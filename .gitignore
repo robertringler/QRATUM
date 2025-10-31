@@ -1,0 +1,7 @@
+build/
+install/
+.venv/
+obj_dir/
+__pycache__/
+*.pyc
+*.so
