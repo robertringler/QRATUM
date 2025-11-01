@@ -118,7 +118,7 @@ def cmd_bench(args: argparse.Namespace) -> None:
     cmd.extend(["--rank", str(args.rank)])
     cmd.extend(["--dimension", str(args.dimension)])
     cmd.extend(["--repeat", str(args.repeat)])
-    
+
     print("Running", " ".join(cmd))
     subprocess.run(cmd, check=True, env=env)
     print("Benchmark completed successfully.")
