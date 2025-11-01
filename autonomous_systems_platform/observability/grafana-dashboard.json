@@ -1,0 +1,23 @@
+{
+  "title": "Autonomous Systems Kernel Observability",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Kernel p95 Latency",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(autonomous_systems_request_latency_seconds_bucket[5m])) by (le))"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Kernel Throughput",
+      "targets": [
+        {
+          "expr": "sum(rate(autonomous_systems_requests_total{endpoint='/kernel'}[5m]))"
+        }
+      ]
+    }
+  ]
+}

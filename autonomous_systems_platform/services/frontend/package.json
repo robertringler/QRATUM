@@ -1,0 +1,9 @@
+{
+  "name": "autonomous-systems-frontend",
+  "version": "1.0.0",
+  "description": "QuASIM Autonomous Systems Dashboard",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 3000"
+  }
+}

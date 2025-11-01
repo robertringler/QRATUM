@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: autonomous-systems-ingress
+  namespace: autonomous-systems
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  tls:
+    - hosts: ["autonomous_systems.quasim.example.com"]
+      secretName: autonomous-systems-tls
+  rules:
+    - host: autonomous_systems.quasim.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: autonomous-systems-backend
+                port:
+                  number: 80

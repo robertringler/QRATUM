@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    env:
+      JAX_PLATFORM_NAME: cpu
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install backend
+        run: |
+          pip install -r services/backend/requirements.txt
+      - name: Run tests
+        run: |
+          python -m pytest services/backend/tests -q
+      - name: Build backend image
+        run: |
+          docker build -t ghcr.io/${github.repository}/autonomous_systems-backend:latest services/backend
+      - name: Build frontend image
+        run: |
+          docker build -t ghcr.io/${github.repository}/autonomous_systems-frontend:latest services/frontend
+      - name: Trivy scan
+        uses: aquasecurity/trivy-action@v0.13.1
+        with:
+          image-ref: ghcr.io/${github.repository}/autonomous_systems-backend:latest
+  publish:
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push images
+        run: |
+          docker push ghcr.io/${github.repository}/autonomous_systems-backend:latest
+          docker push ghcr.io/${github.repository}/autonomous_systems-frontend:latest

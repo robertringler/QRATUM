@@ -1,0 +1,35 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        default: staging
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      IMAGE: ghcr.io/${{ github.repository }}/autonomous_systems-backend:latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.29.0'
+      - name: Decode kubeconfig
+        run: |
+          echo "$KUBE_CONFIG_DATA" | base64 -d > kubeconfig
+          export KUBECONFIG=$PWD/kubeconfig
+          kubectl apply -f infra/k8s/namespace.yaml
+          kubectl apply -f infra/k8s/deployment.yaml
+          kubectl apply -f infra/k8s/service.yaml
+          kubectl apply -f infra/k8s/ingress.yaml
+          kubectl apply -f infra/k8s/hpa.yaml
+      - name: Patch image
+        run: |
+          export KUBECONFIG=$PWD/kubeconfig
+          kubectl set image deployment/autonomous-systems-backend backend=$IMAGE -n autonomous-systems

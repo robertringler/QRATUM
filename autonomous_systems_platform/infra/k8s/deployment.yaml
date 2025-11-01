@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autonomous-systems-backend
+  namespace: autonomous-systems
+  labels:
+    app: autonomous-systems-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: autonomous-systems-backend
+  template:
+    metadata:
+      labels:
+        app: autonomous-systems-backend
+    spec:
+      serviceAccountName: autonomous_systems-backend
+      containers:
+        - name: backend
+          image: <ECR_REPOSITORY_URL>:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: JAX_PLATFORM_NAME
+              value: "gpu"
+            - name: QUASIM_KERNEL_SEED
+              value: "0"
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+      nodeSelector:
+        accelerator: nvidia
+      tolerations:
+        - key: "accelerator"
+          operator: "Equal"
+          value: "nvidia"
+          effect: "NoSchedule"

@@ -1,33 +1,91 @@
-# GB10 QuASIM Reference Platform
+# QuASIM Infrastructure — Stage I
 
-The GB10 QuASIM reference repository delivers a cohesive hardware-software co-design stack for a synthetic Grace-Blackwell inspired superchip optimized for AI and quantum simulation workloads. The project demonstrates how an open research platform could expose heterogeneous compute resources through a unified runtime and SDK.
+This guide brings up a production-ready EKS cluster with GPU node groups and installs platform components via ArgoCD (app-of-apps).
 
-## Repository Layout
+## Prereqs
+- Terraform ≥ 1.7, kubectl ≥ 1.29, helm ≥ 3.14, aws CLI configured
+- Route53 hosted zone (or external DNS option), ACM for public certs (optional)
 
-```
-rtl/                SystemVerilog and Chisel sources for the SoC
-fw/                 Boot ROM, firmware, and board support libraries
-drivers/            Linux kernel drivers for each subsystem
-runtime/            libquasim runtime, Python bindings, and tooling
-sdk/                Compiler frontend, ISA tools, and profiling utilities
-tests/              Verification testbenches and software regression suites
-quantum/            QuASIM accelerated kernels and visualization assets
-scripts/            Build, lint, simulation, and CI orchestration scripts
-docs/               Technical documentation and specifications
-ci/                 Continuous integration workflows and container recipes
-Makefile            Top-level convenience targets for developers
+## Quick Start
+1) **Provision VPC+EKS**
+```bash
+cd infra/terraform/eks
+terraform init && terraform apply -var-file=prod.tfvars
+aws eks update-kubeconfig --name $(terraform output -raw cluster_name) --region $(terraform output -raw region)
 ```
 
-## Getting Started
+2. **Install ArgoCD (bootstrap)**
 
-1. Install build prerequisites (`cmake`, `ninja`, `gcc`, `clang`, `python3`, `verilator`, `openjdk`, `sbt`, and `pytest`).
-2. Run `make setup` to configure the local toolchain mirrors and Python environment.
-3. Use `make lint`, `make sim`, and `make cov` to exercise RTL quality gates.
-4. Build and run the runtime tests with `make runtime` and `make test`.
-5. Benchmark the QuASIM tensor simulator with `make bench` or invoke `python benchmarks/quasim_bench.py` directly for custom parameters.
+```bash
+kubectl create namespace argocd || true
+helm repo add argo https://argoproj.github.io/argo-helm
+helm upgrade --install argocd argo/argo-cd \
+  -n argocd -f ../../helm/values/argocd-values.yaml
+```
 
-The repository is intentionally modular—each layer can be evaluated independently while maintaining coherent interfaces. Refer to the documentation in `docs/` for in-depth architecture, firmware boot flows, and API references.
+3. **App-of-Apps (GitOps all platform services)**
 
-## Licensing
+```bash
+kubectl apply -n argocd -f ../../helm/argocd-apps/projects.yaml
+kubectl apply -n argocd -f ../../helm/argocd-apps/app-of-apps.yaml
+```
 
-All source code and documentation in this repository is provided under the Apache 2.0 license unless otherwise noted. This project is intended for academic and research exploration of heterogeneous compute designs.
+4. **Verify**
+
+* `kubectl -n monitoring get pods` → Prometheus/Grafana up
+* `kubectl -n core get pods` → Cilium ready, cert-manager ready
+* `kubectl -n security get pods` → Gatekeeper/Vault ready
+
+## Validation & Testing
+
+Run repository sanity checks locally before opening a pull request:
+
+```bash
+make test
+```
+
+The harness parses all Helm/Kustomize YAML manifests to ensure syntactic
+correctness and, when the Terraform CLI is available, also runs `terraform init`
+with the backend disabled followed by `terraform validate` for each module. Any
+missing tooling is reported as a skipped check so contributors on lightweight
+environments still receive actionable feedback.
+
+## Namespaces
+
+* `core`: CNI, cert-manager, ingress
+* `mlops`: pipelines, registries (later stages)
+* `inference`: KServe/Triton/vLLM (later stages)
+* `monitoring`: Prometheus/Grafana/Loki/Tempo
+* `security`: Vault, Gatekeeper
+
+## GPU Scheduling
+
+GPU nodes are tainted and labeled:
+
+```
+nodeSelector: { accelerator: nvidia }
+tolerations:
+- key: "accelerator"
+  operator: "Equal"
+  value: "nvidia"
+  effect: "NoSchedule"
+```
+
+(AMD uses `accelerator: amd`)
+
+## Diagram
+
+```mermaid
+flowchart LR
+  dev[Git (main)] -->|ArgoCD| k8s[Kubernetes/EKS]
+  subgraph k8s
+    CNI[Cilium]
+    GITOPS[ArgoCD]
+    SEC[Vault + Gatekeeper]
+    TLS[cert-manager]
+    ING[Ingress NGINX]
+    MON[Prometheus/Grafana/Loki/Tempo]
+  end
+  users[QuASIM Teams] --> ING
+  MON <-- metrics/logs/traces --> k8s
+```
