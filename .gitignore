@@ -5,3 +5,8 @@ obj_dir/
 __pycache__/
 *.pyc
 *.so
+.pytest_cache/
+docs/phase2_benchmarks.html
+docs/phase2_benchmarks.json
+docs/benchmarks.html
+docs/benchmarks.json
