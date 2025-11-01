@@ -5,3 +5,18 @@ obj_dir/
 __pycache__/
 *.pyc
 *.so
+
+# Phase III generated files
+evolve/genomes/*.json
+evolve/policies/*.json
+schedules/*.json
+schedules/precision_maps/*.json
+quantum_search/*.json
+memgraph/*.json
+profiles/causal/*.json
+profiles/introspection/*.json
+profiles/evolution/*.json
+profiles/evolution/*.txt
+federated/*.json
+certs/*.json
+.pytest_cache/
