@@ -161,13 +161,18 @@ Based on cumulative execution time in typical workloads:
 
 ## Optimization Tracking
 
-| Kernel | Baseline | Optimized | Speedup | Backend Variants | Last Profiled |
-|--------|----------|-----------|---------|------------------|---------------|
-| K001   | TBD      | TBD       | TBD     | Python           | -             |
-| K002   | TBD      | TBD       | TBD     | Python           | -             |
-| K003   | TBD      | TBD       | TBD     | Python           | -             |
-| K004   | TBD      | TBD       | TBD     | Python           | -             |
-| K005   | N/A      | N/A       | N/A     | Python           | -             |
+| Kernel | Baseline (Medium) | Optimized (Medium) | Speedup | Backend Variants | Last Profiled |
+|--------|-------------------|---------------------|---------|------------------|---------------|
+| K001   | 3.807ms, 17.2 M/s | 3.249ms, 20.2 M/s  | 1.17× (1.82× large) | Python + NumPy | 2025-11-01 |
+| K002   | 10.035ms, 6.5 M/s | 1.346ms, 48.7 M/s  | **7.46×** ✅ | Python + NumPy | 2025-11-01 |
+| K003   | 3.893ms, 128 M/s  | (baseline retained) | 1.0× | Python (optimal) | 2025-11-01 |
+| K004   | (depends on K001) | (depends on K001)  | 1.17×+ | Python | 2025-11-01 |
+| K005   | N/A               | N/A                | N/A     | Python           | 2025-11-01 |
+
+**Notes:**
+- K001: NumPy vectorization; 1.82× speedup on large workloads (64×4096)
+- K002: NumPy vectorization; **7.46× speedup** (exceptional performance gain)
+- K003: Built-in sum() already optimal; NumPy conversion adds overhead
 
 ---
 

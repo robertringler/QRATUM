@@ -15,14 +15,32 @@ import pytest
 
 
 def generate_tensor(rank: int, dimension: int) -> List[complex]:
-    """Generate a deterministic tensor (current implementation)."""
-    if dimension <= 1:
-        scale = 0.0
-        step = 0.0
-    else:
-        scale = float(rank + 1)
-        step = 1.0 / float(dimension - 1)
-    return [complex(idx * step * scale, -idx * step * scale) for idx in range(dimension)]
+    """Generate a deterministic tensor (OPTIMIZED with NumPy)."""
+    try:
+        import numpy as np
+        
+        if dimension <= 1:
+            scale = 0.0
+            step = 0.0
+        else:
+            scale = float(rank + 1)
+            step = 1.0 / float(dimension - 1)
+        
+        # Vectorized: create index array and compute in one go
+        indices = np.arange(dimension)
+        real_parts = indices * step * scale
+        imag_parts = -indices * step * scale
+        result = (real_parts + 1j * imag_parts).tolist()
+        return result
+    except ImportError:
+        # Fallback to pure Python
+        if dimension <= 1:
+            scale = 0.0
+            step = 0.0
+        else:
+            scale = float(rank + 1)
+            step = 1.0 / float(dimension - 1)
+        return [complex(idx * step * scale, -idx * step * scale) for idx in range(dimension)]
 
 
 def benchmark_tensor_generation(batches: int, dimension: int, repeat: int = 50) -> dict[str, float]:

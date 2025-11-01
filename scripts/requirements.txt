@@ -2,3 +2,6 @@ pyyaml
 pybind11
 pytest
 markdown
+numpy
+hypothesis
+plotly

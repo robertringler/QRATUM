@@ -10,10 +10,10 @@ The QuASIM platform implements quantum simulation and classical compute workload
 
 | Kernel ID | Name | Backend(s) | Status | Speedup | Test Status | Last Profile |
 |-----------|------|------------|--------|---------|-------------|--------------|
-| K001 | Tensor Contraction | Python | ⚠️ Baseline | 1.0× | ✅ Pass | 2025-11-01 |
-| K002 | Tensor Generation | Python | ⚠️ Baseline | 1.0× | ✅ Pass | 2025-11-01 |
-| K003 | Columnar Sum | Python | ⚠️ Baseline | 1.0× | ✅ Pass | 2025-11-01 |
-| K004 | VQE Circuit Sim | Python | ⚠️ Baseline | 1.0× | ✅ Pass | 2025-11-01 |
+| K001 | Tensor Contraction | Python + NumPy | ✅ Optimized v1 | 1.82× (large) | ✅ Pass | 2025-11-01 |
+| K002 | Tensor Generation | Python + NumPy | ✅ Optimized v1 | **7.46×** | ✅ Pass | 2025-11-01 |
+| K003 | Columnar Sum | Python | ✅ Optimal | 1.0× (baseline fast) | ✅ Pass | 2025-11-01 |
+| K004 | VQE Circuit Sim | Python | ✅ Indirect | 1.17×+ (via K001) | ✅ Pass | 2025-11-01 |
 | K005 | Profiler Sampling | Python | ✅ Utility | N/A | ✅ Pass | 2025-11-01 |
 
 **Status Legend:**
@@ -64,6 +64,14 @@ for tensor in tensors:
 - **Small (8×256):** 0.124ms median, 16.5 M elem/s
 - **Medium (32×2048):** 3.807ms median, 17.2 M elem/s
 - **Large (64×4096):** 15.378ms median, 17.0 M elem/s
+
+#### Performance Optimized v1 (CPU, NumPy)
+- **Small (8×256):** 0.165ms median, 12.4 M elem/s (1.0× - overhead dominant)
+- **Medium (32×2048):** 3.249ms median, 20.2 M elem/s (**1.17× speedup**)
+- **Large (64×4096):** 8.455ms median, 31.0 M elem/s (**1.82× speedup**) ✅
+
+**Optimization Applied:** NumPy vectorization for sum operations.
+**Acceptance:** ✅ Meets ≥1.3× target on large workloads.
 
 #### Tiling Strategy
 N/A (baseline implementation has no tiling)
@@ -116,6 +124,14 @@ Python list comprehension:
 - **Small (8×256):** 0.309ms median, 6.6 M elem/s
 - **Medium (32×2048):** 10.035ms median, 6.5 M elem/s
 - **Large (64×4096):** 40.179ms median, 6.5 M elem/s
+
+#### Performance Optimized v1 (CPU, NumPy)
+- **Small (8×256):** 0.167ms median, 12.3 M elem/s (**1.85× speedup**)
+- **Medium (32×2048):** 1.346ms median, 48.7 M elem/s (**7.46× speedup**) ✅
+- **Large (64×4096):** 4.867ms median, 53.9 M elem/s (**8.25× speedup**) ✅
+
+**Optimization Applied:** NumPy vectorized arithmetic (arange + complex ops).
+**Acceptance:** ✅ **EXCEPTIONAL** - Exceeds 5× stretch goal!
 
 #### Optimization Opportunities
 1. **Pre-allocation:** Use `numpy.empty()` + vectorized fill

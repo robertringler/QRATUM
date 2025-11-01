@@ -1,0 +1,4 @@
+# file: /home/runner/work/sybernix/sybernix/runtime/python/quasim/runtime.py
+# hypothesis_version: 6.143.0
+
+[0.0, 16384, 'build', 'fp8', 'libquasim', 'libquasim.a']
