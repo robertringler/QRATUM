@@ -24,6 +24,7 @@ Makefile            Top-level convenience targets for developers
 2. Run `make setup` to configure the local toolchain mirrors and Python environment.
 3. Use `make lint`, `make sim`, and `make cov` to exercise RTL quality gates.
 4. Build and run the runtime tests with `make runtime` and `make test`.
+5. Benchmark the QuASIM tensor simulator with `make bench` or invoke `python benchmarks/quasim_bench.py` directly for custom parameters.
 
 The repository is intentionally modular—each layer can be evaluated independently while maintaining coherent interfaces. Refer to the documentation in `docs/` for in-depth architecture, firmware boot flows, and API references.
 
