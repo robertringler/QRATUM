@@ -10,6 +10,7 @@ def test_simulation_roundtrip():
         [1 + 0j, 1 + 0j, 1 + 0j, 1 + 0j],
         [1 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
     ]
+    # TODO(K001): Test call site for tensor contraction (K001)
     with runtime(cfg) as rt:
         result = rt.simulate(circuit)
         assert len(result) == len(circuit)

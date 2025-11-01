@@ -1,4 +1,47 @@
-"""High-level runtime facade bridging to libquasim."""
+"""High-level runtime facade bridging to libquasim.
+
+Kernel: K001 - Tensor Contraction Simulator
+============================================
+
+Purpose:
+    Simulates tensor contraction operations for quantum circuit simulation.
+    This is the PRIMARY COMPUTE HOTSPOT in the QuASIM runtime.
+
+Expected Shapes/Dtypes:
+    - Input: Iterable[Iterable[complex]] (batches of complex tensors)
+    - Typical: 8-64 batches × 256-4096 elements per batch
+    - Dtypes: complex64, complex128
+
+Mathematical Summary:
+    For each tensor batch T[i], compute: result[i] = Σ(T[i][j]) for all j
+    Sequential complex arithmetic reduction.
+
+Performance (Baseline):
+    - Small (8×256): ~0.12ms, 16.5 M elem/s
+    - Medium (32×2048): ~3.8ms, 17.2 M elem/s
+    - Large (64×4096): ~15.4ms, 17.0 M elem/s
+
+Tiling Strategy:
+    Current: None (pure Python nested loops)
+    Planned: NumPy vectorization, parallel batch processing
+
+Tunables:
+    - Config.simulation_precision: "fp8"|"fp16"|"fp32" (currently unused)
+    - Config.max_workspace_mb: Memory limit (currently unused)
+
+Optimization Opportunities (see kernels/MANIFEST.md#K001):
+    1. Vectorize with NumPy/CuPy
+    2. Parallelize batch processing
+    3. JAX JIT compilation
+    4. Kahan summation for numerical stability
+    5. GPU offload with CuPy/JAX
+
+Fallback Path:
+    Pure Python implementation (current) serves as fallback.
+
+Test Status: ✅ Pass (tests/software/test_quasim.py)
+Last Profiled: 2025-11-01
+"""
 from __future__ import annotations
 
 import contextlib
@@ -24,6 +67,12 @@ class _RuntimeHandle:
         self._latencies: List[float] = []
 
     def simulate(self, tensors: Iterable[Iterable[complex]]) -> list[complex]:
+        # TODO(K001): HOTSPOT - Tensor contraction simulation
+        # See kernels/MANIFEST.md#K001 for optimization opportunities:
+        # - Vectorize with NumPy/CuPy
+        # - Parallelize batch processing
+        # - Use JAX JIT compilation
+        # - Memory-efficient accumulation (Kahan summation)
         aggregates: list[complex] = []
         for tensor in tensors:
             total = 0 + 0j

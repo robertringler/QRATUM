@@ -12,6 +12,8 @@ def heisenberg_hamiltonian(n_qubits: int) -> list[np.ndarray]:
 
 
 def run_vqe(num_qubits: int = 4):
+    # TODO(K004): VQE circuit simulation - depends on K001 optimization
+    # See kernels/MANIFEST.md#K004 for quantum-specific optimizations
     circuit = heisenberg_hamiltonian(num_qubits)
     amplitudes = simulate(circuit)
     energy = float(sum(abs(value) ** 2 for value in amplitudes))

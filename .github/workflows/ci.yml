@@ -1,0 +1,197 @@
+name: QuASIM Kernel CI
+
+on:
+  push:
+    branches: [ main, develop, 'copilot/**' ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('scripts/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install ruff mypy pylint pytest pyyaml pybind11 markdown plotly
+    
+    - name: Run ruff (linter)
+      run: |
+        ruff check $(git ls-files '*.py') --ignore E501
+      continue-on-error: true
+    
+    - name: Run mypy (type checker)
+      run: |
+        mypy --ignore-missing-imports --check-untyped-defs $(git ls-files '*.py')
+      continue-on-error: true
+    
+    - name: Run pylint
+      run: |
+        pylint $(git ls-files '*.py') || true
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov hypothesis pyyaml pybind11 markdown plotly
+    
+    - name: Run unit tests
+      run: |
+        PYTHONPATH=.:runtime/python:quantum:sdk pytest tests/software/ -v --tb=short
+    
+    - name: Check test coverage
+      run: |
+        PYTHONPATH=.:runtime/python:quantum:sdk pytest tests/software/ --cov=runtime --cov=quantum --cov=sdk --cov-report=term-missing
+      continue-on-error: true
+
+  benchmark:
+    name: CPU Benchmarks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pyyaml pybind11 markdown plotly
+    
+    - name: Run baseline benchmarks (K001)
+      run: |
+        PYTHONPATH=.:runtime/python:quantum:sdk python3 benchmarks/harnesses/bench_k001_tensor_contraction.py
+    
+    - name: Run baseline benchmarks (K002)
+      run: |
+        PYTHONPATH=.:runtime/python:quantum:sdk python3 benchmarks/harnesses/bench_k002_tensor_generation.py
+    
+    - name: Run baseline benchmarks (K003)
+      run: |
+        PYTHONPATH=.:runtime/python:quantum:sdk python3 benchmarks/harnesses/bench_k003_columnar_sum.py
+    
+    - name: Legacy benchmark compatibility
+      run: |
+        PYTHONPATH=runtime/python:quantum python3 benchmarks/quasim_bench.py --batches 8 --dimension 512 --repeat 3
+
+  validation:
+    name: Numerical Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest hypothesis pyyaml pybind11 markdown plotly
+    
+    - name: Run numerical correctness tests
+      run: |
+        PYTHONPATH=.:runtime/python:quantum:sdk pytest tests/software/test_quasim.py -v
+    
+    - name: Property-based tests (if available)
+      run: |
+        # Placeholder - property-based tests to be added
+        echo "Property-based tests with Hypothesis will be added in validation phase"
+      continue-on-error: true
+
+  docs:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install markdown pyyaml
+    
+    - name: Check kernel manifest
+      run: |
+        test -f kernels/MANIFEST.md || (echo "kernels/MANIFEST.md missing" && exit 1)
+        echo "Kernel manifest found"
+    
+    - name: Validate markdown files
+      run: |
+        python3 -c "import markdown; markdown.markdown(open('kernels/MANIFEST.md').read())"
+        python3 -c "import markdown; markdown.markdown(open('benchmarks/README.md').read())"
+        echo "Markdown files valid"
+    
+    - name: Check TODO tags
+      run: |
+        echo "Checking for kernel TODO tags..."
+        grep -r "TODO(K0" --include="*.py" . || echo "No TODO tags found (expected in active development)"
+
+  status:
+    name: CI Status Summary
+    runs-on: ubuntu-latest
+    needs: [lint, test, benchmark, validation, docs]
+    if: always()
+    
+    steps:
+    - name: Report status
+      run: |
+        echo "==================================="
+        echo "QuASIM Kernel CI Summary"
+        echo "==================================="
+        echo "Lint: ${{ needs.lint.result }}"
+        echo "Test: ${{ needs.test.result }}"
+        echo "Benchmark: ${{ needs.benchmark.result }}"
+        echo "Validation: ${{ needs.validation.result }}"
+        echo "Docs: ${{ needs.docs.result }}"
+        echo ""
+        if [[ "${{ needs.lint.result }}" == "failure" || "${{ needs.test.result }}" == "failure" ]]; then
+          echo "❌ Critical jobs failed"
+          exit 1
+        else
+          echo "✅ All critical jobs passed"
+        fi

@@ -1,4 +1,36 @@
-"""Micro-benchmark driver for the libquasim Python runtime facade."""
+"""Micro-benchmark driver for the libquasim Python runtime facade.
+
+Kernel: K002 - Tensor Generation (Benchmark Workload)
+======================================================
+
+Purpose:
+    Generates deterministic synthetic tensor payloads for benchmarking.
+    Ensures reproducible workloads across benchmark runs.
+
+Expected Shapes/Dtypes:
+    - Output: 1D list of complex values
+    - Typical dimensions: 256, 512, 1024, 2048, 4096
+    - Dtypes: complex64, complex128
+
+Mathematical Summary:
+    For dimension d, rank r:
+        scale = r + 1
+        step = 1.0 / (d - 1)
+        tensor[i] = complex(i * step * scale, -i * step * scale)
+
+Performance (Baseline):
+    - Small (8×256): ~0.31ms, 6.6 M elem/s
+    - Medium (32×2048): ~10.0ms, 6.5 M elem/s
+    - Large (64×4096): ~40.2ms, 6.5 M elem/s
+
+Optimization Opportunities (see kernels/MANIFEST.md#K002):
+    1. Pre-allocate NumPy arrays
+    2. Cache pre-computed tensors
+    3. Vectorize arithmetic operations
+
+Test Status: ✅ Pass (via benchmark harness)
+Last Profiled: 2025-11-01
+"""
 from __future__ import annotations
 
 import argparse
@@ -11,6 +43,8 @@ from quasim.runtime import Config, runtime
 
 def _generate_tensor(rank: int, dimension: int) -> List[complex]:
     """Generate a deterministic tensor payload for benchmarking."""
+    # TODO(K002): Tensor generation optimization opportunity
+    # See kernels/MANIFEST.md#K002 - Pre-allocate NumPy arrays and vectorize
     if dimension <= 1:
         scale = 0.0
         step = 0.0
@@ -21,6 +55,7 @@ def _generate_tensor(rank: int, dimension: int) -> List[complex]:
 
 
 def _generate_workload(batches: int, rank: int, dimension: int) -> Iterable[Iterable[complex]]:
+    # TODO(K002): Call site for tensor generation (K002)
     for batch in range(batches):
         yield _generate_tensor(rank + batch, dimension)
 
@@ -33,6 +68,7 @@ def run_benchmark(batches: int, rank: int, dimension: int, repeat: int) -> dict[
     for _ in range(repeat):
         start = time.perf_counter()
         with runtime(config) as handle:
+            # TODO(K001): Hot call site for tensor contraction (K001)
             handle.simulate(_generate_workload(batches, rank, dimension))
         end = time.perf_counter()
         timings.append(end - start)
