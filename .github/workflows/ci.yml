@@ -1,0 +1,100 @@
+name: CI - Lint, Test, and Validate
+
+on:
+  push:
+    branches: [ main, develop, 'copilot/**' ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install ruff black mypy
+    
+    - name: Run ruff linter
+      run: |
+        ruff check . || true
+    
+    - name: Check Python formatting
+      run: |
+        ruff format --check . || true
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy
+        if [ -f docker/requirements.txt ]; then
+          pip install -r docker/requirements.txt || true
+        fi
+    
+    - name: Run validation tests
+      run: make test
+    
+    - name: Test Fluent adapter
+      run: |
+        mkdir -p /tmp/test_fluent
+        echo '{"solver": "pressure_poisson", "max_iterations": 10, "convergence_tolerance": 1e-6}' > /tmp/test_fluent/job.json
+        echo "# Test mesh" > /tmp/test_fluent/mesh.msh
+        python3 integrations/adapters/fluent/quasim_fluent_driver.py \
+          --mesh /tmp/test_fluent/mesh.msh \
+          --job /tmp/test_fluent/job.json \
+          --output /tmp/test_fluent/results.csv
+    
+    - name: Test CFD kernel
+      run: |
+        python3 integrations/kernels/cfd/pressure_poisson.py
+    
+    - name: Run quick benchmarks
+      run: |
+        python3 integrations/benchmarks/aero/run_benchmarks.py --quick --output-dir /tmp/bench_results
+    
+    - name: Upload benchmark results
+      uses: actions/upload-artifact@v4
+      with:
+        name: benchmark-results
+        path: /tmp/bench_results/
+
+  validate:
+    name: Validate Infrastructure
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    
+    - name: Validate YAML and JSON
+      run: |
+        python3 scripts/test_full_stack.py
+    
+    - name: Check for TODO/FIXME
+      run: |
+        git grep -n "TODO\|FIXME" || true

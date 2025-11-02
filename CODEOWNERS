@@ -1,0 +1,26 @@
+# Code owners for Sybernix repository
+# Each line is a file pattern followed by one or more owners
+
+# Global owners (fallback)
+* @robertringler
+
+# QuASIM integrations
+/integrations/ @robertringler
+/integrations/adapters/ @robertringler
+/integrations/services/ @robertringler
+/integrations/kernels/ @robertringler
+
+# Infrastructure and deployment
+/infra/ @robertringler
+/integrations/infra/ @robertringler
+
+# Security and compliance
+/integrations/compliance/ @robertringler
+SECURITY.md @robertringler
+
+# Documentation
+/docs/ @robertringler
+*.md @robertringler
+
+# CI/CD workflows
+/.github/workflows/ @robertringler
