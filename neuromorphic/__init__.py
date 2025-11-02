@@ -164,7 +164,6 @@ class EventDrivenSimulator:
             Simulation results
         """
         spike_times = []
-        voltages = []
         
         # Placeholder - would implement actual event-driven dynamics
         n_steps = int(duration / self.time_quantization)
