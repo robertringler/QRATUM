@@ -1,0 +1,9 @@
+{
+  "solver": "pressure_poisson",
+  "max_iterations": 1000,
+  "convergence_tolerance": 1e-06,
+  "precision": "fp32",
+  "backend": "cpu",
+  "deterministic": true,
+  "seed": 42
+}

@@ -1,0 +1,12 @@
+inlet:
+  type: velocity-inlet
+  velocity: [10.0, 0.0, 0.0]  # m/s
+  temperature: 300.0  # K
+
+outlet:
+  type: pressure-outlet
+  pressure: 101325.0  # Pa
+
+walls:
+  type: wall
+  condition: no-slip
