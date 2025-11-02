@@ -2,114 +2,114 @@
   "valuations": [
     {
       "method": "DCF Conservative",
-      "valuation_usd_m": 34.93,
+      "valuation_usd_m": 61.82,
       "description": "Discounted cash flow valuation"
     },
     {
       "method": "DCF Base",
-      "valuation_usd_m": 213.07,
+      "valuation_usd_m": 303.25,
       "description": "Discounted cash flow valuation"
     },
     {
       "method": "DCF Aggressive",
-      "valuation_usd_m": 427.83,
+      "valuation_usd_m": 586.57,
       "description": "Discounted cash flow valuation"
     },
     {
       "method": "VC Method",
-      "valuation_usd_m": 276.21,
+      "valuation_usd_m": 345.27,
       "description": "VC target return valuation"
     },
     {
       "method": "Comparable Company",
-      "valuation_usd_m": 476.0,
+      "valuation_usd_m": 570.0,
       "description": "Revenue multiple benchmark"
     },
     {
       "method": "Real Options",
-      "valuation_usd_m": 255.07,
+      "valuation_usd_m": 345.25,
       "description": "Expansion into regulated industries"
     }
   ],
-  "weighted_composite": 310.89,
+  "weighted_composite": 395.88,
   "weights": {
     "DCF Base": 0.4,
     "VC Method": 0.3,
     "Comparable Company": 0.3
   },
   "moat": {
-    "index": 0.81,
+    "index": 0.85,
     "pillars": {
-      "hybrid_kernel_efficiency": 0.88,
-      "quantum_model_library": 0.83,
-      "partner_ecosystem": 0.72,
-      "data_custody": 0.81
+      "hybrid_kernel_efficiency": 0.9,
+      "quantum_model_library": 0.87,
+      "partner_ecosystem": 0.78,
+      "data_custody": 0.85
     },
     "notes": "Composite index derived from architectural maturity, data assets, partner ecosystem, and regulatory posture. Values clipped to [0,1] to reflect realistic bounds."
   },
   "market": {
     "tam": {
-      "2024": 148,
-      "2025": 170,
-      "2026": 197,
-      "2027": 228,
-      "2028": 264
+      "2024": 162,
+      "2025": 195,
+      "2026": 235,
+      "2027": 283,
+      "2028": 342
     },
     "sam": {
-      "2024": 21,
-      "2025": 27,
-      "2026": 35,
-      "2027": 44,
-      "2028": 56
+      "2024": 24,
+      "2025": 32,
+      "2026": 42,
+      "2027": 55,
+      "2028": 72
     },
     "som": {
-      "2024": 0.4,
-      "2025": 0.9,
-      "2026": 1.5,
-      "2027": 2.4,
-      "2028": 3.4
+      "2024": 0.5,
+      "2025": 1.2,
+      "2026": 2.1,
+      "2027": 3.5,
+      "2028": 5.2
     },
     "cagr": {
-      "quantum_simulation": 0.32,
-      "enterprise_vr": 0.27,
-      "ai_modeling": 0.29
+      "quantum_simulation": 0.38,
+      "enterprise_vr": 0.29,
+      "ai_modeling": 0.34
     }
   },
   "competitors": [
     {
       "name": "NVIDIA Omniverse",
       "segment": "Industrial Digital Twins",
-      "valuation_usd_b": 90,
+      "valuation_usd_b": 110,
       "notes": "Dominant GPU stack and ISV ecosystem"
     },
     {
       "name": "IBM Qiskit",
       "segment": "Quantum SDK",
-      "valuation_usd_b": 18,
-      "notes": "Strong research credibility, slower commercial uptake"
+      "valuation_usd_b": 22,
+      "notes": "Strong research credibility, improving commercial traction"
     },
     {
       "name": "Unity Sentis",
       "segment": "Real-time inference",
-      "valuation_usd_b": 12,
-      "notes": "Focused on edge AI with visualization"
+      "valuation_usd_b": 10,
+      "notes": "Focused on edge AI with visualization, market pressures"
     },
     {
       "name": "Epic Unreal Engine",
       "segment": "Immersive Design",
-      "valuation_usd_b": 31,
-      "notes": "High-fidelity rendering, gaming-first"
+      "valuation_usd_b": 35,
+      "notes": "High-fidelity rendering, gaming-first, metaverse play"
     },
     {
       "name": "Google Quantum AI",
       "segment": "Quantum Services",
-      "valuation_usd_b": 25,
-      "notes": "Deep R&D, limited enterprise packaging"
+      "valuation_usd_b": 30,
+      "notes": "Deep R&D, expanding Cirq ecosystem and cloud integration"
     },
     {
       "name": "Rigetti",
       "segment": "Quantum Hardware",
-      "valuation_usd_b": 0.5,
+      "valuation_usd_b": 0.6,
       "notes": "Capital constrained, pivoting to hybrid workflows"
     }
   ],
@@ -150,56 +150,56 @@
   "scenarios": {
     "Conservative": {
       "revenue": [
-        10,
-        19,
-        33,
-        52,
-        76
+        12,
+        24,
+        42,
+        68,
+        98
       ],
-      "ebitda_margin": 0.32,
-      "capex_ratio": 0.24,
+      "ebitda_margin": 0.34,
+      "capex_ratio": 0.23,
       "free_cash_flow": [
-        0.8,
-        1.52,
+        1.32,
         2.64,
-        4.16,
-        6.08
+        4.62,
+        7.48,
+        10.78
       ]
     },
     "Base": {
       "revenue": [
-        20,
-        44,
-        88,
-        156,
-        238
+        25,
+        55,
+        105,
+        185,
+        285
       ],
-      "ebitda_margin": 0.38,
-      "capex_ratio": 0.22,
+      "ebitda_margin": 0.4,
+      "capex_ratio": 0.21,
       "free_cash_flow": [
-        3.2,
-        7.04,
-        14.08,
-        24.96,
-        38.08
+        4.75,
+        10.45,
+        19.95,
+        35.15,
+        54.15
       ]
     },
     "Aggressive": {
       "revenue": [
-        20,
-        55,
-        120,
-        210,
-        320
+        25,
+        68,
+        145,
+        255,
+        390
       ],
-      "ebitda_margin": 0.44,
-      "capex_ratio": 0.2,
+      "ebitda_margin": 0.46,
+      "capex_ratio": 0.19,
       "free_cash_flow": [
-        4.8,
-        13.2,
-        28.8,
-        50.4,
-        76.8
+        6.75,
+        18.36,
+        39.15,
+        68.85,
+        105.3
       ]
     }
   }

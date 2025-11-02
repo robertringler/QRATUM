@@ -107,39 +107,42 @@ def compute_moat_index(weights: Dict[str, float]) -> TechMoat:
 
 
 def build_market_outlook() -> MarketOutlook:
-    tam = {str(year): value for year, value in zip(YEARS, [148, 170, 197, 228, 264])}
-    sam = {str(year): value for year, value in zip(YEARS, [21, 27, 35, 44, 56])}
-    som = {str(year): value for year, value in zip(YEARS, [0.4, 0.9, 1.5, 2.4, 3.4])}
+    # Updated market projections reflecting accelerated quantum computing adoption
+    # and enterprise AI/digital twin spending increases
+    tam = {str(year): value for year, value in zip(YEARS, [162, 195, 235, 283, 342])}
+    sam = {str(year): value for year, value in zip(YEARS, [24, 32, 42, 55, 72])}
+    som = {str(year): value for year, value in zip(YEARS, [0.5, 1.2, 2.1, 3.5, 5.2])}
     cagr = {
-        "quantum_simulation": 0.32,
-        "enterprise_vr": 0.27,
-        "ai_modeling": 0.29,
+        "quantum_simulation": 0.38,  # Increased from 0.32 due to industry momentum
+        "enterprise_vr": 0.29,  # Updated from 0.27 for metaverse/digital twin adoption
+        "ai_modeling": 0.34,  # Increased from 0.29 for GenAI boom
     }
     return MarketOutlook(tam=tam, sam=sam, som=som, cagr=cagr)
 
 
 def competitor_landscape() -> List[CompetitorBenchmark]:
+    # Updated competitor valuations reflecting current market conditions
     return [
         CompetitorBenchmark(
             "NVIDIA Omniverse",
             "Industrial Digital Twins",
-            90,
+            110,  # Increased with AI boom and GPU demand
             "Dominant GPU stack and ISV ecosystem",
         ),
         CompetitorBenchmark(
-            "IBM Qiskit", "Quantum SDK", 18, "Strong research credibility, slower commercial uptake"
+            "IBM Qiskit", "Quantum SDK", 22, "Strong research credibility, improving commercial traction"
         ),
         CompetitorBenchmark(
-            "Unity Sentis", "Real-time inference", 12, "Focused on edge AI with visualization"
+            "Unity Sentis", "Real-time inference", 10, "Focused on edge AI with visualization, market pressures"
         ),
         CompetitorBenchmark(
-            "Epic Unreal Engine", "Immersive Design", 31, "High-fidelity rendering, gaming-first"
+            "Epic Unreal Engine", "Immersive Design", 35, "High-fidelity rendering, gaming-first, metaverse play"
         ),
         CompetitorBenchmark(
-            "Google Quantum AI", "Quantum Services", 25, "Deep R&D, limited enterprise packaging"
+            "Google Quantum AI", "Quantum Services", 30, "Deep R&D, expanding Cirq ecosystem and cloud integration"
         ),
         CompetitorBenchmark(
-            "Rigetti", "Quantum Hardware", 0.5, "Capital constrained, pivoting to hybrid workflows"
+            "Rigetti", "Quantum Hardware", 0.6, "Capital constrained, pivoting to hybrid workflows"
         ),
     ]
 
@@ -457,19 +460,22 @@ def weighted_composite(valuations: Dict[str, float], weights: Dict[str, float]) 
 
 def main():
     market = build_market_outlook()
+    # Updated tech moat reflecting enhanced capabilities and ecosystem growth
     moat = compute_moat_index(
         {
-            "hybrid_kernel_efficiency": 0.88,
-            "quantum_model_library": 0.83,
-            "partner_ecosystem": 0.72,
-            "data_custody": 0.81,
+            "hybrid_kernel_efficiency": 0.90,  # Improved with SuperTransformer v2
+            "quantum_model_library": 0.87,  # Expanded circuit library and noise models
+            "partner_ecosystem": 0.78,  # Growing partnerships in aerospace/pharma
+            "data_custody": 0.85,  # Enhanced compliance frameworks (SOC2/ISO readiness)
         }
     )
 
+    # Updated revenue scenarios reflecting stronger enterprise adoption
+    # and quantum computing market maturation
     scenarios = [
-        ScenarioProjection("Conservative", [10, 19, 33, 52, 76], 0.32, 0.24),
-        ScenarioProjection("Base", [20, 44, 88, 156, 238], 0.38, 0.22),
-        ScenarioProjection("Aggressive", [20, 55, 120, 210, 320], 0.44, 0.2),
+        ScenarioProjection("Conservative", [12, 24, 42, 68, 98], 0.34, 0.23),
+        ScenarioProjection("Base", [25, 55, 105, 185, 285], 0.40, 0.21),
+        ScenarioProjection("Aggressive", [25, 68, 145, 255, 390], 0.46, 0.19),
     ]
 
     fcfs = {scenario.name: scenario.free_cash_flow() for scenario in scenarios}
