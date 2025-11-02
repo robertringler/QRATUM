@@ -69,3 +69,23 @@ deploy:
 	else \
 	echo "kubectl or helm not installed; skipping deployment"; \
 	fi
+
+# Run full stack locally with Docker Compose
+run-full-stack:
+	@echo "Starting full stack with Docker Compose..."
+	@if command -v docker >/dev/null 2>&1; then \
+		docker compose up --build; \
+	else \
+		echo "Docker not installed. Please install Docker to run the full stack."; \
+		exit 1; \
+	fi
+
+# Stop full stack
+stop-full-stack:
+	@echo "Stopping full stack..."
+	@if command -v docker >/dev/null 2>&1; then \
+		docker compose down; \
+	else \
+		echo "Docker not installed."; \
+		exit 1; \
+	fi

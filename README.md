@@ -2,6 +2,18 @@
 
 **Sybernix** is an advanced quantum-aware simulation and AI infrastructure platform that combines quantum circuit simulation with enterprise-grade immersive visualization. At its core is **QuASIM** (Quantum Accelerated Simulation), a hybrid runtime that layers quantum tensor operations on GPU primitives to enable real-time digital twin modeling, optimization, and scenario planning for regulated industries.
 
+## Quick Start
+
+To quickly run the full QuASIM Autonomous Systems platform locally:
+
+```bash
+docker compose up --build
+```
+
+Visit http://localhost:8080 for the dashboard and http://localhost:8000 for the API.
+
+See [QUICKSTART.md](QUICKSTART.md) for detailed instructions.
+
 ## Overview
 
 Sybernix delivers a production-ready infrastructure that integrates:

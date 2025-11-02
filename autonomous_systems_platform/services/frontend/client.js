@@ -1,5 +1,9 @@
 async function runKernel() {
-    const response = await fetch('/kernel', {
+    const backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:8000'
+        : '';
+    
+    const response = await fetch(`${backendUrl}/kernel`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ seed: 0, scale: 1.0 })
