@@ -86,7 +86,7 @@ class Phase3Orchestrator:
         optimized_genome = self.rl_controller.optimize_kernel(genome, metrics)
         
         # 3. Precision Control: Create precision map
-        precision_map = self.precision_controller.create_hierarchical_map(kernel_id)
+        self.precision_controller.create_hierarchical_map(kernel_id)
         compute_savings = self.precision_controller.get_compute_savings(kernel_id)
         
         # 4. Differentiable Scheduling: Optimize schedule
