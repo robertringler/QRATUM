@@ -175,9 +175,12 @@ class TestPRAutoResolver(unittest.TestCase):
     @patch('pr_auto_resolver.subprocess.run')
     def test_auto_resolve_file_conflict_documentation(self, mock_run):
         """Test auto-resolving conflict in documentation file"""
+        import tempfile
+        
         # Create a test file with conflict markers
-        test_file = Path('/tmp/test_doc.md')
-        test_file.write_text("""
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f:
+            test_file = Path(f.name)
+            f.write("""
 Some content
 <<<<<<< HEAD
 Original content
@@ -187,19 +190,21 @@ New content
 More content
 """)
         
-        result = self.resolver._auto_resolve_file_conflict(str(test_file))
-        
-        self.assertTrue(result)
-        
-        # Check that conflict markers are removed
-        content = test_file.read_text()
-        self.assertNotIn('<<<<<<<', content)
-        self.assertNotIn('=======', content)
-        self.assertNotIn('>>>>>>>', content)
-        self.assertIn('New content', content)  # Should prefer incoming
-        
-        # Cleanup
-        test_file.unlink()
+        try:
+            result = self.resolver._auto_resolve_file_conflict(str(test_file))
+            
+            self.assertTrue(result)
+            
+            # Check that conflict markers are removed
+            content = test_file.read_text()
+            self.assertNotIn('<<<<<<<', content)
+            self.assertNotIn('=======', content)
+            self.assertNotIn('>>>>>>>', content)
+            self.assertIn('New content', content)  # Should prefer incoming
+        finally:
+            # Cleanup
+            if test_file.exists():
+                test_file.unlink()
 
 
 class TestPRResolutionResult(unittest.TestCase):

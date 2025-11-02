@@ -282,11 +282,11 @@ class PRAutoResolver:
                 timeout=300
             )
             
-            # Check if tests passed (look for success indicators)
-            if 'FAIL' not in result.stdout:
+            # Check exit code (0 = success) and look for explicit success indicators
+            if result.returncode == 0 and ('✓ PASS' in result.stdout or 'PASS' in result.stdout):
                 return True
             
-            print(f"Tests failed:\n{result.stdout}")
+            print(f"Tests failed (exit code: {result.returncode}):\n{result.stdout}")
             return False
             
         except subprocess.TimeoutExpired:
@@ -296,8 +296,15 @@ class PRAutoResolver:
             print(f"Error running tests: {e}")
             return False
     
-    def check_merge_criteria(self, pr: PullRequest, issues: List[PRIssue]) -> bool:
-        """Check if PR meets merge criteria"""
+    def check_merge_criteria(self, pr: PullRequest, issues: List[PRIssue], run_tests: bool = True) -> bool:
+        """
+        Check if PR meets merge criteria
+        
+        Args:
+            pr: The pull request to check
+            issues: List of known issues
+            run_tests: Whether to run tests (can be disabled for performance)
+        """
         # No critical or high severity unfixed issues
         critical_issues = [i for i in issues if i.severity in ['critical', 'high'] and not i.fixed]
         if critical_issues:
@@ -320,8 +327,8 @@ class PRAutoResolver:
                 if status.state == 'failure':
                     return False
         
-        # Tests must pass
-        if not self.run_tests():
+        # Tests must pass (optional, can be expensive)
+        if run_tests and not self.run_tests():
             return False
         
         return True

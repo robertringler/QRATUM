@@ -29,13 +29,18 @@ def validate_yaml_files() -> bool:
     skipped = 0
     for yaml_file in yaml_files:
         try:
+            # Check first 1KB for Helm template markers (more efficient)
             with open(yaml_file) as f:
-                content = f.read()
+                header = f.read(1024)
             
             # Skip Helm templates (contain Jinja2-like syntax)
-            if '{{' in content or '{%' in content:
+            if '{{' in header or '{%' in header:
                 skipped += 1
                 continue
+            
+            # Read full content for parsing
+            with open(yaml_file) as f:
+                content = f.read()
             
             # Always use safe_load_all to handle both single and multi-document YAML
             try:
