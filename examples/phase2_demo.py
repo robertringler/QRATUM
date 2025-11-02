@@ -68,7 +68,7 @@ async def demo_async():
     graph = ExecutionGraph()
     
     task1 = graph.add_task("task1", lambda x: x * 2, None, 5)
-    task2 = graph.add_task("task2", lambda x: x + 3, [task1], None)
+    task2 = graph.add_task("task2", lambda x: x + 3, [task1])
     
     results = await executor.execute_graph(graph)
     return results
