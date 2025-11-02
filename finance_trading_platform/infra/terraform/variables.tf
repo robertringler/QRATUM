@@ -6,5 +6,8 @@ variable "availability_zones" { type = list(string) }
 variable "public_subnets" { type = list(string) }
 variable "private_subnets" { type = list(string) }
 variable "general_instance_type" { type = string default = "m6i.xlarge" }
-variable "gpu_instance_type" { type = string default = "p4d.24xlarge" }
+variable "gpu_instance_type" {
+  type    = string
+  default = "p4d.24xlarge"
+}
 
