@@ -14,18 +14,16 @@ Artifacts generated:
 from __future__ import annotations
 
 import json
-import os
 import random
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any
 
 
 @dataclass
 class MonteCarloResult:
     """Monte-Carlo simulation result."""
-    
+
     trajectory_id: int
     vehicle: str
     fidelity: float
@@ -38,7 +36,7 @@ class MonteCarloResult:
 @dataclass
 class SeedAuditEntry:
     """Seed management audit entry."""
-    
+
     seed_value: int
     timestamp: str
     environment: str
@@ -50,7 +48,7 @@ class SeedAuditEntry:
 @dataclass
 class MCDCCoverageEntry:
     """MC/DC coverage entry."""
-    
+
     condition_id: str
     test_vector_id: str
     branch_taken: bool
@@ -61,7 +59,7 @@ class MCDCCoverageEntry:
 @dataclass
 class CertificationPackage:
     """Certification Data Package metadata."""
-    
+
     package_id: str
     revision: str
     date: str
@@ -73,53 +71,53 @@ class CertificationPackage:
 
 class QuASIMGenerator:
     """Generate QuASIM certification artifacts."""
-    
+
     def __init__(self, output_dir: str = "."):
         """Initialize generator.
-        
+
         Args:
             output_dir: Output directory for artifacts
         """
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     def generate_montecarlo_results(
         self,
         num_trajectories: int = 1024,
         vehicles: list[str] | None = None,
     ) -> str:
         """Generate Monte-Carlo simulation results.
-        
+
         Args:
             num_trajectories: Number of trajectories to simulate
             vehicles: List of vehicle types (default: ['Falcon9', 'SLS'])
-            
+
         Returns:
             Path to generated JSON file
         """
         if vehicles is None:
             vehicles = ["Falcon9", "SLS"]
-        
+
         results = []
         random.seed(42)  # Deterministic generation
-        
+
         for i in range(num_trajectories):
             vehicle = vehicles[i % len(vehicles)]
             # Generate fidelity around target of 0.97 ± 0.005
             # Bias slightly above 0.97 to ensure mean >= 0.97
             fidelity = random.gauss(0.9705, 0.002)  # Slightly above target
             fidelity = max(0.96, min(0.98, fidelity))  # Clamp to reasonable range
-            
+
             # Purity should be monotonic with noise scaling
             purity = random.uniform(0.92, 0.98)
-            
+
             # Most trajectories should converge
             converged = random.random() > 0.02  # 98% convergence rate
-            
+
             # Deviation within ±1% of nominal envelope - clamp to ensure compliance
             nominal_deviation_pct = random.gauss(0.0, 0.3)
             nominal_deviation_pct = max(-0.99, min(0.99, nominal_deviation_pct))
-            
+
             result = MonteCarloResult(
                 trajectory_id=i,
                 vehicle=vehicle,
@@ -130,12 +128,12 @@ class QuASIMGenerator:
                 timestamp=datetime.now().isoformat(),
             )
             results.append(asdict(result))
-        
+
         # Calculate statistics
         fidelities = [r["fidelity"] for r in results]
         mean_fidelity = sum(fidelities) / len(fidelities)
         converged_count = sum(1 for r in results if r["converged"])
-        
+
         output = {
             "metadata": {
                 "num_trajectories": num_trajectories,
@@ -153,38 +151,38 @@ class QuASIMGenerator:
             },
             "trajectories": results,
         }
-        
+
         output_path = self.output_dir / "montecarlo_campaigns" / "MC_Results_1024.json"
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         with open(output_path, "w") as f:
             json.dump(output, f, indent=2)
-        
+
         print(f"✓ Generated Monte-Carlo results: {output_path}")
         print(f"  Mean fidelity: {mean_fidelity:.4f}")
         print(f"  Convergence rate: {converged_count}/{num_trajectories}")
-        
+
         return str(output_path)
-    
+
     def generate_seed_audit_log(self, num_entries: int = 100) -> str:
         """Generate seed determinism audit log.
-        
+
         Args:
             num_entries: Number of audit entries
-            
+
         Returns:
             Path to generated log file
         """
         entries = []
         random.seed(42)
-        
+
         environments = ["env_dev", "env_qa", "env_prod"]
-        
+
         for i in range(num_entries):
             seed_value = 1000 + i
             # Deterministic replay should have < 1μs drift
             drift = random.uniform(0.0, 0.8)  # Well below 1μs threshold
-            
+
             entry = SeedAuditEntry(
                 seed_value=seed_value,
                 timestamp=datetime.now().isoformat(),
@@ -194,7 +192,7 @@ class QuASIMGenerator:
                 drift_microseconds=drift,
             )
             entries.append(asdict(entry))
-        
+
         output = {
             "metadata": {
                 "audit_purpose": "Deterministic replay validation",
@@ -213,31 +211,31 @@ class QuASIMGenerator:
             },
             "entries": entries,
         }
-        
+
         output_path = self.output_dir / "seed_management" / "seed_audit.log"
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         with open(output_path, "w") as f:
             json.dump(output, f, indent=2)
-        
+
         print(f"✓ Generated seed audit log: {output_path}")
         print(f"  Max drift: {output['results']['max_drift_observed']:.3f} μs")
-        
+
         return str(output_path)
-    
+
     def generate_mcdc_coverage_matrix(self, num_conditions: int = 200) -> str:
         """Generate MC/DC coverage matrix.
-        
+
         Args:
             num_conditions: Number of test conditions
-            
+
         Returns:
             Path to generated CSV file
         """
         import csv
-        
+
         random.seed(42)
-        
+
         entries = []
         for i in range(num_conditions):
             entry = MCDCCoverageEntry(
@@ -248,10 +246,10 @@ class QuASIMGenerator:
                 traceability_id=f"REQ_GNC_{i:04d}",
             )
             entries.append(entry)
-        
+
         output_path = self.output_dir / "montecarlo_campaigns" / "coverage_matrix.csv"
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         with open(output_path, "w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow([
@@ -261,7 +259,7 @@ class QuASIMGenerator:
                 "Coverage Achieved",
                 "Traceability ID",
             ])
-            
+
             for entry in entries:
                 writer.writerow([
                     entry.condition_id,
@@ -270,16 +268,16 @@ class QuASIMGenerator:
                     entry.coverage_achieved,
                     entry.traceability_id,
                 ])
-        
+
         print(f"✓ Generated MC/DC coverage matrix: {output_path}")
         print(f"  Total conditions: {len(entries)}")
-        print(f"  Coverage: 100%")
-        
+        print("  Coverage: 100%")
+
         return str(output_path)
-    
+
     def generate_certification_package(self) -> str:
         """Generate Certification Data Package metadata.
-        
+
         Returns:
             Path to generated JSON file
         """
@@ -291,7 +289,7 @@ class QuASIMGenerator:
             "verification_cross_reference_matrix.xlsx",
             "audit_checklist.pdf",
         ]
-        
+
         package = CertificationPackage(
             package_id="CDP_v1.0",
             revision="1.0",
@@ -301,7 +299,7 @@ class QuASIMGenerator:
             open_anomalies=0,
             artifacts=artifacts,
         )
-        
+
         output = {
             "package": asdict(package),
             "metadata": {
@@ -337,22 +335,22 @@ class QuASIMGenerator:
                 },
             ],
         }
-        
+
         output_path = self.output_dir / "cdp_artifacts" / "CDP_v1.0.json"
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         with open(output_path, "w") as f:
             json.dump(output, f, indent=2)
-        
+
         print(f"✓ Generated Certification Data Package: {output_path}")
         print(f"  Status: {package.verification_status}")
         print(f"  Open anomalies: {package.open_anomalies}")
-        
+
         return str(output_path)
-    
+
     def generate_all(self) -> dict[str, str]:
         """Generate all certification artifacts.
-        
+
         Returns:
             Dictionary mapping artifact type to file path
         """
@@ -360,25 +358,25 @@ class QuASIMGenerator:
         print("QuASIM Certification Artifact Generator")
         print("SpaceX-NASA Integration Roadmap (90-Day Implementation)")
         print("=" * 70 + "\n")
-        
+
         artifacts = {
             "montecarlo_results": self.generate_montecarlo_results(),
             "seed_audit_log": self.generate_seed_audit_log(),
             "mcdc_coverage": self.generate_mcdc_coverage_matrix(),
             "certification_package": self.generate_certification_package(),
         }
-        
+
         print("\n" + "=" * 70)
         print("✓ All artifacts generated successfully")
         print("=" * 70 + "\n")
-        
+
         return artifacts
 
 
 def main():
     """Main entry point."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(
         description="Generate QuASIM certification artifacts"
     )
@@ -405,9 +403,9 @@ def main():
         default=200,
         help="Number of MC/DC conditions (default: 200)",
     )
-    
+
     args = parser.parse_args()
-    
+
     generator = QuASIMGenerator(output_dir=args.output_dir)
     generator.generate_all()
 
