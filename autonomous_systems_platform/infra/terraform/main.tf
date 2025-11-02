@@ -70,7 +70,7 @@ module "eks" {
       min_size       = 0
       max_size       = 4
       labels = { accelerator = "nvidia" }
-      taints = [{ key = "accelerator", value = "nvidia", effect = "NO_SCHEDULE" }]
+      taints = [{ key = "accelerator", value = "nvidia", effect = "NoSchedule" }]
     }
   }
 
