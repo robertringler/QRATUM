@@ -26,15 +26,28 @@ def validate_yaml_files() -> bool:
     yaml_files = [f for f in yaml_files if ".git" not in str(f) and "node_modules" not in str(f)]
 
     all_valid = True
+    skipped = 0
     for yaml_file in yaml_files:
         try:
             with open(yaml_file) as f:
-                yaml.safe_load(f)
-        except yaml.YAMLError as e:
-            print(f"YAML error in {yaml_file}: {e}")
+                content = f.read()
+            
+            # Skip Helm templates (contain Jinja2-like syntax)
+            if '{{' in content or '{%' in content:
+                skipped += 1
+                continue
+            
+            # Always use safe_load_all to handle both single and multi-document YAML
+            try:
+                list(yaml.safe_load_all(content))
+            except yaml.YAMLError as e:
+                print(f"YAML error in {yaml_file}: {e}")
+                all_valid = False
+        except Exception as e:
+            print(f"Error reading {yaml_file}: {e}")
             all_valid = False
 
-    print(f"Validated {len(yaml_files)} YAML files")
+    print(f"Validated {len(yaml_files)} YAML files ({skipped} Helm templates skipped)")
     return all_valid
 
 
