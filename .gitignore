@@ -5,3 +5,18 @@ obj_dir/
 __pycache__/
 *.pyc
 *.so
+
+# Phase III generated artifacts (exclude runtime-generated data)
+evolve/logs/*.json
+evolve/policies/*.json
+evolve/precision_maps/*.json
+evolve/*_dashboard.json
+schedules/*.json
+quantum_search/*.json
+memgraph/*.json
+profiles/causal/*.json
+federated/aggregated/*.json
+certs/*_certificate.json
+
+# Test artifacts
+.pytest_cache/
