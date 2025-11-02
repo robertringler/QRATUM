@@ -114,10 +114,10 @@ def cmd_bench(args: argparse.Namespace) -> None:
     env["PYTHONPATH"] = ":".join(runtime_paths + ([python_path] if python_path else []))
 
     cmd = [sys.executable, str(bench_script)]
-    cmd.extend(["--batches", str(getattr(args, "batches", 32))])
-    cmd.extend(["--rank", str(getattr(args, "rank", 4))])
-    cmd.extend(["--dimension", str(getattr(args, "dimension", 2048))])
-    cmd.extend(["--repeat", str(getattr(args, "repeat", 5))])
+    cmd.extend(["--batches", str(args.batches)])
+    cmd.extend(["--rank", str(args.rank)])
+    cmd.extend(["--dimension", str(args.dimension)])
+    cmd.extend(["--repeat", str(args.repeat)])
 
     print("Running", " ".join(cmd))
     subprocess.run(cmd, check=True, env=env)
