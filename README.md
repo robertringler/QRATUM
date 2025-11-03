@@ -158,6 +158,20 @@ with the backend disabled followed by `terraform validate` for each module. Any
 missing tooling is reported as a skipped check so contributors on lightweight
 environments still receive actionable feedback.
 
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+### Code Quality Standards
+
+The repository enforces code quality through automated workflows:
+- **Formatting**: black (Python), prettier (JS/TS), cargo fmt (Rust), go fmt (Go)
+- **Linting**: ruff (Python), eslint (JS/TS), clippy (Rust), golangci-lint (Go)
+- **Type checking**: mypy (Python when types are present)
+- **Security**: Automated secret scanning and permissions audits
+
+All pull requests must pass CI checks before merging. See [SECURITY.md](SECURITY.md) for security policies.
+
 ## Namespaces
 
 * `core`: CNI, cert-manager, ingress
@@ -276,14 +290,39 @@ The ONERA M6 benchmark configurations are available in `QuASIM/onera/`:
 
 The repository includes automated workflows for:
 
-1. **QuASIM Master Build & Test** (`.github/workflows/quasim-master-build.yml`)
+1. **PR Checks** (`.github/workflows/pr-checks.yml`)
+   - Polyglot linting and testing (Python, Node.js, Go, Rust)
+   - Code formatting validation (black, prettier, cargo fmt)
+   - Security checks and permissions audit
+   - Markdown/YAML validation
+
+2. **Repository Audit & Auto-Fix** (`.github/workflows/repo-audit-autofix.yml`)
+   - Scheduled weekly audits (Mondays 06:00 UTC)
+   - Automated code formatting and linting fixes
+   - Repository structure enforcement
+   - Opens PR with non-destructive improvements
+
+3. **Main Guard** (`.github/workflows/main-guard.yml`)
+   - Post-merge health checks on main branch
+   - Automated revert PR creation for breaking merges
+   - Prevents broken code in production branch
+
+4. **QuASIM Master Build & Test** (`.github/workflows/quasim-master-build.yml`)
    - Self-test validation
    - Core library build (CPU fallback)
    - Demo execution
 
-2. **CUDA Build** (`.github/workflows/cuda-build.yml`)
+5. **CUDA Build** (`.github/workflows/cuda-build.yml`)
    - HPC module verification
    - CUDA kernel validation
    - pybind11 bindings check
 
 All workflows support CPU fallback for environments without GPU support.
+
+## License
+
+See [LICENSE](LICENSE) file for details.
+
+## Changelog
+
+For a detailed list of changes and version history, see the [releases page](https://github.com/robertringler/sybernix/releases).
