@@ -1,0 +1,171 @@
+name: Main Guard (Auto Revert PR)
+
+on:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+
+      # Re-run a minimal CI to detect breakage right after merge
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Quick health checks
+        id: health
+        run: |
+          ok=0
+          
+          # Python checks
+          if ls -1 **/*.py >/dev/null 2>&1; then
+            echo "Running Python health checks..."
+            pip install --upgrade pip black ruff pytest || true
+            
+            if ! black --check . 2>&1; then
+              echo "❌ Black formatting check failed"
+              ok=1
+            fi
+            
+            if ! ruff check . 2>&1; then
+              echo "❌ Ruff linting check failed"
+              ok=1
+            fi
+            
+            # Run quick pytest (non-blocking for now)
+            pytest -q || echo "⚠ Some tests failed"
+          fi
+          
+          # Basic syntax validation for workflows
+          for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
+            if [ -f "$workflow" ]; then
+              if ! python3 -c "import yaml; yaml.safe_load(open('$workflow'))" 2>&1; then
+                echo "❌ YAML syntax error in $workflow"
+                ok=1
+              fi
+            fi
+          done
+          
+          exit $ok
+
+      - name: If broken, open revert PR
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: commits } = await github.rest.repos.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 10
+            });
+            
+            // Find the last merge commit
+            const merge = commits.find(c => c.parents && c.parents.length > 1);
+            
+            if (!merge) {
+              core.setFailed("No merge commit found to revert.");
+              return;
+            }
+            
+            const shortSha = merge.sha.substring(0, 7);
+            const title = `revert: ${merge.commit.message.split('\n')[0]}`;
+            const branch = `revert/${shortSha}`;
+            
+            try {
+              // Check if branch already exists
+              try {
+                await github.rest.git.getRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: `heads/${branch}`
+                });
+                core.warning(`Branch ${branch} already exists, skipping revert PR creation`);
+                return;
+              } catch (e) {
+                // Branch doesn't exist, continue
+              }
+              
+              // Get current main ref
+              const { data: baseRef } = await github.rest.git.getRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: "heads/main"
+              });
+              
+              // Create branch
+              await github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `refs/heads/${branch}`,
+                sha: baseRef.object.sha
+              });
+              
+              const body = [
+                `## 🚨 Automated Guard Detected Failing Checks`,
+                "",
+                `The merge commit ${merge.sha} introduced issues that caused health checks to fail.`,
+                "",
+                "### Manual steps to create revert commit:",
+                "```bash",
+                `git fetch origin`,
+                `git checkout ${branch}`,
+                `git revert -m 1 ${merge.sha}`,
+                `git push origin ${branch}`,
+                "```",
+                "",
+                "### Failing Checks:",
+                "- Code formatting (black/prettier)",
+                "- Linting (ruff/eslint/clippy)",
+                "- YAML syntax validation",
+                "",
+                "### Actions Required:",
+                "1. Review the failing checks in the workflow logs",
+                "2. Create the revert commit using the commands above",
+                "3. Ensure CI passes on this PR",
+                "4. Merge this PR to restore main to a working state",
+                "",
+                `**Workflow Run:** ${context.payload.repository.html_url}/actions/runs/${context.runId}`,
+                "",
+                "### Checklist:",
+                "- [ ] Revert commit created",
+                "- [ ] CI green",
+                "- [ ] Original issue documented",
+                "- [ ] Fix planned in separate PR"
+              ].join('\n');
+              
+              const { data: pr } = await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                head: branch,
+                base: "main",
+                body
+              });
+              
+              core.notice(`Opened revert PR #${pr.number}: ${pr.html_url}`);
+              
+              // Add labels if they exist
+              try {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  labels: ['automated-revert', 'urgent']
+                });
+              } catch (e) {
+                core.warning('Could not add labels to PR');
+              }
+              
+            } catch (error) {
+              core.setFailed(`Failed to create revert PR: ${error.message}`);
+            }

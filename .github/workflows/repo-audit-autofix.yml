@@ -1,0 +1,238 @@
+name: Repo Audit & Auto-Fix
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1'   # Mondays 06:00 UTC
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Setup common toolchains (extend as needed)
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      # Install typical linters/formatters if manifests present
+      - name: Install Python tools
+        run: |
+          pip install --upgrade pip
+          pip install black ruff pytest mypy || true
+      
+      - name: Install Node tools
+        run: npm i -g eslint prettier markdownlint-cli || true
+      
+      - name: Install Go tools
+        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest || true
+
+      # Auto-format / lint (non-destructive)
+      - name: Python format & lint
+        run: |
+          if ls -1 **/*.py >/dev/null 2>&1; then
+            echo "Running black formatter..."
+            black . || true
+            echo "Running ruff linter with auto-fix..."
+            ruff check . --fix || true
+          fi
+      
+      - name: Node format & lint
+        run: |
+          if [ -f package.json ]; then
+            echo "Running prettier formatter..."
+            npx prettier -w . || true
+            echo "Running eslint with auto-fix..."
+            npx eslint . --fix || true
+          fi
+      
+      - name: Go lint
+        run: |
+          if [ -f go.mod ]; then
+            echo "Running golangci-lint..."
+            ~/go/bin/golangci-lint run --fix || true
+            echo "Running go fmt..."
+            go fmt ./... || true
+          fi
+      
+      - name: Rust fmt & clippy
+        run: |
+          if [ -f Cargo.toml ]; then
+            echo "Running cargo fmt..."
+            cargo fmt || true
+            echo "Running cargo clippy with auto-fix..."
+            cargo clippy --fix -Z unstable-options --allow-dirty || true
+          fi
+      
+      - name: Markdown lint
+        run: |
+          echo "Running markdownlint..."
+          markdownlint '**/*.md' --ignore node_modules --ignore QuASIM --fix || true
+
+      # Ensure minimal structure & configs exist
+      - name: Ensure repo structure
+        run: |
+          echo "Ensuring directory structure..."
+          mkdir -p src tests scripts docs .github
+          
+          if [ ! -f .editorconfig ]; then
+            echo "Creating .editorconfig..."
+            cat > .editorconfig <<'EOF'
+          root = true
+
+          [*]
+          end_of_line = lf
+          insert_final_newline = true
+          charset = utf-8
+          indent_style = space
+          indent_size = 2
+          trim_trailing_whitespace = true
+
+          [*.py]
+          indent_size = 4
+
+          [*.{js,ts,jsx,tsx}]
+          indent_size = 2
+
+          [*.go]
+          indent_style = tab
+
+          [Makefile]
+          indent_style = tab
+
+          [*.md]
+          trim_trailing_whitespace = false
+          EOF
+          fi
+          
+          if [ ! -f .gitattributes ]; then
+            echo "Creating .gitattributes..."
+            cat > .gitattributes <<'EOF'
+          # Auto detect text files and perform LF normalization
+          * text=auto
+
+          # Source code
+          *.py text eol=lf
+          *.js text eol=lf
+          *.ts text eol=lf
+          *.go text eol=lf
+          *.rs text eol=lf
+          *.c text eol=lf
+          *.cpp text eol=lf
+          *.h text eol=lf
+          *.hpp text eol=lf
+
+          # Scripts
+          *.sh text eol=lf
+          *.bash text eol=lf
+
+          # Config files
+          *.json text eol=lf
+          *.yaml text eol=lf
+          *.yml text eol=lf
+          *.toml text eol=lf
+          *.xml text eol=lf
+
+          # Documentation
+          *.md text eol=lf
+          *.txt text eol=lf
+
+          # Docker
+          Dockerfile text eol=lf
+          docker-compose*.yml text eol=lf
+
+          # Binary files
+          *.png binary
+          *.jpg binary
+          *.jpeg binary
+          *.gif binary
+          *.ico binary
+          *.pdf binary
+          *.so binary
+          *.dylib binary
+          *.dll binary
+          *.exe binary
+          EOF
+          fi
+
+      # Commit changes on a branch
+      - name: Commit auto-fixes
+        id: commit
+        run: |
+          set -e
+          branch="chore/audit-autofix-$(date +%Y%m%d%H%M%S)"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add -A
+          
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          git commit -m "chore: audit auto-fixes (format, lint, structure)"
+          git push -u origin "$branch"
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          echo "branch=$branch" >> $GITHUB_OUTPUT
+
+      - name: Open PR
+        if: steps.commit.outputs.has_changes == 'true'
+        uses: actions/github-script@v7
+        env:
+          BRANCH: ${{ steps.commit.outputs.branch }}
+        with:
+          script: |
+            const branch = process.env.BRANCH;
+            try {
+              const { data: pr } = await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: "chore: audit auto-fixes (format, lint, structure)",
+                head: branch,
+                base: "main",
+                body: `## Automated Repository Audit and Auto-Fixes
+            
+            This PR contains automated non-destructive fixes from the repository audit workflow.
+            
+            ### Changes Applied:
+            - ✨ Code formatting (black, prettier, cargo fmt, go fmt)
+            - 🔧 Linting auto-fixes (ruff, eslint, clippy, golangci-lint)
+            - 📁 Repository structure normalization
+            - ⚙️ Configuration files (.editorconfig, .gitattributes)
+            
+            ### Checklist:
+            - [ ] CI green (build, lint, tests)
+            - [ ] Minimal diffs; no API breaks
+            - [ ] Security: no privilege escalation
+            - [ ] Docs updated if needed
+            
+            See workflow logs for details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+              });
+              core.notice(\`Opened PR #\${pr.number}: \${pr.html_url}\`);
+            } catch (error) {
+              if (error.status === 422) {
+                core.warning('PR may already exist for this branch');
+              } else {
+                throw error;
+              }
+            }

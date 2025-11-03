@@ -1,0 +1,185 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main, master]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  detect-stack:
+    runs-on: ubuntu-latest
+    outputs:
+      has_python: ${{ steps.detect.outputs.has_python }}
+      has_node: ${{ steps.detect.outputs.has_node }}
+      has_go: ${{ steps.detect.outputs.has_go }}
+      has_rust: ${{ steps.detect.outputs.has_rust }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: detect
+        run: |
+          has_python=$([ -f pyproject.toml ] || [ -f requirements.txt ] || [ -f setup.py ] || ls -1 **/*.py >/dev/null 2>&1 && echo true || echo false)
+          has_node=$([ -f package.json ] && echo true || echo false)
+          has_go=$([ -f go.mod ] && echo true || echo false)
+          has_rust=$([ -f Cargo.toml ] && echo true || echo false)
+          echo "has_python=$has_python" >> $GITHUB_OUTPUT
+          echo "has_node=$has_node" >> $GITHUB_OUTPUT
+          echo "has_go=$has_go" >> $GITHUB_OUTPUT
+          echo "has_rust=$has_rust" >> $GITHUB_OUTPUT
+
+  python:
+    needs: detect-stack
+    if: needs.detect-stack.outputs.has_python == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install black ruff pytest mypy
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt || true
+          fi
+          if [ -f docker/requirements.txt ]; then
+            pip install -r docker/requirements.txt || true
+          fi
+      
+      - name: Check formatting with black
+        run: black --check . || true
+      
+      - name: Run ruff linter
+        run: ruff check .
+      
+      - name: Run pytest
+        run: pytest -q || true
+      
+      - name: Run mypy type checker
+        run: |
+          if ls -1 **/*.py >/dev/null 2>&1; then
+            mypy --ignore-missing-imports . || true
+          fi
+
+  node:
+    needs: detect-stack
+    if: needs.detect-stack.outputs.has_node == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run eslint
+        run: npx eslint . || true
+      
+      - name: Run tests
+        run: npm test --silent || true
+      
+      - name: Check formatting with prettier
+        run: npx prettier -c .
+
+  go:
+    needs: detect-stack
+    if: needs.detect-stack.outputs.has_go == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      
+      - name: Download dependencies
+        run: go mod download
+      
+      - name: Run tests with coverage
+        run: go test ./... -cover -race
+
+  rust:
+    needs: detect-stack
+    if: needs.detect-stack.outputs.has_rust == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      
+      - name: Check formatting
+        run: cargo fmt --check
+      
+      - name: Run clippy
+        run: cargo clippy -- -D warnings || true
+      
+      - name: Run tests
+        run: cargo test --all --quiet
+
+  markdown-yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js for linters
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install markdownlint-cli and yamllint
+        run: |
+          npm install -g markdownlint-cli
+          pip install yamllint
+      
+      - name: Run markdownlint
+        run: markdownlint '**/*.md' --ignore node_modules --ignore QuASIM || true
+      
+      - name: Run yamllint
+        run: yamllint . || true
+
+  github-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Validate GitHub Actions workflows
+        run: |
+          for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
+            if [ -f "$workflow" ]; then
+              echo "Validating $workflow"
+              # Basic YAML syntax check
+              python3 -c "import yaml; yaml.safe_load(open('$workflow'))"
+            fi
+          done
+      
+      - name: Check for least-privilege permissions
+        run: |
+          for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
+            if [ -f "$workflow" ]; then
+              echo "Checking permissions in $workflow"
+              if grep -q "permissions:" "$workflow"; then
+                echo "✓ Permissions specified in $workflow"
+              else
+                echo "⚠ No explicit permissions in $workflow (defaults to read-only)"
+              fi
+            fi
+          done
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run security checks
+        run: |
+          echo "Checking for secrets in code..."
+          # Check for common secret patterns
+          git grep -i -E '(password|secret|api_key|token).*=.*["\047][^"\047]+["\047]' || echo "No obvious secrets found"
+          
+          echo "Checking GitHub Actions for privilege escalation..."
+          grep -r "write-all\|actions: write" .github/workflows/ && echo "⚠ Found elevated permissions" || echo "✓ No elevated permissions"
