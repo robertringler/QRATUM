@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 from evolve.introspection import IntrospectionAgent, KernelMetrics
@@ -12,22 +11,22 @@ from evolve.rl_controller import RLController
 def generate_initial_population(population_size: int = 20, seed: int = 42) -> None:
     """Generate and save initial kernel population."""
     print(f"Initializing kernel population with {population_size} genomes...")
-    
+
     # Create RL controller
     controller = RLController(population_size=population_size, seed=seed)
-    
+
     # Generate initial population
     population = controller.initialize_population()
-    
+
     # Save to disk
     controller.save_policy()
-    
+
     print(f"Generated {len(population)} initial genomes")
-    print(f"Saved policy to evolve/policies/policy.json")
-    
+    print("Saved policy to evolve/policies/policy.json")
+
     # Generate sample introspection data for testing
     agent = IntrospectionAgent()
-    
+
     for i, genome in enumerate(population[:5]):  # Sample first 5
         metrics = KernelMetrics(
             kernel_id=f"kernel_{i}",
@@ -41,10 +40,10 @@ def generate_initial_population(population_size: int = 20, seed: int = 42) -> No
             compute_utilization=0.7 + i * 0.02,
         )
         agent.record_metrics(metrics)
-    
+
     log_path = agent.flush_to_disk()
     print(f"Generated sample metrics at {log_path}")
-    
+
     # Print population summary
     print("\nInitial Population Summary:")
     print("=" * 60)
@@ -52,10 +51,10 @@ def generate_initial_population(population_size: int = 20, seed: int = 42) -> No
         print(f"Genome {i}: tile={genome.tile_size}, warp={genome.warp_count}, "
               f"unroll={genome.unroll_factor}, async={genome.async_depth}, "
               f"precision={genome.precision}")
-    
+
     if len(population) > 10:
         print(f"... and {len(population) - 10} more genomes")
-    
+
     # Generate README
     readme_path = Path("evolve/README.md")
     readme_content = """# Phase III Kernel Evolution
@@ -94,10 +93,10 @@ Each kernel genome encodes:
 - `async_depth`: Async pipeline depth (1-8)
 - `precision`: Numerical precision (fp8, fp16, bf16, fp32)
 """
-    
+
     with open(readme_path, "w") as f:
         f.write(readme_content)
-    
+
     print(f"\nCreated documentation at {readme_path}")
     print("\nInitialization complete!")
 
@@ -120,7 +119,7 @@ def main() -> None:
         help="Random seed for reproducibility",
     )
     args = parser.parse_args()
-    
+
     generate_initial_population(args.population_size, args.seed)
 
 

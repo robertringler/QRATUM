@@ -7,7 +7,6 @@ It initializes the distributed context and runs a quantum simulation.
 
 import os
 
-import torch
 import torch.distributed as dist
 
 from quasim.qc.quasim_dist import init_cluster, initialize_zero_state, profile, shard_state

@@ -32,16 +32,16 @@ def validate_yaml_files() -> bool:
             # Check first 1KB for Helm template markers (more efficient)
             with open(yaml_file) as f:
                 header = f.read(1024)
-            
+
             # Skip Helm templates (contain Jinja2-like syntax)
             if '{{' in header or '{%' in header:
                 skipped += 1
                 continue
-            
+
             # Read full content for parsing
             with open(yaml_file) as f:
                 content = f.read()
-            
+
             # Always use safe_load_all to handle both single and multi-document YAML
             try:
                 list(yaml.safe_load_all(content))

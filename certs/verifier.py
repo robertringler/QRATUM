@@ -5,18 +5,17 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
 
 
 @dataclass
 class ArithmeticInvariant:
     """Arithmetic invariant constraint."""
-    
+
     invariant_id: str
     constraint_type: str  # "bounds", "monotonicity", "stability"
     expression: str
     verified: bool = False
-    
+
     def to_dict(self) -> dict:
         """Convert to dictionary."""
         return {
@@ -30,15 +29,15 @@ class ArithmeticInvariant:
 @dataclass
 class VerificationCertificate:
     """Certificate of formal verification."""
-    
+
     kernel_id: str
     timestamp: float = field(default_factory=time.time)
     verified: bool = False
-    invariants: List[ArithmeticInvariant] = field(default_factory=list)
+    invariants: list[ArithmeticInvariant] = field(default_factory=list)
     floating_point_stable: bool = False
     max_error_bound: float = 0.0
     verification_method: str = "symbolic"
-    
+
     def to_dict(self) -> dict:
         """Convert to dictionary."""
         return {
@@ -57,11 +56,11 @@ class StabilityVerifier:
     Formal verification for floating-point stability.
     Simplified symbolic verification (real implementation would use Z3/CBMC).
     """
-    
+
     def __init__(self):
-        self.certificates: Dict[str, VerificationCertificate] = {}
-        
-    def create_invariants(self, kernel_id: str) -> List[ArithmeticInvariant]:
+        self.certificates: dict[str, VerificationCertificate] = {}
+
+    def create_invariants(self, kernel_id: str) -> list[ArithmeticInvariant]:
         """Create standard arithmetic invariants for a kernel."""
         invariants = [
             ArithmeticInvariant(
@@ -81,7 +80,7 @@ class StabilityVerifier:
             ),
         ]
         return invariants
-        
+
     def verify_bounds(self, invariant: ArithmeticInvariant) -> bool:
         """
         Verify bounds constraint.
@@ -91,7 +90,7 @@ class StabilityVerifier:
         # Symbolic bounds checking would go here
         # For now, assume verification passes
         return True
-        
+
     def verify_monotonicity(self, invariant: ArithmeticInvariant) -> bool:
         """
         Verify monotonicity constraint.
@@ -99,7 +98,7 @@ class StabilityVerifier:
         """
         # Real implementation would analyze control flow
         return True
-        
+
     def verify_stability(self, invariant: ArithmeticInvariant) -> bool:
         """
         Verify numerical stability.
@@ -107,7 +106,7 @@ class StabilityVerifier:
         """
         # Real implementation would use interval arithmetic or symbolic execution
         return True
-        
+
     def verify_floating_point_stability(
         self, kernel_id: str, precision: str = "fp32"
     ) -> bool:
@@ -122,10 +121,10 @@ class StabilityVerifier:
             "no_underflow": True,
             "associativity_preserved": precision in ["fp32", "fp64"],
         }
-        
+
         # All checks must pass
         return all(stability_checks.values())
-        
+
     def compute_error_bound(self, precision: str = "fp32") -> float:
         """
         Compute maximum error bound for a given precision.
@@ -138,7 +137,7 @@ class StabilityVerifier:
             "fp64": 1e-15,
         }
         return error_bounds.get(precision, 1e-6)
-        
+
     def verify_kernel(
         self, kernel_id: str, precision: str = "fp32"
     ) -> VerificationCertificate:
@@ -147,7 +146,7 @@ class StabilityVerifier:
         """
         # Create invariants
         invariants = self.create_invariants(kernel_id)
-        
+
         # Verify each invariant
         for invariant in invariants:
             if invariant.constraint_type == "bounds":
@@ -156,16 +155,16 @@ class StabilityVerifier:
                 invariant.verified = self.verify_monotonicity(invariant)
             elif invariant.constraint_type == "stability":
                 invariant.verified = self.verify_stability(invariant)
-                
+
         # Verify floating-point stability
         fp_stable = self.verify_floating_point_stability(kernel_id, precision)
-        
+
         # All invariants must be verified
         all_verified = all(inv.verified for inv in invariants)
-        
+
         # Compute error bound
         error_bound = self.compute_error_bound(precision)
-        
+
         certificate = VerificationCertificate(
             kernel_id=kernel_id,
             verified=all_verified and fp_stable,
@@ -174,35 +173,35 @@ class StabilityVerifier:
             max_error_bound=error_bound,
             verification_method="symbolic_simplified",
         )
-        
+
         self.certificates[kernel_id] = certificate
         return certificate
-        
+
     def save_certificate(
         self, kernel_id: str, output_dir: str = "certs"
     ) -> Path:
         """Save verification certificate to disk."""
         if kernel_id not in self.certificates:
             raise ValueError(f"No certificate found for kernel {kernel_id}")
-            
+
         output_path = Path(output_dir)
         output_path.mkdir(parents=True, exist_ok=True)
-        
+
         cert_file = output_path / f"{kernel_id}_certificate.json"
         certificate = self.certificates[kernel_id]
-        
+
         with open(cert_file, "w") as f:
             json.dump(certificate.to_dict(), f, indent=2)
-            
+
         return cert_file
-        
+
     def generate_report(self, kernel_id: str) -> str:
         """Generate human-readable verification report."""
         if kernel_id not in self.certificates:
             return f"No certificate found for kernel {kernel_id}"
-            
+
         cert = self.certificates[kernel_id]
-        
+
         lines = [
             f"Verification Certificate for {kernel_id}",
             "=" * 60,
@@ -215,9 +214,9 @@ class StabilityVerifier:
             "Invariants:",
             "-" * 60,
         ]
-        
+
         for inv in cert.invariants:
             status = "✓ PASS" if inv.verified else "✗ FAIL"
             lines.append(f"  {status} [{inv.constraint_type}] {inv.expression}")
-            
+
         return "\n".join(lines)

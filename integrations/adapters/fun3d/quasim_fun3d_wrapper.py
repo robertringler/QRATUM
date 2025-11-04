@@ -16,7 +16,6 @@ import argparse
 import logging
 import sys
 from pathlib import Path
-from typing import Any, Dict
 
 logging.basicConfig(
     level=logging.INFO,
@@ -27,12 +26,12 @@ logger = logging.getLogger(__name__)
 
 class FUN3DMesh:
     """FUN3D mesh representation."""
-    
+
     def __init__(self, mesh_path: Path):
         self.mesh_path = mesh_path
         self.nodes = []
         self.elements = []
-    
+
     def load(self) -> bool:
         """Load FUN3D mesh (UGRID format)."""
         logger.info(f"Loading FUN3D mesh from {self.mesh_path}")
@@ -45,12 +44,12 @@ class FUN3DMesh:
 
 class FUN3DFlow:
     """FUN3D flow solution."""
-    
+
     def __init__(self, flow_path: Path):
         self.flow_path = flow_path
         self.pressure = []
         self.velocity = []
-    
+
     def load(self) -> bool:
         """Load FUN3D flow solution."""
         logger.info(f"Loading FUN3D flow from {self.flow_path}")
@@ -59,7 +58,7 @@ class FUN3DFlow:
             return False
         logger.info(f"Flow loaded: {self.flow_path.name}")
         return True
-    
+
     def write(self, output_path: Path) -> bool:
         """Write updated flow fields."""
         logger.info(f"Writing updated fields to {output_path}")
@@ -78,31 +77,31 @@ def main() -> int:
     parser.add_argument("--flow", type=Path, required=True, help="FUN3D flow.dat file")
     parser.add_argument("--mesh", type=Path, required=True, help="FUN3D mesh file")
     parser.add_argument("--output", type=Path, required=True, help="Output file")
-    
+
     args = parser.parse_args()
-    
+
     logger.info("=" * 60)
     logger.info("QuASIM FUN3D Wrapper")
     logger.info("=" * 60)
-    
+
     mesh = FUN3DMesh(args.mesh)
     if not mesh.load():
         return 1
-    
+
     flow = FUN3DFlow(args.flow)
     if not flow.load():
         return 1
-    
+
     # Run QuASIM correction
     logger.info("Running QuASIM pressure/velocity correction")
-    
+
     if not flow.write(args.output):
         return 1
-    
+
     logger.info("=" * 60)
     logger.info("QuASIM FUN3D Wrapper completed successfully")
     logger.info("=" * 60)
-    
+
     return 0
 
 

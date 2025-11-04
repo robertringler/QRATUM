@@ -87,7 +87,7 @@ def load_fortune500_data(filepath: Path) -> List[CompanyProfile]:
     """
     companies = []
 
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             company = CompanyProfile(
@@ -731,7 +731,7 @@ def main(input_csv: Optional[Path] = None) -> Dict[str, Path]:
     # Aggregate by sector
     print("Aggregating sector analyses...")
     sectors = {}
-    for sector_name in set(a.profile.sector for a in analyses):
+    for sector_name in {a.profile.sector for a in analyses}:
         sector_analyses = [a for a in analyses if a.profile.sector == sector_name]
         sectors[sector_name] = aggregate_sector_analysis(sector_analyses, sector_name)
 

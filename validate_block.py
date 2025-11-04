@@ -1,4 +1,6 @@
-import numpy as np, json
+
+import numpy as np
+
 
 def validate_block(block):
     ρ_re, ρ_im = np.array(block["rho_final_re"]), np.array(block["rho_final_im"])

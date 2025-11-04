@@ -15,7 +15,7 @@ from __future__ import annotations
 import logging
 import time
 from enum import Enum
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 import numpy as np
 
@@ -41,10 +41,10 @@ class Backend(str, Enum):
 
 class PressurePoissonConfig:
     """Configuration for pressure Poisson solver."""
-    
+
     def __init__(
         self,
-        grid_size: Tuple[int, int, int],
+        grid_size: tuple[int, int, int],
         max_iterations: int = 1000,
         tolerance: float = 1e-6,
         precision: Precision = Precision.FP32,
@@ -53,7 +53,7 @@ class PressurePoissonConfig:
         seed: int = 42
     ):
         """Initialize solver configuration.
-        
+
         Args:
             grid_size: (nx, ny, nz) grid dimensions
             max_iterations: Maximum solver iterations
@@ -70,7 +70,7 @@ class PressurePoissonConfig:
         self.backend = backend
         self.deterministic = deterministic
         self.seed = seed
-        
+
         if deterministic:
             np.random.seed(seed)
             logger.info(f"Deterministic mode enabled with seed={seed}")
@@ -78,25 +78,25 @@ class PressurePoissonConfig:
 
 class PressurePoissonSolver:
     """Pressure Poisson solver using multigrid V-cycle."""
-    
+
     def __init__(self, config: PressurePoissonConfig):
         """Initialize solver with configuration.
-        
+
         Args:
             config: Solver configuration
         """
         self.config = config
         self.nx, self.ny, self.nz = config.grid_size
         self.backend = config.backend
-        
+
         # Initialize solver state
         self._initialize_backend()
-        
-        logger.info(f"PressurePoissonSolver initialized:")
+
+        logger.info("PressurePoissonSolver initialized:")
         logger.info(f"  Grid: {self.nx}x{self.ny}x{self.nz}")
         logger.info(f"  Backend: {self.backend}")
         logger.info(f"  Precision: {config.precision}")
-    
+
     def _initialize_backend(self):
         """Initialize computation backend."""
         if self.backend == Backend.CUDA:
@@ -120,22 +120,22 @@ class PressurePoissonSolver:
         else:
             self.xp = np
             logger.info("CPU backend initialized")
-    
+
     def _apply_laplacian(self, pressure: np.ndarray) -> np.ndarray:
         """Apply discrete Laplacian operator.
-        
+
         Args:
             pressure: Pressure field
-            
+
         Returns:
             Laplacian of pressure field
         """
         lap = self.xp.zeros_like(pressure)
-        
+
         # Simple 7-point stencil for 3D Laplacian
         # ∇²p ≈ (p[i+1] + p[i-1] + p[j+1] + p[j-1] + p[k+1] + p[k-1] - 6*p[i,j,k]) / h²
         # For simplicity, assume h=1
-        
+
         lap[1:-1, 1:-1, 1:-1] = (
             pressure[2:, 1:-1, 1:-1] +
             pressure[:-2, 1:-1, 1:-1] +
@@ -145,9 +145,9 @@ class PressurePoissonSolver:
             pressure[1:-1, 1:-1, :-2] -
             6 * pressure[1:-1, 1:-1, 1:-1]
         )
-        
+
         return lap
-    
+
     def _multigrid_vcycle(
         self,
         pressure: np.ndarray,
@@ -156,13 +156,13 @@ class PressurePoissonSolver:
         max_level: int = 3
     ) -> np.ndarray:
         """Multigrid V-cycle for solving Poisson equation.
-        
+
         Args:
             pressure: Current pressure field
             rhs: Right-hand side (divergence of velocity)
             level: Current multigrid level
             max_level: Maximum multigrid level
-            
+
         Returns:
             Updated pressure field
         """
@@ -170,90 +170,90 @@ class PressurePoissonSolver:
         for _ in range(5):
             residual = self._apply_laplacian(pressure) - rhs
             pressure = pressure - 0.16 * residual  # Damping factor
-        
+
         # Coarse grid correction (simplified)
         if level < max_level and min(pressure.shape) > 4:
             # Restrict residual to coarser grid
             residual = self._apply_laplacian(pressure) - rhs
             coarse_rhs = residual[::2, ::2, ::2]
             coarse_pressure = self.xp.zeros(coarse_rhs.shape)
-            
+
             # Solve on coarse grid
             coarse_pressure = self._multigrid_vcycle(
                 coarse_pressure, coarse_rhs, level + 1, max_level
             )
-            
+
             # Prolongate correction to fine grid
             correction = self.xp.zeros_like(pressure)
             correction[::2, ::2, ::2] = coarse_pressure
             # Simple linear interpolation for prolongation
             pressure = pressure + correction
-        
+
         # Post-smoothing
         for _ in range(5):
             residual = self._apply_laplacian(pressure) - rhs
             pressure = pressure - 0.16 * residual
-        
+
         return pressure
-    
+
     def solve(
         self,
-        velocity_divergence: Optional[np.ndarray] = None
-    ) -> Dict[str, Any]:
+        velocity_divergence: np.ndarray | None = None
+    ) -> dict[str, Any]:
         """Solve pressure Poisson equation.
-        
+
         Args:
             velocity_divergence: Divergence of velocity field (RHS).
                                 If None, uses random test data.
-        
+
         Returns:
             Dictionary with solution and metrics
         """
         logger.info("Starting pressure Poisson solve")
         start_time = time.perf_counter()
-        
+
         # Initialize fields
         if velocity_divergence is None:
             # Generate test divergence field
             velocity_divergence = self.xp.random.randn(
                 self.nx, self.ny, self.nz
             ).astype(np.float32)
-        
+
         pressure = self.xp.zeros((self.nx, self.ny, self.nz), dtype=np.float32)
-        
+
         # Iterative solve with multigrid V-cycle
         iteration = 0
         residual_norm = float('inf')
-        
+
         while iteration < self.config.max_iterations and residual_norm > self.config.tolerance:
             # Apply multigrid V-cycle
             pressure = self._multigrid_vcycle(pressure, velocity_divergence)
-            
+
             # Compute residual norm
             residual = self._apply_laplacian(pressure) - velocity_divergence
             residual_norm = float(self.xp.linalg.norm(residual))
-            
+
             iteration += 1
-            
+
             if iteration % 10 == 0:
                 logger.debug(f"Iteration {iteration}: residual={residual_norm:.2e}")
-        
+
         wall_time = time.perf_counter() - start_time
-        
+
         # Compute metrics
         num_cells = self.nx * self.ny * self.nz
         throughput = num_cells * iteration / wall_time
-        
+
         # Estimate energy (placeholder formula)
         # In production, would use NVIDIA SMI / DCGM
         energy_kwh = wall_time * 0.3 / 3600  # Assuming 300W average
-        
+
         # Estimate cost (placeholder)
         cost_per_kwh = 0.10  # USD
         cost_usd = energy_kwh * cost_per_kwh
-        
+
         status = "converged" if residual_norm <= self.config.tolerance else "max_iterations"
-        
+
         results = {
             "status": status,
             "iterations": iteration,
@@ -267,7 +267,7 @@ class PressurePoissonSolver:
                 "num_cells": num_cells,
             }
         }
-        
+
         logger.info(f"Solve completed: {status}")
         logger.info(f"  Iterations: {iteration}")
         logger.info(f"  Residual: {residual_norm:.2e}")
@@ -275,7 +275,7 @@ class PressurePoissonSolver:
         logger.info(f"  Throughput: {throughput:.2e} cells/s")
         logger.info(f"  Energy: {energy_kwh:.6f} kWh")
         logger.info(f"  Cost: ${cost_usd:.4f}")
-        
+
         return results
 
 
@@ -291,13 +291,13 @@ def main():
         deterministic=True,
         seed=42
     )
-    
+
     # Create solver
     solver = PressurePoissonSolver(config)
-    
+
     # Solve
     results = solver.solve()
-    
+
     # Print summary
     print("\n" + "=" * 60)
     print("Pressure Poisson Solver - Summary")

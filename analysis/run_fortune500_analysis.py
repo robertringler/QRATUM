@@ -14,6 +14,10 @@ from pathlib import Path
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+import json
+
+import numpy as np
+
 from analysis.fortune500_quasim_integration import main as run_analysis
 from analysis.fortune500_report_generator import Fortune500ReportGenerator
 from analysis.fortune500_visualizations import (
@@ -23,9 +27,6 @@ from analysis.fortune500_visualizations import (
     create_qii_distribution_histogram,
     create_sector_comparison_chart,
 )
-
-import json
-import numpy as np
 
 
 def main():
@@ -50,7 +51,7 @@ def main():
     vis_dir.mkdir(parents=True, exist_ok=True)
 
     json_path = data_dir / "fortune500_quasim_analysis.json"
-    with open(json_path, "r") as f:
+    with open(json_path) as f:
         data = json.load(f)
 
     # Generate QII distribution
