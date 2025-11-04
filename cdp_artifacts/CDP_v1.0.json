@@ -2,7 +2,7 @@
   "package": {
     "package_id": "CDP_v1.0",
     "revision": "1.0",
-    "date": "2025-11-03T00:06:41.645719",
+    "date": "2025-11-04T11:06:38.674393",
     "standard": "DO-178C Level A / ECSS-Q-ST-80C Rev. 2 / NASA E-HBK-4008",
     "verification_status": "READY_FOR_AUDIT",
     "open_anomalies": 0,
@@ -10,9 +10,11 @@
       "MC_Results_1024.json",
       "seed_audit.log",
       "coverage_matrix.csv",
+      "traceability_matrix.csv",
+      "audit_checklist.md",
+      "review_schedule.md",
       "telemetry_interface_spec_v1.0.pdf",
-      "verification_cross_reference_matrix.xlsx",
-      "audit_checklist.pdf"
+      "verification_cross_reference_matrix.xlsx"
     ]
   },
   "metadata": {
@@ -22,7 +24,7 @@
       "SpaceX",
       "NASA SMA"
     ],
-    "generated_at": "2025-11-03T00:06:41.645739"
+    "generated_at": "2025-11-04T11:06:38.674418"
   },
   "verification_evidence": [
     {
@@ -45,6 +47,24 @@
     },
     {
       "id": "E-04",
+      "description": "Requirements Traceability Matrix",
+      "source_file": "traceability_matrix.csv",
+      "status": "Verified"
+    },
+    {
+      "id": "E-05",
+      "description": "Audit Checklist and Compliance Matrix",
+      "source_file": "audit_checklist.md",
+      "status": "Ready for Review"
+    },
+    {
+      "id": "E-06",
+      "description": "External Review Coordination",
+      "source_file": "review_schedule.md",
+      "status": "Scheduled"
+    },
+    {
+      "id": "E-07",
       "description": "Certification Data Package",
       "source_file": "CDP_v1.0.zip",
       "status": "Submitted"
