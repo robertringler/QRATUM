@@ -1,0 +1,18 @@
+Practice ID,Practice,Domain,Implementation Status,Evidence
+AC.L2-3.1.1,Authorized Access Only,Access Control,Implemented,IAM System
+AC.L2-3.1.2,Transaction Types,Access Control,Implemented,Authorization Matrix
+AC.L2-3.1.20,External Connections,Access Control,Implemented,VPN Gateway
+AU.L2-3.3.1,Audit Events,Audit,Implemented,SIEM Logs
+AU.L2-3.3.2,Audit Review,Audit,Implemented,Weekly Reviews
+CM.L2-3.4.1,Baseline Configurations,Configuration Management,Implemented,Config Repo
+CM.L2-3.4.2,Security Configurations,Configuration Management,Implemented,STIG Applied
+IA.L2-3.5.1,User Identification,Identification and Authentication,Implemented,Unique IDs
+IA.L2-3.5.2,User Authentication,Identification and Authentication,Implemented,MFA
+IR.L2-3.6.1,Incident Handling,Incident Response,Implemented,IR Playbooks
+MA.L2-3.7.1,Maintenance,Maintenance,Implemented,Maintenance Logs
+MP.L2-3.8.1,Media Protection,Media Protection,Implemented,Encryption
+PE.L2-3.10.1,Physical Access,Physical Protection,Implemented,Badge System
+PS.L2-3.9.1,Personnel Screening,Personnel Security,Implemented,Background Checks
+RA.L2-3.11.1,Risk Assessment,Risk Assessment,Implemented,Annual Assessments
+SC.L2-3.13.1,Boundary Protection,System Protection,Implemented,Firewalls
+SI.L2-3.14.1,Flaw Remediation,System Integrity,Implemented,Patch Management

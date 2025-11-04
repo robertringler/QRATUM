@@ -1,0 +1,83 @@
+# System Security Plan (SSP)
+## {{ system_name }}
+
+**Classification:** {{ classification }}
+**Date:** {{ date }}
+**Version:** {{ version }}
+
+---
+
+## 1. System Identification
+
+**System Name:** {{ system_name }}
+**System Owner:** {{ owner }}
+**Mission/Purpose:** {{ mission }}
+**System Type:** {{ system_type }}
+
+## 2. System Categorization
+
+**FIPS 199 Categorization:**
+- Confidentiality: {{ confidentiality }}
+- Integrity: {{ integrity }}
+- Availability: {{ availability }}
+
+**Overall Impact Level:** {{ impact_level }}
+
+## 3. System Description
+
+{{ system_description }}
+
+## 4. System Environment
+
+**Hosting:** {{ hosting_environment }}
+**Network:** {{ network_description }}
+**Data Stores:** {{ data_stores }}
+
+## 5. Security Controls
+
+{% for control in security_controls %}
+### {{ control.id }}: {{ control.name }}
+
+**Implementation Status:** {{ control.status }}
+**Description:** {{ control.description }}
+**Evidence:** {{ control.evidence }}
+
+{% endfor %}
+
+## 6. Encryption
+
+**At Rest:** {{ encryption_at_rest }}
+**In Transit:** {{ encryption_in_transit }}
+**Algorithm:** {{ encryption_algorithm }}
+
+## 7. Access Control
+
+**Authentication:** {{ authentication_method }}
+**MFA:** {{ mfa_enabled }}
+**RBAC:** {{ rbac_enabled }}
+
+## 8. Audit and Logging
+
+**Logging Level:** {{ logging_level }}
+**Retention:** {{ log_retention }} days
+**SIEM Integration:** {{ siem_integration }}
+
+## 9. Incident Response
+
+**IR Plan:** {{ ir_plan_location }}
+**Contact:** {{ ir_contact }}
+**Reporting Timeframe:** {{ reporting_timeframe }} hours
+
+## 10. Continuous Monitoring
+
+**Monitoring Tools:** {{ monitoring_tools }}
+**Frequency:** {{ monitoring_frequency }}
+
+## 11. Approval
+
+**Prepared By:** _____________________ Date: _____
+**Reviewed By:** _____________________ Date: _____
+**Approved By:** _____________________ Date: _____
+
+---
+**Classification:** {{ classification }}

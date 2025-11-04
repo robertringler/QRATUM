@@ -1,0 +1,278 @@
+# Defense-Specific Compliance Configuration
+# National Security & Defense Contractor Requirements
+
+version: "1.0"
+classification: "CUI"
+
+# Defense Industrial Base (DIB) Requirements
+dib:
+  contractor_type: "prime"  # prime, subcontractor, supplier
+  cage_code: "XXXXX"  # Replace with actual CAGE code
+  duns_number: "XXXXXXXXX"  # Replace with actual DUNS
+  facility_clearance: "SECRET"  # UNCLASS, CONFIDENTIAL, SECRET, TOP_SECRET
+  foci_mitigation: false  # Foreign Ownership, Control, or Influence
+
+# DoD Cybersecurity Maturity Model Certification (CMMC)
+cmmc:
+  target_level: 2
+  assessment_type: "C3PAO"  # Certified Third-Party Assessor Organization
+  assessment_frequency: 36  # months
+  scope:
+    - "FCI"  # Federal Contract Information
+    - "CUI"  # Controlled Unclassified Information
+  practices:
+    level_1: 17
+    level_2: 110
+  domains:
+    - "Access Control (AC)"
+    - "Audit and Accountability (AU)"
+    - "Configuration Management (CM)"
+    - "Identification and Authentication (IA)"
+    - "Incident Response (IR)"
+    - "Maintenance (MA)"
+    - "Media Protection (MP)"
+    - "Personnel Security (PS)"
+    - "Physical Protection (PE)"
+    - "Risk Assessment (RA)"
+    - "Security Assessment (CA)"
+    - "System and Communications Protection (SC)"
+    - "System and Information Integrity (SI)"
+    - "Situational Awareness (SA)"
+
+# DFARS Compliance
+dfars:
+  clauses:
+    252_204_7012:
+      title: "Safeguarding Covered Defense Information"
+      applicable: true
+      cui_protection: true
+      incident_reporting: true
+      reporting_timeframe: 72  # hours
+      
+    252_204_7019:
+      title: "Notice of NIST SP 800-171 DoD Assessment"
+      applicable: true
+      assessment_required: true
+      submission_to_sprs: true  # Supplier Performance Risk System
+      
+    252_204_7020:
+      title: "NIST SP 800-171 DoD Assessment Requirements"
+      applicable: true
+      medium_assessment: true
+      high_assessment: false
+      
+    252_204_7021:
+      title: "Cybersecurity Maturity Model Certification"
+      applicable: true
+      level_required: 2
+      
+    252_239_7010:
+      title: "Cloud Computing Services"
+      applicable: true
+      fedramp_required: "Moderate"
+      il_level: 4  # Impact Level
+
+# National Defense Authorization Act (NDAA) Section 889
+ndaa_889:
+  compliance_required: true
+  prohibited_entities:
+    huawei: true
+    zte: true
+    hytera: true
+    hikvision: true
+    dahua: true
+  supply_chain_screening: true
+  representation_required: true
+  flowdown_required: true
+
+# International Traffic in Arms Regulations (ITAR)
+itar:
+  applicable: true
+  usml_categories:
+    VIII: "Aircraft and Related Articles"
+    XI: "Military Electronics"
+    XV: "Spacecraft and Related Articles"
+  registration_required: true
+  ddtc_registration: "M-XXXXX"  # Replace with actual registration
+  technical_data_controls:
+    encryption: "AES-256"
+    access_control: "US_PERSONS_ONLY"
+    storage: "US_TERRITORY_ONLY"
+    export_approval: "REQUIRED"
+  foreign_person_access:
+    allowed: false
+    exception_required: true
+    taa_required: true  # Technical Assistance Agreement
+
+# Export Administration Regulations (EAR)
+ear:
+  applicable: true
+  eccn: "5D002"  # Export Control Classification Number
+  license_requirements:
+    general_prohibition_1: false  # No license required to certain countries
+    general_prohibition_2: false
+    general_prohibition_3: false
+  license_exceptions:
+    tsu: true  # Technology and Software - Unrestricted
+    enc: false  # Encryption
+  deemed_export_controls: true
+  foreign_national_access_controls: true
+
+# Federal Information Processing Standards (FIPS)
+fips:
+  fips_140_3:
+    enabled: true
+    level: 2
+    modules:
+      - name: "OpenSSL 3.0 FIPS"
+        certificate: "4XXX"
+        algorithms:
+          - "AES-256"
+          - "SHA-256"
+          - "SHA-384"
+          - "SHA-512"
+          - "RSA-2048"
+          - "RSA-3072"
+          - "RSA-4096"
+          - "ECDSA P-256"
+          - "ECDSA P-384"
+  fips_199:
+    security_categorization: "HIGH"
+    confidentiality: "HIGH"
+    integrity: "HIGH"
+    availability: "HIGH"
+  fips_200:
+    minimum_security_requirements: true
+    nist_800_53_controls: true
+
+# Security Technical Implementation Guides (STIGs)
+stigs:
+  applicable: true
+  versions:
+    - "Application Security and Development V5R3"
+    - "DevSecOps Platform V2R1"
+    - "Container Platform V2R1"
+    - "Kubernetes V2R1"
+  automation: true
+  scan_frequency: "weekly"
+  remediation_tracking: true
+
+# Risk Management Framework (RMF)
+rmf:
+  applicable: true
+  nist_800_37: true
+  steps:
+    categorize: true
+    select: true
+    implement: true
+    assess: true
+    authorize: true
+    monitor: true
+  ato_required: true  # Authority to Operate
+  ato_duration: 36  # months
+  continuous_monitoring: true
+
+# Supply Chain Risk Management (SCRM)
+scrm:
+  nist_800_161: true
+  risk_assessment: "quarterly"
+  vendor_validation: true
+  component_verification: true
+  counterfeit_detection: true
+  provenance_tracking: true
+
+# Secure Software Development Framework (SSDF)
+ssdf:
+  nist_800_218: true
+  practices:
+    po: true  # Prepare the Organization
+    ps: true  # Protect the Software
+    pw: true  # Produce Well-Secured Software
+    rv: true  # Respond to Vulnerabilities
+  attestation_required: true
+
+# Critical Infrastructure Protection
+cip:
+  applicable: false  # Set to true if applicable
+  sector: "Defense Industrial Base"
+  nerc_cip: false
+  tsa_security_directive: false
+
+# Incident Reporting Requirements
+incident_reporting:
+  dib_csn: true  # Defense Industrial Base Cybersecurity Network
+  reporting_portal: "https://dibnet.dod.mil"
+  timeframe: 72  # hours
+  required_information:
+    - "Incident description"
+    - "Affected systems"
+    - "CUI involved"
+    - "Initial assessment"
+    - "Containment actions"
+  follow_up_required: true
+  forensics_preservation: true
+
+# Insider Threat Program
+insider_threat:
+  program_required: true
+  monitoring: true
+  training_frequency: 12  # months
+  reporting_mechanism: true
+  investigation_process: true
+
+# Personnel Security
+personnel_security:
+  background_checks: true
+  clearance_requirements:
+    unclassified: false
+    confidential: false
+    secret: true
+    top_secret: false
+  foreign_national_access: false
+  visitor_controls: true
+  badge_system: true
+
+# Physical Security
+physical_security:
+  controlled_access: true
+  visitor_escort: true
+  security_cameras: true
+  alarm_system: true
+  cui_storage: "locked_container"
+  after_hours_access: "restricted"
+
+# Training Requirements
+training:
+  cybersecurity_awareness:
+    frequency: 12  # months
+    completion_required: true
+  insider_threat:
+    frequency: 12  # months
+    completion_required: true
+  itar_export_control:
+    frequency: 12  # months
+    completion_required: true
+  cmmc_training:
+    frequency: 24  # months
+    roles: ["IT Staff", "Security Team"]
+
+# Audit and Assessment
+audit:
+  external_audit: true
+  frequency: 12  # months
+  scope: "full_system"
+  remediation_tracking: true
+  artifact_retention: 84  # months (7 years)
+
+# Contract Flow-Down Requirements
+flowdown:
+  subcontractors: true
+  suppliers: true
+  clauses_required:
+    - "DFARS 252.204-7012"
+    - "DFARS 252.204-7019"
+    - "DFARS 252.204-7020"
+    - "DFARS 252.204-7021"
+    - "FAR 52.204-21"
+  compliance_verification: true
+  right_to_audit: true

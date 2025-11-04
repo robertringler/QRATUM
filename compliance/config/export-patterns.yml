@@ -1,0 +1,247 @@
+# Export Control Pattern Detection Configuration
+# ITAR, EAR, and Technology Transfer Controls
+
+version: "1.0"
+
+# ITAR Controlled Technology Patterns
+itar_patterns:
+  usml_category_viii:
+    description: "Aircraft and Related Articles"
+    keywords:
+      - "flight control system"
+      - "avionics"
+      - "autopilot"
+      - "inertial navigation"
+      - "GPS navigation"
+      - "military aircraft"
+      - "UAV"
+      - "drone control"
+    file_patterns:
+      - "**/gnc/**"
+      - "**/flight_control/**"
+      - "**/autopilot/**"
+      - "**/navigation/**"
+    
+  usml_category_xi:
+    description: "Military Electronics"
+    keywords:
+      - "electronic warfare"
+      - "radar system"
+      - "sonar"
+      - "infrared sensor"
+      - "targeting system"
+      - "fire control"
+      - "military communication"
+    file_patterns:
+      - "**/radar/**"
+      - "**/ew/**"  # Electronic Warfare
+      - "**/targeting/**"
+      - "**/fire_control/**"
+    
+  usml_category_xv:
+    description: "Spacecraft and Related Articles"
+    keywords:
+      - "spacecraft"
+      - "satellite"
+      - "orbital mechanics"
+      - "attitude control"
+      - "propulsion system"
+      - "spacecraft bus"
+      - "payload integration"
+    file_patterns:
+      - "**/spacecraft/**"
+      - "**/satellite/**"
+      - "**/orbital/**"
+      - "**/propulsion/**"
+
+# EAR Controlled Technology Patterns
+ear_patterns:
+  5d002:
+    description: "Software for Development or Production"
+    eccn: "5D002"
+    keywords:
+      - "CAD software"
+      - "simulation software"
+      - "finite element"
+      - "computational fluid dynamics"
+      - "design optimization"
+      - "manufacturing process"
+    file_patterns:
+      - "**/cad/**"
+      - "**/simulation/**"
+      - "**/cfd/**"
+      - "**/fem/**"
+  
+  5e002:
+    description: "Technology for Development or Production"
+    eccn: "5E002"
+    keywords:
+      - "technical data package"
+      - "manufacturing specifications"
+      - "engineering drawings"
+      - "process parameters"
+      - "quality procedures"
+    file_patterns:
+      - "**/drawings/**"
+      - "**/specifications/**"
+      - "**/procedures/**"
+
+# Cryptographic Technology
+cryptography:
+  controlled_algorithms:
+    - "AES"
+    - "RSA"
+    - "ECC"
+    - "SHA"
+    - "HMAC"
+    - "Diffie-Hellman"
+    - "ElGamal"
+  controlled_implementations:
+    - "encryption library"
+    - "key management"
+    - "cryptographic module"
+    - "secure communication"
+  file_patterns:
+    - "**/crypto/**"
+    - "**/encryption/**"
+    - "**/security/crypto/**"
+  license_exception: "ENC"
+
+# Dual-Use Technology
+dual_use:
+  keywords:
+    - "missile guidance"
+    - "rocket propulsion"
+    - "nuclear technology"
+    - "chemical weapon"
+    - "biological agent"
+    - "uranium enrichment"
+  file_patterns:
+    - "**/guidance/**"
+    - "**/propulsion/**"
+    - "**/nuclear/**"
+
+# Technical Data Indicators
+technical_data:
+  indicators:
+    - "design specifications"
+    - "engineering calculations"
+    - "performance characteristics"
+    - "manufacturing processes"
+    - "test procedures"
+    - "blueprints"
+    - "schematics"
+    - "source code"
+    - "object code"
+    - "algorithms"
+  file_extensions:
+    - ".dwg"
+    - ".dxf"
+    - ".step"
+    - ".iges"
+    - ".pdf"  # Technical documents
+    - ".docx"  # Technical documents
+
+# Public Domain Exemptions
+public_domain:
+  indicators:
+    - "published research"
+    - "publicly available"
+    - "open source"
+    - "patent application"
+    - "academic paper"
+  licenses:
+    - "MIT"
+    - "Apache-2.0"
+    - "BSD"
+    - "GPL"
+  note: "Must be truly publicly available without restrictions"
+
+# Foreign Person Access Controls
+foreign_person:
+  restricted_countries:
+    group_d1:  # Terrorist Supporting Countries
+      - "CU"  # Cuba
+      - "IR"  # Iran
+      - "KP"  # North Korea
+      - "SY"  # Syria
+    group_d5:  # Military End-Use Restrictions
+      - "RU"  # Russia
+      - "BY"  # Belarus
+      - "VE"  # Venezuela
+    group_e:  # Entity List
+      note: "Check BIS Entity List"
+  controls:
+    access_logging: true
+    vpn_blocking: true
+    geofencing: true
+    authentication_required: true
+
+# Deemed Export Controls
+deemed_export:
+  enabled: true
+  foreign_national_tracking: true
+  taa_required: false  # Technical Assistance Agreement
+  export_license_required: false
+  screening_required: true
+
+# Exclusion Patterns (Not Export Controlled)
+exclusions:
+  basic_scientific_research:
+    - "fundamental research"
+    - "published papers"
+    - "conference presentations"
+  publicly_available_software:
+    - "open source repositories"
+    - "npm packages"
+    - "pypi packages"
+  educational_information:
+    - "textbooks"
+    - "training materials"
+    - "academic courses"
+
+# Detection Rules
+detection:
+  enabled: true
+  scan_commits: true
+  scan_pull_requests: true
+  scan_files: true
+  scan_comments: true
+  alert_threshold: "medium"
+  auto_block: false  # Set to true for automatic blocking
+  notify_export_compliance: true
+
+# Classification Markers
+markers:
+  itar:
+    - "ITAR CONTROLLED"
+    - "USML"
+    - "Export Controlled"
+  ear:
+    - "EAR99"
+    - "ECCN"
+    - "Export Administration Regulations"
+  cui:
+    - "CUI"
+    - "Controlled Unclassified Information"
+    - "FOUO"  # For Official Use Only
+  proprietary:
+    - "PROPRIETARY"
+    - "CONFIDENTIAL"
+    - "INTERNAL USE ONLY"
+
+# Automated Actions
+automation:
+  flag_export_controlled_content: true
+  require_export_review: true
+  block_foreign_ip: false
+  require_us_person_approval: true
+  generate_export_log: true
+  notify_compliance_team: true
+
+# Reporting
+reporting:
+  export_log_retention: 2555  # days (7 years)
+  incident_reporting: true
+  quarterly_review: true
+  annual_certification: true

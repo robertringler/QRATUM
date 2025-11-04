@@ -1,0 +1,21 @@
+Control,Control Name,Implementation Status,Evidence,Notes
+AC-1,Policy and Procedures,Implemented,Security Policy Doc,Reviewed annually
+AC-2,Account Management,Implemented,IAM System,MFA enabled
+AC-3,Access Enforcement,Implemented,RBAC System,Least privilege
+AC-6,Least Privilege,Implemented,Role Definitions,Quarterly review
+AU-2,Audit Events,Implemented,Logging System,All events logged
+AU-3,Content of Audit Records,Implemented,Log Format,Timestamp + user + action
+AU-9,Protection of Audit Information,Implemented,Log Protection,Tamper-proof
+CM-2,Baseline Configuration,Implemented,Config Repo,Version controlled
+CM-3,Configuration Change Control,Implemented,Change Management,PR approval required
+CM-6,Configuration Settings,Implemented,Hardening Guides,STIG applied
+IA-2,Identification and Authentication,Implemented,Auth System,MFA required
+IA-5,Authenticator Management,Implemented,Password Policy,15 char minimum
+SC-7,Boundary Protection,Implemented,Firewall,DMZ configured
+SC-8,Transmission Confidentiality,Implemented,TLS 1.3,All traffic encrypted
+SC-12,Cryptographic Key Management,Implemented,KMS,FIPS 140-3
+SC-13,Cryptographic Protection,Implemented,Encryption,AES-256-GCM
+SC-28,Protection at Rest,Implemented,Disk Encryption,Full disk encryption
+SI-2,Flaw Remediation,Implemented,Patch Management,15-day SLA critical
+SI-3,Malicious Code Protection,Implemented,AV/EDR,Real-time scanning
+SI-4,System Monitoring,Implemented,SIEM,24/7 monitoring

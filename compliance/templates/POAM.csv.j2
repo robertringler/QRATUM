@@ -1,0 +1,4 @@
+POA&M ID,Weakness Description,Control,Severity,Status,Resources,Scheduled Completion,Milestone Changes,Source,Comments
+{% for item in poam_items %}
+{{ item.id }},{{ item.description }},{{ item.control }},{{ item.severity }},{{ item.status }},{{ item.resources }},{{ item.completion_date }},{{ item.milestones }},{{ item.source }},{{ item.comments }}
+{% endfor %}
