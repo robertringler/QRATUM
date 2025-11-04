@@ -34,6 +34,10 @@ class StarshipTelemetrySchema:
 class StarshipTelemetryAdapter:
     """Adapter for Starship vehicle telemetry ingestion."""
 
+    # Stage-specific Raptor engine limits
+    MAX_RAPTOR_BOOSTER = 33
+    MAX_RAPTOR_SHIP = 6
+
     def __init__(self, endpoint: str = "localhost:8003"):
         """Initialize Starship telemetry adapter.
 
@@ -176,8 +180,13 @@ class StarshipTelemetryAdapter:
 
         # Validate propulsion data
         raptor_count = telemetry.propulsion_data.get("raptor_count", 0)
-        if raptor_count < 0 or raptor_count > 50:
-            errors.append(f"Invalid Raptor engine count: {raptor_count}")
+        max_raptor = (
+            self.MAX_RAPTOR_BOOSTER
+            if telemetry.stage_id == "Booster"
+            else self.MAX_RAPTOR_SHIP
+        )
+        if raptor_count < 0 or raptor_count > max_raptor:
+            errors.append(f"Invalid Raptor engine count: {raptor_count} (max: {max_raptor})")
 
         propellant_mass = telemetry.propulsion_data.get("propellant_mass_kg", 0.0)
         if propellant_mass < 0:

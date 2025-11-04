@@ -59,13 +59,13 @@ class TestStarshipTelemetryAdapter:
             "attitude_q": [1.0, 0.0, 0.0, 0.0],
             "angular_vel": [0.0, 0.0, 0.0],
             "angular_accel": [0.0, 0.0, 0.0],
-            "mass": 300_000.0,
+            "mass": 3_700_000.0,  # Total booster mass (dry + propellant)
             "com": [0.0, 0.0, 0.0],
             "raptor_count": 33,
             "raptor_thrust": [2000.0] * 33,
             "raptor_throttle": [100.0] * 33,
             "raptor_gimbal": [0.0] * 33,
-            "propellant_mass": 3_400_000.0,
+            "propellant_mass": 3_400_000.0,  # Propellant mass component
             "propellant_flow": 12_000.0,
             "chamber_pressure": [300.0] * 33,
             "flight_mode": "ASCENT",
@@ -83,7 +83,7 @@ class TestStarshipTelemetryAdapter:
         assert telemetry.vehicle_id == "Starship_S25"
         assert telemetry.stage_id == "Booster"
         assert telemetry.dynamics_data["position"] == [0.0, 0.0, 50_000.0]
-        assert telemetry.dynamics_data["mass_kg"] == 300_000.0
+        assert telemetry.dynamics_data["mass_kg"] == 3_700_000.0
         assert telemetry.propulsion_data["raptor_count"] == 33
         assert telemetry.gnc_data["flight_mode"] == "ASCENT"
         assert telemetry.atmosphere_data["altitude_m"] == 50_000.0

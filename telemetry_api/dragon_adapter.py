@@ -213,7 +213,7 @@ class DragonTelemetryAdapter:
         """
         return {
             "timestamp": telemetry.timestamp,
-            "source": "Dragon_" + telemetry.vehicle_id,
+            "source": f"Dragon_{telemetry.vehicle_id}",
             "trajectory": {
                 "position": telemetry.trajectory_data.get("position_eci", [0.0, 0.0, 0.0]),
                 "velocity": telemetry.trajectory_data.get("velocity_eci", [0.0, 0.0, 0.0]),
