@@ -10,11 +10,12 @@
 ## Compliance & Certification
 
 QuASIM is **COMPLIANT** with defense, aerospace, and industry standards:
-- ✅ [Defense Compliance Summary](DEFENSE_COMPLIANCE_SUMMARY.md) - Comprehensive assessment
-- ✅ [Compliance Status Checklist](COMPLIANCE_STATUS_CHECKLIST.md) - Quick reference
+- 📋 [Compliance Assessment Index](COMPLIANCE_ASSESSMENT_INDEX.md) - **Start here** for navigation
+- ✅ [Defense Compliance Summary](DEFENSE_COMPLIANCE_SUMMARY.md) - Comprehensive assessment (26KB)
+- ✅ [Compliance Status Checklist](COMPLIANCE_STATUS_CHECKLIST.md) - Quick reference (6.5KB)
 - ✅ [Compliance Documentation](README_COMPLIANCE.md) - Framework details
 
-**Overall Status:** 98.75% compliant across 10+ frameworks
+**Overall Status:** 98.75% compliant across 10+ frameworks | [View Full Assessment →](COMPLIANCE_ASSESSMENT_INDEX.md)
 
 ## Quick Start
 
