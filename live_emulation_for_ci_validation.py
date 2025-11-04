@@ -9,7 +9,7 @@ import numpy as np
 from qutip import (Qobj, basis, sigmax, sigmay, sigmaz, hadamard_transform,
                    phasegate, rx, ry, rz, rand_unitary, fidelity, bloch_sphere,
                    mesolve, Options)
-from qutip.qip.operations import snot, phasegate as S, sqrtnot as T_gate  # T is sqrt(S), but approx
+from qutip.qip.operations import snot  # T is sqrt(S), but approx
 from scipy.linalg import expm
 import os
 
