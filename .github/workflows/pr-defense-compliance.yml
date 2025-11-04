@@ -123,30 +123,30 @@ jobs:
       - name: Check Dockerfiles
         run: |
           echo "Scanning Dockerfiles for security issues..."
-          FOUND_DOCKERFILES=false
-          find . -name "Dockerfile*" -type f | while read -r dockerfile; do
-            FOUND_DOCKERFILES=true
-            echo "Checking $dockerfile"
-            
-            # Check for root user
-            if grep -q "USER root" "$dockerfile" 2>/dev/null; then
-              echo "⚠️ $dockerfile uses root user"
-            fi
-            
-            # Check for latest tags
-            if grep -q ":latest" "$dockerfile" 2>/dev/null; then
-              echo "⚠️ $dockerfile uses :latest tag"
-            fi
-            
-            # Check for COPY with broad patterns
-            if grep -qE "COPY \. \." "$dockerfile" 2>/dev/null; then
-              echo "⚠️ $dockerfile uses broad COPY pattern"
-            fi
-          done
           
-          # Check if we found any Dockerfiles
+          # Check if any Dockerfiles exist first
           if ! find . -name "Dockerfile*" -type f | grep -q .; then
             echo "ℹ️ No Dockerfiles found"
+          else
+            # Process each Dockerfile
+            find . -name "Dockerfile*" -type f | while read -r dockerfile; do
+              echo "Checking $dockerfile"
+              
+              # Check for root user
+              if grep -q "USER root" "$dockerfile" 2>/dev/null; then
+                echo "⚠️ $dockerfile uses root user"
+              fi
+              
+              # Check for latest tags
+              if grep -q ":latest" "$dockerfile" 2>/dev/null; then
+                echo "⚠️ $dockerfile uses :latest tag"
+              fi
+              
+              # Check for COPY with broad patterns
+              if grep -qE "COPY \. \." "$dockerfile" 2>/dev/null; then
+                echo "⚠️ $dockerfile uses broad COPY pattern"
+              fi
+            done
           fi
 
   defense-summary:

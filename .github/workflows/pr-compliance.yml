@@ -93,23 +93,26 @@ jobs:
       - name: Validate workflow syntax
         run: |
           echo "Validating GitHub Actions workflow files..."
+          shopt -s nullglob
           for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
-            if [ -f "$workflow" ]; then
-              echo "Checking $workflow"
-              python3 -c "import yaml; yaml.safe_load(open('$workflow'))" || exit 1
-            fi
+            echo "Checking $workflow"
+            python3 -c "import yaml; yaml.safe_load(open('$workflow'))" || exit 1
           done
+          
+          # Check if we found any workflows
+          if [ ! -f .github/workflows/*.yml ] && [ ! -f .github/workflows/*.yaml ]; then
+            echo "ℹ️ No workflow files found"
+          fi
 
       - name: Check workflow permissions
         run: |
           echo "Verifying workflow permissions..."
+          shopt -s nullglob
           for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
-            if [ -f "$workflow" ]; then
-              if grep -q "permissions:" "$workflow"; then
-                echo "✓ Permissions specified in $workflow"
-              else
-                echo "⚠️ No explicit permissions in $workflow"
-              fi
+            if grep -q "permissions:" "$workflow"; then
+              echo "✓ Permissions specified in $workflow"
+            else
+              echo "⚠️ No explicit permissions in $workflow"
             fi
           done
 
