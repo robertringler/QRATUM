@@ -40,6 +40,12 @@ FRONTEND_URL = "http://localhost:8080"
 MAX_STARTUP_WAIT = 120  # seconds
 HEALTH_CHECK_INTERVAL = 5  # seconds
 
+# Test configuration constants
+TEST_SEED = 42
+TEST_SCALE = 1.5
+EXPECTED_METRIC_PREFIX = "autonomous_systems_requests_total"
+EXPECTED_FRONTEND_CONTENT = ["Autonomous Systems", "Run Kernel"]
+
 
 class Colors:
     """ANSI color codes for terminal output."""
@@ -218,7 +224,7 @@ def test_backend_kernel() -> bool:
     """Test backend kernel endpoint."""
     print_info("Testing backend kernel endpoint...")
     try:
-        payload = {"seed": 42, "scale": 1.5}
+        payload = {"seed": TEST_SEED, "scale": TEST_SCALE}
         response = requests.post(
             f"{BACKEND_URL}/kernel",
             json=payload,
@@ -256,7 +262,7 @@ def test_backend_metrics() -> bool:
         if response.status_code == 200:
             metrics_text = response.text
             # Check for expected metrics
-            if "autonomous_systems_requests_total" in metrics_text:
+            if EXPECTED_METRIC_PREFIX in metrics_text:
                 print_success("Backend metrics endpoint works correctly")
                 return True
             else:
@@ -278,7 +284,7 @@ def test_frontend_accessible() -> bool:
         if response.status_code == 200:
             html = response.text
             # Check for expected content
-            if "Autonomous Systems" in html and "Run Kernel" in html:
+            if all(content in html for content in EXPECTED_FRONTEND_CONTENT):
                 print_success("Frontend is accessible and contains expected content")
                 return True
             else:
