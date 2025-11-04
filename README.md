@@ -84,6 +84,7 @@ This guide brings up a production-ready EKS cluster with GPU node groups and ins
 - **Mission Planning**: Quantum-optimized trajectory calculations with real-time constraint solving
 - **Digital Twins**: High-fidelity aircraft system simulation with quantum noise modeling
 - **Supply Chain Optimization**: Quantum annealing for logistics and resource allocation
+- **DO-330 Tool Qualification**: Comprehensive tool qualification documentation for aerospace certification (see [DO-330 Documentation](docs/DO-330_Tool_Qualification/README.md))
 
 ### Pharmaceutical & Life Sciences
 - **Molecular Simulation**: Quantum chemistry calculations for drug discovery pipelines
@@ -171,6 +172,18 @@ The repository enforces code quality through automated workflows:
 - **Security**: Automated secret scanning and permissions audits
 
 All pull requests must pass CI checks before merging. See [SECURITY.md](SECURITY.md) for security policies.
+
+### Aerospace Certification
+
+QuASIM provides comprehensive DO-330 tool qualification documentation to support aerospace certification:
+
+- **Tool Qualification Plan**: Overall strategy and approach for tool qualification
+- **Operational Requirements**: Detailed specifications for each QuASIM tool
+- **Validation Procedures**: Test methodologies and acceptance criteria
+- **Validation Evidence**: Documented test results and compliance verification
+- **Certification Authority Coordination**: Guidance for regulatory engagement
+
+See [DO-330 Tool Qualification Documentation](docs/DO-330_Tool_Qualification/README.md) for complete details.
 
 ## Namespaces
 
