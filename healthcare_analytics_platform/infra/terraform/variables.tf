@@ -18,5 +18,8 @@ variable "general_instance_type" {
   type    = string
   default = "m6i.xlarge"
 }
-variable "gpu_instance_type" { type = string default = "p4d.24xlarge" }
+variable "gpu_instance_type" {
+  type    = string
+  default = "p4d.24xlarge"
+}
 
