@@ -94,27 +94,34 @@ jobs:
         run: |
           echo "Validating GitHub Actions workflow files..."
           shopt -s nullglob
-          for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
-            echo "Checking $workflow"
-            python3 -c "import yaml; yaml.safe_load(open('$workflow'))" || exit 1
-          done
+          workflow_files=(.github/workflows/*.yml .github/workflows/*.yaml)
           
-          # Check if we found any workflows
-          if [ ! -f .github/workflows/*.yml ] && [ ! -f .github/workflows/*.yaml ]; then
+          if [ ${#workflow_files[@]} -eq 0 ]; then
             echo "ℹ️ No workflow files found"
+          else
+            for workflow in "${workflow_files[@]}"; do
+              echo "Checking $workflow"
+              python3 -c "import yaml; yaml.safe_load(open('$workflow'))" || exit 1
+            done
           fi
 
       - name: Check workflow permissions
         run: |
           echo "Verifying workflow permissions..."
           shopt -s nullglob
-          for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
-            if grep -q "permissions:" "$workflow"; then
-              echo "✓ Permissions specified in $workflow"
-            else
-              echo "⚠️ No explicit permissions in $workflow"
-            fi
-          done
+          workflow_files=(.github/workflows/*.yml .github/workflows/*.yaml)
+          
+          if [ ${#workflow_files[@]} -eq 0 ]; then
+            echo "ℹ️ No workflow files found"
+          else
+            for workflow in "${workflow_files[@]}"; do
+              if grep -q "permissions:" "$workflow"; then
+                echo "✓ Permissions specified in $workflow"
+              else
+                echo "⚠️ No explicit permissions in $workflow"
+              fi
+            done
+          fi
 
   compliance-summary:
     name: Compliance Summary
