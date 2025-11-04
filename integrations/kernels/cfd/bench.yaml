@@ -1,0 +1,59 @@
+# Benchmark configuration for CFD Pressure Poisson kernel
+name: cfd_pressure_poisson
+description: "Tensorized multigrid V-cycle solver for pressure correction"
+
+# Input configurations to test
+configs:
+  - name: small
+    grid_size: [32, 32, 32]
+    max_iterations: 10
+    tolerance: 1e-4
+    
+  - name: medium
+    grid_size: [64, 64, 64]
+    max_iterations: 20
+    tolerance: 1e-5
+    
+  - name: large
+    grid_size: [128, 128, 128]
+    max_iterations: 30
+    tolerance: 1e-6
+
+# Supported precisions
+precisions:
+  - fp32
+  - fp16
+
+# Supported backends
+backends:
+  - cpu
+  - cuda
+  - jax
+
+# Accuracy tolerances
+tolerances:
+  rmse: 1e-3
+  mae: 1e-4
+  ulps: 100
+
+# Skip conditions
+skip_if:
+  - condition: backend == "cuda" and not has_cupy
+    reason: "CuPy not available"
+  - condition: backend == "jax" and not has_jax
+    reason: "JAX not available"
+
+# Expected performance ranges (for regression detection)
+baseline:
+  cpu:
+    fp32:
+      p50_ms: 1.0
+      throughput: 1000
+  cuda:
+    fp32:
+      p50_ms: 0.5
+      throughput: 2000
+  jax:
+    fp32:
+      p50_ms: 0.3
+      throughput: 3000
