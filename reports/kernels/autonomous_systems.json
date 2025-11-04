@@ -1,0 +1,40 @@
+{
+  "kernel_name": "autonomous_systems",
+  "backend": "jax",
+  "precision": "fp32",
+  "problem_size": {
+    "seed": 1337,
+    "scale": 1.0
+  },
+  "timing": {
+    "latency_ms_p50": 0.011151500018513616,
+    "latency_ms_p90": 0.014603700049065077,
+    "latency_ms_p99": 0.026095169984046155,
+    "latency_ms_mean": 0.012955600004715961,
+    "latency_ms_std": 0.004854826769219927,
+    "throughput_ops_per_sec": 77186.69915989923,
+    "iterations": 10,
+    "raw_times_ms": [
+      0.013185000057092111,
+      0.011571999948500888,
+      0.011201999996046652,
+      0.01175199997760501,
+      0.010831000054167816,
+      0.010620000011840602,
+      0.027371999976821826,
+      0.01094100002774212,
+      0.01110100004098058,
+      0.010979999956362008
+    ]
+  },
+  "memory": null,
+  "energy": null,
+  "accuracy": null,
+  "success": true,
+  "error_message": null,
+  "metadata": {
+    "iterations": 10,
+    "warmup": 2,
+    "seed": 1337
+  }
+}

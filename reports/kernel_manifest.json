@@ -1,0 +1,61 @@
+[
+  {
+    "name": "pressure_poisson",
+    "path": "integrations/kernels/cfd/pressure_poisson.py",
+    "backend": "cuda",
+    "module_name": "integrations.kernels.cfd.pressure_poisson",
+    "function_name": null,
+    "test_command": null,
+    "dependencies": [],
+    "config": {
+      "problem_size": {
+        "grid_size": [
+          64,
+          64,
+          64
+        ],
+        "max_iterations": 50,
+        "tolerance": 1e-05
+      },
+      "precisions": [
+        "fp32",
+        "fp16"
+      ],
+      "backends": [
+        "cpu",
+        "cuda"
+      ],
+      "tolerances": {
+        "rmse": 0.001,
+        "relative_error": 0.01
+      },
+      "skip_conditions": [
+        {
+          "backend": "cuda",
+          "reason": "CUDA not available",
+          "check": "not torch.cuda.is_available()"
+        }
+      ]
+    }
+  },
+  {
+    "name": "autonomous_systems",
+    "path": "autonomous_systems_platform/services/backend/quasim/kernels/autonomous_systems.py",
+    "backend": "jax",
+    "module_name": "autonomous_systems_platform.services.backend.quasim.kernels.autonomous_systems",
+    "function_name": null,
+    "test_command": null,
+    "dependencies": [],
+    "config": {}
+  },
+  {
+    "name": "quasim_runtime",
+    "path": "benchmarks/quasim_bench.py",
+    "backend": "cpu",
+    "module_name": "benchmarks.quasim_bench",
+    "function_name": "run_benchmark",
+    "test_command": null,
+    "dependencies": [],
+    "config": {}
+  }
+]

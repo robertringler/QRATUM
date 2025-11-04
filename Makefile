@@ -1,4 +1,4 @@
-.PHONY: test validate fmt lint build bench pack deploy
+.PHONY: test validate fmt lint build bench bench-quick bench-legacy pack deploy
 
 ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -40,7 +40,17 @@ build:
 
 # Run benchmarks
 bench:
-	@echo "Running QuASIM benchmarks..."
+	@echo "Running QuASIM comprehensive benchmark suite..."
+	@python3 tools/bench_all.py --iters 30 --warmup 3 --precision fp32 --backends auto --output-dir reports --seed 1337 --verbose
+
+# Run quick benchmarks (fewer iterations)
+bench-quick:
+	@echo "Running QuASIM quick benchmarks..."
+	@python3 tools/bench_all.py --iters 10 --warmup 2 --precision fp32 --backends auto --output-dir reports --seed 1337
+
+# Run legacy benchmarks
+bench-legacy:
+	@echo "Running legacy QuASIM benchmarks..."
 	@if [ -f benchmarks/quasim_bench.py ]; then \
 	python3 benchmarks/quasim_bench.py ; \
 	fi

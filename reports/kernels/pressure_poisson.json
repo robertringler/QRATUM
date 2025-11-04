@@ -1,0 +1,45 @@
+{
+  "kernel_name": "pressure_poisson",
+  "backend": "cuda",
+  "precision": "fp32",
+  "problem_size": {
+    "grid_size": [
+      64,
+      64,
+      64
+    ],
+    "max_iterations": 50,
+    "tolerance": 1e-05
+  },
+  "timing": {
+    "latency_ms_p50": 44.20669850003378,
+    "latency_ms_p90": 44.71899890003215,
+    "latency_ms_p99": 44.87045998992812,
+    "latency_ms_mean": 44.24562839999453,
+    "latency_ms_std": 0.34185063220100825,
+    "throughput_ops_per_sec": 22.601102892237908,
+    "iterations": 10,
+    "raw_times_ms": [
+      44.454182999970726,
+      44.13620900004389,
+      44.887288999916564,
+      44.70030000004499,
+      44.23546800001077,
+      43.85426399994685,
+      43.71198399996956,
+      44.27879000002122,
+      44.17792900005679,
+      44.019867999963935
+    ]
+  },
+  "memory": null,
+  "energy": null,
+  "accuracy": null,
+  "success": true,
+  "error_message": null,
+  "metadata": {
+    "iterations": 10,
+    "warmup": 2,
+    "seed": 1337
+  }
+}

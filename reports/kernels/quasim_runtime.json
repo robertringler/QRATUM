@@ -1,0 +1,42 @@
+{
+  "kernel_name": "quasim_runtime",
+  "backend": "cpu",
+  "precision": "fp32",
+  "problem_size": {
+    "batches": 16,
+    "rank": 2,
+    "dimension": 1024,
+    "repeat": 10
+  },
+  "timing": {
+    "latency_ms_p50": 37.66671399995403,
+    "latency_ms_p90": 37.81207620007763,
+    "latency_ms_p99": 38.167133220027836,
+    "latency_ms_mean": 37.68844539998781,
+    "latency_ms_std": 0.19650255250527984,
+    "throughput_ops_per_sec": 26.533331088268326,
+    "iterations": 10,
+    "raw_times_ms": [
+      37.68116599997029,
+      38.2065840000223,
+      37.426813000024595,
+      37.652261999937764,
+      37.703929999906904,
+      37.71752599993761,
+      37.57660799999485,
+      37.768242000083774,
+      37.54065999999057,
+      37.61066300000948
+    ]
+  },
+  "memory": null,
+  "energy": null,
+  "accuracy": null,
+  "success": true,
+  "error_message": null,
+  "metadata": {
+    "iterations": 10,
+    "warmup": 2,
+    "seed": 1337
+  }
+}
