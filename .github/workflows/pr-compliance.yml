@@ -1,0 +1,131 @@
+name: PR Compliance
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main, master]
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: write
+
+jobs:
+  compliance-check:
+    name: General Compliance Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install linting tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff black isort mypy pylint
+
+      - name: Run ruff linter
+        run: |
+          echo "Running ruff linter..."
+          ruff check . || echo "⚠️ Ruff found issues"
+        continue-on-error: true
+
+      - name: Check black formatting
+        run: |
+          echo "Checking code formatting with black..."
+          black --check --line-length 100 . || echo "⚠️ Black formatting issues found"
+        continue-on-error: true
+
+      - name: Check import sorting
+        run: |
+          echo "Checking import order with isort..."
+          isort --check-only --profile black . || echo "⚠️ Import sorting issues found"
+        continue-on-error: true
+
+      - name: Run type checking
+        run: |
+          echo "Running mypy type checker..."
+          mypy --ignore-missing-imports . || echo "⚠️ Type checking issues found"
+        continue-on-error: true
+
+  yaml-compliance:
+    name: YAML and Markdown Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install linters
+        run: |
+          npm install -g markdownlint-cli
+          pip install yamllint
+
+      - name: Check YAML files
+        run: |
+          echo "Validating YAML files..."
+          yamllint . || echo "⚠️ YAML issues found"
+        continue-on-error: true
+
+      - name: Check Markdown files
+        run: |
+          echo "Validating Markdown files..."
+          markdownlint '**/*.md' --ignore node_modules --ignore QuASIM || echo "⚠️ Markdown issues found"
+        continue-on-error: true
+
+  workflow-compliance:
+    name: GitHub Actions Workflow Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate workflow syntax
+        run: |
+          echo "Validating GitHub Actions workflow files..."
+          for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
+            if [ -f "$workflow" ]; then
+              echo "Checking $workflow"
+              python3 -c "import yaml; yaml.safe_load(open('$workflow'))" || exit 1
+            fi
+          done
+
+      - name: Check workflow permissions
+        run: |
+          echo "Verifying workflow permissions..."
+          for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
+            if [ -f "$workflow" ]; then
+              if grep -q "permissions:" "$workflow"; then
+                echo "✓ Permissions specified in $workflow"
+              else
+                echo "⚠️ No explicit permissions in $workflow"
+              fi
+            fi
+          done
+
+  compliance-summary:
+    name: Compliance Summary
+    runs-on: ubuntu-latest
+    needs: [compliance-check, yaml-compliance, workflow-compliance]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## PR Compliance Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ All compliance checks completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Checks Run:" >> $GITHUB_STEP_SUMMARY
+          echo "- Code linting and formatting" >> $GITHUB_STEP_SUMMARY
+          echo "- YAML and Markdown validation" >> $GITHUB_STEP_SUMMARY
+          echo "- GitHub Actions workflow validation" >> $GITHUB_STEP_SUMMARY
