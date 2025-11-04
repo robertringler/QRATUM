@@ -20,3 +20,6 @@ certs/*_certificate.json
 
 # Test artifacts
 .pytest_cache/
+
+# Lint reports
+lint_report.txt
