@@ -52,15 +52,15 @@ def status():
     # Check for AMD GPU
     try:
         import pyrsmi
-        pyrsmi.rocm_smi.initRsmi()
-        device_count = pyrsmi.rocm_smi.rsmi_num_monitor_devices()
+        pyrsmi.rsmi_init()
+        device_count = pyrsmi.rsmi_num_monitor_devices()
         click.echo(f"✓ AMD GPUs detected: {device_count}")
         
         for i in range(device_count):
-            name = pyrsmi.rocm_smi.rsmi_dev_name_get(i)
+            name = pyrsmi.rsmi_dev_name_get(i)
             click.echo(f"  GPU {i}: {name}")
         
-        pyrsmi.rocm_smi.shutdownRsmi()
+        pyrsmi.rsmi_shut_down()
     except ImportError:
         click.echo("✗ AMD GPU support not available (install with: pip install quasim[hcal-amd])")
     except Exception as e:
@@ -99,8 +99,7 @@ def monitor(duration, interval):
         while time.time() - start_time < duration:
             # Placeholder for monitoring logic
             elapsed = int(time.time() - start_time)
-            click.echo(f"[{elapsed}s] Monitoring...", nl=False)
-            click.echo("\r", nl=False)
+            click.echo(f"\r[{elapsed}s] Monitoring...", nl=False)
             time.sleep(interval)
     except KeyboardInterrupt:
         click.echo("\nMonitoring stopped by user")
