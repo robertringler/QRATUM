@@ -955,7 +955,7 @@ Where:
 
 ## Market Valuation — QuASIM
 
-**Valuation Date:** 2025-11-04  
+**Valuation Date:** 2025-11-06  
 **Reporting Period:** 2025-Q4  
 **Methodology:** Bayesian Real-Options, DCF, Comparable Company Analysis  
 **Status:** Pre-Revenue Deep-Tech Venture  
