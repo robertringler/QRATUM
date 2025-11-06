@@ -6,7 +6,7 @@ with tracking of coherence, entropy, and energy evolution.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Literal
 
 import numpy as np
