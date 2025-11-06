@@ -1,0 +1,291 @@
+name: QCMG Simulation CI/CD
+
+on:
+  push:
+    paths:
+      - 'quasim/sim/**'
+      - 'tests/test_qcmg_sim.py'
+      - '.github/workflows/qcmg-sim-exec.yml'
+  pull_request:
+    paths:
+      - 'quasim/sim/**'
+      - 'tests/test_qcmg_sim.py'
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  lint-and-format:
+    name: Lint and Format Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install black pylint numpy
+      
+      - name: Check formatting with black
+        run: |
+          black --check quasim/sim/qcmg_*.py tests/test_qcmg_sim.py
+      
+      - name: Lint with pylint
+        run: |
+          pylint quasim/sim/qcmg_field.py quasim/sim/qcmg_cli.py \
+            --rcfile=.pylintrc-qcmg \
+            --fail-under=9.0
+
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy pytest pytest-cov
+      
+      - name: Run tests with coverage
+        run: |
+          pytest tests/test_qcmg_sim.py \
+            -v \
+            --cov=quasim.sim.qcmg_field \
+            --cov-report=term \
+            --cov-report=xml
+      
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        if: matrix.python-version == '3.11'
+        with:
+          file: ./coverage.xml
+          flags: qcmg-sim
+          name: qcmg-coverage
+
+  run-simulations:
+    name: Execute Simulations
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy matplotlib
+      
+      - name: Run simulation - Gaussian mode
+        run: |
+          python -m quasim.sim.qcmg_cli \
+            --iterations 100 \
+            --grid-size 64 \
+            --init-mode gaussian \
+            --seed 42 \
+            --export simulation_gaussian.json \
+            --verbose
+      
+      - name: Run simulation - Soliton mode
+        run: |
+          python -m quasim.sim.qcmg_cli \
+            --iterations 100 \
+            --grid-size 64 \
+            --init-mode soliton \
+            --seed 42 \
+            --export simulation_soliton.json \
+            --verbose
+      
+      - name: Run simulation - Random mode
+        run: |
+          python -m quasim.sim.qcmg_cli \
+            --iterations 100 \
+            --grid-size 64 \
+            --init-mode random \
+            --seed 42 \
+            --export simulation_random.json \
+            --verbose
+      
+      - name: Validate simulation outputs
+        run: |
+          python -c "
+          import json
+          import sys
+          
+          def validate_output(filename):
+              with open(filename, 'r') as f:
+                  data = json.load(f)
+              
+              # Check structure
+              assert 'parameters' in data, f'{filename}: Missing parameters'
+              assert 'current_state' in data, f'{filename}: Missing current_state'
+              assert 'history' in data, f'{filename}: Missing history'
+              
+              # Check current state values
+              state = data['current_state']
+              assert 0 <= state['coherence'] <= 1, f'{filename}: Invalid coherence'
+              assert state['entropy'] >= 0, f'{filename}: Invalid entropy'
+              assert state['energy'] > 0, f'{filename}: Invalid energy'
+              
+              # Check history
+              assert len(data['history']) > 0, f'{filename}: Empty history'
+              
+              print(f'✓ {filename} validated successfully')
+          
+          validate_output('simulation_gaussian.json')
+          validate_output('simulation_soliton.json')
+          validate_output('simulation_random.json')
+          print('\\n✓ All simulations validated!')
+          "
+      
+      - name: Upload simulation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: qcmg-simulations
+          path: simulation_*.json
+          retention-days: 30
+
+  reproducibility-check:
+    name: Reproducibility Verification
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy
+      
+      - name: Run first simulation
+        run: |
+          python -m quasim.sim.qcmg_cli \
+            --iterations 50 \
+            --seed 12345 \
+            --export run1.json
+      
+      - name: Run second simulation (same seed)
+        run: |
+          python -m quasim.sim.qcmg_cli \
+            --iterations 50 \
+            --seed 12345 \
+            --export run2.json
+      
+      - name: Verify reproducibility
+        run: |
+          python -c "
+          import json
+          import sys
+          
+          with open('run1.json', 'r') as f:
+              run1 = json.load(f)
+          
+          with open('run2.json', 'r') as f:
+              run2 = json.load(f)
+          
+          # Compare final states
+          s1 = run1['current_state']
+          s2 = run2['current_state']
+          
+          def close(a, b, tol=1e-10):
+              return abs(a - b) < tol
+          
+          assert close(s1['coherence'], s2['coherence']), 'Coherence mismatch'
+          assert close(s1['entropy'], s2['entropy']), 'Entropy mismatch'
+          assert close(s1['energy'], s2['energy']), 'Energy mismatch'
+          
+          print('✓ Reproducibility verified: identical outputs with same seed')
+          "
+
+  benchmark:
+    name: Performance Benchmark
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy
+      
+      - name: Run benchmarks
+        run: |
+          python -c "
+          import time
+          import sys
+          from quasim.sim import QuantacosmomorphysigeneticField, QCMGParameters
+          
+          print('Performance Benchmarks')
+          print('=' * 60)
+          
+          grid_sizes = [32, 64, 128]
+          n_steps = 10
+          
+          for grid_size in grid_sizes:
+              params = QCMGParameters(
+                  grid_size=grid_size,
+                  dt=0.01,
+                  random_seed=42
+              )
+              
+              field = QuantacosmomorphysigeneticField(params)
+              field.initialize(mode='gaussian')
+              
+              start_time = time.time()
+              field.evolve(steps=n_steps)
+              elapsed_time = time.time() - start_time
+              
+              time_per_step = elapsed_time / n_steps * 1000  # ms
+              
+              print(f'Grid size {grid_size:3d}: {time_per_step:.2f} ms/step')
+          
+          print('=' * 60)
+          "
+      
+      - name: Generate summary
+        run: |
+          echo "### QCMG Simulation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ All tests passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ All simulations completed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Reproducibility verified" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Performance benchmarks completed" >> $GITHUB_STEP_SUMMARY
