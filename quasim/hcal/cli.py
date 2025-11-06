@@ -12,7 +12,6 @@ except ImportError:
 
 from . import HCAL, Policy
 
-
 if click is not None:
     @click.group()
     def cli():
@@ -35,9 +34,9 @@ if click is not None:
                     "device_allowlist": [],
                 })
                 hcal = HCAL(default_policy)
-            
+
             topology = hcal.discover(full=True)
-            
+
             if output_json:
                 print(json.dumps(topology, indent=2))
             else:
@@ -65,10 +64,10 @@ if click is not None:
                     "device_allowlist": ["GPU0", "GPU1"],
                 })
                 hcal = HCAL(default_policy)
-            
+
             device_list = devices.split(",") if devices else None
             plan_result = hcal.plan(profile=profile, devices=device_list)
-            
+
             if out:
                 with open(out, "w") as f:
                     json.dump(plan_result, f, indent=2)
@@ -96,10 +95,10 @@ if click is not None:
                     "limits": {"power_watts_max": 300},
                 })
                 hcal = HCAL(default_policy)
-            
+
             with open(plan_file) as f:
                 plan_data = json.load(f)
-            
+
             result = hcal.apply(plan_data, enable_actuation=not dry_run)
             print(json.dumps(result, indent=2))
         except Exception as e:
@@ -113,7 +112,7 @@ def main():
         print("Error: click package not installed", file=sys.stderr)
         print("Install with: pip install click", file=sys.stderr)
         sys.exit(1)
-    
+
     cli()
 
 
