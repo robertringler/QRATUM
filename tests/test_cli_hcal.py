@@ -215,8 +215,8 @@ class TestHCALCLI:
         assert "GPU1" in result.output
         assert "thermal_test" in result.output
 
-    def test_calibrate_unknown_routine(self):
-        """Test calibrate command with unknown routine."""
+    def test_calibrate_unknown_routine_without_force(self):
+        """Test calibrate command with unknown routine fails without --force."""
         result = self.runner.invoke(
             main,
             [
@@ -226,9 +226,26 @@ class TestHCALCLI:
                 "--max-iters", "5"
             ]
         )
-        assert result.exit_code == 0
+        assert result.exit_code == 1
         assert "Unknown routine" in result.output
-        assert "proceeding anyway" in result.output
+        assert "Available routines:" in result.output
+        assert "Use --force" in result.output
+
+    def test_calibrate_unknown_routine_with_force(self):
+        """Test calibrate command with unknown routine succeeds with --force."""
+        result = self.runner.invoke(
+            main,
+            [
+                "calibrate",
+                "--device", "GPU0",
+                "--routine", "unknown_routine",
+                "--max-iters", "5",
+                "--force"
+            ]
+        )
+        assert result.exit_code == 0
+        assert "unknown routine" in result.output
+        assert "--force" in result.output
 
     def test_stop_all(self):
         """Test stop command with --all flag."""

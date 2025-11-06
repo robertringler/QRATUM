@@ -181,7 +181,10 @@ def apply(plan: str, enable_actuation: bool, require_approval: Optional[str]):
             click.echo("Error: --require-approval token required for actuation", err=True)
             sys.exit(1)
 
-        # Validate approval token (simplified)
+        # Validate approval token
+        # In production, this should validate against a secure token system,
+        # environment variable, or cryptographic signature.
+        # For demonstration purposes, we accept "token" as a valid approval.
         if require_approval != "token":
             click.echo("Error: Invalid approval token", err=True)
             sys.exit(1)
@@ -223,7 +226,8 @@ def apply(plan: str, enable_actuation: bool, require_approval: Optional[str]):
 @click.option("--device", required=True, help="Device ID to calibrate")
 @click.option("--routine", required=True, help="Calibration routine to run (e.g., power_sweep, thermal_test)")
 @click.option("--max-iters", default=10, type=int, help="Maximum calibration iterations")
-def calibrate(device: str, routine: str, max_iters: int):
+@click.option("--force", is_flag=True, help="Force calibration with unknown routines")
+def calibrate(device: str, routine: str, max_iters: int, force: bool):
     """Calibrate a hardware device.
 
     Runs calibration routines to optimize device performance and
@@ -256,7 +260,12 @@ def calibrate(device: str, routine: str, max_iters: int):
     }
 
     if routine not in calibration_routines:
-        click.echo(f"\nWarning: Unknown routine '{routine}', proceeding anyway...", err=True)
+        if not force:
+            click.echo(f"Error: Unknown routine '{routine}'", err=True)
+            click.echo(f"Available routines: {', '.join(calibration_routines.keys())}", err=True)
+            click.echo("Use --force to run unknown routines", err=True)
+            sys.exit(1)
+        click.echo(f"\nWarning: Running unknown routine '{routine}' with --force", err=True)
         routine_info = {"description": "Custom calibration routine", "typical_iters": max_iters}
     else:
         routine_info = calibration_routines[routine]
