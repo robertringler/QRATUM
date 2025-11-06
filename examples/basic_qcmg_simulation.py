@@ -6,6 +6,8 @@ Demonstrates initialization, evolution, and analysis of the
 Quantacosmorphysigenetic field system.
 """
 
+import json
+
 import matplotlib.pyplot as plt
 
 from quasim.sim import QCMGParameters, QuantacosmorphysigeneticField
@@ -117,8 +119,6 @@ def main():
 
     # Export final state
     export_data = field.export_state()
-
-    import json
 
     with open("qcmg_results.json", "w") as f:
         json.dump(export_data, f, indent=2)

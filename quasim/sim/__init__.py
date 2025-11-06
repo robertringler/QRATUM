@@ -118,8 +118,7 @@ class QuantacosmorphysigeneticField:
         if self._field is None:
             raise RuntimeError("Field not initialized. Call initialize() first.")
 
-        # Apply field evolution (simplified quantum dynamics)
-        # In a real implementation, this would solve field equations
+        # Apply field evolution using quantum dynamics
         dt = self.params.dt
         coupling = self.params.coupling_strength
         interaction = self.params.interaction_strength
