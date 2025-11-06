@@ -1,2 +1,0 @@
-[console_scripts]
-quasim-hcal = quasim.hcal.cli:main
