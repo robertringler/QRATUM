@@ -1,7 +1,7 @@
 """HCAL actuator for hardware control."""
 
 import time
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 
 class Actuator:
@@ -108,7 +108,7 @@ class Actuator:
         """
         self._backends[device_id] = backend
 
-    def get_telemetry(self, device_ids: Optional[list] = None) -> Dict[str, Any]:
+    def get_telemetry(self, device_ids: Optional[List[str]] = None) -> Dict[str, Any]:
         """Get telemetry from devices.
 
         Args:

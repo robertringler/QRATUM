@@ -5,14 +5,17 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-try:
-    import click
-except ImportError:
-    click = None
-
 from . import HCAL, Policy
 
-if click is not None:
+try:
+    import click
+
+    HAS_CLICK = True
+except ImportError:
+    HAS_CLICK = False
+    click = None  # type: ignore
+
+if HAS_CLICK and click is not None:
     @click.group()
     def cli():
         """HCAL - Hardware Control Abstraction Layer CLI."""

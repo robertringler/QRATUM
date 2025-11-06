@@ -15,7 +15,6 @@ class NVMLBackend(Backend):
             device_id: GPU device identifier
         """
         super().__init__(device_id)
-        self._initialized = False
 
     def get_telemetry(self) -> Dict[str, Any]:
         """Get GPU telemetry via NVML.
