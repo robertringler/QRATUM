@@ -139,7 +139,7 @@ class QuantacosmorphysigeneticField:
         # Normalize to maintain stability
         field_norm = np.sqrt(np.sum(self._field**2))
         if field_norm > 0:
-            self._field = self._field / field_norm * np.sqrt(self.params.grid_size**2)
+            self._field = self._field / field_norm * self.params.grid_size
 
         # Update time
         self._time += dt
