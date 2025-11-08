@@ -727,13 +727,27 @@ class PolicyEngine:
         Raises:
             PolicyViolation: If operation violates policy
         """
+        # Check rate limit first (before any other validation)
+        try:
+            self.rate_limiter.check_and_record()
+        except PolicyViolation:
+            # Re-raise with more context
+            raise PolicyViolation("Rate limit exceeded - operation blocked")
+
         # Check device allowlist
         if not self.is_device_allowed(device_id):
             raise PolicyViolation(f"Device {device_id} not in allowlist")
 
-        # Check production environment restrictions
+        # Check production environment restrictions (before approval check)
         if self.environment == Environment.PROD and operation == "firmware_update":
             raise PolicyViolation("Firmware updates not allowed in PROD environment")
+
+        # Check if approval is required for actuation operations
+        if enable_actuation and self.requires_approval():
+            raise PolicyViolation(
+                "Operation requires approval but no approval provided. "
+                "Call validate_approval() with a valid token before actuating."
+            )
 
         # Validate setpoints against limits
         for param, value in setpoints.items():
