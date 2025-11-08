@@ -210,7 +210,7 @@ class ModuleValidator:
         # For C++ modules, we check syntax and compilation would be tested in CI
         # Here we do basic validation
         try:
-            with open(module_path, "r") as f:
+            with open(module_path) as f:
                 content = f.read()
 
             # Basic syntax checks
@@ -235,7 +235,7 @@ class ModuleValidator:
             return True  # Only test Python modules for now
 
         try:
-            with open(module["path"], "r") as f:
+            with open(module["path"]) as f:
                 content = f.read()
 
             # Check for seed management
@@ -260,7 +260,7 @@ class ModuleValidator:
             return True
 
         try:
-            with open(ref_file, "r") as f:
+            with open(ref_file) as f:
                 ref_data = json.load(f)
 
             fidelity = ref_data.get("fidelity", 1.0)
@@ -279,7 +279,7 @@ class ModuleValidator:
         # Check for security issues
         if module["type"] == "python":
             try:
-                with open(module["path"], "r") as f:
+                with open(module["path"]) as f:
                     content = f.read()
 
                 # Basic security checks
@@ -401,7 +401,7 @@ class ModuleValidator:
                 report.append(f"   - Message: {result['message']}\n")
                 report.append(f"   - Deterministic: {'✓' if result['deterministic'] else '✗'}\n")
                 report.append(f"   - Fidelity ≥ 0.995: {'✓' if result['fidelity_threshold_met'] else '✗'}\n")
-                
+
                 compliance_str = ", ".join(
                     f"{k}: {'✓' if v else '✗'}" for k, v in result["compliance"].items()
                 )

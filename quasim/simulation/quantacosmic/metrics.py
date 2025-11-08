@@ -27,7 +27,7 @@ class MetricTensor:
     def determinant(self) -> float:
         return _determinant(self.components)
 
-    def normalize(self) -> "MetricTensor":
+    def normalize(self) -> MetricTensor:
         det = self.determinant()
         if det == 0:
             raise ValueError("Cannot normalise a singular metric tensor.")
