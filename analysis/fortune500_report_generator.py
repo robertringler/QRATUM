@@ -3,12 +3,11 @@
 This module generates comprehensive academic-style white papers analyzing
 QuASIM integration opportunities across Fortune 500 companies.
 """
+
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List
-
-import numpy as np
+from typing import List
 
 
 @dataclass
@@ -30,7 +29,7 @@ class Fortune500ReportGenerator:
             json_summary_path: Path to the JSON summary file
             matrix_csv_path: Path to the data matrix CSV file
         """
-        with open(json_summary_path, "r") as f:
+        with open(json_summary_path) as f:
             self.data = json.load(f)
         self.matrix_path = matrix_csv_path
 
@@ -289,13 +288,9 @@ This white paper follows APA 7th edition formatting guidelines with:
     def generate_sectoral_analysis(self) -> str:
         """Generate detailed sectoral analysis section."""
         sectors = self.data["sector_summaries"]
-        
+
         # Sort sectors by mean QII
-        sorted_sectors = sorted(
-            sectors.items(),
-            key=lambda x: x[1]["mean_qii"],
-            reverse=True
-        )
+        sorted_sectors = sorted(sectors.items(), key=lambda x: x[1]["mean_qii"], reverse=True)
 
         content = """# Sectoral Analysis
 
@@ -319,7 +314,7 @@ to lowest integration readiness.
             for i, company in enumerate(sector_data["top_companies"], 1):
                 content += f"{i}. {company}\n"
 
-            content += f"""
+            content += """
 ### Key Challenges
 """
             if sector_data["key_challenges"]:
@@ -609,7 +604,7 @@ importance in driving adoption.
             strength = "weak"
         else:
             strength = "negligible"
-        
+
         direction = "positive" if r >= 0 else "negative"
         return f"{strength} {direction}"
 
@@ -1180,17 +1175,17 @@ def main():
     # Assuming the analysis has already been run
     data_dir = Path(__file__).resolve().parents[1] / "data"
     reports_dir = Path(__file__).resolve().parents[1] / "reports"
-    
+
     json_path = data_dir / "fortune500_quasim_analysis.json"
     matrix_path = data_dir / "fortune500_quasim_matrix.csv"
-    
+
     if not json_path.exists():
         print("Error: Analysis data not found. Please run fortune500_quasim_integration.py first.")
         return
-    
+
     reports_dir.mkdir(parents=True, exist_ok=True)
     output_path = reports_dir / "Fortune500_QuASIM_Integration_Analysis.md"
-    
+
     generator = Fortune500ReportGenerator(json_path, matrix_path)
     generator.save_report(output_path)
 

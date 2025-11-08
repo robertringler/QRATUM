@@ -4,6 +4,7 @@ This module implements a comprehensive analysis framework to evaluate QuASIM
 (Quantum-Accelerated Simulation Infrastructure & Management) integration
 opportunities across all Fortune 500 companies.
 """
+
 import csv
 import json
 from dataclasses import asdict, dataclass, field
@@ -87,7 +88,7 @@ def load_fortune500_data(filepath: Path) -> List[CompanyProfile]:
     """
     companies = []
 
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             company = CompanyProfile(
@@ -178,8 +179,7 @@ def enrich_company_data(company: CompanyProfile) -> CompanyProfile:
 
     # Predictive analytics
     company.has_predictive_analytics = (
-        company.sector in ["Financial Services", "Insurance", "Healthcare"]
-        or company.has_ai_ml
+        company.sector in ["Financial Services", "Insurance", "Healthcare"] or company.has_ai_ml
     )
 
     # R&D spending estimation (based on industry averages)
@@ -431,9 +431,7 @@ def identify_integration_pathways(
 
     # Pipeline fusion
     if company.has_ai_ml and company.has_digital_twin:
-        pathways.append(
-            "Pipeline fusion: Integrate QuASIM into existing ML/digital-twin workflows"
-        )
+        pathways.append("Pipeline fusion: Integrate QuASIM into existing ML/digital-twin workflows")
 
     # SDK integration
     if qii_components.technical_feasibility > 0.5:
@@ -441,9 +439,7 @@ def identify_integration_pathways(
 
     # Cloud-native deployment
     if company.cloud_provider in ["AWS", "Azure", "GCP"]:
-        pathways.append(
-            f"Cloud-native: Deploy QuASIM containers on {company.cloud_provider}"
-        )
+        pathways.append(f"Cloud-native: Deploy QuASIM containers on {company.cloud_provider}")
 
     # Custom quantum circuits
     if company.has_quantum:
@@ -507,9 +503,7 @@ def analyze_company(company: CompanyProfile) -> CompanyAnalysis:
     )
 
 
-def aggregate_sector_analysis(
-    analyses: List[CompanyAnalysis], sector_name: str
-) -> SectorAnalysis:
+def aggregate_sector_analysis(analyses: List[CompanyAnalysis], sector_name: str) -> SectorAnalysis:
     """Aggregate analysis results for a specific sector.
 
     Args:

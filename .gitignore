@@ -22,3 +22,12 @@ certs/*_certificate.json
 .pytest_cache/
 *.backup
 sbom.spdx.json
+
+# QCMG simulation outputs
+qcmg_evolution.png
+qcmg_results.json
+# CLI generated files
+plan.json
+
+# Package build artifacts
+*.egg-info/

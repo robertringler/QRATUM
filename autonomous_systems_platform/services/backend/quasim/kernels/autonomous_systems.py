@@ -5,8 +5,9 @@ import random as py_random
 try:
     import jax.numpy as jnp
     from jax import random as jax_random
+
     JAX_AVAILABLE = True
-except (ImportError, AttributeError, RuntimeError) as e:
+except (ImportError, AttributeError, RuntimeError):
     JAX_AVAILABLE = False
 
 
@@ -25,7 +26,7 @@ def autonomous_systems_kernel(seed: int = 0, scale: float = 1.0):
         except (ValueError, AttributeError, RuntimeError):
             # JAX import succeeded but runtime failed, fall back
             pass
-    
+
     # Fallback implementation
     py_random.seed(seed)
     state = [py_random.gauss(0, scale) for _ in range(10)]

@@ -265,11 +265,13 @@ class DeterministicValidator:
 
         for i, (rec1, rec2) in enumerate(zip(batch1, batch2)):
             if rec1.seed_value != rec2.seed_value:
-                mismatches.append({
-                    "index": i,
-                    "seed1": rec1.seed_value,
-                    "seed2": rec2.seed_value,
-                })
+                mismatches.append(
+                    {
+                        "index": i,
+                        "seed1": rec1.seed_value,
+                        "seed2": rec2.seed_value,
+                    }
+                )
 
             drift = abs(rec2.timestamp - rec1.timestamp) * 1_000_000  # μs
             drifts.append(drift)

@@ -21,10 +21,10 @@ logger = logging.getLogger(__name__)
 
 class QuASIMOmniGraphNode:
     """OmniGraph node for QuASIM physics operations."""
-    
+
     def __init__(self, node_id: str):
         """Initialize node.
-        
+
         Args:
             node_id: Unique node identifier
         """
@@ -32,31 +32,31 @@ class QuASIMOmniGraphNode:
         self.inputs = {}
         self.outputs = {}
         logger.info(f"QuASIM OmniGraph Node initialized: {node_id}")
-    
+
     def compute(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
         """Compute physics step.
-        
+
         Args:
             inputs: Input data (mesh, boundary conditions, etc.)
-            
+
         Returns:
             Output data (pressure, velocity fields, etc.)
         """
         logger.info(f"Computing QuASIM physics step for node {self.node_id}")
-        
+
         # In production, would invoke QuASIM kernels
         outputs = {
             "pressure_field": [],
             "velocity_field": [],
             "temperature_field": [],
         }
-        
+
         logger.info("Physics step completed")
         return outputs
-    
+
     def update_usd_stage(self, stage, prim_path: str, fields: Dict[str, Any]):
         """Update USD stage with physics fields.
-        
+
         Args:
             stage: USD stage object
             prim_path: Path to USD primitive

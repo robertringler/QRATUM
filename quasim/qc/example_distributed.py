@@ -144,7 +144,7 @@ def example_distributed():
 
     # Initialize cluster (will use fallback if JAX/PyTorch not available)
     ctx = init_cluster(backend="jax", mesh_shape=(1, 1), seed=12345)
-    print(f"Initialized cluster:")
+    print("Initialized cluster:")
     print(f"  Backend: {ctx.backend}")
     print(f"  Rank: {ctx.global_rank}/{ctx.world_size}")
     print(f"  Device: {ctx.device}")
@@ -160,7 +160,7 @@ def example_distributed():
 
     # Profile
     prof = profile(ctx)
-    print(f"\nProfile:")
+    print("\nProfile:")
     print(f"  World size: {prof['world_size']}")
     print(f"  Wall time: {prof['wall_time_s']:.4f}s")
 

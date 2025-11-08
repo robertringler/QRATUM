@@ -37,6 +37,7 @@ class DistContext:
         mesh: Device mesh (backend-specific)
         metadata: Additional context metadata
     """
+
     backend: str
     mesh_shape: Tuple[int, int]
     global_rank: int = 0
@@ -58,6 +59,7 @@ class ShardedState:
         shard_spec: Sharding specification
         context: Distributed context
     """
+
     local_data: Any
     global_shape: Tuple[int, ...]
     shard_spec: Dict[str, Any]
@@ -65,9 +67,7 @@ class ShardedState:
 
 
 def init_cluster(
-    backend: str = "jax",
-    mesh_shape: Tuple[int, int] = (1, 1),
-    seed: int = 12345
+    backend: str = "jax", mesh_shape: Tuple[int, int] = (1, 1), seed: int = 12345
 ) -> DistContext:
     """Initialize distributed cluster for quantum simulation.
 
@@ -96,10 +96,7 @@ def init_cluster(
         return _init_cluster_torch(mesh_shape, seed)
 
 
-def _init_cluster_jax(
-    mesh_shape: Tuple[int, int],
-    seed: int
-) -> DistContext:
+def _init_cluster_jax(mesh_shape: Tuple[int, int], seed: int) -> DistContext:
     """Initialize JAX distributed cluster."""
     try:
         import jax
@@ -114,15 +111,17 @@ def _init_cluster_jax(
             raise RuntimeError("No JAX devices available")
 
         # Set default device
-        jax.config.update('jax_default_device', devices[0])
+        jax.config.update("jax_default_device", devices[0])
 
         # Create device mesh
         data_parallel, model_parallel = mesh_shape
         expected_devices = data_parallel * model_parallel
 
         if n_devices < expected_devices:
-            print(f"Warning: Requested {expected_devices} devices but only "
-                  f"{n_devices} available. Adjusting mesh shape.")
+            print(
+                f"Warning: Requested {expected_devices} devices but only "
+                f"{n_devices} available. Adjusting mesh shape."
+            )
             # Adjust mesh shape to fit available devices
             if n_devices == 1:
                 mesh_shape = (1, 1)
@@ -137,7 +136,7 @@ def _init_cluster_jax(
 
         # Create mesh with named axes
         device_mesh = mesh_utils.create_device_mesh(mesh_shape, devices[:n_devices])
-        mesh = Mesh(device_mesh, axis_names=('data', 'model'))
+        mesh = Mesh(device_mesh, axis_names=("data", "model"))
 
         # Determine rank (for multi-host, would use jax.process_index())
         global_rank = 0  # Single-host for now
@@ -159,8 +158,8 @@ def _init_cluster_jax(
             metadata={
                 "jax_version": jax.__version__,
                 "device_kind": devices[0].device_kind,
-                "n_devices": n_devices
-            }
+                "n_devices": n_devices,
+            },
         )
 
         return context
@@ -176,14 +175,11 @@ def _init_cluster_jax(
             device=None,
             seed=seed,
             mesh=None,
-            metadata={"mode": "fallback"}
+            metadata={"mode": "fallback"},
         )
 
 
-def _init_cluster_torch(
-    mesh_shape: Tuple[int, int],
-    seed: int
-) -> DistContext:
+def _init_cluster_torch(mesh_shape: Tuple[int, int], seed: int) -> DistContext:
     """Initialize PyTorch distributed cluster."""
     try:
         import torch
@@ -230,8 +226,8 @@ def _init_cluster_torch(
             metadata={
                 "torch_version": torch.__version__,
                 "cuda_available": torch.cuda.is_available(),
-                "device_count": torch.cuda.device_count() if torch.cuda.is_available() else 0
-            }
+                "device_count": torch.cuda.device_count() if torch.cuda.is_available() else 0,
+            },
         )
 
         return context
@@ -247,7 +243,7 @@ def _init_cluster_torch(
             device=None,
             seed=seed,
             mesh=None,
-            metadata={"mode": "fallback"}
+            metadata={"mode": "fallback"},
         )
 
 
@@ -255,13 +251,10 @@ def _compute_rank_seed(global_seed: int, rank: int) -> int:
     """Compute deterministic per-rank seed."""
     seed_str = f"{global_seed}_{rank}"
     hash_val = hashlib.sha256(seed_str.encode()).digest()
-    return int.from_bytes(hash_val[:4], byteorder='big')
+    return int.from_bytes(hash_val[:4], byteorder="big")
 
 
-def shard_state(
-    context: DistContext,
-    state: NDArray[np.complex128]
-) -> ShardedState:
+def shard_state(context: DistContext, state: NDArray[np.complex128]) -> ShardedState:
     """Shard quantum state across distributed devices.
 
     Partitions state vector along computational basis according to
@@ -285,10 +278,7 @@ def shard_state(
         return _shard_state_torch(context, state)
 
 
-def _shard_state_jax(
-    context: DistContext,
-    state: NDArray[np.complex128]
-) -> ShardedState:
+def _shard_state_jax(context: DistContext, state: NDArray[np.complex128]) -> ShardedState:
     """Shard state using JAX."""
     try:
         import jax
@@ -300,7 +290,7 @@ def _shard_state_jax(
 
         # Define sharding: split along first dimension (data parallel)
         if context.mesh is not None:
-            sharding = NamedSharding(context.mesh, PartitionSpec('data', None))
+            sharding = NamedSharding(context.mesh, PartitionSpec("data", None))
             # Shard the array
             sharded_array = jax.device_put(jax_state, sharding)
             local_data = sharded_array
@@ -311,23 +301,17 @@ def _shard_state_jax(
             local_data=local_data,
             global_shape=state.shape,
             shard_spec={"type": "data_parallel"},
-            context=context
+            context=context,
         )
 
     except ImportError:
         # Fallback to numpy
         return ShardedState(
-            local_data=state,
-            global_shape=state.shape,
-            shard_spec={"type": "none"},
-            context=context
+            local_data=state, global_shape=state.shape, shard_spec={"type": "none"}, context=context
         )
 
 
-def _shard_state_torch(
-    context: DistContext,
-    state: NDArray[np.complex128]
-) -> ShardedState:
+def _shard_state_torch(context: DistContext, state: NDArray[np.complex128]) -> ShardedState:
     """Shard state using PyTorch."""
     try:
         import torch
@@ -354,17 +338,14 @@ def _shard_state_torch(
             shard_spec={
                 "type": "1d_split",
                 "rank": context.global_rank,
-                "world_size": context.world_size
+                "world_size": context.world_size,
             },
-            context=context
+            context=context,
         )
 
     except ImportError:
         return ShardedState(
-            local_data=state,
-            global_shape=state.shape,
-            shard_spec={"type": "none"},
-            context=context
+            local_data=state, global_shape=state.shape, shard_spec={"type": "none"}, context=context
         )
 
 
@@ -372,7 +353,7 @@ def dist_apply_gate(
     context: DistContext,
     sharded_state: ShardedState,
     gate: NDArray[np.complex128],
-    targets: List[int]
+    targets: List[int],
 ) -> ShardedState:
     """Apply quantum gate to distributed state.
 
@@ -405,7 +386,7 @@ def dist_apply_noise(
     context: DistContext,
     sharded_state: ShardedState,
     kraus_ops: List[NDArray[np.complex128]],
-    targets: List[int]
+    targets: List[int],
 ) -> ShardedState:
     """Apply noise channel to distributed state.
 
@@ -429,7 +410,7 @@ def dist_evolve(
     context: DistContext,
     sharded_state: ShardedState,
     control_schedule: List[Tuple[float, Dict[str, Any]]],
-    method: str = "trotter"
+    method: str = "trotter",
 ) -> ShardedState:
     """Evolve distributed state under time-dependent Hamiltonian.
 
@@ -450,9 +431,7 @@ def dist_evolve(
 
 
 def batch_run(
-    context: DistContext,
-    sharded_state: ShardedState,
-    trajectories: int = 1024
+    context: DistContext, sharded_state: ShardedState, trajectories: int = 1024
 ) -> Dict[str, Any]:
     """Run batched trajectories across distributed system.
 
@@ -468,17 +447,13 @@ def batch_run(
         "trajectories": trajectories,
         "backend": context.backend,
         "world_size": context.world_size,
-        "mesh_shape": context.mesh_shape
+        "mesh_shape": context.mesh_shape,
     }
 
     return results
 
 
-def save_checkpoint(
-    context: DistContext,
-    sharded_state: ShardedState,
-    path: str
-) -> None:
+def save_checkpoint(context: DistContext, sharded_state: ShardedState, path: str) -> None:
     """Save distributed checkpoint.
 
     Each rank saves its shard with deterministic partition order.
@@ -498,7 +473,7 @@ def save_checkpoint(
             "world_size": context.world_size,
             "global_shape": sharded_state.global_shape,
             "shard_spec": sharded_state.shard_spec,
-            "seed": context.seed
+            "seed": context.seed,
         }
         with open(os.path.join(path, "metadata.json"), "w") as f:
             json.dump(metadata, f, indent=2)
@@ -515,10 +490,7 @@ def save_checkpoint(
     np.save(shard_path, local_array)
 
 
-def load_checkpoint(
-    context: DistContext,
-    path: str
-) -> ShardedState:
+def load_checkpoint(context: DistContext, path: str) -> ShardedState:
     """Load distributed checkpoint.
 
     Args:
@@ -539,9 +511,11 @@ def load_checkpoint(
     # Convert to backend format
     if context.backend == "jax":
         import jax.numpy as jnp
+
         local_data = jnp.array(local_array)
     elif context.backend == "torch":
         import torch
+
         local_data = torch.from_numpy(local_array).to(context.device)
     else:
         local_data = local_array
@@ -550,7 +524,7 @@ def load_checkpoint(
         local_data=local_data,
         global_shape=tuple(metadata["global_shape"]),
         shard_spec=metadata["shard_spec"],
-        context=context
+        context=context,
     )
 
 
@@ -576,13 +550,14 @@ def profile(context: DistContext) -> Dict[str, Any]:
         "tflops": 0.0,
         "comm_compute_overlap_pct": 0.0,
         "bandwidth_gb_s": 0.0,
-        "hbm_usage_mb": 0.0
+        "hbm_usage_mb": 0.0,
     }
 
     # Get backend-specific metrics
     if context.backend == "torch":
         try:
             import torch
+
             if torch.cuda.is_available():
                 profile_data["hbm_usage_mb"] = torch.cuda.memory_allocated() / (1024**2)
                 profile_data["hbm_reserved_mb"] = torch.cuda.memory_reserved() / (1024**2)
@@ -602,7 +577,7 @@ def initialize_zero_state(num_qubits: int, dtype: str = "complex64") -> NDArray:
     Returns:
         Zero state vector
     """
-    d = 2 ** num_qubits
+    d = 2**num_qubits
     if dtype == "complex64":
         state = np.zeros(d, dtype=np.complex64)
     else:

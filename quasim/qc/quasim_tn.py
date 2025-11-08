@@ -37,11 +37,7 @@ class TensorNetworkEngine:
     """
 
     def __init__(
-        self,
-        num_qubits: int,
-        bond_dim: int = 64,
-        backend: str = "numpy",
-        seed: int = 42
+        self, num_qubits: int, bond_dim: int = 64, backend: str = "numpy", seed: int = 42
     ) -> None:
         """Initialize tensor network engine.
 
@@ -75,7 +71,7 @@ class TensorNetworkEngine:
             "compile_time_s": 0.0,
             "execution_time_s": 0.0,
             "gpu_mem_mb": 0.0,
-            "flops": 0.0
+            "flops": 0.0,
         }
 
         self.results: Dict[str, Any] = {}
@@ -87,6 +83,7 @@ class TensorNetworkEngine:
             try:
                 import jax
                 import jax.numpy as jnp
+
                 self.backend_module = jnp
                 # Try to get GPU device
                 devices = jax.devices()
@@ -99,6 +96,7 @@ class TensorNetworkEngine:
         elif self.backend == "torch":
             try:
                 import torch
+
                 self.backend_module = torch
                 self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 print(f"PyTorch backend initialized with device: {self.device}")
@@ -125,12 +123,14 @@ class TensorNetworkEngine:
                 shape = tuple([2] * self.num_qubits)
                 if self.backend == "jax":
                     import jax.numpy as jnp
+
                     self.state_tensor = jnp.zeros(shape, dtype=jnp.complex64)
                     # Set |0...0⟩ state
                     idx = tuple([0] * self.num_qubits)
                     self.state_tensor = self.state_tensor.at[idx].set(1.0)
                 elif self.backend == "torch":
                     import torch
+
                     self.state_tensor = torch.zeros(shape, dtype=torch.complex64)
                     idx = tuple([0] * self.num_qubits)
                     self.state_tensor[idx] = 1.0
@@ -167,7 +167,7 @@ class TensorNetworkEngine:
         self,
         gate: Union[str, NDArray],
         targets: List[int],
-        params: Optional[Dict[str, float]] = None
+        params: Optional[Dict[str, float]] = None,
     ) -> None:
         """Apply quantum gate using tensor contraction.
 
@@ -191,18 +191,18 @@ class TensorNetworkEngine:
             self._apply_gate_tensor(gate_tensor, targets)
 
         # Record operation
-        self.gate_sequence.append({
-            "gate": gate if isinstance(gate, str) else "custom",
-            "targets": targets,
-            "params": params
-        })
+        self.gate_sequence.append(
+            {
+                "gate": gate if isinstance(gate, str) else "custom",
+                "targets": targets,
+                "params": params,
+            }
+        )
 
         self.profile_data["execution_time_s"] += time.time() - start_time
 
     def _get_gate_tensor(
-        self,
-        gate_name: str,
-        params: Optional[Dict[str, float]] = None
+        self, gate_name: str, params: Optional[Dict[str, float]] = None
     ) -> NDArray:
         """Get gate tensor from name."""
         params = params or {}
@@ -221,37 +221,29 @@ class TensorNetworkEngine:
         elif gate_name == "T":
             gate = np.array([[1, 0], [0, np.exp(1j * np.pi / 4)]], dtype=np.complex64)
         elif gate_name == "CNOT":
-            gate = np.array([
-                [1, 0, 0, 0],
-                [0, 1, 0, 0],
-                [0, 0, 0, 1],
-                [0, 0, 1, 0]
-            ], dtype=np.complex64)
+            gate = np.array(
+                [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]], dtype=np.complex64
+            )
         elif gate_name == "CZ":
-            gate = np.array([
-                [1, 0, 0, 0],
-                [0, 1, 0, 0],
-                [0, 0, 1, 0],
-                [0, 0, 0, -1]
-            ], dtype=np.complex64)
+            gate = np.array(
+                [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, -1]], dtype=np.complex64
+            )
         else:
             raise ValueError(f"Unknown gate: {gate_name}")
 
         # Convert to backend format if needed
         if self.backend == "jax":
             import jax.numpy as jnp
+
             gate = jnp.array(gate)
         elif self.backend == "torch":
             import torch
+
             gate = torch.tensor(gate)
 
         return gate
 
-    def _apply_gate_tensor(
-        self,
-        gate: NDArray,
-        targets: List[int]
-    ) -> None:
+    def _apply_gate_tensor(self, gate: NDArray, targets: List[int]) -> None:
         """Apply gate to full state tensor using einsum."""
         if self.state_tensor is None:
             raise RuntimeError("State not initialized")
@@ -267,11 +259,7 @@ class TensorNetworkEngine:
             # Contract gate with qubit q of state tensor
             if self.backend == "numpy":
                 # Use tensordot for efficiency
-                self.state_tensor = np.tensordot(
-                    gate_reshaped,
-                    self.state_tensor,
-                    axes=([1], [q])
-                )
+                self.state_tensor = np.tensordot(gate_reshaped, self.state_tensor, axes=([1], [q]))
                 # Move axis back to position q
                 axes = list(range(n))
                 axes.insert(q, axes.pop(0))
@@ -279,9 +267,7 @@ class TensorNetworkEngine:
             else:
                 # For JAX/PyTorch, similar approach
                 self.state_tensor = np.tensordot(
-                    np.asarray(gate_reshaped),
-                    np.asarray(self.state_tensor),
-                    axes=([1], [q])
+                    np.asarray(gate_reshaped), np.asarray(self.state_tensor), axes=([1], [q])
                 )
                 axes = list(range(n))
                 axes.insert(q, axes.pop(0))
@@ -294,16 +280,9 @@ class TensorNetworkEngine:
 
             # Apply via tensor contraction
             # This is simplified - production would optimize contraction order
-            self.state_tensor = self._apply_two_qubit_gate_tensor(
-                gate_reshaped, q1, q2
-            )
+            self.state_tensor = self._apply_two_qubit_gate_tensor(gate_reshaped, q1, q2)
 
-    def _apply_two_qubit_gate_tensor(
-        self,
-        gate: NDArray,
-        q1: int,
-        q2: int
-    ) -> NDArray:
+    def _apply_two_qubit_gate_tensor(self, gate: NDArray, q1: int, q2: int) -> NDArray:
         """Apply two-qubit gate using tensor contraction."""
         if self.state_tensor is None:
             raise RuntimeError("State not initialized")
@@ -335,11 +314,7 @@ class TensorNetworkEngine:
 
         return state_arr
 
-    def _apply_gate_mps(
-        self,
-        gate: NDArray,
-        targets: List[int]
-    ) -> None:
+    def _apply_gate_mps(self, gate: NDArray, targets: List[int]) -> None:
         """Apply gate in MPS representation."""
         # Simplified MPS gate application
         # Production version would implement proper MPS algorithms
@@ -398,18 +373,14 @@ class TensorNetworkEngine:
                 mps.append(U.reshape(mps[-1].shape[-1], 2, bond).astype(np.complex64))
 
             # Continue with right part
-            remaining = (np.diag(S) @ Vt).reshape([bond] + list(shape[i+1:]))
+            remaining = (np.diag(S) @ Vt).reshape([bond] + list(shape[i + 1 :]))
 
         # Last tensor
         mps.append(remaining.astype(np.complex64))
 
         return mps
 
-    def apply_noise(
-        self,
-        kraus_ops: List[NDArray],
-        targets: List[int]
-    ) -> None:
+    def apply_noise(self, kraus_ops: List[NDArray], targets: List[int]) -> None:
         """Apply noise channel via Kraus operators.
 
         Args:
@@ -422,9 +393,7 @@ class TensorNetworkEngine:
         pass
 
     def evolve(
-        self,
-        control_schedule: List[Tuple[float, Dict[str, Any]]],
-        method: str = "trotter"
+        self, control_schedule: List[Tuple[float, Dict[str, Any]]], method: str = "trotter"
     ) -> None:
         """Evolve state under time-dependent Hamiltonian.
 
@@ -454,15 +423,12 @@ class TensorNetworkEngine:
             "backend": self.backend,
             "num_qubits": self.num_qubits,
             "bond_dim": self.bond_dim,
-            "execution_time_s": time.time() - start_time
+            "execution_time_s": time.time() - start_time,
         }
 
         return results
 
-    def measure_pauli_expectation(
-        self,
-        pauli_ops: List[Tuple[str, List[int]]]
-    ) -> Dict[str, float]:
+    def measure_pauli_expectation(self, pauli_ops: List[Tuple[str, List[int]]]) -> Dict[str, float]:
         """Measure expectation values of Pauli operators.
 
         Args:
@@ -542,7 +508,7 @@ class TensorNetworkEngine:
 
         # Compute fidelity
         overlap = np.abs(np.vdot(target, state))
-        return float(overlap ** 2)
+        return float(overlap**2)
 
     def compute_entropy(self) -> float:
         """Compute von Neumann entropy of full state.

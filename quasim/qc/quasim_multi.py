@@ -51,16 +51,13 @@ class MultiQubitSimulator:
         self.results: Dict[str, Any] = {}
         self.gate_history: List[Dict[str, Any]] = []
 
-    def initialize_state(
-        self,
-        state: Union[str, NDArray[np.complex128]] = "zero"
-    ) -> None:
+    def initialize_state(self, state: Union[str, NDArray[np.complex128]] = "zero") -> None:
         """Initialize quantum state.
 
         Args:
             state: Initial state - "zero" for |00...0⟩, or custom state vector
         """
-        dim = 2 ** self.num_qubits
+        dim = 2**self.num_qubits
 
         if isinstance(state, str) and state == "zero":
             self.state = np.zeros(dim, dtype=np.complex128)
@@ -77,7 +74,7 @@ class MultiQubitSimulator:
         self,
         gate: Union[str, NDArray[np.complex128]],
         targets: List[int],
-        params: Optional[Dict[str, float]] = None
+        params: Optional[Dict[str, float]] = None,
     ) -> None:
         """Apply quantum gate to target qubits.
 
@@ -99,16 +96,16 @@ class MultiQubitSimulator:
         self.state = self._apply_gate_to_state(self.state, gate_matrix, targets)
 
         # Record gate application
-        self.gate_history.append({
-            "gate": gate if isinstance(gate, str) else "custom",
-            "targets": targets,
-            "params": params
-        })
+        self.gate_history.append(
+            {
+                "gate": gate if isinstance(gate, str) else "custom",
+                "targets": targets,
+                "params": params,
+            }
+        )
 
     def _get_standard_gate(
-        self,
-        gate_name: str,
-        params: Optional[Dict[str, float]] = None
+        self, gate_name: str, params: Optional[Dict[str, float]] = None
     ) -> NDArray[np.complex128]:
         """Get standard gate matrix by name.
 
@@ -136,53 +133,43 @@ class MultiQubitSimulator:
             return np.array([[1, 0], [0, np.exp(1j * np.pi / 4)]], dtype=np.complex128)
         elif gate_name == "Rx":  # X rotation
             theta = params.get("theta", 0.0)
-            return np.array([
-                [np.cos(theta/2), -1j*np.sin(theta/2)],
-                [-1j*np.sin(theta/2), np.cos(theta/2)]
-            ], dtype=np.complex128)
+            return np.array(
+                [
+                    [np.cos(theta / 2), -1j * np.sin(theta / 2)],
+                    [-1j * np.sin(theta / 2), np.cos(theta / 2)],
+                ],
+                dtype=np.complex128,
+            )
         elif gate_name == "Ry":  # Y rotation
             theta = params.get("theta", 0.0)
-            return np.array([
-                [np.cos(theta/2), -np.sin(theta/2)],
-                [np.sin(theta/2), np.cos(theta/2)]
-            ], dtype=np.complex128)
+            return np.array(
+                [[np.cos(theta / 2), -np.sin(theta / 2)], [np.sin(theta / 2), np.cos(theta / 2)]],
+                dtype=np.complex128,
+            )
         elif gate_name == "Rz":  # Z rotation
             theta = params.get("theta", 0.0)
-            return np.array([
-                [np.exp(-1j*theta/2), 0],
-                [0, np.exp(1j*theta/2)]
-            ], dtype=np.complex128)
+            return np.array(
+                [[np.exp(-1j * theta / 2), 0], [0, np.exp(1j * theta / 2)]], dtype=np.complex128
+            )
 
         # Two-qubit gates
         elif gate_name == "CNOT":
-            return np.array([
-                [1, 0, 0, 0],
-                [0, 1, 0, 0],
-                [0, 0, 0, 1],
-                [0, 0, 1, 0]
-            ], dtype=np.complex128)
+            return np.array(
+                [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]], dtype=np.complex128
+            )
         elif gate_name == "CZ":
-            return np.array([
-                [1, 0, 0, 0],
-                [0, 1, 0, 0],
-                [0, 0, 1, 0],
-                [0, 0, 0, -1]
-            ], dtype=np.complex128)
+            return np.array(
+                [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, -1]], dtype=np.complex128
+            )
         elif gate_name == "SWAP":
-            return np.array([
-                [1, 0, 0, 0],
-                [0, 0, 1, 0],
-                [0, 1, 0, 0],
-                [0, 0, 0, 1]
-            ], dtype=np.complex128)
+            return np.array(
+                [[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 0], [0, 0, 0, 1]], dtype=np.complex128
+            )
         else:
             raise ValueError(f"Unknown gate: {gate_name}")
 
     def _apply_gate_to_state(
-        self,
-        state: NDArray[np.complex128],
-        gate: NDArray[np.complex128],
-        targets: List[int]
+        self, state: NDArray[np.complex128], gate: NDArray[np.complex128], targets: List[int]
     ) -> NDArray[np.complex128]:
         """Apply gate matrix to state vector.
 
@@ -197,7 +184,7 @@ class MultiQubitSimulator:
             Updated state vector
         """
         n = self.num_qubits
-        d = 2 ** n
+        d = 2**n
 
         # Reshape state to tensor
         shape = [2] * n
@@ -283,10 +270,7 @@ class MultiQubitSimulator:
         self.state /= np.linalg.norm(self.state)
 
     def _apply_amplitude_damping(
-        self,
-        rho: NDArray[np.complex128],
-        qubit: int,
-        gamma: float
+        self, rho: NDArray[np.complex128], qubit: int, gamma: float
     ) -> NDArray[np.complex128]:
         """Apply amplitude damping to density matrix."""
         # Kraus operators for amplitude damping
@@ -297,10 +281,7 @@ class MultiQubitSimulator:
         return rho_new
 
     def _apply_phase_damping(
-        self,
-        rho: NDArray[np.complex128],
-        qubit: int,
-        gamma: float
+        self, rho: NDArray[np.complex128], qubit: int, gamma: float
     ) -> NDArray[np.complex128]:
         """Apply phase damping to density matrix."""
         # Kraus operators for phase damping
@@ -311,29 +292,23 @@ class MultiQubitSimulator:
         return rho_new
 
     def _apply_depolarizing(
-        self,
-        rho: NDArray[np.complex128],
-        qubit: int,
-        p: float
+        self, rho: NDArray[np.complex128], qubit: int, p: float
     ) -> NDArray[np.complex128]:
         """Apply depolarizing channel to density matrix."""
         # Kraus operators for depolarizing
-        K0 = np.sqrt(1 - 3*p/4) * np.eye(2, dtype=np.complex128)
-        K1 = np.sqrt(p/4) * np.array([[0, 1], [1, 0]], dtype=np.complex128)
-        K2 = np.sqrt(p/4) * np.array([[0, -1j], [1j, 0]], dtype=np.complex128)
-        K3 = np.sqrt(p/4) * np.array([[1, 0], [0, -1]], dtype=np.complex128)
+        K0 = np.sqrt(1 - 3 * p / 4) * np.eye(2, dtype=np.complex128)
+        K1 = np.sqrt(p / 4) * np.array([[0, 1], [1, 0]], dtype=np.complex128)
+        K2 = np.sqrt(p / 4) * np.array([[0, -1j], [1j, 0]], dtype=np.complex128)
+        K3 = np.sqrt(p / 4) * np.array([[1, 0], [0, -1]], dtype=np.complex128)
 
         rho_new = self._apply_single_qubit_kraus(rho, qubit, [K0, K1, K2, K3])
         return rho_new
 
     def _apply_single_qubit_kraus(
-        self,
-        rho: NDArray[np.complex128],
-        qubit: int,
-        kraus_ops: List[NDArray[np.complex128]]
+        self, rho: NDArray[np.complex128], qubit: int, kraus_ops: List[NDArray[np.complex128]]
     ) -> NDArray[np.complex128]:
         """Apply Kraus operators to single qubit in density matrix."""
-        d = 2 ** self.num_qubits
+        d = 2**self.num_qubits
         rho_new = np.zeros((d, d), dtype=np.complex128)
 
         for K in kraus_ops:
@@ -344,9 +319,7 @@ class MultiQubitSimulator:
         return rho_new
 
     def _build_full_operator(
-        self,
-        single_qubit_op: NDArray[np.complex128],
-        target: int
+        self, single_qubit_op: NDArray[np.complex128], target: int
     ) -> NDArray[np.complex128]:
         """Build full system operator from single-qubit operator."""
         op = np.array([[1.0]], dtype=np.complex128)
@@ -414,7 +387,7 @@ class MultiQubitSimulator:
 
         # Create W state via controlled operations
         # Start with |0...01⟩
-        d = 2 ** self.num_qubits
+        d = 2**self.num_qubits
         self.state = np.zeros(d, dtype=np.complex128)
 
         # Build W state directly
@@ -441,20 +414,18 @@ class MultiQubitSimulator:
                 bloch_vec = self._compute_bloch_vector(rho, q)
                 bloch_vectors.append(bloch_vec.tolist())
 
-        self.results.update({
-            "density_matrix_real": rho.real.tolist(),
-            "density_matrix_imag": rho.imag.tolist(),
-            "bloch_vectors": bloch_vectors,
-            "purity": float(np.real(np.trace(rho @ rho)))
-        })
+        self.results.update(
+            {
+                "density_matrix_real": rho.real.tolist(),
+                "density_matrix_imag": rho.imag.tolist(),
+                "bloch_vectors": bloch_vectors,
+                "purity": float(np.real(np.trace(rho @ rho))),
+            }
+        )
 
         return self.results
 
-    def _compute_bloch_vector(
-        self,
-        rho: NDArray[np.complex128],
-        qubit: int
-    ) -> NDArray[np.float64]:
+    def _compute_bloch_vector(self, rho: NDArray[np.complex128], qubit: int) -> NDArray[np.float64]:
         """Compute Bloch vector for a single qubit."""
         # Pauli matrices
         X = np.array([[0, 1], [1, 0]], dtype=np.complex128)
@@ -509,11 +480,7 @@ class MultiQubitSimulator:
         state_tensor = self.state.reshape(shape)
 
         # Form density matrix tensor
-        rho_tensor = np.tensordot(
-            state_tensor,
-            np.conj(state_tensor),
-            axes=0
-        )
+        rho_tensor = np.tensordot(state_tensor, np.conj(state_tensor), axes=0)
 
         # Trace out unwanted qubits
         for q in sorted(trace_qubits, reverse=True):
@@ -527,9 +494,7 @@ class MultiQubitSimulator:
         return rho_reduced
 
     def evolve_control(
-        self,
-        control_schedule: List[Tuple[float, Dict[str, Any]]],
-        method: str = "trotter"
+        self, control_schedule: List[Tuple[float, Dict[str, Any]]], method: str = "trotter"
     ) -> None:
         """Evolve state under time-dependent Hamiltonian.
 
@@ -561,7 +526,7 @@ class MultiQubitSimulator:
 
     def _build_hamiltonian(self, params: Dict[str, Any]) -> NDArray[np.complex128]:
         """Build Hamiltonian from parameters."""
-        d = 2 ** self.num_qubits
+        d = 2**self.num_qubits
         H = np.zeros((d, d), dtype=np.complex128)
 
         # Single-qubit terms
@@ -592,22 +557,15 @@ class MultiQubitSimulator:
 
         return H
 
-    def _trotter_evolution(
-        self,
-        H: NDArray[np.complex128],
-        dt: float
-    ) -> NDArray[np.complex128]:
+    def _trotter_evolution(self, H: NDArray[np.complex128], dt: float) -> NDArray[np.complex128]:
         """Compute evolution operator via Trotterization."""
         # For simplicity, use matrix exponential (can be optimized later)
         return self._expm_evolution(H, dt)
 
-    def _expm_evolution(
-        self,
-        H: NDArray[np.complex128],
-        dt: float
-    ) -> NDArray[np.complex128]:
+    def _expm_evolution(self, H: NDArray[np.complex128], dt: float) -> NDArray[np.complex128]:
         """Compute evolution operator via matrix exponential."""
         from scipy.linalg import expm
+
         return expm(-1j * H * dt)
 
     def run(self, trajectories: int = 1) -> Dict[str, Any]:
@@ -631,10 +589,7 @@ class MultiQubitSimulator:
 
         return self.results
 
-    def compute_fidelity(
-        self,
-        target_state: NDArray[np.complex128]
-    ) -> float:
+    def compute_fidelity(self, target_state: NDArray[np.complex128]) -> float:
         """Compute fidelity with target state.
 
         F = |⟨ψ|φ⟩|²
@@ -649,7 +604,7 @@ class MultiQubitSimulator:
             raise RuntimeError("State not initialized")
 
         overlap = np.abs(np.vdot(target_state, self.state))
-        return float(overlap ** 2)
+        return float(overlap**2)
 
 
 def create_bell_plus() -> NDArray[np.complex128]:
@@ -662,8 +617,8 @@ def create_bell_plus() -> NDArray[np.complex128]:
 
 def create_ghz_state_exact(n: int) -> NDArray[np.complex128]:
     """Create exact GHZ state for n qubits."""
-    d = 2 ** n
+    d = 2**n
     state = np.zeros(d, dtype=np.complex128)
-    state[0] = 1.0 / np.sqrt(2)      # |00...0⟩
+    state[0] = 1.0 / np.sqrt(2)  # |00...0⟩
     state[d - 1] = 1.0 / np.sqrt(2)  # |11...1⟩
     return state

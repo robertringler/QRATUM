@@ -6,9 +6,10 @@ This module creates visualizations for the Fortune 500 analysis including:
 - Adoption timeline forecasts
 - Correlation plots
 """
+
 import json
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 import numpy as np
 
@@ -289,7 +290,9 @@ def create_adoption_timeline_chart(filename: str = "adoption_timeline.svg") -> N
         points.append((x, y))
 
         # Point
-        svg_parts.append(f"<circle cx='{x}' cy='{y}' r='6' fill='#3B82F6' stroke='#1E40AF' stroke-width='2'/>")
+        svg_parts.append(
+            f"<circle cx='{x}' cy='{y}' r='6' fill='#3B82F6' stroke='#1E40AF' stroke-width='2'/>"
+        )
 
         # Value label
         svg_parts.append(
@@ -316,9 +319,15 @@ def create_adoption_timeline_chart(filename: str = "adoption_timeline.svg") -> N
 
     # Adoption phases
     phase_y = margin + 20
-    svg_parts.append("<text x='140' y='60' class='label' fill='#666' font-style='italic'>Early Adopters</text>")
-    svg_parts.append("<text x='380' y='60' class='label' fill='#666' font-style='italic'>Early Majority</text>")
-    svg_parts.append("<text x='640' y='60' class='label' fill='#666' font-style='italic'>Late Majority</text>")
+    svg_parts.append(
+        "<text x='140' y='60' class='label' fill='#666' font-style='italic'>Early Adopters</text>"
+    )
+    svg_parts.append(
+        "<text x='380' y='60' class='label' fill='#666' font-style='italic'>Early Majority</text>"
+    )
+    svg_parts.append(
+        "<text x='640' y='60' class='label' fill='#666' font-style='italic'>Late Majority</text>"
+    )
 
     svg_parts.append("</svg>")
     _write_svg(VIS_DIR / filename, "".join(svg_parts))
@@ -433,7 +442,9 @@ def create_correlation_scatter_plot(
 
     # Legend
     svg_parts.append("<text x='640' y='100' class='label' fill='#666'>Best fit line</text>")
-    svg_parts.append("<line x1='600' y1='95' x2='630' y2='95' stroke='#EF4444' stroke-width='2' stroke-dasharray='5,5'/>")
+    svg_parts.append(
+        "<line x1='600' y1='95' x2='630' y2='95' stroke='#EF4444' stroke-width='2' stroke-dasharray='5,5'/>"
+    )
 
     svg_parts.append("</svg>")
     _write_svg(VIS_DIR / filename, "".join(svg_parts))
@@ -554,7 +565,7 @@ def main():
         print("Error: Analysis data not found. Please run fortune500_quasim_integration.py first.")
         return
 
-    with open(json_path, "r") as f:
+    with open(json_path) as f:
         data = json.load(f)
 
     # 1. QII Distribution Histogram
@@ -563,9 +574,7 @@ def main():
     qii_scores = [c["qii_score"] for c in data["top_20_companies"]]
     # Add some synthetic variation
     np.random.seed(42)
-    all_qii_scores = (
-        qii_scores + list(np.random.beta(2, 2, 480) * 0.8)
-    )  # Generate 500 total scores
+    all_qii_scores = qii_scores + list(np.random.beta(2, 2, 480) * 0.8)  # Generate 500 total scores
     create_qii_distribution_histogram(all_qii_scores)
 
     # 2. Sector Comparison Chart

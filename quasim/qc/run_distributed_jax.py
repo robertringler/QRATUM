@@ -32,12 +32,12 @@ def main():
     sim.initialize_state()
     sim.apply_gate("H", [0])
     sim.apply_gate("CNOT", [0, 1])
-    print(f"Applied H and CNOT gates to first 2 qubits")
+    print("Applied H and CNOT gates to first 2 qubits")
 
     # Profile execution
     print("Profiling...")
     prof = profile(ctx)
-    print(f"Profile:")
+    print("Profile:")
     print(f"  Backend: {prof['backend']}")
     print(f"  Device: {prof['device']}")
     print(f"  World size: {prof['world_size']}")

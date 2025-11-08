@@ -8,21 +8,20 @@ following financial analysis best practices and quantum-tech industry standards.
 
 import os
 from datetime import datetime
-from typing import Dict, List
 
 
 def generate_market_valuation_section() -> str:
     """
     Generate a complete Market Valuation section for QuASIM.
-    
+
     Returns:
         str: Formatted markdown content for the market valuation section
     """
-    
+
     # Get current date for the report
     current_date = datetime.now().strftime("%Y-%m-%d")
     current_quarter = f"{datetime.now().year}-Q{(datetime.now().month - 1) // 3 + 1}"
-    
+
     content = f"""## Market Valuation — QuASIM
 
 **Valuation Date:** {current_date}  
@@ -386,7 +385,7 @@ The company is **investment-ready** for deep-tech venture capital and strategic 
 **External Validation:** Recommended third-party valuation audit before Series B close  
 
 """
-    
+
     return content
 
 
@@ -396,29 +395,29 @@ def main():
     print("QuASIM Market Valuation Generator")
     print("=" * 70)
     print()
-    
+
     # Generate the market valuation content
     print("Generating market valuation section...")
     valuation_content = generate_market_valuation_section()
-    
+
     # Determine the output file path
     # The problem statement mentions both "valuation.md" and references existing "market_valuation.md"
     # We'll update the existing market_valuation.md file by appending/updating
     script_dir = os.path.dirname(os.path.abspath(__file__))
     repo_root = os.path.dirname(script_dir)
     output_file = os.path.join(repo_root, "docs", "market_valuation.md")
-    
+
     print(f"Output file: {output_file}")
-    
+
     # Read existing content if file exists
     existing_content = ""
     marker = "## Market Valuation — QuASIM"
-    
+
     if os.path.exists(output_file):
-        with open(output_file, 'r', encoding='utf-8') as f:
+        with open(output_file, encoding="utf-8") as f:
             existing_content = f.read()
         print(f"Existing file found ({len(existing_content)} characters)")
-        
+
         # Check if our section already exists
         if marker in existing_content:
             print("Found existing Market Valuation section. Replacing...")
@@ -431,14 +430,14 @@ def main():
             existing_content = existing_content.rstrip() + "\n\n---\n\n"
     else:
         print("Creating new market_valuation.md file...")
-    
+
     # Write the combined content
     final_content = existing_content + valuation_content
-    
-    with open(output_file, 'w', encoding='utf-8') as f:
+
+    with open(output_file, "w", encoding="utf-8") as f:
         f.write(final_content)
-    
-    print(f"✓ Market valuation section written successfully")
+
+    print("✓ Market valuation section written successfully")
     print(f"  Total content length: {len(final_content)} characters")
     print(f"  Generated section length: {len(valuation_content)} characters")
     print()

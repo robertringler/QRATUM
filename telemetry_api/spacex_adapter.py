@@ -129,9 +129,7 @@ class SpaceXTelemetryAdapter:
         is_valid = len(errors) == 0
         return is_valid, errors
 
-    def ingest_batch(
-        self, raw_batch: list[dict[str, Any]]
-    ) -> tuple[int, int, list[str]]:
+    def ingest_batch(self, raw_batch: list[dict[str, Any]]) -> tuple[int, int, list[str]]:
         """Ingest batch of telemetry data.
 
         Args:

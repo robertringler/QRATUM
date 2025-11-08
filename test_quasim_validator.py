@@ -97,17 +97,16 @@ class TestFidelityMetrics:
 
         # Verify mean fidelity is within tolerance
         assert abs(mean_fidelity - target) <= tolerance, (
-            f"Mean fidelity {mean_fidelity:.4f} outside tolerance "
-            f"of {target} ± {tolerance}"
+            f"Mean fidelity {mean_fidelity:.4f} outside tolerance " f"of {target} ± {tolerance}"
         )
 
         # Verify acceptance criteria met
         assert stats["acceptance_criteria_met"], "Fidelity acceptance criteria not met"
 
         # Verify convergence rate is high (≥ 98%)
-        assert stats["convergence_rate"] >= 0.98, (
-            f"Convergence rate {stats['convergence_rate']:.2%} below 98% threshold"
-        )
+        assert (
+            stats["convergence_rate"] >= 0.98
+        ), f"Convergence rate {stats['convergence_rate']:.2%} below 98% threshold"
 
     def test_trajectory_envelope_compliance(self):
         """Verify all trajectories converge within ±1% of nominal envelope."""
@@ -153,9 +152,9 @@ class TestTrotterConvergence:
             trotter_error = 1e-12  # Simulated error
             threshold = 1e-10
 
-            assert trotter_error <= threshold, (
-                f"Trotter error {trotter_error:.2e} exceeds threshold {threshold:.2e}"
-            )
+            assert (
+                trotter_error <= threshold
+            ), f"Trotter error {trotter_error:.2e} exceeds threshold {threshold:.2e}"
 
 
 class TestSchemaCompliance:
@@ -196,9 +195,9 @@ class TestSchemaCompliance:
 
         compliance_rate = valid_entries / len(entries)
 
-        assert compliance_rate >= 0.99, (
-            f"Schema compliance {compliance_rate:.2%} below 99% threshold"
-        )
+        assert (
+            compliance_rate >= 0.99
+        ), f"Schema compliance {compliance_rate:.2%} below 99% threshold"
 
     def test_timestamp_synchronization(self):
         """Verify timestamp synchronization < 1μs drift across replay cycles."""
@@ -213,9 +212,9 @@ class TestSchemaCompliance:
         max_drift = data["results"]["max_drift_observed"]
         threshold = 1.0  # 1 microsecond
 
-        assert max_drift < threshold, (
-            f"Maximum drift {max_drift:.3f}μs exceeds threshold {threshold}μs"
-        )
+        assert (
+            max_drift < threshold
+        ), f"Maximum drift {max_drift:.3f}μs exceeds threshold {threshold}μs"
 
         # Verify all entries validated
         assert data["results"]["validation_passed"], "Determinism validation failed"
@@ -238,15 +237,12 @@ class TestCoverageCompliance:
             entries = list(reader)
 
         # All conditions must be covered at least once
-        covered_conditions = sum(
-            1 for entry in entries if entry["Coverage Achieved"] == "True"
-        )
+        covered_conditions = sum(1 for entry in entries if entry["Coverage Achieved"] == "True")
 
         coverage_rate = covered_conditions / len(entries)
 
         assert coverage_rate == 1.0, (
-            f"MC/DC coverage {coverage_rate:.2%} incomplete "
-            "(all conditions must be covered)"
+            f"MC/DC coverage {coverage_rate:.2%} incomplete " "(all conditions must be covered)"
         )
 
 
@@ -265,13 +261,13 @@ class TestCertificationReadiness:
 
         package = data["package"]
 
-        assert package["open_anomalies"] == 0, (
-            f"Open anomalies detected: {package['open_anomalies']}"
-        )
+        assert (
+            package["open_anomalies"] == 0
+        ), f"Open anomalies detected: {package['open_anomalies']}"
 
-        assert package["verification_status"] == "READY_FOR_AUDIT", (
-            f"Package not ready for audit: {package['verification_status']}"
-        )
+        assert (
+            package["verification_status"] == "READY_FOR_AUDIT"
+        ), f"Package not ready for audit: {package['verification_status']}"
 
     def test_verification_evidence_complete(self):
         """Verify all verification evidence items are present and verified."""
@@ -292,9 +288,7 @@ class TestCertificationReadiness:
             assert req_id in evidence_ids, f"Missing evidence item {req_id}"
 
         # Verify most items are verified (E-04 may be "Submitted")
-        verified_count = sum(
-            1 for item in evidence if item["status"] in ["Verified", "Submitted"]
-        )
+        verified_count = sum(1 for item in evidence if item["status"] in ["Verified", "Submitted"])
 
         assert verified_count == len(evidence), "Not all evidence items verified"
 
