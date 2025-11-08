@@ -58,10 +58,13 @@ class TestHCALCLI:
                 main,
                 [
                     "plan",
-                    "--profile", "low-latency",
-                    "--devices", "GPU0,GPU1",
-                    "--output", str(plan_file)
-                ]
+                    "--profile",
+                    "low-latency",
+                    "--devices",
+                    "GPU0,GPU1",
+                    "--output",
+                    str(plan_file),
+                ],
             )
             assert result.exit_code == 0
             assert "Reconfiguration plan created" in result.output
@@ -79,12 +82,7 @@ class TestHCALCLI:
     def test_plan_unknown_profile(self):
         """Test plan command with unknown profile."""
         result = self.runner.invoke(
-            main,
-            [
-                "plan",
-                "--profile", "unknown-profile",
-                "--devices", "GPU0"
-            ]
+            main, ["plan", "--profile", "unknown-profile", "--devices", "GPU0"]
         )
         assert result.exit_code == 1
         assert "Unknown profile" in result.output
@@ -102,10 +100,10 @@ class TestHCALCLI:
                     {
                         "device": "GPU0",
                         "action": "reconfigure",
-                        "changes": {"power_mode": "max_performance"}
+                        "changes": {"power_mode": "max_performance"},
                     }
                 ],
-                "estimated_downtime_seconds": 10
+                "estimated_downtime_seconds": 10,
             }
 
             with open(plan_file, "w") as f:
@@ -130,10 +128,10 @@ class TestHCALCLI:
                     {
                         "device": "GPU0",
                         "action": "reconfigure",
-                        "changes": {"power_mode": "max_performance"}
+                        "changes": {"power_mode": "max_performance"},
                     }
                 ],
-                "estimated_downtime_seconds": 10
+                "estimated_downtime_seconds": 10,
             }
 
             with open(plan_file, "w") as f:
@@ -144,10 +142,12 @@ class TestHCALCLI:
                 main,
                 [
                     "apply",
-                    "--plan", str(plan_file),
+                    "--plan",
+                    str(plan_file),
                     "--enable-actuation",
-                    "--require-approval", "token"
-                ]
+                    "--require-approval",
+                    "token",
+                ],
             )
             assert result.exit_code == 0
             assert "APPLYING RECONFIGURATION PLAN" in result.output
@@ -163,7 +163,7 @@ class TestHCALCLI:
                 "plan_version": "1.0",
                 "profile": "low-latency",
                 "target_devices": ["GPU0"],
-                "actions": []
+                "actions": [],
             }
 
             with open(plan_file, "w") as f:
@@ -171,8 +171,7 @@ class TestHCALCLI:
 
             # Test actuation without approval
             result = self.runner.invoke(
-                main,
-                ["apply", "--plan", str(plan_file), "--enable-actuation"]
+                main, ["apply", "--plan", str(plan_file), "--enable-actuation"]
             )
             assert result.exit_code == 1
             assert "require-approval token required" in result.output
@@ -186,13 +185,7 @@ class TestHCALCLI:
     def test_calibrate_power_sweep(self):
         """Test calibrate command with power_sweep routine."""
         result = self.runner.invoke(
-            main,
-            [
-                "calibrate",
-                "--device", "GPU0",
-                "--routine", "power_sweep",
-                "--max-iters", "10"
-            ]
+            main, ["calibrate", "--device", "GPU0", "--routine", "power_sweep", "--max-iters", "10"]
         )
         assert result.exit_code == 0
         assert "Starting Hardware Calibration" in result.output
@@ -203,13 +196,7 @@ class TestHCALCLI:
     def test_calibrate_thermal_test(self):
         """Test calibrate command with thermal_test routine."""
         result = self.runner.invoke(
-            main,
-            [
-                "calibrate",
-                "--device", "GPU1",
-                "--routine", "thermal_test",
-                "--max-iters", "5"
-            ]
+            main, ["calibrate", "--device", "GPU1", "--routine", "thermal_test", "--max-iters", "5"]
         )
         assert result.exit_code == 0
         assert "GPU1" in result.output
@@ -219,12 +206,7 @@ class TestHCALCLI:
         """Test calibrate command with unknown routine fails without --force."""
         result = self.runner.invoke(
             main,
-            [
-                "calibrate",
-                "--device", "GPU0",
-                "--routine", "unknown_routine",
-                "--max-iters", "5"
-            ]
+            ["calibrate", "--device", "GPU0", "--routine", "unknown_routine", "--max-iters", "5"],
         )
         assert result.exit_code == 1
         assert "Unknown routine" in result.output
@@ -237,11 +219,14 @@ class TestHCALCLI:
             main,
             [
                 "calibrate",
-                "--device", "GPU0",
-                "--routine", "unknown_routine",
-                "--max-iters", "5",
-                "--force"
-            ]
+                "--device",
+                "GPU0",
+                "--routine",
+                "unknown_routine",
+                "--max-iters",
+                "5",
+                "--force",
+            ],
         )
         assert result.exit_code == 0
         assert "unknown routine" in result.output

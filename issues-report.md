@@ -3,7 +3,7 @@
 125	UP006 	non-pep585-annotation
 115	N806  	non-lowercase-variable-in-function
  39	W291  	trailing-whitespace
- 35	      	invalid-syntax
+ 30	      	invalid-syntax
  19	UP045 	non-pep604-annotation-optional
  14	F841  	unused-variable
  13	B007  	unused-loop-control-variable
@@ -26,7 +26,7 @@
   1	N818  	error-suffix-on-exception-name
   1	SIM110	reimplemented-builtin
   1	SIM115	open-file-with-context-handler
-Found 426 errors.
+Found 421 errors.
 No fixes available (240 hidden fixes can be enabled with the `--unsafe-fixes` option).
 ### Type Checking (mypy)
 pyproject.toml: [mypy]: python_version: Python 3.8 is not supported (must be 3.9 or higher)

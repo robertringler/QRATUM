@@ -37,7 +37,7 @@ def discover(json_output: bool):
                 "memory_gb": 40,
                 "compute_capability": "8.0",
                 "utilization_percent": 0,
-                "status": "available"
+                "status": "available",
             },
             {
                 "id": "GPU1",
@@ -45,7 +45,7 @@ def discover(json_output: bool):
                 "memory_gb": 40,
                 "compute_capability": "8.0",
                 "utilization_percent": 0,
-                "status": "available"
+                "status": "available",
             },
             {
                 "id": "CPU0",
@@ -53,12 +53,12 @@ def discover(json_output: bool):
                 "cores": 64,
                 "memory_gb": 512,
                 "utilization_percent": 5,
-                "status": "available"
-            }
+                "status": "available",
+            },
         ],
         "discovered_at": "2025-11-06T10:17:50Z",
         "platform": "linux",
-        "driver_version": "525.105.17"
+        "driver_version": "525.105.17",
     }
 
     if json_output:
@@ -81,7 +81,11 @@ def discover(json_output: bool):
 
 
 @main.command()
-@click.option("--profile", required=True, help="Configuration profile to use (e.g., low-latency, high-throughput)")
+@click.option(
+    "--profile",
+    required=True,
+    help="Configuration profile to use (e.g., low-latency, high-throughput)",
+)
 @click.option("--devices", required=True, help="Comma-separated list of device IDs to reconfigure")
 @click.option("--output", default="plan.json", help="Output file for the reconfiguration plan")
 def plan(profile: str, devices: str, output: str):
@@ -99,20 +103,20 @@ def plan(profile: str, devices: str, output: str):
             "priority": "latency",
             "power_mode": "max_performance",
             "clock_boost": True,
-            "memory_config": "optimized"
+            "memory_config": "optimized",
         },
         "high-throughput": {
             "priority": "throughput",
             "power_mode": "balanced",
             "clock_boost": False,
-            "memory_config": "high_bandwidth"
+            "memory_config": "high_bandwidth",
         },
         "power-efficient": {
             "priority": "efficiency",
             "power_mode": "low_power",
             "clock_boost": False,
-            "memory_config": "conservative"
-        }
+            "memory_config": "conservative",
+        },
     }
 
     if profile not in profiles:
@@ -128,21 +132,23 @@ def plan(profile: str, devices: str, output: str):
         "target_devices": device_list,
         "actions": [],
         "estimated_downtime_seconds": 30,
-        "requires_approval": True
+        "requires_approval": True,
     }
 
     # Generate actions for each device
     for device_id in device_list:
-        plan_data["actions"].append({
-            "device": device_id,
-            "action": "reconfigure",
-            "changes": {
-                "power_mode": profiles[profile]["power_mode"],
-                "clock_boost": profiles[profile]["clock_boost"],
-                "memory_config": profiles[profile]["memory_config"]
-            },
-            "estimated_duration_seconds": 10
-        })
+        plan_data["actions"].append(
+            {
+                "device": device_id,
+                "action": "reconfigure",
+                "changes": {
+                    "power_mode": profiles[profile]["power_mode"],
+                    "clock_boost": profiles[profile]["clock_boost"],
+                    "memory_config": profiles[profile]["memory_config"],
+                },
+                "estimated_duration_seconds": 10,
+            }
+        )
 
     # Save plan to file
     output_path = Path(output)
@@ -159,7 +165,9 @@ def plan(profile: str, devices: str, output: str):
 
 @main.command()
 @click.option("--plan", required=True, help="Path to the reconfiguration plan file")
-@click.option("--enable-actuation", is_flag=True, help="Enable actual hardware changes (not dry-run)")
+@click.option(
+    "--enable-actuation", is_flag=True, help="Enable actual hardware changes (not dry-run)"
+)
 @click.option("--require-approval", help="Approval token for actuation")
 def apply(plan: str, enable_actuation: bool, require_approval: Optional[str]):
     """Apply a reconfiguration plan.
@@ -219,12 +227,16 @@ def apply(plan: str, enable_actuation: bool, require_approval: Optional[str]):
         click.echo(f"\nEstimated downtime: {plan_data['estimated_downtime_seconds']}s")
         click.echo("\n✓ Dry-run validation passed")
         click.echo("\nTo apply changes, use:")
-        click.echo(f"  quasim-hcal apply --plan {plan} --enable-actuation --require-approval <token>")
+        click.echo(
+            f"  quasim-hcal apply --plan {plan} --enable-actuation --require-approval <token>"
+        )
 
 
 @main.command()
 @click.option("--device", required=True, help="Device ID to calibrate")
-@click.option("--routine", required=True, help="Calibration routine to run (e.g., power_sweep, thermal_test)")
+@click.option(
+    "--routine", required=True, help="Calibration routine to run (e.g., power_sweep, thermal_test)"
+)
 @click.option("--max-iters", default=10, type=int, help="Maximum calibration iterations")
 @click.option("--force", is_flag=True, help="Force calibration with unknown routines")
 def calibrate(device: str, routine: str, max_iters: int, force: bool):
@@ -245,18 +257,18 @@ def calibrate(device: str, routine: str, max_iters: int, force: bool):
         "power_sweep": {
             "description": "Power consumption sweep across operating points",
             "typical_iters": 15,
-            "parameters": ["voltage", "frequency", "power_limit"]
+            "parameters": ["voltage", "frequency", "power_limit"],
         },
         "thermal_test": {
             "description": "Thermal stability validation",
             "typical_iters": 10,
-            "parameters": ["temperature", "fan_speed", "throttling"]
+            "parameters": ["temperature", "fan_speed", "throttling"],
         },
         "memory_bandwidth": {
             "description": "Memory bandwidth optimization",
             "typical_iters": 8,
-            "parameters": ["memory_clock", "bandwidth", "latency"]
-        }
+            "parameters": ["memory_clock", "bandwidth", "latency"],
+        },
     }
 
     if routine not in calibration_routines:
@@ -278,7 +290,9 @@ def calibrate(device: str, routine: str, max_iters: int, force: bool):
         click.echo(f"  Iteration {i}/{max_iters}: Convergence {convergence:.1f}%")
 
     click.echo("\n✓ Calibration completed successfully")
-    click.echo(f"Final status: Converged after {min(max_iters, routine_info.get('typical_iters', max_iters))} iterations")
+    click.echo(
+        f"Final status: Converged after {min(max_iters, routine_info.get('typical_iters', max_iters))} iterations"
+    )
 
     # Output calibration results
     results = {
@@ -286,7 +300,7 @@ def calibrate(device: str, routine: str, max_iters: int, force: bool):
         "routine": routine,
         "iterations": min(max_iters, routine_info.get("typical_iters", max_iters)),
         "status": "converged",
-        "timestamp": "2025-11-06T10:17:50Z"
+        "timestamp": "2025-11-06T10:17:50Z",
     }
 
     click.echo("\nCalibration results:")
