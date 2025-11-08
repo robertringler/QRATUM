@@ -23,9 +23,7 @@ def check_file_exists(path, description):
 def run_command(cmd, description):
     """Run a command and report status"""
     try:
-        result = subprocess.run(
-            cmd, shell=True, capture_output=True, text=True, timeout=60
-        )
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=60)
         if result.returncode == 0:
             print(f"✅ {description}")
             return True
@@ -52,52 +50,30 @@ def main():
 
     # File existence checks
     print("## File Existence Checks")
+    checks.append(check_file_exists("quasim_master_all.py", "Main source file"))
+    checks.append(check_file_exists("QUASIM_MASTER_SUMMARY.md", "Summary document"))
     checks.append(
-        check_file_exists("quasim_master_all.py", "Main source file")
+        check_file_exists(".github/workflows/quasim-master-build.yml", "Main CI workflow")
     )
-    checks.append(
-        check_file_exists("QUASIM_MASTER_SUMMARY.md", "Summary document")
-    )
-    checks.append(
-        check_file_exists(
-            ".github/workflows/quasim-master-build.yml", "Main CI workflow"
-        )
-    )
-    checks.append(
-        check_file_exists(".github/workflows/cuda-build.yml", "CUDA CI workflow")
-    )
+    checks.append(check_file_exists(".github/workflows/cuda-build.yml", "CUDA CI workflow"))
     checks.append(check_file_exists("QuASIM/CMakeLists.txt", "CMake config"))
     checks.append(check_file_exists("QuASIM/demo.cpp", "Demo application"))
-    checks.append(
-        check_file_exists("QuASIM/src/quasim_tensor_solve.cpp", "Core solver")
-    )
-    checks.append(
-        check_file_exists("QuASIM/include/quasim_core.h", "Core header")
-    )
-    checks.append(
-        check_file_exists("QuASIM/Dockerfile.cuda", "CUDA Dockerfile")
-    )
-    checks.append(
-        check_file_exists("QuASIM/onera/benchmarks.csv", "Benchmark data")
-    )
+    checks.append(check_file_exists("QuASIM/src/quasim_tensor_solve.cpp", "Core solver"))
+    checks.append(check_file_exists("QuASIM/include/quasim_core.h", "Core header"))
+    checks.append(check_file_exists("QuASIM/Dockerfile.cuda", "CUDA Dockerfile"))
+    checks.append(check_file_exists("QuASIM/onera/benchmarks.csv", "Benchmark data"))
     print()
 
     # Functional checks
     print("## Functional Checks")
-    checks.append(
-        run_command("python3 quasim_master_all.py", "Self-test execution")
-    )
+    checks.append(run_command("python3 quasim_master_all.py", "Self-test execution"))
     checks.append(
         run_command(
             "python3 quasim_master_all.py --emit /tmp/quasim_val_test",
             "Scaffold emission",
         )
     )
-    checks.append(
-        run_command(
-            "python3 -m py_compile quasim_master_all.py", "Python syntax check"
-        )
-    )
+    checks.append(run_command("python3 -m py_compile quasim_master_all.py", "Python syntax check"))
     print()
 
     # Summary

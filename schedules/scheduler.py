@@ -1,4 +1,5 @@
 """Differentiable scheduling with gradient-based optimization."""
+
 from __future__ import annotations
 
 import json
@@ -117,13 +118,12 @@ class DifferentiableScheduler:
 
         return energy_loss
 
-    def compute_gradients(
-        self, params: ScheduleParams, epsilon: float = 1e-5
-    ) -> Dict[str, float]:
+    def compute_gradients(self, params: ScheduleParams, epsilon: float = 1e-5) -> Dict[str, float]:
         """
         Compute numerical gradients for all parameters.
         Uses finite differences.
         """
+
         # Combined loss (weighted sum of latency and energy)
         def loss_fn(p: ScheduleParams) -> float:
             return self.compute_latency_loss(p) + 0.5 * self.compute_energy_loss(p)
@@ -149,9 +149,7 @@ class DifferentiableScheduler:
         # Compute gradient for memory_coalesce_factor
         params_copy = ScheduleParams(**params.to_dict())
         params_copy.memory_coalesce_factor += epsilon
-        gradients["memory_coalesce_factor"] = (
-            loss_fn(params_copy) - base_loss
-        ) / epsilon
+        gradients["memory_coalesce_factor"] = (loss_fn(params_copy) - base_loss) / epsilon
 
         # Compute gradient for prefetch_distance
         params_copy = ScheduleParams(**params.to_dict())

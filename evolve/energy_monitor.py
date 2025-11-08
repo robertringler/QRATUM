@@ -1,4 +1,5 @@
 """Energy-adaptive regulation with thermal control."""
+
 from __future__ import annotations
 
 import json
@@ -133,9 +134,7 @@ class EnergyMonitor:
         # Take minimum (most restrictive)
         return min(temp_factor, power_factor)
 
-    def apply_feedback_control(
-        self, telemetry: ThermalTelemetry
-    ) -> Dict[str, float]:
+    def apply_feedback_control(self, telemetry: ThermalTelemetry) -> Dict[str, float]:
         """
         Apply feedback control algorithm.
         Returns control parameters for throttling/migration.

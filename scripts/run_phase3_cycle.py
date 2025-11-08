@@ -54,7 +54,7 @@ def run_evolution_cycle(
 ):
     """
     Run a complete Phase III evolution cycle.
-    
+
     Integrates:
     - RL-based kernel evolution
     - Precision management with fallback
@@ -171,9 +171,11 @@ def run_evolution_cycle(
         if controller.best_genome:
             best_fitness_history.append(controller.best_genome.fitness)
             print(f"Best fitness: {controller.best_genome.fitness:.4f}")
-            print(f"Best config: tile={controller.best_genome.tile_size}, "
-                  f"warp={controller.best_genome.warp_count}, "
-                  f"precision={controller.best_genome.precision}")
+            print(
+                f"Best config: tile={controller.best_genome.tile_size}, "
+                f"warp={controller.best_genome.warp_count}, "
+                f"precision={controller.best_genome.precision}"
+            )
 
     # Final optimization using quantum search
     print("\n--- Quantum-Inspired Final Optimization ---")
@@ -185,15 +187,15 @@ def run_evolution_cycle(
     # Optimize schedule for best genome
     print("\n--- Differentiable Schedule Optimization ---")
     schedule_metadata = scheduler.optimize_schedule("best_kernel", steps=100)
-    print(f"Optimized schedule: latency={schedule_metadata.latency_ms:.2f}ms, "
-          f"energy={schedule_metadata.energy_j:.2f}J")
+    print(
+        f"Optimized schedule: latency={schedule_metadata.latency_ms:.2f}ms, "
+        f"energy={schedule_metadata.energy_j:.2f}J"
+    )
 
     # Verify best kernel
     print("\n--- Formal Verification ---")
     if controller.best_genome:
-        cert = verifier.verify_kernel(
-            "best_kernel", precision=controller.best_genome.precision
-        )
+        cert = verifier.verify_kernel("best_kernel", precision=controller.best_genome.precision)
         print(f"Verification: {'✓ VERIFIED' if cert.verified else '✗ FAILED'}")
         print(f"Max error bound: {cert.max_error_bound:.1e}")
 
@@ -263,9 +265,7 @@ def main():
     """Main entry point."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Run Phase III autonomous evolution cycle"
-    )
+    parser = argparse.ArgumentParser(description="Run Phase III autonomous evolution cycle")
     parser.add_argument(
         "--generations",
         type=int,

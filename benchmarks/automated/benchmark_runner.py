@@ -19,7 +19,7 @@ import numpy as np
 @dataclass
 class BenchmarkResult:
     """Container for benchmark results.
-    
+
     Attributes:
         name: Benchmark name
         backend: Backend used ('cuda', 'hip', 'cpu')
@@ -58,7 +58,7 @@ class BenchmarkResult:
 
 class BenchmarkRunner:
     """Automated benchmark runner for QuASIM.
-    
+
     Runs comprehensive performance benchmarks across:
     - Quantum circuit simulation (various qubit counts)
     - Digital twin forward simulation
@@ -69,7 +69,7 @@ class BenchmarkRunner:
 
     def __init__(self, backend: str = "cpu", output_dir: Path | None = None):
         """Initialize benchmark runner.
-        
+
         Args:
             backend: Computation backend ('cuda', 'hip', 'cpu')
             output_dir: Directory to save results
@@ -81,7 +81,7 @@ class BenchmarkRunner:
 
     def run_all(self) -> list[BenchmarkResult]:
         """Run all benchmarks.
-        
+
         Returns:
             List of benchmark results
         """
@@ -121,7 +121,7 @@ class BenchmarkRunner:
             try:
                 # Simulate quantum circuit
                 # In production, would use actual QuASIM QC module
-                state_size = 2 ** num_qubits
+                state_size = 2**num_qubits
                 state_vector = np.zeros(state_size, dtype=np.complex128)
                 state_vector[0] = 1.0
 
@@ -138,7 +138,7 @@ class BenchmarkRunner:
                     duration_ms=duration_ms,
                     throughput=num_qubits / (duration_ms / 1000),
                     memory_usage_mb=state_vector.nbytes / (1024 * 1024),
-                    metadata={"num_qubits": num_qubits, "state_size": state_size}
+                    metadata={"num_qubits": num_qubits, "state_size": state_size},
                 )
 
                 self.results.append(result)
@@ -150,7 +150,7 @@ class BenchmarkRunner:
                     backend=self.backend,
                     duration_ms=0.0,
                     success=False,
-                    error=str(e)
+                    error=str(e),
                 )
                 self.results.append(result)
                 print(f"    Failed: {e}")
@@ -187,7 +187,7 @@ class BenchmarkRunner:
                     backend=self.backend,
                     duration_ms=duration_ms,
                     throughput=time_steps / (duration_ms / 1000),
-                    metadata=config
+                    metadata=config,
                 )
 
                 self.results.append(result)
@@ -199,7 +199,7 @@ class BenchmarkRunner:
                     backend=self.backend,
                     duration_ms=0.0,
                     success=False,
-                    error=str(e)
+                    error=str(e),
                 )
                 self.results.append(result)
                 print(f"    Failed: {e}")
@@ -231,7 +231,7 @@ class BenchmarkRunner:
                         name=f"opt_{algorithm}_{dim}d",
                         backend=self.backend,
                         duration_ms=duration_ms,
-                        metadata={"algorithm": algorithm, "dimension": dim}
+                        metadata={"algorithm": algorithm, "dimension": dim},
                     )
 
                     self.results.append(result)
@@ -243,7 +243,7 @@ class BenchmarkRunner:
                         backend=self.backend,
                         duration_ms=0.0,
                         success=False,
-                        error=str(e)
+                        error=str(e),
                     )
                     self.results.append(result)
                     print(f"    Failed: {e}")
@@ -268,7 +268,7 @@ class BenchmarkRunner:
                 end_time = time.perf_counter()
                 duration_ms = (end_time - start_time) * 1000
 
-                flops = 2 * size ** 3  # Matrix multiplication FLOPs
+                flops = 2 * size**3  # Matrix multiplication FLOPs
                 gflops = flops / (duration_ms / 1000) / 1e9
 
                 result = BenchmarkResult(
@@ -276,7 +276,7 @@ class BenchmarkRunner:
                     backend=self.backend,
                     duration_ms=duration_ms,
                     throughput=gflops,
-                    metadata={"matrix_size": size, "gflops": gflops}
+                    metadata={"matrix_size": size, "gflops": gflops},
                 )
 
                 self.results.append(result)
@@ -288,7 +288,7 @@ class BenchmarkRunner:
                     backend=self.backend,
                     duration_ms=0.0,
                     success=False,
-                    error=str(e)
+                    error=str(e),
                 )
                 self.results.append(result)
                 print(f"    Failed: {e}")
@@ -323,11 +323,13 @@ class BenchmarkRunner:
                     "p50": np.median(latencies),
                     "p95": p95_latency,
                     "p99": p99_latency,
-                }
+                },
             )
 
             self.results.append(result)
-            print(f"    Avg: {avg_latency:.2f}ms, P95: {p95_latency:.2f}ms, P99: {p99_latency:.2f}ms")
+            print(
+                f"    Avg: {avg_latency:.2f}ms, P95: {p95_latency:.2f}ms, P99: {p99_latency:.2f}ms"
+            )
 
     def save_results(self) -> None:
         """Save benchmark results to file."""
@@ -348,7 +350,7 @@ class BenchmarkRunner:
 
     def get_summary(self) -> dict[str, Any]:
         """Get summary statistics.
-        
+
         Returns:
             Summary dictionary
         """
@@ -369,8 +371,9 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="QuASIM Benchmark Runner")
-    parser.add_argument("--backend", choices=["cuda", "hip", "cpu"], default="cpu",
-                       help="Backend to benchmark")
+    parser.add_argument(
+        "--backend", choices=["cuda", "hip", "cpu"], default="cpu", help="Backend to benchmark"
+    )
     parser.add_argument("--output-dir", type=Path, help="Output directory for results")
 
     args = parser.parse_args()

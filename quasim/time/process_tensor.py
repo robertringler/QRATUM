@@ -21,11 +21,11 @@ def two_time_correlation(
     time_2: float,
 ) -> complex:
     """Compute two-time correlation function ⟨A(t₁)B(t₂)⟩.
-    
+
     Correlation function:
         C(t₁,t₂) = ⟨ψ|A(t₁)B(t₂)|ψ⟩
                  = ⟨ψ|e^{iHt₁} A e^{-iHt₁} e^{iHt₂} B e^{-iHt₂}|ψ⟩
-    
+
     Args:
         state: Initial quantum state |ψ⟩
         observable_A: First observable operator A
@@ -33,10 +33,10 @@ def two_time_correlation(
         hamiltonian: System Hamiltonian H
         time_1: First measurement time t₁
         time_2: Second measurement time t₂
-        
+
     Returns:
         Complex correlation value C(t₁,t₂)
-        
+
     Example:
         >>> psi = np.array([1, 0], dtype=complex)
         >>> sigma_x = np.array([[0, 1], [1, 0]], dtype=complex)
@@ -64,24 +64,24 @@ def process_tensor_choi(
     n_steps: int,
 ) -> Array:
     """Construct Choi matrix representation of temporal evolution.
-    
+
     Choi matrix Λ maps initial to final states through dynamical map:
         ρ(t) = Tr_A[Λ (ρ(0) ⊗ I)]
-    
+
     For unitary evolution: Λ = |U⟩⟩⟨⟨U|
-    
+
     Args:
         hamiltonian: System Hamiltonian
         dt: Time step
         n_steps: Number of time steps
-        
+
     Returns:
         Choi matrix in vectorized form
-        
+
     Example:
         >>> H = np.array([[0, 1], [1, 0]], dtype=complex)
         >>> Λ = process_tensor_choi(H, 0.1, 10)
-        
+
     Reference:
         Pollock et al. (2018), "Non-Markovian quantum processes"
     """
@@ -108,21 +108,21 @@ def temporal_bell_inequality(
     times: NDArray[np.float64],
 ) -> float:
     """Compute temporal Bell-CHSH parameter for time-separated measurements.
-    
+
     Leggett-Garg inequality for temporal correlations:
         K = |C(t₁,t₂) + C(t₂,t₃) + C(t₃,t₄) - C(t₁,t₄)| ≤ 2 (classical)
-    
+
     Quantum systems can violate: K > 2
-    
+
     Args:
         state: Initial quantum state
         measurements: List of measurement operators [A, B, C, D]
         hamiltonian: System Hamiltonian
         times: Measurement times [t₁, t₂, t₃, t₄]
-        
+
     Returns:
         CHSH parameter K
-        
+
     Example:
         >>> psi = np.array([1, 0], dtype=complex)
         >>> sigma_x = np.array([[0, 1], [1, 0]], dtype=complex)
@@ -130,7 +130,7 @@ def temporal_bell_inequality(
         >>> H = np.array([[1, 0], [0, -1]], dtype=complex)
         >>> times = np.array([0, 0.5, 1.0, 1.5])
         >>> K = temporal_bell_inequality(psi, measurements, H, times)
-        
+
     Reference:
         Leggett & Garg (1985), "Quantum mechanics versus macroscopic realism"
     """
@@ -157,17 +157,17 @@ def memory_kernel(
     times: NDArray[np.float64],
 ) -> NDArray[np.float64]:
     """Extract memory kernel from two-time correlation function.
-    
+
     Memory kernel K(t,t') characterizes non-Markovian dynamics:
         ∂ρ(t)/∂t = ∫₀ᵗ K(t,t') ρ(t') dt'
-    
+
     Args:
         correlation_function: C(t,t') correlation matrix
         times: Time points
-        
+
     Returns:
         Memory kernel K(t)
-        
+
     Example:
         >>> times = np.linspace(0, 10, 100)
         >>> C = np.exp(-0.1 * np.abs(times[:, None] - times[None, :]))
@@ -191,16 +191,16 @@ def quantum_coherence_measure(
     density_matrix: Array,
 ) -> float:
     """Compute quantum coherence from off-diagonal density matrix elements.
-    
+
     Coherence measure:
         C(ρ) = Σ_{i≠j} |ρ_ij|²
-    
+
     Args:
         density_matrix: Density matrix ρ
-        
+
     Returns:
         Coherence measure C(ρ) ≥ 0
-        
+
     Example:
         >>> rho = np.array([[0.5, 0.4], [0.4, 0.5]], dtype=complex)
         >>> C = quantum_coherence_measure(rho)

@@ -64,9 +64,7 @@ class DeviceLimits:
         elif parameter == "freq_mhz" and self.freq_mhz_range is not None:
             min_f, max_f = self.freq_mhz_range
             if value < min_f or value > max_f:
-                raise PolicyViolation(
-                    f"Frequency {value}MHz outside range [{min_f}, {max_f}]MHz"
-                )
+                raise PolicyViolation(f"Frequency {value}MHz outside range [{min_f}, {max_f}]MHz")
 
 
 @dataclass

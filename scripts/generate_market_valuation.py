@@ -13,7 +13,7 @@ from datetime import datetime
 def generate_market_valuation_section() -> str:
     """
     Generate a complete Market Valuation section for QuASIM.
-    
+
     Returns:
         str: Formatted markdown content for the market valuation section
     """
@@ -414,7 +414,7 @@ def main():
     marker = "## Market Valuation — QuASIM"
 
     if os.path.exists(output_file):
-        with open(output_file, encoding='utf-8') as f:
+        with open(output_file, encoding="utf-8") as f:
             existing_content = f.read()
         print(f"Existing file found ({len(existing_content)} characters)")
 
@@ -434,7 +434,7 @@ def main():
     # Write the combined content
     final_content = existing_content + valuation_content
 
-    with open(output_file, 'w', encoding='utf-8') as f:
+    with open(output_file, "w", encoding="utf-8") as f:
         f.write(final_content)
 
     print("✓ Market valuation section written successfully")

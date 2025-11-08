@@ -18,18 +18,18 @@ def bulk_boundary_hamiltonian(
     coupling_strength: float,
 ) -> Array:
     """Construct composite Hamiltonian with bulk-boundary coupling.
-    
+
     Composes bulk and boundary Hamiltonians with interaction term:
         H_total = H_bulk ⊗ I_boundary + I_bulk ⊗ H_boundary + λ H_coupling
-    
+
     Args:
         bulk_H: Bulk Hamiltonian matrix (n_bulk × n_bulk)
         boundary_H: Boundary Hamiltonian matrix (n_boundary × n_boundary)
         coupling_strength: Coupling parameter λ
-        
+
     Returns:
         Total Hamiltonian of shape (n_bulk*n_boundary × n_bulk*n_boundary)
-        
+
     Example:
         >>> bulk = np.array([[0, 1], [1, 0]])
         >>> boundary = np.array([[1, 0], [0, -1]])
@@ -43,10 +43,7 @@ def bulk_boundary_hamiltonian(
     I_boundary = np.eye(n_boundary, dtype=complex)
 
     # Construct tensor product terms
-    H_total = (
-        np.kron(bulk_H, I_boundary)
-        + np.kron(I_bulk, boundary_H)
-    )
+    H_total = np.kron(bulk_H, I_boundary) + np.kron(I_bulk, boundary_H)
 
     # Add coupling term (simplified as local interaction)
     if coupling_strength != 0:
@@ -68,31 +65,28 @@ def evolve_open_boundary(
     dissipation_rate: float = 0.0,
 ) -> Array:
     """Evolve state with open boundary conditions.
-    
+
     Implements Lindblad-type evolution for open quantum systems:
         dρ/dt = -i[H,ρ] + Σ_k (L_k ρ L_k† - 1/2{L_k†L_k, ρ})
-    
+
     Simplified to state vector evolution with dissipation.
-    
+
     Args:
         initial_state: Initial state vector
         hamiltonian: System Hamiltonian
         dt: Time step
         dissipation_rate: Dissipation coefficient γ ≥ 0
-        
+
     Returns:
         Evolved state vector (renormalized)
-        
+
     Example:
         >>> psi0 = np.array([1.0, 0.0], dtype=complex)
         >>> H = np.array([[0, 1], [1, 0]], dtype=complex)
         >>> psi_final = evolve_open_boundary(psi0, H, 0.01, 0.1)
     """
     # Unitary evolution
-    U = np.linalg.matrix_power(
-        np.eye(len(hamiltonian)) - 1j * hamiltonian * dt,
-        1
-    )
+    U = np.linalg.matrix_power(np.eye(len(hamiltonian)) - 1j * hamiltonian * dt, 1)
     state = U @ initial_state
 
     # Apply dissipation (simplified decay)
@@ -113,18 +107,18 @@ def check_probability_conservation(
     tolerance: float = 1e-10,
 ) -> tuple[bool, float]:
     """Verify probability conservation for evolved state.
-    
+
     Checks that ⟨ψ|ψ⟩ = 1 within tolerance.
-    
+
     Args:
         evolved_state: State vector after evolution
         tolerance: Maximum allowed deviation from unity
-        
+
     Returns:
         Tuple of (is_conserved, deviation):
             - is_conserved: True if |⟨ψ|ψ⟩ - 1| < tolerance
             - deviation: Actual deviation from unity
-            
+
     Example:
         >>> state = np.array([1/np.sqrt(2), 1/np.sqrt(2)], dtype=complex)
         >>> is_ok, dev = check_probability_conservation(state)
@@ -143,17 +137,17 @@ def boundary_projection(
     n_boundary: int,
 ) -> Array:
     """Project bulk+boundary state onto boundary degrees of freedom.
-    
+
     Extracts boundary subsystem by tracing out bulk degrees of freedom.
-    
+
     Args:
         bulk_state: Composite state vector of shape (n_bulk * n_boundary,)
         n_bulk: Dimension of bulk subsystem
         n_boundary: Dimension of boundary subsystem
-        
+
     Returns:
         Boundary state (reduced density matrix diagonal or state vector)
-        
+
     Example:
         >>> state = np.array([1, 0, 0, 0], dtype=complex)  # Product state
         >>> boundary = boundary_projection(state, 2, 2)

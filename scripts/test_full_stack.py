@@ -34,7 +34,7 @@ def validate_yaml_files() -> bool:
                 header = f.read(1024)
 
             # Skip Helm templates (contain Jinja2-like syntax)
-            if '{{' in header or '{%' in header:
+            if "{{" in header or "{%" in header:
                 skipped += 1
                 continue
 

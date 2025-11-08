@@ -18,22 +18,22 @@ def fractional_laplacian_fft(
     dx: float,
 ) -> Array:
     """Compute fractional Laplacian (-∇²)^α via FFT spectral method.
-    
+
     Fractional Laplacian in Fourier space:
         ℱ[(-∇²)^α ψ] = |k|^(2α) ℱ[ψ]
-    
+
     Args:
         wavefunction: Spatial wavefunction ψ(x)
         alpha: Fractional exponent (0.5 = half-derivative, 1.0 = Laplacian)
         dx: Spatial grid spacing
-        
+
     Returns:
         (-∇²)^α ψ in position space
-        
+
     Example:
         >>> psi = np.sin(2*np.pi*np.arange(64)/64) + 0j
         >>> laplacian_frac = fractional_laplacian_fft(psi, 0.5, 0.1)
-        
+
     Reference:
         Laskin (2000), "Fractional quantum mechanics"
     """
@@ -62,20 +62,20 @@ def fractional_schrodinger_step(
     dt: float,
 ) -> Array:
     """Evolve wavefunction using fractional Schrödinger equation.
-    
+
     Fractional Schrödinger equation:
         iℏ ∂ψ/∂t = (-∇²)^α ψ + V ψ
-    
+
     Args:
         wavefunction: Current wavefunction ψ
         alpha: Fractional order
         potential: Potential energy V(x)
         dx: Spatial grid spacing
         dt: Time step
-        
+
     Returns:
         Updated wavefunction after time dt
-        
+
     Example:
         >>> psi = np.ones(64, dtype=complex) / 8
         >>> V = np.zeros(64)
@@ -106,26 +106,26 @@ def anomalous_diffusion_propagator(
     diffusion_coeff: float = 1.0,
 ) -> NDArray[np.float64]:
     """Compute propagator for fractional diffusion equation.
-    
+
     Fractional diffusion:
         ∂ρ/∂t = D_α (-∇²)^α ρ
-    
+
     Solution (Green's function):
         G(x,t) ∝ t^(-d/2α) exp(-|x|^β / (D_α t)^(1/α))
-    
+
     Args:
         x: Spatial positions
         t: Time
         alpha: Fractional exponent
         diffusion_coeff: Diffusion coefficient D_α
-        
+
     Returns:
         Propagator G(x,t)
-        
+
     Example:
         >>> x = np.linspace(-10, 10, 200)
         >>> G = anomalous_diffusion_propagator(x, 1.0, 0.75, 1.0)
-        
+
     Reference:
         Metzler & Klafter (2000), "The random walk's guide to anomalous diffusion"
     """
@@ -157,21 +157,21 @@ def measure_diffusion_exponent(
     times: NDArray[np.float64],
 ) -> tuple[float, float]:
     """Extract anomalous diffusion exponent from mean-square displacement.
-    
+
     Mean-square displacement:
         ⟨x²(t)⟩ ∝ t^β
-    
+
     where β = 1 (normal), β < 1 (subdiffusion), β > 1 (superdiffusion).
-    
+
     Args:
         positions: Trajectory positions x(t)
         times: Time points
-        
+
     Returns:
         Tuple of (exponent_beta, diffusion_coefficient):
             - exponent_beta: Fitted exponent β
             - diffusion_coefficient: Generalized diffusion constant
-            
+
     Example:
         >>> t = np.linspace(0, 10, 100)[1:]  # Exclude t=0
         >>> x = np.sqrt(t) + 0.1*np.random.randn(len(t))  # β ≈ 0.5
@@ -205,18 +205,18 @@ def levy_flight_step(
     scale: float = 1.0,
 ) -> float:
     """Generate single step of Lévy flight for anomalous transport.
-    
+
     Lévy distribution with power-law tails:
         P(Δx) ∝ |Δx|^(-(1+α))
-    
+
     Args:
         current_position: Current position x
         alpha: Lévy exponent (0 < α ≤ 2)
         scale: Scale parameter
-        
+
     Returns:
         New position after Lévy flight
-        
+
     Example:
         >>> x = 0.0
         >>> x_new = levy_flight_step(x, 1.5, 1.0)
@@ -250,19 +250,19 @@ def fractal_dimension_capacity(
     box_sizes: NDArray[np.float64],
 ) -> float:
     """Compute capacity (box-counting) fractal dimension.
-    
+
     Fractal dimension:
         D = -lim_{ε→0} log(N(ε)) / log(ε)
-    
+
     where N(ε) is number of boxes of size ε needed to cover the set.
-    
+
     Args:
         positions: Set of points in 1D
         box_sizes: Range of box sizes to test
-        
+
     Returns:
         Fractal dimension D
-        
+
     Example:
         >>> x = np.random.randn(1000)  # Random 1D points
         >>> sizes = np.logspace(-2, 0, 10)

@@ -22,14 +22,17 @@ def create_sample_files():
 
     # Sample mesh (mock)
     mesh_path = Path("mesh.msh")
-    mesh_path.write_text("""# Fluent Mesh File
+    mesh_path.write_text(
+        """# Fluent Mesh File
 # Mock wing mesh - 32x32x16 cells
 # In production, export from Fluent
-""")
+"""
+    )
 
     # Boundary conditions
     bc_path = Path("boundary_conditions.yaml")
-    bc_path.write_text("""inlet:
+    bc_path.write_text(
+        """inlet:
   type: velocity-inlet
   velocity: [10.0, 0.0, 0.0]  # m/s
   temperature: 300.0  # K
@@ -41,19 +44,25 @@ outlet:
 walls:
   type: wall
   condition: no-slip
-""")
+"""
+    )
 
     # Job configuration
     job_config_path = Path("job_config.json")
-    job_config_path.write_text(json.dumps({
-        "solver": "pressure_poisson",
-        "max_iterations": 1000,
-        "convergence_tolerance": 1e-6,
-        "precision": "fp32",
-        "backend": "cpu",
-        "deterministic": True,
-        "seed": 42
-    }, indent=2))
+    job_config_path.write_text(
+        json.dumps(
+            {
+                "solver": "pressure_poisson",
+                "max_iterations": 1000,
+                "convergence_tolerance": 1e-6,
+                "precision": "fp32",
+                "backend": "cpu",
+                "deterministic": True,
+                "seed": 42,
+            },
+            indent=2,
+        )
+    )
 
     print("✅ Sample files created")
     return mesh_path, bc_path, job_config_path
@@ -69,11 +78,16 @@ def run_quasim_adapter(mesh_path, bc_path, job_config_path):
     cmd = [
         "python3",
         str(adapter_script),
-        "--mesh", str(mesh_path),
-        "--bc", str(bc_path),
-        "--job", str(job_config_path),
-        "--output", str(output_path),
-        "--format", "csv"
+        "--mesh",
+        str(mesh_path),
+        "--bc",
+        str(bc_path),
+        "--job",
+        str(job_config_path),
+        "--output",
+        str(output_path),
+        "--format",
+        "csv",
     ]
 
     result = subprocess.run(cmd, capture_output=True, text=True)
@@ -98,7 +112,7 @@ def analyze_results(output_path):
     content = output_path.read_text()
     print(f"\nResults file content:\n{'-'*60}")
     print(content)
-    print('-'*60)
+    print("-" * 60)
 
     print("\n✅ Results analysis complete")
 
@@ -155,6 +169,7 @@ def main():
     except Exception as e:
         print(f"\n❌ Error: {e}")
         import traceback
+
         traceback.print_exc()
         return 1
 

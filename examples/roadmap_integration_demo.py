@@ -120,9 +120,11 @@ def demo_nasa_telemetry():
     print("\n✓ Telemetry parsed successfully")
     print(f"  Vehicle: {telemetry.vehicle_system}")
     print(f"  MET: {telemetry.met:.1f}s")
-    print(f"  Position: [{telemetry.state_vector[0]/1000:.0f}, "
-          f"{telemetry.state_vector[1]/1000:.0f}, "
-          f"{telemetry.state_vector[2]/1000:.0f}] km")
+    print(
+        f"  Position: [{telemetry.state_vector[0]/1000:.0f}, "
+        f"{telemetry.state_vector[1]/1000:.0f}, "
+        f"{telemetry.state_vector[2]/1000:.0f}] km"
+    )
     print(f"  GNC Mode: {telemetry.gnc_mode}")
     print(f"  Validation: {'✓ Valid' if is_valid else '✗ Invalid'}")
 
@@ -165,9 +167,11 @@ def demo_montecarlo_validation():
         print("\nSample Trajectories:")
         for traj in data["trajectories"][:3]:
             status = "✓" if traj["converged"] else "✗"
-            print(f"  {status} Trajectory {traj['trajectory_id']:04d}: "
-                  f"fidelity={traj['fidelity']:.4f}, "
-                  f"deviation={traj['nominal_deviation_pct']:+.2f}%")
+            print(
+                f"  {status} Trajectory {traj['trajectory_id']:04d}: "
+                f"fidelity={traj['fidelity']:.4f}, "
+                f"deviation={traj['nominal_deviation_pct']:+.2f}%"
+            )
 
     except FileNotFoundError:
         print("✗ Monte-Carlo results not found. Run generate_quasim_jsons.py first.")

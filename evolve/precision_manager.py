@@ -1,4 +1,5 @@
 """Hierarchical hybrid precision management system."""
+
 from __future__ import annotations
 
 import json
@@ -141,8 +142,10 @@ class PrecisionManager:
 
     def _apply_fallback(self, precision_map: PrecisionMap) -> None:
         """Apply fallback to higher precision."""
-        print(f"Warning: Accumulated error {precision_map.accumulated_error:.2e} "
-              f"exceeds budget {precision_map.global_error_budget:.2e}")
+        print(
+            f"Warning: Accumulated error {precision_map.accumulated_error:.2e} "
+            f"exceeds budget {precision_map.global_error_budget:.2e}"
+        )
         print(f"Applying fallback to {precision_map.fallback_precision.value}")
 
         # Upgrade all zones to fallback precision

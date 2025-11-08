@@ -5,6 +5,7 @@ import random as py_random
 try:
     import jax.numpy as jnp
     from jax import random as jax_random
+
     JAX_AVAILABLE = True
 except (ImportError, AttributeError, RuntimeError):
     JAX_AVAILABLE = False

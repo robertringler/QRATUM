@@ -26,8 +26,7 @@ except ImportError:
     yaml = None  # type: ignore
 
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -37,7 +36,7 @@ class FluentMesh:
 
     def __init__(self, mesh_path: Path):
         """Initialize mesh from Fluent export file.
-        
+
         Args:
             mesh_path: Path to Fluent mesh file (.msh)
         """
@@ -48,7 +47,7 @@ class FluentMesh:
 
     def load(self) -> bool:
         """Load mesh from file.
-        
+
         Returns:
             True if successful, False otherwise
         """
@@ -64,7 +63,7 @@ class FluentMesh:
 
     def to_quasim_tensor(self) -> dict[str, Any]:
         """Convert mesh to QuASIM tensor format.
-        
+
         Returns:
             Dictionary with tensor representation
         """
@@ -81,7 +80,7 @@ class BoundaryConditions:
 
     def __init__(self, bc_path: Path | None = None):
         """Initialize boundary conditions.
-        
+
         Args:
             bc_path: Optional path to YAML boundary condition file
         """
@@ -90,7 +89,7 @@ class BoundaryConditions:
 
     def load(self) -> bool:
         """Load boundary conditions from YAML.
-        
+
         Returns:
             True if successful, False otherwise
         """
@@ -115,7 +114,7 @@ class BoundaryConditions:
 
     def to_quasim_format(self) -> dict[str, Any]:
         """Convert to QuASIM format.
-        
+
         Returns:
             Dictionary with QuASIM-compatible BC representation
         """
@@ -130,7 +129,7 @@ class QuASIMJob:
 
     def __init__(self, job_path: Path):
         """Initialize job from JSON config.
-        
+
         Args:
             job_path: Path to JSON job configuration
         """
@@ -139,7 +138,7 @@ class QuASIMJob:
 
     def load(self) -> bool:
         """Load job configuration.
-        
+
         Returns:
             True if successful, False otherwise
         """
@@ -167,7 +166,7 @@ class QuASIMKernel:
 
     def __init__(self, config: dict[str, Any]):
         """Initialize kernel with configuration.
-        
+
         Args:
             config: Job configuration
         """
@@ -178,11 +177,11 @@ class QuASIMKernel:
 
     def run(self, mesh: FluentMesh, bc: BoundaryConditions) -> dict[str, Any]:
         """Run QuASIM CFD kernel.
-        
+
         Args:
             mesh: Fluent mesh
             bc: Boundary conditions
-        
+
         Returns:
             Dictionary with simulation results
         """
@@ -203,12 +202,11 @@ class QuASIMKernel:
                 "wall_time_s": 1.234,
                 "throughput_cells_per_s": 1e6,
                 "energy_kwh": 0.001,
-            }
+            },
         }
 
         logger.info(f"Simulation completed: {results['status']}")
-        logger.info(f"Iterations: {results['iterations']}, "
-                   f"Residual: {results['residual']:.2e}")
+        logger.info(f"Iterations: {results['iterations']}, " f"Residual: {results['residual']:.2e}")
 
         return results
 
@@ -219,11 +217,11 @@ class ResultWriter:
     @staticmethod
     def write_csv(results: dict[str, Any], output_path: Path) -> bool:
         """Write results to CSV format.
-        
+
         Args:
             results: Simulation results
             output_path: Output file path
-        
+
         Returns:
             True if successful
         """
@@ -240,11 +238,11 @@ class ResultWriter:
     @staticmethod
     def write_hdf5(results: dict[str, Any], output_path: Path) -> bool:
         """Write results to HDF5 format.
-        
+
         Args:
             results: Simulation results
             output_path: Output file path
-        
+
         Returns:
             True if successful
         """
@@ -256,11 +254,11 @@ class ResultWriter:
     @staticmethod
     def write_vtk(results: dict[str, Any], output_path: Path) -> bool:
         """Write results to VTK format.
-        
+
         Args:
             results: Simulation results
             output_path: Output file path
-        
+
         Returns:
             True if successful
         """
@@ -272,46 +270,28 @@ class ResultWriter:
 
 def main() -> int:
     """Main entry point for Fluent driver.
-    
+
     Returns:
         Exit code (0 for success, non-zero for failure)
     """
     parser = argparse.ArgumentParser(
         description="QuASIM Fluent Driver - CFD adapter for Ansys Fluent"
     )
-    parser.add_argument(
-        "--case",
-        type=Path,
-        help="Fluent case file (.cas.h5)"
-    )
-    parser.add_argument(
-        "--mesh",
-        type=Path,
-        required=True,
-        help="Fluent mesh file (.msh)"
-    )
-    parser.add_argument(
-        "--bc",
-        type=Path,
-        help="Boundary conditions (YAML)"
-    )
-    parser.add_argument(
-        "--job",
-        type=Path,
-        required=True,
-        help="QuASIM job configuration (JSON)"
-    )
+    parser.add_argument("--case", type=Path, help="Fluent case file (.cas.h5)")
+    parser.add_argument("--mesh", type=Path, required=True, help="Fluent mesh file (.msh)")
+    parser.add_argument("--bc", type=Path, help="Boundary conditions (YAML)")
+    parser.add_argument("--job", type=Path, required=True, help="QuASIM job configuration (JSON)")
     parser.add_argument(
         "--output",
         type=Path,
         default=Path("quasim_results.csv"),
-        help="Output file path (default: quasim_results.csv)"
+        help="Output file path (default: quasim_results.csv)",
     )
     parser.add_argument(
         "--format",
         choices=["csv", "hdf5", "vtk"],
         default="csv",
-        help="Output format (default: csv)"
+        help="Output format (default: csv)",
     )
 
     args = parser.parse_args()

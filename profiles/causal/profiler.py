@@ -1,4 +1,5 @@
 """Causal profiling with perturbation analysis."""
+
 from __future__ import annotations
 
 import json
@@ -60,9 +61,7 @@ class CausalProfiler:
         """Inject a micro-delay (sleep)."""
         time.sleep(duration_ms / 1000.0)
 
-    def measure_baseline(
-        self, workload: Callable[[], None], repeat: int = 3
-    ) -> float:
+    def measure_baseline(self, workload: Callable[[], None], repeat: int = 3) -> float:
         """Measure baseline latency without perturbations."""
         latencies = []
 
@@ -151,7 +150,9 @@ class CausalProfiler:
         return influence_map
 
     def save_influence_map(
-        self, influence_map: CausalInfluenceMap, output_path: str = "profiles/causal/influence_map.json"
+        self,
+        influence_map: CausalInfluenceMap,
+        output_path: str = "profiles/causal/influence_map.json",
     ) -> Path:
         """Save causal influence map to disk."""
         map_path = Path(output_path)

@@ -1,4 +1,5 @@
 """Tests for Fortune 500 QuASIM Integration Analysis modules."""
+
 import csv
 import json
 import sys

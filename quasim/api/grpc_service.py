@@ -11,13 +11,13 @@ from typing import Any
 
 class QuASIMService:
     """gRPC service for QuASIM operations.
-    
+
     Implements gRPC service methods for:
     - Quantum circuit simulation
     - Digital twin orchestration
     - Optimization task submission
     - Distributed execution management
-    
+
     In production, this would be generated from Protocol Buffer definitions.
     """
 
@@ -27,70 +27,55 @@ class QuASIMService:
 
     def SimulateCircuit(self, request: dict[str, Any]) -> dict[str, Any]:
         """Execute quantum circuit simulation via gRPC.
-        
+
         Args:
             request: Circuit specification and parameters
-            
+
         Returns:
             Simulation results
         """
-        return {
-            "job_id": f"grpc_qc_{hash(str(request))}",
-            "status": "completed",
-            "results": {}
-        }
+        return {"job_id": f"grpc_qc_{hash(str(request))}", "status": "completed", "results": {}}
 
     def CreateDigitalTwin(self, request: dict[str, Any]) -> dict[str, Any]:
         """Create digital twin via gRPC.
-        
+
         Args:
             request: Digital twin parameters
-            
+
         Returns:
             Twin initialization status
         """
-        return {
-            "twin_id": request.get("twin_id", ""),
-            "status": "initialized"
-        }
+        return {"twin_id": request.get("twin_id", ""), "status": "initialized"}
 
     def SubmitOptimization(self, request: dict[str, Any]) -> dict[str, Any]:
         """Submit optimization task via gRPC.
-        
+
         Args:
             request: Optimization problem specification
-            
+
         Returns:
             Job submission status
         """
-        return {
-            "job_id": f"grpc_opt_{hash(str(request))}",
-            "status": "queued"
-        }
+        return {"job_id": f"grpc_opt_{hash(str(request))}", "status": "queued"}
 
     def GetClusterStatus(self, request: dict[str, Any]) -> dict[str, Any]:
         """Get distributed cluster status via gRPC.
-        
+
         Args:
             request: Empty request (or filtering parameters)
-            
+
         Returns:
             Cluster status information
         """
-        return {
-            "num_workers": 4,
-            "backend": "cuda",
-            "total_gpus": 4,
-            "available_gpus": 2
-        }
+        return {"num_workers": 4, "backend": "cuda", "total_gpus": 4, "available_gpus": 2}
 
 
 def create_grpc_server(port: int = 50051) -> Any:
     """Create and configure gRPC server.
-    
+
     Args:
         port: Port to listen on
-        
+
     Returns:
         Configured gRPC server (in production would use grpc.server())
     """

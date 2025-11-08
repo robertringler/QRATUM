@@ -20,23 +20,23 @@ def tdgl_evolution_step(
     dt: float,
 ) -> Array:
     """Evolve order parameter using Time-Dependent Ginzburg-Landau equation.
-    
+
     TDGL equation:
         ∂ψ/∂t = -γ(α ψ + β |ψ|² ψ - ∇²ψ)
-    
+
     Where ψ is the complex order parameter, α, β control phase transition,
     and γ is the relaxation rate.
-    
+
     Args:
         order_parameter: Current order parameter field ψ(r)
         alpha: Linear coefficient (< 0 for ordered phase)
         beta: Nonlinear coefficient (> 0 for stability)
         gamma: Relaxation rate
         dt: Time step
-        
+
     Returns:
         Updated order parameter field
-        
+
     Example:
         >>> psi = np.random.randn(64) + 1j * np.random.randn(64)
         >>> psi_new = tdgl_evolution_step(psi, -1.0, 1.0, 0.5, 0.01)
@@ -50,9 +50,7 @@ def tdgl_evolution_step(
 
     for i in range(n):
         laplacian[i] = (
-            order_parameter[(i + 1) % n]
-            - 2 * order_parameter[i]
-            + order_parameter[(i - 1) % n]
+            order_parameter[(i + 1) % n] - 2 * order_parameter[i] + order_parameter[(i - 1) % n]
         )
 
     # TDGL evolution
@@ -67,18 +65,18 @@ def compute_structure_factor(
     order_parameter: Array,
 ) -> Array:
     """Compute structure factor S(k) = |⟨ψ(k)⟩|² via Fourier transform.
-    
+
     The structure factor reveals spatial correlations and ordering:
         S(k) = |FFT[ψ(r)]|²
-    
+
     Peaks in S(k) indicate crystalline order at specific wavevectors.
-    
+
     Args:
         order_parameter: Spatial order parameter field
-        
+
     Returns:
         Structure factor as a function of wavevector
-        
+
     Example:
         >>> psi = np.exp(1j * 2 * np.pi * np.arange(64) / 64)  # Periodic
         >>> S = compute_structure_factor(psi)
@@ -101,19 +99,19 @@ def detect_crystallization(
     threshold: float = 10.0,
 ) -> tuple[bool, int, float]:
     """Detect crystalline ordering from structure factor peak.
-    
+
     Crystallization is indicated by emergence of sharp peaks in S(k).
-    
+
     Args:
         structure_factor: Structure factor S(k)
         threshold: Minimum peak height relative to background
-        
+
     Returns:
         Tuple of (is_crystallized, peak_index, peak_height):
             - is_crystallized: True if peak exceeds threshold
             - peak_index: Location of dominant peak
             - peak_height: Height of dominant peak
-            
+
     Example:
         >>> S = np.array([1, 0.5, 20, 0.5, 1])
         >>> crystallized, idx, height = detect_crystallization(S, 5.0)
@@ -142,10 +140,10 @@ def simulate_crystallization(
     noise_amplitude: float = 0.1,
 ) -> tuple[Array, Array]:
     """Simulate full crystallization dynamics from noisy initial conditions.
-    
+
     Evolves TDGL equation from random initial state until crystalline
     order emerges (or fails to emerge).
-    
+
     Args:
         n_grid: Number of spatial grid points
         alpha: Linear TDGL coefficient
@@ -154,12 +152,12 @@ def simulate_crystallization(
         dt: Time step
         n_steps: Number of evolution steps
         noise_amplitude: Initial noise level
-        
+
     Returns:
         Tuple of (final_order_parameter, structure_factor_history):
             - final_order_parameter: Final ψ(r) field
             - structure_factor_history: S(k) at each time step
-            
+
     Example:
         >>> psi_final, S_history = simulate_crystallization(
         ...     64, -1.0, 1.0, 0.5, 0.01, 1000

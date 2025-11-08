@@ -1,4 +1,5 @@
 """Quantum-inspired Ising model optimization for kernel search."""
+
 from __future__ import annotations
 
 import json

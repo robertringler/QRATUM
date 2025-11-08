@@ -18,23 +18,16 @@ def analyze_mcdc_coverage(coverage_file):
         coverage = {"mcdc": 0, "statement": 0, "branch": 0}
 
     # DO-178C Level A Requirements
-    requirements = {
-        "mcdc": 100,
-        "statement": 100,
-        "branch": 100
-    }
+    requirements = {"mcdc": 100, "statement": 100, "branch": 100}
 
-    results = {
-        "compliant": True,
-        "details": {}
-    }
+    results = {"compliant": True, "details": {}}
 
     for metric, required in requirements.items():
         actual = coverage.get(metric, 0)
         results["details"][metric] = {
             "required": required,
             "actual": actual,
-            "compliant": actual >= required
+            "compliant": actual >= required,
         }
         if actual < required:
             results["compliant"] = False
@@ -51,7 +44,9 @@ def analyze_mcdc_coverage(coverage_file):
 
     return results
 
+
 if __name__ == "__main__":
     import sys
+
     coverage_file = sys.argv[1] if len(sys.argv) > 1 else "coverage.json"
     analyze_mcdc_coverage(coverage_file)

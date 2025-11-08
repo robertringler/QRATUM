@@ -18,7 +18,7 @@ def fix_multi_document_yaml(filepath: Path) -> bool:
             content = f.read()
 
         # Check if it's a multi-document YAML
-        if content.count('---') > 1:
+        if content.count("---") > 1:
             print(f"Multi-document YAML detected in {filepath}")
             # This is actually valid YAML, update the validator to handle it
             return True
@@ -36,7 +36,7 @@ def fix_flow_node_yaml(filepath: Path) -> bool:
             content = f.read()
 
         # Check for common flow node issues
-        if content.startswith('{{-'):
+        if content.startswith("{{-"):
             print(f"Helm template detected in {filepath} - this is expected")
             return True
 
@@ -47,7 +47,7 @@ def fix_flow_node_yaml(filepath: Path) -> bool:
         except yaml.YAMLError as e:
             print(f"YAML error in {filepath}: {e}")
             # This might be a Helm template, which is OK
-            if '{{' in content or '{%' in content:
+            if "{{" in content or "{%" in content:
                 print("  -> Appears to be a template file, skipping")
                 return True
             return False
@@ -62,11 +62,11 @@ def main():
 
     # Files with known issues from the test output
     problematic_files = [
-        'infra/kubefed/federated-service.yaml',
-        'infra/kubefed/federated-deployment.yaml',
-        'infra/helm/quasim-platform/templates/qc-worker-deployment.yaml',
-        'infra/helm/quasim-platform/templates/ray-cluster.yaml',
-        'infra/helm/quasim-platform/templates/api-deployment.yaml',
+        "infra/kubefed/federated-service.yaml",
+        "infra/kubefed/federated-deployment.yaml",
+        "infra/helm/quasim-platform/templates/qc-worker-deployment.yaml",
+        "infra/helm/quasim-platform/templates/ray-cluster.yaml",
+        "infra/helm/quasim-platform/templates/api-deployment.yaml",
     ]
 
     all_ok = True
@@ -79,9 +79,9 @@ def main():
             with open(full_path) as f:
                 first_line = f.readline()
 
-            if first_line.startswith('{{-') or '{{' in first_line:
+            if first_line.startswith("{{-") or "{{" in first_line:
                 print("  -> Helm template file (expected to fail standard YAML parsing)")
-            elif '---' in open(full_path).read().count('---') > 1:
+            elif "---" in open(full_path).read().count("---") > 1:
                 print("  -> Multi-document YAML (valid format)")
             else:
                 result = fix_flow_node_yaml(full_path)
@@ -90,17 +90,17 @@ def main():
         else:
             print(f"File not found: {file_path}")
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     if all_ok:
         print("Note: The 'errors' found are expected for Helm templates and")
         print("multi-document YAML files. These are valid formats.")
         print("The test runner should be updated to handle these cases.")
     else:
         print("Some YAML files have genuine issues that need manual review.")
-    print("="*60)
+    print("=" * 60)
 
     return 0 if all_ok else 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

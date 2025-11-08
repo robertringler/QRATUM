@@ -17,24 +17,24 @@ def refractive_index_to_metric(
     flow_velocity: NDArray[np.float64] | None = None,
 ) -> NDArray[np.float64]:
     """Convert refractive index profile to effective metric tensor.
-    
+
     For acoustic/optical analog systems, effective metric:
         g_μν = (ρ/c) diag(-1, n²(r), n²(r), n²(r))
-    
+
     where n(r) is refractive index and ρ is density.
-    
+
     Args:
         refractive_index: Spatial refractive index profile n(r)
         flow_velocity: Optional flow velocity field v(r)
-        
+
     Returns:
         Effective metric tensor (simplified 2x2 for 1D+time)
-        
+
     Example:
         >>> n = np.ones(64)
         >>> n[32:] = 1.5  # Index jump
         >>> g = refractive_index_to_metric(n)
-        
+
     Reference:
         Unruh (1981), "Experimental Black-Hole Evaporation?"
     """
@@ -69,22 +69,22 @@ def geodesic_propagation(
     dt: float,
 ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
     """Propagate particle/wave along geodesic in effective curved spacetime.
-    
+
     Geodesic equation:
         d²x^μ/dτ² = -Γ^μ_νλ (dx^ν/dτ)(dx^λ/dτ)
-    
+
     Simplified for null geodesics in analog metric.
-    
+
     Args:
         initial_position: Starting position x₀
         initial_momentum: Initial momentum p₀
         metric: Effective metric tensor field
         n_steps: Number of integration steps
         dt: Time step
-        
+
     Returns:
         Tuple of (positions, momenta) trajectories
-        
+
     Example:
         >>> g = refractive_index_to_metric(np.ones(64))
         >>> x, p = geodesic_propagation(0.5, 1.0, g, 100, 0.01)
@@ -140,19 +140,19 @@ def check_normalization_preservation(
     tolerance: float = 1e-6,
 ) -> tuple[bool, float]:
     """Verify that geodesic propagation preserves wavefunction normalization.
-    
+
     For valid metric, ∫|ψ|² √g dx = const.
-    
+
     Args:
         wavefunction: Quantum wavefunction ψ(x)
         metric: Spacetime metric tensor
         tolerance: Maximum allowed deviation
-        
+
     Returns:
         Tuple of (is_normalized, deviation):
             - is_normalized: True if norm preserved
             - deviation: Deviation from unity
-            
+
     Example:
         >>> psi = np.ones(64, dtype=complex) / 8
         >>> g = refractive_index_to_metric(np.ones(64))
@@ -181,16 +181,16 @@ def effective_potential_from_metric(
     metric: NDArray[np.float64],
 ) -> NDArray[np.float64]:
     """Extract effective potential from metric tensor.
-    
+
     In analog systems, metric curvature creates effective potential:
         V_eff(x) ∝ ∂_x g_μν
-    
+
     Args:
         metric: Metric tensor field
-        
+
     Returns:
         Effective potential energy V_eff(x)
-        
+
     Example:
         >>> g = refractive_index_to_metric(np.linspace(1, 2, 64))
         >>> V = effective_potential_from_metric(g)
@@ -219,20 +219,20 @@ def acoustic_black_hole_metric(
     flow_strength: float = 1.0,
 ) -> NDArray[np.float64]:
     """Generate analog acoustic black hole metric.
-    
+
     Models acoustic analog of black hole using supersonic flow.
-    
+
     Args:
         n_points: Number of spatial grid points
         horizon_position: Location of sonic horizon (0 to 1)
         flow_strength: Strength of flow velocity
-        
+
     Returns:
         Acoustic black hole metric tensor
-        
+
     Example:
         >>> g = acoustic_black_hole_metric(128, 0.5, 1.5)
-        
+
     Reference:
         Unruh (1981), Barcelo et al. (2005)
     """

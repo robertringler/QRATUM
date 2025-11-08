@@ -1,4 +1,5 @@
 """Tests for Phase III autonomous kernel evolution."""
+
 from __future__ import annotations
 
 import time
@@ -179,9 +180,7 @@ def test_causal_profiler():
         profiler.inject_delay(1.0)  # Add 1ms delay
 
     # Profile function
-    result = profiler.profile_function(
-        "test_function", baseline_workload, perturbed_workload
-    )
+    result = profiler.profile_function("test_function", baseline_workload, perturbed_workload)
 
     assert result.causal_impact > 0
 
@@ -199,18 +198,30 @@ def test_federated_aggregator():
     config2 = {"tile_size": 512, "warp_count": 64}
 
     aggregator.add_telemetry(
-        "deployment_1", config1, latency_ms=100.0, energy_j=10.0,
-        throughput_gops=1000.0, timestamp=time.time()
+        "deployment_1",
+        config1,
+        latency_ms=100.0,
+        energy_j=10.0,
+        throughput_gops=1000.0,
+        timestamp=time.time(),
     )
 
     aggregator.add_telemetry(
-        "deployment_2", config1, latency_ms=105.0, energy_j=10.5,
-        throughput_gops=980.0, timestamp=time.time()
+        "deployment_2",
+        config1,
+        latency_ms=105.0,
+        energy_j=10.5,
+        throughput_gops=980.0,
+        timestamp=time.time(),
     )
 
     aggregator.add_telemetry(
-        "deployment_3", config2, latency_ms=80.0, energy_j=12.0,
-        throughput_gops=1200.0, timestamp=time.time()
+        "deployment_3",
+        config2,
+        latency_ms=80.0,
+        energy_j=12.0,
+        throughput_gops=1200.0,
+        timestamp=time.time(),
     )
 
     # Aggregate

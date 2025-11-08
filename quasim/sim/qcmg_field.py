@@ -18,9 +18,10 @@ Evolution follows Hamiltonian dynamics with entropy production:
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from typing import Literal
-import json
+
 import numpy as np
 
 

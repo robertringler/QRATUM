@@ -33,8 +33,7 @@ from integrations.kernels.cfd.pressure_poisson import (
 )
 
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -42,6 +41,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class BenchmarkResult:
     """Result of a single benchmark run."""
+
     scenario: str
     workload: str
     mesh_size: str
@@ -61,7 +61,7 @@ class CFDBenchmark:
     @staticmethod
     def run_wing_coarse() -> BenchmarkResult:
         """Run CFD simulation on coarse wing mesh.
-        
+
         Returns:
             Benchmark result
         """
@@ -74,7 +74,7 @@ class CFDBenchmark:
             precision=Precision.FP32,
             backend=Backend.CPU,
             deterministic=True,
-            seed=42
+            seed=42,
         )
 
         solver = PressurePoissonSolver(config)
@@ -97,13 +97,13 @@ class CFDBenchmark:
             energy_kwh=results["metrics"]["energy_kwh"],
             cost_usd=results["metrics"]["cost_usd_per_sim"],
             rmse=rmse,
-            speedup_vs_legacy=speedup
+            speedup_vs_legacy=speedup,
         )
 
     @staticmethod
     def run_wing_medium() -> BenchmarkResult:
         """Run CFD simulation on medium wing mesh.
-        
+
         Returns:
             Benchmark result
         """
@@ -116,7 +116,7 @@ class CFDBenchmark:
             precision=Precision.FP32,
             backend=Backend.CPU,
             deterministic=True,
-            seed=42
+            seed=42,
         )
 
         solver = PressurePoissonSolver(config)
@@ -136,7 +136,7 @@ class CFDBenchmark:
             energy_kwh=results["metrics"]["energy_kwh"],
             cost_usd=results["metrics"]["cost_usd_per_sim"],
             rmse=rmse,
-            speedup_vs_legacy=speedup
+            speedup_vs_legacy=speedup,
         )
 
 
@@ -146,7 +146,7 @@ class FEABenchmark:
     @staticmethod
     def run_composite_plate() -> BenchmarkResult:
         """Run FEA simulation on composite plate under load.
-        
+
         Returns:
             Benchmark result
         """
@@ -183,7 +183,7 @@ class FEABenchmark:
             energy_kwh=energy_kwh,
             cost_usd=cost_usd,
             rmse=rmse,
-            speedup_vs_legacy=speedup
+            speedup_vs_legacy=speedup,
         )
 
 
@@ -193,7 +193,7 @@ class OrbitalMCBenchmark:
     @staticmethod
     def run_orbital_mc() -> BenchmarkResult:
         """Run orbital Monte Carlo with 1M trajectories.
-        
+
         Returns:
             Benchmark result
         """
@@ -229,13 +229,13 @@ class OrbitalMCBenchmark:
             energy_kwh=energy_kwh,
             cost_usd=cost_usd,
             rmse=rmse,
-            speedup_vs_legacy=speedup
+            speedup_vs_legacy=speedup,
         )
 
 
 def write_csv_report(results: List[BenchmarkResult], output_path: Path):
     """Write benchmark results to CSV.
-    
+
     Args:
         results: List of benchmark results
         output_path: Path to output CSV file
@@ -246,42 +246,46 @@ def write_csv_report(results: List[BenchmarkResult], output_path: Path):
         writer = csv.writer(f)
 
         # Header
-        writer.writerow([
-            "Scenario",
-            "Workload",
-            "Mesh_Size",
-            "Iterations",
-            "Wall_Time_s",
-            "Throughput",
-            "Throughput_Unit",
-            "Energy_kWh",
-            "Cost_USD",
-            "RMSE",
-            "Speedup_vs_Legacy"
-        ])
+        writer.writerow(
+            [
+                "Scenario",
+                "Workload",
+                "Mesh_Size",
+                "Iterations",
+                "Wall_Time_s",
+                "Throughput",
+                "Throughput_Unit",
+                "Energy_kWh",
+                "Cost_USD",
+                "RMSE",
+                "Speedup_vs_Legacy",
+            ]
+        )
 
         # Data rows
         for result in results:
-            writer.writerow([
-                result.scenario,
-                result.workload,
-                result.mesh_size,
-                result.iterations,
-                f"{result.wall_time_s:.6f}",
-                f"{result.throughput:.2e}",
-                result.throughput_unit,
-                f"{result.energy_kwh:.6f}",
-                f"{result.cost_usd:.4f}",
-                f"{result.rmse:.4f}",
-                f"{result.speedup_vs_legacy:.1f}"
-            ])
+            writer.writerow(
+                [
+                    result.scenario,
+                    result.workload,
+                    result.mesh_size,
+                    result.iterations,
+                    f"{result.wall_time_s:.6f}",
+                    f"{result.throughput:.2e}",
+                    result.throughput_unit,
+                    f"{result.energy_kwh:.6f}",
+                    f"{result.cost_usd:.4f}",
+                    f"{result.rmse:.4f}",
+                    f"{result.speedup_vs_legacy:.1f}",
+                ]
+            )
 
     logger.info(f"CSV report written to {output_path}")
 
 
 def write_markdown_report(results: List[BenchmarkResult], output_path: Path):
     """Write benchmark results to Markdown.
-    
+
     Args:
         results: List of benchmark results
         output_path: Path to output Markdown file
@@ -339,23 +343,19 @@ def write_markdown_report(results: List[BenchmarkResult], output_path: Path):
 
 def main() -> int:
     """Main entry point for benchmark harness.
-    
+
     Returns:
         Exit code (0 for success)
     """
-    parser = argparse.ArgumentParser(
-        description="QuASIM Aerospace Benchmark Harness"
-    )
+    parser = argparse.ArgumentParser(description="QuASIM Aerospace Benchmark Harness")
     parser.add_argument(
         "--output-dir",
         type=Path,
         default=Path(__file__).parent / "report",
-        help="Output directory for reports (default: ./report/)"
+        help="Output directory for reports (default: ./report/)",
     )
     parser.add_argument(
-        "--quick",
-        action="store_true",
-        help="Run quick benchmarks (reduced problem sizes)"
+        "--quick", action="store_true", help="Run quick benchmarks (reduced problem sizes)"
     )
 
     args = parser.parse_args()

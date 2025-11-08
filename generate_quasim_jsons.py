@@ -143,7 +143,10 @@ class QuASIMGenerator:
             },
             "statistics": {
                 "mean_fidelity": mean_fidelity,
-                "fidelity_std": (sum((f - mean_fidelity) ** 2 for f in fidelities) / len(fidelities)) ** 0.5,
+                "fidelity_std": (
+                    sum((f - mean_fidelity) ** 2 for f in fidelities) / len(fidelities)
+                )
+                ** 0.5,
                 "convergence_rate": converged_count / len(results),
                 "target_fidelity": 0.97,
                 "target_tolerance": 0.005,
@@ -252,22 +255,26 @@ class QuASIMGenerator:
 
         with open(output_path, "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow([
-                "Condition ID",
-                "Test Vector ID",
-                "Branch Taken",
-                "Coverage Achieved",
-                "Traceability ID",
-            ])
+            writer.writerow(
+                [
+                    "Condition ID",
+                    "Test Vector ID",
+                    "Branch Taken",
+                    "Coverage Achieved",
+                    "Traceability ID",
+                ]
+            )
 
             for entry in entries:
-                writer.writerow([
-                    entry.condition_id,
-                    entry.test_vector_id,
-                    entry.branch_taken,
-                    entry.coverage_achieved,
-                    entry.traceability_id,
-                ])
+                writer.writerow(
+                    [
+                        entry.condition_id,
+                        entry.test_vector_id,
+                        entry.branch_taken,
+                        entry.coverage_achieved,
+                        entry.traceability_id,
+                    ]
+                )
 
         print(f"✓ Generated MC/DC coverage matrix: {output_path}")
         print(f"  Total conditions: {len(entries)}")
@@ -377,9 +384,7 @@ def main():
     """Main entry point."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Generate QuASIM certification artifacts"
-    )
+    parser = argparse.ArgumentParser(description="Generate QuASIM certification artifacts")
     parser.add_argument(
         "--output-dir",
         default=".",

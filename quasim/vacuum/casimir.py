@@ -19,24 +19,24 @@ def casimir_energy_parallel_plates(
     cutoff_ratio: float = 10.0,
 ) -> float:
     """Compute Casimir energy for parallel conducting plates.
-    
+
     Energy per unit area:
         E = -(π²ℏc/720a³)
-    
+
     Computed via mode summation with regularization.
-    
+
     Args:
         plate_separation: Distance a between plates
         n_modes: Number of modes to include in summation
         cutoff_ratio: Cutoff at k_max = cutoff_ratio * π/a
-        
+
     Returns:
         Casimir energy per unit area (in natural units where ℏ=c=1)
-        
+
     Example:
         >>> E = casimir_energy_parallel_plates(1.0)
         >>> assert E < 0  # Attractive force
-        
+
     Reference:
         Casimir (1948), analytical result: E = -π²/(720 a³)
     """
@@ -69,18 +69,18 @@ def casimir_force_parallel_plates(
     plate_separation: float,
 ) -> float:
     """Compute Casimir force between parallel plates.
-    
+
     Force per unit area:
         F = -dE/da = -π²ℏc/(240a⁴)
-    
+
     Negative sign indicates attractive force.
-    
+
     Args:
         plate_separation: Distance a between plates
-        
+
     Returns:
         Casimir force per unit area (attractive, so negative)
-        
+
     Example:
         >>> F = casimir_force_parallel_plates(1.0)
         >>> assert F < 0  # Attractive
@@ -94,17 +94,17 @@ def casimir_energy_scaling_test(
     separations: NDArray[np.float64],
 ) -> tuple[bool, float]:
     """Test that Casimir energy scales as E ∝ 1/a³.
-    
+
     Verifies the characteristic power-law scaling of Casimir energy.
-    
+
     Args:
         separations: Array of plate separations to test
-        
+
     Returns:
         Tuple of (is_correct_scaling, fitted_exponent):
             - is_correct_scaling: True if exponent ≈ -3
             - fitted_exponent: Power-law exponent from fit
-            
+
     Example:
         >>> a_values = np.array([0.5, 1.0, 2.0, 4.0])
         >>> is_ok, exp = casimir_energy_scaling_test(a_values)
@@ -132,17 +132,17 @@ def mode_density_confined(
     plate_separation: float,
 ) -> float:
     """Compute mode density for confined electromagnetic field.
-    
+
     Mode density in 1D cavity:
         ρ(ω) = L/(πc) for confined modes
-    
+
     Args:
         frequency: Angular frequency ω
         plate_separation: Cavity length L
-        
+
     Returns:
         Mode density ρ(ω)
-        
+
     Example:
         >>> rho = mode_density_confined(1.0, 2.0)
     """
@@ -160,19 +160,19 @@ def vacuum_energy_shift(
     reference_separation: float,
 ) -> float:
     """Compute vacuum energy shift relative to reference configuration.
-    
+
     Energy difference:
         ΔE = E(a) - E(a_ref)
-    
+
     Relevant for measurable Casimir force.
-    
+
     Args:
         plate_separation: Current plate separation a
         reference_separation: Reference separation a_ref
-        
+
     Returns:
         Vacuum energy shift ΔE
-        
+
     Example:
         >>> dE = vacuum_energy_shift(1.0, 2.0)
         >>> assert dE != 0  # Energy changes with configuration
@@ -190,22 +190,22 @@ def casimir_energy_sphere_plate(
     separation: float,
 ) -> float:
     """Compute Casimir energy for sphere near a plate (proximity force approx).
-    
+
     Using Proximity Force Approximation (PFA):
         E ≈ -Cℏc R/a³
-    
+
     where R is sphere radius and a is closest separation.
-    
+
     Args:
         sphere_radius: Radius R of sphere
         separation: Closest distance a to plate
-        
+
     Returns:
         Casimir energy (approximate)
-        
+
     Example:
         >>> E = casimir_energy_sphere_plate(1.0, 0.5)
-        
+
     Reference:
         Derjaguin approximation for curved surfaces
     """

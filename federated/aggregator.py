@@ -1,4 +1,5 @@
 """Federated learning aggregator for cross-deployment performance data."""
+
 from __future__ import annotations
 
 import hashlib
@@ -123,7 +124,7 @@ class FederatedAggregator:
 
             # Compute standard deviation for latency
             variance = sum((x - avg_latency) ** 2 for x in latencies) / len(latencies)
-            std_latency = variance ** 0.5
+            std_latency = variance**0.5
 
             aggregated = AggregatedPerformance(
                 kernel_config_hash=config_hash,
@@ -138,9 +139,7 @@ class FederatedAggregator:
 
         return self.aggregated
 
-    def predict_performance(
-        self, kernel_config: Dict
-    ) -> AggregatedPerformance | None:
+    def predict_performance(self, kernel_config: Dict) -> AggregatedPerformance | None:
         """
         Predict performance for a kernel configuration using aggregated data.
         Returns None if no data available for this configuration.

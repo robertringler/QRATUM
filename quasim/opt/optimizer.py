@@ -11,13 +11,13 @@ from .problems import OptimizationProblem
 @dataclass
 class QuantumOptimizer:
     """Quantum-enhanced optimizer for combinatorial and continuous problems.
-    
+
     Supports multiple quantum optimization strategies:
     - Quantum Annealing (QA)
     - Quantum Approximate Optimization Algorithm (QAOA)
     - Variational Quantum Eigensolver (VQE)
     - Hybrid classical-quantum optimization
-    
+
     Attributes:
         algorithm: Optimization algorithm ('qa', 'qaoa', 'vqe', 'hybrid')
         backend: Computation backend for quantum simulation
@@ -35,16 +35,14 @@ class QuantumOptimizer:
             raise ValueError(f"Algorithm must be one of {valid_algorithms}")
 
     def optimize(
-        self,
-        problem: OptimizationProblem,
-        initial_params: dict[str, Any] | None = None
+        self, problem: OptimizationProblem, initial_params: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Optimize the given problem using quantum algorithms.
-        
+
         Args:
             problem: Optimization problem specification
             initial_params: Initial parameter values (optional)
-            
+
         Returns:
             Dictionary containing:
                 - solution: Optimal solution found
@@ -64,12 +62,10 @@ class QuantumOptimizer:
             return self._optimize_hybrid(problem, initial_params)
 
     def _optimize_qaoa(
-        self,
-        problem: OptimizationProblem,
-        initial_params: dict[str, Any]
+        self, problem: OptimizationProblem, initial_params: dict[str, Any]
     ) -> dict[str, Any]:
         """Optimize using Quantum Approximate Optimization Algorithm.
-        
+
         QAOA is particularly effective for combinatorial optimization problems
         like graph coloring, Max-Cut, and portfolio optimization.
         """
@@ -103,12 +99,10 @@ class QuantumOptimizer:
         }
 
     def _optimize_annealing(
-        self,
-        problem: OptimizationProblem,
-        initial_params: dict[str, Any]
+        self, problem: OptimizationProblem, initial_params: dict[str, Any]
     ) -> dict[str, Any]:
         """Optimize using Quantum Annealing.
-        
+
         Quantum annealing is effective for QUBO and Ising model problems.
         """
         best_solution = problem.get_random_solution()
@@ -123,12 +117,10 @@ class QuantumOptimizer:
         }
 
     def _optimize_vqe(
-        self,
-        problem: OptimizationProblem,
-        initial_params: dict[str, Any]
+        self, problem: OptimizationProblem, initial_params: dict[str, Any]
     ) -> dict[str, Any]:
         """Optimize using Variational Quantum Eigensolver.
-        
+
         VQE is particularly useful for chemistry and molecular simulation problems.
         """
         best_solution = problem.get_random_solution()
@@ -143,12 +135,10 @@ class QuantumOptimizer:
         }
 
     def _optimize_hybrid(
-        self,
-        problem: OptimizationProblem,
-        initial_params: dict[str, Any]
+        self, problem: OptimizationProblem, initial_params: dict[str, Any]
     ) -> dict[str, Any]:
         """Optimize using hybrid classical-quantum approach.
-        
+
         Combines classical optimization with quantum subroutines for
         improved performance on large-scale problems.
         """

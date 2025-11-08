@@ -24,6 +24,7 @@ from typing import Any, Dict, Optional
 
 try:
     import aiohttp
+
     AIOHTTP_AVAILABLE = True
 except ImportError:
     AIOHTTP_AVAILABLE = False
@@ -36,6 +37,7 @@ logger = logging.getLogger(__name__)
 
 class JobStatus(str, Enum):
     """Job execution status."""
+
     QUEUED = "queued"
     RUNNING = "running"
     COMPLETED = "completed"
@@ -46,6 +48,7 @@ class JobStatus(str, Enum):
 @dataclass
 class Job:
     """Representation of a QuASIM job."""
+
     job_id: str
     status: JobStatus
     job_type: str
@@ -61,10 +64,10 @@ class QuASIMClient:
         api_url: str = "http://localhost:8000",
         api_key: Optional[str] = None,
         timeout: int = 30,
-        max_retries: int = 3
+        max_retries: int = 3,
     ):
         """Initialize QuASIM client.
-        
+
         Args:
             api_url: Base URL of QuASIM API
             api_key: Optional API key for authentication
@@ -83,18 +86,15 @@ class QuASIMClient:
         logger.info(f"QuASIM client initialized: {self.api_url}")
 
     def _make_request(
-        self,
-        method: str,
-        endpoint: str,
-        data: Optional[Dict[str, Any]] = None
+        self, method: str, endpoint: str, data: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """Make HTTP request with retry logic.
-        
+
         Args:
             method: HTTP method (GET, POST, etc.)
             endpoint: API endpoint
             data: Optional request body
-            
+
         Returns:
             Response data
         """
@@ -110,16 +110,17 @@ class QuASIMClient:
                     return {"status": "healthy"}
                 elif endpoint == "/jobs/submit":
                     import uuid
+
                     return {
                         "job_id": str(uuid.uuid4()),
                         "status": "queued",
-                        "submitted_at": time.strftime("%Y-%m-%dT%H:%M:%SZ")
+                        "submitted_at": time.strftime("%Y-%m-%dT%H:%M:%SZ"),
                     }
                 elif "/status" in endpoint:
                     return {
                         "job_id": endpoint.split("/")[2],
                         "status": "completed",
-                        "progress": 1.0
+                        "progress": 1.0,
                     }
 
                 return {}
@@ -128,33 +129,24 @@ class QuASIMClient:
                 if attempt == self.max_retries - 1:
                     raise
                 logger.warning(f"Request failed (attempt {attempt + 1}): {e}")
-                time.sleep(2 ** attempt)  # Exponential backoff
+                time.sleep(2**attempt)  # Exponential backoff
 
         raise RuntimeError("Max retries exceeded")
 
-    def submit_job(
-        self,
-        job_type: str,
-        config: Dict[str, Any],
-        priority: int = 5
-    ) -> Job:
+    def submit_job(self, job_type: str, config: Dict[str, Any], priority: int = 5) -> Job:
         """Submit a generic job.
-        
+
         Args:
             job_type: Type of job (cfd, fea, orbital_mc, etc.)
             config: Job configuration
             priority: Job priority (1-10)
-            
+
         Returns:
             Job object
         """
         logger.info(f"Submitting {job_type} job")
 
-        data = {
-            "job_type": job_type,
-            "config": config,
-            "priority": priority
-        }
+        data = {"job_type": job_type, "config": config, "priority": priority}
 
         response = self._make_request("POST", "/jobs/submit", data)
 
@@ -162,7 +154,7 @@ class QuASIMClient:
             job_id=response["job_id"],
             status=JobStatus(response["status"]),
             job_type=job_type,
-            submitted_at=response["submitted_at"]
+            submitted_at=response["submitted_at"],
         )
 
         logger.info(f"Job submitted: {job.job_id}")
@@ -172,47 +164,40 @@ class QuASIMClient:
         self,
         mesh_file: str | Path,
         config: Dict[str, Any],
-        boundary_conditions: Optional[Dict[str, Any]] = None
+        boundary_conditions: Optional[Dict[str, Any]] = None,
     ) -> Job:
         """Submit a CFD simulation job.
-        
+
         Args:
             mesh_file: Path to mesh file
             config: CFD configuration (solver, iterations, etc.)
             boundary_conditions: Optional boundary conditions
-            
+
         Returns:
             Job object
         """
         cfd_config = {
             "mesh": str(mesh_file),
             "boundary_conditions": boundary_conditions or {},
-            **config
+            **config,
         }
 
         return self.submit_job("cfd", cfd_config)
 
     def submit_fea(
-        self,
-        mesh_file: str | Path,
-        material_properties: Dict[str, Any],
-        load_cases: Dict[str, Any]
+        self, mesh_file: str | Path, material_properties: Dict[str, Any], load_cases: Dict[str, Any]
     ) -> Job:
         """Submit an FEA simulation job.
-        
+
         Args:
             mesh_file: Path to mesh file
             material_properties: Material properties
             load_cases: Load case definitions
-            
+
         Returns:
             Job object
         """
-        fea_config = {
-            "mesh": str(mesh_file),
-            "material": material_properties,
-            "loads": load_cases
-        }
+        fea_config = {"mesh": str(mesh_file), "material": material_properties, "loads": load_cases}
 
         return self.submit_job("fea", fea_config)
 
@@ -220,32 +205,32 @@ class QuASIMClient:
         self,
         num_trajectories: int,
         initial_conditions: Dict[str, Any],
-        perturbations: Optional[Dict[str, Any]] = None
+        perturbations: Optional[Dict[str, Any]] = None,
     ) -> Job:
         """Submit an orbital Monte Carlo simulation.
-        
+
         Args:
             num_trajectories: Number of trajectories to simulate
             initial_conditions: Initial orbital parameters
             perturbations: Optional perturbation model
-            
+
         Returns:
             Job object
         """
         mc_config = {
             "num_trajectories": num_trajectories,
             "initial_conditions": initial_conditions,
-            "perturbations": perturbations or {}
+            "perturbations": perturbations or {},
         }
 
         return self.submit_job("orbital_mc", mc_config)
 
     def get_status(self, job_id: str) -> Job:
         """Get job status.
-        
+
         Args:
             job_id: Job identifier
-            
+
         Returns:
             Job object with current status
         """
@@ -256,15 +241,15 @@ class QuASIMClient:
             status=JobStatus(response["status"]),
             job_type="unknown",
             submitted_at="",
-            progress=response.get("progress", 0.0)
+            progress=response.get("progress", 0.0),
         )
 
     def cancel_job(self, job_id: str) -> bool:
         """Cancel a running job.
-        
+
         Args:
             job_id: Job identifier
-            
+
         Returns:
             True if cancelled successfully
         """
@@ -272,19 +257,14 @@ class QuASIMClient:
         response = self._make_request("POST", f"/jobs/{job_id}/cancel")
         return response.get("status") == "cancelled"
 
-    def wait_for_completion(
-        self,
-        job_id: str,
-        poll_interval: int = 5,
-        timeout: int = 3600
-    ) -> Job:
+    def wait_for_completion(self, job_id: str, poll_interval: int = 5, timeout: int = 3600) -> Job:
         """Wait for job to complete.
-        
+
         Args:
             job_id: Job identifier
             poll_interval: Polling interval in seconds
             timeout: Maximum wait time in seconds
-            
+
         Returns:
             Completed job object
         """
@@ -306,11 +286,11 @@ class QuASIMClient:
 
     def download_artifact(self, artifact_id: str, output_path: Path) -> bool:
         """Download job artifact.
-        
+
         Args:
             artifact_id: Artifact identifier
             output_path: Path to save artifact
-            
+
         Returns:
             True if downloaded successfully
         """
@@ -322,17 +302,13 @@ class QuASIMClient:
         logger.info(f"Artifact downloaded to {output_path}")
         return True
 
-    async def submit_job_async(
-        self,
-        job_type: str,
-        config: Dict[str, Any]
-    ) -> Job:
+    async def submit_job_async(self, job_type: str, config: Dict[str, Any]) -> Job:
         """Submit job asynchronously.
-        
+
         Args:
             job_type: Type of job
             config: Job configuration
-            
+
         Returns:
             Job object
         """
@@ -346,7 +322,7 @@ class QuASIMClient:
 
     def health_check(self) -> bool:
         """Check API health.
-        
+
         Returns:
             True if API is healthy
         """
@@ -369,11 +345,7 @@ def main():
     # Submit CFD job
     job = client.submit_cfd(
         mesh_file="wing.msh",
-        config={
-            "solver": "pressure_poisson",
-            "max_iterations": 1000,
-            "tolerance": 1e-6
-        }
+        config={"solver": "pressure_poisson", "max_iterations": 1000, "tolerance": 1e-6},
     )
 
     print(f"Job submitted: {job.job_id}")

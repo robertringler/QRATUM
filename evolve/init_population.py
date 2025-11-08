@@ -1,4 +1,5 @@
 """Initialize the first evolving kernel population for Phase III."""
+
 from __future__ import annotations
 
 import argparse
@@ -48,9 +49,11 @@ def generate_initial_population(population_size: int = 20, seed: int = 42) -> No
     print("\nInitial Population Summary:")
     print("=" * 60)
     for i, genome in enumerate(population[:10]):  # Show first 10
-        print(f"Genome {i}: tile={genome.tile_size}, warp={genome.warp_count}, "
-              f"unroll={genome.unroll_factor}, async={genome.async_depth}, "
-              f"precision={genome.precision}")
+        print(
+            f"Genome {i}: tile={genome.tile_size}, warp={genome.warp_count}, "
+            f"unroll={genome.unroll_factor}, async={genome.async_depth}, "
+            f"precision={genome.precision}"
+        )
 
     if len(population) > 10:
         print(f"... and {len(population) - 10} more genomes")

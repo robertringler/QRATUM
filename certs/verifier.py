@@ -1,4 +1,5 @@
 """Formal stability verification for kernel operations."""
+
 from __future__ import annotations
 
 import json
@@ -108,9 +109,7 @@ class StabilityVerifier:
         # Real implementation would use interval arithmetic or symbolic execution
         return True
 
-    def verify_floating_point_stability(
-        self, kernel_id: str, precision: str = "fp32"
-    ) -> bool:
+    def verify_floating_point_stability(self, kernel_id: str, precision: str = "fp32") -> bool:
         """
         Verify floating-point stability for a kernel.
         Checks for common numerical issues.
@@ -139,9 +138,7 @@ class StabilityVerifier:
         }
         return error_bounds.get(precision, 1e-6)
 
-    def verify_kernel(
-        self, kernel_id: str, precision: str = "fp32"
-    ) -> VerificationCertificate:
+    def verify_kernel(self, kernel_id: str, precision: str = "fp32") -> VerificationCertificate:
         """
         Perform complete verification for a kernel.
         """
@@ -178,9 +175,7 @@ class StabilityVerifier:
         self.certificates[kernel_id] = certificate
         return certificate
 
-    def save_certificate(
-        self, kernel_id: str, output_dir: str = "certs"
-    ) -> Path:
+    def save_certificate(self, kernel_id: str, output_dir: str = "certs") -> Path:
         """Save verification certificate to disk."""
         if kernel_id not in self.certificates:
             raise ValueError(f"No certificate found for kernel {kernel_id}")

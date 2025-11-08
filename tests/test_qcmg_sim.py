@@ -18,8 +18,8 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-from pathlib import Path
 import tempfile
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -33,14 +33,12 @@ from quasim.sim import (
 class TestQCMGParameters:
     """Test parameter configuration and validation."""
 
+
 """Tests for QCMG simulation module."""
 
 from __future__ import annotations
 
-import numpy as np
-import pytest
-
-from quasim.sim import QCMGParameters, QCMGState, QuantacosmorphysigeneticField
+from quasim.sim import QCMGState, QuantacosmorphysigeneticField
 
 
 class TestQCMGParameters:
@@ -415,7 +413,7 @@ class TestStateExport:
             field.save_to_json(temp_path, include_history=True)
 
             # Load and verify
-            with open(temp_path, "r", encoding="utf-8") as f:
+            with open(temp_path, encoding="utf-8") as f:
                 data = json.load(f)
 
             assert "parameters" in data
@@ -497,7 +495,7 @@ class TestCLIIntegration:
             assert Path(temp_path).exists()
 
             # Verify JSON content
-            with open(temp_path, "r", encoding="utf-8") as f:
+            with open(temp_path, encoding="utf-8") as f:
                 data = json.load(f)
 
             assert "parameters" in data
@@ -753,16 +751,12 @@ class TestQuantacosmorphysigeneticField:
     def test_coupling_effect(self):
         """Test that coupling strength affects dynamics."""
         # Low coupling
-        params_low = QCMGParameters(
-            grid_size=32, coupling_strength=0.01, random_seed=42
-        )
+        params_low = QCMGParameters(grid_size=32, coupling_strength=0.01, random_seed=42)
         field_low = QuantacosmorphysigeneticField(params_low)
         field_low.initialize(mode="gaussian")
 
         # High coupling
-        params_high = QCMGParameters(
-            grid_size=32, coupling_strength=0.5, random_seed=42
-        )
+        params_high = QCMGParameters(grid_size=32, coupling_strength=0.5, random_seed=42)
         field_high = QuantacosmorphysigeneticField(params_high)
         field_high.initialize(mode="gaussian")
 
@@ -777,16 +771,12 @@ class TestQuantacosmorphysigeneticField:
     def test_thermal_noise_effect(self):
         """Test that thermal noise affects dynamics."""
         # No noise
-        params_no_noise = QCMGParameters(
-            grid_size=32, thermal_noise=0.0, random_seed=42
-        )
+        params_no_noise = QCMGParameters(grid_size=32, thermal_noise=0.0, random_seed=42)
         field_no_noise = QuantacosmorphysigeneticField(params_no_noise)
         field_no_noise.initialize(mode="gaussian")
 
         # With noise
-        params_noise = QCMGParameters(
-            grid_size=32, thermal_noise=0.01, random_seed=42
-        )
+        params_noise = QCMGParameters(grid_size=32, thermal_noise=0.01, random_seed=42)
         field_noise = QuantacosmorphysigeneticField(params_noise)
         field_noise.initialize(mode="gaussian")
 

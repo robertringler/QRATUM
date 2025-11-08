@@ -23,7 +23,7 @@ __author__ = "Sybernix Team"
 @dataclass
 class Config:
     """QuASIM runtime configuration.
-    
+
     Attributes:
         simulation_precision: Precision level ('fp8', 'fp16', 'fp32', 'fp64')
         max_workspace_mb: Maximum workspace memory in megabytes
@@ -42,7 +42,7 @@ class Runtime:
 
     def __init__(self, config: Config):
         """Initialize runtime with configuration.
-        
+
         Args:
             config: Runtime configuration
         """
@@ -62,10 +62,10 @@ class Runtime:
 
     def simulate(self, circuit: list[list[complex]]) -> list[complex]:
         """Simulate quantum circuit.
-        
+
         Args:
             circuit: Circuit specification as list of gate matrices
-            
+
         Returns:
             Simulation result as state vector
         """
@@ -88,10 +88,10 @@ class Runtime:
 @contextmanager
 def runtime(config: Config):
     """Create a QuASIM runtime context.
-    
+
     Args:
         config: Runtime configuration
-        
+
     Yields:
         Runtime instance
     """

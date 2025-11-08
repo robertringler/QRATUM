@@ -31,8 +31,7 @@ class TestSDK:
         client = QuASIMClient(api_url="http://localhost:8000")
 
         job = client.submit_job(
-            job_type="cfd",
-            config={"solver": "pressure_poisson", "max_iterations": 100}
+            job_type="cfd", config={"solver": "pressure_poisson", "max_iterations": 100}
         )
 
         assert job is not None
@@ -47,7 +46,7 @@ class TestSDK:
         job = client.submit_cfd(
             mesh_file="test_wing.msh",
             config={"solver": "pressure_poisson", "max_iterations": 1000},
-            boundary_conditions={"inlet": {"type": "velocity", "value": [1, 0, 0]}}
+            boundary_conditions={"inlet": {"type": "velocity", "value": [1, 0, 0]}},
         )
 
         assert job is not None
@@ -60,7 +59,7 @@ class TestSDK:
         job = client.submit_fea(
             mesh_file="composite_plate.msh",
             material_properties={"E": 70e9, "nu": 0.3},
-            load_cases={"load1": {"type": "pressure", "value": 1e6}}
+            load_cases={"load1": {"type": "pressure", "value": 1e6}},
         )
 
         assert job is not None
@@ -71,8 +70,7 @@ class TestSDK:
         client = QuASIMClient(api_url="http://localhost:8000")
 
         job = client.submit_orbital_mc(
-            num_trajectories=1000,
-            initial_conditions={"a": 7000e3, "e": 0.001, "i": 98.0}
+            num_trajectories=1000, initial_conditions={"a": 7000e3, "e": 0.001, "i": 98.0}
         )
 
         assert job is not None

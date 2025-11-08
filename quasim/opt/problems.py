@@ -10,10 +10,10 @@ from typing import Callable
 @dataclass
 class OptimizationProblem:
     """Base class for optimization problems.
-    
+
     Defines the interface for optimization problems that can be solved
     using QuASIM's quantum-enhanced algorithms.
-    
+
     Attributes:
         name: Problem name/identifier
         dimension: Problem dimension (number of variables)
@@ -35,10 +35,10 @@ class OptimizationProblem:
 
     def evaluate(self, solution: list[float]) -> float:
         """Evaluate the objective function at a given solution.
-        
+
         Args:
             solution: Candidate solution (list of variable values)
-            
+
         Returns:
             Objective function value
         """
@@ -46,7 +46,7 @@ class OptimizationProblem:
 
     def get_random_solution(self) -> list[float]:
         """Generate a random feasible solution.
-        
+
         Returns:
             Random solution within variable bounds
         """
@@ -58,10 +58,10 @@ class OptimizationProblem:
 
     def is_feasible(self, solution: list[float]) -> bool:
         """Check if a solution satisfies all constraints.
-        
+
         Args:
             solution: Candidate solution
-            
+
         Returns:
             True if solution is feasible
         """
@@ -81,7 +81,7 @@ class OptimizationProblem:
 @dataclass
 class PortfolioOptimization(OptimizationProblem):
     """Portfolio optimization problem for finance applications.
-    
+
     Optimize asset allocation to maximize returns while minimizing risk.
     This problem is ideal for quantum optimization due to its combinatorial
     nature and the quadratic objective function.
@@ -93,12 +93,12 @@ class PortfolioOptimization(OptimizationProblem):
 
     def evaluate(self, solution: list[float]) -> float:
         """Evaluate portfolio performance.
-        
+
         Uses mean-variance optimization framework.
-        
+
         Args:
             solution: Portfolio weights (must sum to 1)
-            
+
         Returns:
             Negative Sharpe ratio (for minimization)
         """
@@ -110,16 +110,16 @@ class PortfolioOptimization(OptimizationProblem):
 
         # Return negative Sharpe ratio (for minimization)
         if variance == 0:
-            return float('inf')
+            return float("inf")
 
-        sharpe_ratio = expected_return / (variance ** 0.5)
+        sharpe_ratio = expected_return / (variance**0.5)
         return -sharpe_ratio  # Negative because we minimize
 
 
 @dataclass
 class MolecularOptimization(OptimizationProblem):
     """Molecular structure optimization for pharmaceutical applications.
-    
+
     Optimize molecular structure to minimize energy or maximize binding affinity.
     Leverages quantum computing for accurate electronic structure calculations.
     """
@@ -128,14 +128,14 @@ class MolecularOptimization(OptimizationProblem):
 
     def evaluate(self, solution: list[float]) -> float:
         """Evaluate molecular energy or binding affinity.
-        
+
         Args:
             solution: Molecular configuration parameters
-            
+
         Returns:
             Energy or negative binding affinity
         """
         # Simplified molecular energy calculation
         # Production version would use quantum chemistry methods (VQE)
-        energy = sum(x ** 2 for x in solution)
+        energy = sum(x**2 for x in solution)
         return energy

@@ -11,11 +11,12 @@ This script demonstrates:
 
 from __future__ import annotations
 
-import numpy as np
-import matplotlib.pyplot as plt
 from pathlib import Path
 
-from quasim.sim import QuantacosmomorphysigeneticField, QCMGParameters
+import matplotlib.pyplot as plt
+import numpy as np
+
+from quasim.sim import QCMGParameters, QuantacosmomorphysigeneticField
 
 
 def run_basic_simulation():
@@ -33,7 +34,7 @@ def run_basic_simulation():
         random_seed=42,  # For reproducibility
     )
 
-    print(f"\nParameters:")
+    print("\nParameters:")
     print(f"  Grid size: {params.grid_size}")
     print(f"  Time step: {params.dt}")
     print(f"  Coupling: {params.coupling_strength}")
@@ -41,13 +42,13 @@ def run_basic_simulation():
     print(f"  Random seed: {params.random_seed}")
 
     # Initialize field with Gaussian wave packet
-    print(f"\nInitializing field with Gaussian mode...")
+    print("\nInitializing field with Gaussian mode...")
     field = QuantacosmomorphysigeneticField(params)
     field.initialize(mode="gaussian")
 
     # Print initial state
     initial_state = field.history[-1]
-    print(f"\nInitial state:")
+    print("\nInitial state:")
     print(f"  Coherence: {initial_state.coherence:.6f}")
     print(f"  Entropy: {initial_state.entropy:.6f}")
     print(f"  Energy: {initial_state.energy:.6f}")
@@ -68,7 +69,7 @@ def run_basic_simulation():
 
     # Print final state
     final_state = field.history[-1]
-    print(f"\nFinal state:")
+    print("\nFinal state:")
     print(f"  Time: {final_state.time:.4f}")
     print(f"  Coherence: {final_state.coherence:.6f}")
     print(f"  Entropy: {final_state.entropy:.6f}")
@@ -79,7 +80,7 @@ def run_basic_simulation():
 
 def visualize_results(field: QuantacosmomorphysigeneticField):
     """Create visualization of simulation results."""
-    print(f"\nCreating visualizations...")
+    print("\nCreating visualizations...")
 
     # Extract data from history
     times = [state.time for state in field.history]
@@ -136,7 +137,14 @@ def visualize_results(field: QuantacosmomorphysigeneticField):
         E0 = energies[0]
         gamma = field.params.dissipation_rate * 2  # Theoretical decay rate
         E_fit = E0 * np.exp(-gamma * np.array(times))
-        ax4.plot(times, E_fit, "k--", linewidth=1.5, alpha=0.7, label="Theory: $E_0 \\, \\exp(-2\\gamma t)$")
+        ax4.plot(
+            times,
+            E_fit,
+            "k--",
+            linewidth=1.5,
+            alpha=0.7,
+            label="Theory: $E_0 \\, \\exp(-2\\gamma t)$",
+        )
         ax4.legend(fontsize=10)
 
     plt.tight_layout()

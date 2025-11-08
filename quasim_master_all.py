@@ -18,12 +18,14 @@ from pathlib import Path
 # SECTION 1 — DEPENDENCY GUARDS & OPTIONAL IMPORTS
 # ============================================================
 
+
 def _opt_import(name, alias=None):
     try:
         mod = __import__(name)
         return mod if alias is None else sys.modules.get(alias, mod)
     except Exception:
         return None
+
 
 jax = _opt_import("jax")
 jnp = _opt_import("jax.numpy", "jax.numpy")
@@ -40,51 +42,58 @@ requests = _opt_import("requests")
 # SECTION 2 — QUASIM CORE (Dual-Mode)
 # ============================================================
 
+
 class QuASIMCore:
     def __init__(self):
         self.phase = "I-XII"
         self.metrics = {}
+
     # -------------------------------------------
     def run_tensor_solve(self):
         print("[Phase I–III] TensorSolve baseline running…")
         return {"iters": 101, "status": "ok"}
+
     # -------------------------------------------
     def qem_vjp(self):
         print("[Phase IV–VI] Quantum Error Mitigation / VJP active")
         return {"grad_norm": 0.001}
+
     # -------------------------------------------
     def rl_swarm(self):
         print("[Phase VII] RL Swarm convergence simulated")
         return {"reward": -0.002}
+
     # -------------------------------------------
     def ftq_federation(self):
         print("[Phase X–XI] Fault-tolerant quantum cluster federation")
         return {"logical_qubits": 256, "error_rate": 1e-15}
+
     # -------------------------------------------
     def bio_swarm(self):
         print("[Phase XII] Bio-Quantum swarm cognition executing")
         return {"biosensor": "CRISPR-array", "braided_error": 1e-16}
+
 
 # ============================================================
 # SECTION 3 — CUDA / HPC MODULE PLACEHOLDERS
 # ============================================================
 
 CUDA_KERNELS = {
-"tensor_solve.cu": """
+    "tensor_solve.cu": """
 #include <cuda_runtime.h>
 extern "C" __global__ void saxpy_kernel(int n,const float a,const float* x,float* y){
     int i=blockIdx.x*blockDim.x+threadIdx.x;
     if(i<n){y[i]=a*x[i]+y[i];}
 }
 """,
-"vjp.cu": """
+    "vjp.cu": """
 #include <cuda_runtime.h>
 extern "C" __global__ void vjp_accum(int n,const float* cot,float* grad){
     int i=blockIdx.x*blockDim.x+threadIdx.x;
     if(i<n){atomicAdd(&grad[0],cot[i]);}
 }
 """,
-"ftq_kernels.cu": """
+    "ftq_kernels.cu": """
 #include <cuda_runtime.h>
 extern "C" __global__ void parity_check(int n,const unsigned char* bits,int* parity){
     __shared__ int s; if(threadIdx.x==0)s=0;__syncthreads();
@@ -92,7 +101,7 @@ extern "C" __global__ void parity_check(int n,const unsigned char* bits,int* par
     if(i<n){atomicXor(&s,bits[i]&1);}__syncthreads();
     if(threadIdx.x==0)parity[blockIdx.x]=s;
 }
-"""
+""",
 }
 
 PYBIND_CPP = """
@@ -172,10 +181,11 @@ jobs:
 # SECTION 6 — SELF-TEST HARNESS
 # ============================================================
 
+
 def run_self_test():
-    print("="*68)
+    print("=" * 68)
     print("QuASIM Master Integration Test (Phases I–XII)")
-    print("="*68)
+    print("=" * 68)
     core = QuASIMCore()
     r = {}
     r["tensor"] = core.run_tensor_solve()
@@ -187,9 +197,11 @@ def run_self_test():
     assert r["bio"]["braided_error"] < 1e-15
     print("✅ All Phases validated — braided error < 1e-15\n")
 
+
 # ============================================================
 # SECTION 7 — FILE EMISSION (OPTIONAL EXPORT)
 # ============================================================
+
 
 def emit_repo(base: str):
     base = Path(base)
@@ -209,6 +221,7 @@ def emit_repo(base: str):
     (base / "Dockerfile.cuda").write_text(DOCKER_CUDA)
     (base / ".github/workflows/build.yml").write_text(CI_YML)
     print(f"✅ QuASIM repository exported to {base.resolve()}")
+
 
 # ============================================================
 # SECTION 8 — CLI

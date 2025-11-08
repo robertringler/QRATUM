@@ -9,6 +9,7 @@ from typing import Any
 
 class TaskPriority(Enum):
     """Task priority levels for scheduling."""
+
     LOW = 0
     NORMAL = 1
     HIGH = 2
@@ -17,6 +18,7 @@ class TaskPriority(Enum):
 
 class TaskStatus(Enum):
     """Task execution status."""
+
     PENDING = "pending"
     RUNNING = "running"
     COMPLETED = "completed"
@@ -27,7 +29,7 @@ class TaskStatus(Enum):
 @dataclass
 class Task:
     """Represents a schedulable task.
-    
+
     Attributes:
         task_id: Unique task identifier
         func_name: Name of function to execute
@@ -52,13 +54,13 @@ class Task:
 @dataclass
 class TaskScheduler:
     """Intelligent task scheduler for distributed GPU workloads.
-    
+
     Schedules tasks across GPU workers based on:
     - Task priority
     - GPU availability
     - Data locality
     - Load balancing
-    
+
     Attributes:
         max_concurrent_tasks: Maximum tasks to run concurrently
         gpu_memory_limit_gb: GPU memory limit per worker
@@ -73,7 +75,7 @@ class TaskScheduler:
 
     def submit(self, task: Task) -> None:
         """Submit a task for scheduling.
-        
+
         Args:
             task: Task to schedule
         """
@@ -82,14 +84,11 @@ class TaskScheduler:
 
     def _sort_queue(self) -> None:
         """Sort task queue by priority."""
-        self._task_queue.sort(
-            key=lambda t: t.priority.value,
-            reverse=True
-        )
+        self._task_queue.sort(key=lambda t: t.priority.value, reverse=True)
 
     def schedule_next(self) -> Task | None:
         """Schedule the next task for execution.
-        
+
         Returns:
             Next task to execute, or None if queue is empty or at capacity
         """
@@ -114,20 +113,17 @@ class TaskScheduler:
 
     def _has_available_gpu(self) -> bool:
         """Check if GPU resources are available.
-        
+
         Returns:
             True if GPU is available
         """
         # Simplified - production would query actual GPU availability
-        gpu_tasks = sum(
-            1 for t in self._running_tasks.values()
-            if t.gpu_required
-        )
+        gpu_tasks = sum(1 for t in self._running_tasks.values() if t.gpu_required)
         return gpu_tasks < self.max_concurrent_tasks
 
     def complete_task(self, task_id: str, result: Any) -> None:
         """Mark a task as completed.
-        
+
         Args:
             task_id: ID of completed task
             result: Task result
@@ -140,7 +136,7 @@ class TaskScheduler:
 
     def fail_task(self, task_id: str, error: str) -> None:
         """Mark a task as failed.
-        
+
         Args:
             task_id: ID of failed task
             error: Error message
@@ -153,10 +149,10 @@ class TaskScheduler:
 
     def cancel_task(self, task_id: str) -> bool:
         """Cancel a pending or running task.
-        
+
         Args:
             task_id: ID of task to cancel
-            
+
         Returns:
             True if task was cancelled
         """
@@ -180,7 +176,7 @@ class TaskScheduler:
 
     def get_queue_status(self) -> dict[str, Any]:
         """Get current queue statistics.
-        
+
         Returns:
             Dictionary with queue metrics
         """

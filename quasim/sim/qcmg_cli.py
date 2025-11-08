@@ -13,8 +13,8 @@ import sys
 from pathlib import Path
 
 from quasim.sim.qcmg_field import (
-    QuantacosmomorphysigeneticField,
     QCMGParameters,
+    QuantacosmomorphysigeneticField,
 )
 
 

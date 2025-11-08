@@ -11,11 +11,11 @@ from .state import StateManager
 @dataclass
 class DigitalTwin:
     """Digital twin representation for physical systems.
-    
+
     Provides quantum-enhanced simulation for aerospace, pharmaceutical,
     financial, and manufacturing applications. Integrates with QuASIM's
     quantum computing module for hybrid classical-quantum simulation.
-    
+
     Attributes:
         twin_id: Unique identifier for the digital twin
         system_type: Type of physical system ('aerospace', 'pharma', 'finance', 'manufacturing')
@@ -36,7 +36,7 @@ class DigitalTwin:
 
     def update_state(self, new_state: dict[str, Any]) -> None:
         """Update the current state of the digital twin.
-        
+
         Args:
             new_state: Dictionary containing state variables
         """
@@ -44,13 +44,13 @@ class DigitalTwin:
 
     def simulate_forward(self, time_steps: int, delta_t: float = 1.0) -> list[dict[str, Any]]:
         """Simulate the system forward in time.
-        
+
         Uses quantum-accelerated algorithms for state prediction where applicable.
-        
+
         Args:
             time_steps: Number of time steps to simulate
             delta_t: Time step size in simulation units
-            
+
         Returns:
             List of predicted states at each time step
         """
@@ -67,15 +67,15 @@ class DigitalTwin:
 
     def _evolve_state(self, state: dict[str, Any], delta_t: float) -> dict[str, Any]:
         """Evolve state by one time step using physics models.
-        
+
         In production, this would integrate with quantum computing
         module for quantum-enhanced molecular dynamics (pharma),
         portfolio optimization (finance), or structural analysis (aerospace).
-        
+
         Args:
             state: Current state variables
             delta_t: Time step size
-            
+
         Returns:
             Updated state after evolution
         """
@@ -99,10 +99,10 @@ class DigitalTwin:
 
     def optimize_parameters(self, objective: str) -> dict[str, Any]:
         """Optimize system parameters using quantum-enhanced algorithms.
-        
+
         Args:
             objective: Optimization objective ('cost', 'performance', 'risk')
-            
+
         Returns:
             Optimized parameters and objective value
         """

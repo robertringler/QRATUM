@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 
 class Precision(str, Enum):
     """Floating-point precision modes."""
+
     FP8 = "fp8"
     FP16 = "fp16"
     FP32 = "fp32"
@@ -33,6 +34,7 @@ class Precision(str, Enum):
 
 class Backend(str, Enum):
     """Computation backend."""
+
     CPU = "cpu"
     CUDA = "cuda"
     HIP = "hip"
@@ -50,10 +52,10 @@ class PressurePoissonConfig:
         precision: Precision = Precision.FP32,
         backend: Backend = Backend.CPU,
         deterministic: bool = True,
-        seed: int = 42
+        seed: int = 42,
     ):
         """Initialize solver configuration.
-        
+
         Args:
             grid_size: (nx, ny, nz) grid dimensions
             max_iterations: Maximum solver iterations
@@ -81,7 +83,7 @@ class PressurePoissonSolver:
 
     def __init__(self, config: PressurePoissonConfig):
         """Initialize solver with configuration.
-        
+
         Args:
             config: Solver configuration
         """
@@ -102,6 +104,7 @@ class PressurePoissonSolver:
         if self.backend == Backend.CUDA:
             try:
                 import cupy as cp
+
                 self.xp = cp
                 logger.info("CUDA backend initialized")
             except ImportError:
@@ -111,6 +114,7 @@ class PressurePoissonSolver:
         elif self.backend == Backend.JAX:
             try:
                 import jax.numpy as jnp
+
                 self.xp = jnp
                 logger.info("JAX backend initialized")
             except ImportError:
@@ -123,10 +127,10 @@ class PressurePoissonSolver:
 
     def _apply_laplacian(self, pressure: np.ndarray) -> np.ndarray:
         """Apply discrete Laplacian operator.
-        
+
         Args:
             pressure: Pressure field
-            
+
         Returns:
             Laplacian of pressure field
         """
@@ -137,32 +141,28 @@ class PressurePoissonSolver:
         # For simplicity, assume h=1
 
         lap[1:-1, 1:-1, 1:-1] = (
-            pressure[2:, 1:-1, 1:-1] +
-            pressure[:-2, 1:-1, 1:-1] +
-            pressure[1:-1, 2:, 1:-1] +
-            pressure[1:-1, :-2, 1:-1] +
-            pressure[1:-1, 1:-1, 2:] +
-            pressure[1:-1, 1:-1, :-2] -
-            6 * pressure[1:-1, 1:-1, 1:-1]
+            pressure[2:, 1:-1, 1:-1]
+            + pressure[:-2, 1:-1, 1:-1]
+            + pressure[1:-1, 2:, 1:-1]
+            + pressure[1:-1, :-2, 1:-1]
+            + pressure[1:-1, 1:-1, 2:]
+            + pressure[1:-1, 1:-1, :-2]
+            - 6 * pressure[1:-1, 1:-1, 1:-1]
         )
 
         return lap
 
     def _multigrid_vcycle(
-        self,
-        pressure: np.ndarray,
-        rhs: np.ndarray,
-        level: int = 0,
-        max_level: int = 3
+        self, pressure: np.ndarray, rhs: np.ndarray, level: int = 0, max_level: int = 3
     ) -> np.ndarray:
         """Multigrid V-cycle for solving Poisson equation.
-        
+
         Args:
             pressure: Current pressure field
             rhs: Right-hand side (divergence of velocity)
             level: Current multigrid level
             max_level: Maximum multigrid level
-            
+
         Returns:
             Updated pressure field
         """
@@ -196,16 +196,13 @@ class PressurePoissonSolver:
 
         return pressure
 
-    def solve(
-        self,
-        velocity_divergence: Optional[np.ndarray] = None
-    ) -> Dict[str, Any]:
+    def solve(self, velocity_divergence: Optional[np.ndarray] = None) -> Dict[str, Any]:
         """Solve pressure Poisson equation.
-        
+
         Args:
             velocity_divergence: Divergence of velocity field (RHS).
                                 If None, uses random test data.
-        
+
         Returns:
             Dictionary with solution and metrics
         """
@@ -215,15 +212,13 @@ class PressurePoissonSolver:
         # Initialize fields
         if velocity_divergence is None:
             # Generate test divergence field
-            velocity_divergence = self.xp.random.randn(
-                self.nx, self.ny, self.nz
-            ).astype(np.float32)
+            velocity_divergence = self.xp.random.randn(self.nx, self.ny, self.nz).astype(np.float32)
 
         pressure = self.xp.zeros((self.nx, self.ny, self.nz), dtype=np.float32)
 
         # Iterative solve with multigrid V-cycle
         iteration = 0
-        residual_norm = float('inf')
+        residual_norm = float("inf")
 
         while iteration < self.config.max_iterations and residual_norm > self.config.tolerance:
             # Apply multigrid V-cycle
@@ -265,7 +260,7 @@ class PressurePoissonSolver:
                 "energy_kwh": energy_kwh,
                 "cost_usd_per_sim": cost_usd,
                 "num_cells": num_cells,
-            }
+            },
         }
 
         logger.info(f"Solve completed: {status}")
@@ -289,7 +284,7 @@ def main():
         precision=Precision.FP32,
         backend=Backend.CPU,
         deterministic=True,
-        seed=42
+        seed=42,
     )
 
     # Create solver

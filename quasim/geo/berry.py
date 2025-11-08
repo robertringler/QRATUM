@@ -18,24 +18,24 @@ def compute_berry_phase(
     parameter_path: Array,
 ) -> float:
     """Compute Berry phase for a closed loop in parameter space.
-    
+
     The Berry phase γ is given by:
         γ = i ∮ ⟨ψ(R)|∇_R|ψ(R)⟩ · dR
-    
+
     where ψ(R) is a parameter-dependent eigenstate and R is the parameter vector.
-    
+
     Args:
         eigenvectors: Array of shape (n_steps, n_dim) containing eigenvectors
                      along the parameter path
         parameter_path: Array of shape (n_steps, n_params) containing parameter values
-        
+
     Returns:
         Berry phase γ in radians, normalized to [-π, π]
-        
+
     Example:
         >>> n_steps = 100
         >>> theta = np.linspace(0, 2*np.pi, n_steps)
-        >>> eigvecs = np.array([[np.cos(t/2), np.sin(t/2)*np.exp(1j*phi)] 
+        >>> eigvecs = np.array([[np.cos(t/2), np.sin(t/2)*np.exp(1j*phi)]
         ...                     for t, phi in zip(theta, theta)])
         >>> params = np.column_stack([theta, theta])
         >>> gamma = compute_berry_phase(eigvecs, params)
@@ -77,21 +77,21 @@ def evolve_with_berry_phase(
     dt: float,
 ) -> tuple[Array, float]:
     """Evolve quantum state along parameter path, tracking Berry phase.
-    
+
     Performs adiabatic evolution with the Hamiltonian H(R(t)) while computing
     the accumulated geometric phase.
-    
+
     Args:
         initial_state: Initial quantum state vector
         hamiltonian_func: Function H(R) returning Hamiltonian matrix for parameters R
         parameter_path: Array of shape (n_steps, n_params) defining the path
         dt: Time step for evolution
-        
+
     Returns:
         Tuple of (final_state, berry_phase):
             - final_state: Evolved state vector
             - berry_phase: Accumulated Berry phase in radians
-            
+
     Example:
         >>> initial = np.array([1.0, 0.0], dtype=complex)
         >>> def H(R): return np.array([[R[0], R[1]], [R[1], -R[0]]])
@@ -133,16 +133,16 @@ def evolve_with_berry_phase(
 
 def analytical_berry_phase_spin_half(solid_angle: float) -> float:
     """Compute analytical Berry phase for spin-1/2 on a sphere.
-    
+
     For a spin-1/2 particle transported around a closed path enclosing
     solid angle Ω on the Bloch sphere, the Berry phase is γ = -Ω/2.
-    
+
     Args:
         solid_angle: Solid angle Ω enclosed by the path (in steradians)
-        
+
     Returns:
         Berry phase γ = -Ω/2 in radians
-        
+
     Reference:
         Berry (1984), Section 5: "Spin in a precessing magnetic field"
     """

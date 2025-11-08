@@ -16,7 +16,7 @@ class TestFluentAdapter:
         result = subprocess.run(
             ["python3", "integrations/adapters/fluent/quasim_fluent_driver.py", "--help"],
             capture_output=True,
-            text=True
+            text=True,
         )
         assert result.returncode == 0
         assert "QuASIM Fluent Driver" in result.stdout
@@ -32,11 +32,15 @@ class TestFluentAdapter:
 
             # Create job config
             job_config = tmpdir_path / "job_config.json"
-            job_config.write_text(json.dumps({
-                "solver": "pressure_poisson",
-                "max_iterations": 10,
-                "convergence_tolerance": 1e-6
-            }))
+            job_config.write_text(
+                json.dumps(
+                    {
+                        "solver": "pressure_poisson",
+                        "max_iterations": 10,
+                        "convergence_tolerance": 1e-6,
+                    }
+                )
+            )
 
             # Create output path
             output_file = tmpdir_path / "results.csv"
@@ -46,12 +50,15 @@ class TestFluentAdapter:
                 [
                     "python3",
                     "integrations/adapters/fluent/quasim_fluent_driver.py",
-                    "--mesh", str(mesh_file),
-                    "--job", str(job_config),
-                    "--output", str(output_file)
+                    "--mesh",
+                    str(mesh_file),
+                    "--job",
+                    str(job_config),
+                    "--output",
+                    str(output_file),
                 ],
                 capture_output=True,
-                text=True
+                text=True,
             )
 
             assert result.returncode == 0, f"Stderr: {result.stderr}"
@@ -71,11 +78,15 @@ class TestFluentAdapter:
             bc_file.write_text("inlet:\n  type: velocity\n  value: [1, 0, 0]\n")
 
             job_config = tmpdir_path / "job.json"
-            job_config.write_text(json.dumps({
-                "solver": "pressure_poisson",
-                "max_iterations": 10,
-                "convergence_tolerance": 1e-6
-            }))
+            job_config.write_text(
+                json.dumps(
+                    {
+                        "solver": "pressure_poisson",
+                        "max_iterations": 10,
+                        "convergence_tolerance": 1e-6,
+                    }
+                )
+            )
 
             output_file = tmpdir_path / "results.csv"
 
@@ -84,14 +95,19 @@ class TestFluentAdapter:
                 [
                     "python3",
                     "integrations/adapters/fluent/quasim_fluent_driver.py",
-                    "--mesh", str(mesh_file),
-                    "--bc", str(bc_file),
-                    "--job", str(job_config),
-                    "--output", str(output_file),
-                    "--format", "csv"
+                    "--mesh",
+                    str(mesh_file),
+                    "--bc",
+                    str(bc_file),
+                    "--job",
+                    str(job_config),
+                    "--output",
+                    str(output_file),
+                    "--format",
+                    "csv",
                 ],
                 capture_output=True,
-                text=True
+                text=True,
             )
 
             assert result.returncode == 0

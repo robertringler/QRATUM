@@ -178,7 +178,7 @@ class TestMultiQubitSimulator:
         probs = np.abs(sim.state) ** 2
         nonzero = probs[probs > 1e-10]
         assert len(nonzero) == 3
-        assert np.allclose(nonzero, 1.0/3.0, atol=1e-10)
+        assert np.allclose(nonzero, 1.0 / 3.0, atol=1e-10)
 
     def test_noise_application(self):
         """Test noise channel application."""
@@ -191,11 +191,7 @@ class TestMultiQubitSimulator:
         fidelity_pure = sim.compute_fidelity(target)
 
         # Apply noise
-        noise_dict = {
-            "gamma1": 0.01,
-            "gamma_phi": 0.01,
-            "p_depol": 0.01
-        }
+        noise_dict = {"gamma1": 0.01, "gamma_phi": 0.01, "p_depol": 0.01}
         sim.apply_noise(noise_dict)
 
         # Fidelity should decrease

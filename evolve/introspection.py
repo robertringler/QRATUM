@@ -1,4 +1,5 @@
 """Runtime introspection agent for kernel metrics collection."""
+
 from __future__ import annotations
 
 import json

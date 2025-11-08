@@ -18,25 +18,25 @@ def effective_mass_hamiltonian(
     potential: NDArray[np.float64] | None = None,
 ) -> Array:
     """Construct position-dependent effective-mass Hamiltonian.
-    
+
     Hamiltonian with spatially varying effective mass:
         H = -∇ · (ℏ²/2m(r)) ∇ + V(r)
-    
+
     Discretized using finite differences with proper operator ordering.
-    
+
     Args:
         mass_profile: Effective mass m(r) at each spatial point
         dx: Spatial grid spacing
         potential: Optional potential energy V(r)
-        
+
     Returns:
         Effective-mass Hamiltonian matrix
-        
+
     Example:
         >>> m = np.ones(64)
         >>> m[32:] = 2.0  # Mass jump at x = L/2
         >>> H = effective_mass_hamiltonian(m, 0.1)
-    
+
     Reference:
         BenDaniel & Duke (1966), Phys. Rev. 152, 683
     """
@@ -81,18 +81,18 @@ def dispersion_relation(
     lattice_constant: float,
 ) -> tuple[NDArray[np.float64], Array]:
     """Compute energy dispersion E(k) from Hamiltonian.
-    
+
     Diagonalizes Hamiltonian to obtain energy bands.
-    
+
     Args:
         hamiltonian: System Hamiltonian matrix
         lattice_constant: Lattice spacing a
-        
+
     Returns:
         Tuple of (wavevectors, energies):
             - wavevectors: k-points in first Brillouin zone
             - energies: Energy eigenvalues E_n(k)
-            
+
     Example:
         >>> H = np.diag([1, 2, 3, 4])
         >>> k, E = dispersion_relation(H, 1.0)
@@ -114,19 +114,19 @@ def test_dispersion_parabolic(
     tolerance: float = 0.1,
 ) -> tuple[bool, float]:
     """Test if dispersion relation is parabolic E ∝ k²/2m.
-    
+
     Fits low-energy dispersion to parabolic form and extracts effective mass.
-    
+
     Args:
         hamiltonian: Hamiltonian matrix
         effective_mass_expected: Expected effective mass
         tolerance: Relative tolerance for mass extraction
-        
+
     Returns:
         Tuple of (is_parabolic, extracted_mass):
             - is_parabolic: True if dispersion is parabolic within tolerance
             - extracted_mass: Fitted effective mass
-            
+
     Example:
         >>> m = np.ones(64)
         >>> H = effective_mass_hamiltonian(m, 0.1)
@@ -164,21 +164,21 @@ def heterostructure_hamiltonian(
     dx: float,
 ) -> Array:
     """Construct Hamiltonian for a heterostructure with mass discontinuity.
-    
+
     Models semiconductor heterostructure with:
         - Different effective masses in left/right regions
         - Potential barrier at interface
-    
+
     Args:
         n_points: Number of spatial grid points
         mass_left: Effective mass in left region
         mass_right: Effective mass in right region
         barrier_height: Potential barrier height at interface
         dx: Spatial grid spacing
-        
+
     Returns:
         Heterostructure Hamiltonian matrix
-        
+
     Example:
         >>> H = heterostructure_hamiltonian(128, 1.0, 2.0, 0.5, 0.1)
     """

@@ -3,6 +3,7 @@
 This module generates comprehensive academic-style white papers analyzing
 QuASIM integration opportunities across Fortune 500 companies.
 """
+
 import json
 from dataclasses import dataclass
 from pathlib import Path
@@ -289,11 +290,7 @@ This white paper follows APA 7th edition formatting guidelines with:
         sectors = self.data["sector_summaries"]
 
         # Sort sectors by mean QII
-        sorted_sectors = sorted(
-            sectors.items(),
-            key=lambda x: x[1]["mean_qii"],
-            reverse=True
-        )
+        sorted_sectors = sorted(sectors.items(), key=lambda x: x[1]["mean_qii"], reverse=True)
 
         content = """# Sectoral Analysis
 

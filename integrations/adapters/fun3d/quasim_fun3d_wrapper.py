@@ -18,8 +18,7 @@ import sys
 from pathlib import Path
 
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -71,9 +70,7 @@ class FUN3DFlow:
 
 def main() -> int:
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="QuASIM FUN3D Wrapper"
-    )
+    parser = argparse.ArgumentParser(description="QuASIM FUN3D Wrapper")
     parser.add_argument("--flow", type=Path, required=True, help="FUN3D flow.dat file")
     parser.add_argument("--mesh", type=Path, required=True, help="FUN3D mesh file")
     parser.add_argument("--output", type=Path, required=True, help="Output file")

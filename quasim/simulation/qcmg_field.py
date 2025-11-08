@@ -13,7 +13,7 @@ from typing import Any
 @dataclass
 class QCMGParameters:
     """Parameters for Quantacosmorphysigenetic Field simulation.
-    
+
     Attributes:
         coupling_strength: Field coupling strength coefficient (default: 1.0)
         field_dimension: Dimensionality of the field space (default: 3)
@@ -43,7 +43,7 @@ class QCMGParameters:
 @dataclass
 class FieldState:
     """State representation for Quantacosmorphysigenetic Field.
-    
+
     Attributes:
         field_values: Current field configuration values
         momentum: Conjugate momentum field values
@@ -65,7 +65,7 @@ class FieldState:
 
     def copy(self) -> FieldState:
         """Create a deep copy of the field state.
-        
+
         Returns:
             New FieldState instance with copied values
         """
@@ -80,11 +80,11 @@ class FieldState:
 
 class QuantacosmorphysigeneticField:
     """Quantacosmorphysigenetic Field simulator for quantum-classical systems.
-    
+
     This class provides both symbolic and numerical simulation engines for
     quantum-classical hybrid systems based on QCMG field theory. It supports
     field evolution, state management, and quantum-classical coupling.
-    
+
     Attributes:
         parameters: QCMG field parameters configuration
         state: Current field state
@@ -93,7 +93,7 @@ class QuantacosmorphysigeneticField:
 
     def __init__(self, parameters: QCMGParameters | None = None) -> None:
         """Initialize the QCMG field simulator.
-        
+
         Args:
             parameters: QCMG field parameters, uses defaults if None
         """
@@ -104,7 +104,7 @@ class QuantacosmorphysigeneticField:
 
     def initialize(self, initial_state: FieldState | None = None) -> None:
         """Initialize the field with an initial state.
-        
+
         Args:
             initial_state: Initial field state, creates default if None
         """
@@ -125,15 +125,15 @@ class QuantacosmorphysigeneticField:
 
     def evolve(self, time_delta: float = 1.0) -> FieldState:
         """Evolve the field forward in time.
-        
+
         Uses quantum-classical hybrid evolution algorithm based on QCMG theory.
-        
+
         Args:
             time_delta: Time step for evolution
-            
+
         Returns:
             Updated field state after evolution
-            
+
         Raises:
             RuntimeError: If field not initialized
         """
@@ -162,9 +162,7 @@ class QuantacosmorphysigeneticField:
         # Calculate energy (simplified Hamiltonian)
         kinetic_energy = sum(abs(p) ** 2 for p in new_momentum) / 2
         potential_energy = (
-            self.parameters.coupling_strength
-            * sum(abs(f) ** 2 for f in new_field_values)
-            / 2
+            self.parameters.coupling_strength * sum(abs(f) ** 2 for f in new_field_values) / 2
         )
         total_energy = kinetic_energy + potential_energy
 
@@ -183,13 +181,13 @@ class QuantacosmorphysigeneticField:
 
     def simulate(self, num_steps: int | None = None) -> list[FieldState]:
         """Run a full simulation for specified number of steps.
-        
+
         Args:
             num_steps: Number of evolution steps, uses parameter default if None
-            
+
         Returns:
             List of field states at each evolution step
-            
+
         Raises:
             RuntimeError: If field not initialized
         """
@@ -207,7 +205,7 @@ class QuantacosmorphysigeneticField:
 
     def get_state(self) -> FieldState:
         """Get the current field state.
-        
+
         Returns:
             Copy of current field state
         """
@@ -215,7 +213,7 @@ class QuantacosmorphysigeneticField:
 
     def get_history(self) -> list[FieldState]:
         """Get the full evolution history.
-        
+
         Returns:
             List of all recorded field states
         """

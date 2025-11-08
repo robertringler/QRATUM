@@ -14,7 +14,7 @@ import numpy as np
 @dataclass
 class QCMGParameters:
     """Parameters for QCMG field simulation.
-    
+
     Attributes:
         grid_size: Size of the spatial grid (default: 64)
         dt: Time step for evolution (default: 0.01)
@@ -37,7 +37,7 @@ class QCMGParameters:
 @dataclass
 class QCMGState:
     """State of the QCMG field system.
-    
+
     Attributes:
         time: Current simulation time
         phi_m: Physical/material field (complex array)
@@ -57,18 +57,18 @@ class QCMGState:
 
 class QuantacosmorphysigeneticField:
     """Quantacosmomorphysigenetic field simulator.
-    
+
     Simulates coupled quantum-classical field dynamics with:
     - Physical field (Φ_m): Material/energy distribution
     - Informational field (Φ_i): Information density and quantum correlations
-    
+
     The fields evolve according to coupled differential equations with
     damping, coupling, and thermal noise.
     """
 
     def __init__(self, params: QCMGParameters):
         """Initialize the field simulator.
-        
+
         Args:
             params: Simulation parameters
         """
@@ -93,7 +93,7 @@ class QuantacosmorphysigeneticField:
 
     def initialize(self, mode: str = "gaussian") -> None:
         """Initialize the field state.
-        
+
         Args:
             mode: Initialization mode - "gaussian", "soliton", or "random"
         """
@@ -123,8 +123,8 @@ class QuantacosmorphysigeneticField:
             raise ValueError(f"Unknown initialization mode: {mode}")
 
         # Normalize
-        self.phi_m = self.phi_m / np.sqrt(np.sum(np.abs(self.phi_m)**2) * self.dx)
-        self.phi_i = self.phi_i / np.sqrt(np.sum(np.abs(self.phi_i)**2) * self.dx)
+        self.phi_m = self.phi_m / np.sqrt(np.sum(np.abs(self.phi_m) ** 2) * self.dx)
+        self.phi_i = self.phi_i / np.sqrt(np.sum(np.abs(self.phi_i) ** 2) * self.dx)
 
         # Reset time and trajectory
         self.time = 0.0
@@ -137,10 +137,10 @@ class QuantacosmorphysigeneticField:
 
     def _compute_laplacian(self, field: np.ndarray) -> np.ndarray:
         """Compute spatial Laplacian using finite differences.
-        
+
         Args:
             field: Input field array
-            
+
         Returns:
             Laplacian of the field
         """
@@ -155,7 +155,7 @@ class QuantacosmorphysigeneticField:
 
     def _compute_coherence(self) -> float:
         """Compute quantum coherence measure.
-        
+
         Returns:
             Coherence value in [0, 1]
         """
@@ -164,8 +164,8 @@ class QuantacosmorphysigeneticField:
 
         # Coherence based on field overlap
         overlap = np.abs(np.sum(np.conj(self.phi_m) * self.phi_i) * self.dx)
-        norm_m = np.sqrt(np.sum(np.abs(self.phi_m)**2) * self.dx)
-        norm_i = np.sqrt(np.sum(np.abs(self.phi_i)**2) * self.dx)
+        norm_m = np.sqrt(np.sum(np.abs(self.phi_m) ** 2) * self.dx)
+        norm_i = np.sqrt(np.sum(np.abs(self.phi_i) ** 2) * self.dx)
 
         if norm_m * norm_i > 0:
             coherence = overlap / (norm_m * norm_i)
@@ -176,7 +176,7 @@ class QuantacosmorphysigeneticField:
 
     def _compute_entropy(self) -> float:
         """Compute system entropy.
-        
+
         Returns:
             Entropy value >= 0
         """
@@ -184,8 +184,8 @@ class QuantacosmorphysigeneticField:
             return 0.0
 
         # Von Neumann-like entropy based on field distribution
-        prob_m = np.abs(self.phi_m)**2
-        prob_i = np.abs(self.phi_i)**2
+        prob_m = np.abs(self.phi_m) ** 2
+        prob_i = np.abs(self.phi_i) ** 2
 
         # Normalize
         prob_m = prob_m / (np.sum(prob_m) + 1e-10)
@@ -199,7 +199,7 @@ class QuantacosmorphysigeneticField:
 
     def _compute_energy(self) -> float:
         """Compute total field energy.
-        
+
         Returns:
             Total energy
         """
@@ -210,23 +210,25 @@ class QuantacosmorphysigeneticField:
         grad_m = np.gradient(self.phi_m, self.dx)
         grad_i = np.gradient(self.phi_i, self.dx)
 
-        kinetic_m = 0.5 * np.sum(np.abs(grad_m)**2) * self.dx
-        kinetic_i = 0.5 * np.sum(np.abs(grad_i)**2) * self.dx
+        kinetic_m = 0.5 * np.sum(np.abs(grad_m) ** 2) * self.dx
+        kinetic_i = 0.5 * np.sum(np.abs(grad_i) ** 2) * self.dx
 
         # Potential energy (field amplitudes)
-        potential_m = 0.5 * np.sum(np.abs(self.phi_m)**2) * self.dx
-        potential_i = 0.5 * np.sum(np.abs(self.phi_i)**2) * self.dx
+        potential_m = 0.5 * np.sum(np.abs(self.phi_m) ** 2) * self.dx
+        potential_i = 0.5 * np.sum(np.abs(self.phi_i) ** 2) * self.dx
 
         # Interaction energy
-        interaction = self.params.coupling_strength * np.sum(
-            np.abs(self.phi_m * np.conj(self.phi_i))
-        ) * self.dx
+        interaction = (
+            self.params.coupling_strength
+            * np.sum(np.abs(self.phi_m * np.conj(self.phi_i)))
+            * self.dx
+        )
 
         return float(kinetic_m + kinetic_i + potential_m + potential_i + interaction)
 
     def evolve(self) -> QCMGState:
         """Evolve the field forward by one time step.
-        
+
         Returns:
             Current field state after evolution
         """
@@ -237,12 +239,10 @@ class QuantacosmorphysigeneticField:
 
         # Add thermal noise
         noise_m = (
-            np.random.randn(self.params.grid_size) +
-            1j * np.random.randn(self.params.grid_size)
+            np.random.randn(self.params.grid_size) + 1j * np.random.randn(self.params.grid_size)
         ) * self.params.thermal_noise
         noise_i = (
-            np.random.randn(self.params.grid_size) +
-            1j * np.random.randn(self.params.grid_size)
+            np.random.randn(self.params.grid_size) + 1j * np.random.randn(self.params.grid_size)
         ) * self.params.thermal_noise
 
         # Compute Laplacians (diffusion)
@@ -255,7 +255,7 @@ class QuantacosmorphysigeneticField:
             1j * laplacian_m
             + self.params.coupling_strength * self.phi_i
             - self.params.damping_coeff * self.phi_m
-            - self.params.interaction_strength * np.abs(self.phi_m)**2 * self.phi_m
+            - self.params.interaction_strength * np.abs(self.phi_m) ** 2 * self.phi_m
             + noise_m
         )
 
@@ -264,7 +264,7 @@ class QuantacosmorphysigeneticField:
             1j * laplacian_i
             + self.params.coupling_strength * self.phi_m
             - self.params.damping_coeff * self.phi_i
-            - self.params.interaction_strength * np.abs(self.phi_i)**2 * self.phi_i
+            - self.params.interaction_strength * np.abs(self.phi_i) ** 2 * self.phi_i
             + noise_i
         )
 
@@ -297,7 +297,7 @@ class QuantacosmorphysigeneticField:
 
     def get_state(self) -> QCMGState:
         """Get current field state without evolving.
-        
+
         Returns:
             Current field state
         """
@@ -315,7 +315,7 @@ class QuantacosmorphysigeneticField:
 
     def export_state(self) -> dict[str, Any]:
         """Export field state and trajectory data.
-        
+
         Returns:
             Dictionary containing state and trajectory information
         """

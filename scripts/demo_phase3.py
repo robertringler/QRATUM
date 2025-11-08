@@ -51,9 +51,11 @@ def demo_evolution():
 
         if controller.best_genome:
             print(f"  Best fitness: {controller.best_genome.fitness:.4f}")
-            print(f"  Best config: tile={controller.best_genome.tile_size}, "
-                  f"warp={controller.best_genome.warp_count}, "
-                  f"precision={controller.best_genome.precision}")
+            print(
+                f"  Best config: tile={controller.best_genome.tile_size}, "
+                f"warp={controller.best_genome.warp_count}, "
+                f"precision={controller.best_genome.precision}"
+            )
 
     controller.save_policy()
     print("\nSaved evolved policy to evolve/policies/policy.json")
@@ -72,8 +74,10 @@ def demo_precision():
 
     print("\nPrecision zones:")
     for zone in precision_map.zones:
-        print(f"  {zone.zone_id:10s}: {zone.precision.value:6s} "
-              f"(region={zone.region}, tolerance={zone.error_tolerance:.1e})")
+        print(
+            f"  {zone.zone_id:10s}: {zone.precision.value:6s} "
+            f"(region={zone.region}, tolerance={zone.error_tolerance:.1e})"
+        )
 
     print(f"\nGlobal error budget: {precision_map.global_error_budget:.1e}")
 
@@ -309,20 +313,32 @@ def demo_federated():
 
     # Deployment 1
     aggregator.add_telemetry(
-        "deployment_us_west", config_a, latency_ms=95.0, energy_j=9.5,
-        throughput_gops=1050.0, timestamp=time.time()
+        "deployment_us_west",
+        config_a,
+        latency_ms=95.0,
+        energy_j=9.5,
+        throughput_gops=1050.0,
+        timestamp=time.time(),
     )
 
     # Deployment 2
     aggregator.add_telemetry(
-        "deployment_eu_central", config_a, latency_ms=102.0, energy_j=10.2,
-        throughput_gops=980.0, timestamp=time.time()
+        "deployment_eu_central",
+        config_a,
+        latency_ms=102.0,
+        energy_j=10.2,
+        throughput_gops=980.0,
+        timestamp=time.time(),
     )
 
     # Deployment 3
     aggregator.add_telemetry(
-        "deployment_asia_east", config_b, latency_ms=78.0, energy_j=12.0,
-        throughput_gops=1280.0, timestamp=time.time()
+        "deployment_asia_east",
+        config_b,
+        latency_ms=78.0,
+        energy_j=12.0,
+        throughput_gops=1280.0,
+        timestamp=time.time(),
     )
 
     print("Aggregating performance data...")

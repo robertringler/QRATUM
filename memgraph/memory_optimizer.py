@@ -1,4 +1,5 @@
 """Topological memory graph optimizer using GNN-inspired algorithms."""
+
 from __future__ import annotations
 
 import json
@@ -55,9 +56,7 @@ class MemoryGraphOptimizer:
         self.nodes: Dict[str, MemoryNode] = {}
         self.layouts: Dict[str, MemoryLayout] = {}
 
-    def add_node(
-        self, node_id: str, size_bytes: int, access_frequency: int = 1
-    ) -> None:
+    def add_node(self, node_id: str, size_bytes: int, access_frequency: int = 1) -> None:
         """Add a memory node to the graph."""
         if node_id not in self.nodes:
             self.nodes[node_id] = MemoryNode(

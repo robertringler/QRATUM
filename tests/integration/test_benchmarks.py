@@ -18,10 +18,11 @@ class TestBenchmarks:
                     "python3",
                     "integrations/benchmarks/aero/run_benchmarks.py",
                     "--quick",
-                    "--output-dir", tmpdir
+                    "--output-dir",
+                    tmpdir,
                 ],
                 capture_output=True,
-                text=True
+                text=True,
             )
 
             assert result.returncode == 0, f"Stderr: {result.stderr}"
@@ -49,7 +50,7 @@ class TestBenchmarks:
             ["python3", "integrations/kernels/cfd/pressure_poisson.py"],
             capture_output=True,
             text=True,
-            timeout=60
+            timeout=60,
         )
 
         assert result.returncode == 0, f"Stderr: {result.stderr}"
