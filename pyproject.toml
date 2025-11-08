@@ -1,3 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quasim"
+version = "0.1.0"
+description = "Quantum-Inspired Autonomous Simulation platform"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "QuASIM Team"}
+]
+
+[tool.setuptools]
+packages = ["quasim", "quasim.api", "quasim.distributed", "quasim.dtwin", "quasim.opt", "quasim.qc", "quasim.hcal"]
+
+[project.scripts]
+quasim-hcal = "quasim.hcal.cli:cli"
+
+[project.optional-dependencies]
+hcal = [
+    "pyyaml>=6.0",
+    "click>=8.0",
+    "numpy>=1.24",
+]
+hcal-nvidia = [
+    "nvidia-ml-py>=12.0",
+]
+hcal-amd = [
+    "pyrsmi>=1.0",
+]
+
 [tool.black]
 line-length = 100
 target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
