@@ -202,34 +202,60 @@ def test_plan_generation_with_additional_constraints():
 
 
 def test_apply_limits_power():
-    """Test applying power limits to setpoints."""
-    reconfig = ReconfigurationProfile.load("low-latency")
+    """Test applying power limits to setpoints via public API."""
+    # Setup topology
+    topology = TopologyDiscovery()
+    topology.add_device("test", "gpu", "NVIDIA A100")
 
-    setpoints = {"power_limit_w": 400, "sm_clock_mhz": 2000}
-    limits = DeviceLimits(
+    # Setup policy with power limit
+    policy = PolicyEngine()
+    policy.set_device_limits("test", DeviceLimits(
         device_id="test",
         power_watts_max=350
+    ))
+
+    # Create a custom profile with high setpoints
+    profile = Profile(
+        name="test-profile",
+        description="Test profile",
+        setpoints={"gpu": {"power_limit_w": 400, "sm_clock_mhz": 2000}},
+        constraints={}
     )
+    reconfig = create_custom_profile(profile)
 
-    limited = reconfig._apply_limits(setpoints, limits)
+    plan = reconfig.plan(topology, policy)
+    setpoints = plan["devices"]["test"]["setpoints"]
 
-    assert limited["power_limit_w"] == 350  # Capped to max
-    assert limited["sm_clock_mhz"] == 2000  # Unchanged
+    assert setpoints["power_limit_w"] == 350  # Capped to max
+    assert setpoints["sm_clock_mhz"] == 2000  # Unchanged
 
 
 def test_apply_limits_clock():
-    """Test applying clock limits to setpoints."""
-    reconfig = ReconfigurationProfile.load("low-latency")
+    """Test applying clock limits to setpoints via public API."""
+    # Setup topology
+    topology = TopologyDiscovery()
+    topology.add_device("test", "gpu", "NVIDIA A100")
 
-    setpoints = {"sm_clock_mhz": 2500}
-    limits = DeviceLimits(
+    # Setup policy with clock range
+    policy = PolicyEngine()
+    policy.set_device_limits("test", DeviceLimits(
         device_id="test",
         clock_mhz_range=(1000, 2200)
+    ))
+
+    # Create a custom profile with high clock setpoint
+    profile = Profile(
+        name="test-profile",
+        description="Test profile",
+        setpoints={"gpu": {"sm_clock_mhz": 2500}},
+        constraints={}
     )
+    reconfig = create_custom_profile(profile)
 
-    limited = reconfig._apply_limits(setpoints, limits)
+    plan = reconfig.plan(topology, policy)
+    setpoints = plan["devices"]["test"]["setpoints"]
 
-    assert limited["sm_clock_mhz"] == 2200  # Capped to max
+    assert setpoints["sm_clock_mhz"] == 2200  # Capped to max
 
 
 def test_apply_limits_clock_min():
