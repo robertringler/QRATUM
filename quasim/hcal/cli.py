@@ -73,9 +73,7 @@ def discover(json_output: bool):
         click.echo(f"\nInterconnects ({len(topology.interconnects)}):")
         for interconnect in topology.interconnects:
             itype = interconnect.interconnect_type.value
-            click.echo(
-                f"  {interconnect.source} <-> {interconnect.destination} ({itype})"
-            )
+            click.echo(f"  {interconnect.source} <-> {interconnect.destination} ({itype})")
             if interconnect.bandwidth_gbps:
                 click.echo(f"    Bandwidth: {interconnect.bandwidth_gbps} GB/s")
 

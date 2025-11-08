@@ -111,9 +111,7 @@ class HCAL:
 
         return self.sensor_manager.read_telemetry(device_id, backend)
 
-    def calibrate_bias_trim(
-        self, device_id: str, max_iterations: int = 20
-    ) -> CalibrationResult:
+    def calibrate_bias_trim(self, device_id: str, max_iterations: int = 20) -> CalibrationResult:
         """Run bias trim calibration.
 
         Args:
@@ -136,9 +134,7 @@ class HCAL:
 
         return bias_trim_v1(device_id, backend, measure_fn, apply_fn)
 
-    def run_power_sweep(
-        self, device_id: str, power_range: Tuple[float, float], steps: int = 10
-    ):
+    def run_power_sweep(self, device_id: str, power_range: Tuple[float, float], steps: int = 10):
         """Run power sweep calibration.
 
         Args:
@@ -196,6 +192,8 @@ class HCAL:
             return self.backends.get("nvidia_nvml")
 
         return None
+
+
 """
 Hardware Control Abstraction Layer (HCAL) for QuASIM.
 
@@ -205,7 +203,6 @@ This module provides policy enforcement and safety mechanisms for hardware contr
 from quasim.hcal.policy import (
     DeviceLimits,
     Environment,
-    PolicyEngine,
     PolicyViolation,
 )
 
