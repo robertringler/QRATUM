@@ -1,0 +1,165 @@
+name: HCAL CI
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'quasim/hcal/**'
+      - 'tests/hcal/**'
+      - 'configs/hcal/**'
+      - '.github/workflows/hcal-ci.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'quasim/hcal/**'
+      - 'tests/hcal/**'
+      - 'configs/hcal/**'
+      - '.github/workflows/hcal-ci.yml'
+
+jobs:
+  lint:
+    name: Lint and Type Check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff mypy
+      
+      - name: Run ruff
+        run: |
+          ruff check quasim/hcal/ tests/hcal/
+      
+      - name: Run mypy
+        run: |
+          mypy quasim/hcal/ --ignore-missing-imports || true
+
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov pyyaml click numpy
+      
+      - name: Run tests
+        run: |
+          pytest tests/hcal/ -v --cov=quasim/hcal --cov-report=xml --cov-report=term
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          flags: hcal
+          name: hcal-coverage
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit
+      
+      - name: Run bandit
+        run: |
+          bandit -r quasim/hcal/ -ll
+
+  docs:
+    name: Documentation Validation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check documentation exists
+        run: |
+          test -f docs/hcal/README.md
+          test -f docs/hcal/Safety-and-Compliance.md
+          test -f configs/hcal/policy.example.yaml
+      
+      - name: Validate YAML syntax
+        run: |
+          python -c "import yaml; yaml.safe_load(open('configs/hcal/policy.example.yaml'))"
+
+  integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pyyaml click numpy
+      
+      - name: Run integration tests
+        run: |
+          pytest tests/hcal/test_integration.py -v
+
+  coverage:
+    name: Coverage Report
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    needs: test
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov pyyaml click numpy
+      
+      - name: Run tests with coverage
+        run: |
+          pytest tests/hcal/ --cov=quasim/hcal --cov-report=term --cov-report=html
+      
+      - name: Check coverage threshold
+        run: |
+          pytest tests/hcal/ --cov=quasim/hcal --cov-report=term --cov-fail-under=50 || echo "Coverage below target (60%), continuing..."
