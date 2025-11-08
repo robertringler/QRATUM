@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 try:
     import pynvml
+
     NVML_AVAILABLE = True
 except ImportError:
     NVML_AVAILABLE = False
@@ -52,16 +53,18 @@ class NVMLBackend:
 
                 # Handle both str and bytes returns from pynvml
                 if isinstance(name, bytes):
-                    name = name.decode('utf-8')
+                    name = name.decode("utf-8")
                 if isinstance(serial, bytes):
-                    serial = serial.decode('utf-8')
+                    serial = serial.decode("utf-8")
 
-                devices.append({
-                    "id": f"GPU{i}",
-                    "index": i,
-                    "name": name,
-                    "serial": serial,
-                })
+                devices.append(
+                    {
+                        "id": f"GPU{i}",
+                        "index": i,
+                        "name": name,
+                        "serial": serial,
+                    }
+                )
         except Exception as e:
             logger.error(f"Failed to list NVIDIA devices: {e}")
 
@@ -115,7 +118,11 @@ class NVMLBackend:
                 "sm_clock_mhz": sm_clock,
                 "mem_clock_mhz": mem_clock,
                 "fan_percent": fan_speed,
-                "ecc_enabled": (ecc_current == pynvml.NVML_FEATURE_ENABLED) if ecc_current is not None else None,
+                "ecc_enabled": (
+                    (ecc_current == pynvml.NVML_FEATURE_ENABLED)
+                    if ecc_current is not None
+                    else None
+                ),
             }
 
         except Exception as e:
@@ -123,11 +130,7 @@ class NVMLBackend:
             return {}
 
     def apply_setpoint(
-        self,
-        device_id: str,
-        parameter: str,
-        value: Any,
-        dry_run: bool = True
+        self, device_id: str, parameter: str, value: Any, dry_run: bool = True
     ) -> Dict[str, Any]:
         """
         Apply setpoint to device.
@@ -168,7 +171,9 @@ class NVMLBackend:
                     current_mem_clock = pynvml.nvmlDeviceGetClockInfo(handle, pynvml.NVML_CLOCK_MEM)
                 except Exception:
                     current_mem_clock = 0
-                pynvml.nvmlDeviceSetApplicationsClocks(handle, mem_clock=current_mem_clock, sm_clock=int(value))
+                pynvml.nvmlDeviceSetApplicationsClocks(
+                    handle, mem_clock=current_mem_clock, sm_clock=int(value)
+                )
                 logger.info(f"Set {device_id} SM clock to {value}MHz")
 
             elif parameter == "mem_clock_mhz":
@@ -177,7 +182,9 @@ class NVMLBackend:
                     current_sm_clock = pynvml.nvmlDeviceGetClockInfo(handle, pynvml.NVML_CLOCK_SM)
                 except Exception:
                     current_sm_clock = 0
-                pynvml.nvmlDeviceSetApplicationsClocks(handle, mem_clock=int(value), sm_clock=current_sm_clock)
+                pynvml.nvmlDeviceSetApplicationsClocks(
+                    handle, mem_clock=int(value), sm_clock=current_sm_clock
+                )
                 logger.info(f"Set {device_id} memory clock to {value}MHz")
 
             elif parameter == "fan_percent":

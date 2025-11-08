@@ -191,9 +191,7 @@ class TopologyDiscovery:
 
         try:
             # Try Xilinx xbutil
-            subprocess.check_output(
-                ["xbutil", "examine"], text=True, stderr=subprocess.DEVNULL
-            )
+            subprocess.check_output(["xbutil", "examine"], text=True, stderr=subprocess.DEVNULL)
 
             # Parse FPGA devices (simplified)
             # In a real implementation, this would parse the output more thoroughly
