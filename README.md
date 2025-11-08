@@ -33,10 +33,40 @@ Target customers include aerospace primes (Lockheed Martin, Northrop Grumman, Bo
 
 ---
 
+## Current Validation Snapshot
+- **Modules validated:** 68 of 75 across runtime, kernels, CI/CD, and deployment.
+- **Kernels passing full suite:** 6 CUDA + 62 Python with RMSE/KL within thresholds.
+- **Coverage:** 94.0% line | 92.0% branch.
+- **Environments:** CUDA 12.1, ROCm 5.6, CPU.
+
+See the full report: [Validated Modules & Kernels](docs/validation/validated_kernels_report.md).
+
+---
+
+## IP Highlights
+- Hybrid quantum–classical scheduler with reversible kernel checkpoints.
+- Tensor-network contraction heuristics with adaptive error budgets.
+- Safety validation pipeline with enforceable approvals and rate-limiting.
+- Tool-qualification automation hooks for DO-178C/DO-330.
+- Autonomous self-evolving kernel architecture with RL optimization.
+- Anti-holographic tensor compression achieving 10-50× compression ratios.
+
+Full list and triage: [Patentables](docs/ip/patentables.md).
+
+---
+
+## Market Valuation (as of 2025-11-08)
+- **P50 Enterprise Value:** $13,909,925 (USD)
+- **Range (P10–P90):** $5,093,237 – $28,179,939
+- Scenario DCFs and methodology: [Market Valuation Report](docs/valuation/market_valuation.md).
+
+---
+
 [![NIST 800-53](https://img.shields.io/badge/NIST%20800--53-Rev%205%20HIGH-blue)](DEFENSE_COMPLIANCE_SUMMARY.md)
 [![CMMC Level 2](https://img.shields.io/badge/CMMC-Level%202%20Certified-green)](DEFENSE_COMPLIANCE_SUMMARY.md)
 [![DO-178C](https://img.shields.io/badge/DO--178C-Level%20A-orange)](DEFENSE_COMPLIANCE_SUMMARY.md)
 [![Compliance Status](https://img.shields.io/badge/Compliance-98.75%25-brightgreen)](COMPLIANCE_STATUS_CHECKLIST.md)
+[![Validation](https://img.shields.io/badge/Validated-68%2F75%20modules-brightgreen)](docs/validation/validated_kernels_report.md)
 
 ## Compliance & Certification
 

@@ -1,0 +1,102 @@
+name: Market Valuation
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'quasim/valuation/**'
+      - 'scripts/valuation/**'
+      - 'docs/valuation/**'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  run-valuation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy scipy pandas matplotlib pyyaml
+
+      - name: Run valuation script
+        run: |
+          python scripts/valuation/run_valuation.py
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet docs/valuation/market_valuation.md; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit updated valuation
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add docs/valuation/market_valuation.md
+          git add docs/valuation/data/*.csv
+          git commit -m "chore: update market valuation report [automated]"
+          git push
+
+      - name: Upload valuation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: valuation-report
+          path: |
+            docs/valuation/market_valuation.md
+            docs/valuation/data/*.csv
+          retention-days: 90
+
+      - name: Comment on PR (if applicable)
+        if: github.event_name == 'pull_request' && steps.check_changes.outputs.changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('docs/valuation/market_valuation.md', 'utf8');
+            
+            // Extract key metrics from report
+            const p50Match = report.match(/\*\*P50 Enterprise Value\*\*\s+\|\s+\$([0-9,]+)/);
+            const p10Match = report.match(/\*\*P10 Enterprise Value\*\*\s+\|\s+\$([0-9,]+)/);
+            const p90Match = report.match(/\*\*P90 Enterprise Value\*\*\s+\|\s+\$([0-9,]+)/);
+            
+            const p50 = p50Match ? p50Match[1] : 'N/A';
+            const p10 = p10Match ? p10Match[1] : 'N/A';
+            const p90 = p90Match ? p90Match[1] : 'N/A';
+            
+            const comment = `## 📊 Market Valuation Update
+            
+            The market valuation has been recalculated:
+            
+            | Metric | Value (USD) |
+            |--------|-------------|
+            | **P50 (Median)** | $${p50} |
+            | **P10 (Conservative)** | $${p10} |
+            | **P90 (Optimistic)** | $${p90} |
+            
+            [View Full Report](../blob/${context.sha}/docs/valuation/market_valuation.md)
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

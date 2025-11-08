@@ -1,0 +1,41 @@
+as_of_date: "2025-11-08"
+currency: "USD"
+discount_rate_base: 0.18
+tax_rate: 0.21
+terminal_growth: 0.03
+
+scenarios:
+  - name: Base
+    start_revenue: 0
+    year1_revenue: 2_000_000
+    yoy_growth: [1.8, 1.2, 0.8, 0.5, 0.3]
+    gross_margin: 0.78
+    opex_ratio: 0.55
+    capex_ratio: 0.06
+    wc_ratio: 0.08
+    
+  - name: High
+    start_revenue: 0
+    year1_revenue: 5_000_000
+    yoy_growth: [2.2, 1.6, 1.1, 0.6, 0.35]
+    gross_margin: 0.82
+    opex_ratio: 0.48
+    capex_ratio: 0.05
+    wc_ratio: 0.07
+    
+  - name: Low
+    start_revenue: 0
+    year1_revenue: 500_000
+    yoy_growth: [1.2, 0.8, 0.6, 0.35, 0.25]
+    gross_margin: 0.72
+    opex_ratio: 0.62
+    capex_ratio: 0.07
+    wc_ratio: 0.09
+
+monte_carlo:
+  trials: 20000
+  distributions:
+    yoy_growth_sigma: 0.25
+    gross_margin_sigma: 0.05
+    opex_ratio_sigma: 0.04
+    discount_rate_sigma: 0.03
