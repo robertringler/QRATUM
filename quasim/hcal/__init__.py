@@ -45,8 +45,8 @@ class HCAL:
         # Initialize policy engine
         self.policy_engine = PolicyEngine(policy_path)
 
-        # Override dry_run if policy requires it
-        if self.policy_engine.is_dry_run_default():
+        # Override dry_run if policy requires it (check if method exists)
+        if hasattr(self.policy_engine, 'is_dry_run_default') and self.policy_engine.is_dry_run_default():
             dry_run = True
 
         self.dry_run = dry_run
@@ -65,6 +65,28 @@ class HCAL:
 
         # Discover topology
         self.topology.discover()
+
+    @classmethod
+    def from_policy(
+        cls,
+        policy_path: Path,
+        enable_actuation: bool = False,
+        audit_log_dir: Optional[Path] = None,
+    ) -> "HCAL":
+        """Create HCAL instance from policy file.
+
+        Args:
+            policy_path: Path to policy YAML file
+            enable_actuation: Whether to enable hardware changes (overrides dry_run)
+            audit_log_dir: Directory for audit logs
+
+        Returns:
+            HCAL instance
+        """
+        # enable_actuation=True means dry_run=False
+        dry_run = not enable_actuation
+        audit_log_path = audit_log_dir / "audit.log" if audit_log_dir else None
+        return cls(policy_path=policy_path, dry_run=dry_run, audit_log_path=audit_log_path)
 
     def discover_topology(self):
         """Discover hardware topology.
