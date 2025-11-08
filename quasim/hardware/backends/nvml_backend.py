@@ -224,8 +224,8 @@ class NVMLBackend:
             try:
                 default_limit = pynvml.nvmlDeviceGetPowerManagementDefaultLimit(handle)
                 pynvml.nvmlDeviceSetPowerManagementLimit(handle, default_limit)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.warning(f"Failed to reset power management limit for {device_id}: {e}")
 
             logger.info(f"Reset {device_id} to defaults")
             return {"success": True, "dry_run": False, "device": device_id}
