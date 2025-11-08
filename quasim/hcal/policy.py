@@ -126,13 +126,14 @@ class PolicyValidator:
         return value <= limit
 """HCAL policy enforcement and validation."""
 
-from typing import Any, Dict
+from typing import Dict
+
 """Policy engine for HCAL - declarative YAML-based policy configuration."""
 
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 """
 Policy engine for hardware control operations.
@@ -168,7 +169,7 @@ class Policy:
         self.approvals = config.get("approvals", {})
 
     @classmethod
-    def from_file(cls, path: str) -> "Policy":
+    def from_file(cls, path: str) -> Policy:
         """Load policy from YAML file.
 
         Args:
