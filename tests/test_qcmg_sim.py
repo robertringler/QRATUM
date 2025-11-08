@@ -193,7 +193,7 @@ class TestFieldEvolution:
         field.initialize(mode="gaussian")
 
         n_steps = 10
-        state = field.evolve(steps=n_steps)
+        field.evolve(steps=n_steps)
 
         # Time should advance correctly
         expected_time = n_steps * params.dt
