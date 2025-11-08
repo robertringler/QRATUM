@@ -1,0 +1,182 @@
+name: HCAL Policy Gate
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'configs/hcal/**'
+      - 'quasim/hcal/policy.py'
+  release:
+    types: [ published ]
+
+jobs:
+  validate-policy:
+    name: Validate Policy Schema
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+      
+      - name: Validate policy files
+        run: |
+          for policy in configs/hcal/*.yaml; do
+            echo "Validating $policy"
+            python -c "
+          import yaml
+          import sys
+          
+          with open('$policy') as f:
+              data = yaml.safe_load(f)
+          
+          required = ['environment', 'device_allowlist', 'backend_restrictions']
+          for field in required:
+              if field not in data:
+                  print(f'Missing required field: {field}')
+                  sys.exit(1)
+          
+          if data['environment'] not in ['dev', 'lab', 'prod']:
+              print(f'Invalid environment: {data[\"environment\"]}')
+              sys.exit(1)
+          
+          print('Policy validation passed')
+          "
+          done
+
+  check-prod-safeguards:
+    name: Check Production Safeguards
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.title, 'prod') || contains(github.event.pull_request.body, 'environment: prod')
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check production policy
+        run: |
+          echo "Checking for production environment changes..."
+          
+          for policy in configs/hcal/*.yaml; do
+            if grep -q "environment: prod" "$policy"; then
+              echo "Production policy found: $policy"
+              
+              # Verify dry_run_default is true
+              if ! grep -q "dry_run_default: true" "$policy"; then
+                echo "ERROR: Production policy must have dry_run_default: true"
+                exit 1
+              fi
+              
+              # Verify approval gate is required
+              if ! grep -q "required: true" "$policy"; then
+                echo "ERROR: Production policy must require approval gate"
+                exit 1
+              fi
+              
+              echo "Production safeguards verified"
+            fi
+          done
+
+  check-limits:
+    name: Verify Safety Limits
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Check device limits
+        run: |
+          python -c "
+          import yaml
+          import sys
+          
+          for policy_file in ['configs/hcal/policy.example.yaml']:
+              with open(policy_file) as f:
+                  data = yaml.safe_load(f)
+              
+              if 'device_limits' in data:
+                  for device, limits in data['device_limits'].items():
+                      # Check GPU limits
+                      if 'max_power_watts' in limits:
+                          if limits['max_power_watts'] > 400:
+                              print(f'WARNING: {device} max_power_watts exceeds 400W')
+                      
+                      if 'max_temp_celsius' in limits:
+                          if limits['max_temp_celsius'] > 90:
+                              print(f'WARNING: {device} max_temp_celsius exceeds 90C')
+          "
+
+  approval-check:
+    name: Check Required Approvals
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check PR approvals
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: reviews } = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+            
+            const approvals = reviews.filter(review => review.state === 'APPROVED');
+            
+            console.log(`Found ${approvals.length} approvals`);
+            
+            // Check if policy changes require 2+ approvals
+            const files = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+            
+            const policyChanges = files.data.some(file => 
+              file.filename.includes('configs/hcal') || 
+              file.filename.includes('quasim/hcal/policy.py')
+            );
+            
+            if (policyChanges && approvals.length < 2) {
+              console.log('WARNING: Policy changes should have 2+ approvals');
+              core.warning('Policy changes should have at least 2 approvals');
+            }
+
+  audit-trail:
+    name: Create Audit Trail
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Generate audit log
+        run: |
+          echo "=== HCAL Release Audit Trail ===" > audit.log
+          echo "Release: ${{ github.event.release.tag_name }}" >> audit.log
+          echo "Date: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> audit.log
+          echo "Actor: ${{ github.actor }}" >> audit.log
+          echo "" >> audit.log
+          echo "Policy Files:" >> audit.log
+          find configs/hcal -name "*.yaml" -exec echo "  - {}" \; >> audit.log
+          echo "" >> audit.log
+          echo "SHA256 Checksums:" >> audit.log
+          find configs/hcal -name "*.yaml" -exec sha256sum {} \; >> audit.log
+      
+      - name: Upload audit log
+        uses: actions/upload-artifact@v3
+        with:
+          name: hcal-audit-trail
+          path: audit.log

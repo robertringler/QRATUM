@@ -1,0 +1,81 @@
+# HCAL Policy Configuration Example
+# This file defines hardware control policies for different environments
+
+environment: DEV  # Options: DEV, LAB, PROD
+
+# Allowed compute backends
+allowed_backends:
+  - cpu
+  - cuda
+  - rocm
+
+# Resource limits
+limits:
+  max_qubits: 20
+  max_circuits: 100
+  max_shots: 10000
+  timeout_seconds: 300
+
+# Additional configuration
+settings:
+  enable_telemetry: true
+  log_level: INFO
+# This file defines safety policies for hardware control operations
+
+# Environment: dev, lab, or prod
+environment: dev
+
+# Dry-run mode by default (highly recommended for safety)
+dry_run_default: true
+
+# Device allowlist (use "*" to allow all, or list specific device IDs)
+device_allowlist:
+  - "*"
+  # - "gpu0"
+  # - "gpu1"
+  # - "cpu0"
+
+# Backend restrictions (list backends to BLOCK)
+backend_restrictions: []
+  # - "AmdRocmBackend"  # Block AMD backend
+  # - "XilinxXrtBackend"  # Block Xilinx backend
+
+# Device-specific limits
+device_limits:
+  gpu0:
+    max_power_watts: 300.0
+    min_power_watts: 100.0
+    max_temp_celsius: 85.0
+    max_clock_mhz: 2000
+  
+  gpu1:
+    max_power_watts: 300.0
+    min_power_watts: 100.0
+    max_temp_celsius: 85.0
+    max_clock_mhz: 2000
+
+  cpu0:
+    max_power_watts: 150.0
+    max_temp_celsius: 90.0
+
+# Rate limiting to prevent runaway automation
+rate_limit:
+  commands_per_minute: 30
+  window_seconds: 60
+
+# Approval gates for production environments
+approval_gate:
+  required: false  # Set to true in production
+  min_approvers: 2  # Require 2+ reviewers in production
+  methods:
+    - "github_pr"  # GitHub pull request approval
+    # - "oidc"  # OpenID Connect authentication
+    # - "sigstore"  # Sigstore signing
+
+# Environment-specific configurations
+# For production, consider:
+# - environment: prod
+# - dry_run_default: true (always!)
+# - approval_gate.required: true
+# - Stricter device_limits
+# - More restrictive device_allowlist

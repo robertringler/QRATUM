@@ -8,17 +8,7 @@ import json
 import os
 
 import numpy as np
-from qutip import (
-    Qobj,
-    fidelity,
-    phasegate,
-    rx,
-    ry,
-    rz,
-    sigmax,
-    sigmay,
-    sigmaz,
-)
+from qutip import Qobj, fidelity, phasegate, rx, ry, rz, sigmax, sigmay, sigmaz
 from qutip.qip.operations import snot  # T is sqrt(S), but approx
 from scipy.linalg import expm
 

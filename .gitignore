@@ -6,6 +6,14 @@ __pycache__/
 *.pyc
 *.so
 
+# Python build artifacts
+dist/
+*.egg-info/
+.coverage
+coverage.xml
+*.whl
+*.tar.gz
+
 # Phase III generated artifacts (exclude runtime-generated data)
 evolve/logs/*.json
 evolve/policies/*.json

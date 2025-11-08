@@ -6,6 +6,7 @@ Safe operations only - no firmware writes.
 """
 
 import logging
+from contextlib import suppress
 from typing import Any, Dict, List
 
 logger = logging.getLogger(__name__)
@@ -34,10 +35,8 @@ class NVMLBackend:
 
     def __del__(self):
         if self.initialized and NVML_AVAILABLE:
-            try:
+            with suppress(Exception):
                 pynvml.nvmlShutdown()
-            except Exception:
-                pass
 
     def list_devices(self) -> List[Dict[str, Any]]:
         """List available NVIDIA GPUs."""

@@ -127,6 +127,17 @@ python3 scripts/run_phase3_cycle.py --generations 10 --population 20
 
 ---
 
+## Quantacosmic + REVULTRA Integration
+
+Implements symbolic-cognitive temporal curvature modeling and quantum manifold simulation.
+The new Quantacosmic modules power deterministic field propagation, REVULTRA curvature
+analytics, and documentation aligned with provisional patent filings. Dive deeper in the
+[Quantacosmic theory overview](docs/theory/quantacosmic.md) and review the
+[REVULTRA temporal curvature analysis](docs/analysis/REVULTRA_Temporal_Curvature_Quotient.md)
+for usage guidance.
+
+---
+
 ## Compliance & Certification
 
 | **Framework/Standard**      | **Status** | **Coverage**                      |
