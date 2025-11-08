@@ -16,6 +16,7 @@ import os
 import subprocess
 import sys
 import time
+from contextlib import suppress
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional
@@ -187,10 +188,8 @@ class PRAutoResolver:
 
         except subprocess.CalledProcessError as e:
             print(f"Error fixing conflicts: {e}")
-            try:
+            with suppress(Exception):
                 subprocess.run(["git", "merge", "--abort"], check=False)
-            except:
-                pass
             return False
 
         return False
@@ -489,10 +488,8 @@ class PRAutoResolver:
 
         # Max attempts reached
         # Label as needs-manual-review
-        try:
+        with suppress(Exception):
             pr.add_to_labels("needs-manual-review")
-        except:
-            pass
 
         return PRResolutionResult(
             pr_number=pr.number,
