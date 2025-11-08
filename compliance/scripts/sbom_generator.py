@@ -4,11 +4,11 @@
 import json
 import subprocess
 from datetime import datetime
-from pathlib import Path
+
 
 def generate_sbom(output_file="sbom.spdx.json"):
     """Generate SBOM from project dependencies"""
-    
+
     sbom = {
         "spdxVersion": "SPDX-2.3",
         "dataLicense": "CC0-1.0",
@@ -18,39 +18,39 @@ def generate_sbom(output_file="sbom.spdx.json"):
         "creationInfo": {
             "created": datetime.now().isoformat(),
             "creators": ["Tool: QuASIM SBOM Generator"],
-            "licenseListVersion": "3.21"
+            "licenseListVersion": "3.21",
         },
-        "packages": []
+        "packages": [],
     }
-    
+
     # Get pip packages
     try:
         result = subprocess.run(
-            ["pip", "list", "--format=json"],
-            capture_output=True,
-            text=True,
-            check=True
+            ["pip", "list", "--format=json"], capture_output=True, text=True, check=True
         )
         packages = json.loads(result.stdout)
-        
+
         for pkg in packages:
-            sbom["packages"].append({
-                "SPDXID": f"SPDXRef-Package-{pkg['name']}",
-                "name": pkg['name'],
-                "versionInfo": pkg['version'],
-                "downloadLocation": f"https://pypi.org/project/{pkg['name']}/{pkg['version']}/",
-                "filesAnalyzed": False,
-                "supplier": "Organization: PyPI"
-            })
+            sbom["packages"].append(
+                {
+                    "SPDXID": f"SPDXRef-Package-{pkg['name']}",
+                    "name": pkg["name"],
+                    "versionInfo": pkg["version"],
+                    "downloadLocation": f"https://pypi.org/project/{pkg['name']}/{pkg['version']}/",
+                    "filesAnalyzed": False,
+                    "supplier": "Organization: PyPI",
+                }
+            )
     except Exception as e:
         print(f"Error generating SBOM: {e}")
-    
+
     # Write SBOM
-    with open(output_file, 'w') as f:
+    with open(output_file, "w") as f:
         json.dump(sbom, f, indent=2)
-    
+
     print(f"✓ SBOM generated: {output_file}")
     return output_file
+
 
 if __name__ == "__main__":
     generate_sbom()

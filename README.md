@@ -48,6 +48,19 @@ QuASIM is **COMPLIANT** with defense, aerospace, and industry standards:
 
 **Overall Status:** 98.75% compliant across 10+ frameworks | [View Full Assessment →](COMPLIANCE_ASSESSMENT_INDEX.md)
 
+## Automated Code Quality & PR Management
+
+QuASIM features a comprehensive automated code quality and pull request management system:
+- 🤖 **Automated Code Review**: Scans and fixes code quality issues automatically
+- 🔧 **Auto-Fix on PR**: Applies ruff, black, and isort fixes directly to pull requests
+- 🔀 **Auto-Merge**: Safely merges PRs that meet all quality and CI criteria
+- 🛡️ **Security Scanning**: Automated secret detection and vulnerability scanning
+- 📊 **Code Quality**: Reduced lint errors by 67% through automated fixes
+
+**Documentation:**
+- 📖 [Auto-Merge System Guide](docs/AUTO_MERGE_SYSTEM.md) - Complete system documentation
+- 📊 [Code Quality Summary](docs/CODE_QUALITY_SUMMARY.md) - Analysis and metrics
+
 ## Quick Start
 
 ### Docker Compose (Full Stack)

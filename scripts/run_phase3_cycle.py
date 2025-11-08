@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import time
-from pathlib import Path
 
 from certs.verifier import StabilityVerifier
 from evolve.energy_monitor import EnergyMonitor
@@ -22,21 +21,21 @@ def simulate_kernel_execution(genome, precision_map):
     # Simplified simulation based on genome parameters
     base_latency = 100.0
     latency = base_latency + genome.tile_size / 5.0 + genome.warp_count * 0.5
-    
+
     base_energy = 10.0
     energy = base_energy + genome.tile_size / 50.0 + genome.warp_count * 0.2
-    
+
     # Simulate temperature and power
     temperature = 70.0 + genome.warp_count * 0.3
     power = 300.0 + genome.tile_size / 2.0
-    
+
     # Compute throughput
     throughput = 1000.0 + genome.tile_size * 2.0
-    
+
     # Simulate numerical error based on precision
     precision_map_zones = precision_map.zones if precision_map else []
     error = sum(z.error_tolerance for z in precision_map_zones) if precision_map_zones else 1e-6
-    
+
     return {
         "latency_ms": latency,
         "energy_j": energy,
@@ -55,7 +54,7 @@ def run_evolution_cycle(
 ):
     """
     Run a complete Phase III evolution cycle.
-    
+
     Integrates:
     - RL-based kernel evolution
     - Precision management with fallback
@@ -70,7 +69,7 @@ def run_evolution_cycle(
     print("=" * 80)
     print("Phase III Complete Evolution Cycle")
     print("=" * 80)
-    
+
     # Initialize all components
     print("\nInitializing components...")
     agent = IntrospectionAgent(log_dir="evolve/logs")
@@ -83,37 +82,37 @@ def run_evolution_cycle(
     profiler = CausalProfiler(delay_increment_ms=1.0)
     verifier = StabilityVerifier()
     fed_agg = FederatedAggregator(aggregation_dir="federated/aggregated")
-    
+
     # Initialize population
     print(f"Generating initial population of {population_size} genomes...")
     population = controller.initialize_population()
-    
+
     # Add memory nodes for optimization
     mem_opt.add_node("input_data", size_bytes=8192, access_frequency=50)
     mem_opt.add_node("weights", size_bytes=16384, access_frequency=40)
     mem_opt.add_node("output_data", size_bytes=8192, access_frequency=30)
     mem_opt.add_edge("input_data", "weights")
     mem_opt.add_edge("weights", "output_data")
-    
+
     # Optimize memory layout
     mem_layout = mem_opt.optimize_layout("cycle_layout")
     print(f"Optimized memory layout: {len(mem_layout.node_order)} nodes")
-    
+
     # Run evolution
     print(f"\nRunning {generations} generations of evolution...")
     best_fitness_history = []
-    
+
     for gen in range(generations):
         print(f"\n--- Generation {gen + 1}/{generations} ---")
-        
+
         for genome_idx, genome in enumerate(population):
             # Create precision map for this kernel
             kernel_id = f"kernel_g{gen}_i{genome_idx}"
             precision_map = precision_mgr.create_default_map(kernel_id)
-            
+
             # Simulate kernel execution
             result = simulate_kernel_execution(genome, precision_map)
-            
+
             # Record introspection metrics
             metrics = KernelMetrics(
                 kernel_id=kernel_id,
@@ -126,7 +125,7 @@ def run_evolution_cycle(
                 precision=genome.precision,
             )
             agent.record_metrics(metrics)
-            
+
             # Update energy monitoring
             telemetry = energy_monitor.sample_telemetry(
                 temperature=result["temperature_c"],
@@ -134,15 +133,15 @@ def run_evolution_cycle(
                 gflops=result["throughput_gops"] / 1000.0,
                 duration_s=result["latency_ms"] / 1000.0,
             )
-            
+
             # Check thermal limits and apply control
             control = energy_monitor.apply_feedback_control(telemetry)
-            
+
             # Update precision management
             needs_fallback = precision_mgr.update_accumulated_error(
                 kernel_id, result["accumulated_error"]
             )
-            
+
             # Evaluate fitness (penalize if throttled)
             throttle_penalty = (1.0 - control["throttle_factor"]) * 50.0
             fitness = controller.evaluate_fitness(
@@ -150,7 +149,7 @@ def run_evolution_cycle(
                 result["latency_ms"] + throttle_penalty,
                 result["energy_j"],
             )
-            
+
             # Add to federated aggregator
             config = {
                 "tile_size": genome.tile_size,
@@ -165,75 +164,77 @@ def run_evolution_cycle(
                 result["throughput_gops"],
                 time.time(),
             )
-        
+
         # Evolve to next generation
         population = controller.select_and_evolve()
-        
+
         if controller.best_genome:
             best_fitness_history.append(controller.best_genome.fitness)
             print(f"Best fitness: {controller.best_genome.fitness:.4f}")
-            print(f"Best config: tile={controller.best_genome.tile_size}, "
-                  f"warp={controller.best_genome.warp_count}, "
-                  f"precision={controller.best_genome.precision}")
-    
+            print(
+                f"Best config: tile={controller.best_genome.tile_size}, "
+                f"warp={controller.best_genome.warp_count}, "
+                f"precision={controller.best_genome.precision}"
+            )
+
     # Final optimization using quantum search
     print("\n--- Quantum-Inspired Final Optimization ---")
     final_config, energy = quantum_opt.optimize_kernel_config()
     print(f"Quantum-optimized config (energy={energy:.4f}):")
     for key, value in final_config.items():
         print(f"  {key}: {value}")
-    
+
     # Optimize schedule for best genome
     print("\n--- Differentiable Schedule Optimization ---")
     schedule_metadata = scheduler.optimize_schedule("best_kernel", steps=100)
-    print(f"Optimized schedule: latency={schedule_metadata.latency_ms:.2f}ms, "
-          f"energy={schedule_metadata.energy_j:.2f}J")
-    
+    print(
+        f"Optimized schedule: latency={schedule_metadata.latency_ms:.2f}ms, "
+        f"energy={schedule_metadata.energy_j:.2f}J"
+    )
+
     # Verify best kernel
     print("\n--- Formal Verification ---")
     if controller.best_genome:
-        cert = verifier.verify_kernel(
-            "best_kernel", precision=controller.best_genome.precision
-        )
+        cert = verifier.verify_kernel("best_kernel", precision=controller.best_genome.precision)
         print(f"Verification: {'✓ VERIFIED' if cert.verified else '✗ FAILED'}")
         print(f"Max error bound: {cert.max_error_bound:.1e}")
-    
+
     # Aggregate federated data
     print("\n--- Federated Learning Aggregation ---")
     fed_agg.aggregate_performance()
     print(f"Aggregated data from {len(fed_agg.telemetry)} telemetry records")
     print(f"Unique configurations: {len(fed_agg.aggregated)}")
-    
+
     # Generate reports
     print("\n--- Generating Reports ---")
-    
+
     # Save all artifacts
     controller.save_policy()
     print("✓ Saved RL policy")
-    
+
     agent.flush_to_disk()
     print("✓ Saved introspection logs")
-    
+
     dashboard = energy_monitor.generate_dashboard()
     energy_monitor.save_dashboard(dashboard)
     print("✓ Saved energy dashboard")
-    
+
     scheduler.save_schedule("best_kernel")
     print("✓ Saved optimized schedule")
-    
+
     quantum_opt.save_history()
     print("✓ Saved quantum search history")
-    
+
     mem_opt.save_layout("cycle_layout")
     print("✓ Saved memory layout")
-    
+
     fed_agg.save_aggregated_data()
     print("✓ Saved federated data")
-    
+
     if controller.best_genome:
         verifier.save_certificate("best_kernel")
         print("✓ Saved verification certificate")
-    
+
     # Print summary
     print("\n" + "=" * 80)
     print("Evolution Cycle Summary")
@@ -247,7 +248,7 @@ def run_evolution_cycle(
     print(f"Energy efficiency (avg):   {dashboard.average_efficiency:.2f} GFLOP/W")
     print(f"Peak temperature:          {dashboard.peak_temp_c:.1f}°C")
     print(f"Total energy consumed:     {dashboard.total_energy_j:.2f} J")
-    
+
     print("\n✅ Phase III evolution cycle complete!")
     print("\nGenerated artifacts in:")
     print("  - evolve/policies/policy.json")
@@ -263,10 +264,8 @@ def run_evolution_cycle(
 def main():
     """Main entry point."""
     import argparse
-    
-    parser = argparse.ArgumentParser(
-        description="Run Phase III autonomous evolution cycle"
-    )
+
+    parser = argparse.ArgumentParser(description="Run Phase III autonomous evolution cycle")
     parser.add_argument(
         "--generations",
         type=int,
@@ -291,9 +290,9 @@ def main():
         default=42,
         help="Random seed for reproducibility",
     )
-    
+
     args = parser.parse_args()
-    
+
     run_evolution_cycle(
         generations=args.generations,
         population_size=args.population,

@@ -124,12 +124,12 @@ class NASATelemetryAdapter:
             return False, f"State vector must have 6 elements, got {len(state_vector)}"
 
         # Check position magnitude (Earth orbit: ~6400 km to ~42000 km radius)
-        pos_mag = (state_vector[0]**2 + state_vector[1]**2 + state_vector[2]**2) ** 0.5
+        pos_mag = (state_vector[0] ** 2 + state_vector[1] ** 2 + state_vector[2] ** 2) ** 0.5
         if pos_mag < 6_000_000 or pos_mag > 50_000_000:  # meters
             return False, f"Position magnitude out of orbital range: {pos_mag/1000:.1f} km"
 
         # Check velocity magnitude (orbital: ~7-11 km/s)
-        vel_mag = (state_vector[3]**2 + state_vector[4]**2 + state_vector[5]**2) ** 0.5
+        vel_mag = (state_vector[3] ** 2 + state_vector[4] ** 2 + state_vector[5] ** 2) ** 0.5
         if vel_mag > 15_000:  # m/s
             return False, f"Velocity magnitude exceeds orbital: {vel_mag:.1f} m/s"
 

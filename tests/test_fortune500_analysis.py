@@ -1,9 +1,10 @@
 """Tests for Fortune 500 QuASIM Integration Analysis modules."""
+
 import csv
 import json
-from pathlib import Path
 import sys
 import tempfile
+from pathlib import Path
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -11,6 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from analysis.fortune500_quasim_integration import (
     CompanyProfile,
     QIIComponents,
+    aggregate_sector_analysis,
+    analyze_company,
     calculate_economic_leverage,
     calculate_integration_compatibility,
     calculate_qii,
@@ -18,8 +21,6 @@ from analysis.fortune500_quasim_integration import (
     calculate_technical_feasibility,
     enrich_company_data,
     generate_synthetic_fortune500,
-    analyze_company,
-    aggregate_sector_analysis,
 )
 
 
@@ -318,7 +319,7 @@ def test_data_matrix_export():
         export_data_matrix(analyses, temp_path)
 
         # Read back and verify
-        with open(temp_path, "r") as f:
+        with open(temp_path) as f:
             reader = csv.DictReader(f)
             rows = list(reader)
 
@@ -358,7 +359,7 @@ def test_json_export():
         export_json_summary(analyses, sectors, correlation_data, temp_path)
 
         # Read back and verify
-        with open(temp_path, "r") as f:
+        with open(temp_path) as f:
             data = json.load(f)
 
         assert "metadata" in data

@@ -130,16 +130,28 @@ def competitor_landscape() -> List[CompetitorBenchmark]:
             "Dominant GPU stack and ISV ecosystem",
         ),
         CompetitorBenchmark(
-            "IBM Qiskit", "Quantum SDK", 22, "Strong research credibility, improving commercial traction"
+            "IBM Qiskit",
+            "Quantum SDK",
+            22,
+            "Strong research credibility, improving commercial traction",
         ),
         CompetitorBenchmark(
-            "Unity Sentis", "Real-time inference", 10, "Focused on edge AI with visualization, market pressures"
+            "Unity Sentis",
+            "Real-time inference",
+            10,
+            "Focused on edge AI with visualization, market pressures",
         ),
         CompetitorBenchmark(
-            "Epic Unreal Engine", "Immersive Design", 35, "High-fidelity rendering, gaming-first, metaverse play"
+            "Epic Unreal Engine",
+            "Immersive Design",
+            35,
+            "High-fidelity rendering, gaming-first, metaverse play",
         ),
         CompetitorBenchmark(
-            "Google Quantum AI", "Quantum Services", 30, "Deep R&D, expanding Cirq ecosystem and cloud integration"
+            "Google Quantum AI",
+            "Quantum Services",
+            30,
+            "Deep R&D, expanding Cirq ecosystem and cloud integration",
         ),
         CompetitorBenchmark(
             "Rigetti", "Quantum Hardware", 0.6, "Capital constrained, pivoting to hybrid workflows"
