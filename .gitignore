@@ -22,3 +22,8 @@ certs/*_certificate.json
 .pytest_cache/
 *.backup
 sbom.spdx.json
+.coverage
+*.pyc
+
+# QCMG simulation output
+qcmg_output/

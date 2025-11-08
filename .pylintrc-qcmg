@@ -1,0 +1,101 @@
+[MASTER]
+# Use multiple processes to speed up Pylint
+jobs=1
+
+# Pickle collected data for later comparisons
+persistent=yes
+
+# Allow loading of arbitrary C extensions
+unsafe-load-any-extension=no
+
+[MESSAGES CONTROL]
+# Disable specific warnings for scientific code
+disable=
+    C0103,  # invalid-name (allow single-letter variables common in physics)
+    R0913,  # too-many-arguments (common in scientific functions)
+    R0914,  # too-many-locals (common in numerical algorithms)
+    R0915,  # too-many-statements (acceptable for complex algorithms)
+    W0212,  # protected-access (allow for testing)
+    C0302,  # too-many-lines (acceptable for comprehensive modules)
+    R0801,  # duplicate-code (acceptable for similar test patterns)
+
+[REPORTS]
+# Set the output format
+output-format=text
+
+# Activate full reports
+reports=no
+
+# Evaluate score
+score=yes
+
+[BASIC]
+# Good variable names which should always be accepted
+good-names=i,j,k,x,y,z,t,dt,dx,dy,dz,f,g,h,n,m,C,S,E,H
+
+# Regular expression for constants
+const-rgx=(([A-Z_][A-Z0-9_]*)|(__.*__))$
+
+# Minimum line length for functions/classes
+min-public-methods=1
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=100
+
+# Maximum number of lines in a module
+max-module-lines=1000
+
+# String used for indentation
+indent-string='    '
+
+[DESIGN]
+# Maximum number of arguments for function / method
+max-args=10
+
+# Maximum number of attributes for a class
+max-attributes=15
+
+# Maximum number of boolean expressions in an if statement
+max-bool-expr=5
+
+# Maximum number of branch for function / method body
+max-branches=15
+
+# Maximum number of locals for function / method body
+max-locals=20
+
+# Maximum number of parents for a class
+max-parents=7
+
+# Maximum number of public methods for a class
+max-public-methods=25
+
+# Maximum number of return / yield for function / method body
+max-returns=6
+
+# Maximum number of statements in function / method body
+max-statements=60
+
+# Minimum number of public methods for a class
+min-public-methods=1
+
+[SIMILARITIES]
+# Minimum lines number of a similarity
+min-similarity-lines=10
+
+# Ignore comments when computing similarities
+ignore-comments=yes
+
+# Ignore docstrings when computing similarities
+ignore-docstrings=yes
+
+# Ignore imports when computing similarities
+ignore-imports=yes
+
+[TYPECHECK]
+# List of module names for which member attributes should not be checked
+ignored-modules=numpy,numpy.random,matplotlib
+
+# List of class names for which member attributes should not be checked
+ignored-classes=numpy,numpy.ndarray
