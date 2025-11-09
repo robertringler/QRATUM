@@ -11,7 +11,7 @@ import numpy as np
 
 def save_tensor(tensor: np.ndarray, path: str | Path) -> None:
     """Save tensor to .npy file.
-    
+
     Parameters
     ----------
     tensor : np.ndarray
@@ -24,12 +24,12 @@ def save_tensor(tensor: np.ndarray, path: str | Path) -> None:
 
 def load_tensor(path: str | Path) -> np.ndarray:
     """Load tensor from .npy file.
-    
+
     Parameters
     ----------
     path : str or Path
         Path to .npy file
-        
+
     Returns
     -------
     np.ndarray
@@ -40,9 +40,9 @@ def load_tensor(path: str | Path) -> np.ndarray:
 
 def export_results_to_json(results: dict[str, Any], path: str | Path) -> None:
     """Export algorithm results to JSON.
-    
+
     Handles numpy array serialization.
-    
+
     Parameters
     ----------
     results : dict
@@ -50,7 +50,7 @@ def export_results_to_json(results: dict[str, Any], path: str | Path) -> None:
     path : str or Path
         Output path
     """
-    
+
     def serialize(obj: Any) -> Any:
         """Serialize numpy arrays and special types."""
         if isinstance(obj, np.ndarray):
@@ -62,25 +62,25 @@ def export_results_to_json(results: dict[str, Any], path: str | Path) -> None:
         if isinstance(obj, (list, tuple)):
             return [serialize(item) for item in obj]
         return obj
-    
+
     serialized = serialize(results)
-    
+
     with open(path, "w", encoding="utf-8") as f:
         json.dump(serialized, f, indent=2)
 
 
 def load_results_from_json(path: str | Path) -> dict[str, Any]:
     """Load results from JSON file.
-    
+
     Parameters
     ----------
     path : str or Path
         Path to JSON file
-        
+
     Returns
     -------
     dict[str, Any]
         Loaded results
     """
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         return json.load(f)

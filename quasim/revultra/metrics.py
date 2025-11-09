@@ -8,19 +8,19 @@ from numpy.typing import NDArray
 
 def find_peaks(array: NDArray[np.float64], threshold: float = 0.1) -> list[int]:
     """Find peaks in an array above a threshold.
-    
+
     Parameters
     ----------
     array : NDArray[np.float64]
         Input array
     threshold : float, optional
         Minimum relative height for peaks (default: 0.1)
-        
+
     Returns
     -------
     list[int]
         Indices of detected peaks
-        
+
     Examples
     --------
     >>> import numpy as np
@@ -31,29 +31,28 @@ def find_peaks(array: NDArray[np.float64], threshold: float = 0.1) -> list[int]:
     """
     if len(array) < 3:
         return []
-        
+
     peaks = []
     max_val = np.max(array)
     threshold_val = threshold * max_val
-    
+
     for i in range(1, len(array) - 1):
-        if array[i] > threshold_val:
-            if array[i] > array[i - 1] and array[i] > array[i + 1]:
-                peaks.append(i)
-                
+        if array[i] > threshold_val and array[i] > array[i - 1] and array[i] > array[i + 1]:
+            peaks.append(i)
+
     return peaks
 
 
 def normalize_array(array: NDArray[np.float64], method: str = "minmax") -> NDArray[np.float64]:
     """Normalize array values.
-    
+
     Parameters
     ----------
     array : NDArray[np.float64]
         Input array
     method : str, optional
         Normalization method: 'minmax' or 'zscore' (default: 'minmax')
-        
+
     Returns
     -------
     NDArray[np.float64]
@@ -75,17 +74,17 @@ def normalize_array(array: NDArray[np.float64], method: str = "minmax") -> NDArr
 
 def compute_entropy(probabilities: NDArray[np.float64]) -> float:
     """Compute Shannon entropy from probability distribution.
-    
+
     Parameters
     ----------
     probabilities : NDArray[np.float64]
         Probability distribution (should sum to 1.0)
-        
+
     Returns
     -------
     float
         Entropy in bits
-        
+
     Examples
     --------
     >>> import numpy as np
@@ -102,14 +101,14 @@ def sliding_window_stats(
     array: NDArray[np.float64], window_size: int
 ) -> dict[str, NDArray[np.float64]]:
     """Compute statistics over sliding windows.
-    
+
     Parameters
     ----------
     array : NDArray[np.float64]
         Input array
     window_size : int
         Size of sliding window
-        
+
     Returns
     -------
     dict[str, NDArray[np.float64]]
@@ -122,18 +121,18 @@ def sliding_window_stats(
             "min": np.array([]),
             "max": np.array([]),
         }
-    
+
     n = len(array) - window_size + 1
     means = np.zeros(n)
     stds = np.zeros(n)
     mins = np.zeros(n)
     maxs = np.zeros(n)
-    
+
     for i in range(n):
         window = array[i : i + window_size]
         means[i] = np.mean(window)
         stds[i] = np.std(window)
         mins[i] = np.min(window)
         maxs[i] = np.max(window)
-    
+
     return {"mean": means, "std": stds, "min": mins, "max": maxs}

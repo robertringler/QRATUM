@@ -12,24 +12,24 @@ import numpy as np
 
 def load_ciphertext(path: str | Path) -> str:
     """Load ciphertext from file.
-    
+
     Parameters
     ----------
     path : str or Path
         Path to ciphertext file
-        
+
     Returns
     -------
     str
         Loaded ciphertext
     """
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         return f.read()
 
 
 def save_ciphertext(text: str, path: str | Path) -> None:
     """Save ciphertext to file.
-    
+
     Parameters
     ----------
     text : str
@@ -43,9 +43,9 @@ def save_ciphertext(text: str, path: str | Path) -> None:
 
 def export_to_json(data: dict[str, Any], path: str | Path) -> None:
     """Export analysis results to JSON.
-    
+
     Handles numpy array serialization automatically.
-    
+
     Parameters
     ----------
     data : dict
@@ -53,7 +53,7 @@ def export_to_json(data: dict[str, Any], path: str | Path) -> None:
     path : str or Path
         Output path
     """
-    
+
     def serialize(obj: Any) -> Any:
         """Serialize numpy arrays to lists."""
         if isinstance(obj, np.ndarray):
@@ -67,16 +67,16 @@ def export_to_json(data: dict[str, Any], path: str | Path) -> None:
         if isinstance(obj, (list, tuple)):
             return [serialize(item) for item in obj]
         return obj
-    
+
     serialized = serialize(data)
-    
+
     with open(path, "w", encoding="utf-8") as f:
         json.dump(serialized, f, indent=2)
 
 
 def export_to_csv(data: dict[str, float], path: str | Path) -> None:
     """Export simple key-value data to CSV.
-    
+
     Parameters
     ----------
     data : dict[str, float]
@@ -93,7 +93,7 @@ def export_to_csv(data: dict[str, float], path: str | Path) -> None:
 
 def save_numpy_array(array: np.ndarray, path: str | Path) -> None:
     """Save numpy array to .npy file.
-    
+
     Parameters
     ----------
     array : np.ndarray
@@ -106,12 +106,12 @@ def save_numpy_array(array: np.ndarray, path: str | Path) -> None:
 
 def load_numpy_array(path: str | Path) -> np.ndarray:
     """Load numpy array from .npy file.
-    
+
     Parameters
     ----------
     path : str or Path
         Path to .npy file
-        
+
     Returns
     -------
     np.ndarray

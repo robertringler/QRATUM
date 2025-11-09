@@ -13,9 +13,8 @@ from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.revultra.typing import ComplexArray, NpArray
+from quasim.revultra.typing import NpArray
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +25,7 @@ EPS = 1e-10
 @dataclass(slots=True)
 class REVULTRAConfig:
     """Configuration for REVULTRA algorithms.
-    
+
     Parameters
     ----------
     hsrq : float
@@ -53,18 +52,18 @@ class REVULTRAConfig:
 
 class REVULTRAAlgorithms:
     """REVULTRA cryptanalytic algorithms suite.
-    
+
     This class provides quantum-inspired methods for analyzing ciphertexts,
     including holographic entropy transforms, temporal embeddings, and
     spectral autocorrelation analysis.
-    
+
     Parameters
     ----------
     cfg : REVULTRAConfig, optional
         Configuration parameters for the algorithms
     rng : np.random.Generator, optional
         Random number generator for reproducibility (default: seeded with 42)
-        
+
     Examples
     --------
     >>> rev = REVULTRAAlgorithms()
@@ -81,12 +80,12 @@ class REVULTRAAlgorithms:
 
     def _normalize_text(self, text: str) -> str:
         """Normalize text to uppercase letters only.
-        
+
         Parameters
         ----------
         text : str
             Input text to normalize
-            
+
         Returns
         -------
         str
@@ -96,20 +95,20 @@ class REVULTRAAlgorithms:
 
     def quantum_information_topology(self, text: str) -> dict[str, complex]:
         """Compute quantum information topology of ciphertext.
-        
+
         Maps character probabilities to complex quantum amplitudes using
         holographic encoding principles.
-        
+
         Parameters
         ----------
         text : str
             Ciphertext to analyze
-            
+
         Returns
         -------
         dict[str, complex]
             Dictionary mapping characters to complex quantum amplitudes
-            
+
         Examples
         --------
         >>> rev = REVULTRAAlgorithms()
@@ -123,7 +122,7 @@ class REVULTRAAlgorithms:
 
         counts = Counter(normalized)
         total = len(normalized)
-        
+
         topology = {}
         for char, count in counts.items():
             prob = count / total
@@ -131,25 +130,25 @@ class REVULTRAAlgorithms:
             amplitude = np.sqrt(prob)
             phase = np.exp(1j * self.cfg.qcorr * np.log(prob + EPS))
             topology[char] = amplitude * phase
-            
+
         return topology
 
     def holographic_entropy_transform(self, text: str) -> tuple[float, NpArray]:
         """Apply holographic entropy transform using 2D FFT.
-        
+
         Transforms text into a 2D grid and computes holographic entropy
         via Fourier analysis of the character distribution surface.
-        
+
         Parameters
         ----------
         text : str
             Ciphertext to analyze
-            
+
         Returns
         -------
         tuple[float, NDArray[np.float64]]
             Entropy value and 2D surface array representing holographic structure
-            
+
         Examples
         --------
         >>> rev = REVULTRAAlgorithms()
@@ -167,40 +166,40 @@ class REVULTRAAlgorithms:
         # Create 2D grid representation
         side = int(np.ceil(np.sqrt(len(normalized))))
         padded = normalized + "A" * (side * side - len(normalized))
-        
+
         # Convert to numeric grid
         grid = np.array([ord(c) - ord("A") for c in padded], dtype=np.float64)
         grid = grid.reshape(side, side)
-        
+
         # Apply 2D FFT
         fft_surface = np.fft.fft2(grid)
         magnitude = np.abs(fft_surface)
-        
+
         # Compute entropy from FFT magnitudes
         magnitude_flat = magnitude.flatten()
         magnitude_norm = magnitude_flat / (np.sum(magnitude_flat) + EPS)
         entropy = -np.sum(magnitude_norm * np.log(magnitude_norm + EPS))
-        
+
         return float(entropy), magnitude
 
     def temporal_embedding_sequence(self, text: str, window_size: int = 5) -> NpArray:
         """Generate temporal embedding sequence with sliding window.
-        
+
         Creates time-series embeddings by analyzing character transitions
         within a sliding window over the ciphertext.
-        
+
         Parameters
         ----------
         text : str
             Ciphertext to analyze
         window_size : int, optional
             Size of sliding window (default: 5)
-            
+
         Returns
         -------
         NDArray[np.float64]
             Array of temporal embeddings, shape (num_windows, window_size)
-            
+
         Examples
         --------
         >>> rev = REVULTRAAlgorithms()
@@ -221,17 +220,17 @@ class REVULTRAAlgorithms:
             # Apply temporal quantum weighting
             weights = np.exp(-self.cfg.teq * np.arange(window_size) / window_size)
             embeddings.append(embed * weights)
-            
+
         return np.array(embeddings, dtype=np.float64)
 
     def memory_recursive_pattern_mining(
         self, text: str, min_pattern_len: int = 3, max_pattern_len: int = 6
     ) -> dict[str, int]:
         """Mine recurring patterns using recursive memory structures.
-        
+
         Identifies repeating patterns of various lengths in the ciphertext
         using recursive search with memory optimization.
-        
+
         Parameters
         ----------
         text : str
@@ -240,12 +239,12 @@ class REVULTRAAlgorithms:
             Minimum pattern length to search (default: 3)
         max_pattern_len : int, optional
             Maximum pattern length to search (default: 6)
-            
+
         Returns
         -------
         dict[str, int]
             Dictionary mapping patterns to occurrence counts
-            
+
         Examples
         --------
         >>> rev = REVULTRAAlgorithms()
@@ -258,33 +257,33 @@ class REVULTRAAlgorithms:
             return {}
 
         patterns: dict[str, int] = {}
-        
+
         for length in range(min_pattern_len, min(max_pattern_len + 1, len(normalized))):
             for i in range(len(normalized) - length + 1):
                 pattern = normalized[i : i + length]
                 patterns[pattern] = patterns.get(pattern, 0) + 1
-                
+
         # Filter to only recurring patterns (count >= 2)
         return {p: c for p, c in patterns.items() if c >= 2}
 
     def index_of_coincidence_tensor(self, text: str, max_period: int = 20) -> NpArray:
         """Compute Index of Coincidence (IoC) tensor for period detection.
-        
+
         Calculates IoC for different period lengths to identify potential
         polyalphabetic cipher periodicities.
-        
+
         Parameters
         ----------
         text : str
             Ciphertext to analyze
         max_period : int, optional
             Maximum period length to test (default: 20)
-            
+
         Returns
         -------
         NDArray[np.float64]
             Array of IoC values for periods 1 through max_period
-            
+
         Examples
         --------
         >>> rev = REVULTRAAlgorithms()
@@ -297,11 +296,11 @@ class REVULTRAAlgorithms:
             return np.zeros(max_period, dtype=np.float64)
 
         ioc_values = []
-        
+
         for period in range(1, max_period + 1):
             # Split text into cosets
             cosets = [normalized[i::period] for i in range(period)]
-            
+
             # Compute IoC for each coset and average
             ioc_sum = 0.0
             for coset in cosets:
@@ -311,30 +310,30 @@ class REVULTRAAlgorithms:
                 n = len(coset)
                 ioc = sum(c * (c - 1) for c in counts.values()) / (n * (n - 1) + EPS)
                 ioc_sum += ioc
-                
+
             avg_ioc = ioc_sum / period if period > 0 else 0.0
             ioc_values.append(avg_ioc)
-            
+
         return np.array(ioc_values, dtype=np.float64)
 
     def spectral_autocorrelation(self, text: str, max_lag: int = 50) -> NpArray:
         """Compute spectral autocorrelation for periodicity detection.
-        
+
         Uses FFT-based autocorrelation to identify periodic structures
         in the frequency domain.
-        
+
         Parameters
         ----------
         text : str
             Ciphertext to analyze
         max_lag : int, optional
             Maximum lag for autocorrelation (default: 50)
-            
+
         Returns
         -------
         NDArray[np.float64]
             Autocorrelation coefficients for lags 0 through max_lag
-            
+
         Examples
         --------
         >>> rev = REVULTRAAlgorithms()
@@ -348,37 +347,37 @@ class REVULTRAAlgorithms:
 
         # Convert to numeric sequence
         numeric = np.array([ord(c) - ord("A") for c in normalized], dtype=np.float64)
-        
+
         # Normalize
         numeric = numeric - np.mean(numeric)
-        
+
         # Compute autocorrelation via FFT
         n = len(numeric)
         fft = np.fft.fft(numeric, n=2 * n)
         power = fft * np.conj(fft)
         autocorr = np.fft.ifft(power).real[:n]
-        
+
         # Normalize by lag 0
         autocorr = autocorr / (autocorr[0] + EPS)
-        
+
         return autocorr[: max_lag + 1]
 
     def emergent_complexity_score(self, text: str) -> dict[str, float]:
         """Compute emergent complexity metrics for ciphertext.
-        
+
         Combines multiple complexity measures including entropy, pattern density,
         and topological features to produce an overall complexity score.
-        
+
         Parameters
         ----------
         text : str
             Ciphertext to analyze
-            
+
         Returns
         -------
         dict[str, float]
             Dictionary with 'score' and component metrics
-            
+
         Examples
         --------
         >>> rev = REVULTRAAlgorithms()
@@ -396,19 +395,19 @@ class REVULTRAAlgorithms:
         counts = Counter(normalized)
         probs = np.array([c / len(normalized) for c in counts.values()], dtype=np.float64)
         char_entropy = -np.sum(probs * np.log(probs + EPS))
-        
+
         # Component 2: Pattern density
         patterns = self.memory_recursive_pattern_mining(normalized)
         pattern_density = len(patterns) / max(len(normalized), 1)
-        
+
         # Component 3: IoC variance (periodicity indicator)
         ioc = self.index_of_coincidence_tensor(normalized, max_period=10)
         ioc_variance = float(np.var(ioc))
-        
+
         # Combine into overall score (0-100 scale)
         score = (char_entropy * 10 + pattern_density * 50 + ioc_variance * 100) / 3
         score = min(100.0, max(0.0, score))
-        
+
         return {
             "score": float(score),
             "entropy": float(char_entropy),
@@ -418,19 +417,19 @@ class REVULTRAAlgorithms:
 
     def kryptos_k4_analysis(self, ciphertext: str) -> dict[str, Any]:
         """Specialized analysis for Kryptos K4 or similar ciphertexts.
-        
+
         Combines all REVULTRA methods for comprehensive cryptanalysis.
-        
+
         Parameters
         ----------
         ciphertext : str
             Ciphertext to analyze (e.g., Kryptos K4)
-            
+
         Returns
         -------
         dict[str, Any]
             Complete analysis results including all metrics
-            
+
         Examples
         --------
         >>> rev = REVULTRAAlgorithms()
@@ -440,7 +439,7 @@ class REVULTRAAlgorithms:
         True
         """
         normalized = self._normalize_text(ciphertext)
-        
+
         return {
             "length": len(normalized),
             "topology": self.quantum_information_topology(normalized),
@@ -452,17 +451,17 @@ class REVULTRAAlgorithms:
 
     def frequency_analysis(self, text: str) -> dict[str, float]:
         """Perform basic frequency analysis on ciphertext.
-        
+
         Parameters
         ----------
         text : str
             Ciphertext to analyze
-            
+
         Returns
         -------
         dict[str, float]
             Character frequencies as percentages
-            
+
         Examples
         --------
         >>> rev = REVULTRAAlgorithms()
@@ -473,26 +472,26 @@ class REVULTRAAlgorithms:
         normalized = self._normalize_text(text)
         if not normalized:
             return {}
-            
+
         counts = Counter(normalized)
         total = len(normalized)
         return {char: (count / total) * 100 for char, count in counts.items()}
 
     def chi_squared_test(self, text: str, expected_freqs: dict[str, float] | None = None) -> float:
         """Perform chi-squared test against expected frequency distribution.
-        
+
         Parameters
         ----------
         text : str
             Ciphertext to test
         expected_freqs : dict[str, float], optional
             Expected frequencies (defaults to English letter frequencies)
-            
+
         Returns
         -------
         float
             Chi-squared statistic
-            
+
         Examples
         --------
         >>> rev = REVULTRAAlgorithms()
@@ -509,17 +508,17 @@ class REVULTRAAlgorithms:
                 "P": 1.9, "B": 1.5, "V": 1.0, "K": 0.8, "J": 0.15, "X": 0.15,
                 "Q": 0.10, "Z": 0.07,
             }
-        
+
         normalized = self._normalize_text(text)
         if not normalized:
             return 0.0
-            
+
         observed = self.frequency_analysis(normalized)
-        
+
         chi2 = 0.0
         for char in string.ascii_uppercase:
             obs = observed.get(char, 0.0)
             exp = expected_freqs.get(char, 1.0)  # Uniform fallback
             chi2 += ((obs - exp) ** 2) / (exp + EPS)
-            
+
         return float(chi2)
