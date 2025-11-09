@@ -91,6 +91,15 @@ QuASIM features a comprehensive automated code quality and pull request manageme
 - 📖 [Auto-Merge System Guide](docs/AUTO_MERGE_SYSTEM.md) - Complete system documentation
 - 📊 [Code Quality Summary](docs/CODE_QUALITY_SUMMARY.md) - Analysis and metrics
 
+## QuASIM — Live Run Capture
+
+<video src="artifacts/flows/quasim_run_latest.mp4" width="100%" controls muted playsinline>
+  <source src="artifacts/flows/quasim_run_latest.mp4" type="video/mp4" />
+  <img src="artifacts/flows/quasim_run_latest.gif" alt="QuASIM live run GIF" />
+</video>
+
+Every QuASIM simulation automatically captures an MP4 + GIF visualization showing the evolution of control parameters, objective values, and quantum metrics in real-time. The latest run is always available above, with full history stored in `artifacts/flows/`.
+
 ## Quick Start
 
 ### Docker Compose (Full Stack)

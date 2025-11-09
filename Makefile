@@ -1,4 +1,4 @@
-.PHONY: test validate fmt lint build bench pack deploy
+.PHONY: test validate fmt lint build bench pack deploy video
 
 ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -49,6 +49,11 @@ bench:
 	else \
 	echo "Aerospace benchmarks not yet implemented"; \
 	fi
+
+# Generate video artifacts
+video:
+	@echo "Generating QuASIM video artifacts..."
+	@python3 -m quasim.cli.run_flow --steps=150 --N=300 --T=3.0 --seed=42 --emit-json
 
 # Package artifacts (containers, helm charts)
 pack:

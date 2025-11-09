@@ -24,6 +24,9 @@ dev = [
     "ruff>=0.1.0",
     "mypy>=1.0.0",
     "bandit[toml]>=1.7.0",
+    "matplotlib>=3.7.0",
+    "imageio>=2.0.0",
+    "imageio-ffmpeg>=0.4.0",
 ]
 ownai = [
     "torch>=2.0.0",
