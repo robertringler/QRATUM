@@ -28,8 +28,8 @@ tensor network simulation with autonomous kernel evolution.
 - Fortune 500 Enterprises: 75 high-fit companies (QII ≥ 0.70)
 - Pharmaceuticals, Financial Services, Manufacturing
 
-**Valuation:** $6.8B-$8.2B (P50: $7.4B)  
-**Growth:** 35% YoY customer acquisition  
+**Valuation:** $6.8B-$8.2B (P50: $7.4B)
+**Growth:** 35% YoY customer acquisition
 **ARPU:** $1.8M → $3.0M (FY26-FY30)
 
 ### Competitive Advantages
@@ -66,8 +66,8 @@ tensor network simulation with autonomous kernel evolution.
 
 ---
 
-**Contact:** QuASIM Team  
-**Website:** github.com/robertringler/QuASIM  
+**Contact:** QuASIM Team
+**Website:** github.com/robertringler/QuASIM
 **License:** Apache 2.0
 
 *For technical specifications and demo access, see repository documentation.*
