@@ -1,4 +1,4 @@
-.PHONY: test validate fmt lint build bench pack deploy video spacex-demo starship-demo demo-all
+.PHONY: test validate fmt lint build bench pack deploy video spacex-demo starship-demo demo-all demos
 
 ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -13,6 +13,12 @@ starship-demo:
 
 demo-all: spacex-demo starship-demo
 	@echo "All pilot track demos complete!"
+
+# Run all vertical demo smoke tests
+demos:
+	@echo "Running smoke tests for all 8 vertical demos..."
+	@python3 -m pytest quasim/demos/*/tests/test_*_smoke.py -q --tb=short
+	@echo "✅ All demo smoke tests passed!"
 
 # Format code (Python, Terraform)
 fmt:
