@@ -13,14 +13,16 @@ def main():
     st.title("🌾 Irrigation & Yield Optimization with Weather Uncertainty")
     st.markdown("**Target Accounts**: John Deere, Bayer Crop Science, Corteva, Syngenta")
 
-    st.markdown("""
+    st.markdown(
+        """
     ## Overview
     
     Maximize yield per water input under weather/soil dynamics
     
     ### Key Performance Indicators (KPIs)
     - yield_kg_ha, water_use_eff, risk_of_loss, profit_margin
-    """)
+    """
+    )
 
     artifacts_dir = Path("artifacts/agritech")
 
@@ -54,7 +56,8 @@ def main():
     else:
         st.info("No artifacts directory found. Run the demo to generate data.")
 
-    st.markdown("""
+    st.markdown(
+        """
     ## How to Run
     
     ```bash
@@ -64,7 +67,8 @@ def main():
     # Run simulation with capture
     python -m quasim.demos.agritech.cli simulate --seed 42 --capture
     ```
-    """)
+    """
+    )
 
 
 if __name__ == "__main__":

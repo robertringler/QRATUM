@@ -13,14 +13,16 @@ def main():
     st.title("⚕️ Adaptive Trial Arm Allocation (Response-Adaptive Randomization)")
     st.markdown("**Target Accounts**: Pfizer, J&J, Mayo Clinic, Roche")
 
-    st.markdown("""
+    st.markdown(
+        """
     ## Overview
     
     Maximize expected responders, control Type I/II error, enforce fairness
     
     ### Key Performance Indicators (KPIs)
     - power, FPR, responders_gain, allocation_entropy
-    """)
+    """
+    )
 
     artifacts_dir = Path("artifacts/healthcare")
 
@@ -52,7 +54,8 @@ def main():
     else:
         st.info("No artifacts directory found. Run the demo to generate data.")
 
-    st.markdown("""
+    st.markdown(
+        """
     ## How to Run
     
     ```bash
@@ -62,7 +65,8 @@ def main():
     # Run simulation with capture
     python -m quasim.demos.healthcare.cli simulate --seed 42 --capture
     ```
-    """)
+    """
+    )
 
 
 if __name__ == "__main__":
