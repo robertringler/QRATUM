@@ -179,7 +179,7 @@ class QuASIMEnhancementOrchestrator:
 
     def generate_quantum_logo(self) -> str:
         """Generate quantum-inspired SVG logo."""
-        return f'''<?xml version="1.0" encoding="UTF-8"?>
+        return f"""<?xml version="1.0" encoding="UTF-8"?>
 <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="quantumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -228,7 +228,7 @@ class QuASIMEnhancementOrchestrator:
         text-anchor="middle" fill="{self.QUANTUM_COLORS["neutral"]}">
     QUANTUM-INSPIRED SIMULATION
   </text>
-</svg>'''
+</svg>"""
 
     def update_readme_logo(self):
         """Update README.md with logo and branding."""

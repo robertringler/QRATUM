@@ -1,6 +1,7 @@
 """
 Pilot example for automotive using QuNimbus SDK
 """
+
 from qunimbus import QuNimbusClient
 
 

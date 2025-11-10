@@ -2,10 +2,11 @@
 QuNimbus SDK for pharma
 Vertical-specific quantum-classical orchestration
 """
+
 __version__ = "2.0.0"
 __vertical__ = "pharma"
 
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 class QuNimbusClient:

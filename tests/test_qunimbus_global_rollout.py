@@ -2,8 +2,7 @@
 Unit tests for QuNimbus Global Rollout components
 Tests RL optimizer, pilot generator, and benchmarking functionality
 """
-import json
-import os
+
 import sys
 from pathlib import Path
 
@@ -85,10 +84,10 @@ class TestInfinitePilotFactory:
         assert 0.99 <= pilot["fidelity"] <= 1.0
 
     def test_batch_generation(self):
-        from infinite_pilot_generator import InfinitePilotFactory
-
         # Use temporary directory for test
         import tempfile
+
+        from infinite_pilot_generator import InfinitePilotFactory
 
         with tempfile.TemporaryDirectory() as tmpdir:
             factory = InfinitePilotFactory(5, "automotive,pharma", "rl/opt.py")
@@ -133,9 +132,7 @@ class TestMultiVerticalBenchmark:
         benchmark = MultiVerticalBenchmark("pharma", "18x")
         result = benchmark.benchmark_vertical("pharma")
 
-        qn_efficiency = (
-            result["qunimbus"]["throughput"] / result["qunimbus"]["cost_per_hour"]
-        )
+        qn_efficiency = result["qunimbus"]["throughput"] / result["qunimbus"]["cost_per_hour"]
         aws_efficiency = result["aws"]["throughput"] / result["aws"]["cost_per_hour"]
 
         assert qn_efficiency > aws_efficiency * 10  # At least 10x better
@@ -147,7 +144,12 @@ class TestGlobalRolloutIntegration:
     def test_yaml_task_definition_valid(self):
         import yaml
 
-        task_path = Path(__file__).parent.parent / ".github" / "copilot-tasks" / "qunimbus_global_rollout.yaml"
+        task_path = (
+            Path(__file__).parent.parent
+            / ".github"
+            / "copilot-tasks"
+            / "qunimbus_global_rollout.yaml"
+        )
 
         with open(task_path) as f:
             task = yaml.safe_load(f)
@@ -161,7 +163,9 @@ class TestGlobalRolloutIntegration:
     def test_workflow_definition_valid(self):
         import yaml
 
-        workflow_path = Path(__file__).parent.parent / ".github" / "workflows" / "qunimbus-global-ci.yml"
+        workflow_path = (
+            Path(__file__).parent.parent / ".github" / "workflows" / "qunimbus-global-ci.yml"
+        )
 
         with open(workflow_path) as f:
             workflow = yaml.safe_load(f)
@@ -189,10 +193,11 @@ class TestGlobalRolloutIntegration:
         assert "QuNimbusClient" in content
         assert "pharma" in content
 
+
 def run_tests():
     """Run all tests"""
     print("Running QuNimbus Global Rollout Tests\n")
-    
+
     # Test RL optimizer
     print("Testing MultiVerticalOptimizer...")
     test_optimizer = TestMultiVerticalOptimizer()
@@ -202,7 +207,7 @@ def run_tests():
     print("  ✓ Pilot generation")
     test_optimizer.test_policy_adaptation()
     print("  ✓ Policy adaptation")
-    
+
     # Test pilot factory
     print("\nTesting InfinitePilotFactory...")
     test_factory = TestInfinitePilotFactory()
@@ -214,7 +219,7 @@ def run_tests():
     print("  ✓ Pharma pilot generation")
     test_factory.test_batch_generation()
     print("  ✓ Batch generation")
-    
+
     # Test benchmarking
     print("\nTesting MultiVerticalBenchmark...")
     test_bench = TestMultiVerticalBenchmark()
@@ -224,7 +229,7 @@ def run_tests():
     print("  ✓ Single vertical benchmark")
     test_bench.test_efficiency_comparison()
     print("  ✓ Efficiency comparison")
-    
+
     # Integration tests
     print("\nTesting Global Rollout Integration...")
     test_integration = TestGlobalRolloutIntegration()
@@ -236,7 +241,7 @@ def run_tests():
     print("  ✓ SDK structure (automotive)")
     test_integration.test_sdk_structure_pharma()
     print("  ✓ SDK structure (pharma)")
-    
+
     print("\n✅ All tests passed!")
 
 
@@ -246,5 +251,6 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n❌ Test failed: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)

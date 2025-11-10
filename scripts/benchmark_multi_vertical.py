@@ -2,7 +2,7 @@
 Multi-Vertical Benchmarking for QuNimbus
 Compares performance across AWS, GCP, Azure
 """
-import json
+
 import os
 from datetime import datetime, timezone
 
@@ -62,9 +62,9 @@ class MultiVerticalBenchmark:
                     f"{r['efficiency']} |\n"
                 )
             f.write("\n## Summary\n\n")
-            f.write(f"- Average speedup: 18.4×\n")
-            f.write(f"- Average efficiency gain: 18× performance/$\n")
-            f.write(f"- Fidelity: ≥0.995 across all verticals\n")
+            f.write("- Average speedup: 18.4×\n")
+            f.write("- Average efficiency gain: 18× performance/$\n")
+            f.write("- Fidelity: ≥0.995 across all verticals\n")
 
         print(f"Benchmark report generated: {report_path}")
         return results

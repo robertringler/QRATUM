@@ -2,10 +2,11 @@
 QuNimbus SDK for automotive
 Vertical-specific quantum-classical orchestration
 """
+
 __version__ = "2.0.0"
 __vertical__ = "automotive"
 
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 class QuNimbusClient:

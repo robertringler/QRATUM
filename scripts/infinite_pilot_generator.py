@@ -2,6 +2,7 @@
 Infinite Pilot Generator for QuNimbus
 Autonomous, continuous pilot generation across verticals
 """
+
 import json
 import os
 from datetime import datetime, timezone
@@ -67,9 +68,7 @@ class InfinitePilotFactory:
         batch = self.generate_batch()
         print(f"Generated {len(batch)} pilots")
         for pilot in batch:
-            print(
-                f"  - {pilot['pilot_id']}: {pilot['workload']} ({pilot['efficiency_gain']} gain)"
-            )
+            print(f"  - {pilot['pilot_id']}: {pilot['workload']} ({pilot['efficiency_gain']} gain)")
 
 
 if __name__ == "__main__":

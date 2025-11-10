@@ -13,7 +13,8 @@ def main():
     st.title("🚀 Aerospace: Hot-Staging & MECO Optimization")
     st.markdown("**Target Accounts**: SpaceX, Boeing, Lockheed Martin, Northrop Grumman")
 
-    st.markdown("""
+    st.markdown(
+        """
     ## Overview
     
     This demo showcases trajectory optimization for launch vehicles with hot-staging
@@ -24,7 +25,8 @@ def main():
     - **RMSE Velocity**: Velocity profile accuracy
     - **q_max**: Maximum dynamic pressure
     - **Fuel Margin**: Remaining fuel percentage
-    """)
+    """
+    )
 
     # Try to load latest results
     artifacts_dir = Path("artifacts/aerospace")
@@ -69,7 +71,8 @@ def main():
     else:
         st.info("No artifacts directory found. Run the demo to generate data.")
 
-    st.markdown("""
+    st.markdown(
+        """
     ## How to Run
     
     ```bash
@@ -88,7 +91,8 @@ def main():
     - DO-178C Level A process compatibility (no certification claims)
     - Deterministic reproducibility with seed control
     - NIST 800-53/171 security controls applicable to production deployments
-    """)
+    """
+    )
 
 
 if __name__ == "__main__":

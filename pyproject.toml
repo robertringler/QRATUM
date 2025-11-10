@@ -61,6 +61,7 @@ quasim-revultra = "quasim.cli.revultra_cli:cli"
 quasim-qgh = "quasim.cli.qgh_cli:cli"
 quasim-terc-obs = "quasim.cli.terc_obs_cli:cli"
 quasim-own = "quasim.cli.quasim_own:cli"
+qunimbus = "quasim.qunimbus.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
