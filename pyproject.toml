@@ -27,6 +27,9 @@ dev = [
     "matplotlib>=3.7.0",
     "imageio>=2.0.0",
     "imageio-ffmpeg>=0.4.0",
+    "plotly>=5.14.0",
+    "kaleido>=0.2.1",
+    "pandas>=2.0.0",
 ]
 ownai = [
     "torch>=2.0.0",

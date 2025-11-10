@@ -84,6 +84,19 @@ Full list and triage: [Patentables](docs/ip/patentables.md).
 - **Range (P10–P90):** $5,093,237 – $28,179,939
 - Scenario DCFs and methodology: [Market Valuation Report](docs/valuation/market_valuation.md).
 
+## 📈 Valuation Dashboard
+
+Interactive valuation analytics and visualizations for the Q1 2026 pre-revenue update. [View Interactive Dashboard](docs/valuation_dashboard.html)
+
+### DCF Valuation Analysis
+![DCF Valuation](docs/assets/valuation_dcf.png)
+
+### Sensitivity Analysis
+![Sensitivity Heatmap](docs/assets/valuation_heatmap.png)
+
+### Monte Carlo Distribution
+![Monte Carlo Waterfall](docs/assets/valuation_waterfall.png)
+
 ---
 
 [![NIST 800-53](https://img.shields.io/badge/NIST%20800--53-Rev%205%20HIGH-blue)](DEFENSE_COMPLIANCE_SUMMARY.md)
