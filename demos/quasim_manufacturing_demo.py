@@ -70,10 +70,21 @@ def evaluate_fitness(metrics: dict, profile: dict) -> float:
     tolerances = profile["tolerances"]
     weights = profile["weights"]
 
-    oee_error = (abs(metrics["avg_oee"] - targets["target_oee_pct"]) / tolerances["oee_tolerance_pct"]) * weights["oee"]
-    throughput_error = (abs(metrics["avg_throughput"] - targets["target_throughput_units_per_hr"]) / tolerances["throughput_tolerance"]) * weights["throughput"]
-    defect_error = (abs(metrics["avg_defect_rate"] - targets["target_defect_rate_ppm"]) / tolerances["defect_tolerance_ppm"]) * weights["defect_rate"]
-    downtime_error = (abs(metrics["avg_downtime"] - targets["target_downtime_pct"]) / tolerances["downtime_tolerance_pct"]) * weights["downtime"]
+    oee_error = (
+        abs(metrics["avg_oee"] - targets["target_oee_pct"]) / tolerances["oee_tolerance_pct"]
+    ) * weights["oee"]
+    throughput_error = (
+        abs(metrics["avg_throughput"] - targets["target_throughput_units_per_hr"])
+        / tolerances["throughput_tolerance"]
+    ) * weights["throughput"]
+    defect_error = (
+        abs(metrics["avg_defect_rate"] - targets["target_defect_rate_ppm"])
+        / tolerances["defect_tolerance_ppm"]
+    ) * weights["defect_rate"]
+    downtime_error = (
+        abs(metrics["avg_downtime"] - targets["target_downtime_pct"])
+        / tolerances["downtime_tolerance_pct"]
+    ) * weights["downtime"]
 
     return float(np.sqrt(oee_error**2 + throughput_error**2 + defect_error**2 + downtime_error**2))
 
@@ -136,14 +147,22 @@ def main():
     print(f"\nOptimization complete! Best alpha: {best_alpha:.6f}")
 
     viz_base64 = create_visualization(best_metrics, profile)
-    fidelity = calculate_fidelity(best_metrics, profile["targets"], ["avg_oee", "avg_throughput", "avg_defect_rate"])
+    fidelity = calculate_fidelity(
+        best_metrics, profile["targets"], ["avg_oee", "avg_throughput", "avg_defect_rate"]
+    )
 
     output_file = f"{Path(args.profile).stem}_demo_report.json"
     generate_report(
-        profile, best_alpha, best_fitness, best_metrics, history,
+        profile,
+        best_alpha,
+        best_fitness,
+        best_metrics,
+        history,
         {"generations": args.generations, "population_size": args.pop, "seed": args.seed},
-        viz_base64, {"fidelity": fidelity, "fitness_rmse": best_fitness},
-        profile.get("compliance_tags", []), output_file
+        viz_base64,
+        {"fidelity": fidelity, "fitness_rmse": best_fitness},
+        profile.get("compliance_tags", []),
+        output_file,
     )
 
     print(f"\nReport saved: {output_file}\n  Fidelity: {fidelity:.4f}\n\nDemo complete! ✓")

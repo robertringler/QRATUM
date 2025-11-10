@@ -84,8 +84,7 @@ def evaluate_fitness(metrics: dict, profile: dict) -> float:
     weights = profile["weights"]
 
     var_error = (
-        abs(metrics["target_var_pct"] - targets["target_var_pct"])
-        / tolerances["var_tolerance_pct"]
+        abs(metrics["target_var_pct"] - targets["target_var_pct"]) / tolerances["var_tolerance_pct"]
     ) * weights["var"]
 
     return_error = (
@@ -125,7 +124,9 @@ def create_visualization(metrics: dict, profile: dict) -> str:
     # VaR visualization
     var_value = metrics["target_var_pct"]
     ax2.hist(returns, bins=50, alpha=0.7, color="green", edgecolor="black")
-    ax2.axvline(x=-var_value, color="r", linestyle="--", linewidth=2, label=f"VaR 95%: {var_value:.2f}%")
+    ax2.axvline(
+        x=-var_value, color="r", linestyle="--", linewidth=2, label=f"VaR 95%: {var_value:.2f}%"
+    )
     ax2.set_xlabel("Annual Return (%)")
     ax2.set_ylabel("Frequency")
     ax2.set_title("Value at Risk (95% confidence)")

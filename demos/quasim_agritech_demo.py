@@ -69,10 +69,22 @@ def evaluate_fitness(metrics: dict, profile: dict) -> float:
     tolerances = profile["tolerances"]
     weights = profile["weights"]
 
-    yield_error = (abs(metrics["avg_yield"] - targets["target_yield_bushels_per_acre"]) / tolerances["yield_tolerance"]) * weights["yield"]
-    water_error = (abs(metrics["avg_water_eff"] - targets["target_water_efficiency_gal_per_bushel"]) / tolerances["water_tolerance"]) * weights["water_efficiency"]
-    fert_error = (abs(metrics["avg_fertilizer"] - targets["target_fertilizer_efficiency_lbs_per_acre"]) / tolerances["fertilizer_tolerance"]) * weights["fertilizer_efficiency"]
-    margin_error = (abs(metrics["avg_profit_margin"] - targets["target_profit_margin_pct"]) / tolerances["margin_tolerance_pct"]) * weights["profit_margin"]
+    yield_error = (
+        abs(metrics["avg_yield"] - targets["target_yield_bushels_per_acre"])
+        / tolerances["yield_tolerance"]
+    ) * weights["yield"]
+    water_error = (
+        abs(metrics["avg_water_eff"] - targets["target_water_efficiency_gal_per_bushel"])
+        / tolerances["water_tolerance"]
+    ) * weights["water_efficiency"]
+    fert_error = (
+        abs(metrics["avg_fertilizer"] - targets["target_fertilizer_efficiency_lbs_per_acre"])
+        / tolerances["fertilizer_tolerance"]
+    ) * weights["fertilizer_efficiency"]
+    margin_error = (
+        abs(metrics["avg_profit_margin"] - targets["target_profit_margin_pct"])
+        / tolerances["margin_tolerance_pct"]
+    ) * weights["profit_margin"]
 
     return float(np.sqrt(yield_error**2 + water_error**2 + fert_error**2 + margin_error**2))
 
@@ -89,13 +101,17 @@ def create_visualization(metrics: dict, profile: dict) -> str:
     ax1.grid(True, alpha=0.3)
 
     ax2.plot(time, metrics["water_efficiency"], "g-", linewidth=1.5)
-    ax2.axhline(y=profile["targets"]["target_water_efficiency_gal_per_bushel"], color="r", linestyle="--")
+    ax2.axhline(
+        y=profile["targets"]["target_water_efficiency_gal_per_bushel"], color="r", linestyle="--"
+    )
     ax2.set_ylabel("Gal/bushel")
     ax2.set_title("Water Efficiency")
     ax2.grid(True, alpha=0.3)
 
     ax3.plot(time, metrics["fertilizer_lbs_per_acre"], "orange", linewidth=1.5)
-    ax3.axhline(y=profile["targets"]["target_fertilizer_efficiency_lbs_per_acre"], color="r", linestyle="--")
+    ax3.axhline(
+        y=profile["targets"]["target_fertilizer_efficiency_lbs_per_acre"], color="r", linestyle="--"
+    )
     ax3.set_ylabel("Lbs/acre")
     ax3.set_title("Fertilizer Usage")
     ax3.grid(True, alpha=0.3)
@@ -135,14 +151,22 @@ def main():
     print(f"\nOptimization complete! Best alpha: {best_alpha:.6f}")
 
     viz_base64 = create_visualization(best_metrics, profile)
-    fidelity = calculate_fidelity(best_metrics, profile["targets"], ["avg_yield", "avg_water_eff", "avg_fertilizer"])
+    fidelity = calculate_fidelity(
+        best_metrics, profile["targets"], ["avg_yield", "avg_water_eff", "avg_fertilizer"]
+    )
 
     output_file = f"{Path(args.profile).stem}_demo_report.json"
     generate_report(
-        profile, best_alpha, best_fitness, best_metrics, history,
+        profile,
+        best_alpha,
+        best_fitness,
+        best_metrics,
+        history,
         {"generations": args.generations, "population_size": args.pop, "seed": args.seed},
-        viz_base64, {"fidelity": fidelity, "fitness_rmse": best_fitness},
-        profile.get("compliance_tags", []), output_file
+        viz_base64,
+        {"fidelity": fidelity, "fitness_rmse": best_fitness},
+        profile.get("compliance_tags", []),
+        output_file,
     )
 
     print(f"\nReport saved: {output_file}\n  Fidelity: {fidelity:.4f}\n\nDemo complete! ✓")
