@@ -50,6 +50,16 @@ reports/
 artifacts/flows/*.mp4
 artifacts/flows/*.gif
 
+# Demo artifacts (auto-generated, keep structure)
+artifacts/aerospace/
+artifacts/telecom/
+artifacts/finance/
+artifacts/healthcare/
+artifacts/energy/
+artifacts/transportation/
+artifacts/manufacturing/
+artifacts/agritech/
+
 # SpaceX/NASA Pilot demo outputs (runtime-generated)
 *_demo_report.json
 

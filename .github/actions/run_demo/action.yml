@@ -1,0 +1,46 @@
+name: 'Run Demo'
+description: 'Run a QuASIM vertical demo with specified parameters'
+inputs:
+  vertical:
+    description: 'Vertical name (aerospace, telecom, finance, etc.)'
+    required: true
+  seed:
+    description: 'Random seed for reproducibility'
+    required: false
+    default: '42'
+  steps:
+    description: 'Number of simulation steps'
+    required: false
+    default: '200'
+  command:
+    description: 'CLI command to run (plan, simulate)'
+    required: false
+    default: 'plan'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      shell: bash
+      run: |
+        pip install -q -e ".[dev]"
+        
+    - name: Run demo
+      shell: bash
+      run: |
+        python -m quasim.demos.${{ inputs.vertical }}.cli ${{ inputs.command }} \
+          --seed ${{ inputs.seed }} \
+          --steps ${{ inputs.steps }}
+        
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ${{ inputs.vertical }}-artifacts-${{ inputs.seed }}
+        path: artifacts/${{ inputs.vertical }}/
+        retention-days: 7
