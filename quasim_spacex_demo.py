@@ -26,7 +26,7 @@ matplotlib.use("Agg")  # Non-interactive backend
 
 def load_profile(profile_path: str) -> dict:
     """Load MECO/hot-staging profile from JSON."""
-    with open(profile_path, "r") as f:
+    with open(profile_path) as f:
         return json.load(f)
 
 
@@ -50,8 +50,8 @@ def simulate_trajectory(alpha: float, profile: dict, seed: int = 42) -> dict:
     # Extract targets from profile
     targets = profile["targets"]
     t_meco = targets["meco_time_s"]
-    alt_target = targets["peak_altitude_km"]
-    vel_target = targets["meco_velocity_kms"]
+    targets["peak_altitude_km"]
+    targets["meco_velocity_kms"]
 
     # Simplified physics model (surrogate for actual simulation)
     # Alpha shapes the thrust profile over time
@@ -154,7 +154,7 @@ def evolutionary_optimization(
         best_idx = np.argmin(fitness_scores)
         best_fitness = fitness_scores[best_idx]
         best_alpha = population[best_idx]
-        best_metrics = metrics_list[best_idx]
+        metrics_list[best_idx]
 
         history.append(
             {
@@ -251,9 +251,7 @@ def create_visualization(metrics: dict, profile: dict) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="QuASIM × SpaceX/NASA Pilot Track Demo"
-    )
+    parser = argparse.ArgumentParser(description="QuASIM × SpaceX/NASA Pilot Track Demo")
     parser.add_argument(
         "--profile",
         type=str,
@@ -288,7 +286,7 @@ def main():
     print(f"Description: {profile['description']}")
 
     # Run optimization
-    print(f"\nRunning evolutionary optimization...")
+    print("\nRunning evolutionary optimization...")
     print(f"  Generations: {args.generations}")
     print(f"  Population: {args.pop}")
     print(f"  Seed: {args.seed}")
@@ -297,7 +295,7 @@ def main():
         profile, generations=args.generations, population_size=args.pop, seed=args.seed
     )
 
-    print(f"\nOptimization complete!")
+    print("\nOptimization complete!")
     print(f"  Best alpha: {best_alpha:.6f}")
     print(f"  Best fitness (RMSE): {best_fitness:.6f}")
     print(f"  Peak altitude: {best_metrics['peak_altitude_km']:.2f} km")
@@ -311,12 +309,14 @@ def main():
 
     # Calculate fidelity metrics
     targets = profile["targets"]
-    rmse_altitude = abs(
-        best_metrics["peak_altitude_km"] - targets["peak_altitude_km"]
-    ) / targets["peak_altitude_km"]
-    rmse_velocity = abs(
-        best_metrics["meco_velocity_kms"] - targets["meco_velocity_kms"]
-    ) / targets["meco_velocity_kms"]
+    rmse_altitude = (
+        abs(best_metrics["peak_altitude_km"] - targets["peak_altitude_km"])
+        / targets["peak_altitude_km"]
+    )
+    rmse_velocity = (
+        abs(best_metrics["meco_velocity_kms"] - targets["meco_velocity_kms"])
+        / targets["meco_velocity_kms"]
+    )
 
     fidelity = 1.0 - (rmse_altitude + rmse_velocity) / 2
 
