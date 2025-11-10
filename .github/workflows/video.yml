@@ -1,56 +1,37 @@
-name: Video Capture
+name: Video Capture Tests
 
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
-
-permissions:
-  contents: write  # Needed to commit video artifacts back to repo
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  generate-video:
+  test-video-capture:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -e .
-        pip install matplotlib imageio imageio-ffmpeg
-        
-    - name: Generate video artifacts
-      run: |
-        python -m quasim.cli.run_flow --steps=150 --N=300 --T=3.0 --seed=42 --emit-json
-        
-    - name: Upload MP4 artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: quasim-video-mp4
-        path: artifacts/flows/*.mp4
-        retention-days: 90
-        
-    - name: Upload GIF artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: quasim-video-gif
-        path: artifacts/flows/*.gif
-        retention-days: 90
-        
-    - name: Commit video artifacts
-      if: github.event_name == 'push'
-      run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git add artifacts/flows/
-        git diff --staged --quiet || git commit -m "chore: update video artifacts [skip ci]"
-        git push || echo "No changes to push"
-      continue-on-error: true
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -e ".[dev]"
+          pip install matplotlib imageio imageio-ffmpeg
+
+      - name: Run flow with video recording
+        run: |
+          python -m quasim.cli.run_flow --steps=5 --N=150 --T=2.0 --record
+
+      - name: Verify artifacts
+        run: |
+          ls -lh artifacts/flows || exit 1
+          test -f artifacts/flows/*.mp4
+          test -f artifacts/flows/*.gif
+
+      - name: Run video tests
+        run: pytest -v tests/test_video_autocapture.py

@@ -4,13 +4,12 @@
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path
 
 import numpy as np
 
 from quasim.control.optimizer import optimize_a
-from quasim.viz.renderer import render_frame, FlowFrameSpec
+from quasim.viz.renderer import FlowFrameSpec, render_frame
 
 
 def _generate_video_hash(seed: int, steps: int, N: int, T: float) -> str:
@@ -30,7 +29,7 @@ def _create_video_artifacts(
 ):
     """
     Generate MP4 and GIF artifacts from simulation results.
-    
+
     Args:
         a_opt: Optimized control schedule
         hist: Optimization history
@@ -41,17 +40,17 @@ def _create_video_artifacts(
         num_frames: Number of frames to render (default: 60)
     """
     import imageio
-    
+
     # Create artifacts directory
     artifacts_dir = Path("artifacts/flows")
     artifacts_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Determine which indices to sample for frames (evenly spaced)
     frame_indices = np.linspace(0, N - 1, num_frames, dtype=int)
-    
+
     # Get final objective value
     J_final = hist[-1][0]
-    
+
     # Render frames
     print(f"[quasim] Rendering {num_frames} frames...")
     frames = []
@@ -71,27 +70,27 @@ def _create_video_artifacts(
         )
         frame = render_frame(spec)
         frames.append(frame)
-    
+
     # Save MP4
     mp4_path = artifacts_dir / f"quasim_run_{repro_hash}.mp4"
     print(f"[quasim] Saving MP4 to {mp4_path}...")
     imageio.mimsave(mp4_path, frames, fps=10, codec="libx264", quality=8)
-    
+
     # Save GIF
     gif_path = artifacts_dir / f"quasim_run_{repro_hash}.gif"
     print(f"[quasim] Saving GIF to {gif_path}...")
     imageio.mimsave(gif_path, frames, fps=10, loop=0)
-    
+
     # Create symlinks to latest
     latest_mp4 = artifacts_dir / "quasim_run_latest.mp4"
     latest_gif = artifacts_dir / "quasim_run_latest.gif"
-    
+
     # Remove old symlinks if they exist
     if latest_mp4.exists() or latest_mp4.is_symlink():
         latest_mp4.unlink()
     if latest_gif.exists() or latest_gif.is_symlink():
         latest_gif.unlink()
-    
+
     # Create new symlinks (or copy on Windows)
     try:
         latest_mp4.symlink_to(mp4_path.name)
@@ -101,8 +100,8 @@ def _create_video_artifacts(
         import shutil
         shutil.copy2(mp4_path, latest_mp4)
         shutil.copy2(gif_path, latest_gif)
-    
-    print(f"[quasim] Video artifacts created:")
+
+    print("[quasim] Video artifacts created:")
     print(f"  MP4: {mp4_path} ({mp4_path.stat().st_size / 1024 / 1024:.2f} MB)")
     print(f"  GIF: {gif_path} ({gif_path.stat().st_size / 1024 / 1024:.2f} MB)")
 
@@ -116,6 +115,7 @@ def main():
     parser.add_argument("--T", type=float, default=3.0)
     parser.add_argument("--seed", type=int, default=0, help="Random seed for reproducibility")
     parser.add_argument("--emit-json", action="store_true", help="Emit results as JSON")
+    parser.add_argument("--record", action="store_true", help="Generate video artifacts (MP4 and GIF)")
     args = parser.parse_args()
 
     a_opt, hist, logs = optimize_a(
@@ -141,13 +141,14 @@ def main():
         f"[quasim] a(t): mean={a_opt.mean():.3f}, min={a_opt.min():.3f}, max={a_opt.max():.3f}"
     )
     print(f"[quasim] logs: keys={list(logs.keys())}")
-    
+
     # Generate reproducible hash for video filenames
     repro_hash = _generate_video_hash(args.seed, args.steps, args.N, args.T)
-    
-    # Create video artifacts
-    _create_video_artifacts(a_opt, hist, logs, args.T, args.N, repro_hash)
-    
+
+    # Create video artifacts if --record flag is set
+    if args.record:
+        _create_video_artifacts(a_opt, hist, logs, args.T, args.N, repro_hash)
+
     # Emit JSON if requested
     if args.emit_json:
         result = {

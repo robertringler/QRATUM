@@ -46,3 +46,7 @@ runs/
 reports/
 .cache/quasim_datasets/
 
+# Video artifacts (auto-generated)
+artifacts/flows/*.mp4
+artifacts/flows/*.gif
+

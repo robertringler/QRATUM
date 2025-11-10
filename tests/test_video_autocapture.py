@@ -4,6 +4,8 @@ Tests for automatic video capture functionality in QuASIM.
 """
 
 import os
+import glob
+import subprocess
 from pathlib import Path
 import shutil
 import pytest
@@ -53,6 +55,26 @@ def test_render_frame_creates_rgb_array():
     assert frame.dtype == np.uint8
     assert frame.min() >= 0
     assert frame.max() <= 255
+
+
+def test_video_autocapture(tmp_path):
+    """Test video autocapture via CLI with --record flag."""
+    output_dir = tmp_path / "artifacts" / "flows"
+    output_dir.mkdir(parents=True)
+
+    cmd = [
+        "python", "-m", "quasim.cli.run_flow",
+        "--steps=2", "--N=20", "--T=0.5", "--record"
+    ]
+    subprocess.run(cmd, check=True, cwd=tmp_path)
+
+    mp4s = glob.glob(str(output_dir / "*.mp4"))
+    gifs = glob.glob(str(output_dir / "*.gif"))
+    assert mp4s, "No MP4 artifacts generated"
+    assert gifs, "No GIF artifacts generated"
+
+    for f in mp4s + gifs:
+        assert os.path.getsize(f) > 0, f"Empty artifact: {f}"
 
 
 def test_video_autocapture_creates_files(temp_artifacts_dir):
