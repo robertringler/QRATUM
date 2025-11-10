@@ -1,7 +1,6 @@
 """Tests for CLI commands."""
 
 import json
-from pathlib import Path
 
 import pytest
 from click.testing import CliRunner
@@ -25,7 +24,7 @@ def test_cli_help(runner):
 def test_cli_train(runner, tmp_path):
     """Test train command."""
     output_dir = tmp_path / "test_run"
-    
+
     result = runner.invoke(
         cli,
         [
@@ -42,14 +41,14 @@ def test_cli_train(runner, tmp_path):
             str(output_dir),
         ],
     )
-    
+
     assert result.exit_code == 0
     assert "Training complete" in result.output
-    
+
     # Check that results were saved
     results_file = output_dir / "results.json"
     assert results_file.exists()
-    
+
     with open(results_file) as f:
         data = json.load(f)
         assert data["model"] == "rf"
@@ -74,13 +73,13 @@ def test_cli_eval(runner, tmp_path):
             str(output_dir),
         ],
     )
-    
+
     # Then evaluate it
     result = runner.invoke(
         cli,
         ["eval", "--run", str(output_dir), "--metrics", "all"],
     )
-    
+
     assert result.exit_code == 0
     assert "Evaluation Results" in result.output
 
@@ -88,7 +87,7 @@ def test_cli_eval(runner, tmp_path):
 def test_cli_benchmark(runner, tmp_path):
     """Test benchmark command with quick suite."""
     report_dir = tmp_path / "reports"
-    
+
     result = runner.invoke(
         cli,
         [
@@ -102,7 +101,7 @@ def test_cli_benchmark(runner, tmp_path):
             str(report_dir),
         ],
     )
-    
+
     # May fail due to missing dependencies, but should start
     # Just check it attempts to run
     assert "benchmark" in result.output.lower() or result.exit_code >= 0
@@ -126,7 +125,7 @@ def test_cli_export(runner, tmp_path):
             str(output_dir),
         ],
     )
-    
+
     # Export it
     export_path = tmp_path / "exported_model.json"
     result = runner.invoke(
@@ -141,7 +140,7 @@ def test_cli_export(runner, tmp_path):
             str(export_path),
         ],
     )
-    
+
     assert result.exit_code == 0
     assert export_path.exists()
 
@@ -164,13 +163,13 @@ def test_cli_modelcard(runner, tmp_path):
             str(output_dir),
         ],
     )
-    
+
     # Generate model card
     card_path = tmp_path / "model_card.md"
     result = runner.invoke(
         cli,
         ["modelcard", "--run", str(output_dir), "--out", str(card_path)],
     )
-    
+
     assert result.exit_code == 0
     assert card_path.exists()

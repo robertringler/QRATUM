@@ -19,7 +19,7 @@ class TestQuantumInformationTopology:
         """Test basic topology computation."""
         text = "HELLO"
         topology = revultra.quantum_information_topology(text)
-        
+
         assert isinstance(topology, dict)
         assert len(topology) > 0
         assert all(isinstance(v, complex) for v in topology.values())
@@ -28,7 +28,7 @@ class TestQuantumInformationTopology:
         """Test that more frequent characters have higher amplitudes."""
         text = "AAABBC"
         topology = revultra.quantum_information_topology(text)
-        
+
         # A appears 3 times, B appears 2 times, C appears 1 time
         assert abs(topology["A"]) > abs(topology["B"])
         assert abs(topology["B"]) > abs(topology["C"])
@@ -46,7 +46,7 @@ class TestHolographicEntropyTransform:
         """Test that entropy is non-negative."""
         text = "ABCDEFGH" * 10
         entropy, surface = revultra.holographic_entropy_transform(text)
-        
+
         assert entropy >= 0.0
         assert isinstance(surface, np.ndarray)
         assert surface.shape[0] > 0
@@ -56,7 +56,7 @@ class TestHolographicEntropyTransform:
         """Test with very short text."""
         text = "AB"
         entropy, surface = revultra.holographic_entropy_transform(text)
-        
+
         assert entropy >= 0.0
         assert surface.shape == (2, 2)
 
@@ -69,7 +69,7 @@ class TestTemporalEmbeddingSequence:
         text = "ABCDEFGH"
         window_size = 3
         embeddings = revultra.temporal_embedding_sequence(text, window_size=window_size)
-        
+
         assert embeddings.shape[1] == window_size
         assert embeddings.shape[0] == len(text) - window_size + 1
 
@@ -77,7 +77,7 @@ class TestTemporalEmbeddingSequence:
         """Test with text shorter than window."""
         text = "AB"
         embeddings = revultra.temporal_embedding_sequence(text, window_size=5)
-        
+
         # Should return empty 2D array when text is too short
         assert embeddings.shape == (1, 0) or embeddings.shape == (0, 0)
 
@@ -89,7 +89,7 @@ class TestMemoryRecursivePatternMining:
         """Test basic pattern detection."""
         text = "ABCABC"
         patterns = revultra.memory_recursive_pattern_mining(text, min_pattern_len=3)
-        
+
         assert "ABC" in patterns
         assert patterns["ABC"] >= 2
 
@@ -97,7 +97,7 @@ class TestMemoryRecursivePatternMining:
         """Test with no repeating patterns."""
         text = "ABCDEFGH"
         patterns = revultra.memory_recursive_pattern_mining(text)
-        
+
         # Should be empty or only have patterns that appear < 2 times
         assert all(count >= 2 for count in patterns.values())
 
@@ -109,7 +109,7 @@ class TestIndexOfCoincidenceTensor:
         """Test that IoC values are in [0, 1]."""
         text = "ABCD" * 50
         ioc = revultra.index_of_coincidence_tensor(text, max_period=8)
-        
+
         assert np.all(ioc >= 0.0)
         assert np.all(ioc <= 1.0)
         assert len(ioc) == 8
@@ -119,7 +119,7 @@ class TestIndexOfCoincidenceTensor:
         # Text with period 3
         text = "ABC" * 30
         ioc = revultra.index_of_coincidence_tensor(text, max_period=10)
-        
+
         # IoC at period 3 should be relatively high
         assert ioc[2] > 0.5  # 0-indexed, so period 3 is index 2
 
@@ -131,7 +131,7 @@ class TestSpectralAutocorrelation:
         """Test that autocorrelation at lag 0 is 1.0."""
         text = "ABCABC" * 10
         autocorr = revultra.spectral_autocorrelation(text)
-        
+
         assert abs(autocorr[0] - 1.0) < 1e-6
 
     def test_autocorr_shape(self, revultra):
@@ -139,7 +139,7 @@ class TestSpectralAutocorrelation:
         text = "ABCDEF" * 10
         max_lag = 20
         autocorr = revultra.spectral_autocorrelation(text, max_lag=max_lag)
-        
+
         assert len(autocorr) == max_lag + 1
 
 
@@ -150,7 +150,7 @@ class TestEmergentComplexityScore:
         """Test that complexity score is in valid range."""
         text = "ABCDEFGH" * 20
         complexity = revultra.emergent_complexity_score(text)
-        
+
         assert 0.0 <= complexity["score"] <= 100.0
         assert "entropy" in complexity
         assert "pattern_density" in complexity
@@ -160,7 +160,7 @@ class TestEmergentComplexityScore:
         """Test that all complexity components are present."""
         text = "ATTACKATDAWN" * 5
         complexity = revultra.emergent_complexity_score(text)
-        
+
         assert complexity["entropy"] >= 0.0
         assert complexity["pattern_density"] >= 0.0
         assert complexity["ioc_variance"] >= 0.0
@@ -173,7 +173,7 @@ class TestFrequencyAnalysis:
         """Test that frequencies sum to 100%."""
         text = "ABCABC"
         freqs = revultra.frequency_analysis(text)
-        
+
         total = sum(freqs.values())
         assert abs(total - 100.0) < 1e-6
 
@@ -181,7 +181,7 @@ class TestFrequencyAnalysis:
         """Test frequency calculation."""
         text = "AAB"
         freqs = revultra.frequency_analysis(text)
-        
+
         assert abs(freqs["A"] - 66.67) < 0.1
         assert abs(freqs["B"] - 33.33) < 0.1
 
@@ -193,7 +193,7 @@ class TestChiSquaredTest:
         """Test that chi-squared is non-negative."""
         text = "AAAAA"
         chi2 = revultra.chi_squared_test(text)
-        
+
         assert chi2 >= 0.0
 
     def test_chi_squared_with_custom_freqs(self, revultra):
@@ -201,7 +201,7 @@ class TestChiSquaredTest:
         text = "ABCD"
         expected = {"A": 25.0, "B": 25.0, "C": 25.0, "D": 25.0}
         chi2 = revultra.chi_squared_test(text, expected_freqs=expected)
-        
+
         assert chi2 >= 0.0
 
 
@@ -212,7 +212,7 @@ class TestKryptosK4Analysis:
         """Test complete K4 analysis."""
         k4 = "OBKRUOXOGHULBSOLIFBBWFLRVQQPRNGKSSOTWTQSJQSSEKZZWATJKLUDIAWINFBNYPVTTMZFPK"
         results = revultra.kryptos_k4_analysis(k4)
-        
+
         assert "length" in results
         assert "topology" in results
         assert "complexity" in results
@@ -224,7 +224,7 @@ class TestKryptosK4Analysis:
         """Test K4 analysis reports correct length."""
         text = "ABCDEFGH" * 10
         results = revultra.kryptos_k4_analysis(text)
-        
+
         # After normalization (removing non-letters)
         assert results["length"] == 80
 
@@ -235,7 +235,7 @@ class TestREVULTRAConfig:
     def test_config_defaults(self):
         """Test default configuration values."""
         config = REVULTRAConfig()
-        
+
         assert config.hsrq == 0.15
         assert config.teq == 1.0
         assert config.etq == 1.3
@@ -246,7 +246,7 @@ class TestREVULTRAConfig:
     def test_config_custom(self):
         """Test custom configuration values."""
         config = REVULTRAConfig(hsrq=0.2, teq=1.5)
-        
+
         assert config.hsrq == 0.2
         assert config.teq == 1.5
 
@@ -258,21 +258,21 @@ class TestDeterministicBehavior:
         """Test that topology is deterministic."""
         rev1 = REVULTRAAlgorithms(rng=np.random.default_rng(123))
         rev2 = REVULTRAAlgorithms(rng=np.random.default_rng(123))
-        
+
         text = "HELLOWORLD"
         topo1 = rev1.quantum_information_topology(text)
         topo2 = rev2.quantum_information_topology(text)
-        
+
         assert topo1 == topo2
 
     def test_deterministic_entropy(self):
         """Test that entropy transform is deterministic."""
         rev1 = REVULTRAAlgorithms(rng=np.random.default_rng(123))
         rev2 = REVULTRAAlgorithms(rng=np.random.default_rng(123))
-        
+
         text = "TESTCIPHERTEXT" * 5
         ent1, surf1 = rev1.holographic_entropy_transform(text)
         ent2, surf2 = rev2.holographic_entropy_transform(text)
-        
+
         assert abs(ent1 - ent2) < 1e-10
         assert np.allclose(surf1, surf2)

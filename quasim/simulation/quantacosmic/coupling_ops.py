@@ -26,10 +26,7 @@ class CouplingOperator:
     def apply(self, vector: Sequence[float]) -> List[float]:
         if len(vector) != len(self.strengths):
             raise ValueError("Vector dimensionality mismatch for coupling operator.")
-        return [
-            sum(weight * value for weight, value in zip(row, vector))
-            for row in self.strengths
-        ]
+        return [sum(weight * value for weight, value in zip(row, vector)) for row in self.strengths]
 
 
 def coupling_matrix(strengths: Sequence[Sequence[float]]) -> List[List[float]]:

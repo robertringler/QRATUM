@@ -6,22 +6,31 @@ import time
 
 # Verification tests
 from certs.verifier import StabilityVerifier
+
 # Energy monitor tests
 from evolve.energy_monitor import EnergyMonitor
+
 # Introspection tests
 from evolve.introspection import IntrospectionAgent, KernelMetrics
+
 # Precision manager tests
 from evolve.precision_manager import PrecisionLevel, PrecisionManager
+
 # RL controller tests
 from evolve.rl_controller import RLController
+
 # Federated learning tests
 from federated.aggregator import FederatedAggregator
+
 # Memory optimizer tests
 from memgraph.memory_optimizer import MemoryGraphOptimizer
+
 # Causal profiler tests
 from profiles.causal.profiler import CausalProfiler
+
 # Quantum search tests
 from quantum_search.ising_optimizer import IsingOptimizer
+
 # Scheduler tests
 from schedules.scheduler import DifferentiableScheduler
 

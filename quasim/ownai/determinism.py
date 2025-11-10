@@ -10,17 +10,17 @@ import numpy as np
 
 def set_seed(seed: int = 1337) -> None:
     """Set global random seed for reproducibility.
-    
+
     This function sets seeds for:
     - Python's random module
     - NumPy
     - PyTorch (if available)
-    
+
     Parameters
     ----------
     seed : int
         Random seed to use (default: 1337)
-        
+
     Examples
     --------
     >>> from quasim.ownai.determinism import set_seed
@@ -38,6 +38,7 @@ def set_seed(seed: int = 1337) -> None:
     # Set PyTorch seed if available
     try:
         import torch
+
         torch.manual_seed(seed)
         torch.cuda.manual_seed_all(seed)
 
@@ -55,17 +56,17 @@ def set_seed(seed: int = 1337) -> None:
 
 def hash_array(arr: np.ndarray) -> str:
     """Compute SHA256 hash of numpy array.
-    
+
     Parameters
     ----------
     arr : np.ndarray
         Array to hash
-        
+
     Returns
     -------
     str
         Hexadecimal hash string
-        
+
     Examples
     --------
     >>> import numpy as np
@@ -79,17 +80,17 @@ def hash_array(arr: np.ndarray) -> str:
 
 def hash_preds(predictions: Any) -> str:
     """Compute hash of model predictions for consensus checking.
-    
+
     Parameters
     ----------
     predictions : Any
         Model predictions (numpy array, torch tensor, or convertible)
-        
+
     Returns
     -------
     str
         Hexadecimal hash string
-        
+
     Examples
     --------
     >>> import numpy as np
@@ -112,7 +113,7 @@ def hash_preds(predictions: Any) -> str:
 
 def verify_determinism(func, *args, seed: int = 1337, n_runs: int = 2, **kwargs) -> bool:
     """Verify that a function produces deterministic outputs.
-    
+
     Parameters
     ----------
     func : callable
@@ -125,12 +126,12 @@ def verify_determinism(func, *args, seed: int = 1337, n_runs: int = 2, **kwargs)
         Number of runs to compare (default: 2)
     **kwargs
         Keyword arguments for func
-        
+
     Returns
     -------
     bool
         True if all runs produce identical output hashes
-        
+
     Examples
     --------
     >>> import numpy as np

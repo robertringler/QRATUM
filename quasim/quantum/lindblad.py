@@ -8,24 +8,30 @@ sx = np.array([[0, 1], [1, 0]], dtype=complex)
 sy = np.array([[0, -1j], [1j, 0]], dtype=complex)
 sz = np.array([[1, 0], [0, -1]], dtype=complex)
 
+
 def dagger(M):
     return M.conj().T
+
 
 def expm_2x2(H):
     vals, vecs = np.linalg.eig(H)
     return vecs @ np.diag(np.exp(vals)) @ np.linalg.inv(vecs)
 
+
 def build_H(Omega, lam, mu_t):
     # H = 0.5 Ω σz + λ μ σx
     return 0.5 * Omega * sz + lam * mu_t * sx
+
 
 def unitary_step(rho, H, dt):
     U = expm_2x2(-1j * H * dt)
     return U @ rho @ dagger(U)
 
+
 def lindblad_dephase_step(rho, gamma, dt):
     # L[ρ] = γ(σz ρ σz - ρ)
     return rho + dt * (gamma * (sz @ rho @ sz - rho))
+
 
 def mixed_step(rho, H, gamma, dt, split=0.5):
     # Strang splitting
@@ -33,6 +39,7 @@ def mixed_step(rho, H, gamma, dt, split=0.5):
     rho = lindblad_dephase_step(rho, gamma, dt)
     rho = unitary_step(rho, H, split * dt)
     return rho
+
 
 def bures_fidelity(rho, sigma):
     w, V = np.linalg.eigh(rho)
@@ -42,9 +49,11 @@ def bures_fidelity(rho, sigma):
     w2, _ = np.linalg.eigh(M)
     return (np.sum(np.sqrt(np.clip(w2, 0, None)))) ** 2
 
+
 def bures_distance(rho, sigma):
     F = np.clip(bures_fidelity(rho, sigma), 0.0, 1.0)
     return np.arccos(np.sqrt(F))
+
 
 def sld_qfi_numeric(rho_mu_minus, rho_mu, rho_mu_plus, dmu):
     # ∂ρ = (ρL + Lρ)/2

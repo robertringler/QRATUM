@@ -3,12 +3,15 @@
 
 import numpy as np
 
-from quasim.info.geometry import (
-    ou_step, gaussian_w2, fr_speed, free_energy
-)
+from quasim.info.geometry import fr_speed, free_energy, gaussian_w2, ou_step
 from quasim.quantum.lindblad import (
-    build_H, mixed_step, bures_distance, bures_fidelity, sld_qfi_numeric
+    build_H,
+    bures_distance,
+    bures_fidelity,
+    mixed_step,
+    sld_qfi_numeric,
 )
+
 
 def simulate(
     a,
@@ -68,7 +71,7 @@ def simulate(
         Fq = sld_qfi_numeric(rho_minus, rho, rho_plus, eps_mu)
 
         JF += alpha * FE * dt
-        JI += beta * 0.5 * (fr ** 2) * dt
+        JI += beta * 0.5 * (fr**2) * dt
         JQ += gamma_loss * (1.0 - Fq) * dt
         JG += delta * (a[k] - 1.0) ** 2 * dt
 
@@ -91,6 +94,7 @@ def simulate(
         "FreeEnergy": np.array(FE_list),
     }
     return J, logs
+
 
 def optimize_a(
     steps=50,

@@ -9,7 +9,7 @@ from quasim.ownai.determinism import set_seed
 
 class TinyCNN:
     """Tiny CNN for vision tasks (using simplified sklearn implementation).
-    
+
     Parameters
     ----------
     n_classes : int
@@ -34,12 +34,12 @@ class TinyCNN:
 
     def _flatten_images(self, images: NDArray[np.float32]) -> NDArray[np.float32]:
         """Flatten image tensors to vectors.
-        
+
         Parameters
         ----------
         images : NDArray
             Image tensor of shape (N, C, H, W)
-            
+
         Returns
         -------
         NDArray
@@ -50,14 +50,14 @@ class TinyCNN:
 
     def fit(self, X: NDArray[np.float32], y: NDArray[np.int64]) -> "TinyCNN":
         """Train the CNN.
-        
+
         Parameters
         ----------
         X : NDArray
             Training images of shape (N, C, H, W)
         y : NDArray
             Training labels
-            
+
         Returns
         -------
         self
@@ -72,12 +72,12 @@ class TinyCNN:
 
     def predict(self, X: NDArray[np.float32]) -> NDArray[np.int64]:
         """Make predictions.
-        
+
         Parameters
         ----------
         X : NDArray
             Input images
-            
+
         Returns
         -------
         NDArray
@@ -88,12 +88,12 @@ class TinyCNN:
 
     def predict_proba(self, X: NDArray[np.float32]) -> NDArray[np.float32]:
         """Predict class probabilities.
-        
+
         Parameters
         ----------
         X : NDArray
             Input images
-            
+
         Returns
         -------
         NDArray

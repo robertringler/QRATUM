@@ -1,9 +1,5 @@
 """Additional tests for HCAL methods to increase coverage."""
 
-import json
-import tempfile
-from pathlib import Path
-
 import pytest
 import yaml
 
@@ -63,21 +59,18 @@ class TestHCALDiscoverPlanApply:
     def test_apply_with_actuation_override(self):
         """Test applying plan with actuation override."""
         hcal = HCAL(dry_run=True)
-        plan = {
-            "plan_id": "test",
-            "devices": {"GPU0": {"power_limit_w": 200}}
-        }
-        
+        plan = {"plan_id": "test", "devices": {"GPU0": {"power_limit_w": 200}}}
+
         # Override to enable actuation
         result = hcal.apply(plan, enable_actuation=True)
-        
+
         assert result["actuation_enabled"] is True
 
     def test_discover_topology(self):
         """Test discover_topology method."""
         hcal = HCAL(dry_run=True)
         topology = hcal.discover_topology()
-        
+
         assert topology is not None
         assert len(topology.devices) > 0
 
@@ -88,7 +81,7 @@ class TestPolicyEngineAdditional:
     def test_policy_engine_default(self):
         """Test PolicyEngine with default settings."""
         engine = PolicyEngine()
-        
+
         assert engine.environment is not None
         assert engine.requires_approval()
         assert engine.is_dry_run_default()
@@ -110,7 +103,7 @@ class TestPolicyEngineAdditional:
             yaml.dump(policy_data, f)
 
         engine = PolicyEngine(policy_file)
-        
+
         assert engine.environment.value == "lab"  # Environment enum uses lowercase
         assert not engine.requires_approval()
         assert not engine.is_dry_run_default()
@@ -118,7 +111,7 @@ class TestPolicyEngineAdditional:
     def test_is_backend_allowed(self):
         """Test backend validation."""
         engine = PolicyEngine()
-        
+
         assert engine.is_backend_allowed("nvml")
         assert engine.is_backend_allowed("rocm_smi")
 
@@ -138,7 +131,7 @@ class TestPolicyEngineAdditional:
             yaml.dump(policy_data, f)
 
         engine = PolicyEngine(policy_file)
-        
+
         assert engine.is_device_allowed("GPU0")
         assert engine.is_device_allowed("GPU1")
         assert not engine.is_device_allowed("GPU2")
@@ -146,22 +139,22 @@ class TestPolicyEngineAdditional:
     def test_rate_limiter_reset(self):
         """Test rate limiter over time."""
         import time
-        
+
         engine = PolicyEngine()
         engine.rate_limiter.commands_per_minute = 2
         engine.rate_limiter.window_seconds = 1
-        
+
         # First 2 should pass
         engine.rate_limiter.check_and_record()
         engine.rate_limiter.check_and_record()
-        
+
         # 3rd should fail
         with pytest.raises(PolicyViolation):
             engine.rate_limiter.check_and_record()
-        
+
         # Wait for window to expire
         time.sleep(1.1)
-        
+
         # Should pass again
         engine.rate_limiter.check_and_record()
 
@@ -181,7 +174,7 @@ class TestPolicyEngineAdditional:
             yaml.dump(policy_data, f)
 
         engine = PolicyEngine(policy_file)
-        
+
         # Should raise for device not in allowlist
         with pytest.raises(PolicyViolation, match="not in allowlist"):
             engine.validate_operation(
@@ -236,10 +229,10 @@ class TestHCALWithPolicyFile:
             yaml.dump(policy_data, f)
 
         hcal = HCAL.from_policy(policy_file)
-        
+
         # Try to plan for both allowed and disallowed devices
         plan = hcal.plan(profile="balanced", devices=["GPU0", "GPU1"])
-        
+
         # GPU1 should be filtered out
         assert "GPU0" in plan["devices"]
         if "warnings" in plan:
@@ -249,14 +242,14 @@ class TestHCALWithPolicyFile:
         """Test getting audit log."""
         hcal = HCAL(dry_run=True)
         log = hcal.get_audit_log()
-        
+
         assert isinstance(log, list)
 
     def test_verify_audit_chain(self):
         """Test audit chain verification."""
         hcal = HCAL(dry_run=True)
         valid = hcal.verify_audit_chain()
-        
+
         assert isinstance(valid, bool)
 
 

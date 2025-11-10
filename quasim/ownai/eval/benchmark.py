@@ -24,7 +24,7 @@ from quasim.ownai.train.metrics import (
 @dataclass
 class BenchmarkResult:
     """Results from a single benchmark run.
-    
+
     Attributes
     ----------
     task : str
@@ -74,7 +74,7 @@ def benchmark_model(
     seed: int = 42,
 ) -> BenchmarkResult:
     """Benchmark a single model on a task/dataset.
-    
+
     Parameters
     ----------
     model_name : str
@@ -85,7 +85,7 @@ def benchmark_model(
         Dataset name
     seed : int
         Random seed
-        
+
     Returns
     -------
     BenchmarkResult
@@ -206,7 +206,7 @@ def run_benchmark_suite(
     output_dir: Path | None = None,
 ) -> list[BenchmarkResult]:
     """Run full benchmark suite.
-    
+
     Parameters
     ----------
     suite : str
@@ -215,7 +215,7 @@ def run_benchmark_suite(
         Number of repetitions per configuration
     output_dir : Path, optional
         Output directory for results
-        
+
     Returns
     -------
     list[BenchmarkResult]
@@ -275,8 +275,10 @@ def run_benchmark_suite(
                     results.append(result)
 
                     count += 1
-                    print(f"[{count}/{total}] {model_name} on {task}/{dataset} (seed={seed}): "
-                          f"primary={result.primary_metric:.4f}")
+                    print(
+                        f"[{count}/{total}] {model_name} on {task}/{dataset} (seed={seed}): "
+                        f"primary={result.primary_metric:.4f}"
+                    )
 
                 except Exception as e:
                     print(f"Error benchmarking {model_name} on {task}/{dataset}: {e}")

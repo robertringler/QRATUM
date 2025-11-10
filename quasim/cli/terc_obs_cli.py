@@ -3,7 +3,6 @@
 
 import json
 import sys
-from pathlib import Path
 
 import click
 import numpy as np
@@ -15,14 +14,14 @@ from quasim.terc_bridge.observables import (
     ioc_period_candidates,
     qgh_consensus_status,
 )
-from quasim.terc_bridge.registry import compute_observable, list_observables
+from quasim.terc_bridge.registry import list_observables
 
 
 @click.group()
 @click.version_option(version="0.1.0", prog_name="quasim-terc-obs")
 def cli():
     """QuASIM TERC Observable Emission Tool.
-    
+
     Extract and emit observables from REVULTRA/QGH algorithms for
     TERC validation tiers.
     """
@@ -36,7 +35,7 @@ def cli():
 @click.option("--observable", type=str, help="Specific observable to compute")
 def emit(state_file: str | None, text: str | None, out: str, observable: str | None):
     """Emit TERC observables from QuASIM state or text input.
-    
+
     Examples:
         quasim-terc-obs emit --text "ATTACK" --out observables.json
         quasim-terc-obs emit --state-file state.json --out obs.json --observable beta_metrics
@@ -49,9 +48,9 @@ def emit(state_file: str | None, text: str | None, out: str, observable: str | N
     else:
         click.echo("Error: Must specify either --state-file or --text", err=True)
         sys.exit(1)
-    
+
     results = {}
-    
+
     if observable:
         # Compute specific observable
         try:
@@ -78,14 +77,14 @@ def emit(state_file: str | None, text: str | None, out: str, observable: str | N
         else:
             click.echo("Error: Non-text input requires --observable specification", err=True)
             sys.exit(1)
-    
+
     # Format for TERC
     formatted = to_terc_observable_format(results)
-    
+
     # Write output
     with open(out, "w") as f:
         json.dump(formatted, f, indent=2)
-    
+
     click.echo(f"Observables emitted to: {out}")
     click.echo(json.dumps(formatted, indent=2))
 
@@ -94,7 +93,7 @@ def emit(state_file: str | None, text: str | None, out: str, observable: str | N
 def list_cmd():
     """List all registered observables."""
     observables = list_observables()
-    
+
     click.echo("Registered TERC Observables:")
     click.echo("=" * 40)
     for obs in observables:
@@ -108,66 +107,68 @@ def list_cmd():
 @click.option("--out", type=click.Path(writable=True), help="Output JSON file")
 def consensus(num_nodes: int, state_dim: int, out: str | None):
     """Compute consensus status observable for QGH.
-    
+
     Example:
         quasim-terc-obs consensus --num-nodes 10 --state-dim 5 --out consensus.json
     """
     click.echo(f"Computing consensus for {num_nodes} nodes, dimension {state_dim}...")
-    
+
     # Generate random initial states
     rng = np.random.default_rng(42)
     states = rng.normal(0, 1, size=(num_nodes, state_dim))
-    
+
     # Compute consensus
     status = qgh_consensus_status(states)
-    
+
     formatted = to_terc_observable_format({"consensus_status": status})
-    
+
     if out:
         with open(out, "w") as f:
             json.dump(formatted, f, indent=2)
         click.echo(f"Results written to: {out}")
     else:
         click.echo(json.dumps(formatted, indent=2))
-    
+
     click.echo(f"\nSummary: Converged={status['converged']}, Stability={status['stability']:.3f}")
 
 
 @cli.command("validate")
-@click.option("--obs-file", type=click.Path(exists=True), required=True, help="Observable JSON file")
+@click.option(
+    "--obs-file", type=click.Path(exists=True), required=True, help="Observable JSON file"
+)
 def validate(obs_file: str):
     """Validate observable JSON format.
-    
+
     Example:
         quasim-terc-obs validate --obs-file observables.json
     """
     try:
-        with open(obs_file, "r") as f:
+        with open(obs_file) as f:
             data = json.load(f)
-        
+
         click.echo("Validating observable file...")
-        
+
         # Check required fields
         if "observables" not in data:
             click.echo("❌ Missing 'observables' field", err=True)
             sys.exit(1)
-        
+
         if "format_version" not in data:
             click.echo("⚠️  Warning: Missing 'format_version' field")
-        
+
         if "source" not in data:
             click.echo("⚠️  Warning: Missing 'source' field")
-        
+
         click.echo("✓ Observable file is valid")
         click.echo(f"Format version: {data.get('format_version', 'unknown')}")
         click.echo(f"Source: {data.get('source', 'unknown')}")
         click.echo(f"Observable count: {len(data['observables'])}")
-        
+
         # List observables
         click.echo("\nObservables present:")
         for key in data["observables"].keys():
             click.echo(f"  - {key}")
-        
+
     except json.JSONDecodeError as e:
         click.echo(f"❌ Invalid JSON: {e}", err=True)
         sys.exit(1)

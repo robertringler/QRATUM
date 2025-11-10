@@ -25,10 +25,7 @@ class FieldLattice:
         base_matrix = coupling.matrix()
         if len(base_matrix) != len(self.positions):
             raise ValueError("Coupling matrix dimension must match lattice size.")
-        scaled = [
-            [element * self.timestep for element in row]
-            for row in base_matrix
-        ]
+        scaled = [[element * self.timestep for element in row] for row in base_matrix]
         return scaled
 
 

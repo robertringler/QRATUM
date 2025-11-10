@@ -254,8 +254,7 @@ class QuantacosmorphysigeneticField:
 
 
 __all__ = ["QCMGParameters", "FieldState", "QuantacosmorphysigeneticField"]
-from quasim.sim.qcmg_field import (FieldState, QCMGParameters,
-                                   QuantacosmomorphysigeneticField)
+from quasim.sim.qcmg_field import FieldState, QCMGParameters, QuantacosmomorphysigeneticField
 
 __version__ = "0.1.0"
 
@@ -264,8 +263,7 @@ __all__ = [
     "FieldState",
     "QuantacosmomorphysigeneticField",
     "__version__",
-from quasim.sim.qcmg import (QCMGParameters, QCMGState,
-                             QuantacosmorphysigeneticField)
+from quasim.sim.qcmg import QCMGParameters, QCMGState, QuantacosmorphysigeneticField
 
 __all__ = [
     "QCMGParameters",

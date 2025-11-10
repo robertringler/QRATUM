@@ -13,7 +13,7 @@ def generate_model_card(
     description: str = "",
 ) -> None:
     """Generate a model card for a QuASIM-Own model.
-    
+
     Parameters
     ----------
     model_name : str

@@ -79,6 +79,7 @@ def to_terc_observable_format(results: dict[str, Any]) -> dict[str, Any]:
     dict[str, Any]
         TERC-formatted observables with metadata
     """
+
     # Serialize numpy arrays to lists
     def serialize(obj: Any) -> Any:
         if isinstance(obj, np.ndarray):

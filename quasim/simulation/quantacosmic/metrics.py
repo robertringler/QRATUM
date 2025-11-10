@@ -27,15 +27,12 @@ class MetricTensor:
     def determinant(self) -> float:
         return _determinant(self.components)
 
-    def normalize(self) -> "MetricTensor":
+    def normalize(self) -> MetricTensor:
         det = self.determinant()
         if det == 0:
             raise ValueError("Cannot normalise a singular metric tensor.")
         factor = abs(det) ** (-1.0 / self.dimension)
-        normalized = [
-            [component * factor for component in row]
-            for row in self.components
-        ]
+        normalized = [[component * factor for component in row] for row in self.components]
         return MetricTensor(normalized)
 
 

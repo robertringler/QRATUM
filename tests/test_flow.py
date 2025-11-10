@@ -2,7 +2,8 @@
 
 import numpy as np
 
-from quasim.control.optimizer import simulate, optimize_a
+from quasim.control.optimizer import optimize_a, simulate
+
 
 def test_simulate_runs():
     N = 50
@@ -11,6 +12,7 @@ def test_simulate_runs():
     assert np.isfinite(J)
     assert "Bures_dist" in logs
     assert logs["Bures_dist"].shape == (N,)
+
 
 def test_optimize_a_improves_or_stabilizes():
     a_opt, hist, logs = optimize_a(steps=5, N=80, T=1.5)

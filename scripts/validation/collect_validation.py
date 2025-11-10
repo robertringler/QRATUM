@@ -13,11 +13,10 @@ Generates: docs/validation/validated_kernels_report.md
 
 import csv
 import datetime
-import json
 import os
 import re
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 
 class ValidationCollector:
@@ -540,16 +539,12 @@ r"Fidelity:\\s+(?P<fidelity>[0-9\\.]+)"
 
 def main():
     """Main entry point."""
-    repo_root = os.path.dirname(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    )
+    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
     collector = ValidationCollector(repo_root)
     collector.collect_all()
 
-    output_path = os.path.join(
-        repo_root, "docs", "validation", "validated_kernels_report.md"
-    )
+    output_path = os.path.join(repo_root, "docs", "validation", "validated_kernels_report.md")
     collector.generate_report(output_path)
 
     print("\n✅ Validation report generation complete!")

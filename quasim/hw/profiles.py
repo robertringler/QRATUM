@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class Profile:
     """Hardware reconfiguration profile."""
+
     name: str
     description: str
     setpoints: Dict[str, Dict[str, Any]]  # device_type -> {param: value}
@@ -41,7 +42,6 @@ PROFILES = {
             "temp_c_max": 85,
         },
     ),
-
     "energy-cap": Profile(
         name="energy-cap",
         description="Minimize power consumption for sustained workloads",
@@ -61,7 +61,6 @@ PROFILES = {
             "power_watts_max": 250,
         },
     ),
-
     "coherence": Profile(
         name="coherence",
         description="Optimize for quantum coherence and low noise",
@@ -82,7 +81,6 @@ PROFILES = {
             "power_watts_max": 200,
         },
     ),
-
     "balanced": Profile(
         name="balanced",
         description="Balanced performance and efficiency",
@@ -127,9 +125,9 @@ class ReconfigurationProfile:
     def plan(
         self,
         topology: Any,  # TopologyDiscovery
-        policy: Any,    # PolicyEngine
+        policy: Any,  # PolicyEngine
         devices: Optional[List[str]] = None,
-        constraints: Optional[Dict[str, Any]] = None
+        constraints: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
         Generate reconfiguration plan from profile.
@@ -156,9 +154,11 @@ class ReconfigurationProfile:
             plan["constraints"].update(constraints)
 
         # Get devices to configure
-        target_devices = topology.devices if not devices else {
-            d: topology.devices[d] for d in devices if d in topology.devices
-        }
+        target_devices = (
+            topology.devices
+            if not devices
+            else {d: topology.devices[d] for d in devices if d in topology.devices}
+        )
 
         # Map profile setpoints to devices
         for device_id, device_info in target_devices.items():
@@ -181,9 +181,7 @@ class ReconfigurationProfile:
         return plan
 
     def _apply_limits(
-        self,
-        setpoints: Dict[str, Any],
-        limits: Any  # DeviceLimits
+        self, setpoints: Dict[str, Any], limits: Any  # DeviceLimits
     ) -> Dict[str, Any]:
         """Apply policy limits to setpoints."""
         limited = setpoints.copy()
@@ -211,7 +209,7 @@ class ReconfigurationProfile:
                 device_id=device_id,
                 operation="reconfigure",
                 setpoints=setpoints,
-                enable_actuation=False  # Validation only
+                enable_actuation=False,  # Validation only
             )
 
 
@@ -219,7 +217,7 @@ def create_custom_profile(
     name: str,
     description: str,
     setpoints: Dict[str, Dict[str, Any]],
-    constraints: Optional[Dict[str, Any]] = None
+    constraints: Optional[Dict[str, Any]] = None,
 ) -> Profile:
     """
     Create custom reconfiguration profile.

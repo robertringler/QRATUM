@@ -81,7 +81,7 @@ class HCAL:
         policy_path: Path,
         enable_actuation: bool = False,
         audit_log_dir: Optional[Path] = None,
-    ) -> "HCAL":
+    ) -> HCAL:
         """Create HCAL instance from policy file.
 
         Args:
@@ -96,7 +96,7 @@ class HCAL:
         if audit_log_dir:
             audit_log_dir.mkdir(parents=True, exist_ok=True)
             audit_log_path = audit_log_dir / "audit.log"
-        
+
         return cls(
             policy_path=policy_path,
             dry_run=not enable_actuation,
@@ -124,10 +124,10 @@ class HCAL:
         # Get backend types from policy if available
         if self.policy:
             topology["summary"]["backend_types"] = list(self.policy.allowed_backends)
-        
+
         # Discover devices from topology
         discovered_topology = self.topology.discover()
-        
+
         for device in discovered_topology.devices:
             device_info = {
                 "id": device.device_id,
@@ -145,11 +145,13 @@ class HCAL:
                         if device_id.startswith("GPU"):
                             # Check if not already added
                             if not any(d["id"] == device_id for d in topology["devices"]):
-                                topology["devices"].append({
-                                    "id": device_id,
-                                    "type": "GPU",
-                                    "backend": "nvml",
-                                })
+                                topology["devices"].append(
+                                    {
+                                        "id": device_id,
+                                        "type": "GPU",
+                                        "backend": "nvml",
+                                    }
+                                )
 
         topology["summary"]["total_devices"] = len(topology["devices"])
 
@@ -311,9 +313,7 @@ class HCAL:
 
         return self.sensor_manager.read_telemetry(device_id, backend)
 
-    def calibrate_bias_trim(
-        self, device_id: str, max_iterations: int = 20
-    ) -> CalibrationResult:
+    def calibrate_bias_trim(self, device_id: str, max_iterations: int = 20) -> CalibrationResult:
         """Run bias trim calibration.
 
         Args:
@@ -336,9 +336,7 @@ class HCAL:
 
         return bias_trim_v1(device_id, backend, measure_fn, apply_fn)
 
-    def run_power_sweep(
-        self, device_id: str, power_range: Tuple[float, float], steps: int = 10
-    ):
+    def run_power_sweep(self, device_id: str, power_range: Tuple[float, float], steps: int = 10):
         """Run power sweep calibration.
 
         Args:
@@ -400,7 +398,9 @@ class HCAL:
         Returns:
             Telemetry dictionary
         """
-        return self.actuator.get_telemetry(devices) if hasattr(self.actuator, 'get_telemetry') else {}
+        return (
+            self.actuator.get_telemetry(devices) if hasattr(self.actuator, "get_telemetry") else {}
+        )
 
     def emergency_stop(self) -> Dict[str, Any]:
         """Emergency stop all operations.
@@ -409,7 +409,7 @@ class HCAL:
             Stop result
         """
         result = {"stopped": True, "timestamp": str(uuid.uuid4())}
-        if hasattr(self.actuator, 'emergency_stop'):
+        if hasattr(self.actuator, "emergency_stop"):
             self.actuator.emergency_stop()
         self.audit_logger.log_event("emergency_stop", result)
         return result
@@ -420,7 +420,7 @@ class HCAL:
         Returns:
             List of audit log entries.
         """
-        return self.actuator.get_audit_log() if hasattr(self.actuator, 'get_audit_log') else []
+        return self.actuator.get_audit_log() if hasattr(self.actuator, "get_audit_log") else []
 
     def verify_audit_chain(self) -> bool:
         """Verify audit log chain integrity.
@@ -428,7 +428,11 @@ class HCAL:
         Returns:
             True if chain is valid.
         """
-        return self.actuator.verify_audit_chain() if hasattr(self.actuator, 'verify_audit_chain') else True
+        return (
+            self.actuator.verify_audit_chain()
+            if hasattr(self.actuator, "verify_audit_chain")
+            else True
+        )
 
     def _get_backend(self, device_id: str):
         """Get appropriate backend for device.

@@ -6,7 +6,7 @@ from numpy.typing import NDArray
 
 class ClassificationHead:
     """Simple classification head using softmax.
-    
+
     Attributes
     ----------
     n_classes : int
@@ -25,7 +25,7 @@ class ClassificationHead:
 
     def initialize(self, seed: int = 42) -> None:
         """Initialize weights and biases.
-        
+
         Parameters
         ----------
         seed : int
@@ -39,12 +39,12 @@ class ClassificationHead:
 
     def forward(self, x: NDArray[np.float32]) -> NDArray[np.float32]:
         """Forward pass.
-        
+
         Parameters
         ----------
         x : NDArray
             Input features of shape (batch_size, input_dim)
-            
+
         Returns
         -------
         NDArray
@@ -58,12 +58,12 @@ class ClassificationHead:
 
     def predict(self, x: NDArray[np.float32]) -> NDArray[np.int64]:
         """Predict class labels.
-        
+
         Parameters
         ----------
         x : NDArray
             Input features
-            
+
         Returns
         -------
         NDArray
@@ -75,7 +75,7 @@ class ClassificationHead:
 
 class RegressionHead:
     """Simple regression head for continuous outputs.
-    
+
     Attributes
     ----------
     weights : NDArray | None
@@ -91,7 +91,7 @@ class RegressionHead:
 
     def initialize(self, seed: int = 42) -> None:
         """Initialize weights and bias.
-        
+
         Parameters
         ----------
         seed : int
@@ -104,12 +104,12 @@ class RegressionHead:
 
     def forward(self, x: NDArray[np.float32]) -> NDArray[np.float32]:
         """Forward pass.
-        
+
         Parameters
         ----------
         x : NDArray
             Input features of shape (batch_size, input_dim)
-            
+
         Returns
         -------
         NDArray
@@ -123,12 +123,12 @@ class RegressionHead:
 
     def predict(self, x: NDArray[np.float32]) -> NDArray[np.float32]:
         """Predict continuous values.
-        
+
         Parameters
         ----------
         x : NDArray
             Input features
-            
+
         Returns
         -------
         NDArray

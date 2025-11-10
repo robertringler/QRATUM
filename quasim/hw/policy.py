@@ -6,12 +6,14 @@ from typing import Any, Dict, Optional, Tuple
 
 class PolicyViolation(Exception):
     """Exception raised when a hardware operation violates policy constraints."""
+
     pass
 
 
 @dataclass
 class DeviceLimits:
     """Device-specific operational limits."""
+
     device_id: str
     power_watts_max: Optional[float] = None
     clock_mhz_range: Optional[Tuple[int, int]] = None  # (min, max)
@@ -45,7 +47,7 @@ class PolicyEngine:
         device_id: str,
         operation: str,
         setpoints: Dict[str, Any],
-        enable_actuation: bool = True
+        enable_actuation: bool = True,
     ) -> None:
         """
         Validate a hardware operation against policy.
@@ -62,7 +64,11 @@ class PolicyEngine:
         limits = self.get_device_limits(device_id)
 
         # Validate power limit
-        if "power_limit_w" in setpoints and limits.power_watts_max and setpoints["power_limit_w"] > limits.power_watts_max:
+        if (
+            "power_limit_w" in setpoints
+            and limits.power_watts_max
+            and setpoints["power_limit_w"] > limits.power_watts_max
+        ):
             raise PolicyViolation(
                 f"Power limit {setpoints['power_limit_w']}W exceeds maximum "
                 f"{limits.power_watts_max}W for device {device_id}"

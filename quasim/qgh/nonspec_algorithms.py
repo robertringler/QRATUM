@@ -192,7 +192,9 @@ class SuperpositionResolver:
                     "final_delta": float(delta),
                 }
 
-        logger.warning(f"SuperpositionResolver did not converge in {self.max_iterations} iterations")
+        logger.warning(
+            f"SuperpositionResolver did not converge in {self.max_iterations} iterations"
+        )
         return {
             "state": state,
             "converged": False,
@@ -421,7 +423,9 @@ class SelfConsistencyPropagator:
                     "final_delta": float(delta),
                 }
 
-        logger.warning(f"SelfConsistencyPropagator did not converge in {self.max_iterations} iterations")
+        logger.warning(
+            f"SelfConsistencyPropagator did not converge in {self.max_iterations} iterations"
+        )
         return {
             "states": states,
             "converged": False,

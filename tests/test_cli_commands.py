@@ -3,7 +3,6 @@
 import json
 import subprocess
 import sys
-from pathlib import Path
 
 import pytest
 
@@ -30,7 +29,7 @@ class TestRevultraCLI:
     def test_analyze_command(self, temp_output_dir):
         """Test analyze command."""
         output_file = temp_output_dir / "results.json"
-        
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -45,14 +44,14 @@ class TestRevultraCLI:
             capture_output=True,
             text=True,
         )
-        
+
         assert result.returncode == 0
         assert output_file.exists()
-        
+
         # Verify JSON output
         with open(output_file) as f:
             data = json.load(f)
-        
+
         assert "complexity" in data
         assert "frequency_analysis" in data
 
@@ -70,14 +69,14 @@ class TestRevultraCLI:
             capture_output=True,
             text=True,
         )
-        
+
         assert result.returncode == 0
         assert "Character Frequencies" in result.stdout
 
     def test_demo_command(self, temp_output_dir):
         """Test demo command."""
         output_file = temp_output_dir / "demo.json"
-        
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -92,7 +91,7 @@ class TestRevultraCLI:
             capture_output=True,
             text=True,
         )
-        
+
         assert result.returncode == 0
         assert "Kryptos K4" in result.stdout
 
@@ -113,7 +112,7 @@ class TestQGHCLI:
     def test_demo_command(self, temp_output_dir):
         """Test demo command."""
         output_file = temp_output_dir / "qgh_demo.json"
-        
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -128,7 +127,7 @@ class TestQGHCLI:
             capture_output=True,
             text=True,
         )
-        
+
         assert result.returncode == 0
         assert output_file.exists()
 
@@ -148,7 +147,7 @@ class TestQGHCLI:
             capture_output=True,
             text=True,
         )
-        
+
         assert result.returncode == 0
         assert "Converged" in result.stdout
 
@@ -168,7 +167,7 @@ class TestQGHCLI:
             capture_output=True,
             text=True,
         )
-        
+
         assert result.returncode == 0
         assert "Monitoring" in result.stdout or "Stream Statistics" in result.stdout
 
@@ -193,14 +192,14 @@ class TestTERCObsCLI:
             capture_output=True,
             text=True,
         )
-        
+
         assert result.returncode == 0
         assert "Registered" in result.stdout or "observables" in result.stdout.lower()
 
     def test_emit_command(self, temp_output_dir):
         """Test emit command."""
         output_file = temp_output_dir / "observables.json"
-        
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -215,21 +214,21 @@ class TestTERCObsCLI:
             capture_output=True,
             text=True,
         )
-        
+
         assert result.returncode == 0
         assert output_file.exists()
-        
+
         # Verify JSON structure
         with open(output_file) as f:
             data = json.load(f)
-        
+
         assert "observables" in data
         assert "format_version" in data
 
     def test_consensus_command(self, temp_output_dir):
         """Test consensus command."""
         output_file = temp_output_dir / "consensus.json"
-        
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -246,7 +245,7 @@ class TestTERCObsCLI:
             capture_output=True,
             text=True,
         )
-        
+
         assert result.returncode == 0
         assert output_file.exists()
 
@@ -261,7 +260,7 @@ class TestTERCObsCLI:
         }
         with open(obs_file, "w") as f:
             json.dump(obs_data, f)
-        
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -274,7 +273,7 @@ class TestTERCObsCLI:
             capture_output=True,
             text=True,
         )
-        
+
         assert result.returncode == 0
         assert "valid" in result.stdout.lower()
 
@@ -302,7 +301,7 @@ class TestCLIIntegration:
         )
         assert result1.returncode == 0
         assert revultra_output.exists()
-        
+
         # Step 2: Emit TERC observables
         terc_output = temp_output_dir / "terc_obs.json"
         result2 = subprocess.run(
@@ -321,7 +320,7 @@ class TestCLIIntegration:
         )
         assert result2.returncode == 0
         assert terc_output.exists()
-        
+
         # Step 3: Validate TERC observables
         result3 = subprocess.run(
             [
@@ -340,7 +339,7 @@ class TestCLIIntegration:
     def test_qgh_demo_to_json(self, temp_output_dir):
         """Test QGH demo with JSON export."""
         output_file = temp_output_dir / "qgh_all_demos.json"
-        
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -355,13 +354,13 @@ class TestCLIIntegration:
             capture_output=True,
             text=True,
         )
-        
+
         assert result.returncode == 0
         assert output_file.exists()
-        
+
         # Verify JSON structure
         with open(output_file) as f:
             data = json.load(f)
-        
+
         # Should contain results from multiple demos
         assert len(data) > 0

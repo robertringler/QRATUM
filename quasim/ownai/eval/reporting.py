@@ -14,12 +14,12 @@ from quasim.ownai.train.metrics import compute_stability_margin
 
 def results_to_dict_list(results: list[BenchmarkResult]) -> list[dict[str, Any]]:
     """Convert benchmark results to list of dictionaries.
-    
+
     Parameters
     ----------
     results : list[BenchmarkResult]
         Benchmark results
-        
+
     Returns
     -------
     list[dict]
@@ -46,7 +46,7 @@ def results_to_dict_list(results: list[BenchmarkResult]) -> list[dict[str, Any]]
 
 def save_results_csv(results: list[BenchmarkResult], output_path: Path) -> None:
     """Save results to CSV file.
-    
+
     Parameters
     ----------
     results : list[BenchmarkResult]
@@ -69,7 +69,7 @@ def save_results_csv(results: list[BenchmarkResult], output_path: Path) -> None:
 
 def save_results_json(results: list[BenchmarkResult], output_path: Path) -> None:
     """Save results to JSON file.
-    
+
     Parameters
     ----------
     results : list[BenchmarkResult]
@@ -87,12 +87,12 @@ def save_results_json(results: list[BenchmarkResult], output_path: Path) -> None
 
 def generate_summary_table(results: list[BenchmarkResult]) -> dict[str, dict[str, Any]]:
     """Generate summary statistics aggregated by model and task.
-    
+
     Parameters
     ----------
     results : list[BenchmarkResult]
         Benchmark results
-        
+
     Returns
     -------
     dict
@@ -145,7 +145,7 @@ def generate_markdown_report(
     title: str = "QuASIM-Own Benchmark Results",
 ) -> None:
     """Generate Markdown report with benchmark results.
-    
+
     Parameters
     ----------
     results : list[BenchmarkResult]
@@ -177,8 +177,12 @@ def generate_markdown_report(
     for task in tasks:
         lines.append(f"### {task}")
         lines.append("")
-        lines.append("| Model | Primary Metric | Secondary Metric | Latency (ms) | Stability | Deterministic |")
-        lines.append("|-------|---------------|------------------|--------------|-----------|---------------|")
+        lines.append(
+            "| Model | Primary Metric | Secondary Metric | Latency (ms) | Stability | Deterministic |"
+        )
+        lines.append(
+            "|-------|---------------|------------------|--------------|-----------|---------------|"
+        )
 
         task_summaries = {k: v for k, v in summary.items() if v["task"] == task}
 
@@ -221,7 +225,7 @@ def generate_markdown_report(
 
 def generate_ascii_chart(values: list[float], labels: list[str], max_width: int = 50) -> str:
     """Generate simple ASCII bar chart.
-    
+
     Parameters
     ----------
     values : list[float]
@@ -230,7 +234,7 @@ def generate_ascii_chart(values: list[float], labels: list[str], max_width: int 
         Labels for each value
     max_width : int
         Maximum bar width in characters
-        
+
     Returns
     -------
     str

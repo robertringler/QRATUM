@@ -124,15 +124,18 @@ class PolicyValidator:
             # Invalid limit value; treat as policy violation
             return False
         return value <= limit
+
+
 """HCAL policy enforcement and validation."""
 
-from typing import Any, Dict
+from typing import Dict
+
 """Policy engine for HCAL - declarative YAML-based policy configuration."""
 
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 """
 Policy engine for hardware control operations.
@@ -147,6 +150,7 @@ from typing import Tuple
 
 class PolicyViolation(Exception):
     """Raised when a policy is violated."""
+
     pass
 
 
@@ -168,7 +172,7 @@ class Policy:
         self.approvals = config.get("approvals", {})
 
     @classmethod
-    def from_file(cls, path: str) -> "Policy":
+    def from_file(cls, path: str) -> Policy:
         """Load policy from YAML file.
 
         Args:
@@ -202,9 +206,7 @@ class Policy:
                 power = setpoints["power_limit_w"]
                 max_power = self.limits.get("power_watts_max")
                 if max_power and power > max_power:
-                    raise PolicyViolation(
-                        f"Power limit {power}W exceeds maximum {max_power}W"
-                    )
+                    raise PolicyViolation(f"Power limit {power}W exceeds maximum {max_power}W")
 
             # Check temperature limits
             if "temp_limit_c" in setpoints:
@@ -222,6 +224,8 @@ class Policy:
             True if approvals required
         """
         return self.approvals.get("required", False)
+
+
 class Environment(Enum):
     """Environment types for policy enforcement."""
 
@@ -526,6 +530,7 @@ class PolicyEngine:
         if not self.policy:
             return True
         return self.policy.dry_run_default
+
     DEV = "DEV"
     LAB = "LAB"
     PROD = "PROD"

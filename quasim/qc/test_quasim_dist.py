@@ -12,10 +12,15 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from .quasim_dist import (init_cluster, initialize_zero_state, load_checkpoint,
-                          profile, save_checkpoint, shard_state)
-from .quasim_multi import (MultiQubitSimulator, create_bell_plus,
-                           create_ghz_state_exact)
+from .quasim_dist import (
+    init_cluster,
+    initialize_zero_state,
+    load_checkpoint,
+    profile,
+    save_checkpoint,
+    shard_state,
+)
+from .quasim_multi import MultiQubitSimulator, create_bell_plus, create_ghz_state_exact
 
 
 class TestDistributedSimulation:

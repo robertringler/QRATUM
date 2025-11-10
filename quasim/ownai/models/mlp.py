@@ -9,7 +9,7 @@ from quasim.ownai.determinism import set_seed
 
 class DeterministicMLP:
     """Deterministic Multi-Layer Perceptron using sklearn.
-    
+
     Parameters
     ----------
     task : str
@@ -59,14 +59,14 @@ class DeterministicMLP:
 
     def fit(self, X: NDArray[np.float32], y: NDArray) -> "DeterministicMLP":
         """Train the MLP.
-        
+
         Parameters
         ----------
         X : NDArray
             Training features
         y : NDArray
             Training targets
-            
+
         Returns
         -------
         self
@@ -77,12 +77,12 @@ class DeterministicMLP:
 
     def predict(self, X: NDArray[np.float32]) -> NDArray:
         """Make predictions.
-        
+
         Parameters
         ----------
         X : NDArray
             Input features
-            
+
         Returns
         -------
         NDArray
@@ -92,12 +92,12 @@ class DeterministicMLP:
 
     def predict_proba(self, X: NDArray[np.float32]) -> NDArray[np.float32]:
         """Predict class probabilities (classification only).
-        
+
         Parameters
         ----------
         X : NDArray
             Input features
-            
+
         Returns
         -------
         NDArray

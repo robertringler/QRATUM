@@ -1,13 +1,12 @@
 """Data preprocessing utilities."""
 
-
 import numpy as np
 from numpy.typing import NDArray
 
 
 class StandardScaler:
     """Standardize features by removing mean and scaling to unit variance.
-    
+
     Attributes
     ----------
     mean_ : NDArray | None
@@ -22,12 +21,12 @@ class StandardScaler:
 
     def fit(self, X: NDArray[np.float32]) -> "StandardScaler":
         """Compute mean and std for later scaling.
-        
+
         Parameters
         ----------
         X : NDArray
             Training data
-            
+
         Returns
         -------
         self
@@ -40,12 +39,12 @@ class StandardScaler:
 
     def transform(self, X: NDArray[np.float32]) -> NDArray[np.float32]:
         """Scale data using computed mean and std.
-        
+
         Parameters
         ----------
         X : NDArray
             Data to scale
-            
+
         Returns
         -------
         NDArray
@@ -58,12 +57,12 @@ class StandardScaler:
 
     def fit_transform(self, X: NDArray[np.float32]) -> NDArray[np.float32]:
         """Fit and transform in one step.
-        
+
         Parameters
         ----------
         X : NDArray
             Data to fit and transform
-            
+
         Returns
         -------
         NDArray
@@ -74,7 +73,7 @@ class StandardScaler:
 
 class SimpleTokenizer:
     """Simple fixed-vocabulary tokenizer for text.
-    
+
     Attributes
     ----------
     vocab : dict[str, int]
@@ -90,12 +89,12 @@ class SimpleTokenizer:
 
     def fit(self, texts: list[str]) -> "SimpleTokenizer":
         """Build vocabulary from texts.
-        
+
         Parameters
         ----------
         texts : list[str]
             Training texts
-            
+
         Returns
         -------
         self
@@ -109,12 +108,12 @@ class SimpleTokenizer:
 
     def transform(self, texts: list[str]) -> NDArray[np.int64]:
         """Convert texts to token IDs.
-        
+
         Parameters
         ----------
         texts : list[str]
             Texts to tokenize
-            
+
         Returns
         -------
         NDArray
@@ -131,12 +130,12 @@ class SimpleTokenizer:
 
     def fit_transform(self, texts: list[str]) -> NDArray[np.int64]:
         """Fit vocabulary and transform in one step.
-        
+
         Parameters
         ----------
         texts : list[str]
             Texts to fit and transform
-            
+
         Returns
         -------
         NDArray
@@ -147,12 +146,12 @@ class SimpleTokenizer:
 
 def normalize_images(images: NDArray[np.float32]) -> NDArray[np.float32]:
     """Normalize images to [0, 1] range.
-    
+
     Parameters
     ----------
     images : NDArray
         Image tensor
-        
+
     Returns
     -------
     NDArray
@@ -172,7 +171,7 @@ def create_sliding_windows(
     data: NDArray[np.float32], window_size: int, stride: int = 1
 ) -> tuple[NDArray[np.float32], NDArray[np.float32]]:
     """Create sliding windows from time series data.
-    
+
     Parameters
     ----------
     data : NDArray
@@ -181,7 +180,7 @@ def create_sliding_windows(
         Size of each window
     stride : int
         Stride between windows (default: 1)
-        
+
     Returns
     -------
     windows : NDArray

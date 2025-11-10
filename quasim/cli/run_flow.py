@@ -98,6 +98,7 @@ def _create_video_artifacts(
     except (OSError, NotImplementedError):
         # Fall back to copying on systems that don't support symlinks
         import shutil
+
         shutil.copy2(mp4_path, latest_mp4)
         shutil.copy2(gif_path, latest_gif)
 
@@ -115,7 +116,9 @@ def main():
     parser.add_argument("--T", type=float, default=3.0)
     parser.add_argument("--seed", type=int, default=0, help="Random seed for reproducibility")
     parser.add_argument("--emit-json", action="store_true", help="Emit results as JSON")
-    parser.add_argument("--record", action="store_true", help="Generate video artifacts (MP4 and GIF)")
+    parser.add_argument(
+        "--record", action="store_true", help="Generate video artifacts (MP4 and GIF)"
+    )
     args = parser.parse_args()
 
     a_opt, hist, logs = optimize_a(
@@ -137,9 +140,7 @@ def main():
 
     J_final = hist[-1][0]
     print(f"[quasim] final objective: {J_final:.6f}")
-    print(
-        f"[quasim] a(t): mean={a_opt.mean():.3f}, min={a_opt.min():.3f}, max={a_opt.max():.3f}"
-    )
+    print(f"[quasim] a(t): mean={a_opt.mean():.3f}, min={a_opt.min():.3f}, max={a_opt.max():.3f}")
     print(f"[quasim] logs: keys={list(logs.keys())}")
 
     # Generate reproducible hash for video filenames
@@ -163,6 +164,7 @@ def main():
             "video_hash": repro_hash,
         }
         print(json.dumps(result, indent=2))
+
 
 if __name__ == "__main__":
     main()

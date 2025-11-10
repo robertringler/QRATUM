@@ -9,12 +9,12 @@ from quasim.ownai.determinism import set_seed
 
 def get_logistic_regression(seed: int = 42) -> LogisticRegression:
     """Get deterministic Logistic Regression classifier.
-    
+
     Parameters
     ----------
     seed : int
         Random seed
-        
+
     Returns
     -------
     LogisticRegression
@@ -30,12 +30,12 @@ def get_logistic_regression(seed: int = 42) -> LogisticRegression:
 
 def get_linear_svc(seed: int = 42) -> LinearSVC:
     """Get deterministic Linear SVC classifier.
-    
+
     Parameters
     ----------
     seed : int
         Random seed
-        
+
     Returns
     -------
     LinearSVC
@@ -51,12 +51,12 @@ def get_linear_svc(seed: int = 42) -> LinearSVC:
 
 def get_linear_svr(seed: int = 42) -> LinearSVR:
     """Get deterministic Linear SVR regressor.
-    
+
     Parameters
     ----------
     seed : int
         Random seed
-        
+
     Returns
     -------
     LinearSVR
@@ -71,14 +71,14 @@ def get_linear_svr(seed: int = 42) -> LinearSVR:
 
 def get_random_forest_classifier(seed: int = 42, n_estimators: int = 100) -> RandomForestClassifier:
     """Get deterministic Random Forest classifier.
-    
+
     Parameters
     ----------
     seed : int
         Random seed
     n_estimators : int
         Number of trees
-        
+
     Returns
     -------
     RandomForestClassifier
@@ -95,14 +95,14 @@ def get_random_forest_classifier(seed: int = 42, n_estimators: int = 100) -> Ran
 
 def get_random_forest_regressor(seed: int = 42, n_estimators: int = 100) -> RandomForestRegressor:
     """Get deterministic Random Forest regressor.
-    
+
     Parameters
     ----------
     seed : int
         Random seed
     n_estimators : int
         Number of trees
-        
+
     Returns
     -------
     RandomForestRegressor
@@ -119,7 +119,7 @@ def get_random_forest_regressor(seed: int = 42, n_estimators: int = 100) -> Rand
 
 def get_linear_regression() -> LinearRegression:
     """Get deterministic Linear Regression.
-    
+
     Returns
     -------
     LinearRegression

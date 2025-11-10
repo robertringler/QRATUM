@@ -179,7 +179,7 @@ def complete_validation_pipeline():
 
     output_file = "terc_validation_report.json"
     with open(output_file, "w") as f:
-        json.dump(report, f, indent=2, default=lambda o: o.tolist() if hasattr(o, 'tolist') else o)
+        json.dump(report, f, indent=2, default=lambda o: o.tolist() if hasattr(o, "tolist") else o)
 
     print(f"Complete report exported to {output_file}")
     print()
@@ -240,8 +240,12 @@ def main():
     print("=" * 70)
     print()
     print("Key Results:")
-    print(f"  • Tier-1 checks: {sum(report['tier1']['checks'].values())}/{len(report['tier1']['checks'])} passed")
-    print(f"  • Tier-5 checks: {sum(report['tier5']['checks'].values())}/{len(report['tier5']['checks'])} passed")
+    print(
+        f"  • Tier-1 checks: {sum(report['tier1']['checks'].values())}/{len(report['tier1']['checks'])} passed"
+    )
+    print(
+        f"  • Tier-5 checks: {sum(report['tier5']['checks'].values())}/{len(report['tier5']['checks'])} passed"
+    )
     print(f"  • Overall: {'VALIDATED ✓' if report['validation_complete'] else 'FAILED ✗'}")
     print()
 

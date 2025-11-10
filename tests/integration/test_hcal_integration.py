@@ -33,7 +33,7 @@ class TestHCALIntegration:
             },
             "approvals": {
                 "required": False,  # Disabled for testing
-            }
+            },
         }
 
         policy_file = tmp_path / "policy.yaml"
@@ -47,9 +47,7 @@ class TestHCALIntegration:
         """Create HCAL instance with test policy."""
         audit_dir = tmp_path / "audit_logs"
         return HCAL.from_policy(
-            policy_path=policy_file,
-            enable_actuation=False,
-            audit_log_dir=audit_dir
+            policy_path=policy_file, enable_actuation=False, audit_log_dir=audit_dir
         )
 
     def test_discover_topology(self, hcal):
@@ -95,7 +93,7 @@ class TestHCALIntegration:
                 "GPU0": {
                     "power_limit_w": 250,
                 }
-            }
+            },
         }
 
         # Apply
@@ -113,7 +111,7 @@ class TestHCALIntegration:
                 "GPU0": {
                     "power_limit_w": 500,  # Exceeds 300W limit
                 }
-            }
+            },
         }
 
         # Should raise PolicyViolation
@@ -129,7 +127,7 @@ class TestHCALIntegration:
                 "GPU5": {  # Not on allowlist
                     "power_limit_w": 200,
                 }
-            }
+            },
         }
 
         with pytest.raises(PolicyViolation, match="not on allowlist"):
@@ -137,11 +135,7 @@ class TestHCALIntegration:
 
     def test_calibration_dry_run(self, hcal):
         """Test calibration loop in dry-run mode."""
-        loop = hcal.calibration(
-            device="GPU0",
-            routine="power_sweep",
-            parameters={}
-        )
+        loop = hcal.calibration(device="GPU0", routine="power_sweep", parameters={})
 
         result = loop.run(max_iters=5, enable_actuation=False)
 
@@ -197,6 +191,7 @@ class TestCLIIntegration:
     def cli_runner(self):
         """Create Click CLI test runner."""
         from click.testing import CliRunner
+
         return CliRunner()
 
     def test_discover_command(self, cli_runner, tmp_path):
@@ -217,12 +212,18 @@ class TestCLIIntegration:
         """Test plan CLI command."""
         from quasim.hcal.cli import cli
 
-        result = cli_runner.invoke(cli, [
-            "plan",
-            "--profile", "balanced",
-            "--devices", "GPU0",
-            "--out", str(tmp_path / "plan.json")
-        ])
+        result = cli_runner.invoke(
+            cli,
+            [
+                "plan",
+                "--profile",
+                "balanced",
+                "--devices",
+                "GPU0",
+                "--out",
+                str(tmp_path / "plan.json"),
+            ],
+        )
 
         # May fail without real hardware, but should handle gracefully
         assert result.exit_code in [0, 1]
@@ -238,7 +239,7 @@ class TestRollback:
             "environment": "DEV",
             "allowed_backends": ["nvml"],
             "limits": {"power_watts_max": 300},
-            "approvals": {"required": False}
+            "approvals": {"required": False},
         }
 
         policy_file = tmp_path / "policy.yaml"
@@ -264,7 +265,7 @@ class TestRollback:
                 "GPU0": {
                     "power_limit_w": 500,  # Exceeds limit
                 }
-            }
+            },
         }
 
         # Should fail and rollback

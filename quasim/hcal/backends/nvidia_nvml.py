@@ -186,9 +186,7 @@ class NvidiaNvmlBackend(BaseBackend):
 
             # Read clock frequencies
             sm_clock = self.pynvml.nvmlDeviceGetClockInfo(handle, self.pynvml.NVML_CLOCK_SM)
-            mem_clock = self.pynvml.nvmlDeviceGetClockInfo(
-                handle, self.pynvml.NVML_CLOCK_MEM
-            )
+            mem_clock = self.pynvml.nvmlDeviceGetClockInfo(handle, self.pynvml.NVML_CLOCK_MEM)
             config["sm_clock_mhz"] = sm_clock
             config["mem_clock_mhz"] = mem_clock
 
@@ -233,9 +231,7 @@ class NvidiaNvmlBackend(BaseBackend):
             telemetry["power_watts"] = power / 1000.0
 
             # Read temperature
-            temp = self.pynvml.nvmlDeviceGetTemperature(
-                handle, self.pynvml.NVML_TEMPERATURE_GPU
-            )
+            temp = self.pynvml.nvmlDeviceGetTemperature(handle, self.pynvml.NVML_TEMPERATURE_GPU)
             telemetry["temperature_celsius"] = float(temp)
 
             # Read utilization
@@ -248,9 +244,7 @@ class NvidiaNvmlBackend(BaseBackend):
 
             # Read clocks
             sm_clock = self.pynvml.nvmlDeviceGetClockInfo(handle, self.pynvml.NVML_CLOCK_SM)
-            mem_clock = self.pynvml.nvmlDeviceGetClockInfo(
-                handle, self.pynvml.NVML_CLOCK_MEM
-            )
+            mem_clock = self.pynvml.nvmlDeviceGetClockInfo(handle, self.pynvml.NVML_CLOCK_MEM)
             telemetry["sm_clock_mhz"] = sm_clock
             telemetry["mem_clock_mhz"] = mem_clock
 

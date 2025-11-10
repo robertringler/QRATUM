@@ -167,6 +167,8 @@ class TestPolicyValidator:
         """Test checking limits with no policy."""
         validator = PolicyValidator()
         assert validator.check_limits("any", 1000) is True
+
+
 from quasim.hcal.policy import Environment, PolicyEngine
 
 

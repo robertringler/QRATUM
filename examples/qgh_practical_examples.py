@@ -5,7 +5,6 @@ Demonstrates practical applications of QGH non-speculative algorithms
 in real-world scenarios.
 """
 
-import json
 
 import numpy as np
 
@@ -168,7 +167,7 @@ def example_event_tracking():
             print(f"  Event {i}: {event_hash[:16]}...")
 
     # Verify causality
-    print(f"\nCausality verification:")
+    print("\nCausality verification:")
     print(f"  Event 0 in history: {chh.verify_causality('measurement_0')}")
     print(f"  Event 49 in history: {chh.verify_causality('measurement_49')}")
     print(f"  Nonexistent event: {chh.verify_causality('measurement_999')}")

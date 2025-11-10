@@ -37,16 +37,16 @@ class MinimalYAMLParser:
     def parse_value(value: str) -> Any:
         """Parse a YAML value."""
         value = value.strip()
-        if value.lower() in ('true', 'yes'):
+        if value.lower() in ("true", "yes"):
             return True
-        if value.lower() in ('false', 'no'):
+        if value.lower() in ("false", "no"):
             return False
         if value.startswith('"') or value.startswith("'"):
             return value[1:-1]
-        if '_' in value and value.replace('_', '').isdigit():
-            return int(value.replace('_', ''))
+        if "_" in value and value.replace("_", "").isdigit():
+            return int(value.replace("_", ""))
         try:
-            if '.' in value:
+            if "." in value:
                 return float(value)
             return int(value)
         except ValueError:
@@ -61,13 +61,13 @@ class MinimalYAMLParser:
 
         for line in stream:
             line = line.rstrip()
-            if not line or line.strip().startswith('#'):
+            if not line or line.strip().startswith("#"):
                 continue
 
             indent = len(line) - len(line.lstrip())
             line = line.strip()
 
-            if line.endswith(':'):
+            if line.endswith(":"):
                 # Section header
                 key = line[:-1]
                 new_section: Dict[str, Any] = {}
@@ -81,10 +81,10 @@ class MinimalYAMLParser:
                     section_stack.append((key, new_section))
                     current_section = new_section
 
-            elif line.startswith('- '):
+            elif line.startswith("- "):
                 # List item
-                key = line[2:].split(':')[0].strip()
-                value_str = line[2 + len(key) + 1:].strip() if ':' in line else ''
+                key = line[2:].split(":")[0].strip()
+                value_str = line[2 + len(key) + 1 :].strip() if ":" in line else ""
 
                 if not value_str:
                     # New list of dicts
@@ -95,8 +95,10 @@ class MinimalYAMLParser:
                 value = MinimalYAMLParser.parse_value(value_str)
 
                 # Handle list notation
-                if isinstance(current_section, dict) and key in current_section and isinstance(
-                    current_section[key], list
+                if (
+                    isinstance(current_section, dict)
+                    and key in current_section
+                    and isinstance(current_section[key], list)
                 ):
                     current_section[key].append(value)
                 else:
@@ -104,17 +106,16 @@ class MinimalYAMLParser:
                         current_section[key] = []
                     current_section[key].append(value)
 
-            elif ':' in line:
+            elif ":" in line:
                 # Key-value pair
-                key, value_str = line.split(':', 1)
+                key, value_str = line.split(":", 1)
                 key = key.strip()
                 value_str = value_str.strip()
 
-                if value_str.startswith('['):
+                if value_str.startswith("["):
                     # Parse inline list
                     value = [
-                        MinimalYAMLParser.parse_value(v.strip())
-                        for v in value_str[1:-1].split(',')
+                        MinimalYAMLParser.parse_value(v.strip()) for v in value_str[1:-1].split(",")
                     ]
                 else:
                     value = MinimalYAMLParser.parse_value(value_str)
@@ -129,19 +130,19 @@ class ValuationEngine:
 
     def __init__(self, config: Dict[str, Any]):
         self.config = config
-        self.as_of_date = config.get('as_of_date', '2025-11-08')
-        self.currency = config.get('currency', 'USD')
-        self.discount_rate = config.get('discount_rate_base', 0.18)
-        self.tax_rate = config.get('tax_rate', 0.21)
-        self.terminal_growth = config.get('terminal_growth', 0.03)
-        self.scenarios = config.get('scenarios', [])
-        self.mc_config = config.get('monte_carlo', {})
+        self.as_of_date = config.get("as_of_date", "2025-11-08")
+        self.currency = config.get("currency", "USD")
+        self.discount_rate = config.get("discount_rate_base", 0.18)
+        self.tax_rate = config.get("tax_rate", 0.21)
+        self.terminal_growth = config.get("terminal_growth", 0.03)
+        self.scenarios = config.get("scenarios", [])
+        self.mc_config = config.get("monte_carlo", {})
 
     def project_financials(self, scenario: Dict[str, Any]) -> List[Dict[str, float]]:
         """Project 5-year financials for a scenario."""
         projections = []
-        revenue = scenario.get('year1_revenue', 0)
-        growth_rates = scenario.get('yoy_growth', [])
+        revenue = scenario.get("year1_revenue", 0)
+        growth_rates = scenario.get("yoy_growth", [])
 
         for year in range(1, 6):
             # Revenue
@@ -149,8 +150,8 @@ class ValuationEngine:
                 revenue *= 1 + growth_rates[year - 2]
 
             # Operating metrics
-            gross_profit = revenue * scenario.get('gross_margin', 0.78)
-            opex = revenue * scenario.get('opex_ratio', 0.55)
+            gross_profit = revenue * scenario.get("gross_margin", 0.78)
+            opex = revenue * scenario.get("opex_ratio", 0.55)
             ebitda = gross_profit - opex
 
             # EBIT and taxes
@@ -159,25 +160,25 @@ class ValuationEngine:
             nopat = ebit - tax
 
             # Capital expenditures and working capital
-            capex = revenue * scenario.get('capex_ratio', 0.06)
-            wc_change = revenue * scenario.get('wc_ratio', 0.08) * 0.2  # Delta
+            capex = revenue * scenario.get("capex_ratio", 0.06)
+            wc_change = revenue * scenario.get("wc_ratio", 0.08) * 0.2  # Delta
 
             # Unlevered Free Cash Flow
             fcf = nopat + 0 - capex - wc_change  # +0 is D&A placeholder
 
             projections.append(
                 {
-                    'year': year,
-                    'revenue': revenue,
-                    'gross_profit': gross_profit,
-                    'opex': opex,
-                    'ebitda': ebitda,
-                    'ebit': ebit,
-                    'tax': tax,
-                    'nopat': nopat,
-                    'capex': capex,
-                    'wc_change': wc_change,
-                    'fcf': fcf,
+                    "year": year,
+                    "revenue": revenue,
+                    "gross_profit": gross_profit,
+                    "opex": opex,
+                    "ebitda": ebitda,
+                    "ebit": ebit,
+                    "tax": tax,
+                    "nopat": nopat,
+                    "capex": capex,
+                    "wc_change": wc_change,
+                    "fcf": fcf,
                 }
             )
 
@@ -192,31 +193,31 @@ class ValuationEngine:
 
         pv_fcf = 0.0
         for p in projections:
-            discount_factor = 1 / ((1 + discount_rate) ** p['year'])
-            pv_fcf += p['fcf'] * discount_factor
+            discount_factor = 1 / ((1 + discount_rate) ** p["year"])
+            pv_fcf += p["fcf"] * discount_factor
 
         # Terminal value (Gordon Growth)
-        last_fcf = projections[-1]['fcf']
+        last_fcf = projections[-1]["fcf"]
         terminal_fcf = last_fcf * (1 + self.terminal_growth)
         terminal_value = terminal_fcf / (discount_rate - self.terminal_growth)
 
         # PV of terminal value
-        terminal_year = projections[-1]['year']
+        terminal_year = projections[-1]["year"]
         pv_terminal = terminal_value / ((1 + discount_rate) ** terminal_year)
 
         enterprise_value = pv_fcf + pv_terminal
 
         return {
-            'pv_fcf': pv_fcf,
-            'terminal_value': terminal_value,
-            'pv_terminal': pv_terminal,
-            'enterprise_value': enterprise_value,
-            'discount_rate': discount_rate,
+            "pv_fcf": pv_fcf,
+            "terminal_value": terminal_value,
+            "pv_terminal": pv_terminal,
+            "enterprise_value": enterprise_value,
+            "discount_rate": discount_rate,
         }
 
     def run_scenario_dcf(self, scenario_name: str) -> Tuple[List[Dict], Dict]:
         """Run DCF for a named scenario."""
-        scenario = next((s for s in self.scenarios if s.get('name') == scenario_name), None)
+        scenario = next((s for s in self.scenarios if s.get("name") == scenario_name), None)
         if not scenario:
             raise ValueError(f"Scenario '{scenario_name}' not found")
 
@@ -227,8 +228,8 @@ class ValuationEngine:
 
     def monte_carlo_simulation(self, base_scenario: Dict[str, Any]) -> Dict[str, Any]:
         """Run Monte Carlo simulation."""
-        trials = self.mc_config.get('trials', 20000)
-        distributions = self.mc_config.get('distributions', {})
+        trials = self.mc_config.get("trials", 20000)
+        distributions = self.mc_config.get("distributions", {})
 
         results = []
 
@@ -237,26 +238,26 @@ class ValuationEngine:
             perturbed = base_scenario.copy()
 
             # Growth rate perturbation
-            growth_sigma = distributions.get('yoy_growth_sigma', 0.25)
-            perturbed['yoy_growth'] = [
-                max(0, g + random.gauss(0, growth_sigma)) for g in base_scenario['yoy_growth']
+            growth_sigma = distributions.get("yoy_growth_sigma", 0.25)
+            perturbed["yoy_growth"] = [
+                max(0, g + random.gauss(0, growth_sigma)) for g in base_scenario["yoy_growth"]
             ]
 
             # Margin perturbation
-            margin_sigma = distributions.get('gross_margin_sigma', 0.05)
-            perturbed['gross_margin'] = max(
+            margin_sigma = distributions.get("gross_margin_sigma", 0.05)
+            perturbed["gross_margin"] = max(
                 0.5,
-                min(0.95, base_scenario['gross_margin'] + random.gauss(0, margin_sigma)),
+                min(0.95, base_scenario["gross_margin"] + random.gauss(0, margin_sigma)),
             )
 
             # OpEx perturbation
-            opex_sigma = distributions.get('opex_ratio_sigma', 0.04)
-            perturbed['opex_ratio'] = max(
-                0.3, min(0.8, base_scenario['opex_ratio'] + random.gauss(0, opex_sigma))
+            opex_sigma = distributions.get("opex_ratio_sigma", 0.04)
+            perturbed["opex_ratio"] = max(
+                0.3, min(0.8, base_scenario["opex_ratio"] + random.gauss(0, opex_sigma))
             )
 
             # Discount rate perturbation
-            discount_sigma = distributions.get('discount_rate_sigma', 0.03)
+            discount_sigma = distributions.get("discount_rate_sigma", 0.03)
             discount_rate = max(
                 0.10, min(0.30, self.discount_rate + random.gauss(0, discount_sigma))
             )
@@ -265,7 +266,7 @@ class ValuationEngine:
             projections = self.project_financials(perturbed)
             dcf = self.calculate_dcf(projections, discount_rate)
 
-            results.append(dcf['enterprise_value'])
+            results.append(dcf["enterprise_value"])
 
         # Calculate percentiles
         results.sort()
@@ -276,13 +277,13 @@ class ValuationEngine:
         std = math.sqrt(sum((r - mean) ** 2 for r in results) / len(results))
 
         return {
-            'trials': trials,
-            'results': results,
-            'p10': p10,
-            'p50': p50,
-            'p90': p90,
-            'mean': mean,
-            'std': std,
+            "trials": trials,
+            "results": results,
+            "p10": p10,
+            "p50": p50,
+            "p90": p90,
+            "mean": mean,
+            "std": std,
         }
 
     def real_options_uplift(self, base_ev: float) -> Dict[str, float]:
@@ -300,9 +301,9 @@ class ValuationEngine:
         K = base_ev * 0.4  # But requires 40% of current EV as investment
 
         # Black-Scholes d1 and d2
-        d1 = (
-            math.log(S / K) + (risk_free_rate + 0.5 * volatility**2) * time_to_option
-        ) / (volatility * math.sqrt(time_to_option))
+        d1 = (math.log(S / K) + (risk_free_rate + 0.5 * volatility**2) * time_to_option) / (
+            volatility * math.sqrt(time_to_option)
+        )
         d2 = d1 - volatility * math.sqrt(time_to_option)
 
         # Cumulative normal distribution approximation
@@ -310,9 +311,9 @@ class ValuationEngine:
             return 0.5 * (1 + math.erf(x / math.sqrt(2)))
 
         # Call option value (real option uplift)
-        option_value = S * norm_cdf(d1) - K * math.exp(
-            -risk_free_rate * time_to_option
-        ) * norm_cdf(d2)
+        option_value = S * norm_cdf(d1) - K * math.exp(-risk_free_rate * time_to_option) * norm_cdf(
+            d2
+        )
 
         # Additional options (delay, abandonment, licensing)
         delay_option = base_ev * 0.08  # Value of waiting
@@ -321,11 +322,11 @@ class ValuationEngine:
         total_option_value = option_value + delay_option + licensing_option
 
         return {
-            'expansion_option': option_value,
-            'delay_option': delay_option,
-            'licensing_option': licensing_option,
-            'total_option_value': total_option_value,
-            'uplift_pct': (total_option_value / base_ev) * 100 if base_ev > 0 else 0,
+            "expansion_option": option_value,
+            "delay_option": delay_option,
+            "licensing_option": licensing_option,
+            "total_option_value": total_option_value,
+            "uplift_pct": (total_option_value / base_ev) * 100 if base_ev > 0 else 0,
         }
 
 
@@ -342,28 +343,26 @@ class ReportGenerator:
         # Run scenarios
         scenarios_results = {}
         for scenario in self.engine.scenarios:
-            name = scenario['name']
+            name = scenario["name"]
             projections, dcf = self.engine.run_scenario_dcf(name)
-            scenarios_results[name] = {'projections': projections, 'dcf': dcf}
+            scenarios_results[name] = {"projections": projections, "dcf": dcf}
 
         # Run Monte Carlo on Base scenario
-        base_scenario = next((s for s in self.engine.scenarios if s['name'] == 'Base'), None)
+        base_scenario = next((s for s in self.engine.scenarios if s["name"] == "Base"), None)
         mc_results = None
         if base_scenario:
             mc_results = self.engine.monte_carlo_simulation(base_scenario)
 
         # Real options
-        base_ev = scenarios_results.get('Base', {}).get('dcf', {}).get('enterprise_value', 0)
+        base_ev = scenarios_results.get("Base", {}).get("dcf", {}).get("enterprise_value", 0)
         real_options = self.engine.real_options_uplift(base_ev)
 
         # Generate report
-        report = self._generate_markdown(
-            scenarios_results, mc_results, real_options, now
-        )
+        report = self._generate_markdown(scenarios_results, mc_results, real_options, now)
 
         # Write report
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        with open(output_path, 'w') as f:
+        with open(output_path, "w") as f:
             f.write(report)
 
         # Save CSV data
@@ -379,12 +378,12 @@ class ReportGenerator:
         timestamp: datetime.datetime,
     ) -> str:
         """Generate markdown report content."""
-        base_dcf = scenarios_results.get('Base', {}).get('dcf', {})
-        base_ev = base_dcf.get('enterprise_value', 0)
+        base_dcf = scenarios_results.get("Base", {}).get("dcf", {})
+        base_ev = base_dcf.get("enterprise_value", 0)
 
-        p50 = mc_results['p50'] if mc_results else base_ev
-        p10 = mc_results['p10'] if mc_results else base_ev * 0.7
-        p90 = mc_results['p90'] if mc_results else base_ev * 1.3
+        p50 = mc_results["p50"] if mc_results else base_ev
+        p10 = mc_results["p10"] if mc_results else base_ev * 0.7
+        p90 = mc_results["p90"] if mc_results else base_ev * 1.3
 
         report = f"""# QuASIM Market Valuation Report
 
@@ -456,11 +455,11 @@ Uses Black-Scholes framework adapted for real options valuation.
 """
 
         # Add scenario tables
-        for scenario_name in ['Base', 'High', 'Low']:
+        for scenario_name in ["Base", "High", "Low"]:
             if scenario_name in scenarios_results:
                 result = scenarios_results[scenario_name]
-                projections = result['projections']
-                dcf = result['dcf']
+                projections = result["projections"]
+                dcf = result["dcf"]
 
                 report += f"""### 2.{['Base', 'High', 'Low'].index(scenario_name) + 1} {scenario_name} Case
 
@@ -640,68 +639,64 @@ Terminal Growth     |████████| ±8%
 
         return report
 
-    def _save_csv_data(
-        self, scenarios_results: Dict, mc_results: Dict, output_path: str
-    ):
+    def _save_csv_data(self, scenarios_results: Dict, mc_results: Dict, output_path: str):
         """Save auxiliary CSV data."""
         # Create data directory
-        data_dir = Path(output_path).parent / 'data'
+        data_dir = Path(output_path).parent / "data"
         data_dir.mkdir(exist_ok=True)
 
         # Save MC histogram
         if mc_results:
-            hist_path = data_dir / 'mc_histogram.csv'
-            with open(hist_path, 'w', newline='') as f:
+            hist_path = data_dir / "mc_histogram.csv"
+            with open(hist_path, "w", newline="") as f:
                 writer = csv.writer(f)
-                writer.writerow(['Trial', 'Enterprise_Value'])
-                for i, value in enumerate(mc_results['results']):
+                writer.writerow(["Trial", "Enterprise_Value"])
+                for i, value in enumerate(mc_results["results"]):
                     writer.writerow([i + 1, value])
             print(f"Monte Carlo data saved: {hist_path}")
 
         # Save scenario projections
         for scenario_name, result in scenarios_results.items():
-            proj_path = data_dir / f'projections_{scenario_name.lower()}.csv'
-            with open(proj_path, 'w', newline='') as f:
+            proj_path = data_dir / f"projections_{scenario_name.lower()}.csv"
+            with open(proj_path, "w", newline="") as f:
                 writer = csv.DictWriter(
                     f,
                     fieldnames=[
-                        'year',
-                        'revenue',
-                        'gross_profit',
-                        'opex',
-                        'ebitda',
-                        'ebit',
-                        'tax',
-                        'nopat',
-                        'capex',
-                        'wc_change',
-                        'fcf',
+                        "year",
+                        "revenue",
+                        "gross_profit",
+                        "opex",
+                        "ebitda",
+                        "ebit",
+                        "tax",
+                        "nopat",
+                        "capex",
+                        "wc_change",
+                        "fcf",
                     ],
                 )
                 writer.writeheader()
-                writer.writerows(result['projections'])
+                writer.writerows(result["projections"])
             print(f"Projections saved: {proj_path}")
 
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(description='QuASIM Market Valuation Engine')
+    parser = argparse.ArgumentParser(description="QuASIM Market Valuation Engine")
     parser.add_argument(
-        '--config',
-        default='quasim/valuation/config.yaml',
-        help='Path to valuation config YAML',
+        "--config",
+        default="quasim/valuation/config.yaml",
+        help="Path to valuation config YAML",
     )
     parser.add_argument(
-        '--output',
-        default='docs/valuation/market_valuation.md',
-        help='Output path for markdown report',
+        "--output",
+        default="docs/valuation/market_valuation.md",
+        help="Output path for markdown report",
     )
     args = parser.parse_args()
 
     # Load config
-    repo_root = os.path.dirname(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    )
+    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     config_path = os.path.join(repo_root, args.config)
 
     print(f"Loading config from: {config_path}")
@@ -724,5 +719,5 @@ def main():
     print(f"   Data: {Path(output_path).parent / 'data'}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

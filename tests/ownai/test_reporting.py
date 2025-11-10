@@ -1,8 +1,5 @@
 """Tests for reporting utilities."""
 
-from pathlib import Path
-
-import numpy as np
 import pytest
 
 from quasim.ownai.eval.benchmark import BenchmarkResult
@@ -68,9 +65,9 @@ def test_save_results_csv(sample_results, tmp_path):
     """Test saving results to CSV."""
     output_path = tmp_path / "results.csv"
     save_results_csv(sample_results, output_path)
-    
+
     assert output_path.exists()
-    
+
     # Read back and verify
     with open(output_path) as f:
         lines = f.readlines()
@@ -83,11 +80,11 @@ def test_save_results_json(sample_results, tmp_path):
     """Test saving results to JSON."""
     output_path = tmp_path / "results.json"
     save_results_json(sample_results, output_path)
-    
+
     assert output_path.exists()
-    
+
     import json
-    
+
     with open(output_path) as f:
         data = json.load(f)
         assert len(data) == 3
@@ -97,11 +94,11 @@ def test_save_results_json(sample_results, tmp_path):
 def test_generate_summary_table(sample_results):
     """Test generating summary table."""
     summary = generate_summary_table(sample_results)
-    
+
     assert len(summary) == 2  # 2 unique (task, model) combinations
     assert "tabular-cls_slt" in summary
     assert "tabular-cls_rf" in summary
-    
+
     slt_summary = summary["tabular-cls_slt"]
     assert slt_summary["n_runs"] == 2
     assert 0.83 <= slt_summary["primary_mean"] <= 0.86
@@ -112,9 +109,9 @@ def test_generate_markdown_report(sample_results, tmp_path):
     """Test generating Markdown report."""
     output_path = tmp_path / "report.md"
     generate_markdown_report(sample_results, output_path, title="Test Report")
-    
+
     assert output_path.exists()
-    
+
     with open(output_path) as f:
         content = f.read()
         assert "Test Report" in content
@@ -127,9 +124,9 @@ def test_generate_ascii_chart():
     """Test generating ASCII chart."""
     values = [0.8, 0.6, 0.9, 0.7]
     labels = ["model_a", "model_b", "model_c", "model_d"]
-    
+
     chart = generate_ascii_chart(values, labels, max_width=30)
-    
+
     assert "model_a" in chart
     assert "model_c" in chart
     assert "█" in chart

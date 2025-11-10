@@ -5,8 +5,7 @@ This script is called by launch_jax.sbatch.
 It initializes the distributed context and runs a quantum simulation.
 """
 
-from quasim.qc.quasim_dist import (init_cluster, initialize_zero_state,
-                                   profile, shard_state)
+from quasim.qc.quasim_dist import init_cluster, initialize_zero_state, profile, shard_state
 from quasim.qc.quasim_multi import MultiQubitSimulator
 
 

@@ -9,9 +9,9 @@ from typing import Any
 
 class QGHLedger:
     """QGH causal history ledger for tracking runs.
-    
+
     Maintains an append-only log of run metadata and prediction hashes.
-    
+
     Attributes
     ----------
     ledger_path : Path
@@ -36,7 +36,7 @@ class QGHLedger:
         metadata: dict[str, Any] | None = None,
     ) -> None:
         """Append a run record to the ledger.
-        
+
         Parameters
         ----------
         run_id : str
@@ -71,7 +71,7 @@ class QGHLedger:
 
     def read_ledger(self) -> list[dict[str, Any]]:
         """Read all records from the ledger.
-        
+
         Returns
         -------
         list[dict]
@@ -96,7 +96,7 @@ class QGHLedger:
         seed: int,
     ) -> bool:
         """Verify consensus for a specific configuration.
-        
+
         Parameters
         ----------
         model : str
@@ -107,7 +107,7 @@ class QGHLedger:
             Dataset name
         seed : int
             Random seed
-            
+
         Returns
         -------
         bool
@@ -135,7 +135,7 @@ class QGHLedger:
 
 def create_run_id(model: str, task: str, dataset: str, seed: int) -> str:
     """Create a unique run identifier.
-    
+
     Parameters
     ----------
     model : str
@@ -146,7 +146,7 @@ def create_run_id(model: str, task: str, dataset: str, seed: int) -> str:
         Dataset name
     seed : int
         Random seed
-        
+
     Returns
     -------
     str

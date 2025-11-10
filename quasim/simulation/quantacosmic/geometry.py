@@ -55,7 +55,7 @@ class QuantumManifold:
         det = _determinant(self.metric)
         if det < 0:
             raise ValueError("Quantacosmic metric must yield a non-negative determinant.")
-        return det ** 0.5
+        return det**0.5
 
     def project_vector(self, vector: Sequence[float]) -> List[float]:
         """Project a vector into the manifold using the metric tensor."""
@@ -80,12 +80,15 @@ def curvature_scalar(metric: Sequence[Sequence[float]]) -> float:
     average_off_diagonal = 0.0
     off_diagonal_count = len(metric) ** 2 - len(metric)
     if off_diagonal_count:
-        average_off_diagonal = sum(
-            metric[row][col]
-            for row in range(len(metric))
-            for col in range(len(metric))
-            if row != col
-        ) / off_diagonal_count
+        average_off_diagonal = (
+            sum(
+                metric[row][col]
+                for row in range(len(metric))
+                for col in range(len(metric))
+                if row != col
+            )
+            / off_diagonal_count
+        )
     return trace - average_off_diagonal
 
 

@@ -210,26 +210,26 @@ class Actuator:
         # Policy engine checks if available
         if self.policy_engine:
             # Check rate limit
-            if hasattr(self.policy_engine, 'check_rate_limit'):
+            if hasattr(self.policy_engine, "check_rate_limit"):
                 if not self.policy_engine.check_rate_limit():
                     print("Rate limit exceeded")
                     return False
 
             # Check device allowed
-            if hasattr(self.policy_engine, 'check_device_allowed'):
+            if hasattr(self.policy_engine, "check_device_allowed"):
                 if not self.policy_engine.check_device_allowed(device_id):
                     print(f"Device {device_id} not allowed by policy")
                     return False
 
             # Check backend allowed
-            if hasattr(self.policy_engine, 'check_backend_allowed'):
+            if hasattr(self.policy_engine, "check_backend_allowed"):
                 backend_name = backend.__class__.__name__
                 if not self.policy_engine.check_backend_allowed(backend_name):
                     print(f"Backend {backend_name} not allowed by policy")
                     return False
 
             # Check limits
-            if hasattr(self.policy_engine, 'check_limits'):
+            if hasattr(self.policy_engine, "check_limits"):
                 if not self.policy_engine.check_limits(device_id, setpoint):
                     print(f"Setpoint exceeds limits for device {device_id}")
                     return False
@@ -279,7 +279,7 @@ class Actuator:
             True if validation passes.
         """
         # Check if device exists
-        if hasattr(backend, 'device_exists'):
+        if hasattr(backend, "device_exists"):
             if not backend.device_exists(device_id):
                 return False
 
@@ -302,7 +302,7 @@ class Actuator:
         """
         # Read back configuration
         try:
-            if not hasattr(backend, 'read_configuration'):
+            if not hasattr(backend, "read_configuration"):
                 return True
 
             actual = backend.read_configuration(device_id)
@@ -353,7 +353,7 @@ class Actuator:
 
         for device_id in device_ids:
             backend = self._backends.get(device_id)
-            if backend and hasattr(backend, 'get_telemetry'):
+            if backend and hasattr(backend, "get_telemetry"):
                 telemetry[device_id] = backend.get_telemetry()
 
         return telemetry

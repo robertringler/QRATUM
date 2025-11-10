@@ -5,9 +5,9 @@ Symbolic and numerical simulation engines for quantum-classical systems.
 """
 
 from .qcmg_field import (
-    QuantacosmorphysigeneticField,
-    QCMGParameters,
     FieldState,
+    QCMGParameters,
+    QuantacosmorphysigeneticField,
 )
 from .quantacosmic import (
     ActionFunctional,
@@ -20,8 +20,6 @@ from .quantacosmic import (
     propagate_field,
     revultra_temporal_curvature,
 )
-from .qcmg_field import (FieldState, QCMGParameters,
-                         QuantacosmorphysigeneticField)
 
 __all__ = [
     "QuantacosmorphysigeneticField",

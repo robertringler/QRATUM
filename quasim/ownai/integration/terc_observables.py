@@ -11,12 +11,12 @@ from quasim.ownai.train.metrics import compute_stability_margin
 
 def collect_terc_observables(results: list[BenchmarkResult]) -> dict[str, Any]:
     """Collect TERC observables from benchmark results.
-    
+
     Parameters
     ----------
     results : list[BenchmarkResult]
         Benchmark results
-        
+
     Returns
     -------
     dict[str, Any]
@@ -78,7 +78,7 @@ def collect_terc_observables(results: list[BenchmarkResult]) -> dict[str, Any]:
 
 def save_terc_observables(observables: dict[str, Any], output_path: Path) -> None:
     """Save TERC observables to JSON file.
-    
+
     Parameters
     ----------
     observables : dict

@@ -21,6 +21,7 @@ class FlowFrameSpec:
         fidelity: Fidelity value
         free_energy: Free energy value
     """
+
     frame_idx: int
     time: float
     control: float

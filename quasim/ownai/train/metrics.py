@@ -9,14 +9,14 @@ from numpy.typing import NDArray
 
 def accuracy(y_true: NDArray, y_pred: NDArray) -> float:
     """Compute classification accuracy.
-    
+
     Parameters
     ----------
     y_true : NDArray
         True labels
     y_pred : NDArray
         Predicted labels
-        
+
     Returns
     -------
     float
@@ -27,14 +27,14 @@ def accuracy(y_true: NDArray, y_pred: NDArray) -> float:
 
 def mae(y_true: NDArray[np.float32], y_pred: NDArray[np.float32]) -> float:
     """Compute Mean Absolute Error.
-    
+
     Parameters
     ----------
     y_true : NDArray
         True values
     y_pred : NDArray
         Predicted values
-        
+
     Returns
     -------
     float
@@ -45,14 +45,14 @@ def mae(y_true: NDArray[np.float32], y_pred: NDArray[np.float32]) -> float:
 
 def rmse(y_true: NDArray[np.float32], y_pred: NDArray[np.float32]) -> float:
     """Compute Root Mean Squared Error.
-    
+
     Parameters
     ----------
     y_true : NDArray
         True values
     y_pred : NDArray
         Predicted values
-        
+
     Returns
     -------
     float
@@ -63,7 +63,7 @@ def rmse(y_true: NDArray[np.float32], y_pred: NDArray[np.float32]) -> float:
 
 def f1_score(y_true: NDArray, y_pred: NDArray, average: str = "weighted") -> float:
     """Compute F1 score.
-    
+
     Parameters
     ----------
     y_true : NDArray
@@ -72,7 +72,7 @@ def f1_score(y_true: NDArray, y_pred: NDArray, average: str = "weighted") -> flo
         Predicted labels
     average : str
         Averaging method (default: 'weighted')
-        
+
     Returns
     -------
     float
@@ -85,7 +85,7 @@ def f1_score(y_true: NDArray, y_pred: NDArray, average: str = "weighted") -> flo
 
 def measure_latency(model: Any, X: Any, n_runs: int = 100) -> dict[str, float]:
     """Measure model inference latency.
-    
+
     Parameters
     ----------
     model : Any
@@ -94,7 +94,7 @@ def measure_latency(model: Any, X: Any, n_runs: int = 100) -> dict[str, float]:
         Input data
     n_runs : int
         Number of runs for measurement
-        
+
     Returns
     -------
     dict[str, float]
@@ -119,7 +119,7 @@ def measure_latency(model: Any, X: Any, n_runs: int = 100) -> dict[str, float]:
 
 def measure_throughput(model: Any, X: Any, duration_sec: float = 1.0) -> float:
     """Measure model throughput (predictions per second).
-    
+
     Parameters
     ----------
     model : Any
@@ -128,7 +128,7 @@ def measure_throughput(model: Any, X: Any, duration_sec: float = 1.0) -> float:
         Input data
     duration_sec : float
         Duration to measure throughput
-        
+
     Returns
     -------
     float
@@ -147,12 +147,12 @@ def measure_throughput(model: Any, X: Any, duration_sec: float = 1.0) -> float:
 
 def estimate_model_size_mb(model: Any) -> float:
     """Estimate model size in megabytes.
-    
+
     Parameters
     ----------
     model : Any
         Model object
-        
+
     Returns
     -------
     float
@@ -175,16 +175,16 @@ def estimate_model_size_mb(model: Any) -> float:
 
 def estimate_energy_proxy(latency_ms: float, throughput: float = None) -> float:
     """Estimate energy consumption proxy based on CPU time.
-    
+
     This is a simple heuristic: energy ~ latency × TDP_estimate
-    
+
     Parameters
     ----------
     latency_ms : float
         Inference latency in milliseconds
     throughput : float, optional
         Throughput (not currently used)
-        
+
     Returns
     -------
     float
@@ -205,12 +205,12 @@ def estimate_energy_proxy(latency_ms: float, throughput: float = None) -> float:
 
 def compute_stability_margin(scores: list[float]) -> float:
     """Compute stability margin (1 - CV) across repeated runs.
-    
+
     Parameters
     ----------
     scores : list[float]
         List of scores from repeated runs
-        
+
     Returns
     -------
     float

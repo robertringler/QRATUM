@@ -12,7 +12,7 @@ TaskType = Literal["tabular-cls", "tabular-reg", "text-cls", "vision-cls", "ts-r
 @dataclass
 class TabularBatch:
     """Batch specification for tabular data.
-    
+
     Attributes
     ----------
     X : NDArray
@@ -31,7 +31,7 @@ class TabularBatch:
 @dataclass
 class TextBatch:
     """Batch specification for text data.
-    
+
     Attributes
     ----------
     input_ids : NDArray
@@ -50,7 +50,7 @@ class TextBatch:
 @dataclass
 class VisionBatch:
     """Batch specification for vision data.
-    
+
     Attributes
     ----------
     images : NDArray
@@ -66,7 +66,7 @@ class VisionBatch:
 @dataclass
 class TimeSeriesBatch:
     """Batch specification for time series data.
-    
+
     Attributes
     ----------
     sequences : NDArray

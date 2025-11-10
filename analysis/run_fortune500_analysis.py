@@ -21,9 +21,12 @@ import numpy as np
 from analysis.fortune500_quasim_integration import main as run_analysis
 from analysis.fortune500_report_generator import Fortune500ReportGenerator
 from analysis.fortune500_visualizations import (
-    create_adoption_timeline_chart, create_component_radar_chart,
-    create_correlation_scatter_plot, create_qii_distribution_histogram,
-    create_sector_comparison_chart)
+    create_adoption_timeline_chart,
+    create_component_radar_chart,
+    create_correlation_scatter_plot,
+    create_qii_distribution_histogram,
+    create_sector_comparison_chart,
+)
 
 
 def main():

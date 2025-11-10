@@ -1,19 +1,18 @@
 """XGBoost and LightGBM baseline models with tiny configs."""
 
-
 from quasim.ownai.determinism import set_seed
 
 
 def get_xgboost_classifier(seed: int = 42, n_estimators: int = 50):
     """Get XGBoost classifier with tiny config.
-    
+
     Parameters
     ----------
     seed : int
         Random seed
     n_estimators : int
         Number of boosting rounds
-        
+
     Returns
     -------
     XGBClassifier
@@ -37,14 +36,14 @@ def get_xgboost_classifier(seed: int = 42, n_estimators: int = 50):
 
 def get_xgboost_regressor(seed: int = 42, n_estimators: int = 50):
     """Get XGBoost regressor with tiny config.
-    
+
     Parameters
     ----------
     seed : int
         Random seed
     n_estimators : int
         Number of boosting rounds
-        
+
     Returns
     -------
     XGBRegressor
@@ -68,14 +67,14 @@ def get_xgboost_regressor(seed: int = 42, n_estimators: int = 50):
 
 def get_lightgbm_classifier(seed: int = 42, n_estimators: int = 50):
     """Get LightGBM classifier with tiny config.
-    
+
     Parameters
     ----------
     seed : int
         Random seed
     n_estimators : int
         Number of boosting rounds
-        
+
     Returns
     -------
     LGBMClassifier
@@ -100,14 +99,14 @@ def get_lightgbm_classifier(seed: int = 42, n_estimators: int = 50):
 
 def get_lightgbm_regressor(seed: int = 42, n_estimators: int = 50):
     """Get LightGBM regressor with tiny config.
-    
+
     Parameters
     ----------
     seed : int
         Random seed
     n_estimators : int
         Number of boosting rounds
-        
+
     Returns
     -------
     LGBMRegressor

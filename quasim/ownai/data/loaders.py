@@ -24,21 +24,21 @@ def load_tabular(
     cache_dir: Path | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Load tabular dataset.
-    
+
     Parameters
     ----------
     name : str
         Dataset name: 'adult', 'wine', or 'higgs-mini'
     cache_dir : Path, optional
         Cache directory (default: from config)
-        
+
     Returns
     -------
     X : np.ndarray
         Feature matrix
     y : np.ndarray
         Target labels
-        
+
     Examples
     --------
     >>> X, y = load_tabular("wine")
@@ -101,21 +101,21 @@ def load_text(
     cache_dir: Path | None = None,
 ) -> tuple[list[str], np.ndarray]:
     """Load text classification dataset.
-    
+
     Parameters
     ----------
     name : str
         Dataset name: 'imdb-mini' or 'agnews-mini'
     cache_dir : Path, optional
         Cache directory (default: from config)
-        
+
     Returns
     -------
     texts : list[str]
         List of text samples
     y : np.ndarray
         Target labels
-        
+
     Examples
     --------
     >>> texts, y = load_text("imdb-mini")
@@ -180,21 +180,21 @@ def load_vision(
     cache_dir: Path | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Load vision dataset.
-    
+
     Parameters
     ----------
     name : str
         Dataset name: 'cifar10-subset' or 'mnist-1k'
     cache_dir : Path, optional
         Cache directory (default: from config)
-        
+
     Returns
     -------
     images : np.ndarray
         Image tensor of shape (N, C, H, W)
     y : np.ndarray
         Target labels
-        
+
     Examples
     --------
     >>> images, y = load_vision("mnist-1k")
@@ -231,21 +231,21 @@ def load_timeseries(
     cache_dir: Path | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Load time series dataset.
-    
+
     Parameters
     ----------
     name : str
         Dataset name: 'etth1-mini' or 'synthetic-arma'
     cache_dir : Path, optional
         Cache directory (default: from config)
-        
+
     Returns
     -------
     sequences : np.ndarray
         Time series sequences of shape (N, seq_len, n_features)
     y : np.ndarray
         Target values
-        
+
     Examples
     --------
     >>> seqs, y = load_timeseries("synthetic-arma")

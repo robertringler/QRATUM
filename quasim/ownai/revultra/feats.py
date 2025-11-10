@@ -14,14 +14,14 @@ from quasim.revultra.metrics import compute_entropy, normalize_array
 
 def extract_ioc_features(text: str, max_period: int = 20) -> NDArray[np.float32]:
     """Extract Index of Coincidence tensor as features.
-    
+
     Parameters
     ----------
     text : str
         Input text
     max_period : int
         Maximum period to analyze (default: 20)
-        
+
     Returns
     -------
     NDArray
@@ -38,14 +38,14 @@ def extract_ioc_features(text: str, max_period: int = 20) -> NDArray[np.float32]
 
 def extract_spectral_features(text: str, max_lag: int = 30) -> NDArray[np.float32]:
     """Extract spectral autocorrelation features.
-    
+
     Parameters
     ----------
     text : str
         Input text
     max_lag : int
         Maximum lag for autocorrelation (default: 30)
-        
+
     Returns
     -------
     NDArray
@@ -62,14 +62,14 @@ def extract_spectral_features(text: str, max_lag: int = 30) -> NDArray[np.float3
 
 def extract_entropy_motifs(text: str, window_size: int = 10) -> NDArray[np.float32]:
     """Extract entropy motifs from text using sliding windows.
-    
+
     Parameters
     ----------
     text : str
         Input text
     window_size : int
         Size of sliding window (default: 10)
-        
+
     Returns
     -------
     NDArray
@@ -117,10 +117,10 @@ def extract_symbolic_latents(
     entropy_window: int = 10,
 ) -> NDArray[np.float32]:
     """Extract all REVULTRA symbolic latent features from text.
-    
+
     This combines IoC tensor, spectral autocorrelation, and entropy motifs
     into a single feature vector that represents symbolic properties of the input.
-    
+
     Parameters
     ----------
     text : str
@@ -131,12 +131,12 @@ def extract_symbolic_latents(
         Number of spectral lags to extract (default: 30)
     entropy_window : int
         Window size for entropy motifs (default: 10)
-        
+
     Returns
     -------
     NDArray
         Symbolic latent features of shape (ioc_periods + spectral_lags + 20,)
-        
+
     Examples
     --------
     >>> latents = extract_symbolic_latents("HELLO WORLD" * 10)
@@ -160,7 +160,7 @@ def extract_symbolic_latents_batch(
     entropy_window: int = 10,
 ) -> NDArray[np.float32]:
     """Extract symbolic latents for a batch of texts.
-    
+
     Parameters
     ----------
     texts : list[str]
@@ -171,7 +171,7 @@ def extract_symbolic_latents_batch(
         Number of spectral lags to extract (default: 30)
     entropy_window : int
         Window size for entropy motifs (default: 10)
-        
+
     Returns
     -------
     NDArray
@@ -189,15 +189,15 @@ def extract_symbolic_latents_numeric(
     X: NDArray[np.float32],
 ) -> NDArray[np.float32]:
     """Extract symbolic latents from numeric/tabular data.
-    
+
     For numeric data, we compute statistical features that serve as
     symbolic representations.
-    
+
     Parameters
     ----------
     X : NDArray
         Numeric feature matrix of shape (n_samples, n_features)
-        
+
     Returns
     -------
     NDArray

@@ -21,7 +21,7 @@ def test_profile_dataclass():
         name="test-profile",
         description="Test profile",
         setpoints={"gpu": {"power_limit_w": 250}},
-        constraints={"temp_c_max": 80}
+        constraints={"temp_c_max": 80},
     )
 
     assert profile.name == "test-profile"
@@ -128,12 +128,15 @@ def test_plan_generation_basic():
 
     # Setup policy
     policy = PolicyEngine()
-    policy.set_device_limits("gpu0", DeviceLimits(
-        device_id="gpu0",
-        power_watts_max=400,
-        clock_mhz_range=(1000, 2500),
-        fan_percent_range=(0, 100)
-    ))
+    policy.set_device_limits(
+        "gpu0",
+        DeviceLimits(
+            device_id="gpu0",
+            power_watts_max=400,
+            clock_mhz_range=(1000, 2500),
+            fan_percent_range=(0, 100),
+        ),
+    )
     policy.set_device_limits("cpu0", DeviceLimits(device_id="cpu0"))
 
     # Generate plan
@@ -161,12 +164,15 @@ def test_plan_generation_with_device_filter():
     # Setup policy
     policy = PolicyEngine()
     for device_id in ["gpu0", "gpu1", "cpu0"]:
-        policy.set_device_limits(device_id, DeviceLimits(
-            device_id=device_id,
-            power_watts_max=400,
-            clock_mhz_range=(1000, 2500),
-            fan_percent_range=(0, 100)
-        ))
+        policy.set_device_limits(
+            device_id,
+            DeviceLimits(
+                device_id=device_id,
+                power_watts_max=400,
+                clock_mhz_range=(1000, 2500),
+                fan_percent_range=(0, 100),
+            ),
+        )
 
     # Generate plan for only gpu0
     reconfig = ReconfigurationProfile.load("low-latency")
@@ -185,12 +191,15 @@ def test_plan_generation_with_additional_constraints():
 
     # Setup policy
     policy = PolicyEngine()
-    policy.set_device_limits("gpu0", DeviceLimits(
-        device_id="gpu0",
-        power_watts_max=400,
-        clock_mhz_range=(1000, 2500),
-        fan_percent_range=(0, 100)
-    ))
+    policy.set_device_limits(
+        "gpu0",
+        DeviceLimits(
+            device_id="gpu0",
+            power_watts_max=400,
+            clock_mhz_range=(1000, 2500),
+            fan_percent_range=(0, 100),
+        ),
+    )
 
     # Generate plan with additional constraints
     reconfig = ReconfigurationProfile.load("low-latency")
@@ -209,17 +218,14 @@ def test_apply_limits_power():
 
     # Setup policy with power limit
     policy = PolicyEngine()
-    policy.set_device_limits("test", DeviceLimits(
-        device_id="test",
-        power_watts_max=350
-    ))
+    policy.set_device_limits("test", DeviceLimits(device_id="test", power_watts_max=350))
 
     # Create a custom profile with high setpoints
     profile = Profile(
         name="test-profile",
         description="Test profile",
         setpoints={"gpu": {"power_limit_w": 400, "sm_clock_mhz": 2000}},
-        constraints={}
+        constraints={},
     )
     reconfig = create_custom_profile(profile)
 
@@ -238,17 +244,14 @@ def test_apply_limits_clock():
 
     # Setup policy with clock range
     policy = PolicyEngine()
-    policy.set_device_limits("test", DeviceLimits(
-        device_id="test",
-        clock_mhz_range=(1000, 2200)
-    ))
+    policy.set_device_limits("test", DeviceLimits(device_id="test", clock_mhz_range=(1000, 2200)))
 
     # Create a custom profile with high clock setpoint
     profile = Profile(
         name="test-profile",
         description="Test profile",
         setpoints={"gpu": {"sm_clock_mhz": 2500}},
-        constraints={}
+        constraints={},
     )
     reconfig = create_custom_profile(profile)
 
@@ -263,10 +266,7 @@ def test_apply_limits_clock_min():
     reconfig = ReconfigurationProfile.load("low-latency")
 
     setpoints = {"sm_clock_mhz": 800}
-    limits = DeviceLimits(
-        device_id="test",
-        clock_mhz_range=(1000, 2200)
-    )
+    limits = DeviceLimits(device_id="test", clock_mhz_range=(1000, 2200))
 
     limited = reconfig._apply_limits(setpoints, limits)
 
@@ -278,10 +278,7 @@ def test_apply_limits_fan():
     reconfig = ReconfigurationProfile.load("low-latency")
 
     setpoints = {"fan_percent": 90}
-    limits = DeviceLimits(
-        device_id="test",
-        fan_percent_range=(30, 80)
-    )
+    limits = DeviceLimits(device_id="test", fan_percent_range=(30, 80))
 
     limited = reconfig._apply_limits(setpoints, limits)
 
@@ -296,12 +293,15 @@ def test_validate_plan_valid():
 
     # Setup policy with generous limits
     policy = PolicyEngine()
-    policy.set_device_limits("gpu0", DeviceLimits(
-        device_id="gpu0",
-        power_watts_max=400,
-        clock_mhz_range=(1000, 2500),
-        fan_percent_range=(0, 100)
-    ))
+    policy.set_device_limits(
+        "gpu0",
+        DeviceLimits(
+            device_id="gpu0",
+            power_watts_max=400,
+            clock_mhz_range=(1000, 2500),
+            fan_percent_range=(0, 100),
+        ),
+    )
 
     # Generate and validate plan
     reconfig = ReconfigurationProfile.load("low-latency")
@@ -319,12 +319,15 @@ def test_validate_plan_policy_violation():
 
     # Setup policy with restrictive limits
     policy = PolicyEngine()
-    policy.set_device_limits("gpu0", DeviceLimits(
-        device_id="gpu0",
-        power_watts_max=300,  # Less than low-latency profile wants (350)
-        clock_mhz_range=(1000, 2000),  # Less than low-latency profile wants (2100)
-        fan_percent_range=(0, 100)
-    ))
+    policy.set_device_limits(
+        "gpu0",
+        DeviceLimits(
+            device_id="gpu0",
+            power_watts_max=300,  # Less than low-latency profile wants (350)
+            clock_mhz_range=(1000, 2000),  # Less than low-latency profile wants (2100)
+            fan_percent_range=(0, 100),
+        ),
+    )
 
     # Generate plan - should apply limits and pass validation
     reconfig = ReconfigurationProfile.load("low-latency")
@@ -343,7 +346,7 @@ def test_create_custom_profile():
         setpoints={
             "gpu": {"power_limit_w": 275, "sm_clock_mhz": 1950},
         },
-        constraints={"temp_c_max": 75}
+        constraints={"temp_c_max": 75},
     )
 
     assert isinstance(profile, Profile)
@@ -360,7 +363,7 @@ def test_custom_profile_without_constraints():
         description="Simple custom profile",
         setpoints={
             "gpu": {"power_limit_w": 250},
-        }
+        },
     )
 
     assert isinstance(profile, Profile)

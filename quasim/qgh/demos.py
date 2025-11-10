@@ -96,9 +96,7 @@ def demo_federated_consensus() -> dict[str, Any]:
     rng = np.random.default_rng(42)
     initial_states = rng.normal(0, 1, size=(num_nodes, state_dim))
 
-    propagator = SelfConsistencyPropagator(
-        num_nodes=num_nodes, damping=0.5, max_iterations=100
-    )
+    propagator = SelfConsistencyPropagator(num_nodes=num_nodes, damping=0.5, max_iterations=100)
     result = propagator.propagate(initial_states)
 
     logger.info(f"Consensus converged: {result['converged']}, Iterations: {result['iterations']}")

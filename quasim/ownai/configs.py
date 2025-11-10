@@ -8,7 +8,7 @@ from typing import Literal
 @dataclass
 class QuasimOwnConfig:
     """Central configuration for QuASIM-Own AI.
-    
+
     Attributes
     ----------
     seed : int

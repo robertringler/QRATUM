@@ -55,7 +55,7 @@ def main():
     ioc = rev.index_of_coincidence_tensor(KRYPTOS_K4, max_period=20)
     ioc_peaks = find_peaks(ioc, threshold=0.2)
     print(f"  IoC Peaks at periods: {[p+1 for p in ioc_peaks]}")
-    print(f"  Top 3 IoC values:")
+    print("  Top 3 IoC values:")
     ioc_sorted = sorted(enumerate(ioc), key=lambda x: x[1], reverse=True)[:3]
     for period, value in ioc_sorted:
         print(f"    Period {period+1}: {value:.4f}")
@@ -94,7 +94,7 @@ def main():
     print("-" * 40)
     chi2 = rev.chi_squared_test(KRYPTOS_K4)
     print(f"  Chi-squared: {chi2:.2f}")
-    print(f"  (Lower values indicate closer to English)")
+    print("  (Lower values indicate closer to English)")
     print()
 
     # Export complete analysis
@@ -103,8 +103,8 @@ def main():
         "length": len(KRYPTOS_K4),
         "frequency": freqs,
         "complexity": complexity,
-        "ioc_peaks": [p+1 for p in ioc_peaks],
-        "autocorr_peaks": [p+1 for p in autocorr_peaks],
+        "ioc_peaks": [p + 1 for p in ioc_peaks],
+        "autocorr_peaks": [p + 1 for p in autocorr_peaks],
         "patterns": patterns,
         "holographic_entropy": entropy,
         "chi_squared": chi2,
@@ -112,7 +112,7 @@ def main():
 
     output_file = "kryptos_k4_analysis.json"
     with open(output_file, "w") as f:
-        json.dump(results, f, indent=2, default=lambda o: o.tolist() if hasattr(o, 'tolist') else o)
+        json.dump(results, f, indent=2, default=lambda o: o.tolist() if hasattr(o, "tolist") else o)
 
     print(f"✓ Complete analysis exported to {output_file}")
     print()

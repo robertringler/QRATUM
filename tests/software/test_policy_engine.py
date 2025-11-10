@@ -5,8 +5,7 @@ Tests for policy engine and validation.
 import pytest
 import yaml
 
-from quasim.hcal.policy import (DeviceLimits, Environment, PolicyEngine,
-                                PolicyViolation)
+from quasim.hcal.policy import DeviceLimits, Environment, PolicyEngine, PolicyViolation
 
 
 class TestPolicyEngine:

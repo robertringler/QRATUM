@@ -18,10 +18,10 @@ from quasim.ownai.revultra.feats import (
 
 class SymbolicLatentTransformer:
     """Symbolic-Latent Transformer (SLT) - Modo.
-    
+
     Fuses REVULTRA symbolic features with learned representations for
     deterministic, auditable AI predictions.
-    
+
     Parameters
     ----------
     task : str
@@ -77,12 +77,12 @@ class SymbolicLatentTransformer:
 
     def _extract_features(self, X: any) -> NDArray[np.float32]:
         """Extract features including symbolic latents.
-        
+
         Parameters
         ----------
         X : any
             Input data (can be numeric array or list of texts)
-            
+
         Returns
         -------
         NDArray
@@ -126,14 +126,14 @@ class SymbolicLatentTransformer:
 
     def fit(self, X: any, y: NDArray) -> "SymbolicLatentTransformer":
         """Train the Symbolic-Latent Transformer.
-        
+
         Parameters
         ----------
         X : any
             Training features (numeric array or list of texts)
         y : NDArray
             Training targets
-            
+
         Returns
         -------
         self
@@ -150,12 +150,12 @@ class SymbolicLatentTransformer:
 
     def predict(self, X: any) -> NDArray:
         """Make predictions.
-        
+
         Parameters
         ----------
         X : any
             Input features
-            
+
         Returns
         -------
         NDArray
@@ -166,12 +166,12 @@ class SymbolicLatentTransformer:
 
     def predict_proba(self, X: any) -> NDArray[np.float32]:
         """Predict class probabilities (classification only).
-        
+
         Parameters
         ----------
         X : any
             Input features
-            
+
         Returns
         -------
         NDArray
@@ -190,7 +190,7 @@ def build_slt(
     use_symbolic: bool = True,
 ) -> SymbolicLatentTransformer:
     """Build a Symbolic-Latent Transformer model.
-    
+
     Parameters
     ----------
     task : str
@@ -199,12 +199,12 @@ def build_slt(
         Random seed
     use_symbolic : bool
         Whether to use symbolic features
-        
+
     Returns
     -------
     SymbolicLatentTransformer
         Initialized SLT model
-        
+
     Examples
     --------
     >>> model = build_slt(task="text-cls", seed=1337)
