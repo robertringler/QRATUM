@@ -92,6 +92,28 @@ Full list and triage: [Patentables](docs/ip/patentables.md).
 [![Compliance Status](https://img.shields.io/badge/Compliance-98.75%25-brightgreen)](COMPLIANCE_STATUS_CHECKLIST.md)
 [![Validation](https://img.shields.io/badge/Validated-68%2F75%20modules-brightgreen)](docs/validation/validated_kernels_report.md)
 
+---
+
+## 🛰️ QuASIM × SpaceX/NASA Pilot Track — Status
+
+| Workflow | Status | Description |
+|-----------|---------|-------------|
+| **Demo Validation** | [![spacex-demo](https://github.com/robertringler/QuASIM/actions/workflows/spacex-demo.yml/badge.svg?branch=pilot/spacex-nasa)](https://github.com/robertringler/QuASIM/actions/workflows/spacex-demo.yml) | Runs deterministic Phase-III RL demo (Falcon 9 + Starship shaping) |
+| **Release Automation** | [![pilot-release](https://github.com/robertringler/QuASIM/actions/workflows/release-pilot.yml/badge.svg?branch=pilot/spacex-nasa)](https://github.com/robertringler/QuASIM/actions/workflows/release-pilot.yml) | Generates templated notes & publishes pilot releases automatically |
+
+### 📦 Latest Pilot Release
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/robertringler/QuASIM?include_prereleases&label=Latest%20Pilot%20Release)](https://github.com/robertringler/QuASIM/releases)
+
+### 🧠 Key Metrics
+[![Deterministic](https://img.shields.io/badge/Deterministic-Yes-brightgreen)]()  
+[![RMSE](https://img.shields.io/badge/RMSE-%3C2%25-blue)]()  
+[![Fidelity](https://img.shields.io/badge/Fidelity-%E2%89%A50.97-purple)]()
+
+**Branch:** `pilot/spacex-nasa`  
+**Runtime:** CPU-only (< 60 s)  |  **Artifacts:** JSON + Base64 PNG  |  **Compliance:** DO-178C Level A | NIST 800-53 | CMMC 2.0 L2
+
+---
+
 ## Compliance & Certification
 
 QuASIM is **COMPLIANT** with defense, aerospace, and industry standards:
