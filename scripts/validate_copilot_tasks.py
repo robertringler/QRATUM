@@ -31,11 +31,13 @@ def validate_task_file(filepath: Path) -> tuple[bool, list[str]]:
     except Exception as e:
         return False, [f"Error reading file: {e}"]
 
-    # Check required top-level fields
-    required_fields = ["name", "description", "steps"]
-    for field in required_fields:
-        if field not in data:
-            errors.append(f"Missing required field: {field}")
+    # Check required top-level fields (support both 'name' and 'task' formats)
+    if "name" not in data and "task" not in data:
+        errors.append("Missing required field: 'name' or 'task'")
+    if "description" not in data:
+        errors.append("Missing required field: 'description'")
+    if "steps" not in data:
+        errors.append("Missing required field: 'steps'")
 
     # Validate steps structure
     if "steps" in data:
@@ -50,8 +52,8 @@ def validate_task_file(filepath: Path) -> tuple[bool, list[str]]:
                 # Check required step fields
                 if "name" not in step:
                     errors.append(f"Step {i} missing 'name' field")
-                if "id" not in step:
-                    errors.append(f"Step {i} missing 'id' field")
+                # 'id' field is optional for compatibility with different formats
+                # 'run' field is optional for compatibility with different formats
 
     return len(errors) == 0, errors
 

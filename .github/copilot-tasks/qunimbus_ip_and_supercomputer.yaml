@@ -1,0 +1,234 @@
+task: "QuNimbus IP Miner + QuASIM×QuNimbus Supercomputer Synthesis"
+description: >
+  Search the repository and related design artifacts to extract, cluster, and draft patentable
+  inventions (emphasis: qubits, quantum devices, quantum-classical schedulers, MERA/anti-holographic
+  compression, QKD/QoS mesh, RL autoscaling, CAC/PIV mTLS trust, QaaS orchestration), then design an
+  end-to-end QuASIM×QuNimbus supercomputer with performance, packaging, cooling, and compliance
+  constraints. Produce invention disclosures, novelty rationales, claims skeletons, diagrams,
+  and a manufacturable high-level architecture. Generate validation plans and export-control gates.
+
+inputs:
+  repo_roots:
+    description: "Comma-separated roots to scan (e.g., quasim, qunimbus, infra, docs)"
+    required: false
+    default: "quasim,qunimbus,infra,docs,sdk"
+  focus:
+    description: "Emphasis areas (comma-separated)"
+    required: false
+    default: "qubits,quantum_devices,anti_holographic_compression,quantum_aware_scheduling,RL_autoscaling,QKD_mesh,security_CAC_mTLS"
+  ip_output_dir:
+    description: "Where to write invention packages"
+    required: false
+    default: "docs/ip"
+  sc_output_dir:
+    description: "Where to write supercomputer design"
+    required: false
+    default: "docs/supercomputer"
+  prior_art_mode:
+    description: "none|light|aggressive (stub hooks for local/curated corpora)"
+    required: false
+    default: "light"
+  efficiency_target:
+    description: "Supercomputer perf/$ uplift vs public cloud baselines"
+    required: false
+    default: ">=10x"
+  fidelity_target:
+    description: "Target end-to-end simulation fidelity"
+    required: false
+    default: ">=0.97"
+  compression_target:
+    description: "MERA/anti-holographic compression target"
+    required: false
+    default: ">=34x"
+  thermal_limit_kw_per_rack:
+    description: "Facility/rack cooling constraint (kW/rack)"
+    required: false
+    default: "80"
+
+env:
+  QN_NAME: "QuNimbus"
+  QN_VERSION: "2.0"
+  QN_SUPERCOMPUTER: "QuASIM×QuNimbus-Alpha"
+  IP_DIR: "${{ inputs.ip_output_dir }}"
+  SC_DIR: "${{ inputs.sc_output_dir }}"
+  REPO_ROOTS: "${{ inputs.repo_roots }}"
+  PRIOR_ART_MODE: "${{ inputs.prior_art_mode }}"
+  EFF_TARGET: "${{ inputs.efficiency_target }}"
+  FIDELITY_TARGET: "${{ inputs.fidelity_target }}"
+  COMPRESS_TARGET: "${{ inputs.compression_target }}"
+  RACK_THERMAL_KW: "${{ inputs.thermal_limit_kw_per_rack }}"
+  LOG: "logs/qunimbus_ip_scaffold.log"
+
+success_criteria:
+  - "Repo mining completes and yields ≥10 clustered invention families with qubit/device emphasis"
+  - "Each invention package includes problem, novelty, enablement, claims skeleton, diagrams"
+  - "Supercomputer design meets or exceeds EFF_TARGET and FIDELITY_TARGET in modeled workloads"
+  - "MERA/anti-holographic storage plan achieves COMPRESS_TARGET in test artifacts"
+  - "Thermal and power budgets fit within RACK_THERMAL_KW per rack with documented cooling"
+  - "Compliance gates defined for DO-178C posture, CMMC L2 mapping, export-control triage"
+
+steps:
+  - name: Bootstrap Folders and Tooling
+    run: |
+      set -euo pipefail
+      mkdir -p "${IP_DIR}"/{raw,clusters,drafts,claims,diagrams} "${SC_DIR}"/{arch,bom,net,thermal,bench,compliance} logs tools
+      echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') Begin IP+SC scaffold" | tee -a "${LOG}"
+      python - <<'PY'
+      import json, os, glob, re, pathlib
+      roots = os.environ.get("REPO_ROOTS","").split(",")
+      candidates=[]
+      for r in roots:
+        for ext in ("**/*.py","**/*.md","**/*.yaml","**/*.yml","**/*.ipynb","**/*.cpp","**/*.cu","**/*.proto"):
+          candidates += glob.glob(os.path.join(r.strip(), ext), recursive=True)
+      open("tools/_repo_filelist.json","w").write(json.dumps(candidates, indent=2))
+      print(f"Indexed {len(candidates)} files")
+      PY
+
+  - name: Mine Repository for Patentable Signals
+    run: |
+      set -euo pipefail
+      copilot-ip scan \
+        --inputs-file tools/_repo_filelist.json \
+        --signals "qubit,charge/flux/spin,neutral-atom,photonic,topological,delta-encoding,MERA,Ising,annealing,RL,quorum-scheduler,deterministic-replay,QKD,SRv6,QUIC,CAC,mTLS,Gatekeeper,QaaS,cuQuantum,ROCm" \
+        --focus "${{ inputs.focus }}" \
+        --output "${IP_DIR}/raw/signals.json"
+
+  - name: Cluster Findings into Invention Families
+    run: |
+      set -euo pipefail
+      copilot-ip cluster \
+        --input "${IP_DIR}/raw/signals.json" \
+        --min-novelty 0.6 \
+        --output "${IP_DIR}/clusters/families.json"
+      copilot-ip summarize \
+        --input "${IP_DIR}/clusters/families.json" \
+        --output "${IP_DIR}/clusters/overview.md"
+
+  - name: Prior-Art Hooks (Local/Curated Corpora)
+    run: |
+      set -euo pipefail
+      copilot-ip prior-art \
+        --mode "${PRIOR_ART_MODE}" \
+        --queries-file "${IP_DIR}/clusters/families.json" \
+        --output "${IP_DIR}/raw/prior_art_notes.md" || true
+
+  - name: Draft Invention Disclosures and Claims Skeletons
+    run: |
+      set -euo pipefail
+      copilot-ip draft \
+        --families "${IP_DIR}/clusters/families.json" \
+        --templates "enablement,claims_skeleton,flow_diagram" \
+        --out-dir "${IP_DIR}/drafts"
+      copilot-ip claims \
+        --in-dir "${IP_DIR}/drafts" \
+        --out-dir "${IP_DIR}/claims"
+      copilot-diagram render \
+        --in "${IP_DIR}/drafts" \
+        --out "${IP_DIR}/diagrams"
+
+  - name: Qubit and Device Emphasis — Specialized Synthesis
+    run: |
+      set -euo pipefail
+      copilot-ip specialize \
+        --family-filter "qubits|neutral-atom|photonic|topological|readout|routing|control" \
+        --constraints "fabrication-feasibility,control-electronics,readout-SNR,error-mitigation,packaging" \
+        --out-dir "${IP_DIR}/drafts/qubits_plus"
+
+  - name: Design QuASIM×QuNimbus Supercomputer (Top-Down)
+    run: |
+      set -euo pipefail
+      copilot-arch synthesize \
+        --name "${QN_SUPERCOMPUTER}" \
+        --targets "perf_per_dollar:${EFF_TARGET},fidelity:${FIDELITY_TARGET},compression:${COMPRESS_TARGET},thermal_kw_per_rack:${RACK_THERMAL_KW}" \
+        --features "Grace-Blackwell+NVLink-C2C,cuQuantum/ROCm,tensor-network-offload,deterministic-scheduler,RL-autoscaling,QKD/QUIC/SRv6,anti-holographic-storage,CAC/mTLS,OPA/Gatekeeper" \
+        --out "${SC_DIR}/arch/system_architecture.md"
+      copilot-bom estimate --arch "${SC_DIR}/arch/system_architecture.md" --out "${SC_DIR}/bom/bom_v0.csv"
+
+  - name: Thermal, Power, and Layout Planning
+    run: |
+      set -euo pipefail
+      copilot-thermal plan \
+        --arch "${SC_DIR}/arch/system_architecture.md" \
+        --rack-kw "${RACK_THERMAL_KW}" \
+        --cooling "rear-door-heat-exchanger,liquid-to-chip,immersion-option" \
+        --out "${SC_DIR}/thermal/plan.md"
+
+  - name: Network & Security Topology (QKD + Zero Trust)
+    run: |
+      set -euo pipefail
+      copilot-net blueprint \
+        --arch "${SC_DIR}/arch/system_architecture.md" \
+        --protocols "QKD,QUIC,SRv6" \
+        --segmentation "quantum,control,bulk" \
+        --security "CAC,PIV,mTLS,Fortinet,OPA_Gatekeeper" \
+        --out "${SC_DIR}/net/topology.md"
+
+  - name: Storage & MERA/Anti-Holographic Plan
+    run: |
+      set -euo pipefail
+      copilot-storage plan \
+        --arch "${SC_DIR}/arch/system_architecture.md" \
+        --compression "MERA-lifted-duality" \
+        --delta "quantum-delta-encoding" \
+        --targets "${COMPRESS_TARGET}" \
+        --out "${SC_DIR}/arch/storage_plan.md"
+
+  - name: Workload Benchmarks and Modeling Hooks
+    run: |
+      set -euo pipefail
+      mkdir -p "${SC_DIR}/bench"
+      cat > "${SC_DIR}/bench/run_models.md" <<'MD'
+      Benchmarks to run (modeled and/or synthetic harness):
+      - QPE harmonic FEM (manufacturing): fidelity ≥ 0.97, perf/$ uplift per EFF_TARGET
+      - Tensor-network contraction suite: FP8/FP16/FP32/FP64 modes, deterministic seeds
+      - RL autoscale convergence: 95–97% within defined horizon; latency SLO ≤ 50 ms
+      - MERA compression: ≥34× on representative tensor artifacts
+      MD
+
+  - name: Compliance & Export-Control Gates
+    run: |
+      set -euo pipefail
+      copilot-compliance map \
+        --frameworks "DO-178C,CMMC-L2,NIST-800-53,ISO-27001,DFARS,ITAR/EAR-scanning" \
+        --artifacts "${SC_DIR}/arch,${IP_DIR}/drafts,${IP_DIR}/claims" \
+        --out "${SC_DIR}/compliance/mapping.md"
+      copilot-compliance export-control \
+        --scan "${IP_DIR}/drafts,${SC_DIR}/arch" \
+        --out "${SC_DIR}/compliance/export_triage.md" || true
+
+  - name: Validate, Index, and Summarize
+    run: |
+      set -euo pipefail
+      python - <<'PY'
+      import os, glob, json
+      def ls(pat): return sorted(glob.glob(pat, recursive=True))
+      summary = {
+        "inventions": len(ls(os.path.join(os.environ["IP_DIR"],"drafts/**/*.md"))),
+        "claims": len(ls(os.path.join(os.environ["IP_DIR"],"claims/**/*.md"))),
+        "diagrams": len(ls(os.path.join(os.environ["IP_DIR"],"diagrams/**/*.*"))),
+        "supercomputer_docs": len(ls(os.path.join(os.environ["SC_DIR"],"**/*.md"))),
+      }
+      open("docs/ip/_summary.json","w").write(json.dumps(summary, indent=2))
+      print(summary)
+      PY
+      printf "\nArtifacts:\n"; find "${IP_DIR}" "${SC_DIR}" -type f | sed 's/^/- /'
+      echo "Targets -> perf/${EFF_TARGET}, fidelity ${FIDELITY_TARGET}, compression ${COMPRESS_TARGET}, rack_kW ${RACK_THERMAL_KW}"
+
+artifacts:
+  - "docs/ip/**"
+  - "docs/supercomputer/**"
+  - "logs/**"
+
+deliverables:
+  - "Repository-wide invention mining with clustered families and novelty notes"
+  - "Invention disclosures with enablement and claims skeletons (qubit/device emphasis)"
+  - "Diagrams: control stacks, device/package sketches, flowcharts"
+  - "QuASIM×QuNimbus supercomputer architecture, BOM draft, thermal/network/storage plans"
+  - "Benchmark plan and SLOs for fidelity, efficiency, and compression"
+  - "Compliance mapping and export-control triage notes"
+
+notes:
+  - This task scaffolds invention disclosures and a supercomputer architecture; engage registered patent counsel
+    for formal claims, filing strategy, and jurisdictional nuances. Verify export-control before publication.
+  - Prior-art queries are stubbed to local/curated corpora; wire to approved external sources through legal review.
+  - Performance targets are modeling goals; validate with QuASIM workloads and facility constraints.
