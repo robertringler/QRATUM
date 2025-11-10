@@ -12,6 +12,10 @@ GitHub Copilot tasks are YAML-based specifications that instruct GitHub Copilot 
 
 **Purpose**: Design and implement QuNimbus, a quantum-optimized cloud fabric purpose-built for QuASIM's quantum-classical workloads.
 
+### QuNimbus Global Rollout (`qunimbus_global_rollout.yaml`)
+
+**Purpose**: Orchestrate autonomous, infinite pilot generation across all market verticals using RL-driven feedback loops for continuous global expansion.
+
 **Objectives**:
 - Achieve ≥10× efficiency improvement vs AWS/GCP/Azure
 - Implement quantum-aware scheduling and anti-holographic tensor compression
@@ -43,6 +47,49 @@ GitHub Copilot tasks are YAML-based specifications that instruct GitHub Copilot 
 - NIST 800-53 Rev 5 HIGH baseline
 - DFARS and DO-326A
 
+**Objectives**:
+- Autonomous rollout across 10+ market verticals (automotive, pharma, logistics, finance, energy, aerospace, manufacturing, biotech, telecom, retail)
+- ≥18× efficiency gain vs public cloud baselines
+- Infinite pilot generation via RL-driven market signal adaptation
+- Multi-vertical compliance (AS9100, ISO13485, GDPR, CMMC L2, FERC 2222, NIST 800-53)
+- GitOps-native continuous deployment with zero-downtime rollouts
+
+**Key Components**:
+1. **Multi-Vertical Control Planes**: Hybrid Kubernetes with quantum-aware scheduling per vertical
+2. **Quantum Compute Fabrics**: Vertical-specific workloads (QPE, VQE, QAOA, QML)
+3. **MERA-Lifted Storage**: Anti-holographic compression with ≥30× tensor compression
+4. **RL Optimizer**: Autonomous policy adaptation for infinite pilot generation
+5. **Security Mosaic**: Vertical-specific compliance enclaves (e.g., FDA pharma, AS9100 aerospace)
+6. **Quantum Mesh Network**: Global hybrid photonic-classical mesh with QKD
+7. **Autonomous CI/CD**: Infinite-loop GitOps pipeline with Prometheus/Grafana/Loki
+8. **Multi-Language SDKs**: Python/C++/Rust with vertical-specific hooks
+9. **Infinite Pilot Factory**: Procedural generation at configurable rate (default 10/hr)
+10. **Continuous Benchmarking**: Real-time performance comparison vs AWS/GCP/Azure
+
+**Deliverables**:
+- Infrastructure as code for all verticals (Terraform + Helm + YAML)
+- RL-generated pilot artifacts (JSON) in `pilots/infinite/active/`
+- Vertical-specific SDKs with usage examples
+- Comprehensive benchmark reports demonstrating ≥18× efficiency gains
+- Autonomous CI/CD workflow with monitoring dashboards
+- Complete compliance documentation per vertical
+
+**Execution Modes**:
+- **Autonomous Infinite Loop**: Continuous pilot generation with market signal adaptation
+- **Rate-Limited**: Configurable pilots/hour (default 10, can scale to 20+)
+- **Dynamic Expansion**: RL agent discovers and adds new verticals based on trends
+
+**Compliance Standards**:
+- AS9100 (Aerospace)
+- ISO 13485 (Pharma)
+- GDPR (Data Protection)
+- CMMC 2.0 Level 2 (Defense)
+- FERC 2222 (Energy)
+- NIST 800-53 Rev 5 (Federal)
+- FDA 21 CFR Part 11 (Pharma)
+- ISO 26262 (Automotive)
+- PCI-DSS (Finance)
+
 ## Usage
 
 ### Prerequisites
@@ -62,10 +109,21 @@ To execute the QuNimbus Cloud task:
 gh copilot-agent run .github/copilot-tasks/qunimbus_cloud.yaml
 ```
 
+To execute the QuNimbus Global Rollout task:
+
+```bash
+gh copilot-agent run .github/copilot-tasks/qunimbus_global_rollout.yaml \
+  --loop infinite \
+  --mode autonomous_nonstop \
+  --input verticals="automotive,pharma,energy,finance,logistics,aerospace,manufacturing,biotech" \
+  --input pilot_rate=20
+```
+
 Or use GitHub Copilot CLI:
 
 ```bash
 copilot task run qunimbus_cloud
+copilot task run qunimbus_global_rollout
 ```
 
 ### Task Structure

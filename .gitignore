@@ -67,3 +67,8 @@ artifacts/agritech/
 logs/copilot-enhancement/
 docs/artifacts/
 
+
+# QuNimbus autonomous rollout artifacts (transient)
+logs/global_rollout.log
+pilots/infinite/active/*.json
+pilots/infinite/archive/*.json
