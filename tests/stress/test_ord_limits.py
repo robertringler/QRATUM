@@ -1,5 +1,5 @@
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import pandas as pd
 
@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-from scripts.stress.inject_load import generate_stress_profile, DEFAULT_LOAD_FACTOR
+from scripts.stress.inject_load import DEFAULT_LOAD_FACTOR, generate_stress_profile
 
 
 def build_baseline():

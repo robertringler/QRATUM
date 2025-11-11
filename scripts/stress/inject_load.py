@@ -1,4 +1,5 @@
 """Synthetic load injector for Φ_QEVF validation."""
+
 from __future__ import annotations
 
 import argparse
@@ -34,8 +35,12 @@ def generate_stress_profile(
     scaled["live"] += noise
     delta_temp = float(np.clip(rng.normal(0.05, 0.01), 0.0, 0.1))
     mtbf = float(np.maximum(baseline["mtbf_hours"].mean() * 1.05, baseline["mtbf_hours"].max()))
-    energy_variance = float(np.var(scaled["live"] - baseline["baseline"]) / baseline["baseline"].mean() * 100)
-    metrics = StressMetrics(mtbf_hours=mtbf, delta_temp_k=delta_temp, energy_variance_pct=energy_variance)
+    energy_variance = float(
+        np.var(scaled["live"] - baseline["baseline"]) / baseline["baseline"].mean() * 100
+    )
+    metrics = StressMetrics(
+        mtbf_hours=mtbf, delta_temp_k=delta_temp, energy_variance_pct=energy_variance
+    )
     return scaled, metrics
 
 
