@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-11-11T200345Z",
+  "rmse": 0.26925824035672175,
+  "variance_pct": 0.07158864541832473,
+  "threshold_breaches": 0,
+  "passed": true,
+  "metadata": {
+    "rolling_window_hours": "6",
+    "tolerance_pct": "5.00",
+    "commit": "UNKNOWN",
+    "campaign": "phase_vi.1_seed"
+  },
+  "record_count": 4
+}
