@@ -11,22 +11,22 @@ any number of telemetry dimensions provided as pandas DataFrames.  Results are
 persisted to ``data/ord/archive`` along with SHA256 manifests for downstream
 compliance automation.
 """
+
 from __future__ import annotations
 
 import dataclasses
 import datetime as _dt
 import hashlib
+import importlib.util
 import json
 import os
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Iterable, Mapping, MutableMapping, Optional
 
 import numpy as np
 import pandas as pd
-
-import importlib.util
-import sys
 
 
 def _load_qmp_pricing_model():
@@ -139,7 +139,9 @@ class TelemetryVerifier:
         merged["delta"] = merged["live"] - merged["baseline"]
         rmse = float(np.sqrt(np.mean(np.square(merged["delta"].to_numpy()))))
         baseline_reference = np.maximum(np.abs(merged["baseline"].to_numpy()), 1e-9)
-        variance_pct = float(np.var(merged["delta"].to_numpy()) / np.mean(baseline_reference) * 100.0)
+        variance_pct = float(
+            np.var(merged["delta"].to_numpy()) / np.mean(baseline_reference) * 100.0
+        )
         relative_delta = np.abs(merged["delta"].to_numpy()) / baseline_reference
         threshold_breaches = int(np.sum(relative_delta * 100.0 > self.config.tolerance_pct))
         breach_cap = max(3, int(0.2 * len(merged)))
@@ -216,10 +218,7 @@ class TelemetryVerifier:
             archive_csv.name: self._sha256_file(archive_csv),
             summary_json.name: self._sha256_file(summary_json),
         }
-        manifest_lines = [
-            f"{digest}  {filename}"
-            for filename, digest in hashes.items()
-        ]
+        manifest_lines = [f"{digest}  {filename}" for filename, digest in hashes.items()]
         manifest_path.write_text("\n".join(manifest_lines) + "\n")
         return summary_json, archive_csv, manifest_path
 

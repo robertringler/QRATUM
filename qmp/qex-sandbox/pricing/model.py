@@ -5,17 +5,17 @@ that links telemetry insights to economic projections.  ``N`` denotes the
 observed logical qubit population, ``η_ent`` is the entanglement efficiency, and
 ``P_EPH`` is the entanglement price per hash as supplied by the mock ticker.
 """
+
 from __future__ import annotations
 
+import importlib.util
+import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Iterable
 
 import numpy as np
 import pandas as pd
-
-from pathlib import Path
-import importlib.util
-import sys
 
 
 def _load_mock_ticker():
@@ -61,7 +61,9 @@ class QuantumPricingModel:
     ) -> float:
         """Compute the projected revenue for the supplied parameters."""
 
-        return float(self.scaling_constant * (logical_qubits ** 2) * entanglement_efficiency * eph_price_usd)
+        return float(
+            self.scaling_constant * (logical_qubits**2) * entanglement_efficiency * eph_price_usd
+        )
 
     def update_from_verification(
         self,
@@ -76,7 +78,9 @@ class QuantumPricingModel:
 
         logical_qubits = int(np.round(float(telemetry["live"].max())))
         eph_price = self.ticker.current_price()
-        entanglement_eff = float(np.clip(telemetry.get("entanglement_efficiency", pd.Series([0.93])).mean(), 0.0, 1.0))
+        entanglement_eff = float(
+            np.clip(telemetry.get("entanglement_efficiency", pd.Series([0.93])).mean(), 0.0, 1.0)
+        )
         revenue = self.revenue_projection(logical_qubits, entanglement_eff, eph_price)
         self.latest_snapshot = PricingSnapshot(
             eph_price_usd=eph_price,
