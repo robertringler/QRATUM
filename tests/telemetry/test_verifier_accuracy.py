@@ -1,6 +1,6 @@
 import json
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import pandas as pd
 
@@ -27,9 +27,7 @@ def test_verifier_detects_within_tolerance(tmp_path):
     live = baseline.copy()
     live["live"] += [0.2, -0.1, 0.3, -0.2, 0.0, 0.1]
 
-    verifier = TelemetryVerifier(
-        VerificationConfig(tolerance_pct=5.0, archive_dir=tmp_path)
-    )
+    verifier = TelemetryVerifier(VerificationConfig(tolerance_pct=5.0, archive_dir=tmp_path))
     result = verifier.evaluate(live, baseline)
 
     assert result.passed is True
@@ -59,9 +57,7 @@ def test_verifier_flags_excessive_variance(tmp_path):
     live = baseline.copy()
     live["live"] = [110, 112, 109, 111, 110]
 
-    verifier = TelemetryVerifier(
-        VerificationConfig(tolerance_pct=5.0, archive_dir=tmp_path)
-    )
+    verifier = TelemetryVerifier(VerificationConfig(tolerance_pct=5.0, archive_dir=tmp_path))
     result = verifier.evaluate(live, baseline)
 
     assert result.passed is False
