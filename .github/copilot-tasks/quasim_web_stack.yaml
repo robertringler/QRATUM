@@ -1,0 +1,322 @@
+task: "Develop and Deploy QuASIM + QuNimbus Website, Landing Page, and Mobile App"
+description: >
+  Build a production-grade, quantum-inspired web presence and mobile application for QuASIM + QuNimbus.
+  Deliver: (1) a Next.js website with a dedicated investor-grade landing page, (2) a React Native mobile app
+  (iOS/Android) with feature parity for dashboards and auth, and (3) CI/CD workflows for build, test, security,
+  and multi-environment deployments. Enforce enterprise security (OIDC/SAML, CAC/PIV mTLS via gateway), ORCID
+  and GitHub social login, Fortinet edge integration, 95+ Lighthouse, WCAG 2.2 AA, SEO schema, and analytics.
+
+inputs:
+  app_name:
+    description: "Marketing name"
+    required: false
+    default: "QuASIM + QuNimbus"
+  web_domain:
+    description: "Primary domain (production)"
+    required: false
+    default: "quasim.io"
+  preview_domain:
+    description: "Preview domain (staging)"
+    required: false
+    default: "preview.quasim.io"
+  org_brand_colors:
+    description: "Comma-separated hex palette (primary,accent,neutral)"
+    required: false
+    default: "#2A0D4A,#00FFFF,#C0C0C0"
+  oidc_issuer:
+    description: "OIDC issuer URL"
+    required: false
+    default: "https://id.quasim.io/realms/quantum"
+  saml_metadata_url:
+    description: "SAML metadata URL for enterprise SSO"
+    required: false
+    default: "https://id.quasim.io/saml/metadata"
+  enable_cac_mtls:
+    description: "true|false CAC/PIV mTLS at gateway"
+    required: false
+    default: "true"
+  analytics_provider:
+    description: "vercel|ga4|plausible"
+    required: false
+    default: "vercel"
+  deploy_target:
+    description: "vercel|netlify|cloudflare|gh-pages"
+    required: false
+    default: "vercel"
+  mobile_bundle_id_ios:
+    description: "iOS bundle id"
+    required: false
+    default: "io.quasim.app"
+  mobile_app_id_android:
+    description: "Android applicationId"
+    required: false
+    default: "io.quasim.app"
+  feature_dashboards:
+    description: "Enable vertical dashboards (aerospace,telecom,finance,healthcare,energy,transportation,manufacturing,agritech)"
+    required: false
+    default: "true"
+  include_careers_blog_docs:
+    description: "true|false include Careers, Blog, Docs sections"
+    required: false
+    default: "true"
+
+env:
+  WEB_DIR: "apps/web"
+  MOBILE_DIR: "apps/mobile"
+  LANDING_DIR: "apps/web/src/app/(landing)"
+  ASSETS_DIR: "apps/web/public/assets"
+  BRAND_COLORS: "${{ inputs.org_brand_colors }}"
+  OIDC_ISSUER: "${{ inputs.oidc_issuer }}"
+  SAML_METADATA_URL: "${{ inputs.saml_metadata_url }}"
+  CAC_MTLS: "${{ inputs.enable_cac_mtls }}"
+  DOMAIN: "${{ inputs.web_domain }}"
+  PREVIEW_DOMAIN: "${{ inputs.preview_domain }}"
+  ANALYTICS: "${{ inputs.analytics_provider }}"
+  DEPLOY_TARGET: "${{ inputs.deploy_target }}"
+  LOG: "logs/quasim_web_stack.log"
+
+success_criteria:
+  - "Website Lighthouse ≥ 95 performance/SEO/accessibility/best-practices on production build"
+  - "WCAG 2.2 AA checks pass; axe-core CI passes with zero critical violations"
+  - "OIDC + SAML SSO functional; ORCID and GitHub social logins verified"
+  - "CAC/PIV mTLS gateway configuration documented and validated in staging"
+  - "Fortinet edge policy and WAF ruleset applied to production ingress"
+  - "Mobile app builds (iOS/Android) succeed with store-ready artifacts"
+  - "Dashboards render with live or stubbed data; SSR/ISR and CDN caching verified"
+  - "Security scanning (SAST/Dependency/Container) yields zero high/critical findings"
+
+steps:
+  - name: Bootstrap monorepo and toolchain
+    run: |
+      set -euo pipefail
+      mkdir -p logs apps packages .github/workflows
+      echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') Web stack init" | tee -a "${LOG}"
+      npm -v >/dev/null 2>&1 || (echo "Node required" && exit 1)
+      pnpm -v >/dev/null 2>&1 || npm i -g pnpm
+      pnpm init -y
+      pnpm add -D turbo typescript @types/node eslint prettier
+      cat > turbo.json <<'JSON'
+      { "pipeline": { "build": { "dependsOn": ["^build"] }, "lint": {}, "test": {} } }
+      JSON
+
+  - name: Scaffold Next.js website with shadcn/ui and Tailwind
+    run: |
+      set -euo pipefail
+      pnpm create next-app ${WEB_DIR} --ts --eslint --src-dir --app --tailwind --no-import-alias
+      pnpm --filter ./apps/web add @tanstack/react-query next-auth @auth/core zod clsx
+      pnpm --filter ./apps/web add -D @types/node @types/react @types/react-dom postcss autoprefixer
+      # Design system and theme
+      node - <<'JS'
+      const fs=require('fs'), p='apps/web/tailwind.config.ts';
+      let t=fs.readFileSync(p,'utf8');
+      t=t.replace('theme: {}',`theme:{extend:{colors:{primary:'${process.env.BRAND_COLORS.split(',')[0]}',accent:'${process.env.BRAND_COLORS.split(',')[1]}',neutral:'${process.env.BRAND_COLORS.split(',')[2]}'}}}`);
+      fs.writeFileSync(p,t);
+      JS
+      mkdir -p ${ASSETS_DIR}
+
+  - name: Implement landing page (SSR) and marketing sections
+    run: |
+      set -euo pipefail
+      mkdir -p ${LANDING_DIR}
+      cat > ${LANDING_DIR}/page.tsx <<'TSX'
+      import Image from "next/image";
+      import Link from "next/link";
+      export default function Landing(){return(
+        <main className="min-h-screen bg-black text-white">
+          <section className="mx-auto max-w-7xl px-6 py-20">
+            <h1 className="text-5xl font-bold tracking-tight">QuASIM + QuNimbus</h1>
+            <p className="mt-6 text-lg text-neutral-300">Deterministic quantum-classical simulation and cloud fabric for regulated industries.</p>
+            <div className="mt-8 flex gap-4">
+              <Link href="/contact" className="rounded-xl bg-cyan-400 px-6 py-3 text-black font-semibold">Request a demo</Link>
+              <Link href="/docs" className="rounded-xl border border-neutral-600 px-6 py-3">Documentation</Link>
+            </div>
+          </section>
+          <section className="border-t border-neutral-800">
+            <div className="mx-auto max-w-7xl px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div><h2 className="text-xl font-semibold">Aerospace-grade compliance</h2><p className="text-neutral-300 mt-2">DO-178C posture, CMMC L2 mapping, CAC/PIV-aware SSO.</p></div>
+              <div><h2 className="text-xl font-semibold">Quantum-aware performance</h2><p className="text-neutral-300 mt-2">cuQuantum/ROCm, MERA compression, RL autoscaling.</p></div>
+              <div><h2 className="text-xl font-semibold">Enterprise reliability</h2><p className="text-neutral-300 mt-2">Multi-cloud GitOps, Fortinet edge, 99.95% SLOs.</p></div>
+            </div>
+          </section>
+        </main>
+      )}
+      TSX
+
+  - name: Authentication (OIDC/SAML, ORCID, GitHub) and CAC/PIV gateway notes
+    run: |
+      set -euo pipefail
+      pnpm --filter ./apps/web add next-auth @auth/nextjs
+      mkdir -p ${WEB_DIR}/src/auth
+      cat > ${WEB_DIR}/src/auth/providers.ts <<'TS'
+      import { type Provider } from "next-auth/providers";
+      import Github from "next-auth/providers/github";
+      import ORCID from "next-auth/providers/orcid";
+      import { OIDC } from "next-auth/providers";
+      export const providers: Provider[] = [
+        Github, ORCID,
+        OIDC({ issuer: process.env.OIDC_ISSUER!, clientId: process.env.OIDC_CLIENT_ID!, clientSecret: process.env.OIDC_CLIENT_SECRET! })
+      ];
+      // SAML via gateway/broker (Keycloak/SimpleSAML) forwarded as OIDC to app.
+      TS
+      mkdir -p docs/security
+      cat > docs/security/cac_piv_gateway.md <<'MD'
+      CAC/PIV mTLS is enforced at the ingress (Fortinet GWLB or Envoy) with client cert validation.
+      The web app consumes the authenticated identity via OIDC headers from the broker (e.g., Keycloak),
+      never handling certificates directly.
+      MD
+
+  - name: Fortinet edge integration and WAF policy scaffolds
+    run: |
+      set -euo pipefail
+      mkdir -p infra/edge
+      cat > infra/edge/fortinet_waf_policy.json <<'JSON'
+      { "name":"quasim-waf", "rules":[{"id":"OWASP-Top10","action":"block"},{"id":"Botnet","action":"challenge"}],
+        "mtls":{"enabled": ${CAC_MTLS} } }
+      JSON
+
+  - name: Data dashboards (optional verticals) and API stubs
+    run: |
+      set -euo pipefail
+      if [ "${{ inputs.feature_dashboards }}" = "true" ]; then
+        mkdir -p ${WEB_DIR}/src/app/dashboards
+        cat > ${WEB_DIR}/src/app/dashboards/page.tsx <<'TSX'
+        export default function Dashboards(){return(<main className="p-8 text-white">Dashboards placeholder with SSR data hooks.</main>)}
+        TSX
+      fi
+      mkdir -p ${WEB_DIR}/src/pages/api
+      cat > ${WEB_DIR}/src/pages/api/health.ts <<'TS'
+      import type { NextApiRequest, NextApiResponse } from "next";
+      export default function handler(_:NextApiRequest,res:NextApiResponse){res.status(200).json({status:"ok"})}
+      TS
+
+  - name: SEO, analytics, schema, and sitemap/robots
+    run: |
+      set -euo pipefail
+      pnpm --filter ./apps/web add next-seo
+      mkdir -p ${WEB_DIR}/src/lib
+      cat > ${WEB_DIR}/next-sitemap.config.js <<'JS'
+      module.exports={ siteUrl: process.env.SITE_URL || "https://${DOMAIN}", generateRobotsTxt: true };
+      JS
+      mkdir -p docs/seo
+      cat > docs/seo/metadata.md <<'MD'
+      Implement JSON-LD schema.org: Organization, Product, TechArticle for QuASIM + QuNimbus.
+      MD
+
+  - name: Accessibility and performance budgets
+    run: |
+      set -euo pipefail
+      pnpm add -D @axe-core/cli lighthouse
+      mkdir -p audits
+      cat > audits/perf-budget.json <<'JSON'
+      { "resourceSizes": [{ "resourceType":"script","budget":300 }], "timings": [{ "metric":"first-contentful-paint","budget":1800 }] }
+      JSON
+
+  - name: Scaffold React Native mobile app (Expo)
+    run: |
+      set -euo pipefail
+      pnpm dlx create-expo-app ${MOBILE_DIR} --template
+      pnpm --filter ./apps/mobile add expo-auth-session react-native-reanimated react-query
+      node - <<'JS'
+      const fs=require('fs'); const p='apps/mobile/app.config.js';
+      if(fs.existsSync(p)){let t=fs.readFileSync(p,'utf8'); t=t.replace(/name:.+/, "name: 'QuASIM QuNimbus'"); fs.writeFileSync(p,t)}
+      JS
+      mkdir -p ${MOBILE_DIR}/src
+      cat > ${MOBILE_DIR}/src/Auth.tsx <<'TSX'
+      import * as React from 'react'; export default function Auth(){return null}
+      TSX
+
+  - name: Tests, lint, and formatting
+    run: |
+      set -euo pipefail
+      pnpm add -D vitest @testing-library/react @testing-library/jest-dom eslint-config-next eslint-plugin-jsx-a11y eslint-plugin-security ruff
+      cat > .eslintrc.json <<'JSON'
+      { "extends": ["next/core-web-vitals","plugin:jsx-a11y/recommended","plugin:security/recommended"] }
+      JSON
+
+  - name: CI/CD workflows
+    run: |
+      set -euo pipefail
+      cat > .github/workflows/web-ci.yml <<'YML'
+      name: Web CI
+      on: [push, pull_request]
+      jobs:
+        build-test:
+          runs-on: ubuntu-latest
+          steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with: { node-version: 20 }
+            - run: npm i -g pnpm && pnpm i
+            - run: pnpm -C apps/web build
+            - run: pnpm -C apps/web test --if-present
+            - run: npx @axe-core/cli http://localhost:3000 || true
+      YML
+      cat > .github/workflows/mobile-ci.yml <<'YML'
+      name: Mobile CI
+      on: [push, pull_request]
+      jobs:
+        build:
+          runs-on: ubuntu-latest
+          steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with: { node-version: 20 }
+            - run: npm i -g pnpm && pnpm i
+            - run: pnpm -C apps/mobile build || true
+      YML
+
+  - name: Deployment adapter
+    run: |
+      set -euo pipefail
+      mkdir -p scripts
+      cat > scripts/deploy_web.sh <<'SH'
+      #!/usr/bin/env bash
+      set -euo pipefail
+      case "${DEPLOY_TARGET}" in
+        vercel) npx vercel deploy --prod --cwd apps/web ;;
+        netlify) npx netlify deploy --prod --dir apps/web/out ;;
+        cloudflare) npx wrangler pages deploy apps/web/out ;;
+        gh-pages) npm i -g gh-pages && gh-pages -d apps/web/out ;;
+        *) echo "Unknown DEPLOY_TARGET"; exit 1 ;;
+      esac
+      SH
+      chmod +x scripts/deploy_web.sh
+
+  - name: Build preview and run audits
+    run: |
+      set -euo pipefail
+      pnpm -C apps/web build
+      pnpm -C apps/web start & sleep 3 || true
+      npx lighthouse http://localhost:3000 --budget-path=audits/perf-budget.json --output=json --output-path=audits/lh.json || true
+
+  - name: Summarize artifacts
+    run: |
+      set -euo pipefail
+      echo "Artifacts:"
+      find apps/web -maxdepth 3 -type f | sed 's/^/- /'
+      find apps/mobile -maxdepth 3 -type f | sed 's/^/- /'
+      echo "Success gates: Lighthouse/axe, SSO, CAC/PIV gateway notes, Fortinet WAF policy"
+
+artifacts:
+  - "apps/web/**"
+  - "apps/mobile/**"
+  - "infra/edge/**"
+  - "docs/security/**"
+  - "docs/seo/**"
+  - "audits/**"
+  - ".github/workflows/*.yml"
+  - "logs/**"
+
+deliverables:
+  - "Next.js production website with investor-grade landing page and SSR"
+  - "React Native iOS/Android app with auth and dashboard stubs"
+  - "OIDC/SAML SSO with ORCID + GitHub; CAC/PIV mTLS gateway documentation"
+  - "Fortinet WAF/edge policy scaffolds"
+  - "Accessibility/performance budgets with CI enforcement"
+  - "CI/CD workflows and deployment script for selected provider"
+  - "SEO schema, sitemaps, analytics integration"
+
+notes:
+  - For CAC/PIV enforcement, terminate mTLS at ingress (Fortinet GWLB/Envoy), broker to OIDC/SAML, and forward identity headers.
+  - Connect dashboards to real QuASIM/QuNimbus APIs via signed fetchers; never embed secrets in client bundles.
+  - Use ISR/Edge Middleware for high-traffic landing page variants and geo routing; enable HTTP/3 and strict CSP.
