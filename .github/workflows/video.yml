@@ -1,0 +1,37 @@
+name: Video Capture Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-video-capture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -e ".[dev]"
+          pip install matplotlib imageio imageio-ffmpeg
+
+      - name: Run flow with video recording
+        run: |
+          python -m quasim.cli.run_flow --steps=5 --N=150 --T=2.0 --record
+
+      - name: Verify artifacts
+        run: |
+          ls -lh artifacts/flows || exit 1
+          test -f artifacts/flows/*.mp4
+          test -f artifacts/flows/*.gif
+
+      - name: Run video tests
+        run: pytest -v tests/test_video_autocapture.py

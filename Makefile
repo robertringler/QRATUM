@@ -1,6 +1,24 @@
-.PHONY: test validate fmt lint build bench pack deploy
+.PHONY: test validate fmt lint build bench pack deploy video spacex-demo starship-demo demo-all demos
 
 ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
+# SpaceX/NASA Pilot Track Demo Targets
+spacex-demo:
+	@echo "Running SpaceX Falcon 9 Stage 1 demo..."
+	python3 quasim_spacex_demo.py --profile configs/meco_profiles/spacex_f9_stage1.json
+
+starship-demo:
+	@echo "Running Starship hot-staging demo..."
+	python3 quasim_spacex_demo.py --profile configs/meco_profiles/starship_hotstaging.json
+
+demo-all: spacex-demo starship-demo
+	@echo "All pilot track demos complete!"
+
+# Run all vertical demo smoke tests
+demos:
+	@echo "Running smoke tests for all 8 vertical demos..."
+	@python3 -m pytest quasim/demos/*/tests/test_*_smoke.py -q --tb=short
+	@echo "✅ All demo smoke tests passed!"
 
 # Format code (Python, Terraform)
 fmt:
@@ -49,6 +67,11 @@ bench:
 	else \
 	echo "Aerospace benchmarks not yet implemented"; \
 	fi
+
+# Generate video artifacts
+video:
+	@echo "Generating QuASIM video artifacts..."
+	@python3 -m quasim.cli.run_flow --steps=150 --N=300 --T=3.0 --seed=42 --emit-json
 
 # Package artifacts (containers, helm charts)
 pack:

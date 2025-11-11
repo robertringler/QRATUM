@@ -1,0 +1,98 @@
+# ===============================
+# QuASIM Copilot Agent Configuration
+# Pilot Track: SpaceX/NASA Demo
+# ===============================
+
+version: 1.0
+
+agent:
+  name: quasim-pilot-agent
+  description: >
+    GitHub Copilot Agent for QuASIM pilot track.
+    Responsible for maintaining deterministic demo integrity,
+    running profile-shaped simulations, and generating JSON reports.
+  mode: strict
+  allow_branch_creation: true
+  allowed_branches:
+    - pilot/spacex-nasa
+    - copilot/pilotspacex-nasa
+  default_branch: pilot/spacex-nasa
+
+permissions:
+  file_access:
+    allow:
+      - "quasim_spacex_demo.py"
+      - "configs/meco_profiles/*.json"
+      - "Dockerfile"
+      - "docker-compose.yml"
+      - "Makefile"
+      - ".github/workflows/spacex-demo.yml"
+      - "README.md"
+      - "legal/*"
+      - "requirements-demo.txt"
+      - "copilot/*"
+    deny:
+      - "quasim/core/**"
+      - "quasim/kernels/**"
+      - "quasim/runtime/**"
+      - "secrets/**"
+      - ".env"
+      - "**/datasets/**"
+  network:
+    allow: false
+  external_api_calls:
+    allow: false
+  secret_detection: true
+
+runtime:
+  max_runtime_seconds: 60
+  deterministic_mode: true
+  random_seed: 42
+  dependencies:
+    - numpy
+    - matplotlib
+  python_version: "3.11"
+  os_image: "ubuntu-latest"
+
+validation:
+  deterministic_output: true
+  reproducibility_tests:
+    runs: 2
+    compare_files:
+      - "spacex_f9_stage1_demo_report.json"
+      - "starship_hotstaging_demo_report.json"
+  ci_checklist:
+    - ensure README.md updated
+    - ensure no proprietary imports
+    - ensure legal files present
+    - ensure all tests pass in <60s
+
+reporting:
+  artifact_upload: true
+  log_level: info
+  log_format: concise
+  outputs:
+    - spacex_f9_stage1_demo_report.json
+    - starship_hotstaging_demo_report.json
+  badges:
+    - name: Deterministic
+      color: green
+      message: reproducible
+    - name: RMSE
+      color: blue
+      message: "<2% (surrogate)"
+    - name: Fidelity
+      color: purple
+      message: "≥0.97"
+
+post_merge:
+  actions:
+    - create_release:
+        tag: pilot-v1.0
+        name: QuASIM Pilot Demo Release v1.0
+        artifacts:
+          - spacex_f9_stage1_demo_report.json
+          - starship_hotstaging_demo_report.json
+        description: >
+          Deterministic pilot demonstration outputs for QuASIM × SpaceX/NASA.
+          CI validated, reproducible, no proprietary content.

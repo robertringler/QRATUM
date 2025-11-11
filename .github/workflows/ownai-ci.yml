@@ -1,0 +1,83 @@
+name: QuASIM-Own CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'copilot/**'
+    paths:
+      - 'quasim/ownai/**'
+      - 'quasim/baselines/**'
+      - 'tests/ownai/**'
+      - '.github/workflows/ownai-ci.yml'
+  pull_request:
+    paths:
+      - 'quasim/ownai/**'
+      - 'quasim/baselines/**'
+      - 'tests/ownai/**'
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+          pip install scikit-learn xgboost lightgbm
+      
+      - name: Run ruff
+        run: |
+          ruff check quasim/ownai quasim/baselines --exit-zero
+      
+      - name: Run black check
+        run: |
+          pip install black
+          black --check quasim/ownai quasim/baselines --diff --color || true
+      
+      - name: Run mypy
+        run: |
+          mypy quasim/ownai quasim/baselines --ignore-missing-imports --no-strict-optional || true
+      
+      - name: Run unit tests
+        run: |
+          pytest tests/ownai/ -v --tb=short --maxfail=5
+      
+      - name: Quick benchmark
+        run: |
+          python -c "
+          from quasim.ownai.eval.benchmark import run_benchmark_suite
+          from quasim.ownai.eval.reporting import save_results_csv, generate_markdown_report
+          from pathlib import Path
+          
+          print('Running quick benchmark suite...')
+          results = run_benchmark_suite(suite='quick', n_repeats=2)
+          print(f'Completed {len(results)} benchmark runs')
+          
+          # Save artifacts
+          report_dir = Path('reports')
+          report_dir.mkdir(exist_ok=True)
+          save_results_csv(results, report_dir / 'quick_bench.csv')
+          generate_markdown_report(results, report_dir / 'quick_bench.md')
+          "
+      
+      - name: Upload benchmark artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quick-benchmark-results
+          path: reports/
+          retention-days: 7

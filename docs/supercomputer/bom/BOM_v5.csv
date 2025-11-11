@@ -1,0 +1,14 @@
+Category,Component,Quantity,Unit Cost,Total Cost,Vendor,Lead Time
+Quantum,Qubit Processor Units,240,2500000,600000000,IonQ/Rigetti,12 months
+Classical,NVIDIA Grace-Blackwell GPUs,960,45000,43200000,NVIDIA,6 months
+Memory,HBM3e Modules (128GB),1920,1200,2304000,SK Hynix,4 months
+Storage,NVMe Gen5 SSDs (30TB),960,8000,7680000,Samsung,3 months
+Network,400G Optical Transceivers,480,5000,2400000,Mellanox,3 months
+Cooling,Liquid Cooling Systems,60,125000,7500000,Asetek,6 months
+Power,Rack PDUs (80kW),60,15000,900000,APC,2 months
+Quantum,Cryo-Photonic Mesh,48,1800000,86400000,Custom Fab,18 months
+Control,Quantum Control Electronics,240,95000,22800000,Zurich Instruments,9 months
+Infrastructure,Racks and Cabling,60,25000,1500000,Various,4 months
+Total System,,,,774684000,,18 months
+Contingency (15%),,,,116202600,,
+Grand Total,,,,890886600,,

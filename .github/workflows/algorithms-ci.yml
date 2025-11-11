@@ -1,0 +1,282 @@
+name: algorithms-ci
+
+on:
+  push:
+    branches: [main, copilot/**]
+    paths:
+      - 'quasim/revultra/**'
+      - 'quasim/qgh/**'
+      - 'quasim/terc_bridge/**'
+      - 'quasim/cli/revultra_cli.py'
+      - 'quasim/cli/qgh_cli.py'
+      - 'quasim/cli/terc_obs_cli.py'
+      - 'tests/test_revultra_algorithms.py'
+      - 'tests/test_qgh_nonspec_algorithms.py'
+      - 'tests/test_terc_bridge_observables.py'
+      - 'tests/test_cli_commands.py'
+      - '.github/workflows/algorithms-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'quasim/revultra/**'
+      - 'quasim/qgh/**'
+      - 'quasim/terc_bridge/**'
+      - 'quasim/cli/*_cli.py'
+      - 'tests/test_*_algorithms.py'
+      - 'tests/test_terc_bridge_observables.py'
+      - 'tests/test_cli_commands.py'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+
+      - name: Lint with ruff
+        run: |
+          ruff check quasim/revultra quasim/qgh quasim/terc_bridge quasim/cli/revultra_cli.py quasim/cli/qgh_cli.py quasim/cli/terc_obs_cli.py
+
+      - name: Type check with mypy
+        run: |
+          mypy quasim/revultra quasim/qgh quasim/terc_bridge --ignore-missing-imports
+        continue-on-error: true
+
+      - name: Run tests with coverage
+        run: |
+          pytest tests/test_revultra_algorithms.py tests/test_qgh_nonspec_algorithms.py tests/test_terc_bridge_observables.py tests/test_cli_commands.py \
+            -v --cov=quasim/revultra --cov=quasim/qgh --cov=quasim/terc_bridge \
+            --cov-report=xml --cov-report=term-missing \
+            --maxfail=1
+
+      - name: Check coverage threshold
+        run: |
+          python -c "
+          import xml.etree.ElementTree as ET
+          tree = ET.parse('coverage.xml')
+          root = tree.getroot()
+          line_rate = float(root.attrib['line-rate'])
+          coverage_pct = line_rate * 100
+          print(f'Coverage: {coverage_pct:.2f}%')
+          
+          # Check individual package coverage
+          packages = root.findall('.//package')
+          for pkg in packages:
+              pkg_name = pkg.attrib['name']
+              pkg_rate = float(pkg.attrib['line-rate']) * 100
+              print(f'{pkg_name}: {pkg_rate:.2f}%')
+              
+              # Core algorithm modules should have >= 90% coverage
+              if 'algorithms' in pkg_name or 'nonspec_algorithms' in pkg_name or 'observables' in pkg_name:
+                  if pkg_rate < 90.0:
+                      print(f'WARNING: {pkg_name} coverage below 90%')
+          "
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml-${{ matrix.os }}-${{ matrix.python-version }}
+          path: coverage.xml
+
+      - name: Test CLI commands
+        run: |
+          echo "Testing REVULTRA CLI..."
+          python -m quasim.cli.revultra_cli --help
+          python -m quasim.cli.revultra_cli analyze --ciphertext "ATTACKATDAWN"
+          
+          echo "Testing QGH CLI..."
+          python -m quasim.cli.qgh_cli --help
+          python -m quasim.cli.qgh_cli demo --section tensor
+          
+          echo "Testing TERC-OBS CLI..."
+          python -m quasim.cli.terc_obs_cli --help
+          python -m quasim.cli.terc_obs_cli list
+
+      - name: Run example scripts
+        run: |
+          echo "Running REVULTRA K4 demo..."
+          python examples/revultra_k4_demo.py
+          
+          echo "Running QGH practical examples..."
+          python examples/qgh_practical_examples.py
+          
+          echo "Running TERC observables pipeline..."
+          python examples/terc_observables_pipeline.py
+
+      - name: Upload demo artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo-results-${{ matrix.os }}-${{ matrix.python-version }}
+          path: |
+            kryptos_k4_analysis.json
+            terc_validation_report.json
+
+  quality-gates:
+    runs-on: ubuntu-latest
+    needs: test
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+
+      - name: Security check with bandit
+        run: |
+          bandit -r quasim/revultra quasim/qgh quasim/terc_bridge -ll
+        continue-on-error: true
+
+      - name: Check for eval/exec usage
+        run: |
+          echo "Checking for eval/exec usage..."
+          ! grep -r "eval\|exec" quasim/revultra quasim/qgh quasim/terc_bridge --include="*.py" || \
+          (echo "ERROR: eval/exec found in code" && exit 1)
+
+      - name: Verify deterministic RNG usage
+        run: |
+          echo "Verifying seedable RNG usage..."
+          grep -r "np.random.default_rng\|np.random.Generator" quasim/revultra quasim/qgh --include="*.py" | head -5
+
+      - name: Check docstring coverage
+        run: |
+          python -c "
+          import ast
+          import os
+          
+          def check_docstrings(filepath):
+              with open(filepath) as f:
+                  tree = ast.parse(f.read())
+              
+              total = 0
+              documented = 0
+              
+              for node in ast.walk(tree):
+                  if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
+                      if not node.name.startswith('_'):  # Skip private
+                          total += 1
+                          if ast.get_docstring(node):
+                              documented += 1
+              
+              return total, documented
+          
+          modules = [
+              'quasim/revultra/algorithms.py',
+              'quasim/qgh/nonspec_algorithms.py',
+              'quasim/terc_bridge/observables.py'
+          ]
+          
+          for module in modules:
+              if os.path.exists(module):
+                  total, documented = check_docstrings(module)
+                  coverage = (documented / total * 100) if total > 0 else 0
+                  print(f'{module}: {documented}/{total} ({coverage:.1f}%)')
+          "
+
+  integration-test:
+    runs-on: ubuntu-latest
+    needs: test
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+
+      - name: End-to-end integration test
+        run: |
+          # Test REVULTRA -> TERC pipeline
+          python -c "
+          from quasim.revultra import REVULTRAAlgorithms
+          from quasim.terc_bridge import beta_metrics_from_cipher, emergent_complexity
+          
+          rev = REVULTRAAlgorithms()
+          text = 'TESTCIPHER' * 20
+          
+          # Run REVULTRA
+          complexity = rev.emergent_complexity_score(text)
+          print(f'REVULTRA complexity: {complexity[\"score\"]:.2f}')
+          
+          # Extract TERC observables
+          beta = beta_metrics_from_cipher(text)
+          print(f'TERC beta_entropy: {beta[\"beta_entropy\"]:.4f}')
+          
+          assert 0 <= beta['beta_entropy'] <= 1
+          assert 0 <= complexity['score'] <= 100
+          print('✓ REVULTRA -> TERC pipeline OK')
+          "
+          
+          # Test QGH -> TERC pipeline
+          python -c "
+          import numpy as np
+          from quasim.qgh import SelfConsistencyPropagator
+          from quasim.terc_bridge import qgh_consensus_status
+          
+          # Run QGH
+          states = np.random.rand(10, 5)
+          status = qgh_consensus_status(states)
+          
+          print(f'QGH consensus: {status[\"converged\"]}')
+          print(f'TERC stability: {status[\"stability\"]:.4f}')
+          
+          assert 0 <= status['stability'] <= 1
+          print('✓ QGH -> TERC pipeline OK')
+          "
+
+      - name: Test observable registry
+        run: |
+          python -c "
+          from quasim.terc_bridge.registry import list_observables, compute_observable
+          
+          observables = list_observables()
+          print(f'Registered observables: {len(observables)}')
+          assert len(observables) >= 6
+          
+          # Test computation
+          result = compute_observable('emergent_complexity', 'TESTTEXT' * 10)
+          assert 'score' in result
+          print('✓ Observable registry OK')
+          "

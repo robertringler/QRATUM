@@ -1,0 +1,112 @@
+MUTUAL NON-DISCLOSURE AGREEMENT
+
+Between: QuASIM Technologies, Inc. ("QuASIM")
+And: Space Exploration Technologies Corp. ("SpaceX")
+
+Version: 1.0
+Date: [To Be Executed]
+Classification: CONFIDENTIAL
+
+═══════════════════════════════════════════════════════════════════════════════
+
+1. DEFINITIONS
+
+   1.1 "Confidential Information" means any technical, business, financial, or 
+       other proprietary information disclosed by either party in connection with 
+       the evaluation of potential collaboration regarding quantum-inspired 
+       autonomous simulation technology for aerospace applications.
+
+   1.2 "Purpose" means the evaluation of QuASIM's quantum simulation platform 
+       for potential integration with SpaceX mission planning, trajectory 
+       optimization, and flight systems validation.
+
+2. OBLIGATIONS OF RECEIVING PARTY
+
+   2.1 Each party agrees to:
+       (a) Maintain Confidential Information in strict confidence
+       (b) Use Confidential Information solely for the Purpose
+       (c) Disclose only to employees with need-to-know
+       (d) Protect with same care as own confidential information (minimum 
+           reasonable care)
+
+   2.2 Receiving party shall not reverse engineer, decompile, or disassemble 
+       any software, algorithms, or technical materials.
+
+3. EXCLUSIONS
+
+   Information is NOT confidential if it:
+   (a) Was publicly known at time of disclosure
+   (b) Becomes publicly known through no breach by receiving party
+   (c) Was rightfully possessed prior to disclosure
+   (d) Is independently developed without use of Confidential Information
+   (e) Is disclosed with prior written approval
+
+4. TERM AND TERMINATION
+
+   4.1 This Agreement is effective as of execution date and continues for 
+       three (3) years.
+
+   4.2 Obligations survive termination for five (5) years.
+
+   4.3 Either party may terminate with thirty (30) days written notice.
+
+5. RETURN OF MATERIALS
+
+   Upon termination or request, receiving party shall promptly return or 
+   destroy all Confidential Information and certify compliance in writing.
+
+6. NO LICENSE OR WARRANTY
+
+   6.1 No license or rights are granted except as expressly stated.
+
+   6.2 Confidential Information provided "AS IS" without warranty.
+
+7. REMEDIES
+
+   7.1 Breach may cause irreparable harm. Injunctive relief is available 
+       without posting bond.
+
+   7.2 Remedies are cumulative and not exclusive.
+
+8. EXPORT CONTROL
+
+   8.1 Parties acknowledge information may be subject to U.S. export control 
+       laws (ITAR, EAR).
+
+   8.2 No transfer of export-controlled technical data without compliance.
+
+9. GOVERNING LAW
+
+   This Agreement is governed by the laws of the State of Delaware, without 
+   regard to conflict of laws provisions.
+
+10. ENTIRE AGREEMENT
+
+    This Agreement constitutes the entire understanding regarding confidentiality 
+    and supersedes all prior agreements.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+SIGNATURES
+
+QuASIM Technologies, Inc.
+
+By: _________________________
+Name: 
+Title: 
+Date: 
+
+Space Exploration Technologies Corp.
+
+By: _________________________
+Name: 
+Title: 
+Date: 
+
+═══════════════════════════════════════════════════════════════════════════════
+
+NOTICE: This is a placeholder template for demonstration purposes only.
+        Not executed. Not legally binding.
+        Contact: legal@quasim.tech for executed agreements.
+
+═══════════════════════════════════════════════════════════════════════════════

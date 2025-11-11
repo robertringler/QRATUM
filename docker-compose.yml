@@ -1,4 +1,16 @@
 services:
+  # SpaceX/NASA Pilot Track Demo
+  spacex-demo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quasim-spacex-demo
+    volumes:
+      - ./:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["python", "quasim_spacex_demo.py", "--profile", "configs/meco_profiles/spacex_f9_stage1.json"]
+
   backend:
     build:
       context: ./autonomous_systems_platform/services/backend

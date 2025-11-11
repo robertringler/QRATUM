@@ -1,0 +1,88 @@
+name: Demo - Healthcare
+
+on:
+  push:
+    branches: [main, copilot/*]
+    paths:
+      - 'quasim/demos/healthcare/**'
+      - 'quasim/common/**'
+      - 'quasim/viz/**'
+      - '.github/workflows/demo_healthcare.yml'
+  pull_request:
+    paths:
+      - 'quasim/demos/healthcare/**'
+      - 'quasim/common/**'
+      - 'quasim/viz/**'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          pip install -q ruff
+          
+      - name: Run ruff
+        run: |
+          ruff check quasim/demos/healthcare/
+          
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          pip install -q -e ".[dev]"
+          
+      - name: Run tests
+        run: |
+          pytest quasim/demos/healthcare/tests/ -v --tb=short
+          
+  build:
+    name: Build Artifacts
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          pip install -q -e ".[dev]"
+          
+      - name: Run healthcare demo
+        run: |
+          python -m quasim.demos.healthcare.cli plan --steps 100 --seed 42
+          
+      - name: Verify artifacts
+        run: |
+          test -f artifacts/healthcare/run_42/metrics.json || exit 1
+          test -f artifacts/healthcare/run_42/log.jsonl || exit 1
+          echo "✅ Artifacts verified"
+          
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: healthcare-demo-artifacts
+          path: artifacts/healthcare/
+          retention-days: 30

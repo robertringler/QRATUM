@@ -1,0 +1,29 @@
+{
+  "name": "Starship Hot-Staging",
+  "description": "Hot-staging separation profile for Starship/Super Heavy",
+  "vehicle": "Starship + Super Heavy",
+  "mission_phase": "Booster MECO and hot-staging separation",
+  "targets": {
+    "meco_time_s": 170.0,
+    "peak_altitude_km": 90.0,
+    "meco_altitude_km": 75.0,
+    "meco_velocity_kms": 2.3
+  },
+  "tolerances": {
+    "altitude_tolerance_km": 8.0,
+    "velocity_tolerance_kms": 0.15,
+    "time_tolerance_s": 12.0
+  },
+  "weights": {
+    "altitude": 0.35,
+    "velocity": 0.45,
+    "time": 0.2
+  },
+  "alpha_bounds": [0.4, 0.95],
+  "metadata": {
+    "reference_mission": "IFT-3 Hot-Staging (Surrogate)",
+    "data_source": "Public telemetry analysis",
+    "classification": "UNCLASSIFIED // PUBLIC",
+    "note": "Simplified surrogate model for demonstration only. Not flight-validated."
+  }
+}

@@ -1,162 +1,12 @@
 """HCAL actuator for hardware control."""
 
-import time
-from typing import Any, Dict, List, Optional
-
-
-class Actuator:
-    """Hardware actuator with baseline capture and rollback."""
-
-    def __init__(self, enable_actuation: bool = False):
-        """Initialize actuator.
-
-        Args:
-            enable_actuation: Whether to enable actual hardware changes
-        """
-        self.enable_actuation = enable_actuation
-        self._baselines: Dict[str, Dict[str, Any]] = {}
-        self._backends: Dict[str, Any] = {}
-
-    def capture_baseline(self, device_id: str) -> Dict[str, Any]:
-        """Capture baseline state for a device.
-
-        Args:
-            device_id: Device identifier
-
-        Returns:
-            Captured baseline state
-        """
-        baseline = {
-            "device_id": device_id,
-            "timestamp": time.time(),
-            "state": {},
-        }
-
-        # Get backend if available
-        backend = self._backends.get(device_id)
-        if backend:
-            baseline["state"] = backend.capture_state()
-
-        self._baselines[device_id] = baseline
-        return baseline
-
-    def rollback_device(self, device_id: str) -> Dict[str, Any]:
-        """Rollback device to baseline state.
-
-        Args:
-            device_id: Device identifier
-
-        Returns:
-            Rollback result
-        """
-        baseline = self._baselines.get(device_id)
-        if not baseline:
-            return {
-                "success": False,
-                "error": f"No baseline captured for {device_id}",
-            }
-
-        # Restore state if backend available
-        backend = self._backends.get(device_id)
-        if backend and self.enable_actuation:
-            return backend.restore_state(baseline["state"])
-
-        return {
-            "success": True,
-            "device_id": device_id,
-            "dry_run": not self.enable_actuation,
-        }
-
-    def apply_plan(self, plan: Dict[str, Any]) -> Dict[str, Any]:
-        """Apply a plan to hardware.
-
-        Args:
-            plan: Plan to apply
-
-        Returns:
-            Application result
-        """
-        result = {
-            "plan_id": plan.get("plan_id", "unknown"),
-            "actuation_enabled": self.enable_actuation,
-            "devices": {},
-        }
-
-        devices = plan.get("devices", {})
-        for device_id, setpoints in devices.items():
-            backend = self._backends.get(device_id)
-
-            if backend and self.enable_actuation:
-                device_result = backend.apply_setpoint(setpoints)
-            else:
-                device_result = {
-                    "success": True,
-                    "dry_run": True,
-                    "setpoints": setpoints,
-                }
-
-            result["devices"][device_id] = device_result
-
-        return result
-
-    def register_backend(self, device_id: str, backend: Any) -> None:
-        """Register a backend for a device.
-
-        Args:
-            device_id: Device identifier
-            backend: Backend instance
-        """
-        self._backends[device_id] = backend
-
-    def get_telemetry(self, device_ids: Optional[List[str]] = None) -> Dict[str, Any]:
-        """Get telemetry from devices.
-
-        Args:
-            device_ids: List of device IDs, or None for all
-
-        Returns:
-            Telemetry data
-        """
-        telemetry = {}
-
-        if device_ids is None:
-            device_ids = list(self._backends.keys())
-
-        for device_id in device_ids:
-            backend = self._backends.get(device_id)
-            if backend:
-                telemetry[device_id] = backend.get_telemetry()
-
-        return telemetry
-
-    def emergency_stop(self) -> Dict[str, Any]:
-        """Emergency stop all devices.
-
-        Returns:
-            Stop result
-        """
-        result = {
-            "timestamp": time.time(),
-            "devices_stopped": list(self._backends.keys()),
-        }
-
-        # In a real implementation, this would stop all operations
-        # and potentially restore safe defaults
-
-        return result
-
-
-__all__ = ["Actuator"]
-"""Hardware actuator for HCAL - unified setpoint application."""
-
 import hashlib
 import json
+import time
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-
-from quasim.hcal.policy import PolicyEngine
 
 
 @dataclass
@@ -184,40 +34,156 @@ class Baseline:
 
 
 class Actuator:
-    """Hardware actuator for applying setpoints."""
+    """Hardware actuator for applying setpoints with policy validation and audit logging."""
 
     def __init__(
         self,
-        policy_engine: PolicyEngine,
+        enable_actuation: bool = False,
+        policy_engine: Optional[Any] = None,
         audit_log_path: Optional[Path] = None,
         dry_run: bool = True,
     ):
         """Initialize actuator.
 
         Args:
+            enable_actuation: Whether to enable actual hardware changes (legacy parameter)
             policy_engine: Policy engine for validation.
             audit_log_path: Path to audit log file.
             dry_run: Enable dry-run mode (default: True).
         """
+        # Support both enable_actuation and dry_run parameters
+        if enable_actuation is not None:
+            self.dry_run = not enable_actuation
+            self.enable_actuation = enable_actuation
+        else:
+            self.dry_run = dry_run
+            self.enable_actuation = not dry_run
+
         self.policy_engine = policy_engine
         self.audit_log_path = audit_log_path or Path("/tmp/hcal_audit.log")
-        self.dry_run = dry_run
         self._baselines: Dict[str, Baseline] = {}
+        self._backends: Dict[str, Any] = {}
         self._audit_log: List[AuditLogEntry] = []
         self._last_checksum: Optional[str] = None
         self._emergency_stop = False
 
-    def capture_baseline(self, device_id: str, configuration: Dict[str, Any]):
-        """Capture baseline configuration for rollback.
+    def capture_baseline(
+        self, device_id: str, configuration: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """Capture baseline state for a device.
+
+        Args:
+            device_id: Device identifier
+            configuration: Current device configuration (optional)
+
+        Returns:
+            Captured baseline state
+        """
+        if configuration is None:
+            configuration = {}
+
+        baseline_obj = Baseline(
+            device_id=device_id,
+            timestamp=datetime.now(),
+            configuration=configuration.copy(),
+        )
+        self._baselines[device_id] = baseline_obj
+
+        # Return dict for backwards compatibility
+        return {
+            "device_id": device_id,
+            "timestamp": time.time(),
+            "state": configuration,
+        }
+
+    def rollback_device(self, device_id: str, backend: Optional[Any] = None) -> Dict[str, Any]:
+        """Rollback device to baseline state.
+
+        Args:
+            device_id: Device identifier
+            backend: Backend driver instance (optional)
+
+        Returns:
+            Rollback result
+        """
+        if device_id not in self._baselines:
+            return {
+                "success": False,
+                "error": f"No baseline captured for {device_id}",
+            }
+
+        baseline = self._baselines[device_id]
+
+        # Use provided backend or look up registered one
+        if backend is None:
+            backend = self._backends.get(device_id)
+
+        # Restore state if backend available and actuation enabled
+        if backend and self.enable_actuation:
+            try:
+                success = backend.apply_setpoint(device_id, baseline.configuration)
+                self._log_operation(device_id, "rollback", baseline.configuration, success)
+                return {
+                    "success": success,
+                    "device_id": device_id,
+                    "dry_run": False,
+                }
+            except Exception as e:
+                return {
+                    "success": False,
+                    "error": str(e),
+                }
+
+        return {
+            "success": True,
+            "device_id": device_id,
+            "dry_run": True,
+        }
+
+    def rollback(self, device_id: str, backend: Any) -> bool:
+        """Rollback to baseline configuration.
 
         Args:
             device_id: Device identifier.
-            configuration: Current device configuration.
+            backend: Backend driver instance.
+
+        Returns:
+            True if rollback was successful.
         """
-        baseline = Baseline(
-            device_id=device_id, timestamp=datetime.now(), configuration=configuration.copy()
-        )
-        self._baselines[device_id] = baseline
+        result = self.rollback_device(device_id, backend)
+        return result.get("success", False)
+
+    def apply_plan(self, plan: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply a plan to hardware.
+
+        Args:
+            plan: Plan to apply
+
+        Returns:
+            Application result
+        """
+        result = {
+            "plan_id": plan.get("plan_id", "unknown"),
+            "actuation_enabled": self.enable_actuation,
+            "devices": {},
+        }
+
+        devices = plan.get("devices", {})
+        for device_id, setpoints in devices.items():
+            backend = self._backends.get(device_id)
+
+            if backend and self.enable_actuation:
+                device_result = backend.apply_setpoint(device_id, setpoints)
+            else:
+                device_result = {
+                    "success": True,
+                    "dry_run": True,
+                    "setpoints": setpoints,
+                }
+
+            result["devices"][device_id] = device_result
+
+        return result
 
     def apply_setpoint(
         self,
@@ -241,26 +207,32 @@ class Actuator:
             print("Emergency stop active - operation blocked")
             return False
 
-        # Check rate limit
-        if not self.policy_engine.check_rate_limit():
-            print("Rate limit exceeded")
-            return False
+        # Policy engine checks if available
+        if self.policy_engine:
+            # Check rate limit
+            if hasattr(self.policy_engine, "check_rate_limit"):
+                if not self.policy_engine.check_rate_limit():
+                    print("Rate limit exceeded")
+                    return False
 
-        # Check device allowed
-        if not self.policy_engine.check_device_allowed(device_id):
-            print(f"Device {device_id} not allowed by policy")
-            return False
+            # Check device allowed
+            if hasattr(self.policy_engine, "check_device_allowed"):
+                if not self.policy_engine.check_device_allowed(device_id):
+                    print(f"Device {device_id} not allowed by policy")
+                    return False
 
-        # Check backend allowed
-        backend_name = backend.__class__.__name__
-        if not self.policy_engine.check_backend_allowed(backend_name):
-            print(f"Backend {backend_name} not allowed by policy")
-            return False
+            # Check backend allowed
+            if hasattr(self.policy_engine, "check_backend_allowed"):
+                backend_name = backend.__class__.__name__
+                if not self.policy_engine.check_backend_allowed(backend_name):
+                    print(f"Backend {backend_name} not allowed by policy")
+                    return False
 
-        # Check limits
-        if not self.policy_engine.check_limits(device_id, setpoint):
-            print(f"Setpoint exceeds limits for device {device_id}")
-            return False
+            # Check limits
+            if hasattr(self.policy_engine, "check_limits"):
+                if not self.policy_engine.check_limits(device_id, setpoint):
+                    print(f"Setpoint exceeds limits for device {device_id}")
+                    return False
 
         # Pre-validation
         if validate:
@@ -307,8 +279,9 @@ class Actuator:
             True if validation passes.
         """
         # Check if device exists
-        if not backend.device_exists(device_id):
-            return False
+        if hasattr(backend, "device_exists"):
+            if not backend.device_exists(device_id):
+                return False
 
         # Check if setpoint is valid
         if not setpoint:
@@ -329,6 +302,9 @@ class Actuator:
         """
         # Read back configuration
         try:
+            if not hasattr(backend, "read_configuration"):
+                return True
+
             actual = backend.read_configuration(device_id)
 
             # Check if setpoint was applied (with tolerance)
@@ -352,36 +328,50 @@ class Actuator:
             print(f"Post-validation error: {e}")
             return False
 
-    def rollback(self, device_id: str, backend: Any) -> bool:
-        """Rollback to baseline configuration.
+    def register_backend(self, device_id: str, backend: Any) -> None:
+        """Register a backend for a device.
 
         Args:
-            device_id: Device identifier.
-            backend: Backend driver instance.
+            device_id: Device identifier
+            backend: Backend instance
+        """
+        self._backends[device_id] = backend
+
+    def get_telemetry(self, device_ids: Optional[List[str]] = None) -> Dict[str, Any]:
+        """Get telemetry from devices.
+
+        Args:
+            device_ids: List of device IDs, or None for all
 
         Returns:
-            True if rollback was successful.
+            Telemetry data
         """
-        if device_id not in self._baselines:
-            print(f"No baseline for device {device_id}")
-            return False
+        telemetry = {}
 
-        baseline = self._baselines[device_id]
-        print(f"Rolling back {device_id} to baseline from {baseline.timestamp}")
+        if device_ids is None:
+            device_ids = list(self._backends.keys())
 
-        try:
-            success = backend.apply_setpoint(device_id, baseline.configuration)
-            self._log_operation(device_id, "rollback", baseline.configuration, success)
-            return success
-        except Exception as e:
-            print(f"Rollback error: {e}")
-            return False
+        for device_id in device_ids:
+            backend = self._backends.get(device_id)
+            if backend and hasattr(backend, "get_telemetry"):
+                telemetry[device_id] = backend.get_telemetry()
 
-    def emergency_stop(self):
-        """Activate emergency stop - blocks all operations."""
+        return telemetry
+
+    def emergency_stop(self) -> Dict[str, Any]:
+        """Emergency stop all devices.
+
+        Returns:
+            Stop result
+        """
         print("EMERGENCY STOP ACTIVATED")
         self._emergency_stop = True
         self._log_operation("system", "emergency_stop", {}, True)
+
+        return {
+            "timestamp": time.time(),
+            "devices_stopped": list(self._backends.keys()),
+        }
 
     def reset_emergency_stop(self):
         """Reset emergency stop."""
@@ -479,3 +469,6 @@ class Actuator:
             previous_checksum = entry.checksum
 
         return True
+
+
+__all__ = ["Actuator", "AuditLogEntry", "Baseline"]

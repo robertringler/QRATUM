@@ -1,0 +1,70 @@
+name: SpaceX/NASA Pilot Demo
+
+on:
+  push:
+    branches:
+      - pilot/spacex-nasa
+      - copilot/pilotspacex-nasa
+  workflow_dispatch:
+
+jobs:
+  pilot-demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install demo dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-demo.txt
+
+      - name: Run Falcon 9 Stage 1 demo
+        run: |
+          python quasim_spacex_demo.py --profile configs/meco_profiles/spacex_f9_stage1.json --generations 50 --pop 20 --seed 42
+
+      - name: Run Starship hot-staging demo
+        run: |
+          python quasim_spacex_demo.py --profile configs/meco_profiles/starship_hotstaging.json --generations 50 --pop 20 --seed 42
+
+      - name: Verify deterministic outputs
+        run: |
+          echo "Checking output files..."
+          ls -lh *_demo_report.json
+          
+          # Verify JSON structure
+          python -c "import json; f=open('spacex_f9_stage1_demo_report.json'); data=json.load(f); print(f'Falcon 9 alpha: {data[\"optimized_alpha\"]}'); print(f'Fitness: {data[\"fitness_rmse\"]}')"
+          python -c "import json; f=open('starship_hotstaging_demo_report.json'); data=json.load(f); print(f'Starship alpha: {data[\"optimized_alpha\"]}'); print(f'Fitness: {data[\"fitness_rmse\"]}')"
+
+      - name: Upload Falcon 9 demo report
+        uses: actions/upload-artifact@v4
+        with:
+          name: spacex_demo_report
+          path: spacex_f9_stage1_demo_report.json
+          retention-days: 90
+
+      - name: Upload Starship demo report
+        uses: actions/upload-artifact@v4
+        with:
+          name: starship_demo_report
+          path: starship_hotstaging_demo_report.json
+          retention-days: 90
+
+      - name: Generate summary
+        run: |
+          echo "## QuASIM × SpaceX/NASA Pilot Demo Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Falcon 9 Stage 1" >> $GITHUB_STEP_SUMMARY
+          python -c "import json; f=open('spacex_f9_stage1_demo_report.json'); data=json.load(f); print(f'- **Optimized Alpha**: {data[\"optimized_alpha\"]:.6f}'); print(f'- **Fitness (RMSE)**: {data[\"fitness_rmse\"]:.6f}'); print(f'- **Peak Altitude**: {data[\"metrics\"][\"peak_altitude_km\"]:.2f} km'); print(f'- **MECO Velocity**: {data[\"metrics\"][\"meco_velocity_kms\"]:.4f} km/s'); print(f'- **Fidelity**: {data[\"validation_metrics\"][\"fidelity\"]:.4f}')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Starship Hot-Staging" >> $GITHUB_STEP_SUMMARY
+          python -c "import json; f=open('starship_hotstaging_demo_report.json'); data=json.load(f); print(f'- **Optimized Alpha**: {data[\"optimized_alpha\"]:.6f}'); print(f'- **Fitness (RMSE)**: {data[\"fitness_rmse\"]:.6f}'); print(f'- **Peak Altitude**: {data[\"metrics\"][\"peak_altitude_km\"]:.2f} km'); print(f'- **MECO Velocity**: {data[\"metrics\"][\"meco_velocity_kms\"]:.4f} km/s'); print(f'- **Fidelity**: {data[\"validation_metrics\"][\"fidelity\"]:.4f}')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **Demo runtime**: < 60s (deterministic, CPU-only)" >> $GITHUB_STEP_SUMMARY
