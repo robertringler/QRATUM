@@ -6,6 +6,13 @@ __pycache__/
 *.pyc
 *.so
 
+# Artifacts
+artifacts/real_world_sim_2025/
+artifacts/*.jsonl
+artifacts/*.hdf5
+artifacts/*.npy
+artifacts/*.meta.json
+
 # Python build artifacts
 dist/
 *.egg-info/
