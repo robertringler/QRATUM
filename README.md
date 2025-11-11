@@ -262,6 +262,57 @@ F --> G[Observability Stack (Grafana/Prometheus)]
   <a href="LICENSE">Apache 2.0 License</a> • <a href="https://quasim.io">Website</a>
 </p>
 
+## QuNimbus Integration (Phase VII)
+
+QuASIM now interfaces with QuNimbus v6 for multi-scale world modeling. Deterministic seeds, audit logs, and HDF5/Zarr state enable replayable validation.
+
+### Quickstart
+
+```bash
+# Execute world-model ascend operation
+python -m quasim.qunimbus.cli ascend \
+  --query "real world simulation" \
+  --seed 42 \
+  --out artifacts/real_world_sim_2025
+
+# Validate snapshot against observables
+python -m quasim.qunimbus.cli validate \
+  --snapshot artifacts/real_world_sim_2025/earth_snapshot.hdf5 \
+  --tolerance 0.03
+```
+
+### Architecture
+
+- **Bridge Layer**: `quasim/qunimbus/bridge.py` mediates all external calls
+- **Determinism**: `quasim/runtime/determinism.py` ensures reproducible seeds
+- **Audit Log**: `quasim/audit/log.py` provides SHA256 chain-of-trust
+- **Validation**: `quasim/validation/compare.py` compares observables
+- **Policy Guard**: `quasim/policy/qnimbus_guard.py` enforces safety rules
+
+### Key Features
+
+- **Deterministic Replay**: All QuNimbus interactions use seeded randomness
+- **Audit Trail**: Append-only log with cryptographic integrity
+- **Observable Validation**: Compare snapshots against expected metrics
+- **Safety Gates**: Policy guard prevents dangerous query patterns
+- **Compliance Ready**: Mapped to DO-178C, NIST 800-53, CMMC 2.0
+
+### Data Schema
+
+Snapshots use HDF5 format with groups:
+- `/meta`: version, query_id, seed, timestamp
+- `/physics`: constants, fields, grid
+- `/biosphere`: species_table
+- `/agents`: demographic/economic agent data
+- `/economy`: market timeseries
+- `/climate`: spatial climate state
+
+See `configs/observables/earth_2025.yml` for validation schema.
+
+### Compliance
+
+Compliance documentation: `docs/compliance/qunimbus_integration.md`
+
 ## Phase VI.1 Operationalization (Automated)
 - Φ_QEVF verifier harness added (RMSE/MAE/variance, KS confidence with scipy)
 - ORD pipeline (zstd + signed manifests) at 30s with 6h checkpoints

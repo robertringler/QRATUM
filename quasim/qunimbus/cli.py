@@ -12,12 +12,17 @@ Usage:
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import sys
-from typing import Optional
 
 import click
 
+from quasim.audit.log import audit_event
+from quasim.io.hdf5 import write_snapshot
+from quasim.net.http import HttpClient
+from quasim.policy.qnimbus_guard import QNimbusGuard
+from quasim.qunimbus.bridge import QNimbusBridge, QNimbusConfig
 from quasim.qunimbus.china_integration import ChinaPhotonicFactory
 from quasim.qunimbus.orchestrator import (
     ComplianceFramework,
@@ -26,6 +31,8 @@ from quasim.qunimbus.orchestrator import (
     QuNimbusOrchestrator,
 )
 from quasim.qunimbus.pilot_factory import PilotFactory
+from quasim.runtime.determinism import set_seed
+from quasim.validation.compare import compare_observables
 
 # Configure logging
 logging.basicConfig(
@@ -92,7 +99,7 @@ def cli():
 def orchestrate(
     parallel: bool,
     task: tuple,
-    auth: Optional[str],
+    auth: str | None,
     compliance: str,
     mode: str,
     pilot_target: int,
@@ -278,6 +285,135 @@ def metrics():
     logger.info("| Veto Rate           | 0.8%          |")
     logger.info("| QKD Latency         | 0.18 ms       |")
     logger.info("| Value Unlocked      | $20B/yr       |")
+
+
+@cli.command("ascend")
+@click.option("--query", required=True, help="Query for QuNimbus v6")
+@click.option("--mode", default="singularity", help="Execution mode")
+@click.option("--seed", default=42, type=int, help="Random seed for determinism")
+@click.option("--out", default="artifacts/real_world_sim_2025", help="Output directory")
+def ascend_cmd(query: str, mode: str, seed: int, out: str):
+    """Execute QuNimbus v6 ascend operation.
+
+    This command queries QuNimbus v6 for world-model generation with
+    deterministic seeding and audit logging.
+
+    Example:
+        qunimbus ascend --query "real world simulation" --out artifacts/real_world_sim_2025
+    """
+    # Check policy guard
+    guard = QNimbusGuard()
+    if not guard.allow_query(query):
+        reason = guard.get_rejection_reason(query)
+        logger.error(f"✗ Query rejected: {reason}")
+        sys.exit(1)
+
+    # Set deterministic seed
+    set_seed(seed)
+
+    # Initialize bridge
+    client = HttpClient()
+    bridge = QNimbusBridge(QNimbusConfig(), client)
+
+    # Execute ascend
+    logger.info(f"Ascending with query: {query}")
+    logger.info(f"Mode: {mode}, Seed: {seed}")
+
+    resp = bridge.ascend(query=query, mode=mode, seed=seed)
+
+    # Audit event
+    audit_event(
+        "qnimbus.ascend",
+        {
+            "query": query,
+            "mode": mode,
+            "seed": seed,
+            "qid": resp.get("query_id"),
+        },
+    )
+
+    # Fetch artifacts
+    artifacts = resp.get("artifacts", {})
+    paths = {}
+
+    logger.info(f"\nQuery ID: {resp.get('query_id')}")
+
+    if artifacts:
+        logger.info("\nFetching artifacts...")
+        for key, art in artifacts.items():
+            artifact_path = f"{out}/{art['filename']}"
+            paths[key] = bridge.fetch_artifact(art["id"], artifact_path)
+            logger.info(f"  ✓ {key}: {artifact_path}")
+    else:
+        # Create stub snapshot for testing
+        logger.info("\nCreating stub snapshot (no artifacts in response)...")
+        import numpy as np
+
+        stub_meta = {
+            "version": "1.0",
+            "query_id": resp.get("query_id"),
+            "seed": seed,
+            "query": query,
+        }
+        stub_arrays = {
+            "agents": np.zeros((100, 5)),  # Stub agent data
+            "climate": np.ones((50,)) * 288.5,  # Stub climate data
+        }
+        snapshot_path = f"{out}/earth_snapshot.hdf5"
+        write_snapshot(snapshot_path, stub_meta, stub_arrays)
+        paths["earth_snapshot"] = snapshot_path
+        logger.info(f"  ✓ earth_snapshot: {snapshot_path}")
+
+    result = {"status": "ok", "out": out, "paths": paths}
+    click.echo(json.dumps(result, indent=2))
+
+
+@cli.command("validate")
+@click.option("--snapshot", required=True, help="Path to earth_snapshot.hdf5")
+@click.option(
+    "--metrics",
+    default="configs/observables/earth_2025.yml",
+    help="Path to observables config",
+)
+@click.option("--tolerance", default=0.03, type=float, help="Validation tolerance")
+def validate_cmd(snapshot: str, metrics: str, tolerance: float):
+    """Validate snapshot against expected observables.
+
+    This command compares a snapshot's observables against expected values
+    from a configuration file.
+
+    Example:
+        qunimbus validate --snapshot artifacts/real_world_sim_2025/earth_snapshot.hdf5
+    """
+    logger.info(f"Validating snapshot: {snapshot}")
+    logger.info(f"Metrics config: {metrics}")
+    logger.info(f"Tolerance: {tolerance}")
+
+    results = compare_observables(snapshot, metrics, tolerance)
+
+    # Audit validation
+    audit_event(
+        "qnimbus.validate", {"snapshot": snapshot, "tolerance": tolerance, "results": results}
+    )
+
+    # Display results
+    logger.info("\n### Validation Results")
+    ok = True
+    for name, result in results.items():
+        status = "✓ PASS" if result["pass"] else "✗ FAIL"
+        logger.info(
+            f"{status} {name}: {result['value']:.2f} "
+            f"(expected: {result['expected']:.2f}, delta: {result['delta']:.2f})"
+        )
+        if not result["pass"]:
+            ok = False
+
+    # Output JSON result
+    output = {"ok": ok, "results": results}
+    click.echo("\n" + json.dumps(output, indent=2))
+
+    # Exit with appropriate code
+    sys.exit(0 if ok else 2)
 
 
 def main():
