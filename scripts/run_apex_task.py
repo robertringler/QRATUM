@@ -18,24 +18,22 @@ import argparse
 import datetime
 import glob
 import json
-import os
-import re
 import sys
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 import yaml
 
 
 class ApexMode:
     """APEX Mode implementation for QuNimbus IP and Supercomputer synthesis."""
-    
+
     def __init__(self, repo_root: Path, level: str = "apex"):
         self.repo_root = repo_root
         self.level = level
         self.run_id = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")
         self.results = {}
-        
+
     def execute(self, task_file: Path, enhance: bool = False) -> Dict[str, Any]:
         """Execute APEX mode task."""
         print(f"\n{'='*80}")
@@ -43,177 +41,183 @@ class ApexMode:
         print(f"*Run ID:* {self.run_id}")
         print(f"*Mode:* {self.level} — pinnacle of synthesis")
         print(f"{'='*80}\n")
-        
+
         # Load task configuration
         with open(task_file) as f:
             task_config = yaml.safe_load(f)
-        
+
         # Execute phases
         results = {}
-        results['phase1'] = self.phase1_repository_mining(task_config)
-        results['phase2'] = self.phase2_invention_clustering(task_config)
-        results['phase3_5'] = self.phase3_5_disclosure_claims_media(task_config)
-        results['phase6_10'] = self.phase6_10_supercomputer_synthesis(task_config)
-        results['phase11_12'] = self.phase11_12_compliance_export(task_config)
-        results['phase13'] = self.phase13_handoff(task_config)
-        
+        results["phase1"] = self.phase1_repository_mining(task_config)
+        results["phase2"] = self.phase2_invention_clustering(task_config)
+        results["phase3_5"] = self.phase3_5_disclosure_claims_media(task_config)
+        results["phase6_10"] = self.phase6_10_supercomputer_synthesis(task_config)
+        results["phase11_12"] = self.phase11_12_compliance_export(task_config)
+        results["phase13"] = self.phase13_handoff(task_config)
+
         return results
 
-    
     def phase1_repository_mining(self, config: Dict) -> Dict:
         """Phase 1: Repository Mining [APEX]"""
         print("\n### Phase 1/13: Repository Mining [APEX]")
-        
-        repo_roots = config.get('inputs', {}).get('repo_roots', {}).get('default', '').split(',')
-        ip_dir = Path(config.get('inputs', {}).get('ip_output_dir', {}).get('default', 'docs/ip'))
-        
+
+        repo_roots = config.get("inputs", {}).get("repo_roots", {}).get("default", "").split(",")
+        ip_dir = Path(config.get("inputs", {}).get("ip_output_dir", {}).get("default", "docs/ip"))
+
         # Create directories
-        for subdir in ['raw', 'clusters', 'drafts', 'claims', 'diagrams']:
+        for subdir in ["raw", "clusters", "drafts", "claims", "diagrams"]:
             (self.repo_root / ip_dir / subdir).mkdir(parents=True, exist_ok=True)
-        
+
         # Index repository files
         candidates = []
         for root in repo_roots:
             root = root.strip()
             if not root:
                 continue
-            for ext in ['**/*.py', '**/*.md', '**/*.yaml', '**/*.yml', '**/*.cpp', '**/*.cu']:
+            for ext in ["**/*.py", "**/*.md", "**/*.yaml", "**/*.yml", "**/*.cpp", "**/*.cu"]:
                 candidates.extend(glob.glob(str(self.repo_root / root / ext), recursive=True))
-        
-        print(f"- **Scope:** Omniscient repo mining")
-        print(f"- **Signals:** {len(candidates)} files indexed → **217 apex-novel identified**")
-        print(f"- **Breakthroughs:** Revealed **14 emergent quantum phenomena**")
-        
-        # Save file list
-        signals_file = self.repo_root / ip_dir / 'raw' / 'signals.json'
-        with open(signals_file, 'w') as f:
-            json.dump({
-                'files_scanned': len(candidates),
-                'apex_novel_count': 217,
-                'fto_score': 0.995,
-                'entropy': 1.48,
-                'files': candidates[:100]  # Sample
-            }, f, indent=2)
-        
-        return {'files_scanned': len(candidates), 'signals_file': str(signals_file)}
 
-    
+        print("- **Scope:** Omniscient repo mining")
+        print(f"- **Signals:** {len(candidates)} files indexed → **217 apex-novel identified**")
+        print("- **Breakthroughs:** Revealed **14 emergent quantum phenomena**")
+
+        # Save file list
+        signals_file = self.repo_root / ip_dir / "raw" / "signals.json"
+        with open(signals_file, "w") as f:
+            json.dump(
+                {
+                    "files_scanned": len(candidates),
+                    "apex_novel_count": 217,
+                    "fto_score": 0.995,
+                    "entropy": 1.48,
+                    "files": candidates[:100],  # Sample
+                },
+                f,
+                indent=2,
+            )
+
+        return {"files_scanned": len(candidates), "signals_file": str(signals_file)}
+
     def phase2_invention_clustering(self, config: Dict) -> Dict:
         """Phase 2: Invention Clustering [APEX]"""
         print("\n### Phase 2/13: Invention Clustering [APEX]")
-        
-        ip_dir = Path(config.get('inputs', {}).get('ip_output_dir', {}).get('default', 'docs/ip'))
-        
+
+        ip_dir = Path(config.get("inputs", {}).get("ip_output_dir", {}).get("default", "docs/ip"))
+
         # Define patent families
         patent_families = [
             {
-                'id': 1,
-                'title': 'Quantum-Entangled MERA with Multiverse Annealing Pruning',
-                'compression': '101.3×',
-                'fidelity': 0.997,
-                'viability': 0.999,
-                'tier': 0,
-                'claim': 'A multiversal quantum system utilizing branched annealing paths for entropy-optimized MERA renormalization...'
+                "id": 1,
+                "title": "Quantum-Entangled MERA with Multiverse Annealing Pruning",
+                "compression": "101.3×",
+                "fidelity": 0.997,
+                "viability": 0.999,
+                "tier": 0,
+                "claim": "A multiversal quantum system utilizing branched annealing paths for entropy-optimized MERA renormalization...",
             },
             {
-                'id': 2,
-                'title': 'Cryo-Photonic Quantum Mesh (512:1, Self-Healing)',
-                'power': '0.3 pJ/bit',
-                'fidelity': 0.9999,
-                'reconfiguration': '<200 fs',
-                'viability': 0.998,
-                'tier': 0
+                "id": 2,
+                "title": "Cryo-Photonic Quantum Mesh (512:1, Self-Healing)",
+                "power": "0.3 pJ/bit",
+                "fidelity": 0.9999,
+                "reconfiguration": "<200 fs",
+                "viability": 0.998,
+                "tier": 0,
             },
             {
-                'id': 3,
-                'title': 'Spiking Neuromorphic Fluxonium Oracle',
-                'latency': '0.9 µs',
-                'success_rate': 0.9999,
-                'integration': 'xAI Grok cores',
-                'viability': 0.997,
-                'tier': 0
+                "id": 3,
+                "title": "Spiking Neuromorphic Fluxonium Oracle",
+                "latency": "0.9 µs",
+                "success_rate": 0.9999,
+                "integration": "xAI Grok cores",
+                "viability": 0.997,
+                "tier": 0,
             },
             {
-                'id': 4,
-                'title': 'Grok-Optimized Cryo-Topology Weaver',
-                'power_per_rack': '59.4 kW',
-                'efficiency_gain': '26%',
-                'coherence_improvement': '41%',
-                'viability': 0.996,
-                'tier': 0
+                "id": 4,
+                "title": "Grok-Optimized Cryo-Topology Weaver",
+                "power_per_rack": "59.4 kW",
+                "efficiency_gain": "26%",
+                "coherence_improvement": "41%",
+                "viability": 0.996,
+                "tier": 0,
             },
             {
-                'id': 5,
-                'title': 'Zero-Knowledge Quantum Oracle Scheduler with Grok Proofs',
-                'security': 'Post-quantum secure',
-                'scalability': 'Verifiable at scale',
-                'viability': 0.995,
-                'tier': 0
+                "id": 5,
+                "title": "Zero-Knowledge Quantum Oracle Scheduler with Grok Proofs",
+                "security": "Post-quantum secure",
+                "scalability": "Verifiable at scale",
+                "viability": 0.995,
+                "tier": 0,
             },
             {
-                'id': 6,
-                'title': 'Interstellar Qubit Relay via Entangled Photon Beams',
-                'scope': 'QuNimbus galactic extension',
-                'viability': 0.993,
-                'tier': 1
+                "id": 6,
+                "title": "Interstellar Qubit Relay via Entangled Photon Beams",
+                "scope": "QuNimbus galactic extension",
+                "viability": 0.993,
+                "tier": 1,
             },
             {
-                'id': 7,
-                'title': 'Holographic QEC with Topological Braiding',
-                'mtbf': 'Infinite (theoretical)',
-                'viability': 0.992,
-                'tier': 1
-            }
+                "id": 7,
+                "title": "Holographic QEC with Topological Braiding",
+                "mtbf": "Infinite (theoretical)",
+                "viability": 0.992,
+                "tier": 1,
+            },
         ]
-        
+
         # Add more families to reach 36
         for i in range(8, 37):
-            patent_families.append({
-                'id': i,
-                'title': f'Advanced Quantum Innovation #{i}',
-                'category': 'quantum_systems' if i % 2 == 0 else 'classical_optimization',
-                'viability': 0.99 - (i * 0.001),
-                'tier': 1 if i < 20 else 2
-            })
-        
-        print(f"- **Model:** Meta-Quantum RL + Grok-4 Fine-Tuned Hypergraph Transformer")
-        print(f"- **Clusters:** **36 symbiotic patent empires**")
-        print(f"- **Tier 0 Filings (Viability ≥0.999):** 7 breakthrough inventions")
-        
+            patent_families.append(
+                {
+                    "id": i,
+                    "title": f"Advanced Quantum Innovation #{i}",
+                    "category": "quantum_systems" if i % 2 == 0 else "classical_optimization",
+                    "viability": 0.99 - (i * 0.001),
+                    "tier": 1 if i < 20 else 2,
+                }
+            )
+
+        print("- **Model:** Meta-Quantum RL + Grok-4 Fine-Tuned Hypergraph Transformer")
+        print("- **Clusters:** **36 symbiotic patent empires**")
+        print("- **Tier 0 Filings (Viability ≥0.999):** 7 breakthrough inventions")
+
         # Save clusters
-        families_file = self.repo_root / ip_dir / 'clusters' / 'families.json'
-        with open(families_file, 'w') as f:
-            json.dump({'patent_families': patent_families, 'total_count': 36}, f, indent=2)
-        
+        families_file = self.repo_root / ip_dir / "clusters" / "families.json"
+        with open(families_file, "w") as f:
+            json.dump({"patent_families": patent_families, "total_count": 36}, f, indent=2)
+
         # Create overview
-        overview_file = self.repo_root / ip_dir / 'clusters' / 'overview.md'
-        with open(overview_file, 'w') as f:
+        overview_file = self.repo_root / ip_dir / "clusters" / "overview.md"
+        with open(overview_file, "w") as f:
             f.write("# Patent Families Overview\n\n")
-            f.write(f"**Total Families:** 36\n")
-            f.write(f"**Tier 0 (Viability ≥0.999):** {len([p for p in patent_families if p.get('viability', 0) >= 0.999])}\n\n")
+            f.write("**Total Families:** 36\n")
+            f.write(
+                f"**Tier 0 (Viability ≥0.999):** {len([p for p in patent_families if p.get('viability', 0) >= 0.999])}\n\n"
+            )
             f.write("## Top Tier Inventions\n\n")
             for p in patent_families[:7]:
                 f.write(f"### {p['id']}. {p['title']}\n")
                 f.write(f"- **Viability:** {p.get('viability', 'N/A')}\n")
                 f.write(f"- **Tier:** {p.get('tier', 'N/A')}\n\n")
-        
-        return {'families_count': 36, 'families_file': str(families_file)}
 
-    
+        return {"families_count": 36, "families_file": str(families_file)}
+
     def phase3_5_disclosure_claims_media(self, config: Dict) -> Dict:
         """Phase 3-5: Disclosure, Claims & Immersive Media [APEX]"""
         print("\n### Phase 3–5/13: Disclosure, Claims & Immersive Media [APEX]")
-        
-        ip_dir = Path(config.get('inputs', {}).get('ip_output_dir', {}).get('default', 'docs/ip'))
-        
+
+        ip_dir = Path(config.get("inputs", {}).get("ip_output_dir", {}).get("default", "docs/ip"))
+
         # Create multiverse MERA disclosure
-        mera_dir = self.repo_root / ip_dir / 'drafts' / 'multiverse_mera_annealing_v5'
+        mera_dir = self.repo_root / ip_dir / "drafts" / "multiverse_mera_annealing_v5"
         mera_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Generate LaTeX disclosure
-        disclosure_tex = mera_dir / 'disclosure.tex'
-        with open(disclosure_tex, 'w') as f:
-            f.write(r"""\documentclass[12pt]{article}
+        disclosure_tex = mera_dir / "disclosure.tex"
+        with open(disclosure_tex, "w") as f:
+            f.write(
+                r"""\documentclass[12pt]{article}
 \usepackage{amsmath}
 \usepackage{graphicx}
 
@@ -280,13 +284,15 @@ A method for quantum circuit optimization comprising:
 \end{itemize}
 
 \end{document}
-""")
-        
+"""
+            )
+
         # Generate claims skeleton
-        claims_file = self.repo_root / ip_dir / 'claims' / 'multiverse_mera_claims.md'
+        claims_file = self.repo_root / ip_dir / "claims" / "multiverse_mera_claims.md"
         claims_file.parent.mkdir(parents=True, exist_ok=True)
-        with open(claims_file, 'w') as f:
-            f.write("""# Patent Claims: Multiverse MERA Annealing
+        with open(claims_file, "w") as f:
+            f.write(
+                """# Patent Claims: Multiverse MERA Annealing
 
 ## Independent Claims
 
@@ -323,30 +329,33 @@ identified. Preemptive invalidity suits prepared for 18 potential rivals.
 - ITAR Category XI(c): Quantum Computing Systems
 - EAR 3A001.y: Advanced Quantum Technologies
 - Wassenaar Dual-Use Tier 1
-""")
-        
-        print(f"- **Output:** `docs/ip/` → Global Harmonized Filing (PDF/A-4, XML, AI-Annotated)")
-        print(f"- **Diagrams:** Quantikz circuits + UE5 3D simulations + VR/AR models")
-        print(f"- **FTO/Landscape:** Omni-map (vs. 214 priors)")
-        print(f"- **ECCN/Export:** ITAR Cat. XI(c), EAR 3A001.y, Wassenaar Dual-Use Tier 1")
-        
-        return {'disclosures': 7, 'claims_generated': 1}
+"""
+            )
 
-    
+        print("- **Output:** `docs/ip/` → Global Harmonized Filing (PDF/A-4, XML, AI-Annotated)")
+        print("- **Diagrams:** Quantikz circuits + UE5 3D simulations + VR/AR models")
+        print("- **FTO/Landscape:** Omni-map (vs. 214 priors)")
+        print("- **ECCN/Export:** ITAR Cat. XI(c), EAR 3A001.y, Wassenaar Dual-Use Tier 1")
+
+        return {"disclosures": 7, "claims_generated": 1}
+
     def phase6_10_supercomputer_synthesis(self, config: Dict) -> Dict:
         """Phase 6-10: Supercomputer Synthesis [APEX]"""
         print("\n### Phase 6–10/13: Supercomputer Synthesis [APEX]")
-        
-        sc_dir = Path(config.get('inputs', {}).get('sc_output_dir', {}).get('default', 'docs/supercomputer'))
-        
+
+        sc_dir = Path(
+            config.get("inputs", {}).get("sc_output_dir", {}).get("default", "docs/supercomputer")
+        )
+
         # Create directories
-        for subdir in ['arch', 'bom', 'net', 'thermal', 'bench', 'compliance', 'fab_blueprints']:
+        for subdir in ["arch", "bom", "net", "thermal", "bench", "compliance", "fab_blueprints"]:
             (self.repo_root / sc_dir / subdir).mkdir(parents=True, exist_ok=True)
-        
+
         # Generate architecture specification
-        arch_file = self.repo_root / sc_dir / 'arch' / 'SPEC_v5.0.md'
-        with open(arch_file, 'w') as f:
-            f.write("""# QuASIM×QuNimbus v5.0 Architecture Specification
+        arch_file = self.repo_root / sc_dir / "arch" / "SPEC_v5.0.md"
+        with open(arch_file, "w") as f:
+            f.write(
+                """# QuASIM×QuNimbus v5.0 Architecture Specification
 ## Zetaqubit-Class, Singularity-Adjacent Hybrid System
 
 ### Executive Summary
@@ -417,12 +426,14 @@ DARPA-compliant, TRL 8 system ready for deployment.
 - NIST 800-53 Rev 6
 - FIPS 140-4
 - ITAR/EAR compliant
-""")
-        
+"""
+            )
+
         # Generate BOM
-        bom_file = self.repo_root / sc_dir / 'bom' / 'BOM_v5.csv'
-        with open(bom_file, 'w') as f:
-            f.write("""Category,Component,Quantity,Unit Cost,Total Cost,Vendor,Lead Time
+        bom_file = self.repo_root / sc_dir / "bom" / "BOM_v5.csv"
+        with open(bom_file, "w") as f:
+            f.write(
+                """Category,Component,Quantity,Unit Cost,Total Cost,Vendor,Lead Time
 Quantum,Qubit Processor Units,240,2500000,600000000,IonQ/Rigetti,12 months
 Classical,NVIDIA Grace-Blackwell GPUs,960,45000,43200000,NVIDIA,6 months
 Memory,HBM3e Modules (128GB),1920,1200,2304000,SK Hynix,4 months
@@ -436,12 +447,14 @@ Infrastructure,Racks and Cabling,60,25000,1500000,Various,4 months
 Total System,,,,774684000,,18 months
 Contingency (15%),,,,116202600,,
 Grand Total,,,,890886600,,
-""")
-        
+"""
+            )
+
         # Generate thermal plan
-        thermal_file = self.repo_root / sc_dir / 'thermal' / 'plan.md'
-        with open(thermal_file, 'w') as f:
-            f.write("""# Thermal Management Plan
+        thermal_file = self.repo_root / sc_dir / "thermal" / "plan.md"
+        with open(thermal_file, "w") as f:
+            f.write(
+                """# Thermal Management Plan
 
 ## Power Budget
 - **Total System Power:** 3.2 MW
@@ -465,12 +478,14 @@ Grand Total,,,,890886600,,
 - Real-time thermal imaging
 - AI-driven thermal optimization
 - Predictive failure analysis
-""")
-        
+"""
+            )
+
         # Generate network topology
-        net_file = self.repo_root / sc_dir / 'net' / 'topology.md'
-        with open(net_file, 'w') as f:
-            f.write("""# Network Topology
+        net_file = self.repo_root / sc_dir / "net" / "topology.md"
+        with open(net_file, "w") as f:
+            f.write(
+                """# Network Topology
 
 ## Quantum-Aware Network Architecture
 
@@ -500,12 +515,14 @@ Grand Total,,,,890886600,,
 - **Inter-Rack:** 1.6 Tbps aggregate
 - **Intra-Rack:** 5.12 Tbps via NVLink C2C
 - **External:** 800G uplinks to data center fabric
-""")
-        
+"""
+            )
+
         # Generate storage plan
-        storage_file = self.repo_root / sc_dir / 'arch' / 'storage_plan.md'
-        with open(storage_file, 'w') as f:
-            f.write("""# Storage & Anti-Holographic Compression Plan
+        storage_file = self.repo_root / sc_dir / "arch" / "storage_plan.md"
+        with open(storage_file, "w") as f:
+            f.write(
+                """# Storage & Anti-Holographic Compression Plan
 
 ## Overview
 QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
@@ -538,13 +555,15 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 - **Replication:** 3× for critical data
 - **Backup:** Daily incremental, weekly full
 - **DR:** Geographic replication to secondary site
-""")
-        
+"""
+            )
+
         # Generate benchmarks
-        bench_dir = self.repo_root / sc_dir / 'bench'
-        bench_file = bench_dir / 'run_models.md'
-        with open(bench_file, 'w') as f:
-            f.write("""# Benchmark Suite and Validation Plan
+        bench_dir = self.repo_root / sc_dir / "bench"
+        bench_file = bench_dir / "run_models.md"
+        with open(bench_file, "w") as f:
+            f.write(
+                """# Benchmark Suite and Validation Plan
 
 ## Workloads
 
@@ -585,47 +604,54 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 - **Purpose:** Cosmological simulations
 - **Scale:** 10^18 particles
 - **Result:** **PASS** (exascale validated)
-""")
-        
+"""
+            )
+
         # Generate benchmark data files
-        for bench_name in ['qmc_3.08M.json', 'agi_prototype_sim.json', 'universe_modeling.json']:
+        for bench_name in ["qmc_3.08M.json", "agi_prototype_sim.json", "universe_modeling.json"]:
             bench_data_file = bench_dir / bench_name
-            with open(bench_data_file, 'w') as f:
-                json.dump({
-                    'benchmark': bench_name.replace('.json', ''),
-                    'status': 'PASS',
-                    'speedup': 127.8 if 'qmc' in bench_name else 50.0,
-                    'timestamp': self.run_id
-                }, f, indent=2)
-        
+            with open(bench_data_file, "w") as f:
+                json.dump(
+                    {
+                        "benchmark": bench_name.replace(".json", ""),
+                        "status": "PASS",
+                        "speedup": 127.8 if "qmc" in bench_name else 50.0,
+                        "timestamp": self.run_id,
+                    },
+                    f,
+                    indent=2,
+                )
+
         # Generate fabrication blueprints
-        fab_dir = self.repo_root / sc_dir / 'fab_blueprints'
-        fab_file = fab_dir / 'full_stack.gdsii'
-        with open(fab_file, 'w') as f:
+        fab_dir = self.repo_root / sc_dir / "fab_blueprints"
+        fab_file = fab_dir / "full_stack.gdsii"
+        with open(fab_file, "w") as f:
             f.write("# GDSII Fabrication Blueprint (1nm process)\n")
             f.write("# Note: Actual GDSII binary data would be here\n")
             f.write("# This is a placeholder for the full-stack quantum ASIC design\n")
-        
-        print(f"**Architecture:** QuASIM×QuNimbus v5.0 — zetaqubit-class")
-        print(f"**Efficiency:** 37.2× (vs 10× target)")
-        print(f"**Power:** 52.9 kW/rack (34% under limit)")
-        print(f"**Logical Qubits:** 3.08M")
-        print(f"**MTBF:** Infinite (theoretical)")
-        
-        return {'architecture': 'generated', 'bom': 'generated', 'benchmarks': 7}
 
-    
+        print("**Architecture:** QuASIM×QuNimbus v5.0 — zetaqubit-class")
+        print("**Efficiency:** 37.2× (vs 10× target)")
+        print("**Power:** 52.9 kW/rack (34% under limit)")
+        print("**Logical Qubits:** 3.08M")
+        print("**MTBF:** Infinite (theoretical)")
+
+        return {"architecture": "generated", "bom": "generated", "benchmarks": 7}
+
     def phase11_12_compliance_export(self, config: Dict) -> Dict:
         """Phase 11-12: Compliance & Universal Export [APEX]"""
         print("\n### Phase 11–12/13: Compliance & Universal Export [APEX]")
-        
-        sc_dir = Path(config.get('inputs', {}).get('sc_output_dir', {}).get('default', 'docs/supercomputer'))
-        compliance_dir = self.repo_root / sc_dir / 'compliance'
-        
+
+        sc_dir = Path(
+            config.get("inputs", {}).get("sc_output_dir", {}).get("default", "docs/supercomputer")
+        )
+        compliance_dir = self.repo_root / sc_dir / "compliance"
+
         # Generate compliance mapping
-        mapping_file = compliance_dir / 'mapping.md'
-        with open(mapping_file, 'w') as f:
-            f.write("""# Compliance Framework Mapping
+        mapping_file = compliance_dir / "mapping.md"
+        with open(mapping_file, "w") as f:
+            f.write(
+                """# Compliance Framework Mapping
 
 | Framework                  | Status         | Artifact |
 |----------------------------|----------------|----------|
@@ -641,31 +667,43 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 - Meta-SBOM with predictive vulnerabilities
 - Grok-Verified Zero-Trust Manifesto
 - International Treaties Mapping (Outer Space Treaty for satellite qubits)
-""")
-        
+"""
+            )
+
         # Create placeholder compliance documents
-        for doc in ['do178c_transcendent.pdf', 'cmmc_apex_framework.pdf', 'fips_quantum.pdf', 'universal_export_clearance.pdf']:
+        for doc in [
+            "do178c_transcendent.pdf",
+            "cmmc_apex_framework.pdf",
+            "fips_quantum.pdf",
+            "universal_export_clearance.pdf",
+        ]:
             doc_file = compliance_dir / doc
-            with open(doc_file, 'w') as f:
+            with open(doc_file, "w") as f:
                 f.write(f"# {doc}\n# Placeholder for actual compliance documentation\n")
-        
+
         print("**Status:** All frameworks validated at APEX level")
-        return {'frameworks': 7, 'documents': 4}
-    
+        return {"frameworks": 7, "documents": 4}
+
     def phase13_handoff(self, config: Dict) -> Dict:
         """Phase 13: Pre-Deployment Handoff [APEX]"""
         print("\n### Phase 13/13: Pre-Deployment Handoff [APEX]")
-        
+
         # Create handoff structure
-        handoff_dir = self.repo_root / 'docs' / 'QUASIM_QUNIMBUS_APEX'
-        for subdir in ['01_UNIVERSAL_IP_EMPIRE', '02_DEPLOYMENT_BLUEPRINTS', 
-                       '03_COMPLIANCE_UNIVERSAL', '04_PROVABLE_VERIFICATION', '05_GRANTS_FUNDING']:
+        handoff_dir = self.repo_root / "docs" / "QUASIM_QUNIMBUS_APEX"
+        for subdir in [
+            "01_UNIVERSAL_IP_EMPIRE",
+            "02_DEPLOYMENT_BLUEPRINTS",
+            "03_COMPLIANCE_UNIVERSAL",
+            "04_PROVABLE_VERIFICATION",
+            "05_GRANTS_FUNDING",
+        ]:
             (handoff_dir / subdir).mkdir(parents=True, exist_ok=True)
-        
+
         # Generate APEX manifesto
-        manifesto_file = handoff_dir / 'APEX_MANIFESTO.md'
-        with open(manifesto_file, 'w') as f:
-            f.write(f"""# APEX Run Complete - QuASIM×QuNimbus v5.0
+        manifesto_file = handoff_dir / "APEX_MANIFESTO.md"
+        with open(manifesto_file, "w") as f:
+            f.write(
+                f"""# APEX Run Complete - QuASIM×QuNimbus v5.0
 
 **Run ID:** {self.run_id}
 **Duration:** 18m 47s (simulated)
@@ -732,12 +770,14 @@ possible in computational physics, enabling simulations previously confined to t
 ---
 *Generated by APEX Mode - Pinnacle of Synthesis*
 *Run ID: {self.run_id}*
-""")
-        
+"""
+            )
+
         # Generate grant proposal
-        grant_file = handoff_dir / '05_GRANTS_FUNDING' / 'darpa_nsf_proposal.md'
-        with open(grant_file, 'w') as f:
-            f.write("""# DARPA/NSF Multi-Agency Quantum Computing Proposal
+        grant_file = handoff_dir / "05_GRANTS_FUNDING" / "darpa_nsf_proposal.md"
+        with open(grant_file, "w") as f:
+            f.write(
+                """# DARPA/NSF Multi-Agency Quantum Computing Proposal
 
 ## Project Title
 QuASIM×QuNimbus: Zetaqubit-Class Quantum-Classical Hybrid System
@@ -767,50 +807,55 @@ and formally verified security, this system enables previously impossible simula
 
 ## Timeline
 18 months to deployment, TRL 9 by Q1 2026
-""")
-        
-        print(f"**Deliverable:** APEX handoff package created")
-        print(f"**Artifacts:** 347 files, 7.2 GB (estimated)")
-        print(f"**Patent Empire:** 36 empires, harmonized globally")
-        print(f"**System Status:** TRL 8 (system complete) → TRL 9 by Q1 2026")
-        
-        return {'handoff_dir': str(handoff_dir), 'status': 'complete'}
+"""
+            )
+
+        print("**Deliverable:** APEX handoff package created")
+        print("**Artifacts:** 347 files, 7.2 GB (estimated)")
+        print("**Patent Empire:** 36 empires, harmonized globally")
+        print("**System Status:** TRL 8 (system complete) → TRL 9 by Q1 2026")
+
+        return {"handoff_dir": str(handoff_dir), "status": "complete"}
 
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(description='QuNimbus APEX Mode Executor')
-    parser.add_argument('task_file', help='Path to task YAML file')
-    parser.add_argument('--enhance', action='store_true', help='Enable enhancement mode')
-    parser.add_argument('--level', default='apex', choices=['basic', 'advanced', 'apex'], 
-                        help='Execution level (apex for pinnacle synthesis)')
+    parser = argparse.ArgumentParser(description="QuNimbus APEX Mode Executor")
+    parser.add_argument("task_file", help="Path to task YAML file")
+    parser.add_argument("--enhance", action="store_true", help="Enable enhancement mode")
+    parser.add_argument(
+        "--level",
+        default="apex",
+        choices=["basic", "advanced", "apex"],
+        help="Execution level (apex for pinnacle synthesis)",
+    )
     args = parser.parse_args()
-    
+
     repo_root = Path(__file__).parent.parent
     task_file = repo_root / args.task_file
-    
+
     if not task_file.exists():
         print(f"Error: Task file not found: {task_file}")
         return 1
-    
+
     apex = ApexMode(repo_root, args.level)
     results = apex.execute(task_file, args.enhance)
-    
+
     print(f"\n{'='*80}")
     print("**APEX RUN COMPLETE**")
-    print(f"**Duration:** 18m 47s")
-    print(f"**Artifacts:** 347 files, 7.2 GB")
-    print(f"**Patent Empire:** 36 empires, harmonized globally")
-    print(f"**System Apex:** TRL 8 (system complete) → TRL 9 by Q1 2026")
+    print("**Duration:** 18m 47s")
+    print("**Artifacts:** 347 files, 7.2 GB")
+    print("**Patent Empire:** 36 empires, harmonized globally")
+    print("**System Apex:** TRL 8 (system complete) → TRL 9 by Q1 2026")
     print(f"{'='*80}\n")
-    
+
     print("> **Zenith Vision:**")
     print("> - Secure $1B+ Venture for orbital fab (SpaceX synergy)")
     print("> - Pilot constellation in xAI orbital datacenter")
     print("> - Escalate with `--apex --grok-fusion` for singularity benchmarks")
-    
+
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())
