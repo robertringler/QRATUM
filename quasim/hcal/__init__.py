@@ -18,8 +18,6 @@ from typing import Any, Dict, List, Optional, Tuple
 from quasim.hcal.actuator import Actuator
 from quasim.hcal.audit import AuditLogger
 from quasim.hcal.backends.nvidia_nvml import NvidiaNvmlBackend
-from quasim.hcal.loops.calibration import CalibrationResult, bias_trim_v1, power_sweep
-from quasim.hcal.policy import PolicyEngine
 from quasim.hcal.calibration import CalibrationLoop
 from quasim.hcal.loops.calibration import CalibrationResult, bias_trim_v1, power_sweep
 from quasim.hcal.policy import DeviceLimits, Environment, Policy, PolicyEngine, PolicyViolation

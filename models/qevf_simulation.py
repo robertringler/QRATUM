@@ -5,12 +5,12 @@ yield and energy inputs to economic projections. The calibration constants are
 aligned with the architecture specification in
 `docs/architecture/quasim_qnimbus_v5_spec.md`.
 """
+
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Iterable, List, Tuple
-
-import math
 
 
 @dataclass
@@ -53,7 +53,7 @@ def phi_qevf(params: QEVFParameters) -> float:
     # Guard against numerical instabilities.
     base = max(base, 1e-12)
     amplification = math.log10(1.0 + params.energy / params.omega_qevf)
-    return params.omega_qevf * (base ** params.rho_anti) * amplification
+    return params.omega_qevf * (base**params.rho_anti) * amplification
 
 
 def entanglement_to_revenue(
