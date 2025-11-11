@@ -1,0 +1,54 @@
+{
+  "title": "Φ_QEVF Expected vs Actual",
+  "time": {
+    "from": "now-72h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Operations per kWh",
+      "targets": [
+        {"expr": "qevf_ops_per_kw_expected"},
+        {"expr": "qevf_ops_per_kw_actual"}
+      ],
+      "thresholds": [
+        {"value": 5, "color": "red"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Entanglement Yield",
+      "targets": [
+        {"expr": "qevf_entanglement_yield_expected"},
+        {"expr": "qevf_entanglement_yield_actual"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Energy Stability",
+      "targets": [
+        {"expr": "qevf_energy_stability_expected"},
+        {"expr": "qevf_energy_stability_actual"}
+      ]
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "name": "Compliance Snapshots",
+        "datasource": "Prometheus",
+        "expr": "qevf_compliance_snapshot"
+      }
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "region",
+        "query": "label_values(qevf_ops_per_kw_actual, region)",
+        "current": {"text": "All", "value": ""}
+      }
+    ]
+  }
+}

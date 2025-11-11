@@ -1,0 +1,34 @@
+{
+  "title": "QuASIM×QuNimbus Public Overview",
+  "description": "Sanitized metrics for community visibility",
+  "tags": ["public", "phase-vi.1"],
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Verification RMSE",
+      "targets": [
+        {"expr": "qevf_rmse_public"}
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Compliance Snapshot Age",
+      "targets": [
+        {"expr": "time() - qevf_compliance_snapshot_timestamp"}
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Regional Variance",
+      "targets": [
+        {"expr": "qevf_variance_pct_public"}
+      ]
+    }
+  ],
+  "links": [
+    {
+      "title": "Documentation",
+      "url": "docs/status/phase_vi.html"
+    }
+  ]
+}
