@@ -118,7 +118,10 @@ def agent_from_inputs(
         for region in regions
     ]
     LOGGER.info(
-        "Creating telemetry agent for %d regions, %d racks, seed=%d", len(region_configs), racks, seed
+        "Creating telemetry agent for %d regions, %d racks, seed=%d",
+        len(region_configs),
+        racks,
+        seed,
     )
     return TelemetryAgent(region_configs, seed=seed, collection_interval_s=collection_interval_s)
 

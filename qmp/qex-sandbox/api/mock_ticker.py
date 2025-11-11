@@ -1,11 +1,11 @@
 """Deterministic mock ticker for the Quantum Exchange (QEX) sandbox."""
-from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Iterable, List
+from __future__ import annotations
 
 import math
 import random
+from dataclasses import dataclass, field
+from typing import Iterable, List
 
 
 @dataclass
