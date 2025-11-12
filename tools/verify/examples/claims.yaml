@@ -1,0 +1,31 @@
+claims:
+  - id: CLM-TECH-RMSE
+    text: "<2% RMSE vs SpaceX/NASA public telemetry"
+    evidence:
+      - TECH-002
+  
+  - id: CLM-TECH-COMPRESSION
+    text: "18.7× anti-holographic MERA compression"
+    evidence:
+      - TECH-004
+  
+  - id: CLM-TECH-RL
+    text: "RL convergence ≥0.993 on Wave 2"
+    evidence:
+      - TECH-003
+  
+  - id: CLM-ECON-PHI
+    text: "Φ_QEVF consistent with η_ent=0.93±0.02, base=$0.0004/EPH"
+    evidence:
+      - ECON-201
+  
+  - id: CLM-VAL-P50
+    text: "Median (P50) enterprise value ~ $0.75B base case"
+    evidence:
+      - ECON-202
+  
+  - id: CLM-COMP-ROADMAP
+    text: "DO-178C Level A roadmap: PSAC/SAS/DER planned; CMMC L2 underway"
+    evidence:
+      - COMP-101
+      - COMP-102

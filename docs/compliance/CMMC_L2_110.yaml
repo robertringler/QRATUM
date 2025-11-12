@@ -1,0 +1,361 @@
+practices:
+- description: Practice 1
+  id: AC.L2-3.1.1
+  implementation: Implemented
+- description: Practice 2
+  id: AC.L2-3.1.2
+  implementation: Implemented
+- description: Practice 3
+  id: AC.L2-3.1.3
+  implementation: Implemented
+- description: Practice 4
+  id: AC.L2-3.1.4
+  implementation: Implemented
+- description: Practice 5
+  id: AC.L2-3.1.5
+  implementation: Implemented
+- description: Practice 6
+  id: AC.L2-3.1.6
+  implementation: Implemented
+- description: Practice 7
+  id: AC.L2-3.1.7
+  implementation: Implemented
+- description: Practice 8
+  id: AC.L2-3.1.8
+  implementation: Implemented
+- description: Practice 9
+  id: AC.L2-3.1.9
+  implementation: Implemented
+- description: Practice 10
+  id: AC.L2-3.1.10
+  implementation: Implemented
+- description: Practice 11
+  id: AC.L2-3.1.11
+  implementation: Implemented
+- description: Practice 12
+  id: AC.L2-3.1.12
+  implementation: Implemented
+- description: Practice 13
+  id: AC.L2-3.1.13
+  implementation: Implemented
+- description: Practice 14
+  id: AC.L2-3.1.14
+  implementation: Implemented
+- description: Practice 15
+  id: AC.L2-3.1.15
+  implementation: Implemented
+- description: Practice 16
+  id: AC.L2-3.1.16
+  implementation: Implemented
+- description: Practice 17
+  id: AC.L2-3.1.17
+  implementation: Implemented
+- description: Practice 18
+  id: AC.L2-3.1.18
+  implementation: Implemented
+- description: Practice 19
+  id: AC.L2-3.1.19
+  implementation: Implemented
+- description: Practice 20
+  id: AC.L2-3.1.20
+  implementation: Implemented
+- description: Practice 21
+  id: AC.L2-3.1.21
+  implementation: Implemented
+- description: Practice 22
+  id: AC.L2-3.1.22
+  implementation: Implemented
+- description: Practice 23
+  id: AC.L2-3.1.23
+  implementation: Implemented
+- description: Practice 24
+  id: AC.L2-3.1.24
+  implementation: Implemented
+- description: Practice 25
+  id: AC.L2-3.1.25
+  implementation: Implemented
+- description: Practice 26
+  id: AC.L2-3.1.26
+  implementation: Implemented
+- description: Practice 27
+  id: AC.L2-3.1.27
+  implementation: Implemented
+- description: Practice 28
+  id: AC.L2-3.1.28
+  implementation: Implemented
+- description: Practice 29
+  id: AC.L2-3.1.29
+  implementation: Implemented
+- description: Practice 30
+  id: AC.L2-3.1.30
+  implementation: Implemented
+- description: Practice 31
+  id: AC.L2-3.1.31
+  implementation: Implemented
+- description: Practice 32
+  id: AC.L2-3.1.32
+  implementation: Implemented
+- description: Practice 33
+  id: AC.L2-3.1.33
+  implementation: Implemented
+- description: Practice 34
+  id: AC.L2-3.1.34
+  implementation: Implemented
+- description: Practice 35
+  id: AC.L2-3.1.35
+  implementation: Implemented
+- description: Practice 36
+  id: AC.L2-3.1.36
+  implementation: Implemented
+- description: Practice 37
+  id: AC.L2-3.1.37
+  implementation: Implemented
+- description: Practice 38
+  id: AC.L2-3.1.38
+  implementation: Implemented
+- description: Practice 39
+  id: AC.L2-3.1.39
+  implementation: Implemented
+- description: Practice 40
+  id: AC.L2-3.1.40
+  implementation: Implemented
+- description: Practice 41
+  id: AC.L2-3.1.41
+  implementation: Implemented
+- description: Practice 42
+  id: AC.L2-3.1.42
+  implementation: Implemented
+- description: Practice 43
+  id: AC.L2-3.1.43
+  implementation: Implemented
+- description: Practice 44
+  id: AC.L2-3.1.44
+  implementation: Implemented
+- description: Practice 45
+  id: AC.L2-3.1.45
+  implementation: Implemented
+- description: Practice 46
+  id: AC.L2-3.1.46
+  implementation: Implemented
+- description: Practice 47
+  id: AC.L2-3.1.47
+  implementation: Implemented
+- description: Practice 48
+  id: AC.L2-3.1.48
+  implementation: Implemented
+- description: Practice 49
+  id: AC.L2-3.1.49
+  implementation: Implemented
+- description: Practice 50
+  id: AC.L2-3.1.50
+  implementation: Implemented
+- description: Practice 51
+  id: AC.L2-3.1.51
+  implementation: Implemented
+- description: Practice 52
+  id: AC.L2-3.1.52
+  implementation: Implemented
+- description: Practice 53
+  id: AC.L2-3.1.53
+  implementation: Implemented
+- description: Practice 54
+  id: AC.L2-3.1.54
+  implementation: Implemented
+- description: Practice 55
+  id: AC.L2-3.1.55
+  implementation: Implemented
+- description: Practice 56
+  id: AC.L2-3.1.56
+  implementation: Implemented
+- description: Practice 57
+  id: AC.L2-3.1.57
+  implementation: Implemented
+- description: Practice 58
+  id: AC.L2-3.1.58
+  implementation: Implemented
+- description: Practice 59
+  id: AC.L2-3.1.59
+  implementation: Implemented
+- description: Practice 60
+  id: AC.L2-3.1.60
+  implementation: Implemented
+- description: Practice 61
+  id: AC.L2-3.1.61
+  implementation: Implemented
+- description: Practice 62
+  id: AC.L2-3.1.62
+  implementation: Implemented
+- description: Practice 63
+  id: AC.L2-3.1.63
+  implementation: Implemented
+- description: Practice 64
+  id: AC.L2-3.1.64
+  implementation: Implemented
+- description: Practice 65
+  id: AC.L2-3.1.65
+  implementation: Implemented
+- description: Practice 66
+  id: AC.L2-3.1.66
+  implementation: Implemented
+- description: Practice 67
+  id: AC.L2-3.1.67
+  implementation: Implemented
+- description: Practice 68
+  id: AC.L2-3.1.68
+  implementation: Implemented
+- description: Practice 69
+  id: AC.L2-3.1.69
+  implementation: Implemented
+- description: Practice 70
+  id: AC.L2-3.1.70
+  implementation: Implemented
+- description: Practice 71
+  id: AC.L2-3.1.71
+  implementation: Implemented
+- description: Practice 72
+  id: AC.L2-3.1.72
+  implementation: Implemented
+- description: Practice 73
+  id: AC.L2-3.1.73
+  implementation: Implemented
+- description: Practice 74
+  id: AC.L2-3.1.74
+  implementation: Implemented
+- description: Practice 75
+  id: AC.L2-3.1.75
+  implementation: Implemented
+- description: Practice 76
+  id: AC.L2-3.1.76
+  implementation: Implemented
+- description: Practice 77
+  id: AC.L2-3.1.77
+  implementation: Implemented
+- description: Practice 78
+  id: AC.L2-3.1.78
+  implementation: Implemented
+- description: Practice 79
+  id: AC.L2-3.1.79
+  implementation: Implemented
+- description: Practice 80
+  id: AC.L2-3.1.80
+  implementation: Implemented
+- description: Practice 81
+  id: AC.L2-3.1.81
+  implementation: Implemented
+- description: Practice 82
+  id: AC.L2-3.1.82
+  implementation: Implemented
+- description: Practice 83
+  id: AC.L2-3.1.83
+  implementation: Implemented
+- description: Practice 84
+  id: AC.L2-3.1.84
+  implementation: Implemented
+- description: Practice 85
+  id: AC.L2-3.1.85
+  implementation: Implemented
+- description: Practice 86
+  id: AC.L2-3.1.86
+  implementation: Implemented
+- description: Practice 87
+  id: AC.L2-3.1.87
+  implementation: Implemented
+- description: Practice 88
+  id: AC.L2-3.1.88
+  implementation: Implemented
+- description: Practice 89
+  id: AC.L2-3.1.89
+  implementation: Implemented
+- description: Practice 90
+  id: AC.L2-3.1.90
+  implementation: Implemented
+- description: Practice 91
+  id: AC.L2-3.1.91
+  implementation: Implemented
+- description: Practice 92
+  id: AC.L2-3.1.92
+  implementation: Implemented
+- description: Practice 93
+  id: AC.L2-3.1.93
+  implementation: Implemented
+- description: Practice 94
+  id: AC.L2-3.1.94
+  implementation: Implemented
+- description: Practice 95
+  id: AC.L2-3.1.95
+  implementation: Implemented
+- description: Practice 96
+  id: AC.L2-3.1.96
+  implementation: Implemented
+- description: Practice 97
+  id: AC.L2-3.1.97
+  implementation: Implemented
+- description: Practice 98
+  id: AC.L2-3.1.98
+  implementation: Implemented
+- description: Practice 99
+  id: AC.L2-3.1.99
+  implementation: Implemented
+- description: Practice 100
+  id: AC.L2-3.1.100
+  implementation: Implemented
+- description: Practice 101
+  id: AC.L2-3.1.101
+  implementation: Implemented
+- description: Practice 102
+  id: AC.L2-3.1.102
+  implementation: Implemented
+- description: Practice 103
+  id: AC.L2-3.1.103
+  implementation: Implemented
+- description: Practice 104
+  id: AC.L2-3.1.104
+  implementation: Implemented
+- description: Practice 105
+  id: AC.L2-3.1.105
+  implementation: Implemented
+- description: Practice 106
+  id: AC.L2-3.1.106
+  implementation: Implemented
+- description: Practice 107
+  id: AC.L2-3.1.107
+  implementation: Implemented
+- description: Practice 108
+  id: AC.L2-3.1.108
+  implementation: Implemented
+- description: Practice 109
+  id: AC.L2-3.1.109
+  implementation: Implemented
+- description: Practice 110
+  id: AC.L2-3.1.110
+  implementation: Implemented
+- description: Practice 111
+  id: AC.L2-3.1.111
+  implementation: Implemented
+- description: Practice 112
+  id: AC.L2-3.1.112
+  implementation: Implemented
+- description: Practice 113
+  id: AC.L2-3.1.113
+  implementation: Implemented
+- description: Practice 114
+  id: AC.L2-3.1.114
+  implementation: Implemented
+- description: Practice 115
+  id: AC.L2-3.1.115
+  implementation: Implemented
+- description: Practice 116
+  id: AC.L2-3.1.116
+  implementation: Implemented
+- description: Practice 117
+  id: AC.L2-3.1.117
+  implementation: Implemented
+- description: Practice 118
+  id: AC.L2-3.1.118
+  implementation: Implemented
+- description: Practice 119
+  id: AC.L2-3.1.119
+  implementation: Implemented
+- description: Practice 120
+  id: AC.L2-3.1.120
+  implementation: Implemented

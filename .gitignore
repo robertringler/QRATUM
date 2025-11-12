@@ -80,3 +80,12 @@ docs/artifacts/
 logs/global_rollout.log
 pilots/infinite/active/*.json
 pilots/infinite/archive/*.json
+
+# Verification tool test artifacts
+artifacts/verify/
+artifacts/benchmarks/
+artifacts/metrics/
+artifacts/compression/
+artifacts/econ/
+data/telemetry/
+docs/compliance/DO178C/

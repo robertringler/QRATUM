@@ -1,0 +1,65 @@
+version: 1
+
+inputs:
+  brief_paths:
+    - docs/QuASIM_ExecutiveBrief_v1.2.pdf
+    - docs/brief.md
+    - QuASIM_Executive_Brief.md
+  
+  claims_file: tools/verify/examples/claims.yaml
+  
+  telemetry:
+    spacex_csv: data/telemetry/f9_public.csv
+    nasa_csv: data/telemetry/orion_public.csv
+  
+  artifacts:
+    benchmarks_npz_dir: artifacts/benchmarks/
+    rl_convergence_json: artifacts/metrics/rl_convergence.json
+    compression_npz: artifacts/compression/sample_mps_mera.npz
+  
+  compliance:
+    psac_id: docs/compliance/DO178C/PSAC.pdf
+    sas_id: docs/compliance/DO178C/SAS.pdf
+    der_letter: docs/compliance/DO178C/DER_letter.pdf
+    cmmc_map: docs/compliance/CMMC_L2_110.yaml
+    soc2_report: docs/compliance/SOC2_TypeII.pdf
+    iso_27001_cert: docs/compliance/ISO27001_Certificate.pdf
+  
+  economics:
+    phi_inputs_yaml: artifacts/econ/phi_inputs.yaml
+    montecarlo_params_yaml: artifacts/econ/mc_params.yaml
+
+checks:
+  - id: TECH-001
+  - id: TECH-002
+  - id: TECH-003
+  - id: TECH-004
+  - id: ECON-201
+  - id: ECON-202
+  - id: COMP-101
+  - id: COMP-102
+  - id: DOC-401
+  - id: GOV-301
+
+policy:
+  tolerances:
+    rmse_max: 0.02
+    rl_convergence_min: 0.993
+    compression_min_ratio: 18.0
+    benchmark_speedup_min: 10.0
+    valuation_p50_min: 5.0e8
+    valuation_p50_max: 1.5e9
+    cmmc_practices_min: 110
+  
+  ban_phrases_unless_evidence:
+    - "53B"
+    - "3.1 million logical qubits"
+  
+  require_der_for_level_a: true
+  require_ids_for_soc_iso: true
+
+outputs:
+  report_json: artifacts/verify/report.json
+  report_sarif: artifacts/verify/report.sarif
+  audit_chain_file: artifacts/verify/audit.sha256chain
+  exit_on_fail: true
