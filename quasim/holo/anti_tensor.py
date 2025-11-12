@@ -49,9 +49,7 @@ def compute_mutual_information(tensor: Array) -> NDArray[np.float64]:
     return np.zeros((n_qubits, n_qubits))
 
 
-def hierarchical_decompose(
-    tensor: Array, mutual_info: NDArray[np.float64]
-) -> dict[str, Any]:
+def hierarchical_decompose(tensor: Array, mutual_info: NDArray[np.float64]) -> dict[str, Any]:
     """Perform hierarchical tensor decomposition preserving entanglement.
 
     Decomposes tensor into structured components: T ≈ Σ_i w_i U_i ⊗ V_i
@@ -83,9 +81,7 @@ def hierarchical_decompose(
     }
 
 
-def adaptive_truncate(
-    decomposition: dict[str, Any], epsilon: float
-) -> dict[str, Any]:
+def adaptive_truncate(decomposition: dict[str, Any], epsilon: float) -> dict[str, Any]:
     """Adaptively truncate tensor components below threshold.
 
     Removes components with |w_i| < ε while maintaining fidelity constraint.
@@ -109,9 +105,7 @@ def adaptive_truncate(
     return {
         "weights": weights[mask],
         "basis_left": [b for i, b in enumerate(decomposition["basis_left"]) if mask[i]],
-        "basis_right": [
-            b for i, b in enumerate(decomposition["basis_right"]) if mask[i]
-        ],
+        "basis_right": [b for i, b in enumerate(decomposition["basis_right"]) if mask[i]],
         "topology": decomposition["topology"],
     }
 

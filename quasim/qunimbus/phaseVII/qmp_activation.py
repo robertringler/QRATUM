@@ -144,10 +144,10 @@ class QMPActivation:
             "entanglement_throughput_eph": current_throughput,
             "entanglement_throughput_target_eph": self.entanglement_throughput_target,
             "throughput_within_target": current_throughput > self.entanglement_throughput_target,
-            "partners_active": len(
-                [p for p in self.market_feed.values() if p.get("status") == "connected"]
-            )
-            if self.market_feed
-            else 0,
+            "partners_active": (
+                len([p for p in self.market_feed.values() if p.get("status") == "connected"])
+                if self.market_feed
+                else 0
+            ),
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
