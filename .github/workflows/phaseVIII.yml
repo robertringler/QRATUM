@@ -23,6 +23,8 @@ jobs:
   test-phase-viii:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: read
 
     strategy:
       matrix:
@@ -58,6 +60,8 @@ jobs:
   test-mck-convergence:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -85,6 +89,8 @@ jobs:
   test-policy-reasoner-logic:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -122,6 +128,8 @@ jobs:
   test-qeg-ethics:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -150,6 +158,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     if: github.event_name == 'schedule'
+    permissions:
+      contents: read
+      actions: write
 
     steps:
       - name: Checkout repository
@@ -199,6 +210,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: [test-phase-viii, test-mck-convergence, test-policy-reasoner-logic, test-qeg-ethics]
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
