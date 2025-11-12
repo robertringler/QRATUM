@@ -3,9 +3,7 @@
 import json
 import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock, patch
-
-import pytest
+from unittest.mock import patch
 
 from quasim.audit.log import audit_event, verify_audit_chain
 from quasim.qunimbus.bridge import QNimbusBridge, QNimbusConfig
@@ -102,7 +100,7 @@ def test_verify_audit_chain_detects_corruption():
         audit_event("event2", {"data": "test2"}, log_path=log_path)
 
         # Corrupt the chain
-        with open(log_path, "r") as f:
+        with open(log_path) as f:
             lines = f.readlines()
 
         # Modify second event's data
@@ -218,9 +216,8 @@ observables:
 
 def test_strict_mode_passes_with_all_observables():
     """Test that strict mode passes when all observables are present."""
-    from click.testing import CliRunner
-
     import numpy as np
+    from click.testing import CliRunner
 
     from quasim.io.hdf5 import write_snapshot
     from quasim.qunimbus.cli import cli
