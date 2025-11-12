@@ -1,7 +1,5 @@
 """Unit tests for QuNimbus bridge module."""
 
-import pytest
-
 from quasim.net.http import HttpClient
 from quasim.qunimbus.bridge import QNimbusBridge, QNimbusConfig
 

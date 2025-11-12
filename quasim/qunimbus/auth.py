@@ -116,9 +116,7 @@ class SignedHttpClient:
         self._token_expires_at: Optional[datetime] = None
 
         if not JWT_AVAILABLE:
-            raise ImportError(
-                "JWT support not available. Install with: pip install pyjwt[crypto]"
-            )
+            raise ImportError("JWT support not available. Install with: pip install pyjwt[crypto]")
 
     def _verify_token(self) -> bool:
         """Verify JWT token signature and expiration.

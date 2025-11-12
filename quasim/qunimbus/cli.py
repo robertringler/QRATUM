@@ -292,7 +292,9 @@ def metrics():
 @click.option("--mode", default="singularity", help="Execution mode")
 @click.option("--seed", default=42, type=int, help="Random seed for determinism")
 @click.option("--out", default="artifacts/real_world_sim_2025", help="Output directory")
-@click.option("--dry-run", is_flag=True, help="Validate config, seed, and policy without network calls")
+@click.option(
+    "--dry-run", is_flag=True, help="Validate config, seed, and policy without network calls"
+)
 def ascend_cmd(query: str, mode: str, seed: int, out: str, dry_run: bool):
     """Execute QuNimbus v6 ascend operation.
 

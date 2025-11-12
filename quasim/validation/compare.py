@@ -9,9 +9,7 @@ import yaml
 from quasim.io.hdf5 import read_snapshot
 
 
-def compare_observables(
-    hdf5_path: str, cfg_yaml: str, tol_default: float = 0.03
-) -> Dict[str, Any]:
+def compare_observables(hdf5_path: str, cfg_yaml: str, tol_default: float = 0.03) -> Dict[str, Any]:
     """Compare observables from HDF5 snapshot against expected values.
 
     Parameters

@@ -1,16 +1,18 @@
-import json
-import time
-import zstandard as zstd
 import hashlib
+import json
 import os
 import sys
+import time
 from pathlib import Path
+
+import zstandard as zstd
 
 INTERVAL = int(os.getenv("ORD_INTERVAL_SEC", "30"))
 CHECKPOINT_H = int(os.getenv("ORD_CHECKPOINT_HOURS", "6"))
 
 out = Path("ord_out")
 out.mkdir(exist_ok=True)
+
 
 def write(doc, name):
     raw = json.dumps(doc, separators=(",", ":")).encode("utf-8")
@@ -20,6 +22,7 @@ def write(doc, name):
     p.write_bytes(comp)
     sig = hashlib.sha256(comp).hexdigest()
     (out / f"{name}.sha256").write_text(sig)
+
 
 def run(bounded_loops=10):
     t0 = time.time()
@@ -32,6 +35,7 @@ def run(bounded_loops=10):
             t0 = time.time()  # Reset for next
         time.sleep(INTERVAL)
         i += 1
+
 
 if __name__ == "__main__":
     try:

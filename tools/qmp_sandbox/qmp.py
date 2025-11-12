@@ -1,11 +1,12 @@
-import time
 import json
-import random
 import os
+import random
 import sys
+import time
 
 BASE = float(os.getenv("QMP_BASE_PRICE_USD", "0.0004"))
 ETA = 0.93
+
 
 def price_stream(n=50, latency_max=60):
     start = time.time()
@@ -17,6 +18,7 @@ def price_stream(n=50, latency_max=60):
         time.sleep(random.uniform(0, latency_max / n))  # Simulate latency
     elapsed = time.time() - start
     return books, float(elapsed)
+
 
 if __name__ == "__main__":
     try:

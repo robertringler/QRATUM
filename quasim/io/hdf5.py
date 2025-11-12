@@ -64,9 +64,7 @@ def write_snapshot(path: str, meta: Dict[str, Any], arrays: Dict[str, np.ndarray
         # Write arrays as datasets with compression
         for key, arr in arrays.items():
             if arr.size > 0:
-                f.create_dataset(
-                    key, data=arr, compression="gzip", shuffle=True, fletcher32=True
-                )
+                f.create_dataset(key, data=arr, compression="gzip", shuffle=True, fletcher32=True)
             else:
                 # Handle empty arrays
                 f.create_dataset(key, data=arr)

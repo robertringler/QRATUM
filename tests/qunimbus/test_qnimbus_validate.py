@@ -67,9 +67,7 @@ observables:
 
 def test_compare_observables_pass(sample_snapshot, sample_config):
     """Test observable comparison with passing values."""
-    results = compare_observables(
-        str(sample_snapshot), str(sample_config), tol_default=0.03
-    )
+    results = compare_observables(str(sample_snapshot), str(sample_config), tol_default=0.03)
 
     assert "population_test" in results
     assert "mean_temp_test" in results
@@ -99,9 +97,7 @@ observables:
 """
     )
 
-    results = compare_observables(
-        str(sample_snapshot), str(config_path), tol_default=0.03
-    )
+    results = compare_observables(str(sample_snapshot), str(config_path), tol_default=0.03)
 
     assert results["population_test"]["pass"] is False
     assert results["population_test"]["delta"] > 10
@@ -138,8 +134,6 @@ observables:
 """
     )
 
-    results = compare_observables(
-        str(sample_snapshot), str(config_path), tol_default=0.03
-    )
+    results = compare_observables(str(sample_snapshot), str(config_path), tol_default=0.03)
 
     assert results["test_observable"]["pass"] is True
