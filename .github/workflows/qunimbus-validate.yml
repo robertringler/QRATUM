@@ -225,6 +225,8 @@ jobs:
   strict-validation-tests:
     name: Test Strict Validation Mode
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - name: Checkout code
@@ -251,6 +253,8 @@ jobs:
   dry-run-tests:
     name: Test Dry-Run Mode
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - name: Checkout code
@@ -281,6 +285,8 @@ jobs:
   auth-module-tests:
     name: Test Auth Module (JWT/HMAC)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - name: Checkout code
@@ -311,6 +317,8 @@ jobs:
   audit-chain-tests:
     name: Test Audit Chain with Query ID
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - name: Checkout code
