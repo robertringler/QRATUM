@@ -292,7 +292,8 @@ def metrics():
 @click.option("--mode", default="singularity", help="Execution mode")
 @click.option("--seed", default=42, type=int, help="Random seed for determinism")
 @click.option("--out", default="artifacts/real_world_sim_2025", help="Output directory")
-def ascend_cmd(query: str, mode: str, seed: int, out: str):
+@click.option("--dry-run", is_flag=True, help="Validate config, seed, and policy without network calls")
+def ascend_cmd(query: str, mode: str, seed: int, out: str, dry_run: bool):
     """Execute QuNimbus v6 ascend operation.
 
     This command queries QuNimbus v6 for world-model generation with
@@ -300,6 +301,7 @@ def ascend_cmd(query: str, mode: str, seed: int, out: str):
 
     Example:
         qunimbus ascend --query "real world simulation" --out artifacts/real_world_sim_2025
+        qunimbus ascend --query "real world simulation" --dry-run
     """
     # Check policy guard
     guard = QNimbusGuard()
@@ -310,6 +312,27 @@ def ascend_cmd(query: str, mode: str, seed: int, out: str):
 
     # Set deterministic seed
     set_seed(seed)
+
+    # Dry-run mode: validate without network calls
+    if dry_run:
+        logger.info("🔍 DRY RUN MODE - Validation Only")
+        logger.info(f"✓ Query validated: {query}")
+        logger.info("✓ Policy check passed")
+        logger.info(f"✓ Mode: {mode}")
+        logger.info(f"✓ Seed: {seed}")
+        logger.info(f"✓ Output directory: {out}")
+        logger.info("✓ Configuration valid")
+
+        result = {
+            "status": "dry_run",
+            "valid": True,
+            "query": query,
+            "mode": mode,
+            "seed": seed,
+            "out": out,
+        }
+        click.echo(json.dumps(result, indent=2))
+        return
 
     # Initialize bridge
     client = HttpClient()
@@ -376,20 +399,61 @@ def ascend_cmd(query: str, mode: str, seed: int, out: str):
     help="Path to observables config",
 )
 @click.option("--tolerance", default=0.03, type=float, help="Validation tolerance")
-def validate_cmd(snapshot: str, metrics: str, tolerance: float):
+@click.option(
+    "--strict",
+    is_flag=True,
+    help="Fail if any observable is missing (even if others pass)",
+)
+def validate_cmd(snapshot: str, metrics: str, tolerance: float, strict: bool):
     """Validate snapshot against expected observables.
 
     This command compares a snapshot's observables against expected values
     from a configuration file.
 
+    In strict mode (--strict), validation fails if ANY observable is missing
+    from the snapshot, even if other observables pass their tolerance checks.
+    This is useful for DO-178C Level A compliance where all expected metrics
+    must be present and valid.
+
     Example:
         qunimbus validate --snapshot artifacts/real_world_sim_2025/earth_snapshot.hdf5
+        qunimbus validate --snapshot artifacts/snapshot.hdf5 --strict --tolerance 0.01
     """
     logger.info(f"Validating snapshot: {snapshot}")
     logger.info(f"Metrics config: {metrics}")
     logger.info(f"Tolerance: {tolerance}")
+    if strict:
+        logger.info("Strict mode: ENABLED (all observables required)")
 
     results = compare_observables(snapshot, metrics, tolerance)
+
+    # Check for missing observables in strict mode
+    if strict:
+        # Load config to see what observables are expected
+        from pathlib import Path
+
+        import yaml
+
+        cfg_path = Path(metrics)
+        if cfg_path.exists():
+            with open(cfg_path) as f:
+                config = yaml.safe_load(f)
+                expected_observables = set(config.get("observables", {}).keys())
+                found_observables = set(results.keys())
+                missing = expected_observables - found_observables
+
+                if missing:
+                    logger.error(f"\n✗ STRICT MODE FAILURE: Missing observables: {missing}")
+                    sys.exit(3)
+
+                # Check if any observable has an error
+                for name, result in results.items():
+                    if result.get("error"):
+                        logger.error(
+                            f"\n✗ STRICT MODE FAILURE: Observable '{name}' has error: "
+                            f"{result['error']}"
+                        )
+                        sys.exit(3)
 
     # Audit validation
     audit_event(

@@ -52,27 +52,115 @@ class QNimbusBridge:
         This operation generates world-model artifacts based on the query.
         All randomness is controlled by the seed parameter for reproducibility.
 
+        The ascend operation follows DO-178C Level A determinism requirements:
+        - Identical seed + query → identical artifacts (within tolerance)
+        - All network calls are logged in audit trail
+        - Query hash is recorded for replay validation
+
         Parameters
         ----------
         query : str
             Query for world-model generation
         mode : str
             Generation mode (default: "singularity")
+            Options: "singularity", "distributed", "validation"
         seed : int
-            Random seed for deterministic generation
+            Random seed for deterministic generation (default: 42)
+            Must be in range [0, 2^31-1] for cross-platform reproducibility
 
         Returns
         -------
         Dict[str, Any]
-            Response containing query_id and artifact metadata
+            Response containing:
+            - query_id (str): Unique identifier for this query
+            - status (str): "success", "pending", or "failed"
+            - artifacts (dict): Map of artifact_name → {id, filename, size_bytes}
+            - mode (str): Echo of requested mode
+            - seed (int): Echo of seed used
+
+        Raises
+        ------
+        ValueError
+            If seed is out of valid range
+        HTTPError
+            If network request fails (falls back to mock response)
 
         Examples
         --------
+        Basic usage with default parameters:
+
         >>> from quasim.net.http import HttpClient
-        >>> bridge = QNimbusBridge(QNimbusConfig(), HttpClient())
+        >>> from quasim.qunimbus.bridge import QNimbusBridge, QNimbusConfig
+        >>> from quasim.runtime.determinism import set_seed
+        >>>
+        >>> # Initialize bridge
+        >>> cfg = QNimbusConfig()
+        >>> http = HttpClient()
+        >>> bridge = QNimbusBridge(cfg, http)
+        >>>
+        >>> # Set global seed for reproducibility
+        >>> set_seed(42)
+        >>>
+        >>> # Execute ascend operation
         >>> resp = bridge.ascend("real world simulation", seed=42)
         >>> print(resp["query_id"])
         qid-...
+        >>> print(resp["status"])
+        success
+
+        Handling artifacts from response:
+
+        >>> resp = bridge.ascend("climate model 2025", mode="distributed", seed=12345)
+        >>>
+        >>> # Iterate over artifacts
+        >>> for artifact_name, artifact_meta in resp.get("artifacts", {}).items():
+        ...     artifact_id = artifact_meta["id"]
+        ...     filename = artifact_meta["filename"]
+        ...
+        ...     # Download artifact
+        ...     local_path = bridge.fetch_artifact(artifact_id, f"output/{filename}")
+        ...     print(f"Downloaded {artifact_name} to {local_path}")
+
+        Integration with audit logging:
+
+        >>> from quasim.audit.log import audit_event
+        >>>
+        >>> # Execute with audit
+        >>> resp = bridge.ascend("economic forecast", seed=99)
+        >>>
+        >>> # Log to audit trail
+        >>> audit_event(
+        ...     "qnimbus.ascend",
+        ...     {
+        ...         "query": "economic forecast",
+        ...         "seed": 99,
+        ...         "query_id": resp["query_id"],
+        ...         "status": resp["status"],
+        ...     }
+        ... )
+
+        Seed injection for deterministic replay:
+
+        >>> import hashlib
+        >>>
+        >>> # Generate seed from query for consistent experiments
+        >>> query = "particle physics simulation"
+        >>> query_hash = hashlib.sha256(query.encode()).digest()
+        >>> deterministic_seed = int.from_bytes(query_hash[:4], "big") % (2**31)
+        >>>
+        >>> # Use derived seed
+        >>> resp = bridge.ascend(query, seed=deterministic_seed)
+        >>>
+        >>> # Same query + seed = same results
+        >>> resp2 = bridge.ascend(query, seed=deterministic_seed)
+        >>> assert resp["query_id"] == resp2["query_id"]
+
+        Notes
+        -----
+        - All operations are deterministic given the same seed
+        - Network failures gracefully degrade to mock responses
+        - Artifacts are stored with compression and checksums (HDF5/Fletcher32)
+        - Query responses are cached for 24h on server side
         """
         payload = {"query": query, "mode": mode, "seed": seed}
 
