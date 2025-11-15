@@ -7,9 +7,15 @@ import re
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterable, List
+from typing import Iterable, List, Optional
 
-import spacy
+try:
+    import spacy
+except Exception as error:  # pragma: no cover - exercised indirectly via fallback
+    spacy = None  # type: ignore[assignment]
+    _SPACY_IMPORT_ERROR = error
+else:
+    _SPACY_IMPORT_ERROR = None
 
 from .domains import DomainTagger
 from .models import ClassificationLabel, MessageRecord, SentenceRecord
@@ -37,6 +43,7 @@ PLAUSIBLE_KEYWORDS = (
     "often",
     "design",
     "implementation",
+    "calibrated",
 )
 
 SPECULATIVE_KEYWORDS = (
@@ -63,24 +70,43 @@ META_KEYWORDS = (
     "persona",
 )
 
-MEASUREMENT_PATTERN = re.compile(r"\b\d+(\.\d+)?\s?(hz|khz|ghz|ms|s|kg|m|mm|cm|km|nm|%|percent)\b")
+MEASUREMENT_PATTERN = re.compile(
+    r"\b\d+(\.\d+)?\s?(hz|khz|ghz|ms|s|kg|g|mg|ma|a|v|mv|kv|m|mm|cm|km|nm|%|percent)\b"
+)
 
 
 @dataclass
 class SentenceSegmenter:
-    """Segments text into sentences using spaCy's sentencizer."""
+    """Segments text into sentences using spaCy with a deterministic fallback."""
 
     model: str = "en"
+    _nlp: Optional[object] = field(init=False, default=None)
 
     def __post_init__(self) -> None:
+        if spacy is None:
+            LOGGER.warning(
+                "spaCy is unavailable (%s). Using regex-based sentence segmentation fallback.",
+                _SPACY_IMPORT_ERROR,
+            )
+            self._nlp = None
+            return
+
         LOGGER.info("Initializing spaCy model '%s' for segmentation", self.model)
         self._nlp = spacy.blank(self.model)
         if "sentencizer" not in self._nlp.pipe_names:
             self._nlp.add_pipe("sentencizer")
 
     def segment(self, text: str) -> List[str]:
+        if not text.strip():
+            return []
+        if self._nlp is None:
+            return self._fallback_segment(text)
         doc = self._nlp(text)
         return [sent.text.strip() for sent in doc.sents if sent.text.strip()]
+
+    def _fallback_segment(self, text: str) -> List[str]:
+        sentences = re.split(r"(?<=[.!?])\s+", text.strip())
+        return [sentence for sentence in sentences if sentence]
 
 
 @dataclass

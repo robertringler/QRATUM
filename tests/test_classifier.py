@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from extractor.classifier import SentenceClassifier
+from extractor.classifier import SentenceClassifier, SentenceSegmenter
 from extractor.models import ClassificationLabel, MessageRecord
 
 
@@ -30,3 +30,10 @@ def test_classify_messages_generates_records(tmp_path: Path) -> None:
     assert len(records) == 2
     assert records[0].classification == ClassificationLabel.EMPIRICAL_PLAUSIBLE
     assert records[1].classification == ClassificationLabel.SPECULATIVE
+
+
+def test_segmenter_fallback_segment() -> None:
+    segmenter = SentenceSegmenter()
+    segmenter._nlp = None  # force fallback path
+    sentences = segmenter.segment("One. Two? Three!")
+    assert sentences == ["One.", "Two?", "Three!"]

@@ -27,7 +27,9 @@ pip install -r requirements.txt
 python -m extractor.run --input /path/to/conversations.json --out artifacts/
 ```
 
-The command prints logging information describing how many messages were parsed and where the resulting artifacts were saved.
+The command prints logging information describing how many messages were parsed and where the resulting artifacts were saved. If
+spaCy is not available in the current environment, the segmenter automatically falls back to a deterministic regex splitter so
+tests and offline workflows still succeed. Installing spaCy enables the more accurate sentencizer-based segmentation.
 
 ## Repository Layout
 
