@@ -5,11 +5,15 @@ on:
     paths:
       - "qnx/**"
       - "tests/qnx/**"
+      - "tests/qnx_integration/**"
+      - "docs/validation/qnx_backend_validation.md"
       - ".github/workflows/qnx-ci.yml"
   pull_request:
     paths:
       - "qnx/**"
       - "tests/qnx/**"
+      - "tests/qnx_integration/**"
+      - "docs/validation/qnx_backend_validation.md"
       - ".github/workflows/qnx-ci.yml"
 
 jobs:
@@ -28,6 +32,10 @@ jobs:
           pip install -e .
           pip install pytest
 
-      - name: Run QNX smoke tests
+      - name: Static interface check
         run: |
-          pytest tests/qnx/ -v
+          python -m compileall qnx tests/qnx tests/qnx_integration
+
+      - name: Run QNX integration harness
+        run: |
+          pytest tests/qnx tests/qnx_integration -v

@@ -20,12 +20,39 @@ class QNXSubstrate:
         self.backends = get_backend_registry()
         logger.info("QNXSubstrate initialised with backends", extra={"backends": list(self.backends)})
 
+    def initialise_runtime(self) -> MutableMapping[str, Any]:
+        """Return runtime metadata for lifecycle coordination."""
+
+        return {
+            "status": "initialised",
+            "available_backends": list(self.backends),
+        }
+
+    def boot_backend(self, backend_name: str, config: SimulationConfig | None = None) -> MutableMapping[str, Any]:
+        """Perform a lightweight backend probe to confirm readiness."""
+
+        backend = self._resolve_backend(backend_name)
+        probe_config = config or SimulationConfig(
+            scenario_id="__boot_probe__",
+            timesteps=1,
+            seed=0,
+            backend=backend_name,
+        )
+
+        ready = False
+        try:
+            ready = backend.validate(probe_config)
+        except Exception as exc:  # pragma: no cover - defensive
+            logger.info(
+                "Backend validation failed", extra={"backend": backend_name, "error": str(exc)}
+            )
+
+        return {"backend": backend_name, "ready": bool(ready)}
+
     def run_simulation(self, config: SimulationConfig) -> SubstrateResult:
         """Run a simulation on the configured backend and return a structured result."""
 
-        backend = self.backends.get(config.backend)
-        if backend is None:
-            raise ValueError(f"Backend '{config.backend}' is not available")
+        backend = self._resolve_backend(config.backend)
 
         validate_security_context(config.security_level)
 
@@ -68,3 +95,47 @@ class QNXSubstrate:
             errors=errors,
             warnings=warnings,
         )
+
+    def dispatch(self, config: SimulationConfig, *, rtos: Any | None = None) -> SubstrateResult:
+        """Dispatch the simulation with optional RTOS instrumentation."""
+
+        if rtos is not None:
+            rtos.boot()
+            rtos.dispatch_ticks(iterations=max(1, config.timesteps))
+
+        result = self.run_simulation(config)
+
+        if rtos is not None:
+            rtos.send_ipc("simulation_complete", {"hash": result.simulation_hash, "backend": result.backend})
+            rtos.teardown()
+
+        return result
+
+    def teardown_backend(self, backend_name: str) -> MutableMapping[str, str]:
+        """Mark a backend as stopped for lifecycle tracking."""
+
+        self._resolve_backend(backend_name)
+        return {"backend": backend_name, "status": "stopped"}
+
+    def lifecycle_run(
+        self, config: SimulationConfig, *, rtos: Any | None = None
+    ) -> MutableMapping[str, Any]:
+        """Execute the full lifecycle: init → boot → dispatch → teardown."""
+
+        init_state = self.initialise_runtime()
+        boot_state = self.boot_backend(config.backend, config)
+        result = self.dispatch(config, rtos=rtos)
+        teardown_state = self.teardown_backend(config.backend)
+
+        return {
+            "init": init_state,
+            "boot": boot_state,
+            "dispatch_result": result,
+            "teardown": teardown_state,
+        }
+
+    def _resolve_backend(self, backend_name: str):
+        backend = self.backends.get(backend_name)
+        if backend is None:
+            raise ValueError(f"Backend '{backend_name}' is not available")
+        return backend
