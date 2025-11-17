@@ -67,10 +67,11 @@ quasim-qgh = "quasim.cli.qgh_cli:cli"
 quasim-terc-obs = "quasim.cli.terc_obs_cli:cli"
 quasim-own = "quasim.cli.quasim_own:cli"
 qunimbus = "quasim.qunimbus.cli:main"
+qnx = "qnx.cli:cli"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["quasim*"]
+include = ["quasim*", "qnx*"]
 
 [tool.black]
 line-length = 100

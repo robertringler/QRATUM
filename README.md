@@ -423,3 +423,42 @@ Compliance documentation: `docs/QUNIMBUS_NIST_800_53_COMPLIANCE.md`
 - Three-region observability manifests (Prometheus/Grafana/Thanos), retention 90d
 - QMP sandbox streams base EPH price 0.0004 USD with efficiency factor 0.93±0.02
 - CI gates: variance <5%, recall ≥95%, false positives <1%
+
+## QNX substrate (additive orchestration layer)
+
+This repository includes an *optional* `qnx` package that provides a small,
+additive orchestration layer on top of the existing QuASIM implementation.
+
+The QNX substrate does **not** change any existing public APIs; it offers a
+unified way to route simulations to different engines and compare their outputs
+using a common result type.
+
+The modern backend builds deterministic circuits via
+`quasim.api.scenarios.build_circuit` and executes them through
+`quantum.python.quasim_sim.simulate`, so repeated runs with identical inputs
+produce stable hashes for auditing.
+
+Example (Python):
+
+```python
+from qnx import QNXSubstrate, SimulationConfig, SecurityLevel
+
+cfg = SimulationConfig(
+    scenario_id="smoke",
+    timesteps=10,
+    seed=42,
+    security_level=SecurityLevel.INTERNAL,
+    backend="quasim_modern",
+)
+
+substrate = QNXSubstrate()
+result = substrate.run_simulation(cfg)
+
+print(result.backend, result.simulation_hash)
+```
+
+Example (CLI, once wired into packaging):
+
+```bash
+qnx simulate --scenario smoke --timesteps 10 --backend quasim_modern
+```

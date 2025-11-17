@@ -1,0 +1,33 @@
+name: QNX substrate CI
+
+on:
+  push:
+    paths:
+      - "qnx/**"
+      - "tests/qnx/**"
+      - ".github/workflows/qnx-ci.yml"
+  pull_request:
+    paths:
+      - "qnx/**"
+      - "tests/qnx/**"
+      - ".github/workflows/qnx-ci.yml"
+
+jobs:
+  test-qnx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -e .
+          pip install pytest
+
+      - name: Run QNX smoke tests
+        run: |
+          pytest tests/qnx/ -v
