@@ -24,3 +24,12 @@ Q-Stack is a deterministic research playground that layers an identity root (Q),
 - `tests/`: deterministic unit and integration coverage for identity, runtime, cognition flows, simulation, valuation, and cross-layer integration.
 
 Import via `import qstack` or submodules (e.g., `from qstack.q import KeyManager`) to explore the building blocks. The code is self-contained and does not modify the rest of the QuASIM tree.
+
+## Launching a deterministic demo
+Run the lightweight CLI to spin up the identity, ledger, trust graph, and QNX runtime in one shot:
+
+```
+python -m qstack.launch --goal "stabilize" --energy 5
+```
+
+The command seeds an orchestrator identity, writes an attested ledger entry, constructs a trivial self-trust edge, and executes a single deterministic QNX VM cycle. The resulting JSON includes the orchestrator record, ledger head, trust relationships, runtime state, and execution trace so you can validate the stack wiring end-to-end.
