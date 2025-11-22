@@ -1,13 +1,13 @@
 # Q-Stack
 
-Q-Stack is a deterministic research playground that layers an identity root (Q), a deterministic runtime substrate (QNX), a lightweight AGI-style control stack (QNX-AGI), and domain adapters for simulation (QuASIM) and economics (QuNimbus). Everything is dependency-light, side-effect explicit, and designed to be auditable in safety-critical environments.
+Q-Stack is a deterministic research playground that layers identity, a deterministic runtime substrate, a compact cognition stack, and domain adapters for simulation and economics. Everything is dependency-light, side-effect explicit, and designed to be auditable in safety-critical environments.
 
 ## Architectural slices
 - **Q (Identity and sovereignty)**: deterministic key derivation, signing, attestations, trust graphs, and an in-memory ledger/registry to anchor provenance for every payload.
 - **QNX (Runtime substrate)**: lexicographic operator scheduling, explicit safety constraints/envelopes, trace capture, and deterministic VM-style execution. Simulation and valuation operators from QuASIM/QuNimbus can be registered for cross-layer execution.
 - **QNX-AGI (Cognition)**: perception encoders, world models with domain dynamics and QuASIM/QuNimbus adapters, deterministic memory systems (working/episodic/semantic), planners (greedy, heuristic, A*, beam, MPC), orchestrators with critic scoring, and alignment policies.
 - **QuASIM (Simulation)**: structured tensor kernels with classical evaluators for aerospace/finance/pharma scenarios, circuit evaluation helpers, and deterministic MLIR-lowering stubs.
-- **QuNimbus (Economics)**: deterministic pricing, risk, incentives, and governance engines usable directly or via QNX-AGI alignment hooks and QNX runtime operators.
+- **QuNimbus (Economics)**: deterministic valuation primitives for pricing, risk, incentives, governance, and QNX operator adapters.
 
 ## Determinism and safety
 - No ambient randomness in core logic; all stochastic behaviors are seeded and explicit in tests only.
@@ -26,10 +26,16 @@ Q-Stack is a deterministic research playground that layers an identity root (Q),
 Import via `import qstack` or submodules (e.g., `from qstack.q import KeyManager`) to explore the building blocks. The code is self-contained and does not modify the rest of the QuASIM tree.
 
 ## Launching a deterministic demo
-Run the lightweight CLI to spin up the identity, ledger, trust graph, and QNX runtime in one shot:
+Use the lightweight CLI to wire up the identity layer and the deterministic QNX runtime in one shot:
 
-```
+```bash
 python -m qstack.launch --goal "stabilize" --energy 5
 ```
 
-The command seeds an orchestrator identity, writes an attested ledger entry, constructs a trivial self-trust edge, and executes a single deterministic QNX VM cycle. The resulting JSON includes the orchestrator record, ledger head, trust relationships, runtime state, and execution trace so you can validate the stack wiring end-to-end.
+What happens under the hood:
+1. Seed an orchestrator identity, sign it, and record an attested ledger entry.
+2. Construct a trust graph with an initial self-trust edge.
+3. Bind the requested goal, advance the deterministic clock, and debit the energy budget once.
+4. Capture the operator trace alongside the runtime state for inspection.
+
+The command prints a JSON payload with the orchestrator record, ledger head, trust relationships, runtime state, execution result, and trace events so you can validate the stack wiring end-to-end or embed it into tests.

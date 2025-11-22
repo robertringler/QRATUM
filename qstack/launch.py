@@ -1,9 +1,15 @@
-"""CLI entrypoint to launch the deterministic Q-Stack demo run."""
+"""CLI entrypoint to launch the deterministic Q-Stack demo run.
+
+The module exposes a `launch` function that wires up the identity layer, trust
+graph, and deterministic QNX runtime so tests or other tooling can call it
+without shelling out to Click. The CLI simply parses the flags and prints the
+resulting launch summary as JSON.
+"""
 from __future__ import annotations
 
 import json
 from dataclasses import asdict
-from typing import Dict
+from typing import Any, Dict
 
 import click
 
@@ -23,6 +29,7 @@ from qstack.qnx.runtime.vm import QNXVM
 
 
 def build_identity(seed: str) -> tuple[QIdentity, IdentityRegistry, TrustGraph]:
+    """Seed the orchestrator identity, registry, and trust graph."""
     key_manager = KeyManager(seed)
     signer = Signer(key_manager.derive_key("signing"))
     attestor = Attestor(signer)
@@ -38,6 +45,7 @@ def build_identity(seed: str) -> tuple[QIdentity, IdentityRegistry, TrustGraph]:
 
 
 def build_runtime(state: QNXState) -> tuple[QNXVM, TraceRecorder]:
+    """Create a deterministic runtime with safety and tracing enabled."""
     operators = OperatorLibrary()
 
     def bind_goal(current_state: QNXState, goal: str) -> Dict[str, str]:
@@ -74,11 +82,8 @@ def build_runtime(state: QNXState) -> tuple[QNXVM, TraceRecorder]:
     return vm, tracer
 
 
-@click.command()
-@click.option("--seed", default="qstack-root-seed", show_default=True, help="Deterministic seed for identity derivation.")
-@click.option("--goal", default="stabilize", show_default=True, help="Goal string to bind into the runtime state.")
-@click.option("--energy", default=5, show_default=True, type=int, help="Starting energy budget for the runtime.")
-def main(seed: str, goal: str, energy: int) -> None:
+def launch(seed: str, goal: str, energy: int) -> Dict[str, Any]:
+    """Execute a single deterministic Q-Stack cycle and return the summary."""
     orchestrator, registry, trust_graph = build_identity(seed)
     state = QNXState({"energy": energy, "tick": 0})
 
@@ -94,8 +99,24 @@ def main(seed: str, goal: str, energy: int) -> None:
         },
         "runtime_state": state.data,
         "execution": execution,
+        "trace": tracer.snapshot(),
     }
 
+    return output
+
+
+@click.command()
+@click.option("--seed", default="qstack-root-seed", show_default=True, help="Deterministic seed for identity derivation.")
+@click.option("--goal", default="stabilize", show_default=True, help="Goal string to bind into the runtime state.")
+@click.option(
+    "--energy",
+    default=5,
+    show_default=True,
+    type=click.IntRange(min=0, max=100),
+    help="Starting energy budget for the runtime.",
+)
+def main(seed: str, goal: str, energy: int) -> None:
+    output = launch(seed, goal, energy)
     click.echo(json.dumps(output, indent=2))
 
 
