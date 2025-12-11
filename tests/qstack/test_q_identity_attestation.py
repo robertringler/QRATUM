@@ -1,6 +1,5 @@
-import pytest
 
-from qstack.q import Attestor, KeyManager, QIdentity, Signer, SovereignObject, TrustGraph, Ledger, IdentityRegistry
+from qstack.q import Attestor, IdentityRegistry, KeyManager, Ledger, QIdentity, Signer, TrustGraph
 
 
 def test_identity_attestation_and_registry():

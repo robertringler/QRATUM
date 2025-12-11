@@ -46,7 +46,7 @@ def cmd_simulate(args):
     scenario = {"default": True}
     capture = RunCapture() if args.capture else None
 
-    results = run_simulation(scenario, steps=150, seed=args.seed, capture=capture)
+    run_simulation(scenario, steps=150, seed=args.seed, capture=capture)
 
     print("\nSimulation complete")
 
@@ -54,7 +54,7 @@ def cmd_simulate(args):
         output_dir = Path("artifacts/finance") / f"sim_{args.seed}"
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        artifacts = capture.finalize(mp4_path=output_dir / "simulation.mp4", fps=30)
+        capture.finalize(mp4_path=output_dir / "simulation.mp4", fps=30)
         print(f"Artifacts saved to {output_dir}")
 
     return 0

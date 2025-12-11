@@ -215,7 +215,6 @@ def main():
         example_superposition_resolution,
     ]
 
-    results = {}
 
     for example_fn in examples:
         example_fn()

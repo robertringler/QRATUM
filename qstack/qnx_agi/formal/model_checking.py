@@ -2,15 +2,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Dict, Iterable, List
+from typing import Callable, Iterable
 
 
 @dataclass(frozen=True)
 class TLASpecification:
     name: str
-    init: Callable[[Dict[str, float]], bool]
-    next_state: Callable[[Dict[str, float]], Dict[str, float]]
-    invariant: Callable[[Dict[str, float]], bool]
+    init: Callable[[dict[str, float]], bool]
+    next_state: Callable[[dict[str, float]], dict[str, float]]
+    invariant: Callable[[dict[str, float]], bool]
 
 
 class ModelChecker:
@@ -20,7 +20,7 @@ class ModelChecker:
         self._spec = specification
         self._bound = bound
 
-    def run(self, start: Dict[str, float]) -> List[Dict[str, float]]:
+    def run(self, start: dict[str, float]) -> list[dict[str, float]]:
         if not self._spec.init(start):
             raise ValueError("initial state violates init predicate")
         states = [dict(start)]
@@ -35,5 +35,5 @@ class ModelChecker:
         return states
 
     @staticmethod
-    def check_all(traces: Iterable[Dict[str, float]], predicate: Callable[[Dict[str, float]], bool]) -> bool:
+    def check_all(traces: Iterable[dict[str, float]], predicate: Callable[[dict[str, float]], bool]) -> bool:
         return all(predicate(state) for state in traces)

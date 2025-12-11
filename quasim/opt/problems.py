@@ -71,11 +71,7 @@ class OptimizationProblem:
                 return False
 
         # Check additional constraints
-        for constraint in self.constraints:
-            if not constraint(solution):
-                return False
-
-        return True
+        return all(constraint(solution) for constraint in self.constraints)
 
 
 @dataclass

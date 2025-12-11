@@ -1,10 +1,8 @@
 """Minimal deterministic CCSDS packet decoder."""
 from __future__ import annotations
 
-from typing import Dict
 
-
-def decode(packet: bytes) -> Dict[str, object]:
+def decode(packet: bytes) -> dict[str, object]:
     if len(packet) < 4:
         raise ValueError("CCSDS packet too short")
     version = packet[0] >> 5

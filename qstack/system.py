@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any
 
 from qstack.config import QStackConfig
 from qstack.qnx_adapter import QNXAdapter
@@ -16,7 +16,7 @@ class QStackSystem:
 
     config: QStackConfig
 
-    def run_qnx_lifecycle(self, rtos: Any | None = None) -> Dict[str, Any]:
+    def run_qnx_lifecycle(self, rtos: Any | None = None) -> dict[str, Any]:
         adapter = QNXAdapter(self.config.qnx)
         return dict(adapter.run_lifecycle(rtos=rtos))
 
@@ -24,20 +24,20 @@ class QStackSystem:
         adapter = QNXAdapter(self.config.qnx)
         return adapter.run_simulation()
 
-    def simulate_circuit(self, circuit: List[List[complex]]) -> List[complex]:
+    def simulate_circuit(self, circuit: list[list[complex]]) -> list[complex]:
         adapter = QuASIMAdapter(self.config.quasim)
         return adapter.simulate_circuit(circuit)
 
-    def simulate_circuits_batch(self, circuits: List[List[List[complex]]]) -> List[List[complex]]:
+    def simulate_circuits_batch(self, circuits: list[list[list[complex]]]) -> list[list[complex]]:
         adapter = QuASIMAdapter(self.config.quasim)
         return adapter.simulate_batch(circuits)
 
     def run_synthetic_market(
         self, agents: Any, shocks: Any, steps: int
-    ) -> Dict[str, Any]:  # type: ignore[override]
+    ) -> dict[str, Any]:  # type: ignore[override]
         adapter = QuNimbusAdapter(self.config.qunimbus)
         return adapter.run_synthetic_market(agents, shocks, steps)
 
-    def score_node_from_report(self, report: Any) -> Dict[str, Any]:
+    def score_node_from_report(self, report: Any) -> dict[str, Any]:
         adapter = QuNimbusAdapter(self.config.qunimbus)
         return adapter.score_node_from_report(report)

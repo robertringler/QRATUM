@@ -337,10 +337,7 @@ def create_histogram(title: str, values: List[float], bins: int, filename: str) 
 
     counts = [0] * bins
     for value in values:
-        if value == max_value:
-            idx = bins - 1
-        else:
-            idx = int((value - min_value) / bin_width)
+        idx = bins - 1 if value == max_value else int((value - min_value) / bin_width)
         counts[idx] += 1
 
     max_count = max(counts)
@@ -440,7 +437,7 @@ def create_visuals(
     create_line_chart(
         title="Free Cash Flow Projections",
         x_values=[int(year) for year in years],
-        series={name: fcfs for name, fcfs in scenario_fcfs.items()},
+        series=dict(scenario_fcfs.items()),
         y_label="FCF (USD Millions)",
         filename="cash_flow_curves.svg",
     )

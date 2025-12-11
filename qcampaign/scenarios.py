@@ -1,9 +1,9 @@
 """Campaign-specific scenario wiring."""
 from __future__ import annotations
 
+from qscenario.drivers import ScenarioDrivers
 from qscenario.scenario import Scenario, ScenarioConfig
 from qscenario.timeline import Timeline
-from qscenario.drivers import ScenarioDrivers
 
 
 def build_campaign_scenario(name: str, domains: list[str], timeline_ticks: int) -> Scenario:

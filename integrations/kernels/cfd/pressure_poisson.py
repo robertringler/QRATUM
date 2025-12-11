@@ -15,7 +15,7 @@ from __future__ import annotations
 import logging
 import time
 from enum import Enum
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 import numpy as np
 
@@ -46,7 +46,7 @@ class PressurePoissonConfig:
 
     def __init__(
         self,
-        grid_size: Tuple[int, int, int],
+        grid_size: tuple[int, int, int],
         max_iterations: int = 1000,
         tolerance: float = 1e-6,
         precision: Precision = Precision.FP32,
@@ -196,7 +196,7 @@ class PressurePoissonSolver:
 
         return pressure
 
-    def solve(self, velocity_divergence: Optional[np.ndarray] = None) -> Dict[str, Any]:
+    def solve(self, velocity_divergence: np.ndarray | None = None) -> dict[str, Any]:
         """Solve pressure Poisson equation.
 
         Args:

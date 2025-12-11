@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Sequence
+from typing import Sequence
 
 
 @dataclass
@@ -20,16 +20,16 @@ class CouplingOperator:
             if len(row) != size:
                 raise ValueError("Coupling operator must be square.")
 
-    def matrix(self) -> List[List[float]]:
+    def matrix(self) -> list[list[float]]:
         return [list(map(float, row)) for row in self.strengths]
 
-    def apply(self, vector: Sequence[float]) -> List[float]:
+    def apply(self, vector: Sequence[float]) -> list[float]:
         if len(vector) != len(self.strengths):
             raise ValueError("Vector dimensionality mismatch for coupling operator.")
         return [sum(weight * value for weight, value in zip(row, vector)) for row in self.strengths]
 
 
-def coupling_matrix(strengths: Sequence[Sequence[float]]) -> List[List[float]]:
+def coupling_matrix(strengths: Sequence[Sequence[float]]) -> list[list[float]]:
     """Return a normalized coupling matrix enforcing symmetry."""
 
     operator = CouplingOperator(strengths)

@@ -343,7 +343,7 @@ def test_json_export():
 
     # Aggregate by sector
     sectors = {}
-    for sector_name in set(a.profile.sector for a in analyses):
+    for sector_name in {a.profile.sector for a in analyses}:
         sector_analyses = [a for a in analyses if a.profile.sector == sector_name]
         sectors[sector_name] = aggregate_sector_analysis(sector_analyses, sector_name)
 
@@ -439,7 +439,7 @@ def test_qii_score_bounds():
 def test_sector_diversity():
     """Test that generated data includes diverse sectors."""
     companies = generate_synthetic_fortune500()
-    sectors = set(c.sector for c in companies)
+    sectors = {c.sector for c in companies}
 
     assert len(sectors) >= 10  # At least 10 different sectors
     assert "Technology" in sectors

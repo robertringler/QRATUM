@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Iterable, List, Tuple
+from typing import Iterable
 
 
 @dataclass
@@ -60,7 +60,7 @@ def entanglement_to_revenue(
     yields: Iterable[float],
     params: QEVFParameters,
     revenue_scale: float,
-) -> List[Tuple[float, float]]:
+) -> list[tuple[float, float]]:
     """Map entanglement yields to projected revenue flux.
 
     Args:
@@ -72,7 +72,7 @@ def entanglement_to_revenue(
         List of tuples containing (entanglement_yield, revenue_flux).
     """
     params.validate()
-    curve: List[Tuple[float, float]] = []
+    curve: list[tuple[float, float]] = []
     phi_value = phi_qevf(params)
     for ent_yield in yields:
         if ent_yield <= 0:

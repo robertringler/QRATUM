@@ -1,6 +1,6 @@
 from qledger.query import LedgerQuery
-from qledger.store import LedgerStore
 from qledger.record import LedgerRecord
+from qledger.store import LedgerStore
 
 
 def test_query_by_tick_and_constitution():

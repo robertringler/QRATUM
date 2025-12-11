@@ -2,11 +2,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List
 
-from qscenario.timeline import Timeline
-from qscenario.events import Event
 from qscenario.drivers import ScenarioDrivers
+from qscenario.events import Event
+from qscenario.timeline import Timeline
 
 
 @dataclass
@@ -14,9 +13,9 @@ class ScenarioConfig:
     """Configuration for a scenario run."""
 
     name: str
-    domains: List[str]
-    parameters: Dict[str, object] = field(default_factory=dict)
-    policies: Dict[str, object] = field(default_factory=dict)
+    domains: list[str]
+    parameters: dict[str, object] = field(default_factory=dict)
+    policies: dict[str, object] = field(default_factory=dict)
     description: str = ""
 
 
@@ -25,9 +24,9 @@ class ScenarioState:
     """Mutable state during scenario execution."""
 
     tick: int = 0
-    context: Dict[str, object] = field(default_factory=dict)
-    metrics: Dict[str, int] = field(default_factory=dict)
-    incidents: List[Dict[str, object]] = field(default_factory=list)
+    context: dict[str, object] = field(default_factory=dict)
+    metrics: dict[str, int] = field(default_factory=dict)
+    incidents: list[dict[str, object]] = field(default_factory=list)
 
     def increment_tick(self) -> None:
         self.tick += 1
@@ -47,7 +46,7 @@ class Scenario:
         self.timeline = timeline
         self.drivers = drivers
         self.state = ScenarioState()
-        self.results: List[Dict[str, object]] = []
+        self.results: list[dict[str, object]] = []
 
     def _apply_policies(self, event: Event) -> None:
         for name, policy in sorted(self.config.policies.items()):
@@ -65,7 +64,7 @@ class Scenario:
             self.state.increment_tick()
         return self.state
 
-    def summary(self) -> Dict[str, object]:
+    def summary(self) -> dict[str, object]:
         return {
             "config": self.config,
             "state": self.state,

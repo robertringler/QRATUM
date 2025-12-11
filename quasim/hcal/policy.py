@@ -128,14 +128,12 @@ class PolicyValidator:
 
 """HCAL policy enforcement and validation."""
 
-from typing import Dict
 
 """Policy engine for HCAL - declarative YAML-based policy configuration."""
 
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional
 
 """
 Policy engine for hardware control operations.
@@ -145,7 +143,6 @@ Provides validation, rate limiting, and approval mechanisms for safe hardware co
 
 from collections import deque
 from dataclasses import dataclass, field
-from typing import Tuple
 
 
 class PolicyViolation(Exception):
@@ -157,7 +154,7 @@ class PolicyViolation(Exception):
 class Policy:
     """Hardware control policy."""
 
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: dict[str, Any]):
         """Initialize policy from configuration.
 
         Args:
@@ -185,7 +182,7 @@ class Policy:
             config = yaml.safe_load(f)
         return cls(config)
 
-    def validate_plan(self, plan: Dict[str, Any]) -> None:
+    def validate_plan(self, plan: dict[str, Any]) -> None:
         """Validate a plan against policy.
 
         Args:
@@ -238,12 +235,12 @@ class Environment(Enum):
 class DeviceLimits:
     """Hardware limits for devices."""
 
-    max_power_watts: Optional[float] = None
-    max_temp_celsius: Optional[float] = None
-    max_voltage_volts: Optional[float] = None
-    max_clock_mhz: Optional[float] = None
-    min_power_watts: Optional[float] = None
-    min_temp_celsius: Optional[float] = None
+    max_power_watts: float | None = None
+    max_temp_celsius: float | None = None
+    max_voltage_volts: float | None = None
+    max_clock_mhz: float | None = None
+    min_power_watts: float | None = None
+    min_temp_celsius: float | None = None
 
 
 @dataclass
@@ -260,7 +257,7 @@ class ApprovalGate:
 
     required: bool = False
     min_approvers: int = 0
-    methods: List[str] = field(default_factory=list)
+    methods: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -268,9 +265,9 @@ class PolicyConfig:
     """Complete policy configuration."""
 
     environment: Environment
-    device_allowlist: List[str]
-    backend_restrictions: List[str]
-    device_limits: Dict[str, DeviceLimits]
+    device_allowlist: list[str]
+    backend_restrictions: list[str]
+    device_limits: dict[str, DeviceLimits]
     rate_limit: RateLimitConfig
     approval_gate: ApprovalGate
     dry_run_default: bool = True
@@ -279,15 +276,15 @@ class PolicyConfig:
 class PolicyEngine:
     """Policy engine for HCAL operations."""
 
-    def __init__(self, policy_path: Optional[Path] = None):
+    def __init__(self, policy_path: Path | None = None):
         """Initialize policy engine.
 
         Args:
             policy_path: Path to policy YAML file. If None, uses default policy.
         """
         self.policy_path = policy_path
-        self.policy: Optional[PolicyConfig] = None
-        self._command_history: List[float] = []
+        self.policy: PolicyConfig | None = None
+        self._command_history: list[float] = []
 
         if policy_path:
             self.load_policy(policy_path)
@@ -321,7 +318,7 @@ class PolicyEngine:
         self._validate_schema(data)
         self.policy = self._parse_policy(data)
 
-    def _validate_schema(self, data: Dict[str, Any]):
+    def _validate_schema(self, data: dict[str, Any]):
         """Validate policy schema.
 
         Args:
@@ -338,7 +335,7 @@ class PolicyEngine:
         if data["environment"] not in ["dev", "lab", "prod"]:
             raise ValueError(f"Invalid environment: {data['environment']}")
 
-    def _parse_policy(self, data: Dict[str, Any]) -> PolicyConfig:
+    def _parse_policy(self, data: dict[str, Any]) -> PolicyConfig:
         """Parse policy data into PolicyConfig.
 
         Args:
@@ -415,7 +412,7 @@ class PolicyEngine:
 
         return backend not in self.policy.backend_restrictions
 
-    def check_limits(self, device_id: str, setpoint: Dict[str, Any]) -> bool:
+    def check_limits(self, device_id: str, setpoint: dict[str, Any]) -> bool:
         """Check if setpoint is within limits.
 
         Args:
@@ -550,10 +547,10 @@ PolicyViolation = PolicyViolationError
 class DeviceLimits:
     """Device limits for hardware control operations."""
 
-    power_watts_max: Optional[float] = None
-    temp_c_max: Optional[float] = None
-    voltage_mv_range: Optional[Tuple[float, float]] = None
-    freq_mhz_range: Optional[Tuple[float, float]] = None
+    power_watts_max: float | None = None
+    temp_c_max: float | None = None
+    voltage_mv_range: tuple[float, float] | None = None
+    freq_mhz_range: tuple[float, float] | None = None
 
     def validate_setpoint(self, parameter: str, value: float) -> None:
         """
@@ -624,7 +621,7 @@ class PolicyEngine:
     Provides validation, rate limiting, and approval mechanisms.
     """
 
-    def __init__(self, policy_file: Optional[Path] = None):
+    def __init__(self, policy_file: Path | None = None):
         """
         Initialize policy engine.
 
@@ -717,7 +714,7 @@ class PolicyEngine:
         self,
         device_id: str,
         operation: str,
-        setpoints: Dict[str, Any],
+        setpoints: dict[str, Any],
         enable_actuation: bool,
     ) -> None:
         """

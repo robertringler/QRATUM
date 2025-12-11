@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict
 
 from .interval_arithmetic import Interval
 
@@ -33,7 +32,7 @@ class AbstractState:
 
     def __init__(self, lattice: AbstractLattice | None = None):
         self._lattice = lattice or AbstractLattice()
-        self._store: Dict[str, Interval] = {}
+        self._store: dict[str, Interval] = {}
 
     def assign(self, name: str, interval: Interval) -> None:
         self._store[name] = interval
@@ -44,7 +43,7 @@ class AbstractState:
             raise KeyError(f"abstract variable {name} not found")
         return iv
 
-    def join(self, other: "AbstractState") -> "AbstractState":
+    def join(self, other: AbstractState) -> AbstractState:
         merged = AbstractState(self._lattice)
         keys = set(self._store) | set(other._store)
         for key in keys:
@@ -57,12 +56,12 @@ class AbstractState:
         current = self.read(name)
         self.assign(name, self._lattice.meet(current, constraint))
 
-    def widen(self, previous: "AbstractState") -> "AbstractState":
+    def widen(self, previous: AbstractState) -> AbstractState:
         widened = AbstractState(self._lattice)
         for key, interval in self._store.items():
             prev = previous._store.get(key, interval)
             widened.assign(key, self._lattice.widen(prev, interval))
         return widened
 
-    def snapshot(self) -> Dict[str, Interval]:
+    def snapshot(self) -> dict[str, Interval]:
         return dict(self._store)

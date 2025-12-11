@@ -250,10 +250,7 @@ class ModuleValidator:
             has_random = "random" in content.lower()
 
             # If using random without seed management, flag as non-deterministic
-            if has_random and not has_seed:
-                return False
-
-            return True
+            return not (has_random and not has_seed)
         except Exception:
             return True  # Default to pass if can't read
 
@@ -484,10 +481,7 @@ def main():
     args = parser.parse_args()
 
     # Determine repo root
-    if args.repo_root:
-        repo_root = Path(args.repo_root)
-    else:
-        repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(args.repo_root) if args.repo_root else Path(__file__).resolve().parents[1]
 
     # Create validator
     validator = ModuleValidator(repo_root, full_sweep=args.full)

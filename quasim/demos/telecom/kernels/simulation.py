@@ -31,8 +31,8 @@ def run_simulation(
             frame = create_dummy_frame(width=640, height=480, step=step, pattern="gradient")
             capture.record({"frame": frame, "step": step, "value": state["value"]})
 
-    values_arr = np.array(values)
-    target = np.linspace(0, 10, steps)
+    np.array(values)
+    np.linspace(0, 10, steps)
 
     results = {"trace": trace, "final_value": state["value"]}
 

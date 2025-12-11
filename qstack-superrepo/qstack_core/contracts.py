@@ -7,7 +7,7 @@ name, a human-readable description, and an execution entry point.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 
 @runtime_checkable
@@ -50,7 +50,7 @@ class Module(ABC):
         """Return a human-readable module description."""
 
     @abstractmethod
-    def execute(self, context: Dict[str, Any] | None = None) -> Any:
+    def execute(self, context: dict[str, Any] | None = None) -> Any:
         """Execute the module using the provided context."""
 
 
@@ -67,7 +67,7 @@ class Engine(ABC):
         """Return a human-readable engine description."""
 
     @abstractmethod
-    def step(self, state: Dict[str, Any] | None = None) -> Any:
+    def step(self, state: dict[str, Any] | None = None) -> Any:
         """Execute a deterministic engine step."""
 
 

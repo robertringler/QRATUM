@@ -1,5 +1,5 @@
-from qledger.store import LedgerStore
 from qledger.record import LedgerRecord
+from qledger.store import LedgerStore
 
 
 def test_record_type_classification():

@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import re
 from dataclasses import dataclass, field
-from typing import Iterable, List, Mapping, Sequence
+from typing import Iterable, Mapping, Sequence
 
 LOGGER = logging.getLogger(__name__)
 
@@ -29,9 +29,9 @@ class DomainTagger:
         default_factory=lambda: dict(_DEFAULT_DOMAIN_KEYWORDS)
     )
 
-    def tag(self, text: str) -> List[str]:
+    def tag(self, text: str) -> list[str]:
         lowered = text.lower()
-        domains: List[str] = []
+        domains: list[str] = []
         for domain, keywords in self.keyword_map.items():
             if _contains_any(lowered, keywords):
                 domains.append(domain)

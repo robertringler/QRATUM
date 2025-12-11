@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, Iterable, List
+from typing import Iterable
 
 from qintervention.actions import InterventionAction, ScheduledAction
 from qintervention.constraints import ConstraintSet
@@ -10,9 +10,9 @@ from qintervention.constraints import ConstraintSet
 
 @dataclass
 class InterventionPlan:
-    actions: List[ScheduledAction] = field(default_factory=list)
+    actions: list[ScheduledAction] = field(default_factory=list)
 
-    def ordered(self) -> List[ScheduledAction]:
+    def ordered(self) -> list[ScheduledAction]:
         return sorted(self.actions, key=lambda a: a.key())
 
     def add(self, scheduled: ScheduledAction) -> None:
@@ -26,7 +26,7 @@ class InterventionPlanner:
     def __init__(self, constraints: ConstraintSet | None = None) -> None:
         self.constraints = constraints or ConstraintSet()
 
-    def build_plan(self, proposals: Dict[int, List[InterventionAction]]) -> InterventionPlan:
+    def build_plan(self, proposals: dict[int, list[InterventionAction]]) -> InterventionPlan:
         plan = InterventionPlan()
         for tick in sorted(proposals):
             for action in proposals[tick]:

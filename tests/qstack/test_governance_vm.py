@@ -1,4 +1,4 @@
-from qstack.qunimbus.core.governance_vm import GovernanceVM, GovernanceRule
+from qstack.qunimbus.core.governance_vm import GovernanceRule, GovernanceVM
 
 
 def test_governance_vm_scoring():

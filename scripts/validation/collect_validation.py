@@ -79,7 +79,6 @@ class ValidationCollector:
                 if row.get("Coverage Achieved") == "True":
                     coverage_count += 1
 
-        total_lines = coverage_count
         self.data["coverage"] = {
             "conditions_covered": coverage_count,
             "line_coverage_pct": 94.0,  # From README badge
@@ -178,8 +177,8 @@ class ValidationCollector:
 
         report = f"""# QuASIM Validated Modules & Kernels Report
 
-**Generated:** {now.strftime('%Y-%m-%d %H:%M:%S')} UTC  
-**Commit:** {commit_sha}  
+**Generated:** {now.strftime('%Y-%m-%d %H:%M:%S')} UTC
+**Commit:** {commit_sha}
 **Validation Status:** {validated_count}/{total_count} modules validated
 
 ---

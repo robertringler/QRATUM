@@ -352,10 +352,7 @@ class PRAutoResolver:
                     return False
 
         # Tests must pass (optional, can be expensive)
-        if run_tests and not self.run_tests():
-            return False
-
-        return True
+        return not (run_tests and not self.run_tests())
 
     def merge_pr(self, pr: PullRequest) -> bool:
         """Merge a PR using appropriate strategy"""
@@ -474,17 +471,16 @@ class PRAutoResolver:
             remaining_critical = [i for i in issues if i.severity == "critical" and not i.fixed]
             if not remaining_critical:
                 # Try to merge
-                if self.check_merge_criteria(pr, issues):
-                    if self.merge_pr(pr):
-                        return PRResolutionResult(
-                            pr_number=pr.number,
-                            status="success",
-                            issues_found=issues,
-                            issues_fixed=fixed_issues,
-                            attempts=attempts,
-                            merged=True,
-                            message=f"PR merged successfully after fixing {len(fixed_issues)} issues",
-                        )
+                if self.check_merge_criteria(pr, issues) and self.merge_pr(pr):
+                    return PRResolutionResult(
+                        pr_number=pr.number,
+                        status="success",
+                        issues_found=issues,
+                        issues_fixed=fixed_issues,
+                        attempts=attempts,
+                        merged=True,
+                        message=f"PR merged successfully after fixing {len(fixed_issues)} issues",
+                    )
 
         # Max attempts reached
         # Label as needs-manual-review

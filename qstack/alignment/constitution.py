@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable, List, Set
 
 ARTICLE_QNX_SAFETY = "ARTICLE_QNX_SAFETY"
 ARTICLE_QUASIM_BOUNDS = "ARTICLE_QUASIM_BOUNDS"
@@ -15,7 +14,7 @@ class ConstitutionalArticle:
 
     article_id: str
     description: str
-    applies_to: Set[str]
+    applies_to: set[str]
 
     def is_applicable(self, operation: str) -> bool:
         return operation in self.applies_to or "*" in self.applies_to
@@ -25,12 +24,12 @@ class ConstitutionalArticle:
 class Constitution:
     """Collection of constitutional articles."""
 
-    articles: List[ConstitutionalArticle]
+    articles: list[ConstitutionalArticle]
 
-    def applicable_articles(self, operation: str) -> List[ConstitutionalArticle]:
+    def applicable_articles(self, operation: str) -> list[ConstitutionalArticle]:
         return [article for article in self.articles if article.is_applicable(operation)]
 
-    def describe(self) -> List[dict]:
+    def describe(self) -> list[dict]:
         return [
             {
                 "article_id": article.article_id,

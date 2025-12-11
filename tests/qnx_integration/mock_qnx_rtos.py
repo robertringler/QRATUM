@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass
-from typing import Any, Callable, List, MutableSequence
+from typing import Any, Callable, MutableSequence
 
 
 @dataclass
@@ -18,7 +18,7 @@ class MockQNXRTOS:
         self.booted: bool = False
         self.tick_count: int = 0
         self.ipc_bus: MutableSequence[dict[str, Any]] = []
-        self.scheduler_log: List[SchedulerEvent] = []
+        self.scheduler_log: list[SchedulerEvent] = []
 
     def boot(self) -> dict[str, Any]:
         self.booted = True

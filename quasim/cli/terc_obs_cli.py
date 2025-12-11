@@ -166,7 +166,7 @@ def validate(obs_file: str):
 
         # List observables
         click.echo("\nObservables present:")
-        for key in data["observables"].keys():
+        for key in data["observables"]:
             click.echo(f"  - {key}")
 
     except json.JSONDecodeError as e:

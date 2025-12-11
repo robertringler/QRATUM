@@ -1,8 +1,5 @@
 """Hardware Control & Calibration Layer (HCAL) for QuASIM.
 
-HCAL provides a unified API for hardware control and calibration with:
-"""HCAL - Hardware Control Abstraction Layer.
-
 HCAL provides a unified interface for hardware control and calibration with:
 - Dry-run by default with explicit actuation enablement
 - Policy-driven safety enforcement
@@ -39,9 +36,9 @@ class HCAL:
 
     def __init__(
         self,
-        policy_path: Optional[Path] = None,
+        policy_path: Path | None = None,
         dry_run: bool = True,
-        audit_log_path: Optional[Path] = None,
+        audit_log_path: Path | None = None,
     ):
         """Initialize HCAL.
 
@@ -58,8 +55,6 @@ class HCAL:
             hasattr(self.policy_engine, "is_dry_run_default")
             and self.policy_engine.is_dry_run_default()
         ):
-        # Override dry_run if policy requires it
-        if self.policy_engine.is_dry_run_default():
             dry_run = True
 
         self.dry_run = dry_run
@@ -93,7 +88,7 @@ class HCAL:
         cls,
         policy_path: Path,
         enable_actuation: bool = False,
-        audit_log_dir: Optional[Path] = None,
+        audit_log_dir: Path | None = None,
     ) -> HCAL:
         """Create HCAL instance from policy file.
 
@@ -121,7 +116,7 @@ class HCAL:
             audit_log_path=audit_log_path,
         )
 
-    def discover(self, full: bool = False) -> Dict[str, Any]:
+    def discover(self, full: bool = False) -> dict[str, Any]:
         """Discover hardware topology.
 
         Args:
@@ -187,9 +182,9 @@ class HCAL:
     def plan(
         self,
         profile: str,
-        devices: Optional[List[str]] = None,
+        devices: list[str] | None = None,
         **kwargs: Any,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Create hardware configuration plan.
 
         Args:
@@ -208,10 +203,7 @@ class HCAL:
 
         # Get device list
         if devices is None:
-            if self.policy:
-                devices = self.policy.device_allowlist
-            else:
-                devices = []
+            devices = self.policy.device_allowlist if self.policy else []
 
         filtered_devices = []
         for device_id in devices:
@@ -247,9 +239,9 @@ class HCAL:
 
     def apply(
         self,
-        plan: Dict[str, Any],
-        enable_actuation: Optional[bool] = None,
-    ) -> Dict[str, Any]:
+        plan: dict[str, Any],
+        enable_actuation: bool | None = None,
+    ) -> dict[str, Any]:
         """Apply a configuration plan.
 
         Args:
@@ -291,7 +283,7 @@ class HCAL:
         self.audit_logger.log_event("apply", result)
         return result
 
-    def apply_setpoint(self, device_id: str, setpoint: Dict[str, Any]) -> bool:
+    def apply_setpoint(self, device_id: str, setpoint: dict[str, Any]) -> bool:
         """Apply setpoint to device.
 
         Args:
@@ -316,7 +308,7 @@ class HCAL:
         # Apply setpoint
         return self.actuator.apply_setpoint(device_id, setpoint, backend, validate=True)
 
-    def read_telemetry(self, device_id: str) -> Optional[TelemetryReading]:
+    def read_telemetry(self, device_id: str) -> TelemetryReading | None:
         """Read telemetry from device.
 
         Args:
@@ -345,16 +337,16 @@ class HCAL:
         if not backend:
             raise ValueError(f"No backend for device {device_id}")
 
-        def measure_fn(dev_id: str, be: Any) -> Dict[str, Any]:
+        def measure_fn(dev_id: str, be: Any) -> dict[str, Any]:
             reading = self.sensor_manager.read_telemetry(dev_id, be)
             return reading.metrics if reading else {}
 
-        def apply_fn(dev_id: str, setpoint: Dict[str, Any], be: Any) -> bool:
+        def apply_fn(dev_id: str, setpoint: dict[str, Any], be: Any) -> bool:
             return self.actuator.apply_setpoint(dev_id, setpoint, be, validate=False)
 
         return bias_trim_v1(device_id, backend, measure_fn, apply_fn)
 
-    def run_power_sweep(self, device_id: str, power_range: Tuple[float, float], steps: int = 10):
+    def run_power_sweep(self, device_id: str, power_range: tuple[float, float], steps: int = 10):
         """Run power sweep calibration.
 
         Args:
@@ -369,11 +361,11 @@ class HCAL:
         if not backend:
             raise ValueError(f"No backend for device {device_id}")
 
-        def measure_fn(dev_id: str, be: Any) -> Dict[str, Any]:
+        def measure_fn(dev_id: str, be: Any) -> dict[str, Any]:
             reading = self.sensor_manager.read_telemetry(dev_id, be)
             return reading.metrics if reading else {}
 
-        def apply_fn(dev_id: str, setpoint: Dict[str, Any], be: Any) -> bool:
+        def apply_fn(dev_id: str, setpoint: dict[str, Any], be: Any) -> bool:
             return self.actuator.apply_setpoint(dev_id, setpoint, be, validate=False)
 
         return power_sweep(device_id, backend, measure_fn, apply_fn, power_range, steps)
@@ -382,7 +374,7 @@ class HCAL:
         self,
         device: str,
         routine: str,
-        parameters: Optional[Dict[str, Any]] = None,
+        parameters: dict[str, Any] | None = None,
     ) -> CalibrationLoop:
         """Create calibration loop.
 
@@ -406,8 +398,8 @@ class HCAL:
 
     def get_telemetry(
         self,
-        devices: Optional[List[str]] = None,
-    ) -> Dict[str, Any]:
+        devices: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Get device telemetry.
 
         Args:
@@ -420,7 +412,7 @@ class HCAL:
             self.actuator.get_telemetry(devices) if hasattr(self.actuator, "get_telemetry") else {}
         )
 
-    def emergency_stop(self) -> Dict[str, Any]:
+    def emergency_stop(self) -> dict[str, Any]:
         """Emergency stop all operations.
 
         Returns:

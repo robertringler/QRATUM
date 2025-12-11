@@ -2,8 +2,8 @@ import pytest
 
 from qconstitution.articles import ArticleSet, ConstitutionalArticle
 from qconstitution.charter import Charter, ConstitutionalVersion
-from qconstitution.validator import validate_node_config, ValidationError
 from qconstitution.upgrade import ConstitutionalUpgradeProposal, UpgradePath
+from qconstitution.validator import ValidationError, validate_node_config
 from qnode.config import NodeConfig
 
 

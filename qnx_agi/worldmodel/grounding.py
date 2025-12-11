@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, Tuple
 
 
 @dataclass
@@ -17,7 +16,7 @@ class ConfidenceWeights:
     simulation: float = 0.5
     observation: float = 0.5
 
-    def normalize(self) -> "ConfidenceWeights":
+    def normalize(self) -> ConfidenceWeights:
         total = self.simulation + self.observation
         if total == 0:
             return ConfidenceWeights(0.5, 0.5)
@@ -28,19 +27,19 @@ class ConfidenceWeights:
 class GroundedState:
     """World model state reconciled against observations."""
 
-    blended: Dict[str, float] = field(default_factory=dict)
-    anchors: Dict[str, ObservationAnchor] = field(default_factory=dict)
+    blended: dict[str, float] = field(default_factory=dict)
+    anchors: dict[str, ObservationAnchor] = field(default_factory=dict)
 
     @staticmethod
-    def reconcile(simulated: Dict[str, float], observed: Dict[str, float], anchor: ObservationAnchor, weights: ConfidenceWeights) -> "GroundedState":
+    def reconcile(simulated: dict[str, float], observed: dict[str, float], anchor: ObservationAnchor, weights: ConfidenceWeights) -> GroundedState:
         weights = weights.normalize()
-        blended: Dict[str, float] = {}
+        blended: dict[str, float] = {}
         for key in sorted(set(simulated.keys()) | set(observed.keys())):
             sim_val = simulated.get(key, 0.0)
             obs_val = observed.get(key, 0.0)
             blended[key] = sim_val * weights.simulation + obs_val * weights.observation
-        anchors = {key: anchor for key in observed.keys()}
+        anchors = dict.fromkeys(observed.keys(), anchor)
         return GroundedState(blended=blended, anchors=anchors)
 
-    def divergence(self, simulated: Dict[str, float]) -> Dict[str, float]:
+    def divergence(self, simulated: dict[str, float]) -> dict[str, float]:
         return {key: self.blended.get(key, 0.0) - simulated.get(key, 0.0) for key in sorted(self.blended.keys())}

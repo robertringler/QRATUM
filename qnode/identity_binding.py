@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict
 
 
 @dataclass(frozen=True)
@@ -11,7 +10,7 @@ class NodeIdentity:
     public_key: str
     trust_level: str = "baseline"
 
-    def attest(self) -> Dict[str, str]:
+    def attest(self) -> dict[str, str]:
         return {"node_id": self.node_id, "public_key": self.public_key, "trust_level": self.trust_level}
 
     def verify_signature(self, payload: str, signature: str) -> bool:

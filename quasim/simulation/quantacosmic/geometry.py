@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Sequence
+from typing import Sequence
 
 
 def _validate_square(matrix: Sequence[Sequence[float]]) -> None:
@@ -57,7 +57,7 @@ class QuantumManifold:
             raise ValueError("Quantacosmic metric must yield a non-negative determinant.")
         return det**0.5
 
-    def project_vector(self, vector: Sequence[float]) -> List[float]:
+    def project_vector(self, vector: Sequence[float]) -> list[float]:
         """Project a vector into the manifold using the metric tensor."""
 
         if len(vector) != self.dimension:

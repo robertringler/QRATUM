@@ -13,7 +13,6 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -44,13 +43,13 @@ class ChinaFactoryMetrics:
     qkd_latency_ms: float = 0.18
     first_pilot_runtime_s: float = 0.689
     first_pilot_fidelity: float = 0.998
-    timestamp: Optional[datetime] = None
+    timestamp: datetime | None = None
 
 
 class ChinaPhotonicFactory:
     """Integration with China Photonic Factory for global scale."""
 
-    def __init__(self, config: Optional[ChinaFactoryConfig] = None):
+    def __init__(self, config: ChinaFactoryConfig | None = None):
         """Initialize China Photonic Factory integration.
 
         Args:
@@ -88,7 +87,7 @@ class ChinaPhotonicFactory:
 
         return True
 
-    def generate_pilots(self, count: int) -> Dict:
+    def generate_pilots(self, count: int) -> dict:
         """Generate pilots using China factory capacity.
 
         Args:
@@ -158,7 +157,7 @@ class ChinaPhotonicFactory:
         self.metrics.timestamp = datetime.now()
         return self.metrics
 
-    def get_compliance_status(self) -> Dict:
+    def get_compliance_status(self) -> dict:
         """Get compliance status for cross-border operations.
 
         Returns:

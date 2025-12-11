@@ -51,7 +51,7 @@ def casimir_energy_parallel_plates(
     energies = k_n / 2.0
 
     # Sum over modes
-    E_raw = np.sum(energies)
+    np.sum(energies)
 
     # Regularization: subtract divergent vacuum energy
     # Use zeta function regularization: Σ n = ζ(-1) = -1/12

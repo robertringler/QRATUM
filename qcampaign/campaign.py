@@ -2,23 +2,22 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List
 
-from qcampaign.teams import Team
-from qcampaign.scoring import CampaignScorecard, CampaignScorer
 from qcampaign.reporting import CampaignReport
+from qcampaign.scoring import CampaignScorecard, CampaignScorer
+from qcampaign.teams import Team
 
 
 @dataclass
 class Campaign:
     name: str
-    scenario_config: Dict[str, object]
-    teams: List[Team]
+    scenario_config: dict[str, object]
+    teams: list[Team]
     timeline_ticks: int
-    constraints: Dict[str, object] = field(default_factory=dict)
-    logs: List[Dict[str, object]] = field(default_factory=list)
+    constraints: dict[str, object] = field(default_factory=dict)
+    logs: list[dict[str, object]] = field(default_factory=list)
 
-    def record(self, entry: Dict[str, object]) -> None:
+    def record(self, entry: dict[str, object]) -> None:
         self.logs.append(entry)
 
     def run(self) -> CampaignScorecard:

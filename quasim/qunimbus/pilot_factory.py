@@ -12,7 +12,6 @@ import logging
 import random
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, List
 
 logger = logging.getLogger(__name__)
 
@@ -177,7 +176,7 @@ class PilotFactory:
 
         return pilot
 
-    def generate_batch(self, count: int = 10) -> List[PilotSpec]:
+    def generate_batch(self, count: int = 10) -> list[PilotSpec]:
         """Generate a batch of pilots.
 
         Args:
@@ -188,13 +187,13 @@ class PilotFactory:
         """
         logger.info(f"Generating batch of {count} pilots...")
         pilots = []
-        for i in range(count):
+        for _i in range(count):
             pilot = self.generate_pilot(self.pilots_generated + 1)
             pilots.append(pilot)
         logger.info(f"Batch complete: {count} pilots generated")
         return pilots
 
-    def get_first_10_snapshot(self) -> List[Dict]:
+    def get_first_10_snapshot(self) -> list[dict]:
         """Generate the first 10 pilots as a snapshot (for display).
 
         Returns:
@@ -301,7 +300,7 @@ class PilotFactory:
         logger.info("| 1000 | Retail | QAOA Inventory Opt | 0.298s | 0.998 | -42% Overstock |")
         logger.info("\n> **Wave 3 LIVE — 1,000 pilots/day achieved.**")
 
-    def get_stats(self) -> Dict:
+    def get_stats(self) -> dict:
         """Get factory statistics.
 
         Returns:

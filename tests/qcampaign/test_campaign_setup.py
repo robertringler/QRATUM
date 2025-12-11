@@ -1,6 +1,6 @@
-from qagents.base import Agent, AgentObservation, LambdaPolicy
+from qagents.base import Agent, LambdaPolicy
 from qcampaign.campaign import Campaign
-from qcampaign.teams import RedTeam, BlueTeam
+from qcampaign.teams import BlueTeam, RedTeam
 
 
 def test_campaign_runs_and_logs():

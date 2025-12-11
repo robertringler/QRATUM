@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-from typing import Dict
 
-
-def finance_step(state: Dict[str, float]) -> Dict[str, float]:
+def finance_step(state: dict[str, float]) -> dict[str, float]:
     price = float(state.get("price", 0.0))
     drift = float(state.get("drift", 0.0))
     shock = float(state.get("shock", 0.0))

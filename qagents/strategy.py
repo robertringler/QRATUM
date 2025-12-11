@@ -2,14 +2,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any
 
 from qagents.base import AgentObservation, AgentState
 
 
 @dataclass
 class StrategyDecision:
-    action: Dict[str, Any]
+    action: dict[str, Any]
     justification: str
 
 
@@ -28,8 +28,8 @@ class ThresholdStrategy(Strategy):
 
     metric: str
     threshold: float
-    above_action: Dict[str, Any]
-    below_action: Dict[str, Any]
+    above_action: dict[str, Any]
+    below_action: dict[str, Any]
     name: str = "threshold"
 
     def decide(self, observation: AgentObservation, state: AgentState) -> StrategyDecision:
@@ -43,8 +43,8 @@ class ThresholdStrategy(Strategy):
 class ScriptedStrategy(Strategy):
     """Replay a deterministic script of actions keyed by tick."""
 
-    script: Dict[int, Dict[str, Any]]
-    default_action: Dict[str, Any]
+    script: dict[int, dict[str, Any]]
+    default_action: dict[str, Any]
     name: str = "scripted"
 
     def decide(self, observation: AgentObservation, state: AgentState) -> StrategyDecision:
@@ -58,7 +58,7 @@ class PolicyAdapter:
     def __init__(self, strategy: Strategy):
         self.strategy = strategy
 
-    def decide(self, observation: AgentObservation, state: AgentState) -> Dict[str, Any]:
+    def decide(self, observation: AgentObservation, state: AgentState) -> dict[str, Any]:
         decision = self.strategy.decide(observation, state)
         return {"action": decision.action, "reason": decision.justification, "strategy": self.strategy.name}
 

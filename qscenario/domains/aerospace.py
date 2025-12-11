@@ -1,12 +1,10 @@
 """Aerospace scenario templates."""
 from __future__ import annotations
 
-from typing import List
-
-from qscenario.events import MissionEvent
-from qscenario.timeline import Timeline, TimelineEntry
 from qscenario.drivers import ScenarioDrivers
+from qscenario.events import MissionEvent
 from qscenario.scenario import Scenario, ScenarioConfig
+from qscenario.timeline import Timeline, TimelineEntry
 
 
 def _aerospace_driver(event, state):
@@ -22,7 +20,7 @@ def aerospace_launch_anomaly() -> Scenario:
         domains=["aerospace"],
         description="Launch with guidance drift and comms loss recovery",
     )
-    entries: List[TimelineEntry] = [
+    entries: list[TimelineEntry] = [
         TimelineEntry(0, [MissionEvent(0, "aerospace", "liftoff", {"thrust": 1.0})]),
         TimelineEntry(1, [MissionEvent(1, "aerospace", "guidance_drift", {"delta": 0.02})]),
         TimelineEntry(2, [MissionEvent(2, "aerospace", "comms_loss", {"duration": 3})]),

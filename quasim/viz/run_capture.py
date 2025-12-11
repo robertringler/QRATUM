@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import numpy as np
 
@@ -25,12 +25,12 @@ class RunCapture:
         frame_counter: Current frame number
     """
 
-    frames: List[np.ndarray] = field(default_factory=list)
-    metadata: List[Dict[str, Any]] = field(default_factory=list)
-    output_dir: Optional[Path] = None
+    frames: list[np.ndarray] = field(default_factory=list)
+    metadata: list[dict[str, Any]] = field(default_factory=list)
+    output_dir: Path | None = None
     frame_counter: int = 0
 
-    def record(self, step_dict: Dict[str, Any]) -> None:
+    def record(self, step_dict: dict[str, Any]) -> None:
         """Record a simulation step.
 
         Args:
@@ -59,11 +59,11 @@ class RunCapture:
 
     def finalize(
         self,
-        mp4_path: Optional[Union[str, Path]] = None,
-        gif_path: Optional[Union[str, Path]] = None,
+        mp4_path: str | Path | None = None,
+        gif_path: str | Path | None = None,
         save_pngs: bool = False,
         fps: int = 30,
-    ) -> Dict[str, Path]:
+    ) -> dict[str, Path]:
         """Finalize capture and encode videos.
 
         Args:

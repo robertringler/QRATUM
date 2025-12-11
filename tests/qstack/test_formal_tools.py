@@ -1,11 +1,10 @@
-import pytest
 
 from qstack.qnx_agi.formal import (
-    Interval,
-    AbstractState,
     AbstractLattice,
-    SymbolicExecutor,
+    AbstractState,
+    Interval,
     ModelChecker,
+    SymbolicExecutor,
     TLASpecification,
     propagate_affine,
 )

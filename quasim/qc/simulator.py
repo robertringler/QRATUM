@@ -98,7 +98,7 @@ class QCSimulator:
             raise ValueError(f"Invalid gate: {gate_type} with {len(qubits)} qubits")
 
         # Get gate matrix
-        gate_matrix = GateSet.get_gate_matrix(gate_type, params)
+        GateSet.get_gate_matrix(gate_type, params)
 
         # Apply gate to state vector (simplified for CPU)
         # Production version would use tensor network contraction on GPU

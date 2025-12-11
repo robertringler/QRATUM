@@ -1,15 +1,13 @@
 """Adapter constructing QNX operators for QuASIM simulations."""
 from __future__ import annotations
 
-from typing import Dict
-
 from ..core.engine import SimulationEngine, build_default_engine
 from ..domains.aerospace import evaluate_flight
 from ..domains.finance import evaluate_portfolio
 from ..domains.pharma import evaluate_trial
 
 
-def build_qnx_operator_library(engine: SimulationEngine | None = None) -> Dict[str, callable]:
+def build_qnx_operator_library(engine: SimulationEngine | None = None) -> dict[str, callable]:
     engine = engine or build_default_engine()
     # Ensure essential kernels are present even if a bare engine is supplied.
     engine.register_kernel("telemetry", engine.telemetry_kernel)

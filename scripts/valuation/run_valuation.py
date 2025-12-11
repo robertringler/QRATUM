@@ -64,7 +64,7 @@ class MinimalYAMLParser:
             if not line or line.strip().startswith("#"):
                 continue
 
-            indent = len(line) - len(line.lstrip())
+            len(line) - len(line.lstrip())
             line = line.strip()
 
             if line.endswith(":"):
@@ -387,9 +387,9 @@ class ReportGenerator:
 
         report = f"""# QuASIM Market Valuation Report
 
-**Generated:** {timestamp.strftime('%Y-%m-%d %H:%M:%S')} UTC  
-**Valuation Date:** {self.engine.as_of_date}  
-**Currency:** {self.engine.currency}  
+**Generated:** {timestamp.strftime('%Y-%m-%d %H:%M:%S')} UTC
+**Valuation Date:** {self.engine.as_of_date}
+**Currency:** {self.engine.currency}
 **Methodology:** DCF + Monte Carlo + Real Options
 
 ---
@@ -702,10 +702,7 @@ def main():
     print(f"Loading config from: {config_path}")
 
     with open(config_path) as f:
-        if yaml:
-            config = yaml.safe_load(f)
-        else:
-            config = MinimalYAMLParser.load(f)
+        config = yaml.safe_load(f) if yaml else MinimalYAMLParser.load(f)
 
     # Create engine and generate report
     engine = ValuationEngine(config)
