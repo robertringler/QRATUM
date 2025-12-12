@@ -45,7 +45,7 @@ async def send_ws_payload(ws_url: str, payload: bytes) -> None:
         async with websockets.connect(ws_url) as websocket:
             await websocket.send(payload)
     except ImportError:
-        # WebSocket library not available - log warning
+        # WebSocket library not available - silently skip
         pass
 
 

@@ -1,7 +1,6 @@
 """Unit tests for multi-GPU renderer."""
 
 
-
 class TestMultiGPURenderer:
     """Tests for MultiGPURenderer class."""
 

@@ -5,6 +5,10 @@ from __future__ import annotations
 import json
 from typing import Any
 
+# Dashboard configuration
+TARGET_FPS = 30
+FRAME_INTERVAL = 1.0 / TARGET_FPS  # ~0.033 seconds
+
 try:
     import asyncio
 
@@ -90,7 +94,7 @@ def create_dashboard_app() -> Any:
         _clients.add(ws)
         try:
             while True:
-                await asyncio.sleep(0.033)  # ~30 FPS
+                await asyncio.sleep(FRAME_INTERVAL)
                 frame_data = get_latest_frame_json()
                 await asyncio.gather(
                     *[c.send_text(frame_data) for c in _clients],

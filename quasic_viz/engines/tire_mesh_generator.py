@@ -36,15 +36,15 @@ class TireMeshGenerator:
         """
         # Convert to meters
         outer_radius = outer_diameter_mm / 2000.0
-        _ = width_mm / 1000.0  # Reserved for future use
+        width = width_mm / 1000.0
         rim_radius = (rim_diameter_inch * 25.4) / 2000.0
 
         # Generate torus-like mesh
         theta = np.linspace(0, 2 * np.pi, self.resolution)
         phi = np.linspace(0, 2 * np.pi, self.resolution // 2)
 
-        # Cross-section radius
-        cross_radius = (outer_radius - rim_radius) / 2
+        # Cross-section radius calculated from tire width and sidewall height
+        cross_radius = min((outer_radius - rim_radius) / 2, width / 2)
         center_radius = rim_radius + cross_radius
 
         vertices = []
