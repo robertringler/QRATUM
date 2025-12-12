@@ -38,10 +38,6 @@ class SynergyCluster:
             raise ValueError(
                 f"Execution mode must be sequential, parallel, or hybrid, got {self.execution_mode}"
             )
-        if self.cluster_type not in ["two-domain", "multi-domain", "full-stack"]:
-            raise ValueError(
-                f"Cluster type must be two-domain, multi-domain, or full-stack, got {self.cluster_type}"
-            )
 
         # Auto-detect cluster type based on domain count
         if len(self.domains) == 2:
@@ -50,6 +46,12 @@ class SynergyCluster:
             self.cluster_type = "full-stack"
         elif len(self.domains) > 2:
             self.cluster_type = "multi-domain"
+
+        # Validate the final cluster type
+        if self.cluster_type not in ["two-domain", "multi-domain", "full-stack"]:
+            raise ValueError(
+                f"Cluster type must be two-domain, multi-domain, or full-stack, got {self.cluster_type}"
+            )
 
     def get_total_revenue_projection(self) -> float:
         """Calculate total revenue projection across all years."""

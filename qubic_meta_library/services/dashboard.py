@@ -45,18 +45,35 @@ class Dashboard:
     def _calculate_prompt_metrics(self, prompts: dict[int, Prompt]) -> dict[str, Any]:
         """Calculate prompt execution metrics."""
         if not prompts:
-            return {"total": 0}
+            return {
+                "total_prompts": 0,
+                "high_value_prompts": 0,
+                "high_value_percentage": 0.0,
+                "average_patentability": 0.0,
+                "average_commercial_potential": 0.0,
+                "by_phase": {},
+                "by_output_type": {},
+            }
 
-        high_value_count = sum(1 for p in prompts.values() if p.is_high_value(0.8))
+        # Calculate all metrics in a single pass for efficiency
+        total_prompts = 0
+        high_value_count = 0
+        total_patentability = 0.0
+        total_commercial = 0.0
+
+        for p in prompts.values():
+            total_prompts += 1
+            if p.is_high_value(0.8):
+                high_value_count += 1
+            total_patentability += p.patentability_score
+            total_commercial += p.commercial_potential
 
         return {
-            "total_prompts": len(prompts),
+            "total_prompts": total_prompts,
             "high_value_prompts": high_value_count,
-            "high_value_percentage": (high_value_count / len(prompts)) * 100,
-            "average_patentability": sum(p.patentability_score for p in prompts.values())
-            / len(prompts),
-            "average_commercial_potential": sum(p.commercial_potential for p in prompts.values())
-            / len(prompts),
+            "high_value_percentage": (high_value_count / total_prompts * 100) if total_prompts else 0.0,
+            "average_patentability": (total_patentability / total_prompts) if total_prompts else 0.0,
+            "average_commercial_potential": (total_commercial / total_prompts) if total_prompts else 0.0,
             "by_phase": self._group_prompts_by_phase(prompts),
             "by_output_type": self._group_prompts_by_output_type(prompts),
         }
@@ -89,7 +106,13 @@ class Dashboard:
     def _calculate_cluster_metrics(self, clusters: dict[str, SynergyCluster]) -> dict[str, Any]:
         """Calculate synergy cluster metrics."""
         if not clusters:
-            return {"total": 0}
+            return {
+                "total_clusters": 0,
+                "cluster_types": {},
+                "total_revenue_projection": 0,
+                "average_revenue_per_cluster": 0,
+                "clusters_with_prompts": 0,
+            }
 
         total_revenue = sum(c.get_total_revenue_projection() for c in clusters.values())
 

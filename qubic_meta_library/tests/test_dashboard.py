@@ -171,7 +171,7 @@ class TestDashboard:
     def test_empty_data(self, dashboard):
         """Test with empty data."""
         metrics = dashboard._calculate_prompt_metrics({})
-        assert metrics["total"] == 0
+        assert metrics["total_prompts"] == 0
 
         metrics = dashboard._calculate_cluster_metrics({})
-        assert metrics["total"] == 0
+        assert metrics["total_clusters"] == 0

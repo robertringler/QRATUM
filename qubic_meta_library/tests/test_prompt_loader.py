@@ -152,7 +152,7 @@ domains:
         high_value = loader.get_high_value_prompts(threshold=0.8)
         assert len(high_value) == 2
 
-        # No prompts meet 0.9 threshold (prompt 1 has commercial_potential 0.90)
+        # No prompts meet 0.91 threshold (prompt 1: P=0.85 C=0.90, prompt 2: P=0.92 C=0.88)
         premium = loader.get_high_value_prompts(threshold=0.91)
         assert len(premium) == 0
 

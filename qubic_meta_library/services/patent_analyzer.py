@@ -180,10 +180,16 @@ class PatentAnalyzer:
                 }
                 for p in high_value[:10]
             ],
-            "average_patentability": sum(p.patentability_score for p in prompts.values())
-            / len(prompts),
-            "average_commercial_potential": sum(p.commercial_potential for p in prompts.values())
-            / len(prompts),
+            "average_patentability": (
+                sum(p.patentability_score for p in prompts.values()) / len(prompts)
+                if prompts
+                else 0.0
+            ),
+            "average_commercial_potential": (
+                sum(p.commercial_potential for p in prompts.values()) / len(prompts)
+                if prompts
+                else 0.0
+            ),
             "recommendations": self._generate_recommendations(prompts, high_value),
         }
 
