@@ -356,7 +356,7 @@ class TireScenarioGenerator:
             target_count // (len(compounds) * len(geometries) * len(environments)) + 1
         )
 
-        for iteration in range(iterations_needed):
+        for _iteration in range(iterations_needed):
             if len(scenarios) >= target_count:
                 break
 

@@ -126,7 +126,7 @@ class GoodyearMaterialsDatabase:
         Args:
             file_path: Path to JSON file containing material records
         """
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             data = json.load(f)
 
         for record_data in data["materials"]:

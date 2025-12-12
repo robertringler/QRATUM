@@ -246,7 +246,6 @@ class TireSimulation:
         wear_rate = base_wear * (contact_pressure / 200000.0) / props.abrasion_resistance
 
         # Thermal performance
-        thermal_bc = environment.compute_thermal_boundary_conditions()
         temp_rise = speed_kmh * 0.5 + rolling_resistance * 100.0
         tire_temp = environment.road_temperature + temp_rise
         thermal_performance = 1.0 - max(0, (tire_temp - props.max_service_temp) / 50.0)
@@ -319,9 +318,6 @@ class TireSimulation:
         speed_kmh: float,
     ) -> dict[str, Any]:
         """Compute thermal distribution across tire."""
-        props = compound.base_properties
-        thermal_bc = environment.compute_thermal_boundary_conditions()
-
         # Simplified thermal zones
         tread_temp = environment.road_temperature + 0.5 * speed_kmh
         sidewall_temp = environment.ambient_temperature + 0.3 * speed_kmh

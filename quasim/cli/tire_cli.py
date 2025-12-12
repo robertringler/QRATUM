@@ -5,7 +5,7 @@ import click
 from quasim.domains.tire import generate_tire_library
 
 try:
-    from integrations.goodyear import GoodyearQuantumPilot, create_goodyear_library
+    from integrations.goodyear import create_goodyear_library
     GOODYEAR_AVAILABLE = True
 except ImportError:
     GOODYEAR_AVAILABLE = False
@@ -95,7 +95,7 @@ def inspect(simulation_id: str, library_dir: str):
         click.echo(f"Error: Library not found at {json_file}")
         return
 
-    with open(json_file, "r") as f:
+    with open(json_file) as f:
         results = json.load(f)
 
     # Find simulation

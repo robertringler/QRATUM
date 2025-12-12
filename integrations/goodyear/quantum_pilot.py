@@ -192,7 +192,7 @@ class GoodyearQuantumPilot:
 
 ## Overview
 
-This library contains {num_scenarios} comprehensive tire simulation scenarios using {num_materials} 
+This library contains {num_scenarios} comprehensive tire simulation scenarios using {num_materials}
 materials from the Goodyear Quantum Pilot platform, executed with QuASIM quantum-accelerated simulation.
 
 ## Goodyear Materials Database
@@ -207,7 +207,7 @@ materials from the Goodyear Quantum Pilot platform, executed with QuASIM quantum
         for family, count in db_stats["by_family"].items():
             content += f"- {family.replace('_', ' ').title()}: {count} materials\n"
 
-        content += f"""
+        content += """
 ### Certification Status
 """
 
