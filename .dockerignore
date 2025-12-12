@@ -1,0 +1,79 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.hypothesis/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+docs/_build/
+*.md
+!README.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.log
+*.pot
+*.pyc
+*.pyo
+*.spec
+
+# Large files
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# Outputs
+outputs/
+runs/
+results/
+*.mp4
+*.webm
+*.avi

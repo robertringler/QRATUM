@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qubic-viz"
+version = "0.1.0"
+description = "Production-grade 3D visualization engine for QuASIM tire simulations"
+authors = [{name = "QuASIM Team"}]
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+dependencies = [
+    "numpy>=1.24.0",
+    "matplotlib>=3.7.0",
+    "pillow>=10.0.0",
+]
+
+[project.optional-dependencies]
+gpu = [
+    "torch>=2.0.0",
+]
+video = [
+    "opencv-python>=4.8.0",
+    "imageio>=2.0.0",
+    "imageio-ffmpeg>=0.4.0",
+]
+mesh = [
+    "trimesh>=4.0.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "ruff>=0.1.0",
+]
+all = [
+    "torch>=2.0.0",
+    "opencv-python>=4.8.0",
+    "imageio>=2.0.0",
+    "imageio-ffmpeg>=0.4.0",
+    "trimesh>=4.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["qubic_viz*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "C", "B", "UP"]
+ignore = ["E501", "B008", "C901"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --strict-markers"

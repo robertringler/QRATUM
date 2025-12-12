@@ -1,0 +1,229 @@
+{
+  "build_start": "2025-12-12T21:37:50.878443",
+  "build_end": "2025-12-12T21:37:50.878584",
+  "duration_seconds": 0.000142,
+  "events": [
+    {
+      "timestamp": "2025-12-12T21:37:50.878449",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/core/renderer.py",
+      "module_type": "core",
+      "details": {
+        "lines": 237
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878456",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/core/scene_graph.py",
+      "module_type": "core",
+      "details": {
+        "lines": 205
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878458",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/core/camera.py",
+      "module_type": "core",
+      "details": {
+        "lines": 185
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878459",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/core/lighting.py",
+      "module_type": "core",
+      "details": {
+        "lines": 152
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878460",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/engines/mesh_generator.py",
+      "module_type": "engine",
+      "details": {
+        "lines": 179
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878462",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/engines/tire_renderer.py",
+      "module_type": "engine",
+      "details": {
+        "lines": 389
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878463",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/engines/deformation_engine.py",
+      "module_type": "engine",
+      "details": {
+        "lines": 112
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878464",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/engines/field_visualizer.py",
+      "module_type": "engine",
+      "details": {
+        "lines": 211
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878466",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/adapters/tire_data_adapter.py",
+      "module_type": "adapter",
+      "details": {
+        "lines": 153
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878467",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/adapters/quasim_adapter.py",
+      "module_type": "adapter",
+      "details": {
+        "lines": 146
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878468",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/gpu/kernels.py",
+      "module_type": "gpu",
+      "details": {
+        "lines": 245
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878469",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/gpu/compute_pipeline.py",
+      "module_type": "gpu",
+      "details": {
+        "lines": 134
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878470",
+      "event_type": "module_creation",
+      "module_name": "qubic-viz/gpu/memory_manager.py",
+      "module_type": "gpu",
+      "details": {
+        "lines": 86
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878472",
+      "event_type": "test_result",
+      "test_suite": "qubic-viz/tests",
+      "passed": true,
+      "details": {
+        "tests_passed": 19,
+        "tests_failed": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878560",
+      "event_type": "gpu_check",
+      "available": false,
+      "gpu_info": {
+        "message": "PyTorch not available"
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878563",
+      "event_type": "module_creation",
+      "module_name": "services/qubic-render/server.py",
+      "module_type": "service",
+      "details": {
+        "lines": 97
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878564",
+      "event_type": "module_creation",
+      "module_name": "services/qubic-render/api.py",
+      "module_type": "service",
+      "details": {
+        "lines": 75
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878566",
+      "event_type": "module_creation",
+      "module_name": "services/qubic-render/workers/gpu_worker.py",
+      "module_type": "worker",
+      "details": {
+        "lines": 53
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878567",
+      "event_type": "module_creation",
+      "module_name": "services/qubic-render/workers/scheduler.py",
+      "module_type": "worker",
+      "details": {
+        "lines": 76
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878568",
+      "event_type": "module_creation",
+      "module_name": "qubic-design-studio/exporters/obj_exporter.py",
+      "module_type": "exporter",
+      "details": {
+        "lines": 74
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878569",
+      "event_type": "module_creation",
+      "module_name": "qubic-design-studio/exporters/gltf_exporter.py",
+      "module_type": "exporter",
+      "details": {
+        "lines": 107
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878571",
+      "event_type": "module_creation",
+      "module_name": "qubic-design-studio/spatial/holo_adapter.py",
+      "module_type": "spatial",
+      "details": {
+        "lines": 40
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878572",
+      "event_type": "integration_validation",
+      "integration": "quasim.domains.tire",
+      "status": "validated",
+      "details": {
+        "status": "ok"
+      }
+    },
+    {
+      "timestamp": "2025-12-12T21:37:50.878574",
+      "event_type": "integration_validation",
+      "integration": "qubic-viz <-> render-service",
+      "status": "validated",
+      "details": {
+        "status": "ok"
+      }
+    }
+  ],
+  "summary": {
+    "total_events": 24,
+    "modules_created": 20,
+    "tests_run": 1,
+    "tests_passed": 1
+  }
+}

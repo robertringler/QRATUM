@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  qubic-render:
+    build: .
+    container_name: qubic-render
+    ports:
+      - "8000:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    volumes:
+      - ./outputs:/app/outputs
+    restart: unless-stopped
+    networks:
+      - qubic-net
+
+networks:
+  qubic-net:
+    driver: bridge
