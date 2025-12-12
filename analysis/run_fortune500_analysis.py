@@ -8,6 +8,7 @@ This script orchestrates the complete analysis workflow:
 4. Report generation
 5. Visualization creation
 """
+
 import sys
 from pathlib import Path
 

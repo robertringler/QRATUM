@@ -33,9 +33,7 @@ class QStackSystem:
         adapter = QuASIMAdapter(self.config.quasim)
         return adapter.simulate_batch(circuits)
 
-    def run_synthetic_market(
-        self, agents: Any, shocks: Any, steps: int
-    ) -> dict[str, Any]:  # type: ignore[override]
+    def run_synthetic_market(self, agents: Any, shocks: Any, steps: int) -> dict[str, Any]:  # type: ignore[override]
         adapter = QuNimbusAdapter(self.config.qunimbus)
         return adapter.run_synthetic_market(agents, shocks, steps)
 

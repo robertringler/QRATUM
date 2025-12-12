@@ -110,7 +110,7 @@ def analyze_results(output_path):
 
     # Read results
     content = output_path.read_text()
-    print(f"\nResults file content:\n{'-'*60}")
+    print(f"\nResults file content:\n{'-' * 60}")
     print(content)
     print("-" * 60)
 

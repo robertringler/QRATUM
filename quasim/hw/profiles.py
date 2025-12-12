@@ -181,7 +181,9 @@ class ReconfigurationProfile:
         return plan
 
     def _apply_limits(
-        self, setpoints: Dict[str, Any], limits: Any  # DeviceLimits
+        self,
+        setpoints: Dict[str, Any],
+        limits: Any,  # DeviceLimits
     ) -> Dict[str, Any]:
         """Apply policy limits to setpoints."""
         limited = setpoints.copy()

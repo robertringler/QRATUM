@@ -63,7 +63,7 @@ def run_basic_simulation():
         # Print progress every 50 steps
         if (i + 1) % 50 == 0:
             print(
-                f"  Step {i+1:3d}: C={state.coherence:.4f}, "
+                f"  Step {i + 1:3d}: C={state.coherence:.4f}, "
                 f"S={state.entropy:.4f}, E={state.energy:.4f}"
             )
 

@@ -125,7 +125,7 @@ class PilotFactory:
         self.vetoes = 0
         logger.info(
             f"Pilot Factory initialized - Target: {target_per_day}/day, "
-            f"Veto rate: {veto_rate*100:.1f}%"
+            f"Veto rate: {veto_rate * 100:.1f}%"
         )
 
     def generate_pilot(self, pilot_id: int) -> PilotSpec:

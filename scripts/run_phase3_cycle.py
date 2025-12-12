@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Complete Phase III evolution cycle integrating all components."""
+
 from __future__ import annotations
 
 import time

@@ -16,7 +16,7 @@ class Transpiler:
             expr = self._emit(stmt)
             lines.append(f"    _v{idx} = {expr}")
         lines.append(
-            f"    return _v{len(self.program.statements)-1}"
+            f"    return _v{len(self.program.statements) - 1}"
             if self.program.statements
             else "    return None"
         )

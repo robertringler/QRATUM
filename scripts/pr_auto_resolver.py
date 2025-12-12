@@ -401,9 +401,9 @@ class PRAutoResolver:
 
     def resolve_pr(self, pr: PullRequest) -> PRResolutionResult:
         """Main resolution logic for a single PR"""
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print(f"Processing PR #{pr.number}: {pr.title}")
-        print(f"{'='*60}\n")
+        print(f"{'=' * 60}\n")
 
         attempts = 0
         max_attempts = self.MAX_ATTEMPTS
@@ -546,9 +546,9 @@ class PRAutoResolver:
         with open("pr_resolution_summary.json", "w") as f:
             json.dump(summary, f)
 
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print("SUMMARY")
-        print(f"{'='*60}")
+        print(f"{'=' * 60}")
         print(summary["message"])
         print(summary["details"])
 

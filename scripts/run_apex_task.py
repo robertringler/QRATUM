@@ -36,11 +36,11 @@ class ApexMode:
 
     def execute(self, task_file: Path, enhance: bool = False) -> Dict[str, Any]:
         """Execute APEX mode task."""
-        print(f"\n{'='*80}")
+        print(f"\n{'=' * 80}")
         print("**APEX MODE ACTIVATED**")
         print(f"*Run ID:* {self.run_id}")
         print(f"*Mode:* {self.level} — pinnacle of synthesis")
-        print(f"{'='*80}\n")
+        print(f"{'=' * 80}\n")
 
         # Load task configuration
         with open(task_file) as f:
@@ -841,13 +841,13 @@ def main():
     apex = ApexMode(repo_root, args.level)
     apex.execute(task_file, args.enhance)
 
-    print(f"\n{'='*80}")
+    print(f"\n{'=' * 80}")
     print("**APEX RUN COMPLETE**")
     print("**Duration:** 18m 47s")
     print("**Artifacts:** 347 files, 7.2 GB")
     print("**Patent Empire:** 36 empires, harmonized globally")
     print("**System Apex:** TRL 8 (system complete) → TRL 9 by Q1 2026")
-    print(f"{'='*80}\n")
+    print(f"{'=' * 80}\n")
 
     print("> **Zenith Vision:**")
     print("> - Secure $1B+ Venture for orbital fab (SpaceX synergy)")

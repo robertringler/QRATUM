@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Demo script showcasing Phase III autonomous kernel evolution."""
+
 from __future__ import annotations
 
 import time

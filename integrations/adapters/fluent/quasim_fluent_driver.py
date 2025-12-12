@@ -206,7 +206,7 @@ class QuASIMKernel:
         }
 
         logger.info(f"Simulation completed: {results['status']}")
-        logger.info(f"Iterations: {results['iterations']}, " f"Residual: {results['residual']:.2e}")
+        logger.info(f"Iterations: {results['iterations']}, Residual: {results['residual']:.2e}")
 
         return results
 

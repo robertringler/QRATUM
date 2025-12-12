@@ -81,7 +81,7 @@ def demo_spacex_telemetry():
 
     print("Raw telemetry data:")
     print(f"  T+{raw_data['timestamp']:.1f}s")
-    print(f"  Altitude: {raw_data['altitude']/1000:.1f} km")
+    print(f"  Altitude: {raw_data['altitude'] / 1000:.1f} km")
     print(f"  Velocity: {raw_data['velocity']:.1f} m/s")
 
     # Parse and validate
@@ -121,9 +121,9 @@ def demo_nasa_telemetry():
     print(f"  Vehicle: {telemetry.vehicle_system}")
     print(f"  MET: {telemetry.met:.1f}s")
     print(
-        f"  Position: [{telemetry.state_vector[0]/1000:.0f}, "
-        f"{telemetry.state_vector[1]/1000:.0f}, "
-        f"{telemetry.state_vector[2]/1000:.0f}] km"
+        f"  Position: [{telemetry.state_vector[0] / 1000:.0f}, "
+        f"{telemetry.state_vector[1] / 1000:.0f}, "
+        f"{telemetry.state_vector[2] / 1000:.0f}] km"
     )
     print(f"  GNC Mode: {telemetry.gnc_mode}")
     print(f"  Validation: {'✓ Valid' if is_valid else '✗ Invalid'}")

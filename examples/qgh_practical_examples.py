@@ -5,7 +5,6 @@ Demonstrates practical applications of QGH non-speculative algorithms
 in real-world scenarios.
 """
 
-
 import numpy as np
 
 from quasim.qgh.nonspec_algorithms import (
