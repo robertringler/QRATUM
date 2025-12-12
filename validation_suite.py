@@ -37,9 +37,9 @@ def validate_consistency(block):
     rho = rho_from_block(block)
     bloch_calc = bloch_from_rho(rho)
     bloch_reported = np.array(block["bloch_final"])
-    assert np.allclose(bloch_calc, bloch_reported, atol=TOL_BLOCH), (
-        f"Bloch mismatch {bloch_calc} vs {bloch_reported}"
-    )
+    assert np.allclose(
+        bloch_calc, bloch_reported, atol=TOL_BLOCH
+    ), f"Bloch mismatch {bloch_calc} vs {bloch_reported}"
 
     for axis, idx in zip("XYZ", range(3)):
         probs = (1 + bloch_calc[idx]) / 2

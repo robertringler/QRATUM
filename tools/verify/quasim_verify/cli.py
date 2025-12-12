@@ -105,9 +105,7 @@ def main():
         level = (
             "error"
             if not r.passed and r.severity == "error"
-            else "warning"
-            if not r.passed
-            else "note"
+            else "warning" if not r.passed else "note"
         )
         message = r.details.get("error", "Check passed")
         sarif_results.append(
