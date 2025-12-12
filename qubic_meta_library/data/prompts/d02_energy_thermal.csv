@@ -1,0 +1,11 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+101,CFD Simulation,Thermal flow optimization for heat exchangers,D2,0.85,0.88,"CFD;Heat transfer",D1;D6,QuASIM,1,simulation
+102,Battery Design,Next-gen lithium-ion battery optimization,D2,0.92,0.95,"Electrochemistry;FEA",D13;D19,QuASIM,1,design
+103,Grid Stability,Power grid stability analysis and optimization,D2,0.80,0.87,"Grid modeling;Control theory",D12;D20,QNimbus,1,analysis
+104,Solar Efficiency,Photovoltaic efficiency optimization,D2,0.84,0.90,"Solar physics;Material science",D1;D13,QuASIM,2,optimization
+105,Thermal Management,Spacecraft thermal management system,D2,0.88,0.86,"Thermal analysis;Aerospace",D6;D17,QuASIM,2,simulation
+125,Energy Storage,Battery and energy storage system optimization,D2,0.90,0.93,"Electrochemistry;Optimization",D13;D19,QuASIM,1,optimization
+135,Heat Pump Design,High-efficiency heat pump optimization,D2,0.81,0.85,"Thermodynamics;HVAC",D20;D1,QuASIM,2,design
+145,Fusion Blanket,Fusion reactor blanket thermal analysis,D2,0.89,0.82,"Nuclear physics;CFD",D13;D17,QuASIM,3,simulation
+155,District Heating,District heating network optimization,D2,0.78,0.84,"Network optimization;Thermal",D20;D12,QNimbus,2,optimization
+165,Waste Heat Recovery,Industrial waste heat recovery system,D2,0.83,0.88,"Thermodynamics;Industrial",D11;D19,QuASIM,2,design

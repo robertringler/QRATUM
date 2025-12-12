@@ -1,0 +1,280 @@
+# Keystone Technology Nodes
+# High-value, foundational prompts across all domains
+
+keystones:
+  # Tier 1 - Foundation
+  D1_keystones:
+    - id: 1
+      name: Quantum Materials Simulation Core
+      description: Foundational quantum simulation for material discovery
+      patentability: 0.95
+      commercial_potential: 0.92
+      technology_areas:
+        - Quantum chemistry
+        - DFT calculations
+        - Material property prediction
+
+    - id: 15
+      name: Nanostructure Optimization Engine
+      description: AI-driven nanostructure design and optimization
+      patentability: 0.88
+      commercial_potential: 0.90
+      technology_areas:
+        - Machine learning
+        - Structural optimization
+        - Multi-objective design
+
+  D2_keystones:
+    - id: 101
+      name: Thermal Flow Simulation Framework
+      description: High-fidelity thermal and fluid dynamics simulation
+      patentability: 0.85
+      commercial_potential: 0.88
+      technology_areas:
+        - CFD simulation
+        - Heat transfer
+        - Energy efficiency
+
+    - id: 125
+      name: Energy Storage Optimization
+      description: Battery and energy storage system optimization
+      patentability: 0.90
+      commercial_potential: 0.93
+      technology_areas:
+        - Electrochemistry
+        - Battery design
+        - Charge optimization
+
+  D3_keystones:
+    - id: 201
+      name: Swarm Coordination Algorithm
+      description: Distributed coordination for multi-agent systems
+      patentability: 0.87
+      commercial_potential: 0.85
+      technology_areas:
+        - Distributed systems
+        - Consensus algorithms
+        - Swarm intelligence
+
+  D4_keystones:
+    - id: 301
+      name: Molecular Dynamics Core Engine
+      description: High-performance molecular dynamics simulation
+      patentability: 0.93
+      commercial_potential: 0.94
+      technology_areas:
+        - Quantum chemistry
+        - Protein folding
+        - Drug binding
+
+    - id: 325
+      name: Drug Discovery Pipeline
+      description: End-to-end drug discovery automation
+      patentability: 0.91
+      commercial_potential: 0.96
+      technology_areas:
+        - AI-driven discovery
+        - Virtual screening
+        - Lead optimization
+
+  D5_keystones:
+    - id: 401
+      name: Climate Modeling Foundation
+      description: Large-scale climate simulation framework
+      patentability: 0.82
+      commercial_potential: 0.80
+      technology_areas:
+        - Climate science
+        - Weather prediction
+        - Carbon modeling
+
+  # Tier 2 - Systems
+  D6_keystones:
+    - id: 501
+      name: Aerospace Propulsion Optimizer
+      description: Advanced propulsion system design and optimization
+      patentability: 0.94
+      commercial_potential: 0.95
+      technology_areas:
+        - Rocket propulsion
+        - Hypersonic flight
+        - Structural analysis
+      compliance: DO-178C Level A
+
+  D7_keystones:
+    - id: 601
+      name: Nanomaterial Synthesis Platform
+      description: Automated nanomaterial design and synthesis
+      patentability: 0.89
+      commercial_potential: 0.87
+      technology_areas:
+        - Nanotechnology
+        - Surface engineering
+        - Material synthesis
+
+  D8_keystones:
+    - id: 701
+      name: Autonomous Navigation Framework
+      description: Real-time autonomous navigation and control
+      patentability: 0.86
+      commercial_potential: 0.91
+      technology_areas:
+        - Computer vision
+        - Path planning
+        - Sensor fusion
+
+  D9_keystones:
+    - id: 801
+      name: Biomedical Device Simulator
+      description: High-fidelity biomedical device simulation
+      patentability: 0.88
+      commercial_potential: 0.92
+      technology_areas:
+        - Biomedical engineering
+        - Device design
+        - Regulatory compliance
+
+  D10_keystones:
+    - id: 901
+      name: Geoengineering Model Suite
+      description: Climate intervention and geoengineering simulation
+      patentability: 0.83
+      commercial_potential: 0.79
+      technology_areas:
+        - Carbon capture
+        - Climate modification
+        - Environmental impact
+
+  # Tier 3 - Infrastructure
+  D11_keystones:
+    - id: 1001
+      name: Advanced Robotics Coordination
+      description: Multi-robot coordination and task allocation
+      patentability: 0.85
+      commercial_potential: 0.89
+      technology_areas:
+        - Robotics
+        - Task planning
+        - Human-robot interaction
+
+  D12_keystones:
+    - id: 1501
+      name: IoT Sensor Fusion Engine
+      description: Multi-sensor data fusion and edge processing
+      patentability: 0.84
+      commercial_potential: 0.86
+      technology_areas:
+        - Sensor networks
+        - Edge computing
+        - Data fusion
+
+  D13_keystones:
+    - id: 2001
+      name: Next-Gen Energy System Design
+      description: Advanced energy system modeling and optimization
+      patentability: 0.91
+      commercial_potential: 0.93
+      technology_areas:
+        - Fusion energy
+        - Advanced batteries
+        - Grid integration
+
+  D14_keystones:
+    - id: 2501
+      name: Synthetic Life Engineering
+      description: Synthetic organism design and biofabrication
+      patentability: 0.90
+      commercial_potential: 0.88
+      technology_areas:
+        - Synthetic biology
+        - Genetic engineering
+        - Biomanufacturing
+
+  D15_keystones:
+    - id: 3001
+      name: Multi-Physics Simulation Core
+      description: Integrated multi-physics simulation platform
+      patentability: 0.87
+      commercial_potential: 0.90
+      technology_areas:
+        - FEA/CFD
+        - Digital twins
+        - Real-time simulation
+
+  # Tier 4 - Applications
+  D16_keystones:
+    - id: 3501
+      name: Quantum Algorithm Library
+      description: Production quantum computing algorithms
+      patentability: 0.96
+      commercial_potential: 0.94
+      technology_areas:
+        - Quantum computing
+        - Algorithm design
+        - Error correction
+
+  D17_keystones:
+    - id: 4501
+      name: Space Habitat Design System
+      description: Automated space habitat design and optimization
+      patentability: 0.89
+      commercial_potential: 0.85
+      technology_areas:
+        - Space architecture
+        - Life support
+        - Radiation shielding
+
+  D18_keystones:
+    - id: 5501
+      name: Ocean Systems Modeling
+      description: Integrated ocean and marine system simulation
+      patentability: 0.81
+      commercial_potential: 0.78
+      technology_areas:
+        - Oceanography
+        - Marine biology
+        - Resource management
+
+  D19_keystones:
+    - id: 6501
+      name: Precision Agriculture Platform
+      description: AI-driven precision agriculture optimization
+      patentability: 0.84
+      commercial_potential: 0.90
+      technology_areas:
+        - Crop modeling
+        - Resource optimization
+        - Yield prediction
+
+  D20_keystones:
+    - id: 7501
+      name: Smart City Infrastructure
+      description: Integrated smart city planning and optimization
+      patentability: 0.86
+      commercial_potential: 0.92
+      technology_areas:
+        - Urban planning
+        - Traffic optimization
+        - Infrastructure management
+
+  # Cross-Domain Integration
+  Integration_keystones:
+    - id: 8501
+      name: Cross-Domain Orchestration Engine
+      description: Multi-platform orchestration and integration
+      patentability: 0.92
+      commercial_potential: 0.95
+      technology_areas:
+        - Platform integration
+        - API gateway
+        - Workflow orchestration
+
+    - id: 9001
+      name: Unified Data Pipeline
+      description: Cross-domain data integration and processing
+      patentability: 0.88
+      commercial_potential: 0.91
+      technology_areas:
+        - Data engineering
+        - ETL pipelines
+        - Real-time processing

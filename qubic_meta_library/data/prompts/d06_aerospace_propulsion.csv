@@ -1,0 +1,11 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+501,Propulsion Optimization,Rocket engine combustion chamber optimization,D6,0.94,0.95,"CFD;Propulsion",D2;D1,QuASIM,1,optimization
+502,Hypersonic Flight,Hypersonic vehicle aerodynamics simulation,D6,0.92,0.90,"CFD;Structural analysis",D1;D15,QuASIM,2,simulation
+503,Structural Analysis,Composite airframe structural optimization,D6,0.88,0.91,"FEA;Composites",D1;D7,QuASIM,1,analysis
+504,Flight Control,Advanced flight control system design,D6,0.85,0.89,"Control theory;Aerospace",D8;D11,QStack,2,control
+505,Propellant Mixing,Liquid propellant mixing optimization,D6,0.87,0.86,"CFD;Chemical engineering",D2;D13,QuASIM,2,optimization
+525,Thermal Protection,Re-entry thermal protection system,D6,0.90,0.88,"Thermal analysis;Materials",D1;D2,QuASIM,2,design
+535,Nozzle Design,Rocket nozzle geometry optimization,D6,0.86,0.87,"CFD;Optimization",D2;D15,QuASIM,2,design
+545,Aeroelasticity,Wing aeroelastic behavior prediction,D6,0.84,0.85,"FSI;Structural dynamics",D15;D1,QuASIM,2,simulation
+555,Trajectory Optimization,Launch vehicle trajectory optimization,D6,0.82,0.88,"Optimization;Orbital mechanics",D17;D8,QStack,2,trajectory
+565,Avionics Integration,Integrated avionics system architecture,D6,0.80,0.90,"Systems engineering;Avionics",D12;D8,QStack,3,architecture

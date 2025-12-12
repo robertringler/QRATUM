@@ -1,0 +1,247 @@
+# Domain Configuration for Qubic Meta Library
+# 20 domains across 5 tiers
+
+domains:
+  # Tier 1 - Foundation (D1-D5)
+  - id: D1
+    name: Advanced Materials
+    tier: 1
+    id_range: [1, 100]
+    primary_platform: QuASIM
+    commercial_sector: Aerospace & Manufacturing
+    keystones:
+      - Quantum materials simulation
+      - Nanostructure optimization
+      - Material property prediction
+    description: Advanced materials discovery and optimization using quantum simulation
+
+  - id: D2
+    name: Energy & Thermal Systems
+    tier: 1
+    id_range: [101, 200]
+    primary_platform: QuASIM
+    commercial_sector: Energy & Utilities
+    keystones:
+      - Thermal flow simulation
+      - Energy storage optimization
+      - Grid stability analysis
+    description: Energy systems modeling and thermal dynamics simulation
+
+  - id: D3
+    name: Multi-Agent AI & Swarm
+    tier: 1
+    id_range: [201, 300]
+    primary_platform: QStack
+    commercial_sector: Robotics & Automation
+    keystones:
+      - Swarm coordination algorithms
+      - Distributed decision making
+      - Multi-agent optimization
+    description: Multi-agent systems and swarm intelligence frameworks
+
+  - id: D4
+    name: Quantum Chemistry & Drug Discovery
+    tier: 1
+    id_range: [301, 400]
+    primary_platform: QuASIM
+    commercial_sector: Pharmaceutical & Biotech
+    keystones:
+      - Molecular dynamics simulation
+      - Drug binding prediction
+      - Protein folding analysis
+    description: Quantum chemistry simulation for drug discovery and molecular design
+
+  - id: D5
+    name: Environmental & Climate Systems
+    tier: 1
+    id_range: [401, 500]
+    primary_platform: QNimbus
+    commercial_sector: Environmental Services
+    keystones:
+      - Climate modeling
+      - Weather prediction
+      - Ecosystem simulation
+    description: Environmental systems modeling and climate change analysis
+
+  # Tier 2 - Systems (D6-D10)
+  - id: D6
+    name: Aerospace & Propulsion
+    tier: 2
+    id_range: [501, 600]
+    primary_platform: QuASIM
+    commercial_sector: Aerospace & Defense
+    keystones:
+      - Propulsion system optimization
+      - Flight dynamics simulation
+      - Structural analysis
+    description: Aerospace systems simulation and propulsion optimization
+
+  - id: D7
+    name: Advanced Materials & Nanotech
+    tier: 2
+    id_range: [601, 700]
+    primary_platform: QuASIM
+    commercial_sector: Materials Science
+    keystones:
+      - Nanoscale engineering
+      - Material synthesis
+      - Surface chemistry
+    description: Advanced nanomaterials and surface engineering
+
+  - id: D8
+    name: AI & Autonomous Systems
+    tier: 2
+    id_range: [701, 800]
+    primary_platform: QStack
+    commercial_sector: Autonomous Vehicles
+    keystones:
+      - Autonomous navigation
+      - Computer vision
+      - Real-time decision making
+    description: Autonomous systems and AI-driven control
+
+  - id: D9
+    name: Biomedical & Synthetic Biology
+    tier: 2
+    id_range: [801, 900]
+    primary_platform: QuASIM
+    commercial_sector: Healthcare & Biotech
+    keystones:
+      - Synthetic biology design
+      - Biomedical device simulation
+      - Genomic analysis
+    description: Biomedical engineering and synthetic biology applications
+
+  - id: D10
+    name: Climate Science & Geoengineering
+    tier: 2
+    id_range: [901, 1000]
+    primary_platform: QNimbus
+    commercial_sector: Climate Tech
+    keystones:
+      - Carbon capture modeling
+      - Geoengineering simulation
+      - Climate intervention
+    description: Climate science and geoengineering technologies
+
+  # Tier 3 - Infrastructure (D11-D15)
+  - id: D11
+    name: Advanced Robotics & Automation
+    tier: 3
+    id_range: [1001, 1500]
+    primary_platform: QStack
+    commercial_sector: Industrial Automation
+    keystones:
+      - Robotic manipulation
+      - Factory automation
+      - Human-robot collaboration
+    description: Advanced robotics and industrial automation systems
+
+  - id: D12
+    name: IoT & Sensor Networks
+    tier: 3
+    id_range: [1501, 2000]
+    primary_platform: QNimbus
+    commercial_sector: IoT & Smart Devices
+    keystones:
+      - Sensor fusion
+      - Edge computing
+      - Network optimization
+    description: IoT infrastructure and sensor network optimization
+
+  - id: D13
+    name: Next-Gen Energy Systems
+    tier: 3
+    id_range: [2001, 2500]
+    primary_platform: QuASIM
+    commercial_sector: Energy Infrastructure
+    keystones:
+      - Fusion reactor simulation
+      - Advanced battery design
+      - Renewable integration
+    description: Next-generation energy systems and storage technologies
+
+  - id: D14
+    name: Synthetic Life & Biofabrication
+    tier: 3
+    id_range: [2501, 3000]
+    primary_platform: QuASIM
+    commercial_sector: Biotech & Manufacturing
+    keystones:
+      - Synthetic organism design
+      - Biofabrication processes
+      - Biological computing
+    description: Synthetic life engineering and biofabrication technologies
+
+  - id: D15
+    name: High-Fidelity Simulation
+    tier: 3
+    id_range: [3001, 3500]
+    primary_platform: QuASIM
+    commercial_sector: Simulation & Modeling
+    keystones:
+      - Multi-physics simulation
+      - Digital twin frameworks
+      - Real-time rendering
+    description: High-fidelity multi-physics simulation platforms
+
+  # Tier 4 - Applications (D16-D20)
+  - id: D16
+    name: Quantum Computing & Cryptography
+    tier: 4
+    id_range: [3501, 4500]
+    primary_platform: QuASIM
+    commercial_sector: Quantum Computing
+    keystones:
+      - Quantum algorithm design
+      - Post-quantum cryptography
+      - Quantum error correction
+    description: Quantum computing algorithms and cryptographic systems
+
+  - id: D17
+    name: Space Exploration & Colonization
+    tier: 4
+    id_range: [4501, 5500]
+    primary_platform: QNimbus
+    commercial_sector: Space Industry
+    keystones:
+      - Habitat design
+      - Life support systems
+      - In-situ resource utilization
+    description: Space exploration and extraterrestrial colonization
+
+  - id: D18
+    name: Ocean Systems & Marine Tech
+    tier: 4
+    id_range: [5501, 6500]
+    primary_platform: QNimbus
+    commercial_sector: Marine & Oceanography
+    keystones:
+      - Ocean current modeling
+      - Marine resource management
+      - Underwater robotics
+    description: Ocean systems and marine technology applications
+
+  - id: D19
+    name: Agriculture & Food Systems
+    tier: 4
+    id_range: [6501, 7500]
+    primary_platform: QStack
+    commercial_sector: Agriculture & Food
+    keystones:
+      - Precision agriculture
+      - Crop optimization
+      - Food supply chain
+    description: Agricultural optimization and food systems management
+
+  - id: D20
+    name: Urban Systems & Smart Cities
+    tier: 4
+    id_range: [7501, 8500]
+    primary_platform: QNimbus
+    commercial_sector: Smart Cities
+    keystones:
+      - Urban planning
+      - Traffic optimization
+      - Infrastructure management
+    description: Smart city infrastructure and urban systems optimization
