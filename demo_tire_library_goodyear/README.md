@@ -2,7 +2,7 @@
 
 ## Overview
 
-This library contains 1000 comprehensive tire simulation scenarios using 200 
+This library contains 1000 comprehensive tire simulation scenarios using 200
 materials from the Goodyear Quantum Pilot platform, executed with QuASIM quantum-accelerated simulation.
 
 ## Goodyear Materials Database
