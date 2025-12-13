@@ -443,18 +443,25 @@ class QuasimAnsysAdapter:
 
         Args:
             mapdl: Active PyMAPDL session (optional if provided in constructor).
+                   In STANDALONE mode, None is acceptable and generates a test mesh.
+                   In other modes, a valid MAPDL session is required.
 
         Returns:
             Imported mesh data.
 
         Raises:
-            MeshImportError: If mesh import fails.
+            MeshImportError: If mesh import fails or no MAPDL session provided
+                           (except in STANDALONE mode).
 
         Example:
             >>> from ansys.mapdl.core import launch_mapdl
             >>> mapdl = launch_mapdl()
             >>> # ... setup geometry, mesh in Ansys ...
             >>> adapter.import_mesh_from_mapdl(mapdl)
+
+            >>> # Standalone mode with test mesh
+            >>> adapter = QuasimAnsysAdapter(mode=SolverMode.STANDALONE)
+            >>> adapter.import_mesh_from_mapdl()  # Generates test mesh
         """
         start_time = time.time()
 

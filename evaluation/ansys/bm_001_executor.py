@@ -345,9 +345,9 @@ class BM001Executor:
         )
 
         # Solve with simulated realistic time
-        time.time()
         state = adapter.solve()
         # Simulate realistic QuASIM solve time (target ~45s with variance)
+        # In production, this would be actual solver time from adapter.solve()
         solve_time = self.rng.uniform(42.0, 48.0)
         time.sleep(0.05)  # Brief sleep to simulate computation
 
