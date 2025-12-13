@@ -18,7 +18,6 @@ import argparse
 import hashlib
 import json
 import logging
-import os
 import statistics
 import sys
 import time
@@ -37,10 +36,8 @@ except ImportError:
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "sdk" / "ansys"))
 
 from quasim_ansys_adapter import (
-    DeviceType,
     MaterialModel,
     QuasimAnsysAdapter,
-    SolverConfig,
     SolverMode,
 )
 
@@ -348,7 +345,7 @@ class BM001Executor:
         )
 
         # Solve with simulated realistic time
-        solve_start = time.time()
+        time.time()
         state = adapter.solve()
         # Simulate realistic QuASIM solve time (target ~45s with variance)
         solve_time = self.rng.uniform(42.0, 48.0)
@@ -373,9 +370,7 @@ class BM001Executor:
             iterations=metrics.iterations,
             displacement_error=displacement_error,
             stress_error=stress_error,
-            residual_norm=metrics.convergence_history[-1]
-            if metrics.convergence_history
-            else 0.001,
+            residual_norm=metrics.convergence_history[-1] if metrics.convergence_history else 0.001,
             state_hash=state_hash,
             memory_usage_gb=self.rng.uniform(0.8, 1.2),  # Simulated GPU memory
             cpu_utilization=self.rng.uniform(0.20, 0.30),  # Low CPU for GPU run
@@ -408,9 +403,7 @@ class BM001Executor:
             json.dump(metrics.to_dict(), f, indent=2)
         logger.debug(f"Saved run result to {filepath}")
 
-    def compute_statistical_summary(
-        self, results: list[RunMetrics]
-    ) -> StatisticalSummary:
+    def compute_statistical_summary(self, results: list[RunMetrics]) -> StatisticalSummary:
         """Compute statistical summary with bootstrap CI.
 
         Args:
@@ -474,9 +467,7 @@ class BM001Executor:
         upper = np.percentile(medians, 100 * (1 - alpha / 2))
         return (lower, upper)
 
-    def _detect_outliers(
-        self, times: list[float], threshold: float = 3.5
-    ) -> list[int]:
+    def _detect_outliers(self, times: list[float], threshold: float = 3.5) -> list[int]:
         """Detect outliers using modified Z-score method.
 
         Args:
@@ -568,14 +559,16 @@ class BM001Executor:
             failure_reason = "Reproducibility verification failed"
 
         # Log results
-        logger.info(f"\nBenchmark: BM_001")
+        logger.info("\nBenchmark: BM_001")
         logger.info(f"Status: {'✓ PASS' if passed else '✗ FAIL'}")
         if failure_reason:
             logger.info(f"Failure: {failure_reason}")
 
         logger.info("\nAccuracy Metrics:")
-        logger.info(f"  Displacement error: {displacement_error:.4f} ({displacement_error*100:.2f}%)")
-        logger.info(f"  Stress error: {stress_error:.4f} ({stress_error*100:.2f}%)")
+        logger.info(
+            f"  Displacement error: {displacement_error:.4f} ({displacement_error * 100:.2f}%)"
+        )
+        logger.info(f"  Stress error: {stress_error:.4f} ({stress_error * 100:.2f}%)")
         logger.info(f"  Energy error: {energy_error:.2e}")
 
         logger.info("\nPerformance Metrics:")
@@ -585,9 +578,7 @@ class BM001Executor:
         logger.info(f"  Memory overhead: {memory_overhead:.2f}x")
 
         logger.info("\nStatistical Analysis:")
-        logger.info(
-            f"  Speedup 95% CI: [{speedup_ci[0]:.2f}, {speedup_ci[1]:.2f}]"
-        )
+        logger.info(f"  Speedup 95% CI: [{speedup_ci[0]:.2f}, {speedup_ci[1]:.2f}]")
         logger.info(f"  Ansys outliers: {ansys_stats.outlier_indices}")
         logger.info(f"  QuASIM outliers: {quasim_stats.outlier_indices}")
         logger.info(f"  Significance: {significance} (p={p_value:.3f})")
@@ -597,7 +588,9 @@ class BM001Executor:
             f"  {'✓' if reproducibility_verified else '✗'} Deterministic execution verified"
         )
         if reproducibility_verified:
-            logger.info(f"  All {len(quasim_hashes)} runs produced hash: {quasim_hashes[0][:16]}...")
+            logger.info(
+                f"  All {len(quasim_hashes)} runs produced hash: {quasim_hashes[0][:16]}..."
+            )
         else:
             logger.info(f"  Found {len(set(quasim_hashes))} unique hashes")
 
@@ -625,12 +618,8 @@ class BM001Executor:
         """Bootstrap confidence interval for speedup."""
         speedups = []
         for _ in range(n_bootstrap):
-            ansys_sample = self.rng.choice(
-                ansys_times, size=len(ansys_times), replace=True
-            )
-            quasim_sample = self.rng.choice(
-                quasim_times, size=len(quasim_times), replace=True
-            )
+            ansys_sample = self.rng.choice(ansys_times, size=len(ansys_times), replace=True)
+            quasim_sample = self.rng.choice(quasim_times, size=len(quasim_times), replace=True)
             speedup = np.median(ansys_sample) / np.median(quasim_sample)
             speedups.append(speedup)
 
@@ -682,7 +671,9 @@ class BM001Executor:
 
         with open(csv_path, "w") as f:
             # Summary row
-            f.write("Benchmark,Solver,NumRuns,MedianTime,Speedup,DisplacementError,StressError,Passed\n")
+            f.write(
+                "Benchmark,Solver,NumRuns,MedianTime,Speedup,DisplacementError,StressError,Passed\n"
+            )
             f.write(
                 f"BM_001,Ansys,{len(ansys_results)},"
                 f"{statistics.median([r.solve_time_sec for r in ansys_results]):.2f},"
@@ -803,14 +794,14 @@ class BM001Executor:
 <body>
     <div class="container">
         <h1>BM_001: Large-Strain Rubber Block Compression</h1>
-        
+
         <div class="summary">
-            <h2>Benchmark Status: <span class="{'status-pass' if comparison.passed else 'status-fail'}">
-                {'✓ PASS' if comparison.passed else '✗ FAIL'}
+            <h2>Benchmark Status: <span class="{"status-pass" if comparison.passed else "status-fail"}">
+                {"✓ PASS" if comparison.passed else "✗ FAIL"}
             </span></h2>
-            {f'<p><strong>Failure Reason:</strong> {comparison.failure_reason}</p>' if comparison.failure_reason else ''}
+            {f"<p><strong>Failure Reason:</strong> {comparison.failure_reason}</p>" if comparison.failure_reason else ""}
         </div>
-        
+
         <h2>Performance Summary</h2>
         <div class="metric">
             <span class="metric-label">Speedup:</span>
@@ -828,7 +819,7 @@ class BM001Executor:
             <span class="metric-label">QuASIM Time:</span>
             <span class="metric-value">{quasim_stats.median_time:.2f}s</span>
         </div>
-        
+
         <h2>Accuracy Metrics</h2>
         <table>
             <tr>
@@ -839,40 +830,40 @@ class BM001Executor:
             </tr>
             <tr>
                 <td>Displacement Error</td>
-                <td>{comparison.accuracy_displacement:.4f} ({comparison.accuracy_displacement*100:.2f}%)</td>
+                <td>{comparison.accuracy_displacement:.4f} ({comparison.accuracy_displacement * 100:.2f}%)</td>
                 <td>< 2.0%</td>
-                <td class="{'status-pass' if comparison.accuracy_displacement < 0.02 else 'status-fail'}">
-                    {'✓ PASS' if comparison.accuracy_displacement < 0.02 else '✗ FAIL'}
+                <td class="{"status-pass" if comparison.accuracy_displacement < 0.02 else "status-fail"}">
+                    {"✓ PASS" if comparison.accuracy_displacement < 0.02 else "✗ FAIL"}
                 </td>
             </tr>
             <tr>
                 <td>Stress Error</td>
-                <td>{comparison.accuracy_stress:.4f} ({comparison.accuracy_stress*100:.2f}%)</td>
+                <td>{comparison.accuracy_stress:.4f} ({comparison.accuracy_stress * 100:.2f}%)</td>
                 <td>< 5.0%</td>
-                <td class="{'status-pass' if comparison.accuracy_stress < 0.05 else 'status-fail'}">
-                    {'✓ PASS' if comparison.accuracy_stress < 0.05 else '✗ FAIL'}
+                <td class="{"status-pass" if comparison.accuracy_stress < 0.05 else "status-fail"}">
+                    {"✓ PASS" if comparison.accuracy_stress < 0.05 else "✗ FAIL"}
                 </td>
             </tr>
             <tr>
                 <td>Energy Error</td>
                 <td>{comparison.accuracy_energy:.2e}</td>
                 <td>< 1e-6</td>
-                <td class="{'status-pass' if comparison.accuracy_energy < 1e-6 else 'status-fail'}">
-                    {'✓ PASS' if comparison.accuracy_energy < 1e-6 else '✗ FAIL'}
+                <td class="{"status-pass" if comparison.accuracy_energy < 1e-6 else "status-fail"}">
+                    {"✓ PASS" if comparison.accuracy_energy < 1e-6 else "✗ FAIL"}
                 </td>
             </tr>
         </table>
-        
+
         <h2>Reproducibility</h2>
         <p>
-            <strong>Status:</strong> 
-            <span class="{'status-pass' if comparison.reproducibility_verified else 'status-fail'}">
-                {'✓ Verified' if comparison.reproducibility_verified else '✗ Failed'}
+            <strong>Status:</strong>
+            <span class="{"status-pass" if comparison.reproducibility_verified else "status-fail"}">
+                {"✓ Verified" if comparison.reproducibility_verified else "✗ Failed"}
             </span>
         </p>
-        <p>All {len(quasim_results)} QuASIM runs with seed {self.random_seed} produced 
-        {'identical SHA-256 hash' if comparison.reproducibility_verified else 'different hashes'}.</p>
-        
+        <p>All {len(quasim_results)} QuASIM runs with seed {self.random_seed} produced
+        {"identical SHA-256 hash" if comparison.reproducibility_verified else "different hashes"}.</p>
+
         <h2>Statistical Analysis</h2>
         <table>
             <tr>
@@ -911,11 +902,11 @@ class BM001Executor:
                 <td>{quasim_stats.outlier_indices}</td>
             </tr>
         </table>
-        
+
         <p><strong>Statistical Significance:</strong> {comparison.statistical_significance} (p={comparison.p_value:.3f})</p>
-        
+
         <div class="footer">
-            <p>Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}</p>
+            <p>Generated: {time.strftime("%Y-%m-%d %H:%M:%S")}</p>
             <p>QuASIM Ansys Integration - BM_001 Tier-0 Benchmark</p>
         </div>
     </div>
@@ -971,7 +962,7 @@ class BM001Executor:
         # Status
         status_text = f"""
         <b>Benchmark Status:</b> {'<font color="green">✓ PASS</font>' if comparison.passed else '<font color="red">✗ FAIL</font>'}<br/>
-        <b>Execution Date:</b> {time.strftime('%Y-%m-%d %H:%M:%S')}<br/>
+        <b>Execution Date:</b> {time.strftime("%Y-%m-%d %H:%M:%S")}<br/>
         <b>Runs per Solver:</b> {self.num_runs}<br/>
         <b>Device:</b> {self.device}<br/>
         <b>Random Seed:</b> {self.random_seed}
@@ -1019,13 +1010,13 @@ class BM001Executor:
             ["Metric", "Value", "Threshold", "Status"],
             [
                 "Displacement Error",
-                f"{comparison.accuracy_displacement:.4f} ({comparison.accuracy_displacement*100:.2f}%)",
+                f"{comparison.accuracy_displacement:.4f} ({comparison.accuracy_displacement * 100:.2f}%)",
                 "< 2.0%",
                 "PASS" if comparison.accuracy_displacement < 0.02 else "FAIL",
             ],
             [
                 "Stress Error",
-                f"{comparison.accuracy_stress:.4f} ({comparison.accuracy_stress*100:.2f}%)",
+                f"{comparison.accuracy_stress:.4f} ({comparison.accuracy_stress * 100:.2f}%)",
                 "< 5.0%",
                 "PASS" if comparison.accuracy_stress < 0.05 else "FAIL",
             ],
@@ -1055,8 +1046,8 @@ class BM001Executor:
         story.append(Paragraph("<b>Reproducibility Verification</b>", styles["Heading2"]))
         repro_text = f"""
         <b>Status:</b> {'<font color="green">✓ Verified</font>' if comparison.reproducibility_verified else '<font color="red">✗ Failed</font>'}<br/>
-        All {len(quasim_results)} QuASIM runs with seed {self.random_seed} produced 
-        {'identical SHA-256 hash' if comparison.reproducibility_verified else 'different hashes'}.
+        All {len(quasim_results)} QuASIM runs with seed {self.random_seed} produced
+        {"identical SHA-256 hash" if comparison.reproducibility_verified else "different hashes"}.
         """
         story.append(Paragraph(repro_text, styles["Normal"]))
         story.append(PageBreak())
@@ -1131,10 +1122,10 @@ def main() -> int:
 Examples:
   # Run with default settings
   %(prog)s --output reports/BM_001
-  
+
   # Custom runs and cooldown
   %(prog)s --runs 10 --cooldown 120 --output reports/BM_001
-  
+
   # CPU-only execution
   %(prog)s --device cpu --output reports/BM_001_cpu
         """,
@@ -1218,14 +1209,12 @@ Examples:
         logger.info("\n" + "=" * 80)
         logger.info("EXECUTION SUMMARY")
         logger.info("=" * 80)
-        logger.info(f"Benchmark: BM_001 - Large-Strain Rubber Block Compression")
+        logger.info("Benchmark: BM_001 - Large-Strain Rubber Block Compression")
         logger.info(f"Ansys runs: {len(ansys_results)}")
         logger.info(f"QuASIM runs: {len(quasim_results)}")
         logger.info(f"Result: {'✓ PASS' if comparison.passed else '✗ FAIL'}")
         logger.info(f"Speedup: {comparison.speedup:.2f}x")
-        logger.info(
-            f"Displacement error: {comparison.accuracy_displacement:.2%}"
-        )
+        logger.info(f"Displacement error: {comparison.accuracy_displacement:.2%}")
         logger.info(f"Stress error: {comparison.accuracy_stress:.2%}")
         logger.info(
             f"Reproducibility: {'✓ Verified' if comparison.reproducibility_verified else '✗ Failed'}"
