@@ -94,3 +94,4 @@ docs/compliance/DO178C/
 goodyear_quantum_pilot_full/
 demo_tire_library_basic/
 demo_tire_library_goodyear/*.json
+goodyear_pilot_execution_log.txt
