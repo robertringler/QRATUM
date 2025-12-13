@@ -177,6 +177,10 @@ class AnsysBaselineExecutor:
         self.working_dir = working_dir
         self.working_dir.mkdir(parents=True, exist_ok=True)
         
+        # Set random seed from execution protocol
+        random_seed = benchmark.execution_protocol.get("reproducibility", {}).get("random_seed", 42)
+        np.random.seed(random_seed)
+        
         logger.info(f"Initialized AnsysBaselineExecutor for {benchmark.id}")
     
     def execute(self, run_id: int = 1) -> BenchmarkResult:
@@ -213,8 +217,10 @@ class AnsysBaselineExecutor:
         mesh = self.benchmark.mesh
         memory_gb = mesh["target_element_count"] * 0.0001  # ~0.1 MB per element
         
-        # Compute mock state hash
-        state_data = f"{self.benchmark.id}_ansys_run{run_id}_seed{42}".encode()
+        # Compute mock state hash (deterministic for Ansys baseline)
+        # In production, this would be hash of actual displacement field
+        random_seed = self.benchmark.execution_protocol.get("reproducibility", {}).get("random_seed", 42)
+        state_data = f"{self.benchmark.id}_ansys_seed{random_seed}".encode()
         state_hash = hashlib.sha256(state_data).hexdigest()
         
         elapsed = time.time() - start_time
@@ -277,6 +283,9 @@ class QuasimExecutor:
         self.random_seed = random_seed
         self.working_dir.mkdir(parents=True, exist_ok=True)
         
+        # Set random seed for deterministic execution
+        np.random.seed(random_seed)
+        
         logger.info(f"Initialized QuasimExecutor for {benchmark.id} (device={device})")
     
     def execute(self, run_id: int = 1) -> BenchmarkResult:
@@ -313,8 +322,9 @@ class QuasimExecutor:
         mesh = self.benchmark.mesh
         memory_gb = mesh["target_element_count"] * 0.0002  # ~0.2 MB per element (GPU uses more)
         
-        # Compute mock state hash (different from Ansys due to algorithmic differences)
-        state_data = f"{self.benchmark.id}_quasim_run{run_id}_seed{self.random_seed}_device{self.device}".encode()
+        # Compute mock state hash (deterministic for same seed, excludes run_id for reproducibility)
+        # In production, this would be hash of actual displacement field
+        state_data = f"{self.benchmark.id}_quasim_seed{self.random_seed}_device{self.device}".encode()
         state_hash = hashlib.sha256(state_data).hexdigest()
         
         elapsed = time.time() - start_time
@@ -605,6 +615,7 @@ class ReportGenerator:
         self.generate_csv()
         self.generate_json()
         self.generate_html()
+        self.generate_pdf()
         
         logger.info(f"Reports generated in {self.output_dir}")
     
@@ -724,6 +735,132 @@ class ReportGenerator:
             f.write(html)
         
         logger.info(f"HTML report written to {html_path}")
+    
+    def generate_pdf(self) -> None:
+        """Generate PDF report."""
+        pdf_path = self.output_dir / "report.pdf"
+        
+        try:
+            from reportlab.lib.pagesizes import letter
+            from reportlab.lib.styles import getSampleStyleSheet
+            from reportlab.lib.units import inch
+            from reportlab.platypus import (
+                PageBreak,
+                Paragraph,
+                SimpleDocTemplate,
+                Spacer,
+                Table,
+                TableStyle,
+            )
+            from reportlab.lib import colors
+        except ImportError:
+            logger.warning("reportlab not installed, skipping PDF generation")
+            return
+        
+        # Create PDF document
+        doc = SimpleDocTemplate(str(pdf_path), pagesize=letter)
+        styles = getSampleStyleSheet()
+        story = []
+        
+        # Title
+        title = Paragraph(
+            "QuASIM Ansys Performance Comparison Report",
+            styles['Title']
+        )
+        story.append(title)
+        story.append(Spacer(1, 0.3*inch))
+        
+        # Summary
+        summary_text = f"""
+        <b>Total Benchmarks:</b> {len(self.results)}<br/>
+        <b>Passed:</b> {sum(1 for r in self.results if r.passed)}<br/>
+        <b>Failed:</b> {sum(1 for r in self.results if not r.passed)}
+        """
+        story.append(Paragraph(summary_text, styles['Normal']))
+        story.append(Spacer(1, 0.5*inch))
+        
+        # Results table header
+        story.append(Paragraph("<b>Benchmark Results</b>", styles['Heading2']))
+        story.append(Spacer(1, 0.2*inch))
+        
+        # Table data
+        table_data = [
+            ['Benchmark', 'Status', 'Speedup', 'Disp Error', 'Stress Error', 'Ansys Time', 'QuASIM Time']
+        ]
+        
+        for result in self.results:
+            perf = result.performance_metrics
+            acc = result.accuracy_metrics
+            status = "PASS" if result.passed else "FAIL"
+            
+            table_data.append([
+                result.benchmark_id,
+                status,
+                f"{perf.get('speedup', 0):.2f}x",
+                f"{acc.get('displacement_error', 0):.2%}",
+                f"{acc.get('stress_error', 0):.2%}",
+                f"{perf.get('ansys_median_time', 0):.2f}s",
+                f"{perf.get('quasim_median_time', 0):.2f}s"
+            ])
+        
+        # Create table
+        table = Table(table_data)
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.green),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ]))
+        
+        story.append(table)
+        story.append(Spacer(1, 0.5*inch))
+        
+        # Detailed results for each benchmark
+        for result in self.results:
+            story.append(PageBreak())
+            story.append(Paragraph(f"<b>Benchmark: {result.benchmark_id}</b>", styles['Heading2']))
+            story.append(Spacer(1, 0.2*inch))
+            
+            # Performance metrics
+            perf = result.performance_metrics
+            perf_text = f"""
+            <b>Performance Metrics:</b><br/>
+            Ansys Median Time: {perf.get('ansys_median_time', 0):.2f}s<br/>
+            QuASIM Median Time: {perf.get('quasim_median_time', 0):.2f}s<br/>
+            Speedup: {perf.get('speedup', 0):.2f}x<br/>
+            Memory Overhead: {perf.get('memory_overhead', 0):.2f}x
+            """
+            story.append(Paragraph(perf_text, styles['Normal']))
+            story.append(Spacer(1, 0.2*inch))
+            
+            # Accuracy metrics
+            acc = result.accuracy_metrics
+            acc_text = f"""
+            <b>Accuracy Metrics:</b><br/>
+            Displacement Error: {acc.get('displacement_error', 0):.2%}<br/>
+            Stress Error: {acc.get('stress_error', 0):.2%}<br/>
+            Energy Error: {acc.get('energy_error', 0):.2e}
+            """
+            story.append(Paragraph(acc_text, styles['Normal']))
+            story.append(Spacer(1, 0.2*inch))
+            
+            # Statistical analysis
+            stats = result.statistical_analysis
+            stats_text = f"""
+            <b>Statistical Analysis:</b><br/>
+            Speedup 95% CI: [{stats.get('speedup_ci_lower', 0):.2f}, {stats.get('speedup_ci_upper', 0):.2f}]<br/>
+            Statistical Significance: {stats.get('significance', 'UNKNOWN')}<br/>
+            P-value: {stats.get('p_value', 0):.3f}
+            """
+            story.append(Paragraph(stats_text, styles['Normal']))
+        
+        # Build PDF
+        doc.build(story)
+        logger.info(f"PDF report written to {pdf_path}")
 
 
 # ============================================================================
