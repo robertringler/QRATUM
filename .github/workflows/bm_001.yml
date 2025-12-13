@@ -77,10 +77,11 @@ jobs:
           python -c "import yaml; print('PyYAML available')"
       
       - name: Lint with ruff
+        continue-on-error: false
         run: |
           if command -v ruff &> /dev/null; then
             echo "Running ruff checks..."
-            ruff check evaluation/ansys/bm_001_executor.py sdk/ansys/quasim_ansys_adapter.py || true
+            ruff check evaluation/ansys/bm_001_executor.py sdk/ansys/quasim_ansys_adapter.py
           else
             echo "ruff not available, skipping linting"
           fi
@@ -157,7 +158,8 @@ jobs:
           print(f'Energy error: {metrics[\"energy_error\"]:.2e}')
           print(f'CV: {metrics[\"coefficient_of_variation\"]:.3f}')
           
-          if status != 'PASS':
+          # Case-insensitive status check
+          if status.upper() != 'PASS':
               print('ERROR: Acceptance criteria not met!')
               sys.exit(1)
           
