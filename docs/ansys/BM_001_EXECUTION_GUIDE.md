@@ -28,7 +28,18 @@ python3 -c "import numpy, yaml, reportlab; print('Dependencies OK')"
 
 ### Running the Benchmark
 
-Execute BM_001 with 5 independent runs per solver:
+**Option 1: Using the dedicated executor (recommended)**
+
+```bash
+python3 evaluation/ansys/bm_001_executor.py \
+    --output reports/BM_001 \
+    --runs 5 \
+    --seed 42 \
+    --device gpu \
+    --cooldown 60
+```
+
+**Option 2: Using the legacy runner**
 
 ```bash
 python3 run_bm001_tier0.py \
