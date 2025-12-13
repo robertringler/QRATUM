@@ -33,6 +33,8 @@ jobs:
   bm_001_execution:
     name: BM_001 Benchmark Execution
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout repository
@@ -259,6 +261,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [bm_001_execution, codeql_security_scan]
     if: always()
+    permissions:
+      contents: read
     
     steps:
       - name: Check validation status
