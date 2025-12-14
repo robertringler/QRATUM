@@ -224,6 +224,61 @@ quasim-tire goodyear --use-certified --scenarios-per-material 5
 
 ---
 
+## Visualization Subsystem
+
+QuASIM includes a production-ready, unified visualization subsystem for rendering simulation results with support for tire simulations, quantum circuits, and generic mesh/field data.
+
+### Features
+
+- **Multiple Backends**: Matplotlib (CPU), Headless (CI/cluster), GPU-accelerated with automatic fallback
+- **Export Formats**: PNG, JPEG, MP4, GIF, Interactive HTML/WebGL
+- **Simulation Adapters**: Tire, Quantum, Generic Mesh, Time-Series
+- **Pipelines**: Static rendering, Animation export, Real-time WebSocket streaming
+- **CLI & Python API**: Full command-line interface and programmatic access
+
+### Quick Start
+
+```bash
+# Run tire visualization example
+qubic-viz example tire --output-dir ./viz_output
+
+# Run quantum state visualization example
+qubic-viz example quantum --output-dir ./viz_output
+
+# Render custom simulation data
+qubic-viz render --input data.json --output result.png --adapter tire --field temperature
+
+# Create animation from time-series
+qubic-viz animate --input timeseries.json --output animation.mp4 --fps 30
+```
+
+### Python API
+
+```python
+from qubic.visualization.adapters.tire import TireSimulationAdapter
+from qubic.visualization.pipelines.static import StaticPipeline
+
+# Load and visualize tire simulation
+adapter = TireSimulationAdapter()
+tire_data = adapter.create_synthetic_tire(resolution=48)
+
+pipeline = StaticPipeline(backend="headless", dpi=150)
+pipeline.render_and_save(
+    data=tire_data,
+    output_path="tire_temperature.png",
+    scalar_field="temperature",
+    colormap="hot"
+)
+```
+
+### Documentation
+
+- **Full Documentation**: [qubic/visualization/VISUALIZATION.md](qubic/visualization/VISUALIZATION.md)
+- **Examples**: [qubic/visualization/examples/](qubic/visualization/examples/)
+- **Tests**: [qubic/visualization/tests/](qubic/visualization/tests/)
+
+---
+
 ## Installation & Quickstart
 
 ### Prerequisites
