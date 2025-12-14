@@ -270,10 +270,10 @@ For questions, corrections, or suggestions regarding these documents:
 
 ---
 
-**For the latest updates and additional documentation, visit:**
-- **Website**: https://qratum.io (pending)
-- **Documentation Portal**: https://docs.qratum.io (pending)
-- **GitHub**: https://github.com/robertringler/Qubic
+**For the latest updates and additional documentation:**
+- **Website**: qratum.io (planned)
+- **Documentation Portal**: docs.qratum.io (planned)
+- **GitHub**: https://github.com/robertringler/Qubic (active)
 
 ---
 
