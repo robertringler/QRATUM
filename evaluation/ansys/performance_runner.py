@@ -231,6 +231,7 @@ class AnsysBaselineExecutor:
         logger.info(
             f"Ansys baseline completed in {elapsed:.2f}s (simulated solve: {solve_time:.2f}s)"
         )
+        logger.info(f"Ansys baseline completed in {elapsed:.2f}s (simulated solve: {solve_time:.2f}s)")
 
         return BenchmarkResult(
             benchmark_id=self.benchmark.id,
@@ -384,6 +385,11 @@ class PerformanceComparer:
     """
 
     def __init__(self, benchmark: BenchmarkDefinition, acceptance_criteria: dict[str, Any]):
+    def __init__(
+        self,
+        benchmark: BenchmarkDefinition,
+        acceptance_criteria: dict[str, Any]
+    ):
         """Initialize performance comparer."""
         self.benchmark = benchmark
         self.acceptance_criteria = acceptance_criteria
@@ -578,6 +584,10 @@ class PerformanceComparer:
             accuracy_metrics["stress_error"]
             > self.acceptance_criteria["accuracy"]["stress_error_threshold"]
         ):
+        if accuracy_metrics["displacement_error"] > self.acceptance_criteria["accuracy"]["displacement_error_threshold"]:
+            return False, f"Displacement error {accuracy_metrics['displacement_error']:.3f} exceeds threshold"
+
+        if accuracy_metrics["stress_error"] > self.acceptance_criteria["accuracy"]["stress_error_threshold"]:
             return False, f"Stress error {accuracy_metrics['stress_error']:.3f} exceeds threshold"
 
         # Check performance
@@ -771,6 +781,7 @@ class ReportGenerator:
         title = Paragraph("QuASIM Ansys Performance Comparison Report", styles["Title"])
         story.append(title)
         story.append(Spacer(1, 0.3 * inch))
+        story.append(Spacer(1, 0.3*inch))
 
         # Summary
         summary_text = f"""
@@ -784,6 +795,12 @@ class ReportGenerator:
         # Results table header
         story.append(Paragraph("<b>Benchmark Results</b>", styles["Heading2"]))
         story.append(Spacer(1, 0.2 * inch))
+        story.append(Paragraph(summary_text, styles['Normal']))
+        story.append(Spacer(1, 0.5*inch))
+
+        # Results table header
+        story.append(Paragraph("<b>Benchmark Results</b>", styles['Heading2']))
+        story.append(Spacer(1, 0.2*inch))
 
         # Table data
         table_data = [
@@ -834,12 +851,39 @@ class ReportGenerator:
 
         story.append(table)
         story.append(Spacer(1, 0.5 * inch))
+            table_data.append([
+                result.benchmark_id,
+                status,
+                f"{perf.get('speedup', 0):.2f}x",
+                f"{acc.get('displacement_error', 0):.2%}",
+                f"{acc.get('stress_error', 0):.2%}",
+                f"{perf.get('ansys_median_time', 0):.2f}s",
+                f"{perf.get('quasim_median_time', 0):.2f}s"
+            ])
+
+        # Create table
+        table = Table(table_data)
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.green),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ]))
+
+        story.append(table)
+        story.append(Spacer(1, 0.5*inch))
 
         # Detailed results for each benchmark
         for result in self.results:
             story.append(PageBreak())
             story.append(Paragraph(f"<b>Benchmark: {result.benchmark_id}</b>", styles["Heading2"]))
             story.append(Spacer(1, 0.2 * inch))
+            story.append(Paragraph(f"<b>Benchmark: {result.benchmark_id}</b>", styles['Heading2']))
+            story.append(Spacer(1, 0.2*inch))
 
             # Performance metrics
             perf = result.performance_metrics
@@ -852,6 +896,8 @@ class ReportGenerator:
             """
             story.append(Paragraph(perf_text, styles["Normal"]))
             story.append(Spacer(1, 0.2 * inch))
+            story.append(Paragraph(perf_text, styles['Normal']))
+            story.append(Spacer(1, 0.2*inch))
 
             # Accuracy metrics
             acc = result.accuracy_metrics
@@ -863,6 +909,8 @@ class ReportGenerator:
             """
             story.append(Paragraph(acc_text, styles["Normal"]))
             story.append(Spacer(1, 0.2 * inch))
+            story.append(Paragraph(acc_text, styles['Normal']))
+            story.append(Spacer(1, 0.2*inch))
 
             # Statistical analysis
             stats = result.statistical_analysis
@@ -873,6 +921,7 @@ class ReportGenerator:
             P-value: {stats.get("p_value", 0):.3f}
             """
             story.append(Paragraph(stats_text, styles["Normal"]))
+            story.append(Paragraph(stats_text, styles['Normal']))
 
         # Build PDF
         doc.build(story)
@@ -950,6 +999,25 @@ Examples:
     parser.add_argument(
         "--input", type=Path, help="Input directory with existing results (for --report)"
     )
+    parser.add_argument("--solver", choices=["ansys", "quasim", "both"], default="both",
+                        help="Solver to run (ansys, quasim, or both)")
+    parser.add_argument("--device", choices=["cpu", "gpu", "multi_gpu"], default="gpu",
+                        help="Compute device for QuASIM")
+
+    # Execution parameters
+    parser.add_argument("--runs", type=int, default=5, help="Number of runs per benchmark")
+    parser.add_argument("--seed", type=int, default=42, help="Random seed for deterministic execution")
+    parser.add_argument("--cooldown", type=int, default=60, help="Cooldown period between runs (seconds)")
+
+    # Input/output
+    parser.add_argument("--yaml", type=Path, default=Path("benchmarks/ansys/benchmark_definitions.yaml"),
+                        help="Path to benchmark definitions YAML")
+    parser.add_argument("--output", type=Path, default=Path("results"),
+                        help="Output directory for results")
+
+    # Reporting
+    parser.add_argument("--report", action="store_true", help="Generate report from existing results")
+    parser.add_argument("--input", type=Path, help="Input directory with existing results (for --report)")
 
     # Logging
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
@@ -984,6 +1052,7 @@ Examples:
         logger.info(f"\n{'=' * 60}")
         logger.info(f"Running benchmark: {benchmark_id}")
         logger.info(f"{'=' * 60}\n")
+        logger.info(f"{'='*60}\n")
 
         try:
             # Load benchmark definition
@@ -1057,6 +1126,8 @@ Examples:
                 logger.info(
                     f"  Stress error: {comparison.accuracy_metrics.get('stress_error', 0):.2%}"
                 )
+                logger.info(f"  Displacement error: {comparison.accuracy_metrics.get('displacement_error', 0):.2%}")
+                logger.info(f"  Stress error: {comparison.accuracy_metrics.get('stress_error', 0):.2%}")
 
         except Exception as e:
             logger.error(f"Benchmark {benchmark_id} failed: {e}", exc_info=True)
@@ -1067,6 +1138,7 @@ Examples:
         logger.info(f"\n{'=' * 60}")
         logger.info("Generating reports...")
         logger.info(f"{'=' * 60}\n")
+        logger.info(f"{'='*60}\n")
 
         report_gen = ReportGenerator(all_results, args.output / "reports")
         report_gen.generate_all()
