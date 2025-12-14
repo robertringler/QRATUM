@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict, Union
+from typing import Any
 
 import numpy as np
 
@@ -20,7 +20,7 @@ class MeshAdapter(SimulationAdapter):
     - Procedural mesh generation
     """
 
-    def load_data(self, source: Union[str, Path, Dict[str, Any]]) -> VisualizationData:
+    def load_data(self, source: str | Path | dict[str, Any]) -> VisualizationData:
         """Load generic mesh data.
 
         Args:
@@ -63,7 +63,7 @@ class MeshAdapter(SimulationAdapter):
             "File-based loading not yet implemented. Use dictionary input."
         )
 
-    def _load_from_dict(self, data: Dict[str, Any]) -> VisualizationData:
+    def _load_from_dict(self, data: dict[str, Any]) -> VisualizationData:
         """Load mesh from dictionary.
 
         Args:

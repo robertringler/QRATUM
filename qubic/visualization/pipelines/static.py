@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional, Union
 
 from qubic.visualization.backends.gpu_backend import GPUBackend
 from qubic.visualization.backends.headless_backend import HeadlessBackend
@@ -54,8 +53,8 @@ class StaticPipeline:
     def render(
         self,
         data: VisualizationData,
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         show_edges: bool = False,
         alpha: float = 1.0,
@@ -85,9 +84,9 @@ class StaticPipeline:
     def render_and_save(
         self,
         data: VisualizationData,
-        output_path: Union[str, Path],
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        output_path: str | Path,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         show_edges: bool = False,
         alpha: float = 1.0,
@@ -122,8 +121,8 @@ class StaticPipeline:
     def render_and_show(
         self,
         data: VisualizationData,
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         show_edges: bool = False,
         alpha: float = 1.0,

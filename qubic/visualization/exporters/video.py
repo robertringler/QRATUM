@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import List, Optional
 
 from qubic.visualization.adapters.timeseries import TimeSeriesAdapter
 from qubic.visualization.backends.headless_backend import HeadlessBackend
@@ -35,8 +34,8 @@ class VideoExporter:
         self,
         adapter: TimeSeriesAdapter,
         output_path: Path,
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         fps: int = 30,
         bitrate: str = "5000k",
@@ -65,7 +64,7 @@ class VideoExporter:
             raise ImportError(
                 "imageio and imageio-ffmpeg are required for MP4 export. "
                 "Install with: pip install imageio imageio-ffmpeg"
-            )
+            ) from None
 
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -121,8 +120,8 @@ class VideoExporter:
         self,
         adapter: TimeSeriesAdapter,
         output_path: Path,
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         fps: int = 10,
         loop: int = 0,
@@ -148,7 +147,7 @@ class VideoExporter:
             raise ImportError(
                 "imageio is required for GIF export. "
                 "Install with: pip install imageio"
-            )
+            ) from None
 
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -196,8 +195,8 @@ class VideoExporter:
         self,
         adapter: TimeSeriesAdapter,
         output_path: Path,
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         fps: int = 30,
         **kwargs,

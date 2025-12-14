@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Optional
 
 import click
 
@@ -75,11 +74,11 @@ def cli():
     help="Output resolution (dots per inch)",
 )
 def render(
-    input: Optional[str],
+    input: str | None,
     output: str,
     adapter: str,
     backend: str,
-    field: Optional[str],
+    field: str | None,
     colormap: str,
     dpi: int,
 ):
@@ -158,9 +157,9 @@ def render(
     help="Colormap for scalar field",
 )
 def animate(
-    input: Optional[str],
+    input: str | None,
     output: str,
-    field: Optional[str],
+    field: str | None,
     fps: int,
     colormap: str,
 ):

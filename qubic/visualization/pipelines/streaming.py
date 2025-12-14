@@ -6,7 +6,7 @@ import asyncio
 import base64
 import io
 import logging
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable
 
 from qubic.visualization.backends.headless_backend import HeadlessBackend
 from qubic.visualization.core.camera import Camera
@@ -49,8 +49,8 @@ class StreamingPipeline:
     async def stream_data(
         self,
         data_generator: Callable[[], VisualizationData],
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
     ) -> None:
         """Stream visualization updates to connected clients.
@@ -103,7 +103,7 @@ class StreamingPipeline:
         buf.close()
         return img_base64
 
-    async def _broadcast(self, message: Dict[str, Any]) -> None:
+    async def _broadcast(self, message: dict[str, Any]) -> None:
         """Broadcast message to all connected clients.
 
         Args:
@@ -158,7 +158,7 @@ class StreamingPipeline:
             raise ImportError(
                 "websockets is required for streaming. "
                 "Install with: pip install websockets"
-            )
+            ) from None
 
         async def handle_connection(websocket, path):
             """Handle WebSocket connection."""

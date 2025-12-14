@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict, List, Union
+from typing import Any
 
 import numpy as np
 
@@ -20,11 +20,11 @@ class TimeSeriesAdapter(SimulationAdapter):
 
     def __init__(self) -> None:
         """Initialize time-series adapter."""
-        self.timesteps: List[VisualizationData] = []
-        self.times: List[float] = []
+        self.timesteps: list[VisualizationData] = []
+        self.times: list[float] = []
 
     def load_data(
-        self, source: Union[str, Path, Dict[str, Any], List[Dict[str, Any]]]
+        self, source: str | Path | dict[str, Any] | list[dict[str, Any]]
     ) -> VisualizationData:
         """Load time-series data.
 
@@ -69,7 +69,7 @@ class TimeSeriesAdapter(SimulationAdapter):
             "File-based loading not yet implemented. Use list input."
         )
 
-    def _load_from_list(self, data_list: List[Dict[str, Any]]) -> VisualizationData:
+    def _load_from_list(self, data_list: list[dict[str, Any]]) -> VisualizationData:
         """Load time-series from list of dictionaries.
 
         Args:
@@ -94,7 +94,7 @@ class TimeSeriesAdapter(SimulationAdapter):
 
         return self.timesteps[0]
 
-    def _load_single_timestep(self, data: Dict[str, Any]) -> VisualizationData:
+    def _load_single_timestep(self, data: dict[str, Any]) -> VisualizationData:
         """Load single timestep.
 
         Args:

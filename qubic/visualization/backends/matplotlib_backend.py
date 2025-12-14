@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,7 +22,7 @@ class MatplotlibBackend:
     """
 
     def __init__(
-        self, figsize: Tuple[int, int] = (10, 8), dpi: int = 100
+        self, figsize: tuple[int, int] = (10, 8), dpi: int = 100
     ) -> None:
         """Initialize matplotlib backend.
 
@@ -33,14 +32,14 @@ class MatplotlibBackend:
         """
         self.figsize = figsize
         self.dpi = dpi
-        self.fig: Optional[Figure] = None
-        self.ax: Optional[Axes3D] = None
+        self.fig: Figure | None = None
+        self.ax: Axes3D | None = None
 
     def render(
         self,
         data: VisualizationData,
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         show_edges: bool = False,
         alpha: float = 1.0,

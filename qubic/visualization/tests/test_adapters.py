@@ -3,7 +3,6 @@
 import numpy as np
 import pytest
 
-from qubic.visualization.adapters.base import SimulationAdapter
 from qubic.visualization.adapters.mesh import MeshAdapter
 from qubic.visualization.adapters.quantum import QuantumSimulationAdapter
 from qubic.visualization.adapters.timeseries import TimeSeriesAdapter

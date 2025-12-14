@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 
@@ -93,7 +92,7 @@ class Camera:
         """
         self.target = target
 
-    def orbit(self, angle_x: float, angle_y: float, distance: Optional[float] = None) -> None:
+    def orbit(self, angle_x: float, angle_y: float, distance: float | None = None) -> None:
         """Orbit camera around target.
 
         Args:

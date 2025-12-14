@@ -2,11 +2,9 @@
 
 from __future__ import annotations
 
+import contextlib
 import logging
 from pathlib import Path
-from typing import Optional, Tuple
-
-import numpy as np
 
 from qubic.visualization.backends.matplotlib_backend import MatplotlibBackend
 from qubic.visualization.core.camera import Camera
@@ -23,7 +21,7 @@ class GPUBackend:
     """
 
     def __init__(
-        self, figsize: Tuple[int, int] = (10, 8), dpi: int = 100, force_cpu: bool = False
+        self, figsize: tuple[int, int] = (10, 8), dpi: int = 100, force_cpu: bool = False
     ) -> None:
         """Initialize GPU backend.
 
@@ -74,8 +72,8 @@ class GPUBackend:
     def render(
         self,
         data: VisualizationData,
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         show_edges: bool = False,
         alpha: float = 1.0,
@@ -177,7 +175,5 @@ class GPUBackend:
 
         # Clean up GPU resources if applicable
         if self.use_gpu:
-            try:
+            with contextlib.suppress(Exception):
                 self.torch.cuda.empty_cache()
-            except Exception:
-                pass

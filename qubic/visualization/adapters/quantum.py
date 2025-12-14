@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import numpy as np
 
@@ -21,7 +21,7 @@ class QuantumSimulationAdapter(SimulationAdapter):
     """
 
     def load_data(
-        self, source: Union[Dict[str, Any], np.ndarray]
+        self, source: dict[str, Any] | np.ndarray
     ) -> VisualizationData:
         """Load quantum simulation data.
 
@@ -51,7 +51,7 @@ class QuantumSimulationAdapter(SimulationAdapter):
             )
 
     def _create_amplitude_bars(
-        self, amplitudes: np.ndarray, metadata: Optional[Dict[str, Any]] = None
+        self, amplitudes: np.ndarray, metadata: dict[str, Any] | None = None
     ) -> VisualizationData:
         """Create 3D bar chart for amplitude visualization.
 

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
 
 from qubic.visualization.backends.headless_backend import HeadlessBackend
 from qubic.visualization.core.camera import Camera
@@ -32,8 +31,8 @@ class ImageExporter:
         self,
         data: VisualizationData,
         output_path: Path,
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         transparent: bool = False,
         **kwargs,
@@ -75,8 +74,8 @@ class ImageExporter:
         self,
         data: VisualizationData,
         output_path: Path,
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         quality: int = 95,
         **kwargs,
@@ -118,8 +117,8 @@ class ImageExporter:
         self,
         data: VisualizationData,
         output_path: Path,
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         **kwargs,
     ) -> None:

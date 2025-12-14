@@ -4,12 +4,10 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import List, Optional, Union
 
 from qubic.visualization.adapters.timeseries import TimeSeriesAdapter
 from qubic.visualization.backends.headless_backend import HeadlessBackend
 from qubic.visualization.core.camera import Camera
-from qubic.visualization.core.data_model import VisualizationData
 
 logger = logging.getLogger(__name__)
 
@@ -42,9 +40,9 @@ class TimeSeriesPipeline:
     def render_animation(
         self,
         adapter: TimeSeriesAdapter,
-        output_path: Union[str, Path],
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        output_path: str | Path,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         fps: int = 10,
         format: str = "mp4",
@@ -110,7 +108,7 @@ class TimeSeriesPipeline:
             shutil.rmtree(temp_dir, ignore_errors=True)
 
     def _create_animation(
-        self, frame_paths: List[Path], output_path: Path, fps: int, format: str
+        self, frame_paths: list[Path], output_path: Path, fps: int, format: str
     ) -> None:
         """Create animation from frames.
 
@@ -131,7 +129,7 @@ class TimeSeriesPipeline:
             raise ImportError(
                 "imageio is required for animation export. "
                 "Install with: pip install imageio imageio-ffmpeg"
-            )
+            ) from None
 
         if format == "mp4":
             # Use imageio-ffmpeg for MP4
@@ -141,7 +139,7 @@ class TimeSeriesPipeline:
                 raise ImportError(
                     "imageio-ffmpeg is required for MP4 export. "
                     "Install with: pip install imageio-ffmpeg"
-                )
+                ) from None
 
             writer = imageio.get_writer(output_path, fps=fps, codec="libx264")
 
@@ -163,12 +161,12 @@ class TimeSeriesPipeline:
     def render_frames(
         self,
         adapter: TimeSeriesAdapter,
-        output_dir: Union[str, Path],
-        scalar_field: Optional[str] = None,
-        camera: Optional[Camera] = None,
+        output_dir: str | Path,
+        scalar_field: str | None = None,
+        camera: Camera | None = None,
         colormap: str = "viridis",
         format: str = "png",
-    ) -> List[Path]:
+    ) -> list[Path]:
         """Render individual frames to directory.
 
         Args:

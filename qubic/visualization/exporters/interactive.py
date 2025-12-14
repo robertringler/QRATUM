@@ -5,7 +5,6 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from typing import Optional
 
 from qubic.visualization.core.data_model import VisualizationData
 
@@ -27,7 +26,7 @@ class InteractiveExporter:
         self,
         data: VisualizationData,
         output_path: Path,
-        scalar_field: Optional[str] = None,
+        scalar_field: str | None = None,
         title: str = "Interactive Visualization",
     ) -> None:
         """Export as interactive HTML with embedded viewer.
@@ -47,7 +46,7 @@ class InteractiveExporter:
             raise ImportError(
                 "plotly is required for interactive HTML export. "
                 "Install with: pip install plotly"
-            )
+            ) from None
 
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -86,12 +85,12 @@ class InteractiveExporter:
         # Update layout
         fig.update_layout(
             title=title,
-            scene=dict(
-                xaxis_title="X",
-                yaxis_title="Y",
-                zaxis_title="Z",
-                aspectmode="data",
-            ),
+            scene={
+                "xaxis_title": "X",
+                "yaxis_title": "Y",
+                "zaxis_title": "Z",
+                "aspectmode": "data",
+            },
             width=1000,
             height=800,
         )
@@ -105,7 +104,7 @@ class InteractiveExporter:
         self,
         data: VisualizationData,
         output_path: Path,
-        scalar_field: Optional[str] = None,
+        scalar_field: str | None = None,
     ) -> None:
         """Export data as JSON for custom web viewers.
 
@@ -144,7 +143,7 @@ class InteractiveExporter:
         self,
         data: VisualizationData,
         output_path: Path,
-        scalar_field: Optional[str] = None,
+        scalar_field: str | None = None,
         title: str = "Interactive Visualization",
         **kwargs,
     ) -> None:

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, Optional
 
 import numpy as np
 
@@ -26,10 +25,10 @@ class VisualizationData:
 
     vertices: np.ndarray
     faces: np.ndarray
-    normals: Optional[np.ndarray] = None
-    scalar_fields: Dict[str, np.ndarray] = field(default_factory=dict)
-    vector_fields: Dict[str, np.ndarray] = field(default_factory=dict)
-    metadata: Dict[str, any] = field(default_factory=dict)
+    normals: np.ndarray | None = None
+    scalar_fields: dict[str, np.ndarray] = field(default_factory=dict)
+    vector_fields: dict[str, np.ndarray] = field(default_factory=dict)
+    metadata: dict[str, any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         """Validate data and compute normals if needed."""
