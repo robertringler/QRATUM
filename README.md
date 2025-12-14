@@ -94,7 +94,21 @@ ODE/PDE solvers, numerical integrators, interpolation modules, and uncertainty q
 
 ## System Architecture
 
-+-----------------------------+ | Secure Telemetry & Logging  | +-----------------------------+ | Distributed Compute Layer   | +-----------------------------+ | QuNimbus Verification Layer | +-----------------------------+ | Q-Core Acceleration Engine  | +-----------------------------+ | Deterministic Runtime (Q-OS)| +-----------------------------+ | Simulation Kernel (QuASIM)  | +-----------------------------+
+```
++-----------------------------+
+| Secure Telemetry & Logging  |
++-----------------------------+
+| Distributed Compute Layer   |
++-----------------------------+
+| QuNimbus Verification Layer |
++-----------------------------+
+| Q-Core Acceleration Engine  |
++-----------------------------+
+| Deterministic Runtime (Q-OS)|
++-----------------------------+
+| Simulation Kernel (QuASIM)  |
++-----------------------------+
+```
 
 ### Component Summary
 
