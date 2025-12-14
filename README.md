@@ -241,7 +241,22 @@ long-term auditability
 
 ---
 
-License
+## Contributing
+
+We welcome contributions to QuASIM! Whether you're fixing bugs, adding features, improving documentation, or reporting issues, your help is appreciated.
+
+Please see our [Contributing Guide](CONTRIBUTING.md) for:
+- Development setup instructions
+- Coding standards and best practices
+- Testing requirements
+- Pull request process
+- Security and compliance guidelines
+
+Before contributing, please review our contribution guidelines to ensure your changes align with the project's standards and requirements.
+
+---
+
+## License
 
 Apache 2.0 License (see LICENSE file).
 Contributions welcome under open, research-safe guidelines.
@@ -249,7 +264,7 @@ Contributions welcome under open, research-safe guidelines.
 
 ---
 
-Development Philosophy
+## Development Philosophy
 
 QuASIM adheres to principles of:
 

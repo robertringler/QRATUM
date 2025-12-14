@@ -1,6 +1,6 @@
-# Contributing to Sybernix
+# Contributing to QuASIM
 
-Thank you for your interest in contributing to Sybernix! This document provides guidelines and instructions for contributing to the project.
+Thank you for your interest in contributing to QuASIM! This document provides guidelines and instructions for contributing to the project.
 
 ## Table of Contents
 
@@ -19,8 +19,8 @@ This project adheres to professional standards of conduct. Please be respectful 
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/sybernix.git`
-3. Add upstream remote: `git remote add upstream https://github.com/robertringler/sybernix.git`
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/Qubic.git`
+3. Add upstream remote: `git remote add upstream https://github.com/robertringler/Qubic.git`
 4. Create a feature branch: `git checkout -b feature/your-feature-name`
 
 ## Development Setup
@@ -198,4 +198,4 @@ If you have questions or need help, please:
 2. Search closed issues
 3. Open a new issue with the `question` label
 
-Thank you for contributing to Sybernix!
+Thank you for contributing to QuASIM!
