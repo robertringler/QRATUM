@@ -1,0 +1,41 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/nexus-core",
+    "crates/nexus-accord",
+    "crates/nexus-path",
+    "crates/nexus-shield",
+    "crates/nexus-sync",
+    "crates/nexus-ledger",
+    "crates/sentinel-core",
+    "crates/celestia-fss",
+    "crates/forge-git",
+]
+
+[workspace.package]
+version = "2.0.0"
+edition = "2021"
+rust-version = "1.75"
+license = "Apache-2.0"
+
+[workspace.dependencies]
+tokio = { version = "1.35", features = ["full", "tracing"] }
+async-trait = "0.1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+anyhow = "1.0"
+tracing = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.6", features = ["v4", "serde"] }
+rand = "0.8"
+rand_chacha = "0.3"
+parking_lot = "0.12"
+sha3 = "0.10"
+blake3 = "1.5"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
