@@ -7,14 +7,26 @@
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
         h1 { color: #333; }
-        #output { background: #f4f4f4; padding: 20px; border-radius: 5px; }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        h2 { color: #555; margin-top: 30px; }
+        #output { background: #f4f4f4; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        #history { background: #f9f9f9; padding: 20px; border-radius: 5px; max-height: 400px; overflow-y: auto; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; margin-right: 10px; }
+        .transaction { background: white; padding: 10px; margin-bottom: 10px; border-left: 3px solid #2E86AB; border-radius: 3px; }
+        .transaction-time { color: #666; font-size: 12px; }
+        .transaction-details { margin-top: 5px; }
     </style>
 </head>
 <body>
     <h1>QuASIM Autonomous Systems</h1>
     <button onclick="runKernel()">Run Kernel</button>
+    <button onclick="loadHistory()">Refresh History</button>
     <div id="output"></div>
+    
+    <h2>Transaction History</h2>
+    <div id="history">
+        <p>No transactions yet. Click "Run Kernel" to create a transaction.</p>
+    </div>
+    
     <script src="client.js"></script>
 </body>
 </html>
