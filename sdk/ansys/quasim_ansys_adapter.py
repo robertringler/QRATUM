@@ -569,8 +569,6 @@ class QuasimAnsysAdapter:
             logger.info("Standalone mode: generating test mesh...")
         elif mapdl is None:
             raise MeshImportError("No MAPDL session provided")
-
-        logger.info("Importing mesh from MAPDL session...")
         else:
             logger.info("Importing mesh from MAPDL session...")
 
