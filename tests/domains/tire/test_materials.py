@@ -1,7 +1,5 @@
 """Tests for tire material modeling."""
 
-import pytest
-
 from quasim.domains.tire.materials import (
     CompoundType,
     MaterialProperties,

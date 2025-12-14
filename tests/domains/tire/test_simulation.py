@@ -1,11 +1,8 @@
 """Tests for tire simulation engine."""
 
-import pytest
-
 from quasim.domains.tire.environment import (
     EnvironmentalConditions,
     RoadSurface,
-    WeatherCondition,
 )
 from quasim.domains.tire.geometry import (
     TireGeometry,
