@@ -96,9 +96,9 @@ class TestFidelityMetrics:
         tolerance = stats["target_tolerance"]
 
         # Verify mean fidelity is within tolerance
-        assert abs(mean_fidelity - target) <= tolerance, (
-            f"Mean fidelity {mean_fidelity:.4f} outside tolerance " f"of {target} ± {tolerance}"
-        )
+        assert (
+            abs(mean_fidelity - target) <= tolerance
+        ), f"Mean fidelity {mean_fidelity:.4f} outside tolerance of {target} ± {tolerance}"
 
         # Verify acceptance criteria met
         assert stats["acceptance_criteria_met"], "Fidelity acceptance criteria not met"
@@ -241,9 +241,9 @@ class TestCoverageCompliance:
 
         coverage_rate = covered_conditions / len(entries)
 
-        assert coverage_rate == 1.0, (
-            f"MC/DC coverage {coverage_rate:.2%} incomplete " "(all conditions must be covered)"
-        )
+        assert (
+            coverage_rate == 1.0
+        ), f"MC/DC coverage {coverage_rate:.2%} incomplete (all conditions must be covered)"
 
 
 class TestCertificationReadiness:

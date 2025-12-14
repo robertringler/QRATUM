@@ -9,7 +9,7 @@ import math
 import random
 import re
 import time
-from typing import Dict, Iterable, Iterator, List, Sequence
+from typing import Iterable, Iterator, Sequence
 
 from prometheus_client import Gauge, start_http_server
 
@@ -47,17 +47,17 @@ class TelemetryAgent:
         seed: int,
         collection_interval_s: float = 15.0,
     ) -> None:
-        self._regions: List[RegionConfig] = list(regions)
+        self._regions: list[RegionConfig] = list(regions)
         self._seed = seed
         self._rng = random.Random(seed)
         self._interval = collection_interval_s
-        self._gauges: Dict[str, Gauge] = {
+        self._gauges: dict[str, Gauge] = {
             metric: Gauge(f"ord_{metric}", description, labelnames=("region",))
             for metric, description in self.METRIC_NAMES.items()
         }
         LOGGER.debug("TelemetryAgent initialized for %d regions", len(self._regions))
 
-    def _simulate_tick(self, region: RegionConfig, t: float) -> Dict[str, float]:
+    def _simulate_tick(self, region: RegionConfig, t: float) -> dict[str, float]:
         phase = math.sin((t / 900.0) + (hash(region.name) % 10))
         noise = (self._rng.random() - 0.5) * 0.02
         qevf = region.qevf_target_ops_per_kwh * (1.0 + 0.01 * phase + noise)
@@ -73,7 +73,7 @@ class TelemetryAgent:
             "entanglement_yield": entanglement_yield,
         }
 
-    def samples(self) -> Iterator[Dict[str, float]]:
+    def samples(self) -> Iterator[dict[str, float]]:
         start = time.time()
         while True:
             t = time.time() - start

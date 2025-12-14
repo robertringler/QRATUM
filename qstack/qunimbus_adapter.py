@@ -1,10 +1,11 @@
 """Adapter layer for the QuNimbus synthetic economy and governance modules."""
+
 from __future__ import annotations
 
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Iterable, List
+from typing import Any, Iterable
 
 # Ensure the repository root is prioritised ahead of the nested qstack/qunimbus package
 ROOT_DIR = Path(__file__).resolve().parent.parent
@@ -12,14 +13,13 @@ if str(ROOT_DIR) in sys.path:
     sys.path.remove(str(ROOT_DIR))
 sys.path.insert(0, str(ROOT_DIR))
 
+from qstack.config import QuNimbusConfig
 from qunimbus.node_governance.node_scoring import score_node
 from qunimbus.synthetic.agents import EconomicAgent
 from qunimbus.synthetic.credit_network import CreditNetwork
 from qunimbus.synthetic.market_venue import MarketVenue
 from qunimbus.synthetic.order_book import Trade
 from qunimbus.synthetic.shocks import apply_price_shock
-
-from qstack.config import QuNimbusConfig
 
 
 @dataclass
@@ -39,8 +39,8 @@ class QuNimbusAdapter:
             return 1.0
 
     def run_synthetic_market(
-        self, agents: Iterable[EconomicAgent], shocks: Iterable[Dict[str, float]], steps: int
-    ) -> Dict[str, Any]:
+        self, agents: Iterable[EconomicAgent], shocks: Iterable[dict[str, float]], steps: int
+    ) -> dict[str, Any]:
         """Run a deterministic synthetic market sequence.
 
         Agents alternately submit buy/sell orders each step to exercise the order book and
@@ -52,8 +52,8 @@ class QuNimbusAdapter:
 
         venue = MarketVenue(symbol=self._default_symbol())
         credit_network = CreditNetwork()
-        prices: Dict[str, float] = {venue.symbol: self._initial_price()}
-        trades: List[Trade] = []
+        prices: dict[str, float] = {venue.symbol: self._initial_price()}
+        trades: list[Trade] = []
         shocks_list = list(shocks)
         agent_list = list(agents)
 
@@ -85,7 +85,7 @@ class QuNimbusAdapter:
                 credit_network.add_exposure(lender, borrower, amount=prices[venue.symbol])
 
         defaulted_agents = [agent.agent_id for agent in agent_list if agent.capital <= 0]
-        contagion_losses: Dict[str, float] = {}
+        contagion_losses: dict[str, float] = {}
         for agent_id in defaulted_agents:
             losses = credit_network.contagion(agent_id)
             contagion_losses.update(losses)
@@ -99,7 +99,7 @@ class QuNimbusAdapter:
             "agent_positions": {agent.agent_id: agent.positions for agent in agent_list},
         }
 
-    def score_node_from_report(self, report: Any) -> Dict[str, Any]:
+    def score_node_from_report(self, report: Any) -> dict[str, Any]:
         """Score a node using the QuNimbus governance module."""
 
         if not self.config.enable_node_governance:

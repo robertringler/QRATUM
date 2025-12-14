@@ -66,6 +66,7 @@ quasim-revultra = "quasim.cli.revultra_cli:cli"
 quasim-qgh = "quasim.cli.qgh_cli:cli"
 quasim-terc-obs = "quasim.cli.terc_obs_cli:cli"
 quasim-own = "quasim.cli.quasim_own:cli"
+quasim-tire = "quasim.cli.tire_cli:cli"
 qunimbus = "quasim.qunimbus.cli:main"
 qnx = "qnx.cli:cli"
 qstack = "qstack.launch:main"
@@ -116,23 +117,38 @@ testpaths = ["tests"]
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
-addopts = "-v --strict-markers"
+addopts = "-v --strict-markers --cov=quasim --cov=src --cov=QuASIM --cov=qstack --cov=qagents --cov=sdk --cov-report=term-missing --cov-report=xml --cov-report=html"
 markers = [
     "requires_hardware: marks tests as requiring physical hardware (deselect with '-m \"not requires_hardware\"')",
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
 ]
 
 [tool.coverage.run]
-source = ["."]
+source = ["quasim", "src", "QuASIM", "qstack", "qagents", "sdk", "integrations"]
+branch = true
 omit = [
     "*/tests/*",
     "*/test_*.py",
     "*/__pycache__/*",
     "*/site-packages/*",
+    "*/.venv/*",
+    "*/venv/*",
 ]
 
 [tool.coverage.report]
 precision = 2
 show_missing = true
 skip_covered = false
+fail_under = 0
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
 
 

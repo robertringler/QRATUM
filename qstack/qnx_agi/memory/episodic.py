@@ -1,7 +1,8 @@
 """Episodic memory with deterministic decay."""
+
 from __future__ import annotations
 
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from .base import MemorySystem
 
@@ -11,7 +12,7 @@ class EpisodicMemoryWithDecay(MemorySystem):
         super().__init__(capacity=capacity)
         self.decay = decay
 
-    def record_episode(self, step: int, summary: Dict[str, Any]) -> None:
+    def record_episode(self, step: int, summary: dict[str, Any]) -> None:
         self.record(str(step), summary)
         self._apply_decay()
 

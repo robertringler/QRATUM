@@ -1,0 +1,501 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+2501,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.93,0.94,Synthetic biology;Metabolic engineering,D9;D19,QuASIM,1,simulation
+2502,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.77,,D9,QuASIM,1,model
+2503,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.92,,D19,QuASIM,1,analysis
+2504,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.77,,D19;D1,QuASIM,1,optimization
+2505,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.83,,D9,QuASIM,1,design
+2506,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.83,0.9,,D19,QuASIM,1,prediction
+2507,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.69,,D1,QuASIM,1,simulation
+2508,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.91,,D4;D9,QuASIM,1,model
+2509,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.76,,D4;D1,QuASIM,1,analysis
+2510,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.72,,D9,QuASIM,1,optimization
+2511,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.91,0.93,,D1,QuASIM,1,design
+2512,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.71,,D4;D19,QuASIM,1,prediction
+2513,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.84,,D1;D9,QuASIM,1,simulation
+2514,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.82,,D1;D19,QuASIM,1,model
+2515,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.7,,D19;D1,QuASIM,1,analysis
+2516,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.87,0.85,,D4,QuASIM,1,optimization
+2517,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.72,,D4;D9,QuASIM,1,design
+2518,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.85,,D1;D4,QuASIM,1,prediction
+2519,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.95,0.85,,D19,QuASIM,1,simulation
+2520,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.77,,D9,QuASIM,1,model
+2521,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.93,0.94,,D9;D4,QuASIM,1,analysis
+2522,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.72,,D4,QuASIM,1,optimization
+2523,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.82,,D9;D1,QuASIM,1,design
+2524,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.76,,D1,QuASIM,1,prediction
+2525,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.87,,D19;D9,QuASIM,1,simulation
+2526,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.73,0.78,,D4,QuASIM,1,model
+2527,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.73,,D1;D19,QuASIM,1,analysis
+2528,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.92,,D1;D4,QuASIM,1,optimization
+2529,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.7,,D1,QuASIM,1,design
+2530,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.93,,D9;D19,QuASIM,1,prediction
+2531,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.93,0.85,,D1,QuASIM,1,simulation
+2532,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.7,,D1,QuASIM,1,model
+2533,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.81,,D4,QuASIM,1,analysis
+2534,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.85,,D19,QuASIM,1,optimization
+2535,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.68,,D1;D4,QuASIM,1,design
+2536,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.91,0.75,,D9,QuASIM,1,prediction
+2537,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.79,,D19;D1,QuASIM,1,simulation
+2538,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.7,0.73,,D1;D9,QuASIM,1,model
+2539,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.83,,D19;D1,QuASIM,1,analysis
+2540,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.74,,D1,QuASIM,1,optimization
+2541,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.93,0.68,,D4;D9,QuASIM,1,design
+2542,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.92,,D1,QuASIM,1,prediction
+2543,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.77,0.94,,D19,QuASIM,1,simulation
+2544,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.91,,D4,QuASIM,1,model
+2545,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.74,,D19,QuASIM,1,analysis
+2546,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.83,0.83,,D19,QuASIM,1,optimization
+2547,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.69,,D1;D19,QuASIM,1,design
+2548,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.8,,D19,QuASIM,1,prediction
+2549,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.84,,D4,QuASIM,1,simulation
+2550,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.94,,D9,QuASIM,1,model
+2551,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.72,0.77,,D19;D4,QuASIM,1,analysis
+2552,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.75,,D9,QuASIM,1,optimization
+2553,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.84,,D19;D4,QuASIM,1,design
+2554,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.72,,D19,QuASIM,1,prediction
+2555,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.93,,D19,QuASIM,1,simulation
+2556,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.93,0.75,,D4,QuASIM,1,model
+2557,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.78,,D4,QuASIM,1,analysis
+2558,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.74,,D19,QuASIM,1,optimization
+2559,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.85,,D19;D4,QuASIM,1,design
+2560,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.81,,D19,QuASIM,1,prediction
+2561,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.89,0.71,,D19,QuASIM,1,simulation
+2562,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.86,,D19,QuASIM,1,model
+2563,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.86,,D4,QuASIM,1,analysis
+2564,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.7,,D4,QuASIM,1,optimization
+2565,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.71,,D19,QuASIM,1,design
+2566,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.79,0.74,,D4,QuASIM,1,prediction
+2567,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.69,,D4,QuASIM,1,simulation
+2568,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.72,,D4;D19,QuASIM,1,model
+2569,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.93,,D1;D19,QuASIM,1,analysis
+2570,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.81,,D19,QuASIM,1,optimization
+2571,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.92,0.87,,D4,QuASIM,1,design
+2572,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.89,Synthetic biology;Metabolic engineering,D9,QuASIM,1,prediction
+2573,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.69,,D9,QuASIM,1,simulation
+2574,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.88,,D19,QuASIM,1,model
+2575,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.83,,D1,QuASIM,1,analysis
+2576,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.89,0.86,,D1,QuASIM,1,optimization
+2577,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.69,,D1,QuASIM,1,design
+2578,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.88,,D1,QuASIM,1,prediction
+2579,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.7,0.93,,D4,QuASIM,1,simulation
+2580,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.8,,D1,QuASIM,1,model
+2581,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.92,0.72,,D9,QuASIM,1,analysis
+2582,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.73,,D1,QuASIM,1,optimization
+2583,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.83,,D4,QuASIM,1,design
+2584,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.81,,D9,QuASIM,1,prediction
+2585,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.74,,D1;D4,QuASIM,1,simulation
+2586,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.75,0.73,,D9,QuASIM,1,model
+2587,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.77,,D1;D19,QuASIM,1,analysis
+2588,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.8,,D19,QuASIM,1,optimization
+2589,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.94,,D1,QuASIM,1,design
+2590,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.85,,D4,QuASIM,1,prediction
+2591,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.78,0.69,,D4,QuASIM,1,simulation
+2592,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.71,,D19,QuASIM,1,model
+2593,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.9,,D1;D9,QuASIM,1,analysis
+2594,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.79,,D1,QuASIM,1,optimization
+2595,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.93,,D1,QuASIM,1,design
+2596,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.84,0.74,,D1;D9,QuASIM,1,prediction
+2597,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.7,,D9;D4,QuASIM,1,simulation
+2598,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.83,,D4;D1,QuASIM,1,model
+2599,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.89,,D4,QuASIM,1,analysis
+2600,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.73,,D4;D1,QuASIM,1,optimization
+2601,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.86,0.87,,D19,QuASIM,1,design
+2602,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.7,0.88,,D1;D9,QuASIM,1,prediction
+2603,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.74,,D9;D4,QuASIM,1,simulation
+2604,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.91,,D4,QuASIM,1,model
+2605,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.89,,D4;D9,QuASIM,1,analysis
+2606,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.92,0.86,,D9;D4,QuASIM,1,optimization
+2607,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.81,,D1,QuASIM,1,design
+2608,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.77,0.81,,D4,QuASIM,1,prediction
+2609,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.85,,D19,QuASIM,1,simulation
+2610,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.81,,D9,QuASIM,1,model
+2611,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.72,0.73,,D9,QuASIM,1,analysis
+2612,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.69,,D4;D19,QuASIM,1,optimization
+2613,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.84,,D4,QuASIM,1,design
+2614,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.73,,D1;D4,QuASIM,1,prediction
+2615,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.7,,D19,QuASIM,1,simulation
+2616,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.85,0.93,,D19;D1,QuASIM,1,model
+2617,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.76,,D19,QuASIM,1,analysis
+2618,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.71,,D1,QuASIM,1,optimization
+2619,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.72,,D9,QuASIM,1,design
+2620,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.87,,D1,QuASIM,1,prediction
+2621,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.82,0.89,,D1,QuASIM,1,simulation
+2622,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.94,,D4,QuASIM,1,model
+2623,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.69,,D19,QuASIM,1,analysis
+2624,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.92,,D1;D9,QuASIM,1,optimization
+2625,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.83,,D1;D19,QuASIM,1,design
+2626,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.77,0.92,,D9,QuASIM,1,prediction
+2627,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.72,,D19,QuASIM,1,simulation
+2628,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.7,,D1,QuASIM,1,model
+2629,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.88,,D1;D4,QuASIM,1,analysis
+2630,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.89,,D1;D19,QuASIM,1,optimization
+2631,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.82,0.72,,D1;D4,QuASIM,1,design
+2632,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.68,,D9,QuASIM,1,prediction
+2633,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.91,,D19,QuASIM,1,simulation
+2634,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.78,,D19;D4,QuASIM,1,model
+2635,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.75,,D9,QuASIM,1,analysis
+2636,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.74,0.75,,D9;D4,QuASIM,1,optimization
+2637,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.78,,D4,QuASIM,1,design
+2638,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.69,,D19,QuASIM,1,prediction
+2639,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.73,,D1,QuASIM,1,simulation
+2640,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.86,,D4,QuASIM,1,model
+2641,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.73,0.74,,D9;D4,QuASIM,1,analysis
+2642,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.89,,D1,QuASIM,1,optimization
+2643,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.89,Synthetic biology;Metabolic engineering,D9;D19,QuASIM,1,design
+2644,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.72,,D9;D4,QuASIM,1,prediction
+2645,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.77,0.92,,D19,QuASIM,1,simulation
+2646,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.75,0.83,,D1,QuASIM,1,model
+2647,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.8,,D19;D4,QuASIM,1,analysis
+2648,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.85,,D4,QuASIM,1,optimization
+2649,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.85,,D1,QuASIM,1,design
+2650,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.7,0.92,,D1,QuASIM,1,prediction
+2651,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.83,0.83,,D1;D19,QuASIM,2,simulation
+2652,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.81,,D19;D9,QuASIM,2,model
+2653,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.89,,D4,QuASIM,2,analysis
+2654,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.91,,D19;D4,QuASIM,2,optimization
+2655,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.91,,D1,QuASIM,2,design
+2656,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.88,0.71,,D19,QuASIM,2,prediction
+2657,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.69,,D19,QuASIM,2,simulation
+2658,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.68,,D1,QuASIM,2,model
+2659,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.85,,D19,QuASIM,2,analysis
+2660,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.72,,D4;D9,QuASIM,2,optimization
+2661,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.76,0.84,,D4,QuASIM,2,design
+2662,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.72,,D4,QuASIM,2,prediction
+2663,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.9,,D1;D9,QuASIM,2,simulation
+2664,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.95,0.87,,D9,QuASIM,2,model
+2665,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.74,,D19,QuASIM,2,analysis
+2666,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.84,0.68,,D1,QuASIM,2,optimization
+2667,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.87,,D9,QuASIM,2,design
+2668,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.73,,D9;D1,QuASIM,2,prediction
+2669,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.77,0.88,,D4,QuASIM,2,simulation
+2670,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.85,,D4,QuASIM,2,model
+2671,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.94,0.85,,D4,QuASIM,2,analysis
+2672,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.86,,D4,QuASIM,2,optimization
+2673,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.93,,D1,QuASIM,2,design
+2674,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.74,,D1,QuASIM,2,prediction
+2675,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.77,0.73,,D9;D4,QuASIM,2,simulation
+2676,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.92,0.91,,D1,QuASIM,2,model
+2677,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.78,,D4;D9,QuASIM,2,analysis
+2678,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.75,,D9,QuASIM,2,optimization
+2679,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.69,,D4;D9,QuASIM,2,design
+2680,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.85,,D4;D19,QuASIM,2,prediction
+2681,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.77,0.92,,D1,QuASIM,2,simulation
+2682,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.77,,D9;D4,QuASIM,2,model
+2683,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.87,,D1,QuASIM,2,analysis
+2684,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.76,,D9;D19,QuASIM,2,optimization
+2685,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.76,,D1;D19,QuASIM,2,design
+2686,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.88,0.82,,D9,QuASIM,2,prediction
+2687,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.76,,D9,QuASIM,2,simulation
+2688,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.89,,D1,QuASIM,2,model
+2689,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.76,,D19,QuASIM,2,analysis
+2690,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.73,,D1,QuASIM,2,optimization
+2691,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.74,0.86,,D19;D1,QuASIM,2,design
+2692,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.84,,D1;D9,QuASIM,2,prediction
+2693,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.8,,D9;D4,QuASIM,2,simulation
+2694,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.69,,D4,QuASIM,2,model
+2695,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.85,,D4;D19,QuASIM,2,analysis
+2696,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.82,0.88,,D1;D4,QuASIM,2,optimization
+2697,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.7,,D19;D1,QuASIM,2,design
+2698,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.69,,D9,QuASIM,2,prediction
+2699,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.91,,D1;D19,QuASIM,2,simulation
+2700,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.73,,D1,QuASIM,2,model
+2701,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.78,0.82,,D19,QuASIM,2,analysis
+2702,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.73,,D4,QuASIM,2,optimization
+2703,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.76,,D19,QuASIM,2,design
+2704,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.85,,D19;D1,QuASIM,2,prediction
+2705,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.91,,D9,QuASIM,2,simulation
+2706,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.85,0.89,,D19,QuASIM,2,model
+2707,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.76,,D9,QuASIM,2,analysis
+2708,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.76,,D4;D19,QuASIM,2,optimization
+2709,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.85,,D1,QuASIM,2,design
+2710,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.8,,D1,QuASIM,2,prediction
+2711,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.71,0.85,,D9,QuASIM,2,simulation
+2712,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.88,,D1,QuASIM,2,model
+2713,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.81,,D19;D1,QuASIM,2,analysis
+2714,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.95,Synthetic biology;Metabolic engineering,D1,QuASIM,2,optimization
+2715,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.8,,D4,QuASIM,2,design
+2716,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.91,0.88,,D1;D9,QuASIM,2,prediction
+2717,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.81,,D9,QuASIM,2,simulation
+2718,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.79,,D9,QuASIM,2,model
+2719,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.82,,D9;D1,QuASIM,2,analysis
+2720,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.93,,D4,QuASIM,2,optimization
+2721,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.93,0.93,,D9,QuASIM,2,design
+2722,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.74,,D9,QuASIM,2,prediction
+2723,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.76,,D9;D1,QuASIM,2,simulation
+2724,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.93,,D1,QuASIM,2,model
+2725,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.94,,D4;D9,QuASIM,2,analysis
+2726,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.78,0.93,,D1;D19,QuASIM,2,optimization
+2727,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.75,,D9;D4,QuASIM,2,design
+2728,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.72,,D4,QuASIM,2,prediction
+2729,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.79,,D9,QuASIM,2,simulation
+2730,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.9,,D1;D4,QuASIM,2,model
+2731,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.78,0.78,,D9;D1,QuASIM,2,analysis
+2732,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.95,0.91,,D4,QuASIM,2,optimization
+2733,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.79,,D1;D19,QuASIM,2,design
+2734,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.84,,D1;D19,QuASIM,2,prediction
+2735,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.73,,D19,QuASIM,2,simulation
+2736,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.9,0.75,,D19,QuASIM,2,model
+2737,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.89,,D1;D9,QuASIM,2,analysis
+2738,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.9,,D1,QuASIM,2,optimization
+2739,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.83,,D4;D9,QuASIM,2,design
+2740,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.82,,D9;D19,QuASIM,2,prediction
+2741,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.83,0.77,,D1;D19,QuASIM,2,simulation
+2742,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.7,0.79,,D1,QuASIM,2,model
+2743,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.77,,D4,QuASIM,2,analysis
+2744,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.75,,D9,QuASIM,2,optimization
+2745,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.7,,D4,QuASIM,2,design
+2746,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.87,0.8,,D4;D1,QuASIM,2,prediction
+2747,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.88,,D4,QuASIM,2,simulation
+2748,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.91,,D9;D19,QuASIM,2,model
+2749,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.8,,D4,QuASIM,2,analysis
+2750,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.68,,D1,QuASIM,2,optimization
+2751,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.95,0.91,,D9;D19,QuASIM,2,design
+2752,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.78,,D1,QuASIM,2,prediction
+2753,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.81,,D19,QuASIM,2,simulation
+2754,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.77,0.77,,D1;D9,QuASIM,2,model
+2755,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.89,,D1;D9,QuASIM,2,analysis
+2756,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.79,0.81,,D9;D19,QuASIM,2,optimization
+2757,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.91,,D9;D4,QuASIM,2,design
+2758,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.69,,D1,QuASIM,2,prediction
+2759,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.92,,D4,QuASIM,2,simulation
+2760,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.93,,D4,QuASIM,2,model
+2761,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.74,0.77,,D4;D1,QuASIM,2,analysis
+2762,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.74,,D19;D4,QuASIM,2,optimization
+2763,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.92,,D19;D9,QuASIM,2,design
+2764,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.93,,D4;D19,QuASIM,2,prediction
+2765,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.93,,D9,QuASIM,2,simulation
+2766,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.74,0.87,,D4;D1,QuASIM,2,model
+2767,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.73,,D9,QuASIM,2,analysis
+2768,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.72,,D9,QuASIM,2,optimization
+2769,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.86,,D4;D1,QuASIM,2,design
+2770,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.78,,D4,QuASIM,2,prediction
+2771,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.78,0.86,,D9,QuASIM,2,simulation
+2772,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.68,,D4,QuASIM,2,model
+2773,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.91,,D4;D9,QuASIM,2,analysis
+2774,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.83,,D19,QuASIM,2,optimization
+2775,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.78,,D9;D4,QuASIM,2,design
+2776,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.79,0.84,,D19;D9,QuASIM,2,prediction
+2777,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.74,,D19;D9,QuASIM,2,simulation
+2778,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.71,,D1,QuASIM,2,model
+2779,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.68,,D1,QuASIM,2,analysis
+2780,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.81,,D4,QuASIM,2,optimization
+2781,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.72,0.85,,D19,QuASIM,2,design
+2782,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.87,,D19;D4,QuASIM,2,prediction
+2783,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.92,,D1,QuASIM,2,simulation
+2784,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.76,,D9,QuASIM,2,model
+2785,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.87,Synthetic biology;Metabolic engineering,D1;D19,QuASIM,2,analysis
+2786,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.87,0.91,,D9,QuASIM,2,optimization
+2787,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.75,,D1;D19,QuASIM,2,design
+2788,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.73,,D9,QuASIM,2,prediction
+2789,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.7,0.79,,D1;D9,QuASIM,2,simulation
+2790,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.8,,D1;D4,QuASIM,2,model
+2791,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.85,0.94,,D19;D9,QuASIM,2,analysis
+2792,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.68,,D4,QuASIM,2,optimization
+2793,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.69,,D19,QuASIM,2,design
+2794,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.7,,D4,QuASIM,2,prediction
+2795,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.93,,D19,QuASIM,2,simulation
+2796,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.79,0.81,,D19,QuASIM,2,model
+2797,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.69,,D4,QuASIM,2,analysis
+2798,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.72,,D19,QuASIM,2,optimization
+2799,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.83,,D4;D9,QuASIM,2,design
+2800,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.69,,D9;D1,QuASIM,2,prediction
+2801,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.81,0.89,,D4;D1,QuASIM,3,simulation
+2802,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.86,,D9;D1,QuASIM,3,model
+2803,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.71,,D9;D19,QuASIM,3,analysis
+2804,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.91,,D19,QuASIM,3,optimization
+2805,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.74,,D1;D9,QuASIM,3,design
+2806,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.86,0.91,,D9,QuASIM,3,prediction
+2807,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.95,0.87,,D4,QuASIM,3,simulation
+2808,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.92,,D9,QuASIM,3,model
+2809,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.93,,D9,QuASIM,3,analysis
+2810,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.77,,D9,QuASIM,3,optimization
+2811,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.77,0.7,,D9,QuASIM,3,design
+2812,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.78,,D9,QuASIM,3,prediction
+2813,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.76,,D4,QuASIM,3,simulation
+2814,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.85,,D1,QuASIM,3,model
+2815,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.84,,D1,QuASIM,3,analysis
+2816,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.81,0.74,,D1;D4,QuASIM,3,optimization
+2817,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.74,,D1,QuASIM,3,design
+2818,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.91,,D9,QuASIM,3,prediction
+2819,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.71,,D9,QuASIM,3,simulation
+2820,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.89,,D19;D4,QuASIM,3,model
+2821,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.77,0.83,,D19,QuASIM,3,analysis
+2822,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.8,,D19;D1,QuASIM,3,optimization
+2823,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.92,,D19,QuASIM,3,design
+2824,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.82,,D4;D9,QuASIM,3,prediction
+2825,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.82,,D4,QuASIM,3,simulation
+2826,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.78,0.79,,D9,QuASIM,3,model
+2827,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.69,,D9;D19,QuASIM,3,analysis
+2828,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.83,,D4,QuASIM,3,optimization
+2829,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.7,,D9;D1,QuASIM,3,design
+2830,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.9,,D4,QuASIM,3,prediction
+2831,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.74,0.69,,D4,QuASIM,3,simulation
+2832,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.7,,D4,QuASIM,3,model
+2833,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.69,,D1,QuASIM,3,analysis
+2834,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.91,,D9,QuASIM,3,optimization
+2835,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.73,,D19,QuASIM,3,design
+2836,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.77,0.68,,D4,QuASIM,3,prediction
+2837,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.79,,D9;D19,QuASIM,3,simulation
+2838,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.69,,D4;D9,QuASIM,3,model
+2839,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.89,,D19,QuASIM,3,analysis
+2840,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.92,,D9;D19,QuASIM,3,optimization
+2841,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.7,0.7,,D1,QuASIM,3,design
+2842,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.9,,D19,QuASIM,3,prediction
+2843,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.92,,D4;D19,QuASIM,3,simulation
+2844,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.69,,D4,QuASIM,3,model
+2845,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.76,,D1;D19,QuASIM,3,analysis
+2846,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.91,0.83,,D4,QuASIM,3,optimization
+2847,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.68,,D9,QuASIM,3,design
+2848,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.91,,D19,QuASIM,3,prediction
+2849,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.68,,D4,QuASIM,3,simulation
+2850,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.94,,D9,QuASIM,3,model
+2851,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.81,0.76,,D9,QuASIM,3,analysis
+2852,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.77,,D1,QuASIM,3,optimization
+2853,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.89,,D4,QuASIM,3,design
+2854,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.7,0.91,,D4,QuASIM,3,prediction
+2855,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.86,,D19,QuASIM,3,simulation
+2856,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.93,0.85,Synthetic biology;Metabolic engineering,D1,QuASIM,3,model
+2857,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.73,,D4,QuASIM,3,analysis
+2858,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.81,,D19,QuASIM,3,optimization
+2859,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.8,,D4;D19,QuASIM,3,design
+2860,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.93,,D19;D1,QuASIM,3,prediction
+2861,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.86,0.91,,D1,QuASIM,3,simulation
+2862,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.69,,D4,QuASIM,3,model
+2863,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.77,0.86,,D4;D19,QuASIM,3,analysis
+2864,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.86,,D9,QuASIM,3,optimization
+2865,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.84,,D9;D4,QuASIM,3,design
+2866,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.78,0.71,,D4;D9,QuASIM,3,prediction
+2867,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.83,,D9,QuASIM,3,simulation
+2868,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.84,,D1,QuASIM,3,model
+2869,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.93,,D9,QuASIM,3,analysis
+2870,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.79,,D19,QuASIM,3,optimization
+2871,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.8,0.77,,D19,QuASIM,3,design
+2872,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.91,,D4;D19,QuASIM,3,prediction
+2873,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.9,,D1;D4,QuASIM,3,simulation
+2874,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.7,,D4,QuASIM,3,model
+2875,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.95,0.88,,D4,QuASIM,3,analysis
+2876,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.81,0.72,,D4,QuASIM,3,optimization
+2877,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.72,,D9;D4,QuASIM,3,design
+2878,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.78,,D19,QuASIM,3,prediction
+2879,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.73,,D1;D9,QuASIM,3,simulation
+2880,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.73,,D9;D1,QuASIM,3,model
+2881,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.82,0.92,,D4;D19,QuASIM,3,analysis
+2882,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.85,,D9;D1,QuASIM,3,optimization
+2883,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.78,,D4,QuASIM,3,design
+2884,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.9,,D19,QuASIM,3,prediction
+2885,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.85,,D19;D9,QuASIM,3,simulation
+2886,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.94,0.7,,D9;D4,QuASIM,3,model
+2887,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.92,,D9;D4,QuASIM,3,analysis
+2888,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.89,,D4,QuASIM,3,optimization
+2889,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.87,,D4,QuASIM,3,design
+2890,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.89,,D9;D1,QuASIM,3,prediction
+2891,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.77,0.88,,D19;D1,QuASIM,3,simulation
+2892,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.77,,D19;D9,QuASIM,3,model
+2893,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.69,,D9,QuASIM,3,analysis
+2894,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.74,,D1,QuASIM,3,optimization
+2895,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.73,,D19,QuASIM,3,design
+2896,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.82,0.87,,D9,QuASIM,3,prediction
+2897,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.93,,D9;D19,QuASIM,3,simulation
+2898,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.82,,D9;D19,QuASIM,3,model
+2899,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.84,,D1,QuASIM,3,analysis
+2900,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.91,,D1;D19,QuASIM,3,optimization
+2901,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.94,0.71,,D9,QuASIM,3,design
+2902,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.74,,D19,QuASIM,3,prediction
+2903,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.79,,D19;D4,QuASIM,3,simulation
+2904,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.78,,D4,QuASIM,3,model
+2905,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.8,,D9;D4,QuASIM,3,analysis
+2906,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.7,0.79,,D4;D19,QuASIM,3,optimization
+2907,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.76,,D4,QuASIM,3,design
+2908,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.84,,D9,QuASIM,3,prediction
+2909,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.85,,D4,QuASIM,3,simulation
+2910,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.8,,D1,QuASIM,3,model
+2911,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.82,0.94,,D19;D9,QuASIM,3,analysis
+2912,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.77,,D19;D4,QuASIM,3,optimization
+2913,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.82,,D19,QuASIM,3,design
+2914,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.95,0.86,,D9;D1,QuASIM,3,prediction
+2915,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.68,,D9;D4,QuASIM,3,simulation
+2916,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.77,0.83,,D19;D9,QuASIM,3,model
+2917,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.85,,D19,QuASIM,3,analysis
+2918,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.72,,D19,QuASIM,3,optimization
+2919,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.82,,D1;D9,QuASIM,3,design
+2920,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.91,,D19,QuASIM,3,prediction
+2921,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.75,0.93,,D9;D19,QuASIM,3,simulation
+2922,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.74,,D4;D1,QuASIM,3,model
+2923,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.83,,D9,QuASIM,3,analysis
+2924,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.9,,D19,QuASIM,3,optimization
+2925,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.74,,D4,QuASIM,3,design
+2926,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.77,0.75,,D1,QuASIM,4,prediction
+2927,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.85,Synthetic biology;Metabolic engineering,D19;D1,QuASIM,4,simulation
+2928,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.9,0.86,,D9,QuASIM,4,model
+2929,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.72,,D19;D4,QuASIM,4,analysis
+2930,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.95,0.71,,D1,QuASIM,4,optimization
+2931,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.71,0.88,,D1,QuASIM,4,design
+2932,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.92,0.79,,D1,QuASIM,4,prediction
+2933,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.76,,D19;D9,QuASIM,4,simulation
+2934,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.77,0.92,,D4,QuASIM,4,model
+2935,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.72,,D19;D1,QuASIM,4,analysis
+2936,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.84,0.93,,D19,QuASIM,4,optimization
+2937,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.74,,D19;D4,QuASIM,4,design
+2938,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.82,,D19,QuASIM,4,prediction
+2939,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.77,0.69,,D1,QuASIM,4,simulation
+2940,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.89,,D4,QuASIM,4,model
+2941,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.75,0.91,,D1,QuASIM,4,analysis
+2942,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.91,,D9;D19,QuASIM,4,optimization
+2943,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.72,,D4;D9,QuASIM,4,design
+2944,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.82,,D19;D9,QuASIM,4,prediction
+2945,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.69,,D4,QuASIM,4,simulation
+2946,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.81,0.75,,D1,QuASIM,4,model
+2947,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.86,,D4,QuASIM,4,analysis
+2948,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.92,,D4;D9,QuASIM,4,optimization
+2949,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.9,,D4;D19,QuASIM,4,design
+2950,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.73,,D19,QuASIM,4,prediction
+2951,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.81,0.8,,D19;D4,QuASIM,4,simulation
+2952,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.93,,D1,QuASIM,4,model
+2953,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.8,,D1;D4,QuASIM,4,analysis
+2954,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.76,,D4,QuASIM,4,optimization
+2955,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.78,0.77,,D1,QuASIM,4,design
+2956,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.71,0.86,,D1,QuASIM,4,prediction
+2957,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.95,0.74,,D9,QuASIM,4,simulation
+2958,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.82,0.93,,D1;D9,QuASIM,4,model
+2959,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.79,,D4,QuASIM,4,analysis
+2960,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.71,0.8,,D1;D9,QuASIM,4,optimization
+2961,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.84,0.78,,D9,QuASIM,4,design
+2962,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.93,,D4;D9,QuASIM,4,prediction
+2963,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.76,0.84,,D9;D19,QuASIM,4,simulation
+2964,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.82,,D1,QuASIM,4,model
+2965,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.72,0.7,,D9;D19,QuASIM,4,analysis
+2966,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.74,0.87,,D1;D19,QuASIM,4,optimization
+2967,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.84,0.9,,D4;D9,QuASIM,4,design
+2968,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.75,,D1,QuASIM,4,prediction
+2969,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.77,,D9,QuASIM,4,simulation
+2970,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.93,,D1;D19,QuASIM,4,model
+2971,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.91,0.93,,D19,QuASIM,4,analysis
+2972,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.74,0.74,,D19;D4,QuASIM,4,optimization
+2973,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.7,,D9,QuASIM,4,design
+2974,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.78,,D19;D1,QuASIM,4,prediction
+2975,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.78,,D19;D1,QuASIM,4,simulation
+2976,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.8,0.93,,D19,QuASIM,4,model
+2977,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.88,0.87,,D19;D9,QuASIM,4,analysis
+2978,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.94,0.87,,D1,QuASIM,4,optimization
+2979,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.71,,D9,QuASIM,4,design
+2980,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.8,0.7,,D9;D1,QuASIM,4,prediction
+2981,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.83,0.86,,D9;D4,QuASIM,4,simulation
+2982,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.89,0.86,,D1;D9,QuASIM,4,model
+2983,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.73,0.9,,D4,QuASIM,4,analysis
+2984,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.77,0.88,,D1,QuASIM,4,optimization
+2985,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.81,,D9;D1,QuASIM,4,design
+2986,Synthetic Organisms,Synthetic biology design for biosensing using synthetic life & biofabrication approaches,D14,0.94,0.76,,D9,QuASIM,4,prediction
+2987,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.83,,D9,QuASIM,4,simulation
+2988,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.79,,D1;D9,QuASIM,4,model
+2989,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.86,0.77,,D19,QuASIM,4,analysis
+2990,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.87,0.92,,D4;D9,QuASIM,4,optimization
+2991,Synthetic Organisms,Synthetic biology design for waste remediation using synthetic life & biofabrication approaches,D14,0.83,0.85,,D4;D9,QuASIM,4,design
+2992,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.81,0.88,,D19;D4,QuASIM,4,prediction
+2993,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.83,0.74,,D4;D9,QuASIM,4,simulation
+2994,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.93,0.88,,D4,QuASIM,4,model
+2995,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.85,0.79,,D4,QuASIM,4,analysis
+2996,Synthetic Organisms,Synthetic biology design for biofuel production using synthetic life & biofabrication approaches,D14,0.73,0.87,,D9,QuASIM,4,optimization
+2997,Biofabrication,Biofabrication simulation and optimization using synthetic life & biofabrication approaches,D14,0.75,0.94,,D1;D4,QuASIM,4,design
+2998,Genetic Circuits,Genetic Circuits simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.74,,D1,QuASIM,4,prediction
+2999,Metabolic Engineering,Metabolic Engineering simulation and optimization using synthetic life & biofabrication approaches,D14,0.91,0.87,,D9;D4,QuASIM,4,simulation
+3000,Biological Computing,Biological Computing simulation and optimization using synthetic life & biofabrication approaches,D14,0.79,0.86,,D19;D1,QuASIM,4,model

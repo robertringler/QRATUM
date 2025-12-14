@@ -64,7 +64,7 @@ class MinimalYAMLParser:
             if not line or line.strip().startswith("#"):
                 continue
 
-            indent = len(line) - len(line.lstrip())
+            len(line) - len(line.lstrip())
             line = line.strip()
 
             if line.endswith(":"):
@@ -387,9 +387,9 @@ class ReportGenerator:
 
         report = f"""# QuASIM Market Valuation Report
 
-**Generated:** {timestamp.strftime('%Y-%m-%d %H:%M:%S')} UTC  
-**Valuation Date:** {self.engine.as_of_date}  
-**Currency:** {self.engine.currency}  
+**Generated:** {timestamp.strftime("%Y-%m-%d %H:%M:%S")} UTC
+**Valuation Date:** {self.engine.as_of_date}
+**Currency:** {self.engine.currency}
 **Methodology:** DCF + Monte Carlo + Real Options
 
 ---
@@ -404,14 +404,14 @@ class ReportGenerator:
 | **P10 Enterprise Value** | ${p10:,.0f} | Conservative (10th percentile) |
 | **P90 Enterprise Value** | ${p90:,.0f} | Optimistic (90th percentile) |
 | **Base Case DCF** | ${base_ev:,.0f} | Deterministic scenario |
-| **Real Options Uplift** | ${real_options['total_option_value']:,.0f} | Strategic option value |
+| **Real Options Uplift** | ${real_options["total_option_value"]:,.0f} | Strategic option value |
 
 ### Key Assumptions
 
 - **Discount Rate (WACC):** {self.engine.discount_rate * 100:.1f}%
 - **Tax Rate:** {self.engine.tax_rate * 100:.1f}%
 - **Terminal Growth:** {self.engine.terminal_growth * 100:.1f}%
-- **Monte Carlo Trials:** {mc_results['trials'] if mc_results else 0:,}
+- **Monte Carlo Trials:** {mc_results["trials"] if mc_results else 0:,}
 
 ---
 
@@ -432,12 +432,12 @@ Enterprise Value = PV(FCF) + PV(Terminal Value)
 ### 1.2 Monte Carlo Simulation
 
 Monte Carlo simulation samples probability distributions for key parameters:
-- Revenue growth rates (mean ± {self.engine.mc_config['distributions']['yoy_growth_sigma'] * 100:.0f}%)
-- Gross margins (mean ± {self.engine.mc_config['distributions']['gross_margin_sigma'] * 100:.0f}%)
-- OpEx ratios (mean ± {self.engine.mc_config['distributions']['opex_ratio_sigma'] * 100:.0f}%)
-- Discount rate (mean ± {self.engine.mc_config['distributions']['discount_rate_sigma'] * 100:.0f}%)
+- Revenue growth rates (mean ± {self.engine.mc_config["distributions"]["yoy_growth_sigma"] * 100:.0f}%)
+- Gross margins (mean ± {self.engine.mc_config["distributions"]["gross_margin_sigma"] * 100:.0f}%)
+- OpEx ratios (mean ± {self.engine.mc_config["distributions"]["opex_ratio_sigma"] * 100:.0f}%)
+- Discount rate (mean ± {self.engine.mc_config["distributions"]["discount_rate_sigma"] * 100:.0f}%)
 
-Runs {mc_results['trials'] if mc_results else 0:,} simulations to generate enterprise value distribution.
+Runs {mc_results["trials"] if mc_results else 0:,} simulations to generate enterprise value distribution.
 
 ### 1.3 Real Options Valuation
 
@@ -461,9 +461,9 @@ Uses Black-Scholes framework adapted for real options valuation.
                 projections = result["projections"]
                 dcf = result["dcf"]
 
-                report += f"""### 2.{['Base', 'High', 'Low'].index(scenario_name) + 1} {scenario_name} Case
+                report += f"""### 2.{["Base", "High", "Low"].index(scenario_name) + 1} {scenario_name} Case
 
-**Enterprise Value:** ${dcf['enterprise_value']:,.0f}
+**Enterprise Value:** ${dcf["enterprise_value"]:,.0f}
 
 **Financial Projections (5-Year):**
 
@@ -475,10 +475,10 @@ Uses Black-Scholes framework adapted for real options valuation.
 
                 report += f"""
 **DCF Components:**
-- PV of FCF (Years 1-5): ${dcf['pv_fcf']:,.0f}
-- Terminal Value: ${dcf['terminal_value']:,.0f}
-- PV of Terminal Value: ${dcf['pv_terminal']:,.0f}
-- **Total Enterprise Value:** ${dcf['enterprise_value']:,.0f}
+- PV of FCF (Years 1-5): ${dcf["pv_fcf"]:,.0f}
+- Terminal Value: ${dcf["terminal_value"]:,.0f}
+- PV of Terminal Value: ${dcf["pv_terminal"]:,.0f}
+- **Total Enterprise Value:** ${dcf["enterprise_value"]:,.0f}
 
 """
 
@@ -488,27 +488,27 @@ Uses Black-Scholes framework adapted for real options valuation.
 
 ## 3. Monte Carlo Simulation Results
 
-**Trials:** {mc_results['trials']:,}
+**Trials:** {mc_results["trials"]:,}
 
 **Enterprise Value Distribution:**
 
 | Percentile | Value ({self.engine.currency}) |
 |------------|-------------------------------|
-| **P10** (Conservative) | ${mc_results['p10']:,.0f} |
-| **P25** | ${mc_results['results'][int(len(mc_results['results']) * 0.25)]:,.0f} |
-| **P50** (Median) | ${mc_results['p50']:,.0f} |
-| **P75** | ${mc_results['results'][int(len(mc_results['results']) * 0.75)]:,.0f} |
-| **P90** (Optimistic) | ${mc_results['p90']:,.0f} |
+| **P10** (Conservative) | ${mc_results["p10"]:,.0f} |
+| **P25** | ${mc_results["results"][int(len(mc_results["results"]) * 0.25)]:,.0f} |
+| **P50** (Median) | ${mc_results["p50"]:,.0f} |
+| **P75** | ${mc_results["results"][int(len(mc_results["results"]) * 0.75)]:,.0f} |
+| **P90** (Optimistic) | ${mc_results["p90"]:,.0f} |
 
 **Summary Statistics:**
-- Mean: ${mc_results['mean']:,.0f}
-- Standard Deviation: ${mc_results['std']:,.0f}
-- Coefficient of Variation: {(mc_results['std'] / mc_results['mean']) * 100:.1f}%
+- Mean: ${mc_results["mean"]:,.0f}
+- Standard Deviation: ${mc_results["std"]:,.0f}
+- Coefficient of Variation: {(mc_results["std"] / mc_results["mean"]) * 100:.1f}%
 
 **Interpretation:**
-- **50% probability** the enterprise value exceeds ${mc_results['p50']:,.0f}
-- **10% probability** the enterprise value exceeds ${mc_results['p90']:,.0f}
-- **90% confidence interval:** ${mc_results['p10']:,.0f} - ${mc_results['p90']:,.0f}
+- **50% probability** the enterprise value exceeds ${mc_results["p50"]:,.0f}
+- **10% probability** the enterprise value exceeds ${mc_results["p90"]:,.0f}
+- **90% confidence interval:** ${mc_results["p10"]:,.0f} - ${mc_results["p90"]:,.0f}
 
 """
 
@@ -521,17 +521,17 @@ Strategic optionality adds significant value beyond base DCF:
 
 | Option Type | Value ({self.engine.currency}) | Description |
 |-------------|-------------------------------|-------------|
-| **Expansion Option** | ${real_options['expansion_option']:,.0f} | Right to scale into adjacent markets |
-| **Delay Option** | ${real_options['delay_option']:,.0f} | Value of deferring capital deployment |
-| **Licensing Option** | ${real_options['licensing_option']:,.0f} | IP monetization through partnerships |
-| **Total Option Value** | ${real_options['total_option_value']:,.0f} | Sum of strategic options |
+| **Expansion Option** | ${real_options["expansion_option"]:,.0f} | Right to scale into adjacent markets |
+| **Delay Option** | ${real_options["delay_option"]:,.0f} | Value of deferring capital deployment |
+| **Licensing Option** | ${real_options["licensing_option"]:,.0f} | IP monetization through partnerships |
+| **Total Option Value** | ${real_options["total_option_value"]:,.0f} | Sum of strategic options |
 
-**Option Value as % of Base EV:** {real_options['uplift_pct']:.1f}%
+**Option Value as % of Base EV:** {real_options["uplift_pct"]:.1f}%
 
 **Combined Valuation:**
 - Base Case DCF: ${base_ev:,.0f}
-- Real Options Uplift: ${real_options['total_option_value']:,.0f}
-- **Total with Options:** ${base_ev + real_options['total_option_value']:,.0f}
+- Real Options Uplift: ${real_options["total_option_value"]:,.0f}
+- **Total with Options:** ${base_ev + real_options["total_option_value"]:,.0f}
 
 ---
 
@@ -551,9 +551,9 @@ Strategic optionality adds significant value beyond base DCF:
 
 | Growth Scenario | Year 5 Revenue | Enterprise Value | Change |
 |-----------------|----------------|------------------|--------|
-| High (+30%) | ${scenarios_results.get('High', {}).get('projections', [{}])[-1].get('revenue', 0):,.0f} | ${scenarios_results.get('High', {}).get('dcf', {}).get('enterprise_value', 0):,.0f} | {((scenarios_results.get('High', {}).get('dcf', {}).get('enterprise_value', 0) / base_ev - 1) * 100) if base_ev > 0 else 0:.0f}% |
-| Base | ${scenarios_results.get('Base', {}).get('projections', [{}])[-1].get('revenue', 0):,.0f} | ${base_ev:,.0f} | 0% |
-| Low (-30%) | ${scenarios_results.get('Low', {}).get('projections', [{}])[-1].get('revenue', 0):,.0f} | ${scenarios_results.get('Low', {}).get('dcf', {}).get('enterprise_value', 0):,.0f} | {((scenarios_results.get('Low', {}).get('dcf', {}).get('enterprise_value', 0) / base_ev - 1) * 100) if base_ev > 0 else 0:.0f}% |
+| High (+30%) | ${scenarios_results.get("High", {}).get("projections", [{}])[-1].get("revenue", 0):,.0f} | ${scenarios_results.get("High", {}).get("dcf", {}).get("enterprise_value", 0):,.0f} | {((scenarios_results.get("High", {}).get("dcf", {}).get("enterprise_value", 0) / base_ev - 1) * 100) if base_ev > 0 else 0:.0f}% |
+| Base | ${scenarios_results.get("Base", {}).get("projections", [{}])[-1].get("revenue", 0):,.0f} | ${base_ev:,.0f} | 0% |
+| Low (-30%) | ${scenarios_results.get("Low", {}).get("projections", [{}])[-1].get("revenue", 0):,.0f} | ${scenarios_results.get("Low", {}).get("dcf", {}).get("enterprise_value", 0):,.0f} | {((scenarios_results.get("Low", {}).get("dcf", {}).get("enterprise_value", 0) / base_ev - 1) * 100) if base_ev > 0 else 0:.0f}% |
 
 ### 5.2 Tornado Chart (ASCII)
 
@@ -628,7 +628,7 @@ Terminal Growth     |████████| ±8%
 
 | Date | Version | Changes | Author |
 |------|---------|---------|--------|
-| {timestamp.strftime('%Y-%m-%d')} | 1.0 | Initial automated valuation report | QuASIM Valuation Engine |
+| {timestamp.strftime("%Y-%m-%d")} | 1.0 | Initial automated valuation report | QuASIM Valuation Engine |
 
 ---
 
@@ -702,10 +702,7 @@ def main():
     print(f"Loading config from: {config_path}")
 
     with open(config_path) as f:
-        if yaml:
-            config = yaml.safe_load(f)
-        else:
-            config = MinimalYAMLParser.load(f)
+        config = yaml.safe_load(f) if yaml else MinimalYAMLParser.load(f)
 
     # Create engine and generate report
     engine = ValuationEngine(config)

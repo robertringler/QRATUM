@@ -1,0 +1,101 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+701,Computer Vision,Vision-based object detection for autonomous systems using ai & autonomous systems approaches,D8,0.91,0.93,Deep learning;Sensor fusion,D20,QStack,1,simulation
+702,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.84,0.79,,D11,QStack,1,model
+703,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.75,0.78,,D11;D3,QStack,1,analysis
+704,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.85,0.93,,D3,QStack,1,optimization
+705,Sensor Fusion,Multi-sensor fusion for tracking applications using ai & autonomous systems approaches,D8,0.75,0.82,,D20,QStack,1,design
+706,Computer Vision,Vision-based motion tracking for autonomous systems using ai & autonomous systems approaches,D8,0.7,0.85,,D11,QStack,1,prediction
+707,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.78,0.82,,D3;D6,QStack,1,simulation
+708,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.78,0.92,,D3,QStack,1,model
+709,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.94,0.7,,D20,QStack,1,analysis
+710,Sensor Fusion,Multi-sensor fusion for localization applications using ai & autonomous systems approaches,D8,0.93,0.81,,D11,QStack,1,optimization
+711,Computer Vision,Vision-based scene understanding for autonomous systems using ai & autonomous systems approaches,D8,0.81,0.84,,D20;D6,QStack,1,design
+712,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.81,0.77,,D11;D3,QStack,1,prediction
+713,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.86,0.84,,D11,QStack,1,simulation
+714,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.88,0.77,,D3,QStack,1,model
+715,Sensor Fusion,Multi-sensor fusion for recognition applications using ai & autonomous systems approaches,D8,0.95,0.87,Deep learning;Sensor fusion,D11,QStack,1,analysis
+716,Computer Vision,Vision-based object detection for autonomous systems using ai & autonomous systems approaches,D8,0.81,0.74,,D3;D20,QStack,1,optimization
+717,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.88,0.92,,D6,QStack,1,design
+718,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.89,0.82,,D20,QStack,1,prediction
+719,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.73,0.94,,D11;D6,QStack,1,simulation
+720,Sensor Fusion,Multi-sensor fusion for tracking applications using ai & autonomous systems approaches,D8,0.92,0.9,,D20;D3,QStack,1,model
+721,Computer Vision,Vision-based motion tracking for autonomous systems using ai & autonomous systems approaches,D8,0.94,0.69,,D20,QStack,1,analysis
+722,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.91,0.87,,D3,QStack,1,optimization
+723,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.7,0.77,,D11,QStack,1,design
+724,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.83,0.71,,D6,QStack,1,prediction
+725,Sensor Fusion,Multi-sensor fusion for localization applications using ai & autonomous systems approaches,D8,0.87,0.9,,D20,QStack,1,simulation
+726,Computer Vision,Vision-based scene understanding for autonomous systems using ai & autonomous systems approaches,D8,0.89,0.91,,D6;D11,QStack,1,model
+727,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.82,0.77,,D6;D11,QStack,1,analysis
+728,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.9,0.87,,D3;D6,QStack,1,optimization
+729,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.96,0.88,Deep learning;Sensor fusion,D6,QStack,1,design
+730,Sensor Fusion,Multi-sensor fusion for recognition applications using ai & autonomous systems approaches,D8,0.73,0.79,,D20;D11,QStack,1,prediction
+731,Computer Vision,Vision-based object detection for autonomous systems using ai & autonomous systems approaches,D8,0.93,0.79,,D11;D3,QStack,2,simulation
+732,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.92,0.92,,D11;D3,QStack,2,model
+733,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.86,0.91,,D11;D3,QStack,2,analysis
+734,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.84,0.71,,D6,QStack,2,optimization
+735,Sensor Fusion,Multi-sensor fusion for tracking applications using ai & autonomous systems approaches,D8,0.87,0.71,,D11,QStack,2,design
+736,Computer Vision,Vision-based motion tracking for autonomous systems using ai & autonomous systems approaches,D8,0.92,0.82,,D6,QStack,2,prediction
+737,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.82,0.93,,D3,QStack,2,simulation
+738,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.92,0.85,,D11,QStack,2,model
+739,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.92,0.9,,D3,QStack,2,analysis
+740,Sensor Fusion,Multi-sensor fusion for localization applications using ai & autonomous systems approaches,D8,0.91,0.87,,D11;D3,QStack,2,optimization
+741,Computer Vision,Vision-based scene understanding for autonomous systems using ai & autonomous systems approaches,D8,0.75,0.87,,D3;D11,QStack,2,design
+742,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.88,0.91,,D20;D11,QStack,2,prediction
+743,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.94,0.86,Deep learning;Sensor fusion,D11,QStack,2,simulation
+744,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.94,0.79,,D11,QStack,2,model
+745,Sensor Fusion,Multi-sensor fusion for recognition applications using ai & autonomous systems approaches,D8,0.71,0.92,,D3;D20,QStack,2,analysis
+746,Computer Vision,Vision-based object detection for autonomous systems using ai & autonomous systems approaches,D8,0.93,0.72,,D11;D6,QStack,2,optimization
+747,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.91,0.75,,D3,QStack,2,design
+748,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.91,0.83,,D11;D6,QStack,2,prediction
+749,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.79,0.76,,D11;D6,QStack,2,simulation
+750,Sensor Fusion,Multi-sensor fusion for tracking applications using ai & autonomous systems approaches,D8,0.8,0.77,,D6,QStack,2,model
+751,Computer Vision,Vision-based motion tracking for autonomous systems using ai & autonomous systems approaches,D8,0.89,0.82,,D20,QStack,2,analysis
+752,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.84,0.78,,D6;D20,QStack,2,optimization
+753,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.71,0.84,,D6,QStack,2,design
+754,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.93,0.85,,D3;D11,QStack,2,prediction
+755,Sensor Fusion,Multi-sensor fusion for localization applications using ai & autonomous systems approaches,D8,0.78,0.74,,D6,QStack,2,simulation
+756,Computer Vision,Vision-based scene understanding for autonomous systems using ai & autonomous systems approaches,D8,0.89,0.84,,D11,QStack,2,model
+757,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.97,0.86,Deep learning;Sensor fusion,D20,QStack,2,analysis
+758,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.87,0.76,,D20;D6,QStack,2,optimization
+759,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.71,0.74,,D6;D3,QStack,2,design
+760,Sensor Fusion,Multi-sensor fusion for recognition applications using ai & autonomous systems approaches,D8,0.92,0.74,,D20,QStack,2,prediction
+761,Computer Vision,Vision-based object detection for autonomous systems using ai & autonomous systems approaches,D8,0.85,0.91,,D3;D6,QStack,3,simulation
+762,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.81,0.81,,D6,QStack,3,model
+763,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.74,0.77,,D6;D11,QStack,3,analysis
+764,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.77,0.93,,D20,QStack,3,optimization
+765,Sensor Fusion,Multi-sensor fusion for tracking applications using ai & autonomous systems approaches,D8,0.87,0.77,,D3,QStack,3,design
+766,Computer Vision,Vision-based motion tracking for autonomous systems using ai & autonomous systems approaches,D8,0.77,0.71,,D6,QStack,3,prediction
+767,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.86,0.91,,D6;D20,QStack,3,simulation
+768,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.83,0.91,,D11;D20,QStack,3,model
+769,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.87,0.91,,D11;D6,QStack,3,analysis
+770,Sensor Fusion,Multi-sensor fusion for localization applications using ai & autonomous systems approaches,D8,0.71,0.89,,D20;D11,QStack,3,optimization
+771,Computer Vision,Vision-based scene understanding for autonomous systems using ai & autonomous systems approaches,D8,0.92,0.93,Deep learning;Sensor fusion,D20,QStack,3,design
+772,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.81,0.9,,D6;D3,QStack,3,prediction
+773,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.86,0.88,,D6;D11,QStack,3,simulation
+774,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.8,0.77,,D3,QStack,3,model
+775,Sensor Fusion,Multi-sensor fusion for recognition applications using ai & autonomous systems approaches,D8,0.76,0.74,,D20,QStack,3,analysis
+776,Computer Vision,Vision-based object detection for autonomous systems using ai & autonomous systems approaches,D8,0.71,0.74,,D6;D3,QStack,3,optimization
+777,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.73,0.93,,D3,QStack,3,design
+778,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.83,0.88,,D20;D11,QStack,3,prediction
+779,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.74,0.92,,D6;D11,QStack,3,simulation
+780,Sensor Fusion,Multi-sensor fusion for tracking applications using ai & autonomous systems approaches,D8,0.86,0.78,,D6,QStack,3,model
+781,Computer Vision,Vision-based motion tracking for autonomous systems using ai & autonomous systems approaches,D8,0.74,0.72,,D11,QStack,3,analysis
+782,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.92,0.93,,D6;D3,QStack,3,optimization
+783,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.85,0.82,,D3;D20,QStack,3,design
+784,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.92,0.9,,D6;D3,QStack,3,prediction
+785,Sensor Fusion,Multi-sensor fusion for localization applications using ai & autonomous systems approaches,D8,0.94,0.92,Deep learning;Sensor fusion,D11;D20,QStack,3,simulation
+786,Computer Vision,Vision-based scene understanding for autonomous systems using ai & autonomous systems approaches,D8,0.71,0.72,,D11;D6,QStack,4,model
+787,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.73,0.94,,D20,QStack,4,analysis
+788,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.94,0.77,,D6,QStack,4,optimization
+789,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.73,0.93,,D3,QStack,4,design
+790,Sensor Fusion,Multi-sensor fusion for recognition applications using ai & autonomous systems approaches,D8,0.76,0.71,,D3;D6,QStack,4,prediction
+791,Computer Vision,Vision-based object detection for autonomous systems using ai & autonomous systems approaches,D8,0.81,0.76,,D3,QStack,4,simulation
+792,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.72,0.76,,D20,QStack,4,model
+793,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.84,0.91,,D11;D3,QStack,4,analysis
+794,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.82,0.74,,D3,QStack,4,optimization
+795,Sensor Fusion,Multi-sensor fusion for tracking applications using ai & autonomous systems approaches,D8,0.91,0.86,,D20,QStack,4,design
+796,Computer Vision,Vision-based motion tracking for autonomous systems using ai & autonomous systems approaches,D8,0.83,0.78,,D11,QStack,4,prediction
+797,Autonomous Navigation,Autonomous Navigation simulation and optimization using ai & autonomous systems approaches,D8,0.76,0.71,,D3,QStack,4,simulation
+798,Reinforcement Learning,Reinforcement Learning simulation and optimization using ai & autonomous systems approaches,D8,0.71,0.7,,D20,QStack,4,model
+799,Decision Systems,Decision Systems simulation and optimization using ai & autonomous systems approaches,D8,0.89,0.9,,D3,QStack,4,analysis
+800,Sensor Fusion,Multi-sensor fusion for localization applications using ai & autonomous systems approaches,D8,0.85,0.94,,D3;D6,QStack,4,optimization

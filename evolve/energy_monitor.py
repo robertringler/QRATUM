@@ -6,7 +6,6 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
 
 
 @dataclass
@@ -70,7 +69,7 @@ class EnergyMonitor:
     ):
         self.max_temp_celsius = max_temp_celsius
         self.max_power_watts = max_power_watts
-        self.telemetry_history: List[ThermalTelemetry] = []
+        self.telemetry_history: list[ThermalTelemetry] = []
         self.throttle_events = 0
 
     def sample_telemetry(
@@ -134,7 +133,7 @@ class EnergyMonitor:
         # Take minimum (most restrictive)
         return min(temp_factor, power_factor)
 
-    def apply_feedback_control(self, telemetry: ThermalTelemetry) -> Dict[str, float]:
+    def apply_feedback_control(self, telemetry: ThermalTelemetry) -> dict[str, float]:
         """
         Apply feedback control algorithm.
         Returns control parameters for throttling/migration.

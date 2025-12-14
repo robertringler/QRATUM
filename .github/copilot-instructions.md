@@ -4,10 +4,104 @@
 
 QuASIM (Quantum-Inspired Autonomous Simulation) is a production-grade quantum simulation platform engineered for regulated industries requiring aerospace certification (DO-178C Level A), defense compliance (NIST 800-53/171, CMMC 2.0 L2, DFARS), and deterministic reproducibility. Built on a hybrid quantum-classical runtime with NVIDIA cuQuantum acceleration, QuASIM delivers GPU-accelerated tensor network simulation and multi-cloud Kubernetes orchestration with 99.95% SLA.
 
+### Repository Context
+
+This repository is a research-grade, production-aspiring simulation and systems platform spanning:
+
+- **QuASIM**: materials, elastomeric, and physics simulation
+- **Qubic**: platform, orchestration, CI/CD, and tooling
+- **Mixed execution paths**: Python + Rust + GPU/CPU
+- **Security-sensitive and compliance-aware workflows**
+
+The repository currently contains multiple draft/WIP pull requests. **Copilot must prioritize stability, correctness, and consolidation over feature expansion.**
+
+## Core Operating Rules (Mandatory)
+
+### 1. No Architectural Expansion
+
+- **DO NOT** introduce new subsystems, abstractions, or frameworks
+- **DO NOT** rename existing modules, classes, or files
+- **DO NOT** refactor unless required to:
+  - Fix a bug
+  - Resolve CI failure
+  - Address security or correctness issues
+- **If a change is not strictly necessary, do not propose it**
+
+### 2. Surgical Changes Only
+
+- Prefer minimal diffs
+- Preserve existing control flow unless broken
+- Fix syntax, logic, validation, and safety issues in place
+- Avoid stylistic rewrites
+- **Security > performance > elegance**
+
+### 3. CI / CodeQL First
+
+Every change must:
+
+- Pass existing CI workflows
+- Be compatible with CodeQL static analysis
+
+Avoid:
+
+- Unsafe subprocess usage
+- Path injection
+- Unvalidated user input
+- Silent exception swallowing
+
+### 4. Deterministic Execution
+
+- No hidden global state
+- No nondeterministic defaults
+- Explicit device handling (CPU vs GPU)
+- Explicit error paths
+- All execution paths must be auditable and reproducible
+
+### 5. Logging Discipline
+
+- No duplicate initialization logs
+- No noisy debug logs by default
+- Logs must convey:
+  - Phase (setup / solve / postprocess)
+  - Device
+  - Backend
+  - Timing boundaries
+- **Logging is for operators and auditors, not developers**
+
+## PR-Specific Directives
+
+### PR #231 — Validate Backend Execution (High Priority)
+
+When operating in this PR context:
+
+- **DO NOT** change architecture
+- **DO NOT** add features
+- **ONLY**:
+  - Fix syntax errors
+  - Resolve CodeQL issues
+  - Ensure CI green
+  - Validate PyMAPDL → QuASIM solver handoff
+
+Preserve the three-file change boundary:
+
+- `evaluation/ansys/bm_001_executor.py`
+- `sdk/ansys/quasim_ansys_adapter.py`
+- `evaluation/ansys/performance_runner.py`
+
+**Task 5 (Code Review & CodeQL) must be treated as blocking.**
+
+### Legacy / Redundant PRs
+
+When encountering multiple PRs touching the same subsystem:
+
+- Identify the latest, most complete implementation
+- Do not merge parallel partial implementations
+- Recommend closure of superseded PRs with technical justification
+
 ## Key Technologies
 
 - **Primary Language**: Python 3.10+ (required minimum)
-- **Secondary Languages**: C++, CUDA, Terraform, YAML
+- **Secondary Languages**: C++, CUDA, Rust, Terraform, YAML
 - **Quantum Framework**: NVIDIA cuQuantum, custom tensor network simulation
 - **Infrastructure**: Kubernetes (EKS/GKE/AKS), Docker, Helm, ArgoCD
 - **Observability**: Prometheus, Grafana, Loki, Tempo
@@ -27,12 +121,25 @@ QuASIM (Quantum-Inspired Autonomous Simulation) is a production-grade quantum si
 - **Import Sorting**: Use isort profile "black" (configured via ruff)
 - **Target Version**: Python 3.10+ features allowed
 
+**Language-Specific Guidance (Python)**:
+
+- Use explicit typing where already present
+- Avoid dynamic attribute injection
+- Prefer dataclasses only if already used in that file
+- Raise explicit exceptions instead of print + return
+
 ### C++ and CUDA
 
 - **Standard**: Follow DO-178C coding standards for safety-critical code
 - **Linting**: Use MISRA-like checks with clang-tidy
 - **Documentation**: Doxygen-style comments for all public APIs
 - **Safety**: Avoid undefined behavior; document all assumptions
+
+### Rust
+
+- No `unsafe` blocks unless already present and justified
+- Prefer explicit error types over `unwrap()`
+- No new dependencies without justification
 
 ### YAML and Terraform
 
@@ -46,6 +153,12 @@ QuASIM (Quantum-Inspired Autonomous Simulation) is a production-grade quantum si
 - **APIs**: Document all public APIs thoroughly
 - **Examples**: Include usage examples for complex features
 - **Updates**: Keep README files synchronized with code changes
+
+**Documentation Rules (Critical)**:
+
+- Documentation must reflect **current code only**
+- Remove speculative, aspirational, or marketing language
+- **No claims** about performance, scale, or production readiness unless empirically enforced by CI
 
 ## Development Workflow
 
@@ -258,6 +371,36 @@ See [AUTO_MERGE_SYSTEM.md](../docs/AUTO_MERGE_SYSTEM.md) for details.
 - **Compliance**: [COMPLIANCE_ASSESSMENT_INDEX.md](../COMPLIANCE_ASSESSMENT_INDEX.md)
 - **Security**: [SECURITY.md](../SECURITY.md)
 - **Code Quality**: [docs/CODE_QUALITY_SUMMARY.md](../docs/CODE_QUALITY_SUMMARY.md)
+
+## Forbidden Actions
+
+Copilot must **NEVER**:
+
+- Invent roadmap features
+- Assume future integrations
+- Rewrite large files "for clarity"
+- Introduce experimental APIs
+- Add TODOs instead of fixing issues
+
+## Success Criteria
+
+A change is successful **ONLY IF**:
+
+- CI passes
+- CodeQL passes
+- Diff is minimal
+- Behavior is deterministic
+- No new surface area is introduced
+
+**If uncertain, do nothing and explain why.**
+
+## Copilot Response Style
+
+- **Be concise**
+- **Be technical**
+- **Justify every change**
+- **Reference exact files and lines**
+- **Prefer correctness over creativity**
 
 ## Important Notes
 

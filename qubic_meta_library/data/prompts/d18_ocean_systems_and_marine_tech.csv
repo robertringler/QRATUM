@@ -1,0 +1,1001 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+5501,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.9,0.87,Ocean modeling;Marine robotics,D20,QNimbus,1,simulation
+5502,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.76,,D11;D5,QNimbus,1,model
+5503,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.82,,D5,QNimbus,1,analysis
+5504,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.92,,D5;D10,QNimbus,1,optimization
+5505,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.76,,D5,QNimbus,1,design
+5506,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.88,0.86,,D10;D5,QNimbus,1,prediction
+5507,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.92,,D11,QNimbus,1,simulation
+5508,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.72,,D11;D5,QNimbus,1,model
+5509,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.78,,D20,QNimbus,1,analysis
+5510,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.74,,D20,QNimbus,1,optimization
+5511,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.79,0.73,,D20;D10,QNimbus,1,design
+5512,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.94,,D20,QNimbus,1,prediction
+5513,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.88,,D11,QNimbus,1,simulation
+5514,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.92,,D10,QNimbus,1,model
+5515,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.71,,D10,QNimbus,1,analysis
+5516,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.82,0.87,,D5,QNimbus,1,optimization
+5517,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.84,,D11,QNimbus,1,design
+5518,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.84,,D10,QNimbus,1,prediction
+5519,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.88,,D11;D5,QNimbus,1,simulation
+5520,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.87,,D11,QNimbus,1,model
+5521,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.72,0.89,,D11;D5,QNimbus,1,analysis
+5522,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.74,,D20,QNimbus,1,optimization
+5523,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.94,,D11;D10,QNimbus,1,design
+5524,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.8,,D20;D5,QNimbus,1,prediction
+5525,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.71,,D11;D20,QNimbus,1,simulation
+5526,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.85,0.89,,D5,QNimbus,1,model
+5527,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.82,,D10,QNimbus,1,analysis
+5528,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.88,,D20,QNimbus,1,optimization
+5529,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.92,,D11;D20,QNimbus,1,design
+5530,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.9,,D20,QNimbus,1,prediction
+5531,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.73,0.71,,D10,QNimbus,1,simulation
+5532,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.78,,D20,QNimbus,1,model
+5533,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.91,,D20,QNimbus,1,analysis
+5534,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.81,,D10;D11,QNimbus,1,optimization
+5535,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.81,,D10;D11,QNimbus,1,design
+5536,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.92,0.86,,D20;D5,QNimbus,1,prediction
+5537,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.68,,D10;D11,QNimbus,1,simulation
+5538,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.73,,D10,QNimbus,1,model
+5539,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.87,,D20,QNimbus,1,analysis
+5540,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.86,,D5,QNimbus,1,optimization
+5541,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.86,0.71,,D10;D20,QNimbus,1,design
+5542,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.92,,D20,QNimbus,1,prediction
+5543,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.71,,D11,QNimbus,1,simulation
+5544,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.78,,D5,QNimbus,1,model
+5545,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.75,,D5,QNimbus,1,analysis
+5546,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.8,0.77,,D5;D20,QNimbus,1,optimization
+5547,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.84,,D20,QNimbus,1,design
+5548,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.68,,D10;D5,QNimbus,1,prediction
+5549,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.85,,D10;D11,QNimbus,1,simulation
+5550,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.69,,D11,QNimbus,1,model
+5551,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.9,0.74,,D20;D11,QNimbus,1,analysis
+5552,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.72,,D5;D10,QNimbus,1,optimization
+5553,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.92,,D11,QNimbus,1,design
+5554,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.76,,D5,QNimbus,1,prediction
+5555,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.71,,D20,QNimbus,1,simulation
+5556,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.94,0.74,,D5,QNimbus,1,model
+5557,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.78,,D20,QNimbus,1,analysis
+5558,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.68,,D5,QNimbus,1,optimization
+5559,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.78,,D20,QNimbus,1,design
+5560,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.76,,D5,QNimbus,1,prediction
+5561,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.74,0.82,,D20,QNimbus,1,simulation
+5562,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.92,,D5,QNimbus,1,model
+5563,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.77,,D10,QNimbus,1,analysis
+5564,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.88,,D11,QNimbus,1,optimization
+5565,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.8,,D10;D5,QNimbus,1,design
+5566,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.87,0.78,,D10,QNimbus,1,prediction
+5567,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.84,,D5,QNimbus,1,simulation
+5568,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.88,,D11,QNimbus,1,model
+5569,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.88,,D5;D10,QNimbus,1,analysis
+5570,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.92,,D5;D10,QNimbus,1,optimization
+5571,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.87,0.71,,D5;D11,QNimbus,1,design
+5572,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.89,,D11;D5,QNimbus,1,prediction
+5573,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.92,,D10;D11,QNimbus,1,simulation
+5574,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.69,,D20;D11,QNimbus,1,model
+5575,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.8,,D10;D20,QNimbus,1,analysis
+5576,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.95,0.75,,D11;D10,QNimbus,1,optimization
+5577,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.82,,D20,QNimbus,1,design
+5578,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.86,,D5,QNimbus,1,prediction
+5579,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.86,,D20;D5,QNimbus,1,simulation
+5580,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.79,,D20,QNimbus,1,model
+5581,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.79,0.74,,D20,QNimbus,1,analysis
+5582,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.71,,D20,QNimbus,1,optimization
+5583,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.85,,D5;D10,QNimbus,1,design
+5584,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.7,,D11;D20,QNimbus,1,prediction
+5585,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.79,,D5;D10,QNimbus,1,simulation
+5586,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.94,0.82,,D11;D20,QNimbus,1,model
+5587,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.81,,D5,QNimbus,1,analysis
+5588,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.8,,D11,QNimbus,1,optimization
+5589,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.8,,D11,QNimbus,1,design
+5590,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.9,,D20,QNimbus,1,prediction
+5591,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.88,0.73,,D5,QNimbus,1,simulation
+5592,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.72,,D5,QNimbus,1,model
+5593,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.92,,D5,QNimbus,1,analysis
+5594,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.71,,D5,QNimbus,1,optimization
+5595,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.77,,D10,QNimbus,1,design
+5596,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.93,0.92,,D10,QNimbus,1,prediction
+5597,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.7,,D5,QNimbus,1,simulation
+5598,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.82,,D20,QNimbus,1,model
+5599,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.83,,D5;D20,QNimbus,1,analysis
+5600,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.89,,D5,QNimbus,1,optimization
+5601,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.82,0.89,,D20;D11,QNimbus,1,design
+5602,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.94,,D11,QNimbus,1,prediction
+5603,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.87,,D20;D11,QNimbus,1,simulation
+5604,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.69,,D5,QNimbus,1,model
+5605,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.85,,D10;D11,QNimbus,1,analysis
+5606,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.76,0.84,,D11,QNimbus,1,optimization
+5607,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.69,,D10;D11,QNimbus,1,design
+5608,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.92,,D20,QNimbus,1,prediction
+5609,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.73,,D20,QNimbus,1,simulation
+5610,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.92,,D11;D20,QNimbus,1,model
+5611,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.81,0.71,,D20,QNimbus,1,analysis
+5612,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.85,,D11;D5,QNimbus,1,optimization
+5613,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.87,,D5,QNimbus,1,design
+5614,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.84,,D11,QNimbus,1,prediction
+5615,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.94,,D11,QNimbus,1,simulation
+5616,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.87,0.69,,D20;D11,QNimbus,1,model
+5617,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.85,,D20,QNimbus,1,analysis
+5618,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.86,,D11;D20,QNimbus,1,optimization
+5619,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.82,,D20,QNimbus,1,design
+5620,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.84,,D20;D5,QNimbus,1,prediction
+5621,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.72,0.86,,D11,QNimbus,1,simulation
+5622,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.74,,D10,QNimbus,1,model
+5623,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.81,,D10,QNimbus,1,analysis
+5624,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.68,,D20,QNimbus,1,optimization
+5625,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.87,,D10;D11,QNimbus,1,design
+5626,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.83,0.91,,D11;D10,QNimbus,1,prediction
+5627,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.76,,D5,QNimbus,1,simulation
+5628,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.93,,D10,QNimbus,1,model
+5629,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.83,,D20,QNimbus,1,analysis
+5630,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.76,,D10,QNimbus,1,optimization
+5631,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.71,0.9,,D5,QNimbus,1,design
+5632,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.68,,D5,QNimbus,1,prediction
+5633,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.73,,D5,QNimbus,1,simulation
+5634,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.78,,D10,QNimbus,1,model
+5635,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.68,,D20;D11,QNimbus,1,analysis
+5636,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.7,0.74,,D20,QNimbus,1,optimization
+5637,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.84,,D10;D5,QNimbus,1,design
+5638,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.8,,D5,QNimbus,1,prediction
+5639,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.75,,D10,QNimbus,1,simulation
+5640,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.78,,D10,QNimbus,1,model
+5641,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.89,0.87,,D5,QNimbus,1,analysis
+5642,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.91,,D20,QNimbus,1,optimization
+5643,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.95,Ocean modeling;Marine robotics,D20,QNimbus,1,design
+5644,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.73,,D10,QNimbus,1,prediction
+5645,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.78,,D10;D5,QNimbus,1,simulation
+5646,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.85,0.91,,D20,QNimbus,1,model
+5647,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.87,,D5,QNimbus,1,analysis
+5648,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.9,,D20;D10,QNimbus,1,optimization
+5649,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.85,,D11,QNimbus,1,design
+5650,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.78,,D20;D5,QNimbus,1,prediction
+5651,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.71,0.77,,D20,QNimbus,1,simulation
+5652,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.79,,D5,QNimbus,1,model
+5653,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.69,,D11;D10,QNimbus,1,analysis
+5654,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.74,,D11;D5,QNimbus,1,optimization
+5655,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.85,,D11,QNimbus,1,design
+5656,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.9,0.82,,D20,QNimbus,1,prediction
+5657,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.69,,D5,QNimbus,1,simulation
+5658,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.75,,D10;D5,QNimbus,1,model
+5659,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.78,,D11,QNimbus,1,analysis
+5660,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.82,,D11,QNimbus,1,optimization
+5661,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.9,0.69,,D20,QNimbus,1,design
+5662,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.83,,D5,QNimbus,1,prediction
+5663,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.73,,D20;D10,QNimbus,1,simulation
+5664,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.87,,D5,QNimbus,1,model
+5665,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.85,,D10,QNimbus,1,analysis
+5666,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.93,0.83,,D5,QNimbus,1,optimization
+5667,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.88,,D5,QNimbus,1,design
+5668,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.74,,D5;D20,QNimbus,1,prediction
+5669,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.89,,D5,QNimbus,1,simulation
+5670,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.83,,D20;D10,QNimbus,1,model
+5671,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.81,0.85,,D20,QNimbus,1,analysis
+5672,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.94,,D11;D5,QNimbus,1,optimization
+5673,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.87,,D5,QNimbus,1,design
+5674,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.72,,D11;D10,QNimbus,1,prediction
+5675,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.88,,D10;D11,QNimbus,1,simulation
+5676,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.73,0.84,,D20;D11,QNimbus,1,model
+5677,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.88,,D20,QNimbus,1,analysis
+5678,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.76,,D10,QNimbus,1,optimization
+5679,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.8,,D5;D10,QNimbus,1,design
+5680,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.77,,D11,QNimbus,1,prediction
+5681,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.89,0.88,,D11,QNimbus,1,simulation
+5682,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.73,,D11;D5,QNimbus,1,model
+5683,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.76,,D11,QNimbus,1,analysis
+5684,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.91,,D5;D20,QNimbus,1,optimization
+5685,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.74,,D20,QNimbus,1,design
+5686,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.78,0.89,,D20,QNimbus,1,prediction
+5687,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.89,,D11,QNimbus,1,simulation
+5688,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.91,,D10,QNimbus,1,model
+5689,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.83,,D20,QNimbus,1,analysis
+5690,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.93,,D5,QNimbus,1,optimization
+5691,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.85,0.73,,D11;D5,QNimbus,1,design
+5692,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.9,,D5,QNimbus,1,prediction
+5693,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.82,,D5;D11,QNimbus,1,simulation
+5694,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.93,,D20,QNimbus,1,model
+5695,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.89,,D10;D11,QNimbus,1,analysis
+5696,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.75,0.8,,D10,QNimbus,1,optimization
+5697,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.77,,D5;D20,QNimbus,1,design
+5698,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.75,,D20,QNimbus,1,prediction
+5699,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.93,,D11,QNimbus,1,simulation
+5700,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.79,,D20,QNimbus,1,model
+5701,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.86,0.69,,D20;D10,QNimbus,1,analysis
+5702,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.9,,D10,QNimbus,1,optimization
+5703,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.85,,D10,QNimbus,1,design
+5704,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.75,,D20;D11,QNimbus,1,prediction
+5705,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.76,,D10;D11,QNimbus,1,simulation
+5706,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.76,0.93,,D20,QNimbus,1,model
+5707,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.88,,D20;D10,QNimbus,1,analysis
+5708,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.83,,D10,QNimbus,1,optimization
+5709,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.84,,D10,QNimbus,1,design
+5710,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.72,,D11,QNimbus,1,prediction
+5711,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.94,0.78,,D11,QNimbus,1,simulation
+5712,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.79,,D10;D20,QNimbus,1,model
+5713,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.81,,D10,QNimbus,1,analysis
+5714,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.86,,D5,QNimbus,1,optimization
+5715,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.81,,D11,QNimbus,1,design
+5716,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.92,0.7,,D10,QNimbus,1,prediction
+5717,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.88,,D20,QNimbus,1,simulation
+5718,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.85,,D11;D5,QNimbus,1,model
+5719,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.93,,D20,QNimbus,1,analysis
+5720,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.7,,D20,QNimbus,1,optimization
+5721,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.74,0.84,,D10;D5,QNimbus,1,design
+5722,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.85,,D5,QNimbus,1,prediction
+5723,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.92,,D20,QNimbus,1,simulation
+5724,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.86,,D10,QNimbus,1,model
+5725,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.7,,D11,QNimbus,1,analysis
+5726,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.73,0.91,,D5;D10,QNimbus,1,optimization
+5727,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.71,,D11,QNimbus,1,design
+5728,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.92,,D5;D10,QNimbus,1,prediction
+5729,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.93,,D10,QNimbus,1,simulation
+5730,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.75,,D10,QNimbus,1,model
+5731,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.84,0.71,,D10,QNimbus,1,analysis
+5732,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.71,,D20,QNimbus,1,optimization
+5733,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.7,,D11,QNimbus,1,design
+5734,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.79,,D10;D5,QNimbus,1,prediction
+5735,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.72,,D10,QNimbus,1,simulation
+5736,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.87,0.84,,D10,QNimbus,1,model
+5737,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.81,,D10,QNimbus,1,analysis
+5738,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.75,,D20;D5,QNimbus,1,optimization
+5739,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.69,,D5;D20,QNimbus,1,design
+5740,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.73,,D5,QNimbus,1,prediction
+5741,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.81,0.89,,D11;D20,QNimbus,1,simulation
+5742,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.86,,D11,QNimbus,1,model
+5743,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.84,,D5;D20,QNimbus,1,analysis
+5744,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.74,,D11,QNimbus,1,optimization
+5745,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.73,,D11,QNimbus,1,design
+5746,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.74,0.81,,D5,QNimbus,1,prediction
+5747,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.7,,D5;D20,QNimbus,1,simulation
+5748,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.92,,D10,QNimbus,1,model
+5749,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.82,,D5;D10,QNimbus,1,analysis
+5750,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.74,,D5;D20,QNimbus,1,optimization
+5751,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.72,0.75,,D10;D20,QNimbus,1,design
+5752,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.79,,D10,QNimbus,1,prediction
+5753,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.93,,D10,QNimbus,1,simulation
+5754,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.79,,D10,QNimbus,1,model
+5755,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.78,,D20,QNimbus,1,analysis
+5756,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.72,0.72,,D20,QNimbus,1,optimization
+5757,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.75,,D11,QNimbus,1,design
+5758,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.71,,D5,QNimbus,1,prediction
+5759,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.71,,D5,QNimbus,1,simulation
+5760,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.9,,D20,QNimbus,1,model
+5761,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.93,0.81,,D5;D20,QNimbus,1,analysis
+5762,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.76,,D11,QNimbus,1,optimization
+5763,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.8,,D11;D5,QNimbus,1,design
+5764,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.84,,D20,QNimbus,1,prediction
+5765,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.85,,D10;D5,QNimbus,1,simulation
+5766,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.95,0.78,,D20;D10,QNimbus,1,model
+5767,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.94,,D20,QNimbus,1,analysis
+5768,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.79,,D10,QNimbus,1,optimization
+5769,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.8,,D20;D11,QNimbus,1,design
+5770,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.84,,D20;D10,QNimbus,1,prediction
+5771,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.77,0.7,,D20,QNimbus,1,simulation
+5772,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.85,,D5;D20,QNimbus,1,model
+5773,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.76,,D5,QNimbus,1,analysis
+5774,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.93,,D10,QNimbus,1,optimization
+5775,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.84,,D20,QNimbus,1,design
+5776,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.79,0.81,,D5,QNimbus,1,prediction
+5777,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.69,,D10,QNimbus,1,simulation
+5778,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.7,,D20,QNimbus,1,model
+5779,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.69,,D5,QNimbus,1,analysis
+5780,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.84,,D10;D11,QNimbus,1,optimization
+5781,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.83,0.8,,D10,QNimbus,1,design
+5782,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.89,,D10;D11,QNimbus,1,prediction
+5783,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.84,,D5,QNimbus,1,simulation
+5784,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.81,,D5,QNimbus,1,model
+5785,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.93,Ocean modeling;Marine robotics,D10;D11,QNimbus,1,analysis
+5786,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.89,0.68,,D5,QNimbus,1,optimization
+5787,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.72,,D11,QNimbus,1,design
+5788,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.71,,D11;D20,QNimbus,1,prediction
+5789,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.88,,D10;D5,QNimbus,1,simulation
+5790,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.8,,D20;D11,QNimbus,1,model
+5791,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.77,0.87,,D5;D11,QNimbus,1,analysis
+5792,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.8,,D10;D5,QNimbus,1,optimization
+5793,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.89,,D10;D20,QNimbus,1,design
+5794,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.81,,D5,QNimbus,1,prediction
+5795,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.88,,D10,QNimbus,1,simulation
+5796,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.84,0.77,,D20,QNimbus,1,model
+5797,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.82,,D10;D11,QNimbus,1,analysis
+5798,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.8,,D5;D10,QNimbus,1,optimization
+5799,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.69,,D10;D5,QNimbus,1,design
+5800,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.79,,D10;D20,QNimbus,1,prediction
+5801,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.9,0.71,,D11;D5,QNimbus,2,simulation
+5802,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.88,,D11;D10,QNimbus,2,model
+5803,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.94,,D20,QNimbus,2,analysis
+5804,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.8,,D5,QNimbus,2,optimization
+5805,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.74,,D10;D11,QNimbus,2,design
+5806,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.77,0.91,,D11,QNimbus,2,prediction
+5807,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.69,,D5,QNimbus,2,simulation
+5808,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.9,,D11,QNimbus,2,model
+5809,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.73,,D5;D11,QNimbus,2,analysis
+5810,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.71,,D10,QNimbus,2,optimization
+5811,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.82,0.69,,D5,QNimbus,2,design
+5812,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.8,,D20,QNimbus,2,prediction
+5813,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.73,,D20,QNimbus,2,simulation
+5814,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.92,,D10,QNimbus,2,model
+5815,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.71,,D11,QNimbus,2,analysis
+5816,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.81,0.79,,D5,QNimbus,2,optimization
+5817,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.77,,D11,QNimbus,2,design
+5818,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.89,,D5;D20,QNimbus,2,prediction
+5819,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.76,,D11,QNimbus,2,simulation
+5820,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.74,,D11,QNimbus,2,model
+5821,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.85,0.72,,D11;D20,QNimbus,2,analysis
+5822,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.82,,D5;D20,QNimbus,2,optimization
+5823,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.88,,D20,QNimbus,2,design
+5824,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.8,,D20,QNimbus,2,prediction
+5825,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.69,,D11;D20,QNimbus,2,simulation
+5826,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.72,0.91,,D11,QNimbus,2,model
+5827,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.79,,D10;D11,QNimbus,2,analysis
+5828,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.85,,D20,QNimbus,2,optimization
+5829,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.77,,D20,QNimbus,2,design
+5830,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.91,,D5,QNimbus,2,prediction
+5831,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.9,0.72,,D5,QNimbus,2,simulation
+5832,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.92,,D20,QNimbus,2,model
+5833,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.81,,D11;D10,QNimbus,2,analysis
+5834,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.76,,D11,QNimbus,2,optimization
+5835,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.73,,D20;D10,QNimbus,2,design
+5836,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.9,0.88,,D20,QNimbus,2,prediction
+5837,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.73,,D10;D5,QNimbus,2,simulation
+5838,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.77,,D20,QNimbus,2,model
+5839,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.91,,D10;D5,QNimbus,2,analysis
+5840,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.72,,D10;D20,QNimbus,2,optimization
+5841,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.93,0.76,,D10,QNimbus,2,design
+5842,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.91,,D11,QNimbus,2,prediction
+5843,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.71,,D11,QNimbus,2,simulation
+5844,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.71,,D10;D11,QNimbus,2,model
+5845,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.77,,D10,QNimbus,2,analysis
+5846,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.93,0.91,,D20;D10,QNimbus,2,optimization
+5847,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.9,,D20,QNimbus,2,design
+5848,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.82,,D10,QNimbus,2,prediction
+5849,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.77,,D10,QNimbus,2,simulation
+5850,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.9,,D5;D10,QNimbus,2,model
+5851,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.89,0.72,,D11,QNimbus,2,analysis
+5852,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.93,,D20;D10,QNimbus,2,optimization
+5853,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.93,,D10;D5,QNimbus,2,design
+5854,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.82,,D5,QNimbus,2,prediction
+5855,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.82,,D5;D20,QNimbus,2,simulation
+5856,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.7,0.79,,D20,QNimbus,2,model
+5857,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.74,,D20,QNimbus,2,analysis
+5858,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.78,,D20;D11,QNimbus,2,optimization
+5859,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.72,,D20,QNimbus,2,design
+5860,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.88,,D20,QNimbus,2,prediction
+5861,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.93,0.93,,D11,QNimbus,2,simulation
+5862,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.71,,D5;D11,QNimbus,2,model
+5863,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.9,,D5;D11,QNimbus,2,analysis
+5864,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.85,,D5,QNimbus,2,optimization
+5865,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.81,,D11,QNimbus,2,design
+5866,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.75,0.77,,D5,QNimbus,2,prediction
+5867,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.89,,D5;D10,QNimbus,2,simulation
+5868,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.79,,D11,QNimbus,2,model
+5869,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.82,,D11,QNimbus,2,analysis
+5870,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.85,,D11,QNimbus,2,optimization
+5871,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.76,0.78,,D10,QNimbus,2,design
+5872,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.83,,D5,QNimbus,2,prediction
+5873,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.93,,D5;D20,QNimbus,2,simulation
+5874,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.71,,D11,QNimbus,2,model
+5875,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.86,,D5,QNimbus,2,analysis
+5876,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.74,0.86,,D20;D10,QNimbus,2,optimization
+5877,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.8,,D10,QNimbus,2,design
+5878,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.92,,D10,QNimbus,2,prediction
+5879,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.71,,D10;D11,QNimbus,2,simulation
+5880,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.85,,D5,QNimbus,2,model
+5881,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.71,0.89,,D20,QNimbus,2,analysis
+5882,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.81,,D5,QNimbus,2,optimization
+5883,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.91,,D5,QNimbus,2,design
+5884,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.73,,D11,QNimbus,2,prediction
+5885,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.76,,D10;D5,QNimbus,2,simulation
+5886,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.94,0.82,,D20,QNimbus,2,model
+5887,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.73,,D11,QNimbus,2,analysis
+5888,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.78,,D11;D10,QNimbus,2,optimization
+5889,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.81,,D5,QNimbus,2,design
+5890,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.92,,D20,QNimbus,2,prediction
+5891,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.77,0.86,,D20;D10,QNimbus,2,simulation
+5892,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.71,,D20;D11,QNimbus,2,model
+5893,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.88,,D20;D11,QNimbus,2,analysis
+5894,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.7,,D10,QNimbus,2,optimization
+5895,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.78,,D5,QNimbus,2,design
+5896,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.87,0.72,,D20;D11,QNimbus,2,prediction
+5897,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.71,,D11,QNimbus,2,simulation
+5898,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.75,,D20,QNimbus,2,model
+5899,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.73,,D10,QNimbus,2,analysis
+5900,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.89,,D5,QNimbus,2,optimization
+5901,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.78,0.75,,D20,QNimbus,2,design
+5902,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.78,,D5;D10,QNimbus,2,prediction
+5903,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.74,,D20,QNimbus,2,simulation
+5904,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.94,,D20;D11,QNimbus,2,model
+5905,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.81,,D5,QNimbus,2,analysis
+5906,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.91,0.89,,D20;D5,QNimbus,2,optimization
+5907,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.79,,D11,QNimbus,2,design
+5908,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.81,,D11,QNimbus,2,prediction
+5909,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.91,,D10,QNimbus,2,simulation
+5910,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.79,,D5,QNimbus,2,model
+5911,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.72,0.8,,D5,QNimbus,2,analysis
+5912,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.8,,D20,QNimbus,2,optimization
+5913,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.69,,D10,QNimbus,2,design
+5914,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.9,,D5;D10,QNimbus,2,prediction
+5915,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.89,,D11,QNimbus,2,simulation
+5916,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.74,0.89,,D20;D10,QNimbus,2,model
+5917,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.91,,D10,QNimbus,2,analysis
+5918,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.74,,D10,QNimbus,2,optimization
+5919,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.86,,D10,QNimbus,2,design
+5920,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.71,,D10;D5,QNimbus,2,prediction
+5921,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.75,0.76,,D10,QNimbus,2,simulation
+5922,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.85,,D5;D20,QNimbus,2,model
+5923,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.68,,D5;D20,QNimbus,2,analysis
+5924,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.92,,D11,QNimbus,2,optimization
+5925,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.84,,D11,QNimbus,2,design
+5926,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.95,0.76,,D5,QNimbus,2,prediction
+5927,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.97,0.85,Ocean modeling;Marine robotics,D20,QNimbus,2,simulation
+5928,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.83,,D11,QNimbus,2,model
+5929,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.71,,D20,QNimbus,2,analysis
+5930,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.92,,D10;D5,QNimbus,2,optimization
+5931,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.78,0.78,,D5;D11,QNimbus,2,design
+5932,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.82,,D10,QNimbus,2,prediction
+5933,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.75,,D20,QNimbus,2,simulation
+5934,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.75,,D5,QNimbus,2,model
+5935,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.88,,D10,QNimbus,2,analysis
+5936,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.77,0.78,,D5,QNimbus,2,optimization
+5937,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.91,,D11,QNimbus,2,design
+5938,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.85,,D10,QNimbus,2,prediction
+5939,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.69,,D20;D5,QNimbus,2,simulation
+5940,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.77,,D5,QNimbus,2,model
+5941,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.8,0.91,,D11,QNimbus,2,analysis
+5942,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.92,,D20,QNimbus,2,optimization
+5943,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.8,,D10;D20,QNimbus,2,design
+5944,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.7,,D20;D5,QNimbus,2,prediction
+5945,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.82,,D10;D20,QNimbus,2,simulation
+5946,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.83,0.9,,D20,QNimbus,2,model
+5947,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.88,,D11;D5,QNimbus,2,analysis
+5948,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.76,,D11;D10,QNimbus,2,optimization
+5949,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.91,,D20,QNimbus,2,design
+5950,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.8,,D10,QNimbus,2,prediction
+5951,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.73,0.8,,D10,QNimbus,2,simulation
+5952,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.68,,D5,QNimbus,2,model
+5953,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.87,,D11,QNimbus,2,analysis
+5954,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.88,,D10;D20,QNimbus,2,optimization
+5955,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.82,,D11,QNimbus,2,design
+5956,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.77,0.88,,D20;D11,QNimbus,2,prediction
+5957,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.81,,D20;D10,QNimbus,2,simulation
+5958,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.88,,D5,QNimbus,2,model
+5959,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.94,,D11;D5,QNimbus,2,analysis
+5960,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.9,,D10;D11,QNimbus,2,optimization
+5961,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.75,0.8,,D11;D5,QNimbus,2,design
+5962,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.9,,D5;D20,QNimbus,2,prediction
+5963,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.88,,D11,QNimbus,2,simulation
+5964,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.88,,D10,QNimbus,2,model
+5965,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.92,,D10,QNimbus,2,analysis
+5966,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.81,0.73,,D11;D20,QNimbus,2,optimization
+5967,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.92,,D20,QNimbus,2,design
+5968,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.81,,D20,QNimbus,2,prediction
+5969,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.88,,D20;D10,QNimbus,2,simulation
+5970,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.81,,D20;D10,QNimbus,2,model
+5971,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.84,0.69,,D11;D5,QNimbus,2,analysis
+5972,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.85,,D20;D11,QNimbus,2,optimization
+5973,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.86,,D10;D11,QNimbus,2,design
+5974,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.81,,D11,QNimbus,2,prediction
+5975,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.72,,D5;D10,QNimbus,2,simulation
+5976,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.78,0.75,,D10;D20,QNimbus,2,model
+5977,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.92,,D11,QNimbus,2,analysis
+5978,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.92,,D5;D11,QNimbus,2,optimization
+5979,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.79,,D11;D5,QNimbus,2,design
+5980,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.69,,D11,QNimbus,2,prediction
+5981,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.94,0.86,,D5,QNimbus,2,simulation
+5982,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.92,,D10,QNimbus,2,model
+5983,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.82,,D5,QNimbus,2,analysis
+5984,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.71,,D20,QNimbus,2,optimization
+5985,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.8,,D11,QNimbus,2,design
+5986,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.83,0.75,,D11,QNimbus,2,prediction
+5987,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.7,,D5;D20,QNimbus,2,simulation
+5988,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.85,,D10;D20,QNimbus,2,model
+5989,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.86,,D10;D11,QNimbus,2,analysis
+5990,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.73,,D20,QNimbus,2,optimization
+5991,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.81,0.79,,D5,QNimbus,2,design
+5992,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.78,,D20,QNimbus,2,prediction
+5993,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.72,,D10,QNimbus,2,simulation
+5994,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.71,,D10,QNimbus,2,model
+5995,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.7,,D10,QNimbus,2,analysis
+5996,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.71,0.7,,D5,QNimbus,2,optimization
+5997,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.85,,D11,QNimbus,2,design
+5998,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.74,,D20,QNimbus,2,prediction
+5999,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.72,,D5;D10,QNimbus,2,simulation
+6000,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.76,,D20,QNimbus,2,model
+6001,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.87,0.78,,D20;D11,QNimbus,2,analysis
+6002,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.81,,D11,QNimbus,2,optimization
+6003,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.79,,D20;D11,QNimbus,2,design
+6004,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.88,,D5;D20,QNimbus,2,prediction
+6005,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.71,,D11;D5,QNimbus,2,simulation
+6006,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.78,0.77,,D11;D20,QNimbus,2,model
+6007,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.74,,D10;D20,QNimbus,2,analysis
+6008,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.75,,D5;D11,QNimbus,2,optimization
+6009,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.84,,D10;D5,QNimbus,2,design
+6010,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.76,,D20,QNimbus,2,prediction
+6011,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.75,0.85,,D11,QNimbus,2,simulation
+6012,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.89,,D11;D10,QNimbus,2,model
+6013,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.91,,D10,QNimbus,2,analysis
+6014,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.71,,D20;D11,QNimbus,2,optimization
+6015,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.68,,D5,QNimbus,2,design
+6016,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.83,0.79,,D5,QNimbus,2,prediction
+6017,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.88,,D5,QNimbus,2,simulation
+6018,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.78,,D20;D10,QNimbus,2,model
+6019,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.7,,D10;D11,QNimbus,2,analysis
+6020,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.77,,D11,QNimbus,2,optimization
+6021,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.84,0.94,,D11,QNimbus,2,design
+6022,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.74,,D10;D11,QNimbus,2,prediction
+6023,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.74,,D11,QNimbus,2,simulation
+6024,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.8,,D10;D5,QNimbus,2,model
+6025,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.87,,D11,QNimbus,2,analysis
+6026,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.75,0.86,,D11;D5,QNimbus,2,optimization
+6027,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.91,,D11;D5,QNimbus,2,design
+6028,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.76,,D5,QNimbus,2,prediction
+6029,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.87,,D11;D20,QNimbus,2,simulation
+6030,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.77,,D11,QNimbus,2,model
+6031,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.79,0.68,,D5;D11,QNimbus,2,analysis
+6032,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.76,,D5,QNimbus,2,optimization
+6033,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.74,,D11,QNimbus,2,design
+6034,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.8,,D10,QNimbus,2,prediction
+6035,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.68,,D11,QNimbus,2,simulation
+6036,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.93,0.89,,D10;D11,QNimbus,2,model
+6037,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.93,,D5;D10,QNimbus,2,analysis
+6038,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.78,,D10,QNimbus,2,optimization
+6039,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.69,,D20;D5,QNimbus,2,design
+6040,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.69,,D5,QNimbus,2,prediction
+6041,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.93,0.69,,D11,QNimbus,2,simulation
+6042,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.81,,D20,QNimbus,2,model
+6043,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.71,,D10,QNimbus,2,analysis
+6044,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.84,,D11,QNimbus,2,optimization
+6045,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.8,,D5,QNimbus,2,design
+6046,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.74,0.73,,D20;D5,QNimbus,2,prediction
+6047,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.71,,D20;D10,QNimbus,2,simulation
+6048,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.89,,D10,QNimbus,2,model
+6049,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.87,,D10,QNimbus,2,analysis
+6050,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.83,,D11;D5,QNimbus,2,optimization
+6051,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.84,0.83,,D20;D11,QNimbus,2,design
+6052,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.73,,D5,QNimbus,2,prediction
+6053,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.9,,D10,QNimbus,2,simulation
+6054,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.82,,D11,QNimbus,2,model
+6055,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.81,,D10,QNimbus,2,analysis
+6056,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.71,0.76,,D20,QNimbus,2,optimization
+6057,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.76,,D20,QNimbus,2,design
+6058,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.9,,D11;D5,QNimbus,2,prediction
+6059,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.85,,D20,QNimbus,2,simulation
+6060,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.94,,D11;D20,QNimbus,2,model
+6061,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.82,0.77,,D20;D10,QNimbus,2,analysis
+6062,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.83,,D20;D10,QNimbus,2,optimization
+6063,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.69,,D20,QNimbus,2,design
+6064,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.7,,D20,QNimbus,2,prediction
+6065,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.88,,D20;D5,QNimbus,2,simulation
+6066,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.8,0.68,,D20,QNimbus,2,model
+6067,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.77,,D5,QNimbus,2,analysis
+6068,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.75,,D20,QNimbus,2,optimization
+6069,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.94,Ocean modeling;Marine robotics,D5;D11,QNimbus,2,design
+6070,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.78,,D20,QNimbus,2,prediction
+6071,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.84,0.8,,D20,QNimbus,2,simulation
+6072,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.92,,D20,QNimbus,2,model
+6073,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.69,,D10,QNimbus,2,analysis
+6074,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.73,,D10,QNimbus,2,optimization
+6075,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.89,,D20;D10,QNimbus,2,design
+6076,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.85,0.8,,D20,QNimbus,2,prediction
+6077,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.75,,D5,QNimbus,2,simulation
+6078,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.69,,D5,QNimbus,2,model
+6079,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.73,,D20;D11,QNimbus,2,analysis
+6080,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.78,,D10,QNimbus,2,optimization
+6081,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.8,0.92,,D10,QNimbus,2,design
+6082,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.81,,D5;D11,QNimbus,2,prediction
+6083,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.75,,D20,QNimbus,2,simulation
+6084,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.92,,D20;D10,QNimbus,2,model
+6085,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.84,,D10,QNimbus,2,analysis
+6086,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.77,0.93,,D10,QNimbus,2,optimization
+6087,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.88,,D20,QNimbus,2,design
+6088,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.72,,D20;D10,QNimbus,2,prediction
+6089,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.84,,D10,QNimbus,2,simulation
+6090,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.89,,D11,QNimbus,2,model
+6091,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.75,0.71,,D10,QNimbus,2,analysis
+6092,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.81,,D20;D10,QNimbus,2,optimization
+6093,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.71,,D10,QNimbus,2,design
+6094,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.75,,D20,QNimbus,2,prediction
+6095,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.82,,D11,QNimbus,2,simulation
+6096,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.74,0.82,,D5;D20,QNimbus,2,model
+6097,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.72,,D10,QNimbus,2,analysis
+6098,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.83,,D10,QNimbus,2,optimization
+6099,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.73,,D10,QNimbus,2,design
+6100,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.85,,D11,QNimbus,2,prediction
+6101,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.72,0.7,,D20,QNimbus,3,simulation
+6102,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.69,,D10;D11,QNimbus,3,model
+6103,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.91,,D20,QNimbus,3,analysis
+6104,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.78,,D10,QNimbus,3,optimization
+6105,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.92,,D11,QNimbus,3,design
+6106,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.91,0.71,,D5;D10,QNimbus,3,prediction
+6107,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.82,,D10,QNimbus,3,simulation
+6108,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.86,,D11;D10,QNimbus,3,model
+6109,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.76,,D5;D10,QNimbus,3,analysis
+6110,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.72,,D10,QNimbus,3,optimization
+6111,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.78,0.93,,D20,QNimbus,3,design
+6112,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.91,,D20,QNimbus,3,prediction
+6113,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.81,,D5,QNimbus,3,simulation
+6114,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.78,,D11,QNimbus,3,model
+6115,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.8,,D11;D20,QNimbus,3,analysis
+6116,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.84,0.76,,D11,QNimbus,3,optimization
+6117,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.76,,D20;D10,QNimbus,3,design
+6118,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.84,,D10,QNimbus,3,prediction
+6119,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.78,,D20;D5,QNimbus,3,simulation
+6120,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.8,,D5;D20,QNimbus,3,model
+6121,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.79,0.91,,D20;D11,QNimbus,3,analysis
+6122,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.84,,D5;D10,QNimbus,3,optimization
+6123,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.76,,D10;D5,QNimbus,3,design
+6124,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.82,,D5,QNimbus,3,prediction
+6125,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.87,,D5,QNimbus,3,simulation
+6126,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.86,0.72,,D10,QNimbus,3,model
+6127,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.69,,D5,QNimbus,3,analysis
+6128,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.82,,D10;D11,QNimbus,3,optimization
+6129,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.75,,D5;D11,QNimbus,3,design
+6130,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.72,,D11;D20,QNimbus,3,prediction
+6131,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.84,0.7,,D11,QNimbus,3,simulation
+6132,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.93,,D20,QNimbus,3,model
+6133,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.69,,D20,QNimbus,3,analysis
+6134,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.77,,D10,QNimbus,3,optimization
+6135,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.77,,D11;D10,QNimbus,3,design
+6136,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.9,0.71,,D5,QNimbus,3,prediction
+6137,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.71,,D11,QNimbus,3,simulation
+6138,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.91,,D20;D10,QNimbus,3,model
+6139,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.78,,D10,QNimbus,3,analysis
+6140,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.9,,D5;D10,QNimbus,3,optimization
+6141,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.82,0.76,,D10,QNimbus,3,design
+6142,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.84,,D10;D5,QNimbus,3,prediction
+6143,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.69,,D11,QNimbus,3,simulation
+6144,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.75,,D20;D5,QNimbus,3,model
+6145,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.87,,D20;D11,QNimbus,3,analysis
+6146,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.73,0.83,,D10,QNimbus,3,optimization
+6147,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.93,,D11,QNimbus,3,design
+6148,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.91,,D20;D11,QNimbus,3,prediction
+6149,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.86,,D11,QNimbus,3,simulation
+6150,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.71,,D11;D20,QNimbus,3,model
+6151,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.74,0.8,,D11;D10,QNimbus,3,analysis
+6152,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.77,,D10;D11,QNimbus,3,optimization
+6153,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.79,,D20;D10,QNimbus,3,design
+6154,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.75,,D20,QNimbus,3,prediction
+6155,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.93,,D11,QNimbus,3,simulation
+6156,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.76,0.85,,D11,QNimbus,3,model
+6157,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.78,,D10,QNimbus,3,analysis
+6158,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.84,,D5,QNimbus,3,optimization
+6159,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.77,,D20;D10,QNimbus,3,design
+6160,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.92,,D5,QNimbus,3,prediction
+6161,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.8,0.93,,D11,QNimbus,3,simulation
+6162,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.93,,D5;D10,QNimbus,3,model
+6163,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.8,,D5,QNimbus,3,analysis
+6164,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.87,,D10;D20,QNimbus,3,optimization
+6165,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.86,,D5,QNimbus,3,design
+6166,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.72,0.7,,D5,QNimbus,3,prediction
+6167,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.79,,D20,QNimbus,3,simulation
+6168,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.73,,D20,QNimbus,3,model
+6169,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.83,,D5;D20,QNimbus,3,analysis
+6170,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.75,,D10,QNimbus,3,optimization
+6171,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.95,0.77,,D11,QNimbus,3,design
+6172,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.88,,D11;D20,QNimbus,3,prediction
+6173,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.7,,D5;D10,QNimbus,3,simulation
+6174,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.83,,D5,QNimbus,3,model
+6175,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.7,,D5;D20,QNimbus,3,analysis
+6176,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.78,0.92,,D5,QNimbus,3,optimization
+6177,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.75,,D11;D5,QNimbus,3,design
+6178,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.89,,D5,QNimbus,3,prediction
+6179,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.93,,D20,QNimbus,3,simulation
+6180,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.9,,D20,QNimbus,3,model
+6181,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.9,0.77,,D11,QNimbus,3,analysis
+6182,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.72,,D11,QNimbus,3,optimization
+6183,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.72,,D11,QNimbus,3,design
+6184,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.71,,D20,QNimbus,3,prediction
+6185,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.73,,D5;D20,QNimbus,3,simulation
+6186,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.83,0.73,,D10;D11,QNimbus,3,model
+6187,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.7,,D20;D10,QNimbus,3,analysis
+6188,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.8,,D10;D11,QNimbus,3,optimization
+6189,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.91,,D20,QNimbus,3,design
+6190,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.8,,D20;D11,QNimbus,3,prediction
+6191,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.91,0.81,,D10;D11,QNimbus,3,simulation
+6192,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.94,,D10,QNimbus,3,model
+6193,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.77,,D10,QNimbus,3,analysis
+6194,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.79,,D5,QNimbus,3,optimization
+6195,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.93,,D11,QNimbus,3,design
+6196,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.77,0.74,,D20,QNimbus,3,prediction
+6197,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.91,,D5;D10,QNimbus,3,simulation
+6198,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.68,,D5,QNimbus,3,model
+6199,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.93,,D20,QNimbus,3,analysis
+6200,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.94,,D10,QNimbus,3,optimization
+6201,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.74,0.92,,D5;D10,QNimbus,3,design
+6202,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.86,,D10;D20,QNimbus,3,prediction
+6203,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.78,,D5,QNimbus,3,simulation
+6204,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.7,,D20;D10,QNimbus,3,model
+6205,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.73,,D10;D5,QNimbus,3,analysis
+6206,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.77,0.74,,D10,QNimbus,3,optimization
+6207,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.86,,D11,QNimbus,3,design
+6208,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.87,,D11,QNimbus,3,prediction
+6209,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.73,,D10,QNimbus,3,simulation
+6210,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.81,,D20;D11,QNimbus,3,model
+6211,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.9,0.86,Ocean modeling;Marine robotics,D20,QNimbus,3,analysis
+6212,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.8,,D5,QNimbus,3,optimization
+6213,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.81,,D5,QNimbus,3,design
+6214,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.9,,D10;D11,QNimbus,3,prediction
+6215,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.8,,D5;D10,QNimbus,3,simulation
+6216,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.83,0.83,,D5,QNimbus,3,model
+6217,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.7,,D20,QNimbus,3,analysis
+6218,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.68,,D20,QNimbus,3,optimization
+6219,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.93,,D5;D11,QNimbus,3,design
+6220,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.82,,D20,QNimbus,3,prediction
+6221,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.94,0.82,,D10,QNimbus,3,simulation
+6222,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.87,,D20,QNimbus,3,model
+6223,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.8,,D10;D20,QNimbus,3,analysis
+6224,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.69,,D10;D5,QNimbus,3,optimization
+6225,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.82,,D5,QNimbus,3,design
+6226,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.92,0.77,,D5;D11,QNimbus,3,prediction
+6227,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.94,,D10,QNimbus,3,simulation
+6228,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.89,,D10,QNimbus,3,model
+6229,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.87,,D11,QNimbus,3,analysis
+6230,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.84,,D10,QNimbus,3,optimization
+6231,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.7,0.92,,D5;D11,QNimbus,3,design
+6232,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.91,,D20;D5,QNimbus,3,prediction
+6233,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.82,,D20;D5,QNimbus,3,simulation
+6234,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.86,,D11;D20,QNimbus,3,model
+6235,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.8,,D10;D11,QNimbus,3,analysis
+6236,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.8,0.7,,D20,QNimbus,3,optimization
+6237,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.73,,D11,QNimbus,3,design
+6238,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.91,,D20,QNimbus,3,prediction
+6239,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.77,,D11,QNimbus,3,simulation
+6240,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.72,,D11,QNimbus,3,model
+6241,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.87,0.68,,D11,QNimbus,3,analysis
+6242,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.77,,D11,QNimbus,3,optimization
+6243,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.85,,D10,QNimbus,3,design
+6244,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.89,,D10;D20,QNimbus,3,prediction
+6245,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.88,,D20,QNimbus,3,simulation
+6246,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.79,0.92,,D5;D20,QNimbus,3,model
+6247,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.74,,D20,QNimbus,3,analysis
+6248,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.92,,D20,QNimbus,3,optimization
+6249,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.85,,D10,QNimbus,3,design
+6250,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.81,,D10,QNimbus,3,prediction
+6251,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.84,0.93,,D10,QNimbus,3,simulation
+6252,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.83,,D10,QNimbus,3,model
+6253,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.77,,D5;D20,QNimbus,3,analysis
+6254,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.76,,D11,QNimbus,3,optimization
+6255,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.83,,D11,QNimbus,3,design
+6256,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.87,0.78,,D5,QNimbus,3,prediction
+6257,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.87,,D5,QNimbus,3,simulation
+6258,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.71,,D11,QNimbus,3,model
+6259,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.83,,D5;D20,QNimbus,3,analysis
+6260,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.73,,D10,QNimbus,3,optimization
+6261,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.84,0.84,,D10;D20,QNimbus,3,design
+6262,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.76,,D20,QNimbus,3,prediction
+6263,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.88,,D5;D20,QNimbus,3,simulation
+6264,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.69,,D20,QNimbus,3,model
+6265,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.85,,D11;D10,QNimbus,3,analysis
+6266,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.86,0.72,,D20,QNimbus,3,optimization
+6267,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.77,,D20,QNimbus,3,design
+6268,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.92,,D10;D5,QNimbus,3,prediction
+6269,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.89,,D5,QNimbus,3,simulation
+6270,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.8,,D10;D20,QNimbus,3,model
+6271,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.8,0.73,,D10;D20,QNimbus,3,analysis
+6272,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.94,,D11,QNimbus,3,optimization
+6273,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.77,,D20,QNimbus,3,design
+6274,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.87,,D20,QNimbus,3,prediction
+6275,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.69,,D5;D20,QNimbus,3,simulation
+6276,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.79,0.68,,D5;D10,QNimbus,3,model
+6277,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.91,,D10;D11,QNimbus,3,analysis
+6278,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.84,,D5;D11,QNimbus,3,optimization
+6279,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.9,,D5;D11,QNimbus,3,design
+6280,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.72,,D11,QNimbus,3,prediction
+6281,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.7,0.9,,D11;D10,QNimbus,3,simulation
+6282,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.75,,D5;D10,QNimbus,3,model
+6283,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.73,,D5,QNimbus,3,analysis
+6284,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.9,,D20,QNimbus,3,optimization
+6285,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.88,,D10;D5,QNimbus,3,design
+6286,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.86,0.83,,D5,QNimbus,3,prediction
+6287,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.85,,D11,QNimbus,3,simulation
+6288,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.73,,D10,QNimbus,3,model
+6289,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.89,,D11,QNimbus,3,analysis
+6290,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.73,,D5,QNimbus,3,optimization
+6291,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.94,0.92,,D11,QNimbus,3,design
+6292,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.73,,D10,QNimbus,3,prediction
+6293,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.8,,D20,QNimbus,3,simulation
+6294,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.84,,D20,QNimbus,3,model
+6295,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.83,,D5,QNimbus,3,analysis
+6296,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.82,0.85,,D10,QNimbus,3,optimization
+6297,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.75,,D11,QNimbus,3,design
+6298,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.78,,D20,QNimbus,3,prediction
+6299,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.72,,D11;D5,QNimbus,3,simulation
+6300,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.69,,D10;D5,QNimbus,3,model
+6301,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.95,0.84,,D5,QNimbus,3,analysis
+6302,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.71,,D5,QNimbus,3,optimization
+6303,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.72,,D5,QNimbus,3,design
+6304,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.82,,D10;D5,QNimbus,3,prediction
+6305,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.81,,D5,QNimbus,3,simulation
+6306,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.83,0.72,,D5;D11,QNimbus,3,model
+6307,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.88,,D11;D10,QNimbus,3,analysis
+6308,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.9,,D10;D11,QNimbus,3,optimization
+6309,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.89,,D10;D11,QNimbus,3,design
+6310,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.9,,D11,QNimbus,3,prediction
+6311,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.88,0.71,,D20;D5,QNimbus,3,simulation
+6312,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.76,,D11;D10,QNimbus,3,model
+6313,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.87,,D5,QNimbus,3,analysis
+6314,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.73,,D10;D11,QNimbus,3,optimization
+6315,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.8,,D10;D11,QNimbus,3,design
+6316,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.83,0.71,,D20;D10,QNimbus,3,prediction
+6317,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.9,,D5;D20,QNimbus,3,simulation
+6318,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.85,,D10;D5,QNimbus,3,model
+6319,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.93,,D10,QNimbus,3,analysis
+6320,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.85,,D5,QNimbus,3,optimization
+6321,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.95,0.83,,D11,QNimbus,3,design
+6322,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.92,,D20,QNimbus,3,prediction
+6323,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.81,,D11,QNimbus,3,simulation
+6324,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.9,,D20,QNimbus,3,model
+6325,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.84,,D10,QNimbus,3,analysis
+6326,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.8,0.73,,D10,QNimbus,3,optimization
+6327,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.9,,D5,QNimbus,3,design
+6328,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.92,,D20;D5,QNimbus,3,prediction
+6329,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.84,,D10,QNimbus,3,simulation
+6330,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.91,,D11;D20,QNimbus,3,model
+6331,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.83,0.83,,D20,QNimbus,3,analysis
+6332,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.92,,D10,QNimbus,3,optimization
+6333,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.83,,D11,QNimbus,3,design
+6334,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.77,,D11;D10,QNimbus,3,prediction
+6335,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.78,,D20,QNimbus,3,simulation
+6336,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.75,0.87,,D11;D20,QNimbus,3,model
+6337,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.78,,D5;D20,QNimbus,3,analysis
+6338,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.83,,D10,QNimbus,3,optimization
+6339,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.83,,D20;D5,QNimbus,3,design
+6340,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.91,,D20;D11,QNimbus,3,prediction
+6341,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.85,0.86,,D20,QNimbus,3,simulation
+6342,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.92,,D5;D10,QNimbus,3,model
+6343,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.83,,D5,QNimbus,3,analysis
+6344,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.74,,D11,QNimbus,3,optimization
+6345,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.91,,D5;D11,QNimbus,3,design
+6346,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.88,0.68,,D20;D11,QNimbus,3,prediction
+6347,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.7,,D11;D10,QNimbus,3,simulation
+6348,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.9,,D10,QNimbus,3,model
+6349,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.82,,D11,QNimbus,3,analysis
+6350,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.74,,D5,QNimbus,3,optimization
+6351,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.7,0.74,,D5;D11,QNimbus,4,design
+6352,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.93,,D11,QNimbus,4,prediction
+6353,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.91,Ocean modeling;Marine robotics,D20;D5,QNimbus,4,simulation
+6354,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.72,,D20,QNimbus,4,model
+6355,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.7,,D11;D10,QNimbus,4,analysis
+6356,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.86,0.91,,D10;D11,QNimbus,4,optimization
+6357,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.84,,D5;D11,QNimbus,4,design
+6358,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.8,,D10,QNimbus,4,prediction
+6359,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.69,,D5;D10,QNimbus,4,simulation
+6360,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.8,,D11,QNimbus,4,model
+6361,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.84,0.77,,D11;D5,QNimbus,4,analysis
+6362,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.85,,D10,QNimbus,4,optimization
+6363,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.82,,D11;D20,QNimbus,4,design
+6364,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.84,,D10,QNimbus,4,prediction
+6365,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.69,,D5,QNimbus,4,simulation
+6366,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.87,0.74,,D5;D10,QNimbus,4,model
+6367,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.69,,D20,QNimbus,4,analysis
+6368,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.8,,D10,QNimbus,4,optimization
+6369,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.9,,D11;D20,QNimbus,4,design
+6370,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.82,,D20,QNimbus,4,prediction
+6371,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.8,0.83,,D10,QNimbus,4,simulation
+6372,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.84,,D11,QNimbus,4,model
+6373,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.73,,D5,QNimbus,4,analysis
+6374,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.84,,D20,QNimbus,4,optimization
+6375,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.69,,D10,QNimbus,4,design
+6376,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.76,0.75,,D11,QNimbus,4,prediction
+6377,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.94,,D5,QNimbus,4,simulation
+6378,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.88,,D20;D11,QNimbus,4,model
+6379,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.9,,D20,QNimbus,4,analysis
+6380,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.89,,D10,QNimbus,4,optimization
+6381,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.85,0.71,,D11;D20,QNimbus,4,design
+6382,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.79,,D5,QNimbus,4,prediction
+6383,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.87,,D10;D5,QNimbus,4,simulation
+6384,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.72,,D5,QNimbus,4,model
+6385,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.85,,D5,QNimbus,4,analysis
+6386,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.86,0.77,,D5;D20,QNimbus,4,optimization
+6387,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.87,,D5,QNimbus,4,design
+6388,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.73,,D5;D10,QNimbus,4,prediction
+6389,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.72,,D20;D5,QNimbus,4,simulation
+6390,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.75,,D10,QNimbus,4,model
+6391,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.83,0.73,,D11;D10,QNimbus,4,analysis
+6392,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.87,,D11;D20,QNimbus,4,optimization
+6393,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.71,,D20;D5,QNimbus,4,design
+6394,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.69,,D5,QNimbus,4,prediction
+6395,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.85,,D10,QNimbus,4,simulation
+6396,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.94,0.8,,D11,QNimbus,4,model
+6397,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.87,,D20,QNimbus,4,analysis
+6398,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.74,,D11,QNimbus,4,optimization
+6399,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.77,,D5,QNimbus,4,design
+6400,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.78,,D11;D20,QNimbus,4,prediction
+6401,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.85,0.74,,D11,QNimbus,4,simulation
+6402,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.79,,D10;D11,QNimbus,4,model
+6403,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.74,,D5;D10,QNimbus,4,analysis
+6404,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.91,,D5;D10,QNimbus,4,optimization
+6405,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.76,,D5;D10,QNimbus,4,design
+6406,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.93,0.76,,D11;D5,QNimbus,4,prediction
+6407,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.84,,D5;D10,QNimbus,4,simulation
+6408,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.85,,D10;D20,QNimbus,4,model
+6409,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.76,,D10,QNimbus,4,analysis
+6410,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.82,,D10,QNimbus,4,optimization
+6411,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.74,0.84,,D11,QNimbus,4,design
+6412,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.94,,D20,QNimbus,4,prediction
+6413,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.71,,D10;D5,QNimbus,4,simulation
+6414,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.83,,D11;D20,QNimbus,4,model
+6415,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.73,,D10,QNimbus,4,analysis
+6416,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.92,0.82,,D10,QNimbus,4,optimization
+6417,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.81,,D20;D11,QNimbus,4,design
+6418,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.9,,D20,QNimbus,4,prediction
+6419,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.82,,D5,QNimbus,4,simulation
+6420,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.89,,D11,QNimbus,4,model
+6421,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.72,0.73,,D11;D10,QNimbus,4,analysis
+6422,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.87,,D10;D5,QNimbus,4,optimization
+6423,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.75,,D11;D5,QNimbus,4,design
+6424,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.76,,D10,QNimbus,4,prediction
+6425,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.95,0.83,,D20,QNimbus,4,simulation
+6426,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.86,0.73,,D5,QNimbus,4,model
+6427,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.88,,D11,QNimbus,4,analysis
+6428,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.75,,D11,QNimbus,4,optimization
+6429,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.77,,D11,QNimbus,4,design
+6430,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.88,,D20,QNimbus,4,prediction
+6431,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.85,0.85,,D11;D10,QNimbus,4,simulation
+6432,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.77,,D10,QNimbus,4,model
+6433,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.72,,D5,QNimbus,4,analysis
+6434,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.84,,D11,QNimbus,4,optimization
+6435,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.93,,D20;D5,QNimbus,4,design
+6436,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.87,0.91,,D20;D11,QNimbus,4,prediction
+6437,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.78,,D10,QNimbus,4,simulation
+6438,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.76,,D11,QNimbus,4,model
+6439,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.9,,D20,QNimbus,4,analysis
+6440,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.92,,D20;D11,QNimbus,4,optimization
+6441,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.87,0.77,,D10;D5,QNimbus,4,design
+6442,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.77,,D11,QNimbus,4,prediction
+6443,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.94,0.91,,D11,QNimbus,4,simulation
+6444,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.74,,D5,QNimbus,4,model
+6445,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.8,,D11;D5,QNimbus,4,analysis
+6446,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.91,0.86,,D20,QNimbus,4,optimization
+6447,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.85,0.7,,D5;D20,QNimbus,4,design
+6448,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.73,,D20;D11,QNimbus,4,prediction
+6449,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.8,,D20;D5,QNimbus,4,simulation
+6450,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.86,,D11;D10,QNimbus,4,model
+6451,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.77,0.93,,D10,QNimbus,4,analysis
+6452,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.85,,D5,QNimbus,4,optimization
+6453,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.86,,D11;D20,QNimbus,4,design
+6454,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.93,,D10,QNimbus,4,prediction
+6455,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.88,0.84,,D20,QNimbus,4,simulation
+6456,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.91,0.71,,D11;D10,QNimbus,4,model
+6457,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.86,0.77,,D5;D10,QNimbus,4,analysis
+6458,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.91,,D10,QNimbus,4,optimization
+6459,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.76,,D10,QNimbus,4,design
+6460,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.8,0.71,,D11,QNimbus,4,prediction
+6461,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.93,0.8,,D11,QNimbus,4,simulation
+6462,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.91,0.87,,D11,QNimbus,4,model
+6463,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.92,,D11,QNimbus,4,analysis
+6464,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.75,,D5;D20,QNimbus,4,optimization
+6465,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.9,,D11,QNimbus,4,design
+6466,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.73,0.79,,D11,QNimbus,4,prediction
+6467,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.74,,D20,QNimbus,4,simulation
+6468,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.81,,D5,QNimbus,4,model
+6469,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.72,,D5;D20,QNimbus,4,analysis
+6470,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.93,0.84,,D20,QNimbus,4,optimization
+6471,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.79,0.86,,D5,QNimbus,4,design
+6472,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.84,0.81,,D10,QNimbus,4,prediction
+6473,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.81,0.7,,D5,QNimbus,4,simulation
+6474,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.9,0.93,,D11,QNimbus,4,model
+6475,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.72,,D20,QNimbus,4,analysis
+6476,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.85,0.86,,D11,QNimbus,4,optimization
+6477,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.73,0.91,,D5,QNimbus,4,design
+6478,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.73,,D11,QNimbus,4,prediction
+6479,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.87,0.79,,D10,QNimbus,4,simulation
+6480,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.77,0.76,,D10,QNimbus,4,model
+6481,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.71,0.87,,D10,QNimbus,4,analysis
+6482,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.92,0.78,,D20,QNimbus,4,optimization
+6483,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.77,,D5,QNimbus,4,design
+6484,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.72,,D20,QNimbus,4,prediction
+6485,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.75,,D10;D11,QNimbus,4,simulation
+6486,Ocean Current Modeling,Ocean dynamics simulation for upwelling zones using ocean systems & marine tech approaches,D18,0.72,0.87,,D20,QNimbus,4,model
+6487,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.76,0.92,,D5,QNimbus,4,analysis
+6488,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.75,0.8,,D10;D20,QNimbus,4,optimization
+6489,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.83,0.75,,D11,QNimbus,4,design
+6490,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.81,,D20,QNimbus,4,prediction
+6491,Ocean Current Modeling,Ocean dynamics simulation for current prediction using ocean systems & marine tech approaches,D18,0.77,0.78,,D10,QNimbus,4,simulation
+6492,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.72,0.81,,D20,QNimbus,4,model
+6493,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.89,0.93,,D20,QNimbus,4,analysis
+6494,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.82,0.83,,D10;D11,QNimbus,4,optimization
+6495,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.78,0.72,,D10,QNimbus,4,design
+6496,Ocean Current Modeling,Ocean dynamics simulation for temperature distribution using ocean systems & marine tech approaches,D18,0.74,0.79,,D11;D5,QNimbus,4,prediction
+6497,Marine Robotics,Marine Robotics simulation and optimization using ocean systems & marine tech approaches,D18,0.74,0.68,,D11;D5,QNimbus,4,simulation
+6498,Desalination,Desalination simulation and optimization using ocean systems & marine tech approaches,D18,0.79,0.74,,D5;D20,QNimbus,4,model
+6499,Offshore Energy,Offshore Energy simulation and optimization using ocean systems & marine tech approaches,D18,0.71,0.75,,D10,QNimbus,4,analysis
+6500,Marine Ecology,Marine Ecology simulation and optimization using ocean systems & marine tech approaches,D18,0.7,0.85,,D11,QNimbus,4,optimization

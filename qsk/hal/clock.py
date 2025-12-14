@@ -1,4 +1,5 @@
 """Deterministic logical clock."""
+
 from __future__ import annotations
 
 

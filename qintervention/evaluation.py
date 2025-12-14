@@ -1,28 +1,26 @@
 """Intervention evaluation logic."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List
-
-from qintervention.actions import ScheduledAction
 
 
 @dataclass
 class InterventionOutcome:
     success: bool
-    scores: Dict[str, float]
-    details: List[Dict[str, object]]
+    scores: dict[str, float]
+    details: list[dict[str, object]]
 
 
 class InterventionEvaluation:
     """Score interventions using deterministic weights."""
 
-    def __init__(self, weights: Dict[str, float] | None = None) -> None:
+    def __init__(self, weights: dict[str, float] | None = None) -> None:
         self.weights = weights or {"compliance": 1.0, "impact": 1.0}
 
-    def evaluate(self, applied: List[Dict[str, object]]) -> InterventionOutcome:
-        scores: Dict[str, float] = {"compliance": 0.0, "impact": 0.0}
-        details: List[Dict[str, object]] = []
+    def evaluate(self, applied: list[dict[str, object]]) -> InterventionOutcome:
+        scores: dict[str, float] = {"compliance": 0.0, "impact": 0.0}
+        details: list[dict[str, object]] = []
         for entry in applied:
             scores["compliance"] += 1.0 if entry.get("allowed", True) else 0.0
             scores["impact"] += entry.get("impact", 0.0)

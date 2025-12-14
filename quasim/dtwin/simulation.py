@@ -57,7 +57,7 @@ class DigitalTwin:
         trajectory = []
         current_state = self.state_manager.get_current_state()
 
-        for step in range(time_steps):
+        for _step in range(time_steps):
             # Quantum-enhanced state evolution (simplified)
             next_state = self._evolve_state(current_state, delta_t)
             trajectory.append(next_state)

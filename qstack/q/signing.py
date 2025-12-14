@@ -13,7 +13,7 @@ class Signer:
     key: str
 
     def sign(self, message: Any) -> str:
-        payload = f"{self.key}:{repr(message)}".encode("utf-8")
+        payload = f"{self.key}:{repr(message)}".encode()
         return hashlib.sha256(payload).hexdigest()
 
     def verify(self, message: Any, signature: str) -> bool:

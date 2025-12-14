@@ -5,10 +5,11 @@ operations, enclosure checks, and affine propagation utilities used by
 planners and formal analyzers. All operations avoid nondeterminism and favor
 explicit bounds to align with safety-critical review.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, Iterable, Tuple
+from typing import Iterable
 
 
 @dataclass(frozen=True)
@@ -31,13 +32,13 @@ class Interval:
     def midpoint(self) -> float:
         return (self.low + self.high) / 2.0
 
-    def add(self, other: "Interval") -> "Interval":
+    def add(self, other: Interval) -> Interval:
         return Interval(self.low + other.low, self.high + other.high)
 
-    def sub(self, other: "Interval") -> "Interval":
+    def sub(self, other: Interval) -> Interval:
         return Interval(self.low - other.high, self.high - other.low)
 
-    def mul(self, other: "Interval") -> "Interval":
+    def mul(self, other: Interval) -> Interval:
         candidates = (
             self.low * other.low,
             self.low * other.high,
@@ -46,7 +47,7 @@ class Interval:
         )
         return Interval(min(candidates), max(candidates))
 
-    def div(self, other: "Interval") -> "Interval":
+    def div(self, other: Interval) -> Interval:
         if other.low <= 0.0 <= other.high:
             raise ZeroDivisionError("interval division crosses zero")
         candidates = (
@@ -57,24 +58,26 @@ class Interval:
         )
         return Interval(min(candidates), max(candidates))
 
-    def intersect(self, other: "Interval") -> "Interval":
+    def intersect(self, other: Interval) -> Interval:
         low = max(self.low, other.low)
         high = min(self.high, other.high)
         if low > high:
             raise ValueError("empty interval intersection")
         return Interval(low, high)
 
-    def union(self, other: "Interval") -> "Interval":
+    def union(self, other: Interval) -> Interval:
         return Interval(min(self.low, other.low), max(self.high, other.high))
 
-    def clamp(self, bounds: "Interval") -> "Interval":
+    def clamp(self, bounds: Interval) -> Interval:
         return self.intersect(bounds)
 
-    def to_tuple(self) -> Tuple[float, float]:
+    def to_tuple(self) -> tuple[float, float]:
         return (self.low, self.high)
 
 
-def propagate_affine(intervals: Dict[str, Interval], weights: Dict[str, float], bias: float = 0.0) -> Interval:
+def propagate_affine(
+    intervals: dict[str, Interval], weights: dict[str, float], bias: float = 0.0
+) -> Interval:
     r"""Propagate an affine transform \sum w_i * x_i + bias over intervals."""
     low = bias
     high = bias
@@ -91,8 +94,8 @@ def propagate_affine(intervals: Dict[str, Interval], weights: Dict[str, float], 
 class IntervalEnvironment:
     """Environment mapping variable names to intervals with deterministic updates."""
 
-    def __init__(self, mapping: Dict[str, Interval] | None = None):
-        self._mapping: Dict[str, Interval] = mapping or {}
+    def __init__(self, mapping: dict[str, Interval] | None = None):
+        self._mapping: dict[str, Interval] = mapping or {}
 
     def assign(self, name: str, interval: Interval) -> None:
         self._mapping[name] = interval
@@ -102,7 +105,7 @@ class IntervalEnvironment:
             raise KeyError(f"interval for {name} not defined")
         return self._mapping[name]
 
-    def propagate_linear(self, coefficients: Dict[str, float], bias: float = 0.0) -> Interval:
+    def propagate_linear(self, coefficients: dict[str, float], bias: float = 0.0) -> Interval:
         return propagate_affine(self._mapping, coefficients, bias)
 
     def narrow(self, name: str, constraint: Interval) -> Interval:
@@ -111,20 +114,20 @@ class IntervalEnvironment:
         self.assign(name, narrowed)
         return narrowed
 
-    def snapshot(self) -> Dict[str, Tuple[float, float]]:
+    def snapshot(self) -> dict[str, tuple[float, float]]:
         return {k: v.to_tuple() for k, v in sorted(self._mapping.items(), key=lambda kv: kv[0])}
 
-    def intervals(self) -> Dict[str, Interval]:
+    def intervals(self) -> dict[str, Interval]:
         """Return a shallow copy of the current interval mapping."""
         return dict(self._mapping)
 
-    def bulk_update(self, updates: Dict[str, Interval]) -> None:
+    def bulk_update(self, updates: dict[str, Interval]) -> None:
         for key, interval in updates.items():
             self.assign(key, interval)
 
-    def propagate_non_linear(self, products: Iterable[Tuple[str, str]]) -> Dict[str, Interval]:
+    def propagate_non_linear(self, products: Iterable[tuple[str, str]]) -> dict[str, Interval]:
         """Propagate pairwise products for coarse abstract interpretation."""
-        results: Dict[str, Interval] = {}
+        results: dict[str, Interval] = {}
         for left, right in products:
             lv = self.read(left)
             rv = self.read(right)

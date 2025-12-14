@@ -95,7 +95,7 @@ def test_ascend_with_defaults():
     fake_http = FakeHttp()
     bridge = QNimbusBridge(QNimbusConfig(), fake_http)
 
-    resp = bridge.ascend("test query")
+    bridge.ascend("test query")
 
     # Verify defaults were used
     _, payload, _ = fake_http.posts[0]

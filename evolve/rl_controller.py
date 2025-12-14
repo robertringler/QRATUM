@@ -6,7 +6,6 @@ import json
 import random
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
 
 
 @dataclass
@@ -79,12 +78,12 @@ class RLController:
 
     def __init__(self, population_size: int = 20, seed: int = 42):
         self.population_size = population_size
-        self.population: List[KernelGenome] = []
+        self.population: list[KernelGenome] = []
         self.best_genome: KernelGenome | None = None
         self.generation = 0
         random.seed(seed)
 
-    def initialize_population(self) -> List[KernelGenome]:
+    def initialize_population(self) -> list[KernelGenome]:
         """Create initial random population."""
         self.population = []
         tile_sizes = [64, 128, 256, 512, 1024]
@@ -122,7 +121,7 @@ class RLController:
         genome.fitness = fitness
         return fitness
 
-    def select_and_evolve(self) -> List[KernelGenome]:
+    def select_and_evolve(self) -> list[KernelGenome]:
         """Select top performers and create next generation."""
         # Sort by fitness (lower is better)
         self.population.sort(key=lambda g: g.fitness)

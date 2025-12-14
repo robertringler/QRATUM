@@ -4,11 +4,12 @@ The functions in this module provide a stable mapping from a scenario identifier
 plus basic parameters to a synthetic circuit representation that can be executed
 by :func:`quantum.python.quasim_sim.simulate`.
 """
+
 from __future__ import annotations
 
 import random
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any
 
 
 @dataclass
@@ -30,10 +31,10 @@ class ScenarioSpec:
     scenario_id: str
     timesteps: int
     seed: int
-    extra: Dict[str, Any]
+    extra: dict[str, Any]
 
 
-def _base_pattern(rng: random.Random, width: int = 2) -> List[complex]:
+def _base_pattern(rng: random.Random, width: int = 2) -> list[complex]:
     """Create a small deterministic pattern of complex numbers."""
 
     return [complex(rng.random(), rng.random()) for _ in range(width)]
@@ -45,7 +46,7 @@ def _scenario_variant(rng: random.Random, scenario_id: str) -> float:
     return (sum(ord(ch) for ch in scenario_id) % 7 + 1) / 5.0
 
 
-def build_circuit(spec: ScenarioSpec) -> List[List[complex]]:
+def build_circuit(spec: ScenarioSpec) -> list[list[complex]]:
     """Build a deterministic synthetic circuit from a :class:`ScenarioSpec`.
 
     The resulting circuit is a list of timesteps, each containing a small list
@@ -54,7 +55,7 @@ def build_circuit(spec: ScenarioSpec) -> List[List[complex]]:
     """
 
     rng = random.Random(spec.seed)
-    circuit: List[List[complex]] = []
+    circuit: list[list[complex]] = []
     multiplier = _scenario_variant(rng, spec.scenario_id)
 
     for _ in range(max(1, spec.timesteps)):

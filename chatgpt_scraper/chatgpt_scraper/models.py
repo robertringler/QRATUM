@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Dict, Iterable, List, Literal, Optional
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -13,14 +13,16 @@ class RawMessage(BaseModel):
 
     model_config = ConfigDict(extra="allow")
 
-    id: Optional[str] = None
-    author: Optional[Dict[str, Any]] = None
-    role: Optional[str] = None
-    create_time: Optional[Any] = Field(default=None, description="Raw timestamp as stored in the export")
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    id: str | None = None
+    author: dict[str, Any] | None = None
+    role: str | None = None
+    create_time: Any | None = Field(
+        default=None, description="Raw timestamp as stored in the export"
+    )
+    metadata: dict[str, Any] = Field(default_factory=dict)
     content: Any = None
-    weight: Optional[float] = None
-    recipient: Optional[str] = None
+    weight: float | None = None
+    recipient: str | None = None
 
 
 class RawConversation(BaseModel):
@@ -28,12 +30,12 @@ class RawConversation(BaseModel):
 
     model_config = ConfigDict(extra="allow")
 
-    id: Optional[str] = None
-    title: Optional[str] = None
-    create_time: Optional[Any] = None
-    update_time: Optional[Any] = None
-    mapping: Optional[Dict[str, Any]] = None
-    messages: Optional[List[Dict[str, Any]]] = None
+    id: str | None = None
+    title: str | None = None
+    create_time: Any | None = None
+    update_time: Any | None = None
+    mapping: dict[str, Any] | None = None
+    messages: list[dict[str, Any]] | None = None
 
 
 class NormalizedTurn(BaseModel):
@@ -43,8 +45,8 @@ class NormalizedTurn(BaseModel):
     timestamp: datetime
     role: Literal["user", "assistant", "system", "tool"]
     content: str
-    model: Optional[str] = None
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    model: str | None = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
 
 
 class ConversationSummary(BaseModel):
@@ -55,7 +57,7 @@ class ConversationSummary(BaseModel):
     num_messages: int
     start_time: datetime
     end_time: datetime
-    models_used: List[str]
+    models_used: list[str]
 
 
 __all__ = [

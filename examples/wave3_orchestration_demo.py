@@ -155,7 +155,7 @@ async def demo_parallel_execution():
     logger.info(f"  Efficiency: {metrics.efficiency_multiplier}×")
     logger.info(f"  MERA Compression: {metrics.mera_compression}×")
     logger.info(f"  RL Convergence: {metrics.rl_convergence}%")
-    logger.info(f"  Veto Rate: {metrics.veto_rate*100:.1f}%")
+    logger.info(f"  Veto Rate: {metrics.veto_rate * 100:.1f}%")
     logger.info(f"  QKD Latency: {metrics.qkd_latency_ms} ms")
     logger.info(f"  Avg Fidelity: {metrics.fidelity_avg}")
 
@@ -185,7 +185,7 @@ async def demo_pilot_generation():
     logger.info("Factory Statistics:")
     logger.info(f"  Total Pilots: {stats['pilots_generated']}")
     logger.info(f"  Vetoes: {stats['vetoes']}")
-    logger.info(f"  Veto Rate: {stats['veto_rate']*100:.2f}%")
+    logger.info(f"  Veto Rate: {stats['veto_rate'] * 100:.2f}%")
     logger.info(f"  Target/Day: {stats['target_per_day']}")
 
     # Show some example pilots

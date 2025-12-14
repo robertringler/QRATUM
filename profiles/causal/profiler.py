@@ -6,7 +6,7 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable, Dict, List
+from typing import Callable
 
 
 @dataclass
@@ -35,8 +35,8 @@ class CausalInfluenceMap:
     """Map of causal contributions to total runtime."""
 
     total_runtime_ms: float
-    perturbations: List[PerturbationResult] = field(default_factory=list)
-    influence_scores: Dict[str, float] = field(default_factory=dict)
+    perturbations: list[PerturbationResult] = field(default_factory=list)
+    influence_scores: dict[str, float] = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
@@ -55,7 +55,7 @@ class CausalProfiler:
 
     def __init__(self, delay_increment_ms: float = 1.0):
         self.delay_increment_ms = delay_increment_ms
-        self.results: List[PerturbationResult] = []
+        self.results: list[PerturbationResult] = []
 
     def inject_delay(self, duration_ms: float) -> None:
         """Inject a micro-delay (sleep)."""

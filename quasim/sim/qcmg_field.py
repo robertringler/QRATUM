@@ -94,10 +94,7 @@ class FieldState:
             return False
 
         # Check energy finiteness
-        if not np.isfinite(self.energy):
-            return False
-
-        return True
+        return np.isfinite(self.energy)
 
 
 class QuantacosmomorphysigeneticField:

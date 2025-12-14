@@ -20,7 +20,7 @@ import logging
 import time
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Dict, Optional
+from typing import Any
 
 try:
     import aiohttp
@@ -62,7 +62,7 @@ class QuASIMClient:
     def __init__(
         self,
         api_url: str = "http://localhost:8000",
-        api_key: Optional[str] = None,
+        api_key: str | None = None,
         timeout: int = 30,
         max_retries: int = 3,
     ):
@@ -86,8 +86,8 @@ class QuASIMClient:
         logger.info(f"QuASIM client initialized: {self.api_url}")
 
     def _make_request(
-        self, method: str, endpoint: str, data: Optional[Dict[str, Any]] = None
-    ) -> Dict[str, Any]:
+        self, method: str, endpoint: str, data: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         """Make HTTP request with retry logic.
 
         Args:
@@ -133,7 +133,7 @@ class QuASIMClient:
 
         raise RuntimeError("Max retries exceeded")
 
-    def submit_job(self, job_type: str, config: Dict[str, Any], priority: int = 5) -> Job:
+    def submit_job(self, job_type: str, config: dict[str, Any], priority: int = 5) -> Job:
         """Submit a generic job.
 
         Args:
@@ -163,8 +163,8 @@ class QuASIMClient:
     def submit_cfd(
         self,
         mesh_file: str | Path,
-        config: Dict[str, Any],
-        boundary_conditions: Optional[Dict[str, Any]] = None,
+        config: dict[str, Any],
+        boundary_conditions: dict[str, Any] | None = None,
     ) -> Job:
         """Submit a CFD simulation job.
 
@@ -185,7 +185,7 @@ class QuASIMClient:
         return self.submit_job("cfd", cfd_config)
 
     def submit_fea(
-        self, mesh_file: str | Path, material_properties: Dict[str, Any], load_cases: Dict[str, Any]
+        self, mesh_file: str | Path, material_properties: dict[str, Any], load_cases: dict[str, Any]
     ) -> Job:
         """Submit an FEA simulation job.
 
@@ -204,8 +204,8 @@ class QuASIMClient:
     def submit_orbital_mc(
         self,
         num_trajectories: int,
-        initial_conditions: Dict[str, Any],
-        perturbations: Optional[Dict[str, Any]] = None,
+        initial_conditions: dict[str, Any],
+        perturbations: dict[str, Any] | None = None,
     ) -> Job:
         """Submit an orbital Monte Carlo simulation.
 
@@ -302,7 +302,7 @@ class QuASIMClient:
         logger.info(f"Artifact downloaded to {output_path}")
         return True
 
-    async def submit_job_async(self, job_type: str, config: Dict[str, Any]) -> Job:
+    async def submit_job_async(self, job_type: str, config: dict[str, Any]) -> Job:
         """Submit job asynchronously.
 
         Args:

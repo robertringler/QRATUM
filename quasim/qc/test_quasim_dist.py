@@ -63,11 +63,11 @@ class TestDistributedSimulation:
         num_qubits = 3
 
         # Run 1
-        ctx1 = init_cluster(backend="jax", mesh_shape=(1, 1), seed=seed)
+        init_cluster(backend="jax", mesh_shape=(1, 1), seed=seed)
         state1 = initialize_zero_state(num_qubits=num_qubits)
 
         # Run 2
-        ctx2 = init_cluster(backend="jax", mesh_shape=(1, 1), seed=seed)
+        init_cluster(backend="jax", mesh_shape=(1, 1), seed=seed)
         state2 = initialize_zero_state(num_qubits=num_qubits)
 
         # Should be identical

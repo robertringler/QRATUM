@@ -149,7 +149,7 @@ def run_simulation(args: argparse.Namespace) -> int:
 
                 if (i + 1) % report_interval == 0 or i == 0:
                     print(
-                        f"{i+1:6d} {state.time:10.4f} {state.coherence:12.6f} "
+                        f"{i + 1:6d} {state.time:10.4f} {state.coherence:12.6f} "
                         f"{state.entropy:12.6f} {state.energy:12.6f}"
                     )
         else:

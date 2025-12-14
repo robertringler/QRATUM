@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable
 
 
 class SafetyConstraints:
-    def __init__(self, rules: List[Callable[[Any, Any], bool]]):
+    def __init__(self, rules: list[Callable[[Any, Any], bool]]):
         self._rules = rules
 
     def evaluate(self, state: Any, goal: Any) -> bool:
@@ -12,7 +12,7 @@ class SafetyConstraints:
 
 
 class SafetyEnvelope:
-    def __init__(self, bounds: Dict[str, tuple]):
+    def __init__(self, bounds: dict[str, tuple]):
         """Bounds format: variable -> (low, high)."""
 
         self._bounds = bounds
@@ -41,14 +41,21 @@ class RateLimiter:
 
 
 class SafetyValidator:
-    def __init__(self, constraints: SafetyConstraints, envelope: SafetyEnvelope, rate_limiter: RateLimiter | None = None):
+    def __init__(
+        self,
+        constraints: SafetyConstraints,
+        envelope: SafetyEnvelope,
+        rate_limiter: RateLimiter | None = None,
+    ):
         self._constraints = constraints
         self._envelope = envelope
         self._rate_limiter = rate_limiter
 
     def pre_check(self, state, goal) -> bool:
         constraints_ok = self._constraints.evaluate(state, goal)
-        rate_ok = True if self._rate_limiter is None else self._rate_limiter.increment_and_check(state)
+        rate_ok = (
+            True if self._rate_limiter is None else self._rate_limiter.increment_and_check(state)
+        )
         return constraints_ok and rate_ok
 
     def post_check(self, state, trace) -> bool:

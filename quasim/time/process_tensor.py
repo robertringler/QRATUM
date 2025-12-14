@@ -88,7 +88,7 @@ def process_tensor_choi(
     dim = hamiltonian.shape[0]
 
     # Total evolution operator
-    total_time = dt * n_steps
+    dt * n_steps
     U = np.linalg.matrix_power(np.eye(dim) - 1j * hamiltonian * dt, n_steps)
 
     # Choi matrix: Λ = |U⟩⟩⟨⟨U| where |U⟩⟩ = (I ⊗ U)|I⟩⟩

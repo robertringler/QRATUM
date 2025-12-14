@@ -7,7 +7,7 @@ import logging
 from collections import Counter, defaultdict
 from dataclasses import asdict
 from pathlib import Path
-from typing import Dict, Iterable, Iterator, List, MutableMapping, Sequence
+from typing import Iterable, Iterator, MutableMapping, Sequence
 
 from .models import ClassificationLabel, MessageRecord, SentenceRecord
 
@@ -20,7 +20,7 @@ class ConversationLoader:
     def __init__(self, input_path: Path) -> None:
         self.input_path = Path(input_path)
 
-    def load(self) -> List[MessageRecord]:
+    def load(self) -> list[MessageRecord]:
         """Load and normalize messages from the conversations export."""
 
         LOGGER.info("Loading conversations from %s", self.input_path)
@@ -33,7 +33,7 @@ class ConversationLoader:
         else:
             raise ValueError("Unsupported conversations.json structure")
 
-        records: List[MessageRecord] = []
+        records: list[MessageRecord] = []
         for conv_index, conversation in enumerate(conversations):
             conv_id = _resolve_conversation_id(conversation, conv_index)
             for message_index, message in enumerate(self._iter_messages(conversation)):
@@ -52,7 +52,9 @@ class ConversationLoader:
         LOGGER.info("Loaded %d normalized messages", len(records))
         return records
 
-    def _iter_messages(self, conversation: MutableMapping[str, object]) -> Iterator[MutableMapping[str, object]]:
+    def _iter_messages(
+        self, conversation: MutableMapping[str, object]
+    ) -> Iterator[MutableMapping[str, object]]:
         """Yield raw message dictionaries from a conversation payload."""
 
         if isinstance(conversation.get("messages"), list):
@@ -61,7 +63,9 @@ class ConversationLoader:
 
         mapping = conversation.get("mapping")
         if isinstance(mapping, dict):
-            nodes = [node for node in mapping.values() if isinstance(node, dict) and node.get("message")]
+            nodes = [
+                node for node in mapping.values() if isinstance(node, dict) and node.get("message")
+            ]
             nodes.sort(key=lambda node: node.get("message", {}).get("create_time", 0) or 0)
             for node in nodes:
                 message = node.get("message")
@@ -151,8 +155,8 @@ class SummaryWriter:
         summary_path = self.output_dir / "corpus_classification_summary.csv"
         summary_path.parent.mkdir(parents=True, exist_ok=True)
         counts: Counter[str] = Counter()
-        domain_counts: Dict[str, Counter[str]] = defaultdict(Counter)
-        buffered: List[SentenceRecord] = list(records)
+        domain_counts: dict[str, Counter[str]] = defaultdict(Counter)
+        buffered: list[SentenceRecord] = list(records)
         for record in buffered:
             label = record.classification.value
             counts[label] += 1
@@ -160,7 +164,7 @@ class SummaryWriter:
                 domain_counts[label][domain] += 1
 
         LOGGER.info("Writing summary to %s", summary_path)
-        lines: List[str] = ["classification,count,top_domains"]
+        lines: list[str] = ["classification,count,top_domains"]
         for label in ClassificationLabel:
             label_value = label.value
             count = counts.get(label_value, 0)
@@ -168,6 +172,6 @@ class SummaryWriter:
                 f"{domain}:{domain_counts[label_value][domain]}"
                 for domain in domain_counts[label_value].most_common(3)
             )
-            lines.append(f"{label_value},{count},\"{top_domains}\"")
+            lines.append(f'{label_value},{count},"{top_domains}"')
         summary_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
         return summary_path

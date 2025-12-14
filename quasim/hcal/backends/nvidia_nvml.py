@@ -50,6 +50,7 @@ class NVMLBackend(Backend):
 __all__ = ["NVMLBackend"]
 """NVIDIA NVML backend for HCAL."""
 
+import contextlib
 from typing import Any, Dict
 
 from quasim.hcal.backends import BaseBackend
@@ -256,7 +257,5 @@ class NvidiaNvmlBackend(BaseBackend):
     def __del__(self):
         """Cleanup NVML."""
         if self.nvml_available and not self.dry_run:
-            try:
+            with contextlib.suppress(Exception):
                 self.pynvml.nvmlShutdown()
-            except Exception:
-                pass

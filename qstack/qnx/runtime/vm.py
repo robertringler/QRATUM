@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 from .tracing import TraceRecorder
 
@@ -13,7 +13,7 @@ class QNXVM:
         self._safety = safety
         self._tracer = tracer or TraceRecorder()
 
-    def run_cycle(self, state, goal) -> Dict[str, Any]:
+    def run_cycle(self, state, goal) -> dict[str, Any]:
         if not self._safety.pre_check(state, goal):
             self._tracer.record("pre_check_failed", {"goal": goal})
             return {"error": "safety_pre_check_failed"}

@@ -86,7 +86,7 @@ class QuantumOptimizer:
         prev_value = best_value
         converged = False
 
-        for i in range(self.max_iterations):
+        for _i in range(self.max_iterations):
             iterations += 1
             # QAOA parameter update (simplified)
             candidate = problem.get_random_solution()

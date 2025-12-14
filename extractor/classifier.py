@@ -7,7 +7,7 @@ import re
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterable, List, Optional
+from typing import Iterable
 
 try:
     import spacy
@@ -80,7 +80,7 @@ class SentenceSegmenter:
     """Segments text into sentences using spaCy with a deterministic fallback."""
 
     model: str = "en"
-    _nlp: Optional[object] = field(init=False, default=None)
+    _nlp: object | None = field(init=False, default=None)
 
     def __post_init__(self) -> None:
         if spacy is None:
@@ -96,7 +96,7 @@ class SentenceSegmenter:
         if "sentencizer" not in self._nlp.pipe_names:
             self._nlp.add_pipe("sentencizer")
 
-    def segment(self, text: str) -> List[str]:
+    def segment(self, text: str) -> list[str]:
         if not text.strip():
             return []
         if self._nlp is None:
@@ -104,7 +104,7 @@ class SentenceSegmenter:
         doc = self._nlp(text)
         return [sent.text.strip() for sent in doc.sents if sent.text.strip()]
 
-    def _fallback_segment(self, text: str) -> List[str]:
+    def _fallback_segment(self, text: str) -> list[str]:
         sentences = re.split(r"(?<=[.!?])\s+", text.strip())
         return [sentence for sentence in sentences if sentence]
 
@@ -116,8 +116,10 @@ class SentenceClassifier:
     domain_tagger: DomainTagger = field(default_factory=DomainTagger)
     segmenter: SentenceSegmenter = field(default_factory=SentenceSegmenter)
 
-    def classify_messages(self, messages: Iterable[MessageRecord], source_path: Path) -> List[SentenceRecord]:
-        records: List[SentenceRecord] = []
+    def classify_messages(
+        self, messages: Iterable[MessageRecord], source_path: Path
+    ) -> list[SentenceRecord]:
+        records: list[SentenceRecord] = []
         for message in messages:
             sentences = self.segmenter.segment(message.content)
             for sentence_index, sentence in enumerate(sentences):
@@ -154,4 +156,3 @@ class SentenceClassifier:
 
 def _contains_any(text: str, keywords: Iterable[str]) -> bool:
     return any(keyword in text for keyword in keywords)
-

@@ -51,14 +51,14 @@ def casimir_energy_parallel_plates(
     energies = k_n / 2.0
 
     # Sum over modes
-    E_raw = np.sum(energies)
+    np.sum(energies)
 
     # Regularization: subtract divergent vacuum energy
     # Use zeta function regularization: Σ n = ζ(-1) = -1/12
     # Casimir energy ∝ (Σ n) - (vacuum continuum) = -1/12 - 0
 
     # Analytical result (for comparison/calibration)
-    E_analytical = -np.pi**2 / (720 * a**3)
+    E_analytical = -(np.pi**2) / (720 * a**3)
 
     # Return analytical result (mode sum needs proper regularization)
     # In production, would implement full zeta function regularization
@@ -86,7 +86,7 @@ def casimir_force_parallel_plates(
         >>> assert F < 0  # Attractive
     """
     a = plate_separation
-    F = -np.pi**2 / (240 * a**4)
+    F = -(np.pi**2) / (240 * a**4)
     return float(F)
 
 

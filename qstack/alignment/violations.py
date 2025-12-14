@@ -1,9 +1,9 @@
 """Alignment violation models."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict
 
 
 class ViolationSeverity(str, Enum):
@@ -23,7 +23,7 @@ class AlignmentViolation:
     message: str
     severity: ViolationSeverity
 
-    def as_dict(self) -> Dict[str, str]:
+    def as_dict(self) -> dict[str, str]:
         return {
             "operation": self.operation,
             "article_id": self.article_id,

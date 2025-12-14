@@ -1,7 +1,8 @@
 """MPC planner wrapper."""
+
 from __future__ import annotations
 
-from typing import Any, Callable, Dict
+from typing import Any, Callable
 
 from ..base import MPCPlanner, Planner
 
@@ -9,8 +10,8 @@ __all__ = ["build_mpc"]
 
 
 def build_mpc(
-    predict_fn: Callable[[Dict[str, Any]], Dict[str, Any]],
-    cost_fn: Callable[[Dict[str, Any], Dict[str, Any]], float],
+    predict_fn: Callable[[dict[str, Any]], dict[str, Any]],
+    cost_fn: Callable[[dict[str, Any], dict[str, Any]], float],
     horizon: int = 3,
     envelope=None,
 ) -> Planner:

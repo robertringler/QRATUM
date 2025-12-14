@@ -1,0 +1,101 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+401,Climate Modeling,High-resolution climate simulation for regional forecasting using environmental & climate systems approaches,D5,0.89,0.89,Climate modeling;Ecosystem simulation,D2,QNimbus,1,simulation
+402,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.83,0.83,,D2,QNimbus,1,model
+403,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.89,0.83,,D18,QNimbus,1,analysis
+404,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.85,0.73,,D2,QNimbus,1,optimization
+405,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.87,0.85,,D2;D18,QNimbus,1,design
+406,Climate Modeling,High-resolution climate simulation for long-term trends using environmental & climate systems approaches,D5,0.72,0.71,,D19,QNimbus,1,prediction
+407,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.77,0.89,,D19;D2,QNimbus,1,simulation
+408,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.88,0.77,,D19;D2,QNimbus,1,model
+409,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.93,0.83,,D2,QNimbus,1,analysis
+410,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.92,0.73,,D19,QNimbus,1,optimization
+411,Climate Modeling,High-resolution climate simulation for extreme events using environmental & climate systems approaches,D5,0.84,0.75,,D18;D2,QNimbus,1,design
+412,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.83,0.88,,D19;D18,QNimbus,1,prediction
+413,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.82,0.94,,D19,QNimbus,1,simulation
+414,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.77,0.81,,D18,QNimbus,1,model
+415,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.92,0.95,Climate modeling;Ecosystem simulation,D2;D18,QNimbus,1,analysis
+416,Climate Modeling,High-resolution climate simulation for regional forecasting using environmental & climate systems approaches,D5,0.84,0.87,,D19,QNimbus,1,optimization
+417,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.79,0.77,,D2;D19,QNimbus,1,design
+418,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.84,0.82,,D2,QNimbus,1,prediction
+419,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.81,0.79,,D10,QNimbus,1,simulation
+420,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.85,0.77,,D2,QNimbus,1,model
+421,Climate Modeling,High-resolution climate simulation for long-term trends using environmental & climate systems approaches,D5,0.78,0.74,,D19,QNimbus,1,analysis
+422,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.77,0.92,,D18;D19,QNimbus,1,optimization
+423,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.94,0.75,,D18,QNimbus,1,design
+424,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.71,0.71,,D19;D2,QNimbus,1,prediction
+425,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.74,0.83,,D19;D2,QNimbus,1,simulation
+426,Climate Modeling,High-resolution climate simulation for extreme events using environmental & climate systems approaches,D5,0.75,0.74,,D10;D19,QNimbus,1,model
+427,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.91,0.7,,D10;D19,QNimbus,1,analysis
+428,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.93,0.73,,D2;D19,QNimbus,1,optimization
+429,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.94,0.9,Climate modeling;Ecosystem simulation,D2,QNimbus,1,design
+430,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.92,0.8,,D19,QNimbus,1,prediction
+431,Climate Modeling,High-resolution climate simulation for regional forecasting using environmental & climate systems approaches,D5,0.78,0.73,,D2,QNimbus,2,simulation
+432,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.8,0.93,,D2,QNimbus,2,model
+433,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.8,0.94,,D10,QNimbus,2,analysis
+434,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.83,0.93,,D18;D10,QNimbus,2,optimization
+435,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.84,0.82,,D19,QNimbus,2,design
+436,Climate Modeling,High-resolution climate simulation for long-term trends using environmental & climate systems approaches,D5,0.83,0.92,,D10;D19,QNimbus,2,prediction
+437,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.74,0.77,,D19;D2,QNimbus,2,simulation
+438,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.9,0.83,,D10,QNimbus,2,model
+439,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.79,0.91,,D18,QNimbus,2,analysis
+440,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.85,0.73,,D2;D18,QNimbus,2,optimization
+441,Climate Modeling,High-resolution climate simulation for extreme events using environmental & climate systems approaches,D5,0.92,0.74,,D10,QNimbus,2,design
+442,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.88,0.74,,D2,QNimbus,2,prediction
+443,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.96,0.91,Climate modeling;Ecosystem simulation,D18;D10,QNimbus,2,simulation
+444,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.81,0.7,,D10;D19,QNimbus,2,model
+445,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.81,0.81,,D19;D10,QNimbus,2,analysis
+446,Climate Modeling,High-resolution climate simulation for regional forecasting using environmental & climate systems approaches,D5,0.86,0.9,,D19;D2,QNimbus,2,optimization
+447,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.73,0.89,,D10,QNimbus,2,design
+448,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.79,0.8,,D18;D19,QNimbus,2,prediction
+449,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.9,0.89,,D18,QNimbus,2,simulation
+450,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.85,0.86,,D19;D18,QNimbus,2,model
+451,Climate Modeling,High-resolution climate simulation for long-term trends using environmental & climate systems approaches,D5,0.89,0.9,,D2;D19,QNimbus,2,analysis
+452,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.78,0.69,,D2,QNimbus,2,optimization
+453,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.94,0.87,,D2;D19,QNimbus,2,design
+454,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.75,0.93,,D18,QNimbus,2,prediction
+455,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.89,0.81,,D18,QNimbus,2,simulation
+456,Climate Modeling,High-resolution climate simulation for extreme events using environmental & climate systems approaches,D5,0.72,0.82,,D19;D10,QNimbus,2,model
+457,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.91,0.88,Climate modeling;Ecosystem simulation,D19,QNimbus,2,analysis
+458,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.73,0.7,,D18,QNimbus,2,optimization
+459,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.91,0.91,,D19,QNimbus,2,design
+460,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.74,0.83,,D18,QNimbus,2,prediction
+461,Climate Modeling,High-resolution climate simulation for regional forecasting using environmental & climate systems approaches,D5,0.78,0.82,,D19;D18,QNimbus,3,simulation
+462,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.92,0.74,,D2;D18,QNimbus,3,model
+463,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.76,0.73,,D19;D18,QNimbus,3,analysis
+464,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.74,0.93,,D2,QNimbus,3,optimization
+465,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.81,0.87,,D10,QNimbus,3,design
+466,Climate Modeling,High-resolution climate simulation for long-term trends using environmental & climate systems approaches,D5,0.86,0.79,,D18;D10,QNimbus,3,prediction
+467,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.94,0.93,,D10;D2,QNimbus,3,simulation
+468,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.93,0.82,,D2,QNimbus,3,model
+469,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.76,0.73,,D19,QNimbus,3,analysis
+470,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.9,0.75,,D19,QNimbus,3,optimization
+471,Climate Modeling,High-resolution climate simulation for extreme events using environmental & climate systems approaches,D5,0.94,0.96,Climate modeling;Ecosystem simulation,D18;D19,QNimbus,3,design
+472,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.7,0.84,,D19,QNimbus,3,prediction
+473,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.83,0.72,,D18;D19,QNimbus,3,simulation
+474,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.79,0.68,,D10,QNimbus,3,model
+475,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.72,0.84,,D2;D10,QNimbus,3,analysis
+476,Climate Modeling,High-resolution climate simulation for regional forecasting using environmental & climate systems approaches,D5,0.78,0.84,,D19,QNimbus,3,optimization
+477,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.81,0.75,,D2;D19,QNimbus,3,design
+478,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.89,0.8,,D18;D19,QNimbus,3,prediction
+479,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.72,0.9,,D2,QNimbus,3,simulation
+480,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.83,0.86,,D18,QNimbus,3,model
+481,Climate Modeling,High-resolution climate simulation for long-term trends using environmental & climate systems approaches,D5,0.94,0.82,,D19;D2,QNimbus,3,analysis
+482,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.84,0.79,,D18,QNimbus,3,optimization
+483,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.88,0.7,,D2;D18,QNimbus,3,design
+484,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.86,0.77,,D2,QNimbus,3,prediction
+485,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.89,0.87,Climate modeling;Ecosystem simulation,D18,QNimbus,3,simulation
+486,Climate Modeling,High-resolution climate simulation for extreme events using environmental & climate systems approaches,D5,0.81,0.83,,D10,QNimbus,4,model
+487,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.92,0.71,,D2;D18,QNimbus,4,analysis
+488,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.87,0.77,,D18,QNimbus,4,optimization
+489,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.77,0.81,,D10;D18,QNimbus,4,design
+490,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.85,0.72,,D19,QNimbus,4,prediction
+491,Climate Modeling,High-resolution climate simulation for regional forecasting using environmental & climate systems approaches,D5,0.85,0.77,,D18;D10,QNimbus,4,simulation
+492,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.72,0.8,,D19,QNimbus,4,model
+493,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.71,0.9,,D2,QNimbus,4,analysis
+494,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.86,0.89,,D19;D2,QNimbus,4,optimization
+495,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.75,0.72,,D2,QNimbus,4,design
+496,Climate Modeling,High-resolution climate simulation for long-term trends using environmental & climate systems approaches,D5,0.81,0.92,,D10;D18,QNimbus,4,prediction
+497,Weather Prediction,Weather Prediction simulation and optimization using environmental & climate systems approaches,D5,0.9,0.94,,D19,QNimbus,4,simulation
+498,Ecosystem Simulation,Ecosystem Simulation simulation and optimization using environmental & climate systems approaches,D5,0.89,0.81,,D19,QNimbus,4,model
+499,Carbon Capture,Carbon Capture simulation and optimization using environmental & climate systems approaches,D5,0.83,0.83,,D18;D19,QNimbus,4,analysis
+500,Environmental Monitoring,Environmental Monitoring simulation and optimization using environmental & climate systems approaches,D5,0.71,0.9,,D10;D18,QNimbus,4,optimization

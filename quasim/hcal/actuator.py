@@ -235,10 +235,9 @@ class Actuator:
                     return False
 
         # Pre-validation
-        if validate:
-            if not self._pre_validate(device_id, setpoint, backend):
-                print("Pre-validation failed")
-                return False
+        if validate and not self._pre_validate(device_id, setpoint, backend):
+            print("Pre-validation failed")
+            return False
 
         # Apply setpoint (or simulate in dry-run)
         success = False
@@ -279,15 +278,11 @@ class Actuator:
             True if validation passes.
         """
         # Check if device exists
-        if hasattr(backend, "device_exists"):
-            if not backend.device_exists(device_id):
-                return False
-
-        # Check if setpoint is valid
-        if not setpoint:
+        if hasattr(backend, "device_exists") and not backend.device_exists(device_id):
             return False
 
-        return True
+        # Check if setpoint is valid
+        return setpoint
 
     def _post_validate(self, device_id: str, setpoint: Dict[str, Any], backend: Any) -> bool:
         """Post-validate setpoint after application.

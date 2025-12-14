@@ -5,7 +5,6 @@ Demonstrates practical applications of QGH non-speculative algorithms
 in real-world scenarios.
 """
 
-
 import numpy as np
 
 from quasim.qgh.nonspec_algorithms import (
@@ -214,8 +213,6 @@ def main():
         example_event_tracking,
         example_superposition_resolution,
     ]
-
-    results = {}
 
     for example_fn in examples:
         example_fn()

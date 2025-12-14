@@ -7,6 +7,7 @@ This script validates:
 - Python bytecode compilation
 - C/C++ code formatting checks
 """
+
 from __future__ import annotations
 
 import json

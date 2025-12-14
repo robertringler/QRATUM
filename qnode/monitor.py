@@ -1,10 +1,9 @@
 """Health and integrity monitor."""
+
 from __future__ import annotations
 
-from typing import Dict, List
-
-from infra.metrics import MetricRegistry
 from infra.alerts import AlertEngine
+from infra.metrics import MetricRegistry
 from qnode.incident_log import IncidentLog
 
 
@@ -19,11 +18,11 @@ class HealthMonitor:
         counter = self.metrics.counter(category)
         counter.inc()
 
-    def record_error(self, detail: Dict[str, object]) -> None:
+    def record_error(self, detail: dict[str, object]) -> None:
         self.metrics.counter("errors").inc()
         self.incidents.record("error", detail)
 
-    def evaluate(self) -> Dict[str, object]:
+    def evaluate(self) -> dict[str, object]:
         snapshot = self.metrics.snapshot()
         triggered = self.alerts.evaluate(snapshot)
         if triggered:
@@ -34,5 +33,5 @@ class HealthMonitor:
         errors = self.metrics.counter("errors").value
         return max(0, 100 - errors * 10)
 
-    def incident_history(self) -> List[object]:
+    def incident_history(self) -> list[object]:
         return [i.__dict__ for i in self.incidents.all()]

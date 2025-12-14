@@ -89,3 +89,13 @@ artifacts/compression/
 artifacts/econ/
 data/telemetry/
 docs/compliance/DO178C/
+
+# Goodyear Quantum Pilot outputs (runtime-generated)
+goodyear_quantum_pilot_full/
+demo_tire_library_basic/
+demo_tire_library_goodyear/*.json
+goodyear_pilot_execution_log.txt
+# Benchmark execution results
+results/
+bm001_execution.log
+bm001_execution_output.txt

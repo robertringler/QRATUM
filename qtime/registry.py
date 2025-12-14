@@ -1,15 +1,15 @@
 """Registry for snapshots."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict
 
 from qtime.snapshot import Snapshot
 
 
 @dataclass
 class SnapshotRegistry:
-    snapshots: Dict[str, Snapshot] = field(default_factory=dict)
+    snapshots: dict[str, Snapshot] = field(default_factory=dict)
 
     def register(self, snapshot: Snapshot) -> str:
         sid = snapshot.snapshot_id()

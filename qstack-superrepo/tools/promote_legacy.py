@@ -1,4 +1,5 @@
 """Promote legacy snippets into structured packages using the registry."""
+
 from __future__ import annotations
 
 import shutil

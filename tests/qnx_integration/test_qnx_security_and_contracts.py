@@ -1,7 +1,5 @@
 import json
 
-import pytest
-
 from qnx.security import compute_integrity_hash, validate_security_context, verify_integrity
 from qnx.sustainability import estimate_carbon
 from qnx.types import SecurityLevel, SubstrateResult

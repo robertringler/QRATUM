@@ -1,15 +1,15 @@
 """Compare scenario reports across variants."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List
 
 from qscenario.reporting import ScenarioReport
 
 
 @dataclass
 class ComparisonReport:
-    reports: List[ScenarioReport]
+    reports: list[ScenarioReport]
 
     def best_outcome(self) -> ScenarioReport:
         sorted_reports = sorted(
@@ -22,7 +22,7 @@ class ComparisonReport:
         )
         return sorted_reports[0]
 
-    def summarize(self) -> Dict[str, object]:
+    def summarize(self) -> dict[str, object]:
         return {
             "variants": [r.config.policies for r in self.reports],
             "classifications": [r.outcome.classify() for r in self.reports],

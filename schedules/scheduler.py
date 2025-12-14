@@ -6,7 +6,6 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict
 
 
 @dataclass
@@ -46,7 +45,7 @@ class ScheduleMetadata:
     loss_value: float = 0.0
     optimization_steps: int = 0
     timestamp: float = field(default_factory=time.time)
-    benchmark_trace: Dict[str, float] = field(default_factory=dict)
+    benchmark_trace: dict[str, float] = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
@@ -67,7 +66,7 @@ class DifferentiableScheduler:
 
     def __init__(self, learning_rate: float = 0.01):
         self.learning_rate = learning_rate
-        self.schedules: Dict[str, ScheduleMetadata] = {}
+        self.schedules: dict[str, ScheduleMetadata] = {}
 
     def compute_latency_loss(self, params: ScheduleParams) -> float:
         """
@@ -118,7 +117,7 @@ class DifferentiableScheduler:
 
         return energy_loss
 
-    def compute_gradients(self, params: ScheduleParams, epsilon: float = 1e-5) -> Dict[str, float]:
+    def compute_gradients(self, params: ScheduleParams, epsilon: float = 1e-5) -> dict[str, float]:
         """
         Compute numerical gradients for all parameters.
         Uses finite differences.
@@ -166,7 +165,7 @@ class DifferentiableScheduler:
         """
         params = initial_params or ScheduleParams()
 
-        for step in range(steps):
+        for _step in range(steps):
             # Compute gradients
             gradients = self.compute_gradients(params)
 

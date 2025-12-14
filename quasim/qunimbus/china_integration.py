@@ -13,7 +13,6 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -44,13 +43,13 @@ class ChinaFactoryMetrics:
     qkd_latency_ms: float = 0.18
     first_pilot_runtime_s: float = 0.689
     first_pilot_fidelity: float = 0.998
-    timestamp: Optional[datetime] = None
+    timestamp: datetime | None = None
 
 
 class ChinaPhotonicFactory:
     """Integration with China Photonic Factory for global scale."""
 
-    def __init__(self, config: Optional[ChinaFactoryConfig] = None):
+    def __init__(self, config: ChinaFactoryConfig | None = None):
         """Initialize China Photonic Factory integration.
 
         Args:
@@ -61,7 +60,7 @@ class ChinaPhotonicFactory:
         self._connected = False
 
         logger.info(
-            f"China Photonic Factory integration initialized - " f"Partner: {self.config.partner}"
+            f"China Photonic Factory integration initialized - Partner: {self.config.partner}"
         )
         logger.info(
             f"Capacity: {self.config.capacity_qubits_per_year:,} qubits/yr | "
@@ -82,13 +81,13 @@ class ChinaPhotonicFactory:
         self.metrics.timestamp = datetime.now()
 
         logger.info("✓ Connection established via QKD (BB84)")
-        logger.info(f"✓ Latency: {self.metrics.qkd_latency_ms} ms " f"(Akron ↔ Shenzhen)")
+        logger.info(f"✓ Latency: {self.metrics.qkd_latency_ms} ms (Akron ↔ Shenzhen)")
         logger.info(f"✓ Bandwidth: {self.config.qkd_bandwidth_gbps} Gbps")
         logger.info(f"✓ Compliance: {self.config.compliance_level} + CMMC L2 bridge")
 
         return True
 
-    def generate_pilots(self, count: int) -> Dict:
+    def generate_pilots(self, count: int) -> dict:
         """Generate pilots using China factory capacity.
 
         Args:
@@ -107,8 +106,7 @@ class ChinaPhotonicFactory:
         self.metrics.pilots_generated_today += count
 
         logger.info(
-            f"✓ {count} pilots generated | "
-            f"Technology: Room-temp photonic qubits (PsiQuantum IP)"
+            f"✓ {count} pilots generated | Technology: Room-temp photonic qubits (PsiQuantum IP)"
         )
 
         return {
@@ -158,7 +156,7 @@ class ChinaPhotonicFactory:
         self.metrics.timestamp = datetime.now()
         return self.metrics
 
-    def get_compliance_status(self) -> Dict:
+    def get_compliance_status(self) -> dict:
         """Get compliance status for cross-border operations.
 
         Returns:

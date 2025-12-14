@@ -1,8 +1,9 @@
 """Transpiler from QDL to Python for deterministic execution."""
+
 from __future__ import annotations
 
-from .parser import Parser
 from .ast import BinaryOp, EconomicPrimitive, Number, SafetyGuard, SimulationKernel, WorldModelCall
+from .parser import Parser
 
 
 class Transpiler:
@@ -14,9 +15,12 @@ class Transpiler:
         for idx, stmt in enumerate(self.program.statements):
             expr = self._emit(stmt)
             lines.append(f"    _v{idx} = {expr}")
-        lines.append(f"    return _v{len(self.program.statements)-1}" if self.program.statements else "    return None")
-        return "
-".join(lines)
+        lines.append(
+            f"    return _v{len(self.program.statements) - 1}"
+            if self.program.statements
+            else "    return None"
+        )
+        return "\n".join(lines)
 
     def _emit(self, node):
         if isinstance(node, Number):

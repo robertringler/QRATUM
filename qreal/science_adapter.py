@@ -1,7 +1,6 @@
 """Deterministic adapter for scientific datasets."""
-from __future__ import annotations
 
-from typing import Dict
+from __future__ import annotations
 
 from qreal.base_adapter import BaseAdapter
 from qreal.normalizers import enforce_fields, sort_keys
@@ -17,12 +16,12 @@ class ScienceAdapter(BaseAdapter):
             ]
         )
 
-    def _normalize(self, raw: object, tick: int) -> Dict[str, object]:
+    def _normalize(self, raw: object, tick: int) -> dict[str, object]:
         if not isinstance(raw, dict):
             raise TypeError("ScienceAdapter expects dict input")
         return {**raw, "tick": tick}
 
-    def _to_percept(self, normalized: Dict[str, object]) -> Dict[str, object]:
+    def _to_percept(self, normalized: dict[str, object]) -> dict[str, object]:
         return {
             "kind": "scientific_measurement",
             "experiment": normalized["experiment"],

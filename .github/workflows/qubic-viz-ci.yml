@@ -1,0 +1,59 @@
+name: QUBIC-VIZ CI
+
+on:
+  push:
+    paths:
+      - 'qubic-viz/**'
+  pull_request:
+    paths:
+      - 'qubic-viz/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          cd qubic-viz
+          pip install numpy matplotlib pillow pytest pytest-cov
+
+      - name: Run tests
+        run: |
+          cd qubic-viz
+          python -m pytest tests/ -v --cov=. --cov-report=xml
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        if: matrix.python-version == '3.10'
+        with:
+          file: ./qubic-viz/coverage.xml
+          flags: qubic-viz
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Lint with ruff
+        run: |
+          cd qubic-viz
+          ruff check .

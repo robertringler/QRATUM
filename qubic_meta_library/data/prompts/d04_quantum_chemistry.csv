@@ -1,0 +1,11 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+301,Molecular Dynamics,High-performance molecular dynamics simulation,D4,0.93,0.94,"Quantum chemistry;MD",D9;D14,QuASIM,1,simulation
+302,Drug Binding,Protein-ligand binding affinity prediction,D4,0.91,0.96,"AI;Docking",D9;D16,QStack,1,prediction
+303,Protein Folding,AlphaFold-style protein structure prediction,D4,0.94,0.95,"Deep learning;Bioinformatics",D9;D8,QStack,1,structure
+304,Reaction Pathways,Quantum chemistry for reaction mechanism discovery,D4,0.87,0.85,"QM/MM;Catalysis",D1;D7,QuASIM,2,pathway
+305,Drug Design,De novo drug molecule generation,D4,0.92,0.97,"Generative AI;Chemistry",D9;D8,QStack,1,molecule
+325,Drug Discovery,End-to-end drug discovery automation,D4,0.91,0.96,"AI;High-throughput screening",D9;D14,QStack,1,pipeline
+335,Toxicity Prediction,ADMET property prediction for drug candidates,D4,0.86,0.91,"Machine learning;Pharmacology",D9;D8,QStack,2,prediction
+345,Enzyme Design,Computational enzyme engineering,D4,0.89,0.88,"Protein design;Biocatalysis",D14;D9,QuASIM,2,design
+355,Crystal Structure,Molecular crystal structure prediction,D4,0.85,0.82,"DFT;Crystallography",D1;D7,QuASIM,2,structure
+365,Reaction Kinetics,Chemical reaction kinetics modeling,D4,0.83,0.84,"Quantum chemistry;Kinetics",D13;D14,QuASIM,2,model

@@ -172,7 +172,7 @@ def generate_markdown_report(
     ]
 
     # Group by task
-    tasks = sorted(set(s["task"] for s in summary.values()))
+    tasks = sorted({s["task"] for s in summary.values()})
 
     for task in tasks:
         lines.append(f"### {task}")

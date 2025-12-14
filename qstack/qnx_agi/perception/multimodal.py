@@ -1,16 +1,15 @@
 """Multimodal perception fusion."""
-from __future__ import annotations
 
-from typing import Dict, List
+from __future__ import annotations
 
 from .base import Percept
 
 
-def fuse(percepts: List[Percept]) -> Percept:
+def fuse(percepts: list[Percept]) -> Percept:
     """Deterministically fuse percepts by averaging numeric features."""
     if not percepts:
         return Percept(modality="fused", value={}, features={})
-    fused_features: Dict[str, float] = {}
+    fused_features: dict[str, float] = {}
     for percept in percepts:
         if not percept.features:
             continue

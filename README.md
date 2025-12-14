@@ -1,464 +1,326 @@
-<div align="center" style="margin-top:40px; margin-bottom:20px;">
+QuASIM  
+### Quantum-Accelerated Simulation and Modeling Engine  
+High-Assurance • Deterministic • HPC-Optimized • Multi-Domain Scientific Computing
 
-<img src="docs/assets/quasim_logo_light.svg" alt="QuASIM Logo" width="320"/>
+QuASIM is a high-assurance, quantum-accelerated simulation framework engineered for deterministic, reproducible, multi-domain modeling.  
+It is built for research environments requiring reliability, transparency, and scientific rigor across complex systems such as aerospace studies, energy-grid analysis, orbital mechanics research, and large-scale multi-physics simulation.
 
-<h1><strong>QuASIM × QuNimbus</strong></h1>
-<h3><em>Quantum-Inspired Autonomous Simulation & Market-Linked Intelligence</em></h3>
+QuASIM integrates core components from the Q-Stack ecosystem:
 
-<p>
-  <a href="https://github.com/robertringler/QuASIM/actions">
-    <img src="https://github.com/robertringler/QuASIM/workflows/CI/badge.svg" alt="Build Status"/>
-  </a>
-  <img src="https://img.shields.io/badge/Coverage-94%25-brightgreen"/>
-  <img src="https://img.shields.io/badge/DO--178C-Level%20A-orange"/>
-  <img src="https://img.shields.io/badge/CMMC-Level%202-green"/>
-  <img src="https://img.shields.io/badge/License-Apache%202.0-blue"/>
-</p>
+- **Q-OS** — deterministic runtime environment  
+- **QNX-style scheduler** — real-time determinism & reproducibility  
+- **Q-Core** — vectorized/tensor-accelerated compute  
+- **QuNimbus** — provenance & verification logging  
+- **QNET-OS** — distributed compute & data-exchange layer  
 
-<p>
-  <img src="https://img.shields.io/badge/Build-Passing-brightgreen"/>
-  <img src="https://img.shields.io/badge/Compliance-98.75%25-success"/>
-  <img src="https://img.shields.io/badge/Fidelity-≥0.97-purple"/>
-  <img src="https://img.shields.io/badge/RMSE-<2%25-blue"/>
-  <img src="https://img.shields.io/badge/SLA-99.95%25-blue"/>
-</p>
-
-<p><strong>Enterprise-Grade Quantum Simulation + Economic Activation Platform</strong></p>
-
-<p>
-  <a href="#executive-summary"><b>Overview</b></a> •
-  <a href="#key-capabilities"><b>Capabilities</b></a> •
-  <a href="#qunimbus-metrics"><b>QuNimbus Metrics</b></a> •
-  <a href="#quick-start"><b>Quick Start</b></a> •
-  <a href="#vertical-demos"><b>Demos</b></a> •
-  <a href="#compliance"><b>Compliance</b></a> •
-  <a href="#architecture"><b>Architecture</b></a> •
-  <a href="#market-position"><b>Market</b></a> •
-  <a href="#contact"><b>Contact</b></a>
-</p>
-</div>
-
-<hr style="border:0;height:1px;background:linear-gradient(to right,transparent,#ccc,transparent);margin:40px 0;">
-
-## Executive Summary  
-*Certified hybrid quantum-classical runtime with live economic telemetry.*
-
-QuASIM delivers deterministic, GPU-accelerated tensor-network simulation and autonomous kernel evolution under **DO-178C Level A** assurance.  
-The QuNimbus layer extends these capabilities into **economic feedback optimization**, linking quantum efficiency directly to enterprise valuation signals.
-
-Validated with **SpaceX Falcon 9** and **NASA Orion/SLS** telemetry  
-→ **< 2 % RMSE**, **≥ 0.97 fidelity**, **100 % MC/DC** coverage.
+All components are aligned toward high-integrity scientific modeling, transparent reproducibility, and audit-friendly computational workflows.
 
 ---
 
-## Strategic Significance  
-*Where quantum precision meets economic scalability.*
+## Executive Summary
 
-QuASIM × QuNimbus fuses physical performance with financial analytics.  
-Each verified simulation propagates to the Quantum Market Protocol (QMP), quantifying entanglement efficiency (ηₑₙₜ) as a tradable economic indicator.
+QuASIM provides:
 
-**Outcomes**
-- Certification Moat – DO-178C A validation with live telemetry  
-- Economic Activation – Φ_QEVF → EPH pricing bridge  
-- Live Certification – Continuous compliance CI/CD  
-- Autonomous Intelligence – RL-driven kernel evolution
+- **Deterministic execution** (seeded, reproducible, audit-traceable)  
+- **High-performance numerical modeling** (tensor acceleration via Q-Core)  
+- **Extensible multi-domain simulation primitives**  
+- **Aerospace-grade runtime stability**  
+- **Scientific transparency and provenance logging**  
+- **Modular architecture for research and enterprise HPC labs**  
 
----
+QuASIM has been validated in scientific workflows including:
 
-## Key Capabilities  
-
-| Domain | Description | Edge |
-|:--|:--|:--|
-| Aerospace Certification | DO-178C A / ECSS / NASA E-HBK-4008 | Only certified quantum runtime |
-| GPU Acceleration | cuQuantum + Grace-Blackwell Fabric | 10–100 × faster vs CPU |
-| RL Kernel Evolution | Energy-adaptive autotuning | 30 % + efficiency gain |
-| Economic Telemetry | QuNimbus Wave 2 activation | Live Φ_QEVF → valuation link |
-| **Phase VIII Autonomy** | **Meta-Controller + Policy Reasoner + Ethical Governor** | **Self-governing compliance engine** |
-| **Repository Audit** | **Automated quality, security, compliance validation** | **Continuous audit CI/CD** |
-
-📚 **Read More:** [docs/technical/architecture.md](docs/technical/architecture.md)  
-🤖 **Phase VIII:** [docs/phaseVIII/README.md](docs/phaseVIII/README.md)  
-🔍 **Audit System:** [docs/audit/README.md](docs/audit/README.md)
+- orbital mechanics modeling  
+- aerospace trajectory studies  
+- energy-grid stability analysis  
+- large-scale Monte Carlo campaigns  
+- multi-physics evaluation with coupled solvers  
 
 ---
 
-## IP Highlights
-- Hybrid quantum–classical scheduler with reversible kernel checkpoints.
-- Tensor-network contraction heuristics with adaptive error budgets.
-- Safety validation pipeline with enforceable approvals and rate-limiting.
-- Tool-qualification automation hooks for DO-178C/DO-330.
-- Autonomous self-evolving kernel architecture with RL optimization.
-- Anti-holographic tensor compression achieving 10-50× compression ratios.
-- **Phase VIII: Meta-Controller Kernel with Q-learning parameter optimization.**
-- **Phase VIII: Policy Reasoner with multi-framework compliance rules.**
-- **Phase VIII: Quantum Ethical Governor for energy-equity monitoring.**
+## Mission Context & Problem Domain
 
-Full list and triage: [Patentables](docs/ip/patentables.md).
+Modern research environments require simulation engines that are:
 
----
+- deterministic  
+- verifiable  
+- high-fidelity  
+- capable of integrating heterogeneous data sources  
+- performant under high computational load  
 
-## Market Valuation (as of 2025-11-08)
-- **P50 Enterprise Value:** $13,909,925 (USD)
-- **Range (P10–P90):** $5,093,237 – $28,179,939
-- Scenario DCFs and methodology: [Market Valuation Report](docs/valuation/market_valuation.md).
+Traditional tooling often fails to provide reproducibility or deterministic scheduling when scaling across multi-region or distributed compute environments.
 
-## 📈 Valuation Dashboard
+QuASIM addresses these gaps with:
 
-Interactive valuation analytics and visualizations for the Q1 2026 pre-revenue update. [View Interactive Dashboard](docs/valuation_dashboard.html)
+- deterministic execution paths  
+- strict seed governance  
+- algorithmic reproducibility  
+- advanced tensor computation for demanding workloads  
+- transparent provenance via QuNimbus  
+- modular physics and modeling engines  
 
-### DCF Valuation Analysis
-![DCF Valuation](docs/assets/valuation_dcf.png)
+This makes the platform suitable for domains such as:
 
-### Sensitivity Analysis
-![Sensitivity Heatmap](docs/assets/valuation_heatmap.png)
-
-### Monte Carlo Distribution
-![Monte Carlo Waterfall](docs/assets/valuation_waterfall.png)
+- aerospace research  
+- grid-level energy modeling  
+- economic and financial system simulation  
+- physics-based modeling  
+- time-series forecasting  
+- geospatial and orbital analytics  
 
 ---
 
-[//]: # (Phase VI.1 Enhancements)
-## Phase VI.1 Closed-Loop Verification
+## Core Capabilities
 
-- Specification: [`docs/specifications/quasim_qnimbus_phaseVI.1_validation_enhanced.yaml`](docs/specifications/quasim_qnimbus_phaseVI.1_validation_enhanced.yaml) captures the authoritative scope, success criteria, and rollout sequencing for Phase VI.1.
-- Status dossier: [docs/status/phase_vi.md](docs/status/phase_vi.md) summarizes the 72 h validation window, including verification metrics, stress outcomes, and Phase VII readiness indicators.
-- Φ_QEVF verifier archives RMSE, MAE, variance, KS statistics, and breach counts with Ed25519 manifests under `data/ord/archive`.
-- Grafana dashboards deliver expected-vs-actual variance, geographic heatmaps, operations health, and a sanitized public board refreshed hourly.
-- Synthetic stress injector drives 1.5× load with ΔT < 0.1 K while chaos orchestration validates recovery automation.
-- Compliance snapshot workflow (`.github/workflows/compliance_snapshot.yml`) signs DO-178C/CMMC matrices, SBOM, Trivy, and Grype artifacts on every merge.
-- Quantum Market Protocol sandbox links verifier outputs to calibrated pricing projections via `qmp/qex-sandbox`.
+- **Deterministic Multi-Domain Simulation**  
+Ensures reproducibility across runs, environments, and hardware.
 
-## Summary of Implications — Phase VI.1
+- **Orbital & Aerospace Modeling Frameworks**  
+Trajectory propagation, visibility windows, coordinate transformations.
 
-Phase VI.1 advances QuASIM×QuNimbus into a closed-loop, economically aware runtime with verified performance, transparent observability, and compliance automation aligned to Phase VII activation.
+- **Quantum/Tensor-Accelerated Compute (Q-Core)**  
+Matrix operations, batched integrators, tensor contractions, and HPC primitives.
 
-**Operational Excellence:** Closed-loop Φ_QEVF verification monitors 3.1 million logical qubits with tolerance converging to 2.4% and RMSE 0.42, achieving 98.6% accuracy and 0.7% false positives.
+- **Energy-Grid & Infrastructure Modeling**  
+Stability studies, time-series forecasting, renewable-integration modeling.
 
-**Observability & Compliance:** Forty-two Grafana panels and eighteen alert rules provide unified telemetry while daily attestation maintains 96% DO-178C and 95% CMMC control coverage with zero critical vulnerabilities.
+- **Causal-Temporal Inference Tools**  
+Graph-based models for system-level behavior, scenario evaluation, and risk propagation.
 
-**Stress & Resilience:** Synthetic load campaigns sustain 1.02×10¹⁷ ops/kWh at ΔT 0.07 K, keep MTBF degradation below 0.6%, and recover chaos injections within 43 s p95.
-
-**Economic Activation:** The QMP sandbox monetizes entanglement efficiency (0.93 ±0.02) against a $0.0004 EPH baseline with 60 s pricing latency and 50-order depth, projecting 4.6×10⁹ EPH/hour capacity.
-
-**Strategic Outcome:** With verification, observability, compliance, and QMP scaffolding meeting all Phase VI.1 gates, the platform is ready for Phase VII’s global quantum-economic rollout.
+- **High-Fidelity Multi-Physics Engine**  
+ODE/PDE solvers, numerical integrators, interpolation modules, and uncertainty quantification.
 
 ---
 
-## Phase VII: Quantum-Economic Activation
+## System Architecture
 
-**Release:** v1.0.0-phaseVII-activation | **Status:** Active
++-----------------------------+ | Secure Telemetry & Logging  | +-----------------------------+ | Distributed Compute Layer   | +-----------------------------+ | QuNimbus Verification Layer | +-----------------------------+ | Q-Core Acceleration Engine  | +-----------------------------+ | Deterministic Runtime (Q-OS)| +-----------------------------+ | Simulation Kernel (QuASIM)  | +-----------------------------+
 
-Phase VII delivers full live Quantum-Economic Network (QEN) activation, integrating quantum simulation efficiency directly into economic valuation frameworks with global orchestration.
+### Component Summary
 
-### Core Components
+- **Simulation Kernel**  
+Core orchestrator for numerical methods, integrators, and modeling pipelines.
 
-#### 1. Quantum Market Protocol (QMP)
-Live liquidity partner integration transforming entanglement efficiency into tradable economic indicators.
-- Market update latency: 8.5ms (target: < 10s)
-- Entanglement throughput: 5.2x10^9 EPH/h (target: > 5x10^9)
-- Regions: Americas, EU, APAC
+- **Deterministic Runtime (Q-OS)**  
+Reproducible scheduling, seeded randomness, stable execution envelopes.
 
-#### 2. Dynamic Phi-Valuation Engine
-Maps quantum entanglement efficiency (eta_ent) to Quantum Economic Value Function (Phi_QEVF).
-- Formula: Phi_QEVF = base x (eta_ent/baseline) x coherence_penalty x runtime_factor
-- Coherence variance: 1.5% (target: < 2%)
-- EPH pricing: Real-time price per Entanglement Pair Hour
+- **Acceleration Pipeline (Q-Core)**  
+Tensorized HPC backends with optional GPU support.
 
-#### 3. Decentralized Verification Ledger (DVL)
-Cryptographic chain of Phi_QEVF values and compliance attestations.
-- SHA-256 hash chain with tamper detection
-- Compliance frameworks: DO-178C, NIST-800-53, CMMC-2.0, ISO-27001, ITAR, GDPR
-- Grafana export for real-time visualization
-- RFC3161 timestamping support
+- **QuNimbus Verification**  
+Provenance capture, metadata tracking, run fingerprints, and audit logs.
 
-#### 4. Trust Kernel
-Multi-region orchestration with 6 global regions.
-- 6 Regions: Americas, EU, MENA, APAC, Polar, Orbit
-- Canary deployment: 5% blue-green rollout
-- MTBF target: 120 hours
-- Continuous compliance: ISO-27001, ITAR, GDPR
+- **Distributed Compute Fabric**  
+Optional Kubernetes-based scaling for parallel workloads.
 
-### Metrics Achievement
-
-| Metric | Target | Achieved | Status |
-|--------|--------|----------|--------|
-| Coherence variance | < 2% | 1.5% | Achieved |
-| Market update latency | < 10s | 8.5ms | Achieved |
-| Entanglement throughput | > 5x10^9 EPH/h | 5.2x10^9 | Achieved |
-| Compliance attestation | Continuous | Continuous | Achieved |
-| MTBF | > 120h | 120h | Achieved |
-| Test coverage | > 90% | 100% | Achieved |
-
-Full Documentation: docs/phaseVII_activation.md
-
-## QuNimbus Metrics  
-
-<div align="center">
-
-| Metric | Wave 1 → Wave 2 Δ | Description |
-|:--|:--:|:--|
-| Pilot Rate | ↑ 47 % | Increase in active pilot deployments across 8 verticals |
-| RL Convergence | 0.97 → 0.993 | Faster policy stabilization with meta-reward feedback |
-| MERA Compression | × 12.4 → × 18.7 | Tensor entropy reduction under anti-holographic scheme |
-| Energy Efficiency | + 34 % | Power-normalized throughput gain on Grace-Blackwell |
-| Compliance Pass Rate | 98.1 % → 99.2 % | Improved CMMC/NIST automated validation pipeline |
-| Valuation Impact Φ_QEVF | + 22.8 % | Enterprise value growth correlated with telemetry performance |
-
-</div>
-
-> *Wave 2 demonstrates self-reflexive optimization: runtime metrics directly influence DCF-based valuation inputs via Φ_QEVF.*
-
-📈 **Interactive Dashboard:** [dashboards/grafana/qunimbus_wave2.json](dashboards/grafana/qunimbus_wave2.json)
+- **Telemetry Layer**  
+Structured logs, metrics, and dashboards.
 
 ---
 
-## Quick Start  
+## Technical Pillars
 
+### **Deterministic Compute**
+- Seed governance  
+- Controlled randomness  
+- Replayable execution  
+- Traceable compute graphs  
+
+### **High-Performance Acceleration**
+- Tensor contraction kernels  
+- Batched solver pipelines  
+- Multi-core/GPU optional paths  
+
+### **Scientific Transparency**
+- Config-fingerprinting  
+- Metadata embedding  
+- Provenance tracking  
+
+### **Safety-Critical Software Practices**
+- Static analysis  
+- Runtime validation  
+- Error-bounded integrators  
+- DO-178C-inspired deterministic discipline (research framing)  
+
+---
+
+## Domain Applications (Research-Safe)
+
+### **Aerospace Research**
+- Trajectory analysis  
+- Orbital propagation  
+- Reference-frame transforms  
+- Mission-planning simulation  
+
+### **Energy & Infrastructure Studies**
+- Grid-stability modeling  
+- Time-series forecasting  
+- Renewable-integration experiments  
+
+### **Economic & Systemic Modeling**
+- Risk propagation  
+- Monte Carlo scenario exploration  
+- Complex-system behavior analysis  
+
+### **Physics & Multi-Domain Simulation**
+- ODE/PDE numerical solving  
+- Multi-physics coupling  
+- Uncertainty quantification  
+
+### **Tire Simulation & Materials Engineering**
+- Goodyear Quantum Tire Pilot integration  
+- 1,000+ pre-characterized tire materials database  
+- Quantum-enhanced compound optimization  
+- Multi-scale physics modeling (molecular → macroscopic)  
+- Comprehensive performance analysis (grip, wear, thermal, efficiency)  
+
+---
+
+## Goodyear Quantum Tire Pilot
+
+QuASIM includes a comprehensive tire simulation platform integrated with Goodyear's Quantum Pilot materials database, enabling large-scale tire performance analysis with quantum-enhanced optimization.
+
+### Quick Start
+
+Run the full Goodyear Quantum Tire Pilot to generate 10,000+ tire simulation scenarios:
+
+```bash
+python3 run_goodyear_quantum_pilot.py
+```
+
+This generates:
+- **10,000 unique tire simulation scenarios**
+- **1,000+ Goodyear materials** (8 families: natural rubber, synthetic rubber, biopolymer, nano-enhanced, graphene-reinforced, quantum-optimized, silica-enhanced, carbon black)
+- **Comprehensive performance metrics** (16 KPIs per scenario)
+- **Quantum-enhanced optimization** (QAOA, VQE, hybrid algorithms)
+- **DO-178C Level A compliance posture**
+
+### Features
+
+- **Materials Database**: 1,000+ pre-characterized compounds with test data and certification status
+- **Tire Types**: Passenger, truck, off-road, racing, EV-specific, winter, all-season, performance
+- **Environmental Coverage**: Temperature range -40°C to +80°C, 12 surface types, 8 weather conditions
+- **Performance Domains**: Traction, wear, thermal response, rolling resistance, hydroplaning, noise, durability
+- **Integration Ready**: CAD systems, FEA tools, AI/ML workflows, digital twin platforms
+
+### CLI Usage
+
+```bash
+# Use all 1,000+ Goodyear materials
+quasim-tire goodyear --use-all --scenarios-per-material 10
+
+# Use only quantum-validated materials
+quasim-tire goodyear --quantum-only --scenarios-per-material 20
+
+# Use only certified materials
+quasim-tire goodyear --use-certified --scenarios-per-material 5
+```
+
+### Documentation
+
+- **Usage Guide**: [GOODYEAR_PILOT_USAGE.md](GOODYEAR_PILOT_USAGE.md)
+- **Implementation Summary**: [TIRE_SIMULATION_SUMMARY.md](TIRE_SIMULATION_SUMMARY.md)
+- **Demo Script**: [demos/tire_simulation_demo.py](demos/tire_simulation_demo.py)
+
+---
+
+## Installation & Quickstart
+
+### Prerequisites
+- Python 3.10+  
+- (Optional) Kubernetes 1.28+ for distributed workloads  
+- (Optional) GPU drivers for accelerated Q-Core modules  
+
+### Setup
 ```bash
 git clone https://github.com/robertringler/QuASIM.git
 cd QuASIM
-docker compose up --build
-```
+pip install -r requirements.txt
 
-**Access:** Frontend `localhost:8080`  |  API `localhost:8000/docs`  |  Grafana `localhost:3000`
+Example Run
 
-📚 **Docs:** [docs/quickstart](docs/quickstart)
+python -m quasim.simulate --scenario orbital_demo --seed 42 --output results/
 
----
-
-## Vertical Demos
-
-*Deterministic (≤ 60 s) industry-specific optimizations.*
-
-| Vertical   | Use Case                   | Metrics             | Compliance                  |
-| :--------- | :------------------------- | :------------------ | :-------------------------- |
-| Aerospace  | Trajectory optimization    | Altitude, Velocity  | DO-178C A / NASA-STD-8739.8 |
-| Telecom    | LEO network optimization   | Throughput, Latency | 3GPP 38.821                 |
-| Finance    | Portfolio VaR optimization | VaR, Sharpe         | Basel III / MiFID II        |
-| Healthcare | Genomics pipeline          | Accuracy, Cost      | HIPAA / FDA 21 CFR 11       |
-| Energy     | Smart grid balancing       | Renewable %, Load   | NERC CIP / IEC 61850        |
-
-📖 **Demo Guide:** [docs/demos/README.md](docs/demos/README.md)
 
 ---
 
-## Compliance
+Repository Structure
 
-| Framework                 | Status | Coverage            |
-| :------------------------ | :----: | :------------------ |
-| DO-178C Level A           |    ✅   | 100 % (MC/DC)       |
-| CMMC 2.0 L2               |    ✅   | 110 / 110 Practices |
-| NIST 800-53 Rev 5 (HIGH)  |    ✅   | 21 / 21 Controls    |
-| ITAR (USML VIII, XI, XV)  |   ⚠️   | 95 % (DDTC pending) |
-| ISO 27001 / SOC 2 Type II |    ✅   | 100 % Coverage      |
+(Structure preserved from your original README, but reframed safely.)
 
-🔍 **Assessment Index:** [COMPLIANCE_ASSESSMENT_INDEX.md](COMPLIANCE_ASSESSMENT_INDEX.md)
+analysis/            # Analytical tools and post-processing
+aerospace/           # Orbital & trajectory modeling (AURORA)
+benchmarks/          # Performance benchmarking
+ci/                  # Continuous integration scripts
+configs/             # Simulation configuration files
+data/                # Reference datasets
+docs/                # Documentation
+infra/               # Deployment & provisioning scripts
+models/              # ML/AI or numerical models
+quasim/              # Core simulation engine
+qcore/               # Acceleration backends
+qnet_os/             # Distributed compute & messaging utilities
+qunimbus/            # Provenance, metadata & verification
+runtime/             # Deterministic runtime layer
+tests/               # Unit & integration tests
+tools/               # Utility scripts
+visuals/             # Visualization modules
 
----
-
-## Architecture
-
-![QuASIM Architecture](docs/assets/quasim_architecture.png)
-
-📚 **Architecture Docs:** [docs/technical/architecture.md](docs/technical/architecture.md)
-
-### Closed-Loop Verification (Φ_QEVF) + Safety Control
-
-![Closed-Loop Φ_QEVF](docs/assets/quasim_closed_loop.png)
-
-### Phase VII Global Deployment Topology
-
-![Phase VII Topology](docs/assets/quasim_phase_vii_topology.png)
-
-### Runbook & SLO + EPH Liquidity
-
-![Runbook & Liquidity](docs/assets/quasim_runbook_liquidity.png)
-
-### Predictive Control Map
-
-![Predictive Control](docs/assets/quasim_predictive_control.png)
-
-### Equations Overlay
-
-![Equations Overlay](docs/assets/quasim_equations_overlay.png)
-
-> SVGs are available in `docs/assets/*.svg` for crisp scaling in docs and slides.
 
 ---
 
-## Phase VI.1 — Closed-Loop Verification
+Verification & Provenance
 
-*Autonomous telemetry validation and quantum market integration.*
+QuNimbus provides:
 
-| Module          | Capability                  | Outcome                      |
-| :-------------- | :-------------------------- | :--------------------------- |
-| Φ_QEVF Verifier | Telemetry vs Baseline Drift | Autonomous Variance Control  |
-| Stress Injector | 150 % Entanglement Load     | Thermal Stability ΔT < 0.1 K |
-| QMP Sandbox     | EPH Market Feed             | Performance → Value Mapping  |
+run metadata
 
-📊 **Dashboard:** [dashboards/grafana/public_board.json](dashboards/grafana/public_board.json)
+configuration hashes
 
----
+reproducible seeds
 
-## Market Position
+environment fingerprints
 
-| Metric                   |      Value      | Method                   |
-| :----------------------- | :-------------: | :----------------------- |
-| Pre-Revenue Value        | $ 5.0 B ± 0.3 B | DCF + Comparables        |
-| FY 26 Revenue            |      $ 8 M      | Bottom-Up TAM            |
-| FY 30 Revenue            |     $ 215 M     | 35 % YoY Growth          |
-| Valuation Boost (Φ_QEVF) |     + 22.8 %    | Linked to Wave 2 Metrics |
-| WACC                     |       26 %      | Quantum Sector Risk      |
+structured experiment logs
 
-📈 **Valuation Dashboard:** [docs/valuation_dashboard.html](docs/valuation_dashboard.html)
 
----
+These enable:
 
-## Contact
+scientific reproducibility
 
-| Purpose                    | Email                                                 |
-| :------------------------- | :---------------------------------------------------- |
-| Engineering Liaison        | [devops@quasim.io](mailto:devops@quasim.io)           |
-| Procurement & Partnerships | [procurement@quasim.io](mailto:procurement@quasim.io) |
-| Press & Outreach           | [info@quasim.io](mailto:info@quasim.io)               |
+cross-team validation
 
-🌐 **Website:** [https://quasim.io](https://quasim.io)
+long-term auditability
+
+
 
 ---
 
-<hr style="border:0;height:1px;background:linear-gradient(to right,transparent,#ccc,transparent);margin:40px 0;">
-<p align="center">
-  <sub>© 2025 <b>QuASIM × QuNimbus</b> — Quantum-Classical Infrastructure for the Aerospace Era.</sub><br>
-  <a href="LICENSE">Apache 2.0 License</a> • <a href="https://quasim.io">Website</a>
-</p>
+License
 
-## QuNimbus Integration (Phase VII)
+Apache 2.0 License (see LICENSE file).
+Contributions welcome under open, research-safe guidelines.
 
-QuASIM now interfaces with QuNimbus v6 for multi-scale world modeling. Deterministic seeds, audit logs, and HDF5/Zarr state enable replayable validation.
 
-### v6 Safety-Critical Enhancements
+---
 
-**Dry-Run Validation**
-```bash
-# Validate config/seed/policy without network calls (~0ms overhead)
-qunimbus ascend --query "climate model" --dry-run
-```
+Development Philosophy
 
-**Query ID Audit Tracking**
-```bash
-# Add query_id to SHA256-chained audit logs
-qunimbus ascend --query "simulation" --query-id "qid-a1b2c3"
-# Or use alias --qid
-qunimbus ascend --query "simulation" --qid "qid-a1b2c3"
-```
+QuASIM adheres to principles of:
 
-**Strict Validation Mode**
-```bash
-# Fail (exit 3) if any observable is missing
-qunimbus validate \
-  --snapshot artifacts/snapshot.hdf5 \
-  --observables configs/observables/earth_2025.yml \
-  --tolerance 0.03 \
-  --strict
-```
+robustness
 
-**Audit Chain Verification**
-```python
-from quasim.audit.log import verify_audit_chain
-assert verify_audit_chain("artifacts/audit.jsonl")
-```
+determinism
 
-### Quickstart
+clarity
 
-```bash
-# Execute world-model ascend operation
-python -m quasim.qunimbus.cli ascend \
-  --query "real world simulation" \
-  --seed 42 \
-  --out artifacts/real_world_sim_2025
+transparency
 
-# Validate snapshot against observables
-python -m quasim.qunimbus.cli validate \
-  --snapshot artifacts/real_world_sim_2025/earth_snapshot.hdf5 \
-  --tolerance 0.03
-```
+scientific integrity
 
-### Architecture
+safety and ethics
 
-- **Bridge Layer**: `quasim/qunimbus/bridge.py` mediates all external calls
-- **Determinism**: `quasim/runtime/determinism.py` ensures reproducible seeds
-- **Audit Log**: `quasim/audit/log.py` provides SHA256 chain-of-trust with query_id tracking
-- **Validation**: `quasim/validation/compare.py` compares observables (strict mode available)
-- **Policy Guard**: `quasim/policy/qnimbus_guard.py` enforces safety rules
-- **Auth Module**: `quasim/qunimbus/auth.py` JWT verify, HMAC signing (Q1-2026 production)
 
-### Key Features
+The project is intended strictly for research, modeling, and computational experimentation.
 
-- **Deterministic Replay**: All QuNimbus interactions use seeded randomness
-- **Audit Trail**: Append-only log with cryptographic integrity + query_id indexing
-- **Observable Validation**: Compare snapshots against expected metrics with strict mode
-- **Safety Gates**: Policy guard prevents dangerous query patterns
-- **Dry-Run Mode**: Pre-flight validation without network I/O
-- **Compliance Ready**: Mapped to DO-178C Level A, NIST 800-53 (AC-2, AU-3, SC-28), CMMC 2.0 L2
-
-### Data Schema
-
-Snapshots use HDF5 format with groups:
-- `/meta`: version, query_id, seed, timestamp
-- `/physics`: constants, fields, grid
-- `/biosphere`: species_table
-- `/agents`: demographic/economic agent data
-- `/economy`: market timeseries
-- `/climate`: spatial climate state
-
-See `configs/observables/earth_2025.yml` for validation schema.
-
-### Compliance
-
-Compliance documentation: `docs/QUNIMBUS_NIST_800_53_COMPLIANCE.md`
-
-## Phase VI.1 Operationalization (Automated)
-- Φ_QEVF verifier harness added (RMSE/MAE/variance, KS confidence with scipy)
-- ORD pipeline (zstd + signed manifests) at 30s with 6h checkpoints
-- Three-region observability manifests (Prometheus/Grafana/Thanos), retention 90d
-- QMP sandbox streams base EPH price 0.0004 USD with efficiency factor 0.93±0.02
-- CI gates: variance <5%, recall ≥95%, false positives <1%
-
-## QNX substrate (additive orchestration layer)
-
-This repository includes an *optional* `qnx` package that provides a small,
-additive orchestration layer on top of the existing QuASIM implementation.
-
-The QNX substrate does **not** change any existing public APIs; it offers a
-unified way to route simulations to different engines and compare their outputs
-using a common result type.
-
-The modern backend builds deterministic circuits via
-`quasim.api.scenarios.build_circuit` and executes them through
-`quantum.python.quasim_sim.simulate`, so repeated runs with identical inputs
-produce stable hashes for auditing.
-
-Example (Python):
-
-```python
-from qnx import QNXSubstrate, SimulationConfig, SecurityLevel
-
-cfg = SimulationConfig(
-    scenario_id="smoke",
-    timesteps=10,
-    seed=42,
-    security_level=SecurityLevel.INTERNAL,
-    backend="quasim_modern",
-)
-
-substrate = QNXSubstrate()
-result = substrate.run_simulation(cfg)
-
-print(result.backend, result.simulation_hash)
-```
-
-Example (CLI, once wired into packaging):
-
-```bash
-qnx simulate --scenario smoke --timesteps 10 --backend quasim_modern
-```
+---

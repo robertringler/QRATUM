@@ -16,9 +16,9 @@ def main():
     st.markdown(
         """
     ## Overview
-    
+
     Maximize expected responders, control Type I/II error, enforce fairness
-    
+
     ### Key Performance Indicators (KPIs)
     - power, FPR, responders_gain, allocation_entropy
     """
@@ -57,11 +57,11 @@ def main():
     st.markdown(
         """
     ## How to Run
-    
+
     ```bash
     # Run planning
     python -m quasim.demos.healthcare.cli plan --steps 200 --seed 42
-    
+
     # Run simulation with capture
     python -m quasim.demos.healthcare.cli simulate --seed 42 --capture
     ```
