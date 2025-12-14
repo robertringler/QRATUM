@@ -155,8 +155,8 @@
                     <p>1,152</p>
                 </div>
                 <div class="metric-card warning">
-                    <h3>Issue Categories</h3>
-                    <p>29</p>
+                    <h3>Issue Types</h3>
+                    <p>27</p>
                 </div>
                 <div class="metric-card info">
                     <h3>Auto-Fixable</h3>
@@ -205,10 +205,10 @@
 
         <div class="dashboard-section">
             <h2>4. Type Checking Status</h2>
-            <p>Results from mypy type checking analysis.</p>
+            <p>Results from mypy type checking analysis (as of last report).</p>
             <div style="background-color: #f3f4f6; padding: 1rem; border-radius: 4px; font-family: monospace;">
                 <p style="margin: 0;"><strong>Status:</strong> Type checking completed</p>
-                <p style="margin: 0.5rem 0 0 0;"><strong>Issue:</strong> quasim-api is not a valid Python package name</p>
+                <p style="margin: 0.5rem 0 0 0;"><strong>Note:</strong> quasim-api is not a valid Python package name</p>
             </div>
         </div>
     </div>
@@ -221,7 +221,7 @@
     <script>
         // Issue data
         const issues = [
-            { count: 338, code: '', description: 'invalid-syntax', category: 'E', severity: 'error' },
+            { count: 338, code: 'E', description: 'invalid-syntax', category: 'E', severity: 'error' },
             { count: 200, code: 'N806', description: 'non-lowercase-variable-in-function', category: 'N', severity: 'warning' },
             { count: 193, code: 'UP006', description: 'non-pep585-annotation', category: 'UP', severity: 'info' },
             { count: 69, code: 'W291', description: 'trailing-whitespace', category: 'W', severity: 'warning' },
@@ -259,7 +259,7 @@
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><strong>${issue.count}</strong></td>
-                <td><span class="category-label">${issue.code || 'E'}</span></td>
+                <td><span class="category-label">${issue.code || 'N/A'}</span></td>
                 <td>${issue.description}</td>
                 <td>${getCategoryName(issue.category)}</td>
                 <td><span class="severity-badge severity-${issue.severity}">${issue.severity}</span></td>
