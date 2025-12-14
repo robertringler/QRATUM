@@ -64,9 +64,6 @@ def register_engine(name: str, fn: Callable[..., MutableMapping[str, Any]]) -> N
         name: Unique identifier for the engine (e.g., "quasim_modern")
         fn: Callable that accepts scenario_id, timesteps, seed, and extra kwargs
             and returns a dictionary containing simulation results
-
-    Returns:
-        None
     """
 
     _ENGINE_REGISTRY[name] = fn
