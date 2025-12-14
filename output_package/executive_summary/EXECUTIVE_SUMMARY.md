@@ -18,8 +18,8 @@ This document provides a comprehensive technical analysis of the QuASIM/Qubic re
 
 ### 2.1 Quantitative Metrics
 
-- **Total Modules Analyzed:** 1,033
-- **Total Lines of Code:** 97,232
+- **Total Modules Analyzed:** 1,034
+- **Total Lines of Code:** 97,384
 - **Benchmarks Defined:** 0
 - **Visualizations Generated:** 148
 - **CI/CD Workflows:** 50+ GitHub Actions workflows
@@ -30,7 +30,7 @@ This document provides a comprehensive technical analysis of the QuASIM/Qubic re
 Key subsystems and their module counts:
 
 - **quasim**: 234 modules
-- **tests**: 178 modules
+- **tests**: 179 modules
 - **qstack**: 142 modules
 - **qsk**: 33 modules
 - **scripts**: 26 modules
