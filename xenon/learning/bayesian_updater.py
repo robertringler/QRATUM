@@ -28,9 +28,9 @@ class ExperimentResult:
         self,
         experiment_type: str,
         observations: Dict[str, float],
-        uncertainties: Dict[str, float] | None = None,
-        conditions: Dict[str, Any] | None = None,
-        metadata: Dict[str, Any] | None = None,
+        uncertainties: Optional[Dict[str, float]] = None,
+        conditions: Optional[Dict[str, Any]] = None,
+        metadata: Optional[Dict[str, Any]] = None,
     ):
         self.experiment_type = experiment_type
         self.observations = observations

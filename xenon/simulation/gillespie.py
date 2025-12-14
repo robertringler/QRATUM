@@ -225,10 +225,11 @@ class GillespieSimulator:
         state.molecule_counts[transition.source] -= 1
         state.molecule_counts[transition.target] += 1
         
-        # Ensure non-negative counts
-        state.molecule_counts[transition.source] = max(
-            0, state.molecule_counts[transition.source]
-        )
+        # Check for negative counts (indicates algorithm bug)
+        if state.molecule_counts[transition.source] < 0:
+            # This should not happen in correct SSA implementation
+            # If it does, clamp to zero and continue
+            state.molecule_counts[transition.source] = 0
         
         # Update concentrations
         for species in state.concentrations:

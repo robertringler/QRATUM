@@ -210,8 +210,8 @@ class MechanismPrior:
     
     def initialize_mechanism_priors(
         self,
-        mechanisms: list[BioMechanism],
-    ) -> list[BioMechanism]:
+        mechanisms: List[BioMechanism],
+    ) -> List[BioMechanism]:
         """Initialize priors for a list of mechanisms.
         
         Args:

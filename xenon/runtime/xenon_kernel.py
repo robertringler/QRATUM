@@ -39,7 +39,7 @@ class Target:
     name: str
     protein: str
     objective: str
-    constraints: Dict[str, Any] | None = None
+    constraints: Optional[Dict[str, Any]] = None
 
 
 class XENONRuntime:
@@ -301,10 +301,11 @@ class XENONRuntime:
                 )
                 
                 # Update state concentrations from final simulation state
-                if times:
+                if times and len(times) > 0:
                     for state_name in mechanism._states:
-                        final_conc = trajectories[state_name][-1]
-                        mechanism._states[state_name].concentration = final_conc
+                        if state_name in trajectories and len(trajectories[state_name]) > 0:
+                            final_conc = trajectories[state_name][-1]
+                            mechanism._states[state_name].concentration = final_conc
             
             except Exception:
                 # If simulation fails, mark with low posterior
