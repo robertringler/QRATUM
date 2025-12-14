@@ -927,17 +927,21 @@ app.layout = html.Div([
         
     ], fluid=True),
     
-    # Custom CSS
-    html.Style("""
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-    """),
+    # Custom CSS - use dcc.Markdown with dangerously_allow_html or inline style tag
+    html.Div([
+        dcc.Markdown("""
+<style>
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+</style>
+        """, dangerously_allow_html=True),
+    ], style={"display": "none"}),
 ])
 
 
