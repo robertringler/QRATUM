@@ -1,0 +1,93 @@
+# =============================================================================
+# Goodyear Quantum Tire Visualization Suite - PersistentVolumeClaim
+# =============================================================================
+# Purpose: Persistent storage for quantum simulation data, tire models,
+#          and visualization artifacts
+# Storage Class: Uses 'gp3' for AWS EKS, 'standard' for GKE/AKS
+# Access Mode: ReadWriteMany enables multiple replicas to share data
+# =============================================================================
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: goodyear-simulation-data
+  namespace: goodyear
+  labels:
+    app: goodyear-dashboard
+    component: storage
+    version: v1
+    tier: data
+    # Compliance labels for DO-178C traceability
+    compliance.quasim.io/do178c: "level-a"
+    compliance.quasim.io/data-classification: "proprietary"
+  annotations:
+    # Description for operators
+    description: "Persistent storage for Goodyear quantum tire simulation data"
+    # Backup policy annotation (for Velero or similar backup tools)
+    backup.velero.io/backup-volumes: "goodyear-simulation-data"
+    # Storage optimization hints
+    volume.kubernetes.io/storage-provisioner: "ebs.csi.aws.com"
+spec:
+  # Access mode: ReadWriteMany allows multiple pods to mount simultaneously
+  # Required for multi-replica deployments
+  accessModes:
+    - ReadWriteMany
+  
+  # Storage request: 500Gi for tire simulation datasets, quantum state snapshots,
+  # and visualization cache
+  resources:
+    requests:
+      storage: 500Gi
+  
+  # Storage class configuration
+  # For AWS EKS: Use 'gp3' for cost-effective, high-performance SSD
+  # For GKE: Use 'standard' or 'premium-rwo'
+  # For AKS: Use 'managed-premium' or 'azurefile-premium'
+  storageClassName: gp3
+  
+  # Volume mode: Filesystem (default) for standard file-based access
+  volumeMode: Filesystem
+
+---
+# =============================================================================
+# Alternative Storage Class for GKE (uncomment if deploying to GCP)
+# =============================================================================
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: goodyear-simulation-data
+#   namespace: goodyear
+#   labels:
+#     app: goodyear-dashboard
+#     component: storage
+# spec:
+#   accessModes:
+#     - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 500Gi
+#   storageClassName: standard
+
+---
+# =============================================================================
+# StorageClass for AWS gp3 (create if not exists)
+# =============================================================================
+# Note: This StorageClass should be created cluster-wide by administrators
+# Uncomment and apply if gp3 StorageClass doesn't exist
+# =============================================================================
+# apiVersion: storage.k8s.io/v1
+# kind: StorageClass
+# metadata:
+#   name: gp3
+#   labels:
+#     app: goodyear-dashboard
+# provisioner: ebs.csi.aws.com
+# parameters:
+#   type: gp3
+#   fsType: ext4
+#   # Performance parameters for quantum simulation workloads
+#   iops: "3000"
+#   throughput: "125"
+# reclaimPolicy: Retain
+# allowVolumeExpansion: true
+# volumeBindingMode: WaitForFirstConsumer

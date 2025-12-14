@@ -2,9 +2,9 @@
 
 Real-time QuASIM integration with Claude 4.5 Opus for interactive Gen-6 tire compound analysis and sustainability metrics visualization.
 
-## Status: 🚧 In Progress
+## Status: ✅ Complete
 
-### Completed ✅
+### Components
 - [x] **Dockerfile** - NVIDIA CUDA 12.2 base with Python 3.11, all dependencies
 - [x] **launch_dashboard.py** - Full Dash application with:
   - 3D Molecular Visualization
@@ -16,12 +16,10 @@ Real-time QuASIM integration with Claude 4.5 Opus for interactive Gen-6 tire com
   - Live QuASIM API connection
   - Prometheus metrics
 - [x] **requirements.txt** - All Python dependencies
-
-### Remaining 📋
-- [ ] **k8s/pvc.yaml** - 500GB PersistentVolumeClaim for simulation datasets
-- [ ] **k8s/deployment.yaml** - 2 replicas, GPU nodes, secrets
-- [ ] **k8s/service.yaml** - LoadBalancer, port 80 → 8050
-- [ ] **assets/** directory for static files (optional)
+- [x] **k8s/pvc.yaml** - 500GB PersistentVolumeClaim for simulation datasets
+- [x] **k8s/deployment.yaml** - 2 GPU replicas with secrets, health probes, PodDisruptionBudget
+- [x] **k8s/service.yaml** - LoadBalancer with multi-cloud annotations (AWS/GCP/Azure)
+- [x] **k8s/secrets.yaml.example** - Template for API key secrets
 
 ## Quick Start (Local Development)
 
@@ -81,23 +79,24 @@ open http://localhost:8050
 - Real-time AI analysis of simulation data
 - Technical recommendations for manufacturing
 
-## Kubernetes Deployment (TODO)
-
-When k8s manifests are complete:
+## Kubernetes Deployment
 
 ```bash
-# Create secrets
-kubectl create secret generic goodyear-api-keys \
-  --from-literal=CLAUDE_OPUS_API_KEY=your_key \
-  --from-literal=QUASIM_API_KEY=your_key
+# Create namespace
+kubectl create namespace goodyear
 
-# Apply manifests
+# Create secrets (copy and edit secrets.yaml.example first)
+cp k8s/secrets.yaml.example k8s/secrets.yaml
+# Edit k8s/secrets.yaml with your actual API keys (base64 encoded)
+kubectl apply -f k8s/secrets.yaml
+
+# Apply manifests in order
 kubectl apply -f k8s/pvc.yaml
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
 
 # Get LoadBalancer URL
-kubectl get svc goodyear-dashboard
+kubectl get svc goodyear-dashboard -n goodyear
 ```
 
 ## Architecture

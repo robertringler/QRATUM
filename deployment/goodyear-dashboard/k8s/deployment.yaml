@@ -1,0 +1,336 @@
+# =============================================================================
+# Goodyear Quantum Tire Visualization Suite - Deployment
+# =============================================================================
+# Purpose: GPU-accelerated quantum tire simulation dashboard
+# Features:
+#   - NVIDIA GPU support for cuQuantum acceleration
+#   - High availability with 2 replicas
+#   - Secure secret management for API keys
+#   - Health monitoring with liveness/readiness probes
+#   - Resource limits for predictable performance
+# =============================================================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goodyear-dashboard
+  namespace: goodyear
+  labels:
+    app: goodyear-dashboard
+    component: visualization
+    version: v1
+    tier: frontend
+    # Compliance and tracking labels
+    compliance.quasim.io/do178c: "level-a"
+    compliance.quasim.io/cmmc: "level-2"
+  annotations:
+    # Deployment description
+    description: "Goodyear Quantum Tire Visualization Dashboard with GPU acceleration"
+    # Prometheus monitoring annotations
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8050"
+    prometheus.io/path: "/metrics"
+    # ArgoCD sync wave for ordered deployment
+    argocd.argoproj.io/sync-wave: "2"
+    # Image update policy for automated deployments
+    keel.sh/policy: "major"
+    keel.sh/trigger: "poll"
+spec:
+  # Replica count: 2 for high availability
+  # Consider PodDisruptionBudget (see below) to maintain availability during updates
+  replicas: 2
+  
+  # Revision history for rollback capability
+  revisionHistoryLimit: 5
+  
+  # Deployment strategy: RollingUpdate for zero-downtime deployments
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # Allow 1 extra pod during update for faster rollout
+      maxSurge: 1
+      # Ensure at least 1 pod is always available
+      maxUnavailable: 0
+  
+  # Pod selector - must match template labels
+  selector:
+    matchLabels:
+      app: goodyear-dashboard
+      component: visualization
+  
+  template:
+    metadata:
+      labels:
+        app: goodyear-dashboard
+        component: visualization
+        version: v1
+        tier: frontend
+        # GPU workload label for node affinity
+        gpu-workload: "true"
+      annotations:
+        # Force pod restart on config/secret changes
+        checksum/config: "{{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}"
+        # Prometheus scraping
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8050"
+        # Istio sidecar injection (if using service mesh)
+        sidecar.istio.io/inject: "true"
+    
+    spec:
+      # Service account for RBAC (create separately if needed)
+      serviceAccountName: goodyear-dashboard
+      
+      # Security context at pod level - run as non-root
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        # Secure computing mode
+        seccompProfile:
+          type: RuntimeDefault
+      
+      # Node selector for GPU-enabled nodes
+      nodeSelector:
+        # Select nodes with NVIDIA GPUs
+        accelerator: nvidia-gpu
+        # Alternative labels depending on cloud provider:
+        # cloud.google.com/gke-accelerator: nvidia-tesla-t4
+        # node.kubernetes.io/instance-type: p3.2xlarge
+      
+      # Tolerations for GPU node taints
+      tolerations:
+        - key: "nvidia.com/gpu"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "gpu"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      
+      # Affinity rules for optimal scheduling
+      affinity:
+        # Prefer spreading pods across availability zones
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: goodyear-dashboard
+                topologyKey: topology.kubernetes.io/zone
+        # Prefer nodes with GPU resources
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nvidia.com/gpu.present
+                    operator: In
+                    values:
+                      - "true"
+      
+      # Containers
+      containers:
+        - name: goodyear-dashboard
+          # Container image - update with your registry
+          image: your-dockerhub/goodyear-dashboard:latest
+          imagePullPolicy: Always
+          
+          # Container ports
+          ports:
+            - name: http
+              containerPort: 8050
+              protocol: TCP
+          
+          # Environment variables from secrets
+          env:
+            # API keys from Kubernetes secrets
+            - name: CLAUDE_OPUS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: goodyear-api-keys
+                  key: CLAUDE_OPUS_API_KEY
+            
+            - name: QUASIM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: goodyear-api-keys
+                  key: QUASIM_API_KEY
+            
+            # Application configuration
+            - name: QUASIM_API_URL
+              value: "https://api.quasim.io/v1"
+            
+            - name: DASH_HOST
+              value: "0.0.0.0"
+            
+            - name: DASH_PORT
+              value: "8050"
+            
+            # GPU configuration
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "all"
+            
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: "compute,utility"
+            
+            # Python optimization
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            
+            - name: PYTHONDONTWRITEBYTECODE
+              value: "1"
+            
+            # Simulation data path
+            - name: SIMULATION_DATA_PATH
+              value: "/app/data"
+          
+          # Volume mounts
+          volumeMounts:
+            - name: simulation-data
+              mountPath: /app/data
+              # Read-write access for simulation results
+              readOnly: false
+            
+            # Optional: Mount for temporary files
+            - name: tmp
+              mountPath: /tmp
+          
+          # Resource limits and requests
+          resources:
+            requests:
+              # Minimum resources for scheduling
+              memory: "2Gi"
+              cpu: "1"
+              # GPU request (optional, limit is sufficient)
+              # nvidia.com/gpu: "1"
+            limits:
+              # Maximum resource consumption
+              memory: "4Gi"
+              cpu: "2"
+              # NVIDIA GPU limit - 1 GPU per pod
+              nvidia.com/gpu: "1"
+          
+          # Liveness probe - restart container if unhealthy
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8050
+              scheme: HTTP
+            # Wait 30s before first check (allow startup)
+            initialDelaySeconds: 30
+            # Check every 10 seconds
+            periodSeconds: 10
+            # Timeout for each probe
+            timeoutSeconds: 5
+            # Restart after 3 consecutive failures
+            failureThreshold: 3
+            # Mark healthy after 1 success
+            successThreshold: 1
+          
+          # Readiness probe - remove from service if not ready
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8050
+              scheme: HTTP
+            # Start checking after 10s
+            initialDelaySeconds: 10
+            # Check every 5 seconds
+            periodSeconds: 5
+            # Timeout for each probe
+            timeoutSeconds: 3
+            # Mark unready after 3 failures
+            failureThreshold: 3
+            # Mark ready after 1 success
+            successThreshold: 1
+          
+          # Startup probe - for slow-starting containers
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8050
+            # Allow up to 5 minutes for startup (300s / 10s = 30 attempts)
+            failureThreshold: 30
+            periodSeconds: 10
+          
+          # Container security context
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false  # Set to false for Python apps that need write access
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop:
+                - ALL
+      
+      # Volumes
+      volumes:
+        # PersistentVolumeClaim for simulation data
+        - name: simulation-data
+          persistentVolumeClaim:
+            claimName: goodyear-simulation-data
+        
+        # EmptyDir for temporary files
+        - name: tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
+      
+      # Image pull secrets (if using private registry)
+      # imagePullSecrets:
+      #   - name: dockerhub-credentials
+      
+      # Termination grace period - allow 30s for graceful shutdown
+      terminationGracePeriodSeconds: 30
+      
+      # DNS policy
+      dnsPolicy: ClusterFirst
+      
+      # Restart policy
+      restartPolicy: Always
+
+---
+# =============================================================================
+# PodDisruptionBudget - Maintain availability during voluntary disruptions
+# =============================================================================
+# Ensures at least 1 pod is always available during node drains,
+# cluster upgrades, or other voluntary disruptions
+# =============================================================================
+
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: goodyear-dashboard-pdb
+  namespace: goodyear
+  labels:
+    app: goodyear-dashboard
+    component: visualization
+spec:
+  # Minimum pods that must be available
+  minAvailable: 1
+  # Alternative: maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: goodyear-dashboard
+      component: visualization
+
+---
+# =============================================================================
+# ServiceAccount - RBAC identity for the dashboard pods
+# =============================================================================
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: goodyear-dashboard
+  namespace: goodyear
+  labels:
+    app: goodyear-dashboard
+    component: visualization
+  annotations:
+    # AWS IAM role for service account (IRSA) - uncomment for AWS
+    # eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/goodyear-dashboard-role
+    # GCP Workload Identity - uncomment for GCP
+    # iam.gke.io/gcp-service-account: goodyear-dashboard@PROJECT_ID.iam.gserviceaccount.com
+automountServiceAccountToken: true

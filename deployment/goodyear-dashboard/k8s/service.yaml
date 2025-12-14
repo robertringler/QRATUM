@@ -1,0 +1,199 @@
+# =============================================================================
+# Goodyear Quantum Tire Visualization Suite - Service
+# =============================================================================
+# Purpose: Expose the Goodyear dashboard via cloud provider load balancer
+# Type: LoadBalancer - Creates external IP/DNS for public access
+# Ports: 80 (external) → 8050 (container)
+# =============================================================================
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: goodyear-dashboard
+  namespace: goodyear
+  labels:
+    app: goodyear-dashboard
+    component: visualization
+    version: v1
+    tier: frontend
+    # Compliance labels
+    compliance.quasim.io/do178c: "level-a"
+  annotations:
+    # ==========================================================================
+    # AWS ELB/NLB Annotations (for EKS deployments)
+    # ==========================================================================
+    # Use Network Load Balancer for better performance
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    # Enable cross-zone load balancing
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    # SSL/TLS termination at load balancer (uncomment and configure)
+    # service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:region:account:certificate/cert-id"
+    # service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+    # service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+    # Internal load balancer (for private access only)
+    # service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    # Health check configuration
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: "/health"
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-interval: "10"
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-timeout: "5"
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-healthy-threshold: "2"
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-unhealthy-threshold: "3"
+    
+    # ==========================================================================
+    # GCP Cloud Load Balancer Annotations (for GKE deployments)
+    # ==========================================================================
+    # Use GCP Network Load Balancer
+    # cloud.google.com/load-balancer-type: "External"
+    # Enable Container-native load balancing (NEG)
+    # cloud.google.com/neg: '{"ingress": true}'
+    # Backend configuration for health checks
+    # cloud.google.com/backend-config: '{"default": "goodyear-dashboard-backend-config"}'
+    
+    # ==========================================================================
+    # Azure Load Balancer Annotations (for AKS deployments)
+    # ==========================================================================
+    # Use Azure Standard Load Balancer
+    # service.beta.kubernetes.io/azure-load-balancer-internal: "false"
+    # Health probe configuration
+    # service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: "/health"
+    # service.beta.kubernetes.io/azure-load-balancer-health-probe-interval: "10"
+    # service.beta.kubernetes.io/azure-load-balancer-health-probe-num-of-probe: "3"
+    
+    # ==========================================================================
+    # General Annotations
+    # ==========================================================================
+    # External DNS annotation for automatic DNS record creation
+    external-dns.alpha.kubernetes.io/hostname: "dashboard.goodyear.quasim.io"
+    # Prometheus service discovery
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8050"
+    prometheus.io/path: "/metrics"
+spec:
+  # Service type: LoadBalancer creates an external load balancer
+  # Alternatives: ClusterIP (internal only), NodePort (direct node access)
+  type: LoadBalancer
+  
+  # External traffic policy: Local preserves client IP
+  # Use 'Cluster' for even distribution, 'Local' for client IP preservation
+  externalTrafficPolicy: Local
+  
+  # Session affinity: ClientIP enables sticky sessions
+  # Useful for stateful dashboard interactions
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      # Session timeout in seconds (default: 10800 = 3 hours)
+      timeoutSeconds: 3600
+  
+  # Port configuration
+  ports:
+    - name: http
+      # External port (load balancer listens on this)
+      port: 80
+      # Target port on the container
+      targetPort: 8050
+      # Protocol
+      protocol: TCP
+    
+    # HTTPS port (uncomment if terminating TLS at service level)
+    # - name: https
+    #   port: 443
+    #   targetPort: 8050
+    #   protocol: TCP
+  
+  # Selector - must match deployment pod labels
+  selector:
+    app: goodyear-dashboard
+    component: visualization
+  
+  # IP family configuration (dual-stack support)
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+
+---
+# =============================================================================
+# ClusterIP Service - Internal access within cluster
+# =============================================================================
+# Use this for internal service-to-service communication
+# Useful when using an Ingress controller for external access
+# =============================================================================
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: goodyear-dashboard-internal
+  namespace: goodyear
+  labels:
+    app: goodyear-dashboard
+    component: visualization
+    version: v1
+    tier: frontend
+    access: internal
+  annotations:
+    description: "Internal service for cluster communication"
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8050
+      targetPort: 8050
+      protocol: TCP
+  selector:
+    app: goodyear-dashboard
+    component: visualization
+
+---
+# =============================================================================
+# Headless Service - For StatefulSet or direct pod access
+# =============================================================================
+# Creates DNS records for each pod: pod-name.goodyear-dashboard-headless.namespace
+# Useful for debugging or direct pod communication
+# =============================================================================
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: goodyear-dashboard-headless
+  namespace: goodyear
+  labels:
+    app: goodyear-dashboard
+    component: visualization
+    version: v1
+spec:
+  type: ClusterIP
+  # clusterIP: None makes this a headless service
+  clusterIP: None
+  ports:
+    - name: http
+      port: 8050
+      targetPort: 8050
+  selector:
+    app: goodyear-dashboard
+    component: visualization
+
+---
+# =============================================================================
+# GCP BackendConfig (for GKE with Ingress)
+# =============================================================================
+# Uncomment when using GKE with Container-native load balancing
+# =============================================================================
+# apiVersion: cloud.google.com/v1
+# kind: BackendConfig
+# metadata:
+#   name: goodyear-dashboard-backend-config
+#   namespace: goodyear
+# spec:
+#   healthCheck:
+#     checkIntervalSec: 10
+#     timeoutSec: 5
+#     healthyThreshold: 2
+#     unhealthyThreshold: 3
+#     type: HTTP
+#     requestPath: /health
+#     port: 8050
+#   sessionAffinity:
+#     affinityType: "CLIENT_IP"
+#     affinityCookieTtlSec: 3600
+#   connectionDraining:
+#     drainingTimeoutSec: 30
