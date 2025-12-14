@@ -52,15 +52,12 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import hashlib
-import json
-import logging
-import statistics
 import csv
 import hashlib
 import json
 import logging
 import os
+import statistics
 import sys
 import time
 from dataclasses import asdict, dataclass, field

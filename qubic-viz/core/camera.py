@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 
@@ -59,11 +58,13 @@ class Camera:
         view[0, :3] = right
         view[1, :3] = up
         view[2, :3] = -forward
-        view[:3, 3] = -np.array([
-            np.dot(right, self.position),
-            np.dot(up, self.position),
-            np.dot(-forward, self.position),
-        ])
+        view[:3, 3] = -np.array(
+            [
+                np.dot(right, self.position),
+                np.dot(up, self.position),
+                np.dot(-forward, self.position),
+            ]
+        )
 
         return view
 
@@ -93,7 +94,7 @@ class Camera:
         """
         self.target = target
 
-    def orbit(self, angle_x: float, angle_y: float, distance: Optional[float] = None) -> None:
+    def orbit(self, angle_x: float, angle_y: float, distance: float | None = None) -> None:
         """Orbit camera around target.
 
         Args:

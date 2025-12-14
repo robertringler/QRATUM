@@ -2,10 +2,7 @@
 
 from __future__ import annotations
 
-import asyncio
-import uuid
-from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict
 
 try:
     from fastapi import FastAPI, WebSocket, WebSocketDisconnect

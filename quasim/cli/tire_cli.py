@@ -6,6 +6,7 @@ from quasim.domains.tire import generate_tire_library
 
 try:
     from integrations.goodyear import create_goodyear_library
+
     GOODYEAR_AVAILABLE = True
 except ImportError:
     GOODYEAR_AVAILABLE = False
@@ -71,9 +72,7 @@ def generate(output_dir: str, count: int, format: str, run: bool):
         stats = summary["statistics"]
         click.echo(f"  Average Grip: {stats.get('avg_grip_coefficient', 'N/A')}")
         click.echo(f"  Average Rolling Resistance: {stats.get('avg_rolling_resistance', 'N/A')}")
-        click.echo(
-            f"  Average Optimization Score: {stats.get('avg_optimization_score', 'N/A')}"
-        )
+        click.echo(f"  Average Optimization Score: {stats.get('avg_optimization_score', 'N/A')}")
 
 
 @cli.command()
@@ -168,9 +167,7 @@ def inspect(simulation_id: str, library_dir: str):
     is_flag=True,
     help="Use only quantum-validated materials",
 )
-def goodyear(
-    output_dir: str, scenarios_per_material: int, use_all: bool, quantum_only: bool
-):
+def goodyear(output_dir: str, scenarios_per_material: int, use_all: bool, quantum_only: bool):
     """Generate library using Goodyear Quantum Pilot materials (1,000+ compounds)."""
     if not GOODYEAR_AVAILABLE:
         click.echo("Error: Goodyear integration not available")
@@ -216,16 +213,16 @@ def goodyear(
         stats = summary["statistics"]
         click.echo(f"  Average Grip: {stats.get('avg_grip_coefficient', 'N/A')}")
         click.echo(f"  Average Rolling Resistance: {stats.get('avg_rolling_resistance', 'N/A')}")
-        click.echo(
-            f"  Average Optimization Score: {stats.get('avg_optimization_score', 'N/A')}"
-        )
+        click.echo(f"  Average Optimization Score: {stats.get('avg_optimization_score', 'N/A')}")
 
     if "materials_database_stats" in summary:
         click.echo("")
         click.echo("Materials Database:")
         db_stats = summary["materials_database_stats"]
         click.echo(f"  Total Materials: {db_stats['total_materials']}")
-        click.echo(f"  Quantum Validated: {db_stats['quantum_validated']} ({db_stats['quantum_validated_percentage']}%)")
+        click.echo(
+            f"  Quantum Validated: {db_stats['quantum_validated']} ({db_stats['quantum_validated_percentage']}%)"
+        )
 
 
 if __name__ == "__main__":

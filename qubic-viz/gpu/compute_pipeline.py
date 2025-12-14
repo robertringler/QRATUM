@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Any, Callable, Optional
+from collections.abc import Callable
+from typing import Any
 
 import numpy as np
 
@@ -25,9 +26,7 @@ class ComputePipeline:
         self.memory_manager = GPUMemoryManager(memory_limit_mb)
         self.operations = []
 
-    def add_operation(
-        self, operation: Callable, name: str, inputs: Optional[list] = None
-    ) -> None:
+    def add_operation(self, operation: Callable, name: str, inputs: list | None = None) -> None:
         """Add operation to pipeline.
 
         Args:

@@ -297,9 +297,7 @@ class TireScenarioGenerator:
 
         return environments
 
-    def generate_operating_conditions(
-        self, count: int = 25
-    ) -> list[tuple[float, float, float]]:
+    def generate_operating_conditions(self, count: int = 25) -> list[tuple[float, float, float]]:
         """Generate diverse operating condition variants.
 
         Args:
