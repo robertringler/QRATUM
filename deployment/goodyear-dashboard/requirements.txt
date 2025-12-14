@@ -1,0 +1,60 @@
+# Goodyear Quantum Tire Visualization Suite - Dependencies
+# QuASIM Integration with Claude 4.5 Opus
+
+# Core Dash Framework
+dash>=2.14.0
+dash-core-components>=2.0.0
+dash-html-components>=2.0.0
+dash-bootstrap-components>=1.5.0
+dash-daq>=0.5.0
+
+# Visualization
+plotly>=5.18.0
+plotly-express>=0.4.1
+kaleido>=0.2.1
+
+# 3D Visualization
+dash-vtk>=0.0.9
+pyvista>=0.43.0
+vtk>=9.3.0
+pythreejs>=2.4.2
+
+# Data Processing
+pandas>=2.1.0
+numpy>=1.26.0
+scipy>=1.11.0
+scikit-learn>=1.3.0
+
+# Async and API
+aiohttp>=3.9.0
+httpx>=0.25.0
+requests>=2.31.0
+websockets>=12.0
+
+# Claude Opus Client
+anthropic>=0.18.0
+
+# QuASIM Client (internal package)
+# quasim-client>=1.0.0  # Installed from internal registry
+
+# GPU/CUDA Support
+cupy-cuda12x>=12.3.0
+
+# Database
+redis>=5.0.0
+sqlalchemy>=2.0.0
+
+# Monitoring
+prometheus-client>=0.19.0
+
+# Utilities
+python-dotenv>=1.0.0
+pyyaml>=6.0.1
+orjson>=3.9.0
+tenacity>=8.2.0
+
+# Security
+cryptography>=41.0.0
+
+# Logging
+structlog>=23.2.0
