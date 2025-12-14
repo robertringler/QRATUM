@@ -99,3 +99,6 @@ goodyear_pilot_execution_log.txt
 results/
 bm001_execution.log
 bm001_execution_output.txt
+
+# Generated documentation package
+output_package/
