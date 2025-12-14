@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import Any, Dict
 
-from ..perception.base import PerceptionLayer
-from ..worldmodel.base import WorldModel
 from ..memory.base import MemorySystem
+from ..perception.base import PerceptionLayer
 from ..planning.base import PlanningSystem
 from ..utils.audit_log import AuditLog
 from ..utils.ids import deterministic_id
+from ..worldmodel.base import WorldModel
 
 
 class Orchestrator:
@@ -34,7 +34,9 @@ class Orchestrator:
             self._memory.record(percept.modality, percept.value)
         plan = self._planning.evaluate(goal, state.facts)
         run_id = deterministic_id("cycle", {"goal": goal, "state": state.facts})
-        self._audit.record("cycle", {"id": run_id, "goal": goal, "state": state.facts, "plan": plan})
+        self._audit.record(
+            "cycle", {"id": run_id, "goal": goal, "state": state.facts, "plan": plan}
+        )
         return {
             "id": run_id,
             "percepts": percepts,

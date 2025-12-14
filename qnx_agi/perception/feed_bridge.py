@@ -1,4 +1,5 @@
 """Bridge normalized QREAL data into AGI percepts."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

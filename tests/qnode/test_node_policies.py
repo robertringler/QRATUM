@@ -1,4 +1,4 @@
-from qnode.policies import syscall_allowlist_policy, budget_policy, compose_policies
+from qnode.policies import budget_policy, compose_policies, syscall_allowlist_policy
 
 
 def test_policy_composition():

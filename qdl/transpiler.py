@@ -1,8 +1,8 @@
 """Transpiler from QDL to Python for deterministic execution."""
 from __future__ import annotations
 
-from .parser import Parser
 from .ast import BinaryOp, EconomicPrimitive, Number, SafetyGuard, SimulationKernel, WorldModelCall
+from .parser import Parser
 
 
 class Transpiler:

@@ -1,12 +1,13 @@
 """Structured scenario reporting."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Dict, List
 
 from qscenario.outcomes import OutcomeSummary
-from qscenario.timeline import Timeline
 from qscenario.scenario import ScenarioConfig, ScenarioState
+from qscenario.timeline import Timeline
 
 
 @dataclass
@@ -39,7 +40,9 @@ class ScenarioReport:
 
     def narrative(self) -> List[str]:
         lines: List[str] = []
-        lines.append(f"Scenario {self.config.name} executed over {len(self.timeline.describe())} ticks.")
+        lines.append(
+            f"Scenario {self.config.name} executed over {len(self.timeline.describe())} ticks."
+        )
         if self.outcome.incidents:
             lines.append(f"Incidents observed: {len(self.outcome.incidents)}")
         if self.outcome.metrics:

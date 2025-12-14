@@ -1,4 +1,5 @@
 """Fault isolation zones for deterministic containment."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

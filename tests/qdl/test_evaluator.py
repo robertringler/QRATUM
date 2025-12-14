@@ -8,6 +8,6 @@ class WM:
 
 
 def test_worldmodel_call_evaluates():
-    program = Parser.parse('worldmodel:add(1, 2)')
-    evaluator = Evaluator({'worldmodel': WM()})
+    program = Parser.parse("worldmodel:add(1, 2)")
+    evaluator = Evaluator({"worldmodel": WM()})
     assert evaluator.evaluate(program) == 3

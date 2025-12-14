@@ -1,4 +1,5 @@
 """Deterministic trace recorder for QNX runs."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

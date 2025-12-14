@@ -20,6 +20,8 @@ def test_build_ledger_and_summary_counts():
     assert len(turns) == 5
     assert len(summaries) == 2
     conv_id = conversations[1].id
-    summary = summarize_conversation(conv_id, [t for t in turns if t.conversation_id == conv_id], "List based conversation")
+    summary = summarize_conversation(
+        conv_id, [t for t in turns if t.conversation_id == conv_id], "List based conversation"
+    )
     assert summary.num_messages == 2
     assert "gpt-3.5" in summary.models_used

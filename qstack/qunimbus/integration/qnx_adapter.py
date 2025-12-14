@@ -1,4 +1,5 @@
 """Operator adapter for QNX runtime."""
+
 from __future__ import annotations
 
 from typing import Dict

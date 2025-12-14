@@ -1,4 +1,5 @@
 """Registry for deterministic agent management."""
+
 from __future__ import annotations
 
 from typing import Dict

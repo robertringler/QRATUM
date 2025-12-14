@@ -116,7 +116,9 @@ class SentenceClassifier:
     domain_tagger: DomainTagger = field(default_factory=DomainTagger)
     segmenter: SentenceSegmenter = field(default_factory=SentenceSegmenter)
 
-    def classify_messages(self, messages: Iterable[MessageRecord], source_path: Path) -> List[SentenceRecord]:
+    def classify_messages(
+        self, messages: Iterable[MessageRecord], source_path: Path
+    ) -> List[SentenceRecord]:
         records: List[SentenceRecord] = []
         for message in messages:
             sentences = self.segmenter.segment(message.content)
@@ -154,4 +156,3 @@ class SentenceClassifier:
 
 def _contains_any(text: str, keywords: Iterable[str]) -> bool:
     return any(keyword in text for keyword in keywords)
-

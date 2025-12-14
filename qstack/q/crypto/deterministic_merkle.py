@@ -1,4 +1,5 @@
 """Deterministic Merkle tree implementation."""
+
 from __future__ import annotations
 
 import hashlib
@@ -24,14 +25,14 @@ class DeterministicMerkleTree:
         for i in range(0, len(nodes), 2):
             left = nodes[i]
             right = nodes[i + 1] if i + 1 < len(nodes) else left
-            combined = f"{left}:{right}".encode("utf-8")
+            combined = f"{left}:{right}".encode()
             paired.append(_hash(combined))
         return paired
 
     def root(self) -> str:
         if not self.leaves:
             return _hash(b"empty")
-        level = [ _hash(v.encode("utf-8")) for v in self.leaves ]
+        level = [_hash(v.encode("utf-8")) for v in self.leaves]
         while len(level) > 1:
             level = self._pairwise(level)
         return level[0]
@@ -39,7 +40,7 @@ class DeterministicMerkleTree:
     def prove(self, index: int) -> Tuple[str, List[Tuple[str, str]]]:
         if index < 0 or index >= len(self.leaves):
             raise IndexError("leaf index out of range")
-        hashes = [ _hash(v.encode("utf-8")) for v in self.leaves ]
+        hashes = [_hash(v.encode("utf-8")) for v in self.leaves]
         path: List[Tuple[str, str]] = []
         idx = index
         while len(hashes) > 1:
@@ -57,8 +58,8 @@ class DeterministicMerkleTree:
         computed = leaf_hash
         for direction, sibling in path:
             if direction == "left":
-                combined = f"{sibling}:{computed}".encode("utf-8")
+                combined = f"{sibling}:{computed}".encode()
             else:
-                combined = f"{computed}:{sibling}".encode("utf-8")
+                combined = f"{computed}:{sibling}".encode()
             computed = _hash(combined)
         return computed == expected_root

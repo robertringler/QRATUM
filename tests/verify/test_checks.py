@@ -285,7 +285,9 @@ class TestCMMCMap:
         """Test CMMC map check passes."""
         yaml_file = temp_dir / "cmmc.yaml"
         data = {
-            "practices": [{"id": f"AC.L2-3.1.{i}", "description": f"Practice {i}"} for i in range(115)]
+            "practices": [
+                {"id": f"AC.L2-3.1.{i}", "description": f"Practice {i}"} for i in range(115)
+            ]
         }
         with open(yaml_file, "w") as f:
             yaml.dump(data, f)

@@ -20,12 +20,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Dict, MutableMapping, Optional
 
-from runtime.python.quasim.runtime import Config as RuntimeConfig, runtime as runtime_context
-
+from runtime.python.quasim.runtime import Config as RuntimeConfig
+from runtime.python.quasim.runtime import runtime as runtime_context
 
 # ---------------------------------------------------------------------------
 # Dataclass for internal standardized return payload
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class ScenarioResult:

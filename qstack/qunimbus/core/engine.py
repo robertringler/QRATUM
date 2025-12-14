@@ -35,7 +35,9 @@ class QuNimbusEngine:
         for rule, threshold in sorted(self._governance_rules.items(), key=lambda kv: kv[0]):
             metric = payload.metrics.get(rule, 0.0)
             penalties[rule] = 0.0 if metric <= threshold else (metric - threshold)
-        return GovernanceResult({"base": score, "penalties": penalties, "final": score - sum(penalties.values())})
+        return GovernanceResult(
+            {"base": score, "penalties": penalties, "final": score - sum(penalties.values())}
+        )
 
     def valuation_operator(self) -> Callable[[Dict[str, float]], Dict[str, float]]:
         return valuation_operator(self)

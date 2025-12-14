@@ -1,4 +1,5 @@
 """Counter-based deterministic tick generator."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

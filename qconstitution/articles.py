@@ -1,4 +1,5 @@
 """Constitutional articles."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -30,4 +31,7 @@ class ArticleSet:
         raise KeyError(article_id)
 
     def as_dict(self) -> Dict[str, Dict[str, object]]:
-        return {art.article_id: {"description": art.description, "constraints": art.constraints} for art in self.articles}
+        return {
+            art.article_id: {"description": art.description, "constraints": art.constraints}
+            for art in self.articles
+        }

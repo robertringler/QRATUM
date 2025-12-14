@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-import hashlib
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional
 
 from ..utils.provenance import hash_payload
-from ..utils.serialization import deterministic_dumps
 from .quasim_adapter import translate_simulation_output
 
 
@@ -24,7 +22,7 @@ class WorldState:
     digest: str
     parent: Optional[str] = None
 
-    def project(self, updates: Dict[str, Any]) -> "WorldState":
+    def project(self, updates: Dict[str, Any]) -> WorldState:
         merged = dict(self.facts)
         merged.update(updates)
         digest = hash_payload({"facts": merged, "parent": self.digest})
@@ -67,7 +65,9 @@ class WorldStateGraph:
 class WorldModel:
     """Deterministic world model with domain dynamics and simulation hooks."""
 
-    def __init__(self, dynamics: Optional[Dict[str, Callable[[Dict[str, Any]], Dict[str, Any]]]] = None):
+    def __init__(
+        self, dynamics: Optional[Dict[str, Callable[[Dict[str, Any]], Dict[str, Any]]]] = None
+    ):
         genesis = WorldState(facts={}, digest=hash_payload({}), parent=None)
         self._history: List[WorldState] = [genesis]
         self._graph = WorldStateGraph(genesis)
@@ -78,7 +78,9 @@ class WorldModel:
     def current(self) -> WorldState:
         return self._history[-1]
 
-    def register_dynamics(self, domain: str, fn: Callable[[Dict[str, Any]], Dict[str, Any]]) -> None:
+    def register_dynamics(
+        self, domain: str, fn: Callable[[Dict[str, Any]], Dict[str, Any]]
+    ) -> None:
         self._dynamics[domain] = fn
 
     def record_event(self, label: str, payload: Dict[str, Any]) -> WorldEvent:
@@ -95,7 +97,9 @@ class WorldModel:
         self._graph.add_transition(self.current, next_state)
         return next_state
 
-    def simulate_step(self, domain: str, state_override: Optional[Dict[str, Any]] = None) -> WorldState:
+    def simulate_step(
+        self, domain: str, state_override: Optional[Dict[str, Any]] = None
+    ) -> WorldState:
         if domain not in self._dynamics:
             raise ValueError(f"No dynamics registered for domain {domain}")
         base_state = state_override or self.current.facts
@@ -124,7 +128,7 @@ class WorldModel:
     def rewind(self, steps: int = 1) -> WorldState:
         if steps >= len(self._history):
             raise ValueError("cannot rewind beyond initial state")
-        self._history = self._history[: -steps]
+        self._history = self._history[:-steps]
         return self.current
 
     def history(self) -> List[WorldState]:
