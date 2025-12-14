@@ -226,6 +226,51 @@ docker compose up --build
 
 ---
 
+## CLI Tools
+
+QuASIM provides comprehensive command-line interfaces for all major components:
+
+| CLI Tool | Purpose | Documentation |
+|:---------|:--------|:--------------|
+| `quasim-hcal` | Hardware configuration and calibration | [docs/CLI_HCAL.md](docs/CLI_HCAL.md) |
+| `quasim-own` | Deterministic AI training and benchmarking | [docs/CLI_OWN.md](docs/CLI_OWN.md) |
+| `quasim-qgh` | Non-speculative quantum algorithms | [docs/CLI_QGH.md](docs/CLI_QGH.md) |
+| `quasim-revultra` | Cryptanalytic analysis tools | [docs/CLI_REVULTRA.md](docs/CLI_REVULTRA.md) |
+| `quasim-terc-obs` | TERC observable emission | [docs/CLI_TERC_OBS.md](docs/CLI_TERC_OBS.md) |
+| `qunimbus` | Quantum cloud orchestration | [docs/CLI_QUNIMBUS.md](docs/CLI_QUNIMBUS.md) |
+| `qnx` | Multi-backend quantum simulation | [docs/CLI_QNX.md](docs/CLI_QNX.md) |
+
+**Installation:**
+```bash
+pip install -e .
+```
+
+**Quick examples:**
+```bash
+# Hardware discovery
+quasim-hcal discover --json
+
+# Train AI model
+quasim-own train --model slt --dataset imdb-mini --seed 42
+
+# Run QGH demos
+quasim-qgh demo --section all
+
+# Analyze ciphertext
+quasim-revultra analyze --ciphertext "ATTACKATDAWN"
+
+# Emit TERC observables
+quasim-terc-obs emit --text "CIPHER" --out obs.json
+
+# Orchestrate Wave 3
+qunimbus orchestrate --parallel --mode live_accelerated
+
+# Run quantum simulation
+qnx simulate --scenario smoke --timesteps 10
+```
+
+---
+
 ## Vertical Demos
 
 *Deterministic (≤ 60 s) industry-specific optimizations.*
