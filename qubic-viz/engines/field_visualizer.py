@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -27,7 +26,7 @@ class FieldVisualizer:
         field_data: np.ndarray,
         field_name: str = "Field",
         colormap: str = "viridis",
-        output_path: Optional[Path] = None,
+        output_path: Path | None = None,
     ) -> np.ndarray:
         """Visualize a scalar field on the mesh.
 
@@ -93,7 +92,7 @@ class FieldVisualizer:
         self,
         vector_data: np.ndarray,
         field_name: str = "Vector Field",
-        output_path: Optional[Path] = None,
+        output_path: Path | None = None,
         subsample: int = 10,
     ) -> np.ndarray:
         """Visualize a vector field on the mesh.
@@ -168,7 +167,7 @@ class FieldVisualizer:
         field_data: np.ndarray,
         field_name: str = "Field",
         projection: str = "top",
-        output_path: Optional[Path] = None,
+        output_path: Path | None = None,
     ) -> np.ndarray:
         """Create 2D heatmap projection of field.
 

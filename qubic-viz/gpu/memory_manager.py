@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 
 class GPUMemoryManager:
     """Manage GPU memory allocation and limits.

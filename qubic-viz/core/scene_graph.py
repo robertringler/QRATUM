@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 
@@ -34,24 +34,30 @@ class Transform:
 
         # Create rotation matrices (ZYX order)
         rx, ry, rz = self.rotation
-        Rx = np.array([
-            [1, 0, 0, 0],
-            [0, np.cos(rx), -np.sin(rx), 0],
-            [0, np.sin(rx), np.cos(rx), 0],
-            [0, 0, 0, 1],
-        ])
-        Ry = np.array([
-            [np.cos(ry), 0, np.sin(ry), 0],
-            [0, 1, 0, 0],
-            [-np.sin(ry), 0, np.cos(ry), 0],
-            [0, 0, 0, 1],
-        ])
-        Rz = np.array([
-            [np.cos(rz), -np.sin(rz), 0, 0],
-            [np.sin(rz), np.cos(rz), 0, 0],
-            [0, 0, 1, 0],
-            [0, 0, 0, 1],
-        ])
+        Rx = np.array(
+            [
+                [1, 0, 0, 0],
+                [0, np.cos(rx), -np.sin(rx), 0],
+                [0, np.sin(rx), np.cos(rx), 0],
+                [0, 0, 0, 1],
+            ]
+        )
+        Ry = np.array(
+            [
+                [np.cos(ry), 0, np.sin(ry), 0],
+                [0, 1, 0, 0],
+                [-np.sin(ry), 0, np.cos(ry), 0],
+                [0, 0, 0, 1],
+            ]
+        )
+        Rz = np.array(
+            [
+                [np.cos(rz), -np.sin(rz), 0, 0],
+                [np.sin(rz), np.cos(rz), 0, 0],
+                [0, 0, 1, 0],
+                [0, 0, 0, 1],
+            ]
+        )
         R = Rz @ Ry @ Rx
 
         # Create scale matrix
@@ -73,16 +79,16 @@ class SceneNode:
     def __init__(
         self,
         name: str,
-        transform: Optional[Transform] = None,
-        parent: Optional[SceneNode] = None,
+        transform: Transform | None = None,
+        parent: SceneNode | None = None,
     ) -> None:
         """Initialize scene node."""
         self.name = name
         self.transform = transform or Transform()
         self.parent = parent
         self.children: list[SceneNode] = []
-        self.mesh: Optional[Any] = None
-        self.material: Optional[Any] = None
+        self.mesh: Any | None = None
+        self.material: Any | None = None
         self.visible: bool = True
 
         if parent is not None:
@@ -129,7 +135,7 @@ class SceneNode:
         for child in self.children:
             child.traverse(callback)
 
-    def find(self, name: str) -> Optional[SceneNode]:
+    def find(self, name: str) -> SceneNode | None:
         """Find node by name.
 
         Args:
@@ -158,7 +164,7 @@ class SceneGraph:
         self.root = SceneNode("root")
 
     def add_node(
-        self, name: str, parent: Optional[SceneNode] = None, transform: Optional[Transform] = None
+        self, name: str, parent: SceneNode | None = None, transform: Transform | None = None
     ) -> SceneNode:
         """Add a new node to the scene.
 
@@ -174,7 +180,7 @@ class SceneGraph:
             parent = self.root
         return SceneNode(name, transform, parent)
 
-    def find_node(self, name: str) -> Optional[SceneNode]:
+    def find_node(self, name: str) -> SceneNode | None:
         """Find node by name.
 
         Args:

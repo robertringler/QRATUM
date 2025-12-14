@@ -98,7 +98,9 @@ class BuildTracer:
             "events": self.events,
             "summary": {
                 "total_events": len(self.events),
-                "modules_created": sum(1 for e in self.events if e["event_type"] == "module_creation"),
+                "modules_created": sum(
+                    1 for e in self.events if e["event_type"] == "module_creation"
+                ),
                 "tests_run": sum(1 for e in self.events if e["event_type"] == "test_result"),
                 "tests_passed": sum(
                     1 for e in self.events if e["event_type"] == "test_result" and e["passed"]
@@ -146,13 +148,23 @@ def create_build_trace() -> None:
     # Log service modules
     tracer.log_module_creation("services/qubic-render/server.py", "service", {"lines": 97})
     tracer.log_module_creation("services/qubic-render/api.py", "service", {"lines": 75})
-    tracer.log_module_creation("services/qubic-render/workers/gpu_worker.py", "worker", {"lines": 53})
-    tracer.log_module_creation("services/qubic-render/workers/scheduler.py", "worker", {"lines": 76})
+    tracer.log_module_creation(
+        "services/qubic-render/workers/gpu_worker.py", "worker", {"lines": 53}
+    )
+    tracer.log_module_creation(
+        "services/qubic-render/workers/scheduler.py", "worker", {"lines": 76}
+    )
 
     # Log design studio modules
-    tracer.log_module_creation("qubic-design-studio/exporters/obj_exporter.py", "exporter", {"lines": 74})
-    tracer.log_module_creation("qubic-design-studio/exporters/gltf_exporter.py", "exporter", {"lines": 107})
-    tracer.log_module_creation("qubic-design-studio/spatial/holo_adapter.py", "spatial", {"lines": 40})
+    tracer.log_module_creation(
+        "qubic-design-studio/exporters/obj_exporter.py", "exporter", {"lines": 74}
+    )
+    tracer.log_module_creation(
+        "qubic-design-studio/exporters/gltf_exporter.py", "exporter", {"lines": 107}
+    )
+    tracer.log_module_creation(
+        "qubic-design-studio/spatial/holo_adapter.py", "spatial", {"lines": 40}
+    )
 
     # Log integrations
     tracer.log_integration_validation("quasim.domains.tire", "validated", {"status": "ok"})

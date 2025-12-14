@@ -10,9 +10,7 @@ from typing import Any
 class GLTFExporter:
     """Export meshes to glTF 2.0 format."""
 
-    def export_mesh(
-        self, mesh: Any, output_path: Path, include_animations: bool = False
-    ) -> None:
+    def export_mesh(self, mesh: Any, output_path: Path, include_animations: bool = False) -> None:
         """Export mesh to glTF file.
 
         Args:
