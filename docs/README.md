@@ -21,6 +21,11 @@ For a comprehensive overview of QuASIM's capabilities and specifications, see [`
 - **[Power & Thermal](power_thermal.md)** — DVFS, cooling, and telemetry
 - **[Firmware Boot Flow](firmware_bootflow.md)** — Boot sequence and initialization
 
+## Dashboards
+
+- **[Valuation Dashboard](valuation_dashboard.html)** — Interactive financial analysis and valuation metrics
+- **[Code Quality Dashboard](issues_dashboard.html)** — Real-time code quality issues and linting analysis
+
 ## Additional Resources
 
 - **[CHANGELOG](CHANGELOG.md)** — Documentation version history and updates
