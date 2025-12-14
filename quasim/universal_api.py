@@ -37,11 +37,22 @@ class ScenarioResult:
 
     @property
     def simulation_hash(self) -> str:
-        """Deterministic SHA-256 hash of raw_output."""
+        """Deterministic SHA-256 hash of raw_output.
+
+        Returns:
+            Hexadecimal string representation of SHA-256 hash of the JSON-serialized
+            raw_output dictionary, ensuring deterministic verification of simulation results
+        """
         data = json.dumps(self.raw_output, sort_keys=True, default=str).encode()
         return hashlib.sha256(data).hexdigest()
 
     def to_dict(self) -> Dict[str, Any]:
+        """Convert the ScenarioResult to a dictionary representation.
+
+        Returns:
+            Dictionary containing all scenario result fields including scenario_id,
+            timesteps, seed, engine, simulation_hash, and raw_output
+        """
         return {
             "scenario_id": self.scenario_id,
             "timesteps": self.timesteps,
@@ -61,7 +72,13 @@ _ENGINE_REGISTRY: Dict[str, Callable[..., MutableMapping[str, Any]]] = {}
 
 
 def register_engine(name: str, fn: Callable[..., MutableMapping[str, Any]]):
-    """Register a backend engine function."""
+    """Register a backend engine function.
+
+    Args:
+        name: Unique identifier for the engine (e.g., "quasim_modern", "qvr_win")
+        fn: Callable that accepts scenario_id, timesteps, seed, and extra kwargs
+            and returns a dictionary containing simulation results
+    """
     _ENGINE_REGISTRY[name] = fn
 
 
@@ -195,6 +212,17 @@ def run_scenario(
 
     This function routes calls to the appropriate backend (modern, legacy,
     QVR Windows interface, adapters, HPC wraps, etc.).
+
+    Args:
+        scenario_id: Unique identifier for the simulation scenario
+        timesteps: Number of simulation timesteps to execute
+        seed: Random seed for deterministic reproducibility
+        engine: Name of the registered engine to use (default: "quasim_modern")
+        extra: Optional dictionary of additional parameters passed to the engine
+
+    Returns:
+        ScenarioResult object containing scenario_id, timesteps, seed, engine name,
+        simulation hash, and raw output from the backend engine
     """
     if engine not in _ENGINE_REGISTRY:
         raise ValueError(

@@ -51,6 +51,15 @@ def build_circuit(spec: ScenarioSpec) -> List[List[complex]]:
     The resulting circuit is a list of timesteps, each containing a small list
     of complex values. While synthetic, this structure exercises the runtime and
     remains stable for a given ``(scenario_id, timesteps, seed)`` tuple.
+
+    Args:
+        spec: ScenarioSpec containing scenario_id, timesteps, seed, and optional
+            extra parameters for circuit generation
+
+    Returns:
+        List of timesteps, where each timestep is a list of complex numbers
+        representing quantum gate operations. The circuit is deterministically
+        generated from the input specification.
     """
 
     rng = random.Random(spec.seed)
