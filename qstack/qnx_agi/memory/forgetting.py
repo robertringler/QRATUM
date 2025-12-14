@@ -1,12 +1,11 @@
 """Forgetting budget logic."""
 from __future__ import annotations
 
-from typing import List, Tuple
 
 from .base import MemorySystem
 
 
-def enforce_budget(memory: MemorySystem, budget: int) -> List[Tuple[str, object]]:
+def enforce_budget(memory: MemorySystem, budget: int) -> list[tuple[str, object]]:
     entries = list(memory._buffer)
     if len(entries) <= budget:
         return entries

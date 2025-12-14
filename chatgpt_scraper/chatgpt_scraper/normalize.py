@@ -7,7 +7,7 @@ import json
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Sequence, Tuple
+from typing import Any, Sequence
 
 from .loader import iter_raw_messages
 from .models import ConversationSummary, NormalizedTurn, RawConversation, RawMessage
@@ -91,12 +91,12 @@ def _message_timestamp(message: RawMessage, fallback: datetime | None) -> dateti
     return datetime.now(tz=timezone.utc)
 
 
-def normalize_conversation(conv: RawConversation) -> List[NormalizedTurn]:
+def normalize_conversation(conv: RawConversation) -> list[NormalizedTurn]:
     """Normalize every message in the conversation."""
 
     fallback_ts = _coerce_datetime(conv.create_time) or _coerce_datetime(conv.update_time)
     conversation_id = _conversation_id(conv)
-    turns: List[NormalizedTurn] = []
+    turns: list[NormalizedTurn] = []
     for raw_message in iter_raw_messages(conv):
         timestamp = _message_timestamp(raw_message, fallback_ts)
         role = _normalize_role(raw_message)
@@ -107,7 +107,7 @@ def normalize_conversation(conv: RawConversation) -> List[NormalizedTurn]:
         if not model_name and isinstance(raw_message.metadata, dict):
             candidate = raw_message.metadata.get("default_model")
             model_name = candidate or model_name
-        metadata: Dict[str, Any] = {}
+        metadata: dict[str, Any] = {}
         if raw_message.metadata:
             metadata.update(raw_message.metadata)
         metadata.update(
@@ -168,11 +168,11 @@ def summarize_conversation(
     )
 
 
-def build_ledger(conversations: Sequence[RawConversation]) -> Tuple[List[NormalizedTurn], List[ConversationSummary]]:
+def build_ledger(conversations: Sequence[RawConversation]) -> tuple[list[NormalizedTurn], list[ConversationSummary]]:
     """Normalize every conversation and build per-conversation summaries."""
 
-    all_turns: List[NormalizedTurn] = []
-    summaries: List[ConversationSummary] = []
+    all_turns: list[NormalizedTurn] = []
+    summaries: list[ConversationSummary] = []
     for conv in conversations:
         conv_turns = normalize_conversation(conv)
         all_turns.extend(conv_turns)
@@ -211,7 +211,7 @@ def write_csv(summaries: Sequence[ConversationSummary], path: Path) -> None:
             )
 
 
-def summarize_models(turns: Sequence[NormalizedTurn], top_n: int = 5) -> List[tuple[str, int]]:
+def summarize_models(turns: Sequence[NormalizedTurn], top_n: int = 5) -> list[tuple[str, int]]:
     """Return the most frequently used models across turns."""
 
     counter: Counter[str] = Counter(turn.model for turn in turns if turn.model)

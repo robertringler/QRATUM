@@ -1,9 +1,7 @@
 from qstack.q import (
-    DeterministicMerkleTree,
     DeterministicLedger,
     DeterministicKeyExchange,
     DeterministicAccessControlList,
-    DeterministicCapabilityToken,
     CapabilityAuthority,
     DeterministicRevocationList,
     SovereignClusterReplication,

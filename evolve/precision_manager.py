@@ -6,7 +6,6 @@ import json
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Dict, List
 
 
 class PrecisionLevel(Enum):
@@ -44,7 +43,7 @@ class PrecisionMap:
     """Precision mapping for a kernel."""
 
     kernel_id: str
-    zones: List[PrecisionZone]
+    zones: list[PrecisionZone]
     global_error_budget: float = 1e-5
     accumulated_error: float = 0.0
     fallback_precision: PrecisionLevel = PrecisionLevel.FP32
@@ -86,7 +85,7 @@ class PrecisionManager:
     def __init__(self, map_dir: str = "evolve/precision_maps"):
         self.map_dir = Path(map_dir)
         self.map_dir.mkdir(parents=True, exist_ok=True)
-        self.precision_maps: Dict[str, PrecisionMap] = {}
+        self.precision_maps: dict[str, PrecisionMap] = {}
 
     def create_default_map(self, kernel_id: str) -> PrecisionMap:
         """Create default hierarchical precision map for a kernel."""

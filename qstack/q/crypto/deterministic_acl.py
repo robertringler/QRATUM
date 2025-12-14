@@ -2,14 +2,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, Set
 
 from ..identity import QIdentity
 
 
 @dataclass
 class DeterministicAccessControlList:
-    permissions: Dict[str, Set[str]] = field(default_factory=dict)
+    permissions: dict[str, set[str]] = field(default_factory=dict)
 
     def grant(self, identity: QIdentity, permission: str) -> None:
         perms = set(self.permissions.get(identity.name, set()))
@@ -24,5 +23,5 @@ class DeterministicAccessControlList:
     def allowed(self, identity: QIdentity, permission: str) -> bool:
         return permission in self.permissions.get(identity.name, set())
 
-    def snapshot(self) -> Dict[str, Set[str]]:
+    def snapshot(self) -> dict[str, set[str]]:
         return {k: set(v) for k, v in self.permissions.items()}

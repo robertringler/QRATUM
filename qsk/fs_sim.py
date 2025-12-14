@@ -2,14 +2,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List
+import builtins
 
 
 @dataclass
 class VFSNode:
     name: str
     is_dir: bool
-    children: Dict[str, "VFSNode"] = field(default_factory=dict)
+    children: dict[str, "VFSNode"] = field(default_factory=dict)
     content: str = ""
 
     def path_hash(self) -> str:
@@ -50,12 +50,12 @@ class VirtualFileSystem:
             raise IsADirectoryError(path)
         return node.content
 
-    def list(self, path: str = "/") -> List[str]:
+    def list(self, path: str = "/") -> builtins.list[str]:
         node = self._walk(path if path != "/" else "/", create=False, is_dir=True)
         return sorted(node.children.keys())
 
     def fingerprint(self) -> str:
-        def _hash(node: VFSNode) -> List[str]:
+        def _hash(node: VFSNode) -> list[str]:
             if node.is_dir:
                 acc = [node.path_hash()]
                 for child in sorted(node.children.values(), key=lambda c: c.name):

@@ -5,7 +5,6 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Set
 
 
 @dataclass
@@ -15,7 +14,7 @@ class MemoryNode:
     node_id: str
     size_bytes: int
     access_frequency: int = 0
-    neighbors: Set[str] = field(default_factory=set)
+    neighbors: set[str] = field(default_factory=set)
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
@@ -32,7 +31,7 @@ class MemoryLayout:
     """Optimized memory layout."""
 
     layout_id: str
-    node_order: List[str]
+    node_order: list[str]
     total_path_length: float = 0.0
     cache_miss_rate: float = 0.0
 
@@ -53,8 +52,8 @@ class MemoryGraphOptimizer:
     """
 
     def __init__(self):
-        self.nodes: Dict[str, MemoryNode] = {}
-        self.layouts: Dict[str, MemoryLayout] = {}
+        self.nodes: dict[str, MemoryNode] = {}
+        self.layouts: dict[str, MemoryLayout] = {}
 
     def add_node(self, node_id: str, size_bytes: int, access_frequency: int = 1) -> None:
         """Add a memory node to the graph."""
@@ -74,7 +73,7 @@ class MemoryGraphOptimizer:
             self.nodes[node1].neighbors.add(node2)
             self.nodes[node2].neighbors.add(node1)
 
-    def compute_node_features(self, node_id: str) -> Dict[str, float]:
+    def compute_node_features(self, node_id: str) -> dict[str, float]:
         """
         Compute GNN-style node features.
         Aggregates information from neighbors.
@@ -107,7 +106,7 @@ class MemoryGraphOptimizer:
             "neighbor_avg_freq": neighbor_avg_freq,
         }
 
-    def compute_path_length(self, node_order: List[str]) -> float:
+    def compute_path_length(self, node_order: list[str]) -> float:
         """
         Compute total path length for a given node ordering.
         Lower is better (nodes accessed together are closer).
@@ -135,7 +134,7 @@ class MemoryGraphOptimizer:
 
         return total_length / 2.0  # Divide by 2 to avoid double counting edges
 
-    def estimate_cache_miss_rate(self, node_order: List[str]) -> float:
+    def estimate_cache_miss_rate(self, node_order: list[str]) -> float:
         """
         Estimate cache miss rate for a given layout.
         Simplified model based on access patterns.

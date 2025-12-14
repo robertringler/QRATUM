@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List
 
 from qscenario.policy_sandbox.policy_variant import PolicyVariant
 from qscenario.policy_sandbox.comparison import ComparisonReport
@@ -14,11 +13,11 @@ from qscenario.scenario import Scenario
 
 @dataclass
 class PolicySandbox:
-    base_policies: Dict[str, object]
-    variants: List[PolicyVariant] = field(default_factory=list)
+    base_policies: dict[str, object]
+    variants: list[PolicyVariant] = field(default_factory=list)
 
     def run(self, scenario_builder) -> ComparisonReport:
-        reports: List[ScenarioReport] = []
+        reports: list[ScenarioReport] = []
         for variant in self.variants:
             scenario: Scenario = scenario_builder()
             policies = enforce_core_constraints(variant.apply(self.base_policies))

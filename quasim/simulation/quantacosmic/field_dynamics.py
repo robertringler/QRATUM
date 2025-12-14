@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, List, Sequence
+from typing import Callable, Sequence
 
 from .coupling_ops import CouplingOperator
 
@@ -21,7 +21,7 @@ class FieldLattice:
         if len(self.positions) < 1:
             raise ValueError("A lattice requires at least one position.")
 
-    def propagation_kernel(self, coupling: CouplingOperator) -> List[List[float]]:
+    def propagation_kernel(self, coupling: CouplingOperator) -> list[list[float]]:
         base_matrix = coupling.matrix()
         if len(base_matrix) != len(self.positions):
             raise ValueError("Coupling matrix dimension must match lattice size.")
@@ -35,7 +35,7 @@ def propagate_field(
     timestep: float,
     steps: int,
     nonlinearity: Callable[[float], float] | None = None,
-) -> List[float]:
+) -> list[float]:
     """Propagate a field using a simple linear iterative scheme."""
 
     if steps < 0:

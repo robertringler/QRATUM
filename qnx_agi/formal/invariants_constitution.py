@@ -1,10 +1,9 @@
 """System-wide constitutional invariants."""
 from __future__ import annotations
 
-from typing import Dict, List
 
 
-def invariants() -> List[str]:
+def invariants() -> list[str]:
     return [
         "ledger_append_only",
         "constitution_version_monotonic",
@@ -12,8 +11,8 @@ def invariants() -> List[str]:
     ]
 
 
-def check_invariants(state: Dict[str, object]) -> List[str]:
-    violations: List[str] = []
+def check_invariants(state: dict[str, object]) -> list[str]:
+    violations: list[str] = []
     if not state.get("ledger_append_only", True):
         violations.append("ledger_append_only")
     if not state.get("constitution_version_monotonic", True):

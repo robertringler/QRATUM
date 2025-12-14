@@ -13,7 +13,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, Optional
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +88,7 @@ class ChinaPhotonicFactory:
 
         return True
 
-    def generate_pilots(self, count: int) -> Dict:
+    def generate_pilots(self, count: int) -> dict:
         """Generate pilots using China factory capacity.
 
         Args:
@@ -158,7 +158,7 @@ class ChinaPhotonicFactory:
         self.metrics.timestamp = datetime.now()
         return self.metrics
 
-    def get_compliance_status(self) -> Dict:
+    def get_compliance_status(self) -> dict:
         """Get compliance status for cross-border operations.
 
         Returns:

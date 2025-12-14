@@ -1,7 +1,6 @@
 """Deterministic energy/grid adapter."""
 from __future__ import annotations
 
-from typing import Dict
 
 from qreal.base_adapter import BaseAdapter
 from qreal.normalizers import clamp_numbers, enforce_fields, sort_keys
@@ -18,12 +17,12 @@ class GridAdapter(BaseAdapter):
             ]
         )
 
-    def _normalize(self, raw: object, tick: int) -> Dict[str, object]:
+    def _normalize(self, raw: object, tick: int) -> dict[str, object]:
         if not isinstance(raw, dict):
             raise TypeError("GridAdapter expects dict input")
         return {**raw, "tick": tick}
 
-    def _to_percept(self, normalized: Dict[str, object]) -> Dict[str, object]:
+    def _to_percept(self, normalized: dict[str, object]) -> dict[str, object]:
         return {
             "kind": "grid_state",
             "region": normalized["region"],

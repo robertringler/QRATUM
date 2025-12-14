@@ -6,7 +6,6 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
 
 
 @dataclass
@@ -35,7 +34,7 @@ class VerificationCertificate:
     kernel_id: str
     timestamp: float = field(default_factory=time.time)
     verified: bool = False
-    invariants: List[ArithmeticInvariant] = field(default_factory=list)
+    invariants: list[ArithmeticInvariant] = field(default_factory=list)
     floating_point_stable: bool = False
     max_error_bound: float = 0.0
     verification_method: str = "symbolic"
@@ -60,9 +59,9 @@ class StabilityVerifier:
     """
 
     def __init__(self):
-        self.certificates: Dict[str, VerificationCertificate] = {}
+        self.certificates: dict[str, VerificationCertificate] = {}
 
-    def create_invariants(self, kernel_id: str) -> List[ArithmeticInvariant]:
+    def create_invariants(self, kernel_id: str) -> list[ArithmeticInvariant]:
         """Create standard arithmetic invariants for a kernel."""
         invariants = [
             ArithmeticInvariant(

@@ -1,10 +1,9 @@
 """Decode a subset of Common Information Model (CIM) data."""
 from __future__ import annotations
 
-from typing import Dict
 
 
-def decode(record: Dict[str, object]) -> Dict[str, object]:
+def decode(record: dict[str, object]) -> dict[str, object]:
     expected = {"asset", "rating", "status"}
     if not expected.issubset(record.keys()):
         missing = sorted(list(expected - set(record.keys())))

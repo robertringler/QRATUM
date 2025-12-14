@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List
 
 from qconstitution.charter import Charter, default_charter
 from qconstitution.interpreter import ConstitutionalInterpreter

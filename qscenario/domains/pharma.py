@@ -1,7 +1,6 @@
 """Pharma scenario templates."""
 from __future__ import annotations
 
-from typing import List
 
 from qscenario.events import MarketEvent
 from qscenario.timeline import Timeline, TimelineEntry
@@ -22,7 +21,7 @@ def pharma_trial_outcome() -> Scenario:
         domains=["pharma"],
         description="Trial execution with supply challenges",
     )
-    entries: List[TimelineEntry] = [
+    entries: list[TimelineEntry] = [
         TimelineEntry(0, [MarketEvent(0, "pharma", "enrollment", {"sites": 5})]),
         TimelineEntry(1, [MarketEvent(1, "pharma", "adverse_event", {"severity": "low"})]),
         TimelineEntry(2, [MarketEvent(2, "pharma", "supply_disruption", {"days": 2})]),

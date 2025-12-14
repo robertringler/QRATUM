@@ -3,13 +3,13 @@ from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Optional
 
 from .deterministic_merkle import DeterministicMerkleTree
 from ..attestation import Attestor
 
 
-def _hash_payload(payload: Dict[str, str], prev: str) -> str:
+def _hash_payload(payload: dict[str, str], prev: str) -> str:
     material = f"{prev}:{sorted(payload.items())}".encode("utf-8")
     return hashlib.sha256(material).hexdigest()
 
@@ -17,10 +17,10 @@ def _hash_payload(payload: Dict[str, str], prev: str) -> str:
 @dataclass(frozen=True)
 class DeterministicLedgerEntry:
     index: int
-    payload: Dict[str, str]
+    payload: dict[str, str]
     prev_digest: str
     digest: str
-    attestation: Optional[Dict[str, str]] = None
+    attestation: Optional[dict[str, str]] = None
 
 
 @dataclass
@@ -28,9 +28,9 @@ class DeterministicLedger:
     """Append-only ledger with Merkle anchoring for integrity proofs."""
 
     attestor: Optional[Attestor] = None
-    entries: List[DeterministicLedgerEntry] = field(default_factory=list)
+    entries: list[DeterministicLedgerEntry] = field(default_factory=list)
 
-    def append(self, payload: Dict[str, str]) -> DeterministicLedgerEntry:
+    def append(self, payload: dict[str, str]) -> DeterministicLedgerEntry:
         prev_digest = self.entries[-1].digest if self.entries else "genesis"
         digest = _hash_payload(payload, prev_digest)
         attestation = self.attestor.attest(payload) if self.attestor else None
@@ -61,5 +61,5 @@ class DeterministicLedger:
     def head(self) -> Optional[DeterministicLedgerEntry]:
         return self.entries[-1] if self.entries else None
 
-    def export_chain(self) -> List[Dict[str, str]]:
+    def export_chain(self) -> list[dict[str, str]]:
         return [entry.__dict__ for entry in self.entries]

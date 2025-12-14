@@ -8,7 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 import random
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 import numpy as np
 
@@ -33,7 +33,7 @@ def set_global_seed(seed: int) -> None:
         pass
 
 
-def hash_config(config: Dict[str, Any]) -> str:
+def hash_config(config: dict[str, Any]) -> str:
     """Generate deterministic hash of configuration.
 
     Args:
@@ -77,7 +77,7 @@ class SeedManager:
             base_seed: Base random seed
         """
         self.base_seed = base_seed
-        self.derived_seeds: Dict[str, int] = {}
+        self.derived_seeds: dict[str, int] = {}
         set_global_seed(base_seed)
 
     def get_seed(self, name: str) -> int:

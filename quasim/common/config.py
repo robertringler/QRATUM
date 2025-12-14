@@ -7,12 +7,12 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Dict, Union
+from typing import Any, Union
 
 import yaml
 
 
-def load_config(path: Union[str, Path]) -> Dict[str, Any]:
+def load_config(path: Union[str, Path]) -> dict[str, Any]:
     """Load configuration from YAML, TOML, or JSON file.
 
     Args:
@@ -71,7 +71,7 @@ def load_config(path: Union[str, Path]) -> Dict[str, Any]:
         raise ValueError(f"Unsupported config format: {suffix}")
 
 
-def save_config(config: Dict[str, Any], path: Union[str, Path]) -> None:
+def save_config(config: dict[str, Any], path: Union[str, Path]) -> None:
     """Save configuration to file.
 
     Args:
@@ -104,7 +104,7 @@ def save_config(config: Dict[str, Any], path: Union[str, Path]) -> None:
         raise ValueError(f"Unsupported config format: {suffix}")
 
 
-def merge_configs(base: Dict[str, Any], override: Dict[str, Any]) -> Dict[str, Any]:
+def merge_configs(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
     """Recursively merge two configuration dictionaries.
 
     Args:

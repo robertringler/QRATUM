@@ -23,7 +23,7 @@ import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterable, Mapping, MutableMapping, Optional
+from typing import Iterable, Mapping, MutableMapping, Optional
 
 import numpy as np
 import pandas as pd
@@ -113,7 +113,7 @@ class TelemetryVerifier:
         self,
         live_dataset: Iterable[Mapping[str, float]] | pd.DataFrame,
         baseline_dataset: Iterable[Mapping[str, float]] | pd.DataFrame,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: Optional[dict[str, str]] = None,
     ) -> VerificationResult:
         """Compute verification statistics and persist archival artefacts.
 
@@ -203,7 +203,7 @@ class TelemetryVerifier:
         provenance.setdefault("rolling_window_hours", str(self.config.rolling_window_hours))
         provenance.setdefault("tolerance_pct", f"{self.config.tolerance_pct:.2f}")
         provenance.setdefault("commit", os.getenv("GITHUB_SHA", "UNKNOWN"))
-        summary_payload: Dict[str, object] = {
+        summary_payload: dict[str, object] = {
             "timestamp": timestamp,
             "rmse": rmse,
             "variance_pct": variance_pct,

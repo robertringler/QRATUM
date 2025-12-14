@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 import random
 from dataclasses import dataclass, field
-from typing import Iterable, List
+from typing import Iterable
 
 
 @dataclass
@@ -15,8 +15,8 @@ class MockQuantumTicker:
     base_price: float = 0.0004
     volatility: float = 0.00005
     seed: int = 4242
-    price_history: List[float] = field(default_factory=list)
-    history: List[object] = field(default_factory=list)
+    price_history: list[float] = field(default_factory=list)
+    history: list[object] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         self._rng = random.Random(self.seed)

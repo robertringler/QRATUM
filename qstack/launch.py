@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict
-from typing import Any, Dict
+from typing import Any
 
 import click
 
@@ -48,16 +48,16 @@ def build_runtime(state: QNXState) -> tuple[QNXVM, TraceRecorder]:
     """Create a deterministic runtime with safety and tracing enabled."""
     operators = OperatorLibrary()
 
-    def bind_goal(current_state: QNXState, goal: str) -> Dict[str, str]:
+    def bind_goal(current_state: QNXState, goal: str) -> dict[str, str]:
         current_state.update("goal", goal)
         return {"bound_goal": goal}
 
-    def advance_tick(current_state: QNXState, _goal: str) -> Dict[str, int]:
+    def advance_tick(current_state: QNXState, _goal: str) -> dict[str, int]:
         tick = current_state.read("tick", 0) + 1
         current_state.update("tick", tick)
         return {"tick": tick}
 
-    def manage_energy(current_state: QNXState, _goal: str) -> Dict[str, int]:
+    def manage_energy(current_state: QNXState, _goal: str) -> dict[str, int]:
         energy = max(current_state.read("energy", 0) - 1, 0)
         current_state.update("energy", energy)
         return {"energy": energy}
@@ -82,7 +82,7 @@ def build_runtime(state: QNXState) -> tuple[QNXVM, TraceRecorder]:
     return vm, tracer
 
 
-def launch(seed: str, goal: str, energy: int) -> Dict[str, Any]:
+def launch(seed: str, goal: str, energy: int) -> dict[str, Any]:
     """Execute a single deterministic Q-Stack cycle and return the summary."""
     orchestrator, registry, trust_graph = build_identity(seed)
     state = QNXState({"energy": energy, "tick": 0})

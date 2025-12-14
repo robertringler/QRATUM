@@ -2,14 +2,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List
 
 
 @dataclass(frozen=True)
 class ConstitutionalArticle:
     article_id: str
     description: str
-    constraints: Dict[str, object] = field(default_factory=dict)
+    constraints: dict[str, object] = field(default_factory=dict)
 
     def applies_to(self, subject: str) -> bool:
         scope = self.constraints.get("scope", [])
@@ -18,7 +17,7 @@ class ConstitutionalArticle:
 
 @dataclass
 class ArticleSet:
-    articles: List[ConstitutionalArticle] = field(default_factory=list)
+    articles: list[ConstitutionalArticle] = field(default_factory=list)
 
     def add(self, article: ConstitutionalArticle) -> None:
         self.articles.append(article)
@@ -29,5 +28,5 @@ class ArticleSet:
                 return art
         raise KeyError(article_id)
 
-    def as_dict(self) -> Dict[str, Dict[str, object]]:
+    def as_dict(self) -> dict[str, dict[str, object]]:
         return {art.article_id: {"description": art.description, "constraints": art.constraints} for art in self.articles}

@@ -1,4 +1,3 @@
-import pytest
 
 from qstack.qnx_agi.formal import (
     Interval,

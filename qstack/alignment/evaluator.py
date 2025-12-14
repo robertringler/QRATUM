@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, Iterable, List
+from typing import Iterable
 
 from qstack.alignment.constitution import Constitution, DEFAULT_CONSTITUTION
 from qstack.alignment.policies import AlignmentPolicy, default_policies
@@ -16,10 +16,10 @@ class AlignmentEvaluator:
 
     config: QStackConfig
     constitution: Constitution = DEFAULT_CONSTITUTION
-    policies: List[AlignmentPolicy] = field(default_factory=default_policies)
+    policies: list[AlignmentPolicy] = field(default_factory=default_policies)
 
-    def _evaluate(self, operation: str, context: Dict, phase: str) -> List[AlignmentViolation]:
-        violations: List[AlignmentViolation] = []
+    def _evaluate(self, operation: str, context: dict, phase: str) -> list[AlignmentViolation]:
+        violations: list[AlignmentViolation] = []
         applicable_articles = {article.article_id for article in self.constitution.applicable_articles(operation)}
         for policy in self.policies:
             policy_violations = policy.evaluate(operation, self.config, context)
@@ -28,14 +28,14 @@ class AlignmentEvaluator:
                     violations.append(violation)
         return violations
 
-    def pre_operation_check(self, operation: str, context: Dict) -> List[AlignmentViolation]:
+    def pre_operation_check(self, operation: str, context: dict) -> list[AlignmentViolation]:
         return self._evaluate(operation, context, phase="pre")
 
-    def post_operation_check(self, operation: str, context: Dict) -> List[AlignmentViolation]:
+    def post_operation_check(self, operation: str, context: dict) -> list[AlignmentViolation]:
         return self._evaluate(operation, context, phase="post")
 
     def has_fatal(self, violations: Iterable[AlignmentViolation]) -> bool:
         return any(violation.severity == ViolationSeverity.FATAL for violation in violations)
 
-    def policy_descriptions(self) -> List[Dict[str, str]]:
+    def policy_descriptions(self) -> list[dict[str, str]]:
         return [{"policy_id": policy.policy_id, "description": policy.description} for policy in self.policies]

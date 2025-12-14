@@ -1,7 +1,6 @@
 """Finance scenario templates."""
 from __future__ import annotations
 
-from typing import List
 
 from qscenario.events import MarketEvent
 from qscenario.timeline import Timeline, TimelineEntry
@@ -22,7 +21,7 @@ def finance_liquidity_crunch() -> Scenario:
         domains=["finance"],
         description="Liquidity crunch and contagion propagation",
     )
-    entries: List[TimelineEntry] = [
+    entries: list[TimelineEntry] = [
         TimelineEntry(0, [MarketEvent(0, "finance", "calm", {"vol": 0.1})]),
         TimelineEntry(1, [MarketEvent(1, "finance", "liquidity_crunch", {"outflows": 5})]),
         TimelineEntry(2, [MarketEvent(2, "finance", "policy_intervention", {"tool": "lending"})]),

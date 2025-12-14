@@ -6,7 +6,6 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
 
 
 @dataclass
@@ -52,7 +51,7 @@ class IntrospectionAgent:
     def __init__(self, log_dir: str = "evolve/logs"):
         self.log_dir = Path(log_dir)
         self.log_dir.mkdir(parents=True, exist_ok=True)
-        self.metrics_history: List[KernelMetrics] = []
+        self.metrics_history: list[KernelMetrics] = []
         self._session_id = int(time.time() * 1000)
 
     def record_metrics(self, metrics: KernelMetrics) -> None:
@@ -67,11 +66,11 @@ class IntrospectionAgent:
             json.dump(data, f, indent=2)
         return output_path
 
-    def get_recent_metrics(self, n: int = 100) -> List[KernelMetrics]:
+    def get_recent_metrics(self, n: int = 100) -> list[KernelMetrics]:
         """Get the n most recent metrics."""
         return self.metrics_history[-n:]
 
-    def compute_statistics(self) -> Dict[str, float]:
+    def compute_statistics(self) -> dict[str, float]:
         """Compute aggregate statistics from collected metrics."""
         if not self.metrics_history:
             return {}

@@ -2,14 +2,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 
 @dataclass
 class IRNode:
     name: str
-    inputs: List['IRNode'] = field(default_factory=list)
-    attributes: Dict[str, Any] = field(default_factory=dict)
+    inputs: list['IRNode'] = field(default_factory=list)
+    attributes: dict[str, Any] = field(default_factory=dict)
 
     def add_input(self, node: 'IRNode'):
         self.inputs.append(node)
@@ -28,7 +28,7 @@ class Constant(IRNode):
 class Operation(IRNode):
     op_type: str = ''
 
-    def __init__(self, op_type: str, inputs: Optional[List[IRNode]] = None, attributes: Optional[Dict[str, Any]] = None):
+    def __init__(self, op_type: str, inputs: Optional[list[IRNode]] = None, attributes: Optional[dict[str, Any]] = None):
         super().__init__(op_type, inputs or [], attributes or {})
         self.op_type = op_type
 
@@ -44,9 +44,9 @@ class SafetyBarrier(IRNode):
 
 @dataclass
 class Graph:
-    outputs: List[IRNode]
+    outputs: list[IRNode]
 
-    def nodes(self) -> List[IRNode]:
+    def nodes(self) -> list[IRNode]:
         visited = []
         def walk(node: IRNode):
             if node in visited:

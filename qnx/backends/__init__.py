@@ -19,10 +19,10 @@ def _safe_init(backend_cls: type[SimulationBackend]) -> SimulationBackend | None
         return None
 
 
-def get_backend_registry() -> Dict[str, SimulationBackend]:
+def get_backend_registry() -> dict[str, SimulationBackend]:
     """Initialise all available backends and return them keyed by name."""
 
-    registry: Dict[str, SimulationBackend] = {}
+    registry: dict[str, SimulationBackend] = {}
     for backend_cls in (QuasimModernBackend, QuasimLegacyV120Backend, QVRWinBackend):
         backend = _safe_init(backend_cls)
         if backend is not None:

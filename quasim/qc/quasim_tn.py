@@ -12,7 +12,7 @@ This module implements a high-performance tensor-network backend for QuASIM:
 from __future__ import annotations
 
 import time
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 import numpy as np
 from numpy.typing import NDArray
@@ -64,18 +64,18 @@ class TensorNetworkEngine:
         # State representation
         self.state_tensor: Optional[NDArray] = None
         self.use_mps = num_qubits > 12
-        self.mps_tensors: Optional[List[NDArray]] = None
+        self.mps_tensors: Optional[list[NDArray]] = None
 
         # Profiling data
-        self.profile_data: Dict[str, Any] = {
+        self.profile_data: dict[str, Any] = {
             "compile_time_s": 0.0,
             "execution_time_s": 0.0,
             "gpu_mem_mb": 0.0,
             "flops": 0.0,
         }
 
-        self.results: Dict[str, Any] = {}
-        self.gate_sequence: List[Dict[str, Any]] = []
+        self.results: dict[str, Any] = {}
+        self.gate_sequence: list[dict[str, Any]] = []
 
     def _initialize_backend(self) -> None:
         """Initialize computation backend."""
@@ -141,7 +141,7 @@ class TensorNetworkEngine:
         else:
             raise ValueError(f"Unknown initial state: {state}")
 
-    def _initialize_mps_zero(self) -> List[NDArray]:
+    def _initialize_mps_zero(self) -> list[NDArray]:
         """Initialize MPS tensors for |0...0⟩ state."""
         mps = []
         for i in range(self.num_qubits):
@@ -166,8 +166,8 @@ class TensorNetworkEngine:
     def apply_gate(
         self,
         gate: Union[str, NDArray],
-        targets: List[int],
-        params: Optional[Dict[str, float]] = None,
+        targets: list[int],
+        params: Optional[dict[str, float]] = None,
     ) -> None:
         """Apply quantum gate using tensor contraction.
 
@@ -202,7 +202,7 @@ class TensorNetworkEngine:
         self.profile_data["execution_time_s"] += time.time() - start_time
 
     def _get_gate_tensor(
-        self, gate_name: str, params: Optional[Dict[str, float]] = None
+        self, gate_name: str, params: Optional[dict[str, float]] = None
     ) -> NDArray:
         """Get gate tensor from name."""
         params = params or {}
@@ -243,7 +243,7 @@ class TensorNetworkEngine:
 
         return gate
 
-    def _apply_gate_tensor(self, gate: NDArray, targets: List[int]) -> None:
+    def _apply_gate_tensor(self, gate: NDArray, targets: list[int]) -> None:
         """Apply gate to full state tensor using einsum."""
         if self.state_tensor is None:
             raise RuntimeError("State not initialized")
@@ -314,7 +314,7 @@ class TensorNetworkEngine:
 
         return state_arr
 
-    def _apply_gate_mps(self, gate: NDArray, targets: List[int]) -> None:
+    def _apply_gate_mps(self, gate: NDArray, targets: list[int]) -> None:
         """Apply gate in MPS representation."""
         # Simplified MPS gate application
         # Production version would implement proper MPS algorithms
@@ -339,7 +339,7 @@ class TensorNetworkEngine:
 
         return result
 
-    def _tensor_to_mps(self) -> List[NDArray]:
+    def _tensor_to_mps(self) -> list[NDArray]:
         """Convert tensor to MPS using SVD compression."""
         if self.state_tensor is None:
             raise RuntimeError("State tensor not initialized")
@@ -380,7 +380,7 @@ class TensorNetworkEngine:
 
         return mps
 
-    def apply_noise(self, kraus_ops: List[NDArray], targets: List[int]) -> None:
+    def apply_noise(self, kraus_ops: list[NDArray], targets: list[int]) -> None:
         """Apply noise channel via Kraus operators.
 
         Args:
@@ -393,7 +393,7 @@ class TensorNetworkEngine:
         pass
 
     def evolve(
-        self, control_schedule: List[Tuple[float, Dict[str, Any]]], method: str = "trotter"
+        self, control_schedule: list[tuple[float, dict[str, Any]]], method: str = "trotter"
     ) -> None:
         """Evolve state under time-dependent Hamiltonian.
 
@@ -405,7 +405,7 @@ class TensorNetworkEngine:
         # Would implement time-sliced evolution
         pass
 
-    def batch_run(self, trajectories: int = 1024) -> Dict[str, Any]:
+    def batch_run(self, trajectories: int = 1024) -> dict[str, Any]:
         """Run batched trajectories for Monte Carlo averaging.
 
         Args:
@@ -428,7 +428,7 @@ class TensorNetworkEngine:
 
         return results
 
-    def measure_pauli_expectation(self, pauli_ops: List[Tuple[str, List[int]]]) -> Dict[str, float]:
+    def measure_pauli_expectation(self, pauli_ops: list[tuple[str, list[int]]]) -> dict[str, float]:
         """Measure expectation values of Pauli operators.
 
         Args:
@@ -450,7 +450,7 @@ class TensorNetworkEngine:
 
         return expectations
 
-    def profile(self) -> Dict[str, Any]:
+    def profile(self) -> dict[str, Any]:
         """Get performance profile.
 
         Returns:

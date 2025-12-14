@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Optional
 
 from qledger.record import LedgerRecord
 from qledger.store import LedgerStore
@@ -30,8 +30,8 @@ class LedgerQuery:
             return None
         return sorted(candidates, key=lambda r: r.tick)[-1]
 
-    def violations_for_node(self, node_id: str) -> List[LedgerRecord]:
+    def violations_for_node(self, node_id: str) -> list[LedgerRecord]:
         return [rec for rec in self.store.all_records() if rec.record_type == "violation" and rec.node_id == node_id]
 
-    def records_between(self, start_tick: int, end_tick: int) -> List[LedgerRecord]:
+    def records_between(self, start_tick: int, end_tick: int) -> list[LedgerRecord]:
         return [rec for rec in self.store.all_records() if start_tick <= rec.tick <= end_tick]

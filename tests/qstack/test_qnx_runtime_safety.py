@@ -1,7 +1,6 @@
 from qstack.qnx import (
     DeterministicScheduler,
     OperatorLibrary,
-    PriorityScheduler,
     QNXState,
     RateLimiter,
     SafetyConstraints,

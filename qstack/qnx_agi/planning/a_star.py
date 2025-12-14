@@ -1,7 +1,7 @@
 """Advanced deterministic A* planner with safety constraints."""
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Optional
 
 from .base import PlanStep, Planner
 from ...qnx.runtime.safety import SafetyEnvelope
@@ -10,14 +10,14 @@ from ...qnx.runtime.safety import SafetyEnvelope
 class ConstrainedAStarPlanner(Planner):
     def __init__(
         self,
-        heuristic: Callable[[Dict[str, Any], Dict[str, Any]], float],
+        heuristic: Callable[[dict[str, Any], dict[str, Any]], float],
         envelope: Optional[SafetyEnvelope] = None,
     ):
         super().__init__(heuristic)
         self._envelope = envelope
 
-    def _neighbors(self, state: Dict[str, Any], goal: Dict[str, Any]) -> List[Tuple[str, Dict[str, Any]]]:
-        neighbors: List[Tuple[str, Dict[str, Any]]] = []
+    def _neighbors(self, state: dict[str, Any], goal: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
+        neighbors: list[tuple[str, dict[str, Any]]] = []
         for key, value in goal.items():
             if state.get(key) != value:
                 candidate = dict(state)
@@ -29,14 +29,14 @@ class ConstrainedAStarPlanner(Planner):
                 neighbors.append((f"set_{key}", candidate))
         return neighbors
 
-    def plan(self, goal: Dict[str, Any], state: Dict[str, Any]) -> List[PlanStep]:
-        open_set: List[PlanStep] = [PlanStep(action="start", parameters=state, cost=0.0, heuristic=self._heuristic(goal, state))]
-        explored: Dict[str, float] = {}
+    def plan(self, goal: dict[str, Any], state: dict[str, Any]) -> list[PlanStep]:
+        open_set: list[PlanStep] = [PlanStep(action="start", parameters=state, cost=0.0, heuristic=self._heuristic(goal, state))]
+        explored: dict[str, float] = {}
         while open_set:
             open_set.sort(key=lambda s: (s.total(), s.action))
             current = open_set.pop(0)
             if all(current.parameters.get(k) == v for k, v in goal.items()):
-                path: List[PlanStep] = []
+                path: list[PlanStep] = []
                 cursor: Optional[PlanStep] = current
                 while cursor:
                     path.append(cursor)

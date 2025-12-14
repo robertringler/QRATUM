@@ -1,7 +1,7 @@
 """High-level deterministic system calls."""
 from __future__ import annotations
 
-from typing import Callable, Dict, List
+from typing import Callable
 
 from qnode.config import NodeConfig
 from qnode.policies import NodePolicy, compose_policies
@@ -13,16 +13,16 @@ class SyscallError(Exception):
 
 
 class SyscallRouter:
-    def __init__(self, config: NodeConfig, policies: List[NodePolicy], incident_log: IncidentLog) -> None:
+    def __init__(self, config: NodeConfig, policies: list[NodePolicy], incident_log: IncidentLog) -> None:
         self.config = config
         self.policies = policies
         self.incidents = incident_log
-        self.registry: Dict[str, Callable[[Dict[str, object]], object]] = {}
+        self.registry: dict[str, Callable[[dict[str, object]], object]] = {}
 
-    def register(self, name: str, handler: Callable[[Dict[str, object]], object]) -> None:
+    def register(self, name: str, handler: Callable[[dict[str, object]], object]) -> None:
         self.registry[name] = handler
 
-    def dispatch(self, name: str, payload: Dict[str, object]) -> object:
+    def dispatch(self, name: str, payload: dict[str, object]) -> object:
         if name not in self.registry:
             raise SyscallError(f"unknown syscall {name}")
         context = {"syscall": name, "cost": payload.get("cost", 0)}
@@ -34,5 +34,5 @@ class SyscallRouter:
         self.incidents.record("syscall", {"name": name, "payload": payload, "result": result})
         return result
 
-    def registered(self) -> List[str]:
+    def registered(self) -> list[str]:
         return sorted(self.registry.keys())

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import Any
 
 
 class DeterministicScheduler:
@@ -9,8 +9,8 @@ class DeterministicScheduler:
     def __init__(self, operators):
         self._operators = operators
 
-    def schedule(self, state: Any, goal: Any) -> List[Dict[str, Any]]:
-        trace: List[Dict[str, Any]] = []
+    def schedule(self, state: Any, goal: Any) -> list[dict[str, Any]]:
+        trace: list[dict[str, Any]] = []
         for name, op in sorted(self._operators.available().items(), key=lambda kv: kv[0]):
             result = op.execute(state, goal)
             trace.append({"op": name, "result": result})
@@ -20,16 +20,16 @@ class DeterministicScheduler:
 class PriorityScheduler(DeterministicScheduler):
     """Deterministic priority scheduling based on integer priorities."""
 
-    def __init__(self, operators, priorities: Dict[str, int]):
+    def __init__(self, operators, priorities: dict[str, int]):
         super().__init__(operators)
         self._priorities = priorities
 
-    def schedule(self, state: Any, goal: Any) -> List[Dict[str, Any]]:
+    def schedule(self, state: Any, goal: Any) -> list[dict[str, Any]]:
         def sort_key(item):
             name, _op = item
             return (self._priorities.get(name, 0), name)
 
-        trace: List[Dict[str, Any]] = []
+        trace: list[dict[str, Any]] = []
         for name, op in sorted(self._operators.available().items(), key=sort_key):
             result = op.execute(state, goal)
             trace.append({"op": name, "priority": self._priorities.get(name, 0), "result": result})

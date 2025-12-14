@@ -2,15 +2,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List
 
 
 @dataclass
 class VectorDB:
-    vectors: Dict[str, List[float]] = field(default_factory=dict)
+    vectors: dict[str, list[float]] = field(default_factory=dict)
 
-    def upsert(self, key: str, vector: List[float]) -> None:
+    def upsert(self, key: str, vector: list[float]) -> None:
         self.vectors[key] = list(vector)
 
-    def query(self, key: str) -> List[float]:
+    def query(self, key: str) -> list[float]:
         return list(self.vectors.get(key, []))

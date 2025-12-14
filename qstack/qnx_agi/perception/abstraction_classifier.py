@@ -1,17 +1,16 @@
 """Simple abstraction classifier that bins numeric features deterministically."""
 from __future__ import annotations
 
-from typing import Dict
 
 from .base import Percept
 
 
 class AbstractionClassifier:
-    def __init__(self, thresholds: Dict[str, float]):
+    def __init__(self, thresholds: dict[str, float]):
         self.thresholds = thresholds
 
-    def classify(self, percept: Percept) -> Dict[str, str]:
-        labels: Dict[str, str] = {}
+    def classify(self, percept: Percept) -> dict[str, str]:
+        labels: dict[str, str] = {}
         if percept.features:
             for key, value in percept.features.items():
                 threshold = self.thresholds.get(key, 0.0)

@@ -5,7 +5,7 @@ import hashlib
 import json
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable, Dict, Iterable, List, Mapping
+from typing import Any, Callable, Iterable, Mapping
 
 
 class EventType(str, Enum):
@@ -42,10 +42,10 @@ class EventBus:
     """Pure, deterministic event bus with ordered subscribers."""
 
     timestamp_seed: str | int = "0"
-    events: List[Event] = field(default_factory=list)
-    subscribers: List[Callable[[Event], None]] = field(default_factory=list)
+    events: list[Event] = field(default_factory=list)
+    subscribers: list[Callable[[Event], None]] = field(default_factory=list)
 
-    def _normalize_payload(self, payload: Mapping[str, Any] | None) -> Dict[str, Any]:
+    def _normalize_payload(self, payload: Mapping[str, Any] | None) -> dict[str, Any]:
         if payload is None:
             return {}
         return dict(payload)

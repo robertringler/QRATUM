@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 from ..perception.base import PerceptionLayer
 from ..worldmodel.base import WorldModel
@@ -27,7 +27,7 @@ class Orchestrator:
         self._planning = planning
         self._audit = audit_log or AuditLog()
 
-    def cycle(self, raw_input: Any, goal: Dict[str, Any]) -> Dict[str, Any]:
+    def cycle(self, raw_input: Any, goal: dict[str, Any]) -> dict[str, Any]:
         percepts = self._perception.process(raw_input)
         state = self._world_model.ingest(percepts)
         for percept in percepts:

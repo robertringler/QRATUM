@@ -1,9 +1,8 @@
 """Optimizer for QIR graphs."""
 from __future__ import annotations
 
-from typing import List
 
-from .ir_nodes import Constant, Graph, IRNode, Operation
+from .ir_nodes import Constant, Graph, Operation
 
 
 def constant_fold(graph: Graph) -> Graph:

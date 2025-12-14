@@ -6,7 +6,7 @@ QuASIM, and QuNimbus subsystems via the QStackSystem facade.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 
 @dataclass
@@ -37,7 +37,7 @@ class QuNimbusConfig:
     enable_synthetic_economy: bool = True
     enable_real_policies: bool = True
     enable_node_governance: bool = True
-    parameters: Dict[str, Any] = field(default_factory=dict)
+    parameters: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -48,7 +48,7 @@ class QStackConfig:
     quasim: QuASIMConfig = field(default_factory=QuASIMConfig)
     qunimbus: QuNimbusConfig = field(default_factory=QuNimbusConfig)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return a dictionary representation of the full configuration."""
 
         return asdict(self)

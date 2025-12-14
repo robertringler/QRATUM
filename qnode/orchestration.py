@@ -1,7 +1,7 @@
 """Node-level orchestration across subsystems."""
 from __future__ import annotations
 
-from typing import Callable, Dict, List
+from typing import Callable
 
 from qnode.config import NodeConfig
 from qnode.syscalls import SyscallRouter
@@ -13,23 +13,23 @@ from qscenario.outcomes import evaluate_outcomes
 
 
 class NodeOrchestrator:
-    def __init__(self, config: NodeConfig, policies: Dict[str, NodePolicy], dispatcher: Dict[str, Callable[[Dict[str, object]], object]]) -> None:
+    def __init__(self, config: NodeConfig, policies: dict[str, NodePolicy], dispatcher: dict[str, Callable[[dict[str, object]], object]]) -> None:
         self.incidents = IncidentLog()
         policy_list = list(policies.values())
         self.syscalls = SyscallRouter(config, policy_list, self.incidents)
         for name, handler in dispatcher.items():
             self.syscalls.register(name, handler)
 
-    def execute(self, syscall: str, payload: Dict[str, object]) -> object:
+    def execute(self, syscall: str, payload: dict[str, object]) -> object:
         return self.syscalls.dispatch(syscall, payload)
 
-    def log(self) -> Dict[str, object]:
+    def log(self) -> dict[str, object]:
         return {"incidents": [i.__dict__ for i in self.incidents.all()]}
 
     def attach_scenario(self, scenario: Scenario) -> None:
         scenario.state.context.setdefault("node_config", self.syscalls.config.__dict__)
 
-    def run_scenario(self, scenario: Scenario, required_metrics: List[str] | None = None) -> ScenarioReport:
+    def run_scenario(self, scenario: Scenario, required_metrics: list[str] | None = None) -> ScenarioReport:
         required = required_metrics or []
         self.attach_scenario(scenario)
         state = scenario.run()

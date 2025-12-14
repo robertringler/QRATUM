@@ -2,14 +2,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Iterable, List
+from typing import Iterable
 
 from qledger.record import LedgerRecord
 
 
 @dataclass
 class LedgerChain:
-    records: List[LedgerRecord] = field(default_factory=list)
+    records: list[LedgerRecord] = field(default_factory=list)
 
     def append(self, record: LedgerRecord) -> LedgerRecord:
         prev_hash = self.records[-1].compute_hash() if self.records else record.prev_hash or record.compute_hash()
@@ -26,7 +26,7 @@ class LedgerChain:
             raise ValueError("chain is empty")
         return self.records[-1]
 
-    def hashes(self) -> List[str]:
+    def hashes(self) -> list[str]:
         return [rec.compute_hash() for rec in self.records]
 
     def validate(self) -> bool:

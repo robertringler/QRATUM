@@ -15,7 +15,7 @@ import logging
 import uuid
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 try:
     from fastapi import FastAPI, Header, HTTPException, status
@@ -65,7 +65,7 @@ if FASTAPI_AVAILABLE:
         """Request to submit a new job."""
 
         job_type: JobType = Field(..., description="Type of simulation")
-        config: Dict[str, Any] = Field(..., description="Job configuration")
+        config: dict[str, Any] = Field(..., description="Job configuration")
         priority: int = Field(default=5, ge=1, le=10, description="Job priority (1-10)")
         timeout_seconds: Optional[int] = Field(default=3600, description="Job timeout")
 
@@ -121,18 +121,18 @@ if FASTAPI_AVAILABLE:
         """Request to validate job configuration."""
 
         job_type: JobType
-        config: Dict[str, Any]
+        config: dict[str, Any]
 
     class ValidationResponse(BaseModel):
         """Validation result."""
 
         valid: bool
-        errors: List[str] = Field(default_factory=list)
-        warnings: List[str] = Field(default_factory=list)
+        errors: list[str] = Field(default_factory=list)
+        warnings: list[str] = Field(default_factory=list)
 
 
 # In-memory job store (in production, use Redis or database)
-job_store: Dict[str, Dict[str, Any]] = {}
+job_store: dict[str, dict[str, Any]] = {}
 
 
 def create_app() -> Any:

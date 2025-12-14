@@ -7,13 +7,13 @@ from __future__ import annotations
 
 import shutil
 from pathlib import Path
-from typing import List, Union
+from typing import Union
 
 import numpy as np
 
 
 def encode_video(
-    frames: List[np.ndarray],
+    frames: list[np.ndarray],
     output_path: Union[str, Path],
     fps: int = 30,
     codec: str = "libx264",
@@ -56,7 +56,7 @@ def encode_video(
 
 
 def encode_gif(
-    frames: List[np.ndarray],
+    frames: list[np.ndarray],
     output_path: Union[str, Path],
     fps: int = 10,
     loop: int = 0,

@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, Optional
+from typing import Optional
 
 
 @dataclass(frozen=True)
@@ -20,7 +20,7 @@ UnknownType = QDLType("unknown")
 
 class TypeEnv:
     def __init__(self):
-        self._types: Dict[str, QDLType] = {}
+        self._types: dict[str, QDLType] = {}
 
     def declare(self, name: str, type_: QDLType):
         self._types[name] = type_

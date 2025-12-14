@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List
 
 from quasim import Config as QuasimRuntimeConfig
 from quasim import Runtime as QuasimRuntime
@@ -29,9 +28,9 @@ class QuASIMAdapter:
         with QuasimRuntime(runtime_config) as runtime:
             return runtime.simulate(circuit)
 
-    def simulate_batch(self, circuits: list[list[list[complex]]]) -> List[list[complex]]:
+    def simulate_batch(self, circuits: list[list[list[complex]]]) -> list[list[complex]]:
         runtime_config = self._build_runtime_config()
-        results: List[list[complex]] = []
+        results: list[list[complex]] = []
         with QuasimRuntime(runtime_config) as runtime:
             for circuit in circuits:
                 results.append(runtime.simulate(circuit))

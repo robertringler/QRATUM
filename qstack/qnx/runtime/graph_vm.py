@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from collections import deque
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Optional
 
 from .tracing import TraceRecorder
 from .safety import SafetyEnvelope
@@ -13,8 +13,8 @@ from .safety import SafetyEnvelope
 class OperatorGraph:
     """DAG of operator names with explicit dependencies."""
 
-    edges: Dict[str, List[str]] = field(default_factory=dict)
-    reverse: Dict[str, List[str]] = field(default_factory=dict)
+    edges: dict[str, list[str]] = field(default_factory=dict)
+    reverse: dict[str, list[str]] = field(default_factory=dict)
 
     def add_edge(self, src: str, dst: str) -> None:
         self.edges.setdefault(src, []).append(dst)
@@ -22,10 +22,10 @@ class OperatorGraph:
         self.edges.setdefault(dst, [])
         self.reverse.setdefault(src, [])
 
-    def topological(self) -> List[str]:
-        indegree: Dict[str, int] = {node: len(parents) for node, parents in self.reverse.items()}
+    def topological(self) -> list[str]:
+        indegree: dict[str, int] = {node: len(parents) for node, parents in self.reverse.items()}
         queue = deque(sorted([n for n, deg in indegree.items() if deg == 0]))
-        order: List[str] = []
+        order: list[str] = []
         while queue:
             node = queue.popleft()
             order.append(node)
@@ -41,7 +41,7 @@ class OperatorGraph:
 @dataclass
 class FaultIsolationZone:
     name: str
-    operators: List[str]
+    operators: list[str]
 
     def contains(self, op_name: str) -> bool:
         return op_name in self.operators
@@ -56,8 +56,8 @@ class GraphVM:
         self._trace = TraceRecorder()
         self._tick = 0
         self._envelope = envelope
-        self._fault_zones: List[FaultIsolationZone] = []
-        self._checkpoints: List[Tuple[int, Dict[str, Any]]] = []
+        self._fault_zones: list[FaultIsolationZone] = []
+        self._checkpoints: list[tuple[int, dict[str, Any]]] = []
 
     def add_fault_zone(self, zone: FaultIsolationZone) -> None:
         self._fault_zones.append(zone)
@@ -68,8 +68,8 @@ class GraphVM:
                 return zone
         return None
 
-    def run(self, state: Any, goal: Any) -> List[Dict[str, Any]]:
-        trace: List[Dict[str, Any]] = []
+    def run(self, state: Any, goal: Any) -> list[dict[str, Any]]:
+        trace: list[dict[str, Any]] = []
         for name in self._graph.topological():
             if self._envelope and not self._envelope.inside(state):
                 record = {"tick": self._tick, "op": name, "error": "safety_envelope_violation"}
@@ -81,7 +81,7 @@ class GraphVM:
                 raise KeyError(f"operator {name} not registered")
             zone = self._zone_for(name)
             result = op.execute(state, goal)
-            record: Dict[str, Any] = {"tick": self._tick, "op": name, "result": result}
+            record: dict[str, Any] = {"tick": self._tick, "op": name, "result": result}
             if zone:
                 record["fault_zone"] = zone.name
             self._trace.record("execute", record)
@@ -90,8 +90,8 @@ class GraphVM:
             self._checkpoints.append((self._tick, dict(getattr(state, "data", {}))))
         return trace
 
-    def replay_buffer(self) -> List[Dict[str, Any]]:
+    def replay_buffer(self) -> list[dict[str, Any]]:
         return [entry["payload"] for entry in self._trace.snapshot()]
 
-    def checkpoints(self) -> List[Tuple[int, Dict[str, Any]]]:
+    def checkpoints(self) -> list[tuple[int, dict[str, Any]]]:
         return list(self._checkpoints)

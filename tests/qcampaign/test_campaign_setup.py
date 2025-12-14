@@ -1,4 +1,4 @@
-from qagents.base import Agent, AgentObservation, LambdaPolicy
+from qagents.base import Agent, LambdaPolicy
 from qcampaign.campaign import Campaign
 from qcampaign.teams import RedTeam, BlueTeam
 
