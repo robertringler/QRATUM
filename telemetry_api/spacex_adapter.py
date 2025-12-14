@@ -43,8 +43,11 @@ class SpaceXTelemetryAdapter:
         """Establish connection to SpaceX telemetry service.
 
         Returns:
-            True if connection successful
+            True if connection successful or already connected
         """
+        if self._connected:
+            return True
+
         # In production, would establish actual gRPC connection
         self._connected = True
         return self._connected
@@ -158,6 +161,11 @@ class SpaceXTelemetryAdapter:
 
         return successful, failed, errors
 
-    def disconnect(self) -> None:
-        """Disconnect from telemetry service."""
+    def disconnect(self) -> bool:
+        """Disconnect from telemetry service.
+
+        Returns:
+            True if disconnection successful or already disconnected
+        """
         self._connected = False
+        return True

@@ -71,8 +71,12 @@ class ChinaPhotonicFactory:
         """Establish connection to China Photonic Factory.
 
         Returns:
-            True if connection successful
+            True if connection successful or already connected
         """
+        if self._connected:
+            logger.debug("Already connected to China Photonic Factory")
+            return True
+
         logger.info("Connecting to China Photonic Factory...")
         logger.info(f"QKD Protocol: BB84 | Latency target: {self.config.qkd_latency_ms} ms")
 
@@ -186,9 +190,16 @@ class ChinaPhotonicFactory:
             },
         }
 
-    def disconnect(self):
-        """Disconnect from China Photonic Factory."""
+    def disconnect(self) -> bool:
+        """Disconnect from China Photonic Factory.
+
+        Returns:
+            True if disconnection successful or already disconnected
+        """
         if self._connected:
             logger.info("Disconnecting from China Photonic Factory...")
             self._connected = False
             logger.info("✓ Disconnected")
+        else:
+            logger.debug("Already disconnected from China Photonic Factory")
+        return True
