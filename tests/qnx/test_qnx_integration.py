@@ -31,7 +31,7 @@ def test_qvr_backend_unavailable_on_non_windows():
     config = SimulationConfig(scenario_id="smoke", timesteps=1, seed=0, backend="qvr_win")
 
     result = substrate.run_simulation(config)
-    
+
     # Backend exceptions are now caught and returned as structured results
     assert result.raw_results.get("status") == "error"
     assert "backend_exception" in result.errors
