@@ -1,10 +1,10 @@
 """Deterministic state replication for sovereign clusters."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Dict, List
 
-from .deterministic_merkle import DeterministicMerkleTree
 from .deterministic_ledger import DeterministicLedger, DeterministicLedgerEntry
 
 
@@ -29,7 +29,11 @@ class SovereignClusterReplication:
         ordered_names = sorted(self.nodes.keys())
         reference_name = ordered_names[0]
         reference_root = self._snapshot_root(self.nodes[reference_name])
-        divergent = [name for name in ordered_names if self._snapshot_root(self.nodes[name]) != reference_root]
+        divergent = [
+            name
+            for name in ordered_names
+            if self._snapshot_root(self.nodes[name]) != reference_root
+        ]
         return [n for n in divergent if n != reference_name]
 
     def reconcile(self, source: str) -> Dict[str, int]:

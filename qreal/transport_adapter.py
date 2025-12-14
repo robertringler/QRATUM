@@ -1,4 +1,5 @@
 """Deterministic adapter for aviation/rail/road feeds."""
+
 from __future__ import annotations
 
 from typing import Dict

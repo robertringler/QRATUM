@@ -1,4 +1,5 @@
 """Deterministic event bus for Q-Stack orchestration."""
+
 from __future__ import annotations
 
 import hashlib
@@ -56,7 +57,7 @@ class EventBus:
     def _compute_event_id(self, index: int, payload: Mapping[str, Any]) -> str:
         seed_str = str(self.timestamp_seed)
         payload_repr = self._serialize_payload(payload)
-        hashed = hashlib.sha256(f"{seed_str}:{index}:{payload_repr}".encode("utf-8"))
+        hashed = hashlib.sha256(f"{seed_str}:{index}:{payload_repr}".encode())
         return hashed.hexdigest()
 
     def subscribe(self, subscriber: Callable[[Event], None]) -> None:

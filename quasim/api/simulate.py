@@ -3,6 +3,7 @@
 This module exposes a stable ``run_scenario`` API used by the QNX substrate to
 route requests to different engines (modern, legacy, QVR, or future adapters).
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -64,7 +65,10 @@ def _run_modern_engine(
         "timesteps": timesteps,
         "seed": seed,
         "precision": "fp8",
-        "circuit_summary": {"num_gates": len(circuit), "gate_size": len(circuit[0]) if circuit else 0},
+        "circuit_summary": {
+            "num_gates": len(circuit),
+            "gate_size": len(circuit[0]) if circuit else 0,
+        },
         "result": [complex(value) for value in result],
     }
 

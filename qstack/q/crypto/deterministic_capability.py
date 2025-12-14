@@ -1,4 +1,5 @@
 """Deterministic capability token issuance."""
+
 from __future__ import annotations
 
 import hashlib
@@ -23,13 +24,31 @@ class DeterministicCapabilityToken:
 class CapabilityAuthority:
     """Issues deterministic capability tokens."""
 
-    def issue(self, issuer: QIdentity, subject: QIdentity, permission: str) -> DeterministicCapabilityToken:
+    def issue(
+        self, issuer: QIdentity, subject: QIdentity, permission: str
+    ) -> DeterministicCapabilityToken:
         material = f"{issuer.key}:{subject.key}:{permission}"
-        return DeterministicCapabilityToken(subject=subject.name, permission=permission, issuer=issuer.name, token=_hash_token(material))
+        return DeterministicCapabilityToken(
+            subject=subject.name,
+            permission=permission,
+            issuer=issuer.name,
+            token=_hash_token(material),
+        )
 
-    def validate(self, token: DeterministicCapabilityToken, subject: QIdentity, permission: str, issuer: QIdentity) -> bool:
+    def validate(
+        self,
+        token: DeterministicCapabilityToken,
+        subject: QIdentity,
+        permission: str,
+        issuer: QIdentity,
+    ) -> bool:
         expected = self.issue(issuer, subject, permission)
-        return expected.token == token.token and token.subject == subject.name and token.permission == permission and token.issuer == issuer.name
+        return (
+            expected.token == token.token
+            and token.subject == subject.name
+            and token.permission == permission
+            and token.issuer == issuer.name
+        )
 
     def to_dict(self, token: DeterministicCapabilityToken) -> Dict[str, str]:
         return {

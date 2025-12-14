@@ -1,4 +1,5 @@
 """Policy variant definitions."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -14,7 +15,9 @@ class PolicyVariant:
     rules: Dict[str, Callable[[Event, ScenarioState], bool]] = field(default_factory=dict)
     parameters: Dict[str, object] = field(default_factory=dict)
 
-    def apply(self, base_policies: Dict[str, Callable[[Event, ScenarioState], bool]]) -> Dict[str, Callable[[Event, ScenarioState], bool]]:
+    def apply(
+        self, base_policies: Dict[str, Callable[[Event, ScenarioState], bool]]
+    ) -> Dict[str, Callable[[Event, ScenarioState], bool]]:
         merged = dict(base_policies)
         merged.update(self.rules)
         return merged

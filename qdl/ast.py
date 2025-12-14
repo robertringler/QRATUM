@@ -1,4 +1,5 @@
 """AST node definitions for QDL deterministic language."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -9,7 +10,7 @@ class ASTNode:
     def evaluate(self, context: Dict[str, Any]) -> Any:
         raise NotImplementedError
 
-    def children(self) -> List["ASTNode"]:
+    def children(self) -> List[ASTNode]:
         return []
 
 
@@ -38,19 +39,19 @@ class BinaryOp(ASTNode):
     def evaluate(self, context: Dict[str, Any]) -> Any:
         lval = self.left.evaluate(context)
         rval = self.right.evaluate(context)
-        if self.op == '+':
+        if self.op == "+":
             return lval + rval
-        if self.op == '-':
+        if self.op == "-":
             return lval - rval
-        if self.op == '*':
+        if self.op == "*":
             return lval * rval
-        if self.op == '/':
+        if self.op == "/":
             return lval / rval
-        if self.op == '==':
+        if self.op == "==":
             return lval == rval
-        if self.op == '<':
+        if self.op == "<":
             return lval < rval
-        if self.op == '>':
+        if self.op == ">":
             return lval > rval
         raise ValueError(f"Unknown operator {self.op}")
 
@@ -64,7 +65,7 @@ class WorldModelCall(ASTNode):
     args: List[ASTNode] = field(default_factory=list)
 
     def evaluate(self, context: Dict[str, Any]) -> Any:
-        worldmodel = context.get('worldmodel')
+        worldmodel = context.get("worldmodel")
         if worldmodel is None or not hasattr(worldmodel, self.target):
             raise ValueError(f"Worldmodel call {self.target} undefined")
         func = getattr(worldmodel, self.target)
@@ -81,7 +82,7 @@ class SimulationKernel(ASTNode):
     params: Dict[str, ASTNode]
 
     def evaluate(self, context: Dict[str, Any]) -> Any:
-        kernel_fn = context.get('simulation_kernels', {}).get(self.kernel)
+        kernel_fn = context.get("simulation_kernels", {}).get(self.kernel)
         if kernel_fn is None:
             raise ValueError(f"Simulation kernel {self.kernel} not available")
         evaluated_params = {k: v.evaluate(context) for k, v in self.params.items()}
@@ -97,7 +98,7 @@ class EconomicPrimitive(ASTNode):
     amount: ASTNode
 
     def evaluate(self, context: Dict[str, Any]) -> Any:
-        econ = context.get('economics', {})
+        econ = context.get("economics", {})
         primitive_fn = econ.get(self.primitive)
         if primitive_fn is None:
             raise ValueError(f"Economic primitive {self.primitive} missing")

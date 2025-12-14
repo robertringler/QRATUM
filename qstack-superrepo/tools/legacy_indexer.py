@@ -1,4 +1,5 @@
 """Index legacy raw snippets into a manifest for later promotion."""
+
 from __future__ import annotations
 
 import json

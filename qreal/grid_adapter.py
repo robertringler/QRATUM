@@ -1,4 +1,5 @@
 """Deterministic energy/grid adapter."""
+
 from __future__ import annotations
 
 from typing import Dict
@@ -13,7 +14,7 @@ class GridAdapter(BaseAdapter):
         self.chain.steps.extend(
             [
                 enforce_fields(["region", "load", "generation", "frequency"]),
-                clamp_numbers(-10**3, 10**6),
+                clamp_numbers(-(10**3), 10**6),
                 sort_keys,
             ]
         )

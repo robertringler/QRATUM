@@ -1,10 +1,11 @@
 """Alignment evaluation engine applying constitutional policies."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Dict, Iterable, List
 
-from qstack.alignment.constitution import Constitution, DEFAULT_CONSTITUTION
+from qstack.alignment.constitution import DEFAULT_CONSTITUTION, Constitution
 from qstack.alignment.policies import AlignmentPolicy, default_policies
 from qstack.alignment.violations import AlignmentViolation, ViolationSeverity
 from qstack.config import QStackConfig
@@ -20,7 +21,9 @@ class AlignmentEvaluator:
 
     def _evaluate(self, operation: str, context: Dict, phase: str) -> List[AlignmentViolation]:
         violations: List[AlignmentViolation] = []
-        applicable_articles = {article.article_id for article in self.constitution.applicable_articles(operation)}
+        applicable_articles = {
+            article.article_id for article in self.constitution.applicable_articles(operation)
+        }
         for policy in self.policies:
             policy_violations = policy.evaluate(operation, self.config, context)
             for violation in policy_violations:
@@ -38,4 +41,7 @@ class AlignmentEvaluator:
         return any(violation.severity == ViolationSeverity.FATAL for violation in violations)
 
     def policy_descriptions(self) -> List[Dict[str, str]]:
-        return [{"policy_id": policy.policy_id, "description": policy.description} for policy in self.policies]
+        return [
+            {"policy_id": policy.policy_id, "description": policy.description}
+            for policy in self.policies
+        ]

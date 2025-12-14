@@ -1,4 +1,5 @@
 """Encode transport feed data into AGI percepts."""
+
 from __future__ import annotations
 
 from typing import Dict

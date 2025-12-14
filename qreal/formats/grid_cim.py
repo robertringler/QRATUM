@@ -1,4 +1,5 @@
 """Decode a subset of Common Information Model (CIM) data."""
+
 from __future__ import annotations
 
 from typing import Dict

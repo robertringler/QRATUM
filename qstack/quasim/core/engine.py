@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from typing import Any, Callable, Dict, List, Tuple
 
-from .tensor_ops import dot, matmul
-
 
 class SimulationEngine:
     """Deterministic simulation engine supporting named kernels and circuits."""

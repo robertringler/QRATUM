@@ -1,4 +1,5 @@
 """Deterministic market data adapter."""
+
 from __future__ import annotations
 
 from typing import Dict

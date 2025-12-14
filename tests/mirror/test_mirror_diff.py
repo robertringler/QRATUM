@@ -1,5 +1,5 @@
-from qsk.distributed.real_mirror.mirror_state import MirrorState
 from qsk.distributed.real_mirror.mirror_diff import diff
+from qsk.distributed.real_mirror.mirror_state import MirrorState
 
 
 def test_mirror_diff_detects_changes():

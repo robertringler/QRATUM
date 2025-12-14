@@ -1,4 +1,5 @@
 """Minimal deterministic CCSDS packet decoder."""
+
 from __future__ import annotations
 
 from typing import Dict

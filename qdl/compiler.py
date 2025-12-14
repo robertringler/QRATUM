@@ -1,10 +1,19 @@
 """Compiler pipeline for QDL to QIR."""
+
 from __future__ import annotations
 
+from .ast import (
+    BinaryOp,
+    EconomicPrimitive,
+    Number,
+    Program,
+    SafetyGuard,
+    SimulationKernel,
+    WorldModelCall,
+)
 from .parser import Parser
-from .qir import optimizer, lowering, verifier
+from .qir import lowering, optimizer, verifier
 from .qir.ir_nodes import Constant, Graph, Operation, SafetyBarrier
-from .ast import BinaryOp, EconomicPrimitive, Number, Program, SafetyGuard, SimulationKernel, WorldModelCall
 
 
 class Compiler:
@@ -28,19 +37,29 @@ class Compiler:
         if isinstance(node, BinaryOp):
             left = self._compile_node(node.left)
             right = self._compile_node(node.right)
-            op_map = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'div', '==': 'eq', '<': 'lt', '>': 'gt'}
+            op_map = {
+                "+": "add",
+                "-": "sub",
+                "*": "mul",
+                "/": "div",
+                "==": "eq",
+                "<": "lt",
+                ">": "gt",
+            }
             op_type = op_map.get(node.op, node.op)
             return Operation(op_type, [left, right])
         if isinstance(node, SimulationKernel):
             params = {k: self._compile_node(v) for k, v in node.params.items()}
-            op = Operation('simulate', list(params.values()), {'kernel': node.kernel, 'params': params})
+            op = Operation(
+                "simulate", list(params.values()), {"kernel": node.kernel, "params": params}
+            )
             return op
         if isinstance(node, WorldModelCall):
             args = [self._compile_node(a) for a in node.args]
-            return Operation('worldmodel', args, {'target': node.target})
+            return Operation("worldmodel", args, {"target": node.target})
         if isinstance(node, EconomicPrimitive):
             amount = self._compile_node(node.amount)
-            return Operation('economic', [amount], {'primitive': node.primitive})
+            return Operation("economic", [amount], {"primitive": node.primitive})
         if isinstance(node, SafetyGuard):
             cond = self._compile_node(node.condition)
             action = self._compile_node(node.action)
