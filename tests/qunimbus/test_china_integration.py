@@ -119,10 +119,12 @@ def test_china_factory_disconnect():
     """Test disconnection from China factory."""
     factory = ChinaPhotonicFactory()
 
-    factory.connect()
+    result = factory.connect()
+    assert result is True
     assert factory._connected is True
 
-    factory.disconnect()
+    result = factory.disconnect()
+    assert result is True
     assert factory._connected is False
 
 
@@ -140,3 +142,44 @@ def test_china_factory_metrics_fields():
     assert hasattr(metrics, "first_pilot_runtime_s")
     assert hasattr(metrics, "first_pilot_fidelity")
     assert hasattr(metrics, "timestamp")
+
+
+def test_china_factory_connect_when_already_connected():
+    """Test connecting when already connected."""
+    factory = ChinaPhotonicFactory()
+
+    # First connection
+    result1 = factory.connect()
+    assert result1 is True
+    assert factory._connected is True
+
+    # Second connection should succeed without error
+    result2 = factory.connect()
+    assert result2 is True
+    assert factory._connected is True
+
+
+def test_china_factory_disconnect_when_not_connected():
+    """Test disconnecting when not connected."""
+    factory = ChinaPhotonicFactory()
+
+    # Disconnect without connecting first
+    result = factory.disconnect()
+    assert result is True
+    assert factory._connected is False
+
+
+def test_china_factory_multiple_connect_disconnect_cycles():
+    """Test multiple connect/disconnect cycles."""
+    factory = ChinaPhotonicFactory()
+
+    for _ in range(3):
+        # Connect
+        connect_result = factory.connect()
+        assert connect_result is True
+        assert factory._connected is True
+
+        # Disconnect
+        disconnect_result = factory.disconnect()
+        assert disconnect_result is True
+        assert factory._connected is False
