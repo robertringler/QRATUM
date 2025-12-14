@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuASIM Code Quality Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+            color: #1f2937;
+        }
+        .header {
+            background: linear-gradient(135deg, #2E86AB 0%, #1e5a7a 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 1.125rem;
+            opacity: 0.95;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .dashboard-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .dashboard-section h2 {
+            margin-top: 0;
+            color: #1f2937;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #2E86AB;
+            padding-bottom: 0.5rem;
+        }
+        .figure-container {
+            margin-top: 1rem;
+        }
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #2E86AB;
+        }
+        .metric-card.warning {
+            border-left-color: #F59E0B;
+        }
+        .metric-card.error {
+            border-left-color: #EF4444;
+        }
+        .metric-card.info {
+            border-left-color: #3B82F6;
+        }
+        .metric-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.875rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .metric-card p {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .issue-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .issue-table th {
+            background-color: #f3f4f6;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .issue-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .issue-table tr:hover {
+            background-color: #f9fafb;
+        }
+        .severity-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .severity-error {
+            background-color: #FEE2E2;
+            color: #991B1B;
+        }
+        .severity-warning {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+        .severity-info {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+        .category-label {
+            font-family: 'Courier New', monospace;
+            background-color: #f3f4f6;
+            padding: 0.125rem 0.375rem;
+            border-radius: 3px;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>QuASIM Code Quality Dashboard</h1>
+        <p>Remaining Code Quality Issues — Ruff Linting Analysis</p>
+    </div>
+
+    <div class="container">
+        <div class="dashboard-section">
+            <h2>Key Metrics</h2>
+            <div class="metrics">
+                <div class="metric-card error">
+                    <h3>Total Issues</h3>
+                    <p>1,152</p>
+                </div>
+                <div class="metric-card warning">
+                    <h3>Issue Categories</h3>
+                    <p>29</p>
+                </div>
+                <div class="metric-card info">
+                    <h3>Auto-Fixable</h3>
+                    <p>462</p>
+                </div>
+                <div class="metric-card">
+                    <h3>Top Issue Type</h3>
+                    <p>invalid-syntax</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2>1. Top 10 Issues by Count</h2>
+            <p>Most frequent code quality issues identified by Ruff linting.</p>
+            <div class="figure-container">
+                <div id="top-issues-chart"></div>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2>2. Issue Distribution by Category</h2>
+            <p>Breakdown of issues by error category prefix.</p>
+            <div class="figure-container">
+                <div id="category-chart"></div>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2>3. All Issues</h2>
+            <p>Complete list of code quality issues detected by Ruff.</p>
+            <table class="issue-table">
+                <thead>
+                    <tr>
+                        <th>Count</th>
+                        <th>Code</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Severity</th>
+                    </tr>
+                </thead>
+                <tbody id="issues-table-body">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="dashboard-section">
+            <h2>4. Type Checking Status</h2>
+            <p>Results from mypy type checking analysis.</p>
+            <div style="background-color: #f3f4f6; padding: 1rem; border-radius: 4px; font-family: monospace;">
+                <p style="margin: 0;"><strong>Status:</strong> Type checking completed</p>
+                <p style="margin: 0.5rem 0 0 0;"><strong>Issue:</strong> quasim-api is not a valid Python package name</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>QuASIM</strong> — Quantum-Inspired Autonomous Simulation Platform</p>
+        <p>Code Quality Analysis | Generated: <span id="timestamp"></span></p>
+    </div>
+
+    <script>
+        // Issue data
+        const issues = [
+            { count: 338, code: '', description: 'invalid-syntax', category: 'E', severity: 'error' },
+            { count: 200, code: 'N806', description: 'non-lowercase-variable-in-function', category: 'N', severity: 'warning' },
+            { count: 193, code: 'UP006', description: 'non-pep585-annotation', category: 'UP', severity: 'info' },
+            { count: 69, code: 'W291', description: 'trailing-whitespace', category: 'W', severity: 'warning' },
+            { count: 55, code: 'UP045', description: 'non-pep604-annotation-optional', category: 'UP', severity: 'info' },
+            { count: 51, code: 'F841', description: 'unused-variable', category: 'F', severity: 'warning' },
+            { count: 36, code: 'N803', description: 'invalid-argument-name', category: 'N', severity: 'warning' },
+            { count: 35, code: 'E402', description: 'module-import-not-at-top-of-file', category: 'E', severity: 'error' },
+            { count: 35, code: 'W293', description: 'blank-line-with-whitespace', category: 'W', severity: 'warning' },
+            { count: 31, code: 'F821', description: 'undefined-name', category: 'F', severity: 'error' },
+            { count: 19, code: 'B007', description: 'unused-loop-control-variable', category: 'B', severity: 'warning' },
+            { count: 16, code: 'UP007', description: 'non-pep604-annotation-union', category: 'UP', severity: 'info' },
+            { count: 13, code: 'SIM108', description: 'if-else-block-instead-of-if-exp', category: 'SIM', severity: 'info' },
+            { count: 10, code: 'SIM102', description: 'collapsible-if', category: 'SIM', severity: 'info' },
+            { count: 8, code: 'B904', description: 'raise-without-from-inside-except', category: 'B', severity: 'warning' },
+            { count: 7, code: 'C401', description: 'unnecessary-generator-set', category: 'C', severity: 'info' },
+            { count: 7, code: 'F811', description: 'redefined-while-unused', category: 'F', severity: 'warning' },
+            { count: 6, code: 'F401', description: 'unused-import', category: 'F', severity: 'warning' },
+            { count: 6, code: 'SIM103', description: 'needless-bool', category: 'SIM', severity: 'info' },
+            { count: 5, code: 'N802', description: 'invalid-function-name', category: 'N', severity: 'warning' },
+            { count: 3, code: 'N999', description: 'invalid-module-name', category: 'N', severity: 'warning' },
+            { count: 3, code: 'SIM105', description: 'suppressible-exception', category: 'SIM', severity: 'info' },
+            { count: 2, code: 'N818', description: 'error-suffix-on-exception-name', category: 'N', severity: 'warning' },
+            { count: 1, code: 'C400', description: 'unnecessary-generator-list', category: 'C', severity: 'info' },
+            { count: 1, code: 'C416', description: 'unnecessary-comprehension', category: 'C', severity: 'info' },
+            { count: 1, code: 'SIM110', description: 'reimplemented-builtin', category: 'SIM', severity: 'info' },
+            { count: 1, code: 'SIM118', description: 'in-dict-keys', category: 'SIM', severity: 'info' }
+        ];
+
+        // Populate timestamp
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+
+        // Populate issues table
+        const tableBody = document.getElementById('issues-table-body');
+        issues.forEach(issue => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><strong>${issue.count}</strong></td>
+                <td><span class="category-label">${issue.code || 'E'}</span></td>
+                <td>${issue.description}</td>
+                <td>${getCategoryName(issue.category)}</td>
+                <td><span class="severity-badge severity-${issue.severity}">${issue.severity}</span></td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // Category mapping
+        function getCategoryName(code) {
+            const categories = {
+                'E': 'Error',
+                'F': 'Pyflakes',
+                'W': 'Warning',
+                'N': 'Naming',
+                'UP': 'Upgrade',
+                'B': 'Bugbear',
+                'C': 'Comprehension',
+                'SIM': 'Simplify'
+            };
+            return categories[code] || code;
+        }
+
+        // Top 10 issues chart
+        const top10 = issues.slice(0, 10);
+        const topIssuesData = [{
+            x: top10.map(i => i.count),
+            y: top10.map(i => i.description),
+            type: 'bar',
+            orientation: 'h',
+            marker: {
+                color: top10.map(i => i.severity === 'error' ? '#EF4444' : i.severity === 'warning' ? '#F59E0B' : '#3B82F6'),
+            },
+            text: top10.map(i => i.count),
+            textposition: 'outside',
+        }];
+
+        const topIssuesLayout = {
+            title: {
+                text: 'Top 10 Code Quality Issues',
+                font: { size: 20, color: '#1f2937' },
+                x: 0.5,
+                xanchor: 'center'
+            },
+            xaxis: {
+                title: 'Number of Occurrences',
+                gridcolor: '#e5e7eb',
+                linecolor: '#9ca3af'
+            },
+            yaxis: {
+                automargin: true,
+                gridcolor: '#e5e7eb',
+                linecolor: '#9ca3af'
+            },
+            margin: { t: 80, b: 80, l: 250, r: 40 },
+            height: 500,
+            plot_bgcolor: 'white',
+            paper_bgcolor: 'white',
+            font: {
+                family: 'Arial, sans-serif',
+                size: 12,
+                color: '#374151'
+            }
+        };
+
+        Plotly.newPlot('top-issues-chart', topIssuesData, topIssuesLayout, { responsive: true });
+
+        // Category distribution
+        const categoryCount = {};
+        issues.forEach(issue => {
+            const cat = getCategoryName(issue.category);
+            categoryCount[cat] = (categoryCount[cat] || 0) + issue.count;
+        });
+
+        const categories = Object.keys(categoryCount);
+        const counts = Object.values(categoryCount);
+
+        const categoryData = [{
+            labels: categories,
+            values: counts,
+            type: 'pie',
+            marker: {
+                colors: ['#EF4444', '#F59E0B', '#3B82F6', '#10B981', '#6366F1', '#EC4899', '#8B5CF6', '#14B8A6'],
+            },
+            textinfo: 'label+percent',
+            textposition: 'outside',
+            automargin: true
+        }];
+
+        const categoryLayout = {
+            title: {
+                text: 'Issues by Category',
+                font: { size: 20, color: '#1f2937' },
+                x: 0.5,
+                xanchor: 'center'
+            },
+            height: 500,
+            margin: { t: 80, b: 40, l: 40, r: 40 },
+            plot_bgcolor: 'white',
+            paper_bgcolor: 'white',
+            font: {
+                family: 'Arial, sans-serif',
+                size: 12,
+                color: '#374151'
+            }
+        };
+
+        Plotly.newPlot('category-chart', categoryData, categoryLayout, { responsive: true });
+    </script>
+</body>
+</html>
