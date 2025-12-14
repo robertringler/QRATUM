@@ -1,6 +1,7 @@
-QuASIM  
-### Quantum-Accelerated Simulation and Modeling Engine  
-High-Assurance • Deterministic • HPC-Optimized • Multi-Domain Scientific Computing
+# QuASIM  
+
+**Quantum-Accelerated Simulation and Modeling Engine**  
+*High-Assurance • Deterministic • HPC-Optimized • Multi-Domain Scientific Computing*
 
 QuASIM is a high-assurance, quantum-accelerated simulation framework engineered for deterministic, reproducible, multi-domain modeling.  
 It is built for research environments requiring reliability, transparency, and scientific rigor across complex systems such as aerospace studies, energy-grid analysis, orbital mechanics research, and large-scale multi-physics simulation.
@@ -94,7 +95,21 @@ ODE/PDE solvers, numerical integrators, interpolation modules, and uncertainty q
 
 ## System Architecture
 
-+-----------------------------+ | Secure Telemetry & Logging  | +-----------------------------+ | Distributed Compute Layer   | +-----------------------------+ | QuNimbus Verification Layer | +-----------------------------+ | Q-Core Acceleration Engine  | +-----------------------------+ | Deterministic Runtime (Q-OS)| +-----------------------------+ | Simulation Kernel (QuASIM)  | +-----------------------------+
+```
++-----------------------------+
+| Secure Telemetry & Logging  |
++-----------------------------+
+| Distributed Compute Layer   |
++-----------------------------+
+| QuNimbus Verification Layer |
++-----------------------------+
+| Q-Core Acceleration Engine  |
++-----------------------------+
+| Deterministic Runtime (Q-OS)|
++-----------------------------+
+| Simulation Kernel (QuASIM)  |
++-----------------------------+
+```
 
 ### Component Summary
 
@@ -291,18 +306,19 @@ pipeline.render_and_save(
 git clone https://github.com/robertringler/QuASIM.git
 cd QuASIM
 pip install -r requirements.txt
+```
 
-Example Run
+### Example Run
 
+```bash
 python -m quasim.simulate --scenario orbital_demo --seed 42 --output results/
-
+```
 
 ---
 
-Repository Structure
+## Repository Structure
 
-(Structure preserved from your original README, but reframed safely.)
-
+```
 analysis/            # Analytical tools and post-processing
 aerospace/           # Orbital & trajectory modeling (AURORA)
 benchmarks/          # Performance benchmarking
@@ -320,61 +336,44 @@ runtime/             # Deterministic runtime layer
 tests/               # Unit & integration tests
 tools/               # Utility scripts
 visuals/             # Visualization modules
-
+```
 
 ---
 
-Verification & Provenance
+## Verification & Provenance
 
 QuNimbus provides:
 
-run metadata
-
-configuration hashes
-
-reproducible seeds
-
-environment fingerprints
-
-structured experiment logs
-
+- run metadata
+- configuration hashes
+- reproducible seeds
+- environment fingerprints
+- structured experiment logs
 
 These enable:
-
-scientific reproducibility
-
-cross-team validation
-
-long-term auditability
-
-
+- scientific reproducibility
+- cross-team validation
+- long-term auditability
 
 ---
 
-License
+## License
 
-Apache 2.0 License (see LICENSE file).
+Apache 2.0 License (see LICENSE file).  
 Contributions welcome under open, research-safe guidelines.
 
-
 ---
 
-Development Philosophy
+## Development Philosophy
 
 QuASIM adheres to principles of:
 
-robustness
-
-determinism
-
-clarity
-
-transparency
-
-scientific integrity
-
-safety and ethics
-
+- robustness
+- determinism
+- clarity
+- transparency
+- scientific integrity
+- safety and ethics
 
 The project is intended strictly for research, modeling, and computational experimentation.
 
