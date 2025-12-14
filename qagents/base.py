@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Protocol
+from typing import Any, Callable, Protocol
 
 
 @dataclass
@@ -10,7 +10,7 @@ class AgentObservation:
     """A deterministic snapshot of what an agent can see."""
 
     tick: int
-    view: Dict[str, Any]
+    view: dict[str, Any]
     provenance: str = ""
 
 
@@ -19,10 +19,10 @@ class AgentState:
     """Mutable per-agent state tracked during simulations."""
 
     agent_id: str
-    memory: Dict[str, Any] = field(default_factory=dict)
-    rewards: List[float] = field(default_factory=list)
-    actions: List[Dict[str, Any]] = field(default_factory=list)
-    observations: List[AgentObservation] = field(default_factory=list)
+    memory: dict[str, Any] = field(default_factory=dict)
+    rewards: list[float] = field(default_factory=list)
+    actions: list[dict[str, Any]] = field(default_factory=list)
+    observations: list[AgentObservation] = field(default_factory=list)
 
     def remember(self, key: str, value: Any) -> None:
         self.memory[key] = value
@@ -31,7 +31,7 @@ class AgentState:
         self.rewards.append(reward)
         return sum(self.rewards)
 
-    def record_action(self, action: Dict[str, Any]) -> None:
+    def record_action(self, action: dict[str, Any]) -> None:
         self.actions.append(action)
 
     def record_observation(self, observation: AgentObservation) -> None:
@@ -41,7 +41,7 @@ class AgentState:
 class AgentPolicy(Protocol):
     """Policy interface producing deterministic actions."""
 
-    def decide(self, observation: AgentObservation, state: AgentState) -> Dict[str, Any]:
+    def decide(self, observation: AgentObservation, state: AgentState) -> dict[str, Any]:
         ...
 
 
@@ -60,7 +60,7 @@ class Agent:
         self.state.record_observation(observation)
         self.state.remember("last_view", observation.view)
 
-    def act(self, observation: AgentObservation) -> Dict[str, Any]:
+    def act(self, observation: AgentObservation) -> dict[str, Any]:
         self.observe(observation)
         action = self.policy.decide(observation, self.state)
         self.state.record_action(action)
@@ -75,12 +75,12 @@ class AgentLog:
     """Captures agent trajectories for reporting and replay."""
 
     agent_id: str
-    actions: List[Dict[str, Any]]
-    observations: List[AgentObservation]
-    rewards: List[float]
+    actions: list[dict[str, Any]]
+    observations: list[AgentObservation]
+    rewards: list[float]
 
     @classmethod
-    def from_state(cls, state: AgentState) -> "AgentLog":
+    def from_state(cls, state: AgentState) -> AgentLog:
         return cls(
             agent_id=state.agent_id,
             actions=list(state.actions),
@@ -92,8 +92,8 @@ class AgentLog:
 class LambdaPolicy:
     """Utility policy that defers to a pure function for decisions."""
 
-    def __init__(self, fn: Callable[[AgentObservation, AgentState], Dict[str, Any]]):
+    def __init__(self, fn: Callable[[AgentObservation, AgentState], dict[str, Any]]):
         self.fn = fn
 
-    def decide(self, observation: AgentObservation, state: AgentState) -> Dict[str, Any]:
+    def decide(self, observation: AgentObservation, state: AgentState) -> dict[str, Any]:
         return self.fn(observation, state)

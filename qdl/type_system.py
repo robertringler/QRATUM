@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, Optional
 
 
 @dataclass(frozen=True)
@@ -20,17 +19,17 @@ UnknownType = QDLType("unknown")
 
 class TypeEnv:
     def __init__(self):
-        self._types: Dict[str, QDLType] = {}
+        self._types: dict[str, QDLType] = {}
 
     def declare(self, name: str, type_: QDLType):
         self._types[name] = type_
 
-    def resolve(self, name: str) -> Optional[QDLType]:
+    def resolve(self, name: str) -> QDLType | None:
         return self._types.get(name, UnknownType)
 
 
 class TypeChecker:
-    def __init__(self, env: Optional[TypeEnv] = None):
+    def __init__(self, env: TypeEnv | None = None):
         self.env = env or TypeEnv()
 
     def infer_number(self, value) -> QDLType:

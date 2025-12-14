@@ -1,8 +1,6 @@
 """Coordinator for deterministic distributed compute."""
 from __future__ import annotations
 
-from typing import List
-
 from .deterministic_transport import DeterministicTransport
 from .replica_sync import ReplicaSync
 
@@ -12,6 +10,6 @@ class Coordinator:
         self.transport = DeterministicTransport()
         self.sync = ReplicaSync()
 
-    def broadcast_plan(self, plan: List[dict]) -> List[dict]:
+    def broadcast_plan(self, plan: list[dict]) -> list[dict]:
         ordered = self.transport.order(plan)
         return self.sync.apply(ordered)

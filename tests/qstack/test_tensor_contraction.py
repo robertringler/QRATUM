@@ -11,4 +11,4 @@ def test_contract_shape_mismatch():
         contract_tensors([[1.0], [1.0, 2.0]])
     except ValueError:
         return
-    assert False
+    raise AssertionError()

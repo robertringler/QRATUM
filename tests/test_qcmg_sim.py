@@ -783,7 +783,7 @@ class TestIntegrationScenarios:
         field.initialize(mode="gaussian")
 
         # Evolve
-        for i in range(100):
+        for _i in range(100):
             state = field.evolve()
 
         # Analyze

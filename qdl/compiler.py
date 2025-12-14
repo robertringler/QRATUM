@@ -1,10 +1,18 @@
 """Compiler pipeline for QDL to QIR."""
 from __future__ import annotations
 
+from .ast import (
+    BinaryOp,
+    EconomicPrimitive,
+    Number,
+    Program,
+    SafetyGuard,
+    SimulationKernel,
+    WorldModelCall,
+)
 from .parser import Parser
-from .qir import optimizer, lowering, verifier
+from .qir import lowering, optimizer, verifier
 from .qir.ir_nodes import Constant, Graph, Operation, SafetyBarrier
-from .ast import BinaryOp, EconomicPrimitive, Number, Program, SafetyGuard, SimulationKernel, WorldModelCall
 
 
 class Compiler:

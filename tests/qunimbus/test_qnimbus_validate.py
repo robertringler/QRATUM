@@ -108,7 +108,7 @@ def test_compare_observables_missing_snapshot(sample_config):
     results = compare_observables("nonexistent.hdf5", str(sample_config))
 
     # Should return results with errors
-    for name, result in results.items():
+    for _name, result in results.items():
         assert result["pass"] is False
 
 

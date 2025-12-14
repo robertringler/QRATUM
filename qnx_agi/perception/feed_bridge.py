@@ -2,14 +2,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict
 
 
 @dataclass(frozen=True)
 class Percept:
     kind: str
-    payload: Dict[str, object]
+    payload: dict[str, object]
 
 
-def to_percept(kind: str, normalized: Dict[str, object]) -> Percept:
+def to_percept(kind: str, normalized: dict[str, object]) -> Percept:
     return Percept(kind=kind, payload=dict(normalized))

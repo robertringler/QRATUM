@@ -12,7 +12,6 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -40,9 +39,9 @@ class OrchestrationConfig:
     """Configuration for QuNimbus orchestration."""
 
     parallel: bool = True
-    tasks: List[str] = None
-    auth: Optional[str] = None
-    compliance: List[ComplianceFramework] = None
+    tasks: list[str] = None
+    auth: str | None = None
+    compliance: list[ComplianceFramework] = None
     mode: ExecutionMode = ExecutionMode.LIVE_ACCELERATED
     wave: int = 3
     pilot_target: int = 1000
@@ -74,7 +73,7 @@ class ExecutionMetrics:
     qkd_latency_ms: float = 0.0
     fidelity_avg: float = 0.0
     veto_rate: float = 0.0
-    timestamp: Optional[datetime] = None
+    timestamp: datetime | None = None
 
 
 class QuNimbusOrchestrator:
@@ -94,7 +93,7 @@ class QuNimbusOrchestrator:
             f"Mode: {config.mode.value}"
         )
 
-    async def execute_wave3_launch(self) -> Dict:
+    async def execute_wave3_launch(self) -> dict:
         """Execute Wave 3 launch (1,000 pilots/day).
 
         Returns:
@@ -132,7 +131,7 @@ class QuNimbusOrchestrator:
             "fidelity": self.metrics.fidelity_avg,
         }
 
-    async def execute_china_photonic_scale(self) -> Dict:
+    async def execute_china_photonic_scale(self) -> dict:
         """Execute China Photonic Factory integration.
 
         Returns:
@@ -171,7 +170,7 @@ class QuNimbusOrchestrator:
             "uptime": "100%",
         }
 
-    async def execute_parallel(self) -> Dict:
+    async def execute_parallel(self) -> dict:
         """Execute both tasks in parallel.
 
         Returns:
@@ -236,7 +235,7 @@ class QuNimbusOrchestrator:
         logger.info("[10:02:32] FortiSIEM: Cross-border audit trail (Akron ↔ Shenzhen)")
         logger.info("[10:02:33] QKD: 1 Gbps (BB84 + photonic relay)")
 
-    async def orchestrate(self) -> Dict:
+    async def orchestrate(self) -> dict:
         """Main orchestration entry point.
 
         Returns:

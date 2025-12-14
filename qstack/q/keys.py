@@ -12,5 +12,5 @@ class KeyManager:
     seed: str
 
     def derive_key(self, name: str) -> str:
-        payload = f"{self.seed}:{name}".encode("utf-8")
+        payload = f"{self.seed}:{name}".encode()
         return hashlib.sha256(payload).hexdigest()

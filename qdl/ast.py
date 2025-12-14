@@ -2,14 +2,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 class ASTNode:
-    def evaluate(self, context: Dict[str, Any]) -> Any:
+    def evaluate(self, context: dict[str, Any]) -> Any:
         raise NotImplementedError
 
-    def children(self) -> List["ASTNode"]:
+    def children(self) -> list[ASTNode]:
         return []
 
 
@@ -17,7 +17,7 @@ class ASTNode:
 class Number(ASTNode):
     value: float
 
-    def evaluate(self, context: Dict[str, Any]) -> Any:
+    def evaluate(self, context: dict[str, Any]) -> Any:
         return self.value
 
 
@@ -25,7 +25,7 @@ class Number(ASTNode):
 class Identifier(ASTNode):
     name: str
 
-    def evaluate(self, context: Dict[str, Any]) -> Any:
+    def evaluate(self, context: dict[str, Any]) -> Any:
         return context.get(self.name)
 
 
@@ -35,7 +35,7 @@ class BinaryOp(ASTNode):
     left: ASTNode
     right: ASTNode
 
-    def evaluate(self, context: Dict[str, Any]) -> Any:
+    def evaluate(self, context: dict[str, Any]) -> Any:
         lval = self.left.evaluate(context)
         rval = self.right.evaluate(context)
         if self.op == '+':
@@ -54,16 +54,16 @@ class BinaryOp(ASTNode):
             return lval > rval
         raise ValueError(f"Unknown operator {self.op}")
 
-    def children(self) -> List[ASTNode]:
+    def children(self) -> list[ASTNode]:
         return [self.left, self.right]
 
 
 @dataclass
 class WorldModelCall(ASTNode):
     target: str
-    args: List[ASTNode] = field(default_factory=list)
+    args: list[ASTNode] = field(default_factory=list)
 
-    def evaluate(self, context: Dict[str, Any]) -> Any:
+    def evaluate(self, context: dict[str, Any]) -> Any:
         worldmodel = context.get('worldmodel')
         if worldmodel is None or not hasattr(worldmodel, self.target):
             raise ValueError(f"Worldmodel call {self.target} undefined")
@@ -71,23 +71,23 @@ class WorldModelCall(ASTNode):
         evaluated_args = [a.evaluate(context) for a in self.args]
         return func(*evaluated_args)
 
-    def children(self) -> List[ASTNode]:
+    def children(self) -> list[ASTNode]:
         return list(self.args)
 
 
 @dataclass
 class SimulationKernel(ASTNode):
     kernel: str
-    params: Dict[str, ASTNode]
+    params: dict[str, ASTNode]
 
-    def evaluate(self, context: Dict[str, Any]) -> Any:
+    def evaluate(self, context: dict[str, Any]) -> Any:
         kernel_fn = context.get('simulation_kernels', {}).get(self.kernel)
         if kernel_fn is None:
             raise ValueError(f"Simulation kernel {self.kernel} not available")
         evaluated_params = {k: v.evaluate(context) for k, v in self.params.items()}
         return kernel_fn(**evaluated_params)
 
-    def children(self) -> List[ASTNode]:
+    def children(self) -> list[ASTNode]:
         return list(self.params.values())
 
 
@@ -96,14 +96,14 @@ class EconomicPrimitive(ASTNode):
     primitive: str
     amount: ASTNode
 
-    def evaluate(self, context: Dict[str, Any]) -> Any:
+    def evaluate(self, context: dict[str, Any]) -> Any:
         econ = context.get('economics', {})
         primitive_fn = econ.get(self.primitive)
         if primitive_fn is None:
             raise ValueError(f"Economic primitive {self.primitive} missing")
         return primitive_fn(self.amount.evaluate(context))
 
-    def children(self) -> List[ASTNode]:
+    def children(self) -> list[ASTNode]:
         return [self.amount]
 
 
@@ -111,16 +111,16 @@ class EconomicPrimitive(ASTNode):
 class SafetyGuard(ASTNode):
     condition: ASTNode
     action: ASTNode
-    failure: Optional[ASTNode] = None
+    failure: ASTNode | None = None
 
-    def evaluate(self, context: Dict[str, Any]) -> Any:
+    def evaluate(self, context: dict[str, Any]) -> Any:
         if self.condition.evaluate(context):
             return self.action.evaluate(context)
         if self.failure:
             return self.failure.evaluate(context)
         raise ValueError("Safety guard triggered without fallback")
 
-    def children(self) -> List[ASTNode]:
+    def children(self) -> list[ASTNode]:
         nodes = [self.condition, self.action]
         if self.failure:
             nodes.append(self.failure)
@@ -129,13 +129,13 @@ class SafetyGuard(ASTNode):
 
 @dataclass
 class Program(ASTNode):
-    statements: List[ASTNode]
+    statements: list[ASTNode]
 
-    def evaluate(self, context: Dict[str, Any]) -> Any:
+    def evaluate(self, context: dict[str, Any]) -> Any:
         result = None
         for stmt in self.statements:
             result = stmt.evaluate(context)
         return result
 
-    def children(self) -> List[ASTNode]:
+    def children(self) -> list[ASTNode]:
         return list(self.statements)

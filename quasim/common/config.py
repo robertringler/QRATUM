@@ -5,14 +5,15 @@ Supports loading from YAML, TOML, and JSON formats using OmegaConf.
 
 from __future__ import annotations
 
+import contextlib
 import json
 from pathlib import Path
-from typing import Any, Dict, Union
+from typing import Any
 
 import yaml
 
 
-def load_config(path: Union[str, Path]) -> Dict[str, Any]:
+def load_config(path: str | Path) -> dict[str, Any]:
     """Load configuration from YAML, TOML, or JSON file.
 
     Args:
@@ -61,17 +62,15 @@ def load_config(path: Union[str, Path]) -> Dict[str, Any]:
                         key = key.strip()
                         value = value.strip().strip("\"'")
                         # Try to parse as number
-                        try:
+                        with contextlib.suppress(ValueError):
                             value = float(value) if "." in value else int(value)
-                        except ValueError:
-                            pass
                         config[section][key] = value
             return config
     else:
         raise ValueError(f"Unsupported config format: {suffix}")
 
 
-def save_config(config: Dict[str, Any], path: Union[str, Path]) -> None:
+def save_config(config: dict[str, Any], path: str | Path) -> None:
     """Save configuration to file.
 
     Args:
@@ -104,7 +103,7 @@ def save_config(config: Dict[str, Any], path: Union[str, Path]) -> None:
         raise ValueError(f"Unsupported config format: {suffix}")
 
 
-def merge_configs(base: Dict[str, Any], override: Dict[str, Any]) -> Dict[str, Any]:
+def merge_configs(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
     """Recursively merge two configuration dictionaries.
 
     Args:

@@ -1,6 +1,6 @@
 import pytest
 
-from qconstitution.validator import validate_node_config, ValidationError
+from qconstitution.validator import ValidationError, validate_node_config
 from qnode.config import NodeConfig
 
 

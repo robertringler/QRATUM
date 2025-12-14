@@ -1,11 +1,9 @@
 """Threshold-based alerting for scenarios."""
 from __future__ import annotations
 
-from typing import Dict, List
 
-
-def evaluate_alerts(metrics: Dict[str, int], thresholds: Dict[str, int]) -> List[str]:
-    alerts: List[str] = []
+def evaluate_alerts(metrics: dict[str, int], thresholds: dict[str, int]) -> list[str]:
+    alerts: list[str] = []
     for name, limit in thresholds.items():
         value = metrics.get(name, 0)
         if value >= limit:

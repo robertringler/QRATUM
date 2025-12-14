@@ -7,14 +7,13 @@ from __future__ import annotations
 
 import shutil
 from pathlib import Path
-from typing import List, Union
 
 import numpy as np
 
 
 def encode_video(
-    frames: List[np.ndarray],
-    output_path: Union[str, Path],
+    frames: list[np.ndarray],
+    output_path: str | Path,
     fps: int = 30,
     codec: str = "libx264",
     quality: int = 23,
@@ -56,8 +55,8 @@ def encode_video(
 
 
 def encode_gif(
-    frames: List[np.ndarray],
-    output_path: Union[str, Path],
+    frames: list[np.ndarray],
+    output_path: str | Path,
     fps: int = 10,
     loop: int = 0,
 ) -> None:
@@ -93,7 +92,7 @@ def encode_gif(
         raise ImportError("imageio required for GIF encoding")
 
 
-def save_frame(frame: np.ndarray, output_path: Union[str, Path]) -> None:
+def save_frame(frame: np.ndarray, output_path: str | Path) -> None:
     """Save single frame as PNG.
 
     Args:

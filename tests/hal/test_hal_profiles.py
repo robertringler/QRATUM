@@ -1,6 +1,6 @@
 from qsk.hal.cpu import CPU
-from qsk.hal.gpu import GPU
 from qsk.hal.fpga import FPGA
+from qsk.hal.gpu import GPU
 from qsk.hal.telemetry import collect
 
 

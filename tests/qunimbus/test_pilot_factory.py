@@ -52,7 +52,7 @@ def test_pilot_verticals_distribution():
     factory = PilotFactory()
 
     pilots = factory.generate_batch(count=100)
-    verticals = set(p.vertical for p in pilots)
+    verticals = {p.vertical for p in pilots}
 
     # Should cover all or most verticals with 100 pilots
     assert len(verticals) >= 8

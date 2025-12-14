@@ -88,7 +88,6 @@ def validate_policy(policy_path: Path) -> None:
         sys.exit(1)
 
 
-from typing import Optional
 
 from . import HCAL
 
@@ -110,7 +109,7 @@ if HAS_CLICK and click is not None:
     @cli.command()
     @click.option("--json", "output_json", is_flag=True, help="Output as JSON")
     @click.option("--policy", type=click.Path(exists=True), help="Policy file path")
-    def discover(output_json: bool, policy: Optional[str]):
+    def discover(output_json: bool, policy: str | None):
         """Discover hardware topology."""
         try:
             if policy:
@@ -145,7 +144,7 @@ if HAS_CLICK and click is not None:
     @click.option("--devices", help="Comma-separated device IDs")
     @click.option("--out", type=click.Path(), help="Output file path")
     @click.option("--policy", type=click.Path(exists=True), help="Policy file path")
-    def plan(profile: str, devices: Optional[str], out: Optional[str], policy: Optional[str]):
+    def plan(profile: str, devices: str | None, out: str | None, policy: str | None):
         """Create hardware configuration plan."""
         try:
             if policy:
@@ -179,7 +178,7 @@ if HAS_CLICK and click is not None:
     @click.argument("plan_file", type=click.Path(exists=True))
     @click.option("--dry-run", is_flag=True, help="Dry run mode")
     @click.option("--policy", type=click.Path(exists=True), help="Policy file path")
-    def apply(plan_file: str, dry_run: bool, policy: Optional[str]):
+    def apply(plan_file: str, dry_run: bool, policy: str | None):
         """Apply hardware configuration plan."""
         try:
             if policy:
@@ -233,7 +232,7 @@ def cli():
 @cli.command()
 @click.option("--json", "output_json", is_flag=True, help="Output as JSON")
 @click.option("--policy", type=click.Path(exists=True), help="Policy file path")
-def discover(output_json: bool, policy: Optional[str]):
+def discover(output_json: bool, policy: str | None):
     """Discover hardware topology."""
     try:
         if policy:
@@ -260,7 +259,7 @@ def discover(output_json: bool, policy: Optional[str]):
 @click.option("--devices", help="Comma-separated device IDs")
 @click.option("--out", type=click.Path(), help="Output file path")
 @click.option("--policy", type=click.Path(exists=True), help="Policy file path")
-def plan(profile: str, devices: Optional[str], out: Optional[str], policy: Optional[str]):
+def plan(profile: str, devices: str | None, out: str | None, policy: str | None):
     """Create hardware configuration plan."""
     try:
         if policy:
@@ -546,7 +545,7 @@ def plan_profile(profile: str, device: str, json_output: bool):
 def apply(
     profile: str,
     device: str,
-    policy: Optional[Path],
+    policy: Path | None,
     actuate: bool,
     json_output: bool,
 ):
@@ -604,7 +603,7 @@ def apply(
 )
 @click.option("--iterations", default=20, help="Maximum iterations")
 @click.option("--json-output", is_flag=True, help="Output in JSON format")
-def calibrate(device: str, policy: Optional[Path], iterations: int, json_output: bool):
+def calibrate(device: str, policy: Path | None, iterations: int, json_output: bool):
     """Run closed-loop calibration."""
     hcal = HCAL(policy_path=policy, dry_run=True)
 
@@ -640,7 +639,7 @@ def calibrate(device: str, policy: Optional[Path], iterations: int, json_output:
     help="Policy file path",
 )
 @click.option("--json-output", is_flag=True, help="Output in JSON format")
-def telemetry(device: Optional[str], policy: Optional[Path], json_output: bool):
+def telemetry(device: str | None, policy: Path | None, json_output: bool):
     """Read real-time telemetry data."""
     hcal = HCAL(policy_path=policy, dry_run=True)
 

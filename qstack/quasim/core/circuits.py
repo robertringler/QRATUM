@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Callable, List
+from typing import Callable
 
 
 @dataclass
@@ -16,7 +16,7 @@ class QuantumGate:
 
 @dataclass
 class QuantumCircuit:
-    gates: List[QuantumGate] = field(default_factory=list)
+    gates: list[QuantumGate] = field(default_factory=list)
 
     def add_gate(self, gate: QuantumGate) -> None:
         self.gates.append(gate)

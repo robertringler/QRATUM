@@ -1,4 +1,3 @@
-import pytest
 
 from qdl.lexer import Lexer
 from qdl.parser import Parser

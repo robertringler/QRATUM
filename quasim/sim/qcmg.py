@@ -167,10 +167,7 @@ class QuantacosmorphysigeneticField:
         norm_m = np.sqrt(np.sum(np.abs(self.phi_m) ** 2) * self.dx)
         norm_i = np.sqrt(np.sum(np.abs(self.phi_i) ** 2) * self.dx)
 
-        if norm_m * norm_i > 0:
-            coherence = overlap / (norm_m * norm_i)
-        else:
-            coherence = 0.0
+        coherence = overlap / (norm_m * norm_i) if norm_m * norm_i > 0 else 0.0
 
         return float(np.clip(coherence, 0.0, 1.0))
 

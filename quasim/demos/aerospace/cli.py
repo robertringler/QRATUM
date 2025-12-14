@@ -71,7 +71,7 @@ def cmd_replay(args):
     # Run with capture if requested
     capture = RunCapture() if args.capture else None
 
-    results = simulate_ascent(
+    simulate_ascent(
         scenario=scenario,
         steps=100,
         seed=args.seed,
@@ -121,7 +121,7 @@ def cmd_simulate(args):
         output_dir = Path("artifacts/aerospace") / f"sim_{args.seed}"
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        artifacts = capture.finalize(
+        capture.finalize(
             mp4_path=output_dir / "simulation.mp4",
             fps=30,
         )

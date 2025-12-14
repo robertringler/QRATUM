@@ -18,7 +18,6 @@ import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
 
 import numpy as np
 
@@ -233,7 +232,7 @@ class OrbitalMCBenchmark:
         )
 
 
-def write_csv_report(results: List[BenchmarkResult], output_path: Path):
+def write_csv_report(results: list[BenchmarkResult], output_path: Path):
     """Write benchmark results to CSV.
 
     Args:
@@ -283,7 +282,7 @@ def write_csv_report(results: List[BenchmarkResult], output_path: Path):
     logger.info(f"CSV report written to {output_path}")
 
 
-def write_markdown_report(results: List[BenchmarkResult], output_path: Path):
+def write_markdown_report(results: list[BenchmarkResult], output_path: Path):
     """Write benchmark results to Markdown.
 
     Args:
@@ -368,7 +367,7 @@ def main() -> int:
     logger.info("=" * 70)
 
     # Run benchmarks
-    results: List[BenchmarkResult] = []
+    results: list[BenchmarkResult] = []
 
     try:
         # CFD benchmarks

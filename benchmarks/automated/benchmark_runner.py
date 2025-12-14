@@ -263,7 +263,7 @@ class BenchmarkRunner:
                 # Simulate distributed matrix multiplication
                 a = np.random.randn(size, size)
                 b = np.random.randn(size, size)
-                c = np.dot(a, b)
+                np.dot(a, b)
 
                 end_time = time.perf_counter()
                 duration_ms = (end_time - start_time) * 1000
@@ -379,7 +379,7 @@ def main():
     args = parser.parse_args()
 
     runner = BenchmarkRunner(backend=args.backend, output_dir=args.output_dir)
-    results = runner.run_all()
+    runner.run_all()
 
     # Print summary
     print("\n" + "=" * 60)

@@ -106,7 +106,7 @@ def optimize_a(
     """
     Finite-difference control over the geometric scale schedule a(t).
     """
-    rng = np.random.default_rng(seed)
+    np.random.default_rng(seed)
     a = np.ones(N, dtype=float)
     hist = []
 

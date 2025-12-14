@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Iterable, List
+from typing import Iterable
 
 TOKEN_SPEC = [
     ("NUMBER", r"\d+(?:\.\d+)?"),
@@ -46,8 +46,8 @@ class Lexer:
     def __init__(self, source: str):
         self.source = source
 
-    def tokenize(self) -> List[Token]:
-        tokens: List[Token] = []
+    def tokenize(self) -> list[Token]:
+        tokens: list[Token] = []
         for match in tok_regex.finditer(self.source):
             kind = match.lastgroup
             value = match.group()

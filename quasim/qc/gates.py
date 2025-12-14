@@ -112,7 +112,4 @@ class GateSet:
             return True
         if gate_type in two_qubit_gates and num_qubits == 2:
             return True
-        if gate_type in three_qubit_gates and num_qubits == 3:
-            return True
-
-        return False
+        return bool(gate_type in three_qubit_gates and num_qubits == 3)

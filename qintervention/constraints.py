@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Callable, List
+from typing import Callable
 
 from qintervention.actions import ScheduledAction
 
@@ -18,7 +18,7 @@ class Constraint:
 
 @dataclass
 class ConstraintSet:
-    constraints: List[Constraint] = field(default_factory=list)
+    constraints: list[Constraint] = field(default_factory=list)
 
     def add(self, constraint: Constraint) -> None:
         self.constraints.append(constraint)

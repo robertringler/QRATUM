@@ -3,10 +3,10 @@ from __future__ import annotations
 
 from qnode.config import NodeConfig
 from qnode.identity_binding import NodeIdentity
-from qnode.policies import budget_policy, syscall_allowlist_policy
-from qnode.monitor import HealthMonitor
 from qnode.incident_log import IncidentLog
 from qnode.lifecycle import NodeLifecycle
+from qnode.monitor import HealthMonitor
+from qnode.policies import budget_policy, syscall_allowlist_policy
 from qnode.syscalls import SyscallRouter
 
 

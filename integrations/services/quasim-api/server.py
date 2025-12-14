@@ -15,7 +15,7 @@ import logging
 import uuid
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 try:
     from fastapi import FastAPI, Header, HTTPException, status
@@ -65,9 +65,9 @@ if FASTAPI_AVAILABLE:
         """Request to submit a new job."""
 
         job_type: JobType = Field(..., description="Type of simulation")
-        config: Dict[str, Any] = Field(..., description="Job configuration")
+        config: dict[str, Any] = Field(..., description="Job configuration")
         priority: int = Field(default=5, ge=1, le=10, description="Job priority (1-10)")
-        timeout_seconds: Optional[int] = Field(default=3600, description="Job timeout")
+        timeout_seconds: int | None = Field(default=3600, description="Job timeout")
 
     class JobSubmitResponse(BaseModel):
         """Response after job submission."""
@@ -83,10 +83,10 @@ if FASTAPI_AVAILABLE:
         status: JobStatus
         job_type: JobType
         submitted_at: str
-        started_at: Optional[str] = None
-        completed_at: Optional[str] = None
+        started_at: str | None = None
+        completed_at: str | None = None
         progress: float = Field(default=0.0, ge=0.0, le=1.0)
-        message: Optional[str] = None
+        message: str | None = None
 
     class JobCancelResponse(BaseModel):
         """Response to job cancellation."""
@@ -121,18 +121,18 @@ if FASTAPI_AVAILABLE:
         """Request to validate job configuration."""
 
         job_type: JobType
-        config: Dict[str, Any]
+        config: dict[str, Any]
 
     class ValidationResponse(BaseModel):
         """Validation result."""
 
         valid: bool
-        errors: List[str] = Field(default_factory=list)
-        warnings: List[str] = Field(default_factory=list)
+        errors: list[str] = Field(default_factory=list)
+        warnings: list[str] = Field(default_factory=list)
 
 
 # In-memory job store (in production, use Redis or database)
-job_store: Dict[str, Dict[str, Any]] = {}
+job_store: dict[str, dict[str, Any]] = {}
 
 
 def create_app() -> Any:
@@ -180,7 +180,7 @@ def create_app() -> Any:
 
     # Job management endpoints
     @app.post("/jobs/submit", response_model=JobSubmitResponse, tags=["Jobs"])
-    def submit_job(request: JobSubmitRequest, x_api_key: Optional[str] = Header(None)):
+    def submit_job(request: JobSubmitRequest, x_api_key: str | None = Header(None)):
         """Submit a new simulation job.
 
         Args:
@@ -298,7 +298,7 @@ def create_app() -> Any:
             Current system metrics
         """
         # In production, compute from actual job queue and history
-        total_jobs = len(job_store)
+        len(job_store)
         queued = sum(1 for j in job_store.values() if j["status"] == JobStatus.QUEUED)
         running = sum(1 for j in job_store.values() if j["status"] == JobStatus.RUNNING)
         completed = sum(1 for j in job_store.values() if j["status"] == JobStatus.COMPLETED)

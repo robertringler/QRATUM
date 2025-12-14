@@ -1,7 +1,7 @@
 """Whitelist/blacklist filters for feed sandboxing."""
 from __future__ import annotations
 
-from typing import Dict, Iterable
+from typing import Iterable
 
 
 class FilterSet:
@@ -9,10 +9,8 @@ class FilterSet:
         self.whitelist = set(whitelist or [])
         self.blacklist = set(blacklist or [])
 
-    def allow(self, payload: Dict[str, object]) -> bool:
+    def allow(self, payload: dict[str, object]) -> bool:
         keys = set(payload.keys())
         if self.whitelist and not keys.issuperset(self.whitelist):
             return False
-        if self.blacklist.intersection(keys):
-            return False
-        return True
+        return not self.blacklist.intersection(keys)

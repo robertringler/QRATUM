@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Tuple
 
 
 @dataclass
@@ -16,14 +15,14 @@ class Packet:
 class NetworkLink:
     def __init__(self, latency: int = 1) -> None:
         self.latency = latency
-        self.queue: List[Tuple[int, Packet]] = []
+        self.queue: list[tuple[int, Packet]] = []
 
     def send(self, packet: Packet) -> None:
         self.queue.append((self.latency, packet))
 
-    def tick(self) -> List[Packet]:
-        delivered: List[Packet] = []
-        next_queue: List[Tuple[int, Packet]] = []
+    def tick(self) -> list[Packet]:
+        delivered: list[Packet] = []
+        next_queue: list[tuple[int, Packet]] = []
         for remaining, packet in self.queue:
             remaining -= 1
             packet.hop += 1
@@ -38,7 +37,7 @@ class NetworkLink:
         return len(self.queue)
 
 
-def route(network: Dict[Tuple[str, str], NetworkLink], packet: Packet) -> List[Packet]:
+def route(network: dict[tuple[str, str], NetworkLink], packet: Packet) -> list[Packet]:
     key = (packet.source, packet.destination)
     if key not in network:
         raise KeyError("route not found")

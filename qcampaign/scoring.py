@@ -2,20 +2,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List
 
-from qagents.rewards import aggregate_rewards
 from qcampaign.teams import Team
 
 
 @dataclass
 class CampaignScorecard:
-    team_scores: Dict[str, float]
-    logs: List[Dict[str, object]]
+    team_scores: dict[str, float]
+    logs: list[dict[str, object]]
 
 
 class CampaignScorer:
-    def score(self, teams: List[Team], logs: List[Dict[str, object]]) -> CampaignScorecard:
+    def score(self, teams: list[Team], logs: list[dict[str, object]]) -> CampaignScorecard:
         team_rewards = {team.name: 0.0 for team in teams}
         for team in teams:
             team_rewards[team.name] = sum(agent.state.add_reward(0.0) for agent in team.agents)

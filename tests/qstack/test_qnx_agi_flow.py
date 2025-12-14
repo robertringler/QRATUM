@@ -1,12 +1,20 @@
-from qstack.qnx import DeterministicScheduler, OperatorLibrary, QNXState, SafetyConstraints, SafetyEnvelope, SafetyValidator, QNXVM
-from qstack.qnx_agi.perception.encoders.finance import FinanceEncoder
-from qstack.qnx_agi.worldmodel.base import WorldModel
+from qstack.qnx import (
+    QNXVM,
+    DeterministicScheduler,
+    OperatorLibrary,
+    QNXState,
+    SafetyConstraints,
+    SafetyEnvelope,
+    SafetyValidator,
+)
 from qstack.qnx_agi.memory.working import WorkingMemory
-from qstack.qnx_agi.planning.planners.greedy import GreedyPlanner
-from qstack.qnx_agi.planning.base import PlanningSystem
 from qstack.qnx_agi.orchestrator.base import Orchestrator
-from qstack.quasim.integration.qnx_adapter import build_qnx_operator_library
+from qstack.qnx_agi.perception.encoders.finance import FinanceEncoder
+from qstack.qnx_agi.planning.base import PlanningSystem
+from qstack.qnx_agi.planning.planners.greedy import GreedyPlanner
+from qstack.qnx_agi.worldmodel.base import WorldModel
 from qstack.quasim.core.engine import SimulationEngine
+from qstack.quasim.integration.qnx_adapter import build_qnx_operator_library
 
 
 def test_agi_cycle_and_qnx_execution():

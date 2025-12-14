@@ -40,7 +40,7 @@ def compute_emission_intensity(
     """
     intensity = np.zeros(len(time_points))
 
-    for i, t in enumerate(time_points):
+    for i, _t in enumerate(time_points):
         # Compute expectation value of dipole operator
         dipole_expectation = state.conj() @ dipole_operator @ state
 
@@ -162,7 +162,7 @@ def multi_state_superposition_intensity(
         >>> t = np.linspace(0, 10, 100)
         >>> I = multi_state_superposition_intensity(c, E, d, t)
     """
-    n_states = len(amplitudes)
+    len(amplitudes)
     intensity = np.zeros(len(time_points))
 
     for t_idx, t in enumerate(time_points):

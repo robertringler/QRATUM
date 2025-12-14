@@ -4,9 +4,9 @@ from typing import Dict
 
 from ..logging import get_logger
 from ..types import SimulationBackend
-from .qvr_win import QVRWinBackend
 from .quasim_legacy_v120 import QuasimLegacyV120Backend
 from .quasim_modern import QuasimModernBackend
+from .qvr_win import QVRWinBackend
 
 logger = get_logger(__name__)
 
@@ -19,10 +19,10 @@ def _safe_init(backend_cls: type[SimulationBackend]) -> SimulationBackend | None
         return None
 
 
-def get_backend_registry() -> Dict[str, SimulationBackend]:
+def get_backend_registry() -> dict[str, SimulationBackend]:
     """Initialise all available backends and return them keyed by name."""
 
-    registry: Dict[str, SimulationBackend] = {}
+    registry: dict[str, SimulationBackend] = {}
     for backend_cls in (QuasimModernBackend, QuasimLegacyV120Backend, QVRWinBackend):
         backend = _safe_init(backend_cls)
         if backend is not None:

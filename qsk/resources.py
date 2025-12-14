@@ -2,14 +2,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict
 
 
 @dataclass
 class ResourceBudget:
     cpu: int
     memory: int
-    usage: Dict[str, int] = field(default_factory=lambda: {"cpu": 0, "memory": 0})
+    usage: dict[str, int] = field(default_factory=lambda: {"cpu": 0, "memory": 0})
 
     def consume(self, cpu: int = 0, memory: int = 0) -> bool:
         next_cpu = self.usage["cpu"] + cpu
@@ -24,5 +23,5 @@ class ResourceBudget:
         self.usage["cpu"] = max(0, self.usage["cpu"] - cpu)
         self.usage["memory"] = max(0, self.usage["memory"] - memory)
 
-    def snapshot(self) -> Dict[str, int]:
+    def snapshot(self) -> dict[str, int]:
         return dict(self.usage)

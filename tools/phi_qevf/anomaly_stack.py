@@ -8,7 +8,7 @@ from sklearn.ensemble import IsolationForest
 def detect(series, z_thresh=3.5, contamination=0.01):
     x = np.array(series).reshape(-1, 1)
     # Inject known anomalies for metric eval
-    clean_x = x.copy()
+    x.copy()
     anomaly_indices = [123, 4567]  # Known injections
     x[anomaly_indices] = [8, -7] if len(x) > 4567 else x[anomaly_indices] + 10
     true_anoms = np.zeros(len(x), dtype=bool)

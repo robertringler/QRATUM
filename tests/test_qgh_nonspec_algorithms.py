@@ -160,7 +160,7 @@ class TestDistributedStreamMonitor:
         rng = np.random.default_rng(42)
 
         # Create correlated streams
-        for i in range(50):
+        for _i in range(50):
             base = rng.normal(0, 1)
             monitor.add_sample(0, base + rng.normal(0, 0.1))
             monitor.add_sample(1, base + rng.normal(0, 0.1))

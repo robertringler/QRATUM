@@ -2,24 +2,24 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict
+from typing import Any
 
 from .state import QNXState
 
 
-def _copy_state(state: QNXState) -> Dict[str, Any]:
+def _copy_state(state: QNXState) -> dict[str, Any]:
     return dict(state.data)
 
 
 @dataclass(frozen=True)
 class Checkpoint:
     tick: int
-    snapshot: Dict[str, Any]
+    snapshot: dict[str, Any]
 
 
 class CheckpointManager:
     def __init__(self):
-        self._checkpoints: Dict[int, Checkpoint] = {}
+        self._checkpoints: dict[int, Checkpoint] = {}
 
     def create(self, tick: int, state: QNXState) -> Checkpoint:
         cp = Checkpoint(tick=tick, snapshot=_copy_state(state))
@@ -32,5 +32,5 @@ class CheckpointManager:
         snapshot = self._checkpoints[tick].snapshot
         return QNXState(dict(snapshot))
 
-    def available(self) -> Dict[int, Checkpoint]:
+    def available(self) -> dict[int, Checkpoint]:
         return dict(self._checkpoints)

@@ -1,7 +1,6 @@
 from qnode.config import NodeConfig
 from qnode.orchestration import NodeOrchestrator
 from qnode.policies import NodePolicy
-from qnode.syscalls import SyscallRouter
 from qscenario.domains.aerospace import aerospace_launch_anomaly
 
 
