@@ -179,8 +179,6 @@ def execute_static_load_phase(
     simulator: Any, compound: Any, geometry: Any, environment: Any
 ) -> dict[str, Any]:
     """Execute static load simulation phase."""
-    import numpy as np
-
     # Static load analysis
     loads = [300.0, 450.0, 600.0, 750.0]  # kg
     pressures = [200.0, 240.0, 280.0]  # kPa
@@ -246,8 +244,6 @@ def execute_dynamic_rolling_phase(
     simulator: Any, compound: Any, geometry: Any, environment: Any
 ) -> dict[str, Any]:
     """Execute dynamic rolling simulation phase."""
-    import numpy as np
-
     # Dynamic rolling analysis
     speeds = [30.0, 60.0, 90.0, 120.0, 150.0, 180.0]  # km/h
     load = 450.0  # kg (nominal)
@@ -303,7 +299,12 @@ def execute_dynamic_rolling_phase(
         )
 
         # Hysteresis energy calculation
-        frequency_hz = speed / (3.6 * np.pi * geometry.outer_diameter / 1000)
+        # Circumference in meters: π × diameter (mm) / 1000
+        circumference_m = np.pi * geometry.outer_diameter / 1000
+        # Speed in m/s: speed_kmh / 3.6
+        speed_ms = speed / 3.6
+        # Rotation frequency: speed / circumference
+        frequency_hz = speed_ms / circumference_m
         hysteresis_loss = compound.base_properties.compute_hysteresis_loss(
             frequency_hz, result.thermal_map.get("tread_center", 25)
         )
@@ -348,8 +349,6 @@ def execute_thermal_ramp_phase(
     simulator: Any, compound: Any, geometry: Any
 ) -> dict[str, Any]:
     """Execute thermal ramp simulation phase."""
-    import numpy as np
-
     from quasim.domains.tire import EnvironmentalConditions, RoadSurface, WeatherCondition
 
     # Thermal ramp from -40°C to +80°C
@@ -440,8 +439,6 @@ def execute_fatigue_projection_phase(
     simulator: Any, compound: Any, geometry: Any, environment: Any
 ) -> dict[str, Any]:
     """Execute long-horizon fatigue projection phase."""
-    import numpy as np
-
     # Fatigue projection for multiple mileage scenarios
     mileages_km = [10000, 25000, 50000, 75000, 100000]
     avg_speed = 80.0  # km/h average
@@ -456,7 +453,10 @@ def execute_fatigue_projection_phase(
 
     for mileage in mileages_km:
         # Estimate stress cycles
-        revolutions = mileage * 1000 / (np.pi * geometry.outer_diameter / 1000)
+        # Circumference in m: π × diameter (mm) / 1000
+        circumference_m = np.pi * geometry.outer_diameter / 1000
+        # Revolutions = distance (m) / circumference (m)
+        revolutions = (mileage * 1000) / circumference_m
         stress_cycles = int(revolutions * 4)  # ~4 stress cycles per revolution
 
         result = simulator.simulate(
@@ -519,10 +519,13 @@ def execute_fatigue_projection_phase(
         )
 
     # Calculate predicted lifetime
-    wear_rate = metrics.wear_rate
-    initial_tread = geometry.tread_design.groove_depth
-    legal_minimum = 1.6  # mm
-    predicted_lifetime_km = ((initial_tread - legal_minimum) / wear_rate) * 1000
+    # wear_rate is in mm/1000km, so we need to multiply by 1000 to get km
+    wear_rate = metrics.wear_rate  # mm per 1000km
+    initial_tread = geometry.tread_design.groove_depth  # mm
+    legal_minimum = 1.6  # mm (legal minimum tread depth)
+    tread_available_mm = initial_tread - legal_minimum
+    # lifetime = (available_tread / wear_rate_per_1000km) * 1000
+    predicted_lifetime_km = (tread_available_mm / wear_rate) * 1000
 
     results["summary"] = {
         "predicted_lifetime_km": round(predicted_lifetime_km, 0),
@@ -975,8 +978,12 @@ def main() -> None:
     )
 
     # Compute derived geometry properties
+    # Sidewall height = section width × aspect ratio / 100 (e.g., 225 × 50% = 112.5 mm)
     sidewall_height = geometry.width * geometry.aspect_ratio / 100.0
+    # Rim radius = rim diameter in inches × 25.4 mm/inch / 2
     rim_radius_mm = geometry.diameter * 25.4 / 2.0
+    # Outer radius = rim radius + sidewall height (both are radial distances)
+    # Outer diameter = 2 × outer radius
     outer_diameter = (rim_radius_mm + sidewall_height) * 2.0
 
     # Add derived properties to geometry object for use in simulation
