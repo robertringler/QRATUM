@@ -1,4 +1,4 @@
-"""Command-line interface for XENON PHASE 1 simulation and visualization."""
+"""Command-line interface for XENON simulation and visualization."""
 
 from __future__ import annotations
 

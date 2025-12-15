@@ -1,6 +1,6 @@
-"""Demonstration of XENON PHASE 1 streaming visualization.
+"""Demonstration of XENON streaming visualization.
 
-This script demonstrates how to integrate XENON PHASE 1 simulations with the
+This script demonstrates how to integrate XENON simulations with the
 streaming visualization pipeline for real-time bio-mechanism visualization.
 """
 

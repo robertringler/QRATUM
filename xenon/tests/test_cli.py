@@ -1,4 +1,4 @@
-"""Tests for XENON PHASE 1 CLI."""
+"""Tests for XENON CLI."""
 
 import json
 import os

@@ -1,6 +1,6 @@
-# XENON PHASE 1: Bio-Mechanism Simulation and Visualization
+# XENON: Bio-Mechanism Simulation and Visualization
 
-XENON PHASE 1 is a bio-mechanism simulation system integrated with the Qubic visualization pipeline. It models biochemical reaction networks using stochastic simulation algorithms (SSA) and provides adapters for real-time visualization.
+XENON is a bio-mechanism simulation system integrated with the Qubic visualization pipeline. It models biochemical reaction networks using stochastic simulation algorithms (SSA) and provides adapters for real-time visualization.
 
 ## Overview
 

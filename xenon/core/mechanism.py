@@ -1,4 +1,4 @@
-"""Core XENON PHASE 1 simulation data structures for bio-mechanisms."""
+"""Core XENON simulation data structures for bio-mechanisms."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Tests for XENON PHASE 1 visualization adapters."""
+"""Tests for XENON visualization adapters."""
 
 import numpy as np
 import pytest

@@ -1,4 +1,4 @@
-"""XENON PHASE 1 simulation adapter for visualization pipeline integration."""
+"""XENON simulation adapter for visualization pipeline integration."""
 
 from __future__ import annotations
 
@@ -13,14 +13,14 @@ from xenon.core.mechanism import BioMechanism, MolecularState, Transition
 
 
 class XenonSimulationAdapter(SimulationAdapter):
-    """Adapter for XENON PHASE 1 bio-mechanism simulations.
+    """Adapter for XENON bio-mechanism simulations.
 
-    Integrates XENON PHASE 1 simulation outputs into the Qubic visualization pipeline,
+    Integrates XENON simulation outputs into the Qubic visualization pipeline,
     supporting BioMechanism, MolecularState, and Transition data types.
     """
 
     def __init__(self, layout: str = "spring", scale: float = 10.0):
-        """Initialize XENON PHASE 1 adapter.
+        """Initialize XENON adapter.
 
         Args:
             layout: Network layout algorithm ('spring', 'circular', 'hierarchical')

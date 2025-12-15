@@ -1,4 +1,4 @@
-"""Core XENON PHASE 1 data structures."""
+"""Core XENON data structures."""
 
 from xenon.core.mechanism import BioMechanism, MolecularState, Transition
 

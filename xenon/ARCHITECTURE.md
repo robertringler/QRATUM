@@ -1,8 +1,8 @@
-# XENON PHASE 1 Architecture
+# XENON Architecture
 
 ## Overview
 
-XENON PHASE 1 (eXtensible bio-mEchanism simulatioN and visualizatiOn) is a modular system for simulating and visualizing biochemical reaction networks. It integrates with the Qubic visualization pipeline to provide real-time visualization of stochastic simulation algorithms (SSA).
+XENON (eXtensible bio-mEchanism simulatioN and visualizatiOn) is a modular system for simulating and visualizing biochemical reaction networks. It integrates with the Qubic visualization pipeline to provide real-time visualization of stochastic simulation algorithms (SSA).
 
 ## Architecture Diagram
 
