@@ -2,6 +2,9 @@
 
 Provides tools for:
 - Sequence analysis (FASTA, protein sequences)
+- Quantum-enhanced alignment with adaptive circuit depth
+- Multi-omics information fusion with PID
+- Transfer entropy for time-series omics
 - Literature mining (PubMed integration)
 - Ontology integration (GO, ChEBI, UniProt)
 - Structure analysis (PDB parsing)
@@ -9,6 +12,21 @@ Provides tools for:
 """
 
 from xenon.bioinformatics.sequence_analyzer import SequenceAnalyzer, ProteinSequence
+from xenon.bioinformatics.quantum_alignment import (
+    QuantumAlignmentEngine,
+    AlignmentConfig,
+    AlignmentResult,
+)
+from xenon.bioinformatics.information_fusion import (
+    InformationFusionEngine,
+    ConservationConstraints,
+    PIDResult,
+)
+from xenon.bioinformatics.transfer_entropy import (
+    TransferEntropyEngine,
+    TransferEntropyConfig,
+    TransferEntropyResult,
+)
 from xenon.bioinformatics.literature_miner import LiteratureMiner, Publication
 from xenon.bioinformatics.ontology_integrator import OntologyIntegrator, GOTerm, ProteinAnnotation
 from xenon.bioinformatics.structure_analyzer import StructureAnalyzer, ProteinStructure
@@ -19,6 +37,15 @@ from xenon.bioinformatics.multiomics_integrator import MultiOmicsIntegrator, Omi
 __all__ = [
     "SequenceAnalyzer",
     "ProteinSequence",
+    "QuantumAlignmentEngine",
+    "AlignmentConfig",
+    "AlignmentResult",
+    "InformationFusionEngine",
+    "ConservationConstraints",
+    "PIDResult",
+    "TransferEntropyEngine",
+    "TransferEntropyConfig",
+    "TransferEntropyResult",
     "LiteratureMiner",
     "Publication",
     "OntologyIntegrator",
