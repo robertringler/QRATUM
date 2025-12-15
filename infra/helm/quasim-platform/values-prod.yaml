@@ -1,0 +1,59 @@
+global:
+  environment: production
+  region: us-west-2
+  clusterName: quasim-prod
+
+api:
+  enabled: true
+  replicaCount: 3
+  image:
+    repository: ghcr.io/robertringler/quasim-api
+    tag: "v1.0.0"
+    pullPolicy: IfNotPresent
+  service:
+    targetPort: 8080
+  autoscaling:
+    enabled: false
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "2000m"
+      memory: "4Gi"
+
+qc:
+  enabled: true
+  replicaCount: 4
+  image:
+    repository: ghcr.io/robertringler/quasim-qc-worker
+    tag: "v1.0.0"
+    pullPolicy: IfNotPresent
+  gpu:
+    enabled: true
+    type: "nvidia"
+  nodeSelector:
+    accelerator: nvidia
+  tolerations:
+    - key: "accelerator"
+      operator: "Equal"
+      value: "nvidia"
+      effect: "NoSchedule"
+  resources:
+    requests:
+      cpu: "1000m"
+      memory: "4Gi"
+      nvidia.com/gpu: "1"
+    limits:
+      cpu: "4000m"
+      memory: "16Gi"
+      nvidia.com/gpu: "1"
+
+imagePullSecrets:
+  - name: reg-credentials
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
