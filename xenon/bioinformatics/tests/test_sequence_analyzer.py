@@ -1,7 +1,6 @@
 """Tests for sequence analyzer."""
 
 import pytest
-import numpy as np
 
 from xenon.bioinformatics.sequence_analyzer import (
     ProteinSequence,

@@ -8,7 +8,6 @@ Combines multiple sources of prior information:
 
 from __future__ import annotations
 
-from typing import Dict, Optional
 
 import numpy as np
 

@@ -3,14 +3,14 @@
 from __future__ import annotations
 
 import random
-from typing import List, Optional, Set, Tuple
+from typing import Optional
 
 try:
     import networkx as nx
 except ImportError:
     nx = None
 
-from .mechanism import BioMechanism, MolecularState, Transition
+from .mechanism import BioMechanism, Transition
 
 
 class MechanismGraph:

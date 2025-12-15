@@ -11,11 +11,11 @@ The Journal of Physical Chemistry, 81(25), 2340-2361.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
-from ..core.mechanism import BioMechanism, Transition
+from ..core.mechanism import BioMechanism
 
 
 @dataclass

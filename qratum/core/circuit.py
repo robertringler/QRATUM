@@ -5,7 +5,7 @@ with support for all standard gates and custom operations.
 """
 
 import numpy as np
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple
 from qratum.core import gates
 
 

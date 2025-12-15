@@ -14,9 +14,7 @@ import pytest
 
 from xenon.bioinformatics.information_fusion import (
     ConservationConstraints,
-    InformationComponent,
     InformationFusionEngine,
-    PIDResult,
 )
 
 
