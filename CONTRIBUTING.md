@@ -121,6 +121,7 @@ Use conventional commit format:
 ```
 
 Types:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -130,6 +131,7 @@ Types:
 - `chore`: Build process or auxiliary tool changes
 
 Example:
+
 ```
 feat(adapters): add Fluent CFD adapter with HDF5 support
 
@@ -153,11 +155,13 @@ Closes #123
 ### PR Title Format
 
 Use conventional commit format for PR titles:
+
 ```
 <type>(<scope>): <description>
 ```
 
 Example:
+
 ```
 feat(integrations): initial QuASIM adapters, API, and bench harness
 ```
@@ -194,6 +198,7 @@ feat(integrations): initial QuASIM adapters, API, and bench harness
 ## Questions?
 
 If you have questions or need help, please:
+
 1. Check existing documentation
 2. Search closed issues
 3. Open a new issue with the `question` label

@@ -5,6 +5,7 @@ Deterministic verification tool that validates technical, compliance, and econom
 ## Overview
 
 This tool:
+
 - **Extracts and normalizes claims** (technical, compliance, economic) from your brief and repo
 - **Runs deterministic checks** (benchmarks, RMSE, compression ratio, RL convergence, Φ_QEVF math, Monte Carlo valuation)
 - **Verifies evidence presence** (DER/PSAC placeholders, CMMC mappings, SOC2/ISO cert IDs)
@@ -53,6 +54,7 @@ python -m quasim_verify.cli --config my-verify.yaml --verbose
 ### 3. Check Results
 
 The tool generates three output files:
+
 - **JSON Report**: `artifacts/verify/report.json` - Complete verification results
 - **SARIF Report**: `artifacts/verify/report.sarif` - Static analysis format for CI tools
 - **Audit Chain**: `artifacts/verify/audit.sha256chain` - SHA256 hash chain for evidence files
@@ -145,6 +147,7 @@ outputs:
 ### Telemetry CSV
 
 Expected columns:
+
 - `time_s`: Time in seconds
 - `altitude_km`: Predicted altitude
 - `altitude_km_ref`: Reference altitude
@@ -152,23 +155,27 @@ Expected columns:
 ### Benchmark NPZ
 
 Required fields:
+
 - `speedup`: Computed speedup ratio, OR
 - `baseline_time` and `quasim_time`: Timing data for speedup calculation
 
 ### RL Convergence JSON
 
 Required field:
+
 - `final_convergence`: Float value of final convergence metric
 
 ### Compression NPZ
 
 Required fields:
+
 - `raw_flops`: Raw FLOP count
 - `compressed_flops`: Compressed FLOP count
 
 ### Φ_QEVF Inputs YAML
 
 Required fields:
+
 ```yaml
 base_value_per_eph: 0.0004
 eta_ent: 0.93
@@ -181,6 +188,7 @@ market_multiplier: 1.0
 ### Monte Carlo Parameters YAML
 
 Required structure:
+
 ```yaml
 trials: 5000
 seed: 42
@@ -196,6 +204,7 @@ scenarios:
 ### CMMC Mapping YAML
 
 Required structure:
+
 ```yaml
 practices:
   - id: AC.L2-3.1.1
@@ -209,6 +218,7 @@ practices:
 ### JSON Report
 
 The JSON report contains:
+
 ```json
 {
   "version": "0.1.0",
@@ -362,6 +372,7 @@ pip install numpy pandas scipy pydantic pyyaml tabulate jsonschema
 ### File Not Found Errors
 
 Check that:
+
 1. All paths in `verify.config.yaml` are correct
 2. Paths are relative to repository root or absolute
 3. Required data files exist
@@ -387,6 +398,7 @@ Apache 2.0 - See repository LICENSE file.
 ## Support
 
 For issues or questions:
+
 1. Check this README
 2. Review example configurations in `examples/`
 3. Open an issue on GitHub

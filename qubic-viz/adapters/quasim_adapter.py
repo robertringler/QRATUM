@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 import numpy as np
 
@@ -15,7 +15,7 @@ class QuASIMDataAdapter:
     """
 
     @staticmethod
-    def extract_quantum_state(simulation_result: Any) -> Dict[str, np.ndarray]:
+    def extract_quantum_state(simulation_result: Any) -> dict[str, np.ndarray]:
         """Extract quantum state data.
 
         Args:
@@ -37,7 +37,7 @@ class QuASIMDataAdapter:
         return {"amplitudes": None, "phases": None, "probabilities": None}
 
     @staticmethod
-    def extract_optimization_data(simulation_result: Any) -> Dict[str, Any]:
+    def extract_optimization_data(simulation_result: Any) -> dict[str, Any]:
         """Extract optimization trajectory data.
 
         Args:
@@ -61,9 +61,7 @@ class QuASIMDataAdapter:
         return data
 
     @staticmethod
-    def convert_to_visualization_format(
-        data: Any, data_type: str = "tire"
-    ) -> Dict[str, Any]:
+    def convert_to_visualization_format(data: Any, data_type: str = "tire") -> dict[str, Any]:
         """Convert QuASIM data to visualization format.
 
         Args:
@@ -83,7 +81,7 @@ class QuASIMDataAdapter:
             raise ValueError(f"Unknown data type: {data_type}")
 
     @staticmethod
-    def _convert_tire_data(data: Any) -> Dict[str, Any]:
+    def _convert_tire_data(data: Any) -> dict[str, Any]:
         """Convert tire simulation data.
 
         Args:
@@ -97,7 +95,7 @@ class QuASIMDataAdapter:
         return TireDataAdapter.extract_visualization_data(data)
 
     @staticmethod
-    def _convert_quantum_data(data: Any) -> Dict[str, Any]:
+    def _convert_quantum_data(data: Any) -> dict[str, Any]:
         """Convert quantum simulation data.
 
         Args:
@@ -112,7 +110,7 @@ class QuASIMDataAdapter:
         }
 
     @staticmethod
-    def _convert_optimization_data(data: Any) -> Dict[str, Any]:
+    def _convert_optimization_data(data: Any) -> dict[str, Any]:
         """Convert optimization data.
 
         Args:
@@ -126,7 +124,7 @@ class QuASIMDataAdapter:
     @staticmethod
     def create_animation_frames(
         simulation_sequence: list[Any], frame_skip: int = 1
-    ) -> list[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Create animation frames from simulation sequence.
 
         Args:

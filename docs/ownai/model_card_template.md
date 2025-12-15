@@ -13,15 +13,18 @@
 ## Intended Use
 
 This model is designed for deterministic, auditable AI tasks including:
+
 - [Task 1]
 - [Task 2]
 - [Task 3]
 
 ### Primary Intended Uses
+
 - [Use case 1]
 - [Use case 2]
 
 ### Out-of-Scope Uses
+
 - Real-time streaming applications
 - Safety-critical systems without human oversight
 - Applications requiring sub-millisecond latency
@@ -122,6 +125,7 @@ The model combines:
 ### Transparency
 
 This model is designed for transparent, auditable AI applications:
+
 - All predictions are hashable and traceable
 - QGH ledger maintains complete run history
 - TERC observables provide ongoing monitoring
@@ -129,6 +133,7 @@ This model is designed for transparent, auditable AI applications:
 ### Responsible Use
 
 Users should:
+
 - ✅ Validate predictions on their specific data
 - ✅ Monitor for distribution shift
 - ✅ Ensure appropriate use cases
@@ -181,6 +186,7 @@ The following observables should be continuously monitored:
 ## Contact
 
 For questions or issues:
+
 - GitHub: [Repository URL]
 - Email: [Contact email]
 - Issues: [Issues URL]

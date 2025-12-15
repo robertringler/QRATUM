@@ -61,7 +61,7 @@ Defines fundamental data structures for bio-mechanism simulation.
 
 - **Purpose**: Represents biochemical reaction network as DAG
 - **Components**: List of states, list of transitions, evidence score
-- **Methods**: 
+- **Methods**:
   - `get_state(state_id)`: Retrieve state by ID
   - `get_transitions_from(state_id)`: Get outgoing transitions
   - `get_transitions_to(state_id)`: Get incoming transitions
@@ -89,6 +89,7 @@ Transforms XENON data structures into visualization-ready formats.
 **Output**: `VisualizationData` (3D network)
 
 **Transformation Pipeline**:
+
 1. Extract states → nodes
 2. Extract transitions → edges
 3. Apply spatial layout algorithm
@@ -97,6 +98,7 @@ Transforms XENON data structures into visualization-ready formats.
 6. Map properties to scalar fields
 
 **Layout Algorithms**:
+
 - **Spring**: Force-directed (O(n²))
 - **Circular**: Uniform distribution (O(n))
 - **Hierarchical**: Level-based (O(n + e))
@@ -107,10 +109,12 @@ Transforms XENON data structures into visualization-ready formats.
 **Output**: `VisualizationData` (surface or point cloud)
 
 **Representations**:
+
 1. **Energy Surface**: 2D grid with energy as height
 2. **Point Cloud**: Stochastic particle representation
 
 **Scalar Fields**:
+
 - `energy`: Per-vertex energy values
 - `concentration`: Molecular density
 
@@ -120,10 +124,12 @@ Transforms XENON data structures into visualization-ready formats.
 **Output**: `VisualizationData` (arrow or curve)
 
 **Visualizations**:
+
 1. **Arrow**: Directional edge between states
 2. **Energy Barrier**: Reaction coordinate energy profile
 
 **Styling**:
+
 - Color mapping: Rate constant → RGB (blue=slow, red=fast)
 - Thickness: Log-scale rate constant
 - Metadata: Source/target, kinetic parameters
@@ -137,11 +143,13 @@ Transforms XENON data structures into visualization-ready formats.
 **Interface**: Implements `SimulationAdapter` base class
 
 **Methods**:
+
 - `load_data(source)`: Auto-detect XENON type and convert
 - `validate_source(source)`: Check if source is XENON object
 - `load_mechanism_timeseries(mechanisms)`: Batch conversion
 
 **Type Detection**:
+
 ```python
 if isinstance(source, BioMechanism):
     → BioMechanismAdapter
@@ -231,6 +239,7 @@ Animation (MP4/GIF)
 | Arrow Generation | O(s) | O(s) |
 
 Where:
+
 - `n` = number of states
 - `e` = number of transitions
 - `r` = surface resolution
@@ -367,8 +376,8 @@ xenon [OPTIONS]
 ### Technical
 
 - Qubic Visualization Pipeline: `/qubic/visualization/README.md`
-- NumPy Documentation: https://numpy.org/doc/
-- NetworkX (reference): https://networkx.org/
+- NumPy Documentation: <https://numpy.org/doc/>
+- NetworkX (reference): <https://networkx.org/>
 
 ## Maintenance
 

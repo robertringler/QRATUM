@@ -5,17 +5,15 @@ between Ansys Mechanical and QuASIM solvers.
 """
 
 from .performance_runner import (
+    # Executor classes
+    AnsysBaselineExecutor,
     # Data structures
     BenchmarkDefinition,
     BenchmarkResult,
     ComparisonResult,
-    
-    # Executor classes
-    AnsysBaselineExecutor,
-    QuasimExecutor,
-    
     # Analysis classes
     PerformanceComparer,
+    QuasimExecutor,
     ReportGenerator,
 )
 

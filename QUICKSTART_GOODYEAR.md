@@ -12,6 +12,7 @@ python3 run_goodyear_quantum_pilot.py
 ```
 
 **That's it!** The script will:
+
 - ✅ Generate 10,000 tire simulation scenarios
 - ✅ Use 1,000+ Goodyear materials
 - ✅ Apply quantum-enhanced optimization
@@ -79,6 +80,7 @@ pip install numpy pyyaml click
 ### Import Errors
 
 Make sure you're in the repository root:
+
 ```bash
 cd /path/to/Qubic
 python3 run_goodyear_quantum_pilot.py
@@ -87,6 +89,7 @@ python3 run_goodyear_quantum_pilot.py
 ## 📈 What's Inside
 
 ### Materials (1,000+)
+
 - Natural Rubber (125)
 - Synthetic Rubber (125)
 - Biopolymer (125)
@@ -97,6 +100,7 @@ python3 run_goodyear_quantum_pilot.py
 - Carbon Black (125)
 
 ### Tire Types (8)
+
 - Passenger
 - Truck
 - Off-Road
@@ -107,6 +111,7 @@ python3 run_goodyear_quantum_pilot.py
 - Performance
 
 ### Performance Metrics (16 per scenario)
+
 - Grip coefficients (dry, wet, snow, ice)
 - Rolling resistance
 - Wear rate and patterns
@@ -145,6 +150,7 @@ python3 run_goodyear_quantum_pilot.py
 ## 📞 Support
 
 For questions or issues:
+
 1. Check [GOODYEAR_PILOT_USAGE.md](GOODYEAR_PILOT_USAGE.md) troubleshooting section
 2. Review [TIRE_SIMULATION_SUMMARY.md](TIRE_SIMULATION_SUMMARY.md) for implementation details
 3. Run demo: `python3 demos/tire_simulation_demo.py`

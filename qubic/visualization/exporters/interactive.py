@@ -168,6 +168,5 @@ class InteractiveExporter:
             self.export_json(data, output_path, scalar_field, **kwargs)
         else:
             raise ValueError(
-                f"Unsupported interactive format: {extension}. "
-                "Supported formats: .html, .json"
+                f"Unsupported interactive format: {extension}. " "Supported formats: .html, .json"
             )

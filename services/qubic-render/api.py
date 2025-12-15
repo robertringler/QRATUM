@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import uuid
-from typing import Dict, Optional
+from typing import Optional
 
 try:
     from fastapi import APIRouter, HTTPException
@@ -64,9 +64,7 @@ def create_render_router() -> Optional[APIRouter]:
     async def render_sequence(request: RenderRequest):
         """Render an animation sequence."""
         job_id = str(uuid.uuid4())
-        return RenderResponse(
-            job_id=job_id, status="queued", message="Sequence render job queued"
-        )
+        return RenderResponse(job_id=job_id, status="queued", message="Sequence render job queued")
 
     @router.get("/status/{job_id}", response_model=JobStatus)
     async def get_job_status(job_id: str):

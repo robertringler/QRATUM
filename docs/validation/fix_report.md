@@ -29,6 +29,7 @@ This report documents the validation issues identified and resolved across QuASI
 **Issue:** File contained multiple overlapping and incomplete class definitions, causing complete module import failure.
 
 **Before:**
+
 ```python
 """HCAL - Hardware Control Abstraction Layer."""
 __all__ = [
@@ -42,6 +43,7 @@ Hardware Control Abstraction Layer (HCAL) for QuASIM.  # <-- Unterminated triple
 ```
 
 **After:**
+
 ```python
 """Hardware Control & Calibration Layer (HCAL) for QuASIM.
 
@@ -69,6 +71,7 @@ class HCAL:
 **Issue:** Multiple overlapping docstrings at file beginning.
 
 **Before:**
+
 ```python
 """QCMG (Quantacosmorphysigenetic) Field Simulation Module.
 ...
@@ -80,6 +83,7 @@ class HCAL:
 ```
 
 **After:**
+
 ```python
 """QCMG - Quantacosmomorphysigenetic Field Simulation Module.
 
@@ -97,6 +101,7 @@ field dynamics...
 **Issue:** `from __future__ import annotations` not at beginning of file.
 
 **Before:**
+
 ```python
 """Test docstring"""
 
@@ -110,6 +115,7 @@ from __future__ import annotations  # <-- Duplicate at wrong position
 ```
 
 **After:**
+
 ```python
 """Test docstring"""
 
@@ -127,11 +133,13 @@ from __future__ import annotations  # Line 16 - correct position
 ### 4. Enhanced `validate_operation()` (IMPLEMENTED ✅)
 
 **Requirement:** Ensure `validate_operation` enforces:
+
 - ✅ enable_actuation checks
 - ✅ requires_approval checks
 - ✅ Rate limiter integration
 
 **Before:**
+
 ```python
 def validate_operation(self, device_id, operation, setpoints, enable_actuation):
     # Only basic checks:
@@ -143,6 +151,7 @@ def validate_operation(self, device_id, operation, setpoints, enable_actuation):
 ```
 
 **After:**
+
 ```python
 def validate_operation(self, device_id, operation, setpoints, enable_actuation):
     # 1. Rate limit check (FIRST - before any operation)
@@ -172,6 +181,7 @@ def validate_operation(self, device_id, operation, setpoints, enable_actuation):
 ```
 
 **Impact:**
+
 - ✅ All policy engine tests pass (7/7)
 - ✅ Rate limiting enforced before any operation
 - ✅ Approval required for actuation when policy demands it
@@ -186,6 +196,7 @@ def validate_operation(self, device_id, operation, setpoints, enable_actuation):
 **Issue:** Tests expected "soliton" and "random" initialization modes.
 
 **Added:**
+
 ```python
 def initialize(self, mode: Literal["gaussian", "uniform", "zero", "soliton", "random"] = "gaussian"):
     # ...
@@ -208,6 +219,7 @@ def initialize(self, mode: Literal["gaussian", "uniform", "zero", "soliton", "ra
 **Issue:** Tests import `QCMGState` but implementation uses `FieldState`.
 
 **Solution:**
+
 ```python
 # Backward compatibility alias
 QCMGState = FieldState
@@ -226,6 +238,7 @@ __all__ = [
 **Issue:** Tests call `HCAL.from_policy()` class method.
 
 **Added:**
+
 ```python
 @classmethod
 def from_policy(
@@ -271,6 +284,7 @@ def from_policy(
 **Current:** 36% (Target: 94%)
 
 **Analysis:**
+
 - Many modules have syntax/import errors preventing test execution
 - Some test files have API mismatches with implementations
 - Need to align test expectations with actual implementations
@@ -325,12 +339,14 @@ def from_policy(
 ## Conclusion
 
 Significant progress made on critical blocking issues:
+
 - ✅ All syntax errors resolved
 - ✅ Import system working
 - ✅ Core policy enforcement enhanced
 - ✅ 206/293 tests passing (70.3%)
 
 Primary remaining work:
+
 - Align API expectations between tests and implementations
 - Consolidate duplicate class definitions
 - Increase test coverage to 94%+ target

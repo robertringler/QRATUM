@@ -27,17 +27,20 @@ This document describes the implementation of the 90-day programmatic integratio
 Generates QuASIM certification artifacts for the 90-day integration roadmap.
 
 **Usage:**
+
 ```bash
 python3 generate_quasim_jsons.py --output-dir .
 ```
 
 **Options:**
+
 - `--output-dir DIR`: Output directory (default: current directory)
 - `--trajectories N`: Number of Monte-Carlo trajectories (default: 1024)
 - `--seed-entries N`: Number of seed audit entries (default: 100)
 - `--coverage-conditions N`: Number of MC/DC conditions (default: 200)
 
 **Generated Artifacts:**
+
 - `montecarlo_campaigns/MC_Results_1024.json`: Monte-Carlo fidelity report
   - Mean fidelity ≥ 0.97 ± 0.005
   - Convergence rate ≥ 98%
@@ -57,11 +60,13 @@ python3 generate_quasim_jsons.py --output-dir .
 Pytest test suite for deterministic validation and standards compliance.
 
 **Usage:**
+
 ```bash
 python3 -m pytest test_quasim_validator.py -v
 ```
 
 **Test Coverage:**
+
 - **Deterministic Validation**: Seed-based replay, convergence, precision modes
 - **Fidelity Metrics**: Mean fidelity ≥ 0.97, trajectory envelope ±1%
 - **Trotter Convergence**: Error ≤ 1×10⁻¹⁰
@@ -75,11 +80,13 @@ python3 -m pytest test_quasim_validator.py -v
 ### Phase 1: Infrastructure (Weeks 1-4)
 
 **Telemetry Ingestion:**
+
 - `SpaceXTelemetryAdapter`: Parses Falcon 9 ascent, engine, attitude, GNC data
 - `NASATelemetryAdapter`: Parses Orion/SLS GNC data in CSV/JSON formats
 - JSON-RPC/gRPC endpoint support (interface defined, implementation ready)
 
 **Deterministic Control:**
+
 - `SeedManager`: Manages PRNG seeds with SHA256 verification
 - `SeedRepository`: Stores and retrieves seed records
 - `DeterministicValidator`: Validates replay with < 1μs timestamp drift
@@ -87,12 +94,14 @@ python3 -m pytest test_quasim_validator.py -v
 ### Phase 2: Monte-Carlo Campaigns (Weeks 5-8)
 
 **Simulation Execution:**
+
 - 1024-trajectory Monte-Carlo batches per vehicle (Falcon 9, SLS)
 - Noise injection support (sensor, actuator, atmospheric)
 - Fidelity and purity metrics computation
 - MC/DC coverage matrix generation
 
 **Metrics:**
+
 - Mean fidelity: 0.9705 ± 0.002 (target: ≥ 0.97)
 - Convergence rate: 98.5% (target: ≥ 98%)
 - Trajectory envelope: All within ±1%
@@ -100,12 +109,14 @@ python3 -m pytest test_quasim_validator.py -v
 ### Phase 3: Certification & Audit (Weeks 9-12)
 
 **Verification Evidence:**
+
 - E-01: Monte-Carlo Fidelity Report (Verified)
 - E-02: Seed-Determinism Log (Verified)
 - E-03: MC/DC Coverage Export (Verified)
 - E-04: Certification Data Package (Submitted)
 
 **Standards Compliance:**
+
 - DO-178C Level A: Software verification objectives met
 - ECSS-Q-ST-80C Rev. 2: Anomaly-closure criteria satisfied
 - NASA E-HBK-4008: Reproducibility and safety guidance conformance

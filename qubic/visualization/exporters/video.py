@@ -144,8 +144,7 @@ class VideoExporter:
             import imageio
         except ImportError:
             raise ImportError(
-                "imageio is required for GIF export. "
-                "Install with: pip install imageio"
+                "imageio is required for GIF export. " "Install with: pip install imageio"
             ) from None
 
         output_path = Path(output_path)
@@ -216,15 +215,10 @@ class VideoExporter:
         extension = output_path.suffix.lower()
 
         if extension == ".mp4":
-            self.export_mp4(
-                adapter, output_path, scalar_field, camera, colormap, fps, **kwargs
-            )
+            self.export_mp4(adapter, output_path, scalar_field, camera, colormap, fps, **kwargs)
         elif extension == ".gif":
-            self.export_gif(
-                adapter, output_path, scalar_field, camera, colormap, fps, **kwargs
-            )
+            self.export_gif(adapter, output_path, scalar_field, camera, colormap, fps, **kwargs)
         else:
             raise ValueError(
-                f"Unsupported video format: {extension}. "
-                "Supported formats: .mp4, .gif"
+                f"Unsupported video format: {extension}. " "Supported formats: .mp4, .gif"
             )

@@ -17,6 +17,7 @@ The Qubic Meta Library is an enterprise-scale prompt management and execution sy
 ### Domain Structure (5 Tiers, 20 Domains)
 
 **Tier 1 - Foundation (D1-D5):**
+
 - D1: Advanced Materials (IDs 1-100)
 - D2: Energy & Thermal Systems (IDs 101-200)
 - D3: Multi-Agent AI & Swarm (IDs 201-300)
@@ -24,6 +25,7 @@ The Qubic Meta Library is an enterprise-scale prompt management and execution sy
 - D5: Environmental & Climate Systems (IDs 401-500)
 
 **Tier 2 - Systems (D6-D10):**
+
 - D6: Aerospace & Propulsion (IDs 501-600)
 - D7: Advanced Materials & Nanotech (IDs 601-700)
 - D8: AI & Autonomous Systems (IDs 701-800)
@@ -31,6 +33,7 @@ The Qubic Meta Library is an enterprise-scale prompt management and execution sy
 - D10: Climate Science & Geoengineering (IDs 901-1000)
 
 **Tier 3 - Infrastructure (D11-D15):**
+
 - D11: Advanced Robotics & Automation (IDs 1001-1500)
 - D12: IoT & Sensor Networks (IDs 1501-2000)
 - D13: Next-Gen Energy Systems (IDs 2001-2500)
@@ -38,6 +41,7 @@ The Qubic Meta Library is an enterprise-scale prompt management and execution sy
 - D15: High-Fidelity Simulation (IDs 3001-3500)
 
 **Tier 4 - Applications (D16-D20):**
+
 - D16: Quantum Computing & Cryptography (IDs 3501-4500)
 - D17: Space Exploration & Colonization (IDs 4501-5500)
 - D18: Ocean Systems & Marine Tech (IDs 5501-6500)
@@ -45,6 +49,7 @@ The Qubic Meta Library is an enterprise-scale prompt management and execution sy
 - D20: Urban Systems & Smart Cities (IDs 7501-8500)
 
 **Tier 5 - Integration:**
+
 - Cross-Domain Integration Prompts (IDs 8501-10000)
 
 ### Synergy Clusters (110 Total)
@@ -481,21 +486,25 @@ ruff check --fix qubic_meta_library/
 ## Roadmap
 
 ### Phase 1 (Q1-Q2 2026)
+
 - Foundation layer deployment
 - Core domain activation (D1-D5)
 - Keystone technology validation
 
 ### Phase 2 (Q3 2026 - Q2 2027)
+
 - Systems integration (D6-D10)
 - Platform synergy validation
 - First patent filings
 
 ### Phase 3 (Q3 2027 - Q2 2028)
+
 - Infrastructure scale-out (D11-D15)
 - Multi-cloud deployment
 - CMMC 2.0 Level 2 certification
 
 ### Phase 4 (Q3 2028 - Q4 2030)
+
 - Full commercial deployment (D16-D20)
 - Enterprise adoption
 - $400M+ revenue target (Cluster DK)
@@ -508,8 +517,8 @@ Apache 2.0 - See LICENSE file for details
 
 For questions, issues, or commercial inquiries:
 
-- GitHub Issues: https://github.com/robertringler/QuASIM/issues
-- Documentation: https://github.com/robertringler/QuASIM
+- GitHub Issues: <https://github.com/robertringler/QuASIM/issues>
+- Documentation: <https://github.com/robertringler/QuASIM>
 - Email: [Contact maintainers through GitHub]
 
 ## Acknowledgments

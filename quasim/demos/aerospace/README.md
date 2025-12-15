@@ -159,4 +159,4 @@ A: With fixed seed, results are bit-exact reproducible (tolerance < 1e-6).
 
 **Status**: ✅ Demo Ready | 🔧 Production Integration Available  
 **Last Updated**: 2025-11-10  
-**Contact**: aerospace-demos@quasim.ai
+**Contact**: <aerospace-demos@quasim.ai>

@@ -36,6 +36,7 @@ A system and method for autonomous optimization of computational kernels using r
 ### Prior Art Differentiation
 
 Traditional kernel optimization requires manual tuning (NVIDIA Nsight, Intel VTune) or offline profiling. Prior RL-based approaches (TVM, Ansor) operate offline during compilation. QuASIM's system uniquely combines:
+
 - Online runtime optimization (vs. offline compilation)
 - Formal verification integration (vs. heuristic-only approaches)
 - Multi-objective optimization including energy and thermal constraints
@@ -44,6 +45,7 @@ Traditional kernel optimization requires manual tuning (NVIDIA Nsight, Intel VTu
 ### Enablement Sketch
 
 **Key Components:**
+
 1. **Introspection Layer:** Collects performance counters (warp divergence, cache miss rates, memory bandwidth)
 2. **RL Controller:** PPO-style policy gradient algorithm optimizing kernel configuration space
 3. **Kernel Genome:** Parameter encoding (tile size, warp count, unroll factors, async depth)
@@ -53,6 +55,7 @@ Traditional kernel optimization requires manual tuning (NVIDIA Nsight, Intel VTu
 7. **Federated Aggregator:** Privacy-preserving gradient aggregation across deployments
 
 **Implementation Flow:**
+
 ```
 Runtime Metrics → Introspection → RL Policy → Kernel Reconfiguration → Verification → Deployment
                                       ↓
@@ -100,6 +103,7 @@ A novel hybrid computing architecture integrating Grace CPU (72-core ARM v9) wit
 ### Prior Art Differentiation
 
 Existing quantum-classical systems (IBM Qiskit, AWS Braket) require explicit data copying between quantum and classical components. NVIDIA's cuQuantum provides GPU acceleration but lacks CPU-GPU coherence. QuASIM uniquely combines:
+
 - Hardware-level coherence (vs. software-managed transfers)
 - Quantum-classical co-optimization (vs. separate optimization)
 - Multi-precision automatic selection (vs. fixed precision)
@@ -108,6 +112,7 @@ Existing quantum-classical systems (IBM Qiskit, AWS Braket) require explicit dat
 ### Enablement Sketch
 
 **Architecture Layers:**
+
 1. **Grace CPU:** 72-core ARM Neoverse V2, 480 GB LPDDR5X memory
 2. **Blackwell GPU:** 16-GPU cluster, 192 GB HBM3e per GPU
 3. **NVLink-C2C:** 900 GB/s coherent fabric interconnect
@@ -116,6 +121,7 @@ Existing quantum-classical systems (IBM Qiskit, AWS Braket) require explicit dat
 6. **Scheduler:** Work distribution across classical and quantum resources
 
 **Data Flow:**
+
 ```
 Quantum Circuit → Tensor Network → GPU Compilation → Execution on Blackwell
                                            ↓
@@ -161,6 +167,7 @@ Novel heuristics for optimizing tensor network contraction paths with adaptive e
 ### Prior Art Differentiation
 
 Traditional tensor network libraries (ITensor, TensorNetwork) use fixed contraction heuristics. QuASIM introduces:
+
 - Learned contraction path selection (vs. greedy heuristics)
 - Adaptive precision based on error sensitivity analysis
 - Runtime error budget adjustment
@@ -169,6 +176,7 @@ Traditional tensor network libraries (ITensor, TensorNetwork) use fixed contract
 ### Enablement Sketch
 
 **Components:**
+
 1. **Graph Analyzer:** Extracts tensor network structure and symmetries
 2. **Path Optimizer:** ML-guided search over contraction orderings
 3. **Error Budget Allocator:** Distributes precision requirements across operations
@@ -211,6 +219,7 @@ Comprehensive safety validation pipeline with policy-based approval workflows, r
 ### Prior Art Differentiation
 
 Existing validation frameworks focus on functional testing. QuASIM's pipeline uniquely provides:
+
 - Runtime safety enforcement (vs. pre-deployment only)
 - Policy-driven approval gates
 - Automated compliance documentation generation
@@ -219,6 +228,7 @@ Existing validation frameworks focus on functional testing. QuASIM's pipeline un
 ### Enablement Sketch
 
 **Pipeline Stages:**
+
 1. **Input Validation:** Schema validation and bounds checking
 2. **Policy Evaluation:** Check against declared safety policies
 3. **Risk Assessment:** Automated risk scoring based on computation characteristics
@@ -263,6 +273,7 @@ Automated generation of tool qualification artifacts for software tools used in 
 ### Prior Art Differentiation
 
 Manual DO-330 qualification is time-consuming and error-prone. QuASIM's automation:
+
 - Generates qualification artifacts from code annotations
 - Maintains traceability automatically
 - Enables continuous re-qualification on updates
@@ -271,6 +282,7 @@ Manual DO-330 qualification is time-consuming and error-prone. QuASIM's automati
 ### Enablement Sketch
 
 **Components:**
+
 1. **Annotation Parser:** Extracts qualification metadata from source code
 2. **TOR Generator:** Produces Tool Operational Requirements document
 3. **TQP Generator:** Creates Tool Qualification Plan
@@ -312,6 +324,7 @@ Specialized Monte Carlo simulation models for valuing quantum computing infrastr
 ### Prior Art Differentiation
 
 Traditional technology valuation models don't capture quantum computing's unique characteristics:
+
 - Exponential scaling benefits (but also exponential hardware costs)
 - Technology readiness uncertainty
 - Strategic optionality value
@@ -319,6 +332,7 @@ Traditional technology valuation models don't capture quantum computing's unique
 ### Enablement Sketch
 
 **Model Components:**
+
 1. **Scenario Generator:** Monte Carlo sampling of market adoption paths
 2. **Cash Flow Projector:** Revenue/cost modeling per scenario
 3. **Options Valuation:** Black-Scholes-style real options pricing
@@ -360,6 +374,7 @@ System ensuring deterministic reproducibility of quantum simulations with <1μs 
 ### Prior Art Differentiation
 
 Most quantum simulation frameworks are non-deterministic or provide only loose reproducibility. QuASIM achieves:
+
 - Microsecond-level drift tolerance (vs. millisecond-level in prior art)
 - Cross-platform determinism
 - Cryptographically secure seed derivation
@@ -368,6 +383,7 @@ Most quantum simulation frameworks are non-deterministic or provide only loose r
 ### Enablement Sketch
 
 **Components:**
+
 1. **Seed Generator:** Cryptographically secure pseudo-random number generator
 2. **Timestamp Synchronization:** NTP-based microsecond clock sync
 3. **Seed Hierarchy:** Parent-child seed derivation for distributed tasks
@@ -409,6 +425,7 @@ Kubernetes operator for orchestrating hybrid GPU-quantum workloads across multi-
 ### Prior Art Differentiation
 
 Existing Kubernetes GPU operators (NVIDIA GPU Operator) don't support quantum backends. Quantum cloud platforms (IBM Quantum, AWS Braket) lack GPU co-scheduling. QuASIM's operator uniquely:
+
 - Co-schedules GPU and quantum resources
 - Provides multi-cloud abstraction
 - Optimizes for hybrid workload characteristics
@@ -416,6 +433,7 @@ Existing Kubernetes GPU operators (NVIDIA GPU Operator) don't support quantum ba
 ### Enablement Sketch
 
 **Components:**
+
 1. **Custom Resource Definitions (CRDs):** QuantumJob, HybridWorkload resources
 2. **Scheduler:** Intelligent placement considering GPU/QPU availability
 3. **Resource Controller:** Lifecycle management of GPU/quantum resources
@@ -457,6 +475,7 @@ Novel compression algorithm for high-dimensional quantum state tensors inspired 
 ### Prior Art Differentiation
 
 Traditional tensor decomposition (SVD, Tucker, TT) provides compression but lacks quantum-aware optimization. QuASIM's algorithm:
+
 - Preserves quantum entanglement structure
 - Provides fidelity guarantees
 - Optimized for quantum circuit simulation workloads
@@ -465,6 +484,7 @@ Traditional tensor decomposition (SVD, Tucker, TT) provides compression but lack
 ### Enablement Sketch
 
 **Algorithm Steps:**
+
 1. **Entanglement Analysis:** Identify entangled subsystems via mutual information
 2. **Hierarchical Decomposition:** Multi-level tensor decomposition preserving structure
 3. **Adaptive Truncation:** Truncate low-weight components based on fidelity budget
@@ -506,6 +526,7 @@ Privacy-preserving federated learning framework for quantum machine learning mod
 ### Prior Art Differentiation
 
 Existing federated learning frameworks (TensorFlow Federated, PySyft) don't support quantum models. QuASIM's framework:
+
 - Native quantum circuit parameter aggregation
 - Quantum-aware differential privacy
 - Heterogeneous quantum hardware support
@@ -513,6 +534,7 @@ Existing federated learning frameworks (TensorFlow Federated, PySyft) don't supp
 ### Enablement Sketch
 
 **Components:**
+
 1. **Federated Coordinator:** Orchestrates multi-party quantum training
 2. **Quantum Aggregator:** Combines quantum circuit parameters from multiple parties
 3. **Privacy Engine:** Differential privacy for quantum gradients
@@ -554,6 +576,7 @@ Real-time digital twin system using quantum-enhanced Kalman filtering for state 
 ### Prior Art Differentiation
 
 Traditional digital twins use classical Kalman filters. QuASIM's quantum-enhanced approach:
+
 - Faster convergence to accurate state estimates
 - Better handling of high-dimensional state spaces
 - Quantum-accelerated anomaly detection
@@ -561,6 +584,7 @@ Traditional digital twins use classical Kalman filters. QuASIM's quantum-enhance
 ### Enablement Sketch
 
 **Components:**
+
 1. **Sensor Interface:** Multi-modal data ingestion
 2. **Quantum State Estimator:** Quantum Kalman filter implementation
 3. **Digital Twin Engine:** Real-time state synchronization
@@ -602,6 +626,7 @@ Automated system for generating compliance reports and identifying gaps across m
 ### Prior Art Differentiation
 
 Manual compliance checking is time-consuming and error-prone. QuASIM's automation:
+
 - Covers multiple frameworks simultaneously
 - Uses AI for intelligent gap analysis
 - Generates reports automatically
@@ -610,6 +635,7 @@ Manual compliance checking is time-consuming and error-prone. QuASIM's automatio
 ### Enablement Sketch
 
 **Components:**
+
 1. **Compliance Parser:** Extracts requirements from regulatory documents
 2. **Evidence Collector:** Gathers compliance evidence from code and documentation
 3. **Gap Analyzer:** AI-driven identification of compliance gaps
@@ -678,37 +704,37 @@ Manual compliance checking is time-consuming and error-prone. QuASIM's automatio
 
 #### 🟡 Medium Priority (Q2-Q3 2026)
 
-6. **Safety Validation Pipeline** (Item #4)
+1. **Safety Validation Pipeline** (Item #4)
    - **Action:** Prior art search, provisional if clear
    - **Timeline:** Q2 2026
    - **Note:** Focus on unique integration of policy engine + quantum workflows
 
-7. **Tool-Qualification Automation** (Item #5)
+2. **Tool-Qualification Automation** (Item #5)
    - **Action:** Prior art search in aerospace software domain
    - **Timeline:** Q3 2026
    - **Note:** May be more valuable as trade secret vs. patent
 
-8. **Monte Carlo Valuation Models** (Item #6)
+3. **Monte Carlo Valuation Models** (Item #6)
    - **Action:** Academic publication first, then patent assessment
    - **Timeline:** Q2 2026
    - **Note:** Financial methods patents face stricter scrutiny
 
-9. **Multi-Cloud Kubernetes Operator** (Item #8)
+4. **Multi-Cloud Kubernetes Operator** (Item #8)
    - **Action:** Prior art search (crowded Kubernetes patent space)
    - **Timeline:** Q3 2026
    - **Note:** Focus on quantum-GPU co-scheduling novelty
 
-10. **Federated Quantum ML Framework** (Item #10)
+5. **Federated Quantum ML Framework** (Item #10)
     - **Action:** Prior art search (federated learning + quantum)
     - **Timeline:** Q3 2026
     - **Note:** Emerging area with growing patent activity
 
-11. **Real-Time Digital Twin** (Item #11)
+6. **Real-Time Digital Twin** (Item #11)
     - **Action:** Prior art search (digital twin + quantum Kalman filtering)
     - **Timeline:** Q3 2026
     - **Note:** Focus on quantum-enhanced state estimation novelty
 
-12. **Automated Compliance Reporting** (Item #12)
+7. **Automated Compliance Reporting** (Item #12)
     - **Action:** Prior art search, consider trade secret protection
     - **Timeline:** Q4 2026
     - **Note:** Value may be in implementation vs. abstract method
@@ -716,17 +742,20 @@ Manual compliance checking is time-consuming and error-prone. QuASIM's automatio
 ### Budget & Resource Allocation
 
 **Estimated Patent Filing Costs (US):**
+
 - Provisional application: $5K-$10K each
 - Full utility patent: $15K-$30K each (including prosecution)
 - International (PCT): +$50K-$100K per patent family
 
 **Recommended FY2026 IP Budget:**
+
 - High priority provisionals (5): $40K-$50K
 - Prior art searches (all): $30K-$40K
 - 2-3 full utility patents: $45K-$90K
 - **Total FY2026:** $115K-$180K
 
 **Resource Requirements:**
+
 - External patent counsel: Specialized in software/quantum/AI patents
 - Technical documentation: Engineering time for detailed enablement
 - Prior art analysis: Technical + legal review
@@ -734,11 +763,13 @@ Manual compliance checking is time-consuming and error-prone. QuASIM's automatio
 ### Trade Secret vs. Patent Strategy
 
 **Recommended for Patent:**
+
 - Core algorithmic innovations (Items #1, #3, #9)
 - System architectures with clear boundaries (Items #2, #7)
 - Novel integration approaches (Items #4, #8)
 
 **Recommended for Trade Secret:**
+
 - Implementation details of compression algorithms
 - Specific kernel optimization heuristics
 - Internal compliance workflows
@@ -747,6 +778,7 @@ Manual compliance checking is time-consuming and error-prone. QuASIM's automatio
 ### Competitive Intelligence
 
 **Key Competitors to Monitor:**
+
 - **IBM Quantum:** Active quantum patents, focus on hardware + software
 - **Google Quantum AI:** Strong quantum algorithm patent portfolio
 - **NVIDIA:** GPU computing patents, potential overlap in hybrid architectures
@@ -754,6 +786,7 @@ Manual compliance checking is time-consuming and error-prone. QuASIM's automatio
 - **AWS Braket, Azure Quantum:** Cloud quantum platform patents
 
 **Patent Landscape Gaps (Opportunities):**
+
 - Hybrid quantum-classical co-optimization (under-patented)
 - Federated quantum learning (emerging area)
 - Quantum-enhanced digital twins (nascent)

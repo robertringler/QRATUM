@@ -15,9 +15,7 @@ class CADExporter:
     """
 
     @staticmethod
-    def export_mesh(
-        mesh: Any, filename: str | Path, format: str = "obj"
-    ) -> None:
+    def export_mesh(mesh: Any, filename: str | Path, format: str = "obj") -> None:
         """Export mesh to specified format.
 
         Args:
@@ -30,9 +28,7 @@ class CADExporter:
             ImportError: If required library (trimesh) is not available
         """
         if format not in SUPPORTED_FORMATS:
-            raise ValueError(
-                f"Unsupported format: {format}. Supported: {SUPPORTED_FORMATS}"
-            )
+            raise ValueError(f"Unsupported format: {format}. Supported: {SUPPORTED_FORMATS}")
 
         filename = Path(filename)
 
@@ -64,8 +60,7 @@ class CADExporter:
                 CADExporter._export_obj_fallback(mesh, filename)
             else:
                 raise ImportError(
-                    f"trimesh required for {format} export. "
-                    "Install with: pip install trimesh"
+                    f"trimesh required for {format} export. " "Install with: pip install trimesh"
                 ) from exc
 
     @staticmethod

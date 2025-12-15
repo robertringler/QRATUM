@@ -21,6 +21,7 @@ u_t = K · ∂V/∂η
 ```
 
 Where:
+
 - `u_t`: Control action at time t (scheduler adjustments, tolerance settings)
 - `K`: Controller gain matrix
 - `∂V/∂η`: Sensitivity of valuation to entanglement efficiency
@@ -58,16 +59,19 @@ The partial derivative `∂V/∂η` drives control decisions.
 ## Closed-Loop Dynamics
 
 ### Telemetry Extraction
+
 - Real-time drift metrics: `r_t`
 - Kolmogorov-Smirnov (KS) statistics
 - Root Mean Square Error (RMSE)
 
 ### Actuator Control
+
 - GPU scheduler adjustments
 - Precision tolerance modifications
 - Resource allocation optimization
 
 ### Feedback Path
+
 - Telemetry features `x_t` extracted continuously
 - Control actions applied to runtime actuators
 - System response measured and fed back
@@ -113,14 +117,17 @@ The control system operates within a comprehensive runbook framework:
 ## Economic Liquidity Model (EPH)
 
 ### Order Depth
+
 - 50-tier order book maintained
 - Dynamic spread adjustment for shock absorption
 
 ### Latency Bands
+
 - 60-second average market response
 - Feedback loop coupling to valuation engine
 
 ### Market Impact
+
 - Real-time pricing updates based on efficiency metrics
 - Liquidity feedback prevents market manipulation
 

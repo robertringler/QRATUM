@@ -68,6 +68,7 @@ GitHub: github.com/robertringler/QuASIM
 ---
 
 **Technical Specifications:**
+
 - Platform: Hybrid quantum-classical runtime
 - Acceleration: NVIDIA cuQuantum, AMD ROCm support
 - Deployment: Kubernetes (EKS/GKE/AKS)

@@ -12,6 +12,7 @@
 This document specifies the performance validation methodology for Ansys-QuASIM integration. It ensures **reproducible, statistically rigorous, and adversarially defensible** performance comparisons between Ansys Mechanical (CPU baseline) and QuASIM (GPU-accelerated) solvers.
 
 **Key Principles:**
+
 1. **Bit-exact reproducibility** - SHA-256 hash verification of results
 2. **Statistical rigor** - 5 runs per benchmark with confidence intervals
 3. **Controlled hardware** - Fixed CPU/GPU configuration, cooldown periods
@@ -36,11 +37,13 @@ This document specifies the performance validation methodology for Ansys-QuASIM 
 | Kernel | 5.15+ | Long-term support |
 
 **Alternatives (with performance normalization):**
+
 - AMD EPYC 7763 (64-core) → normalize to 16-core equivalent
 - Intel Xeon Platinum 8280 → similar performance to Gold 6248R
 - ARM-based (AWS Graviton3) → not recommended (different ISA)
 
 **Forbidden:**
+
 - Laptop CPUs (thermal throttling)
 - Overclocked systems (non-deterministic)
 - Shared cloud instances (noisy neighbors)
@@ -60,12 +63,14 @@ This document specifies the performance validation methodology for Ansys-QuASIM 
 | OS | Same as baseline | |
 
 **Alternatives (with caveats):**
+
 - NVIDIA A100 40GB → BM_005 may fail (OOM)
 - NVIDIA H100 80GB → 1.5-2x faster (report separately)
 - NVIDIA V100 32GB → Older architecture (report separately)
 - AMD MI250X → ROCm support experimental
 
 **Multi-GPU Configuration (for BM_005):**
+
 - 4x NVIDIA A100 80GB
 - NVLink mesh topology (all-to-all)
 - PCIe Gen4 x16 fallback if NVLink unavailable
@@ -73,17 +78,20 @@ This document specifies the performance validation methodology for Ansys-QuASIM 
 ### 1.3 Network and Environment
 
 **Network Isolation:**
+
 - Dedicated VLAN or air-gapped network
 - No internet access during benchmarking
 - NTP time sync disabled (use system clock)
 
 **System State:**
+
 - No GUI (text console only)
 - All non-essential services stopped
 - CPU governor: `performance` (no frequency scaling)
 - GPU persistence mode: enabled (`nvidia-smi -pm 1`)
 
 **Thermal Management:**
+
 - CPU temperature < 75°C (monitor with `sensors`)
 - GPU temperature < 80°C (monitor with `nvidia-smi`)
 - 60-second cooldown between runs
@@ -95,16 +103,19 @@ This document specifies the performance validation methodology for Ansys-QuASIM 
 ### 2.1 Ansys Mechanical
 
 **Primary Version:**
+
 - **Ansys Mechanical 2024 R1** (version 24.1)
 - MAPDL solver build: 24.1.0
 - License: Mechanical Pro or Enterprise
 
 **Compatibility:**
+
 - 2024 R2: Supported (may have minor differences)
 - 2023 R2: Supported (some features unavailable)
 - 2023 R1 and earlier: **Not validated**
 
 **Configuration:**
+
 ```bash
 # Ansys environment variables
 export ANSYS_RELEASE=241  # 2024 R1
@@ -142,6 +153,7 @@ export ANSYS_MPI=0
 | cuQuantum | 23.10+ | Quantum tensor backend |
 
 **Installation Verification:**
+
 ```bash
 # Verify Python environment
 python3 --version  # Should be ≥3.10
@@ -160,6 +172,7 @@ python3 -m quasim_ansys_adapter.test_installation
 ## 3. Pre-Execution Checklist
 
 **System Preparation:**
+
 - [ ] Verify hardware configuration matches spec
 - [ ] Install all required software versions
 - [ ] Run installation test (`test_installation.py`)
@@ -169,12 +182,14 @@ python3 -m quasim_ansys_adapter.test_installation
 - [ ] Clear filesystem cache (`sync; echo 3 > /proc/sys/vm/drop_caches`)
 
 **Benchmark Preparation:**
+
 - [ ] Download `benchmark_definitions.yaml`
 - [ ] Verify YAML syntax (`python3 -c "import yaml; yaml.safe_load(open('benchmark_definitions.yaml'))"`)
 - [ ] Create output directory (`mkdir -p results/`)
 - [ ] Set random seeds in config files
 
 **Environment Variables:**
+
 ```bash
 # Deterministic execution
 export OMP_NUM_THREADS=16  # Match CPU core count
@@ -202,8 +217,9 @@ export QUASIM_CACHE_DIR=/tmp/quasim_cache
 1. **Cooldown Period** (60 seconds)
    - Let CPU/GPU temperatures stabilize
    - Monitor with `sensors` and `nvidia-smi`
-   
+
 2. **Run Ansys Baseline** (5 runs)
+
    ```bash
    for i in {1..5}; do
        echo "Ansys baseline run $i/5"
@@ -214,16 +230,18 @@ export QUASIM_CACHE_DIR=/tmp/quasim_cache
        sleep 60  # Cooldown
    done
    ```
-   
+
 3. **Compute Reference Hash**
+
    ```bash
    python3 performance_runner.py \
        --benchmark BM_001 \
        --compute-hash \
        --output results/BM_001_reference_hash.txt
    ```
-   
+
 4. **Run QuASIM Solver** (5 runs)
+
    ```bash
    for i in {1..5}; do
        echo "QuASIM run $i/5"
@@ -235,8 +253,9 @@ export QUASIM_CACHE_DIR=/tmp/quasim_cache
        sleep 60  # Cooldown
    done
    ```
-   
+
 5. **Validate Results**
+
    ```bash
    python3 performance_runner.py \
        --benchmark BM_001 \
@@ -248,12 +267,14 @@ export QUASIM_CACHE_DIR=/tmp/quasim_cache
 ### 4.2 Timing Methodology
 
 **What to Measure:**
+
 - **Setup time:** Mesh import, material initialization (exclude from speedup)
 - **Solve time:** Newton-Raphson iteration (include in speedup)
 - **Postprocessing time:** Result extraction (exclude from speedup)
 - **Total time:** Setup + Solve + Postprocessing (for reference only)
 
 **How to Measure:**
+
 ```python
 import time
 
@@ -268,12 +289,14 @@ solve_time = time.time() - solve_start
 ```
 
 **Clock Source:**
+
 - Use `time.perf_counter()` for high-resolution timing
 - Do NOT use `time.time()` (wall clock, subject to NTP adjustments)
 
 ### 4.3 Memory Measurement
 
 **GPU Memory:**
+
 ```bash
 # Peak memory usage during solve
 nvidia-smi --query-gpu=memory.used --format=csv -lms 100 > gpu_mem.log &
@@ -290,6 +313,7 @@ awk -F, 'NR>1 {if($1>max) max=$1} END {print max}' gpu_mem.log
 ```
 
 **CPU Memory:**
+
 ```bash
 # Use `/usr/bin/time -v` for detailed memory stats
 /usr/bin/time -v python3 performance_runner.py ... 2>&1 | grep "Maximum resident"
@@ -302,12 +326,14 @@ awk -F, 'NR>1 {if($1>max) max=$1} END {print max}' gpu_mem.log
 ### 5.1 Deterministic Execution
 
 **Requirements:**
+
 - **Fixed random seed:** Set in benchmark YAML and environment variable
 - **Single-threaded reduction:** Use deterministic summation (Kahan algorithm)
 - **Sorted iteration order:** Iterate over elements/nodes in ascending ID order
 - **Disabled dynamic scheduling:** Force static OpenMP schedule
 
 **Verification:**
+
 ```bash
 # Run same benchmark twice
 python3 performance_runner.py --benchmark BM_001 --solver quasim --seed 42 --output run1.json
@@ -321,11 +347,13 @@ diff <(jq -r '.state_hash' run1.json) <(jq -r '.state_hash' run2.json)
 ### 5.2 SHA-256 Hash Verification
 
 **What to Hash:**
+
 - Nodal displacements (full precision, all nodes)
 - Element stresses (integration point values)
 - Convergence history (residual norms)
 
 **How to Compute:**
+
 ```python
 import hashlib
 import numpy as np
@@ -338,6 +366,7 @@ def compute_state_hash(displacements: np.ndarray) -> str:
 ```
 
 **Acceptance Criteria:**
+
 - All 5 Ansys runs must have **identical hash** (bit-exact reproducibility)
 - All 5 QuASIM runs must have **identical hash**
 - QuASIM hash must **differ** from Ansys hash (due to algorithmic differences)
@@ -350,6 +379,7 @@ def compute_state_hash(displacements: np.ndarray) -> str:
 ### 6.1 Displacement Error
 
 **Metric:**
+
 ```
 L2 displacement error = ||u_quasim - u_ansys||₂ / ||u_ansys||₂
 
@@ -360,6 +390,7 @@ where:
 ```
 
 **Computation:**
+
 ```python
 def compute_displacement_error(u_quasim: np.ndarray, u_ansys: np.ndarray) -> float:
     """Compute L2 displacement error."""
@@ -369,6 +400,7 @@ def compute_displacement_error(u_quasim: np.ndarray, u_ansys: np.ndarray) -> flo
 ```
 
 **Threshold:**
+
 - **Tier-0 acceptance:** < 2% for all benchmarks
 - **Warning level:** 1-2% (acceptable, but investigate)
 - **Failure:** > 2% (solver tuning required)
@@ -376,6 +408,7 @@ def compute_displacement_error(u_quasim: np.ndarray, u_ansys: np.ndarray) -> flo
 ### 6.2 Stress Error
 
 **Metric:**
+
 ```
 Element-wise von Mises stress error:
   σ_vm = sqrt(1/2 * [(σ₁-σ₂)² + (σ₂-σ₃)² + (σ₃-σ₁)²])
@@ -388,12 +421,14 @@ Mean error:
 ```
 
 **Threshold:**
+
 - **Tier-0 acceptance:** < 5% mean error
 - **Per-element tolerance:** < 15% (99th percentile)
 
 ### 6.3 Energy Conservation
 
 **Metric:**
+
 ```
 Strain energy error:
   E_strain = ∫ W(F) dV  (integrate strain energy density over volume)
@@ -403,11 +438,13 @@ Relative error:
 ```
 
 **Threshold:**
+
 - **Tier-0 acceptance:** < 1e-6 (strain energy balance)
 
 ### 6.4 Contact Force Error (for BM_002, BM_005)
 
 **Metric:**
+
 ```
 Reaction force error:
   F_reaction = Σ (reaction forces at constrained nodes)
@@ -417,6 +454,7 @@ Relative error:
 ```
 
 **Threshold:**
+
 - **Tier-0 acceptance:** < 5% for normal direction
 - **Tangential forces:** < 10% (friction is harder to match)
 
@@ -427,6 +465,7 @@ Relative error:
 ### 7.1 Speedup Definition
 
 **Primary Metric:**
+
 ```
 Speedup = T_ansys_median / T_quasim_median
 
@@ -436,11 +475,13 @@ where:
 ```
 
 **Why Median?**
+
 - Robust to outliers (single slow run doesn't skew results)
 - More stable than mean for small sample sizes
 - Industry-standard practice
 
 **Reporting:**
+
 - Report median ± 95% confidence interval
 - Report min/max for transparency
 - Flag outliers (> 1.5 × IQR from median)
@@ -448,6 +489,7 @@ where:
 ### 7.2 Iteration Count
 
 **Metric:**
+
 ```
 Iteration efficiency = N_ansys / N_quasim
 
@@ -457,12 +499,14 @@ where:
 ```
 
 **Target:**
+
 - **Ideal:** N_quasim ≤ N_ansys (QuASIM converges in fewer iterations)
 - **Acceptable:** N_quasim ≤ 1.2 × N_ansys (20% more iterations OK if faster per-iteration)
 
 ### 7.3 Memory Efficiency
 
 **Metric:**
+
 ```
 Memory overhead = M_quasim / M_ansys
 
@@ -472,6 +516,7 @@ where:
 ```
 
 **Note:**
+
 - CPU and GPU memory are not directly comparable
 - Report absolute values (GB) for transparency
 - GPU memory limit is hard constraint (OOM = failure)
@@ -479,6 +524,7 @@ where:
 ### 7.4 Scaling Efficiency (Multi-GPU)
 
 **Weak Scaling (BM_005 only):**
+
 ```
 Efficiency_weak = T_1GPU / T_NGPU
 
@@ -486,6 +532,7 @@ Target: > 75% for N ≤ 4 GPUs
 ```
 
 **Strong Scaling:**
+
 ```
 Efficiency_strong = (T_1GPU / N) / T_NGPU
 
@@ -499,17 +546,20 @@ Target: > 65% for N ≤ 4 GPUs
 ### 8.1 Sample Size Justification
 
 **Why 5 runs?**
+
 - Minimum for meaningful statistics (central limit theorem)
 - Balances rigor with practicality (10 runs = 2 hours per benchmark)
 - Sufficient to detect outliers (modified Z-score method)
 
 **If variance is high:**
+
 - Increase to 7-10 runs
 - Investigate source of variance (thermal throttling? background processes?)
 
 ### 8.2 Outlier Detection
 
 **Modified Z-Score Method:**
+
 ```python
 def detect_outliers(times: list[float], threshold: float = 3.5) -> list[int]:
     """Detect outliers using modified Z-score."""
@@ -520,6 +570,7 @@ def detect_outliers(times: list[float], threshold: float = 3.5) -> list[int]:
 ```
 
 **Action on Outliers:**
+
 - **1 outlier:** Report but include in statistics
 - **2+ outliers:** Investigate (hardware issue? thermal throttling?)
 - **All outliers:** Discard entire benchmark run, repeat with different hardware
@@ -527,6 +578,7 @@ def detect_outliers(times: list[float], threshold: float = 3.5) -> list[int]:
 ### 8.3 Confidence Intervals
 
 **Bootstrap Method (for small samples):**
+
 ```python
 def bootstrap_ci(times: list[float], n_bootstrap: int = 10000) -> tuple[float, float]:
     """Compute 95% confidence interval via bootstrap."""
@@ -538,6 +590,7 @@ def bootstrap_ci(times: list[float], n_bootstrap: int = 10000) -> tuple[float, f
 ```
 
 **Reporting Format:**
+
 ```
 Speedup: 4.2x (95% CI: [3.8x, 4.6x])
 ```
@@ -545,12 +598,14 @@ Speedup: 4.2x (95% CI: [3.8x, 4.6x])
 ### 8.4 Statistical Significance Test
 
 **Null Hypothesis:**
+
 ```
 H₀: T_quasim ≥ T_ansys  (QuASIM is not faster)
 H₁: T_quasim < T_ansys  (QuASIM is faster)
 ```
 
 **Mann-Whitney U Test:**
+
 ```python
 from scipy.stats import mannwhitneyu
 
@@ -571,12 +626,14 @@ def test_speedup_significance(ansys_times, quasim_times) -> tuple[float, str]:
 ### 9.1 Ansys Profiling
 
 **Enable Ansys Timing Output:**
+
 ```apdl
 /CONFIG,TIMINT,1  ! Enable timing
 /STATUS,SOLU      ! Print solver status
 ```
 
 **Parse Ansys Output:**
+
 ```python
 def parse_ansys_timing(output_file: str) -> dict:
     """Extract timing breakdown from Ansys output."""
@@ -596,6 +653,7 @@ def parse_ansys_timing(output_file: str) -> dict:
 ### 9.2 QuASIM GPU Profiling
 
 **NVIDIA Nsight Systems:**
+
 ```bash
 # Profile QuASIM execution
 nsys profile -o quasim_profile python3 performance_runner.py \
@@ -606,6 +664,7 @@ nsys-ui quasim_profile.nsys-rep
 ```
 
 **NVIDIA Nsight Compute (kernel-level):**
+
 ```bash
 # Profile specific kernels
 ncu --set full -o kernel_profile python3 performance_runner.py \
@@ -616,6 +675,7 @@ ncu-ui kernel_profile.ncu-rep
 ```
 
 **What to Look For:**
+
 - GPU utilization (should be > 80% during solve)
 - Memory bandwidth utilization (> 60% is good)
 - Kernel launch overhead (should be < 5% of total time)
@@ -646,6 +706,7 @@ ncu-ui kernel_profile.ncu-rep
 ### 10.2 Overall Acceptance (All Benchmarks)
 
 **Tier-0 acceptance requires:**
+
 - [ ] All 5 benchmarks pass accuracy thresholds
 - [ ] All 5 benchmarks achieve ≥ 3x speedup
 - [ ] Zero convergence failures across all runs
@@ -653,6 +714,7 @@ ncu-ui kernel_profile.ncu-rep
 - [ ] Statistical significance (p < 0.05 for all speedup claims)
 
 **If any benchmark fails:**
+
 1. Analyze failure mode (accuracy? performance? convergence?)
 2. Implement fix (algorithm tuning, hardware upgrade, etc.)
 3. Re-run failed benchmark(s)
@@ -665,6 +727,7 @@ ncu-ui kernel_profile.ncu-rep
 ### 11.1 Report Formats
 
 **CSV (machine-readable):**
+
 ```csv
 Benchmark,Solver,Run,SolveTime,Iterations,MemoryGB,DisplacementError,StressError
 BM_001,ansys,1,180.2,6,4.2,N/A,N/A
@@ -675,6 +738,7 @@ BM_001,quasim,1,45.3,7,8.1,0.015,0.032
 ```
 
 **JSON (detailed metrics):**
+
 ```json
 {
   "benchmark": "BM_001",
@@ -704,6 +768,7 @@ BM_001,quasim,1,45.3,7,8.1,0.015,0.032
 ```
 
 **HTML (human-readable):**
+
 - Executive summary (pass/fail for each benchmark)
 - Performance plots (speedup bar chart, convergence curves)
 - Statistical analysis (confidence intervals, significance tests)
@@ -712,6 +777,7 @@ BM_001,quasim,1,45.3,7,8.1,0.015,0.032
 ### 11.2 Required Plots
 
 **Speedup Comparison (Bar Chart):**
+
 ```
 Benchmark Speedup vs Ansys Baseline
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -725,6 +791,7 @@ BM_005 █████████    3.7x ± 0.5x
 ```
 
 **Accuracy Error Bars:**
+
 ```
 Displacement Error (%) by Benchmark
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -740,6 +807,7 @@ BM_005 ●━━━━━━━━━━━━━━━━━━━━━━━ 
 ```
 
 **Convergence History:**
+
 ```
 Newton-Raphson Convergence (BM_001)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -764,11 +832,13 @@ Newton-Raphson Convergence (BM_001)
 ### 12.1 Regression Test Suite
 
 **Automated Execution:**
+
 - **Trigger:** Every merge to `main` branch
 - **Frequency:** Weekly full benchmark suite
 - **Hardware:** Dedicated CI server (fixed config)
 
 **Regression Detection:**
+
 ```python
 def check_performance_regression(
     current_speedup: float,
@@ -782,6 +852,7 @@ def check_performance_regression(
 ```
 
 **Action on Regression:**
+
 1. Bisect commits to find culprit
 2. Profile regression case
 3. Fix or revert
@@ -790,15 +861,18 @@ def check_performance_regression(
 ### 12.2 Notification and Reporting
 
 **Success Notification:**
+
 - Green checkmark on commit status
 - Update performance badge in README
 
 **Failure Notification:**
+
 - Red X on commit status
 - Email to engineering team
 - Slack message to #quasim-ansys channel
 
 **Failure Report Contents:**
+
 - Which benchmark failed
 - Accuracy or performance regression
 - Comparison against previous run
@@ -811,6 +885,7 @@ def check_performance_regression(
 ### 13.1 Partner Execution
 
 **Provided to Partners:**
+
 - Benchmark definitions YAML
 - Performance runner script
 - Reference data (Ansys hashes, expected speedups)
@@ -818,6 +893,7 @@ def check_performance_regression(
 - Troubleshooting guide
 
 **Partner Responsibilities:**
+
 - Run benchmarks on internal hardware
 - Report results (CSV/JSON)
 - Document any issues encountered
@@ -825,16 +901,19 @@ def check_performance_regression(
 ### 13.2 Partner Acceptance Gates
 
 **Minimum Requirements:**
+
 - 3+ Fortune-50 partners validate successfully
 - No critical issues (zero convergence failures)
 - Median speedup ≥ 3x across all partners
 
 **Critical Issues:**
+
 - Convergence failure (any benchmark)
 - Accuracy violation (> 5% error)
 - Crash or GPU driver error
 
 **Non-Critical Issues:**
+
 - Speedup < 3x (but > 2x, acceptable with investigation)
 - Installation difficulties (docs improvement needed)
 
@@ -847,11 +926,13 @@ def check_performance_regression(
 **Issue:** Ansys solve time varies widely (> 20% between runs)
 
 **Diagnosis:**
+
 - Check CPU temperature (thermal throttling?)
 - Check for background processes (`top`, `htop`)
 - Check CPU frequency scaling (`cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor`)
 
 **Fix:**
+
 - Set CPU governor to `performance`
 - Kill background processes
 - Increase cooldown period to 120 seconds
@@ -861,10 +942,12 @@ def check_performance_regression(
 **Issue:** QuASIM GPU memory error (OOM)
 
 **Diagnosis:**
+
 - Check GPU memory usage (`nvidia-smi`)
 - Check model size (element count)
 
 **Fix:**
+
 - Reduce precision (FP32 instead of FP64)
 - Use multi-GPU mode
 - Upgrade to 80GB GPU (from 40GB)
@@ -874,11 +957,13 @@ def check_performance_regression(
 **Issue:** QuASIM convergence failure
 
 **Diagnosis:**
+
 - Check convergence history (diverging residual?)
 - Check material parameters (negative modulus?)
 - Check mesh quality (negative Jacobian?)
 
 **Fix:**
+
 - Reduce load step size (increase substeps)
 - Enable line search
 - Fallback to CPU (more robust numerics)
@@ -888,11 +973,13 @@ def check_performance_regression(
 **Issue:** Accuracy failure (> 2% displacement error)
 
 **Diagnosis:**
+
 - Check mesh convergence (refine and re-run)
 - Check Ansys reference hash (reproducible?)
 - Check material parameter conversion (units correct?)
 
 **Fix:**
+
 - Refine mesh by 2x
 - Re-run Ansys with tighter tolerance
 - Verify material parameter mapping
@@ -904,6 +991,7 @@ def check_performance_regression(
 This methodology ensures **reproducible, statistically rigorous, and adversarially defensible** performance validation of Ansys-QuASIM integration. By following this protocol, industrial partners can independently verify QuASIM performance claims and make informed decisions about pilot deployment.
 
 **Key Takeaways:**
+
 1. **Accuracy first** - Performance is irrelevant if accuracy fails
 2. **Statistical rigor** - 5 runs, confidence intervals, significance tests
 3. **Transparency** - Report all data, outliers, and failures
@@ -915,6 +1003,7 @@ If all benchmarks pass Tier-0 acceptance criteria, QuASIM is **production-ready 
 ---
 
 **Document Control:**
+
 - **Revision History:**
   - v1.0.0 (2025-12-13): Initial release
 - **Next Review:** 2025-03-15 (quarterly)

@@ -183,6 +183,7 @@ python3 tests/test_documentation_generation.py
 ```
 
 Tests verify:
+
 - Module imports
 - Data structures
 - Appendix generation
@@ -194,6 +195,7 @@ Tests verify:
 ### 1. Evidence-Based Analysis
 
 All documentation is based on actual code analysis:
+
 - No speculative features
 - No marketing claims
 - Verifiable through repository artifacts
@@ -201,6 +203,7 @@ All documentation is based on actual code analysis:
 ### 2. Technical Rigor
 
 Documentation follows scientific standards:
+
 - Precise technical language
 - Mathematical derivations
 - Statistical methods
@@ -209,6 +212,7 @@ Documentation follows scientific standards:
 ### 3. Comprehensive Coverage
 
 Complete system documentation:
+
 - 1,032 modules analyzed
 - 96,532 lines of code scanned
 - 148 visualizations generated
@@ -217,6 +221,7 @@ Complete system documentation:
 ### 4. Reproducibility
 
 Deterministic generation:
+
 - Version-controlled scripts
 - Fixed random seeds for visualizations
 - Automated execution
@@ -253,6 +258,7 @@ Then update `generate_all_appendices()` to include it.
 ### Modifying Document Structure
 
 Edit the respective generator classes:
+
 - `ExecutiveSummaryGenerator.generate()` for executive summary
 - `TechnicalWhitePaperGenerator.generate()` for white paper
 
@@ -314,6 +320,7 @@ QuASIM Engineering Team
 ## Support
 
 For issues or questions:
+
 - Open a GitHub issue
 - Contact the QuASIM team
 - Refer to main repository documentation

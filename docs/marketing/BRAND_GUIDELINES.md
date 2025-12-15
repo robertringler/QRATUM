@@ -15,12 +15,14 @@ QuASIM × QuNimbus delivers enterprise-grade quantum-classical simulation with e
 ## Brand Positioning
 
 **What We Are**:
+
 - The first certifiable quantum-classical platform for aerospace & defense
 - Production-ready, not a research prototype
 - Validated with real SpaceX and NASA mission data
 - Enterprise-focused with 99.95% SLA guarantees
 
 **What We Are Not**:
+
 - A pure research project or academic exercise
 - Focused solely on quantum hardware
 - Limited to simulation without economic integration
@@ -35,10 +37,12 @@ QuASIM × QuNimbus delivers enterprise-grade quantum-classical simulation with e
 The QuASIM logo consists of stylized text with quantum-inspired geometric elements.
 
 **Versions**:
+
 - Light version (`quasim_logo_light.svg`): For dark backgrounds (#002b36, #073642)
 - Dark version (`quasim_logo_dark.svg`): For light backgrounds (#fdf6e3, white)
 
 **Usage Rules**:
+
 - Always maintain aspect ratio (do not stretch or distort)
 - Minimum width: 120px (web), 80px (mobile), 1.5 inches (print)
 - Clear space: Minimum 20px on all sides
@@ -48,6 +52,7 @@ The QuASIM logo consists of stylized text with quantum-inspired geometric elemen
 #### QuNimbus Extension
 
 When referencing the combined platform, use:
+
 - **Text Format**: QuASIM × QuNimbus (note the multiplication symbol ×, not letter x)
 - **Alternative**: QuASIM + QuNimbus (for environments where × is unavailable)
 - **Tagline**: "Quantum-Inspired Autonomous Simulation & Market-Linked Intelligence"
@@ -87,28 +92,33 @@ QuASIM follows a dark, professional color scheme based on the Solarized palette 
 #### Color Usage Guidelines
 
 **Backgrounds**:
+
 - Primary: Base Dark (#002b36)
 - Panels/Cards: Base Medium (#073642)
 - Overlays: Base Dark with 80-90% opacity
 
 **Text**:
+
 - Primary: Light Beige (#fdf6e3)
 - Secondary: Light Gray (#93a1a1)
 - Disabled: Dark Gray (#586e75)
 
 **Interactive Elements**:
+
 - Primary CTA: Accent Blue (#268bd2)
 - Hover: Accent Cyan (#2aa198)
 - Active: Lighter shade of Accent Blue
 - Disabled: Dark Gray (#586e75)
 
 **Status Indicators**:
+
 - Success: Green (#859900)
 - Warning: Orange (#cb4b16) or Yellow (#b58900)
 - Error: Red (#dc322f)
 - Info: Accent Blue (#268bd2)
 
 **Quantum Elements**:
+
 - Glow effects: Accent Cyan (#2aa198)
 - Energy flows: Gradient from Accent Blue to Accent Cyan
 - Entanglement lines: Accent Cyan with opacity
@@ -118,12 +128,14 @@ QuASIM follows a dark, professional color scheme based on the Solarized palette 
 #### Font Families
 
 **Primary Font: Inter**
+
 - **Purpose**: UI elements, marketing copy, body text, headings
 - **Source**: [rsms.me/inter](https://rsms.me/inter/)
 - **License**: SIL Open Font License
 - **Formats**: Variable font (preferred), static weights
 
 **Monospace Font: Roboto Mono**
+
 - **Purpose**: Code snippets, technical specifications, data
 - **Source**: [Google Fonts](https://fonts.google.com/specimen/Roboto+Mono)
 - **License**: Apache 2.0
@@ -145,24 +157,28 @@ QuASIM follows a dark, professional color scheme based on the Solarized palette 
 #### Typography Guidelines
 
 **Headings**:
+
 - Use sentence case for most headings (capitalize first word only)
 - Use title case for major page titles
 - Maximum 2-3 lines per heading
 - Maintain clear hierarchy (don't skip levels)
 
 **Body Text**:
+
 - Line length: 60-80 characters optimal
 - Paragraph spacing: 1.5-2× line height
 - Left-aligned for LTR languages
 - Avoid full justification (creates uneven spacing)
 
 **Links**:
+
 - Color: Accent Blue (#268bd2)
 - Hover: Accent Cyan (#2aa198)
 - Underline: Optional (use for text-heavy contexts)
 - Visited: Slightly darker Accent Blue
 
 **Code**:
+
 - Font: Roboto Mono
 - Background: Base Medium (#073642) with 50% opacity
 - Padding: 4px horizontal, 2px vertical
@@ -174,6 +190,7 @@ QuASIM follows a dark, professional color scheme based on the Solarized palette 
 #### Photography Style
 
 When using photography:
+
 - **Tone**: Professional, high-tech, futuristic
 - **Color Treatment**: Cool tones (blues, cyans), desaturate if needed
 - **Composition**: Clean, minimalist, uncluttered
@@ -183,6 +200,7 @@ When using photography:
 #### Illustrations
 
 Custom illustrations should follow these principles:
+
 - **Style**: Geometric, minimalist, vector-based
 - **Color**: Use brand color palette
 - **Complexity**: Simple shapes, clear meaning
@@ -191,6 +209,7 @@ Custom illustrations should follow these principles:
 #### Icons
 
 Use consistent icon style:
+
 - **Library**: Feather Icons or Heroicons (both MIT licensed)
 - **Style**: Outline or solid (be consistent within each context)
 - **Sizes**: 24×24px (standard), 48×48px (large)
@@ -235,6 +254,7 @@ Use multiples of 8px for consistent spacing:
 #### Buttons
 
 **Primary Button**:
+
 - Background: Accent Blue (#268bd2)
 - Text: Light Beige (#fdf6e3)
 - Padding: 12px 24px
@@ -243,6 +263,7 @@ Use multiples of 8px for consistent spacing:
 - Active: Darker Accent Blue
 
 **Secondary Button**:
+
 - Background: Transparent
 - Border: 2px solid Accent Blue (#268bd2)
 - Text: Accent Blue (#268bd2)
@@ -250,6 +271,7 @@ Use multiples of 8px for consistent spacing:
 - Hover: Background Accent Blue, text Light Beige
 
 **Text Button**:
+
 - Background: Transparent
 - Text: Accent Blue (#268bd2)
 - Padding: 8px 16px
@@ -267,6 +289,7 @@ Use multiples of 8px for consistent spacing:
 #### Forms
 
 **Input Fields**:
+
 - Background: Base Dark (#002b36)
 - Border: 1px solid Dark Gray (#586e75)
 - Padding: 10px 12px
@@ -275,6 +298,7 @@ Use multiples of 8px for consistent spacing:
 - Error: Border color Red (#dc322f)
 
 **Labels**:
+
 - Color: Light Gray (#93a1a1)
 - Size: 14px
 - Weight: 500 (Medium)
@@ -283,6 +307,7 @@ Use multiples of 8px for consistent spacing:
 #### Badges
 
 **Certification Badges** (DO-178C, CMMC, NIST):
+
 - Background: Orange (#cb4b16) or Green (#859900)
 - Text: Light Beige (#fdf6e3)
 - Padding: 4px 8px
@@ -291,6 +316,7 @@ Use multiples of 8px for consistent spacing:
 - Font weight: 600 (SemiBold)
 
 **Status Badges**:
+
 - Success: Green background
 - Warning: Orange background
 - Error: Red background
@@ -334,6 +360,7 @@ Use sparingly and ensure they don't interfere with content readability.
 ### Writing Style
 
 **Do**:
+
 - Use active voice ("QuASIM delivers..." not "Results are delivered by...")
 - Be specific (metrics, numbers, concrete examples)
 - Use technical terms correctly
@@ -341,6 +368,7 @@ Use sparingly and ensure they don't interfere with content readability.
 - Focus on benefits, not just features
 
 **Don't**:
+
 - Overhype or make unsupported claims
 - Use buzzwords without substance
 - Over-simplify complex concepts (maintain technical accuracy)
@@ -358,21 +386,25 @@ Use sparingly and ensure they don't interfere with content readability.
 ### Messaging Framework
 
 **For Aerospace/Defense Customers**:
+
 - Emphasis: Certification, compliance, mission validation
 - Proof points: DO-178C Level A, CMMC 2.0 L2, SpaceX/NASA results
 - Tone: Highly technical, rigorous, formal
 
 **For Enterprise Customers**:
+
 - Emphasis: Production readiness, ROI, integration ease
 - Proof points: 99.95% SLA, Fortune 500 pipeline, GPU acceleration
 - Tone: Professional, business-focused, benefit-driven
 
 **For Technical Audiences**:
+
 - Emphasis: Architecture, performance, innovation
 - Proof points: cuQuantum integration, tensor networks, RL optimization
 - Tone: Technical, detailed, peer-to-peer
 
 **For Investors**:
+
 - Emphasis: Market opportunity, competitive moat, traction
 - Proof points: $7.4B valuation, 3-5 year lead, federal pipeline
 - Tone: Strategic, confident, growth-focused
@@ -382,6 +414,7 @@ Use sparingly and ensure they don't interfere with content readability.
 ### Marketing Website
 
 **Hero Section**:
+
 - Headline: "Quantum-Inspired Autonomous Simulation"
 - Subhead: "The first certifiable quantum-classical platform for aerospace & defense"
 - Background: Dark theme with subtle animated quantum network
@@ -390,11 +423,13 @@ Use sparingly and ensure they don't interfere with content readability.
 ### Pitch Deck
 
 **Title Slide**:
+
 - QuASIM logo (centered, large)
 - Tagline: "Enterprise-Grade Quantum Simulation + Economic Activation"
 - Background: Base Dark with cyan accent lines
 
 **Content Slides**:
+
 - Title: 36px Inter SemiBold, Accent Blue
 - Body: 20px Inter Regular, Light Beige
 - Metrics: 48px Inter Bold, Accent Cyan
@@ -403,12 +438,14 @@ Use sparingly and ensure they don't interfere with content readability.
 ### Social Media
 
 **Twitter/X Post**:
+
 - Headline: 24-32px Inter Bold
 - Body: 16-20px Inter Regular
 - Logo: Upper left or lower right
 - Hashtags: #QuASIM #QuantumSimulation
 
 **LinkedIn Post**:
+
 - Professional tone
 - Include metrics and credentials
 - Link to full article or case study
@@ -425,6 +462,7 @@ Use sparingly and ensure they don't interfere with content readability.
 ### Third-Party Logos
 
 When featuring partner or customer logos:
+
 - Obtain written permission
 - Follow partner's brand guidelines
 - Maintain clear space around logos
@@ -433,6 +471,7 @@ When featuring partner or customer logos:
 ### Export Control
 
 QuASIM development must comply with ITAR and EAR:
+
 - **Do not** include export-controlled information in public materials
 - **Do not** specify capabilities that exceed public domain
 - **Do verify** with legal team before publishing technical specifications
@@ -440,6 +479,7 @@ QuASIM development must comply with ITAR and EAR:
 ### Accessibility
 
 All materials must meet WCAG 2.1 Level AA standards:
+
 - Color contrast: Minimum 4.5:1 for body text, 3:1 for large text
 - Text alternatives: Provide alt text for images
 - Keyboard navigation: Ensure all interactive elements are accessible
@@ -457,6 +497,7 @@ All materials must meet WCAG 2.1 Level AA standards:
 ### Requesting Changes
 
 To suggest brand guideline updates:
+
 1. Open GitHub issue with label `brand` or `design`
 2. Describe proposed change with rationale
 3. Provide visual examples if applicable
@@ -465,6 +506,7 @@ To suggest brand guideline updates:
 ### Contact
 
 For questions about brand guidelines:
+
 - **GitHub**: Open issue with `brand` label
 - **Email**: [Contact team]
 - **Urgent Matters**: Tag @QuASIM-Marketing in relevant discussion

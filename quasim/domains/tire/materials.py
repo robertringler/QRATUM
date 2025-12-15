@@ -81,7 +81,7 @@ class MaterialProperties:
         t_factor = max(0.3, min(1.5, t_factor))
 
         # Strain rate effect (simplified power law)
-        rate_factor = 1.0 + 0.05 * (strain_rate ** 0.2)
+        rate_factor = 1.0 + 0.05 * (strain_rate**0.2)
 
         return self.elastic_modulus * t_factor * rate_factor
 
@@ -96,7 +96,7 @@ class MaterialProperties:
             Energy loss per cycle (normalized)
         """
         # Frequency-dependent loss factor
-        freq_factor = 1.0 + 0.1 * (frequency ** 0.5)
+        freq_factor = 1.0 + 0.1 * (frequency**0.5)
 
         # Temperature dependence
         temp_factor = 1.0 + 0.02 * abs(temperature - 20.0)

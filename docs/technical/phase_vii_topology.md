@@ -19,6 +19,7 @@ Phase VII extends the Phase VI single-region architecture to a three-region acti
 3. **ap-southeast-1**: Asia-Pacific presence
 
 Each region provides:
+
 - Full simulation stack (compiler, tensor planner, GPU schedulers)
 - Kubernetes services with GitOps deployment
 - Local observability (Grafana, Prometheus, Thanos)
@@ -35,16 +36,19 @@ Each region provides:
 ## Cross-Region Synchronization
 
 ### Metrics & Logs
+
 - Real-time metrics aggregation via Thanos
 - Log shipping with 30-second maximum lag
 - Distributed tracing with Tempo
 
 ### ORD Archive
+
 - Signed checkpoint synchronization every 30 seconds
 - Ed25519 signature verification
 - zstd compression for efficient transfer
 
 ### Drift Analytics
+
 - Φ_QEVF verifier exchanges drift statistics
 - Kolmogorov-Smirnov (KS) test results shared
 - Cross-region validation for consistency
@@ -52,11 +56,13 @@ Each region provides:
 ## Market Integration
 
 ### QMP/QEX Market Mesh
+
 - Three-broker mesh topology for redundancy
 - Pricing oracles provide real-time valuation inputs
 - Entanglement efficiency (η_ent) as tradable metric
 
 ### Valuation Dashboard
+
 - Aggregated cross-region metrics
 - Risk engine for scenario analysis
 - DCF-based valuation updates
@@ -64,6 +70,7 @@ Each region provides:
 ## Safety & Compliance
 
 ### QuNimbus v6 Global Safety Control
+
 1. **Dry-Run Validator**: Pre-flight simulation checks
 2. **Query ID Audit Chain**: Immutable execution logs
 3. **Strict Validation**: Policy enforcement

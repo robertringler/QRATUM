@@ -26,26 +26,32 @@ QuASIM × QuNimbus is an enterprise-grade quantum-classical simulation platform 
 ## Quick Links
 
 ### For Designers
+
 Start here: **[Figma Quick Start](FIGMA_QUICKSTART.md)**
+
 - Learn the basics in 5 minutes
 - Access templates and components
 - Follow the export workflow
 
 ### For Marketers
+
 - **[One-Pager](one_pager.md)**: Elevator pitch and key facts
 - **[Press Release](press_release.md)**: Official announcement template
 - **[Brand Guidelines](BRAND_GUIDELINES.md)**: Messaging and tone
 
 ### For Developers
+
 - **[Figma Integration Guide](FIGMA_INTEGRATION_GUIDE.md)**: Technical workflow
 - Asset directories: `../assets/marketing/`, `../assets/social/`
 
 ## Key Brand Elements
 
 ### Tagline
+
 "Quantum-Inspired Autonomous Simulation & Market-Linked Intelligence"
 
 ### Color Palette
+
 - Base Dark: `#002b36` (primary background)
 - Base Medium: `#073642` (panels)
 - Accent Blue: `#268bd2` (primary accent)
@@ -53,10 +59,12 @@ Start here: **[Figma Quick Start](FIGMA_QUICKSTART.md)**
 - Light Text: `#fdf6e3` (on dark backgrounds)
 
 ### Typography
+
 - **Primary**: Inter (UI, marketing, body text)
 - **Monospace**: Roboto Mono (code, technical specs)
 
 ### Logo
+
 - Light version: `../assets/quasim_logo_light.svg` (for dark backgrounds)
 - Dark version: `../assets/quasim_logo_dark.svg` (for light backgrounds)
 
@@ -104,12 +112,14 @@ Start here: **[Figma Quick Start](FIGMA_QUICKSTART.md)**
 **Professional + Futuristic + Technical + Accessible**
 
 **Do**:
+
 - Use active voice and specific metrics
 - Cite validation results and certifications
 - Focus on benefits over features
 - Explain technical concepts clearly
 
 **Don't**:
+
 - Overhype or make unsupported claims
 - Use buzzwords without substance
 - Over-simplify at the cost of accuracy
@@ -200,20 +210,24 @@ Request access via GitHub issue with `access-request` label.
 ## Compliance & Legal
 
 ### Trademark Usage
+
 - QuASIM™ and QuNimbus™ are trademarks
 - Use ™ symbol on first prominent use
 - Proper capitalization: QuASIM, QuNimbus (not QUASIM, quasim)
 
 ### Export Control
+
 - No ITAR/EAR controlled information in public materials
 - Verify with legal team before publishing technical specs
 
 ### Third-Party Assets
+
 - Obtain permission before using customer logos
 - Follow partner brand guidelines
 - Credit sources appropriately
 
 ### Accessibility
+
 - WCAG 2.1 Level AA compliance
 - 4.5:1 color contrast ratio minimum
 - Alt text for all images
@@ -253,12 +267,14 @@ Request access via GitHub issue with `access-request` label.
 ### Resources
 
 **External**:
+
 - [Figma](https://www.figma.com/)
 - [Inter Font](https://rsms.me/inter/)
 - [Roboto Mono Font](https://fonts.google.com/specimen/Roboto+Mono)
 - [SVGO](https://github.com/svg/svgo) (SVG optimizer)
 
 **Internal**:
+
 - [Main README](../../README.md)
 - [Architecture Docs](../technical/architecture.md)
 - [Valuation Dashboard](../valuation_dashboard.html)

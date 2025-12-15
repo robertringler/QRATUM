@@ -31,6 +31,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 - **Commercial Integration**: Production-ready Ansys PyMAPDL adapter with CO_SOLVER, PRECONDITIONER, and STANDALONE modes
 
 **Validated Applications:**
+
 - Aerospace trajectory studies and orbital mechanics
 - Energy-grid stability analysis and renewable integration
 - Large-strain rubber block compression (BM_001 benchmark)
@@ -63,6 +64,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 - **Multi-Cloud Support**: EKS (AWS), GKE (Google Cloud), AKS (Azure) compatibility
 
 **Architecture:**
+
 - Stateless backend for horizontal scaling with HPA (Horizontal Pod Autoscaler)
 - Prometheus + Grafana + Loki + Tempo observability stack
 - Cilium CNI for network policy enforcement
@@ -132,30 +134,35 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 ### Target Markets
 
 #### 1. Aerospace & Defense ($1.2T Global Market)
+
 - **Primary Need:** DO-178C Level A certification-ready simulation for flight-critical systems
 - **Pain Point:** Lack of quantum-enhanced tools meeting aerospace safety standards
 - **QRATUM Advantage:** Only platform with aerospace certification posture + quantum acceleration
 - **Target Customers:** Boeing, Lockheed Martin, Northrop Grumman, Raytheon, BAE Systems, SpaceX (validated with mission data)
 
 #### 2. Automotive & Tire Manufacturing ($150B Tire Market)
+
 - **Primary Need:** High-fidelity elastomeric simulation for product development
 - **Pain Point:** Computational expense of finite element analysis at production scale
 - **QRATUM Advantage:** 11.4× performance improvement + Ansys integration + validated Goodyear pilot
 - **Target Customers:** Goodyear, Michelin, Bridgestone, Continental, Pirelli
 
 #### 3. Energy & Utilities ($2.3T Global Market)
+
 - **Primary Need:** Grid stability analysis and renewable integration modeling
 - **Pain Point:** Real-time simulation at transmission system operator (TSO) scale
 - **QRATUM Advantage:** Deterministic execution + multi-physics coupling + distributed orchestration
 - **Target Customers:** National Grid, PG&E, Duke Energy, Enel, EDF
 
 #### 4. Pharmaceutical & Biotechnology ($1.5T Market)
+
 - **Primary Need:** Protein folding, drug discovery, molecular dynamics
 - **Pain Point:** Computational limitations in simulating large biomolecular systems
 - **QRATUM Advantage:** XENON bio-mechanism engine + GPU acceleration + visualization
 - **Target Customers:** Pfizer, Moderna, Genentech, Amgen, GSK
 
 #### 5. Financial Services ($26T Global Assets)
+
 - **Primary Need:** Risk modeling, Monte Carlo simulation, portfolio optimization
 - **Pain Point:** Computational bottlenecks in stress testing and scenario analysis
 - **QRATUM Advantage:** Deterministic execution + audit trails + federated learning
@@ -172,6 +179,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 | **NVIDIA cuQuantum** | GPU acceleration library | Developer toolkit, not turnkey platform | Complete ecosystem, automated workflows |
 
 **Defensible Moat:**
+
 1. **Certification Portfolio**: Only platform with DO-178C Level A + CMMC 2.0 L2 + NIST 800-53 compliance
 2. **Validated Mission Data**: SpaceX and NASA data integration demonstrates production readiness
 3. **Autonomous Evolution**: Self-improving kernels create widening performance gap over time
@@ -217,17 +225,20 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 ### 3. Validated Performance Benchmarks
 
 **BM_001 Large-Strain Rubber Compression:**
+
 - **Baseline:** Ansys PyMAPDL standalone
 - **QuASIM Performance:** 11.4× throughput improvement
 - **Statistical Validation:** Bootstrap confidence intervals, modified Z-score outlier detection
 - **Reproducibility:** SHA-256 state hash verification across runs
 
 **Goodyear Pilot Program:**
+
 - **Scope:** Tire simulation library with 1,500 pilots/day processing capacity
 - **Results:** Validated material models, mesh import/export, real-world stress distributions
 - **Business Impact:** Accelerated product development cycle, reduced physical prototyping costs
 
 **SpaceX Telemetry Integration:**
+
 - **Capability:** Orbital mechanics modeling and trajectory propagation
 - **Framework:** Telemetry ingestion and validation adapters implemented
 - **Significance:** Demonstrates aerospace data integration readiness for production validation
@@ -235,6 +246,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 ### 4. Intellectual Property Portfolio
 
 **Patent Coverage:** $10B–$14B valuation across:
+
 - Runtime introspection and RL-based kernel evolution (Phase III)
 - Hierarchical hybrid precision graphs with error budgeting
 - Differentiable compiler scheduling with gradient-based optimization
@@ -245,6 +257,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 - Federated kernel intelligence with privacy-preserving aggregation
 
 **Trade Secrets:**
+
 - Ansys integration architecture and material model implementations
 - MERA compression algorithms (100× state compression ratio)
 - QuNimbus RL convergence optimization (99.1% rate)
@@ -254,11 +267,13 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 ### 5. Ecosystem Lock-In
 
 **Network Effects:**
+
 - Federated learning improves performance for all users as deployment scales
 - Community-contributed material models, benchmark suites, and validation datasets
 - Growing library of domain-specific simulation templates (aerospace, automotive, energy, pharma)
 
 **Switching Costs:**
+
 - Certification evidence carries forward only within QRATUM ecosystem
 - Custom integration adapters (Ansys, COMSOL, ABAQUS) require re-engineering with competitors
 - Trained personnel, institutional knowledge, and workflow automation locked to platform
@@ -282,6 +297,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 | **Government** | Defense, Federal Agencies | $500K–$2M | FedRAMP High, IL4/IL5, On-prem deployment, DO-178C certification package |
 
 **Projected ARR (Annual Recurring Revenue):**
+
 - **Year 1 (2026):** 10 Enterprise + 50 Professional + 200 Starter = $8.4M ARR
 - **Year 2 (2027):** 50 Enterprise + 200 Professional + 1,000 Starter = $39.2M ARR
 - **Year 3 (2028):** 200 Enterprise + 800 Professional + 5,000 Starter = $156M ARR
@@ -295,6 +311,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 - **Managed Services:** Dedicated infrastructure management, 24/7 operations support (15–25% of subscription value)
 
 **Projected Services Revenue:**
+
 - **Year 1:** $2.1M (25% attach rate on Enterprise tier)
 - **Year 3:** $39M (25% of total revenue)
 - **Year 5:** $165M (20% of total revenue)
@@ -315,6 +332,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 - **Patent Licensing:** Defensive patent pool participation, cross-licensing agreements
 
 **Strategic Partners (Target):**
+
 - **Ansys:** Co-development of next-generation PyMAPDL quantum backend
 - **NVIDIA:** Joint optimization of cuQuantum integration, GPU reference architecture
 - **AWS/Azure/Google:** Preferred partner status, co-marketing, marketplace revenue share
@@ -341,6 +359,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 | **EBITDA** | -$5.6M | $3.1M | $61.7M | $207.5M | $443.5M |
 
 **Assumptions:**
+
 - Average deal size increases 15% annually (product maturity, enterprise adoption)
 - Customer acquisition cost (CAC) decreases 20% annually (brand recognition, channel development)
 - Customer lifetime value (LTV) increases with churn reduction (95% retention in Enterprise tier by Year 3)
@@ -352,11 +371,13 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 #### Bottom-Up Approach (SaaS Multiples)
 
 **Revenue Multiple Method:**
+
 - **Year 3 ARR:** $246.7M
 - **Enterprise SaaS Multiple (High-Growth):** 15–25× ARR
 - **Valuation Range:** $3.7B–$6.2B
 
 **Comparable Public Companies:**
+
 - **Palantir:** 18× ARR (AI/analytics platform, government contracts)
 - **Snowflake:** 22× ARR (data infrastructure, enterprise adoption)
 - **CrowdStrike:** 24× ARR (cybersecurity, compliance focus)
@@ -365,6 +386,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 #### Top-Down Approach (Market Capture)
 
 **Total Addressable Market (TAM):**
+
 - Aerospace Simulation: $12B × 5% capture = $600M
 - Automotive/Tire: $8B × 3% capture = $240M
 - Energy Grid: $15B × 2% capture = $300M
@@ -373,6 +395,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 - **Total Serviceable Obtainable Market (SOM):** $1.465B by Year 7
 
 **Market Share Valuation:**
+
 - Capturing 30% of SOM by Year 7: $440M ARR
 - Applying 20× multiple (mature SaaS): $8.8B valuation
 
@@ -381,6 +404,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 **Patent Portfolio:** $10B–$14B (based on licensing potential, defensive value, acquisition comparables)
 
 **Strategic Assets:**
+
 - Compliance certification evidence packages: $500M+ replacement cost
 - Validated benchmark suites and mission data: $200M+ proprietary value
 - Trained models and federated intelligence corpus: $300M+ data asset value
@@ -388,6 +412,7 @@ QRATUM addresses a critical market gap: the absence of production-grade quantum-
 #### Blended Valuation Range
 
 **Pre-Revenue (2025):** $3.2B–$27B
+
 - **Conservative:** 15× Year 3 ARR + 50% IP value discount = $3.7B + $5B = $8.7B
 - **Bull Case:** 25× Year 3 ARR + full IP value + strategic premium = $6.2B + $14B + $6.8B = $27B
 
@@ -470,9 +495,9 @@ The platform's defensible moats—certification portfolio, validated mission dat
 
 ### B. Contact Information
 
-**Investor Relations:** exec@qratum.io  
-**Technical Inquiries:** support@qratum.io  
-**Partnership Opportunities:** partnerships@qratum.io
+**Investor Relations:** <exec@qratum.io>  
+**Technical Inquiries:** <support@qratum.io>  
+**Partnership Opportunities:** <partnerships@qratum.io>
 
 ### C. References
 
@@ -487,4 +512,3 @@ The platform's defensible moats—certification portfolio, validated mission dat
 ---
 
 **Document Security:** This document contains business confidential information. Distribution limited to authorized personnel, investors, and strategic partners under NDA.
-

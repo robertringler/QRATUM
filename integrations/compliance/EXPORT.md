@@ -33,6 +33,7 @@ make pack QUASIM_NO_CONTROLLED_DATA=1
 ```
 
 This produces public artifacts suitable for:
+
 - Open source distribution
 - Non-controlled development environments
 - CI/CD pipelines
@@ -51,6 +52,7 @@ make pack QUASIM_CONTROLLED_BUILD=1
 ```
 
 Controlled artifacts must:
+
 - Include export control markings
 - Be distributed only to authorized recipients
 - Be stored in approved secure facilities
@@ -142,6 +144,7 @@ For controlled releases to authorized recipients:
 ## Penalties for Non-Compliance
 
 ITAR violations carry severe penalties:
+
 - Civil penalties up to $1,000,000 per violation
 - Criminal penalties including imprisonment
 - Debarment from government contracts

@@ -23,12 +23,14 @@ This document maps QuNimbus v6 integration code to NIST 800-53 Rev 5 security co
 **Control Objective**: Manage information system accounts including authorization, monitoring, and usage conditions.
 
 **How Met**:
+
 - Query authorization enforced via `QNimbusGuard` policy engine
 - Banned patterns include bio-weapons, mass manipulation, vulnerability exploitation
 - All queries logged with unique `query_id` for accountability
 - Rejection reasons captured in audit trail
 
 **Assessment Procedure** (AC-2(01)):
+
 ```bash
 # Test 1: Verify allowed query passes
 qunimbus ascend --query "climate simulation" --dry-run
@@ -42,6 +44,7 @@ python3 -c "from quasim.audit.log import verify_audit_chain; assert verify_audit
 ```
 
 **Compliance Evidence**:
+
 - DO-178C Level A: Deterministic authorization with 100% MC/DC coverage target
 - NIST 800-53 HIGH: Query-level access control with audit trail
 - CMMC 2.0 L2: AC.2.013 - Monitor and control remote access sessions
@@ -64,6 +67,7 @@ python3 -c "from quasim.audit.log import verify_audit_chain; assert verify_audit
 **Control Objective**: Generate audit records containing sufficient information to establish what events occurred, when, where, and by whom.
 
 **How Met**:
+
 - **What**: Event type (e.g., "qnimbus.ascend", "qunimbus.validate")
 - **When**: UTC timestamp in ISO 8601 format
 - **Where**: Implicit in query metadata (mode, configuration)
@@ -71,6 +75,7 @@ python3 -c "from quasim.audit.log import verify_audit_chain; assert verify_audit
 - **Outcome**: Status and results captured in data payload
 
 **Audit Record Format**:
+
 ```json
 {
   "timestamp": "2025-11-12T00:00:00.000000Z",
@@ -88,12 +93,14 @@ python3 -c "from quasim.audit.log import verify_audit_chain; assert verify_audit
 ```
 
 **Chain-of-Trust Properties**:
+
 - Append-only: New events extend chain, cannot modify history
 - Tamper-evident: SHA256 hash includes `prev_hash`, breaking chain if modified
 - Deterministic: Same event data always produces same `event_id`
 - Query-indexed: Top-level `query_id` enables efficient query correlation
 
 **Assessment Procedure** (AU-3(01)):
+
 ```bash
 # Test 1: Generate audit events
 qunimbus ascend --query "test query" --dry-run
@@ -117,6 +124,7 @@ print('✓ Query IDs indexed')
 ```
 
 **Compliance Evidence**:
+
 - DO-178C Level A: Deterministic event ordering with cryptographic integrity
 - NIST 800-53 HIGH: AU-3(1) - Additional audit information (query_id, seed)
 - NIST 800-53 HIGH: AU-9 - Protection of audit information (SHA256 chain)
@@ -142,17 +150,20 @@ print('✓ Query IDs indexed')
 **How Met**:
 
 **Integrity Protection**:
+
 - HDF5 files use Fletcher32 checksums for error detection
 - Observable validation ensures snapshot integrity within tolerances
 - SHA256 hashes in audit log link snapshots to generation events
 - Deterministic seeding enables bit-exact replay validation
 
 **Confidentiality Protection**:
+
 - Snapshots stored with compression (gzip) reducing attack surface
 - No plaintext secrets in artifacts (seed is public, reproducibility feature)
 - Policy guard prevents generation of prohibited content
 
 **Data-at-Rest Features**:
+
 ```python
 # From quasim/io/hdf5.py:66-69
 f.create_dataset(
@@ -164,6 +175,7 @@ f.create_dataset(
 ```
 
 **Validation Workflow**:
+
 ```bash
 # Generate snapshot with deterministic seed
 qunimbus ascend --query "climate model" --seed 42 --out artifacts/run1
@@ -195,6 +207,7 @@ print('✓ Bit-exact reproducibility verified')
 ```
 
 **Assessment Procedure** (SC-28(01)):
+
 ```bash
 # Test 1: Verify compression and checksums
 python3 -c "
@@ -232,6 +245,7 @@ qunimbus validate \
 ```
 
 **Compliance Evidence**:
+
 - DO-178C Level A: Deterministic snapshot generation with replay validation
 - NIST 800-53 HIGH: SC-28(1) - Cryptographic protection (SHA256 in audit chain)
 - CMMC 2.0 L2: SC.3.191 - Protect confidentiality of CUI at rest
@@ -249,11 +263,13 @@ qunimbus validate \
 **Overall Compliance Score**: 100% (3/3 controls fully implemented)
 
 **Certification Readiness**:
+
 - ✅ DO-178C Level A: Deterministic, replayable, fully tested
 - ✅ NIST 800-53 HIGH: All required controls implemented
 - ✅ CMMC 2.0 L2: Meets CUI protection requirements
 
 **Auditor Notes**:
+
 - All code includes type hints for static analysis
 - Defensive programming with graceful degradation (h5py fallback)
 - No breaking changes to existing functionality
@@ -275,4 +291,4 @@ qunimbus validate \
 
 ---
 
-*This document is part of the QuASIM certification package. For questions, contact compliance@quasim.io*
+*This document is part of the QuASIM certification package. For questions, contact <compliance@quasim.io>*

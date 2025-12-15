@@ -63,6 +63,7 @@ mechanism = BioMechanism(
 Represents a molecular configuration with thermodynamic properties.
 
 **Attributes:**
+
 - `state_id`: Unique identifier
 - `protein_name`: Name of the protein
 - `free_energy`: Gibbs free energy (ΔG) in kJ/mol
@@ -74,6 +75,7 @@ Represents a molecular configuration with thermodynamic properties.
 Represents a state transition (reaction) with kinetic parameters.
 
 **Attributes:**
+
 - `source_state`: Source state ID
 - `target_state`: Target state ID
 - `rate_constant`: Transition rate (k) in s⁻¹
@@ -100,6 +102,7 @@ viz_data = adapter.to_3d_network(layout="spring", scale=10.0)
 ```
 
 **Supported Layouts:**
+
 - `spring`: Force-directed spring layout
 - `circular`: Circular arrangement
 - `hierarchical`: Level-based hierarchy
@@ -219,6 +222,7 @@ python xenon/streaming_demo.py --steps 10 --min-evidence 0.9
 ```
 
 The demo:
+
 1. Creates a protein folding mechanism
 2. Runs stochastic simulation (Gillespie algorithm)
 3. Generates visualization snapshots at each step

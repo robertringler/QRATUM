@@ -70,6 +70,7 @@ Monitor progress via Grafana dashboards at qunimbus-global.local.
 ## Support
 
 For issues or questions:
+
 - Check logs: `logs/global_rollout.log`
 - Review pilot artifacts: `pilots/infinite/active/`
 - Monitor dashboards: Grafana at qunimbus-global.local

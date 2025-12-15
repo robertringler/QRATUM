@@ -11,6 +11,7 @@ This analysis system evaluates QuASIM (Quantum-Accelerated Simulation Infrastruc
 **Purpose**: Performs the complete analytical workflow from data ingestion to output generation.
 
 **Key Functions**:
+
 - `load_fortune500_data()`: Load Fortune 500 dataset from CSV
 - `enrich_company_data()`: Add technological infrastructure context
 - `calculate_qii()`: Compute QuASIM Integration Index with 4 components
@@ -19,6 +20,7 @@ This analysis system evaluates QuASIM (Quantum-Accelerated Simulation Infrastruc
 - `generate_synthetic_fortune500()`: Create synthetic dataset for demonstration
 
 **QuASIM Integration Index (QII)**:
+
 ```
 QII = 0.25*T + 0.25*I + 0.25*E + 0.25*S
 
@@ -41,6 +43,7 @@ Where:
 **Purpose**: Generate comprehensive academic-style white papers with detailed analysis.
 
 **Report Sections**:
+
 1. Executive Summary - Key findings and strategic recommendations
 2. Methodology - Complete analytical framework documentation
 3. Sectoral Analysis - Detailed breakdown by industry
@@ -57,6 +60,7 @@ Where:
 **Purpose**: Create publication-quality SVG visualizations.
 
 **Visualizations**:
+
 - QII Distribution Histogram
 - Sector Comparison Bar Chart
 - Adoption Timeline Forecast (2025-2030)
@@ -68,6 +72,7 @@ Where:
 **Purpose**: Orchestrate the complete analysis workflow.
 
 **Workflow**:
+
 1. Execute company analysis (500 companies)
 2. Generate visualizations
 3. Create white paper report
@@ -100,6 +105,7 @@ output_files = main(input_csv=csv_path)
 ```
 
 **CSV Format Requirements**:
+
 ```csv
 Rank,Company,Sector,Industry,Revenue,Profit,Headquarters
 1,Walmart,Retail,General Merchandisers,611289,14881,"Bentonville, AR"
@@ -146,6 +152,7 @@ print(f"Adoption Timeline: {analysis.adoption_timeline}")
 ### 1. Data Matrix CSV (`fortune500_quasim_matrix.csv`)
 
 Complete 500×15 matrix with:
+
 - Company identification (Rank, Name, Sector)
 - Financial metrics (Revenue, Profit, R&D%)
 - Technology flags (HPC, AI/ML, Quantum, Cloud Provider)
@@ -154,6 +161,7 @@ Complete 500×15 matrix with:
 ### 2. JSON Summary (`fortune500_quasim_analysis.json`)
 
 Structured analysis results:
+
 ```json
 {
   "metadata": {...},
@@ -167,6 +175,7 @@ Structured analysis results:
 ### 3. White Paper (`Fortune500_QuASIM_Integration_Analysis.md`)
 
 ~10,000 word comprehensive report with:
+
 - Executive summary and strategic recommendations
 - Detailed methodology and validation
 - Sector-by-sector analysis
@@ -177,6 +186,7 @@ Structured analysis results:
 ### 4. Visualizations (`visuals/*.svg`)
 
 Five publication-quality charts:
+
 - `qii_distribution.svg`: Score distribution histogram
 - `sector_comparison.svg`: Sector QII comparison
 - `adoption_timeline.svg`: 2025-2030 forecast
@@ -304,6 +314,7 @@ if company.custom_condition:
 - **Standard library**: csv, json, pathlib, dataclasses
 
 Install dependencies:
+
 ```bash
 pip install numpy
 ```
@@ -359,6 +370,7 @@ Part of the QuASIM Infrastructure project. See repository root for license detai
 ## Contact
 
 For questions or support:
+
 - Technical issues: Open a GitHub issue
 - Analysis methodology: See white paper methodology section
 - Custom analysis requests: Contact QuASIM team

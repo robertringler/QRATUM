@@ -1,6 +1,5 @@
 """Tests for tire scenario generator."""
 
-import pytest
 
 from quasim.domains.tire.generator import TireScenarioGenerator
 

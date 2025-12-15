@@ -23,6 +23,7 @@ python3 extract_patent_inventions.py --output my_patents
 ## Output Files
 
 ### Markdown Report (`PATENT_INVENTIONS.md`)
+
 - Human-readable format
 - Organized by priority (High → Medium → Low)
 - Includes all technical claims and novelty factors
@@ -30,6 +31,7 @@ python3 extract_patent_inventions.py --output my_patents
 - Provides recommended filing timeline
 
 ### JSON Data (`PATENT_INVENTIONS.json`)
+
 - Machine-readable format
 - Structured data for integration with patent management systems
 - Includes metadata (extraction date, total count)
@@ -40,9 +42,10 @@ python3 extract_patent_inventions.py --output my_patents
 ### Total: 12 Patent-Eligible Inventions
 
 #### High Priority (5 inventions)
+
 1. **PATENT-001**: Autonomous Self-Evolving Kernel Architecture with RL
    - *Key Innovation*: Self-learning quantum kernel optimization
-   
+
 2. **PATENT-002**: Hybrid Quantum-Classical Architecture with NVLink-C2C
    - *Key Innovation*: Zero-copy quantum-classical integration
 
@@ -56,19 +59,22 @@ python3 extract_patent_inventions.py --output my_patents
    - *Key Innovation*: Near-linear scaling to 128+ GPUs
 
 #### Medium Priority (5 inventions)
+
 6. **PATENT-003**: Hierarchical Hybrid Precision Management
-7. **PATENT-004**: Differentiable Compiler Scheduling
-8. **PATENT-005**: Quantum-Inspired Kernel Search using Ising Model
-9. **PATENT-006**: Topological Memory Graph Optimizer
-10. **PATENT-012**: Quantum-Enhanced Digital Twin with CFT Kernels
+2. **PATENT-004**: Differentiable Compiler Scheduling
+3. **PATENT-005**: Quantum-Inspired Kernel Search using Ising Model
+4. **PATENT-006**: Topological Memory Graph Optimizer
+5. **PATENT-012**: Quantum-Enhanced Digital Twin with CFT Kernels
 
 #### Low Priority (2 inventions)
+
 11. **PATENT-007**: Causal Profiling with Perturbation Analysis
-12. **PATENT-009**: Fortune 500 Integration Index (QII)
+2. **PATENT-009**: Fortune 500 Integration Index (QII)
 
 ## Patent Classification Coverage
 
 The inventions span multiple patent classes:
+
 - **G06N 10/00**: Quantum computing (8 inventions)
 - **G06F**: Computer systems and software (6 inventions)
 - **G06N 3/00**: Neural networks and AI (2 inventions)
@@ -78,7 +84,9 @@ The inventions span multiple patent classes:
 ## Recommended Filing Strategy
 
 ### Phase 1 - Immediate (Q1 2026)
+
 File provisional patents for high-priority core technologies:
+
 - PATENT-001 (Autonomous Kernels)
 - PATENT-002 (Hybrid Architecture)
 - PATENT-008 (Certification Pipeline)
@@ -88,7 +96,9 @@ File provisional patents for high-priority core technologies:
 **Estimated Cost**: $15,000 - $25,000 (provisional)
 
 ### Phase 2 - Short-term (Q2 2026)
+
 File provisional patents for optimization technologies:
+
 - PATENT-003 (Precision Management)
 - PATENT-004 (Compiler Scheduling)
 - PATENT-012 (Digital Twin Enhancement)
@@ -96,7 +106,9 @@ File provisional patents for optimization technologies:
 **Estimated Cost**: $9,000 - $15,000 (provisional)
 
 ### Phase 3 - Medium-term (Q3-Q4 2026)
+
 File provisional patents for supporting technologies:
+
 - PATENT-005 (Ising Optimization)
 - PATENT-006 (Memory Optimization)
 - PATENT-009 (QII Scoring)
@@ -104,7 +116,9 @@ File provisional patents for supporting technologies:
 **Estimated Cost**: $9,000 - $15,000 (provisional)
 
 ### Phase 4 - Long-term (2027)
+
 Convert provisional to full utility patents:
+
 - Complete PCT international filing
 - File continuation applications
 - Pursue patent prosecution
@@ -133,10 +147,12 @@ Convert provisional to full utility patents:
 ## Integration with Existing Patents
 
 According to project documentation, QuASIM currently has:
+
 - **8 granted patents**: Core quantum simulation technologies
 - **27 pending patents**: Various aspects of the platform
 
 The newly identified inventions complement the existing portfolio by:
+
 1. Covering autonomous/self-learning aspects (PATENT-001)
 2. Documenting novel hardware integration (PATENT-002)
 3. Protecting certification methodology (PATENT-008)
@@ -167,9 +183,10 @@ The newly identified inventions complement the existing portfolio by:
 ## Contact Information
 
 For questions about the patent extraction tool or inventions:
+
 - **Technical Inquiries**: See source code comments in `extract_patent_inventions.py`
 - **Legal/IP Inquiries**: Contact your patent attorney
-- **Business Inquiries**: procurement@quasim.io
+- **Business Inquiries**: <procurement@quasim.io>
 
 ## Appendix: Tool Architecture
 
@@ -188,6 +205,7 @@ class PatentInventionExtractor:
 ```
 
 Key features:
+
 - ✅ Automatic source file tracking
 - ✅ Priority classification (High/Medium/Low)
 - ✅ International patent class assignment

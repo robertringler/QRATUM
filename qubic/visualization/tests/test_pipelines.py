@@ -57,9 +57,7 @@ class TestStaticPipeline:
     def test_render_with_scalar_field(self, sample_data):
         """Test rendering with scalar field."""
         # Add scalar field
-        sample_data.add_scalar_field(
-            "test_field", np.random.rand(len(sample_data.vertices))
-        )
+        sample_data.add_scalar_field("test_field", np.random.rand(len(sample_data.vertices)))
 
         pipeline = StaticPipeline(backend="headless")
         fig = pipeline.render(sample_data, scalar_field="test_field")
@@ -93,9 +91,7 @@ class TestTimeSeriesPipeline:
 
         with tempfile.TemporaryDirectory() as tmpdir:
             output_dir = Path(tmpdir)
-            frame_paths = pipeline.render_frames(
-                adapter=timeseries_adapter, output_dir=output_dir
-            )
+            frame_paths = pipeline.render_frames(adapter=timeseries_adapter, output_dir=output_dir)
 
             assert len(frame_paths) == 3
             for path in frame_paths:
@@ -145,6 +141,4 @@ class TestTimeSeriesPipeline:
             output_path = Path(tmpdir) / "animation.gif"
 
             with pytest.raises(RuntimeError):
-                pipeline.render_animation(
-                    adapter=adapter, output_path=output_path, format="gif"
-                )
+                pipeline.render_animation(adapter=adapter, output_path=output_path, format="gif")
