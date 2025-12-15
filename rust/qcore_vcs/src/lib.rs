@@ -12,7 +12,9 @@
 
 pub mod crdt;
 pub mod git;
+pub mod mercurial;
 pub mod object_store;
+pub mod svn;
 pub mod vcs;
 
 pub use crate::vcs::VcsAdapter;
