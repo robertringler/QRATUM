@@ -64,7 +64,7 @@ class Residue:
     residue_name: str
     chain_id: str
     residue_number: int
-    atoms: List[Atom] = field(default_factory=list)
+    atoms: list[Atom] = field(default_factory=list)
     
     def get_alpha_carbon(self) -> Optional[Atom]:
         """Get alpha carbon atom."""
@@ -98,9 +98,9 @@ class ProteinStructure:
     title: str = ""
     method: str = ""
     resolution: float = 0.0
-    chains: Dict[str, List[Residue]] = field(default_factory=dict)
+    chains: dict[str, list[Residue]] = field(default_factory=dict)
     
-    def get_all_atoms(self) -> List[Atom]:
+    def get_all_atoms(self) -> list[Atom]:
         """Get all atoms in structure."""
         atoms = []
         for chain_residues in self.chains.values():
@@ -108,7 +108,7 @@ class ProteinStructure:
                 atoms.extend(residue.atoms)
         return atoms
     
-    def get_chain(self, chain_id: str) -> List[Residue]:
+    def get_chain(self, chain_id: str) -> list[Residue]:
         """Get residues for a chain."""
         return self.chains.get(chain_id, [])
     
@@ -126,7 +126,7 @@ class StructureAnalyzer:
     
     def __init__(self):
         """Initialize structure analyzer."""
-        self._structures: Dict[str, ProteinStructure] = {}
+        self._structures: dict[str, ProteinStructure] = {}
     
     def parse_pdb(self, pdb_content: str) -> ProteinStructure:
         """Parse PDB format file (simplified).
@@ -139,7 +139,7 @@ class StructureAnalyzer:
         """
         structure = ProteinStructure(pdb_id="unknown")
         current_chain = "A"
-        residues_by_chain: Dict[str, Dict[int, Residue]] = {}
+        residues_by_chain: dict[str, dict[int, Residue]] = {}
         
         for line in pdb_content.split('\n'):
             if line.startswith('HEADER'):
@@ -257,7 +257,7 @@ class StructureAnalyzer:
         structure: ProteinStructure,
         ligand_coords: Optional[np.ndarray] = None,
         distance_cutoff: float = 5.0,
-    ) -> List[Residue]:
+    ) -> list[Residue]:
         """Identify potential binding site residues.
         
         Args:
@@ -293,7 +293,7 @@ class StructureAnalyzer:
         self,
         structure: ProteinStructure,
         chain_id: str = 'A',
-    ) -> Dict[int, str]:
+    ) -> dict[int, str]:
         """Predict secondary structure (simplified).
         
         Uses phi/psi angles to classify as helix, sheet, or coil.
@@ -328,7 +328,7 @@ class StructureAnalyzer:
     def assess_structure_quality(
         self,
         structure: ProteinStructure,
-    ) -> Dict[str, float]:
+    ) -> dict[str, float]:
         """Assess structure quality metrics.
         
         Args:
@@ -366,7 +366,7 @@ class StructureAnalyzer:
         self,
         structure: ProteinStructure,
         distance_threshold: float = 2.0,
-    ) -> List[Tuple[Atom, Atom, float]]:
+    ) -> list[tuple[Atom, Atom, float]]:
         """Find steric clashes in structure.
         
         Args:
@@ -401,7 +401,7 @@ class StructureAnalyzer:
         structure: ProteinStructure,
         chain_id: str = 'A',
         solvent_radius: float = 1.4,
-    ) -> List[int]:
+    ) -> list[int]:
         """Identify surface-exposed residues.
         
         Args:

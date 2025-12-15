@@ -27,10 +27,10 @@ class ExperimentResult:
     def __init__(
         self,
         experiment_type: str,
-        observations: Dict[str, float],
-        uncertainties: Optional[Dict[str, float]] = None,
-        conditions: Optional[Dict[str, Any]] = None,
-        metadata: Optional[Dict[str, Any]] = None,
+        observations: dict[str, float],
+        uncertainties: Optional[dict[str, float]] = None,
+        conditions: Optional[dict[str, Any]] = None,
+        metadata: Optional[dict[str, Any]] = None,
     ):
         self.experiment_type = experiment_type
         self.observations = observations
@@ -66,9 +66,9 @@ class BayesianUpdater:
     
     def update_mechanisms(
         self,
-        mechanisms: List[BioMechanism],
+        mechanisms: list[BioMechanism],
         experiment_result: ExperimentResult,
-    ) -> List[BioMechanism]:
+    ) -> list[BioMechanism]:
         """Update mechanism posteriors based on experimental result.
         
         Implements Bayesian update:
@@ -231,9 +231,9 @@ class BayesianUpdater:
     
     def prune_low_evidence(
         self,
-        mechanisms: List[BioMechanism],
+        mechanisms: list[BioMechanism],
         threshold: float | None = None,
-    ) -> List[BioMechanism]:
+    ) -> list[BioMechanism]:
         """Remove mechanisms with posterior below threshold.
         
         Args:
@@ -250,7 +250,7 @@ class BayesianUpdater:
         
         return pruned
     
-    def get_evidence_summary(self, mechanisms: List[BioMechanism]) -> Dict[str, Any]:
+    def get_evidence_summary(self, mechanisms: list[BioMechanism]) -> dict[str, Any]:
         """Compute summary statistics of mechanism evidence.
         
         Args:

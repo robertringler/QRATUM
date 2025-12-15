@@ -160,9 +160,9 @@ class BioinformaticsEnhancedPrior:
     
     def rank_mechanisms_by_evidence(
         self,
-        mechanisms: List[BioMechanism],
+        mechanisms: list[BioMechanism],
         protein_name: str,
-    ) -> List[Tuple[BioMechanism, float]]:
+    ) -> list[tuple[BioMechanism, float]]:
         """Rank mechanisms by combined evidence.
         
         Args:
@@ -185,7 +185,7 @@ class BioinformaticsEnhancedPrior:
         self,
         protein_name: str,
         min_similarity: float = 0.5,
-    ) -> List[Tuple[str, float, str]]:
+    ) -> list[tuple[str, float, str]]:
         """Identify proteins related to target.
         
         Args:
@@ -227,7 +227,7 @@ class BioinformaticsEnhancedPrior:
         self,
         protein_name: str,
         sequence: str,
-    ) -> List[Dict[str, any]]:
+    ) -> list[dict[str, any]]:
         """Generate mechanism hypotheses from homologous proteins.
         
         Args:
@@ -264,8 +264,8 @@ class BioinformaticsEnhancedPrior:
     def validate_mechanism_with_structure(
         self,
         mechanism: BioMechanism,
-        protein_structures: Dict[str, str],
-    ) -> Tuple[bool, List[str]]:
+        protein_structures: dict[str, str],
+    ) -> tuple[bool, list[str]]:
         """Validate mechanism using structural information.
         
         Args:
@@ -317,7 +317,7 @@ class BioinformaticsEnhancedPrior:
         self,
         mechanism: BioMechanism,
         protein_name: str,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Export mechanism with enriched bioinformatics annotations.
         
         Args:

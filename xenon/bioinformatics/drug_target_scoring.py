@@ -126,7 +126,7 @@ class ADMETProperties:
     excretion: float = 0.0
     toxicity: float = 0.0
     bbb_permeability: float = 0.0
-    cyp450_inhibition: Dict[str, float] = field(default_factory=dict)
+    cyp450_inhibition: dict[str, float] = field(default_factory=dict)
 
 
 class DrugTargetScorer:
@@ -138,9 +138,9 @@ class DrugTargetScorer:
     
     def __init__(self):
         """Initialize drug-target scorer."""
-        self._drugs: Dict[str, DrugCandidate] = {}
-        self._interactions: List[DrugTargetInteraction] = []
-        self._admet_cache: Dict[str, ADMETProperties] = {}
+        self._drugs: dict[str, DrugCandidate] = {}
+        self._interactions: list[DrugTargetInteraction] = []
+        self._admet_cache: dict[str, ADMETProperties] = {}
     
     def add_drug(self, drug: DrugCandidate) -> None:
         """Add a drug candidate.
@@ -202,7 +202,7 @@ class DrugTargetScorer:
         
         return min(1.0, score)
     
-    def compute_drug_likeness(self, drug_id: str) -> Dict[str, any]:
+    def compute_drug_likeness(self, drug_id: str) -> dict[str, any]:
         """Compute comprehensive drug-likeness metrics.
         
         Args:
@@ -283,8 +283,8 @@ class DrugTargetScorer:
     def assess_target_druggability(
         self,
         target_id: str,
-        binding_sites: Optional[List[Dict[str, any]]] = None,
-    ) -> Dict[str, float]:
+        binding_sites: Optional[list[dict[str, any]]] = None,
+    ) -> dict[str, float]:
         """Assess target druggability.
         
         Args:
@@ -339,8 +339,8 @@ class DrugTargetScorer:
     def rank_drug_candidates(
         self,
         target_id: str,
-        criteria: List[str] = None,
-    ) -> List[Tuple[str, float]]:
+        criteria: list[str] = None,
+    ) -> list[tuple[str, float]]:
         """Rank drug candidates for a target.
         
         Args:
@@ -389,7 +389,7 @@ class DrugTargetScorer:
         self,
         drug_id: str,
         target_id: str,
-        off_targets: List[str],
+        off_targets: list[str],
     ) -> float:
         """Compute drug selectivity for target vs off-targets.
         
@@ -428,7 +428,7 @@ class DrugTargetScorer:
         self,
         drug_id: str,
         target_id: str,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Generate comprehensive drug candidate report.
         
         Args:

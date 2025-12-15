@@ -17,7 +17,7 @@ class TaskScheduler:
 
     def __init__(self, num_workers: int = 1) -> None:
         """Initialize task scheduler."""
-        self.workers: List[RenderWorker] = []
+        self.workers: list[RenderWorker] = []
         self.job_queue: asyncio.Queue = asyncio.Queue()
 
         # Create workers
@@ -25,7 +25,7 @@ class TaskScheduler:
             worker = RenderWorker(f"worker-{i}", gpu_device=i % 8)
             self.workers.append(worker)
 
-    async def submit_job(self, job: Dict[str, Any]) -> str:
+    async def submit_job(self, job: dict[str, Any]) -> str:
         """Submit a job to the queue.
 
         Args:
@@ -62,7 +62,7 @@ class TaskScheduler:
                 return worker
         return None
 
-    def get_stats(self) -> Dict[str, Any]:
+    def get_stats(self) -> dict[str, Any]:
         """Get scheduler statistics.
 
         Returns:

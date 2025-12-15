@@ -30,8 +30,8 @@ class GOTerm:
     name: str
     namespace: str
     definition: str = ""
-    is_a: List[str] = field(default_factory=list)
-    part_of: List[str] = field(default_factory=list)
+    is_a: list[str] = field(default_factory=list)
+    part_of: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -53,10 +53,10 @@ class ProteinAnnotation:
     protein_name: str
     gene_name: str
     organism: str
-    go_terms: List[str] = field(default_factory=list)
+    go_terms: list[str] = field(default_factory=list)
     function: str = ""
-    pathways: List[str] = field(default_factory=list)
-    domains: List[str] = field(default_factory=list)
+    pathways: list[str] = field(default_factory=list)
+    domains: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -97,9 +97,9 @@ class Pathway:
     
     pathway_id: str
     name: str
-    proteins: List[str] = field(default_factory=list)
-    compounds: List[str] = field(default_factory=list)
-    reactions: List[str] = field(default_factory=list)
+    proteins: list[str] = field(default_factory=list)
+    compounds: list[str] = field(default_factory=list)
+    reactions: list[str] = field(default_factory=list)
     database: str = "unknown"
 
 
@@ -112,11 +112,11 @@ class OntologyIntegrator:
     
     def __init__(self):
         """Initialize ontology integrator."""
-        self._go_terms: Dict[str, GOTerm] = {}
-        self._proteins: Dict[str, ProteinAnnotation] = {}
-        self._compounds: Dict[str, ChemicalCompound] = {}
-        self._pathways: Dict[str, Pathway] = {}
-        self._protein_go_index: Dict[str, Set[str]] = {}
+        self._go_terms: dict[str, GOTerm] = {}
+        self._proteins: dict[str, ProteinAnnotation] = {}
+        self._compounds: dict[str, ChemicalCompound] = {}
+        self._pathways: dict[str, Pathway] = {}
+        self._protein_go_index: dict[str, set[str]] = {}
     
     def add_go_term(self, term: GOTerm) -> None:
         """Add a GO term to the ontology.
@@ -168,7 +168,7 @@ class OntologyIntegrator:
         annotation = self._proteins.get(uniprot_id)
         return annotation.function if annotation else None
     
-    def get_protein_go_terms(self, uniprot_id: str) -> List[GOTerm]:
+    def get_protein_go_terms(self, uniprot_id: str) -> list[GOTerm]:
         """Get GO terms for a protein.
         
         Args:
@@ -189,7 +189,7 @@ class OntologyIntegrator:
         
         return terms
     
-    def get_proteins_by_go_term(self, go_id: str) -> List[str]:
+    def get_proteins_by_go_term(self, go_id: str) -> list[str]:
         """Get proteins annotated with a GO term.
         
         Args:
@@ -204,7 +204,7 @@ class OntologyIntegrator:
         self,
         uniprot_id: str,
         relationship: str = "go_overlap",
-    ) -> List[Tuple[str, float]]:
+    ) -> list[tuple[str, float]]:
         """Find related proteins based on annotations.
         
         Args:
@@ -225,7 +225,7 @@ class OntologyIntegrator:
         else:
             return []
     
-    def _find_go_similar_proteins(self, uniprot_id: str) -> List[Tuple[str, float]]:
+    def _find_go_similar_proteins(self, uniprot_id: str) -> list[tuple[str, float]]:
         """Find proteins with similar GO annotations.
         
         Args:
@@ -262,7 +262,7 @@ class OntologyIntegrator:
         similar.sort(key=lambda x: x[1], reverse=True)
         return similar
     
-    def _find_pathway_proteins(self, uniprot_id: str) -> List[Tuple[str, float]]:
+    def _find_pathway_proteins(self, uniprot_id: str) -> list[tuple[str, float]]:
         """Find proteins in same pathways.
         
         Args:
@@ -281,7 +281,7 @@ class OntologyIntegrator:
             return []
         
         # Find other proteins in these pathways
-        related: Dict[str, int] = {}
+        related: dict[str, int] = {}
         for pathway_id in protein_pathways:
             pathway = self._pathways[pathway_id]
             for other_id in pathway.proteins:
@@ -330,7 +330,7 @@ class OntologyIntegrator:
         self,
         protein_a: str,
         protein_b: str,
-    ) -> List[Dict[str, any]]:
+    ) -> list[dict[str, any]]:
         """Find mechanistic links between two proteins.
         
         Args:
@@ -366,7 +366,7 @@ class OntologyIntegrator:
         
         return evidence
     
-    def query_by_function(self, function_keywords: List[str]) -> List[str]:
+    def query_by_function(self, function_keywords: list[str]) -> list[str]:
         """Find proteins by functional keywords.
         
         Args:
@@ -389,10 +389,10 @@ class OntologyIntegrator:
     
     def export_protein_network(
         self,
-        proteins: List[str],
+        proteins: list[str],
         relationship_type: str = "go_overlap",
         min_similarity: float = 0.3,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Export protein network as graph data.
         
         Args:

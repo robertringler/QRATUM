@@ -106,7 +106,7 @@ class TransferEntropyEngine:
         """
         self.config = config or TransferEntropyConfig()
         self.seed_manager = SeedManager(seed if seed is not None else 42)
-        self._te_cache: Dict[str, TransferEntropyResult] = {}
+        self._te_cache: dict[str, TransferEntropyResult] = {}
     
     def compute_entropy_timeseries(
         self,
@@ -298,11 +298,11 @@ class TransferEntropyEngine:
     
     def compute_transfer_entropy_batched(
         self,
-        sources: List[np.ndarray],
-        targets: List[np.ndarray],
-        source_names: Optional[List[str]] = None,
-        target_names: Optional[List[str]] = None,
-    ) -> List[List[TransferEntropyResult]]:
+        sources: list[np.ndarray],
+        targets: list[np.ndarray],
+        source_names: Optional[list[str]] = None,
+        target_names: Optional[list[str]] = None,
+    ) -> list[list[TransferEntropyResult]]:
         """Compute transfer entropy for multiple source-target pairs in batches.
         
         Args:
@@ -360,9 +360,9 @@ class TransferEntropyEngine:
     
     def compute_information_network(
         self,
-        time_series: Dict[str, np.ndarray],
+        time_series: dict[str, np.ndarray],
         threshold: float = 0.1,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Build information flow network from time series data.
         
         Args:
@@ -403,7 +403,7 @@ class TransferEntropyEngine:
             "threshold": threshold,
         }
     
-    def get_statistics(self) -> Dict[str, any]:
+    def get_statistics(self) -> dict[str, any]:
         """Get engine statistics.
         
         Returns:

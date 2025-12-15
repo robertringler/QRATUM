@@ -21,7 +21,7 @@ class RenderWorker:
         self.current_job: Optional[str] = None
         self.is_busy = False
 
-    async def process_job(self, job: Dict[str, Any]) -> Dict[str, Any]:
+    async def process_job(self, job: dict[str, Any]) -> dict[str, Any]:
         """Process a render job.
 
         Args:

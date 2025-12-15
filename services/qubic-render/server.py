@@ -32,7 +32,7 @@ class RenderServer:
             raise ImportError("FastAPI not installed. Install with: pip install fastapi uvicorn")
 
         self.gpu_available = gpu_available
-        self.jobs: Dict[str, Dict] = {}
+        self.jobs: dict[str, dict] = {}
         self.app = self._create_app()
 
     def _create_app(self) -> FastAPI:
@@ -64,7 +64,7 @@ class RenderServer:
 
         return app
 
-    def _get_gpu_info(self) -> Dict:
+    def _get_gpu_info(self) -> dict:
         """Get GPU information.
 
         Returns:

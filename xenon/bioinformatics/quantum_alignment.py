@@ -113,7 +113,7 @@ class QuantumAlignmentEngine:
         """
         self.config = config or AlignmentConfig()
         self.seed_manager = SeedManager(seed if seed is not None else 42)
-        self._alignment_cache: Dict[Tuple[str, str], AlignmentResult] = {}
+        self._alignment_cache: dict[tuple[str, str], AlignmentResult] = {}
         self._call_count = 0
     
     def compute_sequence_entropy(self, sequence: str) -> float:
@@ -133,7 +133,7 @@ class QuantumAlignmentEngine:
         sequence = sequence.upper()
         
         # Count amino acids
-        aa_counts: Dict[str, int] = {}
+        aa_counts: dict[str, int] = {}
         for aa in sequence:
             if aa in "ACDEFGHIKLMNPQRSTVWY":
                 aa_counts[aa] = aa_counts.get(aa, 0) + 1
@@ -185,7 +185,7 @@ class QuantumAlignmentEngine:
         self,
         seq1: str,
         seq2: str,
-    ) -> Tuple[str, str, float, np.ndarray]:
+    ) -> tuple[str, str, float, np.ndarray]:
         """Perform classical Needleman-Wunsch alignment.
         
         This is the reference implementation for equivalence validation.
@@ -285,7 +285,7 @@ class QuantumAlignmentEngine:
         seq1: str,
         seq2: str,
         circuit_depth: int,
-    ) -> Tuple[str, str, float]:
+    ) -> tuple[str, str, float]:
         """Perform quantum-inspired alignment (placeholder).
         
         Note: This is a placeholder for future quantum backend integration.
@@ -421,7 +421,7 @@ class QuantumAlignmentEngine:
         """Clear alignment cache."""
         self._alignment_cache.clear()
     
-    def get_statistics(self) -> Dict[str, any]:
+    def get_statistics(self) -> dict[str, any]:
         """Get alignment engine statistics.
         
         Returns:

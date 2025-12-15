@@ -384,7 +384,6 @@ class PerformanceComparer:
         acceptance_criteria: Global acceptance criteria from YAML
     """
 
-    def __init__(self, benchmark: BenchmarkDefinition, acceptance_criteria: dict[str, Any]):
     def __init__(
         self,
         benchmark: BenchmarkDefinition,
@@ -584,11 +583,10 @@ class PerformanceComparer:
             accuracy_metrics["stress_error"]
             > self.acceptance_criteria["accuracy"]["stress_error_threshold"]
         ):
-        if accuracy_metrics["displacement_error"] > self.acceptance_criteria["accuracy"]["displacement_error_threshold"]:
-            return False, f"Displacement error {accuracy_metrics['displacement_error']:.3f} exceeds threshold"
-
-        if accuracy_metrics["stress_error"] > self.acceptance_criteria["accuracy"]["stress_error_threshold"]:
-            return False, f"Stress error {accuracy_metrics['stress_error']:.3f} exceeds threshold"
+            return (
+                False,
+                f"Stress error {accuracy_metrics['stress_error']:.3f} exceeds threshold",
+            )
 
         # Check performance
         if (
@@ -851,31 +849,6 @@ class ReportGenerator:
 
         story.append(table)
         story.append(Spacer(1, 0.5 * inch))
-            table_data.append([
-                result.benchmark_id,
-                status,
-                f"{perf.get('speedup', 0):.2f}x",
-                f"{acc.get('displacement_error', 0):.2%}",
-                f"{acc.get('stress_error', 0):.2%}",
-                f"{perf.get('ansys_median_time', 0):.2f}s",
-                f"{perf.get('quasim_median_time', 0):.2f}s"
-            ])
-
-        # Create table
-        table = Table(table_data)
-        table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.green),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 12),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ]))
-
-        story.append(table)
-        story.append(Spacer(1, 0.5*inch))
 
         # Detailed results for each benchmark
         for result in self.results:

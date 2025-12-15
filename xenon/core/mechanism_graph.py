@@ -54,7 +54,7 @@ class MechanismGraph:
         return new_mech
     
     @staticmethod
-    def extract_subgraph(mechanism: BioMechanism, nodes: Set[str]) -> BioMechanism:
+    def extract_subgraph(mechanism: BioMechanism, nodes: set[str]) -> BioMechanism:
         """Extract subgraph containing specified nodes."""
         sub_mech = BioMechanism(name=f"{mechanism.name}_subgraph")
         sub_mech.provenance = mechanism.provenance + ["subgraph_extraction"]
@@ -79,7 +79,7 @@ class MechanismGraph:
         for state in all_states.values():
             child.add_state(state)
         
-        seen_transitions: Set[Tuple[str, str]] = set()
+        seen_transitions: set[tuple[str, str]] = set()
         
         for transition in mech1._transitions + mech2._transitions:
             key = (transition.source, transition.target)
@@ -92,7 +92,7 @@ class MechanismGraph:
         return child
     
     @staticmethod
-    def detect_cycles(mechanism: BioMechanism) -> List[List[str]]:
+    def detect_cycles(mechanism: BioMechanism) -> list[list[str]]:
         """Detect cycles in mechanism graph."""
         if mechanism.graph is None or nx is None:
             return []

@@ -56,9 +56,9 @@ class LangevinSimulator:
         self,
         t_max: float,
         dt: float,
-        initial_state: Dict[str, float],
+        initial_state: dict[str, float],
         seed: Optional[int] = None,
-    ) -> Tuple[List[float], Dict[str, List[float]]]:
+    ) -> tuple[list[float], dict[str, list[float]]]:
         """Run Langevin dynamics simulation.
         
         Args:
@@ -84,7 +84,7 @@ class LangevinSimulator:
         # Storage for trajectory
         n_steps = int(t_max / dt) + 1
         times = [i * dt for i in range(n_steps)]
-        trajectories: Dict[str, List[float]] = {
+        trajectories: dict[str, list[float]] = {
             species: [state[species]] for species in state
         }
         
@@ -116,7 +116,7 @@ class LangevinSimulator:
         
         return times, trajectories
     
-    def _compute_forces(self, state: Dict[str, float]) -> Dict[str, float]:
+    def _compute_forces(self, state: dict[str, float]) -> dict[str, float]:
         """Compute chemical potential forces (drift terms).
         
         For each species, compute net rate of change from all reactions:
@@ -128,7 +128,7 @@ class LangevinSimulator:
         Returns:
             Dictionary of drift terms for each species
         """
-        forces: Dict[str, float] = {species: 0.0 for species in state}
+        forces: dict[str, float] = {species: 0.0 for species in state}
         
         for transition in self.mechanism._transitions:
             source = transition.source
@@ -151,9 +151,9 @@ class LangevinSimulator:
     
     def _add_thermal_noise(
         self,
-        forces: Dict[str, float],
+        forces: dict[str, float],
         dt: float,
-    ) -> Dict[str, float]:
+    ) -> dict[str, float]:
         """Add thermal noise to forces.
         
         Noise amplitude is proportional to sqrt(reaction propensity):
@@ -169,7 +169,7 @@ class LangevinSimulator:
         Returns:
             Dictionary of noise terms
         """
-        noise: Dict[str, float] = {}
+        noise: dict[str, float] = {}
         
         for species in forces:
             # Compute noise amplitude from force magnitude
@@ -188,10 +188,10 @@ class LangevinSimulator:
         self,
         t_max: float,
         dt: float,
-        initial_state: Dict[str, float],
-        temperature_schedule: List[Tuple[float, float]],
+        initial_state: dict[str, float],
+        temperature_schedule: list[tuple[float, float]],
         seed: Optional[int] = None,
-    ) -> Tuple[List[float], Dict[str, List[float]]]:
+    ) -> tuple[list[float], dict[str, list[float]]]:
         """Run simulation with time-varying temperature.
         
         Useful for simulated annealing or temperature-dependent studies.

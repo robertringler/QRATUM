@@ -33,11 +33,11 @@ class Publication:
     
     pmid: str
     title: str
-    authors: List[str]
+    authors: list[str]
     journal: str
     year: int
     abstract: str = ""
-    keywords: List[str] = field(default_factory=list)
+    keywords: list[str] = field(default_factory=list)
     doi: Optional[str] = None
     
     def mentions_protein(self, protein_name: str) -> bool:
@@ -52,7 +52,7 @@ class Publication:
         search_text = (self.title + " " + self.abstract).lower()
         return protein_name.lower() in search_text
     
-    def extract_interactions(self) -> List[Tuple[str, str]]:
+    def extract_interactions(self) -> list[tuple[str, str]]:
         """Extract potential protein-protein interactions from text.
         
         Returns:
@@ -89,7 +89,7 @@ class InteractionEvidence:
     protein_a: str
     protein_b: str
     interaction_type: str
-    publications: List[str] = field(default_factory=list)
+    publications: list[str] = field(default_factory=list)
     confidence: float = 0.0
     
     def add_publication(self, pmid: str) -> None:
@@ -109,11 +109,11 @@ class LiteratureMiner:
     
     def __init__(self):
         """Initialize literature miner."""
-        self._publications: Dict[str, Publication] = {}
-        self._interactions: Dict[Tuple[str, str], InteractionEvidence] = {}
-        self._protein_citations: Dict[str, Set[str]] = {}
+        self._publications: dict[str, Publication] = {}
+        self._interactions: dict[tuple[str, str], InteractionEvidence] = {}
+        self._protein_citations: dict[str, set[str]] = {}
     
-    def parse_pubmed_xml(self, xml_content: str) -> List[Publication]:
+    def parse_pubmed_xml(self, xml_content: str) -> list[Publication]:
         """Parse PubMed XML format (simplified).
         
         Note: Full implementation would use xml.etree.ElementTree.
@@ -132,7 +132,7 @@ class LiteratureMiner:
         self,
         query: str,
         max_results: int = 100,
-    ) -> List[Publication]:
+    ) -> list[Publication]:
         """Query PubMed database.
         
         Note: Requires internet access and NCBI API key for production use.
@@ -171,7 +171,7 @@ class LiteratureMiner:
             
             self._interactions[key].add_publication(publication.pmid)
     
-    def get_protein_citations(self, protein_name: str) -> List[Publication]:
+    def get_protein_citations(self, protein_name: str) -> list[Publication]:
         """Get all publications mentioning a protein.
         
         Args:
@@ -202,7 +202,7 @@ class LiteratureMiner:
         self,
         protein: Optional[str] = None,
         min_confidence: float = 0.0,
-    ) -> List[InteractionEvidence]:
+    ) -> list[InteractionEvidence]:
         """Get protein-protein interactions.
         
         Args:
@@ -248,7 +248,7 @@ class LiteratureMiner:
         # Normalize to 0-1 range (assuming max ~10^5 citations)
         return min(1.0, log_citations / 5.0)
     
-    def extract_mechanism_keywords(self, publication: Publication) -> List[str]:
+    def extract_mechanism_keywords(self, publication: Publication) -> list[str]:
         """Extract mechanism-related keywords from publication.
         
         Args:
@@ -278,7 +278,7 @@ class LiteratureMiner:
         self,
         protein: str,
         mechanism_type: Optional[str] = None,
-    ) -> List[Tuple[Publication, float]]:
+    ) -> list[tuple[Publication, float]]:
         """Rank publications by relevance to protein/mechanism.
         
         Args:
@@ -325,7 +325,7 @@ class LiteratureMiner:
         self,
         protein: str,
         max_publications: int = 10,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Generate summary of literature for a protein.
         
         Args:
@@ -340,7 +340,7 @@ class LiteratureMiner:
         interactions = self.get_interactions(protein=protein, min_confidence=0.3)
         
         # Extract common keywords
-        all_keywords: Dict[str, int] = {}
+        all_keywords: dict[str, int] = {}
         for pub in publications:
             keywords = self.extract_mechanism_keywords(pub)
             for kw in keywords:
