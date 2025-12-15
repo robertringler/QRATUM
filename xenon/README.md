@@ -362,13 +362,93 @@ XENON enforces rigorous scientific constraints:
 5. **Interpretability**: Output is mechanistic explanation, not learned weights
 6. **Moat**: Accumulated experimental history is non-exportable
 
+## Bioinformatics Integration (Phase 1 Complete)
+
+XENON now includes comprehensive bioinformatics capabilities:
+
+### Sequence Analysis
+- FASTA parsing and validation
+- Molecular weight and hydrophobicity calculation
+- Isoelectric point prediction
+- Sequence alignment (Needleman-Wunsch)
+- Conservation score computation
+- Motif finding
+
+### Literature Mining
+- PubMed integration framework
+- Protein-protein interaction extraction
+- Citation-based prior computation
+- Mechanism keyword extraction
+- Publication ranking by relevance
+
+### Ontology Integration
+- Gene Ontology (GO) support
+- ChEBI chemical ontology
+- UniProt protein annotations
+- Pathway databases (KEGG, Reactome)
+- Protein network construction
+
+### Structure Analysis
+- PDB file parsing
+- RMSD calculation
+- Binding site prediction
+- Secondary structure prediction
+- Structure quality assessment
+- Surface residue identification
+
+### Pathway Analysis
+- Metabolic pathway modeling
+- Flux balance analysis (simplified)
+- Bottleneck identification
+- Pathway enrichment testing
+- Signaling cascade discovery
+
+### Drug Discovery
+- Drug-likeness scoring (Lipinski rules)
+- ADMET property prediction
+- Drug-target interaction scoring
+- Target druggability assessment
+- Selectivity computation
+
+### Multi-Omics Integration
+- Genomics, transcriptomics, proteomics, metabolomics
+- Cross-omics correlation analysis
+- Biomarker discovery
+- Pathway enrichment
+- Integrated network construction
+
+## Usage Example: Enhanced Priors
+
+```python
+from xenon import XENONRuntime
+from xenon.bioinformatics import BioinformaticsEnhancedPrior
+
+# Initialize runtime with enhanced priors
+runtime = XENONRuntime()
+enhanced_prior = BioinformaticsEnhancedPrior()
+
+# Add target
+runtime.add_target(
+    name="EGFR_analysis",
+    protein="EGFR",
+    objective="characterize"
+)
+
+# Use bioinformatics to enhance mechanism ranking
+mechanisms = runtime.get_mechanisms(min_evidence=0.5)
+ranked = enhanced_prior.rank_mechanisms_by_evidence(mechanisms, "EGFR")
+
+for mechanism, evidence_score in ranked[:5]:
+    print(f"{mechanism.name}: evidence={evidence_score:.3f}")
+```
+
 ## Phase 2+ Roadmap
 
 - **Cloud Lab Integration**: Automated experiment execution (Emerald Cloud Lab, Strateos)
-- **Literature Mining**: PubMed/bioRxiv automated extraction
-- **Ontology Reasoning**: GO, ChEBI, UniProt integration
-- **Multi-Omics**: Proteomics, metabolomics, genomics data fusion
-- **Drug Discovery**: Automated inhibitor/activator screening
+- **Deep Learning Models**: ML-based binding affinity and ADMET prediction
+- **Real-time PubMed API**: Live literature mining and updates
+- **Advanced Flux Analysis**: Full FBA with linear programming
+- **Personalized Medicine**: Patient-specific mechanism discovery
 - **Scale**: 10^9 mechanisms, 10^6 experiments
 
 ## Citation
