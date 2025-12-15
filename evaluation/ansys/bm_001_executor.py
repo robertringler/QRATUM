@@ -512,6 +512,21 @@ class BM001Executor:
         return (float(lower), float(upper))
 
     def _detect_outliers(self, times: list[float], threshold: float = 3.5) -> list[int]:
+        """Detect outliers using modified Z-score method."""
+        if len(times) < 3:
+            return []
+
+        times_array = np.array(times)
+        median = np.median(times_array)
+        mad = np.median(np.abs(times_array - median))
+
+        if mad == 0:
+            return []
+
+        modified_z = 0.6745 * (times_array - median) / mad
+        return [int(i) for i, z in enumerate(modified_z) if abs(z) > threshold]
+
+
 # Real Backend Solvers
 # ============================================================================
 
@@ -1308,8 +1323,8 @@ class StatisticalValidator:
                 "stress_error_threshold": 0.05,
                 "minimum_speedup": 3.0,
                 "passed": comparison.passed,
-        modified_z = 0.6745 * (times - median) / mad
-        return [int(i) for i, z in enumerate(modified_z) if abs(z) > 3.5]
+            },
+        }
 
     def _check_acceptance(self, metrics: StatisticalMetrics) -> bool:
         """Check if metrics meet acceptance criteria."""

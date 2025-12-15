@@ -384,7 +384,6 @@ class PerformanceComparer:
         acceptance_criteria: Global acceptance criteria from YAML
     """
 
-    def __init__(self, benchmark: BenchmarkDefinition, acceptance_criteria: dict[str, Any]):
     def __init__(
         self,
         benchmark: BenchmarkDefinition,
@@ -584,11 +583,10 @@ class PerformanceComparer:
             accuracy_metrics["stress_error"]
             > self.acceptance_criteria["accuracy"]["stress_error_threshold"]
         ):
-        if accuracy_metrics["displacement_error"] > self.acceptance_criteria["accuracy"]["displacement_error_threshold"]:
-            return False, f"Displacement error {accuracy_metrics['displacement_error']:.3f} exceeds threshold"
-
-        if accuracy_metrics["stress_error"] > self.acceptance_criteria["accuracy"]["stress_error_threshold"]:
-            return False, f"Stress error {accuracy_metrics['stress_error']:.3f} exceeds threshold"
+            return (
+                False,
+                f"Stress error {accuracy_metrics['stress_error']:.3f} exceeds threshold",
+            )
 
         # Check performance
         if (
@@ -851,19 +849,19 @@ class ReportGenerator:
 
         story.append(table)
         story.append(Spacer(1, 0.5 * inch))
-            table_data.append([
+
+        # Add timing details
+        timing_data = [["Benchmark", "Ansys (median)", "QuASIM (median)", "Speedup"]]
+        for result in self.results:
+            timing_data.append([
                 result.benchmark_id,
-                status,
-                f"{perf.get('speedup', 0):.2f}x",
-                f"{acc.get('displacement_error', 0):.2%}",
-                f"{acc.get('stress_error', 0):.2%}",
-                f"{perf.get('ansys_median_time', 0):.2f}s",
-                f"{perf.get('quasim_median_time', 0):.2f}s"
+                f"{result.performance_metrics.get('ansys_median_time', 0):.2f}s",
+                f"{result.performance_metrics.get('quasim_median_time', 0):.2f}s",
+                f"{result.performance_metrics.get('speedup', 0):.2f}x"
             ])
 
-        # Create table
-        table = Table(table_data)
-        table.setStyle(TableStyle([
+        timing_table = Table(timing_data)
+        timing_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.green),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
