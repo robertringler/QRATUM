@@ -1,8 +1,9 @@
 """Scenario drivers connecting to subsystems."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Callable, Dict, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, Dict
 
 from qscenario.events import Event
 
@@ -12,9 +13,11 @@ if TYPE_CHECKING:  # pragma: no cover
 
 @dataclass
 class ScenarioDrivers:
-    simulators: Dict[str, Callable[[Event, "ScenarioState"], Dict[str, object]]] = field(default_factory=dict)
-    governance_hook: Callable[[Event, "ScenarioState"], Dict[str, object]] | None = None
-    node_hook: Callable[[Event, "ScenarioState"], Dict[str, object]] | None = None
+    simulators: Dict[str, Callable[[Event, ScenarioState], Dict[str, object]]] = field(
+        default_factory=dict
+    )
+    governance_hook: Callable[[Event, ScenarioState], Dict[str, object]] | None = None
+    node_hook: Callable[[Event, ScenarioState], Dict[str, object]] | None = None
 
     def invoke(self, domain: str, event: Event, state: ScenarioState) -> Dict[str, object]:
         if self.governance_hook is not None:

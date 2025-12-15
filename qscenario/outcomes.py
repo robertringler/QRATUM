@@ -1,4 +1,5 @@
 """Outcome metrics and scoring."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -30,4 +31,9 @@ def evaluate_outcomes(state: ScenarioState, required_metrics: List[str]) -> Outc
         reasons.append(f"missing metrics: {','.join(missing)}")
     if state.incidents:
         reasons.append("incidents detected")
-    return OutcomeSummary(success=success, reasons=reasons, metrics=dict(state.metrics), incidents=list(state.incidents))
+    return OutcomeSummary(
+        success=success,
+        reasons=reasons,
+        metrics=dict(state.metrics),
+        incidents=list(state.incidents),
+    )

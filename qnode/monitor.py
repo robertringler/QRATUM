@@ -1,10 +1,11 @@
 """Health and integrity monitor."""
+
 from __future__ import annotations
 
 from typing import Dict, List
 
-from infra.metrics import MetricRegistry
 from infra.alerts import AlertEngine
+from infra.metrics import MetricRegistry
 from qnode.incident_log import IncidentLog
 
 

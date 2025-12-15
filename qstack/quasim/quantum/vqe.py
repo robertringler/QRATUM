@@ -1,4 +1,5 @@
 """Stubbed deterministic VQE energy evaluation."""
+
 from __future__ import annotations
 
 from typing import List

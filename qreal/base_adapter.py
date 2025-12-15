@@ -1,12 +1,13 @@
 """Base classes for deterministic reality adapters."""
+
 from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
 from typing import Callable, Dict, List
 
-from qreal.provenance import ProvenanceRecord, compute_provenance
 from qreal.normalizers import NormalizationChain
+from qreal.provenance import ProvenanceRecord, compute_provenance
 
 
 @dataclass
@@ -48,10 +49,14 @@ class BaseAdapter:
         return AdapterOutput(normalized=normalized, percept=percept, provenance=provenance)
 
     # Subclass hooks -----------------------------------------------------------------
-    def _normalize(self, raw: object, tick: int) -> Dict[str, object]:  # pragma: no cover - abstract
+    def _normalize(
+        self, raw: object, tick: int
+    ) -> Dict[str, object]:  # pragma: no cover - abstract
         raise NotImplementedError
 
-    def _to_percept(self, normalized: Dict[str, object]) -> Dict[str, object]:  # pragma: no cover - abstract
+    def _to_percept(
+        self, normalized: Dict[str, object]
+    ) -> Dict[str, object]:  # pragma: no cover - abstract
         raise NotImplementedError
 
     # Helpers ------------------------------------------------------------------------

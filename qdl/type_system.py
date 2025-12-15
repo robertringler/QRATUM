@@ -1,4 +1,5 @@
 """Minimal type system for QDL."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

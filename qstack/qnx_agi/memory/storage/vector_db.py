@@ -1,4 +1,5 @@
 """Deterministic vector storage."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

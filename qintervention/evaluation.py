@@ -1,10 +1,9 @@
 """Intervention evaluation logic."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Dict, List
-
-from qintervention.actions import ScheduledAction
 
 
 @dataclass

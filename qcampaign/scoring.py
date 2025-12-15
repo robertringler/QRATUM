@@ -1,10 +1,10 @@
 """Campaign scoring utilities."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Dict, List
 
-from qagents.rewards import aggregate_rewards
 from qcampaign.teams import Team
 
 

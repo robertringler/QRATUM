@@ -6,7 +6,7 @@ record.
 """
 
 from .core import QNXSubstrate
-from .types import SimulationConfig, SubstrateResult, SecurityLevel
+from .types import SecurityLevel, SimulationConfig, SubstrateResult
 
 __all__ = [
     "QNXSubstrate",

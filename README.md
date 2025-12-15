@@ -241,6 +241,55 @@ long-term auditability
 
 ---
 
+## QCore VCS - Universal Version Control Engine
+
+QuASIM includes **QCore VCS**, a Rust-based universal version control system engine with CRDT (Conflict-free Replicated Data Type) overlays for distributed, conflict-free collaboration.
+
+### Features
+
+- **Multi-VCS Support**: Pluggable adapters for Git, Mercurial, and SVN
+- **Git-Compatible Object Store**: Blobs, Trees, Commits, and Tags with SHA-256 content addressing
+- **CRDT Timeline**: Distributed collaboration with automatic conflict resolution
+- **Object Deduplication**: Content-addressable storage with automatic deduplication
+- **High Performance**: Designed for <15ms GitOps operations
+
+### Architecture
+
+```
+rust/qcore_vcs/
+├── src/
+│   ├── object_store.rs  # Git object storage
+│   ├── crdt.rs          # CRDT timeline
+│   ├── vcs.rs           # VCS adapter interface
+│   ├── git.rs           # Git adapter
+│   ├── mercurial.rs     # Mercurial adapter
+│   └── svn.rs           # SVN adapter
+└── examples/
+    └── basic_usage.rs   # Usage examples
+```
+
+### Quick Start
+
+```rust
+use qcore_vcs::{git::GitAdapter, vcs::VcsAdapter};
+
+let mut adapter = GitAdapter::new();
+adapter.init().unwrap();
+let commit_id = adapter.commit("Initial commit").unwrap();
+```
+
+See `rust/qcore_vcs/README.md` for detailed documentation and `rust/qcore_vcs/examples/` for usage examples.
+
+### Testing
+
+```bash
+cd rust/qcore_vcs
+cargo test      # Run all tests (21 tests)
+cargo run --example basic_usage  # Run example
+```
+
+---
+
 License
 
 Apache 2.0 License (see LICENSE file).

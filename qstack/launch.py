@@ -5,6 +5,7 @@ graph, and deterministic QNX runtime so tests or other tooling can call it
 without shelling out to Click. The CLI simply parses the flags and prints the
 resulting launch summary as JSON.
 """
+
 from __future__ import annotations
 
 import json
@@ -21,7 +22,12 @@ from qstack.q.registry import IdentityRegistry
 from qstack.q.signing import Signer
 from qstack.q.trust_graph import TrustGraph
 from qstack.qnx.runtime.operators import OperatorLibrary
-from qstack.qnx.runtime.safety import RateLimiter, SafetyConstraints, SafetyEnvelope, SafetyValidator
+from qstack.qnx.runtime.safety import (
+    RateLimiter,
+    SafetyConstraints,
+    SafetyEnvelope,
+    SafetyValidator,
+)
 from qstack.qnx.runtime.scheduler import DeterministicScheduler
 from qstack.qnx.runtime.state import QNXState
 from qstack.qnx.runtime.tracing import TraceRecorder
@@ -63,8 +69,12 @@ def build_runtime(state: QNXState) -> tuple[QNXVM, TraceRecorder]:
         return {"energy": energy}
 
     operators.register("bind_goal", bind_goal, description="Store the requested goal in state.")
-    operators.register("advance_tick", advance_tick, description="Move the deterministic clock forward.")
-    operators.register("energy_budget", manage_energy, description="Consume a single energy unit per cycle.")
+    operators.register(
+        "advance_tick", advance_tick, description="Move the deterministic clock forward."
+    )
+    operators.register(
+        "energy_budget", manage_energy, description="Consume a single energy unit per cycle."
+    )
 
     constraints = SafetyConstraints(
         [
@@ -106,8 +116,18 @@ def launch(seed: str, goal: str, energy: int) -> Dict[str, Any]:
 
 
 @click.command()
-@click.option("--seed", default="qstack-root-seed", show_default=True, help="Deterministic seed for identity derivation.")
-@click.option("--goal", default="stabilize", show_default=True, help="Goal string to bind into the runtime state.")
+@click.option(
+    "--seed",
+    default="qstack-root-seed",
+    show_default=True,
+    help="Deterministic seed for identity derivation.",
+)
+@click.option(
+    "--goal",
+    default="stabilize",
+    show_default=True,
+    help="Goal string to bind into the runtime state.",
+)
 @click.option(
     "--energy",
     default=5,

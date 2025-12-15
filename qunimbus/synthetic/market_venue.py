@@ -1,4 +1,5 @@
 """Deterministic market venue built atop the order book."""
+
 from __future__ import annotations
 
 from typing import Dict, List

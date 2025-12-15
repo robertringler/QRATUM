@@ -1,4 +1,5 @@
 """Deterministic tensor contraction utilities."""
+
 from __future__ import annotations
 
 from typing import List, Sequence

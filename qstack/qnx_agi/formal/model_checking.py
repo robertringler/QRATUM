@@ -1,4 +1,5 @@
 """Deterministic hooks for model checking and invariant validation."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -35,5 +36,7 @@ class ModelChecker:
         return states
 
     @staticmethod
-    def check_all(traces: Iterable[Dict[str, float]], predicate: Callable[[Dict[str, float]], bool]) -> bool:
+    def check_all(
+        traces: Iterable[Dict[str, float]], predicate: Callable[[Dict[str, float]], bool]
+    ) -> bool:
         return all(predicate(state) for state in traces)

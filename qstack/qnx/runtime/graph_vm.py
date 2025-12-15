@@ -1,12 +1,13 @@
 """Graph-based deterministic execution for operator DAGs with replay and checkpoints."""
+
 from __future__ import annotations
 
 from collections import deque
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 
-from .tracing import TraceRecorder
 from .safety import SafetyEnvelope
+from .tracing import TraceRecorder
 
 
 @dataclass

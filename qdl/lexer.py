@@ -1,4 +1,5 @@
 """Deterministic lexer for QDL."""
+
 from __future__ import annotations
 
 import re

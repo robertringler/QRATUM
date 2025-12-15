@@ -1,4 +1,5 @@
 """Adapter from QuASIM evaluators to world model updates."""
+
 from __future__ import annotations
 
 from typing import Any, Dict

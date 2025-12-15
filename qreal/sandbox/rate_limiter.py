@@ -1,4 +1,5 @@
 """Tick-based deterministic rate limiting."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

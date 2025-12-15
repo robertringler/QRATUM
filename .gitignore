@@ -89,3 +89,10 @@ artifacts/compression/
 artifacts/econ/
 data/telemetry/
 docs/compliance/DO178C/
+
+
+# Rust build artifacts
+/target
+**/target/
+Cargo.lock
+**/*.rs.bk

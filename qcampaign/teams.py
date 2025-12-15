@@ -1,10 +1,11 @@
 """Red/Blue/Gray team abstractions."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Dict, List
 
-from qagents.base import AgentObservation, Agent
+from qagents.base import Agent, AgentObservation
 
 
 @dataclass

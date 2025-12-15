@@ -12,7 +12,14 @@ LOGGER = logging.getLogger(__name__)
 _DEFAULT_DOMAIN_KEYWORDS: Mapping[str, Sequence[str]] = {
     "physics": ("quantum", "photon", "thermodynamic", "relativity", "gravity", "optics"),
     "mathematics": ("algebra", "calculus", "theorem", "proof", "matrix", "derivative"),
-    "computer_science": ("algorithm", "computational", "runtime", "complexity", "neural", "database"),
+    "computer_science": (
+        "algorithm",
+        "computational",
+        "runtime",
+        "complexity",
+        "neural",
+        "database",
+    ),
     "engineering": ("prototype", "circuit", "load-bearing", "tolerance", "mechanical", "sensor"),
     "biology": ("cell", "protein", "genome", "enzyme", "metabolic", "organism"),
     "biometrics": ("iris", "fingerprint", "facial recognition", "gait", "retina"),
@@ -41,4 +48,3 @@ class DomainTagger:
 
 def _contains_any(text: str, keywords: Iterable[str]) -> bool:
     return any(re.search(r"\b" + re.escape(keyword) + r"\b", text) for keyword in keywords)
-
