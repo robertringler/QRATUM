@@ -171,7 +171,8 @@ class TestExperiments:
 
     def test_experiment_1_2_quotient_module(self):
         """Test standalone quotient experiment."""
-        from quasim.terc_validation.experiment_1_2_quotient import run_experiment
+        from quasim.terc_validation.experiment_1_2_quotient import \
+            run_experiment
 
         result = run_experiment()
         assert result["status"] == "passed"
@@ -189,7 +190,8 @@ class TestExperiments:
 
     def test_experiment_3_1_pathology_module(self):
         """Test standalone pathology experiment."""
-        from quasim.terc_validation.experiment_3_1_pathology import run_experiment
+        from quasim.terc_validation.experiment_3_1_pathology import \
+            run_experiment
 
         result = run_experiment()
         assert result["status"] == "passed"
@@ -198,7 +200,8 @@ class TestExperiments:
 
     def test_experiment_5_4_integration_module(self):
         """Test standalone integration experiment."""
-        from quasim.terc_validation.experiment_5_4_integration import run_experiment
+        from quasim.terc_validation.experiment_5_4_integration import \
+            run_experiment
 
         result = run_experiment()
         assert result["status"] == "passed"
@@ -211,7 +214,8 @@ class TestConsciousnessMetrics:
 
     def test_persistent_homology_computation(self):
         """Test persistent homology computation."""
-        from quasim.terc_validation.experiment_1_1_tda import compute_persistent_homology
+        from quasim.terc_validation.experiment_1_1_tda import \
+            compute_persistent_homology
 
         np.random.seed(42)
         point_cloud = np.random.randn(50, 3)
@@ -224,7 +228,8 @@ class TestConsciousnessMetrics:
 
     def test_quotient_calibration(self):
         """Test quotient space calibration."""
-        from quasim.terc_validation.experiment_1_2_quotient import calibrate_quotient_space
+        from quasim.terc_validation.experiment_1_2_quotient import \
+            calibrate_quotient_space
 
         np.random.seed(42)
         state_space = np.random.randn(100, 5)
@@ -236,7 +241,8 @@ class TestConsciousnessMetrics:
 
     def test_eeg_correlation(self):
         """Test EEG correlation computation."""
-        from quasim.terc_validation.experiment_2_1_eeg import compute_eeg_correlation
+        from quasim.terc_validation.experiment_2_1_eeg import \
+            compute_eeg_correlation
 
         np.random.seed(42)
         eeg_signal = np.random.randn(100)
@@ -249,7 +255,8 @@ class TestConsciousnessMetrics:
 
     def test_pathology_classification(self):
         """Test pathology classification."""
-        from quasim.terc_validation.experiment_3_1_pathology import classify_pathology
+        from quasim.terc_validation.experiment_3_1_pathology import \
+            classify_pathology
 
         metrics = {"phi": 0.85, "icq": 0.90, "beta_1": 5}
         result = classify_pathology(metrics)

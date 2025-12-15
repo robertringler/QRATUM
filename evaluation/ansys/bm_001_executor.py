@@ -52,15 +52,12 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import hashlib
-import json
-import logging
-import statistics
 import csv
 import hashlib
 import json
 import logging
 import os
+import statistics
 import sys
 import time
 from dataclasses import asdict, dataclass, field
@@ -1732,13 +1729,8 @@ class ReportGenerator:
             from reportlab.lib.pagesizes import letter
             from reportlab.lib.styles import getSampleStyleSheet
             from reportlab.lib.units import inch
-            from reportlab.platypus import (
-                Paragraph,
-                SimpleDocTemplate,
-                Spacer,
-                Table,
-                TableStyle,
-            )
+            from reportlab.platypus import (Paragraph, SimpleDocTemplate,
+                                            Spacer, Table, TableStyle)
         except ImportError:
             logger.warning("reportlab not installed, skipping PDF generation")
             return

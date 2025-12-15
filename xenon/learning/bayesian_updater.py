@@ -6,7 +6,7 @@ P(mechanism | experiment) ∝ P(experiment | mechanism) × P(mechanism)
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 import numpy as np
 
@@ -23,7 +23,7 @@ class ExperimentResult:
         conditions: Experimental conditions (temperature, pH, etc.)
         metadata: Additional metadata
     """
-    
+
     def __init__(
         self,
         experiment_type: str,
@@ -48,7 +48,7 @@ class BayesianUpdater:
         likelihood_scale: Scaling factor for likelihood computation
         evidence_threshold: Minimum posterior probability to keep mechanisms
     """
-    
+
     def __init__(
         self,
         likelihood_scale: float = 1.0,
@@ -63,7 +63,7 @@ class BayesianUpdater:
         self.likelihood_scale = likelihood_scale
         self.evidence_threshold = evidence_threshold
         self._total_experiments = 0
-    
+
     def update_mechanisms(
         self,
         mechanisms: List[BioMechanism],
@@ -85,34 +85,34 @@ class BayesianUpdater:
         """
         if not mechanisms:
             return []
-        
+
         # Compute likelihoods for each mechanism
         likelihoods = []
         for mechanism in mechanisms:
             likelihood = self.compute_likelihood(mechanism, experiment_result)
             likelihoods.append(likelihood)
-        
+
         # Bayesian update: posterior ∝ likelihood × prior
         unnormalized_posteriors = []
         for mechanism, likelihood in zip(mechanisms, likelihoods):
             prior = mechanism.posterior  # Current posterior is prior for next update
             unnormalized_posterior = likelihood * prior
             unnormalized_posteriors.append(unnormalized_posterior)
-        
+
         # Normalize posteriors
         total_evidence = sum(unnormalized_posteriors)
-        
+
         if total_evidence > 0:
             for mechanism, unnormalized in zip(mechanisms, unnormalized_posteriors):
                 mechanism.posterior = unnormalized / total_evidence
                 mechanism.provenance.append(
                     f"bayesian_update_{self._total_experiments}:{experiment_result.experiment_type}"
                 )
-        
+
         self._total_experiments += 1
-        
+
         return mechanisms
-    
+
     def compute_likelihood(
         self,
         mechanism: BioMechanism,
@@ -141,7 +141,7 @@ class BayesianUpdater:
         else:
             # Default: uniform likelihood for unknown experiment types
             return 1.0
-    
+
     def _likelihood_concentration(
         self,
         mechanism: BioMechanism,
@@ -154,25 +154,25 @@ class BayesianUpdater:
         """
         chi_squared = 0.0
         n_measurements = 0
-        
+
         for state_name, observed_conc in experiment.observations.items():
             if state_name in mechanism._states:
                 predicted_conc = mechanism._states[state_name].concentration
-                
+
                 if predicted_conc is not None:
                     uncertainty = experiment.uncertainties.get(state_name, 0.1 * observed_conc)
                     if uncertainty > 0:
                         residual = (observed_conc - predicted_conc) / uncertainty
                         chi_squared += residual ** 2
                         n_measurements += 1
-        
+
         if n_measurements == 0:
             return 0.1  # Low likelihood if no predictions available
-        
+
         # Gaussian likelihood
         likelihood = np.exp(-chi_squared / (2.0 * n_measurements * self.likelihood_scale))
         return max(likelihood, 1e-10)  # Prevent underflow
-    
+
     def _likelihood_kinetics(
         self,
         mechanism: BioMechanism,
@@ -184,27 +184,27 @@ class BayesianUpdater:
         """
         log_likelihood = 0.0
         n_rates = 0
-        
+
         for transition in mechanism._transitions:
             transition_key = f"{transition.source}->{transition.target}"
-            
+
             if transition_key in experiment.observations:
                 observed_rate = experiment.observations[transition_key]
                 predicted_rate = transition.rate_constant
-                
+
                 # Log-normal likelihood (rate constants span many orders of magnitude)
                 if observed_rate > 0 and predicted_rate > 0:
                     log_ratio = np.log(predicted_rate / observed_rate)
                     # Assume 1 order of magnitude uncertainty
                     log_likelihood += -0.5 * (log_ratio / np.log(10)) ** 2
                     n_rates += 1
-        
+
         if n_rates == 0:
             return 0.1
-        
+
         likelihood = np.exp(log_likelihood / n_rates)
         return max(likelihood, 1e-10)
-    
+
     def _likelihood_perturbation(
         self,
         mechanism: BioMechanism,
@@ -217,18 +217,18 @@ class BayesianUpdater:
         # Check if perturbation source and target are in mechanism
         source = experiment.conditions.get("perturbation_source")
         target = experiment.conditions.get("perturbation_target")
-        
+
         if source and target and source in mechanism._states and target in mechanism._states:
             # Check if causal path exists
             paths = mechanism.get_causal_paths(source, target)
-            
+
             if len(paths) > 0:
                 # Likelihood increases with number of paths
                 likelihood = 1.0 - np.exp(-len(paths) / 5.0)
                 return likelihood
-        
+
         return 0.1  # Low likelihood if topology doesn't support perturbation
-    
+
     def prune_low_evidence(
         self,
         mechanisms: List[BioMechanism],
@@ -245,11 +245,11 @@ class BayesianUpdater:
         """
         if threshold is None:
             threshold = self.evidence_threshold
-        
+
         pruned = [m for m in mechanisms if m.posterior >= threshold]
-        
+
         return pruned
-    
+
     def get_evidence_summary(self, mechanisms: List[BioMechanism]) -> Dict[str, Any]:
         """Compute summary statistics of mechanism evidence.
         
@@ -267,16 +267,16 @@ class BayesianUpdater:
                 "mean_posterior": 0.0,
                 "entropy": 0.0,
             }
-        
+
         posteriors = [m.posterior for m in mechanisms]
         total_evidence = sum(posteriors)
-        
+
         # Compute entropy (uncertainty in mechanism distribution)
         entropy = 0.0
         for p in posteriors:
             if p > 0:
                 entropy += -p * np.log(p)
-        
+
         return {
             "n_mechanisms": len(mechanisms),
             "total_evidence": total_evidence,

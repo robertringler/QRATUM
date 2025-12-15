@@ -9,16 +9,10 @@ from quasim.ownai.data.preprocess import StandardScaler
 from quasim.ownai.determinism import hash_preds, set_seed
 from quasim.ownai.models.mlp import DeterministicMLP
 from quasim.ownai.models.slt import build_slt
-from quasim.ownai.train.metrics import (
-    accuracy,
-    estimate_energy_proxy,
-    estimate_model_size_mb,
-    f1_score,
-    mae,
-    measure_latency,
-    measure_throughput,
-    rmse,
-)
+from quasim.ownai.train.metrics import (accuracy, estimate_energy_proxy,
+                                        estimate_model_size_mb, f1_score, mae,
+                                        measure_latency, measure_throughput,
+                                        rmse)
 
 
 @dataclass
@@ -124,9 +118,7 @@ def benchmark_model(
         model = DeterministicMLP(task=task_type, seed=seed)
     elif model_name == "rf":
         from quasim.baselines.sklearn_models import (
-            get_random_forest_classifier,
-            get_random_forest_regressor,
-        )
+            get_random_forest_classifier, get_random_forest_regressor)
 
         if "cls" in task:
             model = get_random_forest_classifier(seed=seed)
@@ -141,20 +133,16 @@ def benchmark_model(
 
         model = get_linear_svc(seed=seed)
     elif model_name == "xgboost":
-        from quasim.baselines.xgboost_lightgbm import (
-            get_xgboost_classifier,
-            get_xgboost_regressor,
-        )
+        from quasim.baselines.xgboost_lightgbm import (get_xgboost_classifier,
+                                                       get_xgboost_regressor)
 
         if "cls" in task:
             model = get_xgboost_classifier(seed=seed)
         else:
             model = get_xgboost_regressor(seed=seed)
     elif model_name == "lightgbm":
-        from quasim.baselines.xgboost_lightgbm import (
-            get_lightgbm_classifier,
-            get_lightgbm_regressor,
-        )
+        from quasim.baselines.xgboost_lightgbm import (get_lightgbm_classifier,
+                                                       get_lightgbm_regressor)
 
         if "cls" in task:
             model = get_lightgbm_classifier(seed=seed)

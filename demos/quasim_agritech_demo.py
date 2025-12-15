@@ -20,12 +20,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from quasim.common import (
-    calculate_fidelity,
-    evolutionary_optimization,
-    generate_report,
-    load_profile,
-)
+from quasim.common import (calculate_fidelity, evolutionary_optimization,
+                           generate_report, load_profile)
 
 
 def simulate_agriculture(alpha: float, profile: dict, seed: int = 42) -> dict:

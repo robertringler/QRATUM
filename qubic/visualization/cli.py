@@ -260,14 +260,14 @@ def example(example_type: str, output_dir: str):
         tire_main(output_path)
 
     elif example_type == "quantum":
-        from qubic.visualization.examples.render_quantum import main as quantum_main
+        from qubic.visualization.examples.render_quantum import \
+            main as quantum_main
 
         quantum_main(output_path)
 
     elif example_type == "streaming":
-        from qubic.visualization.examples.stream_simulation import (
-            main as streaming_main,
-        )
+        from qubic.visualization.examples.stream_simulation import \
+            main as streaming_main
 
         streaming_main()
 

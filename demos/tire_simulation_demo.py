@@ -162,11 +162,9 @@ def demo_quantum_optimization():
     print("=" * 80)
     print()
 
-    from quasim.domains.tire.materials import (
-        CompoundType,
-        MaterialProperties,
-        TireCompound,
-    )
+    from quasim.domains.tire.materials import (CompoundType,
+                                               MaterialProperties,
+                                               TireCompound)
 
     # Create a base compound
     props = MaterialProperties(

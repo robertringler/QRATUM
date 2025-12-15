@@ -4,8 +4,10 @@ Provides a flexible circuit builder for constructing quantum circuits
 with support for all standard gates and custom operations.
 """
 
+from typing import List, Optional, Tuple
+
 import numpy as np
-from typing import List, Optional, Tuple, Union
+
 from qratum.core import gates
 
 

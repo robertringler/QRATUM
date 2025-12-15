@@ -44,7 +44,8 @@ def main() -> None:
     # Import required modules
     print("Loading QuASIM and Goodyear integration modules...")
     try:
-        from integrations.goodyear import GoodyearQuantumPilot, GoodyearMaterialsDatabase
+        from integrations.goodyear import (GoodyearMaterialsDatabase,
+                                           GoodyearQuantumPilot)
         from quasim.domains.tire import generate_tire_library
         print("✓ Modules loaded successfully")
     except ImportError as e:
@@ -60,7 +61,7 @@ def main() -> None:
     # Display database statistics
     db_stats = gqp.materials_db.get_statistics()
     print()
-    print(f"Materials Database Loaded:")
+    print("Materials Database Loaded:")
     print(f"  Total Materials: {db_stats['total_materials']}")
     print(f"  Quantum Validated: {db_stats['quantum_validated']} ({db_stats['quantum_validated_percentage']}%)")
     print()
@@ -102,7 +103,7 @@ def main() -> None:
         print(f"✓ Total Scenarios Generated: {summary['total_scenarios']}")
         print(f"✓ Scenarios per Material: {summary['scenarios_per_material']}")
         print()
-        print(f"Output Files:")
+        print("Output Files:")
         print(f"  • Results: {summary['results_file']}")
         print(f"  • Materials Database: {summary['materials_file']}")
         print(f"  • Documentation: {output_dir}/README.md")
@@ -137,7 +138,7 @@ def main() -> None:
         # Execution summary
         elapsed_time = time.time() - start_time
         print_section("PHASE 5: Execution Summary")
-        print(f"✓ Goodyear Quantum Tire Pilot execution COMPLETE")
+        print("✓ Goodyear Quantum Tire Pilot execution COMPLETE")
         print(f"✓ Total execution time: {elapsed_time:.2f} seconds ({elapsed_time/60:.2f} minutes)")
         print(f"✓ Simulation throughput: {summary['total_scenarios']/elapsed_time:.2f} scenarios/second")
         print()

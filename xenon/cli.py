@@ -74,12 +74,12 @@ def run(
     Example:
         xenon run --target EGFR --max-iter 50 --objective characterize
     """
-    click.echo(f"🧬 XENON Runtime Starting")
+    click.echo("🧬 XENON Runtime Starting")
     click.echo(f"Target: {target}")
     click.echo(f"Objective: {objective}")
     click.echo(f"Max iterations: {max_iter}")
     click.echo()
-    
+
     # Initialize runtime
     runtime = XENONRuntime()
     runtime.add_target(
@@ -87,11 +87,11 @@ def run(
         protein=target,
         objective=objective,
     )
-    
+
     # Run learning loop
     click.echo("Running continuous learning loop...")
     summary = runtime.run(max_iterations=max_iter, seed=seed)
-    
+
     # Display results
     click.echo()
     click.echo("=" * 60)
@@ -102,15 +102,15 @@ def run(
     click.echo(f"Final entropy: {summary['final_entropy']:.4f}")
     click.echo(f"Mechanisms discovered: {summary['mechanisms_discovered']}")
     click.echo()
-    
+
     # Get high-confidence mechanisms
     mechanisms = runtime.get_mechanisms(min_evidence=0.1)
-    
+
     if mechanisms:
         click.echo(f"Top {min(5, len(mechanisms))} mechanisms:")
         for i, mech in enumerate(mechanisms[:5], 1):
             click.echo(f"  {i}. {mech.name} (posterior: {mech.posterior:.4f})")
-    
+
     # Save results if output specified
     if output:
         results = {
@@ -118,7 +118,7 @@ def run(
             "runtime_summary": runtime.get_summary(),
             "mechanisms": [m.to_dict() for m in mechanisms[:10]],
         }
-        
+
         output_path = Path(output)
         output_path.write_text(json.dumps(results, indent=2))
         click.echo()
@@ -154,23 +154,23 @@ def query(target: str, min_evidence: float, input: Optional[str]):
         click.echo("First run: xenon run --target EGFR --output results.json")
         click.echo("Then query: xenon query --target EGFR --input results.json")
         return
-    
+
     # Load results
     input_path = Path(input)
     data = json.loads(input_path.read_text())
-    
+
     # Filter mechanisms
     mechanisms_data = data.get("mechanisms", [])
     filtered = [
         m for m in mechanisms_data
         if m.get("posterior", 0) >= min_evidence
     ]
-    
+
     click.echo(f"🔍 Query Results for {target}")
     click.echo(f"Minimum evidence: {min_evidence}")
     click.echo(f"Mechanisms found: {len(filtered)}")
     click.echo()
-    
+
     for i, mech_data in enumerate(filtered, 1):
         click.echo(f"{i}. {mech_data['name']}")
         click.echo(f"   Posterior: {mech_data['posterior']:.4f}")
@@ -201,30 +201,30 @@ def validate(mechanism_file: str, temperature: float):
     """
     click.echo(f"🔬 Validating mechanism: {mechanism_file}")
     click.echo()
-    
+
     # Load mechanism
     mechanism_path = Path(mechanism_file)
     data = json.loads(mechanism_path.read_text())
-    
+
     try:
         mechanism = BioMechanism.from_dict(data)
     except Exception as e:
         click.echo(f"❌ Error loading mechanism: {e}")
         return
-    
+
     # Validate
     click.echo(f"Mechanism: {mechanism.name}")
     click.echo(f"States: {len(mechanism._states)}")
     click.echo(f"Transitions: {len(mechanism._transitions)}")
     click.echo()
-    
+
     # Thermodynamic feasibility
     is_feasible = mechanism.is_thermodynamically_feasible(temperature)
     if is_feasible:
         click.echo("✅ Thermodynamically feasible")
     else:
         click.echo("❌ Thermodynamically infeasible")
-    
+
     # Conservation laws
     is_valid, violations = mechanism.validate_conservation_laws()
     if is_valid:
@@ -233,7 +233,7 @@ def validate(mechanism_file: str, temperature: float):
         click.echo("❌ Conservation law violations:")
         for violation in violations:
             click.echo(f"   - {violation}")
-    
+
     # Mechanism hash
     mech_hash = mechanism.compute_mechanism_hash()
     click.echo()

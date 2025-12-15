@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,7 +22,7 @@ class TireRenderer:
         config: Rendering configuration
     """
 
-    def __init__(self, config: Optional[RenderConfig] = None) -> None:
+    def __init__(self, config: RenderConfig | None = None) -> None:
         """Initialize tire renderer."""
         self.config = config or RenderConfig()
         self.renderer = SceneRenderer(self.config)
@@ -31,9 +31,9 @@ class TireRenderer:
     def render_tire_3d(
         self,
         tire_mesh: TireMesh,
-        camera: Optional[Camera] = None,
-        lights: Optional[list[Light]] = None,
-        material: Optional[PBRMaterial] = None,
+        camera: Camera | None = None,
+        lights: list[Light] | None = None,
+        material: PBRMaterial | None = None,
     ) -> np.ndarray:
         """Render 3D tire model with lighting.
 
@@ -111,7 +111,7 @@ class TireRenderer:
         return image
 
     def render_thermal_map(
-        self, tire_mesh: TireMesh, thermal_data: np.ndarray, output_path: Optional[Path] = None
+        self, tire_mesh: TireMesh, thermal_data: np.ndarray, output_path: Path | None = None
     ) -> np.ndarray:
         """Render thermal gradient visualization.
 
@@ -163,7 +163,7 @@ class TireRenderer:
         return image
 
     def render_stress_distribution(
-        self, tire_mesh: TireMesh, stress_data: np.ndarray, output_path: Optional[Path] = None
+        self, tire_mesh: TireMesh, stress_data: np.ndarray, output_path: Path | None = None
     ) -> np.ndarray:
         """Render stress field visualization.
 
@@ -215,7 +215,7 @@ class TireRenderer:
         return image
 
     def render_wear_pattern(
-        self, tire_mesh: TireMesh, wear_data: np.ndarray, output_path: Optional[Path] = None
+        self, tire_mesh: TireMesh, wear_data: np.ndarray, output_path: Path | None = None
     ) -> np.ndarray:
         """Render tread wear visualization.
 
@@ -267,7 +267,7 @@ class TireRenderer:
         return image
 
     def render_performance_dashboard(
-        self, simulation_result: Any, output_path: Optional[Path] = None
+        self, simulation_result: Any, output_path: Path | None = None
     ) -> np.ndarray:
         """Render comprehensive multi-panel performance dashboard.
 

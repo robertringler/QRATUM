@@ -2,18 +2,10 @@
 
 from collections.abc import Callable
 
-from .checks import (
-    audit_chain,
-    comp_artifacts,
-    comp_cmmc_map,
-    doc_language_lint,
-    econ_montecarlo,
-    econ_phi_qevf,
-    tech_benchmarks,
-    tech_compression,
-    tech_rl_convergence,
-    tech_telemetry_rmse,
-)
+from .checks import (audit_chain, comp_artifacts, comp_cmmc_map,
+                     doc_language_lint, econ_montecarlo, econ_phi_qevf,
+                     tech_benchmarks, tech_compression, tech_rl_convergence,
+                     tech_telemetry_rmse)
 
 # Registry mapping check IDs to their runner functions
 REG: dict[str, Callable] = {

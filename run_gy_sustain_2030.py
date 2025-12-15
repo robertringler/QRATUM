@@ -349,7 +349,8 @@ def execute_thermal_ramp_phase(
     simulator: Any, compound: Any, geometry: Any
 ) -> dict[str, Any]:
     """Execute thermal ramp simulation phase."""
-    from quasim.domains.tire import EnvironmentalConditions, RoadSurface, WeatherCondition
+    from quasim.domains.tire import (EnvironmentalConditions, RoadSurface,
+                                     WeatherCondition)
 
     # Thermal ramp from -40°C to +80°C
     temperatures = np.linspace(-40, 80, 13)  # 10°C increments
@@ -867,20 +868,12 @@ def main() -> None:
     # Import required modules
     print("Loading QuASIM simulation modules...")
     try:
-        from quasim.domains.tire import (
-            CompoundType,
-            EnvironmentalConditions,
-            MaterialProperties,
-            RoadSurface,
-            TireCompound,
-            TireGeometry,
-            TireSimulation,
-            TireStructure,
-            TireType,
-            TreadDesign,
-            TreadPattern,
-            WeatherCondition,
-        )
+        from quasim.domains.tire import (CompoundType, EnvironmentalConditions,
+                                         MaterialProperties, RoadSurface,
+                                         TireCompound, TireGeometry,
+                                         TireSimulation, TireStructure,
+                                         TireType, TreadDesign, TreadPattern,
+                                         WeatherCondition)
 
         print("✓ Modules loaded successfully")
     except ImportError as e:

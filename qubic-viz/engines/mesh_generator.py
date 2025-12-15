@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 
@@ -170,7 +169,7 @@ class TireMeshGenerator:
 
         return mesh
 
-    def add_tread_detail(self, mesh: TireMesh, tread_design: Optional[Any] = None) -> TireMesh:
+    def add_tread_detail(self, mesh: TireMesh, tread_design: Any | None = None) -> TireMesh:
         """Add tread pattern detail to tire mesh.
 
         Args:

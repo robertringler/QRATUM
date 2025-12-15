@@ -1,19 +1,12 @@
 """Tests for tire simulation engine."""
 
-import pytest
 
-from quasim.domains.tire.environment import (
-    EnvironmentalConditions,
-    RoadSurface,
-    WeatherCondition,
-)
-from quasim.domains.tire.geometry import (
-    TireGeometry,
-    TireStructure,
-    TireType,
-    TreadDesign,
-)
-from quasim.domains.tire.materials import CompoundType, MaterialProperties, TireCompound
+from quasim.domains.tire.environment import (EnvironmentalConditions,
+                                             RoadSurface)
+from quasim.domains.tire.geometry import (TireGeometry, TireStructure,
+                                          TireType, TreadDesign)
+from quasim.domains.tire.materials import (CompoundType, MaterialProperties,
+                                           TireCompound)
 from quasim.domains.tire.simulation import TireSimulation
 
 

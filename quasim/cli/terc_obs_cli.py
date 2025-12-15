@@ -7,13 +7,12 @@ import sys
 import click
 import numpy as np
 
-from quasim.terc_bridge.adapters import from_quasim_state, to_terc_observable_format
-from quasim.terc_bridge.observables import (
-    beta_metrics_from_cipher,
-    emergent_complexity,
-    ioc_period_candidates,
-    qgh_consensus_status,
-)
+from quasim.terc_bridge.adapters import (from_quasim_state,
+                                         to_terc_observable_format)
+from quasim.terc_bridge.observables import (beta_metrics_from_cipher,
+                                            emergent_complexity,
+                                            ioc_period_candidates,
+                                            qgh_consensus_status)
 from quasim.terc_bridge.registry import list_observables
 
 

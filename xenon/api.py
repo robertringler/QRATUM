@@ -43,17 +43,17 @@ def create_mechanism(
         >>> mech = create_mechanism("test", states, transitions)
     """
     mechanism = BioMechanism(name=name)
-    
+
     # Add states
     for state_dict in states:
         state = MolecularState(**state_dict)
         mechanism.add_state(state)
-    
+
     # Add transitions
     for trans_dict in transitions:
         transition = Transition(**trans_dict)
         mechanism.add_transition(transition)
-    
+
     return mechanism
 
 
@@ -120,12 +120,12 @@ def run_xenon(
         ... )
     """
     runtime = XENONRuntime(**kwargs)
-    
+
     for target_dict in targets:
         runtime.add_target(**target_dict)
-    
+
     summary = runtime.run(max_iterations)
-    
+
     return summary
 
 
@@ -149,7 +149,7 @@ def validate_mechanism(
     """
     thermodynamic_feasible = mechanism.is_thermodynamically_feasible(temperature)
     conservation_valid, violations = mechanism.validate_conservation_laws()
-    
+
     return {
         "thermodynamically_feasible": thermodynamic_feasible,
         "conservation_laws_valid": conservation_valid,

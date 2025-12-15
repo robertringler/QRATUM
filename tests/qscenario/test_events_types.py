@@ -1,4 +1,5 @@
-from qscenario.events import Event, MarketEvent, MissionEvent, NodeEvent, SystemEvent
+from qscenario.events import (Event, MarketEvent, MissionEvent, NodeEvent,
+                              SystemEvent)
 
 
 def test_event_describe():

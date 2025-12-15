@@ -2,11 +2,8 @@
 
 import pytest
 
-from quasim.qunimbus.orchestrator import (
-    ExecutionMode,
-    OrchestrationConfig,
-    QuNimbusOrchestrator,
-)
+from quasim.qunimbus.orchestrator import (ExecutionMode, OrchestrationConfig,
+                                          QuNimbusOrchestrator)
 
 
 def test_orchestration_config_defaults():

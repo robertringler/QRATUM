@@ -18,25 +18,16 @@ Docs: https://qratum.io/docs
 """
 
 from qratum.config import QRATUMConfig, get_config, reset_config, set_config
-from qratum.version import (
-    __author__,
-    __classification__,
-    __docs__,
-    __github__,
-    __legacy_name__,
-    __license__,
-    __rebrand_date__,
-    __url__,
-    __version__,
-)
-
+from qratum.core import gates
+from qratum.core.circuit import Circuit
+from qratum.core.densitymatrix import DensityMatrix
+from qratum.core.measurement import Measurement, Result
 # Core imports
 from qratum.core.simulator import Simulator
-from qratum.core.circuit import Circuit
 from qratum.core.statevector import StateVector
-from qratum.core.measurement import Measurement, Result
-from qratum.core.densitymatrix import DensityMatrix
-from qratum.core import gates
+from qratum.version import (__author__, __classification__, __docs__,
+                            __github__, __legacy_name__, __license__,
+                            __rebrand_date__, __url__, __version__)
 
 __all__ = [
     # Version and metadata
@@ -67,7 +58,7 @@ __all__ = [
 
 def print_banner():
     """Print QRATUM ASCII banner."""
-    banner = """
+    banner = f"""
     ██████╗ ██████╗  █████╗ ████████╗██╗   ██╗███╗   ███╗
    ██╔═══██╗██╔══██╗██╔══██╗╚══██╔══╝██║   ██║████╗ ████║
    ██║   ██║██████╔╝███████║   ██║   ██║   ██║██╔████╔██║
@@ -76,11 +67,9 @@ def print_banner():
     ╚══▀▀═╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝
 
     Quantum Resource Allocation, Tensor Analysis, and Unified Modeling
-    Version {version} | Formerly QuASIM
+    Version {__version__} | Formerly QuASIM
     https://qratum.io
-    """.format(
-        version=__version__
-    )
+    """
     print(banner)
 
 

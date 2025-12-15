@@ -9,7 +9,8 @@ from typing import Any
 
 import numpy as np
 
-from quasim.domains.tire.materials import CompoundType, MaterialProperties, TireCompound
+from quasim.domains.tire.materials import (CompoundType, MaterialProperties,
+                                           TireCompound)
 
 
 @dataclass

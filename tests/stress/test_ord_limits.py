@@ -7,7 +7,8 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-from scripts.stress.inject_load import DEFAULT_LOAD_FACTOR, generate_stress_profile
+from scripts.stress.inject_load import (DEFAULT_LOAD_FACTOR,
+                                        generate_stress_profile)
 
 
 def build_baseline():

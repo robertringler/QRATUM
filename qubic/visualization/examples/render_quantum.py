@@ -98,7 +98,8 @@ def main(output_dir: Path = Path("./viz_output")) -> None:
 
     # Export interactive visualization
     try:
-        from qubic.visualization.exporters.interactive import InteractiveExporter
+        from qubic.visualization.exporters.interactive import \
+            InteractiveExporter
 
         logger.info("Exporting interactive HTML...")
         interactive_exporter = InteractiveExporter()

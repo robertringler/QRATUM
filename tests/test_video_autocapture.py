@@ -77,7 +77,8 @@ def test_video_autocapture(tmp_path):
 def test_video_autocapture_creates_files(temp_artifacts_dir):
     """Test that video files are created during a simulation run."""
     # Import here to ensure we're in the temp directory
-    from quasim.cli.run_flow import _create_video_artifacts, _generate_video_hash
+    from quasim.cli.run_flow import (_create_video_artifacts,
+                                     _generate_video_hash)
 
     # Run a small optimization
     N = 30
@@ -101,7 +102,8 @@ def test_video_autocapture_creates_files(temp_artifacts_dir):
 
 def test_video_file_size_threshold(temp_artifacts_dir):
     """Test that MP4 file size exceeds minimum threshold (indicates video data written)."""
-    from quasim.cli.run_flow import _create_video_artifacts, _generate_video_hash
+    from quasim.cli.run_flow import (_create_video_artifacts,
+                                     _generate_video_hash)
 
     # Run a small optimization
     N = 40

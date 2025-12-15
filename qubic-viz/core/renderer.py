@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 
@@ -58,7 +58,7 @@ class SceneRenderer:
         config: Rendering configuration
     """
 
-    def __init__(self, config: Optional[RenderConfig] = None) -> None:
+    def __init__(self, config: RenderConfig | None = None) -> None:
         """Initialize renderer."""
         self.config = config or RenderConfig()
         self.gpu_available = self._detect_gpu()
@@ -148,7 +148,7 @@ class SceneRenderer:
         scene: Any,
         camera: Any,
         num_frames: int,
-        output_path: Optional[Path] = None,
+        output_path: Path | None = None,
     ) -> list[np.ndarray]:
         """Render an animation sequence.
 

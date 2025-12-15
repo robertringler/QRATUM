@@ -4,8 +4,8 @@ Complete set of quantum gates including single-qubit gates (Pauli, Hadamard,
 phase gates, rotation gates) and multi-qubit gates (CNOT, CZ, SWAP, Toffoli).
 """
 
+
 import numpy as np
-from typing import Union
 
 # Type alias for gate matrices
 GateMatrix = np.ndarray

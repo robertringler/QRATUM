@@ -37,8 +37,8 @@ __author__ = "XENON Project"
 
 from .core.mechanism import BioMechanism, MolecularState, Transition
 from .learning.bayesian_updater import BayesianUpdater
-from .simulation.gillespie import GillespieSimulator
 from .runtime.xenon_kernel import XENONRuntime
+from .simulation.gillespie import GillespieSimulator
 
 __all__ = [
     "BioMechanism",

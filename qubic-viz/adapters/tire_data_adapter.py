@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 import numpy as np
 
@@ -15,7 +15,7 @@ class TireDataAdapter:
     """
 
     @staticmethod
-    def extract_visualization_data(simulation_result: Any) -> Dict[str, Any]:
+    def extract_visualization_data(simulation_result: Any) -> dict[str, Any]:
         """Extract visualization data from simulation result.
 
         Args:
