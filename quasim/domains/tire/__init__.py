@@ -20,7 +20,9 @@ from .generator import (
 from .geometry import (
     TireGeometry,
     TireStructure,
+    TireType,
     TreadDesign,
+    TreadPattern,
 )
 from .materials import (
     CompoundType,
@@ -37,7 +39,9 @@ __all__ = [
     "CompoundType",
     "MaterialProperties",
     "TireCompound",
+    "TireType",
     "TreadDesign",
+    "TreadPattern",
     "TireGeometry",
     "TireStructure",
     "EnvironmentalConditions",

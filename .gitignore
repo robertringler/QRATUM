@@ -102,3 +102,7 @@ bm001_execution_output.txt
 
 # Generated documentation package
 output_package/
+viz_output/
+
+# GY-SUSTAIN-2030 simulation outputs
+gy_sustain_2030_results/

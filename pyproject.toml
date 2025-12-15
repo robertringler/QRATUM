@@ -3,17 +3,29 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "quasim"
-version = "0.1.0"
-description = "Quantum-Accelerated Simulation Runtime"
-authors = [{name = "QuASIM Team"}]
+name = "qratum"
+version = "2.0.0"
+description = "QRATUM: Quantum Resource Allocation, Tensor Analysis, and Unified Modeling (Formerly QuASIM)"
+authors = [{name = "QRATUM Team"}]
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
+keywords = ["quantum", "simulation", "quantum-computing", "tensor-networks", "gpu", "hpc"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
     "numpy>=1.24.0",
     "pyyaml>=6.0",
     "click>=8.0.0",
+    "matplotlib>=3.7.0",
 ]
 
 [project.optional-dependencies]
@@ -30,6 +42,13 @@ dev = [
     "plotly>=5.14.0",
     "kaleido>=0.2.1",
     "pandas>=2.0.0",
+]
+viz = [
+    "imageio>=2.0.0",
+    "imageio-ffmpeg>=0.4.0",
+    "plotly>=5.14.0",
+    "torch>=2.0.0",
+    "websockets>=11.0",
 ]
 ownai = [
     "torch>=2.0.0",
@@ -75,6 +94,11 @@ xenon = "xenon.cli:cli"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["quasim*", "qnx*", "qstack*", "xenon*"]
+qubic-viz = "qubic.visualization.cli:cli"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["qratum*", "quasim*", "qnx*", "qstack*", "qubic*"]
 
 [tool.black]
 line-length = 100
@@ -126,7 +150,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["quasim", "src", "QuASIM", "qstack", "qagents", "sdk", "integrations"]
+source = ["quasim", "src", "QuASIM", "qstack", "qagents", "sdk", "integrations", "qubic"]
 branch = true
 omit = [
     "*/tests/*",
