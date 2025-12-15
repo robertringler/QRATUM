@@ -90,15 +90,11 @@ qunimbus = "quasim.qunimbus.cli:main"
 qnx = "qnx.cli:cli"
 qstack = "qstack.launch:main"
 xenon = "xenon.cli:cli"
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["quasim*", "qnx*", "qstack*", "xenon*"]
 qubic-viz = "qubic.visualization.cli:cli"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["qratum*", "quasim*", "qnx*", "qstack*", "qubic*"]
+include = ["qratum*", "quasim*", "qnx*", "qstack*", "qubic*", "xenon*"]
 
 [tool.black]
 line-length = 100
