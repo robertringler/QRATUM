@@ -81,10 +81,14 @@ impl Tree {
 
     pub fn compute_id(&self) -> ObjectId {
         let mut content = String::from("tree ");
-        let entries_data = serde_json::to_string(&self.entries).unwrap();
-        content.push_str(&entries_data.len().to_string());
+        // Use a simpler format for tree entries that doesn't require JSON serialization
+        let mut entries_str = String::new();
+        for entry in &self.entries {
+            entries_str.push_str(&format!("{} {} {}\n", entry.mode, entry.name, entry.object_id));
+        }
+        content.push_str(&entries_str.len().to_string());
         content.push('\0');
-        content.push_str(&entries_data);
+        content.push_str(&entries_str);
         ObjectId::from_bytes(content.as_bytes())
     }
 }
@@ -120,9 +124,19 @@ impl Commit {
     }
 
     pub fn compute_id(&self) -> ObjectId {
-        let commit_data = serde_json::to_string(self).unwrap();
-        let content = format!("commit {}\0{}", commit_data.len(), commit_data);
-        ObjectId::from_bytes(content.as_bytes())
+        // Create a deterministic commit format
+        let mut content = String::new();
+        content.push_str(&format!("tree {}\n", self.tree));
+        for parent in &self.parents {
+            content.push_str(&format!("parent {}\n", parent));
+        }
+        content.push_str(&format!("author {} {}\n", self.author, self.timestamp));
+        content.push_str(&format!("committer {} {}\n", self.committer, self.timestamp));
+        content.push('\n');
+        content.push_str(&self.message);
+
+        let full_content = format!("commit {}\0{}", content.len(), content);
+        ObjectId::from_bytes(full_content.as_bytes())
     }
 }
 

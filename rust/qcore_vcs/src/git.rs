@@ -57,8 +57,11 @@ impl VcsAdapter for GitAdapter {
     }
 
     fn commit(&mut self, message: &str) -> Result<ObjectId> {
-        // Create a simple commit
-        let tree_id = ObjectId::new("0".repeat(64)); // Placeholder tree
+        // Create a simple commit with a placeholder tree
+        // In a full implementation, this would reference an actual tree object
+        const EMPTY_TREE_PLACEHOLDER: &str = 
+            "0000000000000000000000000000000000000000000000000000000000000000";
+        let tree_id = ObjectId::new(EMPTY_TREE_PLACEHOLDER.to_string());
 
         let parents = if let Some(head) = &self.head {
             vec![head.clone()]

@@ -137,12 +137,43 @@ impl CrdtTimeline {
 
     /// Merge two timelines (conflict-free)
     pub fn merge(&mut self, other: &CrdtTimeline) -> Result<()> {
-        // Add all operations from the other timeline
+        // Collect operations in topological order to handle dependencies correctly
+        let mut to_add = Vec::new();
         for (id, operation) in &other.operations {
             if !self.operations.contains_key(id) {
-                self.add_operation(operation.clone())?;
+                to_add.push(operation.clone());
             }
         }
+
+        // Sort by timestamp to add in chronological order
+        to_add.sort_by_key(|op| op.timestamp);
+
+        // Add operations, skipping those whose dependencies aren't met yet
+        let mut added = true;
+        while added && !to_add.is_empty() {
+            added = false;
+            to_add.retain(|op| {
+                // Check if all dependencies exist
+                let deps_met = op.parents.iter().all(|parent| self.operations.contains_key(parent));
+                if deps_met {
+                    // Safe to unwrap since we know the operation is valid
+                    if self.add_operation(op.clone()).is_ok() {
+                        added = true;
+                        return false; // Remove from to_add
+                    }
+                }
+                true // Keep in to_add
+            });
+        }
+
+        // If there are operations left, their dependencies weren't in either timeline
+        if !to_add.is_empty() {
+            return Err(QCoreError::CrdtMergeConflict(format!(
+                "Cannot merge: {} operation(s) have unmet dependencies",
+                to_add.len()
+            )));
+        }
+
         Ok(())
     }
 

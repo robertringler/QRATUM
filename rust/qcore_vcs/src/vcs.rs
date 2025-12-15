@@ -49,16 +49,23 @@ pub enum VcsType {
     Svn,
 }
 
-impl VcsType {
-    pub fn from_str(s: &str) -> Option<Self> {
+impl std::str::FromStr for VcsType {
+    type Err = crate::QCoreError;
+
+    fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
         match s.to_lowercase().as_str() {
-            "git" => Some(VcsType::Git),
-            "hg" | "mercurial" => Some(VcsType::Mercurial),
-            "svn" | "subversion" => Some(VcsType::Svn),
-            _ => None,
+            "git" => Ok(VcsType::Git),
+            "hg" | "mercurial" => Ok(VcsType::Mercurial),
+            "svn" | "subversion" => Ok(VcsType::Svn),
+            _ => Err(crate::QCoreError::VcsAdapterError(format!(
+                "Unknown VCS type: {}",
+                s
+            ))),
         }
     }
+}
 
+impl VcsType {
     pub fn as_str(&self) -> &str {
         match self {
             VcsType::Git => "git",
