@@ -1,4 +1,5 @@
 """Decode simple multiline scientific JSONL."""
+
 from __future__ import annotations
 
 import json

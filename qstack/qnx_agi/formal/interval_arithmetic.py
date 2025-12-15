@@ -5,6 +5,7 @@ operations, enclosure checks, and affine propagation utilities used by
 planners and formal analyzers. All operations avoid nondeterminism and favor
 explicit bounds to align with safety-critical review.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -31,13 +32,13 @@ class Interval:
     def midpoint(self) -> float:
         return (self.low + self.high) / 2.0
 
-    def add(self, other: "Interval") -> "Interval":
+    def add(self, other: Interval) -> Interval:
         return Interval(self.low + other.low, self.high + other.high)
 
-    def sub(self, other: "Interval") -> "Interval":
+    def sub(self, other: Interval) -> Interval:
         return Interval(self.low - other.high, self.high - other.low)
 
-    def mul(self, other: "Interval") -> "Interval":
+    def mul(self, other: Interval) -> Interval:
         candidates = (
             self.low * other.low,
             self.low * other.high,
@@ -46,7 +47,7 @@ class Interval:
         )
         return Interval(min(candidates), max(candidates))
 
-    def div(self, other: "Interval") -> "Interval":
+    def div(self, other: Interval) -> Interval:
         if other.low <= 0.0 <= other.high:
             raise ZeroDivisionError("interval division crosses zero")
         candidates = (
@@ -57,24 +58,26 @@ class Interval:
         )
         return Interval(min(candidates), max(candidates))
 
-    def intersect(self, other: "Interval") -> "Interval":
+    def intersect(self, other: Interval) -> Interval:
         low = max(self.low, other.low)
         high = min(self.high, other.high)
         if low > high:
             raise ValueError("empty interval intersection")
         return Interval(low, high)
 
-    def union(self, other: "Interval") -> "Interval":
+    def union(self, other: Interval) -> Interval:
         return Interval(min(self.low, other.low), max(self.high, other.high))
 
-    def clamp(self, bounds: "Interval") -> "Interval":
+    def clamp(self, bounds: Interval) -> Interval:
         return self.intersect(bounds)
 
     def to_tuple(self) -> Tuple[float, float]:
         return (self.low, self.high)
 
 
-def propagate_affine(intervals: Dict[str, Interval], weights: Dict[str, float], bias: float = 0.0) -> Interval:
+def propagate_affine(
+    intervals: Dict[str, Interval], weights: Dict[str, float], bias: float = 0.0
+) -> Interval:
     r"""Propagate an affine transform \sum w_i * x_i + bias over intervals."""
     low = bias
     high = bias

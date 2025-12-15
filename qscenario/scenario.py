@@ -1,12 +1,13 @@
 """Scenario definitions and state management."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Dict, List
 
-from qscenario.timeline import Timeline
-from qscenario.events import Event
 from qscenario.drivers import ScenarioDrivers
+from qscenario.events import Event
+from qscenario.timeline import Timeline
 
 
 @dataclass
@@ -42,7 +43,9 @@ class ScenarioState:
 class Scenario:
     """Deterministic scenario execution over a logical timeline."""
 
-    def __init__(self, config: ScenarioConfig, timeline: Timeline, drivers: ScenarioDrivers) -> None:
+    def __init__(
+        self, config: ScenarioConfig, timeline: Timeline, drivers: ScenarioDrivers
+    ) -> None:
         self.config = config
         self.timeline = timeline
         self.drivers = drivers

@@ -4,6 +4,7 @@ This module defines the abstract interfaces for kernels, modules, and engines
 used throughout the Q-Stack ecosystem. Implementations must provide a stable
 name, a human-readable description, and an execution entry point.
 """
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod

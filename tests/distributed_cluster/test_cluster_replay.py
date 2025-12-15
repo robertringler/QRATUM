@@ -1,6 +1,6 @@
+from qsk.distributed.consensus_stub import commit, propose
 from qsk.distributed.event_log import EventLog
 from qsk.distributed.replay import replay
-from qsk.distributed.consensus_stub import propose, commit
 
 
 def test_event_log_replay_and_consensus():

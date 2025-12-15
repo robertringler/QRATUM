@@ -4,7 +4,9 @@ from qstack.qnx_agi.worldmodel.dynamics import aerospace_step, finance_step, pha
 
 def test_worldmodel_dynamics_transitions():
     model = WorldModel({"aero": aerospace_step, "finance": finance_step, "pharma": pharma_step})
-    aero_state = model.simulate_step("aero", {"altitude": 100.0, "velocity": 10.0, "acceleration": 1.0})
+    aero_state = model.simulate_step(
+        "aero", {"altitude": 100.0, "velocity": 10.0, "acceleration": 1.0}
+    )
     assert aero_state.facts["sim"]["aero"]["altitude"] > 100.0
 
     finance_state = model.simulate_step("finance", {"price": 10.0, "drift": 0.01, "shock": -0.02})

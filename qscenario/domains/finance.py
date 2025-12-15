@@ -1,12 +1,13 @@
 """Finance scenario templates."""
+
 from __future__ import annotations
 
 from typing import List
 
-from qscenario.events import MarketEvent
-from qscenario.timeline import Timeline, TimelineEntry
 from qscenario.drivers import ScenarioDrivers
+from qscenario.events import MarketEvent
 from qscenario.scenario import Scenario, ScenarioConfig
+from qscenario.timeline import Timeline, TimelineEntry
 
 
 def _finance_driver(event, state):

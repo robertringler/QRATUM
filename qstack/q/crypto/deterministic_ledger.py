@@ -1,16 +1,17 @@
 """Deterministic ledger with Merkle anchoring and attestation verification."""
+
 from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
-from .deterministic_merkle import DeterministicMerkleTree
 from ..attestation import Attestor
+from .deterministic_merkle import DeterministicMerkleTree
 
 
 def _hash_payload(payload: Dict[str, str], prev: str) -> str:
-    material = f"{prev}:{sorted(payload.items())}".encode("utf-8")
+    material = f"{prev}:{sorted(payload.items())}".encode()
     return hashlib.sha256(material).hexdigest()
 
 
@@ -35,7 +36,11 @@ class DeterministicLedger:
         digest = _hash_payload(payload, prev_digest)
         attestation = self.attestor.attest(payload) if self.attestor else None
         entry = DeterministicLedgerEntry(
-            index=len(self.entries), payload=payload, prev_digest=prev_digest, digest=digest, attestation=attestation
+            index=len(self.entries),
+            payload=payload,
+            prev_digest=prev_digest,
+            digest=digest,
+            attestation=attestation,
         )
         self.entries.append(entry)
         return entry

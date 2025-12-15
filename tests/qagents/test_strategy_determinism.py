@@ -1,5 +1,5 @@
 from qagents.base import AgentObservation, AgentState
-from qagents.strategy import ThresholdStrategy, DeterminismChecker
+from qagents.strategy import DeterminismChecker, ThresholdStrategy
 
 
 def test_threshold_strategy_is_deterministic():

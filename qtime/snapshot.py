@@ -1,4 +1,5 @@
 """Snapshot definitions for deterministic state capture."""
+
 from __future__ import annotations
 
 import hashlib
@@ -27,7 +28,7 @@ class Snapshot:
     def snapshot_id(self) -> str:
         return _hash(self.serialize())
 
-    def diff(self, other: "Snapshot") -> Dict[str, Any]:
+    def diff(self, other: Snapshot) -> Dict[str, Any]:
         differ = {}
         for key in set(self.state.keys()).union(other.state.keys()):
             left = self.state.get(key)
@@ -37,5 +38,9 @@ class Snapshot:
         return differ
 
     @staticmethod
-    def restore(serialized: Dict[str, Any]) -> "Snapshot":
-        return Snapshot(state=serialized["state"], tick=int(serialized["tick"]), metadata=serialized.get("metadata", {}))
+    def restore(serialized: Dict[str, Any]) -> Snapshot:
+        return Snapshot(
+            state=serialized["state"],
+            tick=int(serialized["tick"]),
+            metadata=serialized.get("metadata", {}),
+        )

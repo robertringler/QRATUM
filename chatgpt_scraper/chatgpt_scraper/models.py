@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Dict, Iterable, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -16,7 +16,9 @@ class RawMessage(BaseModel):
     id: Optional[str] = None
     author: Optional[Dict[str, Any]] = None
     role: Optional[str] = None
-    create_time: Optional[Any] = Field(default=None, description="Raw timestamp as stored in the export")
+    create_time: Optional[Any] = Field(
+        default=None, description="Raw timestamp as stored in the export"
+    )
     metadata: Dict[str, Any] = Field(default_factory=dict)
     content: Any = None
     weight: Optional[float] = None

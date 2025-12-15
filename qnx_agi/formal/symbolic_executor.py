@@ -1,4 +1,5 @@
 """Symbolic executor for QDL programs."""
+
 from __future__ import annotations
 
 from typing import Dict

@@ -4,6 +4,7 @@ The functions in this module provide a stable mapping from a scenario identifier
 plus basic parameters to a synthetic circuit representation that can be executed
 by :func:`quantum.python.quasim_sim.simulate`.
 """
+
 from __future__ import annotations
 
 import random

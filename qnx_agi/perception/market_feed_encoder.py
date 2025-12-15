@@ -1,4 +1,5 @@
 """Encode market adapter output into AGI percepts."""
+
 from __future__ import annotations
 
 from typing import Dict

@@ -1,11 +1,12 @@
 """Deterministic symbolic execution stubs built atop interval domains."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable, Dict, List
 
-from .interval_arithmetic import Interval, IntervalEnvironment
 from .abstract_interpretation import AbstractState
+from .interval_arithmetic import Interval, IntervalEnvironment
 
 
 @dataclass(frozen=True)
