@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 
 class HoloLensAdapter:
@@ -12,7 +12,7 @@ class HoloLensAdapter:
         """Initialize HoloLens adapter."""
         self.spatial_mapping_enabled = False
 
-    def convert_to_spatial_mesh(self, mesh: Any) -> Dict[str, Any]:
+    def convert_to_spatial_mesh(self, mesh: Any) -> dict[str, Any]:
         """Convert mesh to spatial coordinate system.
 
         Args:
@@ -27,7 +27,7 @@ class HoloLensAdapter:
             "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
         }
 
-    def stream_to_device(self, spatial_mesh: Dict[str, Any]) -> bool:
+    def stream_to_device(self, spatial_mesh: dict[str, Any]) -> bool:
         """Stream mesh to HoloLens device.
 
         Args:

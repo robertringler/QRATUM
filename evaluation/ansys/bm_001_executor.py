@@ -513,6 +513,13 @@ class BM001Executor:
 
     def _detect_outliers(self, times: list[float], threshold: float = 3.5) -> list[int]:
         """Detect outliers using modified Z-score method."""
+        times_array = np.array(times)
+        median = np.median(times_array)
+        mad = np.median(np.abs(times_array - median))
+        if mad == 0:
+            return []
+        modified_z = 0.6745 * (times_array - median) / mad
+        return [int(i) for i, z in enumerate(modified_z) if abs(z) > 3.5]
         if len(times) < 3:
             return []
 

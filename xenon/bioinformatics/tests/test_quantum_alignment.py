@@ -14,7 +14,6 @@ import pytest
 
 from xenon.bioinformatics.quantum_alignment import (
     AlignmentConfig,
-    AlignmentResult,
     QuantumAlignmentEngine,
 )
 

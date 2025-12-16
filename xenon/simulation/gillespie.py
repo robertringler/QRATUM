@@ -11,11 +11,11 @@ The Journal of Physical Chemistry, 81(25), 2340-2361.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
-from ..core.mechanism import BioMechanism, Transition
+from ..core.mechanism import BioMechanism
 
 
 @dataclass
@@ -29,8 +29,8 @@ class SimulationState:
     """
     
     time: float
-    concentrations: Dict[str, float]
-    molecule_counts: Dict[str, int]
+    concentrations: dict[str, float]
+    molecule_counts: dict[str, int]
 
 
 class GillespieSimulator:
@@ -73,10 +73,10 @@ class GillespieSimulator:
     def run(
         self,
         t_max: float,
-        initial_state: Dict[str, float],
+        initial_state: dict[str, float],
         seed: Optional[int] = None,
         record_interval: Optional[float] = None,
-    ) -> Tuple[List[float], Dict[str, List[float]]]:
+    ) -> tuple[list[float], dict[str, list[float]]]:
         """Run Gillespie SSA simulation.
         
         Args:
@@ -97,7 +97,7 @@ class GillespieSimulator:
         
         # Storage for trajectory
         times = [state.time]
-        trajectories: Dict[str, List[float]] = {
+        trajectories: dict[str, list[float]] = {
             species: [state.concentrations[species]]
             for species in state.concentrations
         }
@@ -136,7 +136,7 @@ class GillespieSimulator:
         
         return times, trajectories
     
-    def _initialize_state(self, initial_concentrations: Dict[str, float]) -> SimulationState:
+    def _initialize_state(self, initial_concentrations: dict[str, float]) -> SimulationState:
         """Initialize simulation state from concentrations.
         
         Args:
@@ -165,7 +165,7 @@ class GillespieSimulator:
             molecule_counts=molecule_counts,
         )
     
-    def _compute_propensities(self, state: SimulationState) -> List[float]:
+    def _compute_propensities(self, state: SimulationState) -> list[float]:
         """Compute reaction propensities (rates).
         
         Propensity a_i = rate_constant × reactant_counts
@@ -190,7 +190,7 @@ class GillespieSimulator:
         
         return propensities
     
-    def _select_reaction(self, propensities: List[float], total_propensity: float) -> int:
+    def _select_reaction(self, propensities: list[float], total_propensity: float) -> int:
         """Select reaction to fire based on propensities.
         
         Args:
@@ -236,7 +236,7 @@ class GillespieSimulator:
             count = state.molecule_counts[species]
             state.concentrations[species] = count / self.nM_to_molecules
     
-    def get_performance_metrics(self) -> Dict[str, float]:
+    def get_performance_metrics(self) -> dict[str, float]:
         """Get simulation performance metrics.
         
         Returns:

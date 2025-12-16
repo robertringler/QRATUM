@@ -10,7 +10,7 @@ Provides functionality for:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -31,7 +31,7 @@ class ProteinSequence:
     name: str
     sequence: str
     organism: Optional[str] = None
-    properties: Dict[str, float] = field(default_factory=dict)
+    properties: dict[str, float] = field(default_factory=dict)
     
     def __post_init__(self):
         self.sequence = self.sequence.upper().strip()
@@ -70,9 +70,9 @@ class SequenceAnalyzer:
     
     def __init__(self):
         """Initialize sequence analyzer."""
-        self._sequences: Dict[str, ProteinSequence] = {}
+        self._sequences: dict[str, ProteinSequence] = {}
     
-    def parse_fasta(self, fasta_content: str) -> List[ProteinSequence]:
+    def parse_fasta(self, fasta_content: str) -> list[ProteinSequence]:
         """Parse FASTA format sequences.
         
         Args:
@@ -188,7 +188,7 @@ class SequenceAnalyzer:
         else:
             return 7.0
     
-    def compute_composition(self, sequence: str) -> Dict[str, float]:
+    def compute_composition(self, sequence: str) -> dict[str, float]:
         """Compute amino acid composition percentages.
         
         Args:
@@ -214,7 +214,7 @@ class SequenceAnalyzer:
         match_score: float = 2.0,
         mismatch_penalty: float = -1.0,
         gap_penalty: float = -2.0,
-    ) -> Tuple[str, str, float]:
+    ) -> tuple[str, str, float]:
         """Perform pairwise sequence alignment (Needleman-Wunsch).
         
         Args:
@@ -288,7 +288,7 @@ class SequenceAnalyzer:
         
         return aligned1, aligned2, final_score
     
-    def compute_conservation_score(self, sequences: List[str]) -> np.ndarray:
+    def compute_conservation_score(self, sequences: list[str]) -> np.ndarray:
         """Compute conservation score for multiple sequence alignment.
         
         Args:
@@ -305,7 +305,7 @@ class SequenceAnalyzer:
         
         for pos in range(length):
             # Count amino acids at this position
-            aa_counts: Dict[str, int] = {}
+            aa_counts: dict[str, int] = {}
             total = 0
             
             for seq in sequences:
@@ -328,7 +328,7 @@ class SequenceAnalyzer:
         
         return conservation
     
-    def find_motifs(self, sequence: str, motif: str) -> List[int]:
+    def find_motifs(self, sequence: str, motif: str) -> list[int]:
         """Find all occurrences of a motif in sequence.
         
         Args:

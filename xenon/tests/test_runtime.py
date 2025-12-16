@@ -1,6 +1,5 @@
 """Tests for XENON runtime."""
 
-import pytest
 
 from xenon.core.mechanism import BioMechanism, MolecularState, Transition
 from xenon.learning.bayesian_updater import BayesianUpdater, ExperimentResult

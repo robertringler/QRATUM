@@ -24,7 +24,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -68,7 +68,7 @@ class PIDResult:
     entropy_target: float
     entropy_sources: float
     conservation_valid: bool
-    violations: List[str] = field(default_factory=list)
+    violations: list[str] = field(default_factory=list)
     condition_number: float = 1.0
 
 
@@ -117,8 +117,8 @@ class InformationFusionEngine:
         """
         self.constraints = constraints or ConservationConstraints()
         self.seed_manager = SeedManager(seed if seed is not None else 42)
-        self._decompositions: Dict[str, PIDResult] = {}
-        self._entropy_cache: Dict[str, float] = {}
+        self._decompositions: dict[str, PIDResult] = {}
+        self._entropy_cache: dict[str, float] = {}
     
     def compute_entropy(
         self,
@@ -313,7 +313,7 @@ class InformationFusionEngine:
         
         return result
     
-    def _validate_conservation(self, result: PIDResult) -> List[str]:
+    def _validate_conservation(self, result: PIDResult) -> list[str]:
         """Validate conservation constraints.
         
         Args:
@@ -398,11 +398,11 @@ class InformationFusionEngine:
     
     def compute_information_flow(
         self,
-        omics_layers: List[np.ndarray],
+        omics_layers: list[np.ndarray],
         target: np.ndarray,
-        layer_names: Optional[List[str]] = None,
+        layer_names: Optional[list[str]] = None,
         bins: int = 10,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Compute information flow from multiple omics layers to target.
         
         Args:
@@ -436,7 +436,7 @@ class InformationFusionEngine:
             "total_layers": len(omics_layers),
         }
     
-    def get_statistics(self) -> Dict[str, any]:
+    def get_statistics(self) -> dict[str, any]:
         """Get engine statistics.
         
         Returns:

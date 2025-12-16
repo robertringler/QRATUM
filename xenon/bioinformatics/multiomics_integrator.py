@@ -10,7 +10,7 @@ Provides functionality for:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -29,13 +29,13 @@ class OmicsData:
     """
     
     sample_id: str
-    genomics: Dict[str, any] = field(default_factory=dict)
-    transcriptomics: Dict[str, float] = field(default_factory=dict)
-    proteomics: Dict[str, float] = field(default_factory=dict)
-    metabolomics: Dict[str, float] = field(default_factory=dict)
-    metadata: Dict[str, any] = field(default_factory=dict)
+    genomics: dict[str, any] = field(default_factory=dict)
+    transcriptomics: dict[str, float] = field(default_factory=dict)
+    proteomics: dict[str, float] = field(default_factory=dict)
+    metabolomics: dict[str, float] = field(default_factory=dict)
+    metadata: dict[str, any] = field(default_factory=dict)
     
-    def get_feature_vector(self, omics_types: List[str]) -> np.ndarray:
+    def get_feature_vector(self, omics_types: list[str]) -> np.ndarray:
         """Get combined feature vector.
         
         Args:
@@ -99,8 +99,8 @@ class MultiOmicsIntegrator:
     
     def __init__(self):
         """Initialize multi-omics integrator."""
-        self._samples: Dict[str, OmicsData] = {}
-        self._biomarkers: List[Biomarker] = []
+        self._samples: dict[str, OmicsData] = {}
+        self._biomarkers: list[Biomarker] = []
     
     def add_sample(self, sample: OmicsData) -> None:
         """Add an omics sample.
@@ -116,7 +116,7 @@ class MultiOmicsIntegrator:
         feature1: str,
         omics2: str,
         feature2: str,
-    ) -> Tuple[float, float]:
+    ) -> tuple[float, float]:
         """Compute correlation between features across omics layers.
         
         Args:
@@ -171,11 +171,11 @@ class MultiOmicsIntegrator:
     
     def identify_biomarkers(
         self,
-        group1_samples: List[str],
-        group2_samples: List[str],
-        omics_types: List[str] = None,
+        group1_samples: list[str],
+        group2_samples: list[str],
+        omics_types: list[str] = None,
         effect_size_threshold: float = 1.5,
-    ) -> List[Biomarker]:
+    ) -> list[Biomarker]:
         """Identify potential biomarkers differentiating two groups.
         
         Args:
@@ -194,7 +194,7 @@ class MultiOmicsIntegrator:
         
         for omics_type in omics_types:
             # Get all features in this omics layer
-            all_features: Set[str] = set()
+            all_features: set[str] = set()
             for sample in self._samples.values():
                 if omics_type == "transcriptomics":
                     all_features.update(sample.transcriptomics.keys())
@@ -294,7 +294,7 @@ class MultiOmicsIntegrator:
             return sample.metabolomics.get(feature)
         return None
     
-    def _benjamini_hochberg(self, p_values: List[float]) -> List[float]:
+    def _benjamini_hochberg(self, p_values: list[float]) -> list[float]:
         """Apply Benjamini-Hochberg FDR correction.
         
         Args:
@@ -324,9 +324,9 @@ class MultiOmicsIntegrator:
     
     def perform_pathway_enrichment(
         self,
-        biomarker_features: List[str],
-        pathways: Dict[str, List[str]],
-    ) -> List[Tuple[str, float, float]]:
+        biomarker_features: list[str],
+        pathways: dict[str, list[str]],
+    ) -> list[tuple[str, float, float]]:
         """Perform pathway enrichment on biomarkers.
         
         Args:
@@ -374,7 +374,7 @@ class MultiOmicsIntegrator:
     def build_integrated_network(
         self,
         correlation_threshold: float = 0.7,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Build integrated multi-omics network.
         
         Args:
@@ -387,7 +387,7 @@ class MultiOmicsIntegrator:
         edges = []
         
         # Collect all features from all omics types
-        features_by_omics: Dict[str, Set[str]] = {
+        features_by_omics: dict[str, set[str]] = {
             "transcriptomics": set(),
             "proteomics": set(),
             "metabolomics": set(),
@@ -400,7 +400,7 @@ class MultiOmicsIntegrator:
         
         # Add nodes
         node_id = 0
-        feature_to_node: Dict[Tuple[str, str], int] = {}
+        feature_to_node: dict[tuple[str, str], int] = {}
         
         for omics_type, features in features_by_omics.items():
             for feature in features:
@@ -442,7 +442,7 @@ class MultiOmicsIntegrator:
             "edges": edges,
         }
     
-    def summarize_sample(self, sample_id: str) -> Dict[str, any]:
+    def summarize_sample(self, sample_id: str) -> dict[str, any]:
         """Generate summary statistics for a sample.
         
         Args:

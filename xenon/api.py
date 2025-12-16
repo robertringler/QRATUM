@@ -6,7 +6,7 @@ and querying results.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Optional
 
 from .core.mechanism import BioMechanism, MolecularState, Transition
 from .core.mechanism_graph import MechanismGraph
@@ -19,8 +19,8 @@ from .simulation.langevin import LangevinSimulator
 
 def create_mechanism(
     name: str,
-    states: List[Dict[str, Any]],
-    transitions: List[Dict[str, Any]],
+    states: list[dict[str, Any]],
+    transitions: list[dict[str, Any]],
 ) -> BioMechanism:
     """Create a mechanism from dictionaries.
     
@@ -60,10 +60,10 @@ def create_mechanism(
 def simulate_mechanism(
     mechanism: BioMechanism,
     t_max: float,
-    initial_state: Dict[str, float],
+    initial_state: dict[str, float],
     method: str = "gillespie",
     **kwargs,
-) -> Tuple[List[float], Dict[str, List[float]]]:
+) -> tuple[list[float], dict[str, list[float]]]:
     """Simulate a mechanism.
     
     Args:
@@ -99,10 +99,10 @@ def simulate_mechanism(
 
 
 def run_xenon(
-    targets: List[Dict[str, str]],
+    targets: list[dict[str, str]],
     max_iterations: int = 100,
     **kwargs,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Run XENON learning loop.
     
     Args:
@@ -132,7 +132,7 @@ def run_xenon(
 def validate_mechanism(
     mechanism: BioMechanism,
     temperature: float = 310.0,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Validate mechanism constraints.
     
     Args:
@@ -178,10 +178,10 @@ def compute_mechanism_prior(mechanism: BioMechanism, **kwargs) -> float:
 
 
 def update_mechanism_posterior(
-    mechanisms: List[BioMechanism],
+    mechanisms: list[BioMechanism],
     experiment_result: ExperimentResult,
     **kwargs,
-) -> List[BioMechanism]:
+) -> list[BioMechanism]:
     """Update mechanism posteriors from experiment.
     
     Args:

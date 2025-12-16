@@ -13,7 +13,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import qratum
 from qratum import Simulator, Circuit, StateVector, gates
-from qratum.core.measurement import Measurement
 
 
 class TestGates:
@@ -216,7 +215,6 @@ class TestBackwardCompatibility:
 
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
-            import quasim
 
             # Should have deprecation warning
             assert len(w) >= 1

@@ -14,7 +14,7 @@ Main loop:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 import numpy as np
 
@@ -39,7 +39,7 @@ class Target:
     name: str
     protein: str
     objective: str
-    constraints: Optional[Dict[str, Any]] = None
+    constraints: Optional[dict[str, Any]] = None
 
 
 class XENONRuntime:
@@ -77,8 +77,8 @@ class XENONRuntime:
         self.mechanism_graph = MechanismGraph()
         
         # State
-        self.targets: List[Target] = []
-        self.mechanisms: Dict[str, List[BioMechanism]] = {}
+        self.targets: list[Target] = []
+        self.mechanisms: dict[str, list[BioMechanism]] = {}
         self.iteration_count = 0
         self._rng = np.random.default_rng()
     
@@ -87,7 +87,7 @@ class XENONRuntime:
         name: str,
         protein: str,
         objective: str,
-        constraints: Optional[Dict[str, Any]] = None,
+        constraints: Optional[dict[str, Any]] = None,
     ) -> None:
         """Add a learning target.
         
@@ -108,7 +108,7 @@ class XENONRuntime:
         self,
         max_iterations: int = 100,
         seed: Optional[int] = None,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Run XENON learning loop.
         
         Main algorithm:
@@ -311,7 +311,7 @@ class XENONRuntime:
                 # If simulation fails, mark with low posterior
                 mechanism.posterior *= 0.1
     
-    def _rank_by_uncertainty(self, target: Target) -> List[BioMechanism]:
+    def _rank_by_uncertainty(self, target: Target) -> list[BioMechanism]:
         """Rank mechanisms by epistemic uncertainty.
         
         Higher uncertainty → more informative for next experiment
@@ -335,8 +335,8 @@ class XENONRuntime:
         return ranked
     
     def _select_experiment(
-        self, target: Target, ranked_mechanisms: List[BioMechanism]
-    ) -> Dict[str, Any]:
+        self, target: Target, ranked_mechanisms: list[BioMechanism]
+    ) -> dict[str, Any]:
         """Select next experiment to maximize information gain.
         
         Phase 1: Random experiment selection
@@ -360,7 +360,7 @@ class XENONRuntime:
         }
     
     def _execute_experiment(
-        self, target: Target, experiment: Dict[str, Any]
+        self, target: Target, experiment: dict[str, Any]
     ) -> ExperimentResult:
         """Execute experiment (mock for Phase 1).
         
@@ -406,7 +406,7 @@ class XENONRuntime:
     
     def get_mechanisms(
         self, min_evidence: float = 0.5, target_name: Optional[str] = None
-    ) -> List[BioMechanism]:
+    ) -> list[BioMechanism]:
         """Get high-confidence mechanisms.
         
         Args:
@@ -430,7 +430,7 @@ class XENONRuntime:
         
         return sorted(mechanisms, key=lambda m: m.posterior, reverse=True)
     
-    def get_summary(self) -> Dict[str, Any]:
+    def get_summary(self) -> dict[str, Any]:
         """Get runtime summary statistics.
         
         Returns:

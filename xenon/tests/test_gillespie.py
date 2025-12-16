@@ -1,7 +1,6 @@
 """Tests for Gillespie SSA simulator."""
 
 import numpy as np
-import pytest
 
 from xenon.core.mechanism import BioMechanism, MolecularState, Transition
 from xenon.simulation.gillespie import GillespieSimulator

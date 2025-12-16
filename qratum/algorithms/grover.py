@@ -5,7 +5,7 @@ finding a marked element in O(√N) queries instead of O(N).
 """
 
 import numpy as np
-from typing import List, Callable, Optional
+from typing import List, Optional
 from qratum.core.circuit import Circuit
 from qratum.core.simulator import Simulator
 from qratum.core.measurement import Result

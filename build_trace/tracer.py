@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 
 class BuildTracer:
@@ -18,10 +18,10 @@ class BuildTracer:
     def __init__(self, output_path: Path = Path("qubic_build_trace.json")) -> None:
         """Initialize build tracer."""
         self.output_path = output_path
-        self.events: List[Dict[str, Any]] = []
+        self.events: list[dict[str, Any]] = []
         self.start_time = datetime.now()
 
-    def log_module_creation(self, module_name: str, module_type: str, details: Dict = None) -> None:
+    def log_module_creation(self, module_name: str, module_type: str, details: dict = None) -> None:
         """Log module creation event.
 
         Args:
@@ -38,7 +38,7 @@ class BuildTracer:
         }
         self.events.append(event)
 
-    def log_test_result(self, test_suite: str, passed: bool, details: Dict = None) -> None:
+    def log_test_result(self, test_suite: str, passed: bool, details: dict = None) -> None:
         """Log test result.
 
         Args:
@@ -55,7 +55,7 @@ class BuildTracer:
         }
         self.events.append(event)
 
-    def log_gpu_availability(self, available: bool, gpu_info: Dict = None) -> None:
+    def log_gpu_availability(self, available: bool, gpu_info: dict = None) -> None:
         """Log GPU availability check.
 
         Args:
@@ -71,7 +71,7 @@ class BuildTracer:
         self.events.append(event)
 
     def log_integration_validation(
-        self, integration: str, status: str, details: Dict = None
+        self, integration: str, status: str, details: dict = None
     ) -> None:
         """Log integration validation.
 

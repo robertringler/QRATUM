@@ -8,7 +8,6 @@ Combines multiple sources of prior information:
 
 from __future__ import annotations
 
-from typing import Dict, Optional
 
 import numpy as np
 
@@ -46,7 +45,7 @@ class MechanismPrior:
         
         # Literature database (mock for Phase 1)
         # In Phase 2+, this would query PubMed/bioRxiv APIs
-        self._literature_db: Dict[str, int] = {}
+        self._literature_db: dict[str, int] = {}
     
     def compute_prior(self, mechanism: BioMechanism) -> float:
         """Compute prior probability P(mechanism).

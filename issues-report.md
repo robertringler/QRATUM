@@ -1,6 +1,10 @@
 ## Remaining Code Quality Issues
 ### Ruff Linting
 1687	W293  	blank-line-with-whitespace
+ 214	N806  	non-lowercase-variable-in-function
+ 116	F401  	unused-import
+  83	F821  	undefined-name
+  74	UP045 	non-pep604-annotation-optional
  293	UP006 	non-pep585-annotation
  214	N806  	non-lowercase-variable-in-function
   83	F821  	undefined-name
@@ -36,6 +40,8 @@
    1	SIM401	if-else-block-instead-of-dict-get
    1	UP032 	f-string
    1	W292  	missing-newline-at-end-of-file
+Found 2427 errors.
+[*] 1464 fixable with the `--fix` option (495 hidden fixes can be enabled with the `--unsafe-fixes` option).
 Found 2657 errors.
 [*] 1409 fixable with the `--fix` option (780 hidden fixes can be enabled with the `--unsafe-fixes` option).
 ### Type Checking (mypy)
