@@ -309,9 +309,7 @@ class VisualizationGenerator:
                     )
                     ax.add_patch(arrow)
 
-            plt.title(
-                f"{benchmark_name} Execution Flow", fontsize=16, fontweight="bold", pad=20
-            )
+            plt.title(f"{benchmark_name} Execution Flow", fontsize=16, fontweight="bold", pad=20)
 
             output_path = self.output_dir / f"{benchmark_name.lower()}_execution_flow.png"
             plt.savefig(output_path, dpi=300, bbox_inches="tight")
@@ -410,15 +408,15 @@ class VisualizationGenerator:
             # Bootstrap CI visualization
             fig, ax = plt.subplots(figsize=(10, 6))
             samples = np.random.normal(3.5, 0.3, 1000)
-            ax.hist(samples, bins=50, alpha=0.7, color='steelblue', edgecolor='black')
-            ax.axvline(np.percentile(samples, 2.5), color='r', linestyle='--', label='2.5% CI')
-            ax.axvline(np.percentile(samples, 97.5), color='r', linestyle='--', label='97.5% CI')
-            ax.set_xlabel('Speedup', fontsize=12, fontweight='bold')
-            ax.set_ylabel('Frequency', fontsize=12, fontweight='bold')
-            ax.set_title('Bootstrap Distribution (1000 samples)', fontsize=14, fontweight='bold')
+            ax.hist(samples, bins=50, alpha=0.7, color="steelblue", edgecolor="black")
+            ax.axvline(np.percentile(samples, 2.5), color="r", linestyle="--", label="2.5% CI")
+            ax.axvline(np.percentile(samples, 97.5), color="r", linestyle="--", label="97.5% CI")
+            ax.set_xlabel("Speedup", fontsize=12, fontweight="bold")
+            ax.set_ylabel("Frequency", fontsize=12, fontweight="bold")
+            ax.set_title("Bootstrap Distribution (1000 samples)", fontsize=14, fontweight="bold")
             ax.legend()
             ax.grid(alpha=0.3)
-            plt.savefig(stat_dir / "bootstrap_ci_distribution.png", dpi=300, bbox_inches='tight')
+            plt.savefig(stat_dir / "bootstrap_ci_distribution.png", dpi=300, bbox_inches="tight")
             plt.close()
             self.manifest.files.append(stat_dir / "bootstrap_ci_distribution.png")
 
@@ -426,14 +424,14 @@ class VisualizationGenerator:
             fig, ax = plt.subplots(figsize=(10, 6))
             runs = list(range(1, 11))
             cv_values = np.random.uniform(0.005, 0.015, 10)
-            ax.plot(runs, cv_values, marker='o', linewidth=2, markersize=8, color='darkgreen')
-            ax.axhline(0.02, color='r', linestyle='--', label='Threshold (2%)')
-            ax.set_xlabel('Run Number', fontsize=12, fontweight='bold')
-            ax.set_ylabel('Coefficient of Variation', fontsize=12, fontweight='bold')
-            ax.set_title('Reproducibility: CV Across Runs', fontsize=14, fontweight='bold')
+            ax.plot(runs, cv_values, marker="o", linewidth=2, markersize=8, color="darkgreen")
+            ax.axhline(0.02, color="r", linestyle="--", label="Threshold (2%)")
+            ax.set_xlabel("Run Number", fontsize=12, fontweight="bold")
+            ax.set_ylabel("Coefficient of Variation", fontsize=12, fontweight="bold")
+            ax.set_title("Reproducibility: CV Across Runs", fontsize=14, fontweight="bold")
             ax.legend()
             ax.grid(alpha=0.3)
-            plt.savefig(stat_dir / "cv_across_runs.png", dpi=300, bbox_inches='tight')
+            plt.savefig(stat_dir / "cv_across_runs.png", dpi=300, bbox_inches="tight")
             plt.close()
             self.manifest.files.append(stat_dir / "cv_across_runs.png")
 
@@ -443,17 +441,23 @@ class VisualizationGenerator:
 
             # GPU memory usage
             fig, ax = plt.subplots(figsize=(10, 6))
-            stages = ['Init', 'Setup', 'Solve', 'Postproc', 'Report']
+            stages = ["Init", "Setup", "Solve", "Postproc", "Report"]
             memory_usage = [2.1, 3.8, 8.5, 4.2, 1.5]
-            bars = ax.bar(stages, memory_usage, color='coral', alpha=0.8)
-            ax.set_ylabel('GPU Memory (GB)', fontsize=12, fontweight='bold')
-            ax.set_title('GPU Memory Usage by Stage', fontsize=14, fontweight='bold')
-            ax.grid(axis='y', alpha=0.3)
+            bars = ax.bar(stages, memory_usage, color="coral", alpha=0.8)
+            ax.set_ylabel("GPU Memory (GB)", fontsize=12, fontweight="bold")
+            ax.set_title("GPU Memory Usage by Stage", fontsize=14, fontweight="bold")
+            ax.grid(axis="y", alpha=0.3)
             for bar, mem in zip(bars, memory_usage):
                 height = bar.get_height()
-                ax.text(bar.get_x() + bar.get_width()/2., height,
-                       f'{mem:.1f}GB', ha='center', va='bottom', fontweight='bold')
-            plt.savefig(hw_dir / "gpu_memory_usage.png", dpi=300, bbox_inches='tight')
+                ax.text(
+                    bar.get_x() + bar.get_width() / 2.0,
+                    height,
+                    f"{mem:.1f}GB",
+                    ha="center",
+                    va="bottom",
+                    fontweight="bold",
+                )
+            plt.savefig(hw_dir / "gpu_memory_usage.png", dpi=300, bbox_inches="tight")
             plt.close()
             self.manifest.files.append(hw_dir / "gpu_memory_usage.png")
 
@@ -462,14 +466,14 @@ class VisualizationGenerator:
             time_steps = np.linspace(0, 100, 100)
             cpu_util = 30 + 50 * np.sin(time_steps / 10) + np.random.normal(0, 5, 100)
             cpu_util = np.clip(cpu_util, 0, 100)
-            ax.plot(time_steps, cpu_util, linewidth=2, color='steelblue')
-            ax.fill_between(time_steps, cpu_util, alpha=0.3, color='steelblue')
-            ax.set_xlabel('Time (s)', fontsize=12, fontweight='bold')
-            ax.set_ylabel('CPU Utilization (%)', fontsize=12, fontweight='bold')
-            ax.set_title('CPU Utilization During Execution', fontsize=14, fontweight='bold')
+            ax.plot(time_steps, cpu_util, linewidth=2, color="steelblue")
+            ax.fill_between(time_steps, cpu_util, alpha=0.3, color="steelblue")
+            ax.set_xlabel("Time (s)", fontsize=12, fontweight="bold")
+            ax.set_ylabel("CPU Utilization (%)", fontsize=12, fontweight="bold")
+            ax.set_title("CPU Utilization During Execution", fontsize=14, fontweight="bold")
             ax.set_ylim(0, 100)
             ax.grid(alpha=0.3)
-            plt.savefig(hw_dir / "cpu_utilization.png", dpi=300, bbox_inches='tight')
+            plt.savefig(hw_dir / "cpu_utilization.png", dpi=300, bbox_inches="tight")
             plt.close()
             self.manifest.files.append(hw_dir / "cpu_utilization.png")
 
@@ -480,12 +484,12 @@ class VisualizationGenerator:
             # Tensor contraction heatmap
             fig, ax = plt.subplots(figsize=(10, 8))
             data = np.random.rand(20, 20)
-            im = ax.imshow(data, cmap='hot', aspect='auto')
-            ax.set_xlabel('Tensor Index', fontsize=12, fontweight='bold')
-            ax.set_ylabel('Contraction Level', fontsize=12, fontweight='bold')
-            ax.set_title('Tensor Contraction Heatmap', fontsize=14, fontweight='bold')
-            plt.colorbar(im, ax=ax, label='Magnitude')
-            plt.savefig(tn_dir / "tensor_contraction_heatmap.png", dpi=300, bbox_inches='tight')
+            im = ax.imshow(data, cmap="hot", aspect="auto")
+            ax.set_xlabel("Tensor Index", fontsize=12, fontweight="bold")
+            ax.set_ylabel("Contraction Level", fontsize=12, fontweight="bold")
+            ax.set_title("Tensor Contraction Heatmap", fontsize=14, fontweight="bold")
+            plt.colorbar(im, ax=ax, label="Magnitude")
+            plt.savefig(tn_dir / "tensor_contraction_heatmap.png", dpi=300, bbox_inches="tight")
             plt.close()
             self.manifest.files.append(tn_dir / "tensor_contraction_heatmap.png")
 
@@ -495,24 +499,28 @@ class VisualizationGenerator:
 
             # Multi-benchmark comparison
             fig, ax = plt.subplots(figsize=(12, 6))
-            benchmarks = ['BM_001', 'BM_002', 'BM_003', 'BM_004', 'BM_005']
+            benchmarks = ["BM_001", "BM_002", "BM_003", "BM_004", "BM_005"]
             ansys_times = [120.5, 145.2, 98.7, 156.3, 132.8]
             quasim_times = [35.2, 42.1, 28.9, 45.8, 38.5]
 
             x = np.arange(len(benchmarks))
             width = 0.35
 
-            bars1 = ax.bar(x - width/2, ansys_times, width, label='Ansys', color='#4A90E2', alpha=0.8)
-            bars2 = ax.bar(x + width/2, quasim_times, width, label='QuASIM', color='#50C878', alpha=0.8)
+            bars1 = ax.bar(
+                x - width / 2, ansys_times, width, label="Ansys", color="#4A90E2", alpha=0.8
+            )
+            bars2 = ax.bar(
+                x + width / 2, quasim_times, width, label="QuASIM", color="#50C878", alpha=0.8
+            )
 
-            ax.set_ylabel('Execution Time (s)', fontsize=12, fontweight='bold')
-            ax.set_title('Multi-Benchmark Performance Comparison', fontsize=14, fontweight='bold')
+            ax.set_ylabel("Execution Time (s)", fontsize=12, fontweight="bold")
+            ax.set_title("Multi-Benchmark Performance Comparison", fontsize=14, fontweight="bold")
             ax.set_xticks(x)
             ax.set_xticklabels(benchmarks)
             ax.legend()
-            ax.grid(axis='y', alpha=0.3)
+            ax.grid(axis="y", alpha=0.3)
 
-            plt.savefig(bench_dir / "multi_benchmark_comparison.png", dpi=300, bbox_inches='tight')
+            plt.savefig(bench_dir / "multi_benchmark_comparison.png", dpi=300, bbox_inches="tight")
             plt.close()
             self.manifest.files.append(bench_dir / "multi_benchmark_comparison.png")
 
@@ -537,11 +545,11 @@ class VisualizationGenerator:
             for i in range(15):
                 fig, ax = plt.subplots(figsize=(10, 6))
                 data = np.random.rand(10, 10)
-                im = ax.imshow(data, cmap='viridis', aspect='auto')
-                ax.set_title(f'Architecture View {i+1}', fontsize=14, fontweight='bold')
+                im = ax.imshow(data, cmap="viridis", aspect="auto")
+                ax.set_title(f"Architecture View {i+1}", fontsize=14, fontweight="bold")
                 plt.colorbar(im, ax=ax)
                 output_path = arch_dir / f"arch_view_{i+1:03d}.png"
-                plt.savefig(output_path, dpi=150, bbox_inches='tight')
+                plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
 
@@ -553,13 +561,13 @@ class VisualizationGenerator:
                 y1 = np.random.uniform(100, 200, 5)
                 y2 = np.random.uniform(20, 60, 5)
                 width = 0.35
-                ax.bar(x - width/2, y1, width, label='Baseline', alpha=0.8)
-                ax.bar(x + width/2, y2, width, label='QuASIM', alpha=0.8)
-                ax.set_title(f'Benchmark Analysis {i+1}', fontsize=14, fontweight='bold')
+                ax.bar(x - width / 2, y1, width, label="Baseline", alpha=0.8)
+                ax.bar(x + width / 2, y2, width, label="QuASIM", alpha=0.8)
+                ax.set_title(f"Benchmark Analysis {i+1}", fontsize=14, fontweight="bold")
                 ax.legend()
-                ax.grid(axis='y', alpha=0.3)
+                ax.grid(axis="y", alpha=0.3)
                 output_path = bench_dir / f"bench_analysis_{i+1:03d}.png"
-                plt.savefig(output_path, dpi=150, bbox_inches='tight')
+                plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
 
@@ -568,13 +576,13 @@ class VisualizationGenerator:
             for i in range(20):
                 fig, ax = plt.subplots(figsize=(10, 6))
                 data = np.random.normal(0, 1, 1000)
-                ax.hist(data, bins=50, alpha=0.7, edgecolor='black')
-                ax.set_title(f'Statistical Distribution {i+1}', fontsize=14, fontweight='bold')
-                ax.set_xlabel('Value', fontsize=12)
-                ax.set_ylabel('Frequency', fontsize=12)
+                ax.hist(data, bins=50, alpha=0.7, edgecolor="black")
+                ax.set_title(f"Statistical Distribution {i+1}", fontsize=14, fontweight="bold")
+                ax.set_xlabel("Value", fontsize=12)
+                ax.set_ylabel("Frequency", fontsize=12)
                 ax.grid(alpha=0.3)
                 output_path = stat_dir / f"stat_dist_{i+1:03d}.png"
-                plt.savefig(output_path, dpi=150, bbox_inches='tight')
+                plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
 
@@ -583,11 +591,11 @@ class VisualizationGenerator:
             for i in range(15):
                 fig, ax = plt.subplots(figsize=(10, 8))
                 data = np.random.rand(15, 15)
-                im = ax.imshow(data, cmap='hot', aspect='auto')
-                ax.set_title(f'Tensor Network View {i+1}', fontsize=14, fontweight='bold')
+                im = ax.imshow(data, cmap="hot", aspect="auto")
+                ax.set_title(f"Tensor Network View {i+1}", fontsize=14, fontweight="bold")
                 plt.colorbar(im, ax=ax)
                 output_path = tn_dir / f"tensor_view_{i+1:03d}.png"
-                plt.savefig(output_path, dpi=150, bbox_inches='tight')
+                plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
 
@@ -599,12 +607,12 @@ class VisualizationGenerator:
                 metric = 50 + 30 * np.sin(time / 10) + np.random.normal(0, 5, 100)
                 ax.plot(time, metric, linewidth=2)
                 ax.fill_between(time, metric, alpha=0.3)
-                ax.set_title(f'Hardware Metric {i+1}', fontsize=14, fontweight='bold')
-                ax.set_xlabel('Time (s)', fontsize=12)
-                ax.set_ylabel('Utilization (%)', fontsize=12)
+                ax.set_title(f"Hardware Metric {i+1}", fontsize=14, fontweight="bold")
+                ax.set_xlabel("Time (s)", fontsize=12)
+                ax.set_ylabel("Utilization (%)", fontsize=12)
                 ax.grid(alpha=0.3)
                 output_path = hw_dir / f"hw_metric_{i+1:03d}.png"
-                plt.savefig(output_path, dpi=150, bbox_inches='tight')
+                plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
 
@@ -615,14 +623,14 @@ class VisualizationGenerator:
                 fig, ax = plt.subplots(figsize=(10, 6))
                 runs = np.arange(1, 21)
                 hash_matches = np.ones(20) * 100
-                ax.plot(runs, hash_matches, marker='o', linewidth=2, markersize=8)
-                ax.set_title(f'Reproducibility Check {i+1}', fontsize=14, fontweight='bold')
-                ax.set_xlabel('Run Number', fontsize=12)
-                ax.set_ylabel('Hash Match (%)', fontsize=12)
+                ax.plot(runs, hash_matches, marker="o", linewidth=2, markersize=8)
+                ax.set_title(f"Reproducibility Check {i+1}", fontsize=14, fontweight="bold")
+                ax.set_xlabel("Run Number", fontsize=12)
+                ax.set_ylabel("Hash Match (%)", fontsize=12)
                 ax.set_ylim(99, 101)
                 ax.grid(alpha=0.3)
                 output_path = repro_dir / f"repro_check_{i+1:03d}.png"
-                plt.savefig(output_path, dpi=150, bbox_inches='tight')
+                plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
 
@@ -631,19 +639,25 @@ class VisualizationGenerator:
             comp_dir.mkdir(exist_ok=True)
             for i in range(10):
                 fig, ax = plt.subplots(figsize=(10, 6))
-                categories = ['DO-178C', 'NIST 800-53', 'CMMC 2.0', 'DFARS', 'ITAR']
+                categories = ["DO-178C", "NIST 800-53", "CMMC 2.0", "DFARS", "ITAR"]
                 compliance = [98.75, 97.5, 96.2, 95.8, 94.3]
-                bars = ax.barh(categories, compliance, color='green', alpha=0.7)
-                ax.set_xlabel('Compliance (%)', fontsize=12, fontweight='bold')
-                ax.set_title(f'Compliance Status {i+1}', fontsize=14, fontweight='bold')
+                bars = ax.barh(categories, compliance, color="green", alpha=0.7)
+                ax.set_xlabel("Compliance (%)", fontsize=12, fontweight="bold")
+                ax.set_title(f"Compliance Status {i+1}", fontsize=14, fontweight="bold")
                 ax.set_xlim(90, 100)
-                ax.grid(axis='x', alpha=0.3)
+                ax.grid(axis="x", alpha=0.3)
                 for bar, val in zip(bars, compliance):
                     width = bar.get_width()
-                    ax.text(width, bar.get_y() + bar.get_height()/2,
-                           f'{val:.1f}%', ha='left', va='center', fontweight='bold')
+                    ax.text(
+                        width,
+                        bar.get_y() + bar.get_height() / 2,
+                        f"{val:.1f}%",
+                        ha="left",
+                        va="center",
+                        fontweight="bold",
+                    )
                 output_path = comp_dir / f"compliance_{i+1:03d}.png"
-                plt.savefig(output_path, dpi=150, bbox_inches='tight')
+                plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
 
@@ -696,9 +710,7 @@ class VisualizationGenerator:
                 )
                 self.manifest.files.append(placeholder)
 
-            self.manifest.categories[category] = [
-                str(f.name) for f in category_dir.glob("*")
-            ]
+            self.manifest.categories[category] = [str(f.name) for f in category_dir.glob("*")]
 
         self.manifest.total_count = len(self.manifest.files)
         logger.info(f"Generated {self.manifest.total_count} visualizations")
@@ -714,88 +726,228 @@ class VisualizationGenerator:
         """
         specs = {
             "architecture": [
-                {"name": "module_structure", "title": "Module Hierarchy",
-                 "description": "Tree view of module organization", "source": "Repository scan"},
-                {"name": "class_diagram", "title": "Class Relationships",
-                 "description": "UML class diagram", "source": "AST analysis"},
-                {"name": "data_flow", "title": "Data Flow Architecture",
-                 "description": "How data flows through system", "source": "Code analysis"},
-                {"name": "api_layers", "title": "API Layer Diagram",
-                 "description": "API structure and endpoints", "source": "Module docstrings"},
-                {"name": "integration_points", "title": "External Integration Points",
-                 "description": "Connections to external systems", "source": "Import analysis"},
+                {
+                    "name": "module_structure",
+                    "title": "Module Hierarchy",
+                    "description": "Tree view of module organization",
+                    "source": "Repository scan",
+                },
+                {
+                    "name": "class_diagram",
+                    "title": "Class Relationships",
+                    "description": "UML class diagram",
+                    "source": "AST analysis",
+                },
+                {
+                    "name": "data_flow",
+                    "title": "Data Flow Architecture",
+                    "description": "How data flows through system",
+                    "source": "Code analysis",
+                },
+                {
+                    "name": "api_layers",
+                    "title": "API Layer Diagram",
+                    "description": "API structure and endpoints",
+                    "source": "Module docstrings",
+                },
+                {
+                    "name": "integration_points",
+                    "title": "External Integration Points",
+                    "description": "Connections to external systems",
+                    "source": "Import analysis",
+                },
             ],
             "benchmarks": [
-                {"name": "speedup_chart", "title": "Speedup Comparison",
-                 "description": "QuASIM vs baseline speedup", "source": "BM_001 results"},
-                {"name": "accuracy_metrics", "title": "Accuracy Analysis",
-                 "description": "Error metrics across benchmarks", "source": "Statistical analysis"},
-                {"name": "convergence", "title": "Convergence Behavior",
-                 "description": "Solver convergence patterns", "source": "Iteration logs"},
-                {"name": "scalability", "title": "Scalability Study",
-                 "description": "Performance vs problem size", "source": "Parametric runs"},
-                {"name": "energy_comparison", "title": "Energy Error Analysis",
-                 "description": "Energy conservation metrics", "source": "Physics validation"},
+                {
+                    "name": "speedup_chart",
+                    "title": "Speedup Comparison",
+                    "description": "QuASIM vs baseline speedup",
+                    "source": "BM_001 results",
+                },
+                {
+                    "name": "accuracy_metrics",
+                    "title": "Accuracy Analysis",
+                    "description": "Error metrics across benchmarks",
+                    "source": "Statistical analysis",
+                },
+                {
+                    "name": "convergence",
+                    "title": "Convergence Behavior",
+                    "description": "Solver convergence patterns",
+                    "source": "Iteration logs",
+                },
+                {
+                    "name": "scalability",
+                    "title": "Scalability Study",
+                    "description": "Performance vs problem size",
+                    "source": "Parametric runs",
+                },
+                {
+                    "name": "energy_comparison",
+                    "title": "Energy Error Analysis",
+                    "description": "Energy conservation metrics",
+                    "source": "Physics validation",
+                },
             ],
             "tensor_networks": [
-                {"name": "contraction_order", "title": "Tensor Contraction Order",
-                 "description": "Optimal contraction sequence", "source": "Algorithm analysis"},
-                {"name": "bond_dimensions", "title": "Bond Dimension Analysis",
-                 "description": "Tensor bond dimension evolution", "source": "Runtime data"},
-                {"name": "entanglement", "title": "Entanglement Structure",
-                 "description": "Quantum entanglement patterns", "source": "State analysis"},
-                {"name": "compression", "title": "Tensor Compression Ratios",
-                 "description": "Compression achieved by AHTN", "source": "Memory logs"},
-                {"name": "gpu_kernel_profile", "title": "GPU Kernel Performance",
-                 "description": "CUDA kernel timing analysis", "source": "Profiler data"},
+                {
+                    "name": "contraction_order",
+                    "title": "Tensor Contraction Order",
+                    "description": "Optimal contraction sequence",
+                    "source": "Algorithm analysis",
+                },
+                {
+                    "name": "bond_dimensions",
+                    "title": "Bond Dimension Analysis",
+                    "description": "Tensor bond dimension evolution",
+                    "source": "Runtime data",
+                },
+                {
+                    "name": "entanglement",
+                    "title": "Entanglement Structure",
+                    "description": "Quantum entanglement patterns",
+                    "source": "State analysis",
+                },
+                {
+                    "name": "compression",
+                    "title": "Tensor Compression Ratios",
+                    "description": "Compression achieved by AHTN",
+                    "source": "Memory logs",
+                },
+                {
+                    "name": "gpu_kernel_profile",
+                    "title": "GPU Kernel Performance",
+                    "description": "CUDA kernel timing analysis",
+                    "source": "Profiler data",
+                },
             ],
             "statistical_analysis": [
-                {"name": "outlier_detection", "title": "Outlier Analysis",
-                 "description": "Modified Z-score outliers", "source": "Statistical tests"},
-                {"name": "normality_test", "title": "Distribution Analysis",
-                 "description": "QQ plots and normality tests", "source": "Results data"},
-                {"name": "confidence_intervals", "title": "CI Width Analysis",
-                 "description": "Bootstrap CI width trends", "source": "Resampling"},
-                {"name": "p_value_matrix", "title": "Statistical Significance",
-                 "description": "P-value heatmap", "source": "Hypothesis tests"},
-                {"name": "variance_analysis", "title": "Variance Decomposition",
-                 "description": "ANOVA-style variance analysis", "source": "Multi-run data"},
+                {
+                    "name": "outlier_detection",
+                    "title": "Outlier Analysis",
+                    "description": "Modified Z-score outliers",
+                    "source": "Statistical tests",
+                },
+                {
+                    "name": "normality_test",
+                    "title": "Distribution Analysis",
+                    "description": "QQ plots and normality tests",
+                    "source": "Results data",
+                },
+                {
+                    "name": "confidence_intervals",
+                    "title": "CI Width Analysis",
+                    "description": "Bootstrap CI width trends",
+                    "source": "Resampling",
+                },
+                {
+                    "name": "p_value_matrix",
+                    "title": "Statistical Significance",
+                    "description": "P-value heatmap",
+                    "source": "Hypothesis tests",
+                },
+                {
+                    "name": "variance_analysis",
+                    "title": "Variance Decomposition",
+                    "description": "ANOVA-style variance analysis",
+                    "source": "Multi-run data",
+                },
             ],
             "hardware_metrics": [
-                {"name": "gpu_timeline", "title": "GPU Execution Timeline",
-                 "description": "GPU activity over time", "source": "Hardware telemetry"},
-                {"name": "memory_bandwidth", "title": "Memory Bandwidth Utilization",
-                 "description": "Memory transfer efficiency", "source": "Performance counters"},
-                {"name": "compute_efficiency", "title": "Compute Efficiency",
-                 "description": "FLOPs utilization", "source": "GPU metrics"},
-                {"name": "power_consumption", "title": "Power Profile",
-                 "description": "Energy consumption analysis", "source": "Power sensors"},
-                {"name": "thermal_profile", "title": "Thermal Analysis",
-                 "description": "Temperature monitoring", "source": "Thermal sensors"},
+                {
+                    "name": "gpu_timeline",
+                    "title": "GPU Execution Timeline",
+                    "description": "GPU activity over time",
+                    "source": "Hardware telemetry",
+                },
+                {
+                    "name": "memory_bandwidth",
+                    "title": "Memory Bandwidth Utilization",
+                    "description": "Memory transfer efficiency",
+                    "source": "Performance counters",
+                },
+                {
+                    "name": "compute_efficiency",
+                    "title": "Compute Efficiency",
+                    "description": "FLOPs utilization",
+                    "source": "GPU metrics",
+                },
+                {
+                    "name": "power_consumption",
+                    "title": "Power Profile",
+                    "description": "Energy consumption analysis",
+                    "source": "Power sensors",
+                },
+                {
+                    "name": "thermal_profile",
+                    "title": "Thermal Analysis",
+                    "description": "Temperature monitoring",
+                    "source": "Thermal sensors",
+                },
             ],
             "reproducibility": [
-                {"name": "hash_verification", "title": "SHA-256 Hash Verification",
-                 "description": "Deterministic execution proof", "source": "Hash logs"},
-                {"name": "seed_sensitivity", "title": "RNG Seed Analysis",
-                 "description": "Impact of seed variation", "source": "Seed sweep"},
-                {"name": "bit_exactness", "title": "Bit-Exact Reproducibility",
-                 "description": "Floating-point consistency", "source": "Result comparison"},
-                {"name": "drift_analysis", "title": "Temporal Drift",
-                 "description": "Result stability over time", "source": "Long-term runs"},
-                {"name": "cross_platform", "title": "Cross-Platform Consistency",
-                 "description": "CPU vs GPU result matching", "source": "Platform comparison"},
+                {
+                    "name": "hash_verification",
+                    "title": "SHA-256 Hash Verification",
+                    "description": "Deterministic execution proof",
+                    "source": "Hash logs",
+                },
+                {
+                    "name": "seed_sensitivity",
+                    "title": "RNG Seed Analysis",
+                    "description": "Impact of seed variation",
+                    "source": "Seed sweep",
+                },
+                {
+                    "name": "bit_exactness",
+                    "title": "Bit-Exact Reproducibility",
+                    "description": "Floating-point consistency",
+                    "source": "Result comparison",
+                },
+                {
+                    "name": "drift_analysis",
+                    "title": "Temporal Drift",
+                    "description": "Result stability over time",
+                    "source": "Long-term runs",
+                },
+                {
+                    "name": "cross_platform",
+                    "title": "Cross-Platform Consistency",
+                    "description": "CPU vs GPU result matching",
+                    "source": "Platform comparison",
+                },
             ],
             "compliance": [
-                {"name": "do178c_coverage", "title": "DO-178C Coverage",
-                 "description": "MC/DC coverage metrics", "source": "Coverage analysis"},
-                {"name": "nist_controls", "title": "NIST 800-53 Controls",
-                 "description": "Security control compliance", "source": "Compliance audit"},
-                {"name": "cmmc_l2", "title": "CMMC 2.0 Level 2",
-                 "description": "Defense compliance status", "source": "CMMC assessment"},
-                {"name": "audit_trail", "title": "Audit Trail Diagram",
-                 "description": "Logging and traceability", "source": "Log analysis"},
-                {"name": "security_posture", "title": "Security Posture",
-                 "description": "CodeQL findings summary", "source": "SAST results"},
+                {
+                    "name": "do178c_coverage",
+                    "title": "DO-178C Coverage",
+                    "description": "MC/DC coverage metrics",
+                    "source": "Coverage analysis",
+                },
+                {
+                    "name": "nist_controls",
+                    "title": "NIST 800-53 Controls",
+                    "description": "Security control compliance",
+                    "source": "Compliance audit",
+                },
+                {
+                    "name": "cmmc_l2",
+                    "title": "CMMC 2.0 Level 2",
+                    "description": "Defense compliance status",
+                    "source": "CMMC assessment",
+                },
+                {
+                    "name": "audit_trail",
+                    "title": "Audit Trail Diagram",
+                    "description": "Logging and traceability",
+                    "source": "Log analysis",
+                },
+                {
+                    "name": "security_posture",
+                    "title": "Security Posture",
+                    "description": "CodeQL findings summary",
+                    "source": "SAST results",
+                },
             ],
         }
 
@@ -864,7 +1016,9 @@ class ExecutiveSummaryGenerator:
             f.write("## 2. Repository Statistics and Code Analysis\n\n")
             f.write("### 2.1 Quantitative Metrics\n\n")
             f.write(f"- **Total Modules Analyzed:** {len(modules):,}\n")
-            f.write(f"- **Total Lines of Code:** {sum(m.lines_of_code for m in modules.values()):,}\n")
+            f.write(
+                f"- **Total Lines of Code:** {sum(m.lines_of_code for m in modules.values()):,}\n"
+            )
             f.write(f"- **Benchmarks Defined:** {len(benchmarks)}\n")
             f.write(f"- **Visualizations Generated:** {visualizations.total_count}\n")
             f.write("- **CI/CD Workflows:** 50+ GitHub Actions workflows\n")
@@ -877,10 +1031,12 @@ class ExecutiveSummaryGenerator:
             # Count modules by directory
             module_dirs = {}
             for module_path in modules:
-                top_dir = module_path.split('/')[0] if '/' in module_path else 'root'
+                top_dir = module_path.split("/")[0] if "/" in module_path else "root"
                 module_dirs[top_dir] = module_dirs.get(top_dir, 0) + 1
 
-            for dir_name, count in sorted(module_dirs.items(), key=lambda x: x[1], reverse=True)[:10]:
+            for dir_name, count in sorted(module_dirs.items(), key=lambda x: x[1], reverse=True)[
+                :10
+            ]:
                 f.write(f"- **{dir_name}**: {count} modules\n")
             f.write("\n")
 
@@ -940,11 +1096,15 @@ class ExecutiveSummaryGenerator:
 
             f.write("### 4.2 Execution Flow\n\n")
             f.write("Typical benchmark execution follows this pattern:\n\n")
-            f.write("1. **Initialization:** Load configuration, set RNG seed, initialize hardware\n")
+            f.write(
+                "1. **Initialization:** Load configuration, set RNG seed, initialize hardware\n"
+            )
             f.write("2. **Baseline Execution:** Run Ansys/PyMAPDL solver (5 iterations)\n")
             f.write("3. **QuASIM Execution:** Run GPU-accelerated solver (5 iterations)\n")
             f.write("4. **Data Collection:** Gather timing, accuracy, and hardware metrics\n")
-            f.write("5. **Statistical Analysis:** Bootstrap CI, outlier detection, hypothesis tests\n")
+            f.write(
+                "5. **Statistical Analysis:** Bootstrap CI, outlier detection, hypothesis tests\n"
+            )
             f.write("6. **Reproducibility Check:** SHA-256 hash verification\n")
             f.write("7. **Report Generation:** Multi-format output (CSV, JSON, HTML, PDF)\n\n")
 
@@ -1023,7 +1183,9 @@ class ExecutiveSummaryGenerator:
             f.write("## 8. Documentation and Visualization Suite\n\n")
             f.write(f"This analysis generated {visualizations.total_count} visualizations:\n\n")
             for category, files in visualizations.categories.items():
-                f.write(f"- **{category.replace('_', ' ').title()}:** {len(files)} visualizations\n")
+                f.write(
+                    f"- **{category.replace('_', ' ').title()}:** {len(files)} visualizations\n"
+                )
             f.write("\n")
 
             # Conclusion
@@ -1051,8 +1213,10 @@ class ExecutiveSummaryGenerator:
             f.write("4. Enhance ML-based optimization features\n\n")
 
             f.write("---\n\n")
-            f.write("**Note:** All capabilities documented in this summary are based on actual "
-                   "code analysis. No speculative or marketing claims are included.\n\n")
+            f.write(
+                "**Note:** All capabilities documented in this summary are based on actual "
+                "code analysis. No speculative or marketing claims are included.\n\n"
+            )
 
         logger.info(f"Generated executive summary: {output_path}")
         return output_path
@@ -1212,9 +1376,7 @@ class TechnicalWhitePaperGenerator:
             # Section 7: Reproducibility
             f.write("## 7. Reproducibility Infrastructure\n\n")
             f.write("### 7.1 Deterministic Execution\n\n")
-            f.write(
-                "SHA-256 hashing ensures deterministic execution across runs:\n\n"
-            )
+            f.write("SHA-256 hashing ensures deterministic execution across runs:\n\n")
             f.write("```python\n")
             f.write("def compute_state_hash(results: np.ndarray) -> str:\n")
             f.write('    """Compute SHA-256 hash of result vector."""\n')
@@ -1328,6 +1490,7 @@ class DocumentationPackageGenerator:
         # Generate appendices
         try:
             import sys
+
             sys.path.insert(0, str(Path(__file__).parent))
             from generate_appendices import generate_all_appendices
 
@@ -1349,10 +1512,7 @@ class DocumentationPackageGenerator:
         logger.info(f"Visualizations: {self.viz_generator.manifest.total_count}")
 
     def generate_manifest(
-        self,
-        exec_summary_path: Path,
-        whitepaper_path: Path,
-        appendices: list[Path] = None
+        self, exec_summary_path: Path, whitepaper_path: Path, appendices: list[Path] = None
     ) -> None:
         """Generate delivery manifest.
 
@@ -1371,9 +1531,15 @@ class DocumentationPackageGenerator:
             f.write("**Generated:** 2025-12-14\n\n")
             f.write("**Version:** 1.0.0\n\n")
             f.write("## Deliverables\n\n")
-            f.write(f"1. **Executive Summary:** `{exec_summary_path.relative_to(self.output_dir)}`\n")
-            f.write(f"2. **Technical White Paper:** `{whitepaper_path.relative_to(self.output_dir)}`\n")
-            f.write(f"3. **Visualizations:** {self.viz_generator.manifest.total_count} files in `visualizations/`\n")
+            f.write(
+                f"1. **Executive Summary:** `{exec_summary_path.relative_to(self.output_dir)}`\n"
+            )
+            f.write(
+                f"2. **Technical White Paper:** `{whitepaper_path.relative_to(self.output_dir)}`\n"
+            )
+            f.write(
+                f"3. **Visualizations:** {self.viz_generator.manifest.total_count} files in `visualizations/`\n"
+            )
             f.write(f"4. **Appendices:** {len(appendices)} files in `appendices/`\n")
             f.write("\n## Directory Structure\n\n")
             f.write("```\n")
@@ -1437,7 +1603,9 @@ class DocumentationPackageGenerator:
             f.write("```\n\n")
 
             f.write("## Package Statistics\n\n")
-            f.write(f"- **Total Files:** {self.viz_generator.manifest.total_count + len(appendices) + 3}\n")
+            f.write(
+                f"- **Total Files:** {self.viz_generator.manifest.total_count + len(appendices) + 3}\n"
+            )
             f.write("- **Documentation Pages:** ~30-40 pages (combined)\n")
             f.write(f"- **Visualizations:** {self.viz_generator.manifest.total_count}\n")
             f.write("- **Code Analysis:** 1,032 modules, 96,532 LOC\n")

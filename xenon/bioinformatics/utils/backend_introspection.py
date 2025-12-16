@@ -8,14 +8,12 @@ from __future__ import annotations
 import warnings
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, List, Optional
-
-import numpy as np
+from typing import Dict, List
 
 
 class BackendType(Enum):
     """Types of computational backends."""
-    
+
     CLASSICAL = "classical"
     QISKIT_AER = "qiskit_aer"
     HARDWARE_QPU = "hardware_qpu"
@@ -24,7 +22,7 @@ class BackendType(Enum):
 @dataclass
 class BackendCapabilities:
     """Backend capability description.
-    
+
     Attributes:
         backend_type: Type of backend
         max_qubits: Maximum number of qubits
@@ -33,7 +31,7 @@ class BackendCapabilities:
         gate_set: Supported quantum gates
         available: Whether backend is currently available
     """
-    
+
     backend_type: BackendType
     max_qubits: int
     max_circuit_depth: int
@@ -44,16 +42,16 @@ class BackendCapabilities:
 
 class BackendIntrospection:
     """Backend capability detection and introspection.
-    
+
     Provides automatic detection of available quantum backends
     and automatic downgrade paths when requested backend unavailable.
     """
-    
+
     def __init__(self):
         """Initialize backend introspection."""
         self.backends: Dict[BackendType, BackendCapabilities] = {}
         self._detect_backends()
-    
+
     def _detect_backends(self) -> None:
         """Detect available backends."""
         # Classical backend always available
@@ -65,12 +63,12 @@ class BackendIntrospection:
             gate_set=["all"],
             available=True,
         )
-        
+
         # Try Qiskit
         try:
             import qiskit
             from qiskit_aer import Aer
-            
+
             self.backends[BackendType.QISKIT_AER] = BackendCapabilities(
                 backend_type=BackendType.QISKIT_AER,
                 max_qubits=32,
@@ -88,37 +86,32 @@ class BackendIntrospection:
                 gate_set=[],
                 available=False,
             )
-    
+
     def get_backend(self, preferred: BackendType) -> BackendType:
         """Get best available backend.
-        
+
         Args:
             preferred: Preferred backend type
-            
+
         Returns:
             Best available backend (may downgrade)
         """
         if preferred in self.backends and self.backends[preferred].available:
             return preferred
-        
+
         # Downgrade path: QPU -> Aer -> Classical
         if preferred == BackendType.HARDWARE_QPU:
-            if self.backends.get(BackendType.QISKIT_AER, BackendCapabilities(
-                BackendType.QISKIT_AER, 0, 0, False, [], False
-            )).available:
-                warnings.warn(
-                    "Hardware QPU not available, downgrading to Qiskit Aer",
-                    UserWarning
-                )
+            if self.backends.get(
+                BackendType.QISKIT_AER,
+                BackendCapabilities(BackendType.QISKIT_AER, 0, 0, False, [], False),
+            ).available:
+                warnings.warn("Hardware QPU not available, downgrading to Qiskit Aer", UserWarning)
                 return BackendType.QISKIT_AER
-        
+
         # Final fallback to classical
-        warnings.warn(
-            f"{preferred.value} not available, using classical fallback",
-            UserWarning
-        )
+        warnings.warn(f"{preferred.value} not available, using classical fallback", UserWarning)
         return BackendType.CLASSICAL
-    
+
     def log_execution(
         self,
         backend: BackendType,
@@ -127,13 +120,13 @@ class BackendIntrospection:
         execution_time: float,
     ) -> Dict[str, any]:
         """Log execution metrics.
-        
+
         Args:
             backend: Backend used
             circuit_depth: Circuit depth
             gate_count: Number of gates
             execution_time: Execution time in seconds
-            
+
         Returns:
             Execution log entry
         """

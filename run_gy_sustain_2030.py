@@ -274,9 +274,7 @@ def execute_dynamic_rolling_phase(
                 "speed_kmh": speed,
                 "rolling_resistance_coeff": round(metrics.rolling_resistance, 5),
                 "rolling_force_n": round(metrics.rolling_resistance * load * 9.81, 2),
-                "power_loss_w": round(
-                    metrics.rolling_resistance * load * 9.81 * (speed / 3.6), 2
-                ),
+                "power_loss_w": round(metrics.rolling_resistance * load * 9.81 * (speed / 3.6), 2),
             }
         )
 
@@ -345,9 +343,7 @@ def _compute_rr_label(rr_coeff: float) -> str:
         return "F"
 
 
-def execute_thermal_ramp_phase(
-    simulator: Any, compound: Any, geometry: Any
-) -> dict[str, Any]:
+def execute_thermal_ramp_phase(simulator: Any, compound: Any, geometry: Any) -> dict[str, Any]:
     """Execute thermal ramp simulation phase."""
     from quasim.domains.tire import EnvironmentalConditions, RoadSurface, WeatherCondition
 
@@ -427,9 +423,7 @@ def execute_thermal_ramp_phase(
         "optimal_temp_range_c": [10, 35],
         "min_grip_at_extreme": round(min(grip_values), 4),
         "max_grip_at_optimal": round(max(grip_values), 4),
-        "glass_transition_margin_c": round(
-            -40 - compound.base_properties.glass_transition_temp, 1
-        ),
+        "glass_transition_margin_c": round(-40 - compound.base_properties.glass_transition_temp, 1),
     }
 
     return results
@@ -555,9 +549,7 @@ def generate_visualization_summary(
         },
         "thermal_gradients": {
             "description": "Temperature distribution across speed range",
-            "max_tread_temp_c": max(
-                r["tread_temp_c"] for r in rolling_results["thermal_response"]
-            ),
+            "max_tread_temp_c": max(r["tread_temp_c"] for r in rolling_results["thermal_response"]),
             "thermal_equilibrium_achieved": True,
         },
         "entropy_dissipation_maps": {
@@ -657,8 +649,8 @@ Status: ✓ VALIDATED
 2.4 Contact Mechanics
 ---------------------
 """
-    min_contact = static_results['summary']['min_contact_area_cm2']
-    max_contact = static_results['summary']['max_contact_area_cm2']
+    min_contact = static_results["summary"]["min_contact_area_cm2"]
+    max_contact = static_results["summary"]["max_contact_area_cm2"]
     report += f"""Algorithm: Mortar Segment Method
 Contact Patch Range: {min_contact} - {max_contact} cm²
 Friction Model: Coulomb Extended
@@ -674,8 +666,8 @@ Status: ✓ VALIDATED
 2.6 Rolling Resistance Entropy
 ------------------------------
 """
-    avg_rr = rolling_results['summary']['avg_rolling_resistance']
-    eu_label = rolling_results['summary']['eu_label_class']
+    avg_rr = rolling_results["summary"]["avg_rolling_resistance"]
+    eu_label = rolling_results["summary"]["eu_label_class"]
     report += f"""Average Rolling Resistance: {avg_rr:.5f}
 EU Label Class: {eu_label}
 Energy Recovery: Entropy-balanced model
@@ -701,10 +693,10 @@ Total Execution Time: {execution_time:.2f} seconds
 Phases Completed: 4/4 (Static, Rolling, Thermal, Fatigue)
 """
     total_scenarios = (
-        len(static_results['contact_patch_analysis'])
-        + len(rolling_results['rolling_resistance'])
-        + len(thermal_results['temperature_sweep'])
-        + len(fatigue_results['wear_progression'])
+        len(static_results["contact_patch_analysis"])
+        + len(rolling_results["rolling_resistance"])
+        + len(thermal_results["temperature_sweep"])
+        + len(fatigue_results["wear_progression"])
     )
     throughput = total_scenarios / execution_time
     report += f"""Total Scenarios: {total_scenarios}
@@ -744,8 +736,8 @@ Sustainability Impact:
 Material Composition Analysis:
 """
     tread = material_stack["tread_compound"]["properties"]
-    bio_pct = tread['bio_content_percentage']
-    recycled_pct = tread['recycled_content_percentage']
+    bio_pct = tread["bio_content_percentage"]
+    recycled_pct = tread["recycled_content_percentage"]
     total_sustainable = bio_pct + recycled_pct
     report += f"""• Bio-based content: {bio_pct}%
 • Recycled content: {recycled_pct}%
@@ -760,8 +752,8 @@ Performance Trade-offs:
 4.3 Thermal Stability
 ---------------------
 """
-    glass_margin = thermal_results['summary']['glass_transition_margin_c']
-    thermal_idx = thermal_results['temperature_sweep'][6]['grip_coefficient']
+    glass_margin = thermal_results["summary"]["glass_transition_margin_c"]
+    thermal_idx = thermal_results["temperature_sweep"][6]["grip_coefficient"]
     report += f"""• Operating range: -40°C to +80°C (PASS)
 • Glass transition margin: {glass_margin}°C below test minimum
 • Max service temp margin: 40°C above typical operating
@@ -908,7 +900,7 @@ def main() -> None:
 
     # Create material stack
     material_stack = create_sustainable_material_stack()
-    tread_props = material_stack['tread_compound']['properties']
+    tread_props = material_stack["tread_compound"]["properties"]
     print("Material Stack Configuration:")
     print(f"  • Tread: {material_stack['tread_compound']['name']}")
     print(f"    - Bio content: {tread_props['bio_content_percentage']}%")
@@ -1046,7 +1038,7 @@ def main() -> None:
     phases[2].results = thermal_results
     print(f"  ✓ Completed in {phases[2].duration_seconds:.2f}s")
     print(f"  • Temperature scenarios: {len(thermal_results['temperature_sweep'])}")
-    glass_trans_margin = thermal_results['summary']['glass_transition_margin_c']
+    glass_trans_margin = thermal_results["summary"]["glass_transition_margin_c"]
     print(f"  • Glass transition margin: {glass_trans_margin}°C")
 
     # Phase 4: Fatigue Projection
@@ -1147,11 +1139,11 @@ def main() -> None:
     print(f"All results saved to: {output_dir}/")
     print()
     print("Key Findings:")
-    rr_val = rolling_results['summary']['avg_rolling_resistance']
-    rr_class = rolling_results['summary']['eu_label_class']
+    rr_val = rolling_results["summary"]["avg_rolling_resistance"]
+    rr_class = rolling_results["summary"]["eu_label_class"]
     print(f"  • Rolling Resistance: {rr_val:.5f} (Class {rr_class})")
     print("  • Sustainable Content: 60% (35% bio + 25% recycled)")
-    pred_life = fatigue_results['summary']['predicted_lifetime_km']
+    pred_life = fatigue_results["summary"]["predicted_lifetime_km"]
     print(f"  • Predicted Lifetime: {pred_life:,.0f} km")
     print("  • Temperature Range: -40°C to +80°C VALIDATED")
     print()

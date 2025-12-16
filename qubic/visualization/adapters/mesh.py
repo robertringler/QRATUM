@@ -38,8 +38,7 @@ class MeshAdapter(SimulationAdapter):
             return self._load_from_dict(source)
         else:
             raise ValueError(
-                f"Unsupported source type: {type(source)}. "
-                "Expected file path or dictionary."
+                f"Unsupported source type: {type(source)}. " "Expected file path or dictionary."
             )
 
     def _load_from_file(self, path: Path) -> VisualizationData:
@@ -59,9 +58,7 @@ class MeshAdapter(SimulationAdapter):
             raise FileNotFoundError(f"File not found: {path}")
 
         # Placeholder for file format detection and parsing
-        raise NotImplementedError(
-            "File-based loading not yet implemented. Use dictionary input."
-        )
+        raise NotImplementedError("File-based loading not yet implemented. Use dictionary input.")
 
     def _load_from_dict(self, data: dict[str, Any]) -> VisualizationData:
         """Load mesh from dictionary.

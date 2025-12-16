@@ -1,6 +1,5 @@
 """Tests for tire simulation engine."""
 
-
 from quasim.domains.tire.environment import (
     EnvironmentalConditions,
     RoadSurface,

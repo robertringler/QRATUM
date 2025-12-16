@@ -29,9 +29,7 @@ class FrameCache:
         # Clone data to avoid mutation
         try:
             mesh_copy = mesh.copy() if hasattr(mesh, "copy") else mesh
-            fields_copy = {
-                k: v.copy() if hasattr(v, "copy") else v for k, v in fields.items()
-            }
+            fields_copy = {k: v.copy() if hasattr(v, "copy") else v for k, v in fields.items()}
         except Exception:
             mesh_copy = mesh
             fields_copy = fields
@@ -78,9 +76,7 @@ class FrameCache:
         Returns:
             List of frame data dictionaries
         """
-        return [
-            f for f in self._history if start_time <= f["timestamp"] <= end_time
-        ]
+        return [f for f in self._history if start_time <= f["timestamp"] <= end_time]
 
     def clear(self) -> None:
         """Clear all cached frames."""
@@ -118,9 +114,7 @@ def cache_frame(mesh: Any, fields: dict[str, Any]) -> None:
     """
     try:
         mesh_copy = mesh.copy() if hasattr(mesh, "copy") else mesh
-        fields_copy = {
-            k: v.copy() if hasattr(v, "copy") else v for k, v in fields.items()
-        }
+        fields_copy = {k: v.copy() if hasattr(v, "copy") else v for k, v in fields.items()}
     except Exception:
         mesh_copy = mesh
         fields_copy = fields

@@ -44,9 +44,7 @@ class TestMatplotlibBackend:
         backend = MatplotlibBackend()
 
         # Add a scalar field
-        sample_data.add_scalar_field(
-            "test_field", np.random.rand(len(sample_data.vertices))
-        )
+        sample_data.add_scalar_field("test_field", np.random.rand(len(sample_data.vertices)))
 
         fig = backend.render(sample_data, scalar_field="test_field")
         assert fig is not None
@@ -137,9 +135,7 @@ class TestGPUBackend:
         """Test rendering with scalar field."""
         backend = GPUBackend()
 
-        sample_data.add_scalar_field(
-            "test_field", np.random.rand(len(sample_data.vertices))
-        )
+        sample_data.add_scalar_field("test_field", np.random.rand(len(sample_data.vertices)))
 
         fig = backend.render(sample_data, scalar_field="test_field")
         assert fig is not None

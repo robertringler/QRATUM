@@ -1,6 +1,5 @@
 """Tests for tire material modeling."""
 
-
 from quasim.domains.tire.materials import (
     CompoundType,
     MaterialProperties,

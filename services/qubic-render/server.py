@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-
 try:
     from fastapi import FastAPI, WebSocket, WebSocketDisconnect
     from fastapi.responses import JSONResponse

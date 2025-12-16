@@ -27,12 +27,14 @@ __all__ = ["core", "vqe_molecule", "qaoa_optimization"]
 # Quantum module is optional - gracefully handle missing dependencies
 try:
     import qiskit
+
     QISKIT_AVAILABLE = True
 except ImportError:
     QISKIT_AVAILABLE = False
 
 try:
     import pennylane
+
     PENNYLANE_AVAILABLE = True
 except ImportError:
     PENNYLANE_AVAILABLE = False
@@ -40,7 +42,7 @@ except ImportError:
 
 def check_quantum_dependencies() -> dict[str, bool]:
     """Check which quantum computing libraries are available.
-    
+
     Returns:
         Dictionary mapping library names to availability status
     """
@@ -52,14 +54,14 @@ def check_quantum_dependencies() -> dict[str, bool]:
 
 def get_quantum_status() -> str:
     """Get a human-readable status of quantum capabilities.
-    
+
     Returns:
         Status string describing available quantum features
     """
     deps = check_quantum_dependencies()
-    
+
     if not any(deps.values()):
         return "No quantum libraries available. Install with: pip install qiskit pennylane"
-    
+
     available = [name for name, avail in deps.items() if avail]
     return f"Quantum computing enabled with: {', '.join(available)}"

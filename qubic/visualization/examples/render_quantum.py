@@ -47,9 +47,7 @@ def main(output_dir: Path = Path("./viz_output")) -> None:
         logger.info(f"Visualizing: {title}")
 
         # Create synthetic quantum state
-        quantum_data = adapter.create_synthetic_state(
-            n_qubits=n_qubits, state_type=state_type
-        )
+        quantum_data = adapter.create_synthetic_state(n_qubits=n_qubits, state_type=state_type)
 
         logger.info(f"  States: {2**n_qubits}, Type: {state_type}")
 

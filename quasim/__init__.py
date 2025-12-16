@@ -129,16 +129,16 @@ def runtime(config: Config):
 
 # Re-export QRATUM functionality for backward compatibility
 try:
+    from qratum import Circuit as QRATUMCircuit
+    from qratum import DensityMatrix as QRATUMDensityMatrix
+    from qratum import Measurement as QRATUMMeasurement
     from qratum import (
-        Simulator as QRATUMSimulator,
-        Circuit as QRATUMCircuit,
-        StateVector as QRATUMStateVector,
-        Measurement as QRATUMMeasurement,
-        Result as QRATUMResult,
-        DensityMatrix as QRATUMDensityMatrix,
-        gates as qratum_gates,
         QRATUMConfig,
     )
+    from qratum import Result as QRATUMResult
+    from qratum import Simulator as QRATUMSimulator
+    from qratum import StateVector as QRATUMStateVector
+    from qratum import gates as qratum_gates
 
     # Create aliases for backward compatibility
     # Users can use quasim.Simulator which maps to qratum.Simulator

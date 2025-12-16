@@ -83,9 +83,7 @@ class TireMeshGenerator:
             "num_faces": len(faces),
         }
 
-    def _compute_normals(
-        self, vertices: np.ndarray, faces: np.ndarray
-    ) -> np.ndarray:
+    def _compute_normals(self, vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
         """Compute vertex normals.
 
         Args:

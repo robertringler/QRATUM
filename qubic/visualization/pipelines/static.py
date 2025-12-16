@@ -46,8 +46,7 @@ class StaticPipeline:
             self.backend = GPUBackend(figsize=figsize, dpi=dpi)
         else:
             raise ValueError(
-                f"Unsupported backend: {backend}. "
-                "Choose from: 'matplotlib', 'headless', 'gpu'"
+                f"Unsupported backend: {backend}. " "Choose from: 'matplotlib', 'headless', 'gpu'"
             )
 
     def render(

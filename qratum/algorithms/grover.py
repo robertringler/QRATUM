@@ -4,11 +4,13 @@ Grover's algorithm provides quadratic speedup for unstructured search,
 finding a marked element in O(√N) queries instead of O(N).
 """
 
-import numpy as np
 from typing import List, Optional
+
+import numpy as np
+
 from qratum.core.circuit import Circuit
-from qratum.core.simulator import Simulator
 from qratum.core.measurement import Result
+from qratum.core.simulator import Simulator
 
 
 class Grover:
@@ -20,9 +22,7 @@ class Grover:
         iterations: Number of Grover iterations
     """
 
-    def __init__(
-        self, num_qubits: int, marked_states: List[int], iterations: Optional[int] = None
-    ):
+    def __init__(self, num_qubits: int, marked_states: List[int], iterations: Optional[int] = None):
         """Initialize Grover search.
 
         Args:

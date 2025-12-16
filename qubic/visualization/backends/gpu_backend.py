@@ -124,9 +124,7 @@ class GPUBackend:
             vertices_gpu = self.torch.tensor(
                 data.vertices, device=self.device, dtype=self.torch.float32
             )
-            faces_gpu = self.torch.tensor(
-                data.faces, device=self.device, dtype=self.torch.long
-            )
+            faces_gpu = self.torch.tensor(data.faces, device=self.device, dtype=self.torch.long)
 
             # Compute face normals on GPU
             v0 = vertices_gpu[faces_gpu[:, 0]]

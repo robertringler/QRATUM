@@ -4,8 +4,9 @@ Provides measurement operations on quantum states and result
 processing with classical bit storage.
 """
 
-import numpy as np
 from typing import Dict, List, Optional
+
+import numpy as np
 
 
 class Result:

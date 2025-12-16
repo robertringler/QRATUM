@@ -75,9 +75,7 @@ def RZ(theta: float) -> GateMatrix:
     Returns:
         2x2 rotation matrix
     """
-    return np.array(
-        [[np.exp(-1j * theta / 2), 0], [0, np.exp(1j * theta / 2)]], dtype=complex
-    )
+    return np.array([[np.exp(-1j * theta / 2), 0], [0, np.exp(1j * theta / 2)]], dtype=complex)
 
 
 def Phase(phi: float) -> GateMatrix:
@@ -120,22 +118,16 @@ def U3(theta: float, phi: float, lam: float) -> GateMatrix:
 # ============================================================================
 
 # CNOT gate (Control-NOT)
-CNOT = np.array(
-    [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]], dtype=complex
-)
+CNOT = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]], dtype=complex)
 
 # CZ gate (Control-Z)
 CZ = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, -1]], dtype=complex)
 
 # SWAP gate
-SWAP = np.array(
-    [[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 0], [0, 0, 0, 1]], dtype=complex
-)
+SWAP = np.array([[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 0], [0, 0, 0, 1]], dtype=complex)
 
 # iSWAP gate
-iSWAP = np.array(
-    [[1, 0, 0, 0], [0, 0, 1j, 0], [0, 1j, 0, 0], [0, 0, 0, 1]], dtype=complex
-)
+iSWAP = np.array([[1, 0, 0, 0], [0, 0, 1j, 0], [0, 1j, 0, 0], [0, 0, 0, 1]], dtype=complex)
 
 
 def CRX(theta: float) -> GateMatrix:

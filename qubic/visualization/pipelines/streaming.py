@@ -156,8 +156,7 @@ class StreamingPipeline:
             import websockets
         except ImportError:
             raise ImportError(
-                "websockets is required for streaming. "
-                "Install with: pip install websockets"
+                "websockets is required for streaming. " "Install with: pip install websockets"
             ) from None
 
         async def handle_connection(websocket, path):

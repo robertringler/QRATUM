@@ -4,8 +4,10 @@ Provides a flexible circuit builder for constructing quantum circuits
 with support for all standard gates and custom operations.
 """
 
-import numpy as np
 from typing import List, Optional, Tuple
+
+import numpy as np
+
 from qratum.core import gates
 
 
@@ -211,9 +213,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
-        self.instructions.append(
-            ("toffoli", [control1, control2, target], gates.TOFFOLI, {})
-        )
+        self.instructions.append(("toffoli", [control1, control2, target], gates.TOFFOLI, {}))
         return self
 
     # ========================================================================

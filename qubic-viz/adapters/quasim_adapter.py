@@ -61,9 +61,7 @@ class QuASIMDataAdapter:
         return data
 
     @staticmethod
-    def convert_to_visualization_format(
-        data: Any, data_type: str = "tire"
-    ) -> dict[str, Any]:
+    def convert_to_visualization_format(data: Any, data_type: str = "tire") -> dict[str, Any]:
         """Convert QuASIM data to visualization format.
 
         Args:

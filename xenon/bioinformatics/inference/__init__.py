@@ -8,10 +8,10 @@ Provides:
 """
 
 from xenon.bioinformatics.inference.neural_symbolic import (
-    NeuralSymbolicEngine,
-    GraphEmbedding,
     ConstraintType,
+    GraphEmbedding,
     InferenceResult,
+    NeuralSymbolicEngine,
 )
 
 __all__ = [
