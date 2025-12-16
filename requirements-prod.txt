@@ -1,0 +1,39 @@
+# XENON v5 Production Dependencies
+# Certificate: QRATUM-HARDENING-20251215-V5
+# Locked versions for production reproducibility
+
+# Core numerical computing
+numpy==1.24.3
+scipy==1.11.4
+
+# Machine learning and neural networks
+torch==2.1.2
+scikit-learn==1.3.2
+
+# Quantum computing (optional, graceful degradation)
+qiskit==0.45.1
+qiskit-aer==0.13.1
+
+# Bioinformatics
+biopython==1.81
+
+# Data handling
+pandas==2.1.4
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+
+# Code quality
+ruff==0.1.9
+mypy==1.8.0
+
+# YAML and configuration
+pyyaml==6.0.1
+
+# CLI
+click==8.1.7
+
+# Visualization (optional)
+matplotlib==3.7.4
