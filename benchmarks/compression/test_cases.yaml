@@ -2,6 +2,9 @@
 #
 # This configuration defines the test matrix for validating QRATUM's
 # MERA tensor compression capabilities.
+#
+# Note: Use decimal notation for epsilon values (e.g., 0.001 instead of 1e-3)
+# to ensure proper YAML parsing.
 
 test_cases:
   # Random quantum states (baseline test)
@@ -10,7 +13,7 @@ test_cases:
     qubits: [10, 15, 20, 25]
     seeds: [42, 123, 456]
     fidelity_target: 0.995
-    epsilon: [1e-3, 1e-4, 1e-5]
+    epsilon: [0.001, 0.0001, 0.00001]
 
   # Product states (should achieve high compression)
   - name: "product_states_zero"
@@ -18,28 +21,28 @@ test_cases:
     product_type: "zero"
     qubits: [10, 15, 20]
     fidelity_target: 0.999
-    epsilon: 1e-3
+    epsilon: 0.001
 
   - name: "product_states_plus"
     generator: "product"
     product_type: "plus"
     qubits: [10, 15, 20]
     fidelity_target: 0.999
-    epsilon: 1e-3
+    epsilon: 0.001
 
   # GHZ states (maximally entangled)
   - name: "ghz_states"
     generator: "ghz"
     qubits: [10, 15, 20, 25]
     fidelity_target: 0.995
-    epsilon: 1e-3
+    epsilon: 0.001
 
   # W states (symmetric entanglement)
   - name: "w_states"
     generator: "w"
     qubits: [10, 15, 20]
     fidelity_target: 0.995
-    epsilon: 1e-3
+    epsilon: 0.001
 
   # Random quantum circuits (realistic complexity)
   - name: "random_circuits_shallow"
@@ -48,7 +51,7 @@ test_cases:
     circuit_depth: 10
     seeds: [42, 123]
     fidelity_target: 0.995
-    epsilon: 1e-3
+    epsilon: 0.001
 
   - name: "random_circuits_deep"
     generator: "circuit"
@@ -56,7 +59,7 @@ test_cases:
     circuit_depth: 50
     seeds: [42]
     fidelity_target: 0.99
-    epsilon: 1e-2
+    epsilon: 0.01
 
 # Compression algorithm settings
 compression_settings:
@@ -64,7 +67,7 @@ compression_settings:
   fidelity_targets: [0.99, 0.995, 0.999]
 
   # Epsilon sweep for sensitivity analysis
-  epsilon_sweep: [1e-2, 1e-3, 1e-4, 1e-5]
+  epsilon_sweep: [0.01, 0.001, 0.0001, 0.00001]
 
   # Maximum rank (optional constraint)
   max_rank: null

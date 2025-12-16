@@ -34,20 +34,26 @@ from typing import Any
 import numpy as np
 import yaml
 
+# Add repository root to path for imports
+_script_dir = Path(__file__).parent.absolute()
+_repo_root = _script_dir.parent.parent
+if str(_repo_root) not in sys.path:
+    sys.path.insert(0, str(_repo_root))
+
 # Import generators and validators
-from generators.quantum_states import (
+from benchmarks.compression.generators.quantum_states import (
     generate_ghz_state,
     generate_product_state,
     generate_random_circuit_state,
     generate_random_state,
     generate_w_state,
 )
-from validators.compression_ratio import (
+from benchmarks.compression.validators.compression_ratio import (
     aggregate_compression_statistics,
     compute_compression_metrics,
     validate_compression_claim,
 )
-from validators.fidelity import compute_fidelity, validate_fidelity_bound
+from benchmarks.compression.validators.fidelity import compute_fidelity, validate_fidelity_bound
 
 # Import AHTC compression
 try:
@@ -206,7 +212,7 @@ class BenchmarkOrchestrator:
                 return
 
             # Get compression parameters
-            fidelity_target = test_case.get("fidelity_target", 0.995)
+            fidelity_target = float(test_case.get("fidelity_target", 0.995))
             epsilon_list = test_case.get("epsilon", [1e-3])
 
             # Handle single epsilon vs list
@@ -214,7 +220,7 @@ class BenchmarkOrchestrator:
                 epsilon_list = [epsilon_list]
 
             # Test with first epsilon (can extend to test all)
-            epsilon = epsilon_list[0]
+            epsilon = float(epsilon_list[0])
 
             # Run compression benchmark
             start_time = time.time()
@@ -256,6 +262,9 @@ class BenchmarkOrchestrator:
 
         except Exception as e:
             print(f"  ❌ Test {test_id}: FAILED - {e}")
+            if self.verbose:
+                import traceback
+                traceback.print_exc()
             self.failed_tests += 1
 
             # Create failed result
