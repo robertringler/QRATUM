@@ -44,6 +44,10 @@ qcmg_results.json
 # CLI generated files
 plan.json
 
+# NGAD demo outputs
+ngad_results.json
+plots/
+
 # Package build artifacts
 *.egg-info/
 coverage.json
