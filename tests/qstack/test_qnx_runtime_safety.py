@@ -1,14 +1,13 @@
 from qstack.qnx import (
+    QNXVM,
     DeterministicScheduler,
     OperatorLibrary,
-    PriorityScheduler,
     QNXState,
     RateLimiter,
     SafetyConstraints,
     SafetyEnvelope,
     SafetyValidator,
     TraceRecorder,
-    QNXVM,
 )
 
 

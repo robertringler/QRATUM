@@ -25,7 +25,9 @@ class MockQNXRTOS:
         self.scheduler_log.append(SchedulerEvent(self.tick_count, "boot"))
         return {"status": "booted", "ticks": self.tick_count}
 
-    def dispatch_ticks(self, *, iterations: int = 1, handler: Callable[[int], Any] | None = None) -> list[Any]:
+    def dispatch_ticks(
+        self, *, iterations: int = 1, handler: Callable[[int], Any] | None = None
+    ) -> list[Any]:
         outputs: list[Any] = []
         for _ in range(iterations):
             self.tick_count += 1

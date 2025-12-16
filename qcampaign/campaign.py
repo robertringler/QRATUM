@@ -1,12 +1,13 @@
 """Campaign definitions for multi-agent exercises."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Dict, List
 
-from qcampaign.teams import Team
-from qcampaign.scoring import CampaignScorecard, CampaignScorer
 from qcampaign.reporting import CampaignReport
+from qcampaign.scoring import CampaignScorecard, CampaignScorer
+from qcampaign.teams import Team
 
 
 @dataclass

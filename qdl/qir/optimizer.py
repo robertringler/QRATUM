@@ -1,28 +1,29 @@
 """Optimizer for QIR graphs."""
+
 from __future__ import annotations
 
-from typing import List
-
-from .ir_nodes import Constant, Graph, IRNode, Operation
+from .ir_nodes import Constant, Graph, Operation
 
 
 def constant_fold(graph: Graph) -> Graph:
     for node in graph.nodes():
-        if isinstance(node, Operation) and node.op_type in {'add', 'sub', 'mul', 'div'}:
+        if isinstance(node, Operation) and node.op_type in {"add", "sub", "mul", "div"}:
             if all(isinstance(inp, Constant) for inp in node.inputs):
                 values = [inp.value for inp in node.inputs]
                 result = None
-                if node.op_type == 'add':
+                if node.op_type == "add":
                     result = values[0] + values[1]
-                elif node.op_type == 'sub':
+                elif node.op_type == "sub":
                     result = values[0] - values[1]
-                elif node.op_type == 'mul':
+                elif node.op_type == "mul":
                     result = values[0] * values[1]
-                elif node.op_type == 'div':
+                elif node.op_type == "div":
                     result = values[0] / values[1]
                 node.inputs.clear()
                 node.__class__ = Constant
-                node.__dict__.update({'name': 'const', 'value': result, 'attributes': {'value': result}})
+                node.__dict__.update(
+                    {"name": "const", "value": result, "attributes": {"value": result}}
+                )
     return graph
 
 

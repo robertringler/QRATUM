@@ -1,4 +1,5 @@
 """Deterministic gate definitions."""
+
 from __future__ import annotations
 
 from ..core.circuits import QuantumGate

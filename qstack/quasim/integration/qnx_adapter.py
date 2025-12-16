@@ -1,4 +1,5 @@
 """Adapter constructing QNX operators for QuASIM simulations."""
+
 from __future__ import annotations
 
 from typing import Dict

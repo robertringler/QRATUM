@@ -1,10 +1,11 @@
 """SubAgent orchestrating partial goals."""
+
 from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from ..planning.planners.greedy import GreedyPlanner
 from ..planning.base import PlanningSystem
+from ..planning.planners.greedy import GreedyPlanner
 
 
 class SubAgent:

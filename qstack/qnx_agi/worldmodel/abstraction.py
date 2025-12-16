@@ -1,4 +1,5 @@
 """Abstraction helpers for world model state grouping."""
+
 from __future__ import annotations
 
 from typing import Dict

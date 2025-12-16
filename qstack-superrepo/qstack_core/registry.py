@@ -1,4 +1,5 @@
 """Global registry for Q-Stack components."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

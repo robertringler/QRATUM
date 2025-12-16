@@ -1,4 +1,5 @@
 """Deterministic counters for scenario metrics."""
+
 from __future__ import annotations
 
 from typing import Dict

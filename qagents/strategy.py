@@ -1,8 +1,9 @@
 """Deterministic strategy helpers for agents."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 from qagents.base import AgentObservation, AgentState
 
@@ -60,7 +61,11 @@ class PolicyAdapter:
 
     def decide(self, observation: AgentObservation, state: AgentState) -> Dict[str, Any]:
         decision = self.strategy.decide(observation, state)
-        return {"action": decision.action, "reason": decision.justification, "strategy": self.strategy.name}
+        return {
+            "action": decision.action,
+            "reason": decision.justification,
+            "strategy": self.strategy.name,
+        }
 
 
 class DeterminismChecker:

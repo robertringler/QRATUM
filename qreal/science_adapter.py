@@ -1,4 +1,5 @@
 """Deterministic adapter for scientific datasets."""
+
 from __future__ import annotations
 
 from typing import Dict

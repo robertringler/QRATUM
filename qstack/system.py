@@ -1,4 +1,5 @@
 """System-level facade providing a unified Q-Stack API surface."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

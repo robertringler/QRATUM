@@ -1,4 +1,5 @@
 """Constitutional charter definitions."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -22,7 +23,11 @@ class Charter:
         return {art.article_id: art for art in self.active.articles.articles}
 
     def describe(self) -> Dict[str, object]:
-        return {"version_id": self.active.version_id, "enacted_tick": self.active.enacted_tick, "articles": self.active.articles.as_dict()}
+        return {
+            "version_id": self.active.version_id,
+            "enacted_tick": self.active.enacted_tick,
+            "articles": self.active.articles.as_dict(),
+        }
 
 
 def default_charter() -> Charter:

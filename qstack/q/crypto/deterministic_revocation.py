@@ -1,4 +1,5 @@
 """Deterministic revocation list tracking."""
+
 from __future__ import annotations
 
 import hashlib

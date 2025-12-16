@@ -1,11 +1,12 @@
 """High-level deterministic system calls."""
+
 from __future__ import annotations
 
 from typing import Callable, Dict, List
 
 from qnode.config import NodeConfig
-from qnode.policies import NodePolicy, compose_policies
 from qnode.incident_log import IncidentLog
+from qnode.policies import NodePolicy, compose_policies
 
 
 class SyscallError(Exception):
@@ -13,7 +14,9 @@ class SyscallError(Exception):
 
 
 class SyscallRouter:
-    def __init__(self, config: NodeConfig, policies: List[NodePolicy], incident_log: IncidentLog) -> None:
+    def __init__(
+        self, config: NodeConfig, policies: List[NodePolicy], incident_log: IncidentLog
+    ) -> None:
         self.config = config
         self.policies = policies
         self.incidents = incident_log

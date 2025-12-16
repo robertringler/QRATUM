@@ -1,12 +1,13 @@
 """Network scenario templates."""
+
 from __future__ import annotations
 
 from typing import List
 
-from qscenario.events import SystemEvent
-from qscenario.timeline import Timeline, TimelineEntry
 from qscenario.drivers import ScenarioDrivers
+from qscenario.events import SystemEvent
 from qscenario.scenario import Scenario, ScenarioConfig
+from qscenario.timeline import Timeline, TimelineEntry
 
 
 def _network_driver(event, state):

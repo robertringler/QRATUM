@@ -1,4 +1,5 @@
 """Unified telemetry stream for Q-Stack subsystems."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -11,7 +12,10 @@ def _ensure_serializable(data: Mapping[str, Any]) -> Dict[str, Any]:
         if isinstance(value, (str, int, float, bool)) or value is None:
             serialized[key] = value
         elif isinstance(value, (list, tuple)):
-            serialized[key] = [str(item) if not isinstance(item, (str, int, float, bool, type(None))) else item for item in value]
+            serialized[key] = [
+                str(item) if not isinstance(item, (str, int, float, bool, type(None))) else item
+                for item in value
+            ]
         elif isinstance(value, dict):
             serialized[key] = {str(sub_key): str(sub_val) for sub_key, sub_val in value.items()}
         else:
@@ -25,7 +29,9 @@ class Telemetry:
 
     entries: List[Dict[str, Any]] = field(default_factory=list)
 
-    def record(self, component: str, metrics: Mapping[str, Any], context: Mapping[str, Any] | None = None) -> Dict[str, Any]:
+    def record(
+        self, component: str, metrics: Mapping[str, Any], context: Mapping[str, Any] | None = None
+    ) -> Dict[str, Any]:
         entry: Dict[str, Any] = {
             "component": component,
             "metrics": _ensure_serializable(dict(metrics)),

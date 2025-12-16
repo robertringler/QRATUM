@@ -12,7 +12,7 @@ class PlanStep:
     parameters: Dict[str, Any]
     cost: float
     heuristic: float
-    parent: Optional["PlanStep"] = None
+    parent: Optional[PlanStep] = None
 
     def total(self) -> float:
         return self.cost + self.heuristic
@@ -21,12 +21,23 @@ class PlanStep:
 class Planner:
     """Abstract planner interface."""
 
-    def __init__(self, heuristic: Optional[Callable[[Dict[str, Any], Dict[str, Any]], float]] = None):
+    def __init__(
+        self, heuristic: Optional[Callable[[Dict[str, Any], Dict[str, Any]], float]] = None
+    ):
         self._heuristic = heuristic or (lambda goal, state: 0.0)
 
-    def plan(self, goal: Dict[str, Any], state: Dict[str, Any]) -> List[PlanStep]:  # pragma: no cover - interface
+    def plan(
+        self, goal: Dict[str, Any], state: Dict[str, Any]
+    ) -> List[PlanStep]:  # pragma: no cover - interface
         """Default deterministic plan: mirror goal into a single noop step."""
-        return [PlanStep(action="noop", parameters=dict(state), cost=0.0, heuristic=self._heuristic(goal, state))]
+        return [
+            PlanStep(
+                action="noop",
+                parameters=dict(state),
+                cost=0.0,
+                heuristic=self._heuristic(goal, state),
+            )
+        ]
 
 
 class GreedyPlanner(Planner):
@@ -37,18 +48,29 @@ class GreedyPlanner(Planner):
         steps: List[PlanStep] = []
         for key, value in sorted(goal.items(), key=lambda kv: kv[0]):
             cost = 0.0 if state.get(key) == value else 1.0
-            steps.append(PlanStep(action="set", parameters={"key": key, "value": value}, cost=cost, heuristic=0.0))
+            steps.append(
+                PlanStep(
+                    action="set", parameters={"key": key, "value": value}, cost=cost, heuristic=0.0
+                )
+            )
         return steps
 
 
 class HeuristicSearchPlanner(Planner):
-    def __init__(self, heuristic: Optional[Callable[[Dict[str, Any], Dict[str, Any]], float]] = None):
+    def __init__(
+        self, heuristic: Optional[Callable[[Dict[str, Any], Dict[str, Any]], float]] = None
+    ):
         super().__init__(heuristic or (lambda goal, state: float(len(goal))))
 
     def plan(self, goal: Dict[str, Any], state: Dict[str, Any]) -> List[PlanStep]:
         ordered = sorted(goal.items(), key=lambda kv: kv[0])
         return [
-            PlanStep(action="set", parameters={"key": key, "value": value}, cost=float(idx), heuristic=self._heuristic(goal, state))
+            PlanStep(
+                action="set",
+                parameters={"key": key, "value": value},
+                cost=float(idx),
+                heuristic=self._heuristic(goal, state),
+            )
             for idx, (key, value) in enumerate(ordered)
         ]
 
@@ -59,7 +81,9 @@ class AStarPlanner(Planner):
     def __init__(self, heuristic: Callable[[Dict[str, Any], Dict[str, Any]], float]):
         super().__init__(heuristic)
 
-    def _neighbors(self, state: Dict[str, Any], goal: Dict[str, Any]) -> Iterable[Tuple[str, Dict[str, Any]]]:
+    def _neighbors(
+        self, state: Dict[str, Any], goal: Dict[str, Any]
+    ) -> Iterable[Tuple[str, Dict[str, Any]]]:
         for key, value in goal.items():
             if state.get(key) != value:
                 new_state = dict(state)
@@ -67,14 +91,18 @@ class AStarPlanner(Planner):
                 yield f"set_{key}", new_state
 
     def plan(self, goal: Dict[str, Any], state: Dict[str, Any]) -> List[PlanStep]:
-        start = PlanStep(action="start", parameters=state, cost=0.0, heuristic=self._heuristic(goal, state))
+        start = PlanStep(
+            action="start", parameters=state, cost=0.0, heuristic=self._heuristic(goal, state)
+        )
         open_set: List[PlanStep] = [start]
         closed: Dict[str, float] = {}
         while open_set:
             open_set.sort(key=lambda step: (step.total(), step.action))
             current = open_set.pop(0)
             state_digest = str(sorted(current.parameters.items()))
-            if current.heuristic == 0.0 and all(goal.get(k) == current.parameters.get(k) for k in goal):
+            if current.heuristic == 0.0 and all(
+                goal.get(k) == current.parameters.get(k) for k in goal
+            ):
                 path: List[PlanStep] = []
                 cursor: Optional[PlanStep] = current
                 while cursor:
@@ -87,18 +115,30 @@ class AStarPlanner(Planner):
             for action_label, neighbor_state in self._neighbors(current.parameters, goal):
                 cost = current.cost + 1.0
                 heuristic = self._heuristic(goal, neighbor_state)
-                neighbor_step = PlanStep(action=action_label, parameters=neighbor_state, cost=cost, heuristic=heuristic, parent=current)
+                neighbor_step = PlanStep(
+                    action=action_label,
+                    parameters=neighbor_state,
+                    cost=cost,
+                    heuristic=heuristic,
+                    parent=current,
+                )
                 open_set.append(neighbor_step)
         return []
 
 
 class BeamSearchPlanner(Planner):
-    def __init__(self, heuristic: Callable[[Dict[str, Any], Dict[str, Any]], float], width: int = 3):
+    def __init__(
+        self, heuristic: Callable[[Dict[str, Any], Dict[str, Any]], float], width: int = 3
+    ):
         super().__init__(heuristic)
         self._width = width
 
     def plan(self, goal: Dict[str, Any], state: Dict[str, Any]) -> List[PlanStep]:
-        frontier: List[PlanStep] = [PlanStep(action="start", parameters=state, cost=0.0, heuristic=self._heuristic(goal, state))]
+        frontier: List[PlanStep] = [
+            PlanStep(
+                action="start", parameters=state, cost=0.0, heuristic=self._heuristic(goal, state)
+            )
+        ]
         for _ in range(len(goal)):
             expanded: List[PlanStep] = []
             for step in frontier:
@@ -150,7 +190,13 @@ class MPCPlanner(Planner):
             if self._envelope and not self._envelope.inside(type("State", (), {"data": predicted})):
                 break
             cost = self._cost_fn(goal, predicted)
-            plan_step = PlanStep(action="predict", parameters=predicted, cost=cost, heuristic=0.0, parent=trajectory[-1] if trajectory else None)
+            plan_step = PlanStep(
+                action="predict",
+                parameters=predicted,
+                cost=cost,
+                heuristic=0.0,
+                parent=trajectory[-1] if trajectory else None,
+            )
             trajectory.append(plan_step)
             current_state = predicted
             if all(predicted.get(k) == goal.get(k) for k in goal):

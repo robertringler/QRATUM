@@ -1,4 +1,5 @@
 """Adapter layer for the QuNimbus synthetic economy and governance modules."""
+
 from __future__ import annotations
 
 import sys
@@ -12,14 +13,13 @@ if str(ROOT_DIR) in sys.path:
     sys.path.remove(str(ROOT_DIR))
 sys.path.insert(0, str(ROOT_DIR))
 
+from qstack.config import QuNimbusConfig
 from qunimbus.node_governance.node_scoring import score_node
 from qunimbus.synthetic.agents import EconomicAgent
 from qunimbus.synthetic.credit_network import CreditNetwork
 from qunimbus.synthetic.market_venue import MarketVenue
 from qunimbus.synthetic.order_book import Trade
 from qunimbus.synthetic.shocks import apply_price_shock
-
-from qstack.config import QuNimbusConfig
 
 
 @dataclass
