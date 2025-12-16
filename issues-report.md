@@ -1,6 +1,5 @@
 ## Remaining Code Quality Issues
 ### Ruff Linting
-1303	UP006 	non-pep585-annotation
  345	      	invalid-syntax
  200	N806  	non-lowercase-variable-in-function
  105	UP045 	non-pep604-annotation-optional
