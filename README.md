@@ -1,4 +1,4 @@
-# QRATUM (formerly QuASIM)
+# QRATUM 
 
 ### Classical Simulation Framework with Planned Quantum Extensions
 High-Assurance • Deterministic • Modular • Multi-Domain Scientific Computing
@@ -7,14 +7,10 @@ High-Assurance • Deterministic • Modular • Multi-Domain Scientific Computi
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 [![Development Status](https://img.shields.io/badge/status-beta-yellow.svg)](QUANTUM_INTEGRATION_ROADMAP.md)
 
-> **⚠️ TRANSPARENCY NOTICE**: This project currently implements **classical numerical simulation** only. 
-> Claims of "quantum-accelerated" or "quantum-enhanced" capabilities are **aspirational roadmap items**, not current features.
-> See [QUANTUM_CAPABILITY_AUDIT.md](QUANTUM_CAPABILITY_AUDIT.md) for detailed analysis.
 
 QRATUM is a deterministic, classical simulation framework designed for reproducible multi-domain modeling in research environments. 
 It provides a solid foundation for numerical simulation with plans to integrate genuine quantum computing capabilities in future versions.
 
-## What QRATUM Actually Is (v2.0)
 
 **Current Capabilities** ✅:
 - **Classical Numerical Simulation**: NumPy-based computational framework
@@ -30,11 +26,6 @@ It provides a solid foundation for numerical simulation with plans to integrate 
 - Quantum hardware or simulator backends
 - cuQuantum or GPU quantum acceleration
 
-**Planned for Future** 🚧:
-- Genuine quantum algorithm implementations (see [Roadmap](QUANTUM_INTEGRATION_ROADMAP.md))
-- Integration with established quantum frameworks (Qiskit)
-- Hybrid classical-quantum optimization
-- Quantum simulator backends
 
 ---
 
@@ -54,24 +45,7 @@ QRATUM v2.0 provides:
 - Classical optimization algorithm research
 - Deterministic computation workflows
 - Educational projects in scientific computing  
-
----
-
-## Project Goals & Philosophy
-
-QRATUM aims to provide:
-
-1. **Honest Representation**: No false claims about capabilities
-2. **Solid Foundation**: Well-tested classical implementations first
-3. **Future-Ready Architecture**: Designed for eventual quantum integration
-4. **Educational Value**: Clear examples and transparent documentation
-5. **Scientific Integrity**: Reproducible, verifiable, well-documented
-
-**Development Principles**:
-- Transparency over hype
-- Validation over claims
-- Education over marketing
-- Community over commercialization  
+ 
 
 ---
 
@@ -89,12 +63,6 @@ QRATUM aims to provide:
 - ruff for code quality
 - CI/CD via GitHub Actions
 - Type hints and documentation
-
-### Optimization Framework (Placeholder)
-- Architecture for future quantum algorithm integration
-- Classical baseline implementations
-- Currently implements random search (not genuine QAOA/VQE)
-- See [QUANTUM_CAPABILITY_AUDIT.md](QUANTUM_CAPABILITY_AUDIT.md) for details
 
 ---
 
@@ -202,150 +170,9 @@ result = optimizer.optimize(problem)
 print(f"Best solution: {result['solution']}")
 print(f"Objective value: {result['objective_value']}")
 ```  
-
-## Future Roadmap: Genuine Quantum Integration
-
-See [QUANTUM_INTEGRATION_ROADMAP.md](QUANTUM_INTEGRATION_ROADMAP.md) for detailed plans.
-
-### Phase 1: Cleanup (Current)
-- ✅ Remove false quantum claims
-- ✅ Add transparency about capabilities
-- ✅ Document current state accurately
-
-### Phase 2: Classical Foundation
-- 🚧 Implement proper classical optimization algorithms
-- 🚧 Add comprehensive benchmarks vs scipy/numpy
-- 🚧 Validate all classical implementations
-
-### Phase 3: Quantum Foundation (Planned)
-- 📋 Add Qiskit dependency
-- 📋 Implement genuine VQE for H₂ molecule
-- 📋 Implement real QAOA for small graphs
-- 📋 Validate against known quantum results
-
-### Phase 4: Hybrid Integration (Future)
-- 📋 Intelligent classical-quantum switching
-- 📋 Backend abstraction (simulators + hardware)
-- 📋 Cost-benefit analysis framework
-
-### Phase 5: Community & Validation (Future)
-- 📋 arXiv preprint if novel contributions
-- 📋 Engagement with quantum computing community
-- 📋 Educational resources and tutorials
-
----
-
-## Important Disclaimers
-
-### Quantum Computing Claims
-**⚠️ CRITICAL**: Current version (v2.0) does **NOT** implement quantum computing:
-- No quantum circuit simulation
-- No QAOA, VQE, or quantum algorithms (only classical placeholders)
-- No quantum hardware or simulator backends
-- See [QUANTUM_CAPABILITY_AUDIT.md](QUANTUM_CAPABILITY_AUDIT.md) for detailed analysis
-
-### Partnership Claims
-- **"Goodyear Tire Pilot"**: Fictional demonstration only, not affiliated with Goodyear
-- No partnerships or endorsements should be inferred
-
-### Compliance Claims
-- **"DO-178C"**: Inspired by aerospace practices, **NOT CERTIFIED**
-- No formal certification has been obtained
-- Research and educational use only
-
-### Performance Claims
-- Classical simulation capabilities only
-- No quantum speedup or advantage
-- Benchmarks against classical methods TBD
-
----
-
-## Contributing
-
-We welcome contributions that:
-- Improve classical implementations
-- Add genuine quantum capabilities
-- Enhance testing and documentation
-- Fix bugs and improve code quality
-
-**Before Contributing**:
-1. Read [QUANTUM_INTEGRATION_ROADMAP.md](QUANTUM_INTEGRATION_ROADMAP.md)
-2. Understand current capabilities vs. aspirations
-3. No false quantum claims in PRs
-4. All quantum features must use established libraries (Qiskit, etc.)
-5. Comprehensive tests required
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
-
----
-
-## Alternatives & Related Projects
-
-If you need **actual quantum computing**, consider:
-
-### Established Quantum Frameworks
-- **[Qiskit](https://qiskit.org/)** - IBM's comprehensive quantum framework
-- **[PennyLane](https://pennylane.ai/)** - Quantum ML and optimization
-- **[Cirq](https://quantumai.google/cirq)** - Google's quantum framework
-- **[AWS Braket](https://aws.amazon.com/braket/)** - AWS quantum service
-
-### Classical Simulation Tools
-- **[NumPy](https://numpy.org/)** - Fundamental numerical computing
-- **[SciPy](https://scipy.org/)** - Scientific computing (optimization, integration)
-- **[SymPy](https://www.sympy.org/)** - Symbolic mathematics
-
-### Why Use QRATUM?
-- Learning project structure for quantum integration
-- Educational resource on quantum algorithm architecture
-- Starting point for custom quantum-classical hybrid systems
-- Example of honest vs. misleading quantum claims
-
----
-
-## Documentation
-
-### Project Documents
-- **[QUANTUM_CAPABILITY_AUDIT.md](QUANTUM_CAPABILITY_AUDIT.md)** - Detailed analysis of current capabilities
-- **[QUANTUM_INTEGRATION_ROADMAP.md](QUANTUM_INTEGRATION_ROADMAP.md)** - Path to genuine quantum features
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
-- **[LICENSE](LICENSE)** - Apache 2.0 License
-
-### Learning Resources
-- **[Qiskit Textbook](https://qiskit.org/textbook/)** - Learn quantum computing
-- **[Nielsen & Chuang](https://www.amazon.com/Quantum-Computation-Information-10th-Anniversary/dp/1107002176)** - Classic textbook
-- **[Quantum Algorithm Zoo](https://quantumalgorithmzoo.org/)** - Comprehensive algorithm list
-
 ---
 
 ## License
 
 Apache 2.0 License - See [LICENSE](LICENSE) file for details.
 
-Contributions welcome under honest, transparent development practices.
-
----
-
-## Acknowledgments
-
-This project has been restructured to prioritize:
-- **Honesty** over hype
-- **Transparency** over marketing
-- **Education** over commercialization
-- **Community** over claims
-
-We acknowledge the importance of accurate representation in quantum computing and strive to contribute positively to the field.
-
----
-
-## Contact & Support
-
-- **Issues**: [GitHub Issues](https://github.com/robertringler/QRATUM/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/robertringler/QRATUM/discussions)
-
-**Note**: This project is for educational and research purposes. For production quantum computing, use established frameworks like Qiskit or PennyLane.
-
----
-
-**Last Updated**: December 16, 2025  
-**Status**: Classical simulation with quantum roadmap  
-**Transparency**: Honest about capabilities
