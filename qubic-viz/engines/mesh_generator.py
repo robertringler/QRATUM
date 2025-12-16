@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 
@@ -99,9 +98,7 @@ class TireMeshGenerator:
 
         return self._generate_torus(major_radius, minor_radius, width)
 
-    def _generate_torus(
-        self, major_radius: float, minor_radius: float, width: float
-    ) -> TireMesh:
+    def _generate_torus(self, major_radius: float, minor_radius: float, width: float) -> TireMesh:
         """Generate torus mesh for tire.
 
         Args:
@@ -152,10 +149,12 @@ class TireMeshGenerator:
         faces = np.array(faces)
 
         # Generate UVs
-        uvs = np.column_stack([
-            u_flat / (2 * np.pi),
-            v_flat / (2 * np.pi),
-        ])
+        uvs = np.column_stack(
+            [
+                u_flat / (2 * np.pi),
+                v_flat / (2 * np.pi),
+            ]
+        )
 
         # Create mesh
         mesh = TireMesh(
@@ -170,7 +169,7 @@ class TireMeshGenerator:
 
         return mesh
 
-    def add_tread_detail(self, mesh: TireMesh, tread_design: Optional[Any] = None) -> TireMesh:
+    def add_tread_detail(self, mesh: TireMesh, tread_design: Any | None = None) -> TireMesh:
         """Add tread pattern detail to tire mesh.
 
         Args:

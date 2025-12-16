@@ -153,9 +153,7 @@ class TimeSeriesPipeline:
             imageio.mimsave(output_path, images, fps=fps)
 
         else:
-            raise ValueError(
-                f"Unsupported animation format: {format}. Choose 'mp4' or 'gif'"
-            )
+            raise ValueError(f"Unsupported animation format: {format}. Choose 'mp4' or 'gif'")
 
     def render_frames(
         self,

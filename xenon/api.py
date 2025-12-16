@@ -23,15 +23,15 @@ def create_mechanism(
     transitions: List[Dict[str, Any]],
 ) -> BioMechanism:
     """Create a mechanism from dictionaries.
-    
+
     Args:
         name: Mechanism name
         states: List of state dictionaries
         transitions: List of transition dictionaries
-    
+
     Returns:
         BioMechanism object
-    
+
     Example:
         >>> states = [
         ...     {"name": "S1", "molecule": "Protein", "free_energy": -10.0},
@@ -43,17 +43,17 @@ def create_mechanism(
         >>> mech = create_mechanism("test", states, transitions)
     """
     mechanism = BioMechanism(name=name)
-    
+
     # Add states
     for state_dict in states:
         state = MolecularState(**state_dict)
         mechanism.add_state(state)
-    
+
     # Add transitions
     for trans_dict in transitions:
         transition = Transition(**trans_dict)
         mechanism.add_transition(transition)
-    
+
     return mechanism
 
 
@@ -65,17 +65,17 @@ def simulate_mechanism(
     **kwargs,
 ) -> Tuple[List[float], Dict[str, List[float]]]:
     """Simulate a mechanism.
-    
+
     Args:
         mechanism: Mechanism to simulate
         t_max: Maximum simulation time
         initial_state: Initial concentrations
         method: Simulation method ("gillespie" or "langevin")
         **kwargs: Additional simulator arguments (volume, seed, dt, etc.)
-    
+
     Returns:
         Tuple of (times, trajectories)
-    
+
     Example:
         >>> times, traj = simulate_mechanism(
         ...     mechanism, t_max=1.0, initial_state={"S1": 100.0, "S2": 0.0}
@@ -104,15 +104,15 @@ def run_xenon(
     **kwargs,
 ) -> Dict[str, Any]:
     """Run XENON learning loop.
-    
+
     Args:
         targets: List of target dictionaries with keys: name, protein, objective
         max_iterations: Maximum iterations
         **kwargs: Additional runtime arguments
-    
+
     Returns:
         Summary dictionary
-    
+
     Example:
         >>> results = run_xenon(
         ...     targets=[{"name": "test", "protein": "EGFR", "objective": "characterize"}],
@@ -120,12 +120,12 @@ def run_xenon(
         ... )
     """
     runtime = XENONRuntime(**kwargs)
-    
+
     for target_dict in targets:
         runtime.add_target(**target_dict)
-    
+
     summary = runtime.run(max_iterations)
-    
+
     return summary
 
 
@@ -134,14 +134,14 @@ def validate_mechanism(
     temperature: float = 310.0,
 ) -> Dict[str, Any]:
     """Validate mechanism constraints.
-    
+
     Args:
         mechanism: Mechanism to validate
         temperature: Temperature in Kelvin
-    
+
     Returns:
         Validation results dictionary
-    
+
     Example:
         >>> validation = validate_mechanism(mechanism)
         >>> if validation["thermodynamically_feasible"]:
@@ -149,7 +149,7 @@ def validate_mechanism(
     """
     thermodynamic_feasible = mechanism.is_thermodynamically_feasible(temperature)
     conservation_valid, violations = mechanism.validate_conservation_laws()
-    
+
     return {
         "thermodynamically_feasible": thermodynamic_feasible,
         "conservation_laws_valid": conservation_valid,
@@ -162,14 +162,14 @@ def validate_mechanism(
 
 def compute_mechanism_prior(mechanism: BioMechanism, **kwargs) -> float:
     """Compute prior probability for a mechanism.
-    
+
     Args:
         mechanism: Mechanism
         **kwargs: MechanismPrior arguments
-    
+
     Returns:
         Prior probability
-    
+
     Example:
         >>> prior = compute_mechanism_prior(mechanism)
     """
@@ -183,15 +183,15 @@ def update_mechanism_posterior(
     **kwargs,
 ) -> List[BioMechanism]:
     """Update mechanism posteriors from experiment.
-    
+
     Args:
         mechanisms: List of mechanisms
         experiment_result: Experimental result
         **kwargs: BayesianUpdater arguments
-    
+
     Returns:
         Updated mechanisms
-    
+
     Example:
         >>> result = ExperimentResult("concentration", {"S1": 80.0, "S2": 20.0})
         >>> updated = update_mechanism_posterior(mechanisms, result)
@@ -206,15 +206,15 @@ def mutate_mechanism(
     seed: Optional[int] = None,
 ) -> BioMechanism:
     """Mutate mechanism topology.
-    
+
     Args:
         mechanism: Parent mechanism
         mutation_rate: Mutation rate
         seed: Random seed
-    
+
     Returns:
         Mutated mechanism
-    
+
     Example:
         >>> mutant = mutate_mechanism(mechanism, mutation_rate=0.2)
     """
@@ -227,15 +227,15 @@ def recombine_mechanisms(
     name: str,
 ) -> BioMechanism:
     """Recombine two mechanisms.
-    
+
     Args:
         mech1: First parent
         mech2: Second parent
         name: Name for child mechanism
-    
+
     Returns:
         Recombined mechanism
-    
+
     Example:
         >>> child = recombine_mechanisms(parent1, parent2, "child")
     """

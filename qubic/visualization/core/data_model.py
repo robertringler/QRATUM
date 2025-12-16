@@ -43,9 +43,7 @@ class VisualizationData:
             ValueError: If data dimensions are inconsistent
         """
         if self.vertices.ndim != 2 or self.vertices.shape[1] != 3:
-            raise ValueError(
-                f"vertices must be Nx3 array, got shape {self.vertices.shape}"
-            )
+            raise ValueError(f"vertices must be Nx3 array, got shape {self.vertices.shape}")
 
         if self.faces.ndim != 2 or self.faces.shape[1] != 3:
             raise ValueError(f"faces must be Mx3 array, got shape {self.faces.shape}")
@@ -140,8 +138,7 @@ class VisualizationData:
         expected_shape = (len(self.vertices), 3)
         if data.shape != expected_shape:
             raise ValueError(
-                f"vector field shape {data.shape} doesn't match "
-                f"expected shape {expected_shape}"
+                f"vector field shape {data.shape} doesn't match " f"expected shape {expected_shape}"
             )
         self.vector_fields[name] = data
 

@@ -52,15 +52,12 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import hashlib
-import json
-import logging
-import statistics
 import csv
 import hashlib
 import json
 import logging
 import os
+import statistics
 import sys
 import time
 from dataclasses import asdict, dataclass, field
@@ -112,6 +109,8 @@ class RunMetrics:
     timestamp: str
     convergence_history: list[float] = field(default_factory=list)
     hardware_config: dict[str, Any] = field(default_factory=dict)
+
+
 class ExecutionResult:
     """Results from a single benchmark execution."""
 
@@ -160,6 +159,8 @@ class StatisticalSummary:
 @dataclass
 class ComparisonMetrics:
     """Comparison metrics between Ansys and QuASIM."""
+
+
 class StatisticalMetrics:
     """Statistical analysis metrics."""
 
@@ -1404,23 +1405,34 @@ class ReportGenerator:
             writer = csv.writer(f)
 
             # Header
-            writer.writerow([
-                "Benchmark", "Status", "Speedup", "SpeedupCI_Lower", "SpeedupCI_Upper",
-                "DisplacementError", "StressError", "EnergyError", "CV"
-            ])
+            writer.writerow(
+                [
+                    "Benchmark",
+                    "Status",
+                    "Speedup",
+                    "SpeedupCI_Lower",
+                    "SpeedupCI_Upper",
+                    "DisplacementError",
+                    "StressError",
+                    "EnergyError",
+                    "CV",
+                ]
+            )
 
             # Data
-            writer.writerow([
-                "BM_001",
-                "PASS" if passed else "FAIL",
-                f"{metrics.speedup:.2f}",
-                f"{metrics.speedup_ci_lower:.2f}",
-                f"{metrics.speedup_ci_upper:.2f}",
-                f"{metrics.displacement_error:.4f}",
-                f"{metrics.stress_error:.4f}",
-                f"{metrics.energy_error:.2e}",
-                f"{metrics.coefficient_of_variation:.4f}",
-            ])
+            writer.writerow(
+                [
+                    "BM_001",
+                    "PASS" if passed else "FAIL",
+                    f"{metrics.speedup:.2f}",
+                    f"{metrics.speedup_ci_lower:.2f}",
+                    f"{metrics.speedup_ci_upper:.2f}",
+                    f"{metrics.displacement_error:.4f}",
+                    f"{metrics.stress_error:.4f}",
+                    f"{metrics.energy_error:.2e}",
+                    f"{metrics.coefficient_of_variation:.4f}",
+                ]
+            )
 
         logger.info(f"CSV report: {csv_path}")
 
@@ -1491,7 +1503,11 @@ class ReportGenerator:
 
         quasim_hashes = {r.state_hash for r in quasim_results}
         repro_status = "status-pass" if len(quasim_hashes) == 1 else "status-fail"
-        repro_text = f"Deterministic: All {len(quasim_results)} runs identical" if len(quasim_hashes) == 1 else f"Non-deterministic: {len(quasim_hashes)} unique hashes"
+        repro_text = (
+            f"Deterministic: All {len(quasim_results)} runs identical"
+            if len(quasim_hashes) == 1
+            else f"Non-deterministic: {len(quasim_hashes)} unique hashes"
+        )
 
         # CSS braces are doubled for .format() escaping
         html = """<!DOCTYPE html>
@@ -1932,11 +1948,12 @@ class ReportGenerator:
         doc.build(story)
         logger.info(f"PDF report written to {pdf_path}")
 
-
-# ============================================================================
-# Command-Line Interface
+        # ============================================================================
+        # Command-Line Interface
         status_color = "green" if passed else "red"
-        status_text = f'<b>Status:</b> <font color="{status_color}">{"PASS" if passed else "FAIL"}</font>'
+        status_text = (
+            f'<b>Status:</b> <font color="{status_color}">{"PASS" if passed else "FAIL"}</font>'
+        )
         story.append(Paragraph(status_text, styles["Normal"]))
         story.append(Spacer(1, 0.2 * inch))
 
@@ -1974,16 +1991,18 @@ class ReportGenerator:
 
         table = Table(table_data)
         table.setStyle(
-            TableStyle([
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#3498db")),
-                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
-                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-                ("FONTSIZE", (0, 0), (-1, 0), 12),
-                ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
-                ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
-                ("GRID", (0, 0), (-1, -1), 1, colors.black),
-            ])
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#3498db")),
+                    ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                    ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                    ("FONTSIZE", (0, 0), (-1, 0), 12),
+                    ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                    ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
+                    ("GRID", (0, 0), (-1, -1), 1, colors.black),
+                ]
+            )
         )
 
         story.append(table)

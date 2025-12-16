@@ -265,9 +265,7 @@ def example(example_type: str, output_dir: str):
         quantum_main(output_path)
 
     elif example_type == "streaming":
-        from qubic.visualization.examples.stream_simulation import (
-            main as streaming_main,
-        )
+        from qubic.visualization.examples.stream_simulation import main as streaming_main
 
         streaming_main()
 

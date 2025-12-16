@@ -32,9 +32,7 @@ class TireDataAdapter:
 
         # Extract or generate field data
         thermal_map = TireDataAdapter._extract_thermal_map(simulation_result)
-        stress_distribution = TireDataAdapter._extract_stress_distribution(
-            simulation_result
-        )
+        stress_distribution = TireDataAdapter._extract_stress_distribution(simulation_result)
         wear_pattern = TireDataAdapter._extract_wear_pattern(simulation_result)
 
         return {
@@ -60,10 +58,7 @@ class TireDataAdapter:
         Returns:
             Temperature values array
         """
-        if (
-            hasattr(simulation_result, "thermal_map")
-            and simulation_result.thermal_map is not None
-        ):
+        if hasattr(simulation_result, "thermal_map") and simulation_result.thermal_map is not None:
             return np.array(simulation_result.thermal_map)
 
         # Generate synthetic thermal data based on environment

@@ -65,9 +65,7 @@ class TimeSeriesAdapter(SimulationAdapter):
         if not path.exists():
             raise FileNotFoundError(f"File not found: {path}")
 
-        raise NotImplementedError(
-            "File-based loading not yet implemented. Use list input."
-        )
+        raise NotImplementedError("File-based loading not yet implemented. Use list input.")
 
     def _load_from_list(self, data_list: list[dict[str, Any]]) -> VisualizationData:
         """Load time-series from list of dictionaries.
@@ -153,9 +151,7 @@ class TimeSeriesAdapter(SimulationAdapter):
             raise RuntimeError("No timesteps loaded. Call load_data first.")
 
         if index < 0 or index >= len(self.timesteps):
-            raise IndexError(
-                f"Timestep index {index} out of range [0, {len(self.timesteps)})"
-            )
+            raise IndexError(f"Timestep index {index} out of range [0, {len(self.timesteps)})")
 
         return self.timesteps[index]
 

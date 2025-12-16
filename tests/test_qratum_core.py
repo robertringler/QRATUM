@@ -3,17 +3,17 @@
 Tests simulator, circuit builder, gates, measurements, and state vectors.
 """
 
-import pytest
-import numpy as np
 import sys
 from pathlib import Path
+
+import numpy as np
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import qratum
-from qratum import Simulator, Circuit, StateVector, gates
-from qratum.core.measurement import Measurement
+from qratum import Circuit, Simulator, StateVector, gates
 
 
 class TestGates:
@@ -216,7 +216,6 @@ class TestBackwardCompatibility:
 
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
-            import quasim
 
             # Should have deprecation warning
             assert len(w) >= 1

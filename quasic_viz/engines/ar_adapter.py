@@ -21,9 +21,7 @@ def serialize_mesh_fields(mesh: Any, fields: dict[str, Any]) -> bytes:
 
         # Convert numpy arrays to lists for JSON serialization
         mesh_data = mesh.tolist() if hasattr(mesh, "tolist") else mesh
-        fields_data = {
-            k: v.tolist() if isinstance(v, np.ndarray) else v for k, v in fields.items()
-        }
+        fields_data = {k: v.tolist() if isinstance(v, np.ndarray) else v for k, v in fields.items()}
     except ImportError:
         mesh_data = mesh
         fields_data = fields

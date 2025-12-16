@@ -21,9 +21,7 @@ class MatplotlibBackend:
     using Matplotlib's 3D plotting capabilities.
     """
 
-    def __init__(
-        self, figsize: tuple[int, int] = (10, 8), dpi: int = 100
-    ) -> None:
+    def __init__(self, figsize: tuple[int, int] = (10, 8), dpi: int = 100) -> None:
         """Initialize matplotlib backend.
 
         Args:
@@ -83,7 +81,11 @@ class MatplotlibBackend:
 
             # Create collection with colors
             collection = Poly3DCollection(
-                face_vertices, facecolors=colors, alpha=alpha, edgecolor="k" if show_edges else None, linewidths=0.1 if show_edges else 0
+                face_vertices,
+                facecolors=colors,
+                alpha=alpha,
+                edgecolor="k" if show_edges else None,
+                linewidths=0.1 if show_edges else 0,
             )
 
             # Add colorbar
@@ -143,9 +145,7 @@ class MatplotlibBackend:
 
         # Elevation and azimuth
         azim = np.degrees(np.arctan2(view_vec[1], view_vec[0]))
-        elev = np.degrees(
-            np.arcsin(view_vec[2] / (distance + 1e-10))
-        )
+        elev = np.degrees(np.arcsin(view_vec[2] / (distance + 1e-10)))
 
         self.ax.view_init(elev=elev, azim=azim)
         self.ax.dist = 10 / (distance + 1)  # Zoom level

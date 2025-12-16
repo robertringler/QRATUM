@@ -50,9 +50,7 @@ def update_frame_data(mesh: Any, fields: dict[str, Any]) -> None:
         import numpy as np
 
         mesh_data = mesh.tolist() if isinstance(mesh, np.ndarray) else mesh
-        fields_data = {
-            k: v.tolist() if isinstance(v, np.ndarray) else v for k, v in fields.items()
-        }
+        fields_data = {k: v.tolist() if isinstance(v, np.ndarray) else v for k, v in fields.items()}
     except ImportError:
         mesh_data = mesh
         fields_data = fields
@@ -130,6 +128,4 @@ async def broadcast_frame(mesh: Any, fields: dict[str, Any]) -> None:
     if _clients:
         import asyncio
 
-        await asyncio.gather(
-            *[c.send_text(frame_data) for c in _clients], return_exceptions=True
-        )
+        await asyncio.gather(*[c.send_text(frame_data) for c in _clients], return_exceptions=True)

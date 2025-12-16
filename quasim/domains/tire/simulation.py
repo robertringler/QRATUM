@@ -431,7 +431,9 @@ class TireSimulation:
             suggestions.append("Reduce noise by optimizing tread pattern pitch sequence")
 
         if compound.quantum_optimization_level < 0.5:
-            suggestions.append("Apply quantum optimization to discover superior compound formulation")
+            suggestions.append(
+                "Apply quantum optimization to discover superior compound formulation"
+            )
 
         if metrics.comfort_index < 0.6:
             suggestions.append("Optimize structure for improved ride comfort")

@@ -52,8 +52,7 @@ class TireSimulationAdapter(SimulationAdapter):
             return self._load_from_dict(source)
         else:
             raise ValueError(
-                f"Unsupported source type: {type(source)}. "
-                "Expected file path or dictionary."
+                f"Unsupported source type: {type(source)}. " "Expected file path or dictionary."
             )
 
     def _load_from_file(self, path: Path) -> VisualizationData:
@@ -74,9 +73,7 @@ class TireSimulationAdapter(SimulationAdapter):
 
         # Placeholder for actual file parsing
         # In production, this would parse Ansys CDB, VTK, or custom formats
-        raise NotImplementedError(
-            "File-based loading not yet implemented. Use dictionary input."
-        )
+        raise NotImplementedError("File-based loading not yet implemented. Use dictionary input.")
 
     def _load_from_dict(self, data: dict[str, Any]) -> VisualizationData:
         """Load tire data from dictionary.

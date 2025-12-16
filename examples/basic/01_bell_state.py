@@ -7,6 +7,7 @@ This example creates the |Φ+⟩ = (|00⟩ + |11⟩)/√2 state.
 
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 import qratum
@@ -48,6 +49,6 @@ print(f"\n{state}")
 print("\n" + "=" * 60)
 print("Analysis:")
 print(f"  Measured states: {len(result.get_counts())}")
-print(f"  Expected: 2 states (|00⟩ and |11⟩)")
+print("  Expected: 2 states (|00⟩ and |11⟩)")
 print(f"  Circuit depth: {circuit.depth()}")
 print(f"  Gate count: {circuit.gate_count()}")

@@ -139,15 +139,10 @@ class ImageExporter:
         extension = output_path.suffix.lower()
 
         if extension == ".png":
-            self.export_png(
-                data, output_path, scalar_field, camera, colormap, **kwargs
-            )
+            self.export_png(data, output_path, scalar_field, camera, colormap, **kwargs)
         elif extension in (".jpg", ".jpeg"):
-            self.export_jpeg(
-                data, output_path, scalar_field, camera, colormap, **kwargs
-            )
+            self.export_jpeg(data, output_path, scalar_field, camera, colormap, **kwargs)
         else:
             raise ValueError(
-                f"Unsupported image format: {extension}. "
-                "Supported formats: .png, .jpg, .jpeg"
+                f"Unsupported image format: {extension}. " "Supported formats: .png, .jpg, .jpeg"
             )
