@@ -1,8 +1,9 @@
 """Constitutional principles enforced across Q-Stack operations."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable, List, Set
+from typing import List, Set
 
 ARTICLE_QNX_SAFETY = "ARTICLE_QNX_SAFETY"
 ARTICLE_QUASIM_BOUNDS = "ARTICLE_QUASIM_BOUNDS"

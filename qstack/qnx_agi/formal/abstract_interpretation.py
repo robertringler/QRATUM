@@ -1,4 +1,5 @@
 """Abstract interpretation utilities using interval domains."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -44,7 +45,7 @@ class AbstractState:
             raise KeyError(f"abstract variable {name} not found")
         return iv
 
-    def join(self, other: "AbstractState") -> "AbstractState":
+    def join(self, other: AbstractState) -> AbstractState:
         merged = AbstractState(self._lattice)
         keys = set(self._store) | set(other._store)
         for key in keys:
@@ -57,7 +58,7 @@ class AbstractState:
         current = self.read(name)
         self.assign(name, self._lattice.meet(current, constraint))
 
-    def widen(self, previous: "AbstractState") -> "AbstractState":
+    def widen(self, previous: AbstractState) -> AbstractState:
         widened = AbstractState(self._lattice)
         for key, interval in self._store.items():
             prev = previous._store.get(key, interval)

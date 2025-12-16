@@ -1,4 +1,5 @@
 """Sensor abstraction for deterministic feeds."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

@@ -1,4 +1,5 @@
 """Deterministic pseudo-consensus protocol."""
+
 from __future__ import annotations
 
 from typing import Dict, List
@@ -11,4 +12,4 @@ def propose(values: Dict[str, int]) -> int:
 
 
 def commit(participants: List[str], value: int) -> Dict[str, int]:
-    return {node: value for node in sorted(participants)}
+    return dict.fromkeys(sorted(participants), value)

@@ -1,4 +1,5 @@
 """Syscall table bridging QDL/QIR to kernel."""
+
 from __future__ import annotations
 
 from typing import Any, Callable, Dict

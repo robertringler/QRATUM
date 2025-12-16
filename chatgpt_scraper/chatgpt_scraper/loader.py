@@ -6,7 +6,7 @@ import json
 import tempfile
 import zipfile
 from pathlib import Path
-from typing import Iterable, Iterator, List
+from typing import Iterable, List
 
 from .models import RawConversation, RawMessage
 

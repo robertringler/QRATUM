@@ -1,4 +1,5 @@
 """QDL checker invoking formal analysis."""
+
 from __future__ import annotations
 
 from typing import List

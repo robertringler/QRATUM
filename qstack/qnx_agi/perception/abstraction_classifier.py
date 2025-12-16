@@ -1,4 +1,5 @@
 """Simple abstraction classifier that bins numeric features deterministically."""
+
 from __future__ import annotations
 
 from typing import Dict

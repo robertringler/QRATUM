@@ -1,4 +1,5 @@
 """Deterministic order book simulation."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -37,7 +38,9 @@ class OrderBook:
         self.asks.sort(key=lambda o: (o.price, o.order_id))
 
     def submit(self, agent_id: str, side: str, price: float, quantity: float) -> Order:
-        order = Order(order_id=self._next_id, agent_id=agent_id, side=side, price=price, quantity=quantity)
+        order = Order(
+            order_id=self._next_id, agent_id=agent_id, side=side, price=price, quantity=quantity
+        )
         self._next_id += 1
         if side == "buy":
             self.bids.append(order)

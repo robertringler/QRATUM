@@ -10,7 +10,9 @@ def test_upgrade_proposal_applied_with_quorum():
         proposer="nodeA",
         added_articles=[
             ConstitutionalArticle(
-                article_id="integrity-proof", description="Proof obligations must be satisfied.", constraints={}
+                article_id="integrity-proof",
+                description="Proof obligations must be satisfied.",
+                constraints={},
             )
         ],
         target_version="v2",

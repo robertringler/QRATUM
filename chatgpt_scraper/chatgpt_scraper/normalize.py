@@ -83,7 +83,9 @@ def _message_timestamp(message: RawMessage, fallback: datetime | None) -> dateti
     timestamp = _coerce_datetime(message.create_time)
     if timestamp:
         return timestamp
-    metadata_ts = _coerce_datetime(message.metadata.get("create_time")) if message.metadata else None
+    metadata_ts = (
+        _coerce_datetime(message.metadata.get("create_time")) if message.metadata else None
+    )
     if metadata_ts:
         return metadata_ts
     if fallback:
@@ -168,7 +170,9 @@ def summarize_conversation(
     )
 
 
-def build_ledger(conversations: Sequence[RawConversation]) -> Tuple[List[NormalizedTurn], List[ConversationSummary]]:
+def build_ledger(
+    conversations: Sequence[RawConversation],
+) -> Tuple[List[NormalizedTurn], List[ConversationSummary]]:
     """Normalize every conversation and build per-conversation summaries."""
 
     all_turns: List[NormalizedTurn] = []
@@ -194,7 +198,14 @@ def write_csv(summaries: Sequence[ConversationSummary], path: Path) -> None:
     """Write conversation summaries to a CSV file."""
 
     path.parent.mkdir(parents=True, exist_ok=True)
-    fieldnames = ["conversation_id", "title", "num_messages", "start_time", "end_time", "models_used"]
+    fieldnames = [
+        "conversation_id",
+        "title",
+        "num_messages",
+        "start_time",
+        "end_time",
+        "models_used",
+    ]
     with path.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()

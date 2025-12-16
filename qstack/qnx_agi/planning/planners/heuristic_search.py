@@ -1,4 +1,5 @@
 """Heuristic search planner using deterministic expansion."""
+
 from __future__ import annotations
 
 from typing import Any, Dict, List

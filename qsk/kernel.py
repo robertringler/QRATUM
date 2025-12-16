@@ -1,4 +1,5 @@
 """Deterministic sovereign kernel."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -30,11 +31,13 @@ class Kernel:
         results = []
         for node in ordered:
             self.trace.record(f"execute:{node['id']}")
-            if node['type'] == 'syscall':
-                result = self.syscalls.invoke(node['name'], *node.get('args', []), **node.get('kwargs', {}))
+            if node["type"] == "syscall":
+                result = self.syscalls.invoke(
+                    node["name"], *node.get("args", []), **node.get("kwargs", {})
+                )
                 results.append(result)
             else:
-                results.append(node.get('value'))
+                results.append(node.get("value"))
         return results
 
     def verify_trace(self) -> bool:

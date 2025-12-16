@@ -1,4 +1,5 @@
 """Simple deterministic hardware behavior simulation."""
+
 from __future__ import annotations
 
 from typing import Dict

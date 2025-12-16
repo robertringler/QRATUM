@@ -1,4 +1,5 @@
 """Deterministic key exchange using shared identifiers."""
+
 from __future__ import annotations
 
 import hashlib
@@ -13,5 +14,5 @@ class DeterministicKeyExchange:
 
     def derive_shared(self, a: QIdentity, b: QIdentity) -> str:
         ordered = sorted([a.key, b.key])
-        material = f"{ordered[0]}:{ordered[1]}".encode("utf-8")
+        material = f"{ordered[0]}:{ordered[1]}".encode()
         return hashlib.sha256(material).hexdigest()

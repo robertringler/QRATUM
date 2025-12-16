@@ -1,4 +1,5 @@
 """Logical block device simulation."""
+
 from __future__ import annotations
 
 from typing import Dict
@@ -7,7 +8,7 @@ from typing import Dict
 class BlockDevice:
     def __init__(self, blocks: int = 8, block_size: int = 512) -> None:
         self.block_size = block_size
-        self.data: Dict[int, bytes] = {i: b"\x00" * block_size for i in range(blocks)}
+        self.data: Dict[int, bytes] = dict.fromkeys(range(blocks), b"\x00" * block_size)
 
     def write(self, index: int, payload: bytes) -> None:
         if len(payload) != self.block_size:

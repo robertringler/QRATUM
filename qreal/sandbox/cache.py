@@ -1,4 +1,5 @@
 """Deterministic in-memory cache for feed sandboxing."""
+
 from __future__ import annotations
 
 from typing import Dict, Tuple

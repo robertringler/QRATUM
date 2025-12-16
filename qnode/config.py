@@ -1,8 +1,9 @@
 """Node configuration primitives."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 
 @dataclass(frozen=True)
@@ -17,7 +18,7 @@ class NodeConfig:
     annotations: Dict[str, str] = field(default_factory=dict)
 
     @staticmethod
-    def from_dict(payload: Dict[str, object]) -> "NodeConfig":
+    def from_dict(payload: Dict[str, object]) -> NodeConfig:
         return NodeConfig(
             node_id=str(payload.get("node_id", "qnode")),
             identity_ref=str(payload.get("identity_ref", "anonymous")),

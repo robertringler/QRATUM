@@ -13,11 +13,24 @@ from .normalize import build_ledger, summarize_models, write_csv, write_jsonl
 def build_parser() -> argparse.ArgumentParser:
     """Create the argument parser used by the CLI."""
 
-    parser = argparse.ArgumentParser(description="Normalize a ChatGPT export into JSONL/CSV outputs.")
-    parser.add_argument("--export-path", type=Path, required=True, help="Path to the export directory or .zip file")
-    parser.add_argument("--out-ledger", type=Path, required=True, help="Destination JSONL ledger path")
-    parser.add_argument("--out-summary", type=Path, required=True, help="Destination CSV summary path")
-    parser.add_argument("--top-models", type=int, default=5, help="Number of models to display in the summary output")
+    parser = argparse.ArgumentParser(
+        description="Normalize a ChatGPT export into JSONL/CSV outputs."
+    )
+    parser.add_argument(
+        "--export-path", type=Path, required=True, help="Path to the export directory or .zip file"
+    )
+    parser.add_argument(
+        "--out-ledger", type=Path, required=True, help="Destination JSONL ledger path"
+    )
+    parser.add_argument(
+        "--out-summary", type=Path, required=True, help="Destination CSV summary path"
+    )
+    parser.add_argument(
+        "--top-models",
+        type=int,
+        default=5,
+        help="Number of models to display in the summary output",
+    )
     return parser
 
 

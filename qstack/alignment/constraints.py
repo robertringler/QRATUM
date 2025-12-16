@@ -1,4 +1,5 @@
 """Low-level alignment constraints for Q-Stack subsystems."""
+
 from __future__ import annotations
 
 from typing import List, Tuple

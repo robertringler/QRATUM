@@ -1,4 +1,5 @@
 """Deterministic replay buffer for runtime traces."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

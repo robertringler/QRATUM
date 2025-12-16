@@ -1,4 +1,5 @@
 """SystemSession binds configuration, kernel, telemetry, and event bus."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -48,7 +49,7 @@ class SystemSession:
         scenario_name: str = "default",
         node_id: str = "node-0",
         timestamp_seed: str | int = "0",
-    ) -> "SystemSession":
+    ) -> SystemSession:
         resolved_config = config or QStackConfig()
         run_context = RunContext(
             scenario_name=scenario_name,
