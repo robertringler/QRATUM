@@ -145,7 +145,7 @@ class FullGenomeSequencingPipeline:
         self.instrument = PerformanceInstrument()
         
         # Initialize seed manager
-        SeedManager.set_seed(self.config.global_seed)
+        self.seed_manager = SeedManager(self.config.global_seed)
         logger.info(f"Global seed set to {self.config.global_seed}")
         
         # Create output directory
@@ -345,12 +345,12 @@ class FullGenomeSequencingPipeline:
                 )
         
         metrics = self.instrument.end_operation(op_id)
-        self.metrics.alignment_duration_ms = metrics["duration_ms"]
+        self.metrics.alignment_duration_ms = metrics.duration_ms
         
         results["summary"] = {
             "total_alignments": len(results["alignments"]),
-            "duration_ms": metrics["duration_ms"],
-            "memory_mb": metrics["memory_mb"],
+            "duration_ms": metrics.duration_ms,
+            "memory_mb": metrics.memory_mb,
         }
         
         logger.info(f"✓ Completed {len(results['alignments'])} alignments")
@@ -434,12 +434,12 @@ class FullGenomeSequencingPipeline:
                 )
         
         metrics = self.instrument.end_operation(op_id)
-        self.metrics.fusion_duration_ms = metrics["duration_ms"]
+        self.metrics.fusion_duration_ms = metrics.duration_ms
         
         results["summary"] = {
             "total_decompositions": len(results["decompositions"]),
-            "duration_ms": metrics["duration_ms"],
-            "memory_mb": metrics["memory_mb"],
+            "duration_ms": metrics.duration_ms,
+            "memory_mb": metrics.memory_mb,
         }
         
         logger.info(f"✓ Completed {len(results['decompositions'])} decompositions")
@@ -476,7 +476,7 @@ class FullGenomeSequencingPipeline:
                     logger.info(f"Computing TE: {source_var} → {target_var}")
                     
                     try:
-                        result = self.te_engine.estimate_transfer_entropy(
+                        result = self.te_engine.compute_transfer_entropy(
                             source=timeseries_data[source_var],
                             target=timeseries_data[target_var],
                             source_name=source_var,
@@ -507,12 +507,12 @@ class FullGenomeSequencingPipeline:
                         )
         
         metrics = self.instrument.end_operation(op_id)
-        self.metrics.transfer_entropy_duration_ms = metrics["duration_ms"]
+        self.metrics.transfer_entropy_duration_ms = metrics.duration_ms
         
         results["summary"] = {
             "total_te_pairs": len(results["transfer_entropies"]),
-            "duration_ms": metrics["duration_ms"],
-            "memory_mb": metrics["memory_mb"],
+            "duration_ms": metrics.duration_ms,
+            "memory_mb": metrics.memory_mb,
         }
         
         logger.info(f"✓ Completed {len(results['transfer_entropies'])} TE computations")
@@ -590,12 +590,12 @@ class FullGenomeSequencingPipeline:
             )
         
         metrics = self.instrument.end_operation(op_id)
-        self.metrics.inference_duration_ms = metrics["duration_ms"]
+        self.metrics.inference_duration_ms = metrics.duration_ms
         
         results["summary"] = {
             "total_variants": variant_graph["n_nodes"],
-            "duration_ms": metrics["duration_ms"],
-            "memory_mb": metrics["memory_mb"],
+            "duration_ms": metrics.duration_ms,
+            "memory_mb": metrics.memory_mb,
         }
         
         logger.info(f"✓ Completed inference for {variant_graph['n_nodes']} variants")
@@ -618,17 +618,24 @@ class FullGenomeSequencingPipeline:
         self.audit.export_to_json(json_path)
         logger.info(f"✓ Audit exported to {json_path}")
         
+        # Calculate totals from stats
+        total_entries = sum(v["count"] for v in stats.values()) if stats else 0
+        unresolved_critical = sum(
+            v["count"] - v["resolved_count"]
+            for v in stats.values()
+            if v["avg_severity"] >= 7
+        ) if stats else 0
+        
         summary = {
-            "total_entries": stats["total_entries"],
-            "unresolved_critical": stats["unresolved_critical"],
-            "by_type": stats["by_type"],
-            "by_severity": stats["by_severity"],
+            "total_entries": total_entries,
+            "unresolved_critical": unresolved_critical,
+            "by_type": {k: v["count"] for k, v in stats.items()},
             "json_export": json_path,
             "database": self.config.audit_db_path,
         }
         
-        logger.info(f"Total audit entries: {stats['total_entries']}")
-        logger.info(f"Unresolved critical violations: {stats['unresolved_critical']}")
+        logger.info(f"Total audit entries: {total_entries}")
+        logger.info(f"Unresolved critical violations: {unresolved_critical}")
         
         return summary
 
@@ -757,7 +764,20 @@ class FullGenomeSequencingPipeline:
         # Calculate total metrics
         end_time = time.time()
         self.metrics.total_duration_ms = (end_time - start_time) * 1000
-        self.metrics.memory_peak_mb = self.instrument.get_current_memory()
+        
+        # Get peak memory from instrumentation history
+        if self.instrument.metrics_history:
+            self.metrics.memory_peak_mb = max(
+                m.memory_mb for m in self.instrument.metrics_history if m.memory_mb > 0
+            )
+        else:
+            # Fallback: get current memory
+            try:
+                import psutil
+                process = psutil.Process(os.getpid())
+                self.metrics.memory_peak_mb = process.memory_info().rss / 1024 / 1024
+            except ImportError:
+                self.metrics.memory_peak_mb = 0.0
         
         # Create deployment report
         deployment_report = {
