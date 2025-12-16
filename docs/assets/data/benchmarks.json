@@ -1,0 +1,143 @@
+{
+  "qubitScaling": {
+    "labels": [10, 15, 20, 25, 30, 35, 40],
+    "datasets": [
+      {
+        "label": "QuASIM (cuQuantum)",
+        "data": [0.05, 0.15, 0.45, 1.2, 3.5, 10.2, 30.5],
+        "borderColor": "#00ff88",
+        "backgroundColor": "rgba(0, 255, 136, 0.1)"
+      },
+      {
+        "label": "Cirq",
+        "data": [0.08, 0.25, 0.85, 2.8, 9.5, 32.1, 115.0],
+        "borderColor": "#00d4ff",
+        "backgroundColor": "rgba(0, 212, 255, 0.1)"
+      },
+      {
+        "label": "Qiskit",
+        "data": [0.12, 0.38, 1.15, 3.9, 13.2, 45.7, 158.0],
+        "borderColor": "#ff3366",
+        "backgroundColor": "rgba(255, 51, 102, 0.1)"
+      }
+    ],
+    "yAxisLabel": "Execution Time (seconds)",
+    "xAxisLabel": "Number of Qubits"
+  },
+  "gpuScaling": {
+    "labels": ["1 GPU", "2 GPUs", "4 GPUs", "8 GPUs"],
+    "datasets": [
+      {
+        "label": "Linear Scaling",
+        "data": [1.0, 2.0, 4.0, 8.0],
+        "borderColor": "#666",
+        "borderDash": [5, 5],
+        "fill": false
+      },
+      {
+        "label": "QuASIM Multi-GPU",
+        "data": [1.0, 1.95, 3.82, 7.45],
+        "borderColor": "#00ff88",
+        "backgroundColor": "rgba(0, 255, 136, 0.2)",
+        "fill": true
+      }
+    ],
+    "yAxisLabel": "Speedup Factor",
+    "xAxisLabel": "GPU Configuration"
+  },
+  "gpuUtilization": {
+    "labels": ["Compute", "Memory", "Interconnect", "Power"],
+    "values": [92, 87, 78, 85],
+    "colors": ["#00ff88", "#00d4ff", "#ffaa00", "#ff3366"]
+  },
+  "gateTimes": {
+    "labels": ["Single-Qubit", "CNOT", "Toffoli", "QFT-8", "Grover-20"],
+    "datasets": [
+      {
+        "label": "QuASIM (ns)",
+        "data": [12, 45, 180, 850, 2400],
+        "backgroundColor": "#00ff88"
+      },
+      {
+        "label": "Cirq (ns)",
+        "data": [25, 95, 380, 1850, 5200],
+        "backgroundColor": "#00d4ff"
+      },
+      {
+        "label": "Qiskit (ns)",
+        "data": [35, 120, 475, 2200, 6100],
+        "backgroundColor": "#ff3366"
+      }
+    ],
+    "yAxisLabel": "Gate Execution Time (nanoseconds)"
+  },
+  "frameworkComparison": {
+    "frameworks": [
+      {
+        "name": "QuASIM",
+        "maxQubits": 40,
+        "fidelity": 0.9995,
+        "throughput": 125000,
+        "gpuAccel": true,
+        "certCompliant": true
+      },
+      {
+        "name": "Cirq",
+        "maxQubits": 32,
+        "fidelity": 0.9985,
+        "throughput": 45000,
+        "gpuAccel": true,
+        "certCompliant": false
+      },
+      {
+        "name": "Qiskit",
+        "maxQubits": 30,
+        "fidelity": 0.9980,
+        "throughput": 35000,
+        "gpuAccel": false,
+        "certCompliant": false
+      },
+      {
+        "name": "ProjectQ",
+        "maxQubits": 28,
+        "fidelity": 0.9975,
+        "throughput": 28000,
+        "gpuAccel": false,
+        "certCompliant": false
+      },
+      {
+        "name": "Pennylane",
+        "maxQubits": 25,
+        "fidelity": 0.9970,
+        "throughput": 22000,
+        "gpuAccel": true,
+        "certCompliant": false
+      }
+    ]
+  },
+  "throughputLatency": {
+    "data": [
+      {"throughput": 15000, "latency": 12.5},
+      {"throughput": 35000, "latency": 8.2},
+      {"throughput": 65000, "latency": 5.8},
+      {"throughput": 95000, "latency": 3.9},
+      {"throughput": 125000, "latency": 2.4}
+    ],
+    "xAxisLabel": "Throughput (ops/sec)",
+    "yAxisLabel": "Latency (ms)"
+  },
+  "memoryRequirements": {
+    "qubits": [10, 15, 20, 25, 30, 35, 40],
+    "fp64": [0.000016, 0.000512, 0.016384, 0.524288, 16.777216, 536.870912, 17179.869184],
+    "fp32": [0.000008, 0.000256, 0.008192, 0.262144, 8.388608, 268.435456, 8589.934592],
+    "fp16": [0.000004, 0.000128, 0.004096, 0.131072, 4.194304, 134.217728, 4294.967296],
+    "unit": "GB"
+  },
+  "systemMetrics": {
+    "uptime": 99.95,
+    "meanTimeToFailure": 8760,
+    "recoveryTime": 45,
+    "errorRate": 0.0001,
+    "certificationLevel": "DO-178C Level A"
+  }
+}

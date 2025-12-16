@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="QuASIM - Production-grade quantum simulation platform for aerospace, defense, and enterprise applications">
+  <meta name="keywords" content="quantum simulation, GPU acceleration, aerospace certification, CMMC compliance">
+  <title>QuASIM - Quantum-Accelerated Simulation Platform</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/visualizations.css">
+</head>
+<body>
+  <!-- Skip to main content -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Classification Banner -->
+  <div class="classification-banner" role="banner">
+    UNCLASSIFIED // FOR PUBLIC RELEASE
+  </div>
+  
+  <!-- Navigation -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar-container">
+      <a href="index.html" class="navbar-brand">QuASIM</a>
+      <button class="navbar-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        ☰
+      </button>
+      <ul class="navbar-nav">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="architecture.html">Architecture</a></li>
+        <li><a href="performance.html">Performance</a></li>
+        <li><a href="compliance.html">Compliance</a></li>
+        <li><a href="whitepaper.html">Whitepaper</a></li>
+        <li><a href="api.html">API</a></li>
+        <li><a href="roadmap.html">Roadmap</a></li>
+      </ul>
+    </div>
+  </nav>
+  
+  <!-- Particle Background -->
+  <canvas id="particles-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;"></canvas>
+  
+  <!-- Hero Section -->
+  <main id="main-content">
+    <section class="hero">
+      <div class="hero-content">
+        <pre class="text-green" style="font-size: 0.7rem; line-height: 1.2; margin-bottom: 2rem;">
+ ██████╗ ██╗   ██╗ █████╗ ███████╗██╗███╗   ███╗
+██╔═══██╗██║   ██║██╔══██╗██╔════╝██║████╗ ████║
+██║   ██║██║   ██║███████║███████╗██║██╔████╔██║
+██║▄▄ ██║██║   ██║██╔══██║╚════██║██║██║╚██╔╝██║
+╚██████╔╝╚██████╔╝██║  ██║███████║██║██║ ╚═╝ ██║
+ ╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝╚═╝     ╚═╝
+        </pre>
+        <h1 class="hero-title glitch">
+          Quantum-Accelerated<br>Simulation & Modeling
+        </h1>
+        <p class="hero-subtitle">
+          Production-grade quantum simulation platform for aerospace, defense, and enterprise
+        </p>
+        <div class="hero-cta">
+          <a href="whitepaper.html" class="btn btn-primary">Read Whitepaper</a>
+          <a href="api.html" class="btn btn-secondary">View Documentation</a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Terminal Demo -->
+    <section class="section bg-dark">
+      <div class="container">
+        <h2 class="text-center text-green mb-8">Live Terminal Demo</h2>
+        <div class="terminal">
+          <div class="terminal-header">
+            <button class="terminal-button close"></button>
+            <button class="terminal-button minimize"></button>
+            <button class="terminal-button maximize"></button>
+            <span class="terminal-title">quasim-cli v2.4.0</span>
+          </div>
+          <div class="terminal-body" id="hero-terminal-body"></div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- KPI Cards -->
+    <section class="section">
+      <div class="container">
+        <div class="grid grid-4">
+          <div class="card">
+            <div class="card-body text-center">
+              <div class="text-5xl text-cyan mb-4" data-count="40" data-format="number">0</div>
+              <h3 class="text-lg">Max Qubits</h3>
+              <p class="text-sm">GPU-accelerated simulation</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body text-center">
+              <div class="text-5xl text-green mb-4" data-count="99.95" data-format="percentage">0</div>
+              <h3 class="text-lg">System Uptime</h3>
+              <p class="text-sm">Enterprise SLA guarantee</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body text-center">
+              <div class="text-5xl text-cyan mb-4" data-count="125000" data-format="number">0</div>
+              <h3 class="text-lg">Ops/Second</h3>
+              <p class="text-sm">Peak throughput performance</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body text-center">
+              <div class="text-5xl text-green mb-4" data-count="98.75" data-format="percentage">0</div>
+              <h3 class="text-lg">Compliance</h3>
+              <p class="text-sm">NIST 800-53 + CMMC L2</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Features -->
+    <section class="section bg-dark">
+      <div class="container">
+        <h2 class="text-center text-green mb-8">Core Capabilities</h2>
+        <div class="grid grid-3">
+          <div class="card card-interactive">
+            <div class="card-body">
+              <h3 class="text-green mb-4">🚀 GPU Acceleration</h3>
+              <p>NVIDIA cuQuantum integration with multi-GPU scaling. Achieve 7.45x speedup on 8 GPUs with FP8/FP16/FP32/FP64 precision modes.</p>
+              <div class="mt-4">
+                <span class="badge badge-success">cuQuantum</span>
+                <span class="badge badge-info">Multi-GPU</span>
+              </div>
+            </div>
+          </div>
+          <div class="card card-interactive">
+            <div class="card-body">
+              <h3 class="text-green mb-4">🛡️ Aerospace Certified</h3>
+              <p>DO-178C Level A compliance with deterministic reproducibility and MC/DC coverage. Ready for safety-critical aerospace applications.</p>
+              <div class="mt-4">
+                <span class="badge badge-success">DO-178C</span>
+                <span class="badge badge-success">FAA/EASA</span>
+              </div>
+            </div>
+          </div>
+          <div class="card card-interactive">
+            <div class="card-body">
+              <h3 class="text-green mb-4">🔐 Defense Grade</h3>
+              <p>CMMC 2.0 Level 2 certified with NIST 800-53 HIGH baseline. AES-256, TLS 1.3, and Intel SGX encryption layers.</p>
+              <div class="mt-4">
+                <span class="badge badge-success">CMMC L2</span>
+                <span class="badge badge-success">NIST 800-53</span>
+              </div>
+            </div>
+          </div>
+          <div class="card card-interactive">
+            <div class="card-body">
+              <h3 class="text-green mb-4">📊 Tensor Networks</h3>
+              <p>Advanced tensor contraction with adaptive error budgets. 10x compression improvement for large-scale quantum circuits.</p>
+              <div class="mt-4">
+                <span class="badge badge-info">Adaptive</span>
+                <span class="badge badge-info">Scalable</span>
+              </div>
+            </div>
+          </div>
+          <div class="card card-interactive">
+            <div class="card-body">
+              <h3 class="text-green mb-4">☸️ Kubernetes Native</h3>
+              <p>Multi-cloud orchestration on EKS, GKE, and AKS. ArgoCD GitOps with Prometheus/Grafana observability stack.</p>
+              <div class="mt-4">
+                <span class="badge badge-info">K8s</span>
+                <span class="badge badge-info">Multi-Cloud</span>
+              </div>
+            </div>
+          </div>
+          <div class="card card-interactive">
+            <div class="card-body">
+              <h3 class="text-green mb-4">🔄 Deterministic</h3>
+              <p>Seed replay with &lt;1μs drift tolerance. Complete audit trail for regulatory compliance and reproducibility.</p>
+              <div class="mt-4">
+                <span class="badge badge-success">Reproducible</span>
+                <span class="badge badge-success">Auditable</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Architecture Preview -->
+    <section class="section">
+      <div class="container">
+        <h2 class="text-center text-green mb-8">System Architecture</h2>
+        <div class="architecture-diagram">
+          <div class="architecture-layer">
+            <h3 class="architecture-layer-title">Application Layer</h3>
+            <div class="architecture-layer-components">
+              <span class="architecture-component">Python SDK</span>
+              <span class="architecture-component">C++ API</span>
+              <span class="architecture-component">REST API</span>
+              <span class="architecture-component">CLI Tools</span>
+            </div>
+          </div>
+          <div class="architecture-layer">
+            <h3 class="architecture-layer-title">Quantum Runtime</h3>
+            <div class="architecture-layer-components">
+              <span class="architecture-component">Circuit Compiler</span>
+              <span class="architecture-component">State Vector Engine</span>
+              <span class="architecture-component">Tensor Network</span>
+              <span class="architecture-component">Error Mitigation</span>
+            </div>
+          </div>
+          <div class="architecture-layer">
+            <h3 class="architecture-layer-title">Acceleration Layer</h3>
+            <div class="architecture-layer-components">
+              <span class="architecture-component">cuQuantum</span>
+              <span class="architecture-component">Multi-GPU</span>
+              <span class="architecture-component">CUDA Kernels</span>
+              <span class="architecture-component">Memory Pool</span>
+            </div>
+          </div>
+          <div class="architecture-layer">
+            <h3 class="architecture-layer-title">Infrastructure</h3>
+            <div class="architecture-layer-components">
+              <span class="architecture-component">Kubernetes</span>
+              <span class="architecture-component">ArgoCD</span>
+              <span class="architecture-component">Prometheus</span>
+              <span class="architecture-component">Vault</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-8">
+          <a href="architecture.html" class="btn btn-primary">View Full Architecture</a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Code Example -->
+    <section class="section bg-dark">
+      <div class="container-narrow">
+        <h2 class="text-center text-green mb-8">Quick Start Example</h2>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-block-lang">Python</span>
+            <button class="code-block-copy">Copy</button>
+          </div>
+          <pre><code class="language-python">from quasim import QuantumSimulator
+from quasim.circuits import QuantumCircuit
+
+# Initialize 32-qubit simulation on 4 GPUs
+sim = QuantumSimulator(
+    qubits=32,
+    backend='cuQuantum',
+    gpus=[0, 1, 2, 3],
+    precision='fp32'
+)
+
+# Build quantum circuit
+circuit = QuantumCircuit(32)
+circuit.h(0)  # Hadamard gate on qubit 0
+for i in range(31):
+    circuit.cx(i, i+1)  # CNOT cascade
+
+# Execute and measure
+result = sim.run(circuit, shots=1024)
+print(f"Fidelity: {result.fidelity:.4f}")
+print(f"Execution time: {result.time_ms:.2f}ms")</code></pre>
+        </div>
+      </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="section">
+      <div class="container text-center">
+        <h2 class="text-5xl text-green mb-6">Ready to Get Started?</h2>
+        <p class="text-xl text-muted mb-8">
+          Deploy QuASIM on your infrastructure or contact us for enterprise support
+        </p>
+        <div class="flex justify-center gap-4">
+          <a href="https://github.com/robertringler/QRATUM" class="btn btn-primary btn-lg">View on GitHub</a>
+          <a href="api.html" class="btn btn-outline btn-lg">API Documentation</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h4>QuASIM</h4>
+          <p class="text-muted">Production-grade quantum simulation platform for regulated industries.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="whitepaper.html">Whitepaper</a></li>
+            <li><a href="api.html">Documentation</a></li>
+            <li><a href="roadmap.html">Roadmap</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Compliance</h4>
+          <ul class="footer-links">
+            <li><a href="compliance.html">DO-178C Level A</a></li>
+            <li><a href="compliance.html">CMMC 2.0 L2</a></li>
+            <li><a href="compliance.html">NIST 800-53</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/robertringler/QRATUM">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 QuASIM Project. Licensed under Apache 2.0.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Scripts -->
+  <script src="js/particles.js"></script>
+  <script src="js/terminal.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
