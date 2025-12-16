@@ -1,4 +1,4 @@
-"""QuASIM Quantum Computing Module.
+"""QRATUM Quantum Computing Module.
 
 This module provides genuine quantum computing capabilities using Qiskit and PennyLane.
 It implements validated quantum algorithms for materials science applications.

@@ -1,4 +1,4 @@
-# QuASIM - Quantum-Classical Hybrid Materials Simulation Framework
+# QRATUM - Quantum-Classical Hybrid Materials Simulation Framework
 
 ### Rigorous NISQ-Era Quantum Computing with Classical Validation
 High-Assurance • Reproducible • Scientifically Validated • Materials Science Focus
@@ -11,7 +11,7 @@ High-Assurance • Reproducible • Scientifically Validated • Materials Scien
 
 ## ⚠️ IMPORTANT DISCLAIMER
 
-**QuASIM is a PROTOTYPE research platform for NISQ-era quantum computing (December 2025).**
+**QRATUM is a PROTOTYPE research platform for NISQ-era quantum computing (December 2025).**
 
 This project implements **genuine quantum algorithms** using Qiskit, but with critical limitations:
 - **Small systems only**: H₂ molecules (~2 qubits), small graphs (~10 nodes)
@@ -72,7 +72,7 @@ See [QUANTUM_CAPABILITY_AUDIT.md](QUANTUM_CAPABILITY_AUDIT.md) for detailed anal
 
 ## Architecture
 
-QuASIM follows a hybrid quantum-classical architecture:
+QRATUM follows a hybrid quantum-classical architecture:
 
 ```
 quasim/
@@ -116,7 +116,7 @@ tests/
 - Classical simulation is often faster for small problems
 - Quantum advantage exists only for specific problems at specific scales
 
-**Current QuASIM quantum capabilities are for**:
+**Current QRATUM quantum capabilities are for**:
 - Research and algorithm development
 - Educational demonstrations
 - Validating quantum algorithm implementations
@@ -319,7 +319,7 @@ print(f"Ground state energy: {result.energy:.4f}")
 
 ### Why Classical is Still Faster (2025)
 
-QuASIM quantum algorithms run on **classical simulators** that:
+QRATUM quantum algorithms run on **classical simulators** that:
 - Scale exponentially with qubit count (2^n states)
 - Are practical only up to ~30 qubits on modern hardware
 - Take seconds to minutes for problems solvable classically in milliseconds
@@ -329,7 +329,7 @@ QuASIM quantum algorithms run on **classical simulators** that:
 - Suffers from noise (requires error mitigation)
 - Currently offers no speedup for problems QuASIM can handle
 
-**Quantum advantage** exists theoretically but is not demonstrated in QuASIM because:
+**Quantum advantage** exists theoretically but is not demonstrated in QRATUM because:
 - Problem sizes are too small (limited by NISQ noise)
 - Classical algorithms are highly optimized
 - Quantum error correction not yet available
@@ -372,7 +372,7 @@ QuASIM quantum algorithms run on **classical simulators** that:
 
 ## Scientific Integrity Statement
 
-QuASIM is committed to **rigorous scientific transparency**:
+QRATUM is committed to **rigorous scientific transparency**:
 
 1. **No false quantum claims**: All quantum capabilities are clearly documented with limitations
 2. **Classical validation**: Every quantum result is compared to classical methods
@@ -404,13 +404,13 @@ If you need production-ready quantum computing tools:
 - **VASP**: DFT for materials science
 - **LAMMPS**: Molecular dynamics
 
-### When to use QuASIM
+### When to use QRATUM
 - Learning quantum algorithms (VQE, QAOA)
 - Prototyping hybrid quantum-classical workflows
 - Educational demonstrations
 - Research on NISQ-era algorithm development
 
-### When NOT to use QuASIM
+### When NOT to use QRATUM
 - Production materials optimization (use classical DFT)
 - Large-scale simulations (use HPC + VASP/Gaussian)
 - Industrial deployment (not ready for production)
@@ -437,12 +437,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## Citation
 
-If you use QuASIM in research, please cite:
+If you use QRATUM in research, please cite:
 
 ```bibtex
-@software{quasim2025,
-  title = {QuASIM: Quantum-Classical Hybrid Materials Simulation Framework},
-  author = {QuASIM Development Team},
+@software{qratum2025,
+  title = {QRATUM: Quantum-Classical Hybrid Materials Simulation Framework},
+  author = {QRATUM Development Team},
   year = {2025},
   url = {https://github.com/robertringler/QRATUM},
   note = {NISQ-era quantum computing research platform}

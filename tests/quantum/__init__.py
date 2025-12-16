@@ -1,1 +1,1 @@
-"""Tests for QuASIM quantum computing module."""
+"""Tests for QRATUM quantum computing module."""

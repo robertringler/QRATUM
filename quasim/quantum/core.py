@@ -1,4 +1,4 @@
-"""Core quantum computing infrastructure for QuASIM.
+"""Core quantum computing infrastructure for QRATUM.
 
 This module provides backend setup, configuration, and common utilities
 for quantum circuit simulation and execution.

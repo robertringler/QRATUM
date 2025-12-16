@@ -28,7 +28,7 @@ from quasim.quantum.qaoa_optimization import QAOA
 def main():
     """Run QAOA for MaxCut."""
     print("="*60)
-    print("QuASIM - QAOA for MaxCut")
+    print("QRATUM - QAOA for MaxCut")
     print("="*60)
     print()
     
