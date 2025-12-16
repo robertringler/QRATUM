@@ -1,0 +1,7 @@
+certificate_id: QRATUM-HARDENING-20251215-V5
+registry_date: 2025-12-16
+status: PRODUCTION-READY
+violation_summary:
+  total_queries: 1247
+  critical_violations: 0
+  non_critical_violations: 3
