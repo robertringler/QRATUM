@@ -29,10 +29,10 @@ class TestDockerfileCompliance:
         assert "useradd" in dockerfile_content, "Non-root user must be created"
         assert "-u 1000" in dockerfile_content, "User must have UID 1000"
         assert "appuser" in dockerfile_content, "User must be named 'appuser'"
-        
+
         # Verify USER directive switches to non-root
         assert "USER appuser" in dockerfile_content, "Must switch to non-root user"
-        
+
     def test_nist_ac6_workspace_ownership(self, dockerfile_content):
         """Test AC-6: workspace ownership transfer to non-root user."""
         # Verify ownership is transferred to appuser
@@ -45,7 +45,7 @@ class TestDockerfileCompliance:
         # Verify pybind11 is pinned
         assert "pybind11==" in dockerfile_content, "pybind11 must be pinned"
         assert "2.11.1" in dockerfile_content, "pybind11 must be pinned to 2.11.1"
-        
+
         # Verify numpy is pinned
         assert "numpy==" in dockerfile_content, "numpy must be pinned"
         assert "1.26.4" in dockerfile_content, "numpy must be pinned to 1.26.4"
@@ -56,20 +56,48 @@ class TestDockerfileCompliance:
         assert "rm -rf /var/lib/apt/lists/*" in dockerfile_content, (
             "apt cache must be cleaned up"
         )
-        
+
         # Verify cleanup is in same RUN command as apt-get
-        lines = dockerfile_content.split("\n")
-        apt_run_found = False
-        cleanup_found = False
-        
-        for line in lines:
-            if "apt-get update" in line and "apt-get install" in line:
-                apt_run_found = True
-            if apt_run_found and "rm -rf /var/lib/apt/lists/*" in line:
-                cleanup_found = True
+        # Split on RUN commands to check each separately
+        run_commands = []
+        in_run = False
+        current_run = []
+
+        for line in dockerfile_content.split("\n"):
+            stripped = line.strip()
+            if stripped.startswith("RUN"):
+                if current_run and in_run:
+                    run_commands.append(" ".join(current_run))
+                in_run = True
+                current_run = [stripped]
+            elif in_run:
+                if stripped.endswith("\\"):
+                    current_run.append(stripped)
+                elif stripped:
+                    current_run.append(stripped)
+                    run_commands.append(" ".join(current_run))
+                    in_run = False
+                    current_run = []
+                elif not stripped and current_run:
+                    run_commands.append(" ".join(current_run))
+                    in_run = False
+                    current_run = []
+
+        if current_run:
+            run_commands.append(" ".join(current_run))
+
+        # Find the RUN command with apt-get and verify it has cleanup
+        apt_run_with_cleanup = False
+        for run_cmd in run_commands:
+            if (
+                "apt-get update" in run_cmd
+                and "apt-get install" in run_cmd
+                and "rm -rf /var/lib/apt/lists/*" in run_cmd
+            ):
+                apt_run_with_cleanup = True
                 break
-        
-        assert cleanup_found, "apt cleanup must be in same RUN command as apt-get"
+
+        assert apt_run_with_cleanup, "apt cleanup must be in same RUN command as apt-get"
 
     def test_compliance_comments_present(self, dockerfile_content):
         """Test that compliance references are documented."""
@@ -82,18 +110,47 @@ class TestDockerfileCompliance:
     def test_build_order_preserved(self, dockerfile_content):
         """Test that build order is logical and correct."""
         lines = [line.strip() for line in dockerfile_content.split("\n") if line.strip()]
-        
+
         # Extract key commands in order (only actual Dockerfile commands, not comments)
-        from_idx = next(i for i, line in enumerate(lines) if line.startswith("FROM"))
-        user_create_idx = next(i for i, line in enumerate(lines) if line.startswith("RUN") and "useradd" in line)
-        workdir_idx = next(i for i, line in enumerate(lines) if line.startswith("WORKDIR"))
-        copy_idx = next(i for i, line in enumerate(lines) if line.startswith("COPY"))
-        pip_idx = next(i for i, line in enumerate(lines) if line.startswith("RUN") and "pip3 install" in line)
-        cmake_idx = next(i for i, line in enumerate(lines) if line.startswith("RUN") and "cmake -S" in line)
-        chown_idx = next(i for i, line in enumerate(lines) if line.startswith("RUN") and "chown" in line)
-        user_switch_idx = next(i for i, line in enumerate(lines) if line.startswith("USER"))
-        cmd_idx = next(i for i, line in enumerate(lines) if line.startswith("CMD"))
-        
+        def find_command_index(predicate, error_msg):
+            """Find index of command matching predicate."""
+            try:
+                return next(i for i, line in enumerate(lines) if predicate(line))
+            except StopIteration:
+                pytest.fail(error_msg)
+
+        from_idx = find_command_index(
+            lambda line: line.startswith("FROM"), "FROM command not found"
+        )
+        user_create_idx = find_command_index(
+            lambda line: line.startswith("RUN") and "useradd" in line,
+            "RUN useradd command not found"
+        )
+        workdir_idx = find_command_index(
+            lambda line: line.startswith("WORKDIR"), "WORKDIR command not found"
+        )
+        copy_idx = find_command_index(
+            lambda line: line.startswith("COPY"), "COPY command not found"
+        )
+        pip_idx = find_command_index(
+            lambda line: line.startswith("RUN") and "pip3 install" in line,
+            "RUN pip3 install command not found"
+        )
+        cmake_idx = find_command_index(
+            lambda line: line.startswith("RUN") and "cmake -S" in line,
+            "RUN cmake command not found"
+        )
+        chown_idx = find_command_index(
+            lambda line: line.startswith("RUN") and "chown" in line,
+            "RUN chown command not found"
+        )
+        user_switch_idx = find_command_index(
+            lambda line: line.startswith("USER"), "USER command not found"
+        )
+        cmd_idx = find_command_index(
+            lambda line: line.startswith("CMD"), "CMD command not found"
+        )
+
         # Verify order
         assert from_idx < user_create_idx, "User must be created after FROM"
         assert user_create_idx < workdir_idx, "User must be created before WORKDIR"
@@ -110,7 +167,7 @@ class TestDockerfileCompliance:
         assert "password" not in dockerfile_content.lower(), "No hardcoded passwords"
         assert "secret" not in dockerfile_content.lower(), "No hardcoded secrets"
         assert "token" not in dockerfile_content.lower(), "No hardcoded tokens"
-        
+
         # Ensure no dangerous commands
         assert "chmod 777" not in dockerfile_content, "No world-writable permissions"
         assert "chown -R root" not in dockerfile_content, "No root ownership after user switch"
