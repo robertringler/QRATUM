@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Contact Us | QRATUM - Quantum-Classical Simulation Platform</title>
+    <meta name="description" content="Contact QRATUM sales team for pricing, demos, and enterprise inquiries. Get started with quantum-classical simulation today.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="marketing.css">
+    <link rel="stylesheet" href="pages.css">
+</head>
+<body class="marketing-page">
+    <!-- Skip to content -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Marketing Header -->
+    <header class="marketing-header" role="banner">
+        <div class="marketing-header__inner">
+            <a href="../landing.html" class="marketing-logo" aria-label="QRATUM Home">
+                <span class="marketing-logo__icon">Q</span>
+                <span class="marketing-logo__text">QRATUM</span>
+            </a>
+            
+            <nav class="marketing-nav" role="navigation" aria-label="Main navigation">
+                <ul class="marketing-nav__list">
+                    <li class="marketing-nav__item">
+                        <a href="platform.html" class="marketing-nav__link">Platform</a>
+                    </li>
+                    <li class="marketing-nav__item">
+                        <a href="pricing.html" class="marketing-nav__link">Pricing</a>
+                    </li>
+                    <li class="marketing-nav__item">
+                        <a href="security.html" class="marketing-nav__link">Security</a>
+                    </li>
+                </ul>
+                <div class="marketing-nav__cta">
+                    <a href="../index.html" class="btn btn-secondary">Open Dashboard</a>
+                </div>
+            </nav>
+            
+            <button class="marketing-mobile-btn" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Mobile Navigation -->
+    <div class="marketing-mobile-nav" id="mobile-nav" role="dialog" aria-modal="true">
+        <button class="marketing-mobile-nav__close" aria-label="Close menu">&times;</button>
+        <div class="marketing-mobile-nav__inner">
+            <ul class="marketing-mobile-nav__list">
+                <li><a href="platform.html">Platform</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="security.html">Security</a></li>
+            </ul>
+            <div class="marketing-mobile-nav__cta">
+                <a href="../index.html" class="btn btn-secondary">Open Dashboard</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+        
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="marketing-container">
+                <div class="page-header__content">
+                    <h1 class="page-header__title">Contact Us</h1>
+                    <p class="page-header__description">
+                        Get in touch with our team for sales inquiries, technical questions, 
+                        or to learn more about QRATUM.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Form Section -->
+        <section class="form-section">
+            <div class="marketing-container">
+                <div class="two-column">
+                    <div class="form-container">
+                        <form id="contact-form" data-form="contact" aria-label="Contact form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="first-name" class="form-label">
+                                        First Name <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="first-name" name="firstName" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="last-name" class="form-label">
+                                        Last Name <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="last-name" name="lastName" class="form-input" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">
+                                    Work Email <span class="required">*</span>
+                                </label>
+                                <input type="email" id="email" name="email" class="form-input" required placeholder="you@company.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="company" class="form-label">
+                                    Company
+                                </label>
+                                <input type="text" id="company" name="company" class="form-input">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject" class="form-label">
+                                    Subject <span class="required">*</span>
+                                </label>
+                                <select id="subject" name="subject" class="form-select" required>
+                                    <option value="">Select a topic...</option>
+                                    <option value="sales">Sales Inquiry</option>
+                                    <option value="pricing">Pricing Question</option>
+                                    <option value="demo">Request Demo</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="security">Security Question</option>
+                                    <option value="partnership">Partnership Opportunity</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message" class="form-label">
+                                    Message <span class="required">*</span>
+                                </label>
+                                <textarea id="message" name="message" class="form-textarea" required placeholder="How can we help you?"></textarea>
+                            </div>
+                            
+                            <div class="form-submit">
+                                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                                    Send Message
+                                </button>
+                            </div>
+                            
+                            <p style="margin-top: var(--spacing-md); font-size: 0.875rem; color: var(--text-muted); text-align: center;">
+                                By submitting this form, you agree to our 
+                                <a href="privacy.html" style="color: var(--primary);">Privacy Policy</a>.
+                            </p>
+                        </form>
+                    </div>
+                    
+                    <div>
+                        <h2 style="font-size: 1.75rem; margin-bottom: var(--spacing-md);">Get in Touch</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg); line-height: 1.7;">
+                            Our team is here to help you get started with QRATUM. 
+                            Whether you have questions about pricing, need a demo, or want to discuss 
+                            your specific requirements, we're ready to assist.
+                        </p>
+                        
+                        <div style="margin-bottom: var(--spacing-xl);">
+                            <h4 style="margin-bottom: var(--spacing-sm);">Sales Inquiries</h4>
+                            <p style="color: var(--text-secondary); margin: 0;">
+                                <a href="mailto:sales@qratum.io" style="color: var(--primary);">sales@qratum.io</a>
+                            </p>
+                        </div>
+                        
+                        <div style="margin-bottom: var(--spacing-xl);">
+                            <h4 style="margin-bottom: var(--spacing-sm);">Security Questions</h4>
+                            <p style="color: var(--text-secondary); margin: 0;">
+                                <a href="mailto:security@qratum.io" style="color: var(--primary);">security@qratum.io</a>
+                            </p>
+                        </div>
+                        
+                        <div style="margin-bottom: var(--spacing-xl);">
+                            <h4 style="margin-bottom: var(--spacing-sm);">Technical Support</h4>
+                            <p style="color: var(--text-secondary); margin: 0;">
+                                <a href="https://github.com/robertringler/QRATUM/issues" target="_blank" rel="noopener" style="color: var(--primary);">GitHub Issues</a>
+                            </p>
+                        </div>
+                        
+                        <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--spacing-lg);">
+                            <h4 style="margin-bottom: var(--spacing-sm);">Response Times</h4>
+                            <ul class="icon-list" style="margin: 0;">
+                                <li>
+                                    <span class="check">✓</span>
+                                    <span>Sales: Within 24 hours</span>
+                                </li>
+                                <li>
+                                    <span class="check">✓</span>
+                                    <span>Security: Within 4 hours</span>
+                                </li>
+                                <li>
+                                    <span class="check">✓</span>
+                                    <span>Technical: Community response</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="marketing-footer" role="contentinfo">
+        <div class="marketing-container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <p class="footer-copyright">
+                    &copy; 2025 QRATUM. All rights reserved. Apache 2.0 License.
+                </p>
+                <div class="footer-legal">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="marketing.js"></script>
+    <script>
+        // Pre-fill subject from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const subject = urlParams.get('subject');
+        const plan = urlParams.get('plan');
+        
+        if (subject) {
+            const subjectSelect = document.getElementById('subject');
+            if (subjectSelect) {
+                subjectSelect.value = subject;
+            }
+        }
+        
+        if (plan) {
+            const subjectSelect = document.getElementById('subject');
+            const messageField = document.getElementById('message');
+            if (subjectSelect) {
+                subjectSelect.value = 'pricing';
+            }
+            if (messageField) {
+                messageField.value = `I'm interested in the ${plan.charAt(0).toUpperCase() + plan.slice(1)} plan. Please send me more information.`;
+            }
+        }
+    </script>
+</body>
+</html>

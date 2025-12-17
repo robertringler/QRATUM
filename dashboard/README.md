@@ -99,17 +99,36 @@ The dashboard expects a backend API at:
 
 ```
 dashboard/
-├── index.html          # Main HTML file
+├── index.html          # Main dashboard application
+├── landing.html        # Marketing landing page
 ├── README.md           # This file
-└── assets/
-    ├── css/
-    │   └── dashboard.css    # Styles
-    └── js/
-        ├── api.js           # API integration layer
-        ├── websocket.js     # WebSocket handler
-        ├── visualization.js # 3D visualization
-        └── dashboard.js     # Main application
+├── assets/
+│   ├── css/
+│   │   └── dashboard.css    # Dashboard styles
+│   └── js/
+│       ├── api.js           # API integration layer
+│       ├── websocket.js     # WebSocket handler
+│       ├── visualization.js # 3D visualization
+│       └── dashboard.js     # Main application
+└── marketing/
+    ├── marketing.css        # Marketing page styles
+    ├── marketing.js         # Marketing page scripts
+    ├── pages.css            # Additional page styles
+    ├── pricing.html         # Pricing page
+    ├── security.html        # Security/Trust Center
+    └── demo.html            # Demo request form
 ```
+
+## Marketing Pages
+
+The dashboard includes integrated marketing pages accessible via `landing.html`:
+
+- **Landing Page** (`landing.html`): Hero section, features, use cases, CTAs
+- **Pricing** (`marketing/pricing.html`): Tiered pricing plans with feature comparison
+- **Security** (`marketing/security.html`): Compliance certifications and security architecture
+- **Demo Request** (`marketing/demo.html`): Lead capture form for sales demos
+
+Marketing pages share the dashboard's design system and link directly to the dashboard application.
 
 ## Accessibility
 
