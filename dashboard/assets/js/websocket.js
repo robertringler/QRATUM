@@ -254,6 +254,7 @@ const QratumWebSocket = (function() {
      */
     function disconnect() {
         stopHeartbeat();
+        stopDemoSimulation();
         if (socket) {
             socket.close();
             socket = null;
@@ -265,7 +266,7 @@ const QratumWebSocket = (function() {
     // Demo Mode - Simulated Real-Time Updates
     // ========================================
 
-    let demoInterval = null;
+    let demoIntervals = [];
 
     /**
      * Enable demo mode with simulated data
@@ -298,10 +299,10 @@ const QratumWebSocket = (function() {
      * Start demo data simulation
      */
     function startDemoSimulation() {
-        if (demoInterval) return;
+        if (demoIntervals.length > 0) return;
 
         // Simulate GPU metrics updates
-        setInterval(() => {
+        demoIntervals.push(setInterval(() => {
             const gpuData = {
                 utilization: Math.floor(Math.random() * 40) + 50,
                 vramUsed: Math.floor(Math.random() * 30) + 40,
@@ -310,10 +311,10 @@ const QratumWebSocket = (function() {
                 powerDraw: Math.floor(Math.random() * 100) + 200
             };
             handlers['metrics:gpu'].forEach(handler => handler(gpuData));
-        }, 2000);
+        }, 2000));
 
         // Simulate job progress updates
-        setInterval(() => {
+        demoIntervals.push(setInterval(() => {
             const jobUpdate = {
                 jobId: `job_demo_${Math.floor(Math.random() * 5)}`,
                 progress: Math.floor(Math.random() * 100),
@@ -324,10 +325,10 @@ const QratumWebSocket = (function() {
                 }
             };
             handlers['job:update'].forEach(handler => handler(jobUpdate));
-        }, 3000);
+        }, 3000));
 
         // Simulate system metrics
-        setInterval(() => {
+        demoIntervals.push(setInterval(() => {
             const systemData = {
                 cpuUsage: Math.floor(Math.random() * 30) + 20,
                 memoryUsage: Math.floor(Math.random() * 40) + 30,
@@ -335,10 +336,10 @@ const QratumWebSocket = (function() {
                 networkOut: Math.floor(Math.random() * 50)
             };
             handlers['metrics:system'].forEach(handler => handler(systemData));
-        }, 5000);
+        }, 5000));
 
         // Simulate occasional job completion
-        setInterval(() => {
+        demoIntervals.push(setInterval(() => {
             if (Math.random() > 0.7) {
                 const completedJob = {
                     jobId: `job_demo_${Math.floor(Math.random() * 5)}`,
@@ -352,10 +353,10 @@ const QratumWebSocket = (function() {
                 };
                 handlers['job:complete'].forEach(handler => handler(completedJob));
             }
-        }, 15000);
+        }, 15000));
 
         // Simulate occasional alerts
-        setInterval(() => {
+        demoIntervals.push(setInterval(() => {
             if (Math.random() > 0.8) {
                 const alerts = [
                     { type: 'warning', title: 'GPU memory usage high', time: new Date().toISOString() },
@@ -365,9 +366,15 @@ const QratumWebSocket = (function() {
                 const alert = alerts[Math.floor(Math.random() * alerts.length)];
                 handlers['alert:new'].forEach(handler => handler(alert));
             }
-        }, 20000);
+        }, 20000));
+    }
 
-        demoInterval = true;
+    /**
+     * Stop demo simulation
+     */
+    function stopDemoSimulation() {
+        demoIntervals.forEach(id => clearInterval(id));
+        demoIntervals = [];
     }
 
     /**

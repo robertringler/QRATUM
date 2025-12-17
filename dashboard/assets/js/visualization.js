@@ -88,12 +88,24 @@ const QratumVisualization = (function() {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
 
-        // Create controls
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.maxDistance = 100;
-        controls.minDistance = 5;
+        // Create controls (with fallback if OrbitControls not available)
+        if (typeof THREE.OrbitControls !== 'undefined') {
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxDistance = 100;
+            controls.minDistance = 5;
+        } else {
+            console.warn('[Viz] OrbitControls not available, using basic camera controls');
+            // Basic camera controls will be handled manually
+            controls = {
+                update: function() {},
+                reset: function() {
+                    camera.position.set(0, 15, 30);
+                    camera.lookAt(0, 0, 0);
+                }
+            };
+        }
 
         // Add lights
         const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
