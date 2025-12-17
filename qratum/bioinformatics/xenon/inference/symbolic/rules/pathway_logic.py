@@ -1,4 +1,5 @@
 """
+
 Pathway Logic Rule (NON-CRITICAL)
 
 Validates pathway dependencies and logic.
@@ -10,6 +11,7 @@ from typing import Dict, Optional
 
 def validate_pathway_logic(query: Dict, context: Optional[Dict] = None) -> Dict:
     """
+
     Validate pathway logic constraints.
 
     Checks:
@@ -24,6 +26,7 @@ def validate_pathway_logic(query: Dict, context: Optional[Dict] = None) -> Dict:
     Returns:
         Validation result
     """
+
     # If no pathway data, assume valid
     if context is None or "pathway" not in context:
         return {"valid": True, "message": "No pathway data to validate"}

@@ -35,6 +35,7 @@ class StreamingPipeline:
             dpi: Resolution in dots per inch
             max_fps: Maximum frames per second for streaming
         """
+
         self.figsize = figsize
         self.dpi = dpi
         self.max_fps = max_fps
@@ -61,6 +62,7 @@ class StreamingPipeline:
             camera: Camera settings
             colormap: Colormap name
         """
+
         self.is_streaming = True
         logger.info(f"Starting streaming at {self.max_fps} FPS")
 
@@ -96,6 +98,7 @@ class StreamingPipeline:
         Returns:
             Base64-encoded PNG image data
         """
+
         buf = io.BytesIO()
         self.backend.fig.savefig(buf, format="png", bbox_inches="tight")
         buf.seek(0)
@@ -109,6 +112,7 @@ class StreamingPipeline:
         Args:
             message: Message dictionary to send
         """
+
         if not self.websocket_connections:
             return
 
@@ -122,6 +126,7 @@ class StreamingPipeline:
         Args:
             websocket: WebSocket connection object
         """
+
         self.websocket_connections.add(websocket)
         logger.info(f"Client connected. Total clients: {len(self.websocket_connections)}")
 
@@ -131,11 +136,13 @@ class StreamingPipeline:
         Args:
             websocket: WebSocket connection object
         """
+
         self.websocket_connections.discard(websocket)
         logger.info(f"Client disconnected. Total clients: {len(self.websocket_connections)}")
 
     def stop_streaming(self) -> None:
         """Stop the streaming loop."""
+
         logger.info("Stopping streaming")
         self.is_streaming = False
 
@@ -152,15 +159,17 @@ class StreamingPipeline:
         Raises:
             ImportError: If websockets library is not available
         """
+
         try:
             import websockets
         except ImportError:
             raise ImportError(
-                "websockets is required for streaming. " "Install with: pip install websockets"
+                "websockets is required for streaming. Install with: pip install websockets"
             ) from None
 
         async def handle_connection(websocket, path):
             """Handle WebSocket connection."""
+
             self.add_connection(websocket)
             try:
                 await websocket.wait_closed()

@@ -27,6 +27,7 @@ from quasim_verify.models import CheckResult
 @pytest.fixture
 def temp_dir():
     """Create temporary directory for tests."""
+
     with tempfile.TemporaryDirectory() as tmpdir:
         yield Path(tmpdir)
 
@@ -34,6 +35,7 @@ def temp_dir():
 @pytest.fixture
 def base_config(temp_dir):
     """Create base configuration for tests."""
+
     return {
         "inputs": {
             "brief_paths": [],
@@ -57,6 +59,7 @@ class TestTelemetryRMSE:
 
     def test_rmse_calculation_passes(self, temp_dir, base_config):
         """Test RMSE check passes with good data."""
+
         # Create test CSV
         df = pd.DataFrame(
             {
@@ -87,6 +90,7 @@ class TestTelemetryRMSE:
 
     def test_rmse_calculation_fails(self, temp_dir, base_config):
         """Test RMSE check fails with poor data."""
+
         df = pd.DataFrame(
             {
                 "time_s": [0, 1, 2, 3, 4],
@@ -116,6 +120,7 @@ class TestCompression:
 
     def test_compression_passes(self, temp_dir, base_config):
         """Test compression check passes."""
+
         npz_file = temp_dir / "compression.npz"
         np.savez(npz_file, raw_flops=1e12, compressed_flops=5e10)
 
@@ -131,6 +136,7 @@ class TestCompression:
 
     def test_compression_fails(self, temp_dir, base_config):
         """Test compression check fails with low ratio."""
+
         npz_file = temp_dir / "compression.npz"
         np.savez(npz_file, raw_flops=1e12, compressed_flops=1e11)
 
@@ -149,6 +155,7 @@ class TestRLConvergence:
 
     def test_rl_convergence_passes(self, temp_dir, base_config):
         """Test RL convergence passes."""
+
         json_file = temp_dir / "rl.json"
         with open(json_file, "w") as f:
             json.dump({"final_convergence": 0.995}, f)
@@ -165,6 +172,7 @@ class TestRLConvergence:
 
     def test_rl_convergence_fails(self, temp_dir, base_config):
         """Test RL convergence fails."""
+
         json_file = temp_dir / "rl.json"
         with open(json_file, "w") as f:
             json.dump({"final_convergence": 0.990}, f)
@@ -183,6 +191,7 @@ class TestPhiQEVF:
 
     def test_phi_qevf_passes(self, temp_dir, base_config):
         """Test Φ_QEVF calculation passes."""
+
         yaml_file = temp_dir / "phi.yaml"
         data = {
             "base_value_per_eph": 0.0004,
@@ -210,6 +219,7 @@ class TestMonteCarloValuation:
 
     def test_monte_carlo_passes(self, temp_dir, base_config):
         """Test Monte Carlo valuation passes."""
+
         yaml_file = temp_dir / "mc.yaml"
         data = {
             "trials": 1000,
@@ -240,6 +250,7 @@ class TestComplianceArtifacts:
 
     def test_compliance_artifacts_pass(self, temp_dir, base_config):
         """Test compliance artifacts check passes."""
+
         # Create dummy files
         psac = temp_dir / "PSAC.pdf"
         sas = temp_dir / "SAS.pdf"
@@ -264,6 +275,7 @@ class TestComplianceArtifacts:
 
     def test_compliance_artifacts_fail(self, temp_dir, base_config):
         """Test compliance artifacts check fails."""
+
         config = base_config.copy()
         config["inputs"]["compliance"] = {
             "psac_id": "/nonexistent/PSAC.pdf",
@@ -283,6 +295,7 @@ class TestCMMCMap:
 
     def test_cmmc_map_passes(self, temp_dir, base_config):
         """Test CMMC map check passes."""
+
         yaml_file = temp_dir / "cmmc.yaml"
         data = {
             "practices": [
@@ -308,6 +321,7 @@ class TestLanguageLint:
 
     def test_language_lint_no_hits(self, temp_dir, base_config):
         """Test language lint with no banned phrases."""
+
         md_file = temp_dir / "doc.md"
         md_file.write_text("This is a clean document with no banned phrases.")
 
@@ -323,6 +337,7 @@ class TestLanguageLint:
 
     def test_language_lint_with_hits(self, temp_dir, base_config):
         """Test language lint finds banned phrases."""
+
         md_file = temp_dir / "doc.md"
         md_file.write_text("This document claims 53B in value.")
 
@@ -341,6 +356,7 @@ class TestAuditChain:
 
     def test_audit_chain_creation(self, temp_dir, base_config):
         """Test audit chain generation."""
+
         # Create test files
         file1 = temp_dir / "file1.txt"
         file2 = temp_dir / "file2.txt"
@@ -368,6 +384,7 @@ class TestBenchmarks:
 
     def test_benchmarks_pass(self, temp_dir, base_config):
         """Test benchmark validation passes."""
+
         bench_dir = temp_dir / "benchmarks"
         bench_dir.mkdir()
 
@@ -391,6 +408,7 @@ class TestIOUtilities:
 
     def test_sha256_file(self, temp_dir):
         """Test SHA256 file hashing."""
+
         test_file = temp_dir / "test.txt"
         test_file.write_text("test content")
 
@@ -402,6 +420,7 @@ class TestIOUtilities:
 
     def test_write_read_json(self, temp_dir):
         """Test JSON write and read."""
+
         data = {"key": "value", "number": 42}
         json_file = temp_dir / "test.json"
 
@@ -412,6 +431,7 @@ class TestIOUtilities:
 
     def test_load_yaml(self, temp_dir):
         """Test YAML loading."""
+
         yaml_file = temp_dir / "test.yaml"
         data = {"key": "value", "list": [1, 2, 3]}
 

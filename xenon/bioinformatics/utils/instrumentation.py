@@ -53,6 +53,7 @@ class PerformanceInstrument:
         Args:
             enable_gpu: Whether to monitor GPU metrics
         """
+
         self.enable_gpu = enable_gpu
         self.metrics_history: List[PerformanceMetrics] = []
 
@@ -76,6 +77,7 @@ class PerformanceInstrument:
         Returns:
             Operation ID for ending
         """
+
         metrics = PerformanceMetrics(
             operation=operation,
             timestamp=time.time(),
@@ -95,6 +97,7 @@ class PerformanceInstrument:
         Returns:
             Final metrics
         """
+
         if operation_id >= len(self.metrics_history):
             raise ValueError(f"Invalid operation ID: {operation_id}")
 
@@ -136,6 +139,7 @@ class PerformanceInstrument:
         Returns:
             Summary statistics
         """
+
         filtered = self.metrics_history
         if operation:
             filtered = [m for m in self.metrics_history if m.operation == operation]
@@ -165,6 +169,7 @@ class PerformanceInstrument:
         Args:
             output_path: Output file path
         """
+
         import json
 
         data = {

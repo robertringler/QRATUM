@@ -8,8 +8,6 @@ Combines multiple sources of prior information:
 
 from __future__ import annotations
 
-from typing import Dict
-
 import numpy as np
 
 from ..core.mechanism import BioMechanism, Transition
@@ -40,13 +38,14 @@ class MechanismPrior:
             conservation_weight: Weight for evolutionary conservation (0-1)
             literature_weight: Weight for literature evidence (0-1)
         """
+
         self.rate_constant_scale = rate_constant_scale
         self.conservation_weight = conservation_weight
         self.literature_weight = literature_weight
 
         # Literature database (mock for Phase 1)
         # In Phase 2+, this would query PubMed/bioRxiv APIs
-        self._literature_db: Dict[str, int] = {}
+        self._literature_db: dict[str, int] = {}
 
     def compute_prior(self, mechanism: BioMechanism) -> float:
         """Compute prior probability P(mechanism).
@@ -62,6 +61,7 @@ class MechanismPrior:
         Returns:
             Prior probability (0 to 1)
         """
+
         # Base prior from rate constants
         rate_prior = self._rate_constant_prior_product(mechanism)
 
@@ -100,6 +100,7 @@ class MechanismPrior:
         Returns:
             Prior probability (0 to 1)
         """
+
         rate = transition.rate_constant
 
         if rate <= 0:
@@ -129,6 +130,7 @@ class MechanismPrior:
         Returns:
             Combined rate constant prior
         """
+
         if not mechanism._transitions:
             return 0.5  # Neutral prior for mechanisms without transitions
 
@@ -157,6 +159,7 @@ class MechanismPrior:
         Returns:
             Conservation prior (0 to 1)
         """
+
         # Mock: assume moderate conservation
         # Real implementation would query protein databases
 
@@ -181,6 +184,7 @@ class MechanismPrior:
         Returns:
             Literature prior (0 to 1)
         """
+
         # Mock: check if proteins are in literature database
         n_citations = 0
 
@@ -206,6 +210,7 @@ class MechanismPrior:
             protein: Protein name
             citation_count: Number of relevant citations
         """
+
         self._literature_db[protein] = citation_count
 
     def initialize_mechanism_priors(
@@ -220,6 +225,7 @@ class MechanismPrior:
         Returns:
             Mechanisms with initialized posteriors
         """
+
         for mechanism in mechanisms:
             mechanism.posterior = self.compute_prior(mechanism)
 

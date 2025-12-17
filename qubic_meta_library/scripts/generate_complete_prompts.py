@@ -1,4 +1,5 @@
 """
+
 Generate complete 10,000-prompt library for all 20 domains.
 
 This script generates CSV files with realistic prompts, patentability scores,
@@ -211,6 +212,7 @@ DOMAINS = {
 
 def generate_prompt_description(domain_id: str, category: str, prompt_num: int) -> str:
     """Generate a realistic prompt description."""
+
     domain_name = DOMAINS[domain_id]["name"]
 
     descriptions = {
@@ -238,6 +240,7 @@ def generate_prompt_description(domain_id: str, category: str, prompt_num: int) 
 
 def generate_patentability_score(is_keystone: bool = False) -> float:
     """Generate realistic patentability score."""
+
     if is_keystone:
         return round(random.uniform(0.88, 0.97), 2)
     return round(random.uniform(0.70, 0.95), 2)
@@ -245,6 +248,7 @@ def generate_patentability_score(is_keystone: bool = False) -> float:
 
 def generate_commercial_potential(is_keystone: bool = False) -> float:
     """Generate realistic commercial potential score."""
+
     if is_keystone:
         return round(random.uniform(0.85, 0.96), 2)
     return round(random.uniform(0.68, 0.94), 2)
@@ -252,6 +256,7 @@ def generate_commercial_potential(is_keystone: bool = False) -> float:
 
 def generate_keystone_nodes(domain_id: str, is_keystone: bool = False) -> str:
     """Generate keystone technology nodes."""
+
     if not is_keystone:
         return ""
 
@@ -278,6 +283,7 @@ def generate_keystone_nodes(domain_id: str, is_keystone: bool = False) -> str:
 
 def generate_prompts_for_domain(domain_id: str, output_dir: Path):
     """Generate all prompts for a domain."""
+
     domain = DOMAINS[domain_id]
     start_id, end_id = domain["id_range"]
 
@@ -360,6 +366,7 @@ def generate_prompts_for_domain(domain_id: str, output_dir: Path):
 
 def main():
     """Generate all missing domain prompt files."""
+
     output_dir = Path(__file__).parent.parent / "data" / "prompts"
     output_dir.mkdir(parents=True, exist_ok=True)
 

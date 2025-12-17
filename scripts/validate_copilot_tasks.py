@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Validate GitHub Copilot task definitions.
 
 This script validates YAML structure and required fields for Copilot task files.
@@ -13,6 +14,7 @@ import yaml
 
 def validate_task_file(filepath: Path) -> tuple[bool, list[str]]:
     """
+
     Validate a single Copilot task YAML file.
 
     Args:
@@ -21,6 +23,7 @@ def validate_task_file(filepath: Path) -> tuple[bool, list[str]]:
     Returns:
         Tuple of (is_valid, list_of_errors)
     """
+
     errors = []
 
     try:
@@ -60,6 +63,7 @@ def validate_task_file(filepath: Path) -> tuple[bool, list[str]]:
 
 def main():
     """Main validation function."""
+
     repo_root = Path(__file__).parent.parent
     tasks_dir = repo_root / ".github" / "copilot-tasks"
 

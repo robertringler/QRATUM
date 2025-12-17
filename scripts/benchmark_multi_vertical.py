@@ -1,4 +1,5 @@
 """
+
 Multi-Vertical Benchmarking for QuNimbus
 Compares performance across AWS, GCP, Azure
 """
@@ -17,6 +18,7 @@ class MultiVerticalBenchmark:
 
     def benchmark_vertical(self, vertical: str) -> dict:
         """Benchmark a single vertical"""
+
         return {
             "vertical": vertical,
             "qunimbus": {
@@ -39,6 +41,7 @@ class MultiVerticalBenchmark:
 
     def run_benchmarks(self):
         """Run benchmarks across all verticals"""
+
         results = []
         for vertical in self.verticals:
             result = self.benchmark_vertical(vertical)

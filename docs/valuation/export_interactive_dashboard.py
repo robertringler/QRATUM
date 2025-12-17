@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Export QuASIM valuation dashboard as interactive HTML.
 
 This script generates a standalone HTML page with all dashboard visualizations
@@ -28,6 +29,7 @@ OUTPUT_PATH = Path(__file__).parent.parent / "valuation_dashboard.html"
 
 def create_html_dashboard():
     """Create standalone HTML dashboard with all figures."""
+
     # Create figures
     fig_dcf = create_dcf_waterfall_chart()
     fig_heatmap = create_sensitivity_heatmap()
@@ -193,6 +195,7 @@ def create_html_dashboard():
 
 def main():
     """Generate and save interactive HTML dashboard."""
+
     print("QuASIM Valuation Dashboard — Interactive HTML Export")
     print("=" * 50)
 

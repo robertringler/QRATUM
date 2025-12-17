@@ -29,12 +29,14 @@ class QCSimulator:
             backend: Computation backend ('cuda', 'hip', or 'cpu')
             precision: Floating point precision ('fp32', 'fp16', 'fp8')
         """
+
         self.backend = backend
         self.precision = precision
         self._validate_config()
 
     def _validate_config(self) -> None:
         """Validate simulator configuration."""
+
         if self.backend not in ("cuda", "hip", "cpu"):
             raise ValueError(f"Unsupported backend: {self.backend}")
         if self.precision not in ("fp32", "fp16", "fp8"):
@@ -52,6 +54,7 @@ class QCSimulator:
                 - probabilities: Measurement probabilities
                 - backend_used: Backend used for simulation
         """
+
         # Initialize state vector |0...0⟩
         num_states = 2**circuit.num_qubits
         state_vector = np.zeros(num_states, dtype=np.complex128)
@@ -89,6 +92,7 @@ class QCSimulator:
         Returns:
             Updated state vector
         """
+
         gate_type = gate["type"]
         qubits = gate["qubits"]
         params = gate.get("params", {})
@@ -110,6 +114,7 @@ class QCSimulator:
         Returns:
             Dictionary with backend capabilities and status
         """
+
         return {
             "backend": self.backend,
             "precision": self.precision,
@@ -119,6 +124,7 @@ class QCSimulator:
 
     def _check_cuda_available(self) -> bool:
         """Check if CUDA backend is available."""
+
         try:
             import subprocess
 
@@ -129,6 +135,7 @@ class QCSimulator:
 
     def _check_hip_available(self) -> bool:
         """Check if HIP/ROCm backend is available."""
+
         try:
             import subprocess
 

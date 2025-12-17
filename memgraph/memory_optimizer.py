@@ -18,6 +18,7 @@ class MemoryNode:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "node_id": self.node_id,
             "size_bytes": self.size_bytes,
@@ -37,6 +38,7 @@ class MemoryLayout:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "layout_id": self.layout_id,
             "node_order": self.node_order,
@@ -47,6 +49,7 @@ class MemoryLayout:
 
 class MemoryGraphOptimizer:
     """
+
     Optimizer that represents memory allocation as a dynamic graph
     and uses GNN-inspired algorithms to predict optimal layouts.
     """
@@ -57,6 +60,7 @@ class MemoryGraphOptimizer:
 
     def add_node(self, node_id: str, size_bytes: int, access_frequency: int = 1) -> None:
         """Add a memory node to the graph."""
+
         if node_id not in self.nodes:
             self.nodes[node_id] = MemoryNode(
                 node_id=node_id,
@@ -69,15 +73,18 @@ class MemoryGraphOptimizer:
 
     def add_edge(self, node1: str, node2: str) -> None:
         """Add an edge (access relationship) between two nodes."""
+
         if node1 in self.nodes and node2 in self.nodes:
             self.nodes[node1].neighbors.add(node2)
             self.nodes[node2].neighbors.add(node1)
 
     def compute_node_features(self, node_id: str) -> dict[str, float]:
         """
+
         Compute GNN-style node features.
         Aggregates information from neighbors.
         """
+
         if node_id not in self.nodes:
             return {}
 
@@ -108,9 +115,11 @@ class MemoryGraphOptimizer:
 
     def compute_path_length(self, node_order: list[str]) -> float:
         """
+
         Compute total path length for a given node ordering.
         Lower is better (nodes accessed together are closer).
         """
+
         if len(node_order) < 2:
             return 0.0
 
@@ -136,9 +145,11 @@ class MemoryGraphOptimizer:
 
     def estimate_cache_miss_rate(self, node_order: list[str]) -> float:
         """
+
         Estimate cache miss rate for a given layout.
         Simplified model based on access patterns.
         """
+
         if not node_order:
             return 1.0
 
@@ -170,9 +181,11 @@ class MemoryGraphOptimizer:
 
     def optimize_layout(self, layout_id: str) -> MemoryLayout:
         """
+
         Optimize memory layout using greedy heuristic.
         Places frequently accessed and connected nodes close together.
         """
+
         if not self.nodes:
             return MemoryLayout(layout_id=layout_id, node_order=[])
 
@@ -242,6 +255,7 @@ class MemoryGraphOptimizer:
 
     def save_layout(self, layout_id: str, output_dir: str = "memgraph") -> Path:
         """Save memory layout to disk."""
+
         if layout_id not in self.layouts:
             raise ValueError(f"No layout found for {layout_id}")
 

@@ -49,6 +49,7 @@ class QuantumOptimizer:
 
     def __post_init__(self) -> None:
         """Validate optimizer configuration."""
+
         valid_algorithms = {"qa", "qaoa", "vqe", "hybrid"}
         if self.algorithm not in valid_algorithms:
             raise ValueError(f"Algorithm must be one of {valid_algorithms}")
@@ -69,6 +70,7 @@ class QuantumOptimizer:
                 - iterations: Number of iterations performed
                 - convergence: Whether the algorithm converged
         """
+
         initial_params = initial_params or {}
 
         if self.algorithm == "qaoa":
@@ -101,6 +103,7 @@ class QuantumOptimizer:
 
         Current implementation: Just random search for testing architecture.
         """
+
         import numpy as np
 
         # Set random seed for deterministic behavior
@@ -167,6 +170,7 @@ class QuantumOptimizer:
 
         Current implementation: One random evaluation only.
         """
+
         best_solution = problem.get_random_solution()
         best_value = problem.evaluate(best_solution)
 
@@ -200,6 +204,7 @@ class QuantumOptimizer:
 
         Current implementation: Returns one random evaluation.
         """
+
         best_solution = problem.get_random_solution()
         best_value = problem.evaluate(best_solution)
 
@@ -219,6 +224,7 @@ class QuantumOptimizer:
         Combines classical optimization with quantum subroutines for
         improved performance on large-scale problems.
         """
+
         best_solution = problem.get_random_solution()
         best_value = problem.evaluate(best_solution)
 

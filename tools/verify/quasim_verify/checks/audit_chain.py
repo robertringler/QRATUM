@@ -24,6 +24,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
     Returns:
         CheckResult with pass/fail status and audit chain path
     """
+
     files = []
 
     # Collect all input files

@@ -30,6 +30,7 @@ def generate_yaml_benchmark_spec(output_dir: Path) -> Path:
     Returns:
         Path to generated file
     """
+
     output_path = output_dir / "appendix_a_benchmark_specs.md"
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -110,6 +111,7 @@ def generate_cuda_pseudocode(output_dir: Path) -> Path:
     Returns:
         Path to generated file
     """
+
     output_path = output_dir / "appendix_b_cuda_pseudocode.md"
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -224,6 +226,7 @@ def generate_statistical_derivations(output_dir: Path) -> Path:
     Returns:
         Path to generated file
     """
+
     output_path = output_dir / "appendix_c_statistical_methods.md"
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -308,6 +311,7 @@ def generate_reproducibility_proof(output_dir: Path) -> Path:
     Returns:
         Path to generated file
     """
+
     output_path = output_dir / "appendix_d_reproducibility_proof.md"
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -375,6 +379,7 @@ def generate_reporting_examples(output_dir: Path) -> Path:
     Returns:
         Path to generated file
     """
+
     output_path = output_dir / "appendix_e_reporting_formats.md"
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -475,6 +480,7 @@ def generate_all_appendices(output_dir: Path) -> list[Path]:
     Returns:
         List of generated file paths
     """
+
     output_dir.mkdir(parents=True, exist_ok=True)
 
     appendices = [

@@ -6,6 +6,7 @@ from typing import Any
 @dataclass(frozen=True)
 class Signer:
     """
+
     Deterministic SHA-256 based MAC. Suitable for integrity checks
     across the Q-Stack modules. Keys should be derived via KeyManager.
     """

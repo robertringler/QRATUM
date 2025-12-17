@@ -38,6 +38,7 @@ class ValidationRunner:
 
     def setup_logging(self):
         """Configure logging for validation runs."""
+
         log_level = getattr(logging, self.config.log_level.upper())
         logging.basicConfig(
             level=log_level,
@@ -47,6 +48,7 @@ class ValidationRunner:
 
     def run_tier_1(self) -> Dict:
         """Execute Tier 1: Computational Foundations."""
+
         self.logger.info("Starting Tier 1: Computational Foundations")
         results = {
             "tier": 1,
@@ -72,6 +74,7 @@ class ValidationRunner:
 
     def run_tier_2(self) -> Dict:
         """Execute Tier 2: Neurobiological Correlation."""
+
         self.logger.info("Starting Tier 2: Neurobiological Correlation")
         results = {
             "tier": 2,
@@ -96,6 +99,7 @@ class ValidationRunner:
 
     def run_tier_3(self) -> Dict:
         """Execute Tier 3: Clinical Digital Twin Diagnostics."""
+
         self.logger.info("Starting Tier 3: Clinical Digital Twin Diagnostics")
         results = {
             "tier": 3,
@@ -116,6 +120,7 @@ class ValidationRunner:
 
     def run_tier_4(self) -> Dict:
         """Execute Tier 4: Meta Validation."""
+
         self.logger.info("Starting Tier 4: Meta Validation")
         results = {
             "tier": 4,
@@ -140,6 +145,7 @@ class ValidationRunner:
 
     def _run_experiment_1_1_tda(self) -> Dict:
         """Experiment 1.1: TDA Baseline Validation."""
+
         self.logger.info("Running Experiment 1.1: TDA Baseline")
 
         # Minimal implementation - would integrate with real TDA libraries
@@ -159,6 +165,7 @@ class ValidationRunner:
 
     def _run_experiment_1_2_quotient(self) -> Dict:
         """Experiment 1.2: Quotient Calibration."""
+
         self.logger.info("Running Experiment 1.2: Quotient Calibration")
 
         result = {
@@ -175,6 +182,7 @@ class ValidationRunner:
 
     def _run_experiment_2_1_eeg(self) -> Dict:
         """Experiment 2.1: EEG Correlation."""
+
         self.logger.info("Running Experiment 2.1: EEG Correlation")
 
         result = {
@@ -192,6 +200,7 @@ class ValidationRunner:
 
     def _run_experiment_2_2_fmri(self) -> Dict:
         """Experiment 2.2: fMRI Validation."""
+
         self.logger.info("Running Experiment 2.2: fMRI Validation")
 
         result = {
@@ -208,6 +217,7 @@ class ValidationRunner:
 
     def _run_experiment_3_1_pathology(self) -> Dict:
         """Experiment 3.1: Pathology Classification."""
+
         self.logger.info("Running Experiment 3.1: Pathology Classification")
 
         result = {
@@ -225,6 +235,7 @@ class ValidationRunner:
 
     def _run_experiment_4_1_tournament(self) -> Dict:
         """Experiment 4.1: Tournament Validation."""
+
         self.logger.info("Running Experiment 4.1: Tournament Validation")
 
         result = {
@@ -241,6 +252,7 @@ class ValidationRunner:
 
     def _run_experiment_4_2_induction(self) -> Dict:
         """Experiment 4.2: Induction Validation."""
+
         self.logger.info("Running Experiment 4.2: Induction Validation")
 
         result = {
@@ -257,6 +269,7 @@ class ValidationRunner:
 
     def run_full_suite(self) -> Dict:
         """Execute all TERC validation tiers."""
+
         self.logger.info("Starting full TERC validation suite")
 
         suite_results = {
@@ -304,6 +317,7 @@ class ValidationRunner:
 
     def run(self) -> Dict:
         """Execute validation based on configuration."""
+
         if self.config.full_suite:
             results = self.run_full_suite()
         elif self.config.tier is not None:
@@ -329,6 +343,7 @@ class ValidationRunner:
 
     def _save_results(self, results: Dict):
         """Save validation results to output directory."""
+
         self.config.output_dir.mkdir(parents=True, exist_ok=True)
 
         output_file = self.config.output_dir / "validation_results.json"
@@ -342,6 +357,7 @@ class ValidationRunner:
 
     def _generate_markdown_report(self, results: Dict):
         """Generate markdown summary report."""
+
         report_file = self.config.output_dir.parent / "terc_validation_summary.md"
 
         with open(report_file, "w") as f:
@@ -381,6 +397,7 @@ class ValidationRunner:
 
 def main():
     """Main entry point for TERC validation runner."""
+
     parser = argparse.ArgumentParser(description="TERC Framework Validation Suite for QuASIM")
     parser.add_argument(
         "--tier",

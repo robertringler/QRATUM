@@ -11,7 +11,7 @@ The Journal of Chemical Physics, 113(1), 297-306.
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -46,6 +46,7 @@ class LangevinSimulator:
             mechanism: Mechanism to simulate
             temperature: Temperature in Kelvin
         """
+
         self.mechanism = mechanism
         self.temperature = temperature
         self.boltzmann = 1.987e-3  # Boltzmann constant (kcal/mol/K)
@@ -56,9 +57,9 @@ class LangevinSimulator:
         self,
         t_max: float,
         dt: float,
-        initial_state: Dict[str, float],
+        initial_state: dict[str, float],
         seed: Optional[int] = None,
-    ) -> Tuple[List[float], Dict[str, List[float]]]:
+    ) -> tuple[list[float], dict[str, list[float]]]:
         """Run Langevin dynamics simulation.
 
         Args:
@@ -70,6 +71,7 @@ class LangevinSimulator:
         Returns:
             Tuple of (times, trajectories) where trajectories[species] = [concentrations]
         """
+
         # Initialize random number generator
         self._rng = np.random.default_rng(seed)
 
@@ -84,7 +86,7 @@ class LangevinSimulator:
         # Storage for trajectory
         n_steps = int(t_max / dt) + 1
         times = [i * dt for i in range(n_steps)]
-        trajectories: Dict[str, List[float]] = {species: [state[species]] for species in state}
+        trajectories: dict[str, list[float]] = {species: [state[species]] for species in state}
 
         # Main integration loop
         current_time = 0.0
@@ -114,7 +116,7 @@ class LangevinSimulator:
 
         return times, trajectories
 
-    def _compute_forces(self, state: Dict[str, float]) -> Dict[str, float]:
+    def _compute_forces(self, state: dict[str, float]) -> dict[str, float]:
         """Compute chemical potential forces (drift terms).
 
         For each species, compute net rate of change from all reactions:
@@ -126,7 +128,8 @@ class LangevinSimulator:
         Returns:
             Dictionary of drift terms for each species
         """
-        forces: Dict[str, float] = dict.fromkeys(state, 0.0)
+
+        forces: dict[str, float] = dict.fromkeys(state, 0.0)
 
         for transition in self.mechanism._transitions:
             source = transition.source
@@ -149,9 +152,9 @@ class LangevinSimulator:
 
     def _add_thermal_noise(
         self,
-        forces: Dict[str, float],
+        forces: dict[str, float],
         dt: float,
-    ) -> Dict[str, float]:
+    ) -> dict[str, float]:
         """Add thermal noise to forces.
 
         Noise amplitude is proportional to sqrt(reaction propensity):
@@ -167,7 +170,8 @@ class LangevinSimulator:
         Returns:
             Dictionary of noise terms
         """
-        noise: Dict[str, float] = {}
+
+        noise: dict[str, float] = {}
 
         for species in forces:
             # Compute noise amplitude from force magnitude
@@ -186,10 +190,10 @@ class LangevinSimulator:
         self,
         t_max: float,
         dt: float,
-        initial_state: Dict[str, float],
-        temperature_schedule: List[Tuple[float, float]],
+        initial_state: dict[str, float],
+        temperature_schedule: list[tuple[float, float]],
         seed: Optional[int] = None,
-    ) -> Tuple[List[float], Dict[str, List[float]]]:
+    ) -> tuple[list[float], dict[str, list[float]]]:
         """Run simulation with time-varying temperature.
 
         Useful for simulated annealing or temperature-dependent studies.
@@ -204,6 +208,7 @@ class LangevinSimulator:
         Returns:
             Tuple of (times, trajectories)
         """
+
         # For Phase 1, use constant temperature
         # Phase 2+ will implement full temperature scheduling
         return self.run(t_max, dt, initial_state, seed)

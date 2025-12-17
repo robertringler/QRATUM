@@ -30,6 +30,7 @@ class GPUBackend:
             dpi: Resolution in dots per inch
             force_cpu: Force CPU fallback even if GPU is available
         """
+
         self.figsize = figsize
         self.dpi = dpi
         self.use_gpu = False
@@ -53,6 +54,7 @@ class GPUBackend:
         Returns:
             True if GPU is available and initialized successfully
         """
+
         try:
             import torch
 
@@ -93,6 +95,7 @@ class GPUBackend:
         Returns:
             Matplotlib figure with rendered visualization
         """
+
         # Preprocess data on GPU if available
         if self.use_gpu:
             data = self._preprocess_gpu(data)
@@ -119,6 +122,7 @@ class GPUBackend:
         Returns:
             Processed visualization data
         """
+
         # Example: compute normals on GPU
         try:
             vertices_gpu = self.torch.tensor(
@@ -161,14 +165,17 @@ class GPUBackend:
             output_path: Output file path
             **kwargs: Additional arguments for save
         """
+
         self.backend.save(output_path, **kwargs)
 
     def show(self) -> None:
         """Display the rendered figure interactively."""
+
         self.backend.show()
 
     def close(self) -> None:
         """Close the backend and free resources."""
+
         self.backend.close()
 
         # Clean up GPU resources if applicable

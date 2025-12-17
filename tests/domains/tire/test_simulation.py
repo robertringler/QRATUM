@@ -16,6 +16,7 @@ from quasim.domains.tire.simulation import TireSimulation
 
 def test_tire_simulation_creation():
     """Test TireSimulation initialization."""
+
     sim = TireSimulation(use_quantum_acceleration=True, random_seed=42)
     assert sim.use_quantum_acceleration is True
     assert sim.random_seed == 42
@@ -23,6 +24,7 @@ def test_tire_simulation_creation():
 
 def test_complete_simulation():
     """Test complete tire simulation workflow."""
+
     # Create tire compound
     props = MaterialProperties()
     compound = TireCompound(
@@ -74,6 +76,7 @@ def test_complete_simulation():
 
 def test_performance_metrics():
     """Test performance metrics computation."""
+
     props = MaterialProperties(
         wet_grip_coefficient=0.75,
         rolling_resistance_coeff=0.010,
@@ -127,6 +130,7 @@ def test_performance_metrics():
 
 def test_thermal_distribution():
     """Test thermal distribution computation."""
+
     props = MaterialProperties()
     compound = TireCompound(
         compound_id="TEST_001",
@@ -172,6 +176,7 @@ def test_thermal_distribution():
 
 def test_optimization_suggestions():
     """Test optimization suggestions generation."""
+
     props = MaterialProperties(
         wet_grip_coefficient=0.5,  # Low wet grip
         rolling_resistance_coeff=0.015,  # High rolling resistance
@@ -215,6 +220,7 @@ def test_optimization_suggestions():
 
 def test_result_serialization():
     """Test simulation result serialization."""
+
     props = MaterialProperties()
     compound = TireCompound(
         compound_id="TEST_001",

@@ -18,6 +18,7 @@ class GLTFExporter:
             output_path: Output file path
             include_animations: Whether to include animations
         """
+
         output_path = Path(output_path)
 
         # Build glTF structure

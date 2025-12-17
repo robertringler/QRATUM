@@ -5,6 +5,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class KeyManager:
     """
+
     Deterministic key derivation from a root seed using SHA-256.
     The function is purely functional and side-effect free.
     """

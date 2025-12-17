@@ -25,6 +25,7 @@ class GoodyearQuantumPilot:
         Args:
             materials_db_path: Path to Goodyear materials database
         """
+
         self.materials_db = GoodyearMaterialsDatabase(db_path=materials_db_path)
         print(f"Loaded {len(self.materials_db.materials)} Goodyear materials")
 
@@ -46,6 +47,7 @@ class GoodyearQuantumPilot:
         Returns:
             Summary of library generation
         """
+
         # Select materials
         if material_filters:
             materials = self.materials_db.search_materials(**material_filters)
@@ -157,6 +159,7 @@ class GoodyearQuantumPilot:
 
     def _compute_statistics(self, results: list[dict[str, Any]]) -> dict[str, Any]:
         """Compute performance statistics."""
+
         if not results:
             return {}
 
@@ -185,6 +188,7 @@ class GoodyearQuantumPilot:
         self, readme_file: Path, num_materials: int, num_scenarios: int, results: list[dict]
     ) -> None:
         """Generate README file."""
+
         stats = self._compute_statistics(results)
         db_stats = self.materials_db.get_statistics()
 
@@ -197,9 +201,9 @@ materials from the Goodyear Quantum Pilot platform, executed with QuASIM quantum
 
 ## Goodyear Materials Database
 
-- **Total Materials**: {db_stats['total_materials']}
-- **Quantum Validated**: {db_stats['quantum_validated']} ({db_stats['quantum_validated_percentage']}%)
-- **Material Families**: {', '.join(db_stats['by_family'].keys())}
+- **Total Materials**: {db_stats["total_materials"]}
+- **Quantum Validated**: {db_stats["quantum_validated"]} ({db_stats["quantum_validated_percentage"]}%)
+- **Material Families**: {", ".join(db_stats["by_family"].keys())}
 
 ### Materials by Family
 """
@@ -208,6 +212,7 @@ materials from the Goodyear Quantum Pilot platform, executed with QuASIM quantum
             content += f"- {family.replace('_', ' ').title()}: {count} materials\n"
 
         content += """
+
 ### Certification Status
 """
 
@@ -215,6 +220,7 @@ materials from the Goodyear Quantum Pilot platform, executed with QuASIM quantum
             content += f"- {status.title()}: {count} materials\n"
 
         content += f"""
+
 ## Simulation Coverage
 
 - **Tire Types**: Passenger, Truck, Off-Road, Racing, EV-Specific, Winter, All-Season, Performance
@@ -231,16 +237,16 @@ All simulations utilize QuASIM's quantum-enhanced optimization:
 
 ## Performance Statistics
 
-- **Average Grip Coefficient**: {stats.get('avg_grip_coefficient', 'N/A')}
-- **Average Rolling Resistance**: {stats.get('avg_rolling_resistance', 'N/A')}
-- **Average Wear Rate**: {stats.get('avg_wear_rate', 'N/A')} mm/1000km
-- **Average Thermal Performance**: {stats.get('avg_thermal_performance', 'N/A')}
-- **Average Optimization Score**: {stats.get('avg_optimization_score', 'N/A')}
+- **Average Grip Coefficient**: {stats.get("avg_grip_coefficient", "N/A")}
+- **Average Rolling Resistance**: {stats.get("avg_rolling_resistance", "N/A")}
+- **Average Wear Rate**: {stats.get("avg_wear_rate", "N/A")} mm/1000km
+- **Average Thermal Performance**: {stats.get("avg_thermal_performance", "N/A")}
+- **Average Optimization Score**: {stats.get("avg_optimization_score", "N/A")}
 
 ### Performance Ranges
-- **Grip Coefficient**: {stats.get('grip_range', ['N/A'])[0]} - {stats.get('grip_range', ['N/A', 'N/A'])[1]}
-- **Rolling Resistance**: {stats.get('rolling_resistance_range', ['N/A'])[0]} - {stats.get('rolling_resistance_range', ['N/A', 'N/A'])[1]}
-- **Predicted Lifetime**: {stats.get('predicted_lifetime_range', ['N/A'])[0]} - {stats.get('predicted_lifetime_range', ['N/A', 'N/A'])[1]} km
+- **Grip Coefficient**: {stats.get("grip_range", ["N/A"])[0]} - {stats.get("grip_range", ["N/A", "N/A"])[1]}
+- **Rolling Resistance**: {stats.get("rolling_resistance_range", ["N/A"])[0]} - {stats.get("rolling_resistance_range", ["N/A", "N/A"])[1]}
+- **Predicted Lifetime**: {stats.get("predicted_lifetime_range", ["N/A"])[0]} - {stats.get("predicted_lifetime_range", ["N/A", "N/A"])[1]} km
 
 ## Data Formats
 
@@ -303,6 +309,7 @@ def load_goodyear_materials(db_path: str | None = None) -> GoodyearMaterialsData
     Returns:
         GoodyearMaterialsDatabase instance
     """
+
     return GoodyearMaterialsDatabase(db_path=db_path)
 
 
@@ -323,6 +330,7 @@ def create_goodyear_library(
     Returns:
         Library generation summary
     """
+
     gqp = GoodyearQuantumPilot()
     return gqp.generate_comprehensive_library(
         output_dir=output_dir,

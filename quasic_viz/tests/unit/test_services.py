@@ -8,6 +8,7 @@ class TestFrameCache:
 
     def test_init(self):
         """Test cache initialization."""
+
         from quasic_viz.services.qubic_render.frame_cache import FrameCache
 
         cache = FrameCache(max_frames=100)
@@ -15,6 +16,7 @@ class TestFrameCache:
 
     def test_cache_frame(self):
         """Test caching frames."""
+
         from quasic_viz.services.qubic_render.frame_cache import FrameCache
 
         cache = FrameCache()
@@ -23,6 +25,7 @@ class TestFrameCache:
 
     def test_get_latest(self):
         """Test getting latest frame."""
+
         from quasic_viz.services.qubic_render.frame_cache import FrameCache
 
         cache = FrameCache()
@@ -35,6 +38,7 @@ class TestFrameCache:
 
     def test_get_frame_at(self):
         """Test getting frame at timestamp."""
+
         from quasic_viz.services.qubic_render.frame_cache import FrameCache
 
         cache = FrameCache()
@@ -46,6 +50,7 @@ class TestFrameCache:
 
     def test_get_range(self):
         """Test getting frames in time range."""
+
         from quasic_viz.services.qubic_render.frame_cache import FrameCache
 
         cache = FrameCache()
@@ -60,6 +65,7 @@ class TestFrameCache:
 
     def test_clear(self):
         """Test clearing cache."""
+
         from quasic_viz.services.qubic_render.frame_cache import FrameCache
 
         cache = FrameCache()
@@ -69,6 +75,7 @@ class TestFrameCache:
 
     def test_timestamps(self):
         """Test timestamp properties."""
+
         from quasic_viz.services.qubic_render.frame_cache import FrameCache
 
         cache = FrameCache()
@@ -85,6 +92,7 @@ class TestGlobalFrameCache:
 
     def test_cache_frame_global(self):
         """Test global cache_frame function."""
+
         from quasic_viz.services.qubic_render.frame_cache import (
             FRAME_HISTORY,
             cache_frame,
@@ -96,6 +104,7 @@ class TestGlobalFrameCache:
 
     def test_get_frame_at_global(self):
         """Test global get_frame_at function."""
+
         from quasic_viz.services.qubic_render.frame_cache import (
             cache_frame,
             get_frame_at,
@@ -113,6 +122,7 @@ class TestWebSocketServer:
 
     def test_init(self):
         """Test server initialization."""
+
         from quasic_viz.services.qubic_render.ws_server import WebSocketServer
 
         server = WebSocketServer()
@@ -120,6 +130,7 @@ class TestWebSocketServer:
 
     def test_create_ws_app(self):
         """Test creating WebSocket app."""
+
         from quasic_viz.services.qubic_render.ws_server import create_ws_app
 
         app = create_ws_app()

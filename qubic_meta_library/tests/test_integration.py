@@ -14,6 +14,7 @@ class TestIntegration:
 
     def test_full_workflow(self):
         """Test complete workflow from loading to dashboard generation."""
+
         # Step 1: Load data
         loader = PromptLoader()
         domains = loader.load_domains()
@@ -61,6 +62,7 @@ class TestIntegration:
 
     def test_high_value_workflow(self):
         """Test workflow focused on high-value prompts."""
+
         # Load data
         loader = PromptLoader()
         loader.load_domains()
@@ -85,6 +87,7 @@ class TestIntegration:
 
     def test_synergy_workflow(self):
         """Test workflow focused on synergy mapping."""
+
         # Load data
         loader = PromptLoader()
         loader.load_domains()
@@ -110,6 +113,7 @@ class TestIntegration:
 
     def test_execution_workflow(self):
         """Test workflow focused on pipeline execution."""
+
         # Load data
         loader = PromptLoader()
         loader.load_domains()
@@ -139,6 +143,7 @@ class TestIntegration:
 
     def test_domain_coverage(self):
         """Test that all domains are properly configured."""
+
         loader = PromptLoader()
         domains = loader.load_domains()
 
@@ -164,6 +169,7 @@ class TestIntegration:
 
     def test_keystone_identification(self):
         """Test keystone prompt identification."""
+
         loader = PromptLoader()
         loader.load_domains()
         prompts = loader.load_all_prompts()

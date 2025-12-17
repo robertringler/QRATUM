@@ -10,7 +10,7 @@ Provides functionality for:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -31,18 +31,19 @@ class Reaction:
 
     reaction_id: str
     name: str
-    substrates: List[str]
-    products: List[str]
-    enzymes: List[str] = field(default_factory=list)
+    substrates: list[str]
+    products: list[str]
+    enzymes: list[str] = field(default_factory=list)
     reversible: bool = False
     rate_constant: float = 1.0
 
-    def get_stoichiometry(self) -> Dict[str, int]:
+    def get_stoichiometry(self) -> dict[str, int]:
         """Get stoichiometry of reaction.
 
         Returns:
             Dictionary mapping compound IDs to stoichiometric coefficients
         """
+
         stoich = {}
         for substrate in self.substrates:
             stoich[substrate] = stoich.get(substrate, 0) - 1
@@ -66,10 +67,10 @@ class MetabolicPathway:
 
     pathway_id: str
     name: str
-    reactions: List[Reaction] = field(default_factory=list)
-    metabolites: Set[str] = field(default_factory=set)
-    entry_points: List[str] = field(default_factory=list)
-    exit_points: List[str] = field(default_factory=list)
+    reactions: list[Reaction] = field(default_factory=list)
+    metabolites: set[str] = field(default_factory=set)
+    entry_points: list[str] = field(default_factory=list)
+    exit_points: list[str] = field(default_factory=list)
 
     def add_reaction(self, reaction: Reaction) -> None:
         """Add a reaction to the pathway.
@@ -77,6 +78,7 @@ class MetabolicPathway:
         Args:
             reaction: Reaction object
         """
+
         self.reactions.append(reaction)
         self.metabolites.update(reaction.substrates)
         self.metabolites.update(reaction.products)
@@ -87,6 +89,7 @@ class MetabolicPathway:
         Returns:
             Matrix where rows are metabolites, columns are reactions
         """
+
         metabolites = sorted(self.metabolites)
         met_index = {met: i for i, met in enumerate(metabolites)}
 
@@ -114,8 +117,9 @@ class PathwayAnalyzer:
 
     def __init__(self):
         """Initialize pathway analyzer."""
-        self._pathways: Dict[str, MetabolicPathway] = {}
-        self._pathway_memberships: Dict[str, Set[str]] = {}
+
+        self._pathways: dict[str, MetabolicPathway] = {}
+        self._pathway_memberships: dict[str, set[str]] = {}
 
     def add_pathway(self, pathway: MetabolicPathway) -> None:
         """Add a pathway to the analyzer.
@@ -123,6 +127,7 @@ class PathwayAnalyzer:
         Args:
             pathway: Metabolic pathway object
         """
+
         self._pathways[pathway.pathway_id] = pathway
 
         # Index pathway memberships
@@ -134,9 +139,9 @@ class PathwayAnalyzer:
     def compute_flux_balance(
         self,
         pathway_id: str,
-        objective: Dict[str, float],
-        constraints: Optional[Dict[str, Tuple[float, float]]] = None,
-    ) -> Dict[str, float]:
+        objective: dict[str, float],
+        constraints: Optional[dict[str, tuple[float, float]]] = None,
+    ) -> dict[str, float]:
         """Compute flux balance analysis (simplified).
 
         Note: Full FBA requires linear programming solver (scipy.optimize.linprog).
@@ -150,6 +155,7 @@ class PathwayAnalyzer:
         Returns:
             Optimal flux distribution
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return {}
@@ -165,8 +171,8 @@ class PathwayAnalyzer:
     def analyze_bottlenecks(
         self,
         pathway_id: str,
-        flux_distribution: Dict[str, float],
-    ) -> List[Tuple[str, float]]:
+        flux_distribution: dict[str, float],
+    ) -> list[tuple[str, float]]:
         """Identify pathway bottlenecks.
 
         Args:
@@ -176,6 +182,7 @@ class PathwayAnalyzer:
         Returns:
             List of (reaction_id, bottleneck_score) tuples
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return []
@@ -203,9 +210,9 @@ class PathwayAnalyzer:
 
     def compute_pathway_enrichment(
         self,
-        query_genes: List[str],
-        background_genes: Optional[List[str]] = None,
-    ) -> List[Tuple[str, float, float]]:
+        query_genes: list[str],
+        background_genes: Optional[list[str]] = None,
+    ) -> list[tuple[str, float, float]]:
         """Compute pathway enrichment using hypergeometric test.
 
         Args:
@@ -215,6 +222,7 @@ class PathwayAnalyzer:
         Returns:
             List of (pathway_id, p_value, enrichment_ratio) tuples
         """
+
         from scipy.stats import hypergeom
 
         if background_genes is None:
@@ -264,7 +272,7 @@ class PathwayAnalyzer:
         start_protein: str,
         end_protein: str,
         max_steps: int = 10,
-    ) -> List[List[str]]:
+    ) -> list[list[str]]:
         """Find signaling cascades between proteins.
 
         Args:
@@ -275,8 +283,9 @@ class PathwayAnalyzer:
         Returns:
             List of protein cascades (paths)
         """
+
         # Build interaction graph from reactions
-        graph: Dict[str, Set[str]] = {}
+        graph: dict[str, set[str]] = {}
 
         for pathway in self._pathways.values():
             for reaction in pathway.reactions:
@@ -320,7 +329,7 @@ class PathwayAnalyzer:
     def compute_pathway_activity(
         self,
         pathway_id: str,
-        expression_data: Dict[str, float],
+        expression_data: dict[str, float],
     ) -> float:
         """Compute pathway activity from gene expression.
 
@@ -331,6 +340,7 @@ class PathwayAnalyzer:
         Returns:
             Pathway activity score (0-1)
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return 0.0
@@ -352,9 +362,9 @@ class PathwayAnalyzer:
     def identify_regulatory_targets(
         self,
         pathway_id: str,
-        perturbation_data: Dict[str, float],
+        perturbation_data: dict[str, float],
         threshold: float = 0.5,
-    ) -> List[Tuple[str, float]]:
+    ) -> list[tuple[str, float]]:
         """Identify key regulatory targets in pathway.
 
         Args:
@@ -365,6 +375,7 @@ class PathwayAnalyzer:
         Returns:
             List of (gene_id, regulatory_effect) tuples
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return []
@@ -385,7 +396,7 @@ class PathwayAnalyzer:
     def compute_metabolite_importance(
         self,
         pathway_id: str,
-    ) -> Dict[str, float]:
+    ) -> dict[str, float]:
         """Compute importance of metabolites in pathway.
 
         Args:
@@ -394,12 +405,13 @@ class PathwayAnalyzer:
         Returns:
             Dictionary mapping metabolite IDs to importance scores
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return {}
 
         # Count connections for each metabolite
-        connections: Dict[str, int] = dict.fromkeys(pathway.metabolites, 0)
+        connections: dict[str, int] = dict.fromkeys(pathway.metabolites, 0)
 
         for reaction in pathway.reactions:
             for substrate in reaction.substrates:
@@ -416,7 +428,7 @@ class PathwayAnalyzer:
     def export_pathway_graph(
         self,
         pathway_id: str,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Export pathway as graph data.
 
         Args:
@@ -425,6 +437,7 @@ class PathwayAnalyzer:
         Returns:
             Dictionary with nodes and edges
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return {"nodes": [], "edges": []}

@@ -30,6 +30,7 @@ class DigitalTwin:
 
     def __post_init__(self) -> None:
         """Validate digital twin configuration."""
+
         valid_types = {"aerospace", "pharma", "finance", "manufacturing"}
         if self.system_type not in valid_types:
             raise ValueError(f"System type must be one of {valid_types}")
@@ -40,6 +41,7 @@ class DigitalTwin:
         Args:
             new_state: Dictionary containing state variables
         """
+
         self.state_manager.update(new_state)
 
     def simulate_forward(self, time_steps: int, delta_t: float = 1.0) -> list[dict[str, Any]]:
@@ -54,6 +56,7 @@ class DigitalTwin:
         Returns:
             List of predicted states at each time step
         """
+
         trajectory = []
         current_state = self.state_manager.get_current_state()
 
@@ -79,6 +82,7 @@ class DigitalTwin:
         Returns:
             Updated state after evolution
         """
+
         # Simplified evolution - production would use domain-specific models
         evolved_state = state.copy()
 
@@ -106,6 +110,7 @@ class DigitalTwin:
         Returns:
             Optimized parameters and objective value
         """
+
         # Integration point with quasim.opt module
         return {
             "parameters": self.parameters,
@@ -115,6 +120,7 @@ class DigitalTwin:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize digital twin to dictionary."""
+
         return {
             "twin_id": self.twin_id,
             "system_type": self.system_type,
@@ -125,6 +131,7 @@ class DigitalTwin:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> DigitalTwin:
         """Deserialize digital twin from dictionary."""
+
         twin = cls(
             twin_id=data["twin_id"],
             system_type=data["system_type"],

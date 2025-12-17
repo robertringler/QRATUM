@@ -24,6 +24,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
     Returns:
         CheckResult with pass/fail status and detailed metrics
     """
+
     try:
         bench_dir = cfg["inputs"]["artifacts"]["benchmarks_npz_dir"]
         min_speedup = cfg["policy"]["tolerances"].get("benchmark_speedup_min", 10.0)

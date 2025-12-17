@@ -1,4 +1,5 @@
 """
+
 Information-Theoretic Multi-Omics Integration Engine
 
 Features:
@@ -22,6 +23,7 @@ from ....core.validation import NumericalStabilityAnalyzer
 
 class InformationEngine:
     """
+
     Multi-omics integration using information theory.
 
     Provides:
@@ -33,11 +35,13 @@ class InformationEngine:
 
     def __init__(self, seed: Optional[int] = None):
         """
+
         Initialize information engine.
 
         Args:
             seed: Random seed for reproducibility
         """
+
         self.reproducibility_mgr = ReproducibilityManager(seed=seed)
         self.reproducibility_mgr.setup_deterministic_mode()
         self.security_validator = SecurityValidator()
@@ -56,6 +60,7 @@ class InformationEngine:
         self, data_x: np.ndarray, data_y: np.ndarray, method: str = "ksg"
     ) -> Dict:
         """
+
         Compute mutual information I(X;Y).
 
         Args:
@@ -66,6 +71,7 @@ class InformationEngine:
         Returns:
             Dictionary with MI and metadata
         """
+
         # Validate inputs
         val_x = self.security_validator.validate_matrix(data_x, "data_x", check_finite=True)
         if not val_x["valid"]:
@@ -101,6 +107,7 @@ class InformationEngine:
         self, data_x: np.ndarray, data_y: np.ndarray, data_target: np.ndarray
     ) -> Dict:
         """
+
         Perform Partial Information Decomposition.
 
         Args:
@@ -111,6 +118,7 @@ class InformationEngine:
         Returns:
             PID decomposition results
         """
+
         try:
             pid_result = self.pid_estimator.decompose(data_x, data_y, data_target)
             return {
@@ -134,6 +142,7 @@ class InformationEngine:
         self, source: np.ndarray, target: np.ndarray, lag: int = 1
     ) -> Dict:
         """
+
         Compute transfer entropy from source to target.
 
         Args:
@@ -144,12 +153,14 @@ class InformationEngine:
         Returns:
             Transfer entropy results
         """
+
         te = self.te_estimator.compute_te(source, target, lag=lag)
 
         return {"transfer_entropy": float(te), "lag": lag, "method": "kraskov"}
 
     def _compute_entropy(self, data: np.ndarray) -> float:
         """Compute Shannon entropy."""
+
         # Convert to probabilities via histogram
         hist, _ = np.histogram(data, bins="auto", density=True)
         hist = hist[hist > 0]
@@ -166,6 +177,7 @@ class InformationEngine:
 
     def _compute_joint_entropy(self, data_x: np.ndarray, data_y: np.ndarray) -> float:
         """Compute joint entropy H(X,Y)."""
+
         # Stack data
         joint_data = np.column_stack([data_x.flatten(), data_y.flatten()])
 
@@ -184,6 +196,7 @@ class InformationEngine:
 
     def _histogram_mi(self, data_x: np.ndarray, data_y: np.ndarray) -> float:
         """Compute MI using histogram method."""
+
         h_x = self._compute_entropy(data_x)
         h_y = self._compute_entropy(data_y)
         h_xy = self._compute_joint_entropy(data_x, data_y)

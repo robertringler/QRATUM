@@ -16,6 +16,7 @@ class FrameCache:
 
     def __init__(self, max_frames: int = 10000) -> None:
         """Initialize frame cache."""
+
         self._history: deque[dict[str, Any]] = deque(maxlen=max_frames)
         self._max_frames = max_frames
 
@@ -26,6 +27,7 @@ class FrameCache:
             mesh: Mesh data
             fields: Field data dictionary
         """
+
         # Clone data to avoid mutation
         try:
             mesh_copy = mesh.copy() if hasattr(mesh, "copy") else mesh
@@ -51,6 +53,7 @@ class FrameCache:
         Returns:
             Frame data dictionary or None if not found
         """
+
         for frame in self._history:
             if frame["timestamp"] >= timestamp:
                 return frame
@@ -62,6 +65,7 @@ class FrameCache:
         Returns:
             Most recent frame or None if cache is empty
         """
+
         if self._history:
             return self._history[-1]
         return None
@@ -76,19 +80,23 @@ class FrameCache:
         Returns:
             List of frame data dictionaries
         """
+
         return [f for f in self._history if start_time <= f["timestamp"] <= end_time]
 
     def clear(self) -> None:
         """Clear all cached frames."""
+
         self._history.clear()
 
     def __len__(self) -> int:
         """Get number of cached frames."""
+
         return len(self._history)
 
     @property
     def oldest_timestamp(self) -> float | None:
         """Get timestamp of oldest frame."""
+
         if self._history:
             return self._history[0]["timestamp"]
         return None
@@ -96,6 +104,7 @@ class FrameCache:
     @property
     def newest_timestamp(self) -> float | None:
         """Get timestamp of newest frame."""
+
         if self._history:
             return self._history[-1]["timestamp"]
         return None
@@ -112,6 +121,7 @@ def cache_frame(mesh: Any, fields: dict[str, Any]) -> None:
         mesh: Mesh data
         fields: Field data dictionary
     """
+
     try:
         mesh_copy = mesh.copy() if hasattr(mesh, "copy") else mesh
         fields_copy = {k: v.copy() if hasattr(v, "copy") else v for k, v in fields.items()}
@@ -137,6 +147,7 @@ def get_frame_at(timestamp: float) -> dict[str, Any] | None:
     Returns:
         Frame data or None
     """
+
     for frame in FRAME_HISTORY:
         if frame["timestamp"] >= timestamp:
             return frame

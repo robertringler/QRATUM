@@ -14,6 +14,7 @@ from quasim.viz.renderer import FlowFrameSpec, render_frame
 
 def _generate_video_hash(seed: int, steps: int, N: int, T: float) -> str:
     """Generate a reproducible hash for the video filename based on parameters."""
+
     param_str = f"seed={seed}_steps={steps}_N={N}_T={T}"
     return hashlib.sha256(param_str.encode()).hexdigest()[:12]
 
@@ -28,6 +29,7 @@ def _create_video_artifacts(
     num_frames: int = 60,
 ):
     """
+
     Generate MP4 and GIF artifacts from simulation results.
 
     Args:
@@ -39,6 +41,7 @@ def _create_video_artifacts(
         repro_hash: Reproducible hash for filenames
         num_frames: Number of frames to render (default: 60)
     """
+
     import imageio
 
     # Create artifacts directory

@@ -14,6 +14,7 @@ class GPUKernels:
 
     def __init__(self, device: str = "cpu") -> None:
         """Initialize GPU kernels."""
+
         self.device = device
         self.cuda_available = self._check_cuda()
 
@@ -27,6 +28,7 @@ class GPUKernels:
         Returns:
             True if CUDA is available
         """
+
         try:
             import torch
 
@@ -50,6 +52,7 @@ class GPUKernels:
         Returns:
             Deformed vertex positions
         """
+
         if self.device == "cuda" and self.cuda_available:
             return self._mesh_deformation_cuda(vertices, forces, stiffness)
         else:
@@ -68,6 +71,7 @@ class GPUKernels:
         Returns:
             Deformed vertices
         """
+
         try:
             import torch
 
@@ -97,6 +101,7 @@ class GPUKernels:
         Returns:
             Deformed vertices
         """
+
         displacement = forces / stiffness
         return vertices + displacement
 
@@ -116,6 +121,7 @@ class GPUKernels:
         Returns:
             Interpolated field values (M,)
         """
+
         if self.device == "cuda" and self.cuda_available:
             return self._field_interpolation_cuda(positions, field_values, query_positions)
         else:
@@ -137,6 +143,7 @@ class GPUKernels:
         Returns:
             Interpolated values
         """
+
         try:
             import torch
 
@@ -174,6 +181,7 @@ class GPUKernels:
         Returns:
             Interpolated values
         """
+
         interpolated = np.zeros(len(query_positions))
 
         for i, query_pos in enumerate(query_positions):
@@ -202,6 +210,7 @@ class GPUKernels:
         Returns:
             Updated temperature field
         """
+
         if self.device == "cuda" and self.cuda_available:
             return self._thermal_diffusion_cuda(temperature, conductivity, dt)
         else:
@@ -220,6 +229,7 @@ class GPUKernels:
         Returns:
             Updated temperature
         """
+
         try:
             import torch
 
@@ -252,5 +262,6 @@ class GPUKernels:
             This is a simplified implementation without spatial derivatives.
             For production use, implement proper finite difference stencils.
         """
+
         # Simplified diffusion (no spatial derivatives for now)
         return temperature

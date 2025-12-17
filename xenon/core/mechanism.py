@@ -9,7 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Optional
 
 try:
     import networkx as nx
@@ -36,16 +36,18 @@ class MolecularState:
 
     name: str
     molecule: str
-    properties: Dict[str, Any] = field(default_factory=dict)
+    properties: dict[str, Any] = field(default_factory=dict)
     concentration: Optional[float] = None
     free_energy: Optional[float] = None
 
     def __hash__(self) -> int:
         """Hash based on name for use in sets/dicts."""
+
         return hash(self.name)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
+
         return {
             "name": self.name,
             "molecule": self.molecule,
@@ -77,10 +79,11 @@ class Transition:
     activation_energy: Optional[float] = None
     reversible: bool = False
     reverse_rate: Optional[float] = None
-    stoichiometry: Dict[str, int] = field(default_factory=dict)
+    stoichiometry: dict[str, int] = field(default_factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
+
         return {
             "source": self.source,
             "target": self.target,
@@ -112,25 +115,28 @@ class BioMechanism:
         Args:
             name: Unique mechanism identifier
         """
+
         self.name = name
         if nx is not None:
             self.graph = nx.DiGraph()
         else:
             self.graph = None
         self.posterior = 1.0
-        self.provenance: List[str] = []
-        self.confidence_intervals: Dict[str, Tuple[float, float]] = {}
-        self._states: Dict[str, MolecularState] = {}
-        self._transitions: List[Transition] = []
+        self.provenance: list[str] = []
+        self.confidence_intervals: dict[str, tuple[float, float]] = {}
+        self._states: dict[str, MolecularState] = {}
+        self._transitions: list[Transition] = []
 
     def add_state(self, state: MolecularState) -> None:
         """Add a molecular state to the mechanism."""
+
         self._states[state.name] = state
         if self.graph is not None:
             self.graph.add_node(state.name, state=state)
 
     def add_transition(self, transition: Transition) -> None:
         """Add a transition between states."""
+
         if transition.source not in self._states:
             raise ValueError(f"Source state '{transition.source}' not found")
         if transition.target not in self._states:
@@ -142,6 +148,7 @@ class BioMechanism:
 
     def is_thermodynamically_feasible(self, temperature: float = 310.0) -> bool:
         """Check if mechanism satisfies thermodynamic constraints."""
+
         R = 0.001987
 
         for transition in self._transitions:
@@ -167,8 +174,9 @@ class BioMechanism:
 
         return True
 
-    def validate_conservation_laws(self) -> Tuple[bool, List[str]]:
+    def validate_conservation_laws(self) -> tuple[bool, list[str]]:
         """Validate mass and charge conservation."""
+
         violations = []
 
         for transition in self._transitions:
@@ -181,8 +189,9 @@ class BioMechanism:
 
         return len(violations) == 0, violations
 
-    def get_causal_paths(self, source: str, target: str) -> List[List[str]]:
+    def get_causal_paths(self, source: str, target: str) -> list[list[str]]:
         """Get all causal paths from source to target state."""
+
         if source not in self._states or target not in self._states:
             return []
 
@@ -197,6 +206,7 @@ class BioMechanism:
 
     def compute_mechanism_hash(self) -> str:
         """Compute unique hash of mechanism topology and parameters."""
+
         mech_dict = {
             "states": sorted([s.to_dict() for s in self._states.values()], key=lambda x: x["name"]),
             "transitions": sorted(
@@ -207,8 +217,9 @@ class BioMechanism:
         mech_json = json.dumps(mech_dict, sort_keys=True)
         return hashlib.sha256(mech_json.encode()).hexdigest()
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Serialize mechanism to dictionary."""
+
         return {
             "name": self.name,
             "posterior": self.posterior,
@@ -219,8 +230,9 @@ class BioMechanism:
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> BioMechanism:
+    def from_dict(cls, data: dict[str, Any]) -> BioMechanism:
         """Deserialize mechanism from dictionary."""
+
         mech = cls(name=data["name"])
         mech.posterior = data["posterior"]
         mech.provenance = data["provenance"]
@@ -237,6 +249,7 @@ class BioMechanism:
 
     def __repr__(self) -> str:
         """String representation."""
+
         return (
             f"BioMechanism(name='{self.name}', "
             f"states={len(self._states)}, "

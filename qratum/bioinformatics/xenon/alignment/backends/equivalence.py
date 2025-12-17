@@ -1,4 +1,5 @@
 """
+
 Equivalence Checker for Alignment Backends
 
 Validates quantum-classical equivalence for alignment results.
@@ -12,20 +13,24 @@ from .....core.validation import EquivalenceValidator
 
 class AlignmentEquivalenceChecker:
     """
+
     Checks equivalence between quantum and classical alignment backends.
     """
 
     def __init__(self, tolerance: float = 1e-6):
         """
+
         Initialize equivalence checker.
 
         Args:
             tolerance: Maximum acceptable difference
         """
+
         self.validator = EquivalenceValidator(tolerance=tolerance)
 
     def check_alignment_equivalence(self, classical_result: Dict, quantum_result: Dict) -> Dict:
         """
+
         Check if quantum and classical alignments are equivalent.
 
         Args:
@@ -35,6 +40,7 @@ class AlignmentEquivalenceChecker:
         Returns:
             Equivalence validation results
         """
+
         # Check score equivalence
         score_check = self.validator.validate_scalar_equivalence(
             classical_result["score"], quantum_result["score"], "classical_score", "quantum_score"

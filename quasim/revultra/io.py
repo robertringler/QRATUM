@@ -23,6 +23,7 @@ def load_ciphertext(path: str | Path) -> str:
     str
         Loaded ciphertext
     """
+
     with open(path, encoding="utf-8") as f:
         return f.read()
 
@@ -37,6 +38,7 @@ def save_ciphertext(text: str, path: str | Path) -> None:
     path : str or Path
         Output path
     """
+
     with open(path, "w", encoding="utf-8") as f:
         f.write(text)
 
@@ -56,6 +58,7 @@ def export_to_json(data: dict[str, Any], path: str | Path) -> None:
 
     def serialize(obj: Any) -> Any:
         """Serialize numpy arrays to lists."""
+
         if isinstance(obj, np.ndarray):
             return obj.tolist()
         if isinstance(obj, (np.integer, np.floating)):
@@ -84,6 +87,7 @@ def export_to_csv(data: dict[str, float], path: str | Path) -> None:
     path : str or Path
         Output path
     """
+
     with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["key", "value"])
@@ -101,6 +105,7 @@ def save_numpy_array(array: np.ndarray, path: str | Path) -> None:
     path : str or Path
         Output path
     """
+
     np.save(path, array)
 
 
@@ -117,4 +122,5 @@ def load_numpy_array(path: str | Path) -> np.ndarray:
     np.ndarray
         Loaded array
     """
+
     return np.load(path)

@@ -11,7 +11,7 @@ The Journal of Physical Chemistry, 81(25), 2340-2361.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -29,8 +29,8 @@ class SimulationState:
     """
 
     time: float
-    concentrations: Dict[str, float]
-    molecule_counts: Dict[str, int]
+    concentrations: dict[str, float]
+    molecule_counts: dict[str, int]
 
 
 class GillespieSimulator:
@@ -58,6 +58,7 @@ class GillespieSimulator:
             mechanism: Mechanism to simulate
             volume: Reaction volume in liters
         """
+
         self.mechanism = mechanism
         self.volume = volume
         self.avogadro = 6.022e23  # Avogadro's number
@@ -73,10 +74,10 @@ class GillespieSimulator:
     def run(
         self,
         t_max: float,
-        initial_state: Dict[str, float],
+        initial_state: dict[str, float],
         seed: Optional[int] = None,
         record_interval: Optional[float] = None,
-    ) -> Tuple[List[float], Dict[str, List[float]]]:
+    ) -> tuple[list[float], dict[str, list[float]]]:
         """Run Gillespie SSA simulation.
 
         Args:
@@ -88,6 +89,7 @@ class GillespieSimulator:
         Returns:
             Tuple of (times, trajectories) where trajectories[species] = [concentrations]
         """
+
         # Initialize random number generator
         self._rng = np.random.default_rng(seed)
         self._reaction_count = 0
@@ -97,7 +99,7 @@ class GillespieSimulator:
 
         # Storage for trajectory
         times = [state.time]
-        trajectories: Dict[str, List[float]] = {
+        trajectories: dict[str, list[float]] = {
             species: [state.concentrations[species]] for species in state.concentrations
         }
 
@@ -135,7 +137,7 @@ class GillespieSimulator:
 
         return times, trajectories
 
-    def _initialize_state(self, initial_concentrations: Dict[str, float]) -> SimulationState:
+    def _initialize_state(self, initial_concentrations: dict[str, float]) -> SimulationState:
         """Initialize simulation state from concentrations.
 
         Args:
@@ -144,6 +146,7 @@ class GillespieSimulator:
         Returns:
             Initialized simulation state
         """
+
         # Ensure all species in mechanism have initial values
         concentrations = {}
         molecule_counts = {}
@@ -164,7 +167,7 @@ class GillespieSimulator:
             molecule_counts=molecule_counts,
         )
 
-    def _compute_propensities(self, state: SimulationState) -> List[float]:
+    def _compute_propensities(self, state: SimulationState) -> list[float]:
         """Compute reaction propensities (rates).
 
         Propensity a_i = rate_constant × reactant_counts
@@ -175,6 +178,7 @@ class GillespieSimulator:
         Returns:
             List of propensities for each transition
         """
+
         propensities = []
 
         for transition in self.mechanism._transitions:
@@ -189,7 +193,7 @@ class GillespieSimulator:
 
         return propensities
 
-    def _select_reaction(self, propensities: List[float], total_propensity: float) -> int:
+    def _select_reaction(self, propensities: list[float], total_propensity: float) -> int:
         """Select reaction to fire based on propensities.
 
         Args:
@@ -199,6 +203,7 @@ class GillespieSimulator:
         Returns:
             Index of selected reaction
         """
+
         # Direct method: generate random number and find reaction
         r = self._rng.random() * total_propensity
 
@@ -218,6 +223,7 @@ class GillespieSimulator:
             state: Current state (modified in place)
             reaction_idx: Index of reaction that fired
         """
+
         transition = self.mechanism._transitions[reaction_idx]
 
         # Update molecule counts (stoichiometry)
@@ -235,12 +241,13 @@ class GillespieSimulator:
             count = state.molecule_counts[species]
             state.concentrations[species] = count / self.nM_to_molecules
 
-    def get_performance_metrics(self) -> Dict[str, float]:
+    def get_performance_metrics(self) -> dict[str, float]:
         """Get simulation performance metrics.
 
         Returns:
             Dictionary with performance statistics
         """
+
         return {
             "total_reactions": self._reaction_count,
             "reactions_per_second": self._reaction_count,  # Placeholder
@@ -267,6 +274,7 @@ class GillespieSimulatorOptimized(GillespieSimulator):
 
         For each reaction, identify which reactions' propensities are affected.
         """
+
         # For Phase 1, use full propensity recalculation
         # Phase 2+ will implement partial updates
         pass

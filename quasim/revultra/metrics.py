@@ -29,6 +29,7 @@ def find_peaks(array: NDArray[np.float64], threshold: float = 0.1) -> list[int]:
     >>> 1 in peaks and 3 in peaks
     True
     """
+
     if len(array) < 3:
         return []
 
@@ -58,6 +59,7 @@ def normalize_array(array: NDArray[np.float64], method: str = "minmax") -> NDArr
     NDArray[np.float64]
         Normalized array
     """
+
     if method == "minmax":
         min_val, max_val = np.min(array), np.max(array)
         if max_val - min_val < 1e-10:
@@ -92,6 +94,7 @@ def compute_entropy(probabilities: NDArray[np.float64]) -> float:
     >>> abs(compute_entropy(probs) - 1.0) < 0.01
     True
     """
+
     # Filter out zeros to avoid log(0)
     probs = probabilities[probabilities > 0]
     return float(-np.sum(probs * np.log2(probs)))
@@ -114,6 +117,7 @@ def sliding_window_stats(
     dict[str, NDArray[np.float64]]
         Dictionary with 'mean', 'std', 'min', 'max' arrays
     """
+
     if len(array) < window_size:
         return {
             "mean": np.array([]),

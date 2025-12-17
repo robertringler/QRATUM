@@ -34,6 +34,7 @@ def get_latest_frame_json() -> str:
     Returns:
         JSON string of latest frame data
     """
+
     return json.dumps(_latest_frame)
 
 
@@ -44,6 +45,7 @@ def update_frame_data(mesh: Any, fields: dict[str, Any]) -> None:
         mesh: Mesh data to store
         fields: Field data to store
     """
+
     global _latest_frame
     # Convert numpy arrays to lists for JSON serialization
     try:
@@ -64,6 +66,7 @@ def create_dashboard_app() -> Any:
     Returns:
         FastAPI app instance or None if FastAPI not available
     """
+
     if not FASTAPI_AVAILABLE:
         return None
 
@@ -76,6 +79,7 @@ def create_dashboard_app() -> Any:
     @app.get("/health")
     async def health_check() -> dict[str, Any]:
         """Health check endpoint."""
+
         return {
             "status": "healthy",
             "clients_connected": len(_clients),
@@ -88,6 +92,7 @@ def create_dashboard_app() -> Any:
         Args:
             ws: WebSocket connection
         """
+
         await ws.accept()
         _clients.add(ws)
         try:
@@ -110,6 +115,7 @@ def create_dashboard_app() -> Any:
         Returns:
             Current frame data
         """
+
         return _latest_frame
 
     return app
@@ -122,6 +128,7 @@ async def broadcast_frame(mesh: Any, fields: dict[str, Any]) -> None:
         mesh: Mesh data to broadcast
         fields: Field data to broadcast
     """
+
     update_frame_data(mesh, fields)
     frame_data = get_latest_frame_json()
 

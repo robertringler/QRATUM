@@ -20,6 +20,7 @@ from xenon.bioinformatics.sequence_analyzer import SequenceAnalyzer
 
 def demo_sequence_analysis():
     """Demonstrate sequence analysis capabilities."""
+
     print("=" * 60)
     print("XENON Sequence Analysis Demo")
     print("=" * 60)
@@ -59,6 +60,7 @@ ILHGAVRFSNNPALCNVESIQWRDIVSSDFLSNMSMDFQNHLGSCQKCDPSCPNGSCWGAGEENCQKLTKII"""
 
 def demo_literature_mining():
     """Demonstrate literature mining capabilities."""
+
     print("\n" + "=" * 60)
     print("XENON Literature Mining Demo")
     print("=" * 60)
@@ -112,6 +114,7 @@ def demo_literature_mining():
 
 def demo_drug_target_scoring():
     """Demonstrate drug-target scoring capabilities."""
+
     print("\n" + "=" * 60)
     print("XENON Drug-Target Scoring Demo")
     print("=" * 60)
@@ -176,6 +179,7 @@ def demo_drug_target_scoring():
 
 def demo_multiomics_integration():
     """Demonstrate multi-omics integration capabilities."""
+
     print("\n" + "=" * 60)
     print("XENON Multi-Omics Integration Demo")
     print("=" * 60)
@@ -188,7 +192,7 @@ def demo_multiomics_integration():
     # Healthy samples (group 1)
     for i in range(5):
         sample = OmicsData(
-            sample_id=f"HEALTHY_{i+1}",
+            sample_id=f"HEALTHY_{i + 1}",
             transcriptomics={
                 "EGFR": np.random.normal(100, 10),
                 "KRAS": np.random.normal(150, 15),
@@ -210,7 +214,7 @@ def demo_multiomics_integration():
     # Disease samples (group 2)
     for i in range(5):
         sample = OmicsData(
-            sample_id=f"DISEASE_{i+1}",
+            sample_id=f"DISEASE_{i + 1}",
             transcriptomics={
                 "EGFR": np.random.normal(200, 20),  # Upregulated
                 "KRAS": np.random.normal(140, 14),
@@ -232,8 +236,8 @@ def demo_multiomics_integration():
     print(f"\nAnalyzing {len(integrator._samples)} samples")
 
     # Identify biomarkers
-    healthy_ids = [f"HEALTHY_{i+1}" for i in range(5)]
-    disease_ids = [f"DISEASE_{i+1}" for i in range(5)]
+    healthy_ids = [f"HEALTHY_{i + 1}" for i in range(5)]
+    disease_ids = [f"DISEASE_{i + 1}" for i in range(5)]
 
     biomarkers = integrator.identify_biomarkers(disease_ids, healthy_ids, effect_size_threshold=1.3)
 
@@ -260,6 +264,7 @@ def demo_multiomics_integration():
 
 def main():
     """Run all demonstrations."""
+
     print("\n" + "=" * 60)
     print("XENON Bioinformatics Capabilities Demonstration")
     print("=" * 60)

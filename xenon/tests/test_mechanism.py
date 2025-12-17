@@ -11,6 +11,7 @@ class TestMolecularState:
 
     def test_create_state(self):
         """Test creating a molecular state."""
+
         state = MolecularState(
             name="S1",
             molecule="TestProtein",
@@ -26,6 +27,7 @@ class TestMolecularState:
 
     def test_state_serialization(self):
         """Test state to_dict."""
+
         state = MolecularState(
             name="S1",
             molecule="Protein",
@@ -43,6 +45,7 @@ class TestTransition:
 
     def test_create_transition(self):
         """Test creating a transition."""
+
         transition = Transition(
             source="S1",
             target="S2",
@@ -56,6 +59,7 @@ class TestTransition:
 
     def test_reversible_transition(self):
         """Test reversible transition."""
+
         transition = Transition(
             source="S1",
             target="S2",
@@ -73,6 +77,7 @@ class TestBioMechanism:
 
     def test_create_mechanism(self):
         """Test creating a mechanism."""
+
         mech = BioMechanism("test_mechanism")
         assert mech.name == "test_mechanism"
         assert len(mech._states) == 0
@@ -80,6 +85,7 @@ class TestBioMechanism:
 
     def test_add_states(self):
         """Test adding states to mechanism."""
+
         mech = BioMechanism("test")
 
         state1 = MolecularState(name="S1", molecule="Protein", free_energy=-10.0)
@@ -94,6 +100,7 @@ class TestBioMechanism:
 
     def test_add_transition(self):
         """Test adding transition to mechanism."""
+
         mech = BioMechanism("test")
 
         state1 = MolecularState(name="S1", molecule="Protein", free_energy=-10.0)
@@ -108,6 +115,7 @@ class TestBioMechanism:
 
     def test_add_transition_missing_state(self):
         """Test adding transition with missing state raises error."""
+
         mech = BioMechanism("test")
 
         state1 = MolecularState(name="S1", molecule="Protein")
@@ -120,6 +128,7 @@ class TestBioMechanism:
 
     def test_thermodynamic_feasibility(self):
         """Test thermodynamic feasibility check."""
+
         mech = BioMechanism("test")
 
         state1 = MolecularState(name="S1", molecule="Protein", free_energy=-10.0)
@@ -140,6 +149,7 @@ class TestBioMechanism:
 
     def test_conservation_laws(self):
         """Test conservation law validation."""
+
         mech = BioMechanism("test")
 
         state1 = MolecularState(name="S1", molecule="Protein")
@@ -155,6 +165,7 @@ class TestBioMechanism:
 
     def test_causal_paths(self):
         """Test finding causal paths."""
+
         mech = BioMechanism("test")
 
         state1 = MolecularState(name="S1", molecule="Protein")
@@ -176,6 +187,7 @@ class TestBioMechanism:
 
     def test_mechanism_hash(self):
         """Test mechanism hash computation."""
+
         mech = BioMechanism("test")
 
         state1 = MolecularState(name="S1", molecule="Protein", free_energy=-10.0)
@@ -195,6 +207,7 @@ class TestBioMechanism:
 
     def test_serialization(self):
         """Test mechanism serialization."""
+
         mech = BioMechanism("test")
 
         state1 = MolecularState(name="S1", molecule="Protein", free_energy=-10.0)
@@ -219,6 +232,7 @@ class TestMechanismGraph:
 
     def test_mutate_topology(self):
         """Test topology mutation."""
+
         mech = BioMechanism("parent")
 
         state1 = MolecularState(name="S1", molecule="Protein")
@@ -236,6 +250,7 @@ class TestMechanismGraph:
 
     def test_extract_subgraph(self):
         """Test subgraph extraction."""
+
         mech = BioMechanism("full")
 
         state1 = MolecularState(name="S1", molecule="Protein")
@@ -260,6 +275,7 @@ class TestMechanismGraph:
 
     def test_recombine_mechanisms(self):
         """Test mechanism recombination."""
+
         mech1 = BioMechanism("parent1")
         mech2 = BioMechanism("parent2")
 
@@ -276,6 +292,7 @@ class TestMechanismGraph:
 
     def test_detect_cycles(self):
         """Test cycle detection."""
+
         mech = BioMechanism("cyclic")
 
         state1 = MolecularState(name="S1", molecule="Protein")
@@ -295,6 +312,7 @@ class TestMechanismGraph:
 
     def test_isomorphic(self):
         """Test isomorphism check."""
+
         mech1 = BioMechanism("mech1")
         mech2 = BioMechanism("mech2")
 

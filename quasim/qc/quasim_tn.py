@@ -47,6 +47,7 @@ class TensorNetworkEngine:
             backend: Backend ("jax", "torch", "numpy")
             seed: Random seed for reproducibility
         """
+
         if num_qubits < 1 or num_qubits > 32:
             raise ValueError("num_qubits must be between 1 and 32")
 
@@ -79,6 +80,7 @@ class TensorNetworkEngine:
 
     def _initialize_backend(self) -> None:
         """Initialize computation backend."""
+
         if self.backend == "jax":
             try:
                 import jax
@@ -114,6 +116,7 @@ class TensorNetworkEngine:
         Args:
             state: Initial state ("zero" for |00...0⟩)
         """
+
         if state == "zero":
             if self.use_mps:
                 # Initialize MPS representation
@@ -143,6 +146,7 @@ class TensorNetworkEngine:
 
     def _initialize_mps_zero(self) -> list[NDArray]:
         """Initialize MPS tensors for |0...0⟩ state."""
+
         mps = []
         for i in range(self.num_qubits):
             if i == 0:
@@ -176,6 +180,7 @@ class TensorNetworkEngine:
             targets: Target qubit indices
             params: Optional gate parameters
         """
+
         start_time = time.time()
 
         # Get gate tensor
@@ -200,6 +205,7 @@ class TensorNetworkEngine:
 
     def _get_gate_tensor(self, gate_name: str, params: dict[str, float] | None = None) -> NDArray:
         """Get gate tensor from name."""
+
         params = params or {}
 
         # Use numpy for gate definitions, convert to backend later
@@ -240,6 +246,7 @@ class TensorNetworkEngine:
 
     def _apply_gate_tensor(self, gate: NDArray, targets: list[int]) -> None:
         """Apply gate to full state tensor using einsum."""
+
         if self.state_tensor is None:
             raise RuntimeError("State not initialized")
 
@@ -279,6 +286,7 @@ class TensorNetworkEngine:
 
     def _apply_two_qubit_gate_tensor(self, gate: NDArray, q1: int, q2: int) -> NDArray:
         """Apply two-qubit gate using tensor contraction."""
+
         if self.state_tensor is None:
             raise RuntimeError("State not initialized")
 
@@ -311,6 +319,7 @@ class TensorNetworkEngine:
 
     def _apply_gate_mps(self, gate: NDArray, targets: list[int]) -> None:
         """Apply gate in MPS representation."""
+
         # Simplified MPS gate application
         # Production version would implement proper MPS algorithms
         if self.mps_tensors is None:
@@ -324,6 +333,7 @@ class TensorNetworkEngine:
 
     def _mps_to_tensor(self) -> NDArray:
         """Convert MPS to full tensor."""
+
         if self.mps_tensors is None:
             raise RuntimeError("MPS not initialized")
 
@@ -336,6 +346,7 @@ class TensorNetworkEngine:
 
     def _tensor_to_mps(self) -> list[NDArray]:
         """Convert tensor to MPS using SVD compression."""
+
         if self.state_tensor is None:
             raise RuntimeError("State tensor not initialized")
 
@@ -382,6 +393,7 @@ class TensorNetworkEngine:
             kraus_ops: List of Kraus operators
             targets: Target qubit indices
         """
+
         # For noise, need to work with density matrix
         # This is a simplified implementation
         # Production would implement proper Kraus evolution
@@ -396,6 +408,7 @@ class TensorNetworkEngine:
             control_schedule: List of (time, hamiltonian_params)
             method: Evolution method ("trotter" or "expm")
         """
+
         # Placeholder for Hamiltonian evolution
         # Would implement time-sliced evolution
         pass
@@ -409,6 +422,7 @@ class TensorNetworkEngine:
         Returns:
             Batch results with statistics
         """
+
         start_time = time.time()
 
         # For now, return single trajectory result
@@ -432,6 +446,7 @@ class TensorNetworkEngine:
         Returns:
             Dictionary of expectation values
         """
+
         if self.state_tensor is None:
             raise RuntimeError("State not initialized")
 
@@ -451,6 +466,7 @@ class TensorNetworkEngine:
         Returns:
             Dictionary with profiling data
         """
+
         profile = self.profile_data.copy()
 
         # Add backend info
@@ -476,6 +492,7 @@ class TensorNetworkEngine:
         Returns:
             State vector (flattened)
         """
+
         if self.use_mps and self.mps_tensors is not None:
             tensor = self._mps_to_tensor()
         elif self.state_tensor is not None:
@@ -494,6 +511,7 @@ class TensorNetworkEngine:
         Returns:
             Fidelity (0 to 1)
         """
+
         state = self.get_state_vector()
         target = np.asarray(target_state).flatten()
 
@@ -511,6 +529,7 @@ class TensorNetworkEngine:
         Returns:
             Entropy in bits
         """
+
         state = self.get_state_vector()
         rho = np.outer(state, np.conj(state))
 

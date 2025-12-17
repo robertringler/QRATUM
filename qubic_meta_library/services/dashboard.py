@@ -10,6 +10,7 @@ class Dashboard:
 
     def __init__(self):
         """Initialize dashboard."""
+
         self.kpis: dict[str, Any] = {}
 
     def calculate_kpis(
@@ -20,6 +21,7 @@ class Dashboard:
         pipelines: dict[str, Pipeline],
     ) -> dict[str, Any]:
         """
+
         Calculate all KPIs for the meta library.
 
         Args:
@@ -31,6 +33,7 @@ class Dashboard:
         Returns:
             Dictionary with all KPI metrics
         """
+
         self.kpis = {
             "prompt_metrics": self._calculate_prompt_metrics(prompts),
             "domain_metrics": self._calculate_domain_metrics(prompts, domains),
@@ -44,6 +47,7 @@ class Dashboard:
 
     def _calculate_prompt_metrics(self, prompts: dict[int, Prompt]) -> dict[str, Any]:
         """Calculate prompt execution metrics."""
+
         if not prompts:
             return {
                 "total_prompts": 0,
@@ -88,6 +92,7 @@ class Dashboard:
         self, prompts: dict[int, Prompt], domains: dict[str, Domain]
     ) -> dict[str, Any]:
         """Calculate domain-level metrics."""
+
         domain_prompt_counts = {}
         domain_avg_patentability = {}
 
@@ -111,6 +116,7 @@ class Dashboard:
 
     def _calculate_cluster_metrics(self, clusters: dict[str, SynergyCluster]) -> dict[str, Any]:
         """Calculate synergy cluster metrics."""
+
         if not clusters:
             return {
                 "total_clusters": 0,
@@ -136,6 +142,7 @@ class Dashboard:
 
     def _calculate_pipeline_metrics(self, pipelines: dict[str, Pipeline]) -> dict[str, Any]:
         """Calculate pipeline execution metrics."""
+
         if not pipelines:
             return {"total": 0}
 
@@ -156,6 +163,7 @@ class Dashboard:
 
     def _calculate_patent_metrics(self, prompts: dict[int, Prompt]) -> dict[str, Any]:
         """Calculate patent pipeline metrics."""
+
         if not prompts:
             return {"total": 0}
 
@@ -175,6 +183,7 @@ class Dashboard:
         self, prompts: dict[int, Prompt], clusters: dict[str, SynergyCluster]
     ) -> dict[str, Any]:
         """Calculate commercial readiness metrics."""
+
         if not prompts:
             return {"average_score": 0}
 
@@ -194,6 +203,7 @@ class Dashboard:
 
     def _group_prompts_by_phase(self, prompts: dict[int, Prompt]) -> dict[int, int]:
         """Group prompts by deployment phase."""
+
         phase_counts = {}
         for prompt in prompts.values():
             phase_counts[prompt.phase_deployment] = phase_counts.get(prompt.phase_deployment, 0) + 1
@@ -201,6 +211,7 @@ class Dashboard:
 
     def _group_prompts_by_output_type(self, prompts: dict[int, Prompt]) -> dict[str, int]:
         """Group prompts by output type."""
+
         output_counts = {}
         for prompt in prompts.values():
             output_counts[prompt.output_type] = output_counts.get(prompt.output_type, 0) + 1
@@ -208,6 +219,7 @@ class Dashboard:
 
     def _group_domains_by_tier(self, domains: dict[str, Domain]) -> dict[int, int]:
         """Group domains by tier."""
+
         tier_counts = {}
         for domain in domains.values():
             tier_counts[domain.tier] = tier_counts.get(domain.tier, 0) + 1
@@ -221,6 +233,7 @@ class Dashboard:
         pipelines: dict[str, Pipeline],
     ) -> str:
         """
+
         Generate executive summary report.
 
         Args:
@@ -232,6 +245,7 @@ class Dashboard:
         Returns:
             Executive summary as formatted string
         """
+
         kpis = self.calculate_kpis(prompts, domains, clusters, pipelines)
 
         summary = "# Qubic Meta Library Executive Summary\n\n"

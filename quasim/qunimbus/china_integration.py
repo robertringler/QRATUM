@@ -55,6 +55,7 @@ class ChinaPhotonicFactory:
         Args:
             config: Factory configuration (uses defaults if None)
         """
+
         self.config = config or ChinaFactoryConfig()
         self.metrics = ChinaFactoryMetrics(timestamp=datetime.now())
         self._connected = False
@@ -73,6 +74,7 @@ class ChinaPhotonicFactory:
         Returns:
             True if connection successful
         """
+
         logger.info("Connecting to China Photonic Factory...")
         logger.info(f"QKD Protocol: BB84 | Latency target: {self.config.qkd_latency_ms} ms")
 
@@ -96,6 +98,7 @@ class ChinaPhotonicFactory:
         Returns:
             Generation results
         """
+
         if not self._connected:
             logger.warning("Not connected to China factory, connecting...")
             self.connect()
@@ -119,6 +122,7 @@ class ChinaPhotonicFactory:
 
     def display_dashboard(self):
         """Display China Photonic Factory dashboard."""
+
         logger.info("\n#### China Factory Dashboard")
         logger.info("```")
         logger.info("┌────────────────────────────────────────────────────────────┐")
@@ -153,6 +157,7 @@ class ChinaPhotonicFactory:
         Returns:
             Current metrics snapshot
         """
+
         self.metrics.timestamp = datetime.now()
         return self.metrics
 
@@ -162,6 +167,7 @@ class ChinaPhotonicFactory:
         Returns:
             Compliance status dictionary
         """
+
         return {
             "china_standards": {
                 "mlps_level": "3",
@@ -188,6 +194,7 @@ class ChinaPhotonicFactory:
 
     def disconnect(self):
         """Disconnect from China Photonic Factory."""
+
         if self._connected:
             logger.info("Disconnecting from China Photonic Factory...")
             self._connected = False

@@ -76,6 +76,7 @@ class MaterialProperties:
         Returns:
             Effective elastic modulus in GPa
         """
+
         # Temperature effect (WLF equation simplified)
         t_factor = 1.0 - 0.01 * (temperature - 20.0)
         t_factor = max(0.3, min(1.5, t_factor))
@@ -95,6 +96,7 @@ class MaterialProperties:
         Returns:
             Energy loss per cycle (normalized)
         """
+
         # Frequency-dependent loss factor
         freq_factor = 1.0 + 0.1 * (frequency**0.5)
 
@@ -111,6 +113,7 @@ class MaterialProperties:
             uv_hours: Hours of UV exposure
             stress_cycles: Number of high-stress fatigue cycles
         """
+
         # Oxidative degradation
         oxidation_factor = 1.0 - (exposure_days / 3650.0) * (1.0 - self.oxidation_resistance)
         oxidation_factor = max(0.5, oxidation_factor)
@@ -168,6 +171,7 @@ class TireCompound:
         Returns:
             Optimization results including improved properties and composition
         """
+
         from quasim.opt.optimizer import QuantumOptimizer
         from quasim.opt.problems import OptimizationProblem
 
@@ -184,6 +188,7 @@ class TireCompound:
                 Returns:
                     Negative performance score (for minimization)
                 """
+
                 # Simple heuristic: penalize deviation from target
                 # In production, this would use detailed material models
                 score = sum(x**2 for x in solution)  # Regularization
@@ -223,6 +228,7 @@ class TireCompound:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize compound to dictionary."""
+
         return {
             "compound_id": self.compound_id,
             "name": self.name,

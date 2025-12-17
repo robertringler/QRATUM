@@ -27,6 +27,7 @@ class CADExporter:
             ValueError: If format is not supported
             ImportError: If required library (trimesh) is not available
         """
+
         if format not in SUPPORTED_FORMATS:
             raise ValueError(f"Unsupported format: {format}. Supported: {SUPPORTED_FORMATS}")
 
@@ -60,7 +61,7 @@ class CADExporter:
                 CADExporter._export_obj_fallback(mesh, filename)
             else:
                 raise ImportError(
-                    f"trimesh required for {format} export. " "Install with: pip install trimesh"
+                    f"trimesh required for {format} export. Install with: pip install trimesh"
                 ) from exc
 
     @staticmethod
@@ -71,6 +72,7 @@ class CADExporter:
             mesh: Mesh object or dictionary
             filename: Output file path
         """
+
         # Extract vertices and faces
         if hasattr(mesh, "vertices"):
             vertices = mesh.vertices
@@ -98,7 +100,7 @@ class CADExporter:
             # Write faces (OBJ is 1-indexed)
             f.write("\n")
             for face in faces:
-                f.write(f"f {face[0]+1} {face[1]+1} {face[2]+1}\n")
+                f.write(f"f {face[0] + 1} {face[1] + 1} {face[2] + 1}\n")
 
     @staticmethod
     def get_supported_formats() -> list[str]:
@@ -107,4 +109,5 @@ class CADExporter:
         Returns:
             List of supported format strings
         """
+
         return SUPPORTED_FORMATS.copy()

@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import warnings
 from dataclasses import dataclass
-from typing import Dict, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -111,9 +111,10 @@ class QuantumAlignmentEngine:
             config: Alignment configuration
             seed: Random seed for reproducibility
         """
+
         self.config = config or AlignmentConfig()
         self.seed_manager = SeedManager(seed if seed is not None else 42)
-        self._alignment_cache: Dict[Tuple[str, str], AlignmentResult] = {}
+        self._alignment_cache: dict[tuple[str, str], AlignmentResult] = {}
         self._call_count = 0
 
     def compute_sequence_entropy(self, sequence: str) -> float:
@@ -130,10 +131,11 @@ class QuantumAlignmentEngine:
         Returns:
             Shannon entropy in bits
         """
+
         sequence = sequence.upper()
 
         # Count amino acids
-        aa_counts: Dict[str, int] = {}
+        aa_counts: dict[str, int] = {}
         for aa in sequence:
             if aa in "ACDEFGHIKLMNPQRSTVWY":
                 aa_counts[aa] = aa_counts.get(aa, 0) + 1
@@ -166,6 +168,7 @@ class QuantumAlignmentEngine:
         Returns:
             Selected circuit depth
         """
+
         # Compute entropy for both sequences
         h1 = self.compute_sequence_entropy(seq1)
         h2 = self.compute_sequence_entropy(seq2)
@@ -185,7 +188,7 @@ class QuantumAlignmentEngine:
         self,
         seq1: str,
         seq2: str,
-    ) -> Tuple[str, str, float, np.ndarray]:
+    ) -> tuple[str, str, float, np.ndarray]:
         """Perform classical Needleman-Wunsch alignment.
 
         This is the reference implementation for equivalence validation.
@@ -197,6 +200,7 @@ class QuantumAlignmentEngine:
         Returns:
             Tuple of (aligned_seq1, aligned_seq2, score, score_matrix)
         """
+
         seq1 = seq1.upper()
         seq2 = seq2.upper()
         m, n = len(seq1), len(seq2)
@@ -274,6 +278,7 @@ class QuantumAlignmentEngine:
         Returns:
             Condition number (ratio of max to min singular value)
         """
+
         # Use Frobenius norm-based estimate for efficiency
         if matrix.size == 0:
             return 1.0
@@ -291,7 +296,7 @@ class QuantumAlignmentEngine:
         seq1: str,
         seq2: str,
         circuit_depth: int,
-    ) -> Tuple[str, str, float]:
+    ) -> tuple[str, str, float]:
         """Perform quantum-inspired alignment (placeholder).
 
         Note: This is a placeholder for future quantum backend integration.
@@ -306,6 +311,7 @@ class QuantumAlignmentEngine:
         Returns:
             Tuple of (aligned_seq1, aligned_seq2, score)
         """
+
         # Use classical algorithm with deterministic seed-based perturbation
         # This ensures reproducibility while maintaining equivalence
         aligned1, aligned2, score, _ = self.align_classical(seq1, seq2)
@@ -348,6 +354,7 @@ class QuantumAlignmentEngine:
         Raises:
             ValueError: If equivalence validation fails
         """
+
         self._call_count += 1
 
         # Check cache (deterministic cache key)
@@ -420,14 +427,16 @@ class QuantumAlignmentEngine:
 
     def clear_cache(self) -> None:
         """Clear alignment cache."""
+
         self._alignment_cache.clear()
 
-    def get_statistics(self) -> Dict[str, any]:
+    def get_statistics(self) -> dict[str, any]:
         """Get alignment engine statistics.
 
         Returns:
             Dictionary with statistics
         """
+
         return {
             "total_alignments": self._call_count,
             "cached_alignments": len(self._alignment_cache),

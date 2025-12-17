@@ -17,6 +17,7 @@ class TestAuditRegistry:
 
     def test_initialization(self):
         """Test registry initialization."""
+
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
             db_path = f.name
 
@@ -30,6 +31,7 @@ class TestAuditRegistry:
 
     def test_log_entry(self):
         """Test logging an audit entry."""
+
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
             db_path = f.name
 
@@ -52,6 +54,7 @@ class TestAuditRegistry:
 
     def test_query_entries(self):
         """Test querying audit entries."""
+
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
             db_path = f.name
 
@@ -82,6 +85,7 @@ class TestAuditRegistry:
 
     def test_mark_resolved(self):
         """Test marking entry as resolved."""
+
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
             db_path = f.name
 
@@ -113,6 +117,7 @@ class TestAuditRegistry:
 
     def test_get_statistics(self):
         """Test getting statistics."""
+
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
             db_path = f.name
 

@@ -31,6 +31,7 @@ class TireScenarioGenerator:
         Args:
             random_seed: Random seed for reproducibility
         """
+
         self.random_seed = random_seed
         self.rng = np.random.RandomState(random_seed)
 
@@ -43,6 +44,7 @@ class TireScenarioGenerator:
         Returns:
             List of tire compound specifications
         """
+
         compound_types = list(CompoundType)
         compounds = []
 
@@ -136,6 +138,7 @@ class TireScenarioGenerator:
         Returns:
             List of tire geometry specifications
         """
+
         tire_types = list(TireType)
         tread_patterns = list(TreadPattern)
         geometries = []
@@ -251,6 +254,7 @@ class TireScenarioGenerator:
         Returns:
             List of environmental condition specifications
         """
+
         surfaces = list(RoadSurface)
         weathers = list(WeatherCondition)
         environments = []
@@ -306,6 +310,7 @@ class TireScenarioGenerator:
         Returns:
             List of (load_kg, pressure_kpa, speed_kmh) tuples
         """
+
         conditions = []
 
         # Load range: 200-1200 kg
@@ -332,6 +337,7 @@ class TireScenarioGenerator:
         Returns:
             List of scenario specifications ready for simulation
         """
+
         print(f"Generating {target_count} tire simulation scenarios...")
 
         # Generate component variants
@@ -401,6 +407,7 @@ def generate_tire_library(
     Returns:
         Summary of library generation
     """
+
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
@@ -487,6 +494,7 @@ def generate_tire_library(
 
 def _export_to_csv(results: list[dict[str, Any]], csv_file: Path) -> None:
     """Export results to CSV format."""
+
     try:
         import csv
 
@@ -511,6 +519,7 @@ def _export_to_csv(results: list[dict[str, Any]], csv_file: Path) -> None:
 
 def _flatten_dict(d: dict[str, Any], parent_key: str = "", sep: str = "_") -> dict[str, Any]:
     """Flatten nested dictionary."""
+
     items = []
     for k, v in d.items():
         new_key = f"{parent_key}{sep}{k}" if parent_key else k
@@ -525,6 +534,7 @@ def _flatten_dict(d: dict[str, Any], parent_key: str = "", sep: str = "_") -> di
 
 def _flatten_dict_keys(d: dict[str, Any], parent_key: str = "", sep: str = "_") -> list[str]:
     """Get flattened dictionary keys."""
+
     keys = []
     for k, v in d.items():
         new_key = f"{parent_key}{sep}{k}" if parent_key else k
@@ -537,6 +547,7 @@ def _flatten_dict_keys(d: dict[str, Any], parent_key: str = "", sep: str = "_") 
 
 def _compute_library_statistics(results: list[dict[str, Any]]) -> dict[str, Any]:
     """Compute summary statistics for simulation library."""
+
     if not results:
         return {}
 
@@ -564,11 +575,12 @@ def _compute_library_statistics(results: list[dict[str, Any]]) -> dict[str, Any]
 
 def _generate_readme(readme_file: Path, summary: dict[str, Any]) -> None:
     """Generate README for tire simulation library."""
+
     content = f"""# Tire Simulation Library - Goodyear Quantum Pilot Platform Integration
 
 ## Overview
 
-This library contains {summary['total_scenarios']} comprehensive tire simulation scenarios
+This library contains {summary["total_scenarios"]} comprehensive tire simulation scenarios
 generated using QuASIM quantum-accelerated simulation engine.
 
 ## Library Structure
@@ -629,19 +641,21 @@ summary = generate_tire_library(
     if "statistics" in summary:
         stats = summary["statistics"]
         content += f"""
-- Average Grip Coefficient: {stats.get('avg_grip_coefficient', 'N/A')}
-- Average Rolling Resistance: {stats.get('avg_rolling_resistance', 'N/A')}
-- Average Wear Rate: {stats.get('avg_wear_rate', 'N/A')} mm/1000km
-- Average Thermal Performance: {stats.get('avg_thermal_performance', 'N/A')}
-- Average Optimization Score: {stats.get('avg_optimization_score', 'N/A')}
+
+- Average Grip Coefficient: {stats.get("avg_grip_coefficient", "N/A")}
+- Average Rolling Resistance: {stats.get("avg_rolling_resistance", "N/A")}
+- Average Wear Rate: {stats.get("avg_wear_rate", "N/A")} mm/1000km
+- Average Thermal Performance: {stats.get("avg_thermal_performance", "N/A")}
+- Average Optimization Score: {stats.get("avg_optimization_score", "N/A")}
 
 ### Performance Ranges
-- Grip Coefficient: {stats.get('grip_range', ['N/A', 'N/A'])[0]} - {stats.get('grip_range', ['N/A', 'N/A'])[1]}
-- Rolling Resistance: {stats.get('rolling_resistance_range', ['N/A', 'N/A'])[0]} - {stats.get('rolling_resistance_range', ['N/A', 'N/A'])[1]}
-- Predicted Lifetime: {stats.get('predicted_lifetime_range', ['N/A', 'N/A'])[0]} - {stats.get('predicted_lifetime_range', ['N/A', 'N/A'])[1]} km
+- Grip Coefficient: {stats.get("grip_range", ["N/A", "N/A"])[0]} - {stats.get("grip_range", ["N/A", "N/A"])[1]}
+- Rolling Resistance: {stats.get("rolling_resistance_range", ["N/A", "N/A"])[0]} - {stats.get("rolling_resistance_range", ["N/A", "N/A"])[1]}
+- Predicted Lifetime: {stats.get("predicted_lifetime_range", ["N/A", "N/A"])[0]} - {stats.get("predicted_lifetime_range", ["N/A", "N/A"])[1]} km
 """
 
     content += """
+
 ## Compliance
 
 All simulations maintain:

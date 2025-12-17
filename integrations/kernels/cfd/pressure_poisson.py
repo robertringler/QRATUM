@@ -65,6 +65,7 @@ class PressurePoissonConfig:
             deterministic: Enable deterministic execution
             seed: Random seed for reproducibility
         """
+
         self.grid_size = grid_size
         self.max_iterations = max_iterations
         self.tolerance = tolerance
@@ -87,6 +88,7 @@ class PressurePoissonSolver:
         Args:
             config: Solver configuration
         """
+
         self.config = config
         self.nx, self.ny, self.nz = config.grid_size
         self.backend = config.backend
@@ -101,6 +103,7 @@ class PressurePoissonSolver:
 
     def _initialize_backend(self):
         """Initialize computation backend."""
+
         if self.backend == Backend.CUDA:
             try:
                 import cupy as cp
@@ -134,6 +137,7 @@ class PressurePoissonSolver:
         Returns:
             Laplacian of pressure field
         """
+
         lap = self.xp.zeros_like(pressure)
 
         # Simple 7-point stencil for 3D Laplacian
@@ -166,6 +170,7 @@ class PressurePoissonSolver:
         Returns:
             Updated pressure field
         """
+
         # Pre-smoothing with Jacobi iterations
         for _ in range(5):
             residual = self._apply_laplacian(pressure) - rhs
@@ -206,6 +211,7 @@ class PressurePoissonSolver:
         Returns:
             Dictionary with solution and metrics
         """
+
         logger.info("Starting pressure Poisson solve")
         start_time = time.perf_counter()
 
@@ -276,6 +282,7 @@ class PressurePoissonSolver:
 
 def main():
     """Example usage of pressure Poisson solver."""
+
     # Create configuration
     config = PressurePoissonConfig(
         grid_size=(64, 64, 64),

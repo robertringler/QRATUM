@@ -36,6 +36,7 @@ def simulate(circuit, *, precision: str = "fp8"):
     Returns:
         List of complex numbers (NOT quantum amplitudes)
     """
+
     cfg = Config(simulation_precision=precision, max_workspace_mb=1024)
     tensors = [[complex(value) for value in gate] for gate in circuit]
     with runtime(cfg) as rt:

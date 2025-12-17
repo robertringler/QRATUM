@@ -1,4 +1,5 @@
 """
+
 Reproducibility Manager for QRATUM
 
 Enforces deterministic behavior across Python, NumPy, PyTorch, TensorFlow, and Qiskit.
@@ -14,6 +15,7 @@ from .global_seed import get_global_seed
 
 class ReproducibilityManager:
     """
+
     Manages reproducibility across multiple frameworks.
 
     Ensures deterministic execution for:
@@ -26,16 +28,19 @@ class ReproducibilityManager:
 
     def __init__(self, seed: Optional[int] = None):
         """
+
         Initialize reproducibility manager.
 
         Args:
             seed: Optional seed override. If None, uses global seed.
         """
+
         self.seed = seed if seed is not None else get_global_seed()
         self._initialized = False
 
     def setup_deterministic_mode(self) -> None:
         """
+
         Configure all frameworks for deterministic execution.
 
         Sets up:
@@ -45,6 +50,7 @@ class ReproducibilityManager:
         - TensorFlow deterministic ops
         - Qiskit seed
         """
+
         if self._initialized:
             return
 
@@ -89,20 +95,24 @@ class ReproducibilityManager:
 
     def get_qiskit_seed(self) -> int:
         """
+
         Get seed for Qiskit quantum simulators.
 
         Returns:
             int: Seed value for Qiskit
         """
+
         return self.seed
 
     def verify_determinism(self) -> dict:
         """
+
         Verify deterministic configuration across frameworks.
 
         Returns:
             dict: Status of deterministic settings
         """
+
         status = {
             "seed": self.seed,
             "python_hash_seed": os.environ.get("PYTHONHASHSEED"),

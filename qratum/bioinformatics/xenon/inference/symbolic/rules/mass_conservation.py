@@ -1,4 +1,5 @@
 """
+
 Mass Conservation Rule (IMMUTABLE)
 
 Enforces mass conservation in biological reactions.
@@ -10,6 +11,7 @@ from typing import Dict, Optional
 
 def validate_mass_conservation(query: Dict, context: Optional[Dict] = None) -> Dict:
     """
+
     Validate mass conservation.
 
     For biological reactions: sum(reactant_masses) = sum(product_masses)
@@ -21,6 +23,7 @@ def validate_mass_conservation(query: Dict, context: Optional[Dict] = None) -> D
     Returns:
         Validation result
     """
+
     # If no reaction data, assume valid
     if context is None or "reaction" not in context:
         return {"valid": True, "message": "No reaction data to validate"}

@@ -31,6 +31,7 @@ class StandardScaler:
         -------
         self
         """
+
         self.mean_ = np.mean(X, axis=0)
         self.std_ = np.std(X, axis=0)
         # Avoid division by zero
@@ -50,6 +51,7 @@ class StandardScaler:
         NDArray
             Scaled data
         """
+
         if self.mean_ is None or self.std_ is None:
             raise ValueError("Scaler not fitted. Call fit() first.")
 
@@ -68,6 +70,7 @@ class StandardScaler:
         NDArray
             Scaled data
         """
+
         return self.fit(X).transform(X)
 
 
@@ -99,6 +102,7 @@ class SimpleTokenizer:
         -------
         self
         """
+
         for text in texts:
             for word in text.lower().split():
                 if word not in self.vocab:
@@ -119,6 +123,7 @@ class SimpleTokenizer:
         NDArray
             Token IDs of shape (len(texts), max_length)
         """
+
         result = np.zeros((len(texts), self.max_length), dtype=np.int64)
 
         for i, text in enumerate(texts):
@@ -141,6 +146,7 @@ class SimpleTokenizer:
         NDArray
             Token IDs
         """
+
         return self.fit(texts).transform(texts)
 
 
@@ -157,6 +163,7 @@ def normalize_images(images: NDArray[np.float32]) -> NDArray[np.float32]:
     NDArray
         Normalized images
     """
+
     images = images.astype(np.float32)
     min_val = images.min()
     max_val = images.max()
@@ -188,6 +195,7 @@ def create_sliding_windows(
     targets : NDArray
         Target values (next value after each window)
     """
+
     if data.ndim == 1:
         data = data.reshape(-1, 1)
 

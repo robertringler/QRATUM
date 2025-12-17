@@ -30,6 +30,7 @@ class OptimizationProblem:
 
     def __post_init__(self) -> None:
         """Initialize default bounds if not provided."""
+
         if not self.bounds:
             self.bounds = [(0.0, 1.0) for _ in range(self.dimension)]
 
@@ -42,6 +43,7 @@ class OptimizationProblem:
         Returns:
             Objective function value
         """
+
         raise NotImplementedError("Subclasses must implement evaluate()")
 
     def get_random_solution(self) -> list[float]:
@@ -50,6 +52,7 @@ class OptimizationProblem:
         Returns:
             Random solution within variable bounds
         """
+
         solution = []
         for lower, upper in self.bounds:
             value = random.uniform(lower, upper)
@@ -65,6 +68,7 @@ class OptimizationProblem:
         Returns:
             True if solution is feasible
         """
+
         # Check bounds
         for i, (lower, upper) in enumerate(self.bounds):
             if solution[i] < lower or solution[i] > upper:
@@ -98,6 +102,7 @@ class PortfolioOptimization(OptimizationProblem):
         Returns:
             Negative Sharpe ratio (for minimization)
         """
+
         # Simplified portfolio evaluation
         expected_return = sum(w * r for w, r in zip(solution, self.expected_returns))
 
@@ -131,6 +136,7 @@ class MolecularOptimization(OptimizationProblem):
         Returns:
             Energy or negative binding affinity
         """
+
         # Simplified molecular energy calculation
         # Production version would use quantum chemistry methods (VQE)
         energy = sum(x**2 for x in solution)

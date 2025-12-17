@@ -1,4 +1,5 @@
 """
+
 Constraint Validator for Symbolic Reasoning
 
 Validates biological constraints (IMMUTABLE and TERMINAL).
@@ -10,6 +11,7 @@ from typing import Dict, List, Optional
 
 class ConstraintValidator:
     """
+
     Validates biological constraints.
 
     Enforces:
@@ -20,10 +22,12 @@ class ConstraintValidator:
 
     def __init__(self):
         """Initialize constraint validator."""
+
         self.violation_registry = []
 
     def validate_all(self, query: Dict, context: Optional[Dict] = None) -> Dict:
         """
+
         Validate all constraints.
 
         Args:
@@ -33,6 +37,7 @@ class ConstraintValidator:
         Returns:
             Validation results with violations
         """
+
         violations = []
         critical_violations = []
 
@@ -89,8 +94,10 @@ class ConstraintValidator:
 
     def get_violations(self) -> List[Dict]:
         """Get all recorded violations."""
+
         return self.violation_registry.copy()
 
     def clear_violations(self) -> None:
         """Clear violation registry."""
+
         self.violation_registry.clear()

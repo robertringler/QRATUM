@@ -91,6 +91,7 @@ def benchmark_model(
     BenchmarkResult
         Benchmark results
     """
+
     set_seed(seed)
 
     # Load data
@@ -221,6 +222,7 @@ def run_benchmark_suite(
     list[BenchmarkResult]
         All benchmark results
     """
+
     # Define benchmark configurations
     if suite == "quick":
         tasks = [

@@ -11,6 +11,7 @@ class TestGillespieSimulator:
 
     def test_create_simulator(self):
         """Test creating a simulator."""
+
         mech = BioMechanism("test")
 
         state1 = MolecularState(name="S1", molecule="Protein")
@@ -24,6 +25,7 @@ class TestGillespieSimulator:
 
     def test_simple_simulation(self):
         """Test simple A -> B simulation."""
+
         mech = BioMechanism("simple")
 
         state_a = MolecularState(name="A", molecule="A", concentration=100.0)
@@ -57,6 +59,7 @@ class TestGillespieSimulator:
 
     def test_reversible_reaction(self):
         """Test reversible A <-> B simulation."""
+
         mech = BioMechanism("reversible")
 
         state_a = MolecularState(name="A", molecule="A")
@@ -92,6 +95,7 @@ class TestGillespieSimulator:
 
     def test_seed_reproducibility(self):
         """Test that simulations with same seed are reproducible."""
+
         mech = BioMechanism("test")
 
         state_a = MolecularState(name="A", molecule="A")
@@ -117,6 +121,7 @@ class TestGillespieSimulator:
 
     def test_no_reactions_terminates(self):
         """Test that simulation terminates when no reactions possible."""
+
         mech = BioMechanism("no_reactions")
 
         state_a = MolecularState(name="A", molecule="A")
@@ -139,6 +144,7 @@ class TestGillespieSimulator:
 
     def test_performance_metrics(self):
         """Test getting performance metrics."""
+
         mech = BioMechanism("test")
 
         state_a = MolecularState(name="A", molecule="A")
@@ -166,6 +172,7 @@ class TestGillespieSimulator:
         For simple A -> B with rate k, inter-reaction times should be
         exponentially distributed with mean 1/(k*n_A).
         """
+
         mech = BioMechanism("exponential")
 
         state_a = MolecularState(name="A", molecule="A")
@@ -198,6 +205,7 @@ class TestGillespieSimulator:
 
     def test_mass_conservation(self):
         """Test that total mass is conserved in unimolecular reactions."""
+
         mech = BioMechanism("conservation")
 
         state_a = MolecularState(name="A", molecule="A")
@@ -237,6 +245,7 @@ class TestGillespieOptimized:
 
     def test_optimized_simulator_exists(self):
         """Test that optimized simulator is available."""
+
         from xenon.simulation.gillespie import GillespieSimulatorOptimized
 
         mech = BioMechanism("test")

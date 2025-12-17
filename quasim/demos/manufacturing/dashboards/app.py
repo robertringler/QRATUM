@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Manufacturing Demo - QuASIM", layout="wide")
 
     st.title("🏭 Predictive Maintenance & Throughput Control")
@@ -15,6 +16,7 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
 
     Minimize downtime, maximize throughput, schedule maintenance
@@ -58,6 +60,7 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
 
     ```bash

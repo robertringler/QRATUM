@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Example usage of the NVIDIA NVML backend.
 
 This demonstrates how to use the NVMLBackend for GPU management.
@@ -10,6 +11,7 @@ from quasim.hardware import NVML_AVAILABLE, NVMLBackend
 
 def main():
     """Demonstrate NVML backend usage."""
+
     print("NVIDIA NVML Backend Example")
     print("=" * 50)
 

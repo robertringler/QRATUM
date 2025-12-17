@@ -21,6 +21,7 @@ class ComputePipeline:
 
     def __init__(self, device: str = "cpu", memory_limit_mb: int = 4096) -> None:
         """Initialize compute pipeline."""
+
         self.device = device
         self.kernels = GPUKernels(device)
         self.memory_manager = GPUMemoryManager(memory_limit_mb)
@@ -34,6 +35,7 @@ class ComputePipeline:
             name: Operation name
             inputs: Input dependencies
         """
+
         self.operations.append({"operation": operation, "name": name, "inputs": inputs or []})
 
     def execute(self, initial_data: dict[str, Any]) -> dict[str, Any]:
@@ -45,6 +47,7 @@ class ComputePipeline:
         Returns:
             Results dictionary
         """
+
         results = initial_data.copy()
 
         for op in self.operations:
@@ -63,6 +66,7 @@ class ComputePipeline:
 
     def clear(self) -> None:
         """Clear pipeline operations."""
+
         self.operations = []
 
     def optimize_mesh_rendering(
@@ -78,6 +82,7 @@ class ComputePipeline:
         Returns:
             Tuple of (optimized_vertices, optimized_faces, optimized_field)
         """
+
         # Check memory constraints
         vertex_memory = vertices.nbytes
         face_memory = faces.nbytes
@@ -122,6 +127,7 @@ class ComputePipeline:
         Returns:
             List of processed fields
         """
+
         results = []
 
         for field in field_list:

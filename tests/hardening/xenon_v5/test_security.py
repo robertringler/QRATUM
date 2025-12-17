@@ -1,4 +1,5 @@
 """
+
 Security Tests for XENON v5
 
 Tests input validation and security hardening.
@@ -17,6 +18,7 @@ class TestSecurity:
 
     def test_sequence_validation_dna(self):
         """Test DNA sequence validation."""
+
         validator = SecurityValidator()
 
         # Valid DNA
@@ -30,6 +32,7 @@ class TestSecurity:
 
     def test_sequence_validation_protein(self):
         """Test protein sequence validation."""
+
         validator = SecurityValidator()
 
         # Valid protein
@@ -42,6 +45,7 @@ class TestSecurity:
 
     def test_matrix_validation(self):
         """Test matrix validation."""
+
         validator = SecurityValidator()
 
         # Valid matrix
@@ -63,6 +67,7 @@ class TestSecurity:
 
     def test_file_path_validation(self):
         """Test file path sanitization."""
+
         validator = SecurityValidator()
 
         # Normal path
@@ -75,6 +80,7 @@ class TestSecurity:
 
     def test_bounds_validation(self):
         """Test bounds checking."""
+
         validator = SecurityValidator()
 
         # Within bounds
@@ -91,6 +97,7 @@ class TestSecurity:
 
     def test_alignment_input_validation(self):
         """Test alignment engine validates inputs."""
+
         engine = QuantumAlignmentEngine(seed=42)
 
         # Valid sequences
@@ -103,6 +110,7 @@ class TestSecurity:
 
     def test_information_engine_input_validation(self):
         """Test information engine validates inputs."""
+
         from qratum.bioinformatics.xenon.omics import InformationEngine
 
         engine = InformationEngine(seed=42)

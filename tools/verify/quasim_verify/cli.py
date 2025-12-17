@@ -10,6 +10,7 @@ from .registry import REG
 
 def main():
     """Main entry point for quasim-verify CLI."""
+
     ap = argparse.ArgumentParser(
         "quasim-verify",
         description="QuASIM × QuNimbus claim and compliance verification tool",
@@ -105,7 +106,9 @@ def main():
         level = (
             "error"
             if not r.passed and r.severity == "error"
-            else "warning" if not r.passed else "note"
+            else "warning"
+            if not r.passed
+            else "note"
         )
         message = r.details.get("error", "Check passed")
         sarif_results.append(

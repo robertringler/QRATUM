@@ -26,6 +26,7 @@ def collect_terc_observables(results: list[BenchmarkResult]) -> dict[str, Any]:
         - emergent_complexity: Latent dispersion measure
         - goal_progress: Task completion metric
     """
+
     if not results:
         return {
             "stability_margin": 0.0,
@@ -86,6 +87,7 @@ def save_terc_observables(observables: dict[str, Any], output_path: Path) -> Non
     output_path : Path
         Output file path
     """
+
     import json
 
     output_path.parent.mkdir(parents=True, exist_ok=True)

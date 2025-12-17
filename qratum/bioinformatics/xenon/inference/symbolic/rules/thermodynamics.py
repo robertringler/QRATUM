@@ -1,4 +1,5 @@
 """
+
 Thermodynamics Rule (IMMUTABLE)
 
 Enforces thermodynamic laws in biological systems.
@@ -10,6 +11,7 @@ from typing import Dict, Optional
 
 def validate_thermodynamics(query: Dict, context: Optional[Dict] = None) -> Dict:
     """
+
     Validate thermodynamic constraints.
 
     Checks:
@@ -24,6 +26,7 @@ def validate_thermodynamics(query: Dict, context: Optional[Dict] = None) -> Dict
     Returns:
         Validation result
     """
+
     # If no thermodynamic data, assume valid
     if context is None or "thermodynamics" not in context:
         return {"valid": True, "message": "No thermodynamic data to validate"}

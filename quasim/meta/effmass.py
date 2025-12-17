@@ -40,6 +40,7 @@ def effective_mass_hamiltonian(
     Reference:
         BenDaniel & Duke (1966), Phys. Rev. 152, 683
     """
+
     n = len(mass_profile)
     H = np.zeros((n, n), dtype=complex)
 
@@ -97,6 +98,7 @@ def dispersion_relation(
         >>> H = np.diag([1, 2, 3, 4])
         >>> k, E = dispersion_relation(H, 1.0)
     """
+
     # Diagonalize Hamiltonian
     eigenvalues, eigenvectors = np.linalg.eigh(hamiltonian)
 
@@ -132,6 +134,7 @@ def test_dispersion_parabolic(
         >>> H = effective_mass_hamiltonian(m, 0.1)
         >>> is_ok, m_eff = test_dispersion_parabolic(H, 1.0, 0.1)
     """
+
     # Get dispersion
     k, E = dispersion_relation(hamiltonian, 1.0)
 
@@ -182,6 +185,7 @@ def heterostructure_hamiltonian(
     Example:
         >>> H = heterostructure_hamiltonian(128, 1.0, 2.0, 0.5, 0.1)
     """
+
     # Mass profile with discontinuity at center
     mass_profile = np.ones(n_points) * mass_left
     mass_profile[n_points // 2 :] = mass_right

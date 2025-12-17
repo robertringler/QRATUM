@@ -36,6 +36,7 @@ class NASATelemetryAdapter:
         Args:
             log_format: NASA simulation log format version
         """
+
         self.log_format = log_format
         self._schema_version = "2.0"
 
@@ -51,6 +52,7 @@ class NASATelemetryAdapter:
         Raises:
             ValueError: If parsing fails
         """
+
         fields = csv_line.strip().split(",")
 
         if len(fields) < 8:
@@ -87,6 +89,7 @@ class NASATelemetryAdapter:
         Raises:
             ValueError: If required fields missing
         """
+
         required_fields = ["MET", "vehicle"]
 
         for field_name in required_fields:
@@ -120,6 +123,7 @@ class NASATelemetryAdapter:
         Returns:
             Tuple of (is_valid, error_message)
         """
+
         if len(state_vector) != 6:
             return False, f"State vector must have 6 elements, got {len(state_vector)}"
 
@@ -144,6 +148,7 @@ class NASATelemetryAdapter:
         Returns:
             Tuple of (is_valid, list of validation errors)
         """
+
         errors = []
 
         # Validate MET
@@ -177,6 +182,7 @@ class NASATelemetryAdapter:
         Returns:
             Tuple of (successful_count, failed_count, error_messages)
         """
+
         from pathlib import Path
 
         file = Path(file_path)
@@ -222,6 +228,7 @@ class NASATelemetryAdapter:
         Returns:
             Dictionary in QuASIM format
         """
+
         return {
             "timestamp": telemetry.met,
             "source": "NASA_" + telemetry.vehicle_system,

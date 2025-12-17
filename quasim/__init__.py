@@ -71,17 +71,20 @@ class Runtime:
         Args:
             config: Runtime configuration
         """
+
         self.config = config
         self.average_latency = 0.0
         self._initialized = False
 
     def __enter__(self):
         """Enter runtime context."""
+
         self._initialized = True
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Exit runtime context."""
+
         self._initialized = False
         return False
 
@@ -94,6 +97,7 @@ class Runtime:
         Returns:
             Simulation result as state vector
         """
+
         if not self._initialized:
             raise RuntimeError("Runtime not initialized. Use 'with runtime(config)' context.")
 
@@ -120,6 +124,7 @@ def runtime(config: Config):
     Yields:
         Runtime instance
     """
+
     rt = Runtime(config)
     try:
         yield rt.__enter__()

@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Healthcare Demo - QuASIM", layout="wide")
 
     st.title("⚕️ Adaptive Trial Arm Allocation (Response-Adaptive Randomization)")
@@ -15,6 +16,7 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
 
     Maximize expected responders, control Type I/II error, enforce fairness
@@ -56,6 +58,7 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
 
     ```bash

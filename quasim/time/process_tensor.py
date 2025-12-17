@@ -44,6 +44,7 @@ def two_time_correlation(
         >>> H = np.array([[1, 0], [0, -1]], dtype=complex)
         >>> C = two_time_correlation(psi, sigma_x, sigma_z, H, 0, 1)
     """
+
     # Evolution operators
     U_1 = np.linalg.matrix_power(np.eye(len(hamiltonian)) - 1j * hamiltonian * time_1, 1)
     U_2 = np.linalg.matrix_power(np.eye(len(hamiltonian)) - 1j * hamiltonian * time_2, 1)
@@ -85,6 +86,7 @@ def process_tensor_choi(
     Reference:
         Pollock et al. (2018), "Non-Markovian quantum processes"
     """
+
     dim = hamiltonian.shape[0]
 
     # Total evolution operator
@@ -134,6 +136,7 @@ def temporal_bell_inequality(
     Reference:
         Leggett & Garg (1985), "Quantum mechanics versus macroscopic realism"
     """
+
     if len(measurements) != 4 or len(times) != 4:
         raise ValueError("Need exactly 4 measurements and 4 times")
 
@@ -173,6 +176,7 @@ def memory_kernel(
         >>> C = np.exp(-0.1 * np.abs(times[:, None] - times[None, :]))
         >>> K = memory_kernel(C, times)
     """
+
     # Time derivative of correlation function
     dt = times[1] - times[0] if len(times) > 1 else 1.0
 
@@ -206,6 +210,7 @@ def quantum_coherence_measure(
         >>> C = quantum_coherence_measure(rho)
         >>> assert C > 0
     """
+
     # Off-diagonal elements
     n = density_matrix.shape[0]
     coherence = 0.0

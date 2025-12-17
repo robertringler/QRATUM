@@ -15,6 +15,7 @@ from pathlib import Path
 
 def test_documentation_generator_imports():
     """Test that documentation generator can be imported."""
+
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
@@ -39,6 +40,7 @@ def test_documentation_generator_imports():
 
 def test_appendix_generator_imports():
     """Test that appendix generator can be imported."""
+
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
@@ -62,6 +64,7 @@ def test_appendix_generator_imports():
 
 def test_module_info_dataclass():
     """Test ModuleInfo dataclass."""
+
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
@@ -78,6 +81,7 @@ def test_module_info_dataclass():
 
 def test_appendix_generation():
     """Test that appendices can be generated."""
+
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
@@ -102,6 +106,7 @@ def test_appendix_generation():
 
 def test_repository_parser():
     """Test repository parser."""
+
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))

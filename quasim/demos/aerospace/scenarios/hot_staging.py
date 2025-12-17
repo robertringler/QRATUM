@@ -12,6 +12,7 @@ def load_scenario(name: str) -> Dict[str, Any]:
     Returns:
         Scenario configuration dictionary
     """
+
     scenarios = {
         "starship": {
             "vehicle": "starship",

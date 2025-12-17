@@ -29,6 +29,7 @@ class DensityMatrix:
         Raises:
             ValueError: If matrix is not square or dimension not power of 2
         """
+
         self.data = np.asarray(data, dtype=complex)
         if self.data.shape[0] != self.data.shape[1]:
             raise ValueError("Density matrix must be square")
@@ -51,6 +52,7 @@ class DensityMatrix:
         Returns:
             DensityMatrix representing |ψ⟩⟨ψ|
         """
+
         state = np.asarray(state, dtype=complex)
         density = np.outer(state, np.conj(state))
         num_qubits = int(np.log2(len(state)))
@@ -66,6 +68,7 @@ class DensityMatrix:
         Returns:
             Density matrix in |0...0⟩ state
         """
+
         dim = 2**num_qubits
         density = np.zeros((dim, dim), dtype=complex)
         density[0, 0] = 1.0
@@ -81,6 +84,7 @@ class DensityMatrix:
         Returns:
             Maximally mixed density matrix
         """
+
         dim = 2**num_qubits
         density = np.eye(dim, dtype=complex) / dim
         return cls(density, num_qubits)
@@ -96,6 +100,7 @@ class DensityMatrix:
         Returns:
             True if state is pure
         """
+
         purity = np.trace(self.data @ self.data).real
         return abs(purity - 1.0) < tol
 
@@ -105,6 +110,7 @@ class DensityMatrix:
         Returns:
             Purity value (1 for pure states, 1/2^n for maximally mixed)
         """
+
         return np.trace(self.data @ self.data).real
 
     def trace(self) -> complex:
@@ -113,6 +119,7 @@ class DensityMatrix:
         Returns:
             Trace (should be 1 for valid density matrix)
         """
+
         return np.trace(self.data)
 
     def expectation_value(self, operator: np.ndarray) -> float:
@@ -124,6 +131,7 @@ class DensityMatrix:
         Returns:
             Expectation value
         """
+
         return np.trace(self.data @ operator).real
 
     def partial_trace(self, qubits_to_trace: List[int]) -> "DensityMatrix":
@@ -135,6 +143,7 @@ class DensityMatrix:
         Returns:
             Reduced density matrix
         """
+
         # Simplified partial trace implementation
         # Full implementation requires tensor reshaping
         n = self.num_qubits
@@ -164,6 +173,7 @@ class DensityMatrix:
         Returns:
             New evolved density matrix
         """
+
         evolved = unitary @ self.data @ np.conj(unitary.T)
         return DensityMatrix(evolved, self.num_qubits)
 
@@ -178,6 +188,7 @@ class DensityMatrix:
         Returns:
             New density matrix after channel application
         """
+
         result = np.zeros_like(self.data)
         for E in kraus_ops:
             result += E @ self.data @ np.conj(E.T)
@@ -189,14 +200,17 @@ class DensityMatrix:
         Returns:
             New DensityMatrix with copied data
         """
+
         return DensityMatrix(self.data.copy(), self.num_qubits)
 
     def __repr__(self) -> str:
         """String representation."""
+
         return f"DensityMatrix({self.num_qubits} qubits, purity={self.purity():.4f})"
 
     def __str__(self) -> str:
         """Human-readable string representation."""
+
         lines = [f"DensityMatrix with {self.num_qubits} qubits:"]
         lines.append(f"  Purity: {self.purity():.6f}")
         lines.append(f"  Trace: {self.trace():.6f}")

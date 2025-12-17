@@ -135,6 +135,7 @@ class MeshData:
 
     def __post_init__(self) -> None:
         """Validate mesh data."""
+
         if self.nodes.ndim != 2 or self.nodes.shape[1] != 3:
             raise ValueError(f"Nodes must be (N, 3) array, got {self.nodes.shape}")
         if self.elements.ndim != 2:
@@ -145,15 +146,18 @@ class MeshData:
     @property
     def num_nodes(self) -> int:
         """Number of nodes in mesh."""
+
         return len(self.nodes)
 
     @property
     def num_elements(self) -> int:
         """Number of elements in mesh."""
+
         return len(self.elements)
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
+
         return {
             "num_nodes": self.num_nodes,
             "num_elements": self.num_elements,
@@ -186,16 +190,19 @@ class StateVector:
 
     def __post_init__(self) -> None:
         """Validate state vector."""
+
         if self.displacements.ndim != 2 or self.displacements.shape[1] != 3:
             raise ValueError(f"Displacements must be (N, 3), got {self.displacements.shape}")
 
     @property
     def num_nodes(self) -> int:
         """Number of nodes in state."""
+
         return len(self.displacements)
 
     def compute_hash(self) -> str:
         """Compute SHA-256 hash of state for reproducibility verification."""
+
         data = self.displacements.tobytes()
         return hashlib.sha256(data).hexdigest()
 
@@ -222,6 +229,7 @@ class MaterialParameters:
 
     def validate(self) -> None:
         """Validate material parameters."""
+
         # Check for negative moduli
         if self.model == MaterialModel.MOONEY_RIVLIN:
             if "C10" not in self.parameters or "C01" not in self.parameters:
@@ -247,6 +255,7 @@ class MaterialParameters:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
+
         return {
             "material_id": self.material_id,
             "name": self.name,
@@ -283,6 +292,7 @@ class SolverConfig:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
+
         return {
             "analysis_type": self.analysis_type,
             "large_deflection": self.large_deflection,
@@ -317,6 +327,7 @@ class PerformanceMetrics:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
+
         return {
             "solve_time": self.solve_time,
             "setup_time": self.setup_time,
@@ -394,6 +405,7 @@ class QuasimAnsysAdapter:
         enable_logging: bool = True,
     ) -> None:
         """Initialize QuASIM Ansys adapter."""
+
         self.mode = mode
         if isinstance(device, str):
             self.device = DeviceType(device.lower())
@@ -434,6 +446,7 @@ class QuasimAnsysAdapter:
         Raises:
             GPUDriverError: If GPU initialization fails.
         """
+
         try:
             # Check if GPU is theoretically available
             try:
@@ -459,6 +472,7 @@ class QuasimAnsysAdapter:
 
     def _log_initialization_parameters(self) -> None:
         """Log solver initialization parameters for audit trail."""
+
         logger.info("=" * 60)
         logger.info("QuASIM Ansys Adapter - Initialization Parameters")
         logger.info("=" * 60)
@@ -484,6 +498,7 @@ class QuasimAnsysAdapter:
             MeshImportError: If mesh import fails or no MAPDL session provided
                            (except in STANDALONE mode).
         """
+
         start_time = time.time()
 
         mapdl = mapdl or self.mapdl_session
@@ -569,6 +584,7 @@ class QuasimAnsysAdapter:
         Raises:
             MeshImportError: If file not found or parsing fails.
         """
+
         filepath = Path(filepath)
         if not filepath.exists():
             raise MeshImportError(f"Mesh file not found: {filepath}")
@@ -583,6 +599,7 @@ class QuasimAnsysAdapter:
         Args:
             mesh: MeshData object.
         """
+
         mesh.__post_init__()  # Validate
         self.mesh = mesh
         logger.info(f"Mesh set: {mesh.num_nodes} nodes, {mesh.num_elements} elements")
@@ -609,6 +626,7 @@ class QuasimAnsysAdapter:
         Raises:
             MaterialParameterError: If parameters are invalid.
         """
+
         if isinstance(model, str):
             model = MaterialModel(model.lower())
 
@@ -647,6 +665,7 @@ class QuasimAnsysAdapter:
             ConvergenceError: If solver fails to converge.
             GPUMemoryError: If GPU memory is exhausted.
         """
+
         if self.mesh is None:
             raise ValueError("No mesh imported. Call import_mesh_from_mapdl() first.")
 
@@ -728,6 +747,7 @@ class QuasimAnsysAdapter:
         Raises:
             ValueError: If no solution state available.
         """
+
         if self.state is None:
             raise ValueError("No solution state. Call solve() first.")
 
@@ -755,6 +775,7 @@ class QuasimAnsysAdapter:
         Raises:
             ValueError: If no solution state or invalid format.
         """
+
         if self.state is None:
             raise ValueError("No solution state. Call solve() first.")
 
@@ -800,6 +821,7 @@ class QuasimAnsysAdapter:
         Raises:
             ValueError: If no solve has been executed.
         """
+
         if self.metrics is None:
             raise ValueError("No metrics available. Call solve() first.")
         return self.metrics
@@ -810,6 +832,7 @@ class QuasimAnsysAdapter:
         Args:
             **kwargs: Configuration parameters (see SolverConfig).
         """
+
         for key, value in kwargs.items():
             if hasattr(self.config, key):
                 setattr(self.config, key, value)
@@ -826,6 +849,7 @@ class QuasimAnsysAdapter:
         Note:
             This is an advanced feature for preconditioner mode.
         """
+
         if self.mode != SolverMode.PRECONDITIONER:
             warnings.warn(
                 "Registering as preconditioner but mode is not PRECONDITIONER", stacklevel=2
@@ -837,6 +861,7 @@ class QuasimAnsysAdapter:
 
     def _log_solver_parameters(self) -> None:
         """Log solver execution parameters for audit trail."""
+
         logger.info("-" * 60)
         logger.info("Solver Execution Parameters:")
         logger.info(f"  Analysis type: {self.config.analysis_type}")
@@ -851,6 +876,7 @@ class QuasimAnsysAdapter:
 
     def _track_hardware_utilization_start(self) -> None:
         """Start tracking hardware utilization metrics."""
+
         self._hardware_metrics["start_time"] = time.time()
 
         if self._gpu_available:
@@ -863,6 +889,7 @@ class QuasimAnsysAdapter:
 
     def _track_hardware_utilization_end(self) -> None:
         """End tracking hardware utilization metrics."""
+
         self._hardware_metrics["end_time"] = time.time()
         self._hardware_metrics["duration"] = (
             self._hardware_metrics["end_time"] - self._hardware_metrics["start_time"]
@@ -880,6 +907,7 @@ class QuasimAnsysAdapter:
 
     def _log_hardware_metrics(self) -> None:
         """Log hardware utilization metrics."""
+
         if not self._gpu_available:
             self._hardware_metrics.update(
                 {
@@ -908,6 +936,7 @@ class QuasimAnsysAdapter:
         Returns:
             Dictionary of hardware metrics
         """
+
         return self._hardware_metrics.copy()
 
     def load_config_from_yaml(self, path: str | Path) -> None:
@@ -919,6 +948,7 @@ class QuasimAnsysAdapter:
         Raises:
             ImportError: If pyyaml is not installed.
         """
+
         if yaml is None:
             raise ImportError("pyyaml not installed")
         with open(path) as f:
@@ -937,6 +967,7 @@ def test_installation() -> bool:
     Returns:
         True if installation is valid, False otherwise.
     """
+
     logger.info("Testing QuASIM Ansys adapter installation...")
 
     # Check Python version

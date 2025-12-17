@@ -39,6 +39,7 @@ def audit_event(
     >>> audit_event("test.event", {"key": "value", "query_id": "qid-123"})
     '...'
     """
+
     log_path = log_path or DEFAULT_LOG_PATH
     log_file = Path(log_path)
     log_file.parent.mkdir(parents=True, exist_ok=True)
@@ -103,6 +104,7 @@ def verify_audit_chain(log_path: Optional[str] = None) -> bool:
     >>> verify_audit_chain()
     True
     """
+
     log_path = log_path or DEFAULT_LOG_PATH
     log_file = Path(log_path)
 

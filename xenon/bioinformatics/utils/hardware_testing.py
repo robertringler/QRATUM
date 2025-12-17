@@ -50,11 +50,13 @@ class HardwareDetector:
 
     def __init__(self):
         """Initialize hardware detector."""
+
         self.hardware_info: List[HardwareInfo] = []
         self._detect_hardware()
 
     def _detect_hardware(self) -> None:
         """Detect all available hardware."""
+
         # CPU always available
         self.hardware_info.append(
             HardwareInfo(
@@ -136,6 +138,7 @@ class HardwareDetector:
         Returns:
             True if available
         """
+
         for info in self.hardware_info:
             if info.hardware_type == hardware_type:
                 return info.available
@@ -147,6 +150,7 @@ class HardwareDetector:
         Returns:
             List of available hardware types
         """
+
         return [info.hardware_type for info in self.hardware_info if info.available]
 
     def get_info(self, hardware_type: HardwareType) -> Optional[HardwareInfo]:
@@ -158,6 +162,7 @@ class HardwareDetector:
         Returns:
             Hardware info or None
         """
+
         for info in self.hardware_info:
             if info.hardware_type == hardware_type:
                 return info
@@ -173,6 +178,7 @@ def requires_hardware(hardware_type: HardwareType):
     Returns:
         Test decorator
     """
+
     import pytest
 
     detector = HardwareDetector()

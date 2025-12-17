@@ -47,6 +47,7 @@ class HCAL:
             dry_run: Enable dry-run mode (default: True for safety).
             audit_log_path: Path to audit log file.
         """
+
         # Initialize policy engine
         self.policy_engine = PolicyEngine(policy_path)
 
@@ -101,6 +102,7 @@ class HCAL:
         Returns:
             HCAL instance
         """
+
         # enable_actuation=True means dry_run=False
         dry_run = not enable_actuation
         audit_log_path = audit_log_dir / "audit.log" if audit_log_dir else None
@@ -125,6 +127,7 @@ class HCAL:
         Returns:
             Topology dictionary with devices, interconnects, and summary
         """
+
         topology = {
             "devices": [],
             "interconnects": [],
@@ -177,6 +180,7 @@ class HCAL:
         Returns:
             Topology instance with discovered hardware.
         """
+
         return self.topology.discover()
 
     def plan(
@@ -195,6 +199,7 @@ class HCAL:
         Returns:
             Plan dictionary with 'devices' and optional 'warnings' for filtered devices
         """
+
         plan = {
             "plan_id": str(uuid.uuid4()),
             "profile": profile,
@@ -254,6 +259,7 @@ class HCAL:
         Raises:
             PolicyViolation: If plan violates policy
         """
+
         # Validate plan against policy
         if self.policy:
             self.policy.validate_plan(plan)
@@ -296,6 +302,7 @@ class HCAL:
         Returns:
             True if setpoint was applied successfully.
         """
+
         # Determine backend
         backend = self._get_backend(device_id)
         if not backend:
@@ -317,6 +324,7 @@ class HCAL:
         Returns:
             TelemetryReading instance or None if failed.
         """
+
         backend = self._get_backend(device_id)
         if not backend:
             return None
@@ -333,6 +341,7 @@ class HCAL:
         Returns:
             CalibrationResult instance.
         """
+
         backend = self._get_backend(device_id)
         if not backend:
             raise ValueError(f"No backend for device {device_id}")
@@ -357,6 +366,7 @@ class HCAL:
         Returns:
             List of (power, telemetry) tuples.
         """
+
         backend = self._get_backend(device_id)
         if not backend:
             raise ValueError(f"No backend for device {device_id}")
@@ -386,6 +396,7 @@ class HCAL:
         Returns:
             CalibrationLoop instance
         """
+
         if parameters is None:
             parameters = {}
 
@@ -408,6 +419,7 @@ class HCAL:
         Returns:
             Telemetry dictionary
         """
+
         return (
             self.actuator.get_telemetry(devices) if hasattr(self.actuator, "get_telemetry") else {}
         )
@@ -418,6 +430,7 @@ class HCAL:
         Returns:
             Stop result
         """
+
         result = {"stopped": True, "timestamp": str(uuid.uuid4())}
         if hasattr(self.actuator, "emergency_stop"):
             self.actuator.emergency_stop()
@@ -430,6 +443,7 @@ class HCAL:
         Returns:
             List of audit log entries.
         """
+
         return self.actuator.get_audit_log() if hasattr(self.actuator, "get_audit_log") else []
 
     def verify_audit_chain(self) -> bool:
@@ -438,6 +452,7 @@ class HCAL:
         Returns:
             True if chain is valid.
         """
+
         return (
             self.actuator.verify_audit_chain()
             if hasattr(self.actuator, "verify_audit_chain")
@@ -453,6 +468,7 @@ class HCAL:
         Returns:
             Backend instance or None.
         """
+
         # Simple heuristic: gpu* -> nvidia_nvml
         if device_id.startswith("gpu"):
             return self.backends.get("nvidia_nvml")

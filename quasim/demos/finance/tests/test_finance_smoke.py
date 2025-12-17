@@ -5,6 +5,7 @@ from quasim.demos.finance.kernels.simulation import run_simulation
 
 def test_run_simulation_basic():
     """Test basic simulation."""
+
     scenario = {"default": True}
     results = run_simulation(scenario, steps=50, seed=42)
 
@@ -15,6 +16,7 @@ def test_run_simulation_basic():
 
 def test_run_simulation_deterministic():
     """Test deterministic behavior."""
+
     scenario = {"default": True}
 
     results1 = run_simulation(scenario, steps=30, seed=42)
@@ -25,6 +27,7 @@ def test_run_simulation_deterministic():
 
 def test_quick_run():
     """Quick integration test."""
+
     scenario = {"default": True}
     results = run_simulation(scenario, steps=20, seed=42)
 

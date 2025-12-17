@@ -36,6 +36,7 @@ def write_snapshot(path: str, meta: Dict[str, Any], arrays: Dict[str, np.ndarray
     ...     {"data": np.array([1, 2, 3])}
     ... )
     """
+
     if not HDF5_AVAILABLE:
         # Fallback: write metadata as JSON
         Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -89,6 +90,7 @@ def read_snapshot(path: str) -> Dict[str, Any]:
     >>> print(data['meta']['seed'])
     42
     """
+
     if not HDF5_AVAILABLE:
         # Fallback: read from JSON and .npy files
         meta_path = Path(path).with_suffix(".meta.json")

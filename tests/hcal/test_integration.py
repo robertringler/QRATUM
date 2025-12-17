@@ -13,6 +13,7 @@ from quasim.hcal.topology import DeviceType
 
 def test_hcal_initialization():
     """Test HCAL initialization."""
+
     hcal = HCAL(dry_run=True)
 
     assert hcal.dry_run is True
@@ -24,6 +25,7 @@ def test_hcal_initialization():
 
 def test_topology_discovery():
     """Test hardware topology discovery."""
+
     hcal = HCAL(dry_run=True)
     topology = hcal.discover_topology()
 
@@ -37,6 +39,7 @@ def test_topology_discovery():
 
 def test_nvidia_backend_dry_run():
     """Test NVIDIA backend in dry-run mode."""
+
     backend = NvidiaNvmlBackend(dry_run=True)
 
     # Device should exist in dry-run
@@ -60,6 +63,7 @@ def test_nvidia_backend_dry_run():
 
 def test_apply_setpoint_with_policy():
     """Test applying setpoint with policy validation."""
+
     policy_data = {
         "environment": "dev",
         "device_allowlist": ["gpu0"],
@@ -103,6 +107,7 @@ def test_apply_setpoint_with_policy():
 
 def test_read_telemetry():
     """Test reading telemetry."""
+
     hcal = HCAL(dry_run=True)
 
     reading = hcal.read_telemetry("gpu0")
@@ -115,6 +120,7 @@ def test_read_telemetry():
 
 def test_calibration_bias_trim():
     """Test bias trim calibration."""
+
     hcal = HCAL(dry_run=True)
 
     result = hcal.calibrate_bias_trim("gpu0", max_iterations=5)
@@ -127,6 +133,7 @@ def test_calibration_bias_trim():
 
 def test_power_sweep():
     """Test power sweep calibration."""
+
     hcal = HCAL(dry_run=True)
 
     results = hcal.run_power_sweep("gpu0", power_range=(150.0, 250.0), steps=3)
@@ -138,6 +145,7 @@ def test_power_sweep():
 
 def test_audit_log():
     """Test audit log functionality."""
+
     with tempfile.NamedTemporaryFile(mode="w", suffix=".log", delete=False) as f:
         audit_path = Path(f.name)
 
@@ -161,6 +169,7 @@ def test_audit_log():
 
 def test_emergency_stop():
     """Test emergency stop functionality."""
+
     hcal = HCAL(dry_run=True)
 
     # Emergency stop should block operations
@@ -172,6 +181,7 @@ def test_emergency_stop():
 
 def test_profile_manager():
     """Test reconfiguration profile manager."""
+
     mgr = ProfileManager()
 
     # List profiles
@@ -193,6 +203,7 @@ def test_profile_manager():
 
 def test_custom_profile():
     """Test creating custom profile."""
+
     mgr = ProfileManager()
 
     setpoints = {
@@ -219,6 +230,7 @@ def test_custom_profile():
 
 def test_end_to_end_workflow():
     """Test complete end-to-end workflow."""
+
     # Setup policy
     policy_data = {
         "environment": "dev",
@@ -268,6 +280,7 @@ def test_end_to_end_workflow():
 
 def test_rollback_functionality():
     """Test automatic rollback on validation failure."""
+
     policy_data = {
         "environment": "dev",
         "device_allowlist": ["gpu0"],

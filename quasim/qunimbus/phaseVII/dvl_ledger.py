@@ -1,4 +1,5 @@
 """
+
 Decentralized Verification Ledger (DVL)
 
 Maintains cryptographic chain of Φ_QEVF values and compliance attestations.
@@ -13,6 +14,7 @@ from typing import Any, Dict, List, Optional
 
 class DVLBlock:
     """
+
     Decentralized Verification Ledger block.
 
     Contains Φ_QEVF value, compliance attestations, and cryptographic hash chain.
@@ -27,6 +29,7 @@ class DVLBlock:
         previous_hash: str,
     ):
         """
+
         Initialize DVL block.
 
         Args:
@@ -36,6 +39,7 @@ class DVLBlock:
             compliance_attestations: Dict of compliance framework attestations
             previous_hash: Hash of previous block
         """
+
         self.index = index
         self.timestamp = datetime.now(timezone.utc).isoformat()
         self.phi_qevf = phi_qevf
@@ -46,11 +50,13 @@ class DVLBlock:
 
     def _calculate_hash(self) -> str:
         """
+
         Calculate cryptographic hash of block.
 
         Returns:
             SHA-256 hash of block data
         """
+
         block_data = {
             "index": self.index,
             "timestamp": self.timestamp,
@@ -64,11 +70,13 @@ class DVLBlock:
 
     def to_dict(self) -> Dict[str, Any]:
         """
+
         Convert block to dictionary.
 
         Returns:
             Block data as dictionary
         """
+
         return {
             "index": self.index,
             "timestamp": self.timestamp,
@@ -82,6 +90,7 @@ class DVLBlock:
 
 class DVLLedger:
     """
+
     Decentralized Verification Ledger for Φ_QEVF and compliance attestations.
 
     Maintains cryptographic chain with RFC3161 timestamping support.
@@ -89,11 +98,13 @@ class DVLLedger:
 
     def __init__(self, compliance_frameworks: Optional[List[str]] = None):
         """
+
         Initialize DVL Ledger.
 
         Args:
             compliance_frameworks: List of compliance frameworks to attest
         """
+
         self.compliance_frameworks = compliance_frameworks or [
             "DO-178C",
             "NIST-800-53",
@@ -107,6 +118,7 @@ class DVLLedger:
 
     def _create_genesis_block(self):
         """Create the genesis (first) block in the chain."""
+
         genesis_block = DVLBlock(
             index=0,
             phi_qevf=0.0,
@@ -123,6 +135,7 @@ class DVLLedger:
         compliance_attestations: Optional[Dict[str, str]] = None,
     ) -> DVLBlock:
         """
+
         Add a new block to the ledger.
 
         Args:
@@ -133,6 +146,7 @@ class DVLLedger:
         Returns:
             Created DVL block
         """
+
         # Default attestations to "verified" for all frameworks
         if compliance_attestations is None:
             compliance_attestations = dict.fromkeys(self.compliance_frameworks, "verified")
@@ -150,11 +164,13 @@ class DVLLedger:
 
     def verify_chain(self) -> bool:
         """
+
         Verify integrity of the entire chain.
 
         Returns:
             True if chain is valid, False otherwise
         """
+
         for i in range(1, len(self.chain)):
             current_block = self.chain[i]
             previous_block = self.chain[i - 1]
@@ -171,20 +187,24 @@ class DVLLedger:
 
     def get_latest_block(self) -> DVLBlock:
         """
+
         Get the latest block in the chain.
 
         Returns:
             Latest DVL block
         """
+
         return self.chain[-1]
 
     def get_chain_summary(self) -> Dict[str, Any]:
         """
+
         Get summary of the DVL chain.
 
         Returns:
             Chain summary including length, latest values, and verification status
         """
+
         latest_block = self.get_latest_block()
 
         return {
@@ -200,15 +220,18 @@ class DVLLedger:
 
     def export_for_grafana(self) -> List[Dict[str, Any]]:
         """
+
         Export chain data in format suitable for Grafana ingestion.
 
         Returns:
             List of blocks formatted for Grafana
         """
+
         return [block.to_dict() for block in self.chain]
 
     def get_attestation_history(self, framework: str) -> List[Dict[str, Any]]:
         """
+
         Get attestation history for a specific compliance framework.
 
         Args:
@@ -217,6 +240,7 @@ class DVLLedger:
         Returns:
             List of attestations with timestamps
         """
+
         history = []
         for block in self.chain:
             if framework in block.compliance_attestations:

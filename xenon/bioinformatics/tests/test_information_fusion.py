@@ -23,6 +23,7 @@ class TestInformationFusionEngine:
 
     def test_deterministic_entropy_computation(self):
         """Test entropy computation is deterministic."""
+
         engine1 = InformationFusionEngine(seed=42)
         engine2 = InformationFusionEngine(seed=42)
 
@@ -36,6 +37,7 @@ class TestInformationFusionEngine:
 
     def test_entropy_bounds(self):
         """Test entropy satisfies theoretical bounds."""
+
         engine = InformationFusionEngine(seed=42)
 
         # Uniform distribution should have maximum entropy
@@ -51,6 +53,7 @@ class TestInformationFusionEngine:
 
     def test_mutual_information_symmetry(self):
         """Test MI(X;Y) = MI(Y;X)."""
+
         engine = InformationFusionEngine(seed=42)
         rng = np.random.RandomState(42)
 
@@ -64,6 +67,7 @@ class TestInformationFusionEngine:
 
     def test_mutual_information_with_self(self):
         """Test MI(X;X) = H(X)."""
+
         engine = InformationFusionEngine(seed=42)
         rng = np.random.RandomState(42)
 
@@ -77,6 +81,7 @@ class TestInformationFusionEngine:
 
     def test_mutual_information_non_negative(self):
         """Test MI >= 0 for all inputs."""
+
         engine = InformationFusionEngine(seed=42)
         rng = np.random.RandomState(42)
 
@@ -90,6 +95,7 @@ class TestInformationFusionEngine:
 
     def test_pid_component_sum(self):
         """Test PID components sum to total MI."""
+
         engine = InformationFusionEngine(seed=42)
         rng = np.random.RandomState(42)
 
@@ -107,6 +113,7 @@ class TestInformationFusionEngine:
 
     def test_pid_non_negativity(self):
         """Test all PID components are non-negative."""
+
         engine = InformationFusionEngine(seed=42)
         rng = np.random.RandomState(42)
 
@@ -123,6 +130,7 @@ class TestInformationFusionEngine:
 
     def test_conservation_upper_bound(self):
         """Test total MI does not exceed entropy bounds."""
+
         engine = InformationFusionEngine(seed=42)
         rng = np.random.RandomState(42)
 
@@ -138,6 +146,7 @@ class TestInformationFusionEngine:
 
     def test_redundant_information_bounds(self):
         """Test redundant information satisfies theoretical bounds."""
+
         engine = InformationFusionEngine(seed=42)
         rng = np.random.RandomState(42)
 
@@ -157,6 +166,7 @@ class TestInformationFusionEngine:
 
     def test_synergistic_information_detection(self):
         """Test detection of synergistic information."""
+
         engine = InformationFusionEngine(seed=42)
         rng = np.random.RandomState(42)
 
@@ -173,6 +183,7 @@ class TestInformationFusionEngine:
 
     def test_auto_correction_of_violations(self):
         """Test automatic correction of minor violations."""
+
         constraints = ConservationConstraints(
             enforce_non_negativity=True, auto_correct=True, tolerance=1e-6
         )
@@ -192,10 +203,13 @@ class TestInformationFusionEngine:
 
     def test_violation_detection_without_auto_correct(self):
         """Test violation detection when auto-correct is disabled."""
+
         # Note: With proper implementation, violations should be rare
         # This test verifies the mechanism is in place
         constraints = ConservationConstraints(
-            enforce_non_negativity=True, auto_correct=False, tolerance=1e-20  # Impossibly strict
+            enforce_non_negativity=True,
+            auto_correct=False,
+            tolerance=1e-20,  # Impossibly strict
         )
         engine = InformationFusionEngine(constraints=constraints, seed=42)
         rng = np.random.RandomState(42)
@@ -215,6 +229,7 @@ class TestInformationFusionEngine:
 
     def test_information_flow_multiple_layers(self):
         """Test information flow analysis with multiple omics layers."""
+
         engine = InformationFusionEngine(seed=42)
         rng = np.random.RandomState(42)
 
@@ -243,6 +258,7 @@ class TestInformationFusionEngine:
 
     def test_deterministic_reproducibility(self):
         """Test bit-level reproducibility across runs."""
+
         rng = np.random.RandomState(42)
         source1 = rng.randn(100)
         source2 = rng.randn(100)
@@ -265,6 +281,7 @@ class TestInformationFusionEngine:
 
     def test_caching_behavior(self):
         """Test result caching for performance."""
+
         engine = InformationFusionEngine(seed=42)
         rng = np.random.RandomState(42)
 
@@ -291,6 +308,7 @@ class TestInformationFusionEngine:
 
     def test_condition_number_computation(self):
         """Test numerical condition number is computed."""
+
         engine = InformationFusionEngine(seed=42)
         rng = np.random.RandomState(42)
 
@@ -305,6 +323,7 @@ class TestInformationFusionEngine:
 
     def test_empty_data_handling(self):
         """Test handling of edge cases with empty data."""
+
         engine = InformationFusionEngine(seed=42)
 
         # Empty array should have zero entropy
@@ -318,6 +337,7 @@ class TestInformationFusionEngine:
 
     def test_engine_statistics(self):
         """Test engine statistics tracking."""
+
         constraints = ConservationConstraints(
             enforce_non_negativity=True,
             enforce_upper_bound=True,

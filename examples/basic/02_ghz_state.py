@@ -22,6 +22,7 @@ def create_ghz_state(num_qubits: int) -> qratum.Circuit:
     Returns:
         Circuit that prepares GHZ state
     """
+
     circuit = qratum.Circuit(num_qubits)
 
     # Apply Hadamard to first qubit

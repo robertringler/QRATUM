@@ -6,7 +6,7 @@ and querying results.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Optional
 
 from .core.mechanism import BioMechanism, MolecularState, Transition
 from .core.mechanism_graph import MechanismGraph
@@ -19,8 +19,8 @@ from .simulation.langevin import LangevinSimulator
 
 def create_mechanism(
     name: str,
-    states: List[Dict[str, Any]],
-    transitions: List[Dict[str, Any]],
+    states: list[dict[str, Any]],
+    transitions: list[dict[str, Any]],
 ) -> BioMechanism:
     """Create a mechanism from dictionaries.
 
@@ -42,6 +42,7 @@ def create_mechanism(
         ... ]
         >>> mech = create_mechanism("test", states, transitions)
     """
+
     mechanism = BioMechanism(name=name)
 
     # Add states
@@ -60,10 +61,10 @@ def create_mechanism(
 def simulate_mechanism(
     mechanism: BioMechanism,
     t_max: float,
-    initial_state: Dict[str, float],
+    initial_state: dict[str, float],
     method: str = "gillespie",
     **kwargs,
-) -> Tuple[List[float], Dict[str, List[float]]]:
+) -> tuple[list[float], dict[str, list[float]]]:
     """Simulate a mechanism.
 
     Args:
@@ -81,6 +82,7 @@ def simulate_mechanism(
         ...     mechanism, t_max=1.0, initial_state={"S1": 100.0, "S2": 0.0}
         ... )
     """
+
     if method == "gillespie":
         # Extract run() parameters
         seed = kwargs.pop("seed", None)
@@ -99,10 +101,10 @@ def simulate_mechanism(
 
 
 def run_xenon(
-    targets: List[Dict[str, str]],
+    targets: list[dict[str, str]],
     max_iterations: int = 100,
     **kwargs,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Run XENON learning loop.
 
     Args:
@@ -119,6 +121,7 @@ def run_xenon(
         ...     max_iterations=10
         ... )
     """
+
     runtime = XENONRuntime(**kwargs)
 
     for target_dict in targets:
@@ -132,7 +135,7 @@ def run_xenon(
 def validate_mechanism(
     mechanism: BioMechanism,
     temperature: float = 310.0,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Validate mechanism constraints.
 
     Args:
@@ -147,6 +150,7 @@ def validate_mechanism(
         >>> if validation["thermodynamically_feasible"]:
         ...     print("Mechanism is valid")
     """
+
     thermodynamic_feasible = mechanism.is_thermodynamically_feasible(temperature)
     conservation_valid, violations = mechanism.validate_conservation_laws()
 
@@ -173,15 +177,16 @@ def compute_mechanism_prior(mechanism: BioMechanism, **kwargs) -> float:
     Example:
         >>> prior = compute_mechanism_prior(mechanism)
     """
+
     prior_calculator = MechanismPrior(**kwargs)
     return prior_calculator.compute_prior(mechanism)
 
 
 def update_mechanism_posterior(
-    mechanisms: List[BioMechanism],
+    mechanisms: list[BioMechanism],
     experiment_result: ExperimentResult,
     **kwargs,
-) -> List[BioMechanism]:
+) -> list[BioMechanism]:
     """Update mechanism posteriors from experiment.
 
     Args:
@@ -196,6 +201,7 @@ def update_mechanism_posterior(
         >>> result = ExperimentResult("concentration", {"S1": 80.0, "S2": 20.0})
         >>> updated = update_mechanism_posterior(mechanisms, result)
     """
+
     updater = BayesianUpdater(**kwargs)
     return updater.update_mechanisms(mechanisms, experiment_result)
 
@@ -218,6 +224,7 @@ def mutate_mechanism(
     Example:
         >>> mutant = mutate_mechanism(mechanism, mutation_rate=0.2)
     """
+
     return MechanismGraph.mutate_topology(mechanism, mutation_rate, seed)
 
 
@@ -239,6 +246,7 @@ def recombine_mechanisms(
     Example:
         >>> child = recombine_mechanisms(parent1, parent2, "child")
     """
+
     return MechanismGraph.recombine_mechanisms(mech1, mech2, name)
 
 

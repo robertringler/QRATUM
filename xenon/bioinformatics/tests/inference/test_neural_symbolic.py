@@ -16,6 +16,7 @@ class TestNeuralSymbolicEngine:
 
     def test_initialization(self):
         """Test engine initialization."""
+
         engine = NeuralSymbolicEngine(seed=42)
         assert engine.input_dim == 64
         assert engine.hidden_dim == 128
@@ -24,6 +25,7 @@ class TestNeuralSymbolicEngine:
 
     def test_deterministic_inference(self):
         """Test inference is deterministic."""
+
         # Create test data
         rng = np.random.RandomState(42)
         node_features = rng.randn(10, 64)
@@ -44,6 +46,7 @@ class TestNeuralSymbolicEngine:
 
     def test_classical_fallback(self):
         """Test classical fallback works."""
+
         engine = NeuralSymbolicEngine(seed=42)
 
         rng = np.random.RandomState(42)
@@ -59,6 +62,7 @@ class TestNeuralSymbolicEngine:
 
     def test_graph_embedding(self):
         """Test graph embedding structure."""
+
         engine = NeuralSymbolicEngine(seed=42)
 
         rng = np.random.RandomState(42)
@@ -73,6 +77,7 @@ class TestNeuralSymbolicEngine:
 
     def test_different_graph_sizes(self):
         """Test engine handles different graph sizes."""
+
         engine = NeuralSymbolicEngine(seed=42)
 
         # Small graph
@@ -91,6 +96,7 @@ class TestNeuralSymbolicEngine:
 
     def test_constraint_tracking(self):
         """Test constraint violation tracking."""
+
         engine = NeuralSymbolicEngine(seed=42)
 
         # Add a simple constraint
@@ -115,6 +121,7 @@ class TestNeuralSymbolicEngine:
 
     def test_seed_reproducibility(self):
         """Test different seeds produce different results."""
+
         rng = np.random.RandomState(42)
         node_features = rng.randn(10, 64)
         edge_index = np.array([[0, 1, 2], [1, 2, 3]])
@@ -132,6 +139,7 @@ class TestNeuralSymbolicEngine:
 
     def test_output_shapes(self):
         """Test output dimensions are correct."""
+
         input_dim = 32
         hidden_dim = 64
         output_dim = 16

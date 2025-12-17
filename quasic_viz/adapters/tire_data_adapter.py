@@ -24,6 +24,7 @@ class TireDataAdapter:
         Returns:
             Dictionary containing visualization-ready data
         """
+
         # Extract geometry
         geometry = getattr(simulation_result, "tire_geometry", None)
 
@@ -58,6 +59,7 @@ class TireDataAdapter:
         Returns:
             Temperature values array
         """
+
         if hasattr(simulation_result, "thermal_map") and simulation_result.thermal_map is not None:
             return np.array(simulation_result.thermal_map)
 
@@ -86,6 +88,7 @@ class TireDataAdapter:
         Returns:
             Stress values array (MPa)
         """
+
         if (
             hasattr(simulation_result, "stress_distribution")
             and simulation_result.stress_distribution is not None
@@ -112,6 +115,7 @@ class TireDataAdapter:
         Returns:
             Wear depth values array (mm)
         """
+
         if (
             hasattr(simulation_result, "wear_pattern")
             and simulation_result.wear_pattern is not None
@@ -144,6 +148,7 @@ class TireDataAdapter:
         Returns:
             Normalized field data
         """
+
         if len(field_data) == target_size:
             return field_data
 

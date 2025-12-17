@@ -11,6 +11,7 @@ class TestCADExporter:
 
     def test_supported_formats(self):
         """Test that supported formats are available."""
+
         from quasic_viz.exporters.cad_exporter import SUPPORTED_FORMATS
 
         assert "obj" in SUPPORTED_FORMATS
@@ -20,6 +21,7 @@ class TestCADExporter:
 
     def test_get_supported_formats(self):
         """Test get_supported_formats method."""
+
         from quasic_viz.exporters.cad_exporter import CADExporter
 
         formats = CADExporter.get_supported_formats()
@@ -28,6 +30,7 @@ class TestCADExporter:
 
     def test_export_obj_fallback(self):
         """Test OBJ export without trimesh."""
+
         from quasic_viz.engines.tire_mesh_generator import TireMeshGenerator
         from quasic_viz.exporters.cad_exporter import CADExporter
 
@@ -47,6 +50,7 @@ class TestCADExporter:
 
     def test_export_invalid_format(self):
         """Test export with invalid format raises error."""
+
         from quasic_viz.exporters.cad_exporter import CADExporter
 
         with pytest.raises(ValueError):

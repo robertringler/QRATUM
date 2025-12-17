@@ -71,6 +71,7 @@ class DeterministicMLP:
         -------
         self
         """
+
         set_seed(self.seed)
         self.model.fit(X, y)
         return self
@@ -88,6 +89,7 @@ class DeterministicMLP:
         NDArray
             Predictions
         """
+
         return self.model.predict(X)
 
     def predict_proba(self, X: NDArray[np.float32]) -> NDArray[np.float32]:
@@ -103,6 +105,7 @@ class DeterministicMLP:
         NDArray
             Class probabilities
         """
+
         if self.task != "classification":
             raise ValueError("predict_proba only available for classification")
         return self.model.predict_proba(X)

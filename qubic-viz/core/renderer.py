@@ -45,6 +45,7 @@ class RenderConfig:
 
     def __post_init__(self) -> None:
         """Validate configuration."""
+
         if self.width <= 0 or self.height <= 0:
             raise ValueError("Width and height must be positive")
         if self.samples < 1:
@@ -60,6 +61,7 @@ class SceneRenderer:
 
     def __init__(self, config: RenderConfig | None = None) -> None:
         """Initialize renderer."""
+
         self.config = config or RenderConfig()
         self.gpu_available = self._detect_gpu()
         self._initialized = False
@@ -77,6 +79,7 @@ class SceneRenderer:
         Returns:
             True if GPU is available, False otherwise
         """
+
         try:
             import torch
 
@@ -90,6 +93,7 @@ class SceneRenderer:
         Returns:
             Best available GPU backend
         """
+
         try:
             import torch
 
@@ -103,6 +107,7 @@ class SceneRenderer:
 
     def initialize(self) -> None:
         """Initialize rendering backend."""
+
         if self._initialized:
             return
 
@@ -130,6 +135,7 @@ class SceneRenderer:
         Returns:
             Rendered frame as RGB numpy array (H, W, 3) with values in [0, 255]
         """
+
         self.initialize()
 
         # Create empty frame with background color
@@ -157,6 +163,7 @@ class SceneRenderer:
         Returns:
             List of rendered frames
         """
+
         frames = []
         for i in range(num_frames):
             frame = self.render_frame(scene, camera, i)
@@ -174,6 +181,7 @@ class SceneRenderer:
             frames: List of frames to save
             output_path: Path to output video file
         """
+
         try:
             import imageio
 
@@ -208,6 +216,7 @@ class SceneRenderer:
             frame: Frame to save
             output_path: Path to output file
         """
+
         try:
             from PIL import Image
 

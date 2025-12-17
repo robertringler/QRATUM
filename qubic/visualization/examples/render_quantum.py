@@ -23,6 +23,7 @@ def main(output_dir: Path = Path("./viz_output")) -> None:
     Args:
         output_dir: Directory for output files
     """
+
     logger.info("=" * 60)
     logger.info("QUBIC Quantum Visualization Example")
     logger.info("=" * 60)

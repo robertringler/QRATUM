@@ -19,6 +19,7 @@ from quasim.qc.quasim_tn import TensorNetworkEngine
 
 def example_bell_state():
     """Example: Create and verify Bell pair."""
+
     print("\n" + "=" * 60)
     print("Example 1: Bell State Creation")
     print("=" * 60)
@@ -48,6 +49,7 @@ def example_bell_state():
 
 def example_ghz_state():
     """Example: Create and verify GHZ state."""
+
     print("\n" + "=" * 60)
     print("Example 2: GHZ State for 4 Qubits")
     print("=" * 60)
@@ -77,6 +79,7 @@ def example_ghz_state():
 
 def example_noise_simulation():
     """Example: Simulate noise effects on entangled state."""
+
     print("\n" + "=" * 60)
     print("Example 3: Noise Effects on Bell State")
     print("=" * 60)
@@ -108,6 +111,7 @@ def example_noise_simulation():
 
 def example_tensor_network():
     """Example: Tensor-network simulation."""
+
     print("\n" + "=" * 60)
     print("Example 4: Tensor-Network Simulation")
     print("=" * 60)
@@ -138,6 +142,7 @@ def example_tensor_network():
 
 def example_distributed():
     """Example: Distributed execution setup."""
+
     print("\n" + "=" * 60)
     print("Example 5: Distributed Context Initialization")
     print("=" * 60)
@@ -167,6 +172,7 @@ def example_distributed():
 
 def main():
     """Run all examples."""
+
     print("\n" + "=" * 60)
     print("QuASIM Distributed Quantum Simulation Examples")
     print("=" * 60)

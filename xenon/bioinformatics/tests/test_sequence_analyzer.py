@@ -13,6 +13,7 @@ class TestProteinSequence:
 
     def test_create_sequence(self):
         """Test sequence creation."""
+
         seq = ProteinSequence(id="P12345", name="Test Protein", sequence="ACDEFGHIKLMNPQRSTVWY")
 
         assert seq.id == "P12345"
@@ -21,6 +22,7 @@ class TestProteinSequence:
 
     def test_sequence_validation(self):
         """Test sequence validation."""
+
         valid_seq = ProteinSequence(id="1", name="Valid", sequence="ACDEFGHIKLM")
         assert valid_seq.validate()
 
@@ -33,6 +35,7 @@ class TestSequenceAnalyzer:
 
     def test_parse_fasta(self):
         """Test FASTA parsing."""
+
         fasta_content = """>sp|P12345|PROT1 Protein 1
 ACDEFGHIKLMNPQRSTVWY
 >sp|P67890|PROT2 Protein 2
@@ -49,6 +52,7 @@ WYVSRTQPNMLKIHGFEDCA"""
 
     def test_molecular_weight(self):
         """Test molecular weight calculation."""
+
         analyzer = SequenceAnalyzer()
 
         # Simple sequence
@@ -61,6 +65,7 @@ WYVSRTQPNMLKIHGFEDCA"""
 
     def test_hydrophobicity(self):
         """Test hydrophobicity calculation."""
+
         analyzer = SequenceAnalyzer()
 
         # Hydrophobic sequence
@@ -75,6 +80,7 @@ WYVSRTQPNMLKIHGFEDCA"""
 
     def test_isoelectric_point(self):
         """Test pI calculation."""
+
         analyzer = SequenceAnalyzer()
 
         # Basic sequence (lysine-rich)
@@ -89,6 +95,7 @@ WYVSRTQPNMLKIHGFEDCA"""
 
     def test_composition(self):
         """Test amino acid composition."""
+
         analyzer = SequenceAnalyzer()
 
         sequence = "AAACCCGGGG"
@@ -101,6 +108,7 @@ WYVSRTQPNMLKIHGFEDCA"""
 
     def test_sequence_alignment(self):
         """Test pairwise alignment."""
+
         analyzer = SequenceAnalyzer()
 
         seq1 = "ACDEFGH"
@@ -115,6 +123,7 @@ WYVSRTQPNMLKIHGFEDCA"""
 
     def test_conservation_score(self):
         """Test conservation score calculation."""
+
         analyzer = SequenceAnalyzer()
 
         # Perfectly conserved sequences
@@ -131,6 +140,7 @@ WYVSRTQPNMLKIHGFEDCA"""
 
     def test_find_motifs(self):
         """Test motif finding."""
+
         analyzer = SequenceAnalyzer()
 
         sequence = "ACDEFGHIKLMNPQRSTVWYACDEFGH"
@@ -144,6 +154,7 @@ WYVSRTQPNMLKIHGFEDCA"""
 
     def test_compute_similarity(self):
         """Test sequence similarity."""
+
         analyzer = SequenceAnalyzer()
 
         # Identical sequences

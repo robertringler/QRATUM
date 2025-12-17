@@ -73,11 +73,13 @@ class PolicyReasoner:
 
     def __init__(self):
         """Initialize the Policy Reasoner with compliance rules."""
+
         self.rules: List[PolicyRule] = []
         self._initialize_rules()
 
     def _initialize_rules(self) -> None:
         """Initialize compliance policy rules."""
+
         # DO-178C Level A Rules
         self.rules.extend(
             [
@@ -199,6 +201,7 @@ class PolicyReasoner:
         PolicyEvaluation
             Evaluation result with decision and conditions
         """
+
         context = context or {}
         violated_rules = []
         conditions = []
@@ -267,6 +270,7 @@ class PolicyReasoner:
         bool
             True if condition is met
         """
+
         # Safety-critical changes
         if condition == "safety_critical_change":
             safety_params = [
@@ -333,6 +337,7 @@ class PolicyReasoner:
 
     def _get_condition_text(self, rule: PolicyRule) -> str:
         """Get human-readable condition text for a rule."""
+
         condition_texts = {
             "safety_critical_change": f"MC/DC testing required ({rule.framework.value} {rule.rule_id})",
             "traceability_required": f"Traceability matrix update required ({rule.framework.value} {rule.rule_id})",
@@ -349,6 +354,7 @@ class PolicyReasoner:
 
     def _required_approvers(self, violated_rules: List[PolicyRule]) -> List[str]:
         """Determine required approvers based on violated rules."""
+
         approvers = set()
 
         for rule in violated_rules:
@@ -384,6 +390,7 @@ class PolicyReasoner:
         Optional[PolicyRule]
             Policy rule or None
         """
+
         for rule in self.rules:
             if rule.rule_id == rule_id:
                 return rule
@@ -402,6 +409,7 @@ class PolicyReasoner:
         List[PolicyRule]
             List of rules
         """
+
         return [r for r in self.rules if r.framework == framework]
 
     def get_statistics(self) -> Dict[str, Any]:
@@ -412,6 +420,7 @@ class PolicyReasoner:
         Dict[str, Any]
             Statistics about loaded rules
         """
+
         return {
             "total_rules": len(self.rules),
             "rules_by_framework": {

@@ -1,4 +1,5 @@
 """
+
 Security Input Validator for QRATUM
 
 Enforces input validation for sequences, matrices, file paths, and bounds.
@@ -13,6 +14,7 @@ import numpy as np
 
 class SecurityValidator:
     """
+
     Validates inputs for security and correctness.
 
     Enforces:
@@ -29,12 +31,14 @@ class SecurityValidator:
 
     def __init__(self):
         """Initialize security validator."""
+
         self.validation_errors = []
 
     def validate_sequence(
         self, sequence: str, alphabet: str = "DNA", allow_ambiguous: bool = False
     ) -> Dict[str, Any]:
         """
+
         Validate biological sequence.
 
         Args:
@@ -45,6 +49,7 @@ class SecurityValidator:
         Returns:
             Dictionary with validation results
         """
+
         if not sequence:
             return {"valid": False, "reason": "Empty sequence"}
 
@@ -84,6 +89,7 @@ class SecurityValidator:
         check_normalized: bool = False,
     ) -> Dict[str, Any]:
         """
+
         Validate numerical matrix.
 
         Args:
@@ -96,6 +102,7 @@ class SecurityValidator:
         Returns:
             Dictionary with validation results
         """
+
         if not isinstance(matrix, np.ndarray):
             return {"valid": False, "reason": f"{name} is not a numpy array"}
 
@@ -145,6 +152,7 @@ class SecurityValidator:
         base_dir: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
+
         Validate and sanitize file path.
 
         Args:
@@ -156,6 +164,7 @@ class SecurityValidator:
         Returns:
             Dictionary with validation results
         """
+
         try:
             # Resolve path
             path_obj = Path(path).resolve()
@@ -204,6 +213,7 @@ class SecurityValidator:
         name: str = "value",
     ) -> Dict[str, Any]:
         """
+
         Validate value is within bounds.
 
         Args:
@@ -215,6 +225,7 @@ class SecurityValidator:
         Returns:
             Dictionary with validation results
         """
+
         if min_value is not None and value < min_value:
             error_msg = f"{name} ({value}) is below minimum ({min_value})"
             self.validation_errors.append(error_msg)
@@ -229,8 +240,10 @@ class SecurityValidator:
 
     def get_errors(self) -> list:
         """Get all validation errors."""
+
         return self.validation_errors.copy()
 
     def reset_errors(self) -> None:
         """Clear all validation errors."""
+
         self.validation_errors.clear()

@@ -22,6 +22,7 @@ class HttpClient:
         timeout : int
             Request timeout in seconds (default: 120)
         """
+
         self.timeout = timeout
 
     def post_json(
@@ -48,6 +49,7 @@ class HttpClient:
         HTTPError
             If HTTP request fails
         """
+
         timeout = timeout or self.timeout
         data = json.dumps(payload).encode("utf-8")
 
@@ -91,6 +93,7 @@ class HttpClient:
         HTTPError
             If HTTP request fails
         """
+
         dest_path = Path(dest)
         dest_path.parent.mkdir(parents=True, exist_ok=True)
 

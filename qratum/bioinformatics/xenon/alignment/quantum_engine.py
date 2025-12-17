@@ -1,4 +1,5 @@
 """
+
 Quantum-Augmented Alignment Engine
 
 Features:
@@ -29,6 +30,7 @@ class AlignmentBackend(Enum):
 
 class QuantumAlignmentEngine:
     """
+
     Quantum-augmented sequence alignment engine.
 
     Provides:
@@ -44,6 +46,7 @@ class QuantumAlignmentEngine:
         seed: Optional[int] = None,
     ):
         """
+
         Initialize alignment engine.
 
         Args:
@@ -51,6 +54,7 @@ class QuantumAlignmentEngine:
             enable_uncertainty: Enable Bayesian uncertainty quantification
             seed: Random seed for reproducibility
         """
+
         self.backend = backend
         self.enable_uncertainty = enable_uncertainty
         self.reproducibility_mgr = ReproducibilityManager(seed=seed)
@@ -77,6 +81,7 @@ class QuantumAlignmentEngine:
 
     def align(self, sequence1: str, sequence2: str, alphabet: str = "DNA") -> Dict:
         """
+
         Align two biological sequences.
 
         Args:
@@ -87,6 +92,7 @@ class QuantumAlignmentEngine:
         Returns:
             Dictionary with alignment results
         """
+
         # Validate inputs
         val1 = self.security_validator.validate_sequence(sequence1, alphabet)
         if not val1["valid"]:
@@ -129,6 +135,7 @@ class QuantumAlignmentEngine:
 
     def _select_backend(self) -> AlignmentBackend:
         """Select alignment backend based on configuration."""
+
         if self.backend == AlignmentBackend.CLASSICAL:
             return AlignmentBackend.CLASSICAL
         elif self.backend == AlignmentBackend.QUANTUM:
@@ -148,6 +155,7 @@ class QuantumAlignmentEngine:
 
     def _compute_uncertainty(self, result: Dict) -> Dict:
         """
+
         Compute Bayesian uncertainty quantification.
 
         Args:
@@ -156,6 +164,7 @@ class QuantumAlignmentEngine:
         Returns:
             Uncertainty metrics
         """
+
         # Simplified uncertainty estimation
         score = result.get("score", 0.0)
         length = result.get("length", 1)

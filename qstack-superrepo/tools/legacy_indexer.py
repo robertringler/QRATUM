@@ -11,6 +11,7 @@ MANIFEST_PATH = RAW_SNIPPETS_DIR / "manifest.json"
 
 def build_manifest() -> dict[str, list[str]]:
     """Create a manifest of legacy raw snippets grouped by extension."""
+
     manifest: dict[str, list[str]] = {}
     for snippet_path in sorted(RAW_SNIPPETS_DIR.glob("**/*")):
         if snippet_path.is_file():

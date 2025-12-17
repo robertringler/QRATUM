@@ -119,6 +119,7 @@ class PilotFactory:
             target_per_day: Daily pilot generation target
             veto_rate: Expected veto rate (default 0.8%)
         """
+
         self.target_per_day = target_per_day
         self.veto_rate = veto_rate
         self.pilots_generated = 0
@@ -137,6 +138,7 @@ class PilotFactory:
         Returns:
             Generated pilot specification
         """
+
         # Select vertical (round-robin with some randomness)
         vertical = self.VERTICALS[pilot_id % len(self.VERTICALS)]
 
@@ -185,6 +187,7 @@ class PilotFactory:
         Returns:
             List of generated pilots
         """
+
         logger.info(f"Generating batch of {count} pilots...")
         pilots = []
         for _i in range(count):
@@ -199,6 +202,7 @@ class PilotFactory:
         Returns:
             List of first 10 pilots with metrics
         """
+
         pilots = [
             {
                 "id": "001",
@@ -285,6 +289,7 @@ class PilotFactory:
 
     def display_wave3_snapshot(self):
         """Display Wave 3 snapshot (first 10 pilots)."""
+
         logger.info("\n#### Wave 3 Snapshot (First 10 Pilots)")
         logger.info("| ID | Vertical | Workload | Runtime | Fidelity | Impact |")
         logger.info("|----|----------|----------|---------|----------|--------|")
@@ -306,6 +311,7 @@ class PilotFactory:
         Returns:
             Statistics dictionary
         """
+
         return {
             "pilots_generated": self.pilots_generated,
             "vetoes": self.vetoes,

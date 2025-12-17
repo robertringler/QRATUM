@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Validation Data Collection Script for QuASIM
 
 This script collects validation data from various sources:
@@ -34,6 +35,7 @@ class ValidationCollector:
 
     def parse_validation_summary(self):
         """Parse existing validation summary."""
+
         summary_path = self.repo_root / "docs" / "validation" / "validation_summary.md"
         if not summary_path.exists():
             print(f"Warning: {summary_path} not found")
@@ -67,6 +69,7 @@ class ValidationCollector:
 
     def parse_coverage_matrix(self):
         """Parse coverage matrix CSV."""
+
         coverage_path = self.repo_root / "montecarlo_campaigns" / "coverage_matrix.csv"
         if not coverage_path.exists():
             print(f"Warning: {coverage_path} not found")
@@ -87,6 +90,7 @@ class ValidationCollector:
 
     def collect_kernel_data(self):
         """Collect kernel validation data."""
+
         # Extract kernel information from quasim package
         quasim_dir = self.repo_root / "quasim"
         kernel_modules = []
@@ -122,6 +126,7 @@ class ValidationCollector:
 
     def collect_environment_info(self):
         """Collect environment and platform information."""
+
         self.data["environment"] = {
             "cuda_version": "12.1",
             "rocm_version": "5.6",
@@ -132,6 +137,7 @@ class ValidationCollector:
 
     def generate_metrics(self):
         """Generate synthetic metrics for demonstration."""
+
         self.data["metrics"] = {
             "rmse": 0.0012,
             "kl_divergence": 0.0015,
@@ -142,6 +148,7 @@ class ValidationCollector:
 
     def collect_all(self):
         """Collect data from all sources."""
+
         print("Collecting validation data...")
         self.parse_validation_summary()
         self.parse_coverage_matrix()
@@ -152,6 +159,7 @@ class ValidationCollector:
 
     def generate_report(self, output_path: str):
         """Generate the validated kernels report."""
+
         print(f"Generating report at {output_path}...")
 
         validated_count = self.data.get("validated_count", 68)
@@ -520,6 +528,7 @@ r"Fidelity:\\s+(?P<fidelity>[0-9\\.]+)"
 
     def _get_git_commit(self) -> str:
         """Get current git commit SHA."""
+
         try:
             import subprocess
 
@@ -538,6 +547,7 @@ r"Fidelity:\\s+(?P<fidelity>[0-9\\.]+)"
 
 def main():
     """Main entry point."""
+
     repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
     collector = ValidationCollector(repo_root)

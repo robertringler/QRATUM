@@ -29,6 +29,7 @@ class NumpyEncoder(json.JSONEncoder):
 
     def default(self, obj: Any) -> Any:
         """Handle numpy types for JSON serialization."""
+
         if isinstance(obj, (np.integer, np.int64, np.int32)):
             return int(obj)
         elif isinstance(obj, (np.floating, np.float64, np.float32)):
@@ -53,6 +54,7 @@ class SimulationPhase:
 
 def print_header(title: str) -> None:
     """Print formatted header."""
+
     print()
     print("=" * 80)
     print(title)
@@ -62,6 +64,7 @@ def print_header(title: str) -> None:
 
 def print_section(title: str) -> None:
     """Print section header."""
+
     print()
     print("-" * 80)
     print(title)
@@ -76,6 +79,7 @@ def create_sustainable_material_stack() -> dict[str, Any]:
       - Reinforced sidewall composite
       - Low-hysteresis tread compound
     """
+
     return {
         "tread_compound": {
             "name": "GY-SUSTAIN-TREAD-2030",
@@ -126,6 +130,7 @@ def create_physics_domains() -> dict[str, dict[str, Any]]:
       - Wear and fatigue estimation
       - Rolling resistance entropy modeling
     """
+
     return {
         "nonlinear_elasticity": {
             "enabled": True,
@@ -179,6 +184,7 @@ def execute_static_load_phase(
     simulator: Any, compound: Any, geometry: Any, environment: Any
 ) -> dict[str, Any]:
     """Execute static load simulation phase."""
+
     # Static load analysis
     loads = [300.0, 450.0, 600.0, 750.0]  # kg
     pressures = [200.0, 240.0, 280.0]  # kPa
@@ -244,6 +250,7 @@ def execute_dynamic_rolling_phase(
     simulator: Any, compound: Any, geometry: Any, environment: Any
 ) -> dict[str, Any]:
     """Execute dynamic rolling simulation phase."""
+
     # Dynamic rolling analysis
     speeds = [30.0, 60.0, 90.0, 120.0, 150.0, 180.0]  # km/h
     load = 450.0  # kg (nominal)
@@ -329,6 +336,7 @@ def execute_dynamic_rolling_phase(
 
 def _compute_rr_label(rr_coeff: float) -> str:
     """Compute EU tire label rolling resistance class."""
+
     if rr_coeff <= 0.0065:
         return "A"
     elif rr_coeff <= 0.0078:
@@ -345,6 +353,7 @@ def _compute_rr_label(rr_coeff: float) -> str:
 
 def execute_thermal_ramp_phase(simulator: Any, compound: Any, geometry: Any) -> dict[str, Any]:
     """Execute thermal ramp simulation phase."""
+
     from quasim.domains.tire import EnvironmentalConditions, RoadSurface, WeatherCondition
 
     # Thermal ramp from -40°C to +80°C
@@ -433,6 +442,7 @@ def execute_fatigue_projection_phase(
     simulator: Any, compound: Any, geometry: Any, environment: Any
 ) -> dict[str, Any]:
     """Execute long-horizon fatigue projection phase."""
+
     # Fatigue projection for multiple mileage scenarios
     mileages_km = [10000, 25000, 50000, 75000, 100000]
     avg_speed = 80.0  # km/h average
@@ -536,6 +546,7 @@ def generate_visualization_summary(
     static_results: dict, rolling_results: dict, thermal_results: dict, fatigue_results: dict
 ) -> dict[str, Any]:
     """Generate visualization summary (numerical output since rendering unavailable)."""
+
     return {
         "stress_strain_fields": {
             "description": "Contact patch stress distribution",
@@ -589,7 +600,9 @@ def generate_technical_report(
     execution_time: float,
 ) -> str:
     """Generate comprehensive technical report."""
+
     report = """
+
 ================================================================================
         GOODYEAR QUANTUM TIRE SIMULATION - TECHNICAL REPORT
                     GY-SUSTAIN-2030 Execution Results
@@ -649,6 +662,7 @@ Status: ✓ VALIDATED
 2.4 Contact Mechanics
 ---------------------
 """
+
     min_contact = static_results["summary"]["min_contact_area_cm2"]
     max_contact = static_results["summary"]["max_contact_area_cm2"]
     report += f"""Algorithm: Mortar Segment Method
@@ -659,13 +673,14 @@ Status: ✓ VALIDATED
 2.5 Wear & Fatigue
 ------------------
 Wear Model: Archard Extended
-Wear Rate: {fatigue_results['summary']['wear_rate_mm_per_1000km']} mm/1000km
-Predicted Lifetime: {fatigue_results['summary']['predicted_lifetime_km']:,.0f} km
+Wear Rate: {fatigue_results["summary"]["wear_rate_mm_per_1000km"]} mm/1000km
+Predicted Lifetime: {fatigue_results["summary"]["predicted_lifetime_km"]:,.0f} km
 Status: ✓ VALIDATED
 
 2.6 Rolling Resistance Entropy
 ------------------------------
 """
+
     avg_rr = rolling_results["summary"]["avg_rolling_resistance"]
     eu_label = rolling_results["summary"]["eu_label_class"]
     report += f"""Average Rolling Resistance: {avg_rr:.5f}
@@ -692,6 +707,7 @@ Memory Scaling:         O(n²)           O(n log n)
 Total Execution Time: {execution_time:.2f} seconds
 Phases Completed: 4/4 (Static, Rolling, Thermal, Fatigue)
 """
+
     total_scenarios = (
         len(static_results["contact_patch_analysis"])
         + len(rolling_results["rolling_resistance"])
@@ -716,6 +732,7 @@ Deterministic Reproducibility: <1μs seed replay drift
 4.1 Rolling Resistance Performance
 ----------------------------------
 """
+
     rr_avg = rolling_results["summary"]["avg_rolling_resistance"]
     baseline_rr = 0.0095  # Industry average
     rr_improvement = ((baseline_rr - rr_avg) / baseline_rr) * 100
@@ -723,7 +740,7 @@ Deterministic Reproducibility: <1μs seed replay drift
     report += f"""• Average RR Coefficient: {rr_avg:.5f}
 • Industry Baseline (Avg): 0.00950
 • Improvement vs Baseline: {rr_improvement:.1f}%
-• EU Label Class: {rolling_results['summary']['eu_label_class']}
+• EU Label Class: {rolling_results["summary"]["eu_label_class"]}
 • CO2 Reduction Potential: {rr_improvement * 0.7:.1f}% fuel efficiency gain
 
 Sustainability Impact:
@@ -735,6 +752,7 @@ Sustainability Impact:
 --------------------------------------
 Material Composition Analysis:
 """
+
     tread = material_stack["tread_compound"]["properties"]
     bio_pct = tread["bio_content_percentage"]
     recycled_pct = tread["recycled_content_percentage"]
@@ -745,13 +763,14 @@ Material Composition Analysis:
 • Carbon footprint reduction: ~30% vs conventional compounds
 
 Performance Trade-offs:
-• Wet grip retained: {rolling_results['grip_performance'][2]['wet_grip'] * 100:.1f}% of baseline
-• Wear resistance: {tread['abrasion_resistance'] * 100:.1f}% (premium tier)
+• Wet grip retained: {rolling_results["grip_performance"][2]["wet_grip"] * 100:.1f}% of baseline
+• Wear resistance: {tread["abrasion_resistance"] * 100:.1f}% (premium tier)
 • All-season capability: CONFIRMED (tested -40°C to +80°C)
 
 4.3 Thermal Stability
 ---------------------
 """
+
     glass_margin = thermal_results["summary"]["glass_transition_margin_c"]
     thermal_idx = thermal_results["temperature_sweep"][6]["grip_coefficient"]
     report += f"""• Operating range: -40°C to +80°C (PASS)
@@ -761,8 +780,8 @@ Performance Trade-offs:
 
 4.4 Durability Assessment
 -------------------------
-• Predicted lifetime: {fatigue_results['summary']['predicted_lifetime_km']:,.0f} km
-• Warranty recommendation: {fatigue_results['summary']['warranty_recommendation_km']:,.0f} km
+• Predicted lifetime: {fatigue_results["summary"]["predicted_lifetime_km"]:,.0f} km
+• Warranty recommendation: {fatigue_results["summary"]["warranty_recommendation_km"]:,.0f} km
 • Wear uniformity index: 0.85 (excellent)
 • Fatigue resistance: Premium tier (>100k km cycles)
 
@@ -844,11 +863,13 @@ RECOMMENDATION: APPROVE for Phase 2 manufacturing trials
          Generated by QuASIM v3.2.0 | Goodyear Quantum Pilot Platform
 ================================================================================
 """
+
     return report
 
 
 def main() -> None:
     """Execute the GY-SUSTAIN-2030 Goodyear Quantum Tire Simulation."""
+
     start_time = time.time()
 
     print_header("GOODYEAR QUANTUM TIRE SIMULATION - GY-SUSTAIN-2030")
@@ -1076,7 +1097,7 @@ def main() -> None:
     print_section("PERFORMANCE SUMMARY")
     print(f"Wall-clock Runtime:     {total_execution_time:.2f} seconds")
     print(f"Total Scenarios:        {total_scenarios}")
-    print(f"Throughput:             {total_scenarios/total_execution_time:.1f} scenarios/second")
+    print(f"Throughput:             {total_scenarios / total_execution_time:.1f} scenarios/second")
     print("GPU Utilization:        Simulated (quantum-inspired CPU path)")
     print("Memory Scaling:         Efficient (tensor network compression)")
     print("Convergence:            All phases converged successfully")

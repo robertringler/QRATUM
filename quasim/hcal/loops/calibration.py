@@ -49,6 +49,7 @@ class CalibrationLoop:
             max_iterations: Maximum number of iterations.
             random_seed: Random seed for deterministic behavior (default: 42).
         """
+
         self.measure_fn = measure_fn
         self.apply_fn = apply_fn
         self.objective_fn = objective_fn
@@ -75,6 +76,7 @@ class CalibrationLoop:
         Returns:
             CalibrationResult instance.
         """
+
         setpoint = initial_setpoint.copy()
         objective_history = []
         best_objective = float("inf")
@@ -147,6 +149,7 @@ class CalibrationLoop:
         Returns:
             Updated setpoint.
         """
+
         # Simple proportional control
         new_setpoint = setpoint.copy()
 
@@ -172,6 +175,7 @@ class CalibrationLoop:
         Returns:
             Updated setpoint.
         """
+
         new_setpoint = setpoint.copy()
 
         if len(objective_history) >= 2:
@@ -201,6 +205,7 @@ class CalibrationLoop:
         Returns:
             Updated setpoint.
         """
+
         # Sample perturbations
         num_samples = 10
         samples = []
@@ -255,6 +260,7 @@ def bias_trim_v1(
 
     def objective_fn(state: Dict[str, Any]) -> float:
         """Minimize power while maintaining performance."""
+
         power = state.get("power_watts", 0)
         utilization = state.get("utilization_percent", 0)
 
@@ -298,6 +304,7 @@ def power_sweep(
     Returns:
         List of (power, telemetry) tuples.
     """
+
     results = []
 
     power_levels = np.linspace(power_range[0], power_range[1], steps)

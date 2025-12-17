@@ -12,11 +12,13 @@ class TestSynergyMapper:
     @pytest.fixture
     def mapper(self, tmp_path):
         """Create mapper with test configuration."""
+
         # Create test clusters config
         config_dir = tmp_path / "config"
         config_dir.mkdir()
 
         clusters_content = """
+
 clusters:
   - id: A
     name: Test Cluster A
@@ -36,12 +38,14 @@ clusters:
       2026: 1500000
       2027: 2500000
 """
+
         (config_dir / "clusters.yaml").write_text(clusters_content)
 
         return SynergyMapper(config_dir=config_dir)
 
     def test_load_clusters(self, mapper):
         """Test loading cluster configurations."""
+
         clusters = mapper.load_clusters()
 
         assert len(clusters) == 2
@@ -51,6 +55,7 @@ clusters:
 
     def test_get_clusters_by_domain(self, mapper):
         """Test getting clusters by domain."""
+
         mapper.load_clusters()
 
         d1_clusters = mapper.get_clusters_by_domain("D1")
@@ -62,6 +67,7 @@ clusters:
 
     def test_get_clusters_by_type(self, mapper):
         """Test getting clusters by type."""
+
         mapper.load_clusters()
 
         two_domain = mapper.get_clusters_by_type("two-domain")
@@ -69,6 +75,7 @@ clusters:
 
     def test_find_synergies(self, mapper):
         """Test finding synergies across prompts."""
+
         mapper.load_clusters()
 
         prompts = {
@@ -117,6 +124,7 @@ clusters:
 
     def test_calculate_cluster_value(self, mapper):
         """Test calculating cluster value metrics."""
+
         mapper.load_clusters()
 
         value = mapper.calculate_cluster_value("A")
@@ -127,6 +135,7 @@ clusters:
 
     def test_get_cross_domain_opportunities(self, mapper):
         """Test identifying cross-domain opportunities."""
+
         prompts = {
             1: Prompt(
                 id=1,
@@ -155,6 +164,7 @@ clusters:
 
     def test_generate_cluster_report(self, mapper):
         """Test generating cluster report."""
+
         mapper.load_clusters()
 
         report = mapper.generate_cluster_report()

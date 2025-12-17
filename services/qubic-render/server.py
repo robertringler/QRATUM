@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Dict
-
 try:
     from fastapi import FastAPI, WebSocket, WebSocketDisconnect
     from fastapi.responses import JSONResponse
@@ -25,11 +23,12 @@ class RenderServer:
 
     def __init__(self, gpu_available: bool = True) -> None:
         """Initialize render server."""
+
         if not FASTAPI_AVAILABLE:
             raise ImportError("FastAPI not installed. Install with: pip install fastapi uvicorn")
 
         self.gpu_available = gpu_available
-        self.jobs: Dict[str, Dict] = {}
+        self.jobs: dict[str, dict] = {}
         self.app = self._create_app()
 
     def _create_app(self) -> FastAPI:
@@ -38,6 +37,7 @@ class RenderServer:
         Returns:
             FastAPI app instance
         """
+
         app = FastAPI(
             title="QUBIC Render Service",
             description="Distributed GPU rendering for QuASIM visualization",
@@ -47,6 +47,7 @@ class RenderServer:
         @app.get("/health")
         async def health_check():
             """Health check endpoint."""
+
             return {
                 "status": "healthy",
                 "gpu_available": self.gpu_available,
@@ -56,17 +57,19 @@ class RenderServer:
         @app.get("/gpu-status")
         async def gpu_status():
             """GPU status endpoint."""
+
             gpu_info = self._get_gpu_info()
             return {"gpu_available": self.gpu_available, "info": gpu_info}
 
         return app
 
-    def _get_gpu_info(self) -> Dict:
+    def _get_gpu_info(self) -> dict:
         """Get GPU information.
 
         Returns:
             GPU info dictionary
         """
+
         if not self.gpu_available:
             return {"message": "No GPU available"}
 
@@ -93,6 +96,7 @@ def create_app() -> FastAPI:
     Returns:
         FastAPI app instance
     """
+
     server = RenderServer()
     return server.app
 

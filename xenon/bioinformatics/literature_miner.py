@@ -12,7 +12,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Optional
 
 
 @dataclass
@@ -32,11 +32,11 @@ class Publication:
 
     pmid: str
     title: str
-    authors: List[str]
+    authors: list[str]
     journal: str
     year: int
     abstract: str = ""
-    keywords: List[str] = field(default_factory=list)
+    keywords: list[str] = field(default_factory=list)
     doi: Optional[str] = None
 
     def mentions_protein(self, protein_name: str) -> bool:
@@ -48,15 +48,17 @@ class Publication:
         Returns:
             True if protein is mentioned in title or abstract
         """
+
         search_text = (self.title + " " + self.abstract).lower()
         return protein_name.lower() in search_text
 
-    def extract_interactions(self) -> List[Tuple[str, str]]:
+    def extract_interactions(self) -> list[tuple[str, str]]:
         """Extract potential protein-protein interactions from text.
 
         Returns:
             List of (protein1, protein2) tuples
         """
+
         # Simple pattern matching for interaction keywords
         interaction_patterns = [
             r"(\w+)\s+(?:interacts with|binds to|phosphorylates)\s+(\w+)",
@@ -88,11 +90,12 @@ class InteractionEvidence:
     protein_a: str
     protein_b: str
     interaction_type: str
-    publications: List[str] = field(default_factory=list)
+    publications: list[str] = field(default_factory=list)
     confidence: float = 0.0
 
     def add_publication(self, pmid: str) -> None:
         """Add supporting publication."""
+
         if pmid not in self.publications:
             self.publications.append(pmid)
             # Increase confidence with more publications
@@ -108,11 +111,12 @@ class LiteratureMiner:
 
     def __init__(self):
         """Initialize literature miner."""
-        self._publications: Dict[str, Publication] = {}
-        self._interactions: Dict[Tuple[str, str], InteractionEvidence] = {}
-        self._protein_citations: Dict[str, Set[str]] = {}
 
-    def parse_pubmed_xml(self, xml_content: str) -> List[Publication]:
+        self._publications: dict[str, Publication] = {}
+        self._interactions: dict[tuple[str, str], InteractionEvidence] = {}
+        self._protein_citations: dict[str, set[str]] = {}
+
+    def parse_pubmed_xml(self, xml_content: str) -> list[Publication]:
         """Parse PubMed XML format (simplified).
 
         Note: Full implementation would use xml.etree.ElementTree.
@@ -124,6 +128,7 @@ class LiteratureMiner:
         Returns:
             List of Publication objects
         """
+
         # Placeholder: In Phase 2+, implement full XML parsing
         return []
 
@@ -131,7 +136,7 @@ class LiteratureMiner:
         self,
         query: str,
         max_results: int = 100,
-    ) -> List[Publication]:
+    ) -> list[Publication]:
         """Query PubMed database.
 
         Note: Requires internet access and NCBI API key for production use.
@@ -144,6 +149,7 @@ class LiteratureMiner:
         Returns:
             List of publications
         """
+
         # Phase 1: Mock implementation
         # Phase 2+: Implement actual PubMed E-utilities API calls
         return []
@@ -154,6 +160,7 @@ class LiteratureMiner:
         Args:
             publication: Publication object
         """
+
         self._publications[publication.pmid] = publication
 
         # Extract and index interactions
@@ -170,7 +177,7 @@ class LiteratureMiner:
 
             self._interactions[key].add_publication(publication.pmid)
 
-    def get_protein_citations(self, protein_name: str) -> List[Publication]:
+    def get_protein_citations(self, protein_name: str) -> list[Publication]:
         """Get all publications mentioning a protein.
 
         Args:
@@ -179,6 +186,7 @@ class LiteratureMiner:
         Returns:
             List of publications
         """
+
         publications = []
         for pub in self._publications.values():
             if pub.mentions_protein(protein_name):
@@ -195,13 +203,14 @@ class LiteratureMiner:
         Returns:
             Number of citations
         """
+
         return len(self.get_protein_citations(protein_name))
 
     def get_interactions(
         self,
         protein: Optional[str] = None,
         min_confidence: float = 0.0,
-    ) -> List[InteractionEvidence]:
+    ) -> list[InteractionEvidence]:
         """Get protein-protein interactions.
 
         Args:
@@ -211,6 +220,7 @@ class LiteratureMiner:
         Returns:
             List of interaction evidence
         """
+
         interactions = []
 
         for evidence in self._interactions.values():
@@ -235,6 +245,7 @@ class LiteratureMiner:
         Returns:
             Prior probability (0-1) based on citation count
         """
+
         citation_count = self.get_citation_count(protein)
 
         # Log-scale normalization
@@ -247,7 +258,7 @@ class LiteratureMiner:
         # Normalize to 0-1 range (assuming max ~10^5 citations)
         return min(1.0, log_citations / 5.0)
 
-    def extract_mechanism_keywords(self, publication: Publication) -> List[str]:
+    def extract_mechanism_keywords(self, publication: Publication) -> list[str]:
         """Extract mechanism-related keywords from publication.
 
         Args:
@@ -256,6 +267,7 @@ class LiteratureMiner:
         Returns:
             List of mechanism keywords
         """
+
         # Keywords related to biological mechanisms
         mechanism_keywords = [
             "phosphorylation",
@@ -288,7 +300,7 @@ class LiteratureMiner:
         self,
         protein: str,
         mechanism_type: Optional[str] = None,
-    ) -> List[Tuple[Publication, float]]:
+    ) -> list[tuple[Publication, float]]:
         """Rank publications by relevance to protein/mechanism.
 
         Args:
@@ -298,6 +310,7 @@ class LiteratureMiner:
         Returns:
             List of (publication, relevance_score) tuples
         """
+
         ranked = []
         protein_lower = protein.lower()
 
@@ -335,7 +348,7 @@ class LiteratureMiner:
         self,
         protein: str,
         max_publications: int = 10,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Generate summary of literature for a protein.
 
         Args:
@@ -345,12 +358,13 @@ class LiteratureMiner:
         Returns:
             Dictionary with summary statistics
         """
+
         publications = self.get_protein_citations(protein)
         ranked = self.rank_publications_by_relevance(protein)[:max_publications]
         interactions = self.get_interactions(protein=protein, min_confidence=0.3)
 
         # Extract common keywords
-        all_keywords: Dict[str, int] = {}
+        all_keywords: dict[str, int] = {}
         for pub in publications:
             keywords = self.extract_mechanism_keywords(pub)
             for kw in keywords:

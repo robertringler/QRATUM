@@ -25,6 +25,7 @@ class Circuit:
         Args:
             num_qubits: Number of qubits
         """
+
         self.num_qubits = num_qubits
         self.instructions: List[Tuple[str, List[int], Optional[np.ndarray], dict]] = []
 
@@ -41,6 +42,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("h", [qubit], gates.H, {}))
         return self
 
@@ -53,6 +55,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("x", [qubit], gates.X, {}))
         return self
 
@@ -65,6 +68,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("y", [qubit], gates.Y, {}))
         return self
 
@@ -77,6 +81,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("z", [qubit], gates.Z, {}))
         return self
 
@@ -89,6 +94,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("s", [qubit], gates.S, {}))
         return self
 
@@ -101,6 +107,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("t", [qubit], gates.T, {}))
         return self
 
@@ -114,6 +121,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("rx", [qubit], gates.RX(theta), {"theta": theta}))
         return self
 
@@ -127,6 +135,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("ry", [qubit], gates.RY(theta), {"theta": theta}))
         return self
 
@@ -140,6 +149,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("rz", [qubit], gates.RZ(theta), {"theta": theta}))
         return self
 
@@ -157,6 +167,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("cnot", [control, target], gates.CNOT, {}))
         return self
 
@@ -170,6 +181,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         return self.cnot(control, target)
 
     def cz(self, control: int, target: int) -> "Circuit":
@@ -182,6 +194,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("cz", [control, target], gates.CZ, {}))
         return self
 
@@ -195,6 +208,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("swap", [qubit1, qubit2], gates.SWAP, {}))
         return self
 
@@ -213,6 +227,7 @@ class Circuit:
         Returns:
             Self (for chaining)
         """
+
         self.instructions.append(("toffoli", [control1, control2, target], gates.TOFFOLI, {}))
         return self
 
@@ -226,6 +241,7 @@ class Circuit:
         Returns:
             Circuit depth (number of gate layers)
         """
+
         if not self.instructions:
             return 0
 
@@ -249,6 +265,7 @@ class Circuit:
         Returns:
             Total number of gates in circuit
         """
+
         return len(self.instructions)
 
     def count_ops(self) -> dict:
@@ -257,6 +274,7 @@ class Circuit:
         Returns:
             Dictionary mapping gate names to counts
         """
+
         counts = {}
         for gate_name, _, _, _ in self.instructions:
             counts[gate_name] = counts.get(gate_name, 0) + 1
@@ -272,6 +290,7 @@ class Circuit:
         Returns:
             New circuit that is the inverse
         """
+
         inv_circuit = Circuit(self.num_qubits)
         # Reverse instructions and conjugate gates
         for gate_name, qubits, matrix, params in reversed(self.instructions):
@@ -286,16 +305,19 @@ class Circuit:
         Returns:
             New circuit with copied instructions
         """
+
         new_circuit = Circuit(self.num_qubits)
         new_circuit.instructions = self.instructions.copy()
         return new_circuit
 
     def __repr__(self) -> str:
         """String representation of circuit."""
+
         return f"Circuit({self.num_qubits} qubits, {len(self.instructions)} gates)"
 
     def __str__(self) -> str:
         """Human-readable string representation."""
+
         lines = [f"Circuit with {self.num_qubits} qubits:"]
         for i, (gate_name, qubits, _, params) in enumerate(self.instructions):
             qubit_str = ",".join(map(str, qubits))

@@ -13,6 +13,7 @@ except (ImportError, AttributeError, RuntimeError):
 
 def autonomous_systems_kernel(seed: int = 0, scale: float = 1.0):
     """Simulated autonomous systems kernel."""
+
     if JAX_AVAILABLE:
         try:
             key = jax_random.PRNGKey(seed)

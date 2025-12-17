@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 
 class BuildTracer:
@@ -17,11 +17,12 @@ class BuildTracer:
 
     def __init__(self, output_path: Path = Path("qubic_build_trace.json")) -> None:
         """Initialize build tracer."""
+
         self.output_path = output_path
-        self.events: List[Dict[str, Any]] = []
+        self.events: list[dict[str, Any]] = []
         self.start_time = datetime.now()
 
-    def log_module_creation(self, module_name: str, module_type: str, details: Dict = None) -> None:
+    def log_module_creation(self, module_name: str, module_type: str, details: dict = None) -> None:
         """Log module creation event.
 
         Args:
@@ -29,6 +30,7 @@ class BuildTracer:
             module_type: Type of module (core, engine, adapter, etc.)
             details: Additional details
         """
+
         event = {
             "timestamp": datetime.now().isoformat(),
             "event_type": "module_creation",
@@ -38,7 +40,7 @@ class BuildTracer:
         }
         self.events.append(event)
 
-    def log_test_result(self, test_suite: str, passed: bool, details: Dict = None) -> None:
+    def log_test_result(self, test_suite: str, passed: bool, details: dict = None) -> None:
         """Log test result.
 
         Args:
@@ -46,6 +48,7 @@ class BuildTracer:
             passed: Whether tests passed
             details: Test details
         """
+
         event = {
             "timestamp": datetime.now().isoformat(),
             "event_type": "test_result",
@@ -55,13 +58,14 @@ class BuildTracer:
         }
         self.events.append(event)
 
-    def log_gpu_availability(self, available: bool, gpu_info: Dict = None) -> None:
+    def log_gpu_availability(self, available: bool, gpu_info: dict = None) -> None:
         """Log GPU availability check.
 
         Args:
             available: Whether GPU is available
             gpu_info: GPU information
         """
+
         event = {
             "timestamp": datetime.now().isoformat(),
             "event_type": "gpu_check",
@@ -71,7 +75,7 @@ class BuildTracer:
         self.events.append(event)
 
     def log_integration_validation(
-        self, integration: str, status: str, details: Dict = None
+        self, integration: str, status: str, details: dict = None
     ) -> None:
         """Log integration validation.
 
@@ -80,6 +84,7 @@ class BuildTracer:
             status: Validation status
             details: Validation details
         """
+
         event = {
             "timestamp": datetime.now().isoformat(),
             "event_type": "integration_validation",
@@ -91,6 +96,7 @@ class BuildTracer:
 
     def export(self) -> None:
         """Export build trace to JSON file."""
+
         build_trace = {
             "build_start": self.start_time.isoformat(),
             "build_end": datetime.now().isoformat(),
@@ -116,6 +122,7 @@ class BuildTracer:
 
 def create_build_trace() -> None:
     """Create build trace for QUBIC implementation."""
+
     tracer = BuildTracer()
 
     # Log qubic-viz modules

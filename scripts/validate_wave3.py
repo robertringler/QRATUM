@@ -25,6 +25,7 @@ def validate_pilot_target(target: int) -> bool:
     Returns:
         True if valid
     """
+
     print(f"[✓] Validating pilot target: {target}/day")
     if target < 1000:
         print(f"[✗] Pilot target {target} < 1000 (minimum for Wave 3)")
@@ -42,6 +43,7 @@ def validate_efficiency(efficiency_str: str) -> bool:
     Returns:
         True if valid
     """
+
     print(f"[✓] Validating efficiency target: {efficiency_str}")
     try:
         efficiency = float(efficiency_str.rstrip("x"))
@@ -64,6 +66,7 @@ def validate_mera_compression(compression_str: str) -> bool:
     Returns:
         True if valid
     """
+
     print(f"[✓] Validating MERA compression: {compression_str}")
     try:
         compression = float(compression_str.rstrip("x"))
@@ -86,6 +89,7 @@ def validate_china_integration(enabled: str) -> bool:
     Returns:
         True if valid
     """
+
     print(f"[✓] Validating China factory integration: {enabled}")
     if enabled.lower() not in ["true", "false"]:
         print(f"[✗] Invalid China integration flag: {enabled}")
@@ -110,6 +114,7 @@ def validate_compliance(compliance_str: str) -> bool:
     Returns:
         True if valid
     """
+
     print(f"[✓] Validating compliance frameworks: {compliance_str}")
 
     required = ["CMMC-L2", "DO-178C", "ISO-13485", "China-MLPS"]
@@ -138,6 +143,7 @@ def generate_report(output_path: str, results: dict):
         output_path: Output file path
         results: Validation results
     """
+
     print(f"\n[✓] Generating launch report: {output_path}")
 
     with open(output_path, "w") as f:
@@ -191,6 +197,7 @@ def generate_report(output_path: str, results: dict):
 
 def main():
     """Main validation entry point."""
+
     parser = argparse.ArgumentParser(description="Validate Wave 3 deployment")
     parser.add_argument(
         "--pilot-target",

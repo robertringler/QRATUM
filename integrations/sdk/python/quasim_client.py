@@ -74,6 +74,7 @@ class QuASIMClient:
             timeout: Request timeout in seconds
             max_retries: Maximum number of retry attempts
         """
+
         self.api_url = api_url.rstrip("/")
         self.api_key = api_key
         self.timeout = timeout
@@ -98,6 +99,7 @@ class QuASIMClient:
         Returns:
             Response data
         """
+
         url = f"{self.api_url}{endpoint}"
 
         for attempt in range(self.max_retries):
@@ -144,6 +146,7 @@ class QuASIMClient:
         Returns:
             Job object
         """
+
         logger.info(f"Submitting {job_type} job")
 
         data = {"job_type": job_type, "config": config, "priority": priority}
@@ -176,6 +179,7 @@ class QuASIMClient:
         Returns:
             Job object
         """
+
         cfd_config = {
             "mesh": str(mesh_file),
             "boundary_conditions": boundary_conditions or {},
@@ -197,6 +201,7 @@ class QuASIMClient:
         Returns:
             Job object
         """
+
         fea_config = {"mesh": str(mesh_file), "material": material_properties, "loads": load_cases}
 
         return self.submit_job("fea", fea_config)
@@ -217,6 +222,7 @@ class QuASIMClient:
         Returns:
             Job object
         """
+
         mc_config = {
             "num_trajectories": num_trajectories,
             "initial_conditions": initial_conditions,
@@ -234,6 +240,7 @@ class QuASIMClient:
         Returns:
             Job object with current status
         """
+
         response = self._make_request("GET", f"/jobs/{job_id}/status")
 
         return Job(
@@ -253,6 +260,7 @@ class QuASIMClient:
         Returns:
             True if cancelled successfully
         """
+
         logger.info(f"Cancelling job {job_id}")
         response = self._make_request("POST", f"/jobs/{job_id}/cancel")
         return response.get("status") == "cancelled"
@@ -268,6 +276,7 @@ class QuASIMClient:
         Returns:
             Completed job object
         """
+
         logger.info(f"Waiting for job {job_id} to complete")
 
         start_time = time.time()
@@ -294,6 +303,7 @@ class QuASIMClient:
         Returns:
             True if downloaded successfully
         """
+
         logger.info(f"Downloading artifact {artifact_id} to {output_path}")
 
         # In production, would download actual artifact
@@ -312,6 +322,7 @@ class QuASIMClient:
         Returns:
             Job object
         """
+
         if not AIOHTTP_AVAILABLE:
             logger.warning("aiohttp not available; falling back to sync")
             return self.submit_job(job_type, config)
@@ -326,6 +337,7 @@ class QuASIMClient:
         Returns:
             True if API is healthy
         """
+
         try:
             response = self._make_request("GET", "/health")
             return response.get("status") == "healthy"
@@ -336,6 +348,7 @@ class QuASIMClient:
 
 def main():
     """Example usage."""
+
     client = QuASIMClient(api_url="http://localhost:8000")
 
     # Health check

@@ -20,6 +20,7 @@ class InteractiveExporter:
 
     def __init__(self) -> None:
         """Initialize interactive exporter."""
+
         pass
 
     def export_html(
@@ -40,12 +41,12 @@ class InteractiveExporter:
         Raises:
             ImportError: If plotly is not available
         """
+
         try:
             import plotly.graph_objects as go
         except ImportError:
             raise ImportError(
-                "plotly is required for interactive HTML export. "
-                "Install with: pip install plotly"
+                "plotly is required for interactive HTML export. Install with: pip install plotly"
             ) from None
 
         output_path = Path(output_path)
@@ -113,6 +114,7 @@ class InteractiveExporter:
             output_path: Output JSON file path
             scalar_field: Name of scalar field to include
         """
+
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -159,6 +161,7 @@ class InteractiveExporter:
         Raises:
             ValueError: If file extension is not supported
         """
+
         output_path = Path(output_path)
         extension = output_path.suffix.lower()
 
@@ -168,5 +171,5 @@ class InteractiveExporter:
             self.export_json(data, output_path, scalar_field, **kwargs)
         else:
             raise ValueError(
-                f"Unsupported interactive format: {extension}. " "Supported formats: .html, .json"
+                f"Unsupported interactive format: {extension}. Supported formats: .html, .json"
             )

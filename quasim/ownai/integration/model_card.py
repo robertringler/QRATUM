@@ -25,6 +25,7 @@ def generate_model_card(
     description : str
         Model description
     """
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Filter results for this model

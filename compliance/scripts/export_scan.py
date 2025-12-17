@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Export Control Scanner
 Scans codebase for ITAR/EAR controlled technology patterns
 """
@@ -12,6 +13,7 @@ import yaml
 
 def load_patterns():
     """Load export control patterns from configuration"""
+
     config_file = Path(__file__).parent.parent / "config" / "export-patterns.yml"
     if config_file.exists():
         with open(config_file) as f:
@@ -21,6 +23,7 @@ def load_patterns():
 
 def scan_file(file_path, patterns):
     """Scan a single file for export-controlled content"""
+
     findings = []
 
     try:
@@ -63,6 +66,7 @@ def scan_file(file_path, patterns):
 
 def scan_repository():
     """Scan entire repository for export-controlled content"""
+
     patterns = load_patterns()
     all_findings = []
 

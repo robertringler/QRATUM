@@ -43,6 +43,7 @@ class BenchmarkResult:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
+
         return {
             "name": self.name,
             "backend": self.backend,
@@ -74,6 +75,7 @@ class BenchmarkRunner:
             backend: Computation backend ('cuda', 'hip', 'cpu')
             output_dir: Directory to save results
         """
+
         self.backend = backend
         self.output_dir = output_dir or Path("benchmark_results")
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -85,6 +87,7 @@ class BenchmarkRunner:
         Returns:
             List of benchmark results
         """
+
         print(f"Running benchmarks on {self.backend} backend...")
 
         # Quantum computing benchmarks
@@ -109,6 +112,7 @@ class BenchmarkRunner:
 
     def benchmark_qc_simulation(self) -> None:
         """Benchmark quantum circuit simulation."""
+
         print("\n=== Quantum Circuit Simulation Benchmarks ===")
 
         qubit_counts = [4, 8, 12, 16, 20]
@@ -157,6 +161,7 @@ class BenchmarkRunner:
 
     def benchmark_digital_twin(self) -> None:
         """Benchmark digital twin simulation."""
+
         print("\n=== Digital Twin Benchmarks ===")
 
         configs = [
@@ -206,6 +211,7 @@ class BenchmarkRunner:
 
     def benchmark_optimization(self) -> None:
         """Benchmark optimization algorithms."""
+
         print("\n=== Optimization Benchmarks ===")
 
         algorithms = ["qaoa", "vqe", "hybrid"]
@@ -250,6 +256,7 @@ class BenchmarkRunner:
 
     def benchmark_distributed(self) -> None:
         """Benchmark distributed tensor operations."""
+
         print("\n=== Distributed Execution Benchmarks ===")
 
         matrix_sizes = [256, 512, 1024, 2048]
@@ -295,6 +302,7 @@ class BenchmarkRunner:
 
     def benchmark_api(self) -> None:
         """Benchmark API endpoint latency."""
+
         print("\n=== API Latency Benchmarks ===")
 
         # Simulated API latency measurement
@@ -333,6 +341,7 @@ class BenchmarkRunner:
 
     def save_results(self) -> None:
         """Save benchmark results to file."""
+
         timestamp = time.strftime("%Y%m%d_%H%M%S")
         filename = self.output_dir / f"benchmark_{self.backend}_{timestamp}.json"
 
@@ -354,6 +363,7 @@ class BenchmarkRunner:
         Returns:
             Summary dictionary
         """
+
         successful = [r for r in self.results if r.success]
         failed = [r for r in self.results if not r.success]
 
@@ -368,6 +378,7 @@ class BenchmarkRunner:
 
 def main():
     """Run benchmark suite."""
+
     import argparse
 
     parser = argparse.ArgumentParser(description="QuASIM Benchmark Runner")

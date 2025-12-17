@@ -1,4 +1,5 @@
 """
+
 QRATUM Optimization Framework
 
 Provides performance profiling with equivalence preservation guarantees.

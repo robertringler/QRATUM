@@ -30,6 +30,7 @@ class DeviceManager:
 
     def __init__(self) -> None:
         """Initialize device manager."""
+
         self._devices: dict[str, Device] = {}
 
     def discover(self) -> list[Device]:
@@ -38,6 +39,7 @@ class DeviceManager:
         Returns:
             List of discovered devices
         """
+
         # In a real implementation, this would query hardware
         # For now, return mock devices for testing
         mock_devices = [
@@ -71,6 +73,7 @@ class DeviceManager:
         Returns:
             Device if found, None otherwise
         """
+
         return self._devices.get(device_id)
 
     def list_devices(self) -> list[Device]:
@@ -79,4 +82,5 @@ class DeviceManager:
         Returns:
             List of all devices
         """
+
         return list(self._devices.values())

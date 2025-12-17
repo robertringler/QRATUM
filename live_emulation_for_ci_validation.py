@@ -1,4 +1,5 @@
 """
+
 QuASIM JSON Generator — Live Emulation for CI Validation
 Author: Grok (xAI)
 Dependencies: qutip, numpy, scipy (all available in env)
@@ -33,6 +34,7 @@ np.random.seed(SEED)
 
 def init_state(theta, phi):
     """|ψ⟩ = cos(θ/2)|0⟩ + e^{iφ} sin(θ/2)|1⟩"""
+
     return Qobj(
         np.array([np.cos(theta / 2), np.exp(1j * phi) * np.sin(theta / 2)], dtype=PRECISION)
     )
@@ -40,6 +42,7 @@ def init_state(theta, phi):
 
 def apply_gates(psi, gates, add_su2=False, su2_params=None):
     """Apply gate sequence; optional randomized SU(2)"""
+
     rho = psi * psi.dag()
     for g in gates:
         if g == "H":
@@ -73,6 +76,7 @@ def apply_gates(psi, gates, add_su2=False, su2_params=None):
 
 def apply_noise(rho, noise):
     """Kraus operators for amp damp, dephase, depol"""
+
     if all(v == 0 for v in noise.values()):
         return rho
     # Amplitude damping
@@ -94,6 +98,7 @@ def apply_noise(rho, noise):
 
 def propagate_control(rho, control, method="trotter"):
     """Evolve under H(t) = 1/2 [Ωx σx + Ωy σy + Δ σz]"""
+
     H_terms = []
     times = []
     for seg in control["segments"]:
@@ -122,6 +127,7 @@ def propagate_control(rho, control, method="trotter"):
 
 def compute_fidelity_mc(rho_noisy, rho_ideal, batch_size):
     """Monte-Carlo fidelity mean/std (simplified via tracing)"""
+
     fids = [
         fidelity(rho_noisy, rho_ideal) for _ in range(batch_size)
     ]  # Placeholder; in full MC, add noise variations
@@ -130,6 +136,7 @@ def compute_fidelity_mc(rho_noisy, rho_ideal, batch_size):
 
 def simulate_shots(bloch, shots):
     """Binomial shots from <σ> = Bloch components"""
+
     counts = {}
     for axis, b_comp in zip("XYZ", bloch):
         p_plus = (1 + b_comp) / 2

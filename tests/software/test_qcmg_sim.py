@@ -9,6 +9,7 @@ from quasim.sim import FieldState, QCMGParameters, QuantacosmorphysigeneticField
 
 def test_qcmg_parameters_default():
     """Test QCMGParameters with default values."""
+
     params = QCMGParameters()
     assert params.grid_size == 64
     assert params.dt == 0.01
@@ -20,6 +21,7 @@ def test_qcmg_parameters_default():
 
 def test_qcmg_parameters_custom():
     """Test QCMGParameters with custom values."""
+
     params = QCMGParameters(
         grid_size=32,
         dt=0.02,
@@ -38,6 +40,7 @@ def test_qcmg_parameters_custom():
 
 def test_field_state():
     """Test FieldState dataclass."""
+
     state = FieldState(time=1.0, coherence=0.5, entropy=2.0, energy=100.0)
     assert state.time == 1.0
     assert state.coherence == 0.5
@@ -47,6 +50,7 @@ def test_field_state():
 
 def test_field_initialization_gaussian():
     """Test field initialization with Gaussian mode."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
     field.initialize(mode="gaussian")
@@ -65,6 +69,7 @@ def test_field_initialization_gaussian():
 
 def test_field_initialization_uniform():
     """Test field initialization with uniform mode."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
     field.initialize(mode="uniform")
@@ -76,6 +81,7 @@ def test_field_initialization_uniform():
 
 def test_field_initialization_zero():
     """Test field initialization with zero mode."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
     field.initialize(mode="zero")
@@ -86,6 +92,7 @@ def test_field_initialization_zero():
 
 def test_field_initialization_invalid_mode():
     """Test field initialization with invalid mode raises error."""
+
     params = QCMGParameters(grid_size=32)
     field = QuantacosmorphysigeneticField(params)
 
@@ -95,6 +102,7 @@ def test_field_initialization_invalid_mode():
 
 def test_field_evolution():
     """Test field evolution over multiple steps."""
+
     params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
     field.initialize(mode="gaussian")
@@ -121,6 +129,7 @@ def test_field_evolution():
 
 def test_field_evolution_without_initialization():
     """Test that evolve raises error if field not initialized."""
+
     params = QCMGParameters(grid_size=32)
     field = QuantacosmorphysigeneticField(params)
 
@@ -130,6 +139,7 @@ def test_field_evolution_without_initialization():
 
 def test_get_state_without_initialization():
     """Test that get_state raises error if field not initialized."""
+
     params = QCMGParameters(grid_size=32)
     field = QuantacosmorphysigeneticField(params)
 
@@ -139,6 +149,7 @@ def test_get_state_without_initialization():
 
 def test_field_history():
     """Test field history tracking."""
+
     params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
     field.initialize(mode="gaussian")
@@ -158,6 +169,7 @@ def test_field_history():
 
 def test_export_state():
     """Test exporting field state to dictionary."""
+
     params = QCMGParameters(
         grid_size=32,
         dt=0.01,
@@ -198,6 +210,7 @@ def test_export_state():
 
 def test_reproducibility_with_seed():
     """Test that using the same seed produces reproducible results."""
+
     params1 = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
     field1 = QuantacosmorphysigeneticField(params1)
     field1.initialize(mode="gaussian")
@@ -221,6 +234,7 @@ def test_reproducibility_with_seed():
 
 def test_different_seeds_produce_different_results():
     """Test that different seeds produce different results."""
+
     params1 = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
     field1 = QuantacosmorphysigeneticField(params1)
     field1.initialize(mode="uniform")

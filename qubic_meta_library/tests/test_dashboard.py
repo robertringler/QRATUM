@@ -12,11 +12,13 @@ class TestDashboard:
     @pytest.fixture
     def dashboard(self):
         """Create dashboard instance."""
+
         return Dashboard()
 
     @pytest.fixture
     def sample_data(self):
         """Create sample data for testing."""
+
         prompts = {
             1: Prompt(
                 id=1,
@@ -84,6 +86,7 @@ class TestDashboard:
 
     def test_calculate_kpis(self, dashboard, sample_data):
         """Test calculating all KPIs."""
+
         prompts, domains, clusters, pipelines = sample_data
 
         kpis = dashboard.calculate_kpis(prompts, domains, clusters, pipelines)
@@ -97,6 +100,7 @@ class TestDashboard:
 
     def test_calculate_prompt_metrics(self, dashboard, sample_data):
         """Test calculating prompt metrics."""
+
         prompts, _, _, _ = sample_data
 
         metrics = dashboard._calculate_prompt_metrics(prompts)
@@ -108,6 +112,7 @@ class TestDashboard:
 
     def test_calculate_domain_metrics(self, dashboard, sample_data):
         """Test calculating domain metrics."""
+
         prompts, domains, _, _ = sample_data
 
         metrics = dashboard._calculate_domain_metrics(prompts, domains)
@@ -118,6 +123,7 @@ class TestDashboard:
 
     def test_calculate_cluster_metrics(self, dashboard, sample_data):
         """Test calculating cluster metrics."""
+
         _, _, clusters, _ = sample_data
 
         metrics = dashboard._calculate_cluster_metrics(clusters)
@@ -128,6 +134,7 @@ class TestDashboard:
 
     def test_calculate_pipeline_metrics(self, dashboard, sample_data):
         """Test calculating pipeline metrics."""
+
         _, _, _, pipelines = sample_data
 
         metrics = dashboard._calculate_pipeline_metrics(pipelines)
@@ -138,6 +145,7 @@ class TestDashboard:
 
     def test_calculate_patent_metrics(self, dashboard, sample_data):
         """Test calculating patent metrics."""
+
         prompts, _, _, _ = sample_data
 
         metrics = dashboard._calculate_patent_metrics(prompts)
@@ -148,6 +156,7 @@ class TestDashboard:
 
     def test_calculate_commercial_metrics(self, dashboard, sample_data):
         """Test calculating commercial metrics."""
+
         prompts, _, clusters, _ = sample_data
 
         metrics = dashboard._calculate_commercial_metrics(prompts, clusters)
@@ -158,6 +167,7 @@ class TestDashboard:
 
     def test_generate_executive_summary(self, dashboard, sample_data):
         """Test generating executive summary."""
+
         prompts, domains, clusters, pipelines = sample_data
 
         summary = dashboard.generate_executive_summary(prompts, domains, clusters, pipelines)
@@ -170,6 +180,7 @@ class TestDashboard:
 
     def test_empty_data(self, dashboard):
         """Test with empty data."""
+
         metrics = dashboard._calculate_prompt_metrics({})
         assert metrics["total_prompts"] == 0
 

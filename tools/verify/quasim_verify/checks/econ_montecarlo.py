@@ -26,6 +26,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
     Returns:
         CheckResult with pass/fail status and P50 valuation
     """
+
     try:
         params_path = cfg["inputs"]["economics"]["montecarlo_params_yaml"]
         with open(params_path) as f:

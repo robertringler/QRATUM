@@ -7,6 +7,7 @@ from typing import Any
 @dataclass
 class Prompt:
     """
+
     Represents a prompt in the Qubic Meta Library.
 
     Attributes:
@@ -38,6 +39,7 @@ class Prompt:
 
     def __post_init__(self):
         """Validate prompt attributes."""
+
         if not 1 <= self.id <= 10000:
             raise ValueError(f"Prompt ID must be between 1 and 10000, got {self.id}")
         if not 0.0 <= self.patentability_score <= 1.0:
@@ -55,6 +57,7 @@ class Prompt:
 
     def is_high_value(self, threshold: float = 0.8) -> bool:
         """
+
         Check if prompt is high-value based on patentability and commercial scores.
 
         Args:
@@ -63,10 +66,12 @@ class Prompt:
         Returns:
             True if both scores exceed threshold
         """
+
         return self.patentability_score >= threshold and self.commercial_potential >= threshold
 
     def to_dict(self) -> dict[str, Any]:
         """Convert prompt to dictionary representation."""
+
         return {
             "id": self.id,
             "category": self.category,
@@ -85,6 +90,7 @@ class Prompt:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "Prompt":
         """Create Prompt instance from dictionary."""
+
         return cls(
             id=data["id"],
             category=data["category"],

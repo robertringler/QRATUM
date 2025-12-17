@@ -7,6 +7,7 @@ from .base import Percept
 
 def fuse(percepts: list[Percept]) -> Percept:
     """Deterministically fuse percepts by averaging numeric features."""
+
     if not percepts:
         return Percept(modality="fused", value={}, features={})
     fused_features: dict[str, float] = {}

@@ -20,6 +20,7 @@ def cli():
     Quantum-inspired algorithms for ciphertext analysis including
     holographic entropy, temporal embeddings, and spectral analysis.
     """
+
     pass
 
 
@@ -41,6 +42,7 @@ def analyze(
     Example:
         quasim-revultra analyze --ciphertext "ATTACKATDAWN" --export results.json
     """
+
     # Load ciphertext
     if file:
         text = load_ciphertext(file)
@@ -121,6 +123,7 @@ def demo(section: str, export: str | None):
         quasim-revultra demo --section kryptos
         quasim-revultra demo --section all --export demo_results.json
     """
+
     if section in ["kryptos", "all"]:
         click.echo("=" * 70)
         click.echo("REVULTRA Kryptos K4 Analysis Demo")
@@ -152,6 +155,7 @@ def frequency(ciphertext: str | None, file: str | None):
     Example:
         quasim-revultra frequency --ciphertext "HELLO WORLD"
     """
+
     if file:
         text = load_ciphertext(file)
     elif ciphertext:

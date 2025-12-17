@@ -26,6 +26,7 @@ class SimulationResult:
 
     def is_successful(self) -> bool:
         """Check if simulation completed successfully."""
+
         return self.status == "completed"
 
 
@@ -61,6 +62,7 @@ class QuASIMConnector:
             deterministic_mode: Enable deterministic execution
             precision: Floating point precision (FP16, FP32, FP64)
         """
+
         self.seed = seed
         self.deterministic_mode = deterministic_mode
         self.precision = precision
@@ -75,6 +77,7 @@ class QuASIMConnector:
         Returns:
             True if prompt is compatible with QuASIM platform
         """
+
         return prompt.domain in self.SUPPORTED_DOMAINS or "QuASIM" in prompt.execution_layers
 
     def execute(
@@ -93,6 +96,7 @@ class QuASIMConnector:
         Returns:
             SimulationResult with execution status and outputs
         """
+
         if not self.can_execute(prompt):
             return SimulationResult(
                 prompt_id=prompt.id,
@@ -135,6 +139,7 @@ class QuASIMConnector:
         Returns:
             List of SimulationResults
         """
+
         results = []
         for prompt in prompts:
             if self.can_execute(prompt):
@@ -158,6 +163,7 @@ class QuASIMConnector:
         Returns:
             Simulated execution result
         """
+
         import hashlib
         import random
 
@@ -196,6 +202,7 @@ class QuASIMConnector:
         Returns:
             Dictionary with execution metrics
         """
+
         return {
             "total_executions": self._execution_count,
             "seed": self.seed,

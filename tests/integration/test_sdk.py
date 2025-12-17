@@ -16,18 +16,21 @@ class TestSDK:
 
     def test_client_creation(self):
         """Test that client can be created."""
+
         client = QuASIMClient(api_url="http://localhost:8000")
         assert client is not None
         assert client.api_url == "http://localhost:8000"
 
     def test_health_check(self):
         """Test health check endpoint."""
+
         client = QuASIMClient(api_url="http://localhost:8000")
         # Mock health check returns True
         assert client.health_check() is True
 
     def test_job_submission(self):
         """Test job submission."""
+
         client = QuASIMClient(api_url="http://localhost:8000")
 
         job = client.submit_job(
@@ -41,6 +44,7 @@ class TestSDK:
 
     def test_cfd_job_submission(self):
         """Test CFD-specific job submission."""
+
         client = QuASIMClient(api_url="http://localhost:8000")
 
         job = client.submit_cfd(
@@ -54,6 +58,7 @@ class TestSDK:
 
     def test_fea_job_submission(self):
         """Test FEA job submission."""
+
         client = QuASIMClient(api_url="http://localhost:8000")
 
         job = client.submit_fea(
@@ -67,6 +72,7 @@ class TestSDK:
 
     def test_orbital_mc_submission(self):
         """Test orbital MC job submission."""
+
         client = QuASIMClient(api_url="http://localhost:8000")
 
         job = client.submit_orbital_mc(
@@ -78,6 +84,7 @@ class TestSDK:
 
     def test_job_status(self):
         """Test getting job status."""
+
         client = QuASIMClient(api_url="http://localhost:8000")
 
         # Submit job first

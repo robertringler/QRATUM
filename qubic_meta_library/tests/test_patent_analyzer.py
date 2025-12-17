@@ -12,11 +12,13 @@ class TestPatentAnalyzer:
     @pytest.fixture
     def analyzer(self):
         """Create analyzer instance."""
+
         return PatentAnalyzer()
 
     @pytest.fixture
     def sample_prompts(self):
         """Create sample prompts for testing."""
+
         return {
             1: Prompt(
                 id=1,
@@ -50,6 +52,7 @@ class TestPatentAnalyzer:
 
     def test_extract_high_value_prompts(self, analyzer, sample_prompts):
         """Test extracting high-value prompts."""
+
         high_value = analyzer.extract_high_value_prompts(sample_prompts)
 
         assert len(high_value) == 2
@@ -58,6 +61,7 @@ class TestPatentAnalyzer:
 
     def test_extract_high_value_with_threshold(self, analyzer, sample_prompts):
         """Test extracting with custom threshold."""
+
         premium = analyzer.extract_high_value_prompts(sample_prompts, threshold=0.9)
 
         assert len(premium) == 1
@@ -65,6 +69,7 @@ class TestPatentAnalyzer:
 
     def test_identify_patent_clusters(self, analyzer, sample_prompts):
         """Test identifying patent clusters by domain."""
+
         clusters = analyzer.identify_patent_clusters(sample_prompts)
 
         assert "D1" in clusters
@@ -73,6 +78,7 @@ class TestPatentAnalyzer:
 
     def test_generate_patent_claim_template(self, analyzer, sample_prompts):
         """Test generating patent claim template."""
+
         template = analyzer.generate_patent_claim_template(sample_prompts[1])
 
         assert template["prompt_id"] == 1
@@ -83,6 +89,7 @@ class TestPatentAnalyzer:
 
     def test_analyze_cross_domain_opportunities(self, analyzer, sample_prompts):
         """Test analyzing cross-domain opportunities."""
+
         opportunities = analyzer.analyze_cross_domain_opportunities(sample_prompts)
 
         # Only prompt 1 has 2+ synergy connections
@@ -93,6 +100,7 @@ class TestPatentAnalyzer:
 
     def test_generate_patent_pipeline_report(self, analyzer, sample_prompts):
         """Test generating patent pipeline report."""
+
         report = analyzer.generate_patent_pipeline_report(sample_prompts)
 
         assert report["total_prompts"] == 3
@@ -103,6 +111,7 @@ class TestPatentAnalyzer:
 
     def test_calculate_novelty_score(self, analyzer, sample_prompts):
         """Test novelty score calculation."""
+
         score = analyzer._calculate_novelty_score(sample_prompts[1])
 
         assert 0.0 <= score <= 1.0
@@ -110,6 +119,7 @@ class TestPatentAnalyzer:
 
     def test_generate_recommendations(self, analyzer, sample_prompts):
         """Test generating recommendations."""
+
         high_value = analyzer.extract_high_value_prompts(sample_prompts)
         recommendations = analyzer._generate_recommendations(sample_prompts, high_value)
 

@@ -19,6 +19,7 @@ def save_tensor(tensor: np.ndarray, path: str | Path) -> None:
     path : str or Path
         Output path
     """
+
     np.save(path, tensor)
 
 
@@ -35,6 +36,7 @@ def load_tensor(path: str | Path) -> np.ndarray:
     np.ndarray
         Loaded tensor
     """
+
     return np.load(path)
 
 
@@ -53,6 +55,7 @@ def export_results_to_json(results: dict[str, Any], path: str | Path) -> None:
 
     def serialize(obj: Any) -> Any:
         """Serialize numpy arrays and special types."""
+
         if isinstance(obj, np.ndarray):
             return obj.tolist()
         if isinstance(obj, (np.integer, np.floating)):
@@ -82,5 +85,6 @@ def load_results_from_json(path: str | Path) -> dict[str, Any]:
     dict[str, Any]
         Loaded results
     """
+
     with open(path, encoding="utf-8") as f:
         return json.load(f)

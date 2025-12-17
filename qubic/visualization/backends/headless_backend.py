@@ -24,6 +24,7 @@ class HeadlessBackend(MatplotlibBackend):
             *args: Positional arguments for MatplotlibBackend
             **kwargs: Keyword arguments for MatplotlibBackend
         """
+
         # Ensure Agg backend is active
         matplotlib.use("Agg")
         super().__init__(*args, **kwargs)
@@ -34,4 +35,5 @@ class HeadlessBackend(MatplotlibBackend):
         Raises:
             RuntimeError: Always, as headless mode cannot display
         """
+
         raise RuntimeError("Cannot display in headless mode. Use save() to export to file.")

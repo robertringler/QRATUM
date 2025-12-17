@@ -24,7 +24,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Optional
 
 import numpy as np
 
@@ -69,7 +69,7 @@ class PIDResult:
     entropy_target: float
     entropy_sources: float
     conservation_valid: bool
-    violations: List[str] = field(default_factory=list)
+    violations: list[str] = field(default_factory=list)
     condition_number: float = 1.0
 
 
@@ -116,10 +116,11 @@ class InformationFusionEngine:
             constraints: Conservation constraint configuration
             seed: Random seed for reproducibility
         """
+
         self.constraints = constraints or ConservationConstraints()
         self.seed_manager = SeedManager(seed if seed is not None else 42)
-        self._decompositions: Dict[str, PIDResult] = {}
-        self._entropy_cache: Dict[str, float] = {}
+        self._decompositions: dict[str, PIDResult] = {}
+        self._entropy_cache: dict[str, float] = {}
 
     def compute_entropy(
         self,
@@ -138,6 +139,7 @@ class InformationFusionEngine:
         Returns:
             Shannon entropy in bits
         """
+
         if data.size == 0:
             return 0.0
 
@@ -184,6 +186,7 @@ class InformationFusionEngine:
         Returns:
             Mutual information in bits
         """
+
         if x.size == 0 or y.size == 0:
             return 0.0
 
@@ -237,6 +240,7 @@ class InformationFusionEngine:
         Raises:
             ValueError: If conservation constraints are violated and auto_correct=False
         """
+
         # Generate cache key based on data hash for uniqueness
         import hashlib
 
@@ -312,7 +316,7 @@ class InformationFusionEngine:
 
         return result
 
-    def _validate_conservation(self, result: PIDResult) -> List[str]:
+    def _validate_conservation(self, result: PIDResult) -> list[str]:
         """Validate conservation constraints.
 
         Args:
@@ -321,6 +325,7 @@ class InformationFusionEngine:
         Returns:
             List of violation messages (empty if valid)
         """
+
         violations = []
         tol = self.constraints.tolerance
 
@@ -361,6 +366,7 @@ class InformationFusionEngine:
         Returns:
             Corrected PID result
         """
+
         # Enforce non-negativity by clamping
         unique_s1 = max(0.0, result.unique_s1)
         unique_s2 = max(0.0, result.unique_s2)
@@ -394,11 +400,11 @@ class InformationFusionEngine:
 
     def compute_information_flow(
         self,
-        omics_layers: List[np.ndarray],
+        omics_layers: list[np.ndarray],
         target: np.ndarray,
-        layer_names: Optional[List[str]] = None,
+        layer_names: Optional[list[str]] = None,
         bins: int = 10,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Compute information flow from multiple omics layers to target.
 
         Args:
@@ -410,6 +416,7 @@ class InformationFusionEngine:
         Returns:
             Dictionary with information flow analysis
         """
+
         if layer_names is None:
             layer_names = [f"Layer_{i}" for i in range(len(omics_layers))]
 
@@ -432,12 +439,13 @@ class InformationFusionEngine:
             "total_layers": len(omics_layers),
         }
 
-    def get_statistics(self) -> Dict[str, any]:
+    def get_statistics(self) -> dict[str, any]:
         """Get engine statistics.
 
         Returns:
             Dictionary with statistics
         """
+
         return {
             "total_decompositions": len(self._decompositions),
             "cached_entropies": len(self._entropy_cache),
@@ -452,5 +460,6 @@ class InformationFusionEngine:
 
     def clear_cache(self) -> None:
         """Clear all caches."""
+
         self._decompositions.clear()
         self._entropy_cache.clear()

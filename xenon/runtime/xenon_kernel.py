@@ -14,7 +14,7 @@ Main loop:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 import numpy as np
 
@@ -39,7 +39,7 @@ class Target:
     name: str
     protein: str
     objective: str
-    constraints: Optional[Dict[str, Any]] = None
+    constraints: Optional[dict[str, Any]] = None
 
 
 class XENONRuntime:
@@ -67,6 +67,7 @@ class XENONRuntime:
             convergence_threshold: Entropy threshold for convergence
             mutation_rate: Topology mutation rate
         """
+
         self.max_mechanisms = max_mechanisms
         self.convergence_threshold = convergence_threshold
         self.mutation_rate = mutation_rate
@@ -77,8 +78,8 @@ class XENONRuntime:
         self.mechanism_graph = MechanismGraph()
 
         # State
-        self.targets: List[Target] = []
-        self.mechanisms: Dict[str, List[BioMechanism]] = {}
+        self.targets: list[Target] = []
+        self.mechanisms: dict[str, list[BioMechanism]] = {}
         self.iteration_count = 0
         self._rng = np.random.default_rng()
 
@@ -87,7 +88,7 @@ class XENONRuntime:
         name: str,
         protein: str,
         objective: str,
-        constraints: Optional[Dict[str, Any]] = None,
+        constraints: Optional[dict[str, Any]] = None,
     ) -> None:
         """Add a learning target.
 
@@ -97,6 +98,7 @@ class XENONRuntime:
             objective: Learning objective
             constraints: Optional constraints
         """
+
         target = Target(name, protein, objective, constraints)
         self.targets.append(target)
 
@@ -108,7 +110,7 @@ class XENONRuntime:
         self,
         max_iterations: int = 100,
         seed: Optional[int] = None,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Run XENON learning loop.
 
         Main algorithm:
@@ -129,6 +131,7 @@ class XENONRuntime:
         Returns:
             Summary of learning process
         """
+
         if seed is not None:
             self._rng = np.random.default_rng(seed)
 
@@ -203,6 +206,7 @@ class XENONRuntime:
         Args:
             target: Learning target
         """
+
         # Generate initial template mechanisms
         n_generate = min(10, self.max_mechanisms // len(self.targets))
 
@@ -232,6 +236,7 @@ class XENONRuntime:
         Returns:
             Template mechanism
         """
+
         mech = BioMechanism(name=f"{target.name}_template_{index}")
 
         # Create simple two-state mechanism
@@ -276,6 +281,7 @@ class XENONRuntime:
         Args:
             target: Learning target
         """
+
         for mechanism in self.mechanisms[target.name]:
             # Run short simulation to check viability
             simulator = GillespieSimulator(mechanism, volume=1e-15)
@@ -303,7 +309,7 @@ class XENONRuntime:
                 # If simulation fails, mark with low posterior
                 mechanism.posterior *= 0.1
 
-    def _rank_by_uncertainty(self, target: Target) -> List[BioMechanism]:
+    def _rank_by_uncertainty(self, target: Target) -> list[BioMechanism]:
         """Rank mechanisms by epistemic uncertainty.
 
         Higher uncertainty → more informative for next experiment
@@ -314,6 +320,7 @@ class XENONRuntime:
         Returns:
             Sorted list of mechanisms (high uncertainty first)
         """
+
         # Compute uncertainty as entropy contribution
         mechanisms = self.mechanisms[target.name]
 
@@ -327,8 +334,8 @@ class XENONRuntime:
         return ranked
 
     def _select_experiment(
-        self, target: Target, ranked_mechanisms: List[BioMechanism]
-    ) -> Dict[str, Any]:
+        self, target: Target, ranked_mechanisms: list[BioMechanism]
+    ) -> dict[str, Any]:
         """Select next experiment to maximize information gain.
 
         Phase 1: Random experiment selection
@@ -341,6 +348,7 @@ class XENONRuntime:
         Returns:
             Experiment specification
         """
+
         # Mock experiment selection
         experiment_types = ["concentration", "kinetics", "perturbation"]
         exp_type = self._rng.choice(experiment_types)
@@ -351,7 +359,7 @@ class XENONRuntime:
             "iteration": self.iteration_count,
         }
 
-    def _execute_experiment(self, target: Target, experiment: Dict[str, Any]) -> ExperimentResult:
+    def _execute_experiment(self, target: Target, experiment: dict[str, Any]) -> ExperimentResult:
         """Execute experiment (mock for Phase 1).
 
         Phase 1: Generate synthetic data
@@ -364,6 +372,7 @@ class XENONRuntime:
         Returns:
             Experiment result
         """
+
         exp_type = experiment["type"]
 
         # Generate mock observations
@@ -397,7 +406,7 @@ class XENONRuntime:
 
     def get_mechanisms(
         self, min_evidence: float = 0.5, target_name: Optional[str] = None
-    ) -> List[BioMechanism]:
+    ) -> list[BioMechanism]:
         """Get high-confidence mechanisms.
 
         Args:
@@ -407,6 +416,7 @@ class XENONRuntime:
         Returns:
             List of high-confidence mechanisms
         """
+
         mechanisms = []
 
         if target_name:
@@ -421,12 +431,13 @@ class XENONRuntime:
 
         return sorted(mechanisms, key=lambda m: m.posterior, reverse=True)
 
-    def get_summary(self) -> Dict[str, Any]:
+    def get_summary(self) -> dict[str, Any]:
         """Get runtime summary statistics.
 
         Returns:
             Summary dictionary
         """
+
         total_mechanisms = sum(len(mechs) for mechs in self.mechanisms.values())
 
         evidence_summaries = {}

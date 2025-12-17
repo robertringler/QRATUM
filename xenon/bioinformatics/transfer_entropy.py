@@ -26,7 +26,7 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Optional
 
 import numpy as np
 
@@ -104,9 +104,10 @@ class TransferEntropyEngine:
             config: Transfer entropy configuration
             seed: Random seed for reproducibility
         """
+
         self.config = config or TransferEntropyConfig()
         self.seed_manager = SeedManager(seed if seed is not None else 42)
-        self._te_cache: Dict[str, TransferEntropyResult] = {}
+        self._te_cache: dict[str, TransferEntropyResult] = {}
 
     def compute_entropy_timeseries(
         self,
@@ -122,6 +123,7 @@ class TransferEntropyEngine:
         Returns:
             Shannon entropy in bits
         """
+
         if len(data) == 0:
             return 0.0
 
@@ -157,6 +159,7 @@ class TransferEntropyEngine:
         Returns:
             Conditional entropy in bits
         """
+
         if len(y) == 0 or len(x) == 0:
             return 0.0
 
@@ -208,6 +211,7 @@ class TransferEntropyEngine:
         Returns:
             TransferEntropyResult
         """
+
         # Validate inputs
         if len(source) < self.config.min_samples or len(target) < self.config.min_samples:
             return TransferEntropyResult(
@@ -296,11 +300,11 @@ class TransferEntropyEngine:
 
     def compute_transfer_entropy_batched(
         self,
-        sources: List[np.ndarray],
-        targets: List[np.ndarray],
-        source_names: Optional[List[str]] = None,
-        target_names: Optional[List[str]] = None,
-    ) -> List[List[TransferEntropyResult]]:
+        sources: list[np.ndarray],
+        targets: list[np.ndarray],
+        source_names: Optional[list[str]] = None,
+        target_names: Optional[list[str]] = None,
+    ) -> list[list[TransferEntropyResult]]:
         """Compute transfer entropy for multiple source-target pairs in batches.
 
         Args:
@@ -312,6 +316,7 @@ class TransferEntropyEngine:
         Returns:
             Matrix of transfer entropy results
         """
+
         n_sources = len(sources)
         n_targets = len(targets)
 
@@ -358,9 +363,9 @@ class TransferEntropyEngine:
 
     def compute_information_network(
         self,
-        time_series: Dict[str, np.ndarray],
+        time_series: dict[str, np.ndarray],
         threshold: float = 0.1,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Build information flow network from time series data.
 
         Args:
@@ -370,6 +375,7 @@ class TransferEntropyEngine:
         Returns:
             Dictionary with nodes and directed edges
         """
+
         variable_names = list(time_series.keys())
         time_series_list = [time_series[name] for name in variable_names]
 
@@ -400,12 +406,13 @@ class TransferEntropyEngine:
             "threshold": threshold,
         }
 
-    def get_statistics(self) -> Dict[str, any]:
+    def get_statistics(self) -> dict[str, any]:
         """Get engine statistics.
 
         Returns:
             Dictionary with statistics
         """
+
         return {
             "cached_results": len(self._te_cache),
             "config": {
@@ -419,4 +426,5 @@ class TransferEntropyEngine:
 
     def clear_cache(self) -> None:
         """Clear result cache."""
+
         self._te_cache.clear()

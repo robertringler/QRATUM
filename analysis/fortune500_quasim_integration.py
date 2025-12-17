@@ -86,6 +86,7 @@ def load_fortune500_data(filepath: Path) -> List[CompanyProfile]:
     Returns:
         List of CompanyProfile objects
     """
+
     companies = []
 
     with open(filepath, encoding="utf-8") as f:
@@ -117,6 +118,7 @@ def enrich_company_data(company: CompanyProfile) -> CompanyProfile:
     Returns:
         Enriched CompanyProfile
     """
+
     # Technology-heavy sectors
     tech_sectors = [
         "Technology",
@@ -210,6 +212,7 @@ def calculate_technical_feasibility(company: CompanyProfile) -> float:
     Returns:
         Score from 0.0 to 1.0
     """
+
     score = 0.0
 
     # HPC infrastructure presence
@@ -246,6 +249,7 @@ def calculate_integration_compatibility(company: CompanyProfile) -> float:
     Returns:
         Score from 0.0 to 1.0
     """
+
     score = 0.0
 
     # Digital twin infrastructure
@@ -282,6 +286,7 @@ def calculate_economic_leverage(company: CompanyProfile) -> float:
     Returns:
         Score from 0.0 to 1.0
     """
+
     score = 0.0
 
     # Revenue scale (larger companies have more resources)
@@ -337,6 +342,7 @@ def calculate_strategic_value(company: CompanyProfile) -> float:
     Returns:
         Score from 0.0 to 1.0
     """
+
     score = 0.0
 
     # Strategic sectors for quantum/simulation
@@ -390,6 +396,7 @@ def calculate_qii(company: CompanyProfile) -> tuple[QIIComponents, float]:
     Returns:
         Tuple of (QIIComponents, overall QII score)
     """
+
     components = QIIComponents(
         technical_feasibility=calculate_technical_feasibility(company),
         integration_compatibility=calculate_integration_compatibility(company),
@@ -419,6 +426,7 @@ def identify_integration_pathways(
     Returns:
         List of recommended integration pathways
     """
+
     pathways = []
 
     # API-level integration
@@ -457,6 +465,7 @@ def determine_adoption_timeline(qii_score: float) -> str:
     Returns:
         Timeline string (e.g., "2025-2026")
     """
+
     if qii_score >= 0.75:
         return "2025-2026"
     elif qii_score >= 0.60:
@@ -478,6 +487,7 @@ def analyze_company(company: CompanyProfile) -> CompanyAnalysis:
     Returns:
         CompanyAnalysis with complete evaluation
     """
+
     # Enrich data
     company = enrich_company_data(company)
 
@@ -513,6 +523,7 @@ def aggregate_sector_analysis(analyses: List[CompanyAnalysis], sector_name: str)
     Returns:
         SectorAnalysis with aggregated metrics
     """
+
     if not analyses:
         return SectorAnalysis(
             sector_name=sector_name,
@@ -586,6 +597,7 @@ def calculate_correlation_matrix(
     Returns:
         Dictionary containing correlation statistics
     """
+
     rnd_percents = [a.profile.rnd_percent_revenue for a in analyses]
     qii_scores = [a.qii_score for a in analyses]
 
@@ -605,6 +617,7 @@ def export_data_matrix(analyses: List[CompanyAnalysis], output_path: Path) -> No
         analyses: List of all company analyses
         output_path: Path to output CSV file
     """
+
     with open(output_path, "w", newline="", encoding="utf-8") as f:
         fieldnames = [
             "Rank",
@@ -662,6 +675,7 @@ def export_json_summary(
         correlation_data: Correlation statistics
         output_path: Path to output JSON file
     """
+
     # Top 20 companies by QII
     top_20 = sorted(analyses, key=lambda x: x.qii_score, reverse=True)[:20]
 
@@ -706,6 +720,7 @@ def main(input_csv: Optional[Path] = None) -> Dict[str, Path]:
     Returns:
         Dictionary mapping output names to file paths
     """
+
     # Create output directories
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -757,6 +772,7 @@ def generate_synthetic_fortune500() -> List[CompanyProfile]:
     Returns:
         List of 500 CompanyProfile objects with realistic distributions
     """
+
     np.random.seed(42)
 
     sectors = [

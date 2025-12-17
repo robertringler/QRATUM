@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuASIM Valuation Dashboard
 
 Generates Plotly visualizations for the Q1 2026 valuation report.
@@ -42,6 +43,7 @@ REAL_OPTIONS_UPLIFT = 20_214_291
 
 def load_data():
     """Load valuation data from CSV files."""
+
     df_base = pd.read_csv(PROJECTIONS_BASE)
     df_high = pd.read_csv(PROJECTIONS_HIGH)
     df_low = pd.read_csv(PROJECTIONS_LOW)
@@ -51,6 +53,7 @@ def load_data():
 
 def create_dcf_waterfall_chart():
     """Create DCF valuation waterfall chart showing value components."""
+
     # DCF components for base case from market_valuation.md
     pv_fcf_1_5 = 4_142_723
     pv_terminal = 10_553_230
@@ -112,6 +115,7 @@ def create_dcf_waterfall_chart():
 
 def create_sensitivity_heatmap():
     """Create sensitivity analysis heatmap for WACC and growth rate."""
+
     # Generate sensitivity matrix for different WACC and terminal growth rates
     wacc_range = [0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.21]
     growth_range = [0.01, 0.02, 0.03, 0.04, 0.05]
@@ -170,6 +174,7 @@ def create_sensitivity_heatmap():
 
 def create_monte_carlo_waterfall():
     """Create waterfall chart showing Monte Carlo percentile values."""
+
     # Create waterfall showing progression from P10 to P90
     categories = list(MC_PERCENTILES.keys())
     values = list(MC_PERCENTILES.values())
@@ -224,6 +229,7 @@ def create_monte_carlo_waterfall():
 
 def main():
     """Generate and display valuation dashboard figures."""
+
     print("QuASIM Valuation Dashboard Generator")
     print("=" * 50)
 

@@ -33,6 +33,7 @@ class SSASimulationEngine:
             initial_state: ID of initial molecular state
             total_time: Total simulation time in seconds
         """
+
         self.mechanism = mechanism
         self.current_state = initial_state
         self.current_time = 0.0
@@ -45,6 +46,7 @@ class SSASimulationEngine:
         Returns:
             Tuple of (time_increment, from_state, to_state)
         """
+
         # Get available transitions from current state
         transitions = self.mechanism.get_transitions_from(self.current_state)
 
@@ -86,6 +88,7 @@ class SSASimulationEngine:
         Returns:
             List of (time, state_id) tuples representing the trajectory
         """
+
         while self.current_time < self.total_time:
             tau, from_state, to_state = self.step()
 
@@ -103,6 +106,7 @@ def create_demo_mechanism() -> BioMechanism:
     Returns:
         Sample BioMechanism with realistic parameters
     """
+
     # Create a simple protein folding pathway
     states = [
         MolecularState("Unfolded", "ProteinX", 0.0, 1.0),
@@ -135,6 +139,7 @@ def run_streaming_demo(num_steps: int = 10, min_evidence: float = 0.8) -> None:
         num_steps: Number of simulation steps to visualize
         min_evidence: Minimum evidence threshold for mechanisms
     """
+
     logger.info("Starting XENON streaming demo")
 
     # Create demo mechanism

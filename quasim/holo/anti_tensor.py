@@ -44,6 +44,7 @@ def compute_mutual_information(tensor: Array) -> NDArray[np.float64]:
         >>> M = compute_mutual_information(state)
         >>> assert M[0, 1] < 1e-10  # Unentangled
     """
+
     # Placeholder implementation - to be completed with full algorithm
     n_qubits = int(np.log2(len(tensor)))
     return np.zeros((n_qubits, n_qubits))
@@ -72,6 +73,7 @@ def hierarchical_decompose(tensor: Array, mutual_info: NDArray[np.float64]) -> d
         >>> M = compute_mutual_information(state)
         >>> tree = hierarchical_decompose(state, M)
     """
+
     # Placeholder implementation
     return {
         "weights": np.array([1.0]),
@@ -98,6 +100,7 @@ def adaptive_truncate(decomposition: dict[str, Any], epsilon: float) -> dict[str
         >>> tree = hierarchical_decompose(state, M)
         >>> truncated = adaptive_truncate(tree, epsilon=1e-3)
     """
+
     # Placeholder implementation
     weights = decomposition["weights"]
     mask = np.abs(weights) >= epsilon
@@ -125,6 +128,7 @@ def reconstruct(truncated: dict[str, Any]) -> Array:
     Example:
         >>> reconstructed = reconstruct(truncated)
     """
+
     # Placeholder implementation - simple reconstruction
     weights = truncated["weights"]
     basis_left = truncated["basis_left"]
@@ -158,6 +162,7 @@ def compute_fidelity(original: Array, reconstructed: Array) -> float:
         >>> fidelity = compute_fidelity(state1, state2)
         >>> assert abs(fidelity - 1.0) < 1e-10
     """
+
     # Normalize states
     original_norm = original / np.linalg.norm(original)
     reconstructed_norm = reconstructed / np.linalg.norm(reconstructed)
@@ -207,6 +212,7 @@ def compress(
         >>> assert fid >= 0.995
         >>> print(f"Compression ratio: {meta['compression_ratio']:.2f}x")
     """
+
     # Validate input
     if not np.iscomplex(tensor).any() and not np.isreal(tensor).any():
         msg = "Tensor must be numeric array"
@@ -275,5 +281,6 @@ def decompress(compressed: Array) -> Array:
         >>> decompressed = decompress(compressed)
         >>> fidelity = compute_fidelity(state, decompressed)
     """
+
     # For this placeholder, compressed is already the reconstructed state
     return compressed / np.linalg.norm(compressed)

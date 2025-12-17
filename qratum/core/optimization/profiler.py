@@ -1,4 +1,5 @@
 """
+
 Performance Profiler for QRATUM
 
 Validates that optimizations preserve equivalence while improving performance.
@@ -15,6 +16,7 @@ from ..validation.equivalence import EquivalenceValidator
 
 class PerformanceProfiler:
     """
+
     Profiles performance while ensuring equivalence preservation.
 
     Features:
@@ -25,11 +27,13 @@ class PerformanceProfiler:
 
     def __init__(self, tolerance: float = 1e-6):
         """
+
         Initialize performance profiler.
 
         Args:
             tolerance: Equivalence tolerance for validation
         """
+
         self.validator = EquivalenceValidator(tolerance=tolerance)
         self.profiles = []
 
@@ -42,6 +46,7 @@ class PerformanceProfiler:
         num_runs: int = 1,
     ) -> Dict[str, Any]:
         """
+
         Profile and compare baseline vs optimized function.
 
         Args:
@@ -54,6 +59,7 @@ class PerformanceProfiler:
         Returns:
             Dictionary with profiling results
         """
+
         # Run baseline
         baseline_times = []
         baseline_result = None
@@ -128,6 +134,7 @@ class PerformanceProfiler:
         self, fn: Callable, inputs: Dict[str, Any], name: str = "function", num_runs: int = 1
     ) -> Dict[str, Any]:
         """
+
         Profile a single function without comparison.
 
         Args:
@@ -139,6 +146,7 @@ class PerformanceProfiler:
         Returns:
             Dictionary with profiling results
         """
+
         times = []
         result = None
         for i in range(num_runs):
@@ -165,19 +173,23 @@ class PerformanceProfiler:
 
     def get_profiles(self) -> list:
         """Get all profiling results."""
+
         return self.profiles.copy()
 
     def reset_profiles(self) -> None:
         """Clear all profiling results."""
+
         self.profiles.clear()
 
     def generate_report(self) -> str:
         """
+
         Generate a formatted profiling report.
 
         Returns:
             Formatted report string
         """
+
         if not self.profiles:
             return "No profiling data available."
 

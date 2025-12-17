@@ -1,4 +1,5 @@
 """
+
 Transfer Entropy Estimator
 
 Measures directed information flow between time series.
@@ -10,6 +11,7 @@ import numpy as np
 
 class TransferEntropyEstimator:
     """
+
     Transfer entropy estimator for time series.
 
     Quantifies information flow from source to target.
@@ -17,15 +19,18 @@ class TransferEntropyEstimator:
 
     def __init__(self, k: int = 3):
         """
+
         Initialize transfer entropy estimator.
 
         Args:
             k: Number of nearest neighbors for estimation
         """
+
         self.k = k
 
     def compute_te(self, source: np.ndarray, target: np.ndarray, lag: int = 1) -> float:
         """
+
         Compute transfer entropy from source to target.
 
         TE(X→Y) = I(Y_t ; X_{t-lag} | Y_{t-1})
@@ -38,6 +43,7 @@ class TransferEntropyEstimator:
         Returns:
             Transfer entropy in nats
         """
+
         # Construct lagged variables
         n = len(target)
 
@@ -63,13 +69,15 @@ class TransferEntropyEstimator:
         # Joint MI with source
         joint_with_source = np.hstack([y_present, x_past, y_past])
         mi_with_source = ksg.estimate_mi(
-            joint_with_source[:, :1], joint_with_source[:, 1:]  # y_present  # x_past, y_past
+            joint_with_source[:, :1],
+            joint_with_source[:, 1:],  # y_present  # x_past, y_past
         )
 
         # MI without source
         joint_without_source = np.hstack([y_present, y_past])
         mi_without_source = ksg.estimate_mi(
-            joint_without_source[:, :1], joint_without_source[:, 1:]  # y_present  # y_past
+            joint_without_source[:, :1],
+            joint_without_source[:, 1:],  # y_present  # y_past
         )
 
         te = mi_with_source - mi_without_source

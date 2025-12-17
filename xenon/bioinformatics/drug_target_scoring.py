@@ -10,7 +10,7 @@ Provides functionality for:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -47,6 +47,7 @@ class DrugCandidate:
         Returns:
             Number of violations (0-4)
         """
+
         violations = 0
 
         if self.molecular_weight > 500:
@@ -66,6 +67,7 @@ class DrugCandidate:
         Returns:
             True if drug-like (≤1 violation allowed)
         """
+
         return self.compute_lipinski_violations() <= 1
 
 
@@ -97,6 +99,7 @@ class DrugTargetInteraction:
         Returns:
             Best affinity value (lower is better)
         """
+
         affinities = [
             self.binding_affinity,
             self.ic50,
@@ -126,7 +129,7 @@ class ADMETProperties:
     excretion: float = 0.0
     toxicity: float = 0.0
     bbb_permeability: float = 0.0
-    cyp450_inhibition: Dict[str, float] = field(default_factory=dict)
+    cyp450_inhibition: dict[str, float] = field(default_factory=dict)
 
 
 class DrugTargetScorer:
@@ -138,9 +141,10 @@ class DrugTargetScorer:
 
     def __init__(self):
         """Initialize drug-target scorer."""
-        self._drugs: Dict[str, DrugCandidate] = {}
-        self._interactions: List[DrugTargetInteraction] = []
-        self._admet_cache: Dict[str, ADMETProperties] = {}
+
+        self._drugs: dict[str, DrugCandidate] = {}
+        self._interactions: list[DrugTargetInteraction] = []
+        self._admet_cache: dict[str, ADMETProperties] = {}
 
     def add_drug(self, drug: DrugCandidate) -> None:
         """Add a drug candidate.
@@ -148,6 +152,7 @@ class DrugTargetScorer:
         Args:
             drug: DrugCandidate object
         """
+
         self._drugs[drug.compound_id] = drug
 
     def add_interaction(self, interaction: DrugTargetInteraction) -> None:
@@ -156,6 +161,7 @@ class DrugTargetScorer:
         Args:
             interaction: DrugTargetInteraction object
         """
+
         self._interactions.append(interaction)
 
     def compute_binding_affinity_score(
@@ -174,6 +180,7 @@ class DrugTargetScorer:
         Returns:
             Binding affinity score (0-1, higher is better)
         """
+
         # Phase 1: Simplified scoring
         # Phase 2+: Implement ML-based scoring (e.g., deep learning)
 
@@ -202,7 +209,7 @@ class DrugTargetScorer:
 
         return min(1.0, score)
 
-    def compute_drug_likeness(self, drug_id: str) -> Dict[str, any]:
+    def compute_drug_likeness(self, drug_id: str) -> dict[str, any]:
         """Compute comprehensive drug-likeness metrics.
 
         Args:
@@ -211,6 +218,7 @@ class DrugTargetScorer:
         Returns:
             Dictionary of drug-likeness metrics
         """
+
         drug = self._drugs.get(drug_id)
         if not drug:
             return {}
@@ -244,6 +252,7 @@ class DrugTargetScorer:
         Returns:
             ADMET properties
         """
+
         if drug_id in self._admet_cache:
             return self._admet_cache[drug_id]
 
@@ -282,8 +291,8 @@ class DrugTargetScorer:
     def assess_target_druggability(
         self,
         target_id: str,
-        binding_sites: Optional[List[Dict[str, any]]] = None,
-    ) -> Dict[str, float]:
+        binding_sites: Optional[list[dict[str, any]]] = None,
+    ) -> dict[str, float]:
         """Assess target druggability.
 
         Args:
@@ -293,6 +302,7 @@ class DrugTargetScorer:
         Returns:
             Dictionary of druggability scores
         """
+
         scores = {
             "binding_site_score": 0.0,
             "ligandability_score": 0.0,
@@ -334,8 +344,8 @@ class DrugTargetScorer:
     def rank_drug_candidates(
         self,
         target_id: str,
-        criteria: List[str] = None,
-    ) -> List[Tuple[str, float]]:
+        criteria: list[str] = None,
+    ) -> list[tuple[str, float]]:
         """Rank drug candidates for a target.
 
         Args:
@@ -345,6 +355,7 @@ class DrugTargetScorer:
         Returns:
             List of (drug_id, score) tuples, sorted by score
         """
+
         if criteria is None:
             criteria = ["affinity", "drug_likeness", "admet"]
 
@@ -384,7 +395,7 @@ class DrugTargetScorer:
         self,
         drug_id: str,
         target_id: str,
-        off_targets: List[str],
+        off_targets: list[str],
     ) -> float:
         """Compute drug selectivity for target vs off-targets.
 
@@ -396,6 +407,7 @@ class DrugTargetScorer:
         Returns:
             Selectivity score (0-1, higher is better)
         """
+
         target_affinity = self.compute_binding_affinity_score(drug_id, target_id)
 
         if not off_targets:
@@ -422,7 +434,7 @@ class DrugTargetScorer:
         self,
         drug_id: str,
         target_id: str,
-    ) -> Dict[str, any]:
+    ) -> dict[str, any]:
         """Generate comprehensive drug candidate report.
 
         Args:
@@ -432,6 +444,7 @@ class DrugTargetScorer:
         Returns:
             Dictionary with drug properties and predictions
         """
+
         drug = self._drugs.get(drug_id)
         if not drug:
             return {}

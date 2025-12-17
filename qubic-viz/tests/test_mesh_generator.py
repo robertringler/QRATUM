@@ -22,6 +22,7 @@ class MockTireGeometry:
 
 def test_tire_mesh_properties():
     """Test TireMesh properties."""
+
     vertices = np.random.rand(100, 3)
     faces = np.random.randint(0, 100, (50, 3))
     normals = np.random.rand(100, 3)
@@ -35,6 +36,7 @@ def test_tire_mesh_properties():
 
 def test_tire_mesh_compute_face_normals():
     """Test face normal computation."""
+
     # Create simple triangle
     vertices = np.array([[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]])
     faces = np.array([[0, 1, 2], [0, 1, 3]])
@@ -51,6 +53,7 @@ def test_tire_mesh_compute_face_normals():
 
 def test_tire_mesh_recalculate_normals():
     """Test vertex normal recalculation."""
+
     vertices = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
     faces = np.array([[0, 1, 2]])
     normals = np.zeros((3, 3))
@@ -65,12 +68,14 @@ def test_tire_mesh_recalculate_normals():
 
 def test_tire_mesh_generator_initialization():
     """Test TireMeshGenerator initialization."""
+
     gen = TireMeshGenerator(resolution=32)
     assert gen.resolution == 32
 
 
 def test_generate_tire_mesh():
     """Test tire mesh generation."""
+
     gen = TireMeshGenerator(resolution=16)
     geometry = MockTireGeometry()
 
@@ -87,6 +92,7 @@ def test_generate_tire_mesh():
 
 def test_generate_tire_mesh_resolution():
     """Test that resolution affects mesh detail."""
+
     geometry = MockTireGeometry()
 
     gen_low = TireMeshGenerator(resolution=8)

@@ -9,6 +9,7 @@ from quasim.domains.tire.materials import (
 
 def test_material_properties_creation():
     """Test MaterialProperties creation with defaults."""
+
     props = MaterialProperties()
     assert props.density == 1150.0
     assert props.elastic_modulus == 0.002
@@ -18,6 +19,7 @@ def test_material_properties_creation():
 
 def test_compute_effective_modulus():
     """Test temperature and strain-rate dependent modulus."""
+
     props = MaterialProperties(elastic_modulus=0.002)
 
     # At reference temperature
@@ -35,6 +37,7 @@ def test_compute_effective_modulus():
 
 def test_compute_hysteresis_loss():
     """Test hysteresis energy loss calculation."""
+
     props = MaterialProperties(viscoelastic_loss_factor=0.15)
 
     loss = props.compute_hysteresis_loss(10.0, 20.0)
@@ -44,6 +47,7 @@ def test_compute_hysteresis_loss():
 
 def test_age_material():
     """Test material aging and degradation."""
+
     props = MaterialProperties(
         elastic_modulus=0.002,
         abrasion_resistance=0.8,
@@ -63,6 +67,7 @@ def test_age_material():
 
 def test_tire_compound_creation():
     """Test TireCompound creation."""
+
     props = MaterialProperties()
     compound = TireCompound(
         compound_id="TEST_001",
@@ -78,6 +83,7 @@ def test_tire_compound_creation():
 
 def test_tire_compound_to_dict():
     """Test TireCompound serialization."""
+
     props = MaterialProperties()
     compound = TireCompound(
         compound_id="TEST_001",
@@ -94,6 +100,7 @@ def test_tire_compound_to_dict():
 
 def test_quantum_optimization():
     """Test quantum optimization application."""
+
     props = MaterialProperties()
     compound = TireCompound(
         compound_id="TEST_001",

@@ -49,6 +49,7 @@ class GateSet:
         Returns:
             2D list representing the unitary matrix
         """
+
         params = params or {}
 
         # Single-qubit Pauli gates
@@ -94,6 +95,7 @@ class GateSet:
         Returns:
             True if gate is valid
         """
+
         single_qubit_gates = {
             cls.PAULI_X,
             cls.PAULI_Y,

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuASIM × Energy Grid Optimization Demo
 
 Smart grid load balancing with renewable integration.
@@ -30,6 +31,7 @@ from quasim.common import (
 
 def simulate_grid(alpha: float, profile: dict, seed: int = 42) -> dict:
     """Simulate smart grid performance with renewable integration."""
+
     np.random.seed(seed)
 
     targets = profile["targets"]
@@ -70,6 +72,7 @@ def simulate_grid(alpha: float, profile: dict, seed: int = 42) -> dict:
 
 def evaluate_fitness(metrics: dict, profile: dict) -> float:
     """Evaluate grid fitness."""
+
     targets = profile["targets"]
     tolerances = profile["tolerances"]
     weights = profile["weights"]
@@ -99,6 +102,7 @@ def evaluate_fitness(metrics: dict, profile: dict) -> float:
 
 def create_visualization(metrics: dict, profile: dict) -> str:
     """Create grid visualization."""
+
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 10))
     time = np.array(metrics["time"])
 

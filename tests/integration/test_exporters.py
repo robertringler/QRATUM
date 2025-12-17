@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent / "qubic-design-studi
 
 def test_obj_exporter():
     """Test OBJ exporter."""
+
     from engines.mesh_generator import TireMeshGenerator
     from exporters.obj_exporter import OBJExporter
 
@@ -33,6 +34,7 @@ def test_obj_exporter():
 
 def test_gltf_exporter():
     """Test glTF exporter."""
+
     from engines.mesh_generator import TireMeshGenerator
     from exporters.gltf_exporter import GLTFExporter
 

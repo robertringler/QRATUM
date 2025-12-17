@@ -1,4 +1,5 @@
 """
+
 Neural-Symbolic BioReasoner
 
 Features:
@@ -20,6 +21,7 @@ from ....core.security import SecurityValidator
 
 class NeuralSymbolicReasoner:
     """
+
     Neural-symbolic reasoning for biological systems.
 
     Provides:
@@ -31,12 +33,14 @@ class NeuralSymbolicReasoner:
 
     def __init__(self, seed: Optional[int] = None, enable_neural: bool = True):
         """
+
         Initialize neural-symbolic reasoner.
 
         Args:
             seed: Random seed for reproducibility
             enable_neural: Enable neural components (GNN)
         """
+
         self.reproducibility_mgr = ReproducibilityManager(seed=seed)
         self.reproducibility_mgr.setup_deterministic_mode()
         self.security_validator = SecurityValidator()
@@ -64,6 +68,7 @@ class NeuralSymbolicReasoner:
 
     def reason(self, query: str, context: Optional[Dict] = None) -> Dict:
         """
+
         Perform neural-symbolic reasoning on query.
 
         Args:
@@ -73,6 +78,7 @@ class NeuralSymbolicReasoner:
         Returns:
             Reasoning results with trace
         """
+
         self.reasoning_trace = []
         self._log_trace("START", f"Query: {query}")
 
@@ -109,11 +115,13 @@ class NeuralSymbolicReasoner:
 
     def _parse_query(self, query: str) -> Dict:
         """Parse reasoning query into structured format."""
+
         # Simplified query parsing
         return {"raw_query": query, "type": "biological_query", "entities": [], "relationships": []}
 
     def _neural_reasoning(self, parsed_query: Dict, context: Dict) -> Dict:
         """Perform neural reasoning using GNN."""
+
         if self.gnn is None:
             return {"enabled": False}
 
@@ -133,6 +141,7 @@ class NeuralSymbolicReasoner:
         self, constraint_results: Dict, neural_result: Optional[Dict], parsed_query: Dict
     ) -> Dict:
         """Combine symbolic and neural reasoning results."""
+
         # Symbolic constraints take precedence (IMMUTABLE)
         if constraint_results["violations"]:
             return {
@@ -159,12 +168,15 @@ class NeuralSymbolicReasoner:
 
     def _log_trace(self, stage: str, message: str) -> None:
         """Log reasoning step to trace (MANDATORY for audit)."""
+
         self.reasoning_trace.append({"stage": stage, "message": message})
 
     def get_trace(self) -> List[Dict]:
         """Get reasoning trace for audit."""
+
         return self.reasoning_trace.copy()
 
     def clear_trace(self) -> None:
         """Clear reasoning trace."""
+
         self.reasoning_trace.clear()
