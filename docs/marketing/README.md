@@ -12,6 +12,7 @@ QuASIM × QuNimbus is an enterprise-grade quantum-classical simulation platform 
 
 | Document | Description | Status |
 |----------|-------------|--------|
+| [**Ontological Category Design Summary**](ONTOLOGICAL_CATEGORY_DESIGN_SUMMARY.md) | Executive overview + implementation roadmap | ✅ Ready |
 | [**Brand Identity Prism**](BRAND_IDENTITY_PRISM.md) | Ontological category design: "Deterministic Quantum Realms" | ✅ Ready |
 | [**Brand Guidelines**](BRAND_GUIDELINES.md) | Visual identity, colors, typography, tone | ✅ Ready |
 | [**Figma Quick Start**](FIGMA_QUICKSTART.md) | Quick reference for creating Figma assets | ✅ Ready |
@@ -40,6 +41,7 @@ Start here: **[Figma Quick Start](FIGMA_QUICKSTART.md)**
 - Follow the export workflow
 
 ### For Marketers
+- **START HERE**: **[Ontological Category Design Summary](ONTOLOGICAL_CATEGORY_DESIGN_SUMMARY.md)** — Executive overview
 - **[Brand Identity Prism](BRAND_IDENTITY_PRISM.md)**: Ontological category design framework
 - **[3-Month GTM Strategy](GTM_STRATEGY_3MONTH.md)**: Launch plan for "Deterministic Quantum Realms"
 - **[Social Media Calendar](SOCIAL_MEDIA_CONTENT_CALENDAR.md)**: Week 1 content strategy
