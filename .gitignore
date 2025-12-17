@@ -106,3 +106,6 @@ viz_output/
 
 # GY-SUSTAIN-2030 simulation outputs
 gy_sustain_2030_results/
+
+# Documentation build output
+docs-site/site/
