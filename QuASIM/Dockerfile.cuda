@@ -19,8 +19,8 @@ WORKDIR /workspace
 # Copy source files and adjust ownership
 COPY --chown=appuser:appuser . .
 
-# Create build directory with proper permissions
-RUN mkdir -p build && chown -R appuser:appuser /workspace
+# Ensure workspace is fully owned by appuser
+RUN chown -R appuser:appuser /workspace
 
 # AC-6 (Least Privilege): Switch to non-root user for build and execution
 USER appuser
