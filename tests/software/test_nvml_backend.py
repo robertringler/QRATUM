@@ -16,6 +16,7 @@ class TestNVMLBackendWithoutNVML(unittest.TestCase):
 
     def _get_nvml_backend(self):
         """Helper to patch NVML_AVAILABLE and return a new NVMLBackend instance."""
+
         with patch("quasim.hardware.backends.nvml_backend.NVML_AVAILABLE", False):
             from quasim.hardware.backends.nvml_backend import NVMLBackend
 
@@ -23,23 +24,27 @@ class TestNVMLBackendWithoutNVML(unittest.TestCase):
 
     def test_initialization_without_pynvml(self):
         """Test backend initialization when pynvml is not available."""
+
         backend = self._get_nvml_backend()
         assert not backend.initialized
 
     def test_list_devices_without_pynvml(self):
         """Test list_devices returns empty list when not initialized."""
+
         backend = self._get_nvml_backend()
         devices = backend.list_devices()
         assert devices == []
 
     def test_get_state_without_pynvml(self):
         """Test get_state returns empty dict when not initialized."""
+
         backend = self._get_nvml_backend()
         state = backend.get_state("GPU0")
         assert state == {}
 
     def test_apply_setpoint_without_pynvml(self):
         """Test apply_setpoint returns error when not initialized."""
+
         backend = self._get_nvml_backend()
         result = backend.apply_setpoint("GPU0", "power_limit_w", 250)
         assert not result["success"]
@@ -51,6 +56,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def setUp(self):
         """Set up mocked pynvml for testing."""
+
         # Reset mock between tests
         mock_pynvml.reset_mock()
         # Clear all side effects
@@ -64,6 +70,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_initialization_success(self):
         """Test successful backend initialization."""
+
         mock_pynvml.nvmlInit.return_value = None
         with patch("quasim.hardware.backends.nvml_backend.NVML_AVAILABLE", True):
             from quasim.hardware.backends.nvml_backend import NVMLBackend
@@ -74,6 +81,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_initialization_failure(self):
         """Test backend initialization failure."""
+
         mock_pynvml.nvmlInit.side_effect = Exception("NVML init failed")
         with patch("quasim.hardware.backends.nvml_backend.NVML_AVAILABLE", True):
             from quasim.hardware.backends.nvml_backend import NVMLBackend
@@ -83,6 +91,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_list_devices(self):
         """Test listing NVIDIA devices."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceGetCount.return_value = 2
         mock_pynvml.nvmlDeviceGetName.return_value = "NVIDIA A100"
@@ -101,6 +110,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_get_state_full(self):
         """Test getting device state with all metrics available."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceGetPowerUsage.return_value = 250000  # 250W in mW
         mock_pynvml.nvmlDeviceGetPowerManagementLimit.return_value = 300000  # 300W
@@ -125,6 +135,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_get_state_partial(self):
         """Test getting device state when some metrics fail."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceGetPowerUsage.side_effect = Exception("Not supported")
         mock_pynvml.nvmlDeviceGetTemperature.return_value = 65
@@ -140,6 +151,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_apply_setpoint_dry_run(self):
         """Test applying setpoint in dry-run mode."""
+
         mock_pynvml.nvmlInit.return_value = None
 
         with patch("quasim.hardware.backends.nvml_backend.NVML_AVAILABLE", True):
@@ -156,6 +168,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_apply_setpoint_power_limit(self):
         """Test applying power limit setpoint."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceSetPowerManagementLimit.return_value = None
 
@@ -173,6 +186,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_apply_setpoint_sm_clock(self):
         """Test applying SM clock setpoint."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceSetApplicationsClocks.return_value = None
         # Mock current memory clock retrieval
@@ -192,6 +206,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_apply_setpoint_mem_clock(self):
         """Test applying memory clock setpoint."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceSetApplicationsClocks.return_value = None
         # Mock current SM clock retrieval
@@ -211,6 +226,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_apply_setpoint_fan_speed(self):
         """Test applying fan speed setpoint."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceSetFanSpeed_v2.return_value = None
 
@@ -225,6 +241,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_apply_setpoint_ecc_enabled(self):
         """Test enabling ECC."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceSetEccMode.return_value = None
         mock_pynvml.NVML_FEATURE_ENABLED = 1
@@ -241,6 +258,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_apply_setpoint_ecc_disabled(self):
         """Test disabling ECC."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceSetEccMode.return_value = None
         mock_pynvml.NVML_FEATURE_ENABLED = 1
@@ -257,6 +275,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_apply_setpoint_unknown_parameter(self):
         """Test applying unknown parameter returns error."""
+
         mock_pynvml.nvmlInit.return_value = None
 
         with patch("quasim.hardware.backends.nvml_backend.NVML_AVAILABLE", True):
@@ -270,6 +289,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_apply_setpoint_exception(self):
         """Test apply setpoint handles exceptions."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceGetHandleByIndex.side_effect = Exception("Device error")
 
@@ -284,6 +304,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_reset_to_defaults_dry_run(self):
         """Test reset to defaults in dry-run mode."""
+
         mock_pynvml.nvmlInit.return_value = None
 
         with patch("quasim.hardware.backends.nvml_backend.NVML_AVAILABLE", True):
@@ -298,6 +319,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_reset_to_defaults(self):
         """Test reset to defaults."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceResetApplicationsClocks.return_value = None
         mock_pynvml.nvmlDeviceGetPowerManagementDefaultLimit.return_value = 300000
@@ -315,6 +337,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_reset_to_defaults_partial_failure(self):
         """Test reset to defaults when power limit reset fails."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceResetApplicationsClocks.return_value = None
         mock_pynvml.nvmlDeviceGetPowerManagementDefaultLimit.side_effect = Exception("Fail")
@@ -330,6 +353,7 @@ class TestNVMLBackendWithMock(unittest.TestCase):
 
     def test_reset_to_defaults_exception(self):
         """Test reset handles exceptions."""
+
         mock_pynvml.nvmlInit.return_value = None
         mock_pynvml.nvmlDeviceGetHandleByIndex.side_effect = Exception("Device error")
 

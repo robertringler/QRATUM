@@ -83,15 +83,18 @@ class AuditRegistry:
         Args:
             db_path: Path to SQLite database file
         """
+
         self.db_path = Path(db_path)
         self.conn = None
         self._initialize_db()
 
     def _initialize_db(self) -> None:
         """Initialize database schema."""
+
         self.conn = sqlite3.connect(str(self.db_path))
         self.conn.execute(
             """
+
             CREATE TABLE IF NOT EXISTS audit_log (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 timestamp TEXT NOT NULL,
@@ -109,16 +112,19 @@ class AuditRegistry:
         )
         self.conn.execute(
             """
+
             CREATE INDEX IF NOT EXISTS idx_timestamp ON audit_log(timestamp)
         """
         )
         self.conn.execute(
             """
+
             CREATE INDEX IF NOT EXISTS idx_violation_type ON audit_log(violation_type)
         """
         )
         self.conn.execute(
             """
+
             CREATE INDEX IF NOT EXISTS idx_severity ON audit_log(severity)
         """
         )
@@ -133,9 +139,11 @@ class AuditRegistry:
         Returns:
             Entry ID
         """
+
         cursor = self.conn.cursor()
         cursor.execute(
             """
+
             INSERT INTO audit_log (
                 timestamp, violation_type, severity, module, function,
                 message, context, seed, config_hash, resolved
@@ -177,6 +185,7 @@ class AuditRegistry:
         Returns:
             List of audit entries
         """
+
         query = "SELECT * FROM audit_log WHERE severity >= ? AND severity <= ?"
         params = [min_severity, max_severity]
 
@@ -219,6 +228,7 @@ class AuditRegistry:
         Args:
             entry_id: Entry ID to mark resolved
         """
+
         self.conn.execute("UPDATE audit_log SET resolved = 1 WHERE id = ?", (entry_id,))
         self.conn.commit()
 
@@ -228,8 +238,10 @@ class AuditRegistry:
         Returns:
             Dictionary of statistics
         """
+
         cursor = self.conn.execute(
             """
+
             SELECT 
                 violation_type,
                 COUNT(*) as count,
@@ -256,6 +268,7 @@ class AuditRegistry:
         Args:
             output_path: Output JSON file path
         """
+
         entries = self.query(limit=1000000)  # Export all
 
         data = {
@@ -270,13 +283,16 @@ class AuditRegistry:
 
     def close(self) -> None:
         """Close database connection."""
+
         if self.conn:
             self.conn.close()
 
     def __enter__(self):
         """Context manager entry."""
+
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Context manager exit."""
+
         self.close()

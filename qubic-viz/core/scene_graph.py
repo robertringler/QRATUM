@@ -28,6 +28,7 @@ class Transform:
         Returns:
             4x4 transformation matrix
         """
+
         # Create translation matrix
         T = np.eye(4)
         T[:3, 3] = self.position
@@ -83,6 +84,7 @@ class SceneNode:
         parent: SceneNode | None = None,
     ) -> None:
         """Initialize scene node."""
+
         self.name = name
         self.transform = transform or Transform()
         self.parent = parent
@@ -100,6 +102,7 @@ class SceneNode:
         Args:
             child: Child node to add
         """
+
         if child not in self.children:
             self.children.append(child)
             child.parent = self
@@ -110,6 +113,7 @@ class SceneNode:
         Args:
             child: Child node to remove
         """
+
         if child in self.children:
             self.children.remove(child)
             child.parent = None
@@ -120,6 +124,7 @@ class SceneNode:
         Returns:
             4x4 world transformation matrix
         """
+
         local_matrix = self.transform.to_matrix()
         if self.parent is None:
             return local_matrix
@@ -131,6 +136,7 @@ class SceneNode:
         Args:
             callback: Function to call for each node
         """
+
         callback(self)
         for child in self.children:
             child.traverse(callback)
@@ -144,6 +150,7 @@ class SceneNode:
         Returns:
             Found node or None
         """
+
         if self.name == name:
             return self
         for child in self.children:
@@ -161,6 +168,7 @@ class SceneGraph:
 
     def __init__(self) -> None:
         """Initialize scene graph."""
+
         self.root = SceneNode("root")
 
     def add_node(
@@ -176,6 +184,7 @@ class SceneGraph:
         Returns:
             Created scene node
         """
+
         if parent is None:
             parent = self.root
         return SceneNode(name, transform, parent)
@@ -189,6 +198,7 @@ class SceneGraph:
         Returns:
             Found node or None
         """
+
         return self.root.find(name)
 
     def traverse(self, callback: callable) -> None:
@@ -197,6 +207,7 @@ class SceneGraph:
         Args:
             callback: Function to call for each node
         """
+
         self.root.traverse(callback)
 
     def get_visible_nodes(self) -> list[SceneNode]:
@@ -205,6 +216,7 @@ class SceneGraph:
         Returns:
             List of visible nodes
         """
+
         visible = []
 
         def collect_visible(node: SceneNode) -> None:

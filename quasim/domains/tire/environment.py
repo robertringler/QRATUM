@@ -74,6 +74,7 @@ class EnvironmentalConditions:
         Returns:
             Effective friction coefficient accounting for environment
         """
+
         # Surface type effect
         surface_factors = {
             RoadSurface.DRY_ASPHALT: 1.0,
@@ -106,6 +107,7 @@ class EnvironmentalConditions:
         Returns:
             Dictionary with convection coefficient and ambient temperature
         """
+
         # Convection coefficient increases with wind speed
         base_h = 10.0  # W/(m²·K) base convection coefficient
         h_conv = base_h + 5.0 * self.wind_speed
@@ -130,6 +132,7 @@ class EnvironmentalConditions:
         Returns:
             Aging rate multiplier (1.0 = normal, >1.0 = accelerated)
         """
+
         # Temperature effect (Arrhenius-like)
         temp_factor = 1.0 + 0.05 * max(0, self.ambient_temperature - 20.0)
 
@@ -164,6 +167,7 @@ class EnvironmentalConditions:
         Returns:
             Hydroplaning risk (0=no risk, 1=high risk)
         """
+
         # Only relevant for wet conditions
         if self.surface_wetness < 0.3:
             return 0.0
@@ -182,6 +186,7 @@ class EnvironmentalConditions:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize environmental conditions to dictionary."""
+
         return {
             "ambient_temperature": self.ambient_temperature,
             "road_temperature": self.road_temperature,

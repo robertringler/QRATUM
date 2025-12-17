@@ -11,12 +11,14 @@ class TestXENONRuntime:
 
     def test_create_runtime(self):
         """Test creating a runtime."""
+
         runtime = XENONRuntime()
         assert runtime.max_mechanisms == 1000
         assert len(runtime.targets) == 0
 
     def test_add_target(self):
         """Test adding a target."""
+
         runtime = XENONRuntime()
         runtime.add_target(
             name="test_target",
@@ -30,6 +32,7 @@ class TestXENONRuntime:
 
     def test_run_single_iteration(self):
         """Test running single iteration."""
+
         runtime = XENONRuntime(max_mechanisms=10)
         runtime.add_target(
             name="test_target",
@@ -44,6 +47,7 @@ class TestXENONRuntime:
 
     def test_run_multiple_iterations(self):
         """Test running multiple iterations."""
+
         runtime = XENONRuntime(max_mechanisms=10)
         runtime.add_target(
             name="test_target",
@@ -58,6 +62,7 @@ class TestXENONRuntime:
 
     def test_get_mechanisms(self):
         """Test retrieving high-confidence mechanisms."""
+
         runtime = XENONRuntime(max_mechanisms=10)
         runtime.add_target(
             name="test_target",
@@ -77,6 +82,7 @@ class TestXENONRuntime:
 
     def test_convergence(self):
         """Test that runtime can converge."""
+
         runtime = XENONRuntime(
             max_mechanisms=10,
             convergence_threshold=100.0,  # High threshold for quick convergence
@@ -94,6 +100,7 @@ class TestXENONRuntime:
 
     def test_multiple_targets(self):
         """Test running with multiple targets."""
+
         runtime = XENONRuntime(max_mechanisms=10)
 
         runtime.add_target(
@@ -113,6 +120,7 @@ class TestXENONRuntime:
 
     def test_get_summary(self):
         """Test getting runtime summary."""
+
         runtime = XENONRuntime(max_mechanisms=10)
         runtime.add_target(
             name="test_target",
@@ -131,6 +139,7 @@ class TestXENONRuntime:
 
     def test_mechanism_pruning(self):
         """Test that low-evidence mechanisms are pruned."""
+
         runtime = XENONRuntime(max_mechanisms=5)
         runtime.add_target(
             name="test_target",
@@ -151,11 +160,13 @@ class TestBayesianUpdater:
 
     def test_create_updater(self):
         """Test creating updater."""
+
         updater = BayesianUpdater()
         assert updater.likelihood_scale == 1.0
 
     def test_update_mechanisms(self):
         """Test updating mechanism posteriors."""
+
         mech = BioMechanism("test")
 
         state1 = MolecularState(name="S1", molecule="Protein", concentration=80.0)
@@ -186,6 +197,7 @@ class TestBayesianUpdater:
 
     def test_prune_low_evidence(self):
         """Test pruning low-evidence mechanisms."""
+
         mechs = []
         for i in range(5):
             mech = BioMechanism(f"mech_{i}")
@@ -199,6 +211,7 @@ class TestBayesianUpdater:
 
     def test_evidence_summary(self):
         """Test getting evidence summary."""
+
         mechs = []
         for i in range(3):
             mech = BioMechanism(f"mech_{i}")
@@ -218,11 +231,13 @@ class TestMechanismPrior:
 
     def test_create_prior(self):
         """Test creating prior calculator."""
+
         prior = MechanismPrior()
         assert prior.rate_constant_scale == 1.0
 
     def test_compute_prior(self):
         """Test computing mechanism prior."""
+
         mech = BioMechanism("test")
 
         state1 = MolecularState(name="S1", molecule="Protein", free_energy=-10.0)
@@ -241,6 +256,7 @@ class TestMechanismPrior:
 
     def test_rate_constant_prior(self):
         """Test rate constant prior computation."""
+
         prior_calc = MechanismPrior()
 
         # Typical biochemical rate (should have high prior)
@@ -255,6 +271,7 @@ class TestMechanismPrior:
 
     def test_initialize_mechanism_priors(self):
         """Test initializing priors for multiple mechanisms."""
+
         mechs = []
         for i in range(3):
             mech = BioMechanism(f"mech_{i}")
@@ -278,6 +295,7 @@ class TestMechanismPrior:
 
     def test_literature_evidence(self):
         """Test adding literature evidence."""
+
         prior_calc = MechanismPrior()
 
         prior_calc.add_literature_evidence("TestProtein", 100)
@@ -296,6 +314,7 @@ class TestExperimentResult:
 
     def test_create_experiment_result(self):
         """Test creating experiment result."""
+
         result = ExperimentResult(
             experiment_type="concentration",
             observations={"S1": 80.0, "S2": 20.0},

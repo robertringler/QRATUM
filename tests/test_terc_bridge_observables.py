@@ -17,6 +17,7 @@ class TestBetaMetricsFromCipher:
 
     def test_basic_metrics(self):
         """Test basic beta metrics extraction."""
+
         text = "HELLO" * 20
         metrics = beta_metrics_from_cipher(text)
 
@@ -27,6 +28,7 @@ class TestBetaMetricsFromCipher:
 
     def test_metrics_bounds(self):
         """Test that metrics are in valid ranges."""
+
         text = "ABCDEFGH" * 15
         metrics = beta_metrics_from_cipher(text)
 
@@ -37,6 +39,7 @@ class TestBetaMetricsFromCipher:
 
     def test_periodic_text(self):
         """Test beta metrics on periodic text."""
+
         text = "ABC" * 30
         metrics = beta_metrics_from_cipher(text)
 
@@ -49,6 +52,7 @@ class TestIoCPeriodCandidates:
 
     def test_period_detection(self):
         """Test period detection."""
+
         text = "ABC" * 30
         candidates = ioc_period_candidates(text, max_period=10)
 
@@ -58,6 +62,7 @@ class TestIoCPeriodCandidates:
 
     def test_no_periods(self):
         """Test with random text (no clear periods)."""
+
         text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" * 3
         candidates = ioc_period_candidates(text, max_period=10, threshold=0.5)
 
@@ -66,6 +71,7 @@ class TestIoCPeriodCandidates:
 
     def test_threshold_effect(self):
         """Test that threshold affects results."""
+
         text = "ABCABC" * 10
 
         low_threshold = ioc_period_candidates(text, threshold=0.1)
@@ -80,6 +86,7 @@ class TestEmergentComplexity:
 
     def test_complexity_structure(self):
         """Test complexity result structure."""
+
         text = "ATTACKATDAWN" * 5
         complexity = emergent_complexity(text)
 
@@ -90,6 +97,7 @@ class TestEmergentComplexity:
 
     def test_complexity_bounds(self):
         """Test that complexity values are valid."""
+
         text = "HELLOWORLD" * 10
         complexity = emergent_complexity(text)
 
@@ -104,6 +112,7 @@ class TestQGHConsensusStatus:
 
     def test_consensus_basic(self):
         """Test basic consensus status."""
+
         rng = np.random.default_rng(42)
         states = rng.normal(0, 1, size=(5, 3))
 
@@ -117,6 +126,7 @@ class TestQGHConsensusStatus:
 
     def test_consensus_bounds(self):
         """Test that metrics are in valid ranges."""
+
         rng = np.random.default_rng(42)
         states = rng.normal(0, 1, size=(10, 5))
 
@@ -130,6 +140,7 @@ class TestQGHConsensusStatus:
 
     def test_uniform_states(self):
         """Test with already uniform states."""
+
         states = np.ones((5, 3))
 
         status = qgh_consensus_status(states)
@@ -145,6 +156,7 @@ class TestStreamSynchronizationMetrics:
 
     def test_sync_detection(self):
         """Test synchronization detection."""
+
         # Create correlated streams
         rng = np.random.default_rng(42)
         base = [rng.normal(0, 1) for _ in range(50)]
@@ -165,6 +177,7 @@ class TestStreamSynchronizationMetrics:
 
     def test_sync_ratio(self):
         """Test synchronization ratio calculation."""
+
         stream_data = {
             0: [1.0] * 50,
             1: [1.0] * 50,
@@ -183,6 +196,7 @@ class TestStabilityAssessment:
 
     def test_stable_metrics(self):
         """Test with stable metric series."""
+
         metrics = [1.0 + 0.1 * np.sin(i) for i in range(100)]
 
         assessment = stability_assessment(metrics, window_size=50)
@@ -197,6 +211,7 @@ class TestStabilityAssessment:
 
     def test_unstable_metrics(self):
         """Test with unstable metric series."""
+
         metrics = [float(i) * 5.0 for i in range(100)]  # Strong steep trend
 
         assessment = stability_assessment(metrics, window_size=50)
@@ -209,6 +224,7 @@ class TestStabilityAssessment:
 
     def test_assessment_stats(self):
         """Test that statistics are computed correctly."""
+
         metrics = [1.0, 2.0, 3.0, 4.0, 5.0] * 10
 
         assessment = stability_assessment(metrics, window_size=20)
@@ -222,6 +238,7 @@ class TestIntegration:
 
     def test_full_observable_pipeline(self):
         """Test complete observable extraction pipeline."""
+
         # Text-based observables
         text = "ATTACKATDAWN" * 10
 
@@ -238,6 +255,7 @@ class TestIntegration:
 
     def test_qgh_observable_pipeline(self):
         """Test QGH observable extraction."""
+
         rng = np.random.default_rng(42)
 
         # Consensus observable
@@ -258,6 +276,7 @@ class TestIntegration:
 
     def test_terc_tier_integration(self):
         """Test integration with TERC tier validation."""
+
         # Simulate TERC Tier-1 observable collection
         text = "CRYPTOTEXT" * 20
 

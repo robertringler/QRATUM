@@ -10,6 +10,7 @@ class HoloLensAdapter:
 
     def __init__(self) -> None:
         """Initialize HoloLens adapter."""
+
         self.spatial_mapping_enabled = False
 
     def convert_to_spatial_mesh(self, mesh: Any) -> dict[str, Any]:
@@ -21,6 +22,7 @@ class HoloLensAdapter:
         Returns:
             Spatial mesh data
         """
+
         return {
             "vertices": mesh.vertices.tolist(),
             "faces": mesh.faces.tolist(),
@@ -36,6 +38,7 @@ class HoloLensAdapter:
         Returns:
             True if streaming succeeded
         """
+
         # Placeholder for HoloLens streaming protocol
         print("Streaming mesh to HoloLens (placeholder)")
         return True

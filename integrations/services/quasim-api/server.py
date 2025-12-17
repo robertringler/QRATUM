@@ -141,6 +141,7 @@ def create_app() -> Any:
     Returns:
         Configured FastAPI application
     """
+
     if not FASTAPI_AVAILABLE:
         logger.error("FastAPI not installed; returning mock app")
         return None
@@ -170,11 +171,13 @@ def create_app() -> Any:
     @app.get("/health", tags=["Health"])
     def health_check():
         """Health check endpoint."""
+
         return {"status": "healthy", "version": "0.1.0", "timestamp": datetime.utcnow().isoformat()}
 
     @app.get("/readiness", tags=["Health"])
     def readiness_check():
         """Readiness check for Kubernetes."""
+
         # In production, check dependencies (Redis, S3, etc.)
         return {"ready": True, "dependencies": {"redis": "ok", "storage": "ok"}}
 
@@ -190,6 +193,7 @@ def create_app() -> Any:
         Returns:
             Job submission response with job ID
         """
+
         # In production, validate API key against stored keys
         if x_api_key:
             # TODO: Implement proper API key validation
@@ -233,6 +237,7 @@ def create_app() -> Any:
         Returns:
             Job status information
         """
+
         if job_id not in job_store:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail=f"Job not found: {job_id}"
@@ -251,6 +256,7 @@ def create_app() -> Any:
         Returns:
             Cancellation confirmation
         """
+
         if job_id not in job_store:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail=f"Job not found: {job_id}"
@@ -283,6 +289,7 @@ def create_app() -> Any:
         Returns:
             Artifact metadata and download URL
         """
+
         # In production, retrieve from S3 or object storage
         return {
             "artifact_id": artifact_id,
@@ -297,6 +304,7 @@ def create_app() -> Any:
         Returns:
             Current system metrics
         """
+
         # In production, compute from actual job queue and history
         len(job_store)
         queued = sum(1 for j in job_store.values() if j["status"] == JobStatus.QUEUED)
@@ -322,6 +330,7 @@ def create_app() -> Any:
         Returns:
             Performance profiles
         """
+
         return {
             "profiles": {
                 "cfd": {
@@ -352,6 +361,7 @@ def create_app() -> Any:
         Returns:
             Validation results with errors and warnings
         """
+
         errors = []
         warnings = []
 
@@ -373,6 +383,7 @@ def create_app() -> Any:
 
 def main():
     """Run the FastAPI server (for development)."""
+
     if not FASTAPI_AVAILABLE:
         print("FastAPI not installed. Install with: pip install fastapi uvicorn")
         return 1

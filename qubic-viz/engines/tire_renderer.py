@@ -24,6 +24,7 @@ class TireRenderer:
 
     def __init__(self, config: RenderConfig | None = None) -> None:
         """Initialize tire renderer."""
+
         self.config = config or RenderConfig()
         self.renderer = SceneRenderer(self.config)
         self.mesh_generator = TireMeshGenerator(resolution=32)
@@ -46,6 +47,7 @@ class TireRenderer:
         Returns:
             Rendered image as RGB array
         """
+
         if camera is None:
             camera = Camera(
                 position=np.array([2.0, 1.5, 2.0]),
@@ -123,6 +125,7 @@ class TireRenderer:
         Returns:
             Rendered thermal map
         """
+
         fig = plt.figure(figsize=(12, 8))
         ax = fig.add_subplot(111, projection="3d")
 
@@ -175,6 +178,7 @@ class TireRenderer:
         Returns:
             Rendered stress distribution
         """
+
         fig = plt.figure(figsize=(12, 8))
         ax = fig.add_subplot(111, projection="3d")
 
@@ -227,6 +231,7 @@ class TireRenderer:
         Returns:
             Rendered wear pattern
         """
+
         fig = plt.figure(figsize=(12, 8))
         ax = fig.add_subplot(111, projection="3d")
 
@@ -278,6 +283,7 @@ class TireRenderer:
         Returns:
             Rendered dashboard image
         """
+
         fig = plt.figure(figsize=(16, 12))
 
         # Create grid layout
@@ -355,7 +361,7 @@ class TireRenderer:
         ax6.text(
             0.5,
             0.5,
-            f"{metrics.predicted_lifetime_km/1000:.1f}k km",
+            f"{metrics.predicted_lifetime_km / 1000:.1f}k km",
             ha="center",
             va="center",
             fontsize=36,

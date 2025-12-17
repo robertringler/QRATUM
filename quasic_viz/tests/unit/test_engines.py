@@ -6,6 +6,7 @@ class TestMultiGPURenderer:
 
     def test_init_no_device_ids(self):
         """Test initialization without explicit device IDs."""
+
         from quasic_viz.engines.multi_gpu_renderer import MultiGPURenderer
 
         renderer = MultiGPURenderer()
@@ -14,6 +15,7 @@ class TestMultiGPURenderer:
 
     def test_init_with_device_ids(self):
         """Test initialization with explicit device IDs."""
+
         from quasic_viz.engines.multi_gpu_renderer import MultiGPURenderer
 
         renderer = MultiGPURenderer(device_ids=[0])
@@ -22,6 +24,7 @@ class TestMultiGPURenderer:
 
     def test_is_available(self):
         """Test GPU availability check."""
+
         from quasic_viz.engines.multi_gpu_renderer import MultiGPURenderer
 
         renderer = MultiGPURenderer()
@@ -30,6 +33,7 @@ class TestMultiGPURenderer:
 
     def test_get_device_info(self):
         """Test device info retrieval."""
+
         from quasic_viz.engines.multi_gpu_renderer import MultiGPURenderer
 
         renderer = MultiGPURenderer()
@@ -43,6 +47,7 @@ class TestARAdapter:
 
     def test_init(self):
         """Test AR adapter initialization."""
+
         from quasic_viz.engines.ar_adapter import ARAdapter
 
         adapter = ARAdapter(ws_url="ws://localhost:8000/ws")
@@ -55,6 +60,7 @@ class TestTireMeshGenerator:
 
     def test_init(self):
         """Test mesh generator initialization."""
+
         from quasic_viz.engines.tire_mesh_generator import TireMeshGenerator
 
         gen = TireMeshGenerator(resolution=16)
@@ -62,6 +68,7 @@ class TestTireMeshGenerator:
 
     def test_generate_tire_mesh(self):
         """Test tire mesh generation."""
+
         from quasic_viz.engines.tire_mesh_generator import TireMeshGenerator
 
         gen = TireMeshGenerator(resolution=16)

@@ -36,6 +36,7 @@ logger = logging.getLogger(__name__)
 
 async def demo_wave3_launch():
     """Demonstrate Wave 3 launch execution."""
+
     logger.info("=" * 70)
     logger.info("DEMO: Wave 3 Launch (1,000 pilots/day)")
     logger.info("=" * 70)
@@ -76,6 +77,7 @@ async def demo_wave3_launch():
 
 async def demo_china_factory():
     """Demonstrate China Photonic Factory integration."""
+
     logger.info("")
     logger.info("=" * 70)
     logger.info("DEMO: China Photonic Factory Integration")
@@ -110,6 +112,7 @@ async def demo_china_factory():
 
 async def demo_parallel_execution():
     """Demonstrate parallel execution of both tasks."""
+
     logger.info("")
     logger.info("=" * 70)
     logger.info("DEMO: Parallel Execution (Wave 3 + China Factory)")
@@ -164,6 +167,7 @@ async def demo_parallel_execution():
 
 async def demo_pilot_generation():
     """Demonstrate pilot generation."""
+
     logger.info("")
     logger.info("=" * 70)
     logger.info("DEMO: Pilot Generation")
@@ -202,6 +206,7 @@ async def demo_pilot_generation():
 
 async def demo_china_factory_standalone():
     """Demonstrate China factory standalone operations."""
+
     logger.info("")
     logger.info("=" * 70)
     logger.info("DEMO: China Factory Standalone")
@@ -241,6 +246,7 @@ async def demo_china_factory_standalone():
 
 async def main():
     """Run all demos."""
+
     logger.info("=" * 70)
     logger.info("QuNimbus Wave 3 Orchestration Demo")
     logger.info("=" * 70)

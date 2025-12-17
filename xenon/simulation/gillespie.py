@@ -58,6 +58,7 @@ class GillespieSimulator:
             mechanism: Mechanism to simulate
             volume: Reaction volume in liters
         """
+
         self.mechanism = mechanism
         self.volume = volume
         self.avogadro = 6.022e23  # Avogadro's number
@@ -88,6 +89,7 @@ class GillespieSimulator:
         Returns:
             Tuple of (times, trajectories) where trajectories[species] = [concentrations]
         """
+
         # Initialize random number generator
         self._rng = np.random.default_rng(seed)
         self._reaction_count = 0
@@ -144,6 +146,7 @@ class GillespieSimulator:
         Returns:
             Initialized simulation state
         """
+
         # Ensure all species in mechanism have initial values
         concentrations = {}
         molecule_counts = {}
@@ -175,6 +178,7 @@ class GillespieSimulator:
         Returns:
             List of propensities for each transition
         """
+
         propensities = []
 
         for transition in self.mechanism._transitions:
@@ -199,6 +203,7 @@ class GillespieSimulator:
         Returns:
             Index of selected reaction
         """
+
         # Direct method: generate random number and find reaction
         r = self._rng.random() * total_propensity
 
@@ -218,6 +223,7 @@ class GillespieSimulator:
             state: Current state (modified in place)
             reaction_idx: Index of reaction that fired
         """
+
         transition = self.mechanism._transitions[reaction_idx]
 
         # Update molecule counts (stoichiometry)
@@ -241,6 +247,7 @@ class GillespieSimulator:
         Returns:
             Dictionary with performance statistics
         """
+
         return {
             "total_reactions": self._reaction_count,
             "reactions_per_second": self._reaction_count,  # Placeholder
@@ -267,6 +274,7 @@ class GillespieSimulatorOptimized(GillespieSimulator):
 
         For each reaction, identify which reactions' propensities are affected.
         """
+
         # For Phase 1, use full propensity recalculation
         # Phase 2+ will implement partial updates
         pass

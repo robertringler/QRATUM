@@ -24,6 +24,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
     Returns:
         CheckResult with pass/fail status and practice count
     """
+
     path = cfg["inputs"]["compliance"]["cmmc_map"]
     min_practices = cfg["policy"]["tolerances"].get("cmmc_practices_min", 110)
 

@@ -24,6 +24,7 @@ class SensorManager:
         Args:
             cache_ttl: Cache time-to-live in seconds.
         """
+
         self.cache_ttl = cache_ttl
         self._cache: Dict[str, tuple[TelemetryReading, float]] = {}
 
@@ -40,6 +41,7 @@ class SensorManager:
         Returns:
             TelemetryReading instance or None if failed.
         """
+
         # Check cache
         if use_cache and device_id in self._cache:
             reading, cache_time = self._cache[device_id]
@@ -75,6 +77,7 @@ class SensorManager:
         Returns:
             List of TelemetryReading instances.
         """
+
         readings = []
 
         for device_id in device_ids:
@@ -96,6 +99,7 @@ class SensorManager:
         Returns:
             Dictionary with aggregated statistics.
         """
+
         values = []
 
         for reading in readings:
@@ -118,6 +122,7 @@ class SensorManager:
         Args:
             device_id: Device identifier to clear. If None, clears all.
         """
+
         if device_id:
             if device_id in self._cache:
                 del self._cache[device_id]
@@ -133,6 +138,7 @@ class SensorManager:
         Returns:
             Cached TelemetryReading or None.
         """
+
         if device_id in self._cache:
             reading, _ = self._cache[device_id]
             return reading

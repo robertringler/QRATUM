@@ -29,6 +29,7 @@ class DistributedExecutor:
 
     def __post_init__(self) -> None:
         """Validate executor configuration."""
+
         if self.backend not in ("cuda", "hip"):
             raise ValueError(f"Backend must be 'cuda' or 'hip', got {self.backend}")
         if self.num_workers < 1:
@@ -44,6 +45,7 @@ class DistributedExecutor:
         - Set up GPU device discovery for CUDA/HIP
         - Establish network communication between workers
         """
+
         if self._initialized:
             return
 
@@ -71,6 +73,7 @@ class DistributedExecutor:
         Returns:
             Task ID for tracking execution
         """
+
         if not self._initialized:
             self.initialize()
 
@@ -93,6 +96,7 @@ class DistributedExecutor:
         Returns:
             Results from applying func to all items
         """
+
         if not self._initialized:
             self.initialize()
 
@@ -119,6 +123,7 @@ class DistributedExecutor:
         Returns:
             Object reference ID
         """
+
         if not self._initialized:
             self.initialize()
 
@@ -135,6 +140,7 @@ class DistributedExecutor:
         Returns:
             List of task results
         """
+
         # Production would use Ray's get() API
         return [f"result_{tid}" for tid in task_ids]
 
@@ -143,6 +149,7 @@ class DistributedExecutor:
 
         Cleanly terminates all workers and releases GPU resources.
         """
+
         if not self._initialized:
             return
 
@@ -155,6 +162,7 @@ class DistributedExecutor:
         Returns:
             Dictionary with cluster statistics and worker status
         """
+
         return {
             "num_workers": self.num_workers,
             "backend": self.backend,
@@ -168,6 +176,7 @@ class DistributedExecutor:
         Returns:
             Number of GPUs detected
         """
+
         # Production would query CUDA/HIP for actual GPU count
         return self.num_workers if self.backend in ("cuda", "hip") else 0
 
@@ -189,6 +198,7 @@ class TensorExecutor:
 
     def __post_init__(self) -> None:
         """Validate tensor executor configuration."""
+
         if self.precision not in ("fp32", "fp16", "fp8"):
             raise ValueError("Precision must be 'fp32', 'fp16', or 'fp8'")
 
@@ -204,6 +214,7 @@ class TensorExecutor:
         Returns:
             Product matrix
         """
+
         # Simplified - production would use actual JAX operations
         # and handle device placement automatically
         return [[0.0 for _ in range(len(b[0]))] for _ in range(len(a))]
@@ -221,5 +232,6 @@ class TensorExecutor:
         Returns:
             Contracted tensor
         """
+
         # Production would use JAX's einsum with GPU acceleration
         return tensors[0] if tensors else []

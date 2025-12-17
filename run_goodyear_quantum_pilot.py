@@ -17,6 +17,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 def print_header(title: str) -> None:
     """Print formatted header."""
+
     print()
     print("=" * 80)
     print(title)
@@ -26,6 +27,7 @@ def print_header(title: str) -> None:
 
 def print_section(title: str) -> None:
     """Print section header."""
+
     print()
     print("-" * 80)
     print(title)
@@ -34,6 +36,7 @@ def print_section(title: str) -> None:
 
 def main() -> None:
     """Execute the full Goodyear Quantum Tire Pilot."""
+
     start_time = time.time()
 
     print_header("GOODYEAR QUANTUM TIRE PILOT - FULL EXECUTION")
@@ -143,9 +146,11 @@ def main() -> None:
         elapsed_time = time.time() - start_time
         print_section("PHASE 5: Execution Summary")
         print("✓ Goodyear Quantum Tire Pilot execution COMPLETE")
-        print(f"✓ Total execution time: {elapsed_time:.2f} seconds ({elapsed_time/60:.2f} minutes)")
         print(
-            f"✓ Simulation throughput: {summary['total_scenarios']/elapsed_time:.2f} scenarios/second"
+            f"✓ Total execution time: {elapsed_time:.2f} seconds ({elapsed_time / 60:.2f} minutes)"
+        )
+        print(
+            f"✓ Simulation throughput: {summary['total_scenarios'] / elapsed_time:.2f} scenarios/second"
         )
         print()
         print("Library Capabilities:")

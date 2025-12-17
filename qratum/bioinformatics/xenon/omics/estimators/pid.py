@@ -1,4 +1,5 @@
 """
+
 Partial Information Decomposition (PID) Estimator
 
 Williams & Beer PID framework implementation.
@@ -12,6 +13,7 @@ import numpy as np
 
 class PIDEstimator:
     """
+
     Partial Information Decomposition estimator.
 
     Decomposes information into:
@@ -23,10 +25,12 @@ class PIDEstimator:
 
     def __init__(self):
         """Initialize PID estimator."""
+
         pass
 
     def decompose(self, data_x: np.ndarray, data_y: np.ndarray, data_target: np.ndarray) -> Dict:
         """
+
         Perform PID decomposition.
 
         Args:
@@ -37,6 +41,7 @@ class PIDEstimator:
         Returns:
             Dictionary with PID components
         """
+
         # Compute individual MIs
         from .ksg import KSGEstimator
 

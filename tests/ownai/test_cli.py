@@ -11,11 +11,13 @@ from quasim.cli.quasim_own import cli
 @pytest.fixture
 def runner():
     """Create CLI test runner."""
+
     return CliRunner()
 
 
 def test_cli_help(runner):
     """Test CLI help command."""
+
     result = runner.invoke(cli, ["--help"])
     assert result.exit_code == 0
     assert "QuASIM-Own" in result.output
@@ -23,6 +25,7 @@ def test_cli_help(runner):
 
 def test_cli_train(runner, tmp_path):
     """Test train command."""
+
     output_dir = tmp_path / "test_run"
 
     result = runner.invoke(
@@ -57,6 +60,7 @@ def test_cli_train(runner, tmp_path):
 
 def test_cli_eval(runner, tmp_path):
     """Test eval command."""
+
     # First train a model
     output_dir = tmp_path / "test_run"
     runner.invoke(
@@ -86,6 +90,7 @@ def test_cli_eval(runner, tmp_path):
 
 def test_cli_benchmark(runner, tmp_path):
     """Test benchmark command with quick suite."""
+
     report_dir = tmp_path / "reports"
 
     result = runner.invoke(
@@ -109,6 +114,7 @@ def test_cli_benchmark(runner, tmp_path):
 
 def test_cli_export(runner, tmp_path):
     """Test export command."""
+
     # First train a model
     output_dir = tmp_path / "test_run"
     runner.invoke(
@@ -147,6 +153,7 @@ def test_cli_export(runner, tmp_path):
 
 def test_cli_modelcard(runner, tmp_path):
     """Test modelcard command."""
+
     # First train a model
     output_dir = tmp_path / "test_run"
     runner.invoke(

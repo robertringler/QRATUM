@@ -49,6 +49,7 @@ def create_render_router() -> Optional[APIRouter]:
     Returns:
         FastAPI router or None if FastAPI not available
     """
+
     if not FASTAPI_AVAILABLE:
         return None
 
@@ -57,18 +58,21 @@ def create_render_router() -> Optional[APIRouter]:
     @router.post("/frame", response_model=RenderResponse)
     async def render_frame(request: RenderRequest):
         """Render a single frame."""
+
         job_id = str(uuid.uuid4())
         return RenderResponse(job_id=job_id, status="queued", message="Frame render job queued")
 
     @router.post("/sequence", response_model=RenderResponse)
     async def render_sequence(request: RenderRequest):
         """Render an animation sequence."""
+
         job_id = str(uuid.uuid4())
         return RenderResponse(job_id=job_id, status="queued", message="Sequence render job queued")
 
     @router.get("/status/{job_id}", response_model=JobStatus)
     async def get_job_status(job_id: str):
         """Get job status."""
+
         # Placeholder implementation
         return JobStatus(job_id=job_id, status="completed", progress=1.0)
 

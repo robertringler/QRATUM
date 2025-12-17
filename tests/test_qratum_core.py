@@ -21,24 +21,28 @@ class TestGates:
 
     def test_pauli_gates(self):
         """Test Pauli gates are unitary."""
+
         for gate in [gates.X, gates.Y, gates.Z]:
             identity = gate @ np.conj(gate.T)
             assert np.allclose(identity, np.eye(2))
 
     def test_hadamard(self):
         """Test Hadamard gate."""
+
         # H is self-inverse
         result = gates.H @ gates.H
         assert np.allclose(result, np.eye(2))
 
     def test_cnot(self):
         """Test CNOT gate."""
+
         # CNOT is self-inverse
         result = gates.CNOT @ gates.CNOT
         assert np.allclose(result, np.eye(4))
 
     def test_rotation_gates(self):
         """Test rotation gates."""
+
         # RX(0) should be identity
         rx_zero = gates.RX(0)
         assert np.allclose(rx_zero, np.eye(2))
@@ -53,24 +57,28 @@ class TestCircuit:
 
     def test_circuit_creation(self):
         """Test creating a circuit."""
+
         circuit = Circuit(2)
         assert circuit.num_qubits == 2
         assert circuit.gate_count() == 0
 
     def test_single_qubit_gates(self):
         """Test adding single-qubit gates."""
+
         circuit = Circuit(1)
         circuit.h(0).x(0).y(0).z(0)
         assert circuit.gate_count() == 4
 
     def test_two_qubit_gates(self):
         """Test adding two-qubit gates."""
+
         circuit = Circuit(2)
         circuit.cnot(0, 1).cz(0, 1).swap(0, 1)
         assert circuit.gate_count() == 3
 
     def test_circuit_depth(self):
         """Test circuit depth calculation."""
+
         circuit = Circuit(2)
         circuit.h(0)
         circuit.h(1)
@@ -81,6 +89,7 @@ class TestCircuit:
 
     def test_circuit_copy(self):
         """Test circuit copying."""
+
         circuit1 = Circuit(2)
         circuit1.h(0).cnot(0, 1)
 
@@ -94,6 +103,7 @@ class TestStateVector:
 
     def test_zero_state(self):
         """Test |0⟩ state creation."""
+
         state = StateVector.zero_state(2)
         assert state.num_qubits == 2
         assert len(state.data) == 4
@@ -102,6 +112,7 @@ class TestStateVector:
 
     def test_normalization(self):
         """Test state vector normalization."""
+
         data = np.array([1, 1, 1, 1], dtype=complex)
         state = StateVector(data)
         state.normalize()
@@ -111,6 +122,7 @@ class TestStateVector:
 
     def test_probabilities(self):
         """Test probability calculation."""
+
         state = StateVector.zero_state(1)
         probs = state.probabilities()
         assert np.isclose(probs[0], 1.0)
@@ -118,6 +130,7 @@ class TestStateVector:
 
     def test_inner_product(self):
         """Test inner product."""
+
         state1 = StateVector.zero_state(1)
         state2 = StateVector.zero_state(1)
         inner = state1.inner_product(state2)
@@ -129,6 +142,7 @@ class TestSimulator:
 
     def test_simulator_creation(self):
         """Test creating a simulator."""
+
         sim = Simulator(backend="cpu", precision="fp32", seed=42)
         assert sim.backend == "cpu"
         assert sim.precision == "fp32"
@@ -136,6 +150,7 @@ class TestSimulator:
 
     def test_bell_state_simulation(self):
         """Test simulating Bell state."""
+
         circuit = Circuit(2)
         circuit.h(0)
         circuit.cnot(0, 1)
@@ -156,6 +171,7 @@ class TestSimulator:
 
     def test_statevector_simulation(self):
         """Test state vector simulation without measurement."""
+
         circuit = Circuit(1)
         circuit.h(0)
 
@@ -168,6 +184,7 @@ class TestSimulator:
 
     def test_deterministic_simulation(self):
         """Test deterministic simulation with seed."""
+
         circuit = Circuit(2)
         circuit.h(0)
         circuit.cnot(0, 1)
@@ -187,6 +204,7 @@ class TestMeasurement:
 
     def test_measurement_result(self):
         """Test measurement result object."""
+
         counts = {"00": 500, "11": 500}
         result = qratum.Result(counts, 2)
 
@@ -199,6 +217,7 @@ class TestMeasurement:
 
     def test_most_frequent(self):
         """Test finding most frequent outcomes."""
+
         counts = {"00": 100, "01": 300, "10": 200, "11": 400}
         result = qratum.Result(counts, 2)
 
@@ -212,6 +231,7 @@ class TestBackwardCompatibility:
 
     def test_quasim_import(self):
         """Test importing quasim package."""
+
         import warnings
 
         with warnings.catch_warnings(record=True) as w:
@@ -224,6 +244,7 @@ class TestBackwardCompatibility:
 
     def test_quasim_quantum_circuit(self):
         """Test using quantum circuit through quasim."""
+
         import quasim
 
         if hasattr(quasim, "QuantumCircuit"):
@@ -237,14 +258,17 @@ class TestQRATUMMetadata:
 
     def test_version(self):
         """Test version is 2.0.0."""
+
         assert qratum.__version__ == "2.0.0"
 
     def test_legacy_name(self):
         """Test legacy name is QuASIM."""
+
         assert qratum.__legacy_name__ == "QuASIM"
 
     def test_branding(self):
         """Test QRATUM branding elements."""
+
         assert "qratum.io" in qratum.__url__
         assert "QRATUM" in qratum.__github__
         assert qratum.__license__ == "Apache-2.0"
@@ -252,6 +276,7 @@ class TestQRATUMMetadata:
 
 def test_full_workflow():
     """Test complete workflow from circuit to measurement."""
+
     # Create GHZ state
     circuit = Circuit(3)
     circuit.h(0)

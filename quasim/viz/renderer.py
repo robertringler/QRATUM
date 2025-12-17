@@ -9,6 +9,7 @@ from .specs import FlowFrameSpec
 
 def render_frame(spec: FlowFrameSpec, dpi: int = 100) -> np.ndarray:
     """
+
     Render a single frame of the QuASIM flow visualization.
 
     Args:
@@ -18,6 +19,7 @@ def render_frame(spec: FlowFrameSpec, dpi: int = 100) -> np.ndarray:
     Returns:
         RGB numpy array of shape (height, width, 3) with values in [0, 255]
     """
+
     import matplotlib
     import matplotlib.pyplot as plt
 

@@ -19,11 +19,13 @@ DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 
 def _svg_header(width: int, height: int) -> str:
     """Generate SVG header."""
+
     return f"<svg xmlns='http://www.w3.org/2000/svg' width='{width}' height='{height}' viewBox='0 0 {width} {height}'>"
 
 
 def _write_svg(path: Path, svg_content: str) -> None:
     """Write SVG content to file."""
+
     path.write_text(svg_content, encoding="utf-8")
 
 
@@ -36,6 +38,7 @@ def create_qii_distribution_histogram(
         qii_scores: List of QII scores from all companies
         filename: Output filename
     """
+
     width, height = 800, 500
     margin = 80
     chart_width = width - 2 * margin
@@ -139,6 +142,7 @@ def create_sector_comparison_chart(
         sector_data: Dictionary of sector analysis data
         filename: Output filename
     """
+
     width, height = 900, 600
     margin = 120
     chart_width = width - 2 * margin
@@ -232,6 +236,7 @@ def create_adoption_timeline_chart(filename: str = "adoption_timeline.svg") -> N
     Args:
         filename: Output filename
     """
+
     width, height = 900, 500
     margin = 80
     chart_width = width - 2 * margin
@@ -337,6 +342,7 @@ def create_correlation_scatter_plot(
         qii_scores: List of QII scores
         filename: Output filename
     """
+
     width, height = 800, 600
     margin = 100
     chart_width = width - 2 * margin
@@ -462,6 +468,7 @@ def create_component_radar_chart(
         s_score: Strategic value score
         filename: Output filename
     """
+
     width, height = 500, 500
     center_x, center_y = width / 2, height / 2
     radius = 180
@@ -551,6 +558,7 @@ def create_component_radar_chart(
 
 def main():
     """Generate all Fortune 500 visualizations."""
+
     VIS_DIR.mkdir(parents=True, exist_ok=True)
 
     # Load analysis data

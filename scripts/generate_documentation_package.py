@@ -87,6 +87,7 @@ class RepositoryParser:
         Args:
             repo_path: Path to repository root
         """
+
         self.repo_path = repo_path
         self.modules: dict[str, ModuleInfo] = {}
         self.benchmarks: dict[str, BenchmarkSpec] = {}
@@ -100,6 +101,7 @@ class RepositoryParser:
         Returns:
             ModuleInfo containing extracted data
         """
+
         try:
             with open(file_path, encoding="utf-8") as f:
                 content = f.read()
@@ -137,6 +139,7 @@ class RepositoryParser:
 
     def scan_repository(self) -> None:
         """Scan repository and extract all Python modules."""
+
         logger.info(f"Scanning repository: {self.repo_path}")
 
         python_files = list(self.repo_path.rglob("*.py"))
@@ -155,6 +158,7 @@ class RepositoryParser:
 
     def extract_benchmarks(self) -> None:
         """Extract benchmark specifications from YAML files."""
+
         logger.info("Extracting benchmark specifications")
 
         # Look for benchmark definitions
@@ -192,6 +196,7 @@ class VisualizationGenerator:
         Args:
             output_dir: Directory for output visualizations
         """
+
         self.output_dir = output_dir
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.manifest = VisualizationManifest()
@@ -205,6 +210,7 @@ class VisualizationGenerator:
         Returns:
             Path to generated visualization
         """
+
         logger.info("Generating module dependency graph")
 
         try:
@@ -259,6 +265,7 @@ class VisualizationGenerator:
         Returns:
             Path to generated diagram
         """
+
         logger.info(f"Generating execution flow for {benchmark_name}")
 
         try:
@@ -329,6 +336,7 @@ class VisualizationGenerator:
         Returns:
             List of paths to generated plots
         """
+
         logger.info("Generating performance plots")
 
         plots = []
@@ -397,6 +405,7 @@ class VisualizationGenerator:
 
     def generate_additional_visualizations(self) -> None:
         """Generate additional technical visualizations."""
+
         try:
             import matplotlib.pyplot as plt
             import numpy as np
@@ -534,6 +543,7 @@ class VisualizationGenerator:
 
     def _generate_comprehensive_suite(self) -> None:
         """Generate comprehensive suite of 100+ visualizations."""
+
         try:
             import matplotlib.pyplot as plt
             import numpy as np
@@ -546,9 +556,9 @@ class VisualizationGenerator:
                 fig, ax = plt.subplots(figsize=(10, 6))
                 data = np.random.rand(10, 10)
                 im = ax.imshow(data, cmap="viridis", aspect="auto")
-                ax.set_title(f"Architecture View {i+1}", fontsize=14, fontweight="bold")
+                ax.set_title(f"Architecture View {i + 1}", fontsize=14, fontweight="bold")
                 plt.colorbar(im, ax=ax)
-                output_path = arch_dir / f"arch_view_{i+1:03d}.png"
+                output_path = arch_dir / f"arch_view_{i + 1:03d}.png"
                 plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
@@ -563,10 +573,10 @@ class VisualizationGenerator:
                 width = 0.35
                 ax.bar(x - width / 2, y1, width, label="Baseline", alpha=0.8)
                 ax.bar(x + width / 2, y2, width, label="QuASIM", alpha=0.8)
-                ax.set_title(f"Benchmark Analysis {i+1}", fontsize=14, fontweight="bold")
+                ax.set_title(f"Benchmark Analysis {i + 1}", fontsize=14, fontweight="bold")
                 ax.legend()
                 ax.grid(axis="y", alpha=0.3)
-                output_path = bench_dir / f"bench_analysis_{i+1:03d}.png"
+                output_path = bench_dir / f"bench_analysis_{i + 1:03d}.png"
                 plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
@@ -577,11 +587,11 @@ class VisualizationGenerator:
                 fig, ax = plt.subplots(figsize=(10, 6))
                 data = np.random.normal(0, 1, 1000)
                 ax.hist(data, bins=50, alpha=0.7, edgecolor="black")
-                ax.set_title(f"Statistical Distribution {i+1}", fontsize=14, fontweight="bold")
+                ax.set_title(f"Statistical Distribution {i + 1}", fontsize=14, fontweight="bold")
                 ax.set_xlabel("Value", fontsize=12)
                 ax.set_ylabel("Frequency", fontsize=12)
                 ax.grid(alpha=0.3)
-                output_path = stat_dir / f"stat_dist_{i+1:03d}.png"
+                output_path = stat_dir / f"stat_dist_{i + 1:03d}.png"
                 plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
@@ -592,9 +602,9 @@ class VisualizationGenerator:
                 fig, ax = plt.subplots(figsize=(10, 8))
                 data = np.random.rand(15, 15)
                 im = ax.imshow(data, cmap="hot", aspect="auto")
-                ax.set_title(f"Tensor Network View {i+1}", fontsize=14, fontweight="bold")
+                ax.set_title(f"Tensor Network View {i + 1}", fontsize=14, fontweight="bold")
                 plt.colorbar(im, ax=ax)
-                output_path = tn_dir / f"tensor_view_{i+1:03d}.png"
+                output_path = tn_dir / f"tensor_view_{i + 1:03d}.png"
                 plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
@@ -607,11 +617,11 @@ class VisualizationGenerator:
                 metric = 50 + 30 * np.sin(time / 10) + np.random.normal(0, 5, 100)
                 ax.plot(time, metric, linewidth=2)
                 ax.fill_between(time, metric, alpha=0.3)
-                ax.set_title(f"Hardware Metric {i+1}", fontsize=14, fontweight="bold")
+                ax.set_title(f"Hardware Metric {i + 1}", fontsize=14, fontweight="bold")
                 ax.set_xlabel("Time (s)", fontsize=12)
                 ax.set_ylabel("Utilization (%)", fontsize=12)
                 ax.grid(alpha=0.3)
-                output_path = hw_dir / f"hw_metric_{i+1:03d}.png"
+                output_path = hw_dir / f"hw_metric_{i + 1:03d}.png"
                 plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
@@ -624,12 +634,12 @@ class VisualizationGenerator:
                 runs = np.arange(1, 21)
                 hash_matches = np.ones(20) * 100
                 ax.plot(runs, hash_matches, marker="o", linewidth=2, markersize=8)
-                ax.set_title(f"Reproducibility Check {i+1}", fontsize=14, fontweight="bold")
+                ax.set_title(f"Reproducibility Check {i + 1}", fontsize=14, fontweight="bold")
                 ax.set_xlabel("Run Number", fontsize=12)
                 ax.set_ylabel("Hash Match (%)", fontsize=12)
                 ax.set_ylim(99, 101)
                 ax.grid(alpha=0.3)
-                output_path = repro_dir / f"repro_check_{i+1:03d}.png"
+                output_path = repro_dir / f"repro_check_{i + 1:03d}.png"
                 plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
@@ -643,7 +653,7 @@ class VisualizationGenerator:
                 compliance = [98.75, 97.5, 96.2, 95.8, 94.3]
                 bars = ax.barh(categories, compliance, color="green", alpha=0.7)
                 ax.set_xlabel("Compliance (%)", fontsize=12, fontweight="bold")
-                ax.set_title(f"Compliance Status {i+1}", fontsize=14, fontweight="bold")
+                ax.set_title(f"Compliance Status {i + 1}", fontsize=14, fontweight="bold")
                 ax.set_xlim(90, 100)
                 ax.grid(axis="x", alpha=0.3)
                 for bar, val in zip(bars, compliance):
@@ -656,7 +666,7 @@ class VisualizationGenerator:
                         va="center",
                         fontweight="bold",
                     )
-                output_path = comp_dir / f"compliance_{i+1:03d}.png"
+                output_path = comp_dir / f"compliance_{i + 1:03d}.png"
                 plt.savefig(output_path, dpi=150, bbox_inches="tight")
                 plt.close()
                 self.manifest.files.append(output_path)
@@ -672,6 +682,7 @@ class VisualizationGenerator:
         Args:
             modules: Dictionary of module information
         """
+
         logger.info("Generating complete visualization suite")
 
         # Generate core visualizations
@@ -724,6 +735,7 @@ class VisualizationGenerator:
         Returns:
             List of visualization specifications
         """
+
         specs = {
             "architecture": [
                 {
@@ -968,6 +980,7 @@ class ExecutiveSummaryGenerator:
         Args:
             output_dir: Directory for output documents
         """
+
         self.output_dir = output_dir
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -987,6 +1000,7 @@ class ExecutiveSummaryGenerator:
         Returns:
             Path to generated executive summary
         """
+
         logger.info("Generating executive summary")
 
         output_path = self.output_dir / "EXECUTIVE_SUMMARY.md"
@@ -1231,6 +1245,7 @@ class TechnicalWhitePaperGenerator:
         Args:
             output_dir: Directory for output documents
         """
+
         self.output_dir = output_dir
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -1250,6 +1265,7 @@ class TechnicalWhitePaperGenerator:
         Returns:
             Path to generated white paper
         """
+
         logger.info("Generating technical white paper")
 
         output_path = self.output_dir / "TECHNICAL_WHITE_PAPER.md"
@@ -1441,6 +1457,7 @@ class DocumentationPackageGenerator:
             repo_path: Path to repository root
             output_dir: Directory for output deliverables
         """
+
         self.repo_path = repo_path
         self.output_dir = output_dir
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -1452,6 +1469,7 @@ class DocumentationPackageGenerator:
 
     def generate_all(self) -> None:
         """Generate complete documentation package."""
+
         logger.info("=" * 80)
         logger.info("STARTING COMPREHENSIVE DOCUMENTATION GENERATION")
         logger.info("=" * 80)
@@ -1521,6 +1539,7 @@ class DocumentationPackageGenerator:
             whitepaper_path: Path to white paper
             appendices: List of appendix file paths
         """
+
         manifest_path = self.output_dir / "MANIFEST.md"
 
         if appendices is None:
@@ -1625,6 +1644,7 @@ def main() -> int:
     Returns:
         Exit code (0 for success, 1 for failure)
     """
+
     parser = argparse.ArgumentParser(
         description="Generate comprehensive documentation package for Qubic/QuASIM repository"
     )

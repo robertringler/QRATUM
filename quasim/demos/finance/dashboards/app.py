@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Finance Demo - QuASIM", layout="wide")
 
     st.title("💰 Intraday Risk & Liquidity Stress with Quantum Tensor Net Greeks")
@@ -15,6 +16,7 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
 
     Stable VaR/ES estimation and robust liquidity stress under shocks
@@ -56,6 +58,7 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
 
     ```bash

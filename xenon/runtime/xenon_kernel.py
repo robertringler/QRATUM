@@ -67,6 +67,7 @@ class XENONRuntime:
             convergence_threshold: Entropy threshold for convergence
             mutation_rate: Topology mutation rate
         """
+
         self.max_mechanisms = max_mechanisms
         self.convergence_threshold = convergence_threshold
         self.mutation_rate = mutation_rate
@@ -97,6 +98,7 @@ class XENONRuntime:
             objective: Learning objective
             constraints: Optional constraints
         """
+
         target = Target(name, protein, objective, constraints)
         self.targets.append(target)
 
@@ -129,6 +131,7 @@ class XENONRuntime:
         Returns:
             Summary of learning process
         """
+
         if seed is not None:
             self._rng = np.random.default_rng(seed)
 
@@ -203,6 +206,7 @@ class XENONRuntime:
         Args:
             target: Learning target
         """
+
         # Generate initial template mechanisms
         n_generate = min(10, self.max_mechanisms // len(self.targets))
 
@@ -232,6 +236,7 @@ class XENONRuntime:
         Returns:
             Template mechanism
         """
+
         mech = BioMechanism(name=f"{target.name}_template_{index}")
 
         # Create simple two-state mechanism
@@ -276,6 +281,7 @@ class XENONRuntime:
         Args:
             target: Learning target
         """
+
         for mechanism in self.mechanisms[target.name]:
             # Run short simulation to check viability
             simulator = GillespieSimulator(mechanism, volume=1e-15)
@@ -314,6 +320,7 @@ class XENONRuntime:
         Returns:
             Sorted list of mechanisms (high uncertainty first)
         """
+
         # Compute uncertainty as entropy contribution
         mechanisms = self.mechanisms[target.name]
 
@@ -341,6 +348,7 @@ class XENONRuntime:
         Returns:
             Experiment specification
         """
+
         # Mock experiment selection
         experiment_types = ["concentration", "kinetics", "perturbation"]
         exp_type = self._rng.choice(experiment_types)
@@ -364,6 +372,7 @@ class XENONRuntime:
         Returns:
             Experiment result
         """
+
         exp_type = experiment["type"]
 
         # Generate mock observations
@@ -407,6 +416,7 @@ class XENONRuntime:
         Returns:
             List of high-confidence mechanisms
         """
+
         mechanisms = []
 
         if target_name:
@@ -427,6 +437,7 @@ class XENONRuntime:
         Returns:
             Summary dictionary
         """
+
         total_mechanisms = sum(len(mechs) for mechs in self.mechanisms.values())
 
         evidence_summaries = {}

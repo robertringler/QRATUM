@@ -12,6 +12,7 @@ class TestCLI:
 
     def test_create_sample_mechanism(self):
         """Test sample mechanism creation."""
+
         mechanism = create_sample_mechanism(num_states=3)
 
         assert mechanism.mechanism_id == "SAMPLE_MECH_001"
@@ -34,6 +35,7 @@ class TestCLI:
 
     def test_cli_basic_run(self, monkeypatch):
         """Test basic CLI execution without visualization."""
+
         # Mock sys.argv
         monkeypatch.setattr(
             "sys.argv",
@@ -45,6 +47,7 @@ class TestCLI:
 
     def test_cli_with_export(self, monkeypatch):
         """Test CLI with JSON export."""
+
         with tempfile.TemporaryDirectory() as tmpdir:
             output_file = os.path.join(tmpdir, "output.json")
 
@@ -77,6 +80,7 @@ class TestCLI:
 
     def test_cli_verbose(self, monkeypatch, capsys):
         """Test CLI with verbose output."""
+
         monkeypatch.setattr(
             "sys.argv",
             ["xenon", "--num-states", "2", "--verbose"],

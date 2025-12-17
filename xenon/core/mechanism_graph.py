@@ -23,6 +23,7 @@ class MechanismGraph:
         seed: Optional[int] = None,
     ) -> BioMechanism:
         """Mutate mechanism topology."""
+
         if seed is not None:
             random.seed(seed)
 
@@ -56,6 +57,7 @@ class MechanismGraph:
     @staticmethod
     def extract_subgraph(mechanism: BioMechanism, nodes: set[str]) -> BioMechanism:
         """Extract subgraph containing specified nodes."""
+
         sub_mech = BioMechanism(name=f"{mechanism.name}_subgraph")
         sub_mech.provenance = mechanism.provenance + ["subgraph_extraction"]
 
@@ -72,6 +74,7 @@ class MechanismGraph:
     @staticmethod
     def recombine_mechanisms(mech1: BioMechanism, mech2: BioMechanism, name: str) -> BioMechanism:
         """Recombine two mechanisms into a new mechanism."""
+
         child = BioMechanism(name=name)
         child.provenance = [f"recombination: {mech1.name} + {mech2.name}"]
 
@@ -93,6 +96,7 @@ class MechanismGraph:
     @staticmethod
     def detect_cycles(mechanism: BioMechanism) -> list[list[str]]:
         """Detect cycles in mechanism graph."""
+
         if mechanism.graph is None or nx is None:
             return []
 
@@ -105,6 +109,7 @@ class MechanismGraph:
     @staticmethod
     def is_isomorphic(mech1: BioMechanism, mech2: BioMechanism) -> bool:
         """Check if two mechanisms are topologically isomorphic."""
+
         if mech1.graph is None or mech2.graph is None or nx is None:
             return mech1.compute_mechanism_hash() == mech2.compute_mechanism_hash()
 

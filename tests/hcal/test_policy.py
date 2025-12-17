@@ -18,6 +18,7 @@ class TestPolicyConfig:
 
     def test_policy_config_creation(self) -> None:
         """Test creating a policy config."""
+
         config = PolicyConfig(
             environment="DEV",
             allowed_backends=["cpu", "cuda"],
@@ -34,11 +35,13 @@ class TestPolicyValidator:
 
     def test_validator_init(self) -> None:
         """Test validator initialization."""
+
         validator = PolicyValidator()
         assert validator.policy is None
 
     def test_validator_with_config(self) -> None:
         """Test validator with configuration."""
+
         config = PolicyConfig(
             environment="LAB",
             allowed_backends=["cpu"],
@@ -49,6 +52,7 @@ class TestPolicyValidator:
 
     def test_from_file_valid(self, tmp_path: Path) -> None:
         """Test loading valid policy from file."""
+
         policy_data = {
             "environment": "DEV",
             "allowed_backends": ["cpu", "cuda"],
@@ -66,6 +70,7 @@ class TestPolicyValidator:
 
     def test_from_file_missing_file(self, tmp_path: Path) -> None:
         """Test loading from nonexistent file."""
+
         policy_file = tmp_path / "nonexistent.yaml"
 
         with pytest.raises(FileNotFoundError):
@@ -73,6 +78,7 @@ class TestPolicyValidator:
 
     def test_from_file_invalid_environment(self, tmp_path: Path) -> None:
         """Test loading policy with invalid environment."""
+
         policy_data = {
             "environment": "INVALID",
             "allowed_backends": ["cpu"],
@@ -88,6 +94,7 @@ class TestPolicyValidator:
 
     def test_from_file_missing_keys(self, tmp_path: Path) -> None:
         """Test loading policy with missing required keys."""
+
         policy_data = {
             "environment": "DEV",
             # missing allowed_backends and limits
@@ -102,6 +109,7 @@ class TestPolicyValidator:
 
     def test_validate_backend_allowed(self) -> None:
         """Test validating allowed backend."""
+
         config = PolicyConfig(
             environment="DEV",
             allowed_backends=["cpu", "cuda"],
@@ -114,6 +122,7 @@ class TestPolicyValidator:
 
     def test_validate_backend_not_allowed(self) -> None:
         """Test validating disallowed backend."""
+
         config = PolicyConfig(
             environment="PROD",
             allowed_backends=["cpu"],
@@ -125,11 +134,13 @@ class TestPolicyValidator:
 
     def test_validate_backend_no_policy(self) -> None:
         """Test validating backend with no policy."""
+
         validator = PolicyValidator()
         assert validator.validate_backend("any") is True
 
     def test_check_limits_within(self) -> None:
         """Test checking limits within bounds."""
+
         config = PolicyConfig(
             environment="DEV",
             allowed_backends=["cpu"],
@@ -142,6 +153,7 @@ class TestPolicyValidator:
 
     def test_check_limits_exceeded(self) -> None:
         """Test checking limits when exceeded."""
+
         config = PolicyConfig(
             environment="PROD",
             allowed_backends=["cpu"],
@@ -153,6 +165,7 @@ class TestPolicyValidator:
 
     def test_check_limits_unknown_resource(self) -> None:
         """Test checking limits for unknown resource."""
+
         config = PolicyConfig(
             environment="DEV",
             allowed_backends=["cpu"],
@@ -165,6 +178,7 @@ class TestPolicyValidator:
 
     def test_check_limits_no_policy(self) -> None:
         """Test checking limits with no policy."""
+
         validator = PolicyValidator()
         assert validator.check_limits("any", 1000) is True
 
@@ -174,6 +188,7 @@ from quasim.hcal.policy import Environment, PolicyEngine
 
 def test_default_policy():
     """Test default policy initialization."""
+
     engine = PolicyEngine()
 
     assert engine.policy is not None
@@ -184,6 +199,7 @@ def test_default_policy():
 
 def test_load_valid_policy():
     """Test loading valid policy from file."""
+
     policy_data = {
         "environment": "lab",
         "device_allowlist": ["gpu0", "gpu1"],
@@ -223,6 +239,7 @@ def test_load_valid_policy():
 
 def test_invalid_policy_schema():
     """Test that invalid policy schema raises error."""
+
     policy_data = {
         "environment": "lab",
         # Missing required field: device_allowlist
@@ -241,6 +258,7 @@ def test_invalid_policy_schema():
 
 def test_invalid_environment():
     """Test that invalid environment raises error."""
+
     policy_data = {
         "environment": "invalid",
         "device_allowlist": ["*"],
@@ -260,6 +278,7 @@ def test_invalid_environment():
 
 def test_device_allowlist():
     """Test device allowlist enforcement."""
+
     policy_data = {
         "environment": "lab",
         "device_allowlist": ["gpu0", "gpu1"],
@@ -284,6 +303,7 @@ def test_device_allowlist():
 
 def test_wildcard_device_allowlist():
     """Test wildcard device allowlist."""
+
     policy_data = {
         "environment": "dev",
         "device_allowlist": ["*"],
@@ -306,6 +326,7 @@ def test_wildcard_device_allowlist():
 
 def test_backend_restrictions():
     """Test backend restrictions enforcement."""
+
     policy_data = {
         "environment": "lab",
         "device_allowlist": ["*"],
@@ -329,6 +350,7 @@ def test_backend_restrictions():
 
 def test_limit_enforcement():
     """Test device limit enforcement."""
+
     policy_data = {
         "environment": "lab",
         "device_allowlist": ["gpu0"],
@@ -370,6 +392,7 @@ def test_limit_enforcement():
 
 def test_rate_limiting():
     """Test rate limiting enforcement."""
+
     policy_data = {
         "environment": "dev",
         "device_allowlist": ["*"],
@@ -400,6 +423,7 @@ def test_rate_limiting():
 
 def test_approval_requirements():
     """Test approval gate requirements."""
+
     # Approval not required
     policy_data = {
         "environment": "dev",
@@ -436,6 +460,7 @@ def test_approval_requirements():
 
 def test_environment_getters():
     """Test environment and dry-run getters."""
+
     policy_data = {
         "environment": "prod",
         "device_allowlist": ["*"],

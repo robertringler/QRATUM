@@ -16,6 +16,7 @@ class TireMeshGenerator:
 
     def __init__(self, resolution: int = 32) -> None:
         """Initialize tire mesh generator."""
+
         self.resolution = resolution
 
     def generate_tire_mesh(
@@ -34,6 +35,7 @@ class TireMeshGenerator:
         Returns:
             Dictionary containing vertices, faces, normals
         """
+
         # Convert to meters
         outer_radius = outer_diameter_mm / 2000.0
         width = width_mm / 1000.0
@@ -93,6 +95,7 @@ class TireMeshGenerator:
         Returns:
             Vertex normals
         """
+
         normals = np.zeros_like(vertices)
 
         for face in faces:

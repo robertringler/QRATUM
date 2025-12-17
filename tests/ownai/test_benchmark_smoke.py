@@ -5,6 +5,7 @@ from quasim.ownai.eval.benchmark import benchmark_model, run_benchmark_suite
 
 def test_benchmark_model_tabular():
     """Test benchmarking a single model on tabular task."""
+
     result = benchmark_model(
         model_name="rf",
         task="tabular-cls",
@@ -23,6 +24,7 @@ def test_benchmark_model_tabular():
 
 def test_benchmark_model_text():
     """Test benchmarking a model on text task."""
+
     result = benchmark_model(
         model_name="slt",
         task="text-cls",
@@ -38,6 +40,7 @@ def test_benchmark_model_text():
 
 def test_run_benchmark_suite_quick():
     """Test running quick benchmark suite."""
+
     results = run_benchmark_suite(suite="quick", n_repeats=2)
 
     assert len(results) > 0
@@ -47,6 +50,7 @@ def test_run_benchmark_suite_quick():
 
 def test_benchmark_determinism():
     """Test that benchmarks produce consistent hashes for same seed."""
+
     result1 = benchmark_model(
         model_name="logreg",
         task="tabular-cls",

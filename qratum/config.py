@@ -34,6 +34,7 @@ class QRATUMConfig:
 
     def __post_init__(self):
         """Initialize configuration from environment variables."""
+
         # Override from environment variables
         if env_backend := os.getenv("QRATUM_BACKEND"):
             self.backend = env_backend
@@ -53,6 +54,7 @@ class QRATUMConfig:
         Returns:
             Dictionary representation of configuration
         """
+
         return {
             "backend": self.backend,
             "precision": self.precision,
@@ -74,6 +76,7 @@ def get_config() -> QRATUMConfig:
     Returns:
         Global configuration instance
     """
+
     global _global_config
     if _global_config is None:
         _global_config = QRATUMConfig()
@@ -86,12 +89,14 @@ def set_config(config: QRATUMConfig) -> None:
     Args:
         config: New configuration instance
     """
+
     global _global_config
     _global_config = config
 
 
 def reset_config() -> None:
     """Reset global configuration to defaults."""
+
     global _global_config
     _global_config = QRATUMConfig()
 

@@ -17,6 +17,7 @@ class OBJExporter:
             output_path: Output file path
             include_normals: Whether to include vertex normals
         """
+
         output_path = Path(output_path)
 
         with open(output_path, "w") as f:
@@ -45,12 +46,12 @@ class OBJExporter:
             for face in mesh.faces:
                 if include_normals:
                     f.write(
-                        f"f {face[0]+1}/{face[0]+1}/{face[0]+1} "
-                        f"{face[1]+1}/{face[1]+1}/{face[1]+1} "
-                        f"{face[2]+1}/{face[2]+1}/{face[2]+1}\n"
+                        f"f {face[0] + 1}/{face[0] + 1}/{face[0] + 1} "
+                        f"{face[1] + 1}/{face[1] + 1}/{face[1] + 1} "
+                        f"{face[2] + 1}/{face[2] + 1}/{face[2] + 1}\n"
                     )
                 else:
-                    f.write(f"f {face[0]+1} {face[1]+1} {face[2]+1}\n")
+                    f.write(f"f {face[0] + 1} {face[1] + 1} {face[2] + 1}\n")
 
         # Generate MTL file
         mtl_path = output_path.with_suffix(".mtl")
@@ -64,6 +65,7 @@ class OBJExporter:
         Args:
             mtl_path: Path to MTL file
         """
+
         with open(mtl_path, "w") as f:
             f.write("# QUBIC Tire Material\n")
             f.write("newmtl tire_material\n")

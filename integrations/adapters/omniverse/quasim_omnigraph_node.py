@@ -28,6 +28,7 @@ class QuASIMOmniGraphNode:
         Args:
             node_id: Unique node identifier
         """
+
         self.node_id = node_id
         self.inputs = {}
         self.outputs = {}
@@ -42,6 +43,7 @@ class QuASIMOmniGraphNode:
         Returns:
             Output data (pressure, velocity fields, etc.)
         """
+
         logger.info(f"Computing QuASIM physics step for node {self.node_id}")
 
         # In production, would invoke QuASIM kernels
@@ -62,6 +64,7 @@ class QuASIMOmniGraphNode:
             prim_path: Path to USD primitive
             fields: Physics fields to write
         """
+
         logger.info(f"Updating USD stage at {prim_path}")
         # In production, would write to USD stage
         logger.info("USD stage updated")
@@ -69,6 +72,7 @@ class QuASIMOmniGraphNode:
 
 def register_node():
     """Register node with OmniGraph runtime."""
+
     logger.info("Registering QuASIM OmniGraph node")
     # In production, would register with Omniverse
     return QuASIMOmniGraphNode

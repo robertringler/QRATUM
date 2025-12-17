@@ -22,6 +22,7 @@ def generate_atmosphere_profile(
     Returns:
         Dictionary with 'density' and 'temperature' arrays
     """
+
     set_global_seed(seed)
 
     # Standard atmosphere model with noise
@@ -48,6 +49,7 @@ def generate_fixtures(output_dir: Path) -> None:
     Args:
         output_dir: Output directory for fixtures
     """
+
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Generate atmosphere profile

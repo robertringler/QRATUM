@@ -25,6 +25,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
     Returns:
         CheckResult with pass/fail status and compression ratio statistics
     """
+
     min_ratio = cfg["policy"]["tolerances"]["compression_min_ratio"]
     path = Path(cfg["inputs"]["artifacts"]["compression_npz"])
 
@@ -41,6 +42,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
 
 def _validate_single_file(path: Path, min_ratio: float) -> CheckResult:
     """Validate a single compression artifact file."""
+
     data = np.load(path, allow_pickle=True)
 
     # Try old format first (raw_flops/compressed_flops)
@@ -79,6 +81,7 @@ def _validate_single_file(path: Path, min_ratio: float) -> CheckResult:
 
 def _validate_directory(directory: Path, min_ratio: float) -> CheckResult:
     """Validate compression artifacts from a directory of .npz files."""
+
     npz_files = list(directory.glob("*.npz"))
 
     if not npz_files:

@@ -1,4 +1,5 @@
 """
+
 Classical Alignment Backend
 
 Bit-identical classical sequence alignment (legacy preserved).
@@ -12,6 +13,7 @@ import numpy as np
 
 class ClassicalAlignmentBackend:
     """
+
     Classical sequence alignment using Smith-Waterman algorithm.
 
     Provides bit-identical results to legacy implementations.
@@ -19,6 +21,7 @@ class ClassicalAlignmentBackend:
 
     def __init__(self, match_score: int = 2, mismatch_penalty: int = -1, gap_penalty: int = -1):
         """
+
         Initialize classical alignment backend.
 
         Args:
@@ -26,12 +29,14 @@ class ClassicalAlignmentBackend:
             mismatch_penalty: Penalty for mismatching characters
             gap_penalty: Penalty for gaps
         """
+
         self.match_score = match_score
         self.mismatch_penalty = mismatch_penalty
         self.gap_penalty = gap_penalty
 
     def align(self, sequence1: str, sequence2: str) -> Dict:
         """
+
         Perform local sequence alignment using Smith-Waterman.
 
         Args:
@@ -41,6 +46,7 @@ class ClassicalAlignmentBackend:
         Returns:
             Dictionary with alignment results
         """
+
         m, n = len(sequence1), len(sequence2)
 
         # Initialize scoring matrix
@@ -87,6 +93,7 @@ class ClassicalAlignmentBackend:
         self, score_matrix: np.ndarray, sequence1: str, sequence2: str, max_pos: tuple
     ) -> tuple:
         """
+
         Traceback to recover alignment.
 
         Args:
@@ -98,6 +105,7 @@ class ClassicalAlignmentBackend:
         Returns:
             Tuple of aligned sequences
         """
+
         aligned1 = []
         aligned2 = []
 
@@ -135,6 +143,7 @@ class ClassicalAlignmentBackend:
 
     def _compute_identity(self, aligned1: str, aligned2: str) -> float:
         """
+
         Compute sequence identity percentage.
 
         Args:
@@ -144,6 +153,7 @@ class ClassicalAlignmentBackend:
         Returns:
             Identity percentage (0-1)
         """
+
         if len(aligned1) == 0:
             return 0.0
 

@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 @click.version_option(version="0.1.0")
 def cli():
     """QUBIC Visualization Subsystem - Unified rendering for simulation results."""
+
     pass
 
 
@@ -83,6 +84,7 @@ def render(
     dpi: int,
 ):
     """Render a single-frame visualization."""
+
     logger.info(f"Rendering with {adapter} adapter and {backend} backend")
 
     # Initialize adapter
@@ -164,6 +166,7 @@ def animate(
     colormap: str,
 ):
     """Create an animation from time-series data."""
+
     logger.info(f"Creating animation at {fps} FPS")
 
     from qubic.visualization.adapters.timeseries import TimeSeriesAdapter
@@ -215,6 +218,7 @@ def animate(
 )
 def stream(host: str, port: int):
     """Start a streaming visualization server."""
+
     logger.info(f"Starting streaming server on ws://{host}:{port}")
 
     from qubic.visualization.pipelines.streaming import StreamingPipeline
@@ -249,6 +253,7 @@ def stream(host: str, port: int):
 )
 def example(example_type: str, output_dir: str):
     """Run a visualization example (tire, quantum, or streaming)."""
+
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 

@@ -27,6 +27,7 @@ class VideoExporter:
             dpi: Resolution in dots per inch
             figsize: Figure size in inches
         """
+
         self.dpi = dpi
         self.figsize = figsize
         self.backend = HeadlessBackend(figsize=figsize, dpi=dpi)
@@ -58,6 +59,7 @@ class VideoExporter:
             ImportError: If required libraries are not available
             RuntimeError: If no timesteps are loaded
         """
+
         try:
             import imageio
             import imageio_ffmpeg  # noqa: F401
@@ -87,7 +89,7 @@ class VideoExporter:
 
         try:
             for i in range(n_timesteps):
-                logger.debug(f"Rendering frame {i+1}/{n_timesteps}")
+                logger.debug(f"Rendering frame {i + 1}/{n_timesteps}")
 
                 data = adapter.get_timestep(i)
 
@@ -140,11 +142,12 @@ class VideoExporter:
             ImportError: If imageio is not available
             RuntimeError: If no timesteps are loaded
         """
+
         try:
             import imageio
         except ImportError:
             raise ImportError(
-                "imageio is required for GIF export. " "Install with: pip install imageio"
+                "imageio is required for GIF export. Install with: pip install imageio"
             ) from None
 
         output_path = Path(output_path)
@@ -160,7 +163,7 @@ class VideoExporter:
         frames = []
 
         for i in range(n_timesteps):
-            logger.debug(f"Rendering frame {i+1}/{n_timesteps}")
+            logger.debug(f"Rendering frame {i + 1}/{n_timesteps}")
 
             data = adapter.get_timestep(i)
 
@@ -211,6 +214,7 @@ class VideoExporter:
         Raises:
             ValueError: If file extension is not supported
         """
+
         output_path = Path(output_path)
         extension = output_path.suffix.lower()
 
@@ -220,5 +224,5 @@ class VideoExporter:
             self.export_gif(adapter, output_path, scalar_field, camera, colormap, fps, **kwargs)
         else:
             raise ValueError(
-                f"Unsupported video format: {extension}. " "Supported formats: .mp4, .gif"
+                f"Unsupported video format: {extension}. Supported formats: .mp4, .gif"
             )

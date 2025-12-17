@@ -47,6 +47,7 @@ class DrugCandidate:
         Returns:
             Number of violations (0-4)
         """
+
         violations = 0
 
         if self.molecular_weight > 500:
@@ -66,6 +67,7 @@ class DrugCandidate:
         Returns:
             True if drug-like (≤1 violation allowed)
         """
+
         return self.compute_lipinski_violations() <= 1
 
 
@@ -97,6 +99,7 @@ class DrugTargetInteraction:
         Returns:
             Best affinity value (lower is better)
         """
+
         affinities = [
             self.binding_affinity,
             self.ic50,
@@ -138,6 +141,7 @@ class DrugTargetScorer:
 
     def __init__(self):
         """Initialize drug-target scorer."""
+
         self._drugs: dict[str, DrugCandidate] = {}
         self._interactions: list[DrugTargetInteraction] = []
         self._admet_cache: dict[str, ADMETProperties] = {}
@@ -148,6 +152,7 @@ class DrugTargetScorer:
         Args:
             drug: DrugCandidate object
         """
+
         self._drugs[drug.compound_id] = drug
 
     def add_interaction(self, interaction: DrugTargetInteraction) -> None:
@@ -156,6 +161,7 @@ class DrugTargetScorer:
         Args:
             interaction: DrugTargetInteraction object
         """
+
         self._interactions.append(interaction)
 
     def compute_binding_affinity_score(
@@ -174,6 +180,7 @@ class DrugTargetScorer:
         Returns:
             Binding affinity score (0-1, higher is better)
         """
+
         # Phase 1: Simplified scoring
         # Phase 2+: Implement ML-based scoring (e.g., deep learning)
 
@@ -211,6 +218,7 @@ class DrugTargetScorer:
         Returns:
             Dictionary of drug-likeness metrics
         """
+
         drug = self._drugs.get(drug_id)
         if not drug:
             return {}
@@ -244,6 +252,7 @@ class DrugTargetScorer:
         Returns:
             ADMET properties
         """
+
         if drug_id in self._admet_cache:
             return self._admet_cache[drug_id]
 
@@ -293,6 +302,7 @@ class DrugTargetScorer:
         Returns:
             Dictionary of druggability scores
         """
+
         scores = {
             "binding_site_score": 0.0,
             "ligandability_score": 0.0,
@@ -345,6 +355,7 @@ class DrugTargetScorer:
         Returns:
             List of (drug_id, score) tuples, sorted by score
         """
+
         if criteria is None:
             criteria = ["affinity", "drug_likeness", "admet"]
 
@@ -396,6 +407,7 @@ class DrugTargetScorer:
         Returns:
             Selectivity score (0-1, higher is better)
         """
+
         target_affinity = self.compute_binding_affinity_score(drug_id, target_id)
 
         if not off_targets:
@@ -432,6 +444,7 @@ class DrugTargetScorer:
         Returns:
             Dictionary with drug properties and predictions
         """
+
         drug = self._drugs.get(drug_id)
         if not drug:
             return {}

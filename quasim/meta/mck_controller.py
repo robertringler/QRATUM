@@ -63,6 +63,7 @@ class MetaControllerKernel:
         seed : Optional[int]
             Random seed for deterministic replay
         """
+
         self.learning_rate = learning_rate
         self.discount_factor = discount_factor
         self.exploration_rate = exploration_rate
@@ -110,6 +111,7 @@ class MetaControllerKernel:
         MCKState
             Current state representation
         """
+
         state = MCKState(
             phi_variance=phi_variance,
             compliance_score=compliance_score,
@@ -148,6 +150,7 @@ class MetaControllerKernel:
         MCKAction
             Selected action
         """
+
         epsilon = epsilon if epsilon is not None else self.exploration_rate
 
         # Discretize state for Q-table lookup
@@ -201,6 +204,7 @@ class MetaControllerKernel:
         next_state : MCKState
             Resulting state
         """
+
         state_key = self._discretize_state(state)
         next_state_key = self._discretize_state(next_state)
         action_key = f"{action.parameter_name}:{action.adjustment:.2f}"
@@ -258,6 +262,7 @@ class MetaControllerKernel:
         float
             Computed reward
         """
+
         # Variance reduction (primary objective)
         variance_improvement = prev_state.phi_variance - new_state.phi_variance
         variance_reward = variance_improvement * 10.0
@@ -290,6 +295,7 @@ class MetaControllerKernel:
         path : Path
             Checkpoint file path
         """
+
         path.parent.mkdir(parents=True, exist_ok=True)
 
         checkpoint = {
@@ -339,6 +345,7 @@ class MetaControllerKernel:
         path : Path
             Checkpoint file path
         """
+
         with open(path) as f:
             checkpoint = json.load(f)
 
@@ -370,6 +377,7 @@ class MetaControllerKernel:
         Dict[str, Any]
             Performance metrics
         """
+
         if not self.experience_buffer:
             return {
                 "episodes": 0,
@@ -402,6 +410,7 @@ class MetaControllerKernel:
 
     def _discretize_state(self, state: MCKState) -> str:
         """Discretize continuous state for Q-table."""
+
         phi_bin = int(state.phi_variance * 10)
         comp_bin = int(state.compliance_score / 10)
         util_bin = int(state.resource_utilization * 10)
@@ -410,6 +419,7 @@ class MetaControllerKernel:
 
     def _initialize_q_values(self) -> Dict[str, float]:
         """Initialize Q-values for a new state."""
+
         return {
             "phi_tolerance:0.05": 0.0,
             "phi_tolerance:0.10": 0.0,
@@ -422,6 +432,7 @@ class MetaControllerKernel:
 
     def _random_action(self) -> MCKAction:
         """Select random action for exploration."""
+
         actions = [
             ("phi_tolerance", 0.05),
             ("phi_tolerance", 0.10),
@@ -436,6 +447,7 @@ class MetaControllerKernel:
 
     def _best_action(self, state_key: str) -> MCKAction:
         """Select best action based on Q-values."""
+
         q_values = self.q_table[state_key]
         best_action_key = max(q_values, key=q_values.get)
 

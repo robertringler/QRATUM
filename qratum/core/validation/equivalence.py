@@ -1,4 +1,5 @@
 """
+
 Equivalence Validator for QRATUM
 
 Validates equivalence between quantum and classical backends, and optimization passes.
@@ -12,6 +13,7 @@ import numpy as np
 
 class EquivalenceValidator:
     """
+
     Validates equivalence between different computational paths.
 
     Used to ensure:
@@ -22,17 +24,20 @@ class EquivalenceValidator:
 
     def __init__(self, tolerance: float = 1e-6):
         """
+
         Initialize equivalence validator.
 
         Args:
             tolerance: Maximum acceptable difference for equivalence
         """
+
         self.tolerance = tolerance
 
     def validate_array_equivalence(
         self, array1: np.ndarray, array2: np.ndarray, name1: str = "array1", name2: str = "array2"
     ) -> Dict[str, Any]:
         """
+
         Validate equivalence between two arrays.
 
         Args:
@@ -44,6 +49,7 @@ class EquivalenceValidator:
         Returns:
             Dictionary with validation results
         """
+
         # Shape check
         if array1.shape != array2.shape:
             return {
@@ -76,6 +82,7 @@ class EquivalenceValidator:
         self, value1: float, value2: float, name1: str = "value1", name2: str = "value2"
     ) -> Dict[str, Any]:
         """
+
         Validate equivalence between two scalar values.
 
         Args:
@@ -87,6 +94,7 @@ class EquivalenceValidator:
         Returns:
             Dictionary with validation results
         """
+
         diff = abs(value1 - value2)
         equivalent = diff <= self.tolerance
 
@@ -107,6 +115,7 @@ class EquivalenceValidator:
         self, dict1: Dict[str, Any], dict2: Dict[str, Any], check_keys: Optional[list] = None
     ) -> Dict[str, Any]:
         """
+
         Validate equivalence between dictionaries.
 
         Args:
@@ -117,6 +126,7 @@ class EquivalenceValidator:
         Returns:
             Dictionary with validation results
         """
+
         keys1 = set(dict1.keys())
         keys2 = set(dict2.keys())
 

@@ -43,6 +43,7 @@ class Reaction:
         Returns:
             Dictionary mapping compound IDs to stoichiometric coefficients
         """
+
         stoich = {}
         for substrate in self.substrates:
             stoich[substrate] = stoich.get(substrate, 0) - 1
@@ -77,6 +78,7 @@ class MetabolicPathway:
         Args:
             reaction: Reaction object
         """
+
         self.reactions.append(reaction)
         self.metabolites.update(reaction.substrates)
         self.metabolites.update(reaction.products)
@@ -87,6 +89,7 @@ class MetabolicPathway:
         Returns:
             Matrix where rows are metabolites, columns are reactions
         """
+
         metabolites = sorted(self.metabolites)
         met_index = {met: i for i, met in enumerate(metabolites)}
 
@@ -114,6 +117,7 @@ class PathwayAnalyzer:
 
     def __init__(self):
         """Initialize pathway analyzer."""
+
         self._pathways: dict[str, MetabolicPathway] = {}
         self._pathway_memberships: dict[str, set[str]] = {}
 
@@ -123,6 +127,7 @@ class PathwayAnalyzer:
         Args:
             pathway: Metabolic pathway object
         """
+
         self._pathways[pathway.pathway_id] = pathway
 
         # Index pathway memberships
@@ -150,6 +155,7 @@ class PathwayAnalyzer:
         Returns:
             Optimal flux distribution
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return {}
@@ -176,6 +182,7 @@ class PathwayAnalyzer:
         Returns:
             List of (reaction_id, bottleneck_score) tuples
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return []
@@ -215,6 +222,7 @@ class PathwayAnalyzer:
         Returns:
             List of (pathway_id, p_value, enrichment_ratio) tuples
         """
+
         from scipy.stats import hypergeom
 
         if background_genes is None:
@@ -275,6 +283,7 @@ class PathwayAnalyzer:
         Returns:
             List of protein cascades (paths)
         """
+
         # Build interaction graph from reactions
         graph: dict[str, set[str]] = {}
 
@@ -331,6 +340,7 @@ class PathwayAnalyzer:
         Returns:
             Pathway activity score (0-1)
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return 0.0
@@ -365,6 +375,7 @@ class PathwayAnalyzer:
         Returns:
             List of (gene_id, regulatory_effect) tuples
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return []
@@ -394,6 +405,7 @@ class PathwayAnalyzer:
         Returns:
             Dictionary mapping metabolite IDs to importance scores
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return {}
@@ -425,6 +437,7 @@ class PathwayAnalyzer:
         Returns:
             Dictionary with nodes and edges
         """
+
         pathway = self._pathways.get(pathway_id)
         if not pathway:
             return {"nodes": [], "edges": []}

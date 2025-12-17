@@ -23,6 +23,7 @@ class TireSimulationAdapter(SimulationAdapter):
 
     def __init__(self) -> None:
         """Initialize tire simulation adapter."""
+
         self.supported_fields = {
             "temperature",
             "stress_von_mises",
@@ -46,13 +47,14 @@ class TireSimulationAdapter(SimulationAdapter):
         Raises:
             ValueError: If source format is invalid
         """
+
         if isinstance(source, (str, Path)):
             return self._load_from_file(Path(source))
         elif isinstance(source, dict):
             return self._load_from_dict(source)
         else:
             raise ValueError(
-                f"Unsupported source type: {type(source)}. " "Expected file path or dictionary."
+                f"Unsupported source type: {type(source)}. Expected file path or dictionary."
             )
 
     def _load_from_file(self, path: Path) -> VisualizationData:
@@ -68,6 +70,7 @@ class TireSimulationAdapter(SimulationAdapter):
             FileNotFoundError: If file doesn't exist
             ValueError: If file format is invalid
         """
+
         if not path.exists():
             raise FileNotFoundError(f"File not found: {path}")
 
@@ -87,6 +90,7 @@ class TireSimulationAdapter(SimulationAdapter):
         Raises:
             ValueError: If required keys are missing
         """
+
         if "vertices" not in data or "faces" not in data:
             raise ValueError("Data must contain 'vertices' and 'faces' keys")
 
@@ -133,6 +137,7 @@ class TireSimulationAdapter(SimulationAdapter):
         Returns:
             True if source is valid for this adapter
         """
+
         if isinstance(source, (str, Path)):
             path = Path(source)
             return path.exists() and path.suffix in (".cdb", ".vtk", ".vtu", ".json")
@@ -152,6 +157,7 @@ class TireSimulationAdapter(SimulationAdapter):
         Returns:
             VisualizationData with synthetic tire mesh
         """
+
         # Create torus mesh (simplified tire)
         major_radius = 0.3  # Distance from tire center to tube center
         minor_radius = 0.1  # Tube radius

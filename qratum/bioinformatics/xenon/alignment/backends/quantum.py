@@ -1,4 +1,5 @@
 """
+
 Quantum Alignment Backend
 
 Quantum-enhanced sequence alignment with equivalence guarantees.
@@ -10,6 +11,7 @@ from typing import Dict, Optional
 
 class QuantumAlignmentBackend:
     """
+
     Quantum-enhanced sequence alignment.
 
     Uses quantum computing to explore alignment space more efficiently.
@@ -18,12 +20,14 @@ class QuantumAlignmentBackend:
 
     def __init__(self, seed: Optional[int] = None, simulator: str = "statevector"):
         """
+
         Initialize quantum alignment backend.
 
         Args:
             seed: Random seed for quantum simulator
             simulator: Quantum simulator type
         """
+
         self.seed = seed
         self.simulator = simulator
 
@@ -38,6 +42,7 @@ class QuantumAlignmentBackend:
 
     def align(self, sequence1: str, sequence2: str) -> Dict:
         """
+
         Perform quantum-enhanced alignment.
 
         Args:
@@ -47,6 +52,7 @@ class QuantumAlignmentBackend:
         Returns:
             Dictionary with alignment results
         """
+
         if not self.qiskit_available:
             # Fallback to classical simulation of quantum algorithm
             return self._classical_simulation(sequence1, sequence2)
@@ -57,10 +63,12 @@ class QuantumAlignmentBackend:
 
     def _classical_simulation(self, sequence1: str, sequence2: str) -> Dict:
         """
+
         Classical simulation of quantum alignment.
 
         Uses Smith-Waterman with quantum-inspired scoring.
         """
+
         from .classical import ClassicalAlignmentBackend
 
         # Use classical backend with slightly modified parameters
@@ -71,6 +79,7 @@ class QuantumAlignmentBackend:
 
     def _quantum_inspired_alignment(self, sequence1: str, sequence2: str) -> Dict:
         """
+
         Quantum-inspired alignment using superposition-like exploration.
 
         Args:
@@ -80,6 +89,7 @@ class QuantumAlignmentBackend:
         Returns:
             Alignment results
         """
+
         # For now, use classical backend as quantum hardware is not available
         # This maintains production stability while preserving quantum API
         from .classical import ClassicalAlignmentBackend

@@ -20,6 +20,7 @@ class ScheduleParams:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "block_size": self.block_size,
             "thread_count": self.thread_count,
@@ -31,6 +32,7 @@ class ScheduleParams:
     @classmethod
     def from_dict(cls, data: dict) -> ScheduleParams:
         """Create from dictionary."""
+
         return cls(**data)
 
 
@@ -49,6 +51,7 @@ class ScheduleMetadata:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "schedule_id": self.schedule_id,
             "params": self.params.to_dict(),
@@ -70,9 +73,11 @@ class DifferentiableScheduler:
 
     def compute_latency_loss(self, params: ScheduleParams) -> float:
         """
+
         Compute latency loss function (differentiable approximation).
         Lower is better.
         """
+
         # Simplified model: latency depends on block size and thread count
         # Real implementation would use actual hardware measurements
 
@@ -102,9 +107,11 @@ class DifferentiableScheduler:
 
     def compute_energy_loss(self, params: ScheduleParams) -> float:
         """
+
         Compute energy loss function (differentiable approximation).
         Lower is better.
         """
+
         # Energy increases with thread count and register pressure
         norm_threads = params.thread_count / 128.0
         norm_registers = params.register_pressure / 32.0
@@ -119,6 +126,7 @@ class DifferentiableScheduler:
 
     def compute_gradients(self, params: ScheduleParams, epsilon: float = 1e-5) -> dict[str, float]:
         """
+
         Compute numerical gradients for all parameters.
         Uses finite differences.
         """
@@ -161,8 +169,10 @@ class DifferentiableScheduler:
         self, schedule_id: str, initial_params: ScheduleParams | None = None, steps: int = 100
     ) -> ScheduleMetadata:
         """
+
         Optimize schedule parameters using gradient descent.
         """
+
         params = initial_params or ScheduleParams()
 
         for _step in range(steps):
@@ -209,6 +219,7 @@ class DifferentiableScheduler:
 
     def save_schedule(self, schedule_id: str, output_dir: str = "schedules") -> Path:
         """Save optimized schedule to disk."""
+
         if schedule_id not in self.schedules:
             raise ValueError(f"No schedule found for {schedule_id}")
 

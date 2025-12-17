@@ -20,6 +20,7 @@ def cuda_available() -> bool:
     Returns:
         True if CUDA/CuPy is available
     """
+
     try:
         import cupy
 
@@ -34,6 +35,7 @@ def multi_gpu_available() -> bool:
     Returns:
         True if multiple CUDA devices are available
     """
+
     if not cuda_available():
         return False
     try:
@@ -69,6 +71,7 @@ class Simulator:
             precision: Floating point precision ('fp8', 'fp16', 'fp32', 'fp64')
             seed: Random seed for reproducibility
         """
+
         config = get_config()
         self.backend = backend or config.backend
         self.precision = precision or config.precision
@@ -90,6 +93,7 @@ class Simulator:
         Returns:
             Selected backend name
         """
+
         if self.backend != "auto":
             return self.backend
 
@@ -119,6 +123,7 @@ class Simulator:
         Returns:
             Measurement result
         """
+
         # Select backend based on circuit size
         self._selected_backend = self._auto_select_backend(circuit.num_qubits)
 
@@ -152,6 +157,7 @@ class Simulator:
         Returns:
             Final state vector
         """
+
         # Select backend based on circuit size
         self._selected_backend = self._auto_select_backend(circuit.num_qubits)
 
@@ -184,6 +190,7 @@ class Simulator:
         Returns:
             Updated state vector
         """
+
         n = state.num_qubits
         dim = 2**n
 
@@ -228,6 +235,7 @@ class Simulator:
         Returns:
             Dictionary with backend information
         """
+
         return {
             "backend": self._selected_backend or self.backend,
             "precision": self.precision,
@@ -238,6 +246,7 @@ class Simulator:
 
     def __repr__(self) -> str:
         """String representation of simulator."""
+
         return f"Simulator(backend={self.backend}, precision={self.precision})"
 
 

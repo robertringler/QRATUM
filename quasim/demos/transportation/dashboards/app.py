@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Transportation Demo - QuASIM", layout="wide")
 
     st.title("🚛 Fleet Routing with Stochastic ETA & Charging")
@@ -15,6 +16,7 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
 
     Minimize lateness + energy cost under depot constraints
@@ -58,6 +60,7 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
 
     ```bash

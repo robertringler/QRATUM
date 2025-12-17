@@ -26,6 +26,7 @@ def default_config() -> Config:
     Returns:
         Config: Default runtime configuration with fp32 precision
     """
+
     return Config(
         simulation_precision="fp32",
         max_workspace_mb=64,
@@ -41,6 +42,7 @@ def high_precision_config() -> Config:
     Returns:
         Config: High-precision runtime configuration with fp64 precision
     """
+
     return Config(
         simulation_precision="fp64",
         max_workspace_mb=128,
@@ -56,6 +58,7 @@ def simple_circuit() -> list[list[complex]]:
     Returns:
         list: Simple 2-gate circuit with identity-like operations
     """
+
     return [
         [1 + 0j, 1 + 0j, 1 + 0j, 1 + 0j],
         [1 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
@@ -69,6 +72,7 @@ def complex_circuit() -> list[list[complex]]:
     Returns:
         list: Complex multi-gate circuit for integration testing
     """
+
     return [
         [1 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
         [0.707 + 0j, 0.707 + 0j, 0 + 0j, 0 + 0j],
@@ -87,6 +91,7 @@ def temp_output_dir(tmp_path: Path) -> Path:
     Returns:
         Path: Temporary directory path for test outputs
     """
+
     output_dir = tmp_path / "test_output"
     output_dir.mkdir(exist_ok=True)
     return output_dir
@@ -99,6 +104,7 @@ def mock_telemetry_data() -> dict[str, Any]:
     Returns:
         dict: Mock telemetry data structure
     """
+
     return {
         "timestamp": "2025-12-12T14:00:00Z",
         "simulation_id": "test-sim-001",
@@ -121,6 +127,7 @@ def runtime_context(default_config: Config):
     Yields:
         Runtime: Initialized runtime instance
     """
+
     rt = Runtime(default_config)
     rt.__enter__()
     try:

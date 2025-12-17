@@ -13,6 +13,7 @@ from ..models import CheckResult
 
 def rmse(a, b):
     """Calculate root mean squared error."""
+
     a, b = np.asarray(a), np.asarray(b)
     return float(np.sqrt(np.mean((a - b) ** 2)))
 
@@ -31,6 +32,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
     Returns:
         CheckResult with pass/fail status and RMSE values
     """
+
     tol = cfg["policy"]["tolerances"]["rmse_max"]
     paths = cfg["inputs"]["telemetry"]
 

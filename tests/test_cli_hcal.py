@@ -14,10 +14,12 @@ class TestHCALCLI:
 
     def setup_method(self):
         """Set up test fixtures."""
+
         self.runner = CliRunner()
 
     def test_cli_help(self):
         """Test that CLI help is available."""
+
         result = self.runner.invoke(main, ["--help"])
         assert result.exit_code == 0
         assert "Hardware Configuration and Calibration" in result.output
@@ -29,6 +31,7 @@ class TestHCALCLI:
 
     def test_discover_json(self):
         """Test hardware discovery with JSON output."""
+
         result = self.runner.invoke(main, ["discover", "--json"])
         assert result.exit_code == 0
 
@@ -45,6 +48,7 @@ class TestHCALCLI:
 
     def test_discover_text(self):
         """Test hardware discovery with text output."""
+
         result = self.runner.invoke(main, ["discover"])
         assert result.exit_code == 0
         assert "Hardware Discovery Report" in result.output
@@ -52,6 +56,7 @@ class TestHCALCLI:
 
     def test_plan_low_latency(self):
         """Test plan command with low-latency profile."""
+
         with tempfile.TemporaryDirectory() as tmpdir:
             plan_file = Path(tmpdir) / "test_plan.json"
             result = self.runner.invoke(
@@ -81,6 +86,7 @@ class TestHCALCLI:
 
     def test_plan_unknown_profile(self):
         """Test plan command with unknown profile."""
+
         result = self.runner.invoke(
             main, ["plan", "--profile", "unknown-profile", "--devices", "GPU0"]
         )
@@ -89,6 +95,7 @@ class TestHCALCLI:
 
     def test_apply_dry_run(self):
         """Test apply command in dry-run mode."""
+
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create a test plan
             plan_file = Path(tmpdir) / "test_plan.json"
@@ -117,6 +124,7 @@ class TestHCALCLI:
 
     def test_apply_with_actuation(self):
         """Test apply command with actuation enabled."""
+
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create a test plan
             plan_file = Path(tmpdir) / "test_plan.json"
@@ -156,6 +164,7 @@ class TestHCALCLI:
 
     def test_apply_actuation_without_approval(self):
         """Test that actuation requires approval token."""
+
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create a test plan
             plan_file = Path(tmpdir) / "test_plan.json"
@@ -178,12 +187,14 @@ class TestHCALCLI:
 
     def test_apply_nonexistent_plan(self):
         """Test apply command with nonexistent plan file."""
+
         result = self.runner.invoke(main, ["apply", "--plan", "/nonexistent/plan.json"])
         assert result.exit_code == 1
         assert "Plan file not found" in result.output
 
     def test_calibrate_power_sweep(self):
         """Test calibrate command with power_sweep routine."""
+
         result = self.runner.invoke(
             main, ["calibrate", "--device", "GPU0", "--routine", "power_sweep", "--max-iters", "10"]
         )
@@ -195,6 +206,7 @@ class TestHCALCLI:
 
     def test_calibrate_thermal_test(self):
         """Test calibrate command with thermal_test routine."""
+
         result = self.runner.invoke(
             main, ["calibrate", "--device", "GPU1", "--routine", "thermal_test", "--max-iters", "5"]
         )
@@ -204,6 +216,7 @@ class TestHCALCLI:
 
     def test_calibrate_unknown_routine_without_force(self):
         """Test calibrate command with unknown routine fails without --force."""
+
         result = self.runner.invoke(
             main,
             ["calibrate", "--device", "GPU0", "--routine", "unknown_routine", "--max-iters", "5"],
@@ -215,6 +228,7 @@ class TestHCALCLI:
 
     def test_calibrate_unknown_routine_with_force(self):
         """Test calibrate command with unknown routine succeeds with --force."""
+
         result = self.runner.invoke(
             main,
             [
@@ -234,6 +248,7 @@ class TestHCALCLI:
 
     def test_stop_all(self):
         """Test stop command with --all flag."""
+
         result = self.runner.invoke(main, ["stop", "--all"])
         assert result.exit_code == 0
         assert "EMERGENCY STOP INITIATED" in result.output
@@ -242,6 +257,7 @@ class TestHCALCLI:
 
     def test_stop_specific_device(self):
         """Test stop command for specific device."""
+
         result = self.runner.invoke(main, ["stop", "--device", "GPU0"])
         assert result.exit_code == 0
         assert "EMERGENCY STOP INITIATED" in result.output
@@ -250,12 +266,14 @@ class TestHCALCLI:
 
     def test_stop_no_arguments(self):
         """Test that stop command requires --all or --device."""
+
         result = self.runner.invoke(main, ["stop"])
         assert result.exit_code == 1
         assert "Must specify either --all or --device" in result.output
 
     def test_stop_conflicting_arguments(self):
         """Test that stop command doesn't accept both --all and --device."""
+
         result = self.runner.invoke(main, ["stop", "--all", "--device", "GPU0"])
         assert result.exit_code == 1
         assert "Cannot specify both --all and --device" in result.output

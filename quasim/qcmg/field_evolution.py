@@ -1,4 +1,5 @@
 """
+
 Quantacosmomorphysigenesis (QCMG) Field Evolution Module
 
 Implements the coevolution of physical (Φ_m) and informational (Φ_i) fields
@@ -44,6 +45,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class FieldState:
     """
+
     Represents the state of the QCMG field at a given time.
 
     Attributes:
@@ -64,6 +66,7 @@ class FieldState:
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert state to serializable dictionary."""
+
         return {
             "phi_m_real": self.phi_m.real.tolist(),
             "phi_m_imag": self.phi_m.imag.tolist(),
@@ -79,6 +82,7 @@ class FieldState:
 @dataclass
 class QCMGParameters:
     """
+
     Parameters governing QCMG field evolution.
 
     Physical constants and coupling strengths that determine
@@ -108,6 +112,7 @@ class QCMGParameters:
 
 class QuantacosmorphysigeneticField:
     """
+
     Quantacosmorphysigenetic Field Evolution Engine.
 
     Simulates the coupled evolution of physical and informational fields
@@ -135,11 +140,13 @@ class QuantacosmorphysigeneticField:
 
     def __init__(self, parameters: Optional[QCMGParameters] = None):
         """
+
         Initialize QCMG field simulator.
 
         Args:
             parameters: Evolution parameters (uses defaults if None)
         """
+
         self.params = parameters or QCMGParameters()
 
         # Set random seed for reproducibility
@@ -164,11 +171,13 @@ class QuantacosmorphysigeneticField:
 
     def initialize(self, mode: str = "gaussian") -> None:
         """
+
         Initialize field states with specified mode.
 
         Args:
             mode: Initialization mode - "gaussian", "soliton", "random"
         """
+
         n = self.params.grid_size
 
         if mode == "gaussian":
@@ -209,11 +218,13 @@ class QuantacosmorphysigeneticField:
 
     def evolve(self) -> FieldState:
         """
+
         Evolve fields by one time step using RK4 integration.
 
         Returns:
             Current field state after evolution
         """
+
         if self.phi_m is None or self.phi_i is None:
             raise RuntimeError("Fields not initialized. Call initialize() first.")
 
@@ -260,6 +271,7 @@ class QuantacosmorphysigeneticField:
         self, phi_m: np.ndarray, phi_i: np.ndarray
     ) -> Tuple[np.ndarray, np.ndarray]:
         """
+
         Compute time derivatives of fields: ∂Φ_m/∂t and ∂Φ_i/∂t.
 
         Uses finite differences for spatial derivatives and includes:
@@ -274,6 +286,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Tuple of (dphi_m/dt, dphi_i/dt)
         """
+
         # Compute Laplacians (second spatial derivatives)
         laplacian_m = self._laplacian(phi_m)
         laplacian_i = self._laplacian(phi_i)
@@ -299,10 +312,12 @@ class QuantacosmorphysigeneticField:
 
     def _laplacian(self, field: np.ndarray) -> np.ndarray:
         """
+
         Compute Laplacian using second-order finite differences.
 
         Uses periodic boundary conditions.
         """
+
         # Roll arrays for neighbor access
         field_plus = np.roll(field, -1)
         field_minus = np.roll(field, 1)
@@ -314,6 +329,7 @@ class QuantacosmorphysigeneticField:
 
     def _thermal_noise(self, shape: tuple) -> np.ndarray:
         """Generate complex thermal noise."""
+
         noise_real = np.random.randn(*shape)
         noise_imag = np.random.randn(*shape)
 
@@ -321,10 +337,12 @@ class QuantacosmorphysigeneticField:
 
     def _compute_coherence(self) -> float:
         """
+
         Compute quantum coherence: C = |⟨Φ_m|Φ_i⟩| / (||Φ_m|| ||Φ_i||).
 
         Ranges from 0 (completely decoherent) to 1 (perfect coherence).
         """
+
         inner_product = np.vdot(self.phi_m, self.phi_i)
         norm_m = np.linalg.norm(self.phi_m)
         norm_i = np.linalg.norm(self.phi_i)
@@ -338,10 +356,12 @@ class QuantacosmorphysigeneticField:
 
     def _compute_entropy(self) -> float:
         """
+
         Compute von Neumann entropy: S = -Tr(ρ log ρ).
 
         Approximated from the field density matrix ρ ∝ Φ_m ⊗ Φ_i.
         """
+
         # Construct reduced density matrix (simplified)
         prob_m = np.abs(self.phi_m) ** 2
         prob_i = np.abs(self.phi_i) ** 2
@@ -361,11 +381,13 @@ class QuantacosmorphysigeneticField:
 
     def _compute_energy(self) -> float:
         """
+
         Compute total field energy: H = T + V.
 
         T: Kinetic energy (gradient terms)
         V: Interaction potential
         """
+
         # Kinetic energy
         grad_m = np.gradient(self.phi_m, self.dx)
         grad_i = np.gradient(self.phi_i, self.dx)
@@ -383,6 +405,7 @@ class QuantacosmorphysigeneticField:
 
     def _record_state(self) -> FieldState:
         """Record current field state to history."""
+
         state = FieldState(
             phi_m=self.phi_m.copy(),
             phi_i=self.phi_i.copy(),
@@ -398,16 +421,19 @@ class QuantacosmorphysigeneticField:
 
     def get_state(self) -> FieldState:
         """Get current field state."""
+
         if self.history:
             return self.history[-1]
         raise RuntimeError("No state available. Call initialize() and evolve().")
 
     def get_history(self) -> list[FieldState]:
         """Get full evolution history."""
+
         return self.history.copy()
 
     def export_state(self, state: Optional[FieldState] = None) -> Dict[str, Any]:
         """
+
         Export field state to JSON-serializable dictionary.
 
         Args:
@@ -416,6 +442,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Dictionary with all state information
         """
+
         if state is None:
             state = self.get_state()
 
@@ -436,6 +463,7 @@ class QuantacosmorphysigeneticField:
 
     def _check_bounded(self, state: FieldState) -> bool:
         """Check if field values are within reasonable bounds."""
+
         coherence_ok = 0.0 <= state.coherence <= 1.0
         entropy_ok = state.entropy >= 0.0
         energy_ok = np.isfinite(state.energy)

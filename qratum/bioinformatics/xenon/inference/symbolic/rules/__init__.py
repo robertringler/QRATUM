@@ -1,4 +1,5 @@
 """
+
 Constraint Rules for XENON
 
 Immutable conservation and logic rules.

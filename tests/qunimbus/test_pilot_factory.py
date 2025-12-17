@@ -5,6 +5,7 @@ from quasim.qunimbus.pilot_factory import PilotFactory, PilotSpec
 
 def test_pilot_factory_initialization():
     """Test PilotFactory initialization."""
+
     factory = PilotFactory(target_per_day=1000, veto_rate=0.008)
 
     assert factory.target_per_day == 1000
@@ -15,6 +16,7 @@ def test_pilot_factory_initialization():
 
 def test_pilot_factory_custom_params():
     """Test PilotFactory with custom parameters."""
+
     factory = PilotFactory(target_per_day=500, veto_rate=0.01)
 
     assert factory.target_per_day == 500
@@ -23,6 +25,7 @@ def test_pilot_factory_custom_params():
 
 def test_generate_pilot():
     """Test single pilot generation."""
+
     factory = PilotFactory()
 
     pilot = factory.generate_pilot(1)
@@ -38,6 +41,7 @@ def test_generate_pilot():
 
 def test_generate_batch():
     """Test batch pilot generation."""
+
     factory = PilotFactory()
 
     pilots = factory.generate_batch(count=10)
@@ -49,6 +53,7 @@ def test_generate_batch():
 
 def test_pilot_verticals_distribution():
     """Test that pilots are distributed across verticals."""
+
     factory = PilotFactory()
 
     pilots = factory.generate_batch(count=100)
@@ -60,6 +65,7 @@ def test_pilot_verticals_distribution():
 
 def test_get_first_10_snapshot():
     """Test first 10 pilots snapshot."""
+
     factory = PilotFactory()
 
     snapshot = factory.get_first_10_snapshot()
@@ -73,6 +79,7 @@ def test_get_first_10_snapshot():
 
 def test_get_stats():
     """Test factory statistics."""
+
     factory = PilotFactory()
 
     # Generate some pilots
@@ -87,6 +94,7 @@ def test_get_stats():
 
 def test_pilot_fidelity_range():
     """Test that pilot fidelities are in expected range."""
+
     factory = PilotFactory()
 
     pilots = factory.generate_batch(count=50)
@@ -97,6 +105,7 @@ def test_pilot_fidelity_range():
 
 def test_pilot_runtime_range():
     """Test that pilot runtimes are in expected range."""
+
     factory = PilotFactory()
 
     pilots = factory.generate_batch(count=50)
@@ -107,6 +116,7 @@ def test_pilot_runtime_range():
 
 def test_pilot_has_all_fields():
     """Test that generated pilots have all required fields."""
+
     factory = PilotFactory()
 
     pilot = factory.generate_pilot(1)

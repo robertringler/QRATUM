@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Telecom Demo - QuASIM", layout="wide")
 
     st.title("📡 RAN Slice Placement & Quantum-Aided Traffic Forecasting")
@@ -15,6 +16,7 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
 
     Minimize SLA violations and power under dynamic load
@@ -58,6 +60,7 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
 
     ```bash

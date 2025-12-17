@@ -1,4 +1,5 @@
 """
+
 Graph Attention Network for Biological Reasoning
 
 Graph neural network for learning biological patterns.
@@ -12,6 +13,7 @@ import numpy as np
 
 class GraphAttentionNetwork:
     """
+
     Graph Attention Network for biological graphs.
 
     Simplified implementation for production stability.
@@ -20,12 +22,14 @@ class GraphAttentionNetwork:
 
     def __init__(self, seed: Optional[int] = None, hidden_dim: int = 64):
         """
+
         Initialize GNN.
 
         Args:
             seed: Random seed
             hidden_dim: Hidden dimension size
         """
+
         self.seed = seed
         self.hidden_dim = hidden_dim
 
@@ -41,6 +45,7 @@ class GraphAttentionNetwork:
 
     def forward(self, graph_data: Dict) -> np.ndarray:
         """
+
         Forward pass through GNN.
 
         Args:
@@ -49,6 +54,7 @@ class GraphAttentionNetwork:
         Returns:
             Node embeddings
         """
+
         # Extract graph components
         nodes = graph_data.get("nodes", [])
         edges = graph_data.get("edges", [])
@@ -68,6 +74,7 @@ class GraphAttentionNetwork:
 
     def _attention_layer(self, node_features: np.ndarray, edges: list) -> np.ndarray:
         """
+
         Apply attention mechanism.
 
         Args:
@@ -77,6 +84,7 @@ class GraphAttentionNetwork:
         Returns:
             Updated node embeddings
         """
+
         # Simplified self-attention
         queries = node_features @ self.weights["W_query"]
         keys = node_features @ self.weights["W_key"]
@@ -93,5 +101,6 @@ class GraphAttentionNetwork:
 
     def _softmax(self, x: np.ndarray) -> np.ndarray:
         """Numerically stable softmax."""
+
         exp_x = np.exp(x - np.max(x, axis=-1, keepdims=True))
         return exp_x / np.sum(exp_x, axis=-1, keepdims=True)

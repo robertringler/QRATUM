@@ -49,11 +49,13 @@ class BackendIntrospection:
 
     def __init__(self):
         """Initialize backend introspection."""
+
         self.backends: Dict[BackendType, BackendCapabilities] = {}
         self._detect_backends()
 
     def _detect_backends(self) -> None:
         """Detect available backends."""
+
         # Classical backend always available
         self.backends[BackendType.CLASSICAL] = BackendCapabilities(
             backend_type=BackendType.CLASSICAL,
@@ -96,6 +98,7 @@ class BackendIntrospection:
         Returns:
             Best available backend (may downgrade)
         """
+
         if preferred in self.backends and self.backends[preferred].available:
             return preferred
 
@@ -130,6 +133,7 @@ class BackendIntrospection:
         Returns:
             Execution log entry
         """
+
         return {
             "backend": backend.value,
             "circuit_depth": circuit_depth,

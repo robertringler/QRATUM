@@ -48,6 +48,7 @@ class Publication:
         Returns:
             True if protein is mentioned in title or abstract
         """
+
         search_text = (self.title + " " + self.abstract).lower()
         return protein_name.lower() in search_text
 
@@ -57,6 +58,7 @@ class Publication:
         Returns:
             List of (protein1, protein2) tuples
         """
+
         # Simple pattern matching for interaction keywords
         interaction_patterns = [
             r"(\w+)\s+(?:interacts with|binds to|phosphorylates)\s+(\w+)",
@@ -93,6 +95,7 @@ class InteractionEvidence:
 
     def add_publication(self, pmid: str) -> None:
         """Add supporting publication."""
+
         if pmid not in self.publications:
             self.publications.append(pmid)
             # Increase confidence with more publications
@@ -108,6 +111,7 @@ class LiteratureMiner:
 
     def __init__(self):
         """Initialize literature miner."""
+
         self._publications: dict[str, Publication] = {}
         self._interactions: dict[tuple[str, str], InteractionEvidence] = {}
         self._protein_citations: dict[str, set[str]] = {}
@@ -124,6 +128,7 @@ class LiteratureMiner:
         Returns:
             List of Publication objects
         """
+
         # Placeholder: In Phase 2+, implement full XML parsing
         return []
 
@@ -144,6 +149,7 @@ class LiteratureMiner:
         Returns:
             List of publications
         """
+
         # Phase 1: Mock implementation
         # Phase 2+: Implement actual PubMed E-utilities API calls
         return []
@@ -154,6 +160,7 @@ class LiteratureMiner:
         Args:
             publication: Publication object
         """
+
         self._publications[publication.pmid] = publication
 
         # Extract and index interactions
@@ -179,6 +186,7 @@ class LiteratureMiner:
         Returns:
             List of publications
         """
+
         publications = []
         for pub in self._publications.values():
             if pub.mentions_protein(protein_name):
@@ -195,6 +203,7 @@ class LiteratureMiner:
         Returns:
             Number of citations
         """
+
         return len(self.get_protein_citations(protein_name))
 
     def get_interactions(
@@ -211,6 +220,7 @@ class LiteratureMiner:
         Returns:
             List of interaction evidence
         """
+
         interactions = []
 
         for evidence in self._interactions.values():
@@ -235,6 +245,7 @@ class LiteratureMiner:
         Returns:
             Prior probability (0-1) based on citation count
         """
+
         citation_count = self.get_citation_count(protein)
 
         # Log-scale normalization
@@ -256,6 +267,7 @@ class LiteratureMiner:
         Returns:
             List of mechanism keywords
         """
+
         # Keywords related to biological mechanisms
         mechanism_keywords = [
             "phosphorylation",
@@ -298,6 +310,7 @@ class LiteratureMiner:
         Returns:
             List of (publication, relevance_score) tuples
         """
+
         ranked = []
         protein_lower = protein.lower()
 
@@ -345,6 +358,7 @@ class LiteratureMiner:
         Returns:
             Dictionary with summary statistics
         """
+
         publications = self.get_protein_citations(protein)
         ranked = self.rank_publications_by_relevance(protein)[:max_publications]
         interactions = self.get_interactions(protein=protein, min_confidence=0.3)

@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent / "qubic-viz"))
 
 def test_viz_pipeline_basic():
     """Test basic visualization pipeline."""
+
     from core.renderer import RenderConfig, SceneRenderer
     from engines.mesh_generator import TireMeshGenerator
 
@@ -25,6 +26,7 @@ def test_viz_pipeline_basic():
 
 def test_tire_mesh_generation():
     """Test tire mesh generation."""
+
     from engines.mesh_generator import TireMeshGenerator
 
     class MockTireGeometry:
@@ -43,4 +45,5 @@ def test_tire_mesh_generation():
 @pytest.mark.skip(reason="Requires full QuASIM integration")
 def test_quasim_to_viz_integration():
     """Test full QuASIM to visualization integration."""
+
     pass

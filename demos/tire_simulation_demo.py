@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 def demo_basic_tire_library():
     """Demonstrate basic tire library generation with synthetic compounds."""
+
     print("=" * 80)
     print("DEMO 1: Basic Tire Simulation Library")
     print("=" * 80)
@@ -54,6 +55,7 @@ def demo_basic_tire_library():
 
 def demo_goodyear_integration():
     """Demonstrate Goodyear Quantum Pilot integration with 1,000+ materials."""
+
     print("=" * 80)
     print("DEMO 2: Goodyear Quantum Pilot Integration")
     print("=" * 80)
@@ -112,6 +114,7 @@ def demo_goodyear_integration():
 
 def demo_material_search():
     """Demonstrate material database search capabilities."""
+
     print("=" * 80)
     print("DEMO 3: Material Database Search")
     print("=" * 80)
@@ -132,7 +135,7 @@ def demo_material_search():
         print()
         print("Top 5 materials:")
         for i, material in enumerate(results[:5]):
-            print(f"{i+1}. {material.name}")
+            print(f"{i + 1}. {material.name}")
             print(f"   Family: {material.family}")
             print(f"   Wet Grip: {material.properties.get('wet_grip_coefficient', 0):.3f}")
             print(
@@ -157,6 +160,7 @@ def demo_material_search():
 
 def demo_quantum_optimization():
     """Demonstrate quantum optimization of tire compounds."""
+
     print("=" * 80)
     print("DEMO 4: Quantum Optimization")
     print("=" * 80)
@@ -210,6 +214,7 @@ def demo_quantum_optimization():
 
 def demo_scenario_diversity():
     """Demonstrate scenario diversity and coverage."""
+
     print("=" * 80)
     print("DEMO 5: Scenario Diversity")
     print("=" * 80)
@@ -252,6 +257,7 @@ def demo_scenario_diversity():
 
 def main():
     """Run all demonstrations."""
+
     print()
     print("=" * 80)
     print("QuASIM Tire Simulation Library - Comprehensive Demonstration")

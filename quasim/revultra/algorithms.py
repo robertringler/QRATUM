@@ -91,6 +91,7 @@ class REVULTRAAlgorithms:
         str
             Normalized text containing only A-Z uppercase letters
         """
+
         return "".join(c.upper() for c in text if c.upper() in string.ascii_uppercase)
 
     def quantum_information_topology(self, text: str) -> dict[str, complex]:
@@ -116,6 +117,7 @@ class REVULTRAAlgorithms:
         >>> abs(topology['L']) > abs(topology['H'])  # L appears more frequently
         True
         """
+
         normalized = self._normalize_text(text)
         if not normalized:
             return {}
@@ -158,6 +160,7 @@ class REVULTRAAlgorithms:
         >>> surface.shape[0] > 0 and surface.shape[1] > 0
         True
         """
+
         normalized = self._normalize_text(text)
         if len(normalized) < 4:
             # Return minimal surface for short texts
@@ -207,6 +210,7 @@ class REVULTRAAlgorithms:
         >>> embeddings.shape[1] == 3
         True
         """
+
         normalized = self._normalize_text(text)
         if len(normalized) < window_size:
             return np.array([[]], dtype=np.float64)
@@ -252,6 +256,7 @@ class REVULTRAAlgorithms:
         >>> patterns.get("ABC", 0) >= 2
         True
         """
+
         normalized = self._normalize_text(text)
         if len(normalized) < min_pattern_len:
             return {}
@@ -291,6 +296,7 @@ class REVULTRAAlgorithms:
         >>> np.all((ioc >= 0.0) & (ioc <= 1.0))
         True
         """
+
         normalized = self._normalize_text(text)
         if len(normalized) < 2:
             return np.zeros(max_period, dtype=np.float64)
@@ -341,6 +347,7 @@ class REVULTRAAlgorithms:
         >>> autocorr[0] == 1.0  # Perfect correlation at lag 0
         True
         """
+
         normalized = self._normalize_text(text)
         if len(normalized) < 2:
             return np.zeros(max_lag + 1, dtype=np.float64)
@@ -387,6 +394,7 @@ class REVULTRAAlgorithms:
         >>> 0.0 <= complexity['score'] <= 100.0
         True
         """
+
         normalized = self._normalize_text(text)
         if not normalized:
             return {"score": 0.0, "entropy": 0.0, "pattern_density": 0.0, "ioc_variance": 0.0}
@@ -438,6 +446,7 @@ class REVULTRAAlgorithms:
         >>> 'complexity' in results and 'ioc_tensor' in results
         True
         """
+
         normalized = self._normalize_text(ciphertext)
 
         return {
@@ -469,6 +478,7 @@ class REVULTRAAlgorithms:
         >>> freqs['A'] > freqs['B']
         True
         """
+
         normalized = self._normalize_text(text)
         if not normalized:
             return {}
@@ -499,6 +509,7 @@ class REVULTRAAlgorithms:
         >>> chi2 > 0.0
         True
         """
+
         # Default English letter frequencies (percentages)
         if expected_freqs is None:
             expected_freqs = {

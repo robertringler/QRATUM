@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Aerospace Demo - QuASIM", layout="wide")
 
     st.title("🚀 Aerospace: Hot-Staging & MECO Optimization")
@@ -15,6 +16,7 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
 
     This demo showcases trajectory optimization for launch vehicles with hot-staging
@@ -73,6 +75,7 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
 
     ```bash

@@ -82,6 +82,7 @@ class BenchmarkDefinition:
         Raises:
             ValueError: If benchmark not found or YAML invalid
         """
+
         if yaml is None:
             raise ImportError("PyYAML is required. Install with: pip install pyyaml")
 
@@ -101,6 +102,7 @@ class BenchmarkDefinition:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
+
         return asdict(self)
 
 
@@ -124,6 +126,7 @@ class BenchmarkResult:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
+
         return asdict(self)
 
 
@@ -142,6 +145,7 @@ class ComparisonResult:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
+
         return {
             "benchmark_id": self.benchmark_id,
             "ansys_results": [r.to_dict() for r in self.ansys_results],
@@ -173,6 +177,7 @@ class AnsysBaselineExecutor:
 
     def __init__(self, benchmark: BenchmarkDefinition, working_dir: Path):
         """Initialize Ansys executor."""
+
         self.benchmark = benchmark
         self.working_dir = working_dir
         self.working_dir.mkdir(parents=True, exist_ok=True)
@@ -192,6 +197,7 @@ class AnsysBaselineExecutor:
         Returns:
             BenchmarkResult with timing and convergence data
         """
+
         logger.info(f"Executing Ansys baseline for {self.benchmark.id} (run {run_id})")
 
         # TODO: C++/CUDA integration - actual Ansys MAPDL execution
@@ -252,6 +258,7 @@ class AnsysBaselineExecutor:
 
     def _generate_convergence_history(self, max_iterations: int) -> list[float]:
         """Generate mock convergence history."""
+
         # Exponential decay with some noise
         history = []
         residual = 1.0
@@ -286,6 +293,7 @@ class QuasimExecutor:
         random_seed: int = 42,
     ):
         """Initialize QuASIM executor."""
+
         self.benchmark = benchmark
         self.working_dir = working_dir
         self.device = device
@@ -306,6 +314,7 @@ class QuasimExecutor:
         Returns:
             BenchmarkResult with timing and convergence data
         """
+
         logger.info(f"Executing QuASIM for {self.benchmark.id} (run {run_id})")
 
         # TODO: C++/CUDA integration - actual QuASIM solver execution
@@ -358,6 +367,7 @@ class QuasimExecutor:
 
     def _generate_convergence_history(self, max_iterations: int) -> list[float]:
         """Generate mock convergence history."""
+
         # Similar to Ansys but may have different pattern
         history = []
         residual = 1.0
@@ -388,6 +398,7 @@ class PerformanceComparer:
 
     def __init__(self, benchmark: BenchmarkDefinition, acceptance_criteria: dict[str, Any]):
         """Initialize performance comparer."""
+
         self.benchmark = benchmark
         self.acceptance_criteria = acceptance_criteria
 
@@ -405,6 +416,7 @@ class PerformanceComparer:
         Returns:
             ComparisonResult with accuracy and performance analysis
         """
+
         logger.info(f"Comparing results for {self.benchmark.id}")
 
         # Check that we have results
@@ -449,6 +461,7 @@ class PerformanceComparer:
         self, ansys_results: list[BenchmarkResult], quasim_results: list[BenchmarkResult]
     ) -> dict[str, float]:
         """Compute accuracy metrics (displacement error, stress error, etc.)."""
+
         # TODO: C++/CUDA integration - actual accuracy computation from result files
         # For now, simulate accuracy metrics
 
@@ -471,6 +484,7 @@ class PerformanceComparer:
         self, ansys_results: list[BenchmarkResult], quasim_results: list[BenchmarkResult]
     ) -> dict[str, Any]:
         """Compute performance metrics (speedup, iteration efficiency, etc.)."""
+
         # Extract solve times
         ansys_times = [r.solve_time for r in ansys_results]
         quasim_times = [r.solve_time for r in quasim_results]
@@ -506,6 +520,7 @@ class PerformanceComparer:
         self, ansys_results: list[BenchmarkResult], quasim_results: list[BenchmarkResult]
     ) -> dict[str, Any]:
         """Compute statistical analysis (confidence intervals, significance, etc.)."""
+
         ansys_times = [r.solve_time for r in ansys_results]
         quasim_times = [r.solve_time for r in quasim_results]
 
@@ -533,6 +548,7 @@ class PerformanceComparer:
         self, ansys_times: list[float], quasim_times: list[float], n_bootstrap: int = 1000
     ) -> tuple[float, float]:
         """Compute bootstrap confidence interval for speedup."""
+
         speedups = []
         for _ in range(n_bootstrap):
             ansys_sample = np.random.choice(ansys_times, size=len(ansys_times), replace=True)
@@ -544,6 +560,7 @@ class PerformanceComparer:
 
     def _detect_outliers(self, times: list[float]) -> list[int]:
         """Detect outliers using modified Z-score method."""
+
         if len(times) < 3:
             return []
 
@@ -567,6 +584,7 @@ class PerformanceComparer:
         Returns:
             (passed, failure_reason) tuple
         """
+
         # Check accuracy
         if (
             accuracy_metrics["displacement_error"]
@@ -615,6 +633,7 @@ class ReportGenerator:
 
     def __init__(self, results: list[ComparisonResult], output_dir: Path):
         """Initialize report generator."""
+
         self.results = results
         self.output_dir = output_dir
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -623,6 +642,7 @@ class ReportGenerator:
 
     def generate_all(self) -> None:
         """Generate all report formats."""
+
         self.generate_csv()
         self.generate_json()
         self.generate_html()
@@ -632,6 +652,7 @@ class ReportGenerator:
 
     def generate_csv(self) -> None:
         """Generate CSV report."""
+
         csv_path = self.output_dir / "results.csv"
 
         with open(csv_path, "w") as f:
@@ -654,6 +675,7 @@ class ReportGenerator:
 
     def generate_json(self) -> None:
         """Generate JSON report."""
+
         json_path = self.output_dir / "results.json"
 
         data = {
@@ -672,6 +694,7 @@ class ReportGenerator:
 
     def generate_html(self) -> None:
         """Generate HTML report."""
+
         html_path = self.output_dir / "report.html"
 
         # Simple HTML template (CSS braces are doubled to escape for .format())
@@ -725,6 +748,7 @@ class ReportGenerator:
             status_text = "PASS" if result.passed else "FAIL"
 
             rows += f"""
+
         <tr>
             <td>{result.benchmark_id}</td>
             <td class="{status_class}">{status_text}</td>
@@ -749,6 +773,7 @@ class ReportGenerator:
 
     def generate_pdf(self) -> None:
         """Generate PDF report."""
+
         pdf_path = self.output_dir / "report.pdf"
 
         try:
@@ -781,10 +806,12 @@ class ReportGenerator:
 
         # Summary
         summary_text = f"""
+
         <b>Total Benchmarks:</b> {len(self.results)}<br/>
         <b>Passed:</b> {sum(1 for r in self.results if r.passed)}<br/>
         <b>Failed:</b> {sum(1 for r in self.results if not r.passed)}
         """
+
         story.append(Paragraph(summary_text, styles["Normal"]))
         story.append(Spacer(1, 0.5 * inch))
 
@@ -890,12 +917,14 @@ class ReportGenerator:
             # Performance metrics
             perf = result.performance_metrics
             perf_text = f"""
+
             <b>Performance Metrics:</b><br/>
             Ansys Median Time: {perf.get("ansys_median_time", 0):.2f}s<br/>
             QuASIM Median Time: {perf.get("quasim_median_time", 0):.2f}s<br/>
             Speedup: {perf.get("speedup", 0):.2f}x<br/>
             Memory Overhead: {perf.get("memory_overhead", 0):.2f}x
             """
+
             story.append(Paragraph(perf_text, styles["Normal"]))
             story.append(Spacer(1, 0.2 * inch))
             story.append(Paragraph(perf_text, styles["Normal"]))
@@ -904,11 +933,13 @@ class ReportGenerator:
             # Accuracy metrics
             acc = result.accuracy_metrics
             acc_text = f"""
+
             <b>Accuracy Metrics:</b><br/>
             Displacement Error: {acc.get("displacement_error", 0):.2%}<br/>
             Stress Error: {acc.get("stress_error", 0):.2%}<br/>
             Energy Error: {acc.get("energy_error", 0):.2e}
             """
+
             story.append(Paragraph(acc_text, styles["Normal"]))
             story.append(Spacer(1, 0.2 * inch))
             story.append(Paragraph(acc_text, styles["Normal"]))
@@ -917,11 +948,13 @@ class ReportGenerator:
             # Statistical analysis
             stats = result.statistical_analysis
             stats_text = f"""
+
             <b>Statistical Analysis:</b><br/>
             Speedup 95% CI: [{stats.get("speedup_ci_lower", 0):.2f}, {stats.get("speedup_ci_upper", 0):.2f}]<br/>
             Statistical Significance: {stats.get("significance", "UNKNOWN")}<br/>
             P-value: {stats.get("p_value", 0):.3f}
             """
+
             story.append(Paragraph(stats_text, styles["Normal"]))
             story.append(Paragraph(stats_text, styles["Normal"]))
 
@@ -937,10 +970,12 @@ class ReportGenerator:
 
 def main() -> int:
     """Main entry point for performance runner."""
+
     parser = argparse.ArgumentParser(
         description="QuASIM Ansys Performance Comparison Framework",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
+
 Examples:
   # Run single benchmark (Ansys baseline)
   %(prog)s --benchmark BM_001 --solver ansys --output results/
@@ -1075,7 +1110,7 @@ Examples:
         logger.info(f"\n{'=' * 60}")
         logger.info(f"Running benchmark: {benchmark_id}")
         logger.info(f"{'=' * 60}\n")
-        logger.info(f"{'='*60}\n")
+        logger.info(f"{'=' * 60}\n")
 
         try:
             # Load benchmark definition
@@ -1165,7 +1200,7 @@ Examples:
         logger.info(f"\n{'=' * 60}")
         logger.info("Generating reports...")
         logger.info(f"{'=' * 60}\n")
-        logger.info(f"{'='*60}\n")
+        logger.info(f"{'=' * 60}\n")
 
         report_gen = ReportGenerator(all_results, args.output / "reports")
         report_gen.generate_all()
@@ -1187,6 +1222,7 @@ Examples:
 
 def handle_report_generation(args: argparse.Namespace) -> int:
     """Handle report generation from existing results."""
+
     logger.info("Generating report from existing results...")
 
     if not args.input:

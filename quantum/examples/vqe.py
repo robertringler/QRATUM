@@ -23,6 +23,7 @@ def heisenberg_hamiltonian(n_qubits: int) -> list[list[complex]]:
 
     Real implementation would use SparsePauliOp or similar quantum operator.
     """
+
     gates = []
     for _ in range(n_qubits):
         gates.append([0 + 0j, 1 + 0j, 1 + 0j, 0 + 0j])
@@ -40,6 +41,7 @@ def run_vqe(num_qubits: int = 4):
 
     Current: Just averages some complex numbers.
     """
+
     circuit = heisenberg_hamiltonian(num_qubits)
     amplitudes = simulate(circuit)  # NOT real quantum simulation
     energy = float(sum(abs(value) ** 2 for value in amplitudes))

@@ -17,6 +17,7 @@ class TestQuantumConfig:
 
     def test_default_config(self):
         """Test default configuration values."""
+
         config = QuantumConfig()
         assert config.backend_type == "simulator"
         assert config.shots == 1024
@@ -25,17 +26,20 @@ class TestQuantumConfig:
 
     def test_custom_config(self):
         """Test custom configuration."""
+
         config = QuantumConfig(backend_type="simulator", shots=2048, seed=123)
         assert config.shots == 2048
         assert config.seed == 123
 
     def test_low_shots_warning(self):
         """Test warning for low shot count."""
+
         with pytest.warns(UserWarning, match="shots.*very low"):
             config = QuantumConfig(shots=50)
 
     def test_ibmq_requires_token(self):
         """Test that IBMQ backend requires token."""
+
         with pytest.raises(ValueError, match="ibmq_token required"):
             QuantumConfig(backend_type="ibmq")
 
@@ -46,6 +50,7 @@ class TestQuantumBackend:
 
     def test_simulator_backend(self):
         """Test simulator backend setup."""
+
         config = QuantumConfig(backend_type="simulator")
         backend = QuantumBackend(config)
 
@@ -54,6 +59,7 @@ class TestQuantumBackend:
 
     def test_backend_execution(self):
         """Test simple circuit execution."""
+
         from qiskit import QuantumCircuit
 
         config = QuantumConfig(backend_type="simulator", shots=100)
@@ -77,6 +83,7 @@ class TestQuantumBackend:
 
 def test_import_without_dependencies():
     """Test that module can be imported even without quantum libraries."""
+
     # This test always runs to verify graceful degradation
     from quasim import quantum
 

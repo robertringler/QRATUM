@@ -46,6 +46,7 @@ def check_quantum_dependencies() -> dict[str, bool]:
     Returns:
         Dictionary mapping library names to availability status
     """
+
     return {
         "qiskit": QISKIT_AVAILABLE,
         "pennylane": PENNYLANE_AVAILABLE,
@@ -58,6 +59,7 @@ def get_quantum_status() -> str:
     Returns:
         Status string describing available quantum features
     """
+
     deps = check_quantum_dependencies()
 
     if not any(deps.values()):

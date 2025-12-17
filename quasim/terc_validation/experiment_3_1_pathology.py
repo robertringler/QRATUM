@@ -16,6 +16,7 @@ def classify_pathology(consciousness_metrics: dict) -> dict:
     Returns:
         Dictionary with classification results
     """
+
     np.random.seed(42)
 
     # Extract metrics
@@ -44,6 +45,7 @@ def classify_pathology(consciousness_metrics: dict) -> dict:
 
 def run_experiment():
     """Execute pathology classification experiment."""
+
     np.random.seed(42)
 
     # Generate synthetic test cases

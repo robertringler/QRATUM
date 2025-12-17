@@ -28,6 +28,7 @@ def simulate_ascent(
     Returns:
         Dictionary with simulation results
     """
+
     rng = np.random.RandomState(seed)
 
     # Extract scenario parameters

@@ -44,6 +44,7 @@ class BioinformaticsEnhancedPrior:
             ontology_weight: Weight for ontology annotations
             pathway_weight: Weight for pathway membership
         """
+
         self.literature_weight = literature_weight
         self.conservation_weight = conservation_weight
         self.ontology_weight = ontology_weight
@@ -69,6 +70,7 @@ class BioinformaticsEnhancedPrior:
         Returns:
             Enhanced prior probability (0-1)
         """
+
         # Compute individual priors
         lit_prior = self._compute_literature_prior(protein_name)
         cons_prior = self._compute_conservation_prior(protein_name)
@@ -94,6 +96,7 @@ class BioinformaticsEnhancedPrior:
         Returns:
             Prior probability (0-1)
         """
+
         citation_count = self.literature_miner.get_citation_count(protein_name)
 
         # Log-scale normalization
@@ -112,6 +115,7 @@ class BioinformaticsEnhancedPrior:
         Returns:
             Prior probability (0-1)
         """
+
         return self.ontology.compute_conservation_prior(protein_name)
 
     def _compute_ontology_prior(self, protein_name: str) -> float:
@@ -123,6 +127,7 @@ class BioinformaticsEnhancedPrior:
         Returns:
             Prior probability (0-1)
         """
+
         # Find protein by name
         protein_id = None
         for pid, annotation in self.ontology._proteins.items():
@@ -146,6 +151,7 @@ class BioinformaticsEnhancedPrior:
         Returns:
             Prior probability (0-1)
         """
+
         # Count pathways containing this protein
         pathway_count = 0
         for pathway in self.pathway_analyzer._pathways.values():
@@ -170,6 +176,7 @@ class BioinformaticsEnhancedPrior:
         Returns:
             List of (mechanism, evidence_score) tuples
         """
+
         ranked = []
 
         for mechanism in mechanisms:
@@ -193,6 +200,7 @@ class BioinformaticsEnhancedPrior:
         Returns:
             List of (protein_id, similarity, relationship_type) tuples
         """
+
         related = []
 
         # Find protein ID
@@ -235,6 +243,7 @@ class BioinformaticsEnhancedPrior:
         Returns:
             List of hypothesis dictionaries
         """
+
         hypotheses = []
 
         # Find similar sequences
@@ -271,6 +280,7 @@ class BioinformaticsEnhancedPrior:
         Returns:
             Tuple of (is_valid, validation_messages)
         """
+
         from xenon.bioinformatics.structure_analyzer import StructureAnalyzer
 
         structure_analyzer = StructureAnalyzer()
@@ -301,7 +311,7 @@ class BioinformaticsEnhancedPrior:
                 if quality["completeness"] < 0.8:
                     validation_messages.append(
                         f"Incomplete structure for {protein_name}: "
-                        f"{quality['completeness']*100:.1f}% complete"
+                        f"{quality['completeness'] * 100:.1f}% complete"
                     )
                     is_valid = False
 
@@ -321,6 +331,7 @@ class BioinformaticsEnhancedPrior:
         Returns:
             Dictionary with mechanism and annotations
         """
+
         # Get basic mechanism data
         mech_dict = mechanism.to_dict()
 

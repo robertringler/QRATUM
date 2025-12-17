@@ -4,6 +4,7 @@ from __future__ import annotations
 
 """HCAL Command Line Interface."""
 """
+
 Command-line interface for QuASIM Hardware Calibration and Analysis Layer.
 
 This CLI provides tools for monitoring and managing hardware resources
@@ -39,6 +40,7 @@ from quasim.hcal.policy import PolicyValidator
 @click.version_option()
 def main() -> None:
     """HCAL - Hardware Control Abstraction Layer CLI."""
+
     pass
 
 
@@ -51,6 +53,7 @@ def main() -> None:
 )
 def discover(output_json: bool) -> None:
     """Discover available hardware devices."""
+
     manager = DeviceManager()
     devices = manager.discover()
 
@@ -76,6 +79,7 @@ def discover(output_json: bool) -> None:
 @click.argument("policy_path", type=click.Path(exists=True, path_type=Path))
 def validate_policy(policy_path: Path) -> None:
     """Validate a policy configuration file."""
+
     try:
         validator = PolicyValidator.from_file(policy_path)
         click.echo("✓ Policy validation passed")
@@ -100,6 +104,7 @@ from quasim.hcal.topology import TopologyDiscovery
 @click.group()
 def cli():
     """QuASIM Hardware Control & Calibration Layer (HCAL) CLI."""
+
     pass
 
 
@@ -108,6 +113,7 @@ def cli():
 @click.option("--policy", type=click.Path(exists=True), help="Policy file path")
 def discover(output_json: bool, policy: str | None):
     """Discover hardware topology."""
+
     try:
         if policy:
             hcal = HCAL.from_policy(Path(policy))
@@ -135,6 +141,7 @@ def discover(output_json: bool, policy: str | None):
 @click.option("--policy", type=click.Path(exists=True), help="Policy file path")
 def plan(profile: str, devices: str | None, out: str | None, policy: str | None):
     """Create hardware configuration plan."""
+
     try:
         if policy:
             hcal = HCAL.from_policy(Path(policy))
@@ -159,6 +166,7 @@ def plan(profile: str, devices: str | None, out: str | None, policy: str | None)
 @cli.command()
 def status():
     """Display hardware status and availability."""
+
     click.echo("Hardware Status:")
     click.echo("================")
 
@@ -213,6 +221,7 @@ def status():
 @click.option("--output", "-o", type=click.Path(), help="Output path for calibration results")
 def calibrate(config, output):
     """Run hardware calibration procedures."""
+
     click.echo("Running hardware calibration...")
 
     if config:
@@ -230,6 +239,7 @@ def calibrate(config, output):
 @click.option("--interval", "-i", default=1, help="Sampling interval in seconds")
 def monitor(duration, interval):
     """Monitor hardware resources in real-time."""
+
     import time
 
     click.echo(f"Monitoring hardware for {duration} seconds (sampling every {interval}s)...")
@@ -251,6 +261,7 @@ def monitor(duration, interval):
 @cli.command()
 def info():
     """Display system and package information."""
+
     click.echo("QuASIM HCAL Information:")
     click.echo("========================")
     click.echo("Version: 0.1.0")
@@ -299,6 +310,7 @@ if __name__ == "__main__":
 @click.option("--json-output", is_flag=True, help="Output in JSON format")
 def discover(json_output: bool):  # noqa: F811
     """Discover hardware topology (alternate implementation)."""
+
     discovery = TopologyDiscovery()
     topology = discovery.discover()
 
@@ -365,6 +377,7 @@ def discover(json_output: bool):  # noqa: F811
 @click.option("--json-output", is_flag=True, help="Output in JSON format")
 def plan_profile(profile: str, device: str, json_output: bool):
     """Create a reconfiguration plan (legacy command)."""
+
     profile_mgr = ProfileManager()
 
     profile_obj = profile_mgr.get_profile(profile)
@@ -424,6 +437,7 @@ def apply(
     json_output: bool,
 ):
     """Apply a reconfiguration plan."""
+
     # Initialize HCAL
     hcal = HCAL(policy_path=policy, dry_run=not actuate)
 
@@ -479,6 +493,7 @@ def apply(
 @click.option("--json-output", is_flag=True, help="Output in JSON format")
 def calibrate(device: str, policy: Path | None, iterations: int, json_output: bool):
     """Run closed-loop calibration."""
+
     hcal = HCAL(policy_path=policy, dry_run=True)
 
     click.echo(f"Starting calibration for {device} (max {iterations} iterations)...")
@@ -515,6 +530,7 @@ def calibrate(device: str, policy: Path | None, iterations: int, json_output: bo
 @click.option("--json-output", is_flag=True, help="Output in JSON format")
 def telemetry(device: str | None, policy: Path | None, json_output: bool):
     """Read real-time telemetry data."""
+
     hcal = HCAL(policy_path=policy, dry_run=True)
 
     if device:
@@ -569,12 +585,14 @@ def telemetry(device: str | None, policy: Path | None, json_output: bool):
 @cli.command()
 def stop():
     """Emergency stop - halt all HCAL operations."""
+
     click.echo("EMERGENCY STOP - This would halt all HCAL operations")
     click.echo("(In production, this would trigger actuator emergency stop)")
 
 
 def main():
     """Main entry point."""
+
     cli()
 
 

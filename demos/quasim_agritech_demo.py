@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuASIM × Agritech Precision Agriculture Demo
 
 Crop yield optimization with resource efficiency.
@@ -30,6 +31,7 @@ from quasim.common import (
 
 def simulate_agriculture(alpha: float, profile: dict, seed: int = 42) -> dict:
     """Simulate precision agriculture operations."""
+
     np.random.seed(seed)
     targets = profile["targets"]
     time = np.linspace(0, 100, 100)  # Growing season
@@ -65,6 +67,7 @@ def simulate_agriculture(alpha: float, profile: dict, seed: int = 42) -> dict:
 
 def evaluate_fitness(metrics: dict, profile: dict) -> float:
     """Evaluate agriculture fitness."""
+
     targets = profile["targets"]
     tolerances = profile["tolerances"]
     weights = profile["weights"]
@@ -91,6 +94,7 @@ def evaluate_fitness(metrics: dict, profile: dict) -> float:
 
 def create_visualization(metrics: dict, profile: dict) -> str:
     """Create agriculture visualization."""
+
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 10))
     time = np.array(metrics["time"])
 

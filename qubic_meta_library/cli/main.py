@@ -17,6 +17,7 @@ from qubic_meta_library.services import (
 @click.version_option(version="0.1.0")
 def cli():
     """Qubic Meta Library - 10,000-Prompt System for R&D and IP Generation."""
+
     pass
 
 
@@ -25,6 +26,7 @@ def cli():
 @click.option("--data-dir", type=click.Path(exists=True), help="Data directory")
 def load_all(config_dir, data_dir):
     """Load all prompts and domains."""
+
     loader = PromptLoader(config_dir=config_dir, data_dir=data_dir)
 
     click.echo("Loading domains...")
@@ -48,6 +50,7 @@ def load_all(config_dir, data_dir):
 @click.option("--threshold", type=float, default=0.8, help="High-value threshold")
 def high_value(config_dir, data_dir, threshold):
     """Extract high-value prompts."""
+
     loader = PromptLoader(config_dir=config_dir, data_dir=data_dir)
     loader.load_domains()
     loader.load_all_prompts()
@@ -69,6 +72,7 @@ def high_value(config_dir, data_dir, threshold):
 @click.option("--output", type=click.Path(), help="Output file for patent report")
 def analyze_patents(config_dir, data_dir, output):
     """Analyze patent opportunities."""
+
     loader = PromptLoader(config_dir=config_dir, data_dir=data_dir)
     loader.load_domains()
     prompts = loader.load_all_prompts()
@@ -101,6 +105,7 @@ def analyze_patents(config_dir, data_dir, output):
 @click.option("--data-dir", type=click.Path(exists=True), help="Data directory")
 def map_synergies(config_dir, data_dir):
     """Map synergy clusters and cross-domain connections."""
+
     loader = PromptLoader(config_dir=config_dir, data_dir=data_dir)
     domains = loader.load_domains()
     prompts = loader.load_all_prompts()
@@ -133,6 +138,7 @@ def map_synergies(config_dir, data_dir):
 @click.option("--dry-run", is_flag=True, help="Simulate execution without processing")
 def execute_pipelines(config_dir, data_dir, dry_run):
     """Execute or simulate pipeline execution."""
+
     loader = PromptLoader(config_dir=config_dir, data_dir=data_dir)
     loader.load_domains()
     prompts = loader.load_all_prompts()
@@ -168,6 +174,7 @@ def execute_pipelines(config_dir, data_dir, dry_run):
 @click.option("--output", type=click.Path(), help="Output file for dashboard data")
 def dashboard(config_dir, data_dir, output):
     """Generate KPI dashboard and metrics."""
+
     loader = PromptLoader(config_dir=config_dir, data_dir=data_dir)
     domains = loader.load_domains()
     prompts = loader.load_all_prompts()
@@ -196,6 +203,7 @@ def dashboard(config_dir, data_dir, output):
 @click.option("--config-dir", type=click.Path(exists=True), help="Configuration directory")
 def validate(config_dir):
     """Validate pipeline configuration."""
+
     engine = ExecutionEngine(config_dir=config_dir)
     engine.load_pipelines()
 

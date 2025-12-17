@@ -60,6 +60,7 @@ class BayesianUpdater:
             likelihood_scale: Scaling factor for likelihood computation
             evidence_threshold: Minimum posterior to retain mechanisms
         """
+
         self.likelihood_scale = likelihood_scale
         self.evidence_threshold = evidence_threshold
         self._total_experiments = 0
@@ -83,6 +84,7 @@ class BayesianUpdater:
         Returns:
             Updated mechanisms with new posteriors
         """
+
         if not mechanisms:
             return []
 
@@ -132,6 +134,7 @@ class BayesianUpdater:
         Returns:
             Likelihood value (0 to 1)
         """
+
         if experiment.experiment_type == "concentration":
             return self._likelihood_concentration(mechanism, experiment)
         elif experiment.experiment_type == "kinetics":
@@ -152,6 +155,7 @@ class BayesianUpdater:
         Uses Gaussian likelihood: exp(-chi^2 / 2)
         where chi^2 = sum((observed - predicted)^2 / uncertainty^2)
         """
+
         chi_squared = 0.0
         n_measurements = 0
 
@@ -182,6 +186,7 @@ class BayesianUpdater:
 
         Compares observed vs predicted rate constants.
         """
+
         log_likelihood = 0.0
         n_rates = 0
 
@@ -214,6 +219,7 @@ class BayesianUpdater:
 
         Evaluates whether mechanism topology supports observed response.
         """
+
         # Check if perturbation source and target are in mechanism
         source = experiment.conditions.get("perturbation_source")
         target = experiment.conditions.get("perturbation_target")
@@ -243,6 +249,7 @@ class BayesianUpdater:
         Returns:
             Filtered list of mechanisms
         """
+
         if threshold is None:
             threshold = self.evidence_threshold
 
@@ -259,6 +266,7 @@ class BayesianUpdater:
         Returns:
             Dictionary with summary statistics
         """
+
         if not mechanisms:
             return {
                 "n_mechanisms": 0,

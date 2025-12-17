@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Agritech Demo - QuASIM", layout="wide")
 
     st.title("🌾 Irrigation & Yield Optimization with Weather Uncertainty")
@@ -15,6 +16,7 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
 
     Maximize yield per water input under weather/soil dynamics
@@ -58,6 +60,7 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
 
     ```bash

@@ -1,4 +1,5 @@
 """
+
 Reproducibility Tests for XENON v5
 
 Tests deterministic behavior across all XENON components.
@@ -18,11 +19,13 @@ class TestReproducibility:
 
     def test_global_seed(self):
         """Test global seed is locked for production."""
+
         seed = get_global_seed()
         assert seed == 42, "Global seed must be 42 for production"
 
     def test_reproducibility_manager_determinism(self):
         """Test reproducibility manager sets up deterministic mode."""
+
         manager = ReproducibilityManager()
         manager.setup_deterministic_mode()
 
@@ -32,6 +35,7 @@ class TestReproducibility:
 
     def test_alignment_reproducibility(self):
         """Test alignment produces identical results across runs."""
+
         seq1 = "ACGTACGT"
         seq2 = "ACGTGCGT"
 
@@ -46,6 +50,7 @@ class TestReproducibility:
 
     def test_information_engine_reproducibility(self):
         """Test information engine produces identical results."""
+
         data_x = np.random.RandomState(42).randn(100, 1)
         data_y = np.random.RandomState(42).randn(100, 1)
 
@@ -60,6 +65,7 @@ class TestReproducibility:
 
     def test_cross_platform_determinism(self):
         """Test determinism across different numpy operations."""
+
         manager = ReproducibilityManager(seed=42)
         manager.setup_deterministic_mode()
 

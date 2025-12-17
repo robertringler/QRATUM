@@ -20,6 +20,7 @@ from quasim.terc_bridge.registry import list_observables
 
 def tier1_validation_pipeline():
     """Tier-1 validation: Initial state checks."""
+
     print("=" * 70)
     print("TERC Tier-1 Validation Pipeline")
     print("=" * 70)
@@ -85,6 +86,7 @@ def tier1_validation_pipeline():
 
 def tier5_robustness_pipeline():
     """Tier-5 validation: Robustness and stability."""
+
     print("=" * 70)
     print("TERC Tier-5 Robustness Pipeline")
     print("=" * 70)
@@ -140,6 +142,7 @@ def tier5_robustness_pipeline():
 
 def complete_validation_pipeline():
     """Complete TERC validation pipeline."""
+
     print("=" * 70)
     print("Complete TERC Validation Pipeline")
     print("=" * 70)
@@ -189,6 +192,7 @@ def complete_validation_pipeline():
 
 def observable_extraction_examples():
     """Show examples of extracting individual observables."""
+
     print("=" * 70)
     print("Observable Extraction Examples")
     print("=" * 70)
@@ -223,6 +227,7 @@ def observable_extraction_examples():
 
 def main():
     """Run complete pipeline."""
+
     print("\n")
     print("#" * 70)
     print("# TERC Observables Pipeline Demonstration")

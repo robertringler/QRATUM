@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuASIM × Finance - Portfolio Risk (VaR) Demo
 
 Monte Carlo Value-at-Risk optimization for multi-asset portfolios.
@@ -30,10 +31,12 @@ from quasim.common import (
 
 def simulate_portfolio(alpha: float, profile: dict, seed: int = 42) -> dict:
     """
+
     Simulate portfolio returns using Monte Carlo.
 
     Alpha controls risk-return trade-off (higher alpha = more aggressive).
     """
+
     np.random.seed(seed)
 
     n_simulations = 1000
@@ -79,6 +82,7 @@ def simulate_portfolio(alpha: float, profile: dict, seed: int = 42) -> dict:
 
 def evaluate_fitness(metrics: dict, profile: dict) -> float:
     """Evaluate portfolio fitness against risk-return targets."""
+
     targets = profile["targets"]
     tolerances = profile["tolerances"]
     weights = profile["weights"]
@@ -108,6 +112,7 @@ def evaluate_fitness(metrics: dict, profile: dict) -> float:
 
 def create_visualization(metrics: dict, profile: dict) -> str:
     """Create portfolio performance visualization."""
+
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 10))
 
     returns = np.array(metrics["returns_distribution"]) * 100

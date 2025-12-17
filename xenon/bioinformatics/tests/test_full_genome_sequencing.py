@@ -31,6 +31,7 @@ class TestFullGenomeSequencingPipeline:
     @pytest.fixture
     def temp_output_dir(self):
         """Create temporary output directory."""
+
         temp_dir = tempfile.mkdtemp()
         yield temp_dir
         # Cleanup
@@ -39,6 +40,7 @@ class TestFullGenomeSequencingPipeline:
     @pytest.fixture
     def pipeline_config(self, temp_output_dir):
         """Create test configuration."""
+
         return GenomeSequencingConfig(
             global_seed=42,
             max_threads=2,
@@ -50,6 +52,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_pipeline_initialization(self, pipeline_config):
         """Test that pipeline initializes correctly."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
 
         assert pipeline.config.global_seed == 42
@@ -62,6 +65,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_synthetic_sequence_generation(self, pipeline_config):
         """Test synthetic sequence generation."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
         sequences = pipeline._generate_synthetic_sequences(n_sequences=5)
 
@@ -74,6 +78,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_synthetic_omics_generation(self, pipeline_config):
         """Test synthetic omics data generation."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
         omics_data = pipeline._generate_synthetic_omics_data()
 
@@ -87,6 +92,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_synthetic_timeseries_generation(self, pipeline_config):
         """Test synthetic time-series data generation."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
         timeseries_data = pipeline._generate_synthetic_timeseries_data()
 
@@ -97,6 +103,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_synthetic_variant_graph_generation(self, pipeline_config):
         """Test synthetic variant graph generation."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
         variant_graph = pipeline._generate_synthetic_variant_graph()
 
@@ -107,6 +114,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_alignment_execution(self, pipeline_config):
         """Test alignment phase execution."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
         sequences = pipeline._generate_synthetic_sequences(n_sequences=3)
 
@@ -119,6 +127,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_fusion_execution(self, pipeline_config):
         """Test fusion phase execution."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
         omics_data = pipeline._generate_synthetic_omics_data()
 
@@ -130,6 +139,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_transfer_entropy_execution(self, pipeline_config):
         """Test transfer entropy phase execution."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
         timeseries_data = pipeline._generate_synthetic_timeseries_data()
 
@@ -141,6 +151,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_inference_execution(self, pipeline_config):
         """Test inference phase execution."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
         variant_graph = pipeline._generate_synthetic_variant_graph()
 
@@ -152,6 +163,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_audit_summary_generation(self, pipeline_config):
         """Test audit summary generation."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
 
         # Run a simple operation to generate some audit entries
@@ -167,6 +179,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_reproducibility_report_generation(self, pipeline_config):
         """Test reproducibility report generation."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
 
         report = pipeline.generate_reproducibility_report()
@@ -178,6 +191,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_full_pipeline_run(self, pipeline_config):
         """Test complete pipeline execution."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
 
         deployment_report = pipeline.run()
@@ -210,6 +224,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_deterministic_execution(self, pipeline_config, temp_output_dir):
         """Test that pipeline produces deterministic results."""
+
         # Run 1
         pipeline1 = FullGenomeSequencingPipeline(config=pipeline_config)
         report1 = pipeline1.run()
@@ -234,12 +249,13 @@ class TestFullGenomeSequencingPipeline:
             zip(alignment_results1["alignments"], alignment_results2["alignments"])
         ):
             assert align1["score"] == align2["score"], f"Alignment {i} score differs"
-            assert (
-                align1["circuit_depth"] == align2["circuit_depth"]
-            ), f"Alignment {i} depth differs"
+            assert align1["circuit_depth"] == align2["circuit_depth"], (
+                f"Alignment {i} depth differs"
+            )
 
     def test_hardware_detection(self, pipeline_config):
         """Test hardware detection and backend selection."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
 
         assert pipeline.hardware_detector is not None
@@ -253,6 +269,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_performance_instrumentation(self, pipeline_config):
         """Test that performance metrics are collected."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
 
         deployment_report = pipeline.run()
@@ -267,6 +284,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_thread_safety(self, pipeline_config):
         """Test thread-safe engine wrapper."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
 
         assert pipeline.thread_safe_alignment is not None
@@ -283,6 +301,7 @@ class TestFullGenomeSequencingPipeline:
 
     def test_output_structure(self, pipeline_config):
         """Test that output files have correct structure."""
+
         pipeline = FullGenomeSequencingPipeline(config=pipeline_config)
         pipeline.run()
 

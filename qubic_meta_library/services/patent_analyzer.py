@@ -10,6 +10,7 @@ class PatentAnalyzer:
 
     def __init__(self):
         """Initialize patent analyzer."""
+
         self.high_value_threshold = 0.80
         self.premium_threshold = 0.90
 
@@ -17,6 +18,7 @@ class PatentAnalyzer:
         self, prompts: dict[int, Prompt], threshold: float | None = None
     ) -> list[Prompt]:
         """
+
         Extract high-value prompts based on patentability and commercial scores.
 
         Args:
@@ -26,6 +28,7 @@ class PatentAnalyzer:
         Returns:
             List of high-value prompts sorted by combined score
         """
+
         if threshold is None:
             threshold = self.high_value_threshold
 
@@ -40,6 +43,7 @@ class PatentAnalyzer:
 
     def identify_patent_clusters(self, prompts: dict[int, Prompt]) -> dict[str, list[Prompt]]:
         """
+
         Identify patent clusters by domain.
 
         Args:
@@ -48,6 +52,7 @@ class PatentAnalyzer:
         Returns:
             Dictionary mapping domains to high-value prompts
         """
+
         clusters: dict[str, list[Prompt]] = {}
 
         for prompt in prompts.values():
@@ -64,6 +69,7 @@ class PatentAnalyzer:
 
     def generate_patent_claim_template(self, prompt: Prompt) -> dict[str, Any]:
         """
+
         Generate patent claim template for a prompt.
 
         Args:
@@ -72,6 +78,7 @@ class PatentAnalyzer:
         Returns:
             Dictionary with patent claim structure
         """
+
         return {
             "prompt_id": prompt.id,
             "title": f"System and Method for {prompt.category}",
@@ -114,6 +121,7 @@ class PatentAnalyzer:
         self, prompts: dict[int, Prompt]
     ) -> list[dict[str, Any]]:
         """
+
         Analyze cross-domain patent opportunities.
 
         Args:
@@ -122,6 +130,7 @@ class PatentAnalyzer:
         Returns:
             List of cross-domain patent opportunities
         """
+
         opportunities = []
 
         for prompt in prompts.values():
@@ -149,6 +158,7 @@ class PatentAnalyzer:
 
     def generate_patent_pipeline_report(self, prompts: dict[int, Prompt]) -> dict[str, Any]:
         """
+
         Generate comprehensive patent pipeline report.
 
         Args:
@@ -157,6 +167,7 @@ class PatentAnalyzer:
         Returns:
             Dictionary with patent pipeline metrics and analysis
         """
+
         high_value = self.extract_high_value_prompts(prompts)
         premium_value = [p for p in prompts.values() if p.is_high_value(self.premium_threshold)]
         cross_domain = self.analyze_cross_domain_opportunities(prompts)
@@ -195,6 +206,7 @@ class PatentAnalyzer:
 
     def _calculate_novelty_score(self, prompt: Prompt) -> float:
         """
+
         Calculate novelty score based on multiple factors.
 
         Args:
@@ -203,6 +215,7 @@ class PatentAnalyzer:
         Returns:
             Novelty score (0.0-1.0)
         """
+
         # Weighted combination of factors
         patentability_weight = 0.4
         commercial_weight = 0.3
@@ -225,6 +238,7 @@ class PatentAnalyzer:
         self, all_prompts: dict[int, Prompt], high_value: list[Prompt]
     ) -> list[str]:
         """Generate patent strategy recommendations."""
+
         recommendations = []
 
         # High-value percentage

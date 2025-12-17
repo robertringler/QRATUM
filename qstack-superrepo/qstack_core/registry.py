@@ -26,14 +26,17 @@ class Registry:
 
     def register_kernel(self, kernel: Kernel) -> None:
         """Register a kernel instance."""
+
         self._register(self.kernels, kernel)
 
     def register_module(self, module: Module) -> None:
         """Register a module instance."""
+
         self._register(self.modules, module)
 
     def register_engine(self, engine: Engine) -> None:
         """Register an engine instance."""
+
         self._register(self.engines, engine)
 
     def get_kernel(self, name: str) -> Kernel:

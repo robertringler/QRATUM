@@ -117,6 +117,7 @@ class MolecularVQE:
         Raises:
             ImportError: If required quantum libraries not available
         """
+
         if not QISKIT_AVAILABLE:
             raise ImportError("Qiskit required. Install with: pip install qiskit qiskit-aer")
 
@@ -151,6 +152,7 @@ class MolecularVQE:
         Returns:
             VQEResult with energy and optimization details
         """
+
         # Generate H2 Hamiltonian
         hamiltonian, n_qubits, classical_energy = self._generate_h2_hamiltonian(
             bond_length, basis, compute_classical=use_classical_reference
@@ -193,6 +195,7 @@ class MolecularVQE:
         Returns:
             (hamiltonian, n_qubits, classical_energy)
         """
+
         if not QISKIT_NATURE_AVAILABLE:
             # Fallback: Use hardcoded H2 Hamiltonian for bond_length ~ 0.735 Å
             warnings.warn(
@@ -242,6 +245,7 @@ class MolecularVQE:
         geometry (0.735Å) with STO-3G basis, obtained from standard quantum
         chemistry calculations (e.g., PySCF).
         """
+
         # Known H2 Hamiltonian terms (Jordan-Wigner, 2 qubits)
         # Coefficients for H2 at 0.735 Angstroms, STO-3G basis
         hamiltonian = SparsePauliOp.from_list(
@@ -272,6 +276,7 @@ class MolecularVQE:
         Returns:
             Parameterized quantum circuit
         """
+
         circuit = QuantumCircuit(n_qubits)
         params = []
 
@@ -315,6 +320,7 @@ class MolecularVQE:
         Returns:
             VQEResult with optimal energy and parameters
         """
+
         # Track optimization progress
         iteration_count = [0]
         evaluation_count = [0]
@@ -322,6 +328,7 @@ class MolecularVQE:
 
         def cost_function(params: np.ndarray) -> float:
             """Evaluate energy expectation value."""
+
             evaluation_count[0] += 1
 
             # Use Estimator to compute <ψ(θ)|H|ψ(θ)>
@@ -382,6 +389,7 @@ class MolecularVQE:
         SPSA is gradient-free and efficient for noisy objective functions,
         making it suitable for quantum optimization.
         """
+
         params = initial_params.copy()
         best_energy = float("inf")
         best_params = params.copy()

@@ -122,6 +122,7 @@ if TORCH_AVAILABLE:
                 out_features: Output feature dimension
                 num_heads: Number of attention heads
             """
+
             super().__init__()
             self.num_heads = num_heads
             self.out_features = out_features
@@ -144,6 +145,7 @@ if TORCH_AVAILABLE:
             Returns:
                 Updated node features and attention weights
             """
+
             # Linear transformation
             h = self.linear(node_features)  # [n_nodes, out_features * num_heads]
             h = h.view(-1, self.num_heads, self.out_features)  # [n_nodes, num_heads, out_features]
@@ -194,6 +196,7 @@ if TORCH_AVAILABLE:
                 num_layers: Number of GNN layers
                 num_heads: Number of attention heads per layer
             """
+
             super().__init__()
 
             self.num_layers = num_layers
@@ -224,6 +227,7 @@ if TORCH_AVAILABLE:
             Returns:
                 Node embeddings, graph embedding, predictions
             """
+
             h = node_features
             attention_weights_list = []
 
@@ -275,6 +279,7 @@ class NeuralSymbolicEngine:
             constraint_weight: Weight for constraint regularization (λ)
             seed: Random seed for reproducibility
         """
+
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
         self.output_dim = output_dim
@@ -322,6 +327,7 @@ class NeuralSymbolicEngine:
             ...     return F.relu(-embeddings).sum()  # Penalize negative values
             >>> engine.add_constraint(ConstraintType.NON_NEGATIVE, non_negative_constraint)
         """
+
         self.constraints.append((constraint_type, constraint_fn))
 
     def _compute_constraint_loss(self, embeddings: torch.Tensor) -> torch.Tensor:
@@ -333,6 +339,7 @@ class NeuralSymbolicEngine:
         Returns:
             Total constraint loss
         """
+
         if not TORCH_AVAILABLE:
             return 0.0
 
@@ -360,6 +367,7 @@ class NeuralSymbolicEngine:
         Returns:
             Dictionary of loss components
         """
+
         if not TORCH_AVAILABLE:
             raise RuntimeError("PyTorch not available. Cannot train neural model.")
 
@@ -406,6 +414,7 @@ class NeuralSymbolicEngine:
         Returns:
             Inference result with predictions and embeddings
         """
+
         if TORCH_AVAILABLE and self.model is not None:
             return self._infer_neural(node_features, edge_index)
         else:
@@ -417,6 +426,7 @@ class NeuralSymbolicEngine:
         edge_index: np.ndarray,
     ) -> InferenceResult:
         """Neural inference with PyTorch."""
+
         # Convert to tensors
         node_features_t = torch.FloatTensor(node_features)
         edge_index_t = torch.LongTensor(edge_index)
@@ -456,6 +466,7 @@ class NeuralSymbolicEngine:
         edge_index: np.ndarray,
     ) -> InferenceResult:
         """Classical fallback inference using simple aggregation."""
+
         # Simple message passing aggregation
         n_nodes = node_features.shape[0]
         in_features = node_features.shape[1]
@@ -520,6 +531,7 @@ class NeuralSymbolicEngine:
         Returns:
             (is_equivalent, difference)
         """
+
         if not TORCH_AVAILABLE:
             # No neural backend, always equivalent to itself
             return True, 0.0

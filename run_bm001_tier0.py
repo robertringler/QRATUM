@@ -43,6 +43,7 @@ logger = logging.getLogger(__name__)
 
 def main() -> int:
     """Main entry point for BM_001 Tier-0 execution."""
+
     parser = argparse.ArgumentParser(
         description="Execute Ansys Tier-0 Embedment Package for BM_001",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -273,7 +274,7 @@ def main() -> int:
             f"  Found {len(unique_hashes)} unique hashes across {len(quasim_results)} runs"
         )
         for i, hash_val in enumerate(quasim_hashes):
-            logger.warning(f"  Run {i+1}: {hash_val}")
+            logger.warning(f"  Run {i + 1}: {hash_val}")
 
     # Final summary
     logger.info("\n" + "=" * 80)

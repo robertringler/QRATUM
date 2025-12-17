@@ -34,6 +34,7 @@ def set_seed(seed: int = 42) -> None:
     >>> np.random.randint(0, 100)
     51
     """
+
     # Set Python random seed
     random.seed(seed)
 
@@ -85,6 +86,7 @@ def hash_input(data: Any) -> str:
     >>> hash_input("test query")
     'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb'
     """
+
     if isinstance(data, str):
         data = data.encode("utf-8")
     elif isinstance(data, np.ndarray):

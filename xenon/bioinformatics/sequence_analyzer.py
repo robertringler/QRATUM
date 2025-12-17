@@ -38,10 +38,12 @@ class ProteinSequence:
 
     def length(self) -> int:
         """Return sequence length."""
+
         return len(self.sequence)
 
     def validate(self) -> bool:
         """Validate sequence contains only valid amino acids."""
+
         valid_aa = set("ACDEFGHIKLMNPQRSTVWY")
         return all(aa in valid_aa for aa in self.sequence)
 
@@ -102,6 +104,7 @@ class SequenceAnalyzer:
 
     def __init__(self):
         """Initialize sequence analyzer."""
+
         self._sequences: dict[str, ProteinSequence] = {}
 
     def parse_fasta(self, fasta_content: str) -> list[ProteinSequence]:
@@ -113,6 +116,7 @@ class SequenceAnalyzer:
         Returns:
             List of ProteinSequence objects
         """
+
         sequences = []
         current_id = None
         current_name = None
@@ -166,6 +170,7 @@ class SequenceAnalyzer:
         Returns:
             Molecular weight in Daltons
         """
+
         weight = sum(self.MOLECULAR_WEIGHT.get(aa, 0.0) for aa in sequence.upper())
         # Subtract water molecules for peptide bonds
         weight -= (len(sequence) - 1) * 18.0
@@ -182,6 +187,7 @@ class SequenceAnalyzer:
         Returns:
             Average hydrophobicity score
         """
+
         scores = [self.HYDROPHOBICITY.get(aa, 0.0) for aa in sequence.upper()]
         return float(np.mean(scores)) if scores else 0.0
 
@@ -196,6 +202,7 @@ class SequenceAnalyzer:
         Returns:
             Estimated pI value
         """
+
         # Count charged residues
         n_term = 1
         c_term = 1
@@ -227,6 +234,7 @@ class SequenceAnalyzer:
         Returns:
             Dictionary of amino acid frequencies
         """
+
         sequence = sequence.upper()
         length = len(sequence)
         composition = {}
@@ -257,6 +265,7 @@ class SequenceAnalyzer:
         Returns:
             Tuple of (aligned_seq1, aligned_seq2, alignment_score)
         """
+
         seq1 = seq1.upper()
         seq2 = seq2.upper()
         m, n = len(seq1), len(seq2)
@@ -327,6 +336,7 @@ class SequenceAnalyzer:
         Returns:
             Array of conservation scores (0-1) for each position
         """
+
         if not sequences:
             return np.array([])
 
@@ -368,6 +378,7 @@ class SequenceAnalyzer:
         Returns:
             List of starting positions (0-indexed)
         """
+
         sequence = sequence.upper()
         motif = motif.upper()
         positions = []
@@ -388,6 +399,7 @@ class SequenceAnalyzer:
         Returns:
             Similarity percentage (0-100)
         """
+
         min_len = min(len(seq1), len(seq2))
         if min_len == 0:
             return 0.0
@@ -404,4 +416,5 @@ class SequenceAnalyzer:
         Returns:
             ProteinSequence if found, None otherwise
         """
+
         return self._sequences.get(seq_id)

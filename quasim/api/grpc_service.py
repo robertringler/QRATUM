@@ -23,6 +23,7 @@ class QuASIMService:
 
     def __init__(self):
         """Initialize gRPC service."""
+
         self.name = "QuASIMService"
 
     def SimulateCircuit(self, request: dict[str, Any]) -> dict[str, Any]:
@@ -34,6 +35,7 @@ class QuASIMService:
         Returns:
             Simulation results
         """
+
         return {"job_id": f"grpc_qc_{hash(str(request))}", "status": "completed", "results": {}}
 
     def CreateDigitalTwin(self, request: dict[str, Any]) -> dict[str, Any]:
@@ -45,6 +47,7 @@ class QuASIMService:
         Returns:
             Twin initialization status
         """
+
         return {"twin_id": request.get("twin_id", ""), "status": "initialized"}
 
     def SubmitOptimization(self, request: dict[str, Any]) -> dict[str, Any]:
@@ -56,6 +59,7 @@ class QuASIMService:
         Returns:
             Job submission status
         """
+
         return {"job_id": f"grpc_opt_{hash(str(request))}", "status": "queued"}
 
     def GetClusterStatus(self, request: dict[str, Any]) -> dict[str, Any]:
@@ -67,6 +71,7 @@ class QuASIMService:
         Returns:
             Cluster status information
         """
+
         return {"num_workers": 4, "backend": "cuda", "total_gpus": 4, "available_gpus": 2}
 
 
@@ -79,6 +84,7 @@ def create_grpc_server(port: int = 50051) -> Any:
     Returns:
         Configured gRPC server (in production would use grpc.server())
     """
+
     # In production:
     # import grpc
     # from concurrent import futures
@@ -97,11 +103,13 @@ def create_grpc_server(port: int = 50051) -> Any:
 
         def start(self):
             """Start the gRPC server."""
+
             self.running = True
             print(f"Mock gRPC server started on port {self.port}")
 
         def stop(self, grace: int = 5):
             """Stop the gRPC server."""
+
             self.running = False
             print(f"Mock gRPC server stopped (grace period: {grace}s)")
 

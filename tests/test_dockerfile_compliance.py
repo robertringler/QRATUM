@@ -19,12 +19,14 @@ class TestDockerfileCompliance:
     @pytest.fixture
     def dockerfile_content(self):
         """Load Dockerfile.cuda content."""
+
         dockerfile_path = Path(__file__).parent.parent / "QuASIM" / "Dockerfile.cuda"
         assert dockerfile_path.exists(), "Dockerfile.cuda must exist"
         return dockerfile_path.read_text()
 
     def test_nist_ac6_non_root_user(self, dockerfile_content):
         """Test AC-6 Least Privilege: non-root user present (NIST 800-53)."""
+
         # Verify user creation with specific UID
         assert "useradd" in dockerfile_content, "Non-root user must be created"
         assert "-u 1000" in dockerfile_content, "User must have UID 1000"
@@ -35,6 +37,7 @@ class TestDockerfileCompliance:
 
     def test_nist_ac6_workspace_ownership(self, dockerfile_content):
         """Test AC-6: workspace ownership transfer to non-root user."""
+
         # Verify ownership is transferred to appuser
         assert "chown" in dockerfile_content, "Ownership must be transferred"
         assert "appuser:appuser" in dockerfile_content, "Ownership must be given to appuser"
@@ -42,6 +45,7 @@ class TestDockerfileCompliance:
 
     def test_nist_sc28_pinned_dependencies(self, dockerfile_content):
         """Test SC-28 Integrity: dependency versions pinned (NIST 800-53)."""
+
         # Verify pybind11 is pinned
         assert "pybind11==" in dockerfile_content, "pybind11 must be pinned"
         assert "2.11.1" in dockerfile_content, "pybind11 must be pinned to 2.11.1"
@@ -52,10 +56,9 @@ class TestDockerfileCompliance:
 
     def test_docker_best_practice_apt_cleanup(self, dockerfile_content):
         """Test Docker best practice: apt cache cleanup."""
+
         # Verify apt lists are cleaned up
-        assert "rm -rf /var/lib/apt/lists/*" in dockerfile_content, (
-            "apt cache must be cleaned up"
-        )
+        assert "rm -rf /var/lib/apt/lists/*" in dockerfile_content, "apt cache must be cleaned up"
 
         # Verify cleanup is in same RUN command as apt-get
         # Split on RUN commands to check each separately
@@ -101,6 +104,7 @@ class TestDockerfileCompliance:
 
     def test_compliance_comments_present(self, dockerfile_content):
         """Test that compliance references are documented."""
+
         # Verify NIST 800-53 references
         assert "NIST 800-53" in dockerfile_content, "NIST 800-53 must be referenced"
         assert "CMMC 2.0" in dockerfile_content, "CMMC 2.0 must be referenced"
@@ -109,11 +113,13 @@ class TestDockerfileCompliance:
 
     def test_build_order_preserved(self, dockerfile_content):
         """Test that build order is logical and correct."""
+
         lines = [line.strip() for line in dockerfile_content.split("\n") if line.strip()]
 
         # Extract key commands in order (only actual Dockerfile commands, not comments)
         def find_command_index(predicate, error_msg):
             """Find index of command matching predicate."""
+
             try:
                 return next(i for i, line in enumerate(lines) if predicate(line))
             except StopIteration:
@@ -124,7 +130,7 @@ class TestDockerfileCompliance:
         )
         user_create_idx = find_command_index(
             lambda line: line.startswith("RUN") and "useradd" in line,
-            "RUN useradd command not found"
+            "RUN useradd command not found",
         )
         workdir_idx = find_command_index(
             lambda line: line.startswith("WORKDIR"), "WORKDIR command not found"
@@ -134,22 +140,19 @@ class TestDockerfileCompliance:
         )
         pip_idx = find_command_index(
             lambda line: line.startswith("RUN") and "pip3 install" in line and "pybind11" in line,
-            "RUN pip3 install command not found"
+            "RUN pip3 install command not found",
         )
         cmake_idx = find_command_index(
             lambda line: line.startswith("RUN") and "cmake -S . -B build" in line,
-            "RUN cmake command not found"
+            "RUN cmake command not found",
         )
         chown_idx = find_command_index(
-            lambda line: line.startswith("RUN") and "chown" in line,
-            "RUN chown command not found"
+            lambda line: line.startswith("RUN") and "chown" in line, "RUN chown command not found"
         )
         user_switch_idx = find_command_index(
             lambda line: line.startswith("USER"), "USER command not found"
         )
-        cmd_idx = find_command_index(
-            lambda line: line.startswith("CMD"), "CMD command not found"
-        )
+        cmd_idx = find_command_index(lambda line: line.startswith("CMD"), "CMD command not found")
 
         # Verify order
         assert from_idx < user_create_idx, "User must be created after FROM"
@@ -163,6 +166,7 @@ class TestDockerfileCompliance:
 
     def test_no_security_regressions(self, dockerfile_content):
         """Test that no security anti-patterns are present."""
+
         # Ensure no hardcoded secrets
         assert "password" not in dockerfile_content.lower(), "No hardcoded passwords"
         assert "secret" not in dockerfile_content.lower(), "No hardcoded secrets"

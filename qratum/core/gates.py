@@ -39,6 +39,7 @@ def RX(theta: float) -> GateMatrix:
     Returns:
         2x2 rotation matrix
     """
+
     return np.array(
         [
             [np.cos(theta / 2), -1j * np.sin(theta / 2)],
@@ -57,6 +58,7 @@ def RY(theta: float) -> GateMatrix:
     Returns:
         2x2 rotation matrix
     """
+
     return np.array(
         [
             [np.cos(theta / 2), -np.sin(theta / 2)],
@@ -75,6 +77,7 @@ def RZ(theta: float) -> GateMatrix:
     Returns:
         2x2 rotation matrix
     """
+
     return np.array([[np.exp(-1j * theta / 2), 0], [0, np.exp(1j * theta / 2)]], dtype=complex)
 
 
@@ -87,6 +90,7 @@ def Phase(phi: float) -> GateMatrix:
     Returns:
         2x2 phase matrix
     """
+
     return np.array([[1, 0], [0, np.exp(1j * phi)]], dtype=complex)
 
 
@@ -101,6 +105,7 @@ def U3(theta: float, phi: float, lam: float) -> GateMatrix:
     Returns:
         2x2 general rotation matrix
     """
+
     return np.array(
         [
             [np.cos(theta / 2), -np.exp(1j * lam) * np.sin(theta / 2)],
@@ -139,6 +144,7 @@ def CRX(theta: float) -> GateMatrix:
     Returns:
         4x4 controlled rotation matrix
     """
+
     rx = RX(theta)
     return np.block([[np.eye(2), np.zeros((2, 2))], [np.zeros((2, 2)), rx]])
 
@@ -152,6 +158,7 @@ def CRY(theta: float) -> GateMatrix:
     Returns:
         4x4 controlled rotation matrix
     """
+
     ry = RY(theta)
     return np.block([[np.eye(2), np.zeros((2, 2))], [np.zeros((2, 2)), ry]])
 
@@ -165,6 +172,7 @@ def CRZ(theta: float) -> GateMatrix:
     Returns:
         4x4 controlled rotation matrix
     """
+
     rz = RZ(theta)
     return np.block([[np.eye(2), np.zeros((2, 2))], [np.zeros((2, 2)), rz]])
 

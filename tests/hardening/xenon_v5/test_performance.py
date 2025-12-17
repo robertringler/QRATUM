@@ -1,4 +1,5 @@
 """
+
 Performance Tests for XENON v5
 
 Tests that performance targets are met.
@@ -19,6 +20,7 @@ class TestPerformance:
 
     def test_alignment_performance(self):
         """Test alignment meets performance targets."""
+
         engine = QuantumAlignmentEngine(seed=42)
 
         seq1 = "ACGT" * 25  # 100 bases
@@ -34,6 +36,7 @@ class TestPerformance:
 
     def test_profiler_comparison(self):
         """Test performance profiler can compare implementations."""
+
         profiler = PerformanceProfiler(tolerance=1e-6)
 
         def baseline_fn(size=100):
@@ -53,6 +56,7 @@ class TestPerformance:
 
     def test_information_engine_performance(self):
         """Test information engine meets performance targets."""
+
         from qratum.bioinformatics.xenon.omics import InformationEngine
 
         engine = InformationEngine(seed=42)
@@ -71,6 +75,7 @@ class TestPerformance:
 
     def test_neural_symbolic_performance(self):
         """Test neural-symbolic reasoner meets performance targets."""
+
         from qratum.bioinformatics.xenon.inference import NeuralSymbolicReasoner
 
         reasoner = NeuralSymbolicReasoner(seed=42, enable_neural=False)

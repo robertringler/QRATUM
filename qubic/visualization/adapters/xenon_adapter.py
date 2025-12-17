@@ -26,6 +26,7 @@ class XenonSimulationAdapter(SimulationAdapter):
             layout: Network layout algorithm ('spring', 'circular', 'hierarchical')
             scale: Spatial scale factor for visualization
         """
+
         self.layout = layout
         self.scale = scale
 
@@ -41,6 +42,7 @@ class XenonSimulationAdapter(SimulationAdapter):
         Raises:
             ValueError: If source type is not supported
         """
+
         if isinstance(source, BioMechanism):
             adapter = BioMechanismAdapter(source)
             return adapter.to_3d_network(layout=self.layout, scale=self.scale)
@@ -71,6 +73,7 @@ class XenonSimulationAdapter(SimulationAdapter):
         Returns:
             True if source is valid, False otherwise
         """
+
         return isinstance(source, (BioMechanism, MolecularState, Transition))
 
     def load_mechanism_timeseries(self, mechanisms: list[BioMechanism]) -> list[VisualizationData]:
@@ -84,6 +87,7 @@ class XenonSimulationAdapter(SimulationAdapter):
         Returns:
             List of VisualizationData objects, one per timestep
         """
+
         viz_data_list = []
         for mechanism in mechanisms:
             adapter = BioMechanismAdapter(mechanism)

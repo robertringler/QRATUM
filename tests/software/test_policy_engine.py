@@ -1,4 +1,5 @@
 """
+
 Tests for policy engine and validation.
 """
 
@@ -13,6 +14,7 @@ class TestPolicyEngine:
 
     def test_default_policy(self):
         """Test default policy initialization."""
+
         policy = PolicyEngine()
 
         assert policy.environment == Environment.DEV
@@ -21,6 +23,7 @@ class TestPolicyEngine:
 
     def test_load_policy_from_file(self, tmp_path):
         """Test loading policy from YAML."""
+
         policy_data = {
             "environment": "LAB",
             "allowed_backends": ["nvml", "rocm_smi"],
@@ -53,6 +56,7 @@ class TestPolicyEngine:
 
     def test_device_limits_validation(self):
         """Test device limits validation."""
+
         limits = DeviceLimits(
             power_watts_max=300,
             temp_c_max=85,
@@ -76,6 +80,7 @@ class TestPolicyEngine:
 
     def test_rate_limiting(self):
         """Test rate limit enforcement."""
+
         policy = PolicyEngine()
         policy.rate_limiter.commands_per_minute = 3
         policy.rate_limiter.window_seconds = 10
@@ -90,6 +95,7 @@ class TestPolicyEngine:
 
     def test_operation_validation(self):
         """Test operation validation."""
+
         policy = PolicyEngine()
 
         # Valid operation
@@ -111,6 +117,7 @@ class TestPolicyEngine:
 
     def test_prod_environment_restrictions(self, tmp_path):
         """Test production environment restrictions."""
+
         policy_data = {
             "environment": "PROD",
             "allowed_backends": ["nvml"],
@@ -132,6 +139,7 @@ class TestPolicyEngine:
 
     def test_approval_validation(self, tmp_path):
         """Test approval token validation."""
+
         token_file = tmp_path / "token.txt"
         token_file.write_text("secret-token-123")
 

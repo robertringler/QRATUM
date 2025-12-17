@@ -41,6 +41,7 @@ class AuditResult:
         metadata : Optional[Dict[str, Any]]
             Additional metadata for the check
         """
+
         self.check_name = check_name
         self.status = status
         self.score = score
@@ -59,11 +60,13 @@ class RepositoryAuditor:
         export_path : Optional[Path]
             Path to export audit summary JSON
         """
+
         self.export_path = export_path or Path("audit/audit_summary.json")
         self.results: List[AuditResult] = []
 
     def run_code_quality_check(self) -> AuditResult:
         """Run code quality checks with ruff and pylint."""
+
         findings = []
         score = 10.0
 
@@ -142,6 +145,7 @@ class RepositoryAuditor:
 
     def run_security_check(self) -> AuditResult:
         """Run security checks with pip-audit and safety."""
+
         findings = []
         score = 10.0
 
@@ -220,6 +224,7 @@ class RepositoryAuditor:
 
     def run_compliance_check(self) -> AuditResult:
         """Run compliance verification checks."""
+
         findings = []
         score = 10.0
 
@@ -283,6 +288,7 @@ class RepositoryAuditor:
 
     def run_test_coverage_check(self) -> AuditResult:
         """Run test coverage analysis."""
+
         findings = []
         score = 10.0
 
@@ -365,6 +371,7 @@ class RepositoryAuditor:
 
     def run_performance_check(self) -> AuditResult:
         """Run performance profiling check."""
+
         findings = []
         score = 10.0
 
@@ -407,6 +414,7 @@ class RepositoryAuditor:
 
     def run_documentation_check(self) -> AuditResult:
         """Run documentation validation check."""
+
         findings = []
         score = 10.0
 
@@ -478,6 +486,7 @@ class RepositoryAuditor:
         Dict[str, Any]
             Comprehensive audit summary
         """
+
         print("=" * 60)
         print("QuASIM Full Repository Audit")
         print("=" * 60)
@@ -529,6 +538,7 @@ class RepositoryAuditor:
 
     def _generate_summary(self) -> Dict[str, Any]:
         """Generate audit summary from results."""
+
         timestamp = datetime.now(timezone.utc).isoformat() + "Z"
 
         # Calculate overall metrics
@@ -614,6 +624,7 @@ class RepositoryAuditor:
 
 def main():
     """Main entry point for audit CLI."""
+
     parser = argparse.ArgumentParser(description="QuASIM Full Repository Audit")
     parser.add_argument(
         "--full",

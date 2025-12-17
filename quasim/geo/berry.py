@@ -40,6 +40,7 @@ def compute_berry_phase(
         >>> params = np.column_stack([theta, theta])
         >>> gamma = compute_berry_phase(eigvecs, params)
     """
+
     n_steps = len(eigenvectors)
     if n_steps < 2:
         return 0.0
@@ -98,6 +99,7 @@ def evolve_with_berry_phase(
         >>> path = np.linspace([0, 0.1], [1, 0.1], 50)
         >>> final, gamma = evolve_with_berry_phase(initial, H, path, 0.01)
     """
+
     state = initial_state.copy()
     eigenvectors_history = []
 
@@ -146,4 +148,5 @@ def analytical_berry_phase_spin_half(solid_angle: float) -> float:
     Reference:
         Berry (1984), Section 5: "Spin in a precessing magnetic field"
     """
+
     return -solid_angle / 2.0

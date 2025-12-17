@@ -23,6 +23,7 @@ def main(output_dir: Path = Path("./viz_output")) -> None:
     Args:
         output_dir: Directory for output files
     """
+
     logger.info("=" * 60)
     logger.info("QUBIC Tire Visualization Example")
     logger.info("=" * 60)
@@ -36,7 +37,7 @@ def main(output_dir: Path = Path("./viz_output")) -> None:
     tire_data = adapter.create_synthetic_tire(resolution=48, include_fields=True)
 
     logger.info(
-        f"Tire mesh created: {len(tire_data.vertices)} vertices, " f"{len(tire_data.faces)} faces"
+        f"Tire mesh created: {len(tire_data.vertices)} vertices, {len(tire_data.faces)} faces"
     )
     logger.info(f"Available fields: {list(tire_data.scalar_fields.keys())}")
 

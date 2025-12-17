@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuASIM × Manufacturing IIoT Demo
 
 Smart factory production line optimization.
@@ -30,6 +31,7 @@ from quasim.common import (
 
 def simulate_production(alpha: float, profile: dict, seed: int = 42) -> dict:
     """Simulate manufacturing production line."""
+
     np.random.seed(seed)
     targets = profile["targets"]
     time = np.linspace(0, 100, 100)
@@ -66,6 +68,7 @@ def simulate_production(alpha: float, profile: dict, seed: int = 42) -> dict:
 
 def evaluate_fitness(metrics: dict, profile: dict) -> float:
     """Evaluate manufacturing fitness."""
+
     targets = profile["targets"]
     tolerances = profile["tolerances"]
     weights = profile["weights"]
@@ -91,6 +94,7 @@ def evaluate_fitness(metrics: dict, profile: dict) -> float:
 
 def create_visualization(metrics: dict, profile: dict) -> str:
     """Create manufacturing visualization."""
+
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 10))
     time = np.array(metrics["time"])
 

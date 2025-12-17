@@ -35,6 +35,7 @@ def compute_compression_metrics(
         >>> assert metrics["compression_ratio"] == 16.0
         >>> assert metrics["space_savings"] == 93.75
     """
+
     if compressed_size <= 0:
         raise ValueError("Compressed size must be positive")
     if original_size <= 0:
@@ -85,6 +86,7 @@ def aggregate_compression_statistics(
         >>> assert stats["mean"] == 30.0
         >>> assert stats["median"] == 30.0
     """
+
     if not compression_ratios:
         raise ValueError("Empty compression ratio list")
 
@@ -128,6 +130,7 @@ def compute_compression_efficiency(
         >>> efficiency = compute_compression_efficiency(20.0, 0.995, 2.0)
         >>> assert efficiency["throughput"] == 10.0
     """
+
     # Efficiency score: geometric mean of ratio and fidelity
     # Scale fidelity to similar range as compression ratio
     fidelity_scaled = fidelity * 100  # Scale 0.99 -> 99
@@ -161,6 +164,7 @@ def format_compression_ratio(ratio: float, precision: int = 2) -> str:
         >>> formatted = format_compression_ratio(24.73)
         >>> assert formatted == "24.73×"
     """
+
     return f"{ratio:.{precision}f}×"
 
 
@@ -190,6 +194,7 @@ def validate_compression_claim(
         >>> assert result["in_range"]
         >>> assert result["status"] == "WITHIN_RANGE"
     """
+
     in_range = claimed_min <= measured_ratio <= claimed_max
     meets_min = measured_ratio >= claimed_min
     meets_max = measured_ratio <= claimed_max

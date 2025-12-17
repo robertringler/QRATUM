@@ -30,6 +30,7 @@ def derive_thread_seed(base_seed: int, thread_id: int) -> int:
     Returns:
         Derived seed for thread
     """
+
     combined = f"{base_seed}:thread_{thread_id}"
     hash_bytes = hashlib.sha256(combined.encode()).digest()
     return int.from_bytes(hash_bytes[:4], byteorder="big")
@@ -48,6 +49,7 @@ class ThreadSafeEngine:
             engine: Engine to wrap
             base_seed: Base seed for thread derivation
         """
+
         self.engine = engine
         self.base_seed = base_seed
         self._lock = threading.Lock()
@@ -64,6 +66,7 @@ class ThreadSafeEngine:
         Returns:
             Method result
         """
+
         with self._lock:
             method = getattr(self.engine, method_name)
             return method(*args, **kwargs)
@@ -84,6 +87,7 @@ class ThreadSafeEngine:
         Returns:
             List of results in input order
         """
+
         results = [None] * len(args_list)
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -110,6 +114,7 @@ class ThreadSafeEngine:
         kwargs: Dict,
     ) -> Any:
         """Execute with lock."""
+
         with self._lock:
             method = getattr(self.engine, method_name)
             return method(*args, **kwargs)
@@ -124,6 +129,7 @@ def thread_safe(func: Callable) -> Callable:
     Returns:
         Thread-safe wrapper
     """
+
     lock = threading.Lock()
 
     @wraps(func)

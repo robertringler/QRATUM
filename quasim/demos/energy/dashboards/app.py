@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Energy Demo - QuASIM", layout="wide")
 
     st.title("⚡ Grid Dispatch with Renewables & Storage Under Uncertainty")
@@ -15,6 +16,7 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
 
     Minimize cost and curtailment subject to stability constraints
@@ -58,6 +60,7 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
 
     ```bash

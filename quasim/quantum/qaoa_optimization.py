@@ -106,6 +106,7 @@ class QAOA:
         Raises:
             ImportError: If Qiskit not available
         """
+
         if not QISKIT_AVAILABLE:
             raise ImportError("Qiskit required. Install with: pip install qiskit qiskit-aer")
 
@@ -140,6 +141,7 @@ class QAOA:
         Returns:
             QAOAResult with best solution and optimization details
         """
+
         # Determine number of nodes
         n_nodes = max(max(e) for e in edges) + 1
 
@@ -198,6 +200,7 @@ class QAOA:
         Returns:
             QAOAResult with best spin configuration
         """
+
         n_spins = len(coupling_matrix)
 
         print(f"Ising model: {n_spins} spins")
@@ -224,6 +227,7 @@ class QAOA:
         MaxCut Hamiltonian: H = Σ_{(i,j) ∈ E} 0.5 * (1 - Z_i Z_j)
         Minimizing this maximizes the cut value.
         """
+
         pauli_list = []
 
         for i, j in edges:
@@ -245,6 +249,7 @@ class QAOA:
 
         H = -Σ J_ij Z_i Z_j - Σ h_i Z_i
         """
+
         n = len(coupling_matrix)
         pauli_list = []
 
@@ -281,6 +286,7 @@ class QAOA:
            b. Apply mixer Hamiltonian with parameter β_p
         3. Measure all qubits
         """
+
         circuit = QuantumCircuit(n_qubits)
 
         # Initial state: uniform superposition
@@ -307,6 +313,7 @@ class QAOA:
         self, circuit: QuantumCircuit, hamiltonian: SparsePauliOp, gamma: Parameter
     ) -> None:
         """Apply problem Hamiltonian evolution e^(-iγH)."""
+
         for pauli_str, coeff in hamiltonian.to_list():
             if pauli_str == "I" * len(pauli_str):
                 # Identity term contributes only global phase
@@ -317,6 +324,7 @@ class QAOA:
 
     def _apply_pauli_evolution(self, circuit: QuantumCircuit, pauli_str: str, angle: Any) -> None:
         """Apply evolution under Pauli string."""
+
         n = len(pauli_str)
 
         # Find qubits with non-identity operators
@@ -360,11 +368,13 @@ class QAOA:
         max_iterations: int = 100,
     ) -> QAOAResult:
         """Optimize QAOA parameters to minimize cost function."""
+
         evaluation_count = [0]
         best_result = {"energy": float("inf"), "bitstring": None, "counts": None}
 
         def cost_function(params: np.ndarray) -> float:
             """Evaluate cost function expectation."""
+
             evaluation_count[0] += 1
 
             # Run circuit with current parameters
@@ -418,6 +428,7 @@ class QAOA:
 
         Convert bitstring to spin configuration and compute energy.
         """
+
         # Convert bitstring to spin values (0 -> +1, 1 -> -1)
         spins = np.array([1 if b == "0" else -1 for b in bitstring])
 
@@ -438,6 +449,7 @@ class QAOA:
 
     def _solve_maxcut_classical(self, edges: list[tuple[int, int]], n_nodes: int) -> float:
         """Solve MaxCut exactly using brute force (small instances only)."""
+
         max_cut = 0
 
         # Try all 2^n partitions

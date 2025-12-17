@@ -27,6 +27,7 @@ def extract_ioc_features(text: str, max_period: int = 20) -> NDArray[np.float32]
     NDArray
         IoC tensor features of shape (max_period,)
     """
+
     rev = REVULTRAAlgorithms()
     ioc_tensor = rev.index_of_coincidence_tensor(text, max_period=max_period)
 
@@ -51,6 +52,7 @@ def extract_spectral_features(text: str, max_lag: int = 30) -> NDArray[np.float3
     NDArray
         Spectral autocorrelation features of shape (max_lag,)
     """
+
     rev = REVULTRAAlgorithms()
     autocorr = rev.spectral_autocorrelation(text, max_lag=max_lag)
 
@@ -75,6 +77,7 @@ def extract_entropy_motifs(text: str, window_size: int = 10) -> NDArray[np.float
     NDArray
         Entropy motif features
     """
+
     if len(text) < window_size:
         # Pad text if too short
         text = text * (window_size // len(text) + 1)
@@ -143,6 +146,7 @@ def extract_symbolic_latents(
     >>> latents.shape
     (70,)
     """
+
     ioc_feats = extract_ioc_features(text, max_period=ioc_periods)
     spectral_feats = extract_spectral_features(text, max_lag=spectral_lags)
     entropy_feats = extract_entropy_motifs(text, window_size=entropy_window)
@@ -177,6 +181,7 @@ def extract_symbolic_latents_batch(
     NDArray
         Symbolic latents of shape (len(texts), feature_dim)
     """
+
     latents = []
     for text in texts:
         latent = extract_symbolic_latents(text, ioc_periods, spectral_lags, entropy_window)
@@ -203,6 +208,7 @@ def extract_symbolic_latents_numeric(
     NDArray
         Symbolic latents of shape (n_samples, latent_dim)
     """
+
     n_samples, n_features = X.shape
 
     latents = []

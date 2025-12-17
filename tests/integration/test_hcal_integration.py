@@ -1,4 +1,5 @@
 """
+
 Integration tests for HCAL end-to-end workflows.
 
 Tests full workflows without requiring real hardware (mocked backends).
@@ -20,6 +21,7 @@ class TestHCALIntegration:
     @pytest.fixture
     def policy_file(self, tmp_path):
         """Create temporary policy file."""
+
         policy_data = {
             "environment": "DEV",
             "allowed_backends": ["nvml", "rocm_smi"],
@@ -45,6 +47,7 @@ class TestHCALIntegration:
     @pytest.fixture
     def hcal(self, policy_file, tmp_path):
         """Create HCAL instance with test policy."""
+
         audit_dir = tmp_path / "audit_logs"
         return HCAL.from_policy(
             policy_path=policy_file, enable_actuation=False, audit_log_dir=audit_dir
@@ -52,6 +55,7 @@ class TestHCALIntegration:
 
     def test_discover_topology(self, hcal):
         """Test hardware topology discovery."""
+
         topology = hcal.discover(full=True)
 
         assert "devices" in topology
@@ -61,6 +65,7 @@ class TestHCALIntegration:
 
     def test_plan_and_apply_dry_run(self, hcal):
         """Test plan creation and dry-run application."""
+
         # Plan with low-latency profile
         plan = hcal.plan(profile="low-latency", devices=["GPU0"])
 
@@ -77,6 +82,7 @@ class TestHCALIntegration:
     @patch("quasim.hcal.backends.nvidia_nvml.NVMLBackend")
     def test_plan_and_apply_with_actuation(self, mock_nvml, hcal):
         """Test actual hardware actuation (mocked)."""
+
         # Setup mock backend
         mock_backend = Mock()
         mock_backend.apply_setpoint.return_value = {"success": True}
@@ -103,6 +109,7 @@ class TestHCALIntegration:
 
     def test_policy_violation_blocks_operation(self, hcal):
         """Test that policy violations block operations."""
+
         # Create plan that violates power limit
         plan = {
             "profile": "test",
@@ -120,6 +127,7 @@ class TestHCALIntegration:
 
     def test_device_not_on_allowlist(self, hcal):
         """Test that unlisted devices are blocked."""
+
         plan = {
             "profile": "test",
             "plan_id": "test-789",
@@ -135,6 +143,7 @@ class TestHCALIntegration:
 
     def test_calibration_dry_run(self, hcal):
         """Test calibration loop in dry-run mode."""
+
         loop = hcal.calibration(device="GPU0", routine="power_sweep", parameters={})
 
         result = loop.run(max_iters=5, enable_actuation=False)
@@ -147,6 +156,7 @@ class TestHCALIntegration:
 
     def test_telemetry_collection(self, hcal):
         """Test telemetry collection."""
+
         telemetry = hcal.get_telemetry(devices=["GPU0"])
 
         assert isinstance(telemetry, dict)
@@ -154,6 +164,7 @@ class TestHCALIntegration:
 
     def test_emergency_stop(self, hcal):
         """Test emergency stop functionality."""
+
         result = hcal.emergency_stop()
 
         assert isinstance(result, dict)
@@ -163,6 +174,7 @@ class TestHCALIntegration:
 
     def test_audit_log_creation(self, hcal, tmp_path):
         """Test that audit logs are created."""
+
         audit_dir = tmp_path / "audit_logs"
 
         # Apply a plan (dry-run)
@@ -190,12 +202,14 @@ class TestCLIIntegration:
     @pytest.fixture
     def cli_runner(self):
         """Create Click CLI test runner."""
+
         from click.testing import CliRunner
 
         return CliRunner()
 
     def test_discover_command(self, cli_runner, tmp_path):
         """Test discover CLI command."""
+
         from quasim.hcal.cli import cli
 
         result = cli_runner.invoke(cli, ["discover", "--json"])
@@ -210,6 +224,7 @@ class TestCLIIntegration:
 
     def test_plan_command(self, cli_runner, tmp_path):
         """Test plan CLI command."""
+
         from quasim.hcal.cli import cli
 
         result = cli_runner.invoke(
@@ -235,6 +250,7 @@ class TestRollback:
     @pytest.fixture
     def hcal_with_baseline(self, tmp_path):
         """HCAL instance with captured baseline."""
+
         policy_data = {
             "environment": "DEV",
             "allowed_backends": ["nvml"],
@@ -255,6 +271,7 @@ class TestRollback:
 
     def test_rollback_on_error(self, hcal_with_baseline):
         """Test automatic rollback on error."""
+
         hcal = hcal_with_baseline
 
         # Create plan that would fail validation
@@ -274,6 +291,7 @@ class TestRollback:
 
     def test_manual_rollback(self, hcal_with_baseline):
         """Test manual device rollback."""
+
         hcal = hcal_with_baseline
 
         result = hcal.actuator.rollback_device("GPU0")

@@ -27,6 +27,7 @@ def encode_video(
         codec: Video codec (libx264 or libx265)
         quality: Quality parameter (lower is better, 0-51)
     """
+
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -68,6 +69,7 @@ def encode_gif(
         fps: Frames per second
         loop: Number of loops (0 = infinite)
     """
+
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -99,6 +101,7 @@ def save_frame(frame: np.ndarray, output_path: str | Path) -> None:
         frame: RGB frame as numpy array (H, W, 3)
         output_path: Output PNG path
     """
+
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -121,4 +124,5 @@ def check_ffmpeg() -> bool:
     Returns:
         True if FFmpeg is available
     """
+
     return shutil.which("ffmpeg") is not None

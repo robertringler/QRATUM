@@ -80,6 +80,7 @@ class QuASIMCore:
 
 CUDA_KERNELS = {
     "tensor_solve.cu": """
+
 #include <cuda_runtime.h>
 extern "C" __global__ void saxpy_kernel(int n,const float a,const float* x,float* y){
     int i=blockIdx.x*blockDim.x+threadIdx.x;
@@ -87,6 +88,7 @@ extern "C" __global__ void saxpy_kernel(int n,const float a,const float* x,float
 }
 """,
     "vjp.cu": """
+
 #include <cuda_runtime.h>
 extern "C" __global__ void vjp_accum(int n,const float* cot,float* grad){
     int i=blockIdx.x*blockDim.x+threadIdx.x;
@@ -94,6 +96,7 @@ extern "C" __global__ void vjp_accum(int n,const float* cot,float* grad){
 }
 """,
     "ftq_kernels.cu": """
+
 #include <cuda_runtime.h>
 extern "C" __global__ void parity_check(int n,const unsigned char* bits,int* parity){
     __shared__ int s; if(threadIdx.x==0)s=0;__syncthreads();
@@ -105,6 +108,7 @@ extern "C" __global__ void parity_check(int n,const unsigned char* bits,int* par
 }
 
 PYBIND_CPP = """
+
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 namespace py = pybind11;
@@ -140,6 +144,7 @@ SU2 + QuASIM Phase XII (BioSwarm) & 0.48 & $2.8\times10^{14}$ & $1.6\times10^{-5
 # ============================================================
 
 CMAKELISTS = """
+
 cmake_minimum_required(VERSION 3.25)
 project(QuASIM LANGUAGES CXX CUDA)
 set(CMAKE_CXX_STANDARD 20)
@@ -151,6 +156,7 @@ target_link_libraries(quasim_demo PRIVATE quasim_core)
 """
 
 DOCKER_CUDA = """
+
 FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
 RUN apt-get update && apt-get install -y python3 python3-pip python3-dev git cmake g++
 WORKDIR /workspace
@@ -161,6 +167,7 @@ CMD ["python3","-c","import sys; sys.path.append('build'); import quasim_cuda as
 """
 
 CI_YML = """
+
 name: Build & Test
 on: [push, pull_request]
 jobs:

@@ -17,6 +17,7 @@ class TaskScheduler:
 
     def __init__(self, num_workers: int = 1) -> None:
         """Initialize task scheduler."""
+
         self.workers: list[RenderWorker] = []
         self.job_queue: asyncio.Queue = asyncio.Queue()
 
@@ -34,12 +35,14 @@ class TaskScheduler:
         Returns:
             Job ID
         """
+
         job_id = job.get("job_id")
         await self.job_queue.put(job)
         return job_id
 
     async def process_queue(self) -> None:
         """Process jobs from the queue."""
+
         while True:
             # Get next job
             job = await self.job_queue.get()
@@ -57,6 +60,7 @@ class TaskScheduler:
         Returns:
             Available worker or None
         """
+
         for worker in self.workers:
             if worker.is_available():
                 return worker
@@ -68,6 +72,7 @@ class TaskScheduler:
         Returns:
             Statistics dictionary
         """
+
         return {
             "num_workers": len(self.workers),
             "busy_workers": sum(1 for w in self.workers if not w.is_available()),

@@ -1,4 +1,5 @@
 """
+
 Numerical Stability Analyzer for QRATUM
 
 Monitors condition numbers, entropy stability, gradient flow, and overflow detection.
@@ -13,6 +14,7 @@ import numpy as np
 
 class NumericalStabilityAnalyzer:
     """
+
     Analyzes numerical stability of computations.
 
     Monitors:
@@ -24,11 +26,13 @@ class NumericalStabilityAnalyzer:
 
     def __init__(self, condition_threshold: float = 1e10):
         """
+
         Initialize stability analyzer.
 
         Args:
             condition_threshold: Maximum acceptable condition number
         """
+
         self.condition_threshold = condition_threshold
         self.warnings_issued = []
 
@@ -36,6 +40,7 @@ class NumericalStabilityAnalyzer:
         self, matrix: np.ndarray, name: str = "matrix"
     ) -> Tuple[bool, float]:
         """
+
         Check matrix condition number.
 
         Args:
@@ -45,6 +50,7 @@ class NumericalStabilityAnalyzer:
         Returns:
             Tuple of (is_stable, condition_number)
         """
+
         try:
             cond = np.linalg.cond(matrix)
             is_stable = cond < self.condition_threshold
@@ -65,6 +71,7 @@ class NumericalStabilityAnalyzer:
         self, probabilities: np.ndarray, epsilon: float = 1e-10
     ) -> Tuple[bool, Optional[float]]:
         """
+
         Check entropy computation stability.
 
         Args:
@@ -74,6 +81,7 @@ class NumericalStabilityAnalyzer:
         Returns:
             Tuple of (is_valid, entropy_value)
         """
+
         # Check if probabilities sum to approximately 1
         prob_sum = np.sum(probabilities)
         if not np.isclose(prob_sum, 1.0, atol=1e-6):
@@ -97,6 +105,7 @@ class NumericalStabilityAnalyzer:
 
     def check_gradient_flow(self, gradients: np.ndarray, threshold: float = 1e-7) -> Dict[str, Any]:
         """
+
         Analyze gradient flow in neural networks.
 
         Args:
@@ -106,6 +115,7 @@ class NumericalStabilityAnalyzer:
         Returns:
             Dictionary with gradient statistics
         """
+
         grad_norm = np.linalg.norm(gradients)
         grad_max = np.max(np.abs(gradients))
         grad_min = np.min(np.abs(gradients[gradients != 0])) if np.any(gradients != 0) else 0.0
@@ -133,6 +143,7 @@ class NumericalStabilityAnalyzer:
 
     def detect_overflow_underflow(self, array: np.ndarray, name: str = "array") -> Dict[str, Any]:
         """
+
         Detect overflow and underflow in numerical arrays.
 
         Args:
@@ -142,6 +153,7 @@ class NumericalStabilityAnalyzer:
         Returns:
             Dictionary with detection results
         """
+
         has_nan = np.any(np.isnan(array))
         has_inf = np.any(np.isinf(array))
 
@@ -176,8 +188,10 @@ class NumericalStabilityAnalyzer:
 
     def get_warnings(self) -> list:
         """Get all warnings issued during analysis."""
+
         return self.warnings_issued.copy()
 
     def reset_warnings(self) -> None:
         """Clear all warnings."""
+
         self.warnings_issued.clear()

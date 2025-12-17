@@ -7,6 +7,7 @@ from dataclasses import dataclass
 @dataclass
 class FlowFrameSpec:
     """
+
     Specification for a single frame of the QuASIM flow visualization.
 
     Attributes:

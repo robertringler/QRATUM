@@ -15,6 +15,7 @@ class TestTireSimulationAdapter:
 
     def test_create_synthetic_tire(self):
         """Test synthetic tire mesh generation."""
+
         adapter = TireSimulationAdapter()
         data = adapter.create_synthetic_tire(resolution=32, include_fields=True)
 
@@ -27,6 +28,7 @@ class TestTireSimulationAdapter:
 
     def test_load_from_dict(self):
         """Test loading tire data from dictionary."""
+
         adapter = TireSimulationAdapter()
 
         vertices = np.array([[0, 0, 0], [1, 0, 0], [0, 1, 0]])
@@ -48,6 +50,7 @@ class TestTireSimulationAdapter:
 
     def test_validate_source(self):
         """Test source validation."""
+
         adapter = TireSimulationAdapter()
 
         # Valid dictionary source
@@ -63,6 +66,7 @@ class TestQuantumSimulationAdapter:
 
     def test_create_synthetic_state(self):
         """Test synthetic quantum state generation."""
+
         adapter = QuantumSimulationAdapter()
 
         for state_type in ["superposition", "entangled", "basis"]:
@@ -75,6 +79,7 @@ class TestQuantumSimulationAdapter:
 
     def test_load_from_array(self):
         """Test loading from amplitude array."""
+
         adapter = QuantumSimulationAdapter()
 
         # Create simple 2-qubit state
@@ -86,6 +91,7 @@ class TestQuantumSimulationAdapter:
 
     def test_validate_source(self):
         """Test source validation."""
+
         adapter = QuantumSimulationAdapter()
 
         # Valid array
@@ -101,6 +107,7 @@ class TestMeshAdapter:
 
     def test_create_test_mesh(self):
         """Test test mesh creation."""
+
         adapter = MeshAdapter()
 
         for mesh_type in ["sphere", "cube", "cylinder"]:
@@ -112,6 +119,7 @@ class TestMeshAdapter:
 
     def test_load_from_dict(self):
         """Test loading from dictionary."""
+
         adapter = MeshAdapter()
 
         vertices = np.array([[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]])
@@ -126,6 +134,7 @@ class TestMeshAdapter:
 
     def test_validate_source(self):
         """Test source validation."""
+
         adapter = MeshAdapter()
 
         valid_dict = {"vertices": [[0, 0, 0]], "faces": [[0, 0, 0]]}
@@ -140,6 +149,7 @@ class TestTimeSeriesAdapter:
 
     def test_create_synthetic_timeseries(self):
         """Test synthetic time-series generation."""
+
         adapter = TimeSeriesAdapter()
         data = adapter.create_synthetic_timeseries(n_steps=5)
 
@@ -148,6 +158,7 @@ class TestTimeSeriesAdapter:
 
     def test_get_timestep(self):
         """Test retrieving specific timesteps."""
+
         adapter = TimeSeriesAdapter()
         adapter.create_synthetic_timeseries(n_steps=3)
 
@@ -160,6 +171,7 @@ class TestTimeSeriesAdapter:
 
     def test_get_time_range(self):
         """Test time range retrieval."""
+
         adapter = TimeSeriesAdapter()
         adapter.create_synthetic_timeseries(n_steps=10)
 
@@ -168,6 +180,7 @@ class TestTimeSeriesAdapter:
 
     def test_validate_source(self):
         """Test source validation."""
+
         adapter = TimeSeriesAdapter()
 
         # Valid list of dicts

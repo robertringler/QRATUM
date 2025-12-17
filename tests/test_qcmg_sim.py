@@ -32,6 +32,7 @@ class TestQCMGParameters:
 
     def test_default_parameters(self):
         """Test default parameter values."""
+
         params = QCMGParameters()
         assert params.grid_size == 64
         assert params.dt == 0.01
@@ -43,6 +44,7 @@ class TestQCMGParameters:
 
     def test_custom_parameters(self):
         """Test custom parameter values."""
+
         params = QCMGParameters(
             grid_size=128,
             dt=0.005,
@@ -64,6 +66,7 @@ class TestFieldInitialization:
 
     def test_gaussian_initialization(self):
         """Test Gaussian wave packet initialization."""
+
         params = QCMGParameters(grid_size=64, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -80,6 +83,7 @@ class TestFieldInitialization:
 
     def test_soliton_initialization(self):
         """Test soliton initialization."""
+
         params = QCMGParameters(grid_size=64, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="soliton")
@@ -90,6 +94,7 @@ class TestFieldInitialization:
 
     def test_random_initialization(self):
         """Test random field initialization."""
+
         params = QCMGParameters(grid_size=64, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="random")
@@ -100,6 +105,7 @@ class TestFieldInitialization:
 
     def test_invalid_initialization_mode(self):
         """Test that invalid initialization mode raises ValueError."""
+
         params = QCMGParameters(grid_size=64)
         field = QuantacosmomorphysigeneticField(params)
 
@@ -108,6 +114,7 @@ class TestFieldInitialization:
 
     def test_fields_are_normalized(self):
         """Test that initialized fields are normalized."""
+
         params = QCMGParameters(grid_size=64, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -126,6 +133,7 @@ class TestFieldEvolution:
 
     def test_single_evolution_step(self):
         """Test single evolution step."""
+
         params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -142,6 +150,7 @@ class TestFieldEvolution:
 
     def test_multiple_evolution_steps(self):
         """Test multiple evolution steps."""
+
         params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -158,6 +167,7 @@ class TestFieldEvolution:
 
     def test_evolution_changes_fields(self):
         """Test that evolution changes field values."""
+
         params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -177,6 +187,7 @@ class TestObservables:
 
     def test_coherence_bounds(self):
         """Test that coherence is bounded in [0, 1]."""
+
         params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
 
@@ -189,6 +200,7 @@ class TestObservables:
 
     def test_entropy_non_negative(self):
         """Test that entropy is non-negative."""
+
         params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
 
@@ -201,6 +213,7 @@ class TestObservables:
 
     def test_energy_finite(self):
         """Test that energy is finite."""
+
         params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
 
@@ -213,6 +226,7 @@ class TestObservables:
 
     def test_no_nan_or_inf(self):
         """Test that fields don't contain NaN or Inf."""
+
         params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -229,6 +243,7 @@ class TestReproducibility:
 
     def test_same_seed_same_results(self):
         """Test that same seed produces same results."""
+
         params1 = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
         field1 = QuantacosmomorphysigeneticField(params1)
         field1.initialize(mode="random")
@@ -252,6 +267,7 @@ class TestReproducibility:
 
     def test_different_seeds_different_results(self):
         """Test that different seeds produce different results."""
+
         params1 = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
         field1 = QuantacosmomorphysigeneticField(params1)
         field1.initialize(mode="random")
@@ -270,6 +286,7 @@ class TestStateValidation:
 
     def test_valid_state(self):
         """Test that properly initialized state is valid."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -279,6 +296,7 @@ class TestStateValidation:
 
     def test_invalid_state_nan(self):
         """Test that state with NaN is invalid."""
+
         params = QCMGParameters(grid_size=32)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -290,6 +308,7 @@ class TestStateValidation:
 
     def test_invalid_state_coherence_out_of_bounds(self):
         """Test that state with coherence > 1 is invalid."""
+
         params = QCMGParameters(grid_size=32)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -301,6 +320,7 @@ class TestStateValidation:
 
     def test_invalid_state_negative_entropy(self):
         """Test that state with negative entropy is invalid."""
+
         params = QCMGParameters(grid_size=32)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -316,6 +336,7 @@ class TestStateExport:
 
     def test_export_state_structure(self):
         """Test exported state has correct structure."""
+
         params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -344,6 +365,7 @@ class TestStateExport:
 
     def test_export_without_history(self):
         """Test export without history."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -357,6 +379,7 @@ class TestStateExport:
 
     def test_save_to_json(self):
         """Test saving state to JSON file."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -384,6 +407,7 @@ class TestLongTimeStability:
 
     def test_long_evolution_stability(self):
         """Test that long evolution remains stable."""
+
         params = QCMGParameters(grid_size=32, dt=0.01, dissipation_rate=0.02, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -404,6 +428,7 @@ class TestCLIIntegration:
 
     def test_cli_basic_run(self):
         """Test basic CLI execution."""
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -426,6 +451,7 @@ class TestCLIIntegration:
 
     def test_cli_with_export(self):
         """Test CLI with JSON export."""
+
         with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             temp_path = f.name
 
@@ -461,6 +487,7 @@ class TestCLIIntegration:
 
     def test_cli_verbose_mode(self):
         """Test CLI verbose output."""
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -486,6 +513,7 @@ class TestCLIIntegration:
 
     def test_cli_different_init_modes(self):
         """Test CLI with different initialization modes."""
+
         for mode in ["gaussian", "soliton", "random"]:
             result = subprocess.run(
                 [
@@ -512,6 +540,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_initialization(self):
         """Test field initialization."""
+
         params = QCMGParameters(random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
 
@@ -521,6 +550,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_initialize_gaussian(self):
         """Test Gaussian initialization."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -534,6 +564,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_initialize_soliton(self):
         """Test soliton initialization."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="soliton")
@@ -545,6 +576,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_initialize_random(self):
         """Test random initialization."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="random")
@@ -556,6 +588,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_initialize_invalid_mode(self):
         """Test initialization with invalid mode."""
+
         params = QCMGParameters(random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
 
@@ -564,6 +597,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_evolve_without_initialization(self):
         """Test that evolve raises error without initialization."""
+
         params = QCMGParameters(random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
 
@@ -572,6 +606,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_evolve_single_step(self):
         """Test single evolution step."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -586,6 +621,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_evolve_multiple_steps(self):
         """Test multiple evolution steps."""
+
         params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -599,6 +635,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_get_state(self):
         """Test get_state method."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -613,6 +650,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_get_state_without_initialization(self):
         """Test that get_state raises error without initialization."""
+
         params = QCMGParameters(random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
 
@@ -621,6 +659,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_coherence_bounds(self):
         """Test that coherence stays in [0, 1]."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -631,6 +670,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_entropy_non_negative(self):
         """Test that entropy is always non-negative."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -641,6 +681,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_energy_finite(self):
         """Test that energy remains finite."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -651,6 +692,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_reproducibility_with_seed(self):
         """Test that simulations are reproducible with same seed."""
+
         params1 = QCMGParameters(grid_size=32, random_seed=42)
         field1 = QuantacosmomorphysigeneticField(params1)
         field1.initialize(mode="gaussian")
@@ -669,6 +711,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_export_state(self):
         """Test export_state method."""
+
         params = QCMGParameters(grid_size=32, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -697,6 +740,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_export_state_without_initialization(self):
         """Test that export_state raises error without initialization."""
+
         params = QCMGParameters(random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
 
@@ -705,6 +749,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_coupling_effect(self):
         """Test that coupling strength affects dynamics."""
+
         # Low coupling
         params_low = QCMGParameters(grid_size=32, coupling_strength=0.01, random_seed=42)
         field_low = QuantacosmomorphysigeneticField(params_low)
@@ -725,6 +770,7 @@ class TestQuantacosmomorphysigeneticField:
 
     def test_thermal_noise_effect(self):
         """Test that thermal noise affects dynamics."""
+
         # No noise
         params_no_noise = QCMGParameters(grid_size=32, thermal_noise=0.0, random_seed=42)
         field_no_noise = QuantacosmomorphysigeneticField(params_no_noise)
@@ -749,6 +795,7 @@ class TestQCMGState:
 
     def test_state_creation(self):
         """Test QCMGState creation."""
+
         phi_m = np.array([1 + 0j, 2 + 0j])
         phi_i = np.array([0 + 1j, 0 + 2j])
 
@@ -774,6 +821,7 @@ class TestIntegrationScenarios:
 
     def test_basic_simulation_workflow(self):
         """Test the basic workflow from Quick Start Guide."""
+
         # Configure
         params = QCMGParameters(grid_size=64, dt=0.01, random_seed=42)
 
@@ -792,6 +840,7 @@ class TestIntegrationScenarios:
 
     def test_decoherence_study(self):
         """Test decoherence study from Quick Start Guide."""
+
         params = QCMGParameters(coupling_strength=0.5, thermal_noise=0.001, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")
@@ -803,6 +852,7 @@ class TestIntegrationScenarios:
 
     def test_entropy_production(self):
         """Test entropy production measurement from Quick Start Guide."""
+
         params = QCMGParameters(interaction_strength=0.1, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="soliton")
@@ -819,6 +869,7 @@ class TestIntegrationScenarios:
 
     def test_compare_initialization_modes(self):
         """Test comparing initialization modes from Quick Start Guide."""
+
         modes = ["gaussian", "soliton", "random"]
         results = {}
 
@@ -838,6 +889,7 @@ class TestIntegrationScenarios:
 
     def test_export_and_analyze(self):
         """Test export and analysis from Quick Start Guide."""
+
         params = QCMGParameters(grid_size=128, random_seed=42)
         field = QuantacosmomorphysigeneticField(params)
         field.initialize(mode="gaussian")

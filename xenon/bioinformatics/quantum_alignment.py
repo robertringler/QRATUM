@@ -111,6 +111,7 @@ class QuantumAlignmentEngine:
             config: Alignment configuration
             seed: Random seed for reproducibility
         """
+
         self.config = config or AlignmentConfig()
         self.seed_manager = SeedManager(seed if seed is not None else 42)
         self._alignment_cache: dict[tuple[str, str], AlignmentResult] = {}
@@ -130,6 +131,7 @@ class QuantumAlignmentEngine:
         Returns:
             Shannon entropy in bits
         """
+
         sequence = sequence.upper()
 
         # Count amino acids
@@ -166,6 +168,7 @@ class QuantumAlignmentEngine:
         Returns:
             Selected circuit depth
         """
+
         # Compute entropy for both sequences
         h1 = self.compute_sequence_entropy(seq1)
         h2 = self.compute_sequence_entropy(seq2)
@@ -197,6 +200,7 @@ class QuantumAlignmentEngine:
         Returns:
             Tuple of (aligned_seq1, aligned_seq2, score, score_matrix)
         """
+
         seq1 = seq1.upper()
         seq2 = seq2.upper()
         m, n = len(seq1), len(seq2)
@@ -274,6 +278,7 @@ class QuantumAlignmentEngine:
         Returns:
             Condition number (ratio of max to min singular value)
         """
+
         # Use Frobenius norm-based estimate for efficiency
         if matrix.size == 0:
             return 1.0
@@ -306,6 +311,7 @@ class QuantumAlignmentEngine:
         Returns:
             Tuple of (aligned_seq1, aligned_seq2, score)
         """
+
         # Use classical algorithm with deterministic seed-based perturbation
         # This ensures reproducibility while maintaining equivalence
         aligned1, aligned2, score, _ = self.align_classical(seq1, seq2)
@@ -348,6 +354,7 @@ class QuantumAlignmentEngine:
         Raises:
             ValueError: If equivalence validation fails
         """
+
         self._call_count += 1
 
         # Check cache (deterministic cache key)
@@ -420,6 +427,7 @@ class QuantumAlignmentEngine:
 
     def clear_cache(self) -> None:
         """Clear alignment cache."""
+
         self._alignment_cache.clear()
 
     def get_statistics(self) -> dict[str, any]:
@@ -428,6 +436,7 @@ class QuantumAlignmentEngine:
         Returns:
             Dictionary with statistics
         """
+
         return {
             "total_alignments": self._call_count,
             "cached_alignments": len(self._alignment_cache),

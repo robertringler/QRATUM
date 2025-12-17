@@ -36,6 +36,7 @@ def compute_fidelity(original: Array, reconstructed: Array) -> float:
         >>> fidelity = compute_fidelity(state1, state2)
         >>> assert abs(fidelity - 1.0) < 1e-10
     """
+
     if original.shape != reconstructed.shape:
         raise ValueError(f"State shape mismatch: {original.shape} vs {reconstructed.shape}")
 
@@ -75,6 +76,7 @@ def validate_fidelity_bound(fidelity: float, target: float) -> bool:
         >>> assert validate_fidelity_bound(0.996, 0.995)
         >>> assert not validate_fidelity_bound(0.994, 0.995)
     """
+
     return fidelity >= target
 
 
@@ -99,6 +101,7 @@ def compute_trace_distance(original: Array, reconstructed: Array) -> float:
         >>> distance = compute_trace_distance(state1, state2)
         >>> assert distance < 1e-10
     """
+
     fidelity = compute_fidelity(original, reconstructed)
     # For pure states: D = √(1 - F)
     trace_distance = float(np.sqrt(max(0.0, 1.0 - fidelity)))
@@ -125,6 +128,7 @@ def compute_state_overlap(state1: Array, state2: Array) -> complex:
         >>> overlap = compute_state_overlap(state1, state2)
         >>> assert abs(overlap) < 1e-10  # Orthogonal states
     """
+
     # Normalize states
     state1_norm = state1 / np.linalg.norm(state1)
     state2_norm = state2 / np.linalg.norm(state2)

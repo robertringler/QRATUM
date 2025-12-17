@@ -1,4 +1,5 @@
 """
+
 KSG Mutual Information Estimator
 
 Kraskov-Stögbauer-Grassberger mutual information estimator.
@@ -12,6 +13,7 @@ from scipy.special import digamma
 
 class KSGEstimator:
     """
+
     KSG mutual information estimator.
 
     Uses k-nearest neighbors to estimate MI non-parametrically.
@@ -19,15 +21,18 @@ class KSGEstimator:
 
     def __init__(self, k: int = 3):
         """
+
         Initialize KSG estimator.
 
         Args:
             k: Number of nearest neighbors
         """
+
         self.k = k
 
     def estimate_mi(self, data_x: np.ndarray, data_y: np.ndarray) -> float:
         """
+
         Estimate mutual information I(X;Y).
 
         Args:
@@ -37,6 +42,7 @@ class KSGEstimator:
         Returns:
             Estimated mutual information in nats
         """
+
         # Reshape if needed
         if data_x.ndim == 1:
             data_x = data_x.reshape(-1, 1)

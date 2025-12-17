@@ -1,4 +1,5 @@
 """
+
 Neural Components for XENON
 
 Graph neural networks and embeddings.

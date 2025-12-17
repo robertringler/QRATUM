@@ -17,6 +17,7 @@ def load_yaml(path: str) -> dict[str, Any]:
     Returns:
         Parsed YAML content as dictionary
     """
+
     with open(path, encoding="utf-8") as f:
         return yaml.safe_load(f)
 
@@ -30,6 +31,7 @@ def load_json(path: str) -> dict[str, Any]:
     Returns:
         Parsed JSON content as dictionary
     """
+
     with open(path, encoding="utf-8") as f:
         return json.load(f)
 
@@ -43,6 +45,7 @@ def sha256_file(path: str) -> str:
     Returns:
         Hexadecimal SHA256 hash
     """
+
     h = hashlib.sha256()
     with open(path, "rb") as f:
         for chunk in iter(lambda: f.read(1 << 20), b""):
@@ -57,6 +60,7 @@ def write_json(path: str, obj: dict[str, Any]) -> None:
         path: Output file path
         obj: Dictionary to serialize
     """
+
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(obj, f, indent=2)

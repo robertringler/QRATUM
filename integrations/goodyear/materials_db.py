@@ -44,6 +44,7 @@ class MaterialRecord:
         Returns:
             TireCompound instance compatible with tire simulation
         """
+
         # Map Goodyear family to CompoundType
         family_mapping = {
             "natural_rubber": CompoundType.NATURAL_RUBBER,
@@ -109,12 +110,14 @@ class GoodyearMaterialsDatabase:
         Args:
             db_path: Path to materials database file (JSON format)
         """
+
         self.db_path = db_path
         self.materials: dict[str, MaterialRecord] = {}
         self._load_materials()
 
     def _load_materials(self) -> None:
         """Load materials from database file or generate synthetic database."""
+
         if self.db_path and Path(self.db_path).exists():
             self._load_from_file(self.db_path)
         else:
@@ -126,6 +129,7 @@ class GoodyearMaterialsDatabase:
         Args:
             file_path: Path to JSON file containing material records
         """
+
         with open(file_path) as f:
             data = json.load(f)
 
@@ -152,6 +156,7 @@ class GoodyearMaterialsDatabase:
         Args:
             count: Number of materials to generate
         """
+
         rng = np.random.RandomState(42)
 
         # Material families and their base properties
@@ -299,6 +304,7 @@ class GoodyearMaterialsDatabase:
         Returns:
             Material record or None if not found
         """
+
         return self.materials.get(material_id)
 
     def search_materials(
@@ -323,6 +329,7 @@ class GoodyearMaterialsDatabase:
         Returns:
             List of matching material records
         """
+
         results = []
 
         for material in self.materials.values():
@@ -359,6 +366,7 @@ class GoodyearMaterialsDatabase:
         Returns:
             List of all material records
         """
+
         return list(self.materials.values())
 
     def export_to_json(self, output_path: str) -> None:
@@ -367,6 +375,7 @@ class GoodyearMaterialsDatabase:
         Args:
             output_path: Path to output JSON file
         """
+
         data = {
             "version": "1.0",
             "source": "Goodyear Quantum Pilot Platform",
@@ -396,6 +405,7 @@ class GoodyearMaterialsDatabase:
         Returns:
             Dictionary with database statistics
         """
+
         families = {}
         cert_statuses = {}
         quantum_count = 0

@@ -30,6 +30,7 @@ def cli():
 
     A post-GPU biological intelligence platform for mechanism-based learning.
     """
+
     pass
 
 
@@ -74,6 +75,7 @@ def run(
     Example:
         xenon run --target EGFR --max-iter 50 --objective characterize
     """
+
     click.echo("🧬 XENON Runtime Starting")
     click.echo(f"Target: {target}")
     click.echo(f"Objective: {objective}")
@@ -149,6 +151,7 @@ def query(target: str, min_evidence: float, input: Optional[str]):
     Example:
         xenon query --target EGFR --min-evidence 0.7
     """
+
     if not input:
         click.echo("Error: --input required for query command")
         click.echo("First run: xenon run --target EGFR --output results.json")
@@ -196,6 +199,7 @@ def validate(mechanism_file: str, temperature: float):
     Example:
         xenon validate --mechanism-file mechanism.json
     """
+
     click.echo(f"🔬 Validating mechanism: {mechanism_file}")
     click.echo()
 
@@ -264,6 +268,7 @@ def create_sample_mechanism(num_states: int = 5) -> BioMechanism:
     Returns:
         Sample BioMechanism instance
     """
+
     states = []
     for i in range(num_states):
         state = MolecularState(
@@ -313,6 +318,7 @@ def run_simulation(args: argparse.Namespace) -> int:
     Returns:
         Exit code
     """
+
     logger.info(f"Running XENON simulation with {args.num_states} states")
 
     # Create sample mechanism
@@ -351,6 +357,7 @@ def visualize_mechanism(mechanism: BioMechanism, args: argparse.Namespace) -> No
         mechanism: BioMechanism to visualize
         args: Command-line arguments
     """
+
     # Convert to visualization model
     adapter = BioMechanismAdapter(mechanism)
     viz_model = adapter.to_viz_model()
@@ -397,6 +404,7 @@ def main() -> int:
     Returns:
         Exit code
     """
+
     parser = argparse.ArgumentParser(
         description="XENON: Bio-mechanism simulation and visualization"
     )

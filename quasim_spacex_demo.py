@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuASIM × SpaceX/NASA Pilot Track Demo
 
 Profile-aware evolutionary optimization for MECO and hot-staging trajectories.
@@ -26,12 +27,14 @@ matplotlib.use("Agg")  # Non-interactive backend
 
 def load_profile(profile_path: str) -> dict:
     """Load MECO/hot-staging profile from JSON."""
+
     with open(profile_path) as f:
         return json.load(f)
 
 
 def simulate_trajectory(alpha: float, profile: dict, seed: int = 42) -> dict:
     """
+
     Simulate ascent trajectory with given thrust profile alpha.
 
     This is a simplified surrogate model for demonstration purposes.
@@ -45,6 +48,7 @@ def simulate_trajectory(alpha: float, profile: dict, seed: int = 42) -> dict:
     Returns:
         Dictionary with trajectory metrics
     """
+
     np.random.seed(seed)
 
     # Extract targets from profile
@@ -93,10 +97,12 @@ def simulate_trajectory(alpha: float, profile: dict, seed: int = 42) -> dict:
 
 def evaluate_fitness(metrics: dict, profile: dict) -> float:
     """
+
     Evaluate trajectory fitness against profile targets.
 
     Lower is better (RMSE-style objective).
     """
+
     targets = profile["targets"]
     tolerances = profile["tolerances"]
     weights = profile["weights"]
@@ -125,11 +131,13 @@ def evolutionary_optimization(
     profile: dict, generations: int = 50, population_size: int = 20, seed: int = 42
 ) -> tuple:
     """
+
     Simple evolutionary algorithm to optimize alpha parameter.
 
     Returns:
         (best_alpha, best_metrics, best_fitness, optimization_history)
     """
+
     np.random.seed(seed)
 
     alpha_min, alpha_max = profile["alpha_bounds"]
@@ -202,8 +210,10 @@ def evolutionary_optimization(
 
 def create_visualization(metrics: dict, profile: dict) -> str:
     """
+
     Create trajectory visualization and return as base64-encoded PNG.
     """
+
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
 
     time = np.array(metrics["time"])

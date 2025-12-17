@@ -10,6 +10,7 @@ import pytest
 @pytest.fixture
 def temp_output_dir(tmp_path):
     """Create temporary output directory."""
+
     return tmp_path
 
 
@@ -18,6 +19,7 @@ class TestRevultraCLI:
 
     def test_cli_help(self):
         """Test that CLI help works."""
+
         result = subprocess.run(
             [sys.executable, "-m", "quasim.cli.revultra_cli", "--help"],
             capture_output=True,
@@ -28,6 +30,7 @@ class TestRevultraCLI:
 
     def test_analyze_command(self, temp_output_dir):
         """Test analyze command."""
+
         output_file = temp_output_dir / "results.json"
 
         result = subprocess.run(
@@ -57,6 +60,7 @@ class TestRevultraCLI:
 
     def test_frequency_command(self):
         """Test frequency command."""
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -75,6 +79,7 @@ class TestRevultraCLI:
 
     def test_demo_command(self, temp_output_dir):
         """Test demo command."""
+
         output_file = temp_output_dir / "demo.json"
 
         result = subprocess.run(
@@ -101,6 +106,7 @@ class TestQGHCLI:
 
     def test_cli_help(self):
         """Test that CLI help works."""
+
         result = subprocess.run(
             [sys.executable, "-m", "quasim.cli.qgh_cli", "--help"],
             capture_output=True,
@@ -111,6 +117,7 @@ class TestQGHCLI:
 
     def test_demo_command(self, temp_output_dir):
         """Test demo command."""
+
         output_file = temp_output_dir / "qgh_demo.json"
 
         result = subprocess.run(
@@ -133,6 +140,7 @@ class TestQGHCLI:
 
     def test_resolve_command(self):
         """Test resolve command."""
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -153,6 +161,7 @@ class TestQGHCLI:
 
     def test_monitor_command(self):
         """Test monitor command."""
+
         result = subprocess.run(
             [
                 sys.executable,
@@ -177,6 +186,7 @@ class TestTERCObsCLI:
 
     def test_cli_help(self):
         """Test that CLI help works."""
+
         result = subprocess.run(
             [sys.executable, "-m", "quasim.cli.terc_obs_cli", "--help"],
             capture_output=True,
@@ -187,6 +197,7 @@ class TestTERCObsCLI:
 
     def test_list_command(self):
         """Test list command."""
+
         result = subprocess.run(
             [sys.executable, "-m", "quasim.cli.terc_obs_cli", "list"],
             capture_output=True,
@@ -198,6 +209,7 @@ class TestTERCObsCLI:
 
     def test_emit_command(self, temp_output_dir):
         """Test emit command."""
+
         output_file = temp_output_dir / "observables.json"
 
         result = subprocess.run(
@@ -227,6 +239,7 @@ class TestTERCObsCLI:
 
     def test_consensus_command(self, temp_output_dir):
         """Test consensus command."""
+
         output_file = temp_output_dir / "consensus.json"
 
         result = subprocess.run(
@@ -251,6 +264,7 @@ class TestTERCObsCLI:
 
     def test_validate_command(self, temp_output_dir):
         """Test validate command."""
+
         # Create a valid observable file
         obs_file = temp_output_dir / "test_obs.json"
         obs_data = {
@@ -283,6 +297,7 @@ class TestCLIIntegration:
 
     def test_revultra_to_terc_pipeline(self, temp_output_dir):
         """Test pipeline from REVULTRA analysis to TERC emission."""
+
         # Step 1: Run REVULTRA analysis
         revultra_output = temp_output_dir / "revultra_results.json"
         result1 = subprocess.run(
@@ -338,6 +353,7 @@ class TestCLIIntegration:
 
     def test_qgh_demo_to_json(self, temp_output_dir):
         """Test QGH demo with JSON export."""
+
         output_file = temp_output_dir / "qgh_all_demos.json"
 
         result = subprocess.run(

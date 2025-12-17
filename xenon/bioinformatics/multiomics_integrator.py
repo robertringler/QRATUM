@@ -44,6 +44,7 @@ class OmicsData:
         Returns:
             Feature vector
         """
+
         features = []
 
         if "transcriptomics" in omics_types:
@@ -87,6 +88,7 @@ class Biomarker:
         Returns:
             True if significant
         """
+
         return self.fdr < alpha
 
 
@@ -99,6 +101,7 @@ class MultiOmicsIntegrator:
 
     def __init__(self):
         """Initialize multi-omics integrator."""
+
         self._samples: dict[str, OmicsData] = {}
         self._biomarkers: list[Biomarker] = []
 
@@ -108,6 +111,7 @@ class MultiOmicsIntegrator:
         Args:
             sample: OmicsData object
         """
+
         self._samples[sample.sample_id] = sample
 
     def compute_cross_omics_correlation(
@@ -128,6 +132,7 @@ class MultiOmicsIntegrator:
         Returns:
             Tuple of (correlation, p_value)
         """
+
         values1 = []
         values2 = []
 
@@ -187,6 +192,7 @@ class MultiOmicsIntegrator:
         Returns:
             List of potential biomarkers
         """
+
         if omics_types is None:
             omics_types = ["transcriptomics", "proteomics", "metabolomics"]
 
@@ -286,6 +292,7 @@ class MultiOmicsIntegrator:
         Returns:
             Feature value if found
         """
+
         if omics_type == "transcriptomics":
             return sample.transcriptomics.get(feature)
         elif omics_type == "proteomics":
@@ -303,6 +310,7 @@ class MultiOmicsIntegrator:
         Returns:
             List of FDR-corrected values
         """
+
         n = len(p_values)
         if n == 0:
             return []
@@ -336,6 +344,7 @@ class MultiOmicsIntegrator:
         Returns:
             List of (pathway_id, p_value, enrichment_ratio) tuples
         """
+
         from scipy.stats import hypergeom
 
         biomarker_set = set(biomarker_features)
@@ -383,6 +392,7 @@ class MultiOmicsIntegrator:
         Returns:
             Dictionary with nodes and edges
         """
+
         nodes = []
         edges = []
 
@@ -455,6 +465,7 @@ class MultiOmicsIntegrator:
         Returns:
             Dictionary with summary statistics
         """
+
         sample = self._samples.get(sample_id)
         if not sample:
             return {}

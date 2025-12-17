@@ -23,6 +23,7 @@ class TestQuantumAlignmentEngine:
 
     def test_deterministic_alignment(self):
         """Test that alignment is deterministic with same seed."""
+
         engine1 = QuantumAlignmentEngine(seed=42)
         engine2 = QuantumAlignmentEngine(seed=42)
 
@@ -39,6 +40,7 @@ class TestQuantumAlignmentEngine:
 
     def test_entropy_computation(self):
         """Test Shannon entropy computation."""
+
         engine = QuantumAlignmentEngine(seed=42)
 
         # Uniform distribution (maximum entropy)
@@ -59,6 +61,7 @@ class TestQuantumAlignmentEngine:
 
     def test_adaptive_circuit_depth(self):
         """Test adaptive circuit depth selection based on entropy."""
+
         config = AlignmentConfig(min_circuit_depth=2, max_circuit_depth=10)
         engine = QuantumAlignmentEngine(config=config, seed=42)
 
@@ -75,6 +78,7 @@ class TestQuantumAlignmentEngine:
 
     def test_classical_alignment_correctness(self):
         """Test classical alignment produces correct results."""
+
         engine = QuantumAlignmentEngine(seed=42)
 
         # Test exact match
@@ -99,6 +103,7 @@ class TestQuantumAlignmentEngine:
 
     def test_classical_quantum_equivalence(self):
         """Test quantum alignment maintains equivalence with classical."""
+
         config = AlignmentConfig(enable_quantum=True, equivalence_tolerance=1e-6)
         engine = QuantumAlignmentEngine(config=config, seed=42)
 
@@ -114,6 +119,7 @@ class TestQuantumAlignmentEngine:
 
     def test_condition_number_computation(self):
         """Test numerical condition number computation."""
+
         engine = QuantumAlignmentEngine(seed=42)
 
         # Well-conditioned matrix
@@ -133,6 +139,7 @@ class TestQuantumAlignmentEngine:
 
     def test_alignment_caching(self):
         """Test alignment result caching for performance."""
+
         engine = QuantumAlignmentEngine(seed=42)
 
         seq1 = "ACDEFG"
@@ -156,6 +163,7 @@ class TestQuantumAlignmentEngine:
 
     def test_alignment_result_structure(self):
         """Test alignment result contains all required metadata."""
+
         engine = QuantumAlignmentEngine(seed=42)
 
         seq1 = "ACDEFG"
@@ -181,6 +189,7 @@ class TestQuantumAlignmentEngine:
 
     def test_reproducibility_across_calls(self):
         """Test bit-level reproducibility across multiple calls."""
+
         engine = QuantumAlignmentEngine(seed=42)
 
         seq1 = "ACDEFGHIKLMNPQRSTVWY"
@@ -202,6 +211,7 @@ class TestQuantumAlignmentEngine:
 
     def test_custom_scoring_parameters(self):
         """Test alignment with custom scoring parameters."""
+
         config = AlignmentConfig(match_score=5.0, mismatch_penalty=-3.0, gap_penalty=-4.0)
         engine = QuantumAlignmentEngine(config=config, seed=42)
 
@@ -216,6 +226,7 @@ class TestQuantumAlignmentEngine:
 
     def test_stability_warning_on_high_condition_number(self):
         """Test warning issued for high condition numbers."""
+
         config = AlignmentConfig(stability_threshold=1.0)
         engine = QuantumAlignmentEngine(config=config, seed=42)
 
@@ -230,6 +241,7 @@ class TestQuantumAlignmentEngine:
 
     def test_engine_statistics(self):
         """Test engine statistics tracking."""
+
         config = AlignmentConfig(enable_quantum=False)
         engine = QuantumAlignmentEngine(config=config, seed=42)
 
@@ -247,6 +259,7 @@ class TestQuantumAlignmentEngine:
 
     def test_empty_sequence_handling(self):
         """Test handling of edge cases with empty sequences."""
+
         engine = QuantumAlignmentEngine(seed=42)
 
         # Empty sequence should have zero entropy
@@ -259,8 +272,10 @@ class TestQuantumAlignmentEngine:
 
     def test_equivalence_validation_failure(self):
         """Test that excessive quantum-classical deviation raises error."""
+
         config = AlignmentConfig(
-            enable_quantum=True, equivalence_tolerance=1e-20  # Impossibly strict tolerance
+            enable_quantum=True,
+            equivalence_tolerance=1e-20,  # Impossibly strict tolerance
         )
         engine = QuantumAlignmentEngine(config=config, seed=42)
 
@@ -279,6 +294,7 @@ class TestQuantumAlignmentEngine:
 
     def test_different_seeds_produce_same_classical_results(self):
         """Test classical alignment is independent of quantum seed."""
+
         engine1 = QuantumAlignmentEngine(seed=42)
         engine2 = QuantumAlignmentEngine(seed=12345)
 

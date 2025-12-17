@@ -112,6 +112,7 @@ class OntologyIntegrator:
 
     def __init__(self):
         """Initialize ontology integrator."""
+
         self._go_terms: dict[str, GOTerm] = {}
         self._proteins: dict[str, ProteinAnnotation] = {}
         self._compounds: dict[str, ChemicalCompound] = {}
@@ -124,6 +125,7 @@ class OntologyIntegrator:
         Args:
             term: GO term object
         """
+
         self._go_terms[term.go_id] = term
 
     def add_protein_annotation(self, annotation: ProteinAnnotation) -> None:
@@ -132,6 +134,7 @@ class OntologyIntegrator:
         Args:
             annotation: Protein annotation object
         """
+
         self._proteins[annotation.uniprot_id] = annotation
 
         # Index GO terms
@@ -146,6 +149,7 @@ class OntologyIntegrator:
         Args:
             compound: Chemical compound object
         """
+
         self._compounds[compound.chebi_id] = compound
 
     def add_pathway(self, pathway: Pathway) -> None:
@@ -154,6 +158,7 @@ class OntologyIntegrator:
         Args:
             pathway: Pathway object
         """
+
         self._pathways[pathway.pathway_id] = pathway
 
     def get_protein_function(self, uniprot_id: str) -> Optional[str]:
@@ -165,6 +170,7 @@ class OntologyIntegrator:
         Returns:
             Function description if found
         """
+
         annotation = self._proteins.get(uniprot_id)
         return annotation.function if annotation else None
 
@@ -177,6 +183,7 @@ class OntologyIntegrator:
         Returns:
             List of GO terms
         """
+
         annotation = self._proteins.get(uniprot_id)
         if not annotation:
             return []
@@ -198,6 +205,7 @@ class OntologyIntegrator:
         Returns:
             List of UniProt IDs
         """
+
         return list(self._protein_go_index.get(go_id, set()))
 
     def get_related_proteins(
@@ -214,6 +222,7 @@ class OntologyIntegrator:
         Returns:
             List of (uniprot_id, similarity_score) tuples
         """
+
         annotation = self._proteins.get(uniprot_id)
         if not annotation:
             return []
@@ -234,6 +243,7 @@ class OntologyIntegrator:
         Returns:
             List of (uniprot_id, similarity) tuples
         """
+
         annotation = self._proteins.get(uniprot_id)
         if not annotation:
             return []
@@ -271,6 +281,7 @@ class OntologyIntegrator:
         Returns:
             List of (uniprot_id, pathway_count) tuples
         """
+
         # Find pathways containing this protein
         protein_pathways = []
         for pathway in self._pathways.values():
@@ -301,6 +312,7 @@ class OntologyIntegrator:
         Returns:
             Prior probability (0-1)
         """
+
         # Find protein annotation
         annotation = None
         for ann in self._proteins.values():
@@ -340,6 +352,7 @@ class OntologyIntegrator:
         Returns:
             List of evidence dictionaries
         """
+
         evidence = []
 
         # Check for shared GO terms
@@ -379,6 +392,7 @@ class OntologyIntegrator:
         Returns:
             List of UniProt IDs
         """
+
         matching = []
 
         for uniprot_id, annotation in self._proteins.items():
@@ -407,6 +421,7 @@ class OntologyIntegrator:
         Returns:
             Dictionary with nodes and edges
         """
+
         nodes = []
         edges = []
 

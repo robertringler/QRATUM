@@ -17,11 +17,13 @@ class TestQuASIMConnector:
     @pytest.fixture
     def connector(self):
         """Create connector instance."""
+
         return QuASIMConnector(seed=42, deterministic_mode=True)
 
     @pytest.fixture
     def quasim_prompt(self):
         """Create QuASIM-compatible prompt."""
+
         return Prompt(
             id=1,
             category="Quantum Simulation",
@@ -34,6 +36,7 @@ class TestQuASIMConnector:
 
     def test_can_execute_by_domain(self, connector):
         """Test domain-based execution check."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -46,6 +49,7 @@ class TestQuASIMConnector:
 
     def test_can_execute_by_layer(self, connector):
         """Test execution layer check."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -59,6 +63,7 @@ class TestQuASIMConnector:
 
     def test_cannot_execute_unsupported(self, connector):
         """Test rejection of unsupported prompts."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -71,6 +76,7 @@ class TestQuASIMConnector:
 
     def test_execute_dry_run(self, connector, quasim_prompt):
         """Test dry run execution."""
+
         result = connector.execute(quasim_prompt, dry_run=True)
 
         assert result.is_successful()
@@ -79,6 +85,7 @@ class TestQuASIMConnector:
 
     def test_execute_simulation(self, connector, quasim_prompt):
         """Test simulated execution."""
+
         result = connector.execute(quasim_prompt, dry_run=False)
 
         assert result.is_successful()
@@ -87,6 +94,7 @@ class TestQuASIMConnector:
 
     def test_execute_batch(self, connector):
         """Test batch execution."""
+
         prompts = [
             Prompt(
                 id=i,
@@ -111,10 +119,12 @@ class TestQStackConnector:
     @pytest.fixture
     def connector(self):
         """Create connector instance."""
+
         return QStackConnector(device="cpu")
 
     def test_can_execute_ai_domain(self, connector):
         """Test AI domain support."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -127,6 +137,7 @@ class TestQStackConnector:
 
     def test_execute_dry_run(self, connector):
         """Test dry run execution."""
+
         prompt = Prompt(
             id=1,
             category="ML Training",
@@ -147,10 +158,12 @@ class TestQNimbusConnector:
     @pytest.fixture
     def connector(self):
         """Create connector instance."""
+
         return QNimbusConnector(default_provider="aws")
 
     def test_can_execute_cloud_domain(self, connector):
         """Test cloud domain support."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -163,6 +176,7 @@ class TestQNimbusConnector:
 
     def test_execute_with_provider(self, connector):
         """Test execution with custom provider."""
+
         prompt = Prompt(
             id=1,
             category="Cloud Deployment",
@@ -183,10 +197,12 @@ class TestUnifiedOrchestrator:
     @pytest.fixture
     def orchestrator(self):
         """Create orchestrator instance."""
+
         return UnifiedOrchestrator(quasim_seed=42)
 
     def test_route_quasim(self, orchestrator):
         """Test routing to QuASIM."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -199,6 +215,7 @@ class TestUnifiedOrchestrator:
 
     def test_route_qstack(self, orchestrator):
         """Test routing to QStack."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -211,6 +228,7 @@ class TestUnifiedOrchestrator:
 
     def test_route_qnimbus(self, orchestrator):
         """Test routing to QNimbus."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -223,6 +241,7 @@ class TestUnifiedOrchestrator:
 
     def test_execute_with_routing(self, orchestrator):
         """Test execution with automatic routing."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -238,6 +257,7 @@ class TestUnifiedOrchestrator:
 
     def test_execute_batch(self, orchestrator):
         """Test batch execution across platforms."""
+
         prompts = [
             Prompt(
                 id=1,
@@ -273,6 +293,7 @@ class TestUnifiedOrchestrator:
 
     def test_get_routing_summary(self, orchestrator):
         """Test routing summary generation."""
+
         prompts = [
             Prompt(
                 id=1,
@@ -299,6 +320,7 @@ class TestUnifiedOrchestrator:
 
     def test_execution_stats(self, orchestrator):
         """Test execution statistics."""
+
         prompt = Prompt(
             id=1,
             category="Test",

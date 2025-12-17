@@ -91,6 +91,7 @@ class BenchmarkResult:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert result to dictionary."""
+
         return {
             "test_name": self.test_name,
             "state_type": self.state_type,
@@ -123,6 +124,7 @@ class BenchmarkOrchestrator:
 
     def run_all_tests(self) -> None:
         """Execute all test cases defined in configuration."""
+
         test_cases = self.config.get("test_cases", [])
 
         print(f"\n{'=' * 70}")
@@ -144,6 +146,7 @@ class BenchmarkOrchestrator:
 
     def _run_test_case(self, test_case: dict[str, Any]) -> None:
         """Run a single test case group."""
+
         name = test_case.get("name", "unnamed")
         generator = test_case.get("generator")
         qubits_list = test_case.get("qubits", [10])
@@ -195,6 +198,7 @@ class BenchmarkOrchestrator:
         extra_params: dict[str, Any] | None = None,
     ) -> None:
         """Run a single benchmark test."""
+
         self.total_tests += 1
         extra_params = extra_params or {}
 
@@ -285,6 +289,7 @@ class BenchmarkOrchestrator:
         self, generator: str, n_qubits: int, params: dict[str, Any]
     ) -> np.ndarray | None:
         """Generate quantum state based on generator type."""
+
         try:
             if generator == "random":
                 seed = params.get("seed")
@@ -315,6 +320,7 @@ class BenchmarkOrchestrator:
 
     def _generate_test_id(self, base_name: str, n_qubits: int, params: dict[str, Any]) -> str:
         """Generate unique test identifier."""
+
         parts = [base_name.replace(" ", "_"), f"{n_qubits}q"]
 
         if "seed" in params:
@@ -330,6 +336,7 @@ class BenchmarkOrchestrator:
         self, test_id: str, original: np.ndarray, compressed: np.ndarray, metadata: dict
     ) -> None:
         """Save test artifact to .npz file."""
+
         artifact_path = self.output_dir / f"{test_id}.npz"
 
         np.savez_compressed(
@@ -344,6 +351,7 @@ class BenchmarkOrchestrator:
 
     def generate_summary(self) -> dict[str, Any]:
         """Generate summary statistics from all results."""
+
         if not self.results:
             return {"error": "No results to summarize"}
 
@@ -399,6 +407,7 @@ class BenchmarkOrchestrator:
 
     def save_summary_json(self, filename: str = "compression_summary.json") -> None:
         """Save summary to JSON file."""
+
         summary = self.generate_summary()
         output_path = self.output_dir / filename
 
@@ -409,6 +418,7 @@ class BenchmarkOrchestrator:
 
     def generate_markdown_report(self) -> str:
         """Generate markdown report."""
+
         summary = self.generate_summary()
 
         # Extract statistics
@@ -520,7 +530,7 @@ class BenchmarkOrchestrator:
             icon = status_icons.get(status, "❓")
 
             report_lines.append(
-                f"| {source} | {claimed:.1f}× | " f"{measured_median:.1f}× | {icon} {status} |"
+                f"| {source} | {claimed:.1f}× | {measured_median:.1f}× | {icon} {status} |"
             )
 
         # Validation status
@@ -540,9 +550,9 @@ class BenchmarkOrchestrator:
         report_lines.extend(
             [
                 f"- ✅ Fidelity ≥ 0.995: {len(high_fidelity)}/{len(successful)} "
-                f"({100*len(high_fidelity)/max(len(successful),1):.1f}%)",
+                f"({100 * len(high_fidelity) / max(len(successful), 1):.1f}%)",
                 f"- ✅ Compression 10-50×: {len(good_ratio)}/{len(successful)} "
-                f"({100*len(good_ratio)/max(len(successful),1):.1f}%)",
+                f"({100 * len(good_ratio) / max(len(successful), 1):.1f}%)",
                 "",
                 "## Raw Data",
                 "",
@@ -555,6 +565,7 @@ class BenchmarkOrchestrator:
 
     def save_markdown_report(self, filename: str = "compression_report.md") -> None:
         """Save markdown report to file."""
+
         report = self.generate_markdown_report()
         output_path = self.output_dir / filename
 
@@ -566,12 +577,14 @@ class BenchmarkOrchestrator:
 
 def load_config(config_path: Path) -> dict[str, Any]:
     """Load configuration from YAML file."""
+
     with open(config_path) as f:
         return yaml.safe_load(f)
 
 
 def main() -> int:
     """Main entry point."""
+
     parser = argparse.ArgumentParser(
         description="MERA Compression Benchmark Suite",
         formatter_class=argparse.RawDescriptionHelpFormatter,

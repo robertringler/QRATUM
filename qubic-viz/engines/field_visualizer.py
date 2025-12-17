@@ -19,6 +19,7 @@ class FieldVisualizer:
 
     def __init__(self, mesh: TireMesh) -> None:
         """Initialize field visualizer."""
+
         self.mesh = mesh
 
     def visualize_scalar_field(
@@ -39,6 +40,7 @@ class FieldVisualizer:
         Returns:
             Rendered image as RGB array
         """
+
         if len(field_data) != self.mesh.num_vertices:
             raise ValueError(
                 f"Field data size ({len(field_data)}) must match vertex count ({self.mesh.num_vertices})"
@@ -106,6 +108,7 @@ class FieldVisualizer:
         Returns:
             Rendered image as RGB array
         """
+
         if vector_data.shape[0] != self.mesh.num_vertices:
             raise ValueError("Vector data size must match vertex count")
 
@@ -180,6 +183,7 @@ class FieldVisualizer:
         Returns:
             Rendered heatmap image
         """
+
         fig, ax = plt.subplots(figsize=(10, 8))
 
         # Select projection coordinates

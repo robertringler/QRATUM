@@ -86,6 +86,7 @@ def init_cluster(
         >>> ctx = init_cluster(backend="jax", mesh_shape=(2, 4), seed=12345)
         >>> print(f"Initialized rank {ctx.global_rank}/{ctx.world_size}")
     """
+
     if backend not in ["jax", "torch"]:
         raise ValueError(f"Unsupported backend: {backend}. Use 'jax' or 'torch'")
 
@@ -98,6 +99,7 @@ def init_cluster(
 
 def _init_cluster_jax(mesh_shape: tuple[int, int], seed: int) -> DistContext:
     """Initialize JAX distributed cluster."""
+
     try:
         import jax
         from jax.experimental import mesh_utils
@@ -181,6 +183,7 @@ def _init_cluster_jax(mesh_shape: tuple[int, int], seed: int) -> DistContext:
 
 def _init_cluster_torch(mesh_shape: tuple[int, int], seed: int) -> DistContext:
     """Initialize PyTorch distributed cluster."""
+
     try:
         import torch
         import torch.distributed as dist
@@ -249,6 +252,7 @@ def _init_cluster_torch(mesh_shape: tuple[int, int], seed: int) -> DistContext:
 
 def _compute_rank_seed(global_seed: int, rank: int) -> int:
     """Compute deterministic per-rank seed."""
+
     seed_str = f"{global_seed}_{rank}"
     hash_val = hashlib.sha256(seed_str.encode()).digest()
     return int.from_bytes(hash_val[:4], byteorder="big")
@@ -272,6 +276,7 @@ def shard_state(context: DistContext, state: NDArray[np.complex128]) -> ShardedS
         >>> state[0] = 1.0
         >>> sharded = shard_state(ctx, state)
     """
+
     if context.backend == "jax":
         return _shard_state_jax(context, state)
     else:
@@ -280,6 +285,7 @@ def shard_state(context: DistContext, state: NDArray[np.complex128]) -> ShardedS
 
 def _shard_state_jax(context: DistContext, state: NDArray[np.complex128]) -> ShardedState:
     """Shard state using JAX."""
+
     try:
         import jax
         import jax.numpy as jnp
@@ -313,6 +319,7 @@ def _shard_state_jax(context: DistContext, state: NDArray[np.complex128]) -> Sha
 
 def _shard_state_torch(context: DistContext, state: NDArray[np.complex128]) -> ShardedState:
     """Shard state using PyTorch."""
+
     try:
         import torch
 
@@ -368,6 +375,7 @@ def dist_apply_gate(
     Returns:
         Updated sharded state
     """
+
     # This is a simplified implementation
     # Production would implement proper distributed gate application
     # with all-to-all communication for non-local gates
@@ -402,6 +410,7 @@ def dist_apply_noise(
     Returns:
         Updated sharded state
     """
+
     # Simplified implementation
     return sharded_state
 
@@ -426,6 +435,7 @@ def dist_evolve(
     Returns:
         Evolved sharded state
     """
+
     # Simplified implementation
     return sharded_state
 
@@ -443,6 +453,7 @@ def batch_run(
     Returns:
         Aggregated results with statistics
     """
+
     results = {
         "trajectories": trajectories,
         "backend": context.backend,
@@ -463,6 +474,7 @@ def save_checkpoint(context: DistContext, sharded_state: ShardedState, path: str
         sharded_state: Sharded state to save
         path: Checkpoint directory path
     """
+
     os.makedirs(path, exist_ok=True)
 
     # Save metadata
@@ -500,6 +512,7 @@ def load_checkpoint(context: DistContext, path: str) -> ShardedState:
     Returns:
         Restored sharded state
     """
+
     # Load metadata
     with open(os.path.join(path, "metadata.json")) as f:
         metadata = json.load(f)
@@ -540,6 +553,7 @@ def profile(context: DistContext) -> dict[str, Any]:
         - hbm_usage: HBM memory usage per device
         - latency_histogram: Step latency distribution
     """
+
     profile_data = {
         "backend": context.backend,
         "mesh_shape": context.mesh_shape,
@@ -577,6 +591,7 @@ def initialize_zero_state(num_qubits: int, dtype: str = "complex64") -> NDArray:
     Returns:
         Zero state vector
     """
+
     d = 2**num_qubits
     if dtype == "complex64":
         state = np.zeros(d, dtype=np.complex64)

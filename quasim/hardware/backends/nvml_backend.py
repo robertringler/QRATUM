@@ -1,4 +1,5 @@
 """
+
 NVIDIA NVML backend for GPU reconfiguration.
 
 Supports: clocks, power caps, MIG, ECC, fan control, app clocks.
@@ -40,6 +41,7 @@ class NVMLBackend:
 
     def list_devices(self) -> List[Dict[str, Any]]:
         """List available NVIDIA GPUs."""
+
         if not self.initialized:
             return []
 
@@ -72,6 +74,7 @@ class NVMLBackend:
 
     def get_state(self, device_id: str) -> Dict[str, Any]:
         """Get current device state."""
+
         if not self.initialized:
             return {}
 
@@ -133,6 +136,7 @@ class NVMLBackend:
         self, device_id: str, parameter: str, value: Any, dry_run: bool = True
     ) -> Dict[str, Any]:
         """
+
         Apply setpoint to device.
 
         Supported parameters:
@@ -142,6 +146,7 @@ class NVMLBackend:
         - fan_percent: Fan speed percentage
         - ecc_enabled: Enable/disable ECC
         """
+
         if not self.initialized:
             return {"success": False, "error": "NVML not initialized"}
 
@@ -213,6 +218,7 @@ class NVMLBackend:
 
     def reset_to_defaults(self, device_id: str, dry_run: bool = True) -> Dict[str, Any]:
         """Reset device to default/safe configuration."""
+
         if not self.initialized:
             return {"success": False, "error": "NVML not initialized"}
 

@@ -12,6 +12,7 @@ class TestXenonIntegration:
 
     def test_xenon_adapter_with_mechanism(self):
         """Test XenonSimulationAdapter with BioMechanism."""
+
         # Create sample mechanism
         states = [
             MolecularState("S1", "ProteinA", -10.0),
@@ -30,6 +31,7 @@ class TestXenonIntegration:
 
     def test_xenon_adapter_with_state(self):
         """Test XenonSimulationAdapter with MolecularState."""
+
         state = MolecularState("S1", "ProteinA", -10.0, 0.5)
 
         adapter = XenonSimulationAdapter()
@@ -40,6 +42,7 @@ class TestXenonIntegration:
 
     def test_xenon_adapter_with_transition(self):
         """Test XenonSimulationAdapter with Transition."""
+
         transition = Transition("S1", "S2", 1.5, -5.0, 20.0)
 
         adapter = XenonSimulationAdapter(scale=5.0)
@@ -50,6 +53,7 @@ class TestXenonIntegration:
 
     def test_validate_source(self):
         """Test source validation."""
+
         adapter = XenonSimulationAdapter()
 
         # Valid sources
@@ -69,6 +73,7 @@ class TestXenonIntegration:
 
     def test_load_mechanism_timeseries(self):
         """Test loading time series of mechanisms."""
+
         # Create multiple mechanism snapshots
         mechanisms = []
         for i in range(3):
@@ -86,6 +91,7 @@ class TestXenonIntegration:
 
     def test_unsupported_source_type(self):
         """Test error handling for unsupported source types."""
+
         adapter = XenonSimulationAdapter()
 
         with pytest.raises(ValueError, match="Unsupported XENON source type"):

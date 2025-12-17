@@ -1,4 +1,5 @@
 """
+
 QRATUM Reproducibility Framework
 
 Provides deterministic reproducibility infrastructure for XENON v5 production.

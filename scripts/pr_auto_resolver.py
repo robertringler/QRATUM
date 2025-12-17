@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Automated Pull Request Resolution and Merge System
 
 This script:
@@ -67,6 +68,7 @@ class PRAutoResolver:
 
     def get_open_prs(self, pr_number: Optional[int] = None) -> List[PullRequest]:
         """Fetch all open PRs or a specific PR"""
+
         if pr_number:
             try:
                 return [self.repo.get_pull(pr_number)]
@@ -78,6 +80,7 @@ class PRAutoResolver:
 
     def audit_pr(self, pr: PullRequest) -> List[PRIssue]:
         """Audit a PR for issues"""
+
         issues = []
 
         # Check for merge conflicts
@@ -125,6 +128,7 @@ class PRAutoResolver:
 
     def fix_merge_conflicts(self, pr: PullRequest) -> bool:
         """Attempt to automatically resolve merge conflicts"""
+
         try:
             # Fetch the PR branch
             branch_name = pr.head.ref
@@ -196,10 +200,12 @@ class PRAutoResolver:
 
     def _auto_resolve_file_conflict(self, filepath: str) -> bool:
         """
+
         Attempt to auto-resolve conflicts in a file.
         This is a simplified version - prefers incoming changes for documentation,
         and attempts smart merging for code files.
         """
+
         try:
             # Read the file
             with open(filepath) as f:
@@ -239,6 +245,7 @@ class PRAutoResolver:
 
     def fix_lint_errors(self) -> bool:
         """Run linters and attempt to auto-fix errors"""
+
         try:
             print("Running ruff auto-fix...")
             # Run ruff with auto-fix
@@ -295,6 +302,7 @@ class PRAutoResolver:
 
     def run_tests(self) -> bool:
         """Run the test suite"""
+
         try:
             # Run the full stack test
             result = subprocess.run(
@@ -322,6 +330,7 @@ class PRAutoResolver:
         self, pr: PullRequest, issues: List[PRIssue], run_tests: bool = True
     ) -> bool:
         """
+
         Check if PR meets merge criteria
 
         Args:
@@ -329,6 +338,7 @@ class PRAutoResolver:
             issues: List of known issues
             run_tests: Whether to run tests (can be disabled for performance)
         """
+
         # No critical or high severity unfixed issues
         critical_issues = [i for i in issues if i.severity in ["critical", "high"] and not i.fixed]
         if critical_issues:
@@ -356,6 +366,7 @@ class PRAutoResolver:
 
     def merge_pr(self, pr: PullRequest) -> bool:
         """Merge a PR using appropriate strategy"""
+
         try:
             # Determine merge method based on branch naming
             # feature/* -> squash, hotfix/* -> rebase, default -> squash
@@ -401,6 +412,7 @@ class PRAutoResolver:
 
     def resolve_pr(self, pr: PullRequest) -> PRResolutionResult:
         """Main resolution logic for a single PR"""
+
         print(f"\n{'=' * 60}")
         print(f"Processing PR #{pr.number}: {pr.title}")
         print(f"{'=' * 60}\n")
@@ -499,6 +511,7 @@ class PRAutoResolver:
 
     def run(self, pr_number: Optional[int] = None):
         """Main entry point"""
+
         prs = self.get_open_prs(pr_number)
 
         if not prs:
@@ -555,6 +568,7 @@ class PRAutoResolver:
 
 def main():
     """Main entry point"""
+
     github_token = os.environ.get("GITHUB_TOKEN")
     if not github_token:
         print("ERROR: GITHUB_TOKEN environment variable not set")

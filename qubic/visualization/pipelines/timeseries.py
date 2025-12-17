@@ -32,6 +32,7 @@ class TimeSeriesPipeline:
             figsize: Figure size in inches
             dpi: Resolution in dots per inch
         """
+
         self.figsize = figsize
         self.dpi = dpi
 
@@ -63,6 +64,7 @@ class TimeSeriesPipeline:
             ValueError: If format is not supported
             RuntimeError: If no timesteps are loaded
         """
+
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -78,7 +80,7 @@ class TimeSeriesPipeline:
 
         try:
             for i in range(n_timesteps):
-                logger.info(f"Rendering frame {i+1}/{n_timesteps}")
+                logger.info(f"Rendering frame {i + 1}/{n_timesteps}")
 
                 data = adapter.get_timestep(i)
 
@@ -121,6 +123,7 @@ class TimeSeriesPipeline:
             ValueError: If format is not supported
             ImportError: If required libraries are not available
         """
+
         try:
             import imageio
 
@@ -180,6 +183,7 @@ class TimeSeriesPipeline:
         Raises:
             RuntimeError: If no timesteps are loaded
         """
+
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
 

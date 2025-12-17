@@ -60,6 +60,7 @@ class QuantumConfig:
 
     def __post_init__(self) -> None:
         """Validate configuration."""
+
         if self.shots < 100:
             warnings.warn(
                 f"shots={self.shots} is very low. Use at least 1000 for reliable statistics.",
@@ -72,6 +73,7 @@ class QuantumConfig:
     @property
     def is_simulator(self) -> bool:
         """Check if using simulator backend."""
+
         return self.backend_type == "simulator"
 
 
@@ -103,6 +105,7 @@ class QuantumBackend:
             ImportError: If Qiskit is not installed
             ValueError: If configuration is invalid
         """
+
         if not QISKIT_AVAILABLE:
             raise ImportError(
                 "Qiskit is required for quantum computing. "
@@ -114,6 +117,7 @@ class QuantumBackend:
 
     def _setup_backend(self) -> Any:
         """Setup the quantum backend based on configuration."""
+
         if self.config.backend_type == "simulator":
             return self._setup_simulator()
         elif self.config.backend_type == "ibmq":
@@ -123,6 +127,7 @@ class QuantumBackend:
 
     def _setup_simulator(self) -> AerSimulator:
         """Setup Qiskit Aer simulator."""
+
         backend = AerSimulator()
         return backend
 
@@ -131,6 +136,7 @@ class QuantumBackend:
 
         Requires IBM Quantum account and API token.
         """
+
         try:
             from qiskit_ibm_runtime import QiskitRuntimeService
         except ImportError:
@@ -167,6 +173,7 @@ class QuantumBackend:
         Returns:
             Execution result with measurement counts and metadata
         """
+
         # Ensure circuit(s) have measurements
         circuits = [circuit] if isinstance(circuit, QuantumCircuit) else circuit
 
@@ -191,11 +198,13 @@ class QuantumBackend:
     @property
     def backend_name(self) -> str:
         """Get the name of the current backend."""
+
         return self._backend.name if hasattr(self._backend, "name") else "unknown"
 
     @property
     def num_qubits(self) -> int:
         """Get the number of qubits available on the backend."""
+
         if hasattr(self._backend, "num_qubits"):
             return self._backend.num_qubits
         # Simulator has no hard limit
@@ -215,6 +224,7 @@ def create_noise_model(
     Returns:
         Qiskit NoiseModel or None if Qiskit not available
     """
+
     if not QISKIT_AVAILABLE:
         warnings.warn("Qiskit not available, returning None", UserWarning)
         return None

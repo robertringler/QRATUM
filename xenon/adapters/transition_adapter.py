@@ -30,6 +30,7 @@ class TransitionAdapter:
         Args:
             transition: Transition instance to adapt
         """
+
         self.transition = transition
 
     def to_viz_model(self) -> dict[str, any]:
@@ -38,6 +39,7 @@ class TransitionAdapter:
         Returns:
             Dictionary with transition properties for visualization
         """
+
         return {
             "source": self.transition.source_state,
             "target": self.transition.target_state,
@@ -65,6 +67,7 @@ class TransitionAdapter:
         Returns:
             VisualizationData with arrow mesh
         """
+
         direction = target_pos - source_pos
         length = np.linalg.norm(direction)
         direction_norm = direction / length if length > 0 else np.array([0, 0, 1])
@@ -130,6 +133,7 @@ class TransitionAdapter:
         Returns:
             VisualizationData with energy barrier curve
         """
+
         # Create reaction coordinate (0 to 1)
         reaction_coord = np.linspace(0, 1, num_points)
 
@@ -189,6 +193,7 @@ class TransitionAdapter:
         Returns:
             RGB tuple (0-1 range)
         """
+
         # Normalize rate to 0-1 range
         rate_norm = (self.transition.rate_constant - min_rate) / (max_rate - min_rate)
         rate_norm = np.clip(rate_norm, 0, 1)
@@ -212,6 +217,7 @@ class TransitionAdapter:
         Returns:
             Thickness value for visualization
         """
+
         # Log scale for rate constants (often span many orders of magnitude)
         log_rate = np.log10(max(self.transition.rate_constant, 1e-10))
         # Normalize to thickness range (heuristic)

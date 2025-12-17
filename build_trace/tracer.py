@@ -17,6 +17,7 @@ class BuildTracer:
 
     def __init__(self, output_path: Path = Path("qubic_build_trace.json")) -> None:
         """Initialize build tracer."""
+
         self.output_path = output_path
         self.events: list[dict[str, Any]] = []
         self.start_time = datetime.now()
@@ -29,6 +30,7 @@ class BuildTracer:
             module_type: Type of module (core, engine, adapter, etc.)
             details: Additional details
         """
+
         event = {
             "timestamp": datetime.now().isoformat(),
             "event_type": "module_creation",
@@ -46,6 +48,7 @@ class BuildTracer:
             passed: Whether tests passed
             details: Test details
         """
+
         event = {
             "timestamp": datetime.now().isoformat(),
             "event_type": "test_result",
@@ -62,6 +65,7 @@ class BuildTracer:
             available: Whether GPU is available
             gpu_info: GPU information
         """
+
         event = {
             "timestamp": datetime.now().isoformat(),
             "event_type": "gpu_check",
@@ -80,6 +84,7 @@ class BuildTracer:
             status: Validation status
             details: Validation details
         """
+
         event = {
             "timestamp": datetime.now().isoformat(),
             "event_type": "integration_validation",
@@ -91,6 +96,7 @@ class BuildTracer:
 
     def export(self) -> None:
         """Export build trace to JSON file."""
+
         build_trace = {
             "build_start": self.start_time.isoformat(),
             "build_end": datetime.now().isoformat(),
@@ -116,6 +122,7 @@ class BuildTracer:
 
 def create_build_trace() -> None:
     """Create build trace for QUBIC implementation."""
+
     tracer = BuildTracer()
 
     # Log qubic-viz modules

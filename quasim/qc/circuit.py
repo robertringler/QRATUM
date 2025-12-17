@@ -26,6 +26,7 @@ class QuantumCircuit:
 
     def __post_init__(self) -> None:
         """Validate circuit parameters."""
+
         if self.num_qubits < 1:
             raise ValueError("Circuit must have at least 1 qubit")
         if self.backend not in ("cuda", "hip", "cpu"):
@@ -41,6 +42,7 @@ class QuantumCircuit:
             qubits: List of qubit indices the gate acts on
             params: Optional gate parameters (e.g., rotation angles)
         """
+
         if any(q < 0 or q >= self.num_qubits for q in qubits):
             raise ValueError(f"Qubit indices must be in range [0, {self.num_qubits})")
 
@@ -53,11 +55,13 @@ class QuantumCircuit:
 
     def depth(self) -> int:
         """Calculate the depth of the circuit (critical path length)."""
+
         # Simplified depth calculation - in production, would analyze gate dependencies
         return len(self.gates)
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize circuit to dictionary for distributed execution."""
+
         return {
             "num_qubits": self.num_qubits,
             "gates": self.gates,
@@ -67,6 +71,7 @@ class QuantumCircuit:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> QuantumCircuit:
         """Deserialize circuit from dictionary."""
+
         circuit = cls(
             num_qubits=data["num_qubits"],
             backend=data.get("backend", "cpu"),

@@ -50,6 +50,7 @@ class MockSimulationResult:
 
 def test_extract_visualization_data():
     """Test visualization data extraction."""
+
     sim_result = MockSimulationResult()
     viz_data = TireDataAdapter.extract_visualization_data(sim_result)
 
@@ -70,6 +71,7 @@ def test_extract_visualization_data():
 
 def test_extract_thermal_map():
     """Test thermal map extraction."""
+
     sim_result = MockSimulationResult()
     thermal_map = TireDataAdapter._extract_thermal_map(sim_result)
 
@@ -79,6 +81,7 @@ def test_extract_thermal_map():
 
 def test_extract_stress_distribution():
     """Test stress distribution extraction."""
+
     sim_result = MockSimulationResult()
     stress_dist = TireDataAdapter._extract_stress_distribution(sim_result)
 
@@ -88,6 +91,7 @@ def test_extract_stress_distribution():
 
 def test_extract_wear_pattern():
     """Test wear pattern extraction."""
+
     sim_result = MockSimulationResult()
     wear_pattern = TireDataAdapter._extract_wear_pattern(sim_result)
 
@@ -97,6 +101,7 @@ def test_extract_wear_pattern():
 
 def test_normalize_field_data_same_size():
     """Test field data normalization with same size."""
+
     data = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
     normalized = TireDataAdapter.normalize_field_data(data, 5)
 
@@ -106,6 +111,7 @@ def test_normalize_field_data_same_size():
 
 def test_normalize_field_data_upsample():
     """Test field data upsampling."""
+
     data = np.array([1.0, 5.0])
     normalized = TireDataAdapter.normalize_field_data(data, 5)
 
@@ -117,6 +123,7 @@ def test_normalize_field_data_upsample():
 
 def test_normalize_field_data_downsample():
     """Test field data downsampling."""
+
     data = np.arange(100)
     normalized = TireDataAdapter.normalize_field_data(data, 10)
 

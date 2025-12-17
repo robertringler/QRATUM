@@ -10,6 +10,7 @@ class TestPrompt:
 
     def test_create_valid_prompt(self):
         """Test creating a valid prompt."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -33,6 +34,7 @@ class TestPrompt:
 
     def test_invalid_id(self):
         """Test that invalid ID raises ValueError."""
+
         with pytest.raises(ValueError, match="Prompt ID must be between 1 and 10000"):
             Prompt(
                 id=10001,
@@ -45,6 +47,7 @@ class TestPrompt:
 
     def test_invalid_patentability_score(self):
         """Test that invalid patentability score raises ValueError."""
+
         with pytest.raises(ValueError, match="Patentability score must be between"):
             Prompt(
                 id=1,
@@ -57,6 +60,7 @@ class TestPrompt:
 
     def test_is_high_value(self):
         """Test high-value prompt detection."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -71,6 +75,7 @@ class TestPrompt:
 
     def test_to_dict(self):
         """Test prompt serialization to dict."""
+
         prompt = Prompt(
             id=1,
             category="Test",
@@ -86,6 +91,7 @@ class TestPrompt:
 
     def test_from_dict(self):
         """Test prompt deserialization from dict."""
+
         data = {
             "id": 1,
             "category": "Test",
@@ -105,6 +111,7 @@ class TestDomain:
 
     def test_create_valid_domain(self):
         """Test creating a valid domain."""
+
         domain = Domain(
             id="D1",
             name="Advanced Materials",
@@ -122,6 +129,7 @@ class TestDomain:
 
     def test_invalid_domain_id(self):
         """Test that invalid domain ID raises ValueError."""
+
         with pytest.raises(ValueError, match="Domain ID must start with 'D'"):
             Domain(
                 id="X1",
@@ -134,6 +142,7 @@ class TestDomain:
 
     def test_invalid_tier(self):
         """Test that invalid tier raises ValueError."""
+
         with pytest.raises(ValueError, match="Domain tier must be between 1 and 5"):
             Domain(
                 id="D1",
@@ -146,6 +155,7 @@ class TestDomain:
 
     def test_contains_id(self):
         """Test prompt ID range checking."""
+
         domain = Domain(
             id="D1",
             name="Test",
@@ -164,6 +174,7 @@ class TestSynergyCluster:
 
     def test_create_valid_cluster(self):
         """Test creating a valid synergy cluster."""
+
         cluster = SynergyCluster(
             id="A",
             name="Test Cluster",
@@ -180,6 +191,7 @@ class TestSynergyCluster:
 
     def test_auto_detect_cluster_type(self):
         """Test automatic cluster type detection."""
+
         # Two-domain
         cluster2 = SynergyCluster(id="A", name="Test", domains=["D1", "D2"])
         assert cluster2.cluster_type == "two-domain"
@@ -195,6 +207,7 @@ class TestSynergyCluster:
 
     def test_revenue_projection(self):
         """Test revenue projection calculation."""
+
         cluster = SynergyCluster(
             id="A",
             name="Test",
@@ -210,6 +223,7 @@ class TestPipeline:
 
     def test_create_valid_pipeline(self):
         """Test creating a valid pipeline."""
+
         pipeline = Pipeline(
             id="P1",
             name="Test Pipeline",
@@ -225,11 +239,13 @@ class TestPipeline:
 
     def test_invalid_phase(self):
         """Test that invalid phase raises ValueError."""
+
         with pytest.raises(ValueError, match="Phase must be between 1 and 4"):
             Pipeline(id="P1", name="Test", phase=5)
 
     def test_is_ready(self):
         """Test pipeline readiness checking."""
+
         pipeline = Pipeline(id="P2", name="Test", phase=2, dependencies=["P1"])
 
         assert pipeline.is_ready(set()) is False
@@ -237,6 +253,7 @@ class TestPipeline:
 
     def test_add_prompt(self):
         """Test adding prompts to pipeline."""
+
         pipeline = Pipeline(id="P1", name="Test", phase=1)
 
         pipeline.add_prompt(1, is_keystone=True)

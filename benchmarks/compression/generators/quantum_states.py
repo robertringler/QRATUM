@@ -43,6 +43,7 @@ def generate_random_state(n_qubits: int, seed: Optional[int] = None) -> Array:
         >>> assert state.shape == (8,)
         >>> assert abs(np.linalg.norm(state) - 1.0) < 1e-10
     """
+
     if seed is not None:
         np.random.seed(seed)
 
@@ -80,6 +81,7 @@ def generate_product_state(n_qubits: int, state_type: str = "zero") -> Array:
         >>> assert state[0] == 1.0
         >>> assert np.sum(np.abs(state[1:])) < 1e-10
     """
+
     dim = 2**n_qubits
 
     if state_type == "zero":
@@ -130,6 +132,7 @@ def generate_ghz_state(n_qubits: int) -> Array:
         >>> assert abs(state[0] - 1/np.sqrt(2)) < 1e-10
         >>> assert abs(state[7] - 1/np.sqrt(2)) < 1e-10
     """
+
     dim = 2**n_qubits
     state = np.zeros(dim, dtype=complex)
 
@@ -159,6 +162,7 @@ def generate_w_state(n_qubits: int) -> Array:
         >>> # Should have amplitude 1/√3 at positions 1, 2, 4
         >>> assert abs(state[1] - 1/np.sqrt(3)) < 1e-10
     """
+
     dim = 2**n_qubits
     state = np.zeros(dim, dtype=complex)
 
@@ -192,6 +196,7 @@ def generate_random_circuit_state(
         >>> assert state.shape == (16,)
         >>> assert abs(np.linalg.norm(state) - 1.0) < 1e-10
     """
+
     if not QISKIT_AVAILABLE:
         warnings.warn(
             "Qiskit not available. Using random state instead of circuit state.",
@@ -257,6 +262,7 @@ def generate_vqe_h2_state(bond_length: float = 0.735) -> Optional[Array]:
     Note:
         This function may take several seconds to compute.
     """
+
     try:
         from quasim.quantum.core import QuantumConfig
         from quasim.quantum.vqe_molecule import MolecularVQE
@@ -292,6 +298,7 @@ def generate_qaoa_maxcut_state(n_nodes: int, edges: list[tuple[int, int]]) -> Op
     Returns:
         QAOA state vector (2^n_nodes dimensional), or None if unavailable
     """
+
     try:
         from quasim.quantum.core import QuantumConfig
         from quasim.quantum.qaoa_optimization import QAOA

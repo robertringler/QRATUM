@@ -32,6 +32,7 @@ class VisualizationData:
 
     def __post_init__(self) -> None:
         """Validate data and compute normals if needed."""
+
         self._validate()
         if self.normals is None:
             self.normals = self._compute_normals()
@@ -42,6 +43,7 @@ class VisualizationData:
         Raises:
             ValueError: If data dimensions are inconsistent
         """
+
         if self.vertices.ndim != 2 or self.vertices.shape[1] != 3:
             raise ValueError(f"vertices must be Nx3 array, got shape {self.vertices.shape}")
 
@@ -61,8 +63,7 @@ class VisualizationData:
         for name, field_data in self.scalar_fields.items():
             if len(field_data) != num_vertices:
                 raise ValueError(
-                    f"scalar field '{name}' has length {len(field_data)}, "
-                    f"expected {num_vertices}"
+                    f"scalar field '{name}' has length {len(field_data)}, expected {num_vertices}"
                 )
 
         # Validate vector fields
@@ -79,6 +80,7 @@ class VisualizationData:
         Returns:
             Nx3 array of normalized vertex normals
         """
+
         normals = np.zeros_like(self.vertices)
 
         # Compute face normals and accumulate at vertices
@@ -106,6 +108,7 @@ class VisualizationData:
         Returns:
             Tuple of (min_coords, max_coords) as 3D arrays
         """
+
         return self.vertices.min(axis=0), self.vertices.max(axis=0)
 
     def add_scalar_field(self, name: str, data: np.ndarray) -> None:
@@ -118,6 +121,7 @@ class VisualizationData:
         Raises:
             ValueError: If data length doesn't match number of vertices
         """
+
         if len(data) != len(self.vertices):
             raise ValueError(
                 f"scalar field length {len(data)} doesn't match "
@@ -135,10 +139,11 @@ class VisualizationData:
         Raises:
             ValueError: If data shape doesn't match (num_vertices, 3)
         """
+
         expected_shape = (len(self.vertices), 3)
         if data.shape != expected_shape:
             raise ValueError(
-                f"vector field shape {data.shape} doesn't match " f"expected shape {expected_shape}"
+                f"vector field shape {data.shape} doesn't match expected shape {expected_shape}"
             )
         self.vector_fields[name] = data
 
@@ -154,6 +159,7 @@ class VisualizationData:
         Raises:
             KeyError: If field doesn't exist
         """
+
         if field_name not in self.scalar_fields:
             raise KeyError(f"scalar field '{field_name}' not found")
         data = self.scalar_fields[field_name]

@@ -38,6 +38,7 @@ class UnifiedExecutionResult:
     @classmethod
     def from_simulation_result(cls, result: SimulationResult) -> UnifiedExecutionResult:
         """Create from QuASIM SimulationResult."""
+
         return cls(
             prompt_id=result.prompt_id,
             platform="QuASIM",
@@ -54,6 +55,7 @@ class UnifiedExecutionResult:
     @classmethod
     def from_ml_result(cls, result: MLExecutionResult) -> UnifiedExecutionResult:
         """Create from QStack MLExecutionResult."""
+
         return cls(
             prompt_id=result.prompt_id,
             platform="QStack",
@@ -69,6 +71,7 @@ class UnifiedExecutionResult:
     @classmethod
     def from_cloud_result(cls, result: CloudExecutionResult) -> UnifiedExecutionResult:
         """Create from QNimbus CloudExecutionResult."""
+
         return cls(
             prompt_id=result.prompt_id,
             platform="QNimbus",
@@ -85,6 +88,7 @@ class UnifiedExecutionResult:
 
     def is_successful(self) -> bool:
         """Check if execution completed successfully."""
+
         return self.status == "completed"
 
 
@@ -114,6 +118,7 @@ class UnifiedOrchestrator:
             ml_device: Device for QStack ML workloads
             cloud_provider: Default cloud provider for QNimbus
         """
+
         self.quasim = QuASIMConnector(
             seed=quasim_seed,
             deterministic_mode=deterministic_mode,
@@ -133,6 +138,7 @@ class UnifiedOrchestrator:
         Returns:
             Platform name ("QuASIM", "QStack", or "QNimbus")
         """
+
         # Check explicit execution layers first
         if prompt.execution_layers:
             for layer in prompt.execution_layers:
@@ -168,6 +174,7 @@ class UnifiedOrchestrator:
         Returns:
             UnifiedExecutionResult with execution status
         """
+
         platform = force_platform or self.route_prompt(prompt)
 
         if platform == "QuASIM":
@@ -197,6 +204,7 @@ class UnifiedOrchestrator:
         Returns:
             List of UnifiedExecutionResults
         """
+
         results = []
         for prompt in prompts:
             results.append(self.execute(prompt, dry_run=dry_run))
@@ -211,6 +219,7 @@ class UnifiedOrchestrator:
         Returns:
             Dictionary mapping platforms to prompt IDs
         """
+
         routing: dict[str, list[int]] = {
             "QuASIM": [],
             "QStack": [],
@@ -229,6 +238,7 @@ class UnifiedOrchestrator:
         Returns:
             Dictionary with execution metrics from all platforms
         """
+
         successful = sum(1 for r in self._execution_history if r.is_successful())
         total = len(self._execution_history)
 

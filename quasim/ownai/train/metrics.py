@@ -22,6 +22,7 @@ def accuracy(y_true: NDArray, y_pred: NDArray) -> float:
     float
         Accuracy score
     """
+
     return float(np.mean(y_true == y_pred))
 
 
@@ -40,6 +41,7 @@ def mae(y_true: NDArray[np.float32], y_pred: NDArray[np.float32]) -> float:
     float
         MAE score
     """
+
     return float(np.mean(np.abs(y_true - y_pred)))
 
 
@@ -58,6 +60,7 @@ def rmse(y_true: NDArray[np.float32], y_pred: NDArray[np.float32]) -> float:
     float
         RMSE score
     """
+
     return float(np.sqrt(np.mean((y_true - y_pred) ** 2)))
 
 
@@ -78,6 +81,7 @@ def f1_score(y_true: NDArray, y_pred: NDArray, average: str = "weighted") -> flo
     float
         F1 score
     """
+
     from sklearn.metrics import f1_score as sklearn_f1
 
     return float(sklearn_f1(y_true, y_pred, average=average, zero_division=0))
@@ -100,6 +104,7 @@ def measure_latency(model: Any, X: Any, n_runs: int = 100) -> dict[str, float]:
     dict[str, float]
         Dictionary with p50 and p95 latencies in milliseconds
     """
+
     latencies = []
 
     for _ in range(n_runs):
@@ -134,6 +139,7 @@ def measure_throughput(model: Any, X: Any, duration_sec: float = 1.0) -> float:
     float
         Throughput in predictions per second
     """
+
     start = time.perf_counter()
     count = 0
 
@@ -158,6 +164,7 @@ def estimate_model_size_mb(model: Any) -> float:
     float
         Estimated size in MB
     """
+
     import sys
 
     size_bytes = sys.getsizeof(model)
@@ -190,6 +197,7 @@ def estimate_energy_proxy(latency_ms: float, throughput: float = None) -> float:
     float
         Energy proxy in arbitrary units
     """
+
     # Assume typical CPU TDP of 65W
     tdp_watts = 65.0
 
@@ -216,6 +224,7 @@ def compute_stability_margin(scores: list[float]) -> float:
     float
         Stability margin (higher is more stable)
     """
+
     if len(scores) < 2:
         return 1.0
 

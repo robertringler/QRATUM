@@ -32,6 +32,7 @@ def compare_observables(hdf5_path: str, cfg_yaml: str, tol_default: float = 0.03
     >>> results = compare_observables("snapshot.hdf5", "config.yml", 0.03)
     >>> assert all(r["pass"] for r in results.values())
     """
+
     # Load configuration
     cfg_path = Path(cfg_yaml)
     if not cfg_path.exists():
@@ -112,6 +113,7 @@ def _extract_observable(snapshot: Dict[str, Any], source: str, reduce_op: str) -
     float
         Computed observable value
     """
+
     # Handle special operations
     if reduce_op == "count":
         # Count rows in dataset

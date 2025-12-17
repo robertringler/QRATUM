@@ -27,6 +27,7 @@ class Result:
             counts: Dictionary of basis states to counts
             num_qubits: Number of qubits
         """
+
         self.counts = counts
         self.num_qubits = num_qubits
         self.shots = sum(counts.values())
@@ -37,6 +38,7 @@ class Result:
         Returns:
             Dictionary mapping basis states to counts
         """
+
         return self.counts
 
     def get_probabilities(self) -> Dict[str, float]:
@@ -45,6 +47,7 @@ class Result:
         Returns:
             Dictionary mapping basis states to probabilities
         """
+
         return {state: count / self.shots for state, count in self.counts.items()}
 
     def most_frequent(self, n: int = 1) -> List[str]:
@@ -56,6 +59,7 @@ class Result:
         Returns:
             List of most frequent basis states
         """
+
         sorted_states = sorted(self.counts.items(), key=lambda x: x[1], reverse=True)
         return [state for state, _ in sorted_states[:n]]
 
@@ -68,6 +72,7 @@ class Result:
         Returns:
             Dictionary of marginal counts
         """
+
         marginal = {}
         for state, count in self.counts.items():
             # Extract specified qubits
@@ -87,6 +92,7 @@ class Result:
         Raises:
             ValueError: If observable length doesn't match num_qubits
         """
+
         if len(observable) != self.num_qubits:
             raise ValueError(
                 f"Observable length {len(observable)} must match num_qubits {self.num_qubits}"
@@ -111,10 +117,12 @@ class Result:
 
     def __repr__(self) -> str:
         """String representation of result."""
+
         return f"Result({self.shots} shots, {len(self.counts)} outcomes)"
 
     def __str__(self) -> str:
         """Human-readable string representation."""
+
         lines = [f"Measurement Result ({self.shots} shots):"]
         sorted_counts = sorted(self.counts.items(), key=lambda x: x[1], reverse=True)
         for state, count in sorted_counts[:10]:  # Show top 10
@@ -145,6 +153,7 @@ class Measurement:
         Returns:
             Measurement Result
         """
+
         if seed is not None:
             np.random.seed(seed)
 
@@ -177,6 +186,7 @@ class Measurement:
         Returns:
             Measurement Result for specified qubits
         """
+
         # For simplicity, measure all qubits and marginalize
         full_result = Measurement.measure_statevector(state, shots, seed)
         marginal_counts = full_result.marginal_counts(qubits)
@@ -196,6 +206,7 @@ class Measurement:
         Returns:
             Measurement Result
         """
+
         if seed is not None:
             np.random.seed(seed)
 

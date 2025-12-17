@@ -41,6 +41,7 @@ def tdgl_evolution_step(
         >>> psi = np.random.randn(64) + 1j * np.random.randn(64)
         >>> psi_new = tdgl_evolution_step(psi, -1.0, 1.0, 0.5, 0.01)
     """
+
     # Compute |ψ|²
     psi_abs_sq = np.abs(order_parameter) ** 2
 
@@ -82,6 +83,7 @@ def compute_structure_factor(
         >>> S = compute_structure_factor(psi)
         >>> assert np.argmax(S) == 1  # Peak at k=1
     """
+
     # Fourier transform
     psi_k = np.fft.fft(order_parameter)
 
@@ -117,6 +119,7 @@ def detect_crystallization(
         >>> crystallized, idx, height = detect_crystallization(S, 5.0)
         >>> assert crystallized and idx == 2
     """
+
     # Find peak (excluding DC component at k=0)
     peak_index = np.argmax(structure_factor[1:]) + 1
     peak_height = float(structure_factor[peak_index])
@@ -163,6 +166,7 @@ def simulate_crystallization(
         ...     64, -1.0, 1.0, 0.5, 0.01, 1000
         ... )
     """
+
     # Initialize with noise
     rng = np.random.RandomState(42)  # Deterministic for testing
     psi = noise_amplitude * (rng.randn(n_grid) + 1j * rng.randn(n_grid))

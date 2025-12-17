@@ -39,6 +39,7 @@ class ScenarioResult:
     @property
     def simulation_hash(self) -> str:
         """Deterministic SHA-256 hash of raw_output."""
+
         data = json.dumps(self.raw_output, sort_keys=True, default=str).encode()
         return hashlib.sha256(data).hexdigest()
 
@@ -63,6 +64,7 @@ _ENGINE_REGISTRY: dict[str, Callable[..., MutableMapping[str, Any]]] = {}
 
 def register_engine(name: str, fn: Callable[..., MutableMapping[str, Any]]):
     """Register a backend engine function."""
+
     _ENGINE_REGISTRY[name] = fn
 
 
@@ -192,11 +194,13 @@ def run_scenario(
     extra: dict[str, Any] | None = None,
 ) -> ScenarioResult:
     """
+
     Execute a simulation scenario via a registered engine.
 
     This function routes calls to the appropriate backend (modern, legacy,
     QVR Windows interface, adapters, HPC wraps, etc.).
     """
+
     if engine not in _ENGINE_REGISTRY:
         raise ValueError(
             f"Engine '{engine}' is not registered. "

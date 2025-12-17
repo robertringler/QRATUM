@@ -11,6 +11,7 @@ from evolve.rl_controller import RLController
 
 def generate_initial_population(population_size: int = 20, seed: int = 42) -> None:
     """Generate and save initial kernel population."""
+
     print(f"Initializing kernel population with {population_size} genomes...")
 
     # Create RL controller
@@ -106,6 +107,7 @@ Each kernel genome encodes:
 
 def main() -> None:
     """Main entry point."""
+
     parser = argparse.ArgumentParser(
         description="Initialize kernel evolution population for Phase III"
     )

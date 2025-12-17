@@ -20,6 +20,7 @@ KRYPTOS_K4 = (
 
 def main():
     """Run K4 analysis demo."""
+
     print("=" * 70)
     print("REVULTRA Analysis: Kryptos K4")
     print("=" * 70)

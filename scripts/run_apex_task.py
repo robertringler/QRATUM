@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuNimbus APEX Mode - IP Mining and Supercomputer Synthesis
 
 This script implements the APEX (pinnacle synthesis) mode for the QuNimbus
@@ -36,6 +37,7 @@ class ApexMode:
 
     def execute(self, task_file: Path, enhance: bool = False) -> Dict[str, Any]:
         """Execute APEX mode task."""
+
         print(f"\n{'=' * 80}")
         print("**APEX MODE ACTIVATED**")
         print(f"*Run ID:* {self.run_id}")
@@ -59,6 +61,7 @@ class ApexMode:
 
     def phase1_repository_mining(self, config: Dict) -> Dict:
         """Phase 1: Repository Mining [APEX]"""
+
         print("\n### Phase 1/13: Repository Mining [APEX]")
 
         repo_roots = config.get("inputs", {}).get("repo_roots", {}).get("default", "").split(",")
@@ -100,6 +103,7 @@ class ApexMode:
 
     def phase2_invention_clustering(self, config: Dict) -> Dict:
         """Phase 2: Invention Clustering [APEX]"""
+
         print("\n### Phase 2/13: Invention Clustering [APEX]")
 
         ip_dir = Path(config.get("inputs", {}).get("ip_output_dir", {}).get("default", "docs/ip"))
@@ -205,6 +209,7 @@ class ApexMode:
 
     def phase3_5_disclosure_claims_media(self, config: Dict) -> Dict:
         """Phase 3-5: Disclosure, Claims & Immersive Media [APEX]"""
+
         print("\n### Phase 3–5/13: Disclosure, Claims & Immersive Media [APEX]")
 
         ip_dir = Path(config.get("inputs", {}).get("ip_output_dir", {}).get("default", "docs/ip"))
@@ -341,6 +346,7 @@ identified. Preemptive invalidity suits prepared for 18 potential rivals.
 
     def phase6_10_supercomputer_synthesis(self, config: Dict) -> Dict:
         """Phase 6-10: Supercomputer Synthesis [APEX]"""
+
         print("\n### Phase 6–10/13: Supercomputer Synthesis [APEX]")
 
         sc_dir = Path(
@@ -640,6 +646,7 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 
     def phase11_12_compliance_export(self, config: Dict) -> Dict:
         """Phase 11-12: Compliance & Universal Export [APEX]"""
+
         print("\n### Phase 11–12/13: Compliance & Universal Export [APEX]")
 
         sc_dir = Path(
@@ -686,6 +693,7 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 
     def phase13_handoff(self, config: Dict) -> Dict:
         """Phase 13: Pre-Deployment Handoff [APEX]"""
+
         print("\n### Phase 13/13: Pre-Deployment Handoff [APEX]")
 
         # Create handoff structure
@@ -820,6 +828,7 @@ and formally verified security, this system enables previously impossible simula
 
 def main():
     """Main entry point."""
+
     parser = argparse.ArgumentParser(description="QuNimbus APEX Mode Executor")
     parser.add_argument("task_file", help="Path to task YAML file")
     parser.add_argument("--enhance", action="store_true", help="Enable enhancement mode")

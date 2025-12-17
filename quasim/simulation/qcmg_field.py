@@ -30,6 +30,7 @@ class QCMGParameters:
 
     def __post_init__(self) -> None:
         """Validate QCMG parameters."""
+
         if self.field_dimension < 1:
             raise ValueError("Field dimension must be at least 1")
         if self.evolution_steps < 1:
@@ -60,6 +61,7 @@ class FieldState:
 
     def __post_init__(self) -> None:
         """Validate field state."""
+
         if len(self.field_values) != len(self.momentum) and self.momentum:
             raise ValueError("Field values and momentum must have same length")
 
@@ -69,6 +71,7 @@ class FieldState:
         Returns:
             New FieldState instance with copied values
         """
+
         return FieldState(
             field_values=self.field_values.copy(),
             momentum=self.momentum.copy(),
@@ -97,6 +100,7 @@ class QuantacosmorphysigeneticField:
         Args:
             parameters: QCMG field parameters, uses defaults if None
         """
+
         self.parameters = parameters if parameters is not None else QCMGParameters()
         self.state = FieldState()
         self.history: list[FieldState] = []
@@ -108,6 +112,7 @@ class QuantacosmorphysigeneticField:
         Args:
             initial_state: Initial field state, creates default if None
         """
+
         if initial_state is not None:
             self.state = initial_state.copy()
         else:
@@ -137,6 +142,7 @@ class QuantacosmorphysigeneticField:
         Raises:
             RuntimeError: If field not initialized
         """
+
         if not self._initialized:
             raise RuntimeError("Field not initialized. Call initialize() first.")
 
@@ -191,6 +197,7 @@ class QuantacosmorphysigeneticField:
         Raises:
             RuntimeError: If field not initialized
         """
+
         if not self._initialized:
             raise RuntimeError("Field not initialized. Call initialize() first.")
 
@@ -209,6 +216,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Copy of current field state
         """
+
         return self.state.copy()
 
     def get_history(self) -> list[FieldState]:
@@ -217,10 +225,12 @@ class QuantacosmorphysigeneticField:
         Returns:
             List of all recorded field states
         """
+
         return [state.copy() for state in self.history]
 
     def reset(self) -> None:
         """Reset the field to uninitialized state."""
+
         self.state = FieldState()
         self.history = []
         self._initialized = False

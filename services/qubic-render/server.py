@@ -23,6 +23,7 @@ class RenderServer:
 
     def __init__(self, gpu_available: bool = True) -> None:
         """Initialize render server."""
+
         if not FASTAPI_AVAILABLE:
             raise ImportError("FastAPI not installed. Install with: pip install fastapi uvicorn")
 
@@ -36,6 +37,7 @@ class RenderServer:
         Returns:
             FastAPI app instance
         """
+
         app = FastAPI(
             title="QUBIC Render Service",
             description="Distributed GPU rendering for QuASIM visualization",
@@ -45,6 +47,7 @@ class RenderServer:
         @app.get("/health")
         async def health_check():
             """Health check endpoint."""
+
             return {
                 "status": "healthy",
                 "gpu_available": self.gpu_available,
@@ -54,6 +57,7 @@ class RenderServer:
         @app.get("/gpu-status")
         async def gpu_status():
             """GPU status endpoint."""
+
             gpu_info = self._get_gpu_info()
             return {"gpu_available": self.gpu_available, "info": gpu_info}
 
@@ -65,6 +69,7 @@ class RenderServer:
         Returns:
             GPU info dictionary
         """
+
         if not self.gpu_available:
             return {"message": "No GPU available"}
 
@@ -91,6 +96,7 @@ def create_app() -> FastAPI:
     Returns:
         FastAPI app instance
     """
+
     server = RenderServer()
     return server.app
 

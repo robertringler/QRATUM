@@ -10,6 +10,7 @@ class TestWebGPUDashboard:
 
     def test_get_latest_frame_json(self):
         """Test getting latest frame as JSON."""
+
         from quasic_viz.dashboards.webgpu_dashboard import get_latest_frame_json
 
         json_str = get_latest_frame_json()
@@ -19,6 +20,7 @@ class TestWebGPUDashboard:
 
     def test_update_frame_data(self):
         """Test updating frame data."""
+
         from quasic_viz.dashboards.webgpu_dashboard import (
             get_latest_frame_json,
             update_frame_data,
@@ -30,6 +32,7 @@ class TestWebGPUDashboard:
 
     def test_create_dashboard_app(self):
         """Test dashboard app creation."""
+
         from quasic_viz.dashboards.webgpu_dashboard import create_dashboard_app
 
         app = create_dashboard_app()
@@ -43,6 +46,7 @@ class TestTimeSeriesAnalytics:
 
     def test_init(self):
         """Test analytics initialization."""
+
         from quasic_viz.dashboards.analytics import TimeSeriesAnalytics
 
         analytics = TimeSeriesAnalytics(max_history=100)
@@ -50,6 +54,7 @@ class TestTimeSeriesAnalytics:
 
     def test_record_frame(self):
         """Test recording frames."""
+
         from quasic_viz.dashboards.analytics import TimeSeriesAnalytics
 
         analytics = TimeSeriesAnalytics()
@@ -58,6 +63,7 @@ class TestTimeSeriesAnalytics:
 
     def test_get_frame_at(self):
         """Test getting frame at timestamp."""
+
         from quasic_viz.dashboards.analytics import TimeSeriesAnalytics
 
         analytics = TimeSeriesAnalytics()
@@ -70,6 +76,7 @@ class TestTimeSeriesAnalytics:
 
     def test_get_latest_frames(self):
         """Test getting latest frames."""
+
         from quasic_viz.dashboards.analytics import TimeSeriesAnalytics
 
         analytics = TimeSeriesAnalytics()
@@ -81,6 +88,7 @@ class TestTimeSeriesAnalytics:
 
     def test_compute_field_statistics(self):
         """Test computing field statistics."""
+
         from quasic_viz.dashboards.analytics import TimeSeriesAnalytics
 
         analytics = TimeSeriesAnalytics()
@@ -95,6 +103,7 @@ class TestTimeSeriesAnalytics:
 
     def test_clear(self):
         """Test clearing history."""
+
         from quasic_viz.dashboards.analytics import TimeSeriesAnalytics
 
         analytics = TimeSeriesAnalytics()

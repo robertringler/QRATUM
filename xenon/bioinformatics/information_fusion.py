@@ -116,6 +116,7 @@ class InformationFusionEngine:
             constraints: Conservation constraint configuration
             seed: Random seed for reproducibility
         """
+
         self.constraints = constraints or ConservationConstraints()
         self.seed_manager = SeedManager(seed if seed is not None else 42)
         self._decompositions: dict[str, PIDResult] = {}
@@ -138,6 +139,7 @@ class InformationFusionEngine:
         Returns:
             Shannon entropy in bits
         """
+
         if data.size == 0:
             return 0.0
 
@@ -184,6 +186,7 @@ class InformationFusionEngine:
         Returns:
             Mutual information in bits
         """
+
         if x.size == 0 or y.size == 0:
             return 0.0
 
@@ -237,6 +240,7 @@ class InformationFusionEngine:
         Raises:
             ValueError: If conservation constraints are violated and auto_correct=False
         """
+
         # Generate cache key based on data hash for uniqueness
         import hashlib
 
@@ -321,6 +325,7 @@ class InformationFusionEngine:
         Returns:
             List of violation messages (empty if valid)
         """
+
         violations = []
         tol = self.constraints.tolerance
 
@@ -361,6 +366,7 @@ class InformationFusionEngine:
         Returns:
             Corrected PID result
         """
+
         # Enforce non-negativity by clamping
         unique_s1 = max(0.0, result.unique_s1)
         unique_s2 = max(0.0, result.unique_s2)
@@ -410,6 +416,7 @@ class InformationFusionEngine:
         Returns:
             Dictionary with information flow analysis
         """
+
         if layer_names is None:
             layer_names = [f"Layer_{i}" for i in range(len(omics_layers))]
 
@@ -438,6 +445,7 @@ class InformationFusionEngine:
         Returns:
             Dictionary with statistics
         """
+
         return {
             "total_decompositions": len(self._decompositions),
             "cached_entropies": len(self._entropy_cache),
@@ -452,5 +460,6 @@ class InformationFusionEngine:
 
     def clear_cache(self) -> None:
         """Clear all caches."""
+
         self._decompositions.clear()
         self._entropy_cache.clear()

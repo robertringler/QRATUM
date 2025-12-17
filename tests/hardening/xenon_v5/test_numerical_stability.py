@@ -1,4 +1,5 @@
 """
+
 Numerical Stability Tests for XENON v5
 
 Tests numerical stability of all computations.
@@ -17,6 +18,7 @@ class TestNumericalStability:
 
     def test_matrix_condition_number(self):
         """Test matrix condition number checking."""
+
         analyzer = NumericalStabilityAnalyzer(condition_threshold=1e10)
 
         # Well-conditioned matrix
@@ -33,6 +35,7 @@ class TestNumericalStability:
 
     def test_entropy_stability(self):
         """Test entropy computation stability."""
+
         analyzer = NumericalStabilityAnalyzer()
 
         # Valid probability distribution
@@ -49,6 +52,7 @@ class TestNumericalStability:
 
     def test_gradient_flow(self):
         """Test gradient flow analysis."""
+
         analyzer = NumericalStabilityAnalyzer()
 
         # Normal gradients
@@ -64,6 +68,7 @@ class TestNumericalStability:
 
     def test_overflow_underflow_detection(self):
         """Test overflow and underflow detection."""
+
         analyzer = NumericalStabilityAnalyzer()
 
         # Normal array
@@ -87,6 +92,7 @@ class TestNumericalStability:
 
     def test_entropy_conservation(self):
         """Test entropy conservation in information engine."""
+
         engine = InformationEngine(seed=42)
 
         # Generate correlated data

@@ -27,6 +27,7 @@ def create_animated_sphere(t: float) -> dict:
     Returns:
         Dictionary with sphere mesh data
     """
+
     resolution = 20
 
     phi = np.linspace(0, np.pi, resolution)
@@ -63,6 +64,7 @@ def create_animated_sphere(t: float) -> dict:
 
 def main() -> None:
     """Run streaming visualization example."""
+
     logger.info("=" * 60)
     logger.info("QUBIC Streaming Visualization Example")
     logger.info("=" * 60)
@@ -78,6 +80,7 @@ def main() -> None:
 
     def data_generator():
         """Generate animated data."""
+
         # Update time
         time_counter[0] = (time_counter[0] + 0.05) % 1.0
         t = time_counter[0]

@@ -1,4 +1,5 @@
 """
+
 QRATUM Validation Framework
 
 Provides numerical stability and equivalence validation for XENON v5 production.

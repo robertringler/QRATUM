@@ -15,6 +15,7 @@ except ImportError:
 @click.group()
 def cli():
     """QuASIM Tire Simulation Library - Goodyear Quantum Pilot Platform."""
+
     pass
 
 
@@ -46,6 +47,7 @@ def cli():
 )
 def generate(output_dir: str, count: int, format: str, run: bool):
     """Generate comprehensive tire simulation library."""
+
     click.echo(f"Generating tire simulation library with {count} scenarios...")
     click.echo(f"Output directory: {output_dir}")
     click.echo(f"Export format: {format}")
@@ -85,6 +87,7 @@ def generate(output_dir: str, count: int, format: str, run: bool):
 )
 def inspect(simulation_id: str, library_dir: str):
     """Inspect a specific simulation result."""
+
     import json
     from pathlib import Path
 
@@ -169,6 +172,7 @@ def inspect(simulation_id: str, library_dir: str):
 )
 def goodyear(output_dir: str, scenarios_per_material: int, use_all: bool, quantum_only: bool):
     """Generate library using Goodyear Quantum Pilot materials (1,000+ compounds)."""
+
     if not GOODYEAR_AVAILABLE:
         click.echo("Error: Goodyear integration not available")
         return

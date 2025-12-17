@@ -11,11 +11,13 @@ from quasim.ownai.configs import DEFAULT_CONFIG
 
 def get_cache_dir() -> Path:
     """Get the cache directory for datasets."""
+
     return DEFAULT_CONFIG.cache_dir
 
 
 def compute_checksum(data: bytes) -> str:
     """Compute SHA256 checksum of data."""
+
     return hashlib.sha256(data).hexdigest()
 
 
@@ -45,6 +47,7 @@ def load_tabular(
     >>> X.shape[0] == y.shape[0]
     True
     """
+
     if cache_dir is None:
         cache_dir = get_cache_dir()
 
@@ -122,6 +125,7 @@ def load_text(
     >>> len(texts) == len(y)
     True
     """
+
     if cache_dir is None:
         cache_dir = get_cache_dir()
 
@@ -201,6 +205,7 @@ def load_vision(
     >>> images.shape[0] == y.shape[0]
     True
     """
+
     if cache_dir is None:
         cache_dir = get_cache_dir()
 
@@ -252,6 +257,7 @@ def load_timeseries(
     >>> seqs.shape[0] == y.shape[0]
     True
     """
+
     if cache_dir is None:
         cache_dir = get_cache_dir()
 

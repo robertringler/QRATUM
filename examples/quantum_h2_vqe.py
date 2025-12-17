@@ -27,6 +27,7 @@ from quasim.quantum.vqe_molecule import MolecularVQE
 
 def main():
     """Run VQE for H2 molecule."""
+
     print("=" * 60)
     print("QRATUM - VQE for H2 Molecule")
     print("=" * 60)

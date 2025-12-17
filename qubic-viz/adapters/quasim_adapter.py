@@ -24,6 +24,7 @@ class QuASIMDataAdapter:
         Returns:
             Dictionary with quantum state data
         """
+
         # Extract quantum state if available
         if hasattr(simulation_result, "quantum_state"):
             state = simulation_result.quantum_state
@@ -46,6 +47,7 @@ class QuASIMDataAdapter:
         Returns:
             Dictionary with optimization data
         """
+
         data = {
             "objective_values": [],
             "parameter_values": [],
@@ -71,6 +73,7 @@ class QuASIMDataAdapter:
         Returns:
             Visualization-ready data dictionary
         """
+
         if data_type == "tire":
             return QuASIMDataAdapter._convert_tire_data(data)
         elif data_type == "quantum":
@@ -90,6 +93,7 @@ class QuASIMDataAdapter:
         Returns:
             Converted data
         """
+
         from .tire_data_adapter import TireDataAdapter
 
         return TireDataAdapter.extract_visualization_data(data)
@@ -104,6 +108,7 @@ class QuASIMDataAdapter:
         Returns:
             Converted data
         """
+
         return {
             "quantum_state": QuASIMDataAdapter.extract_quantum_state(data),
             "optimization": QuASIMDataAdapter.extract_optimization_data(data),
@@ -119,6 +124,7 @@ class QuASIMDataAdapter:
         Returns:
             Converted data
         """
+
         return QuASIMDataAdapter.extract_optimization_data(data)
 
     @staticmethod
@@ -134,6 +140,7 @@ class QuASIMDataAdapter:
         Returns:
             List of frame data dictionaries
         """
+
         frames = []
         for i, sim_result in enumerate(simulation_sequence):
             if i % frame_skip == 0:

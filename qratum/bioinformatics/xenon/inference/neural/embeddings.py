@@ -1,4 +1,5 @@
 """
+
 Biological Embeddings for Neural Reasoning
 
 Embedding representations for biological entities.
@@ -12,6 +13,7 @@ import numpy as np
 
 class BiologicalEmbeddings:
     """
+
     Biological entity embeddings.
 
     Provides vector representations for:
@@ -23,12 +25,14 @@ class BiologicalEmbeddings:
 
     def __init__(self, embedding_dim: int = 128, seed: Optional[int] = None):
         """
+
         Initialize embeddings.
 
         Args:
             embedding_dim: Dimension of embedding vectors
             seed: Random seed
         """
+
         self.embedding_dim = embedding_dim
         self.seed = seed
 
@@ -40,6 +44,7 @@ class BiologicalEmbeddings:
 
     def embed_entity(self, entity_id: str, entity_type: str) -> np.ndarray:
         """
+
         Get embedding for entity.
 
         Args:
@@ -49,6 +54,7 @@ class BiologicalEmbeddings:
         Returns:
             Embedding vector
         """
+
         key = f"{entity_type}:{entity_id}"
 
         if key not in self.entity_embeddings:
@@ -59,11 +65,13 @@ class BiologicalEmbeddings:
 
     def _generate_embedding(self, entity_id: str, entity_type: str) -> np.ndarray:
         """
+
         Generate embedding for new entity.
 
         In production, this would use pre-trained embeddings or transformers.
         For now, use deterministic hash-based generation.
         """
+
         # Use hash for deterministic generation
         hash_value = hash(f"{entity_type}:{entity_id}")
         np.random.seed(hash_value % (2**31))
@@ -75,6 +83,7 @@ class BiologicalEmbeddings:
 
     def similarity(self, entity1: str, entity2: str, entity_type: str = "protein") -> float:
         """
+
         Compute similarity between entities.
 
         Args:
@@ -85,6 +94,7 @@ class BiologicalEmbeddings:
         Returns:
             Cosine similarity score
         """
+
         emb1 = self.embed_entity(entity1, entity_type)
         emb2 = self.embed_entity(entity2, entity_type)
 

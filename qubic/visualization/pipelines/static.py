@@ -33,6 +33,7 @@ class StaticPipeline:
         Raises:
             ValueError: If backend is not supported
         """
+
         self.backend_name = backend
         self.figsize = figsize
         self.dpi = dpi
@@ -46,7 +47,7 @@ class StaticPipeline:
             self.backend = GPUBackend(figsize=figsize, dpi=dpi)
         else:
             raise ValueError(
-                f"Unsupported backend: {backend}. " "Choose from: 'matplotlib', 'headless', 'gpu'"
+                f"Unsupported backend: {backend}. Choose from: 'matplotlib', 'headless', 'gpu'"
             )
 
     def render(
@@ -71,6 +72,7 @@ class StaticPipeline:
         Returns:
             Rendered figure object
         """
+
         return self.backend.render(
             data=data,
             scalar_field=scalar_field,
@@ -103,6 +105,7 @@ class StaticPipeline:
             alpha: Transparency
             **save_kwargs: Additional arguments for save operation
         """
+
         self.render(
             data=data,
             scalar_field=scalar_field,
@@ -139,6 +142,7 @@ class StaticPipeline:
         Raises:
             RuntimeError: If using headless backend
         """
+
         self.render(
             data=data,
             scalar_field=scalar_field,
@@ -152,4 +156,5 @@ class StaticPipeline:
 
     def close(self) -> None:
         """Close backend and free resources."""
+
         self.backend.close()

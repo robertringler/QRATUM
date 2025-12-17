@@ -46,6 +46,7 @@ class LangevinSimulator:
             mechanism: Mechanism to simulate
             temperature: Temperature in Kelvin
         """
+
         self.mechanism = mechanism
         self.temperature = temperature
         self.boltzmann = 1.987e-3  # Boltzmann constant (kcal/mol/K)
@@ -70,6 +71,7 @@ class LangevinSimulator:
         Returns:
             Tuple of (times, trajectories) where trajectories[species] = [concentrations]
         """
+
         # Initialize random number generator
         self._rng = np.random.default_rng(seed)
 
@@ -126,6 +128,7 @@ class LangevinSimulator:
         Returns:
             Dictionary of drift terms for each species
         """
+
         forces: dict[str, float] = dict.fromkeys(state, 0.0)
 
         for transition in self.mechanism._transitions:
@@ -167,6 +170,7 @@ class LangevinSimulator:
         Returns:
             Dictionary of noise terms
         """
+
         noise: dict[str, float] = {}
 
         for species in forces:
@@ -204,6 +208,7 @@ class LangevinSimulator:
         Returns:
             Tuple of (times, trajectories)
         """
+
         # For Phase 1, use constant temperature
         # Phase 2+ will implement full temperature scheduling
         return self.run(t_max, dt, initial_state, seed)

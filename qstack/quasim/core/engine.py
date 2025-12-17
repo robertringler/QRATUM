@@ -31,6 +31,7 @@ class SimulationEngine:
 
     def evaluate_circuit(self, gates: list[tuple[str, float]], vector: list[float]) -> list[float]:
         """Simple deterministic circuit evaluation: sequential scalar ops."""
+
         output = list(vector)
         for gate, weight in gates:
             output = [v * weight if gate == "scale" else v + weight for v in output]
@@ -38,6 +39,7 @@ class SimulationEngine:
 
     def mlir_lower(self, operations: list[str]) -> str:
         """Deterministic MLIR-like lowering stub."""
+
         return "\n".join(f"op_{idx}:{op}" for idx, op in enumerate(operations))
 
     def telemetry_kernel(self, telemetry: dict[str, float]) -> dict[str, float]:

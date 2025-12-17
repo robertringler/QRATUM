@@ -40,6 +40,7 @@ def casimir_energy_parallel_plates(
     Reference:
         Casimir (1948), analytical result: E = -π²/(720 a³)
     """
+
     a = plate_separation
 
     # Modes: k_n = nπ/a for n = 1, 2, 3, ...
@@ -85,6 +86,7 @@ def casimir_force_parallel_plates(
         >>> F = casimir_force_parallel_plates(1.0)
         >>> assert F < 0  # Attractive
     """
+
     a = plate_separation
     F = -(np.pi**2) / (240 * a**4)
     return float(F)
@@ -110,6 +112,7 @@ def casimir_energy_scaling_test(
         >>> is_ok, exp = casimir_energy_scaling_test(a_values)
         >>> assert abs(exp + 3.0) < 0.1  # Should be ≈ -3
     """
+
     energies = np.array([casimir_energy_parallel_plates(a) for a in separations])
 
     # Fit log(|E|) = C + α log(a)
@@ -146,6 +149,7 @@ def mode_density_confined(
     Example:
         >>> rho = mode_density_confined(1.0, 2.0)
     """
+
     L = plate_separation
     c = 1.0  # Natural units
 
@@ -177,6 +181,7 @@ def vacuum_energy_shift(
         >>> dE = vacuum_energy_shift(1.0, 2.0)
         >>> assert dE != 0  # Energy changes with configuration
     """
+
     E_current = casimir_energy_parallel_plates(plate_separation)
     E_reference = casimir_energy_parallel_plates(reference_separation)
 
@@ -209,6 +214,7 @@ def casimir_energy_sphere_plate(
     Reference:
         Derjaguin approximation for curved surfaces
     """
+
     R = sphere_radius
     a = separation
 

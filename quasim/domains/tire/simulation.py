@@ -54,6 +54,7 @@ class PerformanceMetrics:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize metrics to dictionary."""
+
         return {
             "grip_coefficient": round(self.grip_coefficient, 4),
             "dry_grip": round(self.dry_grip, 4),
@@ -110,6 +111,7 @@ class TireSimulationResult:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize simulation result to dictionary."""
+
         return {
             "simulation_id": self.simulation_id,
             "input_parameters": {
@@ -143,6 +145,7 @@ class TireSimulation:
             use_quantum_acceleration: Enable quantum-enhanced physics
             random_seed: Random seed for reproducibility
         """
+
         self.use_quantum_acceleration = use_quantum_acceleration
         self.random_seed = random_seed
         self.rng = np.random.RandomState(random_seed)
@@ -171,6 +174,7 @@ class TireSimulation:
         Returns:
             Complete simulation results with performance metrics
         """
+
         # Compute performance metrics
         metrics = self._compute_performance_metrics(
             tire_geometry, compound, environment, load_kg, pressure_kpa, speed_kmh
@@ -222,6 +226,7 @@ class TireSimulation:
         speed_kmh: float,
     ) -> PerformanceMetrics:
         """Compute comprehensive performance metrics."""
+
         props = compound.base_properties
 
         # Grip coefficients
@@ -318,6 +323,7 @@ class TireSimulation:
         speed_kmh: float,
     ) -> dict[str, Any]:
         """Compute thermal distribution across tire."""
+
         # Simplified thermal zones
         tread_temp = environment.road_temperature + 0.5 * speed_kmh
         sidewall_temp = environment.ambient_temperature + 0.3 * speed_kmh
@@ -341,6 +347,7 @@ class TireSimulation:
         speed_kmh: float,
     ) -> dict[str, Any]:
         """Compute wear pattern across tread."""
+
         # Simplified wear distribution
         base_wear = 1.0
         center_wear = base_wear * (1.0 + self.rng.uniform(-0.1, 0.1))
@@ -363,6 +370,7 @@ class TireSimulation:
         pressure_kpa: float,
     ) -> dict[str, Any]:
         """Compute stress distribution in tire structure."""
+
         contact_area = geometry.compute_contact_patch_area(load_kg, pressure_kpa)
         contact_pressure = (load_kg * 9.81) / (contact_area / 10000.0)  # Pa
 
@@ -388,6 +396,7 @@ class TireSimulation:
         environment: EnvironmentalConditions,
     ) -> str:
         """Predict most likely failure mode."""
+
         # Simple heuristics for failure mode
         if tire_temp > props.max_service_temp:
             return "thermal_degradation"
@@ -410,6 +419,7 @@ class TireSimulation:
         metrics: PerformanceMetrics,
     ) -> list[str]:
         """Generate AI-powered optimization suggestions."""
+
         suggestions = []
 
         if metrics.rolling_resistance > 0.012:

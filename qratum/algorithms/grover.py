@@ -30,6 +30,7 @@ class Grover:
             marked_states: List of indices of marked states
             iterations: Number of Grover iterations (auto-calculated if None)
         """
+
         self.num_qubits = num_qubits
         self.marked_states = marked_states
         self.search_space_size = 2**num_qubits
@@ -48,6 +49,7 @@ class Grover:
         Returns:
             Complete Grover circuit
         """
+
         circuit = Circuit(self.num_qubits)
 
         # Step 1: Initialize to uniform superposition
@@ -76,6 +78,7 @@ class Grover:
         Returns:
             Circuit with oracle applied
         """
+
         # For each marked state, apply phase flip
         for marked in self.marked_states:
             # Convert index to binary representation
@@ -109,6 +112,7 @@ class Grover:
         Returns:
             Circuit with diffusion applied
         """
+
         # H on all qubits
         for i in range(self.num_qubits):
             circuit.h(i)
@@ -141,6 +145,7 @@ class Grover:
         Returns:
             Measurement results
         """
+
         circuit = self.build_circuit()
         result = simulator.run(circuit, shots=shots)
         return result
@@ -155,6 +160,7 @@ class Grover:
         Returns:
             List of found state indices (most frequently measured)
         """
+
         result = self.run(simulator, shots=shots)
 
         # Get most frequent states
@@ -175,6 +181,7 @@ class Grover:
         Returns:
             Probability of measuring a marked state
         """
+
         m = len(self.marked_states)
         n = self.search_space_size
         theta = np.arcsin(np.sqrt(m / n))
@@ -183,6 +190,7 @@ class Grover:
 
     def __repr__(self) -> str:
         """String representation."""
+
         return (
             f"Grover({self.num_qubits} qubits, "
             f"{len(self.marked_states)} marked, "
@@ -209,6 +217,7 @@ def grover_search(
     Returns:
         Measurement results
     """
+
     grover = Grover(num_qubits, marked_states)
     simulator = Simulator(backend=backend, seed=seed)
     return grover.run(simulator, shots=shots)

@@ -12,6 +12,7 @@ class TestBenchmarks:
 
     def test_benchmark_quick_mode(self):
         """Test quick benchmark mode."""
+
         with tempfile.TemporaryDirectory() as tmpdir:
             result = subprocess.run(
                 [
@@ -46,6 +47,7 @@ class TestBenchmarks:
 
     def test_cfd_kernel_standalone(self):
         """Test CFD kernel can run standalone."""
+
         result = subprocess.run(
             ["python3", "integrations/kernels/cfd/pressure_poisson.py"],
             capture_output=True,

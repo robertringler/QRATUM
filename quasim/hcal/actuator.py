@@ -51,6 +51,7 @@ class Actuator:
             audit_log_path: Path to audit log file.
             dry_run: Enable dry-run mode (default: True).
         """
+
         # Support both enable_actuation and dry_run parameters
         if enable_actuation is not None:
             self.dry_run = not enable_actuation
@@ -79,6 +80,7 @@ class Actuator:
         Returns:
             Captured baseline state
         """
+
         if configuration is None:
             configuration = {}
 
@@ -106,6 +108,7 @@ class Actuator:
         Returns:
             Rollback result
         """
+
         if device_id not in self._baselines:
             return {
                 "success": False,
@@ -150,6 +153,7 @@ class Actuator:
         Returns:
             True if rollback was successful.
         """
+
         result = self.rollback_device(device_id, backend)
         return result.get("success", False)
 
@@ -162,6 +166,7 @@ class Actuator:
         Returns:
             Application result
         """
+
         result = {
             "plan_id": plan.get("plan_id", "unknown"),
             "actuation_enabled": self.enable_actuation,
@@ -203,6 +208,7 @@ class Actuator:
         Returns:
             True if setpoint was applied successfully.
         """
+
         if self._emergency_stop:
             print("Emergency stop active - operation blocked")
             return False
@@ -277,6 +283,7 @@ class Actuator:
         Returns:
             True if validation passes.
         """
+
         # Check if device exists
         if hasattr(backend, "device_exists") and not backend.device_exists(device_id):
             return False
@@ -295,6 +302,7 @@ class Actuator:
         Returns:
             True if validation passes.
         """
+
         # Read back configuration
         try:
             if not hasattr(backend, "read_configuration"):
@@ -330,6 +338,7 @@ class Actuator:
             device_id: Device identifier
             backend: Backend instance
         """
+
         self._backends[device_id] = backend
 
     def get_telemetry(self, device_ids: Optional[List[str]] = None) -> Dict[str, Any]:
@@ -341,6 +350,7 @@ class Actuator:
         Returns:
             Telemetry data
         """
+
         telemetry = {}
 
         if device_ids is None:
@@ -359,6 +369,7 @@ class Actuator:
         Returns:
             Stop result
         """
+
         print("EMERGENCY STOP ACTIVATED")
         self._emergency_stop = True
         self._log_operation("system", "emergency_stop", {}, True)
@@ -370,6 +381,7 @@ class Actuator:
 
     def reset_emergency_stop(self):
         """Reset emergency stop."""
+
         print("Emergency stop reset")
         self._emergency_stop = False
 
@@ -388,6 +400,7 @@ class Actuator:
             setpoint: Setpoint dictionary.
             success: Operation success status.
         """
+
         entry = AuditLogEntry(
             timestamp=datetime.now(),
             operation=operation,
@@ -430,6 +443,7 @@ class Actuator:
         Returns:
             List of audit log entries.
         """
+
         return self._audit_log.copy()
 
     def verify_audit_chain(self) -> bool:
@@ -438,6 +452,7 @@ class Actuator:
         Returns:
             True if chain is valid.
         """
+
         previous_checksum = None
 
         for entry in self._audit_log:
