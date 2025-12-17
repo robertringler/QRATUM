@@ -1,14 +1,16 @@
-# GitHub Copilot Instructions for QuASIM
+# GitHub Copilot Instructions for QRATUM
 
 ## Project Overview
 
-QuASIM (Quantum-Inspired Autonomous Simulation) is a production-grade quantum simulation platform engineered for regulated industries requiring aerospace certification (DO-178C Level A), defense compliance (NIST 800-53/171, CMMC 2.0 L2, DFARS), and deterministic reproducibility. Built on a hybrid quantum-classical runtime with NVIDIA cuQuantum acceleration, QuASIM delivers GPU-accelerated tensor network simulation and multi-cloud Kubernetes orchestration with 99.95% SLA.
+QRATUM (Quantum Resource Allocation, Tensor Analysis, and Unified Modeling) is the world's first **Certifiable Quantum-Classical Convergence (CQCC)** platform — a production-grade system engineered for regulated industries requiring aerospace certification (DO-178C Level A), defense compliance (NIST 800-53/171, CMMC 2.0 L2, DFARS), and deterministic reproducibility. Built on a hybrid quantum-classical runtime with NVIDIA cuQuantum acceleration, QRATUM delivers GPU-accelerated tensor network simulation and multi-cloud Kubernetes orchestration with 99.95% SLA.
+
+**Note:** QRATUM was formerly known as QuASIM. All references should use QRATUM going forward.
 
 ### Repository Context
 
 This repository is a research-grade, production-aspiring simulation and systems platform spanning:
 
-- **QuASIM**: materials, elastomeric, and physics simulation
+- **QRATUM**: materials, elastomeric, and physics simulation (formerly QuASIM)
 - **Qubic**: platform, orchestration, CI/CD, and tooling
 - **Mixed execution paths**: Python + Rust + GPU/CPU
 - **Security-sensitive and compliance-aware workflows**
@@ -80,7 +82,7 @@ When operating in this PR context:
   - Fix syntax errors
   - Resolve CodeQL issues
   - Ensure CI green
-  - Validate PyMAPDL → QuASIM solver handoff
+  - Validate PyMAPDL → QRATUM solver handoff
 
 Preserve the three-file change boundary:
 
