@@ -4,8 +4,9 @@ Provides density matrix representation for mixed quantum states
 with support for noise and decoherence modeling.
 """
 
-import numpy as np
 from typing import List, Optional
+
+import numpy as np
 
 
 class DensityMatrix:

@@ -124,9 +124,7 @@ class TireDataAdapter:
         return wear
 
     @staticmethod
-    def normalize_field_data(
-        field_data: np.ndarray, target_size: int
-    ) -> np.ndarray:
+    def normalize_field_data(field_data: np.ndarray, target_size: int) -> np.ndarray:
         """Normalize field data to target size.
 
         Args:

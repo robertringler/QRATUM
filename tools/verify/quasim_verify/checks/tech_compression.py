@@ -109,7 +109,7 @@ def _validate_directory(directory: Path, min_ratio: float) -> CheckResult:
                 fidelities.append(fidelity)
                 evidence_paths.append(str(npz_file))
 
-        except Exception as e:
+        except Exception:
             # Skip files that can't be loaded
             continue
 

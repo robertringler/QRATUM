@@ -258,8 +258,8 @@ def generate_vqe_h2_state(bond_length: float = 0.735) -> Optional[Array]:
         This function may take several seconds to compute.
     """
     try:
-        from quasim.quantum.vqe_molecule import MolecularVQE
         from quasim.quantum.core import QuantumConfig
+        from quasim.quantum.vqe_molecule import MolecularVQE
 
         # Run VQE to get H2 state
         config = QuantumConfig(shots=1024, seed=42)
@@ -278,9 +278,7 @@ def generate_vqe_h2_state(bond_length: float = 0.735) -> Optional[Array]:
         return None
 
     except ImportError:
-        warnings.warn(
-            "Quantum modules not available for VQE state generation.", UserWarning
-        )
+        warnings.warn("Quantum modules not available for VQE state generation.", UserWarning)
         return None
 
 
@@ -295,8 +293,8 @@ def generate_qaoa_maxcut_state(n_nodes: int, edges: list[tuple[int, int]]) -> Op
         QAOA state vector (2^n_nodes dimensional), or None if unavailable
     """
     try:
-        from quasim.quantum.qaoa_optimization import QAOA
         from quasim.quantum.core import QuantumConfig
+        from quasim.quantum.qaoa_optimization import QAOA
 
         # Run QAOA to get state
         config = QuantumConfig(shots=1024, seed=42)
@@ -311,7 +309,5 @@ def generate_qaoa_maxcut_state(n_nodes: int, edges: list[tuple[int, int]]) -> Op
         return None
 
     except ImportError:
-        warnings.warn(
-            "Quantum modules not available for QAOA state generation.", UserWarning
-        )
+        warnings.warn("Quantum modules not available for QAOA state generation.", UserWarning)
         return None

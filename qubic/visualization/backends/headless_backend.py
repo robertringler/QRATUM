@@ -34,6 +34,4 @@ class HeadlessBackend(MatplotlibBackend):
         Raises:
             RuntimeError: Always, as headless mode cannot display
         """
-        raise RuntimeError(
-            "Cannot display in headless mode. Use save() to export to file."
-        )
+        raise RuntimeError("Cannot display in headless mode. Use save() to export to file.")

@@ -37,9 +37,7 @@ def compute_fidelity(original: Array, reconstructed: Array) -> float:
         >>> assert abs(fidelity - 1.0) < 1e-10
     """
     if original.shape != reconstructed.shape:
-        raise ValueError(
-            f"State shape mismatch: {original.shape} vs {reconstructed.shape}"
-        )
+        raise ValueError(f"State shape mismatch: {original.shape} vs {reconstructed.shape}")
 
     # Check for zero vectors
     original_norm = np.linalg.norm(original)

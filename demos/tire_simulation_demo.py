@@ -44,9 +44,7 @@ def demo_basic_tire_library():
         print(f"  Average Rolling Resistance: {stats['avg_rolling_resistance']}")
         print(f"  Average Wear Rate: {stats['avg_wear_rate']} mm/1000km")
         print(f"  Average Optimization Score: {stats['avg_optimization_score']}")
-        print(
-            f"  Grip Range: {stats['grip_range'][0]} - {stats['grip_range'][1]}"
-        )
+        print(f"  Grip Range: {stats['grip_range'][0]} - {stats['grip_range'][1]}")
         print(
             f"  Lifetime Range: {stats['predicted_lifetime_range'][0]} - {stats['predicted_lifetime_range'][1]} km"
         )
@@ -71,7 +69,9 @@ def demo_goodyear_integration():
         db_stats = gqp.materials_db.get_statistics()
         print("Goodyear Materials Database:")
         print(f"  Total Materials: {db_stats['total_materials']}")
-        print(f"  Quantum Validated: {db_stats['quantum_validated']} ({db_stats['quantum_validated_percentage']}%)")
+        print(
+            f"  Quantum Validated: {db_stats['quantum_validated']} ({db_stats['quantum_validated_percentage']}%)"
+        )
         print()
         print("Materials by Family:")
         for family, count in db_stats["by_family"].items():

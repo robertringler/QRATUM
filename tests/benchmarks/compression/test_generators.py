@@ -1,13 +1,10 @@
 """Tests for quantum state generators."""
 
 import numpy as np
-import pytest
 
 from benchmarks.compression.generators.quantum_states import (
     generate_ghz_state,
-    generate_product_state,
     generate_random_state,
-    generate_w_state,
 )
 
 

@@ -199,9 +199,7 @@ class BenchmarkOrchestrator:
         extra_params = extra_params or {}
 
         # Generate test identifier
-        test_id = self._generate_test_id(
-            test_case.get("name", "test"), n_qubits, extra_params
-        )
+        test_id = self._generate_test_id(test_case.get("name", "test"), n_qubits, extra_params)
 
         try:
             # Generate quantum state
@@ -265,6 +263,7 @@ class BenchmarkOrchestrator:
             print(f"  ❌ Test {test_id}: FAILED - {e}")
             if self.verbose:
                 import traceback
+
                 traceback.print_exc()
             self.failed_tests += 1
 
@@ -314,9 +313,7 @@ class BenchmarkOrchestrator:
             warnings.warn(f"State generation failed: {e}", UserWarning)
             return None
 
-    def _generate_test_id(
-        self, base_name: str, n_qubits: int, params: dict[str, Any]
-    ) -> str:
+    def _generate_test_id(self, base_name: str, n_qubits: int, params: dict[str, Any]) -> str:
         """Generate unique test identifier."""
         parts = [base_name.replace(" ", "_"), f"{n_qubits}q"]
 
@@ -351,9 +348,7 @@ class BenchmarkOrchestrator:
             return {"error": "No results to summarize"}
 
         # Extract metrics
-        compression_ratios = [
-            r.compression_ratio for r in self.results if r.success
-        ]
+        compression_ratios = [r.compression_ratio for r in self.results if r.success]
         fidelities = [r.fidelity for r in self.results if r.success]
         runtimes = [r.runtime for r in self.results if r.success]
 
@@ -525,8 +520,7 @@ class BenchmarkOrchestrator:
             icon = status_icons.get(status, "❓")
 
             report_lines.append(
-                f"| {source} | {claimed:.1f}× | "
-                f"{measured_median:.1f}× | {icon} {status} |"
+                f"| {source} | {claimed:.1f}× | " f"{measured_median:.1f}× | {icon} {status} |"
             )
 
         # Validation status
@@ -604,9 +598,7 @@ def main() -> int:
         help="Comma-separated list of qubit counts to test (overrides config)",
     )
 
-    parser.add_argument(
-        "--verbose", action="store_true", help="Enable verbose output"
-    )
+    parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
 
     args = parser.parse_args()
 

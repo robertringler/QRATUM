@@ -1,17 +1,14 @@
 """Tests for compression validators."""
 
 import numpy as np
-import pytest
 
-from benchmarks.compression.validators.fidelity import (
-    compute_fidelity,
-    compute_trace_distance,
-    validate_fidelity_bound,
-)
 from benchmarks.compression.validators.compression_ratio import (
     aggregate_compression_statistics,
     compute_compression_metrics,
-    validate_compression_claim,
+)
+from benchmarks.compression.validators.fidelity import (
+    compute_fidelity,
+    validate_fidelity_bound,
 )
 
 

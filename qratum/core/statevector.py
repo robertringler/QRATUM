@@ -4,8 +4,9 @@ Provides state vector representation for quantum states with
 efficient operations and measurement support.
 """
 
-import numpy as np
 from typing import List, Optional
+
+import numpy as np
 
 
 class StateVector:

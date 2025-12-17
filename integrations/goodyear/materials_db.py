@@ -339,10 +339,7 @@ class GoodyearMaterialsDatabase:
             if quantum_validated is not None and material.quantum_validated != quantum_validated:
                 continue
 
-            if (
-                min_wet_grip
-                and material.properties.get("wet_grip_coefficient", 0) < min_wet_grip
-            ):
+            if min_wet_grip and material.properties.get("wet_grip_coefficient", 0) < min_wet_grip:
                 continue
 
             if (
@@ -416,7 +413,5 @@ class GoodyearMaterialsDatabase:
             "by_family": families,
             "by_certification_status": cert_statuses,
             "quantum_validated": quantum_count,
-            "quantum_validated_percentage": round(
-                100.0 * quantum_count / len(self.materials), 1
-            ),
+            "quantum_validated_percentage": round(100.0 * quantum_count / len(self.materials), 1),
         }

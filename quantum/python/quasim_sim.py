@@ -20,19 +20,19 @@ from quasim import Config, runtime
 
 def simulate(circuit, *, precision: str = "fp8"):
     """PLACEHOLDER: Not real quantum simulation.
-    
+
     Current behavior: Averages complex numbers (see quasim/__init__.py Runtime.simulate).
-    
+
     Real quantum simulation would:
     - Apply quantum gates sequentially to state vector
     - Maintain quantum superposition and entanglement
     - Support measurement and sampling
     - Use tensor network contraction or state vector simulation
-    
+
     Args:
         circuit: "Circuit" specification (not actually used as quantum gates)
         precision: Precision level (currently ignored)
-    
+
     Returns:
         List of complex numbers (NOT quantum amplitudes)
     """

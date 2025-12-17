@@ -86,19 +86,19 @@ class QuantumOptimizer:
         """PLACEHOLDER: Classical random search (NOT actual QAOA).
 
         WARNING: This is NOT a genuine QAOA implementation. It's classical random search.
-        
+
         Real QAOA would require:
         - Parameterized quantum circuits (cost + mixer Hamiltonians)
         - Quantum state preparation and measurement
         - Classical optimizer loop (COBYLA, SPSA, etc.)
         - Quantum circuit simulation or hardware execution
         - None of which are implemented here
-        
+
         TODO: Implement actual QAOA using Qiskit:
         from qiskit.algorithms.optimizers import COBYLA
         from qiskit.circuit.library import QAOAAnsatz
         # ... etc
-        
+
         Current implementation: Just random search for testing architecture.
         """
         import numpy as np
@@ -153,18 +153,18 @@ class QuantumOptimizer:
         """PLACEHOLDER: Returns random solution (NOT actual quantum annealing).
 
         WARNING: This is NOT quantum annealing. Returns one random solution.
-        
+
         Real quantum annealing would require:
         - D-Wave quantum annealer or similar hardware
         - QUBO/Ising model formulation
         - Annealing schedule parameters
         - Multiple runs for statistics
         - None of which are implemented here
-        
+
         TODO: Implement actual quantum annealing using D-Wave:
         from dwave.system import DWaveSampler, EmbeddingComposite
         # ... formulate QUBO and submit to quantum annealer
-        
+
         Current implementation: One random evaluation only.
         """
         best_solution = problem.get_random_solution()
@@ -184,7 +184,7 @@ class QuantumOptimizer:
         """PLACEHOLDER: Returns random solution (NOT actual VQE).
 
         WARNING: This is NOT a genuine VQE implementation. Returns one random solution.
-        
+
         Real VQE would require:
         - Quantum Hamiltonian specification (SparsePauliOp)
         - Parameterized ansatz circuit (e.g., UCC, hardware-efficient)
@@ -192,12 +192,12 @@ class QuantumOptimizer:
         - Classical optimizer (COBYLA, SLSQP, etc.)
         - Multiple circuit executions (100s-1000s)
         - None of which are implemented here
-        
+
         TODO: Implement actual VQE for H2 molecule:
         from qiskit.algorithms.minimum_eigensolvers import VQE
         from qiskit.primitives import Estimator
         # ... see QUANTUM_INTEGRATION_ROADMAP.md for example
-        
+
         Current implementation: Returns one random evaluation.
         """
         best_solution = problem.get_random_solution()

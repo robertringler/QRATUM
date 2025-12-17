@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 
@@ -58,7 +58,7 @@ class SceneRenderer:
         config: Rendering configuration
     """
 
-    def __init__(self, config: Optional[RenderConfig] = None) -> None:
+    def __init__(self, config: RenderConfig | None = None) -> None:
         """Initialize renderer."""
         self.config = config or RenderConfig()
         self.gpu_available = self._detect_gpu()
@@ -119,9 +119,7 @@ class SceneRenderer:
 
         self._initialized = True
 
-    def render_frame(
-        self, scene: Any, camera: Any, frame_index: int = 0
-    ) -> np.ndarray:
+    def render_frame(self, scene: Any, camera: Any, frame_index: int = 0) -> np.ndarray:
         """Render a single frame.
 
         Args:
@@ -135,9 +133,7 @@ class SceneRenderer:
         self.initialize()
 
         # Create empty frame with background color
-        frame = np.ones(
-            (self.config.height, self.config.width, 3), dtype=np.uint8
-        )
+        frame = np.ones((self.config.height, self.config.width, 3), dtype=np.uint8)
         bg_color = tuple(int(c * 255) for c in self.config.background_color)
         frame[:] = bg_color
 
@@ -148,7 +144,7 @@ class SceneRenderer:
         scene: Any,
         camera: Any,
         num_frames: int,
-        output_path: Optional[Path] = None,
+        output_path: Path | None = None,
     ) -> list[np.ndarray]:
         """Render an animation sequence.
 
@@ -183,9 +179,7 @@ class SceneRenderer:
 
             fps = 30
             if output_path.suffix in [".mp4", ".webm"]:
-                imageio.mimsave(
-                    str(output_path), frames, fps=fps, codec="libx264"
-                )
+                imageio.mimsave(str(output_path), frames, fps=fps, codec="libx264")
             else:
                 # Save as image sequence
                 for i, frame in enumerate(frames):
@@ -199,9 +193,7 @@ class SceneRenderer:
                 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
                 fps = 30
                 height, width = frames[0].shape[:2]
-                writer = cv2.VideoWriter(
-                    str(output_path), fourcc, fps, (width, height)
-                )
+                writer = cv2.VideoWriter(str(output_path), fourcc, fps, (width, height))
                 for frame in frames:
                     # Convert RGB to BGR for OpenCV
                     writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))

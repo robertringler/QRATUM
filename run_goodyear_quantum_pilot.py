@@ -44,8 +44,9 @@ def main() -> None:
     # Import required modules
     print("Loading QuASIM and Goodyear integration modules...")
     try:
-        from integrations.goodyear import GoodyearQuantumPilot, GoodyearMaterialsDatabase
+        from integrations.goodyear import GoodyearMaterialsDatabase, GoodyearQuantumPilot
         from quasim.domains.tire import generate_tire_library
+
         print("✓ Modules loaded successfully")
     except ImportError as e:
         print(f"✗ Error loading modules: {e}")
@@ -60,9 +61,11 @@ def main() -> None:
     # Display database statistics
     db_stats = gqp.materials_db.get_statistics()
     print()
-    print(f"Materials Database Loaded:")
+    print("Materials Database Loaded:")
     print(f"  Total Materials: {db_stats['total_materials']}")
-    print(f"  Quantum Validated: {db_stats['quantum_validated']} ({db_stats['quantum_validated_percentage']}%)")
+    print(
+        f"  Quantum Validated: {db_stats['quantum_validated']} ({db_stats['quantum_validated_percentage']}%)"
+    )
     print()
     print("Materials by Family:")
     for family, count in sorted(db_stats["by_family"].items()):
@@ -102,7 +105,7 @@ def main() -> None:
         print(f"✓ Total Scenarios Generated: {summary['total_scenarios']}")
         print(f"✓ Scenarios per Material: {summary['scenarios_per_material']}")
         print()
-        print(f"Output Files:")
+        print("Output Files:")
         print(f"  • Results: {summary['results_file']}")
         print(f"  • Materials Database: {summary['materials_file']}")
         print(f"  • Documentation: {output_dir}/README.md")
@@ -119,11 +122,11 @@ def main() -> None:
             print(f"  Average Optimization Score: {stats.get('avg_optimization_score', 'N/A')}")
             print()
             print("Performance Ranges:")
-            grip_range = stats.get('grip_range', [0, 0])
+            grip_range = stats.get("grip_range", [0, 0])
             print(f"  Grip Coefficient: {grip_range[0]} - {grip_range[1]}")
-            rr_range = stats.get('rolling_resistance_range', [0, 0])
+            rr_range = stats.get("rolling_resistance_range", [0, 0])
             print(f"  Rolling Resistance: {rr_range[0]} - {rr_range[1]}")
-            lifetime_range = stats.get('predicted_lifetime_range', [0, 0])
+            lifetime_range = stats.get("predicted_lifetime_range", [0, 0])
             print(f"  Predicted Lifetime: {int(lifetime_range[0])} - {int(lifetime_range[1])} km")
 
         # Display materials database statistics
@@ -132,17 +135,23 @@ def main() -> None:
             print("Materials Database Coverage:")
             mdb_stats = summary["materials_database_stats"]
             print(f"  Total Materials: {mdb_stats['total_materials']}")
-            print(f"  Quantum Validated: {mdb_stats['quantum_validated']} ({mdb_stats['quantum_validated_percentage']}%)")
+            print(
+                f"  Quantum Validated: {mdb_stats['quantum_validated']} ({mdb_stats['quantum_validated_percentage']}%)"
+            )
 
         # Execution summary
         elapsed_time = time.time() - start_time
         print_section("PHASE 5: Execution Summary")
-        print(f"✓ Goodyear Quantum Tire Pilot execution COMPLETE")
+        print("✓ Goodyear Quantum Tire Pilot execution COMPLETE")
         print(f"✓ Total execution time: {elapsed_time:.2f} seconds ({elapsed_time/60:.2f} minutes)")
-        print(f"✓ Simulation throughput: {summary['total_scenarios']/elapsed_time:.2f} scenarios/second")
+        print(
+            f"✓ Simulation throughput: {summary['total_scenarios']/elapsed_time:.2f} scenarios/second"
+        )
         print()
         print("Library Capabilities:")
-        print("  ✓ 8 tire types (passenger, truck, off-road, racing, EV, winter, all-season, performance)")
+        print(
+            "  ✓ 8 tire types (passenger, truck, off-road, racing, EV, winter, all-season, performance)"
+        )
         print("  ✓ 1,000+ Goodyear materials (8 families)")
         print("  ✓ 12 surface types (asphalt, concrete, ice, snow, rain, gravel, etc.)")
         print("  ✓ 8 weather conditions")
@@ -174,6 +183,7 @@ def main() -> None:
         print(f"✗ Error during simulation campaign: {e}")
         print()
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 

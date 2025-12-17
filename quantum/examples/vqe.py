@@ -20,7 +20,7 @@ from quantum.python.quasim_sim import simulate
 
 def heisenberg_hamiltonian(n_qubits: int) -> list[list[complex]]:
     """PLACEHOLDER: Not a real Hamiltonian representation.
-    
+
     Real implementation would use SparsePauliOp or similar quantum operator.
     """
     gates = []
@@ -31,13 +31,13 @@ def heisenberg_hamiltonian(n_qubits: int) -> list[list[complex]]:
 
 def run_vqe(num_qubits: int = 4):
     """PLACEHOLDER: Not actual VQE.
-    
+
     Real VQE requires:
     - Parameterized quantum circuit (ansatz)
     - Hamiltonian expectation value calculation
     - Classical optimizer loop
     - Multiple circuit evaluations
-    
+
     Current: Just averages some complex numbers.
     """
     circuit = heisenberg_hamiltonian(num_qubits)
