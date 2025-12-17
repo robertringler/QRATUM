@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Request Demo | QRATUM - Quantum-Classical Simulation Platform</title>
+    <meta name="description" content="Request a personalized demo of QRATUM. See GPU-accelerated quantum-classical simulation in action with our expert team.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="marketing.css">
+    <link rel="stylesheet" href="pages.css">
+</head>
+<body class="marketing-page">
+    <!-- Skip to content -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Marketing Header -->
+    <header class="marketing-header" role="banner">
+        <div class="marketing-header__inner">
+            <a href="../landing.html" class="marketing-logo" aria-label="QRATUM Home">
+                <span class="marketing-logo__icon">Q</span>
+                <span class="marketing-logo__text">QRATUM</span>
+            </a>
+            
+            <nav class="marketing-nav" role="navigation" aria-label="Main navigation">
+                <ul class="marketing-nav__list">
+                    <li class="marketing-nav__item">
+                        <a href="platform.html" class="marketing-nav__link">Platform</a>
+                    </li>
+                    <li class="marketing-nav__item">
+                        <a href="pricing.html" class="marketing-nav__link">Pricing</a>
+                    </li>
+                    <li class="marketing-nav__item">
+                        <a href="security.html" class="marketing-nav__link">Security</a>
+                    </li>
+                </ul>
+                <div class="marketing-nav__cta">
+                    <a href="../index.html" class="btn btn-secondary">Open Dashboard</a>
+                </div>
+            </nav>
+            
+            <button class="marketing-mobile-btn" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Mobile Navigation -->
+    <div class="marketing-mobile-nav" id="mobile-nav" role="dialog" aria-modal="true">
+        <button class="marketing-mobile-nav__close" aria-label="Close menu">&times;</button>
+        <div class="marketing-mobile-nav__inner">
+            <ul class="marketing-mobile-nav__list">
+                <li><a href="platform.html">Platform</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="security.html">Security</a></li>
+            </ul>
+            <div class="marketing-mobile-nav__cta">
+                <a href="../index.html" class="btn btn-secondary">Open Dashboard</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+        
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="marketing-container">
+                <div class="page-header__content">
+                    <h1 class="page-header__title">Request a Demo</h1>
+                    <p class="page-header__description">
+                        See QRATUM in action. Our team will walk you through the platform's capabilities 
+                        and show how it can transform your simulation workflows.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Demo Form Section -->
+        <section class="form-section">
+            <div class="marketing-container">
+                <div class="two-column">
+                    <div class="form-container">
+                        <form id="demo-form" data-form="demo" aria-label="Demo request form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="first-name" class="form-label">
+                                        First Name <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="first-name" name="firstName" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="last-name" class="form-label">
+                                        Last Name <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="last-name" name="lastName" class="form-input" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">
+                                    Work Email <span class="required">*</span>
+                                </label>
+                                <input type="email" id="email" name="email" class="form-input" required placeholder="you@company.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="company" class="form-label">
+                                    Company <span class="required">*</span>
+                                </label>
+                                <input type="text" id="company" name="company" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="job-title" class="form-label">Job Title</label>
+                                    <input type="text" id="job-title" name="jobTitle" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="company-size" class="form-label">Company Size</label>
+                                    <select id="company-size" name="companySize" class="form-select">
+                                        <option value="">Select...</option>
+                                        <option value="1-10">1-10 employees</option>
+                                        <option value="11-50">11-50 employees</option>
+                                        <option value="51-200">51-200 employees</option>
+                                        <option value="201-500">201-500 employees</option>
+                                        <option value="501-1000">501-1,000 employees</option>
+                                        <option value="1000+">1,000+ employees</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="industry" class="form-label">Industry</label>
+                                <select id="industry" name="industry" class="form-select">
+                                    <option value="">Select your industry...</option>
+                                    <option value="aerospace">Aerospace & Defense</option>
+                                    <option value="automotive">Automotive</option>
+                                    <option value="materials">Materials Science</option>
+                                    <option value="energy">Energy & Utilities</option>
+                                    <option value="pharma">Pharmaceutical & Biotech</option>
+                                    <option value="research">Research & Academia</option>
+                                    <option value="government">Government</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="use-case" class="form-label">What are you looking to achieve?</label>
+                                <textarea id="use-case" name="useCase" class="form-textarea" placeholder="Tell us about your simulation challenges and goals..."></textarea>
+                            </div>
+                            
+                            <div class="form-submit">
+                                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                                    Request Demo
+                                </button>
+                            </div>
+                            
+                            <p style="margin-top: var(--spacing-md); font-size: 0.875rem; color: var(--text-muted); text-align: center;">
+                                By submitting this form, you agree to our 
+                                <a href="privacy.html" style="color: var(--primary);">Privacy Policy</a>.
+                            </p>
+                        </form>
+                    </div>
+                    
+                    <div>
+                        <h2 style="font-size: 1.75rem; margin-bottom: var(--spacing-md);">What to Expect</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg); line-height: 1.7;">
+                            Our demo sessions are tailored to your specific use case and industry. 
+                            You'll get a hands-on look at QRATUM's capabilities with our technical team.
+                        </p>
+                        
+                        <ul class="icon-list">
+                            <li>
+                                <span class="check">✓</span>
+                                <span>Live platform walkthrough with real simulations</span>
+                            </li>
+                            <li>
+                                <span class="check">✓</span>
+                                <span>Q&A with our engineering team</span>
+                            </li>
+                            <li>
+                                <span class="check">✓</span>
+                                <span>Discussion of your specific requirements</span>
+                            </li>
+                            <li>
+                                <span class="check">✓</span>
+                                <span>Compliance and security deep-dive</span>
+                            </li>
+                            <li>
+                                <span class="check">✓</span>
+                                <span>Custom pricing based on your needs</span>
+                            </li>
+                        </ul>
+                        
+                        <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-top: var(--spacing-xl);">
+                            <h4 style="margin-bottom: var(--spacing-sm);">Trusted by Industry Leaders</h4>
+                            <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-lg); color: var(--text-muted); font-weight: 500;">
+                                <span>Aerospace</span>
+                                <span>•</span>
+                                <span>Defense</span>
+                                <span>•</span>
+                                <span>Materials</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="marketing-footer" role="contentinfo">
+        <div class="marketing-container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <p class="footer-copyright">
+                    &copy; 2025 QRATUM. All rights reserved. Apache 2.0 License.
+                </p>
+                <div class="footer-legal">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="marketing.js"></script>
+</body>
+</html>
