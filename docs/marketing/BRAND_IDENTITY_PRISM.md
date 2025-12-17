@@ -36,7 +36,7 @@ We speak with the weight of empirical validation and aerospace certification, ye
 - Sparse use of qualifiers ("might," "could," "potentially")
 
 **Example**: 
-> "DO-178C Level A certification isn't an achievement. It's evidence that aerospace requires deterministic realms, not probabilistic illusions."
+> "Designing for DO-178C Level A isn't an achievement. It's evidence that aerospace requires deterministic realms, not probabilistic illusions."
 
 ### 2. Precision Engineering Minimalism
 **Every word serves a structural purpose, like load-bearing code**
@@ -77,7 +77,7 @@ We don't claim superiority—we demonstrate ontological necessity. QRATUM exists
 - **realm** — evokes self-contained universes, not mere "environments"
 - **tensor networks** — mathematical substrate of our architecture
 - **reproducibility** — aerospace requirement, our primary moat
-- **certification** — DO-178C as ontological proof point
+- **certification-ready** — designed for DO-178C compliance as ontological proof point
 - **mission-validated** — SpaceX/NASA as empirical grounding
 - **absolute** — when paired with "predictability" or "reproducibility"
 - **architecture** — we design realms, not build products
@@ -180,8 +180,8 @@ Abstract fractals of tensor networks in stark black-and-white, evoking the mathe
 **Hero Image - Homepage**:
 > Black-and-white fractal of tensor network contraction. Shot with macro lens at 45-degree angle, nodes in sharp focus (f/2.8), edges receding into grayscale gradient. High contrast grading (blacks at 15, whites at 240). Evokes: "This is the mathematical fabric of deterministic realms."
 
-**Feature Illustration - Certification**:
-> DO-178C document overlaid on tensor lattice schematic. Overhead shot, f/11 for full sharpness. Monochrome with single accent: certification seal in aerospace orange (#cb4b16). Lighting: single top-left source. Evokes: "Certification is structural, not procedural."
+**Feature Illustration - Certification Readiness**:
+> DO-178C requirements document overlaid on tensor lattice schematic. Overhead shot, f/11 for full sharpness. Monochrome with single accent: compliance badge in aerospace orange (#cb4b16). Lighting: single top-left source. Evokes: "Certification readiness is structural, not procedural."
 
 **Case Study - SpaceX Validation**:
 > Falcon 9 stage separation (official SpaceX imagery, licensed) paired with QRATUM tensor network solving same trajectory. Split-screen composition. Left: actual mission photo (full color). Right: tensor solution (high-contrast grayscale with cyan accent (#2aa198) on solution path). Evokes: "Reality and realm converge."
@@ -233,7 +233,7 @@ Represents entanglement efficiency, energy flow, and quantum-economic bridges. U
 #### Aerospace Orange for Certification
 **Certification Accent: Orange (#cb4b16)**
 
-Reserved exclusively for certification badges (DO-178C, CMMC, NIST) and mission validation proof points. Represents the "heat" of aerospace requirements—survival-critical systems.
+Reserved exclusively for compliance badges (DO-178C-ready, CMMC-compliant, NIST-aligned) and mission validation proof points. Represents the "heat" of aerospace requirements—survival-critical systems.
 
 **Psychological Trigger**: Warning systems, critical indicators, high-stakes decision points. Subconscious association with aerospace safety protocols.
 
@@ -265,7 +265,7 @@ Reserved exclusively for certification badges (DO-178C, CMMC, NIST) and mission 
 - Mission validation metrics (< 2% RMSE)
 - Technical specifications (99.95% SLA)
 - Code snippets and configuration examples
-- Certification identifiers (DO-178C Level A)
+- Compliance identifiers (DO-178C Level A ready)
 - Timestamps and seed values
 
 **Example**:
@@ -346,7 +346,7 @@ Competitors optimize probabilistic systems. QRATUM eliminates probability. This 
 
 #### Evidence of Category Creation
 
-1. **Unique Certification Requirement**: DO-178C Level A cannot be achieved with probabilistic simulation. QRATUM's certification posture proves a new category exists.
+1. **Unique Certification Requirement**: DO-178C Level A cannot be achieved with probabilistic simulation. QRATUM's certification-ready architecture proves a new category exists.
 
 2. **Mission Validation Threshold**: < 2% RMSE on SpaceX/NASA telemetry. No probabilistic tool can guarantee this; deterministic realms make it trivial.
 
@@ -375,7 +375,7 @@ Deterministic Quantum Realms
 Where Chaos Doesn't Exist
 
 [Subtext in Roboto Mono 14px]
-DO-178C Level A  |  < 2% RMSE  |  99.95% SLA
+DO-178C Ready  |  < 2% RMSE  |  99.95% SLA
 SpaceX Validated  |  NASA Verified
 ```
 
@@ -404,7 +404,7 @@ SpaceX Validated  |  NASA Verified
 > 
 > QRATUM doesn't compete in probabilistic quantum simulation. We architect Deterministic Quantum Realms where variability is mathematically impossible.
 > 
-> SpaceX Falcon 9 validation: < 2% RMSE. NASA Orion telemetry: verified. DO-178C Level A: in progress.
+> SpaceX Falcon 9 validation: < 2% RMSE. NASA Orion telemetry: verified. DO-178C Level A: designed for compliance.
 > 
 > When reproducibility becomes non-negotiable, deterministic realms become the only valid architecture.
 
