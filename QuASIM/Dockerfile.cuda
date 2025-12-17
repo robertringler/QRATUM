@@ -1,8 +1,34 @@
 
 FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
-RUN apt-get update && apt-get install -y python3 python3-pip python3-dev git cmake g++
+
+# AC-6 (Least Privilege): Install system dependencies and clean cache to minimize attack surface
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
+    python3-dev \
+    git \
+    cmake \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# AC-6 (Least Privilege): Create non-root user
+RUN useradd -m -u 1000 appuser
+
 WORKDIR /workspace
-COPY . .
-RUN pip3 install pybind11 numpy
+
+# Copy source files and adjust ownership
+COPY --chown=appuser:appuser . .
+
+# Ensure workspace is fully owned by appuser
+RUN chown -R appuser:appuser /workspace
+
+# AC-6 (Least Privilege): Switch to non-root user for build and execution
+USER appuser
+
+# SC-28 (Integrity): Pin dependency versions to ensure reproducibility
+RUN pip3 install --user --no-cache-dir pybind11==2.11.1 numpy==1.26.4
+
+# Build QuASIM CUDA components
 RUN cmake -S . -B build && cmake --build build --parallel
+
 CMD ["python3","-c","import sys; sys.path.append('build'); import quasim_cuda as qc; import numpy as np; x=np.ones(8,dtype=np.float32); y=np.zeros(8,dtype=np.float32); qc.saxpy(x,y,2.0); print(y.tolist())"]
