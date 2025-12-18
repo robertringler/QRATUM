@@ -37,7 +37,7 @@ try:
 except ImportError:
     QISKIT_AVAILABLE = False
 
-from .core import QuantumBackend, QuantumConfig
+from .core import AbstractQuantumBackend, QuantumBackend, QuantumConfig
 
 
 @dataclass
@@ -53,6 +53,7 @@ class QAOAResult:
         success: Whether optimization converged
         classical_optimal: Classical optimal energy (if available)
         prob_distribution: Probability distribution over solutions
+        execution_id: Optional execution identifier for tracking
     """
 
     solution: str
@@ -63,6 +64,7 @@ class QAOAResult:
     success: bool = True
     classical_optimal: float | None = None
     prob_distribution: dict[str, float] | None = None
+    execution_id: str | None = None
 
     def __repr__(self) -> str:
         lines = [
@@ -96,11 +98,11 @@ class QAOA:
         >>> print(f"Best cut: {result.solution}, value: {result.energy}")
     """
 
-    def __init__(self, config: QuantumConfig, p_layers: int = 3):
+    def __init__(self, config: QuantumConfig | AbstractQuantumBackend, p_layers: int = 3):
         """Initialize QAOA solver.
 
         Args:
-            config: Quantum configuration
+            config: Quantum configuration or backend instance
             p_layers: Number of QAOA layers (depth). Typical range: 1-10
 
         Raises:
@@ -113,8 +115,15 @@ class QAOA:
         if p_layers < 1:
             raise ValueError("p_layers must be at least 1")
 
-        self.config = config
-        self.backend = QuantumBackend(config)
+        # Support both config and backend instances for flexibility
+        if isinstance(config, QuantumConfig):
+            self.config = config
+            self.backend = QuantumBackend(config)
+        else:
+            # Assume it's a backend instance
+            self.backend = config
+            self.config = config.config if hasattr(config, "config") else QuantumConfig()
+
         self.p_layers = p_layers
 
         # Use Sampler primitive for bitstring sampling

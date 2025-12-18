@@ -38,15 +38,14 @@ except ImportError:
     QISKIT_AVAILABLE = False
 
 try:
-    from qiskit_nature.second_q.circuit.library import UCCSD, HartreeFock
     from qiskit_nature.second_q.drivers import PySCFDriver
-    from qiskit_nature.second_q.mappers import JordanWignerMapper, ParityMapper
+    from qiskit_nature.second_q.mappers import JordanWignerMapper
 
     QISKIT_NATURE_AVAILABLE = True
 except ImportError:
     QISKIT_NATURE_AVAILABLE = False
 
-from .core import QuantumBackend, QuantumConfig
+from .core import AbstractQuantumBackend, QuantumBackend, QuantumConfig
 
 
 @dataclass
@@ -62,6 +61,8 @@ class VQEResult:
         classical_energy: Classical reference energy (if available)
         error_vs_classical: Absolute error vs classical (if available)
         std_dev: Standard deviation of energy measurements
+        convergence: Whether optimization converged successfully
+        execution_id: Optional execution identifier for tracking
     """
 
     energy: float
@@ -72,6 +73,8 @@ class VQEResult:
     classical_energy: float | None = None
     error_vs_classical: float | None = None
     std_dev: float | None = None
+    convergence: bool = True
+    execution_id: str | None = None
 
     def __repr__(self) -> str:
         lines = [
@@ -108,11 +111,11 @@ class MolecularVQE:
         >>> print(f"H2 energy: {result.energy:.4f} Hartree")
     """
 
-    def __init__(self, config: QuantumConfig):
+    def __init__(self, config: QuantumConfig | AbstractQuantumBackend):
         """Initialize VQE calculator.
 
         Args:
-            config: Quantum backend configuration
+            config: Quantum backend configuration or backend instance
 
         Raises:
             ImportError: If required quantum libraries not available
@@ -121,8 +124,14 @@ class MolecularVQE:
         if not QISKIT_AVAILABLE:
             raise ImportError("Qiskit required. Install with: pip install qiskit qiskit-aer")
 
-        self.config = config
-        self.backend = QuantumBackend(config)
+        # Support both config and backend instances for flexibility
+        if isinstance(config, QuantumConfig):
+            self.config = config
+            self.backend = QuantumBackend(config)
+        else:
+            # Assume it's a backend instance
+            self.backend = config
+            self.config = config.config if hasattr(config, "config") else QuantumConfig()
 
         # Use Estimator primitive for energy expectation values
         self.estimator = Estimator()
@@ -187,6 +196,54 @@ class MolecularVQE:
 
         return result
 
+    def compute_molecule_energy(
+        self,
+        molecule: str,
+        bond_length: float,
+        basis: str = "sto3g",
+        use_classical_reference: bool = True,
+        optimizer: str = "COBYLA",
+        max_iterations: int = 100,
+    ) -> VQEResult:
+        """Compute molecular ground state energy using VQE.
+
+        Generalized VQE for molecules (H2, LiH, BeH2).
+
+        Supports:
+        - H2: 2 qubits (production-ready)
+        - LiH: 4 qubits (planned Phase 2)
+        - BeH2: 6 qubits (planned Phase 2)
+
+        Args:
+            molecule: Molecule name ("H2", "LiH", "BeH2")
+            bond_length: Bond length in Angstroms
+            basis: Basis set for molecular calculation
+            use_classical_reference: Compute classical energy for validation
+            optimizer: Classical optimizer (COBYLA, SPSA)
+            max_iterations: Maximum optimization iterations
+
+        Returns:
+            VQEResult with energy and optimization details
+
+        Raises:
+            ValueError: If molecule is not supported
+            NotImplementedError: If molecule support is planned but not implemented
+        """
+        if molecule == "H2":
+            return self.compute_h2_energy(
+                bond_length=bond_length,
+                basis=basis,
+                use_classical_reference=use_classical_reference,
+                optimizer=optimizer,
+                max_iterations=max_iterations,
+            )
+        elif molecule == "LiH":
+            raise NotImplementedError("LiH VQE planned for Phase 2 (2026)")
+        elif molecule == "BeH2":
+            raise NotImplementedError("BeH2 VQE planned for Phase 2 (2026)")
+        else:
+            raise ValueError(f"Unsupported molecule: {molecule}")
+
     def _generate_h2_hamiltonian(
         self, bond_length: float, basis: str, compute_classical: bool = True
     ) -> tuple[SparsePauliOp, int, float | None]:
@@ -199,7 +256,7 @@ class MolecularVQE:
         if not QISKIT_NATURE_AVAILABLE:
             # Fallback: Use hardcoded H2 Hamiltonian for bond_length ~ 0.735 Å
             warnings.warn(
-                "qiskit-nature not available. Using approximate H2 Hamiltonian.", UserWarning
+                "qiskit-nature not available. Using approximate H2 Hamiltonian.", UserWarning, stacklevel=2
             )
             return self._get_approximate_h2_hamiltonian()
 
@@ -232,7 +289,7 @@ class MolecularVQE:
             return hamiltonian, n_qubits, classical_energy
 
         except ImportError:
-            warnings.warn("PySCF not available. Using approximate Hamiltonian.", UserWarning)
+            warnings.warn("PySCF not available. Using approximate Hamiltonian.", UserWarning, stacklevel=2)
             return self._get_approximate_h2_hamiltonian()
 
     def _get_approximate_h2_hamiltonian(self) -> tuple[SparsePauliOp, int, float]:
