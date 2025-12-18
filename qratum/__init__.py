@@ -24,6 +24,10 @@ from qratum.core.circuit import Circuit
 from qratum.core.densitymatrix import DensityMatrix
 from qratum.core.measurement import Measurement, Result
 
+# Platform integration layer (Task 1)
+from qratum.core.platform import QRATUMPlatform, create_platform
+from qratum.core.platform_config import PlatformConfig
+
 # Core imports
 from qratum.core.simulator import Simulator
 from qratum.core.statevector import StateVector
@@ -38,10 +42,6 @@ from qratum.version import (
     __url__,
     __version__,
 )
-
-# Platform integration layer (Task 1)
-from qratum.core.platform import QRATUMPlatform, create_platform
-from qratum.core.platform_config import PlatformConfig
 
 __all__ = [
     # Version and metadata

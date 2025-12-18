@@ -139,7 +139,9 @@ class ExecutionContext:
             "seed": self.seed,
             "start_time": self.start_time,
             "end_time": self.end_time,
-            "duration": self.end_time - self.start_time if self.start_time and self.end_time else None,
+            "duration": (
+                self.end_time - self.start_time if self.start_time and self.end_time else None
+            ),
             "audit_enabled": self.audit_enabled,
             "metrics_enabled": self.metrics_enabled,
             "do178c_enabled": self.do178c_enabled,

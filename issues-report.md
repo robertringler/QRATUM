@@ -2,8 +2,8 @@
 ### Ruff Linting
 629	W293  	blank-line-with-whitespace
 218	N806  	non-lowercase-variable-in-function
-191	UP045 	non-pep604-annotation-optional
-166	UP006 	non-pep585-annotation
+198	UP045 	non-pep604-annotation-optional
+177	UP006 	non-pep585-annotation
  83	F821  	undefined-name
  49	E402  	module-import-not-at-top-of-file
  36	N803  	invalid-argument-name
@@ -37,8 +37,8 @@
   1	SIM201	negate-equal-op
   1	SIM401	if-else-block-instead-of-dict-get
   1	UP007 	non-pep604-annotation-union
-Found 1586 errors.
-No fixes available (1098 hidden fixes can be enabled with the `--unsafe-fixes` option).
+Found 1604 errors.
+No fixes available (1116 hidden fixes can be enabled with the `--unsafe-fixes` option).
 ### Type Checking (mypy)
 quasim-api is not a valid Python package name
 Type checking completed

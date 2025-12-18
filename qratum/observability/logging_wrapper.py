@@ -46,9 +46,7 @@ class StructuredLogger:
             duration: Execution duration
             metadata: Workflow metadata
         """
-        self._logger.info(
-            f"Workflow completed: {workflow} ({duration:.3f}s)", extra=metadata
-        )
+        self._logger.info(f"Workflow completed: {workflow} ({duration:.3f}s)", extra=metadata)
 
     def log_error(self, message: str, error: Exception) -> None:
         """Log error.
