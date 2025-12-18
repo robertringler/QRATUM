@@ -39,10 +39,6 @@ from qratum.version import (
     __version__,
 )
 
-# Platform integration layer (Task 1)
-from qratum.core.platform import QRATUMPlatform, create_platform
-from qratum.core.platform_config import PlatformConfig
-
 __all__ = [
     # Version and metadata
     "__version__",
@@ -67,10 +63,6 @@ __all__ = [
     "Result",
     "DensityMatrix",
     "gates",
-    # Platform integration (Task 1)
-    "PlatformConfig",
-    "QRATUMPlatform",
-    "create_platform",
 ]
 
 
