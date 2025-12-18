@@ -320,6 +320,117 @@
     };
 
     // ========================================
+    // PARTICLE ANIMATION (Hero Background)
+    // ========================================
+    const particleAnimation = {
+        canvas: null,
+        ctx: null,
+        particles: [],
+        animationId: null,
+
+        init: function() {
+            const hero = document.querySelector('.hero');
+            if (!hero) return;
+
+            // Create canvas
+            this.canvas = document.createElement('canvas');
+            this.canvas.style.position = 'absolute';
+            this.canvas.style.top = '0';
+            this.canvas.style.left = '0';
+            this.canvas.style.width = '100%';
+            this.canvas.style.height = '100%';
+            this.canvas.style.pointerEvents = 'none';
+            this.canvas.style.opacity = '0.5';
+            
+            const heroBackground = hero.querySelector('.hero__background');
+            if (heroBackground) {
+                heroBackground.insertBefore(this.canvas, heroBackground.firstChild);
+            }
+
+            this.ctx = this.canvas.getContext('2d');
+            this.resize();
+            this.createParticles();
+            this.animate();
+
+            // Handle resize
+            window.addEventListener('resize', utils.debounce(() => {
+                this.resize();
+            }, 250));
+        },
+
+        resize: function() {
+            this.canvas.width = this.canvas.offsetWidth;
+            this.canvas.height = this.canvas.offsetHeight;
+        },
+
+        createParticles: function() {
+            const count = Math.min(50, Math.floor(this.canvas.width / 30));
+            this.particles = [];
+
+            for (let i = 0; i < count; i++) {
+                this.particles.push({
+                    x: Math.random() * this.canvas.width,
+                    y: Math.random() * this.canvas.height,
+                    size: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * 0.5,
+                    speedY: (Math.random() - 0.5) * 0.5,
+                    opacity: Math.random() * 0.5 + 0.2
+                });
+            }
+        },
+
+        animate: function() {
+            if (!this.ctx) return;
+
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+            // Update and draw particles
+            this.particles.forEach((particle, index) => {
+                // Update position
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+
+                // Wrap around edges
+                if (particle.x < 0) particle.x = this.canvas.width;
+                if (particle.x > this.canvas.width) particle.x = 0;
+                if (particle.y < 0) particle.y = this.canvas.height;
+                if (particle.y > this.canvas.height) particle.y = 0;
+
+                // Draw particle
+                this.ctx.beginPath();
+                this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                this.ctx.fillStyle = `rgba(139, 92, 246, ${particle.opacity})`;
+                this.ctx.fill();
+
+                // Draw connections
+                for (let j = index + 1; j < this.particles.length; j++) {
+                    const other = this.particles[j];
+                    const dx = particle.x - other.x;
+                    const dy = particle.y - other.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) {
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(particle.x, particle.y);
+                        this.ctx.lineTo(other.x, other.y);
+                        this.ctx.strokeStyle = `rgba(139, 92, 246, ${0.15 * (1 - distance / 120)})`;
+                        this.ctx.lineWidth = 1;
+                        this.ctx.stroke();
+                    }
+                }
+            });
+
+            this.animationId = requestAnimationFrame(this.animate.bind(this));
+        },
+
+        destroy: function() {
+            if (this.animationId) {
+                cancelAnimationFrame(this.animationId);
+            }
+        }
+    };
+
+    // ========================================
     // INITIALIZATION
     // ========================================
     const init = function() {
@@ -338,6 +449,7 @@
         cookieConsent.init();
         counterAnimation.init();
         formHandler.init();
+        particleAnimation.init();
 
         console.log('[QRATUM] Marketing page initialized');
     };
