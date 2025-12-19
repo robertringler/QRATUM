@@ -122,7 +122,7 @@ The build script is designed to work in CI/CD environments:
   run: bash build_production.sh
   
 - name: Upload Artifacts
-  uses: actions/upload-artifact@v3
+  uses: actions/upload-artifact@v4
   with:
     name: qratum-production-build
     path: dist/

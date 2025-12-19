@@ -135,9 +135,14 @@ if [ -f "package.json" ]; then
             warn "Creating portable package only..."
             
             # Try to create a packaged version without building installers
-            npm run pack 2>&1 | tee -a "$BUILD_LOG" || {
-                warn "Desktop app packaging failed, this may require platform-specific tools"
-            }
+            if npm run pack 2>&1 | tee -a "$BUILD_LOG"; then
+                info "Desktop packaging completed successfully"
+            else
+                EXIT_CODE=$?
+                warn "Desktop app packaging failed (exit code: $EXIT_CODE)"
+                warn "This may require platform-specific tools or electron-builder dependencies"
+                warn "Check build log for details: $BUILD_LOG"
+            fi
             
             if [ -d "dist" ]; then
                 cp -r dist "$BUILD_DIR/desktop/qratum-desktop"
@@ -262,7 +267,7 @@ echo "" | tee -a "$BUILD_LOG"
 # Generate checksums
 log "Generating checksums..."
 cd "$BUILD_DIR"
-find . -type f \( -name "*.whl" -o -name "*.tar.gz" \) -exec sha256sum {} \; > checksums.sha256 2>&1 | tee -a "$BUILD_LOG"
+find . -type f \( -name "*.whl" -o -name "*.tar.gz" \) -exec sha256sum {} \; 2>&1 | tee checksums.sha256 | tee -a "$BUILD_LOG"
 log "✓ Checksums generated"
 echo "" | tee -a "$BUILD_LOG"
 
@@ -277,7 +282,7 @@ echo "Build Log: ${BUILD_LOG}" | tee -a "$BUILD_LOG"
 echo "" | tee -a "$BUILD_LOG"
 
 echo "Build Artifacts:" | tee -a "$BUILD_LOG"
-if [ -d "$BUILD_DIR/python" ] && [ "$(ls -A $BUILD_DIR/python)" ]; then
+if [ -d "$BUILD_DIR/python" ] && [ "$(ls -A "$BUILD_DIR/python")" ]; then
     echo "  ✓ Python package: dist/python/" | tee -a "$BUILD_LOG"
 else
     echo "  ✗ Python package: FAILED" | tee -a "$BUILD_LOG"
