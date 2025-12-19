@@ -8,8 +8,8 @@ from __future__ import annotations
 import numpy as np
 
 from qubic.visualization.aerospace import (
-    AerospaceVizConfig,
     AerospaceVisualizer,
+    AerospaceVizConfig,
     ComplianceMode,
 )
 
@@ -225,7 +225,7 @@ def generate_all_demos():
     # Generate compliance report
     print("\n10. Generating Compliance Report...")
     report = viz.generate_compliance_report()
-    print(f"\n   Compliance Report:")
+    print("\n   Compliance Report:")
     print(f"   - Mode: {report['compliance_mode']}")
     print(f"   - Total Frames: {report['total_frames']}")
     print(f"   - Seed: {report['seed']}")

@@ -1,7 +1,7 @@
 ## Remaining Code Quality Issues
 ### Ruff Linting
 629	W293  	blank-line-with-whitespace
-219	N806  	non-lowercase-variable-in-function
+222	N806  	non-lowercase-variable-in-function
 197	UP045 	non-pep604-annotation-optional
 185	      	invalid-syntax
 176	UP006 	non-pep585-annotation
@@ -12,9 +12,9 @@
  23	B007  	unused-loop-control-variable
  23	B028  	no-explicit-stacklevel
  21	F401  	unused-import
+ 18	B904  	raise-without-from-inside-except
  16	SIM102	collapsible-if
- 15	F811  	redefined-while-unused
- 14	B904  	raise-without-from-inside-except
+ 14	F811  	redefined-while-unused
  13	N802  	invalid-function-name
   9	C401  	unnecessary-generator-set
   9	W291  	trailing-whitespace
@@ -37,7 +37,7 @@
   1	SIM201	negate-equal-op
   1	SIM401	if-else-block-instead-of-dict-get
   1	UP007 	non-pep604-annotation-union
-Found 1788 errors.
+Found 1794 errors.
 No fixes available (1111 hidden fixes can be enabled with the `--unsafe-fixes` option).
 ### Type Checking (mypy)
 quasim-api is not a valid Python package name
