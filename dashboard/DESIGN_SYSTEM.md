@@ -2,7 +2,7 @@
 
 ## Overview
 
-The QRATUM design system implements a professional, enterprise-grade visual identity inspired by leading quantum computing platforms (IBM Quantum, Google Quantum AI, Microsoft Azure Quantum). The design features a cohesive purple gradient color scheme with glass-morphism effects, smooth animations, and a modern, accessible interface.
+The QRATUM design system implements a professional, enterprise-grade visual identity for quantum-classical workflows. The design features a cohesive purple gradient color scheme with glass-morphism effects, smooth animations, and a modern, accessible interface.
 
 ## Design Philosophy
 
