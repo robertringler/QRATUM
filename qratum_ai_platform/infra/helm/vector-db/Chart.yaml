@@ -1,0 +1,13 @@
+apiVersion: v2
+name: vector-db
+description: Vector database for RAG pipeline (Milvus/Weaviate compatible)
+type: application
+version: 1.0.0
+appVersion: "2.3.0"
+keywords:
+  - vector-database
+  - rag
+  - embeddings
+  - search
+maintainers:
+  - name: QRATUM Team

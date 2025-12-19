@@ -1,0 +1,82 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: canary-deployment
+  namespace: qratum-ml
+spec:
+  entrypoint: canary-rollout
+  
+  arguments:
+    parameters:
+    - name: model-version
+      value: "v1.1.0"
+    - name: canary-percent
+      value: "10"
+  
+  templates:
+  - name: canary-rollout
+    steps:
+    - - name: deploy-canary
+        template: deploy
+    - - name: monitor
+        template: monitor-metrics
+    - - name: decide
+        template: rollout-decision
+  
+  - name: deploy
+    resource:
+      action: apply
+      manifest: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: model-server-canary
+          labels:
+            version: {{workflow.parameters.model-version}}
+            traffic: canary
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app: model-server
+              version: {{workflow.parameters.model-version}}
+          template:
+            metadata:
+              labels:
+                app: model-server
+                version: {{workflow.parameters.model-version}}
+            spec:
+              containers:
+              - name: model-server
+                image: qratum/model-server:{{workflow.parameters.model-version}}
+                ports:
+                - containerPort: 8080
+  
+  - name: monitor-metrics
+    container:
+      image: qratum/metrics-collector:latest
+      command: [python]
+      args:
+        - /app/collect_metrics.py
+        - --version={{workflow.parameters.model-version}}
+        - --duration=300
+      resources:
+        requests:
+          memory: 1Gi
+          cpu: 500m
+  
+  - name: rollout-decision
+    script:
+      image: python:3.10
+      command: [python]
+      source: |
+        import json
+        # Decision logic based on metrics
+        metrics = json.load(open('/metrics/canary.json'))
+        error_rate = metrics.get('error_rate', 0)
+        latency_p99 = metrics.get('latency_p99', 0)
+        
+        if error_rate < 0.01 and latency_p99 < 500:
+            print("PROMOTE")
+        else:
+            print("ROLLBACK")
