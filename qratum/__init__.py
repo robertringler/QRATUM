@@ -47,6 +47,9 @@ try:
 except ImportError:
     QUANTUM_INTEGRATION_AVAILABLE = False
     QuantumModuleAdapter = None
+# Platform integration layer (Task 1)
+from qratum.core.platform import QRATUMPlatform, create_platform
+from qratum.core.platform_config import PlatformConfig
 
 __all__ = [
     # Version and metadata
@@ -73,6 +76,9 @@ __all__ = [
     "DensityMatrix",
     "gates",
     # Platform integration
+    # Platform integration (Task 1)
+    "PlatformConfig",
+    "QRATUMPlatform",
     "create_platform",
 ]
 

@@ -22,6 +22,16 @@
     
     <!-- Dashboard Styles -->
     <link rel="stylesheet" href="assets/css/dashboard.css">
+    
+    <!-- Desktop Integration (loaded conditionally for Electron) -->
+    <script>
+        if (typeof window !== 'undefined' && window.process && window.process.type === 'renderer') {
+            // Running in Electron - load desktop integration
+            const script = document.createElement('script');
+            script.src = '../qratum_desktop/src/desktop-integration.js';
+            document.head.appendChild(script);
+        }
+    </script>
 </head>
 <body>
     <!-- Skip to main content for accessibility -->
