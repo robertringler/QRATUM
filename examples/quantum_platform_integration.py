@@ -80,7 +80,7 @@ def main():
             max_iterations=10,  # Reduced for demo
         )
 
-        print(f"✓ VQE completed successfully")
+        print("✓ VQE completed successfully")
         print(f"  Energy: {vqe_result['energy']:.6f} Hartree")
         print(f"  Iterations: {vqe_result['n_iterations']}")
         print(f"  Convergence: {vqe_result['convergence']}")
@@ -111,7 +111,7 @@ def main():
             classical_reference=True,
         )
 
-        print(f"✓ QAOA completed successfully")
+        print("✓ QAOA completed successfully")
         print(f"  Solution: {qaoa_result['solution']}")
         print(f"  Cut value: {abs(qaoa_result['energy']):.0f} edges")
         print(f"  Iterations: {qaoa_result['n_iterations']}")
@@ -138,7 +138,7 @@ def main():
         # MaxCut classical solution
         classical_result = fallback.solve_maxcut(edges, method="exact")
 
-        print(f"✓ Classical MaxCut solution")
+        print("✓ Classical MaxCut solution")
         print(f"  Solution: {classical_result['solution']}")
         print(f"  Cut value: {classical_result['cut_value']} edges")
         print(f"  Method: {classical_result['method']}")
