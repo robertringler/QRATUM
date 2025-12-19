@@ -109,3 +109,7 @@ gy_sustain_2030_results/
 
 # Documentation build output
 docs-site/site/
+
+# Aerospace visualization demo outputs
+qubic/visualization/aerospace/demo_*.png
+qubic/visualization/aerospace/demo_*.json
