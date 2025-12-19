@@ -3,7 +3,7 @@
 import pytest
 
 try:
-    from quasim.quantum.core import QISKIT_AVAILABLE, QuantumConfig
+    from quasim.quantum.core import QuantumConfig
     from quasim.quantum.qaoa_optimization import QAOA, QAOAResult
 
     QUANTUM_AVAILABLE = True
