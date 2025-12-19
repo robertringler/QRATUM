@@ -122,9 +122,7 @@ class QRATUMPlatform:
             raise BackendSelectionError(f"Backend selection failed: {e}") from e
 
     @contextmanager
-    def execution_context(
-        self, workflow_name: str
-    ) -> Generator[ExecutionContext, None, None]:
+    def execution_context(self, workflow_name: str) -> Generator[ExecutionContext, None, None]:
         """Context manager for workflow execution.
 
         Provides:
@@ -150,9 +148,7 @@ class QRATUMPlatform:
         with ctx:
             yield ctx
 
-    def run_vqe(
-        self, molecule: str, bond_length: float, basis: str = "sto3g"
-    ) -> dict[str, Any]:
+    def run_vqe(self, molecule: str, bond_length: float, basis: str = "sto3g") -> dict[str, Any]:
         """Execute VQE workflow with hybrid preprocessing/postprocessing.
 
         Args:
@@ -260,9 +256,7 @@ class QRATUMPlatform:
                 self._audit.log_start("HybridOptimization", execution_id, {"method": method})
 
                 # Execute optimization
-                result = self._opt_backend.optimize(
-                    objective_function, initial_guess, constraints
-                )
+                result = self._opt_backend.optimize(objective_function, initial_guess, constraints)
 
                 # Add execution metadata
                 result["execution_id"] = execution_id
@@ -314,9 +308,7 @@ class QRATUMPlatform:
         return report
 
 
-def create_platform(
-    quantum_backend: str = "simulator", seed: int = 42, **kwargs
-) -> QRATUMPlatform:
+def create_platform(quantum_backend: str = "simulator", seed: int = 42, **kwargs) -> QRATUMPlatform:
     """Factory function for creating QRATUM platform instance.
 
     Args:

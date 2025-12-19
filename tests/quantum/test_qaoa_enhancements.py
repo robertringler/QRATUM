@@ -82,9 +82,7 @@ class TestQAOABackwardsCompatibility:
 
         # Small graph for quick testing
         edges = [(0, 1), (1, 2)]
-        result = qaoa.solve_maxcut(
-            edges=edges, classical_reference=False, max_iterations=5
-        )
+        result = qaoa.solve_maxcut(edges=edges, classical_reference=False, max_iterations=5)
 
         assert isinstance(result, QAOAResult)
         assert len(result.solution) == 3  # 3 nodes

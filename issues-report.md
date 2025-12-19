@@ -1,20 +1,21 @@
 ## Remaining Code Quality Issues
 ### Ruff Linting
 629	W293  	blank-line-with-whitespace
-218	N806  	non-lowercase-variable-in-function
-191	UP045 	non-pep604-annotation-optional
-166	UP006 	non-pep585-annotation
+219	N806  	non-lowercase-variable-in-function
+197	UP045 	non-pep604-annotation-optional
+185	      	invalid-syntax
+176	UP006 	non-pep585-annotation
  83	F821  	undefined-name
- 49	E402  	module-import-not-at-top-of-file
+ 50	E402  	module-import-not-at-top-of-file
  36	N803  	invalid-argument-name
- 33	F841  	unused-variable
- 27	B028  	no-explicit-stacklevel
+ 34	F841  	unused-variable
  23	B007  	unused-loop-control-variable
- 22	F401  	unused-import
+ 23	B028  	no-explicit-stacklevel
+ 21	F401  	unused-import
  16	SIM102	collapsible-if
- 14	F811  	redefined-while-unused
+ 15	F811  	redefined-while-unused
+ 14	B904  	raise-without-from-inside-except
  13	N802  	invalid-function-name
- 11	B904  	raise-without-from-inside-except
   9	C401  	unnecessary-generator-set
   9	W291  	trailing-whitespace
   6	N999  	invalid-module-name
@@ -25,7 +26,6 @@
   2	N812  	lowercase-imported-as-non-lowercase
   2	N818  	error-suffix-on-exception-name
   2	SIM103	needless-bool
-  1	      	invalid-syntax
   1	C408  	unnecessary-collection-call
   1	C416  	unnecessary-comprehension
   1	E731  	lambda-assignment
@@ -37,8 +37,8 @@
   1	SIM201	negate-equal-op
   1	SIM401	if-else-block-instead-of-dict-get
   1	UP007 	non-pep604-annotation-union
-Found 1586 errors.
-No fixes available (1098 hidden fixes can be enabled with the `--unsafe-fixes` option).
+Found 1788 errors.
+No fixes available (1111 hidden fixes can be enabled with the `--unsafe-fixes` option).
 ### Type Checking (mypy)
 quasim-api is not a valid Python package name
 Type checking completed

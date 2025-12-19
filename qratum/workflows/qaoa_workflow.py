@@ -51,9 +51,7 @@ class QAOAWorkflow:
         Returns:
             Result dictionary with solution and metadata
         """
-        self._logger.info(
-            f"Running QAOA: problem_type={problem_type}, p_layers={p_layers}"
-        )
+        self._logger.info(f"Running QAOA: problem_type={problem_type}, p_layers={p_layers}")
 
         # Stub implementation - delegates to quasim.quantum.qaoa_optimization in production
         result = {

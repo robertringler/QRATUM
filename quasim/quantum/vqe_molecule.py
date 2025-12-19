@@ -259,7 +259,9 @@ class MolecularVQE:
         if not QISKIT_NATURE_AVAILABLE:
             # Fallback: Use hardcoded H2 Hamiltonian for bond_length ~ 0.735 Å
             warnings.warn(
-                "qiskit-nature not available. Using approximate H2 Hamiltonian.", UserWarning, stacklevel=2
+                "qiskit-nature not available. Using approximate H2 Hamiltonian.",
+                UserWarning,
+                stacklevel=2,
             )
             return self._get_approximate_h2_hamiltonian()
 
@@ -292,7 +294,9 @@ class MolecularVQE:
             return hamiltonian, n_qubits, classical_energy
 
         except ImportError:
-            warnings.warn("PySCF not available. Using approximate Hamiltonian.", UserWarning, stacklevel=2)
+            warnings.warn(
+                "PySCF not available. Using approximate Hamiltonian.", UserWarning, stacklevel=2
+            )
             return self._get_approximate_h2_hamiltonian()
 
     def _get_approximate_h2_hamiltonian(self) -> tuple[SparsePauliOp, int, float]:
