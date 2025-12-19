@@ -19,12 +19,20 @@ import numpy as np
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from quasim.common import (
-    calculate_fidelity,
-    evolutionary_optimization,
-    generate_report,
-    load_profile,
+# Import common utilities from the standalone module
+# Note: quasim.common refers to the package (directory), so we import the module directly
+import importlib.util
+
+_common_spec = importlib.util.spec_from_file_location(
+    "quasim_common", Path(__file__).parent.parent / "quasim" / "common.py"
 )
+_common_module = importlib.util.module_from_spec(_common_spec)
+_common_spec.loader.exec_module(_common_module)
+
+calculate_fidelity = _common_module.calculate_fidelity
+evolutionary_optimization = _common_module.evolutionary_optimization
+generate_report = _common_module.generate_report
+load_profile = _common_module.load_profile
 
 
 def simulate_trajectory(alpha: float, profile: dict, seed: int = 42) -> dict:

@@ -1,0 +1,85 @@
+{
+  "config": {
+    "compliance_mode": "DO178C_LEVEL_A",
+    "seed": 42,
+    "resolution": [
+      1920,
+      1080
+    ],
+    "render_backend": "matplotlib"
+  },
+  "frames": [
+    {
+      "frame_id": 0,
+      "timestamp_ns": 1766130317330946364,
+      "seed": 42,
+      "config_hash": "34865423bc362c60219657987f555c677518c2af5e5b3eaac818edba653fa738",
+      "frame_hash": "70e32df0b869cec962e181d2d97a663d98f8e8594c4e67c31c04dae951764694",
+      "render_time_ms": 587.6641273498535,
+      "warnings": []
+    },
+    {
+      "frame_id": 1,
+      "timestamp_ns": 1766130318103843550,
+      "seed": 42,
+      "config_hash": "34865423bc362c60219657987f555c677518c2af5e5b3eaac818edba653fa738",
+      "frame_hash": "8ef7814944494a34dac65750961bf5994caf5cbba5ee417a7a9803e59fcc8360",
+      "render_time_ms": 476.73940658569336,
+      "warnings": []
+    },
+    {
+      "frame_id": 2,
+      "timestamp_ns": 1766130318680549089,
+      "seed": 42,
+      "config_hash": "34865423bc362c60219657987f555c677518c2af5e5b3eaac818edba653fa738",
+      "frame_hash": "e556bfe724315f332d7bbe4c9da8bc6211aa992ccc0e11898c299bee64d8102a",
+      "render_time_ms": 331.6793441772461,
+      "warnings": []
+    },
+    {
+      "frame_id": 3,
+      "timestamp_ns": 1766130319349106123,
+      "seed": 42,
+      "config_hash": "34865423bc362c60219657987f555c677518c2af5e5b3eaac818edba653fa738",
+      "frame_hash": "2daef8d9e6b71694c000b76a058b2489123e9093009c98d58c6a9faa1eef38d8",
+      "render_time_ms": 374.2411136627197,
+      "warnings": []
+    },
+    {
+      "frame_id": 4,
+      "timestamp_ns": 1766130319888965397,
+      "seed": 42,
+      "config_hash": "34865423bc362c60219657987f555c677518c2af5e5b3eaac818edba653fa738",
+      "frame_hash": "f00b47cabd3fcb2294dff92095d9994825f5e1368f5aa4663d0059157829f941",
+      "render_time_ms": 295.41659355163574,
+      "warnings": []
+    },
+    {
+      "frame_id": 5,
+      "timestamp_ns": 1766130320592231988,
+      "seed": 42,
+      "config_hash": "34865423bc362c60219657987f555c677518c2af5e5b3eaac818edba653fa738",
+      "frame_hash": "625d1ef1a4ff8b3b33460acf0f9ce4944f7a094e9010527064becb91127eacf1",
+      "render_time_ms": 422.3628044128418,
+      "warnings": []
+    },
+    {
+      "frame_id": 6,
+      "timestamp_ns": 1766130321172710119,
+      "seed": 42,
+      "config_hash": "34865423bc362c60219657987f555c677518c2af5e5b3eaac818edba653fa738",
+      "frame_hash": "6f73ac38dfeba4565a4d0e8dd11fea5efef3d078902a0e3cd9bf7c9873a4fb3a",
+      "render_time_ms": 329.6689987182617,
+      "warnings": []
+    },
+    {
+      "frame_id": 7,
+      "timestamp_ns": 1766130321741331098,
+      "seed": 42,
+      "config_hash": "34865423bc362c60219657987f555c677518c2af5e5b3eaac818edba653fa738",
+      "frame_hash": "cad65a0f51f8a2f94983a69157cc00a6d3d1d3f03cfed43c20e9fa2d3486aff4",
+      "render_time_ms": 335.4458808898926,
+      "warnings": []
+    }
+  ]
+}
