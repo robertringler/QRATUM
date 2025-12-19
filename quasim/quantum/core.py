@@ -76,7 +76,8 @@ class QuantumConfig:
         if self.shots < 100:
             warnings.warn(
                 f"shots={self.shots} is very low. Use at least 1000 for reliable statistics.",
-                UserWarning, stacklevel=2,
+                UserWarning,
+                stacklevel=2,
             )
 
         if self.backend_type == "ibmq" and not self.ibmq_token:
@@ -85,7 +86,8 @@ class QuantumConfig:
         if self.seed is None and self.backend_type == "simulator":
             warnings.warn(
                 "No seed provided for simulator. Results may not be deterministic.",
-                UserWarning, stacklevel=2,
+                UserWarning,
+                stacklevel=2,
             )
 
     @property
@@ -110,16 +112,12 @@ class AbstractQuantumBackend(ABC):
         pass
 
     @abstractmethod
-    def execute_circuit(
-        self, circuit: Any, shots: int | None = None
-    ) -> dict[str, Any]:
+    def execute_circuit(self, circuit: Any, shots: int | None = None) -> dict[str, Any]:
         """Execute quantum circuit and return results."""
         pass
 
     @abstractmethod
-    def measure_observables(
-        self, circuit: Any, observables: list[str]
-    ) -> dict[str, float]:
+    def measure_observables(self, circuit: Any, observables: list[str]) -> dict[str, float]:
         """Measure Pauli observables and return expectation values."""
         pass
 
@@ -137,17 +135,13 @@ class QiskitAerBackend(AbstractQuantumBackend):
     def _initialize_backend(self) -> None:
         """Initialize Qiskit Aer simulator with seed for reproducibility."""
         if not QISKIT_AVAILABLE:
-            raise ImportError(
-                "Qiskit not installed. Install: pip install qiskit qiskit-aer"
-            )
+            raise ImportError("Qiskit not installed. Install: pip install qiskit qiskit-aer")
 
         from qiskit_aer import AerSimulator
 
         self.backend = AerSimulator()
 
-    def execute_circuit(
-        self, circuit: Any, shots: int | None = None
-    ) -> dict[str, Any]:
+    def execute_circuit(self, circuit: Any, shots: int | None = None) -> dict[str, Any]:
         """Execute quantum circuit on Aer simulator.
 
         Returns:
@@ -166,9 +160,7 @@ class QiskitAerBackend(AbstractQuantumBackend):
             seed_transpiler=self.config.seed,
         )
 
-        job = self.backend.run(
-            transpiled, shots=shots, seed_simulator=self.config.seed
-        )
+        job = self.backend.run(transpiled, shots=shots, seed_simulator=self.config.seed)
         result = job.result()
         execution_time = time.time() - start_time
 
@@ -179,9 +171,7 @@ class QiskitAerBackend(AbstractQuantumBackend):
             "result": result,
         }
 
-    def measure_observables(
-        self, circuit: Any, observables: list[str]
-    ) -> dict[str, float]:
+    def measure_observables(self, circuit: Any, observables: list[str]) -> dict[str, float]:
         """Measure Pauli observables using Qiskit primitives.
 
         Args:
@@ -207,9 +197,7 @@ class QiskitAerBackend(AbstractQuantumBackend):
 
             return results
         except ImportError:
-            raise ImportError(
-                "Qiskit primitives required. Ensure qiskit>=1.0.0 is installed."
-            )
+            raise ImportError("Qiskit primitives required. Ensure qiskit>=1.0.0 is installed.")
 
 
 class IBMQBackend(AbstractQuantumBackend):
@@ -244,9 +232,7 @@ class IBMQBackend(AbstractQuantumBackend):
             self.backend = service.least_busy(operational=True, simulator=False)
             print(f"Connected to IBM Quantum: {self.backend.name}")
 
-    def execute_circuit(
-        self, circuit: Any, shots: int | None = None
-    ) -> dict[str, Any]:
+    def execute_circuit(self, circuit: Any, shots: int | None = None) -> dict[str, Any]:
         """Execute on IBM Quantum hardware (subject to queue wait times)."""
         import time
 
@@ -274,9 +260,7 @@ class IBMQBackend(AbstractQuantumBackend):
             "result": result,
         }
 
-    def measure_observables(
-        self, circuit: Any, observables: list[str]
-    ) -> dict[str, float]:
+    def measure_observables(self, circuit: Any, observables: list[str]) -> dict[str, float]:
         """Measure Pauli observables on IBM hardware."""
         try:
             from qiskit.quantum_info import SparsePauliOp
@@ -293,9 +277,7 @@ class IBMQBackend(AbstractQuantumBackend):
 
             return results
         except ImportError:
-            raise ImportError(
-                "IBM Runtime required. Install: pip install qiskit-ibm-runtime"
-            )
+            raise ImportError("IBM Runtime required. Install: pip install qiskit-ibm-runtime")
 
 
 def create_backend(config: QuantumConfig) -> AbstractQuantumBackend:

@@ -29,7 +29,7 @@ def example_vqe_workflow():
     print("\nRunning VQE for H2 molecule at bond length 0.735 Å...")
     result = platform.run_vqe(molecule="H2", bond_length=0.735, basis="sto3g")
 
-    print(f"\n✓ VQE Results:")
+    print("\n✓ VQE Results:")
     print(f"  Molecule: {result['molecule']}")
     print(f"  Bond Length: {result['bond_length']} Å")
     print(f"  Energy: {result['energy']:.6f} Hartree")
@@ -57,11 +57,9 @@ def example_qaoa_workflow():
     problem_data = {"edges": [[0, 1], [1, 2], [2, 3], [3, 0]], "num_nodes": 4}
 
     print("\nRunning QAOA for MaxCut problem (4-node cycle graph)...")
-    result = platform.run_qaoa(
-        problem_type="maxcut", problem_data=problem_data, p_layers=3
-    )
+    result = platform.run_qaoa(problem_type="maxcut", problem_data=problem_data, p_layers=3)
 
-    print(f"\n✓ QAOA Results:")
+    print("\n✓ QAOA Results:")
     print(f"  Problem Type: {result['problem_type']}")
     print(f"  Solution: {result['solution']}")
     print(f"  Energy: {result['energy']:.3f}")
@@ -108,7 +106,7 @@ def example_compliance_report():
     print(f"Generating compliance report: {report_path}")
     report = platform.generate_compliance_report(report_path)
 
-    print(f"\n✓ Compliance Report Generated:")
+    print("\n✓ Compliance Report Generated:")
     print(f"  Report ID: {report['report_id']}")
     print(f"  Generated At: {report['generated_at']}")
     print(f"  Platform Version: {report['platform_version']}")

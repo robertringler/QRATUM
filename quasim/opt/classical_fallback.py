@@ -100,13 +100,10 @@ class ClassicalFallback:
 
         except ImportError as e:
             raise ImportError(
-                "PySCF required for classical quantum chemistry. "
-                "Install: pip install pyscf"
+                "PySCF required for classical quantum chemistry. " "Install: pip install pyscf"
             ) from e
 
-    def solve_maxcut(
-        self, edges: list[tuple[int, int]], method: str = "exact"
-    ) -> dict[str, Any]:
+    def solve_maxcut(self, edges: list[tuple[int, int]], method: str = "exact") -> dict[str, Any]:
         """Classical MaxCut via NetworkX or Gurobi.
 
         Args:
@@ -131,16 +128,10 @@ class ClassicalFallback:
 
             # Try all 2^n partitions
             for partition_int in range(2**n_nodes):
-                partition = [
-                    (partition_int >> i) & 1 for i in range(n_nodes)
-                ]
+                partition = [(partition_int >> i) & 1 for i in range(n_nodes)]
 
                 # Count edges crossing partition
-                cut_size = sum(
-                    1
-                    for i, j in edges
-                    if partition[i] != partition[j]
-                )
+                cut_size = sum(1 for i, j in edges if partition[i] != partition[j])
 
                 if cut_size > best_cut:
                     best_cut = cut_size
@@ -163,16 +154,12 @@ class ClassicalFallback:
                 # Try placing node in each partition
                 partition[node] = 0
                 cut_0 = sum(
-                    1
-                    for i, j in edges
-                    if (i == node or j == node) and partition[i] != partition[j]
+                    1 for i, j in edges if (i == node or j == node) and partition[i] != partition[j]
                 )
 
                 partition[node] = 1
                 cut_1 = sum(
-                    1
-                    for i, j in edges
-                    if (i == node or j == node) and partition[i] != partition[j]
+                    1 for i, j in edges if (i == node or j == node) and partition[i] != partition[j]
                 )
 
                 # Choose partition with better cut
@@ -200,8 +187,7 @@ class ClassicalFallback:
                     [
                         e
                         for e in edges
-                        if (e[0] in cut and e[1] not in cut)
-                        or (e[0] not in cut and e[1] in cut)
+                        if (e[0] in cut and e[1] not in cut) or (e[0] not in cut and e[1] in cut)
                     ]
                 )
 
