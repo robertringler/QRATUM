@@ -6,7 +6,12 @@ from qintervention.planner import InterventionPlanner
 def test_domain_whitelist_blocks_unknown():
     constraints = ConstraintSet([domain_whitelist({"finance"})])
     planner = InterventionPlanner(constraints)
-    proposals = {0: [InterventionAction(kind="finance", target="a"), InterventionAction(kind="grid", target="b")]} 
+    proposals = {
+        0: [
+            InterventionAction(kind="finance", target="a"),
+            InterventionAction(kind="grid", target="b"),
+        ]
+    }
 
     plan = planner.build_plan(proposals)
 

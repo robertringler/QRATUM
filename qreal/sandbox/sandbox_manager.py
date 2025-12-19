@@ -1,12 +1,13 @@
 """Coordinate deterministic ingestion sessions."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable, Dict, List, Tuple
 
 from qreal.sandbox.cache import DeterministicCache
-from qreal.sandbox.rate_limiter import RateLimiter
 from qreal.sandbox.filters import FilterSet
+from qreal.sandbox.rate_limiter import RateLimiter
 
 
 @dataclass
@@ -25,12 +26,20 @@ class SandboxManager:
         self.cache = DeterministicCache()
         self.sessions: Dict[str, SandboxSession] = {}
 
-    def create_session(self, name: str, limiter: RateLimiter, filter_set: FilterSet) -> SandboxSession:
+    def create_session(
+        self, name: str, limiter: RateLimiter, filter_set: FilterSet
+    ) -> SandboxSession:
         session = SandboxSession(name=name, limiter=limiter, filter_set=filter_set)
         self.sessions[name] = session
         return session
 
-    def ingest(self, session_name: str, tick: int, payload: Dict[str, object], handler: Callable[[Dict[str, object]], object]) -> object:
+    def ingest(
+        self,
+        session_name: str,
+        tick: int,
+        payload: Dict[str, object],
+        handler: Callable[[Dict[str, object]], object],
+    ) -> object:
         session = self.sessions[session_name]
         if not session.limiter.allow(tick):
             return None

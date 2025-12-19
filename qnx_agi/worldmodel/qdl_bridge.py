@@ -1,4 +1,5 @@
 """Bridge between QDL constructs and world model interfaces."""
+
 from __future__ import annotations
 
 from typing import Any

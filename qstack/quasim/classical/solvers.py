@@ -1,7 +1,6 @@
 """Deterministic solvers."""
-from __future__ import annotations
 
-from typing import List
+from __future__ import annotations
 
 
 def fixed_point_solver(initial: float, coefficient: float, iterations: int = 4) -> float:

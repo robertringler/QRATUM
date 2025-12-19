@@ -1,10 +1,11 @@
 """Advanced deterministic A* planner with safety constraints."""
+
 from __future__ import annotations
 
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
-from .base import PlanStep, Planner
 from ...qnx.runtime.safety import SafetyEnvelope
+from .base import Planner, PlanStep
 
 
 class ConstrainedAStarPlanner(Planner):
@@ -16,7 +17,9 @@ class ConstrainedAStarPlanner(Planner):
         super().__init__(heuristic)
         self._envelope = envelope
 
-    def _neighbors(self, state: Dict[str, Any], goal: Dict[str, Any]) -> List[Tuple[str, Dict[str, Any]]]:
+    def _neighbors(
+        self, state: Dict[str, Any], goal: Dict[str, Any]
+    ) -> List[Tuple[str, Dict[str, Any]]]:
         neighbors: List[Tuple[str, Dict[str, Any]]] = []
         for key, value in goal.items():
             if state.get(key) != value:
@@ -30,7 +33,11 @@ class ConstrainedAStarPlanner(Planner):
         return neighbors
 
     def plan(self, goal: Dict[str, Any], state: Dict[str, Any]) -> List[PlanStep]:
-        open_set: List[PlanStep] = [PlanStep(action="start", parameters=state, cost=0.0, heuristic=self._heuristic(goal, state))]
+        open_set: List[PlanStep] = [
+            PlanStep(
+                action="start", parameters=state, cost=0.0, heuristic=self._heuristic(goal, state)
+            )
+        ]
         explored: Dict[str, float] = {}
         while open_set:
             open_set.sort(key=lambda s: (s.total(), s.action))
@@ -50,7 +57,13 @@ class ConstrainedAStarPlanner(Planner):
                 step_cost = current.cost + 1.0
                 heuristic = self._heuristic(goal, neighbor)
                 open_set.append(
-                    PlanStep(action=action, parameters=neighbor, cost=step_cost, heuristic=heuristic, parent=current)
+                    PlanStep(
+                        action=action,
+                        parameters=neighbor,
+                        cost=step_cost,
+                        heuristic=heuristic,
+                        parent=current,
+                    )
                 )
         return []
 

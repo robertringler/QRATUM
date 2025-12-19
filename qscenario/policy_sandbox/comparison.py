@@ -1,4 +1,5 @@
 """Compare scenario reports across variants."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

@@ -1,4 +1,5 @@
 """Deterministic governance and voting primitives."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

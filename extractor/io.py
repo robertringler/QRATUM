@@ -52,7 +52,9 @@ class ConversationLoader:
         LOGGER.info("Loaded %d normalized messages", len(records))
         return records
 
-    def _iter_messages(self, conversation: MutableMapping[str, object]) -> Iterator[MutableMapping[str, object]]:
+    def _iter_messages(
+        self, conversation: MutableMapping[str, object]
+    ) -> Iterator[MutableMapping[str, object]]:
         """Yield raw message dictionaries from a conversation payload."""
 
         if isinstance(conversation.get("messages"), list):
@@ -61,7 +63,9 @@ class ConversationLoader:
 
         mapping = conversation.get("mapping")
         if isinstance(mapping, dict):
-            nodes = [node for node in mapping.values() if isinstance(node, dict) and node.get("message")]
+            nodes = [
+                node for node in mapping.values() if isinstance(node, dict) and node.get("message")
+            ]
             nodes.sort(key=lambda node: node.get("message", {}).get("create_time", 0) or 0)
             for node in nodes:
                 message = node.get("message")
@@ -168,6 +172,6 @@ class SummaryWriter:
                 f"{domain}:{domain_counts[label_value][domain]}"
                 for domain in domain_counts[label_value].most_common(3)
             )
-            lines.append(f"{label_value},{count},\"{top_domains}\"")
+            lines.append(f'{label_value},{count},"{top_domains}"')
         summary_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
         return summary_path

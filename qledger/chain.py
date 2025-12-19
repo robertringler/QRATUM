@@ -1,4 +1,5 @@
 """Ledger chain management."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -12,7 +13,11 @@ class LedgerChain:
     records: List[LedgerRecord] = field(default_factory=list)
 
     def append(self, record: LedgerRecord) -> LedgerRecord:
-        prev_hash = self.records[-1].compute_hash() if self.records else record.prev_hash or record.compute_hash()
+        prev_hash = (
+            self.records[-1].compute_hash()
+            if self.records
+            else record.prev_hash or record.compute_hash()
+        )
         adjusted = record.with_prev_hash(prev_hash)
         self.records.append(adjusted)
         return adjusted

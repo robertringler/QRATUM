@@ -1,5 +1,4 @@
 from qnx import QNXSubstrate, SimulationConfig
-
 from tests.qnx_integration.mock_qnx_rtos import MockQNXRTOS
 
 

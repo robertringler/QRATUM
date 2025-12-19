@@ -3,6 +3,7 @@
 These dataclasses provide deterministic defaults for orchestrating QNX,
 QuASIM, and QuNimbus subsystems via the QStackSystem facade.
 """
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field

@@ -1,9 +1,19 @@
 """Recursive descent parser for QDL."""
+
 from __future__ import annotations
 
 from typing import List
 
-from .ast import BinaryOp, EconomicPrimitive, Identifier, Number, Program, SafetyGuard, SimulationKernel, WorldModelCall
+from .ast import (
+    BinaryOp,
+    EconomicPrimitive,
+    Identifier,
+    Number,
+    Program,
+    SafetyGuard,
+    SimulationKernel,
+    WorldModelCall,
+)
 from .lexer import Lexer, Token
 
 

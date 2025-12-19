@@ -1,4 +1,5 @@
 from math import isclose
+
 from qsk.hal.sensors import Sensor, sensor_bundle
 
 

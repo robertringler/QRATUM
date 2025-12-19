@@ -77,7 +77,11 @@ def run(cfg: dict[str, Any]) -> CheckResult:
         return CheckResult(
             id="TECH-001",
             passed=all_pass,
-            details={"results": results, "min_speedup": min_speedup, "files_checked": len(npz_files)},
+            details={
+                "results": results,
+                "min_speedup": min_speedup,
+                "files_checked": len(npz_files),
+            },
             evidence_paths=evidence_paths,
         )
 

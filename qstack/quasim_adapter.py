@@ -1,13 +1,13 @@
 """Adapter layer for the QuASIM runtime."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import List
 
+from qstack.config import QuASIMConfig
 from quasim import Config as QuasimRuntimeConfig
 from quasim import Runtime as QuasimRuntime
-
-from qstack.config import QuASIMConfig
 
 
 @dataclass

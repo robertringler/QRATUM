@@ -1,4 +1,5 @@
 """Registry for reusable scenario templates."""
+
 from __future__ import annotations
 
 from typing import Callable, Dict
