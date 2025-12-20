@@ -113,3 +113,11 @@ docs-site/site/
 # Aerospace visualization demo outputs
 qubic/visualization/aerospace/demo_*.png
 qubic/visualization/aerospace/demo_*.json
+
+# Node.js
+node_modules/
+package-lock.json
+*.tsbuildinfo
+
+# Build logs
+build_*.log

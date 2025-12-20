@@ -15,5 +15,5 @@ def sample_documents():
     return [
         {"id": "doc1", "text": "First document content"},
         {"id": "doc2", "text": "Second document content"},
-        {"id": "doc3", "text": "Third document content"}
+        {"id": "doc3", "text": "Third document content"},
     ]
