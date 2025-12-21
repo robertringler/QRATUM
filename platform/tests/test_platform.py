@@ -42,7 +42,8 @@ class TestPlatformIntent:
             parameters={"key": "value"},
         )
 
-        with pytest.raises(Exception):  # FrozenInstanceError
+        # Frozen dataclasses raise FrozenInstanceError on attribute modification
+        with pytest.raises((AttributeError, Exception)):  # FrozenInstanceError is a subclass
             intent.operation = "modified"
 
     def test_intent_validation(self):

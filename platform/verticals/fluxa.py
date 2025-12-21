@@ -231,7 +231,11 @@ class FluxaModule(VerticalModuleBase):
                 forecasted_demand = trended_demand
 
             # Add small random variation (deterministic)
-            variation = ((int(forecast_hash[period % 16 : period % 16 + 4], 16) % 20) - 10) / 100.0
+            hash_index = (period % 12) * 4
+            if hash_index + 4 <= len(forecast_hash):
+                variation = ((int(forecast_hash[hash_index : hash_index + 4], 16) % 20) - 10) / 100.0
+            else:
+                variation = 0.0
             forecasted_demand *= 1 + variation
 
             forecast.append(

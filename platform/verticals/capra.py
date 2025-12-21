@@ -6,6 +6,7 @@ strict investment advisory disclaimers.
 
 import hashlib
 import math
+import random
 from typing import Any, Dict, FrozenSet, List
 
 from platform.core.base import VerticalModuleBase
@@ -241,8 +242,6 @@ class CapraModule(VerticalModuleBase):
         Returns:
             (price, greeks dict)
         """
-        import random
-
         # Use deterministic random seed
         random.seed(self.seed)
 
