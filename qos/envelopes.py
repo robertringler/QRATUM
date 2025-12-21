@@ -35,7 +35,7 @@ class SafetyEnvelope:
     def check(self, execution_plan: Any) -> bool:
         """Check if execution plan is within safety envelope.
         
-        This method will be fully implemented in a future PR.
+        This method will be fully implemented in PR-005 (QoS Implementation).
         
         Args:
             execution_plan: Plan containing execution details
@@ -44,10 +44,10 @@ class SafetyEnvelope:
             True if plan is safe, False otherwise
             
         Raises:
-            NotImplementedError: Placeholder for future implementation
+            NotImplementedError: Placeholder for PR-005
         """
         raise NotImplementedError(
-            "Safety envelope checking will be implemented in a future PR. "
+            "Safety envelope checking will be implemented in PR-005. "
             "This is a structural contract establishing the interface."
         )
     

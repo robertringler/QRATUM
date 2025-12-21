@@ -362,7 +362,7 @@ def test_backend_stubs():
 
 
 def test_pauli_term_serialization():
-    """Test PauliTerm serialization."""
+    """Test PauliTerm serialization and validation."""
     from qcore import PauliTerm
     
     term = PauliTerm(coefficient=2.5 + 1.5j, operators=[(0, "X"), (1, "Y"), (2, "Z")])
@@ -376,6 +376,10 @@ def test_pauli_term_serialization():
     # Test __str__
     str_repr = str(term)
     assert "2.5" in str_repr or "(2.5+1.5j)" in str_repr
+    
+    # Test invalid Pauli operator
+    with pytest.raises(ValueError, match="Invalid Pauli operator"):
+        PauliTerm(coefficient=1.0, operators=[(0, "A")])
 
 
 def test_semantic_state_serialization():

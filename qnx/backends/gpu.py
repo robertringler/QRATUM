@@ -22,6 +22,8 @@ class GPUBackend:
     def run(self, task: Any) -> Any:
         """Execute task on GPU backend.
         
+        This method will be implemented in PR-006 (Backend Implementation).
+        
         Args:
             task: Task to execute
             
@@ -29,9 +31,9 @@ class GPUBackend:
             Execution result
             
         Raises:
-            NotImplementedError: Placeholder for future implementation
+            NotImplementedError: Placeholder for PR-006
         """
         raise NotImplementedError(
-            "GPU backend execution will be implemented in a future PR. "
+            "GPU backend execution will be implemented in PR-006. "
             "This is a structural contract establishing the interface."
         )

@@ -33,7 +33,7 @@ class QoSPolicy:
     def enforce(self, execution_context: Any) -> bool:
         """Enforce policy constraints on execution context.
         
-        This method will be fully implemented in a future PR.
+        This method will be fully implemented in PR-005 (QoS Implementation).
         
         Args:
             execution_context: Context containing execution parameters
@@ -42,10 +42,10 @@ class QoSPolicy:
             True if constraints are satisfied, False otherwise
             
         Raises:
-            NotImplementedError: Placeholder for future implementation
+            NotImplementedError: Placeholder for PR-005
         """
         raise NotImplementedError(
-            "QoS policy enforcement will be implemented in a future PR. "
+            "QoS policy enforcement will be implemented in PR-005. "
             "This is a structural contract establishing the interface."
         )
     

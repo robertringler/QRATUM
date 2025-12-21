@@ -27,6 +27,16 @@ class PauliTerm:
     coefficient: complex
     operators: List[tuple[int, str]]
     
+    def __post_init__(self) -> None:
+        """Validate Pauli operators after initialization."""
+        valid_operators = {'I', 'X', 'Y', 'Z'}
+        for qubit_idx, operator in self.operators:
+            if operator not in valid_operators:
+                raise ValueError(
+                    f"Invalid Pauli operator '{operator}'. "
+                    f"Must be one of {valid_operators}"
+                )
+    
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation.
         

@@ -22,6 +22,8 @@ class CPUBackend:
     def run(self, task: Any) -> Any:
         """Execute task on CPU backend.
         
+        This method will be implemented in PR-006 (Backend Implementation).
+        
         Args:
             task: Task to execute
             
@@ -29,9 +31,9 @@ class CPUBackend:
             Execution result
             
         Raises:
-            NotImplementedError: Placeholder for future implementation
+            NotImplementedError: Placeholder for PR-006
         """
         raise NotImplementedError(
-            "CPU backend execution will be implemented in a future PR. "
+            "CPU backend execution will be implemented in PR-006. "
             "This is a structural contract establishing the interface."
         )

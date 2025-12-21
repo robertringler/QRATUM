@@ -22,6 +22,8 @@ class QPUBackend:
     def run(self, task: Any) -> Any:
         """Execute task on QPU backend.
         
+        This method will be implemented in PR-007 (Quantum Backend).
+        
         Args:
             task: Task to execute
             
@@ -29,9 +31,9 @@ class QPUBackend:
             Execution result
             
         Raises:
-            NotImplementedError: Placeholder for future implementation
+            NotImplementedError: Placeholder for PR-007
         """
         raise NotImplementedError(
-            "QPU backend execution will be implemented in a future PR. "
+            "QPU backend execution will be implemented in PR-007. "
             "This is a structural contract establishing the interface."
         )
