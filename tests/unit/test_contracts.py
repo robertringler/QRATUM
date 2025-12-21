@@ -8,11 +8,7 @@ from datetime import datetime, timedelta
 
 from contracts import (
     BaseContract,
-    CapabilityContract,
     ClusterTopology,
-    EventContract,
-    IntentContract,
-    TemporalContract,
     create_capability_contract,
     create_event_contract,
     create_intent_contract,
@@ -211,11 +207,12 @@ class TestTemporalContract:
         assert not contract.is_expired()
 
         # Test with future time (should not be expired)
-        future_time = datetime.utcnow() + timedelta(seconds=1000)
+        from datetime import timezone
+        future_time = datetime.now(timezone.utc) + timedelta(seconds=1000)
         assert not contract.is_expired(future_time)
 
         # Test with far future time (should be expired)
-        far_future = datetime.utcnow() + timedelta(seconds=7200)
+        far_future = datetime.now(timezone.utc) + timedelta(seconds=7200)
         assert contract.is_expired(far_future)
 
     def test_temporal_contract_time_remaining(self):
@@ -232,9 +229,10 @@ class TestTemporalContract:
 
     def test_temporal_contract_window(self):
         """Test execution window checking."""
-        now = datetime.utcnow()
-        window_start = (now + timedelta(hours=-1)).isoformat() + "Z"
-        window_end = (now + timedelta(hours=1)).isoformat() + "Z"
+        from datetime import timezone
+        now = datetime.now(timezone.utc)
+        window_start = (now + timedelta(hours=-1)).isoformat().replace("+00:00", "Z")
+        window_end = (now + timedelta(hours=1)).isoformat().replace("+00:00", "Z")
 
         contract = create_temporal_contract(
             intent_contract_id="INTENT_123",

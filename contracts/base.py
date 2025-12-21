@@ -131,4 +131,5 @@ def get_current_timestamp() -> str:
     Returns:
         ISO 8601 timestamp string with 'Z' suffix
     """
-    return datetime.utcnow().isoformat() + "Z"
+    from datetime import timezone
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")

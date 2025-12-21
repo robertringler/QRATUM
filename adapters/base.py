@@ -133,7 +133,8 @@ class BaseAdapter(ABC):
         Returns:
             ExecutionProof with cryptographic verification
         """
-        timestamp = datetime.utcnow().isoformat() + "Z"
+        from datetime import timezone
+        timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
         # Compute execution hash
         result_str = str(execution_result)

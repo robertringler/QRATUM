@@ -6,14 +6,13 @@ Tests the QIL parser, grammar, AST, and serialization.
 import pytest
 
 from qil import (
-    Intent,
     ParseError,
     compute_hash,
     intent_to_canonical_form,
     parse_intent,
     serialize_intent,
 )
-from qil.ast import Authority, Capability, Constraint, HardwareSpec, Objective, TimeSpec, Trust
+from qil.ast import HardwareSpec, TimeSpec
 
 
 class TestQILParser:

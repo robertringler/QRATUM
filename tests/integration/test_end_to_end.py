@@ -6,7 +6,6 @@ Tests the complete flow: Intent → Authority → Contract → Time → Executio
 import pytest
 
 from adapters import AdapterRegistry
-from contracts import create_intent_contract
 from events import get_global_event_log
 from qcore import AuthorizationEngine, CapabilityResolver, ContractIssuer, PolicyEngine
 from qil import parse_intent
@@ -240,8 +239,7 @@ class TestEndToEndFlow:
         executor = ContractExecutor(adapter_registry=adapter_registry)
         executor.execute(contract_bundle)
 
-        # Verify event contract sequence
-        event_contract = contract_bundle.event_contract
+        # Verify event sequence
         event_log = get_global_event_log()
         observed_events = event_log.get_event_sequence(contract_bundle.intent_contract.contract_id)
 

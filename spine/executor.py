@@ -12,7 +12,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict
 
-from contracts import CapabilityContract, IntentContract, TemporalContract
 from events import log_event
 from qcore.issuer import ContractBundle
 
@@ -65,7 +64,6 @@ class ContractExecutor:
         intent_contract = contract_bundle.intent_contract
         capability_contract = contract_bundle.capability_contract
         temporal_contract = contract_bundle.temporal_contract
-        event_contract = contract_bundle.event_contract
 
         # Log execution start
         log_event(

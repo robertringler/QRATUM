@@ -128,7 +128,8 @@ class EventLog:
         previous_hash = self._get_last_event_hash(contract_id)
 
         # Create event
-        timestamp = datetime.utcnow().isoformat() + "Z"
+        from datetime import timezone
+        timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         content = {
             "event_type": event_type,
             "timestamp": timestamp,

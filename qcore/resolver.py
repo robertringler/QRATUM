@@ -10,9 +10,9 @@ Status: Production
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
-from qil.ast import Intent
+from qil.ast import Capability, Intent
 
 
 @dataclass
@@ -41,7 +41,7 @@ class CapabilityResolutionError(Exception):
 class CapabilityResolver:
     """Resolves capabilities to hardware bindings."""
 
-    def __init__(self, capability_map: Dict[str, List[str]] | None = None) -> None:
+    def __init__(self, capability_map: Optional[Dict[str, List[str]]] = None) -> None:
         """Initialize capability resolver.
 
         Args:
@@ -94,9 +94,10 @@ class CapabilityResolver:
         resolved: List[ResolvedCapability] = []
 
         # If no capabilities specified, use general_compute
-        capabilities = intent.capabilities if intent.capabilities else [
-            type('Capability', (), {'name': 'general_compute'})()
-        ]
+        if not intent.capabilities:
+            capabilities = [Capability(name='general_compute')]
+        else:
+            capabilities = intent.capabilities
 
         for capability in capabilities:
             # Get possible cluster types for this capability
