@@ -1,0 +1,85 @@
+# VITRA - Bioinformatics & Drug Discovery Examples
+# Quantum Intent Language (QIL) for Bioinformatics
+
+# Example 1: Protein Sequence Analysis
+intent:
+  vertical: VITRA
+  operation: analyze_sequence
+  parameters:
+    sequence: "MKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQAPILSRVGDGTQDNLSGAEKAVQVKVKALPDAQFEVVHSLAKWKRQTLGQHDFSAGEGLYTHMKALRPDEDRLSPLHSVYVDQWDWERVMGDGERQFSTLKSTVEAIWAGIKATEAAVSEEFGLAPFLPDQIHFVHSQELLSRYPDLDAKGRERAIAKDLGAVFLVGIGGKLSDGHRHDVRAPDYDDWSTPSELGHAGLNGDILVWNPVLEDAFELSSMGIRVDADTLKHQLALTGDEDRLELEWHQALLRGEMPQTIGGGIGQSRLTMLLLQLPHIGQVQAGVWPAAVRESVPSLL"
+    type: "protein"
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_diagnosis
+    - validation_required
+  user_id: "researcher_001"
+  session_id: "vitra_session_001"
+
+# Example 2: DNA Sequence Analysis
+intent:
+  vertical: VITRA
+  operation: analyze_sequence
+  parameters:
+    sequence: "ATGGCTAAGTATATAGCAAAACAGAGGCAGATTAGTTTTGTGAAATCACATTTTAGTAGGCAGTTG"
+    type: "dna"
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_diagnosis
+    - validation_required
+    - genetic_privacy_compliance
+  user_id: "geneticist_001"
+
+# Example 3: Protein Structure Prediction
+intent:
+  vertical: VITRA
+  operation: predict_structure
+  parameters:
+    sequence: "MKFLILLFNILCLFPVLAADNHGVGPQGASGVDPITRRGGHLRPGAPMGQFPTKHDQAVQFVYGGVRASFDQFEAVVWGGSKDHVVFGVQMGCYPDIDLNPPNWLRDGTEVVVPKPEPVPETKPPKHIYHPESVQAEGPTIPVYSNEIVYRPGLHLLEQQDPTSWRVVDYSNSWDPMNQDWGTLQSSGPHGYPNYIRPVYRNGQLSIRPNWYILGAPITAGRETLPSGTSQILPGPYEYVLTGDKVAVSFSGTKYQVNSPGASQVVDAKQQTVIITGTTQAPEHVIITGTTQAPEHGIAVEWYFNDGDQGWKEPYSAWHKKGDDKVYSNLWLKPSSPFLKGPSSNKFKKASPNQEPSHFQQSSP"
+    method: "alphafold"
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_diagnosis
+    - validation_required
+  user_id: "structural_biologist_001"
+
+# Example 4: Drug-Target Interaction
+intent:
+  vertical: VITRA
+  operation: drug_target_interaction
+  parameters:
+    drug_smiles: "CC(C)CC1=CC=C(C=C1)C(C)C(=O)O"  # Ibuprofen
+    target_sequence: "MRLGAQRLPGPGPLLALLPPLLLLRAFGTGRKDYPVTENSKFFDKMKYVDQAHSDVCPQACPTLEVQEGRKCCQQCPHGDCGDSCQC"
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_diagnosis
+    - validation_required
+    - drug_discovery_ethics
+  user_id: "drug_discovery_scientist_001"
+
+# Example 5: Molecular Dynamics Simulation
+intent:
+  vertical: VITRA
+  operation: molecular_dynamics
+  parameters:
+    system: "protein_in_water"
+    timesteps: 10000
+    temperature_k: 310  # Body temperature
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_diagnosis
+    - validation_required
+  user_id: "computational_chemist_001"
+
+# Example 6: Pharmacokinetics Modeling
+intent:
+  vertical: VITRA
+  operation: pharmacokinetics
+  parameters:
+    drug_id: "compound_12345"
+    dose_mg: 250
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_diagnosis
+    - validation_required
+    - drug_discovery_ethics
+  user_id: "pharmacologist_001"

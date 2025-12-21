@@ -1,0 +1,41 @@
+# Multi-Jurisdiction Conflict of Laws - QIL Example
+# QRATUM-OMNILEX Legal Intent Language
+
+LEGAL_INTENT {
+    intent_id: "OMNILEX-conflict-001"
+    compute_task: "conflict_of_laws"
+    
+    jurisdiction: {
+        primary: "US-CA"
+        secondary: ["US-NY", "US-TX"]
+    }
+    
+    domain: "contract"
+    reasoning: "irac"
+    attorney_supervised: true
+    
+    facts: """
+    GlobalTech Corp (Delaware corporation, headquarters in California) entered into
+    a distribution agreement with DistributorX LLC (Texas LLC, principal place of
+    business in Texas).
+    
+    The contract was negotiated via emails between California and Texas, with final
+    agreement signed electronically. The contract contains no choice-of-law clause.
+    
+    Performance obligations include:
+    - GlobalTech to deliver products to DistributorX's Texas warehouse
+    - DistributorX to make payments to GlobalTech's California bank account
+    - DistributorX to serve customers in Texas, Louisiana, and Oklahoma
+    
+    A dispute arose over payment terms. DistributorX filed suit in Texas state court.
+    GlobalTech argues that California law should govern the dispute due to its
+    headquarters location and where payments are received.
+    
+    The parties disagree on which state's law applies to interpretation of payment terms.
+    """
+    
+    question: """
+    Which state's law should govern the interpretation and enforcement of this
+    distribution agreement?
+    """
+}

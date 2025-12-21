@@ -1,0 +1,91 @@
+# SENTRA - Aerospace & Defense Examples
+# Quantum Intent Language (QIL) for Aerospace and Defense
+
+# Example 1: Trajectory Simulation
+intent:
+  vertical: SENTRA
+  operation: trajectory_simulation
+  parameters:
+    initial_velocity_ms: 2000
+    launch_angle_deg: 35
+    mass_kg: 500
+    drag_coefficient: 0.3
+  compliance_attestations:
+    - export_control_compliance
+    - authorized_use_only
+    - engineering_validation_required
+  user_id: "aerospace_engineer_001"
+  session_id: "sentra_session_001"
+
+# Example 2: Radar Cross-Section Analysis
+intent:
+  vertical: SENTRA
+  operation: rcs_analysis
+  parameters:
+    geometry: "sphere"
+    frequency_ghz: 10
+    dimension_m: 2.0
+  compliance_attestations:
+    - export_control_compliance
+    - authorized_use_only
+    - engineering_validation_required
+  user_id: "radar_engineer_001"
+
+# Example 3: Orbit Propagation
+intent:
+  vertical: SENTRA
+  operation: orbit_propagation
+  parameters:
+    altitude_km: 550
+    inclination_deg: 53.0
+    duration_hours: 168  # One week
+  compliance_attestations:
+    - export_control_compliance
+    - authorized_use_only
+    - engineering_validation_required
+  user_id: "orbital_analyst_001"
+
+# Example 4: Aerodynamic Analysis
+intent:
+  vertical: SENTRA
+  operation: aerodynamic_analysis
+  parameters:
+    vehicle_type: "aircraft"
+    velocity_ms: 300
+    altitude_m: 8000
+    angle_of_attack_deg: 8
+  compliance_attestations:
+    - export_control_compliance
+    - authorized_use_only
+    - engineering_validation_required
+  user_id: "aerodynamicist_001"
+
+# Example 5: Mission Planning
+intent:
+  vertical: SENTRA
+  operation: mission_planning
+  parameters:
+    mission_type: "reconnaissance"
+    range_km: 2000
+    duration_hours: 8
+    constraints: ["fuel_limited", "daylight_only"]
+  compliance_attestations:
+    - export_control_compliance
+    - authorized_use_only
+    - engineering_validation_required
+    - defense_authorization
+  user_id: "mission_planner_001"
+
+# Example 6: Low Earth Orbit Satellite
+intent:
+  vertical: SENTRA
+  operation: orbit_propagation
+  parameters:
+    altitude_km: 400  # ISS altitude
+    inclination_deg: 51.6  # ISS inclination
+    duration_hours: 24
+  compliance_attestations:
+    - export_control_compliance
+    - authorized_use_only
+    - engineering_validation_required
+  user_id: "satellite_operator_001"
