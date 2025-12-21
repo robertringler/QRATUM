@@ -19,7 +19,7 @@ Usage:
 import sys
 from pathlib import Path
 
-# Add qratum_asi to path
+# Add QRATUM root directory to path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from qratum_asi.examples.discovery_demo import main
