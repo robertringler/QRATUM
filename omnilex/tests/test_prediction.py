@@ -4,6 +4,7 @@ Version: 1.0.0
 Status: Production
 """
 
+import pytest
 
 from omnilex.prediction import LitigationPredictionEngine
 
