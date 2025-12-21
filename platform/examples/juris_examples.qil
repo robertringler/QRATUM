@@ -1,0 +1,67 @@
+# JURIS - Legal AI Examples
+# Quantum Intent Language (QIL) for Legal Analysis
+
+# Example 1: Contract Analysis
+intent:
+  vertical: JURIS
+  operation: analyze_contract
+  parameters:
+    contract_text: |
+      EMPLOYMENT AGREEMENT
+      This Employment Agreement is entered into between Company XYZ ("Employer")
+      and John Doe ("Employee"). The Employee shall serve as Senior Engineer.
+      Compensation: $150,000 annually. Termination: Either party may terminate
+      with 30 days notice. Confidentiality: Employee agrees to maintain confidentiality
+      of all proprietary information. Non-compete: Employee agrees not to work for
+      competitors for 12 months after termination within 50-mile radius.
+    jurisdiction: "California"
+  compliance_attestations:
+    - not_legal_advice_acknowledged
+    - attorney_review_required
+    - contract_jurisdiction_known
+  user_id: "legal_analyst_001"
+  session_id: "juris_session_001"
+
+# Example 2: Legal Research
+intent:
+  vertical: JURIS
+  operation: legal_research
+  parameters:
+    query: "employment non-compete agreements enforceability"
+    jurisdiction: "federal"
+  compliance_attestations:
+    - not_legal_advice_acknowledged
+    - attorney_review_required
+    - research_purpose_only
+  user_id: "legal_analyst_002"
+
+# Example 3: Compliance Check
+intent:
+  vertical: JURIS
+  operation: compliance_check
+  parameters:
+    framework: "GDPR"
+    requirements:
+      - "data_subject_rights"
+      - "consent_management"
+      - "data_breach_notification"
+      - "privacy_by_design"
+  compliance_attestations:
+    - not_legal_advice_acknowledged
+    - attorney_review_required
+    - compliance_framework_specified
+  user_id: "compliance_officer_001"
+
+# Example 4: Risk Assessment
+intent:
+  vertical: JURIS
+  operation: risk_assessment
+  parameters:
+    scenario: |
+      Company is considering launching a new product that collects user health data
+      through a mobile app. Data will be shared with third-party research institutions.
+      Users will provide consent. Product will operate in US and EU markets.
+  compliance_attestations:
+    - not_legal_advice_acknowledged
+    - attorney_review_required
+  user_id: "risk_analyst_001"

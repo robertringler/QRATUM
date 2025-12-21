@@ -1,0 +1,69 @@
+# ECORA - Climate & Energy Systems Examples
+# Quantum Intent Language (QIL) for Climate and Energy
+
+# Example 1: Climate Projection
+intent:
+  vertical: ECORA
+  operation: climate_projection
+  parameters:
+    scenario: "RCP4.5"  # Representative Concentration Pathway
+    years_ahead: 50
+    region: "North America"
+  compliance_attestations:
+    - expert_review_required
+    - model_limitations_understood
+    - climate_science_consultation
+  user_id: "climate_scientist_001"
+  session_id: "ecora_session_001"
+
+# Example 2: Renewable Energy Optimization
+intent:
+  vertical: ECORA
+  operation: energy_optimization
+  parameters:
+    system_type: "solar"
+    capacity_mw: 50
+    location: "Arizona, USA"
+  compliance_attestations:
+    - expert_review_required
+    - model_limitations_understood
+    - engineering_review
+  user_id: "energy_engineer_001"
+
+# Example 3: Carbon Footprint Analysis
+intent:
+  vertical: ECORA
+  operation: carbon_footprint
+  parameters:
+    activity: "manufacturing_facility"
+    scope: "1,2,3"
+    duration_days: 365
+  compliance_attestations:
+    - expert_review_required
+    - model_limitations_understood
+  user_id: "sustainability_officer_001"
+
+# Example 4: Grid Stability Simulation
+intent:
+  vertical: ECORA
+  operation: grid_stability
+  parameters:
+    load_mw: 5000
+    renewable_percent: 45
+  compliance_attestations:
+    - expert_review_required
+    - model_limitations_understood
+    - engineering_review
+  user_id: "grid_operator_001"
+
+# Example 5: Weather Prediction
+intent:
+  vertical: ECORA
+  operation: weather_prediction
+  parameters:
+    location: "San Francisco, CA"
+    hours_ahead: 72
+  compliance_attestations:
+    - expert_review_required
+    - model_limitations_understood
+  user_id: "meteorologist_001"

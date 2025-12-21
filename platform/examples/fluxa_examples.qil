@@ -1,0 +1,99 @@
+# FLUXA - Supply Chain & Logistics Examples
+# Quantum Intent Language (QIL) for Supply Chain Optimization
+
+# Example 1: Route Optimization
+intent:
+  vertical: FLUXA
+  operation: optimize_route
+  parameters:
+    num_stops: 25
+    start_location: "distribution_center_nyc"
+    vehicle_capacity: 5000
+  compliance_attestations:
+    - operational_validation_required
+    - model_limitations_understood
+    - operations_team_review
+  user_id: "logistics_manager_001"
+  session_id: "fluxa_session_001"
+
+# Example 2: Demand Forecasting
+intent:
+  vertical: FLUXA
+  operation: forecast_demand
+  parameters:
+    product_id: "SKU-12345"
+    forecast_periods: 12  # months
+    seasonality: true
+  compliance_attestations:
+    - operational_validation_required
+    - model_limitations_understood
+  user_id: "demand_planner_001"
+
+# Example 3: Inventory Optimization
+intent:
+  vertical: FLUXA
+  operation: optimize_inventory
+  parameters:
+    avg_demand_per_day: 150
+    lead_time_days: 14
+    holding_cost_per_unit_per_day: 0.15
+    ordering_cost: 100
+  compliance_attestations:
+    - operational_validation_required
+    - model_limitations_understood
+    - operations_team_review
+  user_id: "inventory_manager_001"
+
+# Example 4: Supplier Risk Analysis
+intent:
+  vertical: FLUXA
+  operation: analyze_supplier_risk
+  parameters:
+    supplier_id: "SUPPLIER-ABC-001"
+    delivery_performance: 0.92
+    financial_health: "stable"
+    geographic_risk: "medium"
+  compliance_attestations:
+    - operational_validation_required
+    - model_limitations_understood
+  user_id: "procurement_analyst_001"
+
+# Example 5: Network Resilience Assessment
+intent:
+  vertical: FLUXA
+  operation: assess_network_resilience
+  parameters:
+    num_nodes: 50
+    num_suppliers: 12
+    redundancy_level: "medium"
+  compliance_attestations:
+    - operational_validation_required
+    - model_limitations_understood
+  user_id: "supply_chain_strategist_001"
+
+# Example 6: Multi-Stop Delivery Route
+intent:
+  vertical: FLUXA
+  operation: optimize_route
+  parameters:
+    num_stops: 15
+    start_location: "warehouse_chicago"
+    vehicle_capacity: 3000
+  compliance_attestations:
+    - operational_validation_required
+    - model_limitations_understood
+    - operations_team_review
+  user_id: "fleet_manager_001"
+
+# Example 7: Long-term Demand Forecast
+intent:
+  vertical: FLUXA
+  operation: forecast_demand
+  parameters:
+    product_id: "PRODUCT-XYZ-789"
+    forecast_periods: 24  # 2 years
+    seasonality: true
+  compliance_attestations:
+    - operational_validation_required
+    - model_limitations_understood
+  user_id: "strategic_planner_001"
