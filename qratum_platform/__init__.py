@@ -4,7 +4,7 @@ This module provides the foundational classes and types for the QRATUM platform,
 including vertical modules, compute substrates, contracts, and event chains.
 """
 
-from platform.core import (
+from qratum_platform.core import (
     ComputeSubstrate,
     ExecutionEvent,
     MerkleEventChain,
@@ -15,7 +15,7 @@ from platform.core import (
     VerticalModule,
     VerticalModuleBase,
 )
-from platform.substrates import VERTICAL_SUBSTRATE_MAPPINGS
+from qratum_platform.substrates import VERTICAL_SUBSTRATE_MAPPINGS
 
 __all__ = [
     "VerticalModule",

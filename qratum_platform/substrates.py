@@ -3,7 +3,7 @@
 Defines optimal hardware for each vertical module's task types.
 """
 
-from platform.core import ComputeSubstrate, VerticalModule
+from qratum_platform.core import ComputeSubstrate, VerticalModule
 
 # Optimal substrate mappings for vertical modules and task types
 VERTICAL_SUBSTRATE_MAPPINGS = {

@@ -1,0 +1,21 @@
+# CAPRA Financial Risk Intent Example
+# QIL for Option Pricing
+
+vertical: CAPRA
+operation: option_pricing
+user_id: quant_analyst_001
+session_id: capra_session_101
+
+parameters:
+  spot_price: 150.0
+  strike_price: 155.0
+  time_to_maturity: 0.25
+  risk_free_rate: 0.05
+  volatility: 0.30
+  option_type: call
+  
+metadata:
+  ticker: TECH_XYZ
+  market: NYSE
+  analysis_date: 2024-12-21
+  purpose: risk_assessment
