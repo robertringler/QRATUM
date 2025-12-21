@@ -1,0 +1,18 @@
+# SENTRA Aerospace & Defense Intent Example
+# QIL for Orbit Propagation
+
+vertical: SENTRA
+operation: orbit_propagation
+user_id: aerospace_engineer_001
+session_id: sentra_session_202
+
+parameters:
+  altitude_km: 550.0
+  inclination_deg: 51.6
+  duration_hours: 24.0
+  
+metadata:
+  satellite_id: SAT_ISS_ANALOG
+  mission_type: leo_orbit_analysis
+  classification: unclassified
+  purpose: mission_planning

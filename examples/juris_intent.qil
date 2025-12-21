@@ -1,0 +1,22 @@
+# JURIS Legal AI Intent Example
+# QIL (QRATUM Intent Language) for Legal Reasoning
+
+vertical: JURIS
+operation: legal_reasoning
+user_id: attorney_001
+session_id: legal_session_123
+
+parameters:
+  facts: |
+    Company A entered into a written contract with Company B on January 1, 2024,
+    to deliver 1000 widgets by March 31, 2024. Company A received payment of $50,000
+    upon signing. On March 15, 2024, Company A notified Company B that due to supplier
+    issues, they could only deliver 600 widgets by the deadline. Company B demands
+    full performance or return of payment plus damages.
+  
+  area_of_law: contract
+
+metadata:
+  jurisdiction: federal
+  matter_id: CASE_2024_001
+  attorney_notes: Potential breach of contract claim
