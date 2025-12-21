@@ -137,7 +137,24 @@ class QMind:
     def _perform_reasoning(
         self, query: str, strategy: ReasoningStrategy, context: Dict[str, Any]
     ) -> List[ReasoningStep]:
-        """Perform reasoning based on strategy."""
+        """Perform reasoning based on strategy.
+        
+        NOTE: This is a PLACEHOLDER implementation with hardcoded responses.
+        A production implementation would require:
+        - Advanced logical inference engines
+        - Probabilistic reasoning frameworks
+        - Causal inference algorithms
+        - Integration with theorem provers
+        - Neural-symbolic reasoning
+        These capabilities require fundamental AI breakthroughs not yet achieved.
+        
+        The actual reasoning steps would need to:
+        1. Query Q-REALITY for relevant knowledge
+        2. Apply strategy-specific algorithms
+        3. Generate provable inference chains
+        4. Compute rigorous confidence bounds
+        5. Handle uncertainty and contradictions
+        """
         # Placeholder implementation - real implementation would use
         # sophisticated reasoning algorithms
         steps = []

@@ -197,7 +197,16 @@ class QReality:
         return None
 
     def _matches_query(self, node: KnowledgeNode, query: Dict[str, Any]) -> bool:
-        """Check if node matches query criteria."""
+        """Check if node matches query criteria.
+        
+        NOTE: This is a placeholder implementation using simple dictionary matching.
+        A production implementation would require:
+        - Semantic search capabilities
+        - Vector embeddings
+        - Neural information retrieval
+        - Efficient indexing structures (e.g., FAISS, Annoy)
+        These capabilities require AI breakthroughs not yet achieved.
+        """
         for key, value in query.items():
             if key == "source_vertical" and node.source_vertical != value:
                 return False

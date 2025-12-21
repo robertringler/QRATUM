@@ -203,7 +203,16 @@ class QWill:
         ]
 
     def _is_prohibited_goal(self, description: str, rationale: str) -> bool:
-        """Check if goal matches prohibited goals."""
+        """Check if goal matches prohibited goals.
+        
+        NOTE: This is a placeholder implementation using simple keyword matching.
+        A production implementation would require:
+        - Semantic similarity analysis
+        - Intent detection via NLP
+        - Adversarial rephrasing detection
+        - Multi-language support
+        These capabilities require AI breakthroughs not yet achieved.
+        """
         text = f"{description.lower()} {rationale.lower()}"
         for prohibited in PROHIBITED_GOALS:
             # Simple keyword matching - real implementation would use semantic analysis
