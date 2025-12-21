@@ -82,6 +82,9 @@ class ASIMerkleChain:
 
     def verify_integrity(self) -> bool:
         """Verify chain integrity by recomputing hash."""
+        # Empty chain is valid
+        if not self.events and self.chain_hash is None:
+            return True
         expected_hash = self._compute_chain_hash()
         return expected_hash == self.chain_hash
 

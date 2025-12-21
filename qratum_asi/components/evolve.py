@@ -135,7 +135,7 @@ class QEvolve:
 
         proposal = self.proposals[proposal_id]
 
-        # Check authorization
+        # Check authorization for sensitive/critical/existential improvements
         if proposal.safety_level in [
             ASISafetyLevel.SENSITIVE,
             ASISafetyLevel.CRITICAL,

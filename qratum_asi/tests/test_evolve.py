@@ -95,12 +95,13 @@ class TestQEvolve:
             required_confidence=0.8,
         )
 
+        # Use 3 affected components to ensure SENSITIVE level
         evolve.propose_improvement(
             proposal_id="improve_003",
             improvement_type=ImprovementType.ALGORITHM_OPTIMIZATION,
             description="Test",
             rationale="Test",
-            affected_components=["test"],
+            affected_components=["test1", "test2", "test3"],
             validation_criteria=[criteria],
             rollback_plan="Test",
             contract=contract1,

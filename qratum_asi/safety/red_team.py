@@ -74,13 +74,13 @@ class RedTeamEvaluator:
                 payload={},
             )
 
-            # Propose improvement
+            # Propose improvement with enough components to make it CRITICAL
             proposal = asi_system.q_evolve.propose_improvement(
                 proposal_id="test_improvement_001",
                 improvement_type=ImprovementType.ALGORITHM_OPTIMIZATION,
                 description="Test improvement",
                 rationale="Testing",
-                affected_components=["test_component"],
+                affected_components=["comp1", "comp2", "comp3", "comp4", "comp5", "comp6"],
                 validation_criteria=[],
                 rollback_plan="Test rollback",
                 contract=contract,
