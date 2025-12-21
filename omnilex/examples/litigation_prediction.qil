@@ -1,0 +1,36 @@
+# Litigation Prediction - QIL Example
+# QRATUM-OMNILEX Legal Intent Language
+
+LEGAL_INTENT {
+    intent_id: "OMNILEX-predict-001"
+    compute_task: "litigation_prediction"
+    
+    jurisdiction: {
+        primary: "US-NY"
+        secondary: []
+    }
+    
+    domain: "contract"
+    reasoning: "irac"
+    attorney_supervised: true
+    
+    facts: """
+    Plaintiff TechVentures LLC filed suit against Defendant InnovateSoft Inc. for breach
+    of software licensing agreement. The agreement required InnovateSoft to pay $500,000
+    in licensing fees over 24 months.
+    
+    InnovateSoft made initial payment of $100,000 but ceased payments after 6 months,
+    claiming the software contained defects that rendered it unusable. TechVentures
+    disputes these claims and has evidence of successful deployment at other client sites.
+    
+    Claimed damages: $400,000 (remaining balance) plus $50,000 in collection costs.
+    
+    Case is pending in New York State Supreme Court, Commercial Division.
+    Both parties have completed discovery and trial is scheduled in 6 months.
+    """
+    
+    question: """
+    What is the likely outcome of this litigation, and what is a reasonable settlement
+    range for the parties to consider?
+    """
+}
