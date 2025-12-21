@@ -14,7 +14,7 @@ class TelemetryAdapter(BaseAdapter):
         self.chain.steps.extend(
             [
                 enforce_fields(["vehicle", "position", "velocity", "status"]),
-                clamp_numbers(-(10**6), 10**6),
+                clamp_numbers(-10**6, 10**6),
                 sort_keys,
             ]
         )
