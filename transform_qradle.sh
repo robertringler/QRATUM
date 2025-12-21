@@ -136,7 +136,10 @@ if [ -d ../qratum/infra/k8s ]; then
     echo "   ✅ Copied infra/k8s/"
 fi
 if [ -d ../qratum/autonomous_systems_platform/infra ]; then
-    cp -r ../qratum/autonomous_systems_platform/infra/* ./infra/ 2>/dev/null || true
+    # Copy contents if directory exists and is not empty
+    if [ "$(ls -A ../qratum/autonomous_systems_platform/infra 2>/dev/null)" ]; then
+        cp -r ../qratum/autonomous_systems_platform/infra/* ./infra/
+    fi
     echo "   ✅ Copied autonomous_systems_platform/infra/"
 fi
 
@@ -157,7 +160,10 @@ echo "   ✅ Copied examples/"
 # Tests
 mkdir -p tests/quantum
 if [ -d ../qratum/tests ]; then
-    cp -r ../qratum/tests/* ./tests/ 2>/dev/null || true
+    # Copy tests if directory exists and is not empty
+    if [ "$(ls -A ../qratum/tests 2>/dev/null)" ]; then
+        cp -r ../qratum/tests/* ./tests/
+    fi
     echo "   ✅ Copied tests/"
 else
     echo "   ⚠️  Warning: tests/ directory not found in QRATUM"
@@ -173,7 +179,10 @@ echo "   ✅ Copied docs/"
 # Compliance
 mkdir -p compliance/DO178C compliance/NIST compliance/CMMC
 if [ -d ../qratum/compliance ]; then
-    cp -r ../qratum/compliance/* ./compliance/ 2>/dev/null || true
+    # Copy compliance files if directory exists and is not empty
+    if [ "$(ls -A ../qratum/compliance 2>/dev/null)" ]; then
+        cp -r ../qratum/compliance/* ./compliance/
+    fi
     echo "   ✅ Copied compliance/"
 else
     echo "   ⚠️  Warning: compliance/ directory not found in QRATUM"
