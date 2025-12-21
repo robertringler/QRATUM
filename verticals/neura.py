@@ -4,7 +4,6 @@ Provides neural network simulation, EEG/MEG signal analysis,
 brain connectivity mapping, BCI signal processing, and cognitive modeling.
 """
 
-import math
 import random
 from typing import Any, Dict, List
 
