@@ -11,21 +11,24 @@ Version: 1.0.0
 Status: Production-Ready
 """
 
-from qradle.core.engine import DeterministicEngine
+from qradle.core.engine import DeterministicEngine, ExecutionContext, ExecutionResult
 from qradle.core.invariants import FatalInvariants, InvariantViolation
 from qradle.core.merkle import MerkleChain, MerkleProof
-from qradle.core.rollback import RollbackManager
+from qradle.core.rollback import RollbackManager, Checkpoint
 from qradle.contracts.system import ContractExecutor, ContractValidator
 from qradle.events.chain import EventChain, Event
 
 __version__ = "1.0.0"
 __all__ = [
     "DeterministicEngine",
+    "ExecutionContext",
+    "ExecutionResult",
     "FatalInvariants",
     "InvariantViolation",
     "MerkleChain",
     "MerkleProof",
     "RollbackManager",
+    "Checkpoint",
     "ContractExecutor",
     "ContractValidator",
     "EventChain",
