@@ -11,35 +11,35 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from typing import Any, List
+from typing import Any
 
 
 @dataclass
 class PauliTerm:
     """Represents a single term in a Pauli decomposition.
-    
+
     Attributes:
         coefficient: Complex coefficient for this term
         operators: List of (qubit_index, pauli_operator) tuples
                    where pauli_operator is one of 'I', 'X', 'Y', 'Z'
     """
-    
+
     coefficient: complex
-    operators: List[tuple[int, str]]
-    
+    operators: list[tuple[int, str]]
+
     def __post_init__(self) -> None:
         """Validate Pauli operators after initialization."""
         valid_operators = {'I', 'X', 'Y', 'Z'}
-        for qubit_idx, operator in self.operators:
+        for _qubit_idx, operator in self.operators:
             if operator not in valid_operators:
                 raise ValueError(
                     f"Invalid Pauli operator '{operator}'. "
                     f"Must be one of {valid_operators}"
                 )
-    
+
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation.
-        
+
         Returns:
             Dictionary with coefficient (split into real/imag) and operators
         """
@@ -50,10 +50,10 @@ class PauliTerm:
             },
             "operators": self.operators,
         }
-    
+
     def __str__(self) -> str:
         """Human-readable representation.
-        
+
         Returns:
             String representation like '(2.5+1.5j) * X0 Y1 Z2'
         """
@@ -66,40 +66,40 @@ class PauliTerm:
 
 class Hamiltonian:
     """Represents a quantum Hamiltonian as a sum of Pauli terms.
-    
+
     This is a structural contract establishing the interface.
     Full implementation of encoding methods will be completed in:
     - PR-003: energy() method for computing expectation values
     - PR-004: from_semantic_state() method for problem encoding
     """
-    
-    def __init__(self, terms: List[PauliTerm]) -> None:
+
+    def __init__(self, terms: list[PauliTerm]) -> None:
         """Initialize Hamiltonian with a list of Pauli terms.
-        
+
         Args:
             terms: List of PauliTerm objects
         """
         self.terms = terms
-    
-    def encode(self) -> List[dict[str, Any]]:
+
+    def encode(self) -> list[dict[str, Any]]:
         """Return list of serialized terms.
-        
+
         Returns:
             List of dictionaries representing each term
         """
         return [term.to_dict() for term in self.terms]
-    
+
     def energy(self, state: Any) -> float:
         """Compute energy expectation value for a given state.
-        
+
         This method will be implemented in PR-003.
-        
+
         Args:
             state: Quantum state (format TBD)
-            
+
         Returns:
             Energy expectation value
-            
+
         Raises:
             NotImplementedError: Placeholder for PR-003
         """
@@ -107,19 +107,19 @@ class Hamiltonian:
             "energy() computation will be implemented in PR-003. "
             "This is a structural contract establishing the interface."
         )
-    
+
     @classmethod
     def from_semantic_state(cls, semantic_state: Any) -> Hamiltonian:
         """Construct Hamiltonian from semantic problem definition.
-        
+
         This method will be implemented in PR-004.
-        
+
         Args:
             semantic_state: SemanticState instance
-            
+
         Returns:
             Hamiltonian instance
-            
+
         Raises:
             NotImplementedError: Placeholder for PR-004
         """
@@ -127,10 +127,10 @@ class Hamiltonian:
             "from_semantic_state() encoding will be implemented in PR-004. "
             "This is a structural contract establishing the interface."
         )
-    
+
     def num_qubits(self) -> int:
         """Return number of qubits required for this Hamiltonian.
-        
+
         Returns:
             Maximum qubit index + 1 across all terms
         """
@@ -141,10 +141,10 @@ class Hamiltonian:
             for qubit_idx, _ in term.operators:
                 max_qubit = max(max_qubit, qubit_idx)
         return max_qubit + 1
-    
+
     def __str__(self) -> str:
         """Human-readable representation.
-        
+
         Returns:
             String like 'H = term1 + term2 + ...'
         """
@@ -152,10 +152,10 @@ class Hamiltonian:
             return "H = 0"
         terms_str = " + ".join(str(term) for term in self.terms)
         return f"H = {terms_str}"
-    
+
     def to_json(self) -> str:
         """JSON serialization of Hamiltonian.
-        
+
         Returns:
             JSON string with all terms
         """

@@ -25,11 +25,11 @@ class QoSPolicy:
         constraints: Dictionary of QoS constraints
         priority: Execution priority level
     """
-    
+
     name: str
     constraints: Dict[str, Any]
     priority: int = 0
-    
+
     def enforce(self, execution_context: Any) -> bool:
         """Enforce policy constraints on execution context.
         
@@ -48,7 +48,7 @@ class QoSPolicy:
             "QoS policy enforcement will be implemented in PR-005. "
             "This is a structural contract establishing the interface."
         )
-    
+
     def validate(self) -> None:
         """Validate policy configuration.
         

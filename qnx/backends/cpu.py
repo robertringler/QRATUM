@@ -18,7 +18,7 @@ class CPUBackend:
     This is a stub implementation establishing the structural interface.
     Full CPU backend will be implemented in a future PR.
     """
-    
+
     def run(self, task: Any) -> Any:
         """Execute task on CPU backend.
         

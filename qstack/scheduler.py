@@ -18,7 +18,7 @@ class Scheduler:
     This is a stub implementation establishing the structural interface.
     Full scheduling logic will be implemented in future PRs.
     """
-    
+
     def schedule(self, job: Any) -> Any:
         """Schedule a job for execution.
         

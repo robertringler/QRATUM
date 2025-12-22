@@ -26,12 +26,12 @@ class SafetyEnvelope:
         max_runtime: Maximum execution time in seconds
         resource_limits: Additional resource constraints
     """
-    
+
     max_qubits: int
     max_depth: int
     max_runtime: float
     resource_limits: Dict[str, Any]
-    
+
     def check(self, execution_plan: Any) -> bool:
         """Check if execution plan is within safety envelope.
         
@@ -50,7 +50,7 @@ class SafetyEnvelope:
             "Safety envelope checking will be implemented in PR-005. "
             "This is a structural contract establishing the interface."
         )
-    
+
     def validate(self) -> None:
         """Validate envelope configuration.
         

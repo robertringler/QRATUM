@@ -18,7 +18,7 @@ class GPUBackend:
     This is a stub implementation establishing the structural interface.
     Full GPU backend will be implemented in a future PR.
     """
-    
+
     def run(self, task: Any) -> Any:
         """Execute task on GPU backend.
         

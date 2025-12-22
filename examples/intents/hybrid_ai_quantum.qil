@@ -1,0 +1,16 @@
+# QIL Intent: Hybrid AI + Quantum Optimization
+# This intent combines classical AI training with quantum optimization
+
+INTENT hybrid_ai_quantum {
+    OBJECTIVE optimize_molecular_design
+    HARDWARE ONLY GB200 AND QPU NOT IPU
+    CONSTRAINT GPU_VRAM >= 500
+    CONSTRAINT QUBITS >= 50
+    CAPABILITY llm_training
+    CAPABILITY quantum_optimizer
+    CAPABILITY molecular_simulation
+    TIME deadline: 10800s
+    TIME budget: 9000s
+    AUTHORITY user: research_lead
+    TRUST level: verified
+}

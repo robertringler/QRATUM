@@ -26,9 +26,14 @@ try:
     from github import Github, GithubException
     from github.PullRequest import PullRequest
     from github.Repository import Repository
+    PYGITHUB_AVAILABLE = True
 except ImportError:
-    print("ERROR: PyGithub not installed. Run: pip install PyGithub")
-    sys.exit(1)
+    PYGITHUB_AVAILABLE = False
+    # Create dummy classes for type hints
+    Github = None
+    GithubException = Exception
+    PullRequest = None
+    Repository = None
 
 
 @dataclass
@@ -568,6 +573,10 @@ class PRAutoResolver:
 
 def main():
     """Main entry point"""
+
+    if not PYGITHUB_AVAILABLE:
+        print("ERROR: PyGithub not installed. Run: pip install PyGithub")
+        sys.exit(1)
 
     github_token = os.environ.get("GITHUB_TOKEN")
     if not github_token:

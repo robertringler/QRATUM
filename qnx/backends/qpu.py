@@ -18,7 +18,7 @@ class QPUBackend:
     This is a stub implementation establishing the structural interface.
     Full QPU backend will be implemented in a future PR.
     """
-    
+
     def run(self, task: Any) -> Any:
         """Execute task on QPU backend.
         
