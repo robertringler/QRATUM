@@ -325,6 +325,67 @@ Q-WILL can **NEVER** propose these goals:
 
 ---
 
+## Research Components
+
+### UltraSSSP: Large-Scale Shortest Path Algorithm
+
+**Status:** 🟢 Experimental / Research-Grade  
+**Module:** `quasim/opt/ultra_sssp.py`  
+**Documentation:** [README_ULTRA_SSSP.md](quasim/opt/README_ULTRA_SSSP.md)
+
+UltraSSSP is an experimental single-source shortest path (SSSP) algorithm designed for QRATUM's computational stack. It demonstrates batch processing, hierarchical graph contraction, and quantum pivot selection hooks for future quantum-classical hybrid algorithms.
+
+#### Key Features
+- **Adaptive Frontier Clustering**: Batch processing for potential parallelization
+- **Hierarchical Graph Contraction**: Multi-level coarsening for memory efficiency
+- **Exact Dijkstra Matching**: 100% correctness when epsilon=0.0
+- **Quantum Hooks**: Placeholder integration points for future QPU support
+- **Performance Benchmarking**: Automated validation against classical baseline
+
+#### When to Use UltraSSSP
+- ✓ Research and experimentation with batch-based graph algorithms
+- ✓ Testing quantum pivot selection strategies (future)
+- ✓ Exploring hierarchical graph contraction approaches
+- ✓ Benchmarking against classical baselines
+
+#### When to Use Classical Dijkstra
+- ✓ Production shortest path requirements
+- ✓ Performance-critical applications
+- ✓ Single-threaded classical computing environments
+
+#### Usage Example
+```python
+from quasim.opt.graph import QGraph
+from quasim.opt.ultra_sssp import UltraSSSP
+
+# Generate or load graph
+graph = QGraph.random_graph(num_nodes=1000, edge_probability=0.01, seed=42)
+
+# Run UltraSSSP
+sssp = UltraSSSP(graph, batch_size=100, use_hierarchy=True)
+distances, metrics = sssp.solve(source=0)
+
+print(f"Distance to node 500: {distances[500]}")
+print(f"Execution time: {metrics.total_time:.4f}s")
+print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
+```
+
+#### Performance Characteristics
+- **Correctness:** 100% match with Dijkstra baseline (epsilon=0.0)
+- **Memory Scaling:** O(V + E) - linear and efficient
+- **Current Limitation:** Slower than pure Dijkstra in single-threaded mode
+- **Future Potential:** Batch design enables parallelization benefits
+
+#### Important Notes
+- **Experimental:** Research-grade implementation, not optimized for production
+- **Quantum Placeholders:** QPU integration hooks are placeholders for future work
+- **Epsilon=0.0:** Current implementation ensures exact results (no approximation)
+- **Validation:** Automated baseline comparison ensures correctness
+
+**See Also:** [ULTRASSSP_IMPLEMENTATION_SUMMARY.md](ULTRASSSP_IMPLEMENTATION_SUMMARY.md) | [ULTRASSSP_EXECUTION_SUMMARY.md](ULTRASSSP_EXECUTION_SUMMARY.md)
+
+---
+
 ## Roadmap
 
 ### 2025: Foundation (Q1-Q4)

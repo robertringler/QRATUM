@@ -183,11 +183,13 @@ def main():
                     "seed": config.seed,
                 },
                 "results": {
+                    "distances": distances,
                     "ultra_sssp_metrics": ultra,
                     "dijkstra_metrics": results.get("dijkstra_metrics"),
                     "correctness": results.get("correctness"),
                     "speedup": results.get("speedup"),
                     "graph_info": results["graph_info"],
+                    "iteration_count": len(ultra.get("avg_iteration_time", [])) if isinstance(ultra.get("avg_iteration_time"), list) else ultra.get("nodes_visited", 0),
                 },
             }
             
