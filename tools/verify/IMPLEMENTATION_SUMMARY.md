@@ -75,6 +75,7 @@ tools/verify/
 ### CI/CD Integration
 
 GitHub Actions workflow (`.github/workflows/verify.yml`):
+
 - Runs on pull requests and main branch pushes
 - Installs verification tool
 - Executes all checks
@@ -138,6 +139,7 @@ The tool expects specific data formats:
 ### Dependencies
 
 Minimal, production-grade dependencies:
+
 - `numpy>=1.24.0`
 - `pandas>=2.0.0`
 - `scipy>=1.10.0`
@@ -149,6 +151,7 @@ Minimal, production-grade dependencies:
 ### Compliance
 
 Follows QuASIM repository standards:
+
 - PEP 8 compliant (ruff)
 - Python 3.10+ compatible
 - Type hints for public APIs
@@ -158,6 +161,7 @@ Follows QuASIM repository standards:
 ## Success Metrics
 
 ✅ All acceptance criteria met:
+
 - Tool runs successfully via CLI
 - All paths resolve correctly
 - Missing evidence yields informative messages

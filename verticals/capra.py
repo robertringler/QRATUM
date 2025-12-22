@@ -6,14 +6,14 @@ portfolio optimization, credit risk analysis, and stress testing.
 
 import math
 import random
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 from qratum_platform.core import (
     ComputeSubstrate,
     PlatformContract,
     VerticalModuleBase,
 )
-from qratum_platform.substrates import get_optimal_substrate, VerticalModule
+from qratum_platform.substrates import VerticalModule, get_optimal_substrate
 from qratum_platform.utils import compute_deterministic_seed
 
 

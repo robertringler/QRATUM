@@ -180,7 +180,7 @@ pip install mkdocs-material
 mkdocs serve
 ```
 
-Then open http://localhost:8000
+Then open <http://localhost:8000>
 
 ### Documentation Style
 

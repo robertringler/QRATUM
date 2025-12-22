@@ -264,6 +264,7 @@ pytest omnilex/tests/ -v
 ```
 
 All 60 tests validate:
+
 - IRAC reasoning engine
 - Adversarial simulation
 - Conflict resolution

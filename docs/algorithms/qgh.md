@@ -11,6 +11,7 @@ QGH (Quantum Graph Hash) provides non-speculative algorithms for distributed qua
 Maintains hash-based causal history of quantum events with deterministic ordering.
 
 **Features**:
+
 - SHA-256 hashing of events
 - FIFO history with configurable size
 - Causality verification
@@ -18,6 +19,7 @@ Maintains hash-based causal history of quantum events with deterministic orderin
 **Use Case**: Track quantum measurement sequences, ensure causal ordering in distributed systems.
 
 **Example**:
+
 ```python
 from quasim.qgh import CausalHistoryHash
 
@@ -31,18 +33,21 @@ assert chh.verify_causality("measurement_1")
 Resolves quantum superpositions through iterative consistency checks.
 
 **Algorithm**:
+
 1. Start with initial superposed state
 2. Apply consistency function iteratively
 3. Check convergence: `||s_t - s_{t-1}|| < tolerance`
 4. Return converged state or max iterations
 
-**Math**: 
+**Math**:
+
 - State update: `s_{t+1} = consistency_fn(s_t)`
 - Convergence: `||s_{t+1} - s_t|| < ε`
 
 **Use Case**: Collapse quantum states to classical observations, distributed consensus.
 
 **Example**:
+
 ```python
 from quasim.qgh import SuperpositionResolver
 
@@ -58,17 +63,20 @@ print(f"Converged: {result['converged']}, Iterations: {result['iterations']}")
 Monitors multiple data streams with synchronization detection.
 
 **Features**:
+
 - Per-stream circular buffers
 - Real-time statistics
 - Correlation-based sync detection
 
 **Math**: For streams `i` and `j`:
+
 - Correlation: `ρ_{ij} = cov(s_i, s_j) / (σ_i * σ_j)`
 - Synchronized if: `|ρ_{ij}| > threshold`
 
 **Use Case**: Monitor distributed sensors, detect synchronized failures.
 
 **Example**:
+
 ```python
 from quasim.qgh import DistributedStreamMonitor
 
@@ -87,6 +95,7 @@ print(f"Synchronized pairs: {sync_pairs}")
 Propagates self-consistency constraints through quantum network.
 
 **Algorithm**:
+
 1. Initialize node states
 2. For each iteration:
    - For each node: average neighbor states
@@ -94,6 +103,7 @@ Propagates self-consistency constraints through quantum network.
 3. Check convergence
 
 **Math**:
+
 - Message passing: `m_{ij} = s_j`
 - Update: `s_i^{t+1} = (1-λ)s_i^t + λ * (Σ_j A_{ij} s_j^t) / deg(i)`
 - Damping factor: `λ ∈ [0,1]`
@@ -101,6 +111,7 @@ Propagates self-consistency constraints through quantum network.
 **Use Case**: Federated learning, distributed consensus, network synchronization.
 
 **Example**:
+
 ```python
 from quasim.qgh import SelfConsistencyPropagator
 
@@ -116,12 +127,14 @@ print(f"Consensus: {result['converged']}, Variance: {result['final_variance']:.4
 Monitors system stability and detects instabilities.
 
 **Algorithm**:
+
 1. Maintain sliding window of metrics
 2. Fit linear trend: `y = mx + b`
 3. Compute normalized slope: `m' = |m| / σ`
 4. Unstable if: `m' > threshold`
 
 **Math**:
+
 - Trend detection: `slope = polyfit(x, y, degree=1)[0]`
 - Normalized: `slope_norm = |slope| / std(y)`
 - Stable if: `slope_norm ≤ threshold`
@@ -129,6 +142,7 @@ Monitors system stability and detects instabilities.
 **Use Case**: Detect system divergence, monitor portfolio volatility, quality control.
 
 **Example**:
+
 ```python
 from quasim.qgh import StabilityMonitor
 
@@ -282,5 +296,5 @@ restored = CausalHistoryHash.from_dict(state)
 - **CausalHistoryHash**: O(1) add, O(1) verify
 - **SuperpositionResolver**: O(n * iterations) where n = state_dim
 - **DistributedStreamMonitor**: O(streams * buffer_size) for sync detection
-- **SelfConsistencyPropagator**: O(nodes² * state_dim * iterations)
+- **SelfConsistencyPropagator**: O(nodes² *state_dim* iterations)
 - **StabilityMonitor**: O(window_size) for stability check

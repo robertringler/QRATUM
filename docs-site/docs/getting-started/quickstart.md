@@ -66,28 +66,28 @@ docker-compose down
 
 <div class="grid cards" markdown>
 
--   :material-book-open:{ .lg .middle } __First Simulation__
+- :material-book-open:{ .lg .middle } **First Simulation**
 
     ---
 
     Learn to run VQE for H₂ molecule simulation
-    
+
     [:octicons-arrow-right-24: First Simulation](first-simulation.md)
 
--   :material-code-braces:{ .lg .middle } __API Reference__
+- :material-code-braces:{ .lg .middle } **API Reference**
 
     ---
 
     Explore the full API documentation
-    
+
     [:octicons-arrow-right-24: API Reference](../reference/api-reference.md)
 
--   :material-kubernetes:{ .lg .middle } __Kubernetes Deployment__
+- :material-kubernetes:{ .lg .middle } **Kubernetes Deployment**
 
     ---
 
     Deploy to production Kubernetes clusters
-    
+
     [:octicons-arrow-right-24: Kubernetes Tutorial](../tutorials/kubernetes-deployment.md)
 
 </div>

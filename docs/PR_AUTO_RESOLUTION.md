@@ -7,6 +7,7 @@ The automated PR resolution system audits, repairs, and merges pull requests aut
 ## Features
 
 ### 1. Fetch & Review
+
 - Lists all open pull requests
 - For each PR, checks for:
   - Merge conflicts
@@ -18,6 +19,7 @@ The automated PR resolution system audits, repairs, and merges pull requests aut
   - Style violations (PEP 8, etc.)
 
 ### 2. Automatic Fixing
+
 - **Merge Conflicts**: Intelligently resolves conflicts preferring main-branch stability
 - **Lint Errors**: Applies automatic code fixes using ruff, black, and isort
 - **Test Errors**: Identifies and attempts to fix test failures
@@ -25,23 +27,28 @@ The automated PR resolution system audits, repairs, and merges pull requests aut
 - **Build Consistency**: Ensures Dockerfiles and manifests remain consistent
 
 ### 3. Verification
+
 - Re-runs full test suite after each fix
 - Confirms CI passes at 100%
 - Performs security linting
 - Validates code coverage meets threshold
 
 ### 4. Merge Policy
+
 Merges only when:
+
 - All tests pass
 - No conflicts remain
 - Code coverage ≥ threshold (configurable)
 - Versioning and changelog entries updated
 
 Merge strategies:
+
 - **Squash and merge** for feature branches (default)
 - **Rebase and merge** for hotfix branches
 
 ### 5. Post-Merge Actions
+
 - Deletes merged branches automatically
 - Triggers deployment workflows if configured
 - Posts summary comment: "✅ All issues resolved, tests passed, and PR merged automatically by Copilot Workflow."
@@ -49,7 +56,9 @@ Merge strategies:
 ## Safety Features
 
 ### Manual Review Trigger
+
 If a PR cannot be merged cleanly after 3 automated attempts, the system:
+
 - Labels it `needs-manual-review`
 - Stops processing further automatic merges
 - Comments with details of unresolved issues
@@ -57,12 +66,15 @@ If a PR cannot be merged cleanly after 3 automated attempts, the system:
 ## Usage
 
 ### Automatic Trigger
+
 The system runs automatically:
+
 - On every PR open/update event
 - Every 6 hours via cron schedule
 - When manually triggered via workflow dispatch
 
 ### Manual Trigger
+
 To process a specific PR:
 
 ```bash
@@ -74,6 +86,7 @@ Go to Actions → Automated PR Resolution and Merge → Run workflow
 ```
 
 ### Local Testing
+
 To test the resolution system locally:
 
 ```bash
@@ -92,12 +105,15 @@ python scripts/pr_auto_resolver.py
 ## Configuration
 
 ### Environment Variables
+
 - `GITHUB_TOKEN`: GitHub API token (required)
 - `PR_NUMBER`: Specific PR to process (optional)
 - `MERGE_THRESHOLD_COVERAGE`: Minimum code coverage required (default: 0.0)
 
 ### Merge Strategies
+
 The system determines merge strategy based on branch naming:
+
 - Branches starting with `hotfix/` → Rebase and merge
 - All other branches → Squash and merge
 
@@ -106,6 +122,7 @@ The system determines merge strategy based on branch naming:
 ### Components
 
 #### 1. GitHub Actions Workflow (`.github/workflows/pr-auto-resolution.yml`)
+
 - Triggers on PR events and schedule
 - Sets up Python environment
 - Installs dependencies
@@ -113,7 +130,9 @@ The system determines merge strategy based on branch naming:
 - Posts summary comments
 
 #### 2. PR Auto Resolver Script (`scripts/pr_auto_resolver.py`)
+
 Main resolution logic:
+
 - `PRAutoResolver`: Main class coordinating the resolution
 - `audit_pr()`: Identifies issues in a PR
 - `fix_merge_conflicts()`: Resolves merge conflicts automatically
@@ -124,7 +143,9 @@ Main resolution logic:
 - `resolve_pr()`: Orchestrates the full resolution process
 
 ### Issue Types
+
 The system handles:
+
 - `conflict`: Merge conflicts with base branch
 - `ci_failure`: Failed CI/CD checks
 - `lint_error`: Code style and quality issues
@@ -133,6 +154,7 @@ The system handles:
 - `outdated`: Branch behind base branch
 
 ### Issue Severity Levels
+
 - `critical`: Must be fixed before merge (conflicts, security)
 - `high`: Should be fixed (failing tests, broken builds)
 - `medium`: Good to fix (outdated branch, minor lint issues)
@@ -215,6 +237,7 @@ The system handles:
 ## Examples
 
 ### Successful Automatic Merge
+
 ```
 Processing PR #123: Add new feature X
 Found 2 issues
@@ -236,6 +259,7 @@ Merging PR #123 using squash strategy
 ```
 
 ### Manual Review Required
+
 ```
 Processing PR #456: Refactor core module
 Found 3 issues
@@ -259,12 +283,14 @@ Attempt 3/3
 ## Best Practices
 
 ### For Contributors
+
 1. Keep PRs focused and small
 2. Ensure your branch is up to date before creating PR
 3. Run local tests before pushing
 4. Follow code style guidelines (automatic formatting available)
 
 ### For Maintainers
+
 1. Review `needs-manual-review` PRs promptly
 2. Monitor the automated merge logs
 3. Adjust merge criteria as needed
@@ -273,16 +299,19 @@ Attempt 3/3
 ## Troubleshooting
 
 ### PR Not Being Processed
+
 - Check if PR is marked as draft
 - Verify CI checks are completing
 - Look for the `needs-manual-review` label
 
 ### Auto-Fix Not Working
+
 - Review the workflow logs in GitHub Actions
 - Check if the issue type is supported for auto-fix
 - Verify GitHub token has sufficient permissions
 
 ### Merge Failing
+
 - Confirm all merge criteria are met
 - Check branch protection rules
 - Verify no required reviews are missing
@@ -297,6 +326,7 @@ Attempt 3/3
 ## Future Enhancements
 
 Potential improvements:
+
 - Integration with additional CI/CD platforms
 - More sophisticated conflict resolution strategies
 - Machine learning for predicting PR quality
@@ -308,6 +338,7 @@ Potential improvements:
 ## Support
 
 For issues or questions:
+
 1. Check the [GitHub Actions logs](../../actions)
 2. Review the [PR auto-resolver script](../../scripts/pr_auto_resolver.py)
 3. Create an issue with the `automation` label

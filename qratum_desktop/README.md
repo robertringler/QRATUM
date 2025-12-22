@@ -11,6 +11,7 @@
 ## 🚀 Features
 
 ### Desktop-Native Experience
+
 - **One-Click Launch**: Single executable, no complex setup
 - **Offline Operation**: Full functionality without internet
 - **Native UI**: Electron-powered desktop interface
@@ -18,6 +19,7 @@
 - **Auto-Updates**: Seamless updates when connected
 
 ### Powerful Backend
+
 - **Local Python Runtime**: Embedded FastAPI server
 - **SQLite Database**: Lightweight, file-based storage
 - **GPU Acceleration**: Automatic GPU detection and fallback
@@ -25,6 +27,7 @@
 - **Secure IPC**: Sandboxed communication between UI and backend
 
 ### Cross-Platform
+
 - **Windows**: Windows 10/11 (x64, ARM64)
 - **macOS**: macOS 11+ (Intel, Apple Silicon)
 - **Linux**: Ubuntu 20.04+, Debian 11+, Fedora 35+
@@ -36,6 +39,7 @@
 ### Download Pre-Built Binaries
 
 **Windows:**
+
 ```powershell
 # Download from GitHub Releases
 # QRATUM-Desktop-Setup-2.0.0.exe
@@ -45,6 +49,7 @@
 ```
 
 **macOS:**
+
 ```bash
 # Download from GitHub Releases
 # QRATUM-Desktop-2.0.0.dmg
@@ -54,6 +59,7 @@ open QRATUM-Desktop-2.0.0.dmg
 ```
 
 **Linux:**
+
 ```bash
 # Ubuntu/Debian
 sudo dpkg -i QRATUM-Desktop-2.0.0.deb
@@ -146,17 +152,20 @@ Built installers will be in `qratum_desktop/dist/`.
 ### Key Components
 
 **Electron Layer:**
+
 - `src/main.js` - Main process (window lifecycle, backend spawner)
 - `src/preload.js` - Secure IPC bridge (context isolation)
 - `src/desktop-integration.js` - Desktop UI enhancements
 
 **Python Backend:**
+
 - `src/backend_server.py` - Local FastAPI server
 - Automatic GPU detection (CUDA/ROCm)
 - SQLite for data persistence
 - Thread-based task execution
 
 **Frontend:**
+
 - Reuses existing `dashboard/` web UI
 - Enhanced with desktop-specific features
 - Native file dialogs, system notifications
@@ -229,12 +238,14 @@ await window.QRATUMDesktop.backend.restart();
 ## 🔒 Security
 
 ### Sandboxing
+
 - **Context Isolation**: Renderer process is sandboxed
 - **No Node Integration**: Web content cannot access Node.js
 - **Preload Script**: Only whitelisted APIs exposed
 - **CSP**: Content Security Policy enforced
 
 ### Data Storage
+
 - **Encrypted at Rest**: AES-256 encryption (optional)
 - **Secure Locations**: OS-specific data directories
   - Windows: `%APPDATA%\QRATUM`
@@ -242,6 +253,7 @@ await window.QRATUMDesktop.backend.restart();
   - Linux: `~/.local/share/qratum`
 
 ### Network
+
 - **Local Only**: Backend binds to 127.0.0.1
 - **No Telemetry**: Optional, opt-in only
 - **Signed Updates**: Code signing for all releases
@@ -266,14 +278,17 @@ npm run test:e2e
 ## 📊 Performance
 
 ### Startup Time
+
 - **Cold start**: < 5 seconds
 - **Warm start**: < 2 seconds
 
 ### Memory Usage
+
 - **Idle**: ~300-400MB
 - **Under load**: 2-8GB (depending on simulation)
 
 ### Bundle Size
+
 - **Windows**: ~180MB (installer)
 - **macOS**: ~160MB (DMG)
 - **Linux**: ~170MB (AppImage)
@@ -313,18 +328,21 @@ Apache License 2.0 - see [LICENSE](../LICENSE) for details.
 ## 🗺️ Roadmap
 
 ### v2.1.0 (Q1 2026)
+
 - [ ] Auto-update mechanism
 - [ ] Crash reporting (opt-in)
 - [ ] Plugin system
 - [ ] Custom themes
 
 ### v2.2.0 (Q2 2026)
+
 - [ ] Cloud sync (optional)
 - [ ] Multi-window support
 - [ ] Advanced GPU controls
 - [ ] Performance profiler
 
 ### v3.0.0 (Q3 2026)
+
 - [ ] WebGPU acceleration
 - [ ] Distributed compute (multiple desktops)
 - [ ] Advanced visualization

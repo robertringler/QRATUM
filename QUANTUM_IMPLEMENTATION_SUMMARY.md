@@ -13,12 +13,14 @@ QRATUM has been successfully transformed from a classical simulation framework w
 ### What Changed
 
 **Before**:
+
 - ❌ No actual quantum computing libraries
 - ❌ Placeholder code labeled as "quantum"
 - ❌ False claims of quantum acceleration
 - ❌ No validation against classical methods
 
 **After**:
+
 - ✅ Real quantum algorithms (VQE, QAOA) using Qiskit
 - ✅ Validated against classical benchmarks
 - ✅ Honest documentation of NISQ limitations
@@ -34,6 +36,7 @@ QRATUM has been successfully transformed from a classical simulation framework w
 **Purpose**: Compute molecular ground state energies
 
 **Implementation Details**:
+
 - Framework: Qiskit + Qiskit Nature
 - Molecules supported: H₂ (2 qubits), extensible to LiH, BeH₂
 - Ansatz: Hardware-efficient variational circuit
@@ -41,16 +44,19 @@ QRATUM has been successfully transformed from a classical simulation framework w
 - Validation: PySCF classical reference calculations
 
 **Files**:
+
 - `quasim/quantum/vqe_molecule.py` (500+ lines)
 - `examples/quantum_h2_vqe.py` (demonstration)
 
 **Expected Performance**:
+
 - H₂ molecule (bond=0.735Å, STO-3G basis)
 - Classical exact: -1.137 Hartree
 - VQE result: -1.12 to -1.14 Hartree (1-5% error)
 - Runtime: 30-60 seconds on simulator
 
 **Scientific Validation**:
+
 ```python
 # Compare to known exact value
 assert abs(vqe_energy - exact_energy) < 0.01  # Within 1% acceptable
@@ -61,26 +67,31 @@ assert abs(vqe_energy - exact_energy) < 0.01  # Within 1% acceptable
 **Purpose**: Solve combinatorial optimization problems
 
 **Problem Types**:
+
 - MaxCut: Graph partitioning (4-20 nodes)
 - Ising models: Spin glass ground states (materials proxy)
 
 **Implementation Details**:
+
 - Framework: Qiskit
 - Circuit depth: p=1-5 layers (configurable)
 - Optimizers: COBYLA (classical)
 - Validation: Brute-force exact solution for small graphs
 
 **Files**:
+
 - `quasim/quantum/qaoa_optimization.py` (550+ lines)
 - `examples/quantum_maxcut_qaoa.py` (demonstration)
 
 **Expected Performance**:
+
 - 4-node graph MaxCut
 - Classical optimal: 4 edges
 - QAOA (p=3): 3-4 edges (0.75-1.0 approximation ratio)
 - Runtime: ~20 seconds on simulator
 
 **Scientific Validation**:
+
 ```python
 # Track approximation quality
 ratio = qaoa_cut_value / classical_optimal
@@ -92,19 +103,23 @@ assert 0.7 <= ratio <= 1.0  # QAOA should find good approximations
 **Purpose**: Unified interface for quantum circuit execution
 
 **Backends Supported**:
+
 - Qiskit Aer simulator (default, no hardware needed)
 - IBM Quantum (real hardware, requires API token)
 
 **Features**:
+
 - Configurable shot counts (statistical analysis)
 - Seed management for reproducibility
 - Noise modeling (simulate real device errors)
 - Transpilation and circuit optimization
 
 **Files**:
+
 - `quasim/quantum/core.py` (300+ lines)
 
 **Configuration Example**:
+
 ```python
 from quasim.quantum.core import QuantumConfig, QuantumBackend
 
@@ -162,6 +177,7 @@ python -c "from quasim.quantum import get_quantum_status; print(get_quantum_stat
 **Location**: `tests/quantum/`
 
 **Coverage**:
+
 - ✅ Core backend configuration
 - ✅ Graceful degradation without dependencies
 - ✅ Basic circuit execution
@@ -169,6 +185,7 @@ python -c "from quasim.quantum import get_quantum_status; print(get_quantum_stat
 - 🚧 QAOA approximation ratio tests (requires quantum libraries)
 
 **Run Tests**:
+
 ```bash
 # Run all tests
 pytest tests/quantum/ -v
@@ -183,12 +200,14 @@ pytest tests/quantum/test_core.py::test_import_without_dependencies
 ### Validation Strategy
 
 Every quantum algorithm includes:
+
 1. **Classical reference**: Exact or best-known classical solution
 2. **Error bounds**: Expected accuracy range (e.g., 1-5% for VQE)
 3. **Approximation ratio**: Quality metric (e.g., 0.7-1.0 for QAOA)
 4. **Statistical analysis**: Standard deviation over multiple runs
 
 Example validation:
+
 ```python
 result = vqe.compute_h2_energy(use_classical_reference=True)
 
@@ -228,6 +247,7 @@ assert abs(result.error_vs_classical) < 0.05  # Within 0.05 Hartree
 4. **No industrial scale**: Not suitable for real materials optimization
 
 **All limitations are clearly documented in**:
+
 - README.md (prominent disclaimer)
 - Individual module docstrings
 - Example script warnings
@@ -268,6 +288,7 @@ tests/quantum/
 ### Integration with Existing Code
 
 QRATUM maintains backward compatibility:
+
 - Existing classical code unchanged
 - Quantum modules are additive (new `quasim/quantum/`)
 - No breaking changes to existing APIs
@@ -302,15 +323,18 @@ QRATUM maintains backward compatibility:
 ### Why No Quantum Advantage?
 
 **Problem sizes too small**:
+
 - H₂ molecule: 2 qubits (trivial classically)
 - MaxCut <20 nodes: Solvable by brute force
 
 **Classical simulation bottleneck**:
+
 - Qiskit Aer simulates 2^n quantum states classically
 - Practical limit: ~30 qubits on modern hardware
 - Real quantum hardware would help, but adds noise
 
 **When quantum advantage might appear**:
+
 - Larger molecules (>50 qubits) with error correction
 - Optimization problems (>100 variables) beyond classical reach
 - Specialized quantum hardware (not general-purpose simulators)
@@ -374,12 +398,14 @@ QRATUM makes the following commitments:
 ### Peer Review
 
 This implementation is based on:
+
 - Published quantum algorithms (VQE: Peruzzo 2014, QAOA: Farhi 2014)
 - Industry-standard frameworks (Qiskit by IBM Quantum)
 - Classical validation (PySCF ab initio calculations)
 - NISQ-era best practices (error mitigation, shot-based statistics)
 
 **Validation welcome**:
+
 - Open issues on GitHub for bugs or inaccuracies
 - Submit PRs with improvements or corrections
 - Test against your own classical benchmarks
@@ -396,9 +422,9 @@ This implementation is based on:
 
 ### Frameworks
 
-1. Qiskit: https://qiskit.org/
-2. Qiskit Nature: https://qiskit.org/ecosystem/nature/
-3. PySCF: https://pyscf.org/
+1. Qiskit: <https://qiskit.org/>
+2. Qiskit Nature: <https://qiskit.org/ecosystem/nature/>
+3. PySCF: <https://pyscf.org/>
 
 ### NISQ Computing
 
@@ -409,15 +435,16 @@ This implementation is based on:
 
 ## Support & Contact
 
-**Issues**: https://github.com/robertringler/QRATUM/issues  
+**Issues**: <https://github.com/robertringler/QRATUM/issues>  
 **Documentation**: See README.md and module docstrings  
 **Examples**: `examples/quantum_*.py`  
 **Tests**: `tests/quantum/`
 
 **Quantum Computing Help**:
-- IBM Quantum: https://quantum-computing.ibm.com/
-- Qiskit Slack: https://qiskit.slack.com/
-- Qiskit Textbook: https://qiskit.org/learn/
+
+- IBM Quantum: <https://quantum-computing.ibm.com/>
+- Qiskit Slack: <https://qiskit.slack.com/>
+- Qiskit Textbook: <https://qiskit.org/learn/>
 
 ---
 

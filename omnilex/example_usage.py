@@ -8,7 +8,7 @@ scenario using the IRAC legal reasoning framework.
 
 import time
 
-from omnilex import QRATUMOmniLexEngine, LegalQILIntent
+from omnilex import LegalQILIntent, QRATUMOmniLexEngine
 from omnilex.qil_legal import generate_intent_id
 
 

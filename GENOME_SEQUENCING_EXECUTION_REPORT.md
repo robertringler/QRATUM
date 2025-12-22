@@ -416,6 +416,7 @@ The Full Genome Sequencing Pipeline successfully demonstrates:
 5. **Compliance**: All requirements satisfied
 
 The pipeline is **production-ready** and suitable for:
+
 - Research workflows
 - Clinical genomics (with regulatory validation)
 - Pharmaceutical discovery

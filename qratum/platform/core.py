@@ -10,9 +10,8 @@ import hashlib
 import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
 from enum import Enum
-
+from typing import Any, Dict
 
 # 8 Fatal Invariants - violations terminate execution
 FATAL_INVARIANTS = [
@@ -72,7 +71,7 @@ class PlatformIntent:
     requester_id: str
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     intent_id: str = field(default="", init=False)
-    
+
     def __post_init__(self):
         """Generate deterministic intent_id from content hash"""
         content = {
@@ -85,7 +84,7 @@ class PlatformIntent:
         content_str = json.dumps(content, sort_keys=True)
         intent_hash = hashlib.sha256(content_str.encode()).hexdigest()[:16]
         object.__setattr__(self, "intent_id", f"intent_{intent_hash}")
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary representation"""
         return {
@@ -123,7 +122,7 @@ class PlatformContract:
     created_at: str
     authorized_at: str
     signature: str = field(default="", init=False)
-    
+
     def __post_init__(self):
         """Generate deterministic contract signature"""
         content = {
@@ -137,7 +136,7 @@ class PlatformContract:
         content_str = json.dumps(content, sort_keys=True)
         sig = hashlib.sha256(content_str.encode()).hexdigest()
         object.__setattr__(self, "signature", sig)
-    
+
     def verify_signature(self) -> bool:
         """Verify contract signature integrity"""
         content = {
@@ -151,7 +150,7 @@ class PlatformContract:
         content_str = json.dumps(content, sort_keys=True)
         expected_sig = hashlib.sha256(content_str.encode()).hexdigest()
         return self.signature == expected_sig
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary representation"""
         return {
@@ -187,7 +186,7 @@ class Event:
     timestamp: str
     data: Dict[str, Any]
     emitter: str
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary representation"""
         return {
@@ -219,7 +218,7 @@ def create_contract_from_intent(
     """
     now = datetime.now(timezone.utc).isoformat()
     contract_id = f"contract_{intent.intent_id}_{hashlib.sha256(now.encode()).hexdigest()[:8]}"
-    
+
     contract = PlatformContract(
         intent=intent,
         contract_id=contract_id,
@@ -228,11 +227,11 @@ def create_contract_from_intent(
         created_at=now,
         authorized_at=now,
     )
-    
+
     # Verify signature was generated correctly
     if not contract.verify_signature():
         raise RuntimeError("FATAL: Contract signature verification failed (Invariant #8)")
-    
+
     return contract
 
 
@@ -256,7 +255,7 @@ def create_event(
     """
     timestamp = datetime.now(timezone.utc).isoformat()
     event_id = f"event_{hashlib.sha256(f'{contract_id}_{timestamp}_{emitter}'.encode()).hexdigest()[:16]}"
-    
+
     return Event(
         event_id=event_id,
         event_type=event_type,

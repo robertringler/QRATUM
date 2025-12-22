@@ -20,6 +20,7 @@ pip install numpy>=1.21 scipy>=1.7 click>=8.0
 ```
 
 Optional (recommended):
+
 ```bash
 pip install networkx>=2.6
 ```
@@ -149,9 +150,11 @@ XENON consists of seven core components:
 ### Core Classes
 
 #### `BioMechanism`
+
 Biological mechanism represented as a DAG.
 
 **Methods:**
+
 - `add_state(state)` - Add molecular state
 - `add_transition(transition)` - Add transition
 - `is_thermodynamically_feasible(temperature)` - Validate thermodynamics
@@ -161,9 +164,11 @@ Biological mechanism represented as a DAG.
 - `to_dict() / from_dict()` - Serialization
 
 #### `MolecularState`
+
 A molecular state (e.g., phosphorylated protein, ligand-bound receptor).
 
 **Attributes:**
+
 - `name` - Unique identifier
 - `molecule` - Molecule name
 - `properties` - State properties (dict)
@@ -171,9 +176,11 @@ A molecular state (e.g., phosphorylated protein, ligand-bound receptor).
 - `free_energy` - Gibbs free energy (kcal/mol)
 
 #### `Transition`
+
 A chemical reaction or conformational change.
 
 **Attributes:**
+
 - `source` - Source state
 - `target` - Target state
 - `rate_constant` - Rate constant (1/s)
@@ -182,9 +189,11 @@ A chemical reaction or conformational change.
 - `reverse_rate` - Reverse rate constant
 
 #### `XENONRuntime`
+
 Main runtime orchestrating the learning loop.
 
 **Methods:**
+
 - `add_target(name, protein, objective)` - Define learning target
 - `run(max_iterations)` - Execute learning loop
 - `get_mechanisms(min_evidence)` - Retrieve high-confidence mechanisms
@@ -193,34 +202,42 @@ Main runtime orchestrating the learning loop.
 ### Simulation
 
 #### `GillespieSimulator`
+
 Exact stochastic simulation (SSA).
 
 **Methods:**
+
 - `run(t_max, initial_state, seed)` - Run simulation
 - Returns: `(times, trajectories)` tuple
 
 #### `LangevinSimulator`
+
 Brownian dynamics with thermal noise.
 
 **Methods:**
+
 - `run(t_max, dt, initial_state, seed)` - Run simulation
 - Returns: `(times, trajectories)` tuple
 
 ### Learning
 
 #### `BayesianUpdater`
+
 Bayesian updating of mechanism posteriors.
 
 **Methods:**
+
 - `update_mechanisms(mechanisms, experiment_result)` - Bayesian update
 - `compute_likelihood(mechanism, experiment)` - P(data | mechanism)
 - `prune_low_evidence(mechanisms, threshold)` - Remove low-posterior mechanisms
 - `get_evidence_summary(mechanisms)` - Summary statistics
 
 #### `MechanismPrior`
+
 Prior probability computation.
 
 **Methods:**
+
 - `compute_prior(mechanism)` - Prior probability
 - `rate_constant_prior(transition)` - Kinetics plausibility
 - `initialize_mechanism_priors(mechanisms)` - Initialize and normalize priors
@@ -367,6 +384,7 @@ XENON enforces rigorous scientific constraints:
 XENON now includes comprehensive bioinformatics capabilities:
 
 ### Sequence Analysis
+
 - FASTA parsing and validation
 - Molecular weight and hydrophobicity calculation
 - Isoelectric point prediction
@@ -375,6 +393,7 @@ XENON now includes comprehensive bioinformatics capabilities:
 - Motif finding
 
 ### Literature Mining
+
 - PubMed integration framework
 - Protein-protein interaction extraction
 - Citation-based prior computation
@@ -382,6 +401,7 @@ XENON now includes comprehensive bioinformatics capabilities:
 - Publication ranking by relevance
 
 ### Ontology Integration
+
 - Gene Ontology (GO) support
 - ChEBI chemical ontology
 - UniProt protein annotations
@@ -389,6 +409,7 @@ XENON now includes comprehensive bioinformatics capabilities:
 - Protein network construction
 
 ### Structure Analysis
+
 - PDB file parsing
 - RMSD calculation
 - Binding site prediction
@@ -397,6 +418,7 @@ XENON now includes comprehensive bioinformatics capabilities:
 - Surface residue identification
 
 ### Pathway Analysis
+
 - Metabolic pathway modeling
 - Flux balance analysis (simplified)
 - Bottleneck identification
@@ -404,6 +426,7 @@ XENON now includes comprehensive bioinformatics capabilities:
 - Signaling cascade discovery
 
 ### Drug Discovery
+
 - Drug-likeness scoring (Lipinski rules)
 - ADMET property prediction
 - Drug-target interaction scoring
@@ -411,6 +434,7 @@ XENON now includes comprehensive bioinformatics capabilities:
 - Selectivity computation
 
 ### Multi-Omics Integration
+
 - Genomics, transcriptomics, proteomics, metabolomics
 - Cross-omics correlation analysis
 - Biomarker discovery
@@ -473,8 +497,9 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
 ## Support
 
 - Documentation: [ARCHITECTURE.md](ARCHITECTURE.md)
-- Issues: https://github.com/robertringler/Qubic/issues
+- Issues: <https://github.com/robertringler/Qubic/issues>
 - Email: [Contact via GitHub]
+
 # XENON: Bio-Mechanism Simulation and Visualization
 
 XENON is a bio-mechanism simulation system integrated with the Qubic visualization pipeline. It models biochemical reaction networks using stochastic simulation algorithms (SSA) and provides adapters for real-time visualization.
@@ -540,6 +565,7 @@ mechanism = BioMechanism(
 Represents a molecular configuration with thermodynamic properties.
 
 **Attributes:**
+
 - `state_id`: Unique identifier
 - `protein_name`: Name of the protein
 - `free_energy`: Gibbs free energy (ΔG) in kJ/mol
@@ -551,6 +577,7 @@ Represents a molecular configuration with thermodynamic properties.
 Represents a state transition (reaction) with kinetic parameters.
 
 **Attributes:**
+
 - `source_state`: Source state ID
 - `target_state`: Target state ID
 - `rate_constant`: Transition rate (k) in s⁻¹
@@ -577,6 +604,7 @@ viz_data = adapter.to_3d_network(layout="spring", scale=10.0)
 ```
 
 **Supported Layouts:**
+
 - `spring`: Force-directed spring layout
 - `circular`: Circular arrangement
 - `hierarchical`: Level-based hierarchy
@@ -696,6 +724,7 @@ python xenon/streaming_demo.py --steps 10 --min-evidence 0.9
 ```
 
 The demo:
+
 1. Creates a protein folding mechanism
 2. Runs stochastic simulation (Gillespie algorithm)
 3. Generates visualization snapshots at each step

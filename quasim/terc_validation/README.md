@@ -9,6 +9,7 @@ The TERC (Topological-Emergent-Recursive Consciousness) Framework Validation Sui
 The validation suite is organized into four hierarchical tiers:
 
 ### Tier 1: Computational Foundations
+
 - **Experiment 1.1**: TDA Baseline Validation
   - Validates persistent homology computation
   - Computes Betti numbers (β₀, β₁, β₂)
@@ -19,6 +20,7 @@ The validation suite is organized into four hierarchical tiers:
   - Calibrates equivalence classes for consciousness state manifolds
 
 ### Tier 2: Neurobiological Correlation
+
 - **Experiment 2.1**: EEG Correlation
   - Correlates consciousness metrics with EEG signals
   - Computes Pearson correlation and statistical significance
@@ -27,11 +29,13 @@ The validation suite is organized into four hierarchical tiers:
   - Validates consciousness metrics against fMRI activation patterns
 
 ### Tier 3: Clinical Digital Twin Diagnostics
+
 - **Experiment 3.1**: Pathology Classification
   - Classifies clinical pathologies using consciousness metrics
   - Provides accuracy and F1 score metrics
 
 ### Tier 4: Meta Validation
+
 - **Experiment 4.1**: Tournament Validation
   - Cross-tier consistency validation
   - Stability scoring
@@ -40,6 +44,7 @@ The validation suite is organized into four hierarchical tiers:
   - Temporal reliability assessment
 
 ### Integration Test
+
 - **Experiment 5.4**: Grand Integration Test
   - Comprehensive integration across all tiers
   - Weighted success score computation
@@ -164,12 +169,14 @@ The validation suite is integrated into GitHub Actions via `.github/workflows/va
 ## Dependencies
 
 Core dependencies:
+
 - `numpy>=1.24.0` - Array operations and numerical computing
 - `scipy>=1.10.0` - Statistical functions (optional, in `terc` extras)
 - `pandas>=2.0.0` - Data analysis (optional, in `terc` extras)
 - `matplotlib>=3.7.0` - Visualization (optional, in `terc` extras)
 
 Optional TDA libraries (not required for basic functionality):
+
 - `ripser` - Persistent homology computation
 - `gudhi` - Topological data analysis
 - `persim` - Persistence diagrams
@@ -192,6 +199,7 @@ All experiments use deterministic seeding (`np.random.seed(42)`) to ensure repro
 ## Compliance
 
 The TERC validation suite supports:
+
 - DO-178C Level A compliance requirements
 - CMMC 2.0 L2 certification
 - NIST 800-53/171 standards
@@ -200,6 +208,7 @@ The TERC validation suite supports:
 ## Future Enhancements
 
 Planned improvements:
+
 1. Integration with real TDA libraries (ripser, gudhi, persim)
 2. Integration with QuASIM's metric tensors and REVULTRA curvature
 3. Real-time dashboard visualization

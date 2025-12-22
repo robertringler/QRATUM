@@ -202,12 +202,15 @@
 ## Key Messages by Audience
 
 ### **For Executives** (30 seconds)
+>
 > "QRATUM created Certifiable Quantum-Classical Convergence — a new category where we're the only inhabitant. Traditional quantum computers can't be certified. Classical HPC is performance-bounded. QRATUM delivers 11× speedups with DO-178C compliance, validated against SpaceX and NASA mission data. $2.6B TAM, 3-5 year competitive moat."
 
 ### **For Engineers** (30 seconds)
+>
 > "CQCC combines GPU-accelerated tensor networks, <1μs deterministic reproducibility, DO-178C compliance posture, and RL-driven autonomous evolution. QRATUM is the full stack — quantum-inspired algorithms, runtime determinism, multi-cloud orchestration, compliance frameworks — as unified architecture. Cannot be bolted together post-hoc."
 
 ### **For Investors** (30 seconds)
+>
 > "We're not competing in quantum computing. We created a new category where we're the only vendor. Our moat: 3-5 years before competitors replicate certification + validation + architecture. $300M Year 3 ARR target. First-mover in winner-take-most market. Category ownership."
 
 ---
@@ -258,17 +261,23 @@
 ## Call to Action
 
 ### For Enterprises
+
 **Stop waiting for quantum hardware. Start deploying CQCC systems.**
+
 - Schedule technical deep-dive → Review SpaceX/NASA validation
 - Design proof-of-concept → Deploy in Q1 2026
 
 ### For Developers
+
 **Build for the category that matters.**
+
 - Explore QRATUM open source → Contribute to CQCC ecosystem
 - Get CQCC certified → Join 1,000+ trained engineers
 
 ### For Investors
+
 **Invest in category creation, not category competition.**
+
 - Review $2.6B TAM analysis → Understand 3-5 year moat
 - Analyze first-mover advantage → Winner-take-most dynamics
 

@@ -18,6 +18,7 @@ H[Φ_m, Φ_i] = ∫ [½|∇Φ_m|² + ½|∇Φ_i|² + V(Φ_m, Φ_i)] dx
 ```
 
 With physical constraints:
+
 - **Coherence**: C(t) = |⟨Φ_m|Φ_i⟩| / (||Φ_m|| ||Φ_i||) ∈ [0, 1]
 - **Entropy**: S(t) = -Tr(ρ log ρ) where ρ ∝ Φ_m ⊗ Φ_i ≥ 0
 - **Energy**: Approximately conserved with controlled dissipation
@@ -77,26 +78,35 @@ export = field.export_state()
 ## Initialization Modes
 
 ### Gaussian
+
 Gaussian wave packet with momentum:
+
 ```python
 field.initialize(mode="gaussian")
 ```
+
 - Produces localized, coherent field configurations
 - Good for studying wave packet dynamics
 
 ### Soliton
+
 Solitonic (localized, stable) solution:
+
 ```python
 field.initialize(mode="soliton")
 ```
+
 - High coherence between fields
 - Demonstrates stability properties
 
 ### Random
+
 Random field configuration:
+
 ```python
 field.initialize(mode="random")
 ```
+
 - Low initial coherence
 - Tests thermalization and decoherence
 
@@ -105,6 +115,7 @@ field.initialize(mode="random")
 ### QuantacosmorphysigeneticField
 
 **Methods:**
+
 - `__init__(parameters)`: Initialize simulator with parameters
 - `initialize(mode)`: Set initial field configuration
 - `evolve()`: Advance fields by one time step
@@ -115,6 +126,7 @@ field.initialize(mode="random")
 ### FieldState
 
 **Attributes:**
+
 - `phi_m`: Physical field amplitude (complex array)
 - `phi_i`: Informational field amplitude (complex array)
 - `coherence`: Quantum coherence measure [0, 1]
@@ -123,6 +135,7 @@ field.initialize(mode="random")
 - `energy`: Total field energy
 
 **Methods:**
+
 - `to_dict()`: Convert state to serializable dictionary
 
 ## Example
@@ -152,6 +165,7 @@ The QCMG module simulates a coupled system where:
 ## Theoretical Background
 
 The implementation is based on:
+
 - Quantum field theory (QFT) formalism
 - Information geometry principles
 - Non-equilibrium thermodynamics
@@ -160,11 +174,13 @@ The implementation is based on:
 ## Testing
 
 Run the test suite:
+
 ```bash
 pytest tests/software/test_qcmg_field.py -v
 ```
 
 All 21 tests should pass, covering:
+
 - Parameter configuration
 - Field initialization
 - Evolution dynamics

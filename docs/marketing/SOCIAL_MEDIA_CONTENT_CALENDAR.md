@@ -1,4 +1,5 @@
 # QRATUM Social Media Content Calendar
+
 ## 1-Week Content Strategy: "Deterministic Quantum Realms" Category Launch
 
 **Version**: 1.0  
@@ -63,12 +64,14 @@ No "What do you think?" or "Tag a colleague." We declare insights; readers decid
 ### Platform-Specific Adaptations
 
 #### LinkedIn
+
 - **Aspect Ratio**: 1200x628 (1.91:1) for feed posts
 - **File Size**: < 8MB (optimize for fast loading)
 - **Text**: More technical, assumes aerospace/defense audience
 - **Posting Time**: Tuesday-Thursday, 8-10 AM ET (peak engagement for B2B)
 
 #### Instagram
+
 - **Aspect Ratio**: 1080x1080 (1:1 square) or 1080x1350 (4:5 portrait)
 - **File Size**: < 5MB for images, < 30MB for video
 - **Text**: Slightly less technical, more visual storytelling
@@ -89,6 +92,7 @@ No "What do you think?" or "Tag a colleague." We declare insights; readers decid
 ### Style Constraints
 
 **Do**:
+
 - Start with declarative statement (no questions)
 - Use metrics over adjectives (< 2% RMSE, not "extremely accurate")
 - Short sentences. High whitespace. Each paragraph = 1-2 sentences.
@@ -96,6 +100,7 @@ No "What do you think?" or "Tag a colleague." We declare insights; readers decid
 - Technical terminology without apology (tensor networks, seed replay, realm-level)
 
 **Don't**:
+
 - Ask rhetorical questions ("What if quantum simulation was deterministic?")
 - Use emojis (zero tolerance)
 - Add hashtags mid-sentence (#QuantumComputing inline)
@@ -120,12 +125,14 @@ Example: `#QuantumComputing #Aerospace #Defense #Simulation #TensorNetworks #NVI
 ### When to Respond
 
 **Respond to**:
+
 - Technical questions about architecture or methodology
 - Requests for paper/case study links (provide arXiv, GitHub)
 - Certification process inquiries from aerospace engineers
 - Defense contractor pilot program interest
 
 **Do NOT Respond to**:
+
 - Generic "Nice post!" or emoji-only comments
 - Competitor comparisons or "How does QRATUM compare to [tool]?" (we don't acknowledge same category)
 - Sales inquiries (redirect to contact form)
@@ -140,6 +147,7 @@ Example: `#QuantumComputing #Aerospace #Defense #Simulation #TensorNetworks #NVI
 > "John, seed replay precision is achieved via deterministic CUDA kernels on cuQuantum tensor network backend. Details in our arXiv paper: [link]."
 
 **Do NOT**:
+
 - Start with "Great question!" (patronizing)
 - Use exclamation points in responses
 - Over-explain (assume technical audience)
@@ -163,11 +171,13 @@ Example: `#QuantumComputing #Aerospace #Defense #Simulation #TensorNetworks #NVI
 ### Content Performance Review (End of Week)
 
 **Winning Post Criteria**:
+
 - Engagement rate > 5%
 - Shares > 30
 - Comments from aerospace engineers or defense contractors (identified by profile)
 
 **If Post Underperforms** (engagement < 2%):
+
 - **Diagnosis**: Too technical? Not technical enough? Visual weak?
 - **Action**: A/B test visual style (more abstract vs. more literal) in next week
 - **Do NOT**: Add emojis, dumb down content, or beg for engagement
@@ -179,16 +189,19 @@ Example: `#QuantumComputing #Aerospace #Defense #Simulation #TensorNetworks #NVI
 ### Week 2 Adjustments (Based on Week 1 Data)
 
 **If Technical Audience Engaged**:
+
 - Increase technical depth (more tensor network specifics)
 - Add code snippets (Python, CUDA) to LinkedIn posts
 - Link directly to GitHub Jupyter Notebooks
 
 **If Broader Audience Engaged**:
+
 - Maintain technical accuracy but add more context
 - Increase aerospace use case examples (SpaceX, NASA)
 - More visual storytelling (mission photos, not just abstracts)
 
 **If Low Engagement Overall**:
+
 - **DO NOT** panic or pivot to generic marketing
 - **Instead**: Narrow focus to specific sub-community (aerospace only, not broad "quantum")
 - Increase frequency of compliance-focused posts (CMMC, DO-178C readiness)
@@ -227,12 +240,14 @@ Example: `#QuantumComputing #Aerospace #Defense #Simulation #TensorNetworks #NVI
 **Style Guide**: Reference `/docs/marketing/BRAND_IDENTITY_PRISM.md`  
 
 **Technical Requirements**:
+
 - Resolution: 2x final size minimum (2400x1256 for LinkedIn, 2160x2160 for Instagram)
 - Color space: sRGB (for web)
 - Format: PNG (lossless) for editing, export JPEG 85% for LinkedIn, PNG for Instagram
 - Fonts: Roboto Mono Bold (included in repo at `/docs/assets/fonts/`)
 
 **Visual Themes**:
+
 1. Tensor network fractals (black-and-white, high contrast)
 2. Architectural blueprints (precision engineering aesthetic)
 3. Macro photography (GPU chips, clock mechanisms)
@@ -240,18 +255,21 @@ Example: `#QuantumComputing #Aerospace #Defense #Simulation #TensorNetworks #NVI
 5. Abstract geometry (crystalline structures, isometric projections)
 
 **Lighting**:
+
 - High contrast, single-source lighting
 - 45-degree angle for depth
 - Dramatic shadows (not flat lighting)
 - No multi-color lighting (no RGB "quantum" effects)
 
 **Post-Processing**:
+
 - Desaturate to 10-20% (not pure grayscale)
 - Crush blacks to 15, boost whites to 240
 - Single cyan accent (#2aa198) on critical elements
 - Moderate sharpening on focal points
 
 **Forbidden Elements**:
+
 - Stock photos (generic tech, people in lab coats)
 - Glowing particle effects (no "quantum orbs")
 - Lens flares, light leaks (not futuristic, just distracting)
@@ -274,6 +292,7 @@ Example: `#QuantumComputing #Aerospace #Defense #Simulation #TensorNetworks #NVI
 ### Emergency Content Changes
 
 If post-publication issue discovered (incorrect metric, legal concern):
+
 1. **Immediate**: Delete post from platform
 2. **Notify**: Legal team (if compliance issue), technical team (if accuracy issue)
 3. **Correct**: Revise content, re-approve

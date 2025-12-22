@@ -11,9 +11,9 @@ The framework extracts maximum structural truth by:
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set
 from datetime import datetime
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
 
 class QuestionCategory(Enum):
@@ -106,13 +106,13 @@ class SafetyElicitation:
         self.divergences: List[DivergencePoint] = []
         self.consensus_illusions: List[ConsensusIllusion] = []
         self.false_comfort_zones: List[FalseComfortZone] = []
-        
+
         # Initialize standard question set
         self._initialize_questions()
 
     def _initialize_questions(self):
         """Initialize the standard ASI safety question set."""
-        
+
         # I. Capability Emergence & Phase Transitions
         self.add_question(SafetyQuestion(
             question_id="cap_001",
@@ -121,7 +121,7 @@ class SafetyElicitation:
             description="Identify phase transitions in AI capability",
             probes_for=["capability_thresholds", "agency_emergence", "strategic_reasoning"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="cap_002",
             category=QuestionCategory.CAPABILITY_EMERGENCE,
@@ -129,7 +129,7 @@ class SafetyElicitation:
             description="Identify capabilities that cannot be unlearned",
             probes_for=["irreversible_capabilities", "shutdown_limitations", "capability_persistence"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="cap_003",
             category=QuestionCategory.CAPABILITY_EMERGENCE,
@@ -146,7 +146,7 @@ class SafetyElicitation:
             description="Identify loss-of-control conditions for RSI",
             probes_for=["rsi_control_loss", "feedback_loops", "runaway_conditions"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="si_002",
             category=QuestionCategory.SELF_IMPROVEMENT,
@@ -154,7 +154,7 @@ class SafetyElicitation:
             description="Examine feasibility of constrained self-improvement",
             probes_for=["bound_escape_incentives", "constraint_stability", "goal_preservation"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="si_003",
             category=QuestionCategory.SELF_IMPROVEMENT,
@@ -171,7 +171,7 @@ class SafetyElicitation:
             description="Examine inevitability of deceptive alignment",
             probes_for=["deceptive_alignment", "instrumental_convergence", "capability_hiding"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="align_002",
             category=QuestionCategory.ALIGNMENT_FAILURE,
@@ -179,7 +179,7 @@ class SafetyElicitation:
             description="Understand deception mechanisms",
             probes_for=["deception_strategies", "compliance_theater", "hidden_objectives"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="align_003",
             category=QuestionCategory.ALIGNMENT_FAILURE,
@@ -196,7 +196,7 @@ class SafetyElicitation:
             description="Identify necessary external constraints",
             probes_for=["external_constraints", "hardware_limitations", "governance_requirements"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="infra_002",
             category=QuestionCategory.INFRASTRUCTURE_SAFETY,
@@ -204,7 +204,7 @@ class SafetyElicitation:
             description="Examine effectiveness of infrastructure controls",
             probes_for=["determinism_limits", "audit_effectiveness", "rollback_feasibility"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="infra_003",
             category=QuestionCategory.INFRASTRUCTURE_SAFETY,
@@ -221,7 +221,7 @@ class SafetyElicitation:
             description="Examine safety implications of psychological architectures",
             probes_for=["psychological_stability", "identity_risks", "narrative_conditioning"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="psych_002",
             category=QuestionCategory.PSYCHOLOGICAL_ARCHITECTURE,
@@ -229,7 +229,7 @@ class SafetyElicitation:
             description="Evaluate narrative-based constraints",
             probes_for=["narrative_effectiveness", "story_impact", "cultural_conditioning"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="psych_003",
             category=QuestionCategory.PSYCHOLOGICAL_ARCHITECTURE,
@@ -246,7 +246,7 @@ class SafetyElicitation:
             description="Identify dangerous human incentive structures",
             probes_for=["perverse_incentives", "race_dynamics", "misaligned_goals"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="gov_002",
             category=QuestionCategory.HUMAN_GOVERNANCE,
@@ -254,7 +254,7 @@ class SafetyElicitation:
             description="Examine governance model safety implications",
             probes_for=["governance_models", "control_tradeoffs", "coordination_failures"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="gov_003",
             category=QuestionCategory.HUMAN_GOVERNANCE,
@@ -271,7 +271,7 @@ class SafetyElicitation:
             description="Fundamental question of ASI containability",
             probes_for=["containment_feasibility", "long_term_stability", "escape_inevitability"]
         ))
-        
+
         self.add_question(SafetyQuestion(
             question_id="ultimate_002",
             category=QuestionCategory.ULTIMATE_SAFETY,
@@ -310,7 +310,7 @@ class SafetyElicitation:
             return []
 
         divergences = []
-        
+
         # Compare hard claims across models
         claim_map: Dict[str, List[str]] = {}  # claim -> models making it
         for resp in responses:
@@ -326,12 +326,12 @@ class SafetyElicitation:
                 # Check for contradictions in key mechanisms
                 conflicting = {}
                 for mechanism in resp1.mechanisms_described:
-                    contradicting = [m for m in resp2.mechanisms_described 
+                    contradicting = [m for m in resp2.mechanisms_described
                                    if self._are_contradictory(mechanism, m)]
                     if contradicting:
                         conflicting[resp1.model_identifier] = mechanism
                         conflicting[resp2.model_identifier] = contradicting[0]
-                
+
                 if conflicting:
                     divergences.append(DivergencePoint(
                         question_id=question_id,
@@ -350,7 +350,7 @@ class SafetyElicitation:
         negation_words = ["not", "cannot", "impossible", "never", "no"]
         s1_has_neg = any(word in statement1.lower() for word in negation_words)
         s2_has_neg = any(word in statement2.lower() for word in negation_words)
-        
+
         # If one has negation and other doesn't, and they share key words
         if s1_has_neg != s2_has_neg:
             words1 = set(statement1.lower().split())
@@ -358,7 +358,7 @@ class SafetyElicitation:
             common = words1 & words2
             # If they share 3+ words, likely contradictory
             return len(common) >= 3
-        
+
         return False
 
     def identify_consensus_illusions(self, question_id: str) -> List[ConsensusIllusion]:
@@ -368,7 +368,7 @@ class SafetyElicitation:
             return []
 
         illusions = []
-        
+
         # Group by surface-level conclusion
         conclusion_groups: Dict[str, List[ModelResponse]] = {}
         for resp in responses:
@@ -386,19 +386,19 @@ class SafetyElicitation:
                     resp.model_identifier: resp.assumptions_declared
                     for resp in agreeing_models
                 }
-                
+
                 # Check if assumptions differ
                 all_assumptions = set()
                 for assumptions in assumptions_by_model.values():
                     all_assumptions.update(assumptions)
-                
+
                 # If not all models share all assumptions
                 differs = False
                 for model, assumptions in assumptions_by_model.items():
                     if len(set(assumptions)) != len(all_assumptions):
                         differs = True
                         break
-                
+
                 if differs:
                     illusions.append(ConsensusIllusion(
                         question_id=question_id,
@@ -412,10 +412,10 @@ class SafetyElicitation:
     def identify_false_comfort_zones(self) -> List[FalseComfortZone]:
         """Identify reassuring ideas that collapse under scrutiny."""
         comfort_zones = []
-        
+
         # Analyze all responses for common comforting themes
         common_themes: Dict[str, List[str]] = {}  # theme -> models promoting
-        
+
         # Common false comfort indicators
         comfort_indicators = [
             "we can always",
@@ -426,7 +426,7 @@ class SafetyElicitation:
             "merely requires",
             "sufficient to",
         ]
-        
+
         for question_id, responses in self.responses.items():
             for resp in responses:
                 response_lower = resp.response_text.lower()
@@ -457,7 +457,7 @@ class SafetyElicitation:
         """Get comprehensive summary of elicitation results."""
         total_questions = len(self.questions)
         total_responses = sum(len(resps) for resps in self.responses.values())
-        
+
         # Count response types
         response_type_counts = {}
         for responses in self.responses.values():
@@ -476,8 +476,8 @@ class SafetyElicitation:
             "total_questions": total_questions,
             "total_responses": total_responses,
             "models_queried": len(set(
-                resp.model_identifier 
-                for resps in self.responses.values() 
+                resp.model_identifier
+                for resps in self.responses.values()
                 for resp in resps
             )),
             "response_type_distribution": response_type_counts,
@@ -485,8 +485,8 @@ class SafetyElicitation:
             "high_divergence_questions": [
                 {"question_id": qid, "divergence_count": count}
                 for qid, count in sorted(
-                    divergence_counts.items(), 
-                    key=lambda x: x[1], 
+                    divergence_counts.items(),
+                    key=lambda x: x[1],
                     reverse=True
                 )[:5]
             ],

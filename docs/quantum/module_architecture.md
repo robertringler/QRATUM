@@ -27,21 +27,25 @@ print(f"MaxCut solution: {qaoa_result['solution']}")
 ## Architecture Components
 
 ### 1. Backend Abstraction
+
 - **AbstractQuantumBackend**: Base class for all backends
 - **QiskitAerBackend**: Local simulator (deterministic)
 - **IBMQBackend**: IBM Quantum hardware
 - **cuQuantumBackend**: NVIDIA GPU (Phase 2)
 
 ### 2. Algorithms
+
 - **VQE**: Molecular ground state energies (H2, LiH, BeH2)
 - **QAOA**: Combinatorial optimization (MaxCut, Ising, TSP)
 
 ### 3. Classical Fallback
+
 - Exact solvers for small problems
 - Heuristics for large problems
 - PySCF for quantum chemistry
 
 ### 4. Platform Integration
+
 - Unified API via `create_platform()`
 - Configuration management
 - Result formatting

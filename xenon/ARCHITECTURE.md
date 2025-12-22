@@ -7,6 +7,7 @@ XENON is a biological intelligence platform that replaces tensor-based deep lear
 ## Core Paradigm Shift
 
 ### Traditional Deep Learning (AlphaFold, etc.)
+
 ```
 Input (sequence) → Neural Network (tensors) → Output (structure)
                     ↓ Gradient Descent
@@ -14,6 +15,7 @@ Input (sequence) → Neural Network (tensors) → Output (structure)
 ```
 
 **Limitations:**
+
 - Black box (no interpretability)
 - Requires massive datasets
 - Static output (no updates)
@@ -21,6 +23,7 @@ Input (sequence) → Neural Network (tensors) → Output (structure)
 - Weights are exportable moat
 
 ### XENON (Mechanism-Based Learning)
+
 ```
 Hypothesis Mechanisms → Simulation → Experiment Selection → Lab Execution
          ↑                                                        ↓
@@ -28,6 +31,7 @@ Hypothesis Mechanisms → Simulation → Experiment Selection → Lab Execution
 ```
 
 **Advantages:**
+
 - Interpretable (causal mechanisms)
 - Learns from single experiments
 - Continuous updates
@@ -49,6 +53,7 @@ class BioMechanism:
 ```
 
 #### Molecular State
+
 Represents a specific configuration of a molecule:
 
 ```python
@@ -62,11 +67,13 @@ class MolecularState:
 ```
 
 **Examples:**
+
 - EGFR_inactive (no ligand bound)
 - EGFR_EGF_bound (ligand bound)
 - EGFR_phosphorylated (active kinase)
 
 #### Transition
+
 Represents a chemical reaction or conformational change:
 
 ```python
@@ -83,17 +90,20 @@ class Transition:
 **Scientific Constraints:**
 
 1. **Thermodynamic Consistency**
+
    ```
    ΔG = -RT ln(K_eq)
    K_eq = k_forward / k_reverse
    ```
 
 2. **Detailed Balance**
+
    ```
    For cycle: ∑ ΔG_i = 0
    ```
 
 3. **Kinetic Bounds**
+
    ```
    Diffusion limit: k_max ≈ 10^9 M^-1 s^-1
    Typical enzyme: k_cat ≈ 10^2 - 10^6 s^-1
@@ -127,6 +137,7 @@ Combines three sources of prior information:
    - Known pathways (KEGG, Reactome)
 
 **Prior Formula:**
+
 ```python
 prior = (
     P_rate_constants^(w1) *
@@ -141,18 +152,21 @@ prior = (
 **Experiment Types:**
 
 1. **Concentration Measurements**
+
    ```python
    L = exp(-χ² / 2)
    χ² = Σ ((observed - predicted) / uncertainty)²
    ```
 
 2. **Kinetics Measurements**
+
    ```python
    L = exp(-Σ (log(k_obs / k_pred))²)
    # Log-normal for rates spanning orders of magnitude
    ```
 
 3. **Perturbation Experiments**
+
    ```python
    L = 1.0 if causal_path_exists(source, target) else 0.1
    ```
@@ -177,6 +191,7 @@ Two complementary algorithms:
 #### Gillespie SSA (Exact)
 
 **Algorithm:**
+
 ```
 1. Compute propensities: a_i = k_i × n_reactants
 2. Total propensity: a_0 = Σ a_i
@@ -189,6 +204,7 @@ Two complementary algorithms:
 **Performance Target:** 10^6 reactions/second
 
 **Implementation:**
+
 ```python
 class GillespieSimulator:
     def run(self, t_max, initial_state):
@@ -212,11 +228,13 @@ class GillespieSimulator:
 #### Langevin Dynamics (Approximate)
 
 **Algorithm:** Chemical Langevin Equation
+
 ```
 dX/dt = drift(X) + sqrt(diffusion(X)) × noise(t)
 ```
 
 **Use Cases:**
+
 - Large molecule counts (>100)
 - Faster than SSA (continuous approximation)
 - Temperature-dependent studies
@@ -258,6 +276,7 @@ while not converged:
 **Convergence Criterion:**
 
 Entropy of mechanism distribution:
+
 ```
 H = -Σ p_i log(p_i)
 ```
@@ -267,11 +286,13 @@ Converged when H < threshold (e.g., 0.1 nats)
 ### 5. Hypothesis Generation
 
 **Phase 1 (Current):**
+
 - Template mechanisms (hand-coded)
 - Topology mutations (add/remove edges)
 - Rate constant perturbations
 
 **Phase 2+ (Future):**
+
 - Literature mining (PubMed API)
 - Ontology reasoning (GO, ChEBI)
 - Mechanism synthesis from databases
@@ -286,10 +307,12 @@ I(experiment) = H(prior) - E[H(posterior | experiment)]
 ```
 
 **Phase 1 (Current):**
+
 - Random experiment selection
 - Uniform sampling of experiment types
 
 **Phase 2+ (Future):**
+
 - Bayesian experimental design
 - Active learning
 - Cost-aware selection
@@ -298,16 +321,19 @@ I(experiment) = H(prior) - E[H(posterior | experiment)]
 ### 7. Cloud Lab Integration (Phase 2+)
 
 **Automated Execution:**
+
 ```
 XENON Runtime → API → Cloud Lab → Physical Experiment → Data → XENON
 ```
 
 **Supported Platforms:**
+
 - Emerald Cloud Lab
 - Strateos
 - Transcriptic
 
 **Experiment Types:**
+
 - Protein expression
 - Kinetics assays (SPR, ITC)
 - Perturbation screens (CRISPR, RNAi)
@@ -379,12 +405,14 @@ mechanism.provenance = [
 ### Memory Footprint
 
 **Per Mechanism:**
+
 - States: ~100 bytes per state
 - Transitions: ~200 bytes per transition
 - Metadata: ~500 bytes
 - **Total**: ~1 KB for typical mechanism (5 states, 10 transitions)
 
 **Scaling:**
+
 - 10^6 mechanisms: ~1 GB
 - 10^9 mechanisms: ~1 TB (Phase 2+)
 
@@ -425,6 +453,7 @@ Output: 3D coordinates (L × 3)
 ```
 
 **Characteristics:**
+
 - Parameters: ~93M (AlphaFold2)
 - Training data: ~170K structures (PDB)
 - Inference: ~1 minute per protein (GPU)
@@ -449,6 +478,7 @@ Output: Mechanistic explanation with confidence
 ```
 
 **Characteristics:**
+
 - Parameters: None (data structure, not weights)
 - Training data: None (learns from experiments)
 - Inference: Continuous learning loop
@@ -619,6 +649,7 @@ Apache 2.0
 ## Contact
 
 See [README.md](README.md) for support information.
+
 ## Overview
 
 XENON (eXtensible bio-mEchanism simulatioN and visualizatiOn) is a modular system for simulating and visualizing biochemical reaction networks. It integrates with the Qubic visualization pipeline to provide real-time visualization of stochastic simulation algorithms (SSA).
@@ -680,7 +711,7 @@ Defines fundamental data structures for bio-mechanism simulation.
 
 - **Purpose**: Represents biochemical reaction network as DAG
 - **Components**: List of states, list of transitions, evidence score
-- **Methods**: 
+- **Methods**:
   - `get_state(state_id)`: Retrieve state by ID
   - `get_transitions_from(state_id)`: Get outgoing transitions
   - `get_transitions_to(state_id)`: Get incoming transitions
@@ -708,6 +739,7 @@ Transforms XENON data structures into visualization-ready formats.
 **Output**: `VisualizationData` (3D network)
 
 **Transformation Pipeline**:
+
 1. Extract states → nodes
 2. Extract transitions → edges
 3. Apply spatial layout algorithm
@@ -716,6 +748,7 @@ Transforms XENON data structures into visualization-ready formats.
 6. Map properties to scalar fields
 
 **Layout Algorithms**:
+
 - **Spring**: Force-directed (O(n²))
 - **Circular**: Uniform distribution (O(n))
 - **Hierarchical**: Level-based (O(n + e))
@@ -726,10 +759,12 @@ Transforms XENON data structures into visualization-ready formats.
 **Output**: `VisualizationData` (surface or point cloud)
 
 **Representations**:
+
 1. **Energy Surface**: 2D grid with energy as height
 2. **Point Cloud**: Stochastic particle representation
 
 **Scalar Fields**:
+
 - `energy`: Per-vertex energy values
 - `concentration`: Molecular density
 
@@ -739,10 +774,12 @@ Transforms XENON data structures into visualization-ready formats.
 **Output**: `VisualizationData` (arrow or curve)
 
 **Visualizations**:
+
 1. **Arrow**: Directional edge between states
 2. **Energy Barrier**: Reaction coordinate energy profile
 
 **Styling**:
+
 - Color mapping: Rate constant → RGB (blue=slow, red=fast)
 - Thickness: Log-scale rate constant
 - Metadata: Source/target, kinetic parameters
@@ -756,11 +793,13 @@ Transforms XENON data structures into visualization-ready formats.
 **Interface**: Implements `SimulationAdapter` base class
 
 **Methods**:
+
 - `load_data(source)`: Auto-detect XENON type and convert
 - `validate_source(source)`: Check if source is XENON object
 - `load_mechanism_timeseries(mechanisms)`: Batch conversion
 
 **Type Detection**:
+
 ```python
 if isinstance(source, BioMechanism):
     → BioMechanismAdapter
@@ -850,6 +889,7 @@ Animation (MP4/GIF)
 | Arrow Generation | O(s) | O(s) |
 
 Where:
+
 - `n` = number of states
 - `e` = number of transitions
 - `r` = surface resolution
@@ -986,8 +1026,8 @@ xenon [OPTIONS]
 ### Technical
 
 - Qubic Visualization Pipeline: `/qubic/visualization/README.md`
-- NumPy Documentation: https://numpy.org/doc/
-- NetworkX (reference): https://networkx.org/
+- NumPy Documentation: <https://numpy.org/doc/>
+- NetworkX (reference): <https://networkx.org/>
 
 ## Maintenance
 

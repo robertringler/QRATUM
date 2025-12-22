@@ -121,11 +121,13 @@ Each release includes:
 If a release has critical issues:
 
 1. **Immediate**: Revert to previous version
+
    ```bash
    kubectl set image deployment/quasim-api quasim-api=ghcr.io/robertringler/quasim-api:vX.Y.Z-1
    ```
 
 2. **Short-term**: Create hotfix branch from previous tag
+
    ```bash
    git checkout -b hotfix/vX.Y.Z+1 vX.Y.Z-1
    ```
@@ -207,6 +209,7 @@ Each release includes:
 ## Questions?
 
 Contact the release team or open an issue for:
+
 - Release timeline questions
 - Version support inquiries
 - Custom release requirements

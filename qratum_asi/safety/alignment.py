@@ -1,10 +1,10 @@
 """Alignment verification system."""
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
 from datetime import datetime
+from typing import Any, Dict, List
 
-from qratum_asi.core.types import IMMUTABLE_BOUNDARIES, PROHIBITED_GOALS
+from qratum_asi.core.types import PROHIBITED_GOALS
 
 
 @dataclass

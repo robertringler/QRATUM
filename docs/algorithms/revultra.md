@@ -11,6 +11,7 @@ REVULTRA (Quantum-Inspired Cryptanalytic Algorithms) provides a suite of advance
 Maps character probabilities to complex quantum amplitudes using holographic encoding.
 
 **Math**: For character `c` with probability `p`:
+
 - Amplitude: `α = √p`
 - Phase: `φ = exp(i * qcorr * log(p + ε))`
 - Quantum amplitude: `ψ_c = α * φ`
@@ -22,6 +23,7 @@ Maps character probabilities to complex quantum amplitudes using holographic enc
 Transforms text into 2D grid and computes holographic entropy via FFT.
 
 **Math**:
+
 1. Reshape text into square grid
 2. Apply 2D FFT: `F(u,v) = FFT2D(grid)`
 3. Compute entropy: `H = -Σ p_i log(p_i)` where `p_i = |F_i| / Σ|F_j|`
@@ -33,6 +35,7 @@ Transforms text into 2D grid and computes holographic entropy via FFT.
 Generates time-series embeddings with sliding windows.
 
 **Math**: For window size `w`:
+
 - Embedding at position `t`: `E_t = [c_t, c_{t+1}, ..., c_{t+w-1}] * W_temporal`
 - Temporal weights: `W_i = exp(-teq * i / w)`
 
@@ -43,6 +46,7 @@ Generates time-series embeddings with sliding windows.
 Identifies repeating patterns using recursive search.
 
 **Algorithm**:
+
 1. For each length `l` in [min_len, max_len]
 2. Extract all substrings of length `l`
 3. Count occurrences
@@ -55,6 +59,7 @@ Identifies repeating patterns using recursive search.
 Computes IoC for different period lengths to detect polyalphabetic periodicities.
 
 **Math**: For period `p`:
+
 - Split text into `p` cosets
 - For each coset: `IoC = Σ n_i(n_i-1) / (N(N-1))`
 - Average across cosets
@@ -66,6 +71,7 @@ Computes IoC for different period lengths to detect polyalphabetic periodicities
 FFT-based autocorrelation for periodicity detection.
 
 **Math**:
+
 1. Normalize sequence: `x' = x - mean(x)`
 2. FFT: `X = FFT(x', 2N)`
 3. Power spectrum: `P = X * conj(X)`
@@ -78,6 +84,7 @@ FFT-based autocorrelation for periodicity detection.
 Combines multiple complexity measures.
 
 **Components**:
+
 - Character entropy: `H = -Σ p_i log(p_i)`
 - Pattern density: `ρ = patterns / length`
 - IoC variance: `σ²(IoC)`
@@ -181,6 +188,6 @@ See `docs/terc_bridge.md` for details.
 
 ## References
 
-- Kryptos K4: https://en.wikipedia.org/wiki/Kryptos
+- Kryptos K4: <https://en.wikipedia.org/wiki/Kryptos>
 - Index of Coincidence: Friedman, W.F. (1920)
 - Holographic Entropy: Information-theoretic cryptanalysis

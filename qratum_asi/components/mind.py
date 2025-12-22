@@ -5,14 +5,14 @@ reasoning strategies and deterministic reasoning chains.
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
 from datetime import datetime
+from typing import Any, Dict, List
 
-from qratum_asi.core.chain import ASIMerkleChain
-from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.core.contracts import ASIContract
-from qratum_asi.core.types import ReasoningStrategy, ASISafetyLevel, AuthorizationType
 from qratum_asi.components.reality import QReality
+from qratum_asi.core.chain import ASIMerkleChain
+from qratum_asi.core.contracts import ASIContract
+from qratum_asi.core.events import ASIEvent, ASIEventType
+from qratum_asi.core.types import ReasoningStrategy
 
 
 @dataclass
@@ -162,7 +162,7 @@ class QMind:
         if strategy == ReasoningStrategy.DEDUCTIVE:
             # Deductive reasoning: general to specific
             step = ReasoningStep(
-                step_id=f"step_0",
+                step_id="step_0",
                 strategy=strategy,
                 premises=["All systems require oversight", "This is a system"],
                 conclusion="This system requires oversight",
@@ -174,7 +174,7 @@ class QMind:
         elif strategy == ReasoningStrategy.INDUCTIVE:
             # Inductive reasoning: specific observations to general pattern
             step = ReasoningStep(
-                step_id=f"step_0",
+                step_id="step_0",
                 strategy=strategy,
                 premises=["Observation 1", "Observation 2", "Observation 3"],
                 conclusion="General pattern inferred",
@@ -186,7 +186,7 @@ class QMind:
         elif strategy == ReasoningStrategy.ABDUCTIVE:
             # Abductive reasoning: best explanation for observations
             step = ReasoningStep(
-                step_id=f"step_0",
+                step_id="step_0",
                 strategy=strategy,
                 premises=["Observed effect"],
                 conclusion="Most likely cause",
@@ -198,7 +198,7 @@ class QMind:
         elif strategy == ReasoningStrategy.CAUSAL:
             # Causal reasoning: cause-effect relationships
             step = ReasoningStep(
-                step_id=f"step_0",
+                step_id="step_0",
                 strategy=strategy,
                 premises=["Cause identified"],
                 conclusion="Expected effect",
@@ -210,7 +210,7 @@ class QMind:
         elif strategy == ReasoningStrategy.BAYESIAN:
             # Bayesian reasoning: probabilistic inference
             step = ReasoningStep(
-                step_id=f"step_0",
+                step_id="step_0",
                 strategy=strategy,
                 premises=["Prior probability", "Evidence"],
                 conclusion="Updated probability",
@@ -222,7 +222,7 @@ class QMind:
         elif strategy == ReasoningStrategy.ANALOGICAL:
             # Analogical reasoning: reasoning by analogy
             step = ReasoningStep(
-                step_id=f"step_0",
+                step_id="step_0",
                 strategy=strategy,
                 premises=["Similar case", "Known outcome"],
                 conclusion="Analogous outcome",

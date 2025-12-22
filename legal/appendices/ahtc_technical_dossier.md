@@ -12,6 +12,7 @@
 ## 1. Overview
 
 This technical dossier supports the AHTC patent by detailing:
+
 - Algorithmic schematics (flow, data dependencies)
 - Mathematical definitions and fidelity guarantees
 - CUDA-accelerated pseudocode
@@ -171,6 +172,7 @@ python quasim/holo/anti_tensor.py --benchmark --fidelity 0.995 --compress 32x
 ```
 
 Each benchmark emits:
+
 - `reports/ahtc_metrics.json`
 - `plots/ahtc_compression_vs_fidelity.png`
 - `logs/ahtc_runtime_profile.txt`
@@ -239,6 +241,7 @@ Such a condition, realized algorithmically, implies a computational analog of re
 ## 10. Integration Reference
 
 Relevant Files:
+
 - `/quasim/holo/anti_tensor.py`
 - `/QuASIM/src/cuda/anti_tensor.cu`
 - `/tests/holo/test_anti_tensor.py`

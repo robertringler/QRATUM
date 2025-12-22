@@ -9,6 +9,7 @@
 ## TL;DR
 
 Converting QRATUM from a cloud platform to a standalone desktop application would require:
+
 - **Timeline**: 11 months minimum
 - **Budget**: $750K-$900K (without compliance re-certification)
 - **Team**: 5-6 dedicated engineers
@@ -23,6 +24,7 @@ Converting QRATUM from a cloud platform to a standalone desktop application woul
 The issue proposes creating "QRATUM Desktop Edition" — a downloadable, installable application that runs entirely on a user's computer without internet connectivity or cloud infrastructure.
 
 **Target User Experience:**
+
 - Download single installer (.exe, .dmg, .deb)
 - Double-click to install
 - Launch from desktop icon
@@ -36,6 +38,7 @@ The issue proposes creating "QRATUM Desktop Edition" — a downloadable, install
 ## Why Desktop Edition?
 
 **Potential Business Drivers:**
+
 1. **Enterprise air-gapped environments**: Defense contractors, classified networks
 2. **Regulatory compliance**: ITAR, CMMC requiring on-premise processing
 3. **User experience**: Native desktop app vs. "localhost:8080 in browser"
@@ -43,6 +46,7 @@ The issue proposes creating "QRATUM Desktop Edition" — a downloadable, install
 5. **Intellectual property protection**: On-premise means no data leaves customer site
 
 **Questions to Validate:**
+
 - How many customers have explicitly requested this? (Target: ≥500)
 - What revenue impact? (Price premium for desktop license?)
 - Are alternatives sufficient? (Docker Compose, VPN to cloud instance)
@@ -86,6 +90,7 @@ Local GPU (if available)
 **Access:** Native desktop application  
 
 **Gap Analysis:**
+
 - ❌ Current: 3+ microservices → Desktop: Single process
 - ❌ Current: PostgreSQL → Desktop: SQLite
 - ❌ Current: Kubernetes → Desktop: OS process manager
@@ -105,6 +110,7 @@ Per **ARCHITECTURE_FREEZE.md** (2025-12-14):
 > **DO NOT Refactor:** Unless fixing bugs or CI failures  
 
 Desktop edition **violates all three constraints**:
+
 1. **Expansion**: New desktop subsystem, IPC layer, embedded DB
 2. **Renaming**: APIs must adapt for local vs. cloud mode
 3. **Refactoring**: Microservices → monolithic backend
@@ -118,33 +124,39 @@ Desktop edition **violates all three constraints**:
 ### Recommended: Electron Framework
 
 **Rationale:**
+
 - Reuse existing web dashboard (HTML/CSS/JS)
 - Fastest time-to-market (3-4 months for MVP)
 - Strong ecosystem, proven technology
 
 **Trade-offs:**
+
 - Larger bundle size (~200MB vs. 50MB for alternatives)
 - Higher memory usage (~300MB vs. 100MB)
 
 **Alternatives:**
+
 - **Tauri**: Smaller, faster, but requires Rust expertise (4-6 months)
 - **PyQt6**: Pure Python, but full UI rewrite needed (6-8 months)
 
 ### Three-Phase Delivery Plan
 
 **Phase 1: Proof of Concept (8 weeks)**
+
 - Electron shell + existing dashboard
 - Python backend via HTTP bridge
 - SQLite for data persistence
 - Windows .exe installer only
 
 **Phase 2: Alpha Release (12 weeks)**
+
 - macOS and Linux builds
 - Auto-update mechanism
 - Local authentication
 - Settings/preferences panel
 
 **Phase 3: Production Release (24 weeks)**
+
 - QA, bug fixes, performance tuning
 - Code signing for all platforms
 - Documentation, tutorials
@@ -214,7 +226,7 @@ Desktop edition **violates all three constraints**:
 
 ## Decision Points
 
-### MUST Answer Before Proceeding:
+### MUST Answer Before Proceeding
 
 1. **Market Demand**
    - [ ] How many customers requested desktop edition?
@@ -250,11 +262,13 @@ Desktop edition **violates all three constraints**:
 **Description:** Package as `docker-compose.yml` for local execution
 
 **Pros:**
+
 - Reuse 90% of existing cloud infrastructure
 - Fast implementation (2-3 months)
 - Lower cost ($150K-$200K)
 
 **Cons:**
+
 - Requires Docker Desktop (not truly "desktop app")
 - Still browser-based (localhost:8080)
 - User must understand Docker basics
@@ -268,11 +282,13 @@ Desktop edition **violates all three constraints**:
 **Description:** Add service worker for offline support, "Add to Desktop" prompt
 
 **Pros:**
+
 - Minimal implementation (2-4 weeks)
 - Low cost ($20K-$40K)
 - Works on all platforms
 
 **Cons:**
+
 - Still browser-based (less native feel)
 - Limited offline capabilities
 - No deep OS integration
@@ -286,11 +302,13 @@ Desktop edition **violates all three constraints**:
 **Description:** Desktop app = thin wrapper around cloud QRATUM API
 
 **Pros:**
+
 - Desktop icon, native windows
 - Fast implementation (1-2 months)
 - Low cost ($75K-$100K)
 
 **Cons:**
+
 - **Requires internet** for computation
 - Not truly offline
 - Limited value vs. browser
@@ -304,6 +322,7 @@ Desktop edition **violates all three constraints**:
 ### Recommended Path: Phased Approach
 
 **Phase 0: Validation (NOW - 4 weeks)**
+
 1. Survey existing customers: "Would you use/pay for desktop edition?"
 2. Competitive analysis: Do competitors offer desktop? At what price?
 3. Prototype Docker Compose local deployment (prove feasibility)
@@ -311,6 +330,7 @@ Desktop edition **violates all three constraints**:
 **Decision Point 1:** If <200 customers interested → STOP. Focus on cloud.
 
 **Phase 1: Docker Compose MVP (3 months, $150K-$200K)**
+
 1. Package QRATUM for `docker-compose up` local execution
 2. Documentation: "Offline mode" guide
 3. Beta test with interested customers
@@ -318,6 +338,7 @@ Desktop edition **violates all three constraints**:
 **Decision Point 2:** If adoption <50% of target → STOP. Docker is sufficient.
 
 **Phase 2: Electron Desktop (11 months, $750K-$900K)**
+
 1. Build full desktop application (Windows, macOS, Linux)
 2. Native UI, auto-update, local authentication
 3. Production release
@@ -355,6 +376,7 @@ Desktop edition **violates all three constraints**:
 **Desktop edition is feasible but expensive and complex.**
 
 **Key Questions:**
+
 1. **Why?** What problem does desktop solve that cloud doesn't?
 2. **Who?** How many customers will actually use it?
 3. **How much?** Can we justify $750K-$900K investment?
@@ -369,11 +391,13 @@ Desktop edition **violates all three constraints**:
 ## Contact
 
 For questions or to schedule stakeholder review:
+
 - Technical Questions: Architecture Team
 - Business Questions: Product Management
 - Compliance Questions: Compliance/Legal Team
 
 **Related Documents:**
+
 - Full Technical Specification: `QRATUM_DESKTOP_EDITION_SPECIFICATION.md`
 - Architecture Freeze Policy: `ARCHITECTURE_FREEZE.md`
 - Current Roadmap: `ROADMAP_IMPLEMENTATION.md`

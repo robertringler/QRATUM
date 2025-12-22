@@ -16,6 +16,7 @@ QuASIM implements a comprehensive, automated compliance framework for Defense, A
 ## Supported Frameworks
 
 ### Federal & Defense
+
 - **NIST 800-53 Rev 5** - Federal Security Controls (HIGH Baseline)
 - **NIST 800-171 R3** - CUI Protection Requirements
 - **CMMC 2.0 Level 2** - Cybersecurity Maturity Model Certification
@@ -28,6 +29,7 @@ QuASIM implements a comprehensive, automated compliance framework for Defense, A
 - **RMF** - Risk Management Framework (NIST 800-37)
 
 ### Export Control
+
 - **ITAR** - International Traffic in Arms Regulations
   - USML Categories VIII (Aircraft), XI (Electronics), XV (Spacecraft)
 - **EAR** - Export Administration Regulations
@@ -35,10 +37,12 @@ QuASIM implements a comprehensive, automated compliance framework for Defense, A
 - **NDAA Section 889** - Prohibited Vendor Screening
 
 ### Aerospace & Safety
+
 - **DO-178C Level A** - Software Considerations in Airborne Systems
 - **MC/DC Coverage** - Modified Condition/Decision Coverage (100%)
 
 ### Industry Standards
+
 - **SOC 2 Type II** - Service Organization Controls
 - **ISO 27001:2022** - Information Security Management
 
@@ -66,13 +70,17 @@ make export-scan
 ### Automated Workflows
 
 #### PR Compliance
+
 Runs automatically on every pull request:
+
 ```bash
 gh run watch --exit-status --workflow "PR Compliance"
 ```
 
 #### PR Defense Compliance
+
 Security-focused checks on every PR:
+
 ```bash
 gh run watch --exit-status --workflow "PR Defense Compliance"
 ```
@@ -108,6 +116,7 @@ compliance/
 ## Features
 
 ### 🛡️ Security Controls
+
 - **Encryption**: AES-256-GCM (FIPS 140-3)
 - **MFA**: Required for all access
 - **RBAC**: Least privilege enforcement
@@ -115,6 +124,7 @@ compliance/
 - **Vulnerability Management**: 15-day critical patch SLA
 
 ### 📋 Compliance Automation
+
 - **Continuous Monitoring**: Real-time compliance checks
 - **Automated Reporting**: Monthly compliance reports
 - **Evidence Collection**: Automated artifact generation
@@ -122,6 +132,7 @@ compliance/
 - **Gap Analysis**: Automated remediation tracking
 
 ### 🔐 Supply Chain Security
+
 - **SBOM Generation**: SPDX 2.3 format
 - **Dependency Scanning**: pip-audit, safety, snyk
 - **Vendor Validation**: Section 889 compliance
@@ -129,6 +140,7 @@ compliance/
 - **Build Attestation**: Signature verification
 
 ### ✈️ Aerospace Standards
+
 - **DO-178C Level A**: Highest criticality
 - **MC/DC Coverage**: 100% required
 - **Traceability**: Requirements to tests
@@ -136,6 +148,7 @@ compliance/
 - **Quality Assurance**: Peer review required
 
 ### 🌍 Export Control
+
 - **ITAR Screening**: Automatic pattern detection
 - **EAR Compliance**: ECCN classification
 - **Access Control**: US persons only
@@ -167,12 +180,14 @@ compliance/
 ### GitHub Actions Workflows
 
 **PR Compliance** (`.github/workflows/pr-compliance.yml`)
+
 - Code quality (ruff, black, isort, mypy)
 - Documentation validation (YAML, Markdown)
 - Workflow validation
 - Permissions compliance
 
 **PR Defense Compliance** (`.github/workflows/pr-defense-compliance.yml`)
+
 - Security scanning (bandit, pip-audit)
 - Secret detection
 - Dependency review
@@ -203,6 +218,7 @@ python compliance/scripts/export_scan.py
 ## Reporting
 
 ### Automated Reports
+
 - **Monthly Compliance Reports**: Full framework status
 - **Security Assessment Reports (SAR)**: Vulnerability findings
 - **Plan of Action & Milestones (POA&M)**: Remediation tracking
@@ -210,6 +226,7 @@ python compliance/scripts/export_scan.py
 - **SBOM**: Software component inventory
 
 ### Metrics Dashboard
+
 - Control implementation status
 - Vulnerability aging
 - Patch compliance
@@ -219,12 +236,14 @@ python compliance/scripts/export_scan.py
 ## Remediation
 
 ### SLAs
+
 - **Critical**: 7 days
 - **High**: 30 days
 - **Medium**: 90 days
 - **Low**: 180 days
 
 ### Process
+
 1. Finding identified (automated or manual)
 2. Ticket created automatically
 3. Assignment to responsible team
@@ -243,7 +262,8 @@ python compliance/scripts/export_scan.py
 ## Support
 
 For compliance questions or issues:
-- **Email**: compliance@quasim.example.com
+
+- **Email**: <compliance@quasim.example.com>
 - **Slack**: #compliance-support
 - **Documentation**: [docs/compliance/](docs/compliance/README.md)
 

@@ -43,59 +43,69 @@ Phase III Components
 ## Core Features
 
 ### 1. Self-Evolving Kernel Architectures
+
 - **Runtime Introspection**: Logs warp divergence, cache misses, latency
 - **RL Controller**: Evolutionary strategy with PPO-like optimization
 - **Kernel Genomes**: Configurations for tile size, warp count, unroll factors, async depth
 - **Automatic Tuning**: Background retraining and policy caching
 
 ### 2. Hierarchical Hybrid Precision Graphs
+
 - **Multi-level Zoning**: Outer FP32 → Inner FP8/INT4 → Boundary BF16
 - **Precision Maps**: JSON configuration per kernel
 - **Error Budgets**: Global error tracking with automatic fallback
 - **Mixed-Precision Fallback**: Triggers when error exceeds 1e-5
 
 ### 3. Differentiable Compiler Scheduling
+
 - **Gradient Descent**: Optimize latency and energy via numerical gradients
 - **Parameterized Schedules**: Block size, thread count, register pressure, coalescing
 - **Loss Functions**: Combined latency + energy objectives
 - **Metadata Storage**: Schedules with benchmark traces
 
 ### 4. Quantum-Inspired Kernel Search
+
 - **Ising Hamiltonian**: Encode configuration space as energy landscape
 - **Simulated Annealing**: Find lowest-energy configurations
 - **Coupling Matrix**: Model parameter interactions
 - **History Tracking**: Full optimization trajectory
 
 ### 5. Topological Memory Graph Optimizer
+
 - **Graph Representation**: Tensors as nodes, accesses as edges
 - **GNN-Inspired**: Aggregate neighbor features for layout decisions
 - **Path Length Minimization**: Co-locate frequently accessed tensors
 - **Cache Miss Prediction**: Estimate miss rate for layouts
 
 ### 6. Predictive Prefetch & Async Streaming
+
 - **Memory Trace Prediction**: Transformer-like pattern recognition
 - **Async Prefetch**: Overlap computation and data movement
 - **Integration**: Works with Phase II async pipeline
 
 ### 7. Causal Profiling & Counterfactual Benchmarking
+
 - **Perturbation Experiments**: Inject micro-delays to measure impact
 - **Causal Contribution**: Estimate function contribution to total runtime
 - **Influence Maps**: Visualize causal relationships
 - **Counterfactual Analysis**: "What if" performance scenarios
 
 ### 8. Energy-Adaptive Regulation
+
 - **Thermal Telemetry**: Monitor temperature and power consumption
 - **Closed-Loop Control**: Feedback algorithms for throttling
 - **Migration Support**: Move workloads based on thermal constraints
 - **Efficiency Metrics**: Track GFLOPs/W and generate dashboards
 
 ### 9. Formal Stability Certification
+
 - **SMT Constraints**: Encode arithmetic invariants (bounds, monotonicity, stability)
 - **Symbolic Verification**: Simplified Z3/CBMC-style checking
 - **Per-Kernel Certificates**: Document verified properties
 - **Error Bounds**: Precision-dependent numerical guarantees
 
 ### 10. Federated Kernel Intelligence
+
 - **Anonymized Telemetry**: SHA-256 hashed deployment IDs and configs
 - **Cross-Deployment Aggregation**: Learn from distributed performance data
 - **Privacy Preserving**: Secure aggregation without raw data sharing
@@ -104,11 +114,13 @@ Phase III Components
 ## Quick Start
 
 ### Initialize Evolution System
+
 ```bash
 python -m evolve.init_population --population-size 20 --seed 42
 ```
 
 ### Run Evolution Cycle
+
 ```python
 from evolve.introspection import IntrospectionAgent, KernelMetrics
 from evolve.rl_controller import RLController
@@ -132,6 +144,7 @@ for generation in range(10):
 ```
 
 ### Optimize Schedule
+
 ```python
 from schedules.scheduler import DifferentiableScheduler
 
@@ -141,6 +154,7 @@ scheduler.save_schedule("my_kernel")
 ```
 
 ### Run Quantum Search
+
 ```python
 from quantum_search.ising_optimizer import IsingOptimizer
 
@@ -150,6 +164,7 @@ optimizer.save_history()
 ```
 
 ### Profile Causally
+
 ```python
 from profiles.causal.profiler import CausalProfiler
 
@@ -160,6 +175,7 @@ profiler.save_influence_map(influence_map)
 ```
 
 ### Verify Stability
+
 ```python
 from certs.verifier import StabilityVerifier
 
@@ -172,11 +188,13 @@ print(verifier.generate_report("my_kernel"))
 ## Testing
 
 Run comprehensive test suite:
+
 ```bash
 PYTHONPATH=.:runtime/python:quantum python3 -m pytest tests/software/test_phase3.py -v
 ```
 
 All 11 tests should pass, covering:
+
 - Introspection agent
 - RL controller evolution
 - Precision management
@@ -192,6 +210,7 @@ All 11 tests should pass, covering:
 ## Success Metrics
 
 Phase III targets:
+
 - **≥ 3× speedup** over Phase II baselines
 - **≥ 40% energy reduction** through adaptive regulation
 - **< 1e-6 numerical deviation** (verified parity)
@@ -202,17 +221,20 @@ Phase III targets:
 ## Architecture Decisions
 
 ### Why Evolutionary Strategies?
+
 - Simpler than full PPO/DDPG for discrete parameter spaces
 - Deterministic under fixed seed
 - No neural network dependencies (pure Python + math)
 - Proven effective for kernel auto-tuning
 
 ### Why Simplified Verification?
+
 - Full Z3/CBMC integration would require external dependencies
 - Demonstrates architecture and workflow
 - Extensible to real SMT solvers when needed
 
 ### Why Federated Learning?
+
 - Enables learning from distributed deployments
 - Privacy-preserving (no raw data sharing)
 - Improves global autotuning policy
@@ -221,6 +243,7 @@ Phase III targets:
 ## Integration Points
 
 Phase III integrates with:
+
 - **Phase I**: Base kernel library (implicit)
 - **Phase II**: Async pipeline (predictive prefetch integration)
 - **Runtime**: Telemetry hooks in `quasim.runtime`

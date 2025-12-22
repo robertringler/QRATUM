@@ -6,36 +6,36 @@ Welcome to QRATUM! This section will help you get up and running quickly.
 
 <div class="grid cards" markdown>
 
--   :material-rocket-launch:{ .lg .middle } __Quick Start__
+- :material-rocket-launch:{ .lg .middle } __Quick Start__
 
     ---
 
     Get QRATUM running in 5 minutes with Docker Compose
-    
+
     [:octicons-arrow-right-24: Quick Start](quickstart.md)
 
--   :material-download:{ .lg .middle } __Installation__
+- :material-download:{ .lg .middle } __Installation__
 
     ---
 
     Full installation guide for all platforms
-    
+
     [:octicons-arrow-right-24: Installation](installation.md)
 
--   :material-laptop:{ .lg .middle } __Local Development__
+- :material-laptop:{ .lg .middle } __Local Development__
 
     ---
 
     Set up your local development environment
-    
+
     [:octicons-arrow-right-24: Local Development](local-development.md)
 
--   :material-play-circle:{ .lg .middle } __First Simulation__
+- :material-play-circle:{ .lg .middle } __First Simulation__
 
     ---
 
     Run your first quantum simulation
-    
+
     [:octicons-arrow-right-24: First Simulation](first-simulation.md)
 
 </div>
@@ -44,11 +44,11 @@ Welcome to QRATUM! This section will help you get up and running quickly.
 
 Before you begin, ensure you have:
 
-- **Python 3.10+** - Required for the simulation engine
-- **pip** - Python package manager
-- **Git** - For cloning the repository
-- **Docker** (optional) - For containerized deployment
-- **4GB RAM minimum** - For Docker Compose setup
+- __Python 3.10+__ - Required for the simulation engine
+- __pip__ - Python package manager
+- __Git__ - For cloning the repository
+- __Docker__ (optional) - For containerized deployment
+- __4GB RAM minimum__ - For Docker Compose setup
 
 ## System Requirements
 

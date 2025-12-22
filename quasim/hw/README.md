@@ -13,21 +13,27 @@ This module provides hardware reconfiguration profiles for optimizing hardware s
 ## Built-in Profiles
 
 ### 1. `low-latency`
+
 Maximizes clocks and minimizes latency for interactive workloads.
+
 - High GPU clocks (2100 MHz SM, 2619 MHz memory)
 - High power limit (350W)
 - Performance CPU governor
 - Target: Interactive and real-time applications
 
 ### 2. `energy-cap`
+
 Minimizes power consumption for sustained workloads.
+
 - Reduced GPU clocks (1410 MHz SM, 1593 MHz memory)
 - Lower power limit (200W)
 - Powersave CPU governor
 - Target: Long-running batch processing
 
 ### 3. `coherence`
+
 Optimizes for quantum coherence and low noise.
+
 - Minimal GPU power (150W)
 - Conservative clocks (1200 MHz)
 - ECC enabled
@@ -35,7 +41,9 @@ Optimizes for quantum coherence and low noise.
 - Target: Quantum computing applications
 
 ### 4. `balanced`
+
 Balanced performance and efficiency.
+
 - Moderate GPU settings (250W, 1800 MHz)
 - Schedutil CPU governor
 - Target: General-purpose workloads
@@ -135,42 +143,52 @@ plan = profile.plan(
 ## API Reference
 
 ### Profile
+
 Dataclass representing a hardware reconfiguration profile.
 
 **Attributes:**
+
 - `name` (str): Profile name
 - `description` (str): Profile description
 - `setpoints` (Dict[str, Dict[str, Any]]): Device type to parameter mappings
 - `constraints` (Optional[Dict[str, Any]]): Global constraints
 
 ### ReconfigurationProfile
+
 Main class for profile management and planning.
 
 **Methods:**
+
 - `load(profile_name: str)`: Load built-in profile by name
 - `list_profiles()`: List available profile names
 - `plan(topology, policy, devices=None, constraints=None)`: Generate reconfiguration plan
 
 ### TopologyDiscovery
+
 Hardware topology management.
 
 **Methods:**
+
 - `add_device(device_id, device_type, name=None, capabilities=None)`: Add device
 - `get_device(device_id)`: Get device information
 - `get_devices_by_type(device_type)`: Get all devices of a type
 
 ### PolicyEngine
+
 Policy enforcement and validation.
 
 **Methods:**
+
 - `set_device_limits(device_id, limits)`: Set device limits
 - `get_device_limits(device_id)`: Get device limits
 - `validate_operation(device_id, operation, setpoints, enable_actuation)`: Validate operation
 
 ### DeviceLimits
+
 Dataclass for device operational limits.
 
 **Attributes:**
+
 - `device_id` (str): Device identifier
 - `power_watts_max` (Optional[float]): Maximum power limit
 - `clock_mhz_range` (Optional[Tuple[int, int]]): Clock frequency range (min, max)
@@ -178,6 +196,7 @@ Dataclass for device operational limits.
 - `temp_c_max` (Optional[float]): Maximum temperature
 
 ### PolicyViolation
+
 Exception raised when operations violate policy constraints.
 
 ## Integration with Actuators

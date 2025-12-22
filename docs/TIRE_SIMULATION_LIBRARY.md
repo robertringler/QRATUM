@@ -19,12 +19,14 @@ This library delivers:
 ### Material Modeling
 
 **Multi-Scale Physics**:
+
 - Molecular dynamics (quantum-enhanced)
 - Mesoscopic behavior
 - Macroscopic properties
 - Aging and degradation models
 
 **Material Types** (8 families, 1,000+ variants):
+
 - Natural rubber compounds
 - Synthetic rubber formulations
 - Bio-polymer materials
@@ -35,6 +37,7 @@ This library delivers:
 - Carbon black compounds
 
 **Properties Modeled**:
+
 - Viscoelasticity and hysteresis
 - Thermomechanics
 - Temperature-dependent moduli
@@ -46,6 +49,7 @@ This library delivers:
 ### Tire Geometry
 
 **Tire Types**:
+
 - Passenger (comfort-oriented)
 - Truck (durability-focused)
 - Off-Road (terrain performance)
@@ -56,6 +60,7 @@ This library delivers:
 - Performance (high-speed capable)
 
 **Structural Components**:
+
 - Tread design (grooves, sipes, microtexture)
 - Belt layers and angles
 - Ply construction
@@ -64,6 +69,7 @@ This library delivers:
 - Internal air volume
 
 **Tread Patterns**:
+
 - Symmetric
 - Asymmetric
 - Directional
@@ -74,6 +80,7 @@ This library delivers:
 **Temperature Range**: -40°C to +80°C
 
 **Surface Types** (12 variants):
+
 - Dry/wet asphalt
 - Dry/wet concrete
 - Ice
@@ -86,6 +93,7 @@ This library delivers:
 - Cobblestone
 
 **Weather Conditions**:
+
 - Clear
 - Rain (light to heavy)
 - Snow
@@ -97,6 +105,7 @@ This library delivers:
 ### Performance Analysis
 
 **Traction Metrics**:
+
 - Dry grip coefficient
 - Wet grip coefficient
 - Snow traction
@@ -104,23 +113,27 @@ This library delivers:
 - Hydroplaning resistance
 
 **Efficiency Metrics**:
+
 - Rolling resistance
 - Fuel efficiency impact
 - Energy loss (hysteresis)
 
 **Durability Metrics**:
+
 - Tread wear rate
 - Predicted lifetime (km)
 - Failure mode prediction
 - Aging characteristics
 
 **Thermal Performance**:
+
 - Temperature distribution
 - Heat dissipation
 - Thermal boundaries
 - Service temperature limits
 
 **Comfort & Noise**:
+
 - Noise level (dB)
 - Ride comfort index
 - Vibration characteristics
@@ -128,12 +141,14 @@ This library delivers:
 ### Quantum Optimization
 
 **Algorithms**:
+
 - QAOA (Quantum Approximate Optimization Algorithm)
 - Quantum Annealing
 - VQE (Variational Quantum Eigensolver)
 - Hybrid classical-quantum approaches
 
 **Optimization Targets**:
+
 - Multi-variable compound formulation
 - Geometry parameter tuning
 - Performance trade-off optimization
@@ -424,6 +439,7 @@ summary = gqp.generate_comprehensive_library(
 ### CSV Format
 
 Flattened representation with columns:
+
 - `simulation_id`
 - `tire_type`, `tire_width`, `tire_aspect_ratio`, ...
 - `compound_type`, `elastic_modulus`, `wet_grip_coefficient`, ...
@@ -495,7 +511,8 @@ See `demos/tire_simulation_demo.py` for comprehensive examples including:
 ## Support
 
 For questions or custom simulation requests:
-- GitHub Issues: https://github.com/robertringler/Qubic
+
+- GitHub Issues: <https://github.com/robertringler/Qubic>
 - Documentation: See QuASIM documentation
 
 ## License

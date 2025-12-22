@@ -22,6 +22,7 @@ python examples/wave3_orchestration_demo.py
 ```
 
 This will show you:
+
 - Wave 3 launch (1,000 pilots/day)
 - China Photonic Factory integration (500 pilots/day)
 - Pilot generation examples
@@ -35,6 +36,7 @@ python scripts/validate_wave3.py
 ```
 
 Expected output:
+
 ```
 ✓ Pilot Target: PASS
 ✓ Efficiency: PASS
@@ -170,17 +172,20 @@ python -c "from quasim.qunimbus import QuNimbusOrchestrator; print('OK')"
 ## Troubleshooting
 
 **Import Error?**
+
 ```bash
 export PYTHONPATH=$PWD:$PYTHONPATH
 ```
 
 **CLI not working?**
+
 ```bash
 # Use Python module syntax instead
 python -m quasim.qunimbus.cli --help
 ```
 
 **Need help?**
+
 - Check `docs/QUNIMBUS_WAVE3.md` for detailed documentation
 - Review example code in `examples/wave3_orchestration_demo.py`
 - See test files in `tests/qunimbus/` for usage patterns

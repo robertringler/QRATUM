@@ -6,20 +6,20 @@ Step-by-step guides for using QRATUM effectively.
 
 <div class="grid cards" markdown>
 
--   :material-molecule:{ .lg .middle } __VQE for H₂ Molecule__
+- :material-molecule:{ .lg .middle } __VQE for H₂ Molecule__
 
     ---
 
     Learn Variational Quantum Eigensolver for molecular ground states
-    
+
     [:octicons-arrow-right-24: VQE Tutorial](vqe-h2-molecule.md)
 
--   :material-graph:{ .lg .middle } __QAOA for MaxCut__
+- :material-graph:{ .lg .middle } __QAOA for MaxCut__
 
     ---
 
     Solve graph optimization problems with QAOA
-    
+
     [:octicons-arrow-right-24: QAOA Tutorial](qaoa-maxcut.md)
 
 </div>
@@ -28,20 +28,20 @@ Step-by-step guides for using QRATUM effectively.
 
 <div class="grid cards" markdown>
 
--   :material-kubernetes:{ .lg .middle } __Kubernetes Deployment__
+- :material-kubernetes:{ .lg .middle } __Kubernetes Deployment__
 
     ---
 
     Deploy QRATUM to production Kubernetes clusters
-    
+
     [:octicons-arrow-right-24: Kubernetes Guide](kubernetes-deployment.md)
 
--   :material-pipe:{ .lg .middle } __CI/CD Integration__
+- :material-pipe:{ .lg .middle } __CI/CD Integration__
 
     ---
 
     Set up automated testing and deployment pipelines
-    
+
     [:octicons-arrow-right-24: CI/CD Guide](cicd-integration.md)
 
 </div>

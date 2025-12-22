@@ -12,7 +12,7 @@ from qratum_platform.core import (
     PlatformContract,
     VerticalModuleBase,
 )
-from qratum_platform.substrates import get_optimal_substrate, VerticalModule
+from qratum_platform.substrates import VerticalModule, get_optimal_substrate
 
 
 class JURISModule(VerticalModuleBase):

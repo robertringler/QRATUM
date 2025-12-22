@@ -1,4 +1,5 @@
 # 20 High-Power Expert Prompts for QRATUM Development
+
 ## Automation Prompts for Claude Opus 4.5 / GPT-4
 
 **Created:** December 19, 2025  
@@ -188,4 +189,4 @@ deliverables/
 
 **Prompt Set Version:** 1.0  
 **Compatible With:** Claude Opus 4.5, GPT-4, GitHub Copilot with MCP  
-**Repository:** https://github.com/robertringler/QRATUM
+**Repository:** <https://github.com/robertringler/QRATUM>

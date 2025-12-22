@@ -10,13 +10,15 @@ This directory contains example configuration files for the QuASIM verification 
 ## Quick Start
 
 1. Install the verification tool:
+
 ```bash
 pip install -e tools/verify
 ```
 
-2. Create test data (see main README for data file formats)
+1. Create test data (see main README for data file formats)
 
-3. Run verification:
+2. Run verification:
+
 ```bash
 quasim-verify --config tools/verify/examples/verify.config.yaml --verbose
 ```

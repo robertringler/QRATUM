@@ -16,6 +16,7 @@ The BM_001 executor implements a production-ready benchmark framework for compar
 ## Execution Commands
 
 ### Default Run
+
 Run 5 Ansys + 5 QuASIM executions with default settings:
 
 ```bash
@@ -23,6 +24,7 @@ python3 evaluation/ansys/bm_001_executor.py --output reports/BM_001
 ```
 
 ### Custom Run
+
 Run with custom parameters:
 
 ```bash
@@ -50,13 +52,17 @@ python3 evaluation/ansys/bm_001_executor.py \
 After execution, the following reports are generated in the output directory:
 
 ### 1. CSV Summary (`summary.csv`)
+
 Quick summary table with key metrics:
+
 - Benchmark ID, Status, Speedup, Confidence Intervals
 - Displacement, Stress, and Energy errors
 - Coefficient of Variation
 
 ### 2. JSON Metadata (`results.json`)
+
 Complete metadata including:
+
 - All execution results (Ansys and QuASIM)
 - Statistical metrics
 - Reproducibility information (SHA-256 hashes)
@@ -64,14 +70,18 @@ Complete metadata including:
 - Timestamp information
 
 ### 3. HTML Report (`report.html`)
+
 Styled web report with:
+
 - Performance and accuracy metrics
 - Execution results tables
 - Reproducibility status
 - Visual formatting for easy review
 
 ### 4. PDF Executive Summary (`executive_summary.pdf`)
+
 Professional executive summary with:
+
 - Key results and metrics
 - Performance comparison table
 - Compliance with acceptance criteria
@@ -81,15 +91,18 @@ Professional executive summary with:
 The benchmark must meet the following criteria to pass:
 
 ### Performance
+
 - **Speedup**: ≥ 3.0x vs Ansys baseline
 - **Coefficient of Variation**: < 2% (reproducibility)
 
 ### Accuracy
+
 - **Displacement Error**: < 2%
 - **Stress Error**: < 5%
 - **Energy Conservation Error**: < 1e-6
 
 ### Reproducibility
+
 - All QuASIM runs with the same seed must produce identical SHA-256 hashes
 
 ## Statistical Validation
@@ -97,14 +110,17 @@ The benchmark must meet the following criteria to pass:
 The executor performs rigorous statistical analysis:
 
 ### Bootstrap Confidence Intervals
+
 - 1000 bootstrap samples per metric
 - 95% confidence intervals for speedup
 
 ### Outlier Detection
+
 - Modified Z-score method
 - Threshold: |Z| > 3.5
 
 ### Acceptance Testing
+
 - Automated verification of all acceptance criteria
 - Detailed failure messages for debugging
 
@@ -153,32 +169,39 @@ The `.github/workflows/bm_001.yml` workflow automates:
 ### Common Issues
 
 #### 1. GPU Not Available
+
 **Symptom**: Warning "GPU requested but not available, falling back to CPU"
 
-**Solution**: 
+**Solution**:
+
 - Ensure CUDA drivers are installed
 - Install PyTorch: `pip install torch`
 - For CI: Use CPU mode explicitly with `--device cpu`
 
 #### 2. PyYAML Import Error
+
 **Symptom**: "PyYAML required. Install with: pip install pyyaml"
 
 **Solution**: `pip install pyyaml>=6.0`
 
 #### 3. Benchmark Definition Not Found
+
 **Symptom**: "BM_001 not found in YAML"
 
 **Solution**: Verify `benchmarks/ansys/benchmark_definitions.yaml` exists and contains BM_001 definition
 
 #### 4. Acceptance Criteria Failure
+
 **Symptom**: "Acceptance check failed: Speedup X.XXx < 3.0x"
 
 **Solution**: This is expected with stub solvers. Production C++/CUDA backend will achieve >3x speedup on real hardware.
 
 #### 5. Non-Deterministic Behavior
+
 **Symptom**: "Non-deterministic: N unique hashes detected"
 
-**Solution**: 
+**Solution**:
+
 - Verify same `--seed` value across all runs
 - Check for external randomness sources
 - Ensure consistent NumPy version
@@ -186,14 +209,18 @@ The `.github/workflows/bm_001.yml` workflow automates:
 ## Integration with Production Backend
 
 ### Current Status (Stub Mode)
+
 The current implementation uses production-ready stubs:
+
 - `QuasimCudaSolver`: Simulates GPU-accelerated tensor solver
 - `PyMapdlExecutor`: Simulates Ansys MAPDL execution
 
 ### Production Integration (TODO)
+
 To integrate with actual C++/CUDA backend:
 
 1. **QuASIM Solver**:
+
    ```python
    # In QuasimCudaSolver.solve()
    # Replace stub with actual cuQuantum tensor network call
@@ -203,6 +230,7 @@ To integrate with actual C++/CUDA backend:
    ```
 
 2. **PyMAPDL Executor**:
+
    ```python
    # In PyMapdlExecutor.execute()
    from ansys.mapdl.core import launch_mapdl
@@ -213,6 +241,7 @@ To integrate with actual C++/CUDA backend:
 ## Development Notes
 
 ### Adding New Benchmarks
+
 To extend the framework to BM_002-BM_005:
 
 1. Copy `bm_001_executor.py` to `bm_00X_executor.py`
@@ -222,6 +251,7 @@ To extend the framework to BM_002-BM_005:
 5. Add acceptance criteria to YAML
 
 ### Code Quality Requirements
+
 - **Linting**: Pass `ruff check` with no errors
 - **Formatting**: Use `ruff format` (PEP 8, line length 100)
 - **Type Hints**: Required for all public functions
@@ -237,6 +267,7 @@ To extend the framework to BM_002-BM_005:
 ## Contact
 
 For questions or issues:
+
 - Open GitHub issue with label `benchmark` or `ansys-integration`
 - See `CONTRIBUTING.md` for contribution guidelines
 - Check `SECURITY.md` for security vulnerability reporting

@@ -17,9 +17,10 @@ Thank you for your interest in contributing to QRATUM-ASI! This document provide
 
 ## Code of Conduct
 
-This project adheres to the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to conduct@qratum.io.
+This project adheres to the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to <conduct@qratum.io>.
 
 **In Summary:**
+
 - Be respectful and constructive in all interactions
 - Welcome diverse perspectives and experiences
 - Focus on what is best for the community and project
@@ -82,6 +83,7 @@ When requesting features, please include:
 ### Fork, Branch, Test, PR Workflow
 
 1. **Fork the Repository**
+
    ```bash
    # Fork via GitHub UI, then clone your fork
    git clone https://github.com/YOUR_USERNAME/QRATUM.git
@@ -89,11 +91,13 @@ When requesting features, please include:
    ```
 
 2. **Add Upstream Remote**
+
    ```bash
    git remote add upstream https://github.com/robertringler/QRATUM.git
    ```
 
 3. **Create a Feature Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    
@@ -111,6 +115,7 @@ When requesting features, please include:
    - Ensure all tests pass locally
 
 5. **Commit Your Changes**
+
    ```bash
    git add .
    git commit -m "feat: add contract analysis for JURIS vertical"
@@ -123,6 +128,7 @@ When requesting features, please include:
    ```
 
 6. **Push to Your Fork**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -136,6 +142,7 @@ When requesting features, please include:
 ### Development Setup
 
 **Prerequisites:**
+
 - Python 3.10+
 - Git 2.30+
 - Docker (optional, for containerized testing)
@@ -244,6 +251,7 @@ black qradle/contracts.py
 ```
 
 **Configuration** (in `pyproject.toml`):
+
 ```toml
 [tool.black]
 line-length = 88
@@ -263,6 +271,7 @@ isort --check .
 ```
 
 **Configuration** (in `pyproject.toml`):
+
 ```toml
 [tool.isort]
 profile = "black"
@@ -309,6 +318,7 @@ pre-commit run --all-files
 ```
 
 **Configuration** (`.pre-commit-config.yaml`):
+
 ```yaml
 repos:
   - repo: https://github.com/psf/black
@@ -492,6 +502,7 @@ All pull requests are reviewed by project maintainers:
 5. **Approval**: At least one maintainer must approve
 
 **Timeline:**
+
 - Initial review: Within **3 business days**
 - Revisions: Within **2 business days** of updates
 - Merge: Within **1 business day** of final approval
@@ -501,6 +512,7 @@ All pull requests are reviewed by project maintainers:
 Code affecting safety-critical components requires **two maintainer approvals**:
 
 **Safety-Critical Components:**
+
 - QRADLE contract execution engine
 - Merkle chain integrity checks
 - Authorization and permission systems
@@ -509,6 +521,7 @@ Code affecting safety-critical components requires **two maintainer approvals**:
 - Q-EVOLVE self-improvement boundaries
 
 **Additional Requirements:**
+
 - Formal verification (where applicable)
 - Red team security review
 - Determinism validation
@@ -518,6 +531,7 @@ Code affecting safety-critical components requires **two maintainer approvals**:
 ### Review Criteria
 
 **Code Quality:**
+
 - [ ] Follows PEP 8 and project style guidelines
 - [ ] All functions have type hints
 - [ ] Code is formatted with Black and isort
@@ -526,6 +540,7 @@ Code affecting safety-critical components requires **two maintainer approvals**:
 - [ ] Clear, descriptive variable and function names
 
 **Testing:**
+
 - [ ] New functionality has unit tests
 - [ ] Tests are deterministic (fixed seeds, no randomness)
 - [ ] Test coverage >80% for modified code
@@ -533,6 +548,7 @@ Code affecting safety-critical components requires **two maintainer approvals**:
 - [ ] Edge cases and error conditions tested
 
 **Documentation:**
+
 - [ ] Docstrings for all public functions/classes
 - [ ] README updated if public API changes
 - [ ] Architecture docs updated if design changes
@@ -540,6 +556,7 @@ Code affecting safety-critical components requires **two maintainer approvals**:
 - [ ] Examples provided for new features
 
 **Safety & Security:**
+
 - [ ] No secrets or credentials in code
 - [ ] Input validation for all external data
 - [ ] Error handling doesn't leak sensitive information
@@ -552,16 +569,19 @@ Code affecting safety-critical components requires **two maintainer approvals**:
 ## Contact for Questions
 
 **General Questions:**
+
 - GitHub Discussions: [QRATUM Discussions](https://github.com/robertringler/QRATUM/discussions)
-- Email: contribute@qratum.io
+- Email: <contribute@qratum.io>
 
 **Technical Questions:**
-- Architecture: architecture@qratum.io
-- Safety & Security: security@qratum.io
-- Vertical Domains: verticals@qratum.io
+
+- Architecture: <architecture@qratum.io>
+- Safety & Security: <security@qratum.io>
+- Vertical Domains: <verticals@qratum.io>
 
 **Maintainers:**
-- Robert Ringler (Project Lead): robert@qratum.io
+
+- Robert Ringler (Project Lead): <robert@qratum.io>
 
 ---
 
@@ -660,6 +680,7 @@ Use conventional commit format:
 ```
 
 Types:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -669,6 +690,7 @@ Types:
 - `chore`: Build process or auxiliary tool changes
 
 Example:
+
 ```
 feat(adapters): add Fluent CFD adapter with HDF5 support
 
@@ -692,11 +714,13 @@ Closes #123
 ### PR Title Format
 
 Use conventional commit format for PR titles:
+
 ```
 <type>(<scope>): <description>
 ```
 
 Example:
+
 ```
 feat(integrations): initial QuASIM adapters, API, and bench harness
 ```
@@ -733,6 +757,7 @@ feat(integrations): initial QuASIM adapters, API, and bench harness
 ## Questions?
 
 If you have questions or need help, please:
+
 1. Check existing documentation
 2. Search closed issues
 3. Open a new issue with the `question` label

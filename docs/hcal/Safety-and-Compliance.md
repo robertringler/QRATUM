@@ -156,9 +156,9 @@ This document outlines safety procedures and compliance requirements for using H
 
 ### Support
 
-- **Technical Support**: support@quasim.example.com
-- **Security Team**: security@quasim.example.com
-- **Operations**: ops@quasim.example.com
+- **Technical Support**: <support@quasim.example.com>
+- **Security Team**: <security@quasim.example.com>
+- **Operations**: <ops@quasim.example.com>
 
 ### Emergency
 
@@ -183,6 +183,7 @@ This system is designed to support compliance with:
 - HCAL Documentation: [README.md](./README.md)
 - QuASIM Platform Overview: [../platform_overview.md](../platform_overview.md)
 - Security Guidelines: [../../SECURITY.md](../../SECURITY.md)
+
 # HCAL Safety & Compliance Guide
 
 **Version:** 0.1.0  
@@ -291,6 +292,7 @@ HCAL itself does not contain export-controlled technology, but:
 - Deployment to restricted countries may require export licenses
 
 **Guidance:**
+
 - Consult legal counsel before deploying to non-US entities
 - Do not share calibration data or performance characteristics without authorization
 - Implement access controls for sensitive configurations
@@ -416,7 +418,7 @@ rate_limit:
 If you discover a security vulnerability in HCAL:
 
 1. **Do not** disclose publicly
-2. Email: security@quasim.example.com (replace with actual contact)
+2. Email: <security@quasim.example.com> (replace with actual contact)
 3. Include: Description, reproduction steps, potential impact
 4. Expected response: 48 hours acknowledgment, 30 days for fix
 

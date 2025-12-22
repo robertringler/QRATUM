@@ -90,6 +90,7 @@ qunimbus orchestrate --parallel \
 ```
 
 **Output:**
+
 ```
 QuNimbus v2.0 — DUAL EXECUTION: Wave 3 Launch + China Photonic Factory Scale
 Location: Akron, Ohio, US
@@ -121,6 +122,7 @@ qunimbus metrics
 ```
 
 Output:
+
 ```
 ### QuNimbus Wave 3 Metrics
 | Metric              | Value         |
@@ -217,6 +219,7 @@ python scripts/validate_wave3.py \
 ```
 
 **Validation Checks:**
+
 - ✓ Pilot target: 1,000/day
 - ✓ Efficiency: 22×
 - ✓ MERA compression: 100×
@@ -252,6 +255,7 @@ python examples/wave3_orchestration_demo.py
 ```
 
 This demo shows:
+
 1. Wave 3 launch execution
 2. China Photonic Factory integration
 3. Pilot generation
@@ -263,17 +267,20 @@ This demo shows:
 Wave 3 maintains compliance across multiple frameworks:
 
 ### US Standards
+
 - **CMMC 2.0 Level 2** - 100% (110 controls)
 - **DO-178C Level A** - 95% (aerospace software safety)
 - **NIST 800-53 Rev 5** - HIGH baseline (421 controls)
 - **ISO 13485** - 100% (medical device quality)
 
 ### China Standards
+
 - **MLPS Level 3** - 100% (Multi-Level Protection Scheme)
 - **Cybersecurity Law** - Compliant
 - **PIPL** - Compliant (Personal Information Protection Law)
 
 ### Cross-Border
+
 - **QKD Security** - Information-theoretic security via BB84
 - **FortiSIEM** - Unified audit trail across borders
 - **OPA Gatekeeper** - 150 active policies (0 violations)
@@ -321,6 +328,7 @@ Wave 3 maintains compliance across multiple frameworks:
 ## Roadmap
 
 ### Wave 4 (Q2 2026)
+
 - **Target:** 10,000 pilots/day
 - **Integrations:** India Quantum-AI Hub, Japan Quantum Optics Center
 - **Verticals:** Expand to 15+
@@ -328,6 +336,7 @@ Wave 3 maintains compliance across multiple frameworks:
 - **MERA:** 200× compression
 
 ### Long-term Goals
+
 - Global quantum dominance
 - 100,000+ pilots/day capacity
 - 50× efficiency multiplier
@@ -363,7 +372,8 @@ python /path/to/QuASIM/quasim/qunimbus/cli.py orchestrate
 ## Support
 
 For issues or questions:
-- GitHub Issues: https://github.com/robertringler/QuASIM/issues
+
+- GitHub Issues: <https://github.com/robertringler/QuASIM/issues>
 - Documentation: See README.md in repository root
 
 ## License

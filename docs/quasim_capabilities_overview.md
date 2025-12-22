@@ -26,6 +26,7 @@ graph TD
 ```
 
 **Key Components:**
+
 - **CPU Complex:** 72-core Grace-inspired Arm v9 SVE2 architecture
 - **GPU Cluster:** Blackwell-style SIMT scheduling with 5th generation tensor cores
 - **Interconnect:** Coherent NVLink-C2C fabric enabling shared virtual address space
@@ -43,6 +44,7 @@ graph TD
 | HBM/LPDDR5x | 128 GB | -- | 78.0 | 273 GB/s |
 
 **Memory Model:**
+
 - Directory-based MOESI coherence protocol
 - Unified memory accessible by all CPU and GPU agents
 - Adaptive write-combining and command reordering
@@ -94,6 +96,7 @@ public:
 ```
 
 **Capabilities:**
+
 - `QuasimRuntime::contract` — Execute tensor-network circuits using GPU scheduler
 - `submit_tensor_job` — Enqueue asynchronous work mapped to GPU command buffers
 - C++20 implementation with minimal dependencies
@@ -109,6 +112,7 @@ with quasim.runtime(cfg) as rt:
 ```
 
 **Features:**
+
 - Context manager for shared memory pool configuration
 - Native numpy array integration
 - Bindings to `libquasim` C++ runtime
@@ -117,6 +121,7 @@ with quasim.runtime(cfg) as rt:
 ### Precision Modes
 
 QuASIM supports multiple floating-point precision modes:
+
 - **FP8:** Ultra-fast approximate simulation with 8-bit tensors
 - **FP16:** Half-precision for balanced performance/accuracy
 - **FP32:** Single-precision standard mode
@@ -125,11 +130,13 @@ QuASIM supports multiple floating-point precision modes:
 ### Performance Characteristics
 
 **Benchmark Configuration:**
+
 - Default: 32 batches × 2048-dimensional tensors
 - Rank parameter: 4
 - Workspace: 32-1024 MB configurable
 
 **Throughput Metrics:**
+
 - Elements/second scales with GPU tensor core utilization
 - Median latency < 100ms for typical circuits
 - Automatic batching for improved GPU occupancy
@@ -139,11 +146,13 @@ QuASIM supports multiple floating-point precision modes:
 ### Dynamic Voltage and Frequency Scaling (DVFS)
 
 **CPU P-states:**
+
 - 8 operating points: 0.6V @ 800 MHz to 1.1V @ 3.2 GHz
 - Adaptive scaling based on workload characteristics
 - Per-cluster frequency control
 
 **GPU G-states:**
+
 - Tensor workload-optimized performance states
 - FP8 boost bins for maximum throughput
 - Ray-tracing core prioritization modes
@@ -151,11 +160,13 @@ QuASIM supports multiple floating-point precision modes:
 ### Thermal Specifications
 
 **Cooling System:**
+
 - Dual-stage vapor chamber heatsink
 - PID-controlled fans (up to 6000 RPM)
 - Target: ≤ 85°C GPU temperature under load
 
 **Telemetry:**
+
 - I2C sensor array aggregation
 - Firmware-coordinated monitoring
 - Sysfs-exported counters for runtime access
@@ -173,6 +184,7 @@ QuASIM supports multiple floating-point precision modes:
 6. **Kernel Handoff** — Memory map transfer to DGX OS
 
 **Implementation:**
+
 - Portable C with minimal hardware abstraction
 - Logging via USB-C CDC ACM
 - QEMU-compatible for development tracing
@@ -262,6 +274,7 @@ with runtime(config) as handle:
 ### Build System
 
 **Make Targets:**
+
 - `make setup` — Configure toolchain and Python environment
 - `make lint` — Run code quality checks
 - `make sim` — Execute RTL simulations
@@ -271,6 +284,7 @@ with runtime(config) as handle:
 - `make bench` — Execute performance benchmarks
 
 **Prerequisites:**
+
 - cmake, ninja, gcc, clang
 - python3, verilator, openjdk, sbt
 - pytest for test execution
@@ -340,6 +354,7 @@ with runtime(config) as handle:
 ## References
 
 For detailed information, refer to:
+
 - **Architecture:** `docs/arch_overview.md`
 - **API Reference:** `docs/api_reference.md`
 - **Memory Hierarchy:** `docs/memory_hierarchy.md`

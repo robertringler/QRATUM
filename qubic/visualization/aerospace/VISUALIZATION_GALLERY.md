@@ -13,6 +13,7 @@ The aerospace visualization module extends QUBIC's visualization system with spe
 **Use Case**: Aircraft flight path visualization with aerodynamic effects
 
 **Features**:
+
 - 3D trajectory line in cyan
 - Start marker (green) and end marker (red)
 - Velocity vectors shown as yellow arrows
@@ -22,6 +23,7 @@ The aerospace visualization module extends QUBIC's visualization system with spe
 **Screenshot**: F-35 Spiral Climb Maneuver showing complete flight path with vapor condensation trail
 
 **Code**:
+
 ```python
 trajectory = np.column_stack([100 * np.cos(t), 100 * np.sin(t), 50 * t])
 viz.render_flight_trajectory(
@@ -39,6 +41,7 @@ viz.render_flight_trajectory(
 **Use Case**: Computational Fluid Dynamics (CFD) visualization
 
 **Features**:
+
 - 3D streamlines following velocity field
 - Velocity magnitude contour on slice plane
 - Vortex flow pattern visualization
@@ -47,6 +50,7 @@ viz.render_flight_trajectory(
 **Screenshot**: Wing Tip Vortex Airflow showing streamlines and velocity contours
 
 **Code**:
+
 ```python
 viz.render_airflow_streamlines(
     velocity_field=velocity_field,
@@ -63,6 +67,7 @@ viz.render_airflow_streamlines(
 **Use Case**: Structural analysis and finite element visualization
 
 **Features**:
+
 - Tetrahedral mesh visualization
 - Von Mises stress coloring
 - Wireframe edge rendering
@@ -71,6 +76,7 @@ viz.render_airflow_streamlines(
 **Screenshot**: Wing Spar Stress Analysis showing stress distribution on structural mesh
 
 **Code**:
+
 ```python
 viz.render_fem_mesh(
     nodes=nodes,
@@ -88,6 +94,7 @@ viz.render_fem_mesh(
 **Use Case**: Structural dynamics and vibration mode visualization
 
 **Features**:
+
 - Original geometry (ghosted gray)
 - Deformed geometry (colored by displacement)
 - Displacement vectors (yellow arrows)
@@ -96,6 +103,7 @@ viz.render_fem_mesh(
 **Screenshot**: Mode 1 at 15.20 Hz showing first bending mode
 
 **Code**:
+
 ```python
 viz.render_modal_analysis(
     nodes=nodes,
@@ -113,6 +121,7 @@ viz.render_modal_analysis(
 **Use Case**: Thermal analysis and heat transfer visualization
 
 **Features**:
+
 - Temperature field on 3D geometry
 - Hot colormap (dark to yellow/white)
 - Spherical surface temperature distribution
@@ -121,6 +130,7 @@ viz.render_modal_analysis(
 **Screenshot**: Reentry Heating Profile showing temperature distribution during atmospheric reentry
 
 **Code**:
+
 ```python
 viz.render_thermal_field(
     temperature=temperature,
@@ -137,6 +147,7 @@ viz.render_thermal_field(
 **Use Case**: Thermal flux analysis on surfaces
 
 **Features**:
+
 - Surface points colored by heat flux magnitude
 - Red arrows showing heat flux direction
 - Cyan arrows showing surface normals
@@ -145,6 +156,7 @@ viz.render_thermal_field(
 **Screenshot**: Heat Flux on Cylindrical Surface showing radial heat flow
 
 **Code**:
+
 ```python
 viz.render_heat_flux(
     heat_flux=heat_flux,
@@ -161,6 +173,7 @@ viz.render_heat_flux(
 **Use Case**: Avionics sensor coverage visualization
 
 **Features**:
+
 - 3D FOV cone (cyan with transparency)
 - Sensor position marker (red)
 - Boresight axis (yellow line)
@@ -170,6 +183,7 @@ viz.render_heat_flux(
 **Screenshot**: Forward LIDAR Field of View showing 90°×45° sensor coverage cone
 
 **Code**:
+
 ```python
 viz.render_sensor_fov(
     sensor_position=sensor_pos,
@@ -188,6 +202,7 @@ viz.render_sensor_fov(
 **Use Case**: Stealth and radar signature analysis
 
 **Features**:
+
 - Polar plot format (aerospace standard)
 - RCS values in dBsm
 - 360° azimuth coverage
@@ -197,6 +212,7 @@ viz.render_sensor_fov(
 **Screenshot**: F-35 Radar Cross Section @ 10 GHz showing stealth characteristics
 
 **Code**:
+
 ```python
 viz.render_radar_cross_section(
     geometry=geometry,

@@ -21,9 +21,9 @@ Public disclosure of vulnerabilities puts all QRATUM users at risk. Please follo
 
 ### How to Report
 
-**Email**: security@qratum.io
+**Email**: <security@qratum.io>
 
-**PGP Key**: Available at https://qratum.io/security/pgp-key.asc (coming soon)
+**PGP Key**: Available at <https://qratum.io/security/pgp-key.asc> (coming soon)
 
 ### What to Include in Your Report
 
@@ -107,6 +107,7 @@ We take all security reports seriously and will respond according to the followi
 | **Coordinated Disclosure** | 90 days | Public disclosure after patch release (or sooner if actively exploited) |
 
 **Expedited Timeline for Critical Vulnerabilities:**
+
 - Acknowledgment: 24 hours
 - Initial Assessment: 3 days
 - Mitigation Plan: 7 days
@@ -114,6 +115,7 @@ We take all security reports seriously and will respond according to the followi
 - Coordinated Disclosure: 45 days
 
 **Critical Vulnerabilities Include:**
+
 - Authentication/authorization bypass
 - Remote code execution
 - Merkle chain integrity violations
@@ -133,14 +135,14 @@ We follow **coordinated disclosure** practices to protect QRATUM users:
 2. **Communication**: We will keep you informed of progress throughout the process
 3. **Credit**: We will credit you in the security advisory (unless you prefer anonymity)
 4. **No Legal Action**: We will not pursue legal action against researchers who:
-   - Report vulnerabilities responsibly via security@qratum.io
+   - Report vulnerabilities responsibly via <security@qratum.io>
    - Do not access, modify, or exfiltrate user data
    - Do not exploit vulnerabilities beyond proof-of-concept
    - Do not disclose publicly before coordinated disclosure date
 
 ### Your Responsibilities
 
-1. **Private Reporting**: Report via security@qratum.io, not public channels
+1. **Private Reporting**: Report via <security@qratum.io>, not public channels
 2. **Reasonable Testing**: Limit testing to proof-of-concept, avoid data damage
 3. **No Data Access**: Do not access, modify, or delete user/customer data
 4. **Coordinated Disclosure**: Wait for our disclosure timeline before publishing
@@ -153,6 +155,7 @@ We follow **coordinated disclosure** practices to protect QRATUM users:
 - **Actively Exploited**: Immediate disclosure with available mitigations
 
 We may request an extension if:
+
 - The issue is complex and requires extensive testing
 - The fix requires coordination with third-party dependencies
 - Multiple vulnerabilities are chained and require unified patching
@@ -234,16 +237,19 @@ We believe in transparency about security limitations:
 ### Current Development Status
 
 **QRATUM-ASI (Theoretical Layer)**:
+
 - ⚠️ Not implemented - no security guarantees for ASI layer
 - Q-EVOLVE, Q-WILL, Q-FORGE: Architecture only, not hardened
 - Self-improvement constraints: Untested at scale
 
 **QRADLE (In Development)**:
+
 - ⚠️ Cryptographic audit not yet complete
 - Merkle chain implementation: Functional but not formally verified
 - Rollback system: Basic functionality, edge cases under review
 
 **QRATUM Platform (In Development)**:
+
 - ⚠️ 5/14 verticals in early stages, not production-hardened
 - Cross-domain synthesis: Limited security testing
 - Authorization system: Role-based access control not finalized
@@ -263,6 +269,7 @@ We believe in transparency about security limitations:
 ### Threat Model Boundaries
 
 **In Scope** (we aim to defend against):
+
 - Unauthorized contract execution
 - Merkle chain tampering
 - Authentication/authorization bypass
@@ -271,6 +278,7 @@ We believe in transparency about security limitations:
 - Rollback manipulation
 
 **Out of Scope** (we do not currently defend against):
+
 - Side-channel attacks (timing, power analysis)
 - Physical access to hardware (assumes secure data center)
 - Malicious infrastructure administrators (assumes trusted operators)
@@ -295,9 +303,9 @@ We use **Dependabot** and **pip-audit** to monitor dependency vulnerabilities an
 
 ### Subscribing to Security Advisories
 
-- **GitHub Security Advisories**: https://github.com/robertringler/QRATUM/security/advisories
-- **Mailing List**: security-announce@qratum.io (subscribe at https://qratum.io/security)
-- **RSS Feed**: https://qratum.io/security/advisories.rss
+- **GitHub Security Advisories**: <https://github.com/robertringler/QRATUM/security/advisories>
+- **Mailing List**: <security-announce@qratum.io> (subscribe at <https://qratum.io/security>)
+- **RSS Feed**: <https://qratum.io/security/advisories.rss>
 
 ### Patch Release Process
 
@@ -388,9 +396,10 @@ We use **Dependabot** and **pip-audit** to monitor dependency vulnerabilities an
 
 We are establishing a bug bounty program to reward security researchers who help improve QRATUM security. Details will be published at:
 
-https://qratum.io/security/bug-bounty
+<https://qratum.io/security/bug-bounty>
 
 **Expected Scope**:
+
 - QRADLE core components
 - QRATUM platform verticals
 - Authentication/authorization systems
@@ -398,6 +407,7 @@ https://qratum.io/security/bug-bounty
 - API endpoints
 
 **Expected Rewards** (tentative):
+
 - Critical vulnerabilities: $5,000 - $20,000
 - High vulnerabilities: $1,000 - $5,000
 - Medium vulnerabilities: $500 - $1,000
@@ -407,10 +417,10 @@ https://qratum.io/security/bug-bounty
 
 ## Contact
 
-**Security Team**: security@qratum.io  
-**PGP Key**: https://qratum.io/security/pgp-key.asc (coming soon)  
-**Security Advisories**: https://github.com/robertringler/QRATUM/security/advisories  
-**Bug Bounty**: https://qratum.io/security/bug-bounty (coming Q3 2025)
+**Security Team**: <security@qratum.io>  
+**PGP Key**: <https://qratum.io/security/pgp-key.asc> (coming soon)  
+**Security Advisories**: <https://github.com/robertringler/QRATUM/security/advisories>  
+**Bug Bounty**: <https://qratum.io/security/bug-bounty> (coming Q3 2025)
 
 ---
 

@@ -77,6 +77,7 @@ pytest -m smoke
 ## CI/CD
 
 GitHub Actions pipeline includes:
+
 - Linting and unit tests
 - RAG integration tests
 - Quantization smoke tests

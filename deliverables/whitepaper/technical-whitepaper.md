@@ -1,4 +1,5 @@
 # QRATUM Technical Whitepaper
+
 ## Certifiable Quantum-Classical Convergence Platform
 
 **Version:** 2.0  
@@ -13,6 +14,7 @@
 QRATUM (Quantum Resource Allocation, Tensor Analysis, and Unified Modeling) is the world's first production-grade **Certifiable Quantum-Classical Convergence (CQCC)** platform. Unlike pure quantum computers (limited by NISQ-era noise) or classical HPC (performance-bounded), QRATUM combines quantum-enhanced algorithms with aerospace-grade certification and defense compliance.
 
 **Key Innovations:**
+
 - DO-178C Level A certification pathway (aerospace safety-critical)
 - NIST 800-53 Rev 5 HIGH baseline compliance (98.75%)
 - CMMC 2.0 Level 2 certified for defense contractors
@@ -82,12 +84,14 @@ The AI platform extends QRATUM with production ML/AI capabilities:
 ### 2.1 Quantum Algorithms (NISQ-Era)
 
 **Implemented:**
+
 - VQE (Variational Quantum Eigensolver): Molecular ground state energy
 - QAOA (Quantum Approximate Optimization): MaxCut, Ising models
 - Qiskit Aer simulator backend
 - IBM Quantum hardware support (optional)
 
 **Limitations (Honest Assessment):**
+
 - Effective qubit count: ~10-20 qubits
 - Classical simulation faster for current problem sizes
 - No quantum error correction (NISQ devices)
@@ -107,6 +111,7 @@ The AI platform extends QRATUM with production ML/AI capabilities:
 ### 2.3 AI/ML Platform
 
 **Services Deployed:**
+
 - Model Server: FastAPI with health/predict endpoints, Bearer token auth
 - Orchestrator: Intent-based routing to multiple model servers
 - RAG Pipeline: Text embedder + vector DB connector (Milvus-compatible)
@@ -118,10 +123,12 @@ The AI platform extends QRATUM with production ML/AI capabilities:
 ### 2.4 Infrastructure
 
 **Helm Charts:**
+
 - model-server: CPU/GPU variants, autoscaling (2-10 replicas)
 - vector-db: Milvus with persistence (50-100GB PVC)
 
 **CI/CD Pipeline:**
+
 - 7-job GitHub Actions workflow (lint, test, RAG, quantize, secrets, SBOM, Helm)
 - Artifact signing with SHA256 checksums
 - SBOM generation (CycloneDX format)
@@ -137,6 +144,7 @@ The AI platform extends QRATUM with production ML/AI capabilities:
 **Status:** Certification pathway established
 
 **Requirements Met:**
+
 - Requirements traceability matrix
 - MC/DC coverage for safety-critical code
 - Deterministic execution (<1μs drift)
@@ -149,6 +157,7 @@ The AI platform extends QRATUM with production ML/AI capabilities:
 **Status:** 98.75% compliance (HIGH baseline)
 
 **Controls Implemented:**
+
 - AC-2: Account Management
 - AU-2/AU-3: Audit Events, Audit Records
 - IA-2/IA-5: User Identification/Authentication
@@ -161,6 +170,7 @@ The AI platform extends QRATUM with production ML/AI capabilities:
 **Status:** Certified
 
 **Practices:**
+
 - Access Control (AC.L2-3.1.1 through AC.L2-3.1.22)
 - Audit & Accountability (AU.L2-3.3.1 through AU.L2-3.3.9)
 - Configuration Management (CM.L2-3.4.1 through CM.L2-3.4.9)
@@ -209,6 +219,7 @@ The AI platform extends QRATUM with production ML/AI capabilities:
 ### 5.1 Threat Landscape
 
 **Threats Addressed:**
+
 1. Unauthorized model access (auth tokens)
 2. Secret leakage in outputs (safety engine)
 3. Input injection attacks (validation)
@@ -229,6 +240,7 @@ The AI platform extends QRATUM with production ML/AI capabilities:
 ### 5.3 Audit Trail
 
 All operations logged with:
+
 - Timestamp (ISO 8601)
 - User/service identity
 - Operation type
@@ -274,6 +286,7 @@ pytest qratum_ai_platform/tests/ -v
 ### 6.3 CI/CD Pipeline
 
 GitHub Actions workflow triggers on PR/push:
+
 1. Lint (ruff)
 2. Unit tests (pytest)
 3. RAG integration tests
@@ -290,6 +303,7 @@ GitHub Actions workflow triggers on PR/push:
 ## 7. Roadmap
 
 ### Phase 1 (2025) - Completed ✅
+
 - VQE/QAOA quantum algorithms
 - AI platform services
 - DO-178C pathway
@@ -297,6 +311,7 @@ GitHub Actions workflow triggers on PR/push:
 - Helm charts & CI/CD
 
 ### Phase 2 (2026) - Planned
+
 - Larger molecule simulations (4-6 qubits)
 - Error mitigation (ZNE, measurement error)
 - cuQuantum GPU acceleration
@@ -304,6 +319,7 @@ GitHub Actions workflow triggers on PR/push:
 - Desktop edition (Electron/Tauri)
 
 ### Phase 3 (2027) - Exploration
+
 - Materials property calculations
 - DFT integration (PySCF, Gaussian)
 - Tensor network methods
@@ -318,12 +334,14 @@ GitHub Actions workflow triggers on PR/push:
 ### 8.1 Category Definition
 
 **Certifiable Quantum-Classical Convergence (CQCC):**
+
 - Quantum-enhanced algorithms + aerospace certification
 - Defense compliance (NIST, CMMC, DFARS)
 - Deterministic reproducibility
 - Multi-cloud enterprise deployment
 
 **Competitors:**
+
 - Pure quantum (IBM, Google, Amazon Braket): No certification, NISQ-limited
 - Classical HPC (VASP, Gaussian): No quantum advantage
 - Cloud ML (AWS SageMaker, GCP Vertex): No compliance moat
@@ -364,7 +382,7 @@ All claims in this whitepaper are supported by actual code:
 
 ### Repository
 
-- GitHub: https://github.com/robertringler/QRATUM
+- GitHub: <https://github.com/robertringler/QRATUM>
 - Commit: 58c86c5 (AI platform implementation)
 - Branch: copilot/refactor-qratum-repository
 
@@ -386,6 +404,7 @@ This positions QRATUM uniquely for regulated industries where quantum advantage 
 ---
 
 **Document Control:**
+
 - Version: 2.0
 - Last Updated: 2025-12-19
 - Classification: Public

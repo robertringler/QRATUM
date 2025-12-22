@@ -59,6 +59,7 @@ quasim/ownai/
 ## CLI Commands
 
 ### Train
+
 ```bash
 quasim-own train \
   --model slt \
@@ -69,11 +70,13 @@ quasim-own train \
 ```
 
 ### Evaluate
+
 ```bash
 quasim-own eval --run runs/slt_imdb --metrics all
 ```
 
 ### Benchmark
+
 ```bash
 # Quick: tabular + text (~10 minutes)
 quasim-own benchmark --suite quick --repeat 3
@@ -86,6 +89,7 @@ quasim-own benchmark --suite full --repeat 10
 ```
 
 ### Export
+
 ```bash
 quasim-own export \
   --run runs/slt_imdb \
@@ -94,6 +98,7 @@ quasim-own export \
 ```
 
 ### Model Card
+
 ```bash
 quasim-own modelcard \
   --run runs/slt_imdb \
@@ -137,6 +142,7 @@ pytest tests/ownai/ --cov=quasim.ownai --cov-report=html
 ## CI/CD
 
 ### ownai-ci.yml
+
 - Triggers on push/PR to ownai code
 - Linting (ruff, black, mypy)
 - Unit tests
@@ -144,6 +150,7 @@ pytest tests/ownai/ --cov=quasim.ownai --cov-report=html
 - Artifact uploads
 
 ### ownai-nightly.yml
+
 - Runs daily at 2 AM UTC
 - Full benchmark suite
 - Commits docs/ownai/benchmarks.md
@@ -170,6 +177,7 @@ Included baseline models:
 ## Performance
 
 Demo results on synthetic data:
+
 - Text classification (IMDb-mini): 99.0% accuracy
 - Tabular classification (Wine): 85-90% accuracy
 - Vision classification (MNIST-1k): 80-85% accuracy

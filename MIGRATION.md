@@ -45,12 +45,14 @@ pip install qratum
 #### Basic Import Changes
 
 **Before (QuASIM):**
+
 ```python
 from quasim import Simulator, Circuit
 from quasim.core import gates
 ```
 
 **After (QRATUM):**
+
 ```python
 from qratum import Simulator, Circuit
 from qratum.core import gates
@@ -70,6 +72,7 @@ from qratum.core import gates
 #### Creating a Simulator
 
 **Before (QuASIM):**
+
 ```python
 from quasim import Config, runtime
 
@@ -84,6 +87,7 @@ with runtime(config) as rt:
 ```
 
 **After (QRATUM):**
+
 ```python
 from qratum import Simulator
 
@@ -99,6 +103,7 @@ result = simulator.run(circuit, shots=1024)
 #### Building Circuits
 
 **Before (QuASIM distributed):**
+
 ```python
 from quasim.qc.circuit import Circuit
 from quasim.qc.gates import H, CNOT
@@ -108,6 +113,7 @@ circuit = Circuit(2)
 ```
 
 **After (QRATUM):**
+
 ```python
 from qratum import Circuit
 
@@ -122,12 +128,14 @@ circuit.cnot(0, 1)
 #### State Vector Access
 
 **Before:**
+
 ```python
 # State vector was internal
 result = runtime.simulate(circuit)
 ```
 
 **After:**
+
 ```python
 # Explicit state vector access
 state = simulator.run_statevector(circuit)
@@ -138,12 +146,14 @@ probs = state.probabilities()
 #### Measurement Results
 
 **Before:**
+
 ```python
 # Simple list output
 result = runtime.simulate(circuit)
 ```
 
 **After:**
+
 ```python
 # Rich Result object
 result = simulator.run(circuit, shots=1024)
@@ -170,6 +180,7 @@ sim_tn = Simulator(backend="tensor-network")  # For >40 qubits
 ```
 
 **Auto-selection logic:**
+
 - 1-10 qubits: `cpu`
 - 11-32 qubits: `gpu` (if available, else `cpu`)
 - 33-40 qubits: `multi-gpu` (if available, else `tensor-network`)
@@ -238,9 +249,11 @@ result = sim.run(circuit)
 ### Environment Variables
 
 **Before (QuASIM):**
+
 - No environment variable support
 
 **After (QRATUM):**
+
 ```bash
 export QRATUM_BACKEND=gpu
 export QRATUM_PRECISION=fp32
@@ -323,14 +336,15 @@ if __name__ == "__main__":
 ```
 
 Run with:
+
 ```bash
 python test_migration.py
 ```
 
 ## Getting Help
 
-- **Documentation**: https://qratum.io/docs
-- **GitHub Issues**: https://github.com/robertringler/QRATUM/issues
+- **Documentation**: <https://qratum.io/docs>
+- **GitHub Issues**: <https://github.com/robertringler/QRATUM/issues>
 - **Migration Questions**: Tag with `migration` label
 
 ## Deprecation Timeline

@@ -43,6 +43,7 @@ A **complete, state-of-the-art desktop application** using modern Electron frame
 ## 📦 Installation Experience
 
 ### Windows
+
 ```
 1. Download: QRATUM-Desktop-Setup-2.0.0.exe (180MB)
 2. Run Installer → Click "Next" → Choose location
@@ -51,6 +52,7 @@ A **complete, state-of-the-art desktop application** using modern Electron frame
 ```
 
 ### macOS
+
 ```
 1. Download: QRATUM-Desktop-2.0.0.dmg (160MB)
 2. Open DMG → Drag to Applications folder
@@ -59,6 +61,7 @@ A **complete, state-of-the-art desktop application** using modern Electron frame
 ```
 
 ### Linux
+
 ```
 1. Download: QRATUM-Desktop-2.0.0.AppImage (170MB)
 2. chmod +x QRATUM-Desktop-2.0.0.AppImage
@@ -279,6 +282,7 @@ await window.QRATUMDesktop.backend.restart();
 ```
 
 **Security Layers:**
+
 1. ✅ Context isolation (renderer can't access Node.js)
 2. ✅ No remote module
 3. ✅ Sandbox mode enabled
@@ -340,6 +344,7 @@ npm run build:linux
 ## 📁 Data Storage
 
 ### Windows
+
 ```
 %APPDATA%\QRATUM\
 ├── data.db              # SQLite database
@@ -352,6 +357,7 @@ npm run build:linux
 ```
 
 ### macOS
+
 ```
 ~/Library/Application Support/QRATUM/
 ├── data.db
@@ -364,6 +370,7 @@ npm run build:linux
 ```
 
 ### Linux
+
 ```
 ~/.local/share/qratum/
 ├── data.db
@@ -395,18 +402,21 @@ npm run build:linux
 ## 🗺️ Roadmap
 
 ### v2.1.0 (Q1 2026)
+
 - [ ] Auto-update mechanism (electron-updater)
 - [ ] Crash reporting (opt-in)
 - [ ] Plugin system
 - [ ] Custom themes
 
 ### v2.2.0 (Q2 2026)
+
 - [ ] Cloud sync (optional)
 - [ ] Multi-window support
 - [ ] Advanced GPU controls
 - [ ] Performance profiler
 
 ### v3.0.0 (Q3 2026)
+
 - [ ] WebGPU acceleration
 - [ ] Distributed compute (multiple desktops)
 - [ ] Advanced visualization
@@ -426,6 +436,7 @@ npm run build:linux
 ## 🎉 Result
 
 **A fully functional, production-ready desktop application** that:
+
 - Installs in one click
 - Runs offline
 - Looks and feels like a native app

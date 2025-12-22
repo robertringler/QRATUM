@@ -3,6 +3,7 @@
 ## Service Architecture
 
 ### Components
+
 - **Model Server** (port 8080): FastAPI-based ML model serving
 - **Orchestrator** (port 8000): Request routing and load balancing
 - **Vector DB** (port 19530): Milvus vector database for RAG
@@ -11,6 +12,7 @@
 ## Deployment
 
 ### Prerequisites
+
 - Kubernetes cluster (1.24+)
 - Helm 3.12+
 - kubectl configured
@@ -231,5 +233,5 @@ mlflow artifacts download --artifact-uri s3://mlflow/models \
 ## Contact
 
 - **On-call**: Slack #qratum-oncall
-- **Escalation**: ops@qratum.io
-- **Documentation**: https://docs.qratum.io
+- **Escalation**: <ops@qratum.io>
+- **Documentation**: <https://docs.qratum.io>

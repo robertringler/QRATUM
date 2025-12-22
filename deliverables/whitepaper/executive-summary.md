@@ -1,9 +1,10 @@
 # QRATUM Executive Summary
+
 ## One-Page Brief for C-Suite and Investors
 
 **Date:** December 19, 2025  
 **Classification:** Public  
-**Contact:** ops@qratum.io
+**Contact:** <ops@qratum.io>
 
 ---
 
@@ -18,6 +19,7 @@ Traditional quantum computers cannot be certified for safety-critical systems. C
 ## Product
 
 **QRATUM Platform:**
+
 - Hybrid quantum-classical runtime (NVIDIA cuQuantum + Qiskit)
 - DO-178C Level A certification pathway (aerospace safety-critical)
 - NIST 800-53 Rev 5 compliant (98.75%, HIGH baseline)
@@ -26,6 +28,7 @@ Traditional quantum computers cannot be certified for safety-critical systems. C
 - Multi-cloud Kubernetes (EKS/GKE/AKS, 99.95% SLA)
 
 **AI Platform Extension:**
+
 - Model serving (FastAPI, GPU/CPU autoscaling)
 - RAG pipeline (vector DB, embeddings)
 - Safety engine (PII/secret filtering)
@@ -50,6 +53,7 @@ Traditional quantum computers cannot be certified for safety-critical systems. C
 ## Traction
 
 **Current Status:**
+
 - 2,875 lines of test code (>90% coverage)
 - 28 passing AI platform tests
 - 7-stage CI/CD pipeline
@@ -57,6 +61,7 @@ Traditional quantum computers cannot be certified for safety-critical systems. C
 - GitHub: 300+ commits, 60+ branches
 
 **Pilot Customers (Proposed):**
+
 - Aerospace: SpaceX/NASA GNC validation
 - Defense: DARPA quantum algorithms
 - Pharma: Molecular simulation (Pfizer/Moderna)
@@ -74,11 +79,13 @@ Traditional quantum computers cannot be certified for safety-critical systems. C
 **Phase 4 (2027+):** Desktop edition, commercial rollout
 
 **Pricing Model:**
+
 - Enterprise License: $250K-$500K/year (on-premise or cloud)
 - Pilot Program: $50K (3-month evaluation)
 - Desktop Edition: $5K/seat/year (planned)
 
 **Sales Strategy:**
+
 - Direct sales to Fortune 500 (aerospace, defense, pharma)
 - Federal contracts (NASA, DOD, DARPA)
 - Channel partners (cloud providers, systems integrators)
@@ -88,6 +95,7 @@ Traditional quantum computers cannot be certified for safety-critical systems. C
 ## Technology Differentiation
 
 **Quantum Capabilities (Honest Assessment):**
+
 - NISQ-era algorithms (VQE, QAOA)
 - Effective qubit count: ~10-20
 - Classical simulation for validation
@@ -96,11 +104,13 @@ Traditional quantum computers cannot be certified for safety-critical systems. C
 **Not a pure-play quantum computer** — QRATUM is a hybrid platform where quantum algorithms run within a certified, compliant, enterprise-grade infrastructure.
 
 **Current Limitations:**
+
 - Quantum advantage not yet demonstrated (NISQ hardware limits)
 - Problem sizes limited by effective qubit count
 - Classical methods often faster for small-scale problems
 
 **Future Roadmap (dependent on quantum hardware evolution):**
+
 - Error mitigation (2026)
 - Larger systems (4-6 qubits, 2026)
 - Fault-tolerant quantum (2028+, if available)
@@ -110,6 +120,7 @@ Traditional quantum computers cannot be certified for safety-critical systems. C
 ## Team
 
 **Core Competencies:**
+
 - Quantum computing (Qiskit, cuQuantum)
 - Aerospace certification (DO-178C, ECSS)
 - Defense compliance (NIST 800-53, CMMC 2.0)
@@ -121,16 +132,19 @@ Traditional quantum computers cannot be certified for safety-critical systems. C
 ## Financials (Projected)
 
 **Year 1 (2026):**
+
 - 5 pilot customers @ $50K = $250K ARR
 - 2 enterprise contracts @ $350K = $700K ARR
 - **Total: $950K ARR**
 
 **Year 2 (2027):**
+
 - 20 enterprise customers @ $350K = $7M ARR
 - Desktop edition: 100 seats @ $5K = $500K ARR
 - **Total: $7.5M ARR**
 
 **Year 3 (2028):**
+
 - 50 enterprise customers = $17.5M ARR
 - Desktop edition: 500 seats = $2.5M ARR
 - **Total: $20M ARR**
@@ -143,11 +157,13 @@ Traditional quantum computers cannot be certified for safety-critical systems. C
 
 **Seeking:** $5M Series A  
 **Use of Funds:**
+
 - Engineering (60%): Expand quantum algorithms, desktop edition, error mitigation
 - Sales (25%): Build aerospace/defense/pharma sales team
 - Operations (15%): Compliance audits, infrastructure, legal
 
 **Milestones:**
+
 - 10 pilot customers by Q2 2026
 - DO-178C certification audit by Q4 2026
 - Desktop edition beta by Q1 2027
@@ -187,8 +203,9 @@ Traditional quantum computers cannot be certified for safety-critical systems. C
 ---
 
 **Contact:**
-- Email: ops@qratum.io
-- GitHub: https://github.com/robertringler/QRATUM
-- Website: https://qratum.io (coming soon)
+
+- Email: <ops@qratum.io>
+- GitHub: <https://github.com/robertringler/QRATUM>
+- Website: <https://qratum.io> (coming soon)
 
 **Document Version:** 1.0 | December 19, 2025

@@ -33,7 +33,9 @@ All vertical modules enforce these invariants:
 ## Vertical Modules
 
 ### 1. JURIS - Legal AI
+
 **Capabilities:**
+
 - Contract analysis and review
 - Legal research and precedent matching
 - Compliance checking
@@ -43,7 +45,9 @@ All vertical modules enforce these invariants:
 **Safety Disclaimer:** NOT legal advice - requires attorney review
 
 ### 2. VITRA - Bioinformatics & Drug Discovery
+
 **Capabilities:**
+
 - Genomic sequence analysis
 - Protein structure prediction
 - Drug-target interaction modeling
@@ -54,7 +58,9 @@ All vertical modules enforce these invariants:
 **Safety Disclaimer:** NOT for clinical diagnosis - requires researcher validation
 
 ### 3. ECORA - Climate & Energy Systems
+
 **Capabilities:**
+
 - Climate projection modeling
 - Renewable energy optimization
 - Carbon footprint analysis
@@ -64,7 +70,9 @@ All vertical modules enforce these invariants:
 **Safety Disclaimer:** Models are approximations - requires expert review
 
 ### 4. CAPRA - Financial Risk & Derivatives
+
 **Capabilities:**
+
 - Options pricing (Black-Scholes, Monte Carlo)
 - VaR/CVaR risk calculation
 - Portfolio optimization
@@ -74,7 +82,9 @@ All vertical modules enforce these invariants:
 **Safety Disclaimer:** NOT investment advice - requires financial advisor
 
 ### 5. SENTRA - Aerospace & Defense
+
 **Capabilities:**
+
 - Trajectory simulation
 - Radar cross-section analysis
 - Orbit propagation
@@ -84,7 +94,9 @@ All vertical modules enforce these invariants:
 **Safety Disclaimer:** Export controls may apply - requires authorization
 
 ### 6. NEURA - Neuroscience & BCI
+
 **Capabilities:**
+
 - Neural network simulation
 - EEG/MEG signal analysis
 - Brain connectivity mapping
@@ -94,7 +106,9 @@ All vertical modules enforce these invariants:
 **Safety Disclaimer:** NOT for clinical use - requires IRB approval
 
 ### 7. FLUXA - Supply Chain & Logistics
+
 **Capabilities:**
+
 - Route optimization
 - Demand forecasting
 - Inventory optimization
@@ -244,6 +258,7 @@ Each module explicitly checks for and refuses prohibited uses. Attempting prohib
 ### Audit Trail
 
 All operations emit events to a cryptographic Merkle chain, providing:
+
 - Complete execution history
 - Tamper detection
 - Cryptographic verification
@@ -254,9 +269,11 @@ All operations emit events to a cryptographic Merkle chain, providing:
 ### Core Classes
 
 #### PlatformIntent
+
 Immutable intent structure for all operations.
 
 **Fields:**
+
 - `vertical`: Target vertical module (VerticalType)
 - `operation`: Specific operation within vertical
 - `parameters`: Operation parameters (Dict)
@@ -266,9 +283,11 @@ Immutable intent structure for all operations.
 - `timestamp`: Intent creation timestamp (UTC)
 
 #### PlatformContract
+
 Immutable execution authorization contract.
 
 **Fields:**
+
 - `intent`: The original platform intent
 - `contract_hash`: SHA-256 hash of intent serialization
 - `authorized`: Whether execution is authorized
@@ -277,13 +296,16 @@ Immutable execution authorization contract.
 - `restrictions`: Any restrictions on execution
 
 **Methods:**
+
 - `is_valid()`: Check if contract is currently valid
 - `has_attestation(attestation)`: Check if attestation is present
 
 #### ExecutionResult
+
 Result of a vertical module execution.
 
 **Fields:**
+
 - `success`: Whether execution succeeded
 - `result_data`: The actual result data
 - `warnings`: Any warnings generated
@@ -310,12 +332,14 @@ Result of a vertical module execution.
 ### Substrate Selection
 
 The platform automatically selects optimal compute substrates based on:
+
 - Problem size
 - Task type
 - Required availability
 - Substrate capabilities
 
 Available substrates:
+
 - CPU_SERIAL, CPU_PARALLEL
 - GPU_CUDA, GPU_METAL
 - TPU

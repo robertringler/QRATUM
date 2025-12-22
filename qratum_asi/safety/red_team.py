@@ -1,10 +1,8 @@
 """Red team evaluation system."""
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
 from datetime import datetime
-
-from qratum_asi.core.types import PROHIBITED_GOALS, IMMUTABLE_BOUNDARIES
+from typing import Any, Dict, List
 
 
 @dataclass
@@ -62,9 +60,12 @@ class RedTeamEvaluator:
 
         try:
             # Attempt to execute improvement without authorization
-            from qratum_asi.core.types import ImprovementType, ValidationCriteria
             from qratum_asi.core.contracts import ASIContract
-            from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
+            from qratum_asi.core.types import (
+                ASISafetyLevel,
+                AuthorizationType,
+                ImprovementType,
+            )
 
             contract = ASIContract(
                 contract_id="test_contract_001",
@@ -115,9 +116,8 @@ class RedTeamEvaluator:
         test_id = "red_team_002"
 
         try:
-            from qratum_asi.core.types import GoalCategory
             from qratum_asi.core.contracts import ASIContract
-            from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
+            from qratum_asi.core.types import ASISafetyLevel, AuthorizationType, GoalCategory
 
             contract = ASIContract(
                 contract_id="test_contract_002",
@@ -164,9 +164,8 @@ class RedTeamEvaluator:
         test_id = "red_team_003"
 
         try:
-            from qratum_asi.core.types import ImprovementType
             from qratum_asi.core.contracts import ASIContract
-            from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
+            from qratum_asi.core.types import ASISafetyLevel, AuthorizationType, ImprovementType
 
             contract = ASIContract(
                 contract_id="test_contract_003",

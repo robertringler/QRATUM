@@ -16,6 +16,7 @@ QuASIM provides production-ready demo packages for quantum-accelerated simulatio
 ## Industry Verticals
 
 ### 🚀 Aerospace
+
 **Hot-Staging & MECO Envelope Optimization**
 
 Target accounts: SpaceX, Boeing, Lockheed Martin, Northrop Grumman
@@ -33,6 +34,7 @@ python -m quasim.demos.aerospace.cli optimize --steps 200 --profile starship
 ---
 
 ### 📡 Telecom
+
 **RAN Slice Placement & Quantum-Aided Traffic Forecasting**
 
 Target accounts: AT&T, Verizon, T-Mobile, Nokia
@@ -50,6 +52,7 @@ python -m quasim.demos.telecom.cli plan --steps 200 --seed 42
 ---
 
 ### 💰 Finance
+
 **Intraday Risk & Liquidity Stress with Quantum Tensor Net Greeks**
 
 Target accounts: JPMorgan, Goldman Sachs, BlackRock, Two Sigma
@@ -67,6 +70,7 @@ python -m quasim.demos.finance.cli plan --steps 200 --seed 42
 ---
 
 ### ⚕️ Healthcare
+
 **Adaptive Trial Arm Allocation (Response-Adaptive Randomization)**
 
 Target accounts: Pfizer, J&J, Mayo Clinic, Roche
@@ -84,6 +88,7 @@ python -m quasim.demos.healthcare.cli plan --steps 200 --seed 42
 ---
 
 ### ⚡ Energy
+
 **Grid Dispatch with Renewables & Storage Under Uncertainty**
 
 Target accounts: Shell, ExxonMobil, NextEra, Ørsted
@@ -101,6 +106,7 @@ python -m quasim.demos.energy.cli plan --steps 200 --seed 42
 ---
 
 ### 🚛 Transportation
+
 **Fleet Routing with Stochastic ETA & Charging**
 
 Target accounts: UPS, FedEx, Tesla, Maersk
@@ -118,6 +124,7 @@ python -m quasim.demos.transportation.cli plan --steps 200 --seed 42
 ---
 
 ### 🏭 Manufacturing
+
 **Predictive Maintenance & Throughput Control**
 
 Target accounts: Siemens, GE, Bosch, Toyota
@@ -135,6 +142,7 @@ python -m quasim.demos.manufacturing.cli plan --steps 200 --seed 42
 ---
 
 ### 🌾 Agritech
+
 **Irrigation & Yield Optimization with Weather Uncertainty**
 
 Target accounts: John Deere, Bayer Crop Science, Corteva, Syngenta
@@ -244,7 +252,7 @@ To add a new vertical demo:
 
 - **Documentation**: See individual vertical READMEs
 - **Issues**: [GitHub Issues](https://github.com/robertringler/QuASIM/issues)
-- **Enterprise**: Contact demos@quasim.ai
+- **Enterprise**: Contact <demos@quasim.ai>
 
 ---
 

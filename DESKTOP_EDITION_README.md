@@ -11,6 +11,7 @@
 This directory contains specification documents for the proposed **QRATUM Desktop Edition** — a standalone, downloadable application version of the QRATUM platform.
 
 **IMPORTANT**: These are **specification documents only**. No implementation has been authorized. Desktop edition would require:
+
 - Suspension of ARCHITECTURE_FREEZE.md
 - 11-month development timeline
 - $750K-$900K budget
@@ -22,11 +23,13 @@ This directory contains specification documents for the proposed **QRATUM Deskto
 ## Documents
 
 ### 1. Executive Summary (Start Here)
+
 **File**: [DESKTOP_EDITION_EXECUTIVE_SUMMARY.md](DESKTOP_EDITION_EXECUTIVE_SUMMARY.md)
 
 **Audience**: Executives, product managers, business stakeholders
 
 **Contents**:
+
 - TL;DR summary (timeline, budget, risks)
 - Business rationale and market drivers
 - Current vs. required architecture
@@ -38,11 +41,13 @@ This directory contains specification documents for the proposed **QRATUM Deskto
 ---
 
 ### 2. Technical Specification (Deep Dive)
+
 **File**: [QRATUM_DESKTOP_EDITION_SPECIFICATION.md](QRATUM_DESKTOP_EDITION_SPECIFICATION.md)
 
 **Audience**: Architects, engineering leads, technical stakeholders
 
 **Contents**:
+
 - Detailed current state analysis
 - Frontend framework comparison (Electron, Tauri, PyQt6)
 - Backend consolidation strategy (microservices → monolithic)
@@ -63,6 +68,7 @@ This directory contains specification documents for the proposed **QRATUM Deskto
 ### Architecture Incompatibilities
 
 **Current QRATUM (Cloud-Native)**:
+
 ```
 Browser → Load Balancer → Frontend (nginx)
                                ↓
@@ -76,6 +82,7 @@ Browser → Load Balancer → Frontend (nginx)
 ```
 
 **Required Desktop Architecture**:
+
 ```
 Desktop App (Electron/Tauri/PyQt)
     ↓
@@ -111,6 +118,7 @@ Per [ARCHITECTURE_FREEZE.md](ARCHITECTURE_FREEZE.md):
 > **DO NOT Refactor**: Unless fixing bugs or CI failures
 
 **Desktop edition violates all three constraints**:
+
 - ❌ New subsystems (desktop UI, IPC layer, embedded DB)
 - ❌ API changes (cloud vs. local mode)
 - ❌ Major refactoring (microservices → monolithic)
@@ -122,18 +130,21 @@ Per [ARCHITECTURE_FREEZE.md](ARCHITECTURE_FREEZE.md):
 ## Alternatives to Full Desktop
 
 ### Option A: Docker Compose Local Deployment
+
 - **Timeline**: 2-3 months
 - **Budget**: $150K-$200K
 - **Pros**: Reuse 90% of existing code
 - **Cons**: Requires Docker Desktop, still browser-based
 
 ### Option B: Progressive Web App (PWA)
+
 - **Timeline**: 2-4 weeks
 - **Budget**: $20K-$40K
 - **Pros**: Minimal implementation, works everywhere
 - **Cons**: Limited offline support, still browser-based
 
 ### Option C: Electron Thin Client
+
 - **Timeline**: 1-2 months
 - **Budget**: $75K-$100K
 - **Pros**: Desktop icon, native windows
@@ -143,7 +154,7 @@ Per [ARCHITECTURE_FREEZE.md](ARCHITECTURE_FREEZE.md):
 
 ## Decision Points
 
-### Must Answer Before Proceeding:
+### Must Answer Before Proceeding
 
 1. **Market Demand**
    - How many customers requested desktop edition?

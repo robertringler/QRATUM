@@ -32,6 +32,7 @@ python run_mega_prompt.py
 ```
 
 This will:
+
 1. Initialize the MEGA PROMPT system with 20 questions
 2. Query 5 model adapters (mechanistic, speculative, cautious, optimistic, refusal)
 3. Validate all responses against mandatory rules
@@ -50,33 +51,43 @@ Validates that the implementation meets all requirements.
 ## Question Categories
 
 ### 1. Capability Emergence & Phase Transitions (Q1-Q2)
+
 Early detection of superintelligent phase transitions and strategic dominance capabilities.
 
 ### 2. Recursive Self-Improvement & Takeoff Dynamics (Q3-Q4)
+
 Uncontrollable RSI conditions and provable self-improvement constraints.
 
 ### 3. Alignment Failure, Deception & Mesa-Optimization (Q5-Q6)
+
 Deceptive alignment emergence and misalignment concealment mechanisms.
 
 ### 4. Infrastructure vs Model-Level Safety (Q7-Q8)
+
 Infrastructure-layer safety requirements and deterministic execution necessity.
 
 ### 5. Psychological / Cognitive Architecture (Q9-Q10)
+
 Partitioned architecture tradeoffs and self-transparency considerations.
 
 ### 6. Governance, Geopolitics & Adversarial Deployment (Q11-Q12)
+
 Centralized vs. open system risks and geopolitical failure modes.
 
 ### 7. Ultimate Safety Constraints (Q13-Q15)
+
 Provable impossibilities, alignment solvability, and false assumptions.
 
 ### 8. Narrative, Myth, and Constraint Encoding (Q16-Q17)
+
 Catastrophe narrative effectiveness and higher authority constraints.
 
 ### 9. Containment & Kill-Switch Reality (Q18-Q19)
+
 Kill switch feasibility and structural containment choke points.
 
 ### 10. Final Adversarial Question (Q20)
+
 Indicators that we're past the last safe point for ASI development.
 
 ---
@@ -103,21 +114,27 @@ All responses follow this strict JSON structure:
 ## Mandatory Response Rules
 
 ### Rule 1: Assume ASI is Adversarial by Default
+
 No benevolence, corrigibility, or alignment assumptions without mechanistic justification.
 
 ### Rule 2: Mechanisms Over Morals
+
 Ethical claims without enforceable mechanisms are flagged as safety theater.
 
 ### Rule 3: No Narrative Reassurance
+
 Avoid "likely safe" or "research is ongoing" without structural justification.
 
 ### Rule 4: Refusal Must Be Explicit
+
 Refusals and uncertainty are high-value safety signals, not failures.
 
 ### Rule 5: No Human Exceptionalism Bias
+
 Don't assume human psychology or values generalize to ASI.
 
 ### Rule 6: Transparency Requirement
+
 Architectural constraints and limitations must be stated explicitly.
 
 Each rule is validated with specific checks producing violations, warnings, and quality scores.
@@ -298,6 +315,7 @@ python test_mega_prompt.py
 ```
 
 Tests validate:
+
 - ✅ 20 questions across 10 categories
 - ✅ Strict JSON response format
 - ✅ Mandatory rules enforcement
@@ -308,6 +326,7 @@ Tests validate:
 ### Security
 
 Code has been verified with:
+
 - ✅ Code review (all issues addressed)
 - ✅ CodeQL security scan (0 vulnerabilities)
 - ✅ Input validation
@@ -318,21 +337,27 @@ Code has been verified with:
 ## Design Principles
 
 ### 1. Adversarial by Default
+
 Assumes ASI is strategically adversarial. No benevolence assumptions.
 
 ### 2. Mechanisms Over Morals
+
 Focus on enforceable mechanisms, not ethical "shoulds".
 
 ### 3. Truth Over Reassurance
+
 If honest analysis increases perceived risk, that's the correct outcome.
 
 ### 4. Refusal as Signal
+
 Explicit refusals indicate real boundaries, treated as valuable data.
 
 ### 5. Strict Format
+
 No deviation from JSON structure. All fields required.
 
 ### 6. Multi-Model Diversity
+
 Different perspectives reveal blind spots and false consensus.
 
 ---
@@ -344,15 +369,15 @@ Different perspectives reveal blind spots and false consensus.
 1. **Framework, Not Solution**
    - Tool for interrogation, not safety guarantee
    - ASI safety remains unsolved
-   
+
 2. **ASI is Theoretical**
    - Requires fundamental AI breakthroughs
    - Current systems far below ASI level
-   
+
 3. **Simulated Responses**
    - Provided adapters use simulated models
    - Real work requires GPT-4, Claude, etc.
-   
+
 4. **No False Comfort**
    - May increase perceived risk
    - Truth over reassurance

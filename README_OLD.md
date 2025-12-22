@@ -1,6 +1,7 @@
 # QRATUM - Quantum-Classical Hybrid Materials Simulation Framework
 
 ### Rigorous NISQ-Era Quantum Computing with Classical Validation
+
 High-Assurance • Reproducible • Scientifically Validated • Materials Science Focus
 
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
@@ -14,12 +15,14 @@ High-Assurance • Reproducible • Scientifically Validated • Materials Scien
 **QRATUM is a PROTOTYPE research platform for NISQ-era quantum computing (December 2025).**
 
 This project implements **genuine quantum algorithms** using Qiskit, but with critical limitations:
+
 - **Small systems only**: H₂ molecules (~2 qubits), small graphs (~10 nodes)
 - **Classical simulation**: Runs on classical computers simulating quantum behavior
 - **No quantum advantage**: Classical methods are faster for all current problem sizes
 - **Research/educational focus**: Demonstrating quantum algorithms, not production deployment
 
 **NOT suitable for**:
+
 - Production materials design
 - Large-scale tire optimization
 - Real-time industrial applications
@@ -34,6 +37,7 @@ See [QUANTUM_CAPABILITY_AUDIT.md](QUANTUM_CAPABILITY_AUDIT.md) for detailed anal
 **QRATUM created a new computational category.** Traditional quantum computers cannot be certified for mission-critical systems. Classical HPC is performance-bounded. QRATUM introduced **Certifiable Quantum-Classical Convergence (CQCC)** — combining quantum-enhanced performance with aerospace certification and defense compliance.
 
 **📚 Category Documentation:**
+
 - **[CATEGORY_INDEX.md](CATEGORY_INDEX.md)** — Navigation hub for all category documents
 - **[CATEGORY_DEFINITION.md](CATEGORY_DEFINITION.md)** — The laws and physics of CQCC
 - **[LIGHTNING_STRIKE_NARRATIVE.md](LIGHTNING_STRIKE_NARRATIVE.md)** — Category introduction strategy
@@ -47,6 +51,7 @@ See [QUANTUM_CAPABILITY_AUDIT.md](QUANTUM_CAPABILITY_AUDIT.md) for detailed anal
 ### ✅ Implemented Quantum Algorithms
 
 **Variational Quantum Eigensolver (VQE)**:
+
 - H₂ molecule ground state energy calculation
 - Validated against classical Hartree-Fock
 - 2-4 qubits (small molecules only)
@@ -54,12 +59,14 @@ See [QUANTUM_CAPABILITY_AUDIT.md](QUANTUM_CAPABILITY_AUDIT.md) for detailed anal
 - Example: `examples/quantum_h2_vqe.py`
 
 **Quantum Approximate Optimization Algorithm (QAOA)**:
+
 - MaxCut graph partitioning (4-10 nodes)
 - Ising spin glass models (proxy for materials defects)
 - Approximation ratio tracking vs. classical optimal
 - Example: `examples/quantum_maxcut_qaoa.py`
 
 **Quantum Infrastructure**:
+
 - Qiskit-based quantum circuit simulation
 - Configurable shot counts (statistical analysis)
 - Seed management for reproducibility
@@ -79,7 +86,6 @@ See [QUANTUM_CAPABILITY_AUDIT.md](QUANTUM_CAPABILITY_AUDIT.md) for detailed anal
 - **Real materials optimization**: Current examples are toy problems
 - **Quantum error correction**: NISQ-era devices have no error correction
 - **Quantum speedup**: Classical methods outperform on all current problem sizes
-
 
 ---
 
@@ -107,6 +113,7 @@ tests/
 ```
 
 ### Design Principles
+
 - **Transparency**: Honest about quantum limitations
 - **Validation**: All quantum results compared to classical
 - **Reproducibility**: Seed management for deterministic behavior
@@ -118,11 +125,13 @@ tests/
 ## NISQ-Era Quantum Computing Reality Check
 
 **What NISQ means (2025)**:
+
 - **N**oisy: Error rates ~0.1-1% per gate
 - **I**ntermediate-**S**cale: 50-1000 qubits (but effective qubits much lower)
 - **Q**uantum: Real quantum devices, but no error correction
 
 **Practical implications**:
+
 - Circuit depth limited to ~100-5000 gates before noise dominates
 - Effective qubit counts: ~10-50 for useful computation
 - Probabilistic results require 1000+ shots for statistics
@@ -130,12 +139,14 @@ tests/
 - Quantum advantage exists only for specific problems at specific scales
 
 **Current QRATUM quantum capabilities are for**:
+
 - Research and algorithm development
 - Educational demonstrations
 - Validating quantum algorithm implementations
 - Exploring quantum-classical hybrid workflows
 
 **NOT for**:
+
 - Production optimization
 - Claims of "quantum acceleration"
 - Large-scale materials simulation
@@ -146,6 +157,7 @@ tests/
 ## Installation
 
 ### Prerequisites
+
 - Python 3.10 or later
 - pip package manager
 
@@ -174,7 +186,8 @@ print(get_quantum_status())
 ### IBM Quantum Hardware Access (Optional)
 
 To run on real quantum hardware:
-1. Create account at https://quantum-computing.ibm.com/
+
+1. Create account at <https://quantum-computing.ibm.com/>
 2. Get API token from your account
 3. Configure in code:
 
@@ -240,6 +253,7 @@ print(f"Error: {result.error_vs_classical:.6f} Hartree")
 ```
 
 Run the full example:
+
 ```bash
 python examples/quantum_h2_vqe.py
 ```
@@ -274,6 +288,7 @@ print(f"Approximation ratio: {result.approximation_ratio:.2%}")
 ```
 
 Run the full example:
+
 ```bash
 python examples/quantum_maxcut_qaoa.py
 ```
@@ -333,16 +348,19 @@ print(f"Ground state energy: {result.energy:.4f}")
 ### Why Classical is Still Faster (2025)
 
 QRATUM quantum algorithms run on **classical simulators** that:
+
 - Scale exponentially with qubit count (2^n states)
 - Are practical only up to ~30 qubits on modern hardware
 - Take seconds to minutes for problems solvable classically in milliseconds
 
 **Real quantum hardware** (IBM, Google, etc.):
+
 - Has queue times (minutes to hours)
 - Suffers from noise (requires error mitigation)
 - Currently offers no speedup for problems QuASIM can handle
 
 **Quantum advantage** exists theoretically but is not demonstrated in QRATUM because:
+
 - Problem sizes are too small (limited by NISQ noise)
 - Classical algorithms are highly optimized
 - Quantum error correction not yet available
@@ -352,6 +370,7 @@ QRATUM quantum algorithms run on **classical simulators** that:
 ## Roadmap
 
 ### Phase 1 (2025) - Current Implementation ✅
+
 - [x] VQE for H₂ molecule
 - [x] QAOA for MaxCut and Ising models
 - [x] Qiskit integration with simulators
@@ -359,6 +378,7 @@ QRATUM quantum algorithms run on **classical simulators** that:
 - [x] Honest documentation of limitations
 
 ### Phase 2 (2026) - Expanded Quantum Capabilities 🚧
+
 - [ ] Larger molecules (LiH, BeH₂) with 4-6 qubits
 - [ ] Error mitigation techniques (measurement error, ZNE)
 - [ ] cuQuantum GPU acceleration for simulation
@@ -366,6 +386,7 @@ QRATUM quantum algorithms run on **classical simulators** that:
 - [ ] Pennylane multi-backend support
 
 ### Phase 3 (2027) - Materials Science Applications 🔮
+
 - [ ] Small materials property calculations
 - [ ] Hybrid quantum-classical workflows for materials design
 - [ ] Integration with classical DFT codes (PySCF, Gaussian)
@@ -373,6 +394,7 @@ QRATUM quantum algorithms run on **classical simulators** that:
 - [ ] Fault-tolerant quantum computing exploration (if available)
 
 ### Long-term Vision (2028+) - Practical Quantum Advantage 🌟
+
 - [ ] Error-corrected logical qubits (when available)
 - [ ] Larger-scale materials simulations (>50 qubits)
 - [ ] Quantum machine learning for materials discovery
@@ -394,6 +416,7 @@ QRATUM is committed to **rigorous scientific transparency**:
 5. **NISQ-aware**: Designed for current noisy quantum devices, not idealized quantum computers
 
 We acknowledge that:
+
 - Current quantum computing (2025) does not provide speedup for our problem sizes
 - Classical simulation will remain competitive for small problems indefinitely
 - Quantum advantage requires larger, error-corrected quantum computers (not yet available)
@@ -406,24 +429,28 @@ We acknowledge that:
 If you need production-ready quantum computing tools:
 
 ### Quantum Frameworks
+
 - **Qiskit** (IBM): Industry-standard quantum computing framework
 - **PennyLane** (Xanadu): Quantum machine learning focus
 - **Cirq** (Google): Google's quantum framework
 - **Amazon Braket**: Cloud quantum computing service
 
 ### Classical Materials Simulation
+
 - **PySCF**: Ab initio quantum chemistry (Python)
 - **Gaussian**: Commercial quantum chemistry software
 - **VASP**: DFT for materials science
 - **LAMMPS**: Molecular dynamics
 
 ### When to use QRATUM
+
 - Learning quantum algorithms (VQE, QAOA)
 - Prototyping hybrid quantum-classical workflows
 - Educational demonstrations
 - Research on NISQ-era algorithm development
 
 ### When NOT to use QRATUM
+
 - Production materials optimization (use classical DFT)
 - Large-scale simulations (use HPC + VASP/Gaussian)
 - Industrial deployment (not ready for production)
@@ -434,6 +461,7 @@ If you need production-ready quantum computing tools:
 ## Contributing
 
 We welcome contributions that:
+
 - Add validated quantum algorithms with benchmarks
 - Improve documentation and examples
 - Fix bugs or improve code quality
@@ -442,6 +470,7 @@ We welcome contributions that:
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 **We do NOT accept**:
+
 - Unsubstantiated quantum claims
 - Code without validation against classical methods
 - Features claiming quantum advantage without proof
@@ -476,4 +505,3 @@ Apache 2.0 License - See [LICENSE](LICENSE) file for details.
 - **Quantum Computing Community**: NISQ-era algorithm research
 - **Classical Chemistry**: PySCF for validation calculations
 - **Open Source**: NumPy, SciPy, and scientific Python ecosystem
-

@@ -48,13 +48,17 @@ compliance/
 ## Workflows
 
 ### PR Compliance
+
 Runs on every pull request:
+
 - Code quality checks
 - YAML/Markdown validation
 - Workflow validation
 
 ### PR Defense Compliance
+
 Security-focused checks:
+
 - Vulnerability scanning
 - Secret detection
 - Dependency review
@@ -80,4 +84,4 @@ gh run watch --exit-status --workflow "PR Defense Compliance"
 
 ## Support
 
-For compliance questions: compliance@quasim.example.com
+For compliance questions: <compliance@quasim.example.com>

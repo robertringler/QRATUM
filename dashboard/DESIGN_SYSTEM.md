@@ -370,6 +370,7 @@ All color combinations meet WCAG 2.1 AA standards (4.5:1 minimum):
 ### Particle Animation
 
 Canvas-based particle system for hero sections with:
+
 - 50 animated particles
 - Connection lines between nearby particles
 - Purple gradient colors (#8b5cf6)
@@ -422,9 +423,11 @@ dashboard/
 ## Screenshots
 
 ### Landing Page Hero
+
 ![Landing Page](screenshots/01-landing-hero.png)
 
 ### Dashboard Main View
+
 ![Dashboard](screenshots/02-dashboard-main.png)
 
 ## Version

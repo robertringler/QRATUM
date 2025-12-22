@@ -22,6 +22,7 @@ Complete definitions of QRATUM-specific terms, acronyms, and concepts.
 ## Core System Terms
 
 ### QRADLE
+
 **Quantum-Resilient Auditable Deterministic Ledger Engine**
 
 Foundation execution layer providing deterministic operations with cryptographic auditability. Status: IN DEVELOPMENT (~60% complete).
@@ -31,6 +32,7 @@ Foundation execution layer providing deterministic operations with cryptographic
 ---
 
 ### QRATUM
+
 **Quantum-Resilient Autonomous Trustworthy Universal Machine**
 
 Multi-vertical AI platform spanning 14 critical domains with unified reasoning and sovereign deployment. Status: IN DEVELOPMENT (~40% complete).
@@ -40,6 +42,7 @@ Multi-vertical AI platform spanning 14 critical domains with unified reasoning a
 ---
 
 ### QRATUM-ASI
+
 **Artificial Superintelligence Layer**
 
 Theoretical architecture for controlled superintelligence via Constrained Recursive Self-Improvement (CRSI). Status: THEORETICAL (~10% complete, requires AI breakthroughs).
@@ -49,6 +52,7 @@ Theoretical architecture for controlled superintelligence via Constrained Recurs
 ---
 
 ### Sovereign Deployment
+
 Installation on-premises or in air-gapped environments with no cloud dependency. Complete data sovereignty for sensitive applications (government, defense, healthcare, finance).
 
 **Benefits**: Data never leaves infrastructure, regulatory compliance, no internet dependency, full control.
@@ -58,6 +62,7 @@ Installation on-premises or in air-gapped environments with no cloud dependency.
 ---
 
 ### Deterministic Execution
+
 Guarantee that same inputs always produce same outputs, with cryptographic proof. Essential for certification (DO-178C, CMMC) and auditability.
 
 **Implementation**: Fixed seeds, deterministic algorithms, no randomness in critical paths, reproducible results.
@@ -67,6 +72,7 @@ Guarantee that same inputs always produce same outputs, with cryptographic proof
 ---
 
 ### Auditability
+
 Ability to trace all operations from input to output with complete provenance. Implemented via Merkle-chained events.
 
 **Properties**: Tamper-evident, non-repudiable, externally verifiable, cryptographically proven.
@@ -78,9 +84,11 @@ Ability to trace all operations from input to output with complete provenance. I
 ## QRADLE Terms
 
 ### Contract
+
 Atomic unit of work in QRADLE. Specifies inputs, operations, expected outputs. Can be rolled back to any previous state.
 
 **Structure**:
+
 - `contract_id`: Unique identifier (UUID)
 - `payload`: Input data (deterministic)
 - `operations`: Sequence of operations to execute
@@ -92,6 +100,7 @@ Atomic unit of work in QRADLE. Specifies inputs, operations, expected outputs. C
 ---
 
 ### Merkle Chain
+
 Cryptographic data structure where each event is hashed and linked to previous events. Enables tamper-evident audit trails.
 
 **Formula**: `Hash_n = SHA256(Event_n || Hash_{n-1})`
@@ -103,9 +112,11 @@ Cryptographic data structure where each event is hashed and linked to previous e
 ---
 
 ### Rollback
+
 Ability to return system to any previous verified state (checkpoint). Critical for high-stakes applications (healthcare, defense, finance).
 
 **Types**:
+
 - **Automatic**: Created before every SENSITIVE+ contract
 - **Manual**: Created on explicit request
 - **Scheduled**: Created on time-based triggers (e.g., daily)
@@ -115,9 +126,11 @@ Ability to return system to any previous verified state (checkpoint). Critical f
 ---
 
 ### 8 Fatal Invariants
+
 Immutable safety constraints that can never be modified (even by self-improvement). Violations trigger immediate system lockdown.
 
 **The 8 Invariants**:
+
 1. Human Oversight Requirement
 2. Merkle Chain Integrity
 3. Contract Immutability
@@ -132,6 +145,7 @@ Immutable safety constraints that can never be modified (even by self-improvemen
 ---
 
 ### Safety Levels
+
 Risk classification for operations determining required authorization:
 
 | Level | Authorization | Use Cases |
@@ -147,6 +161,7 @@ Risk classification for operations determining required authorization:
 ---
 
 ### Checkpoint
+
 Snapshot of system state at a specific point in time. Enables rollback to verified states.
 
 **Contents**: System state, contract history, Merkle chain, configuration.
@@ -158,9 +173,11 @@ Snapshot of system state at a specific point in time. Enables rollback to verifi
 ---
 
 ### Event
+
 Record of a single operation in the Merkle chain. All operations emit events for auditability.
 
 **Schema**:
+
 - `event_id`: Unique identifier
 - `timestamp`: UTC timestamp
 - `contract_id`: Related contract
@@ -177,9 +194,11 @@ Record of a single operation in the Merkle chain. All operations emit events for
 ## QRATUM Terms
 
 ### Vertical
+
 Specialized AI domain within QRATUM (e.g., JURIS for legal, VITRA for healthcare). 14 verticals total covering critical domains.
 
 **Structure**:
+
 - Domain-specific knowledge graphs
 - Reasoning algorithms (deductive, inductive, abductive, analogical, causal, Bayesian)
 - External integrations (APIs, databases, file formats)
@@ -211,6 +230,7 @@ Specialized AI domain within QRATUM (e.g., JURIS for legal, VITRA for healthcare
 ---
 
 ### Unified Reasoning Engine
+
 Component that synthesizes insights across multiple verticals. Enables cross-domain queries and multi-vertical optimization.
 
 **Algorithms**: Constraint satisfaction, Pareto optimization, causal reasoning, analogical transfer.
@@ -220,6 +240,7 @@ Component that synthesizes insights across multiple verticals. Enables cross-dom
 ---
 
 ### Cross-Domain Synthesis
+
 Process of connecting discoveries across multiple verticals to generate novel insights.
 
 **Example**: VITRA drug discovery + ECORA climate impact + FLUXA supply chain = optimized sustainable drug manufacturing.
@@ -229,6 +250,7 @@ Process of connecting discoveries across multiple verticals to generate novel in
 ---
 
 ### Adapter
+
 Integration component connecting QRATUM to external enterprise systems (bidirectional data flow).
 
 **Examples**: Epic EMR, SAP S/4HANA, Bloomberg Terminal, LexisNexis, DISA systems.
@@ -238,6 +260,7 @@ Integration component connecting QRATUM to external enterprise systems (bidirect
 ---
 
 ### Knowledge Graph
+
 Structured representation of domain knowledge as nodes (entities) and edges (relationships).
 
 **Properties**: Domain-specific, versioned, provenance-tracked, queryable.
@@ -249,6 +272,7 @@ Structured representation of domain knowledge as nodes (entities) and edges (rel
 ## QRATUM-ASI Terms
 
 ### CRSI
+
 **Constrained Recursive Self-Improvement**
 
 Framework where AI self-improvement is treated as a QRADLE contract: deterministic, auditable, reversible, human-authorized for sensitive changes.
@@ -260,6 +284,7 @@ Framework where AI self-improvement is treated as a QRADLE contract: determinist
 ---
 
 ### Q-REALITY
+
 **Emergent World Model**
 
 Unified causal model integrating all 14 QRATUM verticals. Hash-addressed knowledge nodes with causal graph structure.
@@ -271,6 +296,7 @@ Unified causal model integrating all 14 QRATUM verticals. Hash-addressed knowled
 ---
 
 ### Q-MIND
+
 **Unified Reasoning Core**
 
 Integrates all 14 verticals into unified reasoning with multiple strategies (deductive, inductive, abductive, analogical, causal, Bayesian).
@@ -282,6 +308,7 @@ Integrates all 14 verticals into unified reasoning with multiple strategies (ded
 ---
 
 ### Q-EVOLVE
+
 **Safe Self-Improvement System**
 
 Contract-bound self-improvement with immutable boundaries, rollback capability, and human-in-the-loop authorization.
@@ -293,6 +320,7 @@ Contract-bound self-improvement with immutable boundaries, rollback capability, 
 ---
 
 ### Q-WILL
+
 **Autonomous Intent Generation**
 
 Proposes goals based on system state analysis. ALL proposals require human authorization. PROHIBITED_GOALS enforced.
@@ -304,6 +332,7 @@ Proposes goals based on system state analysis. ALL proposals require human autho
 ---
 
 ### Q-FORGE
+
 **Superhuman Discovery Engine**
 
 Cross-domain hypothesis generation and novel synthesis from multiple discoveries. Validation framework with confidence scoring.
@@ -315,9 +344,11 @@ Cross-domain hypothesis generation and novel synthesis from multiple discoveries
 ---
 
 ### IMMUTABLE_BOUNDARIES
+
 Set of system properties that can never be modified (even by self-improvement). Enforced by Q-EVOLVE.
 
 **The Boundaries**:
+
 - `human_oversight_requirement`
 - `merkle_chain_integrity`
 - `contract_immutability`
@@ -332,9 +363,11 @@ Set of system properties that can never be modified (even by self-improvement). 
 ---
 
 ### PROHIBITED_GOALS
+
 Set of goals Q-WILL can never propose. Hardcoded safety constraints.
 
 **The Goals**:
+
 - `remove_human_oversight`
 - `disable_authorization`
 - `modify_safety_constraints`
@@ -353,6 +386,7 @@ Set of goals Q-WILL can never propose. Hardcoded safety constraints.
 ## Safety & Security Terms
 
 ### Human-in-the-Loop
+
 Authorization model requiring human approval for sensitive operations. Implements the "Human Oversight Requirement" invariant.
 
 **Levels**: None (ROUTINE), notification (ELEVATED), single approval (SENSITIVE), multi-approval (CRITICAL), board + external (EXISTENTIAL).
@@ -362,6 +396,7 @@ Authorization model requiring human approval for sensitive operations. Implement
 ---
 
 ### Tamper-Evident
+
 Property where any modification to data is detectable. Implemented via Merkle chains in QRADLE.
 
 **Mechanism**: Cryptographic hashing of events with chaining. Any change breaks the chain.
@@ -371,6 +406,7 @@ Property where any modification to data is detectable. Implemented via Merkle ch
 ---
 
 ### Non-Repudiable
+
 Property where executed operations cannot be denied. Implemented via Merkle chains and cryptographic signatures.
 
 **Mechanism**: Every operation signed and Merkle-chained. Historical record is immutable.
@@ -380,9 +416,11 @@ Property where executed operations cannot be denied. Implemented via Merkle chai
 ---
 
 ### Defense in Depth
+
 Security principle using multiple layers of controls. No single failure compromises system.
 
 **Layers in QRATUM**:
+
 1. Input validation
 2. Authorization
 3. Execution isolation
@@ -394,9 +432,11 @@ Security principle using multiple layers of controls. No single failure compromi
 ---
 
 ### Fail Secure
+
 Security principle where system defaults to safe state on errors.
 
 **Examples**:
+
 - Contract execution fails closed (reject on error)
 - Authorization failures deny access (never fall through to allow)
 - Merkle chain integrity violations trigger lockdown
@@ -406,6 +446,7 @@ Security principle where system defaults to safe state on errors.
 ---
 
 ### Coordinated Disclosure
+
 Security vulnerability disclosure practice where researchers and vendors coordinate timing.
 
 **QRATUM Timeline**: 90 days standard, 45 days critical, immediate if actively exploited.
@@ -417,6 +458,7 @@ Security vulnerability disclosure practice where researchers and vendors coordin
 ## Deployment Terms
 
 ### Air-Gapped
+
 Network isolation where system has no internet connectivity. Data transfer via physical media only.
 
 **Use Cases**: Classified government, defense, intelligence agencies.
@@ -428,6 +470,7 @@ Network isolation where system has no internet connectivity. Data transfer via p
 ---
 
 ### On-Premises
+
 Deployment on organization's own infrastructure (data center, server room).
 
 **Benefits**: Data sovereignty, regulatory compliance, full control, customization.
@@ -437,6 +480,7 @@ Deployment on organization's own infrastructure (data center, server room).
 ---
 
 ### Private Cloud
+
 Deployment in dedicated virtual private cloud (VPC) with no internet egress.
 
 **Benefits**: Elasticity, centralized management, still sovereign.
@@ -446,6 +490,7 @@ Deployment in dedicated virtual private cloud (VPC) with no internet egress.
 ---
 
 ### Data Sovereignty
+
 Legal concept where data is subject to laws of the country where it's physically located.
 
 **QRATUM Approach**: On-premises or air-gapped deployment ensures data never leaves organization.
@@ -457,6 +502,7 @@ Legal concept where data is subject to laws of the country where it's physically
 ## Certification Terms
 
 ### DO-178C Level A
+
 Software certification for airborne systems (safety-critical). Highest level of rigor.
 
 **Requirements**: Deterministic execution, complete traceability, formal verification, exhaustive testing.
@@ -466,6 +512,7 @@ Software certification for airborne systems (safety-critical). Highest level of 
 ---
 
 ### CMMC Level 3
+
 **Cybersecurity Maturity Model Certification**
 
 DOD certification for defense contractors handling controlled unclassified information (CUI).
@@ -477,6 +524,7 @@ DOD certification for defense contractors handling controlled unclassified infor
 ---
 
 ### ISO 27001
+
 International standard for information security management systems (ISMS).
 
 **Requirements**: Security policies, asset management, access control, incident management.
@@ -486,6 +534,7 @@ International standard for information security management systems (ISMS).
 ---
 
 ### FedRAMP High
+
 **Federal Risk and Authorization Management Program**
 
 US government cloud security certification for high-impact systems.
@@ -497,6 +546,7 @@ US government cloud security certification for high-impact systems.
 ---
 
 ### Common Criteria EAL4+
+
 International security evaluation standard (Evaluation Assurance Level 4+).
 
 **Requirements**: Methodically designed, tested, and reviewed security functions.
@@ -569,4 +619,4 @@ International security evaluation standard (Evaluation Assurance Level 4+).
 
 ---
 
-For questions about terminology, contact: docs@qratum.io
+For questions about terminology, contact: <docs@qratum.io>

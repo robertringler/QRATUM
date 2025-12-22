@@ -6,19 +6,19 @@ Tests end-to-end workflows across multiple modules and invariant enforcement.
 import pytest
 
 from qratum_platform.core import (
-    QRATUMPlatform,
     PlatformIntent,
-    VerticalModule,
+    QRATUMPlatform,
     SafetyViolation,
+    VerticalModule,
 )
 from verticals import (
-    JURISModule,
-    VITRAModule,
-    ECORAModule,
     CAPRAModule,
-    SENTRAModule,
-    NEURAModule,
+    ECORAModule,
     FLUXAModule,
+    JURISModule,
+    NEURAModule,
+    SENTRAModule,
+    VITRAModule,
 )
 
 

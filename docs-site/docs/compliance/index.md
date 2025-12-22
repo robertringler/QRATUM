@@ -25,44 +25,44 @@ QRATUM maintains compliance with major regulatory frameworks for defense, aerosp
 
 <div class="grid cards" markdown>
 
--   :material-airplane:{ .lg .middle } __DO-178C Guidelines__
+- :material-airplane:{ .lg .middle } __DO-178C Guidelines__
 
     ---
 
     Aerospace software certification for safety-critical systems
-    
+
     [:octicons-arrow-right-24: DO-178C](do-178c.md)
 
--   :material-shield-check:{ .lg .middle } __NIST 800-53__
+- :material-shield-check:{ .lg .middle } __NIST 800-53__
 
     ---
 
     Federal security controls (HIGH baseline)
-    
+
     [:octicons-arrow-right-24: NIST 800-53](nist-800-53.md)
 
--   :material-lock:{ .lg .middle } __CMMC 2.0__
+- :material-lock:{ .lg .middle } __CMMC 2.0__
 
     ---
 
     Cybersecurity Maturity Model Certification
-    
+
     [:octicons-arrow-right-24: CMMC 2.0](cmmc-2.md)
 
--   :material-gavel:{ .lg .middle } __DFARS__
+- :material-gavel:{ .lg .middle } __DFARS__
 
     ---
 
     Defense Federal Acquisition Regulation Supplement
-    
+
     [:octicons-arrow-right-24: DFARS](dfars.md)
 
--   :material-clipboard-check:{ .lg .middle } __Audit Trail__
+- :material-clipboard-check:{ .lg .middle } __Audit Trail__
 
     ---
 
     Reproducibility and audit logging
-    
+
     [:octicons-arrow-right-24: Audit Trail](audit-trail.md)
 
 </div>
@@ -140,5 +140,5 @@ All operations are logged for compliance auditing:
 
 For compliance inquiries:
 
-- **Compliance Officer**: compliance@quasim.example.com
-- **Security Team**: security@quasim.example.com
+- __Compliance Officer__: <compliance@quasim.example.com>
+- __Security Team__: <security@quasim.example.com>

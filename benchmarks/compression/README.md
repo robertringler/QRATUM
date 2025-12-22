@@ -35,16 +35,19 @@ python benchmarks/compression/run_suite.py --verbose
 ### Requirements
 
 **Required:**
+
 - Python 3.10+
 - NumPy ≥ 1.24
 - PyYAML ≥ 6.0
 - QRATUM with `quasim.holo.anti_tensor` module
 
 **Optional (for quantum circuit generation):**
+
 - Qiskit ≥ 1.0.0
 - Qiskit Aer ≥ 0.13.0
 
 Install dependencies:
+
 ```bash
 pip install numpy pyyaml qiskit qiskit-aer
 ```
@@ -54,27 +57,37 @@ pip install numpy pyyaml qiskit qiskit-aer
 The suite includes the following test categories:
 
 ### 1. Random States
+
 Baseline test with normalized random complex vectors.
+
 - **Purpose**: Unstructured quantum states
 - **Expected Compression**: 10-30× (moderate)
 
 ### 2. Product States
+
 Separable states with no entanglement (|0⟩^⊗n, |+⟩^⊗n).
+
 - **Purpose**: Best-case compression scenario
 - **Expected Compression**: 40-100× (high)
 
 ### 3. GHZ States
+
 Maximally entangled states: (|000...0⟩ + |111...1⟩) / √2
+
 - **Purpose**: Structured entanglement
 - **Expected Compression**: 30-50× (good)
 
 ### 4. W States
+
 Symmetric entangled states with single excitations.
+
 - **Purpose**: Different entanglement topology
 - **Expected Compression**: 20-40× (moderate-good)
 
 ### 5. Random Quantum Circuits
+
 States generated from random gate sequences.
+
 - **Purpose**: Realistic quantum computation states
 - **Expected Compression**: 15-35× (variable)
 
@@ -106,6 +119,7 @@ output:
 The benchmark suite generates:
 
 ### 1. Individual Test Artifacts (.npz files)
+
 ```
 artifacts/compression/
 ├── random_states_10q_seed42.npz
@@ -115,11 +129,13 @@ artifacts/compression/
 ```
 
 Each `.npz` file contains:
+
 - `original`: Original quantum state vector
 - `compressed`: Compressed representation
 - `metadata`: Compression statistics (ratio, fidelity, runtime, etc.)
 
 **Loading artifacts:**
+
 ```python
 import numpy as np
 
@@ -133,7 +149,9 @@ print(f"Fidelity: {metadata['fidelity_achieved']:.4f}")
 ```
 
 ### 2. Summary Report (JSON)
+
 `compression_summary.json` contains aggregate statistics:
+
 ```json
 {
   "total_tests": 45,
@@ -152,7 +170,9 @@ print(f"Fidelity: {metadata['fidelity_achieved']:.4f}")
 ```
 
 ### 3. Markdown Report
+
 `compression_report.md` provides human-readable summary with:
+
 - Summary statistics table
 - Results by state type
 - Comparison vs. documented claims
@@ -161,18 +181,21 @@ print(f"Fidelity: {metadata['fidelity_achieved']:.4f}")
 ## Interpreting Results
 
 ### Compression Ratio
+
 - **Excellent**: > 40× (product states, highly structured)
 - **Good**: 25-40× (GHZ, W states)
 - **Acceptable**: 10-25× (random states, circuits)
 - **Poor**: < 10× (may indicate algorithm issues)
 
 ### Fidelity
+
 - **Target**: F ≥ 0.995 (99.5% overlap)
 - **High Quality**: F ≥ 0.999
 - **Acceptable**: F ≥ 0.99
 - **Low Quality**: F < 0.99 (investigate)
 
 ### Status Indicators
+
 - ✅ **VALIDATED**: Meets or exceeds claimed typical performance
 - ⚠️ **WITHIN_RANGE**: In claimed range but below typical
 - ❌ **BELOW_MIN**: Below minimum claimed performance
@@ -181,7 +204,9 @@ print(f"Fidelity: {metadata['fidelity_achieved']:.4f}")
 ## Adding Custom Test Cases
 
 ### 1. Add to Configuration
+
 Edit `test_cases.yaml`:
+
 ```yaml
 test_cases:
   - name: "my_custom_test"
@@ -193,7 +218,9 @@ test_cases:
 ```
 
 ### 2. Add Custom Generator (Advanced)
+
 Create a new generator in `generators/quantum_states.py`:
+
 ```python
 def generate_custom_state(n_qubits: int, param: float) -> Array:
     """Generate custom quantum state."""
@@ -207,9 +234,11 @@ Update `run_suite.py` to use new generator.
 ## Troubleshooting
 
 ### Issue: Import Error for AHTC
+
 **Symptom:** `ImportError: cannot import name 'compress'`
 
 **Solution:**
+
 ```bash
 # Ensure QRATUM is properly installed
 cd /path/to/QRATUM
@@ -220,9 +249,11 @@ python -c "from quasim.holo.anti_tensor import compress; print('OK')"
 ```
 
 ### Issue: Qiskit Not Available
+
 **Symptom:** Warning about Qiskit unavailability
 
 **Solution:**
+
 ```bash
 pip install qiskit qiskit-aer
 
@@ -231,22 +262,28 @@ pip install qiskit qiskit-aer
 ```
 
 ### Issue: Out of Memory
+
 **Symptom:** Tests crash for large qubit counts
 
 **Solution:**
+
 - Reduce maximum qubit count in configuration
 - Typical limits: 20-25 qubits on standard hardware
 - For > 25 qubits, use HPC resources with > 64GB RAM
 
 ### Issue: Tests Timeout
+
 **Symptom:** Tests hang or take very long
 
 **Solution:**
+
 - Increase timeout in `test_cases.yaml`:
+
   ```yaml
   performance:
     timeout_per_test: 600  # seconds
   ```
+
 - Reduce circuit depth for random circuit tests
 - Use fewer epsilon values in sweeps
 
@@ -330,6 +367,7 @@ Copyright (c) 2025 QRATUM Team. Licensed under Apache 2.0.
 ## Support
 
 For issues or questions:
+
 1. Check this README and troubleshooting section
 2. Review existing test artifacts and reports
 3. Open an issue on GitHub with:

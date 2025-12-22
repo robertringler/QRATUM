@@ -7,6 +7,7 @@
 Many documentation files in this repository contain historical claims and aspirational features that **do not reflect the current implementation**. This repository underwent a comprehensive audit in December 2025 revealing:
 
 ### Reality Check ❌
+
 - **NO quantum computing libraries** (no Qiskit, PennyLane, Cirq, cuQuantum)
 - **NO actual quantum algorithms** (QAOA, VQE, etc. are classical placeholders)
 - **NO quantum hardware access** or simulator backends
@@ -14,6 +15,7 @@ Many documentation files in this repository contain historical claims and aspira
 - **NO DO-178C certification** (inspired practices only)
 
 ### Current Capabilities ✅
+
 - Classical numerical simulation using NumPy
 - Deterministic execution with seed management
 - Modular architecture for future quantum integration
@@ -30,6 +32,7 @@ For accurate, up-to-date information, please refer to:
 ## Legacy Documents
 
 The following files contain **outdated or aspirational claims**:
+
 - `GOODYEAR_PILOT_EXECUTION_SUMMARY.md`
 - `GOODYEAR_PILOT_USAGE.md`
 - `QUICKSTART_GOODYEAR.md`
@@ -41,6 +44,7 @@ The following files contain **outdated or aspirational claims**:
 ## Development Philosophy
 
 Going forward, all documentation will:
+
 - Be honest about capabilities
 - Separate current features from planned features
 - Avoid marketing language
@@ -49,6 +53,7 @@ Going forward, all documentation will:
 ## Questions?
 
 If you're unsure whether a feature exists:
+
 1. Check if it uses actual quantum libraries (Qiskit, etc.) in the code
 2. Look for test coverage validating the feature
 3. See if benchmarks exist comparing to classical methods

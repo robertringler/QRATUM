@@ -3,11 +3,13 @@
 Purpose: Centralized, evidence-backed claims for audits, RFPs, and customer due diligence. Each claim must be supported by current, verifiable evidence.
 
 How to use:
+
 - Update “Evidence location” with links (doc repo, GRC item, certificate URL).
 - Keep “Last verified” current and set status accurately.
 - Attach authoritative artifacts (certificates, reports, attestations, CMVP entries, contracts).
 
 Status key:
+
 - Validated = Independently verified and current
 - In progress = Work underway, not yet fully verified
 - Planned = Not started
@@ -31,6 +33,7 @@ Status key:
 | Business Continuity/DR | Service | Tested plans meeting RTO/RPO | BC/DR plans, test results, evidence of backups, failover docs | SRE / SecEng | Planned |  | Map to SOC 2 Availability if applicable |
 
 ## FIPS 140-3 module inventory (detail)
+
 Record all crypto in use and validation status.
 
 | Component | Module name and version | CMVP Cert # | Operational environment | Used algorithms | Validation status | Evidence link |
@@ -38,6 +41,7 @@ Record all crypto in use and validation status.
 | [placeholder] | [e.g., OpenSSL FIPS Provider 3.0.x] | [#xxxx] | [OS/CPU] | [SHA-256, AES-GCM…] | [Validated/In process] | [CMVP URL] |
 
 ## 800-171/CMMC scoping snapshot
+
 - CUI enclave boundary: [placeholder]
 - Hosting: [GovCloud/Commercial/Azure GCC High/etc.]
 - SSP/POA&M location: [link]
@@ -45,9 +49,11 @@ Record all crypto in use and validation status.
 - Incident reporting process: [link]
 
 ## NDAA 889 attestation snapshot
+
 - Corporate attestation signed by: [name/title], dated [date]
 - Supplier screening cadence: [e.g., annual with onboarding checks]
 - Covered telecom check: [none used / details]
 
 ## Change log
+
 - [date]: Initial matrix created.

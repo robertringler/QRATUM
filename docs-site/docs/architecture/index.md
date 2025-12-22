@@ -4,28 +4,28 @@ Understanding QRATUM's system architecture.
 
 <div class="grid cards" markdown>
 
--   :material-sitemap:{ .lg .middle } __System Overview__
+- :material-sitemap:{ .lg .middle } __System Overview__
 
     ---
 
     High-level architecture and design principles
-    
+
     [:octicons-arrow-right-24: System Overview](system-overview.md)
 
--   :material-puzzle:{ .lg .middle } __Components__
+- :material-puzzle:{ .lg .middle } __Components__
 
     ---
 
     Detailed component documentation
-    
+
     [:octicons-arrow-right-24: Components](components.md)
 
--   :material-transit-connection-variant:{ .lg .middle } __Data Flow__
+- :material-transit-connection-variant:{ .lg .middle } __Data Flow__
 
     ---
 
     How data moves through the system
-    
+
     [:octicons-arrow-right-24: Data Flow](data-flow.md)
 
 </div>
@@ -34,11 +34,11 @@ Understanding QRATUM's system architecture.
 
 QRATUM is built on these core principles:
 
-1. **Deterministic Reproducibility** - All simulations reproducible via seed management
-2. **Hybrid Quantum-Classical** - Seamless integration of quantum and classical algorithms
-3. **Certification-Ready** - DO-178C Level A compliant design
-4. **Modular Design** - Clean separation of concerns
-5. **Cloud-Native** - Built for Kubernetes deployment
+1. __Deterministic Reproducibility__ - All simulations reproducible via seed management
+2. __Hybrid Quantum-Classical__ - Seamless integration of quantum and classical algorithms
+3. __Certification-Ready__ - DO-178C Level A compliant design
+4. __Modular Design__ - Clean separation of concerns
+5. __Cloud-Native__ - Built for Kubernetes deployment
 
 ## High-Level Overview
 

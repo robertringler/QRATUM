@@ -223,4 +223,4 @@ Key implementations:
 
 For CMMC compliance inquiries:
 
-- **Compliance Officer**: compliance@quasim.example.com
+- **Compliance Officer**: <compliance@quasim.example.com>

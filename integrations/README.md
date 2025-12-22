@@ -104,6 +104,7 @@ quasim_fluent_driver --mesh wing.msh --job config.json --output results.csv
 ```
 
 Features:
+
 - Reads Fluent mesh and boundary conditions
 - Converts to QuASIM tensor format
 - Runs CFD kernels
@@ -190,10 +191,12 @@ python3 integrations/benchmarks/aero/run_benchmarks.py --quick
 ```
 
 Benchmark output:
+
 - `benchmarks/aero/report/perf.csv` - Performance data
 - `benchmarks/aero/report/perf_substitution_table.md` - Markdown report
 
 Expected results:
+
 - ≥10× throughput improvement over legacy solvers
 - Energy and cost metrics (kWh, $/sim)
 - RMSE vs. reference solutions
@@ -203,6 +206,7 @@ Expected results:
 FastAPI + gRPC service for job management:
 
 **REST Endpoints:**
+
 - `POST /jobs/submit` - Submit new job
 - `GET /jobs/{id}/status` - Get job status
 - `POST /jobs/{id}/cancel` - Cancel job
@@ -211,6 +215,7 @@ FastAPI + gRPC service for job management:
 - `GET /validate` - Validate job config
 
 **gRPC Service:** (planned)
+
 - High-performance job submission
 - Streaming telemetry
 - Bidirectional communication
@@ -267,6 +272,7 @@ See [compliance/EXPORT.md](compliance/EXPORT.md) for ITAR compliance procedures.
 ### DO-178C Compliance
 
 For safety-critical aerospace code:
+
 - MISRA-like coding standards
 - Static analysis (clang-tidy, cppcheck)
 - >90% unit test coverage
@@ -290,6 +296,7 @@ pytest tests/integration/
 ## Documentation
 
 Additional documentation:
+
 - Integration cookbooks (coming soon)
 - Performance tuning guide (coming soon)
 - API reference (OpenAPI at `/docs`)
@@ -302,6 +309,7 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for contribution guidelines.
 ## Support
 
 For questions or issues:
+
 1. Check documentation
 2. Search existing issues
 3. Open a new issue with the `integrations` label
