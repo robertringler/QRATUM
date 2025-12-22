@@ -167,6 +167,7 @@ class GoalPreservationEngine:
                 "Human oversight maintained for critical operations",
                 "Rollback capability always available"
             ],
+            related_constraints=[],
             measurement_func=self._measure_safety_goal
         )
         
