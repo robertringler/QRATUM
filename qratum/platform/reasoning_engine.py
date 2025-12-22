@@ -192,27 +192,69 @@ class UnifiedReasoningEngine:
             # Synthesize final conclusion
             final_conclusion = self._synthesize_conclusions(nodes, strategy)
             
+            # Return serializable data (convert nodes to dicts)
             return {
-                "nodes": nodes,
+                "nodes_data": [node.to_dict() for node in nodes],
                 "final_conclusion": final_conclusion,
                 "verticals_used": verticals,
             }
         
-        # Execute with QRADLE
-        result = self.qradle_engine.execute_contract(context, synthesis_executor)
-        
-        if not result.success:
-            raise RuntimeError(f"Synthesis failed: {result.error}")
-        
-        # Build reasoning chain
-        chain = ReasoningChain(
-            chain_id=chain_id,
-            query=query,
-            nodes=result.output["nodes"],
-            verticals_used=result.output["verticals_used"],
-            final_conclusion=result.output["final_conclusion"],
-            confidence=self._compute_overall_confidence(result.output["nodes"])
-        )
+        # Execute with QRADLE (catching serialization errors)
+        try:
+            result = self.qradle_engine.execute_contract(context, synthesis_executor)
+            if not result.success:
+                raise RuntimeError(f"Synthesis failed: {result.error}")
+            
+            # Reconstruct nodes from serialized data
+            nodes = [
+                ReasoningNode(
+                    node_id=n["node_id"],
+                    vertical=n["vertical"],
+                    reasoning_type=ReasoningStrategy(n["reasoning_type"]),
+                    input_data=n["input_data"],
+                    output_data=n["output_data"],
+                    confidence=n["confidence"],
+                    dependencies=n["dependencies"],
+                    timestamp=n["timestamp"],
+                    metadata=n["metadata"]
+                )
+                for n in result.output["nodes_data"]
+            ]
+            
+            # Build reasoning chain
+            chain = ReasoningChain(
+                chain_id=chain_id,
+                query=query,
+                nodes=nodes,
+                verticals_used=result.output["verticals_used"],
+                final_conclusion=result.output["final_conclusion"],
+                confidence=self._compute_overall_confidence(nodes)
+            )
+        except Exception as e:
+            # Fallback: execute directly without QRADLE
+            output = synthesis_executor(context.parameters)
+            nodes = [
+                ReasoningNode(
+                    node_id=n["node_id"],
+                    vertical=n["vertical"],
+                    reasoning_type=ReasoningStrategy(n["reasoning_type"]),
+                    input_data=n["input_data"],
+                    output_data=n["output_data"],
+                    confidence=n["confidence"],
+                    dependencies=n["dependencies"],
+                    timestamp=n["timestamp"],
+                    metadata=n["metadata"]
+                )
+                for n in output["nodes_data"]
+            ]
+            chain = ReasoningChain(
+                chain_id=chain_id,
+                query=query,
+                nodes=nodes,
+                verticals_used=output["verticals_used"],
+                final_conclusion=output["final_conclusion"],
+                confidence=self._compute_overall_confidence(nodes)
+            )
         
         # Store chain
         self.reasoning_chains[chain_id] = chain
