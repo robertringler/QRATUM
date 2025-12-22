@@ -11,33 +11,48 @@ Capabilities:
 
 from typing import Any, Dict
 import numpy as np
-from qratum_platform.core import VerticalModuleBase, SafetyViolation
+from qratum_platform.core import (
+    VerticalModuleBase,
+    SafetyViolation,
+    PlatformContract,
+    ComputeSubstrate,
+)
 
 
 class SPECTRAModule(VerticalModuleBase):
     """Spectrum Management & RF Intelligence vertical."""
     
-    @property
-    def name(self) -> str:
-        return "SPECTRA"
+    MODULE_NAME = "SPECTRA"
+    MODULE_VERSION = "1.0.0"
+    SAFETY_DISCLAIMER = """
+    SPECTRA RF analysis is for informational purposes only.
+    Comply with all FCC regulations and spectrum licensing requirements.
+    Not for unauthorized spectrum use or interference.
+    """
+    PROHIBITED_USES = ["jamming", "unauthorized_transmission", "eavesdropping"]
     
-    @property
-    def disclaimer(self) -> str:
-        return (
-            "SPECTRA RF analysis is for informational purposes only. "
-            "Comply with all FCC regulations and spectrum licensing requirements. "
-            "Not for unauthorized spectrum use or interference."
-        )
-    
-    def check_safety(self, operation: str, parameters: Dict[str, Any]) -> None:
-        """Check for prohibited uses."""
+    def execute(self, contract: PlatformContract) -> Dict[str, Any]:
+        """Execute spectrum management operation."""
+        operation = contract.intent.operation
+        parameters = contract.intent.parameters
+        
+        # Safety check
         prohibited = ["jamming", "unauthorized_transmission", "eavesdropping"]
         if any(p in operation.lower() for p in prohibited):
             raise SafetyViolation(f"Prohibited operation: {operation}")
+        
+        if operation == "spectrum_analysis":
+            return self._spectrum_analysis(parameters)
+        elif operation == "interference_detection":
+            return self._interference_detection(parameters)
+        elif operation == "frequency_allocation":
+            return self._frequency_allocation(parameters)
+        else:
+            return {"error": f"Unknown operation: {operation}"}
     
-    def execute(self, operation: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute spectrum management operation."""
-        self.check_safety(operation, parameters)
+    def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
+        """Determine optimal compute substrate."""
+        return ComputeSubstrate.CPU  # RF analysis is CPU-bound
         
         if operation == "spectrum_analysis":
             return self._spectrum_analysis(parameters)

@@ -10,34 +10,48 @@ Capabilities:
 """
 
 from typing import Any, Dict, List
-from qratum_platform.core import VerticalModuleBase, SafetyViolation, VerticalModule
+from qratum_platform.core import (
+    VerticalModuleBase,
+    SafetyViolation,
+    PlatformContract,
+    ComputeSubstrate,
+)
 
 
 class NEXUSModule(VerticalModuleBase):
     """Cross-Domain Intelligence & Synthesis vertical."""
     
-    @property
-    def name(self) -> str:
-        return "NEXUS"
+    MODULE_NAME = "NEXUS"
+    MODULE_VERSION = "1.0.0"
+    SAFETY_DISCLAIMER = """
+    NEXUS cross-domain synthesis represents computational inferences.
+    Novel insights should be validated by domain experts before application.
+    Not a substitute for specialized domain expertise.
+    """
+    PROHIBITED_USES = ["weaponization", "manipulation", "deception"]
     
-    @property
-    def disclaimer(self) -> str:
-        return (
-            "NEXUS cross-domain synthesis represents computational inferences. "
-            "Novel insights should be validated by domain experts before application. "
-            "Not a substitute for specialized domain expertise."
-        )
-    
-    def check_safety(self, operation: str, parameters: Dict[str, Any]) -> None:
-        """Check for prohibited uses."""
-        # NEXUS has higher privilege but still checks for obvious misuse
+    def execute(self, contract: PlatformContract) -> Dict[str, Any]:
+        """Execute cross-domain operation."""
+        operation = contract.intent.operation
+        parameters = contract.intent.parameters
+        
+        # Safety check
         prohibited = ["weaponization", "manipulation", "deception"]
         if any(p in operation.lower() for p in prohibited):
             raise SafetyViolation(f"Prohibited operation: {operation}")
+        
+        if operation == "multi_domain_synthesis":
+            return self._multi_domain_synthesis(parameters)
+        elif operation == "cross_domain_inference":
+            return self._cross_domain_inference(parameters)
+        elif operation == "emergent_pattern":
+            return self._emergent_pattern_detection(parameters)
+        else:
+            return {"error": f"Unknown operation: {operation}"}
     
-    def execute(self, operation: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute cross-domain operation."""
-        self.check_safety(operation, parameters)
+    def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
+        """Determine optimal compute substrate."""
+        return ComputeSubstrate.CEREBRAS  # Large-scale synthesis
         
         if operation == "multi_domain_synthesis":
             return self._multi_domain_synthesis(parameters)

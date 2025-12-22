@@ -10,34 +10,48 @@ Capabilities:
 """
 
 from typing import Any, Dict, List, Tuple
-import numpy as np
-from qratum_platform.core import VerticalModuleBase, SafetyViolation
+from qratum_platform.core import (
+    VerticalModuleBase,
+    SafetyViolation,
+    PlatformContract,
+    ComputeSubstrate,
+)
 
 
 class TERAGONModule(VerticalModuleBase):
     """Geospatial Intelligence & Analysis vertical."""
     
-    @property
-    def name(self) -> str:
-        return "TERAGON"
+    MODULE_NAME = "TERAGON"
+    MODULE_VERSION = "1.0.0"
+    SAFETY_DISCLAIMER = """
+    TERAGON geospatial analysis is for authorized purposes only.
+    Comply with all data privacy and national security regulations.
+    Not for unauthorized surveillance or restricted area monitoring.
+    """
+    PROHIBITED_USES = ["surveillance", "tracking_individuals", "restricted_zone"]
     
-    @property
-    def disclaimer(self) -> str:
-        return (
-            "TERAGON geospatial analysis is for authorized purposes only. "
-            "Comply with all data privacy and national security regulations. "
-            "Not for unauthorized surveillance or restricted area monitoring."
-        )
-    
-    def check_safety(self, operation: str, parameters: Dict[str, Any]) -> None:
-        """Check for prohibited uses."""
+    def execute(self, contract: PlatformContract) -> Dict[str, Any]:
+        """Execute geospatial operation."""
+        operation = contract.intent.operation
+        parameters = contract.intent.parameters
+        
+        # Safety check
         prohibited = ["surveillance", "tracking_individuals", "restricted_zone"]
         if any(p in operation.lower() for p in prohibited):
             raise SafetyViolation(f"Prohibited operation: {operation}")
+        
+        if operation == "route_optimization":
+            return self._route_optimization(parameters)
+        elif operation == "terrain_analysis":
+            return self._terrain_analysis(parameters)
+        elif operation == "spatial_pattern":
+            return self._spatial_pattern_detection(parameters)
+        else:
+            return {"error": f"Unknown operation: {operation}"}
     
-    def execute(self, operation: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute geospatial operation."""
-        self.check_safety(operation, parameters)
+    def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
+        """Determine optimal compute substrate."""
+        return ComputeSubstrate.CPU
         
         if operation == "route_optimization":
             return self._route_optimization(parameters)

@@ -10,35 +10,49 @@ Capabilities:
 """
 
 from typing import Any, Dict, List
-import numpy as np
-from qratum_platform.core import VerticalModuleBase, SafetyViolation
+from qratum_platform.core import (
+    VerticalModuleBase,
+    SafetyViolation,
+    PlatformContract,
+    ComputeSubstrate,
+)
 
 
 class SYNTHOSModule(VerticalModuleBase):
     """Materials Science & Discovery vertical."""
     
-    @property
-    def name(self) -> str:
-        return "SYNTHOS"
+    MODULE_NAME = "SYNTHOS"
+    MODULE_VERSION = "1.0.0"
+    SAFETY_DISCLAIMER = """
+    SYNTHOS materials predictions are computational estimates.
+    Experimental validation required before practical application.
+    Not for hazardous materials without proper safety protocols.
+    """
+    PROHIBITED_USES = ["explosive", "toxic", "weapon", "hazmat"]
     
-    @property
-    def disclaimer(self) -> str:
-        return (
-            "SYNTHOS materials predictions are computational estimates. "
-            "Experimental validation required before practical application. "
-            "Not for hazardous materials without proper safety protocols."
-        )
-    
-    def check_safety(self, operation: str, parameters: Dict[str, Any]) -> None:
-        """Check for prohibited uses."""
+    def execute(self, contract: PlatformContract) -> Dict[str, Any]:
+        """Execute materials science operation."""
+        operation = contract.intent.operation
+        parameters = contract.intent.parameters
+        
+        # Safety check
         prohibited = ["explosive", "toxic", "weapon", "hazmat"]
         params_str = str(parameters).lower()
         if any(p in params_str for p in prohibited):
             raise SafetyViolation(f"Prohibited material type in parameters")
+        
+        if operation == "predict_properties":
+            return self._predict_properties(parameters)
+        elif operation == "crystal_structure":
+            return self._crystal_structure_analysis(parameters)
+        elif operation == "composite_design":
+            return self._composite_design(parameters)
+        else:
+            return {"error": f"Unknown operation: {operation}"}
     
-    def execute(self, operation: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute materials science operation."""
-        self.check_safety(operation, parameters)
+    def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
+        """Determine optimal compute substrate."""
+        return ComputeSubstrate.GB200  # Materials science benefits from GPU
         
         if operation == "predict_properties":
             return self._predict_properties(parameters)

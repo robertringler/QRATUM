@@ -10,33 +10,48 @@ Capabilities:
 """
 
 from typing import Any, Dict, List
-from qratum_platform.core import VerticalModuleBase, SafetyViolation
+from qratum_platform.core import (
+    VerticalModuleBase,
+    SafetyViolation,
+    PlatformContract,
+    ComputeSubstrate,
+)
 
 
 class AEGISModule(VerticalModuleBase):
     """Cybersecurity & Threat Intelligence vertical."""
     
-    @property
-    def name(self) -> str:
-        return "AEGIS"
+    MODULE_NAME = "AEGIS"
+    MODULE_VERSION = "1.0.0"
+    SAFETY_DISCLAIMER = """
+    AEGIS security analysis is for defensive purposes only.
+    Do not use for unauthorized access, exploitation, or malicious activities.
+    Comply with all cybersecurity laws and ethical hacking guidelines.
+    """
+    PROHIBITED_USES = ["exploit", "backdoor", "ddos", "ransomware", "unauthorized_access"]
     
-    @property
-    def disclaimer(self) -> str:
-        return (
-            "AEGIS security analysis is for defensive purposes only. "
-            "Do not use for unauthorized access, exploitation, or malicious activities. "
-            "Comply with all cybersecurity laws and ethical hacking guidelines."
-        )
-    
-    def check_safety(self, operation: str, parameters: Dict[str, Any]) -> None:
-        """Check for prohibited uses."""
+    def execute(self, contract: PlatformContract) -> Dict[str, Any]:
+        """Execute cybersecurity operation."""
+        operation = contract.intent.operation
+        parameters = contract.intent.parameters
+        
+        # Safety check
         prohibited = ["exploit", "backdoor", "ddos", "ransomware", "unauthorized_access"]
         if any(p in operation.lower() for p in prohibited):
             raise SafetyViolation(f"Prohibited operation: {operation}")
+        
+        if operation == "vulnerability_scan":
+            return self._vulnerability_scan(parameters)
+        elif operation == "threat_detection":
+            return self._threat_detection(parameters)
+        elif operation == "compliance_check":
+            return self._compliance_check(parameters)
+        else:
+            return {"error": f"Unknown operation: {operation}"}
     
-    def execute(self, operation: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute cybersecurity operation."""
-        self.check_safety(operation, parameters)
+    def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
+        """Determine optimal compute substrate."""
+        return ComputeSubstrate.CPU
         
         if operation == "vulnerability_scan":
             return self._vulnerability_scan(parameters)

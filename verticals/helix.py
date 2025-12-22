@@ -10,34 +10,49 @@ Capabilities:
 """
 
 from typing import Any, Dict, List
-from qratum_platform.core import VerticalModuleBase, SafetyViolation
+from qratum_platform.core import (
+    VerticalModuleBase,
+    SafetyViolation,
+    PlatformContract,
+    ComputeSubstrate,
+)
 
 
 class HELIXModule(VerticalModuleBase):
     """Genomic Medicine & Personalized Health vertical."""
     
-    @property
-    def name(self) -> str:
-        return "HELIX"
+    MODULE_NAME = "HELIX"
+    MODULE_VERSION = "1.0.0"
+    SAFETY_DISCLAIMER = """
+    HELIX genomic analysis is for research and informational purposes only.
+    Not a substitute for professional medical advice or genetic counseling.
+    Results must be interpreted by qualified healthcare professionals.
+    HIPAA and GINA compliance required for clinical use.
+    """
+    PROHIBITED_USES = ["discrimination", "unauthorized_testing", "designer_babies"]
     
-    @property
-    def disclaimer(self) -> str:
-        return (
-            "HELIX genomic analysis is for research and informational purposes only. "
-            "Not a substitute for professional medical advice or genetic counseling. "
-            "Results must be interpreted by qualified healthcare professionals. "
-            "HIPAA and GINA compliance required for clinical use."
-        )
-    
-    def check_safety(self, operation: str, parameters: Dict[str, Any]) -> None:
-        """Check for prohibited uses."""
+    def execute(self, contract: PlatformContract) -> Dict[str, Any]:
+        """Execute genomic medicine operation."""
+        operation = contract.intent.operation
+        parameters = contract.intent.parameters
+        
+        # Safety check
         prohibited = ["discrimination", "unauthorized_testing", "designer_babies"]
         if any(p in operation.lower() for p in prohibited):
             raise SafetyViolation(f"Prohibited operation: {operation}")
+        
+        if operation == "variant_analysis":
+            return self._variant_analysis(parameters)
+        elif operation == "risk_prediction":
+            return self._disease_risk_prediction(parameters)
+        elif operation == "pharmacogenomics":
+            return self._pharmacogenomics_analysis(parameters)
+        else:
+            return {"error": f"Unknown operation: {operation}"}
     
-    def execute(self, operation: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute genomic medicine operation."""
-        self.check_safety(operation, parameters)
+    def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
+        """Determine optimal compute substrate."""
+        return ComputeSubstrate.MI300X  # Genomics benefits from large memory
         
         if operation == "variant_analysis":
             return self._variant_analysis(parameters)

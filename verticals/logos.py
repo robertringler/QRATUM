@@ -10,33 +10,48 @@ Capabilities:
 """
 
 from typing import Any, Dict, List
-from qratum_platform.core import VerticalModuleBase, SafetyViolation
+from qratum_platform.core import (
+    VerticalModuleBase,
+    SafetyViolation,
+    PlatformContract,
+    ComputeSubstrate,
+)
 
 
 class LOGOSModule(VerticalModuleBase):
     """Education & Training AI vertical."""
     
-    @property
-    def name(self) -> str:
-        return "LOGOS"
+    MODULE_NAME = "LOGOS"
+    MODULE_VERSION = "1.0.0"
+    SAFETY_DISCLAIMER = """
+    LOGOS educational recommendations are advisory only.
+    Does not replace qualified educators or accredited programs.
+    Learning paths should be reviewed by educational professionals.
+    """
+    PROHIBITED_USES = ["exam_cheating", "plagiarism", "unauthorized_credentials"]
     
-    @property
-    def disclaimer(self) -> str:
-        return (
-            "LOGOS educational recommendations are advisory only. "
-            "Does not replace qualified educators or accredited programs. "
-            "Learning paths should be reviewed by educational professionals."
-        )
-    
-    def check_safety(self, operation: str, parameters: Dict[str, Any]) -> None:
-        """Check for prohibited uses."""
+    def execute(self, contract: PlatformContract) -> Dict[str, Any]:
+        """Execute education operation."""
+        operation = contract.intent.operation
+        parameters = contract.intent.parameters
+        
+        # Safety check
         prohibited = ["exam_cheating", "plagiarism", "unauthorized_credentials"]
         if any(p in operation.lower() for p in prohibited):
             raise SafetyViolation(f"Prohibited operation: {operation}")
+        
+        if operation == "learning_path":
+            return self._generate_learning_path(parameters)
+        elif operation == "knowledge_assessment":
+            return self._knowledge_assessment(parameters)
+        elif operation == "skill_gap_analysis":
+            return self._skill_gap_analysis(parameters)
+        else:
+            return {"error": f"Unknown operation: {operation}"}
     
-    def execute(self, operation: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute education operation."""
-        self.check_safety(operation, parameters)
+    def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
+        """Determine optimal compute substrate."""
+        return ComputeSubstrate.CPU
         
         if operation == "learning_path":
             return self._generate_learning_path(parameters)
