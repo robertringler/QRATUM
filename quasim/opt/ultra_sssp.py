@@ -285,6 +285,9 @@ class UltraSSSP:
         
         # For correctness: only return nodes within epsilon of min_dist
         # This maintains approximate optimality while enabling batching
+        # epsilon=0.0 gives exact Dijkstra behavior (process one distance level at a time)
+        # epsilon>0.0 allows batch processing but may affect optimality
+        # TODO: Make epsilon configurable as a parameter
         epsilon = 0.0  # Set to 0 for exact Dijkstra behavior
         filtered_batch = [(d, n) for d, n in batch if d <= min_dist + epsilon]
         
@@ -333,8 +336,23 @@ class UltraSSSP:
             Selected pivot node id
             
         Note:
-            TODO: Integrate with QRATUM QPU API for quantum pivot selection
-            using quantum amplitude amplification or similar techniques.
+            TODO: Integrate with QRATUM QPU API for quantum pivot selection.
+            Expected integration:
+            1. Import from qratum.qpu import QPUSelector
+            2. Convert candidates to quantum state |candidates⟩
+            3. Use amplitude amplification to boost minimum distance states
+            4. Measure and return selected pivot
+            5. Fall back to classical if QPU unavailable
+            
+            Example future implementation:
+            ```python
+            from qratum.qpu import QPUSelector
+            if self.qpu_available:
+                selector = QPUSelector(backend='ibm_quantum')
+                return selector.amplitude_amplification(
+                    candidates, distances, metric='min_distance'
+                )
+            ```
         """
         if self.quantum_pivot_fn is not None:
             # Use custom quantum pivot function if provided
@@ -462,14 +480,17 @@ def run_sssp_simulation(config: SSSPSimulationConfig) -> dict:
         correctness = validate_sssp_results(ultra_distances, dijkstra_distances)
         ultra_metrics.correctness = correctness
         
-        speedup = dijkstra_metrics.total_time / ultra_metrics.total_time if ultra_metrics.total_time > 0 else 1.0
+        # Calculate relative performance
+        # Note: speedup < 1.0 means UltraSSSP is slower (overhead from batching)
+        # speedup > 1.0 means UltraSSSP is faster (benefits from parallelization potential)
+        speedup_factor = dijkstra_metrics.total_time / ultra_metrics.total_time if ultra_metrics.total_time > 0 else 1.0
         
         print(f"\nValidation: {'PASS' if correctness else 'FAIL'}")
-        print(f"Speedup: {speedup:.2f}x")
+        print(f"Performance ratio: {speedup_factor:.2f}x (>1.0 = faster, <1.0 = slower)")
         
         results["dijkstra_metrics"] = dijkstra_metrics.to_dict()
         results["correctness"] = correctness
-        results["speedup"] = speedup
+        results["speedup"] = speedup_factor
     
     return results
 

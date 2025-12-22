@@ -150,8 +150,8 @@ def main():
         
         if config.validate_against_dijkstra:
             print(f"\nValidation:")
-            print(f"  Correctness: {'✓ PASS' if results['correctness'] else '✗ FAIL'}")
-            print(f"  Speedup vs Dijkstra: {results['speedup']:.2f}x")
+            print(f"  Correctness: {'PASS' if results['correctness'] else 'FAIL'}")
+            print(f"  Performance ratio vs Dijkstra: {results['speedup']:.2f}x")
             
             print(f"\nDijkstra Baseline Metrics:")
             dijkstra = results["dijkstra_metrics"]

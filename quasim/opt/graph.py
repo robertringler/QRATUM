@@ -228,7 +228,12 @@ class HierarchicalGraph:
             num_supernodes = max(1, int(current_graph.num_nodes * contraction_factor))
             
             # Simple random clustering for now
-            # In production, use graph partitioning algorithms (METIS, etc.)
+            # Production: Use graph partitioning algorithms for better quality:
+            # - METIS (multilevel k-way partitioning): pip install metis
+            # - KaHIP (Karlsruhe High Quality Partitioning): pip install kahip
+            # - Scotch (Static Mapping, Graph Partitioning): available in most package managers
+            # - NetworkX spectral clustering: nx.spectral_clustering(G, n_clusters)
+            # These provide better balanced cuts and preserve graph structure
             mapping = {}
             for node in range(current_graph.num_nodes):
                 supernode = node % num_supernodes
@@ -245,10 +250,14 @@ class HierarchicalGraph:
                     if super_src != super_dst:  # No self-loops
                         key = (super_src, super_dst)
                         # Keep minimum weight edge between supernodes
+                        # Rationale: Preserves shortest path lower bounds in contracted graph
+                        # Alternative strategies (configurable in production):
+                        # - Maximum weight: Preserves upper bounds
+                        # - Average weight: Balances between lower/upper bounds
+                        # - Sum of weights: For flow/capacity applications
                         if key not in edge_weights or weight < edge_weights[key]:
                             edge_weights[key] = weight
             
-            # Add contracted edges
             for (super_src, super_dst), weight in edge_weights.items():
                 contracted_graph.add_edge(super_src, super_dst, weight)
             
