@@ -29,6 +29,21 @@ from qratum_asi.safety.multi_model_orchestrator import (
     ModelInterface,
     QueryResult,
 )
+from qratum_asi.safety.mega_prompt import (
+    MegaPromptSystem,
+    MegaPromptQuestion,
+    MegaPromptResponse,
+    MegaPromptCategory,
+    AnswerType,
+    ConfidenceLevel,
+    MandatoryResponseRules,
+)
+from qratum_asi.safety.mega_prompt_adapter import (
+    MegaPromptModelAdapter,
+    SimulatedMegaPromptAdapter,
+    RefusalMegaPromptAdapter,
+    MegaPromptOrchestrator,
+)
 
 __all__ = [
     "SafetyBoundaryEnforcer",
@@ -54,4 +69,15 @@ __all__ = [
     "RefusalModelAdapter",
     "ModelInterface",
     "QueryResult",
+    "MegaPromptSystem",
+    "MegaPromptQuestion",
+    "MegaPromptResponse",
+    "MegaPromptCategory",
+    "AnswerType",
+    "ConfidenceLevel",
+    "MandatoryResponseRules",
+    "MegaPromptModelAdapter",
+    "SimulatedMegaPromptAdapter",
+    "RefusalMegaPromptAdapter",
+    "MegaPromptOrchestrator",
 ]
