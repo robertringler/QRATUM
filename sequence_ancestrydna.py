@@ -16,7 +16,9 @@ import json
 import logging
 import os
 import sys
+import time
 from collections import defaultdict
+from dataclasses import asdict
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -29,6 +31,9 @@ from xenon.bioinformatics.full_genome_sequencing import (
     FullGenomeSequencingPipeline,
     GenomeSequencingConfig,
 )
+
+# Constants
+EXPECTED_SNP_COLUMNS = 5  # Number of expected columns in SNP data: rsid, chromosome, position, allele1, allele2
 
 # Configure logging
 logging.basicConfig(
@@ -79,16 +84,20 @@ class AncestryDNAParser:
                     continue
 
                 parts = line.split("\t")
-                if len(parts) >= 5:
-                    snp = {
-                        "rsid": parts[0],
-                        "chromosome": parts[1],
-                        "position": int(parts[2]),
-                        "allele1": parts[3],
-                        "allele2": parts[4],
-                    }
-                    self.snps.append(snp)
-                    self.chromosomes[snp["chromosome"]].append(snp)
+                if len(parts) >= EXPECTED_SNP_COLUMNS:
+                    try:
+                        snp = {
+                            "rsid": parts[0],
+                            "chromosome": parts[1],
+                            "position": int(parts[2]),
+                            "allele1": parts[3],
+                            "allele2": parts[4],
+                        }
+                        self.snps.append(snp)
+                        self.chromosomes[snp["chromosome"]].append(snp)
+                    except ValueError as e:
+                        logger.warning(f"Skipping invalid SNP data: {line[:50]}... Error: {e}")
+                        continue
 
         logger.info(f"Parsed {len(self.snps)} SNPs across {len(self.chromosomes)} chromosomes")
         
@@ -244,8 +253,6 @@ class AncestryDNASequencingPipeline(FullGenomeSequencingPipeline):
         logger.info(f"✓ AncestryDNA summary saved to {summary_path}")
 
         # Calculate total metrics
-        import time
-
         self.metrics.total_duration_ms = sum(
             [
                 self.metrics.alignment_duration_ms,
@@ -256,8 +263,6 @@ class AncestryDNASequencingPipeline(FullGenomeSequencingPipeline):
         )
 
         # Create deployment report
-        from dataclasses import asdict
-
         deployment_report = {
             "status": "SUCCESS",
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
