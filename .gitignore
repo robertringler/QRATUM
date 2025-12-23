@@ -125,3 +125,5 @@ qratum_asi/output/
 results/ancestrydna_sequencing/
 results/ancestrydna_sequencing_test/
 results/ancestrydna_advanced/
+results/wgs_test/
+results/wgs_analysis/
