@@ -32,6 +32,9 @@ from xenon.bioinformatics.full_genome_sequencing import (
     GenomeSequencingConfig,
 )
 
+# Import the new Genomic Rarity & Lineage Engine
+from genomic_rarity_engine import GenomicRarityAndLineageSystem
+
 # Constants
 EXPECTED_SNP_COLUMNS = 5  # Number of expected columns in SNP data: rsid, chromosome, position, allele1, allele2
 
@@ -189,6 +192,10 @@ class AncestryDNASequencingPipeline(FullGenomeSequencingPipeline):
         """
         super().__init__(config)
         self.ancestrydna_parser = ancestrydna_parser
+        
+        # Initialize Genomic Rarity & Lineage System
+        self.rarity_system = GenomicRarityAndLineageSystem()
+        logger.info("Genomic Rarity & Lineage System initialized")
 
     def run_ancestrydna_sequencing(self) -> Dict:
         """Run full genome sequencing on AncestryDNA data.
@@ -213,6 +220,23 @@ class AncestryDNASequencingPipeline(FullGenomeSequencingPipeline):
         logger.info(f"Total Chromosomes: {summary_stats['total_chromosomes']}")
         logger.info(f"Heterozygosity Rate: {summary_stats['heterozygosity_rate']:.2%}")
         logger.info(f"Generated Sequences: {len(sequences)}")
+
+        # ============================================================
+        # TIER-VI GENOMIC RARITY & ROYAL LINEAGE ANALYSIS
+        # ============================================================
+        logger.info("=" * 60)
+        logger.info("Tier-VI Genomic Rarity & Royal Lineage Analysis")
+        logger.info("=" * 60)
+        
+        # Perform comprehensive rarity and lineage analysis
+        rarity_lineage_results = self.rarity_system.analyze_genome(self.ancestrydna_parser.snps)
+        
+        # Save rarity & lineage report
+        rarity_report_path = self.rarity_system.generate_report(
+            rarity_lineage_results, 
+            self.config.output_dir
+        )
+        logger.info(f"✓ Rarity & Lineage analysis saved to {rarity_report_path}")
 
         # Execute pipeline phases
         alignment_results = self.execute_alignment(sequences)
@@ -267,7 +291,14 @@ class AncestryDNASequencingPipeline(FullGenomeSequencingPipeline):
             "status": "SUCCESS",
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
             "data_source": "AncestryDNA.txt",
+            "analysis_type": "Tier-VI Genomic-Genealogical Intelligence System",
             "ancestrydna_summary": ancestrydna_summary,
+            "rarity_lineage_analysis": {
+                "genome_wide_rarity": rarity_lineage_results.get("genome_wide_rarity", {}),
+                "haplogroups": rarity_lineage_results.get("haplogroups", {}),
+                "royal_lineage_summary": rarity_lineage_results.get("royal_lineage", {}),
+                "full_report": rarity_report_path,
+            },
             "metrics": asdict(self.metrics),
             "audit_summary": audit_summary,
             "reproducibility": reproducibility_report,
@@ -278,6 +309,7 @@ class AncestryDNASequencingPipeline(FullGenomeSequencingPipeline):
                 "functional_predictions": f"{self.config.output_dir}/functional_predictions.json",
                 "audit_summary": f"{self.config.output_dir}/audit_summary.json",
                 "ancestrydna_summary": summary_path,
+                "rarity_lineage_full_report": rarity_report_path,
             },
         }
 
@@ -296,6 +328,12 @@ class AncestryDNASequencingPipeline(FullGenomeSequencingPipeline):
         logger.info(f"Chromosomes Covered: {summary_stats['total_chromosomes']}")
         logger.info(f"Total Duration: {self.metrics.total_duration_ms:.2f} ms")
         logger.info(f"Audit Violations: {audit_summary['unresolved_critical']}")
+        logger.info("=" * 60)
+        logger.info("Tier-VI Rarity & Lineage Analysis:")
+        logger.info(f"  Genome-wide Rarity Percentile: {rarity_lineage_results['genome_wide_rarity'].get('rarity_percentile', 0):.2f}%")
+        logger.info(f"  Y-Haplogroup: {rarity_lineage_results['haplogroups'].get('y_chromosome', 'Unknown')}")
+        logger.info(f"  mtDNA Haplogroup: {rarity_lineage_results['haplogroups'].get('mitochondrial', 'Unknown')}")
+        logger.info(f"  Royal Connections: {rarity_lineage_results['royal_lineage'].get('total_royal_connections', 0)}")
         logger.info("=" * 60)
 
         return deployment_report
