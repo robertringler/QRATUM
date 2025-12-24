@@ -1,0 +1,24 @@
+# Placeholder for FIDO2 Epoch Public Key A
+#
+# This file should contain the Ed25519 public key (32 bytes) for the
+# first FIDO2 authenticator used in dual-signature zone promotions.
+#
+# Key Generation:
+# 1. Use YubiKey 5 or equivalent FIDO2 device
+# 2. Generate Ed25519 key pair with: ssh-keygen -t ed25519 -f epoch_a
+# 3. Extract public key bytes (32 bytes)
+# 4. Replace this placeholder
+#
+# Usage:
+# - Z0 → Z1: No signature required (auto-promotion)
+# - Z1 → Z2: Signature A required (production gate)
+# - Z2 → Z3: Both A and B required (archive gate)
+# - Z3 → Z2 (rollback): Both A and B required (emergency only)
+#
+# Security:
+# - Store private key on FIDO2 hardware device only
+# - Never expose private key to software
+# - Rotate annually with new epoch
+#
+# Format: 32 bytes raw binary (Ed25519 public key)
+# Current: All zeros (placeholder)
