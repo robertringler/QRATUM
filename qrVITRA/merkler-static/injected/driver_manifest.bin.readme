@@ -1,0 +1,21 @@
+# Placeholder for NVIDIA Driver Manifest Hash
+#
+# This file should contain the SHA3-256 hash (32 bytes) of the NVIDIA
+# driver manifest including:
+# - Driver version (e.g., 535.104.05)
+# - CUDA version (e.g., 12.4.1)
+# - GPU compute capability (e.g., 8.0 for A100)
+# - Driver capabilities (CUDA, OpenGL, Vulkan)
+#
+# Extraction process:
+# 1. Run: nvidia-smi --query-gpu=driver_version,compute_cap --format=csv
+# 2. Run: nvcc --version
+# 3. Concatenate version strings
+# 4. Compute SHA3-256 hash
+# 5. Replace this placeholder with the 32-byte hash
+#
+# Purpose: Ensures reproducible GPU execution by anchoring driver version
+# Different drivers may produce different numerical results
+#
+# Format: 32 bytes raw binary (SHA3-256 digest)
+# Current: All zeros (placeholder)
