@@ -111,7 +111,7 @@ class EffectLattice:
         if a == ConcurrencyEffect.PURE:
             return True
         
-        # Check transitive ordering
+        # Check transitive ordering via BFS - can we reach b from a going upward?
         visited = set()
         queue = [a]
         
@@ -123,11 +123,10 @@ class EffectLattice:
             
             for higher in EFFECT_ORDERING.get(current, set()):
                 if higher == b:
-                    return False  # a is lower, found path upward doesn't hit b
-            
-            # Check reverse: b's predecessors
+                    return True  # Found path from a to b going upward, so a ⊑ b
+                queue.append(higher)
         
-        # Use value comparison
+        # Use value comparison as fallback
         return a.value <= b.value
     
     @staticmethod

@@ -576,7 +576,8 @@ class RegionManager:
             if alloc.freed:
                 # Check no vertices reference this block
                 for v in graph.vertices:
-                    if v.metadata.region == alloc.block.region.name:
+                    region_name = v.metadata.region if v.metadata else None
+                    if region_name and alloc.block.region and region_name == alloc.block.region.name:
                         # Check if vertex uses the freed block
                         pass  # Simplified check
         
