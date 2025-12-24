@@ -2,15 +2,8 @@
 
 from __future__ import annotations
 
-from .ast import (
-    BinaryOp,
-    EconomicPrimitive,
-    Number,
-    Program,
-    SafetyGuard,
-    SimulationKernel,
-    WorldModelCall,
-)
+from .ast import (BinaryOp, EconomicPrimitive, Number, Program, SafetyGuard,
+                  SimulationKernel, WorldModelCall)
 from .parser import Parser
 from .qir import lowering, optimizer, verifier
 from .qir.ir_nodes import Constant, Graph, Operation, SafetyBarrier

@@ -6,12 +6,11 @@ with strict IRB and clinical use restrictions.
 
 import hashlib
 import math
-from typing import Any, Dict, FrozenSet, List
-
 from platform.core.base import VerticalModuleBase
 from platform.core.events import EventType, ExecutionEvent
 from platform.core.intent import PlatformContract
 from platform.core.substrates import ComputeSubstrate
+from typing import Any, Dict, FrozenSet
 
 
 class NeuraModule(VerticalModuleBase):

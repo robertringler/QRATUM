@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from quasim.sim import FieldState, QCMGParameters, QuantacosmorphysigeneticField
+from quasim.sim import (FieldState, QCMGParameters,
+                        QuantacosmorphysigeneticField)
 
 
 def test_qcmg_parameters_default():

@@ -22,12 +22,8 @@ from qstack.q.registry import IdentityRegistry
 from qstack.q.signing import Signer
 from qstack.q.trust_graph import TrustGraph
 from qstack.qnx.runtime.operators import OperatorLibrary
-from qstack.qnx.runtime.safety import (
-    RateLimiter,
-    SafetyConstraints,
-    SafetyEnvelope,
-    SafetyValidator,
-)
+from qstack.qnx.runtime.safety import (RateLimiter, SafetyConstraints,
+                                       SafetyEnvelope, SafetyValidator)
 from qstack.qnx.runtime.scheduler import DeterministicScheduler
 from qstack.qnx.runtime.state import QNXState
 from qstack.qnx.runtime.tracing import TraceRecorder

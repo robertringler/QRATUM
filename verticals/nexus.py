@@ -9,18 +9,15 @@ Capabilities:
 - Unified knowledge synthesis
 """
 
-from typing import Any, Dict, List
-from qratum_platform.core import (
-    VerticalModuleBase,
-    SafetyViolation,
-    PlatformContract,
-    ComputeSubstrate,
-)
+from typing import Any, Dict
+
+from qratum_platform.core import (ComputeSubstrate, PlatformContract,
+                                  SafetyViolation, VerticalModuleBase)
 
 
 class NEXUSModule(VerticalModuleBase):
     """Cross-Domain Intelligence & Synthesis vertical."""
-    
+
     MODULE_NAME = "NEXUS"
     MODULE_VERSION = "1.0.0"
     SAFETY_DISCLAIMER = """
@@ -29,17 +26,17 @@ class NEXUSModule(VerticalModuleBase):
     Not a substitute for specialized domain expertise.
     """
     PROHIBITED_USES = ["weaponization", "manipulation", "deception"]
-    
+
     def execute(self, contract: PlatformContract) -> Dict[str, Any]:
         """Execute cross-domain operation."""
         operation = contract.intent.operation
         parameters = contract.intent.parameters
-        
+
         # Safety check
         prohibited = ["weaponization", "manipulation", "deception"]
         if any(p in operation.lower() for p in prohibited):
             raise SafetyViolation(f"Prohibited operation: {operation}")
-        
+
         if operation == "multi_domain_synthesis":
             return self._multi_domain_synthesis(parameters)
         elif operation == "cross_domain_inference":
@@ -48,11 +45,11 @@ class NEXUSModule(VerticalModuleBase):
             return self._emergent_pattern_detection(parameters)
         else:
             return {"error": f"Unknown operation: {operation}"}
-    
+
     def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
         """Determine optimal compute substrate."""
         return ComputeSubstrate.CEREBRAS  # Large-scale synthesis
-        
+
         if operation == "multi_domain_synthesis":
             return self._multi_domain_synthesis(parameters)
         elif operation == "cross_domain_inference":
@@ -61,13 +58,13 @@ class NEXUSModule(VerticalModuleBase):
             return self._emergent_pattern_detection(parameters)
         else:
             return {"error": f"Unknown operation: {operation}"}
-    
+
     def _multi_domain_synthesis(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Synthesize insights across multiple domains."""
         default_domains = ["VITRA", "ECORA", "FLUXA"]
         domains = params.get("domains") or default_domains
         query = params.get("query", "")
-        
+
         # Example: Drug discovery (VITRA) + Climate impact (ECORA) + Supply chain (FLUXA)
         synthesis = {
             "query": query or "Sustainable pharmaceutical manufacturing",
@@ -103,15 +100,15 @@ class NEXUSModule(VerticalModuleBase):
                 "timeline_months": 18
             }
         }
-        
+
         return synthesis
-    
+
     def _cross_domain_inference(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Make inferences bridging multiple domains."""
         source_domain = params.get("source_domain", "VITRA")
         target_domain = params.get("target_domain", "SYNTHOS")
         concept = params.get("concept", "protein folding")
-        
+
         # Example: Protein folding (biology) → Material design (materials science)
         inference = {
             "source_domain": source_domain,
@@ -141,13 +138,13 @@ class NEXUSModule(VerticalModuleBase):
                 "Measure structural fidelity vs. temperature"
             ]
         }
-        
+
         return inference
-    
+
     def _emergent_pattern_detection(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Detect emergent patterns across domain boundaries."""
         data_sources = params.get("data_sources", [])
-        
+
         # Simulate emergent pattern detection
         patterns = {
             "patterns_detected": 2,
@@ -172,5 +169,5 @@ class NEXUSModule(VerticalModuleBase):
             "synthesis_level": "meta-domain",
             "validation_status": "hypothesis - requires experimental verification"
         }
-        
+
         return patterns

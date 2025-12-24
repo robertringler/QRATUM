@@ -1,7 +1,8 @@
 """Deterministic runtime substrate for Q-Stack."""
 
 from .runtime.operators import Operator, OperatorLibrary
-from .runtime.safety import RateLimiter, SafetyConstraints, SafetyEnvelope, SafetyValidator
+from .runtime.safety import (RateLimiter, SafetyConstraints, SafetyEnvelope,
+                             SafetyValidator)
 from .runtime.scheduler import DeterministicScheduler, PriorityScheduler
 from .runtime.state import QNXState
 from .runtime.tracing import TraceRecorder

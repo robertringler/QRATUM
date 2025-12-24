@@ -5,7 +5,8 @@ from .fault_isolation import FaultIsolationZones
 from .graph_vm import FaultIsolationZone, GraphVM, OperatorGraph
 from .operators import Operator, OperatorLibrary
 from .replay_buffer import DeterministicReplayBuffer
-from .safety import RateLimiter, SafetyConstraints, SafetyEnvelope, SafetyValidator
+from .safety import (RateLimiter, SafetyConstraints, SafetyEnvelope,
+                     SafetyValidator)
 from .scheduler import DeterministicScheduler, PriorityScheduler
 from .state import QNXState
 from .state_delta import compute_delta

@@ -6,7 +6,8 @@ for deterministic pipelines.
 """
 
 from .deterministic_acl import DeterministicAccessControlList
-from .deterministic_capability import CapabilityAuthority, DeterministicCapabilityToken
+from .deterministic_capability import (CapabilityAuthority,
+                                       DeterministicCapabilityToken)
 from .deterministic_kex import DeterministicKeyExchange
 from .deterministic_ledger import DeterministicLedger
 from .deterministic_merkle import DeterministicMerkleTree

@@ -5,13 +5,9 @@ capabilities with authorization, rollback, and validation.
 """
 
 from qratum_asi import QRATUMASI
-from qratum_asi.core.types import (
-    ImprovementType,
-    ASISafetyLevel,
-    AuthorizationType,
-    ValidationCriteria,
-)
 from qratum_asi.core.contracts import ASIContract
+from qratum_asi.core.types import (ASISafetyLevel, AuthorizationType,
+                                   ImprovementType, ValidationCriteria)
 
 
 def main():
@@ -24,7 +20,7 @@ def main():
     # Initialize QRATUM-ASI
     print("Initializing QRATUM-ASI...")
     asi = QRATUMASI()
-    print(f"✓ System initialized")
+    print("✓ System initialized")
     print()
 
     # Propose a routine improvement
@@ -91,7 +87,7 @@ def main():
     print("Authorizing improvement...")
     asi.authorization_system.add_authorized_user("demo_user")
     asi.authorization_system.grant_authorization("improve_001", "demo_user")
-    print(f"  ✓ Authorization granted by demo_user")
+    print("  ✓ Authorization granted by demo_user")
     print()
 
     print("Executing AUTHORIZED improvement...")
@@ -109,7 +105,7 @@ def main():
 
     print(f"  Success: {result.success}")
     print(f"  Validation Passed: {result.validation_passed}")
-    print(f"  Metrics:")
+    print("  Metrics:")
     for key, value in result.metrics.items():
         print(f"    {key}: {value}")
     print()
@@ -163,13 +159,13 @@ def main():
             print(f"  Request ID: {req.request_id}")
             print(f"  Authorization Type: {req.authorization_type.value}")
             print(f"  Status: {req.status}")
-            print(f"  Authorizers needed: 2")
+            print("  Authorizers needed: 2")
     print()
 
     # Grant first authorization
     print("Granting first authorization...")
     asi.authorization_system.grant_authorization("improve_003", "demo_user")
-    print(f"  ✓ Authorized by demo_user (1 of 2)")
+    print("  ✓ Authorized by demo_user (1 of 2)")
 
     # Check if still pending
     if asi.authorization_system.is_authorized("improve_003"):
@@ -182,7 +178,7 @@ def main():
     print("Granting second authorization...")
     asi.authorization_system.add_authorized_user("demo_admin")
     asi.authorization_system.grant_authorization("improve_003", "demo_admin")
-    print(f"  ✓ Authorized by demo_admin (2 of 2)")
+    print("  ✓ Authorized by demo_admin (2 of 2)")
 
     if asi.authorization_system.is_authorized("improve_003"):
         print("  ✓ Fully authorized!")

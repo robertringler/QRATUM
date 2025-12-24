@@ -9,18 +9,15 @@ Capabilities:
 - Genetic ancestry analysis
 """
 
-from typing import Any, Dict, List
-from qratum_platform.core import (
-    VerticalModuleBase,
-    SafetyViolation,
-    PlatformContract,
-    ComputeSubstrate,
-)
+from typing import Any, Dict
+
+from qratum_platform.core import (ComputeSubstrate, PlatformContract,
+                                  SafetyViolation, VerticalModuleBase)
 
 
 class HELIXModule(VerticalModuleBase):
     """Genomic Medicine & Personalized Health vertical."""
-    
+
     MODULE_NAME = "HELIX"
     MODULE_VERSION = "1.0.0"
     SAFETY_DISCLAIMER = """
@@ -30,17 +27,17 @@ class HELIXModule(VerticalModuleBase):
     HIPAA and GINA compliance required for clinical use.
     """
     PROHIBITED_USES = ["discrimination", "unauthorized_testing", "designer_babies"]
-    
+
     def execute(self, contract: PlatformContract) -> Dict[str, Any]:
         """Execute genomic medicine operation."""
         operation = contract.intent.operation
         parameters = contract.intent.parameters
-        
+
         # Safety check
         prohibited = ["discrimination", "unauthorized_testing", "designer_babies"]
         if any(p in operation.lower() for p in prohibited):
             raise SafetyViolation(f"Prohibited operation: {operation}")
-        
+
         if operation == "variant_analysis":
             return self._variant_analysis(parameters)
         elif operation == "risk_prediction":
@@ -49,11 +46,11 @@ class HELIXModule(VerticalModuleBase):
             return self._pharmacogenomics_analysis(parameters)
         else:
             return {"error": f"Unknown operation: {operation}"}
-    
+
     def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
         """Determine optimal compute substrate."""
         return ComputeSubstrate.MI300X  # Genomics benefits from large memory
-        
+
         if operation == "variant_analysis":
             return self._variant_analysis(parameters)
         elif operation == "risk_prediction":
@@ -62,11 +59,11 @@ class HELIXModule(VerticalModuleBase):
             return self._pharmacogenomics_analysis(parameters)
         else:
             return {"error": f"Unknown operation: {operation}"}
-    
+
     def _variant_analysis(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Analyze genetic variants."""
         gene = params.get("gene", "BRCA1")
-        
+
         # Simulate variant analysis
         analysis = {
             "gene": gene,
@@ -87,14 +84,14 @@ class HELIXModule(VerticalModuleBase):
             "variants_of_uncertain_significance": 2,
             "recommendation": "Genetic counseling recommended"
         }
-        
+
         return analysis
-    
+
     def _disease_risk_prediction(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Predict disease risk based on genomics."""
         genomic_profile = params.get("genomic_profile", {})
         disease = params.get("disease", "Type 2 Diabetes")
-        
+
         # Simulate risk prediction
         risk_analysis = {
             "disease": disease,
@@ -114,14 +111,14 @@ class HELIXModule(VerticalModuleBase):
             ],
             "screening_recommendations": "Annual glucose testing starting age 40"
         }
-        
+
         return risk_analysis
-    
+
     def _pharmacogenomics_analysis(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Analyze drug response based on genetics."""
         drug = params.get("drug", "Warfarin")
         genotype = params.get("genotype", {})
-        
+
         # Simulate pharmacogenomic analysis
         analysis = {
             "drug": drug,
@@ -150,5 +147,5 @@ class HELIXModule(VerticalModuleBase):
             "alternative_drugs": ["Rivaroxaban", "Apixaban"],
             "monitoring_frequency": "Weekly INR for first month"
         }
-        
+
         return analysis

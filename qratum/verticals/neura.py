@@ -5,17 +5,16 @@ Provides neural network simulation, brain signal processing, BCI decoding,
 and cognitive modeling capabilities.
 """
 
-from typing import Dict, Any, List
-import random
+from typing import Any, Dict, List
 
-from .base import VerticalModuleBase
-from ..platform.core import PlatformContract, EventType
+from ..platform.core import EventType, PlatformContract
 from ..platform.event_chain import MerkleEventChain
+from .base import VerticalModuleBase
 
 
 class NeuraModule(VerticalModuleBase):
     """Neuroscience and brain-computer interface AI module"""
-    
+
     def __init__(self):
         super().__init__(
             vertical_name="NEURA",
@@ -36,19 +35,19 @@ class NeuraModule(VerticalModuleBase):
                 "HIPAA compliance",
             ],
         )
-    
+
     def get_supported_tasks(self) -> List[str]:
         return ["simulate_neural_network", "process_brain_signals", "decode_bci",
                 "model_cognition", "analyze_neuroimaging", "model_neuropharmacology"]
-    
+
     def execute_task(self, task: str, parameters: Dict[str, Any],
                      contract: PlatformContract, event_chain: MerkleEventChain) -> Dict[str, Any]:
         if task not in self.get_supported_tasks():
             raise ValueError(f"Unknown task: {task}")
-        
+
         self.emit_task_event(EventType.TASK_STARTED, contract.contract_id, task,
                              {"parameters": parameters}, event_chain)
-        
+
         handlers = {
             "simulate_neural_network": lambda p: {"neurons": 10000, "synapses": 1e8, "activity": 0.35},
             "process_brain_signals": lambda p: {"signal_type": p.get("type", "EEG"),
@@ -63,7 +62,7 @@ class NeuraModule(VerticalModuleBase):
                                                   "receptor_affinity": {"5HT2A": 0.85, "D2": 0.42},
                                                   "predicted_efficacy": 0.73},
         }
-        
+
         result = handlers[task](parameters)
         self.emit_task_event(EventType.TASK_COMPLETED, contract.contract_id, task,
                              {"result_type": type(result).__name__}, event_chain)

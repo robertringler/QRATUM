@@ -3,16 +3,16 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
-from qratum_asi.core.chain import ASIMerkleChain
-from qratum_asi.core.authorization import AuthorizationSystem
-from qratum_asi.components.reality import QReality
-from qratum_asi.components.mind import QMind
 from qratum_asi.components.evolve import QEvolve
-from qratum_asi.components.will import QWill
 from qratum_asi.components.forge import QForge
+from qratum_asi.components.mind import QMind
+from qratum_asi.components.reality import QReality
+from qratum_asi.components.will import QWill
+from qratum_asi.core.authorization import AuthorizationSystem
+from qratum_asi.core.chain import ASIMerkleChain
+from qratum_asi.safety.alignment import AlignmentVerifier
 from qratum_asi.safety.boundaries import SafetyBoundaryEnforcer
 from qratum_asi.safety.red_team import RedTeamEvaluator
-from qratum_asi.safety.alignment import AlignmentVerifier
 
 
 @dataclass

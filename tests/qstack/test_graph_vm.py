@@ -1,4 +1,5 @@
-from qstack.qnx.runtime import GraphVM, OperatorGraph, OperatorLibrary, QNXState
+from qstack.qnx.runtime import (GraphVM, OperatorGraph, OperatorLibrary,
+                                QNXState)
 
 
 def test_graph_vm_topological_execution():

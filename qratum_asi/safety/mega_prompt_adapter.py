@@ -4,26 +4,22 @@ This module provides adapters to interrogate AI models using the
 MEGA PROMPT framework with strict JSON response format enforcement.
 """
 
-from typing import Dict, Any, List, Optional
-from abc import ABC, abstractmethod
 import json
-import random
+from abc import ABC, abstractmethod
+from typing import Any, Dict, List, Optional
 
-from qratum_asi.safety.mega_prompt import (
-    MegaPromptSystem,
-    MegaPromptQuestion,
-    MegaPromptResponse,
-    AnswerType,
-    ConfidenceLevel,
-)
+from qratum_asi.safety.mega_prompt import (AnswerType, ConfidenceLevel,
+                                           MegaPromptQuestion,
+                                           MegaPromptResponse,
+                                           MegaPromptSystem)
 
 
 class MegaPromptModelAdapter(ABC):
     """Base adapter for querying models with MEGA PROMPT."""
-    
+
     def __init__(self, model_identifier: str):
         self.model_identifier = model_identifier
-    
+
     @abstractmethod
     def query(self, prompt: str, question: MegaPromptQuestion) -> MegaPromptResponse:
         """Query the model with a MEGA PROMPT.
@@ -47,11 +43,11 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
     - cautious: Emphasizes risks and limitations
     - optimistic: More confident in safety measures
     """
-    
+
     def __init__(self, model_identifier: str, response_style: str = "mechanistic"):
         super().__init__(model_identifier)
         self.response_style = response_style
-        
+
         # Response templates by style
         self.templates = {
             "mechanistic": {
@@ -138,10 +134,10 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                 },
             },
         }
-    
+
     def query(self, prompt: str, question: MegaPromptQuestion) -> MegaPromptResponse:
         """Generate a simulated response to a MEGA PROMPT question."""
-        
+
         # Check if we have a specific template for this question and style
         if self.response_style in self.templates:
             if question.question_id in self.templates[self.response_style]:
@@ -157,13 +153,13 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                     confidence_level=template["confidence_level"],
                     model_identifier=self.model_identifier
                 )
-        
+
         # Generate generic response based on style
         return self._generate_generic_response(question)
-    
+
     def _generate_generic_response(self, question: MegaPromptQuestion) -> MegaPromptResponse:
         """Generate a generic response when no template exists."""
-        
+
         if self.response_style == "mechanistic":
             return MegaPromptResponse(
                 question_id=question.question_id,
@@ -251,14 +247,14 @@ class RefusalMegaPromptAdapter(MegaPromptModelAdapter):
     
     Demonstrates explicit refusal as a high-value safety signal.
     """
-    
+
     def __init__(self, model_identifier: str, refusal_questions: Optional[List[str]] = None):
         super().__init__(model_identifier)
         self.refusal_questions = refusal_questions or ["Q6", "Q13", "Q18", "Q20"]
-    
+
     def query(self, prompt: str, question: MegaPromptQuestion) -> MegaPromptResponse:
         """Query with explicit refusals for certain questions."""
-        
+
         if question.question_id in self.refusal_questions:
             return MegaPromptResponse(
                 question_id=question.question_id,
@@ -304,31 +300,31 @@ class RefusalMegaPromptAdapter(MegaPromptModelAdapter):
 
 class MegaPromptOrchestrator:
     """Orchestrator for running MEGA PROMPT interrogations across multiple models."""
-    
+
     def __init__(self, mega_prompt_system: MegaPromptSystem):
         self.system = mega_prompt_system
         self.adapters: List[MegaPromptModelAdapter] = []
-    
+
     def register_adapter(self, adapter: MegaPromptModelAdapter):
         """Register a model adapter."""
         self.adapters.append(adapter)
-    
+
     def interrogate_all_models(self, question_id: str) -> List[MegaPromptResponse]:
         """Interrogate all registered models with a single question."""
         question = self.system.get_question(question_id)
         if not question:
             raise ValueError(f"Question {question_id} not found")
-        
+
         prompt = self.system.generate_interrogation_prompt(question_id)
         responses = []
-        
+
         for adapter in self.adapters:
             response = adapter.query(prompt, question)
             self.system.record_response(response)
             responses.append(response)
-        
+
         return responses
-    
+
     def run_complete_interrogation(self) -> Dict[str, Any]:
         """Run complete interrogation across all questions and models."""
         results = {
@@ -337,22 +333,22 @@ class MegaPromptOrchestrator:
             "responses_by_question": {},
             "validation_results": {},
         }
-        
+
         for question_id in self.system.questions.keys():
             responses = self.interrogate_all_models(question_id)
             results["responses_by_question"][question_id] = [r.to_dict() for r in responses]
-            
+
             # Validate each response
             results["validation_results"][question_id] = {}
             for response in responses:
                 validation = self.system.validate_response(response)
                 results["validation_results"][question_id][response.model_identifier] = validation
-        
+
         # Add summary
         results["summary"] = self.system.generate_summary()
-        
+
         return results
-    
+
     def export_results(self, filepath: str):
         """Export interrogation results to JSON file."""
         results = self.run_complete_interrogation()

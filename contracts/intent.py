@@ -12,11 +12,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from contracts.base import (
-    BaseContract,
-    generate_contract_id,
-    get_current_timestamp,
-)
+from contracts.base import (BaseContract, generate_contract_id,
+                            get_current_timestamp)
 from qil.ast import Intent
 
 

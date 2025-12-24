@@ -1,9 +1,9 @@
 """ASI Merkle chain with rollback support."""
 
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
 import hashlib
 import json
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional
 
 from qratum_asi.core.events import ASIEvent
 

@@ -1,9 +1,9 @@
 """Tests for JURIS Legal AI Vertical Module."""
 
-import pytest
-
 from platform.core.intent import PlatformContract, PlatformIntent, VerticalType
 from platform.verticals.juris import JurisModule
+
+import pytest
 
 
 class TestJurisModule:

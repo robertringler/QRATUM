@@ -7,13 +7,11 @@ Based on OMNILEX reference implementation.
 """
 
 import hashlib
-import json
-from typing import Any, Dict, FrozenSet
-
 from platform.core.base import VerticalModuleBase
 from platform.core.events import EventType, ExecutionEvent
 from platform.core.intent import PlatformContract
 from platform.core.substrates import ComputeSubstrate
+from typing import Any, Dict, FrozenSet
 
 
 class JurisModule(VerticalModuleBase):

@@ -3,13 +3,9 @@
 import numpy as np
 
 from benchmarks.compression.validators.compression_ratio import (
-    aggregate_compression_statistics,
-    compute_compression_metrics,
-)
+    aggregate_compression_statistics, compute_compression_metrics)
 from benchmarks.compression.validators.fidelity import (
-    compute_fidelity,
-    validate_fidelity_bound,
-)
+    compute_fidelity, validate_fidelity_bound)
 
 
 class TestFidelityComputation:

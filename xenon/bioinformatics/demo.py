@@ -12,9 +12,11 @@ from __future__ import annotations
 
 import numpy as np
 
-from xenon.bioinformatics.drug_target_scoring import DrugCandidate, DrugTargetScorer
+from xenon.bioinformatics.drug_target_scoring import (DrugCandidate,
+                                                      DrugTargetScorer)
 from xenon.bioinformatics.literature_miner import LiteratureMiner, Publication
-from xenon.bioinformatics.multiomics_integrator import MultiOmicsIntegrator, OmicsData
+from xenon.bioinformatics.multiomics_integrator import (MultiOmicsIntegrator,
+                                                        OmicsData)
 from xenon.bioinformatics.sequence_analyzer import SequenceAnalyzer
 
 

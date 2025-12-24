@@ -7,13 +7,13 @@ Built for sovereign, on-premises deployment.
 Version: 1.0.0
 """
 
+from dataclasses import dataclass
 from datetime import datetime, timezone
-from enum import Enum
 from typing import Any, Dict, List, Optional
-from dataclasses import dataclass, asdict
 
 from qradle import DeterministicEngine, ExecutionContext
-from qratum.platform.reasoning_engine import UnifiedReasoningEngine, ReasoningStrategy
+from qratum.platform.reasoning_engine import (ReasoningStrategy,
+                                              UnifiedReasoningEngine)
 
 
 # API Models
@@ -74,7 +74,7 @@ class QRATUMAPIService:
     - Reasoning chain verification
     - System health and statistics
     """
-    
+
     # Vertical configurations
     VERTICALS = {
         "JURIS": {
@@ -148,12 +148,12 @@ class QRATUMAPIService:
             "safety_disclaimer": "🚀 SPACE ANALYSIS: Mission-critical decisions require validation."
         },
     }
-    
+
     def __init__(self):
         """Initialize API service."""
         self.qradle_engine = DeterministicEngine()
         self.reasoning_engine = UnifiedReasoningEngine()
-    
+
     def execute_vertical_task(self, request: APIRequest) -> APIResponse:
         """Execute a task on a specific vertical.
         
@@ -164,7 +164,7 @@ class QRATUMAPIService:
             APIResponse with results
         """
         start_time = datetime.now(timezone.utc)
-        
+
         # Validate vertical
         if request.vertical not in self.VERTICALS:
             return APIResponse(
@@ -174,9 +174,9 @@ class QRATUMAPIService:
                 output_hash="",
                 error=f"Unknown vertical: {request.vertical}"
             )
-        
+
         vertical_config = self.VERTICALS[request.vertical]
-        
+
         # Validate task
         if request.task not in vertical_config["tasks"]:
             return APIResponse(
@@ -186,7 +186,7 @@ class QRATUMAPIService:
                 output_hash="",
                 error=f"Unknown task '{request.task}' for vertical '{request.vertical}'"
             )
-        
+
         # Create execution context
         context = ExecutionContext(
             contract_id=f"{request.vertical}_{request.task}_{int(start_time.timestamp())}",
@@ -199,7 +199,7 @@ class QRATUMAPIService:
             safety_level=request.safety_level,
             authorized=request.authorized
         )
-        
+
         # Execute with QRADLE
         def task_executor(params):
             # Simulate vertical task execution
@@ -214,11 +214,11 @@ class QRATUMAPIService:
                     f"Insight 2 from {params['vertical']}",
                 ],
             }
-        
+
         result = self.qradle_engine.execute_contract(context, task_executor)
-        
+
         execution_time = (datetime.now(timezone.utc) - start_time).total_seconds()
-        
+
         return APIResponse(
             success=result.success,
             data=result.output if result.success else None,
@@ -228,7 +228,7 @@ class QRATUMAPIService:
             error=result.error,
             safety_disclaimer=vertical_config["safety_disclaimer"]
         )
-    
+
     def execute_synthesis(self, request: SynthesisRequest) -> SynthesisResponse:
         """Execute cross-domain synthesis across multiple verticals.
         
@@ -239,7 +239,7 @@ class QRATUMAPIService:
             SynthesisResponse with synthesized results
         """
         start_time = datetime.now(timezone.utc)
-        
+
         # Validate verticals
         invalid_verticals = [v for v in request.verticals if v not in self.VERTICALS]
         if invalid_verticals:
@@ -254,13 +254,13 @@ class QRATUMAPIService:
                 reasoning_nodes_count=0,
                 execution_time=0.0
             )
-        
+
         # Parse reasoning strategy
         try:
             strategy = ReasoningStrategy(request.strategy.lower())
         except ValueError:
             strategy = ReasoningStrategy.DEDUCTIVE
-        
+
         # Execute synthesis
         chain = self.reasoning_engine.synthesize(
             query=request.query,
@@ -268,9 +268,9 @@ class QRATUMAPIService:
             parameters=request.parameters,
             strategy=strategy
         )
-        
+
         execution_time = (datetime.now(timezone.utc) - start_time).total_seconds()
-        
+
         return SynthesisResponse(
             success=True,
             chain_id=chain.chain_id,
@@ -282,11 +282,11 @@ class QRATUMAPIService:
             reasoning_nodes_count=len(chain.nodes),
             execution_time=execution_time
         )
-    
+
     def get_vertical_info(self, vertical: str) -> Optional[Dict[str, Any]]:
         """Get information about a vertical module."""
         return self.VERTICALS.get(vertical)
-    
+
     def list_verticals(self) -> List[Dict[str, Any]]:
         """List all available vertical modules."""
         return [
@@ -296,24 +296,24 @@ class QRATUMAPIService:
             }
             for v_id, v_info in self.VERTICALS.items()
         ]
-    
+
     def verify_reasoning_chain(self, chain_id: str) -> Dict[str, Any]:
         """Verify integrity of a reasoning chain."""
         is_valid = self.reasoning_engine.verify_reasoning_chain(chain_id)
         chain = self.reasoning_engine.get_reasoning_chain(chain_id)
-        
+
         return {
             "chain_id": chain_id,
             "exists": chain is not None,
             "verified": is_valid,
             "provenance_hash": chain.provenance_hash if chain else None,
         }
-    
+
     def get_health_status(self) -> Dict[str, Any]:
         """Get system health status."""
         qradle_stats = self.qradle_engine.get_stats()
         reasoning_stats = self.reasoning_engine.get_stats()
-        
+
         return {
             "status": "healthy",
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -322,7 +322,7 @@ class QRATUMAPIService:
             "reasoning_chains": reasoning_stats["total_chains"],
             "merkle_chain_valid": qradle_stats["chain_valid"],
         }
-    
+
     def get_statistics(self) -> Dict[str, Any]:
         """Get detailed system statistics."""
         return {
@@ -341,7 +341,7 @@ def create_api_routes():
     In production, integrate with FastAPI, Flask, or other framework.
     """
     service = QRATUMAPIService()
-    
+
     # Example routes:
     # POST /api/v1/vertical/execute
     # POST /api/v1/synthesis/execute
@@ -350,5 +350,5 @@ def create_api_routes():
     # GET /api/v1/synthesis/verify/{chain_id}
     # GET /api/v1/health
     # GET /api/v1/stats
-    
+
     return service

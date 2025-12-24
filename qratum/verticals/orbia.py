@@ -5,17 +5,16 @@ Provides orbit propagation, constellation optimization, collision avoidance,
 and mission planning capabilities.
 """
 
-from typing import Dict, Any, List
-import math
+from typing import Any, Dict, List
 
-from .base import VerticalModuleBase
-from ..platform.core import PlatformContract, EventType
+from ..platform.core import EventType, PlatformContract
 from ..platform.event_chain import MerkleEventChain
+from .base import VerticalModuleBase
 
 
 class OrbiaModule(VerticalModuleBase):
     """Space systems and satellites AI module"""
-    
+
     def __init__(self):
         super().__init__(
             vertical_name="ORBIA",
@@ -35,19 +34,19 @@ class OrbiaModule(VerticalModuleBase):
                 "Space debris mitigation",
             ],
         )
-    
+
     def get_supported_tasks(self) -> List[str]:
         return ["propagate_orbit", "optimize_constellation", "avoid_collision",
                 "analyze_link_budget", "plan_mission", "assess_space_situation"]
-    
+
     def execute_task(self, task: str, parameters: Dict[str, Any],
                      contract: PlatformContract, event_chain: MerkleEventChain) -> Dict[str, Any]:
         if task not in self.get_supported_tasks():
             raise ValueError(f"Unknown task: {task}")
-        
+
         self.emit_task_event(EventType.TASK_STARTED, contract.contract_id, task,
                              {"parameters": parameters}, event_chain)
-        
+
         handlers = {
             "propagate_orbit": lambda p: {"orbital_period_min": 90, "perigee_km": 400,
                                          "apogee_km": 420, "inclination_deg": 51.6,
@@ -65,7 +64,7 @@ class OrbiaModule(VerticalModuleBase):
             "assess_space_situation": lambda p: {"tracked_objects": 25000, "conjunctions": 15,
                                                 "debris_risk": "moderate", "collision_probability": 0.0002},
         }
-        
+
         result = handlers[task](parameters)
         self.emit_task_event(EventType.TASK_COMPLETED, contract.contract_id, task,
                              {"result_type": type(result).__name__}, event_chain)
