@@ -1,0 +1,117 @@
+[package]
+name = "aethernet"
+version = "1.0.0"
+edition = "2021"
+authors = ["QRATUM Platform <info@qratum.ai>"]
+description = "Accountable, Reversible Overlay Network Substrate for QRATUM Sovereign Intelligence"
+license = "Apache-2.0"
+repository = "https://github.com/robertringler/QRATUM"
+keywords = ["blockchain", "merkle", "genomics", "compliance", "zero-knowledge"]
+categories = ["cryptography", "network-programming", "no-std"]
+
+[lib]
+name = "aethernet"
+path = "core/lib.rs"
+
+# Build profiles
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+# Core dependencies (no_std compatible)
+[dependencies]
+# Cryptography
+sha3 = { version = "0.10", default-features = false }
+ed25519-dalek = { version = "2.1", default-features = false, features = ["alloc"] }
+
+# CBOR encoding
+minicbor = { version = "0.21", default-features = false, features = ["alloc", "derive"] }
+
+# JSON support (optional, for secondary encoding)
+serde = { version = "1.0", default-features = false, features = ["derive", "alloc"], optional = true }
+serde_json = { version = "1.0", default-features = false, features = ["alloc"], optional = true }
+
+# FIDO2/CTAP2 support
+ctap-types = { version = "0.2", default-features = false, optional = true }
+
+# Zero-knowledge proofs (optional)
+# risc0-zkvm = { version = "0.19", optional = true }
+# halo2_proofs = { version = "0.3", optional = true }
+
+[dev-dependencies]
+# Testing
+criterion = "0.5"
+
+[features]
+default = ["std"]
+
+# Standard library support
+std = [
+    "sha3/std",
+    "ed25519-dalek/std",
+    "minicbor/std",
+    "serde?/std",
+    "serde_json?/std",
+]
+
+# JSON support (secondary encoding)
+json = ["serde", "serde_json"]
+
+# FIDO2 hardware key support
+fido2 = ["ctap-types"]
+
+# Zero-knowledge proof support
+# zkp-risc0 = ["risc0-zkvm"]
+# zkp-halo2 = ["halo2_proofs"]
+
+# Integration testing
+integration = []
+
+# Compliance testing
+compliance = []
+
+# Air-gapped deployment
+airgap = []
+
+[[bench]]
+name = "txo_performance"
+harness = false
+required-features = ["std"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[package.metadata]
+description-long = """
+Aethernet is the accountable, reversible overlay network substrate for QRATUM sovereign intelligence.
+
+Key Features:
+- TXO (Transaction Object) with CBOR-primary encoding
+- RTF (Reversible Transaction Framework) with zone enforcement (Z0-Z3)
+- Ephemeral biokey derivation from SNP loci
+- Zero-knowledge proof support (Risc0/Halo2)
+- Merkle ledger with snapshot-based rollback
+- HIPAA and GDPR compliance modules
+- Integration with VITRA-E0 genomics pipeline
+
+Sovereignty Invariants:
+- Determinism: Same input → same output
+- Dual Control: Critical operations require two authorizations
+- Sovereignty: No external dependencies or data egress
+- Reversibility: Zone-appropriate rollback capability
+- Auditability: Complete provenance chain
+
+Deployment Zones:
+- Z0: Genesis (immutable)
+- Z1: Staging (full rollback)
+- Z2: Production (emergency rollback, single signature)
+- Z3: Archive (immutable, air-gapped, dual signatures)
+"""
