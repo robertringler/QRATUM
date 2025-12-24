@@ -15,10 +15,10 @@ from dataclasses import dataclass, field
 from typing import Any
 import time
 
-from .sir.vertices import Vertex, VertexType, HardwareAffinity
-from .sir.hypergraph import HyperGraph
-from .optimization.scheduler import AdaptiveScheduler, Device, DeviceKind, Task, ScheduleResult
-from .proof.verifier import ProofVerifier, ProofTerm
+from aion.sir.vertices import Vertex, VertexType, HardwareAffinity
+from aion.sir.hypergraph import HyperGraph
+from aion.optimization.scheduler import AdaptiveScheduler, Device, DeviceKind, Task, ScheduleResult
+from aion.proof.verifier import ProofVerifier, ProofTerm
 
 
 @dataclass
@@ -243,7 +243,7 @@ class AIONInterpreter:
     def __init__(self) -> None:
         """Initialize interpreter."""
         self.runtime = AIONRuntime()
-        from .language import AIONParser
+        from aion.language import AIONParser
         self.parser = AIONParser()
     
     def eval(self, source: str) -> Any:
@@ -259,7 +259,7 @@ class AIONInterpreter:
         ast = self.parser.parse(source)
         
         # Convert to SIR
-        from .language import AIONCompiler
+        from aion.language import AIONCompiler
         compiler = AIONCompiler()
         graph = compiler.compile_ast(ast)
         
