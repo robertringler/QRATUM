@@ -8,16 +8,9 @@ Provides the foundational components for deterministic, auditable execution:
 - PlatformOrchestrator: Routes intents to appropriate vertical modules
 """
 
-from .core import (
-    PlatformIntent,
-    PlatformContract,
-    Event,
-    EventType,
-    ContractStatus,
-    create_contract_from_intent,
-    create_event,
-    FATAL_INVARIANTS,
-)
+from .core import (FATAL_INVARIANTS, ContractStatus, Event, EventType,
+                   PlatformContract, PlatformIntent,
+                   create_contract_from_intent, create_event)
 from .event_chain import MerkleEventChain
 from .orchestrator import PlatformOrchestrator
 from .substrates import ComputeSubstrate, SubstrateSelector

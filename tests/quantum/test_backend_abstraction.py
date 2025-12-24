@@ -3,15 +3,10 @@
 import pytest
 
 try:
-    from quasim.quantum.core import (
-        QISKIT_AVAILABLE,
-        AbstractQuantumBackend,
-        BackendTypeEnum,
-        IBMQBackend,
-        QiskitAerBackend,
-        QuantumConfig,
-        create_backend,
-    )
+    from quasim.quantum.core import (QISKIT_AVAILABLE, AbstractQuantumBackend,
+                                     BackendTypeEnum, IBMQBackend,
+                                     QiskitAerBackend, QuantumConfig,
+                                     create_backend)
 
     QUANTUM_AVAILABLE = True
 except ImportError:

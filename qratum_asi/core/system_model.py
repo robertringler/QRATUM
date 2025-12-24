@@ -11,12 +11,12 @@ Build a formal internal representation of QRATUM/QRADLE that enables:
 This is the foundation for system-level reasoning and self-improvement.
 """
 
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set, Callable
-from datetime import datetime
-from enum import Enum
 import hashlib
 import json
+from dataclasses import dataclass, field
+from datetime import datetime
+from enum import Enum
+from typing import Any, Callable, Dict, List, Optional
 
 
 class ComponentType(Enum):
@@ -55,12 +55,12 @@ class InvariantModel:
     validation_func: Optional[Callable[[Dict[str, Any]], bool]] = None
     last_validated: Optional[str] = None
     violation_count: int = 0
-    
+
     def validate(self, system_state: Dict[str, Any]) -> bool:
         """Validate this invariant against current system state."""
         if self.validation_func is None:
             return True
-        
+
         try:
             result = self.validation_func(system_state)
             self.last_validated = datetime.utcnow().isoformat()
@@ -83,7 +83,7 @@ class ComponentModel:
     failure_modes: List[FailureMode]
     performance_bounds: Dict[str, float]  # e.g., {"max_latency_ms": 100}
     last_updated: str = field(default_factory=lambda: datetime.utcnow().isoformat())
-    
+
     def get_state_hash(self) -> str:
         """Compute hash of component state for change detection."""
         state_json = json.dumps(self.state, sort_keys=True)
@@ -101,7 +101,7 @@ class GraphExecutionModel:
     avg_execution_time: float  # seconds
     failure_rate: float  # 0.0 to 1.0
     recent_executions: List[Dict[str, Any]] = field(default_factory=list)
-    
+
     def add_execution(self, execution_data: Dict[str, Any]):
         """Record an execution for pattern analysis."""
         self.recent_executions.append({
@@ -111,7 +111,7 @@ class GraphExecutionModel:
         # Keep only last 100 executions
         if len(self.recent_executions) > 100:
             self.recent_executions = self.recent_executions[-100:]
-        
+
         # Update statistics
         if "execution_time" in execution_data:
             # Exponential moving average
@@ -130,7 +130,7 @@ class MemoryLayoutModel:
     allocation_patterns: Dict[str, int]  # component -> bytes
     fragmentation_ratio: float  # 0.0 to 1.0
     pressure_level: str  # "low", "medium", "high", "critical"
-    
+
     def update_pressure_level(self):
         """Update pressure level based on allocation."""
         usage_ratio = self.total_allocated / max(self.peak_allocated, 1)
@@ -165,7 +165,7 @@ class FailureModeModel:
     mitigation_strategy: str  # How we handle/prevent this failure
     occurrence_count: int = 0
     last_occurred: Optional[str] = None
-    
+
     def record_occurrence(self):
         """Record that this failure occurred."""
         self.occurrence_count += 1
@@ -180,7 +180,7 @@ class QRATUMSystemModel:
     - Self-verification
     - Self-improvement decisions based on reality
     """
-    
+
     def __init__(self):
         """Initialize the system self-model."""
         self.components: Dict[str, ComponentModel] = {}
@@ -204,13 +204,13 @@ class QRATUMSystemModel:
         self.failure_modes: Dict[FailureMode, FailureModeModel] = {}
         self.model_version: int = 1
         self.last_updated: str = datetime.utcnow().isoformat()
-        
+
         # Initialize with known failure modes
         self._initialize_failure_modes()
-        
+
         # Initialize with core invariants
         self._initialize_core_invariants()
-    
+
     def _initialize_failure_modes(self):
         """Initialize known failure modes."""
         self.failure_modes[FailureMode.MEMORY_EXHAUSTION] = FailureModeModel(
@@ -220,7 +220,7 @@ class QRATUMSystemModel:
             detection_method="memory_pressure_monitoring",
             mitigation_strategy="rollback_to_checkpoint"
         )
-        
+
         self.failure_modes[FailureMode.INVARIANT_VIOLATION] = FailureModeModel(
             failure_mode=FailureMode.INVARIANT_VIOLATION,
             probability=0.01,
@@ -228,7 +228,7 @@ class QRATUMSystemModel:
             detection_method="continuous_invariant_validation",
             mitigation_strategy="halt_and_alert"
         )
-        
+
         self.failure_modes[FailureMode.GRAPH_CYCLE] = FailureModeModel(
             failure_mode=FailureMode.GRAPH_CYCLE,
             probability=0.02,
@@ -236,7 +236,7 @@ class QRATUMSystemModel:
             detection_method="cycle_detection_algorithm",
             mitigation_strategy="reject_cyclic_operations"
         )
-    
+
     def _initialize_core_invariants(self):
         """Initialize core system invariants as first-class objects."""
         # Invariant 1: Human Oversight
@@ -247,7 +247,7 @@ class QRATUMSystemModel:
             rationale="Ensures human control over critical system changes",
             criticality="EXISTENTIAL"
         )
-        
+
         # Invariant 2: Merkle Chain Integrity
         self.invariants["merkle_integrity"] = InvariantModel(
             invariant_id="merkle_integrity",
@@ -256,7 +256,7 @@ class QRATUMSystemModel:
             rationale="Provides tamper-evident audit trail for all operations",
             criticality="CRITICAL"
         )
-        
+
         # Invariant 3: Contract Immutability
         self.invariants["contract_immutability"] = InvariantModel(
             invariant_id="contract_immutability",
@@ -265,7 +265,7 @@ class QRATUMSystemModel:
             rationale="Ensures reproducibility and prevents history rewriting",
             criticality="CRITICAL"
         )
-        
+
         # Invariant 8: Determinism Guarantee
         self.invariants["determinism"] = InvariantModel(
             invariant_id="determinism",
@@ -274,7 +274,7 @@ class QRATUMSystemModel:
             rationale="Enables verification, certification, and trust",
             criticality="CRITICAL"
         )
-    
+
     def register_component(
         self,
         component_id: str,
@@ -295,11 +295,11 @@ class QRATUMSystemModel:
             failure_modes=failure_modes,
             performance_bounds=performance_bounds
         )
-        
+
         self.components[component_id] = component
         self._mark_model_updated()
         return component
-    
+
     def update_component_state(
         self,
         component_id: str,
@@ -308,17 +308,17 @@ class QRATUMSystemModel:
         """Update the state of a component."""
         if component_id not in self.components:
             raise ValueError(f"Component not found: {component_id}")
-        
+
         component = self.components[component_id]
         old_hash = component.get_state_hash()
         component.state = new_state
         component.last_updated = datetime.utcnow().isoformat()
         new_hash = component.get_state_hash()
-        
+
         # If state changed, mark model as updated
         if old_hash != new_hash:
             self._mark_model_updated()
-    
+
     def register_graph_execution(
         self,
         graph_id: str,
@@ -337,9 +337,9 @@ class QRATUMSystemModel:
                 avg_execution_time=execution_data.get("execution_time", 0.0),
                 failure_rate=0.0
             )
-        
+
         self.graph_models[graph_id].add_execution(execution_data)
-    
+
     def update_memory_model(
         self,
         total_allocated: int,
@@ -348,13 +348,13 @@ class QRATUMSystemModel:
         """Update memory model with current allocation."""
         self.memory_model.total_allocated = total_allocated
         self.memory_model.allocation_patterns = allocation_patterns
-        
+
         if total_allocated > self.memory_model.peak_allocated:
             self.memory_model.peak_allocated = total_allocated
-        
+
         self.memory_model.update_pressure_level()
         self._mark_model_updated()
-    
+
     def update_scheduling_model(
         self,
         active_contracts: int,
@@ -368,12 +368,12 @@ class QRATUMSystemModel:
         self.scheduling_model.average_wait_time = average_wait_time
         self.scheduling_model.throughput = throughput
         self._mark_model_updated()
-    
+
     def record_failure(self, failure_mode: FailureMode):
         """Record occurrence of a failure mode."""
         if failure_mode in self.failure_modes:
             self.failure_modes[failure_mode].record_occurrence()
-    
+
     def validate_all_invariants(self) -> Dict[str, bool]:
         """Validate all invariants against current system state.
         
@@ -382,12 +382,12 @@ class QRATUMSystemModel:
         """
         system_state = self.get_system_state()
         results = {}
-        
+
         for inv_id, invariant in self.invariants.items():
             results[inv_id] = invariant.validate(system_state)
-        
+
         return results
-    
+
     def get_system_state(self) -> Dict[str, Any]:
         """Get current system state for analysis."""
         return {
@@ -404,11 +404,11 @@ class QRATUMSystemModel:
             },
             "model_version": self.model_version
         }
-    
+
     def get_failure_predictions(self) -> List[Dict[str, Any]]:
         """Predict likely failures based on current state."""
         predictions = []
-        
+
         # Check memory pressure
         if self.memory_model.pressure_level in ["high", "critical"]:
             predictions.append({
@@ -416,7 +416,7 @@ class QRATUMSystemModel:
                 "probability": 0.7 if self.memory_model.pressure_level == "critical" else 0.3,
                 "reason": f"Memory pressure is {self.memory_model.pressure_level}"
             })
-        
+
         # Check scheduling backlog
         if self.scheduling_model.queued_contracts > 100:
             predictions.append({
@@ -424,14 +424,14 @@ class QRATUMSystemModel:
                 "probability": 0.4,
                 "reason": f"Large queue backlog: {self.scheduling_model.queued_contracts}"
             })
-        
+
         return predictions
-    
+
     def _mark_model_updated(self):
         """Mark that the model has been updated."""
         self.model_version += 1
         self.last_updated = datetime.utcnow().isoformat()
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Export system model as machine-readable dictionary."""
         return {

@@ -94,9 +94,7 @@ class TestGlobalFrameCache:
         """Test global cache_frame function."""
 
         from quasic_viz.services.qubic_render.frame_cache import (
-            FRAME_HISTORY,
-            cache_frame,
-        )
+            FRAME_HISTORY, cache_frame)
 
         initial_len = len(FRAME_HISTORY)
         cache_frame([1, 2, 3], {"temp": [100]})
@@ -105,10 +103,8 @@ class TestGlobalFrameCache:
     def test_get_frame_at_global(self):
         """Test global get_frame_at function."""
 
-        from quasic_viz.services.qubic_render.frame_cache import (
-            cache_frame,
-            get_frame_at,
-        )
+        from quasic_viz.services.qubic_render.frame_cache import (cache_frame,
+                                                                  get_frame_at)
 
         start_time = time.time()
         cache_frame([1, 2, 3], {"temp": [100]})

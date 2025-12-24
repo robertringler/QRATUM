@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 import pytest
+
 from qratum.bioinformatics.xenon.alignment import QuantumAlignmentEngine
 from qratum.bioinformatics.xenon.omics import InformationEngine
 
@@ -96,7 +97,8 @@ class TestLoad:
     def test_concurrent_reasoner(self):
         """Test concurrent reasoning operations."""
 
-        from qratum.bioinformatics.xenon.inference import NeuralSymbolicReasoner
+        from qratum.bioinformatics.xenon.inference import \
+            NeuralSymbolicReasoner
 
         def reason_task(i):
             reasoner = NeuralSymbolicReasoner(seed=42, enable_neural=False)

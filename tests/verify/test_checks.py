@@ -8,18 +8,11 @@ import numpy as np
 import pandas as pd
 import pytest
 import yaml
-from quasim_verify.checks import (
-    audit_chain,
-    comp_artifacts,
-    comp_cmmc_map,
-    doc_language_lint,
-    econ_montecarlo,
-    econ_phi_qevf,
-    tech_benchmarks,
-    tech_compression,
-    tech_rl_convergence,
-    tech_telemetry_rmse,
-)
+from quasim_verify.checks import (audit_chain, comp_artifacts, comp_cmmc_map,
+                                  doc_language_lint, econ_montecarlo,
+                                  econ_phi_qevf, tech_benchmarks,
+                                  tech_compression, tech_rl_convergence,
+                                  tech_telemetry_rmse)
 from quasim_verify.io import load_json, load_yaml, sha256_file, write_json
 from quasim_verify.models import CheckResult
 

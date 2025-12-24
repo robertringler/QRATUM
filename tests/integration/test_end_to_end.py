@@ -7,7 +7,8 @@ import pytest
 
 from adapters import AdapterRegistry
 from events import get_global_event_log
-from qcore import AuthorizationEngine, CapabilityResolver, ContractIssuer, PolicyEngine
+from qcore import (AuthorizationEngine, CapabilityResolver, ContractIssuer,
+                   PolicyEngine)
 from qil import parse_intent
 from spine import ContractExecutor
 

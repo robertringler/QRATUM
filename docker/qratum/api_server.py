@@ -8,22 +8,17 @@ Provides endpoints for all 14 verticals and cross-domain synthesis.
 
 import os
 import sys
+from typing import Any, Dict, List, Optional
+
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from typing import Any, Dict, List, Optional
 
 # Add parent directory to path
 sys.path.insert(0, '/app')
 
-from qratum.platform.api import (
-    QRATUMAPIService,
-    APIRequest,
-    APIResponse,
-    SynthesisRequest,
-    SynthesisResponse
-)
+from qratum.platform.api import APIRequest, QRATUMAPIService, SynthesisRequest
 
 # Initialize API service
 api_service = QRATUMAPIService()
@@ -101,12 +96,12 @@ async def execute_vertical_task(request: VerticalTaskRequest):
         safety_level=request.safety_level,
         authorized=request.authorized
     )
-    
+
     response = api_service.execute_vertical_task(api_request)
-    
+
     if not response.success:
         raise HTTPException(status_code=400, detail=response.error)
-    
+
     return {
         "success": response.success,
         "data": response.data,
@@ -126,9 +121,9 @@ async def execute_synthesis(request: MultiVerticalSynthesisRequest):
         strategy=request.strategy,
         requester_id=request.requester_id
     )
-    
+
     response = api_service.execute_synthesis(synthesis_request)
-    
+
     return {
         "success": response.success,
         "chain_id": response.chain_id,
@@ -157,7 +152,7 @@ async def get_statistics():
 if __name__ == "__main__":
     port = int(os.getenv("API_PORT", "8000"))
     host = os.getenv("API_HOST", "0.0.0.0")
-    
+
     uvicorn.run(
         app,
         host=host,

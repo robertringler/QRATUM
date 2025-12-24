@@ -1,6 +1,7 @@
 import pytest
 
-from qstack.qunimbus.core.engine import QuNimbusEngine, ValuationInput, macro_engine
+from qstack.qunimbus.core.engine import (QuNimbusEngine, ValuationInput,
+                                         macro_engine)
 
 
 def test_qunimbus_governance_and_value():

@@ -1,19 +1,14 @@
 """Tests for QRATUM Platform core functionality."""
 
-import pytest
 import time
 
-from qratum_platform.core import (
-    ComputeSubstrate,
-    ExecutionEvent,
-    MerkleEventChain,
-    PlatformContract,
-    PlatformIntent,
-    QRATUMPlatform,
-    SafetyViolation,
-    VerticalModule,
-    VerticalModuleBase,
-)
+import pytest
+
+from qratum_platform.core import (ComputeSubstrate, ExecutionEvent,
+                                  MerkleEventChain, PlatformContract,
+                                  PlatformIntent, QRATUMPlatform,
+                                  SafetyViolation, VerticalModule,
+                                  VerticalModuleBase)
 
 
 class TestVerticalModuleEnum:

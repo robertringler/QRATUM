@@ -26,17 +26,17 @@ class QGraph:
         edges: Adjacency list mapping node_id -> [(neighbor_id, weight), ...]
         directed: Whether the graph is directed (default: True)
     """
-    
+
     num_nodes: int
     edges: dict[int, list[tuple[int, float]]] = field(default_factory=dict)
     directed: bool = True
-    
+
     def __post_init__(self) -> None:
         """Initialize empty adjacency lists for all nodes."""
         for i in range(self.num_nodes):
             if i not in self.edges:
                 self.edges[i] = []
-    
+
     def add_edge(self, src: int, dst: int, weight: float = 1.0) -> None:
         """Add a directed edge with non-negative weight.
         
@@ -52,18 +52,18 @@ class QGraph:
             raise ValueError(f"Edge weight must be non-negative, got {weight}")
         if not (0 <= src < self.num_nodes and 0 <= dst < self.num_nodes):
             raise ValueError(f"Node indices must be in range [0, {self.num_nodes})")
-        
+
         # Add edge from src to dst
         if src not in self.edges:
             self.edges[src] = []
         self.edges[src].append((dst, weight))
-        
+
         # If undirected, add reverse edge
         if not self.directed:
             if dst not in self.edges:
                 self.edges[dst] = []
             self.edges[dst].append((src, weight))
-    
+
     def neighbors(self, node: int) -> Iterator[tuple[int, float]]:
         """Iterate over neighbors of a node with edge weights.
         
@@ -76,7 +76,7 @@ class QGraph:
         if node not in self.edges:
             return
         yield from self.edges[node]
-    
+
     def degree(self, node: int) -> int:
         """Get out-degree of a node.
         
@@ -87,7 +87,7 @@ class QGraph:
             Number of outgoing edges
         """
         return len(self.edges.get(node, []))
-    
+
     def edge_count(self) -> int:
         """Get total number of edges in the graph.
         
@@ -95,7 +95,7 @@ class QGraph:
             Total edge count
         """
         return sum(len(neighbors) for neighbors in self.edges.values())
-    
+
     @classmethod
     def from_edge_list(
         cls,
@@ -117,7 +117,7 @@ class QGraph:
         for src, dst, weight in edge_list:
             graph.add_edge(src, dst, weight)
         return graph
-    
+
     @classmethod
     def random_graph(
         cls,
@@ -140,17 +140,17 @@ class QGraph:
             Randomly generated QGraph
         """
         import numpy as np
-        
+
         np.random.seed(seed)
         graph = cls(num_nodes=num_nodes, directed=directed)
-        
+
         # Generate edges based on probability
         for i in range(num_nodes):
             for j in range(num_nodes):
                 if i != j and np.random.random() < edge_probability:
                     weight = np.random.uniform(1.0, max_weight)
                     graph.add_edge(i, j, weight)
-        
+
         return graph
 
 
@@ -165,10 +165,10 @@ class HierarchicalGraph:
         levels: List of QGraph objects, from finest to coarsest
         node_mappings: Mapping from level i node to level i+1 supernode
     """
-    
+
     levels: list[QGraph] = field(default_factory=list)
     node_mappings: list[dict[int, int]] = field(default_factory=list)
-    
+
     def add_level(self, graph: QGraph, mapping: dict[int, int] | None = None) -> None:
         """Add a hierarchical level.
         
@@ -179,7 +179,7 @@ class HierarchicalGraph:
         self.levels.append(graph)
         if mapping is not None:
             self.node_mappings.append(mapping)
-    
+
     def get_supernode(self, level: int, node: int) -> int:
         """Get supernode id for a node at a given level.
         
@@ -194,12 +194,12 @@ class HierarchicalGraph:
         for l in range(level, len(self.node_mappings)):
             current_node = self.node_mappings[l].get(current_node, current_node)
         return current_node
-    
+
     @property
     def num_levels(self) -> int:
         """Get number of hierarchical levels."""
         return len(self.levels)
-    
+
     @classmethod
     def from_contraction(
         cls,
@@ -217,16 +217,15 @@ class HierarchicalGraph:
         Returns:
             HierarchicalGraph with multiple levels
         """
-        import numpy as np
-        
+
         hierarchy = cls()
         hierarchy.add_level(base_graph, mapping=None)
-        
+
         current_graph = base_graph
         for _ in range(num_levels - 1):
             # Contract graph by clustering nodes
             num_supernodes = max(1, int(current_graph.num_nodes * contraction_factor))
-            
+
             # Simple random clustering for now
             # Production: Use graph partitioning algorithms for better quality:
             # - METIS (multilevel k-way partitioning): pip install metis
@@ -238,11 +237,11 @@ class HierarchicalGraph:
             for node in range(current_graph.num_nodes):
                 supernode = node % num_supernodes
                 mapping[node] = supernode
-            
+
             # Build contracted graph
             contracted_graph = QGraph(num_nodes=num_supernodes, directed=current_graph.directed)
             edge_weights: dict[tuple[int, int], float] = {}
-            
+
             for src in range(current_graph.num_nodes):
                 super_src = mapping[src]
                 for dst, weight in current_graph.neighbors(src):
@@ -257,13 +256,13 @@ class HierarchicalGraph:
                         # - Sum of weights: For flow/capacity applications
                         if key not in edge_weights or weight < edge_weights[key]:
                             edge_weights[key] = weight
-            
+
             for (super_src, super_dst), weight in edge_weights.items():
                 contracted_graph.add_edge(super_src, super_dst, weight)
-            
+
             hierarchy.add_level(contracted_graph, mapping)
             current_graph = contracted_graph
-        
+
         return hierarchy
 
 

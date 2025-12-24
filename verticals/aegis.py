@@ -9,18 +9,15 @@ Capabilities:
 - Attack surface analysis
 """
 
-from typing import Any, Dict, List
-from qratum_platform.core import (
-    VerticalModuleBase,
-    SafetyViolation,
-    PlatformContract,
-    ComputeSubstrate,
-)
+from typing import Any, Dict
+
+from qratum_platform.core import (ComputeSubstrate, PlatformContract,
+                                  SafetyViolation, VerticalModuleBase)
 
 
 class AEGISModule(VerticalModuleBase):
     """Cybersecurity & Threat Intelligence vertical."""
-    
+
     MODULE_NAME = "AEGIS"
     MODULE_VERSION = "1.0.0"
     SAFETY_DISCLAIMER = """
@@ -29,17 +26,17 @@ class AEGISModule(VerticalModuleBase):
     Comply with all cybersecurity laws and ethical hacking guidelines.
     """
     PROHIBITED_USES = ["exploit", "backdoor", "ddos", "ransomware", "unauthorized_access"]
-    
+
     def execute(self, contract: PlatformContract) -> Dict[str, Any]:
         """Execute cybersecurity operation."""
         operation = contract.intent.operation
         parameters = contract.intent.parameters
-        
+
         # Safety check
         prohibited = ["exploit", "backdoor", "ddos", "ransomware", "unauthorized_access"]
         if any(p in operation.lower() for p in prohibited):
             raise SafetyViolation(f"Prohibited operation: {operation}")
-        
+
         if operation == "vulnerability_scan":
             return self._vulnerability_scan(parameters)
         elif operation == "threat_detection":
@@ -48,11 +45,11 @@ class AEGISModule(VerticalModuleBase):
             return self._compliance_check(parameters)
         else:
             return {"error": f"Unknown operation: {operation}"}
-    
+
     def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
         """Determine optimal compute substrate."""
         return ComputeSubstrate.CPU
-        
+
         if operation == "vulnerability_scan":
             return self._vulnerability_scan(parameters)
         elif operation == "threat_detection":
@@ -61,11 +58,11 @@ class AEGISModule(VerticalModuleBase):
             return self._compliance_check(parameters)
         else:
             return {"error": f"Unknown operation: {operation}"}
-    
+
     def _vulnerability_scan(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Scan for vulnerabilities."""
         target_type = params.get("target_type", "web_application")
-        
+
         # Simulate vulnerability findings
         vulnerabilities = [
             {
@@ -90,7 +87,7 @@ class AEGISModule(VerticalModuleBase):
                 "recommendation": "Add Content-Security-Policy and X-Frame-Options headers"
             }
         ]
-        
+
         return {
             "target_type": target_type,
             "vulnerabilities_found": len(vulnerabilities),
@@ -98,10 +95,10 @@ class AEGISModule(VerticalModuleBase):
             "risk_score": 7.6,
             "scan_timestamp": "2025-12-22T08:00:00Z"
         }
-    
+
     def _threat_detection(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Detect and analyze threats."""
-        
+
         # Simulate threat detection
         threats = [
             {
@@ -119,7 +116,7 @@ class AEGISModule(VerticalModuleBase):
                 "confidence": 0.85
             }
         ]
-        
+
         return {
             "threats_detected": len(threats),
             "threats": threats,
@@ -130,11 +127,11 @@ class AEGISModule(VerticalModuleBase):
                 "Update firewall rules"
             ]
         }
-    
+
     def _compliance_check(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Check security policy compliance."""
         framework = params.get("framework", "NIST_800_53")
-        
+
         compliance_results = {
             "framework": framework,
             "overall_compliance": 0.78,
@@ -147,5 +144,5 @@ class AEGISModule(VerticalModuleBase):
                 "IA-5: Authenticator Management - Weak password policy"
             ]
         }
-        
+
         return compliance_results

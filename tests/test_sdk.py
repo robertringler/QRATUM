@@ -15,7 +15,8 @@ import pytest
 
 # Try to import SDK module
 try:
-    from integrations.sdk.python.quasim_client import Job, JobStatus, QuASIMClient
+    from integrations.sdk.python.quasim_client import (Job, JobStatus,
+                                                       QuASIMClient)
 
     SDK_AVAILABLE = True
 except ImportError:

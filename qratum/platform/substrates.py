@@ -7,7 +7,7 @@ Supports GPU (GB200/MI300X), Cerebras, QPU, IPU, and CPU substrates.
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 
 class ComputeSubstrate(Enum):
@@ -155,11 +155,11 @@ class SubstrateSelector:
     substrate(s) for execution. Supports multi-substrate execution
     where tasks can benefit from heterogeneous computing.
     """
-    
+
     def __init__(self):
         """Initialize substrate selector"""
         self.profiles = SUBSTRATE_PROFILES
-    
+
     def select_substrate(
         self,
         task_name: str,
@@ -183,20 +183,20 @@ class SubstrateSelector:
         requires_high_throughput = task_characteristics.get("requires_high_throughput", False)
         requires_quantum = task_characteristics.get("requires_quantum", False)
         workload_type = task_characteristics.get("workload_type", "general")
-        
+
         candidates = []
-        
+
         # Quantum tasks must use QPU
         if requires_quantum:
             candidates.append(ComputeSubstrate.QPU)
             return candidates
-        
+
         # Deterministic tasks prefer CPU
         if requires_determinism:
             candidates.append(ComputeSubstrate.CPU)
             if not requires_high_throughput:
                 return candidates
-        
+
         # High throughput tasks
         if requires_high_throughput:
             if workload_type == "tensor":
@@ -207,17 +207,17 @@ class SubstrateSelector:
                 candidates.append(ComputeSubstrate.CEREBRAS)
             else:
                 candidates.append(ComputeSubstrate.GPU_GB200)
-        
+
         # Default fallback
         if not candidates:
             candidates.append(ComputeSubstrate.CPU)
-        
+
         return candidates
-    
+
     def get_substrate_info(self, substrate: ComputeSubstrate) -> SubstrateCapability:
         """Get capability profile for a substrate"""
         return self.profiles[substrate]
-    
+
     def recommend_for_vertical(self, vertical_name: str) -> Dict[str, List[ComputeSubstrate]]:
         """
         Get substrate recommendations for common tasks in a vertical.
@@ -288,5 +288,5 @@ class SubstrateSelector:
                 "collision_avoidance": [ComputeSubstrate.GPU_GB200, ComputeSubstrate.CPU],
             },
         }
-        
+
         return recommendations.get(vertical_name, {})

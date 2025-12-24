@@ -6,9 +6,9 @@ Enforces QRATUM invariants and provides common functionality.
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
-from ..platform.core import PlatformContract, EventType, create_event
+from ..platform.core import EventType, PlatformContract, create_event
 from ..platform.event_chain import MerkleEventChain
 
 
@@ -30,7 +30,7 @@ class VerticalModuleBase(ABC):
         prohibited_uses: List of prohibited applications
         required_compliance: List of compliance requirements
     """
-    
+
     def __init__(
         self,
         vertical_name: str,
@@ -54,7 +54,7 @@ class VerticalModuleBase(ABC):
         self.safety_disclaimer = safety_disclaimer
         self.prohibited_uses = prohibited_uses
         self.required_compliance = required_compliance
-    
+
     @abstractmethod
     def get_supported_tasks(self) -> List[str]:
         """
@@ -64,7 +64,7 @@ class VerticalModuleBase(ABC):
             List of task identifiers
         """
         pass
-    
+
     @abstractmethod
     def execute_task(
         self,
@@ -96,7 +96,7 @@ class VerticalModuleBase(ABC):
             ValueError: If task unknown or parameters invalid
         """
         pass
-    
+
     def validate_safety(self, parameters: Dict[str, Any]) -> bool:
         """
         Validate that request doesn't violate safety boundaries.
@@ -109,7 +109,7 @@ class VerticalModuleBase(ABC):
         """
         # Default implementation - can be overridden
         return True
-    
+
     def validate_compliance(self, parameters: Dict[str, Any]) -> Dict[str, bool]:
         """
         Check compliance requirements.
@@ -121,8 +121,8 @@ class VerticalModuleBase(ABC):
             Dictionary mapping compliance requirements to status
         """
         # Default implementation - all compliant
-        return {req: True for req in self.required_compliance}
-    
+        return dict.fromkeys(self.required_compliance, True)
+
     def emit_task_event(
         self,
         event_type: EventType,
@@ -152,7 +152,7 @@ class VerticalModuleBase(ABC):
             emitter=self.vertical_name,
         )
         event_chain.append(event)
-    
+
     def format_output(self, output: Any) -> Dict[str, Any]:
         """
         Format output with safety disclaimer and compliance info.

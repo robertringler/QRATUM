@@ -9,17 +9,10 @@ Status: Production
 
 from __future__ import annotations
 
-from contracts.base import (
-    BaseContract,
-    compute_contract_hash,
-    generate_contract_id,
-    get_current_timestamp,
-)
-from contracts.capability import (
-    CapabilityContract,
-    ClusterTopology,
-    create_capability_contract,
-)
+from contracts.base import (BaseContract, compute_contract_hash,
+                            generate_contract_id, get_current_timestamp)
+from contracts.capability import (CapabilityContract, ClusterTopology,
+                                  create_capability_contract)
 from contracts.event import EventContract, create_event_contract
 from contracts.intent import IntentContract, create_intent_contract
 from contracts.temporal import TemporalContract, create_temporal_contract

@@ -4,7 +4,8 @@ import pytest
 
 # Try to import quantum modules
 try:
-    from quasim.quantum.core import QISKIT_AVAILABLE, QuantumBackend, QuantumConfig
+    from quasim.quantum.core import (QISKIT_AVAILABLE, QuantumBackend,
+                                     QuantumConfig)
 
     QUANTUM_AVAILABLE = True
 except ImportError:
