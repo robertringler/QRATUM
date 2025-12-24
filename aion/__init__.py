@@ -20,6 +20,7 @@ from .proof import verifier, synthesis
 from .lifters import c_lifter, cuda_lifter, sql_lifter
 from .optimization import fusion, scheduler
 from .backends import llvm_backend, wasm_backend
+from . import executor
 
 __all__ = [
     "hypergraph",
@@ -37,4 +38,5 @@ __all__ = [
     "scheduler",
     "llvm_backend",
     "wasm_backend",
+    "executor",
 ]
