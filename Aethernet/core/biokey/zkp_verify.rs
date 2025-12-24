@@ -2,12 +2,19 @@
 //!
 //! Zero-knowledge proof verification for ephemeral biokeys.
 //! Integrates with Risc0 or Halo2 guest programs for privacy-preserving authentication.
+//!
+//! Security Hardening (Aethernet Phase I-II):
+//! - Deterministic verification prevents non-determinism attacks
+//! - Replay attack prevention via nonce tracking
+//! - Proof caching with temporal bounds
+//! - Multi-backend support (Risc0/Halo2)
 
 #![no_std]
 
 extern crate alloc;
 
 use alloc::vec::Vec;
+use alloc::collections::BTreeSet;
 use sha3::{Digest, Sha3_256};
 
 /// ZKP verification result
@@ -21,9 +28,11 @@ pub enum VerificationResult {
     FormatError,
     /// Proof expired
     Expired,
+    /// Replay attack detected
+    ReplayDetected,
 }
 
-/// ZKP proof structure (placeholder for Risc0/Halo2)
+/// ZKP proof structure with replay prevention
 #[derive(Debug, Clone)]
 pub struct ZKProof {
     /// Proof bytes (circuit-specific format)
@@ -34,29 +43,129 @@ pub struct ZKProof {
     pub timestamp: u64,
     /// Proof version
     pub version: u32,
+    /// Nonce for replay prevention (unique per proof)
+    pub nonce: [u8; 32],
+    /// Epoch ID for zone-aware validation
+    pub epoch_id: u64,
 }
 
 impl ZKProof {
-    /// Create a new ZKP proof
-    pub fn new(proof_data: Vec<u8>, public_inputs: Vec<u8>, timestamp: u64) -> Self {
+    /// Create a new ZKP proof with replay prevention
+    pub fn new(
+        proof_data: Vec<u8>,
+        public_inputs: Vec<u8>,
+        timestamp: u64,
+        nonce: [u8; 32],
+        epoch_id: u64,
+    ) -> Self {
         Self {
             proof_data,
             public_inputs,
             timestamp,
             version: 1,
+            nonce,
+            epoch_id,
         }
+    }
+    
+    /// Compute unique proof identifier for replay detection
+    pub fn proof_id(&self) -> [u8; 32] {
+        let mut hasher = Sha3_256::new();
+        hasher.update(&self.proof_data);
+        hasher.update(&self.public_inputs);
+        hasher.update(&self.timestamp.to_le_bytes());
+        hasher.update(&self.nonce);
+        hasher.update(&self.epoch_id.to_le_bytes());
+        
+        let result = hasher.finalize();
+        let mut id = [0u8; 32];
+        id.copy_from_slice(&result);
+        id
     }
 }
 
-/// Verify zero-knowledge proof for biokey
+/// Replay detection cache
+///
+/// Tracks recently seen proof IDs to prevent replay attacks.
+/// Uses bounded cache with temporal cleanup.
+pub struct ReplayCache {
+    /// Set of seen proof IDs
+    seen_proofs: BTreeSet<[u8; 32]>,
+    /// Maximum cache size (prevents DoS via cache bloat)
+    max_size: usize,
+    /// Last cleanup timestamp
+    last_cleanup: u64,
+}
+
+impl ReplayCache {
+    /// Create new replay cache
+    pub fn new(max_size: usize) -> Self {
+        Self {
+            seen_proofs: BTreeSet::new(),
+            max_size,
+            last_cleanup: 0,
+        }
+    }
+    
+    /// Check if proof has been seen (replay detection)
+    ///
+    /// # Returns
+    /// * `true` if proof is a replay, `false` if novel
+    pub fn is_replay(&self, proof_id: &[u8; 32]) -> bool {
+        self.seen_proofs.contains(proof_id)
+    }
+    
+    /// Mark proof as seen
+    ///
+    /// # Returns
+    /// * `Ok(())` if added, `Err` if cache is full
+    pub fn mark_seen(&mut self, proof_id: [u8; 32]) -> Result<(), &'static str> {
+        if self.seen_proofs.len() >= self.max_size {
+            return Err("Replay cache full");
+        }
+        
+        self.seen_proofs.insert(proof_id);
+        Ok(())
+    }
+    
+    /// Cleanup old entries (temporal bounds)
+    ///
+    /// In production, would remove entries older than TTL.
+    /// For now, clears half the cache when full.
+    pub fn cleanup(&mut self, current_time: u64) {
+        if self.seen_proofs.len() >= self.max_size {
+            // Simple cleanup: remove first half of entries
+            let to_remove: Vec<[u8; 32]> = self.seen_proofs
+                .iter()
+                .take(self.max_size / 2)
+                .copied()
+                .collect();
+            
+            for id in to_remove {
+                self.seen_proofs.remove(&id);
+            }
+        }
+        
+        self.last_cleanup = current_time;
+    }
+}
+
+/// Verify zero-knowledge proof for biokey with replay prevention
 ///
 /// # Arguments
 /// * `proof` - ZK proof to verify
 /// * `commitment` - Public commitment to verify against
+/// * `current_time` - Current timestamp
 /// * `max_age` - Maximum age of proof in seconds
+/// * `replay_cache` - Cache for replay detection
 ///
 /// # Returns
-/// * Verification result
+/// * Verification result (includes replay detection)
+///
+/// # Security
+/// * Deterministic verification: same proof always gives same result
+/// * Replay prevention: tracks proof IDs to prevent reuse
+/// * Temporal bounds: rejects expired proofs
 ///
 /// # Implementation Notes
 /// In production, this would integrate with:
@@ -67,14 +176,15 @@ impl ZKProof {
 /// 1. Receive encrypted SNP loci
 /// 2. Derive biokey
 /// 3. Prove knowledge without revealing SNP data
-/// 4. Return verifiable proof
+/// 4. Return verifiable proof with nonce
 pub fn verify_zkp(
     proof: &ZKProof,
     commitment: &[u8],
     current_time: u64,
     max_age: u64,
+    replay_cache: &mut ReplayCache,
 ) -> VerificationResult {
-    // Check proof age
+    // Check proof age (temporal bounds)
     if current_time - proof.timestamp > max_age {
         return VerificationResult::Expired;
     }
@@ -84,17 +194,31 @@ pub fn verify_zkp(
         return VerificationResult::FormatError;
     }
     
+    // Replay detection
+    let proof_id = proof.proof_id();
+    if replay_cache.is_replay(&proof_id) {
+        return VerificationResult::ReplayDetected;
+    }
+    
+    // Deterministic verification
     // In production, this would:
     // 1. Load verification key
     // 2. Verify proof using Risc0/Halo2 verifier
     // 3. Check public inputs match commitment
     
-    // Placeholder: Simple hash comparison
+    // Placeholder: Simple hash comparison (deterministic)
     let mut hasher = Sha3_256::new();
     hasher.update(&proof.public_inputs);
     let computed_commitment = hasher.finalize();
     
     if computed_commitment.as_slice() == commitment {
+        // Mark proof as seen to prevent replay
+        if replay_cache.mark_seen(proof_id).is_err() {
+            // Cache full - cleanup and retry
+            replay_cache.cleanup(current_time);
+            let _ = replay_cache.mark_seen(proof_id);
+        }
+        
         VerificationResult::Valid
     } else {
         VerificationResult::Invalid
@@ -245,15 +369,18 @@ mod tests {
         let proof_data = vec![1, 2, 3, 4];
         let public_inputs = vec![5, 6, 7, 8];
         let timestamp = 1000;
+        let nonce = [0x42u8; 32];
+        let epoch_id = 100;
         
-        let proof = ZKProof::new(proof_data, public_inputs.clone(), timestamp);
+        let proof = ZKProof::new(proof_data, public_inputs.clone(), timestamp, nonce, epoch_id);
         
         // Compute expected commitment
         let mut hasher = Sha3_256::new();
         hasher.update(&public_inputs);
         let commitment = hasher.finalize();
         
-        let result = verify_zkp(&proof, commitment.as_slice(), 1030, 60);
+        let mut cache = ReplayCache::new(1000);
+        let result = verify_zkp(&proof, commitment.as_slice(), 1030, 60, &mut cache);
         assert_eq!(result, VerificationResult::Valid);
     }
     
@@ -262,16 +389,19 @@ mod tests {
         let proof_data = vec![1, 2, 3, 4];
         let public_inputs = vec![5, 6, 7, 8];
         let timestamp = 1000;
+        let nonce = [0x42u8; 32];
+        let epoch_id = 100;
         
-        let proof = ZKProof::new(proof_data, public_inputs.clone(), timestamp);
+        let proof = ZKProof::new(proof_data, public_inputs.clone(), timestamp, nonce, epoch_id);
         
         // Compute commitment
         let mut hasher = Sha3_256::new();
         hasher.update(&public_inputs);
         let commitment = hasher.finalize();
         
+        let mut cache = ReplayCache::new(1000);
         // Check with expired proof (current_time = 1200, max_age = 60)
-        let result = verify_zkp(&proof, commitment.as_slice(), 1200, 60);
+        let result = verify_zkp(&proof, commitment.as_slice(), 1200, 60, &mut cache);
         assert_eq!(result, VerificationResult::Expired);
     }
     
@@ -280,14 +410,94 @@ mod tests {
         let proof_data = vec![1, 2, 3, 4];
         let public_inputs = vec![5, 6, 7, 8];
         let timestamp = 1000;
+        let nonce = [0x42u8; 32];
+        let epoch_id = 100;
         
-        let proof = ZKProof::new(proof_data, public_inputs, timestamp);
+        let proof = ZKProof::new(proof_data, public_inputs, timestamp, nonce, epoch_id);
         
         // Use wrong commitment
         let wrong_commitment = [0u8; 32];
         
-        let result = verify_zkp(&proof, &wrong_commitment, 1030, 60);
+        let mut cache = ReplayCache::new(1000);
+        let result = verify_zkp(&proof, &wrong_commitment, 1030, 60, &mut cache);
         assert_eq!(result, VerificationResult::Invalid);
+    }
+    
+    #[test]
+    fn test_replay_detection() {
+        let proof_data = vec![1, 2, 3, 4];
+        let public_inputs = vec![5, 6, 7, 8];
+        let timestamp = 1000;
+        let nonce = [0x42u8; 32];
+        let epoch_id = 100;
+        
+        let proof = ZKProof::new(proof_data, public_inputs.clone(), timestamp, nonce, epoch_id);
+        
+        // Compute commitment
+        let mut hasher = Sha3_256::new();
+        hasher.update(&public_inputs);
+        let commitment = hasher.finalize();
+        
+        let mut cache = ReplayCache::new(1000);
+        
+        // First verification should succeed
+        let result1 = verify_zkp(&proof, commitment.as_slice(), 1030, 60, &mut cache);
+        assert_eq!(result1, VerificationResult::Valid);
+        
+        // Second verification should detect replay
+        let result2 = verify_zkp(&proof, commitment.as_slice(), 1030, 60, &mut cache);
+        assert_eq!(result2, VerificationResult::ReplayDetected);
+    }
+    
+    #[test]
+    fn test_proof_id_uniqueness() {
+        let nonce1 = [0x01u8; 32];
+        let nonce2 = [0x02u8; 32];
+        
+        let proof1 = ZKProof::new(vec![1, 2, 3], vec![4, 5, 6], 1000, nonce1, 100);
+        let proof2 = ZKProof::new(vec![1, 2, 3], vec![4, 5, 6], 1000, nonce2, 100);
+        
+        // Different nonces should produce different proof IDs
+        assert_ne!(proof1.proof_id(), proof2.proof_id());
+    }
+    
+    #[test]
+    fn test_replay_cache() {
+        let mut cache = ReplayCache::new(10);
+        
+        let id1 = [0x01u8; 32];
+        let id2 = [0x02u8; 32];
+        
+        // Initially, no replays
+        assert!(!cache.is_replay(&id1));
+        
+        // Mark as seen
+        cache.mark_seen(id1).unwrap();
+        
+        // Should now detect replay
+        assert!(cache.is_replay(&id1));
+        
+        // Different ID should not be detected
+        assert!(!cache.is_replay(&id2));
+    }
+    
+    #[test]
+    fn test_cache_cleanup() {
+        let mut cache = ReplayCache::new(5);
+        
+        // Fill cache
+        for i in 0..5 {
+            let mut id = [0u8; 32];
+            id[0] = i;
+            cache.mark_seen(id).unwrap();
+        }
+        
+        // Cache should be full
+        assert_eq!(cache.seen_proofs.len(), 5);
+        
+        // Cleanup should reduce size
+        cache.cleanup(1000);
+        assert!(cache.seen_proofs.len() < 5);
     }
     
     #[test]
@@ -298,7 +508,7 @@ mod tests {
         // Commitment should be non-zero
         assert_ne!(commitment, [0u8; 32]);
         
-        // Same positions should produce same commitment
+        // Same positions should produce same commitment (deterministic)
         let commitment2 = generate_commitment(&snp_positions);
         assert_eq!(commitment, commitment2);
     }

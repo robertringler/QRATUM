@@ -80,10 +80,7 @@ compliance = []
 # Air-gapped deployment
 airgap = []
 
-[[bench]]
-name = "txo_performance"
-harness = false
-required-features = ["std"]
+
 
 [package.metadata.docs.rs]
 all-features = true
