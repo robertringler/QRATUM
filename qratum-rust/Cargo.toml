@@ -1,0 +1,103 @@
+[package]
+name = "qratum"
+version = "1.0.0"
+edition = "2021"
+authors = ["QRATUM Platform <info@qratum.ai>"]
+description = "Sovereign, Zero-Trust, Post-State Computational Infrastructure - QRATUM Core"
+license = "Apache-2.0"
+repository = "https://github.com/robertringler/QRATUM"
+keywords = ["blockchain", "ephemeral", "zero-trust", "compliance", "censorship-resistant"]
+categories = ["cryptography", "no-std", "embedded"]
+
+[lib]
+name = "qratum"
+path = "src/lib.rs"
+
+# Build profiles optimized for security and performance
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+# Core dependencies - no_std compatible
+[dependencies]
+# Cryptography (SHA3-256/SHA3-512 only as per spec)
+sha3 = { version = "0.10", default-features = false }
+
+# CBOR primary serialization
+minicbor = { version = "0.21", default-features = false, features = ["alloc", "derive"] }
+
+# Zeroization for sensitive data
+zeroize = { version = "1.7", default-features = false, features = ["alloc", "derive"] }
+
+# Optional ZKP placeholders (disabled by default, no_std subset)
+# halo2_proofs = { version = "0.3", optional = true, default-features = false }
+# risc0-zkvm = { version = "0.19", optional = true, default-features = false }
+
+# Shamir secret sharing placeholder (no_std compatible)
+# sharks = { version = "0.5", optional = true, default-features = false }
+
+[dev-dependencies]
+# Testing utilities
+criterion = "0.5"
+
+[features]
+default = []
+
+# Standard library support (disabled for TEE/enclave compatibility)
+std = [
+    "sha3/std",
+    "minicbor/std",
+    "zeroize/std",
+]
+
+# Zero-knowledge proof support (placeholders)
+# zkp-halo2 = ["halo2_proofs"]
+# zkp-risc0 = ["risc0-zkvm"]
+
+# Shamir secret sharing
+# shamir = ["sharks"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[package.metadata]
+description-long = """
+QRATUM: Sovereign, Zero-Trust, Post-State Computational Infrastructure
+
+A radically ephemeral, anti-holographic, censorship-resistant computational organism
+built on Aethernet and QRADLE foundations.
+
+Core Architectural Invariants:
+- Exists only during active computation (multi-party quorum instantiation)
+- Zero persistent state between sessions (volatile memory zeroization)
+- All sensitive operations confined to RAM (no disk, no logs)
+- Censorship resistance with auditable TXO emission on suppression
+- Regulatory compliance via zero-knowledge proofs
+- Reversibility limited to current ephemeral session
+- External persistence limited to minimal, blinded, signed Outcome TXOs
+
+Implemented Amendments:
+- Progressive quorum threshold decay with DecayJustification TXO
+- Canary TXO probes for censorship detection
+- Encrypted volatile snapshots for mid-session fault recovery
+- Bonded proxy approvals with reputation staking
+- Zero-knowledge compliance attestations
+- Blinded payload commitments with quorum-controlled reveal
+- Nomadic epoch-rotating watchdog validators
+- Forward-compatibility hooks for QRADLE post-quantum migration
+
+Technical Features:
+- #![no_std] core modules (TEE/enclave-ready)
+- SHA3-256/SHA3-512 cryptography
+- CBOR primary serialization
+- Explicit zeroization on drop for all sensitive types
+- 5-stage lifecycle: Quorum → Materialization → Execution → Commitment → Destruction
+"""
