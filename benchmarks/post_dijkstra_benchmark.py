@@ -15,7 +15,7 @@ import argparse
 import json
 import sys
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -46,7 +46,7 @@ class BenchmarkConfig:
         batch_size: Batch size for parallel relaxations
         seed: Random seed
     """
-    
+
     name: str
     num_nodes: int
     edge_probability: float
@@ -75,7 +75,7 @@ class BenchmarkResult:
         correctness: Whether results match
         memory_ratio: Memory usage ratio
     """
-    
+
     config: BenchmarkConfig
     graph_info: dict[str, Any]
     dijkstra_time: float
@@ -85,7 +85,7 @@ class BenchmarkResult:
     speedup: float
     correctness: bool
     memory_ratio: float
-    
+
     def to_dict(self) -> dict:
         """Convert to dictionary for serialization."""
         return {
@@ -130,7 +130,7 @@ def generate_graph(config: BenchmarkConfig) -> QGraph:
     """
     np.random.seed(config.seed)
     graph = QGraph(num_nodes=config.num_nodes, directed=True)
-    
+
     # Generate edges based on probability
     for i in range(config.num_nodes):
         for j in range(config.num_nodes):
@@ -150,9 +150,9 @@ def generate_graph(config: BenchmarkConfig) -> QGraph:
                     weight = np.clip(weight, config.min_weight, config.max_weight)
                 else:
                     weight = np.random.uniform(config.min_weight, config.max_weight)
-                
+
                 graph.add_edge(i, j, weight)
-    
+
     return graph
 
 
@@ -171,29 +171,29 @@ def run_benchmark(config: BenchmarkConfig) -> BenchmarkResult:
     print(f"Nodes: {config.num_nodes}, Edge prob: {config.edge_probability}")
     print(f"Weight dist: {config.weight_distribution}")
     print(f"Hierarchy: {config.use_hierarchy}, Lower bounds: {config.use_lower_bounds}")
-    
+
     # Generate graph
     print("\nGenerating graph...")
     graph = generate_graph(config)
     num_edges = graph.edge_count()
     print(f"Generated graph: {graph.num_nodes} nodes, {num_edges} edges")
-    
+
     graph_info = {
         "num_nodes": graph.num_nodes,
         "num_edges": num_edges,
         "avg_degree": num_edges / graph.num_nodes if graph.num_nodes > 0 else 0,
     }
-    
+
     # Run Dijkstra baseline
     print("\nRunning Dijkstra baseline...")
     start = time.time()
     dijkstra_distances, dijkstra_metrics_obj = dijkstra_baseline(graph, source=0)
     dijkstra_time = time.time() - start
     print(f"Dijkstra completed in {dijkstra_time:.4f}s")
-    
+
     dijkstra_metrics = dijkstra_metrics_obj.to_dict()
     dijkstra_metrics['time'] = dijkstra_time
-    
+
     # Run PostDijkstra
     print("\nRunning PostDijkstra...")
     postdijkstra = PostDijkstraSSSP(
@@ -203,35 +203,35 @@ def run_benchmark(config: BenchmarkConfig) -> BenchmarkResult:
         use_lower_bounds=config.use_lower_bounds,
         batch_size=config.batch_size,
     )
-    
+
     start = time.time()
     postdijkstra_distances, postdijkstra_metrics_obj = postdijkstra.solve(source=0)
     postdijkstra_time = time.time() - start
     print(f"PostDijkstra completed in {postdijkstra_time:.4f}s")
-    
+
     postdijkstra_metrics = postdijkstra_metrics_obj.to_dict()
     postdijkstra_metrics['time'] = postdijkstra_time
-    
+
     # Validate correctness
     print("\nValidating correctness...")
     correctness = validate_sssp_results(postdijkstra_distances, dijkstra_distances)
     print(f"Correctness: {'PASS' if correctness else 'FAIL'}")
-    
+
     # Compute comparison metrics
     speedup = dijkstra_time / postdijkstra_time if postdijkstra_time > 0 else 1.0
     memory_ratio = (
         postdijkstra_metrics['memory_mb'] / dijkstra_metrics['memory_mb']
         if dijkstra_metrics['memory_mb'] > 0 else 1.0
     )
-    
-    print(f"\nResults:")
+
+    print("\nResults:")
     print(f"  Speedup: {speedup:.2f}x ({'faster' if speedup > 1.0 else 'slower'})")
     print(f"  Memory ratio: {memory_ratio:.2f}x")
     print(f"  Dijkstra edges relaxed: {dijkstra_metrics['edges_relaxed']}")
     print(f"  PostDijkstra edges relaxed: {postdijkstra_metrics['edges_relaxed']}")
     print(f"  Bucket operations: {postdijkstra_metrics['bucket_operations']}")
     print(f"  Lower bound prunings: {postdijkstra_metrics['lower_bound_prunings']}")
-    
+
     return BenchmarkResult(
         config=config,
         graph_info=graph_info,
@@ -252,7 +252,7 @@ def create_benchmark_suite() -> list[BenchmarkConfig]:
         List of benchmark configurations
     """
     benchmarks = []
-    
+
     # Small graphs (10^4 nodes)
     benchmarks.append(BenchmarkConfig(
         name="small_sparse_uniform",
@@ -261,7 +261,7 @@ def create_benchmark_suite() -> list[BenchmarkConfig]:
         weight_distribution="uniform",
         seed=42,
     ))
-    
+
     benchmarks.append(BenchmarkConfig(
         name="small_sparse_heavy_tail",
         num_nodes=10000,
@@ -269,7 +269,7 @@ def create_benchmark_suite() -> list[BenchmarkConfig]:
         weight_distribution="heavy_tail",
         seed=43,
     ))
-    
+
     benchmarks.append(BenchmarkConfig(
         name="small_dense_uniform",
         num_nodes=10000,
@@ -277,7 +277,7 @@ def create_benchmark_suite() -> list[BenchmarkConfig]:
         weight_distribution="uniform",
         seed=44,
     ))
-    
+
     # Medium graphs (10^5 nodes)
     benchmarks.append(BenchmarkConfig(
         name="medium_sparse_uniform",
@@ -286,7 +286,7 @@ def create_benchmark_suite() -> list[BenchmarkConfig]:
         weight_distribution="uniform",
         seed=45,
     ))
-    
+
     benchmarks.append(BenchmarkConfig(
         name="medium_sparse_near_uniform",
         num_nodes=100000,
@@ -294,7 +294,7 @@ def create_benchmark_suite() -> list[BenchmarkConfig]:
         weight_distribution="near_uniform",
         seed=46,
     ))
-    
+
     # Large graphs (10^6 nodes) - Warning: may be slow
     if False:  # Enable for full benchmark
         benchmarks.append(BenchmarkConfig(
@@ -304,7 +304,7 @@ def create_benchmark_suite() -> list[BenchmarkConfig]:
             weight_distribution="uniform",
             seed=47,
         ))
-    
+
     return benchmarks
 
 
@@ -322,12 +322,12 @@ def run_benchmark_suite(
         List of benchmark results
     """
     results = []
-    
+
     for i, config in enumerate(configs, 1):
         print(f"\n\n{'#'*80}")
         print(f"# Benchmark {i}/{len(configs)}")
         print(f"{'#'*80}")
-        
+
         try:
             result = run_benchmark(config)
             results.append(result)
@@ -335,15 +335,15 @@ def run_benchmark_suite(
             print(f"ERROR: Benchmark failed: {e}")
             import traceback
             traceback.print_exc()
-    
+
     # Summary
     print(f"\n\n{'='*80}")
     print("BENCHMARK SUITE SUMMARY")
     print(f"{'='*80}\n")
-    
+
     print(f"{'Benchmark':<30} {'Nodes':>10} {'Edges':>10} {'Speedup':>10} {'Correct':>10}")
     print("-" * 80)
-    
+
     for result in results:
         print(
             f"{result.config.name:<30} "
@@ -352,20 +352,20 @@ def run_benchmark_suite(
             f"{result.speedup:>9.2f}x "
             f"{'PASS' if result.correctness else 'FAIL':>10}"
         )
-    
+
     # Statistics
     if results:
         speedups = [r.speedup for r in results if r.correctness]
         if speedups:
-            print(f"\nSpeedup statistics:")
+            print("\nSpeedup statistics:")
             print(f"  Mean: {np.mean(speedups):.2f}x")
             print(f"  Median: {np.median(speedups):.2f}x")
             print(f"  Min: {np.min(speedups):.2f}x")
             print(f"  Max: {np.max(speedups):.2f}x")
-        
+
         correctness_rate = sum(r.correctness for r in results) / len(results) * 100
         print(f"\nCorrectness rate: {correctness_rate:.1f}%")
-    
+
     # Save results
     if output_file:
         with open(output_file, 'w') as f:
@@ -382,7 +382,7 @@ def run_benchmark_suite(
                 indent=2
             )
         print(f"\nResults saved to: {output_file}")
-    
+
     return results
 
 
@@ -391,34 +391,34 @@ def main():
     parser = argparse.ArgumentParser(
         description="PostDijkstra SSSP Benchmark Suite"
     )
-    
+
     parser.add_argument(
         "--output",
         type=str,
         default="post_dijkstra_benchmark_results.json",
         help="Output file for results (JSON)"
     )
-    
+
     parser.add_argument(
         "--custom",
         action="store_true",
         help="Run custom benchmark instead of full suite"
     )
-    
+
     parser.add_argument(
         "--nodes",
         type=int,
         default=50000,
         help="Number of nodes for custom benchmark"
     )
-    
+
     parser.add_argument(
         "--edge-prob",
         type=float,
         default=0.0002,
         help="Edge probability for custom benchmark"
     )
-    
+
     parser.add_argument(
         "--weight-dist",
         type=str,
@@ -426,9 +426,9 @@ def main():
         choices=["uniform", "heavy_tail", "near_uniform"],
         help="Weight distribution for custom benchmark"
     )
-    
+
     args = parser.parse_args()
-    
+
     if args.custom:
         # Run custom benchmark
         config = BenchmarkConfig(
@@ -442,9 +442,9 @@ def main():
     else:
         # Run full suite
         configs = create_benchmark_suite()
-    
+
     results = run_benchmark_suite(configs, output_file=args.output)
-    
+
     return 0 if all(r.correctness for r in results) else 1
 
 

@@ -1,8 +1,8 @@
 """Authorization system for QRATUM-ASI."""
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set
 from datetime import datetime
+from typing import Dict, List, Optional, Set
 
 from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
 

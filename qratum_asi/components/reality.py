@@ -4,16 +4,15 @@ Unified causal model fusing all 14 verticals with hash-addressed
 knowledge nodes, causal graph structure, and full provenance tracking.
 """
 
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set
 import hashlib
 import json
+from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Any, Dict, List, Optional, Set
 
 from qratum_asi.core.chain import ASIMerkleChain
-from qratum_asi.core.events import ASIEvent, ASIEventType
 from qratum_asi.core.contracts import ASIContract
-from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
+from qratum_asi.core.events import ASIEvent, ASIEventType
 
 
 @dataclass

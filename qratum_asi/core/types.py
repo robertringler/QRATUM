@@ -1,8 +1,8 @@
 """Core type definitions for QRATUM-ASI."""
 
-from enum import Enum
 from dataclasses import dataclass
-from typing import Any, FrozenSet
+from enum import Enum
+from typing import FrozenSet
 
 
 class ASISafetyLevel(Enum):

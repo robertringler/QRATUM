@@ -12,9 +12,9 @@ import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
-from qradle import DeterministicEngine, ExecutionContext, MerkleChain
+from qradle import DeterministicEngine, ExecutionContext
 
 
 class ReasoningStrategy(Enum):
@@ -51,7 +51,7 @@ class ReasoningNode:
     dependencies: List[str] = field(default_factory=list)
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     metadata: Dict[str, Any] = field(default_factory=dict)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
         return {
@@ -87,12 +87,12 @@ class ReasoningChain:
     final_conclusion: Dict[str, Any]
     confidence: float
     provenance_hash: str = ""
-    
+
     def __post_init__(self):
         """Compute provenance hash."""
         if not self.provenance_hash:
             self.provenance_hash = self._compute_hash()
-    
+
     def _compute_hash(self) -> str:
         """Compute deterministic hash of reasoning chain."""
         chain_data = {
@@ -103,7 +103,7 @@ class ReasoningChain:
         }
         serialized = json.dumps(chain_data, sort_keys=True)
         return hashlib.sha256(serialized.encode()).hexdigest()
-    
+
     def verify_provenance(self) -> bool:
         """Verify chain provenance hash."""
         expected_hash = self._compute_hash()
@@ -117,13 +117,13 @@ class UnifiedReasoningEngine:
     Enables multi-vertical queries with auditable reasoning chains.
     All operations are deterministic and Merkle-chained.
     """
-    
+
     def __init__(self):
         """Initialize unified reasoning engine."""
         self.qradle_engine = DeterministicEngine()
         self.reasoning_chains: Dict[str, ReasoningChain] = {}
         self._chain_count = 0
-    
+
     def synthesize(
         self,
         query: str,
@@ -144,9 +144,9 @@ class UnifiedReasoningEngine:
         """
         self._chain_count += 1
         chain_id = f"reasoning_chain_{self._chain_count}_{int(datetime.now(timezone.utc).timestamp())}"
-        
+
         parameters = parameters or {}
-        
+
         # Create execution context
         context = ExecutionContext(
             contract_id=f"synthesis_{chain_id}",
@@ -160,15 +160,15 @@ class UnifiedReasoningEngine:
             safety_level="ELEVATED",  # Multi-vertical synthesis is elevated
             authorized=True
         )
-        
+
         # Execute synthesis with QRADLE deterministic engine
         def synthesis_executor(params):
             nodes = []
-            
+
             # Query each vertical
             for idx, vertical in enumerate(verticals):
                 node_id = f"{chain_id}_node_{idx}_{vertical}"
-                
+
                 # Simulate vertical query (in production, this would call actual vertical)
                 vertical_result = self._query_vertical(
                     vertical=vertical,
@@ -176,7 +176,7 @@ class UnifiedReasoningEngine:
                     parameters=params,
                     strategy=strategy
                 )
-                
+
                 # Create reasoning node
                 node = ReasoningNode(
                     node_id=node_id,
@@ -188,23 +188,23 @@ class UnifiedReasoningEngine:
                     dependencies=[f"{chain_id}_node_{i}_{verticals[i]}" for i in range(idx)]
                 )
                 nodes.append(node)
-            
+
             # Synthesize final conclusion
             final_conclusion = self._synthesize_conclusions(nodes, strategy)
-            
+
             # Return serializable data (convert nodes to dicts)
             return {
                 "nodes_data": [node.to_dict() for node in nodes],
                 "final_conclusion": final_conclusion,
                 "verticals_used": verticals,
             }
-        
+
         # Execute with QRADLE (catching serialization errors)
         try:
             result = self.qradle_engine.execute_contract(context, synthesis_executor)
             if not result.success:
                 raise RuntimeError(f"Synthesis failed: {result.error}")
-            
+
             # Reconstruct nodes from serialized data
             nodes = [
                 ReasoningNode(
@@ -220,7 +220,7 @@ class UnifiedReasoningEngine:
                 )
                 for n in result.output["nodes_data"]
             ]
-            
+
             # Build reasoning chain
             chain = ReasoningChain(
                 chain_id=chain_id,
@@ -230,7 +230,7 @@ class UnifiedReasoningEngine:
                 final_conclusion=result.output["final_conclusion"],
                 confidence=self._compute_overall_confidence(nodes)
             )
-        except Exception as e:
+        except Exception:
             # Fallback: execute directly without QRADLE
             output = synthesis_executor(context.parameters)
             nodes = [
@@ -255,12 +255,12 @@ class UnifiedReasoningEngine:
                 final_conclusion=output["final_conclusion"],
                 confidence=self._compute_overall_confidence(nodes)
             )
-        
+
         # Store chain
         self.reasoning_chains[chain_id] = chain
-        
+
         return chain
-    
+
     def _query_vertical(
         self,
         vertical: str,
@@ -287,7 +287,7 @@ class UnifiedReasoningEngine:
                 f"Recommendation from {vertical}",
             ],
         }
-    
+
     def _synthesize_conclusions(
         self,
         nodes: List[ReasoningNode],
@@ -297,12 +297,12 @@ class UnifiedReasoningEngine:
         # Aggregate insights from all verticals
         all_insights = []
         all_recommendations = []
-        
+
         for node in nodes:
             output = node.output_data
             all_insights.extend(output.get("insights", []))
             all_recommendations.extend(output.get("recommendations", []))
-        
+
         return {
             "synthesis_type": "multi_vertical_" + strategy.value,
             "verticals_consulted": [node.vertical for node in nodes],
@@ -311,11 +311,11 @@ class UnifiedReasoningEngine:
             "cross_domain_connections": self._find_connections(nodes),
             "confidence_weighted_conclusion": self._weight_by_confidence(nodes),
         }
-    
+
     def _find_connections(self, nodes: List[ReasoningNode]) -> List[Dict[str, Any]]:
         """Find cross-domain connections between reasoning nodes."""
         connections = []
-        
+
         # Simple heuristic: look for shared concepts
         for i, node1 in enumerate(nodes):
             for j, node2 in enumerate(nodes[i+1:], start=i+1):
@@ -327,39 +327,39 @@ class UnifiedReasoningEngine:
                     "strength": 0.7,
                 }
                 connections.append(connection)
-        
+
         return connections
-    
+
     def _weight_by_confidence(self, nodes: List[ReasoningNode]) -> str:
         """Create confidence-weighted conclusion."""
         total_weight = sum(node.confidence for node in nodes)
         avg_confidence = total_weight / len(nodes) if nodes else 0.0
-        
+
         return f"Multi-vertical analysis complete with {avg_confidence:.2%} confidence"
-    
+
     def _compute_overall_confidence(self, nodes: List[ReasoningNode]) -> float:
         """Compute overall confidence score."""
         if not nodes:
             return 0.0
         return sum(node.confidence for node in nodes) / len(nodes)
-    
+
     def get_reasoning_chain(self, chain_id: str) -> Optional[ReasoningChain]:
         """Retrieve a reasoning chain by ID."""
         return self.reasoning_chains.get(chain_id)
-    
+
     def verify_reasoning_chain(self, chain_id: str) -> bool:
         """Verify integrity of a reasoning chain."""
         chain = self.get_reasoning_chain(chain_id)
         if not chain:
             return False
         return chain.verify_provenance()
-    
+
     def export_reasoning_chain(self, chain_id: str) -> Optional[Dict[str, Any]]:
         """Export reasoning chain for external audit."""
         chain = self.get_reasoning_chain(chain_id)
         if not chain:
             return None
-        
+
         return {
             "chain_id": chain.chain_id,
             "query": chain.query,
@@ -370,7 +370,7 @@ class UnifiedReasoningEngine:
             "provenance_hash": chain.provenance_hash,
             "verified": chain.verify_provenance(),
         }
-    
+
     def get_stats(self) -> Dict[str, Any]:
         """Get reasoning engine statistics."""
         return {

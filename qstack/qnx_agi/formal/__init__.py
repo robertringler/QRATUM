@@ -7,7 +7,8 @@ compatible with safety-critical environments.
 """
 
 from .abstract_interpretation import AbstractLattice, AbstractState
-from .interval_arithmetic import Interval, IntervalEnvironment, propagate_affine
+from .interval_arithmetic import (Interval, IntervalEnvironment,
+                                  propagate_affine)
 from .model_checking import ModelChecker, TLASpecification
 from .runtime_monitor import RuntimeInvariant, RuntimeMonitor
 from .safety_case import SafetyCase, SafetyClaim

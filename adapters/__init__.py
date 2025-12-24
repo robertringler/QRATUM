@@ -17,11 +17,8 @@ from adapters.gb200 import GB200Adapter
 from adapters.ipu import IPUAdapter
 from adapters.mi300x import MI300XAdapter
 from adapters.qpu import QPUAdapter
-from adapters.registry import (
-    AdapterRegistry,
-    get_adapter,
-    get_global_adapter_registry,
-)
+from adapters.registry import (AdapterRegistry, get_adapter,
+                               get_global_adapter_registry)
 
 __all__ = [
     # Base

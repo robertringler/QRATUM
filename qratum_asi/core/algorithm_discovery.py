@@ -12,11 +12,9 @@ This is where the system transitions from optimization to invention.
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set, Tuple, Callable
 from datetime import datetime
 from enum import Enum
-import hashlib
-import json
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 
 class ProblemFormulation(Enum):
@@ -41,7 +39,7 @@ class ExecutionTrace:
     wasted_operations: List[str]  # Operations that didn't contribute to result
     bottlenecks: List[str]  # Identified bottlenecks
     timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
-    
+
     def get_efficiency_score(self) -> float:
         """Compute efficiency score (0.0 to 1.0).
         
@@ -49,7 +47,7 @@ class ExecutionTrace:
         """
         if not self.operations_performed:
             return 1.0
-        
+
         wasted_ratio = len(self.wasted_operations) / len(self.operations_performed)
         return 1.0 - wasted_ratio
 
@@ -74,15 +72,15 @@ class AlgorithmDiscovery:
     problem_formulation: ProblemFormulation
     classical_baseline: str  # Name of classical algorithm it competes with
     implementation: Optional[Callable] = None
-    
+
     # Validation results
     correctness_validated: bool = False
     performance_vs_baseline: float = 0.0  # Multiplier: >1.0 = better
     memory_vs_baseline: float = 0.0  # Multiplier: <1.0 = better (less memory)
-    
+
     validation_runs: int = 0
     discovered_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
-    
+
     def is_novel(self) -> bool:
         """Check if this discovery is truly novel."""
         # Novel if:
@@ -94,7 +92,7 @@ class AlgorithmDiscovery:
             self.performance_vs_baseline >= 0.9 and
             self.validation_runs >= 10
         )
-    
+
     def is_superior(self) -> bool:
         """Check if this discovery is superior to baseline."""
         return (
@@ -105,7 +103,7 @@ class AlgorithmDiscovery:
 
 class WastedWorkAnalyzer:
     """Analyzer for identifying wasted computational work."""
-    
+
     @staticmethod
     def analyze_trace(trace: ExecutionTrace) -> Dict[str, Any]:
         """Analyze trace for wasted work."""
@@ -115,12 +113,12 @@ class WastedWorkAnalyzer:
             "suboptimal_data_access_patterns": [],
             "opportunities": []
         }
-        
+
         # Analyze operations for redundancy
         operation_counts = {}
         for op in trace.operations_performed:
             operation_counts[op] = operation_counts.get(op, 0) + 1
-        
+
         # Identify operations performed many times (potential redundancy)
         for op, count in operation_counts.items():
             if count > trace.input_size * 0.1:  # >10% of input size
@@ -129,27 +127,27 @@ class WastedWorkAnalyzer:
                     "count": count,
                     "potential_saving": count * 0.5  # Estimate
                 })
-        
+
         # Identify opportunities
         if trace.wasted_operations:
             wasted_work["opportunities"].append({
                 "type": "eliminate_wasted_ops",
                 "potential_speedup": 1.0 + (len(trace.wasted_operations) / len(trace.operations_performed))
             })
-        
+
         if trace.bottlenecks:
             wasted_work["opportunities"].append({
                 "type": "optimize_bottlenecks",
                 "bottlenecks": trace.bottlenecks,
                 "potential_speedup": 1.5  # Estimate
             })
-        
+
         return wasted_work
 
 
 class ProblemReformulator:
     """Reformulate problems in alternative computational paradigms."""
-    
+
     @staticmethod
     def reformulate_sssp_as_propagation(
         graph: Dict[str, Any]
@@ -173,7 +171,7 @@ class ProblemReformulator:
                 "Convergence depends on graph structure"
             ]
         }
-    
+
     @staticmethod
     def reformulate_as_constraint_satisfaction(
         problem: Dict[str, Any]
@@ -189,34 +187,34 @@ class ProblemReformulator:
                 "Natural for many problems"
             ]
         }
-    
+
     @staticmethod
     def generate_alternative_formulations(
         problem_description: Dict[str, Any]
     ) -> List[Dict[str, Any]]:
         """Generate multiple alternative formulations of a problem."""
         formulations = []
-        
+
         problem_type = problem_description.get("type", "unknown")
-        
+
         # For graph problems
         if "graph" in problem_type.lower():
             formulations.append(
                 ProblemReformulator.reformulate_sssp_as_propagation({})
             )
-        
+
         # For optimization problems
         if "optimization" in problem_type.lower() or "search" in problem_type.lower():
             formulations.append(
                 ProblemReformulator.reformulate_as_constraint_satisfaction({})
             )
-        
+
         return formulations
 
 
 class DiscoveryValidator:
     """Validate discovered algorithms against classical baselines."""
-    
+
     @staticmethod
     def validate_correctness(
         discovery: AlgorithmDiscovery,
@@ -226,19 +224,19 @@ class DiscoveryValidator:
         """Validate correctness against baseline."""
         if discovery.implementation is None:
             return False
-        
+
         for test_case, expected_result in zip(test_cases, baseline_results):
             try:
                 result = discovery.implementation(test_case)
-                
+
                 # Check if results match (with tolerance for floating point)
                 if not DiscoveryValidator._results_match(result, expected_result):
                     return False
             except Exception:
                 return False
-        
+
         return True
-    
+
     @staticmethod
     def _results_match(
         result: Any,
@@ -249,17 +247,17 @@ class DiscoveryValidator:
         if isinstance(result, dict) and isinstance(expected, dict):
             if set(result.keys()) != set(expected.keys()):
                 return False
-            
+
             for key in result:
                 if not DiscoveryValidator._results_match(result[key], expected[key], epsilon):
                     return False
-            
+
             return True
         elif isinstance(result, (int, float)) and isinstance(expected, (int, float)):
             return abs(result - expected) < epsilon
         else:
             return result == expected
-    
+
     @staticmethod
     def benchmark_performance(
         discovery: AlgorithmDiscovery,
@@ -273,46 +271,46 @@ class DiscoveryValidator:
             performance_ratio > 1.0 means discovery is faster
             memory_ratio < 1.0 means discovery uses less memory
         """
-        import time
         import sys
-        
+        import time
+
         # Benchmark discovery
         discovery_times = []
         discovery_memory = []
-        
+
         for test_case in test_cases:
             if discovery.implementation is None:
                 return 0.0, float('inf')
-            
+
             start = time.time()
             result = discovery.implementation(test_case)
             end = time.time()
-            
+
             discovery_times.append(end - start)
             discovery_memory.append(sys.getsizeof(result))
-        
+
         # Benchmark baseline
         baseline_times = []
         baseline_memory = []
-        
+
         for test_case in test_cases:
             start = time.time()
             result = baseline_implementation(test_case)
             end = time.time()
-            
+
             baseline_times.append(end - start)
             baseline_memory.append(sys.getsizeof(result))
-        
+
         # Compute ratios
         avg_discovery_time = sum(discovery_times) / len(discovery_times)
         avg_baseline_time = sum(baseline_times) / len(baseline_times)
-        
+
         avg_discovery_memory = sum(discovery_memory) / len(discovery_memory)
         avg_baseline_memory = sum(baseline_memory) / len(baseline_memory)
-        
+
         performance_ratio = avg_baseline_time / max(avg_discovery_time, 0.0001)
         memory_ratio = avg_discovery_memory / max(avg_baseline_memory, 1)
-        
+
         return performance_ratio, memory_ratio
 
 
@@ -322,7 +320,7 @@ class AlgorithmDiscoveryEngine:
     This represents the transition from optimization (improving known algorithms)
     to invention (discovering new algorithmic regimes).
     """
-    
+
     def __init__(self):
         """Initialize discovery engine."""
         self.execution_traces: Dict[str, ExecutionTrace] = {}
@@ -331,18 +329,18 @@ class AlgorithmDiscoveryEngine:
         self.wasted_work_analyzer = WastedWorkAnalyzer()
         self.problem_reformulator = ProblemReformulator()
         self.discovery_validator = DiscoveryValidator()
-    
+
     def record_execution_trace(
         self,
         trace: ExecutionTrace
     ):
         """Record an execution trace for analysis."""
         self.execution_traces[trace.trace_id] = trace
-    
+
     def analyze_wasted_work(self) -> List[Dict[str, Any]]:
         """Analyze all traces for wasted work."""
         waste_analyses = []
-        
+
         for trace in self.execution_traces.values():
             analysis = self.wasted_work_analyzer.analyze_trace(trace)
             waste_analyses.append({
@@ -351,16 +349,16 @@ class AlgorithmDiscoveryEngine:
                 "efficiency_score": trace.get_efficiency_score(),
                 "waste_analysis": analysis
             })
-        
+
         # Sort by efficiency (least efficient first = most opportunity)
         waste_analyses.sort(key=lambda x: x["efficiency_score"])
-        
+
         return waste_analyses
-    
+
     def generate_insights(self) -> List[AlgorithmicInsight]:
         """Generate insights from execution traces."""
         insights = []
-        
+
         # Analyze efficiency across algorithms
         algorithm_efficiencies = {}
         for trace in self.execution_traces.values():
@@ -368,11 +366,11 @@ class AlgorithmDiscoveryEngine:
             if algo not in algorithm_efficiencies:
                 algorithm_efficiencies[algo] = []
             algorithm_efficiencies[algo].append(trace.get_efficiency_score())
-        
+
         # Generate insights for inefficient algorithms
         for algo, scores in algorithm_efficiencies.items():
             avg_efficiency = sum(scores) / len(scores)
-            
+
             if avg_efficiency < 0.7:  # Less than 70% efficient
                 insight = AlgorithmicInsight(
                     insight_id=f"insight_{algo}_{datetime.utcnow().timestamp()}",
@@ -386,21 +384,21 @@ class AlgorithmDiscoveryEngine:
                 )
                 insights.append(insight)
                 self.insights[insight.insight_id] = insight
-        
+
         return insights
-    
+
     def discover_alternative_algorithms(
         self,
         problem_description: Dict[str, Any]
     ) -> List[AlgorithmDiscovery]:
         """Discover alternative algorithmic approaches."""
         discoveries = []
-        
+
         # Generate alternative formulations
         formulations = self.problem_reformulator.generate_alternative_formulations(
             problem_description
         )
-        
+
         # Create discovery for each formulation
         for formulation_data in formulations:
             discovery = AlgorithmDiscovery(
@@ -410,12 +408,12 @@ class AlgorithmDiscoveryEngine:
                 problem_formulation=formulation_data['formulation'],
                 classical_baseline=problem_description.get("classical_algorithm", "unknown")
             )
-            
+
             discoveries.append(discovery)
             self.discoveries[discovery.discovery_id] = discovery
-        
+
         return discoveries
-    
+
     def validate_discovery(
         self,
         discovery_id: str,
@@ -426,18 +424,18 @@ class AlgorithmDiscoveryEngine:
         """Validate a discovery against baseline."""
         if discovery_id not in self.discoveries:
             raise ValueError(f"Discovery not found: {discovery_id}")
-        
+
         discovery = self.discoveries[discovery_id]
-        
+
         # Validate correctness
         correctness = self.discovery_validator.validate_correctness(
             discovery,
             test_cases,
             baseline_results
         )
-        
+
         discovery.correctness_validated = correctness
-        
+
         # Benchmark performance (if correct)
         if correctness and discovery.implementation is not None:
             perf_ratio, mem_ratio = self.discovery_validator.benchmark_performance(
@@ -445,11 +443,11 @@ class AlgorithmDiscoveryEngine:
                 baseline_implementation,
                 test_cases
             )
-            
+
             discovery.performance_vs_baseline = perf_ratio
             discovery.memory_vs_baseline = mem_ratio
             discovery.validation_runs += len(test_cases)
-        
+
         return {
             "discovery_id": discovery_id,
             "correctness_validated": correctness,
@@ -458,21 +456,21 @@ class AlgorithmDiscoveryEngine:
             "is_novel": discovery.is_novel(),
             "is_superior": discovery.is_superior()
         }
-    
+
     def get_novel_discoveries(self) -> List[AlgorithmDiscovery]:
         """Get all novel discoveries."""
         return [
             discovery for discovery in self.discoveries.values()
             if discovery.is_novel()
         ]
-    
+
     def get_superior_discoveries(self) -> List[AlgorithmDiscovery]:
         """Get discoveries that outperform baseline."""
         return [
             discovery for discovery in self.discoveries.values()
             if discovery.is_superior()
         ]
-    
+
     def get_discovery_report(self) -> Dict[str, Any]:
         """Get comprehensive discovery report."""
         return {

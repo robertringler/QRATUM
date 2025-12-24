@@ -5,11 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from qstack.alignment import constraints
-from qstack.alignment.constitution import (
-    ARTICLE_QNX_SAFETY,
-    ARTICLE_QUASIM_BOUNDS,
-    ARTICLE_QUNIMBUS_GOVERNANCE,
-)
+from qstack.alignment.constitution import (ARTICLE_QNX_SAFETY,
+                                           ARTICLE_QUASIM_BOUNDS,
+                                           ARTICLE_QUNIMBUS_GOVERNANCE)
 from qstack.alignment.violations import AlignmentViolation, ViolationSeverity
 from qstack.config import QStackConfig
 

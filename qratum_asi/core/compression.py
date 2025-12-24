@@ -9,13 +9,11 @@ Key capabilities:
 - Fewer concepts explaining more behavior with equal/greater performance
 """
 
+from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set, Tuple, Callable
 from datetime import datetime
 from enum import Enum
-from collections import defaultdict
-import hashlib
-import json
+from typing import Any, Dict, List
 
 
 class PatternType(Enum):
@@ -37,7 +35,7 @@ class Pattern:
     complexity_score: float  # How complex is this pattern?
     frequency: int  # How often does it occur?
     discovered_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
-    
+
     def get_compression_potential(self) -> float:
         """Estimate compression potential (higher = more worth abstracting)."""
         # More occurrences = more compression potential
@@ -56,7 +54,7 @@ class AbstractionPrimitive:
     complexity: float  # Complexity of the primitive itself
     created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
     usage_count: int = 0
-    
+
     def get_compression_ratio(self, replaced_complexity: float) -> float:
         """Compute compression ratio.
         
@@ -87,54 +85,54 @@ class AbstractionCompressionEngine:
     This is the key to recursive self-improvement: each iteration should
     make the system conceptually simpler while maintaining/improving capability.
     """
-    
+
     def __init__(self):
         """Initialize compression engine."""
         self.patterns: Dict[str, Pattern] = {}
         self.primitives: Dict[str, AbstractionPrimitive] = {}
         self.metrics_history: List[CompressionMetrics] = []
-        
+
         # Track code/concept instances
         self.concept_instances: Dict[str, List[str]] = defaultdict(list)
-        
+
         # Performance baselines
         self.performance_baselines: Dict[str, float] = {}
-    
+
     def detect_patterns(
         self,
         codebase_analysis: Dict[str, Any]
     ) -> List[Pattern]:
         """Detect repeated patterns across the codebase."""
         detected = []
-        
+
         # Analyze algorithms
         algorithms = codebase_analysis.get("algorithms", {})
         algorithm_patterns = self._detect_algorithm_patterns(algorithms)
         detected.extend(algorithm_patterns)
-        
+
         # Analyze data structures
         data_structures = codebase_analysis.get("data_structures", {})
         ds_patterns = self._detect_data_structure_patterns(data_structures)
         detected.extend(ds_patterns)
-        
+
         # Analyze control flow
         control_flows = codebase_analysis.get("control_flows", {})
         cf_patterns = self._detect_control_flow_patterns(control_flows)
         detected.extend(cf_patterns)
-        
+
         # Store detected patterns
         for pattern in detected:
             self.patterns[pattern.pattern_id] = pattern
-        
+
         return detected
-    
+
     def _detect_algorithm_patterns(
         self,
         algorithms: Dict[str, Any]
     ) -> List[Pattern]:
         """Detect repeated algorithmic patterns."""
         patterns = []
-        
+
         # Group algorithms by similarity
         algorithm_signatures = {}
         for algo_id, algo_data in algorithms.items():
@@ -143,7 +141,7 @@ class AbstractionCompressionEngine:
             if operations not in algorithm_signatures:
                 algorithm_signatures[operations] = []
             algorithm_signatures[operations].append(algo_id)
-        
+
         # Create patterns for repeated signatures
         for idx, (signature, occurrences) in enumerate(algorithm_signatures.items()):
             if len(occurrences) >= 2:  # At least 2 occurrences to be a pattern
@@ -156,16 +154,16 @@ class AbstractionCompressionEngine:
                     frequency=len(occurrences)
                 )
                 patterns.append(pattern)
-        
+
         return patterns
-    
+
     def _detect_data_structure_patterns(
         self,
         data_structures: Dict[str, Any]
     ) -> List[Pattern]:
         """Detect repeated data structure patterns."""
         patterns = []
-        
+
         # Group by structure type and usage
         structure_groups = defaultdict(list)
         for ds_id, ds_data in data_structures.items():
@@ -173,7 +171,7 @@ class AbstractionCompressionEngine:
             operations = tuple(sorted(ds_data.get("operations", [])))
             key = (ds_type, operations)
             structure_groups[key].append(ds_id)
-        
+
         # Create patterns
         for idx, (key, occurrences) in enumerate(structure_groups.items()):
             if len(occurrences) >= 2:
@@ -187,23 +185,23 @@ class AbstractionCompressionEngine:
                     frequency=len(occurrences)
                 )
                 patterns.append(pattern)
-        
+
         return patterns
-    
+
     def _detect_control_flow_patterns(
         self,
         control_flows: Dict[str, Any]
     ) -> List[Pattern]:
         """Detect repeated control flow patterns."""
         patterns = []
-        
+
         # Group by control flow structure
         flow_groups = defaultdict(list)
         for flow_id, flow_data in control_flows.items():
             # Simplified: group by structure type
             structure = flow_data.get("structure", "sequential")
             flow_groups[structure].append(flow_id)
-        
+
         # Create patterns for common structures
         for structure, occurrences in flow_groups.items():
             if len(occurrences) >= 3:  # Higher threshold for control flow
@@ -216,9 +214,9 @@ class AbstractionCompressionEngine:
                     frequency=len(occurrences)
                 )
                 patterns.append(pattern)
-        
+
         return patterns
-    
+
     def propose_abstraction(
         self,
         pattern_ids: List[str],
@@ -233,10 +231,10 @@ class AbstractionCompressionEngine:
             if pid not in self.patterns:
                 raise ValueError(f"Pattern not found: {pid}")
             patterns.append(self.patterns[pid])
-        
+
         # Calculate what this primitive replaces
         replaces_count = sum(p.frequency for p in patterns)
-        
+
         # Create primitive
         primitive = AbstractionPrimitive(
             primitive_id=f"primitive_{datetime.utcnow().timestamp()}",
@@ -246,10 +244,10 @@ class AbstractionCompressionEngine:
             replaces_count=replaces_count,
             complexity=primitive_complexity
         )
-        
+
         self.primitives[primitive.primitive_id] = primitive
         return primitive
-    
+
     def evaluate_abstraction(
         self,
         primitive: AbstractionPrimitive,
@@ -268,13 +266,13 @@ class AbstractionCompressionEngine:
             if pattern_id in self.patterns:
                 pattern = self.patterns[pattern_id]
                 replaced_complexity += pattern.complexity_score * pattern.frequency
-        
+
         # Calculate compression ratio
         compression_ratio = primitive.get_compression_ratio(replaced_complexity)
-        
+
         # Calculate net benefit (compression * performance)
         net_benefit = compression_ratio * performance_impact
-        
+
         # Worth adopting if:
         # 1. Compression ratio > 2.0 (at least 2x reduction)
         # 2. Performance not degraded (>=0.95)
@@ -284,7 +282,7 @@ class AbstractionCompressionEngine:
             performance_impact >= 0.95 and
             net_benefit >= 1.5
         )
-        
+
         return {
             "primitive_id": primitive.primitive_id,
             "worthwhile": worthwhile,
@@ -294,7 +292,7 @@ class AbstractionCompressionEngine:
             "replaced_complexity": replaced_complexity,
             "new_complexity": primitive.complexity
         }
-    
+
     def apply_abstraction(
         self,
         primitive_id: str,
@@ -307,27 +305,27 @@ class AbstractionCompressionEngine:
         """
         if primitive_id not in self.primitives:
             return False
-        
+
         primitive = self.primitives[primitive_id]
-        
+
         # Evaluate if worthwhile
         evaluation = self.evaluate_abstraction(primitive, performance_multiplier)
-        
+
         if not evaluation["worthwhile"]:
             return False
-        
+
         # Mark primitive as used
         primitive.usage_count += 1
-        
+
         # In real implementation, would actually refactor the code
         # For now, just record that patterns are replaced
         for pattern_id in primitive.replaces_patterns:
             if pattern_id in self.patterns:
                 # Mark pattern as abstracted
                 self.patterns[pattern_id].frequency = 0  # No longer repeated
-        
+
         return True
-    
+
     def compute_metrics(
         self,
         system_behavior_coverage: float = 1.0,
@@ -343,7 +341,7 @@ class AbstractionCompressionEngine:
         active_patterns = sum(1 for p in self.patterns.values() if p.frequency > 0)
         active_primitives = len(self.primitives)
         total_concepts = active_patterns + active_primitives
-        
+
         # Calculate total complexity
         pattern_complexity = sum(
             p.complexity_score * p.frequency
@@ -355,25 +353,25 @@ class AbstractionCompressionEngine:
             for p in self.primitives.values()
         )
         total_complexity = pattern_complexity + primitive_complexity
-        
+
         # Compression ratio = behavior coverage / complexity
         # Higher = more behavior explained with less complexity
         compression_ratio = system_behavior_coverage / max(total_complexity, 1.0)
-        
+
         # Intelligence score = compression * performance
         # System is more intelligent if it's both simpler AND more capable
         intelligence_score = compression_ratio * system_performance
-        
+
         metrics = CompressionMetrics(
             total_concepts=total_concepts,
             total_complexity=total_complexity,
             compression_ratio=compression_ratio,
             intelligence_score=intelligence_score
         )
-        
+
         self.metrics_history.append(metrics)
         return metrics
-    
+
     def measure_intelligence_growth(self) -> Dict[str, Any]:
         """Measure how intelligence has grown over time.
         
@@ -385,29 +383,29 @@ class AbstractionCompressionEngine:
                 "compression_improvement": 0.0,
                 "message": "Insufficient history"
             }
-        
+
         # Compare first and last metrics
         first = self.metrics_history[0]
         last = self.metrics_history[-1]
-        
+
         # Intelligence growth
         intelligence_growth = (
             (last.intelligence_score - first.intelligence_score) /
             max(first.intelligence_score, 0.01)
         )
-        
+
         # Compression improvement
         compression_improvement = (
             (last.compression_ratio - first.compression_ratio) /
             max(first.compression_ratio, 0.01)
         )
-        
+
         # Concept reduction
         concept_reduction = (
             (first.total_concepts - last.total_concepts) /
             max(first.total_concepts, 1)
         )
-        
+
         return {
             "intelligence_growth": intelligence_growth,
             "compression_improvement": compression_improvement,
@@ -416,7 +414,7 @@ class AbstractionCompressionEngine:
             "current_intelligence": last.intelligence_score,
             "current_concepts": last.total_concepts
         }
-    
+
     def get_top_compression_opportunities(
         self,
         top_n: int = 5
@@ -424,11 +422,11 @@ class AbstractionCompressionEngine:
         """Get top opportunities for compression."""
         # Rank patterns by compression potential
         opportunities = []
-        
+
         for pattern in self.patterns.values():
             if pattern.frequency == 0:
                 continue  # Already abstracted
-            
+
             potential = pattern.get_compression_potential()
             opportunities.append({
                 "pattern_id": pattern.pattern_id,
@@ -438,34 +436,34 @@ class AbstractionCompressionEngine:
                 "frequency": pattern.frequency,
                 "complexity": pattern.complexity_score
             })
-        
+
         # Sort by potential
         opportunities.sort(key=lambda x: x["compression_potential"], reverse=True)
-        
+
         return opportunities[:top_n]
-    
+
     def get_abstraction_report(self) -> Dict[str, Any]:
         """Get comprehensive abstraction report."""
         # Current state
         current_metrics = self.metrics_history[-1] if self.metrics_history else None
-        
+
         # Primitives stats
         primitive_stats = {
             "total_primitives": len(self.primitives),
             "active_primitives": sum(1 for p in self.primitives.values() if p.usage_count > 0),
             "total_replacements": sum(p.replaces_count for p in self.primitives.values())
         }
-        
+
         # Pattern stats
         pattern_stats = {
             "total_patterns_detected": len(self.patterns),
             "active_patterns": sum(1 for p in self.patterns.values() if p.frequency > 0),
             "abstracted_patterns": sum(1 for p in self.patterns.values() if p.frequency == 0)
         }
-        
+
         # Growth
         growth = self.measure_intelligence_growth()
-        
+
         return {
             "current_metrics": {
                 "total_concepts": current_metrics.total_concepts if current_metrics else 0,

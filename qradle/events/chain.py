@@ -40,7 +40,7 @@ class Event:
     timestamp: str
     data: dict[str, Any]
     metadata: dict[str, Any] = field(default_factory=dict)
-    
+
     def to_dict(self) -> dict[str, Any]:
         """Convert event to dictionary."""
         return {
@@ -57,11 +57,11 @@ class EventChain:
     The event chain provides a complete audit trail of all operations.
     Events are append-only and cryptographically chained.
     """
-    
+
     def __init__(self):
         """Initialize event chain."""
         self.events: list[Event] = []
-    
+
     def emit(
         self,
         event_type: EventType,
@@ -79,17 +79,17 @@ class EventChain:
             The created Event
         """
         timestamp = datetime.now(timezone.utc).isoformat()
-        
+
         event = Event(
             event_type=event_type,
             timestamp=timestamp,
             data=data,
             metadata=metadata or {}
         )
-        
+
         self.events.append(event)
         return event
-    
+
     def get_events(
         self,
         event_type: Optional[EventType] = None,
@@ -107,18 +107,18 @@ class EventChain:
             List of matching events
         """
         filtered = self.events
-        
+
         if event_type:
             filtered = [e for e in filtered if e.event_type == event_type]
-        
+
         if start_time:
             filtered = [e for e in filtered if e.timestamp >= start_time]
-        
+
         if end_time:
             filtered = [e for e in filtered if e.timestamp <= end_time]
-        
+
         return filtered
-    
+
     def get_events_for_contract(self, contract_id: str) -> list[Event]:
         """Get all events for a specific contract.
         
@@ -132,7 +132,7 @@ class EventChain:
             e for e in self.events
             if e.data.get("contract_id") == contract_id
         ]
-    
+
     def export_events(self) -> list[dict[str, Any]]:
         """Export all events as dictionaries.
         
@@ -140,7 +140,7 @@ class EventChain:
             List of event dictionaries
         """
         return [e.to_dict() for e in self.events]
-    
+
     def get_stats(self) -> dict[str, Any]:
         """Get event chain statistics.
         
@@ -151,7 +151,7 @@ class EventChain:
         for event in self.events:
             event_type = event.event_type.value
             event_counts[event_type] = event_counts.get(event_type, 0) + 1
-        
+
         return {
             "total_events": len(self.events),
             "event_type_counts": event_counts,

@@ -9,12 +9,12 @@ Key capabilities:
 - Demonstrate improvement driven by execution feedback alone
 """
 
+import statistics
+from collections import deque
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple, Callable
 from datetime import datetime
 from enum import Enum
-from collections import deque
-import statistics
+from typing import Any, Dict, List, Optional, Tuple
 
 
 class TelemetryType(Enum):
@@ -78,7 +78,7 @@ class FeedbackLoopMetrics:
 
 class TelemetryCollector:
     """Collects runtime telemetry from system execution."""
-    
+
     def __init__(self, window_size: int = 1000):
         """Initialize telemetry collector.
         
@@ -87,7 +87,7 @@ class TelemetryCollector:
         """
         self.events: deque = deque(maxlen=window_size)
         self.event_count = 0
-    
+
     def record(
         self,
         telemetry_type: TelemetryType,
@@ -103,11 +103,11 @@ class TelemetryCollector:
             component=component,
             context=context or {}
         )
-        
+
         self.events.append(event)
         self.event_count += 1
         return event
-    
+
     def get_events_by_type(
         self,
         telemetry_type: TelemetryType,
@@ -118,12 +118,12 @@ class TelemetryCollector:
             e for e in self.events
             if e.telemetry_type == telemetry_type
         ]
-        
+
         if component:
             events = [e for e in events if e.component == component]
-        
+
         return events
-    
+
     def get_recent_events(self, count: int = 100) -> List[TelemetryEvent]:
         """Get most recent events."""
         return list(self.events)[-count:]
@@ -131,7 +131,7 @@ class TelemetryCollector:
 
 class PerformanceAnalyzer:
     """Analyzes telemetry to create performance profiles."""
-    
+
     @staticmethod
     def create_profile(
         component_id: str,
@@ -144,7 +144,7 @@ class PerformanceAnalyzer:
             component_id
         )
         latencies = [e.value for e in latency_events]
-        
+
         if latencies:
             avg_latency = statistics.mean(latencies)
             sorted_latencies = sorted(latencies)
@@ -156,7 +156,7 @@ class PerformanceAnalyzer:
             avg_latency = 0.0
             p95_latency = 0.0
             p99_latency = 0.0
-        
+
         # Get cache miss rate
         cache_miss_events = telemetry_collector.get_events_by_type(
             TelemetryType.CACHE_MISS,
@@ -166,7 +166,7 @@ class PerformanceAnalyzer:
             statistics.mean([e.value for e in cache_miss_events])
             if cache_miss_events else 0.0
         )
-        
+
         # Get memory pressure
         memory_events = telemetry_collector.get_events_by_type(
             TelemetryType.MEMORY_PRESSURE,
@@ -176,7 +176,7 @@ class PerformanceAnalyzer:
             statistics.mean([e.value for e in memory_events])
             if memory_events else 0.0
         )
-        
+
         # Get CPU utilization
         cpu_events = telemetry_collector.get_events_by_type(
             TelemetryType.CPU_UTILIZATION,
@@ -186,7 +186,7 @@ class PerformanceAnalyzer:
             statistics.mean([e.value for e in cpu_events])
             if cpu_events else 0.0
         )
-        
+
         # Calculate bottleneck score
         # Higher latency, cache misses, and memory pressure = higher bottleneck score
         bottleneck_score = (
@@ -195,7 +195,7 @@ class PerformanceAnalyzer:
             memory_pressure * 0.3
         )
         bottleneck_score = min(1.0, bottleneck_score)
-        
+
         return PerformanceProfile(
             component_id=component_id,
             avg_latency=avg_latency,
@@ -206,7 +206,7 @@ class PerformanceAnalyzer:
             cpu_utilization=cpu_utilization,
             bottleneck_score=bottleneck_score
         )
-    
+
     @staticmethod
     def identify_bottlenecks(
         profiles: Dict[str, PerformanceProfile],
@@ -218,16 +218,16 @@ class PerformanceAnalyzer:
             for component_id, profile in profiles.items()
             if profile.bottleneck_score >= threshold
         ]
-        
+
         # Sort by bottleneck score (worst first)
         bottlenecks.sort(key=lambda x: x[1].bottleneck_score, reverse=True)
-        
+
         return bottlenecks
 
 
 class DecisionEngine:
     """Makes architectural decisions based on execution feedback."""
-    
+
     @staticmethod
     def propose_decisions(
         profiles: Dict[str, PerformanceProfile],
@@ -235,7 +235,7 @@ class DecisionEngine:
     ) -> List[ArchitecturalDecision]:
         """Propose decisions based on performance profiles."""
         decisions = []
-        
+
         for component_id, profile in bottlenecks:
             # High cache miss rate -> consider data structure change
             if profile.cache_miss_rate > 0.3:
@@ -246,7 +246,7 @@ class DecisionEngine:
                     execution_evidence=[],  # Would include telemetry event IDs
                     expected_impact="Reduce cache miss rate by 30-50%, improve latency by 20-40%"
                 ))
-            
+
             # High memory pressure -> consider memory optimization
             if profile.memory_pressure > 0.7:
                 decisions.append(ArchitecturalDecision(
@@ -256,7 +256,7 @@ class DecisionEngine:
                     execution_evidence=[],
                     expected_impact="Reduce memory usage by 20-40%"
                 ))
-            
+
             # High latency -> consider algorithmic improvement
             if profile.avg_latency > 100.0:  # >100ms
                 decisions.append(ArchitecturalDecision(
@@ -266,7 +266,7 @@ class DecisionEngine:
                     execution_evidence=[],
                     expected_impact="Reduce latency by 30-60%"
                 ))
-        
+
         return decisions
 
 
@@ -283,19 +283,19 @@ class ExecutionFeedbackLoop:
     
     Success = demonstrable improvement driven by execution feedback alone.
     """
-    
+
     def __init__(self):
         """Initialize feedback loop."""
         self.telemetry_collector = TelemetryCollector()
         self.performance_analyzer = PerformanceAnalyzer()
         self.decision_engine = DecisionEngine()
-        
+
         self.component_profiles: Dict[str, PerformanceProfile] = {}
         self.decisions: Dict[str, ArchitecturalDecision] = {}
         self.metrics_history: List[FeedbackLoopMetrics] = []
-        
+
         self.iteration = 0
-    
+
     def record_telemetry(
         self,
         telemetry_type: TelemetryType,
@@ -305,7 +305,7 @@ class ExecutionFeedbackLoop:
     ):
         """Record runtime telemetry."""
         self.telemetry_collector.record(telemetry_type, value, component, context)
-    
+
     def run_feedback_iteration(
         self,
         components: List[str]
@@ -316,7 +316,7 @@ class ExecutionFeedbackLoop:
             Summary of the iteration
         """
         self.iteration += 1
-        
+
         # Step 1: Analyze performance
         profiles = {}
         for component in components:
@@ -324,37 +324,37 @@ class ExecutionFeedbackLoop:
                 component,
                 self.telemetry_collector
             )
-        
+
         self.component_profiles = profiles
-        
+
         # Step 2: Identify bottlenecks
         bottlenecks = self.performance_analyzer.identify_bottlenecks(profiles)
-        
+
         # Step 3: Propose decisions
         new_decisions = self.decision_engine.propose_decisions(profiles, bottlenecks)
-        
+
         for decision in new_decisions:
             self.decisions[decision.decision_id] = decision
-        
+
         # Step 4: Calculate metrics
         implemented_decisions = [d for d in self.decisions.values() if d.implemented]
         decisions_with_impact = [
             d for d in implemented_decisions
             if d.actual_impact is not None
         ]
-        
+
         avg_impact = (
             statistics.mean([d.actual_impact for d in decisions_with_impact])
             if decisions_with_impact else 0.0
         )
-        
+
         # System performance = inverse of average bottleneck score
         avg_bottleneck = (
             statistics.mean([p.bottleneck_score for p in profiles.values()])
             if profiles else 0.0
         )
         system_performance = 1.0 - avg_bottleneck
-        
+
         metrics = FeedbackLoopMetrics(
             loop_iteration=self.iteration,
             decisions_made=len(new_decisions),
@@ -362,9 +362,9 @@ class ExecutionFeedbackLoop:
             avg_decision_impact=avg_impact,
             system_performance=system_performance
         )
-        
+
         self.metrics_history.append(metrics)
-        
+
         return {
             "iteration": self.iteration,
             "profiles": {
@@ -383,7 +383,7 @@ class ExecutionFeedbackLoop:
             "new_decisions": len(new_decisions),
             "system_performance": system_performance
         }
-    
+
     def implement_decision(
         self,
         decision_id: str,
@@ -400,13 +400,13 @@ class ExecutionFeedbackLoop:
         """
         if decision_id not in self.decisions:
             return False
-        
+
         decision = self.decisions[decision_id]
         decision.implemented = True
         decision.actual_impact = actual_impact
-        
+
         return True
-    
+
     def demonstrate_improvement(self) -> Dict[str, Any]:
         """Demonstrate that system improved through feedback alone.
         
@@ -418,21 +418,21 @@ class ExecutionFeedbackLoop:
                 "reason": "Insufficient iterations",
                 "evidence": None
             }
-        
+
         # Compare first and latest iterations
         first = self.metrics_history[0]
         latest = self.metrics_history[-1]
-        
+
         # Performance improvement
         perf_improvement = latest.system_performance - first.system_performance
         perf_improved = perf_improvement > 0.05  # At least 5% improvement
-        
+
         # Decision effectiveness
         effective_decisions = latest.avg_decision_impact > 1.05  # At least 5% impact
-        
+
         # Overall improvement
         improved = perf_improved and effective_decisions
-        
+
         evidence = {
             "iterations": len(self.metrics_history),
             "initial_performance": first.system_performance,
@@ -443,17 +443,17 @@ class ExecutionFeedbackLoop:
             "implemented_decisions": latest.decisions_implemented,
             "avg_decision_impact": latest.avg_decision_impact
         }
-        
+
         return {
             "improved": improved,
             "reason": "Performance improved through execution feedback" if improved else "Insufficient improvement",
             "evidence": evidence
         }
-    
+
     def get_feedback_loop_status(self) -> Dict[str, Any]:
         """Get current status of feedback loop."""
         latest_metrics = self.metrics_history[-1] if self.metrics_history else None
-        
+
         return {
             "iteration": self.iteration,
             "telemetry_events": len(self.telemetry_collector.events),
