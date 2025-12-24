@@ -66,6 +66,4 @@ pub const VERSION: &str = "1.0.0";
 pub const BUILD_INFO: &str = concat!(
     "Aethernet v",
     env!("CARGO_PKG_VERSION"),
-    " built with rustc ",
-    env!("RUSTC_VERSION"),
 );

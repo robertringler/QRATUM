@@ -50,7 +50,7 @@ ctap-types = { version = "0.2", default-features = false, optional = true }
 criterion = "0.5"
 
 [features]
-default = ["std"]
+default = ["std", "json"]
 
 # Standard library support
 std = [
