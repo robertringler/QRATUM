@@ -102,9 +102,7 @@ qubic-viz = "qubic.visualization.cli:cli"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["qratum*", "quasim*", "qnx*", "qstack*", "qubic*", "xenon*", "api*", "qil*", "qcore*", "contracts*", "events*", "spine*", "adapters*", "omnilex*", "qratum_platform*", "verticals*"]
-include = ["qratum*", "quasim*", "qnx*", "qstack*", "qubic*", "xenon*", "api*", "qratum_platform*", "verticals*"]
-include = ["qratum*", "quasim*", "qnx*", "qstack*", "qubic*", "xenon*", "api*", "omnilex*"]
+include = ["qratum*", "quasim*", "qnx*", "qstack*", "qubic*", "xenon*", "api*", "qil*", "qcore*", "contracts*", "events*", "spine*", "adapters*", "omnilex*", "qratum_platform*", "verticals*", "aion*", "qdl*"]
 
 [tool.black]
 line-length = 100
