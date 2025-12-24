@@ -63,6 +63,8 @@ pub use biokey::derivation::EphemeralBiokey;
 pub const VERSION: &str = "1.0.0";
 
 /// Aethernet build information
+/// Note: RUSTC_VERSION removed due to build environment constraints
+/// To track rust version at runtime, use rustc --version in deployment
 pub const BUILD_INFO: &str = concat!(
     "Aethernet v",
     env!("CARGO_PKG_VERSION"),
