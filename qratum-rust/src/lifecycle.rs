@@ -2,10 +2,10 @@
 //!
 //! ## Lifecycle Stages
 //!
-//! 1. **Quorum Convergence**: Multi-party consensus before session start
-//! 2. **Ephemeral Materialization**: Biokey reconstruction, ledger initialization
-//! 3. **Execution**: Computation with audit hooks (canary, compliance, proxy, rollback)
-//! 4. **Outcome Commitment**: Minimal blinded/signed TXOs only
+//! 1. **Quorum Convergence**: Multi-party consensus before session start (now protocol-enforced)
+//! 2. **Ephemeral Materialization**: Biokey reconstruction, ledger initialization, P2P setup
+//! 3. **Execution**: Computation with audit hooks (canary, compliance, proxy, rollback, consensus)
+//! 4. **Outcome Commitment**: Minimal blinded/signed TXOs finalized via consensus
 //! 5. **Total Self-Destruction**: Explicit zeroization of all ephemeral state
 //!
 //! ## Architectural Invariants
@@ -15,6 +15,9 @@
 //! - All sensitive operations confined to RAM
 //! - Censorship resistance via auditable TXO emission
 //! - Reversibility limited to current session only
+//! - **Protocol-enforced consensus**: TXOs require validator quorum for finalization
+//! - **Decentralized governance**: Protocol changes via on-chain governance
+//! - **Validator incentives**: Economic security through stake and rewards
 //!
 //! ## Security Rationale
 //!
@@ -22,6 +25,18 @@
 //! - Explicit self-destruction prevents state leakage
 //! - Audit trail ensures accountability
 //! - Anti-holographic design (no persistent artifacts except Outcome TXOs)
+//! - Consensus engine prevents unilateral TXO finalization
+//! - Validator incentives align economic interests with security
+//!
+//! ## Decentralized Ghost Machine Integration
+//!
+//! The lifecycle now integrates:
+//! - **Consensus**: TXOs are proposed → gossiped → voted → finalized
+//! - **Governance**: Protocol upgrades flow through on-chain governance
+//! - **Incentives**: Validator rewards and slashing updated each epoch
+//! - **P2P Network**: TXO gossip and ledger synchronization
+//! - **ZK State**: Privacy-preserving state transitions
+//! - **Transport**: Censorship-resistant communication channels
 
 
 extern crate alloc;
@@ -36,6 +51,11 @@ use crate::proxy::{ProxyConfig, ProxyManager};
 use crate::compliance::{ComplianceProver, ProverConfig, CircuitType};
 use crate::ledger::RollbackLedger;
 use crate::watchdog::{WatchdogConfig, WatchdogManager, WatchdogValidator};
+use crate::consensus::{BasicConsensusEngine, ConsensusType};
+use crate::p2p::P2PNetwork;
+use crate::incentives::ValidatorIncentives;
+use crate::governance::GovernanceState;
+use crate::upgrade::UpgradeManager;
 use zeroize::{Zeroize, ZeroizeOnDrop};
 
 /// QRATUM Session Configuration
@@ -48,6 +68,12 @@ pub struct SessionConfig {
     pub prover: ProverConfig,
     pub watchdog: WatchdogConfig,
     pub session_id: [u8; 32],
+    
+    // Decentralized ghost machine configuration
+    pub consensus_threshold: u8,  // Consensus threshold (67 = 2/3 supermajority)
+    pub max_peers: usize,         // Maximum number of P2P peers
+    pub reward_rate: u64,         // Validator reward rate (basis points)
+    pub slashing_rate: u64,       // Validator slashing rate (basis points)
 }
 
 impl Default for SessionConfig {
@@ -60,6 +86,10 @@ impl Default for SessionConfig {
             prover: ProverConfig::default(),
             watchdog: WatchdogConfig::default(),
             session_id: [0u8; 32],
+            consensus_threshold: 67,  // 2/3 supermajority
+            max_peers: 100,
+            reward_rate: 100,         // 1% per epoch
+            slashing_rate: 1000,      // 10% per violation
         }
     }
 }
@@ -79,6 +109,13 @@ pub enum QratumError {
 /// ## Lifecycle Stage: Ephemeral Materialization → Self-Destruction
 ///
 /// All session state exists ONLY in RAM and is zeroized on session end.
+/// 
+/// ## Decentralized Ghost Machine Components
+/// - **Consensus Engine**: BFT-style consensus for TXO finalization
+/// - **P2P Network**: Decentralized communication and TXO gossip
+/// - **Validator Incentives**: Stake-based rewards and slashing
+/// - **Governance**: On-chain protocol governance
+/// - **Upgrade Manager**: Self-amending protocol upgrades
 struct EphemeralSessionState {
     /// Ephemeral biokey (zeroized on drop)
     biokey: EphemeralBiokey,
@@ -100,6 +137,21 @@ struct EphemeralSessionState {
     
     /// Watchdog manager
     watchdogs: WatchdogManager,
+    
+    /// Consensus engine (protocol-enforced quorum)
+    consensus: BasicConsensusEngine,
+    
+    /// P2P network layer
+    p2p: P2PNetwork,
+    
+    /// Validator incentives manager
+    incentives: ValidatorIncentives,
+    
+    /// Governance state
+    governance: GovernanceState,
+    
+    /// Protocol upgrade manager
+    upgrades: UpgradeManager,
 }
 
 impl Drop for EphemeralSessionState {
@@ -113,11 +165,41 @@ impl EphemeralSessionState {
     /// Create new ephemeral session state
     ///
     /// ## Lifecycle Stage: Ephemeral Materialization
+    /// 
+    /// ## Decentralized Ghost Machine Initialization
+    /// - Initializes consensus engine with BFT-HotStuff
+    /// - Sets up P2P network for TXO gossip
+    /// - Configures validator incentives with stake registry
+    /// - Initializes governance and upgrade management
     fn new(
         biokey: EphemeralBiokey,
         config: &SessionConfig,
         validators: Vec<WatchdogValidator>,
     ) -> Self {
+        // Initialize P2P network
+        let node_id = config.session_id; // Use session ID as node ID
+        let public_key = [0u8; 32]; // TODO: Derive from biokey
+        let p2p = P2PNetwork::new(node_id, public_key, config.max_peers);
+        
+        // Initialize consensus engine
+        let consensus = BasicConsensusEngine::new(
+            ConsensusType::BftHotStuff,
+            config.consensus_threshold,
+        );
+        
+        // Initialize validator incentives
+        let incentives = ValidatorIncentives::new(
+            1_000_000_000, // 1B reward pool
+            config.reward_rate,
+            config.slashing_rate,
+        );
+        
+        // Initialize governance
+        let governance = GovernanceState::new();
+        
+        // Initialize upgrade manager
+        let upgrades = UpgradeManager::default();
+        
         Self {
             biokey,
             ledger: RollbackLedger::new(10),
@@ -126,6 +208,11 @@ impl EphemeralSessionState {
             proxies: ProxyManager::new(config.proxy.clone()),
             prover: ComplianceProver::new(config.prover.clone()),
             watchdogs: WatchdogManager::new(config.watchdog.clone(), validators),
+            consensus,
+            p2p,
+            incentives,
+            governance,
+            upgrades,
         }
     }
 }

@@ -115,6 +115,16 @@ pub use ledger::{MerkleLedger, RollbackLedger};
 pub use watchdog::{WatchdogConfig, WatchdogValidator, AuditAttestation, WatchdogManager};
 pub use lifecycle::{SessionConfig, QratumError, run_qratum_session, run_qratum_session_with_config};
 
+// Re-export decentralized ghost machine types
+pub use consensus::{ConsensusType, ValidatorRegistry, ValidatorInfo, ValidatorStatus, ValidatorID, 
+                     ConsensusEngine, BasicConsensusEngine, Vote, TxoCommit, Violation, ConsensusError, ProposalID};
+pub use p2p::{P2PNetwork, TxoMempool, PeerInfo, PeerStatus, NodeID, PeerID};
+pub use incentives::{ValidatorIncentives, Stake};
+pub use zkstate::{ZkStateTransition, StateCommitment, TransitionType, ZkStateVerifier, StateCommitmentBuilder};
+pub use upgrade::{ProtocolUpgrade, UpgradeManager, Version, UpgradeID, CURRENT_VERSION};
+pub use transport::{Channel, ChannelStatus, CensorshipResistance};
+pub use governance::{GovernanceProposal, GovernanceVote, GovernanceState, ProposalType, VoteDecision, VoterID, AuthorityID};
+
 // Module declarations
 pub mod txo;
 pub mod biokey;
@@ -127,6 +137,15 @@ pub mod blinded;
 pub mod ledger;
 pub mod watchdog;
 pub mod lifecycle;
+
+// Decentralized ghost machine modules
+pub mod consensus;
+pub mod p2p;
+pub mod incentives;
+pub mod zkstate;
+pub mod upgrade;
+pub mod transport;
+pub mod governance;
 
 /// QRATUM version
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");

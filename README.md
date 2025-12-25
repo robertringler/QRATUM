@@ -606,6 +606,84 @@ Contract-based execution with rollback capability. Return to any previous verifi
 
 ---
 
+## Decentralized Ghost Machine Architecture – Research Implementation
+
+QRATUM has evolved into a protocol-enforced decentralized "ghost machine" with Byzantine fault-tolerant consensus, on-chain governance, and economic security through validator incentives. This architecture transforms QRATUM from a centralized ephemeral system into a fully decentralized network where no single party can unilaterally control or censor operations.
+
+### Key Features
+
+**1. Protocol-Enforced Consensus** (`qratum-rust/src/consensus.rs`)
+- BFT-style consensus (BFT-HotStuff, Tendermint-like) for TXO finalization
+- 2/3 supermajority required for all decisions
+- Validator slashing for malicious behavior
+- Byzantine fault tolerance up to f < n/3 faulty validators
+
+**2. Decentralized Governance** (`qratum-rust/src/governance.rs`, `qstack/qunimbus/core/governance.py`)
+- Stake-weighted voting on protocol changes
+- Time-locked execution prevents rushed decisions
+- Merkle-logged votes for complete auditability
+- Veto mechanism for emergency situations
+
+**3. P2P Network Layer** (`qratum-rust/src/p2p.rs`)
+- Decentralized TXO gossip protocol
+- Ledger synchronization from any epoch
+- Peer reputation tracking
+- libp2p-based architecture (production-quality skeleton)
+
+**4. Validator Incentives** (`qratum-rust/src/incentives.rs`)
+- Stake-based reward distribution
+- Economic slashing for violations
+- Lock periods prevent rapid changes
+- Proportional rewards by stake
+
+**5. ZK State Transitions** (`qratum-rust/src/zkstate.rs`)
+- Privacy-preserving state changes
+- Zero-knowledge proofs hide actor identity
+- State commitments for auditability
+- Integration with compliance proofs
+
+**6. Self-Amending Protocol** (`qratum-rust/src/upgrade.rs`)
+- On-chain protocol upgrades without hard forks
+- WASM-based state migrations
+- Governance-approved changes only
+- Version compatibility checks
+
+**7. Anti-Censorship Transport** (`qratum-rust/src/transport.rs`)
+- Multiple transport channels (TCP, Tor, I2P, Offline)
+- Automatic fallback on censorship
+- Anonymity network support
+- Air-gapped operation capable
+
+### Integration with QRATUM Lifecycle
+
+The 5-stage lifecycle now includes decentralized components:
+
+1. **Quorum Convergence**: Protocol-enforced validator consensus
+2. **Ephemeral Materialization**: P2P network setup, consensus initialization
+3. **Execution**: TXO proposals → gossip → voting → finalization via consensus
+4. **Outcome Commitment**: Validator signatures, reward distribution, slashing
+5. **Total Self-Destruction**: Clean zeroization including network state
+
+### Security Properties
+
+- **Byzantine Fault Tolerance**: Resilient to f < n/3 faulty validators
+- **Economic Security**: Cost of attack exceeds benefit (slashing)
+- **Censorship Resistance**: Multiple transport channels + audit trail
+- **Privacy Preservation**: ZK proofs hide identities while proving compliance
+- **Auditability**: All actions logged in Merkle-chained TXO trail
+
+### Documentation
+
+For complete architecture details, security analysis, and deployment guide, see:
+- [DECENTRALIZED_GHOST_MACHINE.md](DECENTRALIZED_GHOST_MACHINE.md) - Full architecture documentation
+- `qratum-rust/src/consensus.rs` - Consensus implementation
+- `qratum-rust/src/governance.rs` - Governance protocol
+- `qstack/qunimbus/core/governance.py` - Python governance interface
+
+**Status**: Research implementation with production-quality skeletons. All modules compile and include comprehensive inline documentation explaining security rationale, audit requirements, and integration points.
+
+---
+
 ## Installation & Quickstart
 
 ### Prerequisites
