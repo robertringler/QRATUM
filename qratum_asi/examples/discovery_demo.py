@@ -5,8 +5,8 @@ generation and novel synthesis capabilities.
 """
 
 from qratum_asi import QRATUMASI
-from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
 from qratum_asi.core.contracts import ASIContract
+from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     # Initialize QRATUM-ASI
     print("Initializing QRATUM-ASI...")
     asi = QRATUMASI()
-    print(f"✓ System initialized")
+    print("✓ System initialized")
     print()
 
     # Populate Q-REALITY with cross-domain knowledge
@@ -90,7 +90,7 @@ def main():
     print(f"  Domains: {', '.join(hypothesis.domains)}")
     print(f"  Confidence: {hypothesis.confidence:.2f}")
     print(f"  Novelty Score: {hypothesis.novelty_score:.2f}")
-    print(f"  Predictions:")
+    print("  Predictions:")
     for pred in hypothesis.predictions:
         print(f"    - {pred}")
     print()
@@ -169,7 +169,7 @@ def main():
     )
 
     print(f"  Goal: {synthesis['goal']}")
-    print(f"  Novel Insights:")
+    print("  Novel Insights:")
     for insight in synthesis['novel_insights']:
         print(f"    - {insight}")
     print(f"  Confidence: {synthesis['confidence']:.2f}")

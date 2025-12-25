@@ -12,11 +12,9 @@ The system must know when it broke itself and act accordingly.
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Callable, Set
 from datetime import datetime
 from enum import Enum
-import hashlib
-import json
+from typing import Any, Callable, Dict, List, Optional
 
 
 class VerificationLevel(Enum):
@@ -45,17 +43,17 @@ class VerificationCheck:
     last_run: Optional[str] = None
     last_result: Optional[VerificationResult] = None
     failure_count: int = 0
-    
+
     def run(self, context: Dict[str, Any]) -> VerificationResult:
         """Execute this verification check."""
         try:
             passed = self.verification_func(context)
             self.last_run = datetime.utcnow().isoformat()
             self.last_result = VerificationResult.PASS if passed else VerificationResult.FAIL
-            
+
             if not passed:
                 self.failure_count += 1
-            
+
             return self.last_result
         except Exception:
             self.last_run = datetime.utcnow().isoformat()
@@ -74,21 +72,21 @@ class RegressionSignature:
     intent: str  # What is the system trying to achieve?
     behavioral_markers: Dict[str, Any]  # Observable behaviors that indicate intent fulfillment
     timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
-    
+
     def compute_similarity(self, other: 'RegressionSignature') -> float:
         """Compute similarity with another signature (0.0 to 1.0)."""
         if self.intent != other.intent:
             return 0.0
-        
+
         # Compare behavioral markers
         matching = 0
         total = len(self.behavioral_markers)
-        
+
         for key, value in self.behavioral_markers.items():
             if key in other.behavioral_markers:
                 if other.behavioral_markers[key] == value:
                     matching += 1
-        
+
         return matching / max(total, 1)
 
 
@@ -105,7 +103,7 @@ class ContainmentStrategy:
 
 class SSSPValidator:
     """Validator for Single-Source Shortest Path algorithms."""
-    
+
     @staticmethod
     def validate_correctness(
         graph: Dict[str, Any],
@@ -124,29 +122,29 @@ class SSSPValidator:
         # Check 1: Source distance
         if source not in distances or distances[source] != 0:
             return False
-        
+
         # Check 2: Triangle inequality
         edges = graph.get("edges", [])
         for edge in edges:
             u, v, weight = edge.get("from"), edge.get("to"), edge.get("weight")
-            
+
             if u in distances and v in distances:
                 if distances[v] > distances[u] + weight + 1e-9:  # Small epsilon for floating point
                     return False
-        
+
         # Check 3: Path validity via predecessors
         for node, pred in predecessors.items():
             if pred is not None:
                 if node == source:
                     return False  # Source should have no predecessor
-                
+
                 # Predecessor should have a shorter distance
                 if node in distances and pred in distances:
                     if distances[node] <= distances[pred]:
                         return False
-        
+
         return True
-    
+
     @staticmethod
     def compare_with_baseline(
         test_distances: Dict[int, float],
@@ -156,76 +154,76 @@ class SSSPValidator:
         """Compare SSSP results with a known-good baseline."""
         if set(test_distances.keys()) != set(baseline_distances.keys()):
             return False
-        
+
         for node in test_distances:
             if abs(test_distances[node] - baseline_distances[node]) > epsilon:
                 return False
-        
+
         return True
 
 
 class GraphOperationValidator:
     """Validator for graph operations."""
-    
+
     @staticmethod
     def validate_graph_structure(graph: Dict[str, Any]) -> bool:
         """Validate graph has valid structure."""
         # Check required fields
         if "nodes" not in graph or "edges" not in graph:
             return False
-        
+
         nodes = set(graph["nodes"])
-        
+
         # Check edges reference valid nodes
         for edge in graph["edges"]:
             if "from" not in edge or "to" not in edge:
                 return False
-            
+
             if edge["from"] not in nodes or edge["to"] not in nodes:
                 return False
-        
+
         return True
-    
+
     @staticmethod
     def detect_cycles(graph: Dict[str, Any]) -> bool:
         """Detect if graph has cycles (returns True if cycle found)."""
         nodes = graph.get("nodes", [])
         edges = graph.get("edges", [])
-        
+
         # Build adjacency list
         adj = {node: [] for node in nodes}
         for edge in edges:
             adj[edge["from"]].append(edge["to"])
-        
+
         # DFS for cycle detection
         visited = set()
         rec_stack = set()
-        
+
         def has_cycle_dfs(node):
             visited.add(node)
             rec_stack.add(node)
-            
+
             for neighbor in adj.get(node, []):
                 if neighbor not in visited:
                     if has_cycle_dfs(neighbor):
                         return True
                 elif neighbor in rec_stack:
                     return True
-            
+
             rec_stack.remove(node)
             return False
-        
+
         for node in nodes:
             if node not in visited:
                 if has_cycle_dfs(node):
                     return True
-        
+
         return False
 
 
 class SchedulingValidator:
     """Validator for scheduling operations."""
-    
+
     @staticmethod
     def validate_fairness(
         schedule: List[Dict[str, Any]],
@@ -234,19 +232,19 @@ class SchedulingValidator:
         """Validate scheduling fairness within a window."""
         if len(schedule) < window_size:
             return True
-        
+
         # Check last window
         window = schedule[-window_size:]
         contract_counts = {}
-        
+
         for entry in window:
             contract_id = entry.get("contract_id", "unknown")
             contract_counts[contract_id] = contract_counts.get(contract_id, 0) + 1
-        
+
         # No single contract should dominate more than 50% of window
         max_count = max(contract_counts.values()) if contract_counts else 0
         return max_count <= window_size * 0.5
-    
+
     @staticmethod
     def validate_no_starvation(
         schedule: List[Dict[str, Any]],
@@ -254,15 +252,15 @@ class SchedulingValidator:
     ) -> bool:
         """Validate no contract is starved."""
         current_time = datetime.utcnow().timestamp()
-        
+
         for entry in schedule:
             if entry.get("status") == "queued":
                 queued_time = datetime.fromisoformat(entry.get("queued_at")).timestamp()
                 wait_time = current_time - queued_time
-                
+
                 if wait_time > max_wait_time:
                     return False
-        
+
         return True
 
 
@@ -273,19 +271,19 @@ class SelfVerificationEngine:
     Implements zero-trust execution where every operation is verified.
     Detects regressions based on intent fulfillment, not snapshots.
     """
-    
+
     checks: Dict[str, VerificationCheck] = field(default_factory=dict)
     regression_signatures: Dict[str, RegressionSignature] = field(default_factory=dict)
     containment_strategies: Dict[str, ContainmentStrategy] = field(default_factory=dict)
     verification_history: List[Dict[str, Any]] = field(default_factory=list)
-    
+
     def __post_init__(self):
         """Initialize verification checks."""
         self._initialize_sssp_checks()
         self._initialize_graph_checks()
         self._initialize_scheduling_checks()
         self._initialize_containment_strategies()
-    
+
     def _initialize_sssp_checks(self):
         """Initialize SSSP verification checks."""
         self.checks["sssp_correctness"] = VerificationCheck(
@@ -301,7 +299,7 @@ class SelfVerificationEngine:
             ),
             level=VerificationLevel.STANDARD
         )
-        
+
         self.checks["sssp_baseline"] = VerificationCheck(
             check_id="sssp_baseline",
             check_name="SSSP Baseline Comparison",
@@ -314,7 +312,7 @@ class SelfVerificationEngine:
             ),
             level=VerificationLevel.PARANOID
         )
-    
+
     def _initialize_graph_checks(self):
         """Initialize graph operation checks."""
         self.checks["graph_structure"] = VerificationCheck(
@@ -327,7 +325,7 @@ class SelfVerificationEngine:
             ),
             level=VerificationLevel.BASIC
         )
-        
+
         self.checks["graph_acyclic"] = VerificationCheck(
             check_id="graph_acyclic",
             check_name="Graph Acyclic Check",
@@ -338,7 +336,7 @@ class SelfVerificationEngine:
             ) if ctx.get("require_acyclic", False) else True,
             level=VerificationLevel.STANDARD
         )
-    
+
     def _initialize_scheduling_checks(self):
         """Initialize scheduling checks."""
         self.checks["scheduling_fairness"] = VerificationCheck(
@@ -352,7 +350,7 @@ class SelfVerificationEngine:
             ),
             level=VerificationLevel.STANDARD
         )
-        
+
         self.checks["scheduling_no_starvation"] = VerificationCheck(
             check_id="scheduling_no_starvation",
             check_name="No Starvation",
@@ -364,7 +362,7 @@ class SelfVerificationEngine:
             ),
             level=VerificationLevel.STANDARD
         )
-    
+
     def _initialize_containment_strategies(self):
         """Initialize failure containment strategies."""
         self.containment_strategies["rollback"] = ContainmentStrategy(
@@ -374,7 +372,7 @@ class SelfVerificationEngine:
             trigger_conditions=["verification_failure", "invariant_violation"],
             actions=[self._action_rollback]
         )
-        
+
         self.containment_strategies["isolate"] = ContainmentStrategy(
             strategy_id="isolate",
             name="Isolate Failed Component",
@@ -382,7 +380,7 @@ class SelfVerificationEngine:
             trigger_conditions=["component_failure", "repeated_errors"],
             actions=[self._action_isolate_component]
         )
-    
+
     def verify_operation(
         self,
         operation_type: str,
@@ -392,19 +390,19 @@ class SelfVerificationEngine:
         """Verify an operation."""
         results = {}
         failures = []
-        
+
         # Run relevant checks for this operation
         for check_id, check in self.checks.items():
             # Skip checks that don't match the verification level
             if level == VerificationLevel.BASIC and check.level != VerificationLevel.BASIC:
                 continue
-            
+
             result = check.run(context)
             results[check_id] = result
-            
+
             if result == VerificationResult.FAIL:
                 failures.append(check_id)
-        
+
         # Record verification
         verification_record = {
             "operation_type": operation_type,
@@ -414,15 +412,15 @@ class SelfVerificationEngine:
             "success": len(failures) == 0,
             "failures": failures
         }
-        
+
         self.verification_history.append(verification_record)
-        
+
         # Trigger containment if needed
         if failures:
             self._trigger_containment(failures, context)
-        
+
         return verification_record
-    
+
     def detect_regression(
         self,
         intent: str,
@@ -439,28 +437,28 @@ class SelfVerificationEngine:
             intent=intent,
             behavioral_markers=current_behavior
         )
-        
+
         # Find previous signatures with same intent
         previous_sigs = [
             sig for sig in self.regression_signatures.values()
             if sig.intent == intent
         ]
-        
+
         if not previous_sigs:
             # First time seeing this intent, store and pass
             self.regression_signatures[current_sig.signature_id] = current_sig
             return False
-        
+
         # Compare with most recent previous signature
         latest_previous = max(previous_sigs, key=lambda s: s.timestamp)
         similarity = current_sig.compute_similarity(latest_previous)
-        
+
         # Store current signature
         self.regression_signatures[current_sig.signature_id] = current_sig
-        
+
         # Regression if similarity drops below threshold
         return similarity < 0.8
-    
+
     def _trigger_containment(
         self,
         failures: List[str],
@@ -474,7 +472,7 @@ class SelfVerificationEngine:
                 if condition in failures or condition in context.get("conditions", []):
                     should_trigger = True
                     break
-            
+
             if should_trigger:
                 # Execute containment actions
                 for action in strategy.actions:
@@ -482,29 +480,29 @@ class SelfVerificationEngine:
                         action()
                     except Exception:
                         pass  # Continue with other actions
-    
+
     def _action_rollback(self) -> bool:
         """Containment action: rollback."""
         # Placeholder - actual implementation would trigger rollback
         return True
-    
+
     def _action_isolate_component(self) -> bool:
         """Containment action: isolate component."""
         # Placeholder - actual implementation would isolate component
         return True
-    
+
     def get_verification_stats(self) -> Dict[str, Any]:
         """Get verification statistics."""
         total_verifications = len(self.verification_history)
         failures = sum(1 for v in self.verification_history if not v["success"])
-        
+
         check_stats = {}
         for check_id, check in self.checks.items():
             check_stats[check_id] = {
                 "failure_count": check.failure_count,
                 "last_result": check.last_result.value if check.last_result else "never_run"
             }
-        
+
         return {
             "total_verifications": total_verifications,
             "total_failures": failures,

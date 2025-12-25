@@ -6,17 +6,11 @@ import pytest
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
-from quasim.simulation.quantacosmic import (
-    ActionFunctional,
-    CouplingOperator,
-    FieldLattice,
-    MetricTensor,
-    QuantumManifold,
-    coupling_matrix,
-    curvature_scalar,
-    propagate_field,
-    revultra_temporal_curvature,
-)
+from quasim.simulation.quantacosmic import (ActionFunctional, CouplingOperator,
+                                            FieldLattice, MetricTensor,
+                                            QuantumManifold, coupling_matrix,
+                                            curvature_scalar, propagate_field,
+                                            revultra_temporal_curvature)
 
 
 def test_quantum_manifold_volume_and_projection():

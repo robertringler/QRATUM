@@ -5,14 +5,13 @@ validation framework and confidence scoring.
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
 from datetime import datetime
+from typing import Any, Dict, List
 
-from qratum_asi.core.chain import ASIMerkleChain
-from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.core.contracts import ASIContract
-from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
 from qratum_asi.components.reality import QReality
+from qratum_asi.core.chain import ASIMerkleChain
+from qratum_asi.core.contracts import ASIContract
+from qratum_asi.core.events import ASIEvent, ASIEventType
 
 
 @dataclass
@@ -251,8 +250,8 @@ class QForge:
         """Generate testable predictions from hypothesis."""
         # Placeholder - real implementation would use reasoning
         predictions = [
-            f"Prediction 1 from hypothesis",
-            f"Prediction 2 from hypothesis",
+            "Prediction 1 from hypothesis",
+            "Prediction 2 from hypothesis",
         ]
         return predictions
 

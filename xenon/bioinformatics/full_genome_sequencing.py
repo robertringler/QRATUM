@@ -31,32 +31,21 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
-from xenon.bioinformatics.audit.audit_registry import (
-    AuditEntry,
-    AuditRegistry,
-    ViolationType,
-)
-from xenon.bioinformatics.inference.neural_symbolic import (
-    NeuralSymbolicEngine,
-)
-from xenon.bioinformatics.information_fusion import (
-    ConservationConstraints,
-    InformationFusionEngine,
-)
-
+from xenon.bioinformatics.audit.audit_registry import (AuditEntry,
+                                                       AuditRegistry,
+                                                       ViolationType)
+from xenon.bioinformatics.inference.neural_symbolic import NeuralSymbolicEngine
+from xenon.bioinformatics.information_fusion import (ConservationConstraints,
+                                                     InformationFusionEngine)
 # Import XENON engines
-from xenon.bioinformatics.quantum_alignment import (
-    AlignmentConfig,
-    QuantumAlignmentEngine,
-)
-from xenon.bioinformatics.transfer_entropy import (
-    TransferEntropyConfig,
-    TransferEntropyEngine,
-)
-from xenon.bioinformatics.utils.backend_introspection import (
-    BackendIntrospection,
-)
-from xenon.bioinformatics.utils.hardware_testing import HardwareDetector, HardwareType
+from xenon.bioinformatics.quantum_alignment import (AlignmentConfig,
+                                                    QuantumAlignmentEngine)
+from xenon.bioinformatics.transfer_entropy import (TransferEntropyConfig,
+                                                   TransferEntropyEngine)
+from xenon.bioinformatics.utils.backend_introspection import \
+    BackendIntrospection
+from xenon.bioinformatics.utils.hardware_testing import (HardwareDetector,
+                                                         HardwareType)
 from xenon.bioinformatics.utils.instrumentation import PerformanceInstrument
 from xenon.bioinformatics.utils.threading_utils import ThreadSafeEngine
 

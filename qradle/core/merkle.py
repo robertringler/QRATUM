@@ -28,13 +28,13 @@ class MerkleNode:
     timestamp: str
     previous_hash: str
     node_hash: str = field(default="", init=False)
-    
+
     def __post_init__(self):
         """Compute node hash after initialization."""
         if not self.node_hash:
             computed_hash = self._compute_hash()
             object.__setattr__(self, "node_hash", computed_hash)
-    
+
     def _compute_hash(self) -> str:
         """Compute SHA-256 hash of node content."""
         content = {
@@ -44,7 +44,7 @@ class MerkleNode:
         }
         serialized = json.dumps(content, sort_keys=True)
         return hashlib.sha256(serialized.encode()).hexdigest()
-    
+
     def verify(self) -> bool:
         """Verify node hash matches content."""
         expected_hash = self._compute_hash()
@@ -67,11 +67,11 @@ class MerkleProof:
     chain_position: int
     proof_path: list[str]
     root_hash: str
-    
+
     def verify(self, claimed_root: str) -> bool:
         """Verify this proof against a claimed root hash."""
         return self.root_hash == claimed_root
-    
+
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
         return {
@@ -89,7 +89,7 @@ class MerkleChain:
     All events are appended to the chain and cryptographically linked.
     The chain provides tamper-evident audit trails with cryptographic proofs.
     """
-    
+
     def __init__(self, genesis_data: Optional[dict[str, Any]] = None):
         """Initialize Merkle chain with genesis block.
         
@@ -98,15 +98,15 @@ class MerkleChain:
         """
         self.nodes: list[MerkleNode] = []
         self._genesis_hash = self._create_genesis_hash()
-        
+
         # Create genesis block
         genesis = genesis_data or {"type": "genesis", "version": "1.0.0"}
         self.append(genesis)
-    
+
     def _create_genesis_hash(self) -> str:
         """Create hash for genesis block."""
         return hashlib.sha256(b"QRADLE_GENESIS_1.0.0").hexdigest()
-    
+
     def append(self, data: dict[str, Any]) -> MerkleNode:
         """Append data to the chain.
         
@@ -118,25 +118,25 @@ class MerkleChain:
         """
         timestamp = datetime.now(timezone.utc).isoformat()
         previous_hash = self.nodes[-1].node_hash if self.nodes else self._genesis_hash
-        
+
         node = MerkleNode(
             data=data,
             timestamp=timestamp,
             previous_hash=previous_hash
         )
-        
+
         self.nodes.append(node)
         return node
-    
+
     def get_chain_head(self) -> Optional[MerkleNode]:
         """Get the most recent node in the chain."""
         return self.nodes[-1] if self.nodes else None
-    
+
     def get_root_hash(self) -> str:
         """Get the root hash (hash of most recent node)."""
         head = self.get_chain_head()
         return head.node_hash if head else self._genesis_hash
-    
+
     def verify_chain_integrity(self) -> bool:
         """Verify the integrity of the entire chain.
         
@@ -145,21 +145,21 @@ class MerkleChain:
         """
         if not self.nodes:
             return True
-        
+
         # Verify each node
         for node in self.nodes:
             if not node.verify():
                 return False
-        
+
         # Verify linkage
         expected_prev = self._genesis_hash
         for node in self.nodes:
             if node.previous_hash != expected_prev:
                 return False
             expected_prev = node.node_hash
-        
+
         return True
-    
+
     def get_proof(self, node_index: int) -> MerkleProof:
         """Generate a Merkle proof for a node at given index.
         
@@ -171,12 +171,12 @@ class MerkleChain:
         """
         if node_index < 0 or node_index >= len(self.nodes):
             raise ValueError(f"Invalid node index: {node_index}")
-        
+
         node = self.nodes[node_index]
-        
+
         # For a linear chain, the proof path includes all subsequent hashes
         proof_path = [n.node_hash for n in self.nodes[node_index + 1:]]
-        
+
         return MerkleProof(
             event_id=node.data.get("event_id", str(node_index)),
             event_hash=node.node_hash,
@@ -184,7 +184,7 @@ class MerkleChain:
             proof_path=proof_path,
             root_hash=self.get_root_hash()
         )
-    
+
     def verify_proof(self, proof: MerkleProof) -> bool:
         """Verify a Merkle proof against the current chain.
         
@@ -196,7 +196,7 @@ class MerkleChain:
         """
         current_root = self.get_root_hash()
         return proof.verify(current_root)
-    
+
     def get_node(self, index: int) -> Optional[MerkleNode]:
         """Get node at index.
         
@@ -209,7 +209,7 @@ class MerkleChain:
         if 0 <= index < len(self.nodes):
             return self.nodes[index]
         return None
-    
+
     def find_node_by_hash(self, node_hash: str) -> Optional[tuple[int, MerkleNode]]:
         """Find node by its hash.
         
@@ -223,7 +223,7 @@ class MerkleChain:
             if node.node_hash == node_hash:
                 return (idx, node)
         return None
-    
+
     def get_chain_stats(self) -> dict[str, Any]:
         """Get statistics about the chain.
         
@@ -238,7 +238,7 @@ class MerkleChain:
             "first_timestamp": self.nodes[0].timestamp if self.nodes else None,
             "last_timestamp": self.nodes[-1].timestamp if self.nodes else None,
         }
-    
+
     def export_chain(self) -> list[dict[str, Any]]:
         """Export the entire chain as a list of dictionaries.
         

@@ -37,7 +37,7 @@ class ContractValidator:
     - Safety level classification
     - Authorization requirements
     """
-    
+
     def validate_contract(self, contract: dict[str, Any]) -> ContractValidationResult:
         """Validate a contract.
         
@@ -49,13 +49,13 @@ class ContractValidator:
         """
         errors = []
         warnings = []
-        
+
         # Check required fields
         required_fields = ["contract_id", "contract_type", "parameters"]
         for field in required_fields:
             if field not in contract:
                 errors.append(f"Missing required field: {field}")
-        
+
         # Check safety level
         if "safety_level" not in contract:
             warnings.append("No safety_level specified, defaulting to ROUTINE")
@@ -63,13 +63,13 @@ class ContractValidator:
             valid_levels = ["ROUTINE", "ELEVATED", "SENSITIVE", "CRITICAL", "EXISTENTIAL"]
             if contract["safety_level"] not in valid_levels:
                 errors.append(f"Invalid safety_level: {contract['safety_level']}")
-        
+
         # Check authorization for sensitive operations
         safety_level = contract.get("safety_level", "ROUTINE")
         if safety_level in ["SENSITIVE", "CRITICAL", "EXISTENTIAL"]:
             if not contract.get("authorized", False):
                 errors.append(f"Operation at {safety_level} level requires authorization")
-        
+
         return ContractValidationResult(
             valid=len(errors) == 0,
             errors=errors,
@@ -83,7 +83,7 @@ class ContractExecutor:
     The executor ensures all contracts are validated and executed
     with full invariant enforcement.
     """
-    
+
     def __init__(self, engine: Optional[DeterministicEngine] = None):
         """Initialize contract executor.
         
@@ -92,7 +92,7 @@ class ContractExecutor:
         """
         self.engine = engine or DeterministicEngine()
         self.validator = ContractValidator()
-    
+
     def execute(
         self,
         contract: dict[str, Any],
@@ -116,7 +116,7 @@ class ContractExecutor:
         validation = self.validator.validate_contract(contract)
         if not validation.valid:
             raise ValueError(f"Contract validation failed: {validation.errors}")
-        
+
         # Create execution context
         context = ExecutionContext(
             contract_id=contract["contract_id"],
@@ -126,14 +126,14 @@ class ContractExecutor:
             authorized=contract.get("authorized", False),
             metadata=contract.get("metadata", {})
         )
-        
+
         # Execute with deterministic engine
         result = self.engine.execute_contract(
             context=context,
             executor_func=executor_func,
             create_checkpoint=create_checkpoint
         )
-        
+
         return {
             "success": result.success,
             "output": result.output,
@@ -143,7 +143,7 @@ class ContractExecutor:
             "checkpoint_id": result.checkpoint_id,
             "error": result.error,
         }
-    
+
     def get_engine_stats(self) -> dict[str, Any]:
         """Get engine statistics.
         

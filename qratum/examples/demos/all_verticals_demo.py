@@ -5,25 +5,24 @@ Demonstrates all 14 vertical modules in action.
 """
 
 from qratum.platform import PlatformIntent, PlatformOrchestrator
-from qratum.verticals import (
-    JurisModule, VitraModule, EcoraModule, CapraModule,
-    SentraModule, NeuraModule, FluxaModule, ChronaModule,
-    GeonaModule, FusiaModule, StrataModule, VexorModule,
-    CohoraModule, OrbiaModule,
-)
+from qratum.verticals import (CapraModule, ChronaModule, CohoraModule,
+                              EcoraModule, FluxaModule, FusiaModule,
+                              GeonaModule, JurisModule, NeuraModule,
+                              OrbiaModule, SentraModule, StrataModule,
+                              VexorModule, VitraModule)
 
 
 def main():
     """Run comprehensive demo of all 14 verticals"""
-    
+
     print("=" * 80)
     print("QRATUM Platform - All 14 Verticals Demonstration")
     print("=" * 80)
     print()
-    
+
     # Initialize orchestrator and register all verticals
     orchestrator = PlatformOrchestrator()
-    
+
     modules = [
         ("JURIS", JurisModule()),
         ("VITRA", VitraModule()),
@@ -40,13 +39,13 @@ def main():
         ("COHORA", CohoraModule()),
         ("ORBIA", OrbiaModule()),
     ]
-    
+
     for name, module in modules:
         orchestrator.register_vertical(name, module)
-    
+
     print(f"✓ Registered {len(modules)} vertical modules")
     print()
-    
+
     # Execute one task from each vertical
     demo_tasks = [
         ("JURIS", "analyze_contract", {"contract_text": "Sample legal contract"}),
@@ -64,42 +63,42 @@ def main():
         ("COHORA", "coordinate_swarm", {"size": 50}),
         ("ORBIA", "propagate_orbit", {"altitude_km": 400}),
     ]
-    
+
     results = []
-    
+
     for vertical, task, params in demo_tasks:
         print(f"Executing: {vertical}.{task}")
-        
+
         intent = PlatformIntent(
             vertical=vertical,
             task=task,
             parameters=params,
             requester_id="demo_user",
         )
-        
+
         contract = orchestrator.submit_intent(intent)
         result = orchestrator.execute_contract(contract)
         results.append((vertical, task, result))
-        
+
         print(f"  ✓ Completed with substrate recommendations: {result['recommended_substrates']}")
-    
+
     print()
     print("=" * 80)
     print("Execution Summary")
     print("=" * 80)
-    
+
     status = orchestrator.get_platform_status()
     print(f"Total contracts executed: {status['contracts_executed']}")
     print(f"Event chain length: {status['event_chain_length']}")
     print(f"Event chain integrity: {'✓ VERIFIED' if status['event_chain_integrity'] else '✗ FAILED'}")
     print()
-    
+
     # Show sample results from each vertical
     print("=" * 80)
     print("Sample Results from Each Vertical")
     print("=" * 80)
     print()
-    
+
     for vertical, task, result in results:
         print(f"{vertical} ({task}):")
         output = result['output']
@@ -107,7 +106,7 @@ def main():
         for key in list(output.keys())[:3]:
             print(f"  {key}: {output[key]}")
         print()
-    
+
     print("=" * 80)
     print("All verticals demonstrated successfully!")
     print("=" * 80)

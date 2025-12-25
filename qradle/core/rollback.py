@@ -30,7 +30,7 @@ class Checkpoint:
     state_hash: str
     state_data: dict[str, Any]
     metadata: dict[str, Any] = field(default_factory=dict)
-    
+
     def verify(self) -> bool:
         """Verify checkpoint hash matches state data."""
         serialized = json.dumps(self.state_data, sort_keys=True)
@@ -44,16 +44,16 @@ class RollbackManager:
     The rollback capability is a fatal invariant - it must always be available.
     Checkpoints are immutable and cryptographically verified.
     """
-    
+
     def __init__(self):
         """Initialize rollback manager."""
         self.checkpoints: dict[str, Checkpoint] = {}
         self.checkpoint_order: list[str] = []
         self._current_checkpoint_id: Optional[str] = None
-    
+
     def create_checkpoint(
-        self, 
-        state_data: dict[str, Any], 
+        self,
+        state_data: dict[str, Any],
         checkpoint_id: Optional[str] = None,
         metadata: Optional[dict[str, Any]] = None
     ) -> Checkpoint:
@@ -68,15 +68,15 @@ class RollbackManager:
             The created Checkpoint
         """
         timestamp = datetime.now(timezone.utc).isoformat()
-        
+
         # Compute state hash
         serialized = json.dumps(state_data, sort_keys=True)
         state_hash = hashlib.sha256(serialized.encode()).hexdigest()
-        
+
         # Generate checkpoint ID if not provided
         if checkpoint_id is None:
             checkpoint_id = f"checkpoint_{state_hash[:16]}_{int(datetime.now(timezone.utc).timestamp())}"
-        
+
         # Create checkpoint
         checkpoint = Checkpoint(
             checkpoint_id=checkpoint_id,
@@ -85,14 +85,14 @@ class RollbackManager:
             state_data=state_data,
             metadata=metadata or {}
         )
-        
+
         # Store checkpoint
         self.checkpoints[checkpoint_id] = checkpoint
         self.checkpoint_order.append(checkpoint_id)
         self._current_checkpoint_id = checkpoint_id
-        
+
         return checkpoint
-    
+
     def get_checkpoint(self, checkpoint_id: str) -> Optional[Checkpoint]:
         """Get checkpoint by ID.
         
@@ -103,7 +103,7 @@ class RollbackManager:
             Checkpoint or None if not found
         """
         return self.checkpoints.get(checkpoint_id)
-    
+
     def has_checkpoint(self, checkpoint_id: str) -> bool:
         """Check if checkpoint exists.
         
@@ -114,7 +114,7 @@ class RollbackManager:
             True if checkpoint exists
         """
         return checkpoint_id in self.checkpoints
-    
+
     def rollback_to(self, checkpoint_id: str) -> dict[str, Any]:
         """Rollback to a specific checkpoint.
         
@@ -130,17 +130,17 @@ class RollbackManager:
         checkpoint = self.get_checkpoint(checkpoint_id)
         if checkpoint is None:
             raise ValueError(f"Checkpoint not found: {checkpoint_id}")
-        
+
         # Verify checkpoint integrity
         if not checkpoint.verify():
             raise ValueError(f"Checkpoint integrity check failed: {checkpoint_id}")
-        
+
         # Update current checkpoint
         self._current_checkpoint_id = checkpoint_id
-        
+
         # Return the state data for restoration
         return checkpoint.state_data.copy()
-    
+
     def get_current_checkpoint(self) -> Optional[Checkpoint]:
         """Get the current (most recent) checkpoint.
         
@@ -150,7 +150,7 @@ class RollbackManager:
         if self._current_checkpoint_id:
             return self.checkpoints.get(self._current_checkpoint_id)
         return None
-    
+
     def list_checkpoints(self) -> list[dict[str, Any]]:
         """List all checkpoints.
         
@@ -166,7 +166,7 @@ class RollbackManager:
             }
             for cp_id in self.checkpoint_order
         ]
-    
+
     def verify_all_checkpoints(self) -> list[str]:
         """Verify integrity of all checkpoints.
         
@@ -179,7 +179,7 @@ class RollbackManager:
             if not checkpoint.verify():
                 failed.append(cp_id)
         return failed
-    
+
     def prune_checkpoints(self, keep_count: int = 100) -> int:
         """Prune old checkpoints, keeping the most recent ones.
         
@@ -191,17 +191,17 @@ class RollbackManager:
         """
         if len(self.checkpoint_order) <= keep_count:
             return 0
-        
+
         # Keep the most recent checkpoints
         to_remove = self.checkpoint_order[:-keep_count]
-        
+
         for cp_id in to_remove:
             del self.checkpoints[cp_id]
-        
+
         self.checkpoint_order = self.checkpoint_order[-keep_count:]
-        
+
         return len(to_remove)
-    
+
     def get_stats(self) -> dict[str, Any]:
         """Get rollback manager statistics.
         

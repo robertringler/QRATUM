@@ -12,16 +12,9 @@ This script demonstrates the core capabilities of all 7 vertical modules:
 - FLUXA (Supply Chain)
 """
 
-from qratum_platform.core import QRATUMPlatform, PlatformIntent, VerticalModule
-from verticals import (
-    JURISModule,
-    VITRAModule,
-    ECORAModule,
-    CAPRAModule,
-    SENTRAModule,
-    NEURAModule,
-    FLUXAModule,
-)
+from qratum_platform.core import PlatformIntent, QRATUMPlatform, VerticalModule
+from verticals import (CAPRAModule, ECORAModule, FLUXAModule, JURISModule,
+                       NEURAModule, SENTRAModule, VITRAModule)
 
 
 def print_section(title: str):
@@ -55,7 +48,7 @@ def demo_juris():
     print(f"Substrate: {contract.substrate.value}")
 
     result = platform.execute_contract(contract.contract_id)
-    print(f"\nIRAC Analysis:")
+    print("\nIRAC Analysis:")
     print(f"  Issue: {result['issue'][0] if result['issue'] else 'N/A'}")
     print(f"  Conclusion: {result['conclusion'][:100]}...")
 

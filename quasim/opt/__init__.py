@@ -11,13 +11,8 @@ from .classical_fallback import ClassicalFallback
 from .graph import HierarchicalGraph, QGraph
 from .optimizer import QuantumOptimizer
 from .problems import OptimizationProblem
-from .ultra_sssp import (
-    SSSPSimulationConfig,
-    UltraSSSP,
-    dijkstra_baseline,
-    run_sssp_simulation,
-    validate_sssp_results,
-)
+from .ultra_sssp import (SSSPSimulationConfig, UltraSSSP, dijkstra_baseline,
+                         run_sssp_simulation, validate_sssp_results)
 
 __all__ = [
     "QuantumOptimizer",

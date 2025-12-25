@@ -1,6 +1,7 @@
 """Tests for FLUXA Supply Chain module."""
 
-from qratum_platform.core import PlatformContract, PlatformIntent, VerticalModule, ComputeSubstrate
+from qratum_platform.core import (ComputeSubstrate, PlatformContract,
+                                  PlatformIntent, VerticalModule)
 from verticals.fluxa import FLUXAModule
 
 

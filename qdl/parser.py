@@ -2,16 +2,8 @@
 
 from __future__ import annotations
 
-from .ast import (
-    BinaryOp,
-    EconomicPrimitive,
-    Identifier,
-    Number,
-    Program,
-    SafetyGuard,
-    SimulationKernel,
-    WorldModelCall,
-)
+from .ast import (BinaryOp, EconomicPrimitive, Identifier, Number, Program,
+                  SafetyGuard, SimulationKernel, WorldModelCall)
 from .lexer import Lexer, Token
 
 

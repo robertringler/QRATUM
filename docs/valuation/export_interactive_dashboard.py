@@ -17,11 +17,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import plotly.io as pio
-from quasim_valuation_dashboard import (
-    create_dcf_waterfall_chart,
-    create_monte_carlo_waterfall,
-    create_sensitivity_heatmap,
-)
+from quasim_valuation_dashboard import (create_dcf_waterfall_chart,
+                                        create_monte_carlo_waterfall,
+                                        create_sensitivity_heatmap)
 
 # Output path
 OUTPUT_PATH = Path(__file__).parent.parent / "valuation_dashboard.html"
