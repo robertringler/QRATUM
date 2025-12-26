@@ -23,6 +23,7 @@ from uuid import uuid4
 
 class VertexType(Enum):
     """Enumeration of vertex types in AION-SIR."""
+
     CONST = auto()
     ALLOC = auto()
     LOAD = auto()
@@ -38,6 +39,7 @@ class VertexType(Enum):
 
 class HardwareAffinity(Enum):
     """Hardware target affinity for vertices."""
+
     ANY = auto()
     CPU = auto()
     GPU = auto()
@@ -52,6 +54,7 @@ class HardwareAffinity(Enum):
 
 class EffectKind(Enum):
     """Effect kinds for effect tracking."""
+
     PURE = auto()
     READ = auto()
     WRITE = auto()
@@ -72,7 +75,7 @@ class EffectKind(Enum):
 @dataclass
 class VertexMetadata:
     """Metadata attached to vertices.
-    
+
     Attributes:
         type_info: Type information for the vertex output
         effects: Set of effects produced by this vertex
@@ -82,6 +85,7 @@ class VertexMetadata:
         hardware_affinity: Target hardware preference
         region: Memory region this vertex belongs to
     """
+
     type_info: AIONType | None = None
     effects: set[EffectKind] = field(default_factory=set)
     lifetime: str = "static"
@@ -94,7 +98,7 @@ class VertexMetadata:
 @dataclass
 class Provenance:
     """Source provenance information for cross-language debugging.
-    
+
     Attributes:
         source_language: Original source language (C, Rust, Python, etc.)
         source_file: Original source file path
@@ -103,14 +107,15 @@ class Provenance:
         original_name: Original symbol/variable name
         transformation_chain: List of transformations applied
     """
+
     source_language: str
     source_file: str = ""
     source_line: int = 0
     source_column: int = 0
     original_name: str = ""
     transformation_chain: list[str] = field(default_factory=list)
-    
-    def add_transformation(self, transformation: str) -> "Provenance":
+
+    def add_transformation(self, transformation: str) -> Provenance:
         """Add a transformation to the chain."""
         new_chain = self.transformation_chain.copy()
         new_chain.append(transformation)
@@ -127,45 +132,48 @@ class Provenance:
 @dataclass
 class AIONType:
     """AION type representation for dependent type system.
-    
+
     Supports basic types, function types with effects, dependent types,
     and linear/affine types.
     """
+
     kind: str  # "int", "float", "ptr", "fn", "array", "struct", "region"
-    params: list["AIONType"] = field(default_factory=list)
+    params: list[AIONType] = field(default_factory=list)
     size: int | None = None
     effects: set[EffectKind] = field(default_factory=set)
     refinement: str | None = None  # SMT refinement predicate
     linear: bool = False  # Linear type (must be used exactly once)
     affine: bool = False  # Affine type (can be used at most once)
-    
+
     @staticmethod
-    def int(bits: int = 64, signed: bool = True) -> "AIONType":
+    def int(bits: int = 64, signed: bool = True) -> AIONType:
         """Create an integer type."""
         return AIONType(kind="int", size=bits, refinement=f"signed={signed}")
-    
+
     @staticmethod
-    def float(bits: int = 64) -> "AIONType":
+    def float(bits: int = 64) -> AIONType:
         """Create a floating point type."""
         return AIONType(kind="float", size=bits)
-    
+
     @staticmethod
-    def ptr(pointee: "AIONType", region: str = "heap") -> "AIONType":
+    def ptr(pointee: AIONType, region: str = "heap") -> AIONType:
         """Create a pointer type with region annotation."""
         return AIONType(kind="ptr", params=[pointee], refinement=f"region={region}")
-    
+
     @staticmethod
-    def fn(params: list["AIONType"], ret: "AIONType", effects: set[EffectKind] | None = None) -> "AIONType":
+    def fn(
+        params: list[AIONType], ret: AIONType, effects: set[EffectKind] | None = None
+    ) -> AIONType:
         """Create a function type with effects."""
         return AIONType(kind="fn", params=params + [ret], effects=effects or set())
-    
+
     @staticmethod
-    def array(element: "AIONType", length: int | str) -> "AIONType":
+    def array(element: AIONType, length: int | str) -> AIONType:
         """Create an array type with optional dependent length."""
         return AIONType(kind="array", params=[element], refinement=f"length={length}")
-    
+
     @staticmethod
-    def tensor(element: "AIONType", shape: list[int | str]) -> "AIONType":
+    def tensor(element: AIONType, shape: list[int | str]) -> AIONType:
         """Create a tensor type with shape."""
         shape_str = ",".join(str(s) for s in shape)
         return AIONType(kind="tensor", params=[element], refinement=f"shape=[{shape_str}]")
@@ -174,7 +182,7 @@ class AIONType:
 @dataclass
 class Vertex:
     """A vertex in the AION-SIR hypergraph.
-    
+
     Vertices represent computation nodes including:
     - Const: Compile-time constants
     - Alloc: Memory allocation
@@ -182,7 +190,7 @@ class Vertex:
     - Apply: Function application
     - Phi: Control flow merge (SSA)
     - KernelLaunch: Hardware kernel dispatch
-    
+
     Attributes:
         id: Unique vertex identifier
         vertex_type: Type of the vertex
@@ -190,22 +198,25 @@ class Vertex:
         attributes: Additional typed attributes
         metadata: Vertex metadata (type, effects, provenance)
     """
+
     id: str = field(default_factory=lambda: str(uuid4()))
     vertex_type: VertexType = VertexType.CONST
     value: Any = None
     attributes: dict[str, Any] = field(default_factory=dict)
     metadata: VertexMetadata = field(default_factory=VertexMetadata)
-    
+
     def __hash__(self) -> int:
         return hash(self.id)
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Vertex):
             return False
         return self.id == other.id
-    
+
     @staticmethod
-    def const(value: Any, type_info: AIONType | None = None, provenance: Provenance | None = None) -> "Vertex":
+    def const(
+        value: Any, type_info: AIONType | None = None, provenance: Provenance | None = None
+    ) -> Vertex:
         """Create a constant vertex."""
         metadata = VertexMetadata(
             type_info=type_info,
@@ -217,7 +228,7 @@ class Vertex:
             value=value,
             metadata=metadata,
         )
-    
+
     @staticmethod
     def alloc(
         size: int | str,
@@ -225,7 +236,7 @@ class Vertex:
         region: str = "heap",
         affinity: HardwareAffinity = HardwareAffinity.ANY,
         provenance: Provenance | None = None,
-    ) -> "Vertex":
+    ) -> Vertex:
         """Create an allocation vertex."""
         metadata = VertexMetadata(
             type_info=type_info,
@@ -239,13 +250,13 @@ class Vertex:
             attributes={"size": size, "region": region},
             metadata=metadata,
         )
-    
+
     @staticmethod
     def load(
         type_info: AIONType,
         region: str = "heap",
         provenance: Provenance | None = None,
-    ) -> "Vertex":
+    ) -> Vertex:
         """Create a load vertex."""
         metadata = VertexMetadata(
             type_info=type_info,
@@ -257,13 +268,13 @@ class Vertex:
             vertex_type=VertexType.LOAD,
             metadata=metadata,
         )
-    
+
     @staticmethod
     def store(
         type_info: AIONType,
         region: str = "heap",
         provenance: Provenance | None = None,
-    ) -> "Vertex":
+    ) -> Vertex:
         """Create a store vertex."""
         metadata = VertexMetadata(
             type_info=type_info,
@@ -275,14 +286,14 @@ class Vertex:
             vertex_type=VertexType.STORE,
             metadata=metadata,
         )
-    
+
     @staticmethod
     def apply(
         function_name: str,
         type_info: AIONType,
         effects: set[EffectKind] | None = None,
         provenance: Provenance | None = None,
-    ) -> "Vertex":
+    ) -> Vertex:
         """Create a function application vertex."""
         metadata = VertexMetadata(
             type_info=type_info,
@@ -294,12 +305,12 @@ class Vertex:
             attributes={"function": function_name},
             metadata=metadata,
         )
-    
+
     @staticmethod
     def phi(
         type_info: AIONType,
         provenance: Provenance | None = None,
-    ) -> "Vertex":
+    ) -> Vertex:
         """Create a phi node for SSA."""
         metadata = VertexMetadata(
             type_info=type_info,
@@ -310,7 +321,7 @@ class Vertex:
             vertex_type=VertexType.PHI,
             metadata=metadata,
         )
-    
+
     @staticmethod
     def kernel_launch(
         kernel_name: str,
@@ -319,7 +330,7 @@ class Vertex:
         type_info: AIONType,
         affinity: HardwareAffinity = HardwareAffinity.GPU,
         provenance: Provenance | None = None,
-    ) -> "Vertex":
+    ) -> Vertex:
         """Create a kernel launch vertex."""
         metadata = VertexMetadata(
             type_info=type_info,
@@ -336,14 +347,14 @@ class Vertex:
             attributes={"kernel": kernel_name},
             metadata=metadata,
         )
-    
+
     @staticmethod
     def parameter(
         name: str,
         type_info: AIONType,
         index: int = 0,
         provenance: Provenance | None = None,
-    ) -> "Vertex":
+    ) -> Vertex:
         """Create a function parameter vertex."""
         metadata = VertexMetadata(
             type_info=type_info,
@@ -355,12 +366,12 @@ class Vertex:
             attributes={"name": name, "index": index},
             metadata=metadata,
         )
-    
+
     @staticmethod
     def ret(
         type_info: AIONType,
         provenance: Provenance | None = None,
-    ) -> "Vertex":
+    ) -> Vertex:
         """Create a return vertex."""
         metadata = VertexMetadata(
             type_info=type_info,
@@ -371,8 +382,8 @@ class Vertex:
             vertex_type=VertexType.RETURN,
             metadata=metadata,
         )
-    
-    def with_affinity(self, affinity: HardwareAffinity) -> "Vertex":
+
+    def with_affinity(self, affinity: HardwareAffinity) -> Vertex:
         """Create a copy of this vertex with updated hardware affinity."""
         new_metadata = VertexMetadata(
             type_info=self.metadata.type_info,
@@ -390,8 +401,8 @@ class Vertex:
             attributes=self.attributes.copy(),
             metadata=new_metadata,
         )
-    
-    def with_region(self, region: str) -> "Vertex":
+
+    def with_region(self, region: str) -> Vertex:
         """Create a copy of this vertex with updated region."""
         new_metadata = VertexMetadata(
             type_info=self.metadata.type_info,
@@ -409,7 +420,7 @@ class Vertex:
             attributes=self.attributes.copy(),
             metadata=new_metadata,
         )
-    
+
     def serialize(self) -> dict[str, Any]:
         """Serialize vertex to dictionary for .aion_sir section."""
         return {
@@ -427,7 +438,7 @@ class Vertex:
                 "provenance": self._serialize_provenance(self.metadata.provenance),
             },
         }
-    
+
     def _serialize_type(self, t: AIONType | None) -> dict[str, Any] | None:
         """Serialize an AION type."""
         if t is None:
@@ -441,7 +452,7 @@ class Vertex:
             "linear": t.linear,
             "affine": t.affine,
         }
-    
+
     def _serialize_provenance(self, p: Provenance | None) -> dict[str, Any] | None:
         """Serialize provenance information."""
         if p is None:

@@ -6,19 +6,19 @@ Tests end-to-end workflows across multiple modules and invariant enforcement.
 import pytest
 
 from qratum_platform.core import (
-    QRATUMPlatform,
     PlatformIntent,
-    VerticalModule,
+    QRATUMPlatform,
     SafetyViolation,
+    VerticalModule,
 )
 from verticals import (
-    JURISModule,
-    VITRAModule,
-    ECORAModule,
     CAPRAModule,
-    SENTRAModule,
-    NEURAModule,
+    ECORAModule,
     FLUXAModule,
+    JURISModule,
+    NEURAModule,
+    SENTRAModule,
+    VITRAModule,
 )
 
 
@@ -60,7 +60,12 @@ class TestPlatformIntegration:
         # Test intents for each module
         intents = [
             PlatformIntent(VerticalModule.JURIS, "legal_reasoning", {"facts": "test"}, "user"),
-            PlatformIntent(VerticalModule.VITRA, "sequence_analysis", {"sequence": "ATCG", "sequence_type": "dna"}, "user"),
+            PlatformIntent(
+                VerticalModule.VITRA,
+                "sequence_analysis",
+                {"sequence": "ATCG", "sequence_type": "dna"},
+                "user",
+            ),
             PlatformIntent(VerticalModule.ECORA, "carbon_analysis", {"activities": []}, "user"),
             PlatformIntent(VerticalModule.CAPRA, "var_calculation", {}, "user"),
             PlatformIntent(VerticalModule.SENTRA, "trajectory_simulation", {}, "user"),

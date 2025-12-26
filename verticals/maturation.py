@@ -15,7 +15,6 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Callable
 
@@ -82,9 +81,7 @@ class TXO:
             "zone": self.zone,
             "timestamp": self.timestamp,
         }
-        return hashlib.sha256(
-            json.dumps(content, sort_keys=True).encode()
-        ).hexdigest()
+        return hashlib.sha256(json.dumps(content, sort_keys=True).encode()).hexdigest()
 
     def serialize(self) -> dict[str, Any]:
         """Serialize TXO."""
@@ -135,9 +132,7 @@ class PipelineStage:
             "operation": self.operation,
             "input_hashes": sorted(txo_hashes),
         }
-        self.checksum = hashlib.sha256(
-            json.dumps(content, sort_keys=True).encode()
-        ).hexdigest()
+        self.checksum = hashlib.sha256(json.dumps(content, sort_keys=True).encode()).hexdigest()
         return self.checksum
 
 
@@ -280,12 +275,15 @@ class TXORouter:
 
         self.txo_store[txo_id] = txo
 
-        self._log_event("txo_created", {
-            "txo_id": txo_id,
-            "type": txo_type.value,
-            "source": source_vertical,
-            "target": target_vertical,
-        })
+        self._log_event(
+            "txo_created",
+            {
+                "txo_id": txo_id,
+                "type": txo_type.value,
+                "source": source_vertical,
+                "target": target_vertical,
+            },
+        )
 
         return txo
 
@@ -308,10 +306,13 @@ class TXORouter:
 
         self.routing_table[txo_id] = destinations
 
-        self._log_event("txo_routed", {
-            "txo_id": txo_id,
-            "destinations": destinations,
-        })
+        self._log_event(
+            "txo_routed",
+            {
+                "txo_id": txo_id,
+                "destinations": destinations,
+            },
+        )
 
         return True
 
@@ -358,11 +359,13 @@ class TXORouter:
 
     def _log_event(self, event_type: str, data: dict[str, Any]) -> None:
         """Log audit event."""
-        self._audit_log.append({
-            "timestamp": get_current_timestamp(),
-            "event_type": event_type,
-            "data": data,
-        })
+        self._audit_log.append(
+            {
+                "timestamp": get_current_timestamp(),
+                "event_type": event_type,
+                "data": data,
+            }
+        )
 
     def get_audit_log(self) -> list[dict[str, Any]]:
         """Get audit log."""
@@ -411,10 +414,7 @@ class CrossVerticalIntent:
 
     def is_complete(self) -> bool:
         """Check if propagation is complete to all targets."""
-        return all(
-            status == "propagated"
-            for status in self.propagation_status.values()
-        )
+        return all(status == "propagated" for status in self.propagation_status.values())
 
     def serialize(self) -> dict[str, Any]:
         """Serialize intent."""
@@ -547,7 +547,7 @@ class VerticalCoordinator:
 
             return output_txo
 
-        except Exception as e:
+        except Exception:
             stage.status = PipelineStatus.FAILED
             pipeline.status = PipelineStatus.FAILED
             raise
@@ -573,7 +573,9 @@ class VerticalCoordinator:
             Created CrossVerticalIntent
         """
         self._intent_counter += 1
-        intent_id = f"intent_{self._intent_counter:06d}_{compute_contract_hash({'op': operation})[:8]}"
+        intent_id = (
+            f"intent_{self._intent_counter:06d}_{compute_contract_hash({'op': operation})[:8]}"
+        )
 
         # Z2+ requires dual control
         requires_dual = zone in ("Z2", "Z3")
@@ -663,16 +665,12 @@ class VerticalCoordinator:
         return {
             "total_pipelines": len(self.pipelines),
             "active_pipelines": sum(
-                1 for p in self.pipelines.values()
-                if p.status == PipelineStatus.RUNNING
+                1 for p in self.pipelines.values() if p.status == PipelineStatus.RUNNING
             ),
             "completed_pipelines": sum(
-                1 for p in self.pipelines.values()
-                if p.status == PipelineStatus.COMPLETED
+                1 for p in self.pipelines.values() if p.status == PipelineStatus.COMPLETED
             ),
             "total_txos": len(self.txo_router.txo_store),
             "total_intents": len(self.intents),
-            "completed_intents": sum(
-                1 for i in self.intents.values() if i.is_complete()
-            ),
+            "completed_intents": sum(1 for i in self.intents.values() if i.is_complete()),
         }

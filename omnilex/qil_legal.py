@@ -123,7 +123,7 @@ class LegalQILIntent:
         Returns:
             Escaped string
         """
-        return s.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n')
+        return s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
 
 
 def generate_intent_id(task: str, jurisdiction: str, timestamp: float) -> str:

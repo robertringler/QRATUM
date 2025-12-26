@@ -10,8 +10,8 @@ fundamental AI breakthroughs that have not yet occurred. No claim is made
 that superintelligence is achievable with current technology.
 """
 
-from qratum_asi.orchestrator import QRATUMASI
 from qratum_asi.core.vulnerability_discovery import VulnerabilityDiscoveryEngine
+from qratum_asi.orchestrator import QRATUMASI
 
 __version__ = "0.1.0"
 __all__ = ["QRATUMASI", "VulnerabilityDiscoveryEngine"]

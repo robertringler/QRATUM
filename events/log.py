@@ -79,9 +79,7 @@ class Event:
         Returns:
             Hexadecimal SHA-256 hash
         """
-        content = {
-            k: v for k, v in self.serialize().items() if k != "event_id"
-        }
+        content = {k: v for k, v in self.serialize().items() if k != "event_id"}
         json_str = json.dumps(content, sort_keys=True)
         return hashlib.sha256(json_str.encode("utf-8")).hexdigest()
 
@@ -129,6 +127,7 @@ class EventLog:
 
         # Create event
         from datetime import timezone
+
         timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         content = {
             "event_type": event_type,

@@ -45,9 +45,7 @@ class ZoneViolation(Exception):
         self.zone = zone
         self.invariant = invariant
         self.context = context or {}
-        super().__init__(
-            f"ZONE VIOLATION [{zone.value}] - {invariant}: {message}"
-        )
+        super().__init__(f"ZONE VIOLATION [{zone.value}] - {invariant}: {message}")
 
 
 @dataclass(frozen=True)
@@ -106,9 +104,7 @@ DEFAULT_ZONE_POLICIES: dict[SecurityZone, ZonePolicy] = {
         require_dual_control=False,
         require_audit_trail=True,
         max_operation_time_seconds=1800.0,
-        allowed_operations=frozenset({
-            "read", "query", "list", "create", "update", "execute"
-        }),
+        allowed_operations=frozenset({"read", "query", "list", "create", "update", "execute"}),
         require_human_oversight=False,
         require_air_gap=False,
     ),
@@ -118,9 +114,7 @@ DEFAULT_ZONE_POLICIES: dict[SecurityZone, ZonePolicy] = {
         require_dual_control=True,
         require_audit_trail=True,
         max_operation_time_seconds=900.0,
-        allowed_operations=frozenset({
-            "read", "query", "create", "update", "execute", "approve"
-        }),
+        allowed_operations=frozenset({"read", "query", "create", "update", "execute", "approve"}),
         require_human_oversight=True,
         require_air_gap=False,
     ),
@@ -130,9 +124,7 @@ DEFAULT_ZONE_POLICIES: dict[SecurityZone, ZonePolicy] = {
         require_dual_control=True,
         require_audit_trail=True,
         max_operation_time_seconds=300.0,
-        allowed_operations=frozenset({
-            "read", "execute", "archive", "verify"
-        }),
+        allowed_operations=frozenset({"read", "execute", "archive", "verify"}),
         require_human_oversight=True,
         require_air_gap=True,
     ),
@@ -253,9 +245,7 @@ class ZoneDeterminismEnforcer:
         # Log successful enforcement
         self._log_transition(context, "invariants_enforced")
 
-    def _enforce_operation_allowed(
-        self, context: ZoneContext, policy: ZonePolicy
-    ) -> None:
+    def _enforce_operation_allowed(self, context: ZoneContext, policy: ZonePolicy) -> None:
         """Enforce that operation is allowed in zone."""
         if policy.allowed_operations and context.operation_type not in policy.allowed_operations:
             self._violation_count += 1
@@ -269,9 +259,7 @@ class ZoneDeterminismEnforcer:
                 },
             )
 
-    def _enforce_network_policy(
-        self, context: ZoneContext, policy: ZonePolicy
-    ) -> None:
+    def _enforce_network_policy(self, context: ZoneContext, policy: ZonePolicy) -> None:
         """Enforce network access policy."""
         if context.external_network_requested and not policy.allow_external_network:
             self._violation_count += 1
@@ -282,9 +270,7 @@ class ZoneDeterminismEnforcer:
                 context={"external_network_requested": True},
             )
 
-    def _enforce_dual_control(
-        self, context: ZoneContext, policy: ZonePolicy
-    ) -> None:
+    def _enforce_dual_control(self, context: ZoneContext, policy: ZonePolicy) -> None:
         """Enforce dual-control requirement."""
         if policy.require_dual_control and not context.has_dual_control():
             self._violation_count += 1
@@ -298,9 +284,7 @@ class ZoneDeterminismEnforcer:
                 },
             )
 
-    def _enforce_time_limit(
-        self, context: ZoneContext, policy: ZonePolicy
-    ) -> None:
+    def _enforce_time_limit(self, context: ZoneContext, policy: ZonePolicy) -> None:
         """Enforce operation time limit."""
         elapsed = context.get_elapsed_seconds()
         if elapsed > policy.max_operation_time_seconds:
@@ -315,9 +299,7 @@ class ZoneDeterminismEnforcer:
                 },
             )
 
-    def _enforce_air_gap(
-        self, context: ZoneContext, policy: ZonePolicy
-    ) -> None:
+    def _enforce_air_gap(self, context: ZoneContext, policy: ZonePolicy) -> None:
         """Enforce air-gap requirement."""
         if policy.require_air_gap:
             # In air-gapped mode, no external network is allowed
@@ -330,9 +312,7 @@ class ZoneDeterminismEnforcer:
                     context={"air_gap_required": True},
                 )
 
-    def _enforce_audit_trail(
-        self, context: ZoneContext, policy: ZonePolicy
-    ) -> None:
+    def _enforce_audit_trail(self, context: ZoneContext, policy: ZonePolicy) -> None:
         """Enforce audit trail requirement.
 
         This method logs the operation; actual audit storage is handled elsewhere.
@@ -357,9 +337,7 @@ class ZoneDeterminismEnforcer:
             "metadata": context.metadata,
         }
         # Compute entry hash for integrity
-        entry["entry_hash"] = hashlib.sha256(
-            json.dumps(entry, sort_keys=True).encode()
-        ).hexdigest()
+        entry["entry_hash"] = hashlib.sha256(json.dumps(entry, sort_keys=True).encode()).hexdigest()
         self._transition_log.append(entry)
 
     def validate_zone_transition(

@@ -4,16 +4,15 @@ Unified causal model fusing all 14 verticals with hash-addressed
 knowledge nodes, causal graph structure, and full provenance tracking.
 """
 
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set
 import hashlib
 import json
+from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Any, Dict, List, Optional, Set
 
 from qratum_asi.core.chain import ASIMerkleChain
-from qratum_asi.core.events import ASIEvent, ASIEventType
 from qratum_asi.core.contracts import ASIContract
-from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
+from qratum_asi.core.events import ASIEvent, ASIEventType
 
 
 @dataclass
@@ -56,7 +55,7 @@ class CausalLink:
 @dataclass
 class QReality:
     """Q-REALITY: Emergent World Model.
-    
+
     Maintains unified causal model across all QRATUM verticals with
     deterministic updates, full provenance, and cross-domain inference.
     """
@@ -64,10 +63,24 @@ class QReality:
     knowledge_nodes: Dict[str, KnowledgeNode] = field(default_factory=dict)
     causal_links: Dict[str, CausalLink] = field(default_factory=dict)
     merkle_chain: ASIMerkleChain = field(default_factory=ASIMerkleChain)
-    verticals: Set[str] = field(default_factory=lambda: {
-        "JURIS", "VITRA", "ECORA", "QUASIM", "QNIMBUS", "QUBIC",
-        "XENON", "HCAL", "QNX", "QSTACK", "TERC", "OMNILEX", "FEDERATED", "AGI"
-    })
+    verticals: Set[str] = field(
+        default_factory=lambda: {
+            "JURIS",
+            "VITRA",
+            "ECORA",
+            "QUASIM",
+            "QNIMBUS",
+            "QUBIC",
+            "XENON",
+            "HCAL",
+            "QNX",
+            "QSTACK",
+            "TERC",
+            "OMNILEX",
+            "FEDERATED",
+            "AGI",
+        }
+    )
 
     def add_knowledge_node(
         self,
@@ -168,9 +181,7 @@ class QReality:
                     results.append(node)
         return results
 
-    def get_causal_path(
-        self, source_node_id: str, target_node_id: str
-    ) -> Optional[List[str]]:
+    def get_causal_path(self, source_node_id: str, target_node_id: str) -> Optional[List[str]]:
         """Find causal path between two nodes."""
         # Simple BFS implementation
         from collections import deque
@@ -198,7 +209,7 @@ class QReality:
 
     def _matches_query(self, node: KnowledgeNode, query: Dict[str, Any]) -> bool:
         """Check if node matches query criteria.
-        
+
         NOTE: This is a placeholder implementation using simple dictionary matching.
         A production implementation would require:
         - Semantic search capabilities

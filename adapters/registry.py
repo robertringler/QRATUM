@@ -40,9 +40,7 @@ class AdapterRegistry:
         self.register_adapter_class("GAUDI3", Gaudi3Adapter)
         self.register_adapter_class("CPU", CPUAdapter)
 
-    def register_adapter_class(
-        self, cluster_type: str, adapter_class: type[BaseAdapter]
-    ) -> None:
+    def register_adapter_class(self, cluster_type: str, adapter_class: type[BaseAdapter]) -> None:
         """Register an adapter class for a cluster type.
 
         Args:

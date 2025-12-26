@@ -13,79 +13,56 @@ This module tests all components of the planetary infrastructure including:
 """
 
 import pytest
-from datetime import datetime
 
-from qratum.planetary.infrastructure import (
-    GlobalInfrastructure,
-    InfrastructureLayer,
-    PhysicalNode,
-    LogicalContract,
-    AIGovernanceNode,
-    SymbolicAttractor,
-    NodeType,
-    LayerType,
-)
 from qratum.planetary.agents import (
-    PlanetaryAgent,
-    NodeAgent,
-    DataValidatorAgent,
-    AIGovernanceAgent,
-    EconomicAgent,
-    IntegrationAgent,
-    SimulationAgent,
-    SecurityAgent,
     AgentNetwork,
-    AgentType,
     AgentObservation,
+    AgentType,
+    AIGovernanceAgent,
+    DataValidatorAgent,
+    EconomicAgent,
+    NodeAgent,
+    SecurityAgent,
+)
+from qratum.planetary.deployment import (
+    DeploymentRoadmap,
+    MilestoneStatus,
+    PhaseType,
 )
 from qratum.planetary.economics import (
     EconomicEngine,
-    TokenFlow,
-    RevenueStream,
     TokenType,
     TransactionFee,
-    DataAsAService,
-    AnalyticsRevenue,
-    ComplianceRevenue,
-    TokenAccount,
+)
+from qratum.planetary.infrastructure import (
+    GlobalInfrastructure,
+    NodeType,
 )
 from qratum.planetary.integration import (
     DomainIntegration,
-    SectorAdapter,
     DomainType,
     KPIMonitor,
-    KPIMetric,
-    InteroperabilityLayer,
-)
-from qratum.planetary.security import (
-    SecurityLayer,
-    QuantumResistantCrypto,
-    AdaptiveConsensus,
-    CrossChainBridge,
-    DisasterRecovery,
-    CryptoAlgorithm,
-    ConsensusType,
-)
-from qratum.planetary.deployment import (
-    DeploymentPhase,
-    DeploymentRoadmap,
-    PhaseType,
-    MilestoneTracker,
-    Milestone,
-    MilestoneStatus,
+    SectorAdapter,
 )
 from qratum.planetary.optimization import (
     ContinuousOptimizer,
+    PolicyAdjuster,
     PredictiveSimulator,
     RiskAnalyzer,
-    PolicyAdjuster,
     RiskLevel,
 )
+from qratum.planetary.security import (
+    AdaptiveConsensus,
+    ConsensusType,
+    CrossChainBridge,
+    CryptoAlgorithm,
+    DisasterRecovery,
+    QuantumResistantCrypto,
+    SecurityLayer,
+)
 from qratum.planetary.simulation import (
-    PlanetarySimulation,
-    SimulationScenario,
-    VisualizationEngine,
     MetricsCollector,
+    PlanetarySimulation,
     ScenarioType,
 )
 
@@ -281,9 +258,7 @@ class TestEconomicEngine:
         sender.deposit(TokenType.UTILITY, 1000)
 
         # Transfer
-        flow = engine.transfer(
-            "sender", "receiver", TokenType.UTILITY, 100
-        )
+        flow = engine.transfer("sender", "receiver", TokenType.UTILITY, 100)
         assert flow is not None
         assert flow.amount == 100
         assert receiver.balances[TokenType.UTILITY] == 100
@@ -497,11 +472,13 @@ class TestContinuousOptimization:
     def test_risk_assessment(self):
         """Test risk assessment."""
         analyzer = RiskAnalyzer()
-        assessment = analyzer.assess_infrastructure_risk({
-            "node_uptime_percent": 95,
-            "capacity_utilization": 85,
-            "error_rate_percent": 2,
-        })
+        assessment = analyzer.assess_infrastructure_risk(
+            {
+                "node_uptime_percent": 95,
+                "capacity_utilization": 85,
+                "error_rate_percent": 2,
+            }
+        )
         assert assessment.level in RiskLevel
 
     def test_monte_carlo_simulation(self):
@@ -518,29 +495,33 @@ class TestContinuousOptimization:
     def test_policy_adjustment(self):
         """Test policy adjustment recommendations."""
         adjuster = PolicyAdjuster()
-        recommendations = adjuster.analyze_and_recommend({
-            "network_load": 0.95,
-            "validator_participation": 0.7,
-        })
+        recommendations = adjuster.analyze_and_recommend(
+            {
+                "network_load": 0.95,
+                "validator_participation": 0.7,
+            }
+        )
         assert len(recommendations) > 0
 
     def test_optimization_cycle(self):
         """Test complete optimization cycle."""
         optimizer = ContinuousOptimizer()
-        result = optimizer.run_optimization_cycle({
-            "node_uptime_percent": 98,
-            "capacity_utilization": 70,
-            "error_rate_percent": 0.5,
-            "token_volatility": 0.1,
-            "liquidity_ratio": 0.5,
-            "revenue_growth_percent": 10,
-            "threat_level": 0.3,
-            "anomaly_score": 0.2,
-            "active_users": 5000,
-            "revenue": 50000,
-            "capacity": 200,
-            "network_load": 0.6,
-        })
+        result = optimizer.run_optimization_cycle(
+            {
+                "node_uptime_percent": 98,
+                "capacity_utilization": 70,
+                "error_rate_percent": 0.5,
+                "token_volatility": 0.1,
+                "liquidity_ratio": 0.5,
+                "revenue_growth_percent": 10,
+                "threat_level": 0.3,
+                "anomaly_score": 0.2,
+                "active_users": 5000,
+                "revenue": 50000,
+                "capacity": 200,
+                "network_load": 0.6,
+            }
+        )
         assert "risks" in result
         assert "simulation" in result
         assert "optimization_actions" in result
@@ -616,9 +597,7 @@ class TestIntegration:
         infra.deploy_maritime_nodes(num_nodes=10)
 
         # Create contracts and governance
-        infra.create_data_contract(
-            {"type": "telemetry"}, ["v1", "v2", "v3"]
-        )
+        infra.create_data_contract({"type": "telemetry"}, ["v1", "v2", "v3"])
         infra.deploy_ai_governance(num_nodes=5)
         infra.create_symbolic_attractor([0.5, 0.5, 0.5])
 
@@ -645,13 +624,15 @@ class TestIntegration:
         engine.accounts["econ_1"].deposit(TokenType.UTILITY, 10000)
 
         # Run network step
-        actions = network.step({
-            "node_status": "active",
-            "load_percent": 70,
-            "token_balance": 10000,
-            "market_price": 1.0,
-            "demand": 0.5,
-        })
+        actions = network.step(
+            {
+                "node_status": "active",
+                "load_percent": 70,
+                "token_balance": 10000,
+                "market_price": 1.0,
+                "demand": 0.5,
+            }
+        )
 
         assert len(actions) > 0
 
@@ -683,20 +664,22 @@ class TestIntegration:
         roadmap = DeploymentRoadmap()
 
         # Run optimization
-        result = optimizer.run_optimization_cycle({
-            "node_uptime_percent": 99,
-            "capacity_utilization": 85,
-            "error_rate_percent": 0.1,
-            "token_volatility": 0.05,
-            "liquidity_ratio": 0.7,
-            "revenue_growth_percent": 25,
-            "threat_level": 0.1,
-            "anomaly_score": 0.05,
-            "active_users": 10000,
-            "revenue": 100000,
-            "capacity": 500,
-            "network_load": 0.7,
-        })
+        result = optimizer.run_optimization_cycle(
+            {
+                "node_uptime_percent": 99,
+                "capacity_utilization": 85,
+                "error_rate_percent": 0.1,
+                "token_volatility": 0.05,
+                "liquidity_ratio": 0.7,
+                "revenue_growth_percent": 25,
+                "threat_level": 0.1,
+                "anomaly_score": 0.05,
+                "active_users": 10000,
+                "revenue": 100000,
+                "capacity": 500,
+                "network_load": 0.7,
+            }
+        )
 
         # Use optimization results to inform deployment
         if result["risks"]["infrastructure"]["level"] == "low":

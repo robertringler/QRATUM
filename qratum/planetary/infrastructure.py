@@ -158,9 +158,7 @@ class AIGovernanceNode:
             Decision outcome with reasoning
         """
         # Deterministic decision-making placeholder
-        decision_id = hashlib.sha256(
-            json.dumps(context, sort_keys=True).encode()
-        ).hexdigest()[:16]
+        decision_id = hashlib.sha256(json.dumps(context, sort_keys=True).encode()).hexdigest()[:16]
 
         return {
             "decision_id": decision_id,
@@ -504,9 +502,7 @@ class GlobalInfrastructure:
         Returns:
             Created logical contract
         """
-        content = json.dumps(
-            {"schema": data_schema, "validators": validators}, sort_keys=True
-        )
+        content = json.dumps({"schema": data_schema, "validators": validators}, sort_keys=True)
         contract_hash = hashlib.sha256(content.encode()).hexdigest()
         contract_id = f"contract_{contract_hash[:12]}"
 
@@ -580,9 +576,7 @@ class GlobalInfrastructure:
     def _update_capacity(self) -> None:
         """Update total capacity and coverage metrics."""
         physical_layer = self.layers[LayerType.PHYSICAL]
-        total_gbps = sum(
-            node.capacity_gbps for node in physical_layer.nodes.values()
-        )
+        total_gbps = sum(node.capacity_gbps for node in physical_layer.nodes.values())
         self.total_capacity_tbps = total_gbps / 1000
 
         # Estimate coverage based on node distribution
@@ -593,9 +587,7 @@ class GlobalInfrastructure:
             unique_regions.add((lat_region, lon_region))
 
         total_regions = 12 * 6  # 30-degree cells
-        self.global_coverage_percent = min(
-            100, (len(unique_regions) / total_regions) * 100
-        )
+        self.global_coverage_percent = min(100, (len(unique_regions) / total_regions) * 100)
 
     def get_statistics(self) -> dict[str, Any]:
         """Get infrastructure statistics.

@@ -13,9 +13,9 @@ Status: Production
 
 from __future__ import annotations
 
-from .c_lifter import CLifter, RustLifter, CppLifter
+from .c_lifter import CLifter, CppLifter, RustLifter
 from .cuda_lifter import CUDALifter, OpenCLLifter
-from .sql_lifter import SQLLifter, DataflowBuilder
+from .sql_lifter import DataflowBuilder, SQLLifter
 
 __all__ = [
     "CLifter",

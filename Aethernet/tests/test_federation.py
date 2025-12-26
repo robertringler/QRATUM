@@ -1,15 +1,16 @@
 """Tests for Aethernet Federation Module."""
 
 import pytest
+
 from Aethernet.core.federation import (
+    AirGappedReplicator,
     FederationCoordinator,
     FederationRegistry,
     FederationSite,
+    ReplicationMode,
     SiteCredentials,
     SiteType,
     SyncStatus,
-    ReplicationMode,
-    AirGappedReplicator,
 )
 
 
@@ -31,19 +32,13 @@ class TestSiteCredentials:
 
     def test_credential_hash(self):
         """Test credential hash is deterministic."""
-        creds1 = SiteCredentials(
-            "s1", "name", "pk", "ep", "Z1", "2025-01-01T00:00:00Z"
-        )
-        creds2 = SiteCredentials(
-            "s1", "name", "pk", "ep", "Z1", "2025-01-01T00:00:00Z"
-        )
+        creds1 = SiteCredentials("s1", "name", "pk", "ep", "Z1", "2025-01-01T00:00:00Z")
+        creds2 = SiteCredentials("s1", "name", "pk", "ep", "Z1", "2025-01-01T00:00:00Z")
         assert creds1.compute_hash() == creds2.compute_hash()
 
     def test_credential_serialization(self):
         """Test credential serialization."""
-        creds = SiteCredentials(
-            "s1", "name", "pk", "ep", "Z1", "2025-01-01T00:00:00Z"
-        )
+        creds = SiteCredentials("s1", "name", "pk", "ep", "Z1", "2025-01-01T00:00:00Z")
         serialized = creds.serialize()
         assert "credential_hash" in serialized
         assert serialized["site_id"] == "s1"
@@ -54,9 +49,7 @@ class TestFederationSite:
 
     def test_site_creation(self):
         """Test creating a site."""
-        creds = SiteCredentials(
-            "s1", "Site 1", "pk", "ep", "Z1", "2025-01-01T00:00:00Z"
-        )
+        creds = SiteCredentials("s1", "Site 1", "pk", "ep", "Z1", "2025-01-01T00:00:00Z")
         site = FederationSite(
             credentials=creds,
             site_type=SiteType.PRIMARY,
@@ -66,9 +59,7 @@ class TestFederationSite:
 
     def test_air_gapped_site(self):
         """Test air-gapped site detection."""
-        creds = SiteCredentials(
-            "s1", "Z3 Archive", "pk", None, "Z3", "2025-01-01T00:00:00Z"
-        )
+        creds = SiteCredentials("s1", "Z3 Archive", "pk", None, "Z3", "2025-01-01T00:00:00Z")
         site = FederationSite(
             credentials=creds,
             site_type=SiteType.AIR_GAPPED,
@@ -77,9 +68,7 @@ class TestFederationSite:
 
     def test_z3_is_air_gapped(self):
         """Test Z3 zone is treated as air-gapped."""
-        creds = SiteCredentials(
-            "s1", "Z3 Site", "pk", "ep", "Z3", "2025-01-01T00:00:00Z"
-        )
+        creds = SiteCredentials("s1", "Z3 Site", "pk", "ep", "Z3", "2025-01-01T00:00:00Z")
         site = FederationSite(
             credentials=creds,
             site_type=SiteType.ARCHIVE,
@@ -88,9 +77,7 @@ class TestFederationSite:
 
     def test_site_serialization(self):
         """Test site serialization."""
-        creds = SiteCredentials(
-            "s1", "Site 1", "pk", "ep", "Z1", "2025-01-01T00:00:00Z"
-        )
+        creds = SiteCredentials("s1", "Site 1", "pk", "ep", "Z1", "2025-01-01T00:00:00Z")
         site = FederationSite(
             credentials=creds,
             site_type=SiteType.PRIMARY,
@@ -137,9 +124,7 @@ class TestFederationRegistry:
     def test_update_sync_status(self):
         """Test updating sync status."""
         registry = FederationRegistry()
-        site = registry.register_site(
-            "Site1", "pk", "ep", SiteType.REPLICA
-        )
+        site = registry.register_site("Site1", "pk", "ep", SiteType.REPLICA)
         result = registry.update_sync_status(
             site.credentials.site_id,
             SyncStatus.SYNCED,
@@ -215,15 +200,16 @@ class TestAirGappedReplicator:
 
     def test_create_bundle_requires_z3_target(self):
         """Test bundle creation requires Z3 target."""
-        replica = self.registry.register_site(
-            "Replica", "pk_r", "ep", SiteType.REPLICA, zone="Z1"
-        )
+        replica = self.registry.register_site("Replica", "pk_r", "ep", SiteType.REPLICA, zone="Z1")
 
         with pytest.raises(ValueError):
             self.replicator.create_archive_bundle(
                 self.primary.credentials.site_id,
                 replica.credentials.site_id,
-                1, 2, [], {},
+                1,
+                2,
+                [],
+                {},
             )
 
     def test_verify_bundle(self):
@@ -234,7 +220,10 @@ class TestAirGappedReplicator:
         bundle = self.replicator.create_archive_bundle(
             self.primary.credentials.site_id,
             self.z3_site.credentials.site_id,
-            1, 1, blocks, state,
+            1,
+            1,
+            blocks,
+            state,
         )
 
         assert self.replicator.verify_bundle(bundle) is True
@@ -247,7 +236,10 @@ class TestAirGappedReplicator:
         bundle = self.replicator.create_archive_bundle(
             self.primary.credentials.site_id,
             self.z3_site.credentials.site_id,
-            1, 1, blocks, state,
+            1,
+            1,
+            blocks,
+            state,
         )
 
         result = self.replicator.apply_bundle(bundle, blocks, state)
@@ -262,7 +254,10 @@ class TestAirGappedReplicator:
         bundle = self.replicator.create_archive_bundle(
             self.primary.credentials.site_id,
             self.z3_site.credentials.site_id,
-            1, 1, blocks, state,
+            1,
+            1,
+            blocks,
+            state,
         )
 
         wrong_blocks = [{"height": 2}]  # Different data
@@ -286,16 +281,20 @@ class TestAirGappedReplicator:
         """Test getting verifications for a site."""
         self.replicator.verify_replay(
             self.z3_site.credentials.site_id,
-            1, 10, [], "hash1",
+            1,
+            10,
+            [],
+            "hash1",
         )
         self.replicator.verify_replay(
             self.z3_site.credentials.site_id,
-            11, 20, [], "hash2",
+            11,
+            20,
+            [],
+            "hash2",
         )
 
-        verifications = self.replicator.get_verifications_for_site(
-            self.z3_site.credentials.site_id
-        )
+        verifications = self.replicator.get_verifications_for_site(self.z3_site.credentials.site_id)
         assert len(verifications) == 2
 
 
@@ -367,7 +366,10 @@ class TestFederationCoordinator:
         blocks = [{"height": 1}]
         bundle = coordinator.create_z3_archive_bundle(
             archive.credentials.site_id,
-            1, 1, blocks, {"root": "hash"},
+            1,
+            1,
+            blocks,
+            {"root": "hash"},
         )
 
         verification = coordinator.verify_z3_archive(

@@ -73,10 +73,7 @@ class ContractAnalysisEngine:
         self._standard_provisions = self._load_standard_provisions()
 
     def analyze_contract(
-        self,
-        text: str,
-        contract_type: str,
-        jurisdiction: str
+        self, text: str, contract_type: str, jurisdiction: str
     ) -> ContractAnalysisResult:
         """Analyze a contract.
 
@@ -101,9 +98,7 @@ class ContractAnalysisEngine:
         overall_risk = self._calculate_overall_risk(clauses, red_flags, missing)
 
         # Generate recommendations
-        recommendations = self._generate_recommendations(
-            clauses, red_flags, missing, contract_type
-        )
+        recommendations = self._generate_recommendations(clauses, red_flags, missing, contract_type)
 
         return ContractAnalysisResult(
             contract_type=contract_type,
@@ -111,7 +106,7 @@ class ContractAnalysisEngine:
             clauses=clauses,
             red_flags=red_flags,
             missing_provisions=missing,
-            recommendations=recommendations
+            recommendations=recommendations,
         )
 
     def _identify_clauses(self, text: str, contract_type: str) -> list[ContractClause]:
@@ -129,51 +124,65 @@ class ContractAnalysisEngine:
 
         # Check for indemnification clause
         if "indemnif" in text_lower or "hold harmless" in text_lower:
-            risk_level = "high" if "indemnif" in text_lower and "sole" not in text_lower else "medium"
-            clauses.append(ContractClause(
-                clause_id="indemnification-1",
-                clause_type="indemnification",
-                text="[Indemnification clause detected]",
-                risk_level=risk_level,
-                issues=["Broad indemnification may create unlimited liability"],
-                recommendations=["Consider mutual indemnification", "Add liability cap"]
-            ))
+            risk_level = (
+                "high" if "indemnif" in text_lower and "sole" not in text_lower else "medium"
+            )
+            clauses.append(
+                ContractClause(
+                    clause_id="indemnification-1",
+                    clause_type="indemnification",
+                    text="[Indemnification clause detected]",
+                    risk_level=risk_level,
+                    issues=["Broad indemnification may create unlimited liability"],
+                    recommendations=["Consider mutual indemnification", "Add liability cap"],
+                )
+            )
 
         # Check for limitation of liability
         if "limit" in text_lower and "liability" in text_lower:
-            clauses.append(ContractClause(
-                clause_id="liability-1",
-                clause_type="limitation_of_liability",
-                text="[Limitation of liability clause detected]",
-                risk_level="low",
-                issues=[],
-                recommendations=["Ensure limitation is reasonable and enforceable"]
-            ))
+            clauses.append(
+                ContractClause(
+                    clause_id="liability-1",
+                    clause_type="limitation_of_liability",
+                    text="[Limitation of liability clause detected]",
+                    risk_level="low",
+                    issues=[],
+                    recommendations=["Ensure limitation is reasonable and enforceable"],
+                )
+            )
 
         # Check for termination clause
         if "terminat" in text_lower:
             has_cause = "for cause" in text_lower
             risk_level = "low" if has_cause else "medium"
-            clauses.append(ContractClause(
-                clause_id="termination-1",
-                clause_type="termination",
-                text="[Termination clause detected]",
-                risk_level=risk_level,
-                issues=[] if has_cause else ["Termination rights may be one-sided"],
-                recommendations=["Ensure mutual termination rights", "Specify notice period"]
-            ))
+            clauses.append(
+                ContractClause(
+                    clause_id="termination-1",
+                    clause_type="termination",
+                    text="[Termination clause detected]",
+                    risk_level=risk_level,
+                    issues=[] if has_cause else ["Termination rights may be one-sided"],
+                    recommendations=["Ensure mutual termination rights", "Specify notice period"],
+                )
+            )
 
         # Check for IP assignment
-        if ("intellectual property" in text_lower or "ip" in text_lower or
-            "copyright" in text_lower or "patent" in text_lower):
-            clauses.append(ContractClause(
-                clause_id="ip-1",
-                clause_type="intellectual_property",
-                text="[IP clause detected]",
-                risk_level="medium",
-                issues=["IP ownership must be clearly defined"],
-                recommendations=["Clarify ownership of pre-existing and new IP"]
-            ))
+        if (
+            "intellectual property" in text_lower
+            or "ip" in text_lower
+            or "copyright" in text_lower
+            or "patent" in text_lower
+        ):
+            clauses.append(
+                ContractClause(
+                    clause_id="ip-1",
+                    clause_type="intellectual_property",
+                    text="[IP clause detected]",
+                    risk_level="medium",
+                    issues=["IP ownership must be clearly defined"],
+                    recommendations=["Clarify ownership of pre-existing and new IP"],
+                )
+            )
 
         return clauses
 
@@ -200,19 +209,19 @@ class ContractAnalysisEngine:
 
         # Check for automatic renewal
         if "automatic" in text_lower and "renew" in text_lower:
-            red_flags.append("Automatic renewal clause - may create unintended long-term commitment")
+            red_flags.append(
+                "Automatic renewal clause - may create unintended long-term commitment"
+            )
 
         # Check for penalty clauses
         if "penalty" in text_lower or "liquidated damages" in text_lower:
-            red_flags.append("Liquidated damages or penalty clause - may be unenforceable if excessive")
+            red_flags.append(
+                "Liquidated damages or penalty clause - may be unenforceable if excessive"
+            )
 
         return red_flags
 
-    def _check_missing_provisions(
-        self,
-        text: str,
-        contract_type: str
-    ) -> list[str]:
+    def _check_missing_provisions(self, text: str, contract_type: str) -> list[str]:
         """Check for missing standard provisions.
 
         Args:
@@ -226,7 +235,9 @@ class ContractAnalysisEngine:
         text_lower = text.lower()
 
         # Get standard provisions for contract type
-        standard = self._standard_provisions.get(contract_type, self._standard_provisions["general"])
+        standard = self._standard_provisions.get(
+            contract_type, self._standard_provisions["general"]
+        )
 
         for provision in standard:
             keyword = provision["keyword"]
@@ -236,10 +247,7 @@ class ContractAnalysisEngine:
         return missing
 
     def _calculate_overall_risk(
-        self,
-        clauses: list[ContractClause],
-        red_flags: list[str],
-        missing: list[str]
+        self, clauses: list[ContractClause], red_flags: list[str], missing: list[str]
     ) -> str:
         """Calculate overall contract risk.
 
@@ -258,8 +266,9 @@ class ContractAnalysisEngine:
         num_missing = len(missing)
 
         # Calculate risk score
-        risk_score = (critical_clauses * 10 + high_risk_clauses * 5 +
-                     num_red_flags * 3 + num_missing * 2)
+        risk_score = (
+            critical_clauses * 10 + high_risk_clauses * 5 + num_red_flags * 3 + num_missing * 2
+        )
 
         # Classify overall risk
         if risk_score >= 20 or critical_clauses > 0:
@@ -276,7 +285,7 @@ class ContractAnalysisEngine:
         clauses: list[ContractClause],
         red_flags: list[str],
         missing: list[str],
-        contract_type: str
+        contract_type: str,
     ) -> list[str]:
         """Generate overall recommendations.
 
@@ -293,14 +302,10 @@ class ContractAnalysisEngine:
 
         # High-level recommendations based on findings
         if red_flags:
-            recommendations.append(
-                f"Address {len(red_flags)} red flag(s) identified in contract"
-            )
+            recommendations.append(f"Address {len(red_flags)} red flag(s) identified in contract")
 
         if missing:
-            recommendations.append(
-                f"Consider adding {len(missing)} missing standard provision(s)"
-            )
+            recommendations.append(f"Consider adding {len(missing)} missing standard provision(s)")
 
         # Clause-specific recommendations
         high_risk_clauses = [c for c in clauses if c.risk_level in ("high", "critical")]
@@ -359,5 +364,5 @@ class ContractAnalysisEngine:
                 {"keyword": "inspect", "description": "Inspection rights"},
                 {"keyword": "warrant", "description": "Warranties"},
                 {"keyword": "risk of loss", "description": "Risk of loss allocation"},
-            ]
+            ],
         }
