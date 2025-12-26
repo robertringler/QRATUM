@@ -8,6 +8,7 @@ Status: Production Ready
 QuASIM: v2025.12.26
 """
 
+# Import from workflows module (workflows.py)
 from qratum_asi.discovery_acceleration.workflows import (
     DiscoveryAccelerationEngine,
     DiscoveryWorkflow,
@@ -24,16 +25,69 @@ from qratum_asi.discovery_acceleration.contracts import (
     DiscoveryContract,
     CrossVerticalIntent,
 )
+from qratum_asi.discovery_acceleration.types import (
+    WorkflowArtifact,
+    RollbackPoint,
+    DiscoveryProjection,
+    TimelineSimulation,
+    RiskAssessment,
+    ComplianceMapping,
+    ComplianceArtifact,
+    ComplianceValidationResult,
+)
+from qratum_asi.discovery_acceleration.projections import (
+    DiscoveryProjectionsEngine,
+)
+from qratum_asi.discovery_acceleration.compliance_mapper import (
+    ComplianceMapper,
+)
+# Import from workflows package (workflows/)
+from qratum_asi.discovery_acceleration.workflows.personalized_drug import (
+    PersonalizedDrugPipeline,
+)
+from qratum_asi.discovery_acceleration.workflows.climate_gene import (
+    ClimateGenePipeline,
+)
+from qratum_asi.discovery_acceleration.workflows.natural_compound import (
+    NaturalCompoundPipeline,
+)
+from qratum_asi.discovery_acceleration.workflows.economic_bio import (
+    EconomicBioPipeline,
+)
+from qratum_asi.discovery_acceleration.workflows.longevity import (
+    LongevityPipeline,
+)
 
 __all__ = [
+    # Core workflow components
     "DiscoveryAccelerationEngine",
     "DiscoveryWorkflow",
     "DiscoveryType",
     "DiscoveryResult",
     "WorkflowStage",
+    # Federated GWAS
     "FederatedGWASPipeline",
     "GWASCohort",
     "GWASResult",
+    # Contracts
     "DiscoveryContract",
     "CrossVerticalIntent",
+    # Type definitions
+    "WorkflowArtifact",
+    "RollbackPoint",
+    "DiscoveryProjection",
+    "TimelineSimulation",
+    "RiskAssessment",
+    "ComplianceMapping",
+    "ComplianceArtifact",
+    "ComplianceValidationResult",
+    # Projections and compliance
+    "DiscoveryProjectionsEngine",
+    "ComplianceMapper",
+    # Discovery pipelines
+    "PersonalizedDrugPipeline",
+    "ClimateGenePipeline",
+    "NaturalCompoundPipeline",
+    "EconomicBioPipeline",
+    "LongevityPipeline",
 ]
