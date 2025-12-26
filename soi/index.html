@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QRATUM Sovereign Operations Interface - Planetary Command Interface for Regulated Reality">
+    <title>QRATUM | Sovereign Operations Interface</title>
+    
+    <!-- Three.js for 3D Rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" 
+            integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==" 
+            crossorigin="anonymous" 
+            referrerpolicy="no-referrer"></script>
+    
+    <!-- Chart.js for 2D Metrics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+            integrity="sha384-jwMwVYcHJ9ql5YXgawmlD4dUxH0l12z1Vu3dRTfULBIpP7K7+xMT9v63ohEkIVw6"
+            crossorigin="anonymous"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SOI Styles -->
+    <link rel="stylesheet" href="assets/css/soi.css">
+</head>
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#soi-main" class="skip-link">Skip to main content</a>
+    
+    <!-- Cinematic Loading Sequence -->
+    <div class="soi-loader" id="soi-loader" role="status" aria-label="Initializing Sovereign Operations Interface">
+        <div class="loader-rings">
+            <div class="loader-ring outer"></div>
+            <div class="loader-ring middle"></div>
+            <div class="loader-ring inner"></div>
+        </div>
+        <div class="loader-core">
+            <div class="core-pulse"></div>
+        </div>
+        <div class="loader-text">
+            <span class="text-line" id="loader-status">INITIALIZING QRATUM SOI</span>
+            <span class="text-sub" id="loader-substatus">Connecting to Aethernet...</span>
+        </div>
+        <div class="loader-progress">
+            <div class="progress-track">
+                <div class="progress-fill" id="loader-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOI Main Container -->
+    <div class="soi-container" id="soi-container">
+        
+        <!-- Top Navigation Bar -->
+        <header class="soi-header" role="banner">
+            <div class="header-brand">
+                <div class="brand-logo">
+                    <span class="logo-icon">◈</span>
+                    <span class="logo-text">QRATUM</span>
+                </div>
+                <span class="brand-subtitle">SOVEREIGN OPERATIONS INTERFACE</span>
+            </div>
+            
+            <nav class="header-nav" role="navigation" aria-label="Domain navigation">
+                <button class="nav-domain active" data-domain="planetary" aria-selected="true">
+                    <span class="domain-icon">🌍</span>
+                    <span class="domain-label">PLANETARY</span>
+                </button>
+                <button class="nav-domain" data-domain="qradle" aria-selected="false">
+                    <span class="domain-icon">⚙️</span>
+                    <span class="domain-label">QRADLE</span>
+                </button>
+                <button class="nav-domain" data-domain="consensus" aria-selected="false">
+                    <span class="domain-icon">🔗</span>
+                    <span class="domain-label">CONSENSUS</span>
+                </button>
+                <button class="nav-domain" data-domain="verticals" aria-selected="false">
+                    <span class="domain-icon">🏛️</span>
+                    <span class="domain-label">VERTICALS</span>
+                </button>
+            </nav>
+            
+            <div class="header-status">
+                <div class="status-telemetry">
+                    <span class="telemetry-icon pulse"></span>
+                    <span class="telemetry-label">TELEMETRY</span>
+                    <span class="telemetry-value" id="telemetry-status">LIVE</span>
+                </div>
+                <div class="status-zone">
+                    <span class="zone-indicator" data-zone="Z1">Z1</span>
+                    <span class="zone-label">JURISDICTION</span>
+                </div>
+                <div class="status-proof">
+                    <span class="proof-icon">🔒</span>
+                    <span class="proof-hash" id="current-proof">0x7f3a...c91b</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="soi-main" class="soi-main" role="main">
+            
+            <!-- 3D Viewport -->
+            <div class="soi-viewport" id="soi-viewport">
+                <canvas id="soi-canvas" aria-label="3D Sovereign Operations Visualization"></canvas>
+                
+                <!-- Viewport Overlay HUD -->
+                <div class="viewport-hud">
+                    <!-- Top-left: System Time -->
+                    <div class="hud-corner top-left">
+                        <div class="hud-item">
+                            <span class="hud-label">EPOCH</span>
+                            <span class="hud-value" id="hud-epoch">127,843</span>
+                        </div>
+                        <div class="hud-item">
+                            <span class="hud-label">UTC</span>
+                            <span class="hud-value" id="hud-time">--:--:--</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Top-right: Network Status -->
+                    <div class="hud-corner top-right">
+                        <div class="hud-item">
+                            <span class="hud-label">VALIDATORS</span>
+                            <span class="hud-value" id="hud-validators">256</span>
+                        </div>
+                        <div class="hud-item">
+                            <span class="hud-label">QUORUM</span>
+                            <span class="hud-value success" id="hud-quorum">87.3%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Bottom-left: Domain Info -->
+                    <div class="hud-corner bottom-left">
+                        <div class="hud-item large">
+                            <span class="hud-label">ACTIVE DOMAIN</span>
+                            <span class="hud-value highlight" id="hud-domain">PLANETARY NODE MAP</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Bottom-right: Merkle State -->
+                    <div class="hud-corner bottom-right">
+                        <div class="hud-item">
+                            <span class="hud-label">MERKLE ROOT</span>
+                            <span class="hud-value mono" id="hud-merkle">0x4a2b...8e1f</span>
+                        </div>
+                        <div class="hud-item">
+                            <span class="hud-label">CHAIN LENGTH</span>
+                            <span class="hud-value" id="hud-chain">1,847,293</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Center crosshair -->
+                    <div class="hud-crosshair">
+                        <div class="crosshair-ring"></div>
+                        <div class="crosshair-dot"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Side Panel -->
+            <aside class="soi-panel" id="soi-panel" role="complementary">
+                
+                <!-- Panel Header -->
+                <div class="panel-header">
+                    <h2 class="panel-title" id="panel-title">PLANETARY TELEMETRY</h2>
+                    <button class="panel-toggle" aria-label="Toggle panel" id="panel-toggle">⟨</button>
+                </div>
+                
+                <!-- Telemetry Stream -->
+                <section class="panel-section" aria-label="Live telemetry">
+                    <h3 class="section-title">STATE STREAM</h3>
+                    <div class="telemetry-feed" id="telemetry-feed" role="log" aria-live="polite">
+                        <!-- Telemetry events populate here -->
+                    </div>
+                </section>
+                
+                <!-- Validator Health -->
+                <section class="panel-section" aria-label="Validator health">
+                    <h3 class="section-title">VALIDATOR HEALTH</h3>
+                    <div class="health-grid" id="validator-health">
+                        <div class="health-stat">
+                            <span class="stat-value active" id="health-active">243</span>
+                            <span class="stat-label">ACTIVE</span>
+                        </div>
+                        <div class="health-stat">
+                            <span class="stat-value pending" id="health-pending">8</span>
+                            <span class="stat-label">PENDING</span>
+                        </div>
+                        <div class="health-stat">
+                            <span class="stat-value jailed" id="health-jailed">3</span>
+                            <span class="stat-label">JAILED</span>
+                        </div>
+                        <div class="health-stat">
+                            <span class="stat-value slashed" id="health-slashed">2</span>
+                            <span class="stat-label">SLASHED</span>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Zone Classification -->
+                <section class="panel-section" aria-label="Zone classification">
+                    <h3 class="section-title">ZONE CLASSIFICATION</h3>
+                    <div class="zone-grid" id="zone-grid">
+                        <div class="zone-item" data-zone="Z0">
+                            <div class="zone-indicator z0"></div>
+                            <span class="zone-name">Z0 PUBLIC</span>
+                            <span class="zone-count" id="zone-z0">847</span>
+                        </div>
+                        <div class="zone-item" data-zone="Z1">
+                            <div class="zone-indicator z1"></div>
+                            <span class="zone-name">Z1 PRIVATE</span>
+                            <span class="zone-count" id="zone-z1">432</span>
+                        </div>
+                        <div class="zone-item" data-zone="Z2">
+                            <div class="zone-indicator z2"></div>
+                            <span class="zone-name">Z2 REGULATED</span>
+                            <span class="zone-count" id="zone-z2">156</span>
+                        </div>
+                        <div class="zone-item" data-zone="Z3">
+                            <div class="zone-indicator z3"></div>
+                            <span class="zone-name">Z3 AIR-GAPPED</span>
+                            <span class="zone-count" id="zone-z3">23</span>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Collapse Precursors -->
+                <section class="panel-section" aria-label="Collapse monitoring">
+                    <h3 class="section-title">TRAJECTORY MONITORING</h3>
+                    <div class="trajectory-monitor" id="trajectory-monitor">
+                        <div class="trajectory-gauge">
+                            <svg viewBox="0 0 100 50" class="gauge-svg">
+                                <path d="M10 45 A35 35 0 0 1 90 45" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6"/>
+                                <path d="M10 45 A35 35 0 0 1 90 45" fill="none" stroke="url(#trajectoryGradient)" stroke-width="6" 
+                                      stroke-dasharray="110" stroke-dashoffset="88" id="trajectory-arc"/>
+                                <defs>
+                                    <linearGradient id="trajectoryGradient">
+                                        <stop offset="0%" stop-color="#10b981"/>
+                                        <stop offset="50%" stop-color="#f59e0b"/>
+                                        <stop offset="100%" stop-color="#ef4444"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="gauge-value" id="collapse-probability">0.02%</div>
+                            <div class="gauge-label">COLLAPSE PROBABILITY</div>
+                        </div>
+                        <div class="precursor-list" id="precursor-list">
+                            <!-- Precursor signals render here -->
+                        </div>
+                    </div>
+                </section>
+                
+            </aside>
+            
+        </main>
+        
+        <!-- Command Bar -->
+        <footer class="soi-command-bar" role="contentinfo">
+            <div class="command-left">
+                <span class="command-label">COMMAND:</span>
+                <span class="command-mode" id="command-mode">OBSERVE</span>
+            </div>
+            <div class="command-center">
+                <div class="command-actions">
+                    <button class="cmd-btn" data-action="audit" title="View Audit Trail">
+                        <span class="cmd-icon">📜</span>
+                        <span class="cmd-label">AUDIT</span>
+                    </button>
+                    <button class="cmd-btn" data-action="proof" title="View System Proof">
+                        <span class="cmd-icon">🔐</span>
+                        <span class="cmd-label">PROOF</span>
+                    </button>
+                    <button class="cmd-btn" data-action="rollback" title="Time-Vector Selection">
+                        <span class="cmd-icon">⏪</span>
+                        <span class="cmd-label">ROLLBACK</span>
+                    </button>
+                    <button class="cmd-btn biometric" data-action="biometric" title="Biometric Authorization">
+                        <span class="cmd-icon">👁️</span>
+                        <span class="cmd-label">BIOMETRIC</span>
+                    </button>
+                </div>
+            </div>
+            <div class="command-right">
+                <span class="integrity-badge" id="integrity-badge">
+                    <span class="badge-icon">✓</span>
+                    <span class="badge-text">INTEGRITY VERIFIED</span>
+                </span>
+            </div>
+        </footer>
+        
+    </div>
+
+    <!-- Modal Overlay (for sovereign interactions) -->
+    <div class="soi-modal" id="soi-modal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">SOVEREIGN ACTION</h2>
+                <button class="modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Modal content rendered dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel">ABORT</button>
+                <button class="modal-btn confirm">AUTHORIZE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOI Scripts -->
+    <script src="assets/js/telemetry-bus.js"></script>
+    <script src="assets/js/soi-renderer.js"></script>
+    <script src="assets/js/soi-api.js"></script>
+    <script src="components/planetary-map.js"></script>
+    <script src="components/execution-theater.js"></script>
+    <script src="components/war-room.js"></script>
+    <script src="components/vertical-bays.js"></script>
+    <script>
+        // Initialize SOI on load
+        document.addEventListener('DOMContentLoaded', () => {
+            window.SOI = new SovereignOperationsInterface();
+            window.SOI.initialize();
+        });
+    </script>
+</body>
+</html>
