@@ -471,8 +471,6 @@ def compress(
         >>> assert fid >= 0.995
         >>> print(f"Compression ratio: {meta['compression_ratio']:.2f}x")
     """
-    # Set random seed for reproducibility
-    np.random.seed(seed)
     
     # Validate input
     if not np.iscomplex(tensor).any() and not np.isreal(tensor).any():
