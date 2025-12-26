@@ -1,0 +1,30 @@
+# Unreal Engine artifacts
+Binaries/
+Build/
+DerivedDataCache/
+Intermediate/
+Saved/
+*.sln
+*.suo
+*.sdf
+*.opensdf
+*.db
+
+# Visual Studio
+.vs/
+*.VC.db
+*.VC.opendb
+
+# Rider
+.idea/
+*.sln.iml
+
+# macOS
+.DS_Store
+*.xcworkspace
+*.xcodeproj
+
+# Compiled Dynamic libraries
+*.dll
+*.so
+*.dylib

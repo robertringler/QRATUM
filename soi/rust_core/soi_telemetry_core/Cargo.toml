@@ -1,0 +1,24 @@
+[package]
+name = "soi_telemetry_core"
+version = "0.1.0"
+edition = "2021"
+authors = ["QRATUM Platform <info@qratum.ai>"]
+description = "SOI Telemetry Core - High-performance Rust backend for Unreal Engine 5"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tungstenite = "0.20"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+lazy_static = "1.4"
+libc = "0.2"
+url = "2.5"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

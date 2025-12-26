@@ -1,0 +1,31 @@
+{
+    "FileVersion": 3,
+    "EngineAssociation": "5.3",
+    "Category": "",
+    "Description": "QRATUM Sovereign Operations Interface - UE5 Edition",
+    "Modules": [
+        {
+            "Name": "SoiGame",
+            "Type": "Runtime",
+            "LoadingPhase": "Default",
+            "AdditionalDependencies": [
+                "Engine",
+                "CoreUObject"
+            ]
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "CommonUI",
+            "Enabled": true
+        },
+        {
+            "Name": "Niagara",
+            "Enabled": true
+        },
+        {
+            "Name": "PCG",
+            "Enabled": true
+        }
+    ]
+}
