@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import random
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
@@ -698,7 +699,7 @@ class PlanetarySimulation:
         Returns:
             Simulation results
         """
-        import random
+        # random already imported at module level
         random.seed(seed)
 
         params = run.scenario.parameters
@@ -748,7 +749,7 @@ class PlanetarySimulation:
         Returns:
             Simulation results
         """
-        import random
+        # random already imported at module level
         random.seed(seed)
 
         params = run.scenario.parameters
@@ -792,7 +793,7 @@ class PlanetarySimulation:
         Returns:
             Simulation results
         """
-        import random
+        # random already imported at module level
         random.seed(seed)
 
         params = run.scenario.parameters
@@ -847,7 +848,7 @@ class PlanetarySimulation:
         Returns:
             Simulation results
         """
-        import random
+        # random already imported at module level
         random.seed(seed)
 
         params = run.scenario.parameters
@@ -899,7 +900,7 @@ class PlanetarySimulation:
         Returns:
             Simulation results
         """
-        import random
+        # random already imported at module level
         random.seed(seed)
 
         params = run.scenario.parameters
@@ -951,7 +952,7 @@ class PlanetarySimulation:
         Returns:
             Simulation results
         """
-        import random
+        # random already imported at module level
         random.seed(seed)
 
         params = run.scenario.parameters
@@ -1008,7 +1009,7 @@ class PlanetarySimulation:
         Returns:
             Simulation results
         """
-        import random
+        # random already imported at module level
         random.seed(seed)
 
         for tick in range(run.scenario.duration_ticks):

@@ -418,6 +418,9 @@ class EconomicEngine:
         transactions: List of token flows
     """
 
+    # Market capitalization multiplier for valuation estimates
+    MARKET_CAP_MULTIPLE = 10
+
     def __init__(self, engine_id: str | None = None) -> None:
         """Initialize the economic engine.
 
@@ -626,7 +629,7 @@ class EconomicEngine:
                 "analytics_revenue": analytics_revenue,
                 "compliance_revenue": compliance_revenue,
                 "total_revenue": total_revenue,
-                "market_cap_estimate": total_revenue * 10,  # 10x revenue multiple
+                "market_cap_estimate": total_revenue * self.MARKET_CAP_MULTIPLE,
             })
 
         return forecasts

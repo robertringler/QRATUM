@@ -98,14 +98,8 @@ class LogicalContract:
     data_schema: dict[str, Any]
     validators: tuple[str, ...]
     consensus_threshold: int = 67
-    created_at: str = ""
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     expiry_at: str = ""
-
-    def __post_init__(self) -> None:
-        if not self.created_at:
-            object.__setattr__(
-                self, "created_at", datetime.now(timezone.utc).isoformat()
-            )
 
     def verify_consensus(self, votes: dict[str, bool]) -> bool:
         """Verify if consensus is reached.

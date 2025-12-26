@@ -251,7 +251,8 @@ class SectorAdapter:
 
     def _initialize_default_kpis(self) -> None:
         """Initialize default KPIs for the domain."""
-        assert self.kpi_monitor is not None
+        if self.kpi_monitor is None:
+            raise RuntimeError("KPI monitor not initialized")
 
         # Common KPIs
         self.kpi_monitor.add_metric("Uptime", target=99.9, unit="%", initial_value=99.0)

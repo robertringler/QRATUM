@@ -11,6 +11,7 @@ Status: Production
 from __future__ import annotations
 
 import hashlib
+import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
@@ -319,8 +320,7 @@ class DeploymentRoadmap:
 
     def _generate_id(self) -> str:
         """Generate unique roadmap ID."""
-        timestamp = datetime.now(timezone.utc).isoformat()
-        return f"roadmap_{hashlib.sha256(timestamp.encode()).hexdigest()[:12]}"
+        return f"roadmap_{secrets.token_hex(8)}"
 
     def _initialize_phases(self) -> None:
         """Initialize all deployment phases with milestones."""

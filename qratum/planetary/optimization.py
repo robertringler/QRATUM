@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import hashlib
 import random
+import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
@@ -191,7 +192,7 @@ class RiskAnalyzer:
         Args:
             analyzer_id: Optional analyzer ID
         """
-        self.analyzer_id = analyzer_id or f"risk_{hashlib.sha256(str(datetime.now()).encode()).hexdigest()[:8]}"
+        self.analyzer_id = analyzer_id or f"risk_{secrets.token_hex(6)}"
         self.risk_thresholds = {
             RiskLevel.LOW: 0.2,
             RiskLevel.MEDIUM: 0.4,
@@ -398,7 +399,7 @@ class PredictiveSimulator:
         Args:
             simulator_id: Optional simulator ID
         """
-        self.simulator_id = simulator_id or f"sim_{hashlib.sha256(str(datetime.now()).encode()).hexdigest()[:8]}"
+        self.simulator_id = simulator_id or f"sim_{secrets.token_hex(6)}"
         self.simulations: list[dict[str, Any]] = []
         self.current_state: dict[str, float] = {}
 
@@ -614,7 +615,7 @@ class PolicyAdjuster:
         Args:
             adjuster_id: Optional adjuster ID
         """
-        self.adjuster_id = adjuster_id or f"policy_{hashlib.sha256(str(datetime.now()).encode()).hexdigest()[:8]}"
+        self.adjuster_id = adjuster_id or f"policy_{secrets.token_hex(6)}"
         self.policies: dict[str, Any] = {
             "consensus_threshold": 67,
             "transaction_fee_rate": 0.001,
@@ -738,7 +739,7 @@ class ContinuousOptimizer:
         Args:
             optimizer_id: Optional optimizer ID
         """
-        self.optimizer_id = optimizer_id or f"opt_{hashlib.sha256(str(datetime.now()).encode()).hexdigest()[:8]}"
+        self.optimizer_id = optimizer_id or f"opt_{secrets.token_hex(6)}"
         self.risk_analyzer = RiskAnalyzer(analyzer_id=f"risk_{self.optimizer_id}")
         self.simulator = PredictiveSimulator(simulator_id=f"sim_{self.optimizer_id}")
         self.policy_adjuster = PolicyAdjuster(adjuster_id=f"policy_{self.optimizer_id}")

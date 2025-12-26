@@ -13,7 +13,7 @@ from __future__ import annotations
 import hashlib
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any
 
@@ -132,11 +132,7 @@ class QuantumResistantCrypto:
         public_key = secrets.token_hex(key_size_bits // 8)
 
         now = datetime.now(timezone.utc)
-        expires = now.replace(
-            day=now.day + self.key_rotation_days
-            if now.day + self.key_rotation_days <= 28
-            else 28
-        )
+        expires = now + timedelta(days=self.key_rotation_days)
 
         key = CryptoKey(
             key_id=key_id,
