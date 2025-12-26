@@ -528,14 +528,16 @@ def compress(
     U, S, Vh = truncated['cores']
     rank = len(S)
     
-    # Effective compressed size: rank * (complexity of storing U, S, Vh)
-    # But for compression metric, we consider only the essential information:
-    # - S: rank values
-    # - U: reduced (can be reconstructed or stored sparsely)
-    # - Vh: reduced (can be reconstructed or stored sparsely)
-    # Effective storage: S vector + small portions of U and Vh
-    # Rough estimate: rank singular values + some overhead
-    compressed_size = rank * COMPLEX128_BYTES  # Just the singular values in bytes
+    # Effective compressed size: account for storing U, S, and Vh needed
+    # for reconstruction. We approximate the number of stored complex128
+    # values as:
+    #   - U: shape (U.shape[0], rank)
+    #   - S: shape (rank,)
+    #   - Vh: shape (rank, Vh.shape[1])
+    # giving roughly rank * (U.shape[0] + 1 + Vh.shape[1]) complex entries.
+    # This is still an approximation but avoids significantly overstating
+    # the compression ratio by ignoring the matrix factors.
+    compressed_size = rank * (U.shape[0] + Vh.shape[1] + 1) * COMPLEX128_BYTES
     
     compression_ratio = original_size / max(compressed_size, 1)
     
