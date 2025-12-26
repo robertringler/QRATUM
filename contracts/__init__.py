@@ -2,7 +2,7 @@
 
 This module provides immutable, hash-addressed contracts for intent authorization,
 capability binding, temporal management, event sequencing, provenance tracking,
-and rollback operations with cryptographic proofs.
+rollback operations with cryptographic proofs, and fatal invariant enforcement.
 
 Version: 1.0.0
 Status: Production
@@ -43,6 +43,13 @@ from contracts.rollback_proof import (
     StateSnapshot,
     create_rollback_contract,
 )
+from contracts.enforcement import (
+    ContractEnforcer,
+    EnforcedContract,
+    EnforcementCheckpoint,
+    EnforcementResult,
+    create_enforced_contract,
+)
 
 __all__ = [
     # Base
@@ -80,6 +87,12 @@ __all__ = [
     "RollbackReason",
     "StateSnapshot",
     "create_rollback_contract",
+    # Enforcement
+    "ContractEnforcer",
+    "EnforcedContract",
+    "EnforcementCheckpoint",
+    "EnforcementResult",
+    "create_enforced_contract",
 ]
 
 __version__ = "1.0.0"
