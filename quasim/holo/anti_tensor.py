@@ -26,6 +26,10 @@ from numpy.typing import NDArray
 
 Array = NDArray[np.complex128]
 
+# Module-level constants
+NUMERICAL_TOLERANCE = 1e-14
+COMPLEX128_BYTES = 16  # Size in bytes for complex128 dtype
+
 
 def compute_entropy_spectrum(tensor: Array) -> Tuple[Array, float]:
     """Compute eigenvalue spectrum and Shannon entropy of tensor.
@@ -82,14 +86,14 @@ def compute_entropy_spectrum(tensor: Array) -> Tuple[Array, float]:
     sv_squared = singular_values ** 2
     sv_squared_sum = np.sum(sv_squared)
     
-    if sv_squared_sum < 1e-14:
+    if sv_squared_sum < NUMERICAL_TOLERANCE:
         return singular_values, 0.0
     
     probabilities = sv_squared / sv_squared_sum
     
     # Compute Shannon entropy: H = -Σ p_i log(p_i)
     # Filter out zero probabilities to avoid log(0)
-    probabilities = probabilities[probabilities > 1e-14]
+    probabilities = probabilities[probabilities > NUMERICAL_TOLERANCE]
     entropy = -np.sum(probabilities * np.log2(probabilities))
     
     return singular_values, float(entropy)
@@ -143,7 +147,10 @@ def compute_mutual_information(tensor_a: Array, tensor_b: Optional[Array] = None
         _, entropy_b = compute_entropy_spectrum(tensor_b)
     
     # Compute joint entropy H(A,B)
-    # Approximate by concatenating tensors
+    # NOTE: This is a simplified approximation using concatenation.
+    # A rigorous implementation would construct the joint probability distribution.
+    # For tensor compression purposes, this approximation provides a reasonable
+    # estimate of correlation between tensors.
     joint_tensor = np.concatenate([tensor_a.flatten(), tensor_b.flatten()])
     _, entropy_joint = compute_entropy_spectrum(joint_tensor)
     
@@ -214,7 +221,7 @@ def hierarchical_decompose(
         # Fallback to a simpler decomposition
         U = np.eye(matrix.shape[0], dtype=tensor.dtype)
         S = np.linalg.norm(matrix, axis=1)
-        Vh = matrix / (S[:, None] + 1e-14)
+        Vh = matrix / (S[:, None] + NUMERICAL_TOLERANCE)
     
     # Apply rank truncation if specified
     if max_rank is not None and isinstance(max_rank, int) and max_rank < len(S):
@@ -301,15 +308,13 @@ def adaptive_truncate(
     total_energy = np.sum(S ** 2)
     cumulative_energy = np.cumsum(S ** 2)
     required_energy = fidelity_target ** 2 * total_energy
-    mask_fidelity = cumulative_energy <= required_energy
     
-    # Take union: keep SV if either criterion is met
-    # But need at least one singular value
-    if np.any(mask_fidelity):
-        # Find first index where cumulative energy exceeds required
-        n_keep_fidelity = np.searchsorted(cumulative_energy, required_energy) + 1
-    else:
-        n_keep_fidelity = len(S)
+    # Find first index where cumulative energy exceeds required
+    # (we want to KEEP all singular values up to this point)
+    n_keep_fidelity = np.searchsorted(cumulative_energy, required_energy, side='right') + 1
+    
+    # Ensure we don't exceed array bounds
+    n_keep_fidelity = min(n_keep_fidelity, len(S))
     
     n_keep_threshold = np.sum(mask_threshold)
     n_keep = max(1, max(n_keep_threshold, n_keep_fidelity))
@@ -475,7 +480,7 @@ def compress(
         raise ValueError(msg)
 
     norm = np.linalg.norm(tensor)
-    if norm < 1e-14:
+    if norm < NUMERICAL_TOLERANCE:
         msg = "Tensor must be non-zero"
         raise ValueError(msg)
 
@@ -515,7 +520,7 @@ def compress(
     _, entropy_after = compute_entropy_spectrum(reconstructed)
     
     # Compute metadata
-    original_size = tensor.size * 16  # complex128 = 16 bytes
+    original_size = tensor.size * COMPLEX128_BYTES  # Size in bytes
     
     # Compressed size: Only the truncated singular values are truly "compressed"
     # In a real implementation, we'd use sparse storage or only store significant values
@@ -530,7 +535,7 @@ def compress(
     # - Vh: reduced (can be reconstructed or stored sparsely)
     # Effective storage: S vector + small portions of U and Vh
     # Rough estimate: rank singular values + some overhead
-    compressed_size = rank * 16  # Just the singular values in bytes
+    compressed_size = rank * COMPLEX128_BYTES  # Just the singular values in bytes
     
     compression_ratio = original_size / max(compressed_size, 1)
     
@@ -539,7 +544,7 @@ def compress(
         "epsilon": epsilon,
         "entropy_before": entropy_before,
         "entropy_after": entropy_after,
-        "entropy_reduction": (entropy_before - entropy_after) / max(entropy_before, 1e-14),
+        "entropy_reduction": (entropy_before - entropy_after) / max(entropy_before, NUMERICAL_TOLERANCE),
         "mutual_info_entropy": entropy_before,  # Backward compatibility
         "original_size": original_size,
         "compressed_size": compressed_size,
@@ -587,7 +592,7 @@ def decompress(compressed_state: Dict[str, Any]) -> Array:
     
     # Normalize to unit norm (quantum state convention)
     norm = np.linalg.norm(reconstructed)
-    if norm > 1e-14:
+    if norm > NUMERICAL_TOLERANCE:
         reconstructed = reconstructed / norm
     
     return reconstructed
