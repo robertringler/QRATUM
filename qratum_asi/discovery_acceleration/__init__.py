@@ -8,7 +8,7 @@ Status: Production Ready
 QuASIM: v2025.12.26
 """
 
-# Import from workflows module (workflows.py)
+# Import from workflows module file (workflows.py)
 from qratum_asi.discovery_acceleration.workflows import (
     DiscoveryAccelerationEngine,
     DiscoveryWorkflow,
@@ -41,20 +41,20 @@ from qratum_asi.discovery_acceleration.projections import (
 from qratum_asi.discovery_acceleration.compliance_mapper import (
     ComplianceMapper,
 )
-# Import from workflows package (workflows/)
-from qratum_asi.discovery_acceleration.workflows.personalized_drug import (
+# Import from pipelines package (pipelines/)
+from qratum_asi.discovery_acceleration.pipelines.personalized_drug import (
     PersonalizedDrugPipeline,
 )
-from qratum_asi.discovery_acceleration.workflows.climate_gene import (
+from qratum_asi.discovery_acceleration.pipelines.climate_gene import (
     ClimateGenePipeline,
 )
-from qratum_asi.discovery_acceleration.workflows.natural_compound import (
+from qratum_asi.discovery_acceleration.pipelines.natural_compound import (
     NaturalCompoundPipeline,
 )
-from qratum_asi.discovery_acceleration.workflows.economic_bio import (
+from qratum_asi.discovery_acceleration.pipelines.economic_bio import (
     EconomicBioPipeline,
 )
-from qratum_asi.discovery_acceleration.workflows.longevity import (
+from qratum_asi.discovery_acceleration.pipelines.longevity import (
     LongevityPipeline,
 )
 
