@@ -168,6 +168,21 @@ class DiscoveryResult:
         }
 
 
+# Module-level constant mapping workflow stages to allowed zone operations
+STAGE_OPERATION_MAPPING: dict[WorkflowStage, str] = {
+    WorkflowStage.INITIALIZATION: "create",
+    WorkflowStage.INPUT_VALIDATION: "query",
+    WorkflowStage.ZK_PROOF_GENERATION: "execute",
+    WorkflowStage.DETERMINISTIC_PROCESSING: "execute",
+    WorkflowStage.HYPOTHESIS_GENERATION: "create",
+    WorkflowStage.CROSS_VERTICAL_SYNTHESIS: "execute",
+    WorkflowStage.VALIDATION: "query",
+    WorkflowStage.ROLLBACK_POINT: "create",
+    WorkflowStage.OUTPUT_GENERATION: "create",
+    WorkflowStage.PROVENANCE_CHAIN: "read",
+}
+
+
 @dataclass
 class DiscoveryWorkflow:
     """Base class for discovery workflows.
@@ -269,24 +284,10 @@ class DiscoveryWorkflow:
         self.current_stage = stage
         self._stage_counter += 1
         
-        # Create zone context
-        # Map stage to allowed operation type
-        operation_mapping = {
-            WorkflowStage.INITIALIZATION: "create",
-            WorkflowStage.INPUT_VALIDATION: "query",
-            WorkflowStage.ZK_PROOF_GENERATION: "execute",
-            WorkflowStage.DETERMINISTIC_PROCESSING: "execute",
-            WorkflowStage.HYPOTHESIS_GENERATION: "create",
-            WorkflowStage.CROSS_VERTICAL_SYNTHESIS: "execute",
-            WorkflowStage.VALIDATION: "query",
-            WorkflowStage.ROLLBACK_POINT: "create",
-            WorkflowStage.OUTPUT_GENERATION: "create",
-            WorkflowStage.PROVENANCE_CHAIN: "read",
-        }
-        
+        # Create zone context using module-level operation mapping
         context = ZoneContext(
             zone=zone,
-            operation_type=operation_mapping.get(stage, "execute"),
+            operation_type=STAGE_OPERATION_MAPPING.get(stage, "execute"),
             actor_id=actor_id,
             approvers=approvers or [],
         )

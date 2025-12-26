@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
@@ -376,7 +377,6 @@ class FederatedGWASPipeline:
             raise ValueError(f"No proofs found for variant: {variant_id}")
         
         # Create verification context
-        import time
         context = ZKVerificationContext(
             current_time=time.time(),
             max_proof_age=3600,
