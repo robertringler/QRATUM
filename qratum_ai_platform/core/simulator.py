@@ -281,12 +281,29 @@ class Simulator:
 
             # Periodically compress state to save memory
             if (i + 1) % compression_interval == 0:
+                # Compress the current state data
+                old_data = state.data
                 compressed_data, fidelity, metadata = compress(
-                    state.data, fidelity=compression_fidelity
+                    old_data, fidelity=compression_fidelity
                 )
-                state.data = decompress(compressed_data)
+
+                # Drop reference to the old (uncompressed) data before decompression
+                try:
+                    delattr(state, "data")
+                except AttributeError:
+                    # If data is not set as an attribute for some reason, ignore
+                    pass
+
+                # Decompress into a fresh array and assign back to state
+                decompressed = decompress(compressed_data)
+                state.data = decompressed
                 state.normalize()
 
+                # Explicitly release temporary references to help GC/memory usage
+                del old_data
+                del compressed_data
+                del metadata
+                del decompressed
         # Measure
         result = Measurement.measure_statevector(
             state.data, shots=1024, seed=self.seed
