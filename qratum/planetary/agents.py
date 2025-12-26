@@ -16,12 +16,10 @@ Status: Production
 
 from __future__ import annotations
 
-import hashlib
-import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Callable, Protocol
+from typing import Any, Protocol
 
 
 class AgentType(Enum):
@@ -100,9 +98,7 @@ class AgentState:
 class AgentPolicy(Protocol):
     """Protocol for agent decision policies."""
 
-    def decide(
-        self, observation: AgentObservation, state: AgentState
-    ) -> dict[str, Any]:
+    def decide(self, observation: AgentObservation, state: AgentState) -> dict[str, Any]:
         """Make a decision based on observation and state."""
         ...
 
@@ -183,9 +179,7 @@ class PlanetaryAgent:
 class NodeAgentPolicy:
     """Policy for node management agents."""
 
-    def decide(
-        self, observation: AgentObservation, state: AgentState
-    ) -> dict[str, Any]:
+    def decide(self, observation: AgentObservation, state: AgentState) -> dict[str, Any]:
         """Decide on node management actions."""
         view = observation.view
         node_status = view.get("node_status", "unknown")
@@ -237,9 +231,7 @@ class NodeAgent(PlanetaryAgent):
 class DataValidatorPolicy:
     """Policy for data validation agents."""
 
-    def decide(
-        self, observation: AgentObservation, state: AgentState
-    ) -> dict[str, Any]:
+    def decide(self, observation: AgentObservation, state: AgentState) -> dict[str, Any]:
         """Decide on data validation actions."""
         view = observation.view
         data_hash = view.get("data_hash", "")
@@ -291,9 +283,7 @@ class DataValidatorAgent(PlanetaryAgent):
 class AIGovernancePolicy:
     """Policy for AI governance agents."""
 
-    def decide(
-        self, observation: AgentObservation, state: AgentState
-    ) -> dict[str, Any]:
+    def decide(self, observation: AgentObservation, state: AgentState) -> dict[str, Any]:
         """Decide on governance actions."""
         view = observation.view
         proposal = view.get("proposal", {})
@@ -351,9 +341,7 @@ class AIGovernanceAgent(PlanetaryAgent):
 class EconomicPolicy:
     """Policy for economic agents."""
 
-    def decide(
-        self, observation: AgentObservation, state: AgentState
-    ) -> dict[str, Any]:
+    def decide(self, observation: AgentObservation, state: AgentState) -> dict[str, Any]:
         """Decide on economic actions."""
         view = observation.view
         token_balance = view.get("token_balance", 0)
@@ -410,9 +398,7 @@ class EconomicAgent(PlanetaryAgent):
 class IntegrationPolicy:
     """Policy for integration agents."""
 
-    def decide(
-        self, observation: AgentObservation, state: AgentState
-    ) -> dict[str, Any]:
+    def decide(self, observation: AgentObservation, state: AgentState) -> dict[str, Any]:
         """Decide on integration actions."""
         view = observation.view
         source_domain = view.get("source_domain", "")
@@ -453,7 +439,10 @@ class IntegrationAgent(PlanetaryAgent):
             **kwargs,
         )
         self.supported_domains = supported_domains or [
-            "energy", "transport", "healthcare", "finance"
+            "energy",
+            "transport",
+            "healthcare",
+            "finance",
         ]
 
     def to_dict(self) -> dict[str, Any]:
@@ -465,9 +454,7 @@ class IntegrationAgent(PlanetaryAgent):
 class SimulationPolicy:
     """Policy for simulation/optimization agents."""
 
-    def decide(
-        self, observation: AgentObservation, state: AgentState
-    ) -> dict[str, Any]:
+    def decide(self, observation: AgentObservation, state: AgentState) -> dict[str, Any]:
         """Decide on simulation actions."""
         view = observation.view
         scenario = view.get("scenario", "baseline")
@@ -512,7 +499,9 @@ class SimulationAgent(PlanetaryAgent):
             **kwargs,
         )
         self.simulation_types = simulation_types or [
-            "monte_carlo", "agent_based", "system_dynamics"
+            "monte_carlo",
+            "agent_based",
+            "system_dynamics",
         ]
         self.max_iterations = max_iterations
 
@@ -526,9 +515,7 @@ class SimulationAgent(PlanetaryAgent):
 class SecurityPolicy:
     """Policy for security agents."""
 
-    def decide(
-        self, observation: AgentObservation, state: AgentState
-    ) -> dict[str, Any]:
+    def decide(self, observation: AgentObservation, state: AgentState) -> dict[str, Any]:
         """Decide on security actions."""
         view = observation.view
         threat_level = view.get("threat_level", 0.0)
@@ -578,9 +565,7 @@ class SecurityAgent(PlanetaryAgent):
             policy=SecurityPolicy(),
             **kwargs,
         )
-        self.security_domains = security_domains or [
-            "network", "data", "identity", "compliance"
-        ]
+        self.security_domains = security_domains or ["network", "data", "identity", "compliance"]
         self.threat_threshold = threat_threshold
 
     def to_dict(self) -> dict[str, Any]:

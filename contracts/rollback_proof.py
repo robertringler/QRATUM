@@ -442,9 +442,7 @@ class RollbackOrchestrator:
             )
         else:
             # No source - create empty snapshot
-            source_snapshot = self.proof_generator.create_snapshot(
-                {"state": "empty"}, "0" * 64
-            )
+            source_snapshot = self.proof_generator.create_snapshot({"state": "empty"}, "0" * 64)
 
         # Generate rollback proof
         proof = self.proof_generator.generate_proof(
@@ -525,7 +523,4 @@ class RollbackOrchestrator:
         Returns:
             Dictionary mapping contract IDs to verification results
         """
-        return {
-            c.contract_id: c.verify_proof()
-            for c in self._rollback_contracts
-        }
+        return {c.contract_id: c.verify_proof() for c in self._rollback_contracts}

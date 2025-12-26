@@ -7,12 +7,11 @@ strict investment advisory disclaimers.
 import hashlib
 import math
 import random
-from typing import Any, Dict, FrozenSet, List
-
 from platform.core.base import VerticalModuleBase
 from platform.core.events import EventType, ExecutionEvent
 from platform.core.intent import PlatformContract
 from platform.core.substrates import ComputeSubstrate
+from typing import Any, Dict, FrozenSet
 
 
 class CapraModule(VerticalModuleBase):
@@ -298,8 +297,11 @@ class CapraModule(VerticalModuleBase):
         daily_vol = volatility / sqrt(252)
         horizon_vol = daily_vol * sqrt(horizon_days)
         var = portfolio_value * z_score * horizon_vol
-        cvar = portfolio_value * horizon_vol * math.exp(-0.5 * z_score**2) / (
-            (1 - confidence) * sqrt(2 * math.pi)
+        cvar = (
+            portfolio_value
+            * horizon_vol
+            * math.exp(-0.5 * z_score**2)
+            / ((1 - confidence) * sqrt(2 * math.pi))
         )
 
         self.event_chain.append(
@@ -427,7 +429,11 @@ class CapraModule(VerticalModuleBase):
             "loan_amount": loan_amount,
             "probability_of_default": probability_of_default,
             "expected_loss": expected_loss,
-            "risk_rating": "high" if probability_of_default > 0.1 else "medium" if probability_of_default > 0.05 else "low",
+            "risk_rating": (
+                "high"
+                if probability_of_default > 0.1
+                else "medium" if probability_of_default > 0.05 else "low"
+            ),
             "validation_note": "Credit risk assessment requires comprehensive underwriting",
         }
 

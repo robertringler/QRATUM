@@ -1,11 +1,9 @@
 """Tests for Aethernet Consensus Module."""
 
-import pytest
 from Aethernet.core.consensus import (
     BFTConsensus,
     BlockHeader,
     ConsensusPhase,
-    ConsensusRound,
     ConsensusVote,
     QuorumState,
     TrajectoryAwareConsensus,
@@ -34,23 +32,38 @@ class TestBlockHeader:
     def test_header_hash(self):
         """Test header hash is deterministic."""
         header1 = BlockHeader(
-            height=1, round=0, timestamp="2025-01-01T00:00:00Z",
-            proposer_id="val_001", parent_hash="p", state_root="s",
-            txs_root="t", consensus_hash="c",
+            height=1,
+            round=0,
+            timestamp="2025-01-01T00:00:00Z",
+            proposer_id="val_001",
+            parent_hash="p",
+            state_root="s",
+            txs_root="t",
+            consensus_hash="c",
         )
         header2 = BlockHeader(
-            height=1, round=0, timestamp="2025-01-01T00:00:00Z",
-            proposer_id="val_001", parent_hash="p", state_root="s",
-            txs_root="t", consensus_hash="c",
+            height=1,
+            round=0,
+            timestamp="2025-01-01T00:00:00Z",
+            proposer_id="val_001",
+            parent_hash="p",
+            state_root="s",
+            txs_root="t",
+            consensus_hash="c",
         )
         assert header1.compute_hash() == header2.compute_hash()
 
     def test_header_serialization(self):
         """Test header serialization."""
         header = BlockHeader(
-            height=1, round=0, timestamp="2025-01-01T00:00:00Z",
-            proposer_id="val_001", parent_hash="p", state_root="s",
-            txs_root="t", consensus_hash="c",
+            height=1,
+            round=0,
+            timestamp="2025-01-01T00:00:00Z",
+            proposer_id="val_001",
+            parent_hash="p",
+            state_root="s",
+            txs_root="t",
+            consensus_hash="c",
         )
         serialized = header.serialize()
         assert "block_hash" in serialized
@@ -77,9 +90,13 @@ class TestConsensusVote:
     def test_vote_hash(self):
         """Test vote hash computation."""
         vote = ConsensusVote(
-            vote_type=VoteType.PREVOTE, height=1, round=0,
-            block_hash="bh", validator_id="v1",
-            timestamp="2025-01-01T00:00:00Z", signature="s",
+            vote_type=VoteType.PREVOTE,
+            height=1,
+            round=0,
+            block_hash="bh",
+            validator_id="v1",
+            timestamp="2025-01-01T00:00:00Z",
+            signature="s",
         )
         hash1 = vote.compute_hash()
         assert len(hash1) == 64  # SHA256 hex
@@ -103,7 +120,13 @@ class TestQuorumState:
         """Test adding prevote."""
         quorum = QuorumState(height=1, round=0, block_hash="bh", total_voting_power=100)
         vote = ConsensusVote(
-            VoteType.PREVOTE, 1, 0, "bh", "v1", "ts", "sig",
+            VoteType.PREVOTE,
+            1,
+            0,
+            "bh",
+            "v1",
+            "ts",
+            "sig",
         )
         result = quorum.add_prevote(vote, 30)
         assert result is True
@@ -176,8 +199,12 @@ class TestBFTConsensus:
         # Get expected proposer
         proposer = self.consensus.get_proposer_for_slot(100)  # 1*100 + 0
         block = self.consensus.propose_block(
-            height=1, round=0, proposer_id=proposer,
-            parent_hash="parent", state_root="state", txs_root="txs",
+            height=1,
+            round=0,
+            proposer_id=proposer,
+            parent_hash="parent",
+            state_root="state",
+            txs_root="txs",
         )
         assert block is not None
         assert block.height == 1
@@ -186,8 +213,12 @@ class TestBFTConsensus:
         """Test proposal from wrong proposer fails."""
         self.consensus.start_round(1, 0)
         block = self.consensus.propose_block(
-            height=1, round=0, proposer_id="wrong_validator",
-            parent_hash="p", state_root="s", txs_root="t",
+            height=1,
+            round=0,
+            proposer_id="wrong_validator",
+            parent_hash="p",
+            state_root="s",
+            txs_root="t",
         )
         assert block is None
 
@@ -196,10 +227,19 @@ class TestBFTConsensus:
         self.consensus.start_round(1, 0)
         proposer = self.consensus.get_proposer_for_slot(100)
         block = self.consensus.propose_block(
-            1, 0, proposer, "p", "s", "t",
+            1,
+            0,
+            proposer,
+            "p",
+            "s",
+            "t",
         )
         result = self.consensus.prevote(
-            1, 0, block.compute_hash(), "v1", "sig",
+            1,
+            0,
+            block.compute_hash(),
+            "v1",
+            "sig",
         )
         assert result is True
 

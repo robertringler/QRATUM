@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 import pytest
+
 from qratum.bioinformatics.xenon.alignment import QuantumAlignmentEngine
 from qratum.bioinformatics.xenon.omics import InformationEngine
 
