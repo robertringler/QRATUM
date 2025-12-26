@@ -48,9 +48,7 @@ class GB200Adapter(BaseAdapter):
         try:
             # Get resource requirements
             topology = capability_contract.cluster_topology
-            total_gpus = topology.get("node_count", 1) * topology.get(
-                "accelerators_per_node", 8
-            )
+            total_gpus = topology.get("node_count", 1) * topology.get("accelerators_per_node", 8)
 
             # Simulate GB200 execution
             # In production, this would call NVIDIA CUDA/NCCL APIs

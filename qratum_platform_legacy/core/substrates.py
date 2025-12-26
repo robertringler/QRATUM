@@ -5,7 +5,7 @@ Mappings for optimal hardware selection based on task characteristics.
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Optional
+from typing import List
 
 
 class ComputeSubstrate(Enum):

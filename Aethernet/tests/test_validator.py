@@ -1,13 +1,14 @@
 """Tests for Aethernet Validator Module."""
 
 import pytest
+
 from Aethernet.core.validator import (
+    SlashingReason,
     Validator,
     ValidatorCredentials,
     ValidatorRegistry,
     ValidatorStake,
     ValidatorStatus,
-    SlashingReason,
 )
 
 

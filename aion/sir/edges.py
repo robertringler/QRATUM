@@ -17,11 +17,12 @@ from enum import Enum, auto
 from typing import Any
 from uuid import uuid4
 
-from .vertices import Vertex, HardwareAffinity
+from .vertices import HardwareAffinity, Vertex
 
 
 class EdgeType(Enum):
     """Enumeration of hyperedge types in AION-SIR."""
+
     DATA_FLOW = auto()
     CONTROL_FLOW = auto()
     EFFECT_EDGE = auto()
@@ -32,6 +33,7 @@ class EdgeType(Enum):
 
 class ParallelismKind(Enum):
     """Types of parallelism for parallel edges."""
+
     SIMD = auto()
     SIMT = auto()  # GPU warps
     THREAD_LEVEL = auto()
@@ -42,6 +44,7 @@ class ParallelismKind(Enum):
 
 class ControlFlowKind(Enum):
     """Types of control flow edges."""
+
     SEQUENTIAL = auto()
     BRANCH = auto()
     LOOP_ENTRY = auto()
@@ -55,7 +58,7 @@ class ControlFlowKind(Enum):
 @dataclass
 class EdgeMetadata:
     """Metadata attached to hyperedges.
-    
+
     Attributes:
         weight: Edge weight for scheduling
         latency: Estimated latency in cycles
@@ -63,6 +66,7 @@ class EdgeMetadata:
         hardware_affinity: Target hardware preference
         critical_path: Whether edge is on critical path
     """
+
     weight: float = 1.0
     latency: int = 0
     bandwidth: int = 0
@@ -73,13 +77,13 @@ class EdgeMetadata:
 @dataclass
 class HyperEdge:
     """A hyperedge in the AION-SIR hypergraph.
-    
+
     Hyperedges connect multiple vertices and represent:
     - DataFlow: Data dependencies between operations
     - ControlFlow: Execution order constraints
     - EffectEdge: Side effect ordering
     - ParallelEdge: Parallelism annotations
-    
+
     Attributes:
         id: Unique edge identifier
         edge_type: Type of the hyperedge
@@ -88,28 +92,29 @@ class HyperEdge:
         attributes: Additional edge attributes
         metadata: Edge metadata
     """
+
     id: str = field(default_factory=lambda: str(uuid4()))
     edge_type: EdgeType = EdgeType.DATA_FLOW
     sources: list[Vertex] = field(default_factory=list)
     targets: list[Vertex] = field(default_factory=list)
     attributes: dict[str, Any] = field(default_factory=dict)
     metadata: EdgeMetadata = field(default_factory=EdgeMetadata)
-    
+
     def __hash__(self) -> int:
         return hash(self.id)
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, HyperEdge):
             return False
         return self.id == other.id
-    
+
     @staticmethod
     def data_flow(
         source: Vertex | list[Vertex],
         target: Vertex | list[Vertex],
         port: int = 0,
         affinity: HardwareAffinity = HardwareAffinity.ANY,
-    ) -> "HyperEdge":
+    ) -> HyperEdge:
         """Create a data flow hyperedge."""
         sources = [source] if isinstance(source, Vertex) else source
         targets = [target] if isinstance(target, Vertex) else target
@@ -120,14 +125,14 @@ class HyperEdge:
             attributes={"port": port},
             metadata=EdgeMetadata(hardware_affinity=affinity),
         )
-    
+
     @staticmethod
     def control_flow(
         source: Vertex | list[Vertex],
         target: Vertex | list[Vertex],
         kind: ControlFlowKind = ControlFlowKind.SEQUENTIAL,
         condition: str | None = None,
-    ) -> "HyperEdge":
+    ) -> HyperEdge:
         """Create a control flow hyperedge."""
         sources = [source] if isinstance(source, Vertex) else source
         targets = [target] if isinstance(target, Vertex) else target
@@ -137,15 +142,15 @@ class HyperEdge:
             targets=targets,
             attributes={"kind": kind.name, "condition": condition},
         )
-    
+
     @staticmethod
     def effect_edge(
         source: Vertex | list[Vertex],
         target: Vertex | list[Vertex],
         effect_ordering: str = "seq",
-    ) -> "HyperEdge":
+    ) -> HyperEdge:
         """Create an effect ordering hyperedge.
-        
+
         Args:
             source: Source vertex or vertices
             target: Target vertex or vertices
@@ -159,7 +164,7 @@ class HyperEdge:
             targets=targets,
             attributes={"ordering": effect_ordering},
         )
-    
+
     @staticmethod
     def parallel_edge(
         vertices: list[Vertex],
@@ -168,9 +173,9 @@ class HyperEdge:
         num_threads: int = 1,
         warp_size: int = 32,
         affinity: HardwareAffinity = HardwareAffinity.ANY,
-    ) -> "HyperEdge":
+    ) -> HyperEdge:
         """Create a parallelism annotation hyperedge.
-        
+
         Args:
             vertices: Vertices that can execute in parallel
             kind: Type of parallelism
@@ -191,14 +196,14 @@ class HyperEdge:
             },
             metadata=EdgeMetadata(hardware_affinity=affinity),
         )
-    
+
     @staticmethod
     def memory_edge(
         source: Vertex,
         target: Vertex,
         access_type: str = "read",  # "read", "write", "atomic"
         region: str = "heap",
-    ) -> "HyperEdge":
+    ) -> HyperEdge:
         """Create a memory access edge."""
         return HyperEdge(
             edge_type=EdgeType.MEMORY_EDGE,
@@ -206,7 +211,7 @@ class HyperEdge:
             targets=[target],
             attributes={"access_type": access_type, "region": region},
         )
-    
+
     @staticmethod
     def region_edge(
         source: Vertex,
@@ -214,7 +219,7 @@ class HyperEdge:
         source_region: str,
         target_region: str,
         transfer_type: str = "copy",  # "copy", "move", "borrow"
-    ) -> "HyperEdge":
+    ) -> HyperEdge:
         """Create a region transfer edge for memory management."""
         return HyperEdge(
             edge_type=EdgeType.REGION_EDGE,
@@ -226,23 +231,23 @@ class HyperEdge:
                 "transfer_type": transfer_type,
             },
         )
-    
+
     def all_vertices(self) -> list[Vertex]:
         """Return all vertices connected by this edge."""
         return self.sources + self.targets
-    
+
     def is_parallel(self) -> bool:
         """Check if this edge represents parallel execution."""
         return self.edge_type == EdgeType.PARALLEL_EDGE
-    
+
     def is_data_flow(self) -> bool:
         """Check if this is a data flow edge."""
         return self.edge_type == EdgeType.DATA_FLOW
-    
+
     def is_control_flow(self) -> bool:
         """Check if this is a control flow edge."""
         return self.edge_type == EdgeType.CONTROL_FLOW
-    
+
     def serialize(self) -> dict[str, Any]:
         """Serialize edge to dictionary for .aion_sir section."""
         return {
@@ -264,29 +269,30 @@ class HyperEdge:
 @dataclass
 class EdgeGroup:
     """A group of related hyperedges for fusion analysis.
-    
+
     Used to identify patterns like:
     - PythonCall → RustFFI → CUDA pipeline
     - Sequential memory operations for coalescing
     """
+
     id: str = field(default_factory=lambda: str(uuid4()))
     name: str = ""
     edges: list[HyperEdge] = field(default_factory=list)
     pattern: str = ""  # Pattern identifier for fusion
     fusible: bool = False
-    
+
     def add_edge(self, edge: HyperEdge) -> None:
         """Add an edge to the group."""
         self.edges.append(edge)
-    
+
     def vertices(self) -> set[Vertex]:
         """Get all vertices in the edge group."""
         result = set()
         for edge in self.edges:
             result.update(edge.all_vertices())
         return result
-    
-    def can_fuse_with(self, other: "EdgeGroup") -> bool:
+
+    def can_fuse_with(self, other: EdgeGroup) -> bool:
         """Check if this group can be fused with another."""
         if not self.fusible or not other.fusible:
             return False

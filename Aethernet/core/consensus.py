@@ -75,9 +75,7 @@ class BlockHeader:
             "txs_root": self.txs_root,
             "consensus_hash": self.consensus_hash,
         }
-        return hashlib.sha256(
-            json.dumps(content, sort_keys=True).encode()
-        ).hexdigest()
+        return hashlib.sha256(json.dumps(content, sort_keys=True).encode()).hexdigest()
 
     def serialize(self) -> dict[str, Any]:
         """Serialize header."""
@@ -126,9 +124,7 @@ class ConsensusVote:
             "validator_id": self.validator_id,
             "timestamp": self.timestamp,
         }
-        return hashlib.sha256(
-            json.dumps(content, sort_keys=True).encode()
-        ).hexdigest()
+        return hashlib.sha256(json.dumps(content, sort_keys=True).encode()).hexdigest()
 
     def serialize(self) -> dict[str, Any]:
         """Serialize vote."""
@@ -315,11 +311,14 @@ class BFTConsensus:
         self.current_height = height
         self.current_round = round
 
-        self._log_event("round_started", {
-            "height": height,
-            "round": round,
-            "proposer": proposer,
-        })
+        self._log_event(
+            "round_started",
+            {
+                "height": height,
+                "round": round,
+                "proposer": proposer,
+            },
+        )
 
         return consensus_round
 
@@ -353,12 +352,15 @@ class BFTConsensus:
 
         # Verify proposer
         if consensus_round.proposer_id != proposer_id:
-            self._log_event("invalid_proposal", {
-                "height": height,
-                "round": round,
-                "expected_proposer": consensus_round.proposer_id,
-                "actual_proposer": proposer_id,
-            })
+            self._log_event(
+                "invalid_proposal",
+                {
+                    "height": height,
+                    "round": round,
+                    "expected_proposer": consensus_round.proposer_id,
+                    "actual_proposer": proposer_id,
+                },
+            )
             return None
 
         # Verify phase
@@ -367,11 +369,13 @@ class BFTConsensus:
 
         # Create block header
         timestamp = get_current_timestamp()
-        consensus_hash = compute_contract_hash({
-            "height": height,
-            "round": round,
-            "proposer": proposer_id,
-        })
+        consensus_hash = compute_contract_hash(
+            {
+                "height": height,
+                "round": round,
+                "proposer": proposer_id,
+            }
+        )
 
         block = BlockHeader(
             height=height,
@@ -394,12 +398,15 @@ class BFTConsensus:
             total_voting_power=self.get_total_voting_power(),
         )
 
-        self._log_event("block_proposed", {
-            "height": height,
-            "round": round,
-            "proposer": proposer_id,
-            "block_hash": block.compute_hash(),
-        })
+        self._log_event(
+            "block_proposed",
+            {
+                "height": height,
+                "round": round,
+                "proposer": proposer_id,
+                "block_hash": block.compute_hash(),
+            },
+        )
 
         return block
 
@@ -440,13 +447,16 @@ class BFTConsensus:
             expected_hash = consensus_round.proposed_block.compute_hash()
             if block_hash != expected_hash:
                 # Nil vote (voting for different block) - could indicate equivocation
-                self._log_event("nil_prevote", {
-                    "height": height,
-                    "round": round,
-                    "validator": validator_id,
-                    "expected_hash": expected_hash,
-                    "voted_hash": block_hash,
-                })
+                self._log_event(
+                    "nil_prevote",
+                    {
+                        "height": height,
+                        "round": round,
+                        "validator": validator_id,
+                        "expected_hash": expected_hash,
+                        "voted_hash": block_hash,
+                    },
+                )
 
         # Create vote
         vote = ConsensusVote(
@@ -464,22 +474,28 @@ class BFTConsensus:
         if not consensus_round.quorum.add_prevote(vote, voting_power):
             return False  # Duplicate vote
 
-        self._log_event("prevote_received", {
-            "height": height,
-            "round": round,
-            "validator": validator_id,
-            "voting_power": voting_power,
-        })
+        self._log_event(
+            "prevote_received",
+            {
+                "height": height,
+                "round": round,
+                "validator": validator_id,
+                "voting_power": voting_power,
+            },
+        )
 
         # Check for quorum
         if consensus_round.quorum.has_prevote_quorum():
             consensus_round.phase = ConsensusPhase.PRECOMMIT
-            self._log_event("prevote_quorum_reached", {
-                "height": height,
-                "round": round,
-                "prevote_power": consensus_round.quorum.prevote_power,
-                "total_power": consensus_round.quorum.total_voting_power,
-            })
+            self._log_event(
+                "prevote_quorum_reached",
+                {
+                    "height": height,
+                    "round": round,
+                    "prevote_power": consensus_round.quorum.prevote_power,
+                    "total_power": consensus_round.quorum.total_voting_power,
+                },
+            )
 
         return True
 
@@ -531,12 +547,15 @@ class BFTConsensus:
         if not consensus_round.quorum.add_precommit(vote, voting_power):
             return False  # Duplicate vote
 
-        self._log_event("precommit_received", {
-            "height": height,
-            "round": round,
-            "validator": validator_id,
-            "voting_power": voting_power,
-        })
+        self._log_event(
+            "precommit_received",
+            {
+                "height": height,
+                "round": round,
+                "validator": validator_id,
+                "voting_power": voting_power,
+            },
+        )
 
         # Check for quorum
         if consensus_round.quorum.has_precommit_quorum():
@@ -554,12 +573,15 @@ class BFTConsensus:
 
         self.committed_blocks[block.height] = block
 
-        self._log_event("block_committed", {
-            "height": block.height,
-            "round": consensus_round.round,
-            "block_hash": block.compute_hash(),
-            "proposer": block.proposer_id,
-        })
+        self._log_event(
+            "block_committed",
+            {
+                "height": block.height,
+                "round": consensus_round.round,
+                "block_hash": block.compute_hash(),
+                "proposer": block.proposer_id,
+            },
+        )
 
         # Finalize immediately in this simplified implementation
         self._finalize_block(consensus_round)
@@ -574,11 +596,14 @@ class BFTConsensus:
 
         self.finalized_blocks[block.height] = block
 
-        self._log_event("block_finalized", {
-            "height": block.height,
-            "round": consensus_round.round,
-            "block_hash": block.compute_hash(),
-        })
+        self._log_event(
+            "block_finalized",
+            {
+                "height": block.height,
+                "round": consensus_round.round,
+                "block_hash": block.compute_hash(),
+            },
+        )
 
     def handle_timeout(self, height: int, round: int) -> int:
         """Handle round timeout - move to next round.
@@ -595,11 +620,14 @@ class BFTConsensus:
 
         if consensus_round and consensus_round.is_timed_out():
             new_round = round + 1
-            self._log_event("round_timeout", {
-                "height": height,
-                "old_round": round,
-                "new_round": new_round,
-            })
+            self._log_event(
+                "round_timeout",
+                {
+                    "height": height,
+                    "old_round": round,
+                    "new_round": new_round,
+                },
+            )
             self.start_round(height, new_round)
             return new_round
 
@@ -617,11 +645,13 @@ class BFTConsensus:
 
     def _log_event(self, event_type: str, data: dict[str, Any]) -> None:
         """Log consensus event."""
-        self._audit_log.append({
-            "timestamp": get_current_timestamp(),
-            "event_type": event_type,
-            "data": data,
-        })
+        self._audit_log.append(
+            {
+                "timestamp": get_current_timestamp(),
+                "event_type": event_type,
+                "data": data,
+            }
+        )
 
     def get_audit_log(self) -> list[dict[str, Any]]:
         """Get consensus audit log."""
@@ -693,12 +723,15 @@ class TrajectoryAwareConsensus(BFTConsensus):
                 f"Collapse probability {collapse_probability:.2%} exceeds threshold {self.collapse_threshold:.2%}"
             )
 
-        self._log_event("trajectory_metrics_updated", {
-            "health_score": system_health,
-            "collapse_probability": collapse_probability,
-            "precursor_signals": precursor_signals,
-            "is_suspended": self.is_suspended,
-        })
+        self._log_event(
+            "trajectory_metrics_updated",
+            {
+                "health_score": system_health,
+                "collapse_probability": collapse_probability,
+                "precursor_signals": precursor_signals,
+                "is_suspended": self.is_suspended,
+            },
+        )
 
     def _trigger_suspension(self, reason: str) -> None:
         """Trigger consensus self-suspension.
@@ -712,11 +745,14 @@ class TrajectoryAwareConsensus(BFTConsensus):
         self.is_suspended = True
         self.suspension_reason = reason
 
-        self._log_event("consensus_suspended", {
-            "reason": reason,
-            "health_score": self.health_score,
-            "collapse_probability": self.collapse_probability,
-        })
+        self._log_event(
+            "consensus_suspended",
+            {
+                "reason": reason,
+                "health_score": self.health_score,
+                "collapse_probability": self.collapse_probability,
+            },
+        )
 
     def resume_consensus(self) -> bool:
         """Resume consensus after suspension.
@@ -734,10 +770,13 @@ class TrajectoryAwareConsensus(BFTConsensus):
         self.is_suspended = False
         self.suspension_reason = None
 
-        self._log_event("consensus_resumed", {
-            "health_score": self.health_score,
-            "collapse_probability": self.collapse_probability,
-        })
+        self._log_event(
+            "consensus_resumed",
+            {
+                "health_score": self.health_score,
+                "collapse_probability": self.collapse_probability,
+            },
+        )
 
         return True
 
@@ -752,16 +791,17 @@ class TrajectoryAwareConsensus(BFTConsensus):
     ) -> BlockHeader | None:
         """Propose a block with suspension check."""
         if self.is_suspended:
-            self._log_event("proposal_blocked_suspended", {
-                "height": height,
-                "round": round,
-                "reason": self.suspension_reason,
-            })
+            self._log_event(
+                "proposal_blocked_suspended",
+                {
+                    "height": height,
+                    "round": round,
+                    "reason": self.suspension_reason,
+                },
+            )
             return None
 
-        return super().propose_block(
-            height, round, proposer_id, parent_hash, state_root, txs_root
-        )
+        return super().propose_block(height, round, proposer_id, parent_hash, state_root, txs_root)
 
     def get_health_status(self) -> dict[str, Any]:
         """Get health status including trajectory metrics."""

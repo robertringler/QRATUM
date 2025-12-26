@@ -1,6 +1,6 @@
 """Tests for NEURA Neuroscience & BCI module."""
 
-from qratum_platform.core import PlatformContract, PlatformIntent, VerticalModule, ComputeSubstrate
+from qratum_platform.core import ComputeSubstrate, PlatformContract, PlatformIntent, VerticalModule
 from verticals.neura import NEURAModule
 
 

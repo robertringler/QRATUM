@@ -29,12 +29,11 @@ class PauliTerm:
 
     def __post_init__(self) -> None:
         """Validate Pauli operators after initialization."""
-        valid_operators = {'I', 'X', 'Y', 'Z'}
+        valid_operators = {"I", "X", "Y", "Z"}
         for _qubit_idx, operator in self.operators:
             if operator not in valid_operators:
                 raise ValueError(
-                    f"Invalid Pauli operator '{operator}'. "
-                    f"Must be one of {valid_operators}"
+                    f"Invalid Pauli operator '{operator}'. " f"Must be one of {valid_operators}"
                 )
 
     def to_dict(self) -> dict[str, Any]:
@@ -159,7 +158,10 @@ class Hamiltonian:
         Returns:
             JSON string with all terms
         """
-        return json.dumps({
-            "num_qubits": self.num_qubits(),
-            "terms": self.encode(),
-        }, sort_keys=True)
+        return json.dumps(
+            {
+                "num_qubits": self.num_qubits(),
+                "terms": self.encode(),
+            },
+            sort_keys=True,
+        )

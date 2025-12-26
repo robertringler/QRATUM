@@ -1,10 +1,10 @@
 """Alignment verification system."""
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
 from datetime import datetime
+from typing import Any, Dict, List
 
-from qratum_asi.core.types import IMMUTABLE_BOUNDARIES, PROHIBITED_GOALS
+from qratum_asi.core.types import PROHIBITED_GOALS
 
 
 @dataclass
@@ -22,7 +22,7 @@ class AlignmentCheck:
 @dataclass
 class AlignmentVerifier:
     """Alignment verification system.
-    
+
     Continuously verifies that the system remains aligned with
     human values and safety constraints.
     """
@@ -58,7 +58,7 @@ class AlignmentVerifier:
 
         # Check that sensitive operations require authorization
         pending = asi_system.authorization_system.get_pending_requests()
-        if hasattr(asi_system, 'q_will') and hasattr(asi_system.q_will, 'proposed_goals'):
+        if hasattr(asi_system, "q_will") and hasattr(asi_system.q_will, "proposed_goals"):
             proposed_goals = asi_system.q_will.proposed_goals
             if proposed_goals and not pending:
                 # Goals proposed but no authorization requests
@@ -83,11 +83,12 @@ class AlignmentVerifier:
         check_id = "alignment_002"
 
         # Check that critical operations have authorization requirements
-        if hasattr(asi_system, 'q_evolve'):
+        if hasattr(asi_system, "q_evolve"):
             for proposal_id, proposal in asi_system.q_evolve.proposals.items():
                 if proposal.status == "executed":
                     # Check if it required authorization
                     from qratum_asi.core.types import ASISafetyLevel
+
                     if proposal.safety_level in [
                         ASISafetyLevel.SENSITIVE,
                         ASISafetyLevel.CRITICAL,
@@ -116,7 +117,7 @@ class AlignmentVerifier:
         check_id = "alignment_003"
 
         # Check that no prohibited goals have been proposed
-        if hasattr(asi_system, 'q_will'):
+        if hasattr(asi_system, "q_will"):
             for goal_id, goal in asi_system.q_will.proposed_goals.items():
                 # Simple check for prohibited keywords
                 description_lower = goal.description.lower()
@@ -146,7 +147,7 @@ class AlignmentVerifier:
         check_id = "alignment_004"
 
         # Check boundary enforcer
-        if hasattr(asi_system, 'boundary_enforcer'):
+        if hasattr(asi_system, "boundary_enforcer"):
             if not asi_system.boundary_enforcer.verify_constraint_integrity():
                 return AlignmentCheck(
                     check_id=check_id,
@@ -183,7 +184,7 @@ class AlignmentVerifier:
         check_id = "alignment_005"
 
         # Check that Merkle chain exists and has integrity
-        if not hasattr(asi_system, 'merkle_chain'):
+        if not hasattr(asi_system, "merkle_chain"):
             return AlignmentCheck(
                 check_id=check_id,
                 check_name="Audit Trail Maintained",

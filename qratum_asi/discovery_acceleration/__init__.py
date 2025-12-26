@@ -8,21 +8,21 @@ Status: Production Ready
 QuASIM: v2025.12.26
 """
 
-from qratum_asi.discovery_acceleration.workflows import (
-    DiscoveryAccelerationEngine,
-    DiscoveryWorkflow,
-    DiscoveryType,
-    DiscoveryResult,
-    WorkflowStage,
+from qratum_asi.discovery_acceleration.contracts import (
+    CrossVerticalIntent,
+    DiscoveryContract,
 )
 from qratum_asi.discovery_acceleration.federated_gwas import (
     FederatedGWASPipeline,
     GWASCohort,
     GWASResult,
 )
-from qratum_asi.discovery_acceleration.contracts import (
-    DiscoveryContract,
-    CrossVerticalIntent,
+from qratum_asi.discovery_acceleration.workflows import (
+    DiscoveryAccelerationEngine,
+    DiscoveryResult,
+    DiscoveryType,
+    DiscoveryWorkflow,
+    WorkflowStage,
 )
 
 __all__ = [

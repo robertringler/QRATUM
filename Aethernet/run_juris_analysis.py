@@ -9,29 +9,28 @@ Performs comprehensive legal review of the Aethernet implementation including:
 - Intellectual property review
 """
 
-import sys
-import os
 import json
+import sys
 from pathlib import Path
 
 # Add QRATUM to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from verticals.juris import JURISModule
 from qratum_platform.core import PlatformContract, PlatformIntent
+from verticals.juris import JURISModule
 
 
 def analyze_aethernet_legal_compliance():
     """Run comprehensive legal analysis on Aethernet."""
-    
+
     print("=" * 80)
     print("JURIS LEGAL ANALYSIS - AETHERNET OVERLAY NETWORK")
     print("=" * 80)
     print()
-    
+
     # Initialize JURIS module
     juris = JURISModule()
-    
+
     # Define Aethernet components for analysis
     aethernet_components = {
         "txo_structure": """
@@ -56,7 +55,6 @@ def analyze_aethernet_legal_compliance():
         - Merkle chain for tamper-evidence
         - Reversibility for error correction
         """,
-        
         "rtf_api": """
         Reversible Transaction Framework (RTF) API:
         - execute_txo: Validate and prepare TXO for commit
@@ -75,7 +73,6 @@ def analyze_aethernet_legal_compliance():
         - Dual control for critical operations
         - Emergency access procedures
         """,
-        
         "compliance_modules": """
         HIPAA Compliance Module:
         - Administrative safeguards (access control, training, emergency access)
@@ -101,7 +98,6 @@ def analyze_aethernet_legal_compliance():
         - Access logging to immutable audit trail
         - Retention periods: 6 years (HIPAA), as needed (GDPR)
         """,
-        
         "biokey_system": """
         Ephemeral Biokey System:
         - Derivation from SNP (Single Nucleotide Polymorphism) loci
@@ -119,7 +115,6 @@ def analyze_aethernet_legal_compliance():
         - Secure wipe prevents memory dumps
         - No persistent storage of biometric data
         """,
-        
         "intellectual_property": """
         Aethernet IP Status:
         - Open source under Apache License 2.0
@@ -138,12 +133,12 @@ def analyze_aethernet_legal_compliance():
         - Dual-control authorization for genomic operations
         """,
     }
-    
+
     # Analysis 1: Contract Analysis (TXO as implicit contract)
     print("\n" + "=" * 80)
     print("1. CONTRACT ANALYSIS - TXO Structure")
     print("=" * 80)
-    
+
     contract_intent = PlatformIntent(
         operation="contract_analysis",
         parameters={
@@ -155,15 +150,15 @@ def analyze_aethernet_legal_compliance():
         intent=contract_intent,
         vertical_module="JURIS",
     )
-    
+
     result1 = juris.execute(contract)
     print(json.dumps(result1, indent=2))
-    
+
     # Analysis 2: Compliance Checking
     print("\n" + "=" * 80)
     print("2. COMPLIANCE CHECKING - HIPAA & GDPR")
     print("=" * 80)
-    
+
     compliance_intent = PlatformIntent(
         operation="compliance_checking",
         parameters={
@@ -176,15 +171,15 @@ def analyze_aethernet_legal_compliance():
         intent=compliance_intent,
         vertical_module="JURIS",
     )
-    
+
     result2 = juris.execute(contract)
     print(json.dumps(result2, indent=2))
-    
+
     # Analysis 3: Legal Reasoning (Privacy Law)
     print("\n" + "=" * 80)
     print("3. LEGAL REASONING - Biokey Privacy Analysis")
     print("=" * 80)
-    
+
     legal_reasoning_intent = PlatformIntent(
         operation="legal_reasoning",
         parameters={
@@ -197,15 +192,15 @@ def analyze_aethernet_legal_compliance():
         intent=legal_reasoning_intent,
         vertical_module="JURIS",
     )
-    
+
     result3 = juris.execute(contract)
     print(json.dumps(result3, indent=2))
-    
+
     # Analysis 4: Litigation Prediction (Data Breach Scenario)
     print("\n" + "=" * 80)
     print("4. LITIGATION PREDICTION - Hypothetical Breach Scenario")
     print("=" * 80)
-    
+
     litigation_intent = PlatformIntent(
         operation="litigation_prediction",
         parameters={
@@ -226,15 +221,15 @@ def analyze_aethernet_legal_compliance():
         intent=litigation_intent,
         vertical_module="JURIS",
     )
-    
+
     result4 = juris.execute(contract)
     print(json.dumps(result4, indent=2))
-    
+
     # Generate comprehensive report
     print("\n" + "=" * 80)
     print("COMPREHENSIVE LEGAL ASSESSMENT SUMMARY")
     print("=" * 80)
-    
+
     report = {
         "analysis_date": "2024-12-24",
         "system": "Aethernet Overlay Network",
@@ -282,16 +277,16 @@ def analyze_aethernet_legal_compliance():
         ],
         "legal_disclaimer": juris.SAFETY_DISCLAIMER,
     }
-    
+
     print(json.dumps(report, indent=2))
-    
+
     # Save report to file
     report_path = Path(__file__).parent / "LEGAL_ANALYSIS_REPORT.json"
     with open(report_path, "w") as f:
         json.dump(report, f, indent=2)
-    
+
     print(f"\n✓ Legal analysis report saved to: {report_path}")
-    
+
     print("\n" + "=" * 80)
     print("LEGAL ANALYSIS COMPLETE")
     print("=" * 80)

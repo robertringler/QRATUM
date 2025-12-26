@@ -15,7 +15,6 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 
@@ -80,9 +79,7 @@ class SiteCredentials:
             "zone": self.zone_classification,
             "created_at": self.created_at,
         }
-        return hashlib.sha256(
-            json.dumps(content, sort_keys=True).encode()
-        ).hexdigest()
+        return hashlib.sha256(json.dumps(content, sort_keys=True).encode()).hexdigest()
 
     def serialize(self) -> dict[str, Any]:
         """Serialize credentials."""
@@ -123,10 +120,7 @@ class FederationSite:
 
     def is_air_gapped(self) -> bool:
         """Check if site is air-gapped."""
-        return (
-            self.site_type == SiteType.AIR_GAPPED
-            or self.credentials.zone_classification == "Z3"
-        )
+        return self.site_type == SiteType.AIR_GAPPED or self.credentials.zone_classification == "Z3"
 
     def serialize(self) -> dict[str, Any]:
         """Serialize site."""
@@ -181,9 +175,7 @@ class ArchiveBundle:
             "state_snapshot_hash": self.state_snapshot_hash,
             "created_at": self.created_at,
         }
-        return hashlib.sha256(
-            json.dumps(content, sort_keys=True).encode()
-        ).hexdigest()
+        return hashlib.sha256(json.dumps(content, sort_keys=True).encode()).hexdigest()
 
     def verify_signature(self) -> bool:
         """Verify bundle signature.
@@ -322,11 +314,14 @@ class FederationRegistry:
         if site_type == SiteType.PRIMARY and not self.primary_site_id:
             self.primary_site_id = site_id
 
-        self._log_event("site_registered", {
-            "site_id": site_id,
-            "site_type": site_type.value,
-            "zone": zone,
-        })
+        self._log_event(
+            "site_registered",
+            {
+                "site_id": site_id,
+                "site_type": site_type.value,
+                "zone": zone,
+            },
+        )
 
         return site
 
@@ -359,11 +354,14 @@ class FederationRegistry:
             site.last_synced_hash = synced_hash
         site.last_sync_time = get_current_timestamp()
 
-        self._log_event("sync_status_updated", {
-            "site_id": site_id,
-            "status": sync_status.value,
-            "height": synced_height,
-        })
+        self._log_event(
+            "sync_status_updated",
+            {
+                "site_id": site_id,
+                "status": sync_status.value,
+                "height": synced_height,
+            },
+        )
 
         return True
 
@@ -381,11 +379,13 @@ class FederationRegistry:
 
     def _log_event(self, event_type: str, data: dict[str, Any]) -> None:
         """Log event."""
-        self._audit_log.append({
-            "timestamp": get_current_timestamp(),
-            "event_type": event_type,
-            "data": data,
-        })
+        self._audit_log.append(
+            {
+                "timestamp": get_current_timestamp(),
+                "event_type": event_type,
+                "data": data,
+            }
+        )
 
     def get_audit_log(self) -> list[dict[str, Any]]:
         """Get audit log."""
@@ -440,18 +440,16 @@ class AirGappedReplicator:
             raise ValueError("Target site must be air-gapped Z3 site")
 
         # Compute hashes
-        blocks_hash = hashlib.sha256(
-            json.dumps(blocks_data, sort_keys=True).encode()
-        ).hexdigest()
+        blocks_hash = hashlib.sha256(json.dumps(blocks_data, sort_keys=True).encode()).hexdigest()
 
-        state_hash = hashlib.sha256(
-            json.dumps(state_snapshot, sort_keys=True).encode()
-        ).hexdigest()
+        state_hash = hashlib.sha256(json.dumps(state_snapshot, sort_keys=True).encode()).hexdigest()
 
         # Generate bundle ID
         self._bundle_counter += 1
         timestamp = get_current_timestamp()
-        bundle_id = f"bundle_{self._bundle_counter:06d}_{compute_contract_hash({'ts': timestamp})[:8]}"
+        bundle_id = (
+            f"bundle_{self._bundle_counter:06d}_{compute_contract_hash({'ts': timestamp})[:8]}"
+        )
 
         # Create bundle (signature = hash for simplified implementation)
         content = {
@@ -464,9 +462,7 @@ class AirGappedReplicator:
             "state_snapshot_hash": state_hash,
             "created_at": timestamp,
         }
-        signature = hashlib.sha256(
-            json.dumps(content, sort_keys=True).encode()
-        ).hexdigest()
+        signature = hashlib.sha256(json.dumps(content, sort_keys=True).encode()).hexdigest()
 
         bundle = ArchiveBundle(
             bundle_id=bundle_id,
@@ -515,13 +511,9 @@ class AirGappedReplicator:
             return False
 
         # Verify data hashes match bundle
-        blocks_hash = hashlib.sha256(
-            json.dumps(blocks_data, sort_keys=True).encode()
-        ).hexdigest()
+        blocks_hash = hashlib.sha256(json.dumps(blocks_data, sort_keys=True).encode()).hexdigest()
 
-        state_hash = hashlib.sha256(
-            json.dumps(state_snapshot, sort_keys=True).encode()
-        ).hexdigest()
+        state_hash = hashlib.sha256(json.dumps(state_snapshot, sort_keys=True).encode()).hexdigest()
 
         if blocks_hash != bundle.blocks_hash:
             return False
@@ -561,7 +553,9 @@ class AirGappedReplicator:
         Returns:
             ReplayVerification result
         """
-        verification_id = f"verify_{compute_contract_hash({'site': site_id, 'ts': get_current_timestamp()})[:12]}"
+        verification_id = (
+            f"verify_{compute_contract_hash({'site': site_id, 'ts': get_current_timestamp()})[:12]}"
+        )
 
         # Simulate replay (in production, actually replay transactions)
         discrepancies: list[str] = []
@@ -751,14 +745,12 @@ class FederationCoordinator:
             "total_sites": len(sites),
             "primary_site": self.registry.primary_site_id,
             "sites_by_type": {
-                st.value: len(self.registry.get_sites_by_type(st))
-                for st in SiteType
+                st.value: len(self.registry.get_sites_by_type(st)) for st in SiteType
             },
             "air_gapped_sites": len(self.registry.get_air_gapped_sites()),
             "healthy_sites": len(self.registry.get_healthy_sites()),
             "sync_status": {
-                ss.value: sum(1 for s in sites if s.sync_status == ss)
-                for ss in SyncStatus
+                ss.value: sum(1 for s in sites if s.sync_status == ss) for ss in SyncStatus
             },
             "pending_bundles": len(self.replicator.bundles),
             "verifications": len(self.replicator.verifications),

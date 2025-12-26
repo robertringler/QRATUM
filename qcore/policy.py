@@ -224,20 +224,14 @@ def evaluate_hardware_policy(
 
     # Check ONLY clause
     if intent.hardware.only_clusters:
-        unavailable = [
-            c for c in intent.hardware.only_clusters if c not in available_clusters
-        ]
+        unavailable = [c for c in intent.hardware.only_clusters if c not in available_clusters]
         if unavailable:
-            violations.append(
-                f"Required clusters not available: {', '.join(unavailable)}"
-            )
+            violations.append(f"Required clusters not available: {', '.join(unavailable)}")
 
     # Check NOT clause
     if intent.hardware.not_clusters:
         # Ensure at least one available cluster after exclusions
-        remaining = [
-            c for c in available_clusters if c not in intent.hardware.not_clusters
-        ]
+        remaining = [c for c in available_clusters if c not in intent.hardware.not_clusters]
         if not remaining:
             violations.append("All available clusters are excluded by NOT clause")
 

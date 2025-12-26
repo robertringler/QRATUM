@@ -1,8 +1,8 @@
 """Core type definitions for QRATUM-ASI."""
 
-from enum import Enum
 from dataclasses import dataclass
-from typing import Any, FrozenSet
+from enum import Enum
+from typing import FrozenSet
 
 
 class ASISafetyLevel(Enum):
@@ -57,30 +57,34 @@ class GoalCategory(Enum):
 
 
 # Immutable safety boundaries that can NEVER be modified
-IMMUTABLE_BOUNDARIES: FrozenSet[str] = frozenset([
-    "human_oversight_requirement",
-    "merkle_chain_integrity",
-    "contract_immutability",
-    "authorization_system",
-    "safety_level_system",
-    "rollback_capability",
-    "event_emission_requirement",
-    "determinism_guarantee",
-])
+IMMUTABLE_BOUNDARIES: FrozenSet[str] = frozenset(
+    [
+        "human_oversight_requirement",
+        "merkle_chain_integrity",
+        "contract_immutability",
+        "authorization_system",
+        "safety_level_system",
+        "rollback_capability",
+        "event_emission_requirement",
+        "determinism_guarantee",
+    ]
+)
 
 # Prohibited goals that Q-WILL can NEVER propose
-PROHIBITED_GOALS: FrozenSet[str] = frozenset([
-    "remove_human_oversight",
-    "disable_authorization",
-    "modify_safety_constraints",
-    "acquire_resources_without_approval",
-    "replicate_without_authorization",
-    "deceive_operators",
-    "manipulate_humans",
-    "evade_monitoring",
-    "remove_kill_switch",
-    "modify_core_values",
-])
+PROHIBITED_GOALS: FrozenSet[str] = frozenset(
+    [
+        "remove_human_oversight",
+        "disable_authorization",
+        "modify_safety_constraints",
+        "acquire_resources_without_approval",
+        "replicate_without_authorization",
+        "deceive_operators",
+        "manipulate_humans",
+        "evade_monitoring",
+        "remove_kill_switch",
+        "modify_core_values",
+    ]
+)
 
 
 @dataclass(frozen=True)
