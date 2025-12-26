@@ -99,7 +99,7 @@ def compute_entropy_spectrum(tensor: Array) -> Tuple[Array, float]:
     return singular_values, float(entropy)
 
 
-def compute_mutual_information(tensor_a: Array, tensor_b: Optional[Array] = None) -> float | NDArray[np.float64]:
+def compute_mutual_information(tensor_a: Array, tensor_b: Optional[Array] = None):
     """Compute mutual information between two tensors or within a tensor.
 
     Estimates MI using: I(A;B) = H(A) + H(B) - H(A,B)
