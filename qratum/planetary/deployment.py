@@ -10,7 +10,6 @@ Status: Production
 
 from __future__ import annotations
 
-import hashlib
 import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -150,9 +149,7 @@ class DeploymentPhase:
         if not self.milestones:
             return 0.0
 
-        completed = sum(
-            1 for m in self.milestones if m.status == MilestoneStatus.COMPLETED
-        )
+        completed = sum(1 for m in self.milestones if m.status == MilestoneStatus.COMPLETED)
         return (completed / len(self.milestones)) * 100
 
     def is_complete(self) -> bool:
@@ -208,9 +205,7 @@ class MilestoneTracker:
         self.milestones[milestone.milestone_id] = milestone
         self.dependencies_graph[milestone.milestone_id] = milestone.dependencies
 
-    def update_status(
-        self, milestone_id: str, status: MilestoneStatus
-    ) -> None:
+    def update_status(self, milestone_id: str, status: MilestoneStatus) -> None:
         """Update milestone status.
 
         Args:
@@ -222,12 +217,14 @@ class MilestoneTracker:
             if status == MilestoneStatus.COMPLETED:
                 self.milestones[milestone_id].mark_completed()
 
-            self.events.append({
-                "event_type": "status_change",
-                "milestone_id": milestone_id,
-                "new_status": status.value,
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-            })
+            self.events.append(
+                {
+                    "event_type": "status_change",
+                    "milestone_id": milestone_id,
+                    "new_status": status.value,
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                }
+            )
 
     def get_ready_milestones(self) -> list[Milestone]:
         """Get milestones ready to start.
@@ -236,9 +233,7 @@ class MilestoneTracker:
             List of ready milestones
         """
         completed = {
-            mid
-            for mid, m in self.milestones.items()
-            if m.status == MilestoneStatus.COMPLETED
+            mid for mid, m in self.milestones.items() if m.status == MilestoneStatus.COMPLETED
         }
 
         ready = []
@@ -255,10 +250,7 @@ class MilestoneTracker:
         Returns:
             List of blocked milestones
         """
-        return [
-            m for m in self.milestones.values()
-            if m.status == MilestoneStatus.BLOCKED
-        ]
+        return [m for m in self.milestones.values() if m.status == MilestoneStatus.BLOCKED]
 
     def get_critical_path(self) -> list[str]:
         """Calculate critical path through milestones.
@@ -267,7 +259,7 @@ class MilestoneTracker:
             List of milestone IDs on critical path
         """
         # Simple critical path: milestones with most dependents
-        dependents_count = {mid: 0 for mid in self.milestones}
+        dependents_count = dict.fromkeys(self.milestones, 0)
 
         for deps in self.dependencies_graph.values():
             for dep in deps:
@@ -275,9 +267,7 @@ class MilestoneTracker:
                     dependents_count[dep] += 1
 
         # Sort by dependents (descending) and return
-        sorted_milestones = sorted(
-            dependents_count.items(), key=lambda x: x[1], reverse=True
-        )
+        sorted_milestones = sorted(dependents_count.items(), key=lambda x: x[1], reverse=True)
         return [mid for mid, _ in sorted_milestones[:5]]
 
     def to_dict(self) -> dict[str, Any]:
@@ -311,9 +301,7 @@ class DeploymentRoadmap:
         """
         self.roadmap_id = roadmap_id or self._generate_id()
         self.phases: dict[PhaseType, DeploymentPhase] = {}
-        self.milestone_tracker = MilestoneTracker(
-            tracker_id=f"tracker_{self.roadmap_id}"
-        )
+        self.milestone_tracker = MilestoneTracker(tracker_id=f"tracker_{self.roadmap_id}")
         self.created_at = datetime.now(timezone.utc).isoformat()
 
         self._initialize_phases()
@@ -634,9 +622,7 @@ class DeploymentRoadmap:
         return {
             "roadmap_id": self.roadmap_id,
             "overall_progress": (
-                (completed_milestones / total_milestones) * 100
-                if total_milestones > 0
-                else 0
+                (completed_milestones / total_milestones) * 100 if total_milestones > 0 else 0
             ),
             "total_milestones": total_milestones,
             "completed_milestones": completed_milestones,

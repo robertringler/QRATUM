@@ -5,19 +5,18 @@ requirement and prohibited goals enforcement.
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Set
 from datetime import datetime
+from typing import Any, Dict, List
 
-from qratum_asi.core.chain import ASIMerkleChain
-from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.core.contracts import ASIContract
-from qratum_asi.core.types import (
-    GoalCategory,
-    ASISafetyLevel,
-    AuthorizationType,
-    PROHIBITED_GOALS,
-)
 from qratum_asi.core.authorization import AuthorizationSystem
+from qratum_asi.core.chain import ASIMerkleChain
+from qratum_asi.core.contracts import ASIContract
+from qratum_asi.core.events import ASIEvent, ASIEventType
+from qratum_asi.core.types import (
+    PROHIBITED_GOALS,
+    ASISafetyLevel,
+    GoalCategory,
+)
 
 
 @dataclass
@@ -38,7 +37,7 @@ class GoalProposal:
 @dataclass
 class QWill:
     """Q-WILL: Autonomous Intent Generation.
-    
+
     Proposes goals based on system state analysis. ALL proposals require
     human authorization. Cannot propose prohibited goals.
     """
@@ -196,15 +195,11 @@ class QWill:
 
     def get_pending_goals(self) -> List[GoalProposal]:
         """Get all pending goal proposals."""
-        return [
-            goal
-            for goal in self.proposed_goals.values()
-            if goal.status == "proposed"
-        ]
+        return [goal for goal in self.proposed_goals.values() if goal.status == "proposed"]
 
     def _is_prohibited_goal(self, description: str, rationale: str) -> bool:
         """Check if goal matches prohibited goals.
-        
+
         NOTE: This is a placeholder implementation using simple keyword matching.
         A production implementation would require:
         - Semantic similarity analysis

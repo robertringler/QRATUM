@@ -17,7 +17,7 @@ def main():
     # Initialize QRATUM-ASI
     print("Initializing QRATUM-ASI...")
     asi = QRATUMASI()
-    print(f"✓ System initialized")
+    print("✓ System initialized")
     print()
 
     # Display immutable boundaries

@@ -271,10 +271,7 @@ class TestQILParser:
     def test_hardware_spec_conflict(self):
         """Test hardware spec conflict detection."""
         with pytest.raises(ValueError, match="conflict"):
-            HardwareSpec(
-                only_clusters=["GB200"],
-                not_clusters=["GB200"]  # Conflict!
-            )
+            HardwareSpec(only_clusters=["GB200"], not_clusters=["GB200"])  # Conflict!
 
     def test_time_spec_conversion(self):
         """Test time spec unit conversion."""
