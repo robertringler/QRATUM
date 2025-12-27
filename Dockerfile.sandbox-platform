@@ -12,7 +12,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt requirements-prod.txt ./
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt || true && \
+# Note: requirements-prod.txt may have version constraints incompatible with Python 3.11
+# We install core requirements and essential web framework dependencies
+RUN pip install --no-cache-dir -r requirements.txt; \
     pip install --no-cache-dir flask flask-cors
 
 # Copy application files
@@ -20,10 +22,6 @@ COPY qratum_platform.py ./
 COPY qradle ./qradle
 COPY quasim ./quasim
 COPY qratum ./qratum
-
-# Modify qratum_platform.py to use PORT env variable and update port in main
-RUN sed -i 's/port=9000/port=int(os.getenv("PORT", "8002"))/g' qratum_platform.py && \
-    sed -i '1 i\import os' qratum_platform.py
 
 EXPOSE 8002
 

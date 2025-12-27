@@ -12,7 +12,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt requirements-prod.txt ./
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt || true && \
+# Note: requirements-prod.txt may have version constraints incompatible with Python 3.11
+# We install core requirements and essential web framework dependencies
+RUN pip install --no-cache-dir -r requirements.txt; \
     pip install --no-cache-dir flask flask-cors
 
 # Copy QRADLE module

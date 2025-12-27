@@ -83,7 +83,12 @@ success "Core dependencies installed"
 if [ -f "requirements-prod.txt" ]; then
     status "Installing production dependencies from requirements-prod.txt..."
     # Try to install, but continue if some packages fail due to version constraints
-    pip install -r requirements-prod.txt -q || warning "Some production dependencies could not be installed (may be due to Python version constraints)"
+    if ! pip install -r requirements-prod.txt -q 2>/tmp/pip_error.log; then
+        warning "Some production dependencies could not be installed (may be due to Python version constraints)"
+        if [ -s /tmp/pip_error.log ]; then
+            echo "  See /tmp/pip_error.log for details"
+        fi
+    fi
     success "Production dependencies installation attempted"
 fi
 

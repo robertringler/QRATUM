@@ -165,7 +165,7 @@ def wait_for_services(timeout: int = 30) -> bool:
                 response = requests.get(url, timeout=2)
                 if response.status_code != 200:
                     all_ready = False
-            except:
+            except Exception:
                 all_ready = False
         
         if all_ready:
