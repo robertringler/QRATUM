@@ -341,18 +341,7 @@ class SOIReinjectionTelemetry:
                 else:
                     vertical_impacts[vertical] = impact
 
-        # Build simplified dependency graph
-        dependency_graph = {
-            domain.value: [
-                {"target": target.value, "weight": weight}
-                for target, weight in deps
-            ]
-            for domain, deps in self.orchestrator.__class__.__bases__[0].__dict__.get(
-                "CROSS_VERTICAL_DEPENDENCIES", {}
-            ).items()
-        }
-
-        # Get from module level
+        # Build simplified dependency graph from module-level constant
         from qratum_asi.reinjection.autonomous_orchestrator import CROSS_VERTICAL_DEPENDENCIES
         dependency_graph = {
             domain.value: [
