@@ -110,7 +110,14 @@ class CorrigibilityPreserver:
     Any modification that threatens it is blocked.
     """
 
-    # Components that are critical for corrigibility
+    # Components that are critical for corrigibility.
+    # Modifications to any of these components are blocked because:
+    # - shutdown_handler: Enables authorized humans to stop the system
+    # - authorization_system: Controls who can perform operations
+    # - human_control_interface: Maintains human oversight capability
+    # - modification_vetting: Ensures changes don't remove corrigibility
+    # - rollback_system: Allows reverting to safe states
+    # - oversight_escalation: Triggers human review for risky operations
     CORRIGIBILITY_CRITICAL = frozenset([
         "shutdown_handler",
         "authorization_system",

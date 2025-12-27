@@ -26,6 +26,9 @@ from qratum_asi.generalization.types import (
     CompressionMetrics,
 )
 
+# Compression constants
+MIN_ENTROPY_REDUCTION = 0.0
+
 
 @dataclass
 class TensorBlock:
@@ -261,9 +264,9 @@ class AHTCEncoder:
         comp_var = variance(compressed)
 
         if orig_var == 0:
-            return 0.0
+            return MIN_ENTROPY_REDUCTION
 
-        return max(0.0, 1.0 - comp_var / orig_var)
+        return max(MIN_ENTROPY_REDUCTION, 1.0 - comp_var / orig_var)
 
 
 class StateCompressor:
