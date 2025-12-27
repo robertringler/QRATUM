@@ -1,10 +1,15 @@
 build/
 install/
 .venv/
+venv-sandbox/
 obj_dir/
 __pycache__/
 *.pyc
 *.so
+
+# Environment files
+.env
+.env.local
 
 # Artifacts
 artifacts/real_world_sim_2025/

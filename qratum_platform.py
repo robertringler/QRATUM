@@ -1299,8 +1299,9 @@ if __name__ == "__main__":
     thread = threading.Thread(target=generate_data, daemon=True)
     thread.start()
 
-    print("Starting platform server on port 9000...")
+    port = int(os.getenv("PORT", "9000"))
+    print(f"Starting platform server on port {port}...")
     print()
     print("=" * 70)
 
-    app.run(host="0.0.0.0", port=9000, debug=False, threaded=True)
+    app.run(host="0.0.0.0", port=port, debug=False, threaded=True)

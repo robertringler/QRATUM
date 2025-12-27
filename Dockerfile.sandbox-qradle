@@ -1,0 +1,103 @@
+# QRADLE Sandbox Dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements.txt requirements-prod.txt ./
+
+# Install Python dependencies
+# Note: requirements-prod.txt may have version constraints incompatible with Python 3.11
+# We install core requirements and essential web framework dependencies
+RUN pip install --no-cache-dir -r requirements.txt; \
+    pip install --no-cache-dir flask flask-cors
+
+# Copy QRADLE module
+COPY qradle ./qradle
+
+# Create QRADLE service script
+RUN cat > /app/qradle_service.py << 'EOF'
+#!/usr/bin/env python3
+"""
+QRADLE Service - Merkle Chain and Deterministic Execution Engine
+"""
+import sys
+sys.path.insert(0, '/app')
+
+from flask import Flask, jsonify
+from flask_cors import CORS
+import time
+import os
+from qradle.core.merkle import MerkleChain
+from qradle.core.engine import DeterministicEngine
+
+app = Flask(__name__)
+CORS(app)
+
+# Initialize QRADLE components
+chain = MerkleChain(genesis_data={
+    "type": "genesis",
+    "version": "1.0.0",
+    "timestamp": time.time(),
+    "network": os.getenv("QRADLE_NETWORK", "sandbox")
+})
+engine = DeterministicEngine()
+start_time = time.time()
+
+@app.route('/health')
+def health():
+    return jsonify({
+        "status": "healthy",
+        "service": "QRADLE",
+        "version": "1.0.0",
+        "uptime": time.time() - start_time
+    })
+
+@app.route('/api/chain/status')
+def chain_status():
+    return jsonify({
+        "chain_length": len(chain.nodes),
+        "root_hash": chain.get_root_hash(),
+        "genesis_hash": chain.nodes[0].node_hash if chain.nodes else None
+    })
+
+@app.route('/api/engine/status')
+def engine_status():
+    return jsonify({
+        "initialized": True,
+        "seed": engine.seed if hasattr(engine, 'seed') else None,
+        "operations_count": len(engine.execution_log) if hasattr(engine, 'execution_log') else 0
+    })
+
+@app.route('/')
+def index():
+    return jsonify({
+        "service": "QRADLE - Quantum-Resilient Auditable Deterministic Ledger Engine",
+        "endpoints": {
+            "health": "/health",
+            "chain_status": "/api/chain/status",
+            "engine_status": "/api/engine/status"
+        }
+    })
+
+if __name__ == '__main__':
+    port = int(os.getenv("QRADLE_PORT", "8001"))
+    print("=" * 70)
+    print("🛡️  QRADLE Service Starting")
+    print("=" * 70)
+    print(f"Merkle Chain Genesis Block: {chain.get_root_hash()[:32]}...")
+    print(f"Starting on http://0.0.0.0:{port}")
+    print("=" * 70)
+    app.run(host='0.0.0.0', port=port, debug=False)
+EOF
+
+RUN chmod +x /app/qradle_service.py
+
+EXPOSE 8001
+
+CMD ["python3", "/app/qradle_service.py"]
