@@ -106,6 +106,27 @@ from qratum_asi.reinjection.engine import (
     create_synthetic_discovery_candidate,
 )
 
+# Autonomous orchestrator
+from qratum_asi.reinjection.autonomous_orchestrator import (
+    AutonomousReinjectionOrchestrator,
+    DiscoveryArtifact,
+    PropagationResult,
+    PropagationTarget,
+    ReinjectionStatusSummary,
+    ArtifactSensitivity,
+    SystemState,
+    CROSS_VERTICAL_DEPENDENCIES,
+    create_artifact_from_discovery_result,
+)
+
+# SOI Telemetry integration
+from qratum_asi.reinjection.soi_telemetry import (
+    SOIReinjectionTelemetry,
+    TelemetryEvent,
+    OptionalityMetrics,
+    EvolutionDataPoint,
+)
+
 __version__ = "1.0.0"
 
 __all__ = [
@@ -147,4 +168,19 @@ __all__ = [
     "ReinjectionEngine",
     "ReinjectionCycleResult",
     "create_synthetic_discovery_candidate",
+    # Autonomous orchestrator
+    "AutonomousReinjectionOrchestrator",
+    "DiscoveryArtifact",
+    "PropagationResult",
+    "PropagationTarget",
+    "ReinjectionStatusSummary",
+    "ArtifactSensitivity",
+    "SystemState",
+    "CROSS_VERTICAL_DEPENDENCIES",
+    "create_artifact_from_discovery_result",
+    # SOI Telemetry
+    "SOIReinjectionTelemetry",
+    "TelemetryEvent",
+    "OptionalityMetrics",
+    "EvolutionDataPoint",
 ]
