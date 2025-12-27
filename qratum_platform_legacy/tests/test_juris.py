@@ -1,9 +1,9 @@
 """Tests for JURIS Legal AI Vertical Module."""
 
-import pytest
-
 from platform.core.intent import PlatformContract, PlatformIntent, VerticalType
 from platform.verticals.juris import JurisModule
+
+import pytest
 
 
 class TestJurisModule:
@@ -230,7 +230,9 @@ class TestJurisModule:
 
         # Results should be identical (deterministic)
         assert result1.result_data["analysis_id"] == result2.result_data["analysis_id"]
-        assert result1.result_data["clauses_identified"] == result2.result_data["clauses_identified"]
+        assert (
+            result1.result_data["clauses_identified"] == result2.result_data["clauses_identified"]
+        )
 
     def test_audit_trail(self):
         """Test that audit trail is properly maintained."""
@@ -293,7 +295,10 @@ class TestJurisModule:
         result = module.execute(contract)
 
         assert result.success is False
-        assert "Unknown" in result.result_data["error"] or "invalid" in result.result_data["error"].lower()
+        assert (
+            "Unknown" in result.result_data["error"]
+            or "invalid" in result.result_data["error"].lower()
+        )
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ from typing import Any, Dict, Optional
 
 class ContractStatus(Enum):
     """Status of a contract execution."""
-    
+
     PENDING = "pending"
     EXECUTING = "executing"
     COMPLETED = "completed"
@@ -26,11 +26,11 @@ class ContractStatus(Enum):
 @dataclass(frozen=True)
 class Contract:
     """Immutable contract for deterministic execution.
-    
+
     Once created, a contract cannot be modified. This enforces
     the contract immutability invariant.
     """
-    
+
     contract_id: str
     operation: str
     inputs: Dict[str, Any]
@@ -38,7 +38,7 @@ class Contract:
     user_id: str = ""
     timestamp: float = field(default_factory=lambda: time.time())
     metadata: Dict[str, Any] = field(default_factory=dict)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert contract to dictionary for serialization."""
         return {
@@ -50,11 +50,11 @@ class Contract:
             "timestamp": self.timestamp,
             "metadata": self.metadata,
         }
-    
+
     def to_json(self) -> str:
         """Serialize contract to deterministic JSON."""
         return json.dumps(self.to_dict(), sort_keys=True, separators=(",", ":"))
-    
+
     def compute_hash(self) -> str:
         """Compute SHA-256 hash of contract."""
         return hashlib.sha256(self.to_json().encode()).hexdigest()
@@ -63,14 +63,14 @@ class Contract:
 @dataclass
 class ContractExecution:
     """Result of contract execution."""
-    
+
     contract: Contract
     status: ContractStatus
     outputs: Optional[Dict[str, Any]] = None
     error: Optional[str] = None
     execution_time: float = 0.0
     proof_hash: Optional[str] = None
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert execution result to dictionary."""
         return {

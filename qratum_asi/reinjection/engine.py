@@ -21,9 +21,14 @@ from datetime import datetime, timezone
 from typing import Any
 
 from qradle.merkle import MerkleChain
-
+from qratum_asi.reinjection.audit import AuditReport, AuditReportGenerator
+from qratum_asi.reinjection.contracts import (
+    ReinjectionContract,
+    create_reinjection_contract,
+)
+from qratum_asi.reinjection.mapper import DiscoveryPriorMapper
+from qratum_asi.reinjection.sandbox import SandboxOrchestrator
 from qratum_asi.reinjection.types import (
-    AuditRecord,
     DiscoveryDomain,
     ReinjectionCandidate,
     ReinjectionResult,
@@ -33,14 +38,6 @@ from qratum_asi.reinjection.types import (
     ValidationLevel,
 )
 from qratum_asi.reinjection.validator import ReinjectionValidator, ValidationResult
-from qratum_asi.reinjection.mapper import DiscoveryPriorMapper, MappingResult
-from qratum_asi.reinjection.sandbox import SandboxOrchestrator
-from qratum_asi.reinjection.contracts import (
-    ReinjectionContract,
-    ReinjectionContractStatus,
-    create_reinjection_contract,
-)
-from qratum_asi.reinjection.audit import AuditReportGenerator, AuditReport
 
 
 @dataclass
@@ -75,10 +72,14 @@ class ReinjectionCycleResult:
         return {
             "cycle_id": self.cycle_id,
             "candidate_id": self.candidate.candidate_id,
-            "validation_result": self.validation_result.to_dict() if self.validation_result else None,
+            "validation_result": (
+                self.validation_result.to_dict() if self.validation_result else None
+            ),
             "sandbox_result": self.sandbox_result.to_dict() if self.sandbox_result else None,
             "contract": self.contract.to_dict() if self.contract else None,
-            "reinjection_result": self.reinjection_result.to_dict() if self.reinjection_result else None,
+            "reinjection_result": (
+                self.reinjection_result.to_dict() if self.reinjection_result else None
+            ),
             "audit_report": self.audit_report.to_dict() if self.audit_report else None,
             "success": self.success,
             "error_message": self.error_message,
@@ -264,9 +265,7 @@ class ReinjectionEngine:
         try:
             # Step 1: Validate candidate
             candidate.status = ReinjectionStatus.VALIDATING
-            validation_result = self.validator.validate(
-                candidate, candidate.validation_level
-            )
+            validation_result = self.validator.validate(candidate, candidate.validation_level)
 
             if not validation_result.valid:
                 candidate.status = ReinjectionStatus.REJECTED
@@ -482,7 +481,9 @@ class ReinjectionEngine:
             "total_results": len(self.results),
             "total_cycles": len(self.cycle_results),
             "successful_cycles": successful_cycles,
-            "success_rate": successful_cycles / len(self.cycle_results) if self.cycle_results else 0.0,
+            "success_rate": (
+                successful_cycles / len(self.cycle_results) if self.cycle_results else 0.0
+            ),
             "validation_stats": self.validator.get_validation_summary(),
             "mapping_stats": self.mapper.get_mapping_stats(),
             "sandbox_stats": self.sandbox.get_sandbox_stats(),

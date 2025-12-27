@@ -22,11 +22,7 @@ class ConflictOfLawsResolver:
         pass
 
     def resolve_conflict(
-        self,
-        issue_type: str,
-        jurisdictions: list[str],
-        connecting_factors: dict,
-        forum: str
+        self, issue_type: str, jurisdictions: list[str], connecting_factors: dict, forum: str
     ) -> dict:
         """Resolve conflict of laws between jurisdictions.
 
@@ -44,13 +40,9 @@ class ConflictOfLawsResolver:
 
         # Apply appropriate choice-of-law methodology
         if issue_type == "contract":
-            return self._resolve_contract_conflict(
-                jurisdictions, connecting_factors, forum
-            )
+            return self._resolve_contract_conflict(jurisdictions, connecting_factors, forum)
         elif issue_type == "tort":
-            return self._resolve_tort_conflict(
-                jurisdictions, connecting_factors, forum
-            )
+            return self._resolve_tort_conflict(jurisdictions, connecting_factors, forum)
         else:
             # Default to most significant relationship
             return self._apply_most_significant_relationship(
@@ -58,10 +50,7 @@ class ConflictOfLawsResolver:
             )
 
     def _resolve_contract_conflict(
-        self,
-        jurisdictions: list[str],
-        factors: dict,
-        forum: str
+        self, jurisdictions: list[str], factors: dict, forum: str
     ) -> dict:
         """Resolve contract choice-of-law issue.
 
@@ -86,7 +75,7 @@ class ConflictOfLawsResolver:
                         f"their contract. This choice is generally respected "
                         f"absent public policy concerns."
                     ),
-                    "alternative_analyses": []
+                    "alternative_analyses": [],
                 }
 
         # Apply Rome I for EU contracts
@@ -94,16 +83,9 @@ class ConflictOfLawsResolver:
             return self._apply_rome_i(jurisdictions, factors)
 
         # Apply most significant relationship for other contracts
-        return self._apply_most_significant_relationship(
-            jurisdictions, factors, "contract"
-        )
+        return self._apply_most_significant_relationship(jurisdictions, factors, "contract")
 
-    def _resolve_tort_conflict(
-        self,
-        jurisdictions: list[str],
-        factors: dict,
-        forum: str
-    ) -> dict:
+    def _resolve_tort_conflict(self, jurisdictions: list[str], factors: dict, forum: str) -> dict:
         """Resolve tort choice-of-law issue.
 
         Args:
@@ -132,19 +114,14 @@ class ConflictOfLawsResolver:
                 ),
                 "alternative_analyses": [
                     "Most significant relationship test may yield different result"
-                ]
+                ],
             }
 
         # Apply most significant relationship
-        return self._apply_most_significant_relationship(
-            jurisdictions, factors, "tort"
-        )
+        return self._apply_most_significant_relationship(jurisdictions, factors, "tort")
 
     def _apply_most_significant_relationship(
-        self,
-        jurisdictions: list[str],
-        factors: dict,
-        issue_type: str
+        self, jurisdictions: list[str], factors: dict, issue_type: str
     ) -> dict:
         """Apply the most significant relationship test.
 
@@ -190,14 +167,14 @@ class ConflictOfLawsResolver:
             "reasoning": (
                 f"Based on the totality of connecting factors, {governing} "
                 f"has the most significant relationship to the {issue_type}. "
-                f"Relevant factors include: " +
-                ", ".join(f"{k}: {v}" for k, v in factors.items() if k in factor_weights)
+                f"Relevant factors include: "
+                + ", ".join(f"{k}: {v}" for k, v in factors.items() if k in factor_weights)
             ),
             "factor_scores": scores,
             "alternative_analyses": [
                 "Different weight assignments may yield different results",
-                "Forum law may apply to procedural matters"
-            ]
+                "Forum law may apply to procedural matters",
+            ],
         }
 
     def _is_eu_contract(self, jurisdictions: list[str]) -> bool:
@@ -246,7 +223,7 @@ class ConflictOfLawsResolver:
                     f"Under Rome I Article 3, parties may choose the governing law. "
                     f"The parties chose {chosen} law."
                 ),
-                "alternative_analyses": []
+                "alternative_analyses": [],
             }
 
         # Default to place of characteristic performance
@@ -261,7 +238,7 @@ class ConflictOfLawsResolver:
                     "the country where the party required to effect characteristic "
                     "performance has their habitual residence governs."
                 ),
-                "alternative_analyses": []
+                "alternative_analyses": [],
             }
 
         # Fallback to closest connection
@@ -270,7 +247,7 @@ class ConflictOfLawsResolver:
             "methodology": "Rome I Regulation - Closest connection (Art. 4(4))",
             "confidence": "Low",
             "reasoning": "Law of country most closely connected applies as fallback.",
-            "alternative_analyses": []
+            "alternative_analyses": [],
         }
 
     def _apply_rome_ii(self, jurisdictions: list[str], factors: dict) -> dict:
@@ -297,8 +274,8 @@ class ConflictOfLawsResolver:
                 ),
                 "alternative_analyses": [
                     "Common habitual residence exception may apply (Art. 4(2))",
-                    "Manifestly closer connection exception may apply (Art. 4(3))"
-                ]
+                    "Manifestly closer connection exception may apply (Art. 4(3))",
+                ],
             }
 
         return {
@@ -306,5 +283,5 @@ class ConflictOfLawsResolver:
             "methodology": "Rome II Regulation - Default rule",
             "confidence": "Low",
             "reasoning": "Applying default Rome II rules.",
-            "alternative_analyses": []
+            "alternative_analyses": [],
         }

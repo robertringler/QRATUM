@@ -12,15 +12,12 @@ Validates the autonomous discovery monitoring and reinjection system including:
 import pytest
 
 from qratum_asi.reinjection import (
+    ArtifactSensitivity,
     AutonomousReinjectionOrchestrator,
     DiscoveryArtifact,
-    PropagationResult,
+    DiscoveryDomain,
     PropagationTarget,
     ReinjectionStatusSummary,
-    ArtifactSensitivity,
-    SystemState,
-    DiscoveryDomain,
-    ValidationLevel,
 )
 
 
@@ -325,9 +322,7 @@ class TestCrossVerticalPropagation:
         )
 
         # Execute reinjection
-        result = orchestrator.auto_reinject_if_valid(
-            artifact, auto_approve=True
-        )
+        result = orchestrator.auto_reinject_if_valid(artifact, auto_approve=True)
 
         assert result is not None
         if result.success:
@@ -350,9 +345,7 @@ class TestCrossVerticalPropagation:
             provenance_hash="o" * 64,
         )
 
-        result = orchestrator.auto_reinject_if_valid(
-            artifact, auto_approve=True
-        )
+        result = orchestrator.auto_reinject_if_valid(artifact, auto_approve=True)
 
         assert result is not None
         if result.success:
@@ -387,9 +380,7 @@ class TestAutoReinjection:
             },
         )
 
-        result = orchestrator.auto_reinject_if_valid(
-            artifact, auto_approve=True
-        )
+        result = orchestrator.auto_reinject_if_valid(artifact, auto_approve=True)
 
         assert result is not None
         assert result.success is True
@@ -410,9 +401,7 @@ class TestAutoReinjection:
             provenance_hash="q" * 64,
         )
 
-        result = orchestrator.auto_reinject_if_valid(
-            artifact, auto_approve=True
-        )
+        result = orchestrator.auto_reinject_if_valid(artifact, auto_approve=True)
 
         assert result is None
 
@@ -580,9 +569,7 @@ class TestIntegration:
 
         # Process reinjections
         for artifact in filtered:
-            result = orchestrator.auto_reinject_if_valid(
-                artifact, auto_approve=True
-            )
+            result = orchestrator.auto_reinject_if_valid(artifact, auto_approve=True)
             assert result is not None
 
         # Verify status
@@ -616,9 +603,7 @@ class TestIntegration:
                 provenance_hash=f"{i}" * 64,
             )
 
-            result = orchestrator.auto_reinject_if_valid(
-                artifact, auto_approve=True
-            )
+            result = orchestrator.auto_reinject_if_valid(artifact, auto_approve=True)
             if result:
                 results.append(result)
 

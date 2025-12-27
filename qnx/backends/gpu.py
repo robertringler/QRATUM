@@ -14,22 +14,22 @@ from typing import Any
 
 class GPUBackend:
     """GPU backend for accelerated computation.
-    
+
     This is a stub implementation establishing the structural interface.
     Full GPU backend will be implemented in a future PR.
     """
 
     def run(self, task: Any) -> Any:
         """Execute task on GPU backend.
-        
+
         This method will be implemented in PR-006 (Backend Implementation).
-        
+
         Args:
             task: Task to execute
-            
+
         Returns:
             Execution result
-            
+
         Raises:
             NotImplementedError: Placeholder for PR-006
         """

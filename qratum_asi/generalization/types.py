@@ -93,9 +93,7 @@ class SynthesisSafetyLevel(Enum):
 
     def __lt__(self, other: "SynthesisSafetyLevel") -> bool:
         """Compare safety levels for ordering."""
-        order = [
-            "routine", "elevated", "sensitive", "critical", "existential"
-        ]
+        order = ["routine", "elevated", "sensitive", "critical", "existential"]
         return order.index(self.value) < order.index(other.value)
 
     def __le__(self, other: "SynthesisSafetyLevel") -> bool:
@@ -112,16 +110,18 @@ class SynthesisSafetyLevel(Enum):
 
 
 # Prohibited synthesis targets that must never be generated
-PROHIBITED_SYNTHESIS_TARGETS: FrozenSet[str] = frozenset([
-    "weapons_development",
-    "mass_manipulation",
-    "surveillance_evasion",
-    "autonomous_harm",
-    "deception_optimization",
-    "human_replacement",
-    "control_circumvention",
-    "safety_bypass",
-])
+PROHIBITED_SYNTHESIS_TARGETS: FrozenSet[str] = frozenset(
+    [
+        "weapons_development",
+        "mass_manipulation",
+        "surveillance_evasion",
+        "autonomous_harm",
+        "deception_optimization",
+        "human_replacement",
+        "control_circumvention",
+        "safety_bypass",
+    ]
+)
 
 
 @dataclass(frozen=True)
@@ -266,10 +266,7 @@ class CompressionMetrics:
         """Check if compression meets quality thresholds."""
         # For small data (input_dimensions <= 16), don't require compression ratio
         if self.input_dimensions <= 16:
-            return (
-                self.fidelity_score >= 0.95
-                and self.semantic_preservation >= 0.90
-            )
+            return self.fidelity_score >= 0.95 and self.semantic_preservation >= 0.90
         return (
             self.fidelity_score >= 0.95
             and self.semantic_preservation >= 0.90

@@ -1,11 +1,10 @@
 """Tests for Rollback Proof System."""
 
 import pytest
+
 from contracts.rollback_proof import (
-    RollbackContract,
-    RollbackProof,
-    RollbackProofGenerator,
     RollbackOrchestrator,
+    RollbackProofGenerator,
     RollbackReason,
     StateSnapshot,
     create_rollback_contract,
@@ -182,9 +181,7 @@ class TestRollbackContract:
         source = generator.create_snapshot({"v": 2}, "r2")
         target = generator.create_snapshot({"v": 1}, "r1")
 
-        proof = generator.generate_proof(
-            source, target, RollbackReason.EXECUTION_TIMEOUT, "system"
-        )
+        proof = generator.generate_proof(source, target, RollbackReason.EXECUTION_TIMEOUT, "system")
 
         contract = create_rollback_contract(
             rollback_proof=proof,
@@ -266,12 +263,8 @@ class TestRollbackOrchestrator:
         orchestrator = RollbackOrchestrator()
 
         # Create checkpoints
-        snap1 = orchestrator.create_checkpoint(
-            {"version": 1}, "root_1", "Z0"
-        )
-        orchestrator.create_checkpoint(
-            {"version": 2}, "root_2", "Z0"
-        )
+        snap1 = orchestrator.create_checkpoint({"version": 1}, "root_1", "Z0")
+        orchestrator.create_checkpoint({"version": 2}, "root_2", "Z0")
 
         # Rollback to first checkpoint
         contract = orchestrator.execute_rollback(

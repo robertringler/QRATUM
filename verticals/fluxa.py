@@ -6,14 +6,14 @@ network resilience analysis, and logistics simulation.
 
 import math
 import random
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 from qratum_platform.core import (
     ComputeSubstrate,
     PlatformContract,
     VerticalModuleBase,
 )
-from qratum_platform.substrates import get_optimal_substrate, VerticalModule
+from qratum_platform.substrates import VerticalModule, get_optimal_substrate
 from qratum_platform.utils import compute_deterministic_seed
 
 
@@ -101,7 +101,9 @@ class FLUXAModule(VerticalModuleBase):
         seed = compute_deterministic_seed(parameters)
 
         # Simplified nearest neighbor heuristic
-        routes = self._greedy_route_assignment(depot, locations, num_vehicles, vehicle_capacity, seed)
+        routes = self._greedy_route_assignment(
+            depot, locations, num_vehicles, vehicle_capacity, seed
+        )
 
         total_distance = sum(r["distance_km"] for r in routes)
         total_time = sum(r["time_hours"] for r in routes)
@@ -152,7 +154,9 @@ class FLUXAModule(VerticalModuleBase):
                 remaining.remove(best)
 
             if route:
-                route_dist = self._calculate_route_distance(depot, [loc for loc in locations if loc["id"] in route], depot)
+                route_dist = self._calculate_route_distance(
+                    depot, [loc for loc in locations if loc["id"] in route], depot
+                )
                 routes.append(
                     {
                         "vehicle_id": v,
@@ -179,7 +183,9 @@ class FLUXAModule(VerticalModuleBase):
 
         return 6371 * c  # Earth radius in km
 
-    def _calculate_route_distance(self, depot: Dict, stops: List[Dict], return_depot: Dict) -> float:
+    def _calculate_route_distance(
+        self, depot: Dict, stops: List[Dict], return_depot: Dict
+    ) -> float:
         """Calculate total route distance."""
         total = 0
         current = depot
@@ -283,7 +289,9 @@ class FLUXAModule(VerticalModuleBase):
 
         # Total cost
         num_orders = annual_demand / eoq
-        total_cost = (num_orders * ordering_cost) + (eoq / 2 * holding_cost) + (safety_stock * holding_cost)
+        total_cost = (
+            (num_orders * ordering_cost) + (eoq / 2 * holding_cost) + (safety_stock * holding_cost)
+        )
 
         return {
             "optimization_type": "inventory_policy",

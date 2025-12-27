@@ -14,7 +14,6 @@ from typing import Any
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
-
 from qratum_asi.meta_evolution.types import (
     AbstractionLevel,
     AbstractionTransitionSpec,
@@ -312,17 +311,17 @@ class AbstractionLevelManager:
                 # Unknown requirement
                 met = True
 
-            requirements_status.append({
-                "requirement": req,
-                "met": met,
-                "current_value": self._get_current_value(req, metrics),
-            })
+            requirements_status.append(
+                {
+                    "requirement": req,
+                    "met": met,
+                    "current_value": self._get_current_value(req, metrics),
+                }
+            )
 
         return requirements_status
 
-    def _get_current_value(
-        self, requirement: str, metrics: LevelMetrics
-    ) -> str:
+    def _get_current_value(self, requirement: str, metrics: LevelMetrics) -> str:
         """Get current value for a requirement."""
         if "_cycles" in requirement:
             return str(metrics.cycles_completed)
@@ -334,9 +333,7 @@ class AbstractionLevelManager:
         """Get current abstraction level."""
         return self.current_level
 
-    def get_level_metrics(
-        self, level: AbstractionLevel
-    ) -> LevelMetrics:
+    def get_level_metrics(self, level: AbstractionLevel) -> LevelMetrics:
         """Get metrics for a specific level."""
         return self.level_metrics[level]
 

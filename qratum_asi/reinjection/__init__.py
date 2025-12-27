@@ -48,6 +48,64 @@ Usage:
 """
 
 # Type definitions
+# Audit
+from qratum_asi.reinjection.audit import (
+    DOMAIN_COMPLIANCE_FRAMEWORKS,
+    AuditReport,
+    AuditReportGenerator,
+    ComplianceCheck,
+)
+
+# Autonomous orchestrator
+from qratum_asi.reinjection.autonomous_orchestrator import (
+    CROSS_VERTICAL_DEPENDENCIES,
+    ArtifactSensitivity,
+    AutonomousReinjectionOrchestrator,
+    DiscoveryArtifact,
+    PropagationResult,
+    PropagationTarget,
+    ReinjectionStatusSummary,
+    SystemState,
+    create_artifact_from_discovery_result,
+)
+
+# Contracts
+from qratum_asi.reinjection.contracts import (
+    ApprovalRecord,
+    ReinjectionContract,
+    ReinjectionContractStatus,
+    create_reinjection_contract,
+)
+
+# Core engine
+from qratum_asi.reinjection.engine import (
+    ReinjectionCycleResult,
+    ReinjectionEngine,
+    create_synthetic_discovery_candidate,
+)
+
+# Mapper
+from qratum_asi.reinjection.mapper import (
+    DOMAIN_PRIOR_TYPES,
+    DiscoveryPriorMapper,
+    MappingResult,
+    PriorUpdate,
+)
+
+# Sandbox
+from qratum_asi.reinjection.sandbox import (
+    RollbackTest,
+    SandboxOrchestrator,
+    SandboxState,
+)
+
+# SOI Telemetry integration
+from qratum_asi.reinjection.soi_telemetry import (
+    EvolutionDataPoint,
+    OptionalityMetrics,
+    SOIReinjectionTelemetry,
+    TelemetryEvent,
+)
 from qratum_asi.reinjection.types import (
     AuditRecord,
     DiscoveryDomain,
@@ -61,70 +119,11 @@ from qratum_asi.reinjection.types import (
 
 # Validator
 from qratum_asi.reinjection.validator import (
-    ReinjectionValidator,
-    ValidationResult,
     DOMAIN_CONFIDENCE_THRESHOLDS,
     MINIMUM_COMPOSITE_SCORE,
     MINIMUM_MUTUAL_INFORMATION,
-)
-
-# Mapper
-from qratum_asi.reinjection.mapper import (
-    DiscoveryPriorMapper,
-    MappingResult,
-    PriorUpdate,
-    DOMAIN_PRIOR_TYPES,
-)
-
-# Sandbox
-from qratum_asi.reinjection.sandbox import (
-    SandboxOrchestrator,
-    SandboxState,
-    RollbackTest,
-)
-
-# Contracts
-from qratum_asi.reinjection.contracts import (
-    ReinjectionContract,
-    ReinjectionContractStatus,
-    ApprovalRecord,
-    create_reinjection_contract,
-)
-
-# Audit
-from qratum_asi.reinjection.audit import (
-    AuditReport,
-    AuditReportGenerator,
-    ComplianceCheck,
-    DOMAIN_COMPLIANCE_FRAMEWORKS,
-)
-
-# Core engine
-from qratum_asi.reinjection.engine import (
-    ReinjectionEngine,
-    ReinjectionCycleResult,
-    create_synthetic_discovery_candidate,
-)
-
-# Autonomous orchestrator
-from qratum_asi.reinjection.autonomous_orchestrator import (
-    AutonomousReinjectionOrchestrator,
-    DiscoveryArtifact,
-    PropagationResult,
-    PropagationTarget,
-    ReinjectionStatusSummary,
-    ArtifactSensitivity,
-    SystemState,
-    CROSS_VERTICAL_DEPENDENCIES,
-    create_artifact_from_discovery_result,
-)
-
-# SOI Telemetry integration
-from qratum_asi.reinjection.soi_telemetry import (
-    SOIReinjectionTelemetry,
-    TelemetryEvent,
-    OptionalityMetrics,
-    EvolutionDataPoint,
+    ReinjectionValidator,
+    ValidationResult,
 )
 
 __version__ = "1.0.0"

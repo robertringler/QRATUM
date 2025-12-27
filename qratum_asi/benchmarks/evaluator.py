@@ -4,25 +4,23 @@ Evaluates system performance against benchmarks and compares
 to human baselines to track progress toward superintelligence.
 """
 
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
 import hashlib
 import json
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from typing import Any
 
-from qratum_asi.core.chain import ASIMerkleChain
-from qratum_asi.core.contracts import ASIContract
-from qratum_asi.core.events import ASIEvent, ASIEventType
-
+from qratum_asi.benchmarks.registry import BenchmarkRegistry
 from qratum_asi.benchmarks.types import (
-    BenchmarkCategory,
     BenchmarkResult,
     BenchmarkTask,
     EvaluationSummary,
     HumanBaseline,
     PerformanceLevel,
 )
-from qratum_asi.benchmarks.registry import BenchmarkRegistry
+from qratum_asi.core.chain import ASIMerkleChain
+from qratum_asi.core.contracts import ASIContract
+from qratum_asi.core.events import ASIEvent, ASIEventType
 
 
 @dataclass
@@ -41,9 +39,7 @@ class EvaluationSession:
     tasks_evaluated: list[str]
     results: dict[str, BenchmarkResult]
     summary: EvaluationSummary | None = None
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
 class PerformanceEvaluator:
@@ -102,9 +98,7 @@ class PerformanceEvaluator:
         score = self._compute_score(task, system_output)
 
         # Classify performance level
-        performance_level = self._classify_performance(
-            score, task.max_score, task.human_baseline
-        )
+        performance_level = self._classify_performance(score, task.max_score, task.human_baseline)
 
         # Generate reasoning chain (placeholder)
         reasoning_chain = [
@@ -276,18 +270,14 @@ class PerformanceEvaluator:
 
         # Count by category
         tasks_by_category: dict[str, int] = {}
-        for task_id in results.keys():
+        for task_id in results:
             task = self.registry.get_task(task_id)
             if task:
                 cat = task.category.value
                 tasks_by_category[cat] = tasks_by_category.get(cat, 0) + 1
 
         # Average score
-        avg_score = (
-            sum(r.normalized_score for r in results.values()) / total
-            if total > 0
-            else 0.0
-        )
+        avg_score = sum(r.normalized_score for r in results.values()) / total if total > 0 else 0.0
 
         # Performance distribution
         distribution = {level.value: 0 for level in PerformanceLevel}
@@ -330,7 +320,8 @@ class PerformanceEvaluator:
 
         total = len(self.all_results)
         superhuman = sum(
-            1 for r in self.all_results.values()
+            1
+            for r in self.all_results.values()
             if r.performance_level == PerformanceLevel.SUPERHUMAN
         )
 

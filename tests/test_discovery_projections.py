@@ -162,8 +162,8 @@ class TestDiscoveryProjectionsEngine:
 
         # Scores should be different for different workflows
         assert (
-            assessment1.vulnerability_score != assessment2.vulnerability_score or
-            assessment1.trajectory_compliance != assessment2.trajectory_compliance
+            assessment1.vulnerability_score != assessment2.vulnerability_score
+            or assessment1.trajectory_compliance != assessment2.trajectory_compliance
         )
 
     def test_get_all_projections(self):
@@ -200,8 +200,7 @@ class TestDiscoveryProjectionsEngine:
         assert len(comparisons) > 0
         # Complex disease genetics should have high probability (0.75)
         complex_disease_comp = [
-            c for c in comparisons
-            if c[0] == DiscoveryType.COMPLEX_DISEASE_GENETICS
+            c for c in comparisons if c[0] == DiscoveryType.COMPLEX_DISEASE_GENETICS
         ][0]
         assert complex_disease_comp[1] == 0.75
 
@@ -232,8 +231,7 @@ class TestDiscoveryProjectionsEngine:
         engine = DiscoveryProjectionsEngine()
 
         simulation = engine.simulate_timeline(
-            DiscoveryType.PERSONALIZED_DRUG_DESIGN,
-            {"team_size": 5}
+            DiscoveryType.PERSONALIZED_DRUG_DESIGN, {"team_size": 5}
         )
         sim_dict = simulation.to_dict()
 

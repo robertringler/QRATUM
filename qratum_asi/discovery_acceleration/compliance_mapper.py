@@ -222,13 +222,14 @@ class ComplianceMapper:
         self._artifact_counter = 0
 
         # Log initialization
-        self.merkle_chain.add_event("compliance_mapper_initialized", {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        })
+        self.merkle_chain.add_event(
+            "compliance_mapper_initialized",
+            {
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            },
+        )
 
-    def get_compliance_mapping(
-        self, discovery_type: DiscoveryType
-    ) -> ComplianceMapping:
+    def get_compliance_mapping(self, discovery_type: DiscoveryType) -> ComplianceMapping:
         """Get compliance mapping for a discovery type.
 
         Args:
@@ -240,9 +241,7 @@ class ComplianceMapper:
         # Combine common and discovery-specific frameworks
         frameworks = self.COMMON_FRAMEWORKS.copy()
 
-        discovery_specific = self.DISCOVERY_SPECIFIC_FRAMEWORKS.get(
-            discovery_type, {}
-        )
+        discovery_specific = self.DISCOVERY_SPECIFIC_FRAMEWORKS.get(discovery_type, {})
         frameworks.update(discovery_specific)
 
         # Extract all controls
@@ -257,10 +256,7 @@ class ComplianceMapper:
 
         # Determine overall status
         statuses = [f["status"] for f in frameworks.values()]
-        overall_status = (
-            "compliant" if all(s == "compliant" for s in statuses)
-            else "non_compliant"
-        )
+        overall_status = "compliant" if all(s == "compliant" for s in statuses) else "non_compliant"
 
         return ComplianceMapping(
             discovery_type=discovery_type,
@@ -283,9 +279,7 @@ class ComplianceMapper:
             ComplianceArtifact for the contract
         """
         self._artifact_counter += 1
-        artifact_id = (
-            f"ca_{discovery_type.value}_{self._artifact_counter:06d}"
-        )
+        artifact_id = f"ca_{discovery_type.value}_{self._artifact_counter:06d}"
 
         # Get compliance mapping
         mapping = self.get_compliance_mapping(discovery_type)
@@ -318,12 +312,15 @@ class ComplianceMapper:
         self.artifacts[artifact_id] = artifact
 
         # Log to merkle chain
-        self.merkle_chain.add_event("compliance_artifact_generated", {
-            "artifact_id": artifact_id,
-            "contract_id": contract_id,
-            "discovery_type": discovery_type.value,
-            "frameworks": len(mapping.frameworks),
-        })
+        self.merkle_chain.add_event(
+            "compliance_artifact_generated",
+            {
+                "artifact_id": artifact_id,
+                "contract_id": contract_id,
+                "discovery_type": discovery_type.value,
+                "frameworks": len(mapping.frameworks),
+            },
+        )
 
         return artifact
 
@@ -352,41 +349,38 @@ class ComplianceMapper:
             if framework_data["status"] == "compliant":
                 validated_frameworks.append(framework_key)
             else:
-                violations.append({
-                    "framework": framework_key,
-                    "severity": "high",
-                    "description": f"Non-compliant with {framework_data['name']}",
-                })
+                violations.append(
+                    {
+                        "framework": framework_key,
+                        "severity": "high",
+                        "description": f"Non-compliant with {framework_data['name']}",
+                    }
+                )
 
         # Generate recommendations
         recommendations = []
 
         if violations:
-            recommendations.append(
-                "Address identified compliance violations before deployment"
-            )
-            recommendations.append(
-                "Conduct compliance audit with regulatory experts"
-            )
+            recommendations.append("Address identified compliance violations before deployment")
+            recommendations.append("Conduct compliance audit with regulatory experts")
         else:
-            recommendations.append(
-                "Maintain continuous compliance monitoring"
-            )
-            recommendations.append(
-                "Schedule periodic compliance reviews"
-            )
+            recommendations.append("Maintain continuous compliance monitoring")
+            recommendations.append("Schedule periodic compliance reviews")
 
         # Determine overall compliance
         is_compliant = len(violations) == 0
 
         # Log validation
-        self.merkle_chain.add_event("compliance_validated", {
-            "workflow_id": workflow_id,
-            "discovery_type": discovery_type.value,
-            "is_compliant": is_compliant,
-            "frameworks_validated": len(validated_frameworks),
-            "violations_found": len(violations),
-        })
+        self.merkle_chain.add_event(
+            "compliance_validated",
+            {
+                "workflow_id": workflow_id,
+                "discovery_type": discovery_type.value,
+                "is_compliant": is_compliant,
+                "frameworks_validated": len(validated_frameworks),
+                "violations_found": len(violations),
+            },
+        )
 
         return ComplianceValidationResult(
             workflow_id=workflow_id,
@@ -429,9 +423,7 @@ class ComplianceMapper:
 
         return all_frameworks
 
-    def export_compliance_report(
-        self, discovery_type: DiscoveryType
-    ) -> dict[str, Any]:
+    def export_compliance_report(self, discovery_type: DiscoveryType) -> dict[str, Any]:
         """Export comprehensive compliance report for a discovery type.
 
         Args:

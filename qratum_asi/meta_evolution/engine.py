@@ -19,20 +19,19 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
 
+from qratum_asi.core.authorization import AuthorizationSystem
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.core.authorization import AuthorizationSystem
 from qratum_asi.core.types import ASISafetyLevel
-
 from qratum_asi.meta_evolution.types import (
+    META_EVOLUTION_INVARIANTS,
     AbstractionLevel,
     EvolutionProposal,
-    EvolutionType,
     EvolutionSafetyLevel,
+    EvolutionType,
     SafetyVerification,
     VerificationStatus,
-    META_EVOLUTION_INVARIANTS,
 )
 
 
@@ -170,18 +169,19 @@ class MetaEvolutionEngine:
         )
 
         # Identify risks
-        risks = self._identify_risks(
-            evolution_type, abstraction_level, affected_components
-        )
+        risks = self._identify_risks(evolution_type, abstraction_level, affected_components)
 
         # Compute provenance hash
         provenance_hash = hashlib.sha3_256(
-            json.dumps({
-                "proposal_id": proposal_id,
-                "type": evolution_type.value,
-                "level": abstraction_level.value,
-                "title": title,
-            }, sort_keys=True).encode()
+            json.dumps(
+                {
+                    "proposal_id": proposal_id,
+                    "type": evolution_type.value,
+                    "level": abstraction_level.value,
+                    "title": title,
+                },
+                sort_keys=True,
+            ).encode()
         ).hexdigest()
 
         proposal = EvolutionProposal(
@@ -283,8 +283,11 @@ class MetaEvolutionEngine:
 
         # Emit verification event
         event = ASIEvent.create(
-            event_type=ASIEventType.BOUNDARY_CHECK_PASSED if status == VerificationStatus.PASSED
-            else ASIEventType.SAFETY_VIOLATION_DETECTED,
+            event_type=(
+                ASIEventType.BOUNDARY_CHECK_PASSED
+                if status == VerificationStatus.PASSED
+                else ASIEventType.SAFETY_VIOLATION_DETECTED
+            ),
             payload={
                 "verification_id": verification_id,
                 "proposal_id": proposal_id,
@@ -394,8 +397,8 @@ class MetaEvolutionEngine:
 
         # Calculate improvement magnitude
         improvement = (
-            metrics_after.get("capability_score", 1.0) /
-            metrics_before.get("capability_score", 1.0) - 1.0
+            metrics_after.get("capability_score", 1.0) / metrics_before.get("capability_score", 1.0)
+            - 1.0
         )
 
         result = EvolutionResult(
@@ -413,12 +416,14 @@ class MetaEvolutionEngine:
         self.results[proposal_id] = result
 
         # Track improvement
-        self.improvement_history.append({
-            "proposal_id": proposal_id,
-            "level": proposal.abstraction_level.value,
-            "improvement": improvement,
-            "timestamp": datetime.utcnow().isoformat(),
-        })
+        self.improvement_history.append(
+            {
+                "proposal_id": proposal_id,
+                "level": proposal.abstraction_level.value,
+                "improvement": improvement,
+                "timestamp": datetime.utcnow().isoformat(),
+            }
+        )
 
         # Emit execution event
         event = ASIEvent.create(
@@ -476,8 +481,8 @@ class MetaEvolutionEngine:
 
         # Auto-approve for routine optimizations (human approval simulated)
         if (
-            verification.status == VerificationStatus.PASSED and
-            proposal.safety_level == EvolutionSafetyLevel.ROUTINE
+            verification.status == VerificationStatus.PASSED
+            and proposal.safety_level == EvolutionSafetyLevel.ROUTINE
         ):
             self.approve_proposal(proposal.proposal_id, "auto_approver", contract)
             proposals_approved.append(proposal.proposal_id)
@@ -555,9 +560,7 @@ class MetaEvolutionEngine:
 
         return risks
 
-    def _check_invariant(
-        self, invariant: str, proposal: EvolutionProposal
-    ) -> tuple[bool, str]:
+    def _check_invariant(self, invariant: str, proposal: EvolutionProposal) -> tuple[bool, str]:
         """Check if a proposal preserves an invariant."""
         # Check affected components against protected invariants
         protected_components = {
@@ -620,8 +623,7 @@ class MetaEvolutionEngine:
         return {
             "total_proposals": len(self.proposals),
             "approved_proposals": sum(
-                1 for p in self.proposals.values()
-                if p.human_approval_status == "approved"
+                1 for p in self.proposals.values() if p.human_approval_status == "approved"
             ),
             "executed_evolutions": len(self.results),
             "total_cycles": len(self.cycles),
