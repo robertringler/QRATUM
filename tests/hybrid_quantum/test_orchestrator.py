@@ -249,9 +249,12 @@ class TestHybridQuantumOrchestrator:
             classical_fallback=classical_fallback,
         )
         
+        max_retries = orchestrator.fallback_strategy.max_retries
+        expected_quantum_calls = max_retries + 1  # Initial attempt + retries
+        
         assert result["success"] is True
         assert result["mode_used"] == "fallback"
-        assert call_count["quantum"] == 4  # 1 + 3 retries
+        assert call_count["quantum"] == expected_quantum_calls  # Initial + retries
         assert call_count["classical"] == 1
 
     def test_bounded_retry_limit(self):
@@ -272,9 +275,12 @@ class TestHybridQuantumOrchestrator:
             quantum_op=quantum_op,
         )
         
+        max_retries = strategy.max_retries
+        expected_calls = max_retries + 1  # Initial attempt + retries
+        
         assert result["success"] is False
-        assert call_count[0] == 4  # Initial + 3 retries
-        assert result["retry_count"] == 3
+        assert call_count[0] == expected_calls  # Initial + max_retries
+        assert result["retry_count"] == max_retries
 
     def test_dual_approval_proposal_creation(self):
         """Test proposal is created when dual approval required."""

@@ -24,6 +24,9 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Callable
 
+# Trust invariant constant - never modify from external input
+TRUST_INVARIANT_ASSERTION = "ℛ(t) ≥ 0"
+
 
 class ProposalStatus(Enum):
     """Status of a reinjection proposal."""
@@ -140,7 +143,7 @@ class ProposalArtifact:
     fallback_strategy: str = "classical_tensor_fallback"
     rollback_path: str = ""
     cryptographic_signatures: list[str] = field(default_factory=list)
-    invariant_assertion: str = "ℛ(t) ≥ 0"
+    invariant_assertion: str = TRUST_INVARIANT_ASSERTION
     status: ProposalStatus = ProposalStatus.PENDING
     pre_validation: PreValidationScore | None = None
     approvals: list[dict[str, Any]] = field(default_factory=list)
@@ -150,11 +153,13 @@ class ProposalArtifact:
     metadata: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        """Set defaults."""
+        """Set defaults and enforce invariant assertion."""
         if not self.created_at:
             self.created_at = datetime.utcnow().isoformat()
         if not self.updated_at:
             self.updated_at = self.created_at
+        # Enforce invariant assertion cannot be tampered with
+        self.invariant_assertion = TRUST_INVARIANT_ASSERTION
 
     def to_json(self) -> str:
         """Convert to standardized JSON format.
@@ -199,8 +204,14 @@ class ProposalArtifact:
 
         Returns:
             ProposalArtifact instance
+
+        Note:
+            The invariant_assertion field is always set to the constant
+            TRUST_INVARIANT_ASSERTION to prevent tampering via JSON input.
         """
         data = json.loads(json_str)
+        # Note: invariant_assertion is not read from JSON to prevent tampering
+        # The __post_init__ method enforces the constant value
         return cls(
             proposal_id=data["proposal_id"],
             cluster=ProposalCluster(data["cluster"]),
@@ -210,7 +221,8 @@ class ProposalArtifact:
             fallback_strategy=data.get("fallback_strategy", ""),
             rollback_path=data.get("rollback_path", ""),
             cryptographic_signatures=data.get("cryptographic_signatures", []),
-            invariant_assertion=data.get("invariant_assertion", "ℛ(t) ≥ 0"),
+            # Invariant assertion forced to constant - cannot be set from JSON
+            invariant_assertion=TRUST_INVARIANT_ASSERTION,
             status=ProposalStatus(data.get("status", "pending")),
             created_at=data.get("created_at", ""),
             updated_at=data.get("updated_at", ""),

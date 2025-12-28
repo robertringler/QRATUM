@@ -32,6 +32,13 @@ from typing import Any, Callable
 import numpy as np
 
 
+# Trust adjustment constants for maintainability
+TRUST_SUCCESS_MAX_INCREASE = 1.05  # Maximum trust increase factor on success
+TRUST_SUCCESS_INCREMENT = 0.01  # Trust increment per unit below maximum
+TRUST_FALLBACK_REDUCTION = 0.95  # Trust factor for fallback success
+TRUST_FAILURE_REDUCTION_RATE = 0.1  # Trust reduction rate per retry on failure
+
+
 class OrchestratorStatus(Enum):
     """Status of orchestrator execution."""
 
@@ -554,17 +561,22 @@ class HybridQuantumOrchestrator:
         is_fallback: bool = False,
     ) -> None:
         """Update trust metrics based on execution outcome."""
-        # Compute trust adjustment
+        # Compute trust adjustment using named constants
         if success:
             if is_fallback:
                 # Fallback success: slight trust reduction
-                adjustment = 0.95
+                adjustment = TRUST_FALLBACK_REDUCTION
             else:
                 # Quantum success: trust preserved or increased
-                adjustment = min(1.05, 1.0 + 0.01 * (1.0 - context.trust_metric.value))
+                adjustment = min(
+                    TRUST_SUCCESS_MAX_INCREASE,
+                    1.0 + TRUST_SUCCESS_INCREMENT * (1.0 - context.trust_metric.value)
+                )
         else:
             # Failure: trust reduction proportional to retry count
-            adjustment = max(0.0, 1.0 - 0.1 * (context.retry_count + 1))
+            adjustment = max(
+                0.0, 1.0 - TRUST_FAILURE_REDUCTION_RATE * (context.retry_count + 1)
+            )
 
         new_value = max(0.0, context.trust_metric.value * adjustment)
 

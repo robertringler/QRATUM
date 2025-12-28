@@ -428,7 +428,8 @@ class EnhancedTopologicalObserver:
 
         # Entropy ratio
         if n > 1:
-            entropy = -np.sum(prob_array[prob_array > 0] * np.log2(prob_array[prob_array > 0]))
+            nonzero_probs = prob_array[prob_array > 0]
+            entropy = -np.sum(nonzero_probs * np.log2(nonzero_probs))
             max_entropy = np.log2(n)
             entropy_ratio = entropy / max_entropy if max_entropy > 0 else 1.0
         else:

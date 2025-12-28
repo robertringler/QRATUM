@@ -141,11 +141,12 @@ class TestEnhancedTopologicalObserver:
         observer = EnhancedTopologicalObserver()
         
         # 90% in "00", others all >1% so effective support is 4
+        # (900/1000=90%, 50/1000=5%, 30/1000=3%, 20/1000=2%)
         counts = {"00": 900, "01": 50, "10": 30, "11": 20}
         observation = observer.observe(counts)
         
         assert observation.collapse_metrics.collapse_index == 0.9
-        # All outcomes have >1% (9%, 5%, 3%, 2%), so effective_support is 4
+        # All 4 outcomes have probability >1%, so effective_support is 4
         assert observation.collapse_metrics.effective_support == 4
         assert observation.collapse_metrics.dominant_outcomes[0] == "00"
         # Entropy should be low due to concentration
