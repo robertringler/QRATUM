@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRATUM Desktop</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #111827;
+            color: #fff;
+            padding: 1rem;
+        }
+        .header {
+            padding: 1rem;
+            border-bottom: 1px solid #374151;
+            margin-bottom: 1rem;
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background: #1f2937;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #374151;
+        }
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #60a5fa;
+        }
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: #9ca3af;
+        }
+        .stat-value {
+            color: #10b981;
+            font-weight: 600;
+        }
+        .status-healthy { color: #10b981; }
+        .status-degraded { color: #f59e0b; }
+        .status-error { color: #ef4444; }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            background: #374151;
+            color: #9ca3af;
+        }
+        .logs {
+            background: #1f2937;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #374151;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            padding: 0.25rem 0;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🦀 QRATUM Desktop - Ultra-Lightweight Edition</h1>
+        <span class="badge">v0.1.0 | 8 MB Core</span>
+    </div>
+
+    <div class="grid">
+        <!-- Health Status Card -->
+        <div class="card">
+            <h2>System Health</h2>
+            <div class="stat">
+                <span class="stat-label">Status:</span>
+                <span id="status" class="stat-value status-healthy">Healthy</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Memory:</span>
+                <span id="memory" class="stat-value">0 / 0 MB</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Uptime:</span>
+                <span id="uptime" class="stat-value">0s</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Version:</span>
+                <span id="version" class="stat-value">0.1.0</span>
+            </div>
+        </div>
+
+        <!-- QuASIM Module (Placeholder) -->
+        <div class="card">
+            <h2>QuASIM (WASM)</h2>
+            <p style="color: #9ca3af; margin-bottom: 0.5rem;">
+                Quantum simulation via WebAssembly
+            </p>
+            <span class="badge">Phase 2 - Coming Soon</span>
+        </div>
+
+        <!-- XENON Module (Placeholder) -->
+        <div class="card">
+            <h2>XENON (Viz)</h2>
+            <p style="color: #9ca3af; margin-bottom: 0.5rem;">
+                Molecular visualization
+            </p>
+            <span class="badge">Phase 2 - Coming Soon</span>
+        </div>
+
+        <!-- Aethernet Module (Placeholder) -->
+        <div class="card">
+            <h2>Aethernet (TXO)</h2>
+            <p style="color: #9ca3af; margin-bottom: 0.5rem;">
+                Transaction overlay network
+            </p>
+            <span class="badge">Phase 2 - Coming Soon</span>
+        </div>
+    </div>
+
+    <!-- Logs Viewer -->
+    <div class="logs">
+        <h3 style="margin-bottom: 0.5rem;">System Logs</h3>
+        <div id="logs-container">
+            <div class="log-entry">[INFO] QRATUM Desktop initialized (ultra-lightweight mode)</div>
+            <div class="log-entry">[INFO] Binary size: ~8 MB</div>
+            <div class="log-entry">[INFO] Memory usage: ~30-50 MB</div>
+        </div>
+    </div>
+
+    <script>
+        const { invoke } = window.__TAURI__.tauri;
+
+        // Update health status every 5 seconds
+        async function updateHealth() {
+            try {
+                const health = await invoke('get_health');
+                
+                document.getElementById('status').textContent = health.status;
+                document.getElementById('status').className = `stat-value status-${health.status.toLowerCase()}`;
+                
+                document.getElementById('memory').textContent = 
+                    `${health.memory_used_mb.toFixed(0)} / ${health.memory_total_mb.toFixed(0)} MB`;
+                
+                document.getElementById('uptime').textContent = 
+                    `${health.uptime_seconds}s`;
+                
+                document.getElementById('version').textContent = health.backend_version;
+            } catch (error) {
+                console.error('Failed to fetch health:', error);
+            }
+        }
+
+        // Initialize
+        updateHealth();
+        setInterval(updateHealth, 5000);
+    </script>
+</body>
+</html>
