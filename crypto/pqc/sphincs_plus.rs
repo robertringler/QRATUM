@@ -30,6 +30,7 @@ pub enum SPHINCSError {
     InvalidSignature,
     SigningFailed,
     VerificationFailed,
+    KeyGenerationFailed,
 }
 
 impl fmt::Display for SPHINCSError {
@@ -39,6 +40,7 @@ impl fmt::Display for SPHINCSError {
             SPHINCSError::InvalidSignature => write!(f, "Invalid signature"),
             SPHINCSError::SigningFailed => write!(f, "Signing failed"),
             SPHINCSError::VerificationFailed => write!(f, "Verification failed"),
+            SPHINCSError::KeyGenerationFailed => write!(f, "Key generation failed"),
         }
     }
 }
@@ -69,13 +71,18 @@ pub struct Signature {
 
 /// Generate SPHINCS+ keypair
 ///
-/// Uses system randomness to generate a quantum-resistant keypair.
-/// In production, this should use a hardware RNG or HSM.
+/// Uses cryptographically secure RNG (getrandom) to generate a quantum-resistant keypair.
+/// Replaces zero-seed with proper random generation for production security.
 pub fn generate_keypair() -> Result<(PublicKey, SecretKey), SPHINCSError> {
-    // In production, replace with secure random source
+    // Generate cryptographically secure random seeds
     let mut sk_seed = [0u8; SPHINCS_N];
     let mut sk_prf = [0u8; SPHINCS_N];
     let mut pk_seed = [0u8; SPHINCS_N];
+    
+    // Use getrandom for cryptographically secure randomness
+    getrandom::getrandom(&mut sk_seed).map_err(|_| SPHINCSError::KeyGenerationFailed)?;
+    getrandom::getrandom(&mut sk_prf).map_err(|_| SPHINCSError::KeyGenerationFailed)?;
+    getrandom::getrandom(&mut pk_seed).map_err(|_| SPHINCSError::KeyGenerationFailed)?;
     
     // Derive root from seeds (simplified - production uses full SPHINCS+ keygen)
     let mut hasher = Sha3_256::new();
