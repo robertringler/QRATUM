@@ -1,0 +1,123 @@
+# Prometheus Metrics Configuration for QRATUM
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'qratum-production'
+    environment: 'production'
+
+# Alerting configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+# Rule files for alerts
+rule_files:
+  - "alerts/*.yml"
+
+# Scrape configurations
+scrape_configs:
+  # QRATUM Platform metrics
+  - job_name: 'qratum-platform'
+    static_configs:
+      - targets: ['qratum-platform:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Aethernet metrics
+  - job_name: 'aethernet'
+    static_configs:
+      - targets: ['aethernet:9090']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # QRADLE metrics
+  - job_name: 'qradle'
+    static_configs:
+      - targets: ['qradle:8080']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Vertical-specific metrics
+  - job_name: 'verticals'
+    static_configs:
+      - targets: 
+          - 'juris:8001'
+          - 'vitra:8002'
+          - 'ecora:8003'
+          - 'capra:8004'
+          - 'sentra:8005'
+          - 'quasim:8006'
+          - 'neura:8007'
+          - 'fluxa:8008'
+          - 'chrona:8009'
+          - 'geona:8010'
+          - 'fusia:8011'
+          - 'strata:8012'
+          - 'vexor:8013'
+          - 'cohora:8014'
+          - 'orbia:8015'
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # ASI components metrics
+  - job_name: 'qratum-asi'
+    static_configs:
+      - targets: ['q-mind:8100', 'q-reality:8101', 'q-evolve:8102', 'q-forge:8103']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Infrastructure metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 30s
+
+  - job_name: 'postgres-exporter'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    scrape_interval: 30s
+
+  - job_name: 'redis-exporter'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+    scrape_interval: 30s
+
+# Custom QRATUM metrics documented:
+# 
+# Contract Execution:
+# - qratum_contracts_total{status="authorized|executing|completed|failed"}
+# - qratum_contract_execution_duration_seconds
+# - qratum_contract_execution_errors_total
+# - qratum_dual_authorization_violations_total
+#
+# Merkle Chain:
+# - qratum_merkle_chain_length
+# - qratum_merkle_chain_integrity_checks_total
+# - qratum_merkle_chain_integrity_failures_total
+# - qratum_merkle_event_append_duration_seconds
+#
+# Verticals:
+# - qratum_vertical_queries_total{vertical="JURIS|VITRA|..."}
+# - qratum_vertical_query_duration_seconds{vertical}
+# - qratum_vertical_errors_total{vertical}
+#
+# Safety:
+# - qratum_safety_violations_total{invariant="1-8"}
+# - qratum_authorization_denials_total{reason}
+# - qratum_rollback_operations_total
+#
+# Performance:
+# - qratum_txo_throughput_per_second
+# - qratum_p99_latency_seconds
+# - qratum_active_contracts
+# - qratum_queue_depth
+#
+# ASI:
+# - qratum_reasoning_chains_total{strategy}
+# - qratum_reasoning_confidence{vertical}
+# - qratum_asi_capability_invocations_total{component}
