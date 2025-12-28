@@ -8,7 +8,7 @@ mod tray;
 use anyhow::{Context, Result};
 use backend::database::Database;
 use std::sync::{Arc, Mutex};
-use tauri::{Manager, State};
+use tauri::Manager;
 
 // Application state
 pub struct AppState {
