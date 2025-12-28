@@ -11,6 +11,7 @@ from typing import Dict, Any, Optional
 from contextlib import contextmanager
 import time
 import json
+import threading
 
 
 # Optional OpenTelemetry imports for production OTLP export
@@ -66,6 +67,7 @@ class OTelInstrumentation:
         self.traces = []
         self.metrics = []
         self.logs = []
+        self._lock = threading.Lock()  # Thread safety for in-memory storage
         
         # Initialize OpenTelemetry if available
         if OTEL_AVAILABLE and otlp_endpoint:
@@ -178,10 +180,11 @@ class OTelInstrumentation:
                 }
                 
                 if self.enabled:
-                    # Limit in-memory storage to prevent leaks
-                    if len(self.traces) >= self.max_queue_size:
-                        self.traces = self.traces[-self.max_queue_size//2:]
-                    self.traces.append(span)
+                    # Limit in-memory storage to prevent leaks (thread-safe)
+                    with self._lock:
+                        if len(self.traces) >= self.max_queue_size:
+                            self.traces = self.traces[-self.max_queue_size//2:]
+                        self.traces.append(span)
     
     def record_metric(self, name: str, value: float, unit: str = "", labels: Optional[Dict[str, str]] = None):
         """Record a metric.
@@ -243,10 +246,11 @@ class OTelInstrumentation:
         }
         
         if self.enabled:
-            # Limit in-memory storage to prevent leaks
-            if len(self.logs) >= self.max_queue_size:
-                self.logs = self.logs[-self.max_queue_size//2:]
-            self.logs.append(log_entry)
+            # Limit in-memory storage to prevent leaks (thread-safe)
+            with self._lock:
+                if len(self.logs) >= self.max_queue_size:
+                    self.logs = self.logs[-self.max_queue_size//2:]
+                self.logs.append(log_entry)
     
     def flush(self):
         """Manually flush all pending telemetry data.
@@ -288,15 +292,18 @@ class OTelInstrumentation:
     
     def export_traces(self) -> str:
         """Export traces in OTLP JSON format (in-memory fallback only)."""
-        return json.dumps(self.traces[-100:], indent=2)  # Last 100 traces
+        with self._lock:
+            return json.dumps(self.traces[-100:], indent=2)  # Last 100 traces
     
     def export_metrics(self) -> str:
         """Export metrics in OTLP JSON format (in-memory fallback only)."""
-        return json.dumps(self.metrics[-100:], indent=2)  # Last 100 metrics
+        with self._lock:
+            return json.dumps(self.metrics[-100:], indent=2)  # Last 100 metrics
     
     def export_logs(self) -> str:
         """Export logs in OTLP JSON format (in-memory fallback only)."""
-        return json.dumps(self.logs[-100:], indent=2)  # Last 100 logs
+        with self._lock:
+            return json.dumps(self.logs[-100:], indent=2)  # Last 100 logs
 
 
 # Singleton instance

@@ -30,6 +30,7 @@ pub enum KyberError {
     InvalidCiphertext,
     EncapsulationFailed,
     DecapsulationFailed,
+    KeyGenerationFailed,
 }
 
 impl fmt::Display for KyberError {
@@ -39,6 +40,7 @@ impl fmt::Display for KyberError {
             KyberError::InvalidCiphertext => write!(f, "Invalid ciphertext"),
             KyberError::EncapsulationFailed => write!(f, "Encapsulation failed"),
             KyberError::DecapsulationFailed => write!(f, "Decapsulation failed"),
+            KyberError::KeyGenerationFailed => write!(f, "Key generation failed"),
         }
     }
 }
@@ -82,7 +84,7 @@ pub fn generate_keypair() -> Result<(PublicKey, SecretKey), KyberError> {
     
     // Generate cryptographically secure random seed
     let mut seed = [0u8; 64];
-    getrandom::getrandom(&mut seed).map_err(|_| KyberError::EncapsulationFailed)?;
+    getrandom::getrandom(&mut seed).map_err(|_| KyberError::KeyGenerationFailed)?;
     
     // Simplified keygen (production requires full Kyber algorithm)
     let mut hasher = Sha3_512::new();

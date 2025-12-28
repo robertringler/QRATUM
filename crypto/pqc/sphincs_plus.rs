@@ -30,6 +30,7 @@ pub enum SPHINCSError {
     InvalidSignature,
     SigningFailed,
     VerificationFailed,
+    KeyGenerationFailed,
 }
 
 impl fmt::Display for SPHINCSError {
@@ -39,6 +40,7 @@ impl fmt::Display for SPHINCSError {
             SPHINCSError::InvalidSignature => write!(f, "Invalid signature"),
             SPHINCSError::SigningFailed => write!(f, "Signing failed"),
             SPHINCSError::VerificationFailed => write!(f, "Verification failed"),
+            SPHINCSError::KeyGenerationFailed => write!(f, "Key generation failed"),
         }
     }
 }
@@ -78,9 +80,9 @@ pub fn generate_keypair() -> Result<(PublicKey, SecretKey), SPHINCSError> {
     let mut pk_seed = [0u8; SPHINCS_N];
     
     // Use getrandom for cryptographically secure randomness
-    getrandom::getrandom(&mut sk_seed).map_err(|_| SPHINCSError::SigningFailed)?;
-    getrandom::getrandom(&mut sk_prf).map_err(|_| SPHINCSError::SigningFailed)?;
-    getrandom::getrandom(&mut pk_seed).map_err(|_| SPHINCSError::SigningFailed)?;
+    getrandom::getrandom(&mut sk_seed).map_err(|_| SPHINCSError::KeyGenerationFailed)?;
+    getrandom::getrandom(&mut sk_prf).map_err(|_| SPHINCSError::KeyGenerationFailed)?;
+    getrandom::getrandom(&mut pk_seed).map_err(|_| SPHINCSError::KeyGenerationFailed)?;
     
     // Derive root from seeds (simplified - production uses full SPHINCS+ keygen)
     let mut hasher = Sha3_256::new();

@@ -32,6 +32,7 @@ pub enum DilithiumError {
     InvalidSignature,
     SigningFailed,
     VerificationFailed,
+    KeyGenerationFailed,
 }
 
 impl fmt::Display for DilithiumError {
@@ -41,6 +42,7 @@ impl fmt::Display for DilithiumError {
             DilithiumError::InvalidSignature => write!(f, "Invalid signature"),
             DilithiumError::SigningFailed => write!(f, "Signing failed"),
             DilithiumError::VerificationFailed => write!(f, "Verification failed"),
+            DilithiumError::KeyGenerationFailed => write!(f, "Key generation failed"),
         }
     }
 }
@@ -78,7 +80,7 @@ pub fn generate_keypair() -> Result<(PublicKey, SecretKey), DilithiumError> {
     
     // Generate cryptographically secure random seed
     let mut seed = [0u8; 64];
-    getrandom::getrandom(&mut seed).map_err(|_| DilithiumError::SigningFailed)?;
+    getrandom::getrandom(&mut seed).map_err(|_| DilithiumError::KeyGenerationFailed)?;
     
     // Simplified keygen (production requires full Dilithium algorithm)
     let mut shake = Shake256::default();
