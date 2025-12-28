@@ -19,7 +19,7 @@ import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 
 class CheckpointStatus(Enum):
@@ -215,7 +215,9 @@ class RollbackManager:
         Returns:
             List of checkpoints in creation order
         """
-        return [self._checkpoints[cid] for cid in self._checkpoint_chain if cid in self._checkpoints]
+        return [
+            self._checkpoints[cid] for cid in self._checkpoint_chain if cid in self._checkpoints
+        ]
 
     def verify_all_checkpoints(self) -> dict[str, bool]:
         """Verify integrity of all checkpoints.
@@ -233,7 +235,9 @@ class RollbackManager:
                 del self._checkpoints[oldest_id]
             # Clean up execution mapping
             self._execution_to_checkpoint = {
-                eid: cid for eid, cid in self._execution_to_checkpoint.items() if cid in self._checkpoints
+                eid: cid
+                for eid, cid in self._execution_to_checkpoint.items()
+                if cid in self._checkpoints
             }
 
     def export_checkpoint_log(self) -> str:

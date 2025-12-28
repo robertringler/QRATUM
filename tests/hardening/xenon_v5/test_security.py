@@ -8,6 +8,7 @@ Certificate: QRATUM-HARDENING-20251215-V5
 
 import numpy as np
 import pytest
+
 from qratum.bioinformatics.xenon.alignment import QuantumAlignmentEngine
 from qratum.core.security import SecurityValidator
 

@@ -15,14 +15,12 @@ from datetime import datetime, timezone
 from typing import Any
 
 from qradle.merkle import MerkleChain
-
+from qratum_asi.reinjection.contracts import ReinjectionContract
 from qratum_asi.reinjection.types import (
     AuditRecord,
     DiscoveryDomain,
-    ReinjectionCandidate,
     ReinjectionResult,
 )
-from qratum_asi.reinjection.contracts import ReinjectionContract
 
 
 @dataclass
@@ -190,9 +188,7 @@ class AuditReportGenerator:
         provenance_summary = self._generate_provenance_summary(contract)
 
         # Generate recommendations
-        recommendations = self._generate_recommendations(
-            contract, compliance_checks, result
-        )
+        recommendations = self._generate_recommendations(contract, compliance_checks, result)
 
         report = AuditReport(
             report_id=report_id,
@@ -498,9 +494,7 @@ class AuditReportGenerator:
         # Check result metrics
         if result and result.sandbox_result:
             if result.sandbox_result.fidelity_score < 0.8:
-                recommendations.append(
-                    "Consider additional validation - fidelity score below 0.8"
-                )
+                recommendations.append("Consider additional validation - fidelity score below 0.8")
             if result.sandbox_result.side_effects:
                 recommendations.append(
                     f"Monitor for side effects: {len(result.sandbox_result.side_effects)} detected"
@@ -521,13 +515,12 @@ class AuditReportGenerator:
         if not self.generated_reports:
             return {"total_reports": 0}
 
-        avg_checks = sum(
-            len(r.compliance_checks) for r in self.generated_reports
-        ) / len(self.generated_reports)
+        avg_checks = sum(len(r.compliance_checks) for r in self.generated_reports) / len(
+            self.generated_reports
+        )
 
         avg_pass_rate = sum(
-            r.get_compliance_summary()["pass_rate"]
-            for r in self.generated_reports
+            r.get_compliance_summary()["pass_rate"] for r in self.generated_reports
         ) / len(self.generated_reports)
 
         return {

@@ -11,7 +11,6 @@ Status: Production
 from __future__ import annotations
 
 import hashlib
-import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
@@ -196,9 +195,7 @@ class DataAsAService(RevenueStream):
                 "enterprise": 10.0,
             }
 
-    def calculate_data_access_cost(
-        self, tier: str, queries: int
-    ) -> float:
+    def calculate_data_access_cost(self, tier: str, queries: int) -> float:
         """Calculate cost for data access.
 
         Args:
@@ -234,9 +231,7 @@ class AnalyticsRevenue(RevenueStream):
                 "custom_model": 500.0,
             }
 
-    def calculate_analytics_cost(
-        self, model_type: str, compute_units: int
-    ) -> float:
+    def calculate_analytics_cost(self, model_type: str, compute_units: int) -> float:
         """Calculate cost for analytics service.
 
         Args:
@@ -273,9 +268,7 @@ class ComplianceRevenue(RevenueStream):
                 "enterprise": 20000.0,
             }
 
-    def calculate_compliance_cost(
-        self, certification_level: str, audit_hours: int
-    ) -> float:
+    def calculate_compliance_cost(self, certification_level: str, audit_hours: int) -> float:
         """Calculate cost for compliance services.
 
         Args:
@@ -548,9 +541,7 @@ class EconomicEngine:
         self.transactions.append(flow)
         return flow
 
-    def distribute_staking_rewards(
-        self, reward_pool: float
-    ) -> dict[str, float]:
+    def distribute_staking_rewards(self, reward_pool: float) -> dict[str, float]:
         """Distribute staking rewards to all stakers.
 
         Args:
@@ -559,10 +550,7 @@ class EconomicEngine:
         Returns:
             Dictionary of rewards by account ID
         """
-        total_staked = sum(
-            acc.staked.get(TokenType.STAKE, 0.0)
-            for acc in self.accounts.values()
-        )
+        total_staked = sum(acc.staked.get(TokenType.STAKE, 0.0) for acc in self.accounts.values())
 
         if total_staked == 0:
             return {}
@@ -616,21 +604,21 @@ class EconomicEngine:
             # Compliance revenue (5% need compliance)
             compliance_revenue = users * 0.05 * 2000
 
-            total_revenue = (
-                tx_revenue + data_revenue + analytics_revenue + compliance_revenue
-            )
+            total_revenue = tx_revenue + data_revenue + analytics_revenue + compliance_revenue
 
-            forecasts.append({
-                "year": year,
-                "users": users,
-                "transactions": total_transactions,
-                "tx_revenue": tx_revenue,
-                "data_revenue": data_revenue,
-                "analytics_revenue": analytics_revenue,
-                "compliance_revenue": compliance_revenue,
-                "total_revenue": total_revenue,
-                "market_cap_estimate": total_revenue * self.MARKET_CAP_MULTIPLE,
-            })
+            forecasts.append(
+                {
+                    "year": year,
+                    "users": users,
+                    "transactions": total_transactions,
+                    "tx_revenue": tx_revenue,
+                    "data_revenue": data_revenue,
+                    "analytics_revenue": analytics_revenue,
+                    "compliance_revenue": compliance_revenue,
+                    "total_revenue": total_revenue,
+                    "market_cap_estimate": total_revenue * self.MARKET_CAP_MULTIPLE,
+                }
+            )
 
         return forecasts
 

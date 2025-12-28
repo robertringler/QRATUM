@@ -1,36 +1,39 @@
 """Tests for quantum kernels module."""
 
-import pytest
 import numpy as np
+import pytest
 
 try:
     from quasim.quantum_kernels.tensor_networks import (
-        TensorNetworkConfig,
         MPSSimulator,
-        PEPSSimulator,
         MPSState,
+        PEPSSimulator,
+        TensorNetworkConfig,
     )
+
     TENSOR_NETWORKS_AVAILABLE = True
 except ImportError:
     TENSOR_NETWORKS_AVAILABLE = False
 
 try:
     from quasim.quantum_kernels.classical_analogs import (
-        ClassicalVQE,
         ClassicalQAOA,
-        ClassicalVQEResult,
         ClassicalQAOAResult,
+        ClassicalVQE,
+        ClassicalVQEResult,
     )
+
     CLASSICAL_ANALOGS_AVAILABLE = True
 except ImportError:
     CLASSICAL_ANALOGS_AVAILABLE = False
 
 try:
     from quasim.quantum_kernels.quantum_kernels import (
+        QuantumFeatureEncoder,
         QuantumKernel,
         QuantumKernelConfig,
-        QuantumFeatureEncoder,
     )
+
     QUANTUM_KERNELS_AVAILABLE = True
 except ImportError:
     QUANTUM_KERNELS_AVAILABLE = False
@@ -41,6 +44,7 @@ try:
         CompressionConfig,
         CompressionResult,
     )
+
     AHTC_AVAILABLE = True
 except ImportError:
     AHTC_AVAILABLE = False
@@ -92,9 +96,9 @@ class TestMPSSimulator:
         """Test creating product state MPS."""
         config = TensorNetworkConfig(num_sites=4)
         simulator = MPSSimulator(config)
-        
+
         state = simulator.create_product_state()
-        
+
         assert state.num_sites == 4
         assert len(state.tensors) == 4
 
@@ -102,9 +106,9 @@ class TestMPSSimulator:
         """Test creating random MPS."""
         config = TensorNetworkConfig(num_sites=4, bond_dimension=8, seed=42)
         simulator = MPSSimulator(config)
-        
+
         state = simulator.create_random_mps()
-        
+
         assert state.num_sites == 4
         assert state.max_bond_dimension <= 8
 
@@ -112,20 +116,20 @@ class TestMPSSimulator:
         """Test computing MPS norm."""
         config = TensorNetworkConfig(num_sites=3, seed=42)
         simulator = MPSSimulator(config)
-        
+
         state = simulator.create_product_state()
         norm = simulator.compute_norm(state)
-        
+
         assert np.isclose(norm, 1.0, atol=1e-10)
 
     def test_normalize(self):
         """Test normalizing MPS."""
         config = TensorNetworkConfig(num_sites=3, seed=42)
         simulator = MPSSimulator(config)
-        
+
         state = simulator.create_random_mps()
         normalized = simulator.normalize(state)
-        
+
         norm = simulator.compute_norm(normalized)
         assert np.isclose(norm, 1.0, atol=1e-10)
 
@@ -133,20 +137,20 @@ class TestMPSSimulator:
         """Test computing entanglement entropy."""
         config = TensorNetworkConfig(num_sites=4, seed=42)
         simulator = MPSSimulator(config)
-        
+
         # Product state has zero entanglement
         product_state = simulator.create_product_state()
         entropy = simulator.compute_entanglement_entropy(product_state, cut_position=1)
-        
+
         assert entropy >= 0  # Entropy is non-negative
 
     def test_create_heisenberg_hamiltonian(self):
         """Test creating Heisenberg Hamiltonian."""
         config = TensorNetworkConfig(num_sites=4)
         simulator = MPSSimulator(config)
-        
+
         terms = simulator.create_heisenberg_hamiltonian(J=1.0, h=0.1)
-        
+
         assert len(terms) > 0
         # Should have n-1 exchange terms + n field terms
         assert len(terms) == 3 + 4  # 3 bonds + 4 sites
@@ -166,15 +170,17 @@ class TestPEPSSimulator:
         """Test creating 2D product state (stub)."""
         config = TensorNetworkConfig(network_type="peps")
         simulator = PEPSSimulator(config)
-        
+
         state = simulator.create_product_state_2d((3, 3))
-        
+
         assert state["type"] == "peps"
         assert state["lattice_size"] == (3, 3)
         assert "stub" in state["status"]
 
 
-@pytest.mark.skipif(not CLASSICAL_ANALOGS_AVAILABLE, reason="Classical analogs module not available")
+@pytest.mark.skipif(
+    not CLASSICAL_ANALOGS_AVAILABLE, reason="Classical analogs module not available"
+)
 class TestClassicalVQE:
     """Test ClassicalVQE."""
 
@@ -186,12 +192,12 @@ class TestClassicalVQE:
     def test_minimize_energy(self):
         """Test minimizing energy with simple Hamiltonian."""
         vqe = ClassicalVQE(seed=42, max_iterations=100)
-        
+
         # Simple 2x2 Hamiltonian
         H = np.array([[1.0, 0.5], [0.5, -1.0]])
-        
+
         result = vqe.minimize_energy(H, n_params=4)
-        
+
         assert result.success
         # Ground state energy should be negative for this Hamiltonian
         eigenvalues = np.linalg.eigvalsh(H)
@@ -200,17 +206,19 @@ class TestClassicalVQE:
     def test_molecular_energy(self):
         """Test molecular energy computation."""
         vqe = ClassicalVQE(seed=42)
-        
+
         # Simple one-body integrals
         h_pq = np.array([[-1.0, 0.1], [0.1, -0.5]])
-        
+
         result = vqe.compute_molecular_energy(h_pq, n_electrons=1)
-        
+
         assert result.success
         assert result.method == "hartree_fock"
 
 
-@pytest.mark.skipif(not CLASSICAL_ANALOGS_AVAILABLE, reason="Classical analogs module not available")
+@pytest.mark.skipif(
+    not CLASSICAL_ANALOGS_AVAILABLE, reason="Classical analogs module not available"
+)
 class TestClassicalQAOA:
     """Test ClassicalQAOA."""
 
@@ -222,11 +230,11 @@ class TestClassicalQAOA:
     def test_solve_maxcut_small(self):
         """Test solving small MaxCut problem."""
         qaoa = ClassicalQAOA(seed=42)
-        
+
         # Triangle graph
         edges = [(0, 1), (1, 2), (2, 0)]
         result = qaoa.solve_maxcut(n_nodes=3, edges=edges)
-        
+
         assert result.success
         assert result.cost >= 2  # At least 2 edges can be cut
         assert result.approximation_ratio is not None
@@ -234,16 +242,19 @@ class TestClassicalQAOA:
     def test_solve_ising(self):
         """Test solving Ising model."""
         qaoa = ClassicalQAOA(seed=42)
-        
+
         # Simple ferromagnetic chain
-        J = np.array([
-            [0, 1, 0],
-            [1, 0, 1],
-            [0, 1, 0],
-        ], dtype=float)
-        
+        J = np.array(
+            [
+                [0, 1, 0],
+                [1, 0, 1],
+                [0, 1, 0],
+            ],
+            dtype=float,
+        )
+
         result = qaoa.solve_ising(J)
-        
+
         assert result.success
         # Ground state should have aligned spins
         assert len(result.solution) == 3
@@ -263,22 +274,22 @@ class TestQuantumKernel:
         """Test computing kernel value."""
         config = QuantumKernelConfig(feature_dimension=2, seed=42)
         kernel = QuantumKernel(config)
-        
+
         x1 = np.array([1.0, 0.0])
         x2 = np.array([0.0, 1.0])
-        
+
         k = kernel.compute_kernel(x1, x2)
-        
+
         assert 0 <= k <= 1  # Kernel values should be bounded
 
     def test_compute_kernel_matrix(self):
         """Test computing kernel matrix."""
         config = QuantumKernelConfig(feature_dimension=2, seed=42)
         kernel = QuantumKernel(config)
-        
+
         X = np.random.randn(10, 2)
         K = kernel.compute_kernel_matrix(X)
-        
+
         assert K.shape == (10, 10)
         # Matrix should be symmetric
         assert np.allclose(K, K.T)
@@ -292,10 +303,10 @@ class TestQuantumKernel:
                 seed=42,
             )
             kernel = QuantumKernel(config)
-            
+
             x1 = np.array([1.0, 0.0])
             x2 = np.array([0.0, 1.0])
-            
+
             k = kernel.compute_kernel(x1, x2)
             assert isinstance(k, float)
 
@@ -303,10 +314,10 @@ class TestQuantumKernel:
         """Test kernel validity verification."""
         config = QuantumKernelConfig(feature_dimension=2, seed=42)
         kernel = QuantumKernel(config)
-        
+
         X = np.random.randn(5, 2)
         verification = kernel.verify_kernel_validity(X)
-        
+
         assert "is_symmetric" in verification
         assert "is_positive_semidefinite" in verification
         assert "valid" in verification
@@ -324,17 +335,17 @@ class TestQuantumFeatureEncoder:
     def test_fit_transform(self):
         """Test fit and transform."""
         encoder = QuantumFeatureEncoder(output_dim=8, seed=42)
-        
+
         X = np.random.randn(20, 4)
         X_transformed = encoder.fit_transform(X)
-        
+
         assert X_transformed.shape == (20, 8)
 
     def test_transform_requires_fit(self):
         """Test that transform requires fit."""
         encoder = QuantumFeatureEncoder(output_dim=8)
         X = np.random.randn(10, 4)
-        
+
         with pytest.raises(ValueError, match="not fitted"):
             encoder.transform(X)
 
@@ -353,14 +364,14 @@ class TestAHTCAccelerator:
         """Test compressing matrix with SVD."""
         config = CompressionConfig(method="svd", target_rank=5)
         accelerator = AHTCAccelerator(config)
-        
+
         # Create low-rank matrix
         A = np.random.randn(20, 10)
         B = np.random.randn(10, 30)
         matrix = A @ B  # Rank 10 matrix
-        
+
         result = accelerator.compress(matrix, target_rank=5)
-        
+
         assert result.rank_used == 5
         assert result.compression_ratio > 1
 
@@ -368,28 +379,28 @@ class TestAHTCAccelerator:
         """Test decompressing matrix."""
         config = CompressionConfig(method="svd", target_rank=5)
         accelerator = AHTCAccelerator(config)
-        
+
         matrix = np.random.randn(20, 30)
         compressed = accelerator.compress(matrix)
-        
+
         reconstructed = accelerator.decompress(compressed)
-        
+
         assert reconstructed.shape == matrix.shape
 
     def test_accelerated_matvec(self):
         """Test accelerated matrix-vector product."""
         config = CompressionConfig(method="svd", target_rank=10)
         accelerator = AHTCAccelerator(config)
-        
+
         matrix = np.random.randn(100, 100)
         vector = np.random.randn(100)
-        
+
         compressed = accelerator.compress(matrix)
-        
+
         # Compare direct vs accelerated
         direct_result = matrix @ vector
         accelerated_result = accelerator.accelerated_matvec(compressed, vector)
-        
+
         # Should be close (not exact due to compression)
         # Allow more tolerance for compressed result
         assert accelerated_result.shape == direct_result.shape
@@ -398,12 +409,12 @@ class TestAHTCAccelerator:
         """Test memory savings estimation."""
         config = CompressionConfig()
         accelerator = AHTCAccelerator(config)
-        
+
         estimate = accelerator.estimate_memory_savings(
             original_shape=(1000, 1000),
             rank=50,
         )
-        
+
         assert "compression_ratio" in estimate
         assert estimate["compression_ratio"] > 1
         assert "memory_reduction_percent" in estimate
@@ -411,12 +422,12 @@ class TestAHTCAccelerator:
     def test_compression_methods(self):
         """Test different compression methods."""
         matrix = np.random.randn(20, 20)
-        
+
         for method in ["svd", "hosvd", "tt"]:
             config = CompressionConfig(method=method, target_rank=5)
             accelerator = AHTCAccelerator(config)
-            
+
             result = accelerator.compress(matrix)
-            
+
             assert result.method_used == method
             assert result.compression_ratio > 0

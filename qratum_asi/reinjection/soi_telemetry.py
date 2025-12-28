@@ -17,23 +17,16 @@ QuASIM: v2025.12.26
 
 from __future__ import annotations
 
-import hashlib
 import json
-import time
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
-
 from qratum_asi.reinjection.autonomous_orchestrator import (
     AutonomousReinjectionOrchestrator,
     DiscoveryArtifact,
     PropagationResult,
-    ReinjectionStatusSummary,
-    SystemState,
-    ArtifactSensitivity,
-    PropagationTarget,
 )
 from qratum_asi.reinjection.engine import ReinjectionCycleResult
 
@@ -167,9 +160,7 @@ class SOIReinjectionTelemetry:
         self.orchestrator.register_reinjection_callback(self._on_reinjection_completed)
         self.orchestrator.register_propagation_callback(self._on_propagation_completed)
 
-    def register_broadcast_callback(
-        self, callback: Callable[[TelemetryEvent], None]
-    ) -> None:
+    def register_broadcast_callback(self, callback: Callable[[TelemetryEvent], None]) -> None:
         """Register a callback for telemetry broadcasts.
 
         Args:
@@ -247,7 +238,9 @@ class SOIReinjectionTelemetry:
                 "success": result.success,
                 "error_message": result.error_message if not result.success else None,
                 "execution_time_ms": result.execution_time_ms,
-                "validation_passed": result.validation_result.valid if result.validation_result else False,
+                "validation_passed": (
+                    result.validation_result.valid if result.validation_result else False
+                ),
             },
         )
         self._broadcast(event)
@@ -276,9 +269,7 @@ class SOIReinjectionTelemetry:
         # Calculate success rate
         total_completed = status.reinjections_completed + status.reinjections_failed
         success_rate = (
-            status.reinjections_completed / total_completed
-            if total_completed > 0
-            else 1.0
+            status.reinjections_completed / total_completed if total_completed > 0 else 1.0
         )
 
         # Calculate system health
@@ -314,9 +305,7 @@ class SOIReinjectionTelemetry:
             "system_state": self.orchestrator.system_state.value,
             "summary": status.to_dict(),
             "epoch": self.current_epoch,
-            "recent_events": [
-                e.to_dict() for e in self.telemetry_events[-10:]
-            ],
+            "recent_events": [e.to_dict() for e in self.telemetry_events[-10:]],
             "merkle_proof": self.merkle_chain.get_chain_proof(),
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
@@ -343,11 +332,9 @@ class SOIReinjectionTelemetry:
 
         # Build simplified dependency graph from module-level constant
         from qratum_asi.reinjection.autonomous_orchestrator import CROSS_VERTICAL_DEPENDENCIES
+
         dependency_graph = {
-            domain.value: [
-                {"target": target.value, "weight": weight}
-                for target, weight in deps
-            ]
+            domain.value: [{"target": target.value, "weight": weight} for target, weight in deps]
             for domain, deps in CROSS_VERTICAL_DEPENDENCIES.items()
         }
 
@@ -355,9 +342,7 @@ class SOIReinjectionTelemetry:
             "total_propagations": len(propagations),
             "vertical_impacts": vertical_impacts,
             "dependency_graph": dependency_graph,
-            "recent_propagations": [
-                p.to_dict() for p in propagations[-5:]
-            ],
+            "recent_propagations": [p.to_dict() for p in propagations[-5:]],
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
@@ -377,9 +362,7 @@ class SOIReinjectionTelemetry:
         # Success rate
         total_completed = status.reinjections_completed + status.reinjections_failed
         success_rate = (
-            status.reinjections_completed / total_completed
-            if total_completed > 0
-            else 0.0
+            status.reinjections_completed / total_completed if total_completed > 0 else 0.0
         )
 
         # Cross-vertical density
@@ -437,11 +420,13 @@ class SOIReinjectionTelemetry:
         recent_audits = []
         for artifact_id, result in list(self.orchestrator.completed_reinjections.items())[-5:]:
             if result.audit_report:
-                recent_audits.append({
-                    "artifact_id": artifact_id,
-                    "report_id": result.audit_report.report_id,
-                    "compliance_summary": result.audit_report.get_compliance_summary(),
-                })
+                recent_audits.append(
+                    {
+                        "artifact_id": artifact_id,
+                        "report_id": result.audit_report.report_id,
+                        "compliance_summary": result.audit_report.get_compliance_summary(),
+                    }
+                )
 
         return {
             "chain_length": len(self.merkle_chain.chain),

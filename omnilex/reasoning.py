@@ -61,11 +61,7 @@ class LegalReasoningEngine:
         self.knowledge_base = knowledge_base or LegalKnowledgeBase()
 
     def analyze_irac(
-        self,
-        facts: str,
-        question: str,
-        jurisdiction: str,
-        domain: str = "contract"
+        self, facts: str, question: str, jurisdiction: str, domain: str = "contract"
     ) -> IRACAnalysis:
         """Perform IRAC analysis on legal question.
 
@@ -88,9 +84,7 @@ class LegalReasoningEngine:
         application = self._apply_rule_to_facts(rule, facts, issue)
 
         # Step 4: Draw conclusion
-        conclusion, confidence, caveats = self._draw_conclusion(
-            issue, rule, application, domain
-        )
+        conclusion, confidence, caveats = self._draw_conclusion(issue, rule, application, domain)
 
         return IRACAnalysis(
             issue=issue,
@@ -99,7 +93,7 @@ class LegalReasoningEngine:
             application=application,
             conclusion=conclusion,
             confidence=confidence,
-            caveats=caveats
+            caveats=caveats,
         )
 
     def _identify_issue(self, question: str, domain: str) -> str:
@@ -132,12 +126,7 @@ class LegalReasoningEngine:
         # Default issue format
         return f"Legal issue: {question}"
 
-    def _synthesize_rule(
-        self,
-        issue: str,
-        jurisdiction: str,
-        domain: str
-    ) -> tuple[str, list[str]]:
+    def _synthesize_rule(self, issue: str, jurisdiction: str, domain: str) -> tuple[str, list[str]]:
         """Synthesize applicable legal rule from authorities.
 
         Args:
@@ -192,10 +181,20 @@ class LegalReasoningEngine:
             List of keywords
         """
         legal_keywords = [
-            "breach", "contract", "damages", "duty", "negligence",
-            "consideration", "capacity", "offer", "acceptance",
-            "foreseeability", "proximate cause", "reasonable person",
-            "unconscionable", "promissory estoppel"
+            "breach",
+            "contract",
+            "damages",
+            "duty",
+            "negligence",
+            "consideration",
+            "capacity",
+            "offer",
+            "acceptance",
+            "foreseeability",
+            "proximate cause",
+            "reasonable person",
+            "unconscionable",
+            "promissory estoppel",
         ]
 
         text_lower = text.lower()
@@ -267,11 +266,7 @@ class LegalReasoningEngine:
         return application
 
     def _draw_conclusion(
-        self,
-        issue: str,
-        rule: str,
-        application: str,
-        domain: str
+        self, issue: str, rule: str, application: str, domain: str
     ) -> tuple[str, float, list[str]]:
         """Draw legal conclusion from analysis.
 
@@ -300,7 +295,7 @@ class LegalReasoningEngine:
             "Specific facts may alter the conclusion",
             "Jurisdiction-specific rules may apply",
             "Attorney review is recommended",
-            "Recent case law may modify these principles"
+            "Recent case law may modify these principles",
         ]
 
         return conclusion, confidence, caveats

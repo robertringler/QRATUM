@@ -14,13 +14,11 @@ from datetime import datetime, timezone
 from typing import Any
 
 from qradle.merkle import MerkleChain
-
+from qratum_asi.reinjection.mapper import DiscoveryPriorMapper, MappingResult
 from qratum_asi.reinjection.types import (
     ReinjectionCandidate,
-    ReinjectionStatus,
     SandboxResult,
 )
-from qratum_asi.reinjection.mapper import DiscoveryPriorMapper, MappingResult
 
 
 @dataclass
@@ -277,9 +275,7 @@ class SandboxOrchestrator:
         # Check cross-vertical impacts
         for vertical, impact in mapping_result.cross_vertical_impacts.items():
             if impact > 0.8:  # High cross-vertical impact
-                side_effects.append(
-                    f"High cross-vertical impact on {vertical}: {impact:.2f}"
-                )
+                side_effects.append(f"High cross-vertical impact on {vertical}: {impact:.2f}")
 
         return side_effects
 

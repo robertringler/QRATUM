@@ -16,14 +16,14 @@ from qstack.kernel import QStackKernel
 
 class Orchestrator:
     """High-level orchestration layer for Q-Stack execution.
-    
+
     Delegates to the existing QStackKernel for actual execution,
     providing a clean separation between orchestration and kernel logic.
     """
 
     def __init__(self, session: Any) -> None:
         """Initialize orchestrator with a system session.
-        
+
         Args:
             session: SystemSession instance containing kernel and configuration
         """
@@ -32,9 +32,9 @@ class Orchestrator:
 
     def execute(self) -> Any:
         """Execute the orchestrated workflow.
-        
+
         Delegates to the kernel's boot() method for actual execution.
-        
+
         Returns:
             Result from kernel boot operation
         """

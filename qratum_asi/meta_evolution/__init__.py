@@ -15,25 +15,25 @@ Status: Prototype (SI Transition Phase 3)
 Constraints: 8 Fatal Invariants preserved, human-approved bounded improvements
 """
 
+from qratum_asi.meta_evolution.abstraction import (
+    AbstractionLevelManager,
+    AbstractionTransition,
+)
+from qratum_asi.meta_evolution.engine import (
+    EvolutionCycle,
+    EvolutionResult,
+    MetaEvolutionEngine,
+)
+from qratum_asi.meta_evolution.meta_reinjection import (
+    MetaFeedbackResult,
+    MetaReinjectionLoop,
+)
 from qratum_asi.meta_evolution.types import (
     AbstractionLevel,
     EvolutionProposal,
     EvolutionType,
     MetaDiscovery,
     SafetyVerification,
-)
-from qratum_asi.meta_evolution.engine import (
-    MetaEvolutionEngine,
-    EvolutionCycle,
-    EvolutionResult,
-)
-from qratum_asi.meta_evolution.abstraction import (
-    AbstractionLevelManager,
-    AbstractionTransition,
-)
-from qratum_asi.meta_evolution.meta_reinjection import (
-    MetaReinjectionLoop,
-    MetaFeedbackResult,
 )
 
 __all__ = [

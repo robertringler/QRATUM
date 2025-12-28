@@ -158,9 +158,7 @@ class MPSSimulator:
         self.config = config
         self._rng = np.random.default_rng(config.seed)
 
-    def create_product_state(
-        self, local_states: list[np.ndarray] | None = None
-    ) -> MPSState:
+    def create_product_state(self, local_states: list[np.ndarray] | None = None) -> MPSState:
         """Create product state MPS.
 
         Args:

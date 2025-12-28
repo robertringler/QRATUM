@@ -9,14 +9,14 @@ Provides the foundational components for deterministic, auditable execution:
 """
 
 from .core import (
-    PlatformIntent,
-    PlatformContract,
+    FATAL_INVARIANTS,
+    ContractStatus,
     Event,
     EventType,
-    ContractStatus,
+    PlatformContract,
+    PlatformIntent,
     create_contract_from_intent,
     create_event,
-    FATAL_INVARIANTS,
 )
 from .event_chain import MerkleEventChain
 from .orchestrator import PlatformOrchestrator

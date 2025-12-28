@@ -12,17 +12,18 @@ Capabilities:
 - Hybrid classical-quantum algorithms
 """
 
-from typing import Dict, Any, List, Optional
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
-from ..platform.core import PlatformContract, EventType, create_event
+from ..platform.core import EventType, PlatformContract, create_event
 from ..platform.event_chain import MerkleEventChain
 from .base import VerticalModuleBase
 
 
 class QuantumBackend(Enum):
     """Supported quantum backends."""
+
     QISKIT_SIMULATOR = "qiskit_aer"
     CIRQ_SIMULATOR = "cirq_simulator"
     IBM_QUANTUM = "ibm_quantum"
@@ -34,11 +35,12 @@ class QuantumBackend(Enum):
 @dataclass
 class QuantumCircuit:
     """Representation of a quantum circuit."""
+
     num_qubits: int
     gates: List[Dict[str, Any]]
     measurements: List[int]
     name: str = "circuit"
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Export circuit to dictionary."""
         return {
@@ -52,11 +54,12 @@ class QuantumCircuit:
 @dataclass
 class QuantumResult:
     """Result from quantum circuit execution."""
+
     counts: Dict[str, int]
     probabilities: Dict[str, float]
     energy: Optional[float] = None
     metadata: Dict[str, Any] = None
-    
+
     def __post_init__(self):
         if self.metadata is None:
             self.metadata = {}
@@ -64,14 +67,14 @@ class QuantumResult:
 
 class QUASIM(VerticalModuleBase):
     """QUASIM: Quantum Simulation & Optimization Vertical.
-    
+
     Provides quantum computing capabilities:
     - Circuit simulation (Qiskit/Cirq)
     - Variational algorithms (VQE, QAOA)
     - Quantum error correction
     - Optimization algorithms
     """
-    
+
     def __init__(self):
         """Initialize QUASIM vertical."""
         super().__init__(
@@ -92,10 +95,10 @@ class QUASIM(VerticalModuleBase):
                 "Responsible quantum computing guidelines",
             ],
         )
-        
+
         self.supported_backends = list(QuantumBackend)
         self.max_qubits = 40  # Maximum qubits for simulation
-        
+
     def get_supported_tasks(self) -> List[str]:
         """Return list of supported task names."""
         return [
@@ -108,7 +111,7 @@ class QUASIM(VerticalModuleBase):
             "grover_search",
             "shor_factorization",
         ]
-    
+
     def execute_task(
         self,
         task: str,
@@ -117,20 +120,20 @@ class QUASIM(VerticalModuleBase):
         event_chain: MerkleEventChain,
     ) -> Dict[str, Any]:
         """Execute a QUASIM task.
-        
+
         Args:
             task: Task identifier
             parameters: Task-specific parameters
             contract: Executing contract
             event_chain: Event chain for logging
-            
+
         Returns:
             Dictionary with execution results
         """
         # Validate task
         if task not in self.get_supported_tasks():
             raise ValueError(f"Unknown task: {task}")
-        
+
         # Emit task started event
         event = create_event(
             EventType.TASK_STARTED,
@@ -142,7 +145,7 @@ class QUASIM(VerticalModuleBase):
             contract.contract_id,
         )
         event_chain.append(event)
-        
+
         # Execute task
         try:
             if task == "simulate_circuit":
@@ -163,10 +166,10 @@ class QUASIM(VerticalModuleBase):
                 result = self._shor_factorization(parameters)
             else:
                 raise ValueError(f"Task {task} not implemented")
-            
+
             # Add safety disclaimer
             result["safety_disclaimer"] = self.safety_disclaimer
-            
+
             # Emit task completed event
             event = create_event(
                 EventType.TASK_COMPLETED,
@@ -178,9 +181,9 @@ class QUASIM(VerticalModuleBase):
                 contract.contract_id,
             )
             event_chain.append(event)
-            
+
             return result
-            
+
         except Exception as e:
             # Emit task failed event
             event = create_event(
@@ -194,10 +197,10 @@ class QUASIM(VerticalModuleBase):
             )
             event_chain.append(event)
             raise
-    
+
     def _simulate_circuit(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """Simulate a quantum circuit.
-        
+
         Parameters:
             circuit: Circuit specification (dict or QuantumCircuit)
             backend: Backend to use (default: qiskit_aer)
@@ -206,16 +209,16 @@ class QUASIM(VerticalModuleBase):
         circuit_spec = parameters.get("circuit")
         backend = parameters.get("backend", "qiskit_aer")
         shots = parameters.get("shots", 1024)
-        
+
         # Validate circuit
         if isinstance(circuit_spec, dict):
             circuit = QuantumCircuit(**circuit_spec)
         else:
             circuit = circuit_spec
-        
+
         if circuit.num_qubits > self.max_qubits:
             raise ValueError(f"Circuit has {circuit.num_qubits} qubits, max is {self.max_qubits}")
-        
+
         # Placeholder simulation (production would use Qiskit/Cirq)
         # This is where we'd integrate with actual quantum simulators
         result = QuantumResult(
@@ -225,9 +228,9 @@ class QUASIM(VerticalModuleBase):
                 "backend": backend,
                 "shots": shots,
                 "qubits": circuit.num_qubits,
-            }
+            },
         )
-        
+
         return {
             "result": {
                 "counts": result.counts,
@@ -236,10 +239,10 @@ class QUASIM(VerticalModuleBase):
             },
             "circuit": circuit.to_dict(),
         }
-    
+
     def _vqe_optimization(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """Variational Quantum Eigensolver for chemistry/optimization.
-        
+
         Parameters:
             hamiltonian: Hamiltonian specification
             ansatz: Variational ansatz circuit
@@ -249,7 +252,7 @@ class QUASIM(VerticalModuleBase):
         hamiltonian = parameters.get("hamiltonian")
         ansatz = parameters.get("ansatz", "UCCSD")
         optimizer = parameters.get("optimizer", "COBYLA")
-        
+
         # Placeholder VQE (production would use Qiskit VQE)
         return {
             "energy": -1.137,  # Example ground state energy
@@ -260,12 +263,12 @@ class QUASIM(VerticalModuleBase):
                 "hamiltonian": str(hamiltonian),
                 "ansatz": ansatz,
                 "optimizer": optimizer,
-            }
+            },
         }
-    
+
     def _qaoa_optimization(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """Quantum Approximate Optimization Algorithm.
-        
+
         Parameters:
             problem: Optimization problem (MaxCut, TSP, etc.)
             p_layers: Number of QAOA layers
@@ -273,7 +276,7 @@ class QUASIM(VerticalModuleBase):
         """
         problem = parameters.get("problem")
         p_layers = parameters.get("p_layers", 1)
-        
+
         # Placeholder QAOA (production would use Qiskit QAOA)
         return {
             "optimal_solution": "10101",
@@ -283,14 +286,14 @@ class QUASIM(VerticalModuleBase):
             "metadata": {
                 "problem": str(problem),
                 "p_layers": p_layers,
-            }
+            },
         }
-    
+
     def _quantum_error_correction(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """Apply quantum error correction."""
         code = parameters.get("code", "surface_code")
         distance = parameters.get("distance", 3)
-        
+
         return {
             "code": code,
             "distance": distance,
@@ -298,7 +301,7 @@ class QUASIM(VerticalModuleBase):
             "physical_qubits": distance * distance,
             "threshold": 0.01,
         }
-    
+
     def _quantum_state_tomography(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """Perform quantum state tomography."""
         return {
@@ -306,40 +309,41 @@ class QUASIM(VerticalModuleBase):
             "fidelity": 0.99,
             "purity": 1.0,
         }
-    
+
     def _quantum_phase_estimation(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """Quantum phase estimation algorithm."""
         unitary = parameters.get("unitary")
         precision = parameters.get("precision", 8)
-        
+
         return {
             "phase": 0.25,
             "precision_bits": precision,
             "confidence": 0.95,
         }
-    
+
     def _grover_search(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """Grover's search algorithm."""
         search_space_size = parameters.get("search_space_size", 16)
         num_solutions = parameters.get("num_solutions", 1)
-        
+
         import math
+
         optimal_iterations = int(math.pi / 4 * math.sqrt(search_space_size / num_solutions))
-        
+
         return {
             "solution": "1010",
             "iterations": optimal_iterations,
             "success_probability": 0.95,
             "speedup": math.sqrt(search_space_size),
         }
-    
+
     def _shor_factorization(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """Shor's factorization algorithm."""
         number = parameters.get("number")
-        
+
         if not isinstance(number, int) or number < 2:
             raise ValueError("Number must be an integer >= 2")
-        
+
         # Placeholder (production would implement full Shor's algorithm)
         # Note: This requires significant qubits and error correction
         return {
@@ -348,7 +352,7 @@ class QUASIM(VerticalModuleBase):
             "qubits_required": 4 * len(bin(number)) - 4,
             "warning": "Factorization requires fault-tolerant quantum computer",
         }
-    
+
     def get_vertical_info(self) -> Dict[str, Any]:
         """Get information about this vertical."""
         return {
@@ -367,10 +371,10 @@ class QUASIM(VerticalModuleBase):
 if __name__ == "__main__":
     from ..platform.core import PlatformContract
     from ..platform.event_chain import MerkleEventChain
-    
+
     # Initialize QUASIM
     quasim = QUASIM()
-    
+
     # Create test contract and event chain
     contract = PlatformContract(
         contract_id="test_quasim_001",
@@ -378,7 +382,7 @@ if __name__ == "__main__":
         authorization_level="STANDARD",
     )
     event_chain = MerkleEventChain()
-    
+
     # Test circuit simulation
     circuit = QuantumCircuit(
         num_qubits=5,
@@ -388,16 +392,16 @@ if __name__ == "__main__":
             {"type": "rx", "qubit": 2, "angle": 0.5},
         ],
         measurements=[0, 1, 2],
-        name="test_circuit"
+        name="test_circuit",
     )
-    
+
     result = quasim.execute_task(
         task="simulate_circuit",
         parameters={"circuit": circuit, "shots": 1024},
         contract=contract,
         event_chain=event_chain,
     )
-    
+
     print("QUASIM Simulation Result:")
     print(f"Counts: {result['result']['counts']}")
     print(f"Metadata: {result['result']['metadata']}")

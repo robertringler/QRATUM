@@ -22,8 +22,6 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Literal
 
-import numpy as np
-
 
 class BackendProvider(Enum):
     """Supported quantum backend providers."""
@@ -380,7 +378,10 @@ class IBMHybridBackend(HybridQuantumBackend):
             return False, "Circuit cannot be None"
 
         if hasattr(circuit, "depth") and circuit.depth() > self.config.max_circuit_depth:
-            return False, f"Circuit depth {circuit.depth()} exceeds max {self.config.max_circuit_depth}"
+            return (
+                False,
+                f"Circuit depth {circuit.depth()} exceeds max {self.config.max_circuit_depth}",
+            )
 
         return True, "Circuit valid"
 
@@ -491,7 +492,6 @@ class IonQHybridBackend(HybridQuantumBackend):
                 )
 
         # Execute on IonQ via Braket
-        from braket.circuits import Circuit as BraketCircuit
 
         # Convert Qiskit circuit to Braket (simplified)
         # In production, use qiskit-braket-provider for proper conversion

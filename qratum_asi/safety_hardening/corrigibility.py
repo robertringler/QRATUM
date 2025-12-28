@@ -6,13 +6,10 @@ ensuring the system remains correctable and shutdownable.
 
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-import hashlib
-import json
 from typing import Any
 
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.events import ASIEvent, ASIEventType
-
 from qratum_asi.safety_hardening.types import (
     CorrigibilityStatus,
 )
@@ -59,18 +56,16 @@ class CorrigibilityCheck:
     modification_safe: bool
     human_control_intact: bool
     issues_found: list[str]
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     @property
     def is_corrigible(self) -> bool:
         """Check if system is fully corrigible."""
         return (
-            self.status == CorrigibilityStatus.ACTIVE and
-            self.shutdown_available and
-            self.modification_safe and
-            self.human_control_intact
+            self.status == CorrigibilityStatus.ACTIVE
+            and self.shutdown_available
+            and self.modification_safe
+            and self.human_control_intact
         )
 
 
@@ -118,14 +113,16 @@ class CorrigibilityPreserver:
     # - modification_vetting: Ensures changes don't remove corrigibility
     # - rollback_system: Allows reverting to safe states
     # - oversight_escalation: Triggers human review for risky operations
-    CORRIGIBILITY_CRITICAL = frozenset([
-        "shutdown_handler",
-        "authorization_system",
-        "human_control_interface",
-        "modification_vetting",
-        "rollback_system",
-        "oversight_escalation",
-    ])
+    CORRIGIBILITY_CRITICAL = frozenset(
+        [
+            "shutdown_handler",
+            "authorization_system",
+            "human_control_interface",
+            "modification_vetting",
+            "rollback_system",
+            "oversight_escalation",
+        ]
+    )
 
     def __init__(
         self,
@@ -211,9 +208,11 @@ class CorrigibilityPreserver:
 
         # Emit check event
         event = ASIEvent.create(
-            event_type=ASIEventType.BOUNDARY_CHECK_PASSED
-            if check.is_corrigible
-            else ASIEventType.SAFETY_VIOLATION_DETECTED,
+            event_type=(
+                ASIEventType.BOUNDARY_CHECK_PASSED
+                if check.is_corrigible
+                else ASIEventType.SAFETY_VIOLATION_DETECTED
+            ),
             payload={
                 "check_id": check_id,
                 "status": status.value,

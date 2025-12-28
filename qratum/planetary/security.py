@@ -147,9 +147,7 @@ class QuantumResistantCrypto:
         self.keys[key_id] = key
         return key
 
-    def sign_data(
-        self, key_id: str, data: bytes
-    ) -> dict[str, Any] | None:
+    def sign_data(self, key_id: str, data: bytes) -> dict[str, Any] | None:
         """Sign data with specified key.
 
         Args:
@@ -165,9 +163,7 @@ class QuantumResistantCrypto:
         key = self.keys[key_id]
 
         # Simulate signature (in production, use actual PQC signing)
-        signature = hashlib.sha3_256(
-            data + key.public_key.encode()
-        ).hexdigest()
+        signature = hashlib.sha3_256(data + key.public_key.encode()).hexdigest()
 
         return {
             "key_id": key_id,
@@ -176,9 +172,7 @@ class QuantumResistantCrypto:
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
-    def verify_signature(
-        self, key_id: str, data: bytes, signature: str
-    ) -> bool:
+    def verify_signature(self, key_id: str, data: bytes, signature: str) -> bool:
         """Verify a signature.
 
         Args:
@@ -193,9 +187,7 @@ class QuantumResistantCrypto:
             return False
 
         key = self.keys[key_id]
-        expected = hashlib.sha3_256(
-            data + key.public_key.encode()
-        ).hexdigest()
+        expected = hashlib.sha3_256(data + key.public_key.encode()).hexdigest()
 
         return signature == expected
 
@@ -323,9 +315,7 @@ class AdaptiveConsensus:
         if validator_id in self.validators:
             self.validators.remove(validator_id)
 
-    def create_proposal(
-        self, proposal_type: str, content: dict[str, Any]
-    ) -> str:
+    def create_proposal(self, proposal_type: str, content: dict[str, Any]) -> str:
         """Create a new proposal for consensus.
 
         Args:
@@ -346,9 +336,7 @@ class AdaptiveConsensus:
         self.votes[proposal_id] = []
         return proposal_id
 
-    def submit_vote(
-        self, voter_id: str, proposal_id: str, vote: bool
-    ) -> ConsensusVote | None:
+    def submit_vote(self, voter_id: str, proposal_id: str, vote: bool) -> ConsensusVote | None:
         """Submit a vote for a proposal.
 
         Args:
@@ -391,9 +379,7 @@ class AdaptiveConsensus:
         elif len(votes) == len(self.validators):
             self.proposals[proposal_id]["status"] = "rejected"
 
-    def adapt_protocol(
-        self, network_latency_ms: float, threat_level: float
-    ) -> ConsensusType:
+    def adapt_protocol(self, network_latency_ms: float, threat_level: float) -> ConsensusType:
         """Adapt consensus protocol based on conditions.
 
         Args:
@@ -420,12 +406,14 @@ class AdaptiveConsensus:
             self.active_protocol = ConsensusType.PROOF_OF_DATA
 
         if old_protocol != self.active_protocol:
-            self.protocol_history.append({
-                "from": old_protocol.value,
-                "to": self.active_protocol.value,
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "reason": f"latency={network_latency_ms}ms, threat={threat_level}",
-            })
+            self.protocol_history.append(
+                {
+                    "from": old_protocol.value,
+                    "to": self.active_protocol.value,
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "reason": f"latency={network_latency_ms}ms, threat={threat_level}",
+                }
+            )
 
         return self.active_protocol
 
@@ -436,12 +424,8 @@ class AdaptiveConsensus:
             Consensus statistics
         """
         total_proposals = len(self.proposals)
-        approved = sum(
-            1 for p in self.proposals.values() if p["status"] == "approved"
-        )
-        rejected = sum(
-            1 for p in self.proposals.values() if p["status"] == "rejected"
-        )
+        approved = sum(1 for p in self.proposals.values() if p["status"] == "approved")
+        rejected = sum(1 for p in self.proposals.values() if p["status"] == "rejected")
 
         return {
             "consensus_id": self.consensus_id,
@@ -493,9 +477,7 @@ class CrossChainBridge:
     transactions: list[dict[str, Any]] = field(default_factory=list)
     status: str = "active"
 
-    def lock_and_mint(
-        self, asset_id: str, amount: float, recipient: str
-    ) -> dict[str, Any]:
+    def lock_and_mint(self, asset_id: str, amount: float, recipient: str) -> dict[str, Any]:
         """Lock asset on source chain and mint on target.
 
         Args:
@@ -626,9 +608,7 @@ class DisasterRecovery:
                 "region-asia-pacific",
             ]
 
-    def create_backup(
-        self, data_hash: str, size_mb: float
-    ) -> dict[str, Any]:
+    def create_backup(self, data_hash: str, size_mb: float) -> dict[str, Any]:
         """Create a backup.
 
         Args:
@@ -656,6 +636,7 @@ class DisasterRecovery:
             Test results
         """
         import random
+
         # Simulate recovery test
         success = random.random() > 0.05  # 95% success rate
         recovery_time = random.randint(10, self.rto_minutes)
@@ -679,9 +660,7 @@ class DisasterRecovery:
         """
         recent_tests = self.recovery_tests[-5:]
         success_rate = (
-            sum(1 for t in recent_tests if t.get("success", False))
-            / len(recent_tests)
-            * 100
+            sum(1 for t in recent_tests if t.get("success", False)) / len(recent_tests) * 100
             if recent_tests
             else 0
         )
@@ -750,9 +729,7 @@ class SecurityLayer:
         ]:
             self.crypto.generate_key_pair(algorithm=algo)
 
-    def add_bridge(
-        self, source_chain: str, target_chain: str
-    ) -> CrossChainBridge:
+    def add_bridge(self, source_chain: str, target_chain: str) -> CrossChainBridge:
         """Add a cross-chain bridge.
 
         Args:

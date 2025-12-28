@@ -1,6 +1,7 @@
 """Tests for quantum provenance tracking."""
 
 import json
+
 import pytest
 
 try:
@@ -9,6 +10,7 @@ try:
         ProvenanceStatus,
         QuantumProvenanceWrapper,
     )
+
     PROVENANCE_AVAILABLE = True
 except ImportError:
     PROVENANCE_AVAILABLE = False
@@ -18,12 +20,14 @@ try:
         HybridQuantumConfig,
         IBMHybridBackend,
     )
+
     BACKENDS_AVAILABLE = True
 except ImportError:
     BACKENDS_AVAILABLE = False
 
 try:
     from qiskit import QuantumCircuit
+
     QISKIT_AVAILABLE = True
 except ImportError:
     QISKIT_AVAILABLE = False
@@ -53,10 +57,10 @@ class TestProvenanceRecord:
             input_hash="abc123",
             output_hash="def789",
         )
-        
+
         sig1 = record.compute_signature()
         sig2 = record.compute_signature()
-        
+
         assert sig1 == sig2
         assert len(sig1) == 64  # SHA-256
 
@@ -69,9 +73,9 @@ class TestProvenanceRecord:
             backend_provider="ibm",
             shots=1024,
         )
-        
+
         d = record.to_dict()
-        
+
         assert d["record_id"] == "rec-123"
         assert d["backend_provider"] == "ibm"
         assert "signature" in d
@@ -87,9 +91,9 @@ class TestProvenanceRecord:
             "backend_provider": "ibm",
             "shots": 1024,
         }
-        
+
         record = ProvenanceRecord.from_dict(data)
-        
+
         assert record.record_id == "rec-123"
         assert record.status == ProvenanceStatus.RECORDED
         assert record.shots == 1024
@@ -110,7 +114,7 @@ class TestProvenanceStatus:
 
 @pytest.mark.skipif(
     not (PROVENANCE_AVAILABLE and BACKENDS_AVAILABLE and QISKIT_AVAILABLE),
-    reason="Required modules not available"
+    reason="Required modules not available",
 )
 class TestQuantumProvenanceWrapper:
     """Test QuantumProvenanceWrapper."""
@@ -120,7 +124,7 @@ class TestQuantumProvenanceWrapper:
         config = HybridQuantumConfig(provider="simulator", seed=42)
         backend = IBMHybridBackend(config)
         wrapper = QuantumProvenanceWrapper(backend)
-        
+
         assert wrapper.backend is backend
 
     def test_execute_with_provenance(self):
@@ -156,7 +160,7 @@ class TestQuantumProvenanceWrapper:
         result2, record2 = wrapper.execute_with_provenance(circuit)
 
         chain = wrapper.get_execution_chain()
-        
+
         assert len(chain) == 2
         assert chain[0].record_id == record1.record_id
         assert chain[1].parent_record_id == record1.record_id
@@ -195,7 +199,7 @@ class TestQuantumProvenanceWrapper:
         # Verify with same result should pass
         verified = wrapper.verify_provenance(record.record_id, result)
         assert verified is True
-        
+
         # Record status should be updated
         updated_record = wrapper.get_record(record.record_id)
         assert updated_record.status == ProvenanceStatus.VERIFIED

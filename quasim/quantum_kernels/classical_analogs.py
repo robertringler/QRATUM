@@ -18,8 +18,7 @@ from __future__ import annotations
 
 import time
 import uuid
-from dataclasses import dataclass, field
-from typing import Any, Callable
+from dataclasses import dataclass
 
 import numpy as np
 
@@ -320,7 +319,6 @@ class ClassicalQAOA:
         Returns:
             ClassicalQAOAResult with best partition
         """
-        from scipy.optimize import minimize
 
         start_time = time.time()
 
@@ -344,14 +342,10 @@ class ClassicalQAOA:
 
         # Brute force for small problems
         if n_nodes <= 20:
-            best_assignment, best_cost = self._brute_force_maxcut(
-                n_nodes, edges, weights
-            )
+            best_assignment, best_cost = self._brute_force_maxcut(n_nodes, edges, weights)
         else:
             # QAOA-inspired classical heuristic
-            best_assignment, best_cost = self._qaoa_heuristic(
-                n_nodes, adj, self.p_layers
-            )
+            best_assignment, best_cost = self._qaoa_heuristic(n_nodes, adj, self.p_layers)
 
         # Compute approximation ratio
         optimal_cost = self._compute_optimal_maxcut(n_nodes, edges, weights)

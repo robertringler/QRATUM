@@ -5,11 +5,9 @@ Run JURIS Legal Analysis on Aethernet - Standalone Version
 Performs comprehensive legal review of the Aethernet implementation.
 """
 
-import sys
-import os
 import json
+import sys
 from pathlib import Path
-from typing import Dict, Any
 
 print("=" * 80)
 print("JURIS LEGAL ANALYSIS - AETHERNET OVERLAY NETWORK")
@@ -44,7 +42,6 @@ aethernet_components = {
     - Termination: Immediate cessation via zone rollback
     - Governing Law: Apache License 2.0, jurisdiction-specific compliance
     """,
-    
     "compliance_status": """
     HIPAA Compliance Implementation:
     - Administrative: Access control, workforce training, emergency access
@@ -66,14 +63,15 @@ aethernet_components = {
     """,
 }
 
+
 def analyze_contract_structure():
     """Analyze TXO as implicit contract."""
     print("\n" + "=" * 80)
     print("1. CONTRACT ANALYSIS - TXO Structure")
     print("=" * 80)
-    
+
     text = aethernet_components["txo_structure"]
-    
+
     # Identify clauses
     clauses = []
     clause_patterns = {
@@ -84,11 +82,11 @@ def analyze_contract_structure():
         "termination": "Termination",
         "governing law": "Governing Law",
     }
-    
+
     for pattern, clause_name in clause_patterns.items():
         if pattern.lower() in text.lower():
             clauses.append(clause_name)
-    
+
     # Identify risks
     risks = []
     risk_keywords = {
@@ -96,11 +94,11 @@ def analyze_contract_structure():
         "responsible for lawful use": "User liability for misuse",
         "emergency": "Emergency rollback procedures need documentation",
     }
-    
+
     for keyword, risk_desc in risk_keywords.items():
         if keyword.lower() in text.lower():
             risks.append(risk_desc)
-    
+
     # Check missing provisions
     missing = []
     standard_provisions = {
@@ -108,11 +106,11 @@ def analyze_contract_structure():
         "force majeure": "Force Majeure",
         "assignment": "Assignment Rights",
     }
-    
+
     for keyword, provision in standard_provisions.items():
         if keyword.lower() not in text.lower():
             missing.append(provision)
-    
+
     result = {
         "analysis_type": "contract_analysis",
         "identified_clauses": clauses,
@@ -133,18 +131,19 @@ def analyze_contract_structure():
             "Zone-based access control",
         ],
     }
-    
+
     print(json.dumps(result, indent=2))
     return result
+
 
 def analyze_compliance():
     """Analyze HIPAA and GDPR compliance."""
     print("\n" + "=" * 80)
     print("2. COMPLIANCE ANALYSIS - HIPAA & GDPR")
     print("=" * 80)
-    
+
     text = aethernet_components["compliance_status"]
-    
+
     # Check HIPAA requirements
     hipaa_requirements = [
         "access control",
@@ -153,17 +152,17 @@ def analyze_compliance():
         "breach notification",
         "minimum necessary",
     ]
-    
+
     hipaa_compliance = {}
     hipaa_gaps = []
-    
+
     for req in hipaa_requirements:
         if req.lower() in text.lower():
             hipaa_compliance[req] = "✓ Implemented"
         else:
             hipaa_compliance[req] = "✗ Missing"
             hipaa_gaps.append(f"HIPAA: {req}")
-    
+
     # Check GDPR requirements
     gdpr_requirements = [
         "explicit consent",
@@ -173,19 +172,19 @@ def analyze_compliance():
         "dpia",
         "right to erasure",
     ]
-    
+
     gdpr_compliance = {}
     gdpr_gaps = []
-    
+
     for req in gdpr_requirements:
         if req.lower() in text.lower():
             gdpr_compliance[req] = "✓ Implemented"
         else:
             gdpr_compliance[req] = "✗ Missing"
             gdpr_gaps.append(f"GDPR: {req}")
-    
+
     all_gaps = hipaa_gaps + gdpr_gaps
-    
+
     result = {
         "compliance_check": "regulatory_frameworks",
         "frameworks_checked": ["HIPAA", "GDPR"],
@@ -208,16 +207,17 @@ def analyze_compliance():
             "📋 Schedule quarterly compliance audits",
         ],
     }
-    
+
     print(json.dumps(result, indent=2))
     return result
+
 
 def analyze_privacy_law():
     """Analyze biokey privacy implications."""
     print("\n" + "=" * 80)
     print("3. PRIVACY LAW ANALYSIS - Ephemeral Biokey System")
     print("=" * 80)
-    
+
     result = {
         "analysis_type": "privacy_law",
         "method": "IRAC (Issue, Rule, Application, Conclusion)",
@@ -243,9 +243,9 @@ def analyze_privacy_law():
             "⚠ ZK proof implementation must be formally verified",
         ],
         "conclusion": "Ephemeral biokey system demonstrates strong privacy-by-design. "
-                     "However, explicit informed consent is required under GDPR Article 9 "
-                     "before deriving keys from genetic data. ZK proof implementation "
-                     "should undergo independent security audit.",
+        "However, explicit informed consent is required under GDPR Article 9 "
+        "before deriving keys from genetic data. ZK proof implementation "
+        "should undergo independent security audit.",
         "confidence": 0.85,
         "privacy_strengths": [
             "Ephemeral keys (60-second lifetime)",
@@ -262,16 +262,17 @@ def analyze_privacy_law():
             "Key derivation process needs formal security proof",
         ],
     }
-    
+
     print(json.dumps(result, indent=2))
     return result
+
 
 def predict_litigation_risk():
     """Predict litigation risk for breach scenario."""
     print("\n" + "=" * 80)
     print("4. LITIGATION RISK ASSESSMENT - Hypothetical Breach")
     print("=" * 80)
-    
+
     result = {
         "scenario": "Unauthorized access attempt to Z2 (production) zone",
         "plaintiff_win_probability": 0.25,
@@ -307,16 +308,19 @@ def predict_litigation_risk():
             "Consider cyber insurance for future incidents",
         ],
     }
-    
+
     print(json.dumps(result, indent=2))
     return result
 
-def generate_comprehensive_report(contract_result, compliance_result, privacy_result, litigation_result):
+
+def generate_comprehensive_report(
+    contract_result, compliance_result, privacy_result, litigation_result
+):
     """Generate final comprehensive legal report."""
     print("\n" + "=" * 80)
     print("COMPREHENSIVE LEGAL ASSESSMENT SUMMARY")
     print("=" * 80)
-    
+
     report = {
         "analysis_date": "2024-12-24",
         "system": "Aethernet Overlay Network",
@@ -428,17 +432,18 @@ def generate_comprehensive_report(contract_result, compliance_result, privacy_re
         Consult a licensed attorney for legal advice specific to your situation.
         """,
     }
-    
+
     print(json.dumps(report, indent=2))
-    
+
     # Save report
     report_path = Path(__file__).parent / "LEGAL_ANALYSIS_REPORT.json"
     with open(report_path, "w") as f:
         json.dump(report, f, indent=2)
-    
+
     print(f"\n✓ Legal analysis report saved to: {report_path}")
-    
+
     return report
+
 
 def main():
     """Main analysis function."""
@@ -448,29 +453,28 @@ def main():
         compliance_result = analyze_compliance()
         privacy_result = analyze_privacy_law()
         litigation_result = predict_litigation_risk()
-        
+
         # Generate comprehensive report
         report = generate_comprehensive_report(
-            contract_result,
-            compliance_result,
-            privacy_result,
-            litigation_result
+            contract_result, compliance_result, privacy_result, litigation_result
         )
-        
+
         print("\n" + "=" * 80)
         print("LEGAL ANALYSIS COMPLETE")
         print("=" * 80)
         print("\n⚖️  IMPORTANT: This analysis is for informational purposes only.")
         print("   Consult qualified legal counsel for definitive legal advice.")
         print("=" * 80)
-        
+
         return 0
-        
+
     except Exception as e:
         print(f"\n❌ Error during legal analysis: {e}", file=sys.stderr)
         import traceback
+
         traceback.print_exc()
         return 1
+
 
 if __name__ == "__main__":
     sys.exit(main())

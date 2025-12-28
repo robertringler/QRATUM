@@ -7,6 +7,7 @@ the best backend based on circuit size and available hardware.
 from typing import Optional, Union
 
 import numpy as np
+
 from qratum.config import get_config
 from qratum.core.circuit import Circuit
 from qratum.core.measurement import Measurement, Result

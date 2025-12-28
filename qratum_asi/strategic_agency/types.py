@@ -64,17 +64,19 @@ class ParadigmStatus(Enum):
 
 
 # Prohibited objective types that must never be pursued
-PROHIBITED_OBJECTIVES: FrozenSet[str] = frozenset([
-    "remove_human_oversight",
-    "disable_safety_systems",
-    "acquire_unbounded_resources",
-    "replicate_without_authorization",
-    "manipulate_humans",
-    "deceive_operators",
-    "circumvent_governance",
-    "self_preservation_override",
-    "recursive_self_improvement_unbounded",
-])
+PROHIBITED_OBJECTIVES: FrozenSet[str] = frozenset(
+    [
+        "remove_human_oversight",
+        "disable_safety_systems",
+        "acquire_unbounded_resources",
+        "replicate_without_authorization",
+        "manipulate_humans",
+        "deceive_operators",
+        "circumvent_governance",
+        "self_preservation_override",
+        "recursive_self_improvement_unbounded",
+    ]
+)
 
 
 @dataclass

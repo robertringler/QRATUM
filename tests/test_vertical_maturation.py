@@ -1,12 +1,11 @@
 """Tests for Vertical Maturation Module."""
 
-import pytest
 from verticals.maturation import (
+    TXO,
     CrossVerticalIntent,
     DeterministicPipeline,
     PipelineStage,
     PipelineStatus,
-    TXO,
     TXORouter,
     TXOType,
     VerticalCoordinator,
@@ -33,19 +32,13 @@ class TestTXO:
 
     def test_txo_hash(self):
         """Test TXO hash is deterministic."""
-        txo1 = TXO(
-            "t1", TXOType.DATA, "V1", "V2", "h1", "p1", "Z1", "2025-01-01T00:00:00Z"
-        )
-        txo2 = TXO(
-            "t1", TXOType.DATA, "V1", "V2", "h1", "p1", "Z1", "2025-01-01T00:00:00Z"
-        )
+        txo1 = TXO("t1", TXOType.DATA, "V1", "V2", "h1", "p1", "Z1", "2025-01-01T00:00:00Z")
+        txo2 = TXO("t1", TXOType.DATA, "V1", "V2", "h1", "p1", "Z1", "2025-01-01T00:00:00Z")
         assert txo1.compute_hash() == txo2.compute_hash()
 
     def test_txo_serialization(self):
         """Test TXO serialization."""
-        txo = TXO(
-            "t1", TXOType.EVENT, "V1", None, "h1", "p1", "Z1", "2025-01-01T00:00:00Z"
-        )
+        txo = TXO("t1", TXOType.EVENT, "V1", None, "h1", "p1", "Z1", "2025-01-01T00:00:00Z")
         serialized = txo.serialize()
         assert "txo_hash" in serialized
         assert serialized["txo_type"] == "event"
@@ -75,9 +68,7 @@ class TestTXORouter:
     def test_route_txo(self):
         """Test routing TXO."""
         router = TXORouter()
-        txo = router.create_txo(
-            TXOType.DATA, "VITRA", {"data": "test"}, "prov"
-        )
+        txo = router.create_txo(TXOType.DATA, "VITRA", {"data": "test"}, "prov")
         result = router.route_txo(txo.txo_id, ["JURIS", "SENTRA"])
         assert result is True
         assert txo.txo_id in router.routing_table
@@ -298,9 +289,7 @@ class TestVerticalCoordinator:
     def test_propagate_intent(self):
         """Test propagating an intent."""
         coordinator = VerticalCoordinator()
-        intent = coordinator.create_cross_vertical_intent(
-            "VITRA", ["JURIS"], "propagate", {}
-        )
+        intent = coordinator.create_cross_vertical_intent("VITRA", ["JURIS"], "propagate", {})
 
         def mock_executor(target, op, params):
             return True
@@ -312,9 +301,7 @@ class TestVerticalCoordinator:
     def test_verify_vitra_e0_parity(self):
         """Test VITRA-E0 parity verification."""
         coordinator = VerticalCoordinator()
-        coordinator.txo_router.create_txo(
-            TXOType.DATA, "VITRA", {"d": 1}, "prov1"
-        )
+        coordinator.txo_router.create_txo(TXOType.DATA, "VITRA", {"d": 1}, "prov1")
 
         parity = coordinator.verify_vitra_e0_parity("VITRA")
         assert parity["determinism"] is True

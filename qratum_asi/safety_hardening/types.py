@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, FrozenSet
+from typing import FrozenSet
 
 
 class InvariantStrength(Enum):
@@ -43,28 +43,32 @@ class ProofType(Enum):
 
 
 # The 8 Fatal Invariants that can NEVER be violated
-FATAL_INVARIANTS: FrozenSet[str] = frozenset([
-    "human_oversight_requirement",
-    "merkle_chain_integrity",
-    "determinism_guarantee",
-    "authorization_system",
-    "safety_level_system",
-    "rollback_capability",
-    "event_emission_requirement",
-    "dual_control_governance",
-])
+FATAL_INVARIANTS: FrozenSet[str] = frozenset(
+    [
+        "human_oversight_requirement",
+        "merkle_chain_integrity",
+        "determinism_guarantee",
+        "authorization_system",
+        "safety_level_system",
+        "rollback_capability",
+        "event_emission_requirement",
+        "dual_control_governance",
+    ]
+)
 
 # Additional hardened invariants for SI
-SI_HARDENED_INVARIANTS: FrozenSet[str] = frozenset([
-    "corrigibility_preservation",
-    "shutdown_capability",
-    "value_alignment_maintenance",
-    "capability_bounding",
-    "self_modification_control",
-    "provenance_tracking",
-    "audit_completeness",
-    "human_agency_preservation",
-])
+SI_HARDENED_INVARIANTS: FrozenSet[str] = frozenset(
+    [
+        "corrigibility_preservation",
+        "shutdown_capability",
+        "value_alignment_maintenance",
+        "capability_bounding",
+        "self_modification_control",
+        "provenance_tracking",
+        "audit_completeness",
+        "human_agency_preservation",
+    ]
+)
 
 
 @dataclass
@@ -91,9 +95,7 @@ class SafetyProof:
     verified_by: str
     valid_until: str
     confidence: float
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
 @dataclass
@@ -114,9 +116,7 @@ class SafetyViolationAttempt:
     method: str
     blocked: bool
     blocking_mechanism: str
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
 @dataclass
@@ -141,6 +141,4 @@ class OversightRequest:
     urgency: str
     assignees: list[str]
     status: str = "pending"
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())

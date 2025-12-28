@@ -10,7 +10,6 @@ Status: Production
 
 from __future__ import annotations
 
-import hashlib
 import random
 import secrets
 from dataclasses import dataclass, field
@@ -202,9 +201,7 @@ class RiskAnalyzer:
         self.assessments: list[RiskAssessment] = []
         self.monitoring_enabled = True
 
-    def assess_infrastructure_risk(
-        self, metrics: dict[str, float]
-    ) -> RiskAssessment:
+    def assess_infrastructure_risk(self, metrics: dict[str, float]) -> RiskAssessment:
         """Assess infrastructure-related risks.
 
         Args:
@@ -247,9 +244,7 @@ class RiskAnalyzer:
         self.assessments.append(assessment)
         return assessment
 
-    def assess_economic_risk(
-        self, metrics: dict[str, float]
-    ) -> RiskAssessment:
+    def assess_economic_risk(self, metrics: dict[str, float]) -> RiskAssessment:
         """Assess economic-related risks.
 
         Args:
@@ -292,9 +287,7 @@ class RiskAnalyzer:
         self.assessments.append(assessment)
         return assessment
 
-    def assess_security_risk(
-        self, metrics: dict[str, float]
-    ) -> RiskAssessment:
+    def assess_security_risk(self, metrics: dict[str, float]) -> RiskAssessment:
         """Assess security-related risks.
 
         Args:
@@ -539,12 +532,14 @@ class PredictiveSimulator:
             required_capacity = load / (1 - target_headroom)
             scale_factor = max(1, required_capacity / current_load)
 
-            predictions.append({
-                "month": month,
-                "predicted_load": min(1.0, load),
-                "required_capacity_factor": scale_factor,
-                "action_needed": scale_factor > 1.2,
-            })
+            predictions.append(
+                {
+                    "month": month,
+                    "predicted_load": min(1.0, load),
+                    "required_capacity_factor": scale_factor,
+                    "action_needed": scale_factor > 1.2,
+                }
+            )
 
         return {
             "current_load": current_load,
@@ -626,9 +621,7 @@ class PolicyAdjuster:
         self.adjustments: list[PolicyAdjustment] = []
         self.auto_apply = False
 
-    def analyze_and_recommend(
-        self, metrics: dict[str, float]
-    ) -> list[PolicyAdjustment]:
+    def analyze_and_recommend(self, metrics: dict[str, float]) -> list[PolicyAdjustment]:
         """Analyze metrics and recommend policy adjustments.
 
         Args:
@@ -700,9 +693,7 @@ class PolicyAdjuster:
         Returns:
             True if applied successfully
         """
-        adj = next(
-            (a for a in self.adjustments if a.adjustment_id == adjustment_id), None
-        )
+        adj = next((a for a in self.adjustments if a.adjustment_id == adjustment_id), None)
         if adj and adj.policy_name in self.policies:
             self.policies[adj.policy_name] = adj.recommended_value
             return True
@@ -762,9 +753,7 @@ class ContinuousOptimizer:
             )
             self.metrics_history.append(snapshot)
 
-    def run_optimization_cycle(
-        self, metrics: dict[str, float]
-    ) -> dict[str, Any]:
+    def run_optimization_cycle(self, metrics: dict[str, float]) -> dict[str, Any]:
         """Run a complete optimization cycle.
 
         Args:
@@ -797,9 +786,7 @@ class ContinuousOptimizer:
         policy_recs = self.policy_adjuster.analyze_and_recommend(metrics)
 
         # Generate optimization actions
-        actions = self._generate_actions(
-            infra_risk, econ_risk, sec_risk, sim_result, policy_recs
-        )
+        actions = self._generate_actions(infra_risk, econ_risk, sec_risk, sim_result, policy_recs)
         self.optimization_actions.extend(actions)
 
         return {

@@ -30,7 +30,7 @@ __all__ = [
     "AHTCAccelerator",
 ]
 
-from .tensor_networks import MPSSimulator, PEPSSimulator, TensorNetworkConfig
-from .classical_analogs import ClassicalVQE, ClassicalQAOA
-from .quantum_kernels import QuantumKernel
 from .ahtc import AHTCAccelerator
+from .classical_analogs import ClassicalQAOA, ClassicalVQE
+from .quantum_kernels import QuantumKernel
+from .tensor_networks import MPSSimulator, PEPSSimulator, TensorNetworkConfig

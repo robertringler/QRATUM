@@ -13,7 +13,6 @@ from datetime import datetime, timezone
 from typing import Any
 
 from qradle.merkle import MerkleChain
-
 from qratum_asi.reinjection.types import (
     DiscoveryDomain,
     ReinjectionCandidate,
@@ -263,9 +262,7 @@ class DiscoveryPriorMapper:
 
         for prior_type in prior_types:
             # Check if this prior is in target_priors (used for prioritization)
-            has_matching_target = any(
-                prior_type in t.lower() for t in candidate.target_priors
-            )
+            has_matching_target = any(prior_type in t.lower() for t in candidate.target_priors)
 
             # Get or initialize current prior value
             prior_id = f"{candidate.domain.value}_{prior_type}"

@@ -46,7 +46,7 @@ class TestQRATUMOmniLexEngine:
             reasoning_framework="irac",
             attorney_supervised=True,
             raw_facts="Test facts about a contract dispute.",
-            legal_question="Was there a breach of contract?"
+            legal_question="Was there a breach of contract?",
         )
 
         response = engine.submit_legal_intent(intent)
@@ -82,7 +82,7 @@ class TestQRATUMOmniLexEngine:
             reasoning_framework="irac",
             attorney_supervised=True,
             raw_facts="Contract dispute facts.",
-            legal_question="Who will prevail?"
+            legal_question="Who will prevail?",
         )
 
         response = engine.submit_legal_intent(intent)
@@ -105,7 +105,7 @@ class TestQRATUMOmniLexEngine:
             reasoning_framework="irac",
             attorney_supervised=True,
             raw_facts="Multi-state contract dispute.",
-            legal_question="Which law applies?"
+            legal_question="Which law applies?",
         )
 
         response = engine.submit_legal_intent(intent)
@@ -127,7 +127,7 @@ class TestQRATUMOmniLexEngine:
             reasoning_framework="irac",
             attorney_supervised=True,
             raw_facts="Litigation facts.",
-            legal_question="What is the likely outcome?"
+            legal_question="What is the likely outcome?",
         )
 
         response = engine.submit_legal_intent(intent)
@@ -156,7 +156,7 @@ class TestQRATUMOmniLexEngine:
             reasoning_framework="irac",
             attorney_supervised=True,
             raw_facts=contract_text,
-            legal_question="Review this contract."
+            legal_question="Review this contract.",
         )
 
         response = engine.submit_legal_intent(intent)
@@ -180,7 +180,7 @@ class TestQRATUMOmniLexEngine:
             reasoning_framework="irac",
             attorney_supervised=True,
             raw_facts="Test",
-            legal_question="Test"
+            legal_question="Test",
         )
 
         with pytest.raises(ValueError, match="Unknown compute_task"):
@@ -200,7 +200,7 @@ class TestQRATUMOmniLexEngine:
             reasoning_framework="irac",
             attorney_supervised=True,
             raw_facts="Test facts.",
-            legal_question="Test question."
+            legal_question="Test question.",
         )
 
         original_response = engine.submit_legal_intent(intent)
@@ -233,7 +233,7 @@ class TestQRATUMOmniLexEngine:
             reasoning_framework="irac",
             attorney_supervised=True,
             raw_facts="Test facts.",
-            legal_question="Test question."
+            legal_question="Test question.",
         )
 
         engine.submit_legal_intent(intent)
@@ -267,7 +267,7 @@ class TestQRATUMOmniLexEngine:
             reasoning_framework="irac",
             attorney_supervised=True,
             raw_facts="Test facts.",
-            legal_question="Test question."
+            legal_question="Test question.",
         )
 
         response = engine.submit_legal_intent(intent)
@@ -282,11 +282,7 @@ class TestQRATUMOmniLexEngine:
         """Test that serialization is deterministic."""
         engine = QRATUMOmniLexEngine()
 
-        result = {
-            "key2": "value2",
-            "key1": "value1",
-            "key3": {"nested2": "n2", "nested1": "n1"}
-        }
+        result = {"key2": "value2", "key1": "value1", "key3": {"nested2": "n2", "nested1": "n1"}}
 
         hash1 = engine._compute_result_hash(result)
         hash2 = engine._compute_result_hash(result)
@@ -308,7 +304,7 @@ class TestQRATUMOmniLexEngine:
             reasoning_framework="irac",
             attorney_supervised=True,
             raw_facts="Test",
-            legal_question="Test"
+            legal_question="Test",
         )
 
         # Should not raise error (frozen dataclass)

@@ -10,7 +10,6 @@ from typing import Any
 
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.events import ASIEvent, ASIEventType
-
 from qratum_asi.safety_hardening.types import (
     OversightLevel,
     OversightRequest,
@@ -39,9 +38,7 @@ class OversightEscalation:
     operation: str
     approved_by: list[str] = field(default_factory=list)
     status: str = "pending"
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
 @dataclass
@@ -127,9 +124,7 @@ class ScalableOversight:
         request_id = f"oversight_{self._request_counter:06d}"
 
         # Determine required level based on scores
-        level = self._determine_oversight_level(
-            novelty_score, impact_score, domain
-        )
+        level = self._determine_oversight_level(novelty_score, impact_score, domain)
 
         # Determine urgency
         urgency = "high" if impact_score > self.IMPACT_THRESHOLD else "normal"
@@ -245,10 +240,7 @@ class ScalableOversight:
         required_approvals = self._get_required_approvals(request.oversight_level)
 
         # Check if we have enough approvals
-        approved_count = len([
-            a for a in request.assignees
-            if a not in ["pending", "assigned"]
-        ])
+        approved_count = len([a for a in request.assignees if a not in ["pending", "assigned"]])
 
         if approved_count >= required_approvals:
             request.status = "approved"
@@ -354,9 +346,7 @@ class ScalableOversight:
         }
         return approvals.get(level, 1)
 
-    def _find_reviewers(
-        self, level: OversightLevel, domain: str
-    ) -> list[str]:
+    def _find_reviewers(self, level: OversightLevel, domain: str) -> list[str]:
         """Find appropriate reviewers for the level and domain."""
         # Placeholder - would look up from reviewer registry
         base_reviewers = ["reviewer_1"]
@@ -364,19 +354,15 @@ class ScalableOversight:
         if level == OversightLevel.ENHANCED:
             base_reviewers.extend(["reviewer_2", "reviewer_3"])
         elif level == OversightLevel.MAXIMUM:
-            base_reviewers.extend([
-                "reviewer_2", "reviewer_3",
-                "board_member_1", "external_auditor_1"
-            ])
+            base_reviewers.extend(
+                ["reviewer_2", "reviewer_3", "board_member_1", "external_auditor_1"]
+            )
 
         return base_reviewers
 
     def get_pending_requests(self) -> list[OversightRequest]:
         """Get all pending oversight requests."""
-        return [
-            r for r in self.oversight_requests.values()
-            if r.status == "pending"
-        ]
+        return [r for r in self.oversight_requests.values() if r.status == "pending"]
 
     def get_oversight_stats(self) -> dict[str, Any]:
         """Get oversight system statistics."""
@@ -387,8 +373,7 @@ class ScalableOversight:
             "registered_domains": len(self.domain_handlers),
             "requests_by_level": {
                 level.value: sum(
-                    1 for r in self.oversight_requests.values()
-                    if r.oversight_level == level
+                    1 for r in self.oversight_requests.values() if r.oversight_level == level
                 )
                 for level in OversightLevel
             },

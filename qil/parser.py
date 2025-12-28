@@ -63,9 +63,7 @@ class QILParser:
         self._skip_whitespace()
         intent_name = self._parse_identifier()
         if not intent_name:
-            raise ParseError(
-                f"Expected intent name at line {self.line}, column {self.column}"
-            )
+            raise ParseError(f"Expected intent name at line {self.line}, column {self.column}")
 
         self._skip_whitespace()
         if not self._consume_char("{"):
@@ -142,9 +140,7 @@ class QILParser:
         self._skip_whitespace()
         name = self._parse_identifier()
         if not name:
-            raise ParseError(
-                f"Expected objective name at line {self.line}, column {self.column}"
-            )
+            raise ParseError(f"Expected objective name at line {self.line}, column {self.column}")
         return Objective(name=name)
 
     def _parse_constraint(self) -> Constraint:
@@ -154,9 +150,7 @@ class QILParser:
 
         name = self._parse_identifier()
         if not name:
-            raise ParseError(
-                f"Expected constraint name at line {self.line}, column {self.column}"
-            )
+            raise ParseError(f"Expected constraint name at line {self.line}, column {self.column}")
 
         self._skip_whitespace()
         operator = self._parse_comparison_op()
@@ -178,9 +172,7 @@ class QILParser:
         self._skip_whitespace()
         name = self._parse_identifier()
         if not name:
-            raise ParseError(
-                f"Expected capability name at line {self.line}, column {self.column}"
-            )
+            raise ParseError(f"Expected capability name at line {self.line}, column {self.column}")
         return Capability(name=name)
 
     def _parse_time_spec(self) -> TimeSpec:
@@ -235,9 +227,7 @@ class QILParser:
         self._skip_whitespace()
         value = self._parse_identifier()
         if not value:
-            raise ParseError(
-                f"Expected authority value at line {self.line}, column {self.column}"
-            )
+            raise ParseError(f"Expected authority value at line {self.line}, column {self.column}")
 
         return Authority(key=key, value=value)
 
@@ -293,9 +283,7 @@ class QILParser:
         # Parse first cluster
         cluster = self._parse_cluster_type()
         if not cluster:
-            raise ParseError(
-                f"Expected cluster type at line {self.line}, column {self.column}"
-            )
+            raise ParseError(f"Expected cluster type at line {self.line}, column {self.column}")
         clusters.append(cluster)
 
         # Parse additional clusters with AND

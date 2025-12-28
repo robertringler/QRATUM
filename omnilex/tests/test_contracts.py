@@ -20,7 +20,7 @@ class TestContractClause:
             text="Test clause text",
             risk_level="high",
             issues=["Issue 1"],
-            recommendations=["Rec 1"]
+            recommendations=["Rec 1"],
         )
 
         assert clause.risk_level == "high"
@@ -35,7 +35,7 @@ class TestContractClause:
                 text="test",
                 risk_level="extreme",  # Invalid
                 issues=[],
-                recommendations=[]
+                recommendations=[],
             )
 
 
@@ -62,9 +62,7 @@ class TestContractAnalysisEngine:
         """
 
         result = engine.analyze_contract(
-            text=text,
-            contract_type="service_agreement",
-            jurisdiction="US-CA"
+            text=text, contract_type="service_agreement", jurisdiction="US-CA"
         )
 
         assert result.contract_type == "service_agreement"
@@ -119,7 +117,9 @@ class TestContractAnalysisEngine:
 
         assert len(red_flags) > 0
         assert any("sole discretion" in flag.lower() for flag in red_flags)
-        assert any("perpetuity" in flag.lower() or "perpetual" in flag.lower() for flag in red_flags)
+        assert any(
+            "perpetuity" in flag.lower() or "perpetual" in flag.lower() for flag in red_flags
+        )
 
     def test_identify_automatic_renewal_flag(self):
         """Test identification of automatic renewal red flag."""
@@ -164,7 +164,7 @@ class TestContractAnalysisEngine:
 
         clauses = [
             ContractClause("1", "test", "text", "low", [], []),
-            ContractClause("2", "test", "text", "low", [], [])
+            ContractClause("2", "test", "text", "low", [], []),
         ]
         red_flags = []
         missing = []
@@ -179,7 +179,7 @@ class TestContractAnalysisEngine:
         clauses = [
             ContractClause("1", "test", "text", "high", [], []),
             ContractClause("2", "test", "text", "high", [], []),
-            ContractClause("3", "test", "text", "high", [], [])
+            ContractClause("3", "test", "text", "high", [], []),
         ]
         red_flags = ["Flag 1", "Flag 2", "Flag 3"]
         missing = ["Missing 1", "Missing 2"]
@@ -191,9 +191,7 @@ class TestContractAnalysisEngine:
         """Test overall risk calculation for critical-risk contract."""
         engine = ContractAnalysisEngine()
 
-        clauses = [
-            ContractClause("1", "test", "text", "critical", [], [])
-        ]
+        clauses = [ContractClause("1", "test", "text", "critical", [], [])]
         red_flags = []
         missing = []
 
