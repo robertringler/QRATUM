@@ -33,3 +33,8 @@ __pycache__/
 # Electron
 .electron/
 electron-builder.yml
+
+# Tauri / Rust
+src-tauri/target/
+src-tauri/Cargo.lock
+*.electron-backup

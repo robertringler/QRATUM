@@ -1,0 +1,55 @@
+{
+  "build": {
+    "beforeBuildCommand": "",
+    "beforeDevCommand": "",
+    "devPath": "../src",
+    "distDir": "../src"
+  },
+  "package": {
+    "productName": "QRATUM Desktop",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": { "all": false },
+      "dialog": { "all": false },
+      "fs": { "all": false },
+      "http": { "all": false },
+      "notification": { "all": false },
+      "window": {
+        "all": false,
+        "show": true,
+        "hide": true,
+        "close": true,
+        "setFocus": true
+      }
+    },
+    "bundle": {
+      "identifier": "ai.qratum.desktop",
+      "icon": ["icons/icon.png"],
+      "active": true,
+      "targets": "all",
+      "externalBin": [],
+      "resources": []
+    },
+    "security": {
+      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'"
+    },
+    "windows": [{
+      "title": "QRATUM Desktop - Ultra-Lightweight",
+      "width": 1200,
+      "height": 800,
+      "resizable": true,
+      "fullscreen": false,
+      "decorations": true,
+      "transparent": false
+    }],
+    "systemTray": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true,
+      "menuOnLeftClick": false,
+      "title": "QRATUM Desktop"
+    }
+  }
+}
