@@ -32,6 +32,7 @@ pub enum DilithiumError {
     InvalidSignature,
     SigningFailed,
     VerificationFailed,
+    KeyGenerationFailed,
 }
 
 impl fmt::Display for DilithiumError {
@@ -41,6 +42,7 @@ impl fmt::Display for DilithiumError {
             DilithiumError::InvalidSignature => write!(f, "Invalid signature"),
             DilithiumError::SigningFailed => write!(f, "Signing failed"),
             DilithiumError::VerificationFailed => write!(f, "Verification failed"),
+            DilithiumError::KeyGenerationFailed => write!(f, "Key generation failed"),
         }
     }
 }
@@ -68,17 +70,21 @@ pub struct Signature {
 /// Generate Dilithium keypair
 ///
 /// Generates a quantum-resistant keypair for digital signatures.
-/// In production, this should use a hardware RNG or HSM.
+/// Uses cryptographically secure RNG (getrandom) instead of zero-seed.
 pub fn generate_keypair() -> Result<(PublicKey, SecretKey), DilithiumError> {
     // In production, replace with actual Dilithium keygen
-    // This is a placeholder using deterministic derivation
+    // Using cryptographically secure RNG instead of deterministic zero-seed
     
     let mut pk_data = vec![0u8; PUBLIC_KEY_SIZE];
     let mut sk_data = vec![0u8; SECRET_KEY_SIZE];
     
+    // Generate cryptographically secure random seed
+    let mut seed = [0u8; 64];
+    getrandom::getrandom(&mut seed).map_err(|_| DilithiumError::KeyGenerationFailed)?;
+    
     // Simplified keygen (production requires full Dilithium algorithm)
     let mut shake = Shake256::default();
-    shake.update(b"dilithium_keygen_seed");
+    shake.update(&seed);
     
     // Generate key material
     let mut output = vec![0u8; PUBLIC_KEY_SIZE + SECRET_KEY_SIZE];

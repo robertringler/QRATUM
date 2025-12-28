@@ -30,6 +30,7 @@ pub enum KyberError {
     InvalidCiphertext,
     EncapsulationFailed,
     DecapsulationFailed,
+    KeyGenerationFailed,
 }
 
 impl fmt::Display for KyberError {
@@ -39,6 +40,7 @@ impl fmt::Display for KyberError {
             KyberError::InvalidCiphertext => write!(f, "Invalid ciphertext"),
             KyberError::EncapsulationFailed => write!(f, "Encapsulation failed"),
             KyberError::DecapsulationFailed => write!(f, "Decapsulation failed"),
+            KyberError::KeyGenerationFailed => write!(f, "Key generation failed"),
         }
     }
 }
@@ -72,22 +74,26 @@ pub struct SharedSecret {
 /// Generate Kyber keypair
 ///
 /// Generates a quantum-resistant keypair for key encapsulation.
-/// In production, this should use a hardware RNG or HSM.
+/// Uses cryptographically secure RNG (getrandom) instead of zero-seed.
 pub fn generate_keypair() -> Result<(PublicKey, SecretKey), KyberError> {
     // In production, replace with actual Kyber keygen
-    // This is a placeholder using deterministic derivation
+    // Using cryptographically secure RNG instead of deterministic zero-seed
     
     let mut pk_data = vec![0u8; PUBLIC_KEY_SIZE];
     let mut sk_data = vec![0u8; SECRET_KEY_SIZE];
     
+    // Generate cryptographically secure random seed
+    let mut seed = [0u8; 64];
+    getrandom::getrandom(&mut seed).map_err(|_| KyberError::KeyGenerationFailed)?;
+    
     // Simplified keygen (production requires full Kyber algorithm)
     let mut hasher = Sha3_512::new();
-    hasher.update(b"kyber_keygen_seed");
-    let seed = hasher.finalize();
+    hasher.update(&seed);
+    let derived_seed = hasher.finalize();
     
-    // Derive keys from seed (simplified)
-    pk_data[..32].copy_from_slice(&seed[..32]);
-    sk_data[..32].copy_from_slice(&seed[32..64]);
+    // Derive keys from secure random seed (simplified)
+    pk_data[..32].copy_from_slice(&derived_seed[..32]);
+    sk_data[..32].copy_from_slice(&derived_seed[32..64]);
     
     Ok((
         PublicKey { data: pk_data },
@@ -100,6 +106,7 @@ pub fn generate_keypair() -> Result<(PublicKey, SecretKey), KyberError> {
 /// Given a public key, generates a random shared secret and
 /// encapsulates it in a ciphertext.
 ///
+/// Uses cryptographically secure RNG (getrandom) for randomness.
 /// This is a placeholder. Production should use:
 /// - kyber crate (when available)
 /// - Reference implementation from NIST submission
@@ -109,10 +116,14 @@ pub fn encapsulate(public_key: &PublicKey) -> Result<(SharedSecret, Ciphertext),
         return Err(KyberError::InvalidKeySize);
     }
     
+    // Generate cryptographically secure randomness for encapsulation
+    let mut randomness = [0u8; 32];
+    getrandom::getrandom(&mut randomness).map_err(|_| KyberError::EncapsulationFailed)?;
+    
     // Simplified encapsulation (production requires full Kyber algorithm)
     let mut hasher = Sha3_256::new();
     hasher.update(&public_key.data);
-    hasher.update(b"encapsulation_randomness");
+    hasher.update(&randomness);
     
     let hash_result = hasher.finalize();
     let mut shared_secret = [0u8; SHARED_SECRET_SIZE];

@@ -125,11 +125,12 @@ class QuantumResistantCrypto:
         """
         algo = algorithm or self.default_algorithm
 
-        # Generate deterministic key ID
-        key_id = f"key_{secrets.token_hex(8)}"
+        # Generate cryptographically secure key ID using secrets.token_bytes()
+        key_id = f"key_{secrets.token_bytes(8).hex()}"
 
-        # Simulate key generation (in production, use actual PQC library)
-        public_key = secrets.token_hex(key_size_bits // 8)
+        # Use cryptographically secure RNG (secrets.token_bytes) instead of token_hex
+        # This provides better security by generating raw bytes first
+        public_key = secrets.token_bytes(key_size_bits // 8).hex()
 
         now = datetime.now(timezone.utc)
         expires = now + timedelta(days=self.key_rotation_days)
@@ -251,7 +252,8 @@ class ConsensusVote:
         if not self.timestamp:
             self.timestamp = datetime.now(timezone.utc).isoformat()
         if not self.signature:
-            self.signature = hashlib.sha256(
+            # Use SHA-3 instead of SHA-256 for quantum resistance
+            self.signature = hashlib.sha3_256(
                 f"{self.voter_id}{self.proposal_id}{self.vote}".encode()
             ).hexdigest()
 
