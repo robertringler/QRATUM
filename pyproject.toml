@@ -102,7 +102,7 @@ qubic-viz = "qubic.visualization.cli:cli"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["qratum*", "quasim*", "qnx*", "qstack*", "qubic*", "xenon*", "api*", "qil*", "qcore*", "contracts*", "events*", "spine*", "adapters*", "omnilex*", "qratum_platform*", "verticals*", "aion*", "qdl*"]
+include = ["qratum*", "quasim*", "qnx*", "qstack*", "qubic*", "xenon*", "api*", "qil*", "qcore*", "contracts*", "events*", "spine*", "adapters*", "omnilex*", "qratum_platform*", "verticals*", "aion*", "qdl*", "epistemic_heat_sink*", "topological_observer*"]
 
 [tool.black]
 line-length = 100
@@ -154,7 +154,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["quasim", "src", "QuASIM", "qstack", "qagents", "sdk", "integrations", "qubic", "qil", "qcore", "contracts", "events", "spine", "adapters"]
+source = ["quasim", "src", "QuASIM", "qstack", "qagents", "sdk", "integrations", "qubic", "qil", "qcore", "contracts", "events", "spine", "adapters", "epistemic_heat_sink", "topological_observer"]
 branch = true
 omit = [
     "*/tests/*",
