@@ -1,0 +1,36 @@
+[package]
+name = "qratum-desktop"
+version = "2.0.0"
+description = "QRATUM Desktop Edition - Quantum-Classical Computing Platform"
+authors = ["QRATUM Team"]
+license = "Apache-2.0"
+repository = "https://github.com/robertringler/QRATUM"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "2.0", features = [] }
+
+[dependencies]
+tauri = { version = "2.0", features = ["tray-icon", "image-png"] }
+tauri-plugin-shell = "2.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.42", features = ["full"] }
+sysinfo = "0.32"
+rusqlite = { version = "0.32", features = ["bundled"] }
+log = "0.4"
+env_logger = "0.11"
+anyhow = "1.0"
+
+[features]
+# This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
