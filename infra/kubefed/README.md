@@ -5,12 +5,14 @@ This directory contains Kubernetes Federation v2 (KubeFed) manifests for deployi
 ## Prerequisites
 
 1. **Install KubeFed v2**:
+
 ```bash
 helm repo add kubefed-charts https://raw.githubusercontent.com/kubernetes-sigs/kubefed/master/charts
 helm install kubefed kubefed-charts/kubefed --namespace kube-federation-system --create-namespace
 ```
 
-2. **Join clusters to federation**:
+1. **Join clusters to federation**:
+
 ```bash
 kubefedctl join us-west-2 --cluster-context us-west-2-context --host-cluster-context host-cluster
 kubefedctl join us-east-1 --cluster-context us-east-1-context --host-cluster-context host-cluster
@@ -21,17 +23,20 @@ kubefedctl join ap-southeast-1 --cluster-context ap-southeast-1-context --host-c
 ## Deploy Federated Resources
 
 ### 1. Create namespace across all clusters
+
 ```bash
 kubectl apply -f federated-namespace.yaml
 ```
 
 ### 2. Deploy API services
+
 ```bash
 kubectl apply -f federated-deployment.yaml
 kubectl apply -f federated-service.yaml
 ```
 
 ### 3. Verify deployment
+
 ```bash
 # Check federated deployment status
 kubectl get federateddeployment -n quasim-platform
@@ -55,6 +60,7 @@ QuASIM uses KubeFed to distribute workloads across multiple regions:
 ### Traffic Routing
 
 Global traffic is routed using:
+
 - AWS Route53 with latency-based routing
 - Kubernetes Ingress with regional endpoints
 - Session affinity for stateful workloads
@@ -68,6 +74,7 @@ Global traffic is routed using:
 ## Scaling
 
 ### Manual Scaling
+
 ```bash
 # Scale API replicas in specific region
 kubectl patch federateddeployment quasim-api -n quasim-platform \
@@ -82,6 +89,7 @@ Each region has HPA configured. See `../helm/quasim-platform/values.yaml` for au
 ## Monitoring
 
 Federated monitoring is available via:
+
 - Prometheus federation across regions
 - Grafana dashboards with multi-cluster view
 - Thanos for long-term metrics storage
@@ -89,6 +97,7 @@ Federated monitoring is available via:
 ## Disaster Recovery
 
 In case of regional failure:
+
 ```bash
 # Remove failed cluster from federation
 kubefedctl unjoin <cluster-name> --cluster-context <context> --host-cluster-context host-cluster

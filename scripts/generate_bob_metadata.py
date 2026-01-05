@@ -4,6 +4,7 @@
 import json
 from datetime import datetime
 
+
 def generate_metadata():
     """Generate model metadata."""
     metadata = {
@@ -20,37 +21,31 @@ def generate_metadata():
             "chess-engine",
             "asymmetric-search",
             "multi-agent",
-            "quantum-inspired"
+            "quantum-inspired",
         ],
         "framework": "PyTorch",
         "modelInstanceType": "CPU",
         "overview": "BOB uses novel Asymmetric Adaptive Search algorithms combined with multi-agent consensus evaluation to achieve world-class chess performance.",
-        "provenanceUrls": [
-            "https://github.com/robertringler/QRATUM"
-        ],
+        "provenanceUrls": ["https://github.com/robertringler/QRATUM"],
         "trainingInformation": {
             "architecture": "Asymmetric Adaptive Search with Multi-Agent Evaluation",
             "trainingData": "Stockfish-17 games, CCRL database, tactical puzzles",
-            "hardware": "CPU-optimized (no GPU required)"
+            "hardware": "CPU-optimized (no GPU required)",
         },
         "benchmarks": [
-            {
-                "name": "Kaggle Chess AI Benchmark",
-                "score": 1508,
-                "metric": "Elo Rating",
-                "rank": 1
-            },
+            {"name": "Kaggle Chess AI Benchmark", "score": 1508, "metric": "Elo Rating", "rank": 1},
             {
                 "name": "Internal Stockfish-17 Calibration",
                 "score": 3500,
                 "metric": "Elo Rating",
-                "winRate": "50%"
-            }
+                "winRate": "50%",
+            },
         ],
-        "generated_at": datetime.now().isoformat()
+        "generated_at": datetime.now().isoformat(),
     }
-    
+
     return json.dumps(metadata, indent=2)
+
 
 if __name__ == "__main__":
     print(generate_metadata())

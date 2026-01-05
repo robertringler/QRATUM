@@ -7,6 +7,7 @@
 ```
 
 This single command will:
+
 1. ✅ Create isolated Python virtual environment
 2. ✅ Install all dependencies
 3. ✅ Initialize QRADLE genesis block
@@ -34,15 +35,17 @@ Dockerfile.sandbox-platform   # Platform service Docker image
 ## 🌐 Services & Endpoints
 
 ### QRADLE Service (Port 8001)
-- **Home**: http://localhost:8001/
-- **Health**: http://localhost:8001/health
-- **Chain Status**: http://localhost:8001/api/chain/status
-- **Engine Status**: http://localhost:8001/api/engine/status
+
+- **Home**: <http://localhost:8001/>
+- **Health**: <http://localhost:8001/health>
+- **Chain Status**: <http://localhost:8001/api/chain/status>
+- **Engine Status**: <http://localhost:8001/api/engine/status>
 
 ### QRATUM Platform (Port 8002)
-- **Dashboard**: http://localhost:8002/
-- **API Status**: http://localhost:8002/api/status
-- **Metrics**: http://localhost:8002/api/metrics
+
+- **Dashboard**: <http://localhost:8002/>
+- **API Status**: <http://localhost:8002/api/status>
+- **Metrics**: <http://localhost:8002/api/metrics>
 
 ## 🧪 Testing
 
@@ -52,6 +55,7 @@ python3 sandbox/test_sandbox.py
 ```
 
 Expected output:
+
 ```
 ✓ All tests passed!
 
@@ -84,6 +88,7 @@ docker-compose -f sandbox/docker-compose.sandbox.yml down
 ## 💡 GitHub Codespaces
 
 The devcontainer is pre-configured with:
+
 - Python 3.11
 - Auto-installed dependencies
 - Pre-forwarded ports (8000, 8001, 8002, 8080)
@@ -137,4 +142,4 @@ After running `./sandbox/launch.sh`:
 
 ---
 
-**Quick Start**: `./sandbox/launch.sh` → Wait 10 seconds → Visit http://localhost:8002
+**Quick Start**: `./sandbox/launch.sh` → Wait 10 seconds → Visit <http://localhost:8002>

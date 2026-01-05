@@ -15,6 +15,7 @@ The QCMG module implements coupled field equations describing the tensor product
 ```
 
 Where:
+
 - **Φ_m**: Physical/material field representing energy density and spatial structure
 - **Φ_i**: Informational field representing entropy, complexity, and coherence
 - **⊗**: Tensor coupling operator
@@ -29,6 +30,7 @@ Evolution follows Hamiltonian dynamics with controlled entropy production:
 ```
 
 Where:
+
 - **H**: Total Hamiltonian (kinetic + coupling energy)
 - **η_m(t), η_i(t)**: Dissipative terms modeling energy dissipation
 
@@ -37,20 +39,25 @@ Where:
 The module computes three key observables:
 
 1. **Coherence C(t) ∈ [0, 1]**: Quantum coherence measure
+
    ```
    C = |⟨Φ_m|Φ_i⟩| / (||Φ_m|| ||Φ_i||)
    ```
 
 2. **Entropy S(t) ≥ 0**: Von Neumann entropy
+
    ```
    S = -Σ p_i log(p_i)
    ```
+
    where p_i are derived from field amplitude distributions
 
 3. **Energy E(t)**: Total field energy
+
    ```
    E = ∫ (|∇Φ_m|² + |∇Φ_i|² + λ|Φ_m·Φ_i*|²) dx
    ```
+
    where λ is the coupling strength
 
 ## Numerical Implementation
@@ -71,12 +78,14 @@ y_new = y + (dt/6) * (k1 + 2*k2 + 2*k3 + k4)
 ### Boundary Conditions
 
 Periodic boundary conditions are enforced via finite difference schemes:
+
 - Central differences for gradients
 - Second-order differences for Laplacians
 
 ### Stability and Normalization
 
 To prevent numerical instabilities:
+
 - Fields are periodically renormalized (every 10 steps)
 - Validation checks at each step ensure bounded observables
 - Adaptive dissipation prevents runaway growth
@@ -123,16 +132,19 @@ field.save_to_json("results.json", include_history=True)
 ### Initialization Modes
 
 **Gaussian Mode** (`mode="gaussian"`):
+
 - Creates a Gaussian wave packet centered at π
 - Symmetric profile with controlled width
 - Good for studying diffusion and spreading
 
 **Soliton Mode** (`mode="soliton"`):
+
 - Creates a soliton-like localized state using sech profile
 - Maintains coherence over longer times
 - Good for studying stability
 
 **Random Mode** (`mode="random"`):
+
 - Random complex field configuration
 - Tests robustness and general behavior
 - Requires fixed seed for reproducibility
@@ -195,6 +207,7 @@ python -m quasim.sim.qcmg_cli \
 ### Automated Checks
 
 Every simulation step validates:
+
 - ✓ Coherence bounded: 0 ≤ C ≤ 1
 - ✓ Entropy non-negative: S ≥ 0
 - ✓ Energy finite: |E| < ∞
@@ -217,6 +230,7 @@ pytest tests/test_qcmg_sim.py::TestFieldEvolution -v
 ### Test Coverage
 
 The test suite covers:
+
 - Parameter validation (6 tests)
 - Field initialization (5 tests)
 - Evolution dynamics (3 tests)
@@ -234,6 +248,7 @@ The test suite covers:
 ### Coherence Dynamics
 
 Coherence C(t) measures the alignment between material and informational fields:
+
 - **C ≈ 1**: Fields are highly aligned (quantum coherent state)
 - **C ≈ 0**: Fields are orthogonal (decoherent state)
 - Typically decreases over time due to dissipation
@@ -241,6 +256,7 @@ Coherence C(t) measures the alignment between material and informational fields:
 ### Entropy Production
 
 Entropy S(t) tracks information content and disorder:
+
 - Generally increases over time (second law)
 - Rate depends on dissipation and coupling
 - Bounded by system size (S_max ~ log(N))
@@ -248,6 +264,7 @@ Entropy S(t) tracks information content and disorder:
 ### Energy Conservation
 
 With dissipation rate γ, energy approximately follows:
+
 ```
 E(t) ≈ E(0) exp(-2γt)
 ```
@@ -327,6 +344,7 @@ for coupling in [0.5, 1.0, 2.0]:
 **Problem**: Fields grow unbounded or NaN values appear
 
 **Solutions**:
+
 - Reduce time step `dt`
 - Increase dissipation rate
 - Check initial conditions aren't too extreme
@@ -337,6 +355,7 @@ for coupling in [0.5, 1.0, 2.0]:
 **Problem**: Results depend strongly on `dt`
 
 **Solutions**:
+
 - Use smaller time step (RK4 error ~ dt⁴)
 - Increase grid resolution
 - Check for stiff dynamics (high coupling)
@@ -346,6 +365,7 @@ for coupling in [0.5, 1.0, 2.0]:
 **Problem**: Out of memory for long runs
 
 **Solutions**:
+
 - Disable history tracking (`include_history=False`)
 - Reduce grid size
 - Process in batches, saving periodically
@@ -355,6 +375,7 @@ for coupling in [0.5, 1.0, 2.0]:
 ### Theoretical Background
 
 The QCMG formalism synthesizes concepts from:
+
 - Quantum field theory (field quantization)
 - Information theory (entropy measures)
 - Hamiltonian mechanics (variational principles)
@@ -374,6 +395,7 @@ Part of QuASIM. See main repository LICENSE.
 ## Contributing
 
 Contributions welcome! Areas for enhancement:
+
 - Multi-dimensional grids (2D, 3D)
 - Advanced boundary conditions
 - GPU acceleration

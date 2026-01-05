@@ -7,21 +7,25 @@ QRADLE is the foundational execution layer for QRATUM, providing deterministic, 
 ## Core Features
 
 ### 1. **Deterministic Execution**
+
 - Same inputs always produce same outputs
 - Cryptographic proof of execution results
 - Reproducible for certification and audit
 
 ### 2. **Merkle-Chained Event Logs**
+
 - Complete audit trail of all operations
 - Cryptographically linked events
 - Tamper-evident chain with verifiable proofs
 
 ### 3. **Contract-Based Rollback**
+
 - Return to any previous verified state
 - Immutable checkpoints
 - Cryptographic verification of state integrity
 
 ### 4. **8 Fatal Invariants**
+
 All invariants are IMMUTABLE and enforced at runtime:
 
 1. **Human Oversight**: Sensitive operations require human authorization
@@ -303,18 +307,21 @@ QRADLE protects against:
 ## Roadmap
 
 ### Version 1.1 (Q2 2025)
+
 - [ ] Distributed Merkle tree support
 - [ ] Enhanced checkpoint compression
 - [ ] Performance optimizations
 - [ ] External audit integration
 
 ### Version 1.2 (Q3 2025)
+
 - [ ] Formal verification of invariants
 - [ ] Hardware security module (HSM) integration
 - [ ] Zero-knowledge proofs for privacy
 - [ ] Multi-party computation support
 
 ### Version 2.0 (Q4 2025)
+
 - [ ] Quantum-resistant cryptography
 - [ ] Sharded execution for horizontal scaling
 - [ ] Cross-chain verification
@@ -330,9 +337,9 @@ Apache 2.0 License - See [LICENSE](../LICENSE) for details.
 
 ## Support
 
-- **Issues**: https://github.com/robertringler/QRATUM/issues
-- **Discussions**: https://github.com/robertringler/QRATUM/discussions
-- **Security**: security@qratum.io
+- **Issues**: <https://github.com/robertringler/QRATUM/issues>
+- **Discussions**: <https://github.com/robertringler/QRATUM/discussions>
+- **Security**: <security@qratum.io>
 
 ## Citation
 

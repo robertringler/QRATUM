@@ -5,6 +5,7 @@
 ### 1. Core Implementation Files
 
 #### `quasim/opt/graph.py` (265 lines)
+
 - **QGraph**: QRATUM-native graph data structure
   - Adjacency list representation with O(V+E) space complexity
   - Support for directed/undirected graphs
@@ -19,6 +20,7 @@
   - Production recommendations for graph partitioning (METIS, KaHIP, Scotch)
 
 #### `quasim/opt/ultra_sssp.py` (508 lines)
+
 - **UltraSSSP**: Main shortest path algorithm
   - Adaptive frontier clustering with batch processing
   - Correctness-preserving batch extraction (epsilon-based filtering)
@@ -42,6 +44,7 @@
 ### 2. Testing Infrastructure
 
 #### `tests/opt/test_graph.py` (186 lines)
+
 - QGraph initialization and operations
 - Edge addition (directed/undirected)
 - Negative weight rejection
@@ -52,6 +55,7 @@
 - Supernode mapping
 
 #### `tests/opt/test_ultra_sssp.py` (302 lines)
+
 - Dijkstra baseline correctness
 - UltraSSSP on various graph topologies
 - Batch size sensitivity
@@ -67,6 +71,7 @@
 ### 3. Demo and Documentation
 
 #### `demo_ultra_sssp.py` (191 lines)
+
 - Command-line interface with argparse
 - Configurable graph parameters
 - Optional hierarchical mode
@@ -76,6 +81,7 @@
 - Terminal-safe ASCII output
 
 #### `quasim/opt/README_ULTRA_SSSP.md` (329 lines)
+
 - Comprehensive usage guide
 - API documentation
 - Configuration reference
@@ -87,36 +93,42 @@
 ## Key Features Implemented
 
 ### 1. Graph Integration ✓
+
 - [x] QGraph replaces Python defaultdict
 - [x] QRATUM-native API (add_edge, neighbors, degree)
 - [x] Support for directed edges with non-negative weights
 - [x] Efficient adjacency list storage
 
 ### 2. Frontier & Batch Management ✓
+
 - [x] Adaptive frontier clustering
 - [x] Memory-efficient batch extraction
 - [x] Iterative (non-recursive) implementation
 - [x] Quantum pivot selection hooks with detailed TODO
 
 ### 3. Hierarchical Contraction ✓
+
 - [x] Multi-level graph hierarchy
 - [x] Configurable contraction factor
 - [x] Efficient supernode lookup
 - [x] Documented edge weight strategies
 
 ### 4. Logging & Benchmarking ✓
+
 - [x] Execution time tracking (total and per-iteration)
 - [x] Memory footprint estimation
 - [x] Performance metrics collection
 - [x] Distance validation against baseline Dijkstra
 
 ### 5. Simulation Parameters ✓
+
 - [x] Configurable nodes, edges, source
 - [x] Tunable batch size
 - [x] Adjustable hierarchy levels
 - [x] Random seed for reproducibility
 
 ### 6. Output ✓
+
 - [x] Distance array per node
 - [x] Performance report with metrics
 - [x] Correctness validation
@@ -134,11 +146,13 @@
 | 1000  | 9984  | 100       | 0.1591s         | 0.0028s        | ✓ PASS      |
 
 ### Memory Efficiency
+
 - Linear scaling: O(V + E)
 - Graph: ~0.18 MB for 1000 nodes, 10K edges
 - Frontier overhead: Minimal with heap-based priority queue
 
 ### Correctness
+
 - 100% match with Dijkstra baseline across all test cases
 - Handles disconnected components correctly
 - Maintains optimal path distances with batch processing
@@ -146,6 +160,7 @@
 ## Integration Points
 
 ### Current QRATUM Integration
+
 ```python
 # Located in quasim/opt module
 from quasim.opt.ultra_sssp import UltraSSSP, run_sssp_simulation
@@ -157,6 +172,7 @@ from quasim.opt.graph import QGraph, HierarchicalGraph
 ```
 
 ### Quantum Pivot Selection (Placeholder)
+
 ```python
 # Detailed TODO with integration guide:
 # 1. Import from qratum.qpu import QPUSelector
@@ -177,6 +193,7 @@ def quantum_pivot_function(candidates, distances):
 ## Code Quality
 
 ### Review Comments Addressed
+
 1. ✓ Enhanced quantum pivot TODO with specific integration steps
 2. ✓ Added production graph partitioning recommendations
 3. ✓ Documented epsilon parameter and configurability
@@ -185,6 +202,7 @@ def quantum_pivot_function(candidates, distances):
 6. ✓ Explained edge weight strategy choices
 
 ### Best Practices
+
 - Type hints throughout
 - Docstrings for all public APIs
 - Defensive programming (validation, error handling)
@@ -194,6 +212,7 @@ def quantum_pivot_function(candidates, distances):
 ## Usage Examples
 
 ### Minimal Example
+
 ```python
 from quasim.opt.graph import QGraph
 from quasim.opt.ultra_sssp import UltraSSSP
@@ -205,6 +224,7 @@ print(f"Distance to node 50: {distances[50]}")
 ```
 
 ### Complete Pipeline
+
 ```bash
 python demo_ultra_sssp.py \
     --nodes 1000 \
@@ -217,12 +237,14 @@ python demo_ultra_sssp.py \
 ## Future Enhancements
 
 ### Near-Term (TODO)
+
 - [ ] Make epsilon parameter configurable for batch strategies
 - [ ] Integrate with QRATUM QPU API
 - [ ] Add GPU acceleration hooks
 - [ ] Support dynamic graph updates
 
 ### Long-Term
+
 - [ ] Distributed graph processing
 - [ ] Quantum-classical hybrid optimization
 - [ ] Advanced graph partitioning (METIS/KaHIP integration)

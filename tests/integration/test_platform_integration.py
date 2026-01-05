@@ -5,10 +5,11 @@ and workflow integration.
 """
 
 import pytest
-from qratum import PlatformConfig, QRATUMPlatform, create_platform
 from qratum.core.exceptions import (
     PlatformConfigError,
 )
+
+from qratum import PlatformConfig, QRATUMPlatform, create_platform
 
 
 class TestPlatformIntegration:

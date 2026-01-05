@@ -6,7 +6,6 @@ Comprehensive examples for all 14 vertical modules.
 
 from qratum.platform import PlatformIntent
 
-
 # JURIS - Legal AI
 juris_intent = PlatformIntent(
     vertical="JURIS",
@@ -143,14 +142,14 @@ ALL_INTENT_EXAMPLES = [
 
 def print_all_intents():
     """Print summary of all example intents"""
-    
+
     print("QRATUM Platform - QIL Intent Examples for All 14 Verticals")
     print("=" * 80)
     print()
-    
+
     for name, intent in ALL_INTENT_EXAMPLES:
         print(f"{name:12} | {intent.task:30} | {intent.intent_id}")
-    
+
     print()
     print("=" * 80)
     print(f"Total: {len(ALL_INTENT_EXAMPLES)} vertical modules with example intents")

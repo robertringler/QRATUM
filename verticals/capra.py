@@ -6,14 +6,14 @@ portfolio optimization, credit risk analysis, and stress testing.
 
 import math
 import random
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 from qratum_platform.core import (
     ComputeSubstrate,
     PlatformContract,
     VerticalModuleBase,
 )
-from qratum_platform.substrates import get_optimal_substrate, VerticalModule
+from qratum_platform.substrates import VerticalModule, get_optimal_substrate
 from qratum_platform.utils import compute_deterministic_seed
 
 
@@ -71,7 +71,9 @@ class CAPRAModule(VerticalModuleBase):
             return result
         except Exception as e:
             self.emit_event(
-                "capra_execution_failed", contract.contract_id, {"operation": operation, "error": str(e)}
+                "capra_execution_failed",
+                contract.contract_id,
+                {"operation": operation, "error": str(e)},
             )
             raise
 
@@ -117,6 +119,7 @@ class CAPRAModule(VerticalModuleBase):
 
     def _calculate_greeks(self, S, K, T, r, sigma, d1, d2, option_type):
         """Calculate option Greeks."""
+
         def norm_cdf(x):
             return (1.0 + math.erf(x / math.sqrt(2.0))) / 2.0
 

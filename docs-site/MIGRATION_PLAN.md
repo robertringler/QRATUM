@@ -209,5 +209,5 @@ extra:
 
 For questions about documentation migration:
 
-- **Documentation Team:** docs@quasim.example.com
+- **Documentation Team:** <docs@quasim.example.com>
 - **GitHub Issues:** Use `documentation` label

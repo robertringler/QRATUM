@@ -9,6 +9,7 @@ This guide provides step-by-step instructions for implementing the SOI visual sy
 ## 1. War Room Controller Blueprint (BP_WarRoomController)
 
 ### Purpose
+
 Central controller that manages the cinematic "living notification" system and responds to telemetry state changes.
 
 ### Setup Instructions
@@ -19,6 +20,7 @@ Central controller that manages the cinematic "living notification" system and r
    - Place in level
 
 2. **Get Telemetry Subsystem**
+
    ```
    Event BeginPlay
    └─> Get Game Instance
@@ -27,6 +29,7 @@ Central controller that manages the cinematic "living notification" system and r
    ```
 
 3. **Bind to State Events**
+
    ```
    Event BeginPlay (continued)
    └─> Bind Event to OnStateUpdated (TelemetrySubsystem)
@@ -35,6 +38,7 @@ Central controller that manages the cinematic "living notification" system and r
    ```
 
 4. **Implement HandleStateUpdate Event**
+
    ```
    HandleStateUpdate Event
    ├─> Branch: SlashingVector > 0.5
@@ -48,6 +52,7 @@ Central controller that manages the cinematic "living notification" system and r
    ```
 
 5. **Continuous Polling (Optional - for UI updates)**
+
    ```
    Event Tick
    └─> Get Current Epoch (TelemetrySubsystem)
@@ -59,9 +64,11 @@ Central controller that manages the cinematic "living notification" system and r
 ## 2. Holographic HUD (WBP_SovereignHUD)
 
 ### Purpose
+
 Glass-effect UI overlay displaying telemetry data with chromatic aberration and blur.
 
 ### Widget Hierarchy
+
 ```
 Canvas Panel
 ├─> Retainer Box (RetainerBox_GlassEffect)
@@ -80,6 +87,7 @@ Canvas Panel
    - Blend Mode: Translucent
 
 2. **Material Graph**
+
    ```
    Scene Color Node
    ├─> Scene Depth Blur
@@ -112,6 +120,7 @@ Event Construct (WBP_SovereignHUD)
 ## 3. Planetary Map - Niagara Validator Particles
 
 ### Purpose
+
 Replace Three.js sphere mesh with UE5 geosphere + Niagara particle validators.
 
 ### Planet Mesh Setup
@@ -122,6 +131,7 @@ Replace Three.js sphere mesh with UE5 geosphere + Niagara particle validators.
    - Scale: (80, 80, 80)
 
 2. **Material: M_PlanetHolographic**
+
    ```
    Material Graph:
    ├─> Fresnel (Rim Light)
@@ -147,6 +157,7 @@ Replace Three.js sphere mesh with UE5 geosphere + Niagara particle validators.
    - Particle Color: User Parameter binding
 
 3. **User Parameters** (exposed to Blueprint)
+
    ```
    User.Zone0_Heat (float) - Default: 0.2
    User.Zone1_Heat (float) - Default: 0.2
@@ -156,6 +167,7 @@ Replace Three.js sphere mesh with UE5 geosphere + Niagara particle validators.
    ```
 
 4. **Particle Color Module**
+
    ```
    Color from Curve:
    ├─> If Zone0_Heat < 0.3: Blue (0.0, 0.5, 1.0)
@@ -164,6 +176,7 @@ Replace Three.js sphere mesh with UE5 geosphere + Niagara particle validators.
    ```
 
 5. **Particle Position Module**
+
    ```
    Spherical Distribution:
    ├─> Zone 0: Radius = 100
@@ -173,6 +186,7 @@ Replace Three.js sphere mesh with UE5 geosphere + Niagara particle validators.
    ```
 
 6. **Vortex Velocity Module** (responds to heat)
+
    ```
    Vortex Force:
    ├─> Center: Planet origin
@@ -202,6 +216,7 @@ UpdateZoneHeat Event
 ## 4. Execution Theater - PCG Lattice
 
 ### Purpose
+
 Replace WebGL line rendering with procedural crystalline lattice that grows with block height.
 
 ### PCG Graph: PCG_ExecutionLattice
@@ -211,6 +226,7 @@ Replace WebGL line rendering with procedural crystalline lattice that grows with
    - Name: PCG_ExecutionLattice
 
 2. **Graph Structure**
+
    ```
    PCG Input
    └─> Grid Sampler
@@ -224,6 +240,7 @@ Replace WebGL line rendering with procedural crystalline lattice that grows with
    ```
 
 3. **Block Height Integration**
+
    ```
    Get Game Instance
    └─> Get Subsystem (USoiTelemetrySubsystem)
@@ -233,6 +250,7 @@ Replace WebGL line rendering with procedural crystalline lattice that grows with
    ```
 
 4. **Material: M_CrystalGlow**
+
    ```
    Material Graph:
    ├─> Base Color: (0.0, 0.7, 0.85)
@@ -261,6 +279,7 @@ Event Tick
    - Name: LevelSequence_RedAlert
 
 2. **Tracks**
+
    ```
    DirectionalLight_Main
    ├─> Light Color Track
@@ -280,6 +299,7 @@ Event Tick
    ```
 
 3. **Trigger from Blueprint**
+
    ```
    (When SlashingVector > 0.5)
    └─> Play Level Sequence: LevelSequence_RedAlert
@@ -297,6 +317,7 @@ Event Tick
    - Blend Mode: Translucent
 
 2. **Material Graph**
+
    ```
    Radial Gradient
    ├─> Center: Actor Location
@@ -307,6 +328,7 @@ Event Tick
    ```
 
 3. **Blueprint Trigger** (BP_ShieldEffect)
+
    ```
    Bind to OnProofVerified (TelemetrySubsystem)
    └─> Custom Event: TriggerShieldRipple
@@ -339,16 +361,19 @@ Event Tick
 ## 8. Performance Optimization
 
 ### LOD Settings
+
 - Planetary mesh: Enable LOD auto-generation (5 levels)
 - Niagara particles: Max 256 particles, cull at distance > 5000 units
 - PCG lattice: Max 50 nodes, disable at distance > 3000 units
 
 ### Lighting
+
 - Use Lumen for real-time global illumination
 - Virtual Shadow Maps for soft shadows
 - Screen Space Reflections for holographic surfaces
 
 ### Materials
+
 - Enable Material Quality switching (Low/Medium/High)
 - Use Material Parameter Collections for global state
 - Cache scene captures for glass effect (30 FPS update rate)
@@ -358,11 +383,13 @@ Event Tick
 ## 9. Testing
 
 1. **Standalone Testing**
+
    ```
    Play in Editor → Standalone Game
    ```
 
 2. **Connect to Local Telemetry**
+
    ```
    In BP_WarRoomController BeginPlay:
    └─> Connect To Aethernet: "ws://localhost:8000/soi/telemetry"
@@ -378,6 +405,7 @@ Event Tick
 ## Blueprint Node Quick Reference
 
 ### Common Nodes
+
 - `Get Game Instance` → `Get Subsystem` (Class: USoiTelemetrySubsystem)
 - `Get Current Epoch` (Pure)
 - `Get Zone Heat` (Pure, Input: Zone Index)
@@ -387,11 +415,13 @@ Event Tick
 - `Bind Event to OnProofVerified`
 
 ### Niagara Nodes
+
 - `Set Niagara Variable (Float)`
 - `Spawn System at Location`
 - `Set Emitter Enabled`
 
 ### Level Sequence Nodes
+
 - `Play Level Sequence`
 - `Set Playback Position`
 - `Stop Level Sequence`

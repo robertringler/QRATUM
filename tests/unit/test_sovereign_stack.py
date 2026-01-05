@@ -11,20 +11,21 @@ Tests the formalized sovereign stack layers:
 """
 
 import pytest
+
 from qratum.sovereign_stack import (
-    LayerStatus,
+    AetherNETLayer,
+    BaseSovereignLayer,
     ConnectivityMode,
+    DESKTOPOSLayer,
+    DGECLayer,
     LayerCapabilities,
     LayerMetrics,
-    BaseSovereignLayer,
-    QRADLELayer,
-    AetherNETLayer,
-    QuASIMLayer,
-    VITRAE0Layer,
-    DGECLayer,
+    LayerStatus,
     MICROOSLayer,
-    DESKTOPOSLayer,
+    QRADLELayer,
+    QuASIMLayer,
     SovereignStack,
+    VITRAE0Layer,
     get_sovereign_stack,
 )
 
@@ -320,9 +321,9 @@ class TestAllLayersOfflineCapable:
     def test_layer_offline_capable(self, layer_class):
         """Each layer must support offline operation."""
         layer = layer_class()
-        assert layer.capabilities.offline_operation is True, (
-            f"{layer.layer_id} must support offline operation per sovereignty requirement"
-        )
+        assert (
+            layer.capabilities.offline_operation is True
+        ), f"{layer.layer_id} must support offline operation per sovereignty requirement"
 
     @pytest.mark.parametrize(
         "layer_class",

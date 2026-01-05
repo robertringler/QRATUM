@@ -64,6 +64,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Inherent Risk Score**: 10 (Current) → 20 (Future)
 
 **Existing Controls**:
+
 - Kyber-1024 (NIST Level 5) for key encapsulation
 - Dilithium-5/SPHINCS+ for signatures
 - Algorithm agility for migration
@@ -89,6 +90,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Inherent Risk Score**: 15
 
 **Existing Controls**:
+
 - Zeroization on drop
 - 30-second lifetime enforcement
 - No disk writes for keys
@@ -98,6 +100,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Treatment**: Mitigate - Deploy TEE/SGX integration
 
 **Action Items**:
+
 | Action | Owner | Due Date | Status |
 |--------|-------|----------|--------|
 | SGX enclave integration | Platform | Q1 2025 | In Progress |
@@ -121,6 +124,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Inherent Risk Score**: 12
 
 **Existing Controls**:
+
 - M-of-N threshold consensus
 - Byzantine fault tolerance (>2/3 required)
 - Validator slashing for violations
@@ -147,6 +151,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Inherent Risk Score**: 15
 
 **Existing Controls**:
+
 - Dependency pinning with checksums
 - Minimal dependency footprint
 - Code review process
@@ -156,6 +161,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Treatment**: Mitigate - Enhance supply chain security
 
 **Action Items**:
+
 | Action | Owner | Due Date | Status |
 |--------|-------|----------|--------|
 | SBOM generation | DevOps | Q1 2025 | Planned |
@@ -180,6 +186,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Inherent Risk Score**: 8
 
 **Existing Controls**:
+
 - HIPAA compliance engine with PHI tagging
 - GDPR engine with cryptographic tombstoning
 - Audit trail retention (6 years)
@@ -206,6 +213,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Inherent Risk Score**: 9
 
 **Existing Controls**:
+
 - Canary TXO probes
 - Censorship event emission
 - Multiple network paths
@@ -232,6 +240,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Inherent Risk Score**: 8
 
 **Existing Controls**:
+
 - Constant-time cryptographic operations
 - Memory fencing
 - Cache attack mitigations in TEE
@@ -257,6 +266,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Inherent Risk Score**: 10
 
 **Existing Controls**:
+
 - HKDF for deterministic derivation
 - Shamir secret sharing for escrow
 - Time-locked recovery
@@ -266,6 +276,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Treatment**: Mitigate - Add HSM key storage
 
 **Action Items**:
+
 | Action | Owner | Due Date | Status |
 |--------|-------|----------|--------|
 | HSM integration | Platform | Q2 2025 | Planned |
@@ -289,6 +300,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Inherent Risk Score**: 8
 
 **Existing Controls**:
+
 - Role-based enclave segmentation (CMMC)
 - Dual-control authorization (8 Fatal Invariants)
 - Comprehensive audit logging
@@ -315,6 +327,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Inherent Risk Score**: 8
 
 **Existing Controls**:
+
 - TLA+ model checking for state machines
 - Coq proofs for critical properties
 - Alloy for consensus verification
@@ -324,6 +337,7 @@ Risk Level: 1-5 Low | 6-10 Medium | 11-15 High | 16-25 Critical
 **Treatment**: Mitigate - Expand formal coverage
 
 **Action Items**:
+
 | Action | Owner | Due Date | Status |
 |--------|-------|----------|--------|
 | Complete Coq proofs | Engineering | Q2 2025 | In Progress |
