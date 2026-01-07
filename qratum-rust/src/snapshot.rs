@@ -130,7 +130,10 @@ impl VolatileSnapshot {
         
         // Encrypt state data with ChaCha20-Poly1305
         // Use first 32 bytes of key for ChaCha20 key
-        let chacha_key: &[u8; 32] = encryption_key[..32].try_into().unwrap();
+        let chacha_key: &[u8; 32] = encryption_key
+            .get(..32)
+            .and_then(|s| s.try_into().ok())
+            .expect("Encryption key must be at least 32 bytes for ChaCha20-Poly1305");
         let cipher = ChaCha20Poly1305::new(chacha_key.into());
         
         // Use first 12 bytes of nonce_bytes for ChaCha20 nonce
@@ -171,7 +174,10 @@ impl VolatileSnapshot {
     /// - Constant-time decryption operations
     pub fn restore(&self, encryption_key: &[u8; 64]) -> Result<Vec<u8>, &'static str> {
         // Decrypt state data with ChaCha20-Poly1305
-        let chacha_key: &[u8; 32] = encryption_key[..32].try_into().unwrap();
+        let chacha_key: &[u8; 32] = encryption_key
+            .get(..32)
+            .and_then(|s| s.try_into().ok())
+            .expect("Encryption key must be at least 32 bytes for ChaCha20-Poly1305");
         let cipher = ChaCha20Poly1305::new(chacha_key.into());
         
         let nonce = Nonce::from_slice(&self.nonce[..12]);

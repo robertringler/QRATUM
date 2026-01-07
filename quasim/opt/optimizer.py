@@ -151,7 +151,8 @@ class QuantumOptimizer:
             
             # Add interaction terms (simplified for general problems)
             for i in range(num_qubits):
-                pauli_list.append(("Z" + "I" * (num_qubits - i - 1) + "I" * i, -1.0))
+                pauli_str = "I" * i + "Z" + "I" * (num_qubits - i - 1)
+                pauli_list.append((pauli_str, -1.0))
             
             # Add coupling terms
             for i in range(num_qubits - 1):
@@ -221,6 +222,7 @@ class QuantumOptimizer:
         np.random.seed(self.random_seed)
 
         # Simulated annealing parameters
+        rng = np.random.RandomState(self.random_seed)
         T_initial = initial_params.get("temperature", 10.0)
         T_final = 0.01
         cooling_rate = initial_params.get("cooling_rate", 0.95)
@@ -239,8 +241,15 @@ class QuantumOptimizer:
             
             # Generate neighbor solution
             neighbor = current_solution.copy()
-            idx = np.random.randint(0, len(neighbor))
-            neighbor[idx] = 1 - neighbor[idx] if isinstance(neighbor[idx], (int, np.integer)) else np.random.randn()
+            idx = rng.randint(0, len(neighbor))
+            
+            # Handle different solution types
+            if isinstance(neighbor[idx], (int, np.integer)):
+                # Binary/integer variable
+                neighbor[idx] = 1 - neighbor[idx]
+            else:
+                # Continuous variable
+                neighbor[idx] = rng.randn()
             
             neighbor_value = problem.evaluate(neighbor)
             
@@ -250,7 +259,7 @@ class QuantumOptimizer:
             else:
                 delta = current_value - neighbor_value
             
-            if delta < 0 or np.random.random() < np.exp(-delta / temperature):
+            if delta < 0 or rng.random() < np.exp(-delta / temperature):
                 current_solution = neighbor
                 current_value = neighbor_value
                 
@@ -275,9 +284,9 @@ class QuantumOptimizer:
     def _fallback_classical(self, problem: OptimizationProblem, algorithm_name: str) -> dict[str, Any]:
         """Fallback to classical optimization when Qiskit unavailable.
 
-        Uses random search with some intelligence.
+        Uses random search with local random state for determinism.
         """
-        np.random.seed(self.random_seed)
+        rng = np.random.RandomState(self.random_seed)
 
         best_solution = problem.get_random_solution()
         best_value = problem.evaluate(best_solution)
