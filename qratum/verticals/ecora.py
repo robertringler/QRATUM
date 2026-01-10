@@ -5,18 +5,17 @@ Provides climate modeling, energy system optimization, carbon footprint
 analysis, and renewable energy optimization.
 """
 
-from typing import Dict, Any, List
-import random
+from typing import Any, Dict, List
 
-from .base import VerticalModuleBase
-from ..platform.core import PlatformContract, EventType
+from ..platform.core import EventType, PlatformContract
 from ..platform.event_chain import MerkleEventChain
+from .base import VerticalModuleBase
 
 
 class EcoraModule(VerticalModuleBase):
     """
     Climate and energy systems AI module.
-    
+
     Capabilities:
     - Climate modeling and projection (SSP scenarios)
     - Energy system optimization
@@ -25,7 +24,7 @@ class EcoraModule(VerticalModuleBase):
     - Renewable energy optimization
     - Climate risk assessment (TCFD-aligned)
     """
-    
+
     def __init__(self):
         super().__init__(
             vertical_name="ECORA",
@@ -46,7 +45,7 @@ class EcoraModule(VerticalModuleBase):
                 "EPA/EU environmental standards",
             ],
         )
-    
+
     def get_supported_tasks(self) -> List[str]:
         return [
             "model_climate",
@@ -56,7 +55,7 @@ class EcoraModule(VerticalModuleBase):
             "optimize_renewables",
             "assess_climate_risk",
         ]
-    
+
     def execute_task(
         self,
         task: str,
@@ -66,12 +65,15 @@ class EcoraModule(VerticalModuleBase):
     ) -> Dict[str, Any]:
         if task not in self.get_supported_tasks():
             raise ValueError(f"Unknown task: {task}")
-        
+
         self.emit_task_event(
-            EventType.TASK_STARTED, contract.contract_id, task,
-            {"parameters": parameters}, event_chain
+            EventType.TASK_STARTED,
+            contract.contract_id,
+            task,
+            {"parameters": parameters},
+            event_chain,
         )
-        
+
         handlers = {
             "model_climate": self._model_climate,
             "optimize_energy_system": self._optimize_energy_system,
@@ -80,20 +82,23 @@ class EcoraModule(VerticalModuleBase):
             "optimize_renewables": self._optimize_renewables,
             "assess_climate_risk": self._assess_climate_risk,
         }
-        
+
         result = handlers[task](parameters)
-        
+
         self.emit_task_event(
-            EventType.TASK_COMPLETED, contract.contract_id, task,
-            {"result_type": type(result).__name__}, event_chain
+            EventType.TASK_COMPLETED,
+            contract.contract_id,
+            task,
+            {"result_type": type(result).__name__},
+            event_chain,
         )
-        
+
         return self.format_output(result)
-    
+
     def _model_climate(self, params: Dict[str, Any]) -> Dict[str, Any]:
         scenario = params.get("scenario", "SSP2-4.5")
         time_horizon = params.get("time_horizon_years", 30)
-        
+
         return {
             "scenario": scenario,
             "time_horizon_years": time_horizon,
@@ -102,10 +107,10 @@ class EcoraModule(VerticalModuleBase):
             "precipitation_change_percent": 5.2,
             "extreme_events_increase": 1.35,
         }
-    
+
     def _optimize_energy_system(self, params: Dict[str, Any]) -> Dict[str, Any]:
         system_config = params.get("system_config", {})
-        
+
         return {
             "optimal_mix": {
                 "solar": 0.35,
@@ -118,10 +123,10 @@ class EcoraModule(VerticalModuleBase):
             "emissions_reduction_percent": 65,
             "reliability_score": 0.94,
         }
-    
+
     def _analyze_carbon_footprint(self, params: Dict[str, Any]) -> Dict[str, Any]:
         entity_data = params.get("entity_data", {})
-        
+
         return {
             "total_co2e_tonnes": 15000,
             "breakdown": {
@@ -132,11 +137,11 @@ class EcoraModule(VerticalModuleBase):
             "intensity_per_revenue": 2.5,
             "reduction_opportunities": ["renewable_energy", "efficiency", "transport"],
         }
-    
+
     def _forecast_weather(self, params: Dict[str, Any]) -> Dict[str, Any]:
         location = params.get("location", "")
         forecast_days = params.get("forecast_days", 7)
-        
+
         return {
             "location": location,
             "forecast_days": forecast_days,
@@ -145,10 +150,10 @@ class EcoraModule(VerticalModuleBase):
             "wind_speed_kmh": 20,
             "confidence": 0.82,
         }
-    
+
     def _optimize_renewables(self, params: Dict[str, Any]) -> Dict[str, Any]:
         renewable_type = params.get("type", "solar")
-        
+
         return {
             "renewable_type": renewable_type,
             "optimal_capacity_mw": 500,
@@ -156,10 +161,10 @@ class EcoraModule(VerticalModuleBase):
             "lcoe_usd_per_kwh": 0.045,
             "payback_period_years": 8.5,
         }
-    
+
     def _assess_climate_risk(self, params: Dict[str, Any]) -> Dict[str, Any]:
         asset_location = params.get("asset_location", "")
-        
+
         return {
             "location": asset_location,
             "physical_risk_score": 6.5,  # out of 10

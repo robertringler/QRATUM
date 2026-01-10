@@ -175,9 +175,7 @@ class ResearchPhase:
         if not self.milestones:
             return 0.0
 
-        completed = sum(
-            1 for m in self.milestones if m.status == MilestoneStatus.COMPLETED
-        )
+        completed = sum(1 for m in self.milestones if m.status == MilestoneStatus.COMPLETED)
         return completed / len(self.milestones)
 
     def to_dict(self) -> dict[str, Any]:
@@ -281,9 +279,7 @@ class ResearchRoadmap:
                     dependency_count[mid] += 1
 
         # Critical path = milestones with high dependency count or blocking status
-        critical = sorted(
-            dependency_count.items(), key=lambda x: x[1], reverse=True
-        )
+        critical = sorted(dependency_count.items(), key=lambda x: x[1], reverse=True)
 
         return [mid for mid, _ in critical[:10]]
 
@@ -419,12 +415,8 @@ def create_qratum_oncology_roadmap() -> ResearchRoadmap:
                 "Causal direction accuracy > 85%",
             ],
             resources=[
-                ResourceRequirement(
-                    ResourceType.FUNDING, 500000, "USD", "Compute and personnel"
-                ),
-                ResourceRequirement(
-                    ResourceType.PERSONNEL, 3, "FTE", "Computational biologists"
-                ),
+                ResourceRequirement(ResourceType.FUNDING, 500000, "USD", "Compute and personnel"),
+                ResourceRequirement(ResourceType.PERSONNEL, 3, "FTE", "Computational biologists"),
             ],
         )
     )
@@ -528,11 +520,12 @@ def create_qratum_oncology_roadmap() -> ResearchRoadmap:
                 "Mechanism of action confirmed",
             ],
             resources=[
+                ResourceRequirement(ResourceType.FUNDING, 3000000, "USD", "Organoid studies"),
                 ResourceRequirement(
-                    ResourceType.FUNDING, 3000000, "USD", "Organoid studies"
-                ),
-                ResourceRequirement(
-                    ResourceType.PARTNERSHIPS, 2, "centers", "Cancer centers with organoid facilities"
+                    ResourceType.PARTNERSHIPS,
+                    2,
+                    "centers",
+                    "Cancer centers with organoid facilities",
                 ),
             ],
         )
@@ -585,8 +578,7 @@ def create_qratum_oncology_roadmap() -> ResearchRoadmap:
         phase_id="P3",
         name="Phase 3: Clinical Translation",
         description=(
-            "Initiate clinical trials for validated hypotheses, "
-            "establish regulatory pathway"
+            "Initiate clinical trials for validated hypotheses, " "establish regulatory pathway"
         ),
         start_year=2029,
         end_year=2032,
@@ -679,8 +671,7 @@ def create_qratum_oncology_roadmap() -> ResearchRoadmap:
         phase_id="P4",
         name="Phase 4: Expansion and Impact",
         description=(
-            "Expand clinical validation, scale platform, "
-            "demonstrate population-level impact"
+            "Expand clinical validation, scale platform, " "demonstrate population-level impact"
         ),
         start_year=2032,
         end_year=2035,

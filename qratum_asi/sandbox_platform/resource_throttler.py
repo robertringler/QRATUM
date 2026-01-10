@@ -127,7 +127,7 @@ class ResourceBudget:
     io_bandwidth: float = 1.0
     concurrent_operations: int = 10
 
-    def apply_multiplier(self, multiplier: float) -> "ResourceBudget":
+    def apply_multiplier(self, multiplier: float) -> ResourceBudget:
         """Apply throttle multiplier to budget.
 
         Args:
@@ -347,9 +347,7 @@ class ResourceThrottler:
         if self._current_state is None:
             return self.base_budget
 
-        return self.base_budget.apply_multiplier(
-            self._current_state.resource_multiplier
-        )
+        return self.base_budget.apply_multiplier(self._current_state.resource_multiplier)
 
     def _create_default_metrics(self) -> LoadMetrics:
         """Create default load metrics."""
@@ -431,14 +429,10 @@ class ResourceThrottler:
         return {
             "throttler_id": self.throttler_id,
             "policy": self.policy.value,
-            "current_state": (
-                self._current_state.to_dict() if self._current_state else None
-            ),
+            "current_state": (self._current_state.to_dict() if self._current_state else None),
             "base_budget": self.base_budget.to_dict(),
             "current_budget": current_budget.to_dict(),
             "load_history_size": len(self._load_history),
-            "latest_load": (
-                self._load_history[-1].to_dict() if self._load_history else None
-            ),
+            "latest_load": (self._load_history[-1].to_dict() if self._load_history else None),
             "level_counts": level_counts,
         }

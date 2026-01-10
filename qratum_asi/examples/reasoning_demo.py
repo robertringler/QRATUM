@@ -5,8 +5,8 @@ capabilities with deterministic, auditable inference chains.
 """
 
 from qratum_asi import QRATUMASI
-from qratum_asi.core.types import ReasoningStrategy, ASISafetyLevel, AuthorizationType
 from qratum_asi.core.contracts import ASIContract
+from qratum_asi.core.types import ASISafetyLevel, AuthorizationType, ReasoningStrategy
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     # Initialize QRATUM-ASI
     print("Initializing QRATUM-ASI...")
     asi = QRATUMASI()
-    print(f"✓ System initialized")
+    print("✓ System initialized")
     print(f"  Merkle chain length: {asi.merkle_chain.get_chain_length()}")
     print()
 
@@ -120,7 +120,7 @@ def main():
     print(f"  Goal: {synthesis['goal']}")
     print(f"  Domains: {', '.join(synthesis['domains'])}")
     print(f"  Insights: {len(synthesis['insights'])}")
-    for insight in synthesis['insights']:
+    for insight in synthesis["insights"]:
         print(f"    - {insight}")
     print()
 

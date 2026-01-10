@@ -1,15 +1,12 @@
 """Tests for the XENONInterventionSearch module."""
 
-import pytest
-
 from qratum.oncology.intervention_search import (
-    XENONInterventionSearch,
-    InterventionNode,
-    TreatmentSequence,
     AdaptiveTherapyPlan,
     DrugProfile,
+    InterventionNode,
     InterventionType,
-    ResistanceMechanism,
+    TreatmentSequence,
+    XENONInterventionSearch,
     create_example_drug_library,
 )
 
@@ -210,7 +207,9 @@ class TestXENONInterventionSearch:
     def test_to_dict(self):
         """Test serialization."""
         search = XENONInterventionSearch(seed=42)
-        drug = DrugProfile(drug_id="test", name="Test", intervention_type=InterventionType.TARGETED_THERAPY)
+        drug = DrugProfile(
+            drug_id="test", name="Test", intervention_type=InterventionType.TARGETED_THERAPY
+        )
         search.add_drug(drug)
 
         d = search.to_dict()

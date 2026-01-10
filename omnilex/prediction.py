@@ -28,12 +28,7 @@ class LitigationPredictionEngine:
         self.seed = seed
         random.seed(seed)
 
-    def predict_outcome(
-        self,
-        case_type: str,
-        jurisdiction: str,
-        key_facts: dict
-    ) -> dict:
+    def predict_outcome(self, case_type: str, jurisdiction: str, key_facts: dict) -> dict:
         """Predict litigation outcome.
 
         Args:
@@ -54,10 +49,7 @@ class LitigationPredictionEngine:
         damages_estimate = self._estimate_damages(key_facts, case_type)
 
         # Calculate settlement value
-        settlement_value = self._calculate_settlement_value(
-            simulation_results,
-            damages_estimate
-        )
+        settlement_value = self._calculate_settlement_value(simulation_results, damages_estimate)
 
         return {
             "case_type": case_type,
@@ -70,14 +62,14 @@ class LitigationPredictionEngine:
             "confidence_interval": simulation_results["confidence_interval"],
             "simulation_metadata": {
                 "n_simulations": simulation_results["n_simulations"],
-                "seed": self.seed
+                "seed": self.seed,
             },
             "caveats": [
                 "Historical data may not reflect current legal climate",
                 "Individual case facts significantly impact outcomes",
                 "Judge and jury composition affect results",
-                "Settlement often preferable to trial risk"
-            ]
+                "Settlement often preferable to trial risk",
+            ],
         }
 
     def _get_historical_rates(self, case_type: str, jurisdiction: str) -> dict:
@@ -97,36 +89,30 @@ class LitigationPredictionEngine:
             "contract_breach": {
                 "plaintiff_win_rate": 0.65,
                 "median_damages": 250000,
-                "trial_rate": 0.05
+                "trial_rate": 0.05,
             },
             "negligence": {
                 "plaintiff_win_rate": 0.55,
                 "median_damages": 500000,
-                "trial_rate": 0.03
+                "trial_rate": 0.03,
             },
             "employment": {
                 "plaintiff_win_rate": 0.45,
                 "median_damages": 150000,
-                "trial_rate": 0.08
+                "trial_rate": 0.08,
             },
             "ip_infringement": {
                 "plaintiff_win_rate": 0.60,
                 "median_damages": 1000000,
-                "trial_rate": 0.10
-            }
+                "trial_rate": 0.10,
+            },
         }
 
-        return base_rates.get(case_type, {
-            "plaintiff_win_rate": 0.50,
-            "median_damages": 100000,
-            "trial_rate": 0.05
-        })
+        return base_rates.get(
+            case_type, {"plaintiff_win_rate": 0.50, "median_damages": 100000, "trial_rate": 0.05}
+        )
 
-    def _monte_carlo_simulation(
-        self,
-        rates: dict,
-        n_simulations: int = 10000
-    ) -> dict:
+    def _monte_carlo_simulation(self, rates: dict, n_simulations: int = 10000) -> dict:
         """Run Monte Carlo simulation of trial outcomes.
 
         Args:
@@ -168,7 +154,7 @@ class LitigationPredictionEngine:
             "defendant_win_prob": round(defendant_win_prob, 3),
             "confidence_interval": (round(ci_lower, 3), round(ci_upper, 3)),
             "expected_outcome": expected_outcome,
-            "n_simulations": n_simulations
+            "n_simulations": n_simulations,
         }
 
     def _estimate_damages(self, facts: dict, case_type: str) -> dict:
@@ -211,15 +197,11 @@ class LitigationPredictionEngine:
             "methodology": f"Based on typical {case_type} case outcomes",
             "components": {
                 "compensatory": int(mid_estimate * 0.9),
-                "punitive": int(mid_estimate * 0.1) if facts.get("punitive_eligible", False) else 0
-            }
+                "punitive": int(mid_estimate * 0.1) if facts.get("punitive_eligible", False) else 0,
+            },
         }
 
-    def _calculate_settlement_value(
-        self,
-        simulation: dict,
-        damages: dict
-    ) -> dict:
+    def _calculate_settlement_value(self, simulation: dict, damages: dict) -> dict:
         """Calculate settlement value range.
 
         Args:
@@ -254,6 +236,6 @@ class LitigationPredictionEngine:
                 f"Plaintiff win probability: {plaintiff_win_prob:.1%}",
                 f"Expected damages if plaintiff wins: ${mid_damages:,}",
                 f"Litigation cost factor: {litigation_cost_factor:.1%}",
-                f"Risk discount: {risk_discount:.1%}"
-            ]
+                f"Risk discount: {risk_discount:.1%}",
+            ],
         }
