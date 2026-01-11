@@ -153,7 +153,13 @@
             const protocol = window.location.protocol;
             
             serviceLinks.forEach(link => {
-                const port = link.getAttribute('data-port');
+                const portStr = link.getAttribute('data-port');
+                // Validate that port is a valid number
+                const port = parseInt(portStr, 10);
+                if (isNaN(port) || port < 1 || port > 65535) {
+                    console.error('Invalid port:', portStr);
+                    return;
+                }
                 link.href = `${protocol}//${hostname}:${port}`;
             });
         });
