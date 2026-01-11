@@ -6,6 +6,7 @@ Unified web interface for accessing all QRATUM services
 """
 
 import os
+import time
 import requests
 from flask import Flask, render_template_string, jsonify, request
 from flask_cors import CORS
@@ -208,8 +209,8 @@ def index():
     """Main control plane interface."""
     services_data = {}
     
-    # Get the hostname from the request
-    hostname = request.host.split(':')[0]  # Remove port if present
+    # Get the hostname from the request (use server name to avoid port)
+    hostname = request.host.rsplit(':', 1)[0]  # rsplit handles IPv6 addresses better
     scheme = request.scheme
 
     for service_id, service_info in SERVICES.items():
@@ -245,8 +246,8 @@ def api_status():
     """API endpoint for service status."""
     status_data = {}
     
-    # Get the hostname from the request
-    hostname = request.host.split(':')[0]  # Remove port if present
+    # Get the hostname from the request (use rsplit to handle IPv6 addresses)
+    hostname = request.host.rsplit(':', 1)[0]
     scheme = request.scheme
 
     for service_id, service_info in SERVICES.items():
@@ -263,7 +264,7 @@ def api_status():
         }
 
     return jsonify({
-        'timestamp': os.times()[4],  # Using process time as timestamp
+        'timestamp': time.time(),
         'services': status_data,
         'overall_status': 'healthy' if all(s['status'] == 'healthy' for s in status_data.values()) else 'degraded'
     })
