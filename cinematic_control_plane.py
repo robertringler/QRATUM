@@ -204,14 +204,19 @@ def check_service_status(url):
     except:
         return "unknown"
 
+def get_hostname_and_scheme():
+    """Extract hostname and scheme from the current request."""
+    # Extract hostname, removing port (handles both IPv4 and IPv6)
+    hostname = request.host.rsplit(':', 1)[0]
+    scheme = request.scheme
+    return hostname, scheme
+
 @app.route('/')
 def index():
     """Main control plane interface."""
     services_data = {}
     
-    # Get the hostname from the request (use server name to avoid port)
-    hostname = request.host.rsplit(':', 1)[0]  # rsplit handles IPv6 addresses better
-    scheme = request.scheme
+    hostname, scheme = get_hostname_and_scheme()
 
     for service_id, service_info in SERVICES.items():
         status = check_service_status(service_info['url'])
@@ -246,9 +251,7 @@ def api_status():
     """API endpoint for service status."""
     status_data = {}
     
-    # Get the hostname from the request (use rsplit to handle IPv6 addresses)
-    hostname = request.host.rsplit(':', 1)[0]
-    scheme = request.scheme
+    hostname, scheme = get_hostname_and_scheme()
 
     for service_id, service_info in SERVICES.items():
         status = check_service_status(service_info['url'])
