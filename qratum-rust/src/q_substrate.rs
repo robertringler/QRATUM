@@ -338,9 +338,10 @@ impl QSubstrate {
                 let a = self.state[i];
                 let b = self.state[j];
                 // Pauli-Y: [[0, -i], [i, 0]]
-                // |0⟩ -> i|1⟩, |1⟩ -> -i|0⟩
-                self.state[i] = Complex::new(b.im, -b.re);  // i * b = i*(b.re + i*b.im) = -b.im + i*b.re
-                self.state[j] = Complex::new(-a.im, a.re);  // -i * a = -i*(a.re + i*a.im) = a.im - i*a.re
+                // |0⟩ -> i|1⟩: i * b = i*(b.re + i*b.im) = -b.im + i*b.re
+                // |1⟩ -> -i|0⟩: -i * a = -i*(a.re + i*a.im) = a.im - i*a.re
+                self.state[i] = Complex::new(-b.im, b.re);
+                self.state[j] = Complex::new(a.im, -a.re);
             }
         }
     }
