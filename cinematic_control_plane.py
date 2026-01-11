@@ -220,9 +220,7 @@ def get_hostname_and_scheme():
             # Extract hostname between brackets
             if ']' in hostname:
                 hostname = hostname.split(']')[0][1:]  # Remove [ and everything after ]
-            else:
-                # Malformed IPv6, keep as-is but log warning
-                pass  # hostname remains unchanged
+            # If malformed (no closing bracket), hostname remains as-is
         else:
             # Regular hostname:port or bare IPv6 (less common in HTTP Host header)
             hostname = hostname.rsplit(':', 1)[0]
