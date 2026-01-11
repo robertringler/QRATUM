@@ -153,8 +153,17 @@ class SovereignOperationsInterface {
      * Initialize Three.js renderer
      */
     async initializeRenderer() {
+        // Check if Three.js is available
+        if (typeof THREE === 'undefined') {
+            throw new Error('Three.js library not loaded');
+        }
+        
         const container = this.elements.viewport;
         const canvas = this.elements.canvas;
+        
+        if (!container || !canvas) {
+            throw new Error('Viewport or canvas element not found');
+        }
         
         // Create scene
         this.scene = new THREE.Scene();
@@ -294,27 +303,47 @@ class SovereignOperationsInterface {
      */
     async initializeDomains() {
         // These will be loaded from separate component files
-        // For now, create basic placeholders
+        console.log('[SOI] Initializing domain renderers...');
         
-        if (typeof PlanetaryMapRenderer !== 'undefined') {
-            this.domains.planetary = new PlanetaryMapRenderer(this.scene, this.camera);
-            await this.domains.planetary.initialize();
+        try {
+            if (typeof PlanetaryMapRenderer !== 'undefined') {
+                console.log('[SOI] Loading Planetary Map...');
+                this.domains.planetary = new PlanetaryMapRenderer(this.scene, this.camera);
+                await this.domains.planetary.initialize();
+            } else {
+                console.warn('[SOI] PlanetaryMapRenderer not available');
+            }
+        } catch (e) {
+            console.error('[SOI] Failed to init planetary:', e);
         }
         
-        if (typeof ExecutionTheaterRenderer !== 'undefined') {
-            this.domains.qradle = new ExecutionTheaterRenderer(this.scene, this.camera);
+        try {
+            if (typeof ExecutionTheaterRenderer !== 'undefined') {
+                this.domains.qradle = new ExecutionTheaterRenderer(this.scene, this.camera);
+            }
+        } catch (e) {
+            console.error('[SOI] Failed to init qradle:', e);
         }
         
-        if (typeof WarRoomRenderer !== 'undefined') {
-            this.domains.consensus = new WarRoomRenderer(this.scene, this.camera);
+        try {
+            if (typeof WarRoomRenderer !== 'undefined') {
+                this.domains.consensus = new WarRoomRenderer(this.scene, this.camera);
+            }
+        } catch (e) {
+            console.error('[SOI] Failed to init consensus:', e);
         }
         
-        if (typeof VerticalBaysRenderer !== 'undefined') {
-            this.domains.verticals = new VerticalBaysRenderer(this.scene, this.camera);
+        try {
+            if (typeof VerticalBaysRenderer !== 'undefined') {
+                this.domains.verticals = new VerticalBaysRenderer(this.scene, this.camera);
+            }
+        } catch (e) {
+            console.error('[SOI] Failed to init verticals:', e);
         }
         
         // Activate initial domain
         this.activateDomain('planetary');
+        console.log('[SOI] Domain renderers initialized');
     }
     
     /**
@@ -446,16 +475,22 @@ class SovereignOperationsInterface {
      * Show interface after loading
      */
     async showInterface() {
+        console.log('[SOI] Showing interface...');
         return new Promise(resolve => {
             setTimeout(() => {
                 // Hide loader
-                this.elements.loader.classList.add('hidden');
+                if (this.elements.loader) {
+                    this.elements.loader.classList.add('hidden');
+                }
                 
                 // Show container
-                this.elements.container.classList.add('visible');
+                if (this.elements.container) {
+                    this.elements.container.classList.add('visible');
+                }
                 
+                console.log('[SOI] Interface visible');
                 resolve();
-            }, 1000);
+            }, 500);
         });
     }
     

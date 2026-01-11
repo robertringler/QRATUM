@@ -39,6 +39,8 @@ minicbor = { version = "0.21", default-features = false, features = ["alloc", "d
 # Zeroization for sensitive data
 zeroize = { version = "1.7", default-features = false, features = ["alloc", "derive"] }
 
+# Math library for no_std (used by q_substrate quantum simulation)
+libm = "0.2"
 # Shamir Secret Sharing (real implementation)
 sharks = { version = "0.5", default-features = false, features = ["zeroize_memory"] }
 

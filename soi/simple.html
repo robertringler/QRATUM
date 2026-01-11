@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRATUM SOI - Simple Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000814; 
+            color: #00b4d8; 
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        #info {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(0,29,61,0.9);
+            padding: 20px;
+            border: 1px solid #00b4d8;
+            border-radius: 8px;
+        }
+        #info h1 { font-size: 24px; margin-bottom: 10px; }
+        #info p { font-size: 12px; color: #90e0ef; margin: 5px 0; }
+        #status { color: #10b981; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h1>◈ QRATUM SOI</h1>
+        <p>SOVEREIGN OPERATIONS INTERFACE</p>
+        <p id="status">Loading Three.js...</p>
+        <p id="fps">FPS: --</p>
+        <p id="validators">Validators: 256 active</p>
+        <p id="epoch">Epoch: 127,843</p>
+    </div>
+    <canvas id="canvas"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const statusEl = document.getElementById('status');
+        const fpsEl = document.getElementById('fps');
+        
+        if (typeof THREE === 'undefined') {
+            statusEl.textContent = 'ERROR: Three.js failed to load';
+            statusEl.style.color = '#ef4444';
+        } else {
+            statusEl.textContent = 'Three.js loaded ✓';
+            init();
+        }
+        
+        function init() {
+            // Setup
+            const canvas = document.getElementById('canvas');
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000814);
+            
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
+            camera.position.set(0, 150, 300);
+            camera.lookAt(0, 0, 0);
+            
+            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // Lights
+            scene.add(new THREE.AmbientLight(0x001d3d, 0.5));
+            const dirLight = new THREE.DirectionalLight(0x00b4d8, 0.8);
+            dirLight.position.set(100, 200, 100);
+            scene.add(dirLight);
+            
+            // Grid
+            const grid = new THREE.GridHelper(500, 50, 0x003566, 0x001d3d);
+            grid.position.y = -50;
+            scene.add(grid);
+            
+            // Earth wireframe
+            const earthGeo = new THREE.SphereGeometry(80, 32, 32);
+            const earthMat = new THREE.MeshBasicMaterial({ 
+                color: 0x003566, 
+                wireframe: true,
+                transparent: true,
+                opacity: 0.4
+            });
+            const earth = new THREE.Mesh(earthGeo, earthMat);
+            scene.add(earth);
+            
+            // Zone rings
+            const zones = [
+                { radius: 100, color: 0x10b981 }, // Z0
+                { radius: 115, color: 0x3b82f6 }, // Z1
+                { radius: 130, color: 0xf59e0b }, // Z2
+                { radius: 145, color: 0xef4444 }  // Z3
+            ];
+            
+            zones.forEach(z => {
+                const ringGeo = new THREE.RingGeometry(z.radius - 0.5, z.radius + 0.5, 64);
+                const ringMat = new THREE.MeshBasicMaterial({ 
+                    color: z.color, 
+                    transparent: true, 
+                    opacity: 0.3,
+                    side: THREE.DoubleSide
+                });
+                const ring = new THREE.Mesh(ringGeo, ringMat);
+                ring.rotation.x = Math.PI / 2;
+                scene.add(ring);
+            });
+            
+            // Validator nodes
+            const nodeGeo = new THREE.SphereGeometry(1.5, 8, 8);
+            for (let i = 0; i < 100; i++) {
+                const zone = zones[Math.floor(Math.random() * zones.length)];
+                const nodeMat = new THREE.MeshPhongMaterial({
+                    color: zone.color,
+                    emissive: zone.color,
+                    emissiveIntensity: 0.5
+                });
+                const node = new THREE.Mesh(nodeGeo, nodeMat);
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                node.position.set(
+                    zone.radius * Math.sin(phi) * Math.cos(theta),
+                    zone.radius * Math.cos(phi),
+                    zone.radius * Math.sin(phi) * Math.sin(theta)
+                );
+                scene.add(node);
+            }
+            
+            // Stars
+            const starGeo = new THREE.BufferGeometry();
+            const starPositions = new Float32Array(3000);
+            for (let i = 0; i < 3000; i += 3) {
+                starPositions[i] = (Math.random() - 0.5) * 2000;
+                starPositions[i+1] = (Math.random() - 0.5) * 2000;
+                starPositions[i+2] = (Math.random() - 0.5) * 2000;
+            }
+            starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+            const starMat = new THREE.PointsMaterial({ color: 0x90e0ef, size: 1.5, opacity: 0.6, transparent: true });
+            scene.add(new THREE.Points(starGeo, starMat));
+            
+            statusEl.textContent = 'SOI ONLINE ✓';
+            statusEl.style.color = '#10b981';
+            
+            // Animation
+            let lastTime = performance.now();
+            let frames = 0;
+            
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                earth.rotation.y += 0.002;
+                
+                // FPS counter
+                frames++;
+                const now = performance.now();
+                if (now - lastTime >= 1000) {
+                    fpsEl.textContent = `FPS: ${frames}`;
+                    frames = 0;
+                    lastTime = now;
+                }
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            
+            // Mouse rotation
+            let isDragging = false;
+            let prevX = 0;
+            canvas.addEventListener('mousedown', e => { isDragging = true; prevX = e.clientX; });
+            canvas.addEventListener('mouseup', () => isDragging = false);
+            canvas.addEventListener('mouseleave', () => isDragging = false);
+            canvas.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                camera.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), -(e.clientX - prevX) * 0.005);
+                prevX = e.clientX;
+            });
+        }
+    </script>
+</body>
+</html>

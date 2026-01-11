@@ -1,0 +1,32 @@
+{
+  "title": "Regional Variance Heatmap",
+  "panels": [
+    {
+      "type": "heatmap",
+      "title": "Variance vs Baseline",
+      "targets": [
+        {
+          "expr": "qevf_variance_pct{region=~\"(us-east|eu-central|ap-sg)\"}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "orange", "value": 5},
+              {"color": "red", "value": 8}
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "links": [
+    {
+      "title": "Stress Injector",
+      "url": "scripts/stress/inject_load.py"
+    }
+  ]
+}
