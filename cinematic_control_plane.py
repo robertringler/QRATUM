@@ -205,10 +205,25 @@ def check_service_status(url):
         return "unknown"
 
 def get_hostname_and_scheme():
-    """Extract hostname and scheme from the current request."""
-    # Extract hostname, removing port (handles both IPv4 and IPv6)
-    hostname = request.host.rsplit(':', 1)[0]
+    """Extract hostname and scheme from the current request.
+    
+    Handles both IPv4 and IPv6 addresses properly, removing port and brackets.
+    """
+    hostname = request.host
     scheme = request.scheme
+    
+    # Remove port: use rsplit to handle colons in IPv6 addresses
+    # For IPv6, format can be [::1]:8080 or [::1] or ::1
+    if ':' in hostname:
+        # Check if it's an IPv6 address with brackets
+        if hostname.startswith('['):
+            # Extract hostname between brackets
+            if ']' in hostname:
+                hostname = hostname.split(']')[0][1:]  # Remove [ and everything after ]
+        else:
+            # Regular hostname:port or bare IPv6 (less common in HTTP Host header)
+            hostname = hostname.rsplit(':', 1)[0]
+    
     return hostname, scheme
 
 @app.route('/')
