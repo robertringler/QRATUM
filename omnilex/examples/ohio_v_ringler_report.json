@@ -1,6 +1,6 @@
 {
-  "intent_id": "JURIS-1ba7bed2403f99b9",
-  "intent_hash": "26580c6e6bb5bf8fd27c60a9fcd25bbc9da5bcc0e0ea6b1e3e5d8400978b67d9",
+  "intent_id": "JURIS-da62be71cca758ae",
+  "intent_hash": "f2e99bb3e1b3253222c8cd4ca1ba578bbbb7b0ec1f0d0fc2a5206025575e35a6",
   "case_number": "17CR052",
   "case_name": "STATE OF OHIO v. RINGLER, ROBERT",
   "phase_i_public_record_exhaustion": {
@@ -205,8 +205,30 @@
       },
       {
         "charge": "R.C. 2909.06(A)(1) \u2014 Criminal Damaging, M2",
-        "statute_code": "2909.06(A)",
-        "analysis": "Statute not in knowledge base; manual review required"
+        "statute_code": "2909.06(A)(1)",
+        "statute_name": "Criminal Damaging or Endangering",
+        "offense_level": "Misdemeanor 2",
+        "elements": [
+          "Knowingly, by any means",
+          "Caused or created a substantial risk of physical harm",
+          "To any property of another",
+          "Without the other person's consent"
+        ],
+        "mens_rea": "Knowingly",
+        "burden_of_proof": "Beyond a reasonable doubt (State's burden)",
+        "elevating_factors": [],
+        "evidentiary_requirements": [
+          "Evidence of property damage",
+          "Proof of ownership by another",
+          "Evidence damage was knowing (not accidental)",
+          "Valuation of damage for offense level determination"
+        ],
+        "common_ohio_failure_modes": [
+          "Ownership element not established",
+          "Damage was accidental (no knowing mens rea)",
+          "Consent defense available",
+          "De minimis damage"
+        ]
       }
     ],
     "3_constitutional_issues": [
@@ -614,8 +636,8 @@
       "reviewer_guidance": "Operate as if this analysis will be audited by an appellate panel and opposing counsel. Truth > certainty. Completeness > elegance. Law > narrative."
     }
   },
-  "timestamp": 1768112356.62322,
+  "timestamp": 1768112547.3744013,
   "version": "1.0.0",
   "disclaimer": "\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551                           QRATUM-JURIS DISCLAIMER                              \u2551\n\u2560\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2563\n\u2551                                                                                \u2551\n\u2551  THIS SYSTEM DOES NOT PROVIDE LEGAL ADVICE.                                   \u2551\n\u2551                                                                                \u2551\n\u2551  This analysis is produced for INFORMATIONAL PURPOSES ONLY and is suitable    \u2551\n\u2551  for:                                                                          \u2551\n\u2551    \u2022 Judicial bench memoranda                                                  \u2551\n\u2551    \u2022 Appellate issue spotting                                                  \u2551\n\u2551    \u2022 Post-conviction review                                                    \u2551\n\u2551    \u2022 Ineffective-assistance evaluation                                         \u2551\n\u2551    \u2022 Academic or audit-grade legal research                                    \u2551\n\u2551                                                                                \u2551\n\u2551  HARD CONSTRAINTS:                                                             \u2551\n\u2551    \u274c No invented facts                                                        \u2551\n\u2551    \u274c No unexplained \"it depends\"                                              \u2551\n\u2551    \u274c No generic summaries                                                      \u2551\n\u2551    \u2705 Explicit reasoning chains                                                \u2551\n\u2551    \u2705 Ohio-specific doctrine                                                   \u2551\n\u2551    \u2705 Transparency about unknowns                                              \u2551\n\u2551                                                                                \u2551\n\u2551  Assume output will be reviewed by Ohio judges, appellate clerks, and         \u2551\n\u2551  opposing counsel. Truth > certainty. Completeness > elegance. Law > narrative \u2551\n\u2551                                                                                \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n",
-  "result_hash": "6219d71a65d3f3b5e9c7e10b6eb6290abc1f19c92575c680a27c1bb366362629"
+  "result_hash": "5b7efa4572ff1764c2fc93b221f1e3361f6185b295c6d36cec186357cf00073f"
 }
