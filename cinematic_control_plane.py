@@ -7,7 +7,7 @@ Unified web interface for accessing all QRATUM services
 
 import os
 import requests
-from flask import Flask, render_template_string, jsonify
+from flask import Flask, render_template_string, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -15,12 +15,12 @@ CORS(app)
 
 # Service endpoints (internal Docker network)
 SERVICES = {
-    'qradle': {'url': 'http://qradle:8000', 'external_url': 'http://10.0.0.1:8001', 'name': 'QRADLE Foundation Engine', 'description': 'Core blockchain and cryptographic operations'},
-    'platform': {'url': 'http://qratum-platform:8000', 'external_url': 'http://10.0.0.1:8002', 'name': 'QRATUM Platform', 'description': '14 vertical AI modules'},
-    'asi': {'url': 'http://qratum-asi:8000', 'external_url': 'http://10.0.0.1:8003', 'name': 'QRATUM-ASI', 'description': 'Autonomous Systems Intelligence'},
-    'grafana': {'url': 'http://grafana:3000', 'external_url': 'http://10.0.0.1:3000', 'name': 'Grafana', 'description': 'Monitoring & Visualization'},
-    'prometheus': {'url': 'http://prometheus:9090', 'external_url': 'http://10.0.0.1:9090', 'name': 'Prometheus', 'description': 'Metrics Collection'},
-    'loki': {'url': 'http://loki:3100', 'external_url': 'http://10.0.0.1:3100', 'name': 'Loki', 'description': 'Log Aggregation'}
+    'qradle': {'url': 'http://qradle:8000', 'port': 8001, 'name': 'QRADLE Foundation Engine', 'description': 'Core blockchain and cryptographic operations'},
+    'platform': {'url': 'http://qratum-platform:8000', 'port': 8002, 'name': 'QRATUM Platform', 'description': '14 vertical AI modules'},
+    'asi': {'url': 'http://qratum-asi:8000', 'port': 8003, 'name': 'QRATUM-ASI', 'description': 'Autonomous Systems Intelligence'},
+    'grafana': {'url': 'http://grafana:3000', 'port': 3000, 'name': 'Grafana', 'description': 'Monitoring & Visualization'},
+    'prometheus': {'url': 'http://prometheus:9090', 'port': 9090, 'name': 'Prometheus', 'description': 'Metrics Collection'},
+    'loki': {'url': 'http://loki:3100', 'port': 3100, 'name': 'Loki', 'description': 'Log Aggregation'}
 }
 
 HTML_TEMPLATE = """
@@ -207,6 +207,10 @@ def check_service_status(url):
 def index():
     """Main control plane interface."""
     services_data = {}
+    
+    # Get the hostname from the request
+    hostname = request.host.split(':')[0]  # Remove port if present
+    scheme = request.scheme
 
     for service_id, service_info in SERVICES.items():
         status = check_service_status(service_info['url'])
@@ -222,9 +226,13 @@ def index():
             'prometheus': '📈',
             'loki': '📝'
         }
+        
+        # Construct external URL dynamically based on request hostname
+        external_url = f"{scheme}://{hostname}:{service_info['port']}"
 
         services_data[service_id] = {
             **service_info,
+            'external_url': external_url,
             'status_class': status_class,
             'status_icon': status_icon,
             'icon': icons.get(service_id, '🔧')
@@ -236,11 +244,20 @@ def index():
 def api_status():
     """API endpoint for service status."""
     status_data = {}
+    
+    # Get the hostname from the request
+    hostname = request.host.split(':')[0]  # Remove port if present
+    scheme = request.scheme
 
     for service_id, service_info in SERVICES.items():
         status = check_service_status(service_info['url'])
+        
+        # Construct external URL dynamically based on request hostname
+        external_url = f"{scheme}://{hostname}:{service_info['port']}"
+        
         status_data[service_id] = {
             **service_info,
+            'external_url': external_url,
             'status': status,
             'reachable': status != 'unknown'
         }
