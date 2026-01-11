@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import time
 from dataclasses import dataclass
 from enum import Enum
@@ -708,9 +709,9 @@ class QRATUMJurisEngine:
 
     def _extract_statute(self, charge: str) -> str | None:
         """Extract Ohio Revised Code citation from charge."""
-        import re
-        # Match patterns like "R.C. 2903.13(A)" or "2903.13(A)"
-        pattern = r'(?:R\.?C\.?\s*)?(\d{4}\.\d{2}(?:\([A-Z0-9]+\))?)'
+        # Match patterns like "R.C. 2903.13(A)" or "2909.06(A)(1)"
+        # The pattern captures the full statute including nested subsections
+        pattern = r'(?:R\.?C\.?\s*)?(\d{4}\.\d{2}(?:\([A-Z0-9]+\))*)'
         match = re.search(pattern, charge)
         return match.group(1) if match else None
 
