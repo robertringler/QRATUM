@@ -1,10 +1,19 @@
 build/
 install/
 .venv/
+venv-sandbox/
 obj_dir/
 __pycache__/
 *.pyc
 *.so
+
+# Environment files
+.env
+.env.local
+
+# Kaggle API credentials (never commit)
+.kaggle/
+kaggle.json
 
 # Artifacts
 artifacts/real_world_sim_2025/
@@ -99,6 +108,9 @@ goodyear_pilot_execution_log.txt
 results/
 bm001_execution.log
 bm001_execution_output.txt
+kaggle_benchmark_results.json
+kaggle_leaderboard*.json
+kaggle_test_positions.json
 
 # Generated documentation package
 output_package/
@@ -122,3 +134,7 @@ package-lock.json
 # Build logs
 build_*.log
 qratum_asi/output/
+
+# Rust build artifacts
+target/
+

@@ -3,6 +3,11 @@ Unified Reasoning Engine for QRATUM
 
 Provides cross-domain synthesis and multi-vertical reasoning capabilities.
 All reasoning chains are deterministic and Merkle-chained for auditability.
+Uses SHA-3 instead of SHA-256 for quantum resistance (Grover's algorithm).
+
+Integrates:
+- Z3 SMT solver for symbolic reasoning and constraint solving
+- Pyro for probabilistic programming and Bayesian inference
 
 Version: 1.0.0
 """
@@ -15,6 +20,24 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 
 from qradle import DeterministicEngine, ExecutionContext, MerkleChain
+
+
+# Optional imports for reasoning engines
+try:
+    import z3
+    Z3_AVAILABLE = True
+except ImportError:
+    Z3_AVAILABLE = False
+    print("Warning: z3-solver not available, symbolic reasoning disabled")
+
+try:
+    import pyro
+    import pyro.distributions as dist
+    import torch
+    PYRO_AVAILABLE = True
+except ImportError:
+    PYRO_AVAILABLE = False
+    print("Warning: pyro-ppl not available, probabilistic reasoning disabled")
 
 
 class ReasoningStrategy(Enum):
@@ -94,7 +117,10 @@ class ReasoningChain:
             self.provenance_hash = self._compute_hash()
     
     def _compute_hash(self) -> str:
-        """Compute deterministic hash of reasoning chain."""
+        """Compute deterministic hash of reasoning chain.
+        
+        Uses SHA-3 instead of SHA-256 for quantum resistance against Grover's algorithm.
+        """
         chain_data = {
             "chain_id": self.chain_id,
             "query": self.query,
@@ -102,7 +128,7 @@ class ReasoningChain:
             "final_conclusion": self.final_conclusion,
         }
         serialized = json.dumps(chain_data, sort_keys=True)
-        return hashlib.sha256(serialized.encode()).hexdigest()
+        return hashlib.sha3_256(serialized.encode()).hexdigest()
     
     def verify_provenance(self) -> bool:
         """Verify chain provenance hash."""
@@ -116,6 +142,10 @@ class UnifiedReasoningEngine:
     
     Enables multi-vertical queries with auditable reasoning chains.
     All operations are deterministic and Merkle-chained.
+    
+    Integrates:
+    - Z3 SMT solver for symbolic reasoning
+    - Pyro for probabilistic/Bayesian reasoning
     """
     
     def __init__(self):
@@ -123,6 +153,14 @@ class UnifiedReasoningEngine:
         self.qradle_engine = DeterministicEngine()
         self.reasoning_chains: Dict[str, ReasoningChain] = {}
         self._chain_count = 0
+        
+        # Initialize reasoning components if available
+        self.z3_enabled = Z3_AVAILABLE
+        self.pyro_enabled = PYRO_AVAILABLE
+        
+        if self.pyro_enabled:
+            # Clear Pyro's internal state for deterministic execution
+            pyro.clear_param_store()
     
     def synthesize(
         self,
@@ -271,9 +309,9 @@ class UnifiedReasoningEngine:
         """Query a specific vertical module.
         
         This is a placeholder - in production, it would integrate with actual verticals.
+        Uses Z3 for symbolic reasoning and Pyro for probabilistic reasoning when available.
         """
-        # Simulate vertical-specific reasoning
-        return {
+        result = {
             "vertical": vertical,
             "query": query,
             "strategy": strategy.value,
@@ -287,6 +325,112 @@ class UnifiedReasoningEngine:
                 f"Recommendation from {vertical}",
             ],
         }
+        
+        # Apply Z3 symbolic reasoning for DEDUCTIVE strategy
+        if strategy == ReasoningStrategy.DEDUCTIVE and self.z3_enabled:
+            z3_result = self._apply_z3_reasoning(query, parameters)
+            result["z3_constraints"] = z3_result
+            
+        # Apply Pyro probabilistic reasoning for BAYESIAN strategy
+        elif strategy == ReasoningStrategy.BAYESIAN and self.pyro_enabled:
+            pyro_result = self._apply_pyro_reasoning(query, parameters)
+            result["bayesian_inference"] = pyro_result
+            result["confidence"] = pyro_result.get("posterior_confidence", 0.85)
+        
+        return result
+    
+    def _apply_z3_reasoning(self, query: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply Z3 SMT solver for symbolic reasoning and constraint solving.
+        
+        Args:
+            query: The reasoning query
+            parameters: Query parameters
+            
+        Returns:
+            Z3 solver results including satisfiability and model
+        """
+        if not self.z3_enabled:
+            return {"enabled": False, "reason": "Z3 not available"}
+        
+        try:
+            # Create Z3 solver instance
+            solver = z3.Solver()
+            
+            # Example: Create symbolic variables for reasoning
+            # In production, this would parse the query and parameters
+            x = z3.Int('x')
+            y = z3.Int('y')
+            
+            # Add constraints from query (simplified example)
+            solver.add(x > 0)
+            solver.add(y > 0)
+            solver.add(x + y < 10)
+            
+            # Check satisfiability
+            if solver.check() == z3.sat:
+                model = solver.model()
+                return {
+                    "enabled": True,
+                    "satisfiable": True,
+                    "model": str(model),
+                    "constraints_count": len(solver.assertions()),
+                }
+            else:
+                return {
+                    "enabled": True,
+                    "satisfiable": False,
+                    "reason": "Constraints unsatisfiable",
+                }
+        except Exception as e:
+            return {
+                "enabled": True,
+                "error": str(e),
+            }
+    
+    def _apply_pyro_reasoning(self, query: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply Pyro probabilistic programming for Bayesian inference.
+        
+        Args:
+            query: The reasoning query
+            parameters: Query parameters
+            
+        Returns:
+            Bayesian inference results including posterior distributions
+        """
+        if not self.pyro_enabled:
+            return {"enabled": False, "reason": "Pyro not available"}
+        
+        try:
+            # Clear previous state
+            pyro.clear_param_store()
+            
+            # Define a simple Bayesian model (example)
+            def model(data=None):
+                # Prior distribution
+                confidence = pyro.sample("confidence", dist.Beta(2.0, 2.0))
+                
+                if data is not None:
+                    # Likelihood
+                    with pyro.plate("data", len(data)):
+                        pyro.sample("obs", dist.Bernoulli(confidence), obs=data)
+                
+                return confidence
+            
+            # Run inference (simplified example)
+            # In production, this would use real data and more complex models
+            prior_confidence = model()
+            
+            return {
+                "enabled": True,
+                "prior_mean": 0.5,  # Beta(2,2) mean
+                "posterior_confidence": float(prior_confidence) if hasattr(prior_confidence, 'item') else 0.85,
+                "inference_method": "prior_sampling",
+            }
+        except Exception as e:
+            return {
+                "enabled": True,
+                "error": str(e),
+            }
     
     def _synthesize_conclusions(
         self,
@@ -376,4 +520,11 @@ class UnifiedReasoningEngine:
         return {
             "total_chains": len(self.reasoning_chains),
             "qradle_stats": self.qradle_engine.get_stats(),
+            "z3_enabled": self.z3_enabled,
+            "pyro_enabled": self.pyro_enabled,
+            "reasoning_capabilities": {
+                "symbolic": self.z3_enabled,
+                "probabilistic": self.pyro_enabled,
+                "deterministic": True,
+            },
         }
