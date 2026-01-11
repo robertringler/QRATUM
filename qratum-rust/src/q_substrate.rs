@@ -513,7 +513,8 @@ impl QSubstrate {
             }
         }
 
-        // Clamp probability to avoid edge cases
+        // Clamp probability to avoid edge cases from floating-point rounding errors
+        // This prevents sqrt of negative numbers or values > 1.0
         prob_one = prob_one.max(0.0).min(1.0);
 
         // Deterministic "measurement" for simulation (use prob > 0.5)
@@ -552,6 +553,26 @@ impl QSubstrate {
         self.state.iter().map(|c| c.norm_sq()).collect()
     }
 
+    /// Check if input matches code generation keywords
+    fn matches_code_generation(input: &str) -> bool {
+        input.contains("generate code") 
+            || input.contains("create code")
+            || input.contains("write code")
+            || (input.contains("generate") && input.contains("function"))
+            || (input.contains("create") && input.contains("function"))
+    }
+
+    /// Check if input matches quantum execution keywords
+    fn matches_quantum_execution(input: &str) -> bool {
+        (input.contains("quantum") && (input.contains("run") || input.contains("execute") || input.contains("simulate")))
+            || input.contains("qubit")
+            || input.contains("circuit")
+            || input.contains("entangle")
+            || input.contains("superposition")
+            || input.contains("bell state")
+            || input.contains("hadamard")
+    }
+
     /// Classify intent from natural language input
     pub fn classify_intent(&self, input: &str) -> IntentResult {
         let input_lower = input.to_lowercase();
@@ -565,13 +586,7 @@ impl QSubstrate {
             || input_lower.contains("not");
 
         // Keyword-based classification with confidence scoring
-        let (intent, confidence) = if !has_negation && (
-            input_lower.contains("generate code") 
-            || input_lower.contains("create code")
-            || input_lower.contains("write code")
-            || (input_lower.contains("generate") && input_lower.contains("function"))
-            || (input_lower.contains("create") && input_lower.contains("function"))
-        ) {
+        let (intent, confidence) = if !has_negation && Self::matches_code_generation(&input_lower) {
             // Extract language entity
             for lang in &["rust", "python", "javascript", "typescript", "go", "java", "c++", "c"] {
                 if input_lower.contains(lang) {
@@ -586,15 +601,7 @@ impl QSubstrate {
                 }
             }
             (IntentType::CodeGeneration, 0.92)
-        } else if !has_negation && (
-            (input_lower.contains("quantum") && (input_lower.contains("run") || input_lower.contains("execute") || input_lower.contains("simulate")))
-            || input_lower.contains("qubit")
-            || input_lower.contains("circuit")
-            || input_lower.contains("entangle")
-            || input_lower.contains("superposition")
-            || input_lower.contains("bell state")
-            || input_lower.contains("hadamard")
-        ) {
+        } else if !has_negation && Self::matches_quantum_execution(&input_lower) {
             (IntentType::QuantumExecution, 0.95)
         } else if input_lower.contains("analyze data") 
             || input_lower.contains("data analysis")

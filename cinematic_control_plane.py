@@ -248,7 +248,11 @@ HTML_TEMPLATE = """
 
 def check_service_status(url):
     """Check if a service is healthy."""
-    timeout = int(os.getenv('QRATUM_HEALTH_CHECK_TIMEOUT', '10'))
+    try:
+        timeout = int(os.getenv('QRATUM_HEALTH_CHECK_TIMEOUT', '10'))
+    except (ValueError, TypeError):
+        timeout = 10  # Default to 10 seconds if env var is invalid
+    
     try:
         response = requests.get(f"{url}/health", timeout=timeout)
         if response.status_code == 200:
