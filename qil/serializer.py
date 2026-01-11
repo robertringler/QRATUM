@@ -84,8 +84,8 @@ def intent_to_canonical_form(intent: Intent) -> str:
 
     # Constraints
     for constraint in intent.constraints:
-        value_str = f'"{constraint.value}"' if isinstance(constraint.value, str) else str(
-            constraint.value
+        value_str = (
+            f'"{constraint.value}"' if isinstance(constraint.value, str) else str(constraint.value)
         )
         lines.append(f"    CONSTRAINT {constraint.name} {constraint.operator} {value_str}")
 
@@ -96,7 +96,11 @@ def intent_to_canonical_form(intent: Intent) -> str:
     # Time specifications
     for time_spec in intent.time_specs:
         # Format value to avoid unnecessary .0 for integers
-        value_str = str(int(time_spec.value)) if time_spec.value == int(time_spec.value) else str(time_spec.value)
+        value_str = (
+            str(int(time_spec.value))
+            if time_spec.value == int(time_spec.value)
+            else str(time_spec.value)
+        )
         lines.append(f"    TIME {time_spec.key}: {value_str}{time_spec.unit}")
 
     # Authorities

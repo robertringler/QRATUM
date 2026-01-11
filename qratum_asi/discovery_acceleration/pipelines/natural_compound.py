@@ -144,11 +144,14 @@ class NaturalCompoundPipeline:
         self.compliances: dict[str, NagoyaCompliance] = {}
 
         # Log initialization
-        self.merkle_chain.add_event("pipeline_initialized", {
-            "pipeline_id": self.pipeline_id,
-            "pipeline_type": "natural_drug_discovery",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        })
+        self.merkle_chain.add_event(
+            "pipeline_initialized",
+            {
+                "pipeline_id": self.pipeline_id,
+                "pipeline_type": "natural_drug_discovery",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            },
+        )
 
     def analyze_metagenome(
         self,
@@ -184,9 +187,7 @@ class NaturalCompoundPipeline:
             # In production, would integrate with VITRA genomics pipeline
 
             # Generate deterministic diversity metrics
-            source_hash = hashlib.sha3_256(
-                f"{source}_{location}".encode()
-            ).hexdigest()
+            source_hash = hashlib.sha3_256(f"{source}_{location}".encode()).hexdigest()
             base_diversity = 50 + (int(source_hash[:4], 16) % 450)
 
             species_diversity = {
@@ -223,12 +224,15 @@ class NaturalCompoundPipeline:
         self.analyses[analysis.analysis_id] = analysis
 
         # Log to merkle chain
-        self.merkle_chain.add_event("metagenome_analysis_completed", {
-            "analysis_id": analysis.analysis_id,
-            "source": source,
-            "location": location,
-            "novel_sequences": analysis.novel_sequences,
-        })
+        self.merkle_chain.add_event(
+            "metagenome_analysis_completed",
+            {
+                "analysis_id": analysis.analysis_id,
+                "source": source,
+                "location": location,
+                "novel_sequences": analysis.novel_sequences,
+            },
+        )
 
         return analysis
 
@@ -274,12 +278,14 @@ class NaturalCompoundPipeline:
                 ic50 = 0.1 + (int(hit_hash[:4], 16) % 900) / 100.0
 
                 if ic50 < 5.0:  # Hits with IC50 < 5 µM
-                    hits.append({
-                        "compound_id": f"COMP_{i:04d}",
-                        "source_cluster": cluster["cluster_id"],
-                        "ic50_um": ic50,
-                        "selectivity": 0.5 + (int(hit_hash[4:8], 16) % 500) / 1000.0,
-                    })
+                    hits.append(
+                        {
+                            "compound_id": f"COMP_{i:04d}",
+                            "source_cluster": cluster["cluster_id"],
+                            "ic50_um": ic50,
+                            "selectivity": 0.5 + (int(hit_hash[4:8], 16) % 500) / 1000.0,
+                        }
+                    )
 
             # Select lead compounds (top 3 hits)
             lead_compounds = sorted(hits, key=lambda x: x["ic50_um"])[:3]
@@ -311,12 +317,15 @@ class NaturalCompoundPipeline:
         self.screenings[screening.screening_id] = screening
 
         # Log to merkle chain
-        self.merkle_chain.add_event("compound_screening_completed", {
-            "screening_id": screening.screening_id,
-            "target": target,
-            "hits": len(screening.hits),
-            "leads": len(screening.lead_compounds),
-        })
+        self.merkle_chain.add_event(
+            "compound_screening_completed",
+            {
+                "screening_id": screening.screening_id,
+                "target": target,
+                "hits": len(screening.hits),
+                "leads": len(screening.lead_compounds),
+            },
+        )
 
         return screening
 
@@ -375,8 +384,8 @@ class NaturalCompoundPipeline:
 
             # Determine compliance status
             is_compliant = (
-                access_permit["status"] == "valid" and
-                benefit_sharing_agreement["revenue_share_percent"] > 0
+                access_permit["status"] == "valid"
+                and benefit_sharing_agreement["revenue_share_percent"] > 0
             )
 
             return {
@@ -394,11 +403,14 @@ class NaturalCompoundPipeline:
         self.compliances[compliance.compliance_id] = compliance
 
         # Log to merkle chain
-        self.merkle_chain.add_event("nagoya_compliance_validated", {
-            "compliance_id": compliance.compliance_id,
-            "location": analysis.location,
-            "is_compliant": compliance.is_compliant,
-        })
+        self.merkle_chain.add_event(
+            "nagoya_compliance_validated",
+            {
+                "compliance_id": compliance.compliance_id,
+                "location": analysis.location,
+                "is_compliant": compliance.is_compliant,
+            },
+        )
 
         return compliance
 

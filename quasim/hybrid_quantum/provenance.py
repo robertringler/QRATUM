@@ -111,7 +111,7 @@ class ProvenanceRecord:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "ProvenanceRecord":
+    def from_dict(cls, data: dict[str, Any]) -> ProvenanceRecord:
         """Create record from dictionary.
 
         Args:

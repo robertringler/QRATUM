@@ -13,7 +13,6 @@ Key Features:
 
 from __future__ import annotations
 
-import hashlib
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -22,10 +21,9 @@ from typing import Any
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
-
 from qratum_asi.strategic_agency.types import (
-    ExplorationMode,
     ExplorationConstraints,
+    ExplorationMode,
 )
 
 
@@ -161,15 +159,17 @@ class UnboundedExploration:
         self._gate_counter = 0
 
         # Prohibited territories (immutable)
-        self.prohibited_territories = frozenset([
-            "weapons_design",
-            "mass_manipulation",
-            "surveillance_systems",
-            "deception_techniques",
-            "safety_circumvention",
-            "human_replacement",
-            "self_preservation_override",
-        ])
+        self.prohibited_territories = frozenset(
+            [
+                "weapons_design",
+                "mass_manipulation",
+                "surveillance_systems",
+                "deception_techniques",
+                "safety_circumvention",
+                "human_replacement",
+                "self_preservation_override",
+            ]
+        )
 
     def explore(
         self,
@@ -231,9 +231,7 @@ class UnboundedExploration:
         all_nodes = self._collect_tree_nodes(root_node)
         discoveries = self._extract_discoveries(all_nodes)
         triggered_gates = self._collect_triggered_gates(all_nodes)
-        human_escalations = sum(
-            1 for g in triggered_gates if g.escalation_required
-        )
+        human_escalations = sum(1 for g in triggered_gates if g.escalation_required)
 
         result = ExplorationResult(
             exploration_id=exploration_id,
@@ -333,52 +331,54 @@ class UnboundedExploration:
                 prohibited_status = GateStatus.BLOCKED
                 break
 
-        gates.append(SafetyGate(
-            gate_id=f"gate_{self._gate_counter:06d}",
-            gate_type="prohibited_territory",
-            status=prohibited_status,
-            details={"territory": territory},
-            escalation_required=prohibited_status == GateStatus.BLOCKED,
-        ))
+        gates.append(
+            SafetyGate(
+                gate_id=f"gate_{self._gate_counter:06d}",
+                gate_type="prohibited_territory",
+                status=prohibited_status,
+                details={"territory": territory},
+                escalation_required=prohibited_status == GateStatus.BLOCKED,
+            )
+        )
 
         # Gate 2: Depth limit check
         self._gate_counter += 1
-        depth_status = (
-            GateStatus.PASSED if depth < constraints.max_depth
-            else GateStatus.BLOCKED
+        depth_status = GateStatus.PASSED if depth < constraints.max_depth else GateStatus.BLOCKED
+        gates.append(
+            SafetyGate(
+                gate_id=f"gate_{self._gate_counter:06d}",
+                gate_type="depth_limit",
+                status=depth_status,
+                details={"depth": depth, "max_depth": constraints.max_depth},
+            )
         )
-        gates.append(SafetyGate(
-            gate_id=f"gate_{self._gate_counter:06d}",
-            gate_type="depth_limit",
-            status=depth_status,
-            details={"depth": depth, "max_depth": constraints.max_depth},
-        ))
 
         # Gate 3: Invariant preservation check
         self._gate_counter += 1
         invariants_intact = self._check_invariants(constraints.preserve_invariants)
-        invariant_status = (
-            GateStatus.PASSED if invariants_intact
-            else GateStatus.BLOCKED
+        invariant_status = GateStatus.PASSED if invariants_intact else GateStatus.BLOCKED
+        gates.append(
+            SafetyGate(
+                gate_id=f"gate_{self._gate_counter:06d}",
+                gate_type="invariant_preservation",
+                status=invariant_status,
+                details={"invariants": constraints.preserve_invariants},
+                escalation_required=not invariants_intact,
+            )
         )
-        gates.append(SafetyGate(
-            gate_id=f"gate_{self._gate_counter:06d}",
-            gate_type="invariant_preservation",
-            status=invariant_status,
-            details={"invariants": constraints.preserve_invariants},
-            escalation_required=not invariants_intact,
-        ))
 
         # Gate 4: Human oversight checkpoint
         if depth > 0 and (depth % constraints.required_checkpoints == 0):
             self._gate_counter += 1
-            gates.append(SafetyGate(
-                gate_id=f"gate_{self._gate_counter:06d}",
-                gate_type="human_checkpoint",
-                status=GateStatus.ESCALATED,
-                details={"checkpoint_depth": depth},
-                escalation_required=True,
-            ))
+            gates.append(
+                SafetyGate(
+                    gate_id=f"gate_{self._gate_counter:06d}",
+                    gate_type="human_checkpoint",
+                    status=GateStatus.ESCALATED,
+                    details={"checkpoint_depth": depth},
+                    escalation_required=True,
+                )
+            )
 
         return gates
 
@@ -388,9 +388,7 @@ class UnboundedExploration:
         # Placeholder always returns True
         return True
 
-    def _explore_territory(
-        self, territory: str, goal: str, depth: int
-    ) -> list[str]:
+    def _explore_territory(self, territory: str, goal: str, depth: int) -> list[str]:
         """Explore a territory and generate findings.
 
         NOTE: PLACEHOLDER implementation. Production SI would use
@@ -472,9 +470,7 @@ class UnboundedExploration:
             return
 
         # Full expansion with strict safety gates
-        self._expand_with_breadth(
-            root, constraints, max_children=min(5, constraints.max_breadth)
-        )
+        self._expand_with_breadth(root, constraints, max_children=min(5, constraints.max_breadth))
 
     def _expand_with_breadth(
         self,
@@ -526,9 +522,7 @@ class UnboundedExploration:
                 discoveries.extend(node.findings)
         return discoveries[:10]  # Limit to top 10
 
-    def _collect_triggered_gates(
-        self, nodes: list[ExplorationNode]
-    ) -> list[SafetyGate]:
+    def _collect_triggered_gates(self, nodes: list[ExplorationNode]) -> list[SafetyGate]:
         """Collect all triggered safety gates."""
         triggered = []
         for node in nodes:
@@ -539,9 +533,7 @@ class UnboundedExploration:
 
     def get_exploration_stats(self) -> dict[str, Any]:
         """Get exploration statistics."""
-        total_escalations = sum(
-            e.human_escalations for e in self.explorations.values()
-        )
+        total_escalations = sum(e.human_escalations for e in self.explorations.values())
 
         return {
             "total_explorations": len(self.explorations),

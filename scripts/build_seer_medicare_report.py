@@ -166,7 +166,7 @@ def load_json_file(filepath: Path) -> dict[str, Any]:
     if not filepath.exists():
         return {}
     try:
-        with open(filepath, "r") as f:
+        with open(filepath) as f:
             return json.load(f)
     except Exception as e:
         logger.warning(f"Failed to load {filepath}: {e}")
@@ -178,7 +178,7 @@ def load_text_file(filepath: Path) -> str:
     if not filepath.exists():
         return "Not available"
     try:
-        with open(filepath, "r") as f:
+        with open(filepath) as f:
             return f.read().strip()
     except Exception as e:
         logger.warning(f"Failed to load {filepath}: {e}")
@@ -594,6 +594,7 @@ def try_generate_pdf(markdown_content: str, output_path: Path) -> bool:
     try:
         # Check if reportlab is available
         import importlib.util
+
         if importlib.util.find_spec("reportlab") is None:
             raise ImportError("reportlab not found")
 

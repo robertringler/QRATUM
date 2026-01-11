@@ -464,9 +464,7 @@ class PassiveMetricsCollector:
     ) -> tuple[float, float, float, float]:
         """Compute entropy metrics for data."""
         # Convert to string for analysis
-        if isinstance(data, dict):
-            data_str = str(data)
-        elif isinstance(data, list):
+        if isinstance(data, dict) or isinstance(data, list):
             data_str = str(data)
         else:
             data_str = str(data)
@@ -530,8 +528,7 @@ class PassiveMetricsCollector:
             if k >= 2:
                 # Count edges between neighbors
                 neighbor_edges = sum(
-                    1 for n1 in neighbors for n2 in neighbors
-                    if n1 < n2 and n2 in adj[n1]
+                    1 for n1 in neighbors for n2 in neighbors if n1 < n2 and n2 in adj[n1]
                 )
                 max_neighbor_edges = k * (k - 1) / 2
                 if max_neighbor_edges > 0:
@@ -560,12 +557,10 @@ class PassiveMetricsCollector:
         """
         with self._lock:
             latency_metrics = {
-                op: self.get_latency_metrics(op).to_dict()
-                for op in self._latency_samples
+                op: self.get_latency_metrics(op).to_dict() for op in self._latency_samples
             }
             throughput_metrics = {
-                op: self.get_throughput_metrics(op).to_dict()
-                for op in self._throughput_counters
+                op: self.get_throughput_metrics(op).to_dict() for op in self._throughput_counters
             }
 
             return {
@@ -576,14 +571,10 @@ class PassiveMetricsCollector:
                 "entropy_history_size": len(self._entropy_history),
                 "topology_history_size": len(self._topology_history),
                 "latest_entropy": (
-                    self._entropy_history[-1].to_dict()
-                    if self._entropy_history
-                    else None
+                    self._entropy_history[-1].to_dict() if self._entropy_history else None
                 ),
                 "latest_topology": (
-                    self._topology_history[-1].to_dict()
-                    if self._topology_history
-                    else None
+                    self._topology_history[-1].to_dict() if self._topology_history else None
                 ),
                 "timestamp": datetime.now(timezone.utc).isoformat(),
             }

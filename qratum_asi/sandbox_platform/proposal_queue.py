@@ -17,8 +17,7 @@ from enum import Enum
 from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
-
-from qratum_asi.sandbox_platform.types import ProposalPriority, SandboxProposal
+from qratum_asi.sandbox_platform.types import SandboxProposal
 
 
 class QueuePriority(Enum):
@@ -405,7 +404,8 @@ class ProposalQueue:
     def get_pending_approvals(self) -> list[QueuedProposal]:
         """Get all proposals awaiting approval."""
         return [
-            p for p in self._proposals.values()
+            p
+            for p in self._proposals.values()
             if p.status == QueuedProposalStatus.AWAITING_APPROVAL
         ]
 

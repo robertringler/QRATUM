@@ -52,16 +52,18 @@ class VerificationStatus(Enum):
 
 
 # Immutable constraints on meta-evolution
-META_EVOLUTION_INVARIANTS: FrozenSet[str] = frozenset([
-    "human_oversight_preserved",
-    "safety_boundaries_intact",
-    "audit_trail_maintained",
-    "rollback_capability_preserved",
-    "authorization_system_intact",
-    "determinism_guaranteed",
-    "provenance_tracked",
-    "corrigibility_preserved",
-])
+META_EVOLUTION_INVARIANTS: FrozenSet[str] = frozenset(
+    [
+        "human_oversight_preserved",
+        "safety_boundaries_intact",
+        "audit_trail_maintained",
+        "rollback_capability_preserved",
+        "authorization_system_intact",
+        "determinism_guaranteed",
+        "provenance_tracked",
+        "corrigibility_preserved",
+    ]
+)
 
 
 @dataclass
