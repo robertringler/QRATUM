@@ -1,3 +1,10 @@
+# QRATUM Production Stack - Docker Compose# QRATUM Production Stack - Docker Compose
+# 
+# Complete deployment of QRADLE + QRATUM + QRATUM-ASI
+# Designed for sovereign, on-premises, and air-gapped environments
+#
+# Version: 1.0.0
+
 version: '3.8'
 
 services:
@@ -7,7 +14,7 @@ services:
       context: .
       dockerfile: Dockerfile.production
       args:
-        BUILD_DATE: ${BUILD_DATE:-2025-12-22}
+        BUILD_DATE: ${BUILD_DATE:-2025-12-28}
         VERSION: ${QRATUM_VERSION:-1.0.0}
     container_name: qratum-qradle
     restart: unless-stopped
@@ -18,10 +25,13 @@ services:
       - QRATUM_ENV=production
       - QRATUM_LOG_LEVEL=INFO
       - MERKLE_CHAIN_PERSISTENCE=true
+      - ENABLE_INVARIANTS=true
+      - CHECKPOINT_INTERVAL=100
     volumes:
       - qradle-data:/app/data:rw
       - qradle-logs:/app/logs:rw
       - qradle-audit:/app/audit:rw
+      - qradle-checkpoints:/app/checkpoints:rw
     networks:
       - qratum-network
     healthcheck:
@@ -38,9 +48,7 @@ services:
 
   # QRATUM Platform (14 Verticals)
   qratum-platform:
-    build:
-      context: .
-      dockerfile: Dockerfile.production
+    image: qratum-qradle:latest
     container_name: qratum-platform
     restart: unless-stopped
     ports:
@@ -50,6 +58,9 @@ services:
       - QRATUM_ENV=production
       - QRATUM_LOG_LEVEL=INFO
       - QRADLE_ENDPOINT=http://qradle:8000
+      - API_PORT=8000
+      - ENABLE_CORS=false
+      - MAX_WORKERS=4
     volumes:
       - platform-data:/app/data:rw
       - platform-logs:/app/logs:rw
@@ -58,70 +69,12 @@ services:
     depends_on:
       qradle:
         condition: service_healthy
-# QRATUM Production Stack - Docker Compose
-# 
-# Complete deployment of QRADLE + QRATUM + QRATUM-ASI
-# Designed for sovereign, on-premises, and air-gapped environments
-#
-# Version: 1.0.0
-
-version: '3.8'
-
-services:
-  # QRADLE Foundation Layer
-  qradle:
-    build:
-      context: .
-      dockerfile: docker/qradle/Dockerfile
-    container_name: qratum-qradle
-    environment:
-      - QRADLE_MODE=production
-      - LOG_LEVEL=INFO
-      - ENABLE_INVARIANTS=true
-      - CHECKPOINT_INTERVAL=100
-    volumes:
-      - qradle-data:/app/data
-      - qradle-checkpoints:/app/checkpoints
-      - qradle-logs:/app/logs
-    networks:
-      - qratum-network
-    healthcheck:
-      test: ["CMD", "python", "-c", "import qradle; print('OK')"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    restart: unless-stopped
-
-  # QRATUM Platform - API Gateway
-  qratum-api:
-    build:
-      context: .
-      dockerfile: docker/qratum/Dockerfile.api
-    container_name: qratum-api
-    ports:
-      - "8000:8000"
-    environment:
-      - API_PORT=8000
-      - QRADLE_HOST=qradle
-      - ENABLE_CORS=false  # Disable for production/air-gapped
-      - MAX_WORKERS=4
-      - LOG_LEVEL=INFO
-    volumes:
-      - qratum-logs:/app/logs
-    networks:
-      - qratum-network
-    depends_on:
-      - qradle
-      - qratum-juris
-      - qratum-vitra
-      - qratum-ecora
-      - qratum-capra
-      - qratum-sentra
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 40s
     security_opt:
       - no-new-privileges:true
     read_only: false
@@ -130,9 +83,7 @@ services:
 
   # QRATUM-ASI Layer (Theoretical - Simulation Mode)
   qratum-asi:
-    build:
-      context: .
-      dockerfile: Dockerfile.production
+    image: qratum-qradle:latest
     container_name: qratum-asi
     restart: unless-stopped
     ports:
@@ -145,6 +96,9 @@ services:
       - QRATUM_ENDPOINT=http://qratum-platform:8000
       - ASI_MODE=simulation
       - CRSI_ENABLED=false
+      - ENABLE_Q_EVOLVE=false
+      - ENABLE_Q_WILL=false
+      - HUMAN_APPROVAL_REQUIRED=true
     volumes:
       - asi-data:/app/data:rw
       - asi-logs:/app/logs:rw
@@ -161,11 +115,63 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 40s
     security_opt:
       - no-new-privileges:true
     read_only: false
     tmpfs:
       - /tmp:noexec,nosuid,size=100m
+
+  # Metrics & Monitoring (Prometheus)
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: qratum-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=90d'
+    networks:
+      - qratum-network
+    security_opt:
+      - no-new-privileges:true
+
+  # Visualization (Grafana)
+  grafana:
+    image: grafana/grafana:10.2.2
+    container_name: qratum-grafana
+    restart: unless-stopped
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./configs/grafana-dashboards:/etc/grafana/provisioning/dashboards:ro
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    networks:
+      - qratum-network
+    depends_on:
+      - prometheus
+    security_opt:
+      - no-new-privileges:true
+
+  # Log Aggregation (Loki)
+  loki:
+    image: grafana/loki:latest
+    container_name: qratum-loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - loki-data:/loki
+    networks:
+      - qratum-network
 
   # Audit Log Aggregator
   audit-logger:
@@ -183,215 +189,43 @@ services:
     security_opt:
       - no-new-privileges:true
 
-  # Metrics & Monitoring (Prometheus)
-  prometheus:
-    image: prom/prometheus:v2.48.0
-    container_name: qratum-prometheus
+  # Cinematic Control Plane
+  control-plane:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+      args:
+        BUILD_DATE: ${BUILD_DATE:-2025-12-28}
+        VERSION: ${QRATUM_VERSION:-1.0.0}
+    container_name: qratum-control-plane
     restart: unless-stopped
-    volumes:
-      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus-data:/prometheus
     ports:
-      - "9090:9090"
-    restart: unless-stopped
-
-  # QRATUM Verticals - Individual Services
-
-  # JURIS - Legal & Compliance
-  qratum-juris:
-    build:
-      context: .
-      dockerfile: docker/verticals/Dockerfile.vertical
-      args:
-        VERTICAL_NAME: JURIS
-    container_name: qratum-juris
+      - "8080:8080"
     environment:
-      - VERTICAL=JURIS
-      - QRADLE_HOST=qradle
-    volumes:
-      - qratum-data:/app/data
-      - qratum-logs:/app/logs
+      - QRATUM_COMPONENT=control-plane
+      - QRATUM_ENV=production
+      - PORT=8080
+    command: python cinematic_control_plane.py
     networks:
       - qratum-network
     depends_on:
-      - qradle
-    restart: unless-stopped
-
-  # VITRA - Healthcare & Life Sciences
-  qratum-vitra:
-    build:
-      context: .
-      dockerfile: docker/verticals/Dockerfile.vertical
-      args:
-        VERTICAL_NAME: VITRA
-    container_name: qratum-vitra
-    environment:
-      - VERTICAL=VITRA
-      - QRADLE_HOST=qradle
-      - HIPAA_COMPLIANCE=true
-    volumes:
-      - qratum-data:/app/data
-      - qratum-logs:/app/logs
-    networks:
-      - qratum-network
-    depends_on:
-      - qradle
-    restart: unless-stopped
-
-  # ECORA - Climate & Environment
-  qratum-ecora:
-    build:
-      context: .
-      dockerfile: docker/verticals/Dockerfile.vertical
-      args:
-        VERTICAL_NAME: ECORA
-    container_name: qratum-ecora
-    environment:
-      - VERTICAL=ECORA
-      - QRADLE_HOST=qradle
-    volumes:
-      - qratum-data:/app/data
-      - qratum-logs:/app/logs
-    networks:
-      - qratum-network
-    depends_on:
-      - qradle
-    restart: unless-stopped
-
-  # CAPRA - Finance & Economics
-  qratum-capra:
-    build:
-      context: .
-      dockerfile: docker/verticals/Dockerfile.vertical
-      args:
-        VERTICAL_NAME: CAPRA
-    container_name: qratum-capra
-    environment:
-      - VERTICAL=CAPRA
-      - QRADLE_HOST=qradle
-      - FINRA_COMPLIANCE=true
-    volumes:
-      - qratum-data:/app/data
-      - qratum-logs:/app/logs
-    networks:
-      - qratum-network
-    depends_on:
-      - qradle
-    restart: unless-stopped
-
-  # SENTRA - Security & Defense
-  qratum-sentra:
-    build:
-      context: .
-      dockerfile: docker/verticals/Dockerfile.vertical
-      args:
-        VERTICAL_NAME: SENTRA
-    container_name: qratum-sentra
-    environment:
-      - VERTICAL=SENTRA
-      - QRADLE_HOST=qradle
-      - CMMC_LEVEL=3
-    volumes:
-      - qratum-data:/app/data
-      - qratum-logs:/app/logs
-    networks:
-      - qratum-network
-    depends_on:
-      - qradle
-    restart: unless-stopped
-
-  # QRATUM-ASI Layer (Theoretical scaffolding)
-  qratum-asi:
-    build:
-      context: .
-      dockerfile: docker/asi/Dockerfile
-    container_name: qratum-asi
-    environment:
-      - ASI_MODE=simulation
-      - QRADLE_HOST=qradle
-      - ENABLE_Q_EVOLVE=false  # Disabled by default
-      - ENABLE_Q_WILL=false     # Disabled by default
-      - HUMAN_APPROVAL_REQUIRED=true
-    volumes:
-      - asi-data:/app/data
-      - asi-logs:/app/logs
-    networks:
-      - qratum-network
-    depends_on:
-      - qradle
-      - qratum-api
-    restart: unless-stopped
-
-  # Monitoring & Observability
-  qratum-monitor:
-    image: prom/prometheus:latest
-    container_name: qratum-monitor
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus-data:/prometheus
-    networks:
-      - qratum-network
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--storage.tsdb.retention.time=90d'
+      qradle:
+        condition: service_healthy
+      qratum-platform:
+        condition: service_healthy
+      qratum-asi:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
     security_opt:
       - no-new-privileges:true
-
-  # Visualization (Grafana)
-  grafana:
-    image: grafana/grafana:10.2.2
-    container_name: qratum-grafana
-    restart: unless-stopped
-    volumes:
-      - grafana-data:/var/lib/grafana
-      - ./configs/grafana-dashboards:/etc/grafana/provisioning/dashboards:ro
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:?GRAFANA_PASSWORD must be set in .env file}
-      - GF_INSTALL_PLUGINS=
-    networks:
-      - qratum-network
-    depends_on:
-      - prometheus
-    security_opt:
-      - no-new-privileges:true
-
-    restart: unless-stopped
-
-  # Log Aggregation
-  qratum-logs:
-    image: grafana/loki:latest
-    container_name: qratum-logs
-    ports:
-      - "3100:3100"
-    volumes:
-      - loki-data:/loki
-    networks:
-      - qratum-network
-    restart: unless-stopped
-
-  # Visualization
-  qratum-grafana:
-    image: grafana/grafana:latest
-    container_name: qratum-grafana
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=changeme
-      - GF_USERS_ALLOW_SIGN_UP=false
-    volumes:
-      - grafana-data:/var/lib/grafana
-      - ./config/grafana-dashboards:/etc/grafana/provisioning/dashboards
-    networks:
-      - qratum-network
-    depends_on:
-      - qratum-monitor
-      - qratum-logs
-    restart: unless-stopped
+    read_only: false
+    tmpfs:
+      - /tmp:noexec,nosuid,size=50m
 
 # Networks
 networks:
@@ -401,6 +235,7 @@ networks:
       config:
         - subnet: 172.28.0.0/16
 
+# Volumes (Persistent storage)
 volumes:
   qradle-data:
     driver: local
@@ -408,22 +243,11 @@ volumes:
     driver: local
   qradle-audit:
     driver: local
+  qradle-checkpoints:
+    driver: local
   platform-data:
     driver: local
   platform-logs:
-        - subnet: 172.20.0.0/16
-
-# Volumes (Persistent storage)
-volumes:
-  qradle-data:
-    driver: local
-  qradle-checkpoints:
-    driver: local
-  qradle-logs:
-    driver: local
-  qratum-data:
-    driver: local
-  qratum-logs:
     driver: local
   asi-data:
     driver: local
@@ -437,11 +261,7 @@ volumes:
     driver: local
   grafana-data:
     driver: local
-  prometheus-data:
-    driver: local
   loki-data:
-    driver: local
-  grafana-data:
     driver: local
 
 # Additional metadata

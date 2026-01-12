@@ -6,17 +6,6 @@
     <meta name="description" content="QRATUM Sovereign Operations Interface - Planetary Command Interface for Regulated Reality">
     <title>QRATUM | Sovereign Operations Interface</title>
     
-    <!-- Three.js for 3D Rendering -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" 
-            integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==" 
-            crossorigin="anonymous" 
-            referrerpolicy="no-referrer"></script>
-    
-    <!-- Chart.js for 2D Metrics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
-            integrity="sha384-jwMwVYcHJ9ql5YXgawmlD4dUxH0l12z1Vu3dRTfULBIpP7K7+xMT9v63ohEkIVw6"
-            crossorigin="anonymous"></script>
-    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -312,6 +301,14 @@
     </div>
 
     <!-- SOI Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Verify Three.js loaded
+        if (typeof THREE === 'undefined') {
+            document.getElementById('loader-substatus').textContent = 'ERROR: Three.js failed to load';
+            console.error('Three.js failed to load');
+        }
+    </script>
     <script src="assets/js/telemetry-bus.js"></script>
     <script src="assets/js/soi-renderer.js"></script>
     <script src="assets/js/soi-api.js"></script>
@@ -322,8 +319,19 @@
     <script>
         // Initialize SOI on load
         document.addEventListener('DOMContentLoaded', () => {
+            if (typeof THREE === 'undefined') {
+                document.getElementById('loader-substatus').textContent = 'ERROR: Three.js not available';
+                return;
+            }
+            if (typeof SovereignOperationsInterface === 'undefined') {
+                document.getElementById('loader-substatus').textContent = 'ERROR: SOI Renderer not loaded';
+                return;
+            }
             window.SOI = new SovereignOperationsInterface();
-            window.SOI.initialize();
+            window.SOI.initialize().catch(err => {
+                console.error('SOI Init Error:', err);
+                document.getElementById('loader-substatus').textContent = 'ERROR: ' + err.message;
+            });
         });
     </script>
 </body>
