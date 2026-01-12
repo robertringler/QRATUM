@@ -126,17 +126,13 @@ class TestComplianceMapper:
         """Test compliance validation includes recommendations."""
         mapper = ComplianceMapper()
 
-        result = mapper.validate_compliance(
-            "wf_test_001",
-            DiscoveryType.NATURAL_DRUG_DISCOVERY
-        )
+        result = mapper.validate_compliance("wf_test_001", DiscoveryType.NATURAL_DRUG_DISCOVERY)
 
         # Should have recommendations even if compliant
         assert len(result.recommendations) > 0
         # Should mention continuous monitoring
         assert any(
-            "monitoring" in rec.lower() or "review" in rec.lower()
-            for rec in result.recommendations
+            "monitoring" in rec.lower() or "review" in rec.lower() for rec in result.recommendations
         )
 
     def test_get_framework_details_common(self):
@@ -226,8 +222,7 @@ class TestComplianceMapper:
         mapper = ComplianceMapper()
 
         artifact = mapper.generate_compliance_artifact(
-            "dc_test_serialize",
-            DiscoveryType.PERSONALIZED_DRUG_DESIGN
+            "dc_test_serialize", DiscoveryType.PERSONALIZED_DRUG_DESIGN
         )
         artifact_dict = artifact.to_dict()
 
@@ -242,10 +237,7 @@ class TestComplianceMapper:
         """Test compliance validation result can be serialized."""
         mapper = ComplianceMapper()
 
-        result = mapper.validate_compliance(
-            "wf_test_serialize",
-            DiscoveryType.ANTI_AGING_PATHWAYS
-        )
+        result = mapper.validate_compliance("wf_test_serialize", DiscoveryType.ANTI_AGING_PATHWAYS)
         result_dict = result.to_dict()
 
         assert result_dict["workflow_id"] == "wf_test_serialize"

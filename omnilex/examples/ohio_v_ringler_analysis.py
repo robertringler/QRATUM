@@ -69,7 +69,11 @@ def main():
     print(f"{'Source':<25} {'Searched':<10} {'Accessible':<15} {'Information Found':<30}")
     print("-" * 80)
     for row in phase_i["source_disclosure_table"]:
-        info = row["information_found"][:30] + "..." if len(row["information_found"]) > 30 else row["information_found"]
+        info = (
+            row["information_found"][:30] + "..."
+            if len(row["information_found"]) > 30
+            else row["information_found"]
+        )
         print(f"{row['source']:<25} {str(row['searched']):<10} {row['accessible']:<15} {info:<30}")
 
     print("\nC. Negative Certification:")
@@ -166,7 +170,9 @@ def main():
     print(f"{'Outcome':<25} {'Probability':<15} {'Legal Basis':<40}")
     print("-" * 80)
     for outcome in phase_ii["7_outcome_probability_matrix"]:
-        print(f"{outcome['outcome']:<25} {outcome['probability_percent']}%{'':<10} {outcome['legal_basis'][:40]}")
+        print(
+            f"{outcome['outcome']:<25} {outcome['probability_percent']}%{'':<10} {outcome['legal_basis'][:40]}"
+        )
 
     # 8. Post-Conviction Review
     print("\n8️⃣ POST-CONVICTION & COLLATERAL REVIEW")

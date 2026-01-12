@@ -405,7 +405,8 @@ class DualControlGateway:
     def get_pending_requests(self) -> list[ApprovalRequest]:
         """Get all pending requests."""
         return [
-            r for r in self.requests.values()
+            r
+            for r in self.requests.values()
             if r.status in (AuthorizationStatus.PENDING, AuthorizationStatus.AWAITING_SECOND)
         ]
 
@@ -419,7 +420,8 @@ class DualControlGateway:
             List of pending requests
         """
         return [
-            r for r in self.get_pending_requests()
+            r
+            for r in self.get_pending_requests()
             if approver_id in r.required_approvers
             and approver_id not in {a.approver_id for a in r.approvals}
             and approver_id not in {a.approver_id for a in r.rejections}
@@ -447,9 +449,7 @@ class DualControlGateway:
             status_counts[r.status.value] = status_counts.get(r.status.value, 0) + 1
 
         approval_rate = (
-            self._approved_requests / self._total_requests
-            if self._total_requests > 0
-            else 0
+            self._approved_requests / self._total_requests if self._total_requests > 0 else 0
         )
 
         return {

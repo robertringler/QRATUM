@@ -21,7 +21,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Protocol, runtime_checkable
+from typing import Protocol, runtime_checkable
 
 from qratum.metrics import QRATUMMetrics
 
@@ -559,9 +559,7 @@ class SovereignStack:
             if not layer.capabilities.offline_operation:
                 status.offline_capable = False
 
-        status.all_online = all(
-            s == LayerStatus.ONLINE for s in status.layer_statuses.values()
-        )
+        status.all_online = all(s == LayerStatus.ONLINE for s in status.layer_statuses.values())
 
         return status
 
@@ -597,19 +595,19 @@ class SovereignStack:
 
         # Aggregate metrics from all layers
         all_metrics = [layer.get_metrics() for layer in self._layers.values()]
-        
+
         # Filter out None metrics (defensive)
         valid_metrics = [m for m in all_metrics if m is not None]
-        
+
         if not valid_metrics:
             return metrics
 
-        metrics.outcome_superiority_ratio = (
-            sum(m.outcome_superiority_ratio for m in valid_metrics) / len(valid_metrics)
-        )
-        metrics.compute_efficiency_index = (
-            sum(m.compute_efficiency_index for m in valid_metrics) / len(valid_metrics)
-        )
+        metrics.outcome_superiority_ratio = sum(
+            m.outcome_superiority_ratio for m in valid_metrics
+        ) / len(valid_metrics)
+        metrics.compute_efficiency_index = sum(
+            m.compute_efficiency_index for m in valid_metrics
+        ) / len(valid_metrics)
         # Sovereignty is the weakest link
         metrics.sovereignty_factor = min(m.sovereignty_factor for m in valid_metrics)
         # HRD is worst case

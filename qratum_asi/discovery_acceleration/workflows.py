@@ -33,7 +33,7 @@ from qradle.merkle import MerkleChain
 
 class DiscoveryType(Enum):
     """Types of discoveries to accelerate."""
-    
+
     COMPLEX_DISEASE_GENETICS = "complex_disease_genetics"
     PERSONALIZED_DRUG_DESIGN = "personalized_drug_design"
     CLIMATE_GENE_CONNECTIONS = "climate_gene_connections"
@@ -44,7 +44,7 @@ class DiscoveryType(Enum):
 
 class WorkflowStage(Enum):
     """Stages in a discovery workflow."""
-    
+
     INITIALIZATION = "initialization"
     INPUT_VALIDATION = "input_validation"
     ZK_PROOF_GENERATION = "zk_proof_generation"
@@ -60,7 +60,7 @@ class WorkflowStage(Enum):
 @dataclass
 class WorkflowArtifact:
     """Artifact produced by a workflow stage.
-    
+
     Attributes:
         artifact_id: Unique identifier
         stage: Workflow stage that produced this artifact
@@ -69,14 +69,14 @@ class WorkflowArtifact:
         timestamp: Creation timestamp
         metadata: Additional metadata
     """
-    
+
     artifact_id: str
     stage: WorkflowStage
     data_hash: str
     merkle_root: str
     timestamp: str
     metadata: dict[str, Any] = field(default_factory=dict)
-    
+
     def to_dict(self) -> dict[str, Any]:
         """Serialize artifact."""
         return {
@@ -92,7 +92,7 @@ class WorkflowArtifact:
 @dataclass
 class RollbackPoint:
     """Rollback point for workflow recovery.
-    
+
     Attributes:
         rollback_id: Unique identifier
         stage: Stage where rollback point was created
@@ -100,13 +100,13 @@ class RollbackPoint:
         merkle_root: Merkle root at this point
         timestamp: Creation timestamp
     """
-    
+
     rollback_id: str
     stage: WorkflowStage
     state_snapshot: dict[str, Any]
     merkle_root: str
     timestamp: str
-    
+
     def to_dict(self) -> dict[str, Any]:
         """Serialize rollback point."""
         return {
@@ -123,7 +123,7 @@ class RollbackPoint:
 @dataclass
 class DiscoveryResult:
     """Result of a discovery workflow execution.
-    
+
     Attributes:
         workflow_id: Workflow identifier
         discovery_type: Type of discovery
@@ -136,7 +136,7 @@ class DiscoveryResult:
         execution_time_seconds: Total execution time
         timestamp: Completion timestamp
     """
-    
+
     workflow_id: str
     discovery_type: DiscoveryType
     success: bool
@@ -149,7 +149,7 @@ class DiscoveryResult:
     timestamp: str
     projections: dict[str, Any] = field(default_factory=dict)
     compliance_mapping: dict[str, Any] = field(default_factory=dict)
-    
+
     def to_dict(self) -> dict[str, Any]:
         """Serialize result."""
         return {
@@ -186,14 +186,14 @@ STAGE_OPERATION_MAPPING: dict[WorkflowStage, str] = {
 @dataclass
 class DiscoveryWorkflow:
     """Base class for discovery workflows.
-    
+
     Implements invariant-preserving execution with:
     - Zone-enforced pipeline (Z0 -> Z3)
     - Merkle-chained provenance
     - Rollback points
     - Deterministic processing
     """
-    
+
     workflow_id: str
     discovery_type: DiscoveryType
     merkle_chain: MerkleChain = field(default_factory=MerkleChain)
@@ -201,23 +201,23 @@ class DiscoveryWorkflow:
     rollback_points: list[RollbackPoint] = field(default_factory=list)
     current_stage: WorkflowStage = WorkflowStage.INITIALIZATION
     state: dict[str, Any] = field(default_factory=dict)
-    
+
     def __post_init__(self):
         """Initialize workflow."""
         self.zone_enforcer = get_zone_enforcer()
         self._stage_counter = 0
-    
+
     def create_rollback_point(self, description: str = "") -> RollbackPoint:
         """Create a rollback point at current state.
-        
+
         Args:
             description: Human-readable description
-            
+
         Returns:
             Created RollbackPoint
         """
         rollback_id = f"rb_{self.workflow_id}_{len(self.rollback_points):04d}"
-        
+
         rollback_point = RollbackPoint(
             rollback_id=rollback_id,
             stage=self.current_stage,
@@ -225,24 +225,27 @@ class DiscoveryWorkflow:
             merkle_root=self.merkle_chain.get_chain_proof(),
             timestamp=datetime.now(timezone.utc).isoformat(),
         )
-        
+
         self.rollback_points.append(rollback_point)
-        
+
         # Log to merkle chain
-        self.merkle_chain.add_event("rollback_point_created", {
-            "rollback_id": rollback_id,
-            "stage": self.current_stage.value,
-            "description": description,
-        })
-        
+        self.merkle_chain.add_event(
+            "rollback_point_created",
+            {
+                "rollback_id": rollback_id,
+                "stage": self.current_stage.value,
+                "description": description,
+            },
+        )
+
         return rollback_point
-    
+
     def rollback_to(self, rollback_id: str) -> bool:
         """Rollback to a previous state.
-        
+
         Args:
             rollback_id: ID of rollback point
-            
+
         Returns:
             True if rollback succeeded
         """
@@ -250,17 +253,20 @@ class DiscoveryWorkflow:
             if rp.rollback_id == rollback_id:
                 self.state = rp.state_snapshot.copy()
                 self.current_stage = rp.stage
-                
+
                 # Log rollback
-                self.merkle_chain.add_event("rollback_executed", {
-                    "rollback_id": rollback_id,
-                    "restored_stage": rp.stage.value,
-                })
-                
+                self.merkle_chain.add_event(
+                    "rollback_executed",
+                    {
+                        "rollback_id": rollback_id,
+                        "restored_stage": rp.stage.value,
+                    },
+                )
+
                 return True
-        
+
         return False
-    
+
     def execute_stage(
         self,
         stage: WorkflowStage,
@@ -270,20 +276,20 @@ class DiscoveryWorkflow:
         approvers: list[str] | None = None,
     ) -> WorkflowArtifact:
         """Execute a workflow stage with zone enforcement.
-        
+
         Args:
             stage: Stage to execute
             zone: Security zone for this stage
             operation: Operation to execute
             actor_id: Actor performing operation
             approvers: Optional approvers for dual-control
-            
+
         Returns:
             Artifact produced by stage
         """
         self.current_stage = stage
         self._stage_counter += 1
-        
+
         # Create zone context using module-level operation mapping
         context = ZoneContext(
             zone=zone,
@@ -291,14 +297,14 @@ class DiscoveryWorkflow:
             actor_id=actor_id,
             approvers=approvers or [],
         )
-        
+
         # Enforce zone invariants and execute
         result = self.zone_enforcer.execute_in_zone(context, operation)
-        
+
         # Create artifact
         result_json = json.dumps(result, sort_keys=True)
         data_hash = hashlib.sha3_256(result_json.encode()).hexdigest()
-        
+
         artifact = WorkflowArtifact(
             artifact_id=f"art_{self.workflow_id}_{self._stage_counter:04d}",
             stage=stage,
@@ -307,25 +313,28 @@ class DiscoveryWorkflow:
             timestamp=datetime.now(timezone.utc).isoformat(),
             metadata={"zone": zone.value, "actor": actor_id},
         )
-        
+
         self.artifacts.append(artifact)
-        
+
         # Log to merkle chain
-        self.merkle_chain.add_event("stage_completed", {
-            "stage": stage.value,
-            "artifact_id": artifact.artifact_id,
-            "data_hash": data_hash,
-        })
-        
+        self.merkle_chain.add_event(
+            "stage_completed",
+            {
+                "stage": stage.value,
+                "artifact_id": artifact.artifact_id,
+                "data_hash": data_hash,
+            },
+        )
+
         # Update state
         self.state[stage.value] = result
-        
+
         return artifact
 
 
 class DiscoveryAccelerationEngine:
     """Engine for accelerating breakthrough discoveries.
-    
+
     Orchestrates all 6 discovery types with:
     - QRATUM ASI bounded recursive improvement
     - QRADLE deterministic execution
@@ -333,21 +342,24 @@ class DiscoveryAccelerationEngine:
     - Cross-vertical synthesis
     - Full provenance tracking
     """
-    
+
     def __init__(self):
         """Initialize the discovery acceleration engine."""
         self.merkle_chain = MerkleChain()
         self.workflows: dict[str, DiscoveryWorkflow] = {}
         self.results: dict[str, DiscoveryResult] = {}
         self._workflow_counter = 0
-        
+
         # Log initialization
-        self.merkle_chain.add_event("engine_initialized", {
-            "version": "1.0.0",
-            "quasim_version": "v2025.12.26",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        })
-    
+        self.merkle_chain.add_event(
+            "engine_initialized",
+            {
+                "version": "1.0.0",
+                "quasim_version": "v2025.12.26",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            },
+        )
+
     def create_workflow(
         self,
         discovery_type: DiscoveryType,
@@ -355,47 +367,50 @@ class DiscoveryAccelerationEngine:
         actor_id: str,
     ) -> DiscoveryWorkflow:
         """Create a new discovery workflow.
-        
+
         Args:
             discovery_type: Type of discovery
             parameters: Workflow parameters
             actor_id: Actor creating the workflow
-            
+
         Returns:
             Created DiscoveryWorkflow
         """
         self._workflow_counter += 1
         workflow_id = f"wf_{discovery_type.value}_{self._workflow_counter:06d}"
-        
+
         workflow = DiscoveryWorkflow(
             workflow_id=workflow_id,
             discovery_type=discovery_type,
         )
-        
+
         workflow.state["parameters"] = parameters
         workflow.state["actor_id"] = actor_id
         workflow.state["created_at"] = datetime.now(timezone.utc).isoformat()
-        
+
         self.workflows[workflow_id] = workflow
-        
+
         # Log creation
-        self.merkle_chain.add_event("workflow_created", {
-            "workflow_id": workflow_id,
-            "discovery_type": discovery_type.value,
-            "actor_id": actor_id,
-        })
-        
+        self.merkle_chain.add_event(
+            "workflow_created",
+            {
+                "workflow_id": workflow_id,
+                "discovery_type": discovery_type.value,
+                "actor_id": actor_id,
+            },
+        )
+
         return workflow
-    
+
     def get_discovery_projections(
         self,
         discovery_type: DiscoveryType,
     ) -> dict[str, Any]:
         """Get quantitative projections for a discovery type.
-        
+
         Args:
             discovery_type: Type of discovery
-            
+
         Returns:
             Projections dictionary with:
             - discovery_probability: Estimated probability of breakthrough
@@ -453,18 +468,18 @@ class DiscoveryAccelerationEngine:
                 "reversibility_score": 1.0,  # Full rollback capability
             },
         }
-        
+
         return projections.get(discovery_type, {})
-    
+
     def get_compliance_mapping(
         self,
         discovery_type: DiscoveryType,
     ) -> dict[str, Any]:
         """Get compliance/regulatory mapping for a discovery type.
-        
+
         Args:
             discovery_type: Type of discovery
-            
+
         Returns:
             Compliance mapping dictionary
         """
@@ -501,7 +516,7 @@ class DiscoveryAccelerationEngine:
                 ],
             },
         }
-        
+
         # Discovery-specific compliance
         discovery_compliance = {
             DiscoveryType.COMPLEX_DISEASE_GENETICS: {
@@ -558,12 +573,12 @@ class DiscoveryAccelerationEngine:
                 },
             },
         }
-        
+
         return discovery_compliance.get(discovery_type, common_compliance)
-    
+
     def get_engine_stats(self) -> dict[str, Any]:
         """Get engine statistics.
-        
+
         Returns:
             Statistics dictionary
         """
@@ -571,10 +586,7 @@ class DiscoveryAccelerationEngine:
             "total_workflows": len(self.workflows),
             "completed_results": len(self.results),
             "workflows_by_type": {
-                dt.value: sum(
-                    1 for w in self.workflows.values()
-                    if w.discovery_type == dt
-                )
+                dt.value: sum(1 for w in self.workflows.values() if w.discovery_type == dt)
                 for dt in DiscoveryType
             },
             "merkle_chain_length": len(self.merkle_chain.chain),

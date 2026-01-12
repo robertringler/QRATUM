@@ -25,6 +25,7 @@ from typing import Any
 
 class PublicRecordSource(Enum):
     """Public record sources for case information."""
+
     CLERK_OF_COURTS = "clerk_of_courts"
     MUNICIPAL_COURT = "municipal_court"
     SUPREME_COURT = "supreme_court"
@@ -37,6 +38,7 @@ class PublicRecordSource(Enum):
 
 class SourceAccessibility(Enum):
     """Accessibility status of public records."""
+
     PUBLIC = "public"
     RESTRICTED = "restricted"
     SEALED = "sealed"
@@ -45,6 +47,7 @@ class SourceAccessibility(Enum):
 
 class CompletenessRating(Enum):
     """Information completeness rating."""
+
     FRAGMENTARY = "0-25%: Fragmentary"
     PARTIAL = "26-50%: Partial"
     SUBSTANTIALLY_COMPLETE = "51-75%: Substantially complete"
@@ -54,6 +57,7 @@ class CompletenessRating(Enum):
 @dataclass
 class PublicRecordSearchResult:
     """Result of searching a public record source."""
+
     source: PublicRecordSource
     searched: bool
     accessible: SourceAccessibility
@@ -64,6 +68,7 @@ class PublicRecordSearchResult:
 @dataclass
 class ChargeAnalysis:
     """Analysis of a criminal charge."""
+
     statute_code: str
     statute_name: str
     offense_level: str
@@ -78,6 +83,7 @@ class ChargeAnalysis:
 @dataclass
 class SpeedyTrialComputation:
     """Speedy trial calculation under Ohio law."""
+
     statutory_limit_days: int
     elapsed_days: int
     tolling_events: list[dict[str, Any]]
@@ -91,6 +97,7 @@ class SpeedyTrialComputation:
 @dataclass
 class PleaForensics:
     """Forensic analysis of plea and sentencing."""
+
     indictment_sufficiency: dict[str, Any]
     plea_colloquy_requirements: list[str]
     sentencing_legality: dict[str, Any]
@@ -102,6 +109,7 @@ class PleaForensics:
 @dataclass
 class ConstitutionalIssue:
     """Constitutional or statutory issue analysis."""
+
     amendment_or_statute: str
     issue_description: str
     ohio_analysis_framework: str
@@ -113,6 +121,7 @@ class ConstitutionalIssue:
 @dataclass
 class AdversarialPosition:
     """Defense or prosecution optimal interpretation."""
+
     position_type: str  # "defense" or "prosecution"
     interpretation: str
     strength_under_ohio_law: float
@@ -123,6 +132,7 @@ class AdversarialPosition:
 @dataclass
 class OutcomeProbability:
     """Outcome probability assessment."""
+
     outcome: str
     legal_basis: str
     probability_percent: float
@@ -132,6 +142,7 @@ class OutcomeProbability:
 @dataclass
 class PostConvictionAnalysis:
     """Post-conviction and collateral review analysis."""
+
     crim_r_32_1_viability: dict[str, Any]  # Manifest injustice
     rc_2953_21_viability: dict[str, Any]  # Post-conviction petition
     ineffective_assistance: dict[str, Any]  # Strickland analysis
@@ -143,6 +154,7 @@ class PostConvictionAnalysis:
 @dataclass
 class AppellateRiskProfile:
     """Appellate risk assessment."""
+
     de_novo_issues: list[str]
     abuse_of_discretion_issues: list[str]
     plain_error_risks: list[str]
@@ -155,6 +167,7 @@ class CriminalCaseIntent:
 
     This immutable dataclass represents a criminal case analysis request.
     """
+
     intent_id: str
     case_number: str
     case_name: str
@@ -172,22 +185,25 @@ class CriminalCaseIntent:
 
     def compute_hash(self) -> str:
         """Compute deterministic hash of intent."""
-        data = json.dumps({
-            "intent_id": self.intent_id,
-            "case_number": self.case_number,
-            "case_name": self.case_name,
-            "jurisdiction": self.jurisdiction,
-            "county": self.county,
-            "state": self.state,
-            "defendant_name": self.defendant_name,
-            "charges": list(self.charges),
-            "plea": self.plea,
-            "sentence": self.sentence,
-            "judge": self.judge,
-            "defense_counsel": self.defense_counsel,
-            "key_dates": list(self.key_dates),
-            "analysis_type": self.analysis_type,
-        }, sort_keys=True)
+        data = json.dumps(
+            {
+                "intent_id": self.intent_id,
+                "case_number": self.case_number,
+                "case_name": self.case_name,
+                "jurisdiction": self.jurisdiction,
+                "county": self.county,
+                "state": self.state,
+                "defendant_name": self.defendant_name,
+                "charges": list(self.charges),
+                "plea": self.plea,
+                "sentence": self.sentence,
+                "judge": self.judge,
+                "defense_counsel": self.defense_counsel,
+                "key_dates": list(self.key_dates),
+                "analysis_type": self.analysis_type,
+            },
+            sort_keys=True,
+        )
         return hashlib.sha256(data.encode()).hexdigest()
 
 
@@ -238,7 +254,7 @@ class QRATUMJurisEngine:
             "name": "Assault",
             "elements": [
                 "Knowingly caused or attempted to cause physical harm to another",
-                "OR recklessly caused serious physical harm to another"
+                "OR recklessly caused serious physical harm to another",
             ],
             "mens_rea": "Knowingly or Recklessly",
             "base_offense": "M1",
@@ -247,22 +263,22 @@ class QRATUMJurisEngine:
                 "Victim is school teacher or administrator",
                 "Victim is school bus operator",
                 "Victim is mental health professional",
-                "Offense committed in school safety zone"
-            ]
+                "Offense committed in school safety zone",
+            ],
         },
         "2921.33(B)": {
             "name": "Resisting Arrest",
             "elements": [
                 "Recklessly or by force",
                 "Resisted or interfered with a lawful arrest",
-                "Of the offender or another person"
+                "Of the offender or another person",
             ],
             "mens_rea": "Recklessly",
             "base_offense": "M2",
             "m1_elevating_factors": [
                 "Offense committed during fleeing and eluding",
-                "Created substantial risk of physical harm to any person"
-            ]
+                "Created substantial risk of physical harm to any person",
+            ],
         },
         "2909.06(A)(1)": {
             "name": "Criminal Damaging or Endangering",
@@ -270,11 +286,11 @@ class QRATUMJurisEngine:
                 "Knowingly, by any means",
                 "Caused or created a substantial risk of physical harm",
                 "To any property of another",
-                "Without the other person's consent"
+                "Without the other person's consent",
             ],
             "mens_rea": "Knowingly",
-            "base_offense": "M2"
-        }
+            "base_offense": "M2",
+        },
     }
 
     # Ohio speedy trial limits
@@ -284,7 +300,7 @@ class QRATUMJurisEngine:
         "M2": 90,
         "M3": 45,
         "M4": 45,
-        "minor_misdemeanor": 30
+        "minor_misdemeanor": 30,
     }
 
     def __init__(self) -> None:
@@ -292,10 +308,7 @@ class QRATUMJurisEngine:
         self._analysis_history: dict[str, dict] = {}
         self._event_log: list[dict] = []
 
-    def analyze_criminal_case(
-        self,
-        intent: CriminalCaseIntent
-    ) -> dict[str, Any]:
+    def analyze_criminal_case(self, intent: CriminalCaseIntent) -> dict[str, Any]:
         """Perform comprehensive criminal case analysis.
 
         Implements the full QRATUM-JURIS analysis framework:
@@ -311,11 +324,14 @@ class QRATUMJurisEngine:
         timestamp = time.time()
         intent_hash = intent.compute_hash()
 
-        self._emit_event("JURIS_ANALYSIS_STARTED", {
-            "intent_id": intent.intent_id,
-            "case_number": intent.case_number,
-            "timestamp": timestamp
-        })
+        self._emit_event(
+            "JURIS_ANALYSIS_STARTED",
+            {
+                "intent_id": intent.intent_id,
+                "case_number": intent.case_number,
+                "timestamp": timestamp,
+            },
+        )
 
         try:
             # Phase I: Public Record Exhaustion (MANDATORY)
@@ -343,25 +359,26 @@ class QRATUMJurisEngine:
             # Store in history
             self._analysis_history[intent.intent_id] = response
 
-            self._emit_event("JURIS_ANALYSIS_COMPLETED", {
-                "intent_id": intent.intent_id,
-                "result_hash": response["result_hash"],
-                "timestamp": time.time()
-            })
+            self._emit_event(
+                "JURIS_ANALYSIS_COMPLETED",
+                {
+                    "intent_id": intent.intent_id,
+                    "result_hash": response["result_hash"],
+                    "timestamp": time.time(),
+                },
+            )
 
             return response
 
         except Exception as e:
-            self._emit_event("JURIS_ANALYSIS_FAILED", {
-                "intent_id": intent.intent_id,
-                "error": str(e),
-                "timestamp": time.time()
-            })
+            self._emit_event(
+                "JURIS_ANALYSIS_FAILED",
+                {"intent_id": intent.intent_id, "error": str(e), "timestamp": time.time()},
+            )
             raise
 
     def _execute_phase_i_public_record_exhaustion(
-        self,
-        intent: CriminalCaseIntent
+        self, intent: CriminalCaseIntent
     ) -> dict[str, Any]:
         """Execute Phase I: Public Record Exhaustion.
 
@@ -381,7 +398,7 @@ class QRATUMJurisEngine:
             "Probation / community-control records",
             "Financial assessments (costs, restitution)",
             "Public warrants, conveyance orders, and release entries",
-            "Any publicly accessible law-enforcement incident summaries"
+            "Any publicly accessible law-enforcement incident summaries",
         ]
 
         # B. Source-by-Source Disclosure Table
@@ -401,7 +418,7 @@ class QRATUMJurisEngine:
                     "searched": r.searched,
                     "accessible": r.accessible.value,
                     "information_found": r.information_found,
-                    "missing_restricted": r.missing_or_restricted
+                    "missing_restricted": r.missing_or_restricted,
                 }
                 for r in source_table
             ],
@@ -409,111 +426,122 @@ class QRATUMJurisEngine:
             "completeness_rating": completeness.value,
             "completeness_justification": self._get_completeness_justification(
                 completeness, source_table
-            )
+            ),
         }
 
     def _generate_source_disclosure_table(
-        self,
-        intent: CriminalCaseIntent
+        self, intent: CriminalCaseIntent
     ) -> list[PublicRecordSearchResult]:
         """Generate source-by-source disclosure table."""
         results = []
 
         # Clerk of Courts
-        results.append(PublicRecordSearchResult(
-            source=PublicRecordSource.CLERK_OF_COURTS,
-            searched=True,
-            accessible=SourceAccessibility.PUBLIC,
-            information_found=(
-                f"Case No. {intent.case_number}; "
-                f"Defendant: {intent.defendant_name}; "
-                f"Charges: {', '.join(intent.charges)}; "
-                f"Plea: {intent.plea}; "
-                f"Sentence: {intent.sentence}; "
-                f"Judge: {intent.judge}; "
-                f"Defense Counsel: {intent.defense_counsel}"
-            ),
-            missing_or_restricted="Plea colloquy transcript may require purchase"
-        ))
+        results.append(
+            PublicRecordSearchResult(
+                source=PublicRecordSource.CLERK_OF_COURTS,
+                searched=True,
+                accessible=SourceAccessibility.PUBLIC,
+                information_found=(
+                    f"Case No. {intent.case_number}; "
+                    f"Defendant: {intent.defendant_name}; "
+                    f"Charges: {', '.join(intent.charges)}; "
+                    f"Plea: {intent.plea}; "
+                    f"Sentence: {intent.sentence}; "
+                    f"Judge: {intent.judge}; "
+                    f"Defense Counsel: {intent.defense_counsel}"
+                ),
+                missing_or_restricted="Plea colloquy transcript may require purchase",
+            )
+        )
 
         # Municipal Court
-        results.append(PublicRecordSearchResult(
-            source=PublicRecordSource.MUNICIPAL_COURT,
-            searched=True,
-            accessible=SourceAccessibility.NOT_AVAILABLE,
-            information_found="No municipal court records located for this case",
-            missing_or_restricted=(
-                "If case originated as misdemeanor citation, "
-                "bind-over records not available"
+        results.append(
+            PublicRecordSearchResult(
+                source=PublicRecordSource.MUNICIPAL_COURT,
+                searched=True,
+                accessible=SourceAccessibility.NOT_AVAILABLE,
+                information_found="No municipal court records located for this case",
+                missing_or_restricted=(
+                    "If case originated as misdemeanor citation, " "bind-over records not available"
+                ),
             )
-        ))
+        )
 
         # Supreme Court
-        results.append(PublicRecordSearchResult(
-            source=PublicRecordSource.SUPREME_COURT,
-            searched=True,
-            accessible=SourceAccessibility.PUBLIC,
-            information_found="No Ohio Supreme Court filings located",
-            missing_or_restricted="N/A"
-        ))
+        results.append(
+            PublicRecordSearchResult(
+                source=PublicRecordSource.SUPREME_COURT,
+                searched=True,
+                accessible=SourceAccessibility.PUBLIC,
+                information_found="No Ohio Supreme Court filings located",
+                missing_or_restricted="N/A",
+            )
+        )
 
         # Court of Appeals
-        results.append(PublicRecordSearchResult(
-            source=PublicRecordSource.COURT_OF_APPEALS,
-            searched=True,
-            accessible=SourceAccessibility.PUBLIC,
-            information_found="No appellate filings located",
-            missing_or_restricted="N/A"
-        ))
+        results.append(
+            PublicRecordSearchResult(
+                source=PublicRecordSource.COURT_OF_APPEALS,
+                searched=True,
+                accessible=SourceAccessibility.PUBLIC,
+                information_found="No appellate filings located",
+                missing_or_restricted="N/A",
+            )
+        )
 
         # ODRC
-        results.append(PublicRecordSearchResult(
-            source=PublicRecordSource.CORRECTIONS_DEPARTMENT,
-            searched=True,
-            accessible=SourceAccessibility.PUBLIC,
-            information_found=(
-                "Incarceration records consistent with sentence and "
-                "judicial release information provided"
-            ),
-            missing_or_restricted="N/A"
-        ))
+        results.append(
+            PublicRecordSearchResult(
+                source=PublicRecordSource.CORRECTIONS_DEPARTMENT,
+                searched=True,
+                accessible=SourceAccessibility.PUBLIC,
+                information_found=(
+                    "Incarceration records consistent with sentence and "
+                    "judicial release information provided"
+                ),
+                missing_or_restricted="N/A",
+            )
+        )
 
         # Probation
-        results.append(PublicRecordSearchResult(
-            source=PublicRecordSource.PROBATION,
-            searched=True,
-            accessible=SourceAccessibility.RESTRICTED,
-            information_found="Community control terminated per case data",
-            missing_or_restricted=(
-                "Detailed probation reports typically not public; "
-                "only termination date available"
+        results.append(
+            PublicRecordSearchResult(
+                source=PublicRecordSource.PROBATION,
+                searched=True,
+                accessible=SourceAccessibility.RESTRICTED,
+                information_found="Community control terminated per case data",
+                missing_or_restricted=(
+                    "Detailed probation reports typically not public; "
+                    "only termination date available"
+                ),
             )
-        ))
+        )
 
         # Financial Records
-        results.append(PublicRecordSearchResult(
-            source=PublicRecordSource.FINANCIAL_RECORDS,
-            searched=True,
-            accessible=SourceAccessibility.RESTRICTED,
-            information_found="Financial obligations not itemized in public record",
-            missing_or_restricted="Court costs, fees, restitution amounts restricted"
-        ))
+        results.append(
+            PublicRecordSearchResult(
+                source=PublicRecordSource.FINANCIAL_RECORDS,
+                searched=True,
+                accessible=SourceAccessibility.RESTRICTED,
+                information_found="Financial obligations not itemized in public record",
+                missing_or_restricted="Court costs, fees, restitution amounts restricted",
+            )
+        )
 
         # Law Enforcement
-        results.append(PublicRecordSearchResult(
-            source=PublicRecordSource.LAW_ENFORCEMENT,
-            searched=True,
-            accessible=SourceAccessibility.RESTRICTED,
-            information_found="Incident reports not publicly accessible",
-            missing_or_restricted="Police reports require public records request"
-        ))
+        results.append(
+            PublicRecordSearchResult(
+                source=PublicRecordSource.LAW_ENFORCEMENT,
+                searched=True,
+                accessible=SourceAccessibility.RESTRICTED,
+                information_found="Incident reports not publicly accessible",
+                missing_or_restricted="Police reports require public records request",
+            )
+        )
 
         return results
 
-    def _generate_negative_certification(
-        self,
-        source_table: list[PublicRecordSearchResult]
-    ) -> str:
+    def _generate_negative_certification(self, source_table: list[PublicRecordSearchResult]) -> str:
         """Generate negative certification statement."""
         return (
             "After exhausting all publicly available sources reasonably accessible "
@@ -522,14 +550,12 @@ class QRATUMJurisEngine:
         )
 
     def _calculate_completeness_rating(
-        self,
-        source_table: list[PublicRecordSearchResult]
+        self, source_table: list[PublicRecordSearchResult]
     ) -> CompletenessRating:
         """Calculate information completeness rating."""
         total_sources = len(source_table)
         public_sources = sum(
-            1 for r in source_table
-            if r.accessible == SourceAccessibility.PUBLIC and r.searched
+            1 for r in source_table if r.accessible == SourceAccessibility.PUBLIC and r.searched
         )
 
         ratio = public_sources / total_sources if total_sources > 0 else 0
@@ -544,18 +570,12 @@ class QRATUMJurisEngine:
             return CompletenessRating.FRAGMENTARY
 
     def _get_completeness_justification(
-        self,
-        rating: CompletenessRating,
-        source_table: list[PublicRecordSearchResult]
+        self, rating: CompletenessRating, source_table: list[PublicRecordSearchResult]
     ) -> str:
         """Get justification for completeness rating."""
-        public_count = sum(
-            1 for r in source_table
-            if r.accessible == SourceAccessibility.PUBLIC
-        )
+        public_count = sum(1 for r in source_table if r.accessible == SourceAccessibility.PUBLIC)
         restricted_count = sum(
-            1 for r in source_table
-            if r.accessible == SourceAccessibility.RESTRICTED
+            1 for r in source_table if r.accessible == SourceAccessibility.RESTRICTED
         )
 
         return (
@@ -568,9 +588,7 @@ class QRATUMJurisEngine:
         )
 
     def _execute_phase_ii_legal_analysis(
-        self,
-        intent: CriminalCaseIntent,
-        phase_i: dict
+        self, intent: CriminalCaseIntent, phase_i: dict
     ) -> dict[str, Any]:
         """Execute Phase II: Legal Analysis.
 
@@ -586,13 +604,10 @@ class QRATUMJurisEngine:
             "7_outcome_probability_matrix": self._compute_outcome_probabilities(intent),
             "8_post_conviction_review": self._analyze_post_conviction(intent),
             "9_appellate_risk_profile": self._assess_appellate_risk(intent),
-            "10_final_audit_statement": self._generate_audit_statement(intent)
+            "10_final_audit_statement": self._generate_audit_statement(intent),
         }
 
-    def _reconstruct_procedural_posture(
-        self,
-        intent: CriminalCaseIntent
-    ) -> dict[str, Any]:
+    def _reconstruct_procedural_posture(self, intent: CriminalCaseIntent) -> dict[str, Any]:
         """Reconstruct full case lifecycle."""
         key_dates_dict = dict(intent.key_dates)
 
@@ -606,26 +621,22 @@ class QRATUMJurisEngine:
             ("plea", "Change of Plea"),
             ("sentencing", "Sentencing"),
             ("judicial_release", "Judicial Release Granted"),
-            ("community_control_termination", "Community Control Terminated")
+            ("community_control_termination", "Community Control Terminated"),
         ]
 
         for event_key, event_name in expected_events:
             if event_key in key_dates_dict:
-                timeline.append({
-                    "event": event_name,
-                    "date": key_dates_dict[event_key],
-                    "status": "documented"
-                })
+                timeline.append(
+                    {"event": event_name, "date": key_dates_dict[event_key], "status": "documented"}
+                )
             else:
-                timeline.append({
-                    "event": event_name,
-                    "date": "Unknown",
-                    "status": "gap"
-                })
-                gaps.append({
-                    "missing_event": event_name,
-                    "legal_significance": self._explain_gap_significance(event_key)
-                })
+                timeline.append({"event": event_name, "date": "Unknown", "status": "gap"})
+                gaps.append(
+                    {
+                        "missing_event": event_name,
+                        "legal_significance": self._explain_gap_significance(event_key),
+                    }
+                )
 
         return {
             "timeline": timeline,
@@ -636,8 +647,8 @@ class QRATUMJurisEngine:
                 "Guilty plea entered on 08/28/2017",
                 "14-month prison sentence imposed",
                 "Judicial release granted on 12/21/2017 (approximately 4 months)",
-                "Community control terminated on 03/08/2019"
-            ]
+                "Community control terminated on 03/08/2019",
+            ],
         }
 
     def _explain_gap_significance(self, event: str) -> str:
@@ -648,7 +659,7 @@ class QRATUMJurisEngine:
             "plea": "Plea date marks waiver of certain rights",
             "sentencing": "Sentencing date determines post-conviction deadlines",
             "judicial_release": "R.C. 2929.20 eligibility and compliance",
-            "community_control_termination": "Determines completion of sentence"
+            "community_control_termination": "Determines completion of sentence",
         }
         return explanations.get(event, "Unknown significance")
 
@@ -669,10 +680,7 @@ class QRATUMJurisEngine:
 
         return issues
 
-    def _analyze_charges(
-        self,
-        intent: CriminalCaseIntent
-    ) -> list[dict[str, Any]]:
+    def _analyze_charges(self, intent: CriminalCaseIntent) -> list[dict[str, Any]]:
         """Analyze each charge individually."""
         analyses = []
 
@@ -691,16 +699,17 @@ class QRATUMJurisEngine:
                     "elements": stat_info["elements"],
                     "mens_rea": stat_info["mens_rea"],
                     "burden_of_proof": "Beyond a reasonable doubt (State's burden)",
-                    "elevating_factors": stat_info.get("f4_elevating_factors",
-                                                       stat_info.get("m1_elevating_factors", [])),
+                    "elevating_factors": stat_info.get(
+                        "f4_elevating_factors", stat_info.get("m1_elevating_factors", [])
+                    ),
                     "evidentiary_requirements": self._get_evidentiary_requirements(statute),
-                    "common_ohio_failure_modes": self._get_failure_modes(statute)
+                    "common_ohio_failure_modes": self._get_failure_modes(statute),
                 }
             else:
                 analysis = {
                     "charge": charge,
                     "statute_code": statute or "Unknown",
-                    "analysis": "Statute not in knowledge base; manual review required"
+                    "analysis": "Statute not in knowledge base; manual review required",
                 }
 
             analyses.append(analysis)
@@ -711,7 +720,7 @@ class QRATUMJurisEngine:
         """Extract Ohio Revised Code citation from charge."""
         # Match patterns like "R.C. 2903.13(A)" or "2909.06(A)(1)"
         # The pattern captures the full statute including nested subsections
-        pattern = r'(?:R\.?C\.?\s*)?(\d{4}\.\d{2}(?:\([A-Z0-9]+\))*)'
+        pattern = r"(?:R\.?C\.?\s*)?(\d{4}\.\d{2}(?:\([A-Z0-9]+\))*)"
         match = re.search(pattern, charge)
         return match.group(1) if match else None
 
@@ -736,21 +745,21 @@ class QRATUMJurisEngine:
                 "Evidence of defendant's state of mind (knowingly/recklessly)",
                 "If F4: Proof of victim's protected status (e.g., peace officer)",
                 "Medical records if serious physical harm alleged",
-                "Witness testimony corroborating assault"
+                "Witness testimony corroborating assault",
             ],
             "2921.33(B)": [
                 "Testimony from arresting officer(s)",
                 "Evidence arrest was lawful",
                 "Evidence of resistance (physical or verbal)",
                 "Body camera/dash camera footage if available",
-                "Evidence of force used or risk created"
+                "Evidence of force used or risk created",
             ],
             "2909.06(A)(1)": [
                 "Evidence of property damage",
                 "Proof of ownership by another",
                 "Evidence damage was knowing (not accidental)",
-                "Valuation of damage for offense level determination"
-            ]
+                "Valuation of damage for offense level determination",
+            ],
         }
         return requirements.get(statute, ["Standard criminal evidence"])
 
@@ -762,151 +771,157 @@ class QRATUMJurisEngine:
                 "Insufficient evidence of physical harm (vs. offensive contact)",
                 "Self-defense/defense of others not adequately addressed",
                 "Mens rea element not established",
-                "Victim testimony inconsistent or unavailable"
+                "Victim testimony inconsistent or unavailable",
             ],
             "2921.33(B)": [
                 "Arrest not shown to be lawful",
                 "Passive resistance vs. active resistance distinction",
                 "Force used was de minimis",
-                "Constitutional challenge to underlying arrest"
+                "Constitutional challenge to underlying arrest",
             ],
             "2909.06(A)(1)": [
                 "Ownership element not established",
                 "Damage was accidental (no knowing mens rea)",
                 "Consent defense available",
-                "De minimis damage"
-            ]
+                "De minimis damage",
+            ],
         }
         return modes.get(statute, ["Standard evidentiary challenges"])
 
-    def _spot_constitutional_issues(
-        self,
-        intent: CriminalCaseIntent
-    ) -> list[dict[str, Any]]:
+    def _spot_constitutional_issues(self, intent: CriminalCaseIntent) -> list[dict[str, Any]]:
         """Spot constitutional and statutory issues."""
         issues = []
 
         # Fourth Amendment
-        issues.append({
-            "amendment": "Fourth Amendment / Ohio Art. I §14",
-            "issue": "Search and seizure validity",
-            "analysis": (
-                "Without incident report, cannot assess whether initial "
-                "contact was lawful stop, arrest without warrant was supported "
-                "by probable cause, or any search was constitutional."
-            ),
-            "ohio_framework": (
-                "Ohio follows federal constitutional standards. State v. Robinette "
-                "(1996): consent must be voluntary. State v. Andrews (2017): "
-                "warrant requirement applies with exceptions."
-            ),
-            "potential_violation": "Unknown - requires factual development",
-            "information_needed": [
-                "Police report/incident summary",
-                "Basis for initial contact",
-                "Whether warrant obtained"
-            ]
-        })
+        issues.append(
+            {
+                "amendment": "Fourth Amendment / Ohio Art. I §14",
+                "issue": "Search and seizure validity",
+                "analysis": (
+                    "Without incident report, cannot assess whether initial "
+                    "contact was lawful stop, arrest without warrant was supported "
+                    "by probable cause, or any search was constitutional."
+                ),
+                "ohio_framework": (
+                    "Ohio follows federal constitutional standards. State v. Robinette "
+                    "(1996): consent must be voluntary. State v. Andrews (2017): "
+                    "warrant requirement applies with exceptions."
+                ),
+                "potential_violation": "Unknown - requires factual development",
+                "information_needed": [
+                    "Police report/incident summary",
+                    "Basis for initial contact",
+                    "Whether warrant obtained",
+                ],
+            }
+        )
 
         # Fifth Amendment / Miranda
-        issues.append({
-            "amendment": "Fifth Amendment / Miranda",
-            "issue": "Self-incrimination protections",
-            "analysis": (
-                "If defendant made statements during arrest, Miranda compliance "
-                "is relevant. Resisting arrest charge may involve statements "
-                "made during the arrest encounter."
-            ),
-            "ohio_framework": (
-                "State v. Edwards (2007): Miranda applies to custodial interrogation. "
-                "Spontaneous statements are admissible."
-            ),
-            "potential_violation": "Unknown - requires transcript review",
-            "information_needed": [
-                "Whether defendant made statements",
-                "Whether Miranda warnings given",
-                "Circumstances of any statements"
-            ]
-        })
+        issues.append(
+            {
+                "amendment": "Fifth Amendment / Miranda",
+                "issue": "Self-incrimination protections",
+                "analysis": (
+                    "If defendant made statements during arrest, Miranda compliance "
+                    "is relevant. Resisting arrest charge may involve statements "
+                    "made during the arrest encounter."
+                ),
+                "ohio_framework": (
+                    "State v. Edwards (2007): Miranda applies to custodial interrogation. "
+                    "Spontaneous statements are admissible."
+                ),
+                "potential_violation": "Unknown - requires transcript review",
+                "information_needed": [
+                    "Whether defendant made statements",
+                    "Whether Miranda warnings given",
+                    "Circumstances of any statements",
+                ],
+            }
+        )
 
         # Sixth Amendment - Speedy Trial
-        issues.append({
-            "amendment": "Sixth Amendment / R.C. 2945.71",
-            "issue": "Speedy trial",
-            "analysis": "See detailed speedy trial computation below.",
-            "ohio_framework": (
-                "Ohio has statutory (R.C. 2945.71) and constitutional speedy trial "
-                "rights. Statutory right is stricter: 270 days for felony."
-            ),
-            "potential_violation": "Requires filing date to calculate",
-            "information_needed": ["Original filing date", "Continuance records"]
-        })
+        issues.append(
+            {
+                "amendment": "Sixth Amendment / R.C. 2945.71",
+                "issue": "Speedy trial",
+                "analysis": "See detailed speedy trial computation below.",
+                "ohio_framework": (
+                    "Ohio has statutory (R.C. 2945.71) and constitutional speedy trial "
+                    "rights. Statutory right is stricter: 270 days for felony."
+                ),
+                "potential_violation": "Requires filing date to calculate",
+                "information_needed": ["Original filing date", "Continuance records"],
+            }
+        )
 
         # Sixth Amendment - Counsel
-        issues.append({
-            "amendment": "Sixth Amendment - Right to Counsel",
-            "issue": "Effective assistance of counsel",
-            "analysis": (
-                f"Counsel of record: {intent.defense_counsel}. "
-                "Strickland analysis requires showing: (1) deficient performance "
-                "and (2) prejudice. Without trial record, IAC claims limited."
-            ),
-            "ohio_framework": (
-                "State v. Bradley (1989): Ohio adopts Strickland standard. "
-                "Reviewing court must be highly deferential to counsel's decisions."
-            ),
-            "potential_violation": "Cannot assess without more information",
-            "information_needed": [
-                "Pre-trial motions filed",
-                "Plea negotiations",
-                "Advice given regarding plea"
-            ]
-        })
+        issues.append(
+            {
+                "amendment": "Sixth Amendment - Right to Counsel",
+                "issue": "Effective assistance of counsel",
+                "analysis": (
+                    f"Counsel of record: {intent.defense_counsel}. "
+                    "Strickland analysis requires showing: (1) deficient performance "
+                    "and (2) prejudice. Without trial record, IAC claims limited."
+                ),
+                "ohio_framework": (
+                    "State v. Bradley (1989): Ohio adopts Strickland standard. "
+                    "Reviewing court must be highly deferential to counsel's decisions."
+                ),
+                "potential_violation": "Cannot assess without more information",
+                "information_needed": [
+                    "Pre-trial motions filed",
+                    "Plea negotiations",
+                    "Advice given regarding plea",
+                ],
+            }
+        )
 
         # Crim.R. 11 Plea Requirements
-        issues.append({
-            "amendment": "Ohio Crim.R. 11 - Plea Requirements",
-            "issue": "Validity of guilty plea",
-            "analysis": (
-                "Crim.R. 11(C) requires court to address defendant personally and: "
-                "(1) determine plea is voluntary; (2) inform of rights waived; "
-                "(3) determine understanding of charges and consequences."
-            ),
-            "ohio_framework": (
-                "State v. Nero (2000): Substantial compliance required for "
-                "non-constitutional rights; strict compliance for constitutional rights."
-            ),
-            "potential_violation": "Requires plea colloquy transcript",
-            "information_needed": ["Plea hearing transcript"]
-        })
+        issues.append(
+            {
+                "amendment": "Ohio Crim.R. 11 - Plea Requirements",
+                "issue": "Validity of guilty plea",
+                "analysis": (
+                    "Crim.R. 11(C) requires court to address defendant personally and: "
+                    "(1) determine plea is voluntary; (2) inform of rights waived; "
+                    "(3) determine understanding of charges and consequences."
+                ),
+                "ohio_framework": (
+                    "State v. Nero (2000): Substantial compliance required for "
+                    "non-constitutional rights; strict compliance for constitutional rights."
+                ),
+                "potential_violation": "Requires plea colloquy transcript",
+                "information_needed": ["Plea hearing transcript"],
+            }
+        )
 
         # Allied Offenses
-        issues.append({
-            "amendment": "R.C. 2941.25 - Allied Offenses",
-            "issue": "Multiple punishment for same conduct",
-            "analysis": (
-                "Three charges: Assault (F4), Resisting Arrest (M1), "
-                "Criminal Damaging (M2). Must analyze if any are allied offenses "
-                "of similar import requiring merger."
-            ),
-            "ohio_framework": (
-                "State v. Ruff (2015): Two-step analysis - (1) Can offenses be "
-                "committed by same conduct? (2) Were they committed with same "
-                "animus? If both yes, merge."
-            ),
-            "potential_violation": "Possible - requires factual analysis",
-            "information_needed": [
-                "Underlying conduct for each charge",
-                "Whether separate victims/acts"
-            ]
-        })
+        issues.append(
+            {
+                "amendment": "R.C. 2941.25 - Allied Offenses",
+                "issue": "Multiple punishment for same conduct",
+                "analysis": (
+                    "Three charges: Assault (F4), Resisting Arrest (M1), "
+                    "Criminal Damaging (M2). Must analyze if any are allied offenses "
+                    "of similar import requiring merger."
+                ),
+                "ohio_framework": (
+                    "State v. Ruff (2015): Two-step analysis - (1) Can offenses be "
+                    "committed by same conduct? (2) Were they committed with same "
+                    "animus? If both yes, merge."
+                ),
+                "potential_violation": "Possible - requires factual analysis",
+                "information_needed": [
+                    "Underlying conduct for each charge",
+                    "Whether separate victims/acts",
+                ],
+            }
+        )
 
         return issues
 
-    def _compute_speedy_trial(
-        self,
-        intent: CriminalCaseIntent
-    ) -> dict[str, Any]:
+    def _compute_speedy_trial(self, intent: CriminalCaseIntent) -> dict[str, Any]:
         """Compute Ohio statutory speedy trial."""
         key_dates = dict(intent.key_dates)
 
@@ -929,7 +944,7 @@ class QRATUMJurisEngine:
                 {
                     "event": "Guilty plea entered",
                     "date": plea_date,
-                    "effect": "Waives speedy trial right"
+                    "effect": "Waives speedy trial right",
                 }
             ],
             "waiver_analysis": (
@@ -948,15 +963,12 @@ class QRATUMJurisEngine:
                 "Speedy trial claim likely WAIVED by guilty plea unless: "
                 "(1) motion to dismiss for speedy trial was filed before plea, "
                 "and (2) court denied the motion."
-            )
+            ),
         }
 
         return computation
 
-    def _analyze_plea_sentencing(
-        self,
-        intent: CriminalCaseIntent
-    ) -> dict[str, Any]:
+    def _analyze_plea_sentencing(self, intent: CriminalCaseIntent) -> dict[str, Any]:
         """Analyze plea and sentencing forensics."""
         return {
             "indictment_sufficiency": {
@@ -969,24 +981,24 @@ class QRATUMJurisEngine:
                 "common_defects": [
                     "Failure to specify elevating factor for F4 assault",
                     "Insufficient factual basis",
-                    "Variance between indictment and proof"
-                ]
+                    "Variance between indictment and proof",
+                ],
             },
             "plea_colloquy_requirements": {
                 "constitutional_rights_strict": [
                     "Right to jury trial",
                     "Right to confront witnesses",
                     "Right against self-incrimination",
-                    "Right to compulsory process"
+                    "Right to compulsory process",
                 ],
                 "non_constitutional_substantial": [
                     "Nature of charges",
                     "Maximum penalty",
                     "Effect of plea (conviction)",
-                    "Post-release control notification"
+                    "Post-release control notification",
                 ],
                 "ohio_authority": "Crim.R. 11(C); State v. Nero (2000)",
-                "assessment": "Requires plea colloquy transcript to verify compliance"
+                "assessment": "Requires plea colloquy transcript to verify compliance",
             },
             "sentencing_legality": {
                 "charge": "Assault F4 (R.C. 2903.13)",
@@ -999,19 +1011,18 @@ class QRATUMJurisEngine:
                     "Court must notify at sentencing or sentence is void."
                 ),
                 "restitution": "Unknown",
-                "court_costs": "Unknown"
+                "court_costs": "Unknown",
             },
             "judicial_release_compliance": {
                 "statute": "R.C. 2929.20",
                 "eligibility": {
                     "f4_requirement": (
-                        "May file after 180 days OR 1/2 of stated term, "
-                        "whichever is greater"
+                        "May file after 180 days OR 1/2 of stated term, " "whichever is greater"
                     ),
                     "calculation": (
                         "14 months = 420 days. Half = 210 days. "
                         "Defendant must serve at least 210 days before eligible."
-                    )
+                    ),
                 },
                 "release_date": "12/21/2017",
                 "sentencing_date": "Unknown (presumed ~08/28/2017)",
@@ -1025,24 +1036,21 @@ class QRATUMJurisEngine:
                 "assessment": (
                     "Requires sentencing entry showing jail time credit "
                     "to verify compliance with R.C. 2929.20 eligibility."
-                )
+                ),
             },
             "reversible_errors": [
                 "Crim.R. 11 non-compliance (if strict compliance lacking)",
                 "Post-release control notification failure (voids sentence)",
-                "Judicial release granted before eligibility (if no jail credit)"
+                "Judicial release granted before eligibility (if no jail credit)",
             ],
             "harmless_errors": [
                 "Minor procedural irregularities in colloquy",
                 "Technical sentencing entry defects",
-                "Scrivener's errors"
-            ]
+                "Scrivener's errors",
+            ],
         }
 
-    def _dual_adversarial_analysis(
-        self,
-        intent: CriminalCaseIntent
-    ) -> dict[str, Any]:
+    def _dual_adversarial_analysis(self, intent: CriminalCaseIntent) -> dict[str, Any]:
         """Perform adversarial dual analysis."""
         return {
             "issues_analyzed": [
@@ -1058,12 +1066,12 @@ class QRATUMJurisEngine:
                         "key_arguments": [
                             "No evidence of explicit waiver",
                             "Counsel may have been ineffective for not filing motion",
-                            "Delay may have exceeded 270 days"
+                            "Delay may have exceeded 270 days",
                         ],
                         "controlling_authority": [
                             "State v. O'Brien (1987)",
-                            "State v. Singer (1977)"
-                        ]
+                            "State v. Singer (1977)",
+                        ],
                     },
                     "prosecution_optimal": {
                         "interpretation": (
@@ -1074,18 +1082,18 @@ class QRATUMJurisEngine:
                         "key_arguments": [
                             "State v. Kelley (1991): plea waives speedy trial",
                             "No motion to dismiss on record",
-                            "Defendant's silence implies acquiescence"
+                            "Defendant's silence implies acquiescence",
                         ],
                         "controlling_authority": [
                             "State v. Kelley (1991)",
-                            "State v. Pachay (2006)"
-                        ]
+                            "State v. Pachay (2006)",
+                        ],
                     },
                     "stronger_position": "Prosecution",
                     "judicial_discretion_factors": [
                         "Court's view of waiver by plea doctrine",
-                        "Whether any tolling was properly documented"
-                    ]
+                        "Whether any tolling was properly documented",
+                    ],
                 },
                 {
                     "issue": "Allied Offenses Merger",
@@ -1099,12 +1107,12 @@ class QRATUMJurisEngine:
                         "key_arguments": [
                             "Single criminal episode",
                             "Resistance may have been part of assault incident",
-                            "No separate victims for property damage"
+                            "No separate victims for property damage",
                         ],
                         "controlling_authority": [
                             "State v. Ruff (2015)",
-                            "State v. Washington (2015)"
-                        ]
+                            "State v. Washington (2015)",
+                        ],
                     },
                     "prosecution_optimal": {
                         "interpretation": (
@@ -1116,19 +1124,16 @@ class QRATUMJurisEngine:
                         "key_arguments": [
                             "Assault complete before arrest began",
                             "Resisting arrest is separate crime against state",
-                            "Criminal damaging may have different victim"
+                            "Criminal damaging may have different victim",
                         ],
-                        "controlling_authority": [
-                            "State v. Ruff (2015)",
-                            "State v. Earley (2018)"
-                        ]
+                        "controlling_authority": ["State v. Ruff (2015)", "State v. Earley (2018)"],
                     },
                     "stronger_position": "Prosecution (absent specific facts)",
                     "judicial_discretion_factors": [
                         "Timeline of events",
                         "Identity of assault victim vs. arresting officer",
-                        "Property damaged (whose?)"
-                    ]
+                        "Property damaged (whose?)",
+                    ],
                 },
                 {
                     "issue": "Ineffective Assistance of Counsel",
@@ -1142,12 +1147,12 @@ class QRATUMJurisEngine:
                         "key_arguments": [
                             "No pre-trial motions on record",
                             "Quick resolution may indicate pressure to plea",
-                            "Sentence near top of range"
+                            "Sentence near top of range",
                         ],
                         "controlling_authority": [
                             "Strickland v. Washington (1984)",
-                            "State v. Bradley (1989)"
-                        ]
+                            "State v. Bradley (1989)",
+                        ],
                     },
                     "prosecution_optimal": {
                         "interpretation": (
@@ -1160,26 +1165,23 @@ class QRATUMJurisEngine:
                             "Outcome was favorable (early release)",
                             "Strategic decision to plead",
                             "Hindsight analysis improper",
-                            "No showing of prejudice"
+                            "No showing of prejudice",
                         ],
                         "controlling_authority": [
                             "State v. Bradley (1989)",
-                            "State v. Madrigal (2000)"
-                        ]
+                            "State v. Madrigal (2000)",
+                        ],
                     },
                     "stronger_position": "Prosecution",
                     "judicial_discretion_factors": [
                         "Deference to counsel's strategic choices",
-                        "Outcome-based assessment of prejudice"
-                    ]
-                }
+                        "Outcome-based assessment of prejudice",
+                    ],
+                },
             ]
         }
 
-    def _compute_outcome_probabilities(
-        self,
-        intent: CriminalCaseIntent
-    ) -> list[dict[str, Any]]:
+    def _compute_outcome_probabilities(self, intent: CriminalCaseIntent) -> list[dict[str, Any]]:
         """Compute outcome probability matrix."""
         return [
             {
@@ -1190,7 +1192,7 @@ class QRATUMJurisEngine:
                     "Guilty plea generally waives non-jurisdictional defects. "
                     "No direct appeal filed. Post-conviction claims face "
                     "significant procedural barriers."
-                )
+                ),
             },
             {
                 "outcome": "Remand for Resentencing",
@@ -1200,7 +1202,7 @@ class QRATUMJurisEngine:
                     "If post-release control notification was defective, "
                     "sentence may be void. However, defendant completed "
                     "community control, potentially mooting remedy."
-                )
+                ),
             },
             {
                 "outcome": "Reversal of Conviction",
@@ -1210,7 +1212,7 @@ class QRATUMJurisEngine:
                     "Extremely unlikely without plea colloquy transcript "
                     "showing constitutional violation. IAC claims face "
                     "Strickland's high bar."
-                )
+                ),
             },
             {
                 "outcome": "Procedural Bar",
@@ -1220,14 +1222,11 @@ class QRATUMJurisEngine:
                     "Most claims barred by: (1) failure to raise on direct appeal; "
                     "(2) res judicata under State v. Perry; (3) R.C. 2953.21 "
                     "time limits (365 days from transcript, with exceptions)."
-                )
-            }
+                ),
+            },
         ]
 
-    def _analyze_post_conviction(
-        self,
-        intent: CriminalCaseIntent
-    ) -> dict[str, Any]:
+    def _analyze_post_conviction(self, intent: CriminalCaseIntent) -> dict[str, Any]:
         """Analyze post-conviction and collateral review options."""
         return {
             "crim_r_32_1": {
@@ -1241,8 +1240,8 @@ class QRATUMJurisEngine:
                 "barriers": [
                     "Completed sentence strengthens finality interest",
                     "No apparent jurisdictional defect",
-                    "Passage of time weighs against relief"
-                ]
+                    "Passage of time weighs against relief",
+                ],
             },
             "rc_2953_21": {
                 "standard": "Constitutional violation; evidence unavailable at trial",
@@ -1255,13 +1254,9 @@ class QRATUMJurisEngine:
                 "barriers": [
                     "Time limit likely expired (case from 2017)",
                     "Most claims could have been raised on direct appeal",
-                    "Res judicata bars relitigation"
+                    "Res judicata bars relitigation",
                 ],
-                "exceptions": [
-                    "New DNA evidence",
-                    "Brady violation",
-                    "Newly discovered evidence"
-                ]
+                "exceptions": ["New DNA evidence", "Brady violation", "Newly discovered evidence"],
             },
             "ineffective_assistance": {
                 "strickland_prongs": {
@@ -1272,24 +1267,24 @@ class QRATUMJurisEngine:
                     "prejudice": (
                         "Must show reasonable probability of different outcome. "
                         "For plea cases: would not have pled guilty."
-                    )
+                    ),
                 },
                 "viability": "Low",
                 "analysis": (
                     "Without showing specific failures and prejudice, IAC claims "
                     "unlikely to succeed. Favorable outcome (early release, "
                     "completed supervision) undermines prejudice showing."
-                )
+                ),
             },
             "res_judicata_barriers": [
                 "State v. Perry (1967): Claims that could have been raised on direct appeal are barred",
                 "State v. Cole (1982): Res judicata applies to successive petitions",
-                "State v. Szefcyk (1996): Must demonstrate claim could not have been raised earlier"
+                "State v. Szefcyk (1996): Must demonstrate claim could not have been raised earlier",
             ],
             "mootness_concerns": [
                 "Sentence fully served (community control terminated 03/08/2019)",
                 "Collateral consequences (felony record) may preserve justiciability",
-                "State v. Golston (1994): Completed sentence doesn't always moot appeal"
+                "State v. Golston (1994): Completed sentence doesn't always moot appeal",
             ],
             "sealing_eligibility": {
                 "statute": "R.C. 2953.32",
@@ -1301,38 +1296,35 @@ class QRATUMJurisEngine:
                 "waiting_period": "N/A - ineligible offense",
                 "eligible_offenses": [
                     "Resisting Arrest (M1) - may be sealable after 1 year",
-                    "Criminal Damaging (M2) - may be sealable after 1 year"
+                    "Criminal Damaging (M2) - may be sealable after 1 year",
                 ],
                 "ineligible": "Assault (F4) - offense of violence",
                 "recommendation": (
                     "Consult attorney re: partial sealing of non-violent offenses. "
                     "Assault conviction will remain on record."
-                )
-            }
+                ),
+            },
         }
 
-    def _assess_appellate_risk(
-        self,
-        intent: CriminalCaseIntent
-    ) -> dict[str, Any]:
+    def _assess_appellate_risk(self, intent: CriminalCaseIntent) -> dict[str, Any]:
         """Assess appellate risk profile."""
         return {
             "de_novo_issues": [
                 "Sufficiency of indictment (legal question)",
                 "Statutory interpretation (speedy trial calculation)",
                 "Allied offenses merger (R.C. 2941.25 analysis)",
-                "Crim.R. 11 constitutional requirements"
+                "Crim.R. 11 constitutional requirements",
             ],
             "abuse_of_discretion_issues": [
                 "Sentencing within statutory range",
                 "Judicial release decision",
                 "Crim.R. 11 non-constitutional requirements",
-                "Motion rulings (if any)"
+                "Motion rulings (if any)",
             ],
             "plain_error_issues": [
                 "Unpreserved Crim.R. 11 errors",
                 "Post-release control notification",
-                "Allied offense merger not raised below"
+                "Allied offense merger not raised below",
             ],
             "plain_error_standard": (
                 "State v. Barnes (2002): Plain error requires (1) error; "
@@ -1349,14 +1341,11 @@ class QRATUMJurisEngine:
                 "direct_appeal": "30 days from judgment entry (EXPIRED)",
                 "delayed_appeal": "Discretionary; must show good cause",
                 "post_conviction": "365 days from transcript (likely EXPIRED)",
-                "app_r_26b": "90 days from journalization of appellate decision (N/A)"
-            }
+                "app_r_26b": "90 days from journalization of appellate decision (N/A)",
+            },
         }
 
-    def _generate_audit_statement(
-        self,
-        intent: CriminalCaseIntent
-    ) -> dict[str, Any]:
+    def _generate_audit_statement(self, intent: CriminalCaseIntent) -> dict[str, Any]:
         """Generate final confidence and audit statement."""
         return {
             "overall_confidence": "MEDIUM",
@@ -1364,35 +1353,35 @@ class QRATUMJurisEngine:
                 "positive": [
                     "Basic case disposition data available",
                     "Statutory analysis deterministic",
-                    "Ohio case law well-established"
+                    "Ohio case law well-established",
                 ],
                 "negative": [
                     "No plea colloquy transcript",
                     "No filing date for speedy trial",
                     "No incident report",
-                    "No sentencing entry details"
-                ]
+                    "No sentencing entry details",
+                ],
             },
             "top_3_facts_that_could_flip_outcome": [
                 {
                     "fact": "Plea colloquy transcript showing Crim.R. 11 violation",
-                    "impact": "Could support withdrawal of plea or reversal"
+                    "impact": "Could support withdrawal of plea or reversal",
                 },
                 {
                     "fact": "Filing date showing speedy trial violation with preserved motion",
-                    "impact": "Could support dismissal argument"
+                    "impact": "Could support dismissal argument",
                 },
                 {
                     "fact": "Sentencing entry showing no jail time credit",
-                    "impact": "Could show improper judicial release"
-                }
+                    "impact": "Could show improper judicial release",
+                },
             ],
             "documents_critical_to_obtain": [
                 "Plea hearing transcript (Crim.R. 11 compliance)",
                 "Indictment/charging document (elevating factors)",
                 "Sentencing entry (jail credit, PRC notification)",
                 "Docket showing all filings and continuances",
-                "Any pre-trial motions filed by defense"
+                "Any pre-trial motions filed by defense",
             ],
             "audit_certification": (
                 "This analysis was conducted in accordance with QRATUM-JURIS "
@@ -1405,7 +1394,7 @@ class QRATUMJurisEngine:
                 "Operate as if this analysis will be audited by an appellate panel "
                 "and opposing counsel. Truth > certainty. Completeness > elegance. "
                 "Law > narrative."
-            )
+            ),
         }
 
     def _compute_result_hash(self, result: dict) -> str:
@@ -1417,11 +1406,7 @@ class QRATUMJurisEngine:
 
     def _emit_event(self, event_type: str, data: dict) -> None:
         """Emit event to log."""
-        event = {
-            "event_type": event_type,
-            "data": data,
-            "timestamp": time.time()
-        }
+        event = {"event_type": event_type, "data": data, "timestamp": time.time()}
         self._event_log.append(event)
 
 
@@ -1456,7 +1441,7 @@ def create_ohio_v_ringler_intent() -> CriminalCaseIntent:
         charges=(
             "R.C. 2903.13(A) — Assault, Felony 4",
             "R.C. 2921.33(B) — Resisting Arrest, M1",
-            "R.C. 2909.06(A)(1) — Criminal Damaging, M2"
+            "R.C. 2909.06(A)(1) — Criminal Damaging, M2",
         ),
         plea="Guilty (change of plea on 08/28/2017)",
         sentence="14 months imprisonment",
@@ -1467,5 +1452,5 @@ def create_ohio_v_ringler_intent() -> CriminalCaseIntent:
             ("judicial_release", "12/21/2017"),
             ("community_control_termination", "03/08/2019"),
         ),
-        analysis_type="full_forensic"
+        analysis_type="full_forensic",
     )

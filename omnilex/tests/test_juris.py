@@ -3,7 +3,6 @@
 Tests the Ultra-Detailed Legal Analysis & Public-Record Exhaustion Engine.
 """
 
-
 import pytest
 
 from omnilex.juris import (
@@ -331,7 +330,9 @@ class TestPhaseIILegalAnalysis:
         intent = create_ohio_v_ringler_intent()
 
         result = engine.analyze_criminal_case(intent)
-        sealing = result["phase_ii_legal_analysis"]["8_post_conviction_review"]["sealing_eligibility"]
+        sealing = result["phase_ii_legal_analysis"]["8_post_conviction_review"][
+            "sealing_eligibility"
+        ]
 
         assert "ineligible" in sealing
         assert "violence" in sealing["ineligible"].lower()

@@ -8,11 +8,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any
 
 
 class ShaderType(Enum):
     """Shader types."""
+
     VERTEX = "vertex"
     FRAGMENT = "fragment"
     GEOMETRY = "geometry"
@@ -22,18 +22,19 @@ class ShaderType(Enum):
 @dataclass
 class ShaderProgram:
     """Compiled shader program.
-    
+
     Attributes:
         name: Shader program name
         handle: GPU program handle
         uniforms: Uniform variable locations
         attributes: Attribute locations
     """
+
     name: str
     handle: int = 0
     uniforms: dict[str, int] = None
     attributes: dict[str, int] = None
-    
+
     def __post_init__(self):
         self.uniforms = self.uniforms or {}
         self.attributes = self.attributes or {}
@@ -256,39 +257,39 @@ void main() {
 
 class ShaderManager:
     """Manages shader compilation and caching.
-    
+
     Provides:
     - Shader compilation from source
     - Program linking
     - Uniform and attribute location caching
     - Hot-reloading support
     """
-    
+
     # Built-in shader sources
     BUILTIN_SHADERS = {
-        'board_vertex': BOARD_VERTEX_SHADER,
-        'board_fragment': BOARD_FRAGMENT_SHADER,
-        'heatmap_vertex': HEATMAP_VERTEX_SHADER,
-        'heatmap_fragment': HEATMAP_FRAGMENT_SHADER,
-        'tree_vertex': TREE_VERTEX_SHADER,
-        'tree_fragment': TREE_FRAGMENT_SHADER,
-        'quantum_vertex': QUANTUM_VERTEX_SHADER,
-        'quantum_fragment': QUANTUM_FRAGMENT_SHADER,
-        'anti_holographic_fragment': ANTI_HOLOGRAPHIC_FRAGMENT_SHADER,
+        "board_vertex": BOARD_VERTEX_SHADER,
+        "board_fragment": BOARD_FRAGMENT_SHADER,
+        "heatmap_vertex": HEATMAP_VERTEX_SHADER,
+        "heatmap_fragment": HEATMAP_FRAGMENT_SHADER,
+        "tree_vertex": TREE_VERTEX_SHADER,
+        "tree_fragment": TREE_FRAGMENT_SHADER,
+        "quantum_vertex": QUANTUM_VERTEX_SHADER,
+        "quantum_fragment": QUANTUM_FRAGMENT_SHADER,
+        "anti_holographic_fragment": ANTI_HOLOGRAPHIC_FRAGMENT_SHADER,
     }
-    
+
     def __init__(self) -> None:
         """Initialize shader manager."""
         self._programs: dict[str, ShaderProgram] = {}
         self._compiled_shaders: dict[str, int] = {}
-    
+
     def compile_shader(self, source: str, shader_type: ShaderType) -> int:
         """Compile a shader from source.
-        
+
         Args:
             source: GLSL shader source
             shader_type: Type of shader
-            
+
         Returns:
             Shader handle (simulated)
         """
@@ -298,7 +299,7 @@ class ShaderManager:
         if key not in self._compiled_shaders:
             self._compiled_shaders[key] = len(self._compiled_shaders) + 1
         return self._compiled_shaders[key]
-    
+
     def create_program(
         self,
         name: str,
@@ -307,140 +308,140 @@ class ShaderManager:
         geometry_source: str | None = None,
     ) -> ShaderProgram:
         """Create a shader program.
-        
+
         Args:
             name: Program name
             vertex_source: Vertex shader source
             fragment_source: Fragment shader source
             geometry_source: Optional geometry shader source
-            
+
         Returns:
             Compiled shader program
         """
         # Compile shaders
         vertex_shader = self.compile_shader(vertex_source, ShaderType.VERTEX)
         fragment_shader = self.compile_shader(fragment_source, ShaderType.FRAGMENT)
-        
+
         geometry_shader = None
         if geometry_source:
             geometry_shader = self.compile_shader(geometry_source, ShaderType.GEOMETRY)
-        
+
         # Create program (simulated)
         program = ShaderProgram(
             name=name,
             handle=len(self._programs) + 1,
         )
-        
+
         # Parse and cache uniform/attribute locations from source
         program.uniforms = self._parse_uniforms(vertex_source + fragment_source)
         program.attributes = self._parse_attributes(vertex_source)
-        
+
         self._programs[name] = program
         return program
-    
+
     def get_program(self, name: str) -> ShaderProgram | None:
         """Get a compiled program by name.
-        
+
         Args:
             name: Program name
-            
+
         Returns:
             Shader program or None
         """
         return self._programs.get(name)
-    
+
     def create_builtin_programs(self) -> None:
         """Create all built-in shader programs."""
         # Board shader
         self.create_program(
-            'board',
-            self.BUILTIN_SHADERS['board_vertex'],
-            self.BUILTIN_SHADERS['board_fragment'],
+            "board",
+            self.BUILTIN_SHADERS["board_vertex"],
+            self.BUILTIN_SHADERS["board_fragment"],
         )
-        
+
         # Heatmap shader
         self.create_program(
-            'heatmap',
-            self.BUILTIN_SHADERS['heatmap_vertex'],
-            self.BUILTIN_SHADERS['heatmap_fragment'],
+            "heatmap",
+            self.BUILTIN_SHADERS["heatmap_vertex"],
+            self.BUILTIN_SHADERS["heatmap_fragment"],
         )
-        
+
         # Tree shader
         self.create_program(
-            'tree',
-            self.BUILTIN_SHADERS['tree_vertex'],
-            self.BUILTIN_SHADERS['tree_fragment'],
+            "tree",
+            self.BUILTIN_SHADERS["tree_vertex"],
+            self.BUILTIN_SHADERS["tree_fragment"],
         )
-        
+
         # Quantum shader
         self.create_program(
-            'quantum',
-            self.BUILTIN_SHADERS['quantum_vertex'],
-            self.BUILTIN_SHADERS['quantum_fragment'],
+            "quantum",
+            self.BUILTIN_SHADERS["quantum_vertex"],
+            self.BUILTIN_SHADERS["quantum_fragment"],
         )
-    
+
     def _parse_uniforms(self, source: str) -> dict[str, int]:
         """Parse uniform declarations from shader source.
-        
+
         Args:
             source: Shader source code
-            
+
         Returns:
             Dictionary of uniform names to locations
         """
         uniforms = {}
         location = 0
-        
-        for line in source.split('\n'):
+
+        for line in source.split("\n"):
             line = line.strip()
-            if line.startswith('uniform '):
+            if line.startswith("uniform "):
                 # Extract uniform name
-                parts = line.rstrip(';').split()
+                parts = line.rstrip(";").split()
                 if len(parts) >= 3:
                     name = parts[-1]
                     uniforms[name] = location
                     location += 1
-        
+
         return uniforms
-    
+
     def _parse_attributes(self, source: str) -> dict[str, int]:
         """Parse attribute declarations from shader source.
-        
+
         Args:
             source: Vertex shader source code
-            
+
         Returns:
             Dictionary of attribute names to locations
         """
         attributes = {}
-        
-        for line in source.split('\n'):
+
+        for line in source.split("\n"):
             line = line.strip()
-            if 'layout(location' in line and 'in ' in line:
+            if "layout(location" in line and "in " in line:
                 # Extract location and name
                 try:
-                    loc_start = line.find('location = ') + 11
-                    loc_end = line.find(')', loc_start)
+                    loc_start = line.find("location = ") + 11
+                    loc_end = line.find(")", loc_start)
                     location = int(line[loc_start:loc_end])
-                    
-                    name_start = line.rfind(' ') + 1
-                    name = line[name_start:].rstrip(';')
-                    
+
+                    name_start = line.rfind(" ") + 1
+                    name = line[name_start:].rstrip(";")
+
                     attributes[name] = location
                 except (ValueError, IndexError):
                     pass
-        
+
         return attributes
-    
+
     def delete_program(self, name: str) -> None:
         """Delete a shader program.
-        
+
         Args:
             name: Program name
         """
         if name in self._programs:
             del self._programs[name]
-    
+
     def clear(self) -> None:
         """Clear all programs and shaders."""
         self._programs.clear()

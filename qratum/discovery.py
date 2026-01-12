@@ -26,7 +26,6 @@ from typing import Any, Callable, Generic, TypeVar
 
 from qratum.metrics import QRATUMMetrics
 
-
 State = TypeVar("State")
 Action = TypeVar("Action")
 
@@ -113,7 +112,7 @@ class EmpiricalDelta:
     @property
     def exceeds_threshold(self) -> bool:
         """Check if delta exceeds significance threshold.
-        
+
         Uses configurable thresholds (relative_delta_threshold and
         significance_threshold) to allow tuning for different domains.
         """
@@ -142,8 +141,7 @@ class DiscoveryEntry:
     def hash(self) -> str:
         """Compute ledger entry hash for chain integrity."""
         content = (
-            f"{self.entry_id}|{self.hypothesis.hash()}|"
-            f"{self.status.value}|{self.created_at}"
+            f"{self.entry_id}|{self.hypothesis.hash()}|" f"{self.status.value}|{self.created_at}"
         )
         return hashlib.sha256(content.encode()).hexdigest()
 
@@ -176,9 +174,7 @@ class DiscoveryLedger:
 
         # Chain with previous hash
         previous_hash = self._chain_hashes[-1]
-        chain_hash = hashlib.sha256(
-            f"{previous_hash}|{entry_hash}".encode()
-        ).hexdigest()
+        chain_hash = hashlib.sha256(f"{previous_hash}|{entry_hash}".encode()).hexdigest()
 
         self._entries.append(entry)
         self._entry_hashes.append(entry_hash)  # Store the hash at commit time
@@ -273,9 +269,7 @@ class ReplayVerificationAgent(VerificationAgent):
             replay_result = self.search_func(entry.model)
 
             # Compare with original (allow small tolerance)
-            value_match = (
-                abs(replay_result.best_value - entry.search_result.best_value) < 0.01
-            )
+            value_match = abs(replay_result.best_value - entry.search_result.best_value) < 0.01
             return value_match
         except Exception:
             return False
@@ -409,9 +403,7 @@ class SelfDiscoveryCycle(Generic[State, Action]):
             self._spawn_verification(entry)
 
             # Update metrics
-            self.metrics.record_outcome(
-                actual=delta.actual_value, baseline=delta.baseline_value
-            )
+            self.metrics.record_outcome(actual=delta.actual_value, baseline=delta.baseline_value)
 
             return entry
 

@@ -7,8 +7,6 @@ with non-blocking queues.
 
 from __future__ import annotations
 
-import hashlib
-import json
 import queue
 import threading
 import time
@@ -18,7 +16,6 @@ from enum import Enum
 from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
-
 from qratum_asi.sandbox_platform.types import (
     ProposalPriority,
     SandboxEvaluationResult,
@@ -276,9 +273,7 @@ class NonBlockingQueue:
             "enqueue_count": self._enqueue_count,
             "dequeue_count": self._dequeue_count,
             "dropped_count": self._dropped_count,
-            "throughput": (
-                self._dequeue_count / max(1, self._enqueue_count)
-            ),
+            "throughput": (self._dequeue_count / max(1, self._enqueue_count)),
         }
 
 
@@ -496,9 +491,8 @@ class AsyncEvaluationPipeline:
                 stage_time = (time.perf_counter() - stage_start) * 1000
                 stage.items_processed += 1
                 stage.avg_processing_time_ms = (
-                    (stage.avg_processing_time_ms * (stage.items_processed - 1) + stage_time)
-                    / stage.items_processed
-                )
+                    stage.avg_processing_time_ms * (stage.items_processed - 1) + stage_time
+                ) / stage.items_processed
                 stage.last_processed_at = datetime.now(timezone.utc).isoformat()
                 stage.status = PipelineStageStatus.COMPLETED
 

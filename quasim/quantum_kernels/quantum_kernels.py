@@ -17,7 +17,6 @@ Applications:
 
 from __future__ import annotations
 
-import warnings
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Callable, Literal
@@ -95,9 +94,7 @@ class QuantumKernel:
         n_layers = self.config.n_layers
 
         # Random rotation angles for feature map
-        self._rotation_params = self._rng.uniform(
-            -np.pi, np.pi, size=(n_layers, n_features)
-        )
+        self._rotation_params = self._rng.uniform(-np.pi, np.pi, size=(n_layers, n_features))
 
         # Entanglement pattern
         if self.config.use_entanglement:
@@ -381,7 +378,7 @@ class QuantumFeatureEncoder:
         self._fitted = False
         self._params: np.ndarray | None = None
 
-    def fit(self, X: np.ndarray) -> "QuantumFeatureEncoder":
+    def fit(self, X: np.ndarray) -> QuantumFeatureEncoder:
         """Fit encoder to data.
 
         Args:

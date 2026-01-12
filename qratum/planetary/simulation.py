@@ -223,7 +223,9 @@ class VisualizationEngine:
         Args:
             engine_id: Optional engine ID
         """
-        self.engine_id = engine_id or f"viz_{hashlib.sha256(str(datetime.now()).encode()).hexdigest()[:8]}"
+        self.engine_id = (
+            engine_id or f"viz_{hashlib.sha256(str(datetime.now()).encode()).hexdigest()[:8]}"
+        )
         self.visualizations: list[VisualizationData] = []
 
     def create_time_series_chart(
@@ -471,12 +473,14 @@ class SimulationRun:
             event_type: Type of event
             data: Event data
         """
-        self.events.append({
-            "event_type": event_type,
-            "tick": self.current_tick,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "data": data,
-        })
+        self.events.append(
+            {
+                "event_type": event_type,
+                "tick": self.current_tick,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "data": data,
+            }
+        )
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize run to dictionary."""
@@ -687,9 +691,7 @@ class PlanetarySimulation:
         self.runs.append(run)
         return run
 
-    def _simulate_global_adoption(
-        self, run: SimulationRun, seed: int
-    ) -> dict[str, Any]:
+    def _simulate_global_adoption(self, run: SimulationRun, seed: int) -> dict[str, Any]:
         """Simulate global adoption scenario.
 
         Args:
@@ -737,9 +739,7 @@ class PlanetarySimulation:
             "growth_achieved": sum(regional_users.values()) / params.get("initial_users", 1),
         }
 
-    def _simulate_sector_expansion(
-        self, run: SimulationRun, seed: int
-    ) -> dict[str, Any]:
+    def _simulate_sector_expansion(self, run: SimulationRun, seed: int) -> dict[str, Any]:
         """Simulate sector expansion scenario.
 
         Args:
@@ -756,8 +756,8 @@ class PlanetarySimulation:
         sectors = params.get("sectors", ["general"])
         adoption_rate = params.get("adoption_rate", 0.05)
 
-        sector_adoption = {s: 0.0 for s in sectors}
-        integrations = {s: 0 for s in sectors}
+        sector_adoption = dict.fromkeys(sectors, 0.0)
+        integrations = dict.fromkeys(sectors, 0)
 
         for tick in range(run.scenario.duration_ticks):
             run.current_tick = tick
@@ -781,9 +781,7 @@ class PlanetarySimulation:
             "average_adoption": sum(sector_adoption.values()) / len(sectors) * 100,
         }
 
-    def _simulate_stress_test(
-        self, run: SimulationRun, seed: int
-    ) -> dict[str, Any]:
+    def _simulate_stress_test(self, run: SimulationRun, seed: int) -> dict[str, Any]:
         """Simulate stress test scenario.
 
         Args:
@@ -813,12 +811,14 @@ class PlanetarySimulation:
             elif progress < 0.7:
                 load = base_load * peak_multiplier
             else:
-                load = base_load * peak_multiplier - (peak_multiplier * base_load - base_load) * ((progress - 0.7) / 0.3)
+                load = base_load * peak_multiplier - (peak_multiplier * base_load - base_load) * (
+                    (progress - 0.7) / 0.3
+                )
 
             load = min(1.0, load)
 
             # Latency increases with load
-            latency = 10 + (load ** 2) * 990  # 10ms to 1000ms
+            latency = 10 + (load**2) * 990  # 10ms to 1000ms
             max_latency = max(max_latency, latency)
 
             # Failure probability increases with load
@@ -833,12 +833,12 @@ class PlanetarySimulation:
             "peak_load_achieved": peak_multiplier * base_load * 100,
             "max_latency_ms": max_latency,
             "total_failures": failures,
-            "availability": (run.scenario.duration_ticks - failures) / run.scenario.duration_ticks * 100,
+            "availability": (run.scenario.duration_ticks - failures)
+            / run.scenario.duration_ticks
+            * 100,
         }
 
-    def _simulate_disaster_recovery(
-        self, run: SimulationRun, seed: int
-    ) -> dict[str, Any]:
+    def _simulate_disaster_recovery(self, run: SimulationRun, seed: int) -> dict[str, Any]:
         """Simulate disaster recovery scenario.
 
         Args:
@@ -875,9 +875,17 @@ class PlanetarySimulation:
                     recovery_complete_tick = tick
 
             run.metrics.record("system_health", tick, system_health * 100)
-            run.metrics.record("regions_affected", tick, affected_regions if tick >= disaster_tick and system_health < 1.0 else 0)
+            run.metrics.record(
+                "regions_affected",
+                tick,
+                affected_regions if tick >= disaster_tick and system_health < 1.0 else 0,
+            )
 
-        recovery_time = (recovery_complete_tick - disaster_tick) if recovery_complete_tick else run.scenario.duration_ticks
+        recovery_time = (
+            (recovery_complete_tick - disaster_tick)
+            if recovery_complete_tick
+            else run.scenario.duration_ticks
+        )
         rto_met = recovery_time <= recovery_target
 
         return {
@@ -888,9 +896,7 @@ class PlanetarySimulation:
             "min_health_during_disaster": (1.0 - affected_regions * 0.25) * 100,
         }
 
-    def _simulate_economic_shock(
-        self, run: SimulationRun, seed: int
-    ) -> dict[str, Any]:
+    def _simulate_economic_shock(self, run: SimulationRun, seed: int) -> dict[str, Any]:
         """Simulate economic shock scenario.
 
         Args:
@@ -918,11 +924,11 @@ class PlanetarySimulation:
             if shock_start <= tick < shock_start + shock_duration:
                 # During shock
                 shock_effect = shock_magnitude * (1 - (tick - shock_start) / shock_duration)
-                token_price *= (1 - shock_effect * random.gauss(0.1, 0.05))
+                token_price *= 1 - shock_effect * random.gauss(0.1, 0.05)
                 liquidity *= 0.99
             else:
                 # Recovery
-                token_price *= (1 + random.gauss(0.01, 0.02))
+                token_price *= 1 + random.gauss(0.01, 0.02)
                 liquidity = min(1.0, liquidity * 1.01)
 
             token_price = max(0.1, min(2.0, token_price))
@@ -940,9 +946,7 @@ class PlanetarySimulation:
             "final_liquidity": liquidity * 100,
         }
 
-    def _simulate_scaling_test(
-        self, run: SimulationRun, seed: int
-    ) -> dict[str, Any]:
+    def _simulate_scaling_test(self, run: SimulationRun, seed: int) -> dict[str, Any]:
         """Simulate scaling test scenario.
 
         Args:
@@ -997,9 +1001,7 @@ class PlanetarySimulation:
             "cost_efficiency": capacity / cost_spent if cost_spent > 0 else 0,
         }
 
-    def _simulate_generic(
-        self, run: SimulationRun, seed: int
-    ) -> dict[str, Any]:
+    def _simulate_generic(self, run: SimulationRun, seed: int) -> dict[str, Any]:
         """Generic simulation for custom scenarios.
 
         Args:

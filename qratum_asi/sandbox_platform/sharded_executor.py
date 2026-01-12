@@ -6,21 +6,15 @@ evaluation. Dedicated hardware (CPU/GPU/quantum) prevents interference.
 
 from __future__ import annotations
 
-import hashlib
-import json
 import threading
-import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
-
 from qratum_asi.sandbox_platform.types import (
-    ExecutionMode,
     ProposalPriority,
-    ResourceAllocation,
     ResourceType,
     SandboxEvaluationResult,
     SandboxProposal,
@@ -180,7 +174,9 @@ class ShardedSandboxExecutor:
         self._completed_shards: list[str] = []
 
         # Node executor functions
-        self._node_executors: dict[str, Callable[[WorkloadShard], list[SandboxEvaluationResult]]] = {}
+        self._node_executors: dict[
+            str, Callable[[WorkloadShard], list[SandboxEvaluationResult]]
+        ] = {}
 
         # Initialize default nodes
         self._initialize_default_nodes()
@@ -341,7 +337,8 @@ class ShardedSandboxExecutor:
     ) -> NodeAllocation | None:
         """Select best node for workload based on strategy."""
         available_nodes = [
-            n for n in self.nodes.values()
+            n
+            for n in self.nodes.values()
             if n.can_accept_task and n.available_capacity >= resource_requirement
         ]
 
@@ -504,9 +501,7 @@ class ShardedSandboxExecutor:
 
     def get_node_stats(self) -> dict[str, Any]:
         """Get statistics for all nodes."""
-        node_stats = {
-            node_id: node.to_dict() for node_id, node in self.nodes.items()
-        }
+        node_stats = {node_id: node.to_dict() for node_id, node in self.nodes.items()}
 
         total_capacity = sum(n.capacity for n in self.nodes.values())
         total_allocated = sum(n.allocated for n in self.nodes.values())
