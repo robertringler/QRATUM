@@ -265,7 +265,9 @@ class SectorAdapter:
             self.kpi_monitor.add_metric("Carbon Reduction", target=50, unit="%", initial_value=35)
         elif self.domain == DomainType.HEALTHCARE:
             self.kpi_monitor.add_metric("Data Compliance", target=100, unit="%", initial_value=98)
-            self.kpi_monitor.add_metric("Processing Time", target=1000, unit="ms", initial_value=800)
+            self.kpi_monitor.add_metric(
+                "Processing Time", target=1000, unit="ms", initial_value=800
+            )
         elif self.domain == DomainType.FINANCE:
             self.kpi_monitor.add_metric("Transaction Speed", target=50, unit="ms", initial_value=45)
             self.kpi_monitor.add_metric("Fraud Detection", target=99, unit="%", initial_value=97)
@@ -274,7 +276,9 @@ class SectorAdapter:
             self.kpi_monitor.add_metric("Fuel Efficiency", target=20, unit="%", initial_value=15)
         elif self.domain == DomainType.LOGISTICS:
             self.kpi_monitor.add_metric("Delivery Accuracy", target=99, unit="%", initial_value=96)
-            self.kpi_monitor.add_metric("Inventory Accuracy", target=99.5, unit="%", initial_value=98)
+            self.kpi_monitor.add_metric(
+                "Inventory Accuracy", target=99.5, unit="%", initial_value=98
+            )
         elif self.domain == DomainType.COMMUNICATIONS:
             self.kpi_monitor.add_metric("Bandwidth Util", target=80, unit="%", initial_value=65)
             self.kpi_monitor.add_metric("Signal Quality", target=95, unit="%", initial_value=92)
@@ -308,9 +312,7 @@ class SectorAdapter:
             return True
         return False
 
-    def transform_data(
-        self, data: dict[str, Any], target_format: str
-    ) -> dict[str, Any]:
+    def transform_data(self, data: dict[str, Any], target_format: str) -> dict[str, Any]:
         """Transform data to target format.
 
         Args:
@@ -389,18 +391,18 @@ class InteroperabilityLayer:
             if target in self.adapters:
                 adapter = self.adapters[target]
                 transformed = adapter.transform_data(data, "json")
-                results.append({
-                    "source": source.value,
-                    "target": target.value,
-                    "data": transformed,
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
-                })
+                results.append(
+                    {
+                        "source": source.value,
+                        "target": target.value,
+                        "data": transformed,
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                    }
+                )
 
         return results
 
-    def define_route(
-        self, source: DomainType, targets: list[DomainType]
-    ) -> None:
+    def define_route(self, source: DomainType, targets: list[DomainType]) -> None:
         """Define routing rule.
 
         Args:
@@ -550,9 +552,7 @@ class DomainIntegration:
         self.use_cases.append(use_case)
         return use_case
 
-    def simulate_use_case(
-        self, use_case_id: str, duration_days: int = 30
-    ) -> dict[str, Any]:
+    def simulate_use_case(self, use_case_id: str, duration_days: int = 30) -> dict[str, Any]:
         """Simulate a use case and generate metrics.
 
         Args:
@@ -614,12 +614,8 @@ class DomainIntegration:
         Returns:
             Integration statistics
         """
-        total_connections = sum(
-            a.active_connections for a in self.interop_layer.adapters.values()
-        )
-        total_throughput = sum(
-            a.throughput_mbps for a in self.interop_layer.adapters.values()
-        )
+        total_connections = sum(a.active_connections for a in self.interop_layer.adapters.values())
+        total_throughput = sum(a.throughput_mbps for a in self.interop_layer.adapters.values())
 
         return {
             "integration_id": self.integration_id,

@@ -22,9 +22,11 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 ## TIER-1 PR BASELINE SNAPSHOT
 
 ### PR #370: Tensor Compression (AHTC)
+
 **Title:** Replace AHTC placeholder stubs with production SVD-based tensor compression
 
 **Measured State:**
+
 - **Status:** OPEN (non-draft)
 - **Head SHA:** `69666642325b9a34b56596381b5a9bc5faef05d2`
 - **Base SHA:** `45d7cad4f075bc776bf4b256aea639beecdbde61`
@@ -40,11 +42,13 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 **CI Status:** Data unavailable (GitHub CLI not authenticated in sandbox)
 
 **File-Level Metrics:**
+
 - Core implementation: `quasim/holo/anti_tensor.py`
 - Integration tests: `test_anti_tensor_impl.py` (58/58 passing per PR description)
 - Test coverage: Extensive (21 new tests + 25 existing + 12 integration tests)
 
 **Merge Readiness Assessment:**
+
 - ✅ Substantial implementation (production-grade SVD tensor compression)
 - ✅ Comprehensive testing (58/58 tests passing)
 - ✅ Code review activity (22 review comments addressed)
@@ -56,9 +60,11 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 ---
 
 ### PR #387: Quantum UI / WASM Pod Isolation  
+
 **Title:** Phase 4: Advanced quantum gates, WASM pod isolation, and dashboard UI panels
 
 **Measured State:**
+
 - **Status:** OPEN (non-draft)
 - **Head SHA:** `86f68bfd60232e7ebee1070ab5742d4b0b9ea9a1`
 - **Base SHA:** `d79b20285c2a2090dffaaafd4ec329d80a6ec0ba`
@@ -74,11 +80,13 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 **CI Status:** Data unavailable (GitHub CLI not authenticated in sandbox)
 
 **File-Level Metrics:**
+
 - Backend: `qr_os_supreme` (Phase/S/T/Toffoli gates)
 - WASM pods: OSSupreme (64KB), MiniQuASIM (2MB), MiniLM (8MB)
 - UI: Quantum simulation panel (12-qubit visualization)
 
 **Merge Readiness Assessment:**
+
 - ✅ Large feature implementation (advanced quantum gates + UI)
 - ✅ Active code review (34 review comments)
 - ✅ Recent activity (updated Dec 28, 2025)
@@ -90,9 +98,11 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 ---
 
 ### PR #378: Epistemic Heat Sink / zkML
+
 **Title:** Implement topological observer and epistemic heat sink modules
 
 **Measured State:**
+
 - **Status:** OPEN (⚠️ **DRAFT**)
 - **Head SHA:** `237fc56bcf86f316c07393832bb3ba9a3bbec775`
 - **Base SHA:** `0adf56aafd28b86ef8d0131234e6e6b62e81023f`
@@ -108,11 +118,13 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 **CI Status:** Data unavailable (GitHub CLI not authenticated in sandbox)
 
 **File-Level Metrics:**
+
 - New modules: `topological_observer/`, `epistemic_heat_sink/`
 - Test coverage: 74 tests (per PR description)
 - Core features: zkML, Plonky3, neurosymbolic reasoning
 
 **Merge Readiness Assessment:**
+
 - ❌ **DRAFT STATUS** - Not ready for merge
 - ✅ Substantial implementation (+3747 lines)
 - ⚠️ No review activity yet (0 comments)
@@ -124,9 +136,11 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 ---
 
 ### PR #197: Code Quality (PEP 8)
+
 **Title:** Code quality improvements: PEP 8 formatting, documentation cleanup, and syntax error fixes
 
 **Measured State:**
+
 - **Status:** OPEN (non-draft)
 - **Head SHA:** `8684c5caaadd86de089d4bc2846ad5d34707c01c`
 - **Base SHA:** `8571ac75e0f8ef16b8695bd622145b859014111a`
@@ -142,11 +156,13 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 **CI Status:** Data unavailable (GitHub CLI not authenticated in sandbox)
 
 **File-Level Metrics:**
+
 - Scope: 373 files (code formatting, PEP 8 compliance)
 - Fixes: Pre-existing Python syntax errors in 3 files
 - Type: Non-functional code quality improvements
 
 **Merge Readiness Assessment:**
+
 - ✅ Code quality improvements (PEP 8, syntax fixes)
 - ⚠️ **EXTREMELY LARGE SCOPE** (373 files)
 - ⚠️ Requires careful review due to breadth
@@ -158,9 +174,11 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 ---
 
 ### PR #149: Exception Handling
+
 **Title:** [WIP] Replace qnx/core.py with improved exception handling and serialization
 
 **Measured State:**
+
 - **Status:** OPEN (non-draft, marked [WIP] in title)
 - **Head SHA:** `5e4f88e778880256ab773b55a79838e0cbd14f12`
 - **Base SHA:** `0c2de99300d267e20917ddd259d09973b377bfd2`
@@ -176,11 +194,13 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 **CI Status:** Data unavailable (GitHub CLI not authenticated in sandbox)
 
 **File-Level Metrics:**
+
 - Primary change: `qnx/core.py` (exception handling + serialization)
 - Scope: 30 files total
 - Focus: Backend exception handling, deterministic hashing
 
 **Merge Readiness Assessment:**
+
 - ✅ Focused improvement (exception handling)
 - ✅ Reasonable scope (30 files)
 - ⚠️ **WIP marker in title** - may not be finalized
@@ -193,11 +213,13 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 
 ## CONVERGENCE ANALYSIS
 
-### PRs Ready for Convergence (Pending CI Verification):
+### PRs Ready for Convergence (Pending CI Verification)
+
 1. **PR #370** (Tensor Compression) - Strong candidate
 2. **PR #387** (Quantum UI) - Strong candidate pending size review
 
-### PRs Requiring Remediation:
+### PRs Requiring Remediation
+
 1. **PR #378** (Epistemic Heat Sink) - **BLOCKED: Draft status** - must exit draft
 2. **PR #197** (Code Quality) - **CAUTION: 373 files** - needs thorough review
 3. **PR #149** (Exception Handling) - **WIP status** - needs finalization
@@ -206,7 +228,7 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 
 ## DISCREPANCIES & INCONSISTENCIES
 
-### Critical Findings:
+### Critical Findings
 
 1. **CI Status Unknown for All PRs**
    - **Issue:** GitHub CLI not authenticated in sandbox environment
@@ -232,7 +254,7 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
    - **Mitigation:** Verify completion status with author
    - **Priority:** MEDIUM
 
-### Test Coverage Assessment:
+### Test Coverage Assessment
 
 | PR | Test Status | Source |
 |----|-------------|--------|
@@ -246,20 +268,23 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 
 ## DETERMINISM VALIDATION
 
-### Reproducibility Metrics:
+### Reproducibility Metrics
 
 **Evidence Collection:**
+
 - **Method:** GitHub REST API via MCP server
 - **Timestamp:** 2025-12-29T04:44:06Z
 - **Main HEAD:** `4aeda8534ac154d220ac194bf4eeb1a0d98cc9be`
 - **Deterministic:** Yes (API responses are point-in-time snapshots)
 
 **SHA Provenance:**
+
 - All PR head SHAs captured from authoritative GitHub API
 - Main branch SHA verified via `git rev-parse`
 - No local git operations performed on PR branches (read-only)
 
 **Evidence Integrity:**
+
 - All artifacts stored in `docs/convergence_evidence/`
 - JSON files validated (parseable)
 - SHA format validated (40 hex chars)
@@ -269,7 +294,7 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 
 ## RECOMMENDATIONS
 
-### Immediate Actions:
+### Immediate Actions
 
 1. **Verify CI Status** (Priority: HIGH)
    - Manually check GitHub UI for all PRs
@@ -289,9 +314,10 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
    - Confirm WIP status
    - Remove [WIP] marker if complete
 
-### Merge Sequence (Pending Verification):
+### Merge Sequence (Pending Verification)
 
 **Recommended Order:**
+
 1. PR #370 (Tensor Compression) - Focused, well-tested
 2. PR #149 (Exception Handling) - Focused improvement (if WIP resolved)
 3. PR #387 (Quantum UI) - Large but cohesive feature
@@ -299,6 +325,7 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 5. PR #378 (Epistemic Heat Sink) - After draft exit
 
 **Conflict Risk Assessment:**
+
 - PRs #370, #387, #378 likely low conflict (different modules)
 - PR #197 high conflict potential (touches 373 files)
 - PR #149 moderate conflict (qnx/ module changes)
@@ -310,6 +337,7 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 ✅ **Trust Conserved:** ℛ(t) ≥ 0
 
 **Verification:**
+
 - No state-altering actions performed
 - All data captured via read-only API calls
 - No merges, rebases, or draft exits executed
@@ -318,6 +346,7 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 ✅ **No Information Lost**
 
 **Verification:**
+
 - All PR metadata captured
 - Evidence artifacts stored persistently
 - SHA provenance recorded
@@ -326,6 +355,7 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 ✅ **Measured Ground Truth**
 
 **Verification:**
+
 - All data from GitHub API (authoritative source)
 - No inference or modeling used
 - Point-in-time snapshot captured
@@ -338,6 +368,7 @@ Complete baseline snapshot generated for all 5 Tier-1 PRs using the QRATUM Conve
 **Total Artifacts Generated:** 30+
 
 **Per-PR Evidence Bundle:**
+
 ```
 pr_<NUM>_meta.json        - PR metadata from GitHub API
 pr_<NUM>_checks.json      - CI check status (placeholder)
@@ -349,6 +380,7 @@ pr_<NUM>_changed_files.txt - Changed files list
 ```
 
 **Repository-Level Evidence:**
+
 ```
 main_head_sha.txt           - Main branch HEAD
 open_pr_snapshot.json       - Structured PR list
@@ -382,6 +414,7 @@ All required evidence artifacts are present for Tier-1 PRs.
 Complete baseline snapshot successfully generated for all 5 Tier-1 PRs using measured ground truth from GitHub API. Evidence infrastructure operational and all artifacts captured.
 
 **Next Steps:**
+
 1. Manual CI verification via GitHub UI
 2. Address draft status (PR #378)
 3. Clarify WIP status (PR #149)

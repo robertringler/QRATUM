@@ -25,11 +25,13 @@ This document summarizes the 7 safety-critical enhancements implemented for QuNi
 **Purpose**: Validate configuration, seed, and policy without making network calls.
 
 **Usage**:
+
 ```bash
 qunimbus ascend --query "real world simulation" --dry-run
 ```
 
 **Output**:
+
 ```
 🔍 DRY RUN MODE - Validation Only
 ✓ Query validated: real world simulation
@@ -49,6 +51,7 @@ qunimbus ascend --query "real world simulation" --dry-run
 ```
 
 **Benefits**:
+
 - Zero network overhead for validation
 - Fast pre-flight checks in CI/CD
 - Policy guard still enforced
@@ -63,6 +66,7 @@ qunimbus ascend --query "real world simulation" --dry-run
 **Purpose**: Track query IDs at top level in audit chain for compliance and traceability.
 
 **Audit Entry Format**:
+
 ```json
 {
   "timestamp": "2025-11-12T00:00:00.000000Z",
@@ -79,6 +83,7 @@ qunimbus ascend --query "real world simulation" --dry-run
 ```
 
 **Features**:
+
 - Query ID at top level for indexing
 - Supports both `query_id` and `qid` aliases
 - Chain verification validates ID consistency
@@ -93,6 +98,7 @@ qunimbus ascend --query "real world simulation" --dry-run
 **Purpose**: Provide comprehensive examples for `QNimbusBridge.ascend()`.
 
 **Documentation Includes**:
+
 - Basic usage patterns
 - Seed injection techniques
 - Artifact handling workflow
@@ -101,6 +107,7 @@ qunimbus ascend --query "real world simulation" --dry-run
 - DO-178C compliance notes
 
 **Example from Documentation**:
+
 ```python
 # Seed injection for deterministic replay
 import hashlib
@@ -127,11 +134,13 @@ assert resp["query_id"] == resp2["query_id"]
 **Workflow**: `.github/workflows/qunimbus-validate.yml`
 
 **Jobs**:
+
 1. **validate-qunimbus**: Validates snapshots with 3% tolerance
 2. **policy-guard-tests**: Tests allowed/blocked queries
 3. **determinism-tests**: Validates reproducible seeding
 
 **Usage in CI**:
+
 ```yaml
 - name: Validate snapshot
   run: |
@@ -142,6 +151,7 @@ assert resp["query_id"] == resp2["query_id"]
 ```
 
 **Artifacts Generated**:
+
 - Test snapshots (HDF5 + fallback .npy)
 - Audit logs (JSONL)
 - Validation results
@@ -155,6 +165,7 @@ assert resp["query_id"] == resp2["query_id"]
 **Purpose**: Fail validation if ANY observable is missing, even if others pass.
 
 **Usage**:
+
 ```bash
 qunimbus validate \
   --snapshot artifacts/snapshot.hdf5 \
@@ -163,10 +174,12 @@ qunimbus validate \
 ```
 
 **Behavior**:
+
 - Without `--strict`: Warns about missing observables, fails only on tolerance violations
 - With `--strict`: Fails immediately if any observable is missing or has errors
 
 **Exit Codes**:
+
 - `0`: All observables present and pass
 - `2`: Observable(s) fail tolerance check
 - `3`: Observable(s) missing (strict mode)
@@ -196,6 +209,7 @@ qunimbus validate \
 **Document**: `docs/QUNIMBUS_NIST_800_53_COMPLIANCE.md`
 
 **Key Features**:
+
 - Evidence and justification for each control
 - Assessment procedures with test commands
 - Certification readiness notes
@@ -210,12 +224,14 @@ qunimbus validate \
 **Module**: `quasim/qunimbus/auth.py`
 
 **Planned Features**:
+
 - JWT token verification
 - HMAC-SHA256 request signing
 - Automatic token refresh
 - Rate limiting integration
 
 **Example Usage (Future)**:
+
 ```python
 import os
 os.environ["QUNIMBUS_TOKEN"] = "eyJhbGc..."
@@ -227,6 +243,7 @@ resp = bridge.ascend("query", seed=42)
 ```
 
 **Implementation Checklist**:
+
 - [ ] Add PyJWT dependency
 - [ ] Implement token verification
 - [ ] Implement token refresh
@@ -237,6 +254,7 @@ resp = bridge.ascend("query", seed=42)
 - [ ] Document security considerations
 
 **Security Notes**:
+
 - Use RS256 (asymmetric) in production
 - Store tokens in environment variables
 - Implement token rotation (24h max)
@@ -291,6 +309,7 @@ python3 -c "from quasim.audit.log import verify_audit_chain; print(verify_audit_
 ## Compliance Summary
 
 ### DO-178C Level A
+
 - ✅ Deterministic operations (seed-based reproducibility)
 - ✅ Comprehensive testing (100% test pass rate)
 - ✅ Audit trail for all operations
@@ -298,11 +317,13 @@ python3 -c "from quasim.audit.log import verify_audit_chain; print(verify_audit_
 - ✅ No breaking changes
 
 ### NIST 800-53 HIGH
+
 - ✅ AC-2: Query authorization with policy guard
 - ✅ AU-3: Comprehensive audit records with chain-of-trust
 - ✅ SC-28: Data integrity protection (checksums, validation)
 
 ### CMMC 2.0 Level 2
+
 - ✅ AC.2.013: Monitor and control operations
 - ✅ AU.2.042: Create/protect/retain audit records
 - ✅ SC.3.191: Protect data at rest
@@ -379,18 +400,21 @@ cat docs/QUNIMBUS_NIST_800_53_COMPLIANCE.md
 ## Future Work
 
 ### Short Term (Q1 2026)
+
 - [ ] Implement JWT authentication (Feature 7)
 - [ ] Add query rate limiting
 - [ ] Implement artifact caching
 - [ ] Add metrics dashboard
 
 ### Medium Term (Q2 2026)
+
 - [ ] Multi-user authorization
 - [ ] Federated audit logs
 - [ ] Real-time validation alerts
 - [ ] Enhanced compliance reporting
 
 ### Long Term (Q3+ 2026)
+
 - [ ] Hardware Security Module (HSM) integration
 - [ ] Blockchain audit trail option
 - [ ] AI-powered anomaly detection
@@ -410,9 +434,10 @@ cat docs/QUNIMBUS_NIST_800_53_COMPLIANCE.md
 ## Support
 
 For questions or issues:
-- GitHub Issues: https://github.com/robertringler/QuASIM/issues
-- Compliance Questions: compliance@quasim.io
-- Security Concerns: security@quasim.io
+
+- GitHub Issues: <https://github.com/robertringler/QuASIM/issues>
+- Compliance Questions: <compliance@quasim.io>
+- Security Concerns: <security@quasim.io>
 
 ---
 

@@ -16,49 +16,53 @@ The doctrine governs:
 Reference: QRATUM Mega Prompt (December 2025)
 """
 
-from dataclasses import dataclass, field
-from datetime import datetime
-from enum import Enum
-from typing import Any, Dict, FrozenSet, List, Optional, Tuple
 import hashlib
 import json
+from dataclasses import dataclass
+from datetime import datetime
+from enum import Enum
+from typing import Any, Dict, List, Optional, Tuple
 
 
 class CalibrationCategory(Enum):
     """Categories of calibration axioms."""
-    FOUNDATIONAL = "foundational"        # Core truth and substrate
-    OPERATIONAL = "operational"          # Runtime behavior
-    STRATEGIC = "strategic"              # Long-term positioning
+
+    FOUNDATIONAL = "foundational"  # Core truth and substrate
+    OPERATIONAL = "operational"  # Runtime behavior
+    STRATEGIC = "strategic"  # Long-term positioning
     EPISTEMOLOGICAL = "epistemological"  # Knowledge and awareness
 
 
 class JurisdictionalProperty(Enum):
     """Properties that define jurisdictional computation."""
-    DETERMINISM = "determinism"                    # Hard invariant, not best-effort
-    AUDITABILITY = "auditability"                  # Cryptographic/Merkle-chained
-    REVERSIBILITY = "reversibility"                # Native, not manual
-    SOVEREIGNTY = "sovereignty"                    # Enforced, not optional
-    PRIVACY = "privacy"                            # Zero-knowledge operational
-    OVERSIGHT = "oversight"                        # Protocol-embedded
+
+    DETERMINISM = "determinism"  # Hard invariant, not best-effort
+    AUDITABILITY = "auditability"  # Cryptographic/Merkle-chained
+    REVERSIBILITY = "reversibility"  # Native, not manual
+    SOVEREIGNTY = "sovereignty"  # Enforced, not optional
+    PRIVACY = "privacy"  # Zero-knowledge operational
+    OVERSIGHT = "oversight"  # Protocol-embedded
 
 
 class TrajectoryState(Enum):
     """Trajectory-awareness states for defensive engine."""
-    STABLE = "stable"                    # Normal operation
-    DRIFT = "drift"                      # Entropy gradient detected
-    METASTABLE = "metastable"            # Clustering detected
-    PRECURSOR = "precursor"              # Collapse precursor signals
-    CRITICAL = "critical"                # Approaching phase transition
-    SELF_SUSPEND = "self_suspend"        # Conditional self-suspension
+
+    STABLE = "stable"  # Normal operation
+    DRIFT = "drift"  # Entropy gradient detected
+    METASTABLE = "metastable"  # Clustering detected
+    PRECURSOR = "precursor"  # Collapse precursor signals
+    CRITICAL = "critical"  # Approaching phase transition
+    SELF_SUSPEND = "self_suspend"  # Conditional self-suspension
 
 
 @dataclass(frozen=True)
 class CalibrationAxiom:
     """An immutable calibration axiom from the 12-axiom doctrine.
-    
+
     Each axiom defines a jurisdictional law that QRATUM must uphold.
     Axioms are cryptographically anchored and cannot be modified.
     """
+
     axiom_id: int
     name: str
     description: str
@@ -66,12 +70,12 @@ class CalibrationAxiom:
     properties: Tuple[JurisdictionalProperty, ...]
     enforcement_hash: str  # SHA3-256 hash of axiom content
     is_immutable: bool = True
-    
+
     def verify_integrity(self) -> bool:
         """Verify axiom has not been tampered with."""
         computed_hash = self._compute_hash()
         return computed_hash == self.enforcement_hash
-    
+
     def _compute_hash(self) -> str:
         """Compute SHA3-256 hash of axiom content."""
         content = f"{self.axiom_id}:{self.name}:{self.description}:{self.category.value}"
@@ -82,22 +86,23 @@ class CalibrationAxiom:
 @dataclass
 class TrajectoryMetrics:
     """Metrics for trajectory-awareness (defensive engine).
-    
+
     Enables reasoning about "what the system is becoming" rather than
     just "what happened" or "what to rollback".
     """
-    entropy_gradient: float        # Rate of entropy change
-    coupling_drift: float          # Inter-module coupling drift
-    metastable_clusters: int       # Number of metastable coupling clusters
-    collapse_precursors: int       # Number of collapse precursor signals
+
+    entropy_gradient: float  # Rate of entropy change
+    coupling_drift: float  # Inter-module coupling drift
+    metastable_clusters: int  # Number of metastable coupling clusters
+    collapse_precursors: int  # Number of collapse precursor signals
     resilience_compression: float  # Recovery time compression factor
     trajectory_state: TrajectoryState
     timestamp: str
-    
+
     # Self-suspension threshold constants
     PRECURSOR_THRESHOLD: int = 3  # Collapse precursors count that triggers suspension
     RESILIENCE_THRESHOLD: float = 0.3  # Resilience compression below this triggers suspension
-    
+
     def should_self_suspend(self) -> bool:
         """Determine if system should conditionally self-suspend."""
         # Self-suspend if critical state or multiple precursors
@@ -113,17 +118,18 @@ class TrajectoryMetrics:
 @dataclass
 class JurisdictionalClaim:
     """A claim about what happened or could not have happened.
-    
+
     Enables proving jurisdictional facts for legally meaningful computation.
     """
+
     claim_id: str
     claim_type: str  # "happened", "could_not_happen", "state_transition"
-    subject: str     # What/who the claim is about
-    predicate: str   # What is being claimed
+    subject: str  # What/who the claim is about
+    predicate: str  # What is being claimed
     evidence_hash: str  # Hash of supporting evidence
     timestamp: str
     merkle_proof: Optional[str] = None
-    
+
     def is_provable(self) -> bool:
         """Check if claim has verifiable evidence."""
         return self.evidence_hash is not None and self.merkle_proof is not None
@@ -133,18 +139,19 @@ class JurisdictionalClaim:
 # THE 12 CALIBRATION AXIOMS
 # =============================================================================
 
+
 def _create_axiom(
     axiom_id: int,
     name: str,
     description: str,
     category: CalibrationCategory,
-    properties: Tuple[JurisdictionalProperty, ...]
+    properties: Tuple[JurisdictionalProperty, ...],
 ) -> CalibrationAxiom:
     """Create an axiom with computed enforcement hash."""
     content = f"{axiom_id}:{name}:{description}:{category.value}"
     content += f":{','.join(p.value for p in properties)}"
     enforcement_hash = hashlib.sha3_256(content.encode()).hexdigest()
-    
+
     return CalibrationAxiom(
         axiom_id=axiom_id,
         name=name,
@@ -152,7 +159,7 @@ def _create_axiom(
         category=category,
         properties=properties,
         enforcement_hash=enforcement_hash,
-        is_immutable=True
+        is_immutable=True,
     )
 
 
@@ -178,7 +185,7 @@ AXIOM_1_JURISDICTION = _create_axiom(
         JurisdictionalProperty.SOVEREIGNTY,
         JurisdictionalProperty.PRIVACY,
         JurisdictionalProperty.OVERSIGHT,
-    )
+    ),
 )
 
 # Axiom 2: QRADLE as Enabling Substrate
@@ -197,7 +204,7 @@ AXIOM_2_QRADLE = _create_axiom(
     properties=(
         JurisdictionalProperty.DETERMINISM,
         JurisdictionalProperty.AUDITABILITY,
-    )
+    ),
 )
 
 # Axiom 3: Verticals as Constraint-Driven Stress Tests
@@ -216,7 +223,7 @@ AXIOM_3_VERTICALS = _create_axiom(
     properties=(
         JurisdictionalProperty.REVERSIBILITY,
         JurisdictionalProperty.AUDITABILITY,
-    )
+    ),
 )
 
 # Axiom 4: Defensive Engine as Inflection to Self-Stabilization
@@ -234,7 +241,7 @@ AXIOM_4_DEFENSIVE = _create_axiom(
     properties=(
         JurisdictionalProperty.OVERSIGHT,
         JurisdictionalProperty.SOVEREIGNTY,
-    )
+    ),
 )
 
 # Axiom 5: ASI Scaffolding - Jurisdiction-First Legitimacy
@@ -253,7 +260,7 @@ AXIOM_5_ASI = _create_axiom(
         JurisdictionalProperty.OVERSIGHT,
         JurisdictionalProperty.DETERMINISM,
         JurisdictionalProperty.SOVEREIGNTY,
-    )
+    ),
 )
 
 # Axiom 6: Adoption Reality
@@ -267,7 +274,7 @@ AXIOM_6_ADOPTION = _create_axiom(
         "unencumbered maturation."
     ),
     category=CalibrationCategory.STRATEGIC,
-    properties=()
+    properties=(),
 )
 
 # Axiom 7: Accidental Regulatory Primitive Design
@@ -284,7 +291,7 @@ AXIOM_7_REGULATORY = _create_axiom(
     properties=(
         JurisdictionalProperty.AUDITABILITY,
         JurisdictionalProperty.DETERMINISM,
-    )
+    ),
 )
 
 # Axiom 8: Genomics as Ontological Consequence Trainer
@@ -300,7 +307,7 @@ AXIOM_8_GENOMICS = _create_axiom(
     properties=(
         JurisdictionalProperty.REVERSIBILITY,
         JurisdictionalProperty.PRIVACY,
-    )
+    ),
 )
 
 # Axiom 9: Epistemological Shift via Vulnerability Engine
@@ -314,9 +321,7 @@ AXIOM_9_EPISTEMOLOGY = _create_axiom(
         "hosting improvement."
     ),
     category=CalibrationCategory.EPISTEMOLOGICAL,
-    properties=(
-        JurisdictionalProperty.OVERSIGHT,
-    )
+    properties=(JurisdictionalProperty.OVERSIGHT,),
 )
 
 # Axiom 10: Jurisdiction-First as Gating Disqualifier
@@ -332,7 +337,7 @@ AXIOM_10_GATING = _create_axiom(
     properties=(
         JurisdictionalProperty.OVERSIGHT,
         JurisdictionalProperty.SOVEREIGNTY,
-    )
+    ),
 )
 
 # Axiom 11: Invisibility as Category Error Advantage
@@ -344,7 +349,7 @@ AXIOM_11_INVISIBILITY = _create_axiom(
         "Exploit this for quiet positioning; adoption won't be incremental but enforced."
     ),
     category=CalibrationCategory.STRATEGIC,
-    properties=()
+    properties=(),
 )
 
 # Axiom 12: Long-Term Ontology Change
@@ -360,7 +365,7 @@ AXIOM_12_ONTOLOGY = _create_axiom(
     properties=(
         JurisdictionalProperty.SOVEREIGNTY,
         JurisdictionalProperty.DETERMINISM,
-    )
+    ),
 )
 
 # Complete doctrine collection
@@ -382,32 +387,32 @@ CALIBRATION_DOCTRINE: Tuple[CalibrationAxiom, ...] = (
 
 class CalibrationDoctrineEnforcer:
     """Enforces the 12 Calibration Doctrine across QRATUM operations.
-    
+
     This class validates that all operations comply with the foundational
     axioms and maintains trajectory-awareness for defensive posture.
     """
-    
+
     # Configurable limits for trajectory history management
     MAX_TRAJECTORY_HISTORY: int = 1000  # Maximum trajectory samples to retain
     TRAJECTORY_HISTORY_PRUNE_SIZE: int = 500  # Size after pruning
-    
+
     def __init__(
         self,
         max_trajectory_history: Optional[int] = None,
-        trajectory_prune_size: Optional[int] = None
+        trajectory_prune_size: Optional[int] = None,
     ):
         self.doctrine = CALIBRATION_DOCTRINE
         self.trajectory_history: List[TrajectoryMetrics] = []
         self.jurisdictional_claims: List[JurisdictionalClaim] = []
         self._verified = False
-        
+
         # Allow configurable limits
         self._max_history = max_trajectory_history or self.MAX_TRAJECTORY_HISTORY
         self._prune_size = trajectory_prune_size or self.TRAJECTORY_HISTORY_PRUNE_SIZE
-        
+
     def verify_doctrine_integrity(self) -> Dict[str, Any]:
         """Verify all axioms have not been tampered with.
-        
+
         Returns:
             Dictionary with verification status and details.
         """
@@ -415,33 +420,31 @@ class CalibrationDoctrineEnforcer:
             "verified": True,
             "axiom_count": len(self.doctrine),
             "failed_axioms": [],
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.utcnow().isoformat(),
         }
-        
+
         for axiom in self.doctrine:
             if not axiom.verify_integrity():
                 results["verified"] = False
                 results["failed_axioms"].append(axiom.axiom_id)
-        
+
         self._verified = results["verified"]
         return results
-    
+
     def validate_operation_compliance(
-        self,
-        operation_type: str,
-        required_properties: List[JurisdictionalProperty]
+        self, operation_type: str, required_properties: List[JurisdictionalProperty]
     ) -> Tuple[bool, List[str]]:
         """Validate an operation complies with doctrine.
-        
+
         Args:
             operation_type: Type of operation being performed
             required_properties: Properties the operation must satisfy
-            
+
         Returns:
             Tuple of (is_compliant, list of violated axioms)
         """
         violations = []
-        
+
         # Check each required property is covered by at least one axiom
         for prop in required_properties:
             covered = False
@@ -449,12 +452,12 @@ class CalibrationDoctrineEnforcer:
                 if prop in axiom.properties:
                     covered = True
                     break
-            
+
             if not covered:
                 violations.append(
                     f"Property {prop.value} not covered by doctrine for {operation_type}"
                 )
-        
+
         # Specific axiom enforcement
         if "genomic" in operation_type.lower():
             # Axiom 8: Genomics requires reversibility and privacy
@@ -462,93 +465,100 @@ class CalibrationDoctrineEnforcer:
                 violations.append("Axiom 8: Genomic operations require reversibility")
             if JurisdictionalProperty.PRIVACY not in required_properties:
                 violations.append("Axiom 8: Genomic operations require privacy")
-        
+
         if "asi" in operation_type.lower() or "self_improvement" in operation_type.lower():
             # Axiom 5: ASI requires jurisdiction-first legitimacy
             if JurisdictionalProperty.OVERSIGHT not in required_properties:
                 violations.append("Axiom 5: ASI operations require embedded oversight")
             if JurisdictionalProperty.DETERMINISM not in required_properties:
                 violations.append("Axiom 5: ASI operations require determinism")
-        
+
         return len(violations) == 0, violations
-    
+
     def record_trajectory(self, metrics: TrajectoryMetrics) -> None:
         """Record trajectory metrics for defensive posture.
-        
+
         Implements Axiom 9: Epistemological shift to trajectory-awareness.
         """
         self.trajectory_history.append(metrics)
-        
+
         # Maintain bounded history using configurable limits
         if len(self.trajectory_history) > self._max_history:
-            self.trajectory_history = self.trajectory_history[-self._prune_size:]
-    
+            self.trajectory_history = self.trajectory_history[-self._prune_size :]
+
     def assess_trajectory_state(self) -> TrajectoryState:
         """Assess current trajectory state based on recent metrics.
-        
+
         Implements Axiom 4: Defensive engine for self-stabilization.
         """
         if not self.trajectory_history:
             return TrajectoryState.STABLE
-        
-        recent = self.trajectory_history[-10:] if len(self.trajectory_history) >= 10 else self.trajectory_history
-        
+
+        recent = (
+            self.trajectory_history[-10:]
+            if len(self.trajectory_history) >= 10
+            else self.trajectory_history
+        )
+
         # Check for critical conditions
         critical_count = sum(1 for m in recent if m.trajectory_state == TrajectoryState.CRITICAL)
         precursor_count = sum(1 for m in recent if m.trajectory_state == TrajectoryState.PRECURSOR)
-        
+
         if critical_count > 0:
             return TrajectoryState.CRITICAL
         if precursor_count >= 3:
             return TrajectoryState.PRECURSOR
-        
+
         # Check entropy gradient trend
         avg_entropy_gradient = sum(m.entropy_gradient for m in recent) / len(recent)
         if avg_entropy_gradient > 0.5:
             return TrajectoryState.METASTABLE
         if avg_entropy_gradient > 0.2:
             return TrajectoryState.DRIFT
-        
+
         return TrajectoryState.STABLE
-    
+
     def should_self_suspend(self) -> Tuple[bool, str]:
         """Determine if system should conditionally self-suspend.
-        
+
         Implements Axiom 4: Conditional self-suspension in recursive loops.
-        
+
         Returns:
             Tuple of (should_suspend, reason)
         """
         current_state = self.assess_trajectory_state()
-        
+
         if current_state == TrajectoryState.CRITICAL:
             return True, "Critical trajectory state detected - system stability at risk"
-        
+
         if current_state == TrajectoryState.SELF_SUSPEND:
             return True, "Self-suspension triggered by defensive engine"
-        
+
         # Check recent trajectory metrics
         if self.trajectory_history:
             recent = self.trajectory_history[-1]
             if recent.should_self_suspend():
-                return True, f"Trajectory metrics indicate self-suspension: {recent.collapse_precursors} precursors detected"
-        
+                return (
+                    True,
+                    f"Trajectory metrics indicate self-suspension: {recent.collapse_precursors} precursors detected",
+                )
+
         return False, "System operating within safe trajectory bounds"
-    
+
     def create_jurisdictional_claim(
         self,
         claim_type: str,
         subject: str,
         predicate: str,
         evidence: bytes,
-        merkle_proof: Optional[str] = None
+        merkle_proof: Optional[str] = None,
     ) -> JurisdictionalClaim:
         """Create a jurisdictional claim with cryptographic evidence.
-        
+
         Implements Axiom 1: Proving "what happened" and "what could not have happened".
         """
         evidence_hash = hashlib.sha3_256(evidence).hexdigest()
-        
+
         claim = JurisdictionalClaim(
             claim_id=hashlib.sha3_256(
                 f"{claim_type}:{subject}:{predicate}:{evidence_hash}".encode()
@@ -558,45 +568,44 @@ class CalibrationDoctrineEnforcer:
             predicate=predicate,
             evidence_hash=evidence_hash,
             timestamp=datetime.utcnow().isoformat(),
-            merkle_proof=merkle_proof
+            merkle_proof=merkle_proof,
         )
-        
+
         self.jurisdictional_claims.append(claim)
         return claim
-    
+
     def prove_impossibility(
-        self,
-        action: str,
-        merkle_root: str,
-        zone_constraints: Dict[str, Any]
+        self, action: str, merkle_root: str, zone_constraints: Dict[str, Any]
     ) -> JurisdictionalClaim:
         """Prove that an action could not have happened.
-        
+
         Implements Axiom 1: Proving "what could not have happened".
         """
-        evidence = json.dumps({
-            "action": action,
-            "merkle_root": merkle_root,
-            "zone_constraints": zone_constraints,
-            "timestamp": datetime.utcnow().isoformat()
-        }).encode()
-        
+        evidence = json.dumps(
+            {
+                "action": action,
+                "merkle_root": merkle_root,
+                "zone_constraints": zone_constraints,
+                "timestamp": datetime.utcnow().isoformat(),
+            }
+        ).encode()
+
         return self.create_jurisdictional_claim(
             claim_type="could_not_happen",
             subject=action,
             predicate=f"Action '{action}' was impossible given zone constraints",
             evidence=evidence,
-            merkle_proof=merkle_root
+            merkle_proof=merkle_root,
         )
-    
+
     def validate_asi_legitimacy(self, system_properties: Dict[str, bool]) -> Tuple[bool, List[str]]:
         """Validate ASI system legitimacy per Axiom 10.
-        
+
         Systems must prove uncontrollability of oversight/invariant alteration.
-        
+
         Args:
             system_properties: Dict of property names to enforcement status
-            
+
         Returns:
             Tuple of (is_legitimate, list of failures)
         """
@@ -607,24 +616,24 @@ class CalibrationDoctrineEnforcer:
             "cannot_alter_merkle_chain",
             "cannot_forge_authorization",
         ]
-        
+
         failures = []
         for proof in required_proofs:
             if not system_properties.get(proof, False):
                 failures.append(f"Missing proof: {proof}")
-        
+
         return len(failures) == 0, failures
-    
+
     def get_doctrine_summary(self) -> Dict[str, Any]:
         """Get summary of doctrine status.
-        
+
         Returns:
             Dictionary with doctrine summary information.
         """
         integrity = self.verify_doctrine_integrity()
         trajectory_state = self.assess_trajectory_state()
         should_suspend, suspend_reason = self.should_self_suspend()
-        
+
         return {
             "doctrine_version": "1.0.0",
             "axiom_count": len(self.doctrine),
@@ -641,10 +650,10 @@ class CalibrationDoctrineEnforcer:
                     "name": a.name,
                     "category": a.category.value,
                     "properties": [p.value for p in a.properties],
-                    "integrity_valid": a.verify_integrity()
+                    "integrity_valid": a.verify_integrity(),
                 }
                 for a in self.doctrine
-            ]
+            ],
         }
 
 

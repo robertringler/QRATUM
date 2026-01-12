@@ -22,6 +22,7 @@
 | FY30 | $435M | 38% | $165M |
 
 **DCF Assumptions:**
+
 - WACC: 24% (down from 26% post-pilot validation)
 - Terminal Growth: 4.0% (quantum market expansion)
 - Customer Growth: 35% YoY
@@ -35,6 +36,7 @@
 **Comparable Valuation:** $1.4B (FY27) to $2.5B (FY28)
 
 **Premium Justification:**
+
 - Aerospace certification moat (DO-178C Level A)
 - Validated mission data (SpaceX/NASA)
 - Federal/DIB pipeline ($120M-$340M SAM)
@@ -43,22 +45,27 @@
 ## Key Value Drivers
 
 ### Certification Moat (30% Premium)
+
 **Impact:** $2.5B incremental value
 Only quantum platform with DO-178C Level A certification
 
 ### Federal Pipeline (25% Premium)
+
 **Impact:** $2.1B incremental value
 CMMC 2.0 L2 compliance enables immediate DoD sales
 
 ### Mission Validation (20% Premium)
+
 **Impact:** $1.6B incremental value
 <2% RMSE against SpaceX/NASA telemetry
 
 ### Autonomous Evolution (15% Premium)
+
 **Impact:** $1.2B incremental value
 Phase III RL-driven optimization with formal verification
 
 ### Enterprise Infrastructure (10% Premium)
+
 **Impact:** $0.8B incremental value
 Production-ready multi-cloud Kubernetes deployment
 
@@ -73,6 +80,7 @@ Production-ready multi-cloud Kubernetes deployment
 ## Investment Thesis
 
 QuASIM represents a unique convergence of:
+
 1. Quantum simulation technology (tensor networks, cuQuantum)
 2. Aerospace certification (DO-178C Level A)
 3. Federal market access (CMMC 2.0 L2)

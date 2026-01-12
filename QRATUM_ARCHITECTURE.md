@@ -13,15 +13,18 @@ Intent → Authority → Contract → Time → Execution → Event → Audit
 ## Architecture Components
 
 ### 1. QIL (Q Intent Language)
+
 Location: `qil/`
 
 High-level intent language for expressing computational requirements:
+
 - **grammar.py**: EBNF grammar definition
 - **ast.py**: Abstract Syntax Tree models
 - **parser.py**: Parser with validation
 - **serializer.py**: Deterministic serialization
 
 **Example QIL Intent:**
+
 ```qil
 INTENT hybrid_ai_quantum {
     OBJECTIVE optimize_molecular_design
@@ -36,9 +39,11 @@ INTENT hybrid_ai_quantum {
 ```
 
 ### 2. Contract System
+
 Location: `contracts/`
 
 Immutable, hash-addressed contracts for execution:
+
 - **base.py**: Base contract with hash-addressing (frozen=True)
 - **intent.py**: IntentContract (authorized intent)
 - **capability.py**: CapabilityContract with ClusterTopology
@@ -46,15 +51,18 @@ Immutable, hash-addressed contracts for execution:
 - **event.py**: EventContract (expected event sequence)
 
 All contracts are:
+
 - Immutable (frozen dataclasses)
 - Hash-addressed (SHA-256)
 - Deterministically serializable
 - Append-only
 
 ### 3. Q-Core (Sovereign Control Plane)
+
 Location: `qcore/`
 
 Authorization and policy engine that NEVER executes:
+
 - **authority.py**: Authorization engine (raises AuthorizationError on failure)
 - **policy.py**: Policy evaluation
 - **resolver.py**: Capability resolution to hardware
@@ -63,32 +71,40 @@ Authorization and policy engine that NEVER executes:
 **CRITICAL**: Q-Core authorizes but NEVER executes workloads.
 
 ### 4. Events (Causality Fabric)
+
 Location: `events/`
 
 Global append-only event log:
+
 - **log.py**: Immutable event log with cryptographic chaining
 
 Every action emits deterministic, hash-chained events for:
+
 - Audit trails
 - Deterministic replay
 - Causal verification
 
 ### 5. Spine (Execution Dispatcher)
+
 Location: `spine/`
 
 Deterministic execution spine:
+
 - **executor.py**: Dispatches validated contracts to adapters
 
 The spine:
+
 - Validates contract bundles
 - Dispatches to appropriate adapters
 - Logs all execution events
 - Returns execution proofs
 
 ### 6. Adapters (Frankenstein Clusters)
+
 Location: `adapters/`
 
 Zero-policy substrate adapters:
+
 - **base.py**: Base adapter interface (enforces ZERO policy)
 - **gb200.py**: NVIDIA GB200 NVL72 Blackwell
 - **mi300x.py**: AMD MI300X GPU
@@ -100,6 +116,7 @@ Zero-policy substrate adapters:
 - **registry.py**: Adapter registry
 
 **CRITICAL**: Adapters contain ZERO policy logic. They:
+
 - Accept ONLY valid contracts
 - Emit deterministic events
 - Return ExecutionProof with cryptographic verification
@@ -184,6 +201,7 @@ pytest tests/unit/ tests/integration/test_end_to_end.py --cov=qil --cov=qcore --
 ```
 
 ### Test Coverage
+
 - **17 unit tests** for QIL parser
 - **18 unit tests** for contracts
 - **8 integration tests** for end-to-end flow

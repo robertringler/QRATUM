@@ -17,7 +17,7 @@ from __future__ import annotations
 import math
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import TypeVar, Generic, Protocol, runtime_checkable, Any
+from typing import Any, Generic, Protocol, TypeVar, runtime_checkable
 
 # Generic state and action types
 State = TypeVar("State")
@@ -32,7 +32,7 @@ class StateProtocol(Protocol):
         """Return list of legal actions from this state."""
         ...
 
-    def apply_action(self, action: Any) -> "StateProtocol":
+    def apply_action(self, action: Any) -> StateProtocol:
         """Apply action and return new state (immutable)."""
         ...
 
@@ -285,8 +285,8 @@ class AASKernel(ABC, Generic[State, Action]):
 
 # Import chess-specific types when available
 try:
-    from qratum_chess.core.position import Position, Move
     from qratum_chess.core import Color, PieceType
+    from qratum_chess.core.position import Move, Position
 
     _CHESS_AVAILABLE = True
 except ImportError:
@@ -452,9 +452,7 @@ class ChessAASKernel(AASKernel[Position, Move]):
         legal_moves = state.generate_legal_moves()
 
         # 1. Kingside subspace
-        kingside_moves = [
-            m for m in legal_moves if m.to_square % 8 >= 4  # Files e-h
-        ]
+        kingside_moves = [m for m in legal_moves if m.to_square % 8 >= 4]  # Files e-h
         if kingside_moves:
             subspaces.append(
                 OrthogonalSubspace(
@@ -466,9 +464,7 @@ class ChessAASKernel(AASKernel[Position, Move]):
             )
 
         # 2. Queenside subspace
-        queenside_moves = [
-            m for m in legal_moves if m.to_square % 8 < 4  # Files a-d
-        ]
+        queenside_moves = [m for m in legal_moves if m.to_square % 8 < 4]  # Files a-d
         if queenside_moves:
             subspaces.append(
                 OrthogonalSubspace(
@@ -515,14 +511,18 @@ class ChessAASKernel(AASKernel[Position, Move]):
                 )
             )
 
-        return subspaces if subspaces else [
-            OrthogonalSubspace(
-                subspace_id="full_state",
-                state_slice=state,
-                priority=1.0,
-                estimated_complexity=1.0,
-            )
-        ]
+        return (
+            subspaces
+            if subspaces
+            else [
+                OrthogonalSubspace(
+                    subspace_id="full_state",
+                    state_slice=state,
+                    priority=1.0,
+                    estimated_complexity=1.0,
+                )
+            ]
+        )
 
     def adaptive_heuristic_mutation(self, feedback: dict[str, float]) -> None:
         """Update heuristic weights based on search feedback.

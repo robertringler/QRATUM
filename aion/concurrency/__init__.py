@@ -11,9 +11,9 @@ from __future__ import annotations
 
 from .lattice import (
     ConcurrencyEffect,
-    EffectLattice,
     EffectCapability,
     EffectChecker,
+    EffectLattice,
     FunctionEffect,
 )
 

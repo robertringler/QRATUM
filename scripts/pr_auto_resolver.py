@@ -26,6 +26,7 @@ try:
     from github import Github, GithubException
     from github.PullRequest import PullRequest
     from github.Repository import Repository
+
     PYGITHUB_AVAILABLE = True
 except ImportError:
     PYGITHUB_AVAILABLE = False

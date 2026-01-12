@@ -3,6 +3,7 @@
 ## Overview
 
 This guide covers deploying the complete QRATUM stack including:
+
 - QRADLE deterministic execution engine
 - QRATUM Platform with 14 verticals
 - QRATUM-ASI orchestration layer
@@ -13,12 +14,14 @@ This guide covers deploying the complete QRATUM stack including:
 ### Hardware Requirements
 
 **Minimum (Development):**
+
 - 16 GB RAM
 - 4-core CPU
 - 100 GB storage
 - Linux/macOS/Windows (WSL2)
 
 **Recommended (Production):**
+
 - 64 GB RAM (128 GB for ASI workloads)
 - 16+ core CPU (32+ recommended)
 - 500 GB SSD storage (NVMe preferred)
@@ -26,6 +29,7 @@ This guide covers deploying the complete QRATUM stack including:
 - 10 Gbps network
 
 **Air-Gapped Deployment:**
+
 - Additional 200 GB for offline dependencies
 - Removable media for updates
 - Internal mirror for package repositories
@@ -328,11 +332,12 @@ services:
 
 ### Grafana Dashboards
 
-Access Grafana at http://localhost:3000 using username `admin` and the password you set in the `GRAFANA_PASSWORD` environment variable.
+Access Grafana at <http://localhost:3000> using username `admin` and the password you set in the `GRAFANA_PASSWORD` environment variable.
 
 **Security Note:** Never run Grafana with default credentials. Always set a strong password via the `GRAFANA_PASSWORD` environment variable before starting the services.
 
 **Import dashboards:**
+
 1. QRADLE Operations Dashboard
 2. Platform Verticals Dashboard
 3. ASI Orchestrator Dashboard
@@ -458,6 +463,7 @@ ufw enable
 ### 2. Container Security
 
 Already implemented in Dockerfile.production:
+
 - Non-root user
 - Read-only filesystem
 - No new privileges
@@ -589,7 +595,7 @@ systemctl restart docker
 
 ## Support
 
-- Documentation: https://docs.qratum.io
-- GitHub Issues: https://github.com/robertringler/QRATUM/issues
-- Email: support@qratum.io
-- Emergency: emergency@qratum.io (24/7 for Enterprise customers)
+- Documentation: <https://docs.qratum.io>
+- GitHub Issues: <https://github.com/robertringler/QRATUM/issues>
+- Email: <support@qratum.io>
+- Emergency: <emergency@qratum.io> (24/7 for Enterprise customers)

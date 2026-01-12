@@ -164,9 +164,7 @@ def discover_files(
             except Exception as e:
                 logger.warning(f"Failed to hash {filepath}: {e}")
 
-        modified_time = datetime.fromtimestamp(
-            stat.st_mtime, tz=timezone.utc
-        ).isoformat()
+        modified_time = datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc).isoformat()
 
         files.append(
             FileInfo(
@@ -241,7 +239,7 @@ def read_csv_chunked(
     Yields:
         Lists of dictionaries (rows as dicts)
     """
-    with open(filepath, "r", encoding=encoding) as f:
+    with open(filepath, encoding=encoding) as f:
         reader = csv.DictReader(f, delimiter=delimiter)
         chunk = []
 
@@ -272,7 +270,7 @@ def read_fixed_width(
     Yields:
         Dictionaries of column_name -> value
     """
-    with open(filepath, "r", encoding=encoding) as f:
+    with open(filepath, encoding=encoding) as f:
         for _ in range(skip_header):
             next(f, None)
 

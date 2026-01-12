@@ -25,13 +25,16 @@ open http://localhost:9090  # Prometheus
 ## 📦 What's Included
 
 ### QRADLE Foundation
+
 Deterministic execution engine with:
+
 - ✅ Merkle-chained audit trails
 - ✅ Checkpoint & rollback capability
 - ✅ 8 Fatal Invariants enforcement
 - ✅ Cryptographic proof generation
 
 ### QRATUM Platform - 14 Verticals
+
 1. **JURIS** - Legal AI & Compliance
 2. **VITRA** - Bioinformatics & Drug Discovery
 3. **ECORA** - Climate & Energy
@@ -48,6 +51,7 @@ Deterministic execution engine with:
 14. **NEXUS** - Cross-Domain Synthesis
 
 ### QRATUM-ASI Layer
+
 - Q-REALITY: World model
 - Q-MIND: Unified reasoning
 - Q-EVOLVE: Safe self-improvement (simulation)
@@ -55,6 +59,7 @@ Deterministic execution engine with:
 - Q-FORGE: Discovery engine
 
 ### Infrastructure
+
 - 🐳 Production Docker containers
 - 📊 Prometheus monitoring
 - 📈 Grafana dashboards
@@ -165,6 +170,7 @@ curl http://localhost:8001/api/v1/audit/trail | jq .
 ## 📋 Compliance Ready
 
 Designed for certification:
+
 - **DO-178C** (airborne systems)
 - **CMMC Level 3** (defense)
 - **ISO 27001** (security)
@@ -199,11 +205,12 @@ open http://localhost:3000
 
 ## 📊 Monitoring Dashboards
 
-Access Grafana at http://localhost:3000 using username `admin` and the password set in your `GRAFANA_PASSWORD` environment variable.
+Access Grafana at <http://localhost:3000> using username `admin` and the password set in your `GRAFANA_PASSWORD` environment variable.
 
 **Security Warning:** The `GRAFANA_PASSWORD` environment variable must be set before starting services. Never use default credentials in production.
 
 Pre-configured dashboards:
+
 1. **System Health** - Overall status
 2. **QRADLE Operations** - Contract execution metrics
 3. **Platform Verticals** - Per-vertical performance
@@ -212,16 +219,19 @@ Pre-configured dashboards:
 ## 🐛 Troubleshooting
 
 ### Service won't start
+
 ```bash
 docker-compose -f docker-compose.production.yml logs qradle
 ```
 
 ### Check resource usage
+
 ```bash
 docker stats
 ```
 
 ### Verify integrity
+
 ```bash
 curl http://localhost:8001/api/v1/system/proof
 ```
@@ -243,12 +253,15 @@ CRSI_ENABLED=false
 ## 🌐 Deployment Options
 
 ### On-Premises
+
 Standard Docker Compose deployment on your infrastructure.
 
 ### Air-Gapped
+
 Complete offline deployment package available. See [DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ### High Availability
+
 Multi-node deployment with load balancing. See [DEPLOYMENT.md](docs/DEPLOYMENT.md#high-availability-setup).
 
 ## 🚀 CI/CD Pipeline
@@ -275,9 +288,9 @@ Automated pipeline in `.github/workflows/qratum-production-ci.yml`:
 ## 🤝 Support
 
 - **Documentation:** `/docs/`
-- **GitHub Issues:** https://github.com/robertringler/QRATUM/issues
-- **Email:** support@qratum.io
-- **Security:** security@qratum.io
+- **GitHub Issues:** <https://github.com/robertringler/QRATUM/issues>
+- **Email:** <support@qratum.io>
+- **Security:** <security@qratum.io>
 
 ## 📝 License
 

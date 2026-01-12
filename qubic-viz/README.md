@@ -224,8 +224,9 @@ See CONTRIBUTING.md for development guidelines
 ## Support
 
 For issues and questions:
-- GitHub Issues: https://github.com/robertringler/Qubic/issues
-- Documentation: https://github.com/robertringler/Qubic/docs
+
+- GitHub Issues: <https://github.com/robertringler/Qubic/issues>
+- Documentation: <https://github.com/robertringler/Qubic/docs>
 
 ## Citation
 

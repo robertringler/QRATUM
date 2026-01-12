@@ -111,23 +111,23 @@ The pipeline generates the following output files in the specified output direct
 
 ### Audit and Reporting
 
-5. **`audit_summary.json`**
+1. **`audit_summary.json`**
    - Aggregated audit statistics
    - Violation counts by type and severity
    - Resolution status
 
-6. **`genome_audit.db`**
+2. **`genome_audit.db`**
    - SQLite database with full audit trail
    - Queryable violation logs with context
    - Reproducibility metadata (seeds, config hashes)
 
-7. **`deployment_report.json`**
+3. **`deployment_report.json`**
    - Complete pipeline execution summary
    - Performance metrics (duration, memory, GPU utilization)
    - Reproducibility validation results
    - Hardware and backend information
 
-8. **`sequencing.log`**
+4. **`sequencing.log`**
    - Detailed execution log with timestamps
    - Phase transitions and checkpoints
    - Error messages and warnings
@@ -196,6 +196,7 @@ If no FASTQ file is provided, the pipeline generates synthetic sequences for dem
 ### Synthetic Data Generation
 
 The pipeline automatically generates:
+
 - **Sequences**: 10 synthetic protein sequences (50-200 amino acids)
 - **Multi-omics data**: 100 features across genomics, transcriptomics, epigenomics
 - **Time-series data**: 100 timepoints for gene expression and protein abundance
@@ -258,6 +259,7 @@ Memory usage: ~42 MB peak
 ### Scaling
 
 The pipeline scales efficiently with:
+
 - **Sequence count**: Linear O(n) for alignment
 - **Omics layers**: Quadratic O(n²) for pairwise fusion
 - **Time-series length**: Linear O(t) for transfer entropy
@@ -278,6 +280,7 @@ pytest xenon/bioinformatics/tests/test_full_genome_sequencing.py::TestFullGenome
 ### Test Coverage
 
 The test suite includes:
+
 - ✅ Pipeline initialization
 - ✅ Synthetic data generation (sequences, omics, time-series, graphs)
 - ✅ Individual phase execution (alignment, fusion, TE, inference)
@@ -338,10 +341,12 @@ entries = pipeline.audit.query_entries(
 ### Dependencies
 
 Core:
+
 - `numpy >= 1.24.0`
 - `psutil` (for memory monitoring)
 
 Optional:
+
 - `torch >= 2.0.0` (for neural-symbolic inference)
 - `pynvml` (for NVIDIA GPU monitoring)
 - `qiskit` (for quantum backend)
@@ -351,20 +356,25 @@ Optional:
 ### Common Issues
 
 **1. PyTorch not available warning**
+
 ```
 UserWarning: PyTorch not available. Neural-symbolic inference will use classical fallback.
 ```
+
 Solution: Install PyTorch: `pip install torch`
 
 **2. GPU monitoring not available**
+
 ```
 UserWarning: GPU monitoring not available (pynvml not found)
 ```
+
 Solution: Install pynvml: `pip install nvidia-ml-py3`
 
 **3. Memory issues with large datasets**
 
 Solution: Reduce batch size or enable streaming:
+
 ```python
 config = GenomeSequencingConfig(
     te_config=TransferEntropyConfig(batch_size=500)
@@ -414,6 +424,7 @@ FullGenomeSequencingPipeline
 ## Support
 
 For issues, questions, or contributions:
+
 - File an issue on GitHub
 - See `TASKS_4_10_COMPLETION_REPORT.md` for implementation details
 - See `xenon/bioinformatics/ENHANCEMENTS.md` for engine documentation

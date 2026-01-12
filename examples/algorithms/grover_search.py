@@ -10,8 +10,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from qratum import Simulator
 from qratum.algorithms.grover import Grover
+
+from qratum import Simulator
 
 print("Grover's Search Algorithm")
 print("=" * 60)

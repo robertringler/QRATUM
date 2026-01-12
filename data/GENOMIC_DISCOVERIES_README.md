@@ -15,6 +15,7 @@ This dataset contains **100 novel genomic discoveries** spanning human, model or
 ## Dataset Format
 
 The discoveries are stored in JSON format (`genomic_discoveries.json`) for compatibility with:
+
 - QRATUM/XENON v5 bioinformatics platform
 - QRADLE deterministic audit system
 - Standard bioinformatics databases (VCF, BED, GFF3)
@@ -179,6 +180,7 @@ The discoveries include multi-omics correlations that span:
 ## Visualization Support
 
 Each discovery includes a visualization schema for integration with:
+
 - Manhattan plots (GWAS results)
 - Lollipop plots (protein variants)
 - Circos plots (structural variants)
@@ -198,6 +200,7 @@ The discoveries are generated with deterministic seeding:
 ## Compliance
 
 The dataset generation follows:
+
 - FAIR data principles (Findable, Accessible, Interoperable, Reusable)
 - ACMG guidelines for variant classification
 - GWAS best practices for association studies

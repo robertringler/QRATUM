@@ -23,26 +23,31 @@ cd ../rust_core/soi_telemetry_core
 ## Prerequisites (5 minutes)
 
 ### 1. Install Rust
+
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
 ```
 
 ### 2. Install Unreal Engine 5.3+
-- Download Epic Games Launcher: https://www.unrealengine.com/
+
+- Download Epic Games Launcher: <https://www.unrealengine.com/>
 - Install Unreal Engine 5.3 or later
 
 ### 3. Install C++ Build Tools
 
 **Windows:**
+
 - Visual Studio 2022 with "Desktop development with C++"
 
 **macOS:**
+
 ```bash
 xcode-select --install
 ```
 
 **Linux:**
+
 ```bash
 sudo apt-get install build-essential clang lld
 ```
@@ -57,6 +62,7 @@ cd soi/unreal_bridge
 ```
 
 Expected output:
+
 ```
 ✓ Rust installed
 ✓ Cargo installed
@@ -74,6 +80,7 @@ cd ../rust_core/soi_telemetry_core
 ```
 
 Expected output:
+
 ```
 🔨 Building Rust telemetry core...
 ✅ Build successful!
@@ -88,6 +95,7 @@ Expected output:
 4. Click "Open"
 
 When prompted to rebuild modules:
+
 - Click "Yes"
 - Wait for compilation (~2-5 minutes)
 
@@ -100,6 +108,7 @@ In UE5 Editor:
 3. Verify Subsystem is registered
 
 Or in Blueprint:
+
 1. Create new Blueprint Actor
 2. Add node: "Get Game Instance"
 3. Add node: "Get Subsystem" → Select "Soi Telemetry Subsystem"
@@ -113,11 +122,13 @@ The system includes demo mode for testing without a telemetry server:
 
 1. Create `BP_TestController` Blueprint
 2. Add this logic:
+
    ```
    Event BeginPlay
    └─> Get Subsystem (USoiTelemetrySubsystem)
        └─> Print String: "SOI Ready"
    ```
+
 3. Place in level and press Play
 
 ### For Visual Implementation
@@ -127,6 +138,7 @@ Follow the comprehensive guide:
 **Read:** [`BLUEPRINT_IMPLEMENTATION_GUIDE.md`](BLUEPRINT_IMPLEMENTATION_GUIDE.md)
 
 This guide includes step-by-step instructions for:
+
 - Holographic HUD with glass effects
 - Planetary Map Niagara particles
 - Execution Theater PCG lattice
@@ -141,6 +153,7 @@ Time estimate: 4-6 days for complete visual implementation
 ### "Rust library not found"
 
 **Solution:** Build Rust core first:
+
 ```bash
 cd soi/rust_core/soi_telemetry_core
 ./build.sh
@@ -149,6 +162,7 @@ cd soi/rust_core/soi_telemetry_core
 ### "Module 'SoiGame' could not be loaded"
 
 **Solution:** Rebuild C++ modules:
+
 1. Close Unreal Editor
 2. Delete `Binaries/`, `Intermediate/`, `Saved/` directories
 3. Right-click `SoiGame.uproject` → Generate Visual Studio project files
@@ -157,6 +171,7 @@ cd soi/rust_core/soi_telemetry_core
 ### "Validation script fails"
 
 **Solution:** Check prerequisites:
+
 ```bash
 rustc --version  # Should be 1.70+
 cargo --version

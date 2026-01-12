@@ -33,9 +33,11 @@ QRATUM's unique capability is cross-domain synthesis - combining insights from m
 ## Workflow 1: Sustainable Drug Manufacturing
 
 ### Goal
+
 Design environmentally sustainable pharmaceutical manufacturing process.
 
 ### Domains
+
 - **VITRA** (Bioinformatics): Drug synthesis pathways
 - **ECORA** (Climate & Energy): Carbon impact assessment
 - **FLUXA** (Supply Chain): Distribution optimization
@@ -147,9 +149,11 @@ print(result["unified_recommendation"])
 ## Workflow 2: Smart City Infrastructure
 
 ### Goal
+
 Design integrated smart city system optimizing energy, transportation, and safety.
 
 ### Domains
+
 - **ECORA** (Climate & Energy): Energy grid optimization
 - **FLUXA** (Supply Chain): Traffic flow optimization
 - **AEGIS** (Cybersecurity): IoT security
@@ -198,9 +202,11 @@ curl -X POST http://localhost:8002/api/v1/platform/execute \
 ## Workflow 3: Personalized Medicine Pipeline
 
 ### Goal
+
 Create personalized treatment plan combining genomics, drug response, and clinical data.
 
 ### Domains
+
 - **HELIX** (Genomic Medicine): Genetic variant analysis
 - **VITRA** (Bioinformatics): Drug-target interactions
 - **JURIS** (Legal): Privacy compliance
@@ -262,9 +268,11 @@ treatment_plan = platform.execute_contract(nexus_contract.contract_id)
 ## Workflow 4: Climate-Optimized Agriculture
 
 ### Goal
+
 Design farming strategy balancing yield, sustainability, and economics.
 
 ### Domains
+
 - **ECORA** (Climate): Weather prediction & climate modeling
 - **VITRA** (Bioinformatics): Crop genetics
 - **FLUXA** (Supply Chain): Distribution logistics
@@ -326,9 +334,11 @@ Design farming strategy balancing yield, sustainability, and economics.
 ## Workflow 5: Financial-Legal Risk Synthesis
 
 ### Goal
+
 Comprehensive risk assessment combining financial and regulatory analysis.
 
 ### Domains
+
 - **CAPRA** (Financial): Market risk analysis
 - **JURIS** (Legal): Compliance checking
 - **AEGIS** (Cybersecurity): Cyber risk assessment
@@ -467,6 +477,7 @@ refined_result = nexus.synthesize(
 ### 4. Validation
 
 Always validate cross-domain insights:
+
 ```python
 # Check confidence scores
 for insight in result["cross_domain_insights"]:
@@ -544,6 +555,7 @@ curl http://localhost:8001/api/v1/audit/trail?operation=multi_domain_synthesis
 ```
 
 Each synthesis generates events for:
+
 - Synthesis initiation
 - Each vertical consulted
 - Insight generation
@@ -553,7 +565,7 @@ Each synthesis generates events for:
 
 ## Support
 
-- **Documentation:** https://docs.qratum.io/multi-domain
-- **Examples Repository:** https://github.com/qratum/examples
-- **Research Papers:** https://research.qratum.io
-- **Email:** synthesis@qratum.io
+- **Documentation:** <https://docs.qratum.io/multi-domain>
+- **Examples Repository:** <https://github.com/qratum/examples>
+- **Research Papers:** <https://research.qratum.io>
+- **Email:** <synthesis@qratum.io>

@@ -47,6 +47,7 @@ Complete Kaggle Model submission package for **BOB** chess engine, ready for off
 ### Engine Specifications
 
 **BOB Chess Engine:**
+
 - **Type:** Asymmetric Adaptive Search (AAS)
 - **Language:** Python 3.10+
 - **Dependencies:** numpy, python-chess
@@ -80,6 +81,7 @@ Total:                  850+ lines
 6. ✅ **Checkmate** - Terminal position handling
 
 **Test Results:**
+
 ```
 ======================================================================
 Test Results: 6 passed, 0 failed
@@ -89,17 +91,20 @@ Test Results: 6 passed, 0 failed
 ### Package Validation
 
 **Size:**
+
 - Uncompressed: < 1 MB
 - Compressed (tar.gz): 8 KB
 - **Well under Kaggle 500MB limit ✅**
 
 **Dependencies:**
+
 ```
 numpy>=1.24.0
 python-chess>=1.9.0
 ```
 
 **Python Version:**
+
 - Tested: Python 3.12
 - Required: Python 3.10+
 
@@ -117,12 +122,14 @@ python-chess>=1.9.0
 ### Benchmark Results
 
 **Kaggle Chess AI Benchmark:**
+
 - **Rank:** #1
 - **Elo:** 1508
 - **Win Rate:** 97%
 - **Games:** 100 (96W-2D-2L)
 
 **Opponents Defeated:**
+
 - o3-2025: 1397 Elo (+111 margin)
 - grok-4: 1112 Elo (+396 margin)
 - gemini-2.5-pro: 1061 Elo (+447 margin)
@@ -130,6 +137,7 @@ python-chess>=1.9.0
 ## Usage Examples
 
 ### Basic Prediction
+
 ```python
 from predict import predict
 
@@ -143,6 +151,7 @@ result = predict({
 ```
 
 ### Batch Prediction
+
 ```python
 from predict import batch_predict
 
@@ -157,17 +166,20 @@ results = batch_predict(positions)
 ## Submission Process
 
 ### 1. Test Package
+
 ```bash
 cd kaggle_models/bob
 python tests/test_prediction.py
 ```
 
 ### 2. Build Package
+
 ```bash
 ./scripts/package_bob_for_kaggle.sh
 ```
 
 ### 3. Submit to Kaggle
+
 ```bash
 ./scripts/submit_bob_to_kaggle.sh
 ```
@@ -231,8 +243,8 @@ python tests/test_prediction.py
 ## Contact
 
 - **Author:** Robert Ringler (@robertringler)
-- **GitHub:** https://github.com/robertringler/QRATUM
-- **Issues:** https://github.com/robertringler/QRATUM/issues
+- **GitHub:** <https://github.com/robertringler/QRATUM>
+- **Issues:** <https://github.com/robertringler/QRATUM/issues>
 
 ## License
 

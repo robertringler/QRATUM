@@ -12,7 +12,7 @@ from qratum_platform.core import (
     PlatformContract,
     VerticalModuleBase,
 )
-from qratum_platform.substrates import get_optimal_substrate, VerticalModule
+from qratum_platform.substrates import VerticalModule, get_optimal_substrate
 from qratum_platform.utils import compute_deterministic_seed
 
 
@@ -107,7 +107,9 @@ class NEURAModule(VerticalModuleBase):
             firing_rate = random.uniform(1, 20)  # Hz
             num_spikes = int(firing_rate * duration_ms / 1000)
             spikes = sorted([random.uniform(0, duration_ms) for _ in range(num_spikes)])
-            spike_trains.append({"neuron_id": i, "firing_rate_hz": firing_rate, "spike_times_ms": spikes[:20]})
+            spike_trains.append(
+                {"neuron_id": i, "firing_rate_hz": firing_rate, "spike_times_ms": spikes[:20]}
+            )
 
         return {
             "simulation_type": "spiking_neural_network",
@@ -115,7 +117,8 @@ class NEURAModule(VerticalModuleBase):
             "duration_ms": duration_ms,
             "connectivity": connectivity,
             "spike_trains": spike_trains[:10],  # First 10 neurons
-            "mean_firing_rate_hz": sum(st["firing_rate_hz"] for st in spike_trains) / len(spike_trains),
+            "mean_firing_rate_hz": sum(st["firing_rate_hz"] for st in spike_trains)
+            / len(spike_trains),
             "note": "Simplified Poisson spiking model",
             "disclaimer": self.SAFETY_DISCLAIMER,
         }
@@ -264,7 +267,11 @@ class NEURAModule(VerticalModuleBase):
         confidence = random.uniform(0.6, 0.95)
 
         # Control signal
-        control_output = {"direction": intent, "magnitude": confidence, "latency_ms": random.uniform(200, 400)}
+        control_output = {
+            "direction": intent,
+            "magnitude": confidence,
+            "latency_ms": random.uniform(200, 400),
+        }
 
         return {
             "processing_type": "bci_classification",

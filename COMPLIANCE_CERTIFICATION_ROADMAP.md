@@ -12,6 +12,7 @@
 This document provides a comprehensive roadmap for achieving compliance certifications required to transform QRATUM into a production-ready platform for regulated industries. The roadmap addresses HIPAA, GDPR, CMMC L2, DO-178C, ITAR/EAR, and ISO 27001 requirements.
 
 **Certification Timeline:**
+
 - **Q2 2026:** HIPAA, GDPR compliance validation
 - **Q3 2026:** CMMC Level 2 certification
 - **Q4 2026:** DO-178C Level A, ISO 27001 certification
@@ -468,6 +469,7 @@ jobs:
 **FedRAMP Moderate** (Planned for 2027)
 
 **Rationale:**
+
 - Moderate impact level appropriate for CUI
 - Enables federal agency adoption
 - ~325 controls (vs. 421 for High)

@@ -348,5 +348,5 @@ avg(qratum_computation_duration_seconds) by (type)
 
 For audit and compliance inquiries:
 
-- **Compliance Officer**: compliance@quasim.example.com
-- **Security Team**: security@quasim.example.com
+- **Compliance Officer**: <compliance@quasim.example.com>
+- **Security Team**: <security@quasim.example.com>
