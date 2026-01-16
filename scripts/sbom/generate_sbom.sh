@@ -14,6 +14,19 @@ CDXGEN_VERSION="10.10.7"
 CYCLONEDX_PY_VERSION="4.6.0"
 COSIGN_VERSION="2.4.1"
 
+# Rust crate directories to scan for dependencies
+RUST_CRATE_DIRS=(
+    "qratum-rust"
+    "crypto/kdf"
+    "crypto/rng"
+    "crypto/pqc"
+    "q-substrate"
+    "Aethernet"
+    "soi/rust_core/soi_telemetry_core"
+    "qrVITRA/merkler-static"
+    "qratum_desktop/src-tauri"
+)
+
 # Output directories
 SBOM_DIR="${SBOM_DIR:-.sbom}"
 # Convert to absolute path
@@ -223,19 +236,7 @@ EOF
 generate_rust_sbom() {
     log "Generating Rust SBOM..."
     
-    local rust_crates=(
-        "qratum-rust"
-        "crypto/kdf"
-        "crypto/rng"
-        "crypto/pqc"
-        "q-substrate"
-        "Aethernet"
-        "soi/rust_core/soi_telemetry_core"
-        "qrVITRA/merkler-static"
-        "qratum_desktop/src-tauri"
-    )
-    
-    for crate_dir in "${rust_crates[@]}"; do
+    for crate_dir in "${RUST_CRATE_DIRS[@]}"; do
         if [[ -f "${crate_dir}/Cargo.toml" ]]; then
             log "Processing Rust crate: ${crate_dir}"
             
@@ -370,7 +371,7 @@ EOF
     fi
     
     # If cargo IS available, try cargo metadata for each crate
-    for crate_dir in qratum-rust crypto/kdf crypto/rng crypto/pqc q-substrate Aethernet; do
+    for crate_dir in "${RUST_CRATE_DIRS[@]}"; do
         if [[ -f "${crate_dir}/Cargo.toml" ]]; then
             log "Generating SBOM for crate: ${crate_dir}"
             local crate_name="${crate_dir//\//-}"
@@ -767,6 +768,7 @@ import os
 import subprocess
 import glob
 import hashlib
+import shutil
 from datetime import datetime, timezone
 
 # Get environment info
@@ -793,7 +795,7 @@ provenance = {
                 'buildId': '${BUILD_ID}',
                 'os': run_cmd(['uname', '-a']),
                 'pythonVersion': run_cmd(['python3', '--version']),
-                'rustVersion': run_cmd(['rustc', '--version']) if os.path.exists('/usr/bin/rustc') else 'not installed'
+                'rustVersion': run_cmd(['rustc', '--version']) if shutil.which('rustc') else 'not installed'
             }
         },
         'runDetails': {
