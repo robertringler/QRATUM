@@ -11,7 +11,7 @@ Components:
 - zk_proofs: Zero-knowledge result verification
 """
 
-from .pqc import PostQuantumCrypto, KyberKEM, DilithiumSignature
+from .pqc import PostQuantumCrypto, KyberKEM, DilithiumSigner, DilithiumSignature
 from .qdr_tls import QDRTLS, SecureTransport
 from .signing import SPHINCSPlusSigner, BinarySigner
 from .zk_proofs import Halo2Prover, ZeroKnowledgeProof
@@ -19,6 +19,7 @@ from .zk_proofs import Halo2Prover, ZeroKnowledgeProof
 __all__ = [
     "PostQuantumCrypto",
     "KyberKEM",
+    "DilithiumSigner",
     "DilithiumSignature",
     "QDRTLS",
     "SecureTransport",
