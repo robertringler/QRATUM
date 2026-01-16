@@ -14,22 +14,22 @@ from typing import Any
 
 class QPUBackend:
     """QPU backend for quantum computation.
-    
+
     This is a stub implementation establishing the structural interface.
     Full QPU backend will be implemented in a future PR.
     """
 
     def run(self, task: Any) -> Any:
         """Execute task on QPU backend.
-        
+
         This method will be implemented in PR-007 (Quantum Backend).
-        
+
         Args:
             task: Task to execute
-            
+
         Returns:
             Execution result
-            
+
         Raises:
             NotImplementedError: Placeholder for PR-007
         """

@@ -16,7 +16,6 @@ from enum import Enum
 from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
-
 from qratum_asi.sandbox_platform.types import (
     ProposalPriority,
     SandboxEvaluationResult,
@@ -441,9 +440,7 @@ class BatchProposalEvaluator:
 
         avg_batch_time = self._total_time_ms / self._total_batches if self._total_batches > 0 else 0
         overall_throughput = (
-            self._total_proposals / (self._total_time_ms / 1000)
-            if self._total_time_ms > 0
-            else 0
+            self._total_proposals / (self._total_time_ms / 1000) if self._total_time_ms > 0 else 0
         )
 
         return {
@@ -456,8 +453,6 @@ class BatchProposalEvaluator:
             "avg_batch_time_ms": avg_batch_time,
             "overall_throughput": overall_throughput,
             "batch_status_counts": status_counts,
-            "current_batch_size": (
-                len(self.current_batch.proposals) if self.current_batch else 0
-            ),
+            "current_batch_size": (len(self.current_batch.proposals) if self.current_batch else 0),
             "merkle_chain_valid": self.merkle_chain.verify_integrity(),
         }

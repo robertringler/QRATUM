@@ -31,7 +31,6 @@ from typing import Any, Callable
 
 import numpy as np
 
-
 # Trust adjustment constants for maintainability
 TRUST_SUCCESS_MAX_INCREASE = 1.05  # Maximum trust increase factor on success
 TRUST_SUCCESS_INCREMENT = 0.01  # Trust increment per unit below maximum
@@ -434,9 +433,7 @@ class HybridQuantumOrchestrator:
         Returns:
             Rollback result dictionary
         """
-        context = next(
-            (c for c in self._execution_history if c.execution_id == execution_id), None
-        )
+        context = next((c for c in self._execution_history if c.execution_id == execution_id), None)
 
         if context is None:
             return {
@@ -545,9 +542,7 @@ class HybridQuantumOrchestrator:
         else:
             return FailureType.TRANSIENT
 
-    def _compute_provenance_hash(
-        self, inputs: dict[str, Any], outputs: Any
-    ) -> str:
+    def _compute_provenance_hash(self, inputs: dict[str, Any], outputs: Any) -> str:
         """Compute deterministic provenance hash."""
         inputs_str = json.dumps(inputs, sort_keys=True, default=str)
         outputs_str = str(outputs)
@@ -570,13 +565,11 @@ class HybridQuantumOrchestrator:
                 # Quantum success: trust preserved or increased
                 adjustment = min(
                     TRUST_SUCCESS_MAX_INCREASE,
-                    1.0 + TRUST_SUCCESS_INCREMENT * (1.0 - context.trust_metric.value)
+                    1.0 + TRUST_SUCCESS_INCREMENT * (1.0 - context.trust_metric.value),
                 )
         else:
             # Failure: trust reduction proportional to retry count
-            adjustment = max(
-                0.0, 1.0 - TRUST_FAILURE_REDUCTION_RATE * (context.retry_count + 1)
-            )
+            adjustment = max(0.0, 1.0 - TRUST_FAILURE_REDUCTION_RATE * (context.retry_count + 1))
 
         new_value = max(0.0, context.trust_metric.value * adjustment)
 
@@ -598,9 +591,7 @@ class HybridQuantumOrchestrator:
             },
         )
 
-    def _create_proposal(
-        self, context: ExecutionContext, result: dict[str, Any]
-    ) -> str:
+    def _create_proposal(self, context: ExecutionContext, result: dict[str, Any]) -> str:
         """Create proposal artifact for approval workflow."""
         proposal_id = str(uuid.uuid4())
 

@@ -472,9 +472,7 @@ def run_qratum_analysis(
     for timeline in timelines:
         if timeline.index_date:
             baseline = feature_engineer.extract_baseline_features(timeline)
-            state = feature_engineer.extract_state_features(
-                timeline, timeline.index_date
-            )
+            state = feature_engineer.extract_state_features(timeline, timeline.index_date)
             state_dict = feature_engineer.create_qratum_state_dict(baseline, state)
             state_vectors.append(state_dict)
 

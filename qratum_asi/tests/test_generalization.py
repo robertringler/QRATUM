@@ -5,35 +5,31 @@ cross-domain synthesis capabilities.
 """
 
 import pytest
+
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
-
-from qratum_asi.generalization.types import (
-    CognitiveDomain,
-    DomainCapability,
-    HypothesisType,
-    SynthesisSafetyLevel,
-    CrossDomainHypothesis,
-    GenerationConstraints,
-    PROHIBITED_SYNTHESIS_TARGETS,
-)
 from qratum_asi.generalization.domain_registry import (
     ExtendedDomainRegistry,
-    DomainDefinition,
-)
-from qratum_asi.generalization.reasoning_engine import (
-    GeneralReasoningEngine,
-    ReasoningMode,
-    ReasoningContext,
-    CrossDomainSynthesizer,
 )
 from qratum_asi.generalization.hypothesis_generator import (
     HypothesisGenerator,
 )
+from qratum_asi.generalization.reasoning_engine import (
+    GeneralReasoningEngine,
+    ReasoningContext,
+    ReasoningMode,
+)
 from qratum_asi.generalization.state_space import (
-    UniversalStateSpace,
-    StateCompressor,
     AHTCEncoder,
+    UniversalStateSpace,
+)
+from qratum_asi.generalization.types import (
+    CognitiveDomain,
+    CrossDomainHypothesis,
+    DomainCapability,
+    GenerationConstraints,
+    HypothesisType,
+    SynthesisSafetyLevel,
 )
 
 
@@ -139,9 +135,7 @@ class TestExtendedDomainRegistry:
         registry = ExtendedDomainRegistry()
 
         paths = registry.find_synthesis_path(
-            CognitiveDomain.MATHEMATICS,
-            CognitiveDomain.ENGINEERING,
-            max_hops=3
+            CognitiveDomain.MATHEMATICS, CognitiveDomain.ENGINEERING, max_hops=3
         )
 
         assert paths is not None
