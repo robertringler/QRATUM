@@ -1,24 +1,102 @@
 """
-QRATUM Deterministic Compiler Toolchain
+QRATUM ExaScale Deterministic Compiler Toolchain
 
-Ensures reproducible compilation and binary identity verification across
-all compute nodes, with static analysis for determinism violations.
+A comprehensive compiler infrastructure ensuring bit-identical binaries
+across all 3,125 CN-QES nodes with cryptographic verification.
 
-Components:
-- pipeline: Deterministic compilation pipeline
-- ptx_gen: Reproducible PTX/SASS generation
+Modules:
+- pipeline: Deterministic compilation pipeline orchestration
+- ptx_gen: Reproducible PTX/SASS generation (FMA disabled)
 - verifier: Cross-node binary identity verification
+
+Key Guarantees:
+- Bit-identical binaries across all nodes
+- Deterministic PTX/SASS generation
+- FMA instructions disabled for reproducibility
+- Merkle-verified compilation artifacts
+- Byzantine-fault-tolerant verification
+- Zero-knowledge proofs for execution equivalence
+
+Usage:
+    from qratum.exascale.compiler import get_default_pipeline
+    
+    pipeline = get_default_pipeline()
+    success, artifacts = pipeline.full_pipeline(sources, output)
 """
 
-from .pipeline import DeterministicCompiler, CompilationPipeline
-from .ptx_gen import PTXGenerator, SASSGenerator
-from .verifier import BinaryVerifier, IdentityCheck
+from .pipeline import (
+    CompilationStage,
+    OptimizationLevel,
+    DeterminismViolation,
+    CompilerFlags,
+    BuildEnvironment,
+    CompilationArtifact,
+    DeterministicCompilationPipeline,
+    get_default_pipeline,
+)
+
+from .ptx_gen import (
+    PTXVersion,
+    SASSArchitecture,
+    InstructionScheduling,
+    RegisterAllocationStrategy,
+    PTXGenerationConfig,
+    SASSGenerationConfig,
+    PTXArtifact,
+    SASSArtifact,
+    DeterministicPTXGenerator,
+    DeterministicSASSGenerator,
+    get_default_ptx_generator,
+    get_default_sass_generator,
+)
+
+from .verifier import (
+    VerificationLevel,
+    VerificationStatus,
+    HashAlgorithm,
+    ConsensusProtocol,
+    BinaryArtifact,
+    MerkleNode,
+    MerkleTree,
+    VerificationResult,
+    CrossNodeVerifier,
+    get_default_verifier,
+    verify_compilation_reproducibility,
+)
 
 __all__ = [
-    "DeterministicCompiler",
-    "CompilationPipeline",
-    "PTXGenerator",
-    "SASSGenerator",
-    "BinaryVerifier",
-    "IdentityCheck",
+    # Pipeline
+    "CompilationStage",
+    "OptimizationLevel",
+    "DeterminismViolation",
+    "CompilerFlags",
+    "BuildEnvironment",
+    "CompilationArtifact",
+    "DeterministicCompilationPipeline",
+    "get_default_pipeline",
+    # PTX/SASS
+    "PTXVersion",
+    "SASSArchitecture",
+    "InstructionScheduling",
+    "RegisterAllocationStrategy",
+    "PTXGenerationConfig",
+    "SASSGenerationConfig",
+    "PTXArtifact",
+    "SASSArtifact",
+    "DeterministicPTXGenerator",
+    "DeterministicSASSGenerator",
+    "get_default_ptx_generator",
+    "get_default_sass_generator",
+    # Verifier
+    "VerificationLevel",
+    "VerificationStatus",
+    "HashAlgorithm",
+    "ConsensusProtocol",
+    "BinaryArtifact",
+    "MerkleNode",
+    "MerkleTree",
+    "VerificationResult",
+    "CrossNodeVerifier",
+    "get_default_verifier",
+    "verify_compilation_reproducibility",
 ]
