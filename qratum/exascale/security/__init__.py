@@ -12,9 +12,9 @@ Components:
 """
 
 from .pqc import PostQuantumCrypto, KyberKEM, DilithiumSigner, DilithiumSignature
-from .qdr_tls import QDRTLS, SecureTransport
-from .signing import SPHINCSPlusSigner, BinarySigner
-from .zk_proofs import Halo2Prover, ZeroKnowledgeProof
+from .qdr_tls import QDRTLS, SecureTransport, QDRTLSConfig
+from .signing import SPHINCSPlusSigner, BinarySigner, SignatureType, VerificationStatus
+from .zk_proofs import Halo2Prover, ZeroKnowledgeProof, ProofType
 
 __all__ = [
     "PostQuantumCrypto",
@@ -23,8 +23,12 @@ __all__ = [
     "DilithiumSignature",
     "QDRTLS",
     "SecureTransport",
+    "QDRTLSConfig",
     "SPHINCSPlusSigner",
     "BinarySigner",
+    "SignatureType",
+    "VerificationStatus",
     "Halo2Prover",
     "ZeroKnowledgeProof",
+    "ProofType",
 ]
