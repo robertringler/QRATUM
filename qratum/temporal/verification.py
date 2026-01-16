@@ -258,9 +258,8 @@ class TemporalVerifier:
             return False  # Physical time must move forward
         
         # Verify intermediate hash chain
-        # (Would need full states to verify completely, but we can check count)
-        if len(proof.intermediate_hashes) < 0:
-            return False
+        # (Would need full states to verify completely, we check validity)
+        # Empty intermediate_hashes list is valid for single-step operations
         
         # Verify PQC signature if present
         if proof.signature and not self._verify_signature(proof):

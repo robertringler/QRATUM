@@ -156,19 +156,26 @@ class PQCIntegration:
         """
         Sign temporal state with PQC signature.
         
-        In production, would use CRYSTALS-Dilithium or SPHINCS+.
+        PLACEHOLDER IMPLEMENTATION: In production, this must use actual
+        post-quantum signature schemes like CRYSTALS-Dilithium or SPHINCS+.
+        Current implementation is for demonstration only and provides no
+        quantum security.
         
         Args:
             state: State to sign
             
         Returns:
-            PQC signature
+            PQC signature (placeholder)
         """
         import hashlib
         
-        # Placeholder: would use real PQC library
+        # PLACEHOLDER: This is NOT quantum-resistant!
+        # Production implementation should use:
+        # - CRYSTALS-Dilithium for signatures
+        # - SPHINCS+ as alternative
+        # - Proper key management with HSM
         state_hash = state.coordinate.state_hash
-        signature = f"PQC:{hashlib.sha256(state_hash.encode()).hexdigest()}"
+        signature = f"PQC_PLACEHOLDER:{hashlib.sha256(state_hash.encode()).hexdigest()}"
         self.signature_count += 1
         return signature
     
@@ -176,13 +183,23 @@ class PQCIntegration:
         """
         Verify PQC signature on state.
         
+        PLACEHOLDER IMPLEMENTATION: In production, this must verify using
+        public key cryptography with proper PQC algorithms. Current
+        implementation is for demonstration only.
+        
         Args:
             state: State to verify
             signature: Signature to verify
             
         Returns:
-            True if signature is valid
+            True if signature is valid (placeholder check)
         """
+        # PLACEHOLDER: Real implementation would:
+        # 1. Extract public key from state or key registry
+        # 2. Verify signature using PQC algorithm
+        # 3. Validate timestamp and nonce
+        
+        # For placeholder, we just check format consistency
         expected = self.sign_state(state)
         return signature == expected
 
