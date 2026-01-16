@@ -10,16 +10,53 @@ Components:
 - nvlink_q: NVLink-Q interface specification
 """
 
-from .ptaq import PTAQ1000, QuantumModule, LogicalQubit
-from .hybrid_scheduler import HybridScheduler, WorkloadPartitioner
-from .nvlink_q import NVLinkQ, QuantumInterface
+from .ptaq import (
+    PTAQ1000,
+    QuantumModule,
+    QuantumCircuit,
+    QuantumJob,
+    PTAQInterface,
+    GateType,
+)
+from .hybrid_scheduler import (
+    HybridScheduler,
+    HybridWorkload,
+    ClassicalTask,
+    QuantumTask,
+    WorkloadType,
+    SchedulingPolicy,
+    HybridSchedulerInterface,
+)
+from .nvlink_q import (
+    NVLinkQInterface,
+    NVLinkQFabric,
+    NVLinkQPacket,
+    NVLinkQTransfer,
+    NVLinkQProtocol,
+    NVLinkQInterfaceBuilder,
+)
 
 __all__ = [
+    # PTAQ-1000
     "PTAQ1000",
     "QuantumModule",
-    "LogicalQubit",
+    "QuantumCircuit",
+    "QuantumJob",
+    "PTAQInterface",
+    "GateType",
+    # Hybrid Scheduler
     "HybridScheduler",
-    "WorkloadPartitioner",
-    "NVLinkQ",
-    "QuantumInterface",
+    "HybridWorkload",
+    "ClassicalTask",
+    "QuantumTask",
+    "WorkloadType",
+    "SchedulingPolicy",
+    "HybridSchedulerInterface",
+    # NVLink-Q
+    "NVLinkQInterface",
+    "NVLinkQFabric",
+    "NVLinkQPacket",
+    "NVLinkQTransfer",
+    "NVLinkQProtocol",
+    "NVLinkQInterfaceBuilder",
 ]
