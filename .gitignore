@@ -145,3 +145,5 @@ target/
 .sbom/hashes/*.sha512
 .sbom/provenance/*.json
 .sbom/diffs/*.json
+# Temporal compression experiment outputs
+artifacts/temporal_compression/
