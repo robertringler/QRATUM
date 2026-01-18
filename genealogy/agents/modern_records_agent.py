@@ -74,7 +74,8 @@ class ModernRecordsAgent(ResearchAgent):
             given_names="Robert",
             surname="Ringler",
             gender=Gender.MALE,
-            notes="Subject of genealogical investigation"
+            birth_date=date(1995, 1, 1),  # Approximate - requires verification
+            notes="Subject of genealogical investigation; b. 1995"
         )
         self.add_person(subject)
         
@@ -129,14 +130,16 @@ class ModernRecordsAgent(ResearchAgent):
         )
         self.add_person(father)
         
-        # Mother (example - would need actual data)
+        # Mother: Karen L. (Bennett) Pulley
         mother = Person(
-            person_id="MOTHER_001",
-            full_name="[Mother's Name]",
-            surname="Ringler",
-            maiden_name="[Maiden Name]",
+            person_id="KAREN_PULLEY_001",
+            full_name="Karen L. (Bennett) Pulley",
+            given_names="Karen L.",
+            surname="Pulley",
+            maiden_name="Bennett",
             gender=Gender.FEMALE,
-            notes="Mother of subject - requires additional research"
+            birth_date=date(1973, 1, 1),  # Approximate - requires verification
+            notes="Mother of subject; b. 1973; maiden name Bennett"
         )
         self.add_person(mother)
         
@@ -154,51 +157,120 @@ class ModernRecordsAgent(ResearchAgent):
         
         rel_mother = Relationship(
             relationship_id="REL_MOD_002",
-            person1_id="MOTHER_001",
+            person1_id="KAREN_PULLEY_001",
             person2_id="RR_JR_001",
             relationship_type=RelationshipType.PARENT_CHILD,
             biological=True,
             legitimacy=True,
-            evidence_quality="primary"
+            evidence_quality="secondary",
+            notes="Requires birth certificate verification"
         )
         self.add_relationship(rel_mother)
         
         self.add_finding(
-            "Parental generation established through civil birth records and marriage certificates"
+            "Parental generation: Father Robert Ringler Sr. and mother Karen L. (Bennett) Pulley (b. 1973) identified. "
+            "Maternal line Bennett surname provides gateway to documented colonial Maryland families."
         )
     
     def _trace_grandparents(self) -> None:
         """Trace grandparents using census and vital records."""
+        
+        # Maternal grandfather: Thomas Bennett
+        thomas_bennett = Person(
+            person_id="THOMAS_BENNETT_001",
+            full_name="Thomas Bennett",
+            given_names="Thomas",
+            surname="Bennett",
+            gender=Gender.MALE,
+            birth_date=date(1946, 1, 1),  # Approximate
+            notes="Maternal grandfather; b. 1946"
+        )
+        self.add_person(thomas_bennett)
+        
+        # Relationship: Thomas Bennett → Karen Pulley
+        rel_bennett = Relationship(
+            relationship_id="REL_MOD_003",
+            person1_id="THOMAS_BENNETT_001",
+            person2_id="KAREN_PULLEY_001",
+            relationship_type=RelationshipType.PARENT_CHILD,
+            biological=True,
+            legitimacy=True,
+            evidence_quality="secondary",
+            notes="Requires birth certificate and census verification"
+        )
+        self.add_relationship(rel_bennett)
+        
         self.add_finding(
-            "Grandparental generation: Research in progress - "
-            "utilizing census records (1900-1950), death certificates, "
-            "and marriage records to establish four grandparent lines"
+            "Grandparental generation (maternal): Thomas Bennett (b. 1946) identified as father of Karen Pulley. "
+            "Bennett surname continues back through documented 19th century Maryland families. "
+            "Paternal grandparents require additional research."
         )
     
     def _trace_great_grandparents(self) -> None:
         """Trace great-grandparents to establish colonial connections."""
+        
+        # Great-grandfather: Ralph E. Bennett
+        ralph_bennett = Person(
+            person_id="RALPH_BENNETT_001",
+            full_name="Ralph E. Bennett",
+            given_names="Ralph E.",
+            surname="Bennett",
+            gender=Gender.MALE,
+            birth_date=date(1910, 1, 1),  # Approximate
+            death_date=date(1964, 1, 1),  # Approximate
+            notes="Great-grandfather; 1910-1964"
+        )
+        self.add_person(ralph_bennett)
+        
+        # Relationship: Ralph Bennett → Thomas Bennett
+        rel_ralph = Relationship(
+            relationship_id="REL_MOD_004",
+            person1_id="RALPH_BENNETT_001",
+            person2_id="THOMAS_BENNETT_001",
+            relationship_type=RelationshipType.PARENT_CHILD,
+            biological=True,
+            legitimacy=True,
+            evidence_quality="secondary",
+            notes="Requires death certificate, census, and vital records"
+        )
+        self.add_relationship(rel_ralph)
+        
         self.add_finding(
-            "Great-grandparental generation: Research in progress - "
-            "identifying immigration records and links to colonial American families"
+            "Great-grandparental generation: Ralph E. Bennett (1910-1964) identified. "
+            "Bennett line continues back to John E. Bennett (1876-1964), establishing bridge to 19th century. "
+            "Chain documented in family records; requires primary source verification (birth/death certificates, census 1910-1940)."
         )
     
     def analyze_evidence(self) -> Dict[str, Any]:
         """Analyze modern records evidence."""
         return {
-            "coverage": "1800-Present",
+            "coverage": "1800-Present (with maternal Bennett line documented)",
             "primary_sources": len([s for s in self.sources.values() 
                                    if s.reliability == EvidenceQuality.PRIMARY]),
             "secondary_sources": len([s for s in self.sources.values() 
                                      if s.reliability == EvidenceQuality.SECONDARY]),
-            "unresolved_questions": [
-                "Complete maternal line surnames and maiden names",
-                "Exact immigration dates for great-grandparents",
-                "Full census coverage for all family lines 1800-1900"
+            "maternal_chain_documented": [
+                "Robert Ringler Jr. (b. 1995)",
+                "Karen L. (Bennett) Pulley (b. 1973)",
+                "Thomas Bennett (b. 1946)",
+                "Ralph E. Bennett (1910-1964)",
+                "→ John E. Bennett (1876-1964) [transition to 19th century]"
             ],
-            "proof_assessment": "Strong proof for 2-3 generations, moderate for earlier generations",
+            "unresolved_questions": [
+                "Birth certificates for Bennett line (Karen, Thomas, Ralph)",
+                "Marriage records for all generations",
+                "Census verification for Bennett family 1910-1950",
+                "Death certificates for Ralph E. Bennett and John E. Bennett",
+                "Paternal Ringler line documentation"
+            ],
+            "proof_assessment": "Maternal Bennett line chain documented in family records; "
+                               "requires GPS-level primary source verification. "
+                               "Paternal Ringler line requires comprehensive research.",
             "recommendations": [
-                "Obtain certified copies of all vital records",
-                "Search naturalization records for immigrant ancestors",
-                "Consult cemetery records for death dates and relationships"
+                "Priority: Obtain certified birth certificates for Karen Pulley (née Bennett), Thomas Bennett, Ralph Bennett",
+                "Obtain death certificates for Ralph E. Bennett (d. 1964) and John E. Bennett (d. 1964)",
+                "Search census records: 1910, 1920, 1930, 1940 for Bennett family",
+                "Obtain marriage records for all Bennett generations",
+                "Research paternal Ringler family line with equal rigor"
             ]
         }

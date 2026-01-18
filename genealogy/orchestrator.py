@@ -11,6 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .agents import (
     ModernRecordsAgent,
+    NineteenthCenturyBennettAgent,
     ColonialAmericanAgent,
     EnglishNobilityAgent,
     MedievalRoyalAgent,
@@ -44,6 +45,7 @@ class ChiefResearchOrchestrator:
         """Initialize all research agents."""
         return {
             "agent_1_modern": ModernRecordsAgent(),
+            "agent_1b_nineteenth": NineteenthCenturyBennettAgent(),
             "agent_2_colonial": ColonialAmericanAgent(),
             "agent_3_nobility": EnglishNobilityAgent(),
             "agent_4_medieval": MedievalRoyalAgent(),
@@ -78,6 +80,7 @@ class ChiefResearchOrchestrator:
         print("Phase 1: Executing primary research agents (parallel execution)...")
         primary_agents = [
             "agent_1_modern",
+            "agent_1b_nineteenth",
             "agent_2_colonial", 
             "agent_3_nobility",
             "agent_4_medieval",

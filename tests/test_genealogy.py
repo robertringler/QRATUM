@@ -195,7 +195,7 @@ class TestChiefOrchestrator(unittest.TestCase):
         """Test orchestrator initialization."""
         orchestrator = ChiefResearchOrchestrator(subject_name="Test Subject")
         self.assertEqual(orchestrator.subject_name, "Test Subject")
-        self.assertEqual(len(orchestrator.agents), 6)
+        self.assertEqual(len(orchestrator.agents), 7)  # Updated for 7 agents
     
     def test_orchestrator_execution_sequential(self):
         """Test orchestrator execution in sequential mode."""
@@ -212,6 +212,7 @@ class TestChiefOrchestrator(unittest.TestCase):
         # Check that all agents executed
         agents_results = results["agents_results"]
         self.assertIn("agent_1_modern", agents_results)
+        self.assertIn("agent_1b_nineteenth", agents_results)
         self.assertIn("agent_2_colonial", agents_results)
         self.assertIn("agent_3_nobility", agents_results)
         self.assertIn("agent_4_medieval", agents_results)
