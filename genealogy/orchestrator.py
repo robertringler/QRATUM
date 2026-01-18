@@ -14,6 +14,7 @@ from .agents import (
     NineteenthCenturyBennettAgent,
     NineteenthCenturyYorkAgent,
     LoyalistRevolutionaryAgent,
+    SeventeenthCenturyYorkAgent,
     ColonialAmericanAgent,
     NameIdentityAgent,
     EnglishNobilityAgent,
@@ -45,12 +46,13 @@ class ChiefResearchOrchestrator:
         self.results: Dict[str, Any] = {}
         
     def _initialize_agents(self) -> Dict[str, Any]:
-        """Initialize all research agents for DUAL LINE investigation."""
+        """Initialize all research agents for DUAL LINE investigation with GED integration."""
         return {
             "agent_1_modern": ModernRecordsAgent(),  # Both York and Bennett lines
             "agent_1b_nineteenth_bennett": NineteenthCenturyBennettAgent(),  # Bennett 19th century
             "agent_1c_nineteenth_york": NineteenthCenturyYorkAgent(),  # York 19th century
             "agent_2_loyalist": LoyalistRevolutionaryAgent(),  # York line to Semore York (Loyalist)
+            "agent_2c_seventeenth_york": SeventeenthCenturyYorkAgent(),  # York 17th century (GED-based)
             "agent_2b_colonial": ColonialAmericanAgent(),  # Bennett line to Hammond/Warfield
             "agent_3_name_identity": NameIdentityAgent(),  # False attachment prevention
             "agent_4_nobility": EnglishNobilityAgent(),  # English origins testing
@@ -89,6 +91,7 @@ class ChiefResearchOrchestrator:
             "agent_1b_nineteenth_bennett",  # Bennett 19th century
             "agent_1c_nineteenth_york",  # York 19th century
             "agent_2_loyalist",  # York Revolutionary era
+            "agent_2c_seventeenth_york",  # York 17th century (GED-based)
             "agent_2b_colonial",  # Bennett colonial
             "agent_3_name_identity",  # False merge prevention
             "agent_4_nobility",  # English origins

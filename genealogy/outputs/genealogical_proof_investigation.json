@@ -62,64 +62,72 @@
       "relationships": {}
     }
   },
-  "agent_2_loyalist": {
+  "agent_2b_colonial": {
     "success": true,
-    "loyalist_families_documented": 3,
+    "colonial_families_documented": 5,
     "analysis": {
-      "coverage": "1700-1800 (Revolutionary Era, Loyalist focus)",
-      "key_person": "Semore (Seymore) York (circa 1724-1783)",
+      "coverage": "1700-1800 (Colonial Maryland & Chesapeake)",
+      "key_families": [
+        "Hammond",
+        "Warfield",
+        "Welsh"
+      ],
       "documented_chain": [
-        "Semore (Seymore) York (circa 1724-1783) - Loyalist",
-        "Thomas York (circa 1745-1812)",
-        "John Edgar York (circa 1764-1810)",
-        "\u2192 Edward York (circa 1788-1862) [transition to 19th century]"
+        "Maj. Charles M. Hammond (1670-1713)",
+        "Capt. John Charles Hammond (1698-1753)",
+        "Hannah Hammond-Welsh (1723-1779)",
+        "Ruth Hammond Warfield (1756-1820)",
+        "Harriet Amelia Warfield (1783-1844)",
+        "\u2192 Caroline Hammond Benepe (1805-1880) [transition to 19th century]"
       ],
-      "critical_surname_warning": "SEMORE/SEYMORE YORK \u2260 SEYMOUR OF WOLF HALL. These are DISTINCT, UNRELATED families. No connection to Queen Jane Seymour or royal Seymour family. Surname similarity is coincidental.",
-      "loyalist_documentation": "Semore York documented as Loyalist; requires verification through British records at The National Archives, Kew",
-      "evidence_status": "Documented in family records; requires primary source verification",
+      "family_records_status": "Chain documented in family records; requires primary source verification",
       "critical_research_needs": [
-        "Loyalist claims records for Semore York (TNA Kew, UK)",
-        "Land grants (post-Revolutionary, Canada or remaining colonies)",
-        "Will of Semore York (circa 1783)",
-        "Church registers for births, marriages (multiple colonies)",
-        "Military service records (if applicable)",
-        "Migration/relocation documentation"
+        "Wills: Charles M. Hammond (d. 1713), John Charles Hammond (d. 1753)",
+        "Church registers: Baptisms, marriages, burials for all individuals",
+        "Land records: Hammond and Warfield family transactions",
+        "Court records: Family litigation and legal proceedings",
+        "Proof of military titles (Major, Captain) through commissions or contemporary documents"
       ],
-      "proof_status": "Secondary (family records); requires GPS-level primary sources",
+      "proof_status": "Secondary (family records); requires upgrade to primary sources for GPS compliance",
+      "geographic_focus": "Anne Arundel County, Howard County, Baltimore County, Maryland",
       "next_steps": [
-        "PRIORITY 1: The National Archives, Kew - Loyalist claims and service records",
-        "PRIORITY 2: Will of Semore York (death circa 1783) - proves children",
-        "PRIORITY 3: Church registers - baptisms, marriages for York family",
-        "PRIORITY 4: Land records - grants and deeds showing family continuity",
-        "PRIORITY 5: Distinguish from unrelated Seymour families through geographic and documentary analysis"
+        "PRIORITY 1: Maryland State Archives research - parish registers for all families",
+        "PRIORITY 2: Probate records - wills of Charles Hammond (1713) and John Hammond (1753)",
+        "PRIORITY 3: Land office records - Hammond family patents and deeds",
+        "PRIORITY 4: Verify military titles through militia records and commissions",
+        "PRIORITY 5: Court records search for Hammond, Warfield, Welsh families",
+        "PRIORITY 6: Published genealogies cross-verification (Warfield, Hammond families)"
       ],
-      "false_attachment_prevention": "System must explicitly reject any attempted connection to Seymour of Wolf Hall, Queen Jane Seymour, or Tudor royal family. These are HIGH-RISK FALSE ATTACHMENTS based on surname similarity only."
+      "colonial_gentry_status": "Hammond and Warfield families are documented Maryland colonial gentry. This provides strong foundation for potential English gentry/noble connections."
     },
     "report": {
-      "agent_id": "agent_2_loyalist_revolutionary",
-      "scope": "Loyalist & Revolutionary Era (1700-1800)",
+      "agent_id": "agent_2_colonial_maryland",
+      "scope": "Colonial Maryland & Chesapeake (1700-1800)",
       "status": "completed",
       "execution_time": "0.00 seconds",
-      "persons_found": 3,
-      "relationships_established": 2,
+      "persons_found": 5,
+      "relationships_established": 3,
       "records_analyzed": 0,
       "sources_consulted": 4,
       "citations_created": 0,
       "findings": [
-        "Semore (Seymore) York (circa 1724-1783): Documented as Loyalist during American Revolution. CRITICAL: Surname variant 'Semore' or 'Seymore' must NOT be confused with unrelated 'Seymour' families, especially NOT with the royal Seymour of Wolf Hall family (Queen Jane Seymour). Research priorities: 1) Loyalist claims records; 2) Land grants (post-war); 3) Military service records; 4) Migration/relocation documentation; 5) Will and probate (circa 1783).",
-        "York family colonial line: Semore York (circa 1724-1783) \u2192 Thomas York (circa 1745-1812) \u2192 John Edgar York (circa 1764-1810). Chain documented in family records; requires GPS-level verification through wills, church registers, land records, court documents.",
-        "Loyalist Service Research: If Semore York served in Loyalist provincial units, documentation may exist in British military records at TNA Kew. Post-war migration: Many Loyalists relocated to Canada, Nova Scotia, or Caribbean. Research priorities: 1) Loyalist muster rolls; 2) Claims for compensation; 3) Land grants in Canada/Nova Scotia; 4) Ship passenger lists (if relocated).",
-        "Primary sources available for Revolutionary era: 1) Church registers (multiple denominations); 2) Land records (grants, patents, deeds); 3) Court records; 4) Loyalist claims and compensation records (TNA Kew, UK); 5) Probate records (wills and administrations)."
+        "Warfield family: Prominent Maryland colonial gentry. Ruth Hammond Warfield (1756-1820) \u2192 Harriet Amelia Warfield (1783-1844) documented in family records. Requires verification: Church registers (baptism, burial), probate records, land deeds. Warfield surname well-established in Anne Arundel and Howard Counties, Maryland.",
+        "Hannah Hammond-Welsh (1723-1779): Compound surname is genealogically significant. Suggests Hammond maternal lineage preserved in surname. Research priorities: 1) Church registers (birth/baptism circa 1723, death/burial 1779); 2) Marriage record (reveals maiden name and parents); 3) Probate records (father's will naming daughter Hannah); 4) Land records; 5) Connection to Ruth Hammond Warfield requires proof.",
+        "Hammond family: Well-documented colonial Maryland gentry. Maj. Charles M. Hammond (1670-1713) \u2192 Capt. John Charles Hammond (1698-1753) \u2192 Hannah Hammond-Welsh (1723-1779). Military titles 'Major' and 'Captain' require verification in militia records, land grants, court proceedings. Research priorities: 1) Probate records (wills of Charles 1713, John 1753); 2) Land patents and deeds; 3) Church registers; 4) Militia/military commissions; 5) Court records (Hammond family litigation and transactions).",
+        "Colonial Maryland sources available: Parish registers (Maryland State Archives), land office records, prerogative court (probate) records. These primary sources are essential for GPS-level proof of all claimed relationships."
       ],
       "conflicts": [],
       "persons": {
-        "SEMORE_YORK_001": "Semore (Seymore) York",
-        "THOMAS_YORK_001": "Thomas York",
-        "JOHN_EDGAR_YORK_001": "John Edgar York"
+        "RUTH_WARFIELD_001": "Ruth Hammond Warfield",
+        "HARRIET_WARFIELD_001": "Harriet Amelia Warfield",
+        "HANNAH_WELSH_001": "Hannah Hammond-Welsh",
+        "JOHN_HAMMOND_001": "Capt. John Charles Hammond",
+        "CHARLES_HAMMOND_001": "Maj. Charles M. Hammond"
       },
       "relationships": {
-        "REL_LOY_001": "SEMORE_YORK_001 --[parent_child]--> THOMAS_YORK_001",
-        "REL_LOY_002": "THOMAS_YORK_001 --[parent_child]--> JOHN_EDGAR_YORK_001"
+        "REL_COL_001": "RUTH_WARFIELD_001 --[parent_child]--> HARRIET_WARFIELD_001",
+        "REL_COL_002": "CHARLES_HAMMOND_001 --[parent_child]--> JOHN_HAMMOND_001",
+        "REL_COL_003": "JOHN_HAMMOND_001 --[parent_child]--> HANNAH_WELSH_001"
       }
     }
   },
@@ -195,138 +203,6 @@
       "relationships": {
         "REL_19TH_001": "SETH_E_BENNETT_001 --[parent_child]--> JOHN_E_BENNETT_001",
         "REL_19TH_002": "CAROLINE_BENEPE_001 --[parent_child]--> SETH_E_BENNETT_001"
-      }
-    }
-  },
-  "agent_1c_nineteenth_york": {
-    "success": true,
-    "generations_documented": 4,
-    "analysis": {
-      "coverage": "1800-1900 (19th century York family)",
-      "persons_documented": [
-        "James 'Jim' York (circa 1866-1952)",
-        "William Robert York (circa 1846-1906)",
-        "Thomas Ralph York (circa 1825-1906)",
-        "Edward York (circa 1788-1862)"
-      ],
-      "critical_findings": [
-        "Four-generation 19th century chain documented in family records",
-        "Edward York (1788-1862) is BRIDGE to Revolutionary era",
-        "York surname consistent; no variants documented"
-      ],
-      "evidence_gaps": [
-        "Birth/death certificates for all individuals",
-        "Census verification for complete coverage 1800-1940",
-        "Marriage records for all generations",
-        "Wills/probate records (especially Edward York circa 1862)",
-        "Land records showing family continuity"
-      ],
-      "proof_status": "Documented in family records; requires GPS-level primary source verification",
-      "next_steps": [
-        "PRIORITY 1: Census search 1800-1940 for all York generations",
-        "PRIORITY 2: Death certificates: James (1952), William (1906), Thomas (1906), Edward (1862)",
-        "PRIORITY 3: Will of Edward York (circa 1862) - proves connection to Revolutionary era",
-        "PRIORITY 4: Marriage records for all generations",
-        "PRIORITY 5: Land records showing York family presence and continuity"
-      ],
-      "colonial_connection": "Edward York (b. 1788) connects to Revolutionary era through father John Edgar York (1764-1810), grandfather Thomas York (1745-1812), and great-grandfather Semore York (1724-1783, Loyalist). This provides pathway to colonial period via Loyalist research (Agent 2)."
-    },
-    "report": {
-      "agent_id": "agent_1c_nineteenth_century_york",
-      "scope": "19th Century York Family (1800-1900)",
-      "status": "completed",
-      "execution_time": "0.00 seconds",
-      "persons_found": 4,
-      "relationships_established": 3,
-      "records_analyzed": 0,
-      "sources_consulted": 2,
-      "citations_created": 0,
-      "findings": [
-        "James 'Jim' York (circa 1866-1952): Documented in family records. Requires verification: Birth certificate/record, census enumeration 1870-1940, death certificate 1952, marriage record.",
-        "William Robert York (circa 1846-1906): Born mid-19th century, lived through Civil War. Research priorities: 1) Census 1850-1900; 2) Civil War service records (if applicable); 3) Death certificate 1906; 4) Marriage record; 5) Will/probate.",
-        "Thomas Ralph York (circa 1825-1906): Bridge generation between early 19th century and Civil War era. Research priorities: 1) Census 1830-1900; 2) Death record 1906; 3) Marriage record; 4) Will/probate; 5) Land records.",
-        "Edward York (circa 1788-1862): CRITICAL TRANSITIONAL GENERATION. Born post-Revolution (1788), son of John Edgar York (1764-1810) who was son of Thomas York (1745-1812), who was son of Semore York (1724-1783, Loyalist). Research priorities: 1) Will/probate (circa 1862); 2) Census 1800-1860; 3) Land records; 4) Church registers; 5) Connection proof to John Edgar York (Revolutionary era)."
-      ],
-      "conflicts": [],
-      "persons": {
-        "JAMES_YORK_19TH_001": "James \"Jim\" York",
-        "WILLIAM_YORK_001": "William Robert York",
-        "THOMAS_RALPH_YORK_001": "Thomas Ralph York",
-        "EDWARD_YORK_001": "Edward York"
-      },
-      "relationships": {
-        "REL_YORK_19TH_001": "WILLIAM_YORK_001 --[parent_child]--> JAMES_YORK_19TH_001",
-        "REL_YORK_19TH_002": "THOMAS_RALPH_YORK_001 --[parent_child]--> WILLIAM_YORK_001",
-        "REL_YORK_19TH_003": "EDWARD_YORK_001 --[parent_child]--> THOMAS_RALPH_YORK_001"
-      }
-    }
-  },
-  "agent_2b_colonial": {
-    "success": true,
-    "colonial_families_documented": 5,
-    "analysis": {
-      "coverage": "1700-1800 (Colonial Maryland & Chesapeake)",
-      "key_families": [
-        "Hammond",
-        "Warfield",
-        "Welsh"
-      ],
-      "documented_chain": [
-        "Maj. Charles M. Hammond (1670-1713)",
-        "Capt. John Charles Hammond (1698-1753)",
-        "Hannah Hammond-Welsh (1723-1779)",
-        "Ruth Hammond Warfield (1756-1820)",
-        "Harriet Amelia Warfield (1783-1844)",
-        "\u2192 Caroline Hammond Benepe (1805-1880) [transition to 19th century]"
-      ],
-      "family_records_status": "Chain documented in family records; requires primary source verification",
-      "critical_research_needs": [
-        "Wills: Charles M. Hammond (d. 1713), John Charles Hammond (d. 1753)",
-        "Church registers: Baptisms, marriages, burials for all individuals",
-        "Land records: Hammond and Warfield family transactions",
-        "Court records: Family litigation and legal proceedings",
-        "Proof of military titles (Major, Captain) through commissions or contemporary documents"
-      ],
-      "proof_status": "Secondary (family records); requires upgrade to primary sources for GPS compliance",
-      "geographic_focus": "Anne Arundel County, Howard County, Baltimore County, Maryland",
-      "next_steps": [
-        "PRIORITY 1: Maryland State Archives research - parish registers for all families",
-        "PRIORITY 2: Probate records - wills of Charles Hammond (1713) and John Hammond (1753)",
-        "PRIORITY 3: Land office records - Hammond family patents and deeds",
-        "PRIORITY 4: Verify military titles through militia records and commissions",
-        "PRIORITY 5: Court records search for Hammond, Warfield, Welsh families",
-        "PRIORITY 6: Published genealogies cross-verification (Warfield, Hammond families)"
-      ],
-      "colonial_gentry_status": "Hammond and Warfield families are documented Maryland colonial gentry. This provides strong foundation for potential English gentry/noble connections."
-    },
-    "report": {
-      "agent_id": "agent_2_colonial_maryland",
-      "scope": "Colonial Maryland & Chesapeake (1700-1800)",
-      "status": "completed",
-      "execution_time": "0.00 seconds",
-      "persons_found": 5,
-      "relationships_established": 3,
-      "records_analyzed": 0,
-      "sources_consulted": 4,
-      "citations_created": 0,
-      "findings": [
-        "Warfield family: Prominent Maryland colonial gentry. Ruth Hammond Warfield (1756-1820) \u2192 Harriet Amelia Warfield (1783-1844) documented in family records. Requires verification: Church registers (baptism, burial), probate records, land deeds. Warfield surname well-established in Anne Arundel and Howard Counties, Maryland.",
-        "Hannah Hammond-Welsh (1723-1779): Compound surname is genealogically significant. Suggests Hammond maternal lineage preserved in surname. Research priorities: 1) Church registers (birth/baptism circa 1723, death/burial 1779); 2) Marriage record (reveals maiden name and parents); 3) Probate records (father's will naming daughter Hannah); 4) Land records; 5) Connection to Ruth Hammond Warfield requires proof.",
-        "Hammond family: Well-documented colonial Maryland gentry. Maj. Charles M. Hammond (1670-1713) \u2192 Capt. John Charles Hammond (1698-1753) \u2192 Hannah Hammond-Welsh (1723-1779). Military titles 'Major' and 'Captain' require verification in militia records, land grants, court proceedings. Research priorities: 1) Probate records (wills of Charles 1713, John 1753); 2) Land patents and deeds; 3) Church registers; 4) Militia/military commissions; 5) Court records (Hammond family litigation and transactions).",
-        "Colonial Maryland sources available: Parish registers (Maryland State Archives), land office records, prerogative court (probate) records. These primary sources are essential for GPS-level proof of all claimed relationships."
-      ],
-      "conflicts": [],
-      "persons": {
-        "RUTH_WARFIELD_001": "Ruth Hammond Warfield",
-        "HARRIET_WARFIELD_001": "Harriet Amelia Warfield",
-        "HANNAH_WELSH_001": "Hannah Hammond-Welsh",
-        "JOHN_HAMMOND_001": "Capt. John Charles Hammond",
-        "CHARLES_HAMMOND_001": "Maj. Charles M. Hammond"
-      },
-      "relationships": {
-        "REL_COL_001": "RUTH_WARFIELD_001 --[parent_child]--> HARRIET_WARFIELD_001",
-        "REL_COL_002": "CHARLES_HAMMOND_001 --[parent_child]--> JOHN_HAMMOND_001",
-        "REL_COL_003": "JOHN_HAMMOND_001 --[parent_child]--> HANNAH_WELSH_001"
       }
     }
   },
@@ -409,6 +285,170 @@
         "REL_YORK_003": "JAMES_YORK_001 --[parent_child]--> JESSIE_YORK_001",
         "REL_BENN_001": "THOMAS_BENNETT_001 --[parent_child]--> KAREN_PULLEY_001",
         "REL_BENN_002": "RALPH_BENNETT_001 --[parent_child]--> THOMAS_BENNETT_001"
+      }
+    }
+  },
+  "agent_2_loyalist": {
+    "success": true,
+    "loyalist_families_documented": 3,
+    "analysis": {
+      "coverage": "1700-1800 (Revolutionary Era, Loyalist focus)",
+      "key_person": "Semore (Seymore) York (circa 1724-1783)",
+      "documented_chain": [
+        "Semore (Seymore) York (circa 1724-1783) - Loyalist",
+        "Thomas York (circa 1745-1812)",
+        "John Edgar York (circa 1764-1810)",
+        "\u2192 Edward York (circa 1788-1862) [transition to 19th century]"
+      ],
+      "critical_surname_warning": "SEMORE/SEYMORE YORK \u2260 SEYMOUR OF WOLF HALL. These are DISTINCT, UNRELATED families. No connection to Queen Jane Seymour or royal Seymour family. Surname similarity is coincidental.",
+      "loyalist_documentation": "Semore York documented as Loyalist; requires verification through British records at The National Archives, Kew",
+      "evidence_status": "Documented in family records; requires primary source verification",
+      "critical_research_needs": [
+        "Loyalist claims records for Semore York (TNA Kew, UK)",
+        "Land grants (post-Revolutionary, Canada or remaining colonies)",
+        "Will of Semore York (circa 1783)",
+        "Church registers for births, marriages (multiple colonies)",
+        "Military service records (if applicable)",
+        "Migration/relocation documentation"
+      ],
+      "proof_status": "Secondary (family records); requires GPS-level primary sources",
+      "next_steps": [
+        "PRIORITY 1: The National Archives, Kew - Loyalist claims and service records",
+        "PRIORITY 2: Will of Semore York (death circa 1783) - proves children",
+        "PRIORITY 3: Church registers - baptisms, marriages for York family",
+        "PRIORITY 4: Land records - grants and deeds showing family continuity",
+        "PRIORITY 5: Distinguish from unrelated Seymour families through geographic and documentary analysis"
+      ],
+      "false_attachment_prevention": "System must explicitly reject any attempted connection to Seymour of Wolf Hall, Queen Jane Seymour, or Tudor royal family. These are HIGH-RISK FALSE ATTACHMENTS based on surname similarity only."
+    },
+    "report": {
+      "agent_id": "agent_2_loyalist_revolutionary",
+      "scope": "Loyalist & Revolutionary Era (1700-1800)",
+      "status": "completed",
+      "execution_time": "0.00 seconds",
+      "persons_found": 3,
+      "relationships_established": 2,
+      "records_analyzed": 0,
+      "sources_consulted": 4,
+      "citations_created": 0,
+      "findings": [
+        "Semore (Seymore) York (circa 1724-1783): Documented as Loyalist during American Revolution. CRITICAL: Surname variant 'Semore' or 'Seymore' must NOT be confused with unrelated 'Seymour' families, especially NOT with the royal Seymour of Wolf Hall family (Queen Jane Seymour). Research priorities: 1) Loyalist claims records; 2) Land grants (post-war); 3) Military service records; 4) Migration/relocation documentation; 5) Will and probate (circa 1783).",
+        "York family colonial line: Semore York (circa 1724-1783) \u2192 Thomas York (circa 1745-1812) \u2192 John Edgar York (circa 1764-1810). Chain documented in family records; requires GPS-level verification through wills, church registers, land records, court documents.",
+        "Loyalist Service Research: If Semore York served in Loyalist provincial units, documentation may exist in British military records at TNA Kew. Post-war migration: Many Loyalists relocated to Canada, Nova Scotia, or Caribbean. Research priorities: 1) Loyalist muster rolls; 2) Claims for compensation; 3) Land grants in Canada/Nova Scotia; 4) Ship passenger lists (if relocated).",
+        "Primary sources available for Revolutionary era: 1) Church registers (multiple denominations); 2) Land records (grants, patents, deeds); 3) Court records; 4) Loyalist claims and compensation records (TNA Kew, UK); 5) Probate records (wills and administrations)."
+      ],
+      "conflicts": [],
+      "persons": {
+        "SEMORE_YORK_001": "Semore (Seymore) York",
+        "THOMAS_YORK_001": "Thomas York",
+        "JOHN_EDGAR_YORK_001": "John Edgar York"
+      },
+      "relationships": {
+        "REL_LOY_001": "SEMORE_YORK_001 --[parent_child]--> THOMAS_YORK_001",
+        "REL_LOY_002": "THOMAS_YORK_001 --[parent_child]--> JOHN_EDGAR_YORK_001"
+      }
+    }
+  },
+  "agent_2c_seventeenth_york": {
+    "success": true,
+    "gedcom_ancestors_documented": 4,
+    "analysis": "=== 17TH CENTURY YORK LINE ANALYSIS ===\n\nSOURCE: GEDCOM File (Ringler Family Tree.ged)\nSTATUS: GED-DOCUMENTED / NOT GPS-VERIFIED\n\nDOCUMENTED LINEAGE (requires primary source verification):\n  Semore York (1724-1783) \u2190 Jeremiah John York Jr. (1683-1765)\n  \u2190 Richard Yorke (1650-1695) \u2190 Mary Seymour/Gridley/Langton (1622-1688)\n  \u2190 Richard Hill Seymour (early 17th c.)\n\nGPS COMPLIANCE ASSESSMENT:\n  \u274c Reasonably Exhaustive Research: INCOMPLETE (no primary source search yet)\n  \u274c Complete Citations: INCOMPLETE (GED lacks source citations)\n  \u26a0\ufe0f Thorough Analysis: IN PROGRESS (conflicts identified)\n  \u26a0\ufe0f Conflict Resolution: IDENTIFIED (Seymour surname risk documented)\n  \u274c Sound Conclusion: PENDING (awaiting primary source verification)\n\nCONFIDENCE LEVELS:\n  \u2022 Jeremiah York (1683-1765): 25% (GED-documented, plausible dates, requires verification)\n  \u2022 Richard Yorke (1650-1695): 20% (GED-documented, plausible, spelling variant interesting)\n  \u2022 Mary Seymour/Gridley/Langton (1622-1688): 15% (multiple surname variants concerning)\n  \u2022 Richard Hill Seymour (early 17th c.): 5% (extremely speculative, high false-attachment risk)\n\nCRITICAL FINDINGS:\n  \ud83d\udea8 HIGH-RISK FALSE ATTACHMENT: Seymour surname creates critical risk of false royal connection\n  \u26a0\ufe0f SPECULATIVE ELEMENTS: 17th century GED data appears to contain Ancestry-style hint propagation\n  \u2705 GPS DISCIPLINE: System correctly identifies GED-documented vs. GPS-proven distinction\n\nDETERMINATION:\n  \u2022 17th century York lineage: GED-DOCUMENTED, NOT GPS-VERIFIED\n  \u2022 Royal Seymour connection: EXPLICITLY REJECTED (no credible evidence)\n  \u2022 Research pathway: ESTABLISHED (priority order for primary source verification)\n  \u2022 Overall status: PRELIMINARY / REQUIRES SYSTEMATIC PRIMARY SOURCE RESEARCH\n\nFindings: 6 documented\nConflicts: 2 identified\nPersons: 4 GED-documented (not yet verified)\nRelationships: 4 GED-based (require primary sources)",
+    "report": {
+      "agent_id": "agent_2c_17th_century_york",
+      "scope": "17th Century York Line (1600-1700) - GED-based, requires GPS verification",
+      "status": "completed",
+      "execution_time": "0.00 seconds",
+      "persons_found": 4,
+      "relationships_established": 4,
+      "records_analyzed": 0,
+      "sources_consulted": 1,
+      "citations_created": 0,
+      "findings": [
+        "Jeremiah John York Jr. (circa 1683-1765): GED-DOCUMENTED ancestor of Semore York. STATUS: GED-based, NOT yet primary-source-verified. RESEARCH PRIORITIES: 1) Locate birth/baptism record (circa 1683); 2) Locate death/burial record (circa 1765); 3) Probate records/will; 4) Land records; 5) Church registers; 6) Court records. GEOGRAPHIC FOCUS: Likely mid-Atlantic colonies (Maryland, Virginia, Pennsylvania). GPS REQUIREMENT: Must elevate from GED-documented to primary-source-proven.",
+        "Richard Yorke (circa 1650-1695): GED-DOCUMENTED ancestor. STATUS: GED-based, NOT yet primary-source-verified. CRITICAL QUESTION: English immigrant or colonial-born? Spelling 'Yorke' (with 'e') suggests possible English origin. RESEARCH PRIORITIES: 1) Immigration records if English-born; 2) Parish registers (England or Colonial); 3) Land patents/grants (first-generation settlers often received land); 4) Probate records (circa 1695); 5) Marriage record (would reveal wife's identity); 6) Establish connection to Jeremiah (son) via documentary evidence. GEOGRAPHIC FOCUS: If immigrant, likely arrival 1670s; if colonial-born, likely Virginia/Maryland.",
+        "\u26a0\ufe0f CRITICAL: Mary Seymour / Gridley / Langton (circa 1622-1688): GED-DOCUMENTED with HIGH-RISK surname. STATUS: GED-based, NOT primary-source-verified, UNPROVEN royal connection. SURNAME ANALYSIS: Multiple surname variants (Seymour/Gridley/Langton) indicate:\n  1) Possible remarriage(s)\n  2) Possible data quality issues in GED compilation\n  3) Requires careful documentary verification\n\n\u26a0\ufe0f FALSE ATTACHMENT WARNING: Surname 'Seymour' creates HIGH RISK of false merge with royal Seymour family (Queen Jane Seymour, Seymour of Wolf Hall). NO CONNECTION TO ROYAL SEYMOURS should be claimed absent extraordinary primary source proof.\n\nRESEARCH PRIORITIES: 1) Establish true maiden name via marriage record; 2) Locate birth/baptism (circa 1622); 3) Locate death/burial (circa 1688); 4) Verify relationship to Richard Yorke; 5) If English-born, locate parish registers; 6) CRITICAL: Rule out or prove any connection to Seymour gentry families. GPS REQUIREMENT: Extraordinary evidence required for any Seymour family connection claim.",
+        "\ud83d\udea8 EXTREME CAUTION: Richard Hill Seymour (early 17th c.): GED-DOCUMENTED with HIGHEST-RISK surname. STATUS: GED-based, NOT primary-source-verified, EXTREMELY SPECULATIVE. \u26a0\ufe0f FALSE ATTACHMENT RISK: CRITICAL. Name 'Richard' + 'Seymour' + early 17th century creates MAXIMUM risk of false conflation with royal/noble Seymour families of same era.\n\nSEYMOUR FAMILIES - EARLY 17TH CENTURY:\n  \u2022 Seymour of Wolf Hall (royal line - Queen Jane Seymour's family)\n  \u2022 Dukes of Somerset (Seymour dukes)\n  \u2022 Multiple Seymour gentry branches in England\n  \u2022 Common surname with many unrelated branches\n\nANALYSIS: Without extraordinary primary source documentation (parish registers, wills, heraldic visitations, manorial records), NO connection to any Seymour gentry or royal family should be claimed or implied.\n\nRESEARCH STANCE: TREAT AS UNPROVEN / SPECULATIVE unless primary English records discovered. Geographic location (England vs. Colonial America) is critical - if colonial, likelihood of royal connection essentially zero. If English gentry, requires Complete Peerage / Visitation-level documentation.\n\nGPS DETERMINATION: INSUFFICIENT EVIDENCE for any claim beyond 'GED-documented ancestor with surname Seymour.'",
+        "GEDCOM FILE ANALYSIS - Ringler Family Tree.ged:\n\nAUTHORITATIVE STATUS: This GED is the input dataset for genealogical investigation. It represents compiled family research from various sources.\n\nGPS COMPLIANCE REQUIREMENTS:\n  \u2705 GED-documented: Ancestor appears in family tree compilation\n  \u274c NOT GPS-proven: Has not been verified against original primary sources\n\nQUALITY ASSESSMENT:\n  \u2022 17th century York ancestors: Dates and names present but vague\n  \u2022 Seymour surname presence: Creates HIGH RISK of false royal attachment\n  \u2022 Multiple surname variants (Mary Seymour/Gridley/Langton): Suggests data quality issues\n  \u2022 Lack of source citations within GED: Cannot assess original evidence quality\n\nGEDCOM LIMITATIONS:\n  1) Secondary compiled source (not original documentation)\n  2) May contain Ancestry hint propagation without verification\n  3) May contain speculative connections based on name similarity\n  4) Does not indicate which relationships are proven vs. assumed\n\nCONVERSION TO GPS-CERTIFIED PROOF:\nEach GED-documented ancestor must be independently verified using primary sources:\n  \u2022 Parish registers (baptism, marriage, burial)\n  \u2022 Probate records (wills, administrations)\n  \u2022 Land records (deeds, patents, surveys)\n  \u2022 Court records (depositions, lawsuits, guardianships)\n  \u2022 Immigration records (if applicable)\n  \u2022 Heraldic visitations (if claiming gentry/noble status)\n\nUNTIL PRIMARY VERIFICATION: All 17th century ancestors remain 'GED-documented' but NOT 'proven.'",
+        "GPS VERIFICATION PRIORITIES - 17th Century York Line:\n\n1. PRIORITY 1: Jeremiah John York Jr. (1683-1765)\n   - Most recent of 17th c. ancestors; better record survival\n   - Bridge to verified Semore York (1724-1783)\n   - Search: Colonial probate, land records, church registers\n\n2. PRIORITY 2: Richard Yorke (1650-1695)\n   - Determine English immigrant vs. colonial-born status\n   - If immigrant: Search ship passenger lists, port records\n   - If colonial: Search first-generation land patents\n   - Search: Probate records circa 1695; marriage record\n\n3. PRIORITY 3: Mary Seymour/Gridley/Langton (1622-1688)\n   - CRITICAL: Establish true maiden name\n   - Rule out false royal Seymour attachment\n   - Search: Marriage record(s); English parish registers if immigrant\n   - VERIFY: No connection to Seymour of Wolf Hall or ducal Somerset line\n\n4. PRIORITY 4 (LOW): Richard Hill Seymour (early 17th c.)\n   - EXTREMELY SPECULATIVE in GED\n   - Do NOT prioritize absent discovery of earlier generation documentation\n   - IF pursued: Requires English parish registers, heraldic visitations\n   - ROYAL CONNECTION: Do NOT claim absent extraordinary proof\n\nGEOGRAPHIC RESEARCH FOCUS:\n  \u2022 Virginia: Likely first-settlement colony for 17th c. York family\n  \u2022 Maryland: Alternative likely colony\n  \u2022 England: If immigrant origin proven, parish registers essential\n\nREPOSITORY PRIORITIES:\n  \u2022 Library of Virginia (colonial records)\n  \u2022 Maryland State Archives\n  \u2022 Family History Library (LDS - microfilmed parish registers)\n  \u2022 The National Archives (UK) - if English origin confirmed"
+      ],
+      "conflicts": [
+        "Mary Seymour surname creates HIGH RISK of false attachment to royal Seymour family. GED may contain speculative or erroneous connection to Queen Jane Seymour / Seymour of Wolf Hall. REQUIRES: Rigorous documentary evidence to establish true identity and prevent false royal descent claims.",
+        "\ud83d\udea8 CRITICAL: Richard Hill Seymour represents EXTREME HIGH-RISK false attachment vector. GED likely contains Ancestry-style speculative merge with royal/noble Seymour families. RECOMMENDATION: Do NOT promote beyond 'GED-documented' status absent parish registers, wills, or heraldic visitation records explicitly identifying this individual and his parentage. ROYAL DESCENT CLAIM: REJECTED absent extraordinary proof."
+      ],
+      "persons": {
+        "JEREMIAH_YORK_001": "Jeremiah John York Jr.",
+        "RICHARD_YORKE_001": "Richard Yorke",
+        "MARY_SEYMOUR_001": "Mary Seymour / Gridley / Langton",
+        "RICHARD_H_SEYMOUR_001": "Richard Hill Seymour"
+      },
+      "relationships": {
+        "REL_17C_001": "JEREMIAH_YORK_001 --[parent_child]--> SEMORE_YORK_001",
+        "REL_17C_002": "RICHARD_YORKE_001 --[parent_child]--> JEREMIAH_YORK_001",
+        "REL_17C_003": "MARY_SEYMOUR_001 --[parent_child]--> RICHARD_YORKE_001",
+        "REL_17C_004": "RICHARD_H_SEYMOUR_001 --[parent_child]--> MARY_SEYMOUR_001"
+      }
+    }
+  },
+  "agent_1c_nineteenth_york": {
+    "success": true,
+    "generations_documented": 4,
+    "analysis": {
+      "coverage": "1800-1900 (19th century York family)",
+      "persons_documented": [
+        "James 'Jim' York (circa 1866-1952)",
+        "William Robert York (circa 1846-1906)",
+        "Thomas Ralph York (circa 1825-1906)",
+        "Edward York (circa 1788-1862)"
+      ],
+      "critical_findings": [
+        "Four-generation 19th century chain documented in family records",
+        "Edward York (1788-1862) is BRIDGE to Revolutionary era",
+        "York surname consistent; no variants documented"
+      ],
+      "evidence_gaps": [
+        "Birth/death certificates for all individuals",
+        "Census verification for complete coverage 1800-1940",
+        "Marriage records for all generations",
+        "Wills/probate records (especially Edward York circa 1862)",
+        "Land records showing family continuity"
+      ],
+      "proof_status": "Documented in family records; requires GPS-level primary source verification",
+      "next_steps": [
+        "PRIORITY 1: Census search 1800-1940 for all York generations",
+        "PRIORITY 2: Death certificates: James (1952), William (1906), Thomas (1906), Edward (1862)",
+        "PRIORITY 3: Will of Edward York (circa 1862) - proves connection to Revolutionary era",
+        "PRIORITY 4: Marriage records for all generations",
+        "PRIORITY 5: Land records showing York family presence and continuity"
+      ],
+      "colonial_connection": "Edward York (b. 1788) connects to Revolutionary era through father John Edgar York (1764-1810), grandfather Thomas York (1745-1812), and great-grandfather Semore York (1724-1783, Loyalist). This provides pathway to colonial period via Loyalist research (Agent 2)."
+    },
+    "report": {
+      "agent_id": "agent_1c_nineteenth_century_york",
+      "scope": "19th Century York Family (1800-1900)",
+      "status": "completed",
+      "execution_time": "0.00 seconds",
+      "persons_found": 4,
+      "relationships_established": 3,
+      "records_analyzed": 0,
+      "sources_consulted": 2,
+      "citations_created": 0,
+      "findings": [
+        "James 'Jim' York (circa 1866-1952): Documented in family records. Requires verification: Birth certificate/record, census enumeration 1870-1940, death certificate 1952, marriage record.",
+        "William Robert York (circa 1846-1906): Born mid-19th century, lived through Civil War. Research priorities: 1) Census 1850-1900; 2) Civil War service records (if applicable); 3) Death certificate 1906; 4) Marriage record; 5) Will/probate.",
+        "Thomas Ralph York (circa 1825-1906): Bridge generation between early 19th century and Civil War era. Research priorities: 1) Census 1830-1900; 2) Death record 1906; 3) Marriage record; 4) Will/probate; 5) Land records.",
+        "Edward York (circa 1788-1862): CRITICAL TRANSITIONAL GENERATION. Born post-Revolution (1788), son of John Edgar York (1764-1810) who was son of Thomas York (1745-1812), who was son of Semore York (1724-1783, Loyalist). Research priorities: 1) Will/probate (circa 1862); 2) Census 1800-1860; 3) Land records; 4) Church registers; 5) Connection proof to John Edgar York (Revolutionary era)."
+      ],
+      "conflicts": [],
+      "persons": {
+        "JAMES_YORK_19TH_001": "James \"Jim\" York",
+        "WILLIAM_YORK_001": "William Robert York",
+        "THOMAS_RALPH_YORK_001": "Thomas Ralph York",
+        "EDWARD_YORK_001": "Edward York"
+      },
+      "relationships": {
+        "REL_YORK_19TH_001": "WILLIAM_YORK_001 --[parent_child]--> JAMES_YORK_19TH_001",
+        "REL_YORK_19TH_002": "THOMAS_RALPH_YORK_001 --[parent_child]--> WILLIAM_YORK_001",
+        "REL_YORK_19TH_003": "EDWARD_YORK_001 --[parent_child]--> THOMAS_RALPH_YORK_001"
       }
     }
   },
