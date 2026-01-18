@@ -16,10 +16,10 @@ from typing import Any, Dict
 @dataclass
 class SafetyEnvelope:
     """Safety envelope defining execution boundaries.
-    
+
     This is a stub implementation establishing the structural interface.
     Full safety checking will be implemented in future PRs.
-    
+
     Attributes:
         max_qubits: Maximum number of qubits allowed
         max_depth: Maximum circuit depth allowed
@@ -34,15 +34,15 @@ class SafetyEnvelope:
 
     def check(self, execution_plan: Any) -> bool:
         """Check if execution plan is within safety envelope.
-        
+
         This method will be fully implemented in PR-005 (QoS Implementation).
-        
+
         Args:
             execution_plan: Plan containing execution details
-            
+
         Returns:
             True if plan is safe, False otherwise
-            
+
         Raises:
             NotImplementedError: Placeholder for PR-005
         """
@@ -53,7 +53,7 @@ class SafetyEnvelope:
 
     def validate(self) -> None:
         """Validate envelope configuration.
-        
+
         Raises:
             ValueError: If envelope configuration is invalid
         """

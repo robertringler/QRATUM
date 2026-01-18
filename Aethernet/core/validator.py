@@ -15,9 +15,8 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 from contracts.base import compute_contract_hash, get_current_timestamp
 
@@ -67,9 +66,7 @@ class ValidatorCredentials:
             "node_address": self.node_address,
             "created_at": self.created_at,
         }
-        return hashlib.sha256(
-            json.dumps(content, sort_keys=True).encode()
-        ).hexdigest()
+        return hashlib.sha256(json.dumps(content, sort_keys=True).encode()).hexdigest()
 
     def serialize(self) -> dict[str, Any]:
         """Serialize credentials."""
@@ -307,9 +304,7 @@ class ValidatorRegistry:
         """
         # Validate minimum stake
         if initial_stake < self.MIN_STAKE:
-            raise ValueError(
-                f"Initial stake {initial_stake} below minimum {self.MIN_STAKE}"
-            )
+            raise ValueError(f"Initial stake {initial_stake} below minimum {self.MIN_STAKE}")
 
         # Validate commission rate
         if not 0.0 <= commission_rate <= 1.0:
@@ -347,10 +342,13 @@ class ValidatorRegistry:
         self.validators[validator_id] = validator
 
         # Log registration
-        self._log_event("validator_registered", {
-            "validator_id": validator_id,
-            "initial_stake": initial_stake,
-        })
+        self._log_event(
+            "validator_registered",
+            {
+                "validator_id": validator_id,
+                "initial_stake": initial_stake,
+            },
+        )
 
         return validator
 
@@ -406,11 +404,14 @@ class ValidatorRegistry:
 
         validator.stake.add_stake(amount, is_self=False)
 
-        self._log_event("stake_delegated", {
-            "validator_id": validator_id,
-            "delegator_id": delegator_id,
-            "amount": amount,
-        })
+        self._log_event(
+            "stake_delegated",
+            {
+                "validator_id": validator_id,
+                "delegator_id": delegator_id,
+                "amount": amount,
+            },
+        )
 
         return True
 
@@ -439,11 +440,14 @@ class ValidatorRegistry:
             validator.stake.begin_unbonding(amount, completion_time)
             validator.status = ValidatorStatus.UNBONDING
 
-            self._log_event("unbonding_started", {
-                "validator_id": validator_id,
-                "amount": amount,
-                "completion_epoch": completion_epoch,
-            })
+            self._log_event(
+                "unbonding_started",
+                {
+                    "validator_id": validator_id,
+                    "amount": amount,
+                    "completion_epoch": completion_epoch,
+                },
+            )
 
             return True
         except ValueError:
@@ -500,11 +504,14 @@ class ValidatorRegistry:
         if reason == SlashingReason.INVARIANT_VIOLATION:
             validator.status = ValidatorStatus.SLASHED
 
-        self._log_event("validator_slashed", {
-            "validator_id": validator_id,
-            "reason": reason.value,
-            "amount": slashed_amount,
-        })
+        self._log_event(
+            "validator_slashed",
+            {
+                "validator_id": validator_id,
+                "reason": reason.value,
+                "amount": slashed_amount,
+            },
+        )
 
         return event
 
@@ -527,10 +534,13 @@ class ValidatorRegistry:
 
         validator.status = ValidatorStatus.JAILED
 
-        self._log_event("validator_jailed", {
-            "validator_id": validator_id,
-            "reason": reason,
-        })
+        self._log_event(
+            "validator_jailed",
+            {
+                "validator_id": validator_id,
+                "reason": reason,
+            },
+        )
 
         return True
 
@@ -595,10 +605,7 @@ class ValidatorRegistry:
 
     def get_active_validators(self) -> list[Validator]:
         """Get list of active validators."""
-        return [
-            v for v in self.validators.values()
-            if v.status == ValidatorStatus.ACTIVE
-        ]
+        return [v for v in self.validators.values() if v.status == ValidatorStatus.ACTIVE]
 
     def get_total_voting_power(self) -> int:
         """Get total voting power of active validators."""
@@ -645,9 +652,7 @@ class ValidatorRegistry:
         # Complete any finished unbonding
         for validator in self.validators.values():
             if validator.stake.unbonding_completion:
-                completion_epoch = int(
-                    validator.stake.unbonding_completion.split("_")[1]
-                )
+                completion_epoch = int(validator.stake.unbonding_completion.split("_")[1])
                 if self.current_epoch >= completion_epoch:
                     validator.stake.complete_unbonding()
                     if validator.status == ValidatorStatus.UNBONDING:
@@ -663,12 +668,14 @@ class ValidatorRegistry:
 
     def _log_event(self, event_type: str, data: dict[str, Any]) -> None:
         """Log an audit event."""
-        self._audit_log.append({
-            "timestamp": get_current_timestamp(),
-            "epoch": self.current_epoch,
-            "event_type": event_type,
-            "data": data,
-        })
+        self._audit_log.append(
+            {
+                "timestamp": get_current_timestamp(),
+                "epoch": self.current_epoch,
+                "event_type": event_type,
+                "data": data,
+            }
+        )
 
     def get_audit_log(self) -> list[dict[str, Any]]:
         """Get audit log."""

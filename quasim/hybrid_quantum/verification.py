@@ -274,9 +274,7 @@ class QuantumVerifier:
                 entropy -= p * math.log2(p)
         return entropy
 
-    def _estimate_noise(
-        self, counts: dict[str, int], expected: dict[str, float] | None
-    ) -> float:
+    def _estimate_noise(self, counts: dict[str, int], expected: dict[str, float] | None) -> float:
         """Estimate noise level in quantum output.
 
         Uses total variation distance from expected distribution
@@ -381,7 +379,9 @@ class TopologicalDiagnosticObserver:
         """Initialize diagnostic observer."""
         self._observations: list[dict[str, Any]] = []
 
-    def observe(self, counts: dict[str, int], metadata: dict[str, Any] | None = None) -> dict[str, Any]:
+    def observe(
+        self, counts: dict[str, int], metadata: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         """Observe quantum output and compute diagnostics.
 
         Args:

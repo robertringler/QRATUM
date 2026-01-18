@@ -6,8 +6,6 @@ reducing unnecessary computation.
 
 from __future__ import annotations
 
-import hashlib
-import json
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -15,8 +13,7 @@ from enum import Enum
 from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
-
-from qratum_asi.sandbox_platform.types import SandboxProposal, ProposalPriority
+from qratum_asi.sandbox_platform.types import ProposalPriority, SandboxProposal
 
 
 class CriticalityLevel(Enum):
@@ -249,9 +246,7 @@ class LazyEvaluator:
         factors: dict[str, float] = {}
 
         # Factor: Target subsystems
-        targets_critical = any(
-            t in self._critical_subsystems for t in proposal.target_subsystems
-        )
+        targets_critical = any(t in self._critical_subsystems for t in proposal.target_subsystems)
         factors["critical_target"] = 1.0 if targets_critical else 0.0
 
         # Factor: Priority
@@ -267,10 +262,7 @@ class LazyEvaluator:
         factors["impact"] = proposal.estimated_impact
 
         # Factor: Has sensitive data
-        has_sensitive = any(
-            k in proposal.payload
-            for k in self._sensitive_data_keys
-        )
+        has_sensitive = any(k in proposal.payload for k in self._sensitive_data_keys)
         factors["sensitive"] = 1.0 if has_sensitive else 0.0
 
         # Compute overall score
@@ -436,9 +428,7 @@ class LazyEvaluator:
     def get_evaluator_stats(self) -> dict[str, Any]:
         """Get evaluator statistics."""
         skip_rate = (
-            self._skipped_proposals / self._total_proposals
-            if self._total_proposals > 0
-            else 0
+            self._skipped_proposals / self._total_proposals if self._total_proposals > 0 else 0
         )
 
         return {

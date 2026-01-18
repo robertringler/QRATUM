@@ -141,11 +141,14 @@ class EconomicBioPipeline:
         self.models: dict[str, EconomicBioModel] = {}
 
         # Log initialization
-        self.merkle_chain.add_event("pipeline_initialized", {
-            "pipeline_id": self.pipeline_id,
-            "pipeline_type": "economic_biological_model",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        })
+        self.merkle_chain.add_event(
+            "pipeline_initialized",
+            {
+                "pipeline_id": self.pipeline_id,
+                "pipeline_type": "economic_biological_model",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            },
+        )
 
     def run_monte_carlo(
         self,
@@ -175,22 +178,19 @@ class EconomicBioPipeline:
 
         def _simulate():
             simulation_id = (
-                f"mc_{scenario}_"
-                f"{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+                f"mc_{scenario}_" f"{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
             )
 
             # Simulate Monte Carlo (placeholder for CAPRA integration)
             # In production, would integrate with CAPRA economic models
 
             # Generate deterministic but varied outcomes
-            sim_hash = hashlib.sha3_256(
-                f"{scenario}_{'_'.join(markets)}".encode()
-            ).hexdigest()
+            sim_hash = hashlib.sha3_256(f"{scenario}_{'_'.join(markets)}".encode()).hexdigest()
 
             # Generate outcome distributions for each market
             outcomes = {}
             for i, market in enumerate(markets):
-                market_hash = int(sim_hash[i*4:(i+1)*4], 16)
+                market_hash = int(sim_hash[i * 4 : (i + 1) * 4], 16)
                 base_return = (market_hash % 100 - 50) / 100.0  # -0.5 to 0.5
 
                 # Generate pseudo-distribution
@@ -206,7 +206,8 @@ class EconomicBioPipeline:
                     "mean": sum(values) / len(values),
                     "min": min(values),
                     "max": max(values),
-                    "std": (sum((x - sum(values)/len(values))**2 for x in values) / len(values))**0.5,
+                    "std": (sum((x - sum(values) / len(values)) ** 2 for x in values) / len(values))
+                    ** 0.5,
                 }
 
             return {
@@ -224,12 +225,15 @@ class EconomicBioPipeline:
         self.simulations[simulation.simulation_id] = simulation
 
         # Log to merkle chain
-        self.merkle_chain.add_event("monte_carlo_completed", {
-            "simulation_id": simulation.simulation_id,
-            "scenario": scenario,
-            "markets": len(markets),
-            "iterations": iterations,
-        })
+        self.merkle_chain.add_event(
+            "monte_carlo_completed",
+            {
+                "simulation_id": simulation.simulation_id,
+                "scenario": scenario,
+                "markets": len(markets),
+                "iterations": iterations,
+            },
+        )
 
         return simulation
 
@@ -257,8 +261,7 @@ class EconomicBioPipeline:
 
         def _analyze():
             analysis_id = (
-                f"popgen_{trait}_"
-                f"{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+                f"popgen_{trait}_" f"{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
             )
 
             # Simulate population genetics (placeholder for VITRA integration)
@@ -271,12 +274,12 @@ class EconomicBioPipeline:
             allele_frequencies = {}
             for i in range(5):
                 locus = f"rs{1000000 + i}"
-                freq = 0.1 + (int(trait_hash[i*4:(i+1)*4], 16) % 400) / 1000.0
+                freq = 0.1 + (int(trait_hash[i * 4 : (i + 1) * 4], 16) % 400) / 1000.0
                 allele_frequencies[locus] = freq
 
             # Selection coefficients (simulated)
             selection_coefficients = {
-                locus: (int(trait_hash[(i+5)*4:(i+6)*4], 16) % 100 - 50) / 10000.0
+                locus: (int(trait_hash[(i + 5) * 4 : (i + 6) * 4], 16) % 100 - 50) / 10000.0
                 for i, locus in enumerate(allele_frequencies.keys())
             }
 
@@ -302,11 +305,14 @@ class EconomicBioPipeline:
         self.genetic_analyses[analysis.analysis_id] = analysis
 
         # Log to merkle chain
-        self.merkle_chain.add_event("population_genetics_completed", {
-            "analysis_id": analysis.analysis_id,
-            "trait": trait,
-            "loci": len(analysis.allele_frequencies),
-        })
+        self.merkle_chain.add_event(
+            "population_genetics_completed",
+            {
+                "analysis_id": analysis.analysis_id,
+                "trait": trait,
+                "loci": len(analysis.allele_frequencies),
+            },
+        )
 
         return analysis
 
@@ -341,15 +347,14 @@ class EconomicBioPipeline:
             )
 
             # Integration score based on data quality
-            integration_score = 0.75 + (
-                genetic_result.genetic_architecture["heritability"] * 0.2
-            )
+            integration_score = 0.75 + (genetic_result.genetic_architecture["heritability"] * 0.2)
 
             # Generate predictions
             predictions = {
                 "market_impact": {
                     "genetic_contribution": genetic_result.genetic_architecture["heritability"],
-                    "environmental_contribution": 1.0 - genetic_result.genetic_architecture["heritability"],
+                    "environmental_contribution": 1.0
+                    - genetic_result.genetic_architecture["heritability"],
                     "interaction_effect": 0.15,
                 },
                 "population_response": {
@@ -358,7 +363,8 @@ class EconomicBioPipeline:
                     "low_genetic_risk_percent": 25.0,
                 },
                 "scenario_adjustment": {
-                    market: stats["mean"] * (1 + genetic_result.genetic_architecture["heritability"] * 0.1)
+                    market: stats["mean"]
+                    * (1 + genetic_result.genetic_architecture["heritability"] * 0.1)
                     for market, stats in economic_result.statistics.items()
                 },
             }
@@ -388,10 +394,13 @@ class EconomicBioPipeline:
         self.models[model.model_id] = model
 
         # Log to merkle chain
-        self.merkle_chain.add_event("model_synthesized", {
-            "model_id": model.model_id,
-            "integration_score": model.integration_score,
-        })
+        self.merkle_chain.add_event(
+            "model_synthesized",
+            {
+                "model_id": model.model_id,
+                "integration_score": model.integration_score,
+            },
+        )
 
         return model
 
