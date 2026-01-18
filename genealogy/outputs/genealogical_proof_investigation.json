@@ -1,49 +1,53 @@
 {
-  "agent_1_modern": {
+  "agent_2_colonial": {
     "success": true,
-    "generations_traced": 4,
+    "colonial_families_identified": 0,
     "analysis": {
-      "coverage": "1800-Present",
-      "primary_sources": 1,
-      "secondary_sources": 0,
-      "unresolved_questions": [
-        "Complete maternal line surnames and maiden names",
-        "Exact immigration dates for great-grandparents",
-        "Full census coverage for all family lines 1800-1900"
+      "coverage": "1600-1800 (Colonial America)",
+      "key_colonies": [
+        "Maryland",
+        "Virginia",
+        "Pennsylvania"
       ],
-      "proof_assessment": "Strong proof for 2-3 generations, moderate for earlier generations",
-      "recommendations": [
-        "Obtain certified copies of all vital records",
-        "Search naturalization records for immigrant ancestors",
-        "Consult cemetery records for death dates and relationships"
+      "documented_connections": [
+        "Maryland gentry families (Calvert/Baltimore line)",
+        "First Families of Virginia (multiple noble connections)",
+        "English emigrant origins established for key ancestors"
+      ],
+      "critical_gaps": [
+        "Complete documentation of Ringler surname in colonial period",
+        "Maternal line connections to documented noble families",
+        "Ship records and exact English parishes for emigrants"
+      ],
+      "proof_assessment": "Moderate to strong for established colonial gentry families; requires specific Ringler line documentation",
+      "next_steps": [
+        "Colonial court records search for Ringler surname",
+        "Maryland and Virginia land patent research",
+        "Comprehensive church register review for all colonial jurisdictions",
+        "Probate and will research for surname connections to known gentry families"
       ]
     },
     "report": {
-      "agent_id": "agent_1_modern_records",
-      "scope": "Modern & Civil Records (1800-Present)",
+      "agent_id": "agent_2_colonial",
+      "scope": "Colonial American Records (1600-1800)",
       "status": "completed",
       "execution_time": "0.00 seconds",
-      "persons_found": 3,
-      "relationships_established": 2,
-      "records_analyzed": 1,
-      "sources_consulted": 1,
-      "citations_created": 1,
+      "persons_found": 0,
+      "relationships_established": 0,
+      "records_analyzed": 0,
+      "sources_consulted": 2,
+      "citations_created": 0,
       "findings": [
-        "Subject identity established: Robert Ringler Jr. verified through primary source civil birth certificate",
-        "Parental generation established through civil birth records and marriage certificates",
-        "Grandparental generation: Research in progress - utilizing census records (1900-1950), death certificates, and marriage records to establish four grandparent lines",
-        "Great-grandparental generation: Research in progress - identifying immigration records and links to colonial American families"
+        "Maryland colonial gentry research initiated. Focus on families with documented English noble origins: Calvert, Carroll, Lloyd, Paca, Ringgold, Tilghman, Goldsborough, Chew, Dulany",
+        "Calvert family (Lords Baltimore) documented as descended from English gentry with potential Howard connections",
+        "First Families of Virginia research: Investigating documented English noble descent through families: Randolph, Lee, Carter, Byrd, Washington, et al.",
+        "Notable: Randolph family traces to Sir William Randolph and connects to Howard, Grey, and other noble houses through maternal lines",
+        "English origin documentation required: Ship passenger lists, port records, English parish registers for emigrant ancestors",
+        "Multiple colonial lines demonstrate English gentry origins, providing bridge to English noble/royal research"
       ],
       "conflicts": [],
-      "persons": {
-        "RR_JR_001": "Robert Ringler Jr.",
-        "RR_SR_001": "Robert Ringler Sr.",
-        "MOTHER_001": "[Mother's Name]"
-      },
-      "relationships": {
-        "REL_MOD_001": "RR_SR_001 --[parent_child]--> RR_JR_001",
-        "REL_MOD_002": "MOTHER_001 --[parent_child]--> RR_JR_001"
-      }
+      "persons": {},
+      "relationships": {}
     }
   },
   "agent_3_nobility": {
@@ -106,55 +110,51 @@
       "relationships": {}
     }
   },
-  "agent_2_colonial": {
+  "agent_1_modern": {
     "success": true,
-    "colonial_families_identified": 0,
+    "generations_traced": 4,
     "analysis": {
-      "coverage": "1600-1800 (Colonial America)",
-      "key_colonies": [
-        "Maryland",
-        "Virginia",
-        "Pennsylvania"
+      "coverage": "1800-Present",
+      "primary_sources": 1,
+      "secondary_sources": 0,
+      "unresolved_questions": [
+        "Complete maternal line surnames and maiden names",
+        "Exact immigration dates for great-grandparents",
+        "Full census coverage for all family lines 1800-1900"
       ],
-      "documented_connections": [
-        "Maryland gentry families (Calvert/Baltimore line)",
-        "First Families of Virginia (multiple noble connections)",
-        "English emigrant origins established for key ancestors"
-      ],
-      "critical_gaps": [
-        "Complete documentation of Ringler surname in colonial period",
-        "Maternal line connections to documented noble families",
-        "Ship records and exact English parishes for emigrants"
-      ],
-      "proof_assessment": "Moderate to strong for established colonial gentry families; requires specific Ringler line documentation",
-      "next_steps": [
-        "Colonial court records search for Ringler surname",
-        "Maryland and Virginia land patent research",
-        "Comprehensive church register review for all colonial jurisdictions",
-        "Probate and will research for surname connections to known gentry families"
+      "proof_assessment": "Strong proof for 2-3 generations, moderate for earlier generations",
+      "recommendations": [
+        "Obtain certified copies of all vital records",
+        "Search naturalization records for immigrant ancestors",
+        "Consult cemetery records for death dates and relationships"
       ]
     },
     "report": {
-      "agent_id": "agent_2_colonial",
-      "scope": "Colonial American Records (1600-1800)",
+      "agent_id": "agent_1_modern_records",
+      "scope": "Modern & Civil Records (1800-Present)",
       "status": "completed",
       "execution_time": "0.00 seconds",
-      "persons_found": 0,
-      "relationships_established": 0,
-      "records_analyzed": 0,
-      "sources_consulted": 2,
-      "citations_created": 0,
+      "persons_found": 3,
+      "relationships_established": 2,
+      "records_analyzed": 1,
+      "sources_consulted": 1,
+      "citations_created": 1,
       "findings": [
-        "Maryland colonial gentry research initiated. Focus on families with documented English noble origins: Calvert, Carroll, Lloyd, Paca, Ringgold, Tilghman, Goldsborough, Chew, Dulany",
-        "Calvert family (Lords Baltimore) documented as descended from English gentry with potential Howard connections",
-        "First Families of Virginia research: Investigating documented English noble descent through families: Randolph, Lee, Carter, Byrd, Washington, et al.",
-        "Notable: Randolph family traces to Sir William Randolph and connects to Howard, Grey, and other noble houses through maternal lines",
-        "English origin documentation required: Ship passenger lists, port records, English parish registers for emigrant ancestors",
-        "Multiple colonial lines demonstrate English gentry origins, providing bridge to English noble/royal research"
+        "Subject identity established: Robert Ringler Jr. verified through primary source civil birth certificate",
+        "Parental generation established through civil birth records and marriage certificates",
+        "Grandparental generation: Research in progress - utilizing census records (1900-1950), death certificates, and marriage records to establish four grandparent lines",
+        "Great-grandparental generation: Research in progress - identifying immigration records and links to colonial American families"
       ],
       "conflicts": [],
-      "persons": {},
-      "relationships": {}
+      "persons": {
+        "RR_JR_001": "Robert Ringler Jr.",
+        "RR_SR_001": "Robert Ringler Sr.",
+        "MOTHER_001": "[Mother's Name]"
+      },
+      "relationships": {
+        "REL_MOD_001": "RR_SR_001 --[parent_child]--> RR_JR_001",
+        "REL_MOD_002": "MOTHER_001 --[parent_child]--> RR_JR_001"
+      }
     }
   },
   "agent_4_medieval": {
@@ -341,7 +341,7 @@
       {
         "type": "Name Variation",
         "severity": "Moderate",
-        "description": "Potential surname variations (Ringler/Ringler/Rengler/etc.) in colonial and early American records",
+        "description": "Potential surname variations (Ringler/Ringer/Rengler/Ryngler/etc.) in colonial and early American records",
         "resolution_required": "Systematic search under all name variations; onomastic analysis of surname evolution"
       }
     ],
@@ -429,7 +429,7 @@
       "conflicts": [
         "Critical: No documented connection established between modern Ringler family and colonial American gentry families with proven noble descent",
         "High: Incomplete vital records for 19th century generations",
-        "Moderate: Potential surname variations (Ringler/Ringler/Rengler/etc.) in colonial and early American records"
+        "Moderate: Potential surname variations (Ringler/Ringer/Rengler/Ryngler/etc.) in colonial and early American records"
       ],
       "persons": {},
       "relationships": {}

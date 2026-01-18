@@ -157,7 +157,7 @@ class ProofAnalysisAgent(ResearchAgent):
             {
                 "type": "Name Variation",
                 "severity": "Moderate",
-                "description": "Potential surname variations (Ringler/Ringler/Rengler/etc.) "
+                "description": "Potential surname variations (Ringler/Ringer/Rengler/Ryngler/etc.) "
                               "in colonial and early American records",
                 "resolution_required": "Systematic search under all name variations; "
                                       "onomastic analysis of surname evolution"
