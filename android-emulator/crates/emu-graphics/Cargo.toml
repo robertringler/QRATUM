@@ -1,0 +1,33 @@
+[package]
+name = "emu-graphics"
+description = "GPU emulation - Vulkan translation, OpenGL ES backend, shader transpilation"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+log.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+bitflags.workspace = true
+byteorder.workspace = true
+parking_lot.workspace = true
+serde = { workspace = true, features = ["derive"] }
+
+# Optional Vulkan support (feature-gated for headless builds)
+ash = { workspace = true, optional = true }
+gpu-allocator = { workspace = true, optional = true }
+
+# Internal dependencies
+emu-memory = { path = "../emu-memory" }
+
+[dev-dependencies]
+env_logger.workspace = true
+
+[features]
+default = []
+vulkan = ["ash", "gpu-allocator"]
+opengl-es = []
+shader-debug = []
