@@ -10,6 +10,7 @@ import time
 
 import numpy as np
 import pytest
+
 from qratum.bioinformatics.xenon.alignment import QuantumAlignmentEngine
 from qratum.core.optimization import PerformanceProfiler
 

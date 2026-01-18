@@ -21,10 +21,8 @@ from typing import Any
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
-
 from qratum_asi.meta_evolution.types import (
     MetaDiscovery,
-    AbstractionLevel,
 )
 
 
@@ -195,8 +193,8 @@ class MetaReinjectionLoop:
         for discovery in discoveries:
             # Check if eligible for reinjection
             if (
-                discovery.confidence >= self.MIN_REINJECTION_CONFIDENCE and
-                discovery.reinjection_eligible
+                discovery.confidence >= self.MIN_REINJECTION_CONFIDENCE
+                and discovery.reinjection_eligible
             ):
                 # Extract pattern
                 pattern = self._extract_pattern(discovery)
@@ -272,8 +270,7 @@ class MetaReinjectionLoop:
 
         # Determine reinjection eligibility
         reinjection_eligible = (
-            confidence >= self.MIN_REINJECTION_CONFIDENCE and
-            len(applicability) > 0
+            confidence >= self.MIN_REINJECTION_CONFIDENCE and len(applicability) > 0
         )
 
         discovery = MetaDiscovery(
@@ -285,20 +282,21 @@ class MetaReinjectionLoop:
             confidence=confidence,
             reinjection_eligible=reinjection_eligible,
             provenance_hash=hashlib.sha3_256(
-                json.dumps({
-                    "id": discovery_id,
-                    "type": discovery_type,
-                    "desc": description,
-                }, sort_keys=True).encode()
+                json.dumps(
+                    {
+                        "id": discovery_id,
+                        "type": discovery_type,
+                        "desc": description,
+                    },
+                    sort_keys=True,
+                ).encode()
             ).hexdigest(),
         )
 
         self.meta_discoveries[discovery_id] = discovery
         return discovery
 
-    def _analyze_velocity(
-        self, records: list[dict[str, Any]]
-    ) -> MetaDiscovery | None:
+    def _analyze_velocity(self, records: list[dict[str, Any]]) -> MetaDiscovery | None:
         """Analyze improvement velocity patterns."""
         if len(records) < 3:
             return None
@@ -313,16 +311,17 @@ class MetaReinjectionLoop:
                 return self.create_discovery(
                     discovery_type="velocity_acceleration",
                     description="Improvement velocity is accelerating over time",
-                    implications=["Self-improvement process is working", "Future improvements may be faster"],
+                    implications=[
+                        "Self-improvement process is working",
+                        "Future improvements may be faster",
+                    ],
                     applicability=["All abstraction levels"],
                     confidence=0.7,
                 )
 
         return None
 
-    def _analyze_level_patterns(
-        self, records: list[dict[str, Any]]
-    ) -> MetaDiscovery | None:
+    def _analyze_level_patterns(self, records: list[dict[str, Any]]) -> MetaDiscovery | None:
         """Analyze abstraction level patterns."""
         levels = [r.get("level", "code") for r in records]
 
@@ -345,9 +344,7 @@ class MetaReinjectionLoop:
 
         return None
 
-    def _analyze_success_factors(
-        self, records: list[dict[str, Any]]
-    ) -> MetaDiscovery | None:
+    def _analyze_success_factors(self, records: list[dict[str, Any]]) -> MetaDiscovery | None:
         """Analyze factors correlated with success."""
         successful = [r for r in records if r.get("improvement", 0) > 0]
 

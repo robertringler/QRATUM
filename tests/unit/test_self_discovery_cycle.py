@@ -10,18 +10,17 @@ Tests the autonomous discovery loop implementation:
 """
 
 import pytest
+
 from qratum.discovery import (
-    Hypothesis,
-    StateSpaceModel,
-    SearchResult,
-    EmpiricalDelta,
     DiscoveryEntry,
-    DiscoveryStatus,
     DiscoveryLedger,
-    VerificationAgent,
-    ReplayVerificationAgent,
-    StatisticalVerificationAgent,
+    DiscoveryStatus,
+    EmpiricalDelta,
+    Hypothesis,
+    SearchResult,
     SelfDiscoveryCycle,
+    StateSpaceModel,
+    StatisticalVerificationAgent,
     create_sdc_for_domain,
 )
 
@@ -189,9 +188,7 @@ class TestStatisticalVerificationAgent:
 
     def test_verify_significant_discovery(self):
         """Should verify statistically significant discovery."""
-        agent = StatisticalVerificationAgent(
-            min_samples=5, confidence_threshold=0.9
-        )
+        agent = StatisticalVerificationAgent(min_samples=5, confidence_threshold=0.9)
 
         entry = DiscoveryEntry(
             empirical_delta=EmpiricalDelta(
@@ -324,9 +321,13 @@ class TestSelfDiscoveryCycle:
             hypothesis_generator=lambda: Hypothesis(),
             model_deriver=lambda h: StateSpaceModel(),
             search_executor=lambda m: SearchResult(
-                model_id="", best_state=None, best_value=0.5,
-                nodes_explored=10, time_elapsed_ms=1.0,
-                depth_reached=1, confidence=0.5,
+                model_id="",
+                best_state=None,
+                best_value=0.5,
+                nodes_explored=10,
+                time_elapsed_ms=1.0,
+                depth_reached=1,
+                confidence=0.5,
             ),
             delta_evaluator=evaluate_delta_low,
             delta_threshold=0.1,

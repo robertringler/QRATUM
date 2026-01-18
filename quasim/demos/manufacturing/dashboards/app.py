@@ -14,8 +14,7 @@ def main():
     st.title("🏭 Predictive Maintenance & Throughput Control")
     st.markdown("**Target Accounts**: Siemens, GE, Bosch, Toyota")
 
-    st.markdown(
-        """
+    st.markdown("""
 
     ## Overview
 
@@ -23,8 +22,7 @@ def main():
 
     ### Key Performance Indicators (KPIs)
     - MTBF, downtime_pct, throughput_units_hr, false_alarm_rate
-    """
-    )
+    """)
 
     artifacts_dir = Path("artifacts/manufacturing")
 
@@ -58,8 +56,7 @@ def main():
     else:
         st.info("No artifacts directory found. Run the demo to generate data.")
 
-    st.markdown(
-        """
+    st.markdown("""
 
     ## How to Run
 
@@ -70,8 +67,7 @@ def main():
     # Run simulation with capture
     python -m quasim.demos.manufacturing.cli simulate --seed 42 --capture
     ```
-    """
-    )
+    """)
 
 
 if __name__ == "__main__":

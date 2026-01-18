@@ -104,9 +104,7 @@ class DiscoveryProjectionsEngine:
         """Initialize the projections engine."""
         self._projection_cache: dict[DiscoveryType, DiscoveryProjection] = {}
 
-    def get_projections(
-        self, discovery_type: DiscoveryType
-    ) -> DiscoveryProjection:
+    def get_projections(self, discovery_type: DiscoveryType) -> DiscoveryProjection:
         """Get quantitative projections for a discovery type.
 
         Args:
@@ -232,42 +230,36 @@ class DiscoveryProjectionsEngine:
         risk_factors = []
 
         if vulnerability_score > 0.10:
-            risk_factors.append({
-                "factor": "Elevated vulnerability detection",
-                "severity": "medium",
-                "score": vulnerability_score,
-            })
+            risk_factors.append(
+                {
+                    "factor": "Elevated vulnerability detection",
+                    "severity": "medium",
+                    "score": vulnerability_score,
+                }
+            )
 
         if trajectory_compliance < 0.90:
-            risk_factors.append({
-                "factor": "Sub-optimal trajectory compliance",
-                "severity": "low",
-                "score": trajectory_compliance,
-            })
+            risk_factors.append(
+                {
+                    "factor": "Sub-optimal trajectory compliance",
+                    "severity": "low",
+                    "score": trajectory_compliance,
+                }
+            )
 
         # Generate recommendations
         recommendations = []
 
         if vulnerability_score > 0.10:
-            recommendations.append(
-                "Increase vulnerability monitoring frequency"
-            )
-            recommendations.append(
-                "Review trajectory for precursor patterns"
-            )
+            recommendations.append("Increase vulnerability monitoring frequency")
+            recommendations.append("Review trajectory for precursor patterns")
 
         if trajectory_compliance < 0.90:
-            recommendations.append(
-                "Enhance trajectory awareness in workflow stages"
-            )
-            recommendations.append(
-                "Consider additional rollback points"
-            )
+            recommendations.append("Enhance trajectory awareness in workflow stages")
+            recommendations.append("Consider additional rollback points")
 
         if overall_risk > 0.20:
-            recommendations.append(
-                "Implement dual-control for sensitive operations"
-            )
+            recommendations.append("Implement dual-control for sensitive operations")
 
         # Always recommend best practices
         if not recommendations:
@@ -288,10 +280,7 @@ class DiscoveryProjectionsEngine:
         Returns:
             Dictionary mapping discovery type values to projections
         """
-        return {
-            dt.value: self.get_projections(dt)
-            for dt in DiscoveryType
-        }
+        return {dt.value: self.get_projections(dt) for dt in DiscoveryType}
 
     def compare_discovery_types(
         self, metric: str = "time_savings_factor"

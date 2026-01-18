@@ -1,6 +1,6 @@
 """Tests for ECORA Climate & Energy module."""
 
-from qratum_platform.core import PlatformContract, PlatformIntent, VerticalModule, ComputeSubstrate
+from qratum_platform.core import ComputeSubstrate, PlatformContract, PlatformIntent, VerticalModule
 from verticals.ecora import ECORAModule
 
 

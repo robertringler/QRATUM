@@ -1,17 +1,15 @@
 """Tests for Provenance Contract System."""
 
 import pytest
+
 from contracts.provenance import (
-    ProvenanceContract,
+    ComplianceStandard,
     ProvenanceChainBuilder,
     ProvenanceEntry,
     ProvenanceType,
-    ComplianceArtifact,
-    ComplianceStandard,
     create_21cfr11_provenance,
     create_do178c_provenance,
 )
-from contracts.base import compute_contract_hash
 
 
 class TestProvenanceEntry:

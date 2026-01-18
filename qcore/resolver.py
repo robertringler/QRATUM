@@ -95,7 +95,7 @@ class CapabilityResolver:
 
         # If no capabilities specified, use general_compute
         if not intent.capabilities:
-            capabilities = [Capability(name='general_compute')]
+            capabilities = [Capability(name="general_compute")]
         else:
             capabilities = intent.capabilities
 
@@ -110,9 +110,7 @@ class CapabilityResolver:
 
             # Filter by hardware constraints
             if intent.hardware:
-                cluster_types = self._filter_by_hardware_spec(
-                    cluster_types, intent.hardware
-                )
+                cluster_types = self._filter_by_hardware_spec(cluster_types, intent.hardware)
 
             if not cluster_types:
                 raise CapabilityResolutionError(
@@ -141,9 +139,7 @@ class CapabilityResolver:
 
         return resolved
 
-    def _filter_by_hardware_spec(
-        self, cluster_types: list[str], hardware_spec: Any
-    ) -> list[str]:
+    def _filter_by_hardware_spec(self, cluster_types: list[str], hardware_spec: Any) -> list[str]:
         """Filter cluster types by hardware specification.
 
         Args:

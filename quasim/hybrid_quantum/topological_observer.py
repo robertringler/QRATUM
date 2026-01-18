@@ -302,9 +302,7 @@ class EnhancedTopologicalObserver:
         """
         return self._proposals.copy()
 
-    def generate_soi_visualization_data(
-        self, observation_id: str | None = None
-    ) -> dict[str, Any]:
+    def generate_soi_visualization_data(self, observation_id: str | None = None) -> dict[str, Any]:
         """Generate System of Interest (SOI) visualization data.
 
         Args:
@@ -385,9 +383,7 @@ class EnhancedTopologicalObserver:
                 ),
             },
             "findings_total": sum(len(o.findings) for o in self._observations),
-            "proposals_pending": len(
-                [p for p in self._proposals if p.get("status") == "pending"]
-            ),
+            "proposals_pending": len([p for p in self._proposals if p.get("status") == "pending"]),
         }
 
     def _compute_collapse_metrics(
@@ -413,9 +409,9 @@ class EnhancedTopologicalObserver:
         # Concentration coefficient (Gini-like)
         cumsum = np.cumsum(sorted_probs)
         if np.sum(sorted_probs) > 0:
-            gini = (2 * np.sum(np.arange(1, n + 1) * sorted_probs)) / (
-                n * np.sum(sorted_probs)
-            ) - (n + 1) / n
+            gini = (2 * np.sum(np.arange(1, n + 1) * sorted_probs)) / (n * np.sum(sorted_probs)) - (
+                n + 1
+            ) / n
             concentration_coefficient = max(0.0, min(1.0, gini))
         else:
             concentration_coefficient = 0.0
@@ -490,9 +486,7 @@ class EnhancedTopologicalObserver:
                 ref_probs = {k: v / ref_total for k, v in ref.items()}
 
                 all_outcomes = set(probs.keys()) | set(ref_probs.keys())
-                bc = sum(
-                    np.sqrt(probs.get(o, 0) * ref_probs.get(o, 0)) for o in all_outcomes
-                )
+                bc = sum(np.sqrt(probs.get(o, 0) * ref_probs.get(o, 0)) for o in all_outcomes)
                 fidelities.append(bc)
 
             if fidelities:
@@ -626,18 +620,14 @@ class EnhancedTopologicalObserver:
             "max_possible_entropy": np.log2(len(counts)) if len(counts) > 0 else 0,
         }
 
-    def _compute_provenance_hash(
-        self, counts: dict[str, int], diagnostics: dict[str, Any]
-    ) -> str:
+    def _compute_provenance_hash(self, counts: dict[str, int], diagnostics: dict[str, Any]) -> str:
         """Compute provenance hash for observation."""
         counts_str = json.dumps(counts, sort_keys=True)
         diag_str = json.dumps(diagnostics, sort_keys=True, default=str)
         combined = f"{counts_str}|{diag_str}"
         return hashlib.sha256(combined.encode()).hexdigest()
 
-    def _count_by_severity(
-        self, observations: list[TopologicalObservation]
-    ) -> dict[str, int]:
+    def _count_by_severity(self, observations: list[TopologicalObservation]) -> dict[str, int]:
         """Count findings by severity across observations."""
         counts: dict[str, int] = {}
         for obs in observations:
@@ -646,9 +636,7 @@ class EnhancedTopologicalObserver:
                 counts[severity] = counts.get(severity, 0) + 1
         return counts
 
-    def _count_by_category(
-        self, observations: list[TopologicalObservation]
-    ) -> dict[str, int]:
+    def _count_by_category(self, observations: list[TopologicalObservation]) -> dict[str, int]:
         """Count findings by category across observations."""
         counts: dict[str, int] = {}
         for obs in observations:

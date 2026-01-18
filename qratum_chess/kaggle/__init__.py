@@ -13,9 +13,9 @@ Core modules:
 from __future__ import annotations
 
 from qratum_chess.kaggle.client import KaggleClient
-from qratum_chess.kaggle.submission import SubmissionFormatter, SubmissionValidator
-from qratum_chess.kaggle.leaderboard import LeaderboardTracker
 from qratum_chess.kaggle.config import KaggleConfig
+from qratum_chess.kaggle.leaderboard import LeaderboardTracker
+from qratum_chess.kaggle.submission import SubmissionFormatter, SubmissionValidator
 
 __all__ = [
     "KaggleClient",
