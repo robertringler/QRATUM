@@ -298,38 +298,17 @@ class KaggleIntegration:
                 try:
                     position = Position.from_fen(fen)
                     positions.append(KaggleBenchmarkPosition(
+                        position_id=pos_data.get("test_id", str(len(positions))),
                         fen=fen,
-                        position=position,
-                        test_id=pos_data.get("test_id", str(len(positions))),
+                        description=pos_data.get("description", ""),
                         expected_move=pos_data.get("expected_move"),
-                        expected_eval=pos_data.get("expected_eval"),
+                        difficulty=pos_data.get("difficulty"),
+                        position=position,
                     ))
                 except ValueError:
                     logger.warning(f"Invalid FEN skipped: {fen}")
         
         return positions
-
-
-@dataclass
-class KaggleBenchmarkPosition:
-    """Represents a benchmark position from Kaggle data.
-    
-    Attributes:
-        fen: FEN string of the position.
-        position: QRATUM Position object.
-        test_id: Identifier for this test position.
-        expected_move: Expected best move (if available).
-        expected_eval: Expected evaluation (if available).
-        difficulty: Difficulty rating of the position.
-        category: Category of the position (tactics, endgame, etc.).
-    """
-    fen: str
-    position: Position
-    test_id: str
-    expected_move: str | None = None
-    expected_eval: float | None = None
-    difficulty: str = "medium"
-    category: str = "general"
 
 
 @dataclass
