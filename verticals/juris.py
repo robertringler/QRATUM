@@ -12,7 +12,7 @@ from qratum_platform.core import (
     PlatformContract,
     VerticalModuleBase,
 )
-from qratum_platform.substrates import get_optimal_substrate, VerticalModule
+from qratum_platform.substrates import VerticalModule, get_optimal_substrate
 
 
 class JURISModule(VerticalModuleBase):
@@ -169,9 +169,7 @@ class JURISModule(VerticalModuleBase):
 
         return issues
 
-    def _determine_applicable_rules(
-        self, issues: List[str], area_of_law: str
-    ) -> Dict[str, str]:
+    def _determine_applicable_rules(self, issues: List[str], area_of_law: str) -> Dict[str, str]:
         """Determine applicable legal rules."""
         rules = {}
 
@@ -383,9 +381,7 @@ class JURISModule(VerticalModuleBase):
             "disclaimer": self.SAFETY_DISCLAIMER,
         }
 
-    def _check_framework_compliance(
-        self, policy_text: str, framework: str
-    ) -> Dict[str, Any]:
+    def _check_framework_compliance(self, policy_text: str, framework: str) -> Dict[str, Any]:
         """Check compliance with specific framework."""
         framework_requirements = {
             "gdpr": [
@@ -412,9 +408,7 @@ class JURISModule(VerticalModuleBase):
             "gaps": gaps,
         }
 
-    def get_optimal_substrate(
-        self, operation: str, parameters: Dict[str, Any]
-    ) -> ComputeSubstrate:
+    def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
         """Get optimal compute substrate for legal operation.
 
         Args:

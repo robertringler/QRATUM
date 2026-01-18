@@ -72,11 +72,7 @@ class AdversarialSimulator:
         self.knowledge_base = knowledge_base or LegalKnowledgeBase()
 
     def simulate_adversarial_debate(
-        self,
-        issue: str,
-        facts: str,
-        jurisdiction: str,
-        rounds: int = 3
+        self, issue: str, facts: str, jurisdiction: str, rounds: int = 3
     ) -> dict:
         """Simulate adversarial legal debate.
 
@@ -91,36 +87,39 @@ class AdversarialSimulator:
         """
         # Generate plaintiff/prosecution arguments
         plaintiff_position = self._generate_position(
-            side="Plaintiff",
-            issue=issue,
-            facts=facts,
-            jurisdiction=jurisdiction,
-            favor=True
+            side="Plaintiff", issue=issue, facts=facts, jurisdiction=jurisdiction, favor=True
         )
 
         # Generate defendant/defense arguments
         defendant_position = self._generate_position(
-            side="Defendant",
-            issue=issue,
-            facts=facts,
-            jurisdiction=jurisdiction,
-            favor=False
+            side="Defendant", issue=issue, facts=facts, jurisdiction=jurisdiction, favor=False
         )
 
         # Simulate rounds of argument
         debate_rounds = []
         for round_num in range(rounds):
-            debate_rounds.append({
-                "round": round_num + 1,
-                "plaintiff_argument": plaintiff_position.arguments[min(round_num, len(plaintiff_position.arguments) - 1)].premise if plaintiff_position.arguments else "No additional arguments",
-                "defendant_argument": defendant_position.arguments[min(round_num, len(defendant_position.arguments) - 1)].premise if defendant_position.arguments else "No additional arguments",
-            })
+            debate_rounds.append(
+                {
+                    "round": round_num + 1,
+                    "plaintiff_argument": (
+                        plaintiff_position.arguments[
+                            min(round_num, len(plaintiff_position.arguments) - 1)
+                        ].premise
+                        if plaintiff_position.arguments
+                        else "No additional arguments"
+                    ),
+                    "defendant_argument": (
+                        defendant_position.arguments[
+                            min(round_num, len(defendant_position.arguments) - 1)
+                        ].premise
+                        if defendant_position.arguments
+                        else "No additional arguments"
+                    ),
+                }
+            )
 
         # Predict likely outcome
-        outcome_prediction = self._predict_outcome(
-            plaintiff_position,
-            defendant_position
-        )
+        outcome_prediction = self._predict_outcome(plaintiff_position, defendant_position)
 
         return {
             "issue": issue,
@@ -132,11 +131,11 @@ class AdversarialSimulator:
                         "premise": arg.premise,
                         "reasoning": arg.reasoning,
                         "authority": arg.authority,
-                        "strength": arg.strength
+                        "strength": arg.strength,
                     }
                     for arg in plaintiff_position.arguments
                 ],
-                "strength_score": plaintiff_position.strength_score
+                "strength_score": plaintiff_position.strength_score,
             },
             "defendant_position": {
                 "position": defendant_position.position,
@@ -145,23 +144,18 @@ class AdversarialSimulator:
                         "premise": arg.premise,
                         "reasoning": arg.reasoning,
                         "authority": arg.authority,
-                        "strength": arg.strength
+                        "strength": arg.strength,
                     }
                     for arg in defendant_position.arguments
                 ],
-                "strength_score": defendant_position.strength_score
+                "strength_score": defendant_position.strength_score,
             },
             "debate_rounds": debate_rounds,
-            "outcome_prediction": outcome_prediction
+            "outcome_prediction": outcome_prediction,
         }
 
     def _generate_position(
-        self,
-        side: str,
-        issue: str,
-        facts: str,
-        jurisdiction: str,
-        favor: bool
+        self, side: str, issue: str, facts: str, jurisdiction: str, favor: bool
     ) -> DebatePosition:
         """Generate arguments for one side of the debate.
 
@@ -191,48 +185,58 @@ class AdversarialSimulator:
             if authorities:
                 for auth in authorities[:3]:
                     if auth.key_holdings:
-                        arguments.append(LegalArgument(
-                            premise=f"{side} argues that {auth.key_holdings[0].lower()}",
-                            reasoning=f"Under {auth.citation}, the law supports this position",
-                            authority=auth.citation,
-                            strength=0.75
-                        ))
+                        arguments.append(
+                            LegalArgument(
+                                premise=f"{side} argues that {auth.key_holdings[0].lower()}",
+                                reasoning=f"Under {auth.citation}, the law supports this position",
+                                authority=auth.citation,
+                                strength=0.75,
+                            )
+                        )
 
             # Add policy argument
-            arguments.append(LegalArgument(
-                premise=f"{side} argues public policy supports this interpretation",
-                reasoning="This interpretation promotes fairness and predictability in legal relations",
-                authority="General policy considerations",
-                strength=0.60
-            ))
+            arguments.append(
+                LegalArgument(
+                    premise=f"{side} argues public policy supports this interpretation",
+                    reasoning="This interpretation promotes fairness and predictability in legal relations",
+                    authority="General policy considerations",
+                    strength=0.60,
+                )
+            )
         else:
             # Arguments opposing
             if authorities:
                 for auth in authorities[:3]:
                     if len(auth.key_holdings) > 1:
-                        arguments.append(LegalArgument(
-                            premise=f"{side} distinguishes {auth.citation}",
-                            reasoning=f"The facts here differ materially from {auth.title}",
-                            authority=auth.citation,
-                            strength=0.70
-                        ))
+                        arguments.append(
+                            LegalArgument(
+                                premise=f"{side} distinguishes {auth.citation}",
+                                reasoning=f"The facts here differ materially from {auth.title}",
+                                authority=auth.citation,
+                                strength=0.70,
+                            )
+                        )
 
             # Add counterargument
-            arguments.append(LegalArgument(
-                premise=f"{side} argues the facts do not satisfy the required elements",
-                reasoning="Critical factual elements are missing or disputed",
-                authority="Factual analysis",
-                strength=0.65
-            ))
+            arguments.append(
+                LegalArgument(
+                    premise=f"{side} argues the facts do not satisfy the required elements",
+                    reasoning="Critical factual elements are missing or disputed",
+                    authority="Factual analysis",
+                    strength=0.65,
+                )
+            )
 
         # Ensure at least one argument
         if not arguments:
-            arguments.append(LegalArgument(
-                premise=f"{side} presents its case based on the facts and law",
-                reasoning="The facts and applicable law support this position",
-                authority="General legal principles",
-                strength=0.50
-            ))
+            arguments.append(
+                LegalArgument(
+                    premise=f"{side} presents its case based on the facts and law",
+                    reasoning="The facts and applicable law support this position",
+                    authority="General legal principles",
+                    strength=0.50,
+                )
+            )
 
         # Calculate overall strength
         if arguments:
@@ -240,11 +244,7 @@ class AdversarialSimulator:
         else:
             strength_score = 0.50
 
-        return DebatePosition(
-            position=side,
-            arguments=arguments,
-            strength_score=strength_score
-        )
+        return DebatePosition(position=side, arguments=arguments, strength_score=strength_score)
 
     def _extract_keywords(self, text: str) -> list[str]:
         """Extract legal keywords from text.
@@ -256,18 +256,20 @@ class AdversarialSimulator:
             List of keywords
         """
         legal_keywords = [
-            "breach", "contract", "damages", "duty", "negligence",
-            "consideration", "foreseeability", "reasonable"
+            "breach",
+            "contract",
+            "damages",
+            "duty",
+            "negligence",
+            "consideration",
+            "foreseeability",
+            "reasonable",
         ]
 
         text_lower = text.lower()
         return [kw for kw in legal_keywords if kw in text_lower]
 
-    def _predict_outcome(
-        self,
-        plaintiff: DebatePosition,
-        defendant: DebatePosition
-    ) -> dict:
+    def _predict_outcome(self, plaintiff: DebatePosition, defendant: DebatePosition) -> dict:
         """Predict likely outcome based on argument strengths.
 
         Args:
@@ -307,5 +309,5 @@ class AdversarialSimulator:
                 f"Based on argument strength analysis, {likely_winner} "
                 f"has the stronger position, though the outcome depends on "
                 f"how the trier of fact evaluates the evidence and arguments."
-            )
+            ),
         }
