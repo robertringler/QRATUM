@@ -59,6 +59,7 @@ coverage.json
 
 # QuASIM-Own runtime directories
 runs/
+!compiled_realities/runs/
 reports/
 .cache/quasim_datasets/
 
