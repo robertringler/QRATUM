@@ -122,7 +122,8 @@ class CPTPProcessTensorModel(BaseModel):
                              [-1j * np.sin(angle), np.cos(angle)]], dtype=complex)
             else:
                 # Generic unitary rotation
-                U = expm(-1j * angle * self.H / np.linalg.norm(self.H))
+                norm_H = np.linalg.norm(self.H)
+                U = expm(-1j * angle * self.H / norm_H) if norm_H > 1e-12 else np.eye(self.dim, dtype=complex)
             
             return U @ rho @ U.conj().T
     

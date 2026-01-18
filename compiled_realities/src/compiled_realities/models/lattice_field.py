@@ -102,7 +102,7 @@ class LatticeFieldModel(BaseModel):
         """
         # Extract effective light speed from dispersion
         k_small = self.k_grid[1] if len(self.k_grid) > 1 else 1.0
-        c_eff = self.omega_k[1] / k_small if k_small != 0 else 1.0
+        c_eff = self.omega_k[1] / (k_small + 1e-12) if abs(k_small) > 1e-12 else 1.0
         
         # Compute dispersion deviation
         linear_omega = c_eff * np.abs(self.k_grid)
