@@ -234,7 +234,7 @@ def analyze_bulk_vs_boundary_sensitivity(results_df) -> Dict[str, Any]:
         'bulk_sensitivity_std': float(np.std(bulk_sens_values)) if len(bulk_sens_values) > 1 else None,
         'boundary_sensitivity_mean': float(np.mean(boundary_sens_values)) if boundary_sens_values else None,
         'hypothesis_supported': (
-            np.mean(bulk_sens_values) > np.mean(boundary_sens_values)
+            bool(np.mean(bulk_sens_values) > np.mean(boundary_sens_values))
             if bulk_sens_values and boundary_sens_values else None
         ),
     }
