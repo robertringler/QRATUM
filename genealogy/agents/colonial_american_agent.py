@@ -60,8 +60,8 @@ class ColonialAmericanAgent(ResearchAgent):
             given_names="Ruth Hammond",
             surname="Warfield",
             gender=Gender.FEMALE,
-            birth_date=date(1756, 1, 1),  # Approximate
-            death_date=date(1820, 1, 1),  # Approximate
+            birth_date=None,  # Circa (year from family records)
+            death_date=None,  # Circa (year from family records)
             birth_place="Maryland",
             notes="1756-1820; Revolutionary War era; mother of Harriet Amelia Warfield"
         )
@@ -74,8 +74,8 @@ class ColonialAmericanAgent(ResearchAgent):
             given_names="Harriet Amelia",
             surname="Warfield",
             gender=Gender.FEMALE,
-            birth_date=date(1783, 1, 1),  # Approximate
-            death_date=date(1844, 1, 1),  # Approximate
+            birth_date=None,  # Circa (year from family records)
+            death_date=None,  # Circa (year from family records)
             birth_place="Maryland",
             notes="1783-1844; daughter of Ruth Hammond Warfield; documented in family records"
         )
@@ -122,8 +122,8 @@ class ColonialAmericanAgent(ResearchAgent):
             given_names="Hannah",
             surname="Hammond-Welsh",
             gender=Gender.FEMALE,
-            birth_date=date(1723, 1, 1),  # Approximate
-            death_date=date(1779, 1, 1),  # Approximate
+            birth_date=None,  # Circa (year from family records)
+            death_date=None,  # Circa (year from family records)
             birth_place="Maryland",
             notes="1723-1779; compound surname Hammond-Welsh suggests Hammond maternal line"
         )
@@ -148,8 +148,8 @@ class ColonialAmericanAgent(ResearchAgent):
             given_names="John Charles",
             surname="Hammond",
             gender=Gender.MALE,
-            birth_date=date(1698, 1, 1),  # Approximate
-            death_date=date(1753, 1, 1),  # Approximate
+            birth_date=None,  # Circa (year from family records)
+            death_date=None,  # Circa (year from family records)
             titles=["Captain"],
             birth_place="Maryland",
             notes="Captain; 1698-1753; father of Hannah Hammond-Welsh (claimed)"
@@ -163,8 +163,8 @@ class ColonialAmericanAgent(ResearchAgent):
             given_names="Charles M.",
             surname="Hammond",
             gender=Gender.MALE,
-            birth_date=date(1670, 1, 1),  # Approximate
-            death_date=date(1713, 1, 1),  # Approximate
+            birth_date=None,  # Circa (year from family records)
+            death_date=None,  # Circa (year from family records)
             titles=["Major"],
             birth_place="Maryland",
             notes="Major; 1670-1713; father of Capt. John Charles Hammond (claimed)"

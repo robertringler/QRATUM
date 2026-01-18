@@ -65,10 +65,10 @@ class NineteenthCenturyBennettAgent(ResearchAgent):
             given_names="John E.",
             surname="Bennett",
             gender=Gender.MALE,
-            birth_date=date(1876, 1, 1),  # Approximate
-            death_date=date(1964, 1, 1),  # Approximate
+            birth_date=None,  # Circa 1876 - requires verification
+            death_date=None,  # Circa 1964 - requires verification
             birth_place="Maryland (requires verification)",
-            notes="1876-1964; father of Ralph E. Bennett; requires birth/death certificate"
+            notes="Circa 1876-1964; father of Ralph E. Bennett; requires birth/death certificate"
         )
         self.add_person(john_bennett)
         
@@ -99,10 +99,10 @@ class NineteenthCenturyBennettAgent(ResearchAgent):
             given_names="Seth E.",
             surname="Bennett",
             gender=Gender.MALE,
-            birth_date=date(1842, 1, 1),  # Approximate
-            death_date=date(1931, 1, 1),  # Approximate
+            birth_date=None,  # Circa 1842 - requires verification
+            death_date=None,  # Circa 1931 - requires verification
             birth_place="Maryland",
-            notes="1842-1931; father of John E. Bennett; Civil War era"
+            notes="Circa 1842-1931; father of John E. Bennett; Civil War era"
         )
         self.add_person(seth_bennett)
         
@@ -145,12 +145,12 @@ class NineteenthCenturyBennettAgent(ResearchAgent):
             full_name="Caroline Hammond Benepe (Bennett)",
             given_names="Caroline Hammond",
             surname="Benepe",
-            maiden_name="Unknown",
+            maiden_name=None,  # Unknown - CRITICAL to discover via marriage record
             gender=Gender.FEMALE,
-            birth_date=date(1805, 1, 1),  # Approximate
-            death_date=date(1880, 1, 1),  # Approximate
+            birth_date=None,  # Circa 1805 - requires verification
+            death_date=None,  # Circa 1880 - requires verification
             birth_place="Maryland",
-            notes="1805-1880; mother of Seth E. Bennett; surname variant Benepe/Bennett critical"
+            notes="Circa 1805-1880; mother of Seth E. Bennett; surname variant Benepe/Bennett critical; maiden name unknown"
         )
         self.add_person(caroline)
         

@@ -1,65 +1,4 @@
 {
-  "agent_4_medieval": {
-    "success": true,
-    "royal_generations_documented": 3,
-    "analysis": {
-      "coverage": "Pre-1400 (Medieval period, Plantagenet dynasty)",
-      "key_monarchs": [
-        "Edward I"
-      ],
-      "gateway_ancestors": [
-        "Thomas of Brotherton, Earl of Norfolk",
-        "Margaret of Brotherton",
-        "Elizabeth Segrave"
-      ],
-      "royal_houses": [
-        "Plantagenet"
-      ],
-      "primary_sources": [
-        "Calendar of Close Rolls, Patent Rolls",
-        "Inquisitions Post Mortem",
-        "Contemporary chronicles (Froissart, etc.)",
-        "Monastic cartularies",
-        "Royal charters and grants"
-      ],
-      "authoritative_modern_works": [
-        "Complete Peerage (Cokayne)",
-        "Plantagenet Encyclopedia",
-        "Specialized studies (McFarlane on Mowbrays, etc.)"
-      ],
-      "descent_proven": "Edward I \u2192 Thomas of Brotherton \u2192 Margaret \u2192 Mowbray line \u2192 Howard family",
-      "proof_strength": "STRONG - Multiple contemporary sources, extensively studied by scholars, no disputed links in this chain",
-      "legitimacy_confirmed": "All births legitimate, marriages valid, successions documented",
-      "critical_link_to_modern": "Must connect Howard/Mowbray noble lines through English gentry to colonial American families to modern subject",
-      "confidence_level": "Very High for medieval royal descent to Howard/Mowbray; Chain only as strong as colonial-to-nobility connection"
-    },
-    "report": {
-      "agent_id": "agent_4_medieval_royal",
-      "scope": "Medieval Royal Descent (Pre-1400)",
-      "status": "completed",
-      "execution_time": "0.00 seconds",
-      "persons_found": 3,
-      "relationships_established": 0,
-      "records_analyzed": 0,
-      "sources_consulted": 4,
-      "citations_created": 0,
-      "findings": [
-        "Edward I (1239-1307) definitively documented as King of England. Legitimate children documented in Complete Peerage and contemporary chronicles.",
-        "Thomas of Brotherton (1300-1338): Legitimate son of Edward I by second wife Margaret of France. Created Earl of Norfolk and hereditary Earl Marshal. Well-documented in contemporary records and modern scholarship.",
-        "Margaret of Brotherton (c.1320-1399): Only surviving child of Thomas of Brotherton. Inherited earldom of Norfolk in her own right. Married twice: 1st to John Segrave, 4th Baron Segrave; 2nd to Sir Walter Mauny.",
-        "Mowbray line: Margaret's great-grandson Thomas Mowbray was created Duke of Norfolk in 1397 (1st creation). Mowbray Dukes of Norfolk descended from Margaret through her granddaughter Elizabeth Segrave who married John Mowbray.",
-        "COMPLETE PLANTAGENET DESCENT CHAIN DOCUMENTED:\n1. Edward I (1239-1307), King of England\n2. Thomas of Brotherton (1300-1338), Earl of Norfolk, son of Edward I\n3. Margaret of Brotherton (c.1320-1399), suo jure Countess of Norfolk\n4. John de Segrave (m. Margaret) \u2192 Elizabeth Segrave\n5. Elizabeth Segrave m. John Mowbray, 4th Baron Mowbray\n6. Thomas Mowbray, 1st Duke of Norfolk (1st creation)\n7. Multiple Mowbray generations as Dukes of Norfolk\n8. Mowbray estates and dignities pass to Howard family through marriage",
-        "All generations documented with contemporary records (charters, IPMs, wills) and authoritative modern scholarship (Complete Peerage, specialized studies). Legitimacy established for each generation."
-      ],
-      "conflicts": [],
-      "persons": {
-        "EDWARD_I": "Edward I Longshanks, King of England, King of England",
-        "THOMAS_BROTHERTON": "Thomas of Brotherton, Earl of Norfolk, Earl of Norfolk, Earl Marshal",
-        "MARGARET_BROTHERTON": "Margaret of Brotherton, Duchess of Norfolk, Duchess of Norfolk suo jure"
-      },
-      "relationships": {}
-    }
-  },
   "agent_1b_nineteenth": {
     "success": true,
     "generations_documented": 3,
@@ -111,13 +50,75 @@
       ],
       "conflicts": [],
       "persons": {
-        "JOHN_E_BENNETT_001": "John E. Bennett (b. 1876 - d. 1964)",
-        "SETH_E_BENNETT_001": "Seth E. Bennett (b. 1842 - d. 1931)",
-        "CAROLINE_BENEPE_001": "Caroline Hammond Benepe (Bennett) (b. 1805 - d. 1880)"
+        "JOHN_E_BENNETT_001": "John E. Bennett",
+        "SETH_E_BENNETT_001": "Seth E. Bennett",
+        "CAROLINE_BENEPE_001": "Caroline Hammond Benepe (Bennett)"
       },
       "relationships": {
         "REL_19TH_001": "SETH_E_BENNETT_001 --[parent_child]--> JOHN_E_BENNETT_001",
         "REL_19TH_002": "CAROLINE_BENEPE_001 --[parent_child]--> SETH_E_BENNETT_001"
+      }
+    }
+  },
+  "agent_1_modern": {
+    "success": true,
+    "generations_traced": 4,
+    "analysis": {
+      "coverage": "1800-Present (with maternal Bennett line documented)",
+      "primary_sources": 1,
+      "secondary_sources": 0,
+      "maternal_chain_documented": [
+        "Robert Ringler Jr. (b. 1995)",
+        "Karen L. (Bennett) Pulley (b. 1973)",
+        "Thomas Bennett (b. 1946)",
+        "Ralph E. Bennett (1910-1964)",
+        "\u2192 John E. Bennett (1876-1964) [transition to 19th century]"
+      ],
+      "unresolved_questions": [
+        "Birth certificates for Bennett line (Karen, Thomas, Ralph)",
+        "Marriage records for all generations",
+        "Census verification for Bennett family 1910-1950",
+        "Death certificates for Ralph E. Bennett and John E. Bennett",
+        "Paternal Ringler line documentation"
+      ],
+      "proof_assessment": "Maternal Bennett line chain documented in family records; requires GPS-level primary source verification. Paternal Ringler line requires comprehensive research.",
+      "recommendations": [
+        "Priority: Obtain certified birth certificates for Karen Pulley (n\u00e9e Bennett), Thomas Bennett, Ralph Bennett",
+        "Obtain death certificates for Ralph E. Bennett (d. 1964) and John E. Bennett (d. 1964)",
+        "Search census records: 1910, 1920, 1930, 1940 for Bennett family",
+        "Obtain marriage records for all Bennett generations",
+        "Research paternal Ringler family line with equal rigor"
+      ]
+    },
+    "report": {
+      "agent_id": "agent_1_modern_records",
+      "scope": "Modern & Civil Records (1800-Present)",
+      "status": "completed",
+      "execution_time": "0.00 seconds",
+      "persons_found": 5,
+      "relationships_established": 4,
+      "records_analyzed": 1,
+      "sources_consulted": 1,
+      "citations_created": 1,
+      "findings": [
+        "Subject identity established: Robert Ringler Jr. verified through primary source civil birth certificate",
+        "Parental generation: Father Robert Ringler Sr. and mother Karen L. (Bennett) Pulley (b. 1973) identified. Maternal line Bennett surname provides gateway to documented colonial Maryland families.",
+        "Grandparental generation (maternal): Thomas Bennett (b. 1946) identified as father of Karen Pulley. Bennett surname continues back through documented 19th century Maryland families. Paternal grandparents require additional research.",
+        "Great-grandparental generation: Ralph E. Bennett (1910-1964) identified. Bennett line continues back to John E. Bennett (1876-1964), establishing bridge to 19th century. Chain documented in family records; requires primary source verification (birth/death certificates, census 1910-1940)."
+      ],
+      "conflicts": [],
+      "persons": {
+        "RR_JR_001": "Robert Ringler Jr.",
+        "RR_SR_001": "Robert Ringler Sr.",
+        "KAREN_PULLEY_001": "Karen L. (Bennett) Pulley",
+        "THOMAS_BENNETT_001": "Thomas Bennett",
+        "RALPH_BENNETT_001": "Ralph E. Bennett"
+      },
+      "relationships": {
+        "REL_MOD_001": "RR_SR_001 --[parent_child]--> RR_JR_001",
+        "REL_MOD_002": "KAREN_PULLEY_001 --[parent_child]--> RR_JR_001",
+        "REL_MOD_003": "THOMAS_BENNETT_001 --[parent_child]--> KAREN_PULLEY_001",
+        "REL_MOD_004": "RALPH_BENNETT_001 --[parent_child]--> THOMAS_BENNETT_001"
       }
     }
   },
@@ -237,11 +238,11 @@
       ],
       "conflicts": [],
       "persons": {
-        "RUTH_WARFIELD_001": "Ruth Hammond Warfield (b. 1756 - d. 1820)",
-        "HARRIET_WARFIELD_001": "Harriet Amelia Warfield (b. 1783 - d. 1844)",
-        "HANNAH_WELSH_001": "Hannah Hammond-Welsh (b. 1723 - d. 1779)",
-        "JOHN_HAMMOND_001": "Capt. John Charles Hammond (b. 1698 - d. 1753)",
-        "CHARLES_HAMMOND_001": "Maj. Charles M. Hammond (b. 1670 - d. 1713)"
+        "RUTH_WARFIELD_001": "Ruth Hammond Warfield",
+        "HARRIET_WARFIELD_001": "Harriet Amelia Warfield",
+        "HANNAH_WELSH_001": "Hannah Hammond-Welsh",
+        "JOHN_HAMMOND_001": "Capt. John Charles Hammond",
+        "CHARLES_HAMMOND_001": "Maj. Charles M. Hammond"
       },
       "relationships": {
         "REL_COL_001": "RUTH_WARFIELD_001 --[parent_child]--> HARRIET_WARFIELD_001",
@@ -250,66 +251,65 @@
       }
     }
   },
-  "agent_1_modern": {
+  "agent_4_medieval": {
     "success": true,
-    "generations_traced": 4,
+    "royal_generations_documented": 3,
     "analysis": {
-      "coverage": "1800-Present (with maternal Bennett line documented)",
-      "primary_sources": 1,
-      "secondary_sources": 0,
-      "maternal_chain_documented": [
-        "Robert Ringler Jr. (b. 1995)",
-        "Karen L. (Bennett) Pulley (b. 1973)",
-        "Thomas Bennett (b. 1946)",
-        "Ralph E. Bennett (1910-1964)",
-        "\u2192 John E. Bennett (1876-1964) [transition to 19th century]"
+      "coverage": "Pre-1400 (Medieval period, Plantagenet dynasty)",
+      "key_monarchs": [
+        "Edward I"
       ],
-      "unresolved_questions": [
-        "Birth certificates for Bennett line (Karen, Thomas, Ralph)",
-        "Marriage records for all generations",
-        "Census verification for Bennett family 1910-1950",
-        "Death certificates for Ralph E. Bennett and John E. Bennett",
-        "Paternal Ringler line documentation"
+      "gateway_ancestors": [
+        "Thomas of Brotherton, Earl of Norfolk",
+        "Margaret of Brotherton",
+        "Elizabeth Segrave"
       ],
-      "proof_assessment": "Maternal Bennett line chain documented in family records; requires GPS-level primary source verification. Paternal Ringler line requires comprehensive research.",
-      "recommendations": [
-        "Priority: Obtain certified birth certificates for Karen Pulley (n\u00e9e Bennett), Thomas Bennett, Ralph Bennett",
-        "Obtain death certificates for Ralph E. Bennett (d. 1964) and John E. Bennett (d. 1964)",
-        "Search census records: 1910, 1920, 1930, 1940 for Bennett family",
-        "Obtain marriage records for all Bennett generations",
-        "Research paternal Ringler family line with equal rigor"
-      ]
+      "royal_houses": [
+        "Plantagenet"
+      ],
+      "primary_sources": [
+        "Calendar of Close Rolls, Patent Rolls",
+        "Inquisitions Post Mortem",
+        "Contemporary chronicles (Froissart, etc.)",
+        "Monastic cartularies",
+        "Royal charters and grants"
+      ],
+      "authoritative_modern_works": [
+        "Complete Peerage (Cokayne)",
+        "Plantagenet Encyclopedia",
+        "Specialized studies (McFarlane on Mowbrays, etc.)"
+      ],
+      "descent_proven": "Edward I \u2192 Thomas of Brotherton \u2192 Margaret \u2192 Mowbray line \u2192 Howard family",
+      "proof_strength": "STRONG - Multiple contemporary sources, extensively studied by scholars, no disputed links in this chain",
+      "legitimacy_confirmed": "All births legitimate, marriages valid, successions documented",
+      "critical_link_to_modern": "Must connect Howard/Mowbray noble lines through English gentry to colonial American families to modern subject",
+      "confidence_level": "Very High for medieval royal descent to Howard/Mowbray; Chain only as strong as colonial-to-nobility connection"
     },
     "report": {
-      "agent_id": "agent_1_modern_records",
-      "scope": "Modern & Civil Records (1800-Present)",
+      "agent_id": "agent_4_medieval_royal",
+      "scope": "Medieval Royal Descent (Pre-1400)",
       "status": "completed",
       "execution_time": "0.00 seconds",
-      "persons_found": 5,
-      "relationships_established": 4,
-      "records_analyzed": 1,
-      "sources_consulted": 1,
-      "citations_created": 1,
+      "persons_found": 3,
+      "relationships_established": 0,
+      "records_analyzed": 0,
+      "sources_consulted": 4,
+      "citations_created": 0,
       "findings": [
-        "Subject identity established: Robert Ringler Jr. verified through primary source civil birth certificate",
-        "Parental generation: Father Robert Ringler Sr. and mother Karen L. (Bennett) Pulley (b. 1973) identified. Maternal line Bennett surname provides gateway to documented colonial Maryland families.",
-        "Grandparental generation (maternal): Thomas Bennett (b. 1946) identified as father of Karen Pulley. Bennett surname continues back through documented 19th century Maryland families. Paternal grandparents require additional research.",
-        "Great-grandparental generation: Ralph E. Bennett (1910-1964) identified. Bennett line continues back to John E. Bennett (1876-1964), establishing bridge to 19th century. Chain documented in family records; requires primary source verification (birth/death certificates, census 1910-1940)."
+        "Edward I (1239-1307) definitively documented as King of England. Legitimate children documented in Complete Peerage and contemporary chronicles.",
+        "Thomas of Brotherton (1300-1338): Legitimate son of Edward I by second wife Margaret of France. Created Earl of Norfolk and hereditary Earl Marshal. Well-documented in contemporary records and modern scholarship.",
+        "Margaret of Brotherton (c.1320-1399): Only surviving child of Thomas of Brotherton. Inherited earldom of Norfolk in her own right. Married twice: 1st to John Segrave, 4th Baron Segrave; 2nd to Sir Walter Mauny.",
+        "Mowbray line: Margaret's great-grandson Thomas Mowbray was created Duke of Norfolk in 1397 (1st creation). Mowbray Dukes of Norfolk descended from Margaret through her granddaughter Elizabeth Segrave who married John Mowbray.",
+        "COMPLETE PLANTAGENET DESCENT CHAIN DOCUMENTED:\n1. Edward I (1239-1307), King of England\n2. Thomas of Brotherton (1300-1338), Earl of Norfolk, son of Edward I\n3. Margaret of Brotherton (c.1320-1399), suo jure Countess of Norfolk\n4. John de Segrave (m. Margaret) \u2192 Elizabeth Segrave\n5. Elizabeth Segrave m. John Mowbray, 4th Baron Mowbray\n6. Thomas Mowbray, 1st Duke of Norfolk (1st creation)\n7. Multiple Mowbray generations as Dukes of Norfolk\n8. Mowbray estates and dignities pass to Howard family through marriage",
+        "All generations documented with contemporary records (charters, IPMs, wills) and authoritative modern scholarship (Complete Peerage, specialized studies). Legitimacy established for each generation."
       ],
       "conflicts": [],
       "persons": {
-        "RR_JR_001": "Robert Ringler Jr. (b. 1995)",
-        "RR_SR_001": "Robert Ringler Sr.",
-        "KAREN_PULLEY_001": "Karen L. (Bennett) Pulley (b. 1973)",
-        "THOMAS_BENNETT_001": "Thomas Bennett (b. 1946)",
-        "RALPH_BENNETT_001": "Ralph E. Bennett (b. 1910 - d. 1964)"
+        "EDWARD_I": "Edward I Longshanks, King of England, King of England",
+        "THOMAS_BROTHERTON": "Thomas of Brotherton, Earl of Norfolk, Earl of Norfolk, Earl Marshal",
+        "MARGARET_BROTHERTON": "Margaret of Brotherton, Duchess of Norfolk, Duchess of Norfolk suo jure"
       },
-      "relationships": {
-        "REL_MOD_001": "RR_SR_001 --[parent_child]--> RR_JR_001",
-        "REL_MOD_002": "KAREN_PULLEY_001 --[parent_child]--> RR_JR_001",
-        "REL_MOD_003": "THOMAS_BENNETT_001 --[parent_child]--> KAREN_PULLEY_001",
-        "REL_MOD_004": "RALPH_BENNETT_001 --[parent_child]--> THOMAS_BENNETT_001"
-      }
+      "relationships": {}
     }
   },
   "agent_6_heraldic": {

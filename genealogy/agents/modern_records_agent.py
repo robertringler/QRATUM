@@ -74,8 +74,8 @@ class ModernRecordsAgent(ResearchAgent):
             given_names="Robert",
             surname="Ringler",
             gender=Gender.MALE,
-            birth_date=date(1995, 1, 1),  # Approximate - requires verification
-            notes="Subject of genealogical investigation; b. 1995"
+            birth_date=None,  # Circa 1995 - requires birth certificate
+            notes="Subject of genealogical investigation; b. circa 1995"
         )
         self.add_person(subject)
         
@@ -138,8 +138,8 @@ class ModernRecordsAgent(ResearchAgent):
             surname="Pulley",
             maiden_name="Bennett",
             gender=Gender.FEMALE,
-            birth_date=date(1973, 1, 1),  # Approximate - requires verification
-            notes="Mother of subject; b. 1973; maiden name Bennett"
+            birth_date=None,  # Circa 1973 - requires birth certificate
+            notes="Mother of subject; b. circa 1973; maiden name Bennett"
         )
         self.add_person(mother)
         
@@ -182,8 +182,8 @@ class ModernRecordsAgent(ResearchAgent):
             given_names="Thomas",
             surname="Bennett",
             gender=Gender.MALE,
-            birth_date=date(1946, 1, 1),  # Approximate
-            notes="Maternal grandfather; b. 1946"
+            birth_date=None,  # Circa 1946 - requires birth certificate
+            notes="Maternal grandfather; b. circa 1946"
         )
         self.add_person(thomas_bennett)
         
@@ -216,9 +216,9 @@ class ModernRecordsAgent(ResearchAgent):
             given_names="Ralph E.",
             surname="Bennett",
             gender=Gender.MALE,
-            birth_date=date(1910, 1, 1),  # Approximate
-            death_date=date(1964, 1, 1),  # Approximate
-            notes="Great-grandfather; 1910-1964"
+            birth_date=None,  # Circa 1910 - requires verification
+            death_date=None,  # Circa 1964 - requires death certificate
+            notes="Great-grandfather; circa 1910-1964"
         )
         self.add_person(ralph_bennett)
         
