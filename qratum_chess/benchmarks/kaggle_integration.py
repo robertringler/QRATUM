@@ -1,7 +1,3 @@
-"""Kaggle Chess Leaderboard Integration.
-
-Loads and parses Kaggle leaderboard data, extracts benchmark positions,
-and converts them to QRATUM Position objects.
 """Kaggle Chess Leaderboard API Integration for QRATUM-Chess.
 
 This module provides functionality to:
@@ -282,6 +278,40 @@ class KaggleIntegration:
         data: dict[str, Any]
     ) -> list[KaggleBenchmarkPosition]:
         """Extract benchmark positions from Kaggle data.
+        
+        Args:
+            data: Raw Kaggle API response data.
+            
+        Returns:
+            List of benchmark positions.
+        """
+        positions = []
+        
+        # Try different data formats
+        raw_positions = data.get("test_positions", [])
+        if not raw_positions:
+            raw_positions = data.get("positions", [])
+        
+        for pos_data in raw_positions:
+            fen = pos_data.get("fen", "")
+            if fen:
+                try:
+                    position = Position.from_fen(fen)
+                    positions.append(KaggleBenchmarkPosition(
+                        fen=fen,
+                        position=position,
+                        test_id=pos_data.get("test_id", str(len(positions))),
+                        expected_move=pos_data.get("expected_move"),
+                        expected_eval=pos_data.get("expected_eval"),
+                    ))
+                except ValueError:
+                    logger.warning(f"Invalid FEN skipped: {fen}")
+        
+        return positions
+
+
+@dataclass
+class KaggleBenchmarkPosition:
     """Represents a benchmark position from Kaggle data.
     
     Attributes:
