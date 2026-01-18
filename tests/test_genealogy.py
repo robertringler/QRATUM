@@ -195,7 +195,7 @@ class TestChiefOrchestrator(unittest.TestCase):
         """Test orchestrator initialization."""
         orchestrator = ChiefResearchOrchestrator(subject_name="Test Subject")
         self.assertEqual(orchestrator.subject_name, "Test Subject")
-        self.assertEqual(len(orchestrator.agents), 7)  # Updated for 7 agents
+        self.assertEqual(len(orchestrator.agents), 10)  # Updated for 10 agents (dual lines)
     
     def test_orchestrator_execution_sequential(self):
         """Test orchestrator execution in sequential mode."""
@@ -212,12 +212,15 @@ class TestChiefOrchestrator(unittest.TestCase):
         # Check that all agents executed
         agents_results = results["agents_results"]
         self.assertIn("agent_1_modern", agents_results)
-        self.assertIn("agent_1b_nineteenth", agents_results)
-        self.assertIn("agent_2_colonial", agents_results)
-        self.assertIn("agent_3_nobility", agents_results)
-        self.assertIn("agent_4_medieval", agents_results)
-        self.assertIn("agent_5_proof", agents_results)
-        self.assertIn("agent_6_heraldic", agents_results)
+        self.assertIn("agent_1b_nineteenth_bennett", agents_results)
+        self.assertIn("agent_1c_nineteenth_york", agents_results)
+        self.assertIn("agent_2_loyalist", agents_results)
+        self.assertIn("agent_2b_colonial", agents_results)
+        self.assertIn("agent_3_name_identity", agents_results)
+        self.assertIn("agent_4_nobility", agents_results)
+        self.assertIn("agent_5_medieval", agents_results)
+        self.assertIn("agent_6_proof", agents_results)
+        self.assertIn("agent_7_heraldic", agents_results)
         
         # Check synthesis components
         synthesis = results["synthesis"]

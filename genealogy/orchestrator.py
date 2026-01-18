@@ -12,7 +12,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from .agents import (
     ModernRecordsAgent,
     NineteenthCenturyBennettAgent,
+    NineteenthCenturyYorkAgent,
+    LoyalistRevolutionaryAgent,
     ColonialAmericanAgent,
+    NameIdentityAgent,
     EnglishNobilityAgent,
     MedievalRoyalAgent,
     ProofAnalysisAgent,
@@ -42,15 +45,18 @@ class ChiefResearchOrchestrator:
         self.results: Dict[str, Any] = {}
         
     def _initialize_agents(self) -> Dict[str, Any]:
-        """Initialize all research agents."""
+        """Initialize all research agents for DUAL LINE investigation."""
         return {
-            "agent_1_modern": ModernRecordsAgent(),
-            "agent_1b_nineteenth": NineteenthCenturyBennettAgent(),
-            "agent_2_colonial": ColonialAmericanAgent(),
-            "agent_3_nobility": EnglishNobilityAgent(),
-            "agent_4_medieval": MedievalRoyalAgent(),
-            "agent_5_proof": ProofAnalysisAgent(),
-            "agent_6_heraldic": HeraldicAgent(),
+            "agent_1_modern": ModernRecordsAgent(),  # Both York and Bennett lines
+            "agent_1b_nineteenth_bennett": NineteenthCenturyBennettAgent(),  # Bennett 19th century
+            "agent_1c_nineteenth_york": NineteenthCenturyYorkAgent(),  # York 19th century
+            "agent_2_loyalist": LoyalistRevolutionaryAgent(),  # York line to Semore York (Loyalist)
+            "agent_2b_colonial": ColonialAmericanAgent(),  # Bennett line to Hammond/Warfield
+            "agent_3_name_identity": NameIdentityAgent(),  # False attachment prevention
+            "agent_4_nobility": EnglishNobilityAgent(),  # English origins testing
+            "agent_5_medieval": MedievalRoyalAgent(),  # Conditional royal descent
+            "agent_6_proof": ProofAnalysisAgent(),  # GPS audit
+            "agent_7_heraldic": HeraldicAgent(),  # Heraldic analysis
         }
     
     def execute_research(self, parallel: bool = True) -> Dict[str, Any]:
@@ -79,28 +85,35 @@ class ChiefResearchOrchestrator:
         # Execute primary research agents (1-4 and 6)
         print("Phase 1: Executing primary research agents (parallel execution)...")
         primary_agents = [
-            "agent_1_modern",
-            "agent_1b_nineteenth",
-            "agent_2_colonial", 
-            "agent_3_nobility",
-            "agent_4_medieval",
-            "agent_6_heraldic",
+            "agent_1_modern",  # Both lines
+            "agent_1b_nineteenth_bennett",  # Bennett 19th century
+            "agent_1c_nineteenth_york",  # York 19th century
+            "agent_2_loyalist",  # York Revolutionary era
+            "agent_2b_colonial",  # Bennett colonial
+            "agent_3_name_identity",  # False merge prevention
+            "agent_4_nobility",  # English origins
+            "agent_7_heraldic",  # Heraldic
         ]
         
         primary_results = self._execute_agents(primary_agents, context, parallel=parallel)
         
-        # Execute proof analysis agent (5) with results from other agents
+        # Execute proof analysis agent with results from other agents
         print("\nPhase 2: Executing proof analysis and validation...")
         context["all_agents_results"] = [primary_results[agent_id] for agent_id in primary_agents]
         
-        proof_result = self.agents["agent_5_proof"].execute_research(context)
-        primary_results["agent_5_proof"] = proof_result
+        proof_result = self.agents["agent_6_proof"].execute_research(context)
+        primary_results["agent_6_proof"] = proof_result
+        
+        # Execute medieval royal descent agent (conditional on Agent 4 results)
+        print("\nPhase 3: Conditional medieval royal descent analysis...")
+        medieval_result = self.agents["agent_5_medieval"].execute_research(context)
+        primary_results["agent_5_medieval"] = medieval_result
         
         self.results = primary_results
         self.execution_end = datetime.now()
         
         # Generate final synthesis
-        print("\nPhase 3: Generating final synthesis...")
+        print("\nPhase 4: Generating final synthesis...")
         synthesis = self._generate_synthesis()
         
         print(f"\n{'='*80}")
