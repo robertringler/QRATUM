@@ -195,7 +195,7 @@ class TestChiefOrchestrator(unittest.TestCase):
         """Test orchestrator initialization."""
         orchestrator = ChiefResearchOrchestrator(subject_name="Test Subject")
         self.assertEqual(orchestrator.subject_name, "Test Subject")
-        self.assertEqual(len(orchestrator.agents), 10)  # Updated for 10 agents (dual lines)
+        self.assertEqual(len(orchestrator.agents), 11)  # Updated for 11 agents (GED integration)
     
     def test_orchestrator_execution_sequential(self):
         """Test orchestrator execution in sequential mode."""
