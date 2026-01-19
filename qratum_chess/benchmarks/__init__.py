@@ -8,7 +8,6 @@ Implements comprehensive performance certification framework:
 5. Load-failure injection and recovery testing
 6. Telemetry output (heatmaps, distributions, entropy curves)
 7. Stage III certification verification
-8. Kaggle Chess Leaderboard integration
 """
 
 from __future__ import annotations
@@ -25,27 +24,18 @@ from qratum_chess.benchmarks.gauntlet import AdversarialGauntlet
 from qratum_chess.benchmarks.elo import EloCertification
 from qratum_chess.benchmarks.resilience import ResilienceTest
 from qratum_chess.benchmarks.telemetry import TelemetryOutput
-from qratum_chess.benchmarks.kaggle_config import KaggleConfig, load_config
-from qratum_chess.benchmarks.kaggle_integration import (
-    KaggleIntegration,
-    KaggleBenchmarkPosition,
-    KaggleLeaderboardData,
-)
-from qratum_chess.benchmarks.kaggle_submission import (
-    KaggleSubmission,
-    SubmissionResult,
-from qratum_chess.benchmarks.kaggle_integration import (
-    KaggleLeaderboardLoader,
-    KaggleLeaderboard,
-    KaggleBenchmarkPosition,
-    KaggleSubmission,
-    download_kaggle_leaderboard,
-)
-from qratum_chess.benchmarks.benchmark_kaggle import (
-    KaggleBenchmarkRunner,
-    KaggleBenchmarkResult,
-    KaggleBenchmarkSummary,
-)
+
+# Kaggle integration imports disabled due to file corruption in kaggle_integration.py
+# The file contains duplicate class definitions and mismatched parameters that need cleanup.
+# TODO: Fix in separate PR - see code review comments from benchmark PR
+# Required fixes:
+#   1. Remove duplicate KaggleBenchmarkPosition class definitions
+#   2. Resolve parameter name inconsistencies (position_id vs test_id)
+#   3. Clean up merged/corrupted docstrings
+# from qratum_chess.benchmarks.kaggle_config import KaggleConfig, load_config
+# from qratum_chess.benchmarks.kaggle_integration import (...)
+# from qratum_chess.benchmarks.kaggle_submission import (...)
+# from qratum_chess.benchmarks.benchmark_kaggle import (...)
 
 __all__ = [
     "BenchmarkRunner",
@@ -58,19 +48,4 @@ __all__ = [
     "EloCertification",
     "ResilienceTest",
     "TelemetryOutput",
-    "KaggleConfig",
-    "load_config",
-    "KaggleIntegration",
-    "KaggleBenchmarkPosition",
-    "KaggleLeaderboardData",
-    "KaggleSubmission",
-    "SubmissionResult",
-    "KaggleLeaderboardLoader",
-    "KaggleLeaderboard",
-    "KaggleBenchmarkPosition",
-    "KaggleSubmission",
-    "KaggleBenchmarkRunner",
-    "KaggleBenchmarkResult",
-    "KaggleBenchmarkSummary",
-    "download_kaggle_leaderboard",
 ]
