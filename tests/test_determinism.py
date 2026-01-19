@@ -24,7 +24,7 @@ class TestHashDeterminism:
         hash2 = hashlib.sha256(input_data).hexdigest()
         
         assert hash1 == hash2, "SHA-256 must produce identical hashes for identical inputs"
-        assert hash1 == "e8c5c1d0c3b5c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3" or len(hash1) == 64
+        assert len(hash1) == 64, "SHA-256 hash must be 64 hex characters"
     
     def test_sha512_determinism(self):
         """Test that SHA-512 hashing is deterministic across invocations."""
