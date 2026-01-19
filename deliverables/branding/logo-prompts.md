@@ -1,4 +1,5 @@
 # 10 Logo Design Prompts for QRATUM
+
 ## High-Resolution Image Generation Prompts
 
 **Created:** December 19, 2025  
@@ -15,6 +16,7 @@
 **Tone:** Professional, Technical, Trustworthy, Innovative  
 
 **Color Palette:**
+
 - Primary: Deep Indigo (#2E3192)
 - Secondary: Electric Cyan (#00D9FF)
 - Accent: Quantum Gold (#FFB81C)
@@ -22,6 +24,7 @@
 - Background: Space Black (#0A0E1A)
 
 **Typography (for reference):**
+
 - Heading: Helvetica Neue Bold / Inter Bold
 - Body: Source Sans Pro / Inter Regular
 
@@ -34,6 +37,7 @@ QRATUM logo design, minimal geometric mark combining stylized letter Q with quan
 ```
 
 **Variations:**
+
 - Monochrome (white on black)
 - Inverted (black on white)
 - Favicon (32x32, 64x64, 128x128 px)
@@ -49,6 +53,7 @@ QRATUM emblem logo, shield shape with subtle circuit board traces and hexagonal 
 ```
 
 **Variations:**
+
 - Flat version (no 3D effects)
 - Badge variant (circular)
 - Seal variant (with border text: "CERTIFIABLE QUANTUM-CLASSICAL CONVERGENCE")
@@ -64,6 +69,7 @@ QRATUM abstract logo mark, layered quantum grid of interconnected nodes forming 
 ```
 
 **Variations:**
+
 - Animated version (nodes pulsing)
 - Static version (no glow)
 - Grid-only variant (no Q shape)
@@ -79,6 +85,7 @@ QRATUM monogram logo, interlocking letters Q and R with subtle motion blur sugge
 ```
 
 **Variations:**
+
 - Full "QRATUM" wordmark below monogram
 - Q-only minimal variant
 - Animated entry (letters sliding together)
@@ -94,6 +101,7 @@ QRATUM orbital logo, central quantum core with electron-like orbiting nodes form
 ```
 
 **Variations:**
+
 - 2D flat version
 - Animated orbital rotation
 - Color variants (warm/cool)
@@ -109,6 +117,7 @@ QRATUM wordmark logo, custom sans-serif typeface with unique Q tail extending as
 ```
 
 **Variations:**
+
 - Stacked vertical version
 - All-caps vs. sentence case
 - Icon + wordmark lockup
@@ -124,6 +133,7 @@ QRATUM emblem, stylized sine/cosine wave forming Q shape, representing quantum s
 ```
 
 **Variations:**
+
 - Waveform only (no letter)
 - Frequency spectrum visualization
 - Animated wave propagation
@@ -139,6 +149,7 @@ QRATUM secure vault logo, padlock or shield silhouette integrated into Q letter 
 ```
 
 **Variations:**
+
 - Open/closed lock states
 - Badge with "DO-178C Level A" or "CMMC 2.0" text
 - Certification seal variant
@@ -154,6 +165,7 @@ QRATUM prism logo, faceted geometric Q shape with holographic gradient (purple, 
 ```
 
 **Variations:**
+
 - Flat color version (no gradient)
 - Wireframe variant
 - Neon outline version
@@ -169,6 +181,7 @@ QRATUM green technology variant logo, leaf-inspired Q shape with circuit vein pa
 ```
 
 **Variations:**
+
 - Monochrome green
 - Nature+tech hybrid (organic curves + geometric)
 - Growth arrow integrated into Q
@@ -180,18 +193,21 @@ QRATUM green technology variant logo, leaf-inspired Q shape with circuit vein pa
 ## Technical Specifications
 
 **File Formats Required:**
+
 - SVG (vector, scalable)
 - PNG (transparent background, 4K/8K)
 - PDF (print-ready, CMYK)
 - ICO (favicon, multiple sizes)
 
 **Size Variants:**
+
 - Favicon: 32x32, 64x64, 128x128 px
 - Social: 400x400, 1200x1200 px
 - Print: 300 DPI minimum
 - Large format: 8000x8000 px
 
 **Color Modes:**
+
 - RGB (digital/screen)
 - CMYK (print)
 - Pantone equivalents (for brand consistency)
@@ -229,24 +245,28 @@ scientific aesthetic, vector style, high contrast, suitable for tech company
 ## Brand Application Examples
 
 ### Primary Logo (Full Color)
+
 - Website header
 - Product UI
 - Marketing materials
 - Conference signage
 
 ### Monochrome Logo
+
 - Letterhead
 - Fax cover sheets
 - Black & white print
 - Embossing/engraving
 
 ### Icon Only
+
 - App icon
 - Favicon
 - Social media avatar
 - Loading spinner
 
 ### Wordmark Only
+
 - Email signatures
 - Document footers
 - Partner co-branding
@@ -279,5 +299,5 @@ scientific aesthetic, vector style, high contrast, suitable for tech company
 
 **Prompt Set Version:** 1.0  
 **Created:** December 19, 2025  
-**Repository:** https://github.com/robertringler/QRATUM  
-**Contact:** branding@qratum.io
+**Repository:** <https://github.com/robertringler/QRATUM>  
+**Contact:** <branding@qratum.io>

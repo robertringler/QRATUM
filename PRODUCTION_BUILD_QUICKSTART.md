@@ -59,6 +59,7 @@ pip install dist/python/qratum-*.whl
 ## Troubleshooting
 
 **Build fails?**
+
 ```bash
 # Check Python version
 python3 --version  # Should be 3.10+

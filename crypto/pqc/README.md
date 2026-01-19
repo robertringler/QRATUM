@@ -85,16 +85,19 @@ assert!(dilithium_verify(message, &signature, &pk)?);
 ## Migration Strategy
 
 ### Phase 1: Hybrid Mode (Current)
+
 - Both classical (Ed25519) and PQC (Dilithium) signatures
 - Verify both for backward compatibility
 - Migrate operators to PQC gradually
 
 ### Phase 2: PQC Primary (Q3 2025)
+
 - PQC signatures required
 - Classical signatures optional
 - All new keys are PQC
 
 ### Phase 3: PQC Only (Q1 2026)
+
 - Remove classical crypto entirely
 - Quantum-resistant end-to-end
 
@@ -141,7 +144,7 @@ For production deployment:
    - `pqcrypto-kyber`
 
 2. Or use NIST reference implementations:
-   - https://csrc.nist.gov/projects/post-quantum-cryptography
+   - <https://csrc.nist.gov/projects/post-quantum-cryptography>
 
 3. Enable hardware acceleration:
    - AVX2/AVX-512 for polynomial operations
@@ -163,7 +166,7 @@ cargo bench --package qratum-crypto-pqc
 
 ## References
 
-- NIST PQC: https://csrc.nist.gov/projects/post-quantum-cryptography
-- SPHINCS+: https://sphincs.org/
-- CRYSTALS: https://pq-crystals.org/
-- Open Quantum Safe: https://openquantumsafe.org/
+- NIST PQC: <https://csrc.nist.gov/projects/post-quantum-cryptography>
+- SPHINCS+: <https://sphincs.org/>
+- CRYSTALS: <https://pq-crystals.org/>
+- Open Quantum Safe: <https://openquantumsafe.org/>

@@ -46,6 +46,7 @@ Technical documentation for the BOB chess engine architecture and implementation
 BOB uses a novel search approach that adapts strategy based on position characteristics:
 
 **Key Features:**
+
 - **Iterative Deepening:** Gradually increases search depth
 - **Alpha-Beta Pruning:** Eliminates inferior branches
 - **Move Ordering:** Searches best moves first
@@ -102,6 +103,7 @@ def alpha_beta(position, depth, alpha, beta):
 #### Material Evaluation
 
 Piece values (in centipawns):
+
 - Pawn: 100
 - Knight: 320
 - Bishop: 330
@@ -112,19 +114,23 @@ Piece values (in centipawns):
 #### Positional Evaluation
 
 **Center Control:**
+
 - Pawns in center (d4, d5, e4, e5): +20 cp
 - Pieces in center: +10 cp
 
 **King Safety:**
+
 - Exposed king in middlegame: -30 cp
 - Castled king: +20 cp
 
 **Pawn Structure:**
+
 - Doubled pawns: -20 cp per extra pawn
 - Passed pawns: +30 cp
 - Isolated pawns: -15 cp
 
 **Mobility:**
+
 - Each legal move: +10 cp
 - Encourages piece activity
 
@@ -144,6 +150,7 @@ eval(position) =
 Crucial for alpha-beta efficiency:
 
 **Priority Order:**
+
 1. **Captures** (MVV-LVA: Most Valuable Victim - Least Valuable Attacker)
 2. **Checks**
 3. **Killers** (moves that caused cutoffs)
@@ -202,6 +209,7 @@ def allocate_time(time_limit_ms, moves_played):
 ### Scalability
 
 BOB is designed for CPU-only execution:
+
 - Single-threaded search
 - Efficient memory usage
 - No GPU requirements
@@ -264,12 +272,14 @@ def select_opening_move(moves, evaluations):
 ### Kaggle Chess AI Benchmark
 
 **Official Results:**
+
 - **Elo:** 1508
 - **Rank:** #1
 - **Win Rate:** 97% (96W-2D-2L)
 - **Games Played:** 100
 
 **Notable Victories:**
+
 - o3-2025: +111 Elo margin
 - grok-4: +396 Elo margin
 - gemini-2.5-pro: +447 Elo margin
@@ -277,6 +287,7 @@ def select_opening_move(moves, evaluations):
 ### Internal Testing
 
 **Stockfish-17 Calibration:**
+
 - **Elo:** 3500 (estimated)
 - **Win Rate:** 50% vs Stockfish-17 at depth 10
 - **Draw Rate:** 30%
@@ -344,6 +355,7 @@ engine/
 | gemini-2.5 | 1061 | LLM reasoning | Yes |
 
 **Key Advantages:**
+
 - ✅ Higher Elo than all LLMs
 - ✅ CPU-only (no GPU needed)
 - ✅ Faster inference
@@ -384,9 +396,9 @@ engine/
 
 ### Chess Programming Resources
 
-- Chess Programming Wiki: https://www.chessprogramming.org
-- CCRL Rating Lists: http://ccrl.chessdom.com
-- Stockfish Source: https://github.com/official-stockfish/Stockfish
+- Chess Programming Wiki: <https://www.chessprogramming.org>
+- CCRL Rating Lists: <http://ccrl.chessdom.com>
+- Stockfish Source: <https://github.com/official-stockfish/Stockfish>
 
 ## License
 
@@ -395,12 +407,14 @@ Apache 2.0 - See LICENSE file
 ## Author
 
 Robert Ringler (@robertringler)
-- GitHub: https://github.com/robertringler
+
+- GitHub: <https://github.com/robertringler>
 - Email: [Your email]
 
 ## Acknowledgments
 
 Special thanks to:
+
 - Stockfish team for algorithmic inspiration
 - python-chess maintainers
 - Kaggle for hosting the Chess AI Benchmark

@@ -90,6 +90,7 @@ soi/
 ### Prerequisites
 
 1. **Rust** (1.70+)
+
    ```bash
    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
    ```
@@ -118,6 +119,7 @@ cargo build --release
 ```
 
 **Verify Build**:
+
 ```bash
 # Check exported symbols (Linux/macOS)
 nm -gU target/release/libsoi_telemetry_core.so | grep soi_
@@ -150,11 +152,13 @@ cd soi/unreal_bridge
 ### Step 3: Build Unreal Project
 
 **Option A: Using Unreal Editor**
+
 1. Open `SoiGame.uproject` in Unreal Editor
 2. File → Refresh Visual Studio Project
 3. Build → Compile (or Ctrl+Alt+F11)
 
 **Option B: Command Line**
+
 ```bash
 # Windows
 "C:\Program Files\Epic Games\UE_5.3\Engine\Build\BatchFiles\Build.bat" SoiGameEditor Win64 Development "SoiGame.uproject"
@@ -178,6 +182,7 @@ cd soi/unreal_bridge
 ### Connecting to Aethernet Telemetry
 
 In Blueprint (BP_WarRoomController):
+
 ```
 Event BeginPlay
 └─> Get Game Instance
@@ -200,6 +205,7 @@ export UE_LOG_SOI=Verbose
 ## Visual Implementation
 
 Refer to `BLUEPRINT_IMPLEMENTATION_GUIDE.md` for detailed instructions on:
+
 - Holographic HUD with glass effects
 - Planetary Map with Niagara particles
 - Execution Theater PCG lattice
@@ -266,19 +272,25 @@ bool IsConnected() const;
 ## Event Delegates
 
 ### OnStateUpdated
+
 Broadcasts when epoch or slashing vector changes.
+
 ```cpp
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnStateUpdate, int64, Epoch, float, SlashingVector);
 ```
 
 ### OnZoneHeatUpdated
+
 Broadcasts when a zone's validator activity changes.
+
 ```cpp
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnZoneHeatUpdate, int32, ZoneIndex, float, HeatValue);
 ```
 
 ### OnProofVerified
+
 Broadcasts when a new ZK proof is verified.
+
 ```cpp
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProofVerified, FString, ProofHash);
 ```
@@ -286,17 +298,20 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProofVerified, FString, ProofHash
 ## Performance Characteristics
 
 ### Rust Core
+
 - **Latency**: < 1ms per state read (lock-free)
 - **Throughput**: Handles 10,000+ telemetry events/sec
 - **Memory**: ~5MB baseline + 1KB per buffered event
 - **CPU**: Background thread (non-blocking game thread)
 
 ### Unreal Bridge
+
 - **Update Rate**: 60Hz polling (16.67ms interval)
 - **Overhead**: < 0.1ms per poll (amortized)
 - **Event Broadcasting**: Only on state changes (diffing)
 
 ### Visual Systems
+
 - **Niagara Particles**: 256 validators @ 60 FPS (< 1ms GPU)
 - **PCG Lattice**: 50 nodes @ 60 FPS (< 0.5ms GPU)
 - **Glass HUD**: Scene capture @ 30 FPS (< 2ms GPU)
@@ -310,10 +325,13 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProofVerified, FString, ProofHash
 **Symptom**: `soi_telemetry_core.dll not found` error in UE5.
 
 **Fix**:
+
 1. Verify Rust library was built:
+
    ```bash
    ls -l soi/rust_core/soi_telemetry_core/target/release/
    ```
+
 2. Check `SoiGame.Build.cs` path is correct
 3. Copy DLL to `Binaries/Win64/` manually if needed
 
@@ -322,10 +340,13 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProofVerified, FString, ProofHash
 **Symptom**: `Can't connect to Aethernet` in logs.
 
 **Fix**:
+
 1. Verify telemetry server is running:
+
    ```bash
    curl ws://localhost:8000/soi/telemetry
    ```
+
 2. Check firewall settings
 3. Use demo mode in Blueprint (mock data)
 
@@ -334,8 +355,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProofVerified, FString, ProofHash
 **Symptom**: Rust thread consuming excessive CPU.
 
 **Fix**:
+
 1. Reduce WebSocket message rate (server-side)
 2. Increase polling interval in `SoiTelemetrySubsystem.cpp`:
+
    ```cpp
    const float PollInterval = 1.0f / 30.0f; // 30Hz instead of 60Hz
    ```
@@ -345,9 +368,11 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProofVerified, FString, ProofHash
 **Symptom**: Memory usage grows over time.
 
 **Fix**:
+
 1. Check event buffer size in `lib.rs` (default: 1000 events)
 2. Verify `soi_shutdown()` is called on exit
 3. Enable memory profiling:
+
    ```bash
    valgrind --leak-check=full ./SoiGame
    ```
@@ -355,18 +380,21 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProofVerified, FString, ProofHash
 ## Security Considerations
 
 ### FFI Boundary
+
 - ✅ All C strings are validated before use
 - ✅ Buffer sizes are checked (no overflow)
 - ✅ Rust panics are caught at FFI boundary
 - ⚠️ In production, use `catch_unwind` for all FFI exports
 
 ### WebSocket Connection
+
 - ⚠️ Currently accepts all messages (no signature verification)
 - 🔒 TODO: Verify ZK proofs on each message
 - 🔒 TODO: Implement Merkle inclusion proofs
 - 🔒 TODO: Validate validator signatures
 
 ### State Integrity
+
 - ✅ Read-only access from Blueprint (no mutation)
 - ✅ State updates are atomic (Mutex-protected)
 - ⚠️ No replay attack protection (TODO)
@@ -374,17 +402,20 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProofVerified, FString, ProofHash
 ## Testing
 
 ### Unit Tests (Rust)
+
 ```bash
 cd soi/rust_core/soi_telemetry_core
 cargo test
 ```
 
 ### Integration Tests (UE5)
+
 1. PIE (Play In Editor) with mock telemetry
 2. Standalone build with local WebSocket server
 3. Packaged build with production endpoint
 
 ### Performance Profiling
+
 ```bash
 # Rust profiling
 cargo flamegraph --bin soi_telemetry_core
@@ -412,6 +443,7 @@ stat gpu
 ### Data Format Compatibility
 
 The Rust core expects the same JSON schema as the legacy WebSocket:
+
 ```json
 {
   "epoch": 127843,
@@ -424,23 +456,27 @@ The Rust core expects the same JSON schema as the legacy WebSocket:
 ## Roadmap
 
 ### Phase 1: Core Infrastructure ✅
+
 - [x] Rust telemetry core
 - [x] C++ FFI bridge
 - [x] Blueprint API
 
 ### Phase 2: Visual Systems 📝
+
 - [ ] Niagara validator particles
 - [ ] PCG execution lattice
 - [ ] Holographic materials
 - [ ] Level sequences
 
 ### Phase 3: Polish 🔜
+
 - [ ] VR support
 - [ ] Multiplayer (spectator mode)
 - [ ] Replay system
 - [ ] Advanced camera controls
 
 ### Phase 4: Production Hardening 🔜
+
 - [ ] ZK proof verification in Rust
 - [ ] Signature validation
 - [ ] Replay attack protection
@@ -455,6 +491,7 @@ This implementation is part of the QRATUM Sovereign Operations Interface and is 
 ## Support
 
 For technical questions:
-- GitHub Issues: https://github.com/robertringler/QRATUM/issues
+
+- GitHub Issues: <https://github.com/robertringler/QRATUM/issues>
 - Documentation: See `BLUEPRINT_IMPLEMENTATION_GUIDE.md`
-- Contact: info@qratum.ai
+- Contact: <info@qratum.ai>

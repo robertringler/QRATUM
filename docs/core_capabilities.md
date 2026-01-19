@@ -25,6 +25,7 @@ Each capability domain integrates seamlessly across the platform's architecture 
 QuASIM (Quantum Accelerated Simulation) provides a **tensor-network quantum circuit simulator** optimized for GPU acceleration. The runtime delivers cuQuantum-compatible APIs with hybrid CPU-GPU execution, enabling real-time quantum algorithm development and validation without requiring physical quantum hardware.
 
 **Key Features:**
+
 - Tensor contraction-based state vector simulation
 - Multiple floating-point precision modes (FP8, FP16, FP32, FP64)
 - Automatic circuit graph partitioning and optimization
@@ -284,6 +285,7 @@ with quasim.runtime(cfg) as rt:
 \* Requires multi-GPU or distributed execution
 
 **Throughput Metrics:**
+
 - Tensor FLOPS (FP32): 12.5 TFLOPS sustained, 18.7 TFLOPS peak
 - Gate operations/second: 145,000 (average complexity)
 - Circuit compilation time: <50 ms for 1000-gate circuits
@@ -294,6 +296,7 @@ with quasim.runtime(cfg) as rt:
 #### Decoherence Modeling
 
 **Noise Models:**
+
 - **Depolarizing noise:** Single-qubit and two-qubit depolarizing channels
 - **Amplitude damping:** T1 energy relaxation simulation
 - **Phase damping:** T2 dephasing time modeling
@@ -375,6 +378,7 @@ with quasim.runtime(cfg) as rt:
 Sybernix provides **real-time digital twin simulation** combining classical AI models with quantum-enhanced optimization. Digital twins mirror physical systems, enabling scenario planning, predictive maintenance, and autonomous decision-making across regulated industries.
 
 **Key Capabilities:**
+
 - Real-time state synchronization with physical assets
 - Attractor dynamics modeling for system behavior prediction
 - Hybrid quantum-classical optimization for decision intelligence
@@ -456,6 +460,7 @@ dx/dt = f(x, u, t) + η(t)
 ```
 
 Where:
+
 - `x` = state vector (position, velocity, temperature, etc.)
 - `u` = control inputs
 - `f` = system dynamics (learned via neural networks)
@@ -507,6 +512,7 @@ trajectory = engine.simulate(
 Sybernix integrates **Variational Quantum Eigensolver (VQE)** and **Quantum Approximate Optimization Algorithm (QAOA)** for combinatorial optimization problems:
 
 **Use Cases:**
+
 - Resource allocation and scheduling
 - Supply chain route optimization
 - Portfolio optimization in finance
@@ -564,6 +570,7 @@ print(f"Schedule: {solution.job_assignments}")
 Sybernix deploys **SuperTransformer** neural networks for time-series prediction and anomaly detection:
 
 **Model Architecture:**
+
 - Multi-head attention with 16 heads
 - 12 transformer layers
 - 2048 hidden dimensions
@@ -590,24 +597,28 @@ Sybernix deploys **SuperTransformer** neural networks for time-series prediction
 ### 3.6 Industry-Specific Templates
 
 **Aerospace Digital Twins:**
+
 - Aircraft engine health monitoring
 - Flight dynamics simulation with weather integration
 - Structural stress analysis with fatigue modeling
 - Predictive maintenance for landing gear and hydraulics
 
 **Pharmaceutical Digital Twins:**
+
 - Bioreactor process optimization
 - Drug stability and shelf-life prediction
 - Supply chain cold-chain monitoring
 - Manufacturing batch quality control
 
 **Financial Digital Twins:**
+
 - Portfolio risk simulation (Monte Carlo)
 - Market microstructure modeling
 - Regulatory capital optimization
 - Fraud detection and anomaly scoring
 
 **Manufacturing Digital Twins:**
+
 - Production line throughput optimization
 - Quality control and defect prediction
 - Energy consumption optimization
@@ -622,6 +633,7 @@ Sybernix deploys **SuperTransformer** neural networks for time-series prediction
 Sybernix delivers **production-grade Kubernetes infrastructure** optimized for GPU-accelerated workloads with enterprise SLA guarantees, multi-region deployment, and comprehensive observability.
 
 **Key Features:**
+
 - Kubernetes cluster provisioning (AWS EKS, Azure AKS, GKE)
 - GPU node scheduling with NVIDIA/AMD accelerator support
 - GitOps-driven deployment via ArgoCD
@@ -746,6 +758,7 @@ resources:
 **Metrics Collection (Prometheus):**
 
 **Default Metrics:**
+
 - Node resource utilization (CPU, memory, disk, network)
 - GPU utilization and memory consumption
 - Pod resource consumption
@@ -753,6 +766,7 @@ resources:
 - Application-specific custom metrics
 
 **Retention Policy:**
+
 - Raw metrics: 15 days
 - 5-minute aggregates: 90 days
 - 1-hour aggregates: 2 years
@@ -945,6 +959,7 @@ service QuASIMService {
 ### 5.1 Quick Start
 
 **Prerequisites:**
+
 ```bash
 # Install required tools
 brew install terraform kubectl helm awscli  # macOS
@@ -1086,6 +1101,7 @@ jobs:
 ## 7. References
 
 **Related Documentation:**
+
 - [Platform Overview](platform_overview.md) — System architecture and infrastructure
 - [Market Valuation](market_valuation.md) — Business model and valuation framework
 - [API Reference](api_reference.md) — Complete API documentation
@@ -1093,6 +1109,7 @@ jobs:
 - [Architecture Overview](arch_overview.md) — Hardware architecture details
 
 **External Resources:**
+
 - [cuQuantum Documentation](https://docs.nvidia.com/cuda/cuquantum/)
 - [Kubernetes Documentation](https://kubernetes.io/docs/)
 - [ArgoCD Documentation](https://argo-cd.readthedocs.io/)

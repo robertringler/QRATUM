@@ -36,6 +36,7 @@ Design an AI agent that cannot hallucinate by construction.
 ### 1.2 Definition of Hallucination
 
 **Hallucination**: Generation of outputs that:
+
 - Are not grounded in input data
 - Violate known constraints
 - Are presented with false confidence
@@ -161,6 +162,7 @@ Formalize decision determinism under adaptive search.
 ### 2.2 The Challenge
 
 Adaptive search algorithms (A*, Monte Carlo, genetic) typically involve:
+
 - Random tie-breaking
 - Stochastic exploration
 - Path-dependent behavior
@@ -346,17 +348,20 @@ Define "explainability" that satisfies legal standards.
 ### 4.2 Legal Explainability Requirements
 
 **Daubert Standard (US):**
+
 - Theory or technique testable
 - Subjected to peer review
 - Known error rate
 - General acceptance in scientific community
 
 **GDPR Article 22 (EU):**
+
 - Right to explanation of automated decisions
 - Meaningful information about logic involved
 - Significance and envisaged consequences
 
 **Administrative Procedure Act (US):**
+
 - Reasoned decision-making
 - Agency must explain basis for decision
 

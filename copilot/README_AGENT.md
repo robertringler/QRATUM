@@ -1,13 +1,16 @@
 # QuASIM Copilot Agent — Pilot Track (SpaceX/NASA)
 
 ## Overview
+
 This document defines the operational purpose, workflow, and safeguards for the **QuASIM Copilot Agent** running under the **pilot/spacex-nasa** branch.  
 The agent maintains deterministic, audit-ready code and outputs for the QuASIM × SpaceX/NASA demonstration.
 
 ---
 
 ## 1. Mission
+
 The Copilot agent autonomously manages:
+
 - Deterministic **demo generation** using `quasim_spacex_demo.py`
 - Continuous Integration (**CI**) runs that validate reproducibility
 - Artifact publishing (`spacex_demo_report.json`, `starship_demo_report.json`)
@@ -19,6 +22,7 @@ This branch represents QuASIM's **sanitized pilot track**—no proprietary kerne
 ---
 
 ## 2. Key Responsibilities
+
 | Function | Description |
 |-----------|--------------|
 | **Branch Governance** | Operates exclusively on `pilot/spacex-nasa`; forbidden to modify core runtime directories (`quasim/core`, `quasim/kernels`, etc.). |
@@ -45,13 +49,16 @@ legal/                      # NDA & LOI placeholders
 ---
 
 ## 4. Execution Flow
+
 1. **Trigger:** push or workflow_dispatch → `spacex-demo.yml`
 2. **Setup:** Python 3.11 + `numpy`, `matplotlib`
 3. **Run:**  
+
    ```bash
    python quasim_spacex_demo.py --profile configs/meco_profiles/spacex_f9_stage1.json
    python quasim_spacex_demo.py --profile configs/meco_profiles/starship_hotstaging.json
    ```
+
 4. **Validate:** identical JSON metrics across runs, runtime < 60 s
 5. **Artifacts:** upload two JSON files + CI logs
 6. **Release:** tag pilot-v1.0 with attached artifacts and badges
@@ -73,6 +80,7 @@ legal/                      # NDA & LOI placeholders
 ## 6. Approved Dependencies
 
 Only:
+
 - `numpy`
 - `matplotlib`
 
@@ -107,10 +115,10 @@ Maintainers should confirm:
 ## 9. Contact
 
 **QuASIM DevOps Lead:**  
-devops@quasim.io
+<devops@quasim.io>
 
 **Procurement / External Liaisons:**  
-procurement@quasim.io
+<procurement@quasim.io>
 
 ---
 

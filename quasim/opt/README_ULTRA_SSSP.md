@@ -15,7 +15,9 @@ UltraSSSP is a high-performance shortest path algorithm implementation adapted f
 ### 1. Graph Data Structures
 
 #### QGraph
+
 Memory-efficient adjacency list representation supporting:
+
 - Directed and undirected graphs
 - Non-negative edge weights
 - Fast neighbor iteration
@@ -37,7 +39,9 @@ graph = QGraph.random_graph(
 ```
 
 #### HierarchicalGraph
+
 Multi-level graph hierarchy for contraction-based optimization:
+
 - Automatic graph coarsening
 - Supernode mapping
 - Efficient level traversal
@@ -55,6 +59,7 @@ hierarchy = HierarchicalGraph.from_contraction(
 ### 2. UltraSSSP Algorithm
 
 Advanced SSSP with:
+
 - **Batch Processing**: Groups frontier nodes for parallel processing
 - **Correctness Guarantee**: Maintains optimal path distances
 - **Memory Efficiency**: Optimized data structures for large graphs
@@ -163,18 +168,21 @@ python demo_ultra_sssp.py --nodes 1000 --edge-prob 0.01 \
 ## Configuration Parameters
 
 ### Graph Generation
+
 - `num_nodes`: Number of nodes in graph (default: 1000)
 - `edge_probability`: Probability of edge between any two nodes (default: 0.01)
 - `max_edge_weight`: Maximum edge weight (default: 10.0)
 - `source_node`: Source node for SSSP (default: 0)
 
 ### Algorithm Parameters
+
 - `batch_size`: Frontier batch size (default: 100)
 - `use_hierarchy`: Enable hierarchical contraction (default: False)
 - `hierarchy_levels`: Number of hierarchy levels (default: 3)
 - `seed`: Random seed for reproducibility (default: 42)
 
 ### Validation
+
 - `validate_against_dijkstra`: Run validation (default: True)
 
 ## Performance Metrics
@@ -221,11 +229,13 @@ demo_ultra_sssp.py    # Command-line demo
 ## Integration with QRATUM
 
 ### Current Integration
+
 - Uses QRATUM's `quasim` module structure
 - Compatible with QRATUM runtime configuration
 - Follows QRATUM coding conventions
 
 ### Future Integration (TODO)
+
 - [ ] QPU API integration for quantum pivot selection
 - [ ] Integration with QRATUM distributed runtime
 - [ ] Hardware-aware graph partitioning
@@ -246,6 +256,7 @@ python demo_ultra_sssp.py --nodes 500 --use-hierarchy
 ```
 
 Test coverage includes:
+
 - Graph data structure operations
 - Random graph generation
 - Dijkstra baseline implementation
@@ -258,6 +269,7 @@ Test coverage includes:
 ### Correctness Guarantee
 
 UltraSSSP maintains correctness by:
+
 1. Processing nodes in distance order (like Dijkstra)
 2. Handling stale priority queue entries
 3. Extracting batches with similar distances
@@ -298,16 +310,19 @@ def _extract_batch(frontier, distances, visited):
 ## Future Work
 
 ### Quantum Enhancements
+
 - Quantum amplitude amplification for pivot selection
 - Quantum walk-based path finding
 - Hybrid quantum-classical optimization
 
 ### Performance Optimizations
+
 - GPU acceleration for batch processing
 - Distributed graph partitioning
 - Advanced frontier clustering algorithms
 
 ### Features
+
 - Multiple source shortest paths (MSSP)
 - All-pairs shortest paths (APSP)
 - Dynamic graph updates

@@ -12,13 +12,14 @@ from pathlib import Path
 # Add repo to path
 sys.path.insert(0, str(Path(__file__).parent))
 
+import json
+import time
+
+from qratum_chess.benchmarks.motif_extractor import MotifExtractor
+from qratum_chess.benchmarks.runner import BenchmarkConfig, BenchmarkRunner
+from qratum_chess.benchmarks.telemetry import TelemetryOutput
 from qratum_chess.core.position import Position
 from qratum_chess.search.aas import AsymmetricAdaptiveSearch
-from qratum_chess.benchmarks.runner import BenchmarkRunner, BenchmarkConfig, BenchmarkSummary
-from qratum_chess.benchmarks.telemetry import TelemetryOutput
-from qratum_chess.benchmarks.motif_extractor import MotifExtractor
-import time
-import json
 
 print("=" * 80)
 print("QRATUM-Chess LIVE Engine Benchmark Demonstration")
@@ -33,7 +34,7 @@ engine = AsymmetricAdaptiveSearch()
 # Perform a real search
 result = engine.search(pos, depth=4)
 move, eval_score, stats = result
-print(f"   ✓ Engine search completed")
+print("   ✓ Engine search completed")
 print(f"   ✓ Best move: {move.to_uci()}")
 print(f"   ✓ Evaluation: {eval_score:.4f}")
 print(f"   ✓ Nodes searched: {stats.nodes_searched}")
@@ -53,7 +54,7 @@ telemetry.record_move_divergence(
     position_fen=pos.to_fen(),
     move_uci=move.to_uci(),
     engine_move="e2e4",  # Simulated comparison
-    divergence_score=0.65
+    divergence_score=0.65,
 )
 
 print(f"   ✓ Telemetry recorded: {len(telemetry.data.time_per_move)} moves")
@@ -74,16 +75,16 @@ telemetry_export = {
 }
 
 extractor = MotifExtractor(
-    novelty_threshold=0.5,
-    divergence_threshold=0.5,
-    min_cortex_activation=0.3
+    novelty_threshold=0.5, divergence_threshold=0.5, min_cortex_activation=0.3
 )
 
 motifs = extractor.extract_from_telemetry(telemetry_export)
 print(f"   ✓ Motifs extracted: {len(motifs)}")
 if motifs:
     for i, motif in enumerate(motifs[:3], 1):
-        print(f"   {i}. {motif.motif_id} - {motif.motif_type.value} (novelty: {motif.novelty_score:.3f})")
+        print(
+            f"   {i}. {motif.motif_id} - {motif.motif_type.value} (novelty: {motif.novelty_score:.3f})"
+        )
 print()
 
 # 4. Run minimal benchmark suite
@@ -94,8 +95,8 @@ print("   (This uses real engine searches, not mocks)")
 config = BenchmarkConfig(
     run_performance=True,
     run_torture=False,  # Skip torture to save time
-    run_elo=False,      # Skip elo to save time
-    run_resilience=False, # Skip resilience to save time
+    run_elo=False,  # Skip elo to save time
+    run_resilience=False,  # Skip resilience to save time
     run_telemetry=True,
 )
 
@@ -152,11 +153,11 @@ results = {
         "time_per_move": len(telemetry.data.time_per_move),
         "cortex_activations": len(telemetry.data.cortex_activations),
         "move_divergences": len(telemetry.data.move_divergence),
-    }
+    },
 }
 
 # Write JSON
-with open(output_dir / "demo_results.json", 'w') as f:
+with open(output_dir / "demo_results.json", "w") as f:
     json.dump(results, f, indent=2)
 
 # Write telemetry
@@ -176,12 +177,12 @@ print("DEMONSTRATION COMPLETE")
 print("=" * 80)
 print()
 print("Summary:")
-print(f"  ✓ Live engine operational: YES")
-print(f"  ✓ Real computations performed: YES")
-print(f"  ✓ Telemetry captured: YES")
+print("  ✓ Live engine operational: YES")
+print("  ✓ Real computations performed: YES")
+print("  ✓ Telemetry captured: YES")
 print(f"  ✓ Motifs extracted: {len(motifs)}")
-print(f"  ✓ Performance measured: YES")
-print(f"  ✓ Outputs generated: YES")
+print("  ✓ Performance measured: YES")
+print("  ✓ Outputs generated: YES")
 print()
 print("The automated benchmarking system is fully operational with LIVE engine!")
 print(f"Full results available in: {output_dir}")

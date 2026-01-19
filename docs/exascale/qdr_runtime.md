@@ -243,6 +243,7 @@ void qdr_free(void* ptr) {
 ```
 
 **Benefits:**
+
 - Same address across all runs (simplifies debugging)
 - No ASLR (Address Space Layout Randomization)
 - Pointer comparisons are deterministic
@@ -341,6 +342,7 @@ void qdr_ring_allreduce(void* buffer, size_t count, qdr_datatype_t dtype, qdr_op
 ```
 
 **Performance:**
+
 - **Latency:** 12,498 × 500 ns = 6.25 ms (latency-dominated for small messages)
 - **Bandwidth:** Optimal (each link used exactly twice, no congestion)
 - **Efficiency:** 100% for large messages (> 1 MB)
@@ -455,6 +457,7 @@ void qdr_checkpoint_incremental() {
 ```
 
 **Checkpoint Overhead:**
+
 - Dirty page ratio: ~10% per 100 epochs (most memory is read-only)
 - Compression: 3:1 (LZ4 fast mode)
 - Write bandwidth: 112 GB/s per node (8 × NVMe Gen5)
@@ -544,6 +547,7 @@ def qdr_allreduce_byzantine(data, num_nodes, num_faulty):
 ```
 
 **Overhead:**
+
 - Extra communication: 6,250 × 8 bytes = 50 KB per AllReduce
 - Signature verification: 1 ms per signature × 6,250 = 6.25 seconds (parallelized)
 - **Use case:** Critical applications (nuclear simulation, financial trading)
@@ -580,6 +584,7 @@ def qdr_recover_from_failure(failed_nodes):
 ```
 
 **Recovery Time:**
+
 - Detect failure: < 1 ms (heartbeat timeout)
 - Roll back: < 10 seconds (restore from Lustre)
 - Reassign work: < 1 minute (scheduler reconfiguration)
@@ -648,6 +653,7 @@ Qed.
 **Verified Guarantee:**
 
 *For any input I and configuration C, QDR runtime produces a unique deterministic trace T(I, C) with probability 1.0, subject to:*
+
 1. *No hardware faults*
 2. *Clock skew < 1 μs*
 3. *Network latency variance < 5%*
@@ -666,6 +672,7 @@ Qed.
 | AllReduce (8B, 50k GPUs) | 17.2 μs | 15.8 μs | **8.9%** |
 
 **Analysis:**
+
 - Deterministic FP: Minimal overhead (< 2%)
 - Deterministic RNG: High overhead (use sparingly)
 - Deterministic malloc: High overhead (pre-allocate memory)

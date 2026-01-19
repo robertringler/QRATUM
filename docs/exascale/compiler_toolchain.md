@@ -175,6 +175,7 @@ def deterministic_register_allocation(cfg: ControlFlowGraph):
 ```
 
 **Validation:**
+
 - Same source code → same register allocation across all compilations
 - Verified via diff of `.ptx` files
 
@@ -272,6 +273,7 @@ for (int i = 0; i < N; i += 4) {
 ```
 
 **QDR Compiler Defaults:**
+
 - Small loops (< 32 iterations): Fully unroll
 - Medium loops (32-1024 iterations): Unroll factor = 4
 - Large loops (> 1024 iterations): No unrolling (or factor = 2)
@@ -283,6 +285,7 @@ for (int i = 0; i < N; i += 4) {
 PTX is NVIDIA's portable assembly language, analogous to LLVM IR for GPUs.
 
 **Key Characteristics:**
+
 - **Virtual ISA:** Hardware-independent (compiled to SASS by `ptxas`)
 - **Strongly Typed:** Explicit types for all registers and operations
 - **Deterministic:** Fixed semantics (no undefined behavior)
@@ -351,6 +354,7 @@ DONE:
 ```
 
 **Deterministic Features:**
+
 - Fixed instruction order (no reordering)
 - Explicit rounding mode (`.rn` = round-to-nearest-even)
 - Explicit caching policy (`.ca` = cache at all levels)
@@ -390,6 +394,7 @@ diff output1.sass output2.sass
 **Tensor Cores:** Specialized matrix multiplication units on H100 GPUs.
 
 **Specs (H100):**
+
 - Matrix size: 16×8×16 (MxNxK for FP64)
 - Throughput: 50 TFLOPS FP64 per GPU
 - Instructions: `mma.sync.aligned.m16n8k16.row.col.f64.f64.f64.f64`
@@ -455,6 +460,7 @@ diff output1.sass output2.sass
 ```
 
 **Deterministic Guarantees:**
+
 - Fixed operation order (WMMA API enforces sequence)
 - IEEE 754 rounding (round-to-nearest-even)
 - No FMA fusion (results identical to software implementation)
@@ -583,6 +589,7 @@ Qed.
 | LINPACK (HPL) | 5,000 | 45,000 | ✓ | 40% |
 
 **Verification Overhead:**
+
 - Compile time: +30% (symbolic execution + proof generation)
 - Runtime: 0% (proofs checked offline)
 
@@ -627,6 +634,7 @@ __global__ void transpose_optimized(float* in, float* out, int N) {
 **Occupancy:** Percentage of active warps per SM (Streaming Multiprocessor).
 
 **H100 Specs:**
+
 - 132 SMs
 - 64 warps per SM (maximum)
 - 65,536 32-bit registers per SM
@@ -689,6 +697,7 @@ for (int offset = 16; offset > 0; offset >>= 1) {
 **Kernel:** DGEMM (Double-Precision Matrix Multiply)
 
 **Optimizations:**
+
 1. Tensor Core utilization (WMMA API)
 2. Tiling (128×128 tiles)
 3. Prefetching (next tile while computing current)
@@ -706,6 +715,7 @@ for (int offset = 16; offset > 0; offset >>= 1) {
 | **Achieved Performance** | **46 TFLOPS/GPU** | **92% of 50 TFLOPS peak** |
 
 **Scaling to 50k GPUs:**
+
 - Per-GPU: 46 TFLOPS
 - Total: 50,000 × 46 = **2,300 TFLOPS = 2.3 ExaFLOPS**
 - HPL efficiency: 85% (network overhead)
@@ -718,6 +728,7 @@ for (int offset = 16; offset > 0; offset >>= 1) {
 **Kernel:** BFS (Breadth-First Search)
 
 **Optimizations:**
+
 1. Edge-centric traversal (better coalescing)
 2. Work-efficient warp scheduling (avoid divergence)
 3. Atomic operations (for concurrent updates)

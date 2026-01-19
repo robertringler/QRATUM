@@ -5,33 +5,41 @@ This document provides an in-depth technical overview of the QRATUM Temporal Com
 ## Design Principles
 
 ### 1. Deterministic Execution
+
 All temporal computations must be reproducible, ensuring bit-identical results across runs.
 
 **Implementation:**
+
 - Integration with QDR (Quantum Deterministic Runtime)
 - Fixed-order state evolution
 - Deterministic hash functions for state identification
 
 ### 2. Cryptographic Verification
+
 Every temporal operation is cryptographically verified using Merkle trees.
 
 **Implementation:**
+
 - Merkle chains for state sequences
 - Hash-based state identification
 - Optional post-quantum cryptographic signatures
 
 ### 3. Paradox Safety
+
 Temporal paradoxes are automatically detected and resolved.
 
 **Implementation:**
+
 - Multiple resolution strategies (Novikov, Many-Worlds, Chronology Protection)
 - Causality validation at each state transition
 - Configurable paradox handling policies
 
 ### 4. Exascale Performance
+
 Designed for distributed exascale computing environments.
 
 **Implementation:**
+
 - Integration with AetherFabric-X for deterministic routing
 - QDR AllReduce for state synchronization
 - Hardware-accelerated Merkle verification
@@ -81,12 +89,14 @@ Designed for distributed exascale computing environments.
 The `TemporalEngine` is the heart of the system, coordinating all temporal operations.
 
 **Key Methods:**
+
 - `forward()`: Forward temporal projection
 - `backward()`: Backward temporal reconstruction
 - `branch()`: Create parallel timelines
 - `converge()`: Merge parallel timelines
 
 **Internal Architecture:**
+
 ```python
 TemporalEngine
 ├── Configuration (TemporalEngineConfig)
@@ -96,6 +106,7 @@ TemporalEngine
 ```
 
 **State Flow:**
+
 1. Initial state → Evolution function → Intermediate states → Final state
 2. Each transition creates a new TemporalState with parent hash
 3. States are added to a StateChain
@@ -170,6 +181,7 @@ class StateChain:
    - Bidirectional navigation
 
 **EffectiveVelocity Calculation:**
+
 ```python
 effective_c = computational_delta_t / physical_delta_t
 distance_equivalent = SPEED_OF_LIGHT * computational_delta_t
@@ -178,6 +190,7 @@ distance_equivalent = SPEED_OF_LIGHT * computational_delta_t
 ### Paradox Resolution
 
 **Paradox Types:**
+
 - **Grandfather**: Effect prevents its own cause
 - **Bootstrap**: Information with no origin
 - **Predestination**: Circular causality
@@ -202,6 +215,7 @@ distance_equivalent = SPEED_OF_LIGHT * computational_delta_t
    - Implementation: Return failure for paradox
 
 **Causality Validation:**
+
 ```python
 class CausalityValidator:
     def validate_causal_chain(chain) -> (bool, List[Paradox])
@@ -213,6 +227,7 @@ class CausalityValidator:
 ### Timeline Management
 
 **Timeline Hierarchy:**
+
 ```
 Root Timeline
 ├── Branch A (at depth 10)
@@ -224,6 +239,7 @@ Root Timeline
 ```
 
 **TimelineManager Operations:**
+
 - `create_timeline()`: Create new timeline
 - `branch_timeline()`: Split into parallel branches
 - `merge_timelines()`: Converge branches
@@ -232,6 +248,7 @@ Root Timeline
 - `prune_timelines()`: Remove unneeded branches
 
 **Branch Points:**
+
 ```python
 @dataclass
 class TimelineBranch:
@@ -267,6 +284,7 @@ class TimelineBranch:
    - Memory-efficient for long chains
 
 **Entropy Handling:**
+
 ```python
 class EntropyReversal:
     strategy: EntropyStrategy
@@ -300,6 +318,7 @@ Where Si = TemporalState i
 
 **Proof Generation:**
 To prove state S1 is in the chain:
+
 1. Provide H1 (state hash)
 2. Provide H0 (sibling)
 3. Provide H(H2+H3) (uncle)
@@ -323,6 +342,7 @@ class TemporalProof:
 ```
 
 **Proof Verification:**
+
 1. Verify Merkle root matches state chain
 2. Verify time consistency (physical_t increases)
 3. Verify PQC signature (if present)
@@ -333,6 +353,7 @@ class TemporalProof:
 ### QDR Runtime Integration
 
 **Deterministic AllReduce:**
+
 ```python
 class QDRIntegration:
     def synchronize_states(
@@ -344,6 +365,7 @@ class QDRIntegration:
 ```
 
 **Barrier Synchronization:**
+
 - Before forward/backward computation
 - After state transitions
 - Before timeline operations
@@ -351,6 +373,7 @@ class QDRIntegration:
 ### AetherFabric-X Integration
 
 **Deterministic Routing:**
+
 ```python
 class AetherFabricIntegration:
     def route_timeline_state(
@@ -367,11 +390,13 @@ class AetherFabricIntegration:
 ### Hardware Acceleration
 
 **Merkle Hashing:**
+
 - FPGA or ASIC acceleration
 - Parallel hash computation
 - Target: >1M hashes/second
 
 **State Serialization:**
+
 - Zero-copy serialization
 - Hardware-accelerated compression
 - RDMA for inter-node transfer
@@ -381,11 +406,13 @@ class AetherFabricIntegration:
 ### Memory Efficiency
 
 **State Compression:**
+
 - Store only deltas between states
 - Periodic full checkpoints
 - Lazy materialization
 
 **Timeline Pruning:**
+
 - Remove low-probability branches
 - Keep only Pareto-optimal timelines
 - Configurable retention policies
@@ -393,11 +420,13 @@ class AetherFabricIntegration:
 ### Computational Efficiency
 
 **Parallel Execution:**
+
 - Distribute branches across nodes
 - Pipeline state evolution
 - Overlap computation and communication
 
 **Caching:**
+
 - Possibility oracle for precomputed results
 - Memoization of evolution functions
 - Reuse of Merkle proofs
@@ -407,11 +436,13 @@ class AetherFabricIntegration:
 ### Checkpoint Recovery
 
 **Periodic Checkpointing:**
+
 - Every N states
 - Every T wall-clock seconds
 - Before major operations (branch, merge)
 
 **Recovery:**
+
 1. Load most recent checkpoint
 2. Replay forward to target
 3. Verify Merkle consistency
@@ -419,11 +450,13 @@ class AetherFabricIntegration:
 ### Distributed Failure Handling
 
 **Node Failure:**
+
 - Replicate state chains across nodes
 - Continue with remaining nodes
 - Recompute lost branches
 
 **Network Partition:**
+
 - Each partition continues independently
 - Merge when partition heals
 - Use Merkle roots to detect conflicts
@@ -433,11 +466,13 @@ class AetherFabricIntegration:
 ### Post-Quantum Cryptography
 
 **Signature Schemes:**
+
 - CRYSTALS-Dilithium (primary)
 - SPHINCS+ (alternative)
 - Falcon (for constrained environments)
 
 **Key Management:**
+
 - Per-timeline signing keys
 - Hierarchical key derivation
 - Hardware security module integration
@@ -445,14 +480,17 @@ class AetherFabricIntegration:
 ### Attack Vectors
 
 **Temporal Forgery:**
+
 - Attacker creates fake state chain
 - Mitigation: Merkle verification, PQC signatures
 
 **Paradox Injection:**
+
 - Attacker forces paradoxical states
 - Mitigation: Causality validation, resolution strategies
 
 **Replay Attacks:**
+
 - Attacker replays old states
 - Mitigation: Monotonic timestamps, nonces
 

@@ -333,8 +333,7 @@ class CausalOncologyGraph:
         self.provenance: list[str] = []
 
         logger.info(
-            f"Initialized CausalOncologyGraph: {name} "
-            f"(cancer_type={cancer_type}, seed={seed})"
+            f"Initialized CausalOncologyGraph: {name} " f"(cancer_type={cancer_type}, seed={seed})"
         )
 
     def add_node(self, node: OncogenicNode) -> None:
@@ -449,9 +448,7 @@ class CausalOncologyGraph:
 
             for _ in range(n_simulations):
                 # Apply random perturbation to this node
-                perturbation = self.rng.uniform(
-                    -perturbation_magnitude, perturbation_magnitude
-                )
+                perturbation = self.rng.uniform(-perturbation_magnitude, perturbation_magnitude)
 
                 # Propagate through downstream nodes
                 propagated = self._propagate_perturbation(node_id, perturbation)
@@ -576,8 +573,7 @@ class CausalOncologyGraph:
             score = (
                 node.druggability * 0.4
                 + (downstream_influence / max(len(self._nodes), 1)) * 0.3
-                + (loop_participation.get(node_id, 0) / max(len(feedback_loops), 1))
-                * 0.3
+                + (loop_participation.get(node_id, 0) / max(len(feedback_loops), 1)) * 0.3
             )
 
             candidates.append((node, score))

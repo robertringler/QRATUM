@@ -92,8 +92,7 @@ class AuditRegistry:
         """Initialize database schema."""
 
         self.conn = sqlite3.connect(str(self.db_path))
-        self.conn.execute(
-            """
+        self.conn.execute("""
 
             CREATE TABLE IF NOT EXISTS audit_log (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -108,26 +107,19 @@ class AuditRegistry:
                 config_hash TEXT,
                 resolved INTEGER NOT NULL DEFAULT 0
             )
-        """
-        )
-        self.conn.execute(
-            """
+        """)
+        self.conn.execute("""
 
             CREATE INDEX IF NOT EXISTS idx_timestamp ON audit_log(timestamp)
-        """
-        )
-        self.conn.execute(
-            """
+        """)
+        self.conn.execute("""
 
             CREATE INDEX IF NOT EXISTS idx_violation_type ON audit_log(violation_type)
-        """
-        )
-        self.conn.execute(
-            """
+        """)
+        self.conn.execute("""
 
             CREATE INDEX IF NOT EXISTS idx_severity ON audit_log(severity)
-        """
-        )
+        """)
         self.conn.commit()
 
     def log(self, entry: AuditEntry) -> int:
@@ -239,8 +231,7 @@ class AuditRegistry:
             Dictionary of statistics
         """
 
-        cursor = self.conn.execute(
-            """
+        cursor = self.conn.execute("""
 
             SELECT 
                 violation_type,
@@ -249,8 +240,7 @@ class AuditRegistry:
                 SUM(CASE WHEN resolved = 1 THEN 1 ELSE 0 END) as resolved_count
             FROM audit_log
             GROUP BY violation_type
-        """
-        )
+        """)
 
         stats = {}
         for row in cursor.fetchall():

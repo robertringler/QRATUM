@@ -5,14 +5,14 @@ orbit propagation, aerodynamic analysis, and mission planning.
 """
 
 import math
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict
 
 from qratum_platform.core import (
     ComputeSubstrate,
     PlatformContract,
     VerticalModuleBase,
 )
-from qratum_platform.substrates import get_optimal_substrate, VerticalModule
+from qratum_platform.substrates import VerticalModule, get_optimal_substrate
 
 
 class SENTRAModule(VerticalModuleBase):

@@ -23,10 +23,12 @@ pip install -e ".[dev]"
 ### 1. Prepare Your Data
 
 Place your SEER-Medicare data files in local directories:
+
 - **SEER Registry Files:** CSV files containing cancer registry data
 - **Medicare Claims Files:** CSV files for MEDPAR, NCH, OUTSAF, PDE, etc.
 
 Expected file naming conventions:
+
 - MEDPAR files: `*medpar*.csv` or `*inpatient*.csv`
 - NCH/Carrier files: `*nch*.csv` or `*carrier*.csv`
 - Outpatient files: `*outsaf*.csv` or `*outpatient*.csv`
@@ -112,6 +114,7 @@ python scripts/build_seer_medicare_report.py \
 ### SEER Registry Files (CSV)
 
 Expected columns (various aliases supported):
+
 - `PATIENT_ID` or `patient_id`: Unique patient identifier
 - `DATE_OF_DIAGNOSIS` or `DX_DATE`: Diagnosis date (YYYYMMDD or YYYY-MM-DD)
 - `PRIMARY_SITE` or `SITE`: Cancer primary site
@@ -125,6 +128,7 @@ Expected columns (various aliases supported):
 ### Medicare Claims Files (CSV)
 
 **MEDPAR (Inpatient):**
+
 - `BENE_ID`: Beneficiary ID
 - `ADMSN_DT`: Admission date
 - `DRG_CD`: DRG code
@@ -132,18 +136,21 @@ Expected columns (various aliases supported):
 - `ICD_PRCDR_CD1`...`ICD_PRCDR_CD25`: Procedure codes
 
 **NCH/Carrier:**
+
 - `BENE_ID`: Beneficiary ID
 - `CLM_FROM_DT`: Claim from date
 - `HCPCS_CD`: HCPCS/CPT code
 - `PRVDR_SPCLTY`: Provider specialty
 
 **OUTSAF (Outpatient):**
+
 - `BENE_ID`: Beneficiary ID
 - `CLM_FROM_DT`: Claim from date
 - `HCPCS_CD`: HCPCS/CPT code
 - `REV_CNTR`: Revenue center code
 
 **PDE (Part D):**
+
 - `BENE_ID`: Beneficiary ID
 - `SRVC_DT`: Service date
 - `PROD_SRVC_ID`: NDC code
@@ -230,6 +237,7 @@ Results are deterministic given the same inputs and configuration.
 ### Environment Capture
 
 Each run captures:
+
 - Python version
 - Complete `pip freeze` output
 - Git commit hash
@@ -242,21 +250,26 @@ that the exact same data was used.
 ## Limitations & Caveats
 
 ### Medicare Population Bias
+
 - Cohort limited to Medicare beneficiaries (age 65+)
 - Results may not generalize to younger populations
 
 ### Claims-Based Limitations
+
 - Treatment timing reflects billing dates, not administration
 - Diagnosis codes may not capture full clinical picture
 - Drug identification relies on J-code mappings
 
 ### Proxy Variables
+
 All features derived from claims are **proxies**, not direct measurements:
+
 - **Tumor burden proxy:** Based on utilization patterns
 - **Immune engagement proxy:** Based on treatment codes
 - **Toxicity proxy:** Based on healthcare burden
 
 ### Research Use Only
+
 This pipeline generates hypotheses for research exploration.
 Results require clinical validation through prospective studies.
 
@@ -265,7 +278,9 @@ Results require clinical validation through prospective studies.
 ### Core Modules
 
 #### `qratum.oncology.registry.seer_medicare.schema`
+
 Data models for normalized records:
+
 - `ClaimEvent`: Normalized claim event
 - `RegistryCase`: SEER registry case
 - `TreatmentEvent`: Identified treatment
@@ -273,41 +288,55 @@ Data models for normalized records:
 - `CohortDefinition`: Cohort criteria
 
 #### `qratum.oncology.registry.seer_medicare.privacy`
+
 Privacy utilities:
+
 - `PrivacyConfig`: Configuration for privacy controls
 - `SafeLogger`: Privacy-preserving logger
 - `create_patient_key()`: Hash patient identifiers
 - `suppress_small_counts()`: Cell size suppression
 
 #### `qratum.oncology.registry.seer_medicare.io`
+
 File I/O utilities:
+
 - `create_dataset_manifest()`: Generate file manifest
 - `read_csv_chunked()`: Chunked CSV reading
 - `RunArtifacts`: Container for run outputs
 
 #### `qratum.oncology.registry.seer_medicare.seer_registry`
+
 SEER parsing:
+
 - `SEERRegistryParser`: Parse SEER case files
 
 #### `qratum.oncology.registry.seer_medicare.medicare_claims`
+
 Claims parsing:
+
 - `MEDPARParser`: Inpatient claims
 - `NCHParser`: Carrier/physician claims
 - `OUTSAFParser`: Outpatient claims
 - `PDEParser`: Part D drug events
 
 #### `qratum.oncology.registry.seer_medicare.cohort`
+
 Cohort building:
+
 - `CohortBuilder`: Build cohorts with criteria
 - `CohortStats`: Cohort statistics
 
 #### `qratum.oncology.registry.seer_medicare.timelines`
+
 Timeline construction:
+
 - `TreatmentTimelineBuilder`: Build treatment timelines
 - `CodeMappingLibrary`: Treatment code mappings
 
 #### `qratum.oncology.registry.seer_medicare.features`
+
 Feature engineering:
+
 - `FeatureEngineer`: Extract features for QRATUM
 - `BaselineFeatures`: Features at index date
 - `StateFeatures`: Dynamic state features

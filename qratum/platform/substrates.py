@@ -7,13 +7,13 @@ Supports GPU (GB200/MI300X), Cerebras, QPU, IPU, and CPU substrates.
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 
 class ComputeSubstrate(Enum):
     """
     Available compute substrates for QRATUM execution.
-    
+
     Each substrate has specific strengths:
     - GPU: High throughput parallel processing (tensor operations)
     - CEREBRAS: Massive parallelism (wafer-scale integration)
@@ -21,6 +21,7 @@ class ComputeSubstrate(Enum):
     - IPU: Streaming/graph-based computation (neural networks)
     - CPU: Deterministic verification and control flow
     """
+
     GPU_GB200 = "gpu_gb200"  # NVIDIA GB200 Grace-Blackwell
     GPU_MI300X = "gpu_mi300x"  # AMD MI300X
     CEREBRAS = "cerebras"  # Wafer-scale engine
@@ -33,9 +34,10 @@ class ComputeSubstrate(Enum):
 class SubstrateCapability:
     """
     Capability profile for a compute substrate.
-    
+
     Defines what types of workloads are well-suited for each substrate.
     """
+
     substrate: ComputeSubstrate
     strengths: List[str]
     typical_tasks: List[str]
@@ -150,24 +152,22 @@ SUBSTRATE_PROFILES = {
 class SubstrateSelector:
     """
     Intelligent substrate selector for QRATUM tasks.
-    
+
     Analyzes task characteristics and selects the optimal compute
     substrate(s) for execution. Supports multi-substrate execution
     where tasks can benefit from heterogeneous computing.
     """
-    
+
     def __init__(self):
         """Initialize substrate selector"""
         self.profiles = SUBSTRATE_PROFILES
-    
+
     def select_substrate(
-        self,
-        task_name: str,
-        task_characteristics: Dict[str, Any]
+        self, task_name: str, task_characteristics: Dict[str, Any]
     ) -> List[ComputeSubstrate]:
         """
         Select optimal substrate(s) for a task.
-        
+
         Args:
             task_name: Name of the task
             task_characteristics: Dictionary with task properties:
@@ -175,7 +175,7 @@ class SubstrateSelector:
                 - requires_high_throughput: bool
                 - requires_quantum: bool
                 - workload_type: str (tensor, graph, simulation, etc.)
-        
+
         Returns:
             List of recommended substrates (ordered by preference)
         """
@@ -183,20 +183,20 @@ class SubstrateSelector:
         requires_high_throughput = task_characteristics.get("requires_high_throughput", False)
         requires_quantum = task_characteristics.get("requires_quantum", False)
         workload_type = task_characteristics.get("workload_type", "general")
-        
+
         candidates = []
-        
+
         # Quantum tasks must use QPU
         if requires_quantum:
             candidates.append(ComputeSubstrate.QPU)
             return candidates
-        
+
         # Deterministic tasks prefer CPU
         if requires_determinism:
             candidates.append(ComputeSubstrate.CPU)
             if not requires_high_throughput:
                 return candidates
-        
+
         # High throughput tasks
         if requires_high_throughput:
             if workload_type == "tensor":
@@ -207,24 +207,24 @@ class SubstrateSelector:
                 candidates.append(ComputeSubstrate.CEREBRAS)
             else:
                 candidates.append(ComputeSubstrate.GPU_GB200)
-        
+
         # Default fallback
         if not candidates:
             candidates.append(ComputeSubstrate.CPU)
-        
+
         return candidates
-    
+
     def get_substrate_info(self, substrate: ComputeSubstrate) -> SubstrateCapability:
         """Get capability profile for a substrate"""
         return self.profiles[substrate]
-    
+
     def recommend_for_vertical(self, vertical_name: str) -> Dict[str, List[ComputeSubstrate]]:
         """
         Get substrate recommendations for common tasks in a vertical.
-        
+
         Args:
             vertical_name: Name of the vertical module
-        
+
         Returns:
             Dictionary mapping task types to recommended substrates
         """
@@ -288,5 +288,5 @@ class SubstrateSelector:
                 "collision_avoidance": [ComputeSubstrate.GPU_GB200, ComputeSubstrate.CPU],
             },
         }
-        
+
         return recommendations.get(vertical_name, {})

@@ -129,8 +129,7 @@ class CohortBuilder:
             or ([definition.histology] if definition.histology else [])
         )
         self._stage_patterns = self._compile_patterns(
-            definition.stage_patterns
-            or ([definition.stage] if definition.stage else [])
+            definition.stage_patterns or ([definition.stage] if definition.stage else [])
         )
 
     def _compile_patterns(self, patterns: list[str]) -> list[re.Pattern]:
@@ -283,9 +282,7 @@ class CohortBuilder:
         # Age distribution
         if case.age_at_dx is not None:
             age_bin = self._get_age_bin(case.age_at_dx)
-            self._stats.age_distribution[age_bin] = (
-                self._stats.age_distribution.get(age_bin, 0) + 1
-            )
+            self._stats.age_distribution[age_bin] = self._stats.age_distribution.get(age_bin, 0) + 1
         else:
             self._stats.missingness["age"] = self._stats.missingness.get("age", 0) + 1
 

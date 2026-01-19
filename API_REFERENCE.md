@@ -11,6 +11,7 @@ http://localhost:8000/api/v1
 ```
 
 For production with SSL:
+
 ```
 https://your-domain.com/api/v1
 ```
@@ -39,6 +40,7 @@ For high-security environments, client certificates are required.
 Check system health status.
 
 **Response:**
+
 ```json
 {
   "status": "healthy",
@@ -57,6 +59,7 @@ Check system health status.
 Get all available vertical modules.
 
 **Response:**
+
 ```json
 {
   "verticals": [
@@ -81,6 +84,7 @@ Get all available vertical modules.
 Execute a task on a specific vertical module.
 
 **Request Body:**
+
 ```json
 {
   "vertical": "JURIS",
@@ -96,6 +100,7 @@ Execute a task on a specific vertical module.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -124,12 +129,14 @@ Execute a task on a specific vertical module.
 ### 1. JURIS - Legal & Compliance
 
 **Tasks:**
+
 - `analyze_contract`: Analyze contract for risks and compliance
 - `legal_reasoning`: Apply legal reasoning frameworks (IRAC/CRAC)
 - `predict_litigation`: Predict litigation outcomes
 - `check_compliance`: Check regulatory compliance
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:8000/api/v1/vertical/execute \
   -H "Content-Type: application/json" \
@@ -146,6 +153,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 2. VITRA - Healthcare & Life Sciences
 
 **Tasks:**
+
 - `diagnose_condition`: Medical diagnosis support
 - `drug_interaction`: Check drug interactions
 - `clinical_decision`: Clinical decision support
@@ -154,6 +162,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 3. ECORA - Climate & Environment
 
 **Tasks:**
+
 - `climate_model`: Climate impact modeling
 - `sustainability_analysis`: Sustainability assessment
 - `resource_optimization`: Resource optimization
@@ -162,6 +171,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 4. CAPRA - Finance & Economics
 
 **Tasks:**
+
 - `risk_assessment`: Financial risk assessment
 - `fraud_detection`: Fraud detection and analysis
 - `market_analysis`: Market trend analysis
@@ -170,6 +180,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 5. SENTRA - Security & Defense
 
 **Tasks:**
+
 - `threat_detection`: Threat detection and analysis
 - `vulnerability_analysis`: Security vulnerability analysis
 - `strategic_planning`: Strategic security planning
@@ -178,6 +189,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 6. NEURA - Cognitive Science
 
 **Tasks:**
+
 - `behavioral_analysis`: Behavioral pattern analysis
 - `cognitive_modeling`: Cognitive process modeling
 - `mental_health_support`: Mental health support (informational)
@@ -186,6 +198,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 7. FLUXA - Supply Chain
 
 **Tasks:**
+
 - `optimize_route`: Route optimization
 - `demand_forecast`: Demand forecasting
 - `inventory_management`: Inventory optimization
@@ -194,6 +207,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 8. CHRONA - Temporal Reasoning
 
 **Tasks:**
+
 - `time_series_analysis`: Time series analysis
 - `predictive_modeling`: Predictive modeling
 - `scenario_planning`: Future scenario planning
@@ -202,6 +216,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 9. GEONA - Geospatial
 
 **Tasks:**
+
 - `spatial_analysis`: Spatial data analysis
 - `route_optimization`: Geographic route optimization
 - `terrain_modeling`: Terrain modeling
@@ -210,6 +225,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 10. FUSIA - Energy & Materials
 
 **Tasks:**
+
 - `grid_optimization`: Energy grid optimization
 - `materials_discovery`: Materials science discovery
 - `energy_modeling`: Energy system modeling
@@ -218,6 +234,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 11. STRATA - Social Systems
 
 **Tasks:**
+
 - `policy_analysis`: Policy impact analysis
 - `social_impact`: Social impact assessment
 - `governance_modeling`: Governance system modeling
@@ -226,6 +243,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 12. VEXOR - Adversarial & Game Theory
 
 **Tasks:**
+
 - `strategic_game`: Strategic game analysis
 - `adversarial_reasoning`: Adversarial reasoning
 - `negotiation_analysis`: Negotiation strategy analysis
@@ -234,6 +252,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 13. COHORA - Collaborative Intelligence
 
 **Tasks:**
+
 - `multi_agent_coordination`: Multi-agent coordination
 - `collective_decision`: Collective decision making
 - `swarm_optimization`: Swarm optimization
@@ -242,6 +261,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 ### 14. ORBIA - Orbital & Space
 
 **Tasks:**
+
 - `orbital_mechanics`: Orbital mechanics calculation
 - `satellite_ops`: Satellite operations planning
 - `space_mission_planning`: Space mission planning
@@ -256,6 +276,7 @@ curl -X POST http://localhost:8000/api/v1/vertical/execute \
 Synthesize knowledge across multiple verticals.
 
 **Request Body:**
+
 ```json
 {
   "query": "How does climate change affect pharmaceutical supply chains?",
@@ -270,6 +291,7 @@ Synthesize knowledge across multiple verticals.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -308,6 +330,7 @@ Synthesize knowledge across multiple verticals.
 Verify cryptographic integrity of reasoning chain.
 
 **Response:**
+
 ```json
 {
   "chain_id": "reasoning_chain_123_456",
@@ -330,6 +353,7 @@ All operations are classified by safety level:
 | `EXISTENTIAL` | Board + external | Architecture changes |
 
 Set `safety_level` in your request:
+
 ```json
 {
   "safety_level": "SENSITIVE",
@@ -361,10 +385,12 @@ Set `safety_level` in your request:
 ## Rate Limiting
 
 Default limits:
+
 - 1000 requests/minute per API key
 - 10 synthesis requests/minute per API key
 
 Headers included in response:
+
 ```
 X-RateLimit-Limit: 1000
 X-RateLimit-Remaining: 995
@@ -378,6 +404,7 @@ X-RateLimit-Reset: 1609459200
 **GET** `/api/v1/stats`
 
 **Response:**
+
 ```json
 {
   "verticals": 14,
@@ -432,6 +459,6 @@ curl -X POST http://localhost:8000/api/v1/synthesis/execute \
 
 ## Support
 
-- **API Issues**: https://github.com/robertringler/QRATUM/issues
-- **Documentation**: https://docs.qratum.io
-- **Email**: api-support@qratum.io
+- **API Issues**: <https://github.com/robertringler/QRATUM/issues>
+- **Documentation**: <https://docs.qratum.io>
+- **Email**: <api-support@qratum.io>

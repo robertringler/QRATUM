@@ -28,6 +28,7 @@
 The QuASIM Ansys integration provides a Python-first API for GPU-accelerated nonlinear elastomer mechanics. This guide covers installation, basic usage, and advanced features for engineers integrating QuASIM with Ansys Mechanical workflows.
 
 **Key Features:**
+
 - **PyMAPDL integration** - Seamless mesh import/export
 - **GPU acceleration** - 3-6x speedup vs Ansys CPU baseline
 - **Deterministic execution** - Aerospace-grade reproducibility
@@ -41,11 +42,13 @@ The QuASIM Ansys integration provides a Python-first API for GPU-accelerated non
 ### 2.1 System Requirements
 
 **Minimum:**
+
 - Python 3.10+
 - 16 GB RAM
 - NVIDIA GPU with 8+ GB memory (optional, CPU fallback available)
 
 **Recommended:**
+
 - Python 3.12
 - 64 GB RAM
 - NVIDIA A100 40/80GB
@@ -54,26 +57,31 @@ The QuASIM Ansys integration provides a Python-first API for GPU-accelerated non
 ### 2.2 Installation Steps
 
 **Step 1: Install QuASIM Core**
+
 ```bash
 pip install quasim>=0.1.0
 ```
 
 **Step 2: Install Ansys Integration Adapter**
+
 ```bash
 pip install quasim-ansys-adapter>=1.0.0
 ```
 
 **Step 3: Install Ansys PyMAPDL** (if not already installed)
+
 ```bash
 pip install ansys-mapdl-core>=0.68.0
 ```
 
 **Step 4: Verify Installation**
+
 ```bash
 python3 -m sdk.ansys.quasim_ansys_adapter
 ```
 
 Expected output:
+
 ```
 Testing QuASIM Ansys adapter installation...
 ✓ Python 3.12
@@ -103,6 +111,7 @@ CMD ["/bin/bash"]
 ```
 
 Build and run:
+
 ```bash
 docker build -t quasim-ansys .
 docker run --gpus all -it quasim-ansys
@@ -211,8 +220,10 @@ mapdl.pldisp(2)
 QuASIM supports three integration modes:
 
 #### Co-Solver Mode (Recommended)
+
 **Use case:** Ansys handles some elements, QuASIM handles others  
 **Workflow:**
+
 1. Ansys imports mesh and BC
 2. QuASIM solves nonlinear elastomer elements
 3. Ansys solves remaining elements
@@ -222,8 +233,10 @@ QuASIM supports three integration modes:
 **Cons:** Requires data transfer between solvers
 
 #### Preconditioner Mode
+
 **Use case:** QuASIM provides initial guess for Ansys solver  
 **Workflow:**
+
 1. Ansys starts Newton iteration
 2. QuASIM provides preconditioned solution estimate
 3. Ansys refines to full accuracy
@@ -232,8 +245,10 @@ QuASIM supports three integration modes:
 **Cons:** Less speedup than co-solver mode
 
 #### Standalone Mode
+
 **Use case:** QuASIM fully replaces Ansys for supported physics  
 **Workflow:**
+
 1. Export mesh from Ansys (one-time)
 2. Run QuASIM solver independently
 3. Import results to Ansys for visualization
@@ -244,24 +259,30 @@ QuASIM supports three integration modes:
 ### 4.2 Device Selection
 
 **CPU Mode:**
+
 ```python
 adapter = QuasimAnsysAdapter(device="cpu")
 ```
+
 - Automatic fallback if GPU unavailable
 - 10-20x slower than GPU, but still competitive with Ansys
 
 **GPU Mode:**
+
 ```python
 adapter = QuasimAnsysAdapter(device="gpu")
 ```
+
 - Single GPU acceleration
 - 3-6x speedup vs Ansys CPU baseline
 - Requires CUDA 12.2+
 
 **Multi-GPU Mode:**
+
 ```python
 adapter = QuasimAnsysAdapter(device="multi_gpu")
 ```
+
 - Distributed execution across multiple GPUs
 - Required for large models (>100k elements)
 - Requires NVLink or PCIe Gen4
@@ -269,9 +290,11 @@ adapter = QuasimAnsysAdapter(device="multi_gpu")
 ### 4.3 Deterministic Execution
 
 **Fixed Random Seed:**
+
 ```python
 adapter = QuasimAnsysAdapter(random_seed=42)
 ```
+
 - Ensures bit-exact reproducibility
 - Critical for aerospace certification
 - SHA-256 hash verification available
@@ -294,6 +317,7 @@ QuasimAnsysAdapter(
 ```
 
 **Parameters:**
+
 - `mode`: Integration mode (CO_SOLVER, PRECONDITIONER, STANDALONE)
 - `device`: Compute device ("cpu", "gpu", "multi_gpu")
 - `mapdl_session`: Active PyMAPDL session (for co-solver mode)
@@ -302,6 +326,7 @@ QuasimAnsysAdapter(
 **Returns:** QuasimAnsysAdapter instance
 
 **Example:**
+
 ```python
 adapter = QuasimAnsysAdapter(
     mode=SolverMode.CO_SOLVER,
@@ -321,14 +346,17 @@ import_mesh_from_mapdl(mapdl: Any = None) -> MeshData
 **Description:** Import mesh from active Ansys MAPDL session (zero-copy, fastest method).
 
 **Parameters:**
+
 - `mapdl`: Active PyMAPDL session (optional if provided in constructor)
 
 **Returns:** MeshData object
 
 **Raises:**
+
 - `MeshImportError`: If mesh import fails
 
 **Example:**
+
 ```python
 from ansys.mapdl.core import launch_mapdl
 
@@ -350,14 +378,17 @@ import_mesh_from_file(filepath: str | Path) -> MeshData
 **Description:** Import mesh from Ansys CDB file.
 
 **Parameters:**
+
 - `filepath`: Path to Ansys .cdb file
 
 **Returns:** MeshData object
 
 **Raises:**
+
 - `MeshImportError`: If file not found or parsing fails
 
 **Example:**
+
 ```python
 # In Ansys: CDWRITE,ALL,model,cdb
 mesh = adapter.import_mesh_from_file("model.cdb")
@@ -381,6 +412,7 @@ add_material(
 **Description:** Add material definition.
 
 **Parameters:**
+
 - `material_id`: Unique material identifier (matches Ansys MAT ID)
 - `name`: Human-readable material name
 - `model`: Material constitutive model (see MaterialModel enum)
@@ -389,9 +421,11 @@ add_material(
 - `temperature_reference`: Reference temperature [K]
 
 **Raises:**
+
 - `MaterialParameterError`: If parameters are invalid
 
 **Example:**
+
 ```python
 # Mooney-Rivlin hyperelastic material
 adapter.add_material(
@@ -434,16 +468,19 @@ solve(
 **Description:** Execute solver.
 
 **Parameters:**
+
 - `element_types`: Ansys element types to solve (for co-solver mode)
 - `config`: Solver configuration (optional, uses default if not provided)
 
 **Returns:** StateVector with solution
 
 **Raises:**
+
 - `ConvergenceError`: If solver fails to converge
 - `GPUMemoryError`: If GPU memory exhausted
 
 **Example:**
+
 ```python
 # Basic solve
 state = adapter.solve()
@@ -472,12 +509,15 @@ export_results_to_mapdl(mapdl: Any = None) -> None
 **Description:** Export results back to Ansys MAPDL session for postprocessing.
 
 **Parameters:**
+
 - `mapdl`: Active PyMAPDL session (optional if provided in constructor)
 
 **Raises:**
+
 - `ValueError`: If no solution state available
 
 **Example:**
+
 ```python
 # Export to active MAPDL session
 adapter.export_results_to_mapdl(mapdl)
@@ -502,13 +542,16 @@ export_results_to_file(
 **Description:** Export results to file.
 
 **Parameters:**
+
 - `filepath`: Output file path
 - `format`: Output format ("rst", "vtk", "csv", "json", "hdf5")
 
 **Raises:**
+
 - `ValueError`: If no solution state or invalid format
 
 **Example:**
+
 ```python
 # Export to Ansys result format
 adapter.export_results_to_file("results.rst", format="rst")
@@ -536,9 +579,11 @@ get_performance_metrics() -> PerformanceMetrics
 **Returns:** PerformanceMetrics object
 
 **Raises:**
+
 - `ValueError`: If no solve has been executed
 
 **Example:**
+
 ```python
 metrics = adapter.get_performance_metrics()
 print(f"Solve time: {metrics.solve_time:.2f}s")
@@ -560,9 +605,11 @@ set_solver_config(**kwargs: Any) -> None
 **Description:** Update solver configuration parameters.
 
 **Parameters:**
+
 - `**kwargs`: Configuration parameters (see SolverConfig class)
 
 **Example:**
+
 ```python
 adapter.set_solver_config(
     max_iterations=50,
@@ -591,10 +638,12 @@ class MeshData:
 ```
 
 **Properties:**
+
 - `num_nodes: int` - Number of nodes
 - `num_elements: int` - Number of elements
 
 **Methods:**
+
 - `to_dict() -> dict` - Convert to dictionary for serialization
 
 ---
@@ -613,9 +662,11 @@ class StateVector:
 ```
 
 **Properties:**
+
 - `num_nodes: int` - Number of nodes
 
 **Methods:**
+
 - `compute_hash() -> str` - Compute SHA-256 hash for reproducibility verification
 
 ---
@@ -634,6 +685,7 @@ class MaterialParameters:
 ```
 
 **Methods:**
+
 - `validate() -> None` - Validate material parameters
 - `to_dict() -> dict` - Convert to dictionary
 
@@ -711,16 +763,19 @@ class MaterialModel(enum.Enum):
 ### 6.1 Mooney-Rivlin Hyperelastic
 
 **Strain energy density:**
+
 ```
 W = C10(I1 - 3) + C01(I2 - 3) + K(J - 1)²
 ```
 
 **Parameters:**
+
 - `C10`: First Mooney-Rivlin coefficient [MPa]
 - `C01`: Second Mooney-Rivlin coefficient [MPa]
 - `bulk_modulus`: Bulk modulus K [MPa] (typically 1000-2000 for rubber)
 
 **Example:**
+
 ```python
 adapter.add_material(
     material_id=1,
@@ -732,6 +787,7 @@ adapter.add_material(
 ```
 
 **Fitting from test data:**
+
 ```python
 # Given uniaxial test data (stretch λ, stress σ)
 lambda_data = [1.0, 1.5, 2.0, 2.5, 3.0]
@@ -749,20 +805,24 @@ C10, C01 = 0.40, 0.10  # Example fitted values
 ### 6.2 Neo-Hookean (Special Case of Mooney-Rivlin)
 
 **Strain energy density:**
+
 ```
 W = C10(I1 - 3) + K(J - 1)²
 ```
 
 **Parameters:**
+
 - `C10`: Neo-Hookean modulus [MPa]
 - `bulk_modulus`: Bulk modulus K [MPa]
 
 **Relation to shear modulus:**
+
 ```
 G = 2 * C10  (initial shear modulus)
 ```
 
 **Example:**
+
 ```python
 adapter.add_material(
     material_id=2,
@@ -778,16 +838,19 @@ adapter.add_material(
 ### 6.3 Prony Series Viscoelastic
 
 **Shear modulus relaxation:**
+
 ```
 G(t) = G∞ + Σᵢ Gᵢ exp(-t/τᵢ)
 ```
 
 **Parameters:**
+
 - `C10`: Instantaneous hyperelastic modulus [MPa]
 - `shear_coeffs`: List of Prony coefficients [G1/G0, G2/G0, ...]
 - `time_constants`: List of relaxation times [s]
 
 **Example (3-term Prony):**
+
 ```python
 adapter.add_material(
     material_id=3,
@@ -808,16 +871,19 @@ adapter.add_material(
 ### 6.4 WLF Temperature Shift
 
 **Williams-Landel-Ferry equation:**
+
 ```
 log(aₜ) = -C1(T - Tᵣ) / (C2 + T - Tᵣ)
 ```
 
 **Parameters:**
+
 - `C1`: WLF constant 1 (dimensionless, typically 15-20)
 - `C2`: WLF constant 2 [K] (typically 50-60)
 - `T_ref`: Reference temperature [K] (typically 298 K = 25°C)
 
 **Example:**
+
 ```python
 adapter.add_material(
     material_id=4,
@@ -1145,11 +1211,13 @@ else:
 ### 10.1 Precision Selection
 
 **FP64 (Double Precision):**
+
 - Default for accuracy-critical applications
 - Matches Ansys precision
 - Slower than FP32 (1.5-2x)
 
 **FP32 (Single Precision):**
+
 - Acceptable for many engineering applications
 - 1.5-2x faster than FP64
 - ~7 decimal digits of precision
@@ -1163,10 +1231,12 @@ adapter.solve()
 ### 10.2 Load Step Tuning
 
 **Small substeps:**
+
 - More stable (less chance of convergence failure)
 - Slower (more iterations)
 
 **Large substeps:**
+
 - Faster (fewer iterations)
 - Less stable (may diverge)
 
@@ -1421,11 +1491,12 @@ print("\nPlot saved to parametric_study.png")
 
 This guide covers the complete QuASIM Ansys integration API, from installation to advanced usage. For additional support:
 
-- **Documentation:** https://docs.quasim.io/ansys
-- **GitHub Issues:** https://github.com/robertringler/Qubic/issues
-- **Email Support:** support@quasim.io
+- **Documentation:** <https://docs.quasim.io/ansys>
+- **GitHub Issues:** <https://github.com/robertringler/Qubic/issues>
+- **Email Support:** <support@quasim.io>
 
 **Key Takeaways:**
+
 1. Three integration modes (co-solver recommended for gradual adoption)
 2. GPU acceleration provides 3-6x speedup with <2% accuracy error
 3. Deterministic execution ensures aerospace-grade reproducibility
@@ -1435,6 +1506,7 @@ This guide covers the complete QuASIM Ansys integration API, from installation t
 ---
 
 **Document Control:**
+
 - **Revision History:**
   - v1.0.0 (2025-12-13): Initial release
 - **Next Review:** 2025-03-15 (quarterly)

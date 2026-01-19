@@ -5,6 +5,7 @@
 PostDijkstra SSSP is a novel single-source shortest path algorithm that structurally escapes Dijkstra's priority-queue bottleneck through multi-axis optimization. The algorithm combines **bucketed delta-stepping**, **hierarchical decomposition**, **batch relaxation**, **lower-bound pruning**, and **quantum-ready minimum-finding** to achieve asymptotic and practical improvements over classical Dijkstra on large, sparse weighted graphs.
 
 **Key Properties:**
+
 - **Exact**: Returns optimal shortest paths (no approximation)
 - **General**: Supports arbitrary non-negative edge weights
 - **Scalable**: Designed for graphs with 10^4 to 10^7+ nodes
@@ -26,6 +27,7 @@ Bucket(i) = {v : i·Δ ≤ dist(v) < (i+1)·Δ}
 where Δ is the bucket width (delta parameter).
 
 **Key Insight**: Processing all nodes in a bucket together:
+
 1. Reduces heap operations from O(log V) per node to O(1) per bucket
 2. Enables parallel relaxation of edges within a bucket
 3. Maintains correctness through bucket ordering
@@ -34,23 +36,27 @@ where Δ is the bucket width (delta parameter).
 
 The algorithm maintains these invariants at all times:
 
-**Invariant 1 (Distance Monotonicity)**: 
+**Invariant 1 (Distance Monotonicity)**:
+
 ```
 dist[v] only decreases over time (never increases)
 ```
 
 **Invariant 2 (Bucket Ordering)**:
+
 ```
 If bucket i is processed before bucket j, then i < j
 ```
 
 **Invariant 3 (Optimality at Completion)**:
+
 ```
 When frontier is empty, dist[v] = δ(s,v) for all reachable v
 where δ(s,v) is the true shortest path distance
 ```
 
 **Invariant 4 (Triangle Inequality)**:
+
 ```
 At any point: dist[v] ≤ dist[u] + w(u,v) for all edges (u,v)
 ```
@@ -60,6 +66,7 @@ At any point: dist[v] ≤ dist[u] + w(u,v) for all edges (u,v)
 **Theorem**: PostDijkstra computes exact shortest paths.
 
 **Proof**:
+
 1. **Initialization**: dist[s] = 0, dist[v] = ∞ for v ≠ s (correct)
 
 2. **Induction**: Assume all nodes in buckets 0..i-1 have optimal distances.
@@ -68,7 +75,7 @@ At any point: dist[v] ≤ dist[u] + w(u,v) for all edges (u,v)
    - By induction, earlier buckets have optimal distances
    - Therefore, when we process bucket j, all predecessors have correct distances
    - Edge relaxation ensures dist[v] ≤ dist[u] + w(u,v)
-   
+
 3. **Termination**: When frontier is empty, all reachable nodes have been processed in bucket order, ensuring optimality by induction.
 
 **Corollary**: For Δ → 0, PostDijkstra converges to exact Dijkstra behavior.
@@ -80,6 +87,7 @@ At any point: dist[v] ≤ dist[u] + w(u,v) for all edges (u,v)
 ### 2.1 Bucketed Frontier Management
 
 **Data Structure:**
+
 ```python
 class BucketedFrontier:
     buckets: dict[int, Set[Node]]      # bucket_id -> nodes
@@ -88,45 +96,53 @@ class BucketedFrontier:
 ```
 
 **Operations:**
+
 - `insert(node, distance)`: O(1) amortized
 - `extract_min_bucket()`: O(B + N_b) where N_b is bucket size
 - Space: O(V + B) where B is number of active buckets
 
 **Bucket Width Selection:**
+
 ```
 Δ_optimal ≈ max_weight / sqrt(V)
 ```
 
 This balances:
+
 - Small Δ: More buckets, more overhead, but finer granularity
 - Large Δ: Fewer buckets, less overhead, but coarser granularity
 
 ### 2.2 Hierarchical Decomposition
 
 **Multi-Level Graph Hierarchy:**
+
 ```
 G_0 (base) → G_1 (contracted) → ... → G_L (coarsest)
 ```
 
 **Construction:**
+
 1. Partition G_i into regions R_1, ..., R_k
 2. Create supernode in G_{i+1} for each region
 3. Connect supernodes with minimum-weight inter-region edges
 4. Identify portal nodes (boundary nodes between regions)
 
 **Solving Strategy:**
+
 1. Solve G_L first (small graph, fast)
 2. Use G_L distances as lower bounds for G_{L-1}
 3. Propagate bounds downward through hierarchy
 4. Final solve on G_0 with tighter bounds
 
 **Complexity:**
+
 - Construction: O(E · log V) with good partitioning
 - Solution: O((V + E) · log L) where L is hierarchy depth
 
 ### 2.3 Batch Relaxation
 
 **Parallel Edge Processing:**
+
 ```python
 batch = extract_min_bucket()
 for node in batch:  # Can parallelize this loop
@@ -135,11 +151,13 @@ for node in batch:  # Can parallelize this loop
 ```
 
 **Optimization Opportunities:**
+
 - SIMD vectorization: Process multiple edges simultaneously
 - Multi-threading: Distribute batch across cores
 - GPU acceleration: Offload relaxation to GPU kernels
 
 **Cache Efficiency:**
+
 - Batch processing improves locality
 - Sequential memory access patterns
 - Reduced random heap accesses
@@ -149,23 +167,27 @@ for node in batch:  # Can parallelize this loop
 **Landmark-Based Bounds:**
 
 Precompute distances from k landmarks {l_1, ..., l_k}:
+
 ```
 ∀ landmark l: compute dist_l[v] for all v
 ```
 
 **Triangle Inequality Bound:**
+
 ```
 dist(u, v) ≥ max_l |dist_l[u] - dist_l[v]|
 ```
 
 **Pruning Rule:**
 During edge relaxation (u, v, w):
+
 ```
 if dist[u] + w > dist[v] + lower_bound(u, v):
     skip  # This edge cannot improve distance
 ```
 
 **Landmark Selection:**
+
 - Use farthest-point sampling for coverage
 - Typical: k ≈ sqrt(V) landmarks
 - Precomputation: O(k · V · log V)
@@ -174,6 +196,7 @@ if dist[u] + w > dist[v] + lower_bound(u, v):
 ### 2.5 Quantum-Ready Minimum Finding
 
 **Abstract Interface:**
+
 ```python
 class MinimumFinder:
     def find_minimum(candidates: List[Tuple[float, Node]]) -> Tuple[float, Node]
@@ -181,15 +204,18 @@ class MinimumFinder:
 ```
 
 **Classical Implementation:**
+
 - Linear scan: O(n)
 - Heap-based k-selection: O(n + k log k)
 
 **Quantum Implementation (Future):**
+
 - Grover's algorithm: O(sqrt(n))
 - Expected quadratic speedup for minimum finding
 - Requires amplitude encoding and quantum circuit
 
 **Integration Points:**
+
 1. Bucket minimum selection
 2. Portal node selection in hierarchy
 3. Landmark selection for lower bounds
@@ -201,12 +227,14 @@ class MinimumFinder:
 ### 3.1 Time Complexity
 
 **PostDijkstra:**
+
 ```
 T_post = O(V + E + V·W/Δ + k·V·log V)
        = O(V + E + W/Δ)  for fixed k
 ```
 
 where:
+
 - V: number of nodes
 - E: number of edges
 - W: maximum distance (sum of weights on longest path)
@@ -214,6 +242,7 @@ where:
 - k: number of landmarks
 
 **Dijkstra Baselines:**
+
 - Binary heap: O((V + E) log V)
 - Fibonacci heap: O(V log V + E)
 
@@ -227,12 +256,14 @@ where:
 | PostDijkstra (parallel) | O((V+E)/P + W/Δ) | O(V+E+B) | Yes |
 
 **When PostDijkstra Wins:**
+
 1. Large sparse graphs (E ≈ V)
 2. Small W/Δ ratio (bounded distances, good Δ)
 3. Parallel execution available (P > 1)
 4. Lower-bound pruning effective (dense landmark coverage)
 
 **When Dijkstra Wins:**
+
 1. Small graphs (V < 1000)
 2. Large W/Δ ratio (unbounded distances, poor Δ)
 3. Very dense graphs (E ≈ V²)
@@ -240,16 +271,19 @@ where:
 ### 3.2 Space Complexity
 
 **PostDijkstra:**
+
 ```
 S_post = O(V + E + B + k·V)
 ```
 
 where:
+
 - V + E: graph storage
 - B: active buckets (typically B << V)
 - k·V: landmark distance tables
 
 **Memory Breakdown:**
+
 - Distance array: 8V bytes (64-bit floats)
 - Graph edges: 16E bytes (node + weight)
 - Bucket mappings: 16V bytes (node → bucket)
@@ -259,11 +293,13 @@ where:
 ### 3.3 Parallel Complexity
 
 **Work-Depth Model:**
+
 - Work (total operations): W = O(V + E + W/Δ)
 - Depth (critical path): D = O(W/Δ + log V)
 - Parallelism: P = W/D ≈ O((V + E) / log V)
 
 **Scalability:**
+
 - Strong scaling: Speedup ≈ P for P < V/log V
 - Weak scaling: Linear with problem size
 - Communication: O(E/P) edge sharing between processors
@@ -275,6 +311,7 @@ where:
 ### 4.1 Delta Selection Heuristic
 
 **Automatic Delta Computation:**
+
 ```python
 def compute_optimal_delta(graph):
     avg_weight = estimate_average_edge_weight(graph)
@@ -282,11 +319,13 @@ def compute_optimal_delta(graph):
 ```
 
 **Rationale:**
+
 - Δ ≈ avg_weight/2 ensures ~2 nodes per bucket on average
 - Balances bucket overhead vs. distance granularity
 - Adapts to graph-specific weight distribution
 
 **Tuning:**
+
 - Uniform weights: Δ = max_weight / sqrt(V)
 - Heavy-tailed: Δ = median_weight
 - Near-uniform: Δ = std_dev / 2
@@ -294,6 +333,7 @@ def compute_optimal_delta(graph):
 ### 4.2 Hierarchy Construction
 
 **Graph Partitioning:**
+
 ```
 1. Choose partitioning algorithm:
    - METIS (multilevel k-way)
@@ -311,6 +351,7 @@ def compute_optimal_delta(graph):
 ```
 
 **Portal Selection:**
+
 - Keep top-k degree nodes per region
 - Ensures connectivity in contracted graph
 - Typical: 5-10 portals per region
@@ -318,6 +359,7 @@ def compute_optimal_delta(graph):
 ### 4.3 Landmark Selection
 
 **Farthest-Point Sampling:**
+
 ```python
 def select_landmarks(graph, k):
     landmarks = [random_node()]
@@ -329,6 +371,7 @@ def select_landmarks(graph, k):
 ```
 
 **Alternative Strategies:**
+
 - Random sampling: Fast but lower quality
 - Degree-based: High-degree nodes as landmarks
 - Centrality-based: Betweenness centrality
@@ -336,6 +379,7 @@ def select_landmarks(graph, k):
 ### 4.4 Batch Processing
 
 **SIMD Vectorization:**
+
 ```python
 # Vectorized edge relaxation (pseudo-code)
 def relax_batch_vectorized(nodes, distances, graph):
@@ -352,6 +396,7 @@ def relax_batch_vectorized(nodes, distances, graph):
 ```
 
 **Multi-Threading:**
+
 ```python
 # Parallel batch processing
 def relax_batch_parallel(batch, distances, graph, num_threads):
@@ -370,21 +415,25 @@ def relax_batch_parallel(batch, distances, graph, num_threads):
 ### 5.1 When PostDijkstra Underperforms
 
 **Scenario 1: Small Graphs (V < 1000)**
+
 - Overhead of bucketing, hierarchy, landmarks dominates
 - Dijkstra's simple priority queue is faster
 - Recommendation: Use Dijkstra directly
 
 **Scenario 2: Very Dense Graphs (E ≈ V²)**
+
 - Edge relaxation dominates (O(E) term)
 - Bucketing provides little benefit
 - Recommendation: Consider all-pairs algorithms (Floyd-Warshall)
 
 **Scenario 3: Unbounded Distances (W >> V·max_weight)**
+
 - Many buckets needed (W/Δ large)
 - Bucket overhead approaches Dijkstra heap cost
 - Recommendation: Increase Δ or use Dijkstra
 
 **Scenario 4: Unit Weights**
+
 - Simple BFS is optimal: O(V + E)
 - PostDijkstra overhead unnecessary
 - Recommendation: Use BFS directly
@@ -392,18 +441,21 @@ def relax_batch_parallel(batch, distances, graph, num_threads):
 ### 5.2 Pathological Cases
 
 **Near-Uniform Weight Distribution:**
+
 - All edges have weight ≈ w₀ ± ε
 - Optimal Δ is very small (≈ ε)
 - Results in many buckets, high overhead
 - Mitigation: Detect uniform distribution, use Δ = w₀
 
 **Star Graph:**
+
 - One central node connected to all others
 - Hierarchy provides no benefit (trivial partitioning)
 - Lower-bound pruning ineffective
 - Mitigation: Detect star topology, disable hierarchy
 
 **Disconnected Components:**
+
 - Many small components
 - Landmarks cover only local components
 - Hierarchy may create trivial supernodes
@@ -439,21 +491,25 @@ def relax_batch_parallel(batch, distances, graph, num_threads):
 ### 6.4 Metrics
 
 **Performance:**
+
 - Wall-clock runtime (seconds)
 - Throughput (edges processed per second)
 - Speedup vs. Dijkstra baseline
 
 **Operations:**
+
 - Edges relaxed
 - Bucket operations
 - Heap operations (Dijkstra baseline)
 - Lower-bound prunings
 
 **Memory:**
+
 - Peak memory usage (MB)
 - Memory bandwidth (GB/s)
 
 **Correctness:**
+
 - Distance validation (exact match with Dijkstra)
 - Path reconstruction
 - Unreachable node handling
@@ -483,11 +539,13 @@ PostDijkstra SSSP represents a structural departure from Dijkstra's priority-que
 The algorithm maintains **exact correctness** while offering **asymptotic improvements** (O(V + E + W/Δ) vs. O((V+E) log V)) and **practical speedups** on large, sparse weighted graphs.
 
 **Success is achieved if:**
+
 - Demonstrated wall-clock dominance on graphs with V > 10⁵
 - Asymptotic improvement under realistic constraints
 - Clear evidence that priority queue is the bottleneck
 
 **Intellectual honesty:**
+
 - Document all failure regimes
 - Provide evidence for when Dijkstra wins
 - No unverifiable claims

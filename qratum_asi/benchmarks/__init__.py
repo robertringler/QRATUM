@@ -13,20 +13,20 @@ Version: 1.0.0
 Status: Prototype (SI Transition Phase 4)
 """
 
-from qratum_asi.benchmarks.types import (
-    BenchmarkCategory,
-    BenchmarkTask,
-    BenchmarkResult,
-    HumanBaseline,
-    PerformanceLevel,
+from qratum_asi.benchmarks.evaluator import (
+    EvaluationSession,
+    PerformanceEvaluator,
 )
 from qratum_asi.benchmarks.registry import (
     BenchmarkRegistry,
     TaskDefinition,
 )
-from qratum_asi.benchmarks.evaluator import (
-    PerformanceEvaluator,
-    EvaluationSession,
+from qratum_asi.benchmarks.types import (
+    BenchmarkCategory,
+    BenchmarkResult,
+    BenchmarkTask,
+    HumanBaseline,
+    PerformanceLevel,
 )
 
 __all__ = [

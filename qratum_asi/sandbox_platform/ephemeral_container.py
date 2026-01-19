@@ -6,8 +6,6 @@ and auto-destroy after evaluation.
 
 from __future__ import annotations
 
-import hashlib
-import json
 import threading
 import time
 from dataclasses import dataclass, field
@@ -365,7 +363,10 @@ class EphemeralContainerPool:
             # Try to get from available pool
             while self._available:
                 container = self._available.pop()
-                if container.is_alive and container.lifecycle.phase == ContainerLifecyclePhase.READY:
+                if (
+                    container.is_alive
+                    and container.lifecycle.phase == ContainerLifecyclePhase.READY
+                ):
                     self._in_use[container.container_id] = container
                     return container
 
@@ -446,7 +447,5 @@ class EphemeralContainerPool:
             "total_created": self._total_created,
             "total_destroyed": self._total_destroyed,
             "total_executions": self._total_executions,
-            "utilization": (
-                len(self._in_use) / self.pool_size if self.pool_size > 0 else 0
-            ),
+            "utilization": (len(self._in_use) / self.pool_size if self.pool_size > 0 else 0),
         }

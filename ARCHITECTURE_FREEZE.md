@@ -39,6 +39,7 @@ QuASIM (Quantum-Inspired Autonomous Simulation) is a **simulation framework** pr
 ### 1.3 Compliance Posture
 
 Designed for (not yet certified):
+
 - DO-178C Level A readiness
 - NIST 800-53 Rev 5 controls
 - CMMC 2.0 Level 2 alignment

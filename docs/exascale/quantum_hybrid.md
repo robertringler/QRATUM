@@ -10,6 +10,7 @@ The QRATUM ExaScale Initiative pioneers a novel quantum-classical hybrid computi
 - **Cryptanalysis:** Post-quantum cryptography testing and validation
 
 **Key Performance Targets:**
+
 - **Quantum Volume:** 10⁶ (1,000 physical qubits → 200 logical qubits)
 - **Gate Fidelity:** 99.9% (2-qubit gates), 99.99% (1-qubit gates)
 - **Coherence Time:** 1 ms (T₂) for topological qubits
@@ -88,6 +89,7 @@ This document provides a comprehensive specification of the quantum-classical hy
 | Mixing Chamber | 10 mK | 10 μW | Qubit chip, resonators |
 
 **Cooling Power:**
+
 - Base temperature: 10 mK (± 0.1 mK stability)
 - Cooldown time: 48 hours (room temp → 10 mK)
 - Cycle time: 6 months (typical maintenance interval)
@@ -99,6 +101,7 @@ This document provides a comprehensive specification of the quantum-classical hy
 Traditional quantum-classical hybrid systems use Ethernet (ms latency) or PCIe (μs latency). NVLink-Q is a custom high-speed interconnect designed for ultra-low latency:
 
 **Requirements:**
+
 1. **Latency:** < 100 μs round-trip (submit circuit → receive results)
 2. **Bandwidth:** 25 GB/s (stream quantum circuit parameters)
 3. **Reliability:** < 10⁻⁹ BER (bit error rate)
@@ -179,6 +182,7 @@ GPU (H100)                                   Quantum Control Module
 | **Total** | **110 μs** | **(Target: < 100 μs, optimization in progress)** |
 
 **Bandwidth:**
+
 - Circuit size: 64 KB (typical)
 - Result size: 32 KB (1,000 shots × 200 qubits = 25 KB + metadata)
 - Throughput: 10,000 circuits/sec × 96 KB/circuit = **960 MB/s** (well below 25 GB/s limit)
@@ -334,12 +338,14 @@ class HybridScheduler:
 QRATUM uses the surface code, a 2D topological quantum error correction (QEC) code:
 
 **Key Properties:**
+
 - **Overhead:** 5:1 (5 physical qubits → 1 logical qubit)
 - **Threshold:** ~1% (gate fidelity must be > 99% for QEC to work)
 - **Distance:** d = 5 (correct up to 2 errors per cycle)
 - **Stabilizers:** X-type and Z-type (detect bit-flip and phase-flip errors)
 
 **PTAQ-1000 Configuration:**
+
 - 1,000 physical qubits → 200 logical qubits
 - Distance d = 5 (adequate for near-term applications)
 - Future scaling: d = 7 (10:1 overhead, 100 logical qubits, higher fidelity)
@@ -374,12 +380,14 @@ QRATUM uses the surface code, a 2D topological quantum error correction (QEC) co
 ```
 
 **Performance:**
+
 - Syndrome extraction: 1 μs (parallel measurement)
 - Decoding: 0.8 μs (FPGA, Blossom V algorithm)
 - Correction: 100 ns (fast Pauli gates)
 - **Total:** 1.9 μs per QEC cycle
 
 **Logical Qubit Fidelity:**
+
 - Physical gate fidelity: 99.9% (2-qubit)
 - Surface code distance: d = 5
 - Logical error rate: ~10⁻⁸ per gate (exponential suppression)
@@ -392,6 +400,7 @@ QRATUM uses the surface code, a 2D topological quantum error correction (QEC) co
 **Problem:** Compute ground state energy of H₂O molecule (water).
 
 **Algorithm:** Variational Quantum Eigensolver (VQE)
+
 - **Ansatz:** Hardware-efficient ansatz (10 qubits, 50 gates)
 - **Shots per iteration:** 10,000
 - **Iterations:** 100 (gradient descent)
@@ -409,6 +418,7 @@ QRATUM uses the surface code, a 2D topological quantum error correction (QEC) co
 | Accuracy | 99.5% | Within 1 kcal/mol of exact |
 
 **Speedup vs. Classical:**
+
 - Classical (CCSD(T)): 10 hours (CPU)
 - Quantum-Classical Hybrid: **120 ms**
 - **Speedup:** 300,000×
@@ -420,6 +430,7 @@ QRATUM uses the surface code, a 2D topological quantum error correction (QEC) co
 **Problem:** MaxCut on 100-node graph (NP-hard).
 
 **Algorithm:** Quantum Approximate Optimization Algorithm (QAOA)
+
 - **Qubits:** 100 logical (500 physical)
 - **Depth:** p = 5 layers (50 2-qubit gates)
 - **Shots:** 10,000 per parameter set
@@ -437,6 +448,7 @@ QRATUM uses the surface code, a 2D topological quantum error correction (QEC) co
 | Approximation Ratio | 0.92 (92% of optimal) |
 
 **Comparison to Classical:**
+
 - Gurobi (exact solver): 5 minutes
 - QAOA: 220 ms
 - **Speedup:** 1,360× (but approximate)
@@ -448,6 +460,7 @@ QRATUM uses the surface code, a 2D topological quantum error correction (QEC) co
 **Dataset:** Iris dataset (4 features, 2 classes, 100 samples)
 
 **Algorithm:** Quantum Support Vector Machine (QSVM)
+
 - **Feature map:** ZZFeatureMap (4 qubits, 20 gates)
 - **Kernel estimation:** Estimate quantum kernel matrix (100×100)
 - **Shots per kernel entry:** 1,000
@@ -480,6 +493,7 @@ QRATUM uses the surface code, a 2D topological quantum error correction (QEC) co
 | **2035** | 1,000,000 | 100,000 | d = 50 | Fault-tolerant universal quantum computing |
 
 **Challenges:**
+
 1. **Scaling Cryogenics:** 1M qubits requires 10× cooling power (100 μW @ 10 mK)
 2. **Control Electronics:** 1M qubits × 2 controls = 2M AWG channels (custom ASICs)
 3. **Decoder Scaling:** Real-time decoding for d = 50 requires 100× FPGA resources
@@ -489,6 +503,7 @@ QRATUM uses the surface code, a 2D topological quantum error correction (QEC) co
 **Vision:** Use quantum processors to accelerate AI training (quantum backpropagation).
 
 **Potential Applications:**
+
 - **Quantum GANs:** Generate quantum states (useful for QEC)
 - **Quantum Reinforcement Learning:** Optimize quantum control policies
 - **Quantum Neural Networks:** Trainable quantum circuits for pattern recognition
