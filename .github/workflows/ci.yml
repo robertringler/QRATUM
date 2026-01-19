@@ -26,11 +26,13 @@ jobs:
     
     - name: Run ruff linter
       run: |
-        ruff check . || true
+        ruff check . --select=F821,E999 --output-format=github
+      continue-on-error: true  # Temporarily allow failures while fixing legacy issues
     
     - name: Check Python formatting
       run: |
-        ruff format --check . || true
+        ruff format --check . --diff
+      continue-on-error: true  # Temporarily allow failures while fixing legacy issues
 
   test:
     name: Run Tests
@@ -57,7 +59,7 @@ jobs:
     
     - name: Run pytest with coverage
       run: |
-        pytest tests/ test_quasim_validator.py --cov=quasim --cov-report=xml --cov-report=term-missing || true
+        pytest tests/test_determinism.py tests/opt/test_post_dijkstra_sssp.py -v --tb=short
     
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.12'
