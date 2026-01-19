@@ -24,12 +24,11 @@ from __future__ import annotations
 
 import hashlib
 import heapq
-import json
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Callable, Optional
+from typing import Any, Optional
 
 import numpy as np
 
@@ -294,9 +293,7 @@ class XENONInterventionSearch:
         self.created_at = datetime.now(timezone.utc).isoformat()
         self.search_history: list[dict[str, Any]] = []
 
-        logger.info(
-            f"Initialized XENONInterventionSearch (seed={seed}, max_depth={max_depth})"
-        )
+        logger.info(f"Initialized XENONInterventionSearch (seed={seed}, max_depth={max_depth})")
 
     def add_drug(self, drug: DrugProfile) -> None:
         """Add a drug to the search library.
@@ -593,9 +590,7 @@ class XENONInterventionSearch:
 
         # Score and rank completed sequences
         completed.sort(
-            key=lambda s: s.total_efficacy
-            - s.total_toxicity
-            + s.resistance_suppression_score,
+            key=lambda s: s.total_efficacy - s.total_toxicity + s.resistance_suppression_score,
             reverse=True,
         )
 
@@ -633,7 +628,9 @@ class XENONInterventionSearch:
         toxicity_score = 1.0 - node.toxicity_accumulated
 
         # Combined score
-        return tumor_score * 0.3 + resistance_score * 0.3 + immune_score * 0.2 + toxicity_score * 0.2
+        return (
+            tumor_score * 0.3 + resistance_score * 0.3 + immune_score * 0.2 + toxicity_score * 0.2
+        )
 
     def _extract_sequence(self, leaf_node: InterventionNode) -> TreatmentSequence:
         """Extract treatment sequence from leaf to root.
@@ -651,9 +648,7 @@ class XENONInterventionSearch:
         # Walk back to root
         while current.parent_id is not None:
             if current.intervention is not None:
-                interventions.append(
-                    (current.intervention, current.dosage, current.timing_week)
-                )
+                interventions.append((current.intervention, current.dosage, current.timing_week))
             current = self._search_tree.get(current.parent_id)
             if current is None:
                 break
@@ -702,9 +697,7 @@ class XENONInterventionSearch:
         parts.append("Treatment sequence rationale:")
 
         for i, (drug, dosage, week) in enumerate(interventions):
-            parts.append(
-                f"  {i + 1}. Week {week}: {drug.name} at {dosage * 100:.0f}% dosage"
-            )
+            parts.append(f"  {i + 1}. Week {week}: {drug.name} at {dosage * 100:.0f}% dosage")
             parts.append(f"     - Targets: {', '.join(drug.target_genes)}")
             parts.append(f"     - Type: {drug.intervention_type.value}")
 

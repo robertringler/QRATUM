@@ -147,11 +147,14 @@ class PersonalizedDrugPipeline:
         self.validations: dict[str, SafetyValidation] = {}
 
         # Log initialization
-        self.merkle_chain.add_event("pipeline_initialized", {
-            "pipeline_id": self.pipeline_id,
-            "pipeline_type": "personalized_drug_design",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        })
+        self.merkle_chain.add_event(
+            "pipeline_initialized",
+            {
+                "pipeline_id": self.pipeline_id,
+                "pipeline_type": "personalized_drug_design",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            },
+        )
 
     def analyze_pharmacogenomics(
         self,
@@ -188,7 +191,7 @@ class PersonalizedDrugPipeline:
             for i, gene in enumerate(genes):
                 variant_key = f"{gene}_variant"
                 # Deterministic variant assignment
-                hash_val = int(patient_hash[i*4:(i+1)*4], 16) % 100
+                hash_val = int(patient_hash[i * 4 : (i + 1) * 4], 16) % 100
 
                 variants[variant_key] = {
                     "gene": gene,
@@ -233,11 +236,14 @@ class PersonalizedDrugPipeline:
         self.profiles[patient_id] = profile
 
         # Log to merkle chain
-        self.merkle_chain.add_event("pgx_analysis_completed", {
-            "patient_id": patient_id,
-            "genes_analyzed": len(genes),
-            "confidence": profile.confidence,
-        })
+        self.merkle_chain.add_event(
+            "pgx_analysis_completed",
+            {
+                "patient_id": patient_id,
+                "genes_analyzed": len(genes),
+                "confidence": profile.confidence,
+            },
+        )
 
         return profile
 
@@ -313,11 +319,14 @@ class PersonalizedDrugPipeline:
         self.designs[design.design_id] = design
 
         # Log to merkle chain
-        self.merkle_chain.add_event("drug_design_created", {
-            "design_id": design.design_id,
-            "patient_id": design.patient_id,
-            "target": target,
-        })
+        self.merkle_chain.add_event(
+            "drug_design_created",
+            {
+                "design_id": design.design_id,
+                "patient_id": design.patient_id,
+                "target": target,
+            },
+        )
 
         return design
 
@@ -353,9 +362,7 @@ class PersonalizedDrugPipeline:
             # In production, would integrate with toxicity prediction models
 
             # Calculate safety score (deterministic)
-            design_hash = hashlib.sha3_256(
-                drug_design.design_id.encode()
-            ).hexdigest()
+            design_hash = hashlib.sha3_256(drug_design.design_id.encode()).hexdigest()
             safety_score = 0.70 + (int(design_hash[:4], 16) % 300) / 1000.0
 
             # Predicted adverse events
@@ -400,11 +407,14 @@ class PersonalizedDrugPipeline:
         self.validations[validation.validation_id] = validation
 
         # Log to merkle chain
-        self.merkle_chain.add_event("safety_validation_completed", {
-            "validation_id": validation.validation_id,
-            "design_id": drug_design.design_id,
-            "safety_score": validation.safety_score,
-        })
+        self.merkle_chain.add_event(
+            "safety_validation_completed",
+            {
+                "validation_id": validation.validation_id,
+                "design_id": drug_design.design_id,
+                "safety_score": validation.safety_score,
+            },
+        )
 
         return validation
 

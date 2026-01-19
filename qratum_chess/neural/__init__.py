@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+from qratum_chess.neural.encoding import PositionEncoder
 from qratum_chess.neural.network import (
     NeuralEvaluator,
     PolicyValueNetwork,
     ResidualBlock,
 )
-from qratum_chess.neural.encoding import PositionEncoder
 
 __all__ = [
     "NeuralEvaluator",

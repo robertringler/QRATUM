@@ -15,7 +15,6 @@ from datetime import datetime, timezone
 from typing import Any
 
 from qradle.merkle import MerkleChain
-
 from qratum_asi.reinjection.types import (
     DiscoveryDomain,
     ReinjectionCandidate,
@@ -257,18 +256,20 @@ class ReinjectionValidator:
 
         # Check mutual information threshold
         if score.mutual_information < MINIMUM_MUTUAL_INFORMATION:
-            return False, [f"Mutual information {score.mutual_information} below minimum {MINIMUM_MUTUAL_INFORMATION}"]
+            return False, [
+                f"Mutual information {score.mutual_information} below minimum {MINIMUM_MUTUAL_INFORMATION}"
+            ]
 
         # Check composite score
         if score.composite_score < MINIMUM_COMPOSITE_SCORE:
-            return False, [f"Composite score {score.composite_score:.3f} below minimum {MINIMUM_COMPOSITE_SCORE}"]
+            return False, [
+                f"Composite score {score.composite_score:.3f} below minimum {MINIMUM_COMPOSITE_SCORE}"
+            ]
 
         # Check domain-specific confidence threshold
         threshold = DOMAIN_CONFIDENCE_THRESHOLDS.get(candidate.domain, 0.75)
         if score.confidence < threshold:
-            warnings.append(
-                f"Confidence {score.confidence} below domain threshold {threshold}"
-            )
+            warnings.append(f"Confidence {score.confidence} below domain threshold {threshold}")
 
         # Warn on low novelty
         if score.novelty < 0.3:
@@ -276,9 +277,7 @@ class ReinjectionValidator:
 
         return True, warnings
 
-    def _validate_domain_rules(
-        self, candidate: ReinjectionCandidate
-    ) -> tuple[bool, list[str]]:
+    def _validate_domain_rules(self, candidate: ReinjectionCandidate) -> tuple[bool, list[str]]:
         """Validate domain-specific rules."""
         errors: list[str] = []
         domain = candidate.domain
@@ -298,14 +297,15 @@ class ReinjectionValidator:
 
         elif domain == DiscoveryDomain.LONGEVITY:
             # Longevity research has enhanced safety requirements
-            if candidate.validation_level not in (ValidationLevel.ENHANCED, ValidationLevel.CRITICAL):
+            if candidate.validation_level not in (
+                ValidationLevel.ENHANCED,
+                ValidationLevel.CRITICAL,
+            ):
                 errors.append("Longevity research requires enhanced or critical validation")
 
         return len(errors) == 0, errors
 
-    def _validate_compliance(
-        self, candidate: ReinjectionCandidate
-    ) -> tuple[bool, list[str]]:
+    def _validate_compliance(self, candidate: ReinjectionCandidate) -> tuple[bool, list[str]]:
         """Validate regulatory compliance requirements."""
         notes: list[str] = []
         domain = candidate.domain
@@ -349,9 +349,7 @@ class ReinjectionValidator:
             "pass_rate": passed / len(self.validation_history) if self.validation_history else 0.0,
             "by_level": {
                 level.value: sum(
-                    1
-                    for v in self.validation_history
-                    if v.validation_level == level and v.valid
+                    1 for v in self.validation_history if v.validation_level == level and v.valid
                 )
                 for level in ValidationLevel
             },

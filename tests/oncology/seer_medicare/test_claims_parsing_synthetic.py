@@ -8,7 +8,6 @@ without containing any actual patient data.
 from __future__ import annotations
 
 import csv
-import tempfile
 from datetime import date
 from pathlib import Path
 
@@ -201,7 +200,9 @@ class TestMEDPARParser:
         assert len(events) > 0
         # Should have DRG codes and diagnosis codes
         drg_events = [e for e in events if e.code_system == CodeSystem.DRG]
-        dx_events = [e for e in events if e.code_system in (CodeSystem.ICD9_DX, CodeSystem.ICD10_DX)]
+        dx_events = [
+            e for e in events if e.code_system in (CodeSystem.ICD9_DX, CodeSystem.ICD10_DX)
+        ]
 
         # We have 2 rows, each with a DRG
         assert len(drg_events) >= 2

@@ -4,14 +4,12 @@ Trajectory simulation, aerodynamics, and mission planning with
 export control compliance.
 """
 
-import hashlib
 import math
-from typing import Any, Dict, FrozenSet
-
 from platform.core.base import VerticalModuleBase
 from platform.core.events import EventType, ExecutionEvent
 from platform.core.intent import PlatformContract
 from platform.core.substrates import ComputeSubstrate
+from typing import Any, Dict, FrozenSet
 
 
 class SentraModule(VerticalModuleBase):

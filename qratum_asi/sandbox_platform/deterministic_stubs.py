@@ -312,14 +312,14 @@ class DeterministicStubRegistry:
             # Get appropriate stub
             stub = self._get_stub(computation_name, effective_fidelity)
             if stub is None or stub.stub_function is None:
-                raise ValueError(f"No stub available for {computation_name} at {effective_fidelity.value}")
+                raise ValueError(
+                    f"No stub available for {computation_name} at {effective_fidelity.value}"
+                )
 
             result = stub.stub_function(context)
             is_stubbed = True
             accuracy_confidence = stub.accuracy_estimate
-            estimated_full_time = (
-                (time.perf_counter() - start_time) * 1000 * stub.expected_speedup
-            )
+            estimated_full_time = (time.perf_counter() - start_time) * 1000 * stub.expected_speedup
 
             # Update stub statistics
             stub.use_count += 1
@@ -390,9 +390,7 @@ class DeterministicStubRegistry:
             "context": context,
             "fidelity_level": fidelity_level.value,
         }
-        return hashlib.sha3_256(
-            json.dumps(key_data, sort_keys=True).encode()
-        ).hexdigest()
+        return hashlib.sha3_256(json.dumps(key_data, sort_keys=True).encode()).hexdigest()
 
     # Default stub implementations
 
@@ -467,8 +465,7 @@ class DeterministicStubRegistry:
         stub_stats = {}
         for name, fidelity_stubs in self.stubs.items():
             stub_stats[name] = {
-                level.value: stub.to_dict()
-                for level, stub in fidelity_stubs.items()
+                level.value: stub.to_dict() for level, stub in fidelity_stubs.items()
             }
 
         cache_hit_rate = (
