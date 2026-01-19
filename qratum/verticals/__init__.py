@@ -8,6 +8,7 @@ domain-specific tasks with full determinism and auditability.
 
 from .base import VerticalModuleBase
 from .juris import JurisModule
+from .juris_peerage import JurisPeerageModule
 from .vitra import VitraModule
 from .ecora import EcoraModule
 from .capra import CapraModule
@@ -25,6 +26,7 @@ from .orbia import OrbiaModule
 __all__ = [
     "VerticalModuleBase",
     "JurisModule",
+    "JurisPeerageModule",
     "VitraModule",
     "EcoraModule",
     "CapraModule",
