@@ -22,6 +22,7 @@ This document provides a comprehensive strategy for optimizing HPL on QRATUM, in
 | **#4** | Fugaku | RIKEN (Japan) | 0.537 | 0.442 | 82.3% | 158,976 × A64FX (ARM) |
 
 **QRATUM Target:**
+
 - Rpeak: 2.500 ExaFLOPS
 - Rmax: 2.125 ExaFLOPS (85% efficiency)
 - **Margin over Frontier:** 1.78× (2.125 / 1.194)
@@ -35,6 +36,7 @@ HPL solves a dense system of linear equations:
 **A × x = b**
 
 Where:
+
 - **A:** N × N matrix (dense, random coefficients)
 - **x:** N × 1 solution vector (unknown)
 - **b:** N × 1 right-hand side (computed from A and known x_true)
@@ -54,6 +56,7 @@ Where:
 ```
 
 **Computational Complexity:**
+
 - FLOP count: **(2/3) × N³** (dominated by DGEMM)
 - For N = 40M: (2/3) × (4×10⁷)³ ≈ **4.27 × 10²² FLOPS = 42.7 ZettaFLOPS**
 - Time @ 2.125 ExaFLOPS: 42.7 × 10²¹ / (2.125 × 10¹⁸) = **20,094 seconds ≈ 5.6 hours**
@@ -82,6 +85,7 @@ for k in range(0, N, NB):
 ```
 
 **Performance Characteristics:**
+
 - Panel factorization: 1% of total time (CPU-bound, inherently sequential)
 - Broadcast: 4% of total time (network-bound, latency-sensitive)
 - DGEMM: 95% of total time (GPU-bound, compute-intensive)
@@ -91,6 +95,7 @@ for k in range(0, N, NB):
 ### Memory Constraints
 
 **Total Memory Available:**
+
 - 50,000 GPUs × 80 GB HBM3 = 4,000 TB = 4 PB
 - Reserve 20% for OS, buffers, checkpointing: 3.2 PB usable
 
@@ -114,6 +119,7 @@ for k in range(0, N, NB):
 ### Block Size Tuning
 
 **Considerations:**
+
 1. **Cache Efficiency:** NB should fit in GPU L2 cache (50 MB per H100)
 2. **Load Balancing:** NB should evenly divide N (N / NB = integer)
 3. **Network Efficiency:** NB² × 8 bytes should align with AetherFabric-X MTU
@@ -135,6 +141,7 @@ for k in range(0, N, NB):
 ### Tensor Core Utilization
 
 **H100 Tensor Cores:**
+
 - Peak FP64: 50 TFLOPS per GPU
 - Matrix size: 16×8×16 (MxNxK)
 - Instruction: `wmma.mma.sync.aligned.m16n8k16.f64`
@@ -189,6 +196,7 @@ __global__ void dgemm_tensor_core(
 ```
 
 **Performance:**
+
 - Tensor Core Utilization: 92%
 - Achieved: 46 TFLOPS per GPU (92% of 50 TFLOPS peak)
 - Memory Bandwidth: 2.8 TB/s (87% of 3.2 TB/s peak)
@@ -261,6 +269,7 @@ def broadcast_panel(panel, k):
 ```
 
 **Broadcast Time:**
+
 - Panel size: NB × (N - k) ≈ 512 × 40M = 20 GB (worst case)
 - Hops: log₂(125) = 7
 - Latency per hop: 500 ns
@@ -268,6 +277,7 @@ def broadcast_panel(panel, k):
 - Time: 7 × 500 ns + 20 GB / 89.3 GB/s = **3.5 μs + 224 ms ≈ 224 ms**
 
 **Optimization:** Pipeline broadcast (overlap with DGEMM):
+
 - Start DGEMM on first NB rows while broadcast continues
 - Effective broadcast time: **0 ms** (fully overlapped)
 
@@ -288,6 +298,7 @@ def pivot_exchange(row_idx, pivot_proc):
 ```
 
 **Pivoting Overhead:**
+
 - Pivots per iteration: 1
 - Total pivots: N / NB = 40M / 512 = 78,125
 - Time per pivot: 500 ns (latency-bound)
@@ -304,6 +315,7 @@ global_residual = qdr_allreduce(local_residual, op=SUM)
 ```
 
 **AllReduce Time:**
+
 - Payload: 8 bytes (FP64 scalar)
 - Algorithm: Tree allreduce (log₂(6,250) = 13 hops)
 - Latency per hop: 500 ns
@@ -365,11 +377,13 @@ class OutOfCoreHPL:
 ```
 
 **Prefetching:**
+
 - Predict next blocks (i+1, j), (i, j+1)
 - Async DMA from NVMe while GPU computes current block
 - Overlap: 95% (paging overhead: 5%)
 
 **NVMe Performance:**
+
 - Aggregate bandwidth: 700 TB/s (49.2 PB / 70 ms)
 - Block size: 512 × 512 × 8 = 2 MB
 - Fetch time: 2 MB / (700 TB/s / 50,000 GPUs) = **143 μs**
@@ -381,16 +395,20 @@ class OutOfCoreHPL:
 ### Theoretical Performance
 
 **Peak FLOPS:**
+
 - 50,000 GPUs × 50 TFLOPS = 2.5 ExaFLOPS
 
 **Sustained FLOPS (85% efficiency):**
+
 - 2.5 × 0.85 = **2.125 ExaFLOPS**
 
 **Problem Size:**
+
 - N = 40,000,000
 - FLOP count: (2/3) × N³ = 4.27 × 10²² FLOPS
 
 **Execution Time:**
+
 - 4.27 × 10²² / 2.125 × 10¹⁸ = **20,094 seconds = 5.58 hours**
 
 ### Efficiency Breakdown
@@ -468,12 +486,14 @@ T = 5:48:00 - Completion
 **Strategy:** Checkpoint every 30 minutes (6 checkpoints total)
 
 **Checkpoint Size:**
+
 - Matrix state: 12.8 PB (full matrix)
 - Compression: 3:1 (LZ4)
 - Compressed: 4.3 PB
 - Checkpoint time: 4.3 PB / 10 TB/s = **430 seconds = 7.2 minutes**
 
 **Recovery Time (if failure):**
+
 - Detect failure: < 1 second
 - Load checkpoint: 7.2 minutes
 - Resume computation: immediate

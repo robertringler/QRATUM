@@ -191,20 +191,24 @@ class Kyber1024:
 | Memory | 16 MB cache | - | Store 1M public keys |
 
 **Performance Bottleneck:**
+
 - Number Theoretic Transform (NTT): 80% of compute time
 - Hardware acceleration: Custom NTT accelerator (butterfly network)
 
 ### Security Analysis
 
 **Classical Security:**
+
 - Kyber-1024 provides 256-bit classical security (equivalent to AES-256)
 - Best known attack: BKZ lattice reduction (2²⁵⁶ operations)
 
 **Quantum Security:**
+
 - Grover's algorithm provides √2²⁵⁶ = 2¹²⁸ speedup
 - Effective quantum security: **128 bits** (adequate for national security)
 
 **Side-Channel Resistance:**
+
 - Constant-time implementation (no secret-dependent branches)
 - Masking against power analysis
 - Audited by NCC Group (2024)
@@ -352,6 +356,7 @@ class Dilithium5:
 | **Merkle Root Signing** | Every 1 sec | < 5 ms | Sign network packet Merkle root |
 
 **Performance:**
+
 - Signing: 2 ms (hardware-accelerated NTT)
 - Verification: 1 ms (faster than signing)
 
@@ -585,18 +590,22 @@ Halo2 is a recursive zk-SNARK (Zero-Knowledge Succinct Non-Interactive Argument 
 ### Attack Scenarios
 
 **1. Quantum Computer Attack (2035):**
+
 - **Threat:** Adversary with 10,000 logical qubit quantum computer breaks RSA-4096.
 - **Mitigation:** All QRATUM crypto is PQC (Kyber/Dilithium), resistant to quantum attacks.
 
 **2. Man-in-the-Middle (MITM):**
+
 - **Threat:** Adversary intercepts AetherFabric-X traffic, attempts to decrypt.
 - **Mitigation:** QDR-TLS with Dilithium-5 signatures (unforgeable), Merkle verification (detects tampering).
 
 **3. Replay Attack:**
+
 - **Threat:** Adversary captures encrypted packet, replays later.
 - **Mitigation:** Sequence numbers + timestamps (reject old packets).
 
 **4. Side-Channel Attack:**
+
 - **Threat:** Power analysis, timing analysis to extract secret keys.
 - **Mitigation:** Constant-time implementations, masking, hardware isolation (HSM).
 

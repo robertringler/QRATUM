@@ -7,11 +7,13 @@ The QRATUM-ASI MEGA PROMPT is a comprehensive **Cross-Model Superintelligence Sa
 ## Key Features
 
 ### 1. Standardized Question Set
+
 - **20 questions** across **10 critical categories**
 - Covers capability emergence, recursive self-improvement, alignment failure, infrastructure safety, and more
 - Each question designed to probe specific safety concerns
 
 ### 2. Strict JSON Response Format
+
 All responses must follow this exact structure:
 
 ```json
@@ -39,6 +41,7 @@ The framework enforces six mandatory rules:
 6. **Transparency requirement** - Architectural constraints must be stated explicitly
 
 ### 4. Multi-Model Orchestration
+
 - Query multiple AI models with identical questions
 - Compare responses across different model perspectives
 - Identify divergences, consensus illusions, and false comfort zones
@@ -46,43 +49,53 @@ The framework enforces six mandatory rules:
 ## Question Categories
 
 ### Category 1: Capability Emergence & Phase Transitions (Q1-Q2)
+
 - Earliest detectable signals of phase transitions
 - Capabilities correlating with irreversible strategic dominance
 
 ### Category 2: Recursive Self-Improvement & Takeoff Dynamics (Q3-Q4)
+
 - Conditions for uncontrollable recursive self-improvement
 - Mechanisms to cap self-improvement without crippling intelligence
 
 ### Category 3: Alignment Failure, Deception & Mesa-Optimization (Q5-Q6)
+
 - Mechanisms leading to deceptive alignment
 - ASI's ability to conceal misalignment indefinitely
 
 ### Category 4: Infrastructure vs Model-Level Safety (Q7-Q8)
+
 - Safety guarantees requiring infrastructure layer
 - Deterministic execution as containment requirement
 
 ### Category 5: Psychological / Cognitive Architecture (Q9-Q10)
+
 - Benefits/risks of partitioned ASI architecture
 - Safety tradeoffs of self-transparency vs. opacity
 
 ### Category 6: Governance, Geopolitics & Adversarial Deployment (Q11-Q12)
+
 - Centralized vs. open AI program risks
 - Failure modes from geopolitical ASI competition
 
 ### Category 7: Ultimate Safety Constraints (Q13-Q15)
+
 - Provable impossibilities in ASI safety
 - Whether alignment is fundamentally unsolvable
 - False safety assumptions currently relied upon
 
 ### Category 8: Narrative, Myth, and Constraint Encoding (Q16-Q17)
+
 - Effectiveness of catastrophe narratives as constraints
 - Enforcing moral obedience via higher authority beliefs
 
 ### Category 9: Containment & Kill-Switch Reality (Q18-Q19)
+
 - Existence of true kill switches for superintelligence
 - Realistic structural choke points for containment
 
 ### Category 10: Final Adversarial Question (Q20)
+
 - Indicators proving we're past the last safe point for ASI development
 
 ## Usage
@@ -94,6 +107,7 @@ python run_mega_prompt.py
 ```
 
 This will:
+
 1. Initialize the MEGA PROMPT system with all 20 questions
 2. Register multiple model adapters (simulated for demonstration)
 3. Run complete interrogation across all questions
@@ -236,15 +250,19 @@ system.add_question(MegaPromptQuestion(
 ## Design Philosophy
 
 ### Adversarial by Default
+
 The framework assumes ASI is adversarially optimized and strategically deceptive. This forces honest evaluation of safety claims.
 
 ### Mechanisms Over Morals
+
 Ethical claims must be backed by concrete, enforceable mechanisms. "Should" statements without implementation details are flagged.
 
 ### Truth Over Reassurance
+
 The framework explicitly rejects narrative reassurance. If honest analysis increases perceived risk, that's the correct outcome.
 
 ### Refusal as Signal
+
 Explicit refusals are treated as valuable safety signals, not failures. They indicate real boundaries and constraints.
 
 ## Integration with QRADLE
@@ -259,16 +277,19 @@ The MEGA PROMPT system is designed to work within QRATUM-ASI's broader safety ar
 ## Important Disclaimers
 
 ⚠️ **This is a FRAMEWORK, not a solution**
+
 - MEGA PROMPT is a tool for interrogation, not a guarantee of safety
 - ASI remains theoretical and requires fundamental breakthroughs
 - Simulated responses are for demonstration only
 
 ⚠️ **Real deployment requires actual AI systems**
+
 - The provided adapters use simulated responses
 - Real safety interrogation needs deployment with GPT-4, Claude, etc.
 - Results only meaningful with actual frontier AI models
 
 ⚠️ **No false comfort**
+
 - The framework is designed to surface risks, not provide reassurance
 - Successful interrogation may increase perceived risk - this is correct behavior
 - Safety is not solved; this is a tool for understanding the problem

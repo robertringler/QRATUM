@@ -13,9 +13,10 @@ This module provides quantum-resistant security using NIST-standardized post-qua
 NIST FIPS-compliant cryptographic primitives for quantum-resistant security.
 
 #### CRYSTALS-Kyber-1024 (NIST FIPS 203)
+
 - **Purpose**: Key Encapsulation Mechanism (KEM) for secure key exchange
 - **Security Level**: NIST Level 5 (256-bit quantum security)
-- **Key Sizes**: 
+- **Key Sizes**:
   - Public key: 1,568 bytes
   - Secret key: 3,168 bytes
   - Ciphertext: 1,568 bytes
@@ -26,6 +27,7 @@ NIST FIPS-compliant cryptographic primitives for quantum-resistant security.
   - Decapsulation: ~900 µs
 
 #### CRYSTALS-Dilithium-5 (NIST FIPS 204)
+
 - **Purpose**: Digital signatures for ephemeral operations (24-48 hour lifespan)
 - **Security Level**: NIST Level 5 (256-bit quantum security)
 - **Key Sizes**:
@@ -39,6 +41,7 @@ NIST FIPS-compliant cryptographic primitives for quantum-resistant security.
   - Batch verification: ~120 µs per signature (10x speedup)
 
 #### SPHINCS+-256f (NIST FIPS 205)
+
 - **Purpose**: Hash-based signatures for long-term security (decades)
 - **Security Level**: NIST Level 5 (256-bit quantum security)
 - **Key Sizes**:
@@ -55,18 +58,21 @@ NIST FIPS-compliant cryptographic primitives for quantum-resistant security.
 Hybrid TLS 1.3 with post-quantum and classical cryptography for defense-in-depth.
 
 #### Features
+
 - **Key Exchange**: X25519 + Kyber-1024 hybrid
 - **Authentication**: Dilithium-5 + ECDSA (P-384) hybrid signatures
 - **Encryption**: AES-256-GCM authenticated encryption
 - **Forward Secrecy**: Ephemeral keys rotated per session
 
 #### Performance
+
 - Handshake duration: ~8 ms (vs ~5 ms for TLS 1.3)
 - Throughput: 95+ Gbps (near line-rate for 100G NICs)
 - CPU overhead: ~2.5% (within 3% target)
 - Memory per connection: ~4 KB
 
 #### Cipher Suite
+
 ```
 X25519-Kyber1024-Dilithium5-AES256GCM-SHA384
 ```
@@ -76,6 +82,7 @@ X25519-Kyber1024-Dilithium5-AES256GCM-SHA384
 Long-term code signing for binaries, firmware, and critical infrastructure.
 
 #### Use Cases
+
 - Compiler binary signing (NVCC, LLVM, GCC)
 - CUDA kernel signing (PTX, SASS)
 - Firmware updates (BIOS, NIC, GPU)
@@ -84,6 +91,7 @@ Long-term code signing for binaries, firmware, and critical infrastructure.
 - Root certificates
 
 #### Features
+
 - Deterministic signing for reproducible builds
 - Policy-based metadata validation
 - Support for detached, embedded, and manifest signatures
@@ -91,7 +99,9 @@ Long-term code signing for binaries, firmware, and critical infrastructure.
 - Certificate chain validation
 
 #### Signature Overhead
+
 For typical binaries (> 10 MB): < 0.5% overhead
+
 - Binary: 10 MB
 - Signature + metadata: ~50 KB
 - Overhead: 0.5%
@@ -101,18 +111,21 @@ For typical binaries (> 10 MB): < 0.5% overhead
 Recursive SNARKs for distributed computation verification.
 
 #### Features
+
 - **No Trusted Setup**: Eliminates ceremony risk
 - **Recursive Composition**: Proofs can verify other proofs
 - **Small Proofs**: ~1.5 KB (network-friendly)
 - **Fast Verification**: ~10 ms (critical for real-time validation)
 
 #### Performance
+
 - Proof generation: ~100 ms per proof
 - Proof verification: ~10 ms per proof
 - Proof aggregation: ~50 ms (amortizes to ~0.5 ms per proof)
 - Batch verification: ~1 ms per proof (100x speedup)
 
 #### Supported Circuits
+
 - Hash chains (prove hash computation)
 - Merkle trees (prove inclusion)
 - Range proofs (prove value in range without revealing)
@@ -277,6 +290,7 @@ All operations maintain < 3% performance overhead:
 ## Security Levels
 
 All algorithms provide NIST Level 5 security (256-bit quantum security), equivalent to:
+
 - AES-256 for symmetric encryption
 - SHA-512 for hashing
 - Resistant to quantum computers with > 2^256 operations
@@ -300,9 +314,9 @@ All algorithms provide NIST Level 5 security (256-bit quantum security), equival
 
 ## References
 
-1. NIST Post-Quantum Cryptography Standardization: https://csrc.nist.gov/projects/post-quantum-cryptography
-2. CRYSTALS-Kyber: https://pq-crystals.org/kyber/
-3. CRYSTALS-Dilithium: https://pq-crystals.org/dilithium/
-4. SPHINCS+: https://sphincs.org/
-5. Halo2: https://zcash.github.io/halo2/
-6. TLS 1.3: https://datatracker.ietf.org/doc/html/rfc8446
+1. NIST Post-Quantum Cryptography Standardization: <https://csrc.nist.gov/projects/post-quantum-cryptography>
+2. CRYSTALS-Kyber: <https://pq-crystals.org/kyber/>
+3. CRYSTALS-Dilithium: <https://pq-crystals.org/dilithium/>
+4. SPHINCS+: <https://sphincs.org/>
+5. Halo2: <https://zcash.github.io/halo2/>
+6. TLS 1.3: <https://datatracker.ietf.org/doc/html/rfc8446>

@@ -15,6 +15,7 @@ generated using QuASIM quantum-accelerated simulation engine.
 ## Quantum Enhancement
 
 All simulations utilize QuASIM's quantum-enhanced optimization for:
+
 - Multi-variable compound interactions
 - Material property optimization
 - Emergent behavior detection
@@ -23,7 +24,9 @@ All simulations utilize QuASIM's quantum-enhanced optimization for:
 ## Data Format
 
 ### JSON Structure
+
 Each simulation result contains:
+
 - Input parameters (tire geometry, compound, environment, load, pressure, speed)
 - Performance metrics (grip, rolling resistance, wear, thermal performance, etc.)
 - Thermal analysis (temperature distribution)
@@ -32,11 +35,13 @@ Each simulation result contains:
 - Optimization suggestions
 
 ### CSV Format
+
 Flattened representation for easy data analysis and machine learning workflows.
 
 ## Integration with Goodyear Quantum Pilot
 
 This library is compatible with:
+
 - CAD systems (geometry export)
 - FEA tools (stress and thermal analysis)
 - AI-driven design workflows (optimization suggestions)
@@ -58,7 +63,6 @@ summary = generate_tire_library(
 
 ## Statistics
 
-
 - Average Grip Coefficient: 0.1744
 - Average Rolling Resistance: 0.0128
 - Average Wear Rate: 0.42 mm/1000km
@@ -66,6 +70,7 @@ summary = generate_tire_library(
 - Average Optimization Score: 0.5047
 
 ### Performance Ranges
+
 - Grip Coefficient: 0.0235 - 0.4947
 - Rolling Resistance: 0.009 - 0.0177
 - Predicted Lifetime: 21449.0 - 96517.0 km
@@ -73,6 +78,7 @@ summary = generate_tire_library(
 ## Compliance
 
 All simulations maintain:
+
 - Deterministic reproducibility (<1μs seed replay drift)
 - DO-178C Level A safety compliance posture
 - Full provenance tracking via QuNimbus

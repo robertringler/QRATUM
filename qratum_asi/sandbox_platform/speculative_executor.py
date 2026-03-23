@@ -6,8 +6,6 @@ to be approved, reducing latency when approval comes.
 
 from __future__ import annotations
 
-import hashlib
-import json
 import threading
 import time
 from dataclasses import dataclass, field
@@ -16,8 +14,7 @@ from enum import Enum
 from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
-
-from qratum_asi.sandbox_platform.types import SandboxProposal, SandboxEvaluationResult
+from qratum_asi.sandbox_platform.types import SandboxEvaluationResult, SandboxProposal
 
 
 class SpeculativeStatus(Enum):
@@ -170,9 +167,7 @@ class LikelihoodEstimator:
         factors["source_reputation"] = 0.8  # Default good reputation
 
         # Compute weighted likelihood
-        likelihood = sum(
-            factors[k] * self._weights[k] for k in factors
-        )
+        likelihood = sum(factors[k] * self._weights[k] for k in factors)
         likelihood = max(0.0, min(1.0, likelihood))
 
         # Confidence based on historical data availability
@@ -470,9 +465,7 @@ class SpeculativeExecutor:
     def get_executor_stats(self) -> dict[str, Any]:
         """Get executor statistics."""
         hit_rate = (
-            self._used_results / self._total_speculative
-            if self._total_speculative > 0
-            else 0
+            self._used_results / self._total_speculative if self._total_speculative > 0 else 0
         )
 
         status_counts: dict[str, int] = {}

@@ -57,13 +57,13 @@ def compute_mutual_information(tensor: Array) -> NDArray[np.float64]:
 
     n_qubits = int(np.log2(len(tensor)))
     mutual_info = np.zeros((n_qubits, n_qubits))
-    
+
     # Normalize state vector
     state = tensor / np.linalg.norm(tensor)
-    
+
     # Compute density matrix ρ = |ψ⟩⟨ψ|
     density_matrix = np.outer(state, np.conj(state))
-    
+
     # Helper function to compute von Neumann entropy
     def von_neumann_entropy(rho: NDArray) -> float:
         """Compute S(ρ) = -Tr(ρ log ρ) = -Σ λ_i log(λ_i)."""
@@ -74,16 +74,16 @@ def compute_mutual_information(tensor: Array) -> NDArray[np.float64]:
             return 0.0
         # S(ρ) = -Σ λ_i log_2(λ_i)
         return float(-np.sum(eigenvalues * np.log2(eigenvalues)))
-    
+
     # Helper function to compute partial trace (simplified approach)
     # Note: This implementation has O(2^n) complexity which limits scalability.
     # For production use with large systems (>20 qubits), consider using
     # optimized libraries like opt_einsum or specialized quantum frameworks.
     def partial_trace_single_qubit(rho: NDArray, keep_qubit: int, n_qubits: int) -> NDArray:
         """Get reduced density matrix for a single qubit."""
-        dim = 2 ** n_qubits
+        dim = 2**n_qubits
         rho_reduced = np.zeros((2, 2), dtype=complex)
-        
+
         # For each basis state of the kept qubit
         for i in range(2):
             for j in range(2):
@@ -94,30 +94,32 @@ def compute_mutual_information(tensor: Array) -> NDArray[np.float64]:
                     idx_j = 0
                     for q in range(n_qubits):
                         if q == keep_qubit:
-                            idx_i += i * (2 ** q)
-                            idx_j += j * (2 ** q)
+                            idx_i += i * (2**q)
+                            idx_j += j * (2**q)
                         else:
                             bit_pos = q if q < keep_qubit else q - 1
                             bit_val = (k >> bit_pos) & 1
-                            idx_i += bit_val * (2 ** q)
-                            idx_j += bit_val * (2 ** q)
-                    
+                            idx_i += bit_val * (2**q)
+                            idx_j += bit_val * (2**q)
+
                     rho_reduced[i, j] += rho[idx_i, idx_j]
-        
+
         return rho_reduced
-    
-    def partial_trace_two_qubits(rho: NDArray, keep_qubits: tuple[int, int], n_qubits: int) -> NDArray:
+
+    def partial_trace_two_qubits(
+        rho: NDArray, keep_qubits: tuple[int, int], n_qubits: int
+    ) -> NDArray:
         """Get reduced density matrix for two qubits."""
-        dim = 2 ** n_qubits
+        dim = 2**n_qubits
         rho_reduced = np.zeros((4, 4), dtype=complex)
         q1, q2 = keep_qubits
-        
+
         # For each basis state of the two kept qubits
         for i in range(4):
             for j in range(4):
                 i1, i2 = i // 2, i % 2
                 j1, j2 = j // 2, j % 2
-                
+
                 # Sum over all basis states with qubits in states i and j
                 for k in range(dim // 4):
                     idx_i = 0
@@ -125,21 +127,21 @@ def compute_mutual_information(tensor: Array) -> NDArray[np.float64]:
                     other_bit = 0
                     for q in range(n_qubits):
                         if q == q1:
-                            idx_i += i1 * (2 ** q)
-                            idx_j += j1 * (2 ** q)
+                            idx_i += i1 * (2**q)
+                            idx_j += j1 * (2**q)
                         elif q == q2:
-                            idx_i += i2 * (2 ** q)
-                            idx_j += j2 * (2 ** q)
+                            idx_i += i2 * (2**q)
+                            idx_j += j2 * (2**q)
                         else:
                             bit_val = (k >> other_bit) & 1
-                            idx_i += bit_val * (2 ** q)
-                            idx_j += bit_val * (2 ** q)
+                            idx_i += bit_val * (2**q)
+                            idx_j += bit_val * (2**q)
                             other_bit += 1
-                    
+
                     rho_reduced[i, j] += rho[idx_i, idx_j]
-        
+
         return rho_reduced
-    
+
     # Compute mutual information I(A_i : A_j) for all qubit pairs
     for i in range(n_qubits):
         for j in range(i + 1, n_qubits):
@@ -147,15 +149,15 @@ def compute_mutual_information(tensor: Array) -> NDArray[np.float64]:
             rho_i = partial_trace_single_qubit(density_matrix, i, n_qubits)
             rho_j = partial_trace_single_qubit(density_matrix, j, n_qubits)
             rho_ij = partial_trace_two_qubits(density_matrix, (i, j), n_qubits)
-            
+
             # I(A_i : A_j) = S(A_i) + S(A_j) - S(A_i A_j)
             S_i = von_neumann_entropy(rho_i)
             S_j = von_neumann_entropy(rho_j)
             S_ij = von_neumann_entropy(rho_ij)
-            
+
             mutual_info[i, j] = S_i + S_j - S_ij
             mutual_info[j, i] = mutual_info[i, j]  # Symmetric
-    
+
     return mutual_info
 
 
@@ -184,13 +186,15 @@ def hierarchical_decompose(tensor: Array, mutual_info: NDArray[np.float64]) -> d
     """
 
     n_qubits = int(np.log2(len(tensor)))
-    
+
     # Build topology from mutual information (simple graph of strong connections)
     # Connections are considered strong if MI > threshold
     topology = {}
     for i in range(n_qubits):
-        topology[i] = [j for j in range(n_qubits) if mutual_info[i, j] > _TOPOLOGY_MI_THRESHOLD and i != j]
-    
+        topology[i] = [
+            j for j in range(n_qubits) if mutual_info[i, j] > _TOPOLOGY_MI_THRESHOLD and i != j
+        ]
+
     # Use hierarchical bipartition based on entanglement structure
     # Find optimal bipartition by maximizing inter-partition mutual info
     if n_qubits <= 1:
@@ -200,33 +204,35 @@ def hierarchical_decompose(tensor: Array, mutual_info: NDArray[np.float64]) -> d
             "basis_right": [np.ones(1, dtype=complex)],
             "topology": topology,
         }
-    
+
     # Bipartition into left and right subsystems
     # Strategy: Use unbalanced partition for better compression
     # Keep 1-2 qubits on left, rest on right
     # This makes dim_left small, increasing chance of low rank
-    partition_size = min(_MAX_PARTITION_SIZE, max(_MIN_PARTITION_SIZE, n_qubits // _PARTITION_DIVISOR))
+    partition_size = min(
+        _MAX_PARTITION_SIZE, max(_MIN_PARTITION_SIZE, n_qubits // _PARTITION_DIVISOR)
+    )
     left_qubits = list(range(partition_size))
     right_qubits = list(range(partition_size, n_qubits))
-    
+
     # Reshape tensor for bipartition
-    dim_left = 2 ** partition_size
+    dim_left = 2**partition_size
     dim_right = 2 ** (n_qubits - partition_size)
-    
+
     # Reshape state vector into matrix form
     psi_matrix = tensor.reshape(dim_left, dim_right)
-    
+
     # Perform SVD: ψ = Σ_i σ_i |u_i⟩ ⊗ |v_i⟩
     # psi_matrix = U @ diag(s) @ Vh
     U, singular_values, Vh = np.linalg.svd(psi_matrix, full_matrices=False)
-    
+
     # Extract basis vectors and weights
     # U[:, i] gives left basis vector
     # Vh[i, :] gives right basis vector (already conjugate transposed)
     weights = singular_values
     basis_left = [U[:, i] for i in range(len(weights))]
     basis_right = [Vh[i, :] for i in range(len(weights))]
-    
+
     return {
         "weights": weights,
         "basis_left": basis_left,
@@ -256,31 +262,31 @@ def adaptive_truncate(decomposition: dict[str, Any], epsilon: float) -> dict[str
     """
 
     weights = decomposition["weights"]
-    
+
     # Sort indices by weight magnitude (descending)
     sorted_indices = np.argsort(np.abs(weights))[::-1]
-    
+
     # Adaptive truncation: keep components until cumulative weight² ≥ (1 - epsilon²)
     # This ensures fidelity F ≈ Σ retained weights² / Σ all weights²
     total_weight_sq = np.sum(np.abs(weights) ** 2)
-    target_weight_sq = (1.0 - epsilon ** 2) * total_weight_sq
-    
+    target_weight_sq = (1.0 - epsilon**2) * total_weight_sq
+
     cumulative_weight_sq = 0.0
     keep_count = 0
-    
+
     # Keep components that contribute to fidelity target
     for idx in sorted_indices:
         cumulative_weight_sq += np.abs(weights[idx]) ** 2
         keep_count += 1
-        
+
         # Stop when we've retained enough for fidelity
         if cumulative_weight_sq >= target_weight_sq:
             break
-    
+
     # Ensure we keep at least one component
     keep_count = max(1, keep_count)
     keep_indices = sorted_indices[:keep_count]
-    
+
     # Build truncated decomposition
     return {
         "weights": weights[keep_indices],
@@ -317,22 +323,22 @@ def reconstruct(truncated: dict[str, Any]) -> Array:
     # basis_right[i] is already in the form we need (from Vh[i, :])
     dim_left = len(basis_left[0])
     dim_right = len(basis_right[0])
-    
+
     # Initialize result
     result = np.zeros(dim_left * dim_right, dtype=complex)
-    
+
     # Sum over all components
     for i in range(len(weights)):
         # Compute tensor product: |u_i⟩ ⊗ |v_i⟩
         component = np.kron(basis_left[i], basis_right[i])
         # Add weighted component
         result = result + weights[i] * component
-    
+
     # Normalize the reconstructed state
     norm = np.linalg.norm(result)
     if norm > _NORMALIZATION_THRESHOLD:
         result = result / norm
-    
+
     return result
 
 
@@ -448,10 +454,10 @@ def compress(
         dim_right = len(truncated["basis_right"][0])
         original_elements = dim_left * dim_right
         full_rank = min(dim_left, dim_right)
-        
+
         # Compressed format stores: rank * (dim_left + dim_right + 1)
         compressed_elements = n_components * (dim_left + dim_right + 1)
-        
+
         # Calculate compression ratio
         # If rank is reduced, we achieve compression
         if compressed_elements < original_elements:

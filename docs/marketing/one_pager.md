@@ -15,6 +15,7 @@ tensor network simulation with autonomous kernel evolution.
 ### Why QuASIM Matters
 
 **Only Platform With:**
+
 - ✓ DO-178C Level A aerospace certification
 - ✓ Validated SpaceX/NASA mission data (<2% RMSE)
 - ✓ CMMC 2.0 Level 2 defense compliance (110/110 practices)
@@ -24,6 +25,7 @@ tensor network simulation with autonomous kernel evolution.
 ### Market Opportunity
 
 **Target Markets:**
+
 - Aerospace & Defense: $120M-$340M federal pipeline (2025-2030)
 - Fortune 500 Enterprises: 75 high-fit companies (QII ≥ 0.70)
 - Pharmaceuticals, Financial Services, Manufacturing

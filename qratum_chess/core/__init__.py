@@ -45,11 +45,7 @@ class CastlingRights(IntFlag):
 
 
 # Square indices (a1 = 0, h8 = 63)
-SQUARE_NAMES = [
-    f"{file}{rank}"
-    for rank in range(1, 9)
-    for file in "abcdefgh"
-]
+SQUARE_NAMES = [f"{file}{rank}" for rank in range(1, 9) for file in "abcdefgh"]
 
 # File and rank masks
 FILE_A = 0x0101010101010101
@@ -172,40 +168,43 @@ def shift_right(bb: int) -> int:
 @dataclass
 class BitBoard:
     """Bitboard representation for all pieces on the board.
-    
+
     Uses 12 bitboards: 6 piece types × 2 colors.
     Each bitboard is a 64-bit integer where bit i is set if the piece is on square i.
     """
 
     # Piece bitboards [color][piece_type]
     pieces: np.ndarray  # Shape: (2, 6), dtype: uint64
-    
+
     # Combined occupancy bitboards
     occupancy: np.ndarray = field(default=None)  # Shape: (2,), dtype: uint64 - per color
     all_pieces: int = 0  # All pieces combined
-    
+
     def __post_init__(self) -> None:
         """Initialize derived attributes."""
         self._update_occupancy()
-    
+
     def _update_occupancy(self) -> None:
         """Update occupancy bitboards from piece bitboards."""
-        self.occupancy = np.array([
-            sum(int(self.pieces[Color.WHITE, pt]) for pt in PieceType),
-            sum(int(self.pieces[Color.BLACK, pt]) for pt in PieceType),
-        ], dtype=np.uint64)
+        self.occupancy = np.array(
+            [
+                sum(int(self.pieces[Color.WHITE, pt]) for pt in PieceType),
+                sum(int(self.pieces[Color.BLACK, pt]) for pt in PieceType),
+            ],
+            dtype=np.uint64,
+        )
         self.all_pieces = int(self.occupancy[0]) | int(self.occupancy[1])
-    
+
     @classmethod
     def empty(cls) -> BitBoard:
         """Create an empty board."""
         return cls(pieces=np.zeros((2, 6), dtype=np.uint64))
-    
+
     @classmethod
     def starting_position(cls) -> BitBoard:
         """Create the starting chess position."""
         pieces = np.zeros((2, 6), dtype=np.uint64)
-        
+
         # White pieces
         pieces[Color.WHITE, PieceType.PAWN] = RANK_2
         pieces[Color.WHITE, PieceType.ROOK] = 0x81  # a1, h1
@@ -213,7 +212,7 @@ class BitBoard:
         pieces[Color.WHITE, PieceType.BISHOP] = 0x24  # c1, f1
         pieces[Color.WHITE, PieceType.QUEEN] = 0x08  # d1
         pieces[Color.WHITE, PieceType.KING] = 0x10  # e1
-        
+
         # Black pieces
         pieces[Color.BLACK, PieceType.PAWN] = RANK_7
         pieces[Color.BLACK, PieceType.ROOK] = 0x8100000000000000  # a8, h8
@@ -221,9 +220,9 @@ class BitBoard:
         pieces[Color.BLACK, PieceType.BISHOP] = 0x2400000000000000  # c8, f8
         pieces[Color.BLACK, PieceType.QUEEN] = 0x0800000000000000  # d8
         pieces[Color.BLACK, PieceType.KING] = 0x1000000000000000  # e8
-        
+
         return cls(pieces=pieces)
-    
+
     def piece_at(self, square: int) -> tuple[Color, PieceType] | None:
         """Get the piece at a square, if any."""
         mask = 1 << square
@@ -232,36 +231,30 @@ class BitBoard:
                 if int(self.pieces[color, piece_type]) & mask:
                     return (color, piece_type)
         return None
-    
+
     def set_piece(self, square: int, color: Color, piece_type: PieceType) -> None:
         """Place a piece on a square."""
         mask = np.uint64(1) << square
         self.pieces[color, piece_type] |= mask
         self._update_occupancy()
-    
+
     def remove_piece(self, square: int, color: Color, piece_type: PieceType) -> None:
         """Remove a piece from a square."""
         mask = ~(np.uint64(1) << square)
         self.pieces[color, piece_type] &= mask
         self._update_occupancy()
-    
-    def move_piece(
-        self,
-        from_sq: int,
-        to_sq: int,
-        color: Color,
-        piece_type: PieceType
-    ) -> None:
+
+    def move_piece(self, from_sq: int, to_sq: int, color: Color, piece_type: PieceType) -> None:
         """Move a piece from one square to another."""
         from_mask = np.uint64(1) << from_sq
         to_mask = np.uint64(1) << to_sq
         self.pieces[color, piece_type] ^= from_mask | to_mask
         self._update_occupancy()
-    
+
     def get_attack_map(self, color: Color) -> int:
         """Get combined attack map for a color."""
         attacks = 0
-        
+
         # Pawn attacks
         pawns = int(self.pieces[color, PieceType.PAWN])
         if color == Color.WHITE:
@@ -270,28 +263,28 @@ class BitBoard:
         else:
             attacks |= shift_down(shift_left(pawns))
             attacks |= shift_down(shift_right(pawns))
-        
+
         # Knight attacks
         for sq in iter_bits(int(self.pieces[color, PieceType.KNIGHT])):
             attacks |= int(KNIGHT_ATTACKS[sq])
-        
+
         # King attacks
         king_sq = lsb(int(self.pieces[color, PieceType.KING]))
         if king_sq >= 0:
             attacks |= int(KING_ATTACKS[king_sq])
-        
+
         # Sliding piece attacks (simplified - full implementation uses magic bitboards)
         attacks |= self._get_sliding_attacks(color, PieceType.BISHOP)
         attacks |= self._get_sliding_attacks(color, PieceType.ROOK)
         attacks |= self._get_sliding_attacks(color, PieceType.QUEEN)
-        
+
         return attacks
-    
+
     def _get_sliding_attacks(self, color: Color, piece_type: PieceType) -> int:
         """Get sliding piece attacks (simplified ray-based implementation)."""
         attacks = 0
         pieces = int(self.pieces[color, piece_type])
-        
+
         # Direction offsets
         if piece_type == PieceType.BISHOP:
             directions = [7, 9, -7, -9]  # Diagonal
@@ -299,43 +292,43 @@ class BitBoard:
             directions = [1, -1, 8, -8]  # Orthogonal
         else:  # Queen
             directions = [1, -1, 8, -8, 7, 9, -7, -9]
-        
+
         for sq in iter_bits(pieces):
             for direction in directions:
                 attacks |= self._ray_attack(sq, direction)
-        
+
         return attacks
-    
+
     def _ray_attack(self, sq: int, direction: int) -> int:
         """Generate ray attacks from a square in a direction."""
         attacks = 0
         current = sq
-        
+
         while True:
             prev_file = current % 8
             current += direction
-            
+
             # Check bounds
             if current < 0 or current > 63:
                 break
-            
+
             # Check wrapping
             curr_file = current % 8
             if abs(curr_file - prev_file) > 1:
                 break
-            
+
             attacks |= 1 << current
-            
+
             # Stop if we hit a piece
             if self.all_pieces & (1 << current):
                 break
-        
+
         return attacks
-    
+
     def copy(self) -> BitBoard:
         """Create a deep copy of the bitboard."""
         return BitBoard(pieces=self.pieces.copy())
-    
+
     def to_string(self) -> str:
         """Convert to ASCII board representation."""
         piece_chars = {
@@ -352,7 +345,7 @@ class BitBoard:
             (Color.BLACK, PieceType.QUEEN): "q",
             (Color.BLACK, PieceType.KING): "k",
         }
-        
+
         lines = []
         for rank in range(7, -1, -1):
             line = f"{rank + 1} "

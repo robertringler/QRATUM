@@ -47,9 +47,7 @@ def compute_deterministic_float(data: str) -> float:
     return (int(hash_hex[:8], 16) % 1000) / 100.0
 
 
-def verify_hash_chain(
-    events: list, get_hash_func: callable, get_prev_func: callable
-) -> bool:
+def verify_hash_chain(events: list, get_hash_func: callable, get_prev_func: callable) -> bool:
     """Verify integrity of a hash chain.
 
     Args:

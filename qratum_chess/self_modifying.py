@@ -10,31 +10,33 @@ Implements a self-modifying chess engine with:
 
 from __future__ import annotations
 
+import json
+import time
 from dataclasses import dataclass, field
 from typing import Any, Callable
-import time
-import json
+
 import numpy as np
 
-from qratum_chess.core.position import Position, Move
 from qratum_chess.core import Color, PieceType
-from qratum_chess.search.aas import AsymmetricAdaptiveSearch, AASConfig, AASStats
+from qratum_chess.core.position import Move, Position
+from qratum_chess.search.aas import AASConfig, AASStats, AsymmetricAdaptiveSearch
 
 
 @dataclass
 class PhysicalState:
     """X_t: Physical board state - positions, piece velocities, energies."""
+
     position_fen: str
     piece_positions: dict[int, tuple[PieceType, Color]] = field(default_factory=dict)
     move_history: list[str] = field(default_factory=list)
     material_balance: float = 0.0
-    
+
     @classmethod
     def from_position(cls, position: Position) -> PhysicalState:
         """Create physical state from Position object."""
         piece_positions = {}
         material_balance = 0.0
-        
+
         for square in range(64):
             piece_tuple = position.board.piece_at(square)
             if piece_tuple:
@@ -42,13 +44,13 @@ class PhysicalState:
                 piece_type, color = piece_tuple
                 value = cls._get_piece_value(piece_type)
                 material_balance += value if color == Color.WHITE else -value
-        
+
         return cls(
             position_fen=position.to_fen(),
             piece_positions=piece_positions,
-            material_balance=material_balance
+            material_balance=material_balance,
         )
-    
+
     @staticmethod
     def _get_piece_value(piece_type: PieceType) -> float:
         """Get material value of piece."""
@@ -66,6 +68,7 @@ class PhysicalState:
 @dataclass
 class GameConfiguration:
     """G_t: Game configuration - openings, motifs, structures."""
+
     active_openings: list[str] = field(default_factory=list)
     discovered_motifs: list[dict[str, Any]] = field(default_factory=list)
     endgame_type: str = "unknown"
@@ -75,19 +78,22 @@ class GameConfiguration:
 @dataclass
 class Rules:
     """R_t: Evaluation rules and parameters."""
-    piece_values: dict[PieceType, float] = field(default_factory=lambda: {
-        PieceType.PAWN: 1.0,
-        PieceType.KNIGHT: 3.0,
-        PieceType.BISHOP: 3.2,
-        PieceType.ROOK: 5.0,
-        PieceType.QUEEN: 9.0,
-        PieceType.KING: 0.0,
-    })
+
+    piece_values: dict[PieceType, float] = field(
+        default_factory=lambda: {
+            PieceType.PAWN: 1.0,
+            PieceType.KNIGHT: 3.0,
+            PieceType.BISHOP: 3.2,
+            PieceType.ROOK: 5.0,
+            PieceType.QUEEN: 9.0,
+            PieceType.KING: 0.0,
+        }
+    )
     motif_weights: dict[str, float] = field(default_factory=dict)
     tactical_weight: float = 0.5
     strategic_weight: float = 0.3
     novelty_weight: float = 0.2
-    
+
     def adapt(self, delta: dict[str, float], max_change: float = 0.1) -> None:
         """Adapt rules with bounded changes."""
         for key, change in delta.items():
@@ -95,31 +101,32 @@ class Rules:
                 self.tactical_weight = np.clip(
                     self.tactical_weight + change,
                     self.tactical_weight - max_change,
-                    self.tactical_weight + max_change
+                    self.tactical_weight + max_change,
                 )
             elif key == "strategic_weight":
                 self.strategic_weight = np.clip(
                     self.strategic_weight + change,
                     self.strategic_weight - max_change,
-                    self.strategic_weight + max_change
+                    self.strategic_weight + max_change,
                 )
             elif key == "novelty_weight":
                 self.novelty_weight = np.clip(
                     self.novelty_weight + change,
                     self.novelty_weight - max_change,
-                    self.novelty_weight + max_change
+                    self.novelty_weight + max_change,
                 )
 
 
 @dataclass
 class EngineParameters:
     """Θ_t: Engine physics/algorithmic parameters."""
+
     search_depth: int = 10
     mcts_rollouts: int = 1000
     novelty_pressure: float = 0.3
     temperature: float = 1.0
     exploration_constant: float = 1.414
-    
+
     def adapt(self, delta: dict[str, Any], bounds: dict[str, tuple] = None) -> None:
         """Adapt parameters with safety bounds."""
         bounds = bounds or {
@@ -128,34 +135,35 @@ class EngineParameters:
             "novelty_pressure": (0.0, 1.0),
             "temperature": (0.1, 2.0),
         }
-        
+
         for key, change in delta.items():
             if hasattr(self, key):
                 current = getattr(self, key)
                 new_value = current + change
-                
+
                 if key in bounds:
                     min_val, max_val = bounds[key]
                     new_value = np.clip(new_value, min_val, max_val)
-                
+
                 setattr(self, key, new_value)
 
 
 @dataclass
 class MemoryKernel:
     """M_t: Memory kernel storing historical patterns."""
+
     position_history: dict[str, float] = field(default_factory=dict)
     motif_outcomes: dict[str, list[float]] = field(default_factory=dict)
     elo_trajectory: list[float] = field(default_factory=list)
     move_evaluations: dict[str, float] = field(default_factory=dict)
     decay_factor: float = 0.1
-    
+
     def update(self, position_key: str, evaluation: float) -> None:
         """Update memory with exponential decay: M_{t+1} = (1-λ)M_t + λF(S_t)."""
         prev_value = self.position_history.get(position_key, 0.0)
         new_value = (1 - self.decay_factor) * prev_value + self.decay_factor * evaluation
         self.position_history[position_key] = new_value
-    
+
     def record_motif_outcome(self, motif_id: str, outcome: float) -> None:
         """Record outcome for a discovered motif."""
         if motif_id not in self.motif_outcomes:
@@ -166,13 +174,14 @@ class MemoryKernel:
 @dataclass
 class StateSpace:
     """Complete state space S_t = (X_t, G_t, R_t, Θ_t, M_t)."""
+
     physical: PhysicalState
     game_config: GameConfiguration
     rules: Rules
     parameters: EngineParameters
     memory: MemoryKernel
     timestamp: float = field(default_factory=time.time)
-    
+
     def to_dict(self) -> dict[str, Any]:
         """Serialize state for logging."""
         return {
@@ -204,16 +213,16 @@ class StateSpace:
 
 class TacticalCortex:
     """Tactical cortex with policy-value network and belief state.
-    
+
     Maintains:
     - Belief state b_t over positions
     - Policy π_t for move selection
     - Activation weights for telemetry
     """
-    
+
     def __init__(self, learning_rate: float = 0.01):
         """Initialize tactical cortex.
-        
+
         Args:
             learning_rate: Learning rate for policy updates.
         """
@@ -222,82 +231,73 @@ class TacticalCortex:
         self.policy_weights: dict[str, float] = {}
         self.activation_history: list[float] = []
         self.last_activation: float = 0.0
-    
-    def evaluate(
-        self,
-        position: Position,
-        state: StateSpace
-    ) -> tuple[dict[Move, float], float]:
+
+    def evaluate(self, position: Position, state: StateSpace) -> tuple[dict[Move, float], float]:
         """Evaluate position and return move probabilities + value.
-        
+
         Args:
             position: Current position.
             state: Complete state space.
-            
+
         Returns:
             Tuple of (move_probabilities, position_value).
         """
         legal_moves = position.generate_legal_moves()
-        
+
         if not legal_moves:
             return {}, 0.0
-        
+
         # Simple tactical evaluation (placeholder for neural network)
         move_probs = {}
         for move in legal_moves:
             # Combine material + positional evaluation
             score = self._evaluate_move(move, position, state)
             move_probs[move] = score
-        
+
         # Normalize to probabilities
         total = sum(move_probs.values())
         if total > 0:
             move_probs = {m: s / total for m, s in move_probs.items()}
-        
+
         # Position value is material balance + positional factors
         position_value = state.physical.material_balance
-        
+
         # Track activation
         self.last_activation = np.mean(list(move_probs.values())) if move_probs else 0.0
         self.activation_history.append(self.last_activation)
-        
+
         return move_probs, position_value
-    
-    def _evaluate_move(
-        self,
-        move: Move,
-        position: Position,
-        state: StateSpace
-    ) -> float:
+
+    def _evaluate_move(self, move: Move, position: Position, state: StateSpace) -> float:
         """Evaluate single move tactically."""
         score = 0.0
-        
+
         # Check for captures
         target_piece = position.board.piece_at(move.to_sq)
         if target_piece:
             piece_type, _ = target_piece
             score += state.rules.piece_values.get(piece_type, 0.0)
-        
+
         # Center control bonus
         center_squares = {27, 28, 35, 36}  # e4, d4, e5, d5
         if move.to_sq in center_squares:
             score += 0.2
-        
+
         # Development bonus in opening
         if state.game_config.game_phase == "opening":
             if move.to_sq // 8 in {3, 4}:  # 4th and 5th ranks
                 score += 0.1
-        
+
         return score
-    
+
     def update_policy(self, reward: float) -> None:
         """Update policy based on reward signal.
-        
+
         Implements: π_{t+1} = π_t + α * reward_signal
         """
         # Simple policy gradient update
         adjustment = self.learning_rate * reward
-        
+
         # Apply to policy weights (simplified)
         for key in self.policy_weights:
             self.policy_weights[key] += adjustment
@@ -305,7 +305,7 @@ class TacticalCortex:
 
 class SelfModifyingSearch(AsymmetricAdaptiveSearch):
     """Self-modifying search engine with meta-dynamics.
-    
+
     Implements:
     - State space management
     - Tactical cortex with belief-policy updates
@@ -313,16 +313,16 @@ class SelfModifyingSearch(AsymmetricAdaptiveSearch):
     - Memory kernel with decay
     - Benchmarking integration
     """
-    
+
     def __init__(
         self,
         evaluator: Callable[[Position], float] | None = None,
         config: AASConfig | None = None,
         memory_decay: float = 0.1,
-        learning_rate: float = 0.01
+        learning_rate: float = 0.01,
     ):
         """Initialize self-modifying search engine.
-        
+
         Args:
             evaluator: Position evaluation function.
             config: Base AAS configuration.
@@ -330,71 +330,62 @@ class SelfModifyingSearch(AsymmetricAdaptiveSearch):
             learning_rate: Learning rate for cortex updates.
         """
         super().__init__(evaluator=evaluator, config=config)
-        
+
         # Initialize components
         self.tactical_cortex = TacticalCortex(learning_rate=learning_rate)
         self.state_history: list[StateSpace] = []
         self.telemetry_log: list[dict[str, Any]] = []
-        
+
         # Initialize state space
         self.current_state = StateSpace(
             physical=PhysicalState(position_fen="", piece_positions={}),
             game_config=GameConfiguration(),
             rules=Rules(),
             parameters=EngineParameters(),
-            memory=MemoryKernel(decay_factor=memory_decay)
+            memory=MemoryKernel(decay_factor=memory_decay),
         )
-    
+
     def search(
-        self,
-        position: Position,
-        depth: int = 10,
-        time_limit_ms: float | None = None
+        self, position: Position, depth: int = 10, time_limit_ms: float | None = None
     ) -> tuple[Move, float, AASStats]:
         """Search with self-modification capabilities.
-        
+
         Args:
             position: Current position.
             depth: Search depth.
             time_limit_ms: Time limit.
-            
+
         Returns:
             Tuple of (best_move, evaluation, stats).
         """
         start_time = time.time()
-        
+
         # Update state space
         self.step(position)
-        
+
         # Get tactical cortex evaluation
-        move_probs, position_value = self.tactical_cortex.evaluate(
-            position,
-            self.current_state
-        )
-        
+        move_probs, position_value = self.tactical_cortex.evaluate(position, self.current_state)
+
         if not move_probs:
             # Fall back to base engine
             return super().search(position, depth, time_limit_ms)
-        
+
         # Select best move from cortex
         best_move = max(move_probs, key=move_probs.get)
         best_score = move_probs[best_move]
-        
+
         # Calculate novelty pressure (divergence from baseline)
-        novelty_pressure = self._calculate_novelty_pressure(
-            best_move,
-            position
-        )
-        
+        novelty_pressure = self._calculate_novelty_pressure(best_move, position)
+
         # Update memory kernel
         self.update_memory_kernel(position, best_score)
-        
+
         # Apply meta-dynamics
         self.update_meta_dynamics(best_score, novelty_pressure)
-        
+
         # Record telemetry
         self._record_telemetry(position, best_move, best_score, novelty_pressure)
-        
+
         # Create stats
         elapsed_ms = (time.time() - start_time) * 1000
         stats = AASStats(
@@ -404,32 +395,32 @@ class SelfModifyingSearch(AsymmetricAdaptiveSearch):
             entropy=self._calculate_entropy(move_probs),
             branching_factor=float(len(position.generate_legal_moves())),
             depth_reached=depth,
-            tablebase_probes=0
+            tablebase_probes=0,
         )
-        
+
         return best_move, position_value, stats
-    
+
     def step(self, position: Position) -> None:
         """Advance state space with current position.
-        
+
         Updates: S_{t+1} = T(S_t, {a_t}, R_t, Θ_t)
         """
         # Update physical state
         self.current_state.physical = PhysicalState.from_position(position)
-        
+
         # Update game configuration
         self.current_state.game_config.game_phase = self._detect_phase_name(position)
-        
+
         # Store state in history
         self.state_history.append(self.current_state)
-        
+
         # Limit history size
         if len(self.state_history) > 100:
             self.state_history = self.state_history[-100:]
-    
+
     def update_meta_dynamics(self, evaluation: float, novelty: float) -> None:
         """Update rules R_t and parameters Θ_t based on feedback.
-        
+
         Implements:
         - R_{t+1} = U_R(R_t, {a^{rule}}, M_t)
         - Θ_{t+1} = U_Θ(Θ_t, {a^{rule}}, M_t)
@@ -441,7 +432,7 @@ class SelfModifyingSearch(AsymmetricAdaptiveSearch):
                 "novelty_weight": 0.005,
             }
             self.current_state.rules.adapt(rule_delta, max_change=0.05)
-        
+
         # Adapt parameters based on novelty
         if novelty > 0.7:  # High novelty - explore more
             param_delta = {
@@ -455,68 +446,60 @@ class SelfModifyingSearch(AsymmetricAdaptiveSearch):
                 "novelty_pressure": -0.01,
             }
             self.current_state.parameters.adapt(param_delta)
-    
+
     def update_memory_kernel(self, position: Position, evaluation: float) -> None:
         """Update memory kernel with exponential decay.
-        
+
         Implements: M_{t+1} = (1-λ)M_t + λ F(S_t, {a_t})
         """
         position_key = position.to_fen()
         self.current_state.memory.update(position_key, evaluation)
-    
-    def _calculate_novelty_pressure(
-        self,
-        move: Move,
-        position: Position
-    ) -> float:
+
+    def _calculate_novelty_pressure(self, move: Move, position: Position) -> float:
         """Calculate novelty pressure (divergence from baseline).
-        
+
         Returns value between 0 (standard) and 1 (highly novel).
         """
         # Simple heuristic: how much does this differ from material-optimal?
         # In real implementation, compare to engine database
-        
+
         # Check if move is typical for the position
         move_to_center = move.to_sq in {27, 28, 35, 36}
         is_capture = position.board.piece_at(move.to_sq) is not None
-        
+
         if is_capture:
             return 0.2  # Captures are typical
         elif move_to_center:
             return 0.4  # Center moves are somewhat typical
         else:
             return 0.7  # Other moves are more novel
-    
+
     def _calculate_entropy(self, move_probs: dict[Move, float]) -> float:
         """Calculate Shannon entropy of move distribution."""
         if not move_probs:
             return 0.0
-        
+
         probs = list(move_probs.values())
         probs = [p for p in probs if p > 0]
-        
+
         if not probs:
             return 0.0
-        
+
         return -sum(p * np.log2(p) for p in probs)
-    
+
     def _detect_phase_name(self, position: Position) -> str:
         """Detect game phase."""
         piece_count = sum(1 for sq in range(64) if position.board.piece_at(sq))
-        
+
         if piece_count >= 28:
             return "opening"
         elif piece_count <= 10:
             return "endgame"
         else:
             return "middlegame"
-    
+
     def _record_telemetry(
-        self,
-        position: Position,
-        move: Move,
-        evaluation: float,
-        novelty: float
+        self, position: Position, move: Move, evaluation: float, novelty: float
     ) -> None:
         """Record telemetry for benchmarking."""
         telemetry = {
@@ -531,11 +514,11 @@ class SelfModifyingSearch(AsymmetricAdaptiveSearch):
             "timestamp": time.time(),
         }
         self.telemetry_log.append(telemetry)
-    
+
     def get_telemetry(self) -> list[dict[str, Any]]:
         """Get complete telemetry log for benchmarking."""
         return self.telemetry_log
-    
+
     def visualize_cortex(self) -> dict[str, Any]:
         """Get cortex activation data for visualization."""
         return {
@@ -544,7 +527,7 @@ class SelfModifyingSearch(AsymmetricAdaptiveSearch):
             "policy_weights": self.tactical_cortex.policy_weights,
             "belief_state_size": len(self.tactical_cortex.belief_state),
         }
-    
+
     def get_state_analysis(self) -> dict[str, Any]:
         """Get complete state space analysis."""
         return {
@@ -553,7 +536,7 @@ class SelfModifyingSearch(AsymmetricAdaptiveSearch):
             "memory_size": len(self.current_state.memory.position_history),
             "telemetry_entries": len(self.telemetry_log),
         }
-    
+
     def export_telemetry(self, filepath: str) -> None:
         """Export telemetry to JSON file."""
         data = {
@@ -562,15 +545,15 @@ class SelfModifyingSearch(AsymmetricAdaptiveSearch):
             "cortex_data": self.visualize_cortex(),
             "export_timestamp": time.time(),
         }
-        
-        with open(filepath, 'w') as f:
+
+        with open(filepath, "w") as f:
             json.dump(data, f, indent=2)
 
 
 @dataclass
 class SelfModifyingEngineConfig:
     """Configuration for SelfModifyingEngine.
-    
+
     Attributes:
         tactical_weight: Weight for tactical evaluation (0.0-1.0).
         strategic_weight: Weight for strategic evaluation (0.0-1.0).
@@ -580,6 +563,7 @@ class SelfModifyingEngineConfig:
         ontology_evolution: Enable ontology evolution (meta-dynamics).
         recursive_depth_limit: Maximum recursion depth for self-modification.
     """
+
     tactical_weight: float = 0.4
     strategic_weight: float = 0.4
     conceptual_weight: float = 0.2
@@ -591,7 +575,7 @@ class SelfModifyingEngineConfig:
 
 class SelfModifyingEngine(SelfModifyingSearch):
     """Full self-modifying chess engine for large-scale simulations.
-    
+
     Extends SelfModifyingSearch with:
     - Configurable tri-modal weights (tactical, strategic, conceptual)
     - Ontology evolution with meta-dynamics
@@ -599,7 +583,7 @@ class SelfModifyingEngine(SelfModifyingSearch):
     - Motif tracking and discovery
     - ELO progression tracking
     """
-    
+
     def __init__(
         self,
         tactical_weight: float = 0.4,
@@ -613,7 +597,7 @@ class SelfModifyingEngine(SelfModifyingSearch):
         config: AASConfig | None = None,
     ):
         """Initialize the self-modifying engine.
-        
+
         Args:
             tactical_weight: Weight for tactical evaluation (0.0-1.0).
             strategic_weight: Weight for strategic evaluation (0.0-1.0).
@@ -631,14 +615,14 @@ class SelfModifyingEngine(SelfModifyingSearch):
             tactical_weight /= total_weight
             strategic_weight /= total_weight
             conceptual_weight /= total_weight
-        
+
         super().__init__(
             evaluator=evaluator,
             config=config,
             memory_decay=memory_decay,
             learning_rate=0.01,
         )
-        
+
         # Engine configuration
         self.engine_config = SelfModifyingEngineConfig(
             tactical_weight=tactical_weight,
@@ -649,15 +633,15 @@ class SelfModifyingEngine(SelfModifyingSearch):
             ontology_evolution=ontology_evolution,
             recursive_depth_limit=recursive_depth_limit,
         )
-        
+
         # Apply weights to rules
         self.current_state.rules.tactical_weight = tactical_weight
         self.current_state.rules.strategic_weight = strategic_weight
         self.current_state.rules.novelty_weight = conceptual_weight
-        
+
         # Set initial novelty pressure
         self.current_state.parameters.novelty_pressure = novelty_pressure
-        
+
         # Tracking for simulation
         self.games_played: int = 0
         self.total_moves: int = 0
@@ -666,20 +650,20 @@ class SelfModifyingEngine(SelfModifyingSearch):
         self.win_count: int = 0
         self.loss_count: int = 0
         self.draw_count: int = 0
-        
+
         # Meta-dynamics state
         self.ontology_version: int = 0
         self.rule_changes: list[dict[str, Any]] = []
         self.parameter_changes: list[dict[str, Any]] = []
-    
+
     def update_meta_dynamics(self, evaluation: float, novelty: float) -> None:
         """Update rules R_t and parameters Θ_t with meta-dynamics.
-        
+
         Overrides parent to include ontology evolution tracking.
         """
         if not self.engine_config.ontology_evolution:
             return
-        
+
         # Record pre-update state
         pre_state = {
             "tactical_weight": self.current_state.rules.tactical_weight,
@@ -688,10 +672,10 @@ class SelfModifyingEngine(SelfModifyingSearch):
             "search_depth": self.current_state.parameters.search_depth,
             "novelty_pressure": self.current_state.parameters.novelty_pressure,
         }
-        
+
         # Call parent method for actual updates
         super().update_meta_dynamics(evaluation, novelty)
-        
+
         # Record post-update state
         post_state = {
             "tactical_weight": self.current_state.rules.tactical_weight,
@@ -700,38 +684,42 @@ class SelfModifyingEngine(SelfModifyingSearch):
             "search_depth": self.current_state.parameters.search_depth,
             "novelty_pressure": self.current_state.parameters.novelty_pressure,
         }
-        
+
         # Track rule changes
         rule_delta = {
             k: post_state[k] - pre_state[k]
             for k in ["tactical_weight", "strategic_weight", "novelty_weight"]
             if abs(post_state[k] - pre_state[k]) > 1e-6
         }
-        
+
         if rule_delta:
-            self.rule_changes.append({
-                "move": self.total_moves,
-                "game": self.games_played,
-                "changes": rule_delta,
-                "timestamp": time.time(),
-            })
-        
+            self.rule_changes.append(
+                {
+                    "move": self.total_moves,
+                    "game": self.games_played,
+                    "changes": rule_delta,
+                    "timestamp": time.time(),
+                }
+            )
+
         # Track parameter changes
         param_delta = {
             k: post_state[k] - pre_state[k]
             for k in ["search_depth", "novelty_pressure"]
             if abs(post_state[k] - pre_state[k]) > 1e-6
         }
-        
+
         if param_delta:
-            self.parameter_changes.append({
-                "move": self.total_moves,
-                "game": self.games_played,
-                "changes": param_delta,
-                "timestamp": time.time(),
-            })
+            self.parameter_changes.append(
+                {
+                    "move": self.total_moves,
+                    "game": self.games_played,
+                    "changes": param_delta,
+                    "timestamp": time.time(),
+                }
+            )
             self.ontology_version += 1
-    
+
     def record_motif(
         self,
         position_fen: str,
@@ -740,7 +728,7 @@ class SelfModifyingEngine(SelfModifyingSearch):
         novelty_score: float,
     ) -> None:
         """Record a discovered motif.
-        
+
         Args:
             position_fen: Position in FEN notation.
             move_sequence: Sequence of moves (UCI notation).
@@ -763,16 +751,16 @@ class SelfModifyingEngine(SelfModifyingSearch):
             "timestamp": time.time(),
         }
         self.discovered_motifs.append(motif)
-    
+
     def record_game_result(self, result: str, opponent_elo: float = 3500.0) -> None:
         """Record game result and update ELO.
-        
+
         Args:
             result: Game result ("win", "loss", "draw").
             opponent_elo: Opponent's ELO rating.
         """
         self.games_played += 1
-        
+
         if result == "win":
             self.win_count += 1
             score = 1.0
@@ -782,50 +770,51 @@ class SelfModifyingEngine(SelfModifyingSearch):
         else:
             self.draw_count += 1
             score = 0.5
-        
+
         # Simple ELO calculation
         current_elo = self.elo_history[-1] if self.elo_history else 2500.0
         expected = 1.0 / (1.0 + 10 ** ((opponent_elo - current_elo) / 400))
         k_factor = 32
         new_elo = current_elo + k_factor * (score - expected)
-        
+
         self.elo_history.append(new_elo)
-    
+
     def save_checkpoint(self, filepath: str) -> None:
         """Save engine state to checkpoint file.
-        
+
         Args:
             filepath: Output checkpoint file path.
         """
         import os
-        
+
         # Custom JSON encoder for numpy types
         def json_serializer(obj):
             """Handle numpy and other non-serializable types."""
             import numpy as np
+
             if isinstance(obj, np.integer):
                 return int(obj)
             elif isinstance(obj, np.floating):
                 return float(obj)
             elif isinstance(obj, np.ndarray):
                 return obj.tolist()
-            elif hasattr(obj, '__dict__'):
+            elif hasattr(obj, "__dict__"):
                 return str(obj)
             return str(obj)
-        
+
         # Ensure directory exists
         dir_path = os.path.dirname(filepath)
         if dir_path:
             os.makedirs(dir_path, exist_ok=True)
-        
+
         # Convert activation history to serializable format
         cortex_data = self.visualize_cortex()
         cortex_data["tactical_activation_history"] = [
-            float(x) if hasattr(x, 'item') else float(x) 
+            float(x) if hasattr(x, "item") else float(x)
             for x in cortex_data.get("tactical_activation_history", [])
         ]
         cortex_data["current_activation"] = float(cortex_data.get("current_activation", 0.0))
-        
+
         checkpoint = {
             "version": "1.0.0",
             "timestamp": time.time(),
@@ -874,19 +863,19 @@ class SelfModifyingEngine(SelfModifyingSearch):
             },
             "cortex": cortex_data,
         }
-        
-        with open(filepath, 'w') as f:
+
+        with open(filepath, "w") as f:
             json.dump(checkpoint, f, indent=2, default=json_serializer)
-    
+
     def load_checkpoint(self, filepath: str) -> None:
         """Load engine state from checkpoint file.
-        
+
         Args:
             filepath: Input checkpoint file path.
         """
-        with open(filepath, 'r') as f:
+        with open(filepath) as f:
             checkpoint = json.load(f)
-        
+
         # Restore configuration
         cfg = checkpoint.get("config", {})
         self.engine_config = SelfModifyingEngineConfig(
@@ -898,20 +887,20 @@ class SelfModifyingEngine(SelfModifyingSearch):
             ontology_evolution=cfg.get("ontology_evolution", True),
             recursive_depth_limit=cfg.get("recursive_depth_limit", 10),
         )
-        
+
         # Restore state
         state = checkpoint.get("state", {})
         rules = state.get("rules", {})
         self.current_state.rules.tactical_weight = rules.get("tactical_weight", 0.4)
         self.current_state.rules.strategic_weight = rules.get("strategic_weight", 0.4)
         self.current_state.rules.novelty_weight = rules.get("novelty_weight", 0.2)
-        
+
         params = state.get("parameters", {})
         self.current_state.parameters.search_depth = params.get("search_depth", 10)
         self.current_state.parameters.mcts_rollouts = params.get("mcts_rollouts", 1000)
         self.current_state.parameters.novelty_pressure = params.get("novelty_pressure", 0.3)
         self.current_state.parameters.temperature = params.get("temperature", 1.0)
-        
+
         # Restore statistics
         stats = checkpoint.get("statistics", {})
         self.games_played = stats.get("games_played", 0)
@@ -921,19 +910,19 @@ class SelfModifyingEngine(SelfModifyingSearch):
         self.draw_count = stats.get("draw_count", 0)
         self.elo_history = stats.get("elo_history", [])
         self.ontology_version = stats.get("ontology_version", 0)
-        
+
         # Restore motifs
         motifs = checkpoint.get("motifs", {})
         self.discovered_motifs = motifs.get("motifs", [])
-        
+
         # Restore meta-dynamics
         meta = checkpoint.get("meta_dynamics", {})
         self.rule_changes = meta.get("rule_changes", [])
         self.parameter_changes = meta.get("parameter_changes", [])
-    
+
     def get_engine_summary(self) -> dict[str, Any]:
         """Get comprehensive engine summary for reporting.
-        
+
         Returns:
             Engine summary dictionary.
         """
@@ -968,7 +957,11 @@ class SelfModifyingEngine(SelfModifyingSearch):
                 "elo_progression": {
                     "start": self.elo_history[0] if self.elo_history else 2500.0,
                     "end": self.elo_history[-1] if self.elo_history else 2500.0,
-                    "delta": (self.elo_history[-1] - self.elo_history[0]) if len(self.elo_history) > 1 else 0.0,
+                    "delta": (
+                        (self.elo_history[-1] - self.elo_history[0])
+                        if len(self.elo_history) > 1
+                        else 0.0
+                    ),
                 },
             },
             "meta_dynamics": {
@@ -982,7 +975,7 @@ class SelfModifyingEngine(SelfModifyingSearch):
             },
             "telemetry_entries": len(self.telemetry_log),
         }
-    
+
     def _count_motifs_by_type(self) -> dict[str, int]:
         """Count motifs by type."""
         counts: dict[str, int] = {}
@@ -998,29 +991,29 @@ def demo_self_modifying_engine():
     print("Self-Modifying Search Engine (MVI) - Demonstration")
     print("=" * 80)
     print()
-    
+
     # Initialize engine
     engine = SelfModifyingSearch(memory_decay=0.15, learning_rate=0.02)
     print("Engine initialized:")
     print(f"  Memory decay: {engine.current_state.memory.decay_factor}")
     print(f"  Learning rate: {engine.tactical_cortex.learning_rate}")
     print()
-    
+
     # Create starting position
     position = Position.starting()
     print(f"Starting position: {position.to_fen()[:40]}...")
     print()
-    
+
     # Run several moves
     print("Running self-modifying simulation for 3 moves:")
     print("-" * 80)
-    
+
     for turn in range(3):
         move, eval_score, stats = engine.search(position, depth=5)
-        
+
         # Get telemetry
         telemetry = engine.telemetry_log[-1] if engine.telemetry_log else {}
-        
+
         print(f"\nTurn {turn + 1}:")
         print(f"  Move: {move.to_uci()}")
         print(f"  Evaluation: {eval_score:.4f}")
@@ -1030,10 +1023,10 @@ def demo_self_modifying_engine():
         print(f"  Search depth: {telemetry.get('search_depth', 0)}")
         print(f"  Nodes searched: {stats.nodes_searched}")
         print(f"  Entropy: {stats.entropy:.4f}")
-        
+
         # Make the move
         position = position.make_move(move)
-    
+
     print()
     print("-" * 80)
     print("\nState Space Analysis:")
@@ -1041,12 +1034,12 @@ def demo_self_modifying_engine():
     print(f"  State history length: {analysis['state_history_length']}")
     print(f"  Memory positions: {analysis['memory_size']}")
     print(f"  Telemetry entries: {analysis['telemetry_entries']}")
-    
+
     print("\nCortex Visualization Data:")
     cortex_viz = engine.visualize_cortex()
     print(f"  Current activation: {cortex_viz['current_activation']:.4f}")
     print(f"  Activation history: {len(cortex_viz['tactical_activation_history'])} entries")
-    
+
     print()
     print("=" * 80)
     print("Self-modifying engine demonstration complete!")

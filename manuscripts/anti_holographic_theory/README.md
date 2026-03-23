@@ -16,7 +16,9 @@ This directory contains a complete academic manuscript package for peer-reviewed
 ### 1. Core Documents
 
 #### `cover_letter.tex`
+
 Formal submission cover letter to journal editor, written in LaTeX using the standard letter class. Explains:
+
 - Problem addressed
 - Novel contributions
 - Falsifiability criteria
@@ -25,7 +27,9 @@ Formal submission cover letter to journal editor, written in LaTeX using the sta
 **Compile:** `pdflatex cover_letter.tex`
 
 #### `manuscript.tex`
+
 Complete manuscript in RevTeX4-2 format (Physical Review D style). Includes:
+
 - Abstract (248 words)
 - 10 main sections + appendices
 - 8 figure placeholders (descriptions provided)
@@ -36,7 +40,8 @@ Complete manuscript in RevTeX4-2 format (Physical Review D style). Includes:
 - Computational validation results
 - Explicit falsifiability criteria
 
-**Compile:** 
+**Compile:**
+
 ```bash
 pdflatex manuscript.tex
 bibtex manuscript
@@ -45,7 +50,9 @@ pdflatex manuscript.tex
 ```
 
 #### `references.bib`
+
 BibTeX bibliography with 50+ carefully curated references including:
+
 - Holographic principle foundations ('t Hooft, Susskind, Maldacena)
 - JWST observations (Robertson 2023, Curtis-Lake 2023)
 - Chemical evolution (Madau & Dickinson 2014)
@@ -56,7 +63,9 @@ BibTeX bibliography with 50+ carefully curated references including:
 ### 2. Supporting Documents
 
 #### `FIGURE_TABLE_INDEX.md`
+
 Comprehensive index describing all figures and tables:
+
 - 8 main figures with specifications (300+ DPI, format, content)
 - 6 main tables with column definitions
 - 3 supplementary figures
@@ -65,6 +74,7 @@ Comprehensive index describing all figures and tables:
 - Data availability statement
 
 #### `README.md` (this file)
+
 Package documentation and usage instructions
 
 ---
@@ -72,12 +82,15 @@ Package documentation and usage instructions
 ## MANUSCRIPT STRUCTURE
 
 ### Title
+
 **"Empirical Validation of Anti-Holographic Information Principles through Astrophysical Observations and Computational Modeling"**
 
 Conservative, precise, non-sensational title appropriate for high-impact physics journal.
 
 ### Abstract (248 words)
+
 Concise summary including:
+
 - Context (holographic principle)
 - Observational evidence (JWST spectroscopy)
 - Main findings (isotropy, bulk-first information)
@@ -102,6 +115,7 @@ Concise summary including:
 12. **Conclusion** - Conservative summary, future observations
 
 **Appendices:**
+
 - A: Mathematical derivations (information flow, fidelity bounds)
 - B: Supplementary observational data
 - C: Computational protocols
@@ -110,7 +124,7 @@ Concise summary including:
 
 ## KEY SCIENTIFIC CLAIMS
 
-### What the Manuscript DOES Claim:
+### What the Manuscript DOES Claim
 
 1. **Observational Support:** Spectroscopic data from z > 10 show isotropy (δ_iso = 0.14 ± 0.03) consistent with bulk-localized information generation
 
@@ -122,7 +136,7 @@ Concise summary including:
 
 5. **Complementarity:** Anti-holographic and holographic mechanisms may operate in different physical regimes
 
-### What the Manuscript DOES NOT Claim:
+### What the Manuscript DOES NOT Claim
 
 1. ❌ Holographic principle is incorrect or invalid
 2. ❌ AdS/CFT correspondence is contradicted
@@ -166,26 +180,31 @@ Concise summary including:
 ### Core Equations
 
 **Anti-Holographic Condition:**
+
 ```
 I(B_int : B_ext) > I(∂V : B_int)
 ```
 
 **Information Scaling:**
+
 ```
 I_anti-holo ~ V · f(ρ_local)
 ```
 
 **Stability Measure:**
+
 ```
 S_loc = ⟨δI_bulk²⟩ / ⟨δI_boundary²⟩
 ```
 
 **Fidelity Bound:**
+
 ```
 F(ρ, ρ') ≥ 1 - O(ε²)
 ```
 
 **Information Flow Tensor:**
+
 ```
 F^μν = (∂I/∂x^μ)(∂I/∂x^ν) - (1/2)g^μν(∇I)²
 ```
@@ -199,24 +218,28 @@ All equations rigorously derived with clear variable definitions.
 ### Four Explicit Tests
 
 #### Test 1: Anisotropy Detection
+
 - **Anti-Holo:** δ_iso < 0.2
 - **Holographic:** δ_iso > 0.5
 - **Current:** δ_iso = 0.14 ± 0.03 ✓ (supports anti-holo)
 - **Falsification:** δ_iso > 0.4 with >3σ
 
 #### Test 2: Redshift Scaling
+
 - **Anti-Holo:** I ∝ (1+z)^-3 (volume)
 - **Holographic:** I ∝ (1+z)^-2 (area)
 - **Current:** Preliminary anti-holo support
 - **Falsification:** Area scaling with high significance
 
 #### Test 3: Info-Curvature Correlation
+
 - **Anti-Holo:** Higher diversity in voids
 - **Holographic:** Higher diversity in clusters
 - **Current:** Data insufficient
 - **Falsification:** Strong positive correlation
 
 #### Test 4: Entanglement Proxy
+
 - **Anti-Holo:** ξ_BB > ξ_B∂
 - **Holographic:** ξ_B∂ > ξ_BB
 - **Current:** Under analysis
@@ -239,7 +262,8 @@ All equations rigorously derived with clear variable definitions.
 **Software:** CuPy, Python 3.10  
 **Validation:** 100+ random states per configuration
 
-### Key Results:
+### Key Results
+
 - All exceed target compression (>10×)
 - All exceed target fidelity (>0.995)
 - Entanglement preserved (|ΔI| < 0.02)
@@ -249,7 +273,7 @@ All equations rigorously derived with clear variable definitions.
 
 ## FALSIFIABILITY CRITERIA
 
-### Observations That Would Falsify Anti-Holographic Framework:
+### Observations That Would Falsify Anti-Holographic Framework
 
 1. **Strong Anisotropy:** δ_iso > 0.4 detected in large survey (>500 sightlines)
 
@@ -259,7 +283,7 @@ All equations rigorously derived with clear variable definitions.
 
 4. **Non-Local Patterns:** Coherent large-scale patterns inconsistent with local bulk processes
 
-### Timeline for Definitive Tests:
+### Timeline for Definitive Tests
 
 - **2026-2027:** JWST deep antipodal fields
 - **2027-2030:** ELT z > 15 spectroscopy (1000+ objects)
@@ -302,6 +326,7 @@ grep -i warning manuscript.log
 ### Troubleshooting
 
 **Missing RevTeX:**
+
 ```bash
 # Ubuntu/Debian
 sudo apt-get install texlive-publishers
@@ -327,11 +352,11 @@ Figures are placeholders; warnings about missing files are expected until figure
 
 **Scope:** Particles, fields, gravitation, cosmology  
 **Style:** RevTeX 4.2 (manuscript already formatted)  
-**Submission:** https://journals.aps.org/prd/  
+**Submission:** <https://journals.aps.org/prd/>  
 **Length:** Typical 10-25 pages (within guidelines)  
 **Review Time:** 2-4 months
 
-### Alternative Targets:
+### Alternative Targets
 
 1. **Classical and Quantum Gravity**
    - Scope: Gravitational physics, cosmology
@@ -348,7 +373,7 @@ Figures are placeholders; warnings about missing files are expected until figure
    - Format: RevTeX 4.2 (compatible)
    - Length: 4-5 pages (significant condensation needed)
 
-### Submission Checklist:
+### Submission Checklist
 
 - [ ] Cover letter (PDF)
 - [ ] Manuscript (PDF)
@@ -369,7 +394,7 @@ Figures are placeholders; warnings about missing files are expected until figure
 
 Figure and table descriptions are complete (see `FIGURE_TABLE_INDEX.md`) but actual figure files must be generated from data.
 
-### Required Figures (8 total):
+### Required Figures (8 total)
 
 1. Chemical evolution with redshift
 2. Directional isotropy map
@@ -380,7 +405,7 @@ Figure and table descriptions are complete (see `FIGURE_TABLE_INDEX.md`) but act
 7. Entanglement preservation analysis
 8. Falsification criteria decision tree
 
-### Required Tables (6 main + 2 supplementary):
+### Required Tables (6 main + 2 supplementary)
 
 1. Earliest elemental detections
 2. Directional isotropy measurements
@@ -389,9 +414,10 @@ Figure and table descriptions are complete (see `FIGURE_TABLE_INDEX.md`) but act
 5. Testable predictions for next decade
 6. Complete spectroscopic database (appendix)
 
-### Production:
+### Production
 
 Figures can be generated using:
+
 - Python (Matplotlib, Seaborn)
 - Gnuplot
 - Origin
@@ -406,21 +432,25 @@ Figures can be generated using:
 Additional documents that may be required by journal:
 
 ### 1. Extended Data Tables
+
 - Full spectroscopic database (~100 objects)
 - Bootstrap resampling statistics
 - Systematic error budget
 
 ### 2. Code Availability
+
 - AHTC algorithm implementation (Python)
 - Analysis scripts (Jupyter notebooks)
 - Statistical analysis code (R or Python)
 
 ### 3. Data Availability
+
 - Spectroscopic measurements (CSV format)
 - Isotropy analysis data
 - Compression benchmark results
 
 **Repository:** All supplementary materials available via:
+
 - GitHub: QRATUM project
 - Zenodo: DOI for permanent archival
 
@@ -428,7 +458,7 @@ Additional documents that may be required by journal:
 
 ## PEER REVIEW PREPARATION
 
-### Anticipated Reviewer Questions:
+### Anticipated Reviewer Questions
 
 1. **"How does this not contradict AdS/CFT?"**
    - Response: Explicitly addressed in Section IX (Discussion)
@@ -455,7 +485,7 @@ Additional documents that may be required by journal:
    - Cannot definitively exclude with current data
    - Falsifiability framework allows future discrimination
 
-### Response Strategy:
+### Response Strategy
 
 - Every claim is bounded and cited
 - Limitations explicitly stated
@@ -468,13 +498,15 @@ Additional documents that may be required by journal:
 ## REVISION HISTORY
 
 ### Version 1.0 (2026-01-05)
+
 - Initial complete manuscript package
 - All sections drafted
 - Bibliography compiled
 - Figure/table index created
 - Ready for internal review
 
-### Planned Updates:
+### Planned Updates
+
 - Generate actual figure files from data
 - Incorporate feedback from collaborators
 - Add supplementary materials
@@ -488,9 +520,10 @@ Additional documents that may be required by journal:
 **Author:** Robert Ringler  
 **Affiliation:** Independent Researcher  
 **Project:** QRATUM  
-**GitHub:** https://github.com/robertringler/QRATUM  
+**GitHub:** <https://github.com/robertringler/QRATUM>  
 
 **For Questions About:**
+
 - Scientific content: Robert Ringler
 - Technical details: QRATUM project documentation
 - Data access: See Data Availability statement in manuscript
@@ -504,6 +537,7 @@ Additional documents that may be required by journal:
 **Attribution:** Cite as manuscript reference once published
 
 **Pre-Publication Citation:**
+
 ```
 Ringler, R. (2026). Empirical Validation of Anti-Holographic 
 Information Principles through Astrophysical Observations and 
@@ -515,6 +549,7 @@ Computational Modeling. Manuscript in preparation.
 ## ACKNOWLEDGMENTS
 
 This manuscript represents rigorous scientific work grounded in:
+
 - Empirical observations from world-class telescopes (JWST, HST, VLT, Keck)
 - Mathematical formalism consistent with established physics
 - Computational validation demonstrating feasibility
@@ -533,6 +568,7 @@ The work respects the profound contributions of holographic thinking while propo
 ## APPENDIX: QUICK REFERENCE
 
 ### File Sizes (Approximate)
+
 - `cover_letter.tex`: 5 KB
 - `manuscript.tex`: 41 KB
 - `references.bib`: 14 KB
@@ -540,12 +576,14 @@ The work respects the profound contributions of holographic thinking while propo
 - `README.md`: This file
 
 ### Word Counts (Approximate)
+
 - Abstract: 248 words
 - Main text: ~12,000 words
 - Appendices: ~2,000 words
 - Total: ~14,000 words
 
 ### Page Counts (Compiled PDF)
+
 - Cover letter: 2 pages
 - Manuscript: 25-30 pages (two-column RevTeX format)
   - Main sections: 18-20 pages
@@ -553,6 +591,7 @@ The work respects the profound contributions of holographic thinking while propo
   - Appendices: 4-6 pages
 
 ### Citation Statistics
+
 - Total references: 50+
 - Observational papers: 15+
 - Theory papers: 20+

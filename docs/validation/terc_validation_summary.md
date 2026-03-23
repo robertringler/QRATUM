@@ -53,4 +53,3 @@
   - Message: Induction validation successful
   - Metrics:
     - induction_reliability: 0.88
-

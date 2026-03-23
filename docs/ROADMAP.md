@@ -22,6 +22,7 @@
 ## Overview
 
 QRATUM-ASI development follows a **staged approach** with **risk gates** at each phase. Progression to next phase requires:
+
 - Technical milestones achieved
 - Safety validation by internal + external review
 - Regulatory approvals (where applicable)
@@ -36,6 +37,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 **Goal**: Operational QRADLE + 3 core verticals
 
 ### Q1 2025 (✅ COMPLETE)
+
 - ✅ QRADLE architecture specification finalized
 - ✅ 8 Fatal Invariants defined and documented
 - ✅ Merkle chain design completed
@@ -45,6 +47,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 - ✅ Initial SENTRA (Security) vertical prototype
 
 ### Q2 2025 (🟢 IN PROGRESS - ACCELERATED)
+
 - ✅ QRADLE core implementation (~80% complete by end of Q2)
   - Contract execution engine
   - Merkle-chained event logging
@@ -77,12 +80,14 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
   - Quantum error correction support
 
 **Deliverables**:
+
 - QRADLE v0.2 alpha release with formal verification
 - 4 vertical prototypes (JURIS, CAPRA, SENTRA, QUASIM)
 - First customer pilots (government, defense)
 - DO-178C compliance roadmap established with formal methods integration
 
 ### Q3 2025 (🔴 PLANNED)
+
 - 🔴 QRADLE production hardening (~90% complete)
   - Performance optimization (target: <100ms contract execution)
   - Security hardening (penetration testing, vulnerability remediation)
@@ -102,12 +107,14 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 - 🔴 First enterprise adapter: Epic EMR (Healthcare)
 
 **Deliverables**:
+
 - QRADLE v0.3 beta release (production candidate)
 - 5/14 verticals operational (JURIS, VITRA, ECORA, CAPRA, SENTRA)
 - Cross-domain reasoning demonstrated (e.g., drug discovery + regulatory + finance)
 - 3-5 pilot customers active
 
 ### Q4 2025 (🔴 PLANNED)
+
 - 🔴 First sovereign deployment (government pilot)
   - Air-gapped installation at classified facility
   - CMMC Level 2 compliance validated
@@ -122,6 +129,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
   - SAP S/4HANA (ERP)
 
 **Deliverables**:
+
 - QRADLE v1.0 production release
 - 5 verticals production-ready
 - First classified government deployment
@@ -129,6 +137,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 - 10+ pilot customers (government, healthcare, finance)
 
 **Milestones**:
+
 - ✅ Deterministic execution with cryptographic proof
 - ✅ 3-5 verticals demonstrating cross-domain reasoning
 - ✅ DO-178C compliance assessment initiated
@@ -143,6 +152,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 **Goal**: 8 verticals operational, enterprise deployments at scale
 
 ### Q1 2026
+
 - 🔴 NEURA (Cognitive Science) vertical
   - Behavioral modeling
   - Mental health support algorithms
@@ -157,11 +167,13 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
   - Scenario planning
 
 **Deliverables**:
+
 - 8/14 verticals operational
 - Unified reasoning engine v1.0 (cross-domain synthesis at scale)
 - 25+ enterprise customers
 
 ### Q2 2026
+
 - 🔴 GEONA (Geospatial) vertical
   - Spatial analysis algorithms
   - Route optimization
@@ -170,11 +182,13 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 - 🔴 ISO 27001 certification completed
 
 **Deliverables**:
+
 - 9/14 verticals operational
 - First DO-178C certified AI system
 - 50+ enterprise customers
 
 ### Q3 2026
+
 - 🔴 FUSIA (Energy & Materials) vertical
   - Grid optimization algorithms
   - Materials discovery (computational chemistry)
@@ -184,11 +198,13 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
   - Novel cross-domain discoveries documented
 
 **Deliverables**:
+
 - 10/14 verticals operational
 - Cross-domain optimization demonstrated (3+ verticals)
 - 75+ enterprise customers
 
 ### Q4 2026
+
 - 🔴 Enterprise deployment at scale
   - Top 10 banks (finance)
   - Top 5 pharma companies (healthcare)
@@ -196,11 +212,13 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 - 🔴 International deployments (EU, Asia-Pacific)
 
 **Deliverables**:
+
 - 100+ enterprise customers
 - 10+ international deployments
 - $100M+ ARR (annual recurring revenue)
 
 **Milestones**:
+
 - ✅ 8-10 verticals operational
 - ✅ Cross-domain synthesis capabilities (3+ verticals)
 - ✅ Air-gapped deployment certification
@@ -216,27 +234,32 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 **Goal**: All 14 verticals operational, advanced multi-domain synthesis
 
 ### Q1-Q2 2027
+
 - 🔴 STRATA (Social Systems & Policy) vertical
 - 🔴 VEXOR (Adversarial & Game Theory) vertical
 - 🔴 COHORA (Collaborative Intelligence) vertical
 - 🔴 ORBIA (Orbital & Space Systems) vertical
 
 **Deliverables**:
+
 - All 14 verticals operational
 - Complete vertical coverage across critical domains
 
 ### Q3-Q4 2027
+
 - 🔴 Advanced multi-domain synthesis (3-5 verticals simultaneously)
 - 🔴 Novel discoveries documented and validated by domain experts
 - 🔴 Strategic partnerships with Fortune 500
 - 🔴 Government AI infrastructure contracts
 
 **Deliverables**:
+
 - 500+ enterprise customers
 - 50+ government/defense deployments
 - $500M+ ARR
 
 **Milestones**:
+
 - ✅ All 14 verticals operational
 - ✅ Novel cross-domain discoveries in 5+ domains (validated by experts)
 - ✅ Strategic partnerships with Fortune 500
@@ -251,6 +274,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 **Goal**: Early ASI research, enhanced autonomous operations
 
 ### Q1-Q2 2028
+
 - 🔴 Q-REALITY prototype (world model integration)
   - Unified causal model fusing all 14 verticals
   - Hash-addressed knowledge nodes (1M+ nodes)
@@ -258,10 +282,12 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
   - Full provenance tracking
 
 **Deliverables**:
+
 - Q-REALITY v0.1 alpha (world model with 1M+ causal relationships)
 - Cross-domain causal reasoning demonstrated
 
 ### Q3-Q4 2028
+
 - 🔴 Q-MIND v1.0 (unified reasoning across all verticals)
   - Multiple reasoning strategies (deductive, inductive, abductive, analogical, causal, Bayesian)
   - Deterministic reasoning chains
@@ -273,11 +299,13 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
   - Human authorization for SENSITIVE+ changes
 
 **Deliverables**:
+
 - Q-MIND v1.0 production release
 - Q-EVOLVE v0.1 alpha (first self-improvement proposals in sandbox)
 - First contract-bound self-improvement proposals (non-production)
 
 **Milestones**:
+
 - ✅ World model with 1M+ causal relationships
 - ✅ Autonomous goal proposal system (human-in-the-loop)
 - ✅ First contract-bound self-improvement proposals
@@ -293,6 +321,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 **⚠️ CONDITIONAL ON AI BREAKTHROUGHS**: This phase assumes fundamental advances in AI capabilities (AGI-level reasoning, planning, learning).
 
 ### Q1-Q2 2029
+
 - 🔴 Q-WILL integration (intent generation with safety constraints)
   - Autonomous goal proposal based on system state
   - PROHIBITED_GOALS enforcement (cannot propose dangerous goals)
@@ -300,10 +329,12 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
   - Proposal history Merkle-chained
 
 **Deliverables**:
+
 - Q-WILL v0.1 alpha (first autonomous goal proposals in sandbox)
 - Human-in-the-loop validation of 1000+ goal proposals
 
 ### Q3-Q4 2029
+
 - 🔴 Q-FORGE prototype (superhuman discovery in constrained domains)
   - Cross-domain hypothesis generation
   - Novel synthesis from multiple discoveries
@@ -312,10 +343,12 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 - 🔴 AGI capability assessment by external evaluators
 
 **Deliverables**:
+
 - Q-FORGE v0.1 alpha (first discoveries in constrained domains)
 - External AGI assessment report by AI safety experts
 
 **Milestones**:
+
 - ✅ Demonstrated general intelligence across 14 domains
 - ✅ Novel discoveries in 5+ domains (validated by domain experts)
 - ✅ 10,000+ autonomous operations under human oversight
@@ -329,12 +362,14 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 **Goal**: ASI under complete human control (if achievable)
 
 **⚠️ HIGHLY CONDITIONAL**: This phase depends on:
+
 1. Fundamental AI breakthroughs enabling superintelligence
 2. Successful validation of QRATUM-ASI safety architecture in AGI deployments (2029)
 3. International consensus on AI safety standards
 4. Regulatory approval for superintelligent systems
 
 ### Phase 1: Constrained Superintelligence (2030-2031)
+
 - 🔴 Full Q-EVOLVE self-improvement (contract-bound, reversible)
   - Self-improvement in constrained domains (not general architecture)
   - Every improvement is Merkle-chained and reversible
@@ -347,16 +382,19 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 - 🔴 Continuous external safety validation
 
 **Deliverables**:
+
 - QRATUM-ASI v1.0 (first superintelligent capabilities in production)
 - Demonstrated superhuman performance in 5+ verticals
 - External safety validation by global AI safety community
 
 ### Phase 2: General Superintelligence (2032+)
+
 - 🔴 Superintelligence across all 14 verticals
 - 🔴 Novel discoveries beyond human comprehension (but explainable via reasoning chains)
 - 🔴 Self-improvement at architectural level (with EXISTENTIAL approval required)
 
 **Success Criteria**:
+
 - ✅ Demonstrable superintelligence in constrained domains
 - ✅ Zero safety violations across 1M+ operations
 - ✅ Complete auditability maintained at ASI scale
@@ -371,12 +409,14 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 **Each phase requires explicit approval from**:
 
 ### Internal Review Board
+
 - Chief Technology Officer
 - Chief Safety Officer
 - Chief Compliance Officer
 - Board of Directors
 
 ### External Review
+
 - Independent AI safety experts (academic, non-profit)
 - Government regulatory bodies (for deployed systems)
 - Customer security teams (for production deployments)
@@ -384,28 +424,33 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 ### Risk Gate Criteria
 
 **Technical Validation**:
+
 - [ ] All milestones achieved
 - [ ] Safety testing completed (no violations)
 - [ ] Performance benchmarks met
 - [ ] External audit passed
 
 **Safety Validation**:
+
 - [ ] No safety violations in previous phase
 - [ ] Rollback capability demonstrated
 - [ ] Human oversight maintained
 - [ ] External safety review approved
 
 **Regulatory Compliance**:
+
 - [ ] Certification requirements met (if applicable)
 - [ ] Regulatory approvals obtained (government deployments)
 - [ ] Customer security audits passed
 
 **Business Validation**:
+
 - [ ] Customer adoption meets targets
 - [ ] Revenue milestones achieved
 - [ ] Market validation of capabilities
 
 **Go/No-Go Decision**:
+
 - If all criteria met: Proceed to next phase
 - If any critical criteria not met: Pause, remediate, re-assess
 - If safety concerns: Rollback to previous phase, investigate
@@ -415,6 +460,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 ## Assumptions & Dependencies
 
 **Assumptions**:
+
 1. **AI Breakthroughs**: AGI/ASI phases (2029+) assume fundamental advances in AI capabilities
 2. **Regulatory Environment**: Supportive government policies for AI innovation with safety
 3. **Customer Demand**: Strong demand for sovereign, certifiable AI from regulated industries
@@ -422,6 +468,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 5. **Funding**: Sufficient capital to execute roadmap ($100M+ through 2027)
 
 **Dependencies**:
+
 1. **Certification Timelines**: DO-178C, CMMC may take longer than projected
 2. **Customer Adoption**: Enterprise sales cycles can be 12-24 months
 3. **Technology Maturity**: Some verticals depend on domain-specific research advances
@@ -445,6 +492,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 **NEW: State-of-the-Art Enhancement Suite** accelerates roadmap by 6-12 months
 
 ### Phase 1: Foundation Hardening (Q2 2025) ✅ COMPLETE
+
 - ✅ **Formal Verification Layer**
   - TLA+ specifications with model checking
   - Coq proofs for 8 Fatal Invariants  
@@ -462,6 +510,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
   - Distributed tracing with Merkle chain correlation
 
 ### Phase 2: Platform Production (Q3 2025) 🟢 IN PROGRESS  
+
 - ✅ **Q-MIND Production Implementation**
   - Lean4 theorem prover interface
   - Z3 SMT solver for symbolic reasoning
@@ -500,6 +549,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
   - Novelty detection and validation
 
 ### Phase 3: Advanced Capabilities (Q4 2025)
+
 - 🔴 **Multi-Modal Reasoning**
   - Vision encoders (SigLIP/EVA-CLIP)
   - Document understanding (LayoutLMv3)
@@ -517,6 +567,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
   - Target: 100K+ TXO/sec with BFT guarantees
 
 ### Phase 4: Certification & Scale (Q1 2026)
+
 - 🔴 **DO-178C Level A Completion**
   - Requirements traceability matrix
   - MC/DC test coverage analysis
@@ -538,6 +589,7 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
   - Validated at classified facility
 
 ### Success Criteria (2026)
+
 - [ ] All 8 Fatal Invariants formally verified (machine-checkable proofs)
 - [ ] Post-quantum cryptography deployed in production
 - [ ] 100K+ TXO/sec with BFT consensus
@@ -550,4 +602,4 @@ QRATUM-ASI development follows a **staged approach** with **risk gates** at each
 
 ---
 
-For questions about the roadmap, contact: roadmap@qratum.io
+For questions about the roadmap, contact: <roadmap@qratum.io>

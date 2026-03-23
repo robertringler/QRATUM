@@ -12,18 +12,18 @@ Implements comprehensive performance certification framework:
 
 from __future__ import annotations
 
+from qratum_chess.benchmarks.elo import EloCertification
+from qratum_chess.benchmarks.gauntlet import AdversarialGauntlet
+from qratum_chess.benchmarks.metrics import PerformanceMetrics
+from qratum_chess.benchmarks.resilience import ResilienceTest
 from qratum_chess.benchmarks.runner import (
-    BenchmarkRunner,
     BenchmarkConfig,
+    BenchmarkRunner,
     BenchmarkSummary,
     CertificationResult,
 )
-from qratum_chess.benchmarks.metrics import PerformanceMetrics
-from qratum_chess.benchmarks.torture import StrategicTortureSuite
-from qratum_chess.benchmarks.gauntlet import AdversarialGauntlet
-from qratum_chess.benchmarks.elo import EloCertification
-from qratum_chess.benchmarks.resilience import ResilienceTest
 from qratum_chess.benchmarks.telemetry import TelemetryOutput
+from qratum_chess.benchmarks.torture import StrategicTortureSuite
 
 # Kaggle integration imports disabled due to file corruption in kaggle_integration.py
 # The file contains duplicate class definitions and mismatched parameters that need cleanup.

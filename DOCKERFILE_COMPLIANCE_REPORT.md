@@ -1,23 +1,28 @@
 # Dockerfile.cuda Compliance Hardening Report
 
 ## Overview
+
 This report documents the compliance hardening applied to `QuASIM/Dockerfile.cuda` to meet NIST 800-53, CMMC 2.0 L2, and DO-178C requirements.
 
 ## Status
+
 ✅ **COMPLETED** - All compliance controls successfully implemented and validated
 
 ## Applied Security Controls
 
 ### 1. AC-6: Least Privilege (Access Control)
+
 **Requirement**: Employ the principle of least privilege, including for specific security functions and privileged accounts.
 
 **Implementation**:
+
 - Created non-root user `appuser` with UID 1000
 - Switched execution context from root to `appuser` using `USER appuser` directive
 - Applied proper file ownership with `COPY --chown=appuser:appuser` and `chown -R appuser:appuser /workspace`
 - Container now runs all build and runtime operations as non-privileged user
 
 **Validation**:
+
 ```dockerfile
 # AC-6 (Least Privilege): Create non-root user
 RUN useradd -m -u 1000 appuser
@@ -31,9 +36,11 @@ USER appuser
 ---
 
 ### 2. SC-28: Protection of Information at Rest (Integrity)
+
 **Requirement**: Protect the confidentiality and integrity of information at rest.
 
 **Implementation**:
+
 - Pinned all critical dependencies to specific versions:
   - `numpy==1.26.4` - Prevents supply chain attacks via version drift
   - `pybind11==2.11.1` - Ensures bit-exact environment reproduction
@@ -41,6 +48,7 @@ USER appuser
 - Ensures deterministic builds for compliance auditing
 
 **Validation**:
+
 ```dockerfile
 # SC-28 (Integrity): Pin dependency versions to ensure reproducibility
 RUN pip3 install --user --no-cache-dir pybind11==2.11.1 numpy==1.26.4
@@ -51,14 +59,17 @@ RUN pip3 install --user --no-cache-dir pybind11==2.11.1 numpy==1.26.4
 ---
 
 ### 3. Attack Surface Reduction (Defense in Depth)
+
 **Requirement**: Minimize attack surface and reduce image size (NIST 800-53 CM-7)
 
 **Implementation**:
+
 - Added `--no-install-recommends` to apt-get to minimize installed packages
 - Cleared apt caches with `rm -rf /var/lib/apt/lists/*` after installation
 - Removed unnecessary files and dependencies
 
 **Validation**:
+
 ```dockerfile
 # AC-6 (Least Privilege): Install system dependencies and clean cache to minimize attack surface
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -78,6 +89,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ## Compliance Mapping
 
 ### NIST 800-53 Rev 5
+
 | Control | Implementation | Status |
 |---------|----------------|--------|
 | AC-6 | Non-root user execution | ✅ |
@@ -86,6 +98,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 | SI-7 | Software integrity checks | ✅ |
 
 ### CMMC 2.0 Level 2
+
 | Practice | Implementation | Status |
 |----------|----------------|--------|
 | AC.L2-3.1.5 | Least privilege principle | ✅ |
@@ -93,6 +106,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 | SI.L2-3.14.1 | Flaw remediation | ✅ |
 
 ### DO-178C Level A
+
 | Objective | Implementation | Status |
 |-----------|----------------|--------|
 | Deterministic builds | Version pinning | ✅ |
@@ -104,6 +118,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ## Build Validation
 
 ### Pre-Change Dockerfile
+
 ```dockerfile
 FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
 RUN apt-get update && apt-get install -y python3 python3-pip python3-dev git cmake g++
@@ -115,12 +130,14 @@ CMD ["python3","-c","import sys; sys.path.append('build'); import quasim_cuda as
 ```
 
 **Security Issues**:
+
 - ❌ Runs as root (UID 0)
 - ❌ Unpinned dependencies (version drift risk)
 - ❌ No cache cleanup (larger attack surface)
 - ❌ Installs recommended packages (unnecessary dependencies)
 
 ### Post-Change Dockerfile
+
 ```dockerfile
 FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
 
@@ -158,6 +175,7 @@ CMD ["python3","-c","import sys; sys.path.append('build'); import quasim_cuda as
 ```
 
 **Security Improvements**:
+
 - ✅ Runs as non-root user (UID 1000)
 - ✅ Pinned dependencies (no version drift)
 - ✅ Cache cleanup (minimal attack surface)
@@ -168,30 +186,38 @@ CMD ["python3","-c","import sys; sys.path.append('build'); import quasim_cuda as
 ## Testing Results
 
 ### Build Test
+
 ```bash
 cd QuASIM
 docker build -f Dockerfile.cuda -t quasim-cuda:hardened .
 ```
+
 **Result**: ✅ Build succeeds
 
 ### User Context Test
+
 ```bash
 docker run --rm quasim-cuda:hardened whoami
 ```
+
 **Expected**: `appuser`
 **Result**: ✅ Passes
 
 ### Permission Test
+
 ```bash
 docker run --rm quasim-cuda:hardened ls -la /workspace/build
 ```
+
 **Expected**: All files owned by `appuser:appuser`
 **Result**: ✅ Passes
 
 ### Functional Test
+
 ```bash
 docker run --rm quasim-cuda:hardened python3 -c "import sys; sys.path.append('build'); import quasim_cuda as qc; print('QuASIM CUDA loaded successfully')"
 ```
+
 **Result**: ✅ Passes
 
 ---
@@ -199,6 +225,7 @@ docker run --rm quasim-cuda:hardened python3 -c "import sys; sys.path.append('bu
 ## Risk Assessment
 
 ### Before Hardening
+
 | Risk | Severity | Likelihood | Impact |
 |------|----------|------------|--------|
 | Container compromise leads to host access | HIGH | MEDIUM | CRITICAL |
@@ -206,6 +233,7 @@ docker run --rm quasim-cuda:hardened python3 -c "import sys; sys.path.append('bu
 | Unauthorized package installation | MEDIUM | HIGH | MEDIUM |
 
 ### After Hardening
+
 | Risk | Severity | Likelihood | Impact |
 |------|----------|------------|--------|
 | Container compromise leads to host access | LOW | LOW | MEDIUM |
@@ -219,11 +247,13 @@ docker run --rm quasim-cuda:hardened python3 -c "import sys; sys.path.append('bu
 ## Recommendations
 
 ### Completed ✅
+
 1. Non-root user execution (AC-6)
 2. Dependency version pinning (SC-28)
 3. Attack surface minimization (CM-7)
 
 ### Future Enhancements (Optional)
+
 1. **Multi-stage builds**: Separate build and runtime stages to further reduce image size
 2. **Distroless base images**: Consider using distroless images for even smaller attack surface
 3. **SBOM generation**: Generate Software Bill of Materials for supply chain tracking
@@ -235,6 +265,7 @@ docker run --rm quasim-cuda:hardened python3 -c "import sys; sys.path.append('bu
 ## Compliance Certification
 
 This Dockerfile now meets:
+
 - ✅ NIST 800-53 Rev 5 (HIGH baseline) - AC-6, SC-28, CM-7, SI-7
 - ✅ CMMC 2.0 Level 2 - AC.L2-3.1.5, SC.L2-3.13.11, SI.L2-3.14.1
 - ✅ DO-178C Level A - Deterministic builds, reproducible environment

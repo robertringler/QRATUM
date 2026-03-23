@@ -5,6 +5,7 @@ This example demonstrates an end-to-end CFD workflow using the QuASIM Fluent ada
 ## Overview
 
 This workflow:
+
 1. Exports mesh and boundary conditions from Ansys Fluent
 2. Runs QuASIM CFD kernels for pressure/velocity correction
 3. Imports results back into Fluent for visualization
@@ -36,6 +37,7 @@ python3 run_example.py
 ### 2. View Results
 
 Output files:
+
 - `quasim_results.csv` - Pressure and velocity fields
 - `convergence.png` - Residual convergence plot (if matplotlib available)
 - `benchmark_comparison.txt` - Performance vs. legacy solver
@@ -125,6 +127,7 @@ QuASIM Fluent Driver completed successfully
 ### Issue: Import errors
 
 **Solution**: Install dependencies:
+
 ```bash
 pip install numpy pyyaml
 ```
@@ -132,6 +135,7 @@ pip install numpy pyyaml
 ### Issue: Mesh file not found
 
 **Solution**: Ensure you're running from the correct directory:
+
 ```bash
 cd examples/cfd_wing_fluent
 python3 run_example.py
@@ -146,6 +150,7 @@ python3 run_example.py
 ### Using GPU Backend
 
 Edit `job_config.json`:
+
 ```json
 {
   "backend": "cuda",
@@ -185,6 +190,7 @@ python3 ../../integrations/adapters/fluent/quasim_fluent_driver.py \
 ## Support
 
 For issues or questions:
+
 - Check [integration documentation](../../integrations/README.md)
 - Open an issue on GitHub
 - Review [contributing guidelines](../../CONTRIBUTING.md)

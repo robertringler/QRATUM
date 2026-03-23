@@ -47,6 +47,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
 **Objective**: Validate and correct raw sequencing data with complete uncertainty quantification.
 
 **Analyses Performed**:
+
 - Read quality validation (Phred scores)
 - Coverage depth assessment and confidence intervals
 - GC bias detection and correction
@@ -57,6 +58,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
 - Per-locus confidence envelope modeling
 
 **Metrics Reported**:
+
 - Mean quality score (target: ≥30)
 - Coverage depth (mean ± std)
 - GC content and bias
@@ -66,6 +68,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
 - Integrity check: PASSED/FAILED
 
 **Example Output**:
+
 ```json
 {
   "mean_quality_score": 36.87,
@@ -81,6 +84,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
 **Objective**: Reconstruct genome structure with haplotype resolution and detect structural variations.
 
 **Analyses Performed**:
+
 - Reference-guided assembly
 - Reference-free de novo assembly
 - Assembly method comparison
@@ -92,6 +96,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
 - Somatic divergence analysis
 
 **Metrics Reported**:
+
 - Assembly method used
 - Total contigs and N50 length
 - Genome completeness percentage
@@ -102,6 +107,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
 - Telomere/centromere status
 
 **Example Output**:
+
 ```json
 {
   "assembly_method": "hybrid_reference_free",
@@ -119,6 +125,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
 **Objective**: Identify and characterize ALL variant types without exception.
 
 **Variant Types Called**:
+
 1. **SNVs** (Single Nucleotide Variants): 3-4.5 million
 2. **Indels** (Insertions/Deletions): 400-700K
 3. **CNVs** (Copy Number Variants): 1-5K
@@ -135,6 +142,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
 7. **Mitochondrial Variants**: 10-50
 
 **Additional Characterization**:
+
 - Allele frequencies (global + subpopulation)
 - Zygosity states (heterozygous, homozygous)
 - Read-level support metrics
@@ -143,6 +151,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
 - Low-frequency and ultra-rare variants
 
 **Example Output**:
+
 ```json
 {
   "snvs_count": 4136074,
@@ -195,6 +204,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
    - Functional module impacts
 
 **Example Output**:
+
 ```json
 {
   "coding_variants": 22433,
@@ -245,6 +255,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
    - Population-specific variants
 
 **Example Output**:
+
 ```json
 {
   "ancestry_components": {
@@ -291,6 +302,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
    - Robustness analysis
 
 **Example Output**:
+
 ```json
 {
   "gene_network_nodes": 1010,
@@ -336,6 +348,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
    - Recommendations
 
 **Example Output**:
+
 ```json
 {
   "disease_associations": 12,
@@ -394,6 +407,7 @@ QRANTUM/QRADLES Comprehensive Analysis (8 Phases)
    - No resource constraints
 
 **Example Output**:
+
 ```json
 {
   "recursive_amplification_iterations": 5,
@@ -547,6 +561,7 @@ entries = audit.query_entries(
 ### Execution Time
 
 On standard hardware (Intel Xeon, 4 cores):
+
 - Standard XENON v5 pipeline: ~130 ms
 - Comprehensive analysis (all 8 phases): ~150-200 ms
 - Additional overhead: ~20-70 ms for comprehensive phases
@@ -578,6 +593,7 @@ On standard hardware (Intel Xeon, 4 cores):
 ### Error Handling
 
 All phases include comprehensive error handling:
+
 - Exceptions logged to audit trail
 - Partial results saved on failure
 - Graceful degradation when possible
@@ -588,6 +604,7 @@ All phases include comprehensive error handling:
 ### Regulatory Compliance
 
 This analysis is designed to support:
+
 - **CLIA** compliance for clinical laboratory testing
 - **CAP** (College of American Pathologists) standards
 - **FDA** guidance for clinical genomics
@@ -596,6 +613,7 @@ This analysis is designed to support:
 ### Clinical Reporting
 
 The comprehensive dossier provides:
+
 - Pathogenic variant classification
 - Clinical significance assessment
 - Actionable findings
@@ -640,7 +658,8 @@ The comprehensive analysis integrates with QRADLE (Quantum-Resilient Auditable D
 ## Support
 
 For issues, questions, or contributions:
-- GitHub Issues: https://github.com/robertringler/QRATUM/issues
+
+- GitHub Issues: <https://github.com/robertringler/QRATUM/issues>
 - Documentation: See docs/ directory
 - Examples: See examples/ directory
 

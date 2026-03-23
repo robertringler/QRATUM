@@ -6,12 +6,11 @@ with operational validation requirements.
 
 import hashlib
 import math
-from typing import Any, Dict, FrozenSet, List
-
 from platform.core.base import VerticalModuleBase
 from platform.core.events import EventType, ExecutionEvent
 from platform.core.intent import PlatformContract
 from platform.core.substrates import ComputeSubstrate
+from typing import Any, Dict, FrozenSet
 
 
 class FluxaModule(VerticalModuleBase):
@@ -233,7 +232,9 @@ class FluxaModule(VerticalModuleBase):
             # Add small random variation (deterministic)
             hash_index = (period % 12) * 4
             if hash_index + 4 <= len(forecast_hash):
-                variation = ((int(forecast_hash[hash_index : hash_index + 4], 16) % 20) - 10) / 100.0
+                variation = (
+                    (int(forecast_hash[hash_index : hash_index + 4], 16) % 20) - 10
+                ) / 100.0
             else:
                 variation = 0.0
             forecasted_demand *= 1 + variation
@@ -252,7 +253,10 @@ class FluxaModule(VerticalModuleBase):
                 event_type=EventType.RESULT_GENERATED,
                 vertical=self.vertical_name,
                 operation="forecast_demand",
-                payload={"periods": forecast_periods, "avg_demand": sum(f["forecast"] for f in forecast) / len(forecast)},
+                payload={
+                    "periods": forecast_periods,
+                    "avg_demand": sum(f["forecast"] for f in forecast) / len(forecast),
+                },
             )
         )
 
@@ -365,7 +369,7 @@ class FluxaModule(VerticalModuleBase):
         geo_risk = geo_risk_map.get(geographic_risk, 0.5)
 
         # Overall risk score
-        overall_risk = (delivery_risk * 0.4 + financial_risk * 0.35 + geo_risk * 0.25)
+        overall_risk = delivery_risk * 0.4 + financial_risk * 0.35 + geo_risk * 0.25
 
         # Risk mitigation strategies
         mitigation = []
@@ -394,7 +398,9 @@ class FluxaModule(VerticalModuleBase):
             "financial_risk_score": financial_risk,
             "geographic_risk_score": geo_risk,
             "overall_risk_score": overall_risk,
-            "risk_level": "high" if overall_risk > 0.6 else "medium" if overall_risk > 0.3 else "low",
+            "risk_level": (
+                "high" if overall_risk > 0.6 else "medium" if overall_risk > 0.3 else "low"
+            ),
             "mitigation_strategies": mitigation,
             "recommended_monitoring_frequency": "weekly" if overall_risk > 0.5 else "monthly",
         }
@@ -436,7 +442,7 @@ class FluxaModule(VerticalModuleBase):
         diversity_score = min(1.0, num_suppliers / 10.0)
 
         # Overall resilience score
-        resilience_score = (redundancy_score * 0.4 + connectivity_score * 0.3 + diversity_score * 0.3)
+        resilience_score = redundancy_score * 0.4 + connectivity_score * 0.3 + diversity_score * 0.3
 
         # Failure scenarios
         single_node_impact = 1.0 / num_nodes
@@ -459,12 +465,22 @@ class FluxaModule(VerticalModuleBase):
             "connectivity_score": connectivity_score,
             "diversity_score": diversity_score,
             "overall_resilience_score": resilience_score,
-            "resilience_rating": "high" if resilience_score > 0.7 else "medium" if resilience_score > 0.4 else "low",
+            "resilience_rating": (
+                "high" if resilience_score > 0.7 else "medium" if resilience_score > 0.4 else "low"
+            ),
             "single_node_failure_impact": single_node_impact,
             "supplier_failure_impact": supplier_failure_impact,
             "recommendations": [
-                "Increase supplier diversity" if diversity_score < 0.5 else "Maintain supplier diversity",
-                "Add redundant links" if connectivity_score < 0.6 else "Maintain network connectivity",
+                (
+                    "Increase supplier diversity"
+                    if diversity_score < 0.5
+                    else "Maintain supplier diversity"
+                ),
+                (
+                    "Add redundant links"
+                    if connectivity_score < 0.6
+                    else "Maintain network connectivity"
+                ),
                 "Develop business continuity plans",
                 "Conduct regular risk assessments",
             ],

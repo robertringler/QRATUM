@@ -5,6 +5,7 @@ This document describes how to generate the full production build for QRATUM.
 ## Overview
 
 The QRATUM production build system generates distributable artifacts for:
+
 - Python Package (wheel and source distribution)
 - TypeScript SDK
 - Electron Desktop Application
@@ -14,16 +15,19 @@ The QRATUM production build system generates distributable artifacts for:
 ## Prerequisites
 
 ### System Requirements
+
 - Python 3.10 or higher
 - Node.js and npm (for TypeScript SDK and Desktop app)
 - Git
 
 ### Python Dependencies
+
 - setuptools
 - wheel
 - build
 
 ### Node.js Dependencies
+
 - TypeScript (for SDK)
 - Electron and electron-builder (for Desktop app)
 
@@ -36,6 +40,7 @@ bash build_production.sh
 ```
 
 This will:
+
 1. Validate Python version (requires 3.10+)
 2. Create `dist/` directory structure
 3. Build Python package (wheel + sdist)
@@ -84,13 +89,16 @@ npm link  # For local development
 ### Desktop Application
 
 The desktop application is packaged in `dist/desktop/qratum-desktop/`.
+
 - For Linux: See `linux-unpacked/` directory
 - For Windows/Mac: Additional platform-specific builds required
 
 ## Platform-Specific Builds
 
 ### Windows
+
 To build Windows installers, run on a Windows machine:
+
 ```bash
 cd qratum_desktop
 npm install
@@ -98,7 +106,9 @@ npm run build:win
 ```
 
 ### macOS
+
 To build macOS DMG, run on a Mac:
+
 ```bash
 cd qratum_desktop
 npm install
@@ -106,7 +116,9 @@ npm run build:mac
 ```
 
 ### Linux
+
 Linux AppImage/deb/rpm are built automatically with:
+
 ```bash
 cd qratum_desktop
 npm install
@@ -149,6 +161,7 @@ sha256sum -c checksums.sha256
 ## Deployment
 
 For production deployment, see:
+
 - `dist/deploy.sh` - Automated deployment script
 - `dist/docs/PRODUCTION_RELEASE_MANIFEST.md` - Release documentation
 - `dist/BUILD_MANIFEST.md` - Build-specific details
@@ -156,20 +169,24 @@ For production deployment, see:
 ## Troubleshooting
 
 ### Build Fails on Python Package
+
 - Ensure Python 3.10+ is installed: `python3 --version`
 - Install build dependencies: `pip install --upgrade setuptools wheel build`
 
 ### TypeScript Build Errors
+
 - Install dependencies: `cd sdk/typescript && npm install`
 - Check TypeScript version: `npm list typescript`
 - Some TypeScript errors are warnings and don't prevent artifact generation
 
 ### Electron Build Issues
+
 - Electron builds require platform-specific tools
 - On Linux, some Windows/Mac features may not be available
 - Desktop app source is still copied even if full build fails
 
 ### Large Build Size
+
 - The desktop application includes the full Electron runtime (~250MB)
 - For distribution, consider using electron-builder's compression
 - Python wheels are typically 1-2 MB
@@ -177,6 +194,7 @@ For production deployment, see:
 ## Build Logs
 
 All build output is saved to:
+
 - `build_YYYYMMDD_HHMMSS.log` - Main build log
 - `dist/logs/` - Copy of build logs for reference
 
@@ -195,6 +213,7 @@ bash build_production.sh
 ## Support
 
 For issues with the build system:
+
 - Check `dist/logs/build_*.log` for detailed error messages
 - Review `dist/BUILD_MANIFEST.md` for build configuration
 - See repository documentation in `docs/`

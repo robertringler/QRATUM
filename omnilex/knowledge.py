@@ -76,7 +76,7 @@ class LegalKnowledgeBase:
                     "Consequential damages limited to foreseeable losses",
                     "Damages must arise naturally from breach or be in contemplation of parties",
                 ),
-                status="good_law"
+                status="good_law",
             ),
             LegalAuthority(
                 authority_id="ucc-2-302",
@@ -88,7 +88,7 @@ class LegalKnowledgeBase:
                     "Court may refuse to enforce unconscionable contract",
                     "Unconscionability determined as of time of contract formation",
                 ),
-                status="good_law"
+                status="good_law",
             ),
             LegalAuthority(
                 authority_id="palsgraf-v-long-island-1928",
@@ -100,7 +100,7 @@ class LegalKnowledgeBase:
                     "Duty of care owed only to foreseeable plaintiffs",
                     "Negligence requires proximate cause and foreseeability",
                 ),
-                status="good_law"
+                status="good_law",
             ),
             LegalAuthority(
                 authority_id="restatement-contracts-2d-90",
@@ -112,7 +112,7 @@ class LegalKnowledgeBase:
                     "Promise binding without consideration if reasonably induces reliance",
                     "Enforcement necessary to avoid injustice",
                 ),
-                status="good_law"
+                status="good_law",
             ),
             LegalAuthority(
                 authority_id="donoghue-v-stevenson-1932",
@@ -124,19 +124,14 @@ class LegalKnowledgeBase:
                     "Manufacturer owes duty of care to ultimate consumer",
                     "Neighbor principle: duty to persons closely and directly affected",
                 ),
-                status="good_law"
+                status="good_law",
             ),
         ]
 
         for auth in sample_authorities:
             self._authorities[auth.authority_id] = auth
 
-    def search(
-        self,
-        query: str,
-        jurisdiction: str = "",
-        limit: int = 10
-    ) -> list[LegalAuthority]:
+    def search(self, query: str, jurisdiction: str = "", limit: int = 10) -> list[LegalAuthority]:
         """Search for legal authorities.
 
         Args:
@@ -152,9 +147,11 @@ class LegalKnowledgeBase:
 
         for authority in self._authorities.values():
             # Simple keyword matching
-            if (query_lower in authority.title.lower() or
-                query_lower in authority.citation.lower() or
-                any(query_lower in h.lower() for h in authority.key_holdings)):
+            if (
+                query_lower in authority.title.lower()
+                or query_lower in authority.citation.lower()
+                or any(query_lower in h.lower() for h in authority.key_holdings)
+            ):
 
                 # Filter by jurisdiction if specified
                 if jurisdiction and not authority.jurisdiction.startswith(jurisdiction):
@@ -191,10 +188,7 @@ class LegalKnowledgeBase:
         authority = self._authorities.get(authority_id)
 
         if not authority:
-            return {
-                "found": False,
-                "error": "Authority not found"
-            }
+            return {"found": False, "error": "Authority not found"}
 
         return {
             "found": True,
@@ -202,7 +196,7 @@ class LegalKnowledgeBase:
             "status": authority.status,
             "citation": authority.citation,
             "jurisdiction": authority.jurisdiction,
-            "negative_treatment": authority.status != "good_law"
+            "negative_treatment": authority.status != "good_law",
         }
 
     def add_authority(self, authority: LegalAuthority) -> None:
