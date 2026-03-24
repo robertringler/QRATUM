@@ -1,6 +1,6 @@
 # QuASIM-Own Benchmark Results
 
-Generated: 2026-03-23T04:25:10.912858
+Generated: 2026-03-24T03:00:19.232226
 
 Total runs: 25
 
@@ -12,14 +12,14 @@ Total runs: 25
 |-------|---------------|------------------|--------------|-----------|---------------|
 | logreg | 0.6600 ± 0.0000 | 0.6610 ± 0.0000 | 0.10 | 1.000 | ✅ |
 | mlp | 0.8760 ± 0.0153 | 0.8763 ± 0.0154 | 0.17 | 0.983 | ❌ |
-| rf | 0.7850 ± 0.0138 | 0.7850 ± 0.0140 | 4.49 | 0.982 | ❌ |
-| slt | 0.7780 ± 0.0186 | 0.7779 ± 0.0185 | 7.26 | 0.976 | ❌ |
+| rf | 0.7850 ± 0.0138 | 0.7850 ± 0.0140 | 4.59 | 0.982 | ❌ |
+| slt | 0.7780 ± 0.0186 | 0.7779 ± 0.0185 | 7.27 | 0.976 | ❌ |
 
 ### text-cls
 
 | Model | Primary Metric | Secondary Metric | Latency (ms) | Stability | Deterministic |
 |-------|---------------|------------------|--------------|-----------|---------------|
-| slt | 0.9910 ± 0.0020 | 0.9910 ± 0.0020 | 15.41 | 0.998 | ❌ |
+| slt | 0.9910 ± 0.0020 | 0.9910 ± 0.0020 | 15.36 | 0.998 | ❌ |
 
 ## Reliability-per-Watt Ranking
 
@@ -27,8 +27,8 @@ Computed as: `(stability × primary_metric) / energy_proxy`
 
 | Rank | Task | Model | Reliability-per-Watt |
 |------|------|-------|---------------------|
-| 1 | tabular-cls | logreg | 97.767659 |
-| 2 | tabular-cls | mlp | 77.545541 |
-| 3 | tabular-cls | rf | 2.641329 |
-| 4 | tabular-cls | slt | 1.610191 |
-| 5 | text-cls | slt | 0.987181 |
+| 1 | tabular-cls | logreg | 100.381761 |
+| 2 | tabular-cls | mlp | 78.291276 |
+| 3 | tabular-cls | rf | 2.583384 |
+| 4 | tabular-cls | slt | 1.607963 |
+| 5 | text-cls | slt | 0.990297 |
