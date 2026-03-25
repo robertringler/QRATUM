@@ -955,7 +955,7 @@ Where:
 
 ## Market Valuation — QuASIM
 
-**Valuation Date:** 2026-03-24
+**Valuation Date:** 2026-03-25
 **Reporting Period:** 2026-Q1
 **Methodology:** Bayesian Real-Options, DCF, Comparable Company Analysis
 **Status:** Pre-Revenue Deep-Tech Venture
