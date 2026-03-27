@@ -21,7 +21,7 @@ import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 
@@ -403,9 +403,7 @@ class ValidationPipeline:
         """Add a clinical translation step."""
         self.clinical.append(translation)
 
-    def evaluate_stage_completion(
-        self, stage: ValidationStage
-    ) -> dict[str, Any]:
+    def evaluate_stage_completion(self, stage: ValidationStage) -> dict[str, Any]:
         """Evaluate completion status of a validation stage.
 
         Args:
@@ -429,9 +427,7 @@ class ValidationPipeline:
             for v in validations
             if v.status in [ValidationStatus.COMPLETED_SUCCESS, ValidationStatus.COMPLETED_FAILURE]
         )
-        successful = sum(
-            1 for v in validations if v.status == ValidationStatus.COMPLETED_SUCCESS
-        )
+        successful = sum(1 for v in validations if v.status == ValidationStatus.COMPLETED_SUCCESS)
 
         # Calculate rates with proper handling of edge cases
         completion_rate = completed / total if total > 0 else 0.0
@@ -511,10 +507,7 @@ class ValidationPipeline:
         clinical_months = sum(c.estimated_duration_months for c in self.clinical)
 
         total_months = (
-            in_silico_weeks / 4
-            + in_vitro_weeks / 4
-            + in_vivo_weeks / 4
-            + clinical_months
+            in_silico_weeks / 4 + in_vitro_weeks / 4 + in_vivo_weeks / 4 + clinical_months
         )
 
         return {
@@ -598,9 +591,7 @@ def create_example_validation_pipeline(hypothesis_id: str) -> ValidationPipeline
     in_silico = InSilicoValidation(
         validation_id="VS001",
         model_type=ModelSystem.AGENT_BASED_MODEL,
-        description=(
-            "Agent-based model of tumor growth with adaptive therapy scheduling"
-        ),
+        description=("Agent-based model of tumor growth with adaptive therapy scheduling"),
         simulation_parameters={
             "initial_tumor_cells": 1000000,
             "resistant_fraction": 0.01,

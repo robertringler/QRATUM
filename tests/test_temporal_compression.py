@@ -10,22 +10,22 @@ framework including:
 
 from __future__ import annotations
 
-import pytest
 import numpy as np
+import pytest
 
 from temporal_compression import (
-    CellularAutomaton,
-    Rule110,
-    Rule30,
-    TemporalMetrics,
-    CompressionStatistics,
-    VerificationChain,
-    StateVerifier,
     AuditEntry,
-    TemporalCompressionExperiment,
+    CellularAutomaton,
+    CompressionStatistics,
     ExperimentConfig,
+    Rule30,
+    Rule110,
+    StateVerifier,
+    TemporalCompressionExperiment,
+    TemporalMetrics,
+    VerificationChain,
 )
-from temporal_compression.automata import BranchingSimulator, AutomatonState
+from temporal_compression.automata import AutomatonState, BranchingSimulator
 from temporal_compression.verification import EventType
 
 
@@ -126,9 +126,7 @@ class TestCellularAutomaton:
     def test_custom_initial_state(self):
         """Test initialization with custom state."""
         initial = np.array([1, 0, 1, 0, 1], dtype=np.uint8)
-        automaton = CellularAutomaton(
-            rule=110, size=5, seed=42, initial_state=initial
-        )
+        automaton = CellularAutomaton(rule=110, size=5, seed=42, initial_state=initial)
 
         assert np.array_equal(automaton.cells, initial)
 

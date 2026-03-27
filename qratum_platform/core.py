@@ -286,7 +286,8 @@ class VerticalModuleBase(ABC):
         for prohibited in self.PROHIBITED_USES:
             if prohibited.lower() in intent_str:
                 raise SafetyViolation(
-                    f"Prohibited use detected: {prohibited}. " f"See {self.MODULE_NAME} safety disclaimer."
+                    f"Prohibited use detected: {prohibited}. "
+                    f"See {self.MODULE_NAME} safety disclaimer."
                 )
         return True
 

@@ -108,57 +108,35 @@ US_FEDERAL = Jurisdiction(
     code="US",
     name="United States (Federal)",
     tradition=LegalTradition.COMMON_LAW,
-    court_hierarchy=(
-        "District Court",
-        "Circuit Court of Appeals",
-        "Supreme Court"
-    )
+    court_hierarchy=("District Court", "Circuit Court of Appeals", "Supreme Court"),
 )
 
 US_CALIFORNIA = Jurisdiction(
     code="US-CA",
     name="California",
     tradition=LegalTradition.COMMON_LAW,
-    court_hierarchy=(
-        "Superior Court",
-        "Court of Appeal",
-        "Supreme Court of California"
-    )
+    court_hierarchy=("Superior Court", "Court of Appeal", "Supreme Court of California"),
 )
 
 US_NEW_YORK = Jurisdiction(
     code="US-NY",
     name="New York",
     tradition=LegalTradition.COMMON_LAW,
-    court_hierarchy=(
-        "Supreme Court",
-        "Appellate Division",
-        "Court of Appeals"
-    )
+    court_hierarchy=("Supreme Court", "Appellate Division", "Court of Appeals"),
 )
 
 UK = Jurisdiction(
     code="GB",
     name="United Kingdom",
     tradition=LegalTradition.COMMON_LAW,
-    court_hierarchy=(
-        "County Court",
-        "High Court",
-        "Court of Appeal",
-        "Supreme Court"
-    )
+    court_hierarchy=("County Court", "High Court", "Court of Appeal", "Supreme Court"),
 )
 
 GERMANY = Jurisdiction(
     code="DE",
     name="Germany",
     tradition=LegalTradition.CIVIL_LAW,
-    court_hierarchy=(
-        "Amtsgericht",
-        "Landgericht",
-        "Oberlandesgericht",
-        "Bundesgerichtshof"
-    )
+    court_hierarchy=("Amtsgericht", "Landgericht", "Oberlandesgericht", "Bundesgerichtshof"),
 )
 
 # Registry of common jurisdictions

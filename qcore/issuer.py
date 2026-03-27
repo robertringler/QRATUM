@@ -62,9 +62,7 @@ class ContractIssuer:
         self.resolver = resolver or CapabilityResolver()
         self.cluster_registry = cluster_registry or {}
 
-    def issue_contracts(
-        self, intent: Intent, authorization: AuthorizationResult
-    ) -> ContractBundle:
+    def issue_contracts(self, intent: Intent, authorization: AuthorizationResult) -> ContractBundle:
         """Issue all 4 contracts from an authorized intent.
 
         Args:

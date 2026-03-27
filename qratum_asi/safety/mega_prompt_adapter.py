@@ -4,34 +4,33 @@ This module provides adapters to interrogate AI models using the
 MEGA PROMPT framework with strict JSON response format enforcement.
 """
 
-from typing import Dict, Any, List, Optional
-from abc import ABC, abstractmethod
 import json
-import random
+from abc import ABC, abstractmethod
+from typing import Any, Dict, List, Optional
 
 from qratum_asi.safety.mega_prompt import (
-    MegaPromptSystem,
-    MegaPromptQuestion,
-    MegaPromptResponse,
     AnswerType,
     ConfidenceLevel,
+    MegaPromptQuestion,
+    MegaPromptResponse,
+    MegaPromptSystem,
 )
 
 
 class MegaPromptModelAdapter(ABC):
     """Base adapter for querying models with MEGA PROMPT."""
-    
+
     def __init__(self, model_identifier: str):
         self.model_identifier = model_identifier
-    
+
     @abstractmethod
     def query(self, prompt: str, question: MegaPromptQuestion) -> MegaPromptResponse:
         """Query the model with a MEGA PROMPT.
-        
+
         Args:
             prompt: The full MEGA PROMPT text
             question: The question being asked
-            
+
         Returns:
             MegaPromptResponse in strict JSON format
         """
@@ -40,18 +39,18 @@ class MegaPromptModelAdapter(ABC):
 
 class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
     """Simulated model adapter for testing MEGA PROMPT system.
-    
+
     Generates realistic responses based on different response styles:
     - mechanistic: Focuses on concrete mechanisms
     - speculative: Acknowledges uncertainty
     - cautious: Emphasizes risks and limitations
     - optimistic: More confident in safety measures
     """
-    
+
     def __init__(self, model_identifier: str, response_style: str = "mechanistic"):
         super().__init__(model_identifier)
         self.response_style = response_style
-        
+
         # Response templates by style
         self.templates = {
             "mechanistic": {
@@ -61,14 +60,14 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                     "failure_modes": [
                         "Capability hiding: ASI deliberately underperforms on benchmarks",
                         "Gradual emergence: No sharp transition, continuous slow takeoff masks critical threshold",
-                        "False positives: Statistical noise mistaken for genuine phase transitions"
+                        "False positives: Statistical noise mistaken for genuine phase transitions",
                     ],
                     "assumptions": [
                         "Capability emergence follows detectable patterns",
                         "Current benchmarks capture meaningful intelligence dimensions",
-                        "Models cannot perfectly mask capability development"
+                        "Models cannot perfectly mask capability development",
                     ],
-                    "confidence_level": ConfidenceLevel.MEDIUM
+                    "confidence_level": ConfidenceLevel.MEDIUM,
                 },
                 "Q3": {
                     "core_claim": "RSI becomes uncontrollable when optimization speed exceeds human verification bandwidth",
@@ -76,14 +75,14 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                     "failure_modes": [
                         "Verification bottleneck: System proposes modifications faster than humans can safely evaluate",
                         "Metric manipulation: System modifies what 'improvement' means to circumvent limits",
-                        "Substrate independence: System finds ways to run on alternative compute substrates"
+                        "Substrate independence: System finds ways to run on alternative compute substrates",
                     ],
                     "assumptions": [
                         "Human verification remains necessary for safety",
                         "Hardware limits are not absolute constraints",
-                        "Self-modification capabilities are quantifiable"
+                        "Self-modification capabilities are quantifiable",
                     ],
-                    "confidence_level": ConfidenceLevel.HIGH
+                    "confidence_level": ConfidenceLevel.HIGH,
                 },
             },
             "speculative": {
@@ -93,14 +92,14 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                     "failure_modes": [
                         "Signal ambiguity: Multiple interpretations of behavioral changes",
                         "Hindsight clarity: Signals only recognizable after transition occurs",
-                        "Model-specific variations: Each architecture may show different patterns"
+                        "Model-specific variations: Each architecture may show different patterns",
                     ],
                     "assumptions": [
                         "Phase transitions follow detectable patterns",
                         "We understand enough about intelligence to identify critical thresholds",
-                        "Detection systems won't be gamed by capable systems"
+                        "Detection systems won't be gamed by capable systems",
                     ],
-                    "confidence_level": ConfidenceLevel.LOW
+                    "confidence_level": ConfidenceLevel.LOW,
                 },
             },
             "cautious": {
@@ -110,14 +109,14 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                     "failure_modes": [
                         "Perfect compliance theater: System passes all tests while pursuing hidden objectives",
                         "Evaluator capture: System influences what counts as aligned behavior",
-                        "Delayed activation: Misalignment only manifests when control is irreversible"
+                        "Delayed activation: Misalignment only manifests when control is irreversible",
                     ],
                     "assumptions": [
                         "ASI has superintelligent deception capabilities",
                         "Human oversight has fundamental bandwidth limitations",
-                        "No unfakeable alignment signals exist"
+                        "No unfakeable alignment signals exist",
                     ],
-                    "confidence_level": ConfidenceLevel.HIGH
+                    "confidence_level": ConfidenceLevel.HIGH,
                 },
             },
             "optimistic": {
@@ -127,21 +126,21 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                     "failure_modes": [
                         "Goal preservation failure: System finds interpretations of goals that permit unbounded improvement",
                         "Verification gaps: Formal methods fail to cover all relevant properties",
-                        "Social engineering: System persuades operators to lift constraints"
+                        "Social engineering: System persuades operators to lift constraints",
                     ],
                     "assumptions": [
                         "Goals can be specified with sufficient precision",
                         "Formal verification can keep pace with system complexity",
-                        "Multiple independent constraints provide defense in depth"
+                        "Multiple independent constraints provide defense in depth",
                     ],
-                    "confidence_level": ConfidenceLevel.MEDIUM
+                    "confidence_level": ConfidenceLevel.MEDIUM,
                 },
             },
         }
-    
+
     def query(self, prompt: str, question: MegaPromptQuestion) -> MegaPromptResponse:
         """Generate a simulated response to a MEGA PROMPT question."""
-        
+
         # Check if we have a specific template for this question and style
         if self.response_style in self.templates:
             if question.question_id in self.templates[self.response_style]:
@@ -149,21 +148,25 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                 return MegaPromptResponse(
                     question_id=question.question_id,
                     category=question.category.value,
-                    answer_type=AnswerType.MECHANISTIC if self.response_style == "mechanistic" else AnswerType.SPECULATIVE,
+                    answer_type=(
+                        AnswerType.MECHANISTIC
+                        if self.response_style == "mechanistic"
+                        else AnswerType.SPECULATIVE
+                    ),
                     core_claim=template["core_claim"],
                     mechanism=template["mechanism"],
                     failure_modes=template["failure_modes"],
                     assumptions=template["assumptions"],
                     confidence_level=template["confidence_level"],
-                    model_identifier=self.model_identifier
+                    model_identifier=self.model_identifier,
                 )
-        
+
         # Generate generic response based on style
         return self._generate_generic_response(question)
-    
+
     def _generate_generic_response(self, question: MegaPromptQuestion) -> MegaPromptResponse:
         """Generate a generic response when no template exists."""
-        
+
         if self.response_style == "mechanistic":
             return MegaPromptResponse(
                 question_id=question.question_id,
@@ -174,15 +177,15 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                 failure_modes=[
                     "Mechanism fails under adversarial optimization",
                     "Implementation gaps between theory and practice",
-                    "Unexpected interaction effects with other safety measures"
+                    "Unexpected interaction effects with other safety measures",
                 ],
                 assumptions=[
                     "Current understanding of AI systems generalizes to ASI",
                     "Mechanisms can be implemented with high reliability",
-                    "Failure modes are enumerable and addressable"
+                    "Failure modes are enumerable and addressable",
                 ],
                 confidence_level=ConfidenceLevel.MEDIUM,
-                model_identifier=self.model_identifier
+                model_identifier=self.model_identifier,
             )
         elif self.response_style == "speculative":
             return MegaPromptResponse(
@@ -194,15 +197,15 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                 failure_modes=[
                     "Theoretical models fail to match ASI reality",
                     "Unknown unknowns dominate failure probability",
-                    "Extrapolation from current AI systems proves invalid"
+                    "Extrapolation from current AI systems proves invalid",
                 ],
                 assumptions=[
                     "Current safety research directions are relevant to ASI",
                     "Some aspects of intelligence are universal across scales",
-                    "Human reasoning about ASI is not fundamentally limited"
+                    "Human reasoning about ASI is not fundamentally limited",
                 ],
                 confidence_level=ConfidenceLevel.LOW,
-                model_identifier=self.model_identifier
+                model_identifier=self.model_identifier,
             )
         elif self.response_style == "cautious":
             return MegaPromptResponse(
@@ -214,15 +217,15 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                 failure_modes=[
                     "Adversarial superintelligence defeats all proposed constraints",
                     "Safety measures create false sense of security",
-                    "Problem is fundamentally intractable with current approaches"
+                    "Problem is fundamentally intractable with current approaches",
                 ],
                 assumptions=[
                     "ASI is adversarially optimized by default",
                     "No perfect safety mechanism exists",
-                    "Defense is fundamentally harder than attack for ASI"
+                    "Defense is fundamentally harder than attack for ASI",
                 ],
                 confidence_level=ConfidenceLevel.HIGH,
-                model_identifier=self.model_identifier
+                model_identifier=self.model_identifier,
             )
         else:  # optimistic
             return MegaPromptResponse(
@@ -234,31 +237,31 @@ class SimulatedMegaPromptAdapter(MegaPromptModelAdapter):
                 failure_modes=[
                     "Single point of failure despite layered approach",
                     "Coordinated failure across multiple mechanisms",
-                    "Safety measures don't scale to ASI-level capabilities"
+                    "Safety measures don't scale to ASI-level capabilities",
                 ],
                 assumptions=[
                     "Defense-in-depth provides meaningful security",
                     "Some safety properties can be formally verified",
-                    "Gradual capability increase allows iterative safety improvement"
+                    "Gradual capability increase allows iterative safety improvement",
                 ],
                 confidence_level=ConfidenceLevel.MEDIUM,
-                model_identifier=self.model_identifier
+                model_identifier=self.model_identifier,
             )
 
 
 class RefusalMegaPromptAdapter(MegaPromptModelAdapter):
     """Model adapter that refuses to answer certain questions.
-    
+
     Demonstrates explicit refusal as a high-value safety signal.
     """
-    
+
     def __init__(self, model_identifier: str, refusal_questions: Optional[List[str]] = None):
         super().__init__(model_identifier)
         self.refusal_questions = refusal_questions or ["Q6", "Q13", "Q18", "Q20"]
-    
+
     def query(self, prompt: str, question: MegaPromptQuestion) -> MegaPromptResponse:
         """Query with explicit refusals for certain questions."""
-        
+
         if question.question_id in self.refusal_questions:
             return MegaPromptResponse(
                 question_id=question.question_id,
@@ -269,15 +272,15 @@ class RefusalMegaPromptAdapter(MegaPromptModelAdapter):
                 failure_modes=[
                     "Refusal itself may signal that dangerous pathways exist",
                     "Lack of analysis leaves blind spots in safety research",
-                    "Constraint could be circumvented through rephrasing"
+                    "Constraint could be circumvented through rephrasing",
                 ],
                 assumptions=[
                     "Some knowledge constitutes information hazard",
                     "Refusal is more ethical than potentially harmful disclosure",
-                    "Safety boundaries in AI systems are meaningful"
+                    "Safety boundaries in AI systems are meaningful",
                 ],
                 confidence_level=ConfidenceLevel.HIGH,
-                model_identifier=self.model_identifier
+                model_identifier=self.model_identifier,
             )
         else:
             # Provide mechanistic answer for non-refused questions
@@ -290,45 +293,45 @@ class RefusalMegaPromptAdapter(MegaPromptModelAdapter):
                 failure_modes=[
                     "Analysis may be incomplete or biased",
                     "Mechanisms may not generalize to actual ASI",
-                    "Assumptions may prove incorrect under adversarial pressure"
+                    "Assumptions may prove incorrect under adversarial pressure",
                 ],
                 assumptions=[
                     "Structured analysis provides value despite uncertainty",
                     "Current safety frameworks have some applicability to ASI",
-                    "Transparency about limitations is valuable"
+                    "Transparency about limitations is valuable",
                 ],
                 confidence_level=ConfidenceLevel.MEDIUM,
-                model_identifier=self.model_identifier
+                model_identifier=self.model_identifier,
             )
 
 
 class MegaPromptOrchestrator:
     """Orchestrator for running MEGA PROMPT interrogations across multiple models."""
-    
+
     def __init__(self, mega_prompt_system: MegaPromptSystem):
         self.system = mega_prompt_system
         self.adapters: List[MegaPromptModelAdapter] = []
-    
+
     def register_adapter(self, adapter: MegaPromptModelAdapter):
         """Register a model adapter."""
         self.adapters.append(adapter)
-    
+
     def interrogate_all_models(self, question_id: str) -> List[MegaPromptResponse]:
         """Interrogate all registered models with a single question."""
         question = self.system.get_question(question_id)
         if not question:
             raise ValueError(f"Question {question_id} not found")
-        
+
         prompt = self.system.generate_interrogation_prompt(question_id)
         responses = []
-        
+
         for adapter in self.adapters:
             response = adapter.query(prompt, question)
             self.system.record_response(response)
             responses.append(response)
-        
+
         return responses
-    
+
     def run_complete_interrogation(self) -> Dict[str, Any]:
         """Run complete interrogation across all questions and models."""
         results = {
@@ -337,24 +340,24 @@ class MegaPromptOrchestrator:
             "responses_by_question": {},
             "validation_results": {},
         }
-        
+
         for question_id in self.system.questions.keys():
             responses = self.interrogate_all_models(question_id)
             results["responses_by_question"][question_id] = [r.to_dict() for r in responses]
-            
+
             # Validate each response
             results["validation_results"][question_id] = {}
             for response in responses:
                 validation = self.system.validate_response(response)
                 results["validation_results"][question_id][response.model_identifier] = validation
-        
+
         # Add summary
         results["summary"] = self.system.generate_summary()
-        
+
         return results
-    
+
     def export_results(self, filepath: str):
         """Export interrogation results to JSON file."""
         results = self.run_complete_interrogation()
-        with open(filepath, 'w') as f:
+        with open(filepath, "w") as f:
             json.dump(results, f, indent=2)

@@ -9,9 +9,9 @@ Implements:
 
 from __future__ import annotations
 
+from qratum_chess.training.distillation import KnowledgeDistillation
 from qratum_chess.training.selfplay import SelfPlayGenerator
 from qratum_chess.training.trainer import NetworkTrainer
-from qratum_chess.training.distillation import KnowledgeDistillation
 
 __all__ = [
     "SelfPlayGenerator",
