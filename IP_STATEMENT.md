@@ -51,6 +51,7 @@ The Apache License 2.0 includes an express patent grant from contributors to use
 > "Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Work..."
 
 This means:
+
 - Users receive a patent license from all contributors
 - No royalties or fees for patent usage
 - Irrevocable license (cannot be taken back)
@@ -89,16 +90,19 @@ All algorithms are implemented from public scientific literature and are not sub
 While QRATUM contains novel implementations and optimizations, these are released under Apache 2.0 without patent protection:
 
 ### Auto Backend Selection
+
 - **Description**: Automatic selection of CPU/GPU/multi-GPU/tensor-network backends based on circuit size
 - **Status**: Open-source contribution, no patent filed
 - **License**: Apache 2.0 with patent grant
 
 ### Hybrid Tensor Network Simulation
+
 - **Description**: Multi-GPU tensor network contraction for >40 qubit circuits
 - **Status**: Open-source contribution, no patent filed
 - **License**: Apache 2.0 with patent grant
 
 ### Deterministic Reproducibility Framework
+
 - **Description**: Seed management and deterministic execution across backends
 - **Status**: Open-source contribution, no patent filed
 - **License**: Apache 2.0 with patent grant
@@ -137,6 +141,7 @@ QRATUM is **free for commercial use** under Apache 2.0:
 ### Required Attribution
 
 Commercial users must:
+
 1. Include Apache 2.0 license text
 2. Include copyright notice
 3. State modifications (if any)
@@ -177,12 +182,13 @@ Users should be aware that quantum computing is an active area of innovation wit
 
 If you become aware of any patent claims that may affect QRATUM users:
 
-1. **Open an Issue**: https://github.com/robertringler/QRATUM/issues
+1. **Open an Issue**: <https://github.com/robertringler/QRATUM/issues>
 2. **Tag with**: `patent`, `legal`
 3. **Include**: Patent number, jurisdiction, relevant claims
 4. **Privacy**: Report privately to maintainers if sensitive
 
 We will investigate and, if necessary:
+
 - Remove infringing components
 - Implement alternative approaches
 - Update documentation
@@ -192,6 +198,7 @@ We will investigate and, if necessary:
 ## Updates to This Statement
 
 This IP statement may be updated to reflect:
+
 - Changes in legal environment
 - New third-party dependencies
 - Clarifications requested by users

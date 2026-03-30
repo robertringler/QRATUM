@@ -5,6 +5,7 @@ An interactive 3D molecular visualization and simulation platform with WebXR/VR 
 ## Features
 
 ### 🔬 Molecular Visualization
+
 - **3Dmol.js Integration**: Web-based molecular viewer similar to JSmol
 - **Multiple Render Styles**: Cartoon, stick, sphere, line, surface
 - **Color Schemes**: Chain, secondary structure, spectrum, element
@@ -13,12 +14,14 @@ An interactive 3D molecular visualization and simulation platform with WebXR/VR 
 - **Labels & Annotations**: Add custom labels and distance measurements
 
 ### 📂 PDB Loading
+
 - **RCSB Integration**: Load structures directly from the Protein Data Bank
 - **File Upload**: Support for local PDB files
 - **Caching**: Downloaded structures are cached locally
 - **Complete Parsing**: ATOM, HETATM, CONECT, HEADER records
 
 ### ⚗️ Molecular Docking
+
 - **Interactive Docking**: Real-time ligand positioning
 - **Binding Site Detection**: Automatic or manual pocket definition
 - **Scoring Functions**: Lennard-Jones, electrostatic, H-bond
@@ -26,6 +29,7 @@ An interactive 3D molecular visualization and simulation platform with WebXR/VR 
 - **Visualization**: Display interactions and contacts
 
 ### ⚡ Molecular Dynamics
+
 - **Real-time Simulation**: Velocity Verlet integration
 - **Force Field**: Lennard-Jones + electrostatic
 - **Thermostat**: Berendsen temperature control
@@ -33,12 +37,14 @@ An interactive 3D molecular visualization and simulation platform with WebXR/VR 
 - **Trajectory Export**: Save simulation trajectories
 
 ### 🥽 WebXR VR Support
+
 - **Immersive Mode**: Full VR headset support
 - **Hand Tracking**: Natural hand gesture recognition
 - **Controller Input**: Standard VR controller support
 - **Molecule Manipulation**: Grab and rotate molecules in VR
 
 ### 📳 Haptic Feedback
+
 - **Predefined Patterns**: Selection, hover, bond formation
 - **Force Feedback**: Convert molecular forces to haptics
 - **Dual Controllers**: Left/right hand support
@@ -61,6 +67,7 @@ pip install -e .
 - Python 3.10+
 
 Frontend dependencies (loaded via CDN):
+
 - 3Dmol.js - Molecular visualization
 - Three.js - WebXR support
 
@@ -79,7 +86,7 @@ python -m xenon.molecular_dynamics_lab.demo --server
 python -m xenon.molecular_dynamics_lab.demo --server --host 0.0.0.0 --port 9000
 ```
 
-Open http://localhost:8080 in your browser.
+Open <http://localhost:8080> in your browser.
 
 ### Programmatic Usage
 
@@ -255,15 +262,19 @@ haptic_js = engine.generate_haptic_js()
 When running the server, these endpoints are available:
 
 ### `GET /`
+
 Returns the main application HTML page.
 
 ### `GET /api/status`
+
 Returns server status.
 
 ### `GET /api/structure/<pdb_id>`
+
 Load a PDB structure from RCSB.
 
 **Response:**
+
 ```json
 {
   "pdb_id": "1CRN",
@@ -275,9 +286,11 @@ Load a PDB structure from RCSB.
 ```
 
 ### `POST /api/dock`
+
 Run molecular docking.
 
 **Request:**
+
 ```json
 {
   "receptor_pdb": "3HTB",
@@ -290,9 +303,11 @@ Run molecular docking.
 ```
 
 ### `POST /api/simulate`
+
 Run MD simulation.
 
 **Request:**
+
 ```json
 {
   "pdb_id": "1CRN",
@@ -356,6 +371,7 @@ pytest xenon/molecular_dynamics_lab/tests/
 ### Code Style
 
 This module follows the XENON and QRATUM coding standards:
+
 - PEP 8 compliant
 - Type hints required
 - Docstrings for all public APIs

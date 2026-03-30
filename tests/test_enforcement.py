@@ -1,16 +1,16 @@
 """Tests for Contract Enforcement System."""
 
 import pytest
+
+from contracts.base import BaseContract, get_current_timestamp
 from contracts.enforcement import (
     ContractEnforcer,
-    EnforcedContract,
     EnforcementCheckpoint,
     EnforcementResult,
     create_enforced_contract,
 )
-from contracts.base import BaseContract, get_current_timestamp, generate_contract_id
-from qradle.core.zones import SecurityZone
 from qradle.core.invariants import InvariantViolation
+from qradle.core.zones import SecurityZone
 
 
 class MockContract(BaseContract):
@@ -332,9 +332,7 @@ class TestEnforcedContract:
         # Use Z1 which allows 'create'
         enforcer.enforce_contract_creation(contract, "user_001", SecurityZone.Z1)
 
-        enforced = create_enforced_contract(
-            contract, enforcer, SecurityZone.Z1, "ELEVATED"
-        )
+        enforced = create_enforced_contract(contract, enforcer, SecurityZone.Z1, "ELEVATED")
 
         serialized = enforced.serialize()
         assert serialized["zone_classification"] == "Z1"

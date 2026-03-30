@@ -721,7 +721,12 @@ PLATFORM_HTML = (
                 "category": "bioinformatics",
             },
             {"id": "rna_structure", "title": "RNA", "icon": "🔄", "category": "bioinformatics"},
-            {"id": "crispr_designer", "title": "CRISPR", "icon": "✂️", "category": "bioinformatics"},
+            {
+                "id": "crispr_designer",
+                "title": "CRISPR",
+                "icon": "✂️",
+                "category": "bioinformatics",
+            },
             {
                 "id": "metabolic_pathway",
                 "title": "Metabolic",
@@ -776,7 +781,12 @@ PLATFORM_HTML = (
             {"id": "solubility_map", "title": "Solubility", "icon": "💧", "category": "chemistry"},
             {"id": "thermodynamics", "title": "Thermo", "icon": "🌡️", "category": "chemistry"},
             {"id": "hash_visualizer", "title": "Hash Viz", "icon": "🔐", "category": "crypto"},
-            {"id": "blockchain_explorer", "title": "Blockchain", "icon": "⛓️", "category": "crypto"},
+            {
+                "id": "blockchain_explorer",
+                "title": "Blockchain",
+                "icon": "⛓️",
+                "category": "crypto",
+            },
             {"id": "encryption_flow", "title": "Encrypt", "icon": "🔒", "category": "crypto"},
             {"id": "key_exchange", "title": "Key Exch", "icon": "🔑", "category": "crypto"},
             {"id": "merkle_tree", "title": "Merkle", "icon": "🌲", "category": "crypto"},
@@ -1227,8 +1237,7 @@ def molecular_dynamics_lab():
         return server.generate_full_app()
     except ImportError:
         # Fallback to static page if module not fully loaded
-        return render_template_string(
-            """
+        return render_template_string("""
 <!DOCTYPE html>
 <html>
 <head>
@@ -1250,8 +1259,7 @@ def molecular_dynamics_lab():
     <p><a href="/">← Back to QRATUM Platform</a></p>
 </body>
 </html>
-        """
-        )
+        """)
 
 
 @app.route("/modules/<path:path>")

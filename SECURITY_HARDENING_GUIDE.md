@@ -12,6 +12,7 @@
 This document provides comprehensive security hardening guidelines for QRATUM production deployments. It covers adversarial testing, constant-time cryptography, zeroization, and multi-source entropy monitoring to ensure the platform maintains its "Decentralized Ghost Machine" security properties.
 
 **Security Objectives:**
+
 - Byzantine fault tolerance up to f < n/3 malicious validators
 - Resistance to timing side-channel attacks
 - Complete zeroization of sensitive data

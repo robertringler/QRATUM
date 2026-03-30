@@ -41,11 +41,13 @@ Traditional finite element analysis (FEA) solvers face performance bottlenecks w
 The repository contains 1034 Python modules organized as:
 
 **evaluation/ansys/bm_001_executor.py**
+
 - Classes: 0
 - Functions: 0
 - Lines of Code: 0
 
 **sdk/ansys/quasim_ansys_adapter.py**
+
 - QuASIM Ansys Adapter - PyMAPDL integration for hybrid solver acceleration.
 - Classes: 15
 - Functions: 31
@@ -166,4 +168,3 @@ Total visualizations: 148
 **hardware_metrics:** 22 files
 **reproducibility:** 15 files
 **compliance:** 15 files
-

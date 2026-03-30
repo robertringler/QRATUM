@@ -3,6 +3,7 @@
 ## Overview
 
 The QRATUM Platform provides RESTful APIs for interacting with:
+
 - **QRADLE**: Deterministic execution engine
 - **QRATUM Platform**: 14 vertical AI modules
 - **QRATUM-ASI**: Superintelligence orchestration layer (simulation mode)
@@ -36,6 +37,7 @@ POST /api/v1/qradle/contract
 ```
 
 **Request Body:**
+
 ```json
 {
   "operation": "add",
@@ -48,6 +50,7 @@ POST /api/v1/qradle/contract
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -69,6 +72,7 @@ POST /api/v1/system/checkpoint
 ```
 
 **Request Body:**
+
 ```json
 {
   "description": "Before major update"
@@ -76,6 +80,7 @@ POST /api/v1/system/checkpoint
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -94,6 +99,7 @@ GET /api/v1/system/proof
 ```
 
 **Response:**
+
 ```json
 {
   "merkle_root": "7b3f2a...",
@@ -112,6 +118,7 @@ GET /api/v1/audit/trail?contract_id=<optional-contract-id>
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -145,6 +152,7 @@ POST /api/v1/platform/execute
 ```
 
 **Request Body:**
+
 ```json
 {
   "vertical": "juris",
@@ -158,6 +166,7 @@ POST /api/v1/platform/execute
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -180,6 +189,7 @@ GET /api/v1/verticals
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -206,12 +216,14 @@ GET /api/v1/verticals
 ### JURIS - Legal AI
 
 **Operations:**
+
 - `legal_reasoning`: IRAC legal analysis
 - `contract_analysis`: Contract review and risk identification
 - `compliance_check`: Regulatory compliance checking
 - `litigation_prediction`: Outcome prediction
 
 **Example:**
+
 ```json
 {
   "vertical": "juris",
@@ -226,12 +238,14 @@ GET /api/v1/verticals
 ### VITRA - Bioinformatics
 
 **Operations:**
+
 - `sequence_analysis`: DNA/RNA/Protein analysis
 - `drug_screening`: Drug candidate evaluation
 - `molecular_dynamics`: Molecular simulation
 - `adme_prediction`: Pharmacokinetics modeling
 
 **Example:**
+
 ```json
 {
   "vertical": "vitra",
@@ -246,12 +260,14 @@ GET /api/v1/verticals
 ### ECORA - Climate & Energy
 
 **Operations:**
+
 - `climate_projection`: Climate modeling
 - `carbon_footprint`: Carbon emission analysis
 - `energy_optimization`: Grid optimization
 - `renewable_assessment`: Site evaluation
 
 **Example:**
+
 ```json
 {
   "vertical": "ecora",
@@ -266,12 +282,14 @@ GET /api/v1/verticals
 ### CAPRA - Financial Risk
 
 **Operations:**
+
 - `option_pricing`: Black-Scholes pricing
 - `risk_assessment`: VaR/CVaR calculation
 - `portfolio_optimization`: Portfolio optimization
 - `credit_risk`: Credit analysis
 
 **Example:**
+
 ```json
 {
   "vertical": "capra",
@@ -289,6 +307,7 @@ GET /api/v1/verticals
 ### SENTRA - Aerospace & Defense
 
 **Operations:**
+
 - `ballistic_trajectory`: Trajectory simulation
 - `orbit_propagation`: Orbital mechanics
 - `rcs_analysis`: Radar cross-section
@@ -297,6 +316,7 @@ GET /api/v1/verticals
 ### NEURA - Neuroscience & BCI
 
 **Operations:**
+
 - `eeg_analysis`: EEG signal processing
 - `snn_simulation`: Spiking neural networks
 - `connectivity_mapping`: Brain connectivity
@@ -305,6 +325,7 @@ GET /api/v1/verticals
 ### FLUXA - Supply Chain
 
 **Operations:**
+
 - `route_optimization`: Vehicle routing
 - `demand_forecasting`: Demand prediction
 - `inventory_optimization`: Inventory management
@@ -313,6 +334,7 @@ GET /api/v1/verticals
 ### SPECTRA - Spectrum Management
 
 **Operations:**
+
 - `spectrum_analysis`: RF spectrum analysis
 - `interference_detection`: Interference detection
 - `frequency_allocation`: Frequency optimization
@@ -320,6 +342,7 @@ GET /api/v1/verticals
 ### AEGIS - Cybersecurity
 
 **Operations:**
+
 - `vulnerability_scan`: Security scanning
 - `threat_detection`: Threat analysis
 - `compliance_check`: Security compliance
@@ -327,6 +350,7 @@ GET /api/v1/verticals
 ### LOGOS - Education & Training
 
 **Operations:**
+
 - `learning_path`: Personalized learning
 - `knowledge_assessment`: Knowledge testing
 - `skill_gap_analysis`: Skill analysis
@@ -334,6 +358,7 @@ GET /api/v1/verticals
 ### SYNTHOS - Materials Science
 
 **Operations:**
+
 - `predict_properties`: Material properties
 - `crystal_structure`: Structure analysis
 - `composite_design`: Composite design
@@ -341,6 +366,7 @@ GET /api/v1/verticals
 ### TERAGON - Geospatial Intelligence
 
 **Operations:**
+
 - `route_optimization`: Route planning
 - `terrain_analysis`: Terrain analysis
 - `spatial_pattern`: Pattern detection
@@ -348,6 +374,7 @@ GET /api/v1/verticals
 ### HELIX - Genomic Medicine
 
 **Operations:**
+
 - `variant_analysis`: Genetic variant analysis
 - `risk_prediction`: Disease risk prediction
 - `pharmacogenomics`: Drug response analysis
@@ -355,6 +382,7 @@ GET /api/v1/verticals
 ### NEXUS - Cross-Domain Intelligence
 
 **Operations:**
+
 - `multi_domain_synthesis`: Cross-domain synthesis
 - `cross_domain_inference`: Domain bridging
 - `emergent_pattern`: Pattern detection
@@ -372,6 +400,7 @@ GET /api/v1/asi/status
 ```
 
 **Response:**
+
 ```json
 {
   "mode": "simulation",
@@ -402,6 +431,7 @@ All errors follow this format:
 ```
 
 **Common Error Codes:**
+
 - `400`: Bad Request - Invalid parameters
 - `401`: Unauthorized - Invalid API key
 - `403`: Forbidden - Insufficient permissions
@@ -464,7 +494,7 @@ const result = await client.qradle.executeContract({
 
 ## Support
 
-- Documentation: https://docs.qratum.io
-- API Status: https://status.qratum.io
-- Support: support@qratum.io
-- GitHub: https://github.com/robertringler/QRATUM
+- Documentation: <https://docs.qratum.io>
+- API Status: <https://status.qratum.io>
+- Support: <support@qratum.io>
+- GitHub: <https://github.com/robertringler/QRATUM>

@@ -14,8 +14,7 @@ def main():
     st.title("⚡ Grid Dispatch with Renewables & Storage Under Uncertainty")
     st.markdown("**Target Accounts**: Shell, ExxonMobil, NextEra, Ørsted")
 
-    st.markdown(
-        """
+    st.markdown("""
 
     ## Overview
 
@@ -23,8 +22,7 @@ def main():
 
     ### Key Performance Indicators (KPIs)
     - LMP_cost, curtailment_pct, reserve_viols, CO2_tonnes
-    """
-    )
+    """)
 
     artifacts_dir = Path("artifacts/energy")
 
@@ -58,8 +56,7 @@ def main():
     else:
         st.info("No artifacts directory found. Run the demo to generate data.")
 
-    st.markdown(
-        """
+    st.markdown("""
 
     ## How to Run
 
@@ -70,8 +67,7 @@ def main():
     # Run simulation with capture
     python -m quasim.demos.energy.cli simulate --seed 42 --capture
     ```
-    """
-    )
+    """)
 
 
 if __name__ == "__main__":

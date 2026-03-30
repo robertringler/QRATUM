@@ -74,6 +74,7 @@ Design a Byzantine-fault-tolerant deterministic execution model for QRATUM that 
 ### 1.3 Network Partition Handling
 
 **Partition Model:**
+
 - **QRATUM Partition Tolerance**: Continue operation if > 2f+1 nodes reachable
 - **Partition Detection**: Heartbeat-based with deterministic timeout (T_partition = 30s)
 - **Partition Recovery**: State reconciliation via Merkle proof exchange
@@ -113,7 +114,7 @@ STATE: PARTITION_HEALED
 
 **Defense Implementation:**
 
-1. **Cryptographic View Binding**: Each validator signs `<view_number, state_root, nonce>` 
+1. **Cryptographic View Binding**: Each validator signs `<view_number, state_root, nonce>`
 2. **Equivocation Detection**: If validator produces two signatures for same view with different state_roots, automatic slashing
 3. **Deterministic Timeout**: All nodes use same timeout calculation: `T_timeout = T_base + H(block_height) mod T_variance`
 
@@ -459,6 +460,7 @@ Model worst-case adversarial timing attacks and mitigations.
 ### 5.3 Worst-Case Adversarial Model
 
 **Assumptions:**
+
 - Adversary controls up to f < n/3 nodes (Byzantine threshold)
 - Adversary has arbitrary control over network delays (up to Δ_max)
 - Adversary knows all pending transactions
@@ -844,6 +846,7 @@ Design governance-controlled protocol upgrades without consensus collapse.
 ### 8.2 Upgrade Challenge
 
 **Risks:**
+
 - Network split if nodes disagree on upgrade
 - Consensus collapse during transition
 - Loss of chain-of-custody continuity
@@ -1067,6 +1070,7 @@ Red-team QRATUM's distributed assumptions as a hostile nation-state actor.
 ### 10.2 Adversary Profile
 
 **Nation-State Capabilities:**
+
 - Unlimited computational resources
 - Access to zero-day vulnerabilities
 - Supply chain infiltration

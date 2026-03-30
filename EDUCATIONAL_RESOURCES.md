@@ -77,6 +77,7 @@ Quantum Simulation
 - **Positions:** 5 fellowships/year starting 2026
 
 **Requirements:**
+
 - Enrolled in accredited PhD program
 - Research aligned with QRATUM focus areas
 - Commitment to publish and contribute to open source
@@ -94,6 +95,7 @@ Quantum Simulation
 **Prerequisites:** None
 
 **Curriculum:**
+
 1. **Module 1: Introduction to Post-Quantum Cryptography** (2 hours)
    - Quantum computing threat landscape
    - NIST PQC standardization
@@ -121,6 +123,7 @@ Quantum Simulation
 **Prerequisites:** QCP-F
 
 **Curriculum:**
+
 1. **Module 1: QRADLE Contract Development** (12 hours)
    - TXO lifecycle
    - Contract syntax and semantics
@@ -142,6 +145,7 @@ Quantum Simulation
    - Presentation
 
 **Assessment:**
+
 - Hands-on project evaluation
 - Technical interview
 - Valid for 3 years
@@ -153,6 +157,7 @@ Quantum Simulation
 **Prerequisites:** QCP-D + 1 year experience
 
 **Curriculum:**
+
 1. **Module 1: Advanced Architecture** (20 hours)
    - Multi-region deployment
    - HSM/TEE integration
@@ -174,6 +179,7 @@ Quantum Simulation
    - Real-world scenario analysis
 
 **Assessment:**
+
 - Architecture design project
 - Defense presentation
 - Panel interview
@@ -411,14 +417,15 @@ if __name__ == "__main__":
 
 **QRATUM Academic Cloud**
 
-- **URL:** https://academic.qratum.io
+- **URL:** <https://academic.qratum.io>
 - **Access:** Free for accredited institutions
-- **Resources:** 
+- **Resources:**
   - 100 GPU hours/month per researcher
   - Pre-configured quantum simulation environments
   - Reproducibility framework pre-installed
 
 **Environment Setup:**
+
 ```yaml
 # academic_environment.yaml
 name: qratum-academic
@@ -540,6 +547,7 @@ Executive Level (10+ years)
 **Prerequisites:** Cryptography, Distributed Systems
 
 **Syllabus:**
+
 1. **Week 1-2:** Quantum Computing Threat Model
 2. **Week 3-4:** Post-Quantum Cryptography (Lattice, Hash-based)
 3. **Week 5-6:** Formal Verification for Security
@@ -560,12 +568,14 @@ Executive Level (10+ years)
 - **Outcome:** QCP-D certification + job placement assistance
 
 **Curriculum:**
+
 - Weeks 1-3: Foundations (cryptography, distributed systems)
 - Weeks 4-6: QRATUM platform development
 - Weeks 7-9: Security and compliance
 - Weeks 10-12: Capstone project + career prep
 
 **Job Placement Partners:**
+
 - Major defense contractors
 - Healthcare systems
 - Financial services
@@ -587,6 +597,7 @@ Executive Level (10+ years)
   - Annual conference
 
 **Community Tiers:**
+
 | Tier | Requirements | Benefits |
 |------|--------------|----------|
 | **Member** | Join community | Forum access, events |
@@ -684,7 +695,7 @@ Executive Level (10+ years)
 
 ### A. Course Materials Repository
 
-All course materials available at: https://github.com/qratum/education
+All course materials available at: <https://github.com/qratum/education>
 
 ### B. Certification Exam Blueprint
 
@@ -692,7 +703,7 @@ Available to certified instructors upon request.
 
 ### C. Partnership Application
 
-Submit at: https://qratum.io/partnerships/academic
+Submit at: <https://qratum.io/partnerships/academic>
 
 ---
 

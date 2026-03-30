@@ -54,30 +54,35 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 ## Threat Actors
 
 ### TA-1: Nation-State Adversary
+
 - **Capability**: High (quantum computing, zero-days, supply chain)
 - **Motivation**: Espionage, sabotage
 - **Resources**: Unlimited
 - **Relevant to**: PQC, supply chain, physical access
 
 ### TA-2: Organized Cybercrime
+
 - **Capability**: Medium-High
 - **Motivation**: Financial gain, ransomware
 - **Resources**: Significant
 - **Relevant to**: Data theft, service disruption
 
 ### TA-3: Malicious Insider
+
 - **Capability**: Medium (privileged access)
 - **Motivation**: Data theft, sabotage, financial
 - **Resources**: Limited external, high internal
 - **Relevant to**: Quorum compromise, key theft
 
 ### TA-4: Automated Attack Systems
+
 - **Capability**: Medium
 - **Motivation**: Opportunistic exploitation
 - **Resources**: Scalable
 - **Relevant to**: Known vulnerabilities, misconfigurations
 
 ### TA-5: Quantum Adversary (Future)
+
 - **Capability**: Future-state
 - **Motivation**: Break classical cryptography
 - **Resources**: Quantum computer with sufficient qubits
@@ -115,6 +120,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Description**: Adversary attempts to extract biokey material from RAM during or after session.
 
 **Attack Vector**:
+
 1. Cold boot attack on running system
 2. DMA attack via Thunderbolt/PCIe
 3. Memory dump during crash
@@ -124,6 +130,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Risk Score**: HIGH
 
 **Mitigations**:
+
 - [M-001] Zeroization on drop (implemented)
 - [M-002] 30-second biokey lifetime enforcement (implemented)
 - [M-003] Memory encryption in TEE
@@ -141,6 +148,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Description**: Adversary compromises quorum member to inject malicious TXOs or decrypt data.
 
 **Attack Vector**:
+
 1. Credential theft via phishing
 2. Malware on quorum member system
 3. Insider threat
@@ -150,6 +158,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Risk Score**: HIGH
 
 **Mitigations**:
+
 - [M-005] M-of-N threshold (Byzantine tolerance)
 - [M-006] Progressive decay with justification
 - [M-007] Watchdog validators
@@ -167,6 +176,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Description**: Future quantum computer breaks Kyber key encapsulation.
 
 **Attack Vector**:
+
 1. Harvest-now-decrypt-later
 2. Direct quantum attack on TLS/key exchange
 
@@ -175,6 +185,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Risk Score**: HIGH (future)
 
 **Mitigations**:
+
 - [M-009] Kyber-1024 (NIST Level 5) implemented
 - [M-010] Hybrid classical+PQC option
 - [M-011] Algorithm agility for migration
@@ -191,6 +202,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Description**: Adversary measures timing variations to extract key material.
 
 **Attack Vector**:
+
 1. Cache timing attacks
 2. Branch prediction attacks
 3. Memory access pattern analysis
@@ -200,6 +212,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Risk Score**: MEDIUM
 
 **Mitigations**:
+
 - [M-012] Constant-time operations in crypto primitives
 - [M-013] Memory fencing
 - [M-014] Blinding techniques
@@ -216,6 +229,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Description**: Adversary blocks or delays legitimate TXO processing.
 
 **Attack Vector**:
+
 1. Network-level blocking
 2. Validator collusion
 3. Eclipse attack on P2P network
@@ -225,6 +239,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Risk Score**: MEDIUM
 
 **Mitigations**:
+
 - [M-015] Canary TXO probes
 - [M-016] Censorship event emission
 - [M-017] Multiple network paths
@@ -242,6 +257,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Description**: Adversary bypasses HIPAA/GDPR/CMMC controls.
 
 **Attack Vector**:
+
 1. Forge compliance attestations
 2. Bypass access controls
 3. Tamper with audit logs
@@ -251,6 +267,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Risk Score**: MEDIUM
 
 **Mitigations**:
+
 - [M-019] ZKP compliance attestations
 - [M-020] Immutable Merkle audit trail
 - [M-021] Cryptographic tombstoning (GDPR)
@@ -268,6 +285,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Description**: Adversary predicts DRBG output to forge keys or signatures.
 
 **Attack Vector**:
+
 1. Entropy starvation
 2. State recovery from partial output
 3. Weak seeding
@@ -277,6 +295,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Risk Score**: MEDIUM
 
 **Mitigations**:
+
 - [M-023] HMAC-DRBG with SHA3-512
 - [M-024] Entropy pooling from multiple sources
 - [M-025] Automatic reseeding
@@ -294,6 +313,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Description**: Malicious code injected via compromised dependency.
 
 **Attack Vector**:
+
 1. Typosquatting crate/package names
 2. Compromised maintainer account
 3. Build system compromise
@@ -303,6 +323,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Risk Score**: HIGH
 
 **Mitigations**:
+
 - [M-027] Dependency pinning with hashes
 - [M-028] Regular security audits
 - [M-029] Minimal dependency footprint
@@ -320,6 +341,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Description**: Adversary replays previously valid signed messages.
 
 **Attack Vector**:
+
 1. Capture and replay consensus votes
 2. Replay TXO submissions
 3. Replay authentication tokens
@@ -329,6 +351,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Risk Score**: MEDIUM
 
 **Mitigations**:
+
 - [M-031] Timestamp validation
 - [M-032] Nonce/sequence numbers
 - [M-033] Epoch-bound signatures
@@ -346,6 +369,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Description**: Byzantine validators collude to finalize invalid TXOs or halt consensus.
 
 **Attack Vector**:
+
 1. 34% collusion for safety violation
 2. 51% collusion for liveness violation
 3. Long-range attack
@@ -355,6 +379,7 @@ This document presents the comprehensive threat model for QRATUM (Quantum Resour
 **Risk Score**: MEDIUM
 
 **Mitigations**:
+
 - [M-035] BFT-HotStuff/Tendermint consensus
 - [M-036] Slashing for violations
 - [M-037] Stake-weighted voting
@@ -392,16 +417,19 @@ Very Low  │            │            │            │
 ## Recommendations
 
 ### Immediate (P0)
+
 1. Complete TEE/SGX integration for memory protection
 2. Conduct independent penetration testing
 3. Implement hardware security module (HSM) support
 
 ### Short-term (P1)
+
 1. Deploy canary monitoring infrastructure
 2. Implement ZKP circuits for compliance
 3. Add runtime security monitoring
 
 ### Long-term (P2)
+
 1. Achieve FIPS 140-3 certification for crypto module
 2. Complete DO-178C formal verification
 3. Implement quantum-safe hardware tokens

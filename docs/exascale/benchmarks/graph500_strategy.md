@@ -16,11 +16,13 @@ Graph500 stresses random memory access and high-bandwidth networking, complement
 ### Problem Description
 
 **Input:** Undirected graph G = (V, E)
+
 - **Vertices (V):** 2⁴⁰ ≈ 1.1 trillion
 - **Edges (E):** 16 × |V| = 17.6 trillion (average degree = 16)
 - **Graph generation:** R-MAT (Recursive Matrix) with power-law distribution
 
 **Algorithm:** Breadth-First Search (BFS) from random source vertex
+
 - **Output:** Parent array (parent[v] = predecessor of v in BFS tree)
 - **Metric:** TEPS (Traversed Edges Per Second) = |E| / time
 
@@ -71,6 +73,7 @@ def bfs_top_down(graph, source):
 ```
 
 **Performance:**
+
 - Time per level: O(|frontier| × avg_degree)
 - Memory access: Random (poor cache locality)
 - Parallelization: Atomic operations (CAS) for parent array
@@ -94,6 +97,7 @@ def bfs_bottom_up(graph, parent, frontier_bitmap):
 ```
 
 **Performance:**
+
 - Time per level: O(|unvisited| × avg_degree)
 - Better for large frontiers (> 10% of graph)
 
@@ -166,6 +170,7 @@ __global__ void bfs_kernel(
 ```
 
 **Performance:**
+
 - Coalesced memory access (warp loads 32 neighbors together)
 - Reduced atomic contention (warp-level cooperation)
 - Achieved: 32 GTEPS per GPU (20% of memory bandwidth limit)
@@ -188,6 +193,7 @@ Each GPU stores:
 ```
 
 **Cross-GPU Communication:**
+
 - Frontier exchange: Send frontier vertices to GPUs owning neighbors
 - Message size: ~10 MB per level (10% of frontier crosses GPU boundary)
 - AllReduce: Aggregate frontier sizes (8 bytes)
@@ -199,11 +205,13 @@ Each GPU stores:
 ### AetherFabric-X Advantages
 
 **Low-Latency AllGather:**
+
 - BFS requires frequent frontier exchange (every level)
 - QRATUM: 500 ns latency, 89 GB/s bandwidth
 - Frontier exchange time: 10 MB / 89 GB/s = 112 μs (negligible)
 
 **High-Bandwidth Aggregate:**
+
 - 50,000 GPUs × 89 GB/s = 4.45 PB/s aggregate
 - Graph traffic: 10 MB × 50k = 500 GB per level
 - Network utilization: 500 GB / 4.45 PB = 0.01% (underutilized)
@@ -213,12 +221,14 @@ Each GPU stores:
 ### Theoretical Peak
 
 **Memory bandwidth-bound:**
+
 - H100 memory BW: 3.2 TB/s
 - Edge size: 8 bytes
 - Max TEPS: 3.2 TB/s / 8 bytes = 400 GTEPS per GPU
 - System total: 400 GTEPS × 50,000 = **20 PTEPS** (theoretical)
 
 **Achieved (empirical):**
+
 - Random access penalty: 8× (cache misses)
 - Atomic contention: 5× (CAS on parent array)
 - Effective BW: 3.2 TB/s / (8 × 5) = 80 GB/s
@@ -226,22 +236,25 @@ Each GPU stores:
 - System total: 10 GTEPS × 50,000 = **500 GTEPS**
 
 **Optimized (with techniques above):**
+
 - Warp-centric: 2× improvement
 - Coalescing: 1.5× improvement
 - Hybrid BFS: 1.1× improvement
 - Final: 10 × 2 × 1.5 × 1.1 = **33 GTEPS per GPU**
-- System total: 33 × 50,000 = **1,650 GTEPS** 
+- System total: 33 × 50,000 = **1,650 GTEPS**
 
 *(Conservative estimate: 800 GTEPS accounting for graph skew, tail latency)*
 
 ### Execution Time
 
 **BFS Runtime:**
+
 - Edges traversed: 17.6 trillion
 - Performance: 800 GTEPS
 - Time per BFS: 17.6T / 800G = **22 seconds**
 
 **64 BFS runs (median):**
+
 - Total time: 22 × 64 = **1,408 seconds ≈ 23 minutes**
 
 **Validation time:** 5 minutes

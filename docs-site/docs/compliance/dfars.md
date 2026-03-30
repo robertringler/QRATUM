@@ -288,6 +288,6 @@ Required_Flowdown:
 
 For DFARS compliance inquiries:
 
-- **Contracts Team**: contracts@quasim.example.com
-- **Compliance Officer**: compliance@quasim.example.com
-- **Security Team**: security@quasim.example.com
+- **Contracts Team**: <contracts@quasim.example.com>
+- **Compliance Officer**: <compliance@quasim.example.com>
+- **Security Team**: <security@quasim.example.com>

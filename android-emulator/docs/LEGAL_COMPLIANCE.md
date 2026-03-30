@@ -9,6 +9,7 @@ This document describes the legal compliance measures taken in the development o
 All code in this project is licensed under the **Apache License 2.0**.
 
 ### Permitted Uses
+
 - Commercial use
 - Modification
 - Distribution
@@ -16,6 +17,7 @@ All code in this project is licensed under the **Apache License 2.0**.
 - Private use
 
 ### Requirements
+
 - License and copyright notice must be included
 - State changes must be documented
 - Original attribution must be preserved
@@ -25,36 +27,43 @@ All code in this project is licensed under the **Apache License 2.0**.
 The following components are **original implementations** written from scratch:
 
 ### CPU Emulation (emu-cpu)
+
 - ARMv8-A instruction decoder: Based on public ARM Architecture Reference Manual
 - Interpreter/executor: Original implementation
 - Register file: Based on documented ARM register model
 
 ### Memory Subsystem (emu-memory)
+
 - Page table implementation: Original design
 - MMU emulation: Original implementation
 - Snapshot system: Original implementation
 
 ### Android Runtime (emu-android-runtime)
+
 - Binder IPC: Clean-room implementation based on documented interfaces
 - Bionic compatibility: Based on public AOSP documentation
 - Syscall handler: Based on public Linux syscall documentation
 
 ### Graphics (emu-graphics)
+
 - OpenGL ES state tracking: Original implementation
 - Compositor: Original SurfaceFlinger-like implementation
 - Framebuffer management: Original implementation
 
 ### Audio (emu-audio)
+
 - OpenSL ES emulation: Based on public Khronos specifications
 - Audio mixer: Original implementation
 - Stream management: Original implementation
 
 ### Filesystem (emu-filesystem)
+
 - VFS layer: Original implementation
 - EXT4 emulation: Based on public filesystem specifications
 - Mount management: Original implementation
 
 ### PC Compatibility (emu-pc-compat)
+
 - Win32 syscall shim: Research implementation based on documented APIs
 - DirectX abstraction: Research implementation based on public specifications
 - Timing normalization: Original implementation
@@ -62,17 +71,20 @@ The following components are **original implementations** written from scratch:
 ## What This Project Does NOT Include
 
 ### Proprietary Software
+
 - ❌ No EA games or assets
 - ❌ No The Sims 4 binaries or assets
 - ❌ No proprietary Android apps
 - ❌ No copyrighted game content
 
 ### Reverse Engineering
+
 - ❌ No reverse-engineered proprietary code
 - ❌ No decompiled binaries
 - ❌ No extracted firmware
 
 ### DRM/Protection Bypass
+
 - ❌ No DRM circumvention code
 - ❌ No license validation bypass
 - ❌ No copy protection defeat
@@ -114,7 +126,7 @@ The PC Compatibility Layer (emu-pc-compat) is provided for **research purposes o
 
 ## Contact
 
-For legal inquiries, contact: legal@qratum.ai
+For legal inquiries, contact: <legal@qratum.ai>
 
 ## Disclaimer
 

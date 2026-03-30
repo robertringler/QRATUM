@@ -7,11 +7,13 @@ Common issues and solutions for QRATUM.
 ### Python Version Errors
 
 **Error:**
+
 ```
 ERROR: Package requires Python >=3.10 but you have Python 3.9
 ```
 
 **Solution:**
+
 ```bash
 # Install Python 3.10+
 # macOS
@@ -28,11 +30,13 @@ pyenv local 3.11.5
 ### Qiskit Installation Fails
 
 **Error:**
+
 ```
 ERROR: Could not build wheels for qiskit
 ```
 
 **Solution:**
+
 ```bash
 # Install build dependencies
 pip install --upgrade pip setuptools wheel
@@ -47,11 +51,13 @@ xcode-select --install
 ### cuQuantum Not Found
 
 **Error:**
+
 ```python
 ImportError: cuQuantum not available
 ```
 
 **Solution:**
+
 ```bash
 # Install cuQuantum
 pip install cuquantum-python
@@ -65,11 +71,13 @@ pip install cuquantum-python
 ### Out of Memory
 
 **Error:**
+
 ```
 numpy.core._exceptions.MemoryError: Unable to allocate array
 ```
 
 **Solution:**
+
 ```python
 # Reduce qubit count
 config = QuantumConfig(max_qubits=20)
@@ -83,11 +91,13 @@ os.environ['XLA_PYTHON_CLIENT_MEM_FRACTION'] = '0.5'
 ### Convergence Failure
 
 **Error:**
+
 ```python
 ConvergenceError: VQE did not converge after 100 iterations
 ```
 
 **Solution:**
+
 ```python
 # Increase iterations
 result = vqe.compute_h2_energy(
@@ -111,11 +121,13 @@ result = vqe.compute_h2_energy(
 ### Backend Connection Failed
 
 **Error:**
+
 ```python
 IBMQBackendError: Could not connect to IBM Quantum
 ```
 
 **Solution:**
+
 ```python
 # Check token
 import os
@@ -136,11 +148,13 @@ config = QuantumConfig(backend_type="simulator")
 ### Container Won't Start
 
 **Error:**
+
 ```
 Error response from daemon: driver failed programming external connectivity
 ```
 
 **Solution:**
+
 ```bash
 # Check port availability
 lsof -i :8000
@@ -157,11 +171,13 @@ sudo systemctl restart docker
 ### Build Fails
 
 **Error:**
+
 ```
 ERROR: failed to solve: failed to compute cache key
 ```
 
 **Solution:**
+
 ```bash
 # Clean Docker cache
 docker system prune -a
@@ -173,11 +189,13 @@ docker-compose build --no-cache
 ### Services Not Connecting
 
 **Error:**
+
 ```
 ConnectionRefusedError: Connection refused on localhost:8000
 ```
 
 **Solution:**
+
 ```bash
 # Check service status
 docker-compose ps
@@ -196,11 +214,13 @@ docker-compose up -d frontend
 ### Pods Not Starting
 
 **Error:**
+
 ```
 CrashLoopBackOff
 ```
 
 **Solution:**
+
 ```bash
 # Check pod status
 kubectl describe pod <pod-name> -n qratum
@@ -215,11 +235,13 @@ kubectl get events -n qratum --sort-by='.lastTimestamp'
 ### Service Unavailable
 
 **Error:**
+
 ```
 503 Service Unavailable
 ```
 
 **Solution:**
+
 ```bash
 # Check endpoints
 kubectl get endpoints qratum-api -n qratum
@@ -234,11 +256,13 @@ kubectl exec -it <pod-name> -n qratum -- curl localhost:8000/health
 ### Resource Limits
 
 **Error:**
+
 ```
 OOMKilled
 ```
 
 **Solution:**
+
 ```yaml
 # Increase memory limits in deployment.yaml
 resources:
@@ -255,11 +279,13 @@ resources:
 ### Authentication Failed
 
 **Error:**
+
 ```json
 {"error": "Unauthorized", "code": 401}
 ```
 
 **Solution:**
+
 ```python
 # Check API key
 import requests
@@ -274,11 +300,13 @@ print(response.status_code)
 ### Rate Limited
 
 **Error:**
+
 ```json
 {"error": "Rate limit exceeded", "code": 429}
 ```
 
 **Solution:**
+
 ```python
 import time
 
@@ -296,11 +324,13 @@ def api_call_with_retry(url, max_retries=3):
 ### Invalid Input
 
 **Error:**
+
 ```json
 {"error": "Validation error", "details": "bond_length must be positive"}
 ```
 
 **Solution:**
+
 ```python
 # Validate inputs before calling API
 def validate_input(bond_length: float) -> None:
@@ -319,16 +349,19 @@ def validate_input(bond_length: float) -> None:
 **Solutions:**
 
 1. **Reduce shots for development:**
+
    ```python
    config = QuantumConfig(shots=100)  # Instead of 1024
    ```
 
 2. **Enable GPU acceleration:**
+
    ```python
    config = QuantumConfig(backend_type="cuquantum")
    ```
 
 3. **Use circuit caching:**
+
    ```python
    from functools import lru_cache
    
@@ -344,12 +377,14 @@ def validate_input(bond_length: float) -> None:
 **Solutions:**
 
 1. **Force garbage collection:**
+
    ```python
    import gc
    gc.collect()
    ```
 
 2. **Process in batches:**
+
    ```python
    batch_size = 10
    for i in range(0, len(data), batch_size):

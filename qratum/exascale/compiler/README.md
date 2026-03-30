@@ -9,6 +9,7 @@ The QRATUM ExaScale compiler toolchain provides comprehensive deterministic comp
 ## Key Features
 
 ### 1. Deterministic Compilation Pipeline (`pipeline.py`)
+
 - **Fixed optimization levels**: No adaptive optimization
 - **FMA disabled**: Fused Multiply-Add instructions disabled for reproducibility
 - **Static linking only**: No dynamic library dependencies
@@ -17,6 +18,7 @@ The QRATUM ExaScale compiler toolchain provides comprehensive deterministic comp
 - **Static analysis**: Detect determinism violations in source code
 
 ### 2. Reproducible PTX/SASS Generation (`ptx_gen.py`)
+
 - **PTX ISA version pinning**: Fixed PTX version (8.3 for GB200)
 - **Deterministic instruction scheduling**: No reordering
 - **Linear register allocation**: Predictable register assignment
@@ -24,6 +26,7 @@ The QRATUM ExaScale compiler toolchain provides comprehensive deterministic comp
 - **Fixed memory access patterns**: Deterministic cache policies
 
 ### 3. Cross-Node Binary Verification (`verifier.py`)
+
 - **Merkle tree verification**: Hierarchical hash verification
 - **Byzantine fault tolerance**: Tolerates up to 1,041 Byzantine nodes (n=3,125)
 - **Zero-knowledge proofs**: Execution equivalence without revealing computation
@@ -52,6 +55,7 @@ The QRATUM ExaScale compiler toolchain provides comprehensive deterministic comp
 ### Why FMA is Disabled
 
 Fused Multiply-Add (FMA) instructions can cause non-determinism due to:
+
 - Compiler reordering of operations
 - Different FMA availability across architectures
 - Subtle floating-point precision differences
@@ -61,6 +65,7 @@ Fused Multiply-Add (FMA) instructions can cause non-determinism due to:
 ### Why Static Linking Only
 
 Dynamic linking introduces non-determinism via:
+
 - Different library versions on different nodes
 - Load-time symbol resolution order
 - Shared library memory layout
@@ -70,6 +75,7 @@ Dynamic linking introduces non-determinism via:
 ### Why Linear Register Allocation
 
 Graph coloring and adaptive allocation are non-deterministic due to:
+
 - Tie-breaking heuristics
 - Hash table ordering
 - Compiler version differences
@@ -156,21 +162,25 @@ The pipeline's static analysis detects:
 ## Verification Levels
 
 ### L0: Hash Comparison
+
 - Simple SHA-256 comparison
 - Fast, no overhead
 - No Byzantine tolerance
 
 ### L1: Merkle Tree
+
 - Hierarchical verification
 - Efficient for many artifacts
 - Proof size: O(log n)
 
 ### L2: Zero-Knowledge Proof
+
 - Execution equivalence without revealing code
 - Privacy-preserving
 - Computational overhead
 
 ### L3: Byzantine Consensus
+
 - Fault-tolerant agreement
 - Tolerates up to (n-1)/3 faults
 - Required for production
@@ -178,6 +188,7 @@ The pipeline's static analysis detects:
 ## Compiler Flags Reference
 
 ### NVCC Flags (Deterministic)
+
 ```bash
 -arch=sm_90              # Fixed architecture
 -O2                      # Deterministic optimization
@@ -188,6 +199,7 @@ The pipeline's static analysis detects:
 ```
 
 ### PTX Flags
+
 ```bash
 --ptx                    # Generate PTX
 -ptx-version=8.3        # Fixed PTX ISA
@@ -196,6 +208,7 @@ The pipeline's static analysis detects:
 ```
 
 ### SASS Flags
+
 ```bash
 --gpu-name=sm_100           # Target architecture
 --no-optimize-bindings      # No reordering
@@ -214,6 +227,7 @@ Deterministic compilation has minimal performance impact:
 ## Byzantine Fault Tolerance
 
 For n=3,125 nodes:
+
 - **Max Byzantine faults**: f = (n-1)/3 = 1,041
 - **Minimum agreement**: 2f+1 = 2,083 nodes
 - **Safety threshold**: 66.7% consensus required
@@ -227,6 +241,7 @@ python3 test_compiler_toolchain.py
 ```
 
 Expected output:
+
 ```
 ✓ All tests passed successfully
 ✓ Deterministic compilation pipeline
@@ -238,10 +253,10 @@ Expected output:
 
 ## References
 
-- NVCC Compiler Reference: https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/
-- PTX ISA Documentation: https://docs.nvidia.com/cuda/parallel-thread-execution/
+- NVCC Compiler Reference: <https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/>
+- PTX ISA Documentation: <https://docs.nvidia.com/cuda/parallel-thread-execution/>
 - Practical Byzantine Fault Tolerance: Castro & Liskov (1999)
-- Reproducible Builds: https://reproducible-builds.org/
+- Reproducible Builds: <https://reproducible-builds.org/>
 
 ## License
 

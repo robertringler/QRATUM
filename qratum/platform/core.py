@@ -10,9 +10,8 @@ import hashlib
 import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
 from enum import Enum
-
+from typing import Any, Dict
 
 # 8 Fatal Invariants - violations terminate execution
 FATAL_INVARIANTS = [
@@ -29,6 +28,7 @@ FATAL_INVARIANTS = [
 
 class ContractStatus(Enum):
     """Contract lifecycle states"""
+
     PENDING = "pending"
     AUTHORIZED = "authorized"
     EXECUTING = "executing"
@@ -39,6 +39,7 @@ class ContractStatus(Enum):
 
 class EventType(Enum):
     """Event types for execution tracking"""
+
     CONTRACT_CREATED = "contract_created"
     CONTRACT_AUTHORIZED = "contract_authorized"
     EXECUTION_STARTED = "execution_started"
@@ -54,10 +55,10 @@ class EventType(Enum):
 class PlatformIntent:
     """
     Immutable representation of a user's computation request.
-    
+
     This is the entry point for all QRATUM computations. Every intent
     must specify the vertical module, task, and parameters.
-    
+
     Attributes:
         vertical: Target vertical module (e.g., "JURIS", "VITRA")
         task: Specific task within the vertical (e.g., "analyze_contract")
@@ -66,13 +67,14 @@ class PlatformIntent:
         timestamp: UTC timestamp of intent creation
         intent_id: Unique identifier (derived from content hash)
     """
+
     vertical: str
     task: str
     parameters: Dict[str, Any]
     requester_id: str
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     intent_id: str = field(default="", init=False)
-    
+
     def __post_init__(self):
         """Generate deterministic intent_id from content hash"""
         content = {
@@ -85,7 +87,7 @@ class PlatformIntent:
         content_str = json.dumps(content, sort_keys=True)
         intent_hash = hashlib.sha256(content_str.encode()).hexdigest()[:16]
         object.__setattr__(self, "intent_id", f"intent_{intent_hash}")
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary representation"""
         return {
@@ -102,11 +104,11 @@ class PlatformIntent:
 class PlatformContract:
     """
     Immutable, cryptographically-signed execution contract.
-    
+
     Created by Q-Core authorization from a PlatformIntent. The contract
     is the binding agreement to execute a computation with specific
     parameters and guarantees.
-    
+
     Attributes:
         intent: The original PlatformIntent
         contract_id: Unique contract identifier
@@ -116,6 +118,7 @@ class PlatformContract:
         created_at: UTC timestamp of contract creation
         authorized_at: UTC timestamp of authorization
     """
+
     intent: PlatformIntent
     contract_id: str
     authorized_by: str
@@ -123,7 +126,7 @@ class PlatformContract:
     created_at: str
     authorized_at: str
     signature: str = field(default="", init=False)
-    
+
     def __post_init__(self):
         """Generate deterministic contract signature"""
         content = {
@@ -137,7 +140,7 @@ class PlatformContract:
         content_str = json.dumps(content, sort_keys=True)
         sig = hashlib.sha256(content_str.encode()).hexdigest()
         object.__setattr__(self, "signature", sig)
-    
+
     def verify_signature(self) -> bool:
         """Verify contract signature integrity"""
         content = {
@@ -151,7 +154,7 @@ class PlatformContract:
         content_str = json.dumps(content, sort_keys=True)
         expected_sig = hashlib.sha256(content_str.encode()).hexdigest()
         return self.signature == expected_sig
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary representation"""
         return {
@@ -169,10 +172,10 @@ class PlatformContract:
 class Event:
     """
     Immutable event in the execution chain.
-    
+
     Every significant action during contract execution emits an Event.
     Events are appended to the MerkleEventChain for auditability.
-    
+
     Attributes:
         event_id: Unique event identifier
         event_type: Type of event (from EventType enum)
@@ -181,13 +184,14 @@ class Event:
         data: Event-specific data payload
         emitter: Component that emitted the event
     """
+
     event_id: str
     event_type: EventType
     contract_id: str
     timestamp: str
     data: Dict[str, Any]
     emitter: str
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary representation"""
         return {
@@ -201,25 +205,24 @@ class Event:
 
 
 def create_contract_from_intent(
-    intent: PlatformIntent,
-    authorized_by: str = "Q-Core"
+    intent: PlatformIntent, authorized_by: str = "Q-Core"
 ) -> PlatformContract:
     """
     Create an authorized PlatformContract from a PlatformIntent.
-    
+
     This simulates the Q-Core authorization process. In production,
     this would involve cryptographic key signing and policy validation.
-    
+
     Args:
         intent: The PlatformIntent to authorize
         authorized_by: The authorizing entity (default: "Q-Core")
-    
+
     Returns:
         Authorized PlatformContract
     """
     now = datetime.now(timezone.utc).isoformat()
     contract_id = f"contract_{intent.intent_id}_{hashlib.sha256(now.encode()).hexdigest()[:8]}"
-    
+
     contract = PlatformContract(
         intent=intent,
         contract_id=contract_id,
@@ -228,35 +231,34 @@ def create_contract_from_intent(
         created_at=now,
         authorized_at=now,
     )
-    
+
     # Verify signature was generated correctly
     if not contract.verify_signature():
         raise RuntimeError("FATAL: Contract signature verification failed (Invariant #8)")
-    
+
     return contract
 
 
 def create_event(
-    event_type: EventType,
-    contract_id: str,
-    data: Dict[str, Any],
-    emitter: str
+    event_type: EventType, contract_id: str, data: Dict[str, Any], emitter: str
 ) -> Event:
     """
     Create an immutable Event.
-    
+
     Args:
         event_type: Type of event
         contract_id: Associated contract ID
         data: Event-specific data
         emitter: Component emitting the event
-    
+
     Returns:
         Immutable Event
     """
     timestamp = datetime.now(timezone.utc).isoformat()
-    event_id = f"event_{hashlib.sha256(f'{contract_id}_{timestamp}_{emitter}'.encode()).hexdigest()[:16]}"
-    
+    event_id = (
+        f"event_{hashlib.sha256(f'{contract_id}_{timestamp}_{emitter}'.encode()).hexdigest()[:16]}"
+    )
+
     return Event(
         event_id=event_id,
         event_type=event_type,

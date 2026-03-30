@@ -9,7 +9,7 @@ This module implements a complete chess engine system including:
 - UCI protocol interface for chess GUI integration
 
 Stage I: Core Engine Components
-Stage II: Neural Evaluation Network Architecture  
+Stage II: Neural Evaluation Network Architecture
 Stage III: Tri-Modal Cognitive Core (Tactical, Strategic, Conceptual)
 Stage IV: Benchmarking & Load-Testing Protocol
 """

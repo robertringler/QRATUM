@@ -1,6 +1,6 @@
 # QRATUM ExaScale Initiative
 
-## Not just the fastest. The fastest you can trust.
+## Not just the fastest. The fastest you can trust
 
 ---
 
@@ -50,6 +50,7 @@ The QRATUM ExaScale Initiative transforms QRATUM from a trust-optimized platform
 **CN-QES (Compute Node - Quantum ExaScale)**
 
 Each compute node contains:
+
 - 16× NVIDIA GB200 NVL72 GPUs (Blackwell architecture)
   - 40 TFLOPS FP64 per GPU × 16 = 640 TFLOPS per node
   - 192 GB HBM3e per GPU × 16 = 3.07 TB GPU memory per node
@@ -320,9 +321,9 @@ This is a confidential design document. Distribution requires approval from QRAT
 
 For inquiries about the QRATUM ExaScale Initiative:
 
-- **Technical Questions**: exascale-team@qratum.io
-- **Business Development**: partnerships@qratum.io
-- **National Laboratory Engagement**: gov-relations@qratum.io
+- **Technical Questions**: <exascale-team@qratum.io>
+- **Business Development**: <partnerships@qratum.io>
+- **National Laboratory Engagement**: <gov-relations@qratum.io>
 
 ---
 

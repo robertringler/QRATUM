@@ -99,6 +99,7 @@ Export PNG versions at appropriate resolution (1920×1080 for slides).
 **Purpose**: Technical and architectural diagrams
 
 **Content**:
+
 - Architecture overview
 - Data flow diagrams
 - Quantum runtime visualization
@@ -113,6 +114,7 @@ Export PNG versions at appropriate resolution (1920×1080 for slides).
 **Purpose**: UI and marketing icons
 
 **Content**:
+
 - Feature icons (GPU, compliance, RL optimization)
 - Technology icons (Kubernetes, cuQuantum, etc.)
 - Action icons (download, deploy, monitor)
@@ -125,6 +127,7 @@ Export PNG versions at appropriate resolution (1920×1080 for slides).
 **Purpose**: Decorative and explanatory illustrations
 
 **Content**:
+
 - Quantum entanglement visualizations
 - Tensor network representations
 - Abstract quantum backgrounds
@@ -138,6 +141,7 @@ Export PNG versions at appropriate resolution (1920×1080 for slides).
 **Purpose**: Product interface captures
 
 **Content**:
+
 - Dashboard views
 - CLI output examples
 - Monitoring interfaces
@@ -151,6 +155,7 @@ Export PNG versions at appropriate resolution (1920×1080 for slides).
 **Purpose**: Certification and compliance indicators
 
 **Content**:
+
 - DO-178C Level A badge
 - CMMC 2.0 Level 2 badge
 - NIST 800-53 Rev 5 badge
@@ -164,6 +169,7 @@ Export PNG versions at appropriate resolution (1920×1080 for slides).
 **Purpose**: Reusable marketing templates
 
 **Content**:
+
 - Feature card templates
 - Metric display templates
 - Testimonial templates
@@ -205,6 +211,7 @@ Export PNG versions at appropriate resolution (1920×1080 for slides).
 ## Questions?
 
 For questions about marketing assets or requests for new designs:
+
 - Open a GitHub issue with label `design` or `documentation`
 - Tag the marketing team in Figma comments
 - Reference this README in discussions

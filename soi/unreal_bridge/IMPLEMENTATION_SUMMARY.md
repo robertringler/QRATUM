@@ -15,6 +15,7 @@ A high-performance Rust library that acts as the "nervous system" of the SOI:
 **Location:** `soi/rust_core/soi_telemetry_core/`
 
 **Features:**
+
 - ✅ Async WebSocket client using `tokio` and `tungstenite`
 - ✅ Thread-safe global state with `Arc<Mutex>`
 - ✅ Zero-overhead FFI exports (C ABI)
@@ -28,6 +29,7 @@ A high-performance Rust library that acts as the "nervous system" of the SOI:
 - ✅ Build script for easy compilation
 
 **Key Functions:**
+
 ```c
 void   soi_initialize(const char* endpoint);
 uint64 soi_get_epoch();
@@ -46,6 +48,7 @@ A C++ Game Instance Subsystem that bridges Rust to Unreal:
 **Location:** `soi/unreal_bridge/Source/SoiGame/`
 
 **Features:**
+
 - ✅ FFI imports for all Rust functions
 - ✅ 60Hz polling timer (non-blocking)
 - ✅ State change detection with caching
@@ -54,6 +57,7 @@ A C++ Game Instance Subsystem that bridges Rust to Unreal:
 - ✅ Automatic lifecycle management (Initialize/Deinitialize)
 
 **Blueprint API:**
+
 ```cpp
 UFUNCTION(BlueprintCallable)
 void ConnectToAethernet(FString Endpoint);
@@ -72,6 +76,7 @@ FString GetLatestProof() const;
 ```
 
 **Event Delegates:**
+
 - `OnStateUpdated` - Broadcasts when epoch or slashing vector changes
 - `OnZoneHeatUpdated` - Broadcasts zone-specific heat changes
 - `OnProofVerified` - Broadcasts new ZK proof verification
@@ -81,11 +86,13 @@ FString GetLatestProof() const;
 **Location:** `soi/unreal_bridge/`
 
 **Files:**
+
 - ✅ `SoiGame.uproject` - UE5 5.3 project configuration
 - ✅ `SoiGame.Build.cs` - Build system with Rust library linking
 - ✅ `.gitignore` - Excludes UE5 build artifacts
 
 **Plugins Enabled:**
+
 - CommonUI (for holographic HUD)
 - Niagara (for particle systems)
 - PCG (for procedural lattice)
@@ -95,7 +102,9 @@ FString GetLatestProof() const;
 Three major documentation files totaling **~39KB** of detailed technical content:
 
 ##### a) README_UE5_MIGRATION.md (13KB)
+
 Complete migration guide covering:
+
 - System architecture overview
 - Build instructions for all platforms
 - Runtime configuration
@@ -107,7 +116,9 @@ Complete migration guide covering:
 - Migration mapping table
 
 ##### b) BLUEPRINT_IMPLEMENTATION_GUIDE.md (10KB)
+
 Visual implementation guide with step-by-step instructions for:
+
 - War Room Controller Blueprint setup
 - Holographic HUD with glass effects
 - Planetary Map Niagara particles
@@ -118,7 +129,9 @@ Visual implementation guide with step-by-step instructions for:
 - Blueprint node quick reference
 
 ##### c) ARCHITECTURE.md (15KB)
+
 System architecture with ASCII diagrams:
+
 - Complete system overview
 - Data flow diagrams
 - Performance profiles
@@ -208,6 +221,7 @@ soi/
 ## Build & Test Status
 
 ### Rust Core
+
 ```bash
 $ cd soi/rust_core/soi_telemetry_core
 $ cargo test
@@ -217,6 +231,7 @@ test tests::test_default_state ... ok
 ```
 
 ### Compilation
+
 ```bash
 $ cargo check
 Finished `dev` profile [unoptimized + debuginfo] target(s)
@@ -228,18 +243,21 @@ Finished `dev` profile [unoptimized + debuginfo] target(s)
 ### For Developers
 
 1. **Review Documentation**
+
    ```
    Read: soi/unreal_bridge/README_UE5_MIGRATION.md
    Then: soi/unreal_bridge/BLUEPRINT_IMPLEMENTATION_GUIDE.md
    ```
 
 2. **Build Rust Core**
+
    ```bash
    cd soi/rust_core/soi_telemetry_core
    ./build.sh
    ```
 
 3. **Open UE5 Project**
+
    ```
    Open: soi/unreal_bridge/SoiGame.uproject in Unreal Editor 5.3+
    ```
@@ -252,12 +270,14 @@ Finished `dev` profile [unoptimized + debuginfo] target(s)
 ### For Project Managers
 
 **What's Ready:**
+
 - ✅ Core infrastructure (Rust + C++ bridge)
 - ✅ Build system
 - ✅ Documentation (39KB of guides)
 - ✅ Testing framework
 
 **What's Next:**
+
 - Blueprint implementation (2-3 days with guide)
 - Visual asset creation (1-2 days)
 - Testing & polish (1 day)
@@ -267,18 +287,21 @@ Finished `dev` profile [unoptimized + debuginfo] target(s)
 ## Technical Decisions
 
 ### Why Rust?
+
 - Zero-cost abstractions
 - Memory safety without garbage collection
 - Excellent async/await support (Tokio)
 - C FFI is stable and well-documented
 
 ### Why FFI over Rust Plugin?
+
 - `unreal-rust` is experimental and unstable
 - FFI is battle-tested and production-ready
 - Clear ownership boundaries
 - Easier to debug
 
 ### Why 60Hz Polling?
+
 - Matches UE5 target frame rate
 - Minimal overhead (< 0.1ms per frame)
 - Simple change detection via diff
@@ -287,12 +310,14 @@ Finished `dev` profile [unoptimized + debuginfo] target(s)
 ## Security Considerations
 
 ### Current Implementation
+
 ✅ Buffer overflow protection  
 ✅ Panic catching at FFI boundary  
 ✅ Thread-safe state access  
 ✅ Read-only Blueprint API  
 
 ### Production TODO
+
 ⚠️ ZK proof verification in Rust  
 ⚠️ Message signature validation  
 ⚠️ Replay attack protection  
@@ -301,11 +326,13 @@ Finished `dev` profile [unoptimized + debuginfo] target(s)
 ## Performance Validation
 
 ### Rust Core
+
 - State read: < 1μs (lock acquisition)
 - FFI call overhead: < 100ns
 - WebSocket parsing: < 100μs per message
 
 ### C++ Bridge
+
 - Poll cycle: ~100μs (8 FFI calls)
 - Event broadcast: < 10μs per delegate
 - Frame budget impact: < 1%
@@ -332,6 +359,7 @@ Finished `dev` profile [unoptimized + debuginfo] target(s)
 ## Success Criteria
 
 ### ✅ Achieved
+
 - Rust library compiles and tests pass
 - C++ bridge is type-safe and documented
 - FFI boundary is well-defined
@@ -339,6 +367,7 @@ Finished `dev` profile [unoptimized + debuginfo] target(s)
 - Build system is configured
 
 ### 📝 Remaining (Guided)
+
 - Visual assets created in UE5
 - Blueprints implemented per guide
 - Integration testing complete
@@ -351,6 +380,7 @@ This implementation provides a **solid foundation** for migrating the SOI to Unr
 **The architecture is production-grade**, using standard FFI and proven technologies (Rust, Tokio, UE5). The performance overhead is negligible (< 1% frame budget), and the system is designed to scale to thousands of validator nodes.
 
 **Next Steps:**
+
 1. Open `SoiGame.uproject` in UE5
 2. Follow `BLUEPRINT_IMPLEMENTATION_GUIDE.md`
 3. Implement visual systems

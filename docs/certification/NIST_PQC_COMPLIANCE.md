@@ -49,24 +49,30 @@ QRATUM implements NIST-standardized post-quantum cryptographic algorithms to pro
 **Location**: `crypto/pqc/crystals_kyber.rs`
 
 **Key Generation**:
+
 ```rust
 pub fn generate_keypair() -> Result<(PublicKey, SecretKey), KyberError>
 ```
+
 - Uses DRBG with SHA3-512 for randomness
 - Constant-time polynomial arithmetic
 - Zeroization of intermediate values
 
 **Encapsulation**:
+
 ```rust
 pub fn encapsulate(pk: &PublicKey) -> Result<(SharedSecret, Ciphertext), KyberError>
 ```
+
 - Deterministic encapsulation with provided randomness
 - Implicit rejection on decapsulation failure
 
 **Decapsulation**:
+
 ```rust
 pub fn decapsulate(ct: &Ciphertext, sk: &SecretKey) -> Result<SharedSecret, KyberError>
 ```
+
 - Constant-time comparison
 - Returns pseudo-random value on failure (FO transform)
 
@@ -108,26 +114,32 @@ pub fn decapsulate(ct: &Ciphertext, sk: &SecretKey) -> Result<SharedSecret, Kybe
 **Location**: `crypto/pqc/crystals_dilithium.rs`
 
 **Key Generation**:
+
 ```rust
 pub fn generate_keypair() -> Result<(PublicKey, SecretKey), DilithiumError>
 ```
+
 - Deterministic from seed
 - Matrix expansion using SHAKE-256
 
 **Signing**:
+
 ```rust
 pub fn sign(message: &[u8], sk: &SecretKey) -> Result<Signature, DilithiumError>
 pub fn sign_with_context(message: &[u8], ctx: &[u8], sk: &SecretKey) -> Result<Signature, DilithiumError>
 ```
+
 - Rejection sampling for signature generation
 - Context string support (FIPS 204 §5.2)
 - Deterministic signing with hedged randomness
 
 **Verification**:
+
 ```rust
 pub fn verify(message: &[u8], sig: &Signature, pk: &PublicKey) -> Result<bool, DilithiumError>
 pub fn verify_with_context(message: &[u8], ctx: &[u8], sig: &Signature, pk: &PublicKey) -> Result<bool, DilithiumError>
 ```
+
 - Constant-time verification
 - Context binding support
 
@@ -168,23 +180,29 @@ pub fn verify_with_context(message: &[u8], ctx: &[u8], sig: &Signature, pk: &Pub
 **Location**: `crypto/pqc/sphincs_plus.rs`
 
 **Key Generation**:
+
 ```rust
 pub fn generate_keypair() -> Result<(PublicKey, SecretKey), SPHINCSError>
 ```
+
 - Uses getrandom for seed generation
 - Derives root from SK and public seed
 
 **Signing**:
+
 ```rust
 pub fn sign(message: &[u8], sk: &SecretKey) -> Result<Signature, SPHINCSError>
 ```
+
 - Randomized message hash (prevents side-channels)
 - FORS + Hypertree signature
 
 **Verification**:
+
 ```rust
 pub fn verify(message: &[u8], sig: &Signature, pk: &PublicKey) -> Result<bool, SPHINCSError>
 ```
+
 - Stateless verification
 - No state to manage (unlike XMSS)
 
@@ -199,18 +217,21 @@ pub fn verify(message: &[u8], sig: &Signature, pk: &PublicKey) -> Result<bool, S
 
 ## Algorithm Selection Guidelines
 
-### Use ML-KEM (Kyber) For:
+### Use ML-KEM (Kyber) For
+
 - Key encapsulation/exchange
 - Session key establishment
 - Hybrid key exchange with classical ECDH
 
-### Use ML-DSA (Dilithium) For:
+### Use ML-DSA (Dilithium) For
+
 - General-purpose digital signatures
 - Authentication
 - TXO signing
 - Validator signatures
 
-### Use SLH-DSA (SPHINCS+) For:
+### Use SLH-DSA (SPHINCS+) For
+
 - Long-term document signing
 - Root certificates
 - Maximum conservatism requirements
@@ -262,21 +283,25 @@ QRATUM supports hybrid classical+PQC operation:
 ## Migration Path
 
 ### Current State
+
 - PQC implementations complete
 - Classical crypto still primary
 - Hybrid mode available
 
 ### Phase 1: Hybrid Default (Q1 2025)
+
 - Enable hybrid by default
 - Classical fallback for compatibility
 - Monitor for issues
 
 ### Phase 2: PQC Primary (Q3 2025)
+
 - PQC as primary algorithms
 - Classical for legacy systems only
 - Begin deprecation warnings
 
 ### Phase 3: PQC Only (Q1 2026)
+
 - Remove classical-only paths
 - Full PQC operation
 - Harvest-now-decrypt-later mitigation complete

@@ -15,8 +15,8 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from typing import Any, Protocol, runtime_checkable
 from enum import Enum
+from typing import Any, Protocol, runtime_checkable
 
 
 class MetricStatus(Enum):
@@ -136,25 +136,21 @@ class QRATUMMetrics:
 
         # SF
         if self._total_operations > 0:
-            self.sovereignty_factor = 1.0 - (
-                self._external_operations / self._total_operations
-            )
+            self.sovereignty_factor = 1.0 - (self._external_operations / self._total_operations)
         else:
             self.sovereignty_factor = 1.0
 
         # HRD
         if self._total_operations > 0:
-            self.hallucination_risk_density = (
-                self._non_deterministic_ops / self._total_operations
-            )
+            self.hallucination_risk_density = self._non_deterministic_ops / self._total_operations
         else:
             self.hallucination_risk_density = 0.0
 
         # CEI = outcome / (compute * external_dependence)
         external_factor = 1.0 + (1.0 - self.sovereignty_factor)
         if self._compute_cost > 0 and external_factor > 0:
-            self.compute_efficiency_index = (
-                self.outcome_superiority_ratio / (self._compute_cost * external_factor)
+            self.compute_efficiency_index = self.outcome_superiority_ratio / (
+                self._compute_cost * external_factor
             )
 
     def to_dict(self) -> dict[str, float]:
@@ -233,12 +229,12 @@ class MetricsAggregator:
         n = len(all_metrics)
         aggregated = QRATUMMetrics()
 
-        aggregated.outcome_superiority_ratio = sum(
-            m.outcome_superiority_ratio for m in all_metrics.values()
-        ) / n
-        aggregated.compute_efficiency_index = sum(
-            m.compute_efficiency_index for m in all_metrics.values()
-        ) / n
+        aggregated.outcome_superiority_ratio = (
+            sum(m.outcome_superiority_ratio for m in all_metrics.values()) / n
+        )
+        aggregated.compute_efficiency_index = (
+            sum(m.compute_efficiency_index for m in all_metrics.values()) / n
+        )
         aggregated.sovereignty_factor = min(
             m.sovereignty_factor for m in all_metrics.values()
         )  # Weakest link

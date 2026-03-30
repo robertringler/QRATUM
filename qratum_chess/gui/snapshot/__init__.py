@@ -16,5 +16,5 @@ __all__ = [
 ]
 
 from qratum_chess.gui.snapshot.capture import SnapshotCapture, SnapshotConfig
-from qratum_chess.gui.snapshot.manager import SnapshotManager
 from qratum_chess.gui.snapshot.events import SnapshotEvent
+from qratum_chess.gui.snapshot.manager import SnapshotManager

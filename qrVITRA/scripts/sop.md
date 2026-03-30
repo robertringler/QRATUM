@@ -47,6 +47,7 @@ This document defines standard operating procedures for the VITRA-E0 sovereign e
 ### 2.1 Scope
 
 This SOP applies to:
+
 - All VITRA-E0 pipeline executions
 - Zone promotion and rollback operations
 - FIDO2 signature holders (Authorities A and B)
@@ -56,6 +57,7 @@ This SOP applies to:
 ### 2.2 Purpose
 
 To ensure:
+
 - **Determinism**: Bit-identical VCF outputs across runs
 - **Auditability**: Cryptographic provenance for all operations
 - **Security**: Dual authorization for critical promotions
@@ -68,6 +70,7 @@ To ensure:
 ### 3.1 Technical Authority (Signature A Holder)
 
 **Responsibilities**:
+
 - Execute and validate pipeline runs in Z1
 - Sign Z1 → Z2 promotions (single signature)
 - Co-sign Z2 → Z3 promotions (dual signature)
@@ -75,6 +78,7 @@ To ensure:
 - Maintain FIDO2 hardware device (Key A)
 
 **Required Skills**:
+
 - Nextflow pipeline execution
 - GPU computing (NVIDIA Parabricks)
 - GIAB validation interpretation
@@ -83,6 +87,7 @@ To ensure:
 ### 3.2 Compliance Authority (Signature B Holder)
 
 **Responsibilities**:
+
 - Review GIAB validation reports (F1 ≥ 0.995)
 - Co-sign Z2 → Z3 promotions (dual signature)
 - Authorize emergency rollbacks
@@ -90,6 +95,7 @@ To ensure:
 - Maintain FIDO2 hardware device (Key B)
 
 **Required Skills**:
+
 - Genomics quality control
 - Regulatory compliance (HIPAA, FDA)
 - Audit trail analysis
@@ -98,6 +104,7 @@ To ensure:
 ### 3.3 System Administrator
 
 **Responsibilities**:
+
 - Deploy and maintain zone infrastructure
 - Manage Guix container deployments
 - Configure air-gapped Z3 environment
@@ -118,6 +125,7 @@ To ensure:
    - Purchase from authorized distributors
 
 2. **Generate Ed25519 Key Pairs**
+
    ```bash
    # Key A (Technical Authority)
    ssh-keygen -t ed25519 -f epoch_a -N "" -C "vitra-e0-epoch-a"
@@ -127,6 +135,7 @@ To ensure:
    ```
 
 3. **Extract Public Key Binaries**
+
    ```bash
    # Convert to 32-byte binary format (implementation-specific)
    # Store in qrVITRA/merkler-static/injected/epoch_pubkey_*.bin
@@ -140,11 +149,13 @@ To ensure:
 ### 4.2 Key Custody 🔴 CRITICAL
 
 **Physical Security**:
+
 - Store Key A and Key B in separate secure locations
 - Use tamper-evident containers
 - Maintain access logs
 
 **Backup**:
+
 - Create encrypted offline backups of private keys
 - Split backup using Shamir's Secret Sharing (3-of-5 threshold)
 - Store shares in geographically separated vaults
@@ -162,6 +173,7 @@ To ensure:
 6. Document rotation in audit log
 
 **Rotation Triggers** (immediate):
+
 - Key compromise suspected
 - FIDO2 device loss or theft
 - Authority role change
@@ -192,6 +204,7 @@ cat zones/Z0/ZONE_METADATA.json | jq '.properties.immutable'
 ```
 
 **Verification**:
+
 - Z0 contains genesis Merkle root
 - FIDO2 pubkeys injected into merkler-static
 - Z1 staging directory created
@@ -203,6 +216,7 @@ cat zones/Z0/ZONE_METADATA.json | jq '.properties.immutable'
 **Authority**: Technical Lead
 
 **Prerequisites**:
+
 - Pipeline execution in Z1 complete
 - GIAB F1 score ≥ 0.995 verified
 - Precision ≥ 0.998, Recall ≥ 0.992
@@ -230,6 +244,7 @@ cat Z2/artifacts/promotion_*/promotion_manifest.json | jq '.signatures.fido2_a'
 ```
 
 **Verification Checklist**:
+
 - [ ] GIAB F1 ≥ 0.995
 - [ ] Signature A valid
 - [ ] Merkle DAG copied to Z2
@@ -243,6 +258,7 @@ cat Z2/artifacts/promotion_*/promotion_manifest.json | jq '.signatures.fido2_a'
 **Authorities**: Technical Lead + Compliance Lead
 
 **Prerequisites**:
+
 - Pipeline validated in Z2
 - Air-gap environment prepared
 - Network isolation verified
@@ -272,6 +288,7 @@ ip link show | grep -i "state up"  # No active interfaces
 ```
 
 **Verification Checklist**:
+
 - [ ] Network isolation verified
 - [ ] Dual signatures valid
 - [ ] Merkle DAG copied to Z3
@@ -285,6 +302,7 @@ ip link show | grep -i "state up"  # No active interfaces
 ### 6.1 Emergency Rollback Authorization 🔴 CRITICAL
 
 **Triggers** (emergency only):
+
 - Critical pipeline bug discovered
 - Data integrity compromised
 - Security vulnerability in pipeline
@@ -295,6 +313,7 @@ ip link show | grep -i "state up"  # No active interfaces
 ### 6.2 Z3 → Z2 Rollback
 
 **Prerequisites**:
+
 - Written justification (incident report)
 - Dual signature holders present
 - Emergency authorization from management
@@ -321,6 +340,7 @@ echo "Z3 → Z2 rollback executed. Incident: $JUSTIFICATION" | mail -s "VITRA-E0
 ```
 
 **Post-Rollback Actions**:
+
 1. Conduct security review
 2. Update pipeline to fix root cause
 3. Re-validate with GIAB
@@ -366,6 +386,7 @@ sudo mount -t squashfs -o loop,ro /opt/vitra/containers/vitra-e0-v1.0.squashfs /
 ```
 
 **Access Control**:
+
 - Two-person rule (witnesses required)
 - Physical access log
 - Video surveillance
@@ -378,6 +399,7 @@ sudo mount -t squashfs -o loop,ro /opt/vitra/containers/vitra-e0-v1.0.squashfs /
 ### 8.1 Standard Pipeline Run
 
 **Prerequisites**:
+
 - FASTQ files validated (MD5 checksums)
 - Reference genome indexed (GRCh38)
 - GIAB truth set available (if Z2+ promotion)
@@ -407,6 +429,7 @@ tail -f .nextflow.log
 ```
 
 **Performance Expectations**:
+
 - ALIGN_FQ2BAM: 30-45 minutes (30x WGS on A100)
 - CALL_VARIANTS: 25-30 minutes
 - GIAB_VALIDATE: 3-5 minutes
@@ -459,6 +482,7 @@ diff hash_2.txt hash_3.txt  # Should be identical
 ### 9.2 GIAB F1 Score Threshold
 
 **Z2 Promotion Criteria**:
+
 - Overall F1 ≥ 0.995
 - SNP F1 ≥ 0.995
 - Indel F1 ≥ 0.990
@@ -484,6 +508,7 @@ cat results/validation/sample_validation.json | jq '
 ### 10.1 Key Compromise
 
 **Immediate Actions**:
+
 1. Revoke compromised key
 2. Generate new epoch key pair
 3. Update genesis Merkle with new pubkey
@@ -492,6 +517,7 @@ cat results/validation/sample_validation.json | jq '
 6. Conduct forensic analysis
 
 **Escalation**:
+
 - Security team (immediate)
 - Legal/compliance (within 24h)
 - Regulatory bodies (if PHI affected)
@@ -515,6 +541,7 @@ cat results/provenance/provenance.log
 ```
 
 **Resolution Paths**:
+
 - GPU OOM: Reduce batch size or use `--low-memory`
 - Disk full: Clean work directory (`nextflow clean -f`)
 - GIAB fail: Review validation metrics, adjust thresholds
@@ -559,16 +586,16 @@ cat results/provenance/provenance.log
 
 ### Appendix B: References
 
-- NIST GIAB: https://www.nist.gov/programs-projects/genome-bottle
-- NVIDIA Parabricks: https://docs.nvidia.com/clara/parabricks/
-- FIDO Alliance: https://fidoalliance.org/fido2/
-- FDA 21 CFR Part 11: https://www.fda.gov/regulatory-information/search-fda-guidance-documents/part-11-electronic-records-electronic-signatures-scope-and-application
+- NIST GIAB: <https://www.nist.gov/programs-projects/genome-bottle>
+- NVIDIA Parabricks: <https://docs.nvidia.com/clara/parabricks/>
+- FIDO Alliance: <https://fidoalliance.org/fido2/>
+- FDA 21 CFR Part 11: <https://www.fda.gov/regulatory-information/search-fda-guidance-documents/part-11-electronic-records-electronic-signatures-scope-and-application>
 
 ### Appendix C: Contact Information
 
-- **Technical Authority (Key A)**: tech-lead@org.com
-- **Compliance Authority (Key B)**: compliance@org.com
-- **Security Team**: security@org.com
+- **Technical Authority (Key A)**: <tech-lead@org.com>
+- **Compliance Authority (Key B)**: <compliance@org.com>
+- **Security Team**: <security@org.com>
 - **Emergency Hotline**: +1-555-VITRA-E0
 
 ---

@@ -13,6 +13,7 @@ This directory contains the autonomous kernel evolution system for QuASIM.
 ## Usage
 
 Initialize population:
+
 ```bash
 python -m evolve.init_population --population-size 20 --seed 42
 ```
@@ -20,6 +21,7 @@ python -m evolve.init_population --population-size 20 --seed 42
 ## Evolution Strategy
 
 The system uses an evolutionary algorithm with:
+
 - Population-based optimization
 - Elite selection (top 50%)
 - Mutation-based exploration
@@ -28,6 +30,7 @@ The system uses an evolutionary algorithm with:
 ## Kernel Genome
 
 Each kernel genome encodes:
+
 - `tile_size`: Computation tile size (64-1024)
 - `warp_count`: Number of warps (8-64)
 - `unroll_factor`: Loop unroll factor (1-16)

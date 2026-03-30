@@ -1,4 +1,5 @@
 # Supplementary Materials
+
 ## CIIR Formal System: Constraint-Induced Interface Realism
 
 **Author:** Robert Ringler (Independent Researcher)
@@ -20,6 +21,7 @@ $W^*$-algebra) and $\omega : \mathcal{A} \to \mathbb{C}$ the cognitive state
 functional defined by $\omega(A) = \mathbb{E}[A]$.
 
 **Construction.**
+
 1. Define the inner product space $(\mathcal{A}, \langle \cdot, \cdot \rangle_\omega)$
    where $\langle A, B \rangle_\omega = \omega(A^* B)$.
 2. The null space $\mathcal{N} = \{A : \omega(A^*A) = 0\}$ is a left ideal.

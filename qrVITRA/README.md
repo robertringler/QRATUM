@@ -68,6 +68,7 @@ VCF + CBOR Merkle Chain
 ```
 
 **Determinism Guarantees**:
+
 - Fixed CUDA epoch (12.4.x + driver 535.x)
 - Locked DeepVariant seed (42)
 - PTX kernel anchoring (prevents compiler tampering)
@@ -528,6 +529,7 @@ cat reproducibility_report/REPRODUCIBILITY_SUMMARY.md
 **Symptoms**: OOM (out of memory) error during fq2bam
 
 **Solutions**:
+
 ```bash
 # Use low-memory mode
 nextflow run ... --pb_fq2bam_opts='--low-memory --tmp-dir /scratch'
@@ -540,11 +542,13 @@ nvidia-smi -i 0 -pl 250  # Limit GPU power
 ### VCF Not Bit-Identical Across Runs
 
 **Causes**:
+
 - Different CUDA/driver versions
 - DeepVariant seed not fixed
 - Non-deterministic GPU kernels
 
 **Solutions**:
+
 ```bash
 # Lock CUDA environment
 export CUDA_CACHE_DISABLE=1
@@ -559,11 +563,13 @@ grep pb_deepvariant_seed configs/nextflow.config
 ### GIAB Validation F1 < 0.995
 
 **Causes**:
+
 - Low-quality FASTQ input
 - Wrong reference genome (GRCh37 vs GRCh38)
 - Incorrect truth set
 
 **Solutions**:
+
 ```bash
 # Verify reference matches truth set
 cat results/validation/sample_validation.json | jq '.truth_set'
@@ -578,6 +584,7 @@ fastqc sample_R1.fastq.gz
 **Symptoms**: Signature verification error
 
 **Solutions**:
+
 ```bash
 # Verify FIDO2 pubkeys injected
 ls -lh merkler-static/injected/*.bin
@@ -596,17 +603,17 @@ echo -n "$MERKLE_HASH" | ssh-keygen -Y sign -f /yubikey/epoch_a -n vitra-e0 > si
 
 ### Documentation
 
-- **QRATUM Platform**: https://github.com/robertringler/QRATUM
+- **QRATUM Platform**: <https://github.com/robertringler/QRATUM>
 - **Standard Operating Procedures**: [scripts/sop.md](scripts/sop.md)
 - **Zone Topology Diagram**: zones/ZONE_TOPOLOGY.md (after deployment)
 
 ### External Resources
 
-- **NVIDIA Parabricks**: https://docs.nvidia.com/clara/parabricks/
-- **GIAB Reference Materials**: https://www.nist.gov/programs-projects/genome-bottle
-- **Nextflow DSL2**: https://www.nextflow.io/docs/latest/dsl2.html
-- **Guix Manual**: https://guix.gnu.org/manual/
-- **FIDO Alliance**: https://fidoalliance.org/fido2/
+- **NVIDIA Parabricks**: <https://docs.nvidia.com/clara/parabricks/>
+- **GIAB Reference Materials**: <https://www.nist.gov/programs-projects/genome-bottle>
+- **Nextflow DSL2**: <https://www.nextflow.io/docs/latest/dsl2.html>
+- **Guix Manual**: <https://guix.gnu.org/manual/>
+- **FIDO Alliance**: <https://fidoalliance.org/fido2/>
 
 ### Research Papers
 
@@ -664,9 +671,9 @@ If you use VITRA-E0 in your research, please cite:
 
 ## Support
 
-- **Issues**: https://github.com/robertringler/QRATUM/issues
-- **Discussions**: https://github.com/robertringler/QRATUM/discussions
-- **Email**: info@qratum.ai
+- **Issues**: <https://github.com/robertringler/QRATUM/issues>
+- **Discussions**: <https://github.com/robertringler/QRATUM/discussions>
+- **Email**: <info@qratum.ai>
 
 ---
 

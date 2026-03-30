@@ -200,7 +200,7 @@ class MedicareClaimsParser:
         count = 0
         errors = 0
 
-        with open(filepath, "r", encoding=encoding) as f:
+        with open(filepath, encoding=encoding) as f:
             reader = csv.DictReader(f, delimiter=delimiter)
 
             for row in reader:

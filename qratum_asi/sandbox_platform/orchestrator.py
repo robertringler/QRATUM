@@ -8,43 +8,41 @@ from __future__ import annotations
 
 import threading
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 from qradle.merkle import MerkleChain
-
+from qratum_asi.sandbox_platform.async_pipeline import AsyncEvaluationPipeline
+from qratum_asi.sandbox_platform.batch_evaluator import BatchProposalEvaluator
+from qratum_asi.sandbox_platform.deterministic_stubs import DeterministicStubRegistry
+from qratum_asi.sandbox_platform.diagnostics_offload import DiagnosticsOffloader
+from qratum_asi.sandbox_platform.dual_control_gateway import DualControlGateway
+from qratum_asi.sandbox_platform.ephemeral_container import EphemeralContainerPool
+from qratum_asi.sandbox_platform.incremental_state import IncrementalStateEvaluator
+from qratum_asi.sandbox_platform.isolated_sandbox import IsolatedSandboxExecutor
+from qratum_asi.sandbox_platform.lazy_evaluator import LazyEvaluator
+from qratum_asi.sandbox_platform.merkle_verifier import (
+    AuditChainLogger,
+    MerkleVerifiedChannel,
+)
+from qratum_asi.sandbox_platform.passive_metrics import PassiveMetricsCollector
+from qratum_asi.sandbox_platform.proposal_queue import ProposalQueue
+from qratum_asi.sandbox_platform.quantum_sandbox import HybridExecutor, QuantumSandbox
+from qratum_asi.sandbox_platform.resource_throttler import ResourceThrottler
+from qratum_asi.sandbox_platform.sharded_executor import ShardedSandboxExecutor
+from qratum_asi.sandbox_platform.speculative_executor import SpeculativeExecutor
+from qratum_asi.sandbox_platform.tensor_network import TensorNetworkPrecomputer
 from qratum_asi.sandbox_platform.types import (
     ExecutionMode,
     IsolationLevel,
     MetricsSnapshot,
     ProposalPriority,
-    ResourceAllocation,
     SandboxConfig,
     SandboxEvaluationResult,
     SandboxProposal,
 )
-from qratum_asi.sandbox_platform.isolated_sandbox import IsolatedSandboxExecutor
-from qratum_asi.sandbox_platform.merkle_verifier import (
-    AuditChainLogger,
-    MerkleVerifiedChannel,
-)
-from qratum_asi.sandbox_platform.async_pipeline import AsyncEvaluationPipeline
-from qratum_asi.sandbox_platform.sharded_executor import ShardedSandboxExecutor
-from qratum_asi.sandbox_platform.batch_evaluator import BatchProposalEvaluator
-from qratum_asi.sandbox_platform.ephemeral_container import EphemeralContainerPool
-from qratum_asi.sandbox_platform.deterministic_stubs import DeterministicStubRegistry
-from qratum_asi.sandbox_platform.incremental_state import IncrementalStateEvaluator
-from qratum_asi.sandbox_platform.passive_metrics import PassiveMetricsCollector
-from qratum_asi.sandbox_platform.diagnostics_offload import DiagnosticsOffloader
-from qratum_asi.sandbox_platform.proposal_queue import ProposalQueue
-from qratum_asi.sandbox_platform.dual_control_gateway import DualControlGateway
-from qratum_asi.sandbox_platform.lazy_evaluator import LazyEvaluator
-from qratum_asi.sandbox_platform.speculative_executor import SpeculativeExecutor
-from qratum_asi.sandbox_platform.resource_throttler import ResourceThrottler
-from qratum_asi.sandbox_platform.quantum_sandbox import QuantumSandbox, HybridExecutor
-from qratum_asi.sandbox_platform.tensor_network import TensorNetworkPrecomputer
 
 
 class PlatformStatus(Enum):

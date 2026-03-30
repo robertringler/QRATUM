@@ -37,6 +37,7 @@ QRATUM's safety depends on maintaining 8 Fatal Invariants across all operations.
   - Properties: Lifecycle ordering, checkpoint bounds, TXO limits
 
 **Usage:**
+
 ```bash
 # Install TLA+ Tools
 # https://lamport.azurewebsites.net/tla/tools.html
@@ -61,6 +62,7 @@ tlc ledger_state_machine.tla
   - Theorems: Rollback correctness, determinism, state restoration
 
 **Usage:**
+
 ```bash
 # Install Coq (version 8.18+)
 coqc FatalInvariants.v
@@ -75,6 +77,7 @@ coqc ReversibleTxo.v
   - Properties: Safety preservation, no double voting, decision quorum
 
 **Usage:**
+
 ```bash
 # Install Alloy Analyzer
 # https://alloytools.org/download.html
@@ -91,6 +94,7 @@ java -jar alloy.jar bft_consensus.als
   - Mathlib integration
 
 **Usage:**
+
 ```bash
 # Install Lean4 and elan
 curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh
@@ -168,9 +172,9 @@ These formal specifications contribute to DO-178C Level A certification:
 
 ## References
 
-- TLA+: https://lamport.azurewebsites.net/tla/tla.html
-- Coq: https://coq.inria.fr/
-- Alloy: https://alloytools.org/
-- Lean4: https://leanprover.github.io/lean4/doc/
+- TLA+: <https://lamport.azurewebsites.net/tla/tla.html>
+- Coq: <https://coq.inria.fr/>
+- Alloy: <https://alloytools.org/>
+- Lean4: <https://leanprover.github.io/lean4/doc/>
 - DO-178C: RTCA DO-178C Software Considerations in Airborne Systems
-- CBMC: https://www.cprover.org/cbmc/
+- CBMC: <https://www.cprover.org/cbmc/>

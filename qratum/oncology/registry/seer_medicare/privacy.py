@@ -223,7 +223,7 @@ def create_patient_key(
     Returns:
         Hashed patient key (hex string, truncated to 16 chars)
     """
-    combined = f"{salt}{original_id}".encode("utf-8")
+    combined = f"{salt}{original_id}".encode()
 
     if algorithm == "sha256":
         h = hashlib.sha256(combined)
@@ -251,7 +251,7 @@ def create_claim_id_hash(
     Returns:
         Hashed claim ID (hex string, truncated to 12 chars)
     """
-    combined = f"{salt}{claim_id}".encode("utf-8")
+    combined = f"{salt}{claim_id}".encode()
     return hashlib.sha256(combined).hexdigest()[:12]
 
 
@@ -357,9 +357,7 @@ class DUAComplianceChecker:
         passed = True
         for key, count in distribution.items():
             if 0 < count < self.config.min_cell_size:
-                self.issues.append(
-                    f"Cell '{key}' has count {count} < {self.config.min_cell_size}"
-                )
+                self.issues.append(f"Cell '{key}' has count {count} < {self.config.min_cell_size}")
                 passed = False
         return passed
 

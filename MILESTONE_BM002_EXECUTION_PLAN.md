@@ -1,4 +1,5 @@
 # BM-002: DETERMINISTIC EXECUTION & AUDIT FOUNDATION
+
 # QRATUM Institutional-Grade Milestone
 
 **Version:** 1.0  
@@ -14,12 +15,14 @@
 ### Current State Analysis
 
 **Production-Ready Components:**
+
 - ✅ Rust core skeleton (32 tests, 0 CodeQL alerts)
 - ✅ Contract system (immutable, hash-addressed, frozen dataclasses)
 - ✅ QIL parser (17 unit tests)
 - ✅ Event log infrastructure (cryptographic chaining)
 
 **Critical Gaps (Blocking):**
+
 1. **TXO Execution Engine** - No working path from Intent → Execution → Audit
 2. **Merkle Audit Logger** - Event log exists but not integrated
 3. **Deterministic Replay** - No verification harness
@@ -40,16 +43,19 @@
 ### Top 3 Blocking Bottlenecks
 
 #### 1. No Deterministic TXO Execution Path
+
 **Problem:** System can parse QIL and create contracts, but cannot execute them deterministically.  
 **Impact:** No proof of reproducibility, no audit trail, no institutional credibility.  
 **Fix:** Implement TXO executor with contract-driven dispatch.
 
 #### 2. Event Log Not Operational
+
 **Problem:** Rust event log exists but not integrated with Python platform.  
 **Impact:** No audit trail for external verification.  
 **Fix:** Python-Rust FFI bridge for Merkle-chained event emission.
 
 #### 3. No Replay Verification
+
 **Problem:** Cannot prove determinism by replaying executions.  
 **Impact:** No evidence of correctness, no reproducibility.  
 **Fix:** Build replay harness that consumes audit log and verifies hashes.
@@ -57,6 +63,7 @@
 ### Overbuilt/Premature Components (DEFERRED)
 
 **Immediately Frozen:**
+
 - Quantum computing integration (qiskit, pennylane, cirq)
 - Vertical market demos (aerospace, finance, healthcare, etc.)
 - Desktop GUI (qratum_desktop)
@@ -82,6 +89,7 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ### Explicitly Deferred/Frozen
 
 **Technology:**
+
 - All quantum computing features
 - All multi-node coordination
 - All GUI/visualization features
@@ -89,6 +97,7 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 - All compliance certifications (design for, don't claim)
 
 **Process:**
+
 - Vertical market pilots
 - Customer demos
 - Marketing materials
@@ -99,6 +108,7 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ## SECTION 2 — SINGLE MILESTONE (8-12 WEEKS)
 
 ### Milestone Name
+
 **BM-002: Deterministic Execution & Audit Foundation**
 
 ### Technical Scope
@@ -183,23 +193,27 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ### External-Facing Proof Artifacts
 
 #### Cryptographic Proofs
+
 - `audit_log.cbor` - Merkle-chained event log from execution
 - `execution_proof.json` - SHA3-256 hashes from both nodes proving determinism
 - `merkle_root.txt` - Root hash of audit chain
 - `replay_verification.json` - Hash-by-hash replay verification
 
 #### Test Evidence
+
 - `test_results.xml` - JUnit test results (CI artifact)
 - `coverage_report.html` - Code coverage report
 - `codeql_results.sarif` - Security scan results
 
 #### Reproducibility Package
+
 - `EXECUTION_DEMO.md` - Step-by-step reproduction guide
 - `demo_workload.qil` - Example QIL intent
 - `expected_hashes.txt` - Expected SHA3-256 outputs
 - `verification_script.sh` - Automated verification
 
 #### Audit Documentation
+
 - `AUDIT_TRAIL_SPEC.md` - Formal specification of audit log format
 - `ARCHITECTURE.md` - Updated architecture diagram
 - `API_REFERENCE.md` - Complete API documentation
@@ -208,23 +222,27 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ### Why This Milestone Unlocks Institutional Value
 
 #### Funding Opportunities
+
 - **DARPA**: Deterministic execution + audit trail = credible cyber-physical systems proposal
 - **NIH**: Reproducible computational biology pipelines for regulatory submission
 - **DoD**: Provable execution for weapons systems certification
 
 #### Pilot Programs
+
 - **Defense**: Supply chain provenance with cryptographic audit trail
 - **Biomedical**: Clinical trial data processing with deterministic guarantees
 - **Legal**: Discovery processing with tamper-evident logs
 - **Infrastructure**: Critical control systems with safety proofs
 
 #### Certification Paths
+
 - **DO-178C**: Determinism + audit trail = foundation for avionics software
 - **CMMC 2.0**: Audit logging = Level 2 access control requirement
 - **NIST 800-53**: Event logging + integrity verification = AU controls
 - **FDA 21 CFR Part 11**: Audit trail = electronic records compliance
 
 #### Trust & Credibility
+
 - External auditors can independently verify execution
 - No special access required (only public artifacts)
 - Cryptographic proofs cannot be forged
@@ -237,6 +255,7 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ### PR-1: Core TXO Execution Infrastructure
 
 **Files Touched:**
+
 - `qratum/txo_executor.py` (NEW)
 - `qratum/ffi_bridge.py` (NEW)
 - `qratum-rust/src/txo_executor.rs` (NEW)
@@ -244,29 +263,34 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 - `tests/unit/test_txo_executor.py` (NEW)
 
 **Functionality Added:**
+
 - Python-Rust FFI bridge using ctypes/cffi
 - TXO execution engine that accepts contracts
 - Deterministic dispatch to adapters
 - Basic error handling (FATAL on violations)
 
 **Tests Added:**
+
 - `test_execute_valid_txo()` - Happy path execution
 - `test_reject_invalid_contract()` - FATAL error on bad contract
 - `test_deterministic_output()` - Same input → same output
 
 **Determinism Guarantees:**
+
 - All inputs serialized with deterministic CBOR
 - Execution order strictly enforced by contract dependency graph
 - No wall-clock time, no random seeds, no I/O except via contracts
 - All state transitions logged with SHA3-256 hashes
 
 **Audit Guarantees:**
+
 - Every TXO execution emits ExecutionStarted event
 - Every TXO completion emits ExecutionCompleted event
 - All events include parent hash for cryptographic chaining
 - Events include full contract hash for traceability
 
 **Review Checklist:**
+
 - [ ] FFI bridge compiles on Linux/macOS/Windows
 - [ ] All tests pass
 - [ ] No unsafe Rust blocks without justification
@@ -278,6 +302,7 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ### PR-2: Merkle Audit Logger Integration
 
 **Files Touched:**
+
 - `qratum/audit_logger.py` (NEW)
 - `qratum-rust/src/audit_logger.rs` (NEW)
 - `events/merkle_chain.py` (MODIFIED)
@@ -285,6 +310,7 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 - `tests/integration/test_audit_chain.py` (NEW)
 
 **Functionality Added:**
+
 - Merkle tree construction from event log
 - SHA3-256 chaining of events
 - CBOR serialization of audit log
@@ -292,24 +318,28 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 - Python API for querying audit log
 
 **Tests Added:**
+
 - `test_merkle_root_computation()` - Verify Merkle root calculation
 - `test_event_chain_integrity()` - Detect tampered events
 - `test_audit_log_export()` - Serialize/deserialize audit log
 - `test_verify_causal_chain()` - Verify parent-child relationships
 
 **Determinism Guarantees:**
+
 - Event ordering strictly enforced
 - Timestamps from deterministic time oracle (quorum-based, stubbed)
 - No wall-clock dependencies
 - Reproducible Merkle root from same event sequence
 
 **Audit Guarantees:**
+
 - Merkle root commits to entire execution history
 - Any event modification breaks chain verification
 - Export format is CBOR (deterministic encoding)
 - All events include full contract context
 
 **Review Checklist:**
+
 - [ ] Merkle root matches reference implementation
 - [ ] Tampered event detection works
 - [ ] CBOR serialization is deterministic
@@ -321,12 +351,14 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ### PR-3: Contract Validation Enforcement
 
 **Files Touched:**
+
 - `qcore/validator.py` (NEW)
 - `contracts/validation.py` (MODIFIED)
 - `adapters/base.py` (MODIFIED)
 - `tests/unit/test_contract_validation.py` (NEW)
 
 **Functionality Added:**
+
 - Contract signature verification (stubbed with TODO)
 - Authorization policy enforcement
 - Temporal constraint checking (deadline enforcement)
@@ -334,22 +366,26 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 - FATAL errors on any violation
 
 **Tests Added:**
+
 - `test_reject_unsigned_contract()` - FATAL on missing signature
 - `test_reject_unauthorized_intent()` - FATAL on auth failure
 - `test_reject_expired_temporal_contract()` - FATAL on deadline exceeded
 - `test_reject_unresolvable_capability()` - FATAL on invalid hardware
 
 **Determinism Guarantees:**
+
 - All validation is deterministic (no external state)
 - Policy evaluation is pure function
 - No wall-clock time (use temporal contract deadline)
 
 **Audit Guarantees:**
+
 - Validation failure emits ContractRejected event
 - Event includes reason for rejection
 - All validation steps logged
 
 **Review Checklist:**
+
 - [ ] All 8 hard constraints enforced as FATAL
 - [ ] Error messages are actionable
 - [ ] No warnings, only errors
@@ -361,22 +397,26 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ### PR-4: Deterministic Execution Harness
 
 **Files Touched:**
+
 - `qratum/deterministic_harness.py` (NEW)
 - `tests/integration/test_determinism.py` (NEW)
 - `tests/fixtures/example_workload.qil` (NEW)
 
 **Functionality Added:**
+
 - Harness that executes QIL intent deterministically
 - SHA3-256 hash computation at each execution step
 - Comparison mode for two independent executions
 - Detailed divergence reporting
 
 **Tests Added:**
+
 - `test_single_execution_determinism()` - Multiple runs → same hash
 - `test_two_node_determinism()` - Independent nodes → same hash
 - `test_divergence_detection()` - Detect non-deterministic behavior
 
 **Determinism Guarantees:**
+
 - Fixed RNG seed (or no RNG)
 - No wall-clock time
 - No file I/O except via contracts
@@ -384,11 +424,13 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 - Execution order strictly enforced
 
 **Audit Guarantees:**
+
 - Harness execution generates full audit log
 - All intermediate hashes logged
 - Divergence includes full context for debugging
 
 **Review Checklist:**
+
 - [ ] Same input → same output across 100 runs
 - [ ] No flaky tests
 - [ ] Divergence reporting includes actionable info
@@ -399,33 +441,39 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ### PR-5: Rollback/Replay Verification
 
 **Files Touched:**
+
 - `qratum/replay_engine.py` (NEW)
 - `qratum/rollback_validator.py` (NEW)
 - `tests/integration/test_replay.py` (NEW)
 
 **Functionality Added:**
+
 - Replay engine that consumes audit log
 - Step-by-step hash verification
 - Rollback to arbitrary event in log
 - Forward replay from rollback point
 
 **Tests Added:**
+
 - `test_replay_from_audit_log()` - Replay → same output
 - `test_rollback_to_checkpoint()` - Rollback to event N
 - `test_forward_replay_after_rollback()` - Replay → same hash
 - `test_detect_tampered_audit_log()` - Detect corrupted log
 
 **Determinism Guarantees:**
+
 - Replay uses exact same inputs from audit log
 - No external state dependencies
 - Deterministic state reconstruction
 
 **Audit Guarantees:**
+
 - Replay generates secondary audit log
 - Hashes verified against original
 - Any divergence logged with context
 
 **Review Checklist:**
+
 - [ ] Replay matches original execution
 - [ ] Rollback + forward replay works
 - [ ] Tampered log detection works
@@ -436,11 +484,13 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ### PR-6: Two-Node Determinism Demo
 
 **Files Touched:**
+
 - `demos/two_node_determinism.py` (NEW)
 - `demos/EXECUTION_DEMO.md` (NEW)
 - `tests/integration/test_two_node_demo.py` (NEW)
 
 **Functionality Added:**
+
 - Standalone demo script
 - Simulates two independent nodes
 - Executes identical workload
@@ -448,20 +498,24 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 - Generates proof artifact
 
 **Tests Added:**
+
 - `test_two_node_demo_determinism()` - Demo passes
 - `test_proof_artifact_generation()` - Valid JSON output
 
 **Determinism Guarantees:**
+
 - Nodes share no state
 - Execution fully isolated
 - Only contracts exchanged
 
 **Audit Guarantees:**
+
 - Each node generates full audit log
 - Proof artifact includes both Merkle roots
 - Diff tool shows zero divergence
 
 **Review Checklist:**
+
 - [ ] Demo runs in < 30 seconds
 - [ ] No dependencies on external services
 - [ ] Proof artifact is JSON with expected fields
@@ -473,6 +527,7 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ### PR-7: Integration Tests & Documentation
 
 **Files Touched:**
+
 - `tests/integration/test_end_to_end_bm002.py` (NEW)
 - `docs/ARCHITECTURE_BM002.md` (NEW)
 - `docs/AUDIT_TRAIL_SPEC.md` (NEW)
@@ -480,6 +535,7 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 - `docs/AUDITOR_CHECKLIST.md` (NEW)
 
 **Functionality Added:**
+
 - Comprehensive end-to-end integration tests
 - Architecture diagrams (Mermaid)
 - Audit trail format specification
@@ -487,22 +543,26 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 - Auditor verification checklist
 
 **Tests Added:**
+
 - `test_full_execution_flow()` - QIL → Audit Log
 - `test_determinism_verification()` - Proof generation
 - `test_replay_verification()` - Replay from log
 - `test_contract_enforcement()` - FATAL on violations
 
 **Determinism Guarantees:**
+
 - All tests are deterministic
 - No flaky tests
 - Fixed test inputs
 
 **Audit Guarantees:**
+
 - Tests generate audit artifacts
 - Documentation includes expected hashes
 - External verification steps documented
 
 **Review Checklist:**
+
 - [ ] All 15+ integration tests pass
 - [ ] Documentation complete
 - [ ] Architecture diagrams accurate
@@ -514,11 +574,13 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 ### PR-8: Security Hardening & CI Optimization
 
 **Files Touched:**
+
 - `.github/workflows/bm002_ci.yml` (NEW)
 - `security/SECURITY_REVIEW_BM002.md` (NEW)
 - `qratum-rust/src/*` (MODIFIED - security fixes)
 
 **Functionality Added:**
+
 - Consolidated CI workflow for BM-002
 - CodeQL security scanning
 - Dependency vulnerability scanning
@@ -526,20 +588,24 @@ Without this working end-to-end with deterministic guarantees, the system is vap
 - Performance benchmarks
 
 **Tests Added:**
+
 - Security-focused test cases
 - Memory leak detection
 - Boundary condition tests
 
 **Determinism Guarantees:**
+
 - CI runs are deterministic
 - Same commit → same results
 
 **Audit Guarantees:**
+
 - CI artifacts archived
 - Security scan results public
 - All vulnerabilities addressed
 
 **Review Checklist:**
+
 - [ ] CodeQL: 0 high/critical alerts
 - [ ] Build time < 5 minutes
 - [ ] All tests pass on Linux/macOS/Windows
@@ -1117,6 +1183,7 @@ cat demos/expected_hashes.txt
 ### Expected Hashes/Artifacts
 
 **File:** `demos/expected_hashes.txt`
+
 ```
 node1_execution_hash: a3f5d8c9e1b2...  (SHA3-256)
 node2_execution_hash: a3f5d8c9e1b2...  (SHA3-256)
@@ -1126,6 +1193,7 @@ replay_merkle_root:   7e4d9a2f8c3b...  (SHA3-256)
 ```
 
 **File:** `demos/execution_proof.json`
+
 ```json
 {
   "version": "1.0",
@@ -1149,6 +1217,7 @@ replay_merkle_root:   7e4d9a2f8c3b...  (SHA3-256)
 ### Deterministic Replay Steps
 
 1. **Load Original Audit Log:**
+
    ```bash
    python -c "from qratum.audit_logger import AuditLogger; \
    log = AuditLogger.load_from_file('demos/audit_log.cbor'); \
@@ -1157,12 +1226,14 @@ replay_merkle_root:   7e4d9a2f8c3b...  (SHA3-256)
    ```
 
 2. **Replay Execution:**
+
    ```bash
    python scripts/replay_verification.py demos/audit_log.cbor \
    --output demos/replay_proof.json
    ```
 
 3. **Verify Hashes Match:**
+
    ```bash
    diff <(jq -S .node1.merkle_root demos/execution_proof.json) \
         <(jq -S .original_merkle_root demos/replay_proof.json)
@@ -1174,46 +1245,54 @@ replay_merkle_root:   7e4d9a2f8c3b...  (SHA3-256)
 **Auditor Checklist:** `docs/AUDITOR_CHECKLIST.md`
 
 #### 1. Determinism Verification
+
 - [ ] Run two-node demo on independent machines
 - [ ] Verify SHA3-256 hashes match exactly
 - [ ] Confirm no divergences in execution proof
 
 #### 2. Audit Trail Integrity
+
 - [ ] Load audit log from CBOR file
 - [ ] Verify Merkle root computation
 - [ ] Check cryptographic chain (parent-child hashes)
 - [ ] Confirm no events can be tampered without detection
 
 #### 3. Replay Verification
+
 - [ ] Replay execution from audit log
 - [ ] Verify hashes match at each step
 - [ ] Confirm Merkle root matches original
 
 #### 4. Contract Enforcement
+
 - [ ] Attempt invalid contract execution
 - [ ] Verify FATAL error raised (not warning)
 - [ ] Confirm error logged in audit trail
 - [ ] Check no execution occurs with invalid contract
 
 #### 5. Temporal Constraints
+
 - [ ] Create contract with short deadline
 - [ ] Execute workload that exceeds deadline
 - [ ] Verify FATAL error on deadline violation
 - [ ] Confirm partial execution rolled back
 
 #### 6. Security Validation
+
 - [ ] Review CodeQL scan results
 - [ ] Check for 0 high/critical security alerts
 - [ ] Verify dependency vulnerabilities addressed
 - [ ] Confirm no unsafe Rust blocks without justification
 
 #### 7. Build & Test Verification
+
 - [ ] Clone repository from scratch
 - [ ] Run build without errors
 - [ ] Execute all 15+ integration tests
 - [ ] Verify 100% pass rate
 
 #### 8. Documentation Completeness
+
 - [ ] Review architecture diagrams
 - [ ] Check audit trail specification
 - [ ] Verify API reference accuracy
@@ -1222,6 +1301,7 @@ replay_merkle_root:   7e4d9a2f8c3b...  (SHA3-256)
 ### What Evidence Is Archived and How
 
 **Archive Structure:**
+
 ```
 artifacts/
 ├── milestone_bm002/
@@ -1239,12 +1319,14 @@ artifacts/
 ```
 
 **Archival Process:**
+
 1. All artifacts generated during CI build
 2. Uploaded to GitHub Actions artifacts (90-day retention)
 3. Tagged release includes permanent copy
 4. SHA3-256 manifest of all artifacts signed with GPG key
 
 **Integrity Verification:**
+
 ```bash
 # Generate manifest
 sha3sum artifacts/milestone_bm002/* > artifacts/MANIFEST.sha3
@@ -1264,8 +1346,10 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ### Failure Modes
 
 #### 1. Non-Deterministic Execution
+
 **Symptom:** Different SHA3-256 hashes from same input  
 **Causes:**
+
 - Wall-clock time used instead of deterministic time oracle
 - Random number generation without fixed seed
 - File I/O with non-deterministic ordering
@@ -1274,6 +1358,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 **Impact:** Audit trail becomes useless, no reproducibility  
 **Detection:** Two-node demo fails, hashes diverge  
 **Mitigation:**
+
 - Strict no-wall-clock policy
 - All RNG requires explicit seed in contract
 - No file I/O except via contracts
@@ -1282,8 +1367,10 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 2. Audit Log Tampering
+
 **Symptom:** Modified events in audit log  
 **Causes:**
+
 - Direct file modification
 - MITM attack during log transfer
 - Compromised storage
@@ -1291,6 +1378,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 **Impact:** Audit trail integrity compromised  
 **Detection:** Merkle root verification fails, chain integrity check fails  
 **Mitigation:**
+
 - Cryptographic chaining (SHA3-256)
 - Merkle tree verification
 - GPG-signed manifest
@@ -1299,8 +1387,10 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 3. Contract Validation Bypass
+
 **Symptom:** Invalid contract executed  
 **Causes:**
+
 - Validation logic bypassed
 - Race condition in validation
 - Signature verification disabled
@@ -1308,6 +1398,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 **Impact:** Unauthorized execution, policy violation  
 **Detection:** Integration tests fail, audit log shows invalid contract  
 **Mitigation:**
+
 - FATAL errors on validation failure
 - No conditional validation (always enforced)
 - Test coverage > 95% for validation logic
@@ -1316,8 +1407,10 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 4. Temporal Constraint Violation
+
 **Symptom:** Execution continues past deadline  
 **Causes:**
+
 - Deadline check not enforced
 - Wall-clock time vs. contract time mismatch
 - Timeout logic broken
@@ -1325,6 +1418,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 **Impact:** Resource exhaustion, denial of service  
 **Detection:** Execution time exceeds temporal contract deadline  
 **Mitigation:**
+
 - FATAL error on deadline exceeded
 - Deadline checked at each execution step
 - Test coverage for timeout scenarios
@@ -1332,8 +1426,10 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 5. Replay Divergence
+
 **Symptom:** Replay produces different results  
 **Causes:**
+
 - Missing events in audit log
 - Contract reconstruction failure
 - Non-deterministic execution
@@ -1341,6 +1437,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 **Impact:** Cannot prove correctness, audit trail useless  
 **Detection:** Replay verification fails, hashes mismatch  
 **Mitigation:**
+
 - Log ALL events (no filtering)
 - Contract store for reconstruction
 - Deterministic execution guarantees
@@ -1350,9 +1447,11 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ### Attack Surfaces
 
 #### 1. Python-Rust FFI Boundary
+
 **Risk:** Memory safety violations, buffer overflows  
 **Attacker Goal:** Execute arbitrary code via FFI  
 **Mitigation:**
+
 - All FFI inputs validated in Rust
 - No unsafe blocks without justification
 - Memory ownership strictly enforced
@@ -1361,9 +1460,11 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 2. CBOR Deserialization
+
 **Risk:** Malicious CBOR payloads causing crashes  
 **Attacker Goal:** Denial of service, code execution  
 **Mitigation:**
+
 - Use battle-tested CBOR library (cbor2)
 - Size limits on all inputs
 - Validation before deserialization
@@ -1372,9 +1473,11 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 3. Contract Store Access
+
 **Risk:** Unauthorized contract modification  
 **Attacker Goal:** Bypass authorization, inject malicious contracts  
 **Mitigation:**
+
 - Contracts are immutable (frozen=True)
 - Contract store is append-only
 - All modifications logged in audit trail
@@ -1383,9 +1486,11 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 4. Audit Log Storage
+
 **Risk:** Log tampering, deletion  
 **Attacker Goal:** Hide malicious activity  
 **Mitigation:**
+
 - Cryptographic chaining
 - Merkle tree verification
 - Immutable storage backend
@@ -1394,9 +1499,11 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 5. Adapter Execution
+
 **Risk:** Malicious adapter code  
 **Attacker Goal:** Arbitrary code execution, data exfiltration  
 **Mitigation:**
+
 - Adapters sandboxed (future: WASM, containers)
 - Zero policy in adapters (only contract execution)
 - All adapter outputs validated
@@ -1407,10 +1514,12 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ### Misuse Scenarios
 
 #### 1. Backdated Contracts
+
 **Scenario:** Attacker creates contract with past timestamp  
 **Goal:** Retroactive authorization  
 **Impact:** Audit trail shows execution happened before authorization  
 **Mitigation:**
+
 - Temporal contract deadline must be future
 - Validation rejects past timestamps
 - Test coverage for backdated contracts
@@ -1418,10 +1527,12 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 2. Contract Replay Attack
+
 **Scenario:** Attacker replays valid contract from past execution  
 **Goal:** Duplicate execution, resource exhaustion  
 **Impact:** Same workload executed multiple times  
 **Mitigation:**
+
 - Contract ID includes nonce
 - Execution count tracked in executor
 - Duplicate detection in audit log
@@ -1429,10 +1540,12 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 3. Audit Log Deletion
+
 **Scenario:** Attacker deletes audit log after execution  
 **Goal:** Hide malicious activity  
 **Impact:** No evidence of what was executed  
 **Mitigation:**
+
 - Audit log exported to immutable storage
 - Merkle root published externally (blockchain, timestamping service)
 - Regular backups
@@ -1441,10 +1554,12 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 4. Fake Determinism Proof
+
 **Scenario:** Attacker generates fake execution proof with matching hashes  
 **Goal:** Claim determinism without actual execution  
 **Impact:** False confidence in system correctness  
 **Mitigation:**
+
 - Execution proof includes full contract bundle hash
 - Audit log must be provided with proof
 - Merkle root can be independently verified
@@ -1453,10 +1568,12 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### 5. Policy Injection via Adapter
+
 **Scenario:** Attacker adds policy logic to adapter  
 **Goal:** Bypass contract-driven execution  
 **Impact:** Adapter makes unauthorized decisions  
 **Mitigation:**
+
 - Code review for adapter policy logic
 - Integration tests verifying zero-policy guarantee
 - Adapter outputs must match contract specification
@@ -1505,6 +1622,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ### How Adversarial Reviewers Would Attack
 
 #### Attack Vector 1: "It's Not Really Deterministic"
+
 **Approach:** Run two-node demo repeatedly looking for divergence  
 **Countermeasure:** Include 100-run determinism test in CI  
 **Evidence:** Consistent hashes across all runs
@@ -1512,6 +1630,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### Attack Vector 2: "Audit Trail Can Be Forged"
+
 **Approach:** Modify audit log and show Merkle root still validates  
 **Countermeasure:** Tampering breaks cryptographic chain  
 **Evidence:** Integration test showing tamper detection
@@ -1519,6 +1638,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### Attack Vector 3: "Contracts Can Be Bypassed"
+
 **Approach:** Execute workload without valid contract  
 **Countermeasure:** FATAL error on contract validation failure  
 **Evidence:** Integration test showing rejection
@@ -1526,6 +1646,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### Attack Vector 4: "It's Just a Demo, Not Production-Ready"
+
 **Approach:** Claim code is toy implementation  
 **Countermeasure:** Production-quality code with clear TODO markers for cryptography  
 **Evidence:** CodeQL clean, full test coverage, comprehensive docs
@@ -1533,6 +1654,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ---
 
 #### Attack Vector 5: "No Real Use Case"
+
 **Approach:** Claim no one would use this  
 **Countermeasure:** Explicit defense/biomedical use cases with institutional validation requirements  
 **Evidence:** Architecture maps to DO-178C/CMMC/NIST controls
@@ -1562,6 +1684,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 **BM-003: Multi-Party Quorum & Distributed Execution**
 
 **Technical Scope:**
+
 - Multi-party quorum convergence (3-of-5 threshold)
 - Byzantine fault tolerance (1 malicious node)
 - Distributed Merkle audit log
@@ -1569,6 +1692,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 - Consensus-based time oracle
 
 **Success Criteria:**
+
 - 5 independent nodes execute workload
 - 3-of-5 quorum agreement on output
 - Merkle roots match across honest nodes
@@ -1585,6 +1709,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 **Partner:** DoD contractor (Raytheon, Lockheed, etc.)  
 **Use Case:** Parts authentication with cryptographic audit trail  
 **Value Proposition:**
+
 - Deterministic execution proves parts are genuine
 - Audit trail for regulatory compliance
 - Replay verification for external audit
@@ -1598,6 +1723,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 **Partner:** Pharmaceutical company or NIH-funded lab  
 **Use Case:** Deterministic analysis of genomic data  
 **Value Proposition:**
+
 - Reproducible results for FDA submission
 - Cryptographic audit trail for 21 CFR Part 11
 - External verification without data sharing
@@ -1611,6 +1737,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 **Partner:** Law firm or e-discovery vendor  
 **Use Case:** Tamper-evident processing of legal documents  
 **Value Proposition:**
+
 - Audit trail for court submission
 - Deterministic output for appeal verification
 - Chain of custody via Merkle log
@@ -1624,6 +1751,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 **Partner:** Utility company or industrial automation vendor  
 **Use Case:** Safety-critical SCADA system with audit trail  
 **Value Proposition:**
+
 - Deterministic execution for safety certification
 - Audit trail for incident investigation
 - Replay for root cause analysis
@@ -1637,11 +1765,13 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ##### DO-178C Level A (Avionics Software)
 
 **Enabled By BM-002:**
+
 - Deterministic execution (DO-178C requirement)
 - Traceability from requirements to execution (via contracts)
 - Verification & validation (via replay)
 
 **Next Steps After BM-002:**
+
 - Formal requirements traceability matrix
 - DO-178C tool qualification for TXO executor
 - Independent verification & validation (IV&V)
@@ -1653,11 +1783,13 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ##### CMMC 2.0 Level 2 (Defense Contractors)
 
 **Enabled By BM-002:**
+
 - Access control (contract authorization)
 - Audit logging (Merkle audit log)
 - Incident response (replay for investigation)
 
 **Next Steps After BM-002:**
+
 - CMMC-AC assessment
 - SSP (System Security Plan) documentation
 - POA&M (Plan of Action & Milestones)
@@ -1669,11 +1801,13 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ##### NIST 800-53 Rev 5 (Federal Systems)
 
 **Enabled By BM-002:**
+
 - AU (Audit & Accountability) controls
 - SI (System & Information Integrity) controls
 - AC (Access Control) controls
 
 **Next Steps After BM-002:**
+
 - Control assessment by C3PAO
 - Continuous monitoring plan
 - ATO (Authority to Operate) package
@@ -1685,11 +1819,13 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ##### FDA 21 CFR Part 11 (Biomedical Systems)
 
 **Enabled By BM-002:**
+
 - Electronic signatures (contract signatures)
 - Audit trails (Merkle log)
 - Data integrity (determinism + replay)
 
 **Next Steps After BM-002:**
+
 - Validation protocol documentation
 - User requirements specification
 - Vendor audit readiness
@@ -1701,6 +1837,7 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 ### What Remains Explicitly Out-of-Scope
 
 **Technology (Permanently Deferred):**
+
 - Quantum computing integration
 - AGI/ASI features
 - Consumer applications
@@ -1708,12 +1845,14 @@ gpg --verify artifacts/MANIFEST.sha3.sig
 - Web3/blockchain integration (beyond audit logging)
 
 **Scale (Deferred Until BM-004+):**
+
 - Cloud-native deployment
 - Auto-scaling
 - Multi-region replication
 - Performance optimization
 
 **Features (Deferred Until Pilots):**
+
 - Domain-specific workloads
 - UI/UX
 - Enterprise integrations
