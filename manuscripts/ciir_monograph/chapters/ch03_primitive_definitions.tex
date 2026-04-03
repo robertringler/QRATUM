@@ -123,9 +123,14 @@ metric.  This is complete, separable (with $\mathbb{Q} \cap [0,1]$
 dense), and has cardinality $\mathfrak{c}$.
 
 \textit{Intermediate cardinalities:} For $\aleph_0 < \kappa <
-\mathfrak{c}$ (if such exist under the continuum hypothesis's negation),
-take any subset of $[0,1]$ of cardinality $\kappa$ and form its closure
-in $\mathbb{R}$.
+\mathfrak{c}$ (if such exist under the negation of the continuum
+hypothesis), take any subset $S \subset [0,1]$ of cardinality $\kappa$
+and let $\CR = \overline{S}$ (closure in $\mathbb{R}$).  Then $\CR$ is
+complete (closed subset of a complete space), separable ($\mathbb{Q}
+\cap \CR$ is countable and dense in $\CR$ since $\CR \subseteq [0,1]$),
+and non-empty.  Note that $|\CR|$ may equal $\mathfrak{c}$ even if
+$|S| < \mathfrak{c}$; the proposition asserts existence of a Polish
+space of at least the given cardinality.
 \end{proof}
 
 % ============================================================
@@ -500,6 +505,23 @@ $\Tr(\Phi(\sigma)) = \Tr(\sigma)$ for all
 $\sigma \in \mathcal{T}_1(\CR_{\mathrm{op}})$.
 \end{definition}
 
+\begin{definition}[Push-Forward on the Operator Algebra]
+\label{def:3.17b}
+Let $\iota : \CM \hookrightarrow \CR$ be the $C^2$ embedding of the
+constraint manifold.  For a $\sigma$-finite Borel measure $\mu$ on $\CR$,
+the embedding induces a map on $L^2$ spaces via composition:
+$\iota^* : L^2(\CR, \mu) \to L^2(\CM, \iota^*\mu)$ defined by
+$\iota^* f := f \circ \iota$.  The \emph{push-forward on the operator
+algebra} is the $*$-homomorphism
+\[
+  \iota_* : \CB(\CR_{\mathrm{op}}) \to \CB(\CR_{\mathrm{op}}),
+  \qquad
+  \iota_*(A) := (\iota^*)^\dagger \circ A \circ \iota^*,
+\]
+where $(\iota^*)^\dagger$ is the Hilbert adjoint of $\iota^*$ (extended
+by zero on $(\mathrm{ran}\,\iota^*)^\perp$).
+\end{definition}
+
 \begin{definition}[Interface Map]
 \label{def:3.18}
 An \emph{interface map} is a linear map
@@ -510,10 +532,14 @@ $\Phi : \CB(\CR_{\mathrm{op}}) \to \CB(\HC)$ satisfying:
     on $\mathcal{T}_1(\CR_{\mathrm{op}})$.
   \item[(I3)] \textbf{Constraint covariance:}
     $\Phi \circ \iota_* = \hatP_\CM \circ \Phi$, where $\iota_*$ is the
-    push-forward induced by the embedding $\iota$ and $\hatP_\CM$ is
-    the orthogonal projection onto the constraint-image subspace
-    $\HC_\CM$ (Definition~\ref{def:3.21}).
+    push-forward (Definition~\ref{def:3.17b}) and $\hatP_\CM$ is the
+    orthogonal projection onto the constraint-image subspace $\HC_\CM$
+    (Definition~\ref{def:3.21}).
 \end{enumerate}
+Condition (I3) is a \emph{consistency requirement}: $\Phi$ is first
+constructed satisfying (I1)--(I2), then $\HC_\CM$ is derived from $\Phi$
+(Definition~\ref{def:3.21}), and finally (I3) is verified as a constraint
+on the admissible class of interface maps.
 \end{definition}
 
 \begin{proposition}[Kraus Representation]
@@ -740,15 +766,14 @@ to any non-zero vector), hence $\dim\HC_\CM \geq 1$.
       \item $\CR$ (Def.~\ref{def:3.1}) depends on no CIIR-specific objects.
       \item $\CM$ (Def.~\ref{def:3.7}) depends on $\CR$ (via embedding $\iota$).
       \item $\HC$ (Def.~\ref{def:3.11}) depends on no prior CIIR objects.
-      \item $\Phi$ (Def.~\ref{def:3.18}) depends on $\CR_{\mathrm{op}}$,
-        $\HC$, $\CM$ (via $\iota_*$), and $\HC_\CM$ (via $\hatP_\CM$).
-      \item $\HC_\CM$ (Def.~\ref{def:3.21}) depends on $\Phi$, $\HC$, $\CM$.
+      \item $\Phi$ (Def.~\ref{def:3.18}) is constructed in two phases:
+        (a)~conditions (I1)--(I2) depend only on $\CR_{\mathrm{op}}$ and
+        $\HC$; (b)~condition (I3) is a consistency requirement verified
+        \emph{after} $\HC_\CM$ (Def.~\ref{def:3.21}) is derived from
+        $\Phi$.  Thus the construction order is
+        $\Phi_{\text{(I1--I2)}} \to \HC_\CM \to \text{verify (I3)}$,
+        which is acyclic.
     \end{itemize}
-    The apparent mutual dependence between $\Phi$ and $\HC_\CM$ is
-    resolved by observing that $\HC_\CM$ is \emph{constructed from} $\Phi$
-    (so $\Phi$ must exist first), and the constraint covariance condition
-    (I3) in Definition~\ref{def:3.18} is a \emph{consistency requirement}
-    on $\Phi$, verified after $\HC_\CM$ is constructed.
 
   \item \textbf{No contradiction with prior chapters:}
     Chapter~1 (Introduction) and Chapter~2 (Motivation) contain no formal
@@ -786,7 +811,9 @@ $\CB(\HC)$ & Def.~\ref{def:3.12} & $\HC$ \\
 $\mathcal{T}_1(\HC)$ & Def.~\ref{def:3.13} & $\HC$, $\CB(\HC)$ \\
 $\mathfrak{D}(\HC)$ & Def.~\ref{def:3.14} & $\mathcal{T}_1(\HC)$ \\
 $\CR_{\mathrm{op}}$ & Def.~\ref{def:3.15} & $\CR$, $\mathscr{B}(\CR)$ \\
-$\Phi$ & Def.~\ref{def:3.18} & $\CR_{\mathrm{op}}$, $\HC$, $\iota$, $\hatP_\CM$ \\
+$\iota_*$ & Def.~\ref{def:3.17b} & $\iota$, $\CR_{\mathrm{op}}$ \\
+$\Phi$ (construction) & Def.~\ref{def:3.18}(I1--I2) & $\CR_{\mathrm{op}}$, $\HC$ \\
+$\Phi$ (covariance) & Def.~\ref{def:3.18}(I3) & $\iota_*$, $\hatP_\CM$ (verified post-construction) \\
 $\CA(\HC)$ & Def.~\ref{def:3.20} & $\CB(\HC)$, $\hatP_\CM$ \\
 $\HC_\CM$ & Def.~\ref{def:3.21} & $\Phi$, $\HC$ \\
 $\hatP_\CM$ & Def.~\ref{def:3.21} & $\HC_\CM$ \\
