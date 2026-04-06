@@ -21,7 +21,7 @@ from __future__ import annotations
 import time
 import uuid
 import warnings
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Literal
 
@@ -299,7 +299,9 @@ class AHTCAccelerator:
         Vh_trunc = Vh[:rank, :]
 
         # Compute error
-        actual_error = np.sqrt(np.sum(s[rank:] ** 2)) / np.sqrt(np.sum(s**2)) if len(s) > rank else 0.0
+        actual_error = (
+            np.sqrt(np.sum(s[rank:] ** 2)) / np.sqrt(np.sum(s**2)) if len(s) > rank else 0.0
+        )
 
         # Compute compression ratio
         original_size = np.prod(original_shape)
@@ -475,8 +477,12 @@ class AHTCAccelerator:
 
         # Calculate compressed sizes for both parts
         left_arrays = [v for v in left_result.compressed_data.values() if isinstance(v, np.ndarray)]
-        right_arrays = [v for v in right_result.compressed_data.values() if isinstance(v, np.ndarray)]
-        compressed_size = sum(arr.size for arr in left_arrays) + sum(arr.size for arr in right_arrays)
+        right_arrays = [
+            v for v in right_result.compressed_data.values() if isinstance(v, np.ndarray)
+        ]
+        compressed_size = sum(arr.size for arr in left_arrays) + sum(
+            arr.size for arr in right_arrays
+        )
 
         return CompressionResult(
             compressed_data={

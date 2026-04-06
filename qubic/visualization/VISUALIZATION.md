@@ -46,6 +46,7 @@ pip install -e ".[viz]"
 ```
 
 This includes:
+
 - `imageio` and `imageio-ffmpeg` for video export
 - `plotly` for interactive HTML visualizations
 - `torch` for GPU-accelerated rendering
@@ -435,11 +436,13 @@ pytest qubic/visualization/tests/ --cov=qubic.visualization
 ## Dependencies
 
 ### Core (Required)
+
 - `numpy>=1.24.0`
 - `matplotlib>=3.7.0`
 - `click>=8.0.0` (for CLI)
 
 ### Optional (Install with `pip install -e ".[viz]"`)
+
 - `imageio>=2.0.0` (video export)
 - `imageio-ffmpeg>=0.4.0` (MP4 encoding)
 - `plotly>=5.14.0` (interactive HTML)
@@ -483,6 +486,7 @@ backend = HeadlessBackend()
 ### ImportError: plotly not found
 
 Install plotly for interactive HTML export:
+
 ```bash
 pip install plotly
 ```
@@ -490,6 +494,7 @@ pip install plotly
 ### GPU not detected
 
 Verify CUDA installation:
+
 ```bash
 python -c "import torch; print(torch.cuda.is_available())"
 ```
@@ -497,6 +502,7 @@ python -c "import torch; print(torch.cuda.is_available())"
 ### Animation export fails
 
 Install video dependencies:
+
 ```bash
 pip install imageio imageio-ffmpeg
 ```
@@ -504,6 +510,7 @@ pip install imageio imageio-ffmpeg
 ### Display not available (headless mode)
 
 Use `HeadlessBackend` instead of `MatplotlibBackend`:
+
 ```python
 pipeline = StaticPipeline(backend="headless")
 ```
@@ -517,6 +524,7 @@ See `qubic/visualization/examples/` for complete working examples:
 - `stream_simulation.py` - Real-time streaming server
 
 Run examples via CLI:
+
 ```bash
 qubic-viz example tire --output-dir ./output
 qubic-viz example quantum --output-dir ./output
@@ -530,12 +538,14 @@ Apache License 2.0 - See LICENSE file for details.
 ## Support
 
 For issues, feature requests, or questions:
-- GitHub Issues: https://github.com/robertringler/Qubic/issues
+
+- GitHub Issues: <https://github.com/robertringler/Qubic/issues>
 - Documentation: See this file and inline code documentation
 
 ## Compliance
 
 This visualization subsystem is designed to support:
+
 - DO-178C Level A aerospace certification posture
 - NIST 800-53 Rev 5 security controls
 - CMMC 2.0 Level 2 compliance

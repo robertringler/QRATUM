@@ -13,6 +13,7 @@
 This document specifies the technical architecture for integrating QuASIM (Quantum-Accelerated Simulation) as a hybrid solver acceleration layer for Ansys Mechanical. QuASIM provides GPU-accelerated nonlinear elastomer mechanics, viscoelasticity, and wear simulation with deterministic reproducibility and aerospace-grade quality assurance.
 
 **Integration Value Proposition:**
+
 - **3-6x speedup** for large-strain rubber mechanics (validated on industry benchmarks)
 - **GPU acceleration** without Ansys-side architecture changes (PyMAPDL integration)
 - **Drop-in deployment** as co-solver, preconditioner, or surrogate
@@ -20,6 +21,7 @@ This document specifies the technical architecture for integrating QuASIM (Quant
 - **Aerospace compliance** (DO-178C Level A development practices)
 
 **Target Use Cases:**
+
 - Tire simulation (automotive OEMs: Goodyear, Michelin, Continental)
 - Seal/gasket analysis (aerospace: O-rings, dampers)
 - Shock isolation systems (defense: vibration isolation mounts)
@@ -82,9 +84,11 @@ This document specifies the technical architecture for integrating QuASIM (Quant
 QuASIM supports three deployment modes for different use cases:
 
 #### Mode 1: Co-Solver (Recommended)
+
 **Description:** QuASIM runs in parallel with Ansys, handling specific physics domains (e.g., hyperelasticity) while Ansys handles others (e.g., linear structures).
 
 **Execution Flow:**
+
 1. Ansys MAPDL starts solve
 2. PyMAPDL calls `QuasimAnsysAdapter.solve()` for nonlinear elastomer elements
 3. QuASIM returns displacement field to Ansys
@@ -92,11 +96,13 @@ QuASIM supports three deployment modes for different use cases:
 5. Results merged in Ansys postprocessor
 
 **Benefits:**
+
 - Minimal Ansys workflow disruption
 - Leverages best of both solvers
 - Gradual adoption path
 
 **Implementation:**
+
 ```python
 # User script in Ansys Workbench
 from ansys.mapdl.core import launch_mapdl
@@ -126,20 +132,24 @@ mapdl.post1()
 ```
 
 #### Mode 2: Preconditioner
+
 **Description:** QuASIM provides initial solution estimate to accelerate Ansys Newton-Raphson convergence.
 
 **Execution Flow:**
+
 1. Ansys begins Newton iteration
 2. QuASIM provides preconditioned displacement estimate
 3. Ansys refines solution with full accuracy
 4. Repeat until convergence
 
 **Benefits:**
+
 - Reduces Ansys iteration count (3-5x fewer iterations)
 - No accuracy compromise (Ansys still solves to tolerance)
 - Compatible with all Ansys features
 
 **Implementation:**
+
 ```python
 quasim = QuasimAnsysAdapter(
     mode=SolverMode.PRECONDITIONER,
@@ -154,19 +164,23 @@ mapdl.solve()
 ```
 
 #### Mode 3: Standalone Surrogate
+
 **Description:** QuASIM fully replaces Ansys for supported physics (hyperelasticity, wear).
 
 **Execution Flow:**
+
 1. Export mesh/BC from Ansys (one-time)
 2. Run QuASIM solver standalone
 3. Import results to Ansys for visualization
 
 **Benefits:**
+
 - Maximum speedup (6-10x)
 - Batch execution without Ansys license
 - Ideal for parametric sweeps
 
 **Implementation:**
+
 ```python
 # Export from Ansys (one-time setup)
 mapdl.cdwrite("all", "model.cdb")
@@ -190,29 +204,35 @@ mapdl.file("results.rst")
 ### 2.1 Nonlinear Elastomers (Primary)
 
 **Material Models:**
+
 - **Mooney-Rivlin** (2-parameter, 5-parameter, 9-parameter)
 - **Neo-Hookean** (single parameter hyperelastic)
 - **Ogden** (up to 6-term series)
 - **Yeoh** (reduced polynomial form)
 
 **Constitutive Equations:**
+
 ```
 Mooney-Rivlin: W = C10(I1 - 3) + C01(I2 - 3) + K(J - 1)²
 Neo-Hookean:   W = C10(I1 - 3) + K(J - 1)²
 Ogden:         W = Σ(μᵢ/αᵢ)[(λ₁^αᵢ + λ₂^αᵢ + λ₃^αᵢ) - 3]
 ```
+
 where:
+
 - `I1, I2` = first and second strain invariants
 - `J` = volumetric strain (det F)
 - `K` = bulk modulus (near-incompressibility constraint)
 - `λᵢ` = principal stretches
 
 **Strain Regime:**
+
 - Small strain: 0-10% (linear approximation valid)
 - Moderate strain: 10-50% (geometric nonlinearity required)
 - **Large strain: 50-100%+** (QuASIM target regime, hyperelastic models)
 
 **Solver Acceleration:**
+
 - GPU-accelerated stress/tangent computation (100-200x vs CPU)
 - Tensor network contraction for Jacobian assembly
 - Adaptive error budget allocation (1e-6 strain energy tolerance)
@@ -220,10 +240,12 @@ where:
 ### 2.2 Viscoelasticity
 
 **Material Models:**
+
 - **Prony Series** (generalized Maxwell model, up to 10 terms)
 - **WLF Temperature Shift** (Williams-Landel-Ferry)
 
 **Constitutive Equations:**
+
 ```
 G(t) = G∞ + Σᵢ Gᵢ exp(-t/τᵢ)   [Shear modulus relaxation]
 K(t) = K∞ + Σᵢ Kᵢ exp(-t/τᵢ)   [Bulk modulus relaxation]
@@ -231,13 +253,16 @@ K(t) = K∞ + Σᵢ Kᵢ exp(-t/τᵢ)   [Bulk modulus relaxation]
 WLF shift function:
 log(aₜ) = -C₁(T - Tᵣ) / (C₂ + T - Tᵣ)
 ```
+
 where:
+
 - `Gᵢ, τᵢ` = Prony series coefficients and time constants
 - `aₜ` = temperature shift factor
 - `C₁, C₂` = WLF constants
 - `T, Tᵣ` = current and reference temperature
 
 **Time Integration:**
+
 - Implicit Euler (unconditionally stable)
 - Adaptive time stepping (CFL < 0.5)
 - State variable storage optimization (sparse tensor format)
@@ -245,16 +270,19 @@ where:
 ### 2.3 Thermo-Mechanical Coupling
 
 **Coupling Algorithm:**
+
 - **Sequential coupling** (thermal → structural, one-way)
 - **Iterative coupling** (bidirectional, until convergence)
 - **Monolithic coupling** (fully coupled Jacobian, future)
 
 **Thermal Properties:**
+
 - Conductivity: `k(T)` [W/(m·K)]
 - Specific heat: `cₚ(T)` [J/(kg·K)]
 - Thermal expansion: `α(T)` [1/K]
 
 **Temperature-Dependent Modulus:**
+
 - WLF shift function (rubbers)
 - Arrhenius shift (thermoplastics)
 - Linear interpolation (metals)
@@ -262,16 +290,19 @@ where:
 ### 2.4 Contact Mechanics
 
 **Contact Algorithms:**
+
 - **Penalty method** (soft contact, fast convergence)
 - **Augmented Lagrangian** (hard contact, exact constraints)
 - **Mortar method** (future, for shell contact)
 
 **Contact Features:**
+
 - Friction (Coulomb, stick-slip detection)
 - Separation (gap checking, no penetration)
 - Sliding (tangential relative motion)
 
 **GPU Acceleration:**
+
 - Contact search (spatial hashing on GPU)
 - Contact Jacobian assembly (batched operations)
 - Frictional slip iteration (parallel scan algorithms)
@@ -279,6 +310,7 @@ where:
 ### 2.5 Wear Simulation
 
 **Wear Models:**
+
 - **Archard wear law:** `V = k · F · s / H`
   - `V` = wear volume
   - `k` = wear coefficient (empirical)
@@ -287,11 +319,13 @@ where:
   - `H` = material hardness
 
 **Mesh Adaptation:**
+
 - **ALE smoothing** (Arbitrary Lagrangian-Eulerian)
 - Remeshing trigger: wear depth > element size / 2
 - Boundary-only remesh (preserve bulk mesh)
 
 **Long-Horizon Efficiency:**
+
 - Cycle skipping (update wear every N cycles)
 - Checkpointing (save state every 1000 cycles)
 - Memory management (purge old history)
@@ -313,12 +347,14 @@ where:
 ### 3.2 CPU Fallback
 
 **Automatic Fallback Triggers:**
+
 - GPU memory exhausted (model too large)
 - GPU driver failure (hardware fault)
 - CUDA initialization error
 - User override (`device="cpu"`)
 
 **Fallback Behavior:**
+
 ```python
 try:
     quasim = QuasimAnsysAdapter(device="gpu")
@@ -330,6 +366,7 @@ except GPUMemoryError:
 ```
 
 **Performance Impact:**
+
 - CPU solve time: 10-20x slower than GPU
 - Still competitive with Ansys baseline (optimized C++/CUDA kernels)
 - No accuracy loss (identical algorithms)
@@ -337,11 +374,13 @@ except GPUMemoryError:
 ### 3.3 Multi-GPU Scaling
 
 **Domain Decomposition:**
+
 - **Spatial decomposition** (partition mesh by region)
 - **Material-based decomposition** (assign materials to GPUs)
 - **Frequency decomposition** (for modal analysis)
 
 **Scaling Efficiency:**
+
 | GPU Count | Weak Scaling Efficiency | Strong Scaling Efficiency |
 |-----------|-------------------------|---------------------------|
 | 2 GPUs | 95% | 85% |
@@ -349,6 +388,7 @@ except GPUMemoryError:
 | 8 GPUs | 85% | 65% |
 
 **Communication:**
+
 - NVLink (preferred, 600 GB/s bandwidth)
 - PCIe 4.0 (fallback, 64 GB/s per GPU)
 - MPI (multi-node, InfiniBand recommended)
@@ -356,6 +396,7 @@ except GPUMemoryError:
 ### 3.4 Distributed Execution
 
 **Cluster Deployment:**
+
 ```yaml
 # Kubernetes deployment example
 apiVersion: v1
@@ -378,6 +419,7 @@ spec:
 ```
 
 **Cloud Deployment:**
+
 - AWS: EC2 P4d instances (8x A100 80GB)
 - Azure: NDm A100 v4 (8x A100 80GB)
 - GCP: A2 instances (16x A100 40GB)
@@ -389,11 +431,13 @@ spec:
 ### 4.1 Mesh Import
 
 **Supported Formats:**
+
 - **Ansys CDB** (`.cdb`) - full model export via `cdwrite`
 - **Ansys RST** (`.rst`) - result file for restart
 - **PyMAPDL API** - direct Python object access (preferred)
 
 **Mesh Data Structure:**
+
 ```python
 @dataclass
 class MeshData:
@@ -407,6 +451,7 @@ class MeshData:
 ```
 
 **Import Example:**
+
 ```python
 # Method 1: From active MAPDL session (zero-copy, fastest)
 mesh = quasim.import_mesh_from_mapdl()
@@ -426,6 +471,7 @@ quasim.set_mesh(mesh)
 ### 4.2 Field Data Exchange
 
 **State Vector:**
+
 ```python
 @dataclass
 class StateVector:
@@ -439,6 +485,7 @@ class StateVector:
 ```
 
 **Boundary Conditions:**
+
 ```python
 @dataclass
 class BoundaryConditions:
@@ -462,6 +509,7 @@ class BoundaryConditions:
 | `TB,SHIFT,1,,,WLF` | WLF temperature shift | `C1, C2, T_ref` |
 
 **Material Definition Example:**
+
 ```python
 # In Ansys APDL:
 # TB,HYPER,1,,,MOONEY
@@ -484,6 +532,7 @@ quasim.add_material(
 ### 4.4 Result Export
 
 **Export Formats:**
+
 - **Ansys RST** (`.rst`) - native result file for Mechanical postprocessing
 - **VTK** (`.vtu`, `.vtk`) - for ParaView visualization
 - **CSV** - tabular data for external analysis
@@ -491,6 +540,7 @@ quasim.add_material(
 - **HDF5** - large-scale data archival
 
 **Export Example:**
+
 ```python
 # Export to Ansys format (seamless postprocessing)
 quasim.export_results_to_mapdl()  # Direct injection into active session
@@ -534,6 +584,7 @@ class GPUDriverError(QuasimError):
 ### 5.2 Convergence Failure Handling
 
 **Automatic Recovery Strategies:**
+
 1. **Reduce load step:** Halve substep size and retry
 2. **Enable line search:** Activate backtracking if disabled
 3. **Switch preconditioner:** Try block-Jacobi if ILU fails
@@ -541,6 +592,7 @@ class GPUDriverError(QuasimError):
 5. **CPU fallback:** Retry on CPU with double precision
 
 **Example:**
+
 ```python
 try:
     quasim.solve()
@@ -553,6 +605,7 @@ except ConvergenceError as e:
 ### 5.3 GPU Error Handling
 
 **CUDA Errors:**
+
 ```python
 try:
     quasim = QuasimAnsysAdapter(device="gpu")
@@ -562,6 +615,7 @@ except GPUDriverError:
 ```
 
 **Out-of-Memory Recovery:**
+
 ```python
 try:
     quasim.solve()
@@ -578,12 +632,14 @@ except GPUMemoryError:
 ### 5.4 Validation and Sanity Checks
 
 **Pre-Solve Validation:**
+
 - Mesh quality checks (negative Jacobian detection)
 - Material parameter bounds (positive moduli)
 - Boundary condition consistency (overconstrained DOF detection)
 - Unit consistency (SI units enforced)
 
 **Post-Solve Validation:**
+
 - Energy conservation check (strain energy balance)
 - Reaction force equilibrium (ΣF = 0)
 - Contact penetration check (no violations)
@@ -603,6 +659,7 @@ except GPUMemoryError:
 | Contact Force Error | < 5% | Reaction force magnitude |
 
 **Verification Protocol:**
+
 - Run Ansys reference solution with tight tolerances
 - Compute SHA-256 hash of nodal displacements
 - Run QuASIM solver with identical BC/mesh
@@ -619,6 +676,7 @@ except GPUMemoryError:
 | Multi-Material | 3-4x | BM_005 (tire section) |
 
 **Speedup Definition:**
+
 ```
 Speedup = T_ansys / T_quasim
 where:
@@ -629,12 +687,14 @@ where:
 ### 6.3 Scaling Efficiency
 
 **Weak Scaling (constant work per GPU):**
+
 ```
 Efficiency = T_1GPU / T_NGPU
 Target: >75% for N ≤ 8 GPUs
 ```
 
 **Strong Scaling (fixed total work):**
+
 ```
 Efficiency = (T_1GPU / N) / T_NGPU
 Target: >65% for N ≤ 8 GPUs
@@ -643,11 +703,13 @@ Target: >65% for N ≤ 8 GPUs
 ### 6.4 Deterministic Reproducibility
 
 **Requirements:**
+
 - Bit-exact results for identical input (seed, mesh, BC, material)
 - Seed replay with <1μs drift over 10,000 time steps
 - Platform-independent (same result on CPU/GPU, x86/ARM)
 
 **Implementation:**
+
 - Deterministic random number generation (MT19937 with fixed seed)
 - Associative reduction operations (Kahan summation for FP accumulation)
 - Fixed iteration order (sorted element/node IDs)
@@ -659,6 +721,7 @@ Target: >65% for N ≤ 8 GPUs
 ### 7.1 Installation Procedures
 
 **System Requirements:**
+
 - Python 3.10+ (3.12 recommended)
 - NVIDIA GPU with Compute Capability ≥ 8.0 (Ampere or newer)
 - CUDA 12.2+ and cuDNN 8.9+
@@ -686,6 +749,7 @@ python -m quasim_ansys_adapter.test_installation
 ```
 
 **Docker Deployment:**
+
 ```dockerfile
 FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
 
@@ -704,6 +768,7 @@ ENTRYPOINT ["python3", "run_benchmark.py"]
 ### 7.2 Ansys Workbench Integration
 
 **ACT (Ansys Customization Toolkit) Extension:**
+
 ```xml
 <extension version="1.0" name="QuASIM Solver">
   <interface>
@@ -718,6 +783,7 @@ ENTRYPOINT ["python3", "run_benchmark.py"]
 ```
 
 **User Workflow:**
+
 1. Open Ansys Mechanical Workbench
 2. Add QuASIM solver extension from toolbar
 3. Configure solver settings in properties panel
@@ -727,6 +793,7 @@ ENTRYPOINT ["python3", "run_benchmark.py"]
 ### 7.3 APDL Command Integration
 
 **Custom APDL Command:**
+
 ```apdl
 ! Define QuASIM solver macro
 *CREATE,QUASIM_SOLVE
@@ -754,11 +821,13 @@ ENTRYPOINT ["python3", "run_benchmark.py"]
 ### 7.4 Licensing
 
 **QuASIM Licensing:**
+
 - Open-source core (Apache 2.0)
 - Commercial support available (enterprise license)
 - No runtime license server (standalone)
 
 **Ansys Licensing:**
+
 - Requires active Ansys Mechanical license
 - Compatible with both Academic and Commercial licenses
 - PyMAPDL requires Mechanical Pro or higher
@@ -770,6 +839,7 @@ ENTRYPOINT ["python3", "run_benchmark.py"]
 ### 8.1 Benchmark Suite
 
 Five industry-credible benchmark cases (see `benchmark_definitions.yaml`):
+
 - **BM_001:** Large-strain rubber compression (70% strain)
 - **BM_002:** Rolling contact with hysteresis
 - **BM_003:** Temperature-dependent modulus shift
@@ -777,6 +847,7 @@ Five industry-credible benchmark cases (see `benchmark_definitions.yaml`):
 - **BM_005:** Multi-material tire section
 
 **Acceptance Criteria:**
+
 - All benchmarks pass accuracy thresholds (< 5% error)
 - All benchmarks achieve ≥3x speedup vs Ansys
 - Zero convergence failures
@@ -785,12 +856,14 @@ Five industry-credible benchmark cases (see `benchmark_definitions.yaml`):
 ### 8.2 Regression Testing
 
 **Continuous Integration:**
+
 - Weekly automated benchmark runs
 - Comparison against golden reference data (SHA-256 verified)
 - Performance regression detection (5% tolerance)
 - Notification on failure (Slack/email)
 
 **Test Matrix:**
+
 | Ansys Version | QuASIM Version | GPU | Pass/Fail |
 |--------------|----------------|-----|-----------|
 | 2024 R1 | 0.1.0 | A100 80GB | Pass |
@@ -800,6 +873,7 @@ Five industry-credible benchmark cases (see `benchmark_definitions.yaml`):
 ### 8.3 Partner Validation Protocol
 
 **Fortune-50 Industrial Partner Validation:**
+
 1. Provide benchmark suite + reference data
 2. Partner runs on internal hardware (CPU baseline + GPU)
 3. Partner validates accuracy against internal Ansys results
@@ -807,6 +881,7 @@ Five industry-credible benchmark cases (see `benchmark_definitions.yaml`):
 5. Qubic/QuASIM addresses issues within 2-week SLA
 
 **Acceptance Gates:**
+
 - 3+ Fortune-50 partners validate successfully
 - Zero critical issues (convergence failures, accuracy violations)
 - Median speedup ≥ 3x across all partners
@@ -814,18 +889,21 @@ Five industry-credible benchmark cases (see `benchmark_definitions.yaml`):
 ### 8.4 Aerospace Compliance
 
 **DO-178C Level A Development:**
+
 - Requirements traceability matrix (RTM)
 - Software design standards (MISRA-like for C++/CUDA)
 - 100% MC/DC test coverage for safety-critical paths
 - Independent verification and validation (IV&V)
 
 **NIST 800-53 Security Controls:**
+
 - Access control (role-based, least privilege)
 - Audit logging (all solver invocations)
 - Cryptographic integrity (SHA-256 result hashing)
 - Secure configuration management
 
 **Export Control (ITAR):**
+
 - No export-controlled algorithms or data in public release
 - Aerospace-specific features (e.g., high-temperature materials) in controlled fork
 
@@ -836,6 +914,7 @@ Five industry-credible benchmark cases (see `benchmark_definitions.yaml`):
 ### 9.1 Current Limitations (v1.0)
 
 **Not Supported:**
+
 - Modal analysis (eigenvalue problems) - **Roadmap: v1.2**
 - Explicit dynamics (crash simulation) - **Roadmap: v2.0**
 - Fluid-structure interaction - **Not planned**
@@ -843,6 +922,7 @@ Five industry-credible benchmark cases (see `benchmark_definitions.yaml`):
 - Composite materials (layered shells) - **Roadmap: v1.3**
 
 **Performance Limitations:**
+
 - Max element count: ~500k elements per GPU (memory-bound)
 - Contact pairs: <10k active contacts (algorithm complexity)
 - Time steps: <10k steps (storage overhead for viscoelastic history)
@@ -850,21 +930,25 @@ Five industry-credible benchmark cases (see `benchmark_definitions.yaml`):
 ### 9.2 Roadmap
 
 **v1.1 (Q2 2025):**
+
 - Mortar contact method (improved accuracy)
 - Multi-GPU load balancing (dynamic work stealing)
 - HDF5 checkpoint/restart (large models)
 
 **v1.2 (Q3 2025):**
+
 - Modal analysis (Lanczos eigenvalue solver)
 - Frequency-dependent viscoelasticity
 - Python API v2 (simplified interface)
 
 **v1.3 (Q4 2025):**
+
 - Composite materials (shell elements)
 - Thermal radiation (view factors)
 - User-defined material models (Python UDF)
 
 **v2.0 (2026):**
+
 - Explicit dynamics (crash/impact)
 - GPU-accelerated remeshing (wear/ablation)
 - Cloud-native deployment (Kubernetes operators)
@@ -874,16 +958,19 @@ Five industry-credible benchmark cases (see `benchmark_definitions.yaml`):
 ## 10. Support and Contact
 
 **Technical Support:**
-- Documentation: https://docs.quasim.io/ansys
-- GitHub Issues: https://github.com/robertringler/Qubic/issues
-- Email: support@quasim.io
+
+- Documentation: <https://docs.quasim.io/ansys>
+- GitHub Issues: <https://github.com/robertringler/Qubic/issues>
+- Email: <support@quasim.io>
 
 **Enterprise Partnerships:**
-- Ansys partnership inquiries: partnerships@quasim.io
-- Fortune-50 pilot program: pilots@quasim.io
+
+- Ansys partnership inquiries: <partnerships@quasim.io>
+- Fortune-50 pilot program: <pilots@quasim.io>
 
 **Security Issues:**
-- Security vulnerabilities: security@quasim.io (PGP key available)
+
+- Security vulnerabilities: <security@quasim.io> (PGP key available)
 
 ---
 
@@ -913,6 +1000,7 @@ Five industry-credible benchmark cases (see `benchmark_definitions.yaml`):
 ---
 
 **Document Control:**
+
 - **Revision History:**
   - v1.0.0 (2025-12-13): Initial release for Tier-0 industrial validation
 - **Approvals:**

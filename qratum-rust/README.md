@@ -76,6 +76,7 @@ for outcome in outcomes {
 ## Key Features
 
 ### Architectural Invariants
+
 - ✅ Ephemeral existence (system exists only during computation)
 - ✅ Zero persistent state (complete memory zeroization)
 - ✅ RAM-only operations (no disk, no logs, no residuals)
@@ -85,6 +86,7 @@ for outcome in outcomes {
 - ✅ Minimal external persistence (only Outcome TXOs)
 
 ### Implemented Amendments
+
 - ✅ Progressive quorum threshold decay with DecayJustification TXO
 - ✅ Canary TXO probes for censorship detection
 - ✅ Encrypted volatile snapshots for mid-session recovery
@@ -95,6 +97,7 @@ for outcome in outcomes {
 - ✅ Forward-compatibility hooks for QRADLE post-quantum migration
 
 ### Technical Specifications
+
 - **Language**: Rust 1.75+
 - **Compatibility**: `#![no_std]` core (TEE/enclave-ready)
 - **Cryptography**: SHA3-256/SHA3-512 only
@@ -118,6 +121,7 @@ for outcome in outcomes {
 **Tests**: ✅ 32/32 Passing
 
 ### Security Design
+
 - Memory safety (Rust ownership system)
 - Explicit zeroization (sensitive types)
 - Minimal dependencies (reduced attack surface)
@@ -210,6 +214,7 @@ cargo flamegraph --bench lifecycle_bench
 ## Contributing
 
 When contributing, ensure:
+
 1. All tests pass: `cargo test`
 2. Code compiles without warnings: `cargo build --release`
 3. Documentation builds: `cargo doc --no-deps`

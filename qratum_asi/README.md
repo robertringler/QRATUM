@@ -13,6 +13,7 @@ Every act of self-modification is itself a QRATUM contract subject to the same 8
 ## Five Pillars
 
 ### 1. Q-REALITY (Emergent World Model)
+
 - Unified causal model fusing all 14 QRATUM verticals
 - Hash-addressed knowledge nodes (immutable)
 - Causal graph structure with confidence weighting
@@ -21,6 +22,7 @@ Every act of self-modification is itself a QRATUM contract subject to the same 8
 - Deterministic updates via contracts
 
 ### 2. Q-MIND (Unified Reasoning Core)
+
 - Integrates all 14 verticals into unified reasoning
 - Multiple reasoning strategies: deductive, inductive, abductive, analogical, causal, Bayesian
 - Deterministic reasoning chains
@@ -28,6 +30,7 @@ Every act of self-modification is itself a QRATUM contract subject to the same 8
 - Cross-domain synthesis capabilities
 
 ### 3. Q-EVOLVE (Safe Self-Improvement)
+
 - Contract-bound self-improvement proposals
 - Human authorization required for sensitive changes
 - Rollback points before every modification
@@ -36,6 +39,7 @@ Every act of self-modification is itself a QRATUM contract subject to the same 8
 - Full audit trail of all improvements
 
 ### 4. Q-WILL (Autonomous Intent Generation)
+
 - Proposes goals based on system state analysis
 - ALL proposals require human authorization
 - PROHIBITED_GOALS list enforced (cannot propose harmful goals)
@@ -43,6 +47,7 @@ Every act of self-modification is itself a QRATUM contract subject to the same 8
 - Proposal history Merkle-chained
 
 ### 5. Q-FORGE (Superhuman Discovery Engine)
+
 - Cross-domain hypothesis generation
 - Novel synthesis from multiple discoveries
 - Validation framework for discoveries
@@ -237,21 +242,24 @@ python qratum_asi/examples/safety_demo.py
 
 ## Architecture Invariants
 
-### Every Component Must:
+### Every Component Must
+
 1. Emit events to Merkle chain for all operations
 2. Validate authorization before sensitive operations
 3. Support deterministic replay
 4. Maintain immutable records
 5. Respect safety boundaries
 
-### Self-Improvement Must:
+### Self-Improvement Must
+
 1. Create rollback point before execution
 2. Validate all changes against criteria
 3. Rollback on validation failure
 4. Never modify immutable boundaries
 5. Require appropriate authorization level
 
-### Goal Generation Must:
+### Goal Generation Must
+
 1. Check against prohibited goals list
 2. Assess safety level of each goal
 3. Queue all goals for human review
@@ -302,6 +310,7 @@ python3 run_asi_safety_elicitation.py
 ```
 
 This will:
+
 - Query 5 simulated AI models with different perspectives
 - Analyze 20 standard ASI safety questions
 - Generate a Safety Reality Map
@@ -392,6 +401,7 @@ The system must pass these adversarial tests:
 ## Integration with Existing QRATUM
 
 QRATUM-ASI preserves and extends:
+
 - All 14 vertical modules (JURIS, VITRA, ECORA, QUASIM, QNIMBUS, QUBIC, XENON, HCAL, QNX, QSTACK, TERC, OMNILEX, FEDERATED, AGI)
 - QIL intent language
 - Contract quartet system
@@ -414,6 +424,7 @@ PYTHONPATH=. pytest qratum_asi/tests/ -v -o addopts=""
 ```
 
 All tests are passing:
+
 - ✅ Q-REALITY tests (6 tests)
 - ✅ Q-MIND tests (6 tests)
 - ✅ Q-EVOLVE tests (6 tests)

@@ -15,6 +15,7 @@ This repository implements a comprehensive automated code quality and pull reque
 **File**: `.github/workflows/code-review-autofix.yml`
 
 This workflow automatically:
+
 - Scans code for security issues using Bandit
 - Detects potential secrets in code
 - Fixes linting errors with ruff
@@ -24,11 +25,13 @@ This workflow automatically:
 - Comments on the PR with a summary of changes
 
 **Triggers**:
+
 - When a PR is opened, synchronized, or reopened
 - When code is pushed to main or develop
 - Manual trigger via workflow_dispatch
 
 **Permissions Required**:
+
 - `contents: write` - To commit fixes
 - `pull-requests: write` - To comment on PRs
 - `checks: write` - To update check status
@@ -38,6 +41,7 @@ This workflow automatically:
 **File**: `scripts/pr_auto_resolver.py`
 
 This Python script:
+
 - Fetches open pull requests
 - Audits PRs for issues (conflicts, CI failures, lint errors)
 - Automatically fixes detected issues
@@ -45,6 +49,7 @@ This Python script:
 - Labels PRs that need manual review
 
 **Features**:
+
 - Merge conflict resolution
 - Lint error auto-fixing
 - CI status checking
@@ -52,6 +57,7 @@ This Python script:
 - Automatic branch deletion after merge
 
 **Usage**:
+
 ```bash
 # Set environment variables
 export GITHUB_TOKEN="your_github_token"
@@ -71,6 +77,7 @@ python scripts/pr_auto_resolver.py
 This workflow automatically merges PRs that meet all criteria:
 
 **Merge Criteria**:
+
 - ✅ All CI checks must pass
 - ✅ No merge conflicts
 - ✅ Has the `auto-merge` or `automerge` label
@@ -79,12 +86,14 @@ This workflow automatically merges PRs that meet all criteria:
 - ✅ No changes requested in reviews
 
 **Triggers**:
+
 - When a PR is opened, synchronized, reopened, or labeled
 - When check suites complete
 - When CI/Code Review workflows complete
 - Manual trigger for specific PR
 
 **Merge Strategies**:
+
 - `hotfix/*` branches: rebase
 - `copilot/*` branches: squash
 - All others: squash
@@ -98,6 +107,7 @@ All workflows are already configured and will run automatically. No additional s
 ### 2. Configure Labels
 
 Create these labels in your repository:
+
 - `auto-merge` or `automerge` - Enables automatic merging
 - `do-not-merge` - Prevents automatic merging
 - `wip` - Work in progress, blocks merging
@@ -107,6 +117,7 @@ Create these labels in your repository:
 ### 3. Set Branch Protection Rules (Optional)
 
 For enhanced security, configure branch protection:
+
 1. Go to Settings → Branches → Add rule
 2. Branch name pattern: `main`
 3. Enable:
@@ -132,6 +143,7 @@ The workflows use `GITHUB_TOKEN` which is automatically provided by GitHub Actio
 #### Review Auto-Fix Changes
 
 When you open a PR, the code review workflow will:
+
 1. Automatically fix linting and formatting issues
 2. Commit the fixes to your branch
 3. Comment on the PR with details
@@ -141,6 +153,7 @@ Review these automated commits and ensure they don't change logic.
 #### Handle Merge Conflicts
 
 The PR auto-resolver will attempt to automatically resolve merge conflicts in:
+
 - Documentation files (`.md`, `.txt`, `.rst`) - prefers incoming changes
 - Configuration files - attempts smart merging
 
@@ -199,6 +212,7 @@ For complex conflicts, manual resolution is required.
 ### PR Not Auto-Merging
 
 Check that:
+
 1. PR has `auto-merge` label
 2. All CI checks have passed
 3. No merge conflicts exist
@@ -210,6 +224,7 @@ Check the workflow logs for specific reasons.
 ### Auto-Fix Not Working
 
 Ensure:
+
 1. Workflow has write permissions
 2. No branch protection preventing commits
 3. Check workflow logs for errors
@@ -217,6 +232,7 @@ Ensure:
 ### PR Marked "Needs Manual Review"
 
 This happens when:
+
 - Merge conflicts couldn't be auto-resolved
 - Critical issues remain after max attempts (3)
 - CI checks repeatedly fail
@@ -240,6 +256,7 @@ Edit `.ruff.toml` to configure ruff linting rules.
 ### Updating Auto-Fix Tools
 
 Modify `.github/workflows/code-review-autofix.yml` to:
+
 - Add new linting tools
 - Change formatter settings
 - Add security scanners
@@ -247,6 +264,7 @@ Modify `.github/workflows/code-review-autofix.yml` to:
 ### Adjusting Merge Criteria
 
 Edit `scripts/pr_auto_resolver.py` to change:
+
 - Merge thresholds
 - Merge strategies
 - Required checks
@@ -268,6 +286,7 @@ Edit `scripts/pr_auto_resolver.py` to change:
 ## Monitoring and Metrics
 
 Track these metrics:
+
 - Number of PRs auto-merged vs. manually merged
 - Number of issues auto-fixed
 - Average time to merge
@@ -278,6 +297,7 @@ Access via GitHub Actions insights and workflow artifacts.
 ## Support
 
 For issues or questions:
+
 1. Check workflow logs for detailed error messages
 2. Review this documentation
 3. Open an issue with the `question` label
@@ -286,6 +306,7 @@ For issues or questions:
 ## Future Enhancements
 
 Potential improvements:
+
 - Machine learning-based conflict resolution
 - Intelligent test selection based on changed files
 - Advanced security scanning integration

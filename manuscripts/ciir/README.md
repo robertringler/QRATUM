@@ -16,9 +16,11 @@ mathematical theory of **Constraint-Induced Interface Realism (CIIR)**.
 ### Core Documents
 
 #### `manuscript.tex`
+
 Complete manuscript in RevTeX 4.2 format presenting the full axiomatic theory.
 
 **Sections:**
+
 1. Introduction and Motivation
 2. Primitive Definitions
 3. Axiom System (6 axioms)
@@ -39,6 +41,7 @@ Complete manuscript in RevTeX 4.2 format presenting the full axiomatic theory.
 18. Appendices A–C
 
 **Compile:**
+
 ```bash
 pdflatex manuscript.tex
 bibtex manuscript
@@ -47,12 +50,15 @@ pdflatex manuscript.tex
 ```
 
 #### `cover_letter.tex`
+
 Formal submission cover letter to *Foundations of Physics*.
 
 **Compile:** `pdflatex cover_letter.tex`
 
 #### `references.bib`
+
 BibTeX bibliography with 40+ citations including:
+
 - Quantum mechanics foundations (von Neumann, Reed-Simon)
 - Lindblad / GKSL dynamics (Lindblad 1976, GKS 1976)
 - C*-algebra and GNS theory
@@ -67,18 +73,23 @@ BibTeX bibliography with 40+ citations including:
 ### Supporting Documents
 
 #### `FIGURE_TABLE_INDEX.md`
+
 Specifications for all 8 figures and 5 tables.
 
 #### `SUPPLEMENTARY_MATERIALS.md`
+
 Extended derivations, simulation protocols, notation reference.
 
 #### `MASTER_INDEX.md`
+
 Structural overview of all package content.
 
 #### `PACKAGE_SUMMARY.txt`
+
 Plain-text checklist of all deliverables.
 
 #### `compile_test.sh`
+
 Automated LaTeX compilation validation script.
 
 ---
@@ -92,6 +103,7 @@ T_CIIR = (S, A, R, D, M, I)
 ```
 
 Where:
+
 - **S**: State space — separable complex Hilbert space $\mathcal{H_C}$
 - **A**: Axiom system — 6 minimal independent axioms
 - **R**: Operator algebra — $\mathcal{A}(\mathcal{H_C})$ with GKSL dynamics
@@ -140,21 +152,27 @@ $\mathcal{D}_\mathcal{M}$.
 ### Three Falsifiable Predictions
 
 **P1: Curvature-Induced Decision Latency**
+
 ```
 tau = tau_0 * exp(alpha * kappa * V) + tau_1
 ```
+
 Falsified if $\tau$ grows sub-exponentially in $\kappa V$.
 
 **P2: Decoherence-Scaling of Cognitive Interference**
+
 ```
 |off-diagonal|(t) = |off-diagonal|(0) * exp(-(Gamma_1 + Gamma_2) * t / 2)
 ```
+
 Falsified by super-exponential decay or oscillatory recovery.
 
 **P3: Constraint Capacity Saturation**
+
 ```
 I(R;C) -> kappa_max * V + O(1) as training time T -> infinity
 ```
+
 Falsified by saturation above the bound or failure to saturate.
 
 ### Embeddings
@@ -213,6 +231,7 @@ This manuscript meets the following formal standards:
 - **Non-triviality** — finite- and infinite-dimensional models proven to exist
 
 The framework is comparable in rigor to:
+
 - Kolmogorov (1933) axiomatic probability theory
 - von Neumann (1932) Hilbert-space quantum mechanics
 - Lindblad (1976) open quantum systems theory
@@ -230,6 +249,7 @@ The framework is comparable in rigor to:
 ### Conversion Note
 
 To convert from RevTeX to Springer format:
+
 ```bash
 # Install Springer SVJour3 class
 # Replace \documentclass{revtex4-2} with \documentclass{sn-jnl}
@@ -241,6 +261,7 @@ To convert from RevTeX to Springer format:
 ## REVISION HISTORY
 
 ### Version 1.0 (2026-03-22)
+
 - Initial complete manuscript package
 - All sections drafted; all theorems proved
 - Bibliography compiled (40+ references)
@@ -253,7 +274,7 @@ To convert from RevTeX to Springer format:
 
 **Author:** Robert Ringler
 **Affiliation:** Independent Researcher
-**Repository:** https://github.com/robertringler/QRATUM
+**Repository:** <https://github.com/robertringler/QRATUM>
 **Manuscript path:** `manuscripts/ciir/`
 
 ---

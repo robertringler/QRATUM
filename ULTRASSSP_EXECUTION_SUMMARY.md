@@ -11,6 +11,7 @@ UltraSSSP has been successfully executed, validated, and benchmarked across mult
 ## Test Configurations Executed
 
 ### 1. Small Configuration
+
 - **Nodes:** 50
 - **Edge Probability:** 0.1
 - **Edges Generated:** 262
@@ -18,6 +19,7 @@ UltraSSSP has been successfully executed, validated, and benchmarked across mult
 - **Result:** ✓ PASS (Correctness validated)
 
 ### 2. Medium Configuration
+
 - **Nodes:** 500
 - **Edge Probability:** 0.02
 - **Edges Generated:** 4,955
@@ -25,6 +27,7 @@ UltraSSSP has been successfully executed, validated, and benchmarked across mult
 - **Result:** ✓ PASS (Correctness validated)
 
 ### 3. Large Configuration
+
 - **Nodes:** 1,000
 - **Edge Probability:** 0.01
 - **Edges Generated:** 9,984
@@ -32,6 +35,7 @@ UltraSSSP has been successfully executed, validated, and benchmarked across mult
 - **Result:** ✓ PASS (Correctness validated)
 
 ### 4. Hierarchical Configuration
+
 - **Nodes:** 500
 - **Edge Probability:** 0.02
 - **Hierarchy Enabled:** Yes (3 levels)
@@ -49,6 +53,7 @@ UltraSSSP has been successfully executed, validated, and benchmarked across mult
 | Large (1000n)| 0.1606s       | 0.0027s       | 0.02x | 1,000         | 9,984         |
 
 **Note on Performance Ratios:**
+
 - Ratios < 1.0 indicate UltraSSSP is currently slower than baseline Dijkstra
 - This is expected for single-threaded execution on dense graphs
 - UltraSSSP's batch processing design enables future parallelization benefits
@@ -69,17 +74,20 @@ Memory scaling is linear and efficient across all test sizes.
 ## Correctness Guarantees
 
 ### ✓ Exact Dijkstra Matching (epsilon=0.0)
+
 - **All configurations:** 100% distance match with Dijkstra baseline
 - **Tolerance:** 1e-6 for floating-point comparison
 - **Validation Method:** Element-wise comparison of distance arrays
 
 ### ✓ Stale-Entry Handling
+
 - Implementation includes distance checks before node processing
 - Skips nodes if `node_dist > distances[node]` (stale entry detection)
 - Prevents incorrect distance updates from outdated frontier entries
 - Covered by existing test suite (test_ultra_sssp_matches_dijkstra)
 
 ### ✓ Test Assertions
+
 - Tests use `assert validate_sssp_results(ultra_distances, dijkstra_distances)`
 - Validation function fails loudly on any distance mismatch
 - Test suite: 8/8 passing (see tests/opt/test_ultra_sssp.py)
@@ -129,13 +137,16 @@ All required fields present and verified.
 ## CI Status
 
 ### Test Execution
+
 - ✓ Demo script executes successfully on all configurations
 - ✓ No runtime errors or exceptions
 - ✓ Warnings are deprecation notices only (quasim → qratum migration)
 - ✓ All validations pass with correctness=true
 
 ### Code Quality
+
 Note: Lint and type checks deferred to CI due to environment issues.
+
 - Code follows existing QRATUM conventions
 - Type hints present throughout implementation
 - Docstrings complete for all public APIs
@@ -143,6 +154,7 @@ Note: Lint and type checks deferred to CI due to environment issues.
 ## Key Findings
 
 ### What Works
+
 1. **Correctness:** UltraSSSP produces exact Dijkstra results (epsilon=0.0)
 2. **Scalability:** Linear memory scaling confirmed across test sizes
 3. **Hierarchy:** Graph contraction works without affecting correctness
@@ -150,6 +162,7 @@ Note: Lint and type checks deferred to CI due to environment issues.
 5. **Output:** JSON export contains complete simulation data
 
 ### Current Limitations (By Design)
+
 1. **Single-threaded:** No parallelization in current implementation
 2. **Classical-only:** Quantum pivot hooks are placeholders
 3. **Performance:** Slower than pure Dijkstra due to batch overhead
@@ -158,12 +171,14 @@ Note: Lint and type checks deferred to CI due to environment issues.
 ## Recommendations for Usage
 
 ### When to Use UltraSSSP
+
 - ✓ Research and experimentation with batch-based SSSP algorithms
 - ✓ Testing quantum pivot selection strategies (when implemented)
 - ✓ Exploring hierarchical graph contraction approaches
 - ✓ Benchmarking against classical baselines
 
 ### When to Use Classical Dijkstra
+
 - ✓ Production shortest path requirements
 - ✓ Performance-critical applications
 - ✓ Single-threaded classical computing environments
@@ -173,7 +188,8 @@ Note: Lint and type checks deferred to CI due to environment issues.
 
 See: `quasim/opt/README_ULTRA_SSSP.md` (329 lines, comprehensive)
 
-### Covers:
+### Covers
+
 - ✓ Algorithm overview and features
 - ✓ Usage examples and API documentation
 - ✓ Configuration parameters

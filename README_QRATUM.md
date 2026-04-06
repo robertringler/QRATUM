@@ -43,6 +43,7 @@ print(result)  # Measurement results
 ```
 
 **Output:**
+
 ```
 Measurement Result (1000 shots):
   |00⟩:   503 (0.5030)
@@ -164,6 +165,7 @@ QRATUM automatically selects the best backend:
 | 40+ | Tensor Network | MPS/PEPS contraction |
 
 **Manual selection:**
+
 ```python
 # Force specific backend
 sim = qratum.Simulator(backend="gpu")
@@ -202,7 +204,7 @@ See **[MIGRATION.md](MIGRATION.md)** for detailed migration guide.
 - **IP Statement**: [IP_STATEMENT.md](IP_STATEMENT.md)
 - **Examples**: [`examples/`](examples/)
 - **API Reference**: Coming soon
-- **Website**: https://qratum.io (planned)
+- **Website**: <https://qratum.io> (planned)
 
 ---
 
@@ -272,6 +274,7 @@ Apache License 2.0 - See [LICENSE](LICENSE)
 ## 🙏 Acknowledgments
 
 QRATUM builds upon:
+
 - QuASIM (predecessor project)
 - NumPy ecosystem
 - Quantum computing research community
@@ -302,16 +305,17 @@ QRATUM builds upon:
 
 ## 🔗 Links
 
-- **GitHub**: https://github.com/robertringler/QRATUM
-- **Documentation**: https://qratum.io/docs (planned)
-- **Issues**: https://github.com/robertringler/QRATUM/issues
-- **Discussions**: https://github.com/robertringler/QRATUM/discussions
+- **GitHub**: <https://github.com/robertringler/QRATUM>
+- **Documentation**: <https://qratum.io/docs> (planned)
+- **Issues**: <https://github.com/robertringler/QRATUM/issues>
+- **Discussions**: <https://github.com/robertringler/QRATUM/discussions>
 
 ---
 
 ## 📞 Contact
 
 For questions, issues, or contributions:
+
 - Open an issue on GitHub
 - Start a discussion
 - Review the documentation
@@ -320,4 +324,3 @@ For questions, issues, or contributions:
 
 **QRATUM** - High-performance quantum simulation for the modern era  
 Version 2.0.0 | Formerly QuASIM | Apache 2.0 License
-

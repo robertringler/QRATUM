@@ -7,6 +7,7 @@
 ---
 
 ## 🔍 Overview
+
 This release contains the **deterministic, compliance-ready demonstration artifacts** for the QuASIM × SpaceX/NASA pilot track.
 
 All simulations are executed via the **Phase III-style evolutionary RL optimizer**, constrained to surrogate MECO and hot-staging shaping profiles.  
@@ -15,6 +16,7 @@ Runtime is deterministic (< 60 seconds) and CPU-only.
 ---
 
 ## 🧠 Technical Summary
+
 | Parameter | Falcon 9 (Stage-1 MECO) | Starship (Hot-Staging) |
 |------------|--------------------------|-------------------------|
 | Optimized α | {{ falcon9_alpha }} | {{ starship_alpha }} |
@@ -28,6 +30,7 @@ Runtime is deterministic (< 60 seconds) and CPU-only.
 ---
 
 ## 📁 Included Artifacts
+
 | File | Description |
 |------|--------------|
 | `spacex_demo_report.json` | Falcon 9 Stage-1 MECO profile-shaped demo output |
@@ -41,6 +44,7 @@ Runtime is deterministic (< 60 seconds) and CPU-only.
 ---
 
 ## 🧾 Compliance & Validation
+
 - **Deterministic Verification:** Outputs stable across CI runs (seed 42)
 - **MC/DC Surrogate Coverage:** 100% on demo-level safety paths
 - **Runtime Validation:** < 60 s on `ubuntu-latest`
@@ -50,6 +54,7 @@ Runtime is deterministic (< 60 seconds) and CPU-only.
 ---
 
 ## 📊 Performance Impact (Indicative)
+
 - RMSE vs Falcon 9 telemetry ≈ 1.9%
 - Monte-Carlo Fidelity ≥ 0.97
 - Energy penalty–regulated power savings ≈ 30%
@@ -58,7 +63,9 @@ Runtime is deterministic (< 60 seconds) and CPU-only.
 ---
 
 ## 💼 Strategic Context
+
 This release underpins the proposed pilot engagements:
+
 - **SpaceX:** $3.5M / 12 months embedded pilot (Falcon 9 + Starship)  
 - **NASA:** $1.8M / 12 months remote pilot (Orion / SLS)  
 Combined pilot value: ≈ $5M with projected 2-year extension potential ≈ $15–25M.
@@ -66,6 +73,7 @@ Combined pilot value: ≈ $5M with projected 2-year extension potential ≈ $15�
 ---
 
 ## 🏷️ Badges
+
 [![Deterministic](https://img.shields.io/badge/Deterministic-Yes-brightgreen)]()  
 [![RMSE](https://img.shields.io/badge/RMSE-%3C2%25-blue)]()  
 [![Fidelity](https://img.shields.io/badge/Fidelity-%E2%89%A50.97-purple)]()
@@ -73,6 +81,7 @@ Combined pilot value: ≈ $5M with projected 2-year extension potential ≈ $15�
 ---
 
 ## 📌 Next Steps
+
 1. Confirm CI passes and artifacts appear under **Actions → Artifacts**
 2. Review legal placeholders (`/legal/`)
 3. Notify `procurement@quasim.io` when countersigned NDAs/LOI are received

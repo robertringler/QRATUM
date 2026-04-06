@@ -196,7 +196,7 @@ class ProposalArtifact:
         )
 
     @classmethod
-    def from_json(cls, json_str: str) -> "ProposalArtifact":
+    def from_json(cls, json_str: str) -> ProposalArtifact:
         """Create artifact from JSON string.
 
         Args:
@@ -293,9 +293,7 @@ class MerkleTreeBuilder:
         return nodes[0].hash if nodes else "", all_nodes
 
     @staticmethod
-    def verify_merkle_proof(
-        item: str, proof: list[tuple[str, str]], root: str
-    ) -> bool:
+    def verify_merkle_proof(item: str, proof: list[tuple[str, str]], root: str) -> bool:
         """Verify a merkle proof for an item.
 
         Args:
@@ -364,9 +362,7 @@ class ReinjectionEvaluationEngine:
         self._merkle_trees: dict[str, list[MerkleNode]] = {}
         self._validation_hooks: list[Callable[[Any], tuple[bool, str]]] = []
 
-    def register_validation_hook(
-        self, hook: Callable[[Any], tuple[bool, str]]
-    ) -> None:
+    def register_validation_hook(self, hook: Callable[[Any], tuple[bool, str]]) -> None:
         """Register a custom validation hook.
 
         Args:
@@ -647,11 +643,7 @@ class ReinjectionEvaluationEngine:
         Returns:
             List of pending proposals
         """
-        return [
-            p
-            for p in self._proposals.values()
-            if p.status == ProposalStatus.AWAITING_APPROVAL
-        ]
+        return [p for p in self._proposals.values() if p.status == ProposalStatus.AWAITING_APPROVAL]
 
     def get_proposals_by_cluster(self, cluster: ProposalCluster) -> list[ProposalArtifact]:
         """Get proposals filtered by cluster.

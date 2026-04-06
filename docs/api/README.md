@@ -413,6 +413,7 @@ Official SDKs are available for:
 ## Support
 
 For API support, please contact:
-- **Documentation**: https://docs.qratum.io
-- **Issues**: https://github.com/robertringler/QRATUM/issues
-- **Security**: security@qratum.io
+
+- **Documentation**: <https://docs.qratum.io>
+- **Issues**: <https://github.com/robertringler/QRATUM/issues>
+- **Security**: <security@qratum.io>

@@ -22,18 +22,21 @@ A **motif** is a novel chess pattern or move sequence that:
 **Definition**: Short-term combinations involving direct threats and forcing sequences.
 
 **Characteristics**:
+
 - High tactical cortex activation
 - Concrete calculation required
 - Usually 2-5 moves deep
 - Clear material or positional gain
 
 **Examples**:
+
 - Novel pin/fork combinations
 - Unexpected deflection sequences
 - Creative back-rank tactics
 - Unconventional piece sacrifices
 
 **Detection Criteria**:
+
 - Tactical cortex weight > 0.5
 - High divergence from engine moves
 - Short move sequences (2-5 moves)
@@ -43,18 +46,21 @@ A **motif** is a novel chess pattern or move sequence that:
 **Definition**: Long-term positional plans involving piece coordination and pawn structures.
 
 **Characteristics**:
+
 - High strategic cortex activation
 - Positional evaluation changes
 - Planning horizon 5-15 moves
 - Subtle improvements
 
 **Examples**:
+
 - Novel pawn structures
 - Unconventional piece placements
 - Prophylactic maneuvers
 - Space control patterns
 
 **Detection Criteria**:
+
 - Strategic cortex weight > 0.5
 - Medium divergence from engines
 - Medium-length sequences (5-10 moves)
@@ -64,18 +70,21 @@ A **motif** is a novel chess pattern or move sequence that:
 **Definition**: Novel patterns in the opening phase (moves 1-15).
 
 **Characteristics**:
+
 - Discovered in opening positions
 - Piece count > 28
 - Creates new theoretical lines
 - Often strategic in nature
 
 **Examples**:
+
 - New move orders
 - Sideline innovations
 - Transposition tricks
 - Preparation novelties
 
 **Detection Criteria**:
+
 - Game phase = OPENING
 - Total pieces > 28
 - Position from early game
@@ -85,18 +94,21 @@ A **motif** is a novel chess pattern or move sequence that:
 **Definition**: Novel patterns in simplified positions (≤6 pieces excluding pawns).
 
 **Characteristics**:
+
 - Discovered in endgame positions
 - Low piece count
 - Precise calculation required
 - Often decisive
 
 **Examples**:
+
 - Zugzwang formations
 - Novel conversion techniques
 - Opposition tricks
 - Fortress breakthroughs
 
 **Detection Criteria**:
+
 - Game phase = ENDGAME
 - Piece count ≤ 6 (excluding kings/pawns)
 - Late-game position
@@ -106,18 +118,21 @@ A **motif** is a novel chess pattern or move sequence that:
 **Definition**: Abstract patterns requiring high-level understanding.
 
 **Characteristics**:
+
 - High conceptual cortex activation
 - Non-obvious evaluation
 - Requires pattern recognition
 - Hard to explain tactically
 
 **Examples**:
+
 - Positional sacrifices
 - Compensation schemes
 - Dynamic imbalances
 - Abstract plans
 
 **Detection Criteria**:
+
 - Conceptual cortex weight > 0.5
 - Very high divergence (> 0.7)
 - Complex positions
@@ -314,6 +329,7 @@ python run_full_benchmark.py --certify --extract-motifs
 ### 2. Review HTML Report
 
 Open `motifs/motifs_report.html` in browser to see:
+
 - Summary statistics
 - Top motifs by novelty
 - Distribution by type
@@ -382,6 +398,7 @@ Motifs are compared against:
 ### 1. Training Data
 
 Novel motifs can be:
+
 - Added to training datasets
 - Used for knowledge distillation
 - Shared across generations
@@ -389,6 +406,7 @@ Novel motifs can be:
 ### 2. Opening Preparation
 
 Opening motifs provide:
+
 - New theoretical lines
 - Surprise weapons
 - Sideline improvements
@@ -396,6 +414,7 @@ Opening motifs provide:
 ### 3. Study Material
 
 Endgame motifs help:
+
 - Learn conversion techniques
 - Understand zugzwang
 - Master technical positions
@@ -403,6 +422,7 @@ Endgame motifs help:
 ### 4. Research
 
 Motif analysis enables:
+
 - Understanding engine creativity
 - Studying novel patterns
 - Advancing chess theory
@@ -446,13 +466,13 @@ Motif type from cortex:
 
 1. **Evaluation**: Uses placeholder evaluation (0.0)
    - Future: Integrate neural evaluator
-   
+
 2. **Database Comparison**: Limited engine comparison
    - Future: Add Stockfish/Lc0 API calls
-   
+
 3. **Historical Analysis**: No game database lookup
    - Future: Connect to opening/endgame databases
-   
+
 4. **Board Visualization**: No inline board diagrams
    - Future: Add SVG board rendering
 

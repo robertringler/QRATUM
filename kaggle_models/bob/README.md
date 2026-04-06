@@ -40,6 +40,7 @@ print(f"Evaluation: {result['evaluation']}")  # e.g., +0.25
 ## 📊 Architecture
 
 **Asymmetric Adaptive Search (AAS):**
+
 - Non-uniform tree exploration
 - Quantum-inspired move prioritization
 - Multi-agent tactical consensus
@@ -48,14 +49,15 @@ print(f"Evaluation: {result['evaluation']}")  # e.g., +0.25
 ## 📈 Benchmarks
 
 Defeated on Kaggle Chess AI Benchmark:
-- o3-2025 (1397 Elo) 
+
+- o3-2025 (1397 Elo)
 - grok-4 (1112 Elo)
 - gemini-2.5-pro (1061 Elo)
 - All other frontier LLMs
 
 ## 🔗 Links
 
-- GitHub: https://github.com/robertringler/QRATUM
+- GitHub: <https://github.com/robertringler/QRATUM>
 - Paper: [Coming soon]
 - API: [Contact for licensing]
 

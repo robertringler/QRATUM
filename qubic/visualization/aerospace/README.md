@@ -65,6 +65,7 @@ print(f"Rendered {report['total_frames']} frames with compliance mode: {report['
 Configuration dataclass extending `VizConfig` from QubicVisualizer.
 
 **Fields:**
+
 - `compliance_mode` (ComplianceMode): Compliance level (DO178C_LEVEL_A, DO178C_LEVEL_B, DEVELOPMENT)
 - `render_backend` (RenderBackend): Rendering backend (matplotlib, threejs, headless)
 - `seed` (int): Random seed for deterministic rendering (default: 42)
@@ -97,6 +98,7 @@ viz = AerospaceVisualizer(config)
 ```
 
 Available presets:
+
 - **draft**: Fast rendering for development (low DPI, reduced effects)
 - **production**: Balanced quality/performance with DO-178C Level B compliance
 - **cinematic**: Maximum quality for presentations (4K, high DPI)
@@ -556,6 +558,7 @@ ERROR: Matplotlib required for visualization
 ```
 
 **Solution:**
+
 ```bash
 pip install matplotlib
 ```
@@ -567,6 +570,7 @@ WARNING: scipy not available, skipping isotherm contours
 ```
 
 **Solution:**
+
 ```bash
 pip install scipy
 ```

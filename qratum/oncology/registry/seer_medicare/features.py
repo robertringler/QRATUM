@@ -175,8 +175,7 @@ COMORBIDITY_CODE_GROUPS = {
     # ICD-9: 290  |  ICD-10: F00-F03
     "dementia": ["290", "F00", "F01", "F02", "F03"],  # Dementia
     # ICD-9: 490-496  |  ICD-10: J40-J44
-    "copd": ["490", "491", "492", "493", "494", "495", "496",
-             "J40", "J41", "J42", "J43", "J44"],
+    "copd": ["490", "491", "492", "493", "494", "495", "496", "J40", "J41", "J42", "J43", "J44"],
     # ICD-9: 710, 714, 725  |  ICD-10: M05, M06, M32
     "rheumatic": ["710", "714", "725", "M05", "M06", "M32"],  # Rheumatic disease
     # ICD-9: 531-534  |  ICD-10: K25-K28
@@ -310,9 +309,7 @@ class FeatureEngineer:
 
         # Days since last treatment
         last_treatment = max((e.event_date for e in events_to_date), default=None)
-        days_since_last = (
-            (assessment_date - last_treatment).days if last_treatment else None
-        )
+        days_since_last = (assessment_date - last_treatment).days if last_treatment else None
 
         return StateFeatures(
             patient_key=timeline.patient_key,

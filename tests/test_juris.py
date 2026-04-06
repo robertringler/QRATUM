@@ -29,7 +29,10 @@ class TestJURISModule:
         intent = PlatformIntent(
             vertical=VerticalModule.JURIS,
             operation="legal_reasoning",
-            parameters={"facts": "Party A and Party B entered a contract", "area_of_law": "contract"},
+            parameters={
+                "facts": "Party A and Party B entered a contract",
+                "area_of_law": "contract",
+            },
             user_id="user_001",
         )
         contract = PlatformContract(
@@ -54,7 +57,9 @@ class TestJURISModule:
         intent = PlatformIntent(
             vertical=VerticalModule.JURIS,
             operation="contract_analysis",
-            parameters={"contract_text": "This contract includes termination and liability clauses"},
+            parameters={
+                "contract_text": "This contract includes termination and liability clauses"
+            },
             user_id="user_001",
         )
         contract = PlatformContract(

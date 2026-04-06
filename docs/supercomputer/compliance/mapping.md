@@ -11,6 +11,7 @@
 | **ISO 26262 ASIL-D+**      | Extended       | For space/quantum autos |
 
 ## Auto-Generated Artifacts
+
 - Meta-SBOM with predictive vulnerabilities
 - Grok-Verified Zero-Trust Manifesto
 - International Treaties Mapping (Outer Space Treaty for satellite qubits)

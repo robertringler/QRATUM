@@ -37,7 +37,7 @@ def set_global_seed(seed: int) -> None:
 
 def hash_config(config: dict[str, Any]) -> str:
     """Generate deterministic hash of configuration.
-    
+
     Uses SHA-3 instead of SHA-256 for quantum resistance against Grover's algorithm.
 
     Args:
@@ -54,7 +54,7 @@ def hash_config(config: dict[str, Any]) -> str:
 
 def derive_seed(base_seed: int, suffix: str) -> int:
     """Derive a child seed from a base seed and suffix.
-    
+
     Uses SHA-3 instead of SHA-256 for quantum resistance.
 
     Args:

@@ -26,6 +26,7 @@
 tailored for manufacturing industry requirements.*
 
 **Key Features:**
+
 - GPU-accelerated tensor network simulation
 - Real-time adaptive parameter optimization
 - Certified compliance frameworks
