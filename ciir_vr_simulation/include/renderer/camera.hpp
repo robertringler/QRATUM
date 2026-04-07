@@ -12,6 +12,7 @@
 
 #include <array>
 #include <cmath>
+#include <cstdint>
 
 namespace ciir_sim {
 
