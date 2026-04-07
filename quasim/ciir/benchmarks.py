@@ -177,7 +177,8 @@ def run_convergence_stability(
 
     mean_loss = float(np.mean(final_losses))
     std_loss = float(np.std(final_losses))
-    # Use absolute mean for CV to handle negative loss values
+    # CV uses absolute mean since loss can be negative (entropy term).
+    # This is the standard extension of CV to signed quantities.
     cv = std_loss / max(abs(mean_loss), 1e-12)
 
     passed = cv < 1.0  # coefficient of variation < 100%

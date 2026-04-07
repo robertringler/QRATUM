@@ -103,7 +103,7 @@ def projected_gradient_step(rho: RealTensor, grad: RealTensor, lr: float) -> Rea
 # ================================================================
 
 
-def _unitary_half_step(
+def unitary_half_step(
     rho: RealTensor, hamiltonian: RealTensor, dt: float
 ) -> RealTensor:
     r"""e^{-iH dt/2} ρ e^{iH dt/2}.
@@ -141,10 +141,10 @@ def strang_splitting_step(
         Constraint Hamiltonian H_C (D5.7).  If None, skip unitary steps.
     """
     if hamiltonian is not None:
-        rho = _unitary_half_step(rho, hamiltonian, lr)
+        rho = unitary_half_step(rho, hamiltonian, lr)
     rho = projected_gradient_step(rho, grad, lr)
     if hamiltonian is not None:
-        rho = _unitary_half_step(rho, hamiltonian, lr)
+        rho = unitary_half_step(rho, hamiltonian, lr)
     return rho
 
 

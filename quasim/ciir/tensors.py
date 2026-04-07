@@ -168,10 +168,9 @@ def commutator_tensor(A: RealTensor, B_mat: RealTensor) -> RealTensor:
     """
     # AB_{ij} = A_i B_j
     AB = np.einsum("ide,jef->ijdf", A, B_mat)
-    BA = np.einsum("jde,ief->ijdf", B_mat, A)  # reorder for BA
-    # Fix: BA_{ij} = B_j A_i
-    BA_correct = np.einsum("jde,ief->jidf", B_mat, A)
-    return AB - BA_correct
+    # BA_{ij} = B_j A_i
+    BA = np.einsum("jde,ief->jidf", B_mat, A)
+    return AB - BA
 
 
 # ================================================================
