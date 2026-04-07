@@ -1,9 +1,10 @@
 """Tests for Q-WILL component."""
 
 import pytest
+
 from qratum_asi.components.will import QWill
 from qratum_asi.core.contracts import ASIContract
-from qratum_asi.core.types import GoalCategory, ASISafetyLevel, AuthorizationType
+from qratum_asi.core.types import ASISafetyLevel, AuthorizationType, GoalCategory
 
 
 class TestQWill:

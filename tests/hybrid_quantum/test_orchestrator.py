@@ -1,20 +1,21 @@
 """Tests for the Hybrid Quantum Orchestrator."""
 
-import pytest
 import time
-from unittest.mock import Mock, patch
+
+import pytest
 
 try:
     from quasim.hybrid_quantum.orchestrator import (
-        HybridQuantumOrchestrator,
-        TrustMetric,
-        FallbackStrategy,
         ExecutionContext,
-        OrchestratorStatus,
         ExecutionMode,
         FailureType,
+        FallbackStrategy,
+        HybridQuantumOrchestrator,
+        OrchestratorStatus,
         QuantumVerificationError,
+        TrustMetric,
     )
+
     ORCHESTRATOR_AVAILABLE = True
 except ImportError:
     ORCHESTRATOR_AVAILABLE = False
@@ -39,18 +40,18 @@ class TestTrustMetric:
     def test_trust_update_preserves_invariant(self):
         """Test that update enforces trust invariant."""
         metric = TrustMetric(value=1.0)
-        
+
         with pytest.raises(ValueError, match="Trust invariant would be violated"):
             metric.update(-0.5)
 
     def test_trust_update_tracks_history(self):
         """Test that updates track history for variance computation."""
         metric = TrustMetric(value=1.0)
-        
+
         metric.update(0.95)
         metric.update(0.90)
         metric.update(0.92)
-        
+
         assert len(metric.history) == 3
         assert metric.history[0] == 1.0
         assert metric.value == 0.92
@@ -58,11 +59,11 @@ class TestTrustMetric:
     def test_trust_variance_computation(self):
         """Test variance computation for P1 target."""
         metric = TrustMetric(value=1.0)
-        
+
         # Add stable values
         for v in [0.99, 0.98, 0.99, 0.98, 0.99]:
             metric.update(v)
-        
+
         assert metric.variance >= 0
         # With small changes, variance should be low
         assert metric.variance < 0.01
@@ -71,7 +72,7 @@ class TestTrustMetric:
         """Test P1 variance target (≤0.001) check."""
         metric = TrustMetric(value=1.0, variance=0.0005)
         assert metric.meets_p1_target
-        
+
         metric.variance = 0.002
         assert not metric.meets_p1_target
 
@@ -94,9 +95,10 @@ class TestFallbackStrategy:
 
     def test_custom_fallback_function(self):
         """Test setting custom fallback function."""
+
         def custom_fallback(**kwargs):
             return {"result": "classical"}
-        
+
         strategy = FallbackStrategy(classical_fallback_function=custom_fallback)
         assert strategy.classical_fallback_function is not None
 
@@ -117,7 +119,7 @@ class TestExecutionContext:
         """Test recording failures in context."""
         context = ExecutionContext(execution_id="test-123")
         context.record_failure(FailureType.DECOHERENCE, "Qubit decoherence detected")
-        
+
         assert len(context.failures) == 1
         assert context.failures[0]["type"] == "decoherence"
         assert "Qubit decoherence" in context.failures[0]["details"]
@@ -125,10 +127,10 @@ class TestExecutionContext:
     def test_provenance_tracking(self):
         """Test provenance chain tracking."""
         context = ExecutionContext(execution_id="test-123")
-        
+
         context.add_provenance("hash1")
         context.add_provenance("hash2")
-        
+
         assert len(context.provenance_chain) == 2
         assert context.provenance_chain[0] == "hash1"
 
@@ -151,7 +153,7 @@ class TestHybridQuantumOrchestrator:
             require_dual_approval=False,
             zk_proof_latency_threshold=10.0,
         )
-        
+
         assert orchestrator.fallback_strategy.max_retries == 2
         assert orchestrator.require_dual_approval is False
         assert orchestrator.zk_proof_latency_threshold == 10.0
@@ -163,7 +165,7 @@ class TestHybridQuantumOrchestrator:
             mode=ExecutionMode.HYBRID,
             metadata={"test": "value"},
         )
-        
+
         assert context.execution_id != ""
         assert context.mode == ExecutionMode.HYBRID
         assert context.metadata["test"] == "value"
@@ -172,15 +174,15 @@ class TestHybridQuantumOrchestrator:
         """Test successful hybrid execution."""
         orchestrator = HybridQuantumOrchestrator(require_dual_approval=False)
         context = orchestrator.create_execution_context()
-        
+
         def quantum_op(**kwargs):
             return {"measurement": {"00": 500, "11": 500}}
-        
+
         result = orchestrator.execute_hybrid(
             context=context,
             quantum_op=quantum_op,
         )
-        
+
         assert result["success"] is True
         assert result["mode_used"] == "quantum"
         assert result["provenance_hash"] != ""
@@ -190,19 +192,19 @@ class TestHybridQuantumOrchestrator:
         """Test execution with verification function."""
         orchestrator = HybridQuantumOrchestrator(require_dual_approval=False)
         context = orchestrator.create_execution_context()
-        
+
         def quantum_op(**kwargs):
             return {"measurement": {"00": 500, "11": 500}}
-        
+
         def verify(result):
             return "measurement" in result
-        
+
         result = orchestrator.execute_hybrid(
             context=context,
             quantum_op=quantum_op,
             verification_fn=verify,
         )
-        
+
         assert result["success"] is True
 
     def test_execute_hybrid_verification_failure(self):
@@ -211,19 +213,19 @@ class TestHybridQuantumOrchestrator:
         strategy = FallbackStrategy(fallback_to_classical=False)
         orchestrator.fallback_strategy = strategy
         context = orchestrator.create_execution_context()
-        
+
         def quantum_op(**kwargs):
             return {"bad": "data"}
-        
+
         def verify(result):
             return "measurement" in result
-        
+
         result = orchestrator.execute_hybrid(
             context=context,
             quantum_op=quantum_op,
             verification_fn=verify,
         )
-        
+
         # Should fail since verification failed and no fallback
         assert result["success"] is False
         assert len(result["failures"]) > 0
@@ -232,26 +234,26 @@ class TestHybridQuantumOrchestrator:
         """Test fallback to classical on quantum failure."""
         orchestrator = HybridQuantumOrchestrator(require_dual_approval=False)
         context = orchestrator.create_execution_context()
-        
+
         call_count = {"quantum": 0, "classical": 0}
-        
+
         def quantum_op(**kwargs):
             call_count["quantum"] += 1
             raise RuntimeError("Quantum hardware error")
-        
+
         def classical_fallback(**kwargs):
             call_count["classical"] += 1
             return {"classical_result": True}
-        
+
         result = orchestrator.execute_hybrid(
             context=context,
             quantum_op=quantum_op,
             classical_fallback=classical_fallback,
         )
-        
+
         max_retries = orchestrator.fallback_strategy.max_retries
         expected_quantum_calls = max_retries + 1  # Initial attempt + retries
-        
+
         assert result["success"] is True
         assert result["mode_used"] == "fallback"
         assert call_count["quantum"] == expected_quantum_calls  # Initial + retries
@@ -263,21 +265,21 @@ class TestHybridQuantumOrchestrator:
         strategy = FallbackStrategy(max_retries=3, fallback_to_classical=False)
         orchestrator.fallback_strategy = strategy
         context = orchestrator.create_execution_context()
-        
+
         call_count = [0]
-        
+
         def quantum_op(**kwargs):
             call_count[0] += 1
             raise RuntimeError("Transient error")
-        
+
         result = orchestrator.execute_hybrid(
             context=context,
             quantum_op=quantum_op,
         )
-        
+
         max_retries = strategy.max_retries
         expected_calls = max_retries + 1  # Initial attempt + retries
-        
+
         assert result["success"] is False
         assert call_count[0] == expected_calls  # Initial + max_retries
         assert result["retry_count"] == max_retries
@@ -286,18 +288,18 @@ class TestHybridQuantumOrchestrator:
         """Test proposal is created when dual approval required."""
         orchestrator = HybridQuantumOrchestrator(require_dual_approval=True)
         context = orchestrator.create_execution_context()
-        
+
         def quantum_op(**kwargs):
             return {"result": "success"}
-        
+
         result = orchestrator.execute_hybrid(
             context=context,
             quantum_op=quantum_op,
         )
-        
+
         assert result["requires_approval"] is True
         assert "proposal_id" in result
-        
+
         # Check proposal was created
         pending = orchestrator.get_pending_proposals()
         assert len(pending) == 1
@@ -306,22 +308,22 @@ class TestHybridQuantumOrchestrator:
         """Test proposal approval workflow."""
         orchestrator = HybridQuantumOrchestrator(require_dual_approval=True)
         context = orchestrator.create_execution_context()
-        
+
         def quantum_op(**kwargs):
             return {"result": "success"}
-        
+
         result = orchestrator.execute_hybrid(
             context=context,
             quantum_op=quantum_op,
         )
-        
+
         proposal_id = result["proposal_id"]
-        
+
         # First approval
         approval1 = orchestrator.approve_proposal(proposal_id, "approver_1")
         assert approval1["success"] is True
         assert approval1["is_fully_approved"] is False
-        
+
         # Second approval
         approval2 = orchestrator.approve_proposal(proposal_id, "approver_2")
         assert approval2["success"] is True
@@ -331,14 +333,14 @@ class TestHybridQuantumOrchestrator:
         """Test trust report generation."""
         orchestrator = HybridQuantumOrchestrator(require_dual_approval=False)
         context = orchestrator.create_execution_context()
-        
+
         def quantum_op(**kwargs):
             return {"result": "success"}
-        
+
         orchestrator.execute_hybrid(context=context, quantum_op=quantum_op)
-        
+
         report = orchestrator.get_trust_report()
-        
+
         assert "timestamp" in report
         assert report["invariant_assertion"] == "ℛ(t) ≥ 0"
         assert report["invariant_satisfied"] is True
@@ -347,23 +349,24 @@ class TestHybridQuantumOrchestrator:
     def test_failure_classification(self):
         """Test failure type classification."""
         orchestrator = HybridQuantumOrchestrator()
-        
+
         # Test various error strings
-        assert orchestrator._classify_failure(
-            Exception("decoherence detected")
-        ) == FailureType.DECOHERENCE
-        
-        assert orchestrator._classify_failure(
-            Exception("noise threshold exceeded")
-        ) == FailureType.NOISE_THRESHOLD_EXCEEDED
-        
-        assert orchestrator._classify_failure(
-            Exception("zk proof verification failed")
-        ) == FailureType.ZK_PROOF_FAILURE
-        
-        assert orchestrator._classify_failure(
-            Exception("unknown error")
-        ) == FailureType.TRANSIENT
+        assert (
+            orchestrator._classify_failure(Exception("decoherence detected"))
+            == FailureType.DECOHERENCE
+        )
+
+        assert (
+            orchestrator._classify_failure(Exception("noise threshold exceeded"))
+            == FailureType.NOISE_THRESHOLD_EXCEEDED
+        )
+
+        assert (
+            orchestrator._classify_failure(Exception("zk proof verification failed"))
+            == FailureType.ZK_PROOF_FAILURE
+        )
+
+        assert orchestrator._classify_failure(Exception("unknown error")) == FailureType.TRANSIENT
 
     def test_zk_latency_warning(self):
         """Test warning when zk-proof latency exceeds threshold."""
@@ -372,16 +375,16 @@ class TestHybridQuantumOrchestrator:
             zk_proof_latency_threshold=0.001,  # Very low threshold
         )
         context = orchestrator.create_execution_context()
-        
+
         def slow_op(**kwargs):
             time.sleep(0.01)  # 10ms delay
             return {"result": "success"}
-        
+
         result = orchestrator.execute_hybrid(
             context=context,
             quantum_op=slow_op,
         )
-        
+
         assert result["success"] is True
         assert "warnings" in result
         assert any("P0 target" in w for w in result.get("warnings", []))

@@ -41,7 +41,7 @@ class QCSimulator:
         self.use_qiskit = backend.startswith("qiskit_")
         self._validate_config()
         self._qiskit_backend = None
-        
+
         # Initialize Qiskit Aer if requested
         if self.use_qiskit:
             self._init_qiskit_backend()
@@ -59,15 +59,15 @@ class QCSimulator:
         """Initialize Qiskit Aer backend for production quantum simulation."""
         try:
             from qiskit_aer import AerSimulator
-            
+
             # Configure backend options
             if self.backend == "qiskit_aer_gpu":
                 # GPU-accelerated simulation
-                self._qiskit_backend = AerSimulator(method='statevector', device='GPU')
+                self._qiskit_backend = AerSimulator(method="statevector", device="GPU")
             else:
                 # CPU simulation (default)
-                self._qiskit_backend = AerSimulator(method='statevector')
-                
+                self._qiskit_backend = AerSimulator(method="statevector")
+
         except ImportError:
             print("Warning: Qiskit Aer not available, falling back to CPU simulation")
             self.use_qiskit = False
@@ -85,7 +85,7 @@ class QCSimulator:
                 - probabilities: Measurement probabilities
                 - backend_used: Backend used for simulation
         """
-        
+
         # Use Qiskit Aer if available and configured
         if self.use_qiskit and self._qiskit_backend is not None:
             return self._simulate_with_qiskit(circuit)
@@ -95,31 +95,36 @@ class QCSimulator:
     def _simulate_with_qiskit(self, circuit: QuantumCircuit) -> dict[str, Any]:
         """Simulate using production Qiskit Aer backend."""
         try:
-            from qiskit import QuantumCircuit as QiskitCircuit
             from qiskit import transpile
-            
+
             # Convert internal circuit to Qiskit circuit
             qiskit_circuit = self._convert_to_qiskit(circuit)
-            
+
             # Transpile and run on Aer backend
             transpiled = transpile(qiskit_circuit, self._qiskit_backend)
             job = self._qiskit_backend.run(transpiled, shots=1024)
             result = job.result()
-            
+
             # Extract state vector if available
-            if hasattr(result, 'get_statevector'):
+            if hasattr(result, "get_statevector"):
                 state_vector = result.get_statevector(transpiled).data
             else:
                 # Fallback: reconstruct from counts
                 state_vector = np.zeros(2**circuit.num_qubits, dtype=np.complex128)
                 state_vector[0] = 1.0
-            
+
             # Calculate measurement probabilities
             probabilities = np.abs(state_vector) ** 2
-            
+
             return {
-                "state_vector": state_vector.tolist() if hasattr(state_vector, 'tolist') else list(state_vector),
-                "probabilities": probabilities.tolist() if hasattr(probabilities, 'tolist') else list(probabilities),
+                "state_vector": (
+                    state_vector.tolist() if hasattr(state_vector, "tolist") else list(state_vector)
+                ),
+                "probabilities": (
+                    probabilities.tolist()
+                    if hasattr(probabilities, "tolist")
+                    else list(probabilities)
+                ),
                 "backend_used": self.backend,
                 "num_qubits": circuit.num_qubits,
                 "circuit_depth": circuit.depth(),
@@ -132,15 +137,15 @@ class QCSimulator:
     def _convert_to_qiskit(self, circuit: QuantumCircuit):
         """Convert internal circuit representation to Qiskit circuit."""
         from qiskit import QuantumCircuit as QiskitCircuit
-        
+
         qc = QiskitCircuit(circuit.num_qubits)
-        
+
         # Map gates from internal representation to Qiskit
         for gate in circuit.gates:
             gate_type = gate["type"]
             qubits = gate["qubits"]
             params = gate.get("params", {})
-            
+
             # Apply gates based on type
             if gate_type == "H":
                 qc.h(qubits[0])
@@ -157,7 +162,7 @@ class QCSimulator:
             elif gate_type == "RY":
                 qc.ry(params.get("theta", 0), qubits[0])
             # Add more gate types as needed
-        
+
         return qc
 
     def _simulate_cpu_fallback(self, circuit: QuantumCircuit) -> dict[str, Any]:

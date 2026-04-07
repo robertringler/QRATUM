@@ -5,7 +5,6 @@ import pytest
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
 
-
 # ==================== Phase 4: Benchmark Tests ====================
 
 
@@ -36,7 +35,7 @@ class TestBenchmarkRegistry:
 
     def test_get_tasks_by_category(self):
         """Test getting tasks by category."""
-        from qratum_asi.benchmarks import BenchmarkRegistry, BenchmarkCategory
+        from qratum_asi.benchmarks import BenchmarkRegistry
 
         registry = BenchmarkRegistry()
 
@@ -49,7 +48,7 @@ class TestBenchmarkRegistry:
 
     def test_add_custom_task(self):
         """Test adding custom tasks."""
-        from qratum_asi.benchmarks import BenchmarkRegistry, BenchmarkCategory
+        from qratum_asi.benchmarks import BenchmarkCategory, BenchmarkRegistry
         from qratum_asi.benchmarks.types import DifficultyLevel
 
         registry = BenchmarkRegistry()
@@ -171,7 +170,7 @@ class TestInvariantHardener:
     def test_fatal_invariants_are_absolute(self):
         """Test fatal invariants have ABSOLUTE strength."""
         from qratum_asi.safety_hardening import InvariantHardener
-        from qratum_asi.safety_hardening.types import InvariantStrength, FATAL_INVARIANTS
+        from qratum_asi.safety_hardening.types import FATAL_INVARIANTS, InvariantStrength
 
         hardener = InvariantHardener()
 
@@ -265,7 +264,6 @@ class TestScalableOversight:
     def test_oversight_level_escalation(self):
         """Test that high scores trigger escalation."""
         from qratum_asi.safety_hardening import ScalableOversight
-        from qratum_asi.safety_hardening.types import OversightLevel
 
         oversight = ScalableOversight()
 
@@ -446,9 +444,9 @@ class TestSafetyIntegration:
     def test_all_modules_initialize(self):
         """Test all safety modules can initialize together."""
         from qratum_asi.safety_hardening import (
+            CorrigibilityPreserver,
             InvariantHardener,
             ScalableOversight,
-            CorrigibilityPreserver,
         )
 
         hardener = InvariantHardener()
@@ -462,9 +460,9 @@ class TestSafetyIntegration:
         """Test Merkle chain records events from all modules."""
         from qratum_asi.core.chain import ASIMerkleChain
         from qratum_asi.safety_hardening import (
+            CorrigibilityPreserver,
             InvariantHardener,
             ScalableOversight,
-            CorrigibilityPreserver,
         )
 
         chain = ASIMerkleChain()

@@ -12,6 +12,5 @@ from __future__ import annotations
 
 import pytest
 
-
 # Mark all tests in this module as AION tests
 pytestmark = pytest.mark.aion

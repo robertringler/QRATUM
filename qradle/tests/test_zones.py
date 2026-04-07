@@ -1,13 +1,13 @@
 """Tests for Zone Determinism Enforcement."""
 
 import pytest
+
 from qradle.core.zones import (
+    DEFAULT_ZONE_POLICIES,
     SecurityZone,
     ZoneContext,
-    ZonePolicy,
-    ZoneViolation,
     ZoneDeterminismEnforcer,
-    DEFAULT_ZONE_POLICIES,
+    ZoneViolation,
     enforce_zone,
 )
 
@@ -165,9 +165,7 @@ class TestZoneDeterminismEnforcer:
             operation_type="read",
             actor_id="user_001",
         )
-        result = enforcer.validate_zone_transition(
-            SecurityZone.Z1, SecurityZone.Z1, context
-        )
+        result = enforcer.validate_zone_transition(SecurityZone.Z1, SecurityZone.Z1, context)
         assert result is True
 
     def test_zone_transition_skip_zones(self):
@@ -179,9 +177,7 @@ class TestZoneDeterminismEnforcer:
             actor_id="user_001",
         )
         with pytest.raises(ZoneViolation) as exc_info:
-            enforcer.validate_zone_transition(
-                SecurityZone.Z0, SecurityZone.Z2, context
-            )
+            enforcer.validate_zone_transition(SecurityZone.Z0, SecurityZone.Z2, context)
         assert "skip zones" in str(exc_info.value)
 
     def test_zone_escalation_requires_dual_control(self):
@@ -194,9 +190,7 @@ class TestZoneDeterminismEnforcer:
             approvers=[],  # No approvers
         )
         with pytest.raises(ZoneViolation) as exc_info:
-            enforcer.validate_zone_transition(
-                SecurityZone.Z1, SecurityZone.Z2, context
-            )
+            enforcer.validate_zone_transition(SecurityZone.Z1, SecurityZone.Z2, context)
         assert "escalation" in str(exc_info.value)
 
     def test_execute_in_zone(self):

@@ -106,9 +106,7 @@ class SafetyCheckpoint:
         """Serialize checkpoint."""
         return {
             "checkpoint_id": self.checkpoint_id,
-            "state_hash": hashlib.sha3_256(
-                str(self.state_snapshot).encode()
-            ).hexdigest(),
+            "state_hash": hashlib.sha3_256(str(self.state_snapshot).encode()).hexdigest(),
             "merkle_root": self.merkle_root,
             "timestamp": self.timestamp,
             "metrics": self.metrics,
@@ -144,11 +142,14 @@ class LongevityPipeline:
         }
 
         # Log initialization
-        self.merkle_chain.add_event("pipeline_initialized", {
-            "pipeline_id": self.pipeline_id,
-            "pipeline_type": "anti_aging_pathways",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        })
+        self.merkle_chain.add_event(
+            "pipeline_initialized",
+            {
+                "pipeline_id": self.pipeline_id,
+                "pipeline_type": "anti_aging_pathways",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            },
+        )
 
     def explore_pathway(
         self,
@@ -174,8 +175,7 @@ class LongevityPipeline:
 
         def _explore():
             exploration_id = (
-                f"explore_{pathway}_"
-                f"{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+                f"explore_{pathway}_" f"{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
             )
 
             # Simulate pathway exploration (placeholder)
@@ -224,21 +224,26 @@ class LongevityPipeline:
                 ],
             }
 
-            mechanisms = pathway_mechanisms.get(pathway.lower(), [
-                {
-                    "name": "generic_mechanism",
-                    "effect": "longevity_extension",
-                    "evidence_level": "exploratory",
-                }
-            ])
+            mechanisms = pathway_mechanisms.get(
+                pathway.lower(),
+                [
+                    {
+                        "name": "generic_mechanism",
+                        "effect": "longevity_extension",
+                        "evidence_level": "exploratory",
+                    }
+                ],
+            )
 
             # Intervention targets
             targets = [
                 {
                     "target_id": f"target_{i:03d}",
                     "name": mech["name"],
-                    "druggability": 0.6 + (int(pathway_hash[i*4:(i+1)*4], 16) % 400) / 1000.0,
-                    "selectivity": 0.7 + (int(pathway_hash[(i+1)*4:(i+2)*4], 16) % 300) / 1000.0,
+                    "druggability": 0.6
+                    + (int(pathway_hash[i * 4 : (i + 1) * 4], 16) % 400) / 1000.0,
+                    "selectivity": 0.7
+                    + (int(pathway_hash[(i + 1) * 4 : (i + 2) * 4], 16) % 300) / 1000.0,
                 }
                 for i, mech in enumerate(mechanisms)
             ]
@@ -264,11 +269,14 @@ class LongevityPipeline:
         self.current_state["stage"] = "pathway_explored"
 
         # Log to merkle chain
-        self.merkle_chain.add_event("pathway_exploration_completed", {
-            "exploration_id": exploration.exploration_id,
-            "pathway": pathway,
-            "targets_found": len(exploration.targets),
-        })
+        self.merkle_chain.add_event(
+            "pathway_exploration_completed",
+            {
+                "exploration_id": exploration.exploration_id,
+                "pathway": pathway,
+                "targets_found": len(exploration.targets),
+            },
+        )
 
         return exploration
 
@@ -296,16 +304,13 @@ class LongevityPipeline:
 
         def _simulate():
             simulation_id = (
-                f"sim_{intervention}_"
-                f"{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+                f"sim_{intervention}_" f"{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
             )
 
             # Simulate intervention effects (placeholder)
             # In production, would use predictive models
 
-            intervention_hash = hashlib.sha3_256(
-                intervention.encode()
-            ).hexdigest()
+            intervention_hash = hashlib.sha3_256(intervention.encode()).hexdigest()
 
             # Effects
             effects = {
@@ -363,12 +368,15 @@ class LongevityPipeline:
         self.current_state["stage"] = "intervention_simulated"
 
         # Log to merkle chain
-        self.merkle_chain.add_event("intervention_simulation_completed", {
-            "simulation_id": simulation.simulation_id,
-            "intervention": intervention,
-            "safety_score": simulation.safety_score,
-            "efficacy_score": simulation.efficacy_score,
-        })
+        self.merkle_chain.add_event(
+            "intervention_simulation_completed",
+            {
+                "simulation_id": simulation.simulation_id,
+                "intervention": intervention,
+                "safety_score": simulation.safety_score,
+                "efficacy_score": simulation.efficacy_score,
+            },
+        )
 
         return simulation
 
@@ -413,11 +421,14 @@ class LongevityPipeline:
         self.checkpoints[checkpoint_id] = checkpoint
 
         # Log to merkle chain
-        self.merkle_chain.add_event("safety_checkpoint_created", {
-            "checkpoint_id": checkpoint_id,
-            "safety_level": metrics["safety_level"],
-            "description": description,
-        })
+        self.merkle_chain.add_event(
+            "safety_checkpoint_created",
+            {
+                "checkpoint_id": checkpoint_id,
+                "safety_level": metrics["safety_level"],
+                "description": description,
+            },
+        )
 
         return checkpoint
 
@@ -444,11 +455,14 @@ class LongevityPipeline:
         self.current_state = checkpoint.state_snapshot.copy()
 
         # Log rollback
-        self.merkle_chain.add_event("rollback_executed", {
-            "checkpoint_id": checkpoint_id,
-            "actor_id": actor_id,
-            "restored_safety_level": checkpoint.metrics["safety_level"],
-        })
+        self.merkle_chain.add_event(
+            "rollback_executed",
+            {
+                "checkpoint_id": checkpoint_id,
+                "actor_id": actor_id,
+                "restored_safety_level": checkpoint.metrics["safety_level"],
+            },
+        )
 
         return True
 

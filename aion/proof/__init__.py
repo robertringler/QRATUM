@@ -11,18 +11,18 @@ Status: Production
 
 from __future__ import annotations
 
-from .verifier import (
-    ProofVerifier,
-    ProofTerm,
-    ProofContext,
-    SafetyTheorem,
-)
 from .synthesis import (
-    ProofSynthesizer,
-    SMTSolver,
     BorrowProof,
     EffectProof,
+    ProofSynthesizer,
     RegionProof,
+    SMTSolver,
+)
+from .verifier import (
+    ProofContext,
+    ProofTerm,
+    ProofVerifier,
+    SafetyTheorem,
 )
 
 __all__ = [
