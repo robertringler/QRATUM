@@ -14,27 +14,27 @@ Status: Prototype (SI Transition Phase 2)
 Constraints: 8 Fatal Invariants preserved, human-approved bounded improvements
 """
 
-from qratum_asi.strategic_agency.types import (
-    StrategicObjective,
-    ObjectiveType,
-    ObjectivePriority,
-    ExplorationMode,
-    ExplorationConstraints,
-    ParadigmProposal,
-)
-from qratum_asi.strategic_agency.goal_engine import (
-    StrategicGoalEngine,
-    GoalDecomposition,
-    ProgressAssessment,
-)
 from qratum_asi.strategic_agency.exploration import (
-    UnboundedExploration,
     ExplorationResult,
     SafetyGate,
+    UnboundedExploration,
+)
+from qratum_asi.strategic_agency.goal_engine import (
+    GoalDecomposition,
+    ProgressAssessment,
+    StrategicGoalEngine,
 )
 from qratum_asi.strategic_agency.paradigm_invention import (
     ParadigmInventionFramework,
     ParadigmValidation,
+)
+from qratum_asi.strategic_agency.types import (
+    ExplorationConstraints,
+    ExplorationMode,
+    ObjectivePriority,
+    ObjectiveType,
+    ParadigmProposal,
+    StrategicObjective,
 )
 
 __all__ = [

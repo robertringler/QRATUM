@@ -19,12 +19,11 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
 
+from qratum_asi.core.authorization import AuthorizationSystem
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.core.authorization import AuthorizationSystem
 from qratum_asi.core.types import ASISafetyLevel
-
 from qratum_asi.strategic_agency.types import (
     ParadigmProposal,
     ParadigmStatus,
@@ -142,10 +141,8 @@ class ParadigmInventionFramework:
 
         # Analyze pairs of domains for shared structures
         for i, domain_a in enumerate(domains):
-            for domain_b in domains[i + 1:]:
-                shared = self._find_shared_structures(
-                    domain_a, domain_b, domain_knowledge
-                )
+            for domain_b in domains[i + 1 :]:
+                shared = self._find_shared_structures(domain_a, domain_b, domain_knowledge)
 
                 if shared:
                     self._opportunity_counter += 1
@@ -210,11 +207,14 @@ class ParadigmInventionFramework:
 
         # Compute provenance hash
         provenance_hash = hashlib.sha3_256(
-            json.dumps({
-                "proposal_id": proposal_id,
-                "title": title,
-                "principles": key_principles,
-            }, sort_keys=True).encode()
+            json.dumps(
+                {
+                    "proposal_id": proposal_id,
+                    "title": title,
+                    "principles": key_principles,
+                },
+                sort_keys=True,
+            ).encode()
         ).hexdigest()
 
         proposal = ParadigmProposal(
@@ -545,16 +545,14 @@ class ParadigmInventionFramework:
     def get_pending_paradigms(self) -> list[ParadigmProposal]:
         """Get paradigms pending human review."""
         return [
-            p for p in self.proposals.values()
+            p
+            for p in self.proposals.values()
             if p.status in (ParadigmStatus.PROPOSED, ParadigmStatus.VALIDATED)
         ]
 
     def get_approved_paradigms(self) -> list[ParadigmProposal]:
         """Get human-approved paradigms."""
-        return [
-            p for p in self.proposals.values()
-            if p.status == ParadigmStatus.HUMAN_APPROVED
-        ]
+        return [p for p in self.proposals.values() if p.status == ParadigmStatus.HUMAN_APPROVED]
 
     def get_framework_stats(self) -> dict[str, Any]:
         """Get framework statistics."""

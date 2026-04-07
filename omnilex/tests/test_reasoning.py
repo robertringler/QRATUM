@@ -22,7 +22,7 @@ class TestIRACAnalysis:
             application="Test application",
             conclusion="Test conclusion",
             confidence=0.75,
-            caveats=["Caveat 1"]
+            caveats=["Caveat 1"],
         )
 
         assert analysis.issue == "Test issue"
@@ -38,7 +38,7 @@ class TestIRACAnalysis:
                 application="Test",
                 conclusion="Test",
                 confidence=1.5,  # Invalid
-                caveats=[]
+                caveats=[],
             )
 
 
@@ -69,10 +69,7 @@ class TestLegalReasoningEngine:
         question = "Did BetaServices breach the contract?"
 
         analysis = engine.analyze_irac(
-            facts=facts,
-            question=question,
-            jurisdiction="US",
-            domain="contract"
+            facts=facts, question=question, jurisdiction="US", domain="contract"
         )
 
         assert isinstance(analysis, IRACAnalysis)
@@ -91,10 +88,7 @@ class TestLegalReasoningEngine:
         question = "Is Driver A liable for negligence?"
 
         analysis = engine.analyze_irac(
-            facts=facts,
-            question=question,
-            jurisdiction="US",
-            domain="tort"
+            facts=facts, question=question, jurisdiction="US", domain="tort"
         )
 
         assert isinstance(analysis, IRACAnalysis)
@@ -105,10 +99,7 @@ class TestLegalReasoningEngine:
         """Test issue identification for contract questions."""
         engine = LegalReasoningEngine()
 
-        issue = engine._identify_issue(
-            "Is the contract enforceable?",
-            "contract"
-        )
+        issue = engine._identify_issue("Is the contract enforceable?", "contract")
 
         assert "enforceable" in issue.lower()
 
@@ -116,10 +107,7 @@ class TestLegalReasoningEngine:
         """Test issue identification for tort questions."""
         engine = LegalReasoningEngine()
 
-        issue = engine._identify_issue(
-            "Is there negligence?",
-            "tort"
-        )
+        issue = engine._identify_issue("Is there negligence?", "tort")
 
         assert "negligence" in issue.lower()
 

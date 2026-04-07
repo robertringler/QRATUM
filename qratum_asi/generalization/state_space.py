@@ -16,14 +16,13 @@ from __future__ import annotations
 import hashlib
 import json
 import math
-from dataclasses import dataclass, field
-from datetime import datetime
+from dataclasses import dataclass
 from typing import Any
 
 from qratum_asi.generalization.types import (
     CognitiveDomain,
-    UniversalStateVector,
     CompressionMetrics,
+    UniversalStateVector,
 )
 
 # Compression constants
@@ -205,9 +204,7 @@ class AHTCEncoder:
 
         return flat
 
-    def _compress_data(
-        self, data: list[float], target_dims: int
-    ) -> list[float]:
+    def _compress_data(self, data: list[float], target_dims: int) -> list[float]:
         """Compress data to target dimensions (placeholder)."""
         if len(data) <= target_dims:
             return data + [0.0] * (target_dims - len(data))
@@ -227,9 +224,7 @@ class AHTCEncoder:
 
         return compressed
 
-    def _estimate_fidelity(
-        self, original: list[float], compressed: list[float]
-    ) -> float:
+    def _estimate_fidelity(self, original: list[float], compressed: list[float]) -> float:
         """Estimate reconstruction fidelity (placeholder)."""
         # Reconstruct and compare
         reconstructed = self.decode(compressed, len(original))
@@ -238,17 +233,13 @@ class AHTCEncoder:
             return 1.0
 
         # Mean squared error
-        mse = sum(
-            (a - b) ** 2 for a, b in zip(original, reconstructed)
-        ) / len(original)
+        mse = sum((a - b) ** 2 for a, b in zip(original, reconstructed)) / len(original)
 
         # Convert to fidelity score
         fidelity = 1.0 / (1.0 + mse)
         return max(0.0, min(1.0, fidelity))
 
-    def _estimate_entropy_reduction(
-        self, original: list[float], compressed: list[float]
-    ) -> float:
+    def _estimate_entropy_reduction(self, original: list[float], compressed: list[float]) -> float:
         """Estimate entropy reduction from compression."""
         if not original or not compressed:
             return 0.0
@@ -414,9 +405,7 @@ class UniversalStateSpace:
         """Get a state by ID."""
         return self.states.get(state_id)
 
-    def get_domain_states(
-        self, domain: CognitiveDomain
-    ) -> list[UniversalStateVector]:
+    def get_domain_states(self, domain: CognitiveDomain) -> list[UniversalStateVector]:
         """Get all states for a domain."""
         state_ids = self.domain_states.get(domain, [])
         return [self.states[sid] for sid in state_ids if sid in self.states]
@@ -585,13 +574,12 @@ class UniversalStateSpace:
         return {
             "total_states": len(self.states),
             "domains_represented": len(self.domain_states),
-            "states_per_domain": {
-                d.value: len(ids) for d, ids in self.domain_states.items()
-            },
+            "states_per_domain": {d.value: len(ids) for d, ids in self.domain_states.items()},
             "total_compressions": self._total_compressions,
             "total_operations": self._total_operations,
             "average_fidelity": (
-                sum(s.reconstruction_fidelity for s in self.states.values()) /
-                len(self.states) if self.states else 0.0
+                sum(s.reconstruction_fidelity for s in self.states.values()) / len(self.states)
+                if self.states
+                else 0.0
             ),
         }

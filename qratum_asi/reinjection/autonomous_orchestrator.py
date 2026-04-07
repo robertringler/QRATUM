@@ -21,25 +21,19 @@ from __future__ import annotations
 import hashlib
 import json
 import threading
-import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
-
+from qratum_asi.reinjection.audit import AuditReport, AuditReportGenerator
+from qratum_asi.reinjection.engine import ReinjectionCycleResult, ReinjectionEngine
 from qratum_asi.reinjection.types import (
     DiscoveryDomain,
-    ReinjectionCandidate,
-    ReinjectionResult,
-    ReinjectionScore,
-    ReinjectionStatus,
     ValidationLevel,
 )
-from qratum_asi.reinjection.engine import ReinjectionEngine, ReinjectionCycleResult
 from qratum_asi.reinjection.validator import ReinjectionValidator
-from qratum_asi.reinjection.audit import AuditReportGenerator, AuditReport
 
 
 class ArtifactSensitivity(Enum):
@@ -48,7 +42,7 @@ class ArtifactSensitivity(Enum):
     STANDARD = "standard"
     ELEVATED = "elevated"
     SENSITIVE = "sensitive"  # Requires dual-control
-    CRITICAL = "critical"    # Requires board-level review
+    CRITICAL = "critical"  # Requires board-level review
 
 
 class PropagationTarget(Enum):
@@ -342,9 +336,7 @@ class AutonomousReinjectionOrchestrator:
             },
         )
 
-    def register_artifact_callback(
-        self, callback: Callable[[DiscoveryArtifact], None]
-    ) -> None:
+    def register_artifact_callback(self, callback: Callable[[DiscoveryArtifact], None]) -> None:
         """Register callback for artifact events."""
         self._artifact_callbacks.append(callback)
 
@@ -354,9 +346,7 @@ class AutonomousReinjectionOrchestrator:
         """Register callback for reinjection events."""
         self._reinjection_callbacks.append(callback)
 
-    def register_propagation_callback(
-        self, callback: Callable[[PropagationResult], None]
-    ) -> None:
+    def register_propagation_callback(self, callback: Callable[[PropagationResult], None]) -> None:
         """Register callback for propagation events."""
         self._propagation_callbacks.append(callback)
 
@@ -393,9 +383,7 @@ class AutonomousReinjectionOrchestrator:
             artifact_id = f"artifact_{source_pipeline}_{self._artifact_counter:06d}"
 
             # Determine sensitivity
-            sensitivity = self._classify_sensitivity(
-                domain, confidence, fidelity, data_payload
-            )
+            sensitivity = self._classify_sensitivity(domain, confidence, fidelity, data_payload)
 
             artifact = DiscoveryArtifact(
                 artifact_id=artifact_id,
@@ -636,9 +624,7 @@ class AutonomousReinjectionOrchestrator:
 
         return result
 
-    def _determine_validation_level(
-        self, artifact: DiscoveryArtifact
-    ) -> ValidationLevel:
+    def _determine_validation_level(self, artifact: DiscoveryArtifact) -> ValidationLevel:
         """Determine appropriate validation level for artifact."""
         if artifact.sensitivity == ArtifactSensitivity.CRITICAL:
             return ValidationLevel.CRITICAL
@@ -755,7 +741,9 @@ class AutonomousReinjectionOrchestrator:
             # Simulate propagation (in production, would call vertical modules)
             status = "propagated" if weight >= 0.5 else "deferred"
             propagation_status[target.value] = status
-            impact_metrics[target.value] = weight * result.sandbox_result.fidelity_score if result.sandbox_result else 0
+            impact_metrics[target.value] = (
+                weight * result.sandbox_result.fidelity_score if result.sandbox_result else 0
+            )
 
         self.status_summary.cross_vertical_propagations += 1
 
@@ -850,9 +838,7 @@ class AutonomousReinjectionOrchestrator:
             for artifact_id in batch:
                 artifact = self.filtered_artifacts.get(artifact_id)
                 if artifact:
-                    result = self.auto_reinject_if_valid(
-                        artifact, auto_approve=auto_approve
-                    )
+                    result = self.auto_reinject_if_valid(artifact, auto_approve=auto_approve)
                     if result:
                         results.append(result)
                         self.pending_reinjections.remove(artifact_id)

@@ -13,12 +13,12 @@ from __future__ import annotations
 
 from .type_system import (
     AIONTypeSystem,
-    TypeContext,
-    TypeJudgment,
+    DependentType,
     LinearContext,
     RefinementType,
-    DependentType,
     TypeChecker,
+    TypeContext,
+    TypeJudgment,
 )
 
 __all__ = [

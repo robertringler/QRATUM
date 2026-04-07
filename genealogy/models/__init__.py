@@ -2,14 +2,14 @@
 Models package initialization.
 """
 
-from .person import Person, Relationship, Gender, RelationshipType
+from .person import Gender, Person, Relationship, RelationshipType
 from .record import (
-    GenealogicalRecord,
     Citation,
-    Source,
-    RecordType,
-    SourceType,
     EvidenceQuality,
+    GenealogicalRecord,
+    RecordType,
+    Source,
+    SourceType,
 )
 
 __all__ = [

@@ -328,8 +328,7 @@ DATA AND BIAS:
             intended_use=self.intended_use,
             risk_category=SaMDRiskCategory.CATEGORY_I,
             clinical_evaluation=(
-                "Not yet submitted for clinical evaluation. "
-                "Current status: Research-use only."
+                "Not yet submitted for clinical evaluation. " "Current status: Research-use only."
             ),
             quality_management_system="QRATUM QMS v1.0 (Research)",
             labeling_requirements=[
@@ -361,17 +360,13 @@ DATA AND BIAS:
             known_biases=[
                 {
                     "bias_type": "Population representation",
-                    "description": (
-                        "Training data over-represents European ancestry populations"
-                    ),
+                    "description": ("Training data over-represents European ancestry populations"),
                     "severity": "medium",
                     "affected_outputs": "All population-level predictions",
                 },
                 {
                     "bias_type": "Cancer type coverage",
-                    "description": (
-                        "More data available for common cancer types"
-                    ),
+                    "description": ("More data available for common cancer types"),
                     "severity": "low",
                     "affected_outputs": "Rare cancer type predictions",
                 },
@@ -459,9 +454,7 @@ DATA AND BIAS:
 
         # Check for uncertainty quantification
         if "uncertainty" not in output_content and "confidence" not in output_content:
-            validation_result["warnings"].append(
-                "Output lacks uncertainty quantification"
-            )
+            validation_result["warnings"].append("Output lacks uncertainty quantification")
 
         # Log validation
         self._log_audit(
@@ -534,9 +527,9 @@ DATA AND BIAS:
             Compliance report with all relevant information
         """
         return {
-            "report_id": hashlib.md5(
-                datetime.now(timezone.utc).isoformat().encode()
-            ).hexdigest()[:12],
+            "report_id": hashlib.md5(datetime.now(timezone.utc).isoformat().encode()).hexdigest()[
+                :12
+            ],
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "system_name": self.name,
             "disclaimer": self.SYSTEM_DISCLAIMER,
@@ -545,15 +538,9 @@ DATA AND BIAS:
             "safety_constraints": (
                 self.safety_constraints.to_dict() if self.safety_constraints else None
             ),
-            "fda_compliance": (
-                self.fda_compliance.to_dict() if self.fda_compliance else None
-            ),
-            "bias_assessment": (
-                self.bias_assessment.to_dict() if self.bias_assessment else None
-            ),
-            "explainability_requirements": [
-                r.to_dict() for r in self.explainability_requirements
-            ],
+            "fda_compliance": (self.fda_compliance.to_dict() if self.fda_compliance else None),
+            "bias_assessment": (self.bias_assessment.to_dict() if self.bias_assessment else None),
+            "explainability_requirements": [r.to_dict() for r in self.explainability_requirements],
             "audit_summary": {
                 "total_events": len(self.audit_log),
                 "last_event": self.audit_log[-1] if self.audit_log else None,
@@ -588,12 +575,8 @@ DATA AND BIAS:
             )
 
         if output_type == "treatment_recommendation":
-            disclaimers.append(
-                "Treatment suggestions are computational hypotheses only"
-            )
-            disclaimers.append(
-                "Consult appropriate clinical guidelines and oncology expertise"
-            )
+            disclaimers.append("Treatment suggestions are computational hypotheses only")
+            disclaimers.append("Consult appropriate clinical guidelines and oncology expertise")
 
         return disclaimers
 
@@ -625,15 +608,9 @@ DATA AND BIAS:
             "safety_constraints": (
                 self.safety_constraints.to_dict() if self.safety_constraints else None
             ),
-            "fda_compliance": (
-                self.fda_compliance.to_dict() if self.fda_compliance else None
-            ),
-            "bias_assessment": (
-                self.bias_assessment.to_dict() if self.bias_assessment else None
-            ),
-            "explainability_requirements": [
-                r.to_dict() for r in self.explainability_requirements
-            ],
+            "fda_compliance": (self.fda_compliance.to_dict() if self.fda_compliance else None),
+            "bias_assessment": (self.bias_assessment.to_dict() if self.bias_assessment else None),
+            "explainability_requirements": [r.to_dict() for r in self.explainability_requirements],
             "audit_log_size": len(self.audit_log),
             "disclaimer": self.SYSTEM_DISCLAIMER,
         }

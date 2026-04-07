@@ -30,10 +30,10 @@ Usage:
     print(f"Temporal compression ratio: {results.compression_ratio:.2f}×")
 """
 
-from .automata import CellularAutomaton, Rule110, Rule30
-from .experiment import TemporalCompressionExperiment, ExperimentConfig
-from .metrics import TemporalMetrics, CompressionStatistics
-from .verification import VerificationChain, StateVerifier, AuditEntry
+from .automata import CellularAutomaton, Rule30, Rule110
+from .experiment import ExperimentConfig, TemporalCompressionExperiment
+from .metrics import CompressionStatistics, TemporalMetrics
+from .verification import AuditEntry, StateVerifier, VerificationChain
 
 __version__ = "1.0.0"
 

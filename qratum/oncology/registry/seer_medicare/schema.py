@@ -112,7 +112,7 @@ class ClaimEvent:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "ClaimEvent":
+    def from_dict(cls, data: dict[str, Any]) -> ClaimEvent:
         """Deserialize from dictionary."""
         event_date = data.get("event_date")
         if isinstance(event_date, str):
@@ -210,7 +210,7 @@ class RegistryCase:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "RegistryCase":
+    def from_dict(cls, data: dict[str, Any]) -> RegistryCase:
         """Deserialize from dictionary."""
         dx_date = data.get("dx_date")
         if isinstance(dx_date, str):

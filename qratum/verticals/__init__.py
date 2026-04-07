@@ -7,21 +7,21 @@ domain-specific tasks with full determinism and auditability.
 """
 
 from .base import VerticalModuleBase
+from .capra import CapraModule
+from .chrona import ChronaModule
+from .cohora import CohoraModule
+from .ecora import EcoraModule
+from .fluxa import FluxaModule
+from .fusia import FusiaModule
+from .geona import GeonaModule
 from .juris import JurisModule
 from .juris_peerage import JurisPeerageModule
-from .vitra import VitraModule
-from .ecora import EcoraModule
-from .capra import CapraModule
-from .sentra import SentraModule
 from .neura import NeuraModule
-from .fluxa import FluxaModule
-from .chrona import ChronaModule
-from .geona import GeonaModule
-from .fusia import FusiaModule
+from .orbia import OrbiaModule
+from .sentra import SentraModule
 from .strata import StrataModule
 from .vexor import VexorModule
-from .cohora import CohoraModule
-from .orbia import OrbiaModule
+from .vitra import VitraModule
 
 __all__ = [
     "VerticalModuleBase",

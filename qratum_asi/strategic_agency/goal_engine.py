@@ -19,19 +19,18 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
 
+from qratum_asi.core.authorization import AuthorizationSystem
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.core.authorization import AuthorizationSystem
 from qratum_asi.core.types import ASISafetyLevel
-
 from qratum_asi.strategic_agency.types import (
-    StrategicObjective,
-    SubObjective,
-    ObjectiveType,
+    PROHIBITED_OBJECTIVES,
     ObjectivePriority,
     ObjectiveSafetyLevel,
-    PROHIBITED_OBJECTIVES,
+    ObjectiveType,
+    StrategicObjective,
+    SubObjective,
 )
 
 
@@ -178,12 +177,15 @@ class StrategicGoalEngine:
 
         # Compute provenance hash
         provenance_hash = hashlib.sha3_256(
-            json.dumps({
-                "objective_id": objective_id,
-                "title": title,
-                "description": description,
-                "type": objective_type.value,
-            }, sort_keys=True).encode()
+            json.dumps(
+                {
+                    "objective_id": objective_id,
+                    "title": title,
+                    "description": description,
+                    "type": objective_type.value,
+                },
+                sort_keys=True,
+            ).encode()
         ).hexdigest()
 
         objective = StrategicObjective(
@@ -322,7 +324,8 @@ class StrategicGoalEngine:
         # Compute completion percentage
         if decomposition:
             completed = sum(
-                1 for so in decomposition.sub_objectives
+                1
+                for so in decomposition.sub_objectives
                 if current_status.get(so.sub_id) == "completed"
             )
             completion = (completed / len(decomposition.sub_objectives)) * 100
@@ -483,9 +486,7 @@ class StrategicGoalEngine:
 
         return ObjectiveSafetyLevel.ROUTINE
 
-    def _map_safety_level(
-        self, obj_safety: ObjectiveSafetyLevel
-    ) -> ASISafetyLevel:
+    def _map_safety_level(self, obj_safety: ObjectiveSafetyLevel) -> ASISafetyLevel:
         """Map objective safety level to ASI safety level."""
         mapping = {
             ObjectiveSafetyLevel.ROUTINE: ASISafetyLevel.ROUTINE,
@@ -530,26 +531,18 @@ class StrategicGoalEngine:
 
         return sub_objectives
 
-    def _compute_critical_path(
-        self, sub_objectives: list[SubObjective]
-    ) -> list[str]:
+    def _compute_critical_path(self, sub_objectives: list[SubObjective]) -> list[str]:
         """Compute critical path through sub-objectives."""
         # Simple implementation: sequential path
         return [so.sub_id for so in sorted(sub_objectives, key=lambda s: s.order)]
 
     def get_pending_objectives(self) -> list[StrategicObjective]:
         """Get all pending (unapproved) objectives."""
-        return [
-            obj for obj in self.objectives.values()
-            if obj.approval_status == "pending"
-        ]
+        return [obj for obj in self.objectives.values() if obj.approval_status == "pending"]
 
     def get_approved_objectives(self) -> list[StrategicObjective]:
         """Get all approved objectives."""
-        return [
-            obj for obj in self.objectives.values()
-            if obj.approval_status == "approved"
-        ]
+        return [obj for obj in self.objectives.values() if obj.approval_status == "approved"]
 
     def get_engine_stats(self) -> dict[str, Any]:
         """Get engine statistics."""

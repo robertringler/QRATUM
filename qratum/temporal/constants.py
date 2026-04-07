@@ -42,25 +42,31 @@ TEMPORAL_STATE_OVERHEAD = 1024  # bytes per state (target: <1KB)
 
 # Effective Velocity Multipliers
 MIN_FTL_MULTIPLIER = 1.0  # Minimum speed-of-light multiple to be considered FTL
-INFINITE_VELOCITY = float('inf')  # For instantaneous lookups
+INFINITE_VELOCITY = float("inf")  # For instantaneous lookups
+
 
 # Paradox Resolution
 class ParadoxStrategy:
     """Enumeration of paradox resolution strategies"""
+
     NOVIKOV = "novikov"  # Self-consistency principle
     MANY_WORLDS = "many_worlds"  # Branch on paradox
     CHRONOLOGY_PROTECTION = "chronology_protection"  # Reject paradox
 
+
 # Entropy Reversal Strategies
 class EntropyStrategy:
     """Enumeration of entropy reversal strategies"""
+
     RECONSTRUCT = "reconstruct"  # Deterministic reconstruction
     PROBABILISTIC = "probabilistic"  # Probabilistic inference
     MERKLE_RECOVER = "merkle_recover"  # Recover from Merkle chain
 
+
 # Temporal Resolution Levels
 class TemporalResolution:
     """Pre-defined temporal resolution levels"""
+
     PLANCK = PLANCK_TIME
     NANOSECOND = 1e-9
     MICROSECOND = 1e-6
@@ -72,9 +78,11 @@ class TemporalResolution:
     YEAR = SECONDS_PER_YEAR
     COSMIC = SECONDS_PER_COSMIC_YEAR
 
+
 # FTL Computation Mechanisms
 class FTLMechanism:
     """Mechanisms for achieving effective FTL computation"""
+
     PRECOMPUTATION = "precomputation"  # Compute all possibilities in advance
     PREDICTIVE_MODELING = "predictive_modeling"  # Model futures faster than they unfold
     PARALLEL_BRANCHING = "parallel_branching"  # Explore all timelines simultaneously

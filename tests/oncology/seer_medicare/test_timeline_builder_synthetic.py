@@ -12,7 +12,6 @@ from datetime import date, timedelta
 import pytest
 
 from qratum.oncology.registry.seer_medicare.linkages import LinkedPatient
-from qratum.oncology.registry.seer_medicare.privacy import PrivacyConfig
 from qratum.oncology.registry.seer_medicare.schema import (
     ClaimEvent,
     ClaimSetting,
