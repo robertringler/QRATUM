@@ -177,6 +177,14 @@ private:
     void render_frame();
     void update_dashboard();
     void record_metrics();
+    void init_ciir_theory();
+    void init_gpu_resources();
+    void init_vr();
+    void process_input();
+    void update_simulation();
+    void render_frame();
+    void update_dashboard();
+    void record_metrics();
 
     SimulationConfig config_;
     std::atomic<bool> running_{false};
@@ -206,5 +214,26 @@ private:
     std::vector<float> constraint_weights_;
     std::vector<float> observer_targets_;
 };
+
+/**
+ * @brief Run full automated simulation with screenshot capture.
+ *
+ * Primary entry point for batch/automated execution:
+ *   1. Initialize the CIIR → QuASIM → QRATUM pipeline
+ *   2. Step through evolution for num_steps
+ *   3. At each screenshot_interval: render + capture PNG
+ *   4. Log per-step metrics to CSV
+ *   5. Export final tensor log (JSON), metrics (CSV), dashboard (JSON)
+ *
+ * @param num_steps Total evolution steps to run.
+ * @param screenshot_interval Capture screenshot every N steps (0 = disable).
+ * @param output_folder Output directory for all files.
+ * @param config Simulation configuration.
+ */
+void run_and_capture_simulation(
+    int num_steps,
+    int screenshot_interval,
+    const std::string& output_folder,
+    const SimulationConfig& config);
 
 } // namespace ciir_sim

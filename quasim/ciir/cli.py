@@ -179,5 +179,80 @@ def info():
         click.echo(f"  [{status}] {k}")
 
 
+@cli.command()
+@click.option("--config", "config_path", type=click.Path(), default=None, help="YAML config file")
+@click.option("--steps", default=200, help="Number of evolution steps")
+@click.option("--screenshot-interval", default=50, help="Screenshot every N steps (0=disable)")
+@click.option("--output", "-o", default="ciir_output", help="Output directory")
+@click.option("--batch", default=4, help="Batch size")
+@click.option("--dim", default=8, help="Representation dimension D")
+@click.option("--constraints", default=3, help="Number of constraints")
+@click.option("--observers", default=2, help="Number of observers")
+@click.option("--lr", default=0.01, help="Learning rate η")
+@click.option("--entropy-weight", default=0.01, help="Entropy weight γ")
+@click.option("--seed", default=42, help="Random seed")
+@click.option("--dpi", default=150, help="Screenshot DPI")
+def simulate(config_path, steps, screenshot_interval, output, batch, dim,
+             constraints, observers, lr, entropy_weight, seed, dpi):
+    """Run full CIIR → QuASIM → QRATUM simulation with screenshots.
+
+    Automated simulation with screenshot capture, metrics logging,
+    and tensor log export. Captures high-resolution screenshots at
+    specified intervals.
+    """
+    from quasim.ciir.simulation.engine import SimulationConfig, run_and_capture_simulation
+
+    if config_path:
+        import yaml
+        with open(config_path) as f:
+            raw = yaml.safe_load(f)
+        sim_cfg = SimulationConfig(
+            rank=raw.get("rank", 4),
+            rep_dim=raw.get("rep_dim", dim),
+            batch_size=raw.get("batch_size", batch),
+            n_constraints=raw.get("n_constraints", constraints),
+            n_observers=raw.get("n_observers", observers),
+            n_steps=raw.get("n_steps", steps),
+            learning_rate=raw.get("lr", lr),
+            entropy_weight=raw.get("entropy_weight", entropy_weight),
+            method=raw.get("method", "projected_gradient"),
+            screenshot_interval=raw.get("screenshot_interval", screenshot_interval),
+            screenshot_dpi=raw.get("screenshot_dpi", dpi),
+            output_dir=raw.get("output_path", output),
+            seed=raw.get("seed", seed),
+        )
+    else:
+        sim_cfg = SimulationConfig(
+            rep_dim=dim,
+            batch_size=batch,
+            n_constraints=constraints,
+            n_observers=observers,
+            n_steps=steps,
+            learning_rate=lr,
+            entropy_weight=entropy_weight,
+            screenshot_interval=screenshot_interval,
+            screenshot_dpi=dpi,
+            output_dir=output,
+            seed=seed,
+        )
+
+    engine = run_and_capture_simulation(config=sim_cfg)
+
+    # Summary
+    if engine.dashboard and engine.dashboard.latest:
+        final = engine.dashboard.latest
+        click.echo("\n" + "=" * 50)
+        click.echo("Simulation Complete")
+        click.echo(f"  Steps:       {final.step}")
+        click.echo(f"  Final loss:  {final.total_loss:.6f}")
+        click.echo(f"  ‖∇L‖:       {final.gradient_norm:.6e}")
+        click.echo(f"  Purity:      {final.purity:.4f}")
+        click.echo(f"  Entropy:     {final.entropy:.4f}")
+        click.echo(f"  Output:      {sim_cfg.output_dir}/")
+    if engine.exporter and engine.exporter.screenshot_capture:
+        click.echo(f"  Screenshots: {engine.exporter.screenshot_capture.count}")
+
+
+
 if __name__ == "__main__":
     cli()
