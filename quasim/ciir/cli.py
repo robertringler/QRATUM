@@ -268,5 +268,35 @@ def simulate(
         click.echo(f"  Screenshots: {engine.exporter.screenshot_capture.count}")
 
 
+@cli.command()
+@click.option("--output", "-o", default=None, help="Path to save JSON report")
+@click.option("--plots", is_flag=True, help="Generate convergence plots")
+@click.option("--plots-dir", default="/tmp/ciir_validation/plots", help="Plot output directory")
+@click.option("--json-output", is_flag=True, help="Output results as JSON to stdout")
+def validate(output, plots, plots_dir, json_output):
+    """Run multi-scenario validation suite.
+
+    Executes baseline, constraint sweep, observer sweep, step sweep,
+    high-dimensional, and stress test scenarios. Reports convergence,
+    stability, and observer non-commutativity metrics.
+    """
+    from quasim.ciir.validation_runner import generate_convergence_plots, run_all_validations
+
+    report = run_all_validations(
+        verbose=not json_output,
+        output_path=output,
+    )
+
+    if plots:
+        paths = generate_convergence_plots(report, output_dir=plots_dir)
+        if not json_output:
+            click.echo(f"\nPlots saved to {plots_dir}/:")
+            for p in paths:
+                click.echo(f"  {p}")
+
+    if json_output:
+        click.echo(json.dumps(report.to_dict(), indent=2, default=str))
+
+
 if __name__ == "__main__":
     cli()
