@@ -159,7 +159,7 @@ class TestRunScenario:
             n_steps=10,
             learning_rate=0.01,
             seed=42,
-            output_dir="/tmp/ciir_validation_test/basic",
+            output_dir=os.path.join(tempfile.gettempdir(), "ciir_validation_test", "basic"),
             log_metrics=False,
             log_tensors=False,
         )
@@ -179,7 +179,7 @@ class TestRunScenario:
             n_observers=2,
             n_steps=10,
             seed=42,
-            output_dir="/tmp/ciir_validation_test/summary",
+            output_dir=os.path.join(tempfile.gettempdir(), "ciir_validation_test", "summary"),
             log_metrics=False,
             log_tensors=False,
         )
@@ -282,7 +282,7 @@ class TestConvergencePlots:
             n_observers=2,
             n_steps=10,
             seed=42,
-            output_dir="/tmp/ciir_validation_test/plots",
+            output_dir=os.path.join(tempfile.gettempdir(), "ciir_validation_test", "plots"),
             log_metrics=False,
             log_tensors=False,
         )
