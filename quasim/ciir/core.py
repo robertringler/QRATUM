@@ -40,6 +40,9 @@ def density_matrix(psi: np.ndarray) -> np.ndarray:
     return psi @ psi.conj().T
 
 
+_EIGENVALUE_THRESHOLD = 1e-15
+
+
 def von_neumann_entropy(rho: np.ndarray) -> float:
     """Compute von Neumann entropy S = −Tr(ρ log ρ).
 
@@ -50,7 +53,7 @@ def von_neumann_entropy(rho: np.ndarray) -> float:
         Non-negative real entropy value.
     """
     eigenvalues = np.linalg.eigvalsh(rho)
-    eigenvalues = eigenvalues[eigenvalues > 1e-15]
+    eigenvalues = eigenvalues[eigenvalues > _EIGENVALUE_THRESHOLD]
     return float(-np.sum(eigenvalues * np.log(eigenvalues)))
 
 

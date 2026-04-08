@@ -47,6 +47,13 @@ def generate_report(results: dict[str, Any]) -> str:
         or pd["path_dependent"]
     )
 
+    qratum_status = "ACTIVE" if qratum_active else "INACTIVE"
+    qratum_desc = (
+        "operators exhibit non-trivial drift across timesteps"
+        if qratum_active
+        else "operators have converged to fixed points"
+    )
+
     w("=" * 72 + "\n")
     w("  CIIR → QuASIM → QRATUM  SIMULATION REPORT\n")
     w("=" * 72 + "\n\n")
@@ -56,8 +63,7 @@ def generate_report(results: dict[str, Any]) -> str:
     w(
         f"The CIIR → QuASIM → QRATUM pipeline was executed for the full "
         f"parameter space.  QRATUM operator recursion is "
-        f"{'ACTIVE' if qratum_active else 'INACTIVE'}: operators "
-        f"{'exhibit non-trivial drift across timesteps' if qratum_active else 'have converged to fixed points'}.  "
+        f"{qratum_status}: {qratum_desc}.  "
     )
     if non_classical:
         w(
