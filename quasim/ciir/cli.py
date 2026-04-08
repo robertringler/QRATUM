@@ -298,5 +298,79 @@ def validate(output, plots, plots_dir, json_output):
         click.echo(json.dumps(report.to_dict(), indent=2, default=str))
 
 
+@cli.command("long-run")
+@click.option("--duration-hours", default=8.0, help="Wall-clock duration in hours")
+@click.option("--max-steps", default=0, help="Maximum steps (0=unlimited)")
+@click.option("--rank", default=4, help="Ontic dimension R")
+@click.option("--dim", default=8, help="Representation dimension D")
+@click.option("--batch", default=4, help="Batch size B")
+@click.option("--constraints", default=3, help="Number of constraints")
+@click.option("--observers", default=2, help="Number of observers")
+@click.option("--lr", default=0.01, help="Learning rate η")
+@click.option("--entropy-weight", default=0.01, help="Entropy weight γ")
+@click.option("--seed", default=42, help="Random seed")
+@click.option("--checkpoint-interval", default=10000, help="Checkpoint every N steps")
+@click.option("--log-interval", default=1000, help="Console log every N steps")
+@click.option("--output-dir", "-o", default="ciir_long_run", help="Output directory")
+@click.option("--plots", is_flag=True, help="Generate summary plots at completion")
+@click.option("--json-output", is_flag=True, help="Output summary as JSON to stdout")
+def long_run(
+    duration_hours,
+    max_steps,
+    rank,
+    dim,
+    batch,
+    constraints,
+    observers,
+    lr,
+    entropy_weight,
+    seed,
+    checkpoint_interval,
+    log_interval,
+    output_dir,
+    plots,
+    json_output,
+):
+    """Run a long-duration CIIR simulation.
+
+    Executes the CIIR → QuASIM → QRATUM pipeline continuously for
+    the specified wall-clock duration with incremental checkpointing,
+    anomaly detection, and recovery.
+    """
+    from quasim.ciir.long_duration_runner import (
+        LongRunConfig,
+        generate_long_run_plots,
+        run_long_duration,
+    )
+
+    cfg = LongRunConfig(
+        duration_hours=duration_hours,
+        max_steps=max_steps,
+        rank=rank,
+        rep_dim=dim,
+        batch_size=batch,
+        n_constraints=constraints,
+        n_observers=observers,
+        learning_rate=lr,
+        entropy_weight=entropy_weight,
+        seed=seed,
+        checkpoint_interval=checkpoint_interval,
+        log_interval=log_interval,
+        output_dir=output_dir,
+    )
+
+    result = run_long_duration(config=cfg, verbose=not json_output)
+
+    if plots:
+        paths = generate_long_run_plots(result, output_dir=output_dir)
+        if not json_output:
+            click.echo(f"\nPlots saved to {output_dir}/:")
+            for p in paths:
+                click.echo(f"  {p}")
+
+    if json_output:
+        click.echo(json.dumps(result.summary(), indent=2, default=str))
+
+
 if __name__ == "__main__":
     cli()
