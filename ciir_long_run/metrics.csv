@@ -1,1 +1,0 @@
-step,total_loss,constraint_loss,observer_loss,entropy_loss,gradient_norm,purity,entropy,step_time_ms
