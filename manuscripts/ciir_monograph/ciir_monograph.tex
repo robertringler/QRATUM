@@ -1,0 +1,563 @@
+% ============================================================
+%
+%  CONSTRAINT-INDUCED INTERFACE REALISM (CIIR) — UNIFIED MONOGRAPH
+%
+%  A Formal Theory of Cognitive-Informational Interaction
+%  and Recursion
+%
+%  Chapters 1–11, Appendices A–D
+%
+% ============================================================
+
+\documentclass[11pt,a4paper,openany]{book}
+
+% ------------------------------------------------------------
+%  Packages
+% ------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{tensor}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% ------------------------------------------------------------
+%  Theorem-like environments
+% ------------------------------------------------------------
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{axiom}[definition]{Axiom}
+\newtheorem{conjecture}[definition]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{example}[definition]{Example}
+
+% ------------------------------------------------------------
+%  Custom commands — unified notation across all chapters
+% ------------------------------------------------------------
+% Spaces and manifolds
+\newcommand{\CR}{\mathcal{R}}          % Reality space
+\newcommand{\CM}{\mathcal{M}}          % Constraint manifold
+\newcommand{\HC}{H_C}                  % Cognitive state space (Hilbert)
+
+% Operators and algebras
+\newcommand{\CB}{\mathcal{B}}          % Bounded operators
+\newcommand{\CA}{\mathcal{A}}          % Observable algebra
+\newcommand{\CK}{\mathcal{K}}          % Compact operators
+\newcommand{\CL}{\mathcal{L}}         % Lindblad superoperator
+\newcommand{\hatC}{\hat{C}}            % Constraint operator
+\newcommand{\hatO}{\hat{O}}            % Observable operator
+\newcommand{\hatH}{\hat{H}}            % Hamiltonian
+\newcommand{\hatP}{\hat{P}}            % Projection operator
+
+% Trace and norms
+\newcommand{\Tr}{\mathrm{Tr}}
+
+% Effective Planck constant
+\newcommand{\heff}{\hbar_{\mathrm{eff}}}
+
+% ------------------------------------------------------------
+%  Hyperref configuration
+% ------------------------------------------------------------
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!70!black,
+  citecolor=green!50!black,
+  urlcolor=blue!80!black,
+  pdftitle={Constraint-Induced Interface Realism: A Formal Theory},
+  pdfauthor={CIIR Research Programme},
+  pdfsubject={Mathematical Physics, Quantum Foundations, Cognitive Science},
+}
+
+% ============================================================
+\begin{document}
+
+% ============================================================
+%  FRONT MATTER
+% ============================================================
+\frontmatter
+
+% ------------------------------------------------------------
+%  Title page
+% ------------------------------------------------------------
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\Huge\bfseries Constraint-Induced Interface Realism}\\[0.8cm]
+{\LARGE A Formal Theory of Cognitive-Informational\\[0.3cm]
+Interaction and Recursion}\\[2cm]
+{\Large CIIR Monograph}\\[1cm]
+{\large CIIR-$\Omega$ Research Programme}\\[3cm]
+{\large\today}
+\vfill
+\end{titlepage}
+
+% ------------------------------------------------------------
+%  Abstract
+% ------------------------------------------------------------
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This monograph presents \emph{Constraint-Induced Interface Realism}
+(CIIR), a mathematically rigorous framework that unifies cognitive state
+spaces, constraint manifolds, interface maps, and measurement theory
+within a single axiomatic structure compatible with completely positive,
+trace-preserving (CPTP) quantum dynamics.
+
+Starting from a minimal set of primitive objects — a reality space
+$\CR$, a Riemannian constraint manifold $(\CM, g, \kappa)$ with scalar
+constraint curvature $\kappa$, a separable complex Hilbert space
+$\mathcal{H}$, and an interface map $\Phi : \CB(\CR_{\mathrm{op}})
+\to \CB(\mathcal{H})$ — we erect an axiom system (Ax\,4.1--4.6) from
+which the entire algebraic, dynamical, and measurement-theoretic
+apparatus is derived constructively.
+
+The constraint operator algebra $\CB(\CR_{\mathrm{op}})$ is shown to
+admit a finite-dimensional block decomposition
+$\bigoplus_j M_{k_j}(\mathbb{C})$ (Chapter~5).  A representation
+functor $F : \mathbf{CogSys} \to \mathbf{Hilb}_{\mathrm{CIIR}}$
+establishes full functoriality between cognitive systems and their
+Hilbert-space representations (Chapter~6).  The CIIR master equation
+\[
+  \frac{d\rho}{dt}
+  = -\frac{i}{\heff}\bigl[\hatH_C,\,\rho\bigr]
+    + \sum_{k=1}^{K}\gamma_k
+      \Bigl(L_k\,\rho\,L_k^\dagger
+            - \tfrac{1}{2}\bigl\{L_k^\dagger L_k,\,\rho\bigr\}\Bigr),
+\]
+with Lindblad generators $L_k$ derived from constraint operators and
+an effective Planck constant $\heff := (\kappa_{\max}\cdot
+\mathrm{vol}(\CM))^{-1}$, governs trace-preserving evolution on the
+density-operator space $\mathfrak{D}(\mathcal{H})$ (Chapter~7).
+Measurement theory, including CIIR-native positive-operator-valued
+measures, spectral distortion bounds, and Naimark dilation to
+ancilla-extended PVMs, is developed in Chapter~8.  A dual-mode
+consolidation and adversarial red-team audit closes the core theory
+(Chapter~9).
+
+Extensions to external informational layers on quantum systems
+(Chapter~10) and the Computational Reality System (Chapter~11)
+complete the programme.
+
+% ------------------------------------------------------------
+%  List of Symbols
+% ------------------------------------------------------------
+\chapter*{List of Symbols}
+\addcontentsline{toc}{chapter}{List of Symbols}
+
+\begin{longtable}{@{}>{$}l<{$} p{0.72\textwidth}@{}}
+\toprule
+\textbf{Symbol} & \textbf{Description} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Symbol} & \textbf{Description} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+
+%% Spaces and manifolds
+\CR & Reality space — ambient ontological domain \\
+\CM & Constraint manifold — smooth Riemannian manifold encoding
+      epistemic constraints \\
+\mathcal{H} & Cognitive (or interface) Hilbert space — separable
+              complex Hilbert space \\
+T\CM & Tangent bundle of the constraint manifold \\
+\mathbb{C}^d & Finite-dimensional complex Hilbert space of
+               dimension $d$ \\
+
+%% Maps and morphisms
+\Phi & Interface map $\Phi : \CB(\CR_{\mathrm{op}}) \to
+       \CB(\mathcal{H})$; also used for functorial representation \\
+\iota & Embedding $\iota : \CM \hookrightarrow \CR$ of the
+        constraint manifold into reality space \\
+F & Representation functor $F : \mathbf{CogSys} \to
+    \mathbf{Hilb}_{\mathrm{CIIR}}$ \\
+
+%% Curvature, metric, geometry
+\kappa & Constraint curvature scalar
+         $\kappa : \CM \to \mathbb{R}_{\geq 0}$ \\
+\kappa_{\max} & Maximum constraint curvature
+                $\sup_{m \in \CM}\kappa(m)$ \\
+g & Riemannian metric on $\CM$ \\
+\nabla & Levi-Civita connection (covariant derivative) on $(\CM,g)$ \\
+F^{\hatC} & Curvature two-form of the constraint connection \\
+
+%% Operators
+\hatC,\;\hatC_i & Constraint operator(s) on $\mathcal{H}$ \\
+\hatH_C & Constraint Hamiltonian generating unitary evolution \\
+\hatO & Generic self-adjoint observable \\
+\hatP_\lambda & Spectral projection associated with eigenvalue $\lambda$ \\
+\hat{P}_{\CM} & Constraint projection operator \\
+D & Distortion operator quantifying interface-induced deviation \\
+
+%% Algebras
+\CA(\mathcal{H}) & Observable algebra — von Neumann algebra of
+                    self-adjoint operators on $\mathcal{H}$ \\
+\CB(\mathcal{H}) & Algebra of bounded linear operators on $\mathcal{H}$ \\
+\CB(\CR_{\mathrm{op}}) & Operationalised constraint algebra on $\CR$ \\
+\CK(\mathcal{H}) & Ideal of compact operators on $\mathcal{H}$ \\
+M_d(\mathbb{C}) & Algebra of $d\times d$ complex matrices \\
+
+%% Density operators and states
+\rho & Density operator $\rho \in \mathfrak{D}(\mathcal{H})$ \\
+\mathfrak{D}(\mathcal{H}) & Space of density operators (positive,
+                             trace-one) on $\mathcal{H}$ \\
+\mathcal{T}_1(\mathcal{H}) & Trace-class operators on $\mathcal{H}$ \\
+
+%% Dynamics
+\CL & Lindblad superoperator (generator of CPTP semigroup) \\
+L_k & Lindblad jump operators $L_k := \sqrt{\gamma_k}\,\hatC_k$ \\
+\gamma_k & Lindblad decay rates $\gamma_k \in \mathbb{R}_{\geq 0}$ \\
+\heff & Effective Planck constant
+        $\heff := (\kappa_{\max}\cdot\mathrm{vol}(\CM))^{-1}$ \\
+P_\alpha & Superselection sector projection \\
+
+%% Measurement
+E^{\hatO} & Projection-valued measure (PVM) for observable $\hatO$ \\
+M_\Phi & CIIR positive-operator-valued measure (POVM) \\
+\mu & Probability measure on $(\mathbb{R},\,\mathcal{B}(\mathbb{R}))$ \\
+\mathcal{B}(\mathbb{R}) & Borel $\sigma$-algebra on $\mathbb{R}$ \\
+
+%% Norms
+\|\cdot\|_{\mathrm{op}} & Operator norm \\
+\|\cdot\|_1 & Trace norm \\
+\|\cdot\|_g & Riemannian metric norm \\
+
+%% Category theory
+\mathbf{CogSys} & Category of cognitive systems (objects: CIIR
+                   quintuples) \\
+\mathbf{Hilb}_{\mathrm{CIIR}} & Category of CIIR-constrained Hilbert
+                                  spaces \\
+\mathrm{Hom}_{\mathbf{C}}(A,B) & Morphism set in category $\mathbf{C}$ \\
+
+%% Theory tuple
+\mathcal{T}_{\mathrm{CIIR}} & Full CIIR theory tuple
+  $(\mathcal{S},\CA,\CR,\mathcal{D},\CM,\mathcal{I})$ \\
+
+%% Miscellaneous
+\mathrm{vol}(\CM) & Riemannian volume of the constraint manifold \\
+\mathrm{Tr} & Operator trace \\
+\mathrm{tr}_g & Metric (Riemannian) trace \\
+[\,\cdot\,,\,\cdot\,] & Commutator bracket \\
+\{\,\cdot\,,\,\cdot\,\} & Anti-commutator bracket \\
+\end{longtable}
+
+% ------------------------------------------------------------
+%  Table of contents
+% ------------------------------------------------------------
+\tableofcontents
+
+% ============================================================
+%  MAIN MATTER
+% ============================================================
+\mainmatter
+
+% ============================================================
+%  Chapter 1 — Introduction (stub)
+% ============================================================
+\chapter{Introduction}
+\label{ch:introduction}
+
+\section{Motivation and Scope}
+
+Constraint-Induced Interface Realism (CIIR) originates from a central
+question in the foundations of physics and cognitive science: \emph{How
+does a cognitive agent's finite information-processing capacity shape
+the structure of the physical theories it can construct?}
+
+Rather than treating the observer as external to the formalism, CIIR
+embeds the observer--reality interface directly into the mathematical
+framework via a constraint manifold $(\CM, g, \kappa)$ that mediates
+between an inaccessible reality space $\CR$ and an operationally
+accessible Hilbert space $\mathcal{H}$.  The interface map $\Phi$
+then determines which observables, states, and dynamical laws are
+available to the agent.
+
+\section{Overview of the Monograph}
+
+The monograph is organised as follows.
+\begin{itemize}[nosep]
+  \item \textbf{Chapter~2} establishes mathematical prerequisites and
+        notational conventions.
+  \item \textbf{Chapters~3--4} introduce the primitive definitions
+        (D3.1--D3.21) and the axiom system (Ax\,4.1--4.6).
+  \item \textbf{Chapter~5} derives the algebraic structure of the
+        constraint operator algebra.
+  \item \textbf{Chapter~6} constructs the representation functor and
+        proves full functoriality.
+  \item \textbf{Chapter~7} develops the CIIR master equation and
+        Lindblad dynamics.
+  \item \textbf{Chapter~8} formulates measurement theory, spectral
+        distortion bounds, and POVM/PVM dilation.
+  \item \textbf{Chapter~9} consolidates the theory and subjects it to
+        an adversarial red-team audit.
+  \item \textbf{Chapter~10} extends CIIR as an external informational
+        layer on quantum systems.
+  \item \textbf{Chapter~11} describes the Computational Reality System
+        (CRS) implementation.
+  \item \textbf{Appendices~A--D} collect derivations, proofs,
+        simulation parameters, and pseudocode.
+\end{itemize}
+
+% ============================================================
+%  Chapter 2 — Mathematical Preliminaries (stub)
+% ============================================================
+\chapter{Mathematical Preliminaries}
+\label{ch:preliminaries}
+
+\section{Notation and Conventions}
+
+Throughout this monograph we adopt the following conventions:
+\begin{enumerate}[nosep]
+  \item All Hilbert spaces are separable and complex unless stated
+        otherwise.
+  \item $\CB(\mathcal{H})$ denotes the algebra of bounded linear
+        operators on $\mathcal{H}$; its self-adjoint part is written
+        $\CB(\mathcal{H})_{\mathrm{sa}}$.
+  \item Density operators satisfy $\rho \geq 0$ and
+        $\Tr(\rho) = 1$.
+  \item Riemannian manifolds are smooth ($C^\infty$), connected, and
+        without boundary unless explicitly noted.
+  \item We write $[A, B] := AB - BA$ for the commutator and
+        $\{A, B\} := AB + BA$ for the anti-commutator.
+  \item The operator norm is $\|A\|_{\mathrm{op}} :=
+        \sup_{\|\psi\|=1}\|A\psi\|$; the trace norm is
+        $\|A\|_1 := \Tr(|A|)$.
+\end{enumerate}
+
+\section{Functional Analysis Prerequisites}
+
+We assume familiarity with the spectral theorem for unbounded
+self-adjoint operators, the theory of $C^*$- and von Neumann
+algebras, and the Stinespring--Kraus representation of completely
+positive maps.  Standard references include Reed \& Simon
+\cite{reed1980methods} and Bratteli \& Robinson
+\cite{bratteli1987operator}.
+
+\section{Differential Geometry Prerequisites}
+
+Basic Riemannian geometry — metrics, connections, curvature tensors,
+volume forms — is used throughout.  We follow the conventions of
+do~Carmo \cite{docarmo1992riemannian} for sign choices in the
+Riemann curvature tensor.
+
+\section{Category Theory Prerequisites}
+
+Chapters~6 and beyond use elementary category theory: categories,
+functors, natural transformations, and limits.  Mac~Lane
+\cite{maclane1998categories} serves as the standard reference.
+
+% ============================================================
+%  Chapters 3–9 — existing chapter files
+% ============================================================
+
+\input{chapters/ch03_primitive_definitions}
+
+\input{chapters/ch04_axiom_system}
+
+\input{chapters/ch05_algebraic_structure}
+
+\input{chapters/ch06_representation_theory}
+
+\input{chapters/ch07_dynamics}
+
+\input{chapters/ch08_measurement_theory}
+
+\input{chapters/ch09_consolidation_redteam}
+
+% ============================================================
+%  Chapter 10 — External Informational Layer (placeholder)
+% ============================================================
+\chapter{CIIR as External Informational Layer on Quantum Systems}
+\label{ch:external-layer}
+
+\begin{center}
+\emph{[This chapter is under preparation and will be provided separately.]}
+\end{center}
+
+\noindent
+This chapter will extend the CIIR framework to operate as an external
+informational layer interfacing with physical quantum systems.  Topics
+to be covered include:
+\begin{itemize}[nosep]
+  \item Coupling of the constraint manifold $(\CM, g, \kappa)$ to
+        laboratory quantum hardware.
+  \item CIIR-augmented quantum error correction via constraint-induced
+        syndrome decoding.
+  \item Information-theoretic bounds on interface fidelity under
+        decoherence.
+  \item Experimental signatures distinguishing CIIR predictions from
+        standard quantum mechanics.
+\end{itemize}
+
+% ============================================================
+%  Chapter 11 — Computational Reality System (placeholder)
+% ============================================================
+\chapter{Computational Reality System (CRS)}
+\label{ch:crs}
+
+\begin{center}
+\emph{[This chapter is under preparation and will be provided separately.]}
+\end{center}
+
+\noindent
+The Computational Reality System (CRS) translates the CIIR formalism
+into executable numerical and symbolic pipelines.  Planned sections
+include:
+\begin{itemize}[nosep]
+  \item Tensorised representation of constraint operators and Lindblad
+        generators.
+  \item Numerical integration of the CIIR master equation (adaptive
+        Runge--Kutta and Krylov methods).
+  \item QuASIM runtime integration and QRATUM system hooks.
+  \item Benchmark results on standard open-quantum-system test suites.
+\end{itemize}
+
+% ============================================================
+%  BACK MATTER
+% ============================================================
+\backmatter
+
+% ============================================================
+%  Appendices
+% ============================================================
+\appendix
+
+\chapter{Extended Derivations}
+\label{app:derivations}
+
+\begin{center}
+\emph{[Detailed derivations supporting the main text will be collected here.]}
+\end{center}
+
+\noindent
+Planned contents:
+\begin{itemize}[nosep]
+  \item Full proof of axiom independence (Theorem~4.1).
+  \item Block-decomposition derivation for
+        $\CB(\CR_{\mathrm{op}})$ (Theorem~5.2).
+  \item Functoriality verification for composite morphisms
+        (Theorem~6.4).
+\end{itemize}
+
+\chapter{Supplementary Proofs}
+\label{app:proofs}
+
+\begin{center}
+\emph{[Supplementary proofs omitted from the main chapters for readability.]}
+\end{center}
+
+\noindent
+Planned contents:
+\begin{itemize}[nosep]
+  \item Trace-preservation lemma for the CIIR Lindblad generator.
+  \item Naimark dilation existence and uniqueness for CIIR POVMs.
+  \item Spectral distortion bound tightness.
+\end{itemize}
+
+\chapter{Simulation Parameters}
+\label{app:simulation}
+
+\begin{center}
+\emph{[Reference tables of simulation parameters for CRS benchmarks.]}
+\end{center}
+
+\noindent
+Planned contents:
+\begin{itemize}[nosep]
+  \item Default constraint manifold discretisation parameters.
+  \item Lindblad coefficient ranges for standard test models.
+  \item Convergence tolerances and adaptive step-size bounds.
+\end{itemize}
+
+\chapter{Pseudocode}
+\label{app:pseudocode}
+
+\begin{center}
+\emph{[Algorithmic pseudocode for core CRS routines.]}
+\end{center}
+
+\noindent
+Planned contents:
+\begin{itemize}[nosep]
+  \item CIIR master equation integrator.
+  \item Constraint curvature field solver.
+  \item Interface map $\Phi$ evaluation pipeline.
+  \item POVM construction from constraint algebra generators.
+\end{itemize}
+
+% ============================================================
+%  Bibliography
+% ============================================================
+\begin{thebibliography}{99}
+
+\bibitem{reed1980methods}
+M.~Reed and B.~Simon,
+\emph{Methods of Modern Mathematical Physics},
+vols.~I--IV, Academic Press, 1972--1980.
+
+\bibitem{bratteli1987operator}
+O.~Bratteli and D.~W.~Robinson,
+\emph{Operator Algebras and Quantum Statistical Mechanics},
+vols.~1--2, Springer, 1987--1997.
+
+\bibitem{docarmo1992riemannian}
+M.~P. do~Carmo,
+\emph{Riemannian Geometry},
+Birkh\"auser, 1992.
+
+\bibitem{maclane1998categories}
+S.~Mac~Lane,
+\emph{Categories for the Working Mathematician},
+2nd ed., Springer, 1998.
+
+\bibitem{lindblad1976generators}
+G.~Lindblad,
+``On the generators of quantum dynamical semigroups,''
+\emph{Commun.\ Math.\ Phys.} \textbf{48}, 119--130, 1976.
+
+\bibitem{gorini1976completely}
+V.~Gorini, A.~Kossakowski, and E.~C.~G.~Sudarshan,
+``Completely positive dynamical semigroups of $N$-level systems,''
+\emph{J.\ Math.\ Phys.} \textbf{17}, 821--825, 1976.
+
+\bibitem{stinespring1955positive}
+W.~F.~Stinespring,
+``Positive functions on $C^*$-algebras,''
+\emph{Proc.\ Amer.\ Math.\ Soc.} \textbf{6}, 211--216, 1955.
+
+\bibitem{naimark1943spectral}
+M.~A.~Naimark,
+``On a representation of additive operator set functions,''
+\emph{Dokl.\ Akad.\ Nauk SSSR} \textbf{41}, 359--361, 1943.
+
+\bibitem{holevo2001statistical}
+A.~S.~Holevo,
+\emph{Statistical Structure of Quantum Theory},
+Springer, 2001.
+
+\bibitem{wiseman2010quantum}
+H.~M.~Wiseman and G.~J.~Milburn,
+\emph{Quantum Measurement and Control},
+Cambridge University Press, 2010.
+
+\end{thebibliography}
+
+\end{document}
