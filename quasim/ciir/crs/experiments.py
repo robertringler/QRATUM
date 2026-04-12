@@ -36,7 +36,10 @@ def run_diffusion_experiment(
 
     A "hot spot" (large state norm) is placed at the lattice centre.
     Diffusion and decay rules spread the energy, and we track the
-    spatial distribution width over time.
+    spatial distribution width over time.  The *spread* metric is the
+    standard deviation of state norms across nodes — it initially
+    increases as the hot spot diffuses outward, then decreases as the
+    system thermalises.
 
     Parameters
     ----------
@@ -52,8 +55,9 @@ def run_diffusion_experiment(
     Returns
     -------
     dict
-        Keys: ``steps``, ``mean_norm``, ``max_norm``, ``spread``
-        (standard deviation of state norms across nodes).
+        Keys: ``steps``, ``mean_norm``, ``max_norm``, ``spread``,
+        ``peak_ratio`` (max_norm / mean_norm — tracks how peaked the
+        distribution remains).
     """
     side = max(2, int(np.sqrt(n_nodes)))
     g = lattice_graph(side, side, d_state, seed=seed)
@@ -71,22 +75,35 @@ def run_diffusion_experiment(
     engine.register_rule(decay_rule(decay_rate=0.005))
 
     crs = CRSEngine(g, engine, seed=seed)
-    history = crs.evolve(n_steps)
 
+    # Collect per-step spread by snapshotting the graph after each step
+    steps_list: list[int] = []
+    mean_norms: list[float] = []
+    max_norms: list[float] = []
     spreads: list[float] = []
-    for _ in range(n_steps):
-        norms = np.array([np.linalg.norm(n.state) for n in g.nodes.values()])
-        spreads.append(float(norms.std()))
-    # Use per-step norms from history
-    spreads_from_history = []
-    for m in history:
-        spreads_from_history.append(m["mean_state_norm"])
+    peak_ratios: list[float] = []
+
+    for t in range(n_steps):
+        metrics = crs.step()
+        norms = np.array(
+            [float(np.linalg.norm(n.state)) for n in crs.graph.nodes.values()]
+        )
+        mn = float(norms.mean()) if len(norms) > 0 else 0.0
+        mx = float(norms.max()) if len(norms) > 0 else 0.0
+        sd = float(norms.std()) if len(norms) > 0 else 0.0
+
+        steps_list.append(t + 1)
+        mean_norms.append(mn)
+        max_norms.append(mx)
+        spreads.append(sd)
+        peak_ratios.append(mx / mn if mn > 1e-12 else 0.0)
 
     return {
-        "steps": [m["step"] for m in history],
-        "mean_norm": [m["mean_state_norm"] for m in history],
-        "max_norm": [m["max_state_norm"] for m in history],
-        "spread": spreads_from_history,
+        "steps": steps_list,
+        "mean_norm": mean_norms,
+        "max_norm": max_norms,
+        "spread": spreads,
+        "peak_ratio": peak_ratios,
     }
 
 
@@ -100,10 +117,13 @@ def run_wave_experiment(
     n_steps: int = 200,
     seed: int = 42,
 ) -> dict:
-    r"""Demonstrate wave-like propagation via interaction rule.
+    r"""Demonstrate wave-like propagation via interaction + diffusion rules.
 
     Initialises a sinusoidal pattern along the lattice diagonal and
-    runs the interaction rule to observe wave-like dynamics.
+    runs a damped interaction rule to observe wave-like oscillatory
+    dynamics.  The diffusion rule provides the necessary dissipation
+    to prevent blow-up, while the interaction rule creates the
+    restoring force for oscillation.
 
     Parameters
     ----------
@@ -112,7 +132,8 @@ def run_wave_experiment(
     Returns
     -------
     dict
-        Keys: ``steps``, ``mean_norm``, ``max_norm``, ``energy``.
+        Keys: ``steps``, ``mean_norm``, ``max_norm``, ``energy``,
+        ``oscillation_index`` (track oscillatory character).
     """
     side = max(2, int(np.sqrt(n_nodes)))
     g = lattice_graph(side, side, d_state, seed=seed)
@@ -127,21 +148,48 @@ def run_wave_experiment(
             )
 
     engine = RewriteEngine()
-    engine.register_rule(interaction_rule(coupling=0.1))
+    # Use diffusion (dominant) + weak interaction (restoring force)
+    engine.register_rule(diffusion_rule(diffusion_rate=0.15))
+    engine.register_rule(interaction_rule(coupling=0.02))
+    engine.register_rule(decay_rule(decay_rate=0.01))
     engine.register_rule(stochastic_perturbation_rule(noise_scale=0.001))
 
     crs = CRSEngine(g, engine, seed=seed)
-    history = crs.evolve(n_steps)
 
+    steps_list: list[int] = []
+    mean_norms: list[float] = []
+    max_norms: list[float] = []
     energies: list[float] = []
-    for m in history:
-        energies.append(m["total_causal_weight"])
+    oscillation: list[float] = []
+
+    for t in range(n_steps):
+        metrics = crs.step()
+        norms = np.array(
+            [float(np.linalg.norm(n.state)) for n in crs.graph.nodes.values()]
+        )
+        mn = float(norms.mean()) if len(norms) > 0 else 0.0
+        mx = float(norms.max()) if len(norms) > 0 else 0.0
+        # Energy: sum of squared norms (kinetic energy analog)
+        energy = float(np.sum(norms**2))
+
+        # Oscillation index: std of state component 0 across nodes
+        comp0 = np.array(
+            [float(n.state[0]) for n in crs.graph.nodes.values()]
+        )
+        osc = float(np.std(comp0))
+
+        steps_list.append(t + 1)
+        mean_norms.append(mn)
+        max_norms.append(mx)
+        energies.append(energy)
+        oscillation.append(osc)
 
     return {
-        "steps": [m["step"] for m in history],
-        "mean_norm": [m["mean_state_norm"] for m in history],
-        "max_norm": [m["max_state_norm"] for m in history],
+        "steps": steps_list,
+        "mean_norm": mean_norms,
+        "max_norm": max_norms,
         "energy": energies,
+        "oscillation_index": oscillation,
     }
 
 
@@ -214,9 +262,10 @@ def run_entropy_experiment(
 ) -> dict:
     r"""Track Shannon entropy of the state distribution over time.
 
-    Starts from a low-entropy configuration (all nodes near-identical)
-    and demonstrates monotonic entropy increase under stochastic
-    perturbation.
+    Starts from a low-entropy configuration (all nodes identical) and
+    demonstrates entropy increase under stochastic perturbation.  The
+    entropy is computed from the distribution of state-vector norms
+    binned into a histogram.
 
     Parameters
     ----------
@@ -237,13 +286,35 @@ def run_entropy_experiment(
 
     engine = RewriteEngine()
     engine.register_rule(diffusion_rule(0.05))
-    engine.register_rule(stochastic_perturbation_rule(0.02))
+    engine.register_rule(stochastic_perturbation_rule(0.05))
 
     crs = CRSEngine(g, engine, seed=seed)
-    history = crs.evolve(n_steps)
+
+    steps_list: list[int] = []
+    entropies: list[float] = []
+    mean_norms: list[float] = []
+
+    for t in range(n_steps):
+        crs.step()
+        # Compute Shannon entropy from state vector components
+        all_states = np.array([n.state for n in crs.graph.nodes.values()])
+        # Flatten to 1-D for histogram-based entropy
+        flat = all_states.flatten()
+        # Bin into histogram
+        counts, _ = np.histogram(flat, bins=max(10, int(np.sqrt(len(flat)))))
+        p = counts / max(counts.sum(), 1)
+        p = p[p > 0]
+        entropy = float(-np.sum(p * np.log(p)))
+
+        norms = np.array(
+            [float(np.linalg.norm(n.state)) for n in crs.graph.nodes.values()]
+        )
+        steps_list.append(t + 1)
+        entropies.append(entropy)
+        mean_norms.append(float(norms.mean()))
 
     return {
-        "steps": [m["step"] for m in history],
-        "entropy": [m["entropy_estimate"] for m in history],
-        "mean_norm": [m["mean_state_norm"] for m in history],
+        "steps": steps_list,
+        "entropy": entropies,
+        "mean_norm": mean_norms,
     }
