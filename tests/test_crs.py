@@ -140,11 +140,12 @@ class TestGraphPrimitives:
         assert (0, 1) in sub.edges or (0, 2) in sub.edges
 
     def test_graph_copy(self, small_graph):
+        original_state = small_graph.nodes[0].state.copy()
         g2 = small_graph.copy()
         assert g2.node_count == small_graph.node_count
         # Modify copy, original unchanged
         g2.nodes[0].state = np.array([999.0, 999.0])
-        assert small_graph.nodes[0].state[0] != 999.0
+        np.testing.assert_array_equal(small_graph.nodes[0].state, original_state)
 
     def test_random_graph(self):
         g = random_graph(20, d_state=4, p_edge=0.3, seed=42)
@@ -455,13 +456,13 @@ class TestObserver:
         g_before = lattice.copy()
         g_after = decohere(lattice, obs, decoherence_rate=0.5, rng=rng)
         # States within the observer's reach should be modified
-        # (at least some with high probability)
         changed = sum(
             1 for nid in obs.accessible_nodes
             if nid in g_before.nodes and nid in g_after.nodes
             and not np.allclose(g_before.nodes[nid].state, g_after.nodes[nid].state)
         )
-        assert changed >= 0  # may or may not change depending on decoherence model
+        # With decoherence_rate=0.5, at least some nodes should change
+        assert changed > 0, "Decoherence should modify at least one observed node"
 
 
 # ================================================================
