@@ -9,22 +9,26 @@
 ---
 
 ## 1. Title
+
 **"Anti-Holographic Tensor Compression for Quantum State Simulation and Information-Preserving Tensor Processing."**
 
 ---
 
 ## 2. Field of the Invention
+
 The invention relates to **quantum information processing**, **tensor network compression**, and **high-dimensional data representation**.  
 More specifically, it concerns methods and systems for **entanglement-aware compression** of quantum state tensors, incorporating **anti-holographic information flow principles** to achieve superior compression ratios with fidelity guarantees.
 
 ---
 
 ## 3. Background of the Invention
+
 Conventional tensor compression techniques—such as Singular Value Decomposition (SVD), Tucker decomposition, and Tensor Train (TT) formats—approximate high-dimensional tensors by truncating low-variance components.  
 However, these methods fail to maintain **quantum entanglement structure** and **fidelity guarantees** necessary for quantum state preservation.  
 Moreover, existing approaches exhibit limited scalability on modern GPU/quantum-classical hardware and lack dynamic fidelity control mechanisms.
 
 There exists a need for a **quantum-aware tensor compression method** that:
+
 - Achieves **significant memory reduction** (10–50×),
 - Maintains **fidelity ≥ 99.5%**, and
 - Operates in **real time** using GPU acceleration.
@@ -32,6 +36,7 @@ There exists a need for a **quantum-aware tensor compression method** that:
 ---
 
 ## 4. Summary of the Invention
+
 The disclosed invention introduces a **lossy compression algorithm** that maintains provable **quantum state fidelity** through entanglement-aware truncation and **anti-holographic information flow**.
 
 The anti-holographic principle asserts that information can be more efficiently represented when reconstructed **from the bulk to the boundary**, in contrast to traditional holographic compression models.
@@ -51,6 +56,7 @@ The algorithm is further optimized through **hardware-accelerated CUDA kernels**
 ## 5. Detailed Description (Enablement)
 
 ### 5.1 Algorithmic Overview
+
 Let a quantum state tensor \( T \in \mathbb{C}^{2^n} \) represent an \(n\)-qubit system.  
 AHTC performs adaptive decomposition of \(T\) into structured components:
 \[
@@ -64,6 +70,7 @@ F(T, \hat{T}) = \left(\text{Tr}\sqrt{\sqrt{ρ_T} ρ_{\hat{T}} \sqrt{ρ_T}}\right
 and is bounded below by a tunable ε ensuring \(F ≥ 0.995\).
 
 ### 5.2 Anti-Holographic Constraint
+
 Information flow is constrained such that:
 \[
 I_{\text{bulk→boundary}} < I_{\text{boundary→bulk}}
@@ -71,10 +78,12 @@ I_{\text{bulk→boundary}} < I_{\text{boundary→bulk}}
 This enforces compression along minimal information pathways, reducing entropy while preserving structural coherence.
 
 ### 5.3 Hardware Implementation
+
 CUDA kernels perform parallel compression using shared-memory tiling and mixed-precision matrix fusion.  
 A real-time decompression pathway reconstructs entangled states with minimal overhead.
 
 ### 5.4 Verification
+
 Automated fidelity verification validates post-compression states against reference tensors, logging performance metrics in standardized datasets.
 
 ---
@@ -102,6 +111,7 @@ Automated fidelity verification validates post-compression states against refere
 ---
 
 ## 7. Prior Art Differentiation
+
 | Approach | Limitation | Differentiation |
 |-----------|-------------|----------------|
 | **SVD / Tucker** | Linear approximation; no quantum awareness | AHTC uses entanglement topology |
@@ -112,7 +122,9 @@ Automated fidelity verification validates post-compression states against refere
 ---
 
 ## 8. Industrial Applicability
+
 The invention applies to:
+
 - Quantum circuit simulation (high-qubit regimes)  
 - Quantum machine learning feature maps  
 - Quantum communication state transmission  
@@ -123,6 +135,7 @@ It enables **order-of-magnitude performance gains** and **memory reductions** in
 ---
 
 ## 9. References
+
 - `quasim/holo/boundary.py` – Holographic boundary modeling  
 - `quasim/qc/quasim_tn.py` – Quantum tensor networks  
 - `QuASIM/src/cuda/anti_tensor.cu` – CUDA kernel implementations  

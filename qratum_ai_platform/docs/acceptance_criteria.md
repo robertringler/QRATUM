@@ -3,6 +3,7 @@
 ## Infrastructure & Deployment
 
 ### Helm Charts
+
 - [ ] Model-server chart renders without errors: `helm template`
 - [ ] Vector-DB chart renders without errors: `helm template`
 - [ ] Charts support both CPU and GPU variants
@@ -12,6 +13,7 @@
 - [ ] Health probes are defined
 
 ### Kubernetes
+
 - [ ] Deployments create pods successfully
 - [ ] Services are accessible within cluster
 - [ ] PVCs are created and bound
@@ -21,6 +23,7 @@
 ## Services
 
 ### Model Server
+
 - [ ] Health endpoint returns `{"status": "ok"}`
 - [ ] Prediction endpoint requires authentication
 - [ ] Input validation rejects invalid requests
@@ -29,6 +32,7 @@
 - [ ] Handles errors gracefully (4xx, 5xx)
 
 ### Orchestrator
+
 - [ ] Routes requests to correct model-server
 - [ ] Falls back to default route if intent unknown
 - [ ] Handles model-server unavailability (503)
@@ -36,6 +40,7 @@
 - [ ] Lists available routes via `/routes` endpoint
 
 ### RAG Pipeline
+
 - [ ] Query returns top-k passages
 - [ ] Embeddings are consistent (same input → same output)
 - [ ] Document indexing validates format
@@ -43,6 +48,7 @@
 - [ ] Handles empty queries gracefully
 
 ### Safety Engine
+
 - [ ] Blocks content matching blocked patterns
 - [ ] Flags content matching flagged patterns
 - [ ] Sanitizes blocked content ([REDACTED])
@@ -50,6 +56,7 @@
 - [ ] Supports custom patterns
 
 ### Explainability
+
 - [ ] Returns feature importances for predictions
 - [ ] Explanations are ordered by importance
 - [ ] Supports text and tabular inputs
@@ -59,18 +66,21 @@
 ## Testing
 
 ### Unit Tests
+
 - [ ] All unit tests pass: `pytest qratum/tests/`
 - [ ] Code coverage >80%
 - [ ] No test failures in CI
 - [ ] Tests run in <5 minutes
 
 ### Integration Tests
+
 - [ ] RAG integration tests pass
 - [ ] Orchestrator routing test passes
 - [ ] Model server responds to requests
 - [ ] Vector DB connectivity works
 
 ### Smoke Tests
+
 - [ ] Quantization smoke test passes
 - [ ] Services start without errors
 - [ ] Basic end-to-end flow works
@@ -78,6 +88,7 @@
 ## CI/CD
 
 ### GitHub Actions
+
 - [ ] Lint job passes (ruff)
 - [ ] Unit tests job passes
 - [ ] RAG integration job passes
@@ -88,12 +99,14 @@
 - [ ] Helm validation passes
 
 ### Artifact Signing
+
 - [ ] `sign_artifact.sh` creates `.sig` file
 - [ ] Signature verification succeeds
 - [ ] Metadata JSON is generated
 - [ ] SHA256 checksums match
 
 ### SBOM
+
 - [ ] SBOM generation script runs
 - [ ] Output is valid JSON
 - [ ] Lists Python dependencies
@@ -102,6 +115,7 @@
 ## MLOps
 
 ### Argo Workflows
+
 - [ ] Training workflow validates: `argo lint`
 - [ ] Canary workflow validates: `argo lint`
 - [ ] Workflows can be submitted
@@ -109,6 +123,7 @@
 - [ ] Steps execute in order
 
 ### Model Registry
+
 - [ ] Models can be logged to MLflow
 - [ ] Artifacts are signed on registration
 - [ ] Versioning works correctly
@@ -117,17 +132,20 @@
 ## Security
 
 ### Authentication
+
 - [ ] Bearer token authentication works
 - [ ] Invalid tokens return 401
 - [ ] Tokens can be rotated
 
 ### Input Validation
+
 - [ ] SQL injection attempts blocked
 - [ ] XSS patterns blocked
 - [ ] Oversized inputs rejected (>10KB)
 - [ ] Invalid JSON rejected
 
 ### Network
+
 - [ ] Services use TLS (in production)
 - [ ] Network policies restrict traffic
 - [ ] Secrets not in logs
@@ -136,17 +154,20 @@
 ## Performance
 
 ### Latency
+
 - [ ] Health endpoint <10ms
 - [ ] Prediction endpoint <200ms (CPU)
 - [ ] Prediction endpoint <50ms (GPU)
 - [ ] RAG retrieval <100ms
 
 ### Throughput
+
 - [ ] Model server handles >10 req/sec
 - [ ] Orchestrator handles >50 req/sec
 - [ ] Vector DB handles >100 queries/sec
 
 ### Resource Usage
+
 - [ ] Model server: <2GB memory (CPU)
 - [ ] Model server: <8GB memory (GPU)
 - [ ] Orchestrator: <512MB memory
@@ -163,12 +184,14 @@
 ## Observability
 
 ### Logging
+
 - [ ] Structured logs (JSON)
 - [ ] Log levels configurable
 - [ ] No sensitive data in logs
 - [ ] Errors include stack traces
 
 ### Metrics
+
 - [ ] Prometheus endpoints expose metrics
 - [ ] Request count metrics exist
 - [ ] Latency histograms exist
@@ -176,6 +199,7 @@
 - [ ] GPU utilization tracked (if applicable)
 
 ### Tracing
+
 - [ ] Requests have trace IDs
 - [ ] Spans are created for operations
 - [ ] Trace context propagated

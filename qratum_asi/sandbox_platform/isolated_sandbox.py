@@ -17,9 +17,7 @@ from enum import Enum
 from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
-
 from qratum_asi.sandbox_platform.types import (
-    ExecutionMode,
     IsolationLevel,
     ResourceAllocation,
     SandboxConfig,
@@ -188,9 +186,7 @@ class IsolatedSandboxExecutor:
             self._container_counter += 1
             container_id = f"container_{sandbox_id}_{self._container_counter:06d}"
 
-            isolation_level = (
-                config.isolation_level if config else self.default_isolation
-            )
+            isolation_level = config.isolation_level if config else self.default_isolation
             resources = config.resources if config else self.default_resources
 
             # Create memory isolation
@@ -422,21 +418,15 @@ class IsolatedSandboxExecutor:
 
             return True
 
-    def register_on_start(
-        self, callback: Callable[[SandboxContainer], None]
-    ) -> None:
+    def register_on_start(self, callback: Callable[[SandboxContainer], None]) -> None:
         """Register callback for execution start events."""
         self._on_start_callbacks.append(callback)
 
-    def register_on_complete(
-        self, callback: Callable[[SandboxContainer, Any], None]
-    ) -> None:
+    def register_on_complete(self, callback: Callable[[SandboxContainer, Any], None]) -> None:
         """Register callback for execution completion events."""
         self._on_complete_callbacks.append(callback)
 
-    def register_on_error(
-        self, callback: Callable[[SandboxContainer, Exception], None]
-    ) -> None:
+    def register_on_error(self, callback: Callable[[SandboxContainer, Exception], None]) -> None:
         """Register callback for execution error events."""
         self._on_error_callbacks.append(callback)
 
@@ -444,9 +434,7 @@ class IsolatedSandboxExecutor:
         """Get container by ID."""
         return self.containers.get(container_id)
 
-    def list_containers(
-        self, status: ContainerStatus | None = None
-    ) -> list[SandboxContainer]:
+    def list_containers(self, status: ContainerStatus | None = None) -> list[SandboxContainer]:
         """List containers, optionally filtered by status."""
         containers = list(self.containers.values())
         if status:

@@ -23,8 +23,8 @@ The following PRs have been identified as Tier-1 candidates for immediate merge:
 
 ### Constraint Acknowledgment
 
-All merge readiness diagnostics in this report were generated via **model-based inference** 
-from PR descriptions and historical patterns. They are **UNVERIFIED** until validated 
+All merge readiness diagnostics in this report were generated via **model-based inference**
+from PR descriptions and historical patterns. They are **UNVERIFIED** until validated
 through authenticated repository introspection.
 
 ### Evidence Requirements

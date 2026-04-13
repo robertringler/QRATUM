@@ -12,12 +12,10 @@ from __future__ import annotations
 import csv
 import json
 import os
-from dataclasses import dataclass, field
-from pathlib import Path
+from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
-
 
 # ================================================================
 # ScreenshotCapture
@@ -186,17 +184,23 @@ class SimulationExporter:
         os.makedirs(self.output_dir, exist_ok=True)
 
         self.screenshot_capture = ScreenshotCapture(
-            os.path.join(self.output_dir, "screenshots"), dpi=self.dpi)
-        self.tensor_logger = TensorLogger(
-            os.path.join(self.output_dir, "tensor_log.json"))
+            os.path.join(self.output_dir, "screenshots"), dpi=self.dpi
+        )
+        self.tensor_logger = TensorLogger(os.path.join(self.output_dir, "tensor_log.json"))
 
         if fieldnames is None:
             fieldnames = [
-                "step", "total_loss", "constraint_loss", "observer_loss",
-                "entropy_loss", "gradient_norm", "step_time_ms",
+                "step",
+                "total_loss",
+                "constraint_loss",
+                "observer_loss",
+                "entropy_loss",
+                "gradient_norm",
+                "step_time_ms",
             ]
         self.metrics_writer = MetricsCSVWriter(
-            os.path.join(self.output_dir, "metrics.csv"), fieldnames)
+            os.path.join(self.output_dir, "metrics.csv"), fieldnames
+        )
 
     def finalize(self) -> None:
         """Flush and close all export streams."""

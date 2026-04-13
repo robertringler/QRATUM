@@ -10,11 +10,11 @@ This guide provides essential information for QRATUM platform operators responsi
 
 | Service | Port | URL | Purpose |
 |---------|------|-----|---------|
-| QRADLE | 8001 | http://localhost:8001 | Deterministic execution engine |
-| Platform | 8002 | http://localhost:8002 | 14 vertical modules |
-| ASI | 8003 | http://localhost:8003 | ASI orchestrator (simulation) |
-| Prometheus | 9090 | http://localhost:9090 | Metrics |
-| Grafana | 3000 | http://localhost:3000 | Dashboards |
+| QRADLE | 8001 | <http://localhost:8001> | Deterministic execution engine |
+| Platform | 8002 | <http://localhost:8002> | 14 vertical modules |
+| ASI | 8003 | <http://localhost:8003> | ASI orchestrator (simulation) |
+| Prometheus | 9090 | <http://localhost:9090> | Metrics |
+| Grafana | 3000 | <http://localhost:3000> | Dashboards |
 
 ### Common Commands
 
@@ -44,6 +44,7 @@ curl http://localhost:8001/api/v1/system/proof | jq .
 ### Morning Checklist
 
 1. **Check Service Health**
+
    ```bash
    # All services should show "healthy"
    curl http://localhost:8001/health
@@ -52,22 +53,25 @@ curl http://localhost:8001/api/v1/system/proof | jq .
    ```
 
 2. **Review Overnight Metrics**
-   - Open Grafana: http://localhost:3000
+   - Open Grafana: <http://localhost:3000>
    - Check "System Health" dashboard
    - Look for anomalies in request rates, error rates, latency
 
 3. **Verify Merkle Chain Integrity**
+
    ```bash
    curl http://localhost:8001/api/v1/system/proof | jq '.integrity_verified'
    # Should return: true
    ```
 
 4. **Check Disk Space**
+
    ```bash
    df -h | grep -E 'qradle|platform|asi'
    ```
 
 5. **Review Error Logs**
+
    ```bash
    docker-compose -f docker-compose.production.yml logs --since=24h | grep ERROR
    ```
@@ -82,6 +86,7 @@ curl http://localhost:8001/api/v1/system/proof | jq .
 ### Weekly Tasks
 
 1. **Create Weekly Checkpoint**
+
    ```bash
    DATE=$(date +%Y-%m-%d)
    curl -X POST http://localhost:8001/api/v1/system/checkpoint \
@@ -90,12 +95,14 @@ curl http://localhost:8001/api/v1/system/proof | jq .
    ```
 
 2. **Review Audit Logs**
+
    ```bash
    ls -lh audit-logs/
    # Archive logs older than 90 days
    ```
 
 3. **Check Backup Status**
+
    ```bash
    ./backup.sh
    ls -lh /backups/ | tail -5
@@ -136,24 +143,28 @@ curl http://localhost:8001/api/v1/system/proof | jq .
 ### Grafana Dashboards
 
 **System Health Dashboard:**
+
 - Overall system status
 - Service health indicators
 - Resource utilization (CPU, memory, disk)
 - Network throughput
 
 **QRADLE Operations Dashboard:**
+
 - Contract execution rate
 - Execution time distribution
 - Merkle chain metrics
 - Checkpoint timeline
 
 **Platform Verticals Dashboard:**
+
 - Per-vertical request rates
 - Vertical-specific latencies
 - Error rates by vertical
 - Cross-domain synthesis metrics
 
 **ASI Orchestrator Dashboard:**
+
 - ASI component status
 - Safety level distribution
 - CRSI proposal metrics (when enabled)
@@ -191,21 +202,25 @@ groups:
 ### Service Down
 
 1. **Identify affected service:**
+
    ```bash
    docker-compose -f docker-compose.production.yml ps
    ```
 
 2. **Check logs:**
+
    ```bash
    docker-compose -f docker-compose.production.yml logs qradle --tail=200
    ```
 
 3. **Restart service:**
+
    ```bash
    docker-compose -f docker-compose.production.yml restart qradle
    ```
 
 4. **Verify recovery:**
+
    ```bash
    curl http://localhost:8001/health
    ```
@@ -215,6 +230,7 @@ groups:
 ### High Error Rate
 
 1. **Check recent logs:**
+
    ```bash
    docker-compose -f docker-compose.production.yml logs --since=10m | grep ERROR
    ```
@@ -239,6 +255,7 @@ groups:
 **CRITICAL - Requires immediate action!**
 
 1. **Stop accepting new requests:**
+
    ```bash
    # Add firewall rule to block incoming traffic
    ufw deny 8001/tcp
@@ -246,18 +263,21 @@ groups:
    ```
 
 2. **Capture current state:**
+
    ```bash
    curl http://localhost:8001/api/v1/system/proof > integrity-violation-$(date +%s).json
    curl http://localhost:8001/api/v1/audit/trail > audit-trail-$(date +%s).json
    ```
 
 3. **Identify last valid checkpoint:**
+
    ```bash
    # List recent checkpoints
    curl http://localhost:8001/api/v1/system/checkpoints | jq .
    ```
 
 4. **Rollback to checkpoint:**
+
    ```bash
    curl -X POST http://localhost:8001/api/v1/system/rollback \
      -H "Content-Type: application/json" \
@@ -347,6 +367,7 @@ docker-compose -f docker-compose.production.yml restart
 **Symptoms:** Service shows "restarting" or "exited"
 
 **Solutions:**
+
 1. Check logs: `docker-compose logs qradle`
 2. Verify configuration: `docker-compose config`
 3. Check port conflicts: `netstat -tuln | grep 8001`
@@ -358,6 +379,7 @@ docker-compose -f docker-compose.production.yml restart
 **Symptoms:** High latency, timeouts
 
 **Solutions:**
+
 1. Check CPU/memory: `docker stats`
 2. Check disk I/O: `iostat -x 1`
 3. Review slow queries in logs
@@ -369,6 +391,7 @@ docker-compose -f docker-compose.production.yml restart
 **Symptoms:** Error when creating checkpoint
 
 **Solutions:**
+
 1. Check disk space: `df -h`
 2. Verify write permissions: `ls -la checkpoints/`
 3. Check Merkle chain integrity
@@ -380,6 +403,7 @@ docker-compose -f docker-compose.production.yml restart
 **Symptoms:** 401/403 errors
 
 **Solutions:**
+
 1. Verify API key is valid
 2. Check user permissions
 3. Review authorization logs
@@ -465,22 +489,26 @@ curl -X DELETE http://localhost:8001/api/v1/admin/keys/<key-id>
 ### Severity Levels
 
 **P0 - Critical (Response: Immediate)**
+
 - All services down
 - Data integrity violation
 - Security breach
 - Data loss
 
 **P1 - High (Response: < 1 hour)**
+
 - Single service down
 - High error rate (>5%)
 - Performance degradation (>3x latency)
 
 **P2 - Medium (Response: < 4 hours)**
+
 - Intermittent errors
 - Non-critical feature broken
 - Monitoring issues
 
 **P3 - Low (Response: < 24 hours)**
+
 - Minor bugs
 - Documentation issues
 - Feature requests
@@ -488,9 +516,9 @@ curl -X DELETE http://localhost:8001/api/v1/admin/keys/<key-id>
 ### Contact Information
 
 - **On-Call Engineer:** +1-XXX-XXX-XXXX
-- **Engineering Manager:** engineer@qratum.io
-- **Security Team:** security@qratum.io
-- **24/7 Support:** support@qratum.io
+- **Engineering Manager:** <engineer@qratum.io>
+- **Security Team:** <security@qratum.io>
+- **24/7 Support:** <support@qratum.io>
 
 ---
 
@@ -558,8 +586,8 @@ curl -s http://localhost:8001/api/v1/system/proof | \
 
 ## Training Resources
 
-- **Video Tutorials:** https://training.qratum.io
-- **Documentation:** https://docs.qratum.io
+- **Video Tutorials:** <https://training.qratum.io>
+- **Documentation:** <https://docs.qratum.io>
 - **API Reference:** [API_REFERENCE.md](./API_REFERENCE.md)
 - **Deployment Guide:** [DEPLOYMENT.md](./DEPLOYMENT.md)
 
@@ -568,6 +596,6 @@ curl -s http://localhost:8001/api/v1/system/proof | \
 ## Support
 
 - **Operator Slack Channel:** #qratum-ops
-- **Internal Wiki:** https://wiki.qratum.io
-- **Runbook Repository:** https://github.com/qratum/runbooks
-- **On-Call Schedule:** https://oncall.qratum.io
+- **Internal Wiki:** <https://wiki.qratum.io>
+- **Runbook Repository:** <https://github.com/qratum/runbooks>
+- **On-Call Schedule:** <https://oncall.qratum.io>

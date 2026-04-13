@@ -118,15 +118,18 @@ The QRATUM ExaScale Initiative represents a $4.5B investment in next-generation 
 ### 1. Electricity ($42M/year)
 
 **Power Consumption:**
+
 - Compute: 35 MW (average, 80% utilization)
 - Cooling: 6.8 MW
 - Overhead: 3.1 MW
 - **Total:** 44.9 MW average
 
 **Annual Energy:**
+
 - 44.9 MW × 8,760 hours = 393,324 MWh/year
 
 **Cost:**
+
 - Rate: $0.08/kWh (negotiated industrial rate)
 - Annual cost: 393,324 × $80 = **$31,465,920**
 - Demand charges: $10M/year (peak capacity)
@@ -202,11 +205,13 @@ The QRATUM ExaScale Initiative represents a $4.5B investment in next-generation 
 ## Total Cost of Ownership (TCO)
 
 **5-Year TCO:**
+
 - CapEx: $4,157M
 - OpEx (5 years): $360M
 - **Total:** $4,517M
 
 **10-Year TCO:**
+
 - CapEx: $4,157M
 - OpEx (10 years): $720M
 - Hardware Refresh (Year 5): $1,000M (partial upgrade)
@@ -229,6 +234,7 @@ The QRATUM ExaScale Initiative represents a $4.5B investment in next-generation 
 ### Return on Investment (ROI)
 
 **Revenue Streams:**
+
 1. **Academic Research:** $10M/year (grant overhead recovery)
 2. **Industry Partnerships:** $30M/year (compute time sales)
 3. **Cloud Services:** $20M/year (QRATUM-as-a-Service)
@@ -236,6 +242,7 @@ The QRATUM ExaScale Initiative represents a $4.5B investment in next-generation 
 5. **Total Revenue:** $65M/year
 
 **ROI Calculation:**
+
 - Annual revenue: $65M
 - Annual OpEx: $72M
 - **Net:** -$7M/year (subsidized by grants)
@@ -253,6 +260,7 @@ The QRATUM ExaScale Initiative represents a $4.5B investment in next-generation 
 | **QRATUM** | **$4,157M** | **2.125** | **$1,957M** |
 
 **Note:** QRATUM's higher cost reflects:
+
 1. Custom networking (AetherFabric-X): +$150M
 2. Quantum integration: +$100M
 3. Advanced cooling: +$100M

@@ -9,6 +9,7 @@ The Sovereign Operations Interface (SOI) is QRATUM's deterministic, auditable su
 **UI must never execute logic.** It is a purely reflective surface bound to cryptographic state streams.
 
 Every pixel is derived from:
+
 ```
 QRADLE State → Aethernet Provenance → ZK Proof Stream → UI Telemetry Bus
 ```
@@ -18,6 +19,7 @@ No UI action mutates state directly.
 ## Visual System Layers
 
 ### Legacy Stack (WebGL/DOM)
+
 | Layer | Engine | Role |
 |-------|--------|------|
 | Core UI Runtime | Three.js + WebGL | Holographic 3D operational environment |
@@ -27,6 +29,7 @@ No UI action mutates state directly.
 | Rendering Protocol | Read-only TXO mirror | UI cannot desync from QRADLE |
 
 ### **NEW: Unreal Engine 5 Stack** 🎬
+
 | Layer | Engine | Role |
 |-------|--------|------|
 | Visual Cortex | Unreal Engine 5 | Cinematic-grade rendering (Niagara, Lumen, Nanite) |
@@ -41,26 +44,32 @@ No UI action mutates state directly.
 ## Sovereign UI Domains
 
 ### 1. Planetary Node Map
+
 A holographic Earth visualization with:
+
 - Live validator nodes
 - Z-zones glowing by classification
 - Air-gapped Z3 vaults as black monoliths
 - BFT quorum flows animated in real time
 
 ### 2. QRADLE Execution Theater
+
 Each execution is rendered as:
+
 - Deterministic state machine lattice
 - Rollback vectors visualized as reversible time branches
 - Fatal invariant violations as red horizon fractures
 - ZK proofs streaming as quantum-noise overlays
 
 ### 3. Aethernet Consensus War Room
+
 - Validator lifecycle rings
 - Slashing heat maps
 - Trajectory-aware collapse precursors (amber → crimson)
 - Self-suspension triggers as gravitational wells
 
 ### 4. Vertical Operations Bays
+
 Each vertical is a cinematic chamber:
 
 | Vertical | Visual Theme |
@@ -74,6 +83,7 @@ Each vertical is a cinematic chamber:
 ## Technology Stack
 
 ### Legacy WebGL Stack
+
 | Component | Stack |
 |-----------|-------|
 | 3D Runtime | Three.js + WebGL |
@@ -84,6 +94,7 @@ Each vertical is a cinematic chamber:
 | Rendering Sync | Deterministic TXO snapshots |
 
 ### **NEW: Unreal Engine 5 Stack** 🎬
+
 | Component | Stack |
 |-----------|-------|
 | 3D Runtime | Unreal Engine 5.3+ (Lumen, Nanite) |
@@ -139,6 +150,7 @@ soi/
 ## Determinism Preservation
 
 The UI:
+
 - Cannot generate entropy
 - Cannot alter execution paths  
 - Cannot bypass zones
@@ -149,6 +161,7 @@ All rendering is post-factum reflective.
 ## Quick Start
 
 ### Legacy WebGL Version
+
 1. Open `soi/index.html` in a browser
 2. The interface will connect to the telemetry bus
 3. Real-time state streams will render automatically
@@ -156,11 +169,13 @@ All rendering is post-factum reflective.
 ### **NEW: Unreal Engine 5 Version** 🎬
 
 #### Prerequisites
+
 - Rust 1.70+ ([Install](https://rustup.rs/))
 - Unreal Engine 5.3+ ([Download](https://www.unrealengine.com/))
 - Visual Studio 2022 (Windows) or Xcode (macOS)
 
 #### Build Steps
+
 ```bash
 # 1. Build Rust telemetry core
 cd soi/rust_core/soi_telemetry_core
@@ -183,6 +198,7 @@ cd soi/rust_core/soi_telemetry_core
 ## Integration
 
 The SOI integrates with:
+
 - QRADLE Engine (`/qradle/engine.py`)
 - Aethernet Consensus (`/Aethernet/core/consensus.py`)
 - Validator Registry (`/Aethernet/core/validator.py`)

@@ -14,6 +14,7 @@ This document describes the performance characteristics of the QRATUM Android Em
 ### Methodology
 
 Benchmarks measure:
+
 1. **Throughput**: Operations per second
 2. **Latency**: Time per operation
 3. **Memory**: RAM usage
@@ -139,12 +140,14 @@ Note: Overhead is expected for software emulation. Future JIT compilation will i
 ## Optimization Opportunities
 
 ### Implemented
+
 - [x] Instruction caching
 - [x] Memory page caching
 - [x] Shader caching
 - [x] Lock-free queues
 
 ### Planned
+
 - [ ] JIT compilation (10-100x CPU speedup expected)
 - [ ] Hardware virtualization (KVM)
 - [ ] GPU compute acceleration
@@ -201,6 +204,7 @@ Instructions: 1.2M/frame
 ```
 
 Enable with:
+
 ```bash
 emu run --debug
 ```

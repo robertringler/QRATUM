@@ -52,6 +52,7 @@ This implementation delivers a complete, production-ready demo system for QuASIM
 ### Vertical Demo Packages (8 complete)
 
 Each package includes:
+
 - ✅ CLI with plan/simulate/optimize commands
 - ✅ Deterministic simulation kernels
 - ✅ Streamlit dashboard for KPI visualization
@@ -60,11 +61,13 @@ Each package includes:
 - ✅ Compliance documentation (aerospace)
 
 #### 1. 🚀 Aerospace
+
 **Target**: SpaceX, Boeing, Lockheed Martin, Northrop Grumman
 
 **Use Case**: Hot-staging & MECO envelope optimization
 
 **KPIs**:
+
 - RMSE altitude (m)
 - RMSE velocity (m/s)
 - Max dynamic pressure (Pa)
@@ -73,11 +76,13 @@ Each package includes:
 **Files**: 8 files (CLI, kernels, tests, dashboard, README, compliance)
 
 #### 2. 📡 Telecom
+
 **Target**: AT&T, Verizon, T-Mobile, Nokia
 
 **Use Case**: RAN slice placement & quantum traffic forecasting
 
 **KPIs**:
+
 - SLA violation rate (%)
 - Power consumption (kWh)
 - Forecast MAE (Mbps)
@@ -86,11 +91,13 @@ Each package includes:
 **Files**: 6 files (CLI, kernels, tests, dashboard)
 
 #### 3. 💰 Finance
+
 **Target**: JPMorgan, Goldman Sachs, BlackRock, Two Sigma
 
 **Use Case**: Intraday risk & liquidity stress with tensor net Greeks
 
 **KPIs**:
+
 - VaR 99% ($M)
 - Expected Shortfall 97.5% ($M)
 - Max drawdown (%)
@@ -99,11 +106,13 @@ Each package includes:
 **Files**: 6 files (CLI, kernels, tests, dashboard)
 
 #### 4. ⚕️ Healthcare
+
 **Target**: Pfizer, J&J, Mayo Clinic, Roche
 
 **Use Case**: Adaptive trial arm allocation
 
 **KPIs**:
+
 - Statistical power (%)
 - False positive rate (%)
 - Responders gain (patients)
@@ -112,11 +121,13 @@ Each package includes:
 **Files**: 6 files (CLI, kernels, tests, dashboard)
 
 #### 5. ⚡ Energy
+
 **Target**: Shell, ExxonMobil, NextEra, Ørsted
 
 **Use Case**: Grid dispatch with renewables & storage
 
 **KPIs**:
+
 - LMP cost ($M)
 - Curtailment percentage (%)
 - Reserve violations (count)
@@ -125,11 +136,13 @@ Each package includes:
 **Files**: 6 files (CLI, kernels, tests, dashboard)
 
 #### 6. 🚛 Transportation
+
 **Target**: UPS, FedEx, Tesla, Maersk
 
 **Use Case**: Fleet routing with stochastic ETA & charging
 
 **KPIs**:
+
 - On-time delivery (%)
 - Energy cost ($)
 - Distance traveled (km)
@@ -138,11 +151,13 @@ Each package includes:
 **Files**: 6 files (CLI, kernels, tests, dashboard)
 
 #### 7. 🏭 Manufacturing
+
 **Target**: Siemens, GE, Bosch, Toyota
 
 **Use Case**: Predictive maintenance & throughput control
 
 **KPIs**:
+
 - Mean time between failures (hours)
 - Downtime percentage (%)
 - Throughput (units/hr)
@@ -151,11 +166,13 @@ Each package includes:
 **Files**: 6 files (CLI, kernels, tests, dashboard)
 
 #### 8. 🌾 Agritech
+
 **Target**: John Deere, Bayer Crop Science, Corteva, Syngenta
 
 **Use Case**: Irrigation & yield optimization
 
 **KPIs**:
+
 - Crop yield (kg/ha)
 - Water use efficiency (kg/m³)
 - Risk of crop loss (%)
@@ -213,12 +230,14 @@ Each package includes:
 ## Testing Results
 
 ### Test Statistics
+
 - **Total Tests**: 25 smoke tests
 - **Pass Rate**: 100% (25/25)
 - **Execution Time**: 0.20 seconds
 - **Coverage**: Tests cover CLI, kernels, determinism
 
 ### Test Breakdown by Vertical
+
 - Aerospace: 4 tests (scenarios, determinism, quick run)
 - Agritech: 3 tests (basic, determinism, quick run)
 - Energy: 3 tests
@@ -229,6 +248,7 @@ Each package includes:
 - Transportation: 3 tests
 
 ### Determinism Validation
+
 - ✅ Repeated runs with same seed produce identical results
 - ✅ Tolerance: <1e-6 for all metrics
 - ✅ Verified across all verticals
@@ -236,13 +256,16 @@ Each package includes:
 ## Artifact Generation
 
 ### Verified Artifacts
+
 Each demo generates:
+
 - ✅ `metrics.json` - KPI values in JSON format
 - ✅ `log.jsonl` - Time-series trace (JSONL format)
 - ⚙️ `capture.mp4` - Video visualization (infrastructure ready)
 - ⚙️ `capture.gif` - Animated GIF (infrastructure ready)
 
 ### Example Artifacts (Aerospace, seed=42, 50 steps)
+
 ```json
 // metrics.json
 {
@@ -256,11 +279,13 @@ Each demo generates:
 ## Code Quality
 
 ### Formatting
+
 - ✅ Formatted with ruff/black
 - ✅ 42 files reformatted
 - ✅ Consistent style across all demos
 
 ### Linting
+
 - ✅ Auto-fixed with ruff
 - ✅ Remaining issues are cosmetic (type annotations)
 - ✅ No blocking errors
@@ -341,18 +366,21 @@ docs/
 ## Compliance
 
 ### DO-178C Level A
+
 - ✅ Process-compatible structure
 - ✅ Deterministic reproducibility
 - ✅ Traceability (requirements → tests)
 - ⚠️ MC/DC coverage pending (demo-grade)
 
 ### NIST 800-53/171
+
 - ✅ AU-2: Audit logging (serialize.py)
 - ✅ SC-7: Boundary protection (containerization)
 - ✅ SI-3: Malware protection (CodeQL in CI)
 - ⚠️ AC-2, IA-2: Authentication (not applicable for demos)
 
 ### CMMC 2.0 Level 2
+
 - ✅ AC.L2-3.1.1: Access control (demo mode)
 - ✅ AU.L2-3.3.1: Audit records (JSONL logs)
 - ✅ CM.L2-3.4.1: Baseline config (git)
@@ -409,6 +437,7 @@ streamlit run quasim/demos/aerospace/dashboards/app.py
 ## Conclusion
 
 This implementation delivers a complete, production-ready demo system that:
+
 - ✅ Meets all specified requirements
 - ✅ Passes 100% of tests
 - ✅ Includes comprehensive documentation

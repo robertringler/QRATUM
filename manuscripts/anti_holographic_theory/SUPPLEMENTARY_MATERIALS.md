@@ -1,4 +1,5 @@
 # Supplementary Materials
+
 ## Anti-Holographic Theory Manuscript
 
 **Title:** Empirical Validation of Anti-Holographic Information Principles through Astrophysical Observations and Computational Modeling
@@ -46,6 +47,7 @@
 | J1120+0641 | 170.1542 | 6.6892 | 7.09 | H, C, O, Mg, Si, Fe | -0.3 ± 0.1 | -0.4 ± 0.1 | -0.5 ± 0.1 | VLT/XSHOOTER | [6] |
 
 **References:**
+
 - [1] Curtis-Lake et al. 2023, Nature Astronomy 7, 622
 - [2] Robertson et al. 2023, Nature Astronomy 7, 611
 - [3] Bunker et al. 2023, A&A 677, A88
@@ -60,6 +62,7 @@
 **Figure S1 Description:** Spectroscopic detections extended to z = 2-6 showing continuity with high-redshift sample.
 
 **Data Summary:**
+
 - z = 2-4: 847 objects (HST/WFC3, MOSFIRE)
 - z = 4-6: 312 objects (HST, VLT, Keck)
 - z = 6-8: 89 objects (VLT, Keck, JWST)
@@ -71,12 +74,14 @@
 ### 1.3 Sky Coverage and Sightline Distribution
 
 **Angular Distribution:**
+
 - Northern Hemisphere (δ > 0°): 687 sightlines (53.6%)
 - Southern Hemisphere (δ < 0°): 595 sightlines (46.4%)
 - Galactic plane (|b| < 20°): Excluded due to extinction
 - High latitude (|b| > 50°): 892 sightlines (69.6%)
 
 **Representative Fields:**
+
 - GOODS-North: 127 objects
 - GOODS-South: 143 objects
 - COSMOS: 189 objects
@@ -101,16 +106,19 @@ The isotropy parameter quantifies scatter in elemental abundances across differe
 ```
 
 where:
+
 - N = number of sightlines
 - [X/H]ᵢ = logarithmic abundance of element X relative to hydrogen in sightline i
 - ⟨[X/H]⟩ = mean abundance across all sightlines
 
 **Bootstrap Resampling:**
+
 - Resample with replacement: 1000 iterations
 - Recalculate δ_iso for each resample
 - Report median and 68% confidence interval (±1σ)
 
 **Results (Oxygen):**
+
 - Median δ_iso = 0.148
 - 16th percentile = 0.112
 - 84th percentile = 0.189
@@ -121,16 +129,19 @@ where:
 **Null Hypothesis:** Strong holographic encoding predicts δ_iso ≥ 0.5
 
 **Test Statistic:**
+
 ```
 σ = (δ_iso^holo - δ_iso^obs) / Δδ_iso^obs
 ```
 
 **For Oxygen:**
+
 ```
 σ = (0.5 - 0.15) / 0.04 = 8.75σ
 ```
 
 **For Combined Elements (C, O, Si, Fe):**
+
 - Weighted mean: δ_iso = 0.14 ± 0.03
 - Test statistic: σ = (0.5 - 0.14) / 0.03 = 12σ
 
@@ -139,6 +150,7 @@ where:
 ### 2.3 Angular Correlation Analysis
 
 **Two-Point Correlation Function:**
+
 ```
 ξ(θ) = ⟨δ[X/H](n̂₁) δ[X/H](n̂₂)⟩ - ⟨[X/H]⟩²
 ```
@@ -146,6 +158,7 @@ where:
 where θ = |n̂₁ - n̂₂| is angular separation.
 
 **Method:**
+
 1. Pair all sightlines by angular separation
 2. Bin pairs by θ (0.5° bins)
 3. Calculate abundance product for each pair
@@ -153,6 +166,7 @@ where θ = |n̂₁ - n̂₂| is angular separation.
 5. Compare to Poisson expectation
 
 **Results:**
+
 - All bins consistent with ξ(θ) = 0 (no correlation)
 - No detection of correlation at any angular scale θ = 0.5° - 180°
 - 95% confidence upper limit: |ξ(θ)| < 0.05 for all θ > 1°
@@ -164,28 +178,34 @@ where θ = |n̂₁ - n̂₂| is angular separation.
 **Model Fitting:**
 
 Test two competing models:
+
 1. **Holographic (Area) Scaling:** I(z) = A₀(1+z)^(-2)
 2. **Anti-Holographic (Volume) Scaling:** I(z) = A₁(1+z)^(-3)
 
 where I(z) is information content proxy defined as:
+
 ```
 I(z) = Σᵢ Nᵢ(z) log₂ Nᵢ(z)
 ```
+
 (Shannon entropy of spectral line counts)
 
 **Method:**
+
 - Bin data by redshift: Δz = 0.5
 - Calculate I(z) in each bin
 - Fit power-law: I(z) ∝ (1+z)^β
 - Compare β to predictions: β_holo = -2, β_anti = -3
 
 **Results:**
+
 - Best-fit exponent: β = -2.8 ± 0.3
 - χ²/dof (holographic): 4.7 (poor fit)
 - χ²/dof (anti-holographic): 1.3 (good fit)
 - Δχ² = 41 (strongly favors anti-holographic)
 
 **Bayesian Model Comparison:**
+
 - Bayes factor: B_anti/B_holo = 10^8 (decisive evidence)
 
 ### 2.5 Systematic Uncertainty Budget
@@ -210,6 +230,7 @@ Even with systematic uncertainties, δ_iso = 0.14 ± 0.03(stat) ± 0.05(sys) rem
 ### 3.1 AHTC Algorithm Implementation
 
 **Software Stack:**
+
 - Python 3.10.8
 - NumPy 1.24.2
 - CuPy 12.0.0 (CUDA 11.8)
@@ -217,6 +238,7 @@ Even with systematic uncertainties, δ_iso = 0.14 ± 0.03(stat) ± 0.05(sys) rem
 - pytest 7.2.1 (testing)
 
 **Hardware:**
+
 - NVIDIA A100 GPU (40GB HBM2)
 - AMD EPYC 7763 CPU (64 cores)
 - 512 GB DDR4 RAM
@@ -227,6 +249,7 @@ Even with systematic uncertainties, δ_iso = 0.14 ± 0.03(stat) ± 0.05(sys) rem
 **Purpose:** Generate diverse quantum states for compression benchmarking.
 
 **Method:**
+
 ```python
 import numpy as np
 
@@ -262,6 +285,7 @@ def generate_random_density_matrix(n_qubits, seed=None):
 ```
 
 **Validation:**
+
 - 100 random states per qubit number (50, 75, 100, 125)
 - Seeds: 1000-1099 for reproducibility
 - Properties verified: Tr(ρ)=1, ρ†=ρ, eigenvalues ≥ 0
@@ -269,11 +293,13 @@ def generate_random_density_matrix(n_qubits, seed=None):
 ### 3.3 Fidelity Computation
 
 **Mathematical Definition:**
+
 ```
 F(ρ, ρ') = [Tr√(√ρ ρ' √ρ)]²
 ```
 
 **Numerical Implementation:**
+
 ```python
 import scipy.linalg as la
 
@@ -303,6 +329,7 @@ def quantum_fidelity(rho1, rho2):
 
 **Alternative (Pure States):**
 For pure states |ψ⟩, |φ⟩:
+
 ```python
 def pure_state_fidelity(psi, phi):
     """Fidelity for pure states."""
@@ -312,6 +339,7 @@ def pure_state_fidelity(psi, phi):
 ### 3.4 Compression Algorithm Pseudocode
 
 **High-Level Structure:**
+
 ```
 Algorithm: Anti-Holographic Tensor Compression (AHTC)
 
@@ -360,6 +388,7 @@ Return ρ_compressed, F_achieved, R
 ### 3.5 GPU Acceleration Details
 
 **CUDA Kernel for Truncation:**
+
 ```cuda
 __global__ void ahtc_truncate_kernel(
     const cuFloatComplex* input,
@@ -386,6 +415,7 @@ __global__ void ahtc_truncate_kernel(
 ```
 
 **Launch Configuration:**
+
 - Threads per block: 256
 - Blocks: ceil(N / 256)
 - Shared memory: None (coalesced global memory access)
@@ -393,6 +423,7 @@ __global__ void ahtc_truncate_kernel(
 ### 3.6 Validation and Testing
 
 **Unit Tests:**
+
 ```python
 def test_fidelity_bounds():
     """Test that fidelity stays within [0, 1]."""
@@ -424,6 +455,7 @@ def test_entanglement_preservation():
 ```
 
 **Integration Tests:**
+
 - End-to-end compression pipeline
 - Performance benchmarking
 - Comparison with baseline methods (SVD, Tucker)
@@ -437,17 +469,20 @@ def test_entanglement_preservation():
 #### Spectroscopic Measurement Errors
 
 **1. Signal-to-Noise Ratio (SNR)**
+
 - Typical SNR: 10-30 per resolution element
 - Impact on abundance: ±0.03-0.10 dex
 - Mitigation: Longer integration times, co-adding exposures
 
 **2. Continuum Placement**
+
 - Uncertainty: ±5-10% of continuum level
 - Impact on line strength: ±10-20%
 - Impact on abundance: ±0.05-0.15 dex
 - Mitigation: Multiple independent fits, automated algorithms
 
 **3. Line Blending**
+
 - Frequency: ~15% of transitions affected
 - Impact: Systematic overestimation by 0.1-0.3 dex
 - Mitigation: High-resolution spectroscopy (R > 5000), line profile fitting
@@ -455,22 +490,26 @@ def test_entanglement_preservation():
 #### Redshift Uncertainties
 
 **Photometric Redshifts:**
+
 - Accuracy: Δz/(1+z) ~ 0.03-0.05
 - Impact: Minimal for abundance measurements (model selection)
 - **Not used for final sample** (spectroscopic confirmation required)
 
 **Spectroscopic Redshifts:**
+
 - Accuracy: Δz ~ 0.001
 - Impact: Negligible
 
 #### Instrumental Systematics
 
 **Cross-Calibration:**
+
 - JWST NIRSpec vs HST: Agreement within ±0.08 dex
 - VLT XSHOOTER vs Keck LRIS: Agreement within ±0.06 dex
 - Combined uncertainty: ±0.10 dex
 
 **Wavelength Calibration:**
+
 - Typical precision: ±5 km/s
 - Impact on abundances: Negligible
 
@@ -479,22 +518,26 @@ def test_entanglement_preservation():
 #### Photoionization Corrections
 
 **Ionization State:**
+
 - Assumption: Solar ionization parameter U
 - Uncertainty: Factor of 2-3 variation possible
 - Impact: ±0.10-0.20 dex depending on ion
 
 **Mitigation:**
+
 - Use multiple ionization states when available
 - Ionization correction factors from Cloudy models
 
 #### Nucleosynthetic Yields
 
 **Stellar Evolution Models:**
+
 - Type II supernovae: ±30% yield uncertainty
 - Type Ia supernovae: ±20% yield uncertainty
 - AGB stars: ±40% yield uncertainty
 
 **Impact on Interpretation:**
+
 - Chemical evolution slopes: ±0.1 in exponent
 - Does not affect isotropy measurement
 
@@ -503,16 +546,19 @@ def test_entanglement_preservation():
 #### Sample Size Effects
 
 **Bootstrap Analysis:**
+
 - Method: Resample with replacement, 1000 iterations
 - Result: δ_iso = 0.14 ± 0.03 (statistical only)
 
 **Jackknife Analysis:**
+
 - Method: Leave-one-out resampling
 - Result: δ_iso = 0.14 ± 0.03 (consistent with bootstrap)
 
 #### Cosmic Variance
 
 **Field-to-Field Variation:**
+
 - GOODS-N vs GOODS-S: Δ[O/H] = 0.08 ± 0.05 dex (consistent)
 - COSMOS vs EGS: Δ[O/H] = 0.11 ± 0.06 dex (consistent)
 - All fields: RMS scatter = 0.12 dex
@@ -522,11 +568,13 @@ def test_entanglement_preservation():
 ### 4.4 Combined Error Budget
 
 **Quadrature Sum:**
+
 ```
 σ_total = √(σ_stat² + σ_cont² + σ_calib² + σ_ion² + σ_cosmic²)
 ```
 
 **For Typical Measurement:**
+
 - σ_stat (SNR): 0.08 dex
 - σ_cont (continuum): 0.10 dex
 - σ_calib (instrumental): 0.10 dex
@@ -536,6 +584,7 @@ def test_entanglement_preservation():
 **Total: σ_total = 0.26 dex per measurement**
 
 **For Isotropy Parameter (N=52 measurements):**
+
 ```
 σ_isotropy = σ_total / √N = 0.26 / √52 = 0.036 dex
 ```
@@ -551,16 +600,19 @@ def test_entanglement_preservation():
 **Alternative Hypothesis:** Observed isotropy explained entirely by inflationary smoothing without requiring anti-holographic mechanisms.
 
 **Arguments For:**
+
 - Inflation solves horizon problem
 - Produces density perturbations with Gaussian statistics
 - Predicts δρ/ρ ~ 10^-5 (observed in CMB)
 
 **Arguments Against:**
+
 - Inflation explains initial conditions, not ongoing chemical evolution
 - Chemical complexity at z > 10 requires additional mechanisms
 - Anti-holographic framework provides complementary explanation for information organization
 
 **Discriminating Test:**
+
 - Inflation predicts specific primordial power spectrum
 - Anti-holographic framework makes predictions about bulk vs boundary information flow
 - Both may be correct in complementary ways
@@ -572,22 +624,27 @@ def test_entanglement_preservation():
 **Alternative Hypothesis:** Holographic principle applies but with weaker area-scaling coefficient than strong versions.
 
 **Mathematical Form:**
+
 ```
 S ≤ α (A / ℓ_P²)
 ```
+
 where α < 1/4 (weak holography) vs α = 1/4 (strong holography)
 
 **Arguments For:**
+
 - Maintains spirit of holographic principle
 - Allows more information in bulk than strict bound
 - Could accommodate observations
 
 **Arguments Against:**
+
 - No clear physical justification for α < 1/4
 - Does not explain directional isotropy patterns
 - Loses predictive power (α becomes free parameter)
 
 **Discriminating Test:**
+
 - Measure actual information content vs boundary area
 - Determine if α is consistent across different regimes
 - Compare to anti-holographic predictions
@@ -599,16 +656,19 @@ where α < 1/4 (weak holography) vs α = 1/4 (strong holography)
 **Alternative Hypothesis:** Bulk appears fundamental but actually emerges from more complete boundary CFT description not yet formulated.
 
 **Arguments For:**
+
 - Consistent with AdS/CFT philosophy
 - Preserves holographic paradigm
 - Observed isotropy could be property of boundary theory
 
 **Arguments Against:**
+
 - No concrete boundary theory proposed for cosmology
 - Requires boundary to encode fine-grained chemical information
 - Prediction of isotropy from boundary theory unclear
 
 **Discriminating Test:**
+
 - Construct explicit cosmological boundary theory
 - Derive bulk chemical evolution from boundary dynamics
 - Compare predictions to observations
@@ -620,16 +680,19 @@ where α < 1/4 (weak holography) vs α = 1/4 (strong holography)
 **Alternative Hypothesis:** Observational selection preferentially samples isotropic configurations, creating false impression of universal isotropy.
 
 **Arguments For:**
+
 - Telescope pointing tends toward known interesting regions
 - Target selection based on existing catalogs
 - Could introduce bias
 
 **Arguments Against:**
+
 - Multiple independent surveys with different selection criteria show consistent results
 - Random quasar sightlines (no pre-selection) also show isotropy
 - Statistical tests (bootstrap, jackknife) show robustness
 
 **Discriminating Test:**
+
 - Blind survey with no pre-selection
 - Compare pre-selected vs random sightlines
 - Quantify potential bias magnitude
@@ -654,6 +717,7 @@ where α < 1/4 (weak holography) vs α = 1/4 (strong holography)
 ### 6.1 Repository Information
 
 **Primary Repository:**
+
 - Platform: GitHub
 - Organization: robertringler
 - Repository: QRATUM
@@ -668,17 +732,20 @@ where α < 1/4 (weak holography) vs α = 1/4 (strong holography)
 #### Analysis Scripts
 
 **1. `isotropy_analysis.py`**
+
 - Calculates isotropy parameter δ_iso
 - Bootstrap resampling
 - Angular correlation functions
 - Generates Figure 2 (isotropy map)
 
 **2. `redshift_scaling.py`**
+
 - Fits power-law scaling models
 - Bayesian model comparison
 - Generates Figure 3 (information scaling)
 
 **3. `chemical_evolution.py`**
+
 - Metallicity evolution analysis
 - Model fitting (bulk vs boundary)
 - Generates Figure 1 (chemical evolution)
@@ -686,12 +753,14 @@ where α < 1/4 (weak holography) vs α = 1/4 (strong holography)
 #### Compression Algorithm
 
 **4. `ahtc_algorithm.py`**
+
 - Core AHTC implementation
 - Entanglement analysis
 - Adaptive truncation
 - Fidelity verification
 
 **5. `ahtc_cuda_kernels.py`**
+
 - CuPy/CUDA wrappers
 - GPU-accelerated operations
 - Performance benchmarking
@@ -699,11 +768,13 @@ where α < 1/4 (weak holography) vs α = 1/4 (strong holography)
 #### Testing
 
 **6. `test_suite.py`**
+
 - Unit tests for all components
 - Integration tests
 - Validation benchmarks
 
 **7. `benchmark_compression.py`**
+
 - Systematic performance evaluation
 - Generates Table III data
 - Generates Figure 6 (compression performance)
@@ -711,11 +782,13 @@ where α < 1/4 (weak holography) vs α = 1/4 (strong holography)
 #### Data Processing
 
 **8. `load_spectroscopic_data.py`**
+
 - Data ingestion from various formats
 - Quality control filters
 - Unified data structure
 
 **9. `systematic_errors.py`**
+
 - Error budget calculation
 - Uncertainty propagation
 - Generates Table S1 (error budget)
@@ -723,6 +796,7 @@ where α < 1/4 (weak holography) vs α = 1/4 (strong holography)
 ### 6.3 Dependencies
 
 **Required Python Packages:**
+
 ```
 numpy>=1.24.0
 scipy>=1.10.0
@@ -735,6 +809,7 @@ jupyter>=1.0.0
 ```
 
 **Installation:**
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -742,6 +817,7 @@ pip install -r requirements.txt
 ### 6.4 Usage Examples
 
 **Example 1: Calculate Isotropy**
+
 ```python
 from analysis import isotropy_analysis
 
@@ -759,6 +835,7 @@ print(f"δ_iso = {delta_iso:.3f} ± {uncertainty:.3f}")
 ```
 
 **Example 2: Run AHTC Compression**
+
 ```python
 from ahtc import ahtc_algorithm
 
@@ -775,6 +852,7 @@ print(f"Compression: {ratio:.1f}x, Fidelity: {fidelity:.4f}")
 ```
 
 **Example 3: Reproduce Figure 1**
+
 ```python
 from analysis import chemical_evolution
 from plotting import plot_chemical_evolution
@@ -816,6 +894,7 @@ fig.savefig('figure1_chemical_evolution.pdf', dpi=300)
 **Filename:** `spectroscopic_database_full.csv`
 
 **Columns:**
+
 - object_id: Unique identifier
 - ra_j2000: Right ascension (degrees)
 - dec_j2000: Declination (degrees)
@@ -840,6 +919,7 @@ fig.savefig('figure1_chemical_evolution.pdf', dpi=300)
 **Filename:** `ahtc_benchmark_results.h5`
 
 **Contents:**
+
 - `/raw_states/`: Original quantum states (100 per qubit number)
 - `/compressed_states/`: Compressed representations
 - `/metrics/`: Fidelity, compression ratio, timing data
@@ -852,16 +932,19 @@ fig.savefig('figure1_chemical_evolution.pdf', dpi=300)
 ### 7.3 Derived Data Products
 
 **1. Isotropy Maps**
+
 - Format: FITS (Flexible Image Transport System)
 - Content: Sky maps of elemental abundances
 - Files: `isotropy_map_[element].fits`
 
 **2. Correlation Functions**
+
 - Format: ASCII table
 - Content: ξ(θ) vs angular separation θ
 - Files: `correlation_function_[element].dat`
 
 **3. Model Fits**
+
 - Format: JSON
 - Content: Best-fit parameters, uncertainties, χ² values
 - Files: `model_fits.json`
@@ -871,6 +954,7 @@ fig.savefig('figure1_chemical_evolution.pdf', dpi=300)
 **License:** Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 **Terms:**
+
 - Free to use for any purpose
 - Attribution required: "Ringler, R. (2026), Anti-Holographic Theory Data"
 - Modifications allowed
@@ -879,6 +963,7 @@ fig.savefig('figure1_chemical_evolution.pdf', dpi=300)
 ### 7.5 Data Citation
 
 **Recommended Citation:**
+
 ```
 Ringler, Robert (2026). Spectroscopic Database and Compression 
 Benchmarks for Anti-Holographic Theory Validation. 
@@ -896,6 +981,7 @@ Zenodo. DOI: 10.5281/zenodo.XXXXXXX
 The entire analysis from raw data to final figures can be reproduced following these steps:
 
 **Step 1: Environment Setup**
+
 ```bash
 # Clone repository
 git clone https://github.com/robertringler/QRATUM.git
@@ -911,6 +997,7 @@ pip install -r requirements.txt
 ```
 
 **Step 2: Download Data**
+
 ```bash
 # Download spectroscopic database
 wget https://zenodo.org/record/XXXXXXX/spectroscopic_database_full.csv
@@ -920,6 +1007,7 @@ wget https://zenodo.org/record/XXXXXXX/ahtc_benchmark_results.h5
 ```
 
 **Step 3: Run Analysis**
+
 ```bash
 # All analyses
 python run_all_analyses.py
@@ -931,6 +1019,7 @@ python chemical_evolution.py
 ```
 
 **Step 4: Generate Figures**
+
 ```bash
 # All figures
 python generate_all_figures.py
@@ -942,6 +1031,7 @@ python plot_figure2.py  # Isotropy map
 ```
 
 **Step 5: Run Tests**
+
 ```bash
 # Validation tests
 pytest test_suite.py -v
@@ -951,6 +1041,7 @@ python benchmark_compression.py
 ```
 
 **Expected Runtime:**
+
 - Analysis scripts: ~10 minutes (with existing data)
 - Compression benchmarks: ~2 hours (GPU required)
 - Figure generation: ~5 minutes
@@ -959,12 +1050,14 @@ python benchmark_compression.py
 ### 8.2 Computational Requirements
 
 **Minimum:**
+
 - CPU: 4 cores, 2.0 GHz
 - RAM: 16 GB
 - Storage: 10 GB
 - OS: Linux, macOS, or Windows
 
 **Recommended:**
+
 - CPU: 8+ cores, 3.0+ GHz
 - RAM: 32 GB
 - Storage: 50 GB
@@ -997,10 +1090,12 @@ for seed in seeds:
 ### 8.5 Numerical Precision
 
 **Floating-Point Precision:**
+
 - Default: 64-bit (double precision)
 - GPU kernels: 32-bit (single precision) with validation against 64-bit
 
 **Tolerance Thresholds:**
+
 - Fidelity comparison: 1e-4
 - Eigenvalue positivity: 1e-10
 - Trace normalization: 1e-10
@@ -1011,10 +1106,12 @@ for seed in seeds:
 We encourage independent researchers to reproduce results and report discrepancies.
 
 **Contact for Issues:**
-- GitHub Issues: https://github.com/robertringler/QRATUM/issues
+
+- GitHub Issues: <https://github.com/robertringler/QRATUM/issues>
 - Email: Contact information available in repository
 
 **Expected Agreement:**
+
 - Statistical quantities: Within reported uncertainties
 - Figures: Visually identical (minor variations in random noise acceptable)
 - Compression benchmarks: Within 5% (hardware-dependent)
@@ -1026,14 +1123,17 @@ We encourage independent researchers to reproduce results and report discrepanci
 *Additional citations beyond main manuscript:*
 
 **Statistical Methods:**
+
 - Efron, B. & Tibshirani, R. (1993). *An Introduction to the Bootstrap*. Chapman & Hall.
 - Trotta, R. (2008). Bayes in the sky: Bayesian inference and model selection in cosmology. *Contemporary Physics* 49, 71-104.
 
 **Computational Methods:**
+
 - Schollwöck, U. (2011). The density-matrix renormalization group in the age of matrix product states. *Annals of Physics* 326, 96-192.
 - Harris, C.R. et al. (2020). Array programming with NumPy. *Nature* 585, 357-362.
 
 **Observational Techniques:**
+
 - McLure, R.J. et al. (2013). A robust sample of galaxies at redshifts 6.0 < z < 8.7. *MNRAS* 432, 2696-2716.
 - Bunker, A.J. et al. (2023). JADES NIRSpec initial data release. *A&A* 677, A88.
 

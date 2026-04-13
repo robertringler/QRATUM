@@ -12,7 +12,6 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 
@@ -183,9 +182,7 @@ class ProvenanceContract(BaseContract):
         if not self.provenance_proof:
             raise ValueError("provenance_proof cannot be empty")
         if self.zone_classification not in ("Z0", "Z1", "Z2", "Z3"):
-            raise ValueError(
-                f"zone_classification must be Z0-Z3, got: {self.zone_classification}"
-            )
+            raise ValueError(f"zone_classification must be Z0-Z3, got: {self.zone_classification}")
 
     def serialize(self) -> dict[str, Any]:
         """Serialize provenance contract to dictionary."""
@@ -320,9 +317,7 @@ class ProvenanceChainBuilder:
             The created ProvenanceEntry
         """
         entry_id = f"prov_{len(self.entries):04d}_{compute_contract_hash({'ts': get_current_timestamp()})[:8]}"
-        previous_hash = (
-            self.entries[-1].compute_hash() if self.entries else "0" * 64
-        )
+        previous_hash = self.entries[-1].compute_hash() if self.entries else "0" * 64
 
         entry = ProvenanceEntry(
             entry_id=entry_id,
@@ -481,8 +476,7 @@ def create_21cfr11_provenance(
         standard=ComplianceStandard.CFR_21_PART_11,
         requirement_id="11.10_e_audit_trail",
         satisfied_by_entry_ids=[
-            e.entry_id for e in builder.entries
-            if e.provenance_type == ProvenanceType.AUDIT_TRAIL
+            e.entry_id for e in builder.entries if e.provenance_type == ProvenanceType.AUDIT_TRAIL
         ],
         verification_method="Audit trail verification",
         verification_result="PASS",

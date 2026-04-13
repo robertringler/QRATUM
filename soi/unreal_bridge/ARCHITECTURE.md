@@ -114,6 +114,7 @@
 ## Data Flow
 
 ### Cold Path (Initialization)
+
 ```
 1. UE5 Starts → BeginPlay
 2. Get Game Instance → Get USoiTelemetrySubsystem
@@ -124,6 +125,7 @@
 ```
 
 ### Hot Path (Runtime - Every Frame)
+
 ```
 1. Timer Tick (60Hz) → PollRustState()
 2. C++ → FFI → soi_get_epoch()
@@ -141,6 +143,7 @@
 ```
 
 ### Async Path (Background)
+
 ```
 Rust Tokio Task (separate thread):
   ┌─────────────────────────────────┐

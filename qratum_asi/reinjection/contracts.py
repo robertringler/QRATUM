@@ -14,9 +14,7 @@ from enum import Enum
 from typing import Any
 
 from qradle.merkle import MerkleChain
-
 from qratum_asi.reinjection.types import (
-    DiscoveryDomain,
     ReinjectionCandidate,
     ReinjectionStatus,
     ValidationLevel,
@@ -242,9 +240,7 @@ class ReinjectionContract:
 
         # Verify all approvals are positive
         for approver_id in self.required_approvers:
-            approval = next(
-                (a for a in self.approvals if a.approver_id == approver_id), None
-            )
+            approval = next((a for a in self.approvals if a.approver_id == approver_id), None)
             if not approval or approval.decision != "approve":
                 return False
 
@@ -321,9 +317,7 @@ class ReinjectionContract:
         if not self.required_approvers:
             return True
 
-        approved_by = {
-            a.approver_id for a in self.approvals if a.decision == "approve"
-        }
+        approved_by = {a.approver_id for a in self.approvals if a.decision == "approve"}
         return set(self.required_approvers).issubset(approved_by)
 
     def to_dict(self) -> dict[str, Any]:
@@ -356,7 +350,9 @@ def create_reinjection_contract(
     Returns:
         Configured ReinjectionContract
     """
-    contract_id = f"rc_{candidate.candidate_id}_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
+    contract_id = (
+        f"rc_{candidate.candidate_id}_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
+    )
 
     # Determine required approvers based on validation level
     if required_approvers is None:

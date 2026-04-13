@@ -48,9 +48,7 @@ class CPUAdapter(BaseAdapter):
         try:
             # Get resource requirements
             topology = capability_contract.cluster_topology
-            total_cores = topology.get("node_count", 1) * topology.get(
-                "accelerators_per_node", 64
-            )
+            total_cores = topology.get("node_count", 1) * topology.get("accelerators_per_node", 64)
 
             # Simulate CPU execution
             # In production, this would use standard CPU APIs

@@ -6,8 +6,6 @@ for quantum experiments and evaluations.
 
 from __future__ import annotations
 
-import hashlib
-import json
 import threading
 import time
 from dataclasses import dataclass, field
@@ -395,17 +393,13 @@ class QuantumSandbox:
             "default_backend": self.default_backend.value,
             "max_qubits": self.max_qubits,
             "has_isolation": self._isolation is not None,
-            "isolation": (
-                self._isolation.to_dict() if self._isolation else None
-            ),
+            "isolation": (self._isolation.to_dict() if self._isolation else None),
             "total_jobs": self._total_jobs,
             "completed_jobs": self._completed_jobs,
             "total_shots": self._total_shots,
             "total_time_ms": self._total_time_ms,
             "avg_job_time_ms": (
-                self._total_time_ms / self._completed_jobs
-                if self._completed_jobs > 0
-                else 0
+                self._total_time_ms / self._completed_jobs if self._completed_jobs > 0 else 0
             ),
         }
 

@@ -18,12 +18,14 @@ This proposal outlines implementation of military-grade anonymity and stealth ca
 ## Problem Statement
 
 **Current QRATUM transport layer** (`qratum-rust/src/transport.rs`) has:
+
 - ❌ Placeholder implementations only (no actual Tor/I2P code)
 - ❌ No traffic obfuscation (DPI-vulnerable)
 - ❌ No metadata protection (timing/correlation attacks)
 - ❌ Classical cryptography only (quantum-vulnerable)
 
 **Real-world impact:**
+
 - Cannot operate in China/Iran/Russia (DPI blocking)
 - Validators linkable via traffic analysis
 - Future quantum computers break all encryption
@@ -48,6 +50,7 @@ This proposal outlines implementation of military-grade anonymity and stealth ca
 See [`nym_integration.rs`](./nym_integration.rs) for the proposed implementation approach.
 
 **Dependencies:**
+
 ```toml
 [dependencies]
 nym-sdk = "1.1"
@@ -60,6 +63,7 @@ tokio = { version = "1.0", features = ["full"] }
 **Threat Model:** Nation-state with quantum computer (2030+)
 
 **Hybrid Approach:**
+
 - Classical: X25519 (ECDH) + Ed25519 (signatures)
 - Post-Quantum: ML-KEM (Kyber-1024) + ML-DSA (Dilithium-5)
 - Combine both with HKDF
@@ -67,6 +71,7 @@ tokio = { version = "1.0", features = ["full"] }
 See [`post_quantum.rs`](./post_quantum.rs) for the proposed implementation approach.
 
 **Dependencies:**
+
 ```toml
 pqcrypto-kyber = "0.8"
 pqcrypto-dilithium = "0.5"
@@ -101,6 +106,7 @@ See [`pluggable_transports.rs`](./pluggable_transports.rs) for the proposed impl
 ### Phase 1: Nym Mixnet (6 weeks)
 
 **Files to create:**
+
 ```
 qratum-rust/src/transport/mixnet.rs       (500 lines)
 qratum-rust/src/transport/cover_traffic.rs (200 lines)
@@ -108,12 +114,14 @@ qratum-rust/tests/test_mixnet.rs          (300 lines)
 ```
 
 **Deliverables:**
+
 - ✅ Production Nym mixnet integration
 - ✅ Cover traffic generation
 - ✅ Packet padding (fixed 2KB size)
 - ✅ Integration tests
 
 **Dependencies:**
+
 - Nym SDK 1.1+ (stable, production-ready)
 - Tokio async runtime
 
@@ -122,6 +130,7 @@ qratum-rust/tests/test_mixnet.rs          (300 lines)
 ### Phase 2: Post-Quantum Crypto (4 weeks)
 
 **Files to create:**
+
 ```
 qratum-rust/src/crypto/post_quantum.rs    (800 lines)
 qratum-rust/src/crypto/hybrid_kem.rs      (400 lines)
@@ -129,12 +138,14 @@ qratum-rust/tests/test_pqc.rs             (400 lines)
 ```
 
 **Deliverables:**
+
 - ✅ Hybrid KEM (X25519 + Kyber-1024)
 - ✅ Hybrid signatures (Ed25519 + Dilithium-5)
 - ✅ NIST-standardized algorithms only
 - ✅ Comprehensive test suite
 
 **Dependencies:**
+
 - pqcrypto-kyber (NIST standard)
 - pqcrypto-dilithium (NIST standard)
 
@@ -143,6 +154,7 @@ qratum-rust/tests/test_pqc.rs             (400 lines)
 ### Phase 3: Ring Signatures (6 weeks)
 
 **Files to modify:**
+
 ```
 qratum-rust/src/zkstate.rs                (add ring sig support)
 qratum-rust/src/consensus.rs              (anonymous voting)
@@ -150,12 +162,14 @@ qratum-rust/tests/test_ring_sig.rs        (new file)
 ```
 
 **Deliverables:**
+
 - ✅ Ring signature implementation (Monero-style MLSAG)
 - ✅ Key images (prevents double-signing)
 - ✅ Configurable ring size (default: 11)
 - ✅ Integration with validator consensus
 
 **Dependencies:**
+
 - curve25519-dalek (Ristretto group)
 
 **Risk:** 🟡 Medium (complex cryptography, needs careful review)
@@ -163,6 +177,7 @@ qratum-rust/tests/test_ring_sig.rs        (new file)
 ### Phase 4: Pluggable Transports (4 weeks)
 
 **Files to create:**
+
 ```
 qratum-rust/src/transport/pluggable.rs    (600 lines)
 qratum-rust/src/transport/snowflake.rs    (300 lines)
@@ -170,12 +185,14 @@ qratum-rust/src/transport/webtunnel.rs    (300 lines)
 ```
 
 **Deliverables:**
+
 - ✅ obfs4 integration
 - ✅ Snowflake integration (WebRTC)
 - ✅ WebTunnel integration (HTTPS mimicry)
 - ✅ Automatic transport selection
 
 **Dependencies:**
+
 - External binaries: obfs4proxy, snowflake-client
 - SOCKS5 client library
 
@@ -184,6 +201,7 @@ qratum-rust/src/transport/webtunnel.rs    (300 lines)
 ### Phase 5: Integration & Testing (4 weeks)
 
 **Deliverables:**
+
 - ✅ End-to-end integration tests
 - ✅ Performance benchmarks
 - ✅ Security audit preparation
@@ -293,11 +311,13 @@ qratum-rust/src/transport/webtunnel.rs    (300 lines)
 ### Alternative 1: Tor-Only Approach
 
 **Pros:**
+
 - Simpler implementation
 - Well-understood technology
 - Large existing network
 
 **Cons:**
+
 - ❌ Vulnerable to timing/correlation attacks
 - ❌ No quantum resistance
 - ❌ Detectable by DPI
@@ -308,11 +328,13 @@ qratum-rust/src/transport/webtunnel.rs    (300 lines)
 ### Alternative 2: I2P-Only Approach
 
 **Pros:**
+
 - Internal routing (no exit nodes)
 - Garlic routing
 - Lower latency than mixnet
 
 **Cons:**
+
 - ❌ Smaller network than Tor
 - ❌ No quantum resistance
 - ❌ Less mature ecosystem
@@ -323,10 +345,12 @@ qratum-rust/src/transport/webtunnel.rs    (300 lines)
 ### Alternative 3: Custom Mixnet
 
 **Pros:**
+
 - Full control
 - Optimized for QRATUM
 
 **Cons:**
+
 - ❌ Years of development
 - ❌ Small network initially
 - ❌ Requires incentive design
@@ -348,11 +372,13 @@ qratum-rust/src/transport/webtunnel.rs    (300 lines)
 ### Phase 2: External Audit (Week 22-23)
 
 **Recommended Auditors:**
+
 - Trail of Bits (blockchain/crypto expertise)
 - NCC Group (network security)
 - Cure53 (transport security)
 
 **Audit Scope:**
+
 - Nym integration code
 - Post-quantum cryptography implementation
 - Ring signature implementation
@@ -412,7 +438,7 @@ This proposal requires approval from:
 
 ## Next Steps
 
-### If Approved:
+### If Approved
 
 1. **Week 0-1:** Hire 3 FTE engineers
 2. **Week 1-2:** Environment setup, dependency review
@@ -422,7 +448,7 @@ This proposal requires approval from:
 6. **Week 19-22:** Phase 4 (Pluggable transports)
 7. **Week 23-24:** Phase 5 (Integration & audit)
 
-### If Rejected:
+### If Rejected
 
 - Document reasons for future reference
 - Consider scaled-down alternatives
@@ -432,11 +458,11 @@ This proposal requires approval from:
 
 ## References
 
-1. **Nym Whitepaper:** https://nymtech.net/nym-whitepaper.pdf
-2. **NIST Post-Quantum Standards:** https://csrc.nist.gov/projects/post-quantum-cryptography
-3. **Tor Pluggable Transports:** https://tb-manual.torproject.org/circumvention/
-4. **Ring Signatures (Monero):** https://www.getmonero.org/resources/research-lab/
-5. **Snowflake Design:** https://snowflake.torproject.org/
+1. **Nym Whitepaper:** <https://nymtech.net/nym-whitepaper.pdf>
+2. **NIST Post-Quantum Standards:** <https://csrc.nist.gov/projects/post-quantum-cryptography>
+3. **Tor Pluggable Transports:** <https://tb-manual.torproject.org/circumvention/>
+4. **Ring Signatures (Monero):** <https://www.getmonero.org/resources/research-lab/>
+5. **Snowflake Design:** <https://snowflake.torproject.org/>
 
 ---
 
@@ -469,16 +495,19 @@ Based on similar systems:
 ### Appendix C: Threat Scenarios
 
 **Scenario 1: Journalist in China**
+
 - Threat: Great Firewall (DPI, IP blocking)
 - Solution: Snowflake → bypasses DPI via WebRTC
 - Outcome: ✅ Can access QRATUM
 
 **Scenario 2: Whistleblower vs. NSA**
+
 - Threat: Global adversary with traffic correlation
 - Solution: Nym mixnet + ring signatures
 - Outcome: 🟡 Difficult but not impossible to track
 
 **Scenario 3: 2035 Quantum Computer**
+
 - Threat: Harvest-now-decrypt-later attack
 - Solution: Hybrid PQC (Kyber + Dilithium)
 - Outcome: ✅ Communications remain secure

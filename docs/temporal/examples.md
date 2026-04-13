@@ -380,6 +380,7 @@ print(f"AetherFabric messages: {stats['aetherfabric']['message_count']}")
 ## Common Patterns
 
 ### Pattern: Sensitivity Analysis
+
 ```python
 # Vary one parameter across branches
 results = engine.branch(
@@ -392,6 +393,7 @@ results = engine.branch(
 ```
 
 ### Pattern: Monte Carlo Temporal Sampling
+
 ```python
 # Sample many random futures
 ftl = FTLComputation()
@@ -409,6 +411,7 @@ mean_outcome = analyze(outcomes)
 ```
 
 ### Pattern: Iterative Refinement
+
 ```python
 # Coarse simulation first
 coarse_result, _ = engine.forward(

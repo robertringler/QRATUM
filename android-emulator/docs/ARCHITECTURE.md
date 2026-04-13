@@ -67,6 +67,7 @@ This document describes the architecture of the QRATUM Android Emulator.
 ### Supported Instructions
 
 The decoder supports the following ARMv8-A instruction categories:
+
 - Data Processing (Immediate & Register)
 - Branches (Conditional & Unconditional)
 - Loads and Stores
@@ -76,6 +77,7 @@ The decoder supports the following ARMv8-A instruction categories:
 ### Exception Handling
 
 Exceptions are handled through the CpuError enum:
+
 - Synchronous exceptions (SVC, HVC, SMC)
 - Breakpoints
 - Memory faults
@@ -164,6 +166,7 @@ Physical Address → Host Memory
 ### Syscall Support
 
 The following syscall categories are supported:
+
 - File operations (open, read, write, close)
 - Memory management (mmap, mprotect, brk)
 - Process control (exit, clone)
@@ -200,6 +203,7 @@ The following syscall categories are supported:
 ### Purpose
 
 This layer is for **research purposes only**. It provides:
+
 - Win32 syscall translation study
 - DirectX to Vulkan abstraction research
 - Timing normalization for compatibility testing
@@ -231,11 +235,13 @@ This layer is for **research purposes only**. It provides:
 ### Benchmarking
 
 Run benchmarks with:
+
 ```bash
 cargo bench
 ```
 
 Key metrics:
+
 - Instructions per second
 - Memory throughput
 - Graphics frame rate

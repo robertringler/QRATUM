@@ -140,13 +140,13 @@ This document assesses QRATUM's readiness for security certification across mult
 
 ### High Gaps (P1)
 
-3. **Complete ZKP Circuits**
+1. **Complete ZKP Circuits**
    - Required for: Compliance attestations
    - Impact: Privacy-preserving compliance proof
    - Remediation: Implement Halo2/RISC0 circuits
    - Timeline: 8 weeks
 
-4. **TLS 1.3 + PQC Hybrid**
+2. **TLS 1.3 + PQC Hybrid**
    - Required for: Post-quantum transport security
    - Impact: Harvest-now-decrypt-later mitigation
    - Remediation: Deploy hybrid key exchange
@@ -154,13 +154,13 @@ This document assesses QRATUM's readiness for security certification across mult
 
 ### Medium Gaps (P2)
 
-5. **ISMS Documentation**
+1. **ISMS Documentation**
    - Required for: ISO 27001
    - Impact: Certification process
    - Remediation: Complete policy documentation
    - Timeline: 6 weeks
 
-6. **Penetration Testing**
+2. **Penetration Testing**
    - Required for: All frameworks
    - Impact: Validation of controls
    - Remediation: Engage 3rd party assessor

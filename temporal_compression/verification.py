@@ -15,7 +15,7 @@ from __future__ import annotations
 import hashlib
 import json
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
@@ -93,7 +93,7 @@ class AuditEntry:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "AuditEntry":
+    def from_dict(cls, data: dict[str, Any]) -> AuditEntry:
         """Create entry from dictionary."""
         return cls(
             event_type=EventType(data["event_type"]),
@@ -291,7 +291,7 @@ class VerificationChain:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "VerificationChain":
+    def from_dict(cls, data: dict[str, Any]) -> VerificationChain:
         """Create chain from dictionary."""
         chain = cls.__new__(cls)
         chain.entries = [AuditEntry.from_dict(e) for e in data["entries"]]

@@ -36,6 +36,7 @@ F = α·I_novelty + β·I_feasibility + γ·I_scalability + δ·I_strategic_leve
 ```
 
 Where:
+
 - α = 0.30 (novelty weight)
 - β = 0.25 (feasibility weight)
 - γ = 0.25 (scalability weight)
@@ -230,6 +231,7 @@ This governance document is versioned and subject to change:
 - **Change Authority**: QRATUM Platform Maintainers
 
 All changes to governance require:
+
 1. Pull request with rationale
 2. Review by at least 2 maintainers
 3. No objections from stakeholders
@@ -238,9 +240,10 @@ All changes to governance require:
 ## Contact
 
 For questions about discovery governance:
-- Repository: https://github.com/robertringler/QRATUM
-- Issues: https://github.com/robertringler/QRATUM/issues
-- Email: info@qratum.ai
+
+- Repository: <https://github.com/robertringler/QRATUM>
+- Issues: <https://github.com/robertringler/QRATUM/issues>
+- Email: <info@qratum.ai>
 
 ---
 

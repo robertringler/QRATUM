@@ -24,20 +24,17 @@ from typing import Any
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.core.types import ASISafetyLevel, ReasoningStrategy
-
+from qratum_asi.core.types import ReasoningStrategy
+from qratum_asi.generalization.domain_registry import (
+    ExtendedDomainRegistry,
+)
 from qratum_asi.generalization.types import (
+    PROHIBITED_SYNTHESIS_TARGETS,
     CognitiveDomain,
     CrossDomainHypothesis,
-    DomainCapability,
     HypothesisType,
     SynthesisResult,
     SynthesisSafetyLevel,
-    PROHIBITED_SYNTHESIS_TARGETS,
-)
-from qratum_asi.generalization.domain_registry import (
-    ExtendedDomainRegistry,
-    DomainInterconnection,
 )
 
 
@@ -241,9 +238,7 @@ class CrossDomainSynthesizer:
         insights = self._extract_insights(source_domains, synthesis_goal, hypotheses)
 
         # Determine if human review is required
-        safety_level = self._determine_synthesis_safety_level(
-            source_domains, hypotheses
-        )
+        safety_level = self._determine_synthesis_safety_level(source_domains, hypotheses)
         human_review_required = safety_level in (
             SynthesisSafetyLevel.SENSITIVE,
             SynthesisSafetyLevel.CRITICAL,
@@ -287,9 +282,7 @@ class CrossDomainSynthesizer:
 
         return result
 
-    def _validate_synthesis_safety(
-        self, goal: str, domains: list[CognitiveDomain]
-    ) -> bool:
+    def _validate_synthesis_safety(self, goal: str, domains: list[CognitiveDomain]) -> bool:
         """Validate synthesis doesn't target prohibited areas."""
         goal_lower = goal.lower()
         for prohibited in PROHIBITED_SYNTHESIS_TARGETS:
@@ -297,23 +290,17 @@ class CrossDomainSynthesizer:
                 return False
         return True
 
-    def _find_synthesis_paths(
-        self, domains: list[CognitiveDomain]
-    ) -> list[list[CognitiveDomain]]:
+    def _find_synthesis_paths(self, domains: list[CognitiveDomain]) -> list[list[CognitiveDomain]]:
         """Find synthesis paths between domains."""
         paths = []
         for i, source in enumerate(domains):
             for target in domains[i + 1 :]:
-                domain_paths = self.domain_registry.find_synthesis_path(
-                    source, target, max_hops=3
-                )
+                domain_paths = self.domain_registry.find_synthesis_path(source, target, max_hops=3)
                 if domain_paths:
                     paths.extend(domain_paths)
         return paths
 
-    def _find_shared_abstractions(
-        self, domains: list[CognitiveDomain]
-    ) -> list[str]:
+    def _find_shared_abstractions(self, domains: list[CognitiveDomain]) -> list[str]:
         """Find abstractions shared across domains."""
         # Get capabilities for each domain
         capabilities_by_domain = {}
@@ -369,7 +356,9 @@ class CrossDomainSynthesizer:
                     confidence=0.6,
                     novelty_score=0.7,
                     testability_score=0.5,
-                    supporting_evidence=[f"Connected via path: {' -> '.join(d.value for d in path)}"],
+                    supporting_evidence=[
+                        f"Connected via path: {' -> '.join(d.value for d in path)}"
+                    ],
                     required_validation=["domain_expert_review", "empirical_test"],
                     safety_level=SynthesisSafetyLevel.ROUTINE,
                     provenance_hash=hashlib.sha3_256(
@@ -382,7 +371,7 @@ class CrossDomainSynthesizer:
 
         # Generate analogical hypotheses from shared abstractions
         if shared_abstractions and len(hypotheses) < max_hypotheses:
-            for abstraction in shared_abstractions[:max_hypotheses - len(hypotheses)]:
+            for abstraction in shared_abstractions[: max_hypotheses - len(hypotheses)]:
                 hypothesis_counter += 1
 
                 hypothesis = CrossDomainHypothesis(
@@ -461,9 +450,7 @@ class CrossDomainSynthesizer:
 
         return SynthesisSafetyLevel.ROUTINE
 
-    def _compute_synthesis_confidence(
-        self, hypotheses: list[CrossDomainHypothesis]
-    ) -> float:
+    def _compute_synthesis_confidence(self, hypotheses: list[CrossDomainHypothesis]) -> float:
         """Compute overall synthesis confidence."""
         if not hypotheses:
             return 0.0
@@ -565,9 +552,7 @@ class GeneralReasoningEngine:
         overall_confidence = self._compute_chain_confidence(steps)
 
         # Collect domains traversed
-        domains_traversed = list(
-            set([context.primary_domain] + context.supporting_domains)
-        )
+        domains_traversed = list(set([context.primary_domain] + context.supporting_domains))
 
         chain = ReasoningChain(
             chain_id=chain_id,
@@ -650,7 +635,9 @@ class GeneralReasoningEngine:
                 step_id=f"step_{step_counter:03d}",
                 domain=context.primary_domain,
                 strategy=ReasoningStrategy.DEDUCTIVE,
-                input_premises=context.prior_knowledge[:3] if context.prior_knowledge else ["Domain knowledge"],
+                input_premises=(
+                    context.prior_knowledge[:3] if context.prior_knowledge else ["Domain knowledge"]
+                ),
                 output_conclusion=f"Analysis within {context.primary_domain.value} domain",
                 confidence=0.8,
                 justification=f"Applied {context.primary_domain.value} domain expertise",
@@ -713,7 +700,9 @@ class GeneralReasoningEngine:
                 step_id=f"step_{step_counter:03d}",
                 domain=context.primary_domain,
                 strategy=ReasoningStrategy.INDUCTIVE,
-                input_premises=context.prior_knowledge[:3] if context.prior_knowledge else ["Observations"],
+                input_premises=(
+                    context.prior_knowledge[:3] if context.prior_knowledge else ["Observations"]
+                ),
                 output_conclusion="Novel hypothesis generated",
                 confidence=0.55,
                 justification="Creative extrapolation from patterns",
@@ -738,9 +727,7 @@ class GeneralReasoningEngine:
 
         return steps
 
-    def _derive_conclusion(
-        self, steps: list[ReasoningStep], context: ReasoningContext
-    ) -> str:
+    def _derive_conclusion(self, steps: list[ReasoningStep], context: ReasoningContext) -> str:
         """Derive final conclusion from reasoning steps."""
         if not steps:
             return "No conclusion - no reasoning steps generated"

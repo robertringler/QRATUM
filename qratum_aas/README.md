@@ -1,4 +1,5 @@
 # QRATUM Asymmetric Adaptive Search (AAS)
+
 ## Unreal Engine 5 AI Framework - Unreal Fest Chicago 2026
 
 ---
@@ -8,6 +9,7 @@
 QRATUM AAS is a production-grade, deterministic, frame-safe AI framework for Unreal Engine 5 that implements **Asymmetric Adaptive Search** - a tree-search based planning system that outperforms both traditional Behavior Trees and LLM-driven AI in tactical game scenarios.
 
 ### Key Achievements
+
 - Based on BOB chess engine: **#1 on Kaggle Chess AI Benchmark**
 - **97% win rate** against top engines
 - Defeated GPT-4, Claude, Grok-4, Gemini 2.5, and o3 in head-to-head matches
@@ -18,6 +20,7 @@ QRATUM AAS is a production-grade, deterministic, frame-safe AI framework for Unr
 ## Why AAS?
 
 ### vs. Behavior Trees
+
 | Aspect | Behavior Trees | AAS |
 |--------|---------------|-----|
 | Planning | Reactive | Predictive (looks ahead) |
@@ -27,6 +30,7 @@ QRATUM AAS is a production-grade, deterministic, frame-safe AI framework for Unr
 | Maintenance | High (explicit rules) | Low (evaluation tuning) |
 
 ### vs. LLM-driven AI
+
 | Aspect | LLM AI | AAS |
 |--------|--------|-----|
 | Determinism | Stochastic | 100% reproducible |
@@ -41,6 +45,7 @@ QRATUM AAS is a production-grade, deterministic, frame-safe AI framework for Unr
 ## Features
 
 ### Core Capabilities
+
 - **Depth-adaptive tree search** with asymmetric branching
 - **Entropy-gradient** directed resource allocation
 - **Time-bounded search** with deterministic yielding
@@ -48,12 +53,14 @@ QRATUM AAS is a production-grade, deterministic, frame-safe AI framework for Unr
 - **Blueprint exposure** for safe high-level control
 
 ### Determinism Guarantees
+
 - Fixed-point arithmetic (no floating-point variance)
 - Deterministic RNG with explicit state serialization
 - Ordered containers for stable iteration
 - Explicit tick ordering for multi-agent systems
 
 ### Performance
+
 - Sustains **60+ FPS** with configurable frame budget
 - **No game thread blocking** - incremental search
 - Optimized transposition table with replacement policy
@@ -85,12 +92,14 @@ cd QRATUM/qratum_aas
 ### 2. Add AAS to Your Project
 
 #### Blueprint Setup
+
 1. Add `UQRATUMAASComponent` to your AI-controlled Actor
 2. Configure search parameters in the Details panel
 3. Bind to `OnPlanningComplete` event
 4. Call `RequestPlan()` when you need an action
 
 #### C++ Setup
+
 ```cpp
 // In your AI Controller header
 #include "Integration/AQRATUMAIController.h"
@@ -172,6 +181,7 @@ QRATUM/
 ## Extending AAS
 
 ### For RTS Games
+
 ```cpp
 // Implement IAASGameState for your units
 class FRTSUnitState : public QRATUM::IAASGameState
@@ -202,6 +212,7 @@ public:
 ```
 
 ### For Survival Games
+
 ```cpp
 class FSurvivalState : public QRATUM::IAASGameState
 {
@@ -226,6 +237,7 @@ public:
 ```
 
 ### For Tactical FPS
+
 ```cpp
 class FTacticalFPSState : public QRATUM::IAASGameState
 {
@@ -283,6 +295,7 @@ public:
 ## Determinism & Replay Support
 
 ### Setting Up Replay
+
 ```cpp
 // At match start
 int64 MatchSeed = UQRATUMBlueprintLibrary::GenerateMatchSeed(MatchID, PlayerSeed);
@@ -293,6 +306,7 @@ ReplayAASComponent->SetDeterministicSeed(MatchSeed);
 ```
 
 ### Validating Determinism
+
 ```cpp
 // In QA/testing
 bool bDeterministic = UQRATUMBlueprintLibrary::ValidateDeterminism(AASComponent);
@@ -307,6 +321,7 @@ if (!bDeterministic)
 ## Performance Tuning
 
 ### For 30 FPS Target (16.6ms frame budget)
+
 ```cpp
 SearchConfig.FrameBudgetMs = 4.0f;  // 25% of frame
 SearchConfig.BaseDepth = 8;
@@ -314,6 +329,7 @@ SearchConfig.bAdaptiveDepth = true;
 ```
 
 ### For 60 FPS Target (16.6ms frame budget)
+
 ```cpp
 SearchConfig.FrameBudgetMs = 2.0f;  // 12% of frame
 SearchConfig.BaseDepth = 10;
@@ -322,6 +338,7 @@ SearchConfig.bUseNullMove = true;
 ```
 
 ### For 120 FPS Target (8.3ms frame budget)
+
 ```cpp
 SearchConfig.FrameBudgetMs = 1.0f;  // 12% of frame
 SearchConfig.BaseDepth = 6;
@@ -334,6 +351,7 @@ SearchConfig.TranspositionTableSizeMB = 128; // More TT hits
 ## Debug & Visualization
 
 ### Enabling Debug Output
+
 ```cpp
 // In your controller
 AASComponent->bLogSearchStats = true;
@@ -343,6 +361,7 @@ QRATUM::FAASDebugger::LogSearchStats(AASComponent->GetSearchStats());
 ```
 
 ### Getting Search Tree
+
 ```cpp
 FString TreeDescription = QRATUM::FAASDebugger::DescribeSearchTree(
     AASComponent->GetPlanner()->GetRootNode(), 
@@ -352,6 +371,7 @@ UE_LOG(LogAI, Log, TEXT("%s"), *TreeDescription);
 ```
 
 ### JSON Export
+
 ```cpp
 FString JSON = UQRATUMBlueprintLibrary::GetSearchResultJSON(AASComponent);
 // Send to telemetry, save to file, etc.
@@ -363,7 +383,7 @@ FString JSON = UQRATUMBlueprintLibrary::GetSearchResultJSON(AASComponent);
 
 Copyright QRATUM Platform. All Rights Reserved.
 
-For licensing inquiries: licensing@qratum.io
+For licensing inquiries: <licensing@qratum.io>
 
 ---
 
@@ -372,14 +392,16 @@ For licensing inquiries: licensing@qratum.io
 This module was developed for presentation at **Unreal Fest Chicago 2026** as a technical showcase of deterministic AI systems for competitive gaming.
 
 ### Talk Abstract
+
 *"Beyond Behavior Trees: Deterministic Game AI with Asymmetric Adaptive Search"*
 
 Traditional behavior trees are reactive, requiring explicit scripting of every decision. LLM-driven AI promises flexibility but introduces non-determinism that breaks replays and esports integrity. This talk introduces AAS - a tree-search based approach adapted from tournament chess engines that delivers emergent tactical behavior while maintaining 100% reproducibility.
 
 ### Contact
-- Technical Questions: ai-team@qratum.io
-- Business Inquiries: partnerships@qratum.io
-- GitHub: https://github.com/qratum/aas-unreal
+
+- Technical Questions: <ai-team@qratum.io>
+- Business Inquiries: <partnerships@qratum.io>
+- GitHub: <https://github.com/qratum/aas-unreal>
 
 ---
 

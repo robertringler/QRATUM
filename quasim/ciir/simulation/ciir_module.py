@@ -24,16 +24,12 @@ from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
-from numpy.typing import NDArray
 
+from quasim.ciir.observers import PVM, born_distribution, measurement_update
 from quasim.ciir.theory import (
     CIIRTheory,
     RealTensor,
-    StateManifold,
-    build_default_theory,
 )
-from quasim.ciir.observers import PVM, born_distribution, measurement_update
-
 
 # ================================================================
 # CIIRState — State representation with manifold geometry
@@ -108,7 +104,7 @@ class CIIRState:
     @property
     def constraint_violations(self) -> RealTensor:
         """C_i(ρ)² for each constraint and batch element. Shape (B, n_c)."""
-        return self.constraint_values ** 2
+        return self.constraint_values**2
 
     @property
     def purity(self) -> RealTensor:
@@ -183,10 +179,7 @@ class CIIRState:
 
             # Constraint violation
             rho_batch = perturbed[None, :, :]
-            cv = sum(
-                float(c.violation(rho_batch).mean())
-                for c in self.theory.constraints
-            )
+            cv = sum(float(c.violation(rho_batch).mean()) for c in self.theory.constraints)
             violations.append(cv)
 
         return np.array(points_3d), np.array(violations)
@@ -343,12 +336,20 @@ class CIIRVisualizer:
             coords = np.array([s.manifold_embedding_3d()[b] for s in states])
             colors = np.linspace(0, 1, len(coords))
             ax.scatter(
-                coords[:, 0], coords[:, 1], coords[:, 2],
-                c=colors, cmap="viridis", s=10, alpha=0.7,
+                coords[:, 0],
+                coords[:, 1],
+                coords[:, 2],
+                c=colors,
+                cmap="viridis",
+                s=10,
+                alpha=0.7,
             )
             ax.plot(
-                coords[:, 0], coords[:, 1], coords[:, 2],
-                alpha=0.3, linewidth=0.5,
+                coords[:, 0],
+                coords[:, 1],
+                coords[:, 2],
+                alpha=0.3,
+                linewidth=0.5,
             )
 
         ax.set_xlabel("λ₁ (eigenvalue)")
@@ -390,16 +391,26 @@ class CIIRVisualizer:
         v_norm = violations / max(violations.max(), 1e-12)
 
         scatter = ax.scatter(
-            points[:, 0], points[:, 1], points[:, 2],
-            c=v_norm, cmap="hot_r", s=20, alpha=0.6,
+            points[:, 0],
+            points[:, 1],
+            points[:, 2],
+            c=v_norm,
+            cmap="hot_r",
+            s=20,
+            alpha=0.6,
         )
         fig.colorbar(scatter, ax=ax, label="Constraint Violation", shrink=0.6)
 
         # Mark current state
         current = state.manifold_embedding_3d()
         ax.scatter(
-            current[:, 0], current[:, 1], current[:, 2],
-            c="blue", s=100, marker="*", label="Current State",
+            current[:, 0],
+            current[:, 1],
+            current[:, 2],
+            c="blue",
+            s=100,
+            marker="*",
+            label="Current State",
         )
 
         ax.set_xlabel("λ₁")
@@ -436,10 +447,7 @@ class CIIRVisualizer:
         n = norms.shape[0]
         ax.set_xticks(range(n))
         ax.set_yticks(range(n))
-        labels = [
-            o.name or f"O{i}"
-            for i, o in enumerate(observer.theory.observers)
-        ]
+        labels = [o.name or f"O{i}" for i, o in enumerate(observer.theory.observers)]
         ax.set_xticklabels(labels)
         ax.set_yticklabels(labels)
         ax.set_title("Observer Commutator Norms [Oᵢ, Oⱼ]")
