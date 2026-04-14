@@ -27,6 +27,9 @@ FIGURES = [
     ("fig06_emergent_gravity.py",    "Emergent Spacetime & Gravity"),
     ("fig07_crs_architecture.py",    "CRS 8-Layer Architecture"),
     ("fig08_functorial_structure.py", "Functorial Structure CogSys → Hilb"),
+    ("fig09_informational_filtering.py", "Topological Manifold of Informational Filtering"),
+    ("fig10_complexity_vs_icons.py", "Objective Complexity vs Interface Icons"),
+    ("fig11_evolutionary_feedback.py", "Neuro-Evolutionary Feedback Loop"),
 ]
 
 
