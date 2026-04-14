@@ -330,10 +330,16 @@ The monotone metrics on $\mathfrak{D}(\HC)$ are parametrised by
 operator monotone functions $f$ satisfying $f(t) = t\,f(1/t)$,
 yielding the family \eqref{eq:petz-metric}.
 
-\emph{Step 3.} The SLD metric ($f(t) = (1+t)/2$) is the \emph{maximal}
-monotone metric: $g^{(\mathrm{SLD})}_{ij} \geq g^{(f)}_{ij}$ for all
-admissible $f$.  This makes it the natural choice for the emergent
-framework, as it provides the strongest distinguishability bound.
+\emph{Step 3.} The SLD metric ($f(t) = (1+t)/2$) uses the arithmetic mean
+$(p_k + p_l)/2$ as its denominator.  By the AM--GM inequality,
+$(p_k + p_l)/2 \geq \sqrt{p_k p_l}$, so the SLD metric assigns each
+tangent vector the \emph{smallest} value among all Petz metrics:
+$g^{(\mathrm{SLD})}(v,v) \leq g^{(f)}(v,v)$ for all admissible $f$.
+However, the SLD \emph{Fisher information}---the metric evaluated on
+the SLD score function $\ell_i = 2L_\rho^{-1}(\partial_i\rho)$---is
+the \emph{largest} quantum Fisher information (yielding the tightest
+quantum Cram\'er--Rao bound).  For the emergent framework, the SLD
+choice provides the most conservative geometric structure.
 \end{proof}
 
 \begin{corollary}[Non-Uniqueness of Emergent Metric]\label{cor:15.2}

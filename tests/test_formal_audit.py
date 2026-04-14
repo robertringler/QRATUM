@@ -358,34 +358,34 @@ class TestRankDeficientFisher:
 class TestPetzClassification:
     """Verify properties of Petz monotone metric family."""
 
-    def test_sld_is_maximal(self):
-        """SLD metric ≥ any other monotone metric (f=(1+t)/2)."""
+    def test_sld_geometric_ordering(self):
+        """SLD metric ≤ geometric mean metric per tangent vector (AM ≥ GM)."""
         rng = np.random.default_rng(42)
         d = 3
         A = rng.standard_normal((d, d)) + 1j * rng.standard_normal((d, d))
         rho = A @ A.conj().T
         rho /= np.trace(rho)
         eigvals_rho, eigvecs = np.linalg.eigh(rho)
-        # Compute SLD metric (f = (1+t)/2)
         dA = rng.standard_normal((d, d)) + 1j * rng.standard_normal((d, d))
         drho = dA @ A.conj().T + A @ dA.conj().T
         drho -= np.trace(drho) * np.eye(d) / d
-        # SLD metric value
+        # SLD metric: denominator (p_k + p_l)/2 → 2/(p_k + p_l)
         g_sld = 0.0
-        # RLD metric value (f = t, i.e. harmonic mean)
-        g_rld = 0.0
+        # Geometric mean metric: denominator √(p_k p_l) → 1/√(p_k p_l)
+        g_geo = 0.0
         for k in range(d):
             for l in range(d):
                 pk, pl = eigvals_rho[k], eigvals_rho[l]
                 if pk + pl > 1e-14:
-                    elem = eigvecs[:, k].conj() @ drho @ eigvecs[:, l]
-                    # SLD: 2/(pk+pl)
-                    g_sld += 2 * abs(elem) ** 2 / (pk + pl)
-                    # RLD: 1/pk (if pk > 0)
+                    elem = abs(eigvecs[:, k].conj() @ drho @ eigvecs[:, l]) ** 2
+                    # SLD: uses arithmetic mean → smaller metric value
+                    g_sld += 2 * elem / (pk + pl)
+                    # Geometric: uses geometric mean → larger metric value
                     if pk > 1e-14 and pl > 1e-14:
-                        g_rld += abs(elem) ** 2 / np.sqrt(pk * pl)
-        # SLD should be >= RLD (it's the maximal monotone metric)
-        assert g_sld >= g_rld - 1e-10
+                        g_geo += elem / np.sqrt(pk * pl)
+        # By AM ≥ GM: (pk+pl)/2 ≥ √(pk·pl) → 2/(pk+pl) ≤ 1/√(pk·pl)
+        # Hence g_SLD ≤ g_geometric
+        assert g_sld <= g_geo + 1e-10
 
     def test_classical_limit_fisher_rao(self):
         """For diagonal ρ (classical), all Petz metrics = Fisher-Rao."""
