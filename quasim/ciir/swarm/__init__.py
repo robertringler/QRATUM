@@ -38,6 +38,17 @@ from quasim.ciir.swarm.physics_lang import (
     MetaRule,
 )
 from quasim.ciir.swarm.orchestrator import Orchestrator, EvolutionResult
+from quasim.ciir.swarm.mppk import (
+    MPPKEngine,
+    MPPKGraph,
+    MPPKNode,
+    MPPKEdge,
+    MPPKRule,
+    UpdateOperator,
+    Trajectory,
+    GenerationResult,
+    MetaLearningReport,
+)
 
 __all__ = [
     "KnowledgeGraph",
@@ -50,4 +61,13 @@ __all__ = [
     "MetaRule",
     "Orchestrator",
     "EvolutionResult",
+    "MPPKEngine",
+    "MPPKGraph",
+    "MPPKNode",
+    "MPPKEdge",
+    "MPPKRule",
+    "UpdateOperator",
+    "Trajectory",
+    "GenerationResult",
+    "MetaLearningReport",
 ]
