@@ -36,6 +36,7 @@ Design deterministic orchestration for probabilistic quantum outputs.
 ### 1.2 The Fundamental Challenge
 
 Quantum computing is inherently probabilistic:
+
 - Measurement collapses superposition randomly
 - Multiple runs of same circuit yield different results
 - Statistical sampling required for meaningful output

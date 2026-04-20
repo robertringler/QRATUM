@@ -43,11 +43,13 @@ physical time progression—without violating physical causality.
 ## 3. Hypotheses
 
 ### H₀ (Null Hypothesis)
+
 Deterministic temporal simulation provides no statistically or operationally meaningful
 advantage over standard time-stepped simulation in terms of temporal compression,
 reproducibility, or decision-relevant insight.
 
 ### H₁ (Alternative Hypothesis)
+
 Deterministic temporal simulation achieves measurable temporal compression exceeding
 real-time system evolution, with reproducible, auditable, and verifiable results
 suitable for scientific and strategic decision-making.
@@ -59,6 +61,7 @@ suitable for scientific and strategic decision-making.
 ### Selected System: Rule 110 Cellular Automaton
 
 **Justification:**
+
 - Proven Turing-complete (Cook, 2004)
 - Exhibits emergent complexity from simple local rules
 - Permits forward evolution and state verification
@@ -291,7 +294,7 @@ compression exceeding real-time system evolution.
 
 1. Cook, M. (2004). "Universality in Elementary Cellular Automata." Complex Systems, 15(1), 1-40.
 2. Wolfram, S. (2002). "A New Kind of Science." Wolfram Media.
-3. QRATUM Technical Documentation (2025). https://github.com/robertringler/QRATUM
+3. QRATUM Technical Documentation (2025). <https://github.com/robertringler/QRATUM>
 
 ---
 

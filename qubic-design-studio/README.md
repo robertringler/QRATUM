@@ -12,6 +12,7 @@ CAD/CAM export and spatial computing interfaces for tire visualization.
 ## Exporters
 
 ### OBJ Exporter
+
 ```python
 from qubic_design_studio.exporters.obj_exporter import OBJExporter
 
@@ -20,6 +21,7 @@ exporter.export_mesh(tire_mesh, "tire.obj")
 ```
 
 ### glTF Exporter
+
 ```python
 from qubic_design_studio.exporters.gltf_exporter import GLTFExporter
 
@@ -30,6 +32,7 @@ exporter.export_mesh(tire_mesh, "tire.gltf", include_animations=True)
 ## Spatial Computing
 
 ### HoloLens Integration
+
 ```python
 from qubic_design_studio.spatial.holo_adapter import HoloLensAdapter
 

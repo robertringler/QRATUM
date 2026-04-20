@@ -66,6 +66,7 @@ This validation report aggregates data from multiple authoritative sources:
 ### 1.2 Parsing & Aggregation Logic
 
 **Test Result Extraction:**
+
 ```python
 # JUnit XML parsing
 r"VALIDATED\s+MODULE:\s+(?P<name>[\w\-/\.]+)\s+v(?P<version>[\d\.]+)"
@@ -73,6 +74,7 @@ r"KERNEL\s+(?P<kernel>[\w\-/\.]+)\s+STATUS:\s+(?P<status>PASSED|FAILED)"
 ```
 
 **Metrics Extraction:**
+
 ```python
 # Performance metrics from logs
 r"RMSE:\s+(?P<rmse>[0-9\.eE\-\+]+)"
@@ -82,6 +84,7 @@ r"Fidelity:\s+(?P<fidelity>[0-9\.]+)"
 ```
 
 **Aggregation Strategy:**
+
 - Module status determined by most recent test execution
 - Metrics aggregated using weighted averages across test runs
 - Coverage computed from union of all executed test paths
@@ -211,26 +214,31 @@ r"Fidelity:\s+(?P<fidelity>[0-9\.]+)"
 ### 4.1 Modules Pending Revision
 
 ⚠️ **quasim.fractal.fractional** - Non-deterministic behavior in edge cases
+
 - **Action:** Implement deterministic PRNG seeding
 - **Target:** Q1 2026
 - **Owner:** Math Library Team
 
 ⚠️ **quasim.matter.crystal** - Coverage gaps in phase transition logic
+
 - **Action:** Add unit tests for boundary conditions
 - **Target:** Q1 2026
 - **Owner:** Materials Science Team
 
 ⚠️ **quasim.opt.optimizer** - Stochastic convergence needs hardening
+
 - **Action:** Add convergence guarantees with formal proofs
 - **Target:** Q2 2026
 - **Owner:** Optimization Team
 
 ⚠️ **quasim.opt.problems** - Test coverage below 90%
+
 - **Action:** Expand test suite for optimization problems
 - **Target:** Q1 2026
 - **Owner:** QA Team
 
 ⚠️ **quasim.hcal.loops.calibration** - Calibration loop timing variability
+
 - **Action:** Implement deterministic calibration scheduling
 - **Target:** Q1 2026
 - **Owner:** HCAL Team
@@ -238,6 +246,7 @@ r"Fidelity:\s+(?P<fidelity>[0-9\.]+)"
 ### 4.2 Failed Module
 
 ❌ **quasim.sim.qcmg_cli** - Syntax error (IndentationError line 48)
+
 - **Action:** Fix indentation and re-run validation
 - **Priority:** P0 (blocking)
 - **Target:** Immediate
@@ -264,15 +273,18 @@ r"Fidelity:\s+(?P<fidelity>[0-9\.]+)"
 ### 4.4 Recommended Actions
 
 **Priority 1 (Immediate):**
+
 - [ ] Fix syntax error in quasim.sim.qcmg_cli
 - [ ] Address determinism issues in fractal/matter modules
 
 **Priority 2 (Q1 2026):**
+
 - [ ] Expand test coverage for optimization modules
 - [ ] Implement deterministic calibration loop scheduling
 - [ ] Add hardware-in-the-loop test infrastructure
 
 **Priority 3 (Q2 2026):**
+
 - [ ] Conduct 72-hour stress testing campaign
 - [ ] Security adversarial testing and fuzzing
 - [ ] Validate against additional mission datasets

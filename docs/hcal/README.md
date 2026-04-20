@@ -279,6 +279,7 @@ See [Safety-and-Compliance.md](./Safety-and-Compliance.md) for detailed safety g
 ## License
 
 Copyright © 2024 QuASIM Project
+
 ### Policy File
 
 Create a policy file (e.g., `policy.yaml`):

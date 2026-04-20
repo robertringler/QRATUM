@@ -51,6 +51,7 @@ python3 run_bm001_tier0.py \
 ```
 
 **Parameters:**
+
 - `--output`: Output directory for results
 - `--runs`: Number of independent runs per solver (default: 5)
 - `--seed`: Random seed for deterministic execution (default: 42)
@@ -191,5 +192,6 @@ If reproducibility verification fails:
 ## Support
 
 For issues or questions:
-- GitHub Issues: https://github.com/robertringler/Qubic/issues
-- Email: support@quasim.io
+
+- GitHub Issues: <https://github.com/robertringler/Qubic/issues>
+- Email: <support@quasim.io>

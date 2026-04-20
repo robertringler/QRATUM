@@ -41,6 +41,7 @@ QRATUM Desktop Phase 4 includes interactive UI panels, full MiniLM integration, 
 ## 🚀 Features
 
 ### Desktop-Native Experience
+
 - **One-Click Launch**: Single ~20 MB executable, no complex setup
 - **Offline Operation**: Full functionality without internet
 - **Native UI**: Tauri-powered (WebView + Rust)
@@ -48,24 +49,28 @@ QRATUM Desktop Phase 4 includes interactive UI panels, full MiniLM integration, 
 - **Ultra-Fast Startup**: <2 seconds to launch
 
 ### Quantum Simulation
+
 - **12-Qubit Support**: Full state vector simulation (4096 amplitudes)
 - **Advanced Gates**: H, X, Y, Z, S, T, T†, CNOT, CZ, SWAP, Toffoli, RX, RY, RZ
 - **Real-time Visualization**: Amplitude and phase display
 - **Deterministic Execution**: Seed-controlled for reproducibility
 
 ### MiniLM-L6-v2 Integration
+
 - **384-Dimensional Embeddings**: Semantic text representation
 - **Intent Classification**: Command interpretation for DCGE
 - **Cosine Similarity**: Text similarity computation
 - **WASM Isolated**: No side-channel attacks
 
 ### DCGE - Deterministic Code Generation Engine
+
 - **Compiler-Anchored**: >99% compile success rate
 - **Multi-Language**: Rust, Python, JavaScript, C
 - **AST + Typed IR**: Full code structure visibility
 - **Footprint Metrics**: .text, .stack, .heap tracking
 
 ### WASM Pod Isolation
+
 - **Separate Pods**: OS Supreme and Mini QuASIM in isolated pods
 - **Full Sandboxing**: No host memory or filesystem access
 - **Deterministic Mode**: Reproducible execution
@@ -127,6 +132,7 @@ Unique minimal solution, smallest footprint, deterministic, auditable
 ### Download Pre-Built Binaries
 
 **Windows:**
+
 ```powershell
 # Download from GitHub Releases
 # QRATUM-Desktop-Setup-0.4.0.exe
@@ -134,6 +140,7 @@ Unique minimal solution, smallest footprint, deterministic, auditable
 ```
 
 **macOS:**
+
 ```bash
 # Download from GitHub Releases
 # QRATUM-Desktop-0.4.0.dmg
@@ -141,6 +148,7 @@ open QRATUM-Desktop-0.4.0.dmg
 ```
 
 **Linux:**
+
 ```bash
 # Ubuntu/Debian
 sudo dpkg -i QRATUM-Desktop-0.4.0.deb
@@ -156,11 +164,12 @@ chmod +x QRATUM-Desktop-0.4.0.AppImage
 
 ### Prerequisites
 
-- **Rust** 1.70+ (install from https://rustup.rs/)
+- **Rust** 1.70+ (install from <https://rustup.rs/>)
 - **Node.js** 18+ and npm
 - **Git**
 
 **Linux only:**
+
 - libgtk-3-dev, libwebkit2gtk-4.1-dev, libappindicator3-dev, librsvg2-dev, patchelf
 
 ### Setup
@@ -248,6 +257,7 @@ chmod +x scripts/optimize-binary.sh
 ### Key Components
 
 **UI Panels:**
+
 - `Dashboard` - System health, OS Supreme stats, quick actions
 - `Quantum Simulation` - 12-qubit state visualization, gate controls
 - `Code Generation` - DCGE interface with AST/IR preview
@@ -255,6 +265,7 @@ chmod +x scripts/optimize-binary.sh
 - `Molecular Viz` - WebGL-based molecule viewer
 
 **Backend Modules:**
+
 - `qr_os_supreme` - Quantum state + MiniLM AI + WASM pod isolation
 - `codegen` - DCGE with grammar, AST, typed IR, and validator
 - `commands` - Tauri IPC handlers for all operations
@@ -299,12 +310,14 @@ const failureModes = await invoke('get_failure_modes');
 ## 🔒 Security
 
 ### WASM Pod Isolation
+
 - **Separate Pods**: OS Supreme and Mini QuASIM in isolated WASM sandboxes
 - **No Host Access**: Cannot access host memory or filesystem
 - **Deterministic Mode**: Seed-controlled, reproducible execution
 - **Pod Rollback**: Automatic state reset on failure
 
 ### Sandboxing
+
 - **Tight Allowlist**: Only essential window operations enabled
 - **No Node Integration**: Web content cannot access Node.js
 - **CSP**: Content Security Policy enforced

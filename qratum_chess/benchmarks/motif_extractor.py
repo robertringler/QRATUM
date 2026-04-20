@@ -15,17 +15,18 @@ Each motif is analyzed for:
 
 from __future__ import annotations
 
+import csv
+import json
+import time
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
 from typing import Any
-import csv
-import json
-import time
 
 
 class MotifType(Enum):
     """Type of chess motif."""
+
     TACTICAL = "tactical"
     STRATEGIC = "strategic"
     OPENING = "opening"
@@ -35,6 +36,7 @@ class MotifType(Enum):
 
 class GamePhase(Enum):
     """Phase of the game."""
+
     OPENING = "opening"
     MIDDLEGAME = "middlegame"
     ENDGAME = "endgame"
@@ -43,7 +45,7 @@ class GamePhase(Enum):
 @dataclass
 class Motif:
     """Represents a discovered chess motif.
-    
+
     Attributes:
         motif_id: Unique identifier for the motif.
         motif_type: Classification of the motif.
@@ -58,6 +60,7 @@ class Motif:
         discovery_timestamp: When motif was discovered.
         description: Human-readable description (optional).
     """
+
     motif_id: str
     motif_type: MotifType
     game_phase: GamePhase
@@ -70,7 +73,7 @@ class Motif:
     engine_comparison: dict[str, Any] = field(default_factory=dict)
     discovery_timestamp: float = field(default_factory=time.time)
     description: str = ""
-    
+
     def to_dict(self) -> dict[str, Any]:
         """Convert motif to dictionary format."""
         return {
@@ -91,14 +94,14 @@ class Motif:
 
 class MotifExtractor:
     """Extracts and classifies novel chess motifs from telemetry data.
-    
+
     Analyzes telemetry output to identify:
     - Positions with high novelty pressure
     - Moves diverging from engine databases
     - Patterns with conceptual cortex activation
     - Tactical/strategic breakthroughs
     """
-    
+
     def __init__(
         self,
         novelty_threshold: float = 0.6,
@@ -106,7 +109,7 @@ class MotifExtractor:
         min_cortex_activation: float = 0.3,
     ):
         """Initialize motif extractor.
-        
+
         Args:
             novelty_threshold: Minimum novelty score to classify as motif.
             divergence_threshold: Minimum divergence from engines to classify as novel.
@@ -117,61 +120,61 @@ class MotifExtractor:
         self.min_cortex_activation = min_cortex_activation
         self.motifs: list[Motif] = []
         self.motif_counter = 0
-    
+
     def extract_from_telemetry(self, telemetry_data: dict[str, Any]) -> list[Motif]:
         """Extract motifs from telemetry data.
-        
+
         Args:
             telemetry_data: Telemetry data dictionary from TelemetryOutput.
-            
+
         Returns:
             List of discovered motifs.
         """
         current = telemetry_data.get("current", {})
-        
+
         # Extract from pattern inventions (explicit novel patterns)
         pattern_inventions = current.get("pattern_inventions", [])
         for invention in pattern_inventions:
             if invention.get("novelty_score", 0) >= self.novelty_threshold:
                 motif = self._create_motif_from_invention(invention)
                 self.motifs.append(motif)
-        
+
         # Extract from move divergences (implicit novel moves)
         move_divergences = current.get("move_divergence", [])
         novelty_pressure = current.get("novelty_pressure", [])
         cortex_activations = current.get("cortex_activations", [])
-        
+
         for i, divergence in enumerate(move_divergences):
             if divergence.get("divergence", 0) >= self.divergence_threshold:
                 # Get corresponding data
                 pressure = novelty_pressure[i] if i < len(novelty_pressure) else 0.0
                 cortex = cortex_activations[i] if i < len(cortex_activations) else {}
-                
+
                 motif = self._create_motif_from_divergence(divergence, pressure, cortex)
                 self.motifs.append(motif)
-        
+
         return self.motifs
-    
+
     def _create_motif_from_invention(self, invention: dict[str, Any]) -> Motif:
         """Create motif from pattern invention record.
-        
+
         Args:
             invention: Pattern invention data.
-            
+
         Returns:
             Motif object.
         """
         self.motif_counter += 1
         motif_id = f"MOTIF_{self.motif_counter:04d}"
-        
+
         # Determine motif type from pattern type
         pattern_type = invention.get("pattern_type", "tactical")
         motif_type = self._classify_motif_type(pattern_type)
-        
+
         # Determine game phase from position
         position_fen = invention.get("position", "")
         game_phase = self._determine_game_phase(position_fen)
-        
+
         return Motif(
             motif_id=motif_id,
             motif_type=motif_type,
@@ -186,35 +189,32 @@ class MotifExtractor:
             discovery_timestamp=invention.get("timestamp", time.time()),
             description=f"Novel {pattern_type} pattern discovered",
         )
-    
+
     def _create_motif_from_divergence(
-        self,
-        divergence: dict[str, Any],
-        pressure: float,
-        cortex: dict[str, float]
+        self, divergence: dict[str, Any], pressure: float, cortex: dict[str, float]
     ) -> Motif:
         """Create motif from move divergence record.
-        
+
         Args:
             divergence: Move divergence data.
             pressure: Novelty pressure value.
             cortex: Cortex activation weights.
-            
+
         Returns:
             Motif object.
         """
         self.motif_counter += 1
         motif_id = f"MOTIF_{self.motif_counter:04d}"
-        
+
         position_fen = divergence.get("position", "")
         selected_move = divergence.get("selected_move", "")
         engine_move = divergence.get("engine_move", "")
         divergence_score = divergence.get("divergence", 0.0)
-        
+
         # Classify motif type based on cortex activations
         motif_type = self._classify_from_cortex(cortex)
         game_phase = self._determine_game_phase(position_fen)
-        
+
         return Motif(
             motif_id=motif_id,
             motif_type=motif_type,
@@ -231,20 +231,20 @@ class MotifExtractor:
                 "divergence": divergence_score,
             },
             discovery_timestamp=divergence.get("timestamp", time.time()),
-            description=f"Novel move diverging from engine baseline",
+            description="Novel move diverging from engine baseline",
         )
-    
+
     def _classify_motif_type(self, pattern_type: str) -> MotifType:
         """Classify motif type from pattern type string.
-        
+
         Args:
             pattern_type: Pattern type string.
-            
+
         Returns:
             MotifType enum value.
         """
         pattern_lower = pattern_type.lower()
-        
+
         if "tactical" in pattern_lower:
             return MotifType.TACTICAL
         elif "strategic" in pattern_lower:
@@ -257,59 +257,57 @@ class MotifExtractor:
             return MotifType.CONCEPTUAL
         else:
             return MotifType.TACTICAL
-    
+
     def _classify_from_cortex(self, cortex: dict[str, float]) -> MotifType:
         """Classify motif type from cortex activation weights.
-        
+
         Args:
             cortex: Cortex activation weights.
-            
+
         Returns:
             MotifType enum value.
         """
         if not cortex:
             return MotifType.TACTICAL
-        
+
         tactical = cortex.get("tactical", 0.0)
         strategic = cortex.get("strategic", 0.0)
         conceptual = cortex.get("conceptual", 0.0)
-        
+
         # Find dominant cortex
         max_activation = max(tactical, strategic, conceptual)
-        
+
         if max_activation < self.min_cortex_activation:
             return MotifType.TACTICAL
-        
+
         if tactical == max_activation:
             return MotifType.TACTICAL
         elif strategic == max_activation:
             return MotifType.STRATEGIC
         else:
             return MotifType.CONCEPTUAL
-    
+
     def _determine_game_phase(self, position_fen: str) -> GamePhase:
         """Determine game phase from FEN position.
-        
+
         Args:
             position_fen: Position in FEN notation.
-            
+
         Returns:
             GamePhase enum value.
         """
         if not position_fen:
             return GamePhase.MIDDLEGAME
-        
+
         # Simple heuristic based on piece count
         piece_placement = position_fen.split()[0]
-        
+
         # Count pieces (excluding kings and pawns)
-        piece_count = sum(1 for c in piece_placement 
-                         if c.upper() in "QRBN")
-        
+        piece_count = sum(1 for c in piece_placement if c.upper() in "QRBN")
+
         # Count total pieces
-        total_pieces = sum(1 for c in piece_placement 
-                          if c.upper() in "KQRBNP")
-        
+        total_pieces = sum(1 for c in piece_placement if c.upper() in "KQRBNP")
+
         # Opening: many pieces, likely early game
         if total_pieces >= 28:
             return GamePhase.OPENING
@@ -319,48 +317,48 @@ class MotifExtractor:
         # Middlegame: default
         else:
             return GamePhase.MIDDLEGAME
-    
+
     def _estimate_evaluation(self, position_fen: str) -> float:
         """Estimate position evaluation (placeholder).
-        
+
         Args:
             position_fen: Position in FEN notation.
-            
+
         Returns:
             Evaluation in centipawns (0.0 if cannot estimate).
         """
         # Placeholder - in real implementation, this would call an evaluator
         return 0.0
-    
+
     def filter_by_type(self, motif_type: MotifType) -> list[Motif]:
         """Filter motifs by type.
-        
+
         Args:
             motif_type: Type to filter by.
-            
+
         Returns:
             List of motifs of the specified type.
         """
         return [m for m in self.motifs if m.motif_type == motif_type]
-    
+
     def filter_by_phase(self, game_phase: GamePhase) -> list[Motif]:
         """Filter motifs by game phase.
-        
+
         Args:
             game_phase: Phase to filter by.
-            
+
         Returns:
             List of motifs from the specified phase.
         """
         return [m for m in self.motifs if m.game_phase == game_phase]
-    
+
     def get_top_motifs(self, n: int = 10, sort_by: str = "novelty") -> list[Motif]:
         """Get top N motifs sorted by a criterion.
-        
+
         Args:
             n: Number of top motifs to return.
             sort_by: Sorting criterion ("novelty", "pressure", "evaluation").
-            
+
         Returns:
             List of top motifs.
         """
@@ -372,12 +370,12 @@ class MotifExtractor:
             sorted_motifs = sorted(self.motifs, key=lambda m: abs(m.evaluation), reverse=True)
         else:
             sorted_motifs = self.motifs
-        
+
         return sorted_motifs[:n]
-    
+
     def export_catalog_json(self, filepath: Path) -> None:
         """Export motif catalog to JSON file.
-        
+
         Args:
             filepath: Output file path.
         """
@@ -390,82 +388,94 @@ class MotifExtractor:
                 "min_cortex_activation": self.min_cortex_activation,
             },
             "motifs_by_type": {
-                motif_type.value: len(self.filter_by_type(motif_type))
-                for motif_type in MotifType
+                motif_type.value: len(self.filter_by_type(motif_type)) for motif_type in MotifType
             },
             "motifs_by_phase": {
-                phase.value: len(self.filter_by_phase(phase))
-                for phase in GamePhase
+                phase.value: len(self.filter_by_phase(phase)) for phase in GamePhase
             },
             "motifs": [m.to_dict() for m in self.motifs],
         }
-        
-        with open(filepath, 'w') as f:
+
+        with open(filepath, "w") as f:
             json.dump(catalog, f, indent=2)
-    
+
     def export_summary_csv(self, filepath: Path) -> None:
         """Export motif summary to CSV file.
-        
+
         Args:
             filepath: Output file path.
         """
-        rows = [["motif_id", "type", "phase", "novelty_score", "evaluation", 
-                "novelty_pressure", "move_count", "position_fen"]]
-        
+        rows = [
+            [
+                "motif_id",
+                "type",
+                "phase",
+                "novelty_score",
+                "evaluation",
+                "novelty_pressure",
+                "move_count",
+                "position_fen",
+            ]
+        ]
+
         for motif in self.motifs:
-            rows.append([
-                motif.motif_id,
-                motif.motif_type.value,
-                motif.game_phase.value,
-                f"{motif.novelty_score:.4f}",
-                f"{motif.evaluation:.2f}",
-                f"{motif.novelty_pressure:.4f}",
-                len(motif.move_sequence),
-                motif.position_fen,
-            ])
-        
-        with open(filepath, 'w', newline='') as f:
+            rows.append(
+                [
+                    motif.motif_id,
+                    motif.motif_type.value,
+                    motif.game_phase.value,
+                    f"{motif.novelty_score:.4f}",
+                    f"{motif.evaluation:.2f}",
+                    f"{motif.novelty_pressure:.4f}",
+                    len(motif.move_sequence),
+                    motif.position_fen,
+                ]
+            )
+
+        with open(filepath, "w", newline="") as f:
             writer = csv.writer(f)
             writer.writerows(rows)
-    
+
     def export_pgn(self, filepath: Path, motif_type: MotifType | None = None) -> None:
         """Export motifs as PGN file.
-        
+
         Args:
             filepath: Output file path.
             motif_type: Optional filter by motif type.
         """
         motifs = self.filter_by_type(motif_type) if motif_type else self.motifs
-        
-        with open(filepath, 'w') as f:
+
+        with open(filepath, "w") as f:
             for motif in motifs:
                 # PGN header
-                f.write(f'[Event "QRATUM-Chess Motif Discovery"]\n')
-                f.write(f'[Site "Benchmark Suite"]\n')
-                f.write(f'[Date "{time.strftime("%Y.%m.%d", time.localtime(motif.discovery_timestamp))}"]\n')
+                f.write('[Event "QRATUM-Chess Motif Discovery"]\n')
+                f.write('[Site "Benchmark Suite"]\n')
+                f.write(
+                    f'[Date "{time.strftime("%Y.%m.%d", time.localtime(motif.discovery_timestamp))}"]\n'
+                )
                 f.write(f'[Round "{motif.motif_id}"]\n')
-                f.write(f'[White "Bob (QRATUM)"]\n')
-                f.write(f'[Black "Analysis"]\n')
-                f.write(f'[Result "*"]\n')
+                f.write('[White "Bob (QRATUM)"]\n')
+                f.write('[Black "Analysis"]\n')
+                f.write('[Result "*"]\n')
                 f.write(f'[FEN "{motif.position_fen}"]\n')
                 f.write(f'[MotifType "{motif.motif_type.value}"]\n')
                 f.write(f'[GamePhase "{motif.game_phase.value}"]\n')
                 f.write(f'[NoveltyScore "{motif.novelty_score:.4f}"]\n')
                 f.write(f'[Evaluation "{motif.evaluation:.2f}"]\n')
-                f.write('\n')
-                
+                f.write("\n")
+
                 # Moves
-                moves_str = ' '.join(motif.move_sequence)
-                f.write(f'{moves_str} *\n\n')
-    
+                moves_str = " ".join(motif.move_sequence)
+                f.write(f"{moves_str} *\n\n")
+
     def generate_html_report(self, filepath: Path) -> None:
         """Generate HTML report of discovered motifs.
-        
+
         Args:
             filepath: Output file path.
         """
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-        
+
         html_content = f"""<!DOCTYPE html>
 <html>
 <head>
@@ -514,7 +524,7 @@ class MotifExtractor:
                     <div class="stat-value">{len(self.motifs)}</div>
                 </div>
 """
-        
+
         # Statistics by type
         for motif_type in MotifType:
             count = len(self.filter_by_type(motif_type))
@@ -524,24 +534,26 @@ class MotifExtractor:
                     <div class="stat-value">{count}</div>
                 </div>
 """
-        
+
         html_content += """
             </div>
         </div>
 """
-        
+
         # Top motifs
         top_motifs = self.get_top_motifs(n=20, sort_by="novelty")
-        
+
         html_content += """
         <h2 style="color: #7b2cbf; margin-top: 30px;">Top Discovered Motifs</h2>
 """
-        
+
         for motif in top_motifs:
-            novelty_class = ("novelty-high" if motif.novelty_score >= 0.8 
-                           else "novelty-medium" if motif.novelty_score >= 0.6 
-                           else "novelty-low")
-            
+            novelty_class = (
+                "novelty-high"
+                if motif.novelty_score >= 0.8
+                else "novelty-medium" if motif.novelty_score >= 0.6 else "novelty-low"
+            )
+
             html_content += f"""
         <div class="motif-card">
             <div class="motif-header">
@@ -573,7 +585,7 @@ class MotifExtractor:
                         <span class="detail-value">{' '.join(motif.move_sequence)}</span>
                     </div>
 """
-            
+
             if motif.cortex_weights:
                 html_content += f"""
                     <div class="detail-item">
@@ -585,7 +597,7 @@ class MotifExtractor:
                         </span>
                     </div>
 """
-            
+
             html_content += f"""
                 </div>
             </div>
@@ -593,12 +605,12 @@ class MotifExtractor:
             {f'<p style="color: #888; font-style: italic;">{motif.description}</p>' if motif.description else ''}
         </div>
 """
-        
+
         html_content += """
     </div>
 </body>
 </html>
 """
-        
-        with open(filepath, 'w') as f:
+
+        with open(filepath, "w") as f:
             f.write(html_content)

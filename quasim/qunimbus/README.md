@@ -93,21 +93,27 @@ python -m quasim.qunimbus.cli china-factory --connect
 ## Modules
 
 ### `orchestrator.py`
+
 Main orchestration engine supporting:
+
 - Parallel/sequential execution
 - Wave 3 launch (1,000 pilots/day)
 - China Photonic Factory integration
 - Real-time metrics and monitoring
 
 ### `pilot_factory.py`
+
 Pilot generation system:
+
 - 1,000 pilots/day capacity
 - 10 verticals (Aerospace, Pharma, Energy, etc.)
 - Auto-correction (<0.1s for vetoes)
 - Multi-backend support (PsiQuantum, QuEra, cuQuantum)
 
 ### `china_integration.py`
+
 China Photonic Factory integration:
+
 - 500 pilots/day contribution
 - 1M+ qubits/year capacity
 - Room-temperature operation
@@ -115,7 +121,9 @@ China Photonic Factory integration:
 - MLPS Level 3 + CMMC L2 compliance
 
 ### `cli.py`
+
 Command-line interface:
+
 - `orchestrate` - Run Wave 3 dual execution
 - `generate-pilots` - Generate pilot batch
 - `china-factory` - China factory operations
@@ -125,6 +133,7 @@ Command-line interface:
 ## Key Features
 
 ### Wave 3 Launch (Akron Hub)
+
 - ✅ 1,000 pilots/day generation
 - ✅ 10,000+ qubits (PsiQuantum + QuEra)
 - ✅ 100× MERA compression
@@ -133,6 +142,7 @@ Command-line interface:
 - ✅ 22× efficiency vs. public cloud
 
 ### China Photonic Factory
+
 - ✅ 500 pilots/day contribution
 - ✅ 1M+ photonic qubits/year
 - ✅ Room-temperature operation (no cryogenic cooling)
@@ -140,6 +150,7 @@ Command-line interface:
 - ✅ MLPS L3 + CMMC L2 compliance bridge
 
 ### Compliance
+
 - ✅ CMMC 2.0 Level 2 (100%)
 - ✅ DO-178C Level A (95%)
 - ✅ ISO 13485 (100%)
@@ -222,6 +233,7 @@ python scripts/validate_wave3.py
 ## Roadmap
 
 ### Wave 4 (Q2 2026)
+
 - Target: 10,000 pilots/day
 - Integrations: India, Japan quantum hubs
 - Verticals: Expand to 15+

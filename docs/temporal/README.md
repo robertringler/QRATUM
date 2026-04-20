@@ -9,12 +9,14 @@ The QRATUM Temporal Computing Framework enables **computational time travel** th
 ### The Core Paradigm Shift
 
 **Physical Time Travel:**
+
 - Bounded by the speed of light (c)
 - Requires infinite energy
 - Creates causality paradoxes
 - Currently impossible
 
 **Computational Time Travel:**
+
 - Bounded by FLOPS (computational capacity)
 - Requires determinism + verification
 - Paradoxes are computationally resolvable
@@ -32,6 +34,7 @@ QRATUM achieves "effective FTL" by computing temporal states faster than light c
 ## Key Capabilities
 
 ### 1. Forward Projection
+
 Simulate future states at ExaFLOPS speeds, achieving effective velocities exceeding the speed of light.
 
 ```python
@@ -52,6 +55,7 @@ future_climate, proof = engine.forward(
 ```
 
 ### 2. Backward Reconstruction
+
 Recover past states via inverse computation, enabling "temporal archaeology."
 
 ```python
@@ -64,6 +68,7 @@ past_state, proof = engine.backward(
 ```
 
 ### 3. Parallel Timeline Exploration
+
 Branch into multiple parallel realities and explore the possibility space.
 
 ```python
@@ -85,6 +90,7 @@ timelines = engine.branch(
 ```
 
 ### 4. FTL Possibility Search
+
 Search across thousands of parallel realities simultaneously to find optimal outcomes.
 
 ```python
@@ -158,23 +164,29 @@ print(f"Searched 10,000 realities at {velocity.effective_c_multiple:.2e}c")
 ## Key Innovations
 
 ### 1. Effective FTL
+
 Compute answers before light could carry the question across physical space.
 
 **Example:** Predicting next year's weather:
+
 - Light takes 1 year to traverse 1 light-year
 - QRATUM computes 1 year of weather evolution in milliseconds
 - Effective velocity: ~10¹³c (10 trillion times light speed)
 
 ### 2. Bidirectional Causality
+
 Navigate time forward and backward deterministically through inverse computation.
 
 ### 3. Parallel Reality Search
+
 Explore thousands of alternative futures simultaneously, then select the optimal path.
 
 ### 4. Cryptographic Temporal Proofs
+
 Every temporal computation is Merkle-verified and can be proven correct to external observers.
 
 ### 5. Paradox-Safe Computation
+
 Automatic detection and resolution of temporal paradoxes using multiple strategies.
 
 ## Installation
@@ -222,18 +234,21 @@ print(f"Effective velocity: {proof.metadata['effective_velocity_c']:.2e}c")
 ## Use Cases
 
 ### Scientific Computing
+
 - **Climate Modeling**: Simulate centuries of climate evolution in minutes
 - **Molecular Dynamics**: Explore microsecond-scale protein folding
 - **Cosmology**: Model billion-year galactic evolution
 - **Epidemiology**: Predict pandemic spread across multiple scenarios
 
 ### Strategic Planning
+
 - **Policy Analysis**: Explore outcomes of different policy choices
 - **Economic Forecasting**: Model economic futures under uncertainty
 - **Risk Assessment**: Evaluate risks across parallel scenarios
 - **Optimization**: Find optimal solutions in vast possibility spaces
 
 ### Historical Reconstruction
+
 - **Archaeological Inference**: Reconstruct past states from present evidence
 - **Forensic Analysis**: Trace causality backward through evidence chains
 - **System Debugging**: Reverse-engineer failure states

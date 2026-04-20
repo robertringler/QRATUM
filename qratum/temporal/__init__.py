@@ -14,21 +14,21 @@ traverse the physical distance between events. At 2.5 ExaFLOPS, QRATUM completes
 Example Usage:
     >>> from qratum.temporal import TemporalEngine, FTLComputation, TimelineManager
     >>> from qratum.temporal.constants import SECONDS_PER_YEAR
-    >>> 
+    >>>
     >>> # Initialize temporal engine
     >>> engine = TemporalEngine(
     ...     peak_flops=2.5e18,
     ...     deterministic=True,
     ...     merkle_verified=True,
     ... )
-    >>> 
+    >>>
     >>> # Travel forward: predict climate 100 years from now
     >>> future_climate, proof = engine.forward(
     ...     initial_state=current_climate,
     ...     delta_t=100 * SECONDS_PER_YEAR,
     ...     evolution_fn=climate_model,
     ... )
-    >>> 
+    >>>
     >>> # Explore parallel timelines
     >>> manager = TimelineManager()
     >>> branches = engine.branch(
@@ -40,7 +40,7 @@ Example Usage:
     ...     evolution_fn=consequence_model,
     ...     delta_t=50 * SECONDS_PER_YEAR,
     ... )
-    >>> 
+    >>>
     >>> # Find optimal future across all possibilities
     >>> ftl = FTLComputation(peak_flops=2.5e18)
     >>> best_outcome, best_branch, velocity = ftl.parallel_reality_search(
@@ -56,118 +56,110 @@ Example Usage:
 __version__ = "1.0.0"
 
 # Core temporal engine
-from .engine import TemporalEngine, TemporalEngineConfig
-
-# State management
-from .state import (
-    TemporalState,
-    StateChain,
-    TemporalCoordinate,
+# Constants
+from .constants import (
+    OPERATIONS_PER_LIGHT_METER,
+    PLANCK_TIME,
+    QRATUM_PEAK_FLOPS,
+    SECONDS_PER_DAY,
+    SECONDS_PER_HOUR,
+    SECONDS_PER_MINUTE,
+    SECONDS_PER_YEAR,
+    SPEED_OF_LIGHT,
+    TARGET_COMPRESSION_RATIO,
+    EntropyStrategy,
+    FTLMechanism,
+    ParadoxStrategy,
+    TemporalResolution,
 )
+from .engine import TemporalEngine, TemporalEngineConfig
 
 # FTL computation
 from .ftl import (
+    EffectiveVelocity,
     FTLComputation,
     PossibilityOracle,
-    EffectiveVelocity,
     PossibilitySpace,
+)
+
+# Integration
+from .integration import (
+    AetherFabricIntegration,
+    ExascaleConfig,
+    MerkleHardwareAcceleration,
+    PQCIntegration,
+    QDRIntegration,
+    TemporalEngineDistributed,
 )
 
 # Paradox resolution
 from .paradox import (
-    ParadoxResolver,
     CausalityValidator,
     ParadoxDetection,
+    ParadoxResolver,
     ParadoxType,
-)
-
-# Timeline management
-from .timeline import (
-    Timeline,
-    TimelineManager,
-    TimelineBranch,
 )
 
 # Temporal reversal
 from .reversal import (
     CausalReversal,
-    EntropyReversal,
     CheckpointReversal,
+    EntropyReversal,
     ReversalResult,
     ReversalStrategy,
 )
 
+# State management
+from .state import (
+    StateChain,
+    TemporalCoordinate,
+    TemporalState,
+)
+
+# Timeline management
+from .timeline import (
+    Timeline,
+    TimelineBranch,
+    TimelineManager,
+)
+
 # Verification
 from .verification import (
-    TemporalVerifier,
     TemporalProof,
-)
-
-# Integration
-from .integration import (
-    TemporalEngineDistributed,
-    ExascaleConfig,
-    QDRIntegration,
-    AetherFabricIntegration,
-    PQCIntegration,
-    MerkleHardwareAcceleration,
-)
-
-# Constants
-from .constants import (
-    SPEED_OF_LIGHT,
-    PLANCK_TIME,
-    SECONDS_PER_YEAR,
-    SECONDS_PER_DAY,
-    SECONDS_PER_HOUR,
-    SECONDS_PER_MINUTE,
-    QRATUM_PEAK_FLOPS,
-    OPERATIONS_PER_LIGHT_METER,
-    TARGET_COMPRESSION_RATIO,
-    ParadoxStrategy,
-    EntropyStrategy,
-    TemporalResolution,
-    FTLMechanism,
+    TemporalVerifier,
 )
 
 __all__ = [
     # Core
     "TemporalEngine",
     "TemporalEngineConfig",
-    
     # State
     "TemporalState",
     "StateChain",
     "TemporalCoordinate",
-    
     # FTL
     "FTLComputation",
     "PossibilityOracle",
     "EffectiveVelocity",
     "PossibilitySpace",
-    
     # Paradox
     "ParadoxResolver",
     "CausalityValidator",
     "ParadoxDetection",
     "ParadoxType",
-    
     # Timeline
     "Timeline",
     "TimelineManager",
     "TimelineBranch",
-    
     # Reversal
     "CausalReversal",
     "EntropyReversal",
     "CheckpointReversal",
     "ReversalResult",
     "ReversalStrategy",
-    
     # Verification
     "TemporalVerifier",
     "TemporalProof",
-    
     # Integration
     "TemporalEngineDistributed",
     "ExascaleConfig",
@@ -175,7 +167,6 @@ __all__ = [
     "AetherFabricIntegration",
     "PQCIntegration",
     "MerkleHardwareAcceleration",
-    
     # Constants
     "SPEED_OF_LIGHT",
     "PLANCK_TIME",

@@ -5,6 +5,7 @@
 This report presents results from a pre-registered simulation study testing the conditional no-go theorem on backward lab-time signaling in compiled/analog realities.
 
 **Key Findings:**
+
 - **H1 (S_lab = 0):** SUPPORTED - No backward lab-time signaling detected (S_lab = 0.0 ± 0.0)
 - **H2 (χ < 0 possible):** SUPPORTED - 95.0% of lattice configurations exhibited χ < 0
 - **H3 (Validity degradation):** SUPPORTED - Pass rate = 25.0%, indicating validity challenges near χ < 0 regimes
@@ -15,6 +16,7 @@ This report presents results from a pre-registered simulation study testing the 
 **Execution Date:** 2026-01-18 10:36:19 UTC
 
 **Total Configurations:**
+
 - CPTP Model: 18 configurations (2 dimensions × 3 couplings × 3 time separations)
 - Lattice Model: 240 configurations (2 sizes × 3 cutoffs × 4 dispersions × 5 velocities × 2 dissipations)
 - Seeds per configuration: 5
@@ -26,12 +28,14 @@ This report presents results from a pre-registered simulation study testing the 
 ### Hypothesis H1: No Backward Lab-Time Signaling
 
 **S_lab Statistics:**
+
 - Mean: 0.000000e+00
 - Standard Deviation: 0.000000e+00
 - Maximum: 0.000000e+00
 - Total measurements: 1290
 
 **Significance Analysis:**
+
 - Runs exceeding 5σ: 0
 - Interpretation: S_lab consistent with zero within statistical error
 
@@ -40,6 +44,7 @@ This report presents results from a pre-registered simulation study testing the 
 ### Hypothesis H2: Negative χ in Some Regimes
 
 **χ Statistics (Lattice Model):**
+
 - Mean: -2.8509
 - Standard Deviation: 3.4804
 - Minimum: -13.9592
@@ -50,6 +55,7 @@ This report presents results from a pre-registered simulation study testing the 
 ### Hypothesis H3: Validity Degradation Near χ < 0
 
 **Validity Certificate:**
+
 - Pass rate: 300/1200 (25.0%)
 - Dispersion deviation threshold: < 0.10
 - Attenuation margin threshold: > 1.5
@@ -62,12 +68,14 @@ This report presents results from a pre-registered simulation study testing the 
 ### Hypothesis H4: Anti-Holographic Sensitivity
 
 **Sensitivity Analysis:**
+
 - Bulk parameter sensitivity (mean): 0.9852
 - Boundary parameter sensitivity (mean): 0.0164
 - Ratio (bulk/boundary): 60.0x
 - Hypothesis supported: True
 
 **Individual Parameter Sensitivities:**
+
 - cutoff_scale: 0.0000e+00 (bulk)
 - dispersion_strength: 2.9555 (bulk)
 - dissipation_rate: 0.0000e+00 (bulk)
@@ -78,11 +86,13 @@ This report presents results from a pre-registered simulation study testing the 
 ## Causality Audit
 
 **Audit Status:**
+
 - All checks passed: True
 - Total checks: 2580
 - Passed checks: 2580
 
 **Key Verifications:**
+
 - ✓ No future data access in O_{t1} computation
 - ✓ Twin-run invariance before intervention
 - ✓ Postselection conditioning quarantined
@@ -95,10 +105,12 @@ This report presents results from a pre-registered simulation study testing the 
 **S_lab and χ Decoupling:**
 
 The results demonstrate that χ < 0 (effective-time loops) does NOT imply S_lab ≠ 0 (backward lab-time signaling). These diagnostics measure distinct phenomena:
+
 - **χ**: Internal structure of effective metric (effective-time geometry)
 - **S_lab**: Actual causal influence across lab-time ordering (operational signaling)
 
 **Key Evidence:**
+
 - 95.0% of runs have χ < 0 (effective-time loops present)
 - 100% of runs have S_lab = 0 (no backward signaling)
 - This decoupling confirms that effective-time structure does not violate lab-time causality
@@ -106,16 +118,19 @@ The results demonstrate that χ < 0 (effective-time loops) does NOT imply S_lab 
 ## Visualizations
 
 See generated figures in :
+
 - : χ vs parameter variations
 - : S_lab vs parameter variations
 
 ## Reproducibility
 
 **Hashes:**
-- Configuration: 
-- Results: 
+
+- Configuration:
+- Results:
 
 **Seed Information:**
+
 - Base seed: 42
 - Seed generation: Deterministic from configuration index
 - CPTP runs: seeds 42-131
@@ -124,6 +139,7 @@ See generated figures in :
 ## Artifacts
 
 All simulation artifacts are available in :
+
 - : Locked parameter grid (258 configurations)
 - : Complete diagnostic outputs (1290 rows × 24 columns)
 - : Causality audit with 2580 checks

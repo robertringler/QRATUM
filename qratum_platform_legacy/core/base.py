@@ -3,16 +3,13 @@
 Abstract base class enforcing all 8 fatal invariants for vertical modules.
 """
 
-import hashlib
-import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Any, Dict, FrozenSet, List, Optional
-
 from platform.core.events import EventType, ExecutionEvent, MerkleEventChain
-from platform.core.intent import PlatformContract, PlatformIntent
+from platform.core.intent import PlatformContract
 from platform.core.substrates import ComputeSubstrate, select_optimal_substrate
+from typing import Any, Dict, FrozenSet, List
 
 
 @dataclass(frozen=True)
@@ -146,7 +143,7 @@ class VerticalModuleBase(ABC):
 
         # Check contract validity
         if not contract.is_valid():
-            raise ValueError(f"Invalid contract: not authorized or expired")
+            raise ValueError("Invalid contract: not authorized or expired")
 
         # Check required attestations
         required = self.get_required_attestations(contract.intent.operation)
@@ -161,9 +158,7 @@ class VerticalModuleBase(ABC):
             if prohibited_use.lower() in operation_lower:
                 raise ValueError(f"Prohibited use detected: {prohibited_use}")
 
-    def _select_substrate(
-        self, operation: str, parameters: Dict[str, Any]
-    ) -> ComputeSubstrate:
+    def _select_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
         """Select optimal compute substrate.
 
         Args:
@@ -233,7 +228,9 @@ class VerticalModuleBase(ABC):
             self._validate_contract(contract)
 
             # FATAL INVARIANT #7: Select optimal substrate
-            substrate = self._select_substrate(contract.intent.operation, contract.intent.parameters)
+            substrate = self._select_substrate(
+                contract.intent.operation, contract.intent.parameters
+            )
 
             # FATAL INVARIANT #3: Emit safety check event
             self.event_chain.append(

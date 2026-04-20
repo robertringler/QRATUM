@@ -34,6 +34,7 @@ python demo_bob.py
 ```
 
 This demonstrates:
+
 - Single position analysis
 - Tactical position solving
 - Batch prediction
@@ -63,6 +64,7 @@ Creates: `bob-chess-engine.tar.gz` (8 KB compressed)
 ```
 
 **Prerequisites:**
+
 - Kaggle account
 - Kaggle API token in `~/.kaggle/kaggle.json`
 
@@ -86,6 +88,7 @@ print(f"Depth: {result['depth']}")           # 18
 ## 🎯 API Format
 
 ### Input
+
 ```json
 {
     "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -95,6 +98,7 @@ print(f"Depth: {result['depth']}")           # 18
 ```
 
 ### Output
+
 ```json
 {
     "move": "e2e4",
@@ -112,12 +116,14 @@ print(f"Depth: {result['depth']}")           # 18
 ## 📊 Benchmark Results
 
 ### Kaggle Chess AI Benchmark
+
 - **Rank:** #1
 - **Elo:** 1508
 - **Games:** 100 (96W-2D-2L)
 - **Win Rate:** 97%
 
 ### Notable Victories
+
 | Opponent | Elo | Margin |
 |----------|-----|--------|
 | o3-2025 | 1397 | +111 |
@@ -128,18 +134,21 @@ print(f"Depth: {result['depth']}")           # 18
 ## 🔧 Technical Details
 
 ### Algorithm
+
 - **Search:** Asymmetric Adaptive Search (AAS)
 - **Evaluation:** Multi-Agent Consensus
 - **Pruning:** Alpha-Beta with iterative deepening
 - **Optimization:** Move ordering, time management
 
 ### Performance
+
 - **Depth:** 12-20 plies
 - **Nodes/sec:** 50,000-200,000
 - **Time/move:** 500-1000ms
 - **CPU Only:** No GPU required
 
 ### Dependencies
+
 - `numpy>=1.24.0`
 - `python-chess>=1.9.0`
 
@@ -152,11 +161,13 @@ print(f"Depth: {result['depth']}")           # 18
 ## ✅ Validation
 
 ### Automated Tests
+
 ```bash
 cd bob && python tests/test_prediction.py
 ```
 
 **Test Coverage:**
+
 - ✅ Starting position prediction
 - ✅ Tactical position handling
 - ✅ Endgame evaluation
@@ -165,6 +176,7 @@ cd bob && python tests/test_prediction.py
 - ✅ Terminal position handling
 
 ### Manual Testing
+
 ```bash
 python demo_bob.py
 ```
@@ -183,9 +195,9 @@ Before submitting to Kaggle:
 
 ## 🔗 Links
 
-- **GitHub:** https://github.com/robertringler/QRATUM
-- **Kaggle Model:** https://www.kaggle.com/models/robertringler/bob
-- **Benchmark:** https://www.kaggle.com/benchmarks/chess
+- **GitHub:** <https://github.com/robertringler/QRATUM>
+- **Kaggle Model:** <https://www.kaggle.com/models/robertringler/bob>
+- **Benchmark:** <https://www.kaggle.com/benchmarks/chess>
 
 ## 📝 License
 

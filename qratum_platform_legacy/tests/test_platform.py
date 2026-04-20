@@ -3,17 +3,14 @@
 Tests for intent system, event chain, base module, orchestrator, and substrates.
 """
 
-import hashlib
-import json
 from datetime import datetime, timedelta, timezone
-
-import pytest
-
-from platform.core.base import ExecutionResult, VerticalModuleBase
+from platform.core.base import VerticalModuleBase
 from platform.core.events import EventType, ExecutionEvent, MerkleEventChain
 from platform.core.intent import PlatformContract, PlatformIntent, VerticalType
 from platform.core.orchestrator import QRATUMPlatform
 from platform.core.substrates import ComputeSubstrate, select_optimal_substrate
+
+import pytest
 
 
 class TestPlatformIntent:
@@ -282,7 +279,11 @@ class TestComputeSubstrate:
             required_availability=0.7,
         )
 
-        assert substrate in [ComputeSubstrate.GPU_CUDA, ComputeSubstrate.GPU_METAL, ComputeSubstrate.CPU_PARALLEL]
+        assert substrate in [
+            ComputeSubstrate.GPU_CUDA,
+            ComputeSubstrate.GPU_METAL,
+            ComputeSubstrate.CPU_PARALLEL,
+        ]
 
     def test_substrate_selection_quantum(self):
         """Test substrate selection for quantum algorithms."""

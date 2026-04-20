@@ -7,6 +7,7 @@ This is the fully automated pipeline for dominating Kaggle chess competitions. N
 ## Overview
 
 Complete end-to-end automation:
+
 1. Downloads real Kaggle competition data
 2. Runs actual QRATUM engine (no mocks, no stubs)
 3. Generates compliant Kaggle submissions
@@ -32,7 +33,7 @@ echo '{"username":"YOUR_USERNAME","key":"YOUR_API_KEY"}' > ~/.kaggle/kaggle.json
 chmod 600 ~/.kaggle/kaggle.json
 ```
 
-Get your API key from: https://www.kaggle.com/settings/account
+Get your API key from: <https://www.kaggle.com/settings/account>
 
 ### 2. Install Kaggle CLI
 
@@ -209,6 +210,7 @@ Score Progression: +0.0053/submission
 Feedback-driven parameter tuning:
 
 ### Parameters Optimized
+
 - **Novelty Pressure Ω(a)**: Adjusted based on rank delta
 - **Search Depth**: Increased for rank improvements, decreased for regressions  
 - **Cortex Weights**: Gradient-based optimization (future enhancement)
@@ -262,6 +264,7 @@ Parameters and results saved to `benchmarks/kaggle_feedback.json`:
 ## Certification Gates
 
 Submissions blocked unless:
+
 - `hash_hit_rate ≥ 0.90`
 - `illegal_moves = 0`
 - `novelty_score_mean ≥ 0.4`
@@ -306,11 +309,13 @@ pip install kaggle
 ### Credentials Not Found
 
 Check `~/.kaggle/kaggle.json` exists and has correct format:
+
 ```json
 {"username":"your_username","key":"your_api_key"}
 ```
 
 Permissions should be 600:
+
 ```bash
 chmod 600 ~/.kaggle/kaggle.json
 ```
@@ -359,6 +364,7 @@ done
 ## Performance Metrics
 
 Expected performance on modern hardware:
+
 - **Nodes/sec**: 50,000 - 100,000
 - **Time per position**: 2-5 seconds (depth 15)
 - **Submission latency**: 5-10 seconds
@@ -367,6 +373,7 @@ Expected performance on modern hardware:
 ## Future Enhancements
 
 Planned improvements:
+
 - Multi-engine ensemble submissions
 - Real-time cortex weight optimization
 - Automated competition discovery

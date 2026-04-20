@@ -23,12 +23,14 @@ TERC Tier-1 / Tier-5 Validation
 Synthetic state surrogates for TERC validation when quantum observables unavailable.
 
 **Metrics**:
+
 - `beta_entropy`: Normalized character entropy (0-1)
 - `beta_complexity`: Normalized complexity score (0-1)
 - `beta_coherence`: Inverse IoC variance (coherence proxy)
 - `beta_periodicity`: Strength of detected periodicities (0-1)
 
 **Usage**:
+
 ```python
 from quasim.terc_bridge import beta_metrics_from_cipher
 
@@ -41,6 +43,7 @@ print(f"Coherence: {metrics['beta_coherence']:.3f}")
 ```
 
 **TERC Mapping**:
+
 - Tier-1 State Coherence: `beta_entropy`, `beta_coherence`
 - Tier-5 Robustness: `beta_complexity`, `beta_periodicity`
 
@@ -49,6 +52,7 @@ print(f"Coherence: {metrics['beta_coherence']:.3f}")
 Detects candidate periods for polyalphabetic ciphers.
 
 **Usage**:
+
 ```python
 from quasim.terc_bridge import ioc_period_candidates
 
@@ -65,6 +69,7 @@ print(f"Candidate periods: {periods}")
 Overall complexity assessment with components.
 
 **Usage**:
+
 ```python
 from quasim.terc_bridge import emergent_complexity
 
@@ -81,6 +86,7 @@ print(f"Components: entropy={complexity['entropy']:.2f}, "
 Convergence and stability metrics from distributed consensus.
 
 **Usage**:
+
 ```python
 from quasim.terc_bridge import qgh_consensus_status
 import numpy as np
@@ -95,6 +101,7 @@ print(f"Robustness: {status['robustness']:.3f}")
 ```
 
 **TERC Mapping**:
+
 - Tier-1 Consensus: `converged`, `iterations`
 - Tier-5 Robustness: `stability`, `robustness`, `final_variance`
 
@@ -103,6 +110,7 @@ print(f"Robustness: {status['robustness']:.3f}")
 Detects synchronization patterns in distributed streams.
 
 **Usage**:
+
 ```python
 from quasim.terc_bridge import stream_synchronization_metrics
 
@@ -124,6 +132,7 @@ print(f"Synchronized: {metrics['synchronized']}")
 Assesses stability of metric time series.
 
 **Usage**:
+
 ```python
 from quasim.terc_bridge import stability_assessment
 
@@ -141,6 +150,7 @@ print(f"Trend: {assessment['trend']:.4f}")
 Centralized registry for observable functions.
 
 **Auto-Registration**:
+
 ```python
 from quasim.terc_bridge.registry import list_observables, compute_observable
 
@@ -154,6 +164,7 @@ result = compute_observable('beta_metrics', text="EXAMPLE")
 ```
 
 **Manual Registration**:
+
 ```python
 from quasim.terc_bridge.registry import register_observable
 
@@ -246,6 +257,7 @@ quasim-terc-obs validate --obs-file observables.json
 Adapters convert QuASIM agent states to algorithm inputs.
 
 **Example**:
+
 ```python
 from quasim.terc_bridge.adapters import from_quasim_state
 
@@ -261,6 +273,7 @@ text = from_quasim_state("path/to/state.json")
 ```
 
 **Supported Formats**:
+
 - Text trajectories: `{"trajectory": "..."}` → string
 - State vectors: `{"state_vector": [...]}` → np.ndarray
 - Tensor data: `{"tensor": [...]}` → np.ndarray
@@ -286,6 +299,7 @@ formatted = to_terc_observable_format(results)
 ### Tier-1: Initial State Validation
 
 Uses:
+
 - Beta entropy/coherence → State coherence checks
 - IoC period candidates → Periodic structure validation
 - Consensus status → Distributed initialization
@@ -293,6 +307,7 @@ Uses:
 ### Tier-5: Robustness Testing
 
 Uses:
+
 - Beta complexity → Overall robustness metric
 - Stability assessment → Long-term stability
 - Stream synchronization → Distributed coherence
@@ -371,6 +386,7 @@ result = compute_observable("my_metric", text="EXAMPLE")
 - **Stability**: O(window_size) for trend fitting
 
 For large-scale deployments:
+
 - Use smaller max_period for IoC (default: 20)
 - Limit buffer sizes for streams (default: 1000)
 - Set reasonable max_iterations for consensus (default: 100)
