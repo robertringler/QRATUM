@@ -13,8 +13,10 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [CIIR Foundations](#ciir-foundations)
 - [Key Innovations](#key-innovations)
-- [Architecture Stack](#architecture-stack)
+- [QRATUM Architecture](#architecture-stack)
+- [State Space Formalism](#state-space-formalism)
 - [Core Components](#core-components)
 - [VITRA-E0: Deterministic Genomic Pipeline](#vitra-e0-deterministic-genomic-pipeline)
 - [Biokey Module: Privacy-Preserving Authentication](#biokey-module-privacy-preserving-authentication)
@@ -24,8 +26,13 @@
 - [14 Vertical Domains](#14-vertical-domains)
 - [Installation & Quickstart](#installation--quickstart)
 - [Compliance & Regulations](#compliance--regulations)
+- [Research Components](#research-components)
+- [Programmable Physics](#programmable-physics)
+- [Multi-Agent Systems](#multi-agent-systems)
+- [Implementation Strategy](#implementation-strategy)
 - [Roadmap & Recent Developments](#roadmap--recent-developments)
 - [Contributing & Governance](#contributing--governance)
+- [Safety & Alignment Architecture](#safety--alignment-architecture)
 - [Security](#security)
 - [Use Cases](#use-cases)
 - [FAQ](#faq)
@@ -48,6 +55,48 @@ QRATUM empowers organizations and researchers to:
 - Comply with stringent regulations including HIPAA, GDPR Article 9, BIPA, 21 CFR Part 11, and emerging post-quantum standards.
 
 The repository includes Python (54.9%), HTML (37.3%), Rust (4.3%), and other languages. Development focuses on quantum integration, ASI safety constraints, and production hardening, with verified pilots in tire simulation (e.g., Goodyear) and genome analysis.
+
+---
+
+## CIIR Foundations
+
+### Formal Definition
+
+The **Computational Interface of Irreducible Reality (CIIR)** is the foundational ontological and computational substrate over which QRATUM operates. CIIR is defined as the 4-tuple:
+
+```
+CIIR := (Ω, 𝕀, 𝒯, 𝒪)
+```
+
+where:
+
+| Symbol | Name | Definition |
+|--------|------|------------|
+| **Ω** | Irreducible Reality | The non-decomposable ontic substrate; the set of all states admissible in physical reality prior to any representational projection. Ω is not directly accessible by any computational agent — it is accessed exclusively through interface operators. |
+| **𝕀** | Interface Operators | The family of maps `𝕀 : Ω → ℳ` projecting Ω onto representational manifolds ℳ. Each `𝕀_i` selects a specific projection modality (measurement basis, discretization scheme, or observational frame). |
+| **𝒯** | Transformation Algebra | The algebra of structure-preserving maps over interface-projected states. `𝒯` is closed under composition: `𝒯_i ∘ 𝒯_j ∈ 𝒯`. Transformations are constrained to be interface-consistent — they operate on `𝕀(Ω)`, not directly on Ω. |
+| **𝒪** | Observer Constraint System | The participatory constraint set encoding observer-dependent boundary conditions. `𝒪` determines which trajectories through state space are physically admissible given an observer configuration. |
+
+**Foundational Principle:**
+
+> QRATUM operates as a programmable instantiation layer over CIIR, enabling structured manipulation of interface-consistent representations of Ω.
+
+### Epistemic Stance
+
+QRATUM adopts a post-representational stance: reality is not directly accessed but interfaced. CIIR formalizes this interface, and QRATUM operationalizes it. This is not a metaphysical claim but an architectural constraint: no computational system can operate on Ω directly. All computation proceeds over `𝕀(Ω)`. The CIIR formalism makes this explicit, enabling principled reasoning about the limits and structure of what is computationally accessible.
+
+Consequence: every data structure, model, and inference in QRATUM is understood as an element of some `𝕀(Ω)` — a projected, discretized, observer-mediated section of the irreducible substrate. Physical invariants, conservation laws, and causal structures emerge as stable features of this projection process.
+
+### Relationship to Existing Formalisms
+
+CIIR subsumes and contextualizes several existing frameworks:
+
+- **Quantum Mechanics**: A fixed-point solution of observer-consistent projection (`𝕀`, `𝒪`) over a Hilbert-space manifold.
+- **General Relativity**: Metric structure arising as information-geometric compression of `𝕀(Ω)` under Riemannian interface constraints.
+- **Information Theory**: Compression bounds on representational manifolds defined by `𝕀`.
+- **Emergent Physics**: Stable invariants under iterated `𝒯` as the formal definition of physical law.
+
+The CIIR monograph (located at `manuscripts/ciir_monograph/ciir_monograph.tex`, 20 chapters) provides the full formal development including: axiom system (Ch3–Ch8), quantum embedding (Ch10), CRS formal specification (Ch11), formal closure (Ch12), QM as fixed point (Ch13), emergent physics (Ch14), formal audit (Ch15), cross-domain unification (Ch16–Ch19), and programmable physics/MPPK (Ch20).
 
 ---
 
@@ -134,6 +183,57 @@ QRATUM's layered design integrates foundational determinism with advanced quantu
 
 **5. QRATUM-Rust Core** (Status: ~50% Complete, in qratum-rust/)
 - Decentralized components: consensus.rs, governance.rs, p2p.rs.
+
+---
+
+## State Space Formalism
+
+### CIIR–QRATUM Component Mapping
+
+QRATUM's implementation layers correspond directly to CIIR structural elements:
+
+| QRATUM Component | CIIR Element | Role |
+|-----------------|--------------|------|
+| **QRATUM Core Engine** | `𝕀` (Interface Operators) | Implements the projection maps from Ω onto representational manifolds; defines what is computationally observable. |
+| **Simulation Layer** | `𝒯` (Transformation Algebra) | Instantiates the algebra of state transformations; executes forward evolution of interface-projected states. |
+| **Agent Framework** | `𝒪` (Observer Constraint System) | Operationalizes observer-dependent state evolution; encodes participatory boundary conditions as agent behaviors and authorization gates. |
+| **Data Substrate** | `𝕀(Ω)` (Projected State Space) | Discretized projections of Ω via interface operators; all stored data, knowledge graphs, and model parameters are elements of this projected space. |
+
+### Formal State Evolution
+
+Let `S` denote the QRATUM state space. By the CIIR interface principle:
+
+```
+S = 𝕀(Ω)
+```
+
+QRATUM evolves states via the transformation algebra under observer constraints:
+
+```
+S(t+1) = 𝒯(S(t), A, C)
+```
+
+where:
+- `S(t)` is the system state at discrete time step `t`, an element of `𝕀(Ω)`
+- `A` is the set of agent actions, elements of the observer constraint system `𝒪`
+- `C` is the constraint set derived from `𝒪`, encoding authorization gates, safety invariants, and zone topology boundaries
+- `𝒯` is the interface-consistent transformation — it maps within `𝕀(Ω)`, never leaving the representational manifold
+
+**Interface Consistency Condition**: For all `𝒯_i ∈ 𝒯` and all `s ∈ 𝕀(Ω)`:
+
+```
+𝒯_i(s) ∈ 𝕀(Ω)
+```
+
+This condition guarantees that no QRATUM operation produces states outside the representational manifold — a prerequisite for formal verification, rollback integrity, and Merkle-chain consistency.
+
+### Constraint Propagation and Causality
+
+The constraint set `C` derived from `𝒪` is propagated forward through the transformation graph. Causality in QRATUM is defined operationally as: event `e_j` is causally downstream of `e_i` if and only if the constraint state at `e_j` depends on the output of `𝒯` evaluated at `e_i`.
+
+This is equivalent to the zone topology enforcement (Z0 → Z3): each zone promotion corresponds to a tightening of the constraint set `C`, restricting the admissible transformations in `𝒯`.
+
+The 8 Fatal Invariants (see [Safety & Alignment Architecture](#safety--alignment-architecture)) are formally encoded as elements of `𝒪` that are immutable under all `𝒯_i`. They define the boundary of the constraint propagation graph beyond which no trajectory can pass.
 
 ---
 
@@ -1164,6 +1264,125 @@ Specialized modules (verticals/): JURIS (legal), VITRA (genomics), ECORA (climat
 
 ---
 
+## Multi-Agent Systems
+
+### Formal Agent Definition
+
+Within the CIIR state space `S = 𝕀(Ω)`, an agent `Aᵢ` is a map:
+
+```
+Aᵢ : S → S
+```
+
+satisfying interface-consistency: `Aᵢ(s) ∈ 𝕀(Ω)` for all `s ∈ 𝕀(Ω)`.
+
+Agent composition is in general non-commutative:
+
+```
+Aᵢ ∘ Aⱼ ≠ Aⱼ ∘ Aᵢ
+```
+
+This non-commutativity is the formal basis for order-dependent workflows, conflict resolution protocols, and the need for authorization sequencing in the constraint system `𝒪`.
+
+### Swarm Architecture
+
+The programmable physics swarm (`quasim/ciir/swarm/`) implements 10 specialized agents operating as elements of the transformation algebra `𝒯`:
+
+| Agent | Role | CIIR Function |
+|-------|------|---------------|
+| `axiom_architect` | Define axiom systems | Specifies the base rules of `𝕀` |
+| `formalizer` | Formalize hypotheses | Maps informal descriptions into `𝒯`-elements |
+| `rule_synthesizer` | Generate candidate rules | Proposes new elements of `𝒯` |
+| `simulator` | Execute trajectories | Applies `𝒯` over `S` for T steps |
+| `invariant_miner` | Detect conservation laws | Identifies fixed points of `𝒯`-orbits |
+| `consistency_validator` | Check interface consistency | Verifies `Aᵢ(s) ∈ 𝕀(Ω)` |
+| `empirical_mapper` | Map to observational data | Evaluates `𝕀`-projection accuracy |
+| `compression_optimizer` | Minimize description length | Optimizes information-geometric compression of `𝕀(Ω)` |
+| `hypothesis_mutator` | Perturb rule systems | Generates `𝒯`-variations for evolutionary search |
+| `orchestrator` | Coordinate swarm execution | Manages constraint propagation across agents |
+
+### Meta-Agent Layer
+
+QRATUM supports higher-order agent recursion via meta-agents operating over the agent space:
+
+```
+ℳ : {A} → {A}
+```
+
+A meta-agent `ℳ` maps the current population of agents to a new population — this is the formal definition of the swarm orchestrator's evolution step. The fitness function `F : {A} → ℝ` evaluates agent populations by:
+
+```
+F = α · stability + β · structure + γ · boundedness + δ · compress
+```
+
+This enables **self-modifying epistemic systems**: the swarm can modify its own agent composition, enabling emergent intelligence gradients that are not predefined but discovered through transformation-consistent search.
+
+**Critical constraint**: all meta-agent operations are themselves elements of `𝒪`-constrained `𝒯`. No meta-agent can produce an agent that violates the interface consistency condition or the 8 Fatal Invariants. The observer constraint system `𝒪` is immutable under meta-agent operation.
+
+### Agent Framework in QRATUM Verticals
+
+The 14 QRATUM verticals operationalize `𝒪` (the observer constraint system) in domain-specific configurations. Each vertical defines:
+- A domain-specific projection `𝕀_d : Ω → ℳ_d`
+- A set of domain-valid transformations `𝒯_d ⊆ 𝒯`
+- A domain observer constraint set `𝒪_d ⊆ 𝒪`
+
+Cross-domain synthesis (`VITRA + ECORA + JURIS`, etc.) corresponds to the composition of projections and the union of constraint sets: `𝕀_{d₁ ∪ d₂}` with constraint intersection `𝒪_{d₁} ∩ 𝒪_{d₂}`.
+
+---
+
+## Implementation Strategy
+
+### CIIR Abstraction Layer
+
+The CIIR framework prescribes a modular implementation architecture separating the functional core from the stateful orchestration shell:
+
+**Functional Core** — Pure transformations, no side effects:
+- Interface operators (`𝕀`) implemented as composable, pure-function transforms
+- Transformation algebra (`𝒯`) represented as graph or tensor operations over `𝕀(Ω)`
+- Invariant detection as fixed-point solvers over trajectory spaces
+
+**Stateful Shell** — Agent and constraint orchestration:
+- Observer constraints (`𝒪`) encoded as rule systems or boundary condition registries
+- Agent lifecycle management (initialization, composition, retirement)
+- Meta-agent evolution loop with fitness evaluation and selection
+
+### Engineering Map
+
+| CIIR Element | Implementation Pattern | QRATUM Location |
+|-------------|------------------------|-----------------|
+| `𝕀` (Interface Operators) | Composable transform pipelines | `quasim/ciir/crs/` (8-layer CRS substrate) |
+| `𝒯` (Transformation Algebra) | Graph rewrite rules, tensor operations | `quasim/ciir/swarm/mppk.py` (MPPK engine) |
+| `𝒪` (Observer Constraints) | Rule systems, authorization gates | `qratum/safety/`, `Aethernet/rtf/` |
+| `𝕀(Ω)` (State Space) | Discretized graph-structured state | `quasim/ciir/crs/graph.py` (CRSGraph) |
+
+### CRS Package
+
+The **Computational Reality System (CRS)** (`quasim/ciir/crs/`) implements the CIIR substrate as an 8-layer graph-based computational stack:
+
+| Layer | Module | CIIR Role |
+|-------|--------|-----------|
+| 0 | `graph.py` | Base state space (`CRSGraph`) |
+| 1 | `rewrite.py` | Local transformation rules |
+| 2 | `evolution.py` | Iterated `𝒯` application |
+| 3 | `spacetime.py` | Metric structure emergence |
+| 4 | `branching.py` | Branching process / quantum splitting |
+| 5 | `conservation.py` | Conservation law enforcement |
+| 6 | `observer.py` | Observer operator (`𝒪`) |
+| 7 | `integration.py` | Cross-layer integration (`QRATUM_CRS_Core`) |
+
+Tests: `python -m pytest tests/test_crs.py -v --override-ini="addopts="` (54 tests).
+
+### Separation of Concerns
+
+The functional/stateful separation ensures:
+
+1. **Formal verifiability**: Pure transformation functions can be formally verified against CIIR axioms independently of agent state.
+2. **Rollback integrity**: State transitions in `𝕀(Ω)` are recorded in the Merkle chain; rollback restores a previous valid `s ∈ 𝕀(Ω)`.
+3. **Interface consistency checking**: The consistency validator agent can inspect any proposed `𝒯`-application before commitment.
+4. **Composability**: CIIR-compliant modules can be composed without introducing interface violations, because the composition of interface-consistent maps is interface-consistent.
+
+---
+
 ## Roadmap & Recent Developments
 
 **2025 Milestones** (Verified via active development):
@@ -1408,6 +1627,16 @@ Email: **security@qratum.io**
 
 ## Safety & Alignment Architecture
 
+### CIIR Grounding of Safety Constraints
+
+The safety architecture is formally grounded in the observer constraint system `𝒪`. The 8 Fatal Invariants are elements of `𝒪` that are designated **immutable** — no transformation `𝒯_i ∈ 𝒯` is permitted to modify them. Formally:
+
+```
+∀ 𝒯_i ∈ 𝒯, ∀ c ∈ Fatal_Invariants ⊆ 𝒪: 𝒯_i(c) = c
+```
+
+This is enforced architecturally: `𝒪`-constrained transformations that would violate a fatal invariant are rejected at the constraint propagation layer before execution. The zone topology (Z0 → Z3) implements a monotone sequence of increasingly tight constraint sets derived from `𝒪`.
+
 ### 8 Fatal Invariants
 
 These constraints are **IMMUTABLE** and can never be modified by any system operation, including self-improvement:
@@ -1609,6 +1838,91 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 - **Validation:** Automated baseline comparison ensures correctness
 
 **See Also:** [ULTRASSSP_IMPLEMENTATION_SUMMARY.md](ULTRASSSP_IMPLEMENTATION_SUMMARY.md) | [ULTRASSSP_EXECUTION_SUMMARY.md](ULTRASSSP_EXECUTION_SUMMARY.md)
+
+---
+
+## Programmable Physics
+
+### Definition
+
+Within the CIIR framework, physical law is not a primitive given but an emergent property of the transformation algebra:
+
+```
+Physics := stable invariants over iterated 𝒯 under constraint 𝒪
+```
+
+A physical law `L` is identified with a structure that satisfies:
+
+```
+∀ t, s: 𝒯^t(s) satisfies L  ⟺  L is a fixed point of the 𝒯-orbit under 𝒪
+```
+
+**Core principle**: QRATUM does not simulate predefined physics; it searches over transformation-consistent manifolds for stable invariant structures interpretable as physical law. The space of physics is the space of fixed points of the evolution operator constrained by the observer system.
+
+### The MPPK Engine
+
+The **Minimal Programmable Physics Kernel (MPPK)** implements this search process as a 6-step evolutionary loop operating on a graph-based state space `S = 𝕀(Ω)`:
+
+| Step | CIIR Interpretation |
+|------|---------------------|
+| **1. Simulate** | Apply `𝒯` for `T` timesteps; record full trajectory in `𝕀(Ω)`. |
+| **2. Extract Structure** | Identify fixed points, limit cycles, and chaotic regimes — structural features of the `𝒯`-orbit. |
+| **3. Mine Invariants** | Detect conserved quantities `I` satisfying `𝒯(I) = I` — candidate physical laws. |
+| **4. Evaluate Fitness** | Score candidate rule systems by stability, structure formation, boundedness, and compressibility within `𝕀(Ω)`. |
+| **5. Mutate Rules** | Apply perturbations to `𝒯` within the transformation algebra (interaction function, topology, coupling, noise). |
+| **6. Select** | Retain top-k rule systems by fitness — natural selection over the space of transformation algebras. |
+
+The meta-learning layer then extracts cross-generation patterns, estimating the effective force law and identifying candidate physical laws consistent with the observer constraint system.
+
+### Emergent Physical Structures
+
+Three classes of emergent structures arise from this framework:
+
+**Conservation Laws as Fixed Points**
+
+A conserved quantity `Q` satisfies `d/dt Q(S(t)) = 0` along trajectories of `𝒯`. In the MPPK engine, energy conservation (`EC`), momentum conservation (`MC`), and spectral stability (`SS`) are detected as fixed points of the trajectory operator. These are not assumed — they emerge from the structure of stable `𝒯`-orbits.
+
+**Metric Structure as Interface-Consistent Compression**
+
+The metric tensor over state space is the information-geometric structure that minimizes description length of `𝕀(Ω)` — formally, the Fisher–Rao metric on the statistical manifold of interface projections. The CIIR monograph (Ch14) demonstrates that Einstein field equations emerge as the Euler–Lagrange equations of the interface-consistent compression functional.
+
+**Causality as Constraint Propagation**
+
+Causal structure is defined by the directed graph of constraint propagation over `𝒯`. Two events are causally connected if and only if the constraint state of one depends on the output of the transformation at the other. The light cone structure of relativistic physics is a special case of this general constraint propagation topology.
+
+### Running the Computational Framework
+
+The MPPK physics engine and multi-agent swarm orchestrator are executable via:
+
+```bash
+# Full run: MPPK law-discovery + swarm orchestrator
+python run_mppk_physics.py \
+    --generations 10 \
+    --nodes 12 \
+    --dim 4 \
+    --timesteps 100 \
+    --candidates 5 \
+    --output results/mppk_run.json
+
+# MPPK only (skip orchestrator)
+python run_mppk_physics.py --generations 20 --skip-orchestrator
+
+# Test suite (64 MPPK tests + 54 swarm tests)
+python -m pytest tests/test_mppk.py tests/test_programmable_physics.py -v --override-ini="addopts="
+```
+
+Output includes per-generation evolution logs (interaction type, fitness components, invariant flags), meta-learning report (effective force law, stable invariants, embedding dimension, candidate physical laws), and best rule system summary.
+
+### Cross-Domain Unification
+
+The same CIIR framework that produces physical laws from transformation-algebra search also produces cross-domain invariants in economics, biology, linguistics, and cognition. The `quasim/ciir/` package implements domain projection operators `𝕀_d : Ω → ℳ_d` for each domain `d`, enabling:
+
+- Weber–Fechner law as a logarithmic interface projection in perception
+- Neural network learning dynamics as gradient descent in the interface manifold
+- Evolutionary fitness landscapes as `𝒯`-orbit fitness surfaces
+- Linguistic structure as compression-optimal interface representations
+
+Tests: `python -m pytest tests/test_cross_domain_unification.py -v --override-ini="addopts="` (40 tests).
 
 ---
 
@@ -2050,13 +2364,39 @@ See [docs/FAQ.md](docs/FAQ.md) for comprehensive Q&A.
 
 ## Glossary
 
+### CIIR Terms
+
+**CIIR** (Computational Interface of Irreducible Reality)  
+The foundational 4-tuple `(Ω, 𝕀, 𝒯, 𝒪)` defining the ontological and computational substrate over which QRATUM operates.
+
+**Ω** (Omega — Irreducible Reality)  
+The non-decomposable ontic substrate; not directly accessible by any computational agent. All computation proceeds over `𝕀(Ω)`.
+
+**𝕀** (Interface Operators)  
+Maps `𝕀 : Ω → ℳ` projecting Ω onto representational manifolds. Implemented in QRATUM as the composable transform pipelines of the CRS substrate.
+
+**𝒯** (Transformation Algebra)  
+Closed algebra of interface-consistent maps over `𝕀(Ω)`. All QRATUM state transitions are elements of `𝒯`.
+
+**𝒪** (Observer Constraint System)  
+Participatory boundary conditions encoding observer-dependent constraints. The 8 Fatal Invariants are immutable elements of `𝒪`.
+
+**Interface Consistency**  
+Property of a transformation `𝒯_i` such that `𝒯_i(s) ∈ 𝕀(Ω)` for all `s ∈ 𝕀(Ω)`. Prerequisite for formal verification and rollback integrity.
+
+**MPPK** (Minimal Programmable Physics Kernel)  
+The law-discovery engine implementing evolutionary search over the transformation algebra `𝒯`, identifying stable invariants interpretable as physical law.
+
+**CRS** (Computational Reality System)  
+The 8-layer graph-based implementation of the CIIR substrate in `quasim/ciir/crs/`.
+
 ### Core Terms
 
 **QRADLE** (Quantum-Resilient Auditable Deterministic Ledger Engine)  
 Foundation execution layer providing deterministic operations, cryptographic auditability (Merkle chains), and contract-based reversibility.
 
 **QRATUM** (Quantum-Resilient Autonomous Trustworthy Universal Machine)  
-Multi-vertical AI platform spanning 14 critical domains with unified reasoning and sovereign deployment.
+Multi-vertical AI platform spanning 14 critical domains with unified reasoning and sovereign deployment. Formally: a programmable instantiation layer over CIIR.
 
 **QRATUM-ASI** (Artificial Superintelligence Layer)  
 Theoretical architecture for controlled superintelligence via Constrained Recursive Self-Improvement (CRSI).
@@ -2074,15 +2414,15 @@ Cryptographic data structure where each event is hashed and linked to previous e
 Atomic unit of work in QRADLE. Specifies inputs, operations, and expected outputs. Can be rolled back to any previous state.
 
 **8 Fatal Invariants**  
-Immutable safety constraints that can never be modified, even by self-improvement. Enforce human oversight, auditability, and reversibility.
+Immutable elements of `𝒪` that can never be modified, even by self-improvement. Enforce human oversight, auditability, and reversibility.
 
 **Vertical**  
-Specialized AI domain within QRATUM (e.g., JURIS for legal, VITRA for healthcare). 14 verticals total.
+Specialized AI domain within QRATUM (e.g., JURIS for legal, VITRA for healthcare). 14 verticals total; each implements domain-specific `(𝕀_d, 𝒯_d, 𝒪_d)` projections.
 
 ### ASI-Specific Terms
 
 **CRSI** (Constrained Recursive Self-Improvement)  
-Framework where AI self-improvement is contract-bound, auditable, and requires human authorization for sensitive changes.
+Framework where AI self-improvement is contract-bound, auditable, and requires human authorization for sensitive changes. Formally: meta-agent evolution within `𝒪`-enforced bounds.
 
 **Q-REALITY**  
 Emergent world model integrating all 14 verticals into unified causal graph with hash-addressed knowledge nodes.
@@ -2218,6 +2558,14 @@ See [SECURITY.md](SECURITY.md) for:
   url = {https://github.com/robertringler/QRATUM},
   note = {Commit d25ef8b, Release v2025.12.29-0026}
 }
+
+@techreport{ciir_monograph,
+  title = {Computational Interface of Irreducible Reality: Formal Theory, Quantum Embedding, and Programmable Physics},
+  author = {Ringler, Robert},
+  year = {2025},
+  institution = {QRATUM Project},
+  note = {20-chapter monograph; manuscripts/ciir_monograph/ciir_monograph.tex}
+}
 ```
 
 ---
@@ -2242,6 +2590,6 @@ See [LICENSE](LICENSE) for full text.
 
 ---
 
-**QRATUM-ASI**: Building the infrastructure for safe, sovereign, and auditable superintelligence.
+**QRATUM–CIIR**: Building the infrastructure for safe, sovereign, and auditable computation over the interface of irreducible reality.
 
-*If superintelligence emerges, it must be controllable. QRATUM-ASI is the architecture to ensure it.*
+*Reality is not accessed — it is interfaced. CIIR formalizes this interface. QRATUM operationalizes it.*
