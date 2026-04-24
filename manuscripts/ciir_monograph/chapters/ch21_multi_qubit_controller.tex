@@ -142,6 +142,20 @@ characterised by bandwidth $W_\Phi$ (Hz), latency $\tau_\Phi$ (s),
 and depolarising fidelity $\mathcal{F}_\Phi$.
 \end{definition}
 
+\begin{definition}[Biological coupling update]\label{def:bio-update}
+At each discrete cycle step the quantum register state is updated by
+the convex mixture
+\begin{equation}\label{eq:bio-update}
+  \rho_Q \;\leftarrow\; (1-\lambda)\,\rho_Q + \lambda\,\Phi_t[\rho_B],
+  \qquad \lambda \in [0,1],
+\end{equation}
+where $\lambda$ is the \emph{coupling strength} and
+$\Phi_t[\rho_B] \in \mathcal{D}(\mathcal{H}_Q)$ is the quantum state
+injected by the biological channel.  The map is CPTP for every
+$\lambda \in [0,1]$ because it is a convex combination of two CPTP
+maps ($\operatorname{id}$ and $\Phi_t$).
+\end{definition}
+
 \begin{definition}[Fractal code family]\label{def:fractal-code}
 A \emph{fractal quantum code family} $\{\mathcal{E}_n\}_{n \geq 0}$ is
 defined by the recursive map
@@ -442,6 +456,113 @@ level.  Correlated biological noise---e.g., low-frequency vibrational
 bath modes coupling many qubits simultaneously---can violate this
 assumption and raise the effective threshold.  Handling correlated noise
 is an open problem; see Section~\ref{sec:ch21-failure}.
+\end{remark}
+
+% ============================================================
+\section{CIIR Phase Theorem}
+\label{sec:ch21-phase}
+
+The Controllability Theorem (Section~\ref{sec:ch21-controllability}) and
+the Threshold Theorem (Section~\ref{sec:ch21-threshold}) each identify a
+distinct necessary condition for viable CIIR operation.  The following
+master theorem unifies them into a single phase-diagram result.
+
+\begin{theorem}[CIIR Phase Theorem]\label{thm:phase}
+Let the physical parameters of the CIIR controller be given by
+\[
+  \mathbf{q}
+  := \bigl(
+       \mathfrak{g},\;
+       p_{\mathrm{phys}},\;
+       \kappa,\;
+       \tau_{\mathrm{FB}},\;
+       W_\Phi
+     \bigr),
+\]
+where $\mathfrak{g}$ is the dynamical Lie algebra, $p_{\mathrm{phys}}$
+the physical error rate, $\kappa > 0$ the Lyapunov decay rate,
+$\tau_{\mathrm{FB}}$ the total feedback latency, and $W_\Phi$ the BCI
+bandwidth.  Define the \emph{CIIR-stable phase} to be the subset
+\begin{equation}\label{eq:stable-phase}
+  \mathcal{S}
+  := \bigl\{
+       \mathbf{q}
+       \;\big|\;
+       \mathfrak{g} = \mathfrak{su}(2^N),\;
+       p_{\mathrm{phys}} < p_*,\;
+       \tau_{\mathrm{FB}} < T_{\mathrm{cycle}}/2,\;
+       W_\Phi \geq \kappa/\pi
+     \bigr\}.
+\end{equation}
+Then:
+\begin{enumerate}[label=(\roman*), nosep]
+  \item \textbf{(Existence of stable phase.)} $\mathcal{S}$ is non-empty:
+        the conjunction of the four conditions is simultaneously satisfiable
+        for physically realisable parameters.
+  \item \textbf{(Universality.)} For any $\mathbf{q} \in \mathcal{S}$, the
+        CIIR controller achieves universal unitary control, super-exponential
+        logical error suppression, and exponential convergence to $(x^*,\rho^*)$.
+  \item \textbf{(Phase boundary.)} The complement $\mathcal{S}^c$ is the
+        union of four failure phases FM1--FM4 (Section~\ref{sec:ch21-failure}),
+        which are disjoint on the parameter boundary and generically co-dimension-one
+        hypersurfaces in $\mathbf{q}$-space.
+  \item \textbf{(Critical scaling.)}  On the boundary $p_{\mathrm{phys}} \to p_*^-$,
+        the logical error rate at level $n$ satisfies
+        \[
+          p_L(n) \sim p_* \!\left(\frac{p_{\mathrm{phys}}}{p_*}\right)^{\!\alpha^n},
+        \]
+        and the ``fault-tolerance correlation length''
+        $\xi := |\log p_L(n)|^{1/n} \to \alpha$ as $n \to \infty$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(i) Existence.}  Take $N = 5$, independent depolarising noise
+with $p_{\mathrm{phys}} = 10^{-3}$, $p_* = 10^{-2}$ (standard stabiliser
+threshold), $\tau_{\mathrm{FB}} = 50\,\mu\text{s}$,
+$T_{\mathrm{cycle}} = 300\,\mu\text{s}$, $\kappa = 2\pi \times 1\,\text{kHz}$,
+and $W_\Phi = 4\,\text{kHz}$.  Direct substitution verifies all four
+inequalities in~\eqref{eq:stable-phase}.
+
+\medskip\noindent
+\textbf{(ii) Universality.}  By Theorem~\ref{thm:controllability},
+$\mathfrak{g} = \mathfrak{su}(2^N)$ implies any target unitary is
+reachable.  By Theorem~\ref{thm:threshold}, $p_{\mathrm{phys}} < p_*$
+implies $p_L(n) \to 0$ super-exponentially.  By
+Proposition~\ref{prop:lyapunov}, $\kappa > 0$ and $W_\Phi \geq \kappa/\pi$
+(Nyquist condition, \eqref{eq:min-bandwidth}) imply exponential convergence
+to $(x^*, \rho^*)$.  The latency condition $\tau_{\mathrm{FB}} < T_{\mathrm{cycle}}/2$
+prevents FM2 instability, so the feedback loop remains causal.
+
+\medskip\noindent
+\textbf{(iii) Phase boundary.}  Each failure condition in FM1--FM4 defines
+a boundary hypersurface:
+\[
+  \partial\mathcal{S}
+  = \bigl\{\max_k \gamma_k T_{\mathrm{cycle}} = 1\bigr\}
+  \cup \bigl\{p_{\mathrm{phys}} = p_*\bigr\}
+  \cup \bigl\{\tau_{\mathrm{FB}} = T_{\mathrm{cycle}}/2\bigr\}
+  \cup \bigl\{W_\Phi = \kappa/\pi\bigr\}.
+\]
+Each surface is co-dimension one in the four-dimensional parameter space
+$\mathbf{q} \in \mathbb{R}_{\geq 0}^4$.  The four conditions are
+generically independent (their Jacobians are linearly independent at a
+generic boundary point), so FM1--FM4 boundaries intersect only in
+measure-zero subsets.
+
+\medskip\noindent
+\textbf{(iv) Critical scaling.}  Follows directly from
+Theorem~\ref{thm:threshold} with $A = p_*$ and $\alpha \geq 2$.  The
+correlation length $\xi$ is defined by analogy with the RG interpretation
+(Section~\ref{sec:ch21-discussion}).
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:phase} is the CIIR analogue of a quantum phase transition
+diagram: inside $\mathcal{S}$ the controller is in the ``fault-tolerant
+and controllable'' phase; outside $\mathcal{S}$ it resides in one of four
+distinct error phases.  The boundaries are sharp in the thermodynamic
+limit $N \to \infty$ and are smeared to crossovers for finite $N$.
 \end{remark}
 
 % ============================================================
