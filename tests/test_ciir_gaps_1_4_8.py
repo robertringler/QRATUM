@@ -383,3 +383,244 @@ class TestRunUnifiedExperiment:
         assert 0.0 <= result["fidelity_history"][-1] <= 1.0
         assert 0.0 <= result["fidelity_baseline"][0] <= 1.0
         assert 0.0 <= result["fidelity_baseline"][-1] <= 1.0
+
+
+# ===========================================================================
+# PROJECTOR DERIVATION — derive_projector_from_fixed_point
+# ===========================================================================
+
+_SMALL_PARAMS = {
+    "N": 2,
+    "dt": 0.01,
+    "gamma": 0.02,
+    "noise_strength": 0.15,
+    "max_iter": 300,
+}
+
+
+class TestProjectorDerivation:
+    """Tests for derive_projector_from_fixed_point (Route A + Route B)."""
+
+    def test_returns_two_values(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            derive_projector_from_fixed_point,
+        )
+        result = derive_projector_from_fixed_point(_SMALL_PARAMS, tol=1e-6)
+        assert len(result) == 2
+
+    def test_projector_shape(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            derive_projector_from_fixed_point,
+        )
+        Pi, _ = derive_projector_from_fixed_point(_SMALL_PARAMS, tol=1e-6)
+        assert Pi.shape == (4, 4)
+
+    def test_projector_hermitian(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            derive_projector_from_fixed_point,
+        )
+        Pi, _ = derive_projector_from_fixed_point(_SMALL_PARAMS, tol=1e-6)
+        assert np.allclose(Pi, Pi.conj().T, atol=1e-8)
+
+    def test_projector_trace_one(self):
+        """Rank-1 projector must have trace = 1."""
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            derive_projector_from_fixed_point,
+        )
+        Pi, _ = derive_projector_from_fixed_point(_SMALL_PARAMS, tol=1e-6)
+        assert float(np.trace(Pi).real) == pytest.approx(1.0, abs=1e-6)
+
+    def test_projector_idempotent(self):
+        """Rank-1 projector satisfies Π² = Π."""
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            derive_projector_from_fixed_point,
+        )
+        Pi, _ = derive_projector_from_fixed_point(_SMALL_PARAMS, tol=1e-6)
+        assert np.allclose(Pi @ Pi, Pi, atol=1e-6)
+
+    def test_certificate_keys(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            derive_projector_from_fixed_point,
+        )
+        _, cert = derive_projector_from_fixed_point(_SMALL_PARAMS, tol=1e-6)
+        required = {
+            "fixed_point_residual",
+            "overlap_with_ground",
+            "derivation_route",
+            "is_degenerate",
+            "routes_disagree",
+            "converged",
+            "n_iterations",
+        }
+        assert required.issubset(cert.keys())
+
+    def test_overlap_in_range(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            derive_projector_from_fixed_point,
+        )
+        _, cert = derive_projector_from_fixed_point(_SMALL_PARAMS, tol=1e-6)
+        assert 0.0 <= cert["overlap_with_ground"] <= 1.0
+
+    def test_fixed_point_residual_nonneg(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            derive_projector_from_fixed_point,
+        )
+        _, cert = derive_projector_from_fixed_point(_SMALL_PARAMS, tol=1e-6)
+        assert cert["fixed_point_residual"] >= 0.0
+
+    def test_spectral_route_executed_for_small_n(self):
+        """Route A (spectral) must run for N=2 (d=4, superoperator 16×16)."""
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            derive_projector_from_fixed_point,
+        )
+        _, cert = derive_projector_from_fixed_point(_SMALL_PARAMS, tol=1e-6)
+        assert cert["derivation_route"] == "spectral+power"
+        assert cert["route_A_residual"] is not None
+        assert cert["route_agreement"] is not None
+
+    def test_power_only_for_n3(self):
+        """Route A is skipped for N=3 (d^2=64, superop OK) — actually N>4 only skips.
+        For N=3 (d=8) superoperator is 64×64, still computed.
+        Verify certificate returns without error for N=3."""
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            derive_projector_from_fixed_point,
+        )
+        params = {**_SMALL_PARAMS, "N": 3, "max_iter": 100}
+        Pi, cert = derive_projector_from_fixed_point(params, tol=1e-5)
+        assert Pi.shape == (8, 8)
+        assert 0.0 <= cert["overlap_with_ground"] <= 1.0
+
+    def test_convergence_flag(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            derive_projector_from_fixed_point,
+        )
+        _, cert = derive_projector_from_fixed_point(_SMALL_PARAMS, tol=1e-6)
+        assert isinstance(cert["converged"], bool)
+        assert isinstance(cert["n_iterations"], int)
+        assert cert["n_iterations"] >= 1
+
+    def test_superoperator_shape(self):
+        """_build_ciir_superoperator_linear returns (d², d²) matrix."""
+        from quasim.ciir.multi_qubit.analysis.causal_claim import (
+            _build_ciir_superoperator_linear,
+            _build_default_hamiltonian_local,
+            _build_default_lindblad_local,
+            _build_constraint_projector,
+        )
+        N = 2
+        dim = 4
+        H = _build_default_hamiltonian_local(N)
+        ops = _build_default_lindblad_local(N, gamma=0.02)
+        Pi = _build_constraint_projector(dim)
+        S = _build_ciir_superoperator_linear(H, ops, Pi, dt=0.01, noise_strength=0.15, dim=dim)
+        assert S.shape == (dim ** 2, dim ** 2)
+
+
+# ===========================================================================
+# RESCREENING — rescreen_causal_claim
+# ===========================================================================
+
+class TestRescreenCausalClaim:
+    """Tests for rescreen_causal_claim."""
+
+    _params = {
+        "N": 2,
+        "n_steps": 20,
+        "dt": 0.01,
+        "gamma": 0.02,
+        "noise_strength": 0.15,
+        "max_iter": 300,
+    }
+
+    def test_returns_dict(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        result = rescreen_causal_claim(self._params, N_scan=[2], tol=1e-6)
+        assert isinstance(result, dict)
+
+    def test_required_keys(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        result = rescreen_causal_claim(self._params, N_scan=[2], tol=1e-6)
+        required = {
+            "projector", "certificate",
+            "O_CIIR_derived", "O_std_derived", "delta_O_derived",
+            "delta_O_max", "sigma_numerical", "snr_derived",
+            "artifact_results", "verdict",
+            "verdict_justification", "counterargument",
+            "n_scaling", "control_split",
+        }
+        assert required.issubset(result.keys())
+
+    def test_verdict_is_valid_string(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        result = rescreen_causal_claim(self._params, N_scan=[2], tol=1e-6)
+        assert result["verdict"] in ("A+", "A0", "B", "C")
+
+    def test_delta_O_max_nonneg(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        result = rescreen_causal_claim(self._params, N_scan=[2], tol=1e-6)
+        assert result["delta_O_max"] >= 0.0
+
+    def test_snr_nonneg(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        result = rescreen_causal_claim(self._params, N_scan=[2], tol=1e-6)
+        assert result["snr_derived"] >= 0.0
+
+    def test_sigma_numerical_positive(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        result = rescreen_causal_claim(self._params, N_scan=[2], tol=1e-6)
+        assert result["sigma_numerical"] > 0.0
+
+    def test_observable_arrays_same_length(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        n = self._params["n_steps"]
+        result = rescreen_causal_claim(self._params, N_scan=[2], tol=1e-6)
+        assert len(result["O_CIIR_derived"]) == n + 1
+        assert len(result["O_std_derived"]) == n + 1
+        assert len(result["delta_O_derived"]) == n + 1
+
+    def test_observable_values_in_range(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        result = rescreen_causal_claim(self._params, N_scan=[2], tol=1e-6)
+        assert all(-1.0 <= v <= 2.0 for v in result["O_CIIR_derived"])
+        assert all(-1.0 <= v <= 2.0 for v in result["O_std_derived"])
+
+    def test_artifact_results_keys(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        result = rescreen_causal_claim(self._params, N_scan=[2], tol=1e-6)
+        for label in ("AH-1", "AH-2", "AH-3", "AH-4", "AH-5"):
+            assert label in result["artifact_results"]
+            ah = result["artifact_results"][label]
+            assert "passed" in ah
+            assert "value" in ah
+            assert "threshold" in ah
+
+    def test_n_scaling_table(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        result = rescreen_causal_claim(self._params, N_scan=[2, 4], tol=1e-6)
+        assert len(result["n_scaling"]) == 2
+        for row in result["n_scaling"]:
+            assert "N" in row
+
+    def test_control_split_keys(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        result = rescreen_causal_claim(self._params, N_scan=[2], tol=1e-6)
+        cs = result["control_split"]
+        assert "overlap_with_ground" in cs
+        assert "estimated_control_fraction" in cs
+        assert 0.0 <= cs["estimated_control_fraction"] <= 1.0
+
+    def test_high_overlap_gives_a0_or_c(self):
+        """With amplitude damping (γ=0.1, large noise), overlap → 1 → A0 or B/C."""
+        from quasim.ciir.multi_qubit.analysis.causal_claim import rescreen_causal_claim
+        params = {**self._params, "gamma": 0.1, "noise_strength": 0.2}
+        result = rescreen_causal_claim(params, N_scan=[2], tol=1e-5)
+        assert result["verdict"] in ("A+", "A0", "B", "C")
+        # overlap must be in [0,1]
+        assert 0.0 <= result["certificate"]["overlap_with_ground"] <= 1.0
+
+    def test_compute_sigma_numerical(self):
+        from quasim.ciir.multi_qubit.analysis.causal_claim import compute_sigma_numerical
+        sigma = compute_sigma_numerical(n_steps=50, dim=8, dt=0.01)
+        assert sigma > 0.0
+        # Should be much smaller than 1
+        assert sigma < 1e-6

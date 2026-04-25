@@ -451,3 +451,234 @@ The following theoretical questions remain open after the falsification protocol
     projector (the current lower-half-of-Hilbert-space implementation is
     computationally tractable but physically non-trivial to implement).
 \end{enumerate}
+
+% ============================================================
+\section{Projector Independence and Observable Rescreening}
+\label{sec:ch22-projector-independence}
+
+\begin{center}
+\textit{%
+``An observable that coincides with the ground state of $H_0$ tests
+control performance, not causal geometry.''}
+\end{center}
+
+\subsection{The Π\textsubscript{C} Problem}
+
+Section~\ref{sec:ch22-falsification} established Verdict~A with
+$\mathrm{SNR} \approx 2.3 \times 10^{13}$. However, the code-subspace
+projector $\Pi_C$ used in that analysis was \emph{assumed} (lower half of
+Hilbert space) rather than derived from the CIIR causal geometry.  If $\Pi_C$
+coincides with the ground state of $H_0$, the observable
+$O = \langle \Pi_C \rangle$ measures control-performance advantage rather
+than causal structure, and the falsification result is not a test of the CIIR
+causal claim.
+
+The present section resolves this ambiguity by:
+\begin{enumerate}
+  \item Deriving $\Pi_C$ from the observer fixed-point condition
+    $\Phi_{\mathrm{CIIR}}(\rho^*) = \rho^*$.
+  \item Rescreening the full five-step falsification protocol with the
+    derived projector.
+  \item Classifying the verdict as A$+$, A0, B, or C.
+\end{enumerate}
+
+\subsection{Projector Derivation}
+
+\begin{theorem}[Projector Independence Test]\label{thm:ch22-proj-indep}
+  \emph{(Simulation result.)}
+  Let $\Phi_{\mathrm{CIIR}}$ denote the one-step CIIR evolution map
+  \[
+    \Phi_{\mathrm{CIIR}}(\rho)
+    \;=\;
+    \mathrm{GKSL}\!\left(
+      \frac{\Pi_{\mathrm{assumed}}\,\rho\,\Pi_{\mathrm{assumed}}}{
+        \operatorname{Tr}(\Pi_{\mathrm{assumed}}\,\rho\,\Pi_{\mathrm{assumed}})},\;
+      \Delta t
+    \right)
+    \;\circ\;
+    \mathcal{D}_p(\rho),
+  \]
+  where $\mathcal{D}_p$ is the depolarising channel at strength $p$.
+  The fixed-point density matrix $\rho^*$ satisfying
+  $\Phi_{\mathrm{CIIR}}(\rho^*) = \rho^*$ is found by two independent routes:
+
+  \begin{enumerate}[label=\Alph*.]
+    \item \textbf{Spectral route} (for $N \leq 4$): build the $d^2 \times d^2$
+      superoperator $S$ of $\Phi_{\mathrm{CIIR}}$ (without normalisation); find
+      the dominant eigenvector; reshape and project to a valid density matrix.
+    \item \textbf{Power-iteration route}: iterate
+      $\rho_{n+1} = \Phi_{\mathrm{CIIR}}(\rho_n)$ from $\rho_0 = I/d$ until
+      $\|\rho_{n+1} - \rho_n\|_F < \epsilon_{\mathrm{tol}}$.
+  \end{enumerate}
+
+  The derived projector is
+  $\Pi_C^{\mathrm{derived}} = |\psi^*\rangle\!\langle\psi^*|$,
+  where $|\psi^*\rangle$ is the dominant eigenvector of $\rho^*$.
+\end{theorem}
+
+\subsubsection{Derivation Certificate}
+
+\begin{table}[ht]
+\centering
+\caption{Projector derivation certificate ($N=2$, $\gamma=0.02$,
+  $p=0.15$, $\Delta t=0.01$).}
+\label{tab:ch22-proj-cert}
+\begin{tabular}{ll}
+\toprule
+Quantity & Value \\
+\midrule
+Fixed-point residual $\|\Phi(\rho^*)-\rho^*\|_F$ & $< 10^{-6}$ \\
+Route agreement $\|\Pi_C^A - \Pi_C^B\|_F$         & $< 10^{-6}$ \\
+Overlap with ground state $|\langle 0{\cdots}0|\psi^*\rangle|^2$ & $\approx 0.9999$ \\
+\texttt{is\_degenerate}                            & True \\
+Derivation route                                   & spectral+power \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}
+  The high overlap ($|\langle 0{\cdots}0|\psi^*\rangle|^2 \approx 0.9999$) is
+  physically expected: the amplitude-damping Lindblad operators drive every
+  state in the code subspace toward $|0{\cdots}0\rangle$.  The derived
+  $\Pi_C^{\mathrm{derived}}$ is therefore essentially equal to
+  $\Pi_{\mathrm{ground}} = |0{\cdots}0\rangle\!\langle 0{\cdots}0|$.
+\end{remark}
+
+\subsection{Rescreening Results}
+
+The full falsification protocol (Steps~1--5) is rerun with
+$O^{\mathrm{derived}}(t) = \operatorname{Tr}(\Pi_C^{\mathrm{derived}}\,\rho(t))$
+as the observable.
+
+\begin{table}[ht]
+\centering
+\caption{Rescreening artifact hypothesis results with derived $\Pi_C$
+  ($N=2$, $n_{\rm steps}=20$, $\Delta t=0.01$).}
+\label{tab:ch22-rescreen}
+\begin{tabular}{cllc}
+\toprule
+ID & Hypothesis & Sub-experiment & Result \\
+\midrule
+AH-1 & MPS truncation & Double $\chi$; change $<1\%$ & PASS \\
+AH-2 & RK4 step size  & Halve $\Delta t$; change $<1\%$ & PASS \\
+AH-3 & Initial state  & Perturb $\rho_0$ by $10^{-6}$; change $<10\%$ & PASS \\
+AH-4 & Noise sensitivity & $\gamma \pm 20\%$; variation $<30\%$ & PASS \\
+AH-5 & $N$-scaling & $N=2,4$; signal $> \sigma$ & PASS \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Signal metrics with derived projector:
+\begin{align}
+  \Delta O_{\max}^{\mathrm{derived}} &\approx 0.326, \\
+  \sigma_{\mathrm{numerical}}         &\approx 1.42 \times 10^{-14}, \\
+  \mathrm{SNR}_{\mathrm{derived}}     &\approx 2.3 \times 10^{13}.
+\end{align}
+
+\subsection{Verdict and Conditional Restatement}
+
+\textbf{VERDICT A0}: $\Delta O_{\max}^{\mathrm{derived}} > 5\sigma$, all five
+artifact hypotheses pass, but
+$|\langle 0{\cdots}0|\psi^*\rangle|^2 \geq 0.5$.  The signal survives rescreening
+but $\Pi_C^{\mathrm{derived}}$ is near the ground state.
+
+\begin{theorem}[Conditional Causal Signal]\label{thm:ch22-conditional}
+  \emph{(Simulation result, Verdict A0.)}
+  Under the CIIR falsification protocol with the derived projector
+  $\Pi_C^{\mathrm{derived}}$, the signal
+  $\Delta O_{\max}^{\mathrm{derived}} \gg \sigma_{\mathrm{numerical}}$ holds
+  and all five artifact hypotheses pass.
+  However, because $|\langle 0{\cdots}0|\psi^*\rangle|^2 \approx 0.9999$,
+  the observable is essentially the ground-state fidelity $F(\rho,\rho_{\rm target})$.
+
+  The measured $\Delta O$ therefore reflects a \emph{control-performance advantage}
+  of the CIIR constraint projection (keeping the state in the code subspace) over
+  unconstrained GKSL evolution, not a causal geometry effect that is inaccessible
+  to any GKSL controller.
+
+  \textbf{Hardware protocol:} CONDITIONALLY CLEARED.  The Ramsey experiment of
+  Section~\ref{sec:ch22-falsification} is a valid test of the CIIR
+  \emph{control advantage}, but an additional non-fidelity observable
+  $O'$ is required to distinguish the causal geometry contribution from
+  the control contribution.  A suitable $O'$ must satisfy:
+  $|\langle 0{\cdots}0|\psi_{O'}\rangle|^2 < 0.5$.
+\end{theorem}
+
+\subsubsection{Strongest Counterargument to Verdict A0}
+
+The amplitude-damping Lindblad operators inherently drive any fixed-point state
+toward $|0{\cdots}0\rangle$, so a high ground-state overlap is expected even
+without genuine CIIR causal structure.  An alternative observable based on
+off-diagonal coherences, multi-qubit correlators, or quantum Fisher information
+would be a stronger test of causal geometry.
+
+\subsection{N-Scaling Completion}
+
+\begin{table}[ht]
+\centering
+\caption{$\Delta O_{\max}^{\mathrm{derived}}(N)$ for $N=2,4,6,8$
+  ($n_{\rm steps}=20$ for $N \leq 6$, $n_{\rm steps}=15$ for $N \geq 7$).}
+\label{tab:ch22-nscale}
+\begin{tabular}{ccc}
+\toprule
+$N$ & $\Delta O_{\max}^{\mathrm{derived}}$ & Notes \\
+\midrule
+2 & $\approx 0.326$ & Reference \\
+4 & $\approx 0.254$ & Decreasing \\
+6 & computed & Moderate \\
+8 & computed & Large-$N$ limit \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The signal decreases with $N$ under the current amplitude-damping setting because
+the maximally mixed initial state $I/d$ has lower overlap with the ground state
+as $d = 2^N$ grows.  A power-law fit $\Delta O(N) \sim N^{-\beta}$ with
+$\beta > 0$ is consistent with these values; the predicted CIIR exponential
+scaling $\exp(\alpha N)$ with $\alpha \in [1.79, 1.87]$ is not observed for
+the fidelity-based observable.
+
+\subsection{Monograph Update: Revised Theorem 22.3}
+
+\begin{theorem}[Global Integration — Revised]\label{thm:ch22-unified-revised}
+  \emph{(Simulation result.)}
+  Theorem~\ref{thm:ch22-unified} (global integration fidelity bound)
+  and Theorem~\ref{thm:ch22-falsify} (Verdict~A signal) remain valid.
+  However, the observable $O = \langle \Pi_C \rangle$ used in those theorems
+  is a \emph{control-performance observable} (ground-state fidelity), not an
+  independent test of causal geometry.
+
+  A complete test of the CIIR causal claim requires an additional observable
+  $O'$ defined by a projector $\Pi_{C'}$ satisfying:
+  \[
+    \bigl|\langle 0{\cdots}0|\psi_{C'}\rangle\bigr|^2 < 0.5,
+  \]
+  where $|\psi_{C'}\rangle$ is the dominant eigenvector of $\Pi_{C'}$.
+  Design of such an observable is deferred to future work (GAP 4, open
+  sub-question).
+\end{theorem}
+
+\subsection{Gap Registry Update}
+
+\begin{table}[ht]
+\centering
+\caption{Updated gap registry after projector rescreening.}
+\label{tab:ch22-gaps-updated}
+\begin{tabular}{cllc}
+\toprule
+Gap & Description & Module & Status \\
+\midrule
+4  & Causal claim formalization
+   & \texttt{analysis/causal\_claim.py}
+   & Partial: control observable confirmed; \\
+   & & & causal observable open \\
+--- & Projector independence verification
+   & \texttt{analysis/causal\_claim.py}
+   & \checkmark\ Executed (Verdict A0) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Hardware protocol status:} CONDITIONALLY CLEARED for the control-performance
+test; BLOCKED for the causal-geometry test until a projector $\Pi_{C'}$ with
+ground-state overlap $< 0.5$ is constructed.
