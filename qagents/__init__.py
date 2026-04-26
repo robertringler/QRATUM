@@ -3,6 +3,17 @@
 from qagents.base import Agent, AgentLog, AgentObservation, AgentPolicy, AgentState, LambdaPolicy
 from qagents.interaction import InteractionBus, Message
 from qagents.observation import filtered_observation, merge_observations
+from qagents.reality_interface import (
+    ACTION_TYPES,
+    ControlDecision,
+    FallbackPlan,
+    IntentInterpretation,
+    PredictedOutcome,
+    RealityInterfaceController,
+    SelectedAction,
+    default_proposer,
+    default_simulator,
+)
 from qagents.registry import AgentRegistry
 from qagents.rewards import aggregate_rewards, shaped_reward
 from qagents.strategy import (
@@ -34,4 +45,13 @@ __all__ = [
     "merge_observations",
     "aggregate_rewards",
     "shaped_reward",
+    "ACTION_TYPES",
+    "ControlDecision",
+    "FallbackPlan",
+    "IntentInterpretation",
+    "PredictedOutcome",
+    "RealityInterfaceController",
+    "SelectedAction",
+    "default_proposer",
+    "default_simulator",
 ]
