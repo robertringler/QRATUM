@@ -242,7 +242,8 @@ def test_crs_simulator_blocks_on_prohibited_goal():
     )
     assert outcome.risk == 1.0
     assert outcome.stability_score == 0.0
-    assert outcome.expected_state.get("safety_block", "").startswith("prohibited_goal:")
+    assert "safety_block" in outcome.expected_state
+    assert outcome.expected_state["safety_block"].startswith("prohibited_goal:")
 
 
 def test_crs_simulator_blocks_on_immutable_boundary_modification():
@@ -253,6 +254,7 @@ def test_crs_simulator_blocks_on_immutable_boundary_modification():
         {},
     )
     assert outcome.risk == 1.0
+    assert "safety_block" in outcome.expected_state
     assert outcome.expected_state["safety_block"].startswith("immutable_boundary:")
 
 

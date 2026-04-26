@@ -58,9 +58,7 @@ def _f(value: Any, default: float = 0.0) -> float:
 def _stability_from_loss(loss: float) -> float:
     """Map non-negative ``loss`` to ``[0, 1]`` via ``exp(-loss)``."""
 
-    if loss < 0.0:
-        loss = 0.0
-    return math.exp(-loss)
+    return math.exp(-max(0.0, loss))
 
 
 def ciir_simulator(
