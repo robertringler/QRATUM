@@ -19,6 +19,7 @@ from typing import Any, Callable, Dict, List, Optional
 
 class VerificationLevel(Enum):
     """Levels of verification rigor."""
+
     BASIC = "basic"  # Lightweight checks
     STANDARD = "standard"  # Normal verification
     PARANOID = "paranoid"  # Maximum verification
@@ -26,6 +27,7 @@ class VerificationLevel(Enum):
 
 class VerificationResult(Enum):
     """Result of a verification check."""
+
     PASS = "pass"
     FAIL = "fail"
     UNKNOWN = "unknown"
@@ -34,6 +36,7 @@ class VerificationResult(Enum):
 @dataclass
 class VerificationCheck:
     """A single verification check."""
+
     check_id: str
     check_name: str
     check_type: str  # "correctness", "performance", "invariant", "regression"
@@ -65,15 +68,17 @@ class VerificationCheck:
 @dataclass
 class RegressionSignature:
     """Signature of system behavior for regression detection.
-    
+
     Instead of snapshot comparison, we track INTENT fulfillment.
     """
+
     signature_id: str
     intent: str  # What is the system trying to achieve?
     behavioral_markers: Dict[str, Any]  # Observable behaviors that indicate intent fulfillment
     timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
 
     def compute_similarity(self, other: 'RegressionSignature') -> float:
+    def compute_similarity(self, other: "RegressionSignature") -> float:
         """Compute similarity with another signature (0.0 to 1.0)."""
         if self.intent != other.intent:
             return 0.0
@@ -93,6 +98,7 @@ class RegressionSignature:
 @dataclass
 class ContainmentStrategy:
     """Strategy for containing failures."""
+
     strategy_id: str
     name: str
     description: str
@@ -109,10 +115,10 @@ class SSSPValidator:
         graph: Dict[str, Any],
         source: int,
         distances: Dict[int, float],
-        predecessors: Dict[int, Optional[int]]
+        predecessors: Dict[int, Optional[int]],
     ) -> bool:
         """Validate SSSP correctness properties.
-        
+
         Checks:
         1. Source distance is 0
         2. Triangle inequality holds for all edges
@@ -149,7 +155,7 @@ class SSSPValidator:
     def compare_with_baseline(
         test_distances: Dict[int, float],
         baseline_distances: Dict[int, float],
-        epsilon: float = 1e-6
+        epsilon: float = 1e-6,
     ) -> bool:
         """Compare SSSP results with a known-good baseline."""
         if set(test_distances.keys()) != set(baseline_distances.keys()):
@@ -225,10 +231,7 @@ class SchedulingValidator:
     """Validator for scheduling operations."""
 
     @staticmethod
-    def validate_fairness(
-        schedule: List[Dict[str, Any]],
-        window_size: int = 100
-    ) -> bool:
+    def validate_fairness(schedule: List[Dict[str, Any]], window_size: int = 100) -> bool:
         """Validate scheduling fairness within a window."""
         if len(schedule) < window_size:
             return True
@@ -246,10 +249,7 @@ class SchedulingValidator:
         return max_count <= window_size * 0.5
 
     @staticmethod
-    def validate_no_starvation(
-        schedule: List[Dict[str, Any]],
-        max_wait_time: float = 60.0
-    ) -> bool:
+    def validate_no_starvation(schedule: List[Dict[str, Any]], max_wait_time: float = 60.0) -> bool:
         """Validate no contract is starved."""
         current_time = datetime.utcnow().timestamp()
 
@@ -267,7 +267,7 @@ class SchedulingValidator:
 @dataclass
 class SelfVerificationEngine:
     """Continuous self-verification engine.
-    
+
     Implements zero-trust execution where every operation is verified.
     Detects regressions based on intent fulfillment, not snapshots.
     """
@@ -295,9 +295,9 @@ class SelfVerificationEngine:
                 ctx.get("graph", {}),
                 ctx.get("source", 0),
                 ctx.get("distances", {}),
-                ctx.get("predecessors", {})
+                ctx.get("predecessors", {}),
             ),
-            level=VerificationLevel.STANDARD
+            level=VerificationLevel.STANDARD,
         )
 
         self.checks["sssp_baseline"] = VerificationCheck(
@@ -308,9 +308,9 @@ class SelfVerificationEngine:
             verification_func=lambda ctx: SSSPValidator.compare_with_baseline(
                 ctx.get("test_distances", {}),
                 ctx.get("baseline_distances", {}),
-                epsilon=ctx.get("epsilon", 1e-6)
+                epsilon=ctx.get("epsilon", 1e-6),
             ),
-            level=VerificationLevel.PARANOID
+            level=VerificationLevel.PARANOID,
         )
 
     def _initialize_graph_checks(self):
@@ -323,7 +323,7 @@ class SelfVerificationEngine:
             verification_func=lambda ctx: GraphOperationValidator.validate_graph_structure(
                 ctx.get("graph", {})
             ),
-            level=VerificationLevel.BASIC
+            level=VerificationLevel.BASIC,
         )
 
         self.checks["graph_acyclic"] = VerificationCheck(
@@ -331,10 +331,12 @@ class SelfVerificationEngine:
             check_name="Graph Acyclic Check",
             check_type="correctness",
             intent="Ensure graph is acyclic when required",
-            verification_func=lambda ctx: not GraphOperationValidator.detect_cycles(
-                ctx.get("graph", {})
-            ) if ctx.get("require_acyclic", False) else True,
-            level=VerificationLevel.STANDARD
+            verification_func=lambda ctx: (
+                not GraphOperationValidator.detect_cycles(ctx.get("graph", {}))
+                if ctx.get("require_acyclic", False)
+                else True
+            ),
+            level=VerificationLevel.STANDARD,
         )
 
     def _initialize_scheduling_checks(self):
@@ -345,10 +347,9 @@ class SelfVerificationEngine:
             check_type="correctness",
             intent="Ensure fair scheduling across contracts",
             verification_func=lambda ctx: SchedulingValidator.validate_fairness(
-                ctx.get("schedule", []),
-                ctx.get("window_size", 100)
+                ctx.get("schedule", []), ctx.get("window_size", 100)
             ),
-            level=VerificationLevel.STANDARD
+            level=VerificationLevel.STANDARD,
         )
 
         self.checks["scheduling_no_starvation"] = VerificationCheck(
@@ -357,10 +358,9 @@ class SelfVerificationEngine:
             check_type="correctness",
             intent="Ensure no contract is starved",
             verification_func=lambda ctx: SchedulingValidator.validate_no_starvation(
-                ctx.get("schedule", []),
-                ctx.get("max_wait_time", 60.0)
+                ctx.get("schedule", []), ctx.get("max_wait_time", 60.0)
             ),
-            level=VerificationLevel.STANDARD
+            level=VerificationLevel.STANDARD,
         )
 
     def _initialize_containment_strategies(self):
@@ -370,7 +370,7 @@ class SelfVerificationEngine:
             name="Rollback to Last Good State",
             description="Roll back to the last verified checkpoint",
             trigger_conditions=["verification_failure", "invariant_violation"],
-            actions=[self._action_rollback]
+            actions=[self._action_rollback],
         )
 
         self.containment_strategies["isolate"] = ContainmentStrategy(
@@ -378,14 +378,14 @@ class SelfVerificationEngine:
             name="Isolate Failed Component",
             description="Isolate the failing component to prevent cascade",
             trigger_conditions=["component_failure", "repeated_errors"],
-            actions=[self._action_isolate_component]
+            actions=[self._action_isolate_component],
         )
 
     def verify_operation(
         self,
         operation_type: str,
         context: Dict[str, Any],
-        level: VerificationLevel = VerificationLevel.STANDARD
+        level: VerificationLevel = VerificationLevel.STANDARD,
     ) -> Dict[str, Any]:
         """Verify an operation."""
         results = {}
@@ -410,7 +410,7 @@ class SelfVerificationEngine:
             "level": level.value,
             "results": {k: v.value for k, v in results.items()},
             "success": len(failures) == 0,
-            "failures": failures
+            "failures": failures,
         }
 
         self.verification_history.append(verification_record)
@@ -426,8 +426,9 @@ class SelfVerificationEngine:
         intent: str,
         current_behavior: Dict[str, Any]
     ) -> bool:
+    def detect_regression(self, intent: str, current_behavior: Dict[str, Any]) -> bool:
         """Detect regression by comparing intent fulfillment.
-        
+
         Returns True if regression detected (behavior changed in a way that
         violates intent).
         """
@@ -435,7 +436,7 @@ class SelfVerificationEngine:
         current_sig = RegressionSignature(
             signature_id=f"{intent}_{datetime.utcnow().timestamp()}",
             intent=intent,
-            behavioral_markers=current_behavior
+            behavioral_markers=current_behavior,
         )
 
         # Find previous signatures with same intent
@@ -443,6 +444,7 @@ class SelfVerificationEngine:
             sig for sig in self.regression_signatures.values()
             if sig.intent == intent
         ]
+        previous_sigs = [sig for sig in self.regression_signatures.values() if sig.intent == intent]
 
         if not previous_sigs:
             # First time seeing this intent, store and pass
@@ -464,6 +466,7 @@ class SelfVerificationEngine:
         failures: List[str],
         context: Dict[str, Any]
     ):
+    def _trigger_containment(self, failures: List[str], context: Dict[str, Any]):
         """Trigger appropriate containment strategies."""
         for strategy_id, strategy in self.containment_strategies.items():
             # Check if any trigger condition matches
@@ -500,7 +503,7 @@ class SelfVerificationEngine:
         for check_id, check in self.checks.items():
             check_stats[check_id] = {
                 "failure_count": check.failure_count,
-                "last_result": check.last_result.value if check.last_result else "never_run"
+                "last_result": check.last_result.value if check.last_result else "never_run",
             }
 
         return {
@@ -508,5 +511,5 @@ class SelfVerificationEngine:
             "total_failures": failures,
             "failure_rate": failures / max(total_verifications, 1),
             "check_stats": check_stats,
-            "regression_signatures": len(self.regression_signatures)
+            "regression_signatures": len(self.regression_signatures),
         }

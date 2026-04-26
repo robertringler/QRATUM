@@ -8,6 +8,7 @@ from qratum_asi import QRATUMASI
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.types import (ASISafetyLevel, AuthorizationType,
                                    ReasoningStrategy)
+from qratum_asi.core.types import ASISafetyLevel, AuthorizationType, ReasoningStrategy
 
 
 def main():
@@ -121,7 +122,7 @@ def main():
     print(f"  Goal: {synthesis['goal']}")
     print(f"  Domains: {', '.join(synthesis['domains'])}")
     print(f"  Insights: {len(synthesis['insights'])}")
-    for insight in synthesis['insights']:
+    for insight in synthesis["insights"]:
         print(f"    - {insight}")
     print()
 

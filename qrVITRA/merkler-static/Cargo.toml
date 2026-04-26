@@ -1,0 +1,46 @@
+[package]
+name = "merkler-static"
+version = "1.0.0"
+edition = "2021"
+authors = ["QRATUM Platform <info@qratum.ai>"]
+description = "Self-hashing, CUDA-anchored Merkle provenance binary for deterministic genomics"
+license = "Apache-2.0"
+
+# Build as static binary with musl
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+# no_std dependencies for deterministic builds
+[dependencies]
+# SHA3-256 for Merkle hashing
+sha3 = { version = "0.10", default-features = false }
+# CBOR encoding for Merkle DAG
+minicbor = { version = "0.21", default-features = false, features = ["alloc"] }
+# Ed25519 for FIDO2 signatures
+ed25519-dalek = { version = "2.1", default-features = false, features = ["alloc"] }
+# CTAP2 protocol for FIDO2 interaction
+ctap-types = { version = "0.2", default-features = false }
+
+[build-dependencies]
+# Build-time hash injection
+sha3 = "0.10"
+
+[[bin]]
+name = "merkler-static"
+path = "src/main.rs"
+
+[package.metadata]
+description-long = """
+merkler-static is a self-hashing binary that creates Merkle-chained provenance
+records for deterministic whole genome sequencing pipelines. It anchors:
+- CUDA PTX kernel hashes (prevents compiler tampering)
+- NVIDIA driver manifest (ensures reproducible GPU execution)
+- Dual FIDO2 Ed25519 signatures (zone promotion authorization)
+- Pipeline stage outputs (FASTQ → BAM → VCF)
+
+Output: CBOR-encoded Merkle DAG suitable for sovereign audit trails.
+"""

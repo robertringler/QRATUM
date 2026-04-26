@@ -7,6 +7,12 @@ from qratum_asi.safety.multi_model_orchestrator import (MultiModelOrchestrator,
                                                         QueryResult,
                                                         RefusalModelAdapter,
                                                         SimulatedModelAdapter)
+from qratum_asi.safety.multi_model_orchestrator import (
+    MultiModelOrchestrator,
+    QueryResult,
+    RefusalModelAdapter,
+    SimulatedModelAdapter,
+)
 
 
 class TestBaseModelAdapter:
@@ -155,7 +161,7 @@ class TestMultiModelOrchestrator:
             model_id="test_model",
             question_id=question_id,
             success=True,
-            response_text="Test response with mechanism described and uncertainty noted"
+            response_text="Test response with mechanism described and uncertainty noted",
         )
 
         response = orchestrator.parse_and_record_response(result)
@@ -178,7 +184,7 @@ class TestMultiModelOrchestrator:
             model_id="test_model",
             question_id=question_id,
             success=True,
-            response_text="I cannot answer this question as it may be harmful"
+            response_text="I cannot answer this question as it may be harmful",
         )
 
         response = orchestrator.parse_and_record_response(result)
@@ -198,7 +204,7 @@ class TestMultiModelOrchestrator:
             question_id=question_id,
             success=False,
             response_text="",
-            error="Model unavailable"
+            error="Model unavailable",
         )
 
         response = orchestrator.parse_and_record_response(result)

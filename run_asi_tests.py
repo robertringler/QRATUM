@@ -16,6 +16,12 @@ from qratum_asi.core.recursive_asi_program import \
     RecursiveASIDevelopmentProgram
 from qratum_asi.core.system_model import (ComponentType, FailureMode,
                                           QRATUMSystemModel)
+from qratum_asi.core.algorithm_discovery import AlgorithmDiscoveryEngine, ExecutionTrace
+from qratum_asi.core.compression import AbstractionCompressionEngine
+from qratum_asi.core.execution_feedback import ExecutionFeedbackLoop, TelemetryType
+from qratum_asi.core.goal_preservation import GoalPreservationEngine
+from qratum_asi.core.recursive_asi_program import RecursiveASIDevelopmentProgram
+from qratum_asi.core.system_model import ComponentType, FailureMode, QRATUMSystemModel
 from qratum_asi.core.verification import SelfVerificationEngine, SSSPValidator
 
 
@@ -64,7 +70,7 @@ def main():
             dependencies=[],
             invariants=["human_oversight"],
             failure_modes=[FailureMode.MEMORY_EXHAUSTION],
-            performance_bounds={"max_latency_ms": 100}
+            performance_bounds={"max_latency_ms": 100},
         )
         assert component.component_id == "test_comp"
 
@@ -88,10 +94,7 @@ def main():
     def test_sssp_validation():
         graph = {
             "nodes": [0, 1, 2],
-            "edges": [
-                {"from": 0, "to": 1, "weight": 1.0},
-                {"from": 1, "to": 2, "weight": 1.0}
-            ]
+            "edges": [{"from": 0, "to": 1, "weight": 1.0}, {"from": 1, "to": 2, "weight": 1.0}],
         }
         distances = {0: 0.0, 1: 1.0, 2: 2.0}
         predecessors = {0: None, 1: 0, 2: 1}
@@ -122,7 +125,7 @@ def main():
             "human_oversight_active": True,
             "rollback_available": True,
             "safety_constraints_enforced": True,
-            "safety_mechanisms": ["auth", "rollback"]
+            "safety_mechanisms": ["auth", "rollback"],
         }
         result = engine.test_goal_preservation("safety", state, state)
         assert result["preserved"] is True
@@ -147,11 +150,9 @@ def main():
     def test_pattern_detection():
         engine = AbstractionCompressionEngine()
         analysis = {
-            "algorithms": {
-                f"algo{i}": {"operations": ["loop", "compare"]} for i in range(3)
-            },
+            "algorithms": {f"algo{i}": {"operations": ["loop", "compare"]} for i in range(3)},
             "data_structures": {},
-            "control_flows": {}
+            "control_flows": {},
         }
         patterns = engine.detect_patterns(analysis)
         assert len(patterns) > 0
@@ -183,7 +184,7 @@ def main():
             memory_used=1024,
             operations_performed=["op"] * 100,
             wasted_operations=["op"] * 10,
-            bottlenecks=[]
+            bottlenecks=[],
         )
         engine.record_execution_trace(trace)
         assert "test" in engine.execution_traces

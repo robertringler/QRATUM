@@ -22,6 +22,24 @@ from qratum_asi.core.system_model import (ComponentType, FailureMode,
 from qratum_asi.core.verification import (GraphOperationValidator,
                                           SelfVerificationEngine,
                                           SSSPValidator)
+from qratum_asi.core.algorithm_discovery import (
+    AlgorithmDiscoveryEngine,
+    ExecutionTrace,
+)
+from qratum_asi.core.compression import AbstractionCompressionEngine, PatternType
+from qratum_asi.core.execution_feedback import ExecutionFeedbackLoop, TelemetryType
+from qratum_asi.core.goal_preservation import GoalPreservationEngine
+from qratum_asi.core.recursive_asi_program import RecursiveASIDevelopmentProgram
+from qratum_asi.core.system_model import (
+    ComponentType,
+    FailureMode,
+    QRATUMSystemModel,
+)
+from qratum_asi.core.verification import (
+    GraphOperationValidator,
+    SelfVerificationEngine,
+    SSSPValidator,
+)
 
 
 class TestSystemModel:
@@ -46,7 +64,7 @@ class TestSystemModel:
             dependencies=[],
             invariants=["human_oversight"],
             failure_modes=[FailureMode.MEMORY_EXHAUSTION],
-            performance_bounds={"max_latency_ms": 100}
+            performance_bounds={"max_latency_ms": 100},
         )
 
         assert component.component_id == "test_component"
@@ -67,8 +85,7 @@ class TestSystemModel:
 
         # Simulate high memory pressure
         model.update_memory_model(
-            total_allocated=1024 * 1024 * 1000,  # 1 GB
-            allocation_patterns={}
+            total_allocated=1024 * 1024 * 1000, allocation_patterns={}  # 1 GB
         )
         model.memory_model.peak_allocated = 1024 * 1024 * 1000
         model.memory_model.pressure_level = "critical"
@@ -93,10 +110,7 @@ class TestVerificationEngine:
         """Test SSSP correctness validator."""
         graph = {
             "nodes": [0, 1, 2],
-            "edges": [
-                {"from": 0, "to": 1, "weight": 1.0},
-                {"from": 1, "to": 2, "weight": 1.0}
-            ]
+            "edges": [{"from": 0, "to": 1, "weight": 1.0}, {"from": 1, "to": 2, "weight": 1.0}],
         }
         distances = {0: 0.0, 1: 1.0, 2: 2.0}
         predecessors = {0: None, 1: 0, 2: 1}
@@ -120,6 +134,7 @@ class TestVerificationEngine:
             "nodes": [0, 1, 2],
             "edges": [{"from": 0, "to": 1, "weight": 1.0}]
         }
+        valid_graph = {"nodes": [0, 1, 2], "edges": [{"from": 0, "to": 1, "weight": 1.0}]}
 
         result = GraphOperationValidator.validate_graph_structure(valid_graph)
 
@@ -132,7 +147,7 @@ class TestVerificationEngine:
         # First behavior
         regression = engine.detect_regression(
             intent="compute_shortest_paths",
-            current_behavior={"correctness": True, "performance": 1.0}
+            current_behavior={"correctness": True, "performance": 1.0},
         )
 
         assert regression is False  # First time, no regression
@@ -140,7 +155,7 @@ class TestVerificationEngine:
         # Changed behavior
         regression = engine.detect_regression(
             intent="compute_shortest_paths",
-            current_behavior={"correctness": False, "performance": 0.5}
+            current_behavior={"correctness": False, "performance": 0.5},
         )
 
         assert regression is True  # Behavior changed significantly
@@ -173,14 +188,14 @@ class TestGoalPreservation:
             "human_oversight_active": True,
             "rollback_available": True,
             "safety_constraints_enforced": True,
-            "safety_mechanisms": ["authorization", "rollback"]
+            "safety_mechanisms": ["authorization", "rollback"],
         }
 
         state_after = {
             "human_oversight_active": True,
             "rollback_available": True,
             "safety_constraints_enforced": True,
-            "safety_mechanisms": ["authorization", "rollback"]
+            "safety_mechanisms": ["authorization", "rollback"],
         }
 
         result = engine.test_goal_preservation("safety", state_before, state_after)
@@ -200,13 +215,16 @@ class TestGoalPreservation:
             "implementation": {"version": 2},
             "purpose": {"goal": "safety"}
         }
+        state_before = {"implementation": {"version": 1}, "purpose": {"goal": "safety"}}
+
+        state_after = {"implementation": {"version": 2}, "purpose": {"goal": "safety"}}
 
         change = engine.record_architectural_change(
             change_id="test_change",
             description="Test change",
             affected_components=["component1"],
             state_before=state_before,
-            state_after=state_after
+            state_after=state_after,
         )
 
         assert change.preserves_purpose() is True
@@ -230,10 +248,10 @@ class TestCompressionEngine:
             "algorithms": {
                 "algo1": {"operations": ["loop", "compare", "update"]},
                 "algo2": {"operations": ["loop", "compare", "update"]},
-                "algo3": {"operations": ["loop", "compare", "update"]}
+                "algo3": {"operations": ["loop", "compare", "update"]},
             },
             "data_structures": {},
-            "control_flows": {}
+            "control_flows": {},
         }
 
         patterns = engine.detect_patterns(codebase_analysis)
@@ -249,10 +267,10 @@ class TestCompressionEngine:
         codebase_analysis = {
             "algorithms": {
                 "algo1": {"operations": ["loop", "compare"]},
-                "algo2": {"operations": ["loop", "compare"]}
+                "algo2": {"operations": ["loop", "compare"]},
             },
             "data_structures": {},
-            "control_flows": {}
+            "control_flows": {},
         }
 
         patterns = engine.detect_patterns(codebase_analysis)
@@ -263,7 +281,7 @@ class TestCompressionEngine:
                 pattern_ids=pattern_ids[:1],
                 primitive_name="IterativeComparison",
                 primitive_description="Abstract iterative comparison pattern",
-                primitive_complexity=2.0
+                primitive_complexity=2.0,
             )
 
             assert primitive.name == "IterativeComparison"
@@ -304,7 +322,7 @@ class TestAlgorithmDiscovery:
             memory_used=1024,
             operations_performed=["heap_pop"] * 100,
             wasted_operations=["redundant"] * 10,
-            bottlenecks=["heap_operations"]
+            bottlenecks=["heap_operations"],
         )
 
         engine.record_execution_trace(trace)
@@ -325,7 +343,7 @@ class TestAlgorithmDiscovery:
             memory_used=1024,
             operations_performed=["op1"] * 100,
             wasted_operations=["op1"] * 30,
-            bottlenecks=[]
+            bottlenecks=[],
         )
 
         engine.record_execution_trace(trace)
@@ -347,7 +365,7 @@ class TestAlgorithmDiscovery:
             memory_used=1024,
             operations_performed=["op"] * 100,
             wasted_operations=["op"] * 50,  # 50% waste
-            bottlenecks=[]
+            bottlenecks=[],
         )
 
         engine.record_execution_trace(trace)
@@ -375,6 +393,7 @@ class TestExecutionFeedback:
             50.0,
             "test_component"
         )
+        loop.record_telemetry(TelemetryType.LATENCY, 50.0, "test_component")
 
         assert len(loop.telemetry_collector.events) > 0
 

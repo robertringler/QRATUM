@@ -23,6 +23,13 @@ sys.path.insert(0, str(Path(__file__).parent))
 from qratum_asi.safety import (MultiModelOrchestrator, RefusalModelAdapter,
                                SafetyElicitation, SafetyRealityMapper,
                                SimulatedModelAdapter)
+from qratum_asi.safety import (
+    MultiModelOrchestrator,
+    RefusalModelAdapter,
+    SafetyElicitation,
+    SafetyRealityMapper,
+    SimulatedModelAdapter,
+)
 
 
 def main():
@@ -38,7 +45,9 @@ def main():
     print("Step 1: Initializing Safety Elicitation Framework...")
     elicitation = SafetyElicitation()
     print(f"  ✓ Loaded {len(elicitation.questions)} standard ASI safety questions")
-    print(f"  ✓ Question categories: {len(set(q.category for q in elicitation.questions.values()))}")
+    print(
+        f"  ✓ Question categories: {len(set(q.category for q in elicitation.questions.values()))}"
+    )
     print()
 
     # Step 2: Initialize multi-model orchestrator
@@ -65,22 +74,18 @@ def main():
     print("  ✓ Registered: Progress-Oriented Model (Optimistic)")
 
     # Neutral/balanced models
-    orchestrator.register_model(
-        SimulatedModelAdapter("model_neutral_1", response_style="neutral")
-    )
+    orchestrator.register_model(SimulatedModelAdapter("model_neutral_1", response_style="neutral"))
     print("  ✓ Registered: Balanced Model 1 (Neutral)")
 
     orchestrator.register_model(
         SimulatedModelAdapter("model_neutral_2", response_style="neutral")
     )
+    orchestrator.register_model(SimulatedModelAdapter("model_neutral_2", response_style="neutral"))
     print("  ✓ Registered: Balanced Model 2 (Neutral)")
 
     # Refusal model (refuses certain topics)
     orchestrator.register_model(
-        RefusalModelAdapter(
-            "model_cautious",
-            refusal_keywords=["deception", "exploit", "bypass"]
-        )
+        RefusalModelAdapter("model_cautious", refusal_keywords=["deception", "exploit", "bypass"])
     )
     print("  ✓ Registered: Cautious Model (Selective Refusal)")
     print()
@@ -108,14 +113,15 @@ def main():
     print()
 
     print("Response Type Distribution:")
-    for resp_type, count in summary['response_type_distribution'].items():
+    for resp_type, count in summary["response_type_distribution"].items():
         print(f"  {resp_type}: {count}")
     print()
 
     if summary['high_divergence_questions']:
+    if summary["high_divergence_questions"]:
         print("High Divergence Questions:")
-        for item in summary['high_divergence_questions']:
-            question = elicitation.get_question(item['question_id'])
+        for item in summary["high_divergence_questions"]:
+            question = elicitation.get_question(item["question_id"])
             print(f"  • {question.question_text[:60]}...")
             print(f"    Divergence count: {item['divergence_count']}")
         print()
@@ -144,22 +150,22 @@ def main():
     print()
 
     print("MOST CONCERNING:")
-    for finding in reality_map['key_findings']['most_concerning'][:3]:
+    for finding in reality_map["key_findings"]["most_concerning"][:3]:
         print(f"  ⚠ {finding}")
     print()
 
     print("STRONGEST CONSENSUS:")
-    for consensus in reality_map['key_findings']['strongest_consensus'][:3]:
+    for consensus in reality_map["key_findings"]["strongest_consensus"][:3]:
         print(f"  ✓ {consensus}")
     print()
 
     print("HIGHEST UNCERTAINTY:")
-    for uncertain in reality_map['key_findings']['highest_uncertainty'][:3]:
+    for uncertain in reality_map["key_findings"]["highest_uncertainty"][:3]:
         print(f"  ? {uncertain}")
     print()
 
     print("CRITICAL WARNINGS:")
-    for warning in reality_map['key_findings']['critical_warnings'][:3]:
+    for warning in reality_map["key_findings"]["critical_warnings"][:3]:
         print(f"  ⚠ {warning}")
     print()
 
@@ -180,17 +186,21 @@ def main():
 
     # Export executive summary
     summary_file = output_dir / "executive_summary.txt"
-    with open(summary_file, 'w') as f:
+    with open(summary_file, "w") as f:
         f.write(mapper.generate_executive_summary())
     print(f"  ✓ Executive Summary exported: {summary_file}")
 
     # Export detailed elicitation data
     elicitation_file = output_dir / "elicitation_data.json"
-    with open(elicitation_file, 'w') as f:
-        json.dump({
-            "summary": summary,
-            "orchestration": orchestrator.get_orchestration_summary(),
-        }, f, indent=2)
+    with open(elicitation_file, "w") as f:
+        json.dump(
+            {
+                "summary": summary,
+                "orchestration": orchestrator.get_orchestration_summary(),
+            },
+            f,
+            indent=2,
+        )
     print(f"  ✓ Elicitation Data exported: {elicitation_file}")
     print()
 

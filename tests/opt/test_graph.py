@@ -76,11 +76,7 @@ class TestQGraph:
     def test_random_graph(self):
         """Test random graph generation."""
         graph = QGraph.random_graph(
-            num_nodes=10,
-            edge_probability=0.3,
-            seed=42,
-            directed=True,
-            max_weight=5.0
+            num_nodes=10, edge_probability=0.3, seed=42, directed=True, max_weight=5.0
         )
 
         assert graph.num_nodes == 10
@@ -156,17 +152,17 @@ class TestHierarchicalGraph:
             seed=42,
             directed=True
         )
+        base = QGraph.random_graph(num_nodes=20, edge_probability=0.2, seed=42, directed=True)
 
         hierarchy = HierarchicalGraph.from_contraction(
-            base_graph=base,
-            num_levels=3,
-            contraction_factor=0.5
+            base_graph=base, num_levels=3, contraction_factor=0.5
         )
 
         assert hierarchy.num_levels == 3
         assert hierarchy.levels[0].num_nodes == 20
         assert hierarchy.levels[1].num_nodes == 10  # 50% of 20
         assert hierarchy.levels[2].num_nodes == 5   # 50% of 10
+        assert hierarchy.levels[2].num_nodes == 5  # 50% of 10
 
         # Check that mappings exist
         assert len(hierarchy.node_mappings) == 2
@@ -180,9 +176,7 @@ class TestHierarchicalGraph:
         base.add_edge(2, 0, 1.0)
 
         hierarchy = HierarchicalGraph.from_contraction(
-            base_graph=base,
-            num_levels=2,
-            contraction_factor=0.5
+            base_graph=base, num_levels=2, contraction_factor=0.5
         )
 
         # Should have 2 levels

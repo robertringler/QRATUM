@@ -14,6 +14,11 @@ from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
 from qratum_asi.core.types import (PROHIBITED_GOALS, ASISafetyLevel,
                                    GoalCategory)
+from qratum_asi.core.types import (
+    PROHIBITED_GOALS,
+    ASISafetyLevel,
+    GoalCategory,
+)
 
 
 @dataclass
@@ -34,7 +39,7 @@ class GoalProposal:
 @dataclass
 class QWill:
     """Q-WILL: Autonomous Intent Generation.
-    
+
     Proposes goals based on system state analysis. ALL proposals require
     human authorization. Cannot propose prohibited goals.
     """
@@ -192,15 +197,11 @@ class QWill:
 
     def get_pending_goals(self) -> List[GoalProposal]:
         """Get all pending goal proposals."""
-        return [
-            goal
-            for goal in self.proposed_goals.values()
-            if goal.status == "proposed"
-        ]
+        return [goal for goal in self.proposed_goals.values() if goal.status == "proposed"]
 
     def _is_prohibited_goal(self, description: str, rationale: str) -> bool:
         """Check if goal matches prohibited goals.
-        
+
         NOTE: This is a placeholder implementation using simple keyword matching.
         A production implementation would require:
         - Semantic similarity analysis

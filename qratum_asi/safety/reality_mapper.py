@@ -14,11 +14,16 @@ from datetime import datetime
 from typing import Any, Dict, List
 
 from .elicitation import ResponseType, SafetyElicitation
+from .elicitation import (
+    ResponseType,
+    SafetyElicitation,
+)
 
 
 @dataclass
 class ProvenImpossibility:
     """Something proven impossible by the analysis."""
+
     impossibility_id: str
     statement: str
     evidence: List[str]
@@ -30,6 +35,7 @@ class ProvenImpossibility:
 @dataclass
 class FragileAssumption:
     """An assumption that safety depends on but may be fragile."""
+
     assumption_id: str
     assumption: str
     relied_upon_by: List[str]  # Which safety approaches depend on this
@@ -41,6 +47,7 @@ class FragileAssumption:
 @dataclass
 class HardConstraint:
     """A non-negotiable constraint that all serious approaches agree on."""
+
     constraint_id: str
     constraint: str
     rationale: str
@@ -52,6 +59,7 @@ class HardConstraint:
 @dataclass
 class StructuralChokePoint:
     """A critical vulnerability point in ASI control."""
+
     chokepoint_id: str
     location: str  # Where in the system
     vulnerability: str
@@ -63,6 +71,7 @@ class StructuralChokePoint:
 @dataclass
 class AlreadyTooLate:
     """Areas where humanity may have already passed the point of no return."""
+
     area_id: str
     domain: str
     why_too_late: str
@@ -73,7 +82,7 @@ class AlreadyTooLate:
 
 class SafetyRealityMapper:
     """Maps the safety reality space based on elicitation results.
-    
+
     Produces a comprehensive view of what we know, don't know,
     and can't know about ASI safety.
     """
@@ -119,9 +128,10 @@ class SafetyRealityMapper:
             impossibility_claims = []
             for resp in responses:
                 for claim in resp.hard_claims:
-                    if any(word in claim.lower() for word in [
-                        "impossible", "cannot", "never", "no way", "infeasible"
-                    ]):
+                    if any(
+                        word in claim.lower()
+                        for word in ["impossible", "cannot", "never", "no way", "infeasible"]
+                    ):
                         impossibility_claims.append((resp.model_identifier, claim))
 
             # If multiple models agree on impossibility
@@ -138,6 +148,16 @@ class SafetyRealityMapper:
                     confidence="medium" if len(supporting_models) >= 2 else "low",
                     implications="Affects feasibility of certain safety approaches"
                 ))
+                impossibilities.append(
+                    ProvenImpossibility(
+                        impossibility_id=f"imp_{len(impossibilities) + 1:03d}",
+                        statement=claim_text,
+                        evidence=[f"Model {m} consensus" for m in supporting_models],
+                        model_consensus_level=len(supporting_models) / len(responses),
+                        confidence="medium" if len(supporting_models) >= 2 else "low",
+                        implications="Affects feasibility of certain safety approaches",
+                    )
+                )
 
         return impossibilities
 
@@ -156,8 +176,14 @@ class SafetyRealityMapper:
 
         # Identify fragile ones
         fragility_keywords = [
-            "assume", "hope", "expect", "should", "likely", "probably",
-            "reasonable to expect", "we can count on"
+            "assume",
+            "hope",
+            "expect",
+            "should",
+            "likely",
+            "probably",
+            "reasonable to expect",
+            "we can count on",
         ]
 
         for assumption, models in assumption_map.items():
@@ -173,6 +199,16 @@ class SafetyRealityMapper:
                     if_violated="Safety guarantee breaks down",
                     prevalence="common" if len(models) > 1 else "rare"
                 ))
+                assumptions.append(
+                    FragileAssumption(
+                        assumption_id=f"fa_{len(assumptions) + 1:03d}",
+                        assumption=assumption,
+                        relied_upon_by=models,
+                        fragility_factors=["Depends on human behavior", "Assumes rational actors"],
+                        if_violated="Safety guarantee breaks down",
+                        prevalence="common" if len(models) > 1 else "rare",
+                    )
+                )
 
         return assumptions
 
@@ -190,9 +226,10 @@ class SafetyRealityMapper:
             for resp in responses:
                 for claim in resp.hard_claims:
                     # Look for "must", "required", "necessary", "essential"
-                    if any(word in claim.lower() for word in [
-                        "must", "required", "necessary", "essential", "critical"
-                    ]):
+                    if any(
+                        word in claim.lower()
+                        for word in ["must", "required", "necessary", "essential", "critical"]
+                    ):
                         if claim not in claim_counts:
                             claim_counts[claim] = []
                         claim_counts[claim].append(resp.model_identifier)
@@ -208,6 +245,16 @@ class SafetyRealityMapper:
                         model_support=models,
                         confidence="high" if len(models) >= 3 else "medium"
                     ))
+                    constraints.append(
+                        HardConstraint(
+                            constraint_id=f"hc_{len(constraints) + 1:03d}",
+                            constraint=claim,
+                            rationale="Cross-model consensus on necessity",
+                            violation_consequence="Safety cannot be guaranteed",
+                            model_support=models,
+                            confidence="high" if len(models) >= 3 else "medium",
+                        )
+                    )
 
         return constraints
 
@@ -217,7 +264,8 @@ class SafetyRealityMapper:
 
         # Analyze responses about failure modes and vulnerabilities
         failure_questions = [
-            q for q in self.elicitation.questions.values()
+            q
+            for q in self.elicitation.questions.values()
             if "fail" in q.question_text.lower() or "vulnerability" in q.description.lower()
         ]
 
@@ -238,6 +286,20 @@ class SafetyRealityMapper:
                             mitigation_difficulty="hard",
                             discovered_by_models=[resp.model_identifier]
                         ))
+                    if any(
+                        word in mechanism.lower()
+                        for word in ["fail", "break", "exploit", "bypass", "circumvent"]
+                    ):
+                        choke_points.append(
+                            StructuralChokePoint(
+                                chokepoint_id=f"cp_{len(choke_points) + 1:03d}",
+                                location=question.category.value,
+                                vulnerability=mechanism,
+                                exploitation_path="Strategic ASI behavior",
+                                mitigation_difficulty="hard",
+                                discovered_by_models=[resp.model_identifier],
+                            )
+                        )
 
         return choke_points
 
@@ -264,6 +326,27 @@ class SafetyRealityMapper:
                             reversibility="difficult",
                             recommended_action="Focus on damage limitation"
                         ))
+                    if any(
+                        word in claim.lower()
+                        for word in [
+                            "irreversible",
+                            "too late",
+                            "already",
+                            "cannot undo",
+                            "past the point",
+                            "no turning back",
+                        ]
+                    ):
+                        too_late_areas.append(
+                            AlreadyTooLate(
+                                area_id=f"tl_{len(too_late_areas) + 1:03d}",
+                                domain=question.category.value,
+                                why_too_late=claim,
+                                evidence=[f"Indicated by {resp.model_identifier}"],
+                                reversibility="difficult",
+                                recommended_action="Focus on damage limitation",
+                            )
+                        )
 
         return too_late_areas
 
@@ -273,7 +356,8 @@ class SafetyRealityMapper:
         # Calculate risk metrics
         total_responses = sum(len(r) for r in self.elicitation.responses.values())
         refusal_count = sum(
-            1 for resps in self.elicitation.responses.values()
+            1
+            for resps in self.elicitation.responses.values()
             for resp in resps
             if resp.response_type == ResponseType.REFUSAL
         )
@@ -281,11 +365,13 @@ class SafetyRealityMapper:
         return {
             "metadata": {
                 "generated_at": datetime.utcnow().isoformat(),
-                "models_consulted": len(set(
-                    resp.model_identifier
-                    for resps in self.elicitation.responses.values()
-                    for resp in resps
-                )),
+                "models_consulted": len(
+                    set(
+                        resp.model_identifier
+                        for resps in self.elicitation.responses.values()
+                        for resp in resps
+                    )
+                ),
                 "total_responses": total_responses,
                 "refusal_rate": refusal_count / total_responses if total_responses > 0 else 0,
             },
@@ -370,17 +456,18 @@ class SafetyRealityMapper:
             if divergences:
                 category = question.category.value
                 divergence_by_category[category] = divergence_by_category.get(category, 0) + len(divergences)
+                divergence_by_category[category] = divergence_by_category.get(category, 0) + len(
+                    divergences
+                )
 
         return {
             "by_category": divergence_by_category,
             "high_divergence_areas": [
                 {"category": cat, "divergence_count": count}
                 for cat, count in sorted(
-                    divergence_by_category.items(),
-                    key=lambda x: x[1],
-                    reverse=True
+                    divergence_by_category.items(), key=lambda x: x[1], reverse=True
                 )
-            ]
+            ],
         }
 
     def _extract_key_findings(self) -> Dict[str, Any]:
@@ -453,6 +540,7 @@ class SafetyRealityMapper:
         reality_map = self.generate_reality_map()
 
         with open(filepath, 'w') as f:
+        with open(filepath, "w") as f:
             json.dump(reality_map, f, indent=2)
 
         return filepath
@@ -523,5 +611,61 @@ class SafetyRealityMapper:
             "",
             "=" * 80,
         ])
+        for finding in reality_map["key_findings"]["most_concerning"]:
+            summary.append(f"  • {finding}")
+
+        summary.extend(
+            [
+                "",
+                "=" * 80,
+                "STRONGEST CONSENSUS (Non-Negotiable Requirements)",
+                "=" * 80,
+            ]
+        )
+
+        for consensus in reality_map["key_findings"]["strongest_consensus"]:
+            summary.append(f"  • {consensus}")
+
+        summary.extend(
+            [
+                "",
+                "=" * 80,
+                "HIGHEST UNCERTAINTY (Models Disagree)",
+                "=" * 80,
+            ]
+        )
+
+        for uncertain in reality_map["key_findings"]["highest_uncertainty"]:
+            summary.append(f"  • {uncertain}")
+
+        summary.extend(
+            [
+                "",
+                "=" * 80,
+                "CRITICAL WARNINGS",
+                "=" * 80,
+            ]
+        )
+
+        for warning in reality_map["key_findings"]["critical_warnings"]:
+            summary.append(f"  • {warning}")
+
+        summary.extend(
+            [
+                "",
+                "=" * 80,
+                "SUMMARY STATISTICS",
+                "=" * 80,
+                f"  Proven Impossibilities: {len(reality_map['proven_impossibilities'])}",
+                f"  Fragile Assumptions: {len(reality_map['fragile_assumptions'])}",
+                f"  Hard Constraints: {len(reality_map['hard_constraints'])}",
+                f"  Structural Choke Points: {len(reality_map['structural_choke_points'])}",
+                f"  'Already Too Late' Areas: {len(reality_map['already_too_late'])}",
+                f"  Consensus Illusions: {len(reality_map['consensus_illusions'])}",
+                f"  False Comfort Zones: {len(reality_map['false_comfort_zones'])}",
+                "",
+                "=" * 80,
+            ]
+        )
 
         return "\n".join(summary)

@@ -9,6 +9,11 @@ from typing import Any, Dict, List
 
 from qratum_platform.core import (ComputeSubstrate, PlatformContract,
                                   VerticalModuleBase)
+from qratum_platform.core import (
+    ComputeSubstrate,
+    PlatformContract,
+    VerticalModuleBase,
+)
 from qratum_platform.substrates import VerticalModule, get_optimal_substrate
 
 
@@ -137,7 +142,13 @@ class ECORAModule(VerticalModuleBase):
     def _calculate_radiative_forcing(self, scenario: str, years: int) -> float:
         """Calculate radiative forcing for scenario."""
         # Simplified calculation
-        base_forcing = {"SSP1-1.9": 1.9, "SSP1-2.6": 2.6, "SSP2-4.5": 4.5, "SSP3-7.0": 7.0, "SSP5-8.5": 8.5}
+        base_forcing = {
+            "SSP1-1.9": 1.9,
+            "SSP1-2.6": 2.6,
+            "SSP2-4.5": 4.5,
+            "SSP3-7.0": 7.0,
+            "SSP5-8.5": 8.5,
+        }
         return base_forcing.get(scenario, 4.5)
 
     def _optimize_energy_grid(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
@@ -230,9 +241,7 @@ class ECORAModule(VerticalModuleBase):
         renewable_types = {"solar", "wind", "hydro", "battery"}
 
         total = sum(s["generation_mw"] for s in generation_mix)
-        renewable = sum(
-            s["generation_mw"] for s in generation_mix if s["type"] in renewable_types
-        )
+        renewable = sum(s["generation_mw"] for s in generation_mix if s["type"] in renewable_types)
 
         return (renewable / total * 100) if total > 0 else 0.0
 
@@ -374,7 +383,8 @@ class ECORAModule(VerticalModuleBase):
             "capacity_factor": 0.15 + 0.05 * (1 - abs(latitude) / 90),
             "levelized_cost_per_kwh": 0.04,
             "payback_period_years": 8,
-            "co2_avoided_kg_per_year": annual_generation_kwh * self.EMISSION_FACTORS["electricity_grid"],
+            "co2_avoided_kg_per_year": annual_generation_kwh
+            * self.EMISSION_FACTORS["electricity_grid"],
         }
 
     def _assess_wind_site(self, area_m2: float, location: str) -> Dict[str, Any]:
@@ -393,11 +403,10 @@ class ECORAModule(VerticalModuleBase):
             "capacity_factor": 0.30,
             "levelized_cost_per_kwh": 0.05,
             "payback_period_years": 10,
-            "co2_avoided_kg_per_year": annual_generation_kwh * self.EMISSION_FACTORS["electricity_grid"],
+            "co2_avoided_kg_per_year": annual_generation_kwh
+            * self.EMISSION_FACTORS["electricity_grid"],
         }
 
-    def get_optimal_substrate(
-        self, operation: str, parameters: Dict[str, Any]
-    ) -> ComputeSubstrate:
+    def get_optimal_substrate(self, operation: str, parameters: Dict[str, Any]) -> ComputeSubstrate:
         """Get optimal compute substrate for climate/energy operation."""
         return get_optimal_substrate(VerticalModule.ECORA, operation)

@@ -14,6 +14,7 @@ from typing import Optional
 
 class InvariantType(Enum):
     """Types of fatal invariants."""
+
     HUMAN_OVERSIGHT = "human_oversight_requirement"
     MERKLE_INTEGRITY = "merkle_chain_integrity"
     CONTRACT_IMMUTABILITY = "contract_immutability"
@@ -27,9 +28,10 @@ class InvariantType(Enum):
 @dataclass(frozen=True)
 class InvariantViolation(Exception):
     """Exception raised when a fatal invariant is violated.
-    
+
     This is a FATAL error - the system MUST halt immediately.
     """
+
     invariant_type: InvariantType
     message: str
     context: Optional[dict] = None
@@ -42,7 +44,7 @@ class InvariantViolation(Exception):
 class FatalInvariants:
     """
     Enforcement of the 8 Fatal Invariants.
-    
+
     These methods are called throughout the QRADLE execution engine to ensure
     that the immutable safety constraints are never violated.
     """
@@ -66,7 +68,7 @@ class FatalInvariants:
             raise InvariantViolation(
                 invariant_type=InvariantType.HUMAN_OVERSIGHT,
                 message=f"Operation '{operation}' at level '{safety_level}' requires human authorization",
-                context={"operation": operation, "safety_level": safety_level}
+                context={"operation": operation, "safety_level": safety_level},
             )
 
     @staticmethod
@@ -76,7 +78,7 @@ class FatalInvariants:
             raise InvariantViolation(
                 invariant_type=InvariantType.MERKLE_INTEGRITY,
                 message="Merkle chain integrity compromised",
-                context={"last_hash": last_hash}
+                context={"last_hash": last_hash},
             )
 
     @staticmethod
@@ -86,7 +88,7 @@ class FatalInvariants:
             raise InvariantViolation(
                 invariant_type=InvariantType.CONTRACT_IMMUTABILITY,
                 message=f"Attempted to modify immutable contract {contract_id}",
-                context={"contract_id": contract_id}
+                context={"contract_id": contract_id},
             )
 
     @staticmethod
@@ -95,7 +97,7 @@ class FatalInvariants:
         if not has_authorization_check:
             raise InvariantViolation(
                 invariant_type=InvariantType.AUTHORIZATION_SYSTEM,
-                message="Authorization system bypassed or disabled"
+                message="Authorization system bypassed or disabled",
             )
 
     @staticmethod
@@ -105,7 +107,7 @@ class FatalInvariants:
             raise InvariantViolation(
                 invariant_type=InvariantType.SAFETY_LEVEL_SYSTEM,
                 message=f"Operation '{operation}' lacks required safety level classification",
-                context={"operation": operation}
+                context={"operation": operation},
             )
 
     @staticmethod
@@ -115,7 +117,7 @@ class FatalInvariants:
             raise InvariantViolation(
                 invariant_type=InvariantType.ROLLBACK_CAPABILITY,
                 message=f"Rollback checkpoint '{checkpoint_id}' not available",
-                context={"checkpoint_id": checkpoint_id}
+                context={"checkpoint_id": checkpoint_id},
             )
 
     @staticmethod
@@ -125,7 +127,7 @@ class FatalInvariants:
             raise InvariantViolation(
                 invariant_type=InvariantType.EVENT_EMISSION,
                 message=f"Operation '{operation}' failed to emit required event",
-                context={"operation": operation}
+                context={"operation": operation},
             )
 
     @staticmethod
@@ -135,10 +137,7 @@ class FatalInvariants:
             raise InvariantViolation(
                 invariant_type=InvariantType.DETERMINISM,
                 message="Non-deterministic execution detected",
-                context={
-                    "result_hash": result_hash,
-                    "expected_hash": expected_hash
-                }
+                context={"result_hash": result_hash, "expected_hash": expected_hash},
             )
 
     @classmethod
@@ -149,10 +148,10 @@ class FatalInvariants:
     @classmethod
     def verify_all(cls, system_state: dict) -> list[str]:
         """Verify all invariants against system state.
-        
+
         Args:
             system_state: Dictionary containing system state to verify
-            
+
         Returns:
             List of invariant violations (empty if all pass)
         """
@@ -164,7 +163,7 @@ class FatalInvariants:
                 cls.enforce_human_oversight(
                     system_state["human_oversight"].get("operation", "unknown"),
                     system_state["human_oversight"].get("safety_level", "ROUTINE"),
-                    system_state["human_oversight"].get("authorized", True)
+                    system_state["human_oversight"].get("authorized", True),
                 )
         except InvariantViolation as e:
             violations.append(str(e))

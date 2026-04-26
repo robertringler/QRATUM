@@ -2,7 +2,7 @@
 
 Orchestrator that integrates all 6 phases:
 - PHASE I: System Self-Model Construction
-- PHASE II: Self-Verification Engine  
+- PHASE II: Self-Verification Engine
 - PHASE III: Goal Preservation Under Change
 - PHASE IV: Abstraction Compression Engine
 - PHASE V: Autonomous Algorithm Discovery
@@ -28,11 +28,18 @@ from qratum_asi.core.goal_preservation import GoalPreservationEngine
 from qratum_asi.core.system_model import QRATUMSystemModel
 from qratum_asi.core.verification import (SelfVerificationEngine,
                                           VerificationLevel)
+from qratum_asi.core.algorithm_discovery import AlgorithmDiscoveryEngine, ExecutionTrace
+from qratum_asi.core.compression import AbstractionCompressionEngine
+from qratum_asi.core.execution_feedback import ExecutionFeedbackLoop, TelemetryType
+from qratum_asi.core.goal_preservation import GoalPreservationEngine
+from qratum_asi.core.system_model import QRATUMSystemModel
+from qratum_asi.core.verification import SelfVerificationEngine, VerificationLevel
 
 
 @dataclass
 class RecursiveIterationMetrics:
     """Metrics for one recursive improvement iteration."""
+
     iteration_number: int
 
     # Improvement speed (key success criterion)
@@ -59,6 +66,7 @@ class RecursiveIterationMetrics:
     timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
 
     def get_improvement_velocity(self, previous: Optional['RecursiveIterationMetrics']) -> float:
+    def get_improvement_velocity(self, previous: Optional["RecursiveIterationMetrics"]) -> float:
         """Calculate improvement velocity (improvements per second)."""
         if previous is None or self.iteration_duration == 0:
             return 0.0
@@ -66,12 +74,16 @@ class RecursiveIterationMetrics:
         return self.improvements_implemented / self.iteration_duration
 
     def is_progressing_toward_asi(self, previous: Optional['RecursiveIterationMetrics']) -> bool:
+    def is_progressing_toward_asi(self, previous: Optional["RecursiveIterationMetrics"]) -> bool:
         """Check if progressing toward ASI based on success criteria."""
         if previous is None:
             return True  # First iteration, assume progress
 
         # Check: Each iteration improves future improvement speed
         velocity_increasing = self.get_improvement_velocity(previous) > previous.get_improvement_velocity(None)
+        velocity_increasing = self.get_improvement_velocity(
+            previous
+        ) > previous.get_improvement_velocity(None)
 
         # Check: System becomes simpler as it becomes more capable
         complexity_decreasing = self.system_complexity < previous.system_complexity
@@ -91,13 +103,21 @@ class RecursiveIterationMetrics:
             autonomy_increasing or self.human_interventions == 0,
             autonomous_repair or self.autonomous_fixes > 0
         ])
+        criteria_met = sum(
+            [
+                velocity_increasing,
+                simplifying_while_improving,
+                autonomy_increasing or self.human_interventions == 0,
+                autonomous_repair or self.autonomous_fixes > 0,
+            ]
+        )
 
         return criteria_met >= 3
 
 
 class RecursiveASIDevelopmentProgram:
     """Orchestrator for QRATUM-QRADLE Recursive ASI Development.
-    
+
     This is not a feature delivery system - it's a capability emergence system.
     Success = the system gets better at making itself better.
     """
@@ -133,7 +153,7 @@ class RecursiveASIDevelopmentProgram:
 
     def run_recursive_iteration(self) -> Dict[str, Any]:
         """Run one iteration of recursive self-improvement.
-        
+
         Returns:
             Metrics and status for this iteration
         """
@@ -190,7 +210,7 @@ class RecursiveASIDevelopmentProgram:
         # Get current system metrics
         compression_metrics = self.compression_engine.compute_metrics(
             system_behavior_coverage=1.0,
-            system_performance=feedback_results.get("system_performance", 1.0)
+            system_performance=feedback_results.get("system_performance", 1.0),
         )
 
         metrics = RecursiveIterationMetrics(
@@ -205,7 +225,7 @@ class RecursiveASIDevelopmentProgram:
             novel_discoveries=discovery_results["novel_discoveries"],
             human_interventions=human_interventions,
             autonomous_fixes=autonomous_fixes,
-            system_performance=feedback_results.get("system_performance", 1.0)
+            system_performance=feedback_results.get("system_performance", 1.0),
         )
 
         # Check ASI progress
@@ -224,20 +244,20 @@ class RecursiveASIDevelopmentProgram:
             "duration_seconds": iteration_duration,
             "improvements": {
                 "discovered": improvements_discovered,
-                "implemented": improvements_implemented
+                "implemented": improvements_implemented,
             },
             "system_state": {
                 "complexity": metrics.system_complexity,
                 "primitives": metrics.conceptual_primitives,
                 "compression_ratio": metrics.compression_ratio,
-                "capability_score": metrics.system_capability_score
+                "capability_score": metrics.system_capability_score,
             },
             "autonomy": {
                 "human_interventions": human_interventions,
-                "autonomous_fixes": autonomous_fixes
+                "autonomous_fixes": autonomous_fixes,
             },
             "progressing_toward_asi": progressing,
-            "metrics": metrics
+            "metrics": metrics,
         }
 
     def _update_system_model(self) -> Dict[str, Any]:
@@ -245,15 +265,12 @@ class RecursiveASIDevelopmentProgram:
         # Update memory model (simulated)
         self.system_model.update_memory_model(
             total_allocated=1024 * 1024 * 100,  # 100 MB
-            allocation_patterns={"qradle": 50 * 1024 * 1024, "qratum": 50 * 1024 * 1024}
+            allocation_patterns={"qradle": 50 * 1024 * 1024, "qratum": 50 * 1024 * 1024},
         )
 
         # Update scheduling model (simulated)
         self.system_model.update_scheduling_model(
-            active_contracts=5,
-            queued_contracts=2,
-            average_wait_time=0.1,
-            throughput=50.0
+            active_contracts=5, queued_contracts=2, average_wait_time=0.1, throughput=50.0
         )
 
         return self.system_model.get_system_state()
@@ -268,15 +285,15 @@ class RecursiveASIDevelopmentProgram:
                 "graph": {"nodes": list(range(10)), "edges": []},
                 "source": 0,
                 "distances": {i: float(i) for i in range(10)},
-                "predecessors": {i: i-1 if i > 0 else None for i in range(10)}
+                "predecessors": {i: i - 1 if i > 0 else None for i in range(10)},
             },
-            level=VerificationLevel.STANDARD
+            level=VerificationLevel.STANDARD,
         )
 
         return {
             "success": verification["success"],
             "failures": verification["failures"],
-            "verification": verification
+            "verification": verification,
         }
 
     def _attempt_autonomous_repair(self, verification_results: Dict[str, Any]) -> bool:
@@ -309,6 +326,7 @@ class RecursiveASIDevelopmentProgram:
             state_before,
             state_after
         )
+        results = self.goal_preservation.test_all_goals_preserved(state_before, state_after)
 
         return results
 
@@ -319,18 +337,18 @@ class RecursiveASIDevelopmentProgram:
             "algorithms": {
                 "algo1": {"operations": ["loop", "compare", "update"]},
                 "algo2": {"operations": ["loop", "compare", "update"]},
-                "algo3": {"operations": ["loop", "compare", "update"]}
+                "algo3": {"operations": ["loop", "compare", "update"]},
             },
             "data_structures": {
                 "ds1": {"type": "array", "operations": ["insert", "search"]},
-                "ds2": {"type": "array", "operations": ["insert", "search"]}
+                "ds2": {"type": "array", "operations": ["insert", "search"]},
             },
             "control_flows": {
                 "cf1": {"structure": "loop"},
                 "cf2": {"structure": "loop"},
                 "cf3": {"structure": "loop"},
-                "cf4": {"structure": "loop"}
-            }
+                "cf4": {"structure": "loop"},
+            },
         }
 
         patterns = self.compression_engine.detect_patterns(codebase_analysis)
@@ -342,6 +360,7 @@ class RecursiveASIDevelopmentProgram:
             "patterns_detected": len(patterns),
             "top_opportunities": opportunities
         }
+        return {"patterns_detected": len(patterns), "top_opportunities": opportunities}
 
     def _run_algorithm_discovery(self) -> Dict[str, Any]:
         """Run algorithm discovery."""
@@ -354,7 +373,7 @@ class RecursiveASIDevelopmentProgram:
             memory_used=1024 * 100,
             operations_performed=["heap_pop"] * 1000 + ["update_distance"] * 500,
             wasted_operations=["redundant_check"] * 50,
-            bottlenecks=["heap_operations"]
+            bottlenecks=["heap_operations"],
         )
 
         self.discovery_engine.record_execution_trace(trace)
@@ -374,21 +393,15 @@ class RecursiveASIDevelopmentProgram:
 
         for component in components:
             self.feedback_loop.record_telemetry(
-                TelemetryType.LATENCY,
-                50.0 + (hash(component) % 50),
-                component
+                TelemetryType.LATENCY, 50.0 + (hash(component) % 50), component
             )
 
             self.feedback_loop.record_telemetry(
-                TelemetryType.CACHE_MISS,
-                0.1 + (hash(component) % 20) / 100.0,
-                component
+                TelemetryType.CACHE_MISS, 0.1 + (hash(component) % 20) / 100.0, component
             )
 
             self.feedback_loop.record_telemetry(
-                TelemetryType.MEMORY_PRESSURE,
-                0.3 + (hash(component) % 40) / 100.0,
-                component
+                TelemetryType.MEMORY_PRESSURE, 0.3 + (hash(component) % 40) / 100.0, component
             )
 
         # Run feedback iteration
@@ -398,7 +411,7 @@ class RecursiveASIDevelopmentProgram:
 
     def get_asi_progress_report(self) -> Dict[str, Any]:
         """Generate comprehensive ASI progress report.
-        
+
         Evaluates against the strict criteria:
         - Each iteration improves future improvement speed
         - System becomes simpler as it becomes more capable
@@ -428,8 +441,8 @@ class RecursiveASIDevelopmentProgram:
         simpler_and_better = complexity_decreasing and capability_increasing
 
         # Criterion 3: Human guidance advisory
-        autonomy_ratio = (
-            self.total_autonomous_fixes / max(self.total_human_interventions + self.total_autonomous_fixes, 1)
+        autonomy_ratio = self.total_autonomous_fixes / max(
+            self.total_human_interventions + self.total_autonomous_fixes, 1
         )
         guidance_advisory = autonomy_ratio > 0.5  # More autonomous than human-driven
 
@@ -443,6 +456,14 @@ class RecursiveASIDevelopmentProgram:
             guidance_advisory,
             autonomous_repair_active
         ])
+        criteria_met = sum(
+            [
+                bool(improvement_speed_increasing),
+                simpler_and_better,
+                guidance_advisory,
+                autonomous_repair_active,
+            ]
+        )
 
         progressing = criteria_met >= 3
 
@@ -456,7 +477,7 @@ class RecursiveASIDevelopmentProgram:
                 "guidance_advisory": guidance_advisory,
                 "autonomous_repair": autonomous_repair_active,
                 "criteria_met": criteria_met,
-                "required": 3
+                "required": 3,
             },
             "metrics": {
                 "total_improvements": self.total_improvements,
@@ -466,6 +487,6 @@ class RecursiveASIDevelopmentProgram:
                 "current_complexity": latest.system_complexity,
                 "current_capability": latest.system_capability_score,
                 "initial_complexity": first.system_complexity,
-                "initial_capability": first.system_capability_score
-            }
+                "initial_capability": first.system_capability_score,
+            },
         }

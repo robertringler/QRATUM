@@ -15,7 +15,7 @@ from .base import VerticalModuleBase
 class EcoraModule(VerticalModuleBase):
     """
     Climate and energy systems AI module.
-    
+
     Capabilities:
     - Climate modeling and projection (SSP scenarios)
     - Energy system optimization
@@ -67,8 +67,11 @@ class EcoraModule(VerticalModuleBase):
             raise ValueError(f"Unknown task: {task}")
 
         self.emit_task_event(
-            EventType.TASK_STARTED, contract.contract_id, task,
-            {"parameters": parameters}, event_chain
+            EventType.TASK_STARTED,
+            contract.contract_id,
+            task,
+            {"parameters": parameters},
+            event_chain,
         )
 
         handlers = {
@@ -83,8 +86,11 @@ class EcoraModule(VerticalModuleBase):
         result = handlers[task](parameters)
 
         self.emit_task_event(
-            EventType.TASK_COMPLETED, contract.contract_id, task,
-            {"result_type": type(result).__name__}, event_chain
+            EventType.TASK_COMPLETED,
+            contract.contract_id,
+            task,
+            {"result_type": type(result).__name__},
+            event_chain,
         )
 
         return self.format_output(result)

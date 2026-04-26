@@ -29,7 +29,7 @@ class TestDeterministicEngine:
             parameters={"x": 10, "y": 20},
             timestamp="2025-01-01T00:00:00Z",
             safety_level="ROUTINE",
-            authorized=True
+            authorized=True,
         )
 
         # Simple deterministic function
@@ -53,7 +53,7 @@ class TestDeterministicEngine:
             parameters={"value": 42},
             timestamp="2025-01-01T00:00:00Z",
             safety_level="ROUTINE",
-            authorized=True
+            authorized=True,
         )
 
         def executor(params):
@@ -78,7 +78,7 @@ class TestDeterministicEngine:
             parameters={},
             timestamp="2025-01-01T00:00:00Z",
             safety_level="SENSITIVE",
-            authorized=False  # Not authorized!
+            authorized=False,  # Not authorized!
         )
 
         def executor(params):
@@ -96,7 +96,7 @@ class TestDeterministicEngine:
             parameters={"data": "test"},
             timestamp="2025-01-01T00:00:00Z",
             safety_level="ROUTINE",
-            authorized=True
+            authorized=True,
         )
 
         def executor(params):
@@ -116,7 +116,7 @@ class TestDeterministicEngine:
             parameters={"step": 1},
             timestamp="2025-01-01T00:00:00Z",
             safety_level="ROUTINE",
-            authorized=True
+            authorized=True,
         )
 
         result1 = engine.execute_contract(context1, lambda p: p["step"])
@@ -128,7 +128,7 @@ class TestDeterministicEngine:
             parameters={"step": 2},
             timestamp="2025-01-01T00:01:00Z",
             safety_level="ROUTINE",
-            authorized=True
+            authorized=True,
         )
         engine.execute_contract(context2, lambda p: p["step"])
 
@@ -145,7 +145,7 @@ class TestDeterministicEngine:
             parameters={"value": 100},
             timestamp="2025-01-01T00:00:00Z",
             safety_level="ROUTINE",
-            authorized=True
+            authorized=True,
         )
 
         result = engine.execute_contract(context, lambda p: p["value"] * 2)
@@ -165,7 +165,7 @@ class TestDeterministicEngine:
             parameters={"x": 5},
             timestamp="2025-01-01T00:00:00Z",
             safety_level="ROUTINE",
-            authorized=True
+            authorized=True,
         )
 
         result = engine.execute_contract(context, lambda p: p["x"] ** 2)
@@ -187,7 +187,7 @@ class TestDeterministicEngine:
             parameters={},
             timestamp="2025-01-01T00:00:00Z",
             safety_level="ROUTINE",
-            authorized=True
+            authorized=True,
         )
 
         def failing_executor(params):
@@ -210,7 +210,7 @@ class TestDeterministicEngine:
                 parameters={"n": i},
                 timestamp="2025-01-01T00:00:00Z",
                 safety_level="ROUTINE",
-                authorized=True
+                authorized=True,
             )
             engine.execute_contract(context, lambda p: p["n"])
 

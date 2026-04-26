@@ -22,7 +22,7 @@ class RollbackPoint:
 @dataclass
 class ASIMerkleChain:
     """Merkle chain for ASI events with rollback support.
-    
+
     All ASI operations are logged to an immutable Merkle chain,
     providing full auditability and rollback capability.
     """
@@ -57,7 +57,7 @@ class ASIMerkleChain:
 
     def rollback_to(self, rollback_id: str) -> bool:
         """Rollback chain to specified rollback point.
-        
+
         Returns:
             True if rollback successful, False if rollback point not found
         """

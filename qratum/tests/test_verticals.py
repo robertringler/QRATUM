@@ -15,6 +15,25 @@ from qratum.verticals import (CapraModule, ChronaModule, CohoraModule,
                               OrbiaModule, SentraModule, StrataModule,
                               VexorModule, VitraModule)
 
+
+from qratum.platform import MerkleEventChain, PlatformIntent, create_contract_from_intent
+from qratum.verticals import (
+    CapraModule,
+    ChronaModule,
+    CohoraModule,
+    EcoraModule,
+    FluxaModule,
+    FusiaModule,
+    GeonaModule,
+    JurisModule,
+    NeuraModule,
+    OrbiaModule,
+    SentraModule,
+    StrataModule,
+    VexorModule,
+    VitraModule,
+)
+
 # All vertical modules to test
 ALL_VERTICALS = [
     (JurisModule, "JURIS", "analyze_contract", {"contract_text": "Sample"}),
@@ -260,10 +279,20 @@ class TestIntegrationAllVerticals:
         orchestrator = PlatformOrchestrator()
 
         modules = [
-            JurisModule(), VitraModule(), EcoraModule(), CapraModule(),
-            SentraModule(), NeuraModule(), FluxaModule(), ChronaModule(),
-            GeonaModule(), FusiaModule(), StrataModule(), VexorModule(),
-            CohoraModule(), OrbiaModule(),
+            JurisModule(),
+            VitraModule(),
+            EcoraModule(),
+            CapraModule(),
+            SentraModule(),
+            NeuraModule(),
+            FluxaModule(),
+            ChronaModule(),
+            GeonaModule(),
+            FusiaModule(),
+            StrataModule(),
+            VexorModule(),
+            CohoraModule(),
+            OrbiaModule(),
         ]
 
         for module in modules:

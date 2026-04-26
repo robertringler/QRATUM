@@ -10,6 +10,14 @@ from typing import Any, Dict
 
 from .core import (FATAL_INVARIANTS, EventType, PlatformContract,
                    PlatformIntent, create_contract_from_intent, create_event)
+from .core import (
+    FATAL_INVARIANTS,
+    EventType,
+    PlatformContract,
+    PlatformIntent,
+    create_contract_from_intent,
+    create_event,
+)
 from .event_chain import MerkleEventChain
 from .substrates import SubstrateSelector
 
@@ -17,7 +25,7 @@ from .substrates import SubstrateSelector
 class PlatformOrchestrator:
     """
     Central orchestrator for the QRATUM platform.
-    
+
     Responsibilities:
     1. Route intents to correct vertical modules
     2. Manage contract lifecycle
@@ -25,7 +33,7 @@ class PlatformOrchestrator:
     4. Enforce safety boundaries
     5. Coordinate compute substrate selection
     6. Enable deterministic replay
-    
+
     The orchestrator is the only component that can create contracts
     and route execution, ensuring centralized control and audit.
     """
@@ -45,7 +53,7 @@ class PlatformOrchestrator:
     def register_vertical(self, vertical_name: str, vertical_module: Any):
         """
         Register a vertical module with the orchestrator.
-        
+
         Args:
             vertical_name: Name of vertical (e.g., "JURIS", "VITRA")
             vertical_module: Instance of VerticalModuleBase subclass
@@ -59,16 +67,16 @@ class PlatformOrchestrator:
     def submit_intent(self, intent: PlatformIntent) -> PlatformContract:
         """
         Submit a PlatformIntent for execution.
-        
+
         This is the main entry point for all QRATUM computations.
         Enforces Invariant #1: Every computation MUST start with PlatformIntent.
-        
+
         Args:
             intent: PlatformIntent to execute
-        
+
         Returns:
             Authorized PlatformContract
-        
+
         Raises:
             ValueError: If vertical not found or intent is invalid
         """
@@ -76,8 +84,7 @@ class PlatformOrchestrator:
         if intent.vertical not in self.vertical_registry:
             available = ", ".join(self.vertical_registry.keys())
             raise ValueError(
-                f"Unknown vertical: {intent.vertical}. "
-                f"Available verticals: {available}"
+                f"Unknown vertical: {intent.vertical}. " f"Available verticals: {available}"
             )
 
         # Invariant #2: Create immutable contract
@@ -93,7 +100,7 @@ class PlatformOrchestrator:
                 "vertical": intent.vertical,
                 "task": intent.task,
             },
-            emitter="PlatformOrchestrator"
+            emitter="PlatformOrchestrator",
         )
         self.event_chain.append(event)
 
@@ -106,16 +113,16 @@ class PlatformOrchestrator:
     def execute_contract(self, contract: PlatformContract) -> Dict[str, Any]:
         """
         Execute a PlatformContract.
-        
+
         Routes to the appropriate vertical module and manages execution
         lifecycle with full event tracking.
-        
+
         Args:
             contract: PlatformContract to execute
-        
+
         Returns:
             Execution results dictionary
-        
+
         Raises:
             RuntimeError: If contract signature is invalid (Invariant #8)
             ValueError: If vertical not found
@@ -141,7 +148,7 @@ class PlatformOrchestrator:
                 "task": contract.intent.task,
                 "parameters": contract.intent.parameters,
             },
-            emitter="PlatformOrchestrator"
+            emitter="PlatformOrchestrator",
         )
         self.event_chain.append(start_event)
 
@@ -170,7 +177,7 @@ class PlatformOrchestrator:
                     "status": "success",
                     "result_summary": self._summarize_result(result),
                 },
-                emitter="PlatformOrchestrator"
+                emitter="PlatformOrchestrator",
             )
             self.event_chain.append(complete_event)
 
@@ -188,7 +195,7 @@ class PlatformOrchestrator:
                     "error": str(e),
                     "error_type": type(e).__name__,
                 },
-                emitter="PlatformOrchestrator"
+                emitter="PlatformOrchestrator",
             )
             self.event_chain.append(fail_event)
 
@@ -196,18 +203,19 @@ class PlatformOrchestrator:
             self.logger.error(
                 f"Contract execution failed: {contract.contract_id}. Error: {e}"
             )
+            self.logger.error(f"Contract execution failed: {contract.contract_id}. Error: {e}")
 
             raise
 
     def replay_contract(self, contract_id: str) -> Dict[str, Any]:
         """
         Replay a contract execution from the event chain.
-        
+
         Demonstrates Invariant #6: Deterministic replay capability.
-        
+
         Args:
             contract_id: Contract ID to replay
-        
+
         Returns:
             Dictionary with replay information
         """
@@ -223,7 +231,7 @@ class PlatformOrchestrator:
     def get_platform_status(self) -> Dict[str, Any]:
         """
         Get current platform status.
-        
+
         Returns:
             Dictionary with platform metrics and state
         """
@@ -240,7 +248,7 @@ class PlatformOrchestrator:
     def verify_invariants(self) -> Dict[str, bool]:
         """
         Verify all QRATUM invariants.
-        
+
         Returns:
             Dictionary mapping invariant descriptions to verification status
         """
@@ -250,6 +258,7 @@ class PlatformOrchestrator:
         results["Invariant #5: MerkleEventChain integrity"] = (
             self.event_chain.verify_integrity()
         )
+        results["Invariant #5: MerkleEventChain integrity"] = self.event_chain.verify_integrity()
 
         # Additional invariants would be verified here in production
         # For now, we return the chain integrity as the main check

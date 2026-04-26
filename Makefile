@@ -3,6 +3,7 @@
 .PHONY: demo-transportation demo-manufacturing demo-agritech demo-all-verticals
 .PHONY: test validate fmt lint build bench pack deploy video spacex-demo starship-demo demo-all demos
 .PHONY: audit autonomy-test
+.PHONY: sbom sbom-generate sbom-validate sbom-diff sbom-clean
 
 ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -161,3 +162,38 @@ audit:
 autonomy-test:
 	@echo "Running Phase VIII autonomy tests..."
 	@pytest tests/phaseVIII/ -v --tb=short
+
+# =============================================================================
+# SBOM (Software Bill of Materials) Targets
+# =============================================================================
+
+# Generate all SBOMs (CycloneDX and SPDX)
+sbom-generate:
+	@echo "Generating SBOMs for QRATUM..."
+	@chmod +x scripts/sbom/generate_sbom.sh
+	@bash scripts/sbom/generate_sbom.sh
+
+# Validate generated SBOMs
+sbom-validate:
+	@echo "Validating SBOMs..."
+	@chmod +x scripts/sbom/validate_sbom.sh
+	@bash scripts/sbom/validate_sbom.sh
+
+# Diff SBOMs against baseline
+sbom-diff:
+	@echo "Comparing SBOMs with baseline..."
+	@chmod +x scripts/sbom/diff_sbom.sh
+	@bash scripts/sbom/diff_sbom.sh
+
+# Full SBOM workflow: generate, validate
+sbom: sbom-generate sbom-validate
+	@echo "SBOM generation and validation complete!"
+	@echo "Artifacts in .sbom/"
+
+# Clean generated SBOM artifacts
+sbom-clean:
+	@echo "Cleaning SBOM artifacts..."
+	@rm -rf .sbom/cyclonedx/*.json .sbom/spdx/*.json
+	@rm -rf .sbom/hashes/*.sha256 .sbom/hashes/*.sha512
+	@rm -rf .sbom/provenance/*.json .sbom/diffs/*.json
+	@echo "SBOM artifacts cleaned"

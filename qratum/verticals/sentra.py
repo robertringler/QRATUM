@@ -16,7 +16,7 @@ from .base import VerticalModuleBase
 class SentraModule(VerticalModuleBase):
     """
     Aerospace and defense AI module.
-    
+
     Capabilities:
     - Trajectory simulation
     - Radar cross-section analysis
@@ -68,8 +68,11 @@ class SentraModule(VerticalModuleBase):
             raise ValueError(f"Unknown task: {task}")
 
         self.emit_task_event(
-            EventType.TASK_STARTED, contract.contract_id, task,
-            {"parameters": parameters}, event_chain
+            EventType.TASK_STARTED,
+            contract.contract_id,
+            task,
+            {"parameters": parameters},
+            event_chain,
         )
 
         handlers = {
@@ -84,8 +87,11 @@ class SentraModule(VerticalModuleBase):
         result = handlers[task](parameters)
 
         self.emit_task_event(
-            EventType.TASK_COMPLETED, contract.contract_id, task,
-            {"result_type": type(result).__name__}, event_chain
+            EventType.TASK_COMPLETED,
+            contract.contract_id,
+            task,
+            {"result_type": type(result).__name__},
+            event_chain,
         )
 
         return self.format_output(result)
@@ -98,7 +104,7 @@ class SentraModule(VerticalModuleBase):
         g = 9.81
 
         time_of_flight = 2 * initial_velocity * math.sin(angle_rad) / g
-        max_range = (initial_velocity ** 2) * math.sin(2 * angle_rad) / g
+        max_range = (initial_velocity**2) * math.sin(2 * angle_rad) / g
         max_height = (initial_velocity * math.sin(angle_rad)) ** 2 / (2 * g)
 
         return {

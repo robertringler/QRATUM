@@ -207,6 +207,7 @@ class TestEndToEndFlow:
 
         # Wait for expiration (simulate)
         import time
+
         time.sleep(1.1)
 
         # Should fail execution due to expiration

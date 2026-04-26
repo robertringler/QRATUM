@@ -42,7 +42,7 @@ class ReasoningChain:
 @dataclass
 class QMind:
     """Q-MIND: Unified Reasoning Core.
-    
+
     Provides multi-strategy reasoning across all QRATUM verticals
     with deterministic, auditable inference chains.
     """
@@ -138,7 +138,7 @@ class QMind:
         self, query: str, strategy: ReasoningStrategy, context: Dict[str, Any]
     ) -> List[ReasoningStep]:
         """Perform reasoning based on strategy.
-        
+
         NOTE: This is a PLACEHOLDER implementation with hardcoded responses.
         A production implementation would require:
         - Advanced logical inference engines
@@ -147,7 +147,7 @@ class QMind:
         - Integration with theorem provers
         - Neural-symbolic reasoning
         These capabilities require fundamental AI breakthroughs not yet achieved.
-        
+
         The actual reasoning steps would need to:
         1. Query Q-REALITY for relevant knowledge
         2. Apply strategy-specific algorithms

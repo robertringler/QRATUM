@@ -12,7 +12,7 @@ from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
 @dataclass
 class ASIContract:
     """Extended contract for ASI operations.
-    
+
     All ASI operations are contract-bound with immutable records,
     authorization requirements, and safety level classification.
     """

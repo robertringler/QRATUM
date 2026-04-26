@@ -21,7 +21,7 @@ from qradle.core.rollback import RollbackManager
 @dataclass
 class ExecutionContext:
     """Context for deterministic execution.
-    
+
     Attributes:
         contract_id: ID of contract being executed
         parameters: Input parameters
@@ -30,6 +30,7 @@ class ExecutionContext:
         authorized: Whether operation is authorized
         metadata: Additional context metadata
     """
+
     contract_id: str
     parameters: dict[str, Any]
     timestamp: str
@@ -41,7 +42,7 @@ class ExecutionContext:
 @dataclass
 class ExecutionResult:
     """Result of deterministic execution.
-    
+
     Attributes:
         success: Whether execution succeeded
         output: Execution output
@@ -51,6 +52,7 @@ class ExecutionResult:
         checkpoint_id: Checkpoint created before execution
         error: Error message if execution failed
     """
+
     success: bool
     output: Any
     output_hash: str
@@ -62,7 +64,7 @@ class ExecutionResult:
 
 class DeterministicEngine:
     """Deterministic execution engine with cryptographic guarantees.
-    
+
     The engine enforces all 8 Fatal Invariants and provides:
     - Deterministic execution (same inputs -> same outputs)
     - Merkle-chained event logs
@@ -82,18 +84,18 @@ class DeterministicEngine:
         self,
         context: ExecutionContext,
         executor_func: Callable[[dict[str, Any]], Any],
-        create_checkpoint: bool = True
+        create_checkpoint: bool = True,
     ) -> ExecutionResult:
         """Execute a contract with full invariant enforcement.
-        
+
         Args:
             context: Execution context
             executor_func: Function to execute (must be deterministic)
             create_checkpoint: Whether to create checkpoint before execution
-            
+
         Returns:
             ExecutionResult with output and metadata
-            
+
         Raises:
             InvariantViolation: If any fatal invariant is violated
         """
@@ -105,18 +107,18 @@ class DeterministicEngine:
             self.invariants.enforce_human_oversight(
                 operation=context.contract_id,
                 safety_level=context.safety_level,
-                authorized=context.authorized
+                authorized=context.authorized,
             )
 
             # Invariant 4: Verify authorization system is active
             self.invariants.enforce_authorization_system(
                 has_authorization_check=True
             )
+            self.invariants.enforce_authorization_system(has_authorization_check=True)
 
             # Invariant 5: Verify safety level is set
             self.invariants.enforce_safety_level_system(
-                operation=context.contract_id,
-                has_safety_level=bool(context.safety_level)
+                operation=context.contract_id, has_safety_level=bool(context.safety_level)
             )
 
             # Invariant 6: Create checkpoint for rollback capability
@@ -127,14 +129,12 @@ class DeterministicEngine:
                     "execution_count": self._execution_count,
                 }
                 checkpoint = self.rollback_manager.create_checkpoint(
-                    state_data=checkpoint_state,
-                    metadata={"contract_id": context.contract_id}
+                    state_data=checkpoint_state, metadata={"contract_id": context.contract_id}
                 )
                 checkpoint_id = checkpoint.checkpoint_id
 
                 self.invariants.enforce_rollback_capability(
-                    checkpoint_available=True,
-                    checkpoint_id=checkpoint_id
+                    checkpoint_available=True, checkpoint_id=checkpoint_id
                 )
 
             # Invariant 7: Emit execution start event
@@ -152,8 +152,7 @@ class DeterministicEngine:
 
             # Compute output hash for determinism verification (Invariant 8)
             output_serialized = json.dumps(
-                {"output": output, "contract_id": context.contract_id},
-                sort_keys=True
+                {"output": output, "contract_id": context.contract_id}, sort_keys=True
             )
             output_hash = hashlib.sha256(output_serialized.encode()).hexdigest()
 
@@ -170,14 +169,12 @@ class DeterministicEngine:
             # Verify Merkle chain integrity (Invariant 2)
             chain_valid = self.merkle_chain.verify_chain_integrity()
             self.invariants.enforce_merkle_integrity(
-                chain_valid=chain_valid,
-                last_hash=self.merkle_chain.get_root_hash()
+                chain_valid=chain_valid, last_hash=self.merkle_chain.get_root_hash()
             )
 
             # Verify event emission (Invariant 7)
             self.invariants.enforce_event_emission(
-                event_emitted=(events_emitted > 0),
-                operation=context.contract_id
+                event_emitted=(events_emitted > 0), operation=context.contract_id
             )
 
             # Calculate execution time
@@ -192,7 +189,7 @@ class DeterministicEngine:
                 output_hash=output_hash,
                 execution_time=execution_time,
                 events_emitted=events_emitted,
-                checkpoint_id=checkpoint_id
+                checkpoint_id=checkpoint_id,
             )
 
         except InvariantViolation as e:
@@ -227,15 +224,15 @@ class DeterministicEngine:
                 execution_time=execution_time,
                 events_emitted=1,
                 checkpoint_id=checkpoint_id,
-                error=str(e)
+                error=str(e),
             )
 
     def rollback_to_checkpoint(self, checkpoint_id: str) -> bool:
         """Rollback to a specific checkpoint.
-        
+
         Args:
             checkpoint_id: ID of checkpoint to rollback to
-            
+
         Returns:
             True if rollback succeeded
         """
@@ -256,10 +253,10 @@ class DeterministicEngine:
 
     def get_execution_proof(self, contract_id: str) -> Optional[dict[str, Any]]:
         """Get cryptographic proof of contract execution.
-        
+
         Args:
             contract_id: ID of contract to get proof for
-            
+
         Returns:
             Proof dictionary or None if not found
         """
@@ -285,11 +282,11 @@ class DeterministicEngine:
 
     def verify_execution(self, contract_id: str, expected_output_hash: str) -> bool:
         """Verify a contract execution was deterministic.
-        
+
         Args:
             contract_id: ID of contract to verify
             expected_output_hash: Expected output hash
-            
+
         Returns:
             True if execution is verified
         """
@@ -302,7 +299,7 @@ class DeterministicEngine:
 
     def get_stats(self) -> dict[str, Any]:
         """Get engine statistics.
-        
+
         Returns:
             Statistics dictionary
         """

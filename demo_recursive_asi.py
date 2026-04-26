@@ -34,6 +34,8 @@ def main():
     print_section("QRATUM-QRADLE Recursive ASI Development Program")
 
     print("""
+    print(
+        """
 This demonstration shows the 6 phases of recursive self-improvement:
 
 PHASE I   - System Self-Model Construction
@@ -45,6 +47,8 @@ PHASE VI  - Cognition ↔ Execution Feedback Loop
 
 The system will run multiple iterations, demonstrating capability emergence.
 """)
+"""
+    )
 
     # Initialize the recursive development program
     print_section("Initializing Recursive ASI Development Program")
@@ -69,13 +73,17 @@ The system will run multiple iterations, demonstrating capability emergence.
 
         # Display key metrics
         print(f"Duration: {results['duration_seconds']:.2f}s")
-        print(f"Improvements: {results['improvements']['discovered']} discovered, "
-              f"{results['improvements']['implemented']} implemented")
+        print(
+            f"Improvements: {results['improvements']['discovered']} discovered, "
+            f"{results['improvements']['implemented']} implemented"
+        )
         print(f"System Complexity: {results['system_state']['complexity']:.2f}")
         print(f"Capability Score: {results['system_state']['capability_score']:.2f}")
         print(f"Compression Ratio: {results['system_state']['compression_ratio']:.3f}")
-        print(f"Autonomy: {results['autonomy']['autonomous_fixes']} autonomous fixes, "
-              f"{results['autonomy']['human_interventions']} human interventions")
+        print(
+            f"Autonomy: {results['autonomy']['autonomous_fixes']} autonomous fixes, "
+            f"{results['autonomy']['human_interventions']} human interventions"
+        )
         print(f"Progressing toward ASI: {'✓ YES' if results['progressing_toward_asi'] else '✗ NO'}")
 
     # Generate comprehensive ASI progress report
@@ -88,7 +96,7 @@ The system will run multiple iterations, demonstrating capability emergence.
     print(f"\nTotal Iterations: {report['iterations']}")
 
     print("\n--- Success Criteria Evaluation ---")
-    criteria = report['criteria']
+    criteria = report["criteria"]
     print(f"1. Improvement speed increasing: {criteria['improvement_speed_increasing']}")
     print(f"2. Simpler while more capable: {criteria['simpler_while_more_capable']}")
     print(f"3. Guidance advisory (not corrective): {criteria['guidance_advisory']}")
@@ -96,12 +104,14 @@ The system will run multiple iterations, demonstrating capability emergence.
     print(f"\nCriteria Met: {criteria['criteria_met']} / {criteria['required']} required")
 
     print("\n--- Metrics Summary ---")
-    metrics = report['metrics']
+    metrics = report["metrics"]
     print(f"Total Improvements: {metrics['total_improvements']}")
     print(f"Human Interventions: {metrics['total_human_interventions']}")
     print(f"Autonomous Fixes: {metrics['total_autonomous_fixes']}")
     print(f"Autonomy Ratio: {metrics['autonomy_ratio']:.1%}")
-    print(f"\nComplexity: {metrics['initial_complexity']:.2f} → {metrics['current_complexity']:.2f}")
+    print(
+        f"\nComplexity: {metrics['initial_complexity']:.2f} → {metrics['current_complexity']:.2f}"
+    )
     print(f"Capability: {metrics['initial_capability']:.2f} → {metrics['current_capability']:.2f}")
 
     # Phase-specific details
@@ -131,9 +141,13 @@ The system will run multiple iterations, demonstrating capability emergence.
     # Phase IV: Compression
     print("\nPHASE IV - Abstraction Compression")
     compression_report = program.compression_engine.get_abstraction_report()
-    if compression_report['current_metrics']:
-        print(f"  Intelligence Score: {compression_report['current_metrics']['intelligence_score']:.2f}")
-        print(f"  Compression Ratio: {compression_report['current_metrics']['compression_ratio']:.3f}")
+    if compression_report["current_metrics"]:
+        print(
+            f"  Intelligence Score: {compression_report['current_metrics']['intelligence_score']:.2f}"
+        )
+        print(
+            f"  Compression Ratio: {compression_report['current_metrics']['compression_ratio']:.3f}"
+        )
     print(f"  Patterns Detected: {compression_report['pattern_stats']['total_patterns_detected']}")
     print(f"  Primitives Created: {compression_report['primitive_stats']['total_primitives']}")
 
@@ -154,11 +168,15 @@ The system will run multiple iterations, demonstrating capability emergence.
     print(f"  Implemented: {feedback_status['implemented_decisions']}")
     print(f"  Current Performance: {feedback_status['current_performance']:.2f}")
     print(f"  Improvement Demonstrated: {'✓ YES' if feedback_status['improvement_demonstrated'] else '✗ NO'}")
+    print(
+        f"  Improvement Demonstrated: {'✓ YES' if feedback_status['improvement_demonstrated'] else '✗ NO'}"
+    )
 
     # Final assessment
     print_section("Final Assessment")
 
     if report['progressing']:
+    if report["progressing"]:
         print("✓ SYSTEM IS PROGRESSING TOWARD ASI")
         print("\nThe system demonstrates:")
         print("  • Increasing improvement velocity")

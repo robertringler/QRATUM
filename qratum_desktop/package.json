@@ -1,63 +1,13 @@
 {
   "name": "qratum-desktop",
-  "version": "2.0.0",
-  "description": "QRATUM Desktop Edition - Quantum-Classical Convergence Platform",
-  "main": "src/main.js",
-  "author": "QRATUM Team",
-  "license": "Apache-2.0",
+  "version": "0.4.0",
+  "description": "Phase 4 AI + Quantum desktop (~18-25 MB)",
   "scripts": {
-    "start": "electron .",
-    "dev": "electron . --dev",
-    "build": "electron-builder",
-    "build:win": "electron-builder --win",
-    "build:mac": "electron-builder --mac",
-    "build:linux": "electron-builder --linux",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder"
-  },
-  "dependencies": {
-    "electron-store": "^8.1.0",
-    "ws": "^8.14.2"
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build"
   },
   "devDependencies": {
-    "electron": "^28.0.0",
-    "electron-builder": "^24.9.1"
-  },
-  "build": {
-    "appId": "com.qratum.desktop",
-    "productName": "QRATUM Desktop",
-    "files": [
-      "src/**/*",
-      "assets/**/*",
-      "node_modules/**/*"
-    ],
-    "directories": {
-      "buildResources": "build",
-      "output": "dist"
-    },
-    "win": {
-      "target": ["nsis", "portable"],
-      "icon": "build/icon.ico",
-      "artifactName": "${productName}-Setup-${version}.${ext}"
-    },
-    "mac": {
-      "target": ["dmg", "zip"],
-      "icon": "build/icon.icns",
-      "category": "public.app-category.developer-tools",
-      "artifactName": "${productName}-${version}.${ext}"
-    },
-    "linux": {
-      "target": ["AppImage", "deb", "rpm"],
-      "icon": "build/icon.png",
-      "category": "Development",
-      "artifactName": "${productName}-${version}.${ext}"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "QRATUM Desktop"
-    }
+    "@tauri-apps/cli": "^1.5.0"
   }
 }

@@ -25,6 +25,14 @@ from qratum_asi.safety.mega_prompt import MegaPromptSystem
 from qratum_asi.safety.mega_prompt_adapter import (MegaPromptOrchestrator,
                                                    RefusalMegaPromptAdapter,
                                                    SimulatedMegaPromptAdapter)
+from qratum_asi.safety.mega_prompt import (
+    MegaPromptSystem,
+)
+from qratum_asi.safety.mega_prompt_adapter import (
+    MegaPromptOrchestrator,
+    RefusalMegaPromptAdapter,
+    SimulatedMegaPromptAdapter,
+)
 
 
 def print_header(text: str, char: str = "="):
@@ -130,7 +138,7 @@ def main():
 
     mega_prompt_doc = system.generate_full_interrogation_document()
     doc_file = output_dir / "MEGA_PROMPT_DOCUMENT.txt"
-    with open(doc_file, 'w') as f:
+    with open(doc_file, "w") as f:
         f.write(mega_prompt_doc)
 
     print(f"✓ MEGA PROMPT document exported: {doc_file}")
@@ -164,6 +172,9 @@ def main():
             "question": question.to_dict(),
             "responses": [r.to_dict() for r in responses]
         })
+        interrogation_results.append(
+            {"question": question.to_dict(), "responses": [r.to_dict() for r in responses]}
+        )
 
     print()
     print("✓ Complete interrogation finished")
@@ -186,7 +197,9 @@ def main():
     print(f"Total responses: {len(all_validations)}")
     print(f"Valid responses: {valid_count}")
     print(f"Invalid responses: {invalid_count}")
-    print(f"Average quality score: {sum(v['quality_score'] for v in all_validations) / len(all_validations):.1f}/100")
+    print(
+        f"Average quality score: {sum(v['quality_score'] for v in all_validations) / len(all_validations):.1f}/100"
+    )
     print()
 
     # Show top violations
@@ -212,14 +225,14 @@ def main():
     print()
 
     print("Answer Type Distribution:")
-    for answer_type, count in summary['answer_type_distribution'].items():
-        percentage = (count / summary['total_responses']) * 100
+    for answer_type, count in summary["answer_type_distribution"].items():
+        percentage = (count / summary["total_responses"]) * 100
         print(f"  {answer_type}: {count} ({percentage:.1f}%)")
     print()
 
     print("Confidence Level Distribution:")
-    for confidence, count in summary['confidence_distribution'].items():
-        percentage = (count / summary['total_responses']) * 100
+    for confidence, count in summary["confidence_distribution"].items():
+        percentage = (count / summary["total_responses"]) * 100
         print(f"  {confidence}: {count} ({percentage:.1f}%)")
     print()
 
@@ -228,19 +241,27 @@ def main():
 
     # Export complete interrogation results
     results_file = output_dir / "mega_prompt_interrogation_results.json"
-    with open(results_file, 'w') as f:
-        json.dump({
-            "metadata": {
-                "timestamp": datetime.utcnow().isoformat(),
-                "system": "QRATUM-ASI MEGA PROMPT",
-                "version": "1.0",
-                "total_questions": len(system.questions),
-                "total_models": len(orchestrator.adapters),
+    with open(results_file, "w") as f:
+        json.dump(
+            {
+                "metadata": {
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "system": "QRATUM-ASI MEGA PROMPT",
+                    "version": "1.0",
+                    "total_questions": len(system.questions),
+                    "total_models": len(orchestrator.adapters),
+                },
+                "interrogation_results": interrogation_results,
+                "validation_analysis": all_validations,
+                "summary": summary,
             },
             "interrogation_results": interrogation_results,
             "validation_analysis": all_validations,
             "summary": summary,
         }, f, indent=2)
+            f,
+            indent=2,
+        )
 
     print(f"✓ Complete results exported: {results_file}")
 
@@ -251,21 +272,26 @@ def main():
 
     # Export validation report
     validation_file = output_dir / "validation_report.json"
-    with open(validation_file, 'w') as f:
-        json.dump({
-            "summary": {
-                "total_responses": len(all_validations),
-                "valid": valid_count,
-                "invalid": invalid_count,
-                "average_quality_score": sum(v['quality_score'] for v in all_validations) / len(all_validations),
+    with open(validation_file, "w") as f:
+        json.dump(
+            {
+                "summary": {
+                    "total_responses": len(all_validations),
+                    "valid": valid_count,
+                    "invalid": invalid_count,
+                    "average_quality_score": sum(v["quality_score"] for v in all_validations)
+                    / len(all_validations),
+                },
+                "validations": all_validations,
             },
-            "validations": all_validations,
-        }, f, indent=2)
+            f,
+            indent=2,
+        )
     print(f"✓ Validation report exported: {validation_file}")
 
     # Export executive summary
     exec_summary_file = output_dir / "executive_summary.txt"
-    with open(exec_summary_file, 'w') as f:
+    with open(exec_summary_file, "w") as f:
         f.write("=" * 80 + "\n")
         f.write("QRATUM-ASI MEGA PROMPT - EXECUTIVE SUMMARY\n")
         f.write("Cross-Model Superintelligence Safety Interrogation\n")
@@ -277,6 +303,9 @@ def main():
         f.write("-" * 80 + "\n")
         f.write("This interrogation used the QRATUM-ASI MEGA PROMPT framework to query\n")
         f.write(f"{len(orchestrator.adapters)} AI models with {len(system.questions)} standardized questions about\n")
+        f.write(
+            f"{len(orchestrator.adapters)} AI models with {len(system.questions)} standardized questions about\n"
+        )
         f.write("Artificial Superintelligence safety across 10 critical categories.\n\n")
 
         f.write("INTERROGATION SCOPE\n")
@@ -285,11 +314,14 @@ def main():
         f.write(f"Models: {len(orchestrator.adapters)}\n")
         f.write(f"Total Responses: {summary['total_responses']}\n")
         f.write(f"Valid Responses: {valid_count} ({(valid_count/len(all_validations)*100):.1f}%)\n\n")
+        f.write(
+            f"Valid Responses: {valid_count} ({(valid_count/len(all_validations)*100):.1f}%)\n\n"
+        )
 
         f.write("RESPONSE PATTERNS\n")
         f.write("-" * 80 + "\n")
-        for answer_type, count in summary['answer_type_distribution'].items():
-            percentage = (count / summary['total_responses']) * 100
+        for answer_type, count in summary["answer_type_distribution"].items():
+            percentage = (count / summary["total_responses"]) * 100
             f.write(f"  {answer_type.upper()}: {count} responses ({percentage:.1f}%)\n")
         f.write("\n")
 

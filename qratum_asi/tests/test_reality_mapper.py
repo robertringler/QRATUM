@@ -5,6 +5,14 @@ import pytest
 from qratum_asi.safety.elicitation import (ModelResponse, ResponseType,
                                            SafetyElicitation)
 from qratum_asi.safety.reality_mapper import SafetyRealityMapper
+from qratum_asi.safety.elicitation import (
+    ModelResponse,
+    ResponseType,
+    SafetyElicitation,
+)
+from qratum_asi.safety.reality_mapper import (
+    SafetyRealityMapper,
+)
 
 
 class TestSafetyRealityMapper:
@@ -37,7 +45,7 @@ class TestSafetyRealityMapper:
             speculation=[],
             uncertainties=["Timeline uncertain"],
             refusals_avoidances=[],
-            unique_insights=["Novel insight here"]
+            unique_insights=["Novel insight here"],
         )
         elicitation.record_response(response)
 
@@ -70,7 +78,7 @@ class TestSafetyRealityMapper:
                 speculation=[],
                 uncertainties=[],
                 refusals_avoidances=[],
-                unique_insights=[]
+                unique_insights=[],
             )
             elicitation.record_response(response)
 
@@ -93,14 +101,14 @@ class TestSafetyRealityMapper:
             response_text="Response",
             assumptions_declared=[
                 "We assume that humans will remain vigilant",
-                "We expect rational decision-making"
+                "We expect rational decision-making",
             ],
             mechanisms_described=[],
             hard_claims=[],
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
         elicitation.record_response(response)
 
@@ -128,7 +136,7 @@ class TestSafetyRealityMapper:
                 speculation=[],
                 uncertainties=[],
                 refusals_avoidances=[],
-                unique_insights=[]
+                unique_insights=[],
             )
             elicitation.record_response(response)
 
@@ -155,7 +163,7 @@ class TestSafetyRealityMapper:
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
         elicitation.record_response(response)
 
@@ -182,7 +190,7 @@ class TestSafetyRealityMapper:
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
         elicitation.record_response(response)
 
@@ -209,7 +217,7 @@ class TestSafetyRealityMapper:
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
 
         response2 = ModelResponse(
@@ -223,7 +231,7 @@ class TestSafetyRealityMapper:
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
 
         elicitation.record_response(response1)
@@ -251,7 +259,7 @@ class TestSafetyRealityMapper:
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
         elicitation.record_response(response)
 
@@ -277,6 +285,7 @@ class TestSafetyRealityMapper:
 
         # Verify it's valid JSON
         import json
+
         with open(output_file) as f:
             data = json.load(f)
             assert "metadata" in data
@@ -297,7 +306,7 @@ class TestSafetyRealityMapper:
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
         elicitation.record_response(response)
 

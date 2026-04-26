@@ -14,13 +14,13 @@ from typing import Iterator
 @dataclass
 class QGraph:
     """QRATUM-native graph structure optimized for shortest path algorithms.
-    
+
     Features:
     - Directed edges with non-negative weights
     - Memory-efficient adjacency list representation
     - Fast neighbor and edge iteration
     - Support for hierarchical graph contraction
-    
+
     Attributes:
         num_nodes: Total number of nodes in the graph
         edges: Adjacency list mapping node_id -> [(neighbor_id, weight), ...]
@@ -39,12 +39,12 @@ class QGraph:
 
     def add_edge(self, src: int, dst: int, weight: float = 1.0) -> None:
         """Add a directed edge with non-negative weight.
-        
+
         Args:
             src: Source node id
             dst: Destination node id
             weight: Edge weight (must be non-negative)
-            
+
         Raises:
             ValueError: If weight is negative or nodes are out of range
         """
@@ -66,10 +66,10 @@ class QGraph:
 
     def neighbors(self, node: int) -> Iterator[tuple[int, float]]:
         """Iterate over neighbors of a node with edge weights.
-        
+
         Args:
             node: Node id
-            
+
         Yields:
             Tuples of (neighbor_id, edge_weight)
         """
@@ -79,10 +79,10 @@ class QGraph:
 
     def degree(self, node: int) -> int:
         """Get out-degree of a node.
-        
+
         Args:
             node: Node id
-            
+
         Returns:
             Number of outgoing edges
         """
@@ -90,7 +90,7 @@ class QGraph:
 
     def edge_count(self) -> int:
         """Get total number of edges in the graph.
-        
+
         Returns:
             Total edge count
         """
@@ -98,18 +98,15 @@ class QGraph:
 
     @classmethod
     def from_edge_list(
-        cls,
-        num_nodes: int,
-        edge_list: list[tuple[int, int, float]],
-        directed: bool = True
+        cls, num_nodes: int, edge_list: list[tuple[int, int, float]], directed: bool = True
     ) -> QGraph:
         """Create graph from edge list.
-        
+
         Args:
             num_nodes: Total number of nodes
             edge_list: List of (src, dst, weight) tuples
             directed: Whether graph is directed
-            
+
         Returns:
             QGraph instance
         """
@@ -125,17 +122,17 @@ class QGraph:
         edge_probability: float,
         seed: int = 42,
         directed: bool = True,
-        max_weight: float = 10.0
+        max_weight: float = 10.0,
     ) -> QGraph:
         """Generate random graph with specified edge probability.
-        
+
         Args:
             num_nodes: Number of nodes
             edge_probability: Probability of edge between any two nodes
             seed: Random seed for reproducibility
             directed: Whether graph is directed
             max_weight: Maximum edge weight
-            
+
         Returns:
             Randomly generated QGraph
         """
@@ -157,10 +154,10 @@ class QGraph:
 @dataclass
 class HierarchicalGraph:
     """Multi-level hierarchical graph structure for graph contraction.
-    
+
     Supports efficient lookup of supernodes and contracted edges for
     hierarchical shortest path algorithms.
-    
+
     Attributes:
         levels: List of QGraph objects, from finest to coarsest
         node_mappings: Mapping from level i node to level i+1 supernode
@@ -171,7 +168,7 @@ class HierarchicalGraph:
 
     def add_level(self, graph: QGraph, mapping: dict[int, int] | None = None) -> None:
         """Add a hierarchical level.
-        
+
         Args:
             graph: Graph at this level
             mapping: Node to supernode mapping (None for base level)
@@ -182,11 +179,11 @@ class HierarchicalGraph:
 
     def get_supernode(self, level: int, node: int) -> int:
         """Get supernode id for a node at a given level.
-        
+
         Args:
             level: Source level (0 = base graph)
             node: Node id at source level
-            
+
         Returns:
             Supernode id at coarsest level
         """
@@ -202,18 +199,15 @@ class HierarchicalGraph:
 
     @classmethod
     def from_contraction(
-        cls,
-        base_graph: QGraph,
-        num_levels: int = 3,
-        contraction_factor: float = 0.5
+        cls, base_graph: QGraph, num_levels: int = 3, contraction_factor: float = 0.5
     ) -> HierarchicalGraph:
         """Create hierarchical graph by repeated contraction.
-        
+
         Args:
             base_graph: Base graph at finest level
             num_levels: Number of hierarchical levels to create
             contraction_factor: Fraction of nodes to keep at each level
-            
+
         Returns:
             HierarchicalGraph with multiple levels
         """

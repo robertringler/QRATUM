@@ -31,7 +31,7 @@ class AuthorizationRequest:
 @dataclass
 class AuthorizationSystem:
     """Authorization system for ASI operations.
-    
+
     Enforces human oversight requirements based on safety levels.
     All sensitive operations require explicit human authorization.
     """

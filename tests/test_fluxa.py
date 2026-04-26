@@ -2,6 +2,7 @@
 
 from qratum_platform.core import (ComputeSubstrate, PlatformContract,
                                   PlatformIntent, VerticalModule)
+from qratum_platform.core import ComputeSubstrate, PlatformContract, PlatformIntent, VerticalModule
 from verticals.fluxa import FLUXAModule
 
 

@@ -10,6 +10,22 @@ from qratum.verticals import (CapraModule, ChronaModule, CohoraModule,
                               GeonaModule, JurisModule, NeuraModule,
                               OrbiaModule, SentraModule, StrataModule,
                               VexorModule, VitraModule)
+from qratum.verticals import (
+    CapraModule,
+    ChronaModule,
+    CohoraModule,
+    EcoraModule,
+    FluxaModule,
+    FusiaModule,
+    GeonaModule,
+    JurisModule,
+    NeuraModule,
+    OrbiaModule,
+    SentraModule,
+    StrataModule,
+    VexorModule,
+    VitraModule,
+)
 
 
 def main():
@@ -90,7 +106,9 @@ def main():
     status = orchestrator.get_platform_status()
     print(f"Total contracts executed: {status['contracts_executed']}")
     print(f"Event chain length: {status['event_chain_length']}")
-    print(f"Event chain integrity: {'✓ VERIFIED' if status['event_chain_integrity'] else '✗ FAILED'}")
+    print(
+        f"Event chain integrity: {'✓ VERIFIED' if status['event_chain_integrity'] else '✗ FAILED'}"
+    )
     print()
 
     # Show sample results from each vertical
@@ -101,7 +119,7 @@ def main():
 
     for vertical, task, result in results:
         print(f"{vertical} ({task}):")
-        output = result['output']
+        output = result["output"]
         # Print first few keys from output
         for key in list(output.keys())[:3]:
             print(f"  {key}: {output[key]}")

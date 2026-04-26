@@ -9,6 +9,21 @@ from qratum_platform.core import (PlatformIntent, QRATUMPlatform,
                                   SafetyViolation, VerticalModule)
 from verticals import (CAPRAModule, ECORAModule, FLUXAModule, JURISModule,
                        NEURAModule, SENTRAModule, VITRAModule)
+from qratum_platform.core import (
+    PlatformIntent,
+    QRATUMPlatform,
+    SafetyViolation,
+    VerticalModule,
+)
+from verticals import (
+    CAPRAModule,
+    ECORAModule,
+    FLUXAModule,
+    JURISModule,
+    NEURAModule,
+    SENTRAModule,
+    VITRAModule,
+)
 
 
 class TestPlatformIntegration:
@@ -49,7 +64,12 @@ class TestPlatformIntegration:
         # Test intents for each module
         intents = [
             PlatformIntent(VerticalModule.JURIS, "legal_reasoning", {"facts": "test"}, "user"),
-            PlatformIntent(VerticalModule.VITRA, "sequence_analysis", {"sequence": "ATCG", "sequence_type": "dna"}, "user"),
+            PlatformIntent(
+                VerticalModule.VITRA,
+                "sequence_analysis",
+                {"sequence": "ATCG", "sequence_type": "dna"},
+                "user",
+            ),
             PlatformIntent(VerticalModule.ECORA, "carbon_analysis", {"activities": []}, "user"),
             PlatformIntent(VerticalModule.CAPRA, "var_calculation", {}, "user"),
             PlatformIntent(VerticalModule.SENTRA, "trajectory_simulation", {}, "user"),

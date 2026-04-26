@@ -13,7 +13,7 @@ from typing import Any, Dict, List
 class ComputeSubstrate(Enum):
     """
     Available compute substrates for QRATUM execution.
-    
+
     Each substrate has specific strengths:
     - GPU: High throughput parallel processing (tensor operations)
     - CEREBRAS: Massive parallelism (wafer-scale integration)
@@ -21,6 +21,7 @@ class ComputeSubstrate(Enum):
     - IPU: Streaming/graph-based computation (neural networks)
     - CPU: Deterministic verification and control flow
     """
+
     GPU_GB200 = "gpu_gb200"  # NVIDIA GB200 Grace-Blackwell
     GPU_MI300X = "gpu_mi300x"  # AMD MI300X
     CEREBRAS = "cerebras"  # Wafer-scale engine
@@ -33,9 +34,10 @@ class ComputeSubstrate(Enum):
 class SubstrateCapability:
     """
     Capability profile for a compute substrate.
-    
+
     Defines what types of workloads are well-suited for each substrate.
     """
+
     substrate: ComputeSubstrate
     strengths: List[str]
     typical_tasks: List[str]
@@ -150,7 +152,7 @@ SUBSTRATE_PROFILES = {
 class SubstrateSelector:
     """
     Intelligent substrate selector for QRATUM tasks.
-    
+
     Analyzes task characteristics and selects the optimal compute
     substrate(s) for execution. Supports multi-substrate execution
     where tasks can benefit from heterogeneous computing.
@@ -161,13 +163,11 @@ class SubstrateSelector:
         self.profiles = SUBSTRATE_PROFILES
 
     def select_substrate(
-        self,
-        task_name: str,
-        task_characteristics: Dict[str, Any]
+        self, task_name: str, task_characteristics: Dict[str, Any]
     ) -> List[ComputeSubstrate]:
         """
         Select optimal substrate(s) for a task.
-        
+
         Args:
             task_name: Name of the task
             task_characteristics: Dictionary with task properties:
@@ -175,7 +175,7 @@ class SubstrateSelector:
                 - requires_high_throughput: bool
                 - requires_quantum: bool
                 - workload_type: str (tensor, graph, simulation, etc.)
-        
+
         Returns:
             List of recommended substrates (ordered by preference)
         """
@@ -221,10 +221,10 @@ class SubstrateSelector:
     def recommend_for_vertical(self, vertical_name: str) -> Dict[str, List[ComputeSubstrate]]:
         """
         Get substrate recommendations for common tasks in a vertical.
-        
+
         Args:
             vertical_name: Name of the vertical module
-        
+
         Returns:
             Dictionary mapping task types to recommended substrates
         """

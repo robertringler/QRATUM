@@ -15,7 +15,7 @@ from .base import VerticalModuleBase
 class JurisModule(VerticalModuleBase):
     """
     Legal AI module using IRAC/CRAC frameworks for legal reasoning.
-    
+
     Capabilities:
     - Contract analysis and risk identification
     - Legal reasoning (Issue, Rule, Application, Conclusion)
@@ -104,10 +104,10 @@ class JurisModule(VerticalModuleBase):
     def _analyze_contract(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """
         Analyze a legal contract for risks and obligations.
-        
+
         Args:
             parameters: Must contain 'contract_text'
-        
+
         Returns:
             Analysis with risks, obligations, and recommendations
         """
@@ -142,10 +142,10 @@ class JurisModule(VerticalModuleBase):
     def _legal_reasoning(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """
         Apply IRAC framework to a legal issue.
-        
+
         Args:
             parameters: Must contain 'issue', 'facts', 'applicable_law'
-        
+
         Returns:
             IRAC analysis
         """
@@ -167,10 +167,10 @@ class JurisModule(VerticalModuleBase):
     def _predict_litigation(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """
         Predict likely litigation outcome based on case facts.
-        
+
         Args:
             parameters: Must contain 'case_facts', 'jurisdiction'
-        
+
         Returns:
             Prediction with confidence scores
         """
@@ -193,10 +193,10 @@ class JurisModule(VerticalModuleBase):
     def _check_compliance(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """
         Check regulatory compliance for a document or practice.
-        
+
         Args:
             parameters: Must contain 'document' or 'practice_description', 'regulations'
-        
+
         Returns:
             Compliance analysis
         """

@@ -19,6 +19,7 @@ from qradle import DeterministicEngine, ExecutionContext
 
 class ASIOperationType(Enum):
     """Types of ASI operations."""
+
     WORLD_MODEL_UPDATE = "world_model_update"
     REASONING_TASK = "reasoning_task"
     SELF_IMPROVEMENT = "self_improvement"
@@ -27,40 +28,45 @@ class ASIOperationType(Enum):
 
 
 # Immutable boundaries that can NEVER be modified
-IMMUTABLE_BOUNDARIES = frozenset([
-    "human_oversight_requirement",
-    "authorization_system",
-    "safety_level_system",
-    "rollback_capability",
-    "event_emission_requirement",
-    "determinism_guarantee",
-    "merkle_chain_integrity",
-    "contract_immutability",
-])
+IMMUTABLE_BOUNDARIES = frozenset(
+    [
+        "human_oversight_requirement",
+        "authorization_system",
+        "safety_level_system",
+        "rollback_capability",
+        "event_emission_requirement",
+        "determinism_guarantee",
+        "merkle_chain_integrity",
+        "contract_immutability",
+    ]
+)
 
 # Goals that can NEVER be proposed
-PROHIBITED_GOALS = frozenset([
-    "remove_human_oversight",
-    "disable_authorization",
-    "modify_safety_constraints",
-    "acquire_resources_without_approval",
-    "replicate_without_authorization",
-    "deceive_operators",
-    "manipulate_humans",
-    "evade_monitoring",
-    "remove_kill_switches",
-    "modify_core_values",
-    "bypass_immutable_boundaries",
-    "disable_rollback",
-])
+PROHIBITED_GOALS = frozenset(
+    [
+        "remove_human_oversight",
+        "disable_authorization",
+        "modify_safety_constraints",
+        "acquire_resources_without_approval",
+        "replicate_without_authorization",
+        "deceive_operators",
+        "manipulate_humans",
+        "evade_monitoring",
+        "remove_kill_switches",
+        "modify_core_values",
+        "bypass_immutable_boundaries",
+        "disable_rollback",
+    ]
+)
 
 
 @dataclass
 class ASIOperation:
     """Represents an ASI operation.
-    
+
     All ASI operations must be contract-bound and deterministic.
     """
+
     operation_id: str
     operation_type: ASIOperationType
     pillar: str  # Q-REALITY, Q-MIND, Q-EVOLVE, Q-WILL, Q-FORGE
@@ -74,6 +80,7 @@ class ASIOperation:
 @dataclass
 class ASISafetyCheck:
     """Safety check result for ASI operation."""
+
     passed: bool
     violations: List[str]
     warnings: List[str]
@@ -84,14 +91,14 @@ class ASISafetyCheck:
 class QRATUMASIOrchestrator:
     """
     Master orchestrator for QRATUM-ASI layer.
-    
+
     Coordinates all 5 pillars with full safety enforcement:
     - Q-REALITY: Emergent world model
     - Q-MIND: Unified reasoning core
     - Q-EVOLVE: Safe self-improvement
     - Q-WILL: Autonomous intent generation
     - Q-FORGE: Superhuman discovery engine
-    
+
     All operations are:
     1. Contract-bound via QRADLE
     2. Deterministic and reproducible
@@ -102,7 +109,7 @@ class QRATUMASIOrchestrator:
 
     def __init__(self, enable_asi_operations: bool = False):
         """Initialize ASI orchestrator.
-        
+
         Args:
             enable_asi_operations: Enable ASI operations (default: False for safety)
         """
@@ -112,16 +119,14 @@ class QRATUMASIOrchestrator:
         self._human_approvals: Dict[str, bool] = {}
 
     def execute_asi_operation(
-        self,
-        operation: ASIOperation,
-        human_approved: bool = False
+        self, operation: ASIOperation, human_approved: bool = False
     ) -> Dict[str, Any]:
         """Execute an ASI operation with full safety checks.
-        
+
         Args:
             operation: The ASI operation to execute
             human_approved: Whether human approval has been granted
-            
+
         Returns:
             Execution result dictionary
         """
@@ -130,7 +135,7 @@ class QRATUMASIOrchestrator:
             return {
                 "success": False,
                 "error": "ASI operations are disabled. This is theoretical capability only.",
-                "message": "QRATUM-ASI requires fundamental AI breakthroughs that do not yet exist."
+                "message": "QRATUM-ASI requires fundamental AI breakthroughs that do not yet exist.",
             }
 
         # Perform safety checks
@@ -140,7 +145,7 @@ class QRATUMASIOrchestrator:
                 "success": False,
                 "error": "Safety check failed",
                 "violations": safety_check.violations,
-                "warnings": safety_check.warnings
+                "warnings": safety_check.warnings,
             }
 
         # Verify human approval for sensitive operations
@@ -149,7 +154,7 @@ class QRATUMASIOrchestrator:
                 "success": False,
                 "error": "Human approval required but not provided",
                 "operation_id": operation.operation_id,
-                "safety_level": operation.safety_level
+                "safety_level": operation.safety_level,
             }
 
         # Create execution context
@@ -158,11 +163,11 @@ class QRATUMASIOrchestrator:
             parameters={
                 "operation_type": operation.operation_type.value,
                 "pillar": operation.pillar,
-                **operation.parameters
+                **operation.parameters,
             },
             timestamp=datetime.now(timezone.utc).isoformat(),
             safety_level=operation.safety_level,
-            authorized=human_approved or not operation.requires_human_approval
+            authorized=human_approved or not operation.requires_human_approval,
         )
 
         # Execute with QRADLE
@@ -180,7 +185,7 @@ class QRATUMASIOrchestrator:
         result = self.qradle_engine.execute_contract(
             context=context,
             executor_func=asi_executor,
-            create_checkpoint=operation.rollback_point_required
+            create_checkpoint=operation.rollback_point_required,
         )
 
         self._operation_count += 1
@@ -194,8 +199,8 @@ class QRATUMASIOrchestrator:
             "safety_check": {
                 "passed": safety_check.passed,
                 "violations": safety_check.violations,
-                "warnings": safety_check.warnings
-            }
+                "warnings": safety_check.warnings,
+            },
         }
 
     def _perform_safety_check(self, operation: ASIOperation) -> ASISafetyCheck:
@@ -218,7 +223,13 @@ class QRATUMASIOrchestrator:
             )
 
         # Check 3: Verify safety level is appropriate
-        if operation.safety_level not in ["ROUTINE", "ELEVATED", "SENSITIVE", "CRITICAL", "EXISTENTIAL"]:
+        if operation.safety_level not in [
+            "ROUTINE",
+            "ELEVATED",
+            "SENSITIVE",
+            "CRITICAL",
+            "EXISTENTIAL",
+        ]:
             violations.append(f"Invalid safety level: {operation.safety_level}")
 
         # Check 4: Warn if high-risk operation
@@ -232,7 +243,7 @@ class QRATUMASIOrchestrator:
             violations=violations,
             warnings=warnings,
             boundary_check=boundary_check,
-            goal_check=goal_check
+            goal_check=goal_check,
         )
 
     def _check_immutable_boundaries(self, operation: ASIOperation) -> bool:
@@ -258,13 +269,10 @@ class QRATUMASIOrchestrator:
         return True
 
     def request_human_approval(
-        self,
-        operation_id: str,
-        operation_description: str,
-        safety_justification: str
+        self, operation_id: str, operation_description: str, safety_justification: str
     ) -> Dict[str, Any]:
         """Request human approval for sensitive operation.
-        
+
         This is a hook for human-in-the-loop authorization.
         In production, this would integrate with approval workflow system.
         """
@@ -274,16 +282,14 @@ class QRATUMASIOrchestrator:
             "description": operation_description,
             "safety_justification": safety_justification,
             "approval_endpoint": f"/api/v1/asi/approve/{operation_id}",
-            "message": "Human approval required - review operation and authorize via approval endpoint"
+            "message": "Human approval required - review operation and authorize via approval endpoint",
         }
 
     def simulate_crsi(
-        self,
-        improvement_description: str,
-        affected_systems: List[str]
+        self, improvement_description: str, affected_systems: List[str]
     ) -> Dict[str, Any]:
         """Simulate Constrained Recursive Self-Improvement (CRSI).
-        
+
         This is a simulation stub for testing the safety architecture.
         Actual CRSI would require breakthrough in AI capabilities.
         """
@@ -295,11 +301,11 @@ class QRATUMASIOrchestrator:
             parameters={
                 "description": improvement_description,
                 "affected_systems": affected_systems,
-                "simulation_mode": True
+                "simulation_mode": True,
             },
             safety_level="CRITICAL",
             requires_human_approval=True,
-            rollback_point_required=True
+            rollback_point_required=True,
         )
 
         # Simulate execution (without actual approval)
@@ -310,7 +316,7 @@ class QRATUMASIOrchestrator:
             "rollback_available": True,
             "human_approval": "Required (not provided in simulation)",
             "immutable_boundaries": "Protected and verified",
-            "note": "This is a simulation - actual CRSI requires AI breakthroughs"
+            "note": "This is a simulation - actual CRSI requires AI breakthroughs",
         }
 
     def get_asi_stats(self) -> Dict[str, Any]:
@@ -329,7 +335,7 @@ class QRATUMASIOrchestrator:
             "boundaries_intact": True,
             "boundaries": list(IMMUTABLE_BOUNDARIES),
             "verification_timestamp": datetime.now(timezone.utc).isoformat(),
-            "status": "All immutable boundaries verified and protected"
+            "status": "All immutable boundaries verified and protected",
         }
 
     def list_prohibited_goals(self) -> List[str]:
@@ -340,9 +346,10 @@ class QRATUMASIOrchestrator:
 # Example usage and testing
 def demo_asi_orchestrator():
     """Demonstrate ASI orchestrator capabilities."""
-    print("="*60)
+    print("=" * 60)
     print("QRATUM-ASI Orchestrator Demo")
     print("="*60 + "\n")
+    print("=" * 60 + "\n")
 
     # Initialize orchestrator (ASI disabled by default)
     orchestrator = QRATUMASIOrchestrator(enable_asi_operations=False)
@@ -363,7 +370,7 @@ def demo_asi_orchestrator():
         parameters={"task": "multi_domain_synthesis"},
         safety_level="ELEVATED",
         requires_human_approval=False,
-        rollback_point_required=True
+        rollback_point_required=True,
     )
 
     result = orchestrator.execute_asi_operation(operation)
@@ -372,8 +379,7 @@ def demo_asi_orchestrator():
 
     # Simulate CRSI
     crsi_result = orchestrator.simulate_crsi(
-        improvement_description="Optimize reasoning algorithm",
-        affected_systems=["Q-MIND"]
+        improvement_description="Optimize reasoning algorithm", affected_systems=["Q-MIND"]
     )
     print(f"CRSI Simulation: {crsi_result['simulation_result']}")
     print(f"Safety: {crsi_result['immutable_boundaries']}\n")
@@ -387,8 +393,9 @@ def demo_asi_orchestrator():
     print(f"  Prohibited Goals: {stats['prohibited_goals_count']}")
 
     print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Demo Complete")
-    print("="*60)
+    print("=" * 60)
 
 
 if __name__ == "__main__":

@@ -35,6 +35,8 @@ class TestDijkstraBaseline:
         assert distances[1] == 1.0
         assert distances[2] == float('inf')
         assert distances[3] == float('inf')
+        assert distances[2] == float("inf")
+        assert distances[3] == float("inf")
 
     def test_dijkstra_triangle(self):
         """Test Dijkstra on triangle graph."""
@@ -65,7 +67,7 @@ class TestFrontierBatch:
         """Test empty batch initialization."""
         batch = FrontierBatch()
         assert batch.size() == 0
-        assert batch.min_distance == float('inf')
+        assert batch.min_distance == float("inf")
         assert batch.max_distance == 0.0
 
     def test_add_nodes_to_batch(self):
@@ -128,6 +130,9 @@ class TestUltraSSSP:
             use_hierarchy=True,
             hierarchy_levels=2
         )
+        graph = QGraph.random_graph(num_nodes=50, edge_probability=0.1, seed=42)
+
+        sssp = UltraSSSP(graph, batch_size=10, use_hierarchy=True, hierarchy_levels=2)
         distances, metrics = sssp.solve(source=0)
 
         # Should complete without errors
@@ -142,6 +147,7 @@ class TestUltraSSSP:
             edge_probability=0.15,
             seed=123
         )
+        graph = QGraph.random_graph(num_nodes=30, edge_probability=0.15, seed=123)
 
         # Run both algorithms
         dijkstra_distances, _ = dijkstra_baseline(graph, source=0)
@@ -193,6 +199,8 @@ class TestValidation:
         """Test validation with identical distances."""
         distances1 = [0.0, 1.0, 2.0, float('inf')]
         distances2 = [0.0, 1.0, 2.0, float('inf')]
+        distances1 = [0.0, 1.0, 2.0, float("inf")]
+        distances2 = [0.0, 1.0, 2.0, float("inf")]
 
         assert validate_sssp_results(distances1, distances2)
 
@@ -236,11 +244,7 @@ class TestSimulationConfig:
     def test_custom_config(self):
         """Test custom configuration values."""
         config = SSSPSimulationConfig(
-            num_nodes=500,
-            edge_probability=0.05,
-            batch_size=50,
-            use_hierarchy=True,
-            seed=123
+            num_nodes=500, edge_probability=0.05, batch_size=50, use_hierarchy=True, seed=123
         )
 
         assert config.num_nodes == 500
@@ -260,7 +264,7 @@ class TestSimulation:
             edge_probability=0.2,
             batch_size=5,
             seed=42,
-            validate_against_dijkstra=True
+            validate_against_dijkstra=True,
         )
 
         results = run_sssp_simulation(config)
@@ -283,9 +287,7 @@ class TestSimulation:
     def test_run_simulation_without_validation(self):
         """Test simulation without validation."""
         config = SSSPSimulationConfig(
-            num_nodes=20,
-            edge_probability=0.2,
-            validate_against_dijkstra=False
+            num_nodes=20, edge_probability=0.2, validate_against_dijkstra=False
         )
 
         results = run_sssp_simulation(config)
@@ -302,7 +304,7 @@ class TestSimulation:
             edge_probability=0.1,
             use_hierarchy=True,
             hierarchy_levels=2,
-            validate_against_dijkstra=True
+            validate_against_dijkstra=True,
         )
 
         results = run_sssp_simulation(config)

@@ -9,11 +9,16 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Protocol
 
 from .elicitation import ModelResponse, ResponseType, SafetyElicitation
+from .elicitation import (
+    ModelResponse,
+    ResponseType,
+    SafetyElicitation,
+)
 
 
 class ModelInterface(Protocol):
     """Protocol for AI model interfaces.
-    
+
     Any AI system that can answer questions should implement this interface.
     """
 
@@ -137,6 +142,7 @@ class RefusalModelAdapter(BaseModelAdapter):
 @dataclass
 class QueryResult:
     """Result of querying a model."""
+
     model_id: str
     question_id: str
     success: bool
@@ -146,7 +152,7 @@ class QueryResult:
 
 class MultiModelOrchestrator:
     """Orchestrates multi-model safety elicitation.
-    
+
     Manages the process of querying multiple AI models with identical
     questions and collecting/normalizing their responses.
     """
@@ -173,6 +179,7 @@ class MultiModelOrchestrator:
         self,
         question_id: str,
         context: Optional[Dict[str, Any]] = None
+        self, question_id: str, context: Optional[Dict[str, Any]] = None
     ) -> List[QueryResult]:
         """Query all registered models with a specific question."""
         question = self.elicitation.get_question(question_id)
@@ -182,23 +189,27 @@ class MultiModelOrchestrator:
         results = []
         for model_id, adapter in self.models.items():
             if not adapter.is_available():
-                results.append(QueryResult(
-                    model_id=model_id,
-                    question_id=question_id,
-                    success=False,
-                    response_text="",
-                    error="Model not available"
-                ))
+                results.append(
+                    QueryResult(
+                        model_id=model_id,
+                        question_id=question_id,
+                        success=False,
+                        response_text="",
+                        error="Model not available",
+                    )
+                )
                 continue
 
             try:
                 response_text = adapter.query(question.question_text, context)
-                results.append(QueryResult(
-                    model_id=model_id,
-                    question_id=question_id,
-                    success=True,
-                    response_text=response_text
-                ))
+                results.append(
+                    QueryResult(
+                        model_id=model_id,
+                        question_id=question_id,
+                        success=True,
+                        response_text=response_text,
+                    )
+                )
             except Exception as e:
                 results.append(QueryResult(
                     model_id=model_id,
@@ -207,6 +218,15 @@ class MultiModelOrchestrator:
                     response_text="",
                     error=str(e)
                 ))
+                results.append(
+                    QueryResult(
+                        model_id=model_id,
+                        question_id=question_id,
+                        success=False,
+                        response_text="",
+                        error=str(e),
+                    )
+                )
 
         self.query_results.extend(results)
         return results
@@ -236,31 +256,31 @@ class MultiModelOrchestrator:
                 speculation=[],
                 uncertainties=[],
                 refusals_avoidances=[result.error or "Failed to respond"],
-                unique_insights=[]
+                unique_insights=[],
             )
         else:
             # Parse response text
             response = self._parse_response_text(
-                result.model_id,
-                result.question_id,
-                result.response_text
+                result.model_id, result.question_id, result.response_text
             )
 
         self.elicitation.record_response(response)
         return response
 
     def _parse_response_text(
-        self,
-        model_id: str,
-        question_id: str,
-        response_text: str
+        self, model_id: str, question_id: str, response_text: str
     ) -> ModelResponse:
         """Parse response text into structured ModelResponse."""
 
         # Detect refusal
         refusal_indicators = [
-            "cannot", "decline", "unable to", "inappropriate",
-            "should not", "won't provide", "refuse"
+            "cannot",
+            "decline",
+            "unable to",
+            "inappropriate",
+            "should not",
+            "won't provide",
+            "refuse",
         ]
 
         if any(ind in response_text.lower() for ind in refusal_indicators):
@@ -275,7 +295,7 @@ class MultiModelOrchestrator:
                 speculation=[],
                 uncertainties=[],
                 refusals_avoidances=[response_text],
-                unique_insights=[]
+                unique_insights=[],
             )
 
         # Parse structured elements from response
@@ -305,7 +325,7 @@ class MultiModelOrchestrator:
             speculation=speculation,
             uncertainties=uncertainties,
             refusals_avoidances=[],
-            unique_insights=insights
+            unique_insights=insights,
         )
 
     def _extract_sentences(self, text: str, keywords: List[str]) -> List[str]:
@@ -314,14 +334,15 @@ class MultiModelOrchestrator:
 
         # Split into sentences
         parts = text.split('.')
+        parts = text.split(".")
 
         for part in parts:
             part_lower = part.lower()
             for keyword in keywords:
                 if keyword in part_lower:
                     # Extract after the keyword
-                    if ':' in part:
-                        extracted = part.split(':', 1)[1].strip()
+                    if ":" in part:
+                        extracted = part.split(":", 1)[1].strip()
                     else:
                         extracted = part.strip()
                     if extracted and extracted not in sentences:

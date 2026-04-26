@@ -9,6 +9,9 @@ import sys
 
 sys.path.insert(0, '.')
 
+
+sys.path.insert(0, ".")
+
 from qradle.core.engine import DeterministicEngine, ExecutionContext
 from qradle.core.invariants import FatalInvariants, InvariantViolation
 from qradle.core.merkle import MerkleChain
@@ -22,9 +25,7 @@ def test_invariants():
     # Test 1: Human oversight
     try:
         FatalInvariants.enforce_human_oversight(
-            operation="test",
-            safety_level="SENSITIVE",
-            authorized=False
+            operation="test", safety_level="SENSITIVE", authorized=False
         )
         print("  ❌ FAILED: Should have raised InvariantViolation")
         return False
@@ -33,10 +34,7 @@ def test_invariants():
 
     # Test 2: Merkle integrity
     try:
-        FatalInvariants.enforce_merkle_integrity(
-            chain_valid=False,
-            last_hash="test"
-        )
+        FatalInvariants.enforce_merkle_integrity(chain_valid=False, last_hash="test")
         print("  ❌ FAILED: Should have raised InvariantViolation")
         return False
     except InvariantViolation:
@@ -44,6 +42,7 @@ def test_invariants():
 
     print("✓ All invariant tests passed\n")
     return True
+
 
 def test_merkle_chain():
     """Test Merkle chain functionality."""
@@ -70,6 +69,7 @@ def test_merkle_chain():
 
     print("✓ All Merkle chain tests passed\n")
     return True
+
 
 def test_rollback():
     """Test rollback functionality."""
@@ -101,6 +101,7 @@ def test_rollback():
     print("✓ All rollback tests passed\n")
     return True
 
+
 def test_deterministic_engine():
     """Test deterministic execution engine."""
     print("Testing Deterministic Engine...")
@@ -113,7 +114,7 @@ def test_deterministic_engine():
         parameters={"x": 10, "y": 20},
         timestamp="2025-01-01T00:00:00Z",
         safety_level="ROUTINE",
-        authorized=True
+        authorized=True,
     )
 
     def add_func(params):
@@ -153,11 +154,13 @@ def test_deterministic_engine():
     print("✓ All deterministic engine tests passed\n")
     return True
 
+
 def main():
     """Run all tests."""
-    print("="*60)
+    print("=" * 60)
     print("QRADLE Test Suite")
     print("="*60 + "\n")
+    print("=" * 60 + "\n")
 
     results = []
 
@@ -169,6 +172,9 @@ def main():
     print("="*60)
     print("Test Summary")
     print("="*60)
+    print("=" * 60)
+    print("Test Summary")
+    print("=" * 60)
 
     passed = sum(1 for _, result in results if result)
     total = len(results)
@@ -185,6 +191,7 @@ def main():
     else:
         print(f"\n❌ {total - passed} test suite(s) failed")
         return 1
+
 
 if __name__ == "__main__":
     sys.exit(main())

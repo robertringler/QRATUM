@@ -8,6 +8,7 @@ import pytest
 
 from qradle.core.invariants import (FatalInvariants, InvariantType,
                                     InvariantViolation)
+from qradle.core.invariants import FatalInvariants, InvariantType, InvariantViolation
 
 
 class TestFatalInvariants:
@@ -17,25 +18,19 @@ class TestFatalInvariants:
         """Test Invariant 1: Human oversight requirement."""
         # Should pass for ROUTINE operations without authorization
         FatalInvariants.enforce_human_oversight(
-            operation="test_op",
-            safety_level="ROUTINE",
-            authorized=False
+            operation="test_op", safety_level="ROUTINE", authorized=False
         )
 
         # Should fail for SENSITIVE operations without authorization
         with pytest.raises(InvariantViolation) as exc_info:
             FatalInvariants.enforce_human_oversight(
-                operation="test_op",
-                safety_level="SENSITIVE",
-                authorized=False
+                operation="test_op", safety_level="SENSITIVE", authorized=False
             )
         assert exc_info.value.invariant_type == InvariantType.HUMAN_OVERSIGHT
 
         # Should pass for SENSITIVE operations with authorization
         FatalInvariants.enforce_human_oversight(
-            operation="test_op",
-            safety_level="SENSITIVE",
-            authorized=True
+            operation="test_op", safety_level="SENSITIVE", authorized=True
         )
 
     def test_merkle_integrity_enforcement(self):
@@ -45,13 +40,11 @@ class TestFatalInvariants:
             chain_valid=True,
             last_hash="abc123"
         )
+        FatalInvariants.enforce_merkle_integrity(chain_valid=True, last_hash="abc123")
 
         # Should fail with invalid chain
         with pytest.raises(InvariantViolation) as exc_info:
-            FatalInvariants.enforce_merkle_integrity(
-                chain_valid=False,
-                last_hash="abc123"
-            )
+            FatalInvariants.enforce_merkle_integrity(chain_valid=False, last_hash="abc123")
         assert exc_info.value.invariant_type == InvariantType.MERKLE_INTEGRITY
 
     def test_contract_immutability_enforcement(self):
@@ -61,13 +54,11 @@ class TestFatalInvariants:
             contract_id="contract_123",
             modified=False
         )
+        FatalInvariants.enforce_contract_immutability(contract_id="contract_123", modified=False)
 
         # Should fail for modified contract
         with pytest.raises(InvariantViolation) as exc_info:
-            FatalInvariants.enforce_contract_immutability(
-                contract_id="contract_123",
-                modified=True
-            )
+            FatalInvariants.enforce_contract_immutability(contract_id="contract_123", modified=True)
         assert exc_info.value.invariant_type == InvariantType.CONTRACT_IMMUTABILITY
 
     def test_authorization_system_enforcement(self):
@@ -76,12 +67,11 @@ class TestFatalInvariants:
         FatalInvariants.enforce_authorization_system(
             has_authorization_check=True
         )
+        FatalInvariants.enforce_authorization_system(has_authorization_check=True)
 
         # Should fail when authorization check is bypassed
         with pytest.raises(InvariantViolation) as exc_info:
-            FatalInvariants.enforce_authorization_system(
-                has_authorization_check=False
-            )
+            FatalInvariants.enforce_authorization_system(has_authorization_check=False)
         assert exc_info.value.invariant_type == InvariantType.AUTHORIZATION_SYSTEM
 
     def test_safety_level_system_enforcement(self):
@@ -91,28 +81,24 @@ class TestFatalInvariants:
             operation="test_op",
             has_safety_level=True
         )
+        FatalInvariants.enforce_safety_level_system(operation="test_op", has_safety_level=True)
 
         # Should fail when safety level is missing
         with pytest.raises(InvariantViolation) as exc_info:
-            FatalInvariants.enforce_safety_level_system(
-                operation="test_op",
-                has_safety_level=False
-            )
+            FatalInvariants.enforce_safety_level_system(operation="test_op", has_safety_level=False)
         assert exc_info.value.invariant_type == InvariantType.SAFETY_LEVEL_SYSTEM
 
     def test_rollback_capability_enforcement(self):
         """Test Invariant 6: Rollback capability."""
         # Should pass when checkpoint is available
         FatalInvariants.enforce_rollback_capability(
-            checkpoint_available=True,
-            checkpoint_id="checkpoint_123"
+            checkpoint_available=True, checkpoint_id="checkpoint_123"
         )
 
         # Should fail when checkpoint is not available
         with pytest.raises(InvariantViolation) as exc_info:
             FatalInvariants.enforce_rollback_capability(
-                checkpoint_available=False,
-                checkpoint_id="checkpoint_123"
+                checkpoint_available=False, checkpoint_id="checkpoint_123"
             )
         assert exc_info.value.invariant_type == InvariantType.ROLLBACK_CAPABILITY
 
@@ -123,13 +109,11 @@ class TestFatalInvariants:
             event_emitted=True,
             operation="test_op"
         )
+        FatalInvariants.enforce_event_emission(event_emitted=True, operation="test_op")
 
         # Should fail when event is not emitted
         with pytest.raises(InvariantViolation) as exc_info:
-            FatalInvariants.enforce_event_emission(
-                event_emitted=False,
-                operation="test_op"
-            )
+            FatalInvariants.enforce_event_emission(event_emitted=False, operation="test_op")
         assert exc_info.value.invariant_type == InvariantType.EVENT_EMISSION
 
     def test_determinism_enforcement(self):
@@ -139,13 +123,11 @@ class TestFatalInvariants:
             result_hash="abc123",
             expected_hash="abc123"
         )
+        FatalInvariants.enforce_determinism(result_hash="abc123", expected_hash="abc123")
 
         # Should fail when hashes don't match
         with pytest.raises(InvariantViolation) as exc_info:
-            FatalInvariants.enforce_determinism(
-                result_hash="abc123",
-                expected_hash="def456"
-            )
+            FatalInvariants.enforce_determinism(result_hash="abc123", expected_hash="def456")
         assert exc_info.value.invariant_type == InvariantType.DETERMINISM
 
     def test_get_all_invariants(self):

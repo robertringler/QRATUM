@@ -1,10 +1,19 @@
 build/
 install/
 .venv/
+venv-sandbox/
 obj_dir/
 __pycache__/
 *.pyc
 *.so
+
+# Environment files
+.env
+.env.local
+
+# Kaggle API credentials (never commit)
+.kaggle/
+kaggle.json
 
 # Artifacts
 artifacts/real_world_sim_2025/
@@ -50,6 +59,7 @@ coverage.json
 
 # QuASIM-Own runtime directories
 runs/
+!compiled_realities/runs/
 reports/
 .cache/quasim_datasets/
 
@@ -99,6 +109,9 @@ goodyear_pilot_execution_log.txt
 results/
 bm001_execution.log
 bm001_execution_output.txt
+kaggle_benchmark_results.json
+kaggle_leaderboard*.json
+kaggle_test_positions.json
 
 # Generated documentation package
 output_package/
@@ -139,3 +152,16 @@ checkpoints/
 test_checkpoints/
 validation_results/
 api_cache.db
+
+# Rust build artifacts
+target/
+
+# SBOM generated artifacts (keep directory structure)
+.sbom/cyclonedx/*.json
+.sbom/spdx/*.json
+.sbom/hashes/*.sha256
+.sbom/hashes/*.sha512
+.sbom/provenance/*.json
+.sbom/diffs/*.json
+# Temporal compression experiment outputs
+artifacts/temporal_compression/

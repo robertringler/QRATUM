@@ -6,6 +6,12 @@ Demonstrates basic usage of the QRATUM platform with multiple verticals.
 
 from qratum.platform import PlatformIntent, PlatformOrchestrator
 from qratum.verticals import CapraModule, EcoraModule, JurisModule, VitraModule
+from qratum.verticals import (
+    CapraModule,
+    EcoraModule,
+    JurisModule,
+    VitraModule,
+)
 
 
 def main():
@@ -38,8 +44,8 @@ def main():
         task="analyze_contract",
         parameters={
             "contract_text": "This agreement shall indemnify the party against all liability. "
-                           "The party must deliver goods within 30 days. "
-                           "Failure to comply will result in termination and penalties."
+            "The party must deliver goods within 30 days. "
+            "Failure to comply will result in termination and penalties."
         },
         requester_id="demo_user",
     )
@@ -50,7 +56,7 @@ def main():
     result1 = orchestrator.execute_contract(contract1)
     print("✓ Execution completed")
     print(f"\nRisks identified: {len(result1['output']['risks_identified'])}")
-    for risk in result1['output']['risks_identified']:
+    for risk in result1["output"]["risks_identified"]:
         print(f"  - {risk}")
     print(f"\nSafety Disclaimer: {result1['safety_disclaimer'][:100]}...")
     print()
@@ -143,7 +149,9 @@ def main():
     print(f"Contracts created: {status['contracts_created']}")
     print(f"Contracts executed: {status['contracts_executed']}")
     print(f"Event chain length: {status['event_chain_length']}")
-    print(f"Event chain integrity: {'✓ VERIFIED' if status['event_chain_integrity'] else '✗ FAILED'}")
+    print(
+        f"Event chain integrity: {'✓ VERIFIED' if status['event_chain_integrity'] else '✗ FAILED'}"
+    )
     print()
 
     # Demonstrate replay capability

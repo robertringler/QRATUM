@@ -16,7 +16,7 @@ from .base import VerticalModuleBase
 class CapraModule(VerticalModuleBase):
     """
     Financial risk and derivatives AI module.
-    
+
     Capabilities:
     - Derivatives pricing (Black-Scholes, binomial, exotic options)
     - Risk metrics (VaR, CVaR, Greeks)
@@ -68,8 +68,11 @@ class CapraModule(VerticalModuleBase):
             raise ValueError(f"Unknown task: {task}")
 
         self.emit_task_event(
-            EventType.TASK_STARTED, contract.contract_id, task,
-            {"parameters": parameters}, event_chain
+            EventType.TASK_STARTED,
+            contract.contract_id,
+            task,
+            {"parameters": parameters},
+            event_chain,
         )
 
         handlers = {
@@ -84,8 +87,11 @@ class CapraModule(VerticalModuleBase):
         result = handlers[task](parameters)
 
         self.emit_task_event(
-            EventType.TASK_COMPLETED, contract.contract_id, task,
-            {"result_type": type(result).__name__}, event_chain
+            EventType.TASK_COMPLETED,
+            contract.contract_id,
+            task,
+            {"result_type": type(result).__name__},
+            event_chain,
         )
 
         return self.format_output(result)
@@ -101,22 +107,28 @@ class CapraModule(VerticalModuleBase):
         # Simple Black-Scholes approximation
         d1 = (math.log(S/K) + (r + 0.5*sigma**2)*T) / (sigma*math.sqrt(T))
         d2 = d1 - sigma*math.sqrt(T)
+        d1 = (math.log(S / K) + (r + 0.5 * sigma**2) * T) / (sigma * math.sqrt(T))
+        d2 = d1 - sigma * math.sqrt(T)
 
         # Approximation of normal CDF
         from math import erf
+
         N = lambda x: 0.5 * (1 + erf(x / math.sqrt(2)))
 
         if option_type == "call":
-            price = S * N(d1) - K * math.exp(-r*T) * N(d2)
+            price = S * N(d1) - K * math.exp(-r * T) * N(d2)
         else:
             price = K * math.exp(-r*T) * N(-d2) - S * N(-d1)
+            price = K * math.exp(-r * T) * N(-d2) - S * N(-d1)
 
         return {
             "option_type": option_type,
             "price": round(price, 2),
-            "delta": round(N(d1) if option_type == "call" else N(d1)-1, 4),
-            "gamma": round(1/(S*sigma*math.sqrt(2*math.pi*T)) * math.exp(-d1**2/2), 4),
-            "vega": round(S*math.sqrt(T)/(math.sqrt(2*math.pi)) * math.exp(-d1**2/2), 4),
+            "delta": round(N(d1) if option_type == "call" else N(d1) - 1, 4),
+            "gamma": round(
+                1 / (S * sigma * math.sqrt(2 * math.pi * T)) * math.exp(-(d1**2) / 2), 4
+            ),
+            "vega": round(S * math.sqrt(T) / (math.sqrt(2 * math.pi)) * math.exp(-(d1**2) / 2), 4),
             "theta": round(-0.05, 4),
         }
 
@@ -137,7 +149,7 @@ class CapraModule(VerticalModuleBase):
         risk_tolerance = params.get("risk_tolerance", "moderate")
 
         return {
-            "optimal_weights": {f"asset_{i}": 1.0/len(assets) for i in range(len(assets))},
+            "optimal_weights": {f"asset_{i}": 1.0 / len(assets) for i in range(len(assets))},
             "expected_return": 0.08,
             "portfolio_volatility": 0.12,
             "sharpe_ratio": 0.67,

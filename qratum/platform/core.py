@@ -28,6 +28,7 @@ FATAL_INVARIANTS = [
 
 class ContractStatus(Enum):
     """Contract lifecycle states"""
+
     PENDING = "pending"
     AUTHORIZED = "authorized"
     EXECUTING = "executing"
@@ -38,6 +39,7 @@ class ContractStatus(Enum):
 
 class EventType(Enum):
     """Event types for execution tracking"""
+
     CONTRACT_CREATED = "contract_created"
     CONTRACT_AUTHORIZED = "contract_authorized"
     EXECUTION_STARTED = "execution_started"
@@ -53,10 +55,10 @@ class EventType(Enum):
 class PlatformIntent:
     """
     Immutable representation of a user's computation request.
-    
+
     This is the entry point for all QRATUM computations. Every intent
     must specify the vertical module, task, and parameters.
-    
+
     Attributes:
         vertical: Target vertical module (e.g., "JURIS", "VITRA")
         task: Specific task within the vertical (e.g., "analyze_contract")
@@ -65,6 +67,7 @@ class PlatformIntent:
         timestamp: UTC timestamp of intent creation
         intent_id: Unique identifier (derived from content hash)
     """
+
     vertical: str
     task: str
     parameters: Dict[str, Any]
@@ -101,11 +104,11 @@ class PlatformIntent:
 class PlatformContract:
     """
     Immutable, cryptographically-signed execution contract.
-    
+
     Created by Q-Core authorization from a PlatformIntent. The contract
     is the binding agreement to execute a computation with specific
     parameters and guarantees.
-    
+
     Attributes:
         intent: The original PlatformIntent
         contract_id: Unique contract identifier
@@ -115,6 +118,7 @@ class PlatformContract:
         created_at: UTC timestamp of contract creation
         authorized_at: UTC timestamp of authorization
     """
+
     intent: PlatformIntent
     contract_id: str
     authorized_by: str
@@ -168,10 +172,10 @@ class PlatformContract:
 class Event:
     """
     Immutable event in the execution chain.
-    
+
     Every significant action during contract execution emits an Event.
     Events are appended to the MerkleEventChain for auditability.
-    
+
     Attributes:
         event_id: Unique event identifier
         event_type: Type of event (from EventType enum)
@@ -180,6 +184,7 @@ class Event:
         data: Event-specific data payload
         emitter: Component that emitted the event
     """
+
     event_id: str
     event_type: EventType
     contract_id: str
@@ -200,19 +205,18 @@ class Event:
 
 
 def create_contract_from_intent(
-    intent: PlatformIntent,
-    authorized_by: str = "Q-Core"
+    intent: PlatformIntent, authorized_by: str = "Q-Core"
 ) -> PlatformContract:
     """
     Create an authorized PlatformContract from a PlatformIntent.
-    
+
     This simulates the Q-Core authorization process. In production,
     this would involve cryptographic key signing and policy validation.
-    
+
     Args:
         intent: The PlatformIntent to authorize
         authorized_by: The authorizing entity (default: "Q-Core")
-    
+
     Returns:
         Authorized PlatformContract
     """
@@ -236,25 +240,25 @@ def create_contract_from_intent(
 
 
 def create_event(
-    event_type: EventType,
-    contract_id: str,
-    data: Dict[str, Any],
-    emitter: str
+    event_type: EventType, contract_id: str, data: Dict[str, Any], emitter: str
 ) -> Event:
     """
     Create an immutable Event.
-    
+
     Args:
         event_type: Type of event
         contract_id: Associated contract ID
         data: Event-specific data
         emitter: Component emitting the event
-    
+
     Returns:
         Immutable Event
     """
     timestamp = datetime.now(timezone.utc).isoformat()
     event_id = f"event_{hashlib.sha256(f'{contract_id}_{timestamp}_{emitter}'.encode()).hexdigest()[:16]}"
+    event_id = (
+        f"event_{hashlib.sha256(f'{contract_id}_{timestamp}_{emitter}'.encode()).hexdigest()[:16]}"
+    )
 
     return Event(
         event_id=event_id,

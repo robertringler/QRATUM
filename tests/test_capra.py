@@ -2,6 +2,7 @@
 
 from qratum_platform.core import (ComputeSubstrate, PlatformContract,
                                   PlatformIntent, VerticalModule)
+from qratum_platform.core import ComputeSubstrate, PlatformContract, PlatformIntent, VerticalModule
 from verticals.capra import CAPRAModule
 
 
@@ -51,7 +52,12 @@ class TestCAPRAModule:
         intent = PlatformIntent(
             vertical=VerticalModule.CAPRA,
             operation="monte_carlo",
-            parameters={"initial_price": 100, "drift": 0.05, "volatility": 0.2, "num_simulations": 1000},
+            parameters={
+                "initial_price": 100,
+                "drift": 0.05,
+                "volatility": 0.2,
+                "num_simulations": 1000,
+            },
             user_id="user_001",
         )
         contract = PlatformContract(

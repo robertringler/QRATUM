@@ -29,25 +29,17 @@ def main():
     parser = argparse.ArgumentParser(
         description="UltraSSSP Large-Scale SSSP Simulation for QRATUM"
     )
+    parser = argparse.ArgumentParser(description="UltraSSSP Large-Scale SSSP Simulation for QRATUM")
 
     # Graph parameters
     parser.add_argument(
-        "--nodes",
-        type=int,
-        default=1000,
-        help="Number of nodes in graph (default: 1000)"
+        "--nodes", type=int, default=1000, help="Number of nodes in graph (default: 1000)"
     )
     parser.add_argument(
-        "--edge-prob",
-        type=float,
-        default=0.01,
-        help="Edge probability (default: 0.01)"
+        "--edge-prob", type=float, default=0.01, help="Edge probability (default: 0.01)"
     )
     parser.add_argument(
-        "--max-weight",
-        type=float,
-        default=10.0,
-        help="Maximum edge weight (default: 10.0)"
+        "--max-weight", type=float, default=10.0, help="Maximum edge weight (default: 10.0)"
     )
     parser.add_argument(
         "--source",
@@ -55,30 +47,21 @@ def main():
         default=0,
         help="Source node id (default: 0)"
     )
+    parser.add_argument("--source", type=int, default=0, help="Source node id (default: 0)")
 
     # Algorithm parameters
     parser.add_argument(
-        "--batch-size",
-        type=int,
-        default=100,
-        help="Frontier batch size (default: 100)"
+        "--batch-size", type=int, default=100, help="Frontier batch size (default: 100)"
     )
     parser.add_argument(
-        "--use-hierarchy",
-        action="store_true",
-        help="Enable hierarchical graph contraction"
+        "--use-hierarchy", action="store_true", help="Enable hierarchical graph contraction"
     )
     parser.add_argument(
-        "--hierarchy-levels",
-        type=int,
-        default=3,
-        help="Number of hierarchy levels (default: 3)"
+        "--hierarchy-levels", type=int, default=3, help="Number of hierarchy levels (default: 3)"
     )
+    parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
     parser.add_argument(
-        "--seed",
-        type=int,
-        default=42,
-        help="Random seed (default: 42)"
+        "--no-validate", action="store_true", help="Skip validation against Dijkstra baseline"
     )
     parser.add_argument(
         "--no-validate",
@@ -88,10 +71,7 @@ def main():
 
     # Output options
     parser.add_argument(
-        "--output",
-        type=str,
-        default=None,
-        help="Output JSON file for results (optional)"
+        "--output", type=str, default=None, help="Output JSON file for results (optional)"
     )
 
     args = parser.parse_args()
@@ -161,7 +141,7 @@ def main():
 
         # Sample distances
         distances = results["distances"]
-        reachable = [d for d in distances if d != float('inf')]
+        reachable = [d for d in distances if d != float("inf")]
         if reachable:
             print("\nDistance Statistics:")
             print(f"  Reachable nodes: {len(reachable)}/{len(distances)}")
@@ -189,7 +169,11 @@ def main():
                     "correctness": results.get("correctness"),
                     "speedup": results.get("speedup"),
                     "graph_info": results["graph_info"],
-                    "iteration_count": len(ultra.get("avg_iteration_time", [])) if isinstance(ultra.get("avg_iteration_time"), list) else ultra.get("nodes_visited", 0),
+                    "iteration_count": (
+                        len(ultra.get("avg_iteration_time", []))
+                        if isinstance(ultra.get("avg_iteration_time"), list)
+                        else ultra.get("nodes_visited", 0)
+                    ),
                 },
             }
 
@@ -206,6 +190,7 @@ def main():
     except Exception as e:
         print(f"\nError: {e}", file=sys.stderr)
         import traceback
+
         traceback.print_exc()
         return 1
 

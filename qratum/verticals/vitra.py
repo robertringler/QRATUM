@@ -16,7 +16,7 @@ from .base import VerticalModuleBase
 class VitraModule(VerticalModuleBase):
     """
     Bioinformatics and drug discovery AI module.
-    
+
     Capabilities:
     - Genomic sequence analysis (DNA/RNA/Protein)
     - Protein structure prediction
@@ -68,8 +68,11 @@ class VitraModule(VerticalModuleBase):
             raise ValueError(f"Unknown task: {task}")
 
         self.emit_task_event(
-            EventType.TASK_STARTED, contract.contract_id, task,
-            {"parameters": parameters}, event_chain
+            EventType.TASK_STARTED,
+            contract.contract_id,
+            task,
+            {"parameters": parameters},
+            event_chain,
         )
 
         handlers = {
@@ -84,8 +87,11 @@ class VitraModule(VerticalModuleBase):
         result = handlers[task](parameters)
 
         self.emit_task_event(
-            EventType.TASK_COMPLETED, contract.contract_id, task,
-            {"result_type": type(result).__name__}, event_chain
+            EventType.TASK_COMPLETED,
+            contract.contract_id,
+            task,
+            {"result_type": type(result).__name__},
+            event_chain,
         )
 
         return self.format_output(result)
@@ -95,6 +101,7 @@ class VitraModule(VerticalModuleBase):
         seq_type = params.get("type", "dna").lower()
 
         gc_content = (sequence.count('G') + sequence.count('C')) / max(len(sequence), 1)
+        gc_content = (sequence.count("G") + sequence.count("C")) / max(len(sequence), 1)
 
         return {
             "sequence_length": len(sequence),

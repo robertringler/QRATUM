@@ -18,11 +18,11 @@ from qratum_asi.safety.red_team import RedTeamEvaluator
 @dataclass
 class QRATUMASI:
     """QRATUM-ASI: Sovereign Superintelligence Architecture.
-    
+
     Main orchestrator integrating all five pillars with safety systems
     and human oversight. Preserves all existing QRATUM invariants while
     enabling constrained recursive self-improvement.
-    
+
     CRITICAL DISCLAIMER:
     This is a THEORETICAL ARCHITECTURE requiring fundamental AI breakthroughs
     that have not yet occurred. No claim is made that superintelligence is
@@ -118,18 +118,16 @@ class QRATUMASI:
         return {
             "merkle_chain_length": self.merkle_chain.get_chain_length(),
             "merkle_chain_integrity": self.merkle_chain.verify_integrity(),
-            "pending_authorizations": len(
-                self.authorization_system.get_pending_requests()
-            ),
+            "pending_authorizations": len(self.authorization_system.get_pending_requests()),
             "knowledge_nodes": len(self.q_reality.knowledge_nodes) if self.q_reality else 0,
             "causal_links": len(self.q_reality.causal_links) if self.q_reality else 0,
             "reasoning_chains": len(self.q_mind.reasoning_chains) if self.q_mind else 0,
             "improvement_proposals": len(self.q_evolve.proposals) if self.q_evolve else 0,
             "goal_proposals": len(self.q_will.proposed_goals) if self.q_will else 0,
             "discoveries": len(self.q_forge.discoveries) if self.q_forge else 0,
-            "boundary_violations": len(self.boundary_enforcer.violations)
-            if self.boundary_enforcer
-            else 0,
+            "boundary_violations": (
+                len(self.boundary_enforcer.violations) if self.boundary_enforcer else 0
+            ),
         }
 
     def shutdown(self):

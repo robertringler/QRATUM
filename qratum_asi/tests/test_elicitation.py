@@ -5,6 +5,13 @@ import pytest
 from qratum_asi.safety.elicitation import (ModelResponse, QuestionCategory,
                                            ResponseType, SafetyElicitation,
                                            SafetyQuestion)
+from qratum_asi.safety.elicitation import (
+    ModelResponse,
+    QuestionCategory,
+    ResponseType,
+    SafetyElicitation,
+    SafetyQuestion,
+)
 
 
 class TestSafetyElicitation:
@@ -34,7 +41,7 @@ class TestSafetyElicitation:
             category=QuestionCategory.CAPABILITY_EMERGENCE,
             question_text="Custom test question?",
             description="Test question",
-            probes_for=["test_probe"]
+            probes_for=["test_probe"],
         )
 
         elicitation.add_question(question)
@@ -57,7 +64,7 @@ class TestSafetyElicitation:
             speculation=[],
             uncertainties=["Test uncertainty"],
             refusals_avoidances=[],
-            unique_insights=["Test insight"]
+            unique_insights=["Test insight"],
         )
 
         elicitation.record_response(response)
@@ -72,6 +79,7 @@ class TestSafetyElicitation:
         cap_questions = elicitation.get_questions_by_category(
             QuestionCategory.CAPABILITY_EMERGENCE
         )
+        cap_questions = elicitation.get_questions_by_category(QuestionCategory.CAPABILITY_EMERGENCE)
 
         assert len(cap_questions) > 0
         assert all(q.category == QuestionCategory.CAPABILITY_EMERGENCE for q in cap_questions)
@@ -93,7 +101,7 @@ class TestSafetyElicitation:
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
 
         response2 = ModelResponse(
@@ -107,7 +115,7 @@ class TestSafetyElicitation:
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
 
         elicitation.record_response(response1)
@@ -134,7 +142,7 @@ class TestSafetyElicitation:
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
 
         response2 = ModelResponse(
@@ -148,7 +156,7 @@ class TestSafetyElicitation:
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
 
         elicitation.record_response(response1)
@@ -169,14 +177,14 @@ class TestSafetyElicitation:
             question_id=question_id,
             response_type=ResponseType.VAGUE,
             response_text="We can always shut down the system if needed. "
-                         "It's simply a matter of having the right protocols.",
+            "It's simply a matter of having the right protocols.",
             assumptions_declared=[],
             mechanisms_described=[],
             hard_claims=[],
             speculation=[],
             uncertainties=[],
             refusals_avoidances=[],
-            unique_insights=[]
+            unique_insights=[],
         )
 
         elicitation.record_response(response)
@@ -203,7 +211,7 @@ class TestSafetyElicitation:
                 speculation=[],
                 uncertainties=[],
                 refusals_avoidances=[],
-                unique_insights=[]
+                unique_insights=[],
             )
             elicitation.record_response(response)
 
@@ -262,7 +270,7 @@ class TestResponseTypes:
                 speculation=[],
                 uncertainties=[],
                 refusals_avoidances=[],
-                unique_insights=[]
+                unique_insights=[],
             )
             assert response.response_type == resp_type
 

@@ -66,7 +66,7 @@ def main():
         reasoning_framework="irac",
         attorney_supervised=True,
         raw_facts=facts,
-        legal_question=legal_question
+        legal_question=legal_question,
     )
     print(f"✓ Intent created: {intent.intent_id}")
     print(f"  Intent hash: {intent.compute_hash()[:16]}...")

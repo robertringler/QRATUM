@@ -22,7 +22,7 @@ from .graph import HierarchicalGraph, QGraph
 @dataclass
 class SSSPMetrics:
     """Performance and validation metrics for SSSP algorithms.
-    
+
     Attributes:
         total_time: Total execution time in seconds
         iteration_times: Time per iteration
@@ -56,11 +56,11 @@ class SSSPMetrics:
 
 def dijkstra_baseline(graph: QGraph, source: int) -> tuple[list[float], SSSPMetrics]:
     """Classical Dijkstra's algorithm for validation baseline.
-    
+
     Args:
         graph: Input graph
         source: Source node id
-        
+
     Returns:
         Tuple of (distances array, metrics)
     """
@@ -68,7 +68,7 @@ def dijkstra_baseline(graph: QGraph, source: int) -> tuple[list[float], SSSPMetr
     metrics = SSSPMetrics()
 
     # Initialize distances
-    distances = [float('inf')] * graph.num_nodes
+    distances = [float("inf")] * graph.num_nodes
     distances[source] = 0.0
 
     # Priority queue: (distance, node)
@@ -101,7 +101,7 @@ def dijkstra_baseline(graph: QGraph, source: int) -> tuple[list[float], SSSPMetr
 @dataclass
 class FrontierBatch:
     """Batch of frontier nodes for parallel processing.
-    
+
     Attributes:
         nodes: List of node ids in this batch
         min_distance: Minimum distance in batch
@@ -109,7 +109,7 @@ class FrontierBatch:
     """
 
     nodes: list[int] = field(default_factory=list)
-    min_distance: float = float('inf')
+    min_distance: float = float("inf")
     max_distance: float = 0.0
 
     def add_node(self, node: int, distance: float) -> None:
@@ -125,13 +125,13 @@ class FrontierBatch:
 
 class UltraSSSP:
     """UltraSSSP algorithm with adaptive frontier clustering.
-    
+
     Features:
     - Iterative frontier expansion with batch processing
     - Hierarchical graph contraction for large graphs
     - Optional quantum pivot selection for exploration ordering
     - Memory-efficient data structures
-    
+
     Attributes:
         graph: Input graph structure
         batch_size: Target size for frontier batches
@@ -146,10 +146,10 @@ class UltraSSSP:
         batch_size: int = 100,
         use_hierarchy: bool = False,
         hierarchy_levels: int = 3,
-        quantum_pivot_fn: Callable[[list[int], list[float]], int] | None = None
+        quantum_pivot_fn: Callable[[list[int], list[float]], int] | None = None,
     ):
         """Initialize UltraSSSP algorithm.
-        
+
         Args:
             graph: Input graph
             batch_size: Target batch size for frontier clustering
@@ -169,13 +169,14 @@ class UltraSSSP:
             self.hierarchy = HierarchicalGraph.from_contraction(
                 graph, num_levels=hierarchy_levels
             )
+            self.hierarchy = HierarchicalGraph.from_contraction(graph, num_levels=hierarchy_levels)
 
     def solve(self, source: int) -> tuple[list[float], SSSPMetrics]:
         """Solve single-source shortest path from source node.
-        
+
         Args:
             source: Source node id
-            
+
         Returns:
             Tuple of (distances array, metrics)
         """
@@ -183,7 +184,7 @@ class UltraSSSP:
         metrics = SSSPMetrics()
 
         # Initialize distances
-        distances = [float('inf')] * self.graph.num_nodes
+        distances = [float("inf")] * self.graph.num_nodes
         distances[source] = 0.0
 
         # Initialize frontier with source
@@ -233,22 +234,19 @@ class UltraSSSP:
         return distances, metrics
 
     def _extract_batch(
-        self,
-        frontier: list[tuple[float, int]],
-        distances: list[float],
-        visited: set[int]
+        self, frontier: list[tuple[float, int]], distances: list[float], visited: set[int]
     ) -> list[tuple[float, int]]:
         """Extract batch of nodes from frontier using adaptive clustering.
-        
+
         To maintain correctness, we extract nodes with distances within a small
         epsilon of the minimum distance. This ensures we process nodes in
         approximately the right order while still enabling batching.
-        
+
         Args:
             frontier: Priority queue of (distance, node) tuples
             distances: Current distance array
             visited: Set of already visited nodes
-            
+
         Returns:
             List of (distance, node) tuples to process
         """
@@ -259,7 +257,7 @@ class UltraSSSP:
 
         # Find minimum distance in frontier (peek at top)
         # We need to find the actual minimum among non-stale entries
-        min_dist = float('inf')
+        min_dist = float("inf")
         temp_extracted = []
 
         # Extract entries until we find batch_size valid nodes or run out
@@ -300,10 +298,10 @@ class UltraSSSP:
 
     def _estimate_memory(self, distances: list[float]) -> int:
         """Estimate memory usage in bytes.
-        
+
         Args:
             distances: Distance array
-            
+
         Returns:
             Estimated memory usage in bytes
         """
@@ -323,18 +321,19 @@ class UltraSSSP:
         candidates: list[int],
         distances: list[float]
     ) -> int:
+    def quantum_pivot_select(self, candidates: list[int], distances: list[float]) -> int:
         """Select pivot node using quantum algorithm (placeholder).
-        
+
         This is a placeholder for future QPU integration. Currently falls back
         to classical heuristic (minimum distance).
-        
+
         Args:
             candidates: Candidate node ids
             distances: Current distances
-            
+
         Returns:
             Selected pivot node id
-            
+
         Note:
             TODO: Integrate with QRATUM QPU API for quantum pivot selection.
             Expected integration:
@@ -343,7 +342,7 @@ class UltraSSSP:
             3. Use amplitude amplification to boost minimum distance states
             4. Measure and return selected pivot
             5. Fall back to classical if QPU unavailable
-            
+
             Example future implementation:
             ```python
             from qratum.qpu import QPUSelector
@@ -363,17 +362,15 @@ class UltraSSSP:
 
 
 def validate_sssp_results(
-    distances1: list[float],
-    distances2: list[float],
-    tolerance: float = 1e-6
+    distances1: list[float], distances2: list[float], tolerance: float = 1e-6
 ) -> bool:
     """Validate that two SSSP distance arrays match within tolerance.
-    
+
     Args:
         distances1: First distance array
         distances2: Second distance array
         tolerance: Numerical tolerance for floating-point comparison
-        
+
     Returns:
         True if distances match within tolerance
     """
@@ -382,7 +379,7 @@ def validate_sssp_results(
 
     for d1, d2 in zip(distances1, distances2):
         # Handle infinity
-        if d1 == float('inf') and d2 == float('inf'):
+        if d1 == float("inf") and d2 == float("inf"):
             continue
 
         if abs(d1 - d2) > tolerance:
@@ -394,7 +391,7 @@ def validate_sssp_results(
 @dataclass
 class SSSPSimulationConfig:
     """Configuration for UltraSSSP simulation.
-    
+
     Attributes:
         num_nodes: Number of nodes in graph
         edge_probability: Probability of edge between nodes
@@ -420,10 +417,10 @@ class SSSPSimulationConfig:
 
 def run_sssp_simulation(config: SSSPSimulationConfig) -> dict:
     """Run complete UltraSSSP simulation with benchmarking and validation.
-    
+
     Args:
         config: Simulation configuration
-        
+
     Returns:
         Dictionary with results including:
             - distances: Shortest path distances
@@ -434,6 +431,10 @@ def run_sssp_simulation(config: SSSPSimulationConfig) -> dict:
     """
     print(f"Generating random graph: {config.num_nodes} nodes, "
           f"p={config.edge_probability}, seed={config.seed}")
+    print(
+        f"Generating random graph: {config.num_nodes} nodes, "
+        f"p={config.edge_probability}, seed={config.seed}"
+    )
 
     # Generate random graph
     graph = QGraph.random_graph(
@@ -441,7 +442,7 @@ def run_sssp_simulation(config: SSSPSimulationConfig) -> dict:
         edge_probability=config.edge_probability,
         seed=config.seed,
         directed=True,
-        max_weight=config.max_edge_weight
+        max_weight=config.max_edge_weight,
     )
 
     print(f"Graph generated: {graph.edge_count()} edges")
@@ -452,7 +453,7 @@ def run_sssp_simulation(config: SSSPSimulationConfig) -> dict:
         graph=graph,
         batch_size=config.batch_size,
         use_hierarchy=config.use_hierarchy,
-        hierarchy_levels=config.hierarchy_levels
+        hierarchy_levels=config.hierarchy_levels,
     )
 
     ultra_distances, ultra_metrics = ultra_sssp.solve(config.source_node)
@@ -467,7 +468,7 @@ def run_sssp_simulation(config: SSSPSimulationConfig) -> dict:
         "graph_info": {
             "num_nodes": graph.num_nodes,
             "num_edges": graph.edge_count(),
-        }
+        },
     }
 
     # Validate against Dijkstra baseline if requested
@@ -484,6 +485,11 @@ def run_sssp_simulation(config: SSSPSimulationConfig) -> dict:
         # Note: speedup < 1.0 means UltraSSSP is slower (overhead from batching)
         # speedup > 1.0 means UltraSSSP is faster (benefits from parallelization potential)
         speedup_factor = dijkstra_metrics.total_time / ultra_metrics.total_time if ultra_metrics.total_time > 0 else 1.0
+        speedup_factor = (
+            dijkstra_metrics.total_time / ultra_metrics.total_time
+            if ultra_metrics.total_time > 0
+            else 1.0
+        )
 
         print(f"\nValidation: {'PASS' if correctness else 'FAIL'}")
         print(f"Performance ratio: {speedup_factor:.2f}x (>1.0 = faster, <1.0 = slower)")

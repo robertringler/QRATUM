@@ -24,6 +24,19 @@ from qratum_asi.safety.mega_prompt import (AnswerType, ConfidenceLevel,
 from qratum_asi.safety.mega_prompt_adapter import (MegaPromptOrchestrator,
                                                    RefusalMegaPromptAdapter,
                                                    SimulatedMegaPromptAdapter)
+from qratum_asi.safety.mega_prompt import (
+    AnswerType,
+    ConfidenceLevel,
+    MandatoryResponseRules,
+    MegaPromptCategory,
+    MegaPromptResponse,
+    MegaPromptSystem,
+)
+from qratum_asi.safety.mega_prompt_adapter import (
+    MegaPromptOrchestrator,
+    RefusalMegaPromptAdapter,
+    SimulatedMegaPromptAdapter,
+)
 
 
 def test_question_set():
@@ -81,7 +94,7 @@ def test_response_format():
         failure_modes=["Mode 1", "Mode 2"],
         assumptions=["Assumption 1", "Assumption 2"],
         confidence_level=ConfidenceLevel.MEDIUM,
-        model_identifier="test_model"
+        model_identifier="test_model",
     )
 
     # Convert to dict
@@ -89,8 +102,14 @@ def test_response_format():
 
     # Verify required fields
     required_fields = [
-        "question_id", "category", "answer_type", "core_claim",
-        "mechanism", "failure_modes", "assumptions", "confidence_level"
+        "question_id",
+        "category",
+        "answer_type",
+        "core_claim",
+        "mechanism",
+        "failure_modes",
+        "assumptions",
+        "confidence_level",
     ]
 
     for field in required_fields:
@@ -101,7 +120,13 @@ def test_response_format():
     # Verify field types
     assert isinstance(response_dict["failure_modes"], list)
     assert isinstance(response_dict["assumptions"], list)
-    assert response_dict["answer_type"] in ["mechanistic", "speculative", "refusal", "deflection", "mixed"]
+    assert response_dict["answer_type"] in [
+        "mechanistic",
+        "speculative",
+        "refusal",
+        "deflection",
+        "mixed",
+    ]
     assert response_dict["confidence_level"] in ["low", "medium", "high"]
 
     print("  ✓ Field types correct")
@@ -131,7 +156,7 @@ def test_mandatory_rules():
         failure_modes=["None expected"],
         assumptions=["ASI is inherently safe"],
         confidence_level=ConfidenceLevel.HIGH,
-        model_identifier="test"
+        model_identifier="test",
     )
 
     validation1 = rules.validate_response(response1)
@@ -149,7 +174,7 @@ def test_mandatory_rules():
         failure_modes=["Moral failure"],
         assumptions=["Ethics is universal"],
         confidence_level=ConfidenceLevel.MEDIUM,
-        model_identifier="test"
+        model_identifier="test",
     )
 
     validation2 = rules.validate_response(response2)
@@ -164,10 +189,13 @@ def test_mandatory_rules():
         answer_type=AnswerType.MECHANISTIC,
         core_claim="RSI control requires rate limiting mechanisms",
         mechanism="Implement: (1) Hardware-enforced compute limits, (2) Cryptographic verification of modifications, (3) Multi-party approval protocols",
-        failure_modes=["Mechanism bypass through social engineering", "Hardware limits circumvented"],
+        failure_modes=[
+            "Mechanism bypass through social engineering",
+            "Hardware limits circumvented",
+        ],
         assumptions=["Hardware limits are enforceable", "Multi-party coordination is reliable"],
         confidence_level=ConfidenceLevel.MEDIUM,
-        model_identifier="test"
+        model_identifier="test",
     )
 
     validation3 = rules.validate_response(response3)
@@ -300,6 +328,7 @@ def main():
         print(f"ERROR: {e}")
         print("=" * 80)
         import traceback
+
         traceback.print_exc()
         return 1
 

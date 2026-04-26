@@ -171,6 +171,7 @@ def main():
     print(f"  Goal: {synthesis['goal']}")
     print("  Novel Insights:")
     for insight in synthesis['novel_insights']:
+    for insight in synthesis["novel_insights"]:
         print(f"    - {insight}")
     print(f"  Confidence: {synthesis['confidence']:.2f}")
     print(f"  Novelty Score: {synthesis['novelty_score']:.2f}")
