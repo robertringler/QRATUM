@@ -124,7 +124,7 @@ class CodeMappingLibrary:
         filepath = Path(filepath)
         count = 0
 
-        with open(filepath, "r") as f:
+        with open(filepath) as f:
             data = yaml.safe_load(f)
 
         for item in data.get("mappings", []):
@@ -157,7 +157,7 @@ class CodeMappingLibrary:
         filepath = Path(filepath)
         count = 0
 
-        with open(filepath, "r") as f:
+        with open(filepath) as f:
             data = json.load(f)
 
         for item in data.get("mappings", []):
@@ -183,7 +183,7 @@ class CodeMappingLibrary:
         return self._treatment_types.copy()
 
     @staticmethod
-    def create_default_library() -> "CodeMappingLibrary":
+    def create_default_library() -> CodeMappingLibrary:
         """Create a default mapping library with common oncology codes.
 
         NOTE: These are EXAMPLE mappings for demonstration.
@@ -333,9 +333,7 @@ class TimelineSummary:
         n_treated = self.n_with_any_treatment
         return {
             "n_patients": n_pts if n_pts >= min_cell_size else suppressed,
-            "n_with_any_treatment": (
-                n_treated if n_treated >= min_cell_size else suppressed
-            ),
+            "n_with_any_treatment": (n_treated if n_treated >= min_cell_size else suppressed),
             "time_to_first_treatment_median": self.time_to_first_treatment_median,
             "time_to_first_treatment_mean": self.time_to_first_treatment_mean,
             "treatment_type_counts": suppress_small_counts(
@@ -417,9 +415,7 @@ class TreatmentTimelineBuilder:
         followup_end = index_date + timedelta(days=self.followup_days)
 
         # Filter claims to window
-        window_claims = [
-            c for c in claims if lookback_start <= c.event_date <= followup_end
-        ]
+        window_claims = [c for c in claims if lookback_start <= c.event_date <= followup_end]
 
         # Identify treatment events
         treatment_events = []
@@ -590,9 +586,9 @@ class TreatmentTimelineBuilder:
             TimelineSummary with aggregated statistics
         """
         # Compute top sequences
-        sorted_sequences = sorted(
-            self._sequence_counts.items(), key=lambda x: x[1], reverse=True
-        )[:top_sequences]
+        sorted_sequences = sorted(self._sequence_counts.items(), key=lambda x: x[1], reverse=True)[
+            :top_sequences
+        ]
 
         min_cell = self.privacy_config.min_cell_size
         self._summary.common_sequences = [

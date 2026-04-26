@@ -1,0 +1,37 @@
+{
+  "generation_timestamp": "2025-10-18T18:53:00",
+  "validated_results_basis": {
+    "optimal_gamma": 0.0658,
+    "critical_gamma": 0.001,
+    "max_coherence_D2": 0.8597,
+    "participation_ratio": 35.71,
+    "transport_regime": "delocalized",
+    "successful_experiments": 720
+  },
+  "visualization_config": {
+    "style": "publication",
+    "dpi": 300,
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ]
+  },
+  "generated_visualizations": {
+    "phase_diagram": {
+      "png": "advanced_physics_visualizations\\quantum_phase_diagram.png",
+      "pdf": "advanced_physics_visualizations\\quantum_phase_diagram.pdf",
+      "svg": "advanced_physics_visualizations\\quantum_phase_diagram.svg"
+    },
+    "critical_scaling": {
+      "png": "advanced_physics_visualizations\\critical_scaling.png",
+      "pdf": "advanced_physics_visualizations\\critical_scaling.pdf",
+      "svg": "advanced_physics_visualizations\\critical_scaling.svg"
+    },
+    "transport_map": {
+      "png": "advanced_physics_visualizations\\transport_characterization.png",
+      "pdf": "advanced_physics_visualizations\\transport_characterization.pdf",
+      "svg": "advanced_physics_visualizations\\transport_characterization.svg"
+    }
+  }
+}

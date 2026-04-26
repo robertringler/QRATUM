@@ -140,9 +140,7 @@ class BenchmarkResult:
     reasoning_chain: list[str]
     time_taken_seconds: float
     provenance_hash: str
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     metadata: dict[str, Any] = field(default_factory=dict)
 
     @property
@@ -173,6 +171,4 @@ class EvaluationSummary:
     superhuman_count: int
     expert_count: int
     performance_distribution: dict[str, int]
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())

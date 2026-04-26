@@ -24,18 +24,17 @@ __version__ = "1.0.0"
 __author__ = "QRATUM Team"
 
 from .homology import (
-    PersistentHomologyObserver,
     BettiNumbers,
     PersistenceDiagram,
+    PersistentHomologyObserver,
     TopologicalAnnotation,
-    compute_persistent_homology,
     compute_betti_numbers,
+    compute_persistent_homology,
 )
-
 from .observer import (
-    TopologicalInstrumentationLayer,
-    ObservationResult,
     InvariantAssertion,
+    ObservationResult,
+    TopologicalInstrumentationLayer,
 )
 
 __all__ = [

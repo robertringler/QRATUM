@@ -1,18 +1,18 @@
 """Tests for the Enhanced Topological Observer."""
 
 import pytest
-import numpy as np
 
 try:
     from quasim.hybrid_quantum.topological_observer import (
-        EnhancedTopologicalObserver,
-        TopologicalObservation,
         CollapseMetrics,
-        FidelityMetrics,
+        DiagnosticCategory,
         DiagnosticFinding,
         DiagnosticSeverity,
-        DiagnosticCategory,
+        EnhancedTopologicalObserver,
+        FidelityMetrics,
+        TopologicalObservation,
     )
+
     OBSERVER_AVAILABLE = True
 except ImportError:
     OBSERVER_AVAILABLE = False
@@ -38,7 +38,7 @@ class TestCollapseMetrics:
         # Collapse index 0.7 means 30% reduction from 1.0
         metrics = CollapseMetrics(collapse_index=0.7, target_reduction=0.3)
         assert metrics.meets_target is True
-        
+
         # Collapse index 0.8 is above threshold (1 - 0.3 = 0.7)
         metrics = CollapseMetrics(collapse_index=0.8, target_reduction=0.3)
         assert metrics.meets_target is False
@@ -62,7 +62,7 @@ class TestFidelityMetrics:
         """Test P1 fidelity target (≥0.999)."""
         metrics = FidelityMetrics(simulation_fidelity=0.9995)
         assert metrics.meets_p1_target is True
-        
+
         metrics = FidelityMetrics(simulation_fidelity=0.998)
         assert metrics.meets_p1_target is False
 
@@ -94,9 +94,9 @@ class TestDiagnosticFinding:
             recommended_action="Enable error mitigation",
             observation_id="obs-456",
         )
-        
+
         proposal = finding.to_proposal()
-        
+
         assert "proposal_id" in proposal
         assert proposal["finding_id"] == "test-123"
         assert proposal["requires_approval"] is True
@@ -127,10 +127,10 @@ class TestEnhancedTopologicalObserver:
     def test_observe_uniform_distribution(self):
         """Test observing uniform distribution."""
         observer = EnhancedTopologicalObserver()
-        
+
         counts = {"00": 250, "01": 250, "10": 250, "11": 250}
         observation = observer.observe(counts)
-        
+
         assert observation.observation_id != ""
         assert observation.collapse_metrics.collapse_index == 0.25
         assert observation.collapse_metrics.effective_support == 4
@@ -139,12 +139,12 @@ class TestEnhancedTopologicalObserver:
     def test_observe_collapsed_distribution(self):
         """Test observing collapsed distribution."""
         observer = EnhancedTopologicalObserver()
-        
+
         # 90% in "00", others all >1% so effective support is 4
         # (900/1000=90%, 50/1000=5%, 30/1000=3%, 20/1000=2%)
         counts = {"00": 900, "01": 50, "10": 30, "11": 20}
         observation = observer.observe(counts)
-        
+
         assert observation.collapse_metrics.collapse_index == 0.9
         # All 4 outcomes have probability >1%, so effective_support is 4
         assert observation.collapse_metrics.effective_support == 4
@@ -155,24 +155,24 @@ class TestEnhancedTopologicalObserver:
     def test_observe_with_expected_distribution(self):
         """Test observing with expected distribution for fidelity."""
         observer = EnhancedTopologicalObserver()
-        
+
         counts = {"00": 500, "11": 500}
         expected = {"00": 0.5, "11": 0.5}
-        
+
         observation = observer.observe(counts, expected_distribution=expected)
-        
+
         assert observation.fidelity_metrics.simulation_fidelity > 0.99
         assert observation.fidelity_metrics.error_rate < 0.01
 
     def test_observe_with_mismatched_distribution(self):
         """Test observing with mismatched expected distribution."""
         observer = EnhancedTopologicalObserver()
-        
+
         counts = {"00": 800, "11": 200}
         expected = {"00": 0.5, "11": 0.5}
-        
+
         observation = observer.observe(counts, expected_distribution=expected)
-        
+
         # Should have lower fidelity due to mismatch
         assert observation.fidelity_metrics.simulation_fidelity < 0.999
         assert observation.fidelity_metrics.error_rate > 0.1
@@ -180,50 +180,49 @@ class TestEnhancedTopologicalObserver:
     def test_observe_generates_findings(self):
         """Test that observation generates diagnostic findings."""
         observer = EnhancedTopologicalObserver(fidelity_threshold=0.999)
-        
+
         # Create distribution that will trigger findings
         counts = {"00": 900, "11": 100}
         expected = {"00": 0.5, "11": 0.5}
-        
+
         observation = observer.observe(counts, expected_distribution=expected)
-        
+
         # Should have findings for fidelity issue
         assert len(observation.findings) > 0
         fidelity_findings = [
-            f for f in observation.findings 
-            if f.category == DiagnosticCategory.FIDELITY
+            f for f in observation.findings if f.category == DiagnosticCategory.FIDELITY
         ]
         assert len(fidelity_findings) > 0
 
     def test_observe_empty_counts(self):
         """Test observing empty counts."""
         observer = EnhancedTopologicalObserver()
-        
+
         observation = observer.observe({})
-        
+
         assert "error" in observation.raw_diagnostics
 
     def test_observation_history_tracking(self):
         """Test that observations are tracked in history."""
         observer = EnhancedTopologicalObserver()
-        
+
         observer.observe({"00": 500, "11": 500})
         observer.observe({"00": 600, "11": 400})
         observer.observe({"00": 700, "11": 300})
-        
+
         observations = observer.get_observations()
         assert len(observations) == 3
 
     def test_proposals_tracking(self):
         """Test that proposals are tracked from findings."""
         observer = EnhancedTopologicalObserver(fidelity_threshold=0.999)
-        
+
         # Create observation that triggers findings
         counts = {"00": 900, "11": 100}
         expected = {"00": 0.5, "11": 0.5}
-        
+
         observer.observe(counts, expected_distribution=expected)
-        
+
         proposals = observer.get_proposals()
         # Should have generated proposals for findings
         assert len(proposals) > 0
@@ -232,12 +231,12 @@ class TestEnhancedTopologicalObserver:
     def test_soi_visualization_data(self):
         """Test SOI visualization data generation."""
         observer = EnhancedTopologicalObserver()
-        
+
         observer.observe({"00": 500, "11": 500})
         observer.observe({"00": 600, "11": 400})
-        
+
         viz_data = observer.generate_soi_visualization_data()
-        
+
         assert viz_data["visualization_type"] == "soi_topological"
         assert viz_data["data_points"] == 2
         assert "collapse_trend" in viz_data
@@ -247,25 +246,23 @@ class TestEnhancedTopologicalObserver:
     def test_soi_visualization_specific_observation(self):
         """Test SOI visualization for specific observation."""
         observer = EnhancedTopologicalObserver()
-        
+
         obs1 = observer.observe({"00": 500, "11": 500})
         obs2 = observer.observe({"00": 600, "11": 400})
-        
-        viz_data = observer.generate_soi_visualization_data(
-            observation_id=obs1.observation_id
-        )
-        
+
+        viz_data = observer.generate_soi_visualization_data(observation_id=obs1.observation_id)
+
         assert viz_data["data_points"] == 1
 
     def test_summary_report(self):
         """Test summary report generation."""
         observer = EnhancedTopologicalObserver()
-        
+
         observer.observe({"00": 500, "11": 500})
         observer.observe({"00": 600, "11": 400})
-        
+
         summary = observer.get_summary_report()
-        
+
         assert summary["observation_count"] == 2
         assert "collapse_statistics" in summary
         assert "fidelity_statistics" in summary
@@ -275,35 +272,35 @@ class TestEnhancedTopologicalObserver:
     def test_summary_report_empty(self):
         """Test summary report with no observations."""
         observer = EnhancedTopologicalObserver()
-        
+
         summary = observer.get_summary_report()
-        
+
         assert summary["count"] == 0
 
     def test_provenance_hash_computation(self):
         """Test provenance hash is computed for observation."""
         observer = EnhancedTopologicalObserver()
-        
+
         counts = {"00": 500, "11": 500}
         observation = observer.observe(counts)
-        
+
         assert observation.provenance_hash != ""
         assert len(observation.provenance_hash) == 64  # SHA-256 hex
 
     def test_read_only_behavior(self):
         """Test that observer is read-only (no state modification)."""
         observer = EnhancedTopologicalObserver()
-        
+
         counts = {"00": 500, "11": 500}
         observation = observer.observe(counts)
-        
+
         # Observer should not modify counts
         assert counts == {"00": 500, "11": 500}
-        
+
         # Observations should be immutable snapshots
         original_id = observation.observation_id
         observer.observe({"00": 600, "11": 400})
-        
+
         # Original observation unchanged
         obs_list = observer.get_observations()
         assert obs_list[0].observation_id == original_id
@@ -316,7 +313,7 @@ class TestTopologicalObservation:
     def test_observation_creation(self):
         """Test creating observation."""
         observation = TopologicalObservation(observation_id="test-123")
-        
+
         assert observation.observation_id == "test-123"
         assert observation.timestamp != ""
         assert isinstance(observation.collapse_metrics, CollapseMetrics)
@@ -351,28 +348,28 @@ class TestReferenceConsistency:
     def test_observe_with_reference_counts(self):
         """Test observing with reference counts for consistency."""
         observer = EnhancedTopologicalObserver()
-        
+
         counts = {"00": 500, "11": 500}
         reference = [
             {"00": 490, "11": 510},
             {"00": 505, "11": 495},
         ]
-        
+
         observation = observer.observe(counts, reference_counts=reference)
-        
+
         # With similar results, fidelity should be high
         assert observation.fidelity_metrics.classical_fidelity > 0.95
 
     def test_observe_with_inconsistent_reference(self):
         """Test observing with inconsistent reference results."""
         observer = EnhancedTopologicalObserver()
-        
+
         counts = {"00": 800, "11": 200}
         reference = [
             {"00": 200, "11": 800},  # Opposite distribution
         ]
-        
+
         observation = observer.observe(counts, reference_counts=reference)
-        
+
         # With opposite results, classical fidelity should be lower
         assert observation.fidelity_metrics.classical_fidelity < 0.9
