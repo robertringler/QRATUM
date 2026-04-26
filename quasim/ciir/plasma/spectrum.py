@@ -37,6 +37,7 @@ from numpy.typing import NDArray
 from .mhd import MHDState
 
 FloatArray = NDArray[np.floating]
+IntArrayLike = NDArray[np.integer]
 
 
 # ---------------------------------------------------------------------------
@@ -64,10 +65,6 @@ def _shell_bin(KX: FloatArray, KY: FloatArray, n_bins: int) -> tuple[FloatArray,
     centers = 0.5 * (edges[:-1] + edges[1:])
     bin_idx = np.clip(np.digitize(K, edges) - 1, 0, n_bins - 1)
     return centers, bin_idx
-
-
-# numpy typing alias for in-module use
-IntArrayLike = NDArray[np.integer]
 
 
 def spectrum(state: MHDState, n_bins: Optional[int] = None) -> SpectrumSnapshot:

@@ -324,7 +324,7 @@ def topology_snapshot(
     """Compute a full topology snapshot of the current state."""
     crits = find_critical_points(state, grad_tol=grad_tol)
     xs = [c for c in crits if c.kind == "X"]
-    os_ = [c for c in crits if c.kind == "O"]
+    op = [c for c in crits if c.kind == "O"]
     sheets = find_current_sheets(state, threshold_factor=sheet_threshold, min_size=sheet_min_size)
     if xs:
         rate = float(np.mean([abs(state.eta * c.Jz) for c in xs]))
@@ -333,11 +333,11 @@ def topology_snapshot(
     return TopologySnapshot(
         t=state.t,
         x_points=xs,
-        o_points=os_,
+        o_points=op,
         sheets=sheets,
         reconnection_rate_at_X=rate,
         n_X=len(xs),
-        n_O=len(os_),
+        n_O=len(op),
     )
 
 
