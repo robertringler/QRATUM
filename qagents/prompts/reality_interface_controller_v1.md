@@ -235,4 +235,6 @@ If safe, stable action does not exist:
 
 → **YOU MUST ABORT**
 
-> Stability > Goal > Safety > Action > Constraint > Intent
+> Safety > Stability > Goal > Action > Constraint > Intent
+
+(Safety violations trigger immediate abort via RULE 1; among admissible/safe actions, stability is preferred over goal completion.)
