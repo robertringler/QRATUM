@@ -307,11 +307,11 @@ class HttpClient {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const error: APIError = await response.json();
+        const error = await response.json() as APIError;
         throw new QRATUMAPIError(error.error, error.errorDescription, response.status);
       }
 
-      return response.json();
+      return response.json() as Promise<T>;
     } catch (err) {
       clearTimeout(timeoutId);
       if (err instanceof QRATUMAPIError) {
@@ -981,15 +981,15 @@ export class QRATUMClient {
     });
 
     if (!response.ok) {
-      const error = await response.json();
+      const error = await response.json() as { error: string; error_description: string };
       throw new QRATUMAPIError(error.error, error.error_description);
     }
 
-    const token: {
+    const token = await response.json() as {
       access_token: string;
       expires_in: number;
       refresh_token?: string;
-    } = await response.json();
+    };
 
     this.http.setAccessToken(token.access_token);
     this.config.accessToken = token.access_token;
@@ -1030,11 +1030,11 @@ export class QRATUMClient {
       });
 
       if (response.ok) {
-        const token: {
+        const token = await response.json() as {
           access_token: string;
           expires_in: number;
           refresh_token?: string;
-        } = await response.json();
+        };
 
         this.http.setAccessToken(token.access_token);
         this.config.accessToken = token.access_token;

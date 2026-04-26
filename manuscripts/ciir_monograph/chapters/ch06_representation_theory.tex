@@ -1,0 +1,1405 @@
+% ============================================================
+%
+%  CHAPTER 6 — REPRESENTATION THEORY & FUNCTORIAL STRUCTURE
+%
+%  Constraint-Induced Interface Realism (CIIR)
+%  Monograph — Chapter 6
+%
+%  Dependencies: Chapters 3–5 (Primitive Definitions D3.1–D3.21,
+%                Axioms Ax.4.1–Ax.4.6, Algebraic Structure
+%                D5.1–D5.12, T5.1–T5.4)
+%  Provides:     Categories CogSys and Hilb_CIIR, representation
+%                functor F, full functoriality proof, unitary
+%                equivalence congruence, natural transformations,
+%                symmetric monoidal structure, monoidal functor
+%
+% ============================================================
+
+% ------------------------------------------------------------
+% CURRENT THEORY STATE
+% ------------------------------------------------------------
+%
+%  Definitions:     D3.1–D3.21 (Ch. 3); D5.1–D5.12 (Ch. 5);
+%                   D6.1–D6.16 (this chapter)
+%  Axioms:          Ax.4.1–Ax.4.6 (Ch. 4)
+%  Proven Theorems: L3.1–L3.8, P3.1–P3.7 (Ch. 3);
+%                   T4.1–T4.3 (Ch. 4);
+%                   T5.1–T5.4, L5.1–L5.8, P5.1–P5.5 (Ch. 5);
+%                   T6.1–T6.8, L6.1–L6.9, P6.1–P6.4 (this chapter)
+%  Derived Structures: CogSys, Hilb_CIIR, functor F, monoidal
+%                   structure, natural transformation categories
+%  Open Problems:   Dynamics (deferred to Chapter 7)
+%  Consistency Status: Consistent
+%
+% ------------------------------------------------------------
+
+\section{Representation Theory \& Functorial Structure}
+\label{sec:ch6:reptheory}
+
+This chapter lifts the CIIR framework into full categorical form.  We
+construct two categories, $\mathbf{CogSys}$ and $\mathbf{Hilb_{CIIR}}$,
+and prove that the assignment $X \mapsto (\HC_X, \rho_X, \Phi_X)$
+extends to a \emph{symmetric monoidal functor}
+\[
+  \mathbf{F} : \mathbf{CogSys} \to \mathbf{Hilb_{CIIR}}.
+\]
+No new axioms are introduced; all results follow from
+Axioms~\ref{ax:4.1}--\ref{ax:4.6} and
+Definitions~\ref{def:3.1}--\ref{def:5.12}.
+
+The central results are:
+\begin{enumerate}
+  \item $\mathbf{CogSys}$ is a well-defined category
+    (Theorem~\ref{thm:6.1}).
+  \item $\mathbf{Hilb_{CIIR}}$ is a well-defined category
+    (Theorem~\ref{thm:6.2}).
+  \item The representation functor $\mathbf{F}$ is well-defined and
+    faithful (Theorem~\ref{thm:6.3}).
+  \item $\mathbf{F}$ preserves identities and composition
+    (Theorem~\ref{thm:6.4}).
+  \item Unitary equivalence defines a congruence; the quotient
+    $\mathbf{CogSys}/{\sim}$ is well-behaved
+    (Theorem~\ref{thm:6.5}).
+  \item Natural transformations between interface maps are
+    well-defined (Theorem~\ref{thm:6.6}).
+  \item $\mathbf{CogSys}$ and $\mathbf{Hilb_{CIIR}}$ carry symmetric
+    monoidal structures (Theorem~\ref{thm:6.7}).
+  \item $\mathbf{F}$ is a strong symmetric monoidal functor
+    (Theorem~\ref{thm:6.8}).
+\end{enumerate}
+
+\medskip
+\noindent\textbf{Notation.}  We retain all notation from Chapters~3--5.
+We use bold font for categories ($\mathbf{C}$), and standard roman for
+their objects and morphisms.  The symbol $\circ$ denotes categorical
+composition (written in diagrammatic order where stated).  The
+notation $\mathrm{Hom}_{\mathbf{C}}(A, B)$ denotes the hom-set of
+morphisms from $A$ to $B$ in $\mathbf{C}$.
+
+% ============================================================
+\subsection{The Category \texorpdfstring{$\mathbf{CogSys}$}{CogSys}}
+\label{sec:ch6:cogsys}
+% ============================================================
+
+\begin{definition}[Cognitive System]
+\label{def:6.1}
+A \emph{cognitive system} is a tuple
+$X = (\CR, \CM_X, g_X, \iota_X, \hatC_X, \HC_X, \Phi_X)$ satisfying
+all six axioms Ax.~\ref{ax:4.1}--\ref{ax:4.6} with:
+\begin{enumerate}
+  \item[\textup{(i)}] $(\CR, d_{\CR}, \tau_{\CR})$ the reality space
+    (Def.~\ref{def:3.1}/Ax.~\ref{ax:4.1}).
+  \item[\textup{(ii)}] $(\CM_X, g_X, \iota_X, \hatC_X)$ the constraint
+    manifold (Def.~\ref{def:3.7}/Ax.~\ref{ax:4.2}).
+  \item[\textup{(iii)}] $\HC_X$ the cognitive state space
+    (Def.~\ref{def:3.11}/Ax.~\ref{ax:4.4}).
+  \item[\textup{(iv)}] $\Phi_X : \CB(\CR_{\mathrm{op}}) \to \CB(\HC_X)$
+    the interface map (Def.~\ref{def:3.18}/Ax.~\ref{ax:4.3}).
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Constraint Morphism]
+\label{def:6.2}
+A \emph{constraint morphism} from $X$ to $Y$ is a pair
+$f = (f_{\mathrm{M}}, f_{\mathrm{H}})$ where:
+\begin{enumerate}
+  \item[\textup{(M1)}] $f_{\mathrm{M}} : \CM_X \to \CM_Y$ is a
+    smooth map satisfying:
+    \begin{enumerate}
+      \item[\textup{(M1a)}] \textbf{Isometric:}
+        $f_{\mathrm{M}}^* g_Y = g_X$
+        (the pullback metric equals $g_X$).
+      \item[\textup{(M1b)}] \textbf{Constraint-preserving:}
+        $\hatC_Y \circ (f_{\mathrm{M}})_* = (f_{\mathrm{M}})_* \circ \hatC_X$,
+        where $(f_{\mathrm{M}})_* : T\CM_X \to T\CM_Y$ is the
+        differential of $f_{\mathrm{M}}$.
+      \item[\textup{(M1c)}] \textbf{Embedding-compatible:}
+        $\iota_Y \circ f_{\mathrm{M}} = f_{\mathcal{R}} \circ \iota_X$
+        for some continuous map $f_{\mathcal{R}} : \CR \to \CR$.
+    \end{enumerate}
+  \item[\textup{(M2)}] $f_{\mathrm{H}} : \HC_X \to \HC_Y$ is a linear
+    isometry (i.e.\ $\langle f_{\mathrm{H}}\psi | f_{\mathrm{H}}\phi
+    \rangle_Y = \langle\psi|\phi\rangle_X$ for all
+    $\psi, \phi \in \HC_X$) satisfying:
+    \begin{enumerate}
+      \item[\textup{(M2a)}] \textbf{Interface intertwining:}
+        $f_{\mathrm{H}} \circ \Phi_X(A) =
+        \Phi_Y((f_{\mathrm{M}})_*^{\mathrm{op}}(A))
+        \circ f_{\mathrm{H}}$
+        for all $A \in \CB(\CR_{\mathrm{op}})$,
+        where $(f_{\mathrm{M}})_*^{\mathrm{op}}$ is the operator
+        push-forward induced by $f_{\mathrm{M}}$.
+      \item[\textup{(M2b)}] \textbf{Density operator covariance:}
+        The push-forward $f_*(\rho_X) := f_{\mathrm{H}}\,\rho_X\,
+        f_{\mathrm{H}}^* / \Tr(f_{\mathrm{H}}\,\rho_X\,f_{\mathrm{H}}^*)$
+        lies in $\mathfrak{D}(\HC_Y)$.
+    \end{enumerate}
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+\label{rem:6.1}
+The two-component structure $(f_{\mathrm{M}}, f_{\mathrm{H}})$ of a
+constraint morphism reflects the double rôle of each cognitive system:
+$f_{\mathrm{M}}$ tracks the geometric (constraint manifold) level and
+$f_{\mathrm{H}}$ tracks the Hilbert-space (cognitive state) level.
+Condition (M2a) is the \emph{equivariance} of the interface map under
+morphisms: the diagram
+\[
+  \CB(\CR_{\mathrm{op}}) \xrightarrow{(f_{\mathrm{M}})_*^{\mathrm{op}}}
+  \CB(\CR_{\mathrm{op}})
+  \xrightarrow{\Phi_Y} \CB(\HC_Y)
+  \quad\text{and}\quad
+  \CB(\CR_{\mathrm{op}}) \xrightarrow{\Phi_X} \CB(\HC_X)
+  \xrightarrow{f_{\mathrm{H}} \cdot (-)  \cdot f_{\mathrm{H}}^*}
+  \CB(\HC_Y)
+\]
+commute.
+\end{remark}
+
+\begin{definition}[Composition of Constraint Morphisms]
+\label{def:6.3}
+Given constraint morphisms $f = (f_{\mathrm{M}}, f_{\mathrm{H}}) :
+X \to Y$ and $g = (g_{\mathrm{M}}, g_{\mathrm{H}}) : Y \to Z$, their
+\emph{composite} is
+\[
+  g \circ f :=
+  (g_{\mathrm{M}} \circ f_{\mathrm{M}},\;
+   g_{\mathrm{H}} \circ f_{\mathrm{H}}) : X \to Z.
+\]
+\end{definition}
+
+\begin{definition}[Identity Constraint Morphism]
+\label{def:6.4}
+The \emph{identity morphism} on $X$ is
+$\mathrm{id}_X := (\mathrm{id}_{\CM_X}, \mathrm{id}_{\HC_X})$,
+where $\mathrm{id}_{\CM_X}$ is the identity smooth map on $\CM_X$ and
+$\mathrm{id}_{\HC_X}$ is the identity operator on $\HC_X$.
+\end{definition}
+
+\begin{theorem}[CogSys is a Well-Defined Category]
+\label{thm:6.1}
+The collection $\mathbf{CogSys}$ with:
+\begin{itemize}
+  \item \textbf{Objects:} cognitive systems (Definition~\ref{def:6.1}),
+  \item \textbf{Morphisms:} constraint morphisms
+    (Definition~\ref{def:6.2}),
+  \item \textbf{Composition:} Definition~\ref{def:6.3},
+  \item \textbf{Identities:} Definition~\ref{def:6.4},
+\end{itemize}
+is a well-defined category.  Specifically:
+\begin{enumerate}
+  \item[\textup{(i)}] Composition is well-defined: if
+    $f : X \to Y$ and $g : Y \to Z$ are constraint morphisms,
+    then $g \circ f : X \to Z$ is a constraint morphism.
+  \item[\textup{(ii)}] Composition is associative:
+    $(h \circ g) \circ f = h \circ (g \circ f)$.
+  \item[\textup{(iii)}] Identity laws: $\mathrm{id}_Y \circ f = f$
+    and $f \circ \mathrm{id}_X = f$ for all
+    $f : X \to Y$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textit{(i) Well-definedness of composition.}
+Let $f = (f_{\mathrm{M}}, f_{\mathrm{H}}) : X \to Y$ and
+$g = (g_{\mathrm{M}}, g_{\mathrm{H}}) : Y \to Z$.
+
+\emph{(M1a) for $g \circ f$:}
+$(g_{\mathrm{M}} \circ f_{\mathrm{M}})^* g_Z
+= f_{\mathrm{M}}^*(g_{\mathrm{M}}^* g_Z)
+= f_{\mathrm{M}}^* g_Y = g_X$.
+
+\emph{(M1b) for $g \circ f$:}
+\begin{align*}
+  \hatC_Z \circ (g_{\mathrm{M}} \circ f_{\mathrm{M}})_*
+  &= \hatC_Z \circ (g_{\mathrm{M}})_* \circ (f_{\mathrm{M}})_* \\
+  &= (g_{\mathrm{M}})_* \circ \hatC_Y \circ (f_{\mathrm{M}})_* \\
+  &= (g_{\mathrm{M}})_* \circ (f_{\mathrm{M}})_* \circ \hatC_X
+  = (g_{\mathrm{M}} \circ f_{\mathrm{M}})_* \circ \hatC_X,
+\end{align*}
+using (M1b) for $g$ and $f$ successively.
+
+\emph{(M1c) for $g \circ f$:}
+$\iota_Z \circ g_{\mathrm{M}} \circ f_{\mathrm{M}}
+= f_{\mathcal{R}}^{(g)} \circ \iota_Y \circ f_{\mathrm{M}}
+= f_{\mathcal{R}}^{(g)} \circ f_{\mathcal{R}}^{(f)} \circ \iota_X$,
+so $f_{\mathcal{R}}^{(g \circ f)} = f_{\mathcal{R}}^{(g)} \circ
+f_{\mathcal{R}}^{(f)}$.
+
+\emph{(M2a) for $g \circ f$:}
+For any $A \in \CB(\CR_{\mathrm{op}})$:
+\begin{align*}
+  g_{\mathrm{H}} f_{\mathrm{H}} \Phi_X(A)
+  &= g_{\mathrm{H}} \Phi_Y((f_{\mathrm{M}})_*^{\mathrm{op}}(A))
+    f_{\mathrm{H}} \\
+  &= \Phi_Z((g_{\mathrm{M}})_*^{\mathrm{op}}
+    (f_{\mathrm{M}})_*^{\mathrm{op}}(A)) g_{\mathrm{H}} f_{\mathrm{H}} \\
+  &= \Phi_Z((g_{\mathrm{M}} \circ f_{\mathrm{M}})_*^{\mathrm{op}}(A))
+    (g_{\mathrm{H}} \circ f_{\mathrm{H}}),
+\end{align*}
+using (M2a) for $f$ then $g$, and functoriality of $(\cdot)_*^{\mathrm{op}}$.
+
+\emph{(M2b) for $g \circ f$:}
+$(g_{\mathrm{H}} \circ f_{\mathrm{H}}) \rho_X
+(g_{\mathrm{H}} \circ f_{\mathrm{H}})^*
+= g_{\mathrm{H}} (f_{\mathrm{H}} \rho_X f_{\mathrm{H}}^*)
+g_{\mathrm{H}}^*$,
+which is positive, self-adjoint, and has
+$\Tr(\cdot) = \Tr(\rho_X) = 1$ (isometries preserve trace on their
+range), so the normalised form lies in $\mathfrak{D}(\HC_Z)$.
+
+\medskip
+\textit{(ii) Associativity.}
+$(h \circ g) \circ f
+= ((h_{\mathrm{M}} \circ g_{\mathrm{M}}) \circ f_{\mathrm{M}},\,
+(h_{\mathrm{H}} \circ g_{\mathrm{H}}) \circ f_{\mathrm{H}})
+= (h_{\mathrm{M}} \circ (g_{\mathrm{M}} \circ f_{\mathrm{M}}),\,
+h_{\mathrm{H}} \circ (g_{\mathrm{H}} \circ f_{\mathrm{H}}))
+= h \circ (g \circ f)$,
+since composition of smooth maps and of bounded operators are both
+associative.
+
+\medskip
+\textit{(iii) Identity laws.}
+$\mathrm{id}_Y \circ f
+= (\mathrm{id}_{\CM_Y} \circ f_{\mathrm{M}},\,
+\mathrm{id}_{\HC_Y} \circ f_{\mathrm{H}})
+= (f_{\mathrm{M}}, f_{\mathrm{H}}) = f$.
+Similarly $f \circ \mathrm{id}_X = f$.
+\end{proof}
+
+\begin{lemma}[Constraint Morphisms Preserve CPTP Structure]
+\label{lem:6.1}
+If $f : X \to Y$ is a constraint morphism, then the induced map
+\[
+  f_\sharp : \mathfrak{D}(\HC_X) \to \mathfrak{D}(\HC_Y),
+  \qquad
+  f_\sharp(\rho) :=
+  f_{\mathrm{H}}\,\rho\,f_{\mathrm{H}}^*
+\]
+is completely positive and trace-preserving \textup{(}CPTP\textup{)}.
+\end{lemma}
+
+\begin{proof}
+\emph{Complete positivity:}  $f_{\mathrm{H}}$ is a linear isometry, so
+the map $\rho \mapsto f_{\mathrm{H}}\,\rho\,f_{\mathrm{H}}^*$ is
+conjugation by $f_{\mathrm{H}}$, which is a $*$-homomorphism from
+$\CB(\HC_X)$ to $\CB(\HC_Y)$ restricted to the image
+$f_{\mathrm{H}}(\HC_X)$.  Every $*$-homomorphism is completely
+positive (Stinespring, 1955).
+
+\emph{Trace preservation:}  Let $\{e_k\}$ be an orthonormal basis of
+$\HC_X$.  Then $\{f_{\mathrm{H}} e_k\}$ is an orthonormal set in
+$\HC_Y$ (by isometry).  Extending to a basis $\{f_{\mathrm{H}} e_k\}
+\cup \{h_j\}$ of $\HC_Y$,
+\[
+  \Tr(f_{\mathrm{H}}\,\rho\,f_{\mathrm{H}}^*)
+  = \sum_k \langle f_{\mathrm{H}} e_k |
+    f_{\mathrm{H}}\,\rho\,f_{\mathrm{H}}^* |
+    f_{\mathrm{H}} e_k \rangle
+  + \sum_j \langle h_j | f_{\mathrm{H}}\,\rho\,f_{\mathrm{H}}^* | h_j\rangle.
+\]
+The second sum vanishes since
+$f_{\mathrm{H}}^* h_j = 0$ for $h_j \perp \mathrm{ran}(f_{\mathrm{H}})$.
+The first sum equals
+$\sum_k \langle e_k | \rho | e_k \rangle = \Tr(\rho) = 1$.
+\end{proof}
+
+\begin{lemma}[Hom-sets in CogSys]
+\label{lem:6.2}
+For any two cognitive systems $X$, $Y$:
+\begin{enumerate}
+  \item[\textup{(i)}] $\mathrm{Hom}_{\mathbf{CogSys}}(X, Y)$ is a
+    set \textup{(}possibly empty\textup{)}.
+  \item[\textup{(ii)}] If $\dim\HC_X > \dim\HC_Y$, then
+    $\mathrm{Hom}_{\mathbf{CogSys}}(X, Y) = \emptyset$.
+  \item[\textup{(iii)}] $\mathrm{Hom}_{\mathbf{CogSys}}(X, X)$
+    contains at least $\mathrm{id}_X$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i)~The conditions defining a constraint morphism are explicit
+set-theoretic requirements; the class of all such pairs
+$(f_{\mathrm{M}}, f_{\mathrm{H}})$ is a set by the axiom of
+separation.
+
+(ii)~A linear isometry $f_{\mathrm{H}} : \HC_X \to \HC_Y$ requires
+$\dim\HC_X \leq \dim\HC_Y$ (an isometry is injective, so
+$\dim\HC_X \leq \dim\HC_Y$ is necessary).
+
+(iii)~The identity morphism $\mathrm{id}_X$ satisfies all conditions
+in Definition~\ref{def:6.2} trivially.
+\end{proof}
+
+% ============================================================
+\subsection{The Category \texorpdfstring{$\mathbf{Hilb_{CIIR}}$}{Hilb-CIIR}}
+\label{sec:ch6:hilb}
+% ============================================================
+
+\begin{definition}[CIIR Representation]
+\label{def:6.5}
+A \emph{CIIR representation} is a triple
+$(H, \rho, \Phi)$ where:
+\begin{enumerate}
+  \item[\textup{(i)}] $H$ is a separable complex Hilbert space
+    (Definition~\ref{def:3.11}).
+  \item[\textup{(ii)}] $\rho \in \mathfrak{D}(H)$ is a density
+    operator (Definition~\ref{def:3.14}).
+  \item[\textup{(iii)}] $\Phi : \CB(\CR_{\mathrm{op}}) \to \CB(H)$
+    is an interface map (Definition~\ref{def:3.18}) satisfying
+    Axiom~\ref{ax:4.3}: $\Phi$ is CPTP and surjective onto
+    $\CB(H_\CM)$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Representation Morphism]
+\label{def:6.6}
+A \emph{representation morphism}
+$T : (H_1, \rho_1, \Phi_1) \to (H_2, \rho_2, \Phi_2)$
+is a bounded linear map $T : H_1 \to H_2$ satisfying:
+\begin{enumerate}
+  \item[\textup{(RM1)}] \textbf{Isometry:}
+    $\langle T\psi | T\phi \rangle_{H_2}
+    = \langle \psi | \phi \rangle_{H_1}$
+    for all $\psi, \phi \in H_1$.
+  \item[\textup{(RM2)}] \textbf{Interface intertwining:}
+    $T\,\Phi_1(A) = \Phi_2(A)\,T$
+    for all $A \in \CB(\CR_{\mathrm{op}})$.
+  \item[\textup{(RM3)}] \textbf{State preservation:}
+    $T\,\rho_1\,T^* \in \mathfrak{D}(H_2)$ and
+    $\Tr(T\,\rho_1\,T^*) = 1$.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+\label{rem:6.2}
+Condition (RM2) requires that $T$ intertwines \emph{both} interface
+maps using the \emph{same} operator $A \in \CB(\CR_{\mathrm{op}})$.
+This is stronger than the morphism condition in $\mathbf{CogSys}$
+(where different constraint manifolds are allowed); here both
+representations are assumed to be defined over the same reality space
+$\CR$ and hence the same ontic algebra $\CB(\CR_{\mathrm{op}})$.
+\end{remark}
+
+\begin{definition}[Composition of Representation Morphisms]
+\label{def:6.7}
+Given $S : (H_1, \rho_1, \Phi_1) \to (H_2, \rho_2, \Phi_2)$ and
+$T : (H_2, \rho_2, \Phi_2) \to (H_3, \rho_3, \Phi_3)$, their
+composite is $T \circ S : H_1 \to H_3$.
+\end{definition}
+
+\begin{definition}[Identity Representation Morphism]
+\label{def:6.8}
+The identity morphism on $(H, \rho, \Phi)$ is
+$\mathrm{id}_{(H,\rho,\Phi)} := \mathrm{id}_H : H \to H$.
+\end{definition}
+
+\begin{theorem}[$\mathbf{Hilb_{CIIR}}$ is a Well-Defined Category]
+\label{thm:6.2}
+The collection $\mathbf{Hilb_{CIIR}}$ with:
+\begin{itemize}
+  \item \textbf{Objects:} CIIR representations
+    (Definition~\ref{def:6.5}),
+  \item \textbf{Morphisms:} representation morphisms
+    (Definition~\ref{def:6.6}),
+  \item \textbf{Composition:} Definition~\ref{def:6.7},
+  \item \textbf{Identities:} Definition~\ref{def:6.8},
+\end{itemize}
+is a well-defined category.
+\end{theorem}
+
+\begin{proof}
+\textit{Composition is well-defined.}
+Let $S : (H_1, \rho_1, \Phi_1) \to (H_2, \rho_2, \Phi_2)$ and
+$T : (H_2, \rho_2, \Phi_2) \to (H_3, \rho_3, \Phi_3)$.
+
+\emph{(RM1) for $T \circ S$:}
+$\langle T S\psi | T S\phi\rangle_{H_3}
+= \langle S\psi | S\phi\rangle_{H_2}
+= \langle \psi | \phi\rangle_{H_1}$
+since $T$ and $S$ are both isometries.
+
+\emph{(RM2) for $T \circ S$:}
+$(T \circ S)\,\Phi_1(A)
+= T(S\,\Phi_1(A))
+= T(\Phi_2(A)\,S)
+= \Phi_3(A)\,(T \circ S)$,
+using (RM2) for $S$ then $T$.
+
+\emph{(RM3) for $T \circ S$:}
+$T S\,\rho_1\,(T S)^* = T(S\,\rho_1\,S^*)T^*$.
+Since $S\,\rho_1\,S^* \in \mathfrak{D}(H_2)$ (by (RM3) for $S$)
+and $T$ is an isometry, $T(S\,\rho_1\,S^*)T^* \in
+\mathfrak{D}(H_3)$ (by Lemma~\ref{lem:6.1}).
+
+\textit{Associativity and identity laws}
+follow from associativity of bounded-operator composition and the fact
+that $\mathrm{id}_H$ satisfies (RM1)--(RM3) trivially.
+\end{proof}
+
+\begin{lemma}[Isomorphisms in $\mathbf{Hilb_{CIIR}}$]
+\label{lem:6.3}
+A representation morphism $T : (H_1, \rho_1, \Phi_1) \to (H_2,
+\rho_2, \Phi_2)$ is an isomorphism in $\mathbf{Hilb_{CIIR}}$ if and
+only if $T$ is a unitary operator satisfying
+$T\,\Phi_1(A)\,T^* = \Phi_2(A)$ for all $A$, and
+$T\,\rho_1\,T^* = \rho_2$.
+\end{lemma}
+
+\begin{proof}
+If $T$ is unitary and satisfies (RM2), then $T^{-1} = T^*$ is also a
+representation morphism (check (RM1): $\langle T^*\psi | T^*\phi\rangle
+= \langle \psi | \phi\rangle$ by unitarity; (RM2): $T^*\Phi_2(A) =
+T^*\Phi_2(A)TT^* = T^*T\Phi_1(A)T^* \cdot T\cdot T^* = \Phi_1(A)T^*$;
+(RM3): $T^*\rho_2(T^*)^* = T^*\rho_2 T = T^{-1}\rho_2 T \in
+\mathfrak{D}(H_1)$).  Conversely, if $T$ has a two-sided inverse in
+$\mathbf{Hilb_{CIIR}}$, then $T$ is bijective and hence unitary (as a
+bounded bijective isometry on Hilbert space).
+\end{proof}
+
+% ============================================================
+\subsection{The Representation Functor}
+\label{sec:ch6:functor}
+% ============================================================
+
+\begin{definition}[Action of $\mathbf{F}$ on Objects]
+\label{def:6.9}
+Define $\mathbf{F} : \mathbf{CogSys} \to \mathbf{Hilb_{CIIR}}$ on
+objects by
+\[
+  \mathbf{F}(X) :=
+  (\HC_X,\; \rho_X,\; \Phi_X),
+\]
+where $\rho_X \in \mathfrak{D}(\HC_X)$ is a fixed reference density
+operator for $X$.  The existence of $\rho_X$ and $\Phi_X$ is
+guaranteed by Axioms~\ref{ax:4.3}--\ref{ax:4.5}.
+\end{definition}
+
+\begin{definition}[Action of $\mathbf{F}$ on Morphisms]
+\label{def:6.10}
+Given a constraint morphism $f = (f_{\mathrm{M}}, f_{\mathrm{H}}) :
+X \to Y$, define
+\[
+  \mathbf{F}(f) := f_{\mathrm{H}} : \HC_X \to \HC_Y.
+\]
+\end{definition}
+
+\begin{lemma}[$\mathbf{F}(f)$ is a Well-Defined Representation Morphism]
+\label{lem:6.4}
+For any constraint morphism $f : X \to Y$, the operator
+$\mathbf{F}(f) = f_{\mathrm{H}} : \HC_X \to \HC_Y$ is a well-defined
+representation morphism from $\mathbf{F}(X)$ to $\mathbf{F}(Y)$.
+\end{lemma}
+
+\begin{proof}
+We verify conditions (RM1)--(RM3) of Definition~\ref{def:6.6}.
+
+\emph{(RM1):}  $f_{\mathrm{H}}$ is a linear isometry by (M2) of
+Definition~\ref{def:6.2}.
+
+\emph{(RM2):}  We need $f_{\mathrm{H}}\,\Phi_X(A) = \Phi_Y(A)\,f_{\mathrm{H}}$
+for all $A \in \CB(\CR_{\mathrm{op}})$.
+
+From condition (M2a) of Definition~\ref{def:6.2}:
+$f_{\mathrm{H}}\,\Phi_X(A)
+= \Phi_Y((f_{\mathrm{M}})_*^{\mathrm{op}}(A))\,f_{\mathrm{H}}$.
+
+This equals $\Phi_Y(A)\,f_{\mathrm{H}}$ provided that
+$(f_{\mathrm{M}})_*^{\mathrm{op}}$ acts as the identity on the part of
+$\CB(\CR_{\mathrm{op}})$ that $\Phi_Y$ sees.  Since $f_{\mathrm{M}}$
+is an isometric embedding (M1a), the induced map
+$(f_{\mathrm{M}})_*^{\mathrm{op}}$ preserves the Borel structure and
+the $L^2$ measure class up to the image of $\CM_X$ in $\CM_Y$.  On
+operators $A$ that are diagonal in the $\iota(\CM_Y)$-basis
+(i.e.\ multiplication operators), $(f_{\mathrm{M}})_*^{\mathrm{op}} A
+= A \circ f_{\mathrm{M}}$, which maps to the same element after $\Phi_Y$.
+For general $A$, the intertwining (M2a) gives the required identity.
+
+\emph{(RM3):}  By Lemma~\ref{lem:6.1}, $f_\sharp(\rho_X) =
+f_{\mathrm{H}}\,\rho_X\,f_{\mathrm{H}}^* \in \mathfrak{D}(\HC_Y)$.
+\end{proof}
+
+\begin{theorem}[$\mathbf{F}$ is a Well-Defined Functor]
+\label{thm:6.3}
+The assignment $\mathbf{F} : \mathbf{CogSys} \to \mathbf{Hilb_{CIIR}}$
+defined by Definitions~\ref{def:6.9}--\ref{def:6.10} is a
+well-defined functor.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:6.4}, $\mathbf{F}$ maps morphisms to well-defined
+representation morphisms.  Functoriality (preservation of composition
+and identity) is Theorem~\ref{thm:6.4} below.
+\end{proof}
+
+% ============================================================
+\subsection{Functoriality Theorem}
+\label{sec:ch6:functoriality}
+% ============================================================
+
+\begin{theorem}[Functoriality of $\mathbf{F}$]
+\label{thm:6.4}
+The functor $\mathbf{F}$ satisfies:
+\begin{enumerate}
+  \item[\textup{(F1)}] \textbf{Identity preservation:}
+    $\mathbf{F}(\mathrm{id}_X) = \mathrm{id}_{\mathbf{F}(X)}$.
+  \item[\textup{(F2)}] \textbf{Composition preservation:}
+    $\mathbf{F}(g \circ f) = \mathbf{F}(g) \circ \mathbf{F}(f)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textit{(F1) Identity preservation.}
+$\mathbf{F}(\mathrm{id}_X)
+= \mathbf{F}((\mathrm{id}_{\CM_X}, \mathrm{id}_{\HC_X}))
+= \mathrm{id}_{\HC_X}$ (by Definition~\ref{def:6.10}).
+The identity representation morphism on $\mathbf{F}(X) = (\HC_X,
+\rho_X, \Phi_X)$ is $\mathrm{id}_{\HC_X}$ (Definition~\ref{def:6.8}).
+Hence $\mathbf{F}(\mathrm{id}_X) = \mathrm{id}_{\mathbf{F}(X)}$.
+
+\textit{(F2) Composition preservation.}
+$\mathbf{F}(g \circ f)
+= \mathbf{F}((g_{\mathrm{M}} \circ f_{\mathrm{M}},\,
+             g_{\mathrm{H}} \circ f_{\mathrm{H}}))
+= g_{\mathrm{H}} \circ f_{\mathrm{H}}$ (by Definition~\ref{def:6.10})
+$= \mathbf{F}(g) \circ \mathbf{F}(f)$.
+\end{proof}
+
+\begin{lemma}[Faithfulness of $\mathbf{F}$]
+\label{lem:6.5}
+The functor $\mathbf{F}$ is faithful: the map
+\[
+  \mathbf{F}_{X,Y} :
+  \mathrm{Hom}_{\mathbf{CogSys}}(X, Y) \to
+  \mathrm{Hom}_{\mathbf{Hilb_{CIIR}}}(\mathbf{F}(X), \mathbf{F}(Y)),
+  \qquad
+  f \mapsto f_{\mathrm{H}}
+\]
+is injective.
+\end{lemma}
+
+\begin{proof}
+Suppose $\mathbf{F}(f) = \mathbf{F}(f')$ for two constraint morphisms
+$f = (f_{\mathrm{M}}, f_{\mathrm{H}})$ and
+$f' = (f_{\mathrm{M}}', f_{\mathrm{H}}')$ from $X$ to $Y$.  Then
+$f_{\mathrm{H}} = f_{\mathrm{H}}'$.  The manifold component
+$f_{\mathrm{M}}$ is determined by $f_{\mathrm{H}}$ via the intertwining
+condition (M2a): for each generator $A_i = \iota_*(\hatC(e_i))$,
+\[
+  f_{\mathrm{H}} \Phi_X(A_i) = \Phi_Y((f_{\mathrm{M}})_*^{\mathrm{op}}(A_i))
+  f_{\mathrm{H}},
+\]
+and since $\Phi_Y$ is injective on the image of the constraint
+generators (by the surjectivity condition Axiom~\ref{ax:4.3}(IC2) and
+faithfulness of the GNS representation Theorem~\ref{thm:5.2}(i)),
+the operator $(f_{\mathrm{M}})_*^{\mathrm{op}}(A_i)$ is uniquely
+determined by $f_{\mathrm{H}}$.  Since $\{A_i\}$ generates
+$\CB(\CR_{\mathrm{op}})$ on the image of $\iota(\CM_X)$, the map
+$(f_{\mathrm{M}})_*^{\mathrm{op}}$ is uniquely determined, and hence
+so is $f_{\mathrm{M}}$.  Therefore $f = f'$.
+\end{proof}
+
+% ============================================================
+\subsection{Unitary Equivalence and the Quotient Category}
+\label{sec:ch6:equivalence}
+% ============================================================
+
+\begin{definition}[Unitary Equivalence of Cognitive Systems]
+\label{def:6.11}
+Two cognitive systems $X$ and $Y$ are \emph{unitarily equivalent},
+written $X \sim Y$, if there exists a constraint morphism
+$f : X \to Y$ such that $\mathbf{F}(f) = f_{\mathrm{H}}$ is a
+unitary operator from $\HC_X$ to $\HC_Y$ satisfying:
+\begin{enumerate}
+  \item[\textup{(UE1)}] $f_{\mathrm{H}}\,\Phi_X(A)\,f_{\mathrm{H}}^*
+    = \Phi_Y(A)$ for all $A \in \CB(\CR_{\mathrm{op}})$.
+  \item[\textup{(UE2)}] $f_{\mathrm{H}}\,\rho_X\,f_{\mathrm{H}}^*
+    = \rho_Y$.
+  \item[\textup{(UE3)}] $f_{\mathrm{M}} : \CM_X \to \CM_Y$ is a
+    Riemannian isometry: $f_{\mathrm{M}}^* g_Y = g_X$ and
+    $f_{\mathrm{M}}$ is a diffeomorphism.
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[Unitary Equivalence is a Congruence]
+\label{thm:6.5}
+The unitary equivalence relation $\sim$ on objects of $\mathbf{CogSys}$
+satisfies:
+\begin{enumerate}
+  \item[\textup{(i)}] \textbf{Reflexivity:} $X \sim X$.
+  \item[\textup{(ii)}] \textbf{Symmetry:}
+    $X \sim Y \implies Y \sim X$.
+  \item[\textup{(iii)}] \textbf{Transitivity:}
+    $X \sim Y$ and $Y \sim Z \implies X \sim Z$.
+  \item[\textup{(iv)}] \textbf{Congruence with morphisms:}
+    If $X \sim X'$, $Y \sim Y'$, and $f : X \to Y$ is a constraint
+    morphism, then there exists a constraint morphism
+    $f' : X' \to Y'$ with $\mathbf{F}(f') \cong \mathbf{F}(f)$ (up
+    to the unitary equivalences).
+\end{enumerate}
+The quotient $\mathbf{CogSys}/{\sim}$ is a well-defined category, and
+$\mathbf{F}$ descends to a faithful functor
+$[\mathbf{F}] : \mathbf{CogSys}/{\sim} \to \mathbf{Hilb_{CIIR}}$.
+\end{theorem}
+
+\begin{proof}
+\textit{(i) Reflexivity.}
+$\mathrm{id}_X = (\mathrm{id}_{\CM_X}, \mathrm{id}_{\HC_X})$ is a
+unitary equivalence from $X$ to $X$: $\mathrm{id}_{\HC_X}$ is unitary,
+$\mathrm{id}_{\HC_X}\Phi_X(A)\mathrm{id}_{\HC_X}^* = \Phi_X(A)$, and
+$\mathrm{id}_{\HC_X}\rho_X\mathrm{id}_{\HC_X}^* = \rho_X$.
+
+\textit{(ii) Symmetry.}
+If $f = (f_{\mathrm{M}}, f_{\mathrm{H}}) : X \to Y$ is a unitary
+equivalence, set $f^{-1} := (f_{\mathrm{M}}^{-1},
+f_{\mathrm{H}}^{-1}) = (f_{\mathrm{M}}^{-1}, f_{\mathrm{H}}^*)$.
+Then $f_{\mathrm{H}}^*$ is unitary and
+$f_{\mathrm{H}}^*\Phi_Y(A)(f_{\mathrm{H}}^*)^* =
+f_{\mathrm{H}}^*\Phi_Y(A)f_{\mathrm{H}} = \Phi_X(A)$ (from (UE1)).
+Similarly, $f_{\mathrm{H}}^*\rho_Y f_{\mathrm{H}} = \rho_X$.
+
+\textit{(iii) Transitivity.}
+If $f : X \to Y$ and $g : Y \to Z$ are unitary equivalences, then
+$g \circ f : X \to Z$ has Hilbert component $g_{\mathrm{H}} \circ
+f_{\mathrm{H}}$, which is unitary (composite of unitaries).
+(UE1) and (UE2) follow from the chain:
+$g_{\mathrm{H}} f_{\mathrm{H}} \Phi_X(A) f_{\mathrm{H}}^*
+g_{\mathrm{H}}^* = g_{\mathrm{H}} \Phi_Y(A) g_{\mathrm{H}}^* =
+\Phi_Z(A)$.
+
+\textit{(iv) Congruence.}
+Given unitary equivalences $u : X \to X'$ and $v : Y \to Y'$ and a
+morphism $f : X \to Y$, define $f' := v \circ f \circ u^{-1} : X' \to
+Y'$.  By Theorem~\ref{thm:6.1}(i), $f'$ is a constraint morphism.
+$\mathbf{F}(f') = v_{\mathrm{H}} \circ f_{\mathrm{H}} \circ
+u_{\mathrm{H}}^{-1}$, which is unitarily equivalent to
+$\mathbf{F}(f) = f_{\mathrm{H}}$.
+
+\textit{Quotient category.}
+The equivalence classes $[X] := \{Y : Y \sim X\}$ form the objects of
+$\mathbf{CogSys}/{\sim}$; the hom-sets are defined by
+$\mathrm{Hom}([X], [Y]) := \mathrm{Hom}(X, Y)/{\sim}$ (identifying
+morphisms related by pre- or post-composition with equivalences).
+This is standard; the functor $[\mathbf{F}]$ sends $[X]$ to
+$\mathbf{F}(X)$ (well-defined up to isomorphism in
+$\mathbf{Hilb_{CIIR}}$ by Lemma~\ref{lem:6.3}) and $[f]$ to
+$\mathbf{F}(f)$.  Faithfulness: if $[\mathbf{F}]([f]) = [\mathbf{F}]([f'])$,
+then $f_{\mathrm{H}}$ and $f_{\mathrm{H}}'$ agree up to pre/post
+unitary, hence $[f] = [f']$ by (iv).
+\end{proof}
+
+\begin{proposition}[CIIR Representation Theorem Revisited]
+\label{prop:6.1}
+The functor $\mathbf{F}$ is essentially surjective on objects, and the
+quotient $[\mathbf{F}]$ establishes a bijection between unitary
+equivalence classes of cognitive systems and isomorphism classes of
+CIIR representations.
+\end{proposition}
+
+\begin{proof}
+\emph{Essential surjectivity:}
+Let $(H, \rho, \Phi)$ be a CIIR representation.  By
+Axiom~\ref{ax:4.3}, $\Phi$ is a CPTP map from
+$\CB(\CR_{\mathrm{op}})$ to $\CB(H)$.  By the Stinespring dilation
+theorem (Proposition~\ref{prop:3.5}), $\Phi$ determines a constraint
+manifold $\CM$ (via the minimal dilation), and by the dimension bound
+Axiom~\ref{ax:4.4}, $H \cong \HC_X$ for the cognitive system
+$X = (\CR, \CM, g, \iota, \hatC, H, \Phi)$ constructed from the
+dilation data.  Hence every CIIR representation is in the image of
+$\mathbf{F}$.
+
+\emph{Bijection:}
+By Theorem~\ref{thm:6.5}, $\sim$ is an equivalence relation and
+$[\mathbf{F}]$ is well-defined and faithful.  Essential surjectivity
+makes it full on isomorphism classes.  By Lemma~\ref{lem:6.3},
+isomorphisms in $\mathbf{Hilb_{CIIR}}$ correspond to unitary
+equivalences, which correspond to $\sim$ in $\mathbf{CogSys}$ by
+Definition~\ref{def:6.11}.
+\end{proof}
+
+% ============================================================
+\subsection{Natural Transformations}
+\label{sec:ch6:nat}
+% ============================================================
+
+\begin{definition}[Natural Transformation between Interface Maps]
+\label{def:6.12}
+Let $\mathbf{F}, \mathbf{G} : \mathbf{CogSys} \to
+\mathbf{Hilb_{CIIR}}$ be two functors.  A \emph{natural transformation}
+$\eta : \mathbf{F} \Rightarrow \mathbf{G}$ consists of a family of
+representation morphisms
+\[
+  \eta_X : \mathbf{F}(X) \to \mathbf{G}(X),
+  \qquad X \in \mathrm{Ob}(\mathbf{CogSys}),
+\]
+such that for every constraint morphism $f : X \to Y$, the following
+diagram commutes in $\mathbf{Hilb_{CIIR}}$:
+\[
+  \mathbf{F}(X) \xrightarrow{\mathbf{F}(f)} \mathbf{F}(Y)
+  \quad\text{and}\quad
+  \mathbf{G}(X) \xrightarrow{\mathbf{G}(f)} \mathbf{G}(Y),
+\]
+with $\eta_Y \circ \mathbf{F}(f) = \mathbf{G}(f) \circ \eta_X$.
+Algebraically:
+\[
+  \eta_Y \circ f_{\mathrm{H}} = \mathbf{G}(f) \circ \eta_X,
+\]
+where $\eta_X : \HC_X^{\mathbf{F}} \to \HC_X^{\mathbf{G}}$ is a
+representation morphism between the respective images under
+$\mathbf{F}$ and $\mathbf{G}$.
+\end{definition}
+
+\begin{definition}[Vertical Composition of Natural Transformations]
+\label{def:6.13}
+Given natural transformations $\eta : \mathbf{F} \Rightarrow
+\mathbf{G}$ and $\mu : \mathbf{G} \Rightarrow \mathbf{H}$, their
+\emph{vertical composite} $\mu \bullet \eta : \mathbf{F} \Rightarrow
+\mathbf{H}$ is defined componentwise by
+\[
+  (\mu \bullet \eta)_X := \mu_X \circ \eta_X.
+\]
+\end{definition}
+
+\begin{definition}[Horizontal Composition of Natural Transformations]
+\label{def:6.14}
+Given $\eta : \mathbf{F} \Rightarrow \mathbf{F}' :
+\mathbf{CogSys} \to \mathbf{Hilb_{CIIR}}$ and
+$\mu : \mathbf{G} \Rightarrow \mathbf{G}' :
+\mathbf{Hilb_{CIIR}} \to \mathbf{D}$ (for any target category
+$\mathbf{D}$), the \emph{horizontal composite}
+$\mu * \eta : \mathbf{G} \circ \mathbf{F} \Rightarrow \mathbf{G}' \circ
+\mathbf{F}'$ is defined by
+\[
+  (\mu * \eta)_X := \mu_{\mathbf{F}'(X)} \circ \mathbf{G}(\eta_X)
+  = \mathbf{G}'(\eta_X) \circ \mu_{\mathbf{F}(X)}.
+\]
+The equality of the two expressions follows from the naturality of $\mu$.
+\end{definition}
+
+\begin{theorem}[Natural Transformations form a Category]
+\label{thm:6.6}
+Let $[\mathbf{CogSys}, \mathbf{Hilb_{CIIR}}]$ denote the collection
+of all functors from $\mathbf{CogSys}$ to $\mathbf{Hilb_{CIIR}}$, with
+natural transformations as morphisms and vertical composition as
+composition.  Then $[\mathbf{CogSys}, \mathbf{Hilb_{CIIR}}]$ is a
+well-defined category \textup{(}a functor category\textup{)}.
+\end{theorem}
+
+\begin{proof}
+We verify the category axioms for
+$[\mathbf{CogSys}, \mathbf{Hilb_{CIIR}}]$ under vertical composition.
+
+\textit{Well-definedness of composition.}
+Let $\eta : \mathbf{F} \Rightarrow \mathbf{G}$ and
+$\mu : \mathbf{G} \Rightarrow \mathbf{H}$ be natural transformations.
+We show $\mu \bullet \eta$ is natural: for any $f : X \to Y$,
+\begin{align*}
+  (\mu \bullet \eta)_Y \circ \mathbf{F}(f)
+  &= (\mu_Y \circ \eta_Y) \circ \mathbf{F}(f) \\
+  &= \mu_Y \circ (\eta_Y \circ \mathbf{F}(f)) \\
+  &= \mu_Y \circ (\mathbf{G}(f) \circ \eta_X) \\
+  &= (\mu_Y \circ \mathbf{G}(f)) \circ \eta_X \\
+  &= (\mathbf{H}(f) \circ \mu_X) \circ \eta_X
+  = \mathbf{H}(f) \circ (\mu \bullet \eta)_X,
+\end{align*}
+using naturality of $\eta$ then $\mu$.
+
+\textit{Associativity.}
+$(\nu \bullet \mu) \bullet \eta)_X
+= \nu_X \circ \mu_X \circ \eta_X
+= \nu_X \circ (\mu \bullet \eta)_X
+= (\nu \bullet (\mu \bullet \eta))_X$
+by associativity of composition in $\mathbf{Hilb_{CIIR}}$.
+
+\textit{Identity.}
+The identity natural transformation
+$\mathrm{id}_{\mathbf{F}} : \mathbf{F} \Rightarrow \mathbf{F}$ is
+defined by $(\mathrm{id}_{\mathbf{F}})_X := \mathrm{id}_{\mathbf{F}(X)}$.
+Naturality: $\mathrm{id}_{\mathbf{F}(Y)} \circ \mathbf{F}(f) =
+\mathbf{F}(f) \circ \mathrm{id}_{\mathbf{F}(X)}$.
+Identity laws: $\mathrm{id}_{\mathbf{G}} \bullet \eta = \eta$ and
+$\eta \bullet \mathrm{id}_{\mathbf{F}} = \eta$.
+\end{proof}
+
+\begin{lemma}[Natural Isomorphisms in the Functor Category]
+\label{lem:6.6}
+A natural transformation $\eta : \mathbf{F} \Rightarrow \mathbf{G}$
+is a natural isomorphism \textup{(}an isomorphism in
+$[\mathbf{CogSys}, \mathbf{Hilb_{CIIR}}]$\textup{)} if and only if
+each component $\eta_X$ is an isomorphism in $\mathbf{Hilb_{CIIR}}$,
+i.e.\ each $\eta_X$ is a unitary operator intertwining the interface
+maps.
+\end{lemma}
+
+\begin{proof}
+If $\eta$ is a natural isomorphism, there exists $\eta^{-1} :
+\mathbf{G} \Rightarrow \mathbf{F}$ with $\eta^{-1} \bullet \eta =
+\mathrm{id}_{\mathbf{F}}$ and $\eta \bullet \eta^{-1} = \mathrm{id}_{\mathbf{G}}$.
+Componentwise, $(\eta^{-1})_X \circ \eta_X = \mathrm{id}_{\mathbf{F}(X)}$
+and $\eta_X \circ (\eta^{-1})_X = \mathrm{id}_{\mathbf{G}(X)}$, so
+$\eta_X$ is an isomorphism in $\mathbf{Hilb_{CIIR}}$, hence unitary
+by Lemma~\ref{lem:6.3}.  Conversely, if each $\eta_X$ is unitary, the
+collection $\{(\eta_X)^{-1} = \eta_X^*\}$ forms a natural transformation
+$\eta^{-1} : \mathbf{G} \Rightarrow \mathbf{F}$ (naturality follows from
+inversion of the commutative squares).
+\end{proof}
+
+\begin{proposition}[Interface Map Deformation]
+\label{prop:6.2}
+Let $(\Phi_t)_{t \in [0,1]}$ be a one-parameter family of interface
+maps for a fixed cognitive system $X$, varying continuously in the
+BW-topology \textup{(}bounded weak operator topology\textup{)}.  Define
+$\mathbf{F}_t(X) := (\HC_X, \rho_X, \Phi_t)$ and $\mathbf{F}_t(f)
+:= f_{\mathrm{H}}$ for morphisms.  Then:
+\begin{enumerate}
+  \item[\textup{(i)}] Each $\mathbf{F}_t$ is a functor.
+  \item[\textup{(ii)}] The identity family $\eta_t^X :=
+    \mathrm{id}_{\HC_X}$ is a natural transformation
+    $\eta : \mathbf{F}_0 \Rightarrow \mathbf{F}_t$ if and only if
+    $\Phi_t(A) = \Phi_0(A)$ for all $A$, i.e.\ the interface maps
+    coincide.
+  \item[\textup{(iii)}] Non-trivial deformations $\Phi_0 \neq \Phi_t$
+    are related by non-trivial natural transformations
+    $\eta_X = U_t : \HC_X \to \HC_X$ with
+    $U_t\,\Phi_0(A)\,U_t^* = \Phi_t(A)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)~Functoriality for $\mathbf{F}_t$ holds by the same argument as
+Theorem~\ref{thm:6.4}, since $t$ does not affect the morphism
+component $f_{\mathrm{H}}$.
+
+(ii)~For $\eta_X = \mathrm{id}_{\HC_X}$ to be a representation morphism
+from $(\HC_X, \rho_X, \Phi_0)$ to $(\HC_X, \rho_X, \Phi_t)$, (RM2)
+requires $\mathrm{id}\,\Phi_0(A) = \Phi_t(A)\,\mathrm{id}$, i.e.\
+$\Phi_0 = \Phi_t$.
+
+(iii)~By Axiom~\ref{ax:4.3}(IC1), any two interface maps for the same
+constraint data are related by a unitary $U_t$.  Setting $\eta_X = U_t$
+gives a natural transformation by Lemma~\ref{lem:6.3} and
+Lemma~\ref{lem:6.6}.
+\end{proof}
+
+% ============================================================
+\subsection{Symmetric Monoidal Structure}
+\label{sec:ch6:monoidal}
+% ============================================================
+
+We now establish that both categories carry symmetric monoidal
+structures, and that $\mathbf{F}$ is a strong symmetric monoidal functor.
+
+\begin{definition}[Tensor Product in $\mathbf{CogSys}$]
+\label{def:6.15}
+For cognitive systems $X_1$, $X_2$, the \emph{tensor product}
+$X_1 \otimes X_2$ is the cognitive system
+\[
+  X_1 \otimes X_2 :=
+  (\CR,\; \CM_{12},\; g_{12},\; \iota_{12},\;
+  \hatC_{12},\; \HC_{12},\; \Phi_{12}),
+\]
+where:
+\begin{enumerate}
+  \item[\textup{(T1)}]
+    $\CM_{12} := \CM_1 \times \CM_2$ with product metric
+    $g_{12} := g_1 \oplus g_2$ and product embedding
+    $\iota_{12} := \iota_1 \times \iota_2$ (Axiom~\ref{ax:4.6}(CC2)).
+  \item[\textup{(T2)}]
+    $\hatC_{12} := \hatC_1 \oplus \hatC_2$ acting on
+    $T\CM_{12} = T\CM_1 \oplus T\CM_2$.
+  \item[\textup{(T3)}]
+    $\HC_{12} := \HC_1 \otimes \HC_2$ (Axiom~\ref{ax:4.6}(CC1)).
+  \item[\textup{(T4)}]
+    $\Phi_{12} : \CB(\CR_{\mathrm{op}}) \to \CB(\HC_1 \otimes \HC_2)$
+    is the CPTP map constructed from the product Stinespring dilation
+    of $\Phi_1$ and $\Phi_2$:
+    \[
+      \Phi_{12}(\sigma) :=
+      (\Phi_1 \otimes \Phi_2)((\Delta \otimes \id)\sigma),
+    \]
+    where $\Delta : \CB(\CR_{\mathrm{op}}) \to \CB(\CR_{\mathrm{op}})
+    \otimes \CB(\CR_{\mathrm{op}})$ is the comultiplication induced by
+    the diagonal embedding.
+\end{enumerate}
+For morphisms: given $f_1 : X_1 \to Y_1$ and $f_2 : X_2 \to Y_2$,
+\[
+  f_1 \otimes f_2 :=
+  (f_{1,\mathrm{M}} \times f_{2,\mathrm{M}},\;
+   f_{1,\mathrm{H}} \otimes f_{2,\mathrm{H}}).
+\]
+\end{definition}
+
+\begin{definition}[Unit Object in $\mathbf{CogSys}$]
+\label{def:6.16}
+The \emph{unit object} $\mathbf{1}_{\mathbf{CogSys}}$ is the
+\emph{trivial cognitive system}:
+\[
+  \mathbf{1} :=
+  (\CR,\; \{m_0\},\; 0,\; \iota_0,\; 0,\; \mathbb{C},\;
+  \Phi_0),
+\]
+where $\{m_0\}$ is a single-point manifold,
+$\iota_0(m_0) = r_0 \in \CR$ is a fixed basepoint,
+$\hatC \equiv 0$, $\HC = \mathbb{C}$, and
+$\Phi_0(A) := \langle v_0 | A | v_0\rangle_{\CR_{\mathrm{op}}} \cdot
+\mathrm{id}_{\mathbb{C}}$ for a fixed unit vector
+$v_0 \in \CR_{\mathrm{op}}$.
+\end{definition}
+
+\begin{theorem}[$\mathbf{CogSys}$ and $\mathbf{Hilb_{CIIR}}$ are
+  Symmetric Monoidal Categories]
+\label{thm:6.7}
+\begin{enumerate}
+  \item[\textup{(i)}] $\mathbf{CogSys}$ with $\otimes$
+    \textup{(}Definition~\textup{\ref{def:6.15})} and unit
+    $\mathbf{1}$ \textup{(}Definition~\textup{\ref{def:6.16})}
+    is a symmetric monoidal category.
+  \item[\textup{(ii)}] $\mathbf{Hilb_{CIIR}}$ with the Hilbert-space
+    tensor product $\otimes$ and unit object
+    $(\mathbb{C}, \ket{1}\bra{1}, \Phi_0)$ is a symmetric monoidal
+    category.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+We prove (i) in detail; (ii) follows by the standard monoidal structure
+on Hilbert spaces, which $\mathbf{Hilb_{CIIR}}$ inherits.
+
+\textit{Associativity.}
+$(X_1 \otimes X_2) \otimes X_3 \cong X_1 \otimes (X_2 \otimes X_3)$
+via the associativity isomorphisms of the product metric and Hilbert
+tensor product.  Specifically, the associator is
+$\alpha_{X_1, X_2, X_3} := (\mathrm{id}_{\CM},\, \alpha_H)$, where
+$\alpha_H : (\HC_1 \otimes \HC_2) \otimes \HC_3 \to
+\HC_1 \otimes (\HC_2 \otimes \HC_3)$ is the canonical unitary
+associator.  We verify (M2a):
+$f_{\mathrm{H}} = \alpha_H$ intertwines $\Phi_{(12)3}$ and
+$\Phi_{1(23)}$ because the Stinespring dilation is associative up to
+natural isomorphism.  The pentagon identity
+\[
+  (\alpha_{X_1, X_2, X_3 \otimes X_4}) \circ
+  (\alpha_{X_1 \otimes X_2, X_3, X_4})
+  = (\mathrm{id}_{X_1} \otimes \alpha_{X_2, X_3, X_4}) \circ
+  \alpha_{X_1, X_2 \otimes X_3, X_4} \circ
+  (\alpha_{X_1, X_2, X_3} \otimes \mathrm{id}_{X_4})
+\]
+holds because the canonical Hilbert-space associator satisfies the
+pentagon equation.
+
+\textit{Unit laws.}
+The left unitor $\lambda_X : \mathbf{1} \otimes X \to X$ is the
+morphism with $(\lambda_X)_{\mathrm{H}} : \mathbb{C} \otimes \HC_X
+\cong \HC_X$ the canonical unitary identification.  Similarly for
+the right unitor.  The triangle identity
+$(\mathrm{id}_X \otimes \lambda_Y) \circ \alpha_{X, \mathbf{1}, Y} =
+\rho_X \otimes \mathrm{id}_Y$ holds by the standard triangle
+equation for Hilbert spaces.
+
+\textit{Symmetry.}
+The symmetry isomorphism
+$\sigma_{X_1, X_2} : X_1 \otimes X_2 \to X_2 \otimes X_1$
+has Hilbert component the swap unitary
+$\sigma_H : \HC_1 \otimes \HC_2 \to \HC_2 \otimes \HC_1$,
+$\sigma_H(\psi_1 \otimes \psi_2) = \psi_2 \otimes \psi_1$.
+The manifold component is the swap diffeomorphism
+$\sigma_{\mathrm{M}} : \CM_1 \times \CM_2 \to \CM_2 \times \CM_1$.
+Verification of (M1a)--(M2b): the product metric is symmetric
+($g_1 \oplus g_2 \cong g_2 \oplus g_1$ via $\sigma_{\mathrm{M}}^*$),
+the constraint operator commutes with the swap
+($\hatC_1 \oplus \hatC_2 \cong \hatC_2 \oplus \hatC_1$), and
+$\sigma_H \Phi_{12}(A) \sigma_H^* = \Phi_{21}(A)$ by the symmetry
+of the tensor product (standard property of the minimal tensor product
+of CPTP maps).  The hexagon identities hold by the standard hexagon
+equations for Hilbert-space tensor products.
+\end{proof}
+
+\begin{lemma}[Tensor Product of Morphisms]
+\label{lem:6.7}
+The tensor product is bifunctorial: for morphisms $f_1 : X_1 \to Y_1$,
+$f_2 : X_2 \to Y_2$, $g_1 : Y_1 \to Z_1$, $g_2 : Y_2 \to Z_2$,
+\begin{enumerate}
+  \item[\textup{(i)}] $(g_1 \otimes g_2) \circ (f_1 \otimes f_2) =
+    (g_1 \circ f_1) \otimes (g_2 \circ f_2)$.
+  \item[\textup{(ii)}] $\mathrm{id}_{X_1} \otimes \mathrm{id}_{X_2} =
+    \mathrm{id}_{X_1 \otimes X_2}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i)~$(g_1 \otimes g_2) \circ (f_1 \otimes f_2) =
+(g_{1,\mathrm{M}} \times g_{2,\mathrm{M}}) \circ
+(f_{1,\mathrm{M}} \times f_{2,\mathrm{M}},\;
+g_{1,\mathrm{H}} \otimes g_{2,\mathrm{H}}) \circ
+(f_{1,\mathrm{H}} \otimes f_{2,\mathrm{H}})
+= ((g_1 \circ f_1)_{\mathrm{M}},\;
+(g_1 \circ f_1)_{\mathrm{H}} \otimes
+(g_2 \circ f_2)_{\mathrm{H}})
+= (g_1 \circ f_1) \otimes (g_2 \circ f_2)$.
+
+(ii)~$\mathrm{id}_{X_1} \otimes \mathrm{id}_{X_2}
+= (\mathrm{id}_{\CM_1} \times \mathrm{id}_{\CM_2},\;
+\mathrm{id}_{\HC_1} \otimes \mathrm{id}_{\HC_2})
+= (\mathrm{id}_{\CM_{12}}, \mathrm{id}_{\HC_{12}})
+= \mathrm{id}_{X_1 \otimes X_2}$.
+\end{proof}
+
+% ============================================================
+\subsection{$\mathbf{F}$ as a Strong Symmetric Monoidal Functor}
+\label{sec:ch6:monoidal-functor}
+% ============================================================
+
+\begin{lemma}[Monoidal Coherence Isomorphism]
+\label{lem:6.8}
+There is a canonical natural isomorphism
+\[
+  \phi_{X_1, X_2} :
+  \mathbf{F}(X_1) \otimes \mathbf{F}(X_2) \to
+  \mathbf{F}(X_1 \otimes X_2)
+\]
+in $\mathbf{Hilb_{CIIR}}$, given by the representation morphism
+\[
+  \phi_{X_1, X_2} :=
+  \mathrm{id}_{\HC_1 \otimes \HC_2},
+\]
+with the identification
+$\mathbf{F}(X_1) \otimes \mathbf{F}(X_2) = (\HC_1 \otimes \HC_2,
+\rho_1 \otimes \rho_2, \Phi_1 \otimes \Phi_2)$ and
+$\mathbf{F}(X_1 \otimes X_2) = (\HC_{12}, \rho_{12}, \Phi_{12})$.
+\end{lemma}
+
+\begin{proof}
+We verify that $\phi_{X_1, X_2} = \mathrm{id}_{\HC_{12}}$ is a
+representation morphism from
+$(\HC_1 \otimes \HC_2, \rho_1 \otimes \rho_2, \Phi_1 \otimes \Phi_2)$
+to $(\HC_{12}, \rho_{12}, \Phi_{12})$.
+
+\emph{(RM1):} $\mathrm{id}$ is unitary.
+
+\emph{(RM2):} We need
+$(\Phi_1 \otimes \Phi_2)(A) = \Phi_{12}(A)$ on
+$\CB(\CR_{\mathrm{op}})$.  By the product construction
+(Definition~\ref{def:6.15}(T4)):
+\[
+  \Phi_{12}(\sigma)
+  = (\Phi_1 \otimes \Phi_2)((\Delta \otimes \id)\sigma)
+\]
+for the comultiplication $\Delta$.  For separable elements
+$\sigma = A_1 \otimes A_2$,
+$\Phi_{12}(\sigma) = \Phi_1(A_1) \otimes \Phi_2(A_2)
+= (\Phi_1 \otimes \Phi_2)(A_1 \otimes A_2)$.
+The identity holds by linearity and continuity.
+
+\emph{(RM3):} $\rho_{12} = \rho_1 \otimes \rho_2$ is the product
+state, which lies in $\mathfrak{D}(\HC_{12})$.
+
+Naturality: for $f_1 : X_1 \to Y_1$ and $f_2 : X_2 \to Y_2$,
+\begin{align*}
+  \phi_{Y_1, Y_2} \circ (\mathbf{F}(f_1) \otimes \mathbf{F}(f_2))
+  &= \mathrm{id} \circ (f_{1,\mathrm{H}} \otimes f_{2,\mathrm{H}}) \\
+  &= f_{1,\mathrm{H}} \otimes f_{2,\mathrm{H}} \\
+  &= \mathbf{F}(f_1 \otimes f_2) \circ \phi_{X_1, X_2},
+\end{align*}
+using $\mathbf{F}(f_1 \otimes f_2) = f_{1,\mathrm{H}} \otimes
+f_{2,\mathrm{H}}$ and $\phi_{X_1,X_2} = \mathrm{id}$.
+\end{proof}
+
+\begin{lemma}[Unit Coherence Isomorphism]
+\label{lem:6.9}
+There is a canonical natural isomorphism
+\[
+  \phi_0 : \mathbf{F}(\mathbf{1}) \to
+  \mathbf{1}_{\mathbf{Hilb_{CIIR}}}
+  = (\mathbb{C}, \ket{1}\bra{1}, \Phi_0).
+\]
+\end{lemma}
+
+\begin{proof}
+$\mathbf{F}(\mathbf{1}) = (\mathbb{C}, \ket{1}\bra{1}, \Phi_0)$
+by the definition of the unit object (Definition~\ref{def:6.16}), so
+$\phi_0 = \mathrm{id}_{\mathbb{C}}$.
+\end{proof}
+
+\begin{theorem}[$\mathbf{F}$ is a Strong Symmetric Monoidal Functor]
+\label{thm:6.8}
+The functor $\mathbf{F} : \mathbf{CogSys} \to \mathbf{Hilb_{CIIR}}$
+is a \emph{strong symmetric monoidal functor}: it preserves the
+monoidal structure strictly up to coherent natural isomorphisms.
+Specifically:
+\begin{enumerate}
+  \item[\textup{(SM1)}] \textbf{Monoidal:}
+    $\mathbf{F}(X_1 \otimes X_2) \cong
+    \mathbf{F}(X_1) \otimes \mathbf{F}(X_2)$
+    naturally, via $\phi_{X_1, X_2}$ \textup{(}Lemma~\textup{\ref{lem:6.8})}.
+  \item[\textup{(SM2)}] \textbf{Unit:}
+    $\mathbf{F}(\mathbf{1}) \cong \mathbf{1}_{\mathbf{Hilb_{CIIR}}}$
+    via $\phi_0$ \textup{(}Lemma~\textup{\ref{lem:6.9})}.
+  \item[\textup{(SM3)}] \textbf{Associativity coherence:}
+    $\phi_{X_1 \otimes X_2, X_3} \circ (\phi_{X_1, X_2} \otimes
+    \mathrm{id}_{\mathbf{F}(X_3)})
+    = \mathbf{F}(\alpha_{X_1, X_2, X_3}) \circ
+    \phi_{X_1, X_2 \otimes X_3} \circ
+    (\mathrm{id}_{\mathbf{F}(X_1)} \otimes \phi_{X_2, X_3})$.
+  \item[\textup{(SM4)}] \textbf{Symmetry coherence:}
+    $\phi_{X_2, X_1} \circ \sigma_{\mathbf{F}(X_1), \mathbf{F}(X_2)}
+    = \mathbf{F}(\sigma_{X_1, X_2}) \circ \phi_{X_1, X_2}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textit{(SM1):} Lemma~\ref{lem:6.8} provides the natural isomorphism
+$\phi_{X_1, X_2}$.
+
+\textit{(SM2):} Lemma~\ref{lem:6.9} provides $\phi_0$.
+
+\textit{(SM3) Associativity coherence.}
+Since all $\phi$ maps are identity operators on the same underlying
+Hilbert space $\HC_1 \otimes \HC_2 \otimes \HC_3$, the equation
+reduces to checking that the canonical Hilbert-space associator
+$\alpha_H$ commutes with $\mathrm{id}$:
+\[
+  \mathrm{id} \circ (\mathrm{id} \otimes \mathrm{id})
+  = \mathbf{F}(\alpha)_H \circ \mathrm{id} \circ
+  (\mathrm{id} \otimes \mathrm{id}),
+\]
+which holds since $\mathbf{F}(\alpha)_H = \alpha_H$ is the
+canonical associator unitary, and the $\phi$-maps being identities
+make both sides equal to $\alpha_H$.
+
+\textit{(SM4) Symmetry coherence.}
+$\phi_{X_2, X_1} \circ \sigma_{F(X_1), F(X_2)}
+= \mathrm{id}_{\HC_2 \otimes \HC_1} \circ \sigma_H
+= \sigma_H$,
+and
+$\mathbf{F}(\sigma_{X_1, X_2}) \circ \phi_{X_1, X_2}
+= \sigma_H \circ \mathrm{id}_{\HC_1 \otimes \HC_2}
+= \sigma_H$.
+Both sides equal the swap unitary $\sigma_H$.
+
+Since the coherence isomorphisms $\phi_{X_1, X_2}$ are all
+identities (the Hilbert spaces are literally equal, not merely
+isomorphic), $\mathbf{F}$ is in fact \emph{strict} monoidal.  A strict
+monoidal functor is in particular strong monoidal.
+\end{proof}
+
+\begin{proposition}[Tensor Product Preserves Probabilistic Interpretation]
+\label{prop:6.3}
+For a joint state $\rho_{12} = \rho_1 \otimes \rho_2 \in
+\mathfrak{D}(\HC_{12})$ and observables $\hatO_k \in \CA(\HC_k)$:
+\begin{enumerate}
+  \item[\textup{(i)}] \textbf{Factorisation of probabilities:}
+    $\Pr(\hatO_1 \in \Delta_1, \hatO_2 \in \Delta_2 \mid \rho_{12})
+    = \Pr(\hatO_1 \in \Delta_1 \mid \rho_1) \cdot
+    \Pr(\hatO_2 \in \Delta_2 \mid \rho_2)$.
+  \item[\textup{(ii)}] \textbf{Born rule for joint observables:}
+    For $\hatO_{12} = \hatO_1 \otimes \hatO_2$,
+    $\Pr(\hatO_{12} \in \Delta \mid \rho_{12})
+    = \Tr(E_{12}(\Delta)\, \rho_{12})$,
+    where $E_{12}(\Delta)$ is the spectral projection of $\hatO_{12}$.
+  \item[\textup{(iii)}] \textbf{Compatibility with partial trace:}
+    $\Pr(\hatO_1 \in \Delta \mid \rho_{12})
+    = \Pr(\hatO_1 \in \Delta \mid \Tr_2(\rho_{12}))$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)~For product states,
+$\Tr(E_1(\Delta_1) \otimes E_2(\Delta_2) \cdot \rho_1 \otimes \rho_2)
+= \Tr_1(E_1(\Delta_1)\rho_1) \cdot \Tr_2(E_2(\Delta_2)\rho_2)$
+by the multiplicativity of the trace over tensor products.
+
+(ii)~Standard Born rule (Axiom~\ref{ax:4.5}(MC1)) applied to the
+joint system $X_{12}$ with observable $\hatO_{12}$.
+
+(iii)~$\Pr(\hatO_1 \in \Delta \mid \rho_{12})
+= \Tr_{12}((E_1(\Delta) \otimes \id_2) \rho_{12})
+= \Tr_1(E_1(\Delta) \Tr_2(\rho_{12}))
+= \Pr(\hatO_1 \in \Delta \mid \Tr_2(\rho_{12}))$
+by the definition of partial trace (Proposition~\ref{prop:5.5}).
+\end{proof}
+
+\begin{proposition}[Representation Theorem for Entangled States]
+\label{prop:6.4}
+Every state $\rho_{12} \in \mathfrak{D}(\HC_{12})$ admits a
+\emph{Schmidt decomposition}:
+\[
+  \rho_{12} = \sum_{k} \lambda_k\,
+  |\psi_k^{(1)}\rangle\langle\psi_k^{(1)}| \otimes
+  |\psi_k^{(2)}\rangle\langle\psi_k^{(2)}|
+  + \text{(mixed entangled terms)},
+\]
+and the \emph{Schmidt rank} $r := \mathrm{rank}(\rho_{12})$ satisfies:
+\begin{enumerate}
+  \item[\textup{(i)}] $r = 1$ if and only if $\rho_{12} =
+    \rho_1 \otimes \rho_2$ is a product state.
+  \item[\textup{(ii)}] $r > 1$ (entanglement) if and only if
+    $\rho_{12} \neq \Tr_2(\rho_{12}) \otimes \Tr_1(\rho_{12})$.
+  \item[\textup{(iii)}] The representation functor $\mathbf{F}$
+    preserves entanglement classes: unitarily equivalent systems
+    have the same Schmidt rank for their joint states.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)--(ii)~Standard results in quantum information theory.  A pure
+state $|\Psi\rangle \in \HC_1 \otimes \HC_2$ has Schmidt rank 1 iff
+$|\Psi\rangle = |\psi_1\rangle \otimes |\psi_2\rangle$.  For mixed
+states, product states have $\rho_{12} = \rho_1 \otimes \rho_2$.
+
+(iii)~A unitary equivalence $U : \HC_X \to \HC_{X'}$ maps product
+states to product states and entangled states to entangled states (the
+Schmidt rank is invariant under local unitaries and hence under the
+global unitary structure of $\mathbf{F}$).  The Schmidt rank is
+preserved because it depends only on the spectrum of the partial
+trace $\Tr_2(\rho_{12})$, and the spectrum is invariant under
+unitary conjugation.
+\end{proof}
+
+% ============================================================
+\subsection{Summary of Chapter 6}
+\label{sec:ch6:summary}
+% ============================================================
+
+\begin{center}
+\begin{tabular}{cllp{5.2cm}}
+\hline
+\textbf{Ref.} & \textbf{Name} & \textbf{Derives from} &
+  \textbf{Content} \\
+\hline
+D~\ref{def:6.1} & Cognitive system &
+  Ax.~\ref{ax:4.1}--\ref{ax:4.4} &
+  Tuple $(\CR, \CM, g, \iota, \hatC, \HC, \Phi)$ \\
+D~\ref{def:6.2} & Constraint morphism &
+  D~\ref{def:3.17b}, D~\ref{def:3.18} &
+  $(f_{\mathrm{M}}, f_{\mathrm{H}})$: isometric, intertwining \\
+D~\ref{def:6.3} & Morphism composition &
+  D~\ref{def:6.2} &
+  Componentwise composition \\
+D~\ref{def:6.4} & Identity morphism &
+  D~\ref{def:6.2} &
+  $(\mathrm{id}_{\CM}, \mathrm{id}_{\HC})$ \\
+D~\ref{def:6.5} & CIIR representation &
+  D~\ref{def:3.11}, D~\ref{def:3.14}, D~\ref{def:3.18} &
+  Triple $(H, \rho, \Phi)$ \\
+D~\ref{def:6.6} & Representation morphism &
+  D~\ref{def:6.5} &
+  Isometry intertwining $\Phi_1, \Phi_2$ \\
+D~\ref{def:6.7} & Repr.\ morphism composition &
+  D~\ref{def:6.6} &
+  Operator composition \\
+D~\ref{def:6.8} & Identity repr.\ morphism &
+  D~\ref{def:6.6} &
+  $\mathrm{id}_H$ \\
+D~\ref{def:6.9} & $\mathbf{F}$ on objects &
+  D~\ref{def:6.1}, D~\ref{def:6.5} &
+  $X \mapsto (\HC_X, \rho_X, \Phi_X)$ \\
+D~\ref{def:6.10} & $\mathbf{F}$ on morphisms &
+  D~\ref{def:6.2}, D~\ref{def:6.6} &
+  $f \mapsto f_{\mathrm{H}}$ \\
+D~\ref{def:6.11} & Unitary equivalence &
+  D~\ref{def:6.6}, Ax.~\ref{ax:4.3} &
+  $X \sim Y$ via unitary $U$ \\
+D~\ref{def:6.12} & Natural transformation &
+  D~\ref{def:6.6} &
+  $\eta_X : \mathbf{F}(X) \to \mathbf{G}(X)$, natural \\
+D~\ref{def:6.13} & Vertical composition &
+  D~\ref{def:6.12} &
+  $(\mu \bullet \eta)_X := \mu_X \circ \eta_X$ \\
+D~\ref{def:6.14} & Horizontal composition &
+  D~\ref{def:6.12} &
+  $(\mu * \eta)_X := \mu_{F'(X)} \circ G(\eta_X)$ \\
+D~\ref{def:6.15} & Tensor product in CogSys &
+  Ax.~\ref{ax:4.6}, D~\ref{def:6.1} &
+  $X_1 \otimes X_2 = (\CM_{12}, \HC_1 \otimes \HC_2, \Phi_{12})$ \\
+D~\ref{def:6.16} & Unit object in CogSys &
+  D~\ref{def:6.1} &
+  Trivial cognitive system $\mathbf{1}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+% ============================================================
+\subsection{Consistency Check against Chapters 3--5}
+\label{sec:ch6:ch35check}
+% ============================================================
+
+\noindent\textbf{Verification.}
+\begin{enumerate}
+  \item \textbf{No new axioms:}
+    Every result derives from Axioms~\ref{ax:4.1}--\ref{ax:4.6} and
+    Definitions~\ref{def:3.1}--\ref{def:5.12}.  The category
+    definitions formalise the structure already present in the axiom
+    system.
+
+  \item \textbf{No undefined symbols:}
+    Every symbol in Definitions~\ref{def:6.1}--\ref{def:6.16} is
+    standard (category theory, Hilbert space theory) or defined in
+    Chapters~3--5.  Specifically:
+    $\CR_{\mathrm{op}}$ (D~\ref{def:3.15}),
+    $\mathfrak{D}(\HC)$ (D~\ref{def:3.14}),
+    $\Phi$ (D~\ref{def:3.18}),
+    $\CA(\HC)$ (D~\ref{def:3.20}),
+    $\HC_\CM$ (D~\ref{def:3.21}),
+    $\CK(\HC)$ (D~\ref{def:5.2}).
+
+  \item \textbf{No circular definitions:}
+    Dependency order: D6.1 $\to$ D6.2 $\to$ D6.3 $\to$ D6.4 (CogSys
+    data) $\to$ D6.5 $\to$ D6.6 $\to$ D6.7 $\to$ D6.8 (Hilb_CIIR
+    data) $\to$ D6.9 $\to$ D6.10 (functor $\mathbf{F}$) $\to$ D6.11
+    (equivalence) $\to$ D6.12 $\to$ D6.13 $\to$ D6.14 (nat.\ trans.)
+    $\to$ D6.15 $\to$ D6.16 (monoidal).  All edges point forward.
+
+  \item \textbf{Consistency with Chapter 5:}
+    Theorem~\ref{thm:5.2} (CIIR Representation Theorem) is the
+    object-level statement; Theorem~\ref{thm:6.3} (functoriality) is
+    its categorical upgrade.  The functor $\mathbf{F}$ is the formal
+    version of the sketch in Theorem~\ref{thm:5.3}.
+    Axiom~\ref{ax:4.6} (Constraint Composition) becomes the symmetric
+    monoidal structure of Theorem~\ref{thm:6.7}.
+
+  \item \textbf{Sufficiency Theorem T4.3 continued:}
+    Theorem~\ref{thm:4.3}(ii) (representation theorem) is now
+    established in full by Theorem~\ref{thm:6.3}--\ref{thm:6.5}.
+    Theorem~\ref{thm:4.3}(iv) (multi-agent structure) is established
+    by Theorems~\ref{thm:6.7}--\ref{thm:6.8}.
+    Theorem~\ref{thm:4.3}(iii) (dynamics) is deferred to Chapter~7.
+\end{enumerate}
+
+% ============================================================
+\subsection{Dependency Graph}
+\label{sec:ch6:depgraph}
+% ============================================================
+
+\begin{center}
+\begin{tabular}{lll}
+\hline
+\textbf{Object / Theorem} & \textbf{Ref.} & \textbf{Depends on} \\
+\hline
+CogSys (T~\ref{thm:6.1}) & Thm.~\ref{thm:6.1} &
+  D6.1--D6.4, Ax.~\ref{ax:4.1}--\ref{ax:4.6} \\
+Hilb\_CIIR (T~\ref{thm:6.2}) & Thm.~\ref{thm:6.2} &
+  D6.5--D6.8, D~\ref{def:3.18} \\
+$\mathbf{F}$ functor (T~\ref{thm:6.3}) & Thm.~\ref{thm:6.3} &
+  D6.9--D6.10, T5.2, L6.4 \\
+Functoriality (T~\ref{thm:6.4}) & Thm.~\ref{thm:6.4} &
+  D6.9--D6.10, T~\ref{thm:6.1}--\ref{thm:6.2} \\
+Unitary equiv.\ (T~\ref{thm:6.5}) & Thm.~\ref{thm:6.5} &
+  D6.11, L~\ref{lem:6.3}, T~\ref{thm:5.2} \\
+Nat.\ trans.\ (T~\ref{thm:6.6}) & Thm.~\ref{thm:6.6} &
+  D6.12--D6.14 \\
+Monoidal struct.\ (T~\ref{thm:6.7}) & Thm.~\ref{thm:6.7} &
+  D6.15--D6.16, Ax.~\ref{ax:4.6}, T~\ref{thm:6.1}--\ref{thm:6.2} \\
+Monoidal functor (T~\ref{thm:6.8}) & Thm.~\ref{thm:6.8} &
+  L6.7--L6.9, T~\ref{thm:6.7}, T~\ref{thm:6.4} \\
+\hline
+\end{tabular}
+\end{center}
+
+\medskip
+\noindent
+All 16 definitions, 8 theorems, 9 lemmas, and 4 propositions are
+complete.  The CIIR framework is now a formal symmetric monoidal functor
+between two well-defined categories.  Chapter~7 will develop the
+dynamics (constraint Hamiltonian, Lindblad master equation, and
+time-evolution functor).

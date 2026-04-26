@@ -59,6 +59,7 @@ coverage.json
 
 # QuASIM-Own runtime directories
 runs/
+!compiled_realities/runs/
 reports/
 .cache/quasim_datasets/
 
@@ -138,3 +139,12 @@ qratum_asi/output/
 # Rust build artifacts
 target/
 
+# SBOM generated artifacts (keep directory structure)
+.sbom/cyclonedx/*.json
+.sbom/spdx/*.json
+.sbom/hashes/*.sha256
+.sbom/hashes/*.sha512
+.sbom/provenance/*.json
+.sbom/diffs/*.json
+# Temporal compression experiment outputs
+artifacts/temporal_compression/

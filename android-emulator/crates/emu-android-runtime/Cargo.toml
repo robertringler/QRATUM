@@ -1,0 +1,29 @@
+[package]
+name = "emu-android-runtime"
+description = "Android Runtime Layer - ART, Bionic libc, Binder IPC emulation"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+log.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+bitflags.workspace = true
+byteorder.workspace = true
+parking_lot.workspace = true
+serde = { workspace = true, features = ["derive"] }
+
+# Internal dependencies
+emu-cpu = { path = "../emu-cpu" }
+emu-memory = { path = "../emu-memory" }
+
+[dev-dependencies]
+proptest.workspace = true
+env_logger.workspace = true
+
+[features]
+default = []
+binder-debug = []

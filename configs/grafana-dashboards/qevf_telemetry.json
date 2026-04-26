@@ -1,0 +1,77 @@
+{
+  "title": "Φ_QEVF Telemetry",
+  "uid": "qevf-phase-vi",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "15s",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Φ_QEVF ops/kWh",
+      "targets": [
+        {
+          "expr": "avg(ordinstrument_qevf_ops_per_kwh)",
+          "legendFormat": "Median Φ_QEVF"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": 0 },
+              { "color": "semi-dark-yellow", "value": 9.5e16 },
+              { "color": "green", "value": 1.0e17 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "RMSE Energy Variance",
+      "targets": [
+        {
+          "expr": "stddev_over_time(ord_energy_kwh[15m])",
+          "legendFormat": "σ_E"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kwatth",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": 0 },
+              { "color": "red", "value": 0.05 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Fidelity P95",
+      "targets": [
+        {
+          "expr": "quantile_over_time(0.95, ord_fidelity[5m])",
+          "legendFormat": "Fidelity P95"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": 0 },
+              { "color": "green", "value": 0.997 }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

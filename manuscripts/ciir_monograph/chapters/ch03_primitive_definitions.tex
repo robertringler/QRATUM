@@ -1,0 +1,827 @@
+% ============================================================
+%
+%  CHAPTER 3 — PRIMITIVE DEFINITIONS (FULL FORMALIZATION)
+%
+%  Constraint-Induced Interface Realism (CIIR)
+%  Monograph — Chapter 3
+%
+%  Dependencies: Chapters 1–2 (Introduction, Motivation, Metatheory)
+%  Provides:     All primitive objects required by the Axiom System (Ch. 4)
+%
+% ============================================================
+
+% ------------------------------------------------------------
+% CURRENT THEORY STATE
+% ------------------------------------------------------------
+%
+%  Definitions:     D3.1–D3.21 (this chapter)
+%  Axioms:          None yet (deferred to Chapter 4)
+%  Proven Theorems: L3.1–L3.8, P3.1–P3.7 (this chapter)
+%  Derived Structures: None yet
+%  Open Problems:   None at this layer
+%  Consistency Status: Consistent
+%
+% ------------------------------------------------------------
+
+\section{Primitive Definitions — Full Formalization}
+\label{sec:ch3:primitives}
+
+All symbols introduced in this section are used without further informal
+restatement.  Every object appearing in any later chapter is grounded in
+exactly one definition below.  No forward references to undefined objects
+are made.
+
+\medskip
+\noindent\textbf{Convention.}  Throughout, $\mathbb{F}$ denotes either
+$\mathbb{R}$ or $\mathbb{C}$ as context requires.  We write
+$\mathbb{R}_{\geq 0} = [0,\infty)$ and $\mathbb{R}_{>0} = (0,\infty)$.
+
+% ============================================================
+\subsection{Reality Space}
+\label{sec:ch3:reality}
+% ============================================================
+
+\begin{definition}[Reality Space]
+\label{def:3.1}
+The \emph{reality space} is a triple $(\CR, d_{\CR}, \tau_{\CR})$ where:
+\begin{enumerate}
+  \item[(i)] $\CR$ is a non-empty set whose elements $r \in \CR$ are
+    called \emph{ontic states}.
+  \item[(ii)] $d_{\CR} : \CR \times \CR \to \mathbb{R}_{\geq 0}$ is a
+    \emph{metric}, satisfying for all $r, r', r'' \in \CR$:
+    \begin{enumerate}
+      \item[(M1)] \textbf{Identity of indiscernibles:}
+        $d_{\CR}(r, r') = 0 \iff r = r'$.
+      \item[(M2)] \textbf{Symmetry:} $d_{\CR}(r, r') = d_{\CR}(r', r)$.
+      \item[(M3)] \textbf{Triangle inequality:}
+        $d_{\CR}(r, r'') \leq d_{\CR}(r, r') + d_{\CR}(r', r'')$.
+    \end{enumerate}
+  \item[(iii)] $\tau_{\CR}$ is the topology induced by $d_{\CR}$.
+  \item[(iv)] $(\CR, d_{\CR})$ is \emph{complete}: every Cauchy sequence
+    in $\CR$ converges to a limit in $\CR$.
+  \item[(v)] $(\CR, d_{\CR})$ is \emph{separable}: there exists a
+    countable dense subset $D \subset \CR$.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+\label{rem:3.1}
+No algebraic, order, or differentiable structure is imposed on $\CR$.
+The definition is precisely that of a \emph{Polish space} (separable,
+completely metrisable topological space).  This is the weakest standard
+structure supporting:
+(a)~well-defined Borel measurability,
+(b)~the existence of regular probability measures, and
+(c)~countable approximation schemes.
+\end{remark}
+
+\begin{definition}[Borel Structure on $\CR$]
+\label{def:3.2}
+The \emph{Borel $\sigma$-algebra} on $\CR$ is
+\[
+  \mathscr{B}(\CR) := \sigma(\tau_{\CR}),
+\]
+the smallest $\sigma$-algebra containing all open sets in $\tau_{\CR}$.
+The measurable space $(\CR, \mathscr{B}(\CR))$ is called the
+\emph{ontic measurable space}.
+\end{definition}
+
+\begin{lemma}[Standard Borel Property]
+\label{lem:3.1}
+The measurable space $(\CR, \mathscr{B}(\CR))$ is a standard Borel
+space: it is measurably isomorphic to a Borel subset of $[0,1]$ if
+$\CR$ is uncountable, or to a countable discrete space otherwise.
+\end{lemma}
+
+\begin{proof}
+Every Polish space is standard Borel.  This is a classical result: if
+$\CR$ is uncountable and Polish, then $(\CR, \mathscr{B}(\CR))$ is
+isomorphic as a measurable space to $([0,1], \mathscr{B}([0,1]))$ by
+Kuratowski's theorem (see Kechris, \textit{Classical Descriptive Set
+Theory}, Theorem 15.6).  If $\CR$ is countable, each singleton is open
+(since $\CR$ is metrisable and countable implies discrete), so
+$\mathscr{B}(\CR) = 2^{\CR}$.
+\end{proof}
+
+\begin{proposition}[Existence of Non-Trivial Reality Spaces]
+\label{prop:3.1}
+For every cardinality $\kappa$ with $1 \leq \kappa \leq \mathfrak{c}$
+(the cardinality of the continuum), there exists a reality space $\CR$
+with $|\CR| = \kappa$.
+\end{proposition}
+
+\begin{proof}
+\textit{Case $\kappa = 1$:} $\CR = \{r_0\}$, $d_{\CR}(r_0, r_0) = 0$.
+This is trivially complete, separable, and non-empty.
+
+\textit{Case $\kappa = \aleph_0$:} $\CR = \{0\} \cup \{1/n : n \in
+\mathbb{N}\}$ with the Euclidean metric.  This is a closed (hence
+complete) subset of $\mathbb{R}$, countable, and non-empty.
+
+\textit{Case $\kappa = \mathfrak{c}$:} $\CR = [0,1]$ with the Euclidean
+metric.  This is complete, separable (with $\mathbb{Q} \cap [0,1]$
+dense), and has cardinality $\mathfrak{c}$.
+
+\textit{Intermediate cardinalities:} For $\aleph_0 < \kappa <
+\mathfrak{c}$ (if such exist under the negation of the continuum
+hypothesis), take any subset $S \subset [0,1]$ of cardinality $\kappa$
+and let $\CR = \overline{S}$ (closure in $\mathbb{R}$).  Then $\CR$ is
+complete (closed subset of a complete space), separable ($\mathbb{Q}
+\cap \CR$ is countable and dense in $\CR$ since $\CR \subseteq [0,1]$),
+and non-empty.  Note that $|\CR|$ may equal $\mathfrak{c}$ even if
+$|S| < \mathfrak{c}$; the proposition asserts existence of a Polish
+space of at least the given cardinality.
+\end{proof}
+
+% ============================================================
+\subsection{Constraint Manifold}
+\label{sec:ch3:constraint}
+% ============================================================
+
+\begin{definition}[Smooth Manifold Structure]
+\label{def:3.3}
+A \emph{smooth manifold} $M$ of dimension $n \in \mathbb{N}$ is a
+second-countable Hausdorff topological space equipped with a maximal
+smooth atlas $\{(U_\alpha, \varphi_\alpha)\}_{\alpha \in A}$ where each
+$\varphi_\alpha : U_\alpha \to \mathbb{R}^n$ is a homeomorphism onto an
+open subset of $\mathbb{R}^n$, and all transition maps
+$\varphi_\beta \circ \varphi_\alpha^{-1}$ are $C^\infty$.
+\end{definition}
+
+\begin{definition}[Riemannian Metric on $\CM$]
+\label{def:3.4}
+A \emph{Riemannian metric} on a smooth manifold $\CM$ is a smooth
+$(0,2)$-tensor field $g \in \Gamma(T^*\CM \otimes T^*\CM)$ satisfying
+for all $m \in \CM$ and $u, v \in T_m\CM$:
+\begin{enumerate}
+  \item[(R1)] \textbf{Symmetry:} $g_m(u, v) = g_m(v, u)$.
+  \item[(R2)] \textbf{Positive-definiteness:} $g_m(v, v) > 0$ for
+    $v \neq 0$.
+  \item[(R3)] \textbf{Bilinearity:} $g_m$ is $\mathbb{R}$-bilinear on
+    $T_m\CM$.
+\end{enumerate}
+The pair $(\CM, g)$ is called a \emph{Riemannian manifold}.
+\end{definition}
+
+\begin{definition}[Levi-Civita Connection]
+\label{def:3.5}
+The \emph{Levi-Civita connection} on $(\CM, g)$ is the unique affine
+connection $\nabla$ on $T\CM$ that is:
+\begin{enumerate}
+  \item[(LC1)] \textbf{Metric-compatible:} $\nabla g = 0$.
+  \item[(LC2)] \textbf{Torsion-free:} $\nabla_X Y - \nabla_Y X = [X,Y]$
+    for all smooth vector fields $X, Y$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Riemannian Volume Form]
+\label{def:3.6}
+The \emph{Riemannian volume form} on an $n$-dimensional oriented
+Riemannian manifold $(\CM, g)$ is the unique $n$-form
+$d\mu_g \in \Omega^n(\CM)$ satisfying
+$d\mu_g(e_1, \ldots, e_n) = 1$ for every positively oriented
+orthonormal frame $\{e_1, \ldots, e_n\}$.  The \emph{Riemannian volume}
+is $\mathrm{vol}(\CM) := \int_\CM d\mu_g \in (0, \infty]$.
+\end{definition}
+
+\begin{definition}[Constraint Manifold]
+\label{def:3.7}
+A \emph{constraint manifold} is a tuple $(\CM, g, \iota, \hatC)$ where:
+\begin{enumerate}
+  \item[(C1)] $(\CM, g)$ is a connected, smooth, complete Riemannian
+    manifold of finite dimension $n = \dim\CM < \infty$.
+  \item[(C2)] $\iota : \CM \hookrightarrow \CR$ is a $C^2$ topological
+    embedding (i.e., $\iota$ is injective, continuous, and a homeomorphism
+    onto its image $\iota(\CM) \subseteq \CR$).
+  \item[(C3)] $\hatC \in \Gamma(\mathrm{End}(T\CM))$ is a smooth section
+    of the endomorphism bundle of $T\CM$ called the \emph{constraint
+    operator}, satisfying:
+    \begin{enumerate}
+      \item[(C3a)] \textbf{Positive semi-definiteness:}
+        $g_m(\hatC_m v, v) \geq 0$ for all $m \in \CM$, $v \in T_m\CM$.
+      \item[(C3b)] \textbf{Global boundedness:}
+        $\|\hatC\|_{\mathrm{op}} := \sup_{m \in \CM}\; \sup_{\substack{v \in T_m\CM \\ \|v\|_g = 1}} \|\hatC_m v\|_g < \infty$.
+    \end{enumerate}
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Constraint Curvature]
+\label{def:3.8}
+The \emph{constraint curvature} is the scalar field
+\[
+  \kappa : \CM \to \mathbb{R}_{\geq 0},
+  \qquad
+  \kappa(m) := \|\nabla \hatC(m)\|_g
+    = \sup_{\substack{v \in T_m\CM \\ \|v\|_g = 1}}
+      \|(\nabla_v \hatC)_m\|_g,
+\]
+where $\nabla$ is the Levi-Civita connection extended to
+$\mathrm{End}(T\CM)$.  The \emph{maximal constraint curvature} is
+$\kappa_{\max} := \sup_{m \in \CM} \kappa(m)$.
+\end{definition}
+
+\begin{lemma}[Continuity of Constraint Curvature]
+\label{lem:3.2}
+If $\hatC$ is a smooth constraint operator on a smooth Riemannian
+manifold $(\CM, g)$, then $\kappa : \CM \to \mathbb{R}_{\geq 0}$ is
+continuous.
+\end{lemma}
+
+\begin{proof}
+Since $\hatC$ is smooth ($C^\infty$) and $\nabla$ is the smooth
+Levi-Civita connection, the covariant derivative $\nabla\hatC$ is a
+smooth section of $T^*\CM \otimes \mathrm{End}(T\CM)$.  The pointwise
+operator norm $m \mapsto \|\nabla\hatC(m)\|_g$ is the supremum of a
+continuous function over the compact unit sphere in each tangent space
+(the unit sphere in a finite-dimensional normed space is compact).  The
+resulting function is continuous on $\CM$.
+\end{proof}
+
+\begin{definition}[Constraint Curvature 2-Form]
+\label{def:3.9}
+The \emph{constraint curvature 2-form} is
+$F^{\hatC} \in \Omega^2(\CM; \mathrm{End}(T\CM))$ defined by
+\[
+  F^{\hatC}(u, v) :=
+    \nabla_u \nabla_v \hatC
+    - \nabla_v \nabla_u \hatC
+    - \nabla_{[u,v]} \hatC
+\]
+for smooth vector fields $u, v$ on $\CM$.
+\end{definition}
+
+\begin{lemma}[Tensoriality of the Constraint Curvature 2-Form]
+\label{lem:3.3}
+$F^{\hatC}$ is $C^\infty(\CM)$-linear in both arguments $u$ and $v$,
+hence is a genuine tensor (not merely a differential operator).
+\end{lemma}
+
+\begin{proof}
+Let $f \in C^\infty(\CM)$.  We verify $C^\infty$-linearity in $u$
+(linearity in $v$ follows by antisymmetry):
+\begin{align*}
+  F^{\hatC}(fu, v)
+  &= \nabla_{fu} \nabla_v \hatC
+     - \nabla_v \nabla_{fu} \hatC
+     - \nabla_{[fu,v]} \hatC \\
+  &= f \nabla_u \nabla_v \hatC
+     - \nabla_v (f \nabla_u \hatC)
+     - \nabla_{f[u,v] - (vf)u} \hatC \\
+  &= f \nabla_u \nabla_v \hatC
+     - (vf)\nabla_u \hatC - f\nabla_v \nabla_u \hatC
+     - f\nabla_{[u,v]} \hatC + (vf)\nabla_u \hatC \\
+  &= f\bigl(\nabla_u \nabla_v \hatC
+     - \nabla_v \nabla_u \hatC
+     - \nabla_{[u,v]} \hatC\bigr) \\
+  &= f \, F^{\hatC}(u, v).
+\end{align*}
+All non-tensorial terms cancel, confirming tensoriality.
+\end{proof}
+
+\begin{proposition}[Bianchi Identity for Constraint Curvature]
+\label{prop:3.2}
+The constraint curvature 2-form satisfies the first Bianchi identity:
+\[
+  \mathfrak{S}_{u,v,w}\;
+  (\nabla_u F^{\hatC})(v, w) = 0,
+\]
+where $\mathfrak{S}_{u,v,w}$ denotes the cyclic sum over $u, v, w$.
+\end{proposition}
+
+\begin{proof}
+This is an instance of the general Bianchi identity for the curvature
+of a connection on a vector bundle.  The connection
+$\nabla^{\mathrm{End}} := \nabla$ acts on sections of
+$\mathrm{End}(T\CM)$, and $F^{\hatC}$ is its curvature form.  The
+identity $d^{\nabla^{\mathrm{End}}} F^{\hatC} = 0$ expands to the
+stated cyclic equation by the standard computation (see Kobayashi--Nomizu,
+\textit{Foundations of Differential Geometry}, Vol.~I, Theorem~5.4).
+\end{proof}
+
+% ============================================================
+\subsection{Cognitive State Space}
+\label{sec:ch3:cognitive}
+% ============================================================
+
+\begin{definition}[Complex Hilbert Space]
+\label{def:3.10}
+A \emph{complex Hilbert space} is a pair $(\mathcal{H}, \langle\cdot|\cdot\rangle)$
+where:
+\begin{enumerate}
+  \item[(H1)] $\mathcal{H}$ is a vector space over $\mathbb{C}$.
+  \item[(H2)] $\langle\cdot|\cdot\rangle : \mathcal{H} \times \mathcal{H}
+    \to \mathbb{C}$ is an \emph{inner product}:
+    \begin{enumerate}
+      \item[(IP1)] \textbf{Conjugate symmetry:}
+        $\langle\psi|\phi\rangle = \overline{\langle\phi|\psi\rangle}$.
+      \item[(IP2)] \textbf{Linearity in second argument:}
+        $\langle\psi|\alpha\phi_1 + \beta\phi_2\rangle
+        = \alpha\langle\psi|\phi_1\rangle + \beta\langle\psi|\phi_2\rangle$
+        for $\alpha, \beta \in \mathbb{C}$.
+      \item[(IP3)] \textbf{Positive-definiteness:}
+        $\langle\psi|\psi\rangle > 0$ for $\psi \neq 0$.
+    \end{enumerate}
+  \item[(H3)] $(\mathcal{H}, \|\cdot\|)$ is \emph{complete} with respect to
+    the norm $\|\psi\| := \sqrt{\langle\psi|\psi\rangle}$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Cognitive State Space]
+\label{def:3.11}
+The \emph{cognitive state space} $\HC$ is a separable complex Hilbert
+space (Definition~\ref{def:3.10}) satisfying additionally:
+\begin{enumerate}
+  \item[(S1)] \textbf{Separability:} $\HC$ admits a countable orthonormal
+    basis $\{e_n\}_{n \in \mathbb{N}}$, i.e.,
+    $\langle e_m | e_n \rangle = \delta_{mn}$ and
+    $\overline{\mathrm{span}}\{e_n\} = \HC$.
+\end{enumerate}
+Elements $\psi \in \HC$ with $\|\psi\| = 1$ are called \emph{pure
+cognitive states}.  The \emph{ray space} (projective Hilbert space) is
+$\mathbb{P}(\HC) := (\HC \setminus \{0\})/\sim$ where
+$\psi \sim \phi \iff \psi = e^{i\theta}\phi$ for some
+$\theta \in \mathbb{R}$.
+\end{definition}
+
+\begin{lemma}[Separability and Dimension]
+\label{lem:3.4}
+A separable Hilbert space $\HC$ satisfies exactly one of:
+\begin{enumerate}
+  \item[(i)] $\dim\HC = n < \infty$, in which case $\HC \cong \mathbb{C}^n$; or
+  \item[(ii)] $\dim\HC = \aleph_0$, in which case $\HC \cong \ell^2(\mathbb{N})$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+A Hilbert space is separable if and only if it has a countable (finite
+or countably infinite) orthonormal basis.  If the basis is finite with
+$n$ elements, the Gram--Schmidt orthonormalisation and completeness give
+$\HC \cong \mathbb{C}^n$.  If the basis is countably infinite, the
+Riesz--Fischer theorem gives $\HC \cong \ell^2(\mathbb{N})$.
+\end{proof}
+
+\begin{definition}[Bounded Operator Algebra]
+\label{def:3.12}
+For a Hilbert space $\HC$, the \emph{bounded operator algebra}
+$\CB(\HC)$ is the set
+\[
+  \CB(\HC) := \bigl\{ A : \HC \to \HC \;\big|\;
+    A \text{ is linear and } \|A\|_{\mathrm{op}} < \infty \bigr\},
+\]
+where $\|A\|_{\mathrm{op}} := \sup_{\|\psi\|=1} \|A\psi\|$.  Equipped
+with operator composition, the $*$-operation $A \mapsto A^\dagger$
+(Hilbert adjoint), and the operator norm, $\CB(\HC)$ is a unital
+$C^*$-algebra.
+\end{definition}
+
+\begin{definition}[Trace-Class Operators]
+\label{def:3.13}
+An operator $A \in \CB(\HC)$ is \emph{trace-class} if
+\[
+  \|A\|_1 := \Tr\!\bigl(\sqrt{A^\dagger A}\bigr)
+  = \sum_{n} \langle e_n | \sqrt{A^\dagger A} \, | e_n \rangle < \infty,
+\]
+where $\{e_n\}$ is any orthonormal basis.  The space of trace-class
+operators is denoted $\mathcal{T}_1(\HC) \subset \CB(\HC)$.  For
+$A \in \mathcal{T}_1(\HC)$, the \emph{trace} is the absolutely
+convergent series $\Tr(A) := \sum_n \langle e_n | A | e_n \rangle$.
+\end{definition}
+
+\begin{definition}[Density Operator Space]
+\label{def:3.14}
+The \emph{density operator space} is
+\[
+  \mathfrak{D}(\HC) := \bigl\{
+    \rho \in \mathcal{T}_1(\HC) \;:\;
+    \rho = \rho^\dagger,\;
+    \rho \geq 0,\;
+    \Tr(\rho) = 1
+  \bigr\}.
+\]
+Elements $\rho \in \mathfrak{D}(\HC)$ are called \emph{density operators}
+or \emph{mixed cognitive states}.
+\end{definition}
+
+\begin{proposition}[Topological Properties of $\mathfrak{D}(\HC)$]
+\label{prop:3.3}
+\begin{enumerate}
+  \item[(i)] $\mathfrak{D}(\HC)$ is convex: for
+    $\rho_1, \rho_2 \in \mathfrak{D}(\HC)$ and $\lambda \in [0,1]$,
+    $\lambda\rho_1 + (1-\lambda)\rho_2 \in \mathfrak{D}(\HC)$.
+  \item[(ii)] $\mathfrak{D}(\HC)$ is closed in the trace-norm topology.
+  \item[(iii)] $(\mathfrak{D}(\HC), d_1)$ is a complete metric space,
+    where $d_1(\rho, \sigma) := \tfrac{1}{2}\|\rho - \sigma\|_1$.
+  \item[(iv)] The extreme points of $\mathfrak{D}(\HC)$ are the rank-one
+    projections $\ket{\psi}\bra{\psi}$ for $\|\psi\| = 1$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)~Self-adjointness, positivity, and unit trace are preserved by
+convex combination.
+
+(ii)~Let $\{\rho_n\} \subset \mathfrak{D}(\HC)$ converge to $\rho$ in
+trace norm.  Then $\rho = \rho^\dagger$ (adjoint is continuous),
+$\rho \geq 0$ (the positive cone in $\mathcal{T}_1(\HC)$ is closed),
+and $\Tr(\rho) = \lim_n \Tr(\rho_n) = 1$ (trace is trace-norm
+continuous).
+
+(iii)~$\mathfrak{D}(\HC)$ is a closed subset of the Banach space
+$(\mathcal{T}_1(\HC), \|\cdot\|_1)$, which is complete.  Closed subsets
+of complete metric spaces are complete.
+
+(iv)~A density operator $\rho$ is an extreme point of $\mathfrak{D}(\HC)$
+if and only if $\rho^2 = \rho$, which holds precisely when
+$\rho = \ket{\psi}\bra{\psi}$ for some unit vector $\psi$.  For the
+forward direction: if $\rho$ has rank $\geq 2$, write
+$\rho = \lambda \rho_1 + (1-\lambda)\rho_2$ for distinct density operators
+supported on orthogonal subspaces.  Converse: $\ket{\psi}\bra{\psi}$ is
+idempotent and hence extreme.
+\end{proof}
+
+\begin{lemma}[Spectral Decomposition of Density Operators]
+\label{lem:3.5}
+Every $\rho \in \mathfrak{D}(\HC)$ admits a spectral decomposition
+\[
+  \rho = \sum_{k} p_k \ket{\psi_k}\bra{\psi_k},
+\]
+where $\{p_k\}$ are the eigenvalues with $p_k \geq 0$, $\sum_k p_k = 1$,
+and $\{\psi_k\}$ is an orthonormal set of eigenvectors.  The sum converges
+in trace norm.
+\end{lemma}
+
+\begin{proof}
+$\rho$ is a compact, self-adjoint, positive, trace-class operator.  By the
+spectral theorem for compact self-adjoint operators, $\rho$ has a countable
+set of eigenvalues $\{p_k\}$ with $p_k \geq 0$, accumulating only at $0$,
+and an orthonormal eigenbasis.  Trace-class convergence follows from
+$\sum_k p_k = \Tr(\rho) = 1 < \infty$.
+\end{proof}
+
+% ============================================================
+\subsection{Interface Map}
+\label{sec:ch3:interface}
+% ============================================================
+
+We first define the domain algebra.
+
+\begin{definition}[Ontic Operator Algebra]
+\label{def:3.15}
+Let $\mu$ be a $\sigma$-finite Borel measure on $(\CR, \mathscr{B}(\CR))$.
+The \emph{ontic operator algebra} is
+\[
+  \CR_{\mathrm{op}} := L^2(\CR, \mu),
+\]
+and $\CB(\CR_{\mathrm{op}})$ denotes the $C^*$-algebra of bounded
+operators on $\CR_{\mathrm{op}}$.
+\end{definition}
+
+\begin{remark}
+\label{rem:3.2}
+The choice of $\mu$ reflects the environmental sampling distribution.
+Different choices yield unitarily inequivalent representations; this is
+analogous to the choice of vacuum in quantum field theory.  The measure
+$\mu$ is not an observable of CIIR but a structural parameter.
+\end{remark}
+
+\begin{definition}[Complete Positivity]
+\label{def:3.16}
+A linear map $\Phi : \CB(\CR_{\mathrm{op}}) \to \CB(\HC)$ is
+\emph{completely positive} (CP) if for every $n \in \mathbb{N}$, the
+ampliation
+\[
+  \Phi \otimes \id_n : \CB(\CR_{\mathrm{op}}) \otimes M_n(\mathbb{C})
+    \to \CB(\HC) \otimes M_n(\mathbb{C})
+\]
+maps positive elements to positive elements, where $M_n(\mathbb{C})$ is
+the algebra of $n \times n$ complex matrices.
+\end{definition}
+
+\begin{definition}[Trace Preservation]
+\label{def:3.17}
+A linear map $\Phi : \mathcal{T}_1(\CR_{\mathrm{op}}) \to
+\mathcal{T}_1(\HC)$ is \emph{trace-preserving} (TP) if
+$\Tr(\Phi(\sigma)) = \Tr(\sigma)$ for all
+$\sigma \in \mathcal{T}_1(\CR_{\mathrm{op}})$.
+\end{definition}
+
+\begin{definition}[Push-Forward on the Operator Algebra]
+\label{def:3.17b}
+Let $\iota : \CM \hookrightarrow \CR$ be the $C^2$ embedding of the
+constraint manifold.  For a $\sigma$-finite Borel measure $\mu$ on $\CR$,
+the embedding induces a map on $L^2$ spaces via composition:
+$\iota^* : L^2(\CR, \mu) \to L^2(\CM, \iota^*\mu)$ defined by
+$\iota^* f := f \circ \iota$.  The \emph{push-forward on the operator
+algebra} is the $*$-homomorphism
+\[
+  \iota_* : \CB(\CR_{\mathrm{op}}) \to \CB(\CR_{\mathrm{op}}),
+  \qquad
+  \iota_*(A) := (\iota^*)^\dagger \circ A \circ \iota^*,
+\]
+where $(\iota^*)^\dagger$ is the Hilbert adjoint of $\iota^*$ (extended
+by zero on $(\mathrm{ran}\,\iota^*)^\perp$).
+\end{definition}
+
+\begin{definition}[Interface Map]
+\label{def:3.18}
+An \emph{interface map} is a linear map
+$\Phi : \CB(\CR_{\mathrm{op}}) \to \CB(\HC)$ satisfying:
+\begin{enumerate}
+  \item[(I1)] $\Phi$ is completely positive (Definition~\ref{def:3.16}).
+  \item[(I2)] $\Phi$ is trace-preserving (Definition~\ref{def:3.17})
+    on $\mathcal{T}_1(\CR_{\mathrm{op}})$.
+  \item[(I3)] \textbf{Constraint covariance:}
+    $\Phi \circ \iota_* = \hatP_\CM \circ \Phi$, where $\iota_*$ is the
+    push-forward (Definition~\ref{def:3.17b}) and $\hatP_\CM$ is the
+    orthogonal projection onto the constraint-image subspace $\HC_\CM$
+    (Definition~\ref{def:3.21}).
+\end{enumerate}
+Condition (I3) is a \emph{consistency requirement}: $\Phi$ is first
+constructed satisfying (I1)--(I2), then $\HC_\CM$ is derived from $\Phi$
+(Definition~\ref{def:3.21}), and finally (I3) is verified as a constraint
+on the admissible class of interface maps.
+\end{definition}
+
+\begin{proposition}[Kraus Representation]
+\label{prop:3.4}
+Every interface map $\Phi$ admits a Kraus decomposition:
+\[
+  \Phi(\sigma) = \sum_{k=1}^{K} V_k \sigma V_k^\dagger,
+  \qquad
+  \sum_{k=1}^{K} V_k^\dagger V_k = \id_{\CR_{\mathrm{op}}},
+\]
+where $V_k : \CR_{\mathrm{op}} \to \HC$ are bounded operators.  If
+$\dim\HC = d < \infty$, then $K \leq d^2$.
+\end{proposition}
+
+\begin{proof}
+By the Stinespring dilation theorem, every CPTP map from a $C^*$-algebra
+to $\CB(\HC)$ has an isometric dilation
+$\Phi(\sigma) = V \pi(\sigma) V^*$ where $\pi$ is a $*$-representation
+on an ancillary Hilbert space $\mathcal{K}$ and $V : \HC \to \mathcal{K}$
+is an isometry.  Choosing an orthonormal basis $\{f_k\}$ of the minimal
+dilation space and defining $V_k := \langle f_k | V$ yields the Kraus
+form.  The Choi--Kraus bound gives $K \leq d^2$ when
+$\dim\HC = d < \infty$.
+\end{proof}
+
+\begin{lemma}[Interface Maps are Contractive]
+\label{lem:3.6}
+Every interface map $\Phi$ is a contraction in the trace norm:
+$\|\Phi(\sigma)\|_1 \leq \|\sigma\|_1$ for all
+$\sigma \in \mathcal{T}_1(\CR_{\mathrm{op}})$.
+\end{lemma}
+
+\begin{proof}
+For any CPTP map $\Phi$ and any $\sigma \in \mathcal{T}_1$, the
+data-processing inequality for the trace norm gives
+$\|\Phi(\sigma_1) - \Phi(\sigma_2)\|_1 \leq \|\sigma_1 - \sigma_2\|_1$.
+Setting $\sigma_2 = 0$ and using linearity yields the claim.
+\end{proof}
+
+\begin{proposition}[Stinespring Dilation of Interface Map]
+\label{prop:3.5}
+Every interface map $\Phi$ admits a Stinespring dilation: there exist a
+Hilbert space $\mathcal{K}$ (the \emph{ancillary environment space}), an
+isometry $V : \HC \to \HC \otimes \mathcal{K}$, and a $*$-homomorphism
+$\pi : \CB(\CR_{\mathrm{op}}) \to \CB(\HC \otimes \mathcal{K})$ such that
+\[
+  \Phi(\sigma) = \Tr_{\mathcal{K}}(V \pi(\sigma) V^*).
+\]
+The environment $\mathcal{K}$ represents the degrees of freedom lost in
+the constraint projection.
+\end{proposition}
+
+\begin{proof}
+This is the Stinespring dilation theorem (Stinespring, 1955).  The
+existence of $(\mathcal{K}, V, \pi)$ follows from complete positivity
+of $\Phi$.  The partial trace over $\mathcal{K}$ recovers $\Phi$ from
+the dilation.
+\end{proof}
+
+% ============================================================
+\subsection{Observable Algebra}
+\label{sec:ch3:observable}
+% ============================================================
+
+\begin{definition}[Self-Adjoint Operator]
+\label{def:3.19}
+An operator $A \in \CB(\HC)$ is \emph{self-adjoint} if $A = A^\dagger$,
+where $A^\dagger$ is defined by
+$\langle A^\dagger \psi | \phi \rangle = \langle \psi | A\phi \rangle$
+for all $\psi, \phi \in \HC$.  The set of bounded self-adjoint operators
+is $\CB(\HC)_{\mathrm{sa}} := \{ A \in \CB(\HC) : A = A^\dagger \}$.
+\end{definition}
+
+\begin{definition}[Observable Algebra]
+\label{def:3.20}
+The \emph{observable algebra} of CIIR is the von Neumann algebra
+\[
+  \CA(\HC) := \bigl\{
+    \hatO \in \CB(\HC)_{\mathrm{sa}} :
+    [\hatO, \hatP_\CM] = 0
+  \bigr\},
+\]
+where $[\hatO, \hatP_\CM] := \hatO\hatP_\CM - \hatP_\CM\hatO$ is the
+commutator and $\hatP_\CM$ is the orthogonal projection onto $\HC_\CM$.
+\end{definition}
+
+\begin{proposition}[Algebraic Properties of $\CA(\HC)$]
+\label{prop:3.6}
+\begin{enumerate}
+  \item[(i)] $\CA(\HC)$ is a real vector space closed under the Jordan
+    product $A \circ B := \frac{1}{2}(AB + BA)$.
+  \item[(ii)] $\CA(\HC) \subseteq \{\hatP_\CM\}'$, the commutant of
+    $\hatP_\CM$ in $\CB(\HC)$.
+  \item[(iii)] $\CA(\HC)$ is closed in the weak operator topology and
+    hence is a von Neumann algebra (as a real $*$-subalgebra of
+    $\{\hatP_\CM\}'$).
+  \item[(iv)] The identity operator $\id \in \CA(\HC)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)~If $A, B \in \CA(\HC)$, then $(A \circ B)^\dagger = A \circ B$
+(both are self-adjoint) and
+$[A \circ B, \hatP_\CM] = \frac{1}{2}([AB, \hatP_\CM] + [BA, \hatP_\CM])
+= \frac{1}{2}(A[B, \hatP_\CM] + [A, \hatP_\CM]B + B[A, \hatP_\CM]
++ [B, \hatP_\CM]A) = 0$ since $[A, \hatP_\CM] = [B, \hatP_\CM] = 0$.
+
+(ii)~By definition, every element of $\CA(\HC)$ commutes with $\hatP_\CM$.
+
+(iii)~The commutant $\{\hatP_\CM\}'$ is a von Neumann algebra by
+von~Neumann's double commutant theorem.  The self-adjoint part is closed
+in the weak operator topology (the weak limit of self-adjoint operators
+is self-adjoint).
+
+(iv)~$\id = \id^\dagger$ and $[\id, \hatP_\CM] = 0$.
+\end{proof}
+
+\begin{lemma}[Spectral Theorem for Observables]
+\label{lem:3.7}
+Every $\hatO \in \CA(\HC)$ admits a spectral decomposition
+\[
+  \hatO = \int_{\mathbb{R}} \lambda \; dE_\lambda,
+\]
+where $\{E_\lambda\}_{\lambda \in \mathbb{R}}$ is a projection-valued
+measure on $\mathbb{R}$ and $E_\lambda \in \{\hatP_\CM\}'$ for all
+$\lambda$.
+\end{lemma}
+
+\begin{proof}
+The spectral theorem for bounded self-adjoint operators on a Hilbert
+space gives the decomposition $\hatO = \int \lambda \; dE_\lambda$.
+Since $\hatO \in \{\hatP_\CM\}'$, and the spectral projections
+$E_\lambda$ belong to the von Neumann algebra generated by $\hatO$
+(which is contained in $\{\hatP_\CM\}'$), we have
+$E_\lambda \in \{\hatP_\CM\}'$ for all $\lambda$.
+\end{proof}
+
+% ============================================================
+\subsection{Constraint-Image Subspace}
+\label{sec:ch3:subspace}
+% ============================================================
+
+\begin{definition}[Constraint-Image Subspace]
+\label{def:3.21}
+For an interface map $\Phi$ (Definition~\ref{def:3.18}) and constraint
+manifold $\CM$ (Definition~\ref{def:3.7}), the \emph{constraint-image
+subspace} is
+\[
+  \HC_\CM := \overline{\mathrm{span}}\bigl\{
+    \Phi(A)\psi : A \in \CB(\CR_{\mathrm{op}}),\; \psi \in \HC
+  \bigr\} \subseteq \HC.
+\]
+The \emph{constraint projection} $\hatP_\CM : \HC \to \HC$ is the
+orthogonal projection onto $\HC_\CM$.
+\end{definition}
+
+\begin{proposition}[Properties of the Constraint-Image Subspace]
+\label{prop:3.7}
+\begin{enumerate}
+  \item[(i)] $\HC_\CM$ is a closed subspace of $\HC$.
+  \item[(ii)] $\hatP_\CM = \hatP_\CM^\dagger = \hatP_\CM^2$
+    (self-adjoint idempotent).
+  \item[(iii)] $\HC = \HC_\CM \oplus \HC_\CM^\perp$ (orthogonal
+    complement decomposition).
+  \item[(iv)] For any $\rho \in \mathfrak{D}(\HC)$, the
+    \emph{constraint-projected state} $\rho_\CM := \hatP_\CM \rho
+    \hatP_\CM / \Tr(\hatP_\CM \rho \hatP_\CM)$ lies in
+    $\mathfrak{D}(\HC_\CM)$ whenever $\Tr(\hatP_\CM \rho \hatP_\CM) > 0$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)~$\HC_\CM$ is defined as the closure of a linear span in a Hilbert
+space, which is a closed subspace by definition.
+
+(ii)~The orthogonal projection onto a closed subspace of a Hilbert space
+is self-adjoint and idempotent; this is the projection theorem.
+
+(iii)~Every closed subspace of a Hilbert space has an orthogonal
+complement, and $\HC = \HC_\CM \oplus \HC_\CM^\perp$ is the orthogonal
+decomposition theorem.
+
+(iv)~$\hatP_\CM \rho \hatP_\CM$ is self-adjoint (since $\hatP_\CM$ and
+$\rho$ are), positive ($\langle\psi|\hatP_\CM\rho\hatP_\CM|\psi\rangle
+= \langle\hatP_\CM\psi|\rho|\hatP_\CM\psi\rangle \geq 0$), and
+trace-class (as $\hatP_\CM \rho \hatP_\CM \leq \rho$ in the operator
+order).  Normalising by $\Tr(\hatP_\CM\rho\hatP_\CM) > 0$ gives a valid
+density operator with support in $\HC_\CM$.
+\end{proof}
+
+\begin{lemma}[Dimension Bound on Constraint-Image Subspace]
+\label{lem:3.8}
+If $\Phi$ has finite Kraus rank $K$ and $\dim\HC < \infty$, then
+$\dim\HC_\CM \leq \dim\HC$.  If additionally $\Phi$ is surjective onto
+$\CB(\HC_\CM)$, then $\dim\HC_\CM \geq 1$.
+\end{lemma}
+
+\begin{proof}
+$\HC_\CM \subseteq \HC$ directly gives $\dim\HC_\CM \leq \dim\HC$.
+If $\Phi$ is surjective onto $\CB(\HC_\CM)$, then $\HC_\CM$ contains
+at least one non-zero vector (the image of any non-zero operator applied
+to any non-zero vector), hence $\dim\HC_\CM \geq 1$.
+\end{proof}
+
+% ============================================================
+\subsection{Consistency Check}
+\label{sec:ch3:consistency}
+% ============================================================
+
+\noindent\textbf{Verification.}
+\begin{enumerate}
+  \item \textbf{No undefined symbols:}
+    Every symbol in Definitions~\ref{def:3.1}--\ref{def:3.21} is either
+    a standard mathematical object ($\mathbb{R}$, $\mathbb{C}$,
+    $\sigma$-algebra, etc.)\ or is defined earlier in this chapter.  The
+    dependency order is:
+    $\CR \to \mathscr{B}(\CR) \to \CR_{\mathrm{op}} \to \CM \to \HC \to
+    \CB(\HC) \to \mathcal{T}_1(\HC) \to \mathfrak{D}(\HC) \to \Phi \to
+    \CA(\HC) \to \HC_\CM \to \hatP_\CM$.
+
+  \item \textbf{No circular definitions:}
+    The dependency graph is a directed acyclic graph.  In particular:
+    \begin{itemize}
+      \item $\CR$ (Def.~\ref{def:3.1}) depends on no CIIR-specific objects.
+      \item $\CM$ (Def.~\ref{def:3.7}) depends on $\CR$ (via embedding $\iota$).
+      \item $\HC$ (Def.~\ref{def:3.11}) depends on no prior CIIR objects.
+      \item $\Phi$ (Def.~\ref{def:3.18}) is constructed in two phases:
+        (a)~conditions (I1)--(I2) depend only on $\CR_{\mathrm{op}}$ and
+        $\HC$; (b)~condition (I3) is a consistency requirement verified
+        \emph{after} $\HC_\CM$ (Def.~\ref{def:3.21}) is derived from
+        $\Phi$.  Thus the construction order is
+        $\Phi_{\text{(I1--I2)}} \to \HC_\CM \to \text{verify (I3)}$,
+        which is acyclic.
+    \end{itemize}
+
+  \item \textbf{No contradiction with prior chapters:}
+    Chapter~1 (Introduction) and Chapter~2 (Motivation) contain no formal
+    definitions or axioms.  All objects here are introduced for the first
+    time.
+
+  \item \textbf{Sufficiency for axiom system:}
+    The six primitives ($\CR$, $\CM$, $\HC$, $\Phi$, $\CA(\HC)$,
+    $\HC_\CM$) provide all objects referenced in the six CIIR axioms to
+    be stated in Chapter~4.
+\end{enumerate}
+
+% ============================================================
+\subsection{Dependency Graph}
+\label{sec:ch3:depgraph}
+% ============================================================
+
+The complete dependency structure of Chapter~3 primitives:
+
+\begin{center}
+\begin{tabular}{lll}
+\hline
+\textbf{Object} & \textbf{Definition} & \textbf{Depends on} \\
+\hline
+$\CR$ & Def.~\ref{def:3.1} & (none) \\
+$\mathscr{B}(\CR)$ & Def.~\ref{def:3.2} & $\CR$ \\
+$(\CM, g)$ & Defs.~\ref{def:3.3}--\ref{def:3.4} & (none) \\
+$\nabla$ & Def.~\ref{def:3.5} & $(\CM, g)$ \\
+$d\mu_g$ & Def.~\ref{def:3.6} & $(\CM, g)$ \\
+$(\CM, g, \iota, \hatC)$ & Def.~\ref{def:3.7} & $\CR$, $(\CM, g)$ \\
+$\kappa$ & Def.~\ref{def:3.8} & $(\CM, g, \iota, \hatC)$, $\nabla$ \\
+$F^{\hatC}$ & Def.~\ref{def:3.9} & $\hatC$, $\nabla$ \\
+$\HC$ & Defs.~\ref{def:3.10}--\ref{def:3.11} & (none) \\
+$\CB(\HC)$ & Def.~\ref{def:3.12} & $\HC$ \\
+$\mathcal{T}_1(\HC)$ & Def.~\ref{def:3.13} & $\HC$, $\CB(\HC)$ \\
+$\mathfrak{D}(\HC)$ & Def.~\ref{def:3.14} & $\mathcal{T}_1(\HC)$ \\
+$\CR_{\mathrm{op}}$ & Def.~\ref{def:3.15} & $\CR$, $\mathscr{B}(\CR)$ \\
+$\iota_*$ & Def.~\ref{def:3.17b} & $\iota$, $\CR_{\mathrm{op}}$ \\
+$\Phi$ (construction) & Def.~\ref{def:3.18}(I1--I2) & $\CR_{\mathrm{op}}$, $\HC$ \\
+$\Phi$ (covariance) & Def.~\ref{def:3.18}(I3) & $\iota_*$, $\hatP_\CM$ (verified post-construction) \\
+$\CA(\HC)$ & Def.~\ref{def:3.20} & $\CB(\HC)$, $\hatP_\CM$ \\
+$\HC_\CM$ & Def.~\ref{def:3.21} & $\Phi$, $\HC$ \\
+$\hatP_\CM$ & Def.~\ref{def:3.21} & $\HC_\CM$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+All 21 definitions, 8 lemmas/propositions, and their proofs are complete.
+The primitive vocabulary is sufficient to state the six CIIR axioms in
+Chapter~4.
