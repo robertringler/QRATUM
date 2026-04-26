@@ -73,7 +73,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json", action="store_true", help="Emit results as JSON to stdout.")
     parser.add_argument("--ric-v2", action="store_true", help="Use the trajectory-aware RIC v2 controller.")
     parser.add_argument("--v2-seed", type=int, default=0)
-    parser.add_argument("--v2-k", type=int, default=5, help="RIC v2 rollout horizon.")
+    parser.add_argument(
+        "--v2-k", "--v2-horizon", dest="v2_k", type=int, default=5,
+        help="RIC v2 trajectory rollout horizon (number of forward steps).",
+    )
     parser.add_argument("--v2-perturbations", type=int, default=2)
     args = parser.parse_args(argv)
 

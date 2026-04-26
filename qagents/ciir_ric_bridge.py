@@ -43,6 +43,10 @@ def default_intent(priority: float = 0.7) -> dict[str, Any]:
         "constraints": {
             "loss": {"key": "total_loss", "min": 0.0, "max": 1e6, "target": 0.0},
             "purity": {"key": "purity", "min": 0.0, "max": 1.0, "target": 1.0},
+            # gradient_norm is a hard *bound* only — no `target` field, because
+            # gradient magnitude is a training-dynamics quantity (often O(10)+
+            # at initialization). Treating it as a stability target anchors the
+            # distance metric and forces premature aborts.
             "gradient_norm": {"key": "gradient_norm", "min": 0.0, "max": 1e6},
         },
         "priority": float(priority),
