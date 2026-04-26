@@ -71,12 +71,23 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--output-dir", type=str, default="ric_ciir_output")
     parser.add_argument("--json", action="store_true", help="Emit results as JSON to stdout.")
+    parser.add_argument("--ric-v2", action="store_true", help="Use the trajectory-aware RIC v2 controller.")
+    parser.add_argument("--v2-seed", type=int, default=0)
+    parser.add_argument("--v2-k", type=int, default=5, help="RIC v2 rollout horizon.")
+    parser.add_argument("--v2-perturbations", type=int, default=2)
     args = parser.parse_args(argv)
 
     summaries: list[dict[str, Any]] = []
     for proposer in available_backends():
         engine = _build_engine(args)
-        bridge = CIIRRICBridge(engine=engine, proposer=proposer)
+        bridge = CIIRRICBridge(
+            engine=engine,
+            proposer=proposer,
+            use_v2=args.ric_v2,
+            v2_seed=args.v2_seed,
+            v2_k_horizon=args.v2_k,
+            v2_n_perturbations=args.v2_perturbations,
+        )
         result = bridge.run(n_steps=args.steps)
         summaries.append(_summarize(result))
 
@@ -85,7 +96,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     print("=" * 72)
-    print(f"CIIR × RIC × LLM run — steps={args.steps}, rank={args.rank}, rep_dim={args.rep_dim}")
+    mode = "v2 (trajectory-aware)" if args.ric_v2 else "v1 (deterministic)"
+    print(f"CIIR × RIC[{mode}] × LLM run — steps={args.steps}, rank={args.rank}, rep_dim={args.rep_dim}")
     print("=" * 72)
     header = f"{'proposer':<16} {'steps':>6} {'abort@':>7} {'loss':>12} {'purity':>9} {'actions'}"
     print(header)

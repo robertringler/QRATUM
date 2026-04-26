@@ -27,6 +27,7 @@ from qagents.reality_interface import (
     RICDecision,
     Proposer,
 )
+from qagents.reality_interface_v2 import RICv2Controller, RICv2History
 
 
 # ---------------------------------------------------------------------------
@@ -42,7 +43,7 @@ def default_intent(priority: float = 0.7) -> dict[str, Any]:
         "constraints": {
             "loss": {"key": "total_loss", "min": 0.0, "max": 1e6, "target": 0.0},
             "purity": {"key": "purity", "min": 0.0, "max": 1.0, "target": 1.0},
-            "gradient_norm": {"key": "gradient_norm", "min": 0.0, "max": 1e6, "target": 0.0},
+            "gradient_norm": {"key": "gradient_norm", "min": 0.0, "max": 1e6},
         },
         "priority": float(priority),
     }
@@ -121,7 +122,14 @@ class CIIRRICRunResult:
 
 
 class CIIRRICBridge:
-    """Couples a :class:`RealityInterfaceController` to a CIIR engine."""
+    """Couples a :class:`RealityInterfaceController` to a CIIR engine.
+
+    Set ``use_v2=True`` to drive the engine with the trajectory-aware
+    :class:`RICv2Controller` (k-step rollout, bounded stochastic
+    perturbations, anti-deadlock pressure, anti-unanimity entropy
+    injection). Default is the deterministic v1 controller, which keeps
+    the original test contract.
+    """
 
     def __init__(
         self,
@@ -130,9 +138,26 @@ class CIIRRICBridge:
         intent: Mapping[str, Any] | None = None,
         system_limits: Mapping[str, Any] | None = None,
         proposer_name: str | None = None,
+        use_v2: bool = False,
+        v2_seed: int = 0,
+        v2_k_horizon: int = 5,
+        v2_n_perturbations: int = 2,
+        v2_hold_streak_threshold: int = 3,
     ) -> None:
         self.engine = engine
-        self.ric = RealityInterfaceController(proposer=proposer)
+        self.use_v2 = bool(use_v2)
+        if self.use_v2:
+            self.ric = RICv2Controller(
+                proposer=proposer,
+                seed=v2_seed,
+                k_horizon=v2_k_horizon,
+                n_perturbations=v2_n_perturbations,
+                hold_streak_threshold=v2_hold_streak_threshold,
+            )
+            self.history = RICv2History()
+        else:
+            self.ric = RealityInterfaceController(proposer=proposer)
+            self.history = None
         self.intent: dict[str, Any] = dict(intent or default_intent())
         self.system_limits: dict[str, Any] = dict(system_limits or default_system_limits())
         self.proposer_name = proposer_name or getattr(proposer, "name", proposer.__class__.__name__)
@@ -156,13 +181,24 @@ class CIIRRICBridge:
 
         for i in range(n_steps - 1):
             world_state = snapshot_to_world_state(snapshot)
-            decision = self.ric.decide(self.intent, world_state, self.system_limits)
+            if self.use_v2:
+                decision = self.ric.decide(
+                    self.intent, world_state, self.system_limits, history=self.history,
+                )
+            else:
+                decision = self.ric.decide(self.intent, world_state, self.system_limits)
             decisions.append(decision)
 
             action = decision.selected_action
             atype = str(action.get("type", "hold"))
             magnitude = float(action.get("magnitude", 0.0))
             action_counts[atype] = action_counts.get(atype, 0) + 1
+            if self.use_v2 and self.history is not None:
+                self.history.record(atype, metrics={
+                    "total_loss": float(world_state.get("total_loss", 0.0)),
+                    "purity": float(world_state.get("purity", 0.0)),
+                    "gradient_norm": float(world_state.get("gradient_norm", 0.0)),
+                })
 
             if atype == "abort":
                 aborted_at = int(getattr(snapshot, "step", executed))
