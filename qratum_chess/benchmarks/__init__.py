@@ -46,8 +46,6 @@ from qratum_chess.benchmarks.runner import (
 )
 from qratum_chess.benchmarks.telemetry import TelemetryOutput
 from qratum_chess.benchmarks.torture import StrategicTortureSuite
-from qratum_chess.benchmarks.resilience import ResilienceTest
-from qratum_chess.benchmarks.telemetry import TelemetryOutput
 
 # Kaggle integration imports disabled due to file corruption in kaggle_integration.py
 # The file contains duplicate class definitions and mismatched parameters that need cleanup.

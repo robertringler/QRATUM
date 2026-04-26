@@ -11,9 +11,7 @@ info       Display theory tuple summary
 from __future__ import annotations
 
 import json
-import sys
 import time
-from pathlib import Path
 
 import click
 import numpy as np
@@ -105,9 +103,11 @@ def run(config_path, steps, lr, batch, seed, json_output):
         click.echo(f"  Elapsed:    {elapsed:.2f}s")
         if result.loss_components:
             final = result.loss_components[-1]
-            click.echo(f"  Components: constraint={final['constraint']:.4f} "
-                       f"observer={final['observer']:.4f} "
-                       f"entropy={final['entropy']:.4f}")
+            click.echo(
+                f"  Components: constraint={final['constraint']:.4f} "
+                f"observer={final['observer']:.4f} "
+                f"entropy={final['entropy']:.4f}"
+            )
 
 
 @cli.command()
@@ -170,8 +170,10 @@ def info():
     if len(theory.observers) >= 2:
         comm = theory.observers[0].commutator(theory.observers[1])
         comm_norm = float(np.linalg.norm(comm))
-        click.echo(f"  [O_0, O_1] norm: {comm_norm:.6f} "
-                    f"({'non-commuting' if comm_norm > 1e-10 else 'commuting'})")
+        click.echo(
+            f"  [O_0, O_1] norm: {comm_norm:.6f} "
+            f"({'non-commuting' if comm_norm > 1e-10 else 'commuting'})"
+        )
 
     click.echo("\nAxiom Validation:")
     for k, v in checks.items():
@@ -192,8 +194,20 @@ def info():
 @click.option("--entropy-weight", default=0.01, help="Entropy weight γ")
 @click.option("--seed", default=42, help="Random seed")
 @click.option("--dpi", default=150, help="Screenshot DPI")
-def simulate(config_path, steps, screenshot_interval, output, batch, dim,
-             constraints, observers, lr, entropy_weight, seed, dpi):
+def simulate(
+    config_path,
+    steps,
+    screenshot_interval,
+    output,
+    batch,
+    dim,
+    constraints,
+    observers,
+    lr,
+    entropy_weight,
+    seed,
+    dpi,
+):
     """Run full CIIR → QuASIM → QRATUM simulation with screenshots.
 
     Automated simulation with screenshot capture, metrics logging,
@@ -204,6 +218,7 @@ def simulate(config_path, steps, screenshot_interval, output, batch, dim,
 
     if config_path:
         import yaml
+
         with open(config_path) as f:
             raw = yaml.safe_load(f)
         sim_cfg = SimulationConfig(
@@ -251,7 +266,6 @@ def simulate(config_path, steps, screenshot_interval, output, batch, dim,
         click.echo(f"  Output:      {sim_cfg.output_dir}/")
     if engine.exporter and engine.exporter.screenshot_capture:
         click.echo(f"  Screenshots: {engine.exporter.screenshot_capture.count}")
-
 
 
 if __name__ == "__main__":
