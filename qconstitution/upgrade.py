@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List
 
 from qconstitution.articles import ArticleSet, ConstitutionalArticle
 from qconstitution.charter import Charter, ConstitutionalVersion
@@ -13,11 +12,11 @@ from qconstitution.charter import Charter, ConstitutionalVersion
 class ConstitutionalUpgradeProposal:
     proposal_id: str
     proposer: str
-    added_articles: List[ConstitutionalArticle]
+    added_articles: list[ConstitutionalArticle]
     target_version: str
     rationale: str = ""
 
-    def as_dict(self) -> Dict[str, object]:
+    def as_dict(self) -> dict[str, object]:
         return {
             "proposal_id": self.proposal_id,
             "proposer": self.proposer,
@@ -31,11 +30,11 @@ class ConstitutionalUpgradeProposal:
 class UpgradePath:
     threshold: int = 1
 
-    def evaluate(self, proposal: ConstitutionalUpgradeProposal, votes: List[str]) -> bool:
+    def evaluate(self, proposal: ConstitutionalUpgradeProposal, votes: list[str]) -> bool:
         return len(votes) >= self.threshold
 
     def apply(
-        self, charter: Charter, proposal: ConstitutionalUpgradeProposal, votes: List[str]
+        self, charter: Charter, proposal: ConstitutionalUpgradeProposal, votes: list[str]
     ) -> Charter:
         if not self.evaluate(proposal, votes):
             raise ValueError("upgrade did not meet threshold")

@@ -10,6 +10,7 @@ from quasim.qcmg import FieldState, QCMGParameters, QuantacosmorphysigeneticFiel
 
 def test_qcmg_parameters_defaults():
     """Test default parameters are set correctly."""
+
     params = QCMGParameters()
 
     assert params.grid_size == 64
@@ -21,6 +22,7 @@ def test_qcmg_parameters_defaults():
 
 def test_qcmg_parameters_custom():
     """Test custom parameters can be set."""
+
     params = QCMGParameters(
         grid_size=32, spatial_extent=5.0, dt=0.001, coupling_strength=0.2, random_seed=123
     )
@@ -34,6 +36,7 @@ def test_qcmg_parameters_custom():
 
 def test_field_initialization_gaussian():
     """Test field initialization with Gaussian mode."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
 
@@ -53,6 +56,7 @@ def test_field_initialization_gaussian():
 
 def test_field_initialization_soliton():
     """Test field initialization with soliton mode."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
 
@@ -70,6 +74,7 @@ def test_field_initialization_soliton():
 
 def test_field_initialization_random():
     """Test field initialization with random mode."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
 
@@ -87,6 +92,7 @@ def test_field_initialization_random():
 
 def test_field_initialization_invalid_mode():
     """Test that invalid initialization mode raises ValueError."""
+
     params = QCMGParameters(grid_size=32)
     field = QuantacosmorphysigeneticField(params)
 
@@ -96,6 +102,7 @@ def test_field_initialization_invalid_mode():
 
 def test_evolve_without_initialization():
     """Test that evolve raises RuntimeError if not initialized."""
+
     params = QCMGParameters(grid_size=32)
     field = QuantacosmorphysigeneticField(params)
 
@@ -105,6 +112,7 @@ def test_evolve_without_initialization():
 
 def test_field_evolution():
     """Test field evolution over multiple steps."""
+
     params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
 
@@ -123,6 +131,7 @@ def test_field_evolution():
 
 def test_field_state_properties():
     """Test that FieldState has expected properties."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
 
@@ -149,6 +158,7 @@ def test_field_state_properties():
 
 def test_field_state_to_dict():
     """Test FieldState serialization to dictionary."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
 
@@ -175,6 +185,7 @@ def test_field_state_to_dict():
 
 def test_coherence_computation():
     """Test coherence computation is in valid range."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
 
@@ -188,6 +199,7 @@ def test_coherence_computation():
 
 def test_entropy_increases():
     """Test that entropy generally increases (second law)."""
+
     params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
 
@@ -208,6 +220,7 @@ def test_entropy_increases():
 
 def test_energy_conservation_approximate():
     """Test approximate energy conservation with damping."""
+
     params = QCMGParameters(
         grid_size=32,
         dt=0.01,
@@ -233,6 +246,7 @@ def test_energy_conservation_approximate():
 
 def test_get_history():
     """Test getting evolution history."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
 
@@ -254,6 +268,7 @@ def test_get_history():
 
 def test_export_state():
     """Test exporting field state to JSON-serializable dict."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
 
@@ -279,6 +294,7 @@ def test_export_state():
 
 def test_get_state_without_initialization():
     """Test that get_state raises RuntimeError if not initialized."""
+
     params = QCMGParameters(grid_size=32)
     field = QuantacosmorphysigeneticField(params)
 
@@ -288,6 +304,7 @@ def test_get_state_without_initialization():
 
 def test_reproducibility_with_seed():
     """Test that results are reproducible with fixed seed."""
+
     params1 = QCMGParameters(grid_size=32, random_seed=42)
     field1 = QuantacosmorphysigeneticField(params1)
     field1.initialize(mode="random")
@@ -314,6 +331,7 @@ def test_reproducibility_with_seed():
 
 def test_spatial_grid_setup():
     """Test spatial grid is set up correctly."""
+
     params = QCMGParameters(grid_size=32, spatial_extent=10.0)
     field = QuantacosmorphysigeneticField(params)
 
@@ -325,6 +343,7 @@ def test_spatial_grid_setup():
 
 def test_laplacian_computation():
     """Test Laplacian computation with simple function."""
+
     params = QCMGParameters(grid_size=64, spatial_extent=10.0)
     field = QuantacosmorphysigeneticField(params)
 
@@ -342,6 +361,7 @@ def test_laplacian_computation():
 
 def test_field_normalization_during_evolution():
     """Test that fields remain normalized during evolution."""
+
     params = QCMGParameters(grid_size=32, dt=0.01, random_seed=42)
     field = QuantacosmorphysigeneticField(params)
 
@@ -361,6 +381,7 @@ def test_field_normalization_during_evolution():
 
 def test_multiple_initialization_modes():
     """Test all initialization modes produce valid states."""
+
     params = QCMGParameters(grid_size=32, random_seed=42)
 
     modes = ["gaussian", "soliton", "random"]

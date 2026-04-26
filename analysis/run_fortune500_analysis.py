@@ -8,6 +8,7 @@ This script orchestrates the complete analysis workflow:
 4. Report generation
 5. Visualization creation
 """
+
 import sys
 from pathlib import Path
 
@@ -31,6 +32,7 @@ from analysis.fortune500_visualizations import (
 
 def main():
     """Execute the complete Fortune 500 QuASIM Integration Analysis workflow."""
+
     print("=" * 70)
     print("Fortune 500 QuASIM Integration Analysis")
     print("=" * 70)

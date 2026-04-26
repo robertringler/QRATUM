@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import List
-
 from qscenario.drivers import ScenarioDrivers
 from qscenario.events import SystemEvent
 from qscenario.scenario import Scenario, ScenarioConfig
@@ -23,7 +21,7 @@ def energy_grid_instability() -> Scenario:
         domains=["energy"],
         description="Grid instability with cascades",
     )
-    entries: List[TimelineEntry] = [
+    entries: list[TimelineEntry] = [
         TimelineEntry(0, [SystemEvent(0, "energy", "frequency_drift", {"hz": 49.5})]),
         TimelineEntry(1, [SystemEvent(1, "energy", "outage", {"impact": 100})]),
         TimelineEntry(2, [SystemEvent(2, "energy", "remediation", {"crews": 2})]),

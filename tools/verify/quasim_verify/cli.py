@@ -10,6 +10,7 @@ from .registry import REG
 
 def main():
     """Main entry point for quasim-verify CLI."""
+
     ap = argparse.ArgumentParser(
         "quasim-verify",
         description="QuASIM × QuNimbus claim and compliance verification tool",

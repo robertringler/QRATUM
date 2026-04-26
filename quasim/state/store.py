@@ -26,6 +26,7 @@ def save_state(path: str, state: Dict[str, Any]) -> None:
     >>> state = {"meta": {"version": "1.0"}, "data": np.array([1, 2, 3])}
     >>> save_state("state.hdf5", state)
     """
+
     meta = state.get("meta", {})
     arrays = {k: v for k, v in state.items() if k != "meta" and isinstance(v, np.ndarray)}
     write_snapshot(path, meta, arrays)
@@ -50,4 +51,5 @@ def load_state(path: str) -> Dict[str, Any]:
     >>> print(state['meta']['version'])
     1.0
     """
+
     return read_snapshot(path)

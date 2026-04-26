@@ -16,6 +16,7 @@ def compute_integration_score(tier_results: list) -> dict:
     Returns:
         Dictionary with integration metrics
     """
+
     np.random.seed(42)
 
     # Tier weights (computational, neurobiological, clinical, meta)
@@ -42,6 +43,7 @@ def compute_integration_score(tier_results: list) -> dict:
 
 def run_experiment():
     """Execute grand integration test."""
+
     np.random.seed(42)
 
     # Simulate tier results

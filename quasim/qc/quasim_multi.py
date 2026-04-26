@@ -12,7 +12,7 @@ This module implements a scalable multi-qubit quantum simulator supporting:
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
@@ -41,22 +41,24 @@ class MultiQubitSimulator:
             num_qubits: Number of qubits (2-32 supported)
             seed: Random seed for deterministic execution
         """
+
         if num_qubits < 1 or num_qubits > 32:
             raise ValueError("num_qubits must be between 1 and 32")
 
         self.num_qubits = num_qubits
         self.seed = seed
         self.rng = np.random.Generator(np.random.PCG64(seed))
-        self.state: Optional[NDArray[np.complex128]] = None
-        self.results: Dict[str, Any] = {}
-        self.gate_history: List[Dict[str, Any]] = []
+        self.state: NDArray[np.complex128] | None = None
+        self.results: dict[str, Any] = {}
+        self.gate_history: list[dict[str, Any]] = []
 
-    def initialize_state(self, state: Union[str, NDArray[np.complex128]] = "zero") -> None:
+    def initialize_state(self, state: str | NDArray[np.complex128] = "zero") -> None:
         """Initialize quantum state.
 
         Args:
             state: Initial state - "zero" for |00...0⟩, or custom state vector
         """
+
         dim = 2**self.num_qubits
 
         if isinstance(state, str) and state == "zero":
@@ -72,9 +74,9 @@ class MultiQubitSimulator:
 
     def apply_gate(
         self,
-        gate: Union[str, NDArray[np.complex128]],
-        targets: List[int],
-        params: Optional[Dict[str, float]] = None,
+        gate: str | NDArray[np.complex128],
+        targets: list[int],
+        params: dict[str, float] | None = None,
     ) -> None:
         """Apply quantum gate to target qubits.
 
@@ -83,14 +85,12 @@ class MultiQubitSimulator:
             targets: List of target qubit indices
             params: Optional parameters for parameterized gates (e.g., rotation angle)
         """
+
         if self.state is None:
             raise RuntimeError("State not initialized. Call initialize_state() first.")
 
         # Get gate matrix
-        if isinstance(gate, str):
-            gate_matrix = self._get_standard_gate(gate, params)
-        else:
-            gate_matrix = gate
+        gate_matrix = self._get_standard_gate(gate, params) if isinstance(gate, str) else gate
 
         # Apply gate to state
         self.state = self._apply_gate_to_state(self.state, gate_matrix, targets)
@@ -105,7 +105,7 @@ class MultiQubitSimulator:
         )
 
     def _get_standard_gate(
-        self, gate_name: str, params: Optional[Dict[str, float]] = None
+        self, gate_name: str, params: dict[str, float] | None = None
     ) -> NDArray[np.complex128]:
         """Get standard gate matrix by name.
 
@@ -116,6 +116,7 @@ class MultiQubitSimulator:
         Returns:
             Gate matrix as numpy array
         """
+
         params = params or {}
 
         # Single-qubit gates
@@ -169,7 +170,7 @@ class MultiQubitSimulator:
             raise ValueError(f"Unknown gate: {gate_name}")
 
     def _apply_gate_to_state(
-        self, state: NDArray[np.complex128], gate: NDArray[np.complex128], targets: List[int]
+        self, state: NDArray[np.complex128], gate: NDArray[np.complex128], targets: list[int]
     ) -> NDArray[np.complex128]:
         """Apply gate matrix to state vector.
 
@@ -183,6 +184,7 @@ class MultiQubitSimulator:
         Returns:
             Updated state vector
         """
+
         n = self.num_qubits
         d = 2**n
 
@@ -228,7 +230,7 @@ class MultiQubitSimulator:
 
         return state_tensor.reshape(d)
 
-    def apply_noise(self, noise_dict: Dict[str, float]) -> None:
+    def apply_noise(self, noise_dict: dict[str, float]) -> None:
         """Apply noise channels to the quantum state.
 
         Args:
@@ -238,6 +240,7 @@ class MultiQubitSimulator:
                 - p_depol: Depolarizing probability
                 - corr: Correlation coefficient for cross-dephasing
         """
+
         if self.state is None:
             raise RuntimeError("State not initialized")
 
@@ -273,6 +276,7 @@ class MultiQubitSimulator:
         self, rho: NDArray[np.complex128], qubit: int, gamma: float
     ) -> NDArray[np.complex128]:
         """Apply amplitude damping to density matrix."""
+
         # Kraus operators for amplitude damping
         K0 = np.array([[1, 0], [0, np.sqrt(1 - gamma)]], dtype=np.complex128)
         K1 = np.array([[0, np.sqrt(gamma)], [0, 0]], dtype=np.complex128)
@@ -284,6 +288,7 @@ class MultiQubitSimulator:
         self, rho: NDArray[np.complex128], qubit: int, gamma: float
     ) -> NDArray[np.complex128]:
         """Apply phase damping to density matrix."""
+
         # Kraus operators for phase damping
         K0 = np.array([[1, 0], [0, np.sqrt(1 - gamma)]], dtype=np.complex128)
         K1 = np.array([[0, 0], [0, np.sqrt(gamma)]], dtype=np.complex128)
@@ -295,6 +300,7 @@ class MultiQubitSimulator:
         self, rho: NDArray[np.complex128], qubit: int, p: float
     ) -> NDArray[np.complex128]:
         """Apply depolarizing channel to density matrix."""
+
         # Kraus operators for depolarizing
         K0 = np.sqrt(1 - 3 * p / 4) * np.eye(2, dtype=np.complex128)
         K1 = np.sqrt(p / 4) * np.array([[0, 1], [1, 0]], dtype=np.complex128)
@@ -305,9 +311,10 @@ class MultiQubitSimulator:
         return rho_new
 
     def _apply_single_qubit_kraus(
-        self, rho: NDArray[np.complex128], qubit: int, kraus_ops: List[NDArray[np.complex128]]
+        self, rho: NDArray[np.complex128], qubit: int, kraus_ops: list[NDArray[np.complex128]]
     ) -> NDArray[np.complex128]:
         """Apply Kraus operators to single qubit in density matrix."""
+
         d = 2**self.num_qubits
         rho_new = np.zeros((d, d), dtype=np.complex128)
 
@@ -322,6 +329,7 @@ class MultiQubitSimulator:
         self, single_qubit_op: NDArray[np.complex128], target: int
     ) -> NDArray[np.complex128]:
         """Build full system operator from single-qubit operator."""
+
         op = np.array([[1.0]], dtype=np.complex128)
 
         for q in range(self.num_qubits):
@@ -332,12 +340,13 @@ class MultiQubitSimulator:
 
         return op
 
-    def create_bell_pair(self, qubits: Tuple[int, int] = (0, 1)) -> None:
+    def create_bell_pair(self, qubits: tuple[int, int] = (0, 1)) -> None:
         """Create Bell pair |Φ+⟩ = (|00⟩ + |11⟩)/√2.
 
         Args:
             qubits: Tuple of two qubit indices
         """
+
         if self.state is None:
             self.initialize_state()
 
@@ -345,12 +354,13 @@ class MultiQubitSimulator:
         self.apply_gate("H", [q0])
         self.apply_gate("CNOT", [q0, q1])
 
-    def create_ghz_state(self, qubits: Optional[List[int]] = None) -> None:
+    def create_ghz_state(self, qubits: list[int] | None = None) -> None:
         """Create GHZ state |GHZ⟩ = (|00...0⟩ + |11...1⟩)/√2.
 
         Args:
             qubits: List of qubit indices (default: all qubits)
         """
+
         if self.state is None:
             self.initialize_state()
 
@@ -367,7 +377,7 @@ class MultiQubitSimulator:
         for i in range(len(qubits) - 1):
             self.apply_gate("CNOT", [qubits[i], qubits[i + 1]])
 
-    def create_w_state(self, qubits: Optional[List[int]] = None) -> None:
+    def create_w_state(self, qubits: list[int] | None = None) -> None:
         """Create W state - symmetric superposition with one excitation.
 
         For 3 qubits: |W⟩ = (|001⟩ + |010⟩ + |100⟩)/√3
@@ -375,6 +385,7 @@ class MultiQubitSimulator:
         Args:
             qubits: List of qubit indices (default: all qubits)
         """
+
         if self.state is None:
             self.initialize_state()
 
@@ -391,16 +402,17 @@ class MultiQubitSimulator:
         self.state = np.zeros(d, dtype=np.complex128)
 
         # Build W state directly
-        for i, q in enumerate(qubits):
+        for _i, q in enumerate(qubits):
             idx = 2 ** (self.num_qubits - 1 - q)
             self.state[idx] = 1.0 / np.sqrt(n)
 
-    def tomography(self) -> Dict[str, Any]:
+    def tomography(self) -> dict[str, Any]:
         """Perform Pauli tomography on the quantum state.
 
         Returns:
             Dictionary with density matrix and Bloch vectors
         """
+
         if self.state is None:
             raise RuntimeError("State not initialized")
 
@@ -427,6 +439,7 @@ class MultiQubitSimulator:
 
     def _compute_bloch_vector(self, rho: NDArray[np.complex128], qubit: int) -> NDArray[np.float64]:
         """Compute Bloch vector for a single qubit."""
+
         # Pauli matrices
         X = np.array([[0, 1], [1, 0]], dtype=np.complex128)
         Y = np.array([[0, -1j], [1j, 0]], dtype=np.complex128)
@@ -444,7 +457,7 @@ class MultiQubitSimulator:
 
         return np.array([x, y, z])
 
-    def entanglement_entropy(self, subsystem: List[int]) -> float:
+    def entanglement_entropy(self, subsystem: list[int]) -> float:
         """Compute von Neumann entropy of subsystem.
 
         S = -Tr[ρ_A log₂ ρ_A]
@@ -455,6 +468,7 @@ class MultiQubitSimulator:
         Returns:
             Entanglement entropy in bits
         """
+
         if self.state is None:
             raise RuntimeError("State not initialized")
 
@@ -470,8 +484,9 @@ class MultiQubitSimulator:
 
         return float(entropy)
 
-    def _partial_trace(self, keep_qubits: List[int]) -> NDArray[np.complex128]:
+    def _partial_trace(self, keep_qubits: list[int]) -> NDArray[np.complex128]:
         """Compute partial trace over complement of keep_qubits."""
+
         n = self.num_qubits
         trace_qubits = [q for q in range(n) if q not in keep_qubits]
 
@@ -494,7 +509,7 @@ class MultiQubitSimulator:
         return rho_reduced
 
     def evolve_control(
-        self, control_schedule: List[Tuple[float, Dict[str, Any]]], method: str = "trotter"
+        self, control_schedule: list[tuple[float, dict[str, Any]]], method: str = "trotter"
     ) -> None:
         """Evolve state under time-dependent Hamiltonian.
 
@@ -504,6 +519,7 @@ class MultiQubitSimulator:
             control_schedule: List of (time, hamiltonian_params) tuples
             method: Evolution method - "trotter" or "expm"
         """
+
         if self.state is None:
             raise RuntimeError("State not initialized")
 
@@ -524,8 +540,9 @@ class MultiQubitSimulator:
             # Apply evolution operator
             self.state = U @ self.state
 
-    def _build_hamiltonian(self, params: Dict[str, Any]) -> NDArray[np.complex128]:
+    def _build_hamiltonian(self, params: dict[str, Any]) -> NDArray[np.complex128]:
         """Build Hamiltonian from parameters."""
+
         d = 2**self.num_qubits
         H = np.zeros((d, d), dtype=np.complex128)
 
@@ -559,16 +576,18 @@ class MultiQubitSimulator:
 
     def _trotter_evolution(self, H: NDArray[np.complex128], dt: float) -> NDArray[np.complex128]:
         """Compute evolution operator via Trotterization."""
+
         # For simplicity, use matrix exponential (can be optimized later)
         return self._expm_evolution(H, dt)
 
     def _expm_evolution(self, H: NDArray[np.complex128], dt: float) -> NDArray[np.complex128]:
         """Compute evolution operator via matrix exponential."""
+
         from scipy.linalg import expm
 
         return expm(-1j * H * dt)
 
-    def run(self, trajectories: int = 1) -> Dict[str, Any]:
+    def run(self, trajectories: int = 1) -> dict[str, Any]:
         """Run simulation and compute results.
 
         Args:
@@ -577,6 +596,7 @@ class MultiQubitSimulator:
         Returns:
             Dictionary with simulation results
         """
+
         if self.state is None:
             raise RuntimeError("State not initialized")
 
@@ -600,6 +620,7 @@ class MultiQubitSimulator:
         Returns:
             Fidelity (0 to 1)
         """
+
         if self.state is None:
             raise RuntimeError("State not initialized")
 
@@ -609,6 +630,7 @@ class MultiQubitSimulator:
 
 def create_bell_plus() -> NDArray[np.complex128]:
     """Create Bell state |Φ+⟩ = (|00⟩ + |11⟩)/√2."""
+
     state = np.zeros(4, dtype=np.complex128)
     state[0] = 1.0 / np.sqrt(2)  # |00⟩
     state[3] = 1.0 / np.sqrt(2)  # |11⟩
@@ -617,6 +639,7 @@ def create_bell_plus() -> NDArray[np.complex128]:
 
 def create_ghz_state_exact(n: int) -> NDArray[np.complex128]:
     """Create exact GHZ state for n qubits."""
+
     d = 2**n
     state = np.zeros(d, dtype=np.complex128)
     state[0] = 1.0 / np.sqrt(2)  # |00...0⟩

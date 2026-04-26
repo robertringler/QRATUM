@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List
 
 from qcampaign.scoring import CampaignScorecard
 
@@ -11,8 +10,8 @@ from qcampaign.scoring import CampaignScorecard
 @dataclass
 class CampaignReport:
     name: str
-    scores: Dict[str, float]
-    highlights: List[str]
+    scores: dict[str, float]
+    highlights: list[str]
 
     @classmethod
     def from_scorecard(cls, campaign, scorecard: CampaignScorecard) -> CampaignReport:
@@ -21,5 +20,5 @@ class CampaignReport:
         ]
         return cls(name=campaign.name, scores=scorecard.team_scores, highlights=highlights)
 
-    def summary(self) -> Dict[str, object]:
+    def summary(self) -> dict[str, object]:
         return {"name": self.name, "scores": dict(self.scores), "highlights": list(self.highlights)}

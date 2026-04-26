@@ -4,6 +4,9 @@ from typing import Dict
 
 from ..logging import get_logger
 from ..types import SimulationBackend
+from .cpu import CPUBackend
+from .gpu import GPUBackend
+from .qpu import QPUBackend
 from .quasim_legacy_v120 import QuasimLegacyV120Backend
 from .quasim_modern import QuasimModernBackend
 from .qvr_win import QVRWinBackend
@@ -22,10 +25,10 @@ def _safe_init(backend_cls: type[SimulationBackend]) -> SimulationBackend | None
         return None
 
 
-def get_backend_registry() -> Dict[str, SimulationBackend]:
+def get_backend_registry() -> dict[str, SimulationBackend]:
     """Initialise all available backends and return them keyed by name."""
 
-    registry: Dict[str, SimulationBackend] = {}
+    registry: dict[str, SimulationBackend] = {}
     for backend_cls in (QuasimModernBackend, QuasimLegacyV120Backend, QVRWinBackend):
         backend = _safe_init(backend_cls)
         if backend is not None:
@@ -33,4 +36,4 @@ def get_backend_registry() -> Dict[str, SimulationBackend]:
     return registry
 
 
-__all__ = ["get_backend_registry"]
+__all__ = ["get_backend_registry", "CPUBackend", "GPUBackend", "QPUBackend"]

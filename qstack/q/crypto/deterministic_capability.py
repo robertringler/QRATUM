@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass
-from typing import Dict
 
 from ..identity import QIdentity
 
@@ -50,7 +49,7 @@ class CapabilityAuthority:
             and token.issuer == issuer.name
         )
 
-    def to_dict(self, token: DeterministicCapabilityToken) -> Dict[str, str]:
+    def to_dict(self, token: DeterministicCapabilityToken) -> dict[str, str]:
         return {
             "subject": token.subject,
             "permission": token.permission,

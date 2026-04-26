@@ -28,6 +28,6 @@ def test_scheduler_and_safety_with_rate_limit():
     assert result["trace"][0]["op"] == "alpha"
     assert result["recorded"]
 
-    second = vm.run_cycle(state, {"alpha": 1, "beta": 2})
+    vm.run_cycle(state, {"alpha": 1, "beta": 2})
     third = vm.run_cycle(state, {"alpha": 1, "beta": 2})
     assert third.get("error") == "safety_pre_check_failed"

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict
 
 
 @dataclass(frozen=True)
@@ -12,9 +11,9 @@ class InterventionAction:
 
     kind: str
     target: str
-    params: Dict[str, object] = field(default_factory=dict)
+    params: dict[str, object] = field(default_factory=dict)
 
-    def describe(self) -> Dict[str, object]:
+    def describe(self) -> dict[str, object]:
         return {"kind": self.kind, "target": self.target, "params": dict(self.params)}
 
 

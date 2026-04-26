@@ -54,6 +54,7 @@ class QGHLedger:
         metadata : dict, optional
             Additional metadata
         """
+
         record = {
             "timestamp": datetime.now().isoformat(),
             "run_id": run_id,
@@ -77,6 +78,7 @@ class QGHLedger:
         list[dict]
             List of run records
         """
+
         if not self.ledger_path.exists():
             return []
 
@@ -113,6 +115,7 @@ class QGHLedger:
         bool
             True if all matching runs have the same prediction hash
         """
+
         records = self.read_ledger()
 
         # Filter matching records
@@ -152,6 +155,7 @@ def create_run_id(model: str, task: str, dataset: str, seed: int) -> str:
     str
         Unique run ID
     """
+
     timestamp = datetime.now().isoformat()
     content = f"{model}_{task}_{dataset}_{seed}_{timestamp}"
     run_hash = hashlib.sha256(content.encode()).hexdigest()[:16]

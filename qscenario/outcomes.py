@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List
 
 from qscenario.scenario import ScenarioState
 
@@ -11,9 +10,9 @@ from qscenario.scenario import ScenarioState
 @dataclass
 class OutcomeSummary:
     success: bool
-    reasons: List[str] = field(default_factory=list)
-    metrics: Dict[str, int] = field(default_factory=dict)
-    incidents: List[Dict[str, object]] = field(default_factory=list)
+    reasons: list[str] = field(default_factory=list)
+    metrics: dict[str, int] = field(default_factory=dict)
+    incidents: list[dict[str, object]] = field(default_factory=list)
 
     def classify(self) -> str:
         if self.success and not self.incidents:
@@ -23,10 +22,10 @@ class OutcomeSummary:
         return "mixed"
 
 
-def evaluate_outcomes(state: ScenarioState, required_metrics: List[str]) -> OutcomeSummary:
+def evaluate_outcomes(state: ScenarioState, required_metrics: list[str]) -> OutcomeSummary:
     missing = [name for name in required_metrics if name not in state.metrics]
     success = not missing
-    reasons: List[str] = []
+    reasons: list[str] = []
     if missing:
         reasons.append(f"missing metrics: {','.join(missing)}")
     if state.incidents:

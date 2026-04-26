@@ -3,20 +3,19 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List
 
 
 @dataclass(frozen=True)
 class IsabelleGoal:
     name: str
-    context: Dict[str, float]
+    context: dict[str, float]
     statement: str
 
 
 @dataclass(frozen=True)
 class ProofObligation:
     goal: IsabelleGoal
-    assumptions: List[str]
+    assumptions: list[str]
     conclusion: str
 
     def render(self) -> str:
@@ -25,7 +24,7 @@ class ProofObligation:
 
 
 def build_goal(
-    name: str, context: Dict[str, float], statement: str, assumptions: List[str]
+    name: str, context: dict[str, float], statement: str, assumptions: list[str]
 ) -> ProofObligation:
     goal = IsabelleGoal(name=name, context=context, statement=statement)
     return ProofObligation(goal=goal, assumptions=assumptions, conclusion=statement)

@@ -20,6 +20,7 @@ def create_parser() -> argparse.ArgumentParser:
     Returns:
         Configured argument parser
     """
+
     parser = argparse.ArgumentParser(
         description="QCMG Field Simulation - Quantacosmorphysigenetic field evolution",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -97,6 +98,7 @@ def run_simulation(args: argparse.Namespace) -> int:
     Returns:
         Exit code (0 for success, non-zero for failure)
     """
+
     try:
         # Create parameters
         params = QCMGParameters(
@@ -149,7 +151,7 @@ def run_simulation(args: argparse.Namespace) -> int:
 
                 if (i + 1) % report_interval == 0 or i == 0:
                     print(
-                        f"{i+1:6d} {state.time:10.4f} {state.coherence:12.6f} "
+                        f"{i + 1:6d} {state.time:10.4f} {state.coherence:12.6f} "
                         f"{state.entropy:12.6f} {state.energy:12.6f}"
                     )
         else:
@@ -201,6 +203,7 @@ def run_simulation(args: argparse.Namespace) -> int:
 
 def main() -> None:
     """Main entry point for CLI."""
+
     parser = create_parser()
     args = parser.parse_args()
     sys.exit(run_simulation(args))

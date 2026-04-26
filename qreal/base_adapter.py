@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
-from typing import Callable, Dict, List
+from typing import Callable
 
 from qreal.normalizers import NormalizationChain
 from qreal.provenance import ProvenanceRecord, compute_provenance
@@ -14,8 +14,8 @@ from qreal.provenance import ProvenanceRecord, compute_provenance
 class AdapterOutput:
     """Normalized output with provenance annotation."""
 
-    normalized: Dict[str, object]
-    percept: Dict[str, object]
+    normalized: dict[str, object]
+    percept: dict[str, object]
     provenance: ProvenanceRecord
 
 
@@ -30,7 +30,7 @@ class BaseAdapter:
 
     source: str
     chain: NormalizationChain = field(default_factory=NormalizationChain)
-    validators: List[Callable[[Dict[str, object]], None]] = field(default_factory=list)
+    validators: list[Callable[[dict[str, object]], None]] = field(default_factory=list)
 
     def process(self, raw: object, tick: int) -> AdapterOutput:
         """Process raw external data deterministically.
@@ -51,19 +51,19 @@ class BaseAdapter:
     # Subclass hooks -----------------------------------------------------------------
     def _normalize(
         self, raw: object, tick: int
-    ) -> Dict[str, object]:  # pragma: no cover - abstract
+    ) -> dict[str, object]:  # pragma: no cover - abstract
         raise NotImplementedError
 
     def _to_percept(
-        self, normalized: Dict[str, object]
-    ) -> Dict[str, object]:  # pragma: no cover - abstract
+        self, normalized: dict[str, object]
+    ) -> dict[str, object]:  # pragma: no cover - abstract
         raise NotImplementedError
 
     # Helpers ------------------------------------------------------------------------
-    def add_normalizer(self, func: Callable[[Dict[str, object]], Dict[str, object]]) -> None:
+    def add_normalizer(self, func: Callable[[dict[str, object]], dict[str, object]]) -> None:
         self.chain.steps.append(func)
 
-    def add_validator(self, func: Callable[[Dict[str, object]], None]) -> None:
+    def add_validator(self, func: Callable[[dict[str, object]], None]) -> None:
         self.validators.append(func)
 
     def serialize(self) -> str:

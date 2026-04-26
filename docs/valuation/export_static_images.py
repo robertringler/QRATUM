@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Export QuASIM valuation dashboard as static PNG images.
 
 This script imports the dashboard figures and exports them as high-resolution PNG files
@@ -29,6 +30,7 @@ ASSETS_DIR.mkdir(exist_ok=True)
 
 def main():
     """Export dashboard figures as static PNG images."""
+
     print("QuASIM Valuation Dashboard — Static Image Export")
     print("=" * 50)
 

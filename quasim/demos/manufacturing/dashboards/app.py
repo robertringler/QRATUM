@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Manufacturing Demo - QuASIM", layout="wide")
 
     st.title("🏭 Predictive Maintenance & Throughput Control")
@@ -15,10 +16,11 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
-    
+
     Minimize downtime, maximize throughput, schedule maintenance
-    
+
     ### Key Performance Indicators (KPIs)
     - MTBF, downtime_pct, throughput_units_hr, false_alarm_rate
     """
@@ -58,12 +60,13 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
-    
+
     ```bash
     # Run planning
     python -m quasim.demos.manufacturing.cli plan --steps 200 --seed 42
-    
+
     # Run simulation with capture
     python -m quasim.demos.manufacturing.cli simulate --seed 42 --capture
     ```

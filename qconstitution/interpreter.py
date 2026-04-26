@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List
 
 from qconstitution.charter import Charter
 
@@ -12,8 +11,8 @@ from qconstitution.charter import Charter
 class ConstitutionalInterpreter:
     charter: Charter
 
-    def evaluate_constraints(self, subject: str, context: Dict[str, object]) -> List[str]:
-        violations: List[str] = []
+    def evaluate_constraints(self, subject: str, context: dict[str, object]) -> list[str]:
+        violations: list[str] = []
         for article in self.charter.active.articles.articles:
             if not article.applies_to(subject):
                 continue

@@ -2,11 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Dict, List
 
-
-def check_liquidity(snapshot: Dict[str, float], minimum_volume: float) -> List[str]:
-    violations: List[str] = []
+def check_liquidity(snapshot: dict[str, float], minimum_volume: float) -> list[str]:
+    violations: list[str] = []
     volume = float(snapshot.get("volume", 0.0))
     if volume < minimum_volume:
         violations.append("liquidity_breach")

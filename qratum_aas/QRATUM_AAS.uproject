@@ -1,0 +1,27 @@
+{
+    "FileVersion": 3,
+    "EngineAssociation": "5.4",
+    "Category": "AI",
+    "Description": "QRATUM Asymmetric Adaptive Search - Production AI Framework for Unreal Fest 2026",
+    "Modules": [
+        {
+            "Name": "QRATUM",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "AIModule",
+            "Enabled": true
+        },
+        {
+            "Name": "GameplayAbilities",
+            "Enabled": true
+        },
+        {
+            "Name": "NavigationSystem",
+            "Enabled": true
+        }
+    ]
+}

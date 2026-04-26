@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Dict
 
-
-def allocate(budget: int, tasks: Dict[str, int]) -> Dict[str, int]:
+def allocate(budget: int, tasks: dict[str, int]) -> dict[str, int]:
     if budget <= 0:
         return dict.fromkeys(tasks, 0)
     total_weight = sum(tasks.values()) or 1

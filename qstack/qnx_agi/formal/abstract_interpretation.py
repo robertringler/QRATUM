@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict
 
 from .interval_arithmetic import Interval
 
@@ -34,7 +33,7 @@ class AbstractState:
 
     def __init__(self, lattice: AbstractLattice | None = None):
         self._lattice = lattice or AbstractLattice()
-        self._store: Dict[str, Interval] = {}
+        self._store: dict[str, Interval] = {}
 
     def assign(self, name: str, interval: Interval) -> None:
         self._store[name] = interval
@@ -65,5 +64,5 @@ class AbstractState:
             widened.assign(key, self._lattice.widen(prev, interval))
         return widened
 
-    def snapshot(self) -> Dict[str, Interval]:
+    def snapshot(self) -> dict[str, Interval]:
         return dict(self._store)

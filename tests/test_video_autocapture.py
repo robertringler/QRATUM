@@ -1,5 +1,6 @@
 # tests/test_video_autocapture.py
 """
+
 Tests for automatic video capture functionality in QuASIM.
 """
 
@@ -18,6 +19,7 @@ from quasim.viz.renderer import FlowFrameSpec, render_frame
 @pytest.fixture
 def temp_artifacts_dir(tmp_path):
     """Create a temporary artifacts directory for testing."""
+
     artifacts_dir = tmp_path / "artifacts" / "flows"
     artifacts_dir.mkdir(parents=True)
 
@@ -33,6 +35,7 @@ def temp_artifacts_dir(tmp_path):
 
 def test_render_frame_creates_rgb_array():
     """Test that render_frame produces a valid RGB array."""
+
     spec = FlowFrameSpec(
         frame_idx=0,
         time=0.0,
@@ -59,6 +62,7 @@ def test_render_frame_creates_rgb_array():
 
 def test_video_autocapture(tmp_path):
     """Test video autocapture via CLI with --record flag."""
+
     output_dir = tmp_path / "artifacts" / "flows"
     output_dir.mkdir(parents=True)
 
@@ -76,6 +80,7 @@ def test_video_autocapture(tmp_path):
 
 def test_video_autocapture_creates_files(temp_artifacts_dir):
     """Test that video files are created during a simulation run."""
+
     # Import here to ensure we're in the temp directory
     from quasim.cli.run_flow import _create_video_artifacts, _generate_video_hash
 
@@ -101,6 +106,7 @@ def test_video_autocapture_creates_files(temp_artifacts_dir):
 
 def test_video_file_size_threshold(temp_artifacts_dir):
     """Test that MP4 file size exceeds minimum threshold (indicates video data written)."""
+
     from quasim.cli.run_flow import _create_video_artifacts, _generate_video_hash
 
     # Run a small optimization
@@ -127,6 +133,7 @@ def test_video_file_size_threshold(temp_artifacts_dir):
 
 def test_reproducible_hash_generation():
     """Test that hash generation is deterministic."""
+
     from quasim.cli.run_flow import _generate_video_hash
 
     hash1 = _generate_video_hash(42, 150, 300, 3.0)
@@ -140,6 +147,7 @@ def test_reproducible_hash_generation():
 
 def test_flow_frame_spec_dataclass():
     """Test that FlowFrameSpec dataclass works correctly."""
+
     spec = FlowFrameSpec(
         frame_idx=5,
         time=1.5,

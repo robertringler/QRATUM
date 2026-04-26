@@ -14,6 +14,7 @@ class TestValidationRunner:
 
     def test_validation_config_defaults(self):
         """Test ValidationConfig default values."""
+
         config = ValidationConfig()
         assert config.tier is None
         assert config.full_suite is False
@@ -22,6 +23,7 @@ class TestValidationRunner:
 
     def test_validation_runner_initialization(self, tmp_path):
         """Test ValidationRunner initialization."""
+
         config = ValidationConfig(output_dir=tmp_path)
         runner = ValidationRunner(config)
         assert runner.config == config
@@ -29,6 +31,7 @@ class TestValidationRunner:
 
     def test_run_tier_1(self, tmp_path):
         """Test Tier 1 validation."""
+
         config = ValidationConfig(tier=1, output_dir=tmp_path)
         runner = ValidationRunner(config)
         results = runner.run_tier_1()
@@ -41,6 +44,7 @@ class TestValidationRunner:
 
     def test_run_tier_2(self, tmp_path):
         """Test Tier 2 validation."""
+
         config = ValidationConfig(tier=2, output_dir=tmp_path)
         runner = ValidationRunner(config)
         results = runner.run_tier_2()
@@ -52,6 +56,7 @@ class TestValidationRunner:
 
     def test_run_tier_3(self, tmp_path):
         """Test Tier 3 validation."""
+
         config = ValidationConfig(tier=3, output_dir=tmp_path)
         runner = ValidationRunner(config)
         results = runner.run_tier_3()
@@ -62,6 +67,7 @@ class TestValidationRunner:
 
     def test_run_tier_4(self, tmp_path):
         """Test Tier 4 validation."""
+
         config = ValidationConfig(tier=4, output_dir=tmp_path)
         runner = ValidationRunner(config)
         results = runner.run_tier_4()
@@ -72,6 +78,7 @@ class TestValidationRunner:
 
     def test_run_full_suite(self, tmp_path):
         """Test full validation suite."""
+
         config = ValidationConfig(full_suite=True, output_dir=tmp_path)
         runner = ValidationRunner(config)
         results = runner.run_full_suite()
@@ -85,6 +92,7 @@ class TestValidationRunner:
 
     def test_experiment_1_1_tda(self, tmp_path):
         """Test Experiment 1.1: TDA baseline."""
+
         config = ValidationConfig(tier=1, output_dir=tmp_path)
         runner = ValidationRunner(config)
         result = runner._run_experiment_1_1_tda()
@@ -98,6 +106,7 @@ class TestValidationRunner:
 
     def test_experiment_1_2_quotient(self, tmp_path):
         """Test Experiment 1.2: Quotient calibration."""
+
         config = ValidationConfig(tier=1, output_dir=tmp_path)
         runner = ValidationRunner(config)
         result = runner._run_experiment_1_2_quotient()
@@ -109,6 +118,7 @@ class TestValidationRunner:
 
     def test_save_results(self, tmp_path):
         """Test results saving functionality."""
+
         config = ValidationConfig(full_suite=True, output_dir=tmp_path)
         runner = ValidationRunner(config)
         runner.run()
@@ -126,6 +136,7 @@ class TestValidationRunner:
 
     def test_generate_markdown_report(self, tmp_path):
         """Test markdown report generation."""
+
         config = ValidationConfig(full_suite=True, output_dir=tmp_path)
         runner = ValidationRunner(config)
         runner.run()
@@ -144,6 +155,7 @@ class TestValidationRunner:
 
     def test_deterministic_seeding(self, tmp_path):
         """Test that validation is deterministic with fixed seed."""
+
         config1 = ValidationConfig(tier=1, output_dir=tmp_path, random_seed=42)
         runner1 = ValidationRunner(config1)
         results1 = runner1.run_tier_1()
@@ -162,6 +174,7 @@ class TestExperiments:
 
     def test_experiment_1_1_tda_module(self):
         """Test standalone TDA experiment."""
+
         from quasim.terc_validation.experiment_1_1_tda import run_experiment
 
         result = run_experiment()
@@ -171,6 +184,7 @@ class TestExperiments:
 
     def test_experiment_1_2_quotient_module(self):
         """Test standalone quotient experiment."""
+
         from quasim.terc_validation.experiment_1_2_quotient import run_experiment
 
         result = run_experiment()
@@ -180,6 +194,7 @@ class TestExperiments:
 
     def test_experiment_2_1_eeg_module(self):
         """Test standalone EEG experiment."""
+
         from quasim.terc_validation.experiment_2_1_eeg import run_experiment
 
         result = run_experiment()
@@ -189,6 +204,7 @@ class TestExperiments:
 
     def test_experiment_3_1_pathology_module(self):
         """Test standalone pathology experiment."""
+
         from quasim.terc_validation.experiment_3_1_pathology import run_experiment
 
         result = run_experiment()
@@ -198,6 +214,7 @@ class TestExperiments:
 
     def test_experiment_5_4_integration_module(self):
         """Test standalone integration experiment."""
+
         from quasim.terc_validation.experiment_5_4_integration import run_experiment
 
         result = run_experiment()
@@ -211,6 +228,7 @@ class TestConsciousnessMetrics:
 
     def test_persistent_homology_computation(self):
         """Test persistent homology computation."""
+
         from quasim.terc_validation.experiment_1_1_tda import compute_persistent_homology
 
         np.random.seed(42)
@@ -224,6 +242,7 @@ class TestConsciousnessMetrics:
 
     def test_quotient_calibration(self):
         """Test quotient space calibration."""
+
         from quasim.terc_validation.experiment_1_2_quotient import calibrate_quotient_space
 
         np.random.seed(42)
@@ -236,6 +255,7 @@ class TestConsciousnessMetrics:
 
     def test_eeg_correlation(self):
         """Test EEG correlation computation."""
+
         from quasim.terc_validation.experiment_2_1_eeg import compute_eeg_correlation
 
         np.random.seed(42)
@@ -249,6 +269,7 @@ class TestConsciousnessMetrics:
 
     def test_pathology_classification(self):
         """Test pathology classification."""
+
         from quasim.terc_validation.experiment_3_1_pathology import classify_pathology
 
         metrics = {"phi": 0.85, "icq": 0.90, "beta_1": 5}

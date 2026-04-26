@@ -1,0 +1,140 @@
+{
+  "pipeline": "vitra-e0-germline",
+  "version": "1.0.0",
+  "determinism": {
+    "enabled": true,
+    "description": "Locked parameters for reproducible genomics pipeline execution"
+  },
+  "cuda_epoch": {
+    "cuda_version": "12.4.1",
+    "driver_version": "535.104.05",
+    "compute_capability": "8.0",
+    "locked": true,
+    "note": "CUDA epoch must remain fixed for deterministic GPU execution"
+  },
+  "parabricks": {
+    "version": "4.2.1-1",
+    "container": "nvcr.io/nvidia/clara/clara-parabricks:4.2.1-1",
+    "fq2bam": {
+      "algorithm": "bwa-mem",
+      "tmp_dir": "/tmp/pb_tmp",
+      "low_memory": true,
+      "num_gpus": 1,
+      "gpus": "0",
+      "read_group": {
+        "platform": "ILLUMINA",
+        "platform_unit": "unknown",
+        "library": "lib1"
+      },
+      "duplicate_marking": "mark",
+      "sort": true,
+      "create_index": true
+    },
+    "deepvariant": {
+      "seed": 42,
+      "model_type": "WGS",
+      "num_gpus": 1,
+      "gpus": "0",
+      "call_variants_extra_args": "",
+      "gvcf": false,
+      "vcf_compression": true,
+      "note": "Fixed seed ensures deterministic variant calling"
+    }
+  },
+  "reference_genome": {
+    "build": "GRCh38",
+    "source": "1000 Genomes",
+    "url": "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/GRCh38_reference_genome/",
+    "files": {
+      "fasta": "GRCh38_full_analysis_set_plus_decoy_hla.fa",
+      "fai": "GRCh38_full_analysis_set_plus_decoy_hla.fa.fai",
+      "dict": "GRCh38_full_analysis_set_plus_decoy_hla.dict",
+      "bwa_indices": [
+        "GRCh38_full_analysis_set_plus_decoy_hla.fa.amb",
+        "GRCh38_full_analysis_set_plus_decoy_hla.fa.ann",
+        "GRCh38_full_analysis_set_plus_decoy_hla.fa.bwt",
+        "GRCh38_full_analysis_set_plus_decoy_hla.fa.pac",
+        "GRCh38_full_analysis_set_plus_decoy_hla.fa.sa"
+      ]
+    },
+    "md5": {
+      "fasta": "2b77e1e0df19fd16be8f9fd6c0e3d8dd"
+    }
+  },
+  "giab_truth_sets": {
+    "HG001_NA12878": {
+      "version": "4.2.1",
+      "build": "GRCh38",
+      "vcf": "HG001_GRCh38_1_22_v4.2.1_benchmark.vcf.gz",
+      "bed": "HG001_GRCh38_1_22_v4.2.1_benchmark_noinconsistent.bed",
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/NA12878_HG001/NISTv4.2.1/GRCh38/",
+      "note": "NIST GIAB reference truth set for validation"
+    },
+    "HG002_NA24385": {
+      "version": "4.2.1",
+      "build": "GRCh38",
+      "vcf": "HG002_GRCh38_1_22_v4.2.1_benchmark.vcf.gz",
+      "bed": "HG002_GRCh38_1_22_v4.2.1_benchmark_noinconsistent.bed",
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/AshkenazimTrio/HG002_NA24385_son/NISTv4.2.1/GRCh38/"
+    }
+  },
+  "validation_thresholds": {
+    "z2_promotion": {
+      "f1_score_min": 0.995,
+      "precision_min": 0.998,
+      "recall_min": 0.992,
+      "note": "Minimum metrics required for Z1 → Z2 promotion"
+    },
+    "z3_archive": {
+      "f1_score_min": 0.995,
+      "dual_signature_required": true,
+      "air_gapped": true,
+      "note": "Z2 → Z3 requires dual FIDO2 signatures and air-gap validation"
+    }
+  },
+  "performance_targets": {
+    "align_fq2bam": {
+      "max_duration_minutes": 45,
+      "gpu": "A100",
+      "coverage": "30x",
+      "note": "FASTQ → BAM alignment"
+    },
+    "call_variants": {
+      "max_duration_minutes": 30,
+      "gpu": "A100",
+      "coverage": "30x",
+      "note": "BAM → VCF variant calling"
+    },
+    "giab_validate": {
+      "max_duration_minutes": 5,
+      "cpu": true,
+      "note": "VCF → GIAB truth comparison"
+    },
+    "merkle_overhead": {
+      "max_duration_seconds": 5,
+      "cpu": true,
+      "note": "Merkle DAG generation per stage"
+    }
+  },
+  "environmental_controls": {
+    "cuda_visible_devices": "0",
+    "cuda_cache_disable": "1",
+    "tf_deterministic_ops": "1",
+    "tf_cudnn_deterministic": "1",
+    "note": "Environment variables for deterministic GPU execution"
+  },
+  "audit_requirements": {
+    "merkle_chain": true,
+    "self_hashing_binary": true,
+    "cuda_ptx_anchoring": true,
+    "driver_manifest": true,
+    "fido2_signatures": {
+      "z0_to_z1": "none",
+      "z1_to_z2": "single_signature_a",
+      "z2_to_z3": "dual_signatures_ab",
+      "rollback": "dual_signatures_ab"
+    },
+    "cbor_encoding": true,
+    "note": "Cryptographic provenance requirements for audit compliance"
+  }
+}

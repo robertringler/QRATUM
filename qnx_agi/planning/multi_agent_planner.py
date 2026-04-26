@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Dict, List
-
 from qagents.base import Agent
 from qintervention.actions import InterventionAction
 from qintervention.planner import InterventionPlanner
@@ -14,13 +12,13 @@ from qscenario.scenario import ScenarioState
 
 
 def plan_and_apply(
-    agents: List[Agent],
+    agents: list[Agent],
     scenario_state: ScenarioState,
     grounded: GroundedState,
     planner: InterventionPlanner,
-) -> List[Dict[str, object]]:
+) -> list[dict[str, object]]:
     observation = observation_from_state(scenario_state, grounded)
-    proposals: Dict[int, List[InterventionAction]] = {scenario_state.tick: []}
+    proposals: dict[int, list[InterventionAction]] = {scenario_state.tick: []}
     for agent in sorted(agents, key=lambda a: a.agent_id):
         decision = agent.act(observation)
         action_payload = decision.get("action", {}) if isinstance(decision, dict) else decision

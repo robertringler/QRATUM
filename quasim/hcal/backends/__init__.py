@@ -12,6 +12,7 @@ class Backend:
         Args:
             device_id: Device identifier
         """
+
         self.device_id = device_id
 
     def get_telemetry(self) -> Dict[str, Any]:
@@ -20,6 +21,7 @@ class Backend:
         Returns:
             Dictionary of telemetry data
         """
+
         return {}
 
     def apply_setpoint(self, setpoint: Dict[str, Any]) -> Dict[str, Any]:
@@ -31,6 +33,7 @@ class Backend:
         Returns:
             Result dictionary
         """
+
         return {"success": True}
 
     def capture_state(self) -> Dict[str, Any]:
@@ -39,6 +42,7 @@ class Backend:
         Returns:
             State dictionary
         """
+
         return {}
 
     def restore_state(self, state: Dict[str, Any]) -> Dict[str, Any]:
@@ -50,6 +54,7 @@ class Backend:
         Returns:
             Result dictionary
         """
+
         return {"success": True}
 
 
@@ -68,6 +73,7 @@ class BaseBackend:
         Args:
             dry_run: Enable dry-run mode.
         """
+
         self.dry_run = dry_run
 
     def device_exists(self, device_id: str) -> bool:
@@ -79,6 +85,7 @@ class BaseBackend:
         Returns:
             True if device exists.
         """
+
         raise NotImplementedError
 
     def apply_setpoint(self, device_id: str, setpoint: Dict[str, Any]) -> bool:
@@ -91,6 +98,7 @@ class BaseBackend:
         Returns:
             True if successful.
         """
+
         raise NotImplementedError
 
     def read_configuration(self, device_id: str) -> Dict[str, Any]:
@@ -102,6 +110,7 @@ class BaseBackend:
         Returns:
             Configuration dictionary.
         """
+
         raise NotImplementedError
 
     def read_telemetry(self, device_id: str) -> Dict[str, Any]:
@@ -113,4 +122,5 @@ class BaseBackend:
         Returns:
             Telemetry dictionary.
         """
+
         raise NotImplementedError

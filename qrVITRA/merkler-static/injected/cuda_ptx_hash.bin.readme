@@ -1,0 +1,16 @@
+# Placeholder for CUDA PTX kernel hash
+# 
+# This file should contain the SHA3-256 hash (32 bytes) of the compiled
+# CUDA PTX kernels extracted from the NVIDIA Parabricks container.
+#
+# Extraction process:
+# 1. Run: docker run --rm nvidia/clara-parabricks:4.2.1-1 ls /usr/local/parabricks/
+# 2. Extract PTX files from container
+# 3. Compute SHA3-256 hash of all PTX files concatenated
+# 4. Replace this placeholder with the 32-byte hash
+#
+# Purpose: Prevents compiler tampering by anchoring specific CUDA kernels
+# Used by merkler-static to verify GPU execution determinism
+#
+# Format: 32 bytes raw binary (SHA3-256 digest)
+# Current: All zeros (placeholder)

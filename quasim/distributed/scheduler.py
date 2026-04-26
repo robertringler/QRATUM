@@ -79,11 +79,13 @@ class TaskScheduler:
         Args:
             task: Task to schedule
         """
+
         self._task_queue.append(task)
         self._sort_queue()
 
     def _sort_queue(self) -> None:
         """Sort task queue by priority."""
+
         self._task_queue.sort(key=lambda t: t.priority.value, reverse=True)
 
     def schedule_next(self) -> Task | None:
@@ -92,6 +94,7 @@ class TaskScheduler:
         Returns:
             Next task to execute, or None if queue is empty or at capacity
         """
+
         # Check if we can schedule more tasks
         if len(self._running_tasks) >= self.max_concurrent_tasks:
             return None
@@ -117,6 +120,7 @@ class TaskScheduler:
         Returns:
             True if GPU is available
         """
+
         # Simplified - production would query actual GPU availability
         gpu_tasks = sum(1 for t in self._running_tasks.values() if t.gpu_required)
         return gpu_tasks < self.max_concurrent_tasks
@@ -128,6 +132,7 @@ class TaskScheduler:
             task_id: ID of completed task
             result: Task result
         """
+
         if task_id in self._running_tasks:
             task = self._running_tasks[task_id]
             task.status = TaskStatus.COMPLETED
@@ -141,6 +146,7 @@ class TaskScheduler:
             task_id: ID of failed task
             error: Error message
         """
+
         if task_id in self._running_tasks:
             task = self._running_tasks[task_id]
             task.status = TaskStatus.FAILED
@@ -156,6 +162,7 @@ class TaskScheduler:
         Returns:
             True if task was cancelled
         """
+
         # Check running tasks
         if task_id in self._running_tasks:
             if self.enable_preemption:
@@ -180,6 +187,7 @@ class TaskScheduler:
         Returns:
             Dictionary with queue metrics
         """
+
         return {
             "pending": len([t for t in self._task_queue if t.status == TaskStatus.PENDING]),
             "running": len(self._running_tasks),

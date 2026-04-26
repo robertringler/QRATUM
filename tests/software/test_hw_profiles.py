@@ -17,6 +17,7 @@ from quasim.hw import (
 
 def test_profile_dataclass():
     """Test Profile dataclass creation."""
+
     profile = Profile(
         name="test-profile",
         description="Test profile",
@@ -32,6 +33,7 @@ def test_profile_dataclass():
 
 def test_builtin_profiles_exist():
     """Test that all expected built-in profiles exist."""
+
     expected_profiles = ["low-latency", "energy-cap", "coherence", "balanced"]
 
     for profile_name in expected_profiles:
@@ -45,6 +47,7 @@ def test_builtin_profiles_exist():
 
 def test_low_latency_profile():
     """Test low-latency profile configuration."""
+
     profile = PROFILES["low-latency"]
 
     assert profile.name == "low-latency"
@@ -57,6 +60,7 @@ def test_low_latency_profile():
 
 def test_energy_cap_profile():
     """Test energy-cap profile configuration."""
+
     profile = PROFILES["energy-cap"]
 
     assert profile.name == "energy-cap"
@@ -69,6 +73,7 @@ def test_energy_cap_profile():
 
 def test_coherence_profile():
     """Test coherence profile configuration."""
+
     profile = PROFILES["coherence"]
 
     assert profile.name == "coherence"
@@ -81,6 +86,7 @@ def test_coherence_profile():
 
 def test_balanced_profile():
     """Test balanced profile configuration."""
+
     profile = PROFILES["balanced"]
 
     assert profile.name == "balanced"
@@ -92,6 +98,7 @@ def test_balanced_profile():
 
 def test_reconfiguration_profile_load():
     """Test loading a profile by name."""
+
     reconfig = ReconfigurationProfile.load("low-latency")
 
     assert isinstance(reconfig, ReconfigurationProfile)
@@ -100,6 +107,7 @@ def test_reconfiguration_profile_load():
 
 def test_reconfiguration_profile_load_invalid():
     """Test loading an invalid profile name."""
+
     with pytest.raises(ValueError) as exc_info:
         ReconfigurationProfile.load("nonexistent-profile")
 
@@ -109,6 +117,7 @@ def test_reconfiguration_profile_load_invalid():
 
 def test_list_profiles():
     """Test listing available profile names."""
+
     profiles = ReconfigurationProfile.list_profiles()
 
     assert isinstance(profiles, list)
@@ -121,6 +130,7 @@ def test_list_profiles():
 
 def test_plan_generation_basic():
     """Test basic plan generation."""
+
     # Setup topology
     topology = TopologyDiscovery()
     topology.add_device("gpu0", "gpu", "NVIDIA A100")
@@ -155,6 +165,7 @@ def test_plan_generation_basic():
 
 def test_plan_generation_with_device_filter():
     """Test plan generation with device filtering."""
+
     # Setup topology
     topology = TopologyDiscovery()
     topology.add_device("gpu0", "gpu", "NVIDIA A100")
@@ -185,6 +196,7 @@ def test_plan_generation_with_device_filter():
 
 def test_plan_generation_with_additional_constraints():
     """Test plan generation with additional constraints."""
+
     # Setup topology
     topology = TopologyDiscovery()
     topology.add_device("gpu0", "gpu", "NVIDIA A100")
@@ -212,6 +224,7 @@ def test_plan_generation_with_additional_constraints():
 
 def test_apply_limits_power():
     """Test applying power limits to setpoints via public API."""
+
     # Setup topology
     topology = TopologyDiscovery()
     topology.add_device("test", "gpu", "NVIDIA A100")
@@ -238,6 +251,7 @@ def test_apply_limits_power():
 
 def test_apply_limits_clock():
     """Test applying clock limits to setpoints via public API."""
+
     # Setup topology
     topology = TopologyDiscovery()
     topology.add_device("test", "gpu", "NVIDIA A100")
@@ -263,6 +277,7 @@ def test_apply_limits_clock():
 
 def test_apply_limits_clock_min():
     """Test applying minimum clock limit to setpoints."""
+
     reconfig = ReconfigurationProfile.load("low-latency")
 
     setpoints = {"sm_clock_mhz": 800}
@@ -275,6 +290,7 @@ def test_apply_limits_clock_min():
 
 def test_apply_limits_fan():
     """Test applying fan speed limits to setpoints."""
+
     reconfig = ReconfigurationProfile.load("low-latency")
 
     setpoints = {"fan_percent": 90}
@@ -287,6 +303,7 @@ def test_apply_limits_fan():
 
 def test_validate_plan_valid():
     """Test validation of a valid plan."""
+
     # Setup topology
     topology = TopologyDiscovery()
     topology.add_device("gpu0", "gpu", "NVIDIA A100")
@@ -313,6 +330,7 @@ def test_validate_plan_valid():
 
 def test_validate_plan_policy_violation():
     """Test validation with policy violation."""
+
     # Setup topology
     topology = TopologyDiscovery()
     topology.add_device("gpu0", "gpu", "NVIDIA A100")
@@ -340,6 +358,7 @@ def test_validate_plan_policy_violation():
 
 def test_create_custom_profile():
     """Test creating a custom profile."""
+
     profile = create_custom_profile(
         name="my-profile",
         description="Custom optimization",
@@ -358,6 +377,7 @@ def test_create_custom_profile():
 
 def test_custom_profile_without_constraints():
     """Test creating a custom profile without constraints."""
+
     profile = create_custom_profile(
         name="simple-profile",
         description="Simple custom profile",
@@ -373,6 +393,7 @@ def test_custom_profile_without_constraints():
 
 def test_plan_with_missing_device_type():
     """Test plan generation when device type not in profile."""
+
     # Setup topology with device type not in profile
     topology = TopologyDiscovery()
     topology.add_device("fpga0", "fpga", "Xilinx FPGA")

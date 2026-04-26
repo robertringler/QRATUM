@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Tuple
 
 
 @dataclass
@@ -14,7 +13,7 @@ class NodePolicyResult:
 
 
 def evaluate_node_policies(
-    metrics: Dict[str, int], expectations: Dict[str, int]
+    metrics: dict[str, int], expectations: dict[str, int]
 ) -> NodePolicyResult:
     penalty = 0
     for key, expected in sorted(expectations.items()):
@@ -27,5 +26,5 @@ def evaluate_node_policies(
     return NodePolicyResult(compliant=compliant, score=score, reason=reason)
 
 
-def rank_nodes(nodes: List[Tuple[str, NodePolicyResult]]) -> List[Tuple[str, int]]:
+def rank_nodes(nodes: list[tuple[str, NodePolicyResult]]) -> list[tuple[str, int]]:
     return sorted([(name, result.score) for name, result in nodes], key=lambda t: (-t[1], t[0]))

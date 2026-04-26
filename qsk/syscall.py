@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any, Callable, Dict
+from typing import Any, Callable
 
 
 class SyscallTable:
     def __init__(self):
-        self._handlers: Dict[str, Callable[..., Any]] = {}
+        self._handlers: dict[str, Callable[..., Any]] = {}
 
     def register(self, name: str, func: Callable[..., Any]):
         self._handlers[name] = func

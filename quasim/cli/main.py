@@ -17,6 +17,7 @@ def main():
     Manage hardware discovery, reconfiguration planning, calibration,
     and emergency controls for QuASIM simulation infrastructure.
     """
+
     pass
 
 
@@ -28,6 +29,7 @@ def discover(json_output: bool):
     Scans the system for compatible GPU and accelerator devices,
     reporting capabilities, utilization, and configuration status.
     """
+
     # Hardware discovery logic
     hardware_info = {
         "devices": [
@@ -95,6 +97,7 @@ def plan(profile: str, devices: str, output: str):
     and target devices. The plan includes configuration changes,
     estimated downtime, and rollback procedures.
     """
+
     device_list = [d.strip() for d in devices.split(",")]
 
     # Profile configurations
@@ -175,6 +178,7 @@ def apply(plan: str, enable_actuation: bool, require_approval: Optional[str]):
     By default, performs a dry-run validation of the plan.
     Use --enable-actuation with --require-approval to apply actual changes.
     """
+
     plan_path = Path(plan)
 
     if not plan_path.exists():
@@ -246,6 +250,7 @@ def calibrate(device: str, routine: str, max_iters: int, force: bool):
     validate operational parameters. Common routines include power_sweep,
     thermal_test, and memory_bandwidth.
     """
+
     click.echo("Starting Hardware Calibration")
     click.echo("=" * 50)
     click.echo(f"Device: {device}")
@@ -316,6 +321,7 @@ def stop(stop_all: bool, device: Optional[str]):
     Immediately halts operations on specified devices or all devices.
     Use for emergency situations or maintenance windows.
     """
+
     if not stop_all and not device:
         click.echo("Error: Must specify either --all or --device", err=True)
         sys.exit(1)

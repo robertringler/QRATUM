@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import List
-
 from qscenario.drivers import ScenarioDrivers
 from qscenario.events import SystemEvent
 from qscenario.scenario import Scenario, ScenarioConfig
@@ -23,7 +21,7 @@ def network_partition() -> Scenario:
         domains=["network"],
         description="Network partition and recovery",
     )
-    entries: List[TimelineEntry] = [
+    entries: list[TimelineEntry] = [
         TimelineEntry(0, [SystemEvent(0, "network", "latency_spike", {"latency": 120})]),
         TimelineEntry(1, [SystemEvent(1, "network", "partition", {"segments": 2})]),
         TimelineEntry(2, [SystemEvent(2, "network", "reroute", {"paths": 3})]),

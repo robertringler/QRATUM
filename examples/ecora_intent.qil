@@ -1,0 +1,17 @@
+# ECORA Climate & Energy Intent Example
+# QIL for Climate Projection
+
+vertical: ECORA
+operation: climate_projection
+user_id: climate_scientist_001
+session_id: ecora_session_789
+
+parameters:
+  scenario: SSP2-4.5
+  region: north_america
+  target_year: 2100
+  
+metadata:
+  study_name: Climate Impact Assessment 2024
+  institution: University Research Lab
+  funding_source: NSF Grant 12345

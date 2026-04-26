@@ -1,0 +1,45 @@
+# ============================================================
+# CIIR-QuASIM Default Configuration
+#
+# Configuration for Constraint-Induced Interface Realism (CIIR)
+# state evolution on the QuASIM tensor runtime.
+#
+# References:
+#   Ch3 D3.1 (Reality Space rank)
+#   Ch3 D3.11 (Cognitive State Space rep_dim)
+#   Ch5 D5.2 (Constraint Operator Algebra n_constraints)
+#   Ch3 D3.20 (Observable Algebra n_observers)
+#   Ch7 D7.1-D7.17 (Evolution parameters)
+#   Ch8 D8.7, T8.4 (Distortion: kappa_min, diameter)
+# ============================================================
+
+# State manifold dimensions
+rank: 4                   # Ontic dimension R (D3.1)
+rep_dim: 8                # Cognitive representation dimension D (D3.11)
+batch_size: 4             # Number of parallel states
+
+# Theory structure
+n_constraints: 3          # Number of constraint operators (D5.2)
+n_observers: 2            # Number of observer operators (D3.20)
+
+# Evolution parameters (Ch7)
+n_steps: 200              # Maximum evolution steps
+lr: 0.01                  # Learning rate / time step η
+method: projected_gradient  # gradient | projected_gradient | strang_splitting
+tol: 1.0e-06              # Convergence tolerance
+
+# Loss functional weights (Ch8 §2)
+entropy_weight: 0.01      # Regularisation coefficient γ
+constraint_weights: null   # Per-constraint λ_i (null = all-ones)
+observer_weights: null     # Per-observer μ_j (null = all-ones)
+observer_targets: null     # Target values y_j (null = all-zeros)
+
+# Distortion parameters (T8.4)
+kappa_min: 1.0            # Curvature lower bound K_min (D3.8)
+diameter: 1.0             # Constraint manifold diameter D
+
+# Runtime
+seed: 42                  # Random seed for reproducibility
+precision: fp64           # Numerical precision: fp32 | fp64
+output_path: ciir_output  # Output directory
+record_every: 10          # Record state every N steps

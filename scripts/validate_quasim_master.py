@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Validation script for QuASIM Master integration
 Verifies all components are properly integrated and functional
 """
@@ -12,6 +13,7 @@ from pathlib import Path
 
 def check_file_exists(path, description):
     """Check if a file exists and report status"""
+
     if Path(path).exists():
         print(f"✅ {description}: {path}")
         return True
@@ -22,6 +24,7 @@ def check_file_exists(path, description):
 
 def run_command(cmd, description):
     """Run a command and report status"""
+
     try:
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=60)
         if result.returncode == 0:
@@ -38,6 +41,7 @@ def run_command(cmd, description):
 
 def main():
     """Main validation routine"""
+
     print("=" * 70)
     print("QuASIM Master Integration Validation")
     print("=" * 70)

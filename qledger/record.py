@@ -5,16 +5,16 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass, field
-from typing import Any, Dict, Optional
+from typing import Any
 
 _DEF_PREV = "GENESIS"
 
 
-def _canonical(obj: Dict[str, Any]) -> str:
+def _canonical(obj: dict[str, Any]) -> str:
     return json.dumps(obj, sort_keys=True, separators=(",", ":"))
 
 
-def _hash_payload(payload: Dict[str, Any]) -> str:
+def _hash_payload(payload: dict[str, Any]) -> str:
     canonical = _canonical(payload)
     return hashlib.sha256(canonical.encode()).hexdigest()
 
@@ -25,12 +25,12 @@ class LedgerRecord:
 
     tick: int
     record_type: str
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
     node_id: str
-    prev_hash: Optional[str] = None
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    prev_hash: str | None = None
+    metadata: dict[str, Any] = field(default_factory=dict)
 
-    def canonical_payload(self) -> Dict[str, Any]:
+    def canonical_payload(self) -> dict[str, Any]:
         return {
             "tick": int(self.tick),
             "record_type": self.record_type,
@@ -55,7 +55,7 @@ class LedgerRecord:
 
     @staticmethod
     def genesis(
-        record_type: str = "genesis", payload: Optional[Dict[str, Any]] = None
+        record_type: str = "genesis", payload: dict[str, Any] | None = None
     ) -> LedgerRecord:
         payload = payload or {"message": "ledger genesis"}
         return LedgerRecord(

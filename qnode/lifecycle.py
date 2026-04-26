@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List
 
+from qnode.config import NodeConfig
 from qnode.monitor import HealthMonitor
 
 
@@ -13,7 +13,7 @@ class NodeLifecycle:
     monitor: HealthMonitor
     config: NodeConfig | None = None
     state: str = "init"
-    history: List[str] = field(default_factory=list)
+    history: list[str] = field(default_factory=list)
 
     def _transition(self, new_state: str) -> None:
         allowed = {
@@ -49,5 +49,5 @@ class NodeLifecycle:
             self._transition("shutdown")
             self.monitor.observe_event("shutdown")
 
-    def trace(self) -> List[str]:
+    def trace(self) -> list[str]:
         return list(self.history)

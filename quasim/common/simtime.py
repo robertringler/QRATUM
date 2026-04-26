@@ -34,12 +34,14 @@ class SimClock:
         Args:
             steps: Number of steps to advance
         """
+
         if not self.paused:
             self.step += steps
             self.t += steps * self.dt
 
     def reset(self) -> None:
         """Reset clock to initial state."""
+
         self.t = 0.0
         self.step = 0
         self.start_time = time.time()
@@ -47,14 +49,17 @@ class SimClock:
 
     def pause(self) -> None:
         """Pause the clock."""
+
         self.paused = True
 
     def resume(self) -> None:
         """Resume the clock."""
+
         self.paused = False
 
     def elapsed_walltime(self) -> float:
         """Get elapsed wall clock time in seconds."""
+
         return time.time() - self.start_time
 
 
@@ -74,6 +79,7 @@ class StepScheduler:
             step: Step number to run callback
             callback: Function to call at that step
         """
+
         if step not in self.callbacks:
             self.callbacks[step] = []
         self.callbacks[step].append(callback)
@@ -84,10 +90,12 @@ class StepScheduler:
         Args:
             step: Current step number
         """
+
         if step in self.callbacks:
             for callback in self.callbacks[step]:
                 callback()
 
     def clear(self) -> None:
         """Clear all scheduled callbacks."""
+
         self.callbacks.clear()

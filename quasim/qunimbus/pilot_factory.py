@@ -12,7 +12,6 @@ import logging
 import random
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, List
 
 logger = logging.getLogger(__name__)
 
@@ -120,13 +119,14 @@ class PilotFactory:
             target_per_day: Daily pilot generation target
             veto_rate: Expected veto rate (default 0.8%)
         """
+
         self.target_per_day = target_per_day
         self.veto_rate = veto_rate
         self.pilots_generated = 0
         self.vetoes = 0
         logger.info(
             f"Pilot Factory initialized - Target: {target_per_day}/day, "
-            f"Veto rate: {veto_rate*100:.1f}%"
+            f"Veto rate: {veto_rate * 100:.1f}%"
         )
 
     def generate_pilot(self, pilot_id: int) -> PilotSpec:
@@ -138,6 +138,7 @@ class PilotFactory:
         Returns:
             Generated pilot specification
         """
+
         # Select vertical (round-robin with some randomness)
         vertical = self.VERTICALS[pilot_id % len(self.VERTICALS)]
 
@@ -177,7 +178,7 @@ class PilotFactory:
 
         return pilot
 
-    def generate_batch(self, count: int = 10) -> List[PilotSpec]:
+    def generate_batch(self, count: int = 10) -> list[PilotSpec]:
         """Generate a batch of pilots.
 
         Args:
@@ -186,20 +187,22 @@ class PilotFactory:
         Returns:
             List of generated pilots
         """
+
         logger.info(f"Generating batch of {count} pilots...")
         pilots = []
-        for i in range(count):
+        for _i in range(count):
             pilot = self.generate_pilot(self.pilots_generated + 1)
             pilots.append(pilot)
         logger.info(f"Batch complete: {count} pilots generated")
         return pilots
 
-    def get_first_10_snapshot(self) -> List[Dict]:
+    def get_first_10_snapshot(self) -> list[dict]:
         """Generate the first 10 pilots as a snapshot (for display).
 
         Returns:
             List of first 10 pilots with metrics
         """
+
         pilots = [
             {
                 "id": "001",
@@ -286,6 +289,7 @@ class PilotFactory:
 
     def display_wave3_snapshot(self):
         """Display Wave 3 snapshot (first 10 pilots)."""
+
         logger.info("\n#### Wave 3 Snapshot (First 10 Pilots)")
         logger.info("| ID | Vertical | Workload | Runtime | Fidelity | Impact |")
         logger.info("|----|----------|----------|---------|----------|--------|")
@@ -301,12 +305,13 @@ class PilotFactory:
         logger.info("| 1000 | Retail | QAOA Inventory Opt | 0.298s | 0.998 | -42% Overstock |")
         logger.info("\n> **Wave 3 LIVE — 1,000 pilots/day achieved.**")
 
-    def get_stats(self) -> Dict:
+    def get_stats(self) -> dict:
         """Get factory statistics.
 
         Returns:
             Statistics dictionary
         """
+
         return {
             "pilots_generated": self.pilots_generated,
             "vetoes": self.vetoes,

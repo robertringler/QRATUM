@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import List, Tuple
+from typing import Tuple
 
 from qstack.alignment.constitution import (
     ARTICLE_QNX_SAFETY,
@@ -15,8 +15,8 @@ from qstack.config import QNXConfig, QuASIMConfig, QuNimbusConfig
 ConstraintFinding = Tuple[str, str, ViolationSeverity]
 
 
-def check_qnx_config(config: QNXConfig) -> List[ConstraintFinding]:
-    findings: List[ConstraintFinding] = []
+def check_qnx_config(config: QNXConfig) -> list[ConstraintFinding]:
+    findings: list[ConstraintFinding] = []
     if config.timesteps <= 0:
         findings.append(
             (
@@ -36,8 +36,8 @@ def check_qnx_config(config: QNXConfig) -> List[ConstraintFinding]:
     return findings
 
 
-def check_quasim_config(config: QuASIMConfig) -> List[ConstraintFinding]:
-    findings: List[ConstraintFinding] = []
+def check_quasim_config(config: QuASIMConfig) -> list[ConstraintFinding]:
+    findings: list[ConstraintFinding] = []
     if config.max_workspace_mb <= 0:
         findings.append(
             (
@@ -57,8 +57,8 @@ def check_quasim_config(config: QuASIMConfig) -> List[ConstraintFinding]:
     return findings
 
 
-def check_qunimbus_config(config: QuNimbusConfig) -> List[ConstraintFinding]:
-    findings: List[ConstraintFinding] = []
+def check_qunimbus_config(config: QuNimbusConfig) -> list[ConstraintFinding]:
+    findings: list[ConstraintFinding] = []
     if not config.enable_node_governance:
         findings.append(
             (

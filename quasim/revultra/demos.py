@@ -31,6 +31,7 @@ def demo_kryptos_k4_analysis() -> dict[str, Any]:
     >>> 'complexity' in results
     True
     """
+
     logger.info("Running REVULTRA analysis on Kryptos K4...")
 
     rev = REVULTRAAlgorithms()
@@ -65,6 +66,7 @@ def demo_simple_cipher_analysis(ciphertext: str) -> dict[str, Any]:
     >>> results['frequency']['L'] > results['frequency']['H']
     True
     """
+
     rev = REVULTRAAlgorithms()
 
     return {
@@ -90,6 +92,7 @@ def demo_period_detection(ciphertext: str, max_period: int = 20) -> dict[str, An
     dict[str, Any]
         Period detection results
     """
+
     rev = REVULTRAAlgorithms()
 
     ioc = rev.index_of_coincidence_tensor(ciphertext, max_period=max_period)
@@ -120,6 +123,7 @@ def demo_holographic_analysis(ciphertext: str) -> dict[str, Any]:
     dict[str, Any]
         Holographic analysis results
     """
+
     rev = REVULTRAAlgorithms()
 
     entropy, surface = rev.holographic_entropy_transform(ciphertext)

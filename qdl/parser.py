@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import List
-
 from .ast import (
     BinaryOp,
     EconomicPrimitive,
@@ -18,7 +16,7 @@ from .lexer import Lexer, Token
 
 
 class Parser:
-    def __init__(self, tokens: List[Token]):
+    def __init__(self, tokens: list[Token]):
         self.tokens = tokens
         self.pos = 0
 

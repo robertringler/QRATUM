@@ -5,10 +5,9 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
-from typing import Dict
 
 
-def _stable_dump(payload: Dict[str, object]) -> str:
+def _stable_dump(payload: dict[str, object]) -> str:
     return json.dumps(payload, sort_keys=True, separators=(",", ":"))
 
 
@@ -21,7 +20,7 @@ class ProvenanceRecord:
     digest: str
     raw_fingerprint: str
 
-    def as_dict(self) -> Dict[str, object]:
+    def as_dict(self) -> dict[str, object]:
         return {
             "source": self.source,
             "tick": self.tick,
@@ -30,7 +29,7 @@ class ProvenanceRecord:
         }
 
 
-def compute_provenance(source: str, normalized: Dict[str, object], tick: int) -> ProvenanceRecord:
+def compute_provenance(source: str, normalized: dict[str, object], tick: int) -> ProvenanceRecord:
     """Compute a deterministic provenance hash for normalized data."""
 
     serialized = _stable_dump(normalized)

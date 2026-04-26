@@ -88,6 +88,7 @@ class SymbolicLatentTransformer:
         NDArray
             Feature matrix
         """
+
         # Handle text input
         if isinstance(X, list) and len(X) > 0 and isinstance(X[0], str):
             # Text data - extract symbolic latents
@@ -138,6 +139,7 @@ class SymbolicLatentTransformer:
         -------
         self
         """
+
         set_seed(self.seed)
 
         # Extract features including symbolic latents
@@ -161,6 +163,7 @@ class SymbolicLatentTransformer:
         NDArray
             Predictions
         """
+
         features = self._extract_features(X)
         return self.model.predict(features)
 
@@ -177,6 +180,7 @@ class SymbolicLatentTransformer:
         NDArray
             Class probabilities
         """
+
         if not self.is_classification:
             raise ValueError("predict_proba only available for classification")
 
@@ -211,4 +215,5 @@ def build_slt(
     >>> model.task
     'text-cls'
     """
+
     return SymbolicLatentTransformer(task=task, seed=seed, use_symbolic=use_symbolic)

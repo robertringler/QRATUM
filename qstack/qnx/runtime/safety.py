@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable
 
 
 class SafetyConstraints:
-    def __init__(self, rules: List[Callable[[Any, Any], bool]]):
+    def __init__(self, rules: list[Callable[[Any, Any], bool]]):
         self._rules = rules
 
     def evaluate(self, state: Any, goal: Any) -> bool:
@@ -12,7 +12,7 @@ class SafetyConstraints:
 
 
 class SafetyEnvelope:
-    def __init__(self, bounds: Dict[str, tuple]):
+    def __init__(self, bounds: dict[str, tuple]):
         """Bounds format: variable -> (low, high)."""
 
         self._bounds = bounds

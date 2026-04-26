@@ -18,6 +18,7 @@ def get_xgboost_classifier(seed: int = 42, n_estimators: int = 50):
     XGBClassifier
         Configured classifier
     """
+
     try:
         from xgboost import XGBClassifier
 
@@ -49,6 +50,7 @@ def get_xgboost_regressor(seed: int = 42, n_estimators: int = 50):
     XGBRegressor
         Configured regressor
     """
+
     try:
         from xgboost import XGBRegressor
 
@@ -80,6 +82,7 @@ def get_lightgbm_classifier(seed: int = 42, n_estimators: int = 50):
     LGBMClassifier
         Configured classifier
     """
+
     try:
         from lightgbm import LGBMClassifier
 
@@ -112,6 +115,7 @@ def get_lightgbm_regressor(seed: int = 42, n_estimators: int = 50):
     LGBMRegressor
         Configured regressor
     """
+
     try:
         from lightgbm import LGBMRegressor
 

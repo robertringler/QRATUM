@@ -43,6 +43,7 @@ class QNimbusBridge:
         http_client : HttpClient
             HTTP client for API communication
         """
+
         self.cfg = cfg
         self.http = http_client
 
@@ -167,6 +168,7 @@ class QNimbusBridge:
         - Artifacts are stored with compression and checksums (HDF5/Fletcher32)
         - Query responses are cached for 24h on server side
         """
+
         payload = {"query": query, "mode": mode, "seed": seed}
         if query_id:
             payload["query_id"] = query_id
@@ -199,5 +201,6 @@ class QNimbusBridge:
         >>> print(path)
         out/artifact.hdf5
         """
+
         url = f"{self.cfg.base_url}/artifact/{artifact_id}"
         return self.http.download(url, dest)

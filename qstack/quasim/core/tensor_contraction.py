@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import List, Sequence
+from typing import Sequence
 
 
-def contract_tensors(tensors: List[Sequence[float]]) -> List[float]:
+def contract_tensors(tensors: list[Sequence[float]]) -> list[float]:
     """Performs deterministic pairwise tensor contraction (element-wise multiply and sum)."""
+
     if not tensors:
         return []
     result = list(tensors[0])

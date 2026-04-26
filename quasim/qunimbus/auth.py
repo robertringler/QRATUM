@@ -65,6 +65,7 @@ def sign_hmac(message: str, key: Optional[str] = None) -> str:
     >>> len(sig) > 0
     True
     """
+
     key_bytes = (key or os.environ.get("QUNIMBUS_TOKEN", "")).encode("utf-8")
     sig = hmac.new(key_bytes, message.encode("utf-8"), hashlib.sha256).digest()
     return base64.urlsafe_b64encode(sig).decode("ascii")
@@ -106,6 +107,7 @@ def verify_jwt(
     >>> ok
     True
     """
+
     if jwt is None:
         # Minimal structural check + HMAC fallback
         parts = token.split(".")
@@ -160,6 +162,7 @@ def refresh_token(current: str) -> str:
     ...     print("Not implemented yet")
     Not implemented yet
     """
+
     raise NotImplementedError("JWT refresh scheduled for Q1 2026")
 
 
@@ -239,6 +242,7 @@ class SignedHttpClient:
             - QUNIMBUS_TOKEN: JWT bearer token
             - QUNIMBUS_SECRET: Secret key for signing
         """
+
         if config is None:
             token = os.environ.get("QUNIMBUS_TOKEN", "")
             secret = os.environ.get("QUNIMBUS_SECRET")
@@ -265,6 +269,7 @@ class SignedHttpClient:
         jwt.ExpiredSignatureError
             If token has expired
         """
+
         if not self.config.token:
             return False
 
@@ -309,6 +314,7 @@ class SignedHttpClient:
         -----
         Signature format: HMAC-SHA256(secret, method + url + json(payload))
         """
+
         if not self.config.secret:
             return ""
 
@@ -341,6 +347,7 @@ class SignedHttpClient:
 
         STUB: Not yet implemented
         """
+
         # TODO: Implement token refresh logic
         # This would typically POST to /auth/refresh with current token
         # and receive a new token in response
@@ -379,6 +386,7 @@ class SignedHttpClient:
         - X-Signature: HMAC-SHA256 signature
         - X-Timestamp: Request timestamp
         """
+
         # Check token validity
         if not self._verify_token() and not self._refresh_token():
             raise ValueError("Invalid or expired token, refresh failed")
@@ -416,6 +424,7 @@ def validate_token_from_env() -> bool:
     >>> validate_token_from_env()
     True
     """
+
     token = os.environ.get("QUNIMBUS_TOKEN")
     if not token:
         return False
@@ -451,11 +460,13 @@ def cli_with_auth():
         export QUNIMBUS_TOKEN="your-jwt-token"
         qunimbus ascend --query "test"
     """
+
     pass
 
 
 # TODO: Implementation checklist for future work
 """
+
 Implementation Checklist for JWT Authentication:
 
 [ ] 1. Add PyJWT dependency to pyproject.toml

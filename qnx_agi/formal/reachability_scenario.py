@@ -2,13 +2,11 @@
 
 from __future__ import annotations
 
-from typing import List
-
 from qscenario.scenario import ScenarioState
 
 
-def check_bad_outcomes(state: ScenarioState, bad_states: List[str]) -> List[str]:
-    findings: List[str] = []
+def check_bad_outcomes(state: ScenarioState, bad_states: list[str]) -> list[str]:
+    findings: list[str] = []
     for incident in state.incidents:
         label = incident.get("label") or incident.get("label", "")
         if label in bad_states:

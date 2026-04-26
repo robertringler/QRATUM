@@ -14,11 +14,13 @@ class FakeHttp:
 
     def __init__(self):
         """Initialize fake HTTP client."""
+
         self.posts = []
         self.downloads = []
 
     def post_json(self, url, payload, timeout):
         """Mock POST request."""
+
         self.posts.append((url, payload, timeout))
         query_hash = str(abs(hash(payload.get("query", ""))))[:8]
         return {
@@ -29,12 +31,14 @@ class FakeHttp:
 
     def download(self, url, dest):
         """Mock file download."""
+
         self.downloads.append((url, dest))
         return dest
 
 
 def test_audit_event_with_query_id():
     """Test that audit events include query_id at top level."""
+
     with tempfile.TemporaryDirectory() as tmpdir:
         log_path = f"{tmpdir}/audit.jsonl"
 
@@ -57,6 +61,7 @@ def test_audit_event_with_query_id():
 
 def test_audit_event_with_qid_alias():
     """Test that audit events handle 'qid' alias for query_id."""
+
     with tempfile.TemporaryDirectory() as tmpdir:
         log_path = f"{tmpdir}/audit.jsonl"
 
@@ -78,6 +83,7 @@ def test_audit_event_with_qid_alias():
 
 def test_verify_audit_chain_with_query_ids():
     """Test that audit chain verification works with query_ids."""
+
     with tempfile.TemporaryDirectory() as tmpdir:
         log_path = f"{tmpdir}/audit.jsonl"
 
@@ -92,6 +98,7 @@ def test_verify_audit_chain_with_query_ids():
 
 def test_verify_audit_chain_detects_corruption():
     """Test that audit chain verification detects corrupted chains."""
+
     with tempfile.TemporaryDirectory() as tmpdir:
         log_path = f"{tmpdir}/audit.jsonl"
 
@@ -117,6 +124,7 @@ def test_verify_audit_chain_detects_corruption():
 
 def test_dry_run_mode_no_network_calls():
     """Test that dry-run mode doesn't make network calls."""
+
     from click.testing import CliRunner
 
     from quasim.qunimbus.cli import cli
@@ -150,6 +158,7 @@ def test_dry_run_mode_no_network_calls():
 
 def test_dry_run_validates_policy():
     """Test that dry-run mode still validates policy."""
+
     from click.testing import CliRunner
 
     from quasim.qunimbus.cli import cli
@@ -173,6 +182,7 @@ def test_dry_run_validates_policy():
 
 def test_strict_mode_fails_on_missing_observable():
     """Test that strict mode fails when observable is missing."""
+
     from click.testing import CliRunner
 
     from quasim.qunimbus.cli import cli
@@ -216,6 +226,7 @@ observables:
 
 def test_strict_mode_passes_with_all_observables():
     """Test that strict mode passes when all observables are present."""
+
     import numpy as np
     from click.testing import CliRunner
 
@@ -263,6 +274,7 @@ observables:
 
 def test_bridge_ascend_documentation():
     """Test that QNimbusBridge.ascend has comprehensive documentation."""
+
     # Check that docstring exists and contains key information
     docstring = QNimbusBridge.ascend.__doc__
     assert docstring is not None
@@ -274,6 +286,7 @@ def test_bridge_ascend_documentation():
 
 def test_bridge_config_defaults():
     """Test QNimbusConfig default values."""
+
     cfg = QNimbusConfig()
     assert cfg.base_url == "https://omni.x.ai/qunimbus/v6"
     assert cfg.timeout_s == 120
@@ -282,6 +295,7 @@ def test_bridge_config_defaults():
 
 def test_query_id_in_response():
     """Test that bridge.ascend returns query_id."""
+
     fake_http = FakeHttp()
     bridge = QNimbusBridge(QNimbusConfig(), fake_http)
 
@@ -293,6 +307,7 @@ def test_query_id_in_response():
 
 def test_bridge_ascend_with_query_id():
     """Test that bridge.ascend accepts and includes query_id in payload."""
+
     fake_http = FakeHttp()
     bridge = QNimbusBridge(QNimbusConfig(), fake_http)
 
@@ -306,6 +321,7 @@ def test_bridge_ascend_with_query_id():
 
 def test_hmac_sign():
     """Test HMAC-SHA256 signing function."""
+
     from quasim.qunimbus.auth import sign_hmac
 
     # Test with explicit key
@@ -324,6 +340,7 @@ def test_hmac_sign():
 
 def test_verify_jwt_without_pyjwt():
     """Test JWT verification graceful degradation without PyJWT."""
+
     from quasim.qunimbus.auth import verify_jwt
 
     # Valid JWT structure (3 parts)
@@ -340,6 +357,7 @@ def test_verify_jwt_without_pyjwt():
 
 def test_refresh_token_not_implemented():
     """Test that refresh_token raises NotImplementedError (stub)."""
+
     from quasim.qunimbus.auth import refresh_token
 
     try:
@@ -351,6 +369,7 @@ def test_refresh_token_not_implemented():
 
 def test_cli_with_query_id_and_qid():
     """Test that CLI accepts both --query-id and --qid."""
+
     from click.testing import CliRunner
 
     from quasim.qunimbus.cli import cli

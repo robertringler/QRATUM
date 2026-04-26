@@ -1,10 +1,19 @@
 build/
 install/
 .venv/
+venv-sandbox/
 obj_dir/
 __pycache__/
 *.pyc
 *.so
+
+# Environment files
+.env
+.env.local
+
+# Kaggle API credentials (never commit)
+.kaggle/
+kaggle.json
 
 # Artifacts
 artifacts/real_world_sim_2025/
@@ -50,6 +59,7 @@ coverage.json
 
 # QuASIM-Own runtime directories
 runs/
+!compiled_realities/runs/
 reports/
 .cache/quasim_datasets/
 
@@ -89,3 +99,52 @@ artifacts/compression/
 artifacts/econ/
 data/telemetry/
 docs/compliance/DO178C/
+
+# Goodyear Quantum Pilot outputs (runtime-generated)
+goodyear_quantum_pilot_full/
+demo_tire_library_basic/
+demo_tire_library_goodyear/*.json
+goodyear_pilot_execution_log.txt
+# Benchmark execution results
+results/
+bm001_execution.log
+bm001_execution_output.txt
+kaggle_benchmark_results.json
+kaggle_leaderboard*.json
+kaggle_test_positions.json
+
+# Generated documentation package
+output_package/
+viz_output/
+
+# GY-SUSTAIN-2030 simulation outputs
+gy_sustain_2030_results/
+
+# Documentation build output
+docs-site/site/
+
+# Aerospace visualization demo outputs
+qubic/visualization/aerospace/demo_*.png
+qubic/visualization/aerospace/demo_*.json
+
+# Node.js
+node_modules/
+package-lock.json
+*.tsbuildinfo
+
+# Build logs
+build_*.log
+qratum_asi/output/
+
+# Rust build artifacts
+target/
+
+# SBOM generated artifacts (keep directory structure)
+.sbom/cyclonedx/*.json
+.sbom/spdx/*.json
+.sbom/hashes/*.sha256
+.sbom/hashes/*.sha512
+.sbom/provenance/*.json
+.sbom/diffs/*.json
+# Temporal compression experiment outputs
+artifacts/temporal_compression/

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict
 
 
 @dataclass(frozen=True)
@@ -11,9 +10,9 @@ class Event:
     tick: int
     domain: str
     kind: str
-    payload: Dict[str, object]
+    payload: dict[str, object]
 
-    def describe(self) -> Dict[str, object]:
+    def describe(self) -> dict[str, object]:
         return {
             "tick": self.tick,
             "domain": self.domain,
