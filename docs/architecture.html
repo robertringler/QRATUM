@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture | QuASIM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/visualizations.css">
+</head>
+<body>
+  <div class="classification-banner">UNCLASSIFIED // FOR PUBLIC RELEASE</div>
+  <nav class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="navbar-brand">QuASIM</a>
+      <button class="navbar-toggle">☰</button>
+      <ul class="navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="architecture.html" class="active">Architecture</a></li>
+        <li><a href="performance.html">Performance</a></li>
+        <li><a href="compliance.html">Compliance</a></li>
+        <li><a href="whitepaper.html">Whitepaper</a></li>
+        <li><a href="api.html">API</a></li>
+        <li><a href="roadmap.html">Roadmap</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <section class="section">
+      <div class="container">
+        <h1 class="text-center text-green mb-8">System Architecture</h1>
+        <div class="architecture-diagram">
+          <div class="architecture-layer">
+            <h3 class="architecture-layer-title">🌐 Application Layer</h3>
+            <div class="architecture-layer-components">
+              <span class="architecture-component">Python SDK</span>
+              <span class="architecture-component">C++ API</span>
+              <span class="architecture-component">REST API</span>
+              <span class="architecture-component">CLI Tools</span>
+              <span class="architecture-component">Web UI</span>
+            </div>
+          </div>
+          <div class="architecture-layer">
+            <h3 class="architecture-layer-title">⚛️ Quantum Runtime</h3>
+            <div class="architecture-layer-components">
+              <span class="architecture-component">Circuit Compiler</span>
+              <span class="architecture-component">State Vector Engine</span>
+              <span class="architecture-component">Tensor Network</span>
+              <span class="architecture-component">Error Mitigation</span>
+              <span class="architecture-component">Noise Models</span>
+            </div>
+          </div>
+          <div class="architecture-layer">
+            <h3 class="architecture-layer-title">🚀 Acceleration Layer</h3>
+            <div class="architecture-layer-components">
+              <span class="architecture-component">cuQuantum</span>
+              <span class="architecture-component">Multi-GPU Scheduler</span>
+              <span class="architecture-component">CUDA Kernels</span>
+              <span class="architecture-component">Memory Pool</span>
+              <span class="architecture-component">P2P Transfers</span>
+            </div>
+          </div>
+          <div class="architecture-layer">
+            <h3 class="architecture-layer-title">☸️ Infrastructure</h3>
+            <div class="architecture-layer-components">
+              <span class="architecture-component">Kubernetes</span>
+              <span class="architecture-component">ArgoCD</span>
+              <span class="architecture-component">Prometheus</span>
+              <span class="architecture-component">Grafana</span>
+              <span class="architecture-component">Vault</span>
+              <span class="architecture-component">Cilium CNI</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-8">
+          <h2 class="text-green mb-6">Memory Hierarchy</h2>
+          <div class="memory-pyramid">
+            <div class="pyramid-level">
+              <div class="pyramid-level-name">L1 Cache</div>
+              <div class="pyramid-level-spec">128 KB per SM • 1.5 TB/s</div>
+            </div>
+            <div class="pyramid-level">
+              <div class="pyramid-level-name">L2 Cache</div>
+              <div class="pyramid-level-spec">40 MB shared • 1.2 TB/s</div>
+            </div>
+            <div class="pyramid-level">
+              <div class="pyramid-level-name">HBM3</div>
+              <div class="pyramid-level-spec">80 GB per GPU • 3.35 TB/s</div>
+            </div>
+            <div class="pyramid-level">
+              <div class="pyramid-level-name">NVLink</div>
+              <div class="pyramid-level-spec">900 GB/s inter-GPU</div>
+            </div>
+            <div class="pyramid-level">
+              <div class="pyramid-level-name">System Memory</div>
+              <div class="pyramid-level-spec">2 TB DDR5 • 512 GB/s</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-8">
+          <h2 class="text-green mb-6">GPU Cluster Topology</h2>
+          <div class="gpu-cluster">
+            <div class="gpu-node"><div class="gpu-node-id">GPU 0</div><div class="gpu-node-status">Active</div></div>
+            <div class="gpu-node"><div class="gpu-node-id">GPU 1</div><div class="gpu-node-status">Active</div></div>
+            <div class="gpu-node"><div class="gpu-node-id">GPU 2</div><div class="gpu-node-status">Active</div></div>
+            <div class="gpu-node"><div class="gpu-node-id">GPU 3</div><div class="gpu-node-status">Active</div></div>
+            <div class="gpu-node"><div class="gpu-node-id">GPU 4</div><div class="gpu-node-status">Active</div></div>
+            <div class="gpu-node"><div class="gpu-node-id">GPU 5</div><div class="gpu-node-status">Active</div></div>
+            <div class="gpu-node"><div class="gpu-node-id">GPU 6</div><div class="gpu-node-status">Active</div></div>
+            <div class="gpu-node"><div class="gpu-node-id">GPU 7</div><div class="gpu-node-status">Active</div></div>
+          </div>
+        </div>
+        
+        <div class="mt-8">
+          <h2 class="text-green mb-6">Quantum Gate Library</h2>
+          <div class="gate-library">
+            <div class="gate-card"><div class="gate-symbol">H</div><div class="gate-name">Hadamard</div></div>
+            <div class="gate-card"><div class="gate-symbol">X</div><div class="gate-name">Pauli-X</div></div>
+            <div class="gate-card"><div class="gate-symbol">Y</div><div class="gate-name">Pauli-Y</div></div>
+            <div class="gate-card"><div class="gate-symbol">Z</div><div class="gate-name">Pauli-Z</div></div>
+            <div class="gate-card"><div class="gate-symbol">CNOT</div><div class="gate-name">Controlled-NOT</div></div>
+            <div class="gate-card"><div class="gate-symbol">T</div><div class="gate-name">T Gate</div></div>
+            <div class="gate-card"><div class="gate-symbol">S</div><div class="gate-name">Phase</div></div>
+            <div class="gate-card"><div class="gate-symbol">RX</div><div class="gate-name">Rotation-X</div></div>
+          </div>
+        </div>
+        
+        <div class="mt-8">
+          <h2 class="text-green mb-6">3D Bloch Sphere</h2>
+          <div class="bloch-sphere-container" id="bloch-sphere-container"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="container"><div class="footer-bottom"><p>&copy; 2025 QuASIM Project. Licensed under Apache 2.0.</p></div></div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="js/three-scene.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
