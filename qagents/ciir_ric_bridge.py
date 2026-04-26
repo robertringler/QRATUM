@@ -42,7 +42,7 @@ def default_intent(priority: float = 0.7) -> dict[str, Any]:
         "constraints": {
             "loss": {"key": "total_loss", "min": 0.0, "max": 1e6, "target": 0.0},
             "purity": {"key": "purity", "min": 0.0, "max": 1.0, "target": 1.0},
-            "grad_norm": {"key": "gradient_norm", "min": 0.0, "max": 1e6, "target": 0.0},
+            "gradient_norm": {"key": "gradient_norm", "min": 0.0, "max": 1e6, "target": 0.0},
         },
         "priority": float(priority),
     }
