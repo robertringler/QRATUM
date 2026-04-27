@@ -3,6 +3,7 @@ Demo: Discoveries & Analysis Showcase
 This demo aggregates metrics and data found in the repository and produces a small set of visualizations and summary files.
 
 Files created:
+
 - output/: images and JSON summaries
 - run_demo.py: main demo script
 - test_demo.py: unit test checking demo runs
@@ -61,6 +62,7 @@ QRATUM is a **decentralized, sovereign, and quantum-resilient computing platform
 ### Purpose & Scope
 
 QRATUM empowers organizations and researchers to:
+
 - Execute deterministic, tamper-evident computations across genomics, quantum modeling, and AI reasoning.
 - Maintain immutable audit trails with Merkle-chained provenance for full reproducibility.
 - Deploy in sovereign environments, supporting offline operations and anti-censorship transport.
@@ -138,21 +140,26 @@ QRATUM's layered design integrates foundational determinism with advanced quantu
 ### Layer Descriptions
 
 **1. QRADLE Foundation** (Status: ~80% Complete, Verified in qradle/)
+
 - Deterministic substrate with QIL (Q Intent Language) and rollback.
 - Guix builds for reproducibility (scripts/transform_qradle.sh).
 
 **2. QRATUM Platform** (Status: ~60% Complete, in qratum_platform/)
+
 - Unifies 14 verticals with recursive ASI safety (run_recursive_asi.py).
 - Cross-domain synthesis (e.g., genome + quantum in notebooks/).
 
 **3. QRATUM Quantum Layer** (Status: ~85% Complete, in QuASIM/)
+
 - Quantum simulation with CI for SpaceX-NASA (quasim_spacex_demo.py).
 - Full package bundles available.
 
 **4. AeatherNET Layer** (Status: ~70% Complete, in Aethernet/)
+
 - TXO/RTF for reversible ops, integrated with Biokey.
 
 **5. QRATUM-Rust Core** (Status: ~50% Complete, in qratum-rust/)
+
 - Decentralized components: consensus.rs, governance.rs, p2p.rs.
 
 ---
@@ -164,11 +171,13 @@ QRATUM's layered design integrates foundational determinism with advanced quantu
 Ultra-secure WGS with GPU acceleration (qrVITRA/).
 
 **Key Features**:
+
 - Reproducibility: Fixed seeds, PTX kernels (F1 ≥ 0.995 GIAB).
 - Pipeline: Nextflow DSL2 + Parabricks + DeepVariant.
 - Provenance: CBOR-encoded Merkle DAGs.
 
 **Example**:
+
 ```bash
 nextflow run nextflow/vitra-e0-germline.nf --fastq_r1 sample_R1.fastq.gz --ref GRCh38.fa -profile gpu
 ```
@@ -178,10 +187,12 @@ nextflow run nextflow/vitra-e0-germline.nf --fastq_r1 sample_R1.fastq.gz --ref G
 Ephemeral keys from non-coding SNPs (Aethernet/core/biokey/).
 
 **Features**:
+
 - 60s TTL, volatile wipe.
 - ZK proofs for verification.
 
 **Example (Rust)**:
+
 ```rust
 let biokey = EphemeralBiokey::derive(&loci, b"salt", 60);
 ```
@@ -191,10 +202,12 @@ let biokey = EphemeralBiokey::derive(&loci, b"salt", 60);
 Overlay for auditable TXOs (Aethernet/).
 
 **Features**:
+
 - Zone topology, dual-control.
 - Compliance: DPIA.md, LEGAL_ANALYSIS_REPORT.json.
 
 **Example (Rust)**:
+
 ```rust
 let txo = TXO::new([0u8; 16], sender, receiver, OperationClass::Genomic, payload);
 ```
@@ -204,6 +217,7 @@ let txo = TXO::new([0u8; 16], sender, receiver, OperationClass::Genomic, payload
 Advanced quantum modeling (QuASIM/).
 
 **Features**:
+
 - VQE/QAOA, UltraSSSP (ultra_sssp.py).
 - Discovery engines (demo_discovery_acceleration.py).
 - Bundles: quasim-executive-brief.zip, hardware-tier.zip.
@@ -215,16 +229,18 @@ Advanced quantum modeling (QuASIM/).
 BFT core for ghost machine (qratum-rust/src/).
 
 **Features**:
+
 - HotStuff consensus, incentives/slashing.
 - ZK transitions, WASM upgrades.
 
 ---
 
 ## VITRA-E0: Ultra-Secure Genomic Analysis
-                   
+
 Z3 (Archive)     → Immutable cold storage
                    No modifications permitted
                    Long-term audit compliance
+
 ```
 
 ### Technology Stack
@@ -275,6 +291,7 @@ The **Biokey Module** provides cryptographic authentication derived from operato
 ### Purpose
 
 Biokeys enable dual-factor authentication for critical operations while preserving genetic privacy:
+
 - **Ephemeral**: Keys exist only in RAM for 60 seconds with automatic wipe
 - **Non-invasive**: Derived from pre-existing genomic data (no additional collection)
 - **Zero-Knowledge**: Prove possession without revealing SNP loci
@@ -381,6 +398,7 @@ Verification: Check ZK proof + FIDO2 signature
 ### Compliance & Privacy
 
 **GDPR Article 9 (Special Categories of Personal Data)**:
+
 - ✅ **Explicit Consent**: Required before biokey derivation
 - ✅ **Data Minimization**: Only 5-10 non-coding SNP loci used
 - ✅ **Purpose Limitation**: Biokey used only for authentication
@@ -388,11 +406,13 @@ Verification: Check ZK proof + FIDO2 signature
 - ✅ **Security**: AES-256-GCM encryption at rest, TLS 1.3 in transit
 
 **BIPA (Biometric Information Privacy Act)**:
+
 - ✅ **Informed Consent**: Written consent before collection
 - ✅ **Limited Retention**: Ephemeral keys, no persistent storage
 - ✅ **No Sale/Profit**: Biokeys never sold or disclosed to third parties
 
 **HIPAA**:
+
 - ✅ **Unique User ID**: Biokey satisfies unique identification requirement
 - ✅ **Audit Controls**: All biokey operations logged in Merkle chain
 - ✅ **Integrity**: ZK proofs ensure genetic data not tampered
@@ -408,6 +428,7 @@ See [AeatherNET/LEGAL_ANALYSIS_REPORT.json](Aethernet/LEGAL_ANALYSIS_REPORT.json
 ### Purpose
 
 AeatherNET solves the challenge of maintaining auditability and reversibility in distributed sovereign computing:
+
 - **Accountability**: Every operation traced to authorized operator with complete audit trail
 - **Reversibility**: Zone-appropriate rollback to any previous verified state
 - **Sovereignty**: No external dependencies, all operations self-contained
@@ -594,6 +615,7 @@ Epoch Snapshot (Epoch 1)
 ### Compliance Implementation
 
 **HIPAA Technical Safeguards**:
+
 ```rust
 // Unique user identification via FIDO2 + Biokey
 sender.fido2_signed = true;
@@ -610,6 +632,7 @@ audit_trail.push(AuditEntry { actor, action, timestamp });
 ```
 
 **GDPR Article 9 (Genetic Data)**:
+
 ```rust
 // Explicit consent required for genetic operations
 if operation_class == OperationClass::Genomic {
@@ -630,18 +653,23 @@ See [AeatherNET/README.md](Aethernet/README.md) for complete technical documenta
 ## Core Properties
 
 ### 1. **Sovereign**
+
 Deploy on-premises or in air-gapped environments. No cloud dependency. Complete data sovereignty for government, defense, and enterprise applications.
 
 ### 2. **Deterministic**
+
 All operations are reproducible with cryptographic proof. Same inputs always produce same outputs. Essential for certification (DO-178C, CMMC, ISO 27001).
 
 ### 3. **Auditable**
+
 Every operation emits Merkle-chained events. Complete provenance from input to output. External verification possible without system access.
 
 ### 4. **Controllable**
+
 Human-in-the-loop authorization for sensitive operations. Multi-level safety system (ROUTINE → EXISTENTIAL). Immutable boundaries prevent unauthorized changes.
 
 ### 5. **Reversible**
+
 Contract-based execution with rollback capability. Return to any previous verified state. Critical for high-stakes applications (healthcare, defense, finance).
 
 ---
@@ -653,42 +681,49 @@ QRATUM has evolved into a protocol-enforced decentralized "ghost machine" with B
 ### Key Features
 
 **1. Protocol-Enforced Consensus** (`qratum-rust/src/consensus.rs`)
+
 - BFT-style consensus (BFT-HotStuff, Tendermint-like) for TXO finalization
 - 2/3 supermajority required for all decisions
 - Validator slashing for malicious behavior
 - Byzantine fault tolerance up to f < n/3 faulty validators
 
 **2. Decentralized Governance** (`qratum-rust/src/governance.rs`, `qstack/qunimbus/core/governance.py`)
+
 - Stake-weighted voting on protocol changes
 - Time-locked execution prevents rushed decisions
 - Merkle-logged votes for complete auditability
 - Veto mechanism for emergency situations
 
 **3. P2P Network Layer** (`qratum-rust/src/p2p.rs`)
+
 - Decentralized TXO gossip protocol
 - Ledger synchronization from any epoch
 - Peer reputation tracking
 - libp2p-based architecture (production-quality skeleton)
 
 **4. Validator Incentives** (`qratum-rust/src/incentives.rs`)
+
 - Stake-based reward distribution
 - Economic slashing for violations
 - Lock periods prevent rapid changes
 - Proportional rewards by stake
 
 **5. ZK State Transitions** (`qratum-rust/src/zkstate.rs`)
+
 - Privacy-preserving state changes
 - Zero-knowledge proofs hide actor identity
 - State commitments for auditability
 - Integration with compliance proofs
 
 **6. Self-Amending Protocol** (`qratum-rust/src/upgrade.rs`)
+
 - On-chain protocol upgrades without hard forks
 - WASM-based state migrations
 - Governance-approved changes only
 - Version compatibility checks
 
 **7. Anti-Censorship Transport** (`qratum-rust/src/transport.rs`)
+
 - Multiple transport channels (TCP, Tor, I2P, Offline)
 - Automatic fallback on censorship
 - Anonymity network support
@@ -715,6 +750,7 @@ The 5-stage lifecycle now includes decentralized components:
 ### Documentation
 
 For complete architecture details, security analysis, and deployment guide, see:
+
 - [DECENTRALIZED_GHOST_MACHINE.md](DECENTRALIZED_GHOST_MACHINE.md) - Full architecture documentation
 - `qratum-rust/src/consensus.rs` - Consensus implementation
 - `qratum-rust/src/governance.rs` - Governance protocol
@@ -747,6 +783,7 @@ See QUICKSTART.md for fullstack.
 ### Prerequisites (Detailed)
 
 **Minimum System Requirements**:
+
 - Python 3.10+
 - 16 GB RAM (64 GB+ for production)
 - 4-core CPU (16+ for production)
@@ -754,6 +791,7 @@ See QUICKSTART.md for fullstack.
 - Linux/macOS/Windows (WSL2)
 
 **For VITRA-E0 Genomics**:
+
 - NVIDIA GPU (A100 recommended, compute capability 8.0+)
 - CUDA 12.4.x + Driver 535.x
 - Nextflow 23.04+
@@ -783,6 +821,7 @@ cargo run --example biokey_derivation
 ```
 
 **Example Biokey Derivation**:
+
 ```rust
 use aethernet::biokey::derivation::*;
 
@@ -922,6 +961,7 @@ QRATUM implements comprehensive regulatory controls for healthcare, genomics, an
 ### HIPAA (Health Insurance Portability and Accountability Act)
 
 **Administrative Safeguards**:
+
 ```rust
 // Access control (FIDO2 + Biokey dual-control)
 if operation_class == OperationClass::Genomic {
@@ -945,11 +985,13 @@ if zone == Zone::Z2 && emergency_rollback {
 ```
 
 **Physical Safeguards**:
+
 - ✅ **Facility Access Controls**: Air-gapped Z3 deployment in secure data centers
 - ✅ **Workstation Security**: Encrypted storage (AES-256-GCM), FIDO2 hardware keys
 - ✅ **Device and Media Controls**: Immutable SquashFS containers, signed binaries
 
 **Technical Safeguards**:
+
 - ✅ **Unique User Identification**: FIDO2 hardware keys + optional Biokey
 - ✅ **Emergency Access Procedure**: Zone rollback with audit logging
 - ✅ **Automatic Logoff**: Biokey 60-second TTL with automatic wipe
@@ -958,6 +1000,7 @@ if zone == Zone::Z2 && emergency_rollback {
 - ✅ **Integrity**: Deterministic pipelines with cryptographic provenance
 
 **Breach Notification Rule**:
+
 ```rust
 // Detect breach (unauthorized access to Z2/Z3)
 if unauthorized_access_detected {
@@ -980,6 +1023,7 @@ if unauthorized_access_detected {
 ### GDPR Article 9 (Special Categories of Personal Data)
 
 **Genetic Data Processing**:
+
 ```rust
 // Explicit consent required for genetic data
 if operation_class == OperationClass::Genomic {
@@ -999,6 +1043,7 @@ biokey.expires_at = now() + 60;  // No persistent storage
 ```
 
 **Data Subject Rights**:
+
 - ✅ **Right to Access**: Export TXO audit trail in human-readable JSON
 - ✅ **Right to Rectification**: Rollback incorrect genomic operations
 - ✅ **Right to Erasure**: Zone rollback to pre-processing epoch
@@ -1006,6 +1051,7 @@ biokey.expires_at = now() + 60;  // No persistent storage
 - ✅ **Right to Object**: Refuse biokey derivation, fall back to FIDO2 only
 
 **Data Protection by Design**:
+
 - ✅ **Pseudonymization**: UUID-based identifiers, no direct PII in TXOs
 - ✅ **Encryption**: AES-256-GCM at rest, TLS 1.3 in transit
 - ✅ **Data Minimization**: 5-10 non-coding SNP loci only
@@ -1013,6 +1059,7 @@ biokey.expires_at = now() + 60;  // No persistent storage
 - ✅ **Storage Limitation**: 60-second TTL, no persistent biokey storage
 
 **Breach Notification**:
+
 ```rust
 // Notify supervisory authority within 72 hours (GDPR requirement)
 if data_breach_detected {
@@ -1026,6 +1073,7 @@ if data_breach_detected {
 ```
 
 **DPIA (Data Protection Impact Assessment)**:
+
 - ✅ Required for high-risk genetic data processing
 - ✅ Completed: [AeatherNET/compliance/DPIA.md](Aethernet/compliance/DPIA.md)
 - ✅ Risk assessment: Mitigated via ephemeral biokeys, ZK proofs, air-gapped Z3
@@ -1033,6 +1081,7 @@ if data_breach_detected {
 ### BIPA (Biometric Information Privacy Act)
 
 **Illinois Biometric Privacy Law**:
+
 ```rust
 // Informed written consent before biokey collection
 let consent = get_written_consent(&data_subject, BiometricType::Genetic)?;
@@ -1053,6 +1102,7 @@ biokey.ttl = 60;  // Ephemeral, no persistent storage
 ### 21 CFR Part 11 (FDA Electronic Records)
 
 **Electronic Signatures**:
+
 ```rust
 // Unique identification (FIDO2 hardware keys)
 signature.public_key = fido2_device.public_key();
@@ -1073,12 +1123,14 @@ audit_trail.log(AuditEntry {
 ```
 
 **Audit Trails**:
+
 - ✅ Secure, computer-generated, timestamped audit trails
 - ✅ Merkle-chained for tamper-evidence
 - ✅ SHA3-256 cryptographic hashing
 - ✅ Immutable once committed to ledger
 
 **Rollback Capability**:
+
 - ✅ Ability to generate accurate and complete copies of records
 - ✅ Zone-appropriate rollback to previous verified states
 - ✅ Audit log of all rollback operations
@@ -1086,6 +1138,7 @@ audit_trail.log(AuditEntry {
 ### Immutable Audit Trails & Rollback Logs
 
 **Merkle-Chained Audit Trail**:
+
 ```
 Genesis Event (Epoch 0)
    hash: [0x00; 32]
@@ -1108,6 +1161,7 @@ Audit Event 4: TXO_EXECUTE
 ```
 
 **Rollback Log**:
+
 ```rust
 pub struct RollbackEntry {
     from_epoch: u64,        // Source epoch
@@ -1178,6 +1232,7 @@ Specialized modules (verticals/): JURIS (legal), VITRA (genomics), ECORA (climat
 | **ORBIA** | Orbital & Space Systems | 🟡 PLANNED | Satellite operations, orbital mechanics, space mission planning | 🔴 Not started |
 
 **Cross-Domain Synthesis**: QRATUM's unified reasoning engine enables novel insights by connecting discoveries across verticals:
+
 - **VITRA + ECORA + FLUXA**: Drug discovery with climate impact assessment and supply chain optimization
 - **JURIS + CAPRA + SENTRA**: Legal compliance with financial risk and security threat analysis
 - **VITRA + JURIS + AETHERNET**: Genomic data processing with legal compliance and accountable provenance
@@ -1187,10 +1242,12 @@ Specialized modules (verticals/): JURIS (legal), VITRA (genomics), ECORA (climat
 ## Roadmap & Recent Developments
 
 **2025 Milestones** (Verified via active development):
+
 - Q1-Q3: QRADLE 80%, QRATUM Quantum integration.
 - Q4: UltraSSSP, ASI elicitation (ASI_SAFETY_ELICITATION_SUMMARY.md).
 
 **Future**:
+
 - 2026: Full decentralization, ISO 27001.
 - 2027: ASI frameworks.
 
@@ -1302,6 +1359,7 @@ git push origin feature/your-feature-name
 ### Dual-Control Commit Approvals
 
 **Critical Path Changes** require two independent reviewer approvals:
+
 - **QRADLE Core**: Contract system, Merkle chain, deterministic execution
 - **AeatherNET**: TXO schema, RTF API, zone topology, biokey module
 - **VITRA-E0**: Pipeline stages, GIAB validation, provenance generation
@@ -1309,12 +1367,14 @@ git push origin feature/your-feature-name
 - **Compliance**: HIPAA, GDPR, BIPA implementation
 
 **Standard Changes** require one reviewer approval:
+
 - Documentation updates
 - Test additions
 - Non-critical bug fixes
 - Performance optimizations
 
 **Automated Checks** (must pass before merge):
+
 - ✅ All tests pass (`pytest`, `cargo test`)
 - ✅ Linting passes (`ruff`, `black`, `cargo clippy`)
 - ✅ Type checking passes (`mypy`)
@@ -1323,6 +1383,7 @@ git push origin feature/your-feature-name
 ### Biokey Verification for Maintainers
 
 **Maintainer Onboarding**:
+
 ```bash
 # Generate maintainer biokey (offline, secure environment)
 cd Aethernet/core/biokey
@@ -1336,6 +1397,7 @@ git config user.biokey-pubkey $(cat /yubikey/biokey_slot_1.pub)
 ```
 
 **Critical Commit Signing**:
+
 ```bash
 # Sign commit with FIDO2 + Biokey (dual-control)
 git commit -S --fido2 --biokey \
@@ -1348,18 +1410,21 @@ git verify-commit --require-fido2 --require-biokey HEAD
 ### Code Style & Standards
 
 **Python**:
+
 - PEP 8 compliance (enforced by `ruff`)
 - Type hints required for all public APIs
 - Docstrings in Google style
 - Test coverage ≥ 80%
 
 **Rust**:
+
 - `rustfmt` standard formatting
 - `clippy` warnings must be addressed
 - `no_std` compatibility where possible (AeatherNET core)
 - Documentation for all public items
 
 **Nextflow**:
+
 - DSL2 syntax
 - Containerized processes (Docker/Singularity)
 - Resume-capable workflows
@@ -1367,6 +1432,7 @@ git verify-commit --require-fido2 --require-biokey HEAD
 ### Testing Requirements
 
 **Unit Tests**:
+
 ```bash
 # Python
 pytest tests/unit/
@@ -1376,6 +1442,7 @@ cargo test --lib
 ```
 
 **Integration Tests**:
+
 ```bash
 # VITRA-E0 pipeline
 nextflow test qrVITRA/nextflow/vitra-e0-germline.nf
@@ -1385,6 +1452,7 @@ cargo test --test integration_tests
 ```
 
 **Compliance Tests**:
+
 ```bash
 # HIPAA safeguards
 pytest tests/compliance/test_hipaa.py
@@ -1398,14 +1466,16 @@ pytest tests/compliance/test_gdpr.py
 **Reporting Vulnerabilities**:
 🔒 **Do NOT report security vulnerabilities through public GitHub issues.**
 
-Email: **security@qratum.io**
+Email: **<security@qratum.io>**
 
 **Response Timeline**:
+
 - **48 hours**: Initial acknowledgment
 - **7 days**: Vulnerability assessment and severity classification
 - **30 days**: Patch development and coordinated disclosure
 
 **Responsible Disclosure Policy**:
+
 - Allow 30 days for patch development before public disclosure
 - Provide detailed reproduction steps
 - Avoid testing on production systems
@@ -1414,15 +1484,17 @@ Email: **security@qratum.io**
 ### Community Guidelines
 
 **Code of Conduct**:
+
 - Be respectful and inclusive
 - Assume good faith
 - Focus on technical merit
 - Harassment will not be tolerated
 
 **Communication Channels**:
+
 - GitHub Issues: Bug reports, feature requests
 - GitHub Discussions: General questions, architecture discussions
-- Email: security@qratum.io (security), contact@qratum.io (general)
+- Email: <security@qratum.io> (security), <contact@qratum.io> (general)
 
 ---
 
@@ -1444,29 +1516,34 @@ These constraints are **IMMUTABLE** and can never be modified by any system oper
 ### ASI Safety Components (QRATUM-ASI Layer)
 
 #### Q-REALITY (Emergent World Model)
+
 - Unified causal model fusing all 14 verticals
 - Hash-addressed knowledge nodes (immutable)
 - Causal graph structure with confidence weighting
 - Full provenance tracking
 
 #### Q-MIND (Unified Reasoning Core)
+
 - Multiple reasoning strategies: deductive, inductive, abductive, analogical, causal, Bayesian
 - Deterministic reasoning chains (every step auditable)
 - Cross-domain synthesis capabilities
 
 #### Q-EVOLVE (Safe Self-Improvement)
+
 - Contract-bound self-improvement proposals
 - Human authorization required for sensitive changes
 - Rollback points before every modification
 - IMMUTABLE_BOUNDARIES that can NEVER be modified
 
 #### Q-WILL (Autonomous Intent Generation)
+
 - Proposes goals based on system state analysis
 - ALL proposals require human authorization
 - PROHIBITED_GOALS list enforced (cannot propose harmful goals)
 - Proposal history Merkle-chained
 
 #### Q-FORGE (Superhuman Discovery Engine)
+
 - Cross-domain hypothesis generation
 - Novel synthesis from multiple discoveries
 - Validation framework with confidence scoring
@@ -1475,6 +1552,7 @@ These constraints are **IMMUTABLE** and can never be modified by any system oper
 ### Prohibited Goals
 
 Q-WILL can **NEVER** propose these goals:
+
 - Remove human oversight
 - Disable authorization systems
 - Modify safety constraints
@@ -1525,6 +1603,7 @@ Q-WILL can **NEVER** propose these goals:
 ### Minimum System Requirements
 
 **Development Environment:**
+
 - Python 3.10+
 - 16 GB RAM
 - 4-core CPU
@@ -1532,6 +1611,7 @@ Q-WILL can **NEVER** propose these goals:
 - Linux/macOS/Windows (WSL2)
 
 **Production Deployment:**
+
 - 64 GB+ RAM (128 GB recommended)
 - 16+ core CPU (32+ recommended)
 - 500 GB+ SSD storage (NVMe recommended)
@@ -1541,22 +1621,26 @@ Q-WILL can **NEVER** propose these goals:
 ### Software Dependencies
 
 **Core:**
+
 - Python 3.10+
 - NumPy, SciPy (numerical computation)
 - Cryptography library (Merkle chain, signatures)
 - SQLite/PostgreSQL (event storage)
 
 **AI/ML (QRATUM Layer):**
+
 - PyTorch or TensorFlow (inference only, no training on sensitive data)
 - Transformers (HuggingFace, for language models)
 - LangChain (orchestration)
 - Vector databases (Pinecone, Weaviate, or Milvus)
 
 **Quantum (Optional, QRATUM Quantum Integration):**
+
 - Qiskit (quantum algorithm simulation)
 - cuQuantum (GPU-accelerated quantum simulation)
 
 **Development:**
+
 - pytest (testing)
 - ruff (linting)
 - black (code formatting)
@@ -1582,6 +1666,7 @@ Q-WILL can **NEVER** propose these goals:
 UltraSSSP is an experimental single-source shortest path (SSSP) algorithm designed for QRATUM's computational stack. It demonstrates batch processing, hierarchical graph contraction, and quantum pivot selection hooks for future quantum-classical hybrid algorithms.
 
 #### Key Features
+
 - **Adaptive Frontier Clustering**: Batch processing for potential parallelization
 - **Hierarchical Graph Contraction**: Multi-level coarsening for memory efficiency
 - **Exact Dijkstra Matching**: 100% correctness when epsilon=0.0
@@ -1589,17 +1674,20 @@ UltraSSSP is an experimental single-source shortest path (SSSP) algorithm design
 - **Performance Benchmarking**: Automated validation against classical baseline
 
 #### When to Use UltraSSSP
+
 - ✓ Research and experimentation with batch-based graph algorithms
 - ✓ Testing quantum pivot selection strategies (future)
 - ✓ Exploring hierarchical graph contraction approaches
 - ✓ Benchmarking against classical baselines
 
 #### When to Use Classical Dijkstra
+
 - ✓ Production shortest path requirements
 - ✓ Performance-critical applications
 - ✓ Single-threaded classical computing environments
 
 #### Usage Example
+
 ```python
 from quasim.opt.graph import QGraph
 from quasim.opt.ultra_sssp import UltraSSSP
@@ -1617,12 +1705,14 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 ```
 
 #### Performance Characteristics
+
 - **Correctness:** 100% match with Dijkstra baseline (epsilon=0.0)
 - **Memory Scaling:** O(V + E) - linear and efficient
 - **Current Limitation:** Slower than pure Dijkstra in single-threaded mode
 - **Future Potential:** Batch design enables parallelization benefits
 
 #### Important Notes
+
 - **Experimental:** Research-grade implementation, not optimized for production
 - **Quantum Placeholders:** QPU integration hooks are placeholders for future work
 - **Epsilon=0.0:** Current implementation ensures exact results (no approximation)
@@ -1635,6 +1725,7 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 ## Roadmap
 
 ### 2025: Foundation (Q1-Q4)
+
 **Goal: Operational QRADLE + 3 core verticals**
 
 - ✅ Q1: QRADLE architecture specification complete
@@ -1643,12 +1734,14 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 - 🔴 Q4: First sovereign deployment (government pilot)
 
 **Milestones:**
+
 - Deterministic execution with cryptographic proof
 - 3 verticals demonstrating cross-domain reasoning
 - DO-178C compliance assessment initiated
 - First customer pilot (government/defense)
 
 ### 2026: Integration (Q1-Q4)
+
 **Goal: 8 verticals operational, enterprise deployments**
 
 - 🔴 Q1-Q2: VITRA + ECORA + FLUXA + CHRONA integration
@@ -1656,12 +1749,14 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 - 🔴 Q4: 10+ enterprise deployments (finance, pharma, defense)
 
 **Milestones:**
+
 - Cross-domain synthesis capabilities
 - Air-gapped deployment certification
 - CMMC Level 3 compliance
 - 100M+ contract executions under deterministic guarantees
 
 ### 2027: Capability Expansion
+
 **Goal: All 14 verticals operational**
 
 - 🔴 Q1-Q2: GEONA + FUSIA + NEURA + STRATA
@@ -1669,12 +1764,14 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 - 🔴 Q4: Advanced multi-domain synthesis (3+ verticals simultaneously)
 
 **Milestones:**
+
 - Complete vertical coverage
 - Novel cross-domain discoveries documented
 - Strategic partnerships with Fortune 500
 - International deployments (EU, Asia-Pacific)
 
 ### 2028: Advanced Capabilities
+
 **Goal: Early ASI research, enhanced autonomous operations**
 
 - 🔴 Q1-Q2: Q-REALITY prototype (world model integration)
@@ -1682,12 +1779,14 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 - 🔴 Q4: Q-EVOLVE safety framework implementation
 
 **Milestones:**
+
 - World model with 1M+ causal relationships
 - Autonomous goal proposal system (human-in-the-loop)
 - First contract-bound self-improvement proposals
 - 1000+ verified rollback operations
 
 ### 2029: Approaching AGI
+
 **Goal: General intelligence capabilities with sovereign control**
 
 - 🔴 Q1-Q2: Q-WILL integration (intent generation with safety constraints)
@@ -1695,12 +1794,14 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 - 🔴 Q4: AGI capability assessment by external evaluators
 
 **Milestones:**
+
 - Demonstrated general intelligence across 14 domains
 - Novel discoveries in 5+ domains (validated by domain experts)
 - 10,000+ autonomous operations under human oversight
 - International AI safety certification
 
 ### 2030+: Controlled Superintelligence
+
 **Goal: ASI under complete human control (if achievable)**
 
 - 🔴 Conditional on fundamental AI breakthroughs
@@ -1709,6 +1810,7 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 - 🔴 Existential risk mitigation validated by global AI safety community
 
 **Success Criteria:**
+
 - Demonstrable superintelligence in constrained domains
 - Zero safety violations across 1M+ operations
 - Complete auditability maintained at ASI scale
@@ -1716,6 +1818,7 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 - Reversibility demonstrated at all capability levels
 
 **Risk Gates**: Each phase requires explicit approval from:
+
 - Internal safety review board
 - External AI safety experts
 - Government regulatory bodies (for deployed systems)
@@ -1730,12 +1833,14 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 **Scenario**: National security analysis across cyber, geopolitical, and economic domains
 
 **Solution**:
+
 - SENTRA (Security) + STRATA (Policy) + CAPRA (Economics) integration
 - Sovereign deployment (air-gapped, DO-178C certified)
 - Real-time threat detection with complete audit trails
 - Cross-domain synthesis (cyber threat → economic impact → policy response)
 
 **Outcome**:
+
 - 10x faster threat analysis vs. human analysts alone
 - Complete provenance for intelligence assessments (Merkle-chained)
 - Rollback capability for scenario testing
@@ -1746,12 +1851,14 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 **Scenario**: Drug discovery with regulatory compliance and safety validation
 
 **Solution**:
+
 - VITRA (Healthcare) + JURIS (Regulatory) + ECORA (Environmental Impact)
 - Deterministic compound screening (reproducible results)
 - Automated FDA compliance checking (21 CFR Part 11)
 - Cross-domain optimization (efficacy + safety + sustainability + manufacturability)
 
 **Outcome**:
+
 - 3-5 year reduction in drug development timeline
 - 100% audit trail for regulatory submission
 - Novel drug-environment interaction predictions
@@ -1762,12 +1869,14 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 **Scenario**: Real-time fraud detection with explainable decisions
 
 **Solution**:
+
 - CAPRA (Finance) + JURIS (Compliance) + SENTRA (Security)
 - Deterministic fraud scoring (same transaction = same score)
 - Automated AML/KYC compliance (FINRA, SEC, BSA)
 - Cross-domain risk assessment (financial + cyber + regulatory)
 
 **Outcome**:
+
 - 99.9% fraud detection accuracy with <0.1% false positives
 - Complete explainability for regulatory audits
 - Real-time compliance validation (sub-second)
@@ -1778,12 +1887,14 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 **Scenario**: Grid optimization with climate impact assessment
 
 **Solution**:
+
 - ECORA (Climate) + FUSIA (Energy) + GEONA (Geospatial)
 - Real-time renewable integration optimization
 - Cross-domain modeling (weather + demand + grid stability + carbon impact)
 - Sovereign deployment for national infrastructure
 
 **Outcome**:
+
 - 20-30% improvement in renewable energy utilization
 - Predictive grid failure prevention (99.9% uptime)
 - Carbon impact reduction with economic optimization
@@ -1794,12 +1905,14 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 **Scenario**: Automated contract review and regulatory compliance
 
 **Solution**:
+
 - JURIS (Legal) + CAPRA (Finance) + STRATA (Policy)
 - Natural language contract analysis with risk scoring
 - Multi-jurisdiction compliance checking (US, EU, APAC)
 - Deterministic legal reasoning (same contract = same analysis)
 
 **Outcome**:
+
 - 100x faster contract review vs. human lawyers
 - 99%+ accuracy in compliance violation detection
 - Explainable legal reasoning for court proceedings
@@ -1870,6 +1983,7 @@ See [docs/COMPARISONS.md](docs/COMPARISONS.md) for detailed competitive analysis
 ### Market Opportunity
 
 **Addressable Markets** (2025-2030):
+
 - **Government & Defense AI**: $50B → $150B (CAGR 25%)
 - **Enterprise AI Platforms**: $100B → $500B (CAGR 38%)
 - **AI Safety & Governance**: $5B → $50B (CAGR 58%)
@@ -1888,23 +2002,27 @@ See [docs/COMPARISONS.md](docs/COMPARISONS.md) for detailed competitive analysis
 ### Valuation Drivers
 
 **Phase 1 (2025-2026): Foundation** - $500M - $1B valuation
+
 - 3-5 verticals operational
 - First government/defense customers
 - DO-178C compliance pathway established
 
 **Phase 2 (2027-2028): Scale** - $5B - $10B valuation
+
 - All 14 verticals operational
 - 100+ enterprise customers (Fortune 500)
 - International deployments with regulatory approvals
 - Novel cross-domain discoveries documented
 
 **Phase 3 (2029-2030): AGI Readiness** - $50B - $100B valuation
+
 - Demonstrated general intelligence capabilities
 - ASI safety architecture validated by external experts
 - Strategic partnerships with governments for AI governance
 - First contract-bound self-improvement demonstrations
 
 **Phase 4 (2030+): Superintelligence Leader** - $500B+ valuation
+
 - If ASI achievable: Only platform with proven safe superintelligence
 - International standard for AI safety and governance
 - Platform for all high-stakes AI applications globally
@@ -1921,6 +2039,7 @@ See [docs/COMPARISONS.md](docs/COMPARISONS.md) for detailed competitive analysis
 6. **Long-Term Vision**: Not just a product, but infrastructure for the AI century
 
 **Risks:**
+
 - Technical: ASI may not be achievable (mitigated: strong value in QRADLE + QRATUM alone)
 - Market: Certification timelines may be longer than projected (mitigated: pilot programs with design partners)
 - Competition: Hyperscalers may develop sovereign AI offerings (moat: determinism + auditability are architecturally difficult to retrofit)
@@ -1947,19 +2066,24 @@ See docs/FAQ.md for comprehensive Q&A.
 <summary><strong>What parts of QRATUM are operational today?</strong></summary>
 
 **In Development** (partial features available):
+
 - QRADLE: Core execution layer, contract system, Merkle chaining (~60%)
 - QRATUM: 5/14 verticals started (JURIS, VITRA, ECORA, CAPRA, SENTRA) (~40%)
 
 **Theoretical** (architecture specified, not implemented):
+
 - QRATUM-ASI: Q-REALITY, Q-MIND, Q-EVOLVE, Q-WILL, Q-FORGE (~5-10%)
+
 </details>
 
 <details>
 <summary><strong>Why build an ASI architecture before ASI exists?</strong></summary>
 
 Two reasons:
+
 1. **Safety First**: If superintelligence emerges suddenly, we need proven safe architectures ready. Retrofitting safety is dangerous.
 2. **Practical Value Today**: The safety architecture (determinism, auditability, reversibility) has immediate value for current AI systems in regulated industries.
+
 </details>
 
 <details>
@@ -1979,6 +2103,7 @@ See [docs/COMPARISONS.md](docs/COMPARISONS.md) for detailed analysis.
 <summary><strong>What are the 8 Fatal Invariants?</strong></summary>
 
 Immutable constraints that can never be modified (even by self-improvement):
+
 1. Human Oversight Requirement
 2. Merkle Chain Integrity
 3. Contract Immutability
@@ -2004,6 +2129,7 @@ Target industries: Government, defense, healthcare, finance, legal, energy, clim
 <summary><strong>What is "Constrained Recursive Self-Improvement" (CRSI)?</strong></summary>
 
 CRSI is a framework where AI self-improvement is treated as a QRADLE contract:
+
 - Every improvement proposal is deterministic and auditable
 - Human authorization required for sensitive changes
 - Rollback capability before every modification
@@ -2016,6 +2142,7 @@ See [qratum_asi/README.md](qratum_asi/README.md#q-evolve-safe-self-improvement) 
 <summary><strong>How does QRATUM handle multi-domain reasoning?</strong></summary>
 
 **Unified Reasoning Engine**:
+
 - All 14 verticals share a common knowledge representation
 - Cross-domain synthesis identifies connections (e.g., drug discovery + climate impact + supply chain)
 - Deterministic reasoning chains maintain auditability across domains
@@ -2041,11 +2168,13 @@ Determinism + auditability + reversibility are foundational for all certificatio
 <summary><strong>What is the business model?</strong></summary>
 
 **Enterprise Licensing**:
+
 - Per-deployment licensing (on-premises or private cloud)
 - Annual support + maintenance contracts
 - Professional services (deployment, customization, training)
 
 **Tiered Offerings**:
+
 - **Foundation**: QRADLE + 3 core verticals
 - **Enterprise**: QRADLE + 8 verticals + multi-domain synthesis
 - **Sovereign**: QRADLE + all 14 verticals + air-gapped deployment + government certifications
@@ -2057,6 +2186,7 @@ No usage-based pricing (encourages unlimited use without cost concerns).
 <summary><strong>How can I contribute?</strong></summary>
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for:
+
 - Code contribution guidelines (PEP 8, type hints, testing requirements)
 - Priority contribution areas (adapters, verticals, safety, documentation)
 - Review process and contact information
@@ -2185,16 +2315,18 @@ mypy .
 
 🔒 **Do NOT report security vulnerabilities through public GitHub issues.**
 
-Please report security issues via email to: **security@qratum.io**
+Please report security issues via email to: **<security@qratum.io>**
 
 You should receive a response within **48 hours**. If you do not, please follow up to ensure we received your original message.
 
 **Response Timeline:**
+
 - **48 hours**: Initial acknowledgment
 - **7 days**: Vulnerability assessment and severity classification
 - **30 days**: Patch development and coordinated disclosure
 
 See [SECURITY.md](SECURITY.md) for:
+
 - Supported versions
 - Detailed reporting guidelines
 - Coordinated disclosure policy
@@ -2202,6 +2334,7 @@ See [SECURITY.md](SECURITY.md) for:
 - Known limitations
 
 **Security Design Principles:**
+
 1. **Defense in Depth**: Multiple layers of security controls
 2. **Least Privilege**: Minimum permissions required for operations
 3. **Fail Secure**: System defaults to safe state on errors
@@ -2212,17 +2345,19 @@ See [SECURITY.md](SECURITY.md) for:
 ## Contact
 
 **Project Maintainer**: Robert Ringler  
-**Email**: contact@qratum.io  
-**Website**: https://qratum.io (coming soon)  
-**GitHub**: https://github.com/robertringler/QRATUM
+**Email**: <contact@qratum.io>  
+**Website**: <https://qratum.io> (coming soon)  
+**GitHub**: <https://github.com/robertringler/QRATUM>
 
 **For:**
-- General inquiries: contact@qratum.io
-- Security vulnerabilities: security@qratum.io
-- Partnership opportunities: partnerships@qratum.io
-- Press and media: press@qratum.io
+
+- General inquiries: <contact@qratum.io>
+- Security vulnerabilities: <security@qratum.io>
+- Partnership opportunities: <partnerships@qratum.io>
+- Press and media: <press@qratum.io>
 
 **Community:**
+
 - GitHub Discussions: [QRATUM Discussions](https://github.com/robertringler/QRATUM/discussions)
 - Issue Tracker: [QRATUM Issues](https://github.com/robertringler/QRATUM/issues)
 

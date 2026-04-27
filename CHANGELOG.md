@@ -48,7 +48,7 @@ Complete documentation overhaul to establish QRATUM-ASI as an investor-ready, en
 
 4. **SECURITY.md** - Security policy
    - Supported versions table (0.1.x-alpha)
-   - Vulnerability reporting process (security@qratum.io, NOT public issues)
+   - Vulnerability reporting process (<security@qratum.io>, NOT public issues)
    - Report template with all required information
    - Response timeline (48h acknowledgment, 7d assessment, 30d resolution)
    - Coordinated disclosure policy (90 days standard, 45 days critical)
@@ -63,6 +63,7 @@ Complete documentation overhaul to establish QRATUM-ASI as an investor-ready, en
    - Maintained all existing Phase VIII entries
 
 **Documentation Quality:**
+
 - Investor-grade language suitable for enterprise/government audiences
 - Clear distinction between in-development vs. theoretical components
 - Consistent formatting and professional tone
@@ -101,7 +102,7 @@ Three core autonomous governance components:
 3. **Quantum Ethical Governor (QEG)** - `quasim/meta/ethical_governor.py`
    - Resource usage monitoring: energy (kWh), compute time (s), memory (GB), network (Mbps)
    - Fairness metrics: Gini coefficient, access equity score, resource distribution, priority fairness
-   - Ethical scoring: 0-100 scale (energy_efficiency * 0.4 + equity_balance * 0.4 + sustainability * 0.2)
+   - Ethical scoring: 0-100 scale (energy_efficiency *0.4 + equity_balance* 0.4 + sustainability * 0.2)
    - Constraint enforcement: energy_budget, equity_threshold, min_sustainability_score
    - DVL (Digital Verification Ledger) emission with QEG-v1.0.0 attestation
    - 13 unit tests covering monitoring, fairness, violations, and DVL emission
@@ -109,6 +110,7 @@ Three core autonomous governance components:
 **Repository Audit System** - `quasim/audit/run.py`
 
 Comprehensive automated auditing:
+
 - **Code Quality**: ruff (PEP 8, pyflakes, complexity), pylint (static analysis) → score 0-10
 - **Security**: pip-audit (CVE), safety check (vulnerabilities), secret pattern detection → 0 vulnerabilities target
 - **Compliance**: DO-178C/NIST/CMMC/ISO file checks, coverage mapping → 98.75% coverage
@@ -117,6 +119,7 @@ Comprehensive automated auditing:
 - **Documentation**: markdown linting, API completeness → 0 errors target
 
 Audit outputs:
+
 - JSON summary: `audit/audit_summary.json` (timestamp, overall_status, average_score, checks, findings_by_severity)
 - Audit log: `artifacts/audit.jsonl` (SHA256 chain-of-trust, append-only)
 - Human-readable report with recommendations
@@ -174,6 +177,7 @@ Audit outputs:
 - Existing code remains compatible
 - Opt-in activation: `from quasim.meta import MetaControllerKernel`
 - Audit can be run standalone: `make audit`
+
 #### Phase VII: Quantum-Economic Activation (2025-11-12)
 
 **Release:** `v1.0.0-phaseVII-activation`
@@ -212,6 +216,7 @@ Full live Quantum-Economic Network (QEN) activation integrating quantum simulati
    - Regional status management and orchestration mesh monitoring
 
 **Testing:**
+
 - 33 comprehensive unit tests (100% passing)
   - TestQMPActivation: 7 tests
   - TestValuationEngine: 7 tests
@@ -221,6 +226,7 @@ Full live Quantum-Economic Network (QEN) activation integrating quantum simulati
 - All metrics targets achieved
 
 **Documentation:**
+
 - Full Phase VII activation guide: `docs/phaseVII_activation.md`
 - Data flow diagrams: QMP ↔ Φ-Valuation ↔ DVL ↔ Trust Kernel
 - Integration points: Prometheus/Grafana, telemetry ingestion, attestation chain
@@ -228,6 +234,7 @@ Full live Quantum-Economic Network (QEN) activation integrating quantum simulati
 - API usage examples and code samples
 
 **Metrics Achievement:**
+
 | Metric | Unit | Target | Achieved | Status |
 |--------|------|--------|----------|--------|
 | Coherence variance | % | <2% | 1.5% | ✓ |
@@ -238,6 +245,7 @@ Full live Quantum-Economic Network (QEN) activation integrating quantum simulati
 | Test coverage | % | >90% | 100% | ✓ |
 
 **Compliance Extensions:**
+
 - ISO 27001: A.12.1.2, A.14.2.2, A.18.1.4 controls
 - ITAR: Export controls enforced, Americas-only controlled regions
 - GDPR: Data protection enabled (EU region), privacy controls active
@@ -245,6 +253,7 @@ Full live Quantum-Economic Network (QEN) activation integrating quantum simulati
 **Breaking Changes:** None (fully additive)
 
 **Migration Notes:**
+
 - Import from `quasim.qunimbus.phaseVII`
 - All Phase VII components are opt-in
 - No changes required to existing code
@@ -255,6 +264,7 @@ Full live Quantum-Economic Network (QEN) activation integrating quantum simulati
 Production-grade safety and compliance enhancements for DO-178C Level A, NIST 800-53, and CMMC 2.0:
 
 **Core Features:**
+
 1. **Dry-Run Validation** - `--dry-run` flag for `qunimbus ascend` validates config/seed/policy with zero network overhead (~0ms)
 2. **Query ID Audit Tracking** - `--query-id` / `--qid` parameters add SHA256-chained audit with enforced query_id presence
 3. **Strict Validation Mode** - `--strict` flag for `qunimbus validate` fails (exit 3) if any observable is missing (distinct from tolerance failures, exit 2)
@@ -264,6 +274,7 @@ Production-grade safety and compliance enhancements for DO-178C Level A, NIST 80
 7. **JWT Auth Stub** - `quasim/qunimbus/auth.py` adds `verify_jwt()`, `sign_hmac()`, and `refresh_token()` scaffold for Q1-2026 production integration
 
 **Implementation Details:**
+
 - `quasim/qunimbus/cli.py`: Added `--dry-run`, `--query-id`, `--qid`, `--strict` flags with graceful validation
 - `quasim/audit/log.py`: Enhanced with query_id promotion from data dict to top-level field
 - `quasim/qunimbus/bridge.py`: Updated `ascend()` signature to accept optional `query_id` parameter
@@ -272,18 +283,21 @@ Production-grade safety and compliance enhancements for DO-178C Level A, NIST 80
 - `tests/qunimbus/test_qunimbus_enhancements.py`: Added 16 unit tests covering all enhancements (100% pass)
 
 **Performance:**
+
 - Dry-run overhead: ~0ms (no network calls, config/policy validation only)
 - Query_id audit: <1ms per event
 - Strict validation: <5ms additional check
 - Total overhead: <10ms across all enhancements
 
 **Compliance:**
+
 - **DO-178C Level A**: Deterministic replay maintained with <1μs drift tolerance
 - **NIST 800-53 Rev 5**: AC-2 (policy guard), AU-3 (audit content), SC-28 (protection at rest)
 - **CMMC 2.0 Level 2**: CUI protection via audit + policy + cryptographic integrity
 - **DFARS**: Adequate security requirements for defense contractors
 
 **Migration Notes:**
+
 - All features are additive and non-breaking
 - Existing audit logs remain valid (graceful handling of missing query_id)
 - Default behavior unchanged (dry-run/strict/query-id are opt-in)
@@ -293,6 +307,7 @@ Production-grade safety and compliance enhancements for DO-178C Level A, NIST 80
 A comprehensive suite of production-grade demo packages targeting 8 regulated industry verticals:
 
 **Core Infrastructure:**
+
 - `quasim/common/` - Cross-cutting utilities
   - `simtime.py` - Deterministic simulation clock and step scheduler
   - `metrics.py` - RMSE, Wasserstein, Bures fidelity, PR-AUC metrics
@@ -303,39 +318,41 @@ A comprehensive suite of production-grade demo packages targeting 8 regulated in
 - `quasim/viz/run_capture.py` - Headless PNG/MP4 run capture utility
 
 **Vertical Demo Packages:**
+
 1. 🚀 **Aerospace** - Hot-staging & MECO envelope optimization
    - Target: SpaceX, Boeing, Lockheed Martin, Northrop Grumman
    - KPIs: RMSE altitude/velocity, max dynamic pressure, fuel margin
-   
+
 2. 📡 **Telecom** - RAN slice placement & quantum traffic forecasting
    - Target: AT&T, Verizon, T-Mobile, Nokia
    - KPIs: SLA violations, power consumption, forecast MAE
-   
+
 3. 💰 **Finance** - Intraday risk & liquidity stress with tensor net Greeks
    - Target: JPMorgan, Goldman Sachs, BlackRock, Two Sigma
    - KPIs: VaR 99%, Expected Shortfall, max drawdown
-   
+
 4. ⚕️ **Healthcare** - Adaptive trial arm allocation
    - Target: Pfizer, J&J, Mayo Clinic, Roche
    - KPIs: Statistical power, FPR, responders gain
-   
+
 5. ⚡ **Energy** - Grid dispatch with renewables & storage
    - Target: Shell, ExxonMobil, NextEra, Ørsted
    - KPIs: LMP cost, curtailment %, CO2 emissions
-   
+
 6. 🚛 **Transportation** - Fleet routing with stochastic ETA
    - Target: UPS, FedEx, Tesla, Maersk
    - KPIs: On-time %, energy cost, km traveled
-   
+
 7. 🏭 **Manufacturing** - Predictive maintenance & throughput control
    - Target: Siemens, GE, Bosch, Toyota
    - KPIs: MTBF, downtime %, throughput, false alarms
-   
+
 8. 🌾 **Agritech** - Irrigation & yield optimization
    - Target: John Deere, Bayer, Corteva, Syngenta
    - KPIs: Yield, water efficiency, risk of loss
 
 **Each Demo Package Includes:**
+
 - Runnable CLI with plan/simulate/optimize commands
 - Deterministic simulation kernels with seeded RNG
 - Streamlit dashboards for KPI visualization
@@ -345,16 +362,19 @@ A comprehensive suite of production-grade demo packages targeting 8 regulated in
 - Synthetic data generators
 
 **CI/CD Integration:**
+
 - `.github/actions/run_demo/` - Reusable composite action
 - `.github/workflows/demo_<vertical>.yml` - 8 automated workflows
 - `make demos` - Run all smoke tests locally
 
 **Documentation:**
+
 - `docs/demos/README.md` - Vertical demos index
 - Individual READMEs for each vertical
 - Compliance mappings and threat models
 
 **Metrics:**
+
 - 25 smoke tests passing (100% success rate)
 - ~0.2s test execution time
 - Deterministic reproducibility (tolerance <1e-6)
@@ -367,6 +387,7 @@ A comprehensive suite of production-grade demo packages targeting 8 regulated in
 A comprehensive automated system for code review, auto-fixing, and PR merging:
 
 **Workflows:**
+
 - `.github/workflows/code-review-autofix.yml` - Automated code review and fixing workflow
   - Security scanning with Bandit
   - Secret detection in code
@@ -383,6 +404,7 @@ A comprehensive automated system for code review, auto-fixing, and PR merging:
   - Automatic branch cleanup after merge
 
 **Scripts:**
+
 - Enhanced `scripts/pr_auto_resolver.py` with:
   - Improved logging and progress reporting
   - Better error handling and recovery
@@ -390,10 +412,12 @@ A comprehensive automated system for code review, auto-fixing, and PR merging:
   - Enhanced commit messages
 
 **Documentation:**
+
 - `docs/AUTO_MERGE_SYSTEM.md` - Complete system documentation with setup instructions, usage guide, and troubleshooting
 - `docs/CODE_QUALITY_SUMMARY.md` - Detailed analysis of code quality improvements and metrics
 
 **Impact:**
+
 - Fixed 1,664 lint errors automatically (67.4% reduction)
 - Modified 78 files with automated fixes
 - All 11 unit tests passing
@@ -485,18 +509,21 @@ See Git history for previous changes.
 ### Notes
 
 **Development Status:**
+
 - This is an **ALPHA** release focused on architecture and foundations
 - QRATUM-ASI layer is **THEORETICAL** and requires fundamental AI breakthroughs
 - QRADLE and QRATUM are **IN DEVELOPMENT** with partial features available
 - **NOT recommended for production use** in safety-critical or classified environments
 
 **Roadmap:**
+
 - Q4 2025: QRADLE core + 3 verticals operational
 - 2026: 8 verticals operational, enterprise deployments
 - 2027: All 14 verticals operational
 - 2028+: Advanced capabilities, ASI research (conditional on breakthroughs)
 
 **Target Markets:**
+
 - Government & Defense (sovereign AI infrastructure)
 - Healthcare & Pharma (deterministic, auditable clinical AI)
 - Financial Services (reversible, compliant financial AI)

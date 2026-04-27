@@ -64,12 +64,14 @@ This document provides a comprehensive technical specification of AetherFabric-X
 ### Design Rationale
 
 Traditional datacenter routing (e.g., ECMP, spanning tree) introduces non-determinism due to:
+
 1. **Hash Collisions:** Flow hashing can cause unequal link utilization
 2. **Route Flapping:** Link failures trigger re-convergence (100+ ms)
 3. **Elephant Flows:** Large transfers can saturate links unpredictably
 4. **Head-of-Line Blocking:** Congestion on one flow affects others
 
 **DSR Solution:**
+
 - **Pre-Computed Routes:** QDR runtime computes all routes at job start
 - **Source-Specified Paths:** Every packet header contains full route
 - **No Switch State:** Switches perform stateless forwarding
@@ -159,11 +161,13 @@ def compute_dsr_routes(topology: Graph, job_communication_matrix: Matrix):
 ```
 
 **Route Encoding:**
+
 - Each route stored as vector of switch port IDs
 - Maximum 16 hops (diameter of Dragonfly+ topology: 6 hops)
 - Routes cached in NIC HBM3 memory (64 GB = 2²⁶ routes)
 
 **Example Route (Node 0 → Node 6250):**
+
 ```
 Source Node 0 (NIC Port 0)
   → Leaf Switch 0 (Port 16)
@@ -206,6 +210,7 @@ Total: ~300 ns (cut-through) or ~500 ns (with Merkle verification)
 ```
 
 **Pseudo-Code (Switch Forwarding):**
+
 ```c
 void forward_packet(Packet* pkt) {
     DsrHeader* dsr = extract_dsr_header(pkt);
@@ -266,11 +271,13 @@ Root: Embedded in DSR header of every packet
 ```
 
 **Protocol:**
+
 1. **Sender:** Compute Merkle root every 1 ms, embed in DSR header
 2. **Receiver:** Verify packet hash matches Merkle root (request proof if mismatch)
 3. **Switch:** (Optional) Spot-check Merkle proofs (1% sampling)
 
 **Overhead:**
+
 - Sender: 2.4M × SHA-3 / second = 2.4 GHash/s (0.1% NIC compute)
 - Receiver: 2.4M × SHA-3 / second = 2.4 GHash/s (0.1% NIC compute)
 - Merkle root size: 32 bytes per packet (3.2% bandwidth overhead for 1KB packets)
@@ -293,12 +300,14 @@ Root: Embedded in DSR header of every packet
 AetherFabric-X uses a hybrid credit-based + priority flow control (PFC) mechanism:
 
 **Credit System:**
+
 - Each sender maintains a credit count per (dest, QoS) pair
 - Credits represent available buffer space at receiver
 - Sender decrements credit when sending packet
 - Receiver returns credit when buffer is drained
 
 **Credit Update Protocol:**
+
 ```
 Sender:
   if (credits[dest][qos] > packet_size):
@@ -319,6 +328,7 @@ Sender (on credit_update):
 ```
 
 **Credit Packet Format:**
+
 - Piggybacked on reverse traffic (amortize overhead)
 - Explicit credit packets if no reverse traffic for > 10 μs
 - Credit packet size: 64 bytes (minimum Ethernet frame)
@@ -335,6 +345,7 @@ Sender (on credit_update):
 | P3 (Lowest) | Monitoring/telemetry | 10% | Performance counters |
 
 **PFC Mechanism:**
+
 - Per-priority PAUSE frames (IEEE 802.1Qbb)
 - PAUSE threshold: 80% buffer occupancy
 - RESUME threshold: 60% buffer occupancy
@@ -343,11 +354,13 @@ Sender (on credit_update):
 ### Congestion Control
 
 **Explicit Congestion Notification (ECN):**
+
 - Routers mark packets (ECN bit in IP header) when queue depth > 75%
 - Sender reduces rate by 50% upon ECN mark
 - Additive increase (10% every 100 μs) after congestion clears
 
 **Adaptive Routing (Fallback):**
+
 - If primary DSR route congested (ECN marks > 5%), switch to alternate route
 - Alternate routes pre-computed during route calculation
 - Route switch time: < 1 μs (no packet reordering)
@@ -387,10 +400,12 @@ For 50,000 GPUs organized as 6,250 nodes × 8 GPUs/node:
    - Time: 2 μs
 
 **Optimized Tree AllReduce (for small payloads):**
+
 - For payloads < 4 KB, use tree algorithm (depth = 13 for 6,250 nodes)
 - Time: 13 hops × 500 ns × 2 (up + down) = **13 μs**
 
 **NIC Hardware Support:**
+
 - In-network reduction (SUM, MAX, MIN) for FP32/FP64/INT32
 - Atomic operations (FADD, CAS) on HBM3 buffer
 - Zero-copy GPU Direct (bypass CPU)
@@ -425,6 +440,7 @@ ncclResult_t ncclAetherAllReduce(
 ### Latency Breakdown
 
 **Intra-Rack (same leaf switch):**
+
 ```
 Node A NIC (PCIe + DMA)     :   500 ns
   → NIC TX (serialization)  :   100 ns
@@ -437,6 +453,7 @@ Total:                        1,520 ns ≈ 1.5 μs
 ```
 
 **Intra-Group (same group, different racks):**
+
 ```
 Node A → Leaf Switch        :   610 ns
   → Group Switch (DSR fwd)  :   300 ns
@@ -446,6 +463,7 @@ Total:                        1,820 ns ≈ 1.8 μs
 ```
 
 **Cross-Group (global spine):**
+
 ```
 Node A → Leaf Switch        :   610 ns
   → Group Switch            :   300 ns
@@ -461,18 +479,21 @@ Total:                        2,420 ns ≈ 2.4 μs
 ### Bandwidth Utilization
 
 **Single Flow Throughput:**
+
 - Link Speed: 800 Gb/s = 100 GB/s
 - Packet Size: 1024 bytes (typical)
 - Overhead: 106 bytes headers + 4 bytes CRC = 110 bytes = 10.7%
 - **Effective Throughput:** 89.3 GB/s (89.3% efficiency)
 
 **Multi-Flow Aggregate:**
+
 - 4 NICs × 89.3 GB/s = 357 GB/s per node
 - 6,250 nodes × 357 GB/s = 2,231 TB/s aggregate injection
 - Bisection Bandwidth: 410 Tb/s = 51.25 TB/s
 - **Oversubscription:** 2,231 / 51.25 = 43.5:1
 
 **Mitigation:**
+
 - Most traffic is intra-group (same rack or nearby racks)
 - AllReduce uses ring topology (minimizes bisection crossing)
 - Large transfers use store-and-forward (tolerate congestion)
@@ -480,6 +501,7 @@ Total:                        2,420 ns ≈ 2.4 μs
 ### AllReduce Performance (50k GPUs)
 
 **Small Payload (8 bytes, latency-bound):**
+
 ```
 Algorithm: Tree AllReduce (depth = 13)
 Latency per hop: 500 ns
@@ -491,6 +513,7 @@ Total: 13 + 4 = 17 μs
 ```
 
 **Large Payload (1 GB, bandwidth-bound):**
+
 ```
 Algorithm: Ring AllReduce (6,250 nodes)
 Bandwidth per link: 89.3 GB/s
@@ -504,6 +527,7 @@ Efficiency: 2.23 / 4.465 = 50% (expected for ring)
 ```
 
 **NCCL Performance Target:**
+
 - 8B AllReduce: < 20 μs (QRATUM: **17 μs** ✓)
 - 1GB AllReduce: < 30 ms (QRATUM: **22.4 ms** ✓)
 
@@ -514,6 +538,7 @@ Efficiency: 2.23 / 4.465 = 50% (expected for ring)
 All inter-node communication is encrypted using NIST-standardized post-quantum algorithms:
 
 **Key Exchange: Kyber-1024**
+
 - Security Level: 192-bit classical, quantum-resistant
 - Public Key Size: 1,568 bytes
 - Ciphertext Size: 1,568 bytes
@@ -522,6 +547,7 @@ All inter-node communication is encrypted using NIST-standardized post-quantum a
 - Decapsulation: 180 μs
 
 **Digital Signatures: Dilithium-5**
+
 - Security Level: 256-bit classical, quantum-resistant
 - Public Key Size: 2,592 bytes
 - Signature Size: 4,595 bytes
@@ -529,6 +555,7 @@ All inter-node communication is encrypted using NIST-standardized post-quantum a
 - Verification: 1 ms
 
 **Usage:**
+
 - **Control Plane:** All QDR scheduler messages signed with Dilithium-5
 - **Data Plane:** Session keys established with Kyber-1024, traffic encrypted with AES-256-GCM
 - **Merkle Roots:** Signed with Dilithium-5 every 1 second (covers 2.4B packets)
@@ -568,11 +595,13 @@ Session Lifetime: 1 hour (re-key every hour)
 ### Functional Testing
 
 **DSR Route Verification:**
+
 - Exhaustive testing: All 6,250² = 39M node pairs
 - Validation: Packet reaches destination via correct path
 - Failure injection: Random link failures, verify re-routing
 
 **Merkle Verification:**
+
 - Adversarial testing: Inject corrupted packets (bit flips)
 - Detection rate: 100% (no false negatives)
 - False positive rate: < 10⁻¹⁵ (hash collision probability)
@@ -580,18 +609,21 @@ Session Lifetime: 1 hour (re-key every hour)
 ### Performance Testing
 
 **Latency Microbenchmark:**
+
 - Tool: OSU Micro-Benchmarks (MPI_Send/MPI_Recv)
 - Payload: 8 bytes
 - Iterations: 100,000
 - **Result:** 1.8 μs ± 50 ns (intra-group)
 
 **Bandwidth Macrobenchmark:**
+
 - Tool: iperf3 (modified for RDMA)
 - Payload: 1 MB packets
 - Duration: 60 seconds
 - **Result:** 88.7 GB/s (88.7% of 100 GB/s link)
 
 **AllReduce at Scale:**
+
 - Tool: NCCL allreduce_perf
 - Nodes: 6,250 (50,000 GPUs)
 - Payload: 8B to 1GB
@@ -602,11 +634,13 @@ Session Lifetime: 1 hour (re-key every hour)
 ### Stress Testing
 
 **Torture Test (7-day soak):**
+
 - Traffic Pattern: Random all-to-all, 80% link utilization
 - Error Rate: 0 packet drops, 0 CRC errors
 - Latency Variation: 99th percentile = 2.5 μs (stable)
 
 **Failure Scenarios:**
+
 - Link failure: Re-routing within 1 μs (DSR alternate path)
 - Switch failure: Traffic redistributed to neighbor switches (< 10 μs)
 - NIC failure: Node marked as unavailable, job checkpointed
@@ -616,6 +650,7 @@ Session Lifetime: 1 hour (re-key every hour)
 ### ASIC Development
 
 **AetherFabric-X NIC ASIC:**
+
 - **Process:** TSMC 5nm (N5)
 - **Die Size:** 600 mm² (similar to NVIDIA H100)
 - **Transistors:** 80 billion
@@ -624,6 +659,7 @@ Session Lifetime: 1 hour (re-key every hour)
 - **Cost:** $5,000 per NIC (volume pricing)
 
 **Development Timeline:**
+
 1. **RTL Design:** 12 months (Verilog/SystemVerilog)
 2. **Verification:** 6 months (UVM testbenches, formal verification)
 3. **Physical Design:** 6 months (place-and-route, timing closure)
@@ -636,6 +672,7 @@ Session Lifetime: 1 hour (re-key every hour)
 ### Switch Manufacturing
 
 **AetherFabric-X Switch:**
+
 - **Vendor:** Arista (custom design), or in-house if budget allows
 - **Lead Time:** 12 months
 - **Quantity:** 1,037 switches (781 leaf + 256 spine)
@@ -654,6 +691,7 @@ Session Lifetime: 1 hour (re-key every hour)
 | Google TPU Pod | 10.0 | 50 | 4k TPUs | No |
 
 **Advantages:**
+
 1. **3× lower latency** than InfiniBand HDR
 2. **7× higher bandwidth** than InfiniBand HDR
 3. **First interconnect with hardware PQC** (Kyber-1024)

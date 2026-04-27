@@ -76,6 +76,7 @@ Build comprehensive Figma marketing pages including:
 ### 3. Integration Flow
 
 Create Figma components that are:
+
 - Exportable to `/docs/assets/` as SVG/PNG
 - Tagged with relevant hashtags: #QuASIM, #QuNimbus, #QuantumSimulation, #MarketIntelligence
 - Linked back to QuASIM GitHub repo sections (README, architecture docs, valuation dashboard)
@@ -120,6 +121,7 @@ QuASIM uses a dark, professional color scheme inspired by the Solarized palette:
 ### Dark Theme Consistency
 
 All designs must maintain a dark-theme aesthetic:
+
 - Background: #002b36 or #073642
 - Use cyan/blue accents (#268bd2, #2aa198) for emphasis
 - Light text (#fdf6e3) on dark backgrounds
@@ -159,6 +161,7 @@ Incorporate visual elements that convey quantum computing concepts:
 ### Landing Page Components
 
 #### Hero Section
+
 - **Dimensions**: 1920×1080px (desktop), 1600×900px (laptop)
 - **Elements**:
   - Headline (48-64px, Inter Bold)
@@ -168,14 +171,16 @@ Incorporate visual elements that convey quantum computing concepts:
   - Optional: Product screenshot or diagram
 
 #### Feature Grid
+
 - **Layout**: 2×2 or 3×2 grid
-- **Card Design**: 
+- **Card Design**:
   - Icon (64×64px)
   - Title (24px, Inter SemiBold)
   - Description (16px, Inter Regular)
   - Hover state with accent glow
 
 #### Metrics/Stats Section
+
 - **Display Format**: Large numbers with context
 - **Example Metrics**:
   - "< 2% RMSE" (validation accuracy)
@@ -201,6 +206,7 @@ Create a complete pitch deck with the following sections:
 12. **Ask**: Funding requirements
 
 **Pitch Deck Specifications**:
+
 - Format: 16:9 aspect ratio
 - Dimensions: 1920×1080px
 - Export: PDF (print-ready) and PNG (per-slide)
@@ -208,19 +214,23 @@ Create a complete pitch deck with the following sections:
 ### Social Media Templates
 
 #### Twitter/X Card
+
 - **Dimensions**: 1200×675px (16:9)
 - **Safe Zone**: 1104×621px (inset 48px)
 - **Elements**: Logo, key message, branded background
 
 #### LinkedIn Post
+
 - **Dimensions**: 1200×627px
 - **Elements**: Professional tone, metrics-focused, credibility indicators
 
 #### Instagram Post
+
 - **Dimensions**: 1080×1080px (square)
 - **Elements**: Visual-first, minimal text, brand colors
 
 #### Twitter/X Header
+
 - **Dimensions**: 1500×500px
 - **Safe Zone**: Center 1280×427px (avoid edges)
 
@@ -336,6 +346,7 @@ git push origin marketing/figma-assets-v1
 ### Optional: Video Storyboard
 
 Create a short promotional video storyboard illustrating:
+
 1. **Intro**: QuASIM logo animation (3 sec)
 2. **Problem**: Lack of certified quantum simulation (5 sec)
 3. **Solution**: QuASIM architecture overview (8 sec)
@@ -356,6 +367,7 @@ Create a short promotional video storyboard illustrating:
 **Use for**: Logos, icons, diagrams, illustrations
 
 **Settings**:
+
 - Format: SVG
 - Include: "id" attributes
 - Outline text: Optional (keep editable if possible)
@@ -367,6 +379,7 @@ Create a short promotional video storyboard illustrating:
 **Use for**: Screenshots, social media, photographic elements
 
 **Settings**:
+
 - Format: PNG
 - Scale: 1x (standard), 2x (retina)
 - Background: Transparent (if applicable)
@@ -523,6 +536,7 @@ All marketing materials should maintain:
 - **Accessible**: Clear explanations, avoid unnecessary jargon
 
 **Key Messages**:
+
 1. Only certified quantum simulation platform (DO-178C Level A)
 2. Validated with real SpaceX/NASA mission data
 3. Production-ready with 99.95% SLA

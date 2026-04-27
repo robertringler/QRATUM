@@ -17,6 +17,7 @@ The program consists of 6 integrated phases that work together to achieve recurs
 **Module**: `qratum_asi/core/system_model.py`
 
 **Key Classes**:
+
 - `QRATUMSystemModel`: Main system self-model
 - `ComponentModel`: Model of individual components
 - `InvariantModel`: First-class representation of invariants (with rationale)
@@ -26,6 +27,7 @@ The program consists of 6 integrated phases that work together to achieve recurs
 - `FailureModeModel`: Model of known failure modes
 
 **Capabilities**:
+
 - Register and track system components
 - Model graph execution, memory layout, scheduling
 - Encode invariants as first-class objects with rationales
@@ -33,6 +35,7 @@ The program consists of 6 integrated phases that work together to achieve recurs
 - Auto-update when system changes
 
 **Example**:
+
 ```python
 from qratum_asi.core.system_model import QRATUMSystemModel, ComponentType, FailureMode
 
@@ -66,6 +69,7 @@ predictions = model.get_failure_predictions()
 **Module**: `qratum_asi/core/verification.py`
 
 **Key Classes**:
+
 - `SelfVerificationEngine`: Main verification engine
 - `VerificationCheck`: Individual verification check with intent
 - `RegressionSignature`: Intent-based behavior signature
@@ -74,12 +78,14 @@ predictions = model.get_failure_predictions()
 - `SchedulingValidator`: Validator for scheduling fairness
 
 **Capabilities**:
+
 - Continuous correctness validation (SSSP, graph ops, scheduling)
 - Intent-based regression detection (not snapshot-based)
 - Automated rollback/containment for failures
 - Zero-trust execution loop
 
 **Example**:
+
 ```python
 from qratum_asi.core.verification import SelfVerificationEngine, VerificationLevel
 
@@ -111,6 +117,7 @@ regression = engine.detect_regression(
 **Module**: `qratum_asi/core/goal_preservation.py`
 
 **Key Classes**:
+
 - `GoalPreservationEngine`: Main preservation engine
 - `Goal`: High-level system goal with measurement
 - `Constraint`: Constraint with rationale (WHY it exists)
@@ -118,12 +125,14 @@ regression = engine.detect_regression(
 - `ArchitecturalChange`: Tracks changes to architecture
 
 **Capabilities**:
+
 - Encode "WHY" alongside "WHAT" for constraints
 - Test goal preservation across architectural changes
 - Validate changes don't violate constraints
 - Collect evidence of goal stability over time
 
 **Example**:
+
 ```python
 from qratum_asi.core.goal_preservation import GoalPreservationEngine
 
@@ -148,18 +157,21 @@ print(f"Consequences if violated: {rationale.consequences_if_violated}")
 **Module**: `qratum_asi/core/compression.py`
 
 **Key Classes**:
+
 - `AbstractionCompressionEngine`: Main compression engine
 - `Pattern`: Detected repeated pattern
 - `AbstractionPrimitive`: Generalized primitive replacing patterns
 - `CompressionMetrics`: Metrics for compression progress
 
 **Capabilities**:
+
 - Detect repeated patterns across algorithms, data structures, control flow
 - Propose abstraction primitives to replace special cases
 - Measure intelligence growth as compression ratio
 - Track: fewer concepts explaining more behavior
 
 **Example**:
+
 ```python
 from qratum_asi.core.compression import AbstractionCompressionEngine
 
@@ -193,6 +205,7 @@ growth = engine.measure_intelligence_growth()
 **Module**: `qratum_asi/core/algorithm_discovery.py`
 
 **Key Classes**:
+
 - `AlgorithmDiscoveryEngine`: Main discovery engine
 - `ExecutionTrace`: Trace of algorithm execution
 - `AlgorithmicInsight`: Insight about algorithm behavior
@@ -201,12 +214,14 @@ growth = engine.measure_intelligence_growth()
 - `ProblemReformulator`: Reformulates problems
 
 **Capabilities**:
+
 - Analyze execution traces to identify wasted work
 - Generate alternative problem formulations
 - Discover novel computational primitives
 - Validate discoveries against classical baselines
 
 **Example**:
+
 ```python
 from qratum_asi.core.algorithm_discovery import (
     AlgorithmDiscoveryEngine, ExecutionTrace
@@ -247,18 +262,21 @@ discoveries = engine.discover_alternative_algorithms(
 **Module**: `qratum_asi/core/execution_feedback.py`
 
 **Key Classes**:
+
 - `ExecutionFeedbackLoop`: Main feedback loop
 - `TelemetryCollector`: Collects runtime telemetry
 - `PerformanceAnalyzer`: Analyzes telemetry to create profiles
 - `DecisionEngine`: Makes architectural decisions from feedback
 
 **Capabilities**:
+
 - Collect runtime telemetry (cache misses, memory pressure, latency)
 - Feed telemetry into reasoning loops
 - Make architectural decisions driven by execution reality
 - Close the loop: learning → execution → learning
 
 **Example**:
+
 ```python
 from qratum_asi.core.execution_feedback import (
     ExecutionFeedbackLoop, TelemetryType
@@ -295,6 +313,7 @@ improvement_evidence = loop.demonstrate_improvement()
 The `RecursiveASIDevelopmentProgram` class orchestrates all 6 phases to achieve recursive self-improvement.
 
 **Example**:
+
 ```python
 from qratum_asi.core.recursive_asi_program import RecursiveASIDevelopmentProgram
 
@@ -336,6 +355,7 @@ python demo_recursive_asi.py
 ```
 
 This runs 5 iterations and shows:
+
 - System initialization
 - Iteration metrics
 - ASI progress report
@@ -349,6 +369,7 @@ python run_asi_tests.py
 ```
 
 This runs 15 tests covering all phases:
+
 - System model construction
 - Verification engine
 - Goal preservation

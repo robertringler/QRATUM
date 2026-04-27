@@ -5,28 +5,34 @@ This directory contains scripts for running and demonstrating Phase III autonomo
 ## Scripts
 
 ### `demo_phase3.py`
+
 Comprehensive demonstration of all Phase III components individually.
 
 **Usage:**
+
 ```bash
 python scripts/demo_phase3.py
 ```
 
 **Features:**
+
 - Shows each Phase III component in isolation
 - Generates sample data for each module
 - No arguments required - runs all demos
 - ~30 seconds to complete
 
 **Output:**
+
 - Demonstrates 9 core Phase III capabilities
 - Generates artifacts in all Phase III directories
 - Provides detailed output for each component
 
 ### `run_phase3_cycle.py`
+
 Complete integrated evolution cycle combining all Phase III components.
 
 **Usage:**
+
 ```bash
 # Run with defaults (10 generations, 20 population)
 python scripts/run_phase3_cycle.py
@@ -36,12 +42,14 @@ python scripts/run_phase3_cycle.py --generations 20 --population 30 --seed 42
 ```
 
 **Arguments:**
+
 - `--generations N`: Number of evolution generations (default: 10)
 - `--population N`: Population size (default: 20)
 - `--deployment ID`: Deployment ID for federated learning (default: "demo_deployment")
 - `--seed N`: Random seed for reproducibility (default: 42)
 
 **Features:**
+
 - Integrates all 10 Phase III objectives
 - Simulates realistic kernel execution
 - Tracks fitness improvement over generations
@@ -51,6 +59,7 @@ python scripts/run_phase3_cycle.py --generations 20 --population 30 --seed 42
 - Generates complete artifact set
 
 **Output:**
+
 - Evolution summary with fitness progression
 - Energy efficiency metrics
 - Thermal statistics
@@ -69,19 +78,25 @@ python scripts/run_phase3_cycle.py --generations 20 --population 30 --seed 42
 ## Examples
 
 ### Quick Demo
+
 See all Phase III features:
+
 ```bash
 python scripts/demo_phase3.py
 ```
 
 ### Short Evolution Run
+
 Fast evolution cycle for testing:
+
 ```bash
 python scripts/run_phase3_cycle.py --generations 5 --population 10
 ```
 
 ### Full Evolution Run
+
 Production-scale evolution:
+
 ```bash
 python scripts/run_phase3_cycle.py --generations 50 --population 50 --seed 123
 ```
@@ -119,6 +134,7 @@ certs/
 ## Dependencies
 
 Both scripts require:
+
 - Python 3.11+
 - Standard library only (no external packages beyond pytest for testing)
 
@@ -127,6 +143,7 @@ All dependencies are included in the base QuASIM installation.
 ## Testing
 
 Run Phase III tests:
+
 ```bash
 PYTHONPATH=.:runtime/python:quantum python -m pytest tests/software/test_phase3.py -v
 ```

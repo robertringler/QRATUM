@@ -7,6 +7,7 @@
 Aethernet is a deterministic, zone-aware overlay network that provides accountable and reversible transaction execution for QRATUM's sovereign AI platform. It integrates cryptographic provenance, dual-control authorization, multi-factor ephemeral biometric keys, zero-knowledge proofs, and comprehensive compliance enforcement.
 
 **Phase I-II Security Hardening** (Completed):
+
 - Multi-factor biokey derivation with automatic rotation
 - ZKP replay attack prevention
 - TEE runtime with memory scrubbing and attestation
@@ -24,6 +25,7 @@ Aethernet is a deterministic, zone-aware overlay network that provides accountab
 The TXO is the fundamental data structure representing a transaction in Aethernet.
 
 **Key Features:**
+
 - **CBOR-primary encoding** with JSON-secondary for human readability
 - **SHA3-256 hashing** for deterministic Merkle chaining
 - **Dual-control signatures** (FIDO2 + optional biokey ZKP)
@@ -32,6 +34,7 @@ The TXO is the fundamental data structure representing a transaction in Aetherne
 - **Compliance flags** (HIPAA, GDPR, BIPA)
 
 **Structure:**
+
 ```rust
 pub struct TXO {
     version: u32,
@@ -58,6 +61,7 @@ pub struct TXO {
 RTF provides the execution layer with zone enforcement and rollback primitives.
 
 **API:**
+
 - `execute_txo(txo)` - Validate and prepare TXO for commit
 - `commit_txo(txo)` - Append TXO to Merkle ledger
 - `rollback_txo(epoch, reason)` - Rollback to previous epoch
@@ -84,6 +88,7 @@ Z3 (Archive)
 | Z3   | No      | Dual A+B  | Yes     | Never    | Audit only|
 
 **TEE Enclave Module:**
+
 - `enclave_main.rs` - Secure execution environment for TXO processing
 - **Attestation verification** - SGX/SEV-SNP/TDX attestation before execution
 - **Memory scrubbing** - 3-pass volatile write to prevent key material leakage
@@ -97,6 +102,7 @@ Z3 (Archive)
 Multi-factor ephemeral biometric key derivation with automatic rotation.
 
 **Key Features:**
+
 - **Multi-factor entropy** - SNP loci + Device PUF + Ephemeral salt + Temporal nonce
 - **SHA3-512 derivation** - 512-bit key material (upgraded from 256-bit)
 - **Automatic rotation** - Generation tracking with configurable intervals
@@ -105,6 +111,7 @@ Multi-factor ephemeral biometric key derivation with automatic rotation.
 - **Auto-wipe** - Secure memory clearing on Drop (3-pass overwrite)
 
 **Security Model:**
+
 ```rust
 pub struct EphemeralBiokey {
     key_material: [u8; 64],         // SHA3-512 output
@@ -133,6 +140,7 @@ impl Drop for EphemeralBiokey {
 ```
 
 **ZKP Integration (Phase I-II):**
+
 - **Risc0** - RISC-V zkVM guest program skeleton
 - **Halo2** - Recursive SNARK circuit skeleton
 - **Replay prevention** - ReplayCache with proof ID tracking
@@ -145,6 +153,7 @@ impl Drop for EphemeralBiokey {
 Append-only, zone-aware ledger with snapshot-based rollback.
 
 **Features:**
+
 - **Merkle chain** - Each node links to parent via SHA3-256
 - **Zone promotion** - Z0→Z1→Z2→Z3 with validation
 - **Epoch snapshots** - Immutable checkpoints for rollback
@@ -153,6 +162,7 @@ Append-only, zone-aware ledger with snapshot-based rollback.
 - **Tombstone tracking** - Rollback metadata (Phase I-II planned)
 
 **Structure:**
+
 ```rust
 pub struct MerkleLedger {
     genesis_root: [u8; 32],         // Immutable anchor
@@ -170,12 +180,14 @@ pub struct MerkleLedger {
 Emergency multisig recovery for dual biokey failure scenarios.
 
 **Key Features:**
+
 - **Quorum-based** - N/M signature requirement (e.g., 3/5)
 - **Temporal decay** - Recovery window decreases over epochs
 - **Immutable audit** - All override events logged to ledger
 - **No single-point recovery** - Requires multiple independent signers
 
 **Structure:**
+
 ```rust
 pub struct MultisigRecovery {
     quorum_required: u32,            // e.g., 3
@@ -200,6 +212,7 @@ pub struct DecayConfig {
 Secure, immutable execution environment for external TXO ingestion.
 
 **Key Features:**
+
 - **Strictly immutable** - No state persistence
 - **Air-gapped** - No network, no file I/O
 - **Enclave attestation** - TEE report verification before execution
@@ -208,6 +221,7 @@ Secure, immutable execution environment for external TXO ingestion.
 - **Deterministic execution** - Same input → same output
 
 **Firecracker Integration:**
+
 ```rust
 pub struct MicroVMSandbox {
     config: SandboxConfig,
@@ -230,6 +244,7 @@ pub struct SandboxConfig {
 Real-time monitoring and alerting for security anomalies.
 
 **Detection Capabilities:**
+
 - **Propagation delays** - Threshold and statistical (Z-score) detection
 - **Integrity violations** - Merkle proof failures
 - **Operator deviations** - Behavioral profiling
@@ -238,6 +253,7 @@ Real-time monitoring and alerting for security anomalies.
 - **Consensus timeouts** - BFT liveness monitoring
 
 **Structure:**
+
 ```rust
 pub struct AnomalyDetector {
     config: DetectorConfig,
@@ -260,6 +276,7 @@ pub struct DetectorConfig {
 **Location:** `core/` (hipaa.rs, gdpr.rs) and `compliance/` (bipa.rs)
 
 #### HIPAA (Health Insurance Portability and Accountability Act)
+
 - **Administrative Safeguards** - Access control, training, emergency access
 - **Physical Safeguards** - Facility access, workstation security
 - **Technical Safeguards** - Encryption, audit logging, unique user ID
@@ -267,6 +284,7 @@ pub struct DetectorConfig {
 - **Breach Notification** - Risk assessment, notification within 60 days
 
 #### GDPR (General Data Protection Regulation)
+
 - **Lawful Basis** - Consent, contract, legal obligation, vital interests
 - **Special Categories** - Genetic data processing with explicit consent
 - **Data Subject Rights** - Access, rectification, erasure, portability, objection
@@ -277,6 +295,7 @@ pub struct DetectorConfig {
 - **International Transfers** - Adequacy decisions, Standard Contractual Clauses
 
 #### BIPA (Biometric Information Privacy Act) - Phase I-II New
+
 - **Informed consent** - Before biometric collection
 - **Storage disclosure** - Retention period communication
 - **Prohibition on sale** - No profit from biometric data
@@ -284,6 +303,7 @@ pub struct DetectorConfig {
 - **Audit trail** - Immutable log of all biometric operations
 
 **Structure:**
+
 ```rust
 pub struct BipaEnforcer {
     consent_records: Vec<BipaConsent>,
@@ -305,9 +325,11 @@ pub struct BipaConsent {
 **Location:** `integration/`
 
 #### VITRA-E0 Adapter (Nextflow)
+
 Integrates Aethernet TXO execution with VITRA-E0 genomics pipeline.
 
 **Features:**
+
 - **Pipeline hooks** - Before/after stage TXO creation
 - **Zone enforcement** - Validate operations per zone policy
 - **Merkle chain export** - CBOR-encoded provenance DAG
@@ -316,6 +338,7 @@ Integrates Aethernet TXO execution with VITRA-E0 genomics pipeline.
 ## Data Flow
 
 ### 1. TXO Creation (Phase I-II Enhanced)
+
 ```
 User/System
     ↓
@@ -331,6 +354,7 @@ Set compliance flags (HIPAA, GDPR, BIPA)
 ```
 
 ### 2. TXO Execution (Phase I-II Enhanced)
+
 ```
 MicroVM Sandbox (optional)
     ↓
@@ -354,6 +378,7 @@ Add audit entry (EXECUTE)
 ```
 
 ### 3. TXO Commit
+
 ```
 Merkle Ledger
     ↓
@@ -371,6 +396,7 @@ Log to anomaly detector
 ```
 
 ### 4. Rollback (Phase I-II Enhanced)
+
 ```
 RTF Context
     ↓
@@ -394,6 +420,7 @@ Log to audit trail
 ## Security Invariants (Phase I-II Enhanced)
 
 ### Determinism
+
 - Same input TXO → same output state
 - Fixed hash algorithms (SHA3-256/512)
 - CBOR encoding for canonical serialization
@@ -401,12 +428,14 @@ Log to audit trail
 - ZKP verification is deterministic
 
 ### Dual Control
+
 - Critical operations require two independent authorizations
 - Implemented via FIDO2 signatures from separate keys
 - Enforced at zone promotion (Z2→Z3)
 - Emergency multisig recovery with temporal decay
 
 ### Sovereignty
+
 - No data egress to external systems
 - Air-gapped deployment support (Z3)
 - MicroVM sandbox prevents outbound channels
@@ -414,6 +443,7 @@ Log to audit trail
 - Encrypted at rest and in transit
 
 ### Reversibility
+
 - Zone-appropriate rollback capability
 - Z1 (Staging) - full rollback
 - Z2 (Production) - emergency rollback
@@ -421,6 +451,7 @@ Log to audit trail
 - Tombstone tracking for audit
 
 ### Auditability
+
 - Complete provenance chain
 - Immutable audit trail per TXO
 - Merkle-chained for tamper-evidence
@@ -429,6 +460,7 @@ Log to audit trail
 - Recovery override logs
 
 ### Multi-Factor Security (Phase I-II New)
+
 - **Biokey**: SNP + PUF + Salt + Nonce (4-factor)
 - **Automatic rotation**: Generation-tracked key cycling
 - **Replay prevention**: Proof ID caching with temporal bounds
@@ -450,18 +482,21 @@ Log to audit trail
 ## Deployment Profiles
 
 ### Development (Z1)
+
 ```bash
 cargo build --features std,json
 ./aethernet --zone Z1 --mode development
 ```
 
 ### Production (Z2)
+
 ```bash
 cargo build --release --features json
 ./aethernet --zone Z2 --mode production --fido2-key /yubikey/epoch_a
 ```
 
 ### Air-Gapped (Z3)
+
 ```bash
 # Build on connected system
 cargo build --release --no-default-features --features airgap
@@ -526,6 +561,7 @@ cargo test --lib bipa
 ## Phase I-II Completion Status
 
 ### ✅ Completed
+
 1. Multi-factor biokey derivation (SNP+PUF+salt+nonce)
 2. Automatic key rotation with generation tracking
 3. ZKP replay attack prevention with proof caching
@@ -536,11 +572,13 @@ cargo test --lib bipa
 8. BIPA compliance integration
 
 ### 🚧 In Progress
+
 9. Ledger improvements (tombstone tracking, strict proof verification)
-10. TXO runtime validation enhancements
-11. Consensus overlay (PBFT/Tendermint placeholders)
+2. TXO runtime validation enhancements
+3. Consensus overlay (PBFT/Tendermint placeholders)
 
 ### 📋 Planned (Phase III)
+
 - Advanced ZKP circuits (full Halo2/Risc0 implementation)
 - Mesh consensus overlay with BFT quorum
 - Enhanced anomaly detection with ML models
@@ -578,6 +616,7 @@ Apache License 2.0 - see [LICENSE](../LICENSE) for details.
 The TXO is the fundamental data structure representing a transaction in Aethernet.
 
 **Key Features:**
+
 - **CBOR-primary encoding** with JSON-secondary for human readability
 - **SHA3-256 hashing** for deterministic Merkle chaining
 - **Dual-control signatures** (FIDO2 + optional biokey)
@@ -585,6 +624,7 @@ The TXO is the fundamental data structure representing a transaction in Aetherne
 - **Complete audit trail** (actor, action, timestamp)
 
 **Structure:**
+
 ```rust
 pub struct TXO {
     version: u32,
@@ -611,6 +651,7 @@ pub struct TXO {
 RTF provides the execution layer with zone enforcement and rollback primitives.
 
 **API:**
+
 - `execute_txo(txo)` - Validate and prepare TXO for commit
 - `commit_txo(txo)` - Append TXO to Merkle ledger
 - `rollback_txo(epoch, reason)` - Rollback to previous epoch
@@ -637,6 +678,7 @@ Z3 (Archive)
 | Z3   | No      | Dual A+B  | Yes     | Never    | Audit only|
 
 **Enclave Entry Point:**
+
 - `enclave_main.rs` - no_std runtime for trusted execution environment (TEE)
 - Isolates TXO execution in SGX/SEV-SNP enclave
 - Wipes sensitive data after execution
@@ -648,12 +690,14 @@ Z3 (Archive)
 Ephemeral biometric key derivation from SNP (Single Nucleotide Polymorphism) loci.
 
 **Key Features:**
+
 - **Ephemeral derivation** - Keys exist only in RAM for 60 seconds
 - **SNP-based** - Derived from genetic variants (non-coding regions)
 - **Zero-knowledge proofs** - Prove possession without revealing SNP data
 - **Auto-wipe** - Secure memory clearing on Drop
 
 **Security Model:**
+
 ```rust
 pub struct EphemeralBiokey {
     key_material: [u8; 32],  // Derived from SNP loci
@@ -669,6 +713,7 @@ impl Drop for EphemeralBiokey {
 ```
 
 **ZKP Integration:**
+
 - **Risc0** - RISC-V zkVM for general computation
 - **Halo2** - Recursive SNARKs for efficient proofs
 
@@ -679,12 +724,14 @@ impl Drop for EphemeralBiokey {
 Append-only, zone-aware ledger with snapshot-based rollback.
 
 **Features:**
+
 - **Merkle chain** - Each node links to parent via SHA3-256
 - **Zone promotion** - Z0→Z1→Z2→Z3 with validation
 - **Epoch snapshots** - Immutable checkpoints for rollback
 - **Chain verification** - Validate integrity from genesis to current
 
 **Structure:**
+
 ```rust
 pub struct MerkleLedger {
     genesis_root: [u8; 32],     // Immutable anchor
@@ -700,6 +747,7 @@ pub struct MerkleLedger {
 **Location:** `compliance/`
 
 #### HIPAA (Health Insurance Portability and Accountability Act)
+
 - **Administrative Safeguards** - Access control, training, emergency access
 - **Physical Safeguards** - Facility access, workstation security
 - **Technical Safeguards** - Encryption, audit logging, unique user ID
@@ -707,6 +755,7 @@ pub struct MerkleLedger {
 - **Breach Notification** - Risk assessment, notification within 60 days
 
 #### GDPR (General Data Protection Regulation)
+
 - **Lawful Basis** - Consent, contract, legal obligation, vital interests
 - **Special Categories** - Genetic data processing with explicit consent
 - **Data Subject Rights** - Access, rectification, erasure, portability, objection
@@ -721,9 +770,11 @@ pub struct MerkleLedger {
 **Location:** `integration/`
 
 #### VITRA-E0 Adapter (Nextflow)
+
 Integrates Aethernet TXO execution with VITRA-E0 genomics pipeline.
 
 **Features:**
+
 - **Pipeline hooks** - Before/after stage TXO creation
 - **Zone enforcement** - Validate operations per zone policy
 - **Merkle chain export** - CBOR-encoded provenance DAG
@@ -732,6 +783,7 @@ Integrates Aethernet TXO execution with VITRA-E0 genomics pipeline.
 ## Data Flow
 
 ### 1. TXO Creation
+
 ```
 User/System
     ↓
@@ -743,6 +795,7 @@ Add signatures (FIDO2, optional biokey)
 ```
 
 ### 2. TXO Execution
+
 ```
 RTF Context (zone-aware)
     ↓
@@ -758,6 +811,7 @@ Add audit entry (EXECUTE)
 ```
 
 ### 3. TXO Commit
+
 ```
 Merkle Ledger
     ↓
@@ -773,6 +827,7 @@ Add audit entry (COMMIT)
 ```
 
 ### 4. Rollback
+
 ```
 RTF Context
     ↓
@@ -790,29 +845,34 @@ Update current_epoch
 ## Security Invariants
 
 ### Determinism
+
 - Same input TXO → same output state
 - Fixed hash algorithm (SHA3-256)
 - CBOR encoding for canonical serialization
 - No external dependencies or network calls
 
 ### Dual Control
+
 - Critical operations require two independent authorizations
 - Implemented via FIDO2 signatures from separate keys
 - Enforced at zone promotion (Z2→Z3)
 
 ### Sovereignty
+
 - No data egress to external systems
 - Air-gapped deployment support (Z3)
 - On-premises execution
 - Encrypted at rest and in transit
 
 ### Reversibility
+
 - Zone-appropriate rollback capability
 - Z1 (Staging) - full rollback
 - Z2 (Production) - emergency rollback
 - Z0, Z3 - immutable (no rollback)
 
 ### Auditability
+
 - Complete provenance chain
 - Immutable audit trail per TXO
 - Merkle-chained for tamper-evidence
@@ -832,18 +892,21 @@ Update current_epoch
 ## Deployment Profiles
 
 ### Development (Z1)
+
 ```bash
 cargo build --features std
 ./aethernet --zone Z1 --mode development
 ```
 
 ### Production (Z2)
+
 ```bash
 cargo build --release --no-default-features
 ./aethernet --zone Z2 --mode production --fido2-key /yubikey/epoch_a
 ```
 
 ### Air-Gapped (Z3)
+
 ```bash
 # Build on connected system
 cargo build --release --no-default-features --features airgap

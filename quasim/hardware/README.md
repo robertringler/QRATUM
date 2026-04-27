@@ -122,6 +122,7 @@ pytest tests/hardware/test_nvml_backend.py -v
 ### Safety
 
 This backend only performs safe, reversible operations:
+
 - No firmware modifications
 - No permanent changes
 - All settings can be reset to defaults
@@ -130,6 +131,7 @@ This backend only performs safe, reversible operations:
 ### Error Handling
 
 The backend gracefully handles:
+
 - Missing pynvml package (NVML_AVAILABLE flag)
 - Initialization failures
 - Device access errors

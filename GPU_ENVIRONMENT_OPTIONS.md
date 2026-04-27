@@ -10,6 +10,7 @@
 ## 1. CURRENT ENVIRONMENT ASSESSMENT
 
 ### GitHub Actions Standard Runner (Current)
+
 | Property | Value |
 |----------|-------|
 | Runner | `ubuntu-latest` |
@@ -27,6 +28,7 @@
 ### Option A: GitHub Actions GPU Runners
 
 #### A.1: GitHub-Hosted Larger Runners (Enterprise)
+
 | Property | Value |
 |----------|-------|
 | Availability | GitHub Enterprise Cloud only |
@@ -35,7 +37,8 @@
 | Cost | ~$0.07/min (T4), ~$0.15/min (A10G) |
 | Setup | Requires Enterprise subscription |
 
-**Reproducibility**: 
+**Reproducibility**:
+
 - ✅ Hardware identifiable via runner labels
 - ⚠️ Shared infrastructure, potential variability
 - ✅ Logs preserved in GitHub
@@ -43,6 +46,7 @@
 **Suitability**: 🟡 Partial - T4/A10G lack SM 8.0 for full VITRA support
 
 #### A.2: Self-Hosted GPU Runner
+
 | Property | Value |
 |----------|-------|
 | Availability | User-provisioned |
@@ -51,6 +55,7 @@
 | Setup | Requires runner registration |
 
 **Reproducibility**:
+
 - ✅ Full hardware control
 - ✅ Deterministic environment
 - ✅ All logs preserved
@@ -62,6 +67,7 @@
 ### Option B: Major Cloud Providers
 
 #### B.1: AWS EC2 GPU Instances
+
 | Instance | GPU | VRAM | Cost/hr | Spot Cost |
 |----------|-----|------|---------|-----------|
 | p4d.24xlarge | 8× A100 40GB | 320 GB | ~$32.77 | ~$10-15 |
@@ -71,18 +77,21 @@
 | g5.xlarge | 1× A10G | 24 GB | ~$1.006 | ~$0.30 |
 
 **Reproducibility Assessment**:
+
 - ✅ Hardware unambiguously identified via instance metadata
 - ✅ Runs repeatable with same instance type
 - ✅ CloudWatch logs preserved
 - ⚠️ Spot instances may be terminated (use On-Demand for benchmarks)
 
 **Suitability for QRATUM**:
+
 - p4d/p4de: ✅ Full support (A100)
 - g5 (A10G): 🟡 Partial (SM 8.6, not A100)
 - g4dn (T4): ⚠️ Limited (SM 7.5)
 - p3 (V100): ⚠️ Legacy support only
 
 #### B.2: Google Cloud Platform (GCP)
+
 | Machine Type | GPU | VRAM | Cost/hr |
 |--------------|-----|------|---------|
 | a2-highgpu-1g | 1× A100 40GB | 40 GB | ~$3.67 |
@@ -91,6 +100,7 @@
 | n1 + T4 | 1× T4 | 16 GB | ~$0.35 |
 
 **Reproducibility Assessment**:
+
 - ✅ Hardware identifiable via metadata server
 - ✅ Deterministic with same machine type
 - ✅ Cloud Logging preserved
@@ -99,6 +109,7 @@
 **Suitability for QRATUM**: ✅ a2-highgpu-1g ideal for single-GPU benchmarks
 
 #### B.3: Microsoft Azure
+
 | VM Size | GPU | VRAM | Cost/hr |
 |---------|-----|------|---------|
 | Standard_NC24ads_A100_v4 | 1× A100 80GB | 80 GB | ~$3.67 |
@@ -107,6 +118,7 @@
 | Standard_NC4as_T4_v3 | 1× T4 | 16 GB | ~$0.526 |
 
 **Reproducibility Assessment**:
+
 - ✅ Hardware identifiable via Azure IMDS
 - ✅ Deterministic with same VM size
 - ✅ Azure Monitor logs preserved
@@ -118,6 +130,7 @@
 ### Option C: Academic/Research Free-Tier GPU
 
 #### C.1: Google Colab
+
 | Property | Value |
 |----------|-------|
 | GPU Models | T4 (free), A100 (Colab Pro+) |
@@ -126,6 +139,7 @@
 | Time Limit | ~12 hours |
 
 **Reproducibility Assessment**:
+
 - ⚠️ Hardware NOT guaranteed (may get different GPU)
 - ❌ Runs NOT repeatable (random GPU assignment)
 - ⚠️ Logs lost on disconnect
@@ -134,6 +148,7 @@
 **Suitability**: ❌ **DISQUALIFIED** - Hardware variability invalidates claims
 
 #### C.2: Kaggle Notebooks
+
 | Property | Value |
 |----------|-------|
 | GPU Models | T4 (dual), P100 |
@@ -142,6 +157,7 @@
 | Time Limit | 12 hours per session |
 
 **Reproducibility Assessment**:
+
 - ⚠️ Hardware selection not guaranteed
 - ⚠️ Shared environment
 - ✅ Notebooks saved
@@ -149,6 +165,7 @@
 **Suitability**: ❌ **DISQUALIFIED** - Cannot guarantee consistent hardware
 
 #### C.3: Lambda Labs Cloud
+
 | Property | Value |
 |----------|-------|
 | GPU Models | A100 40GB, A100 80GB, H100 |
@@ -156,6 +173,7 @@
 | Availability | Often limited |
 
 **Reproducibility Assessment**:
+
 - ✅ Hardware clearly specified
 - ✅ Dedicated instances
 - ⚠️ Availability constraints
@@ -163,12 +181,14 @@
 **Suitability**: ✅ Cost-effective A100 access
 
 #### C.4: Paperspace
+
 | Property | Value |
 |----------|-------|
 | GPU Models | A100, V100, RTX |
 | Cost | $2.30/hr (A100) |
 
 **Reproducibility Assessment**:
+
 - ✅ Dedicated hardware
 - ✅ Persistent storage
 
@@ -185,6 +205,7 @@
 | Availability | Immediate |
 
 **Reproducibility Assessment**:
+
 - ✅ Full hardware identification (nvidia-smi)
 - ✅ Complete control over environment
 - ✅ All logs preserved locally
@@ -214,13 +235,17 @@
 ## 4. DISQUALIFIED ENVIRONMENTS
 
 ### Google Colab
+
 **Reason**: Hardware selection is non-deterministic. Performance claims would be invalid because:
+
 1. GPU model varies between sessions
 2. Throttling applied unpredictably
 3. Shared resources cause variability
 
 ### Kaggle Notebooks
+
 **Reason**: Similar to Colab - hardware not guaranteed. Benchmark results could vary 2-5x between runs due to:
+
 1. Different GPU assignments
 2. Background resource contention
 3. Session time limits
@@ -230,6 +255,7 @@
 ## 5. ENVIRONMENT RANKING (Most to Least Defensible)
 
 ### Tier 1: Fully Defensible (A100 Hardware)
+
 1. **Self-Hosted Runner with A100** - Complete control
 2. **AWS p4d.24xlarge (On-Demand)** - Documented, repeatable
 3. **GCP a2-highgpu-1g** - Cost-effective A100
@@ -237,14 +263,17 @@
 5. **Lambda Labs A100** - Budget option
 
 ### Tier 2: Partially Defensible (Non-A100)
+
 6. **AWS g5.xlarge (A10G)** - SM 8.6, limited VRAM
-7. **GitHub GPU Runners (T4/A10G)** - Convenient but limited
+2. **GitHub GPU Runners (T4/A10G)** - Convenient but limited
 
 ### Tier 3: Development Only
+
 8. **Local RTX 3090/4090** - Consumer hardware
-9. **AWS p3 (V100)** - Legacy
+2. **AWS p3 (V100)** - Legacy
 
 ### Tier 4: Disqualified
+
 - Google Colab
 - Kaggle Notebooks
 - Any shared/variable hardware
@@ -256,9 +285,10 @@
 ### Recommended Environment: **GCP a2-highgpu-1g**
 
 **Technical Justification**:
+
 1. **Hardware**: NVIDIA A100 40GB (SM 8.0) - meets all QRATUM requirements
 2. **Cost**: ~$3.67/hr - affordable for benchmark runs
-3. **Reproducibility**: 
+3. **Reproducibility**:
    - Same hardware guaranteed via machine type
    - Metadata server provides hardware attestation
    - Cloud Logging preserves all output
@@ -269,6 +299,7 @@
 5. **Setup Complexity**: Low - standard GCP VM workflow
 
 ### Alternative: **AWS p4d.24xlarge (Spot)**
+
 - **Use Case**: Multi-GPU benchmarks
 - **Cost**: ~$10-15/hr (Spot)
 - **Risk**: Spot termination possible
@@ -277,21 +308,24 @@
 
 ## 7. VALID AND INVALID PERFORMANCE CLAIMS
 
-### In GCP a2-highgpu-1g Environment:
+### In GCP a2-highgpu-1g Environment
 
 #### VALID Claims
+
 - "QRATUM achieved X throughput on NVIDIA A100 40GB"
 - "Quantum simulation of 25 qubits completed in Y seconds"
 - "VITRA-E0 processed 30x WGS in Z minutes"
 - "Chess engine evaluated N nodes/second with GPU acceleration"
 
 #### INVALID Claims
+
 - "QRATUM is X% faster than competitor" (no competitor baseline)
 - "Will achieve same performance on H100" (extrapolation)
 - "Scalable to 8-GPU" (single GPU tested)
 - "Production-ready performance" (benchmark environment only)
 
 ### Performance Claim Template
+
 ```
 BENCHMARK: [Name]
 HARDWARE: NVIDIA A100-SXM4-40GB
@@ -310,11 +344,13 @@ DETERMINISM: [Hash if applicable]
 ### Required CI/Infra Changes
 
 #### Option A: GCP Integration (Recommended)
+
 1. **Create GCP Service Account**
    - Role: `compute.instanceAdmin.v1`
    - Role: `logging.logWriter`
 
 2. **Add GitHub Secrets**
+
    ```
    GCP_PROJECT_ID: qratum-benchmarks
    GCP_SA_KEY: [base64-encoded service account JSON]
@@ -322,6 +358,7 @@ DETERMINISM: [Hash if applicable]
    ```
 
 3. **Create Workflow File**: `.github/workflows/gpu-benchmark.yml`
+
    ```yaml
    name: GPU Benchmarks
    on:
@@ -357,6 +394,7 @@ DETERMINISM: [Hash if applicable]
    ```
 
 4. **Update `.gitignore`**
+
    ```
    # GCP credentials (never commit)
    *.json
@@ -364,6 +402,7 @@ DETERMINISM: [Hash if applicable]
    ```
 
 #### Expected Risks
+
 | Risk | Mitigation |
 |------|------------|
 | Cloud cost overrun | Set budget alerts, use preemptible |
@@ -372,6 +411,7 @@ DETERMINISM: [Hash if applicable]
 | GPU quota limits | Request quota increase |
 
 #### Credentials Needed
+
 - GCP Service Account JSON key
 - Project ID with billing enabled
 - Sufficient GPU quota in target zone

@@ -9,6 +9,7 @@ This directory contains reusable Figma templates for creating consistent visual 
 **Purpose**: Marketing website landing pages
 
 **Includes**:
+
 - Hero section (1920×1080px)
 - Feature grid (2×2 or 3×2 layout)
 - Metrics/stats section
@@ -24,21 +25,25 @@ This directory contains reusable Figma templates for creating consistent visual 
 ### 2. Social Media Post Templates
 
 #### Twitter/X Card
+
 - **Dimensions**: 1200×675px (16:9)
 - **Elements**: Headline, body text, logo, background
 - **Location**: 04_Social_Media → Twitter_Card_Template
 
 #### LinkedIn Post
+
 - **Dimensions**: 1200×627px
 - **Elements**: Headline, body text, metric/stat, logo
 - **Location**: 04_Social_Media → LinkedIn_Post_Template
 
 #### Instagram Square
+
 - **Dimensions**: 1080×1080px
 - **Elements**: Visual-first with minimal text, logo
 - **Location**: 04_Social_Media → Instagram_Square_Template
 
 #### Instagram Story
+
 - **Dimensions**: 1080×1920px
 - **Elements**: Vertical format, safe zones marked
 - **Location**: 04_Social_Media → Instagram_Story_Template
@@ -48,6 +53,7 @@ This directory contains reusable Figma templates for creating consistent visual 
 ### 3. Pitch Deck Slide Templates
 
 **Standard Slides**:
+
 - Title slide (logo + tagline)
 - Content slide (title + bullet points)
 - Two-column slide (split content)
@@ -61,11 +67,13 @@ This directory contains reusable Figma templates for creating consistent visual 
 ### 4. Diagram Templates
 
 #### Architecture Diagram
+
 - **Purpose**: System architecture visualization
 - **Elements**: Component boxes, connection lines, labels
 - **Style**: Clean, minimal, color-coded components
 
 #### Flow Diagram
+
 - **Purpose**: Process flows, data flows
 - **Elements**: Start/end nodes, process boxes, decision diamonds, arrows
 - **Style**: Professional, easy to follow
@@ -79,6 +87,7 @@ This directory contains reusable Figma templates for creating consistent visual 
 **Purpose**: Highlighting product features on website or in presentations
 
 **Includes**:
+
 - Icon placeholder (64×64px)
 - Title (24px Inter SemiBold)
 - Description (16px Inter Regular)
@@ -95,12 +104,14 @@ This directory contains reusable Figma templates for creating consistent visual 
 **Purpose**: Displaying compliance and certification credentials
 
 **Includes**:
+
 - Badge shape (rounded rectangle or shield)
 - Certification name
 - Level/tier indicator
 - Color coding by certification type
 
 **Available Badges**:
+
 - DO-178C Level A (Orange)
 - CMMC 2.0 Level 2 (Green)
 - NIST 800-53 Rev 5 (Blue)
@@ -204,9 +215,11 @@ To create a new template for the team:
 ### Naming Conventions
 
 **Template Frames**: `Template_{Type}_{Variant}`
+
 - Example: `Template_Social_Twitter_Card`
 
 **Template Components**: `Component/{Category}/{Name}`
+
 - Example: `Component/Cards/Feature_Card`
 
 ### Components vs Frames
@@ -217,6 +230,7 @@ To create a new template for the team:
 ### Auto Layout
 
 Enable auto-layout on containers for responsive behavior:
+
 - Shift + A (keyboard shortcut)
 - Allows content to reflow when text changes
 - Essential for templates that will be customized
@@ -237,6 +251,7 @@ Enable auto-layout on containers for responsive behavior:
 ### Template Updates
 
 When a template needs updates:
+
 1. Create new version (don't modify original directly)
 2. Test with sample content
 3. Document changes
@@ -246,6 +261,7 @@ When a template needs updates:
 ### Feedback
 
 To suggest template improvements:
+
 - Add comments in Figma
 - Open GitHub issue with `design` or `template` label
 - Discuss in design review meetings

@@ -6,36 +6,36 @@ Complete reference documentation for QRATUM APIs, CLI, and configuration.
 
 <div class="grid cards" markdown>
 
--   :material-api:{ .lg .middle } __API Reference__
+- :material-api:{ .lg .middle } __API Reference__
 
     ---
 
     Complete API documentation with examples
-    
+
     [:octicons-arrow-right-24: API Reference](api-reference.md)
 
--   :material-console:{ .lg .middle } __CLI Reference__
+- :material-console:{ .lg .middle } __CLI Reference__
 
     ---
 
     Command-line interface documentation
-    
+
     [:octicons-arrow-right-24: CLI Reference](cli-reference.md)
 
--   :material-cog:{ .lg .middle } __Configuration__
+- :material-cog:{ .lg .middle } __Configuration__
 
     ---
 
     Configuration options and environment variables
-    
+
     [:octicons-arrow-right-24: Configuration](configuration.md)
 
--   :material-code-braces:{ .lg .middle } __Code Examples__
+- :material-code-braces:{ .lg .middle } __Code Examples__
 
     ---
 
     Copy-paste ready code examples
-    
+
     [:octicons-arrow-right-24: Code Examples](code-examples.md)
 
 </div>

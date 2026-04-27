@@ -23,10 +23,12 @@ Complete answers to common questions about QRATUM-ASI.
 **No.** QRATUM-ASI is a **theoretical architecture** for how superintelligence *could* be controlled if/when it becomes possible. The ASI layer (Q-REALITY, Q-MIND, Q-EVOLVE, Q-WILL, Q-FORGE) requires fundamental AI breakthroughs that have not yet occurred.
 
 **What exists today**:
+
 - QRADLE: Foundation layer (IN DEVELOPMENT, ~60% complete)
 - QRATUM: Multi-vertical platform (IN DEVELOPMENT, ~40% complete)
 
 **What is theoretical**:
+
 - QRATUM-ASI: Superintelligence layer (~10% complete, architecture only)
 
 ---
@@ -51,6 +53,7 @@ Complete answers to common questions about QRATUM-ASI.
    - Unified reasoning framework (design stage)
 
 **Theoretical** (architecture specified, not implemented):
+
 - QRATUM-ASI: All five pillars (~5-10% each)
 
 ---
@@ -83,6 +86,7 @@ Two critical reasons:
 | **Safety** | Post-hoc alignment | 8 immutable invariants |
 
 **Best For**:
+
 - **Cloud AI**: Consumer apps, prototyping, non-sensitive data
 - **QRATUM**: Government, defense, healthcare, finance, any regulated industry
 
@@ -118,12 +122,14 @@ See [docs/ARCHITECTURE.md#8-fatal-invariants](ARCHITECTURE.md#8-fatal-invariants
 **Yes** (with qualifications):
 
 **QRADLE + QRATUM** (In Development):
+
 - ✅ Suitable for pilot programs and development deployments
 - ✅ Target industries: Government, defense, healthcare, finance, legal
-- ✅ Enterprise licensing available (contact: partnerships@qratum.io)
+- ✅ Enterprise licensing available (contact: <partnerships@qratum.io>)
 - ⚠️ **NOT recommended for production** until certification milestones achieved (target: Q4 2026)
 
 **QRATUM-ASI** (Theoretical):
+
 - ❌ Not implemented, architecture only
 - ❌ Requires fundamental AI breakthroughs
 - ❌ Timeline: 2028+ (conditional on breakthroughs)
@@ -151,6 +157,7 @@ See [docs/ARCHITECTURE.md#8-fatal-invariants](ARCHITECTURE.md#8-fatal-invariants
 9. **Audit**: Log entire process (Merkle-chained)
 
 **IMMUTABLE_BOUNDARIES** (cannot be modified):
+
 - `human_oversight_requirement`
 - `merkle_chain_integrity`
 - `contract_immutability`
@@ -259,6 +266,7 @@ def test_contract_determinism():
 **Yes, via Adapters.**
 
 **Adapter Architecture**:
+
 ```
 Enterprise System (Epic, SAP, Bloomberg)
     ↕ (bidirectional)
@@ -270,21 +278,25 @@ QRATUM Platform
 **Supported Integrations** (in development):
 
 **Healthcare**:
+
 - Epic EMR (FHIR API)
 - Cerner (HL7, FHIR)
 - Meditech, Allscripts
 
 **Finance**:
+
 - Bloomberg Terminal (API)
 - Refinitiv Eikon (API)
 - FIS, Finastra
 
 **Legal**:
+
 - LexisNexis (API)
 - Westlaw (API)
 - PACER (federal courts)
 
 **ERP**:
+
 - SAP S/4HANA (API)
 - Oracle ERP Cloud (API)
 - Microsoft Dynamics 365
@@ -343,6 +355,7 @@ QRATUM Platform
 5. **Remediation**: If bug, patched. If adversarial, Q-WILL disabled pending investigation.
 
 **PROHIBITED_GOALS** (hardcoded, cannot be modified):
+
 - `remove_human_oversight`
 - `disable_authorization`
 - `modify_safety_constraints`
@@ -363,6 +376,7 @@ QRATUM Platform
 **Threat Model**:
 
 **In Scope** (we defend against):
+
 - Unauthorized contract execution
 - Merkle chain tampering
 - Authentication/authorization bypass
@@ -370,6 +384,7 @@ QRATUM Platform
 - Rollback manipulation
 
 **Out of Scope** (we do NOT currently defend against):
+
 - Side-channel attacks (timing, power analysis)
 - Physical access to hardware
 - Malicious infrastructure administrators (assumes trusted operators)
@@ -397,6 +412,7 @@ See [SECURITY.md](../SECURITY.md) for full threat model and security practices.
 **Enterprise Licensing**:
 
 **Pricing Model**:
+
 - Per-deployment licensing (not per-use, unlimited operations)
 - Annual support + maintenance contracts
 - Professional services (deployment, customization, training)
@@ -421,6 +437,7 @@ See [SECURITY.md](../SECURITY.md) for full threat model and security practices.
 **No Usage-Based Pricing**: Encourages unlimited use without cost concerns (important for innovation).
 
 **Revenue Projections** (2025-2030):
+
 - 2025: $10M - $20M (pilot customers)
 - 2026: $50M - $100M (enterprise ramp)
 - 2027: $200M - $500M (14 verticals complete)
@@ -493,6 +510,7 @@ See [SECURITY.md](../SECURITY.md) for full threat model and security practices.
    - **Market**: Research, academic
 
 **QRATUM's Moat**:
+
 1. **Technical**: Only deterministic, auditable, reversible AI at scale
 2. **Regulatory**: Years ahead in certification (DO-178C, CMMC)
 3. **Safety**: Only ASI architecture with immutable constraints
@@ -507,17 +525,17 @@ See [docs/COMPARISONS.md](COMPARISONS.md) for detailed competitive analysis.
 
 **For Organizations**:
 
-1. **Pilot Program**: pilots@qratum.io
+1. **Pilot Program**: <pilots@qratum.io>
    - Early access to QRADLE + QRATUM
    - Joint development of vertical capabilities
    - Co-authorship of case studies
 
-2. **Partnerships**: partnerships@qratum.io
+2. **Partnerships**: <partnerships@qratum.io>
    - System integrators (deploy QRATUM for customers)
    - Technology partners (integrate QRATUM with your platform)
    - Research collaborations (universities, labs)
 
-3. **Investment**: invest@qratum.io
+3. **Investment**: <invest@qratum.io>
    - Series A fundraising (Q1 2025)
    - $50M - $100M target
    - Use of funds: Vertical development, certification, enterprise sales
@@ -529,26 +547,28 @@ See [docs/COMPARISONS.md](COMPARISONS.md) for detailed competitive analysis.
    - Documentation (examples, tutorials, translations)
    - Testing (quality assurance, security research)
 
-2. **Careers**: careers@qratum.io
+2. **Careers**: <careers@qratum.io>
    - Open positions: AI researchers, distributed systems engineers, compliance specialists
    - Remote-friendly (US, EU, APAC)
 
-3. **Community**: 
+3. **Community**:
    - GitHub Discussions: [QRATUM Discussions](https://github.com/robertringler/QRATUM/discussions)
-   - Mailing List: community@qratum.io
+   - Mailing List: <community@qratum.io>
 
 ---
 
 ## Additional Questions?
 
 **Contact**:
-- General: contact@qratum.io
-- Technical: tech@qratum.io
-- Sales: sales@qratum.io
-- Press: press@qratum.io
+
+- General: <contact@qratum.io>
+- Technical: <tech@qratum.io>
+- Sales: <sales@qratum.io>
+- Press: <press@qratum.io>
 
 **Resources**:
-- Website: https://qratum.io (coming soon)
+
+- Website: <https://qratum.io> (coming soon)
 - Documentation: [README.md](../README.md)
 - Architecture: [docs/ARCHITECTURE.md](ARCHITECTURE.md)
 - Use Cases: [docs/USE_CASES.md](USE_CASES.md)

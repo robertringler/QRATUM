@@ -20,6 +20,7 @@ All visual design work for QuASIM × QuNimbus is managed through Figma, a collab
 ### Project Access
 
 To gain access to Figma projects:
+
 1. Request access from the QuASIM team via GitHub issue
 2. Label issue with `design` or `access-request`
 3. Provide Figma account email
@@ -55,6 +56,7 @@ Figma projects are stored in the cloud and accessed via web browser or desktop a
 Within Figma projects, use consistent page and frame naming:
 
 **Page Names**:
+
 - `01_Brand_Assets`
 - `02_Marketing_Pages`
 - `03_Pitch_Deck`
@@ -64,6 +66,7 @@ Within Figma projects, use consistent page and frame naming:
 - `07_Exports`
 
 **Frame Names**:
+
 ```
 {page}_{component}_{variant}_{size}
 
@@ -79,6 +82,7 @@ Examples:
 #### Figma Native Versioning
 
 Figma has built-in version history:
+
 - **Save Version**: File → Save to Version History
 - **Name Version**: Use descriptive names (e.g., "v1.0 - Initial Marketing Pages")
 - **Restore**: File → Show Version History → Select version
@@ -86,6 +90,7 @@ Figma has built-in version history:
 #### Git Synchronization
 
 Actual `.fig` files are binary and stored in Figma's cloud. This directory contains:
+
 - References to Figma projects (links in README)
 - Exported assets (staged in `exports/` before moving to `docs/assets/`)
 - Documentation and metadata
@@ -200,6 +205,7 @@ git push origin marketing/figma-assets-v1
 Reusable components are maintained in `QuASIM_Design_System` Figma project:
 
 **Component Categories**:
+
 - Buttons (primary, secondary, text, icon)
 - Cards (feature, metric, testimonial)
 - Forms (inputs, dropdowns, checkboxes)
@@ -219,6 +225,7 @@ To use design system components in new projects:
 ### Updating Components
 
 When updating a component:
+
 1. Edit in `QuASIM_Design_System`
 2. Publish changes (right panel → Publish)
 3. In consuming projects, accept updates (Assets panel → Update icon)
@@ -236,11 +243,13 @@ When updating a component:
 ### Communication
 
 **In Figma**:
+
 - Use comments (C key) for feedback
 - Tag users with @ mentions
 - Mark resolved when addressed
 
 **In GitHub**:
+
 - Open issues for design requests
 - Use `design` label
 - Link to Figma frames in issue description
@@ -248,6 +257,7 @@ When updating a component:
 ### Design Reviews
 
 Schedule regular design reviews:
+
 - **Frequency**: Bi-weekly or before major releases
 - **Attendees**: Design team, marketing, key stakeholders
 - **Agenda**: Review new designs, discuss feedback, plan next sprint
@@ -276,6 +286,7 @@ Schedule regular design reviews:
 ### Creating New Templates
 
 To add a new template:
+
 1. Design in appropriate Figma project
 2. Test with sample content
 3. Document usage in this README
@@ -349,20 +360,25 @@ To add a new template:
 ### Common Issues
 
 **Problem**: Exported SVG doesn't match Figma preview
+
 - **Solution**: Ensure "Include 'id' attribute" is enabled in export settings
 
 **Problem**: PNG file size too large
+
 - **Solution**: Reduce scale (2x → 1x) or optimize with ImageOptim/TinyPNG
 
 **Problem**: Fonts not rendering correctly in exports
+
 - **Solution**: Outline text (Cmd/Ctrl + Shift + O) before exporting
 
 **Problem**: Can't access Figma project
+
 - **Solution**: Request access via GitHub issue with `access-request` label
 
 ## Questions?
 
 For questions about Figma projects or design process:
+
 - **Design Questions**: Open GitHub issue with `design` label
 - **Access Issues**: Open GitHub issue with `access-request` label
 - **Technical Issues**: Contact development team

@@ -82,6 +82,7 @@ results/bm001_tier0/
 **Framework Status**: ✓ VALIDATED - Ready for C++/CUDA integration
 
 **Next Steps** (4-6 weeks):
+
 1. Replace mock solver with production C++/CUDA backend
 2. Integrate PyMAPDL mesh import
 3. Implement cuQuantum tensor kernels
@@ -102,8 +103,9 @@ results/bm001_tier0/
 ## Contact
 
 For issues or questions:
-- GitHub Issues: https://github.com/robertringler/Qubic/issues
-- Email: support@quasim.io
+
+- GitHub Issues: <https://github.com/robertringler/Qubic/issues>
+- Email: <support@quasim.io>
 
 ---
 

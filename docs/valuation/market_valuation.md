@@ -35,6 +35,7 @@
 The DCF approach projects 5-year unlevered free cash flows for each scenario and calculates present value using WACC. Terminal value is computed using the Gordon Growth Model.
 
 **Formula:**
+
 ```
 FCF = NOPAT + D&A - CapEx - ΔWC
 PV(FCF) = Σ FCF_t / (1 + WACC)^t
@@ -45,6 +46,7 @@ Enterprise Value = PV(FCF) + PV(Terminal Value)
 ### 1.2 Monte Carlo Simulation
 
 Monte Carlo simulation samples probability distributions for key parameters:
+
 - Revenue growth rates (mean ± 25%)
 - Gross margins (mean ± 5%)
 - OpEx ratios (mean ± 4%)
@@ -55,6 +57,7 @@ Runs 20,000 simulations to generate enterprise value distribution.
 ### 1.3 Real Options Valuation
 
 Real options capture strategic flexibility value:
+
 - **Expansion Option:** Right to scale into adjacent markets
 - **Delay Option:** Value of deferring investment pending market validation
 - **Licensing Option:** IP monetization through partnerships
@@ -80,6 +83,7 @@ Uses Black-Scholes framework adapted for real options valuation.
 | 5 | $33,264,000 | $25,945,920 | $7,650,720 | $6,044,069 | $1,995,840 | $3,516,005 |
 
 **DCF Components:**
+
 - PV of FCF (Years 1-5): $4,142,723
 - Terminal Value: $24,143,233
 - PV of Terminal Value: $10,553,230
@@ -100,6 +104,7 @@ Uses Black-Scholes framework adapted for real options valuation.
 | 5 | $139,776,000 | $114,616,320 | $47,523,840 | $37,543,834 | $6,988,800 | $28,598,170 |
 
 **DCF Components:**
+
 - PV of FCF (Years 1-5): $30,117,934
 - Terminal Value: $196,374,098
 - PV of Terminal Value: $85,836,928
@@ -120,6 +125,7 @@ Uses Black-Scholes framework adapted for real options valuation.
 | 5 | $4,276,800 | $3,079,296 | $427,680 | $337,867 | $299,376 | $-38,491 |
 
 **DCF Components:**
+
 - PV of FCF (Years 1-5): $-53,300
 - Terminal Value: $-264,306
 - PV of Terminal Value: $-115,531
@@ -142,11 +148,13 @@ Uses Black-Scholes framework adapted for real options valuation.
 | **P90** (Optimistic) | $28,111,678 |
 
 **Summary Statistics:**
+
 - Mean: $15,570,265
 - Standard Deviation: $10,048,587
 - Coefficient of Variation: 64.5%
 
 **Interpretation:**
+
 - **50% probability** the enterprise value exceeds $13,936,912
 - **10% probability** the enterprise value exceeds $28,111,678
 - **90% confidence interval:** $4,930,912 - $28,111,678
@@ -167,6 +175,7 @@ Strategic optionality adds significant value beyond base DCF:
 **Option Value as % of Base EV:** 137.6%
 
 **Combined Valuation:**
+
 - Base Case DCF: $14,695,953
 - Real Options Uplift: $20,214,291
 - **Total with Options:** $34,910,244
@@ -210,16 +219,19 @@ Terminal Growth     |████████| ±8%
 ### 6.1 Key Assumptions
 
 **Revenue Projections:**
+
 - Based on current pipeline and market adoption curves
 - Assumes successful enterprise customer acquisitions
 - No major competitive disruptions
 
 **Cost Structure:**
+
 - Gross margins reflect SaaS economics at scale
 - OpEx includes R&D, sales, and G&A
 - CapEx primarily infrastructure and cloud resources
 
 **Discount Rate:**
+
 - Reflects pre-revenue deep-tech venture risk
 - Comparable to quantum computing sector WACC
 - Adjusted for hybrid quantum-classical de-risking

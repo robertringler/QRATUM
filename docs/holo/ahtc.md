@@ -252,8 +252,9 @@ Apply to tensor-based simulations in aerospace, defense, and energy sectors wher
 ## Contact
 
 For technical questions or collaboration inquiries:
-- Email: support@quasim.tech
-- GitHub: https://github.com/robertringler/QuASIM
+
+- Email: <support@quasim.tech>
+- GitHub: <https://github.com/robertringler/QuASIM>
 
 ---
 

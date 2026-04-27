@@ -1,4 +1,5 @@
 # Figure and Table Index
+
 ## CIIR Formal System Manuscript
 
 **Author:** Robert Ringler (Independent Researcher)
@@ -10,10 +11,12 @@
 ## FIGURES
 
 ### Figure 1: CIIR System Architecture Diagram
+
 **File:** `fig01_ciir_architecture.pdf`
 **Format:** PDF, vector graphics
 **Resolution:** N/A (vector)
 **Content:**
+
 - Block diagram showing the six components of $\mathcal{T}_\mathrm{CIIR}$
 - Arrows indicating functional relationships: $\mathcal{R} \to \mathcal{M} \to \mathcal{H_C} \to \mathcal{A}$
 - Interface map $\Phi_X$ highlighted with bidirectional arrow
@@ -28,10 +31,12 @@ mapped to empirical outputs $\mathbb{R}^n$ by the interpretation map $\mathcal{I
 ---
 
 ### Figure 2: Constraint Manifold Curvature and Hilbert-Space Dimension
+
 **File:** `fig02_curvature_dimension.pdf`
 **Format:** PDF, matplotlib
 **Resolution:** N/A (vector)
 **Content:**
+
 - X-axis: $\kappa_\mathrm{max} \cdot \mathrm{vol}(\mathcal{M})$ (dimensionless)
 - Y-axis: $\log_2 \dim \mathcal{H_C}$ (bits)
 - Curve: $\dim \mathcal{H_C} = \exp(\kappa_\mathrm{max} V)$ from Axiom 4
@@ -45,10 +50,12 @@ curve (shaded).
 ---
 
 ### Figure 3: Qubit Bloch-Sphere Interface Map
+
 **File:** `fig03_bloch_sphere.pdf`
 **Format:** PDF, 3D matplotlib
 **Resolution:** N/A (vector)
 **Content:**
+
 - Standard Bloch sphere representation of $\mathbb{C}^2$
 - Interface map $\Phi_X(\theta)$ shown as a meridional family of states
 - Trajectory of $\rho(t)$ under CIIR master equation indicated by arrows
@@ -62,10 +69,12 @@ states relax to $\rho_* = \frac{1}{2}\mathbf{1}$ (centre) at rate $\gamma$.
 ---
 
 ### Figure 4: Decoherence Decay of Off-Diagonal Elements
+
 **File:** `fig04_decoherence.pdf`
 **Format:** PDF, matplotlib
 **Resolution:** N/A (vector)
 **Content:**
+
 - X-axis: time $t$ (units of $1/\gamma$)
 - Y-axis: $|\rho_{01}(t)|$ (normalised coherence)
 - Curves: analytical prediction $|\rho_{01}(0)|e^{-\gamma t/2}$ vs. numerical integration
@@ -79,10 +88,12 @@ to numerical precision.
 ---
 
 ### Figure 5: Constraint Entropy Evolution
+
 **File:** `fig05_entropy_evolution.pdf`
 **Format:** PDF, matplotlib
 **Resolution:** N/A (vector)
 **Content:**
+
 - X-axis: time $t$ (units of $1/\gamma$)
 - Y-axis: von Neumann entropy $S(\rho(t))$ (bits)
 - Monotone increase from pure state ($S=0$) to maximum ($S=\log 2$)
@@ -96,10 +107,12 @@ throughout, consistent with Spohn's theorem.
 ---
 
 ### Figure 6: Interference Term vs. Decoherence Rate
+
 **File:** `fig06_interference_scaling.pdf`
 **Format:** PDF, matplotlib
 **Resolution:** N/A (vector)
 **Content:**
+
 - X-axis: decoherence rate $\Gamma$ (units)
 - Y-axis: interference term $|\mathrm{Re}\langle\psi_1|\hat{O}|\psi_2\rangle(t)|$
 - Family of curves for $t \in \{1, 2, 4, 8\}$ illustrating Prediction P2
@@ -112,10 +125,12 @@ observation times $t$. The exponential scaling confirms the CIIR prediction.
 ---
 
 ### Figure 7: Constraint Capacity as a Function of Curvature-Volume
+
 **File:** `fig07_capacity_curvature.pdf`
 **Format:** PDF, matplotlib
 **Resolution:** N/A (vector)
 **Content:**
+
 - X-axis: $\kappa_\mathrm{max} V_\mathcal{M}$ (nats)
 - Y-axis: channel capacity $C_\Phi$ (nats)
 - Theoretical bound (Theorem~11) shown as solid line
@@ -129,10 +144,12 @@ the limit of zero decoherence ($\mathcal{D}_\mathcal{M} = 0$).
 ---
 
 ### Figure 8: Classical--Quantum--CIIR Embedding Diagram
+
 **File:** `fig08_embedding.pdf`
 **Format:** PDF, vector
 **Resolution:** N/A (vector)
 **Content:**
+
 - Nested set diagram: CIIR ⊃ Quantum Cognition ⊃ Classical Probability
 - Annotations showing which axioms are relaxed at each embedding level
 - Arrow from Bayesian inference to classical probability corner
@@ -148,6 +165,7 @@ update.
 ## TABLES
 
 ### Table 1: Axiom Summary
+
 **Columns:** Axiom number | Name | Formal statement reference | Justification | Independence demonstrated by
 **Rows:** 6 rows (one per axiom)
 
@@ -163,6 +181,7 @@ update.
 ---
 
 ### Table 2: Theorem Summary
+
 **Columns:** Theorem | Name | Statement | Proof method | Applications
 
 | # | Name | Key Result | Method | Use |
@@ -213,14 +232,17 @@ update.
 ## SUPPLEMENTARY FIGURES
 
 ### Supplementary Figure S1: Spectral Decomposition of $\hat{H}_\mathcal{M}$
+
 Eigenvalue spectrum of the constraint Hamiltonian for the $n=4$ (ququart) model,
 showing discrete spectrum bounded by Axiom~4 constraint.
 
 ### Supplementary Figure S2: Phase Portrait of CIIR Dynamics
+
 Phase portrait in the space of density matrices (parameterised by Bloch vector
 coordinates) showing convergence to equilibrium under various initial conditions.
 
 ### Supplementary Figure S3: Mutual Information Saturation Curve
+
 Numerical simulation of Prediction P3: mutual information $I(R;C)$ as a function
 of training iterations for $\kappa V \in \{1, 2, 4, 8\}$ nats.
 

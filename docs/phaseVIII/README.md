@@ -3,6 +3,7 @@
 ## Overview
 
 Phase VIII extends QuASIM with autonomous governance capabilities through three core components:
+
 - Meta-Controller Kernel (MCK)
 - Policy Reasoner (PR)
 - Quantum Ethical Governor (QEG)
@@ -14,12 +15,14 @@ Phase VIII extends QuASIM with autonomous governance capabilities through three 
 **Purpose**: Reinforcement learning-based autonomous parameter tuning
 
 **Features**:
+
 - Q-learning for Φ_QEVF variance minimization
 - Deterministic seed replay for auditability
 - Checkpoint save/load for reproducibility
 - Telemetry integration
 
 **Usage**:
+
 ```python
 from quasim.meta import MetaControllerKernel
 
@@ -47,12 +50,14 @@ mck.update_q_value(state, action, reward, next_state)
 **Purpose**: Logic-based compliance rule engine
 
 **Frameworks Supported**:
+
 - DO-178C Level A (3 rules)
 - NIST 800-53 (3 rules)
 - CMMC 2.0 Level 2 (2 rules)
 - ISO 27001 (2 rules)
 
 **Usage**:
+
 ```python
 from quasim.policy import PolicyReasoner, ConfigurationMutation
 
@@ -76,12 +81,14 @@ print(f"Required approvers: {evaluation.approved_by}")
 **Purpose**: Energy-equity balance monitoring
 
 **Features**:
+
 - Resource usage tracking
 - Fairness metrics (Gini coefficient)
 - Ethical scoring (0-100)
 - DVL ledger emission
 
 **Usage**:
+
 ```python
 from quasim.meta import QuantumEthicalGovernor
 
@@ -154,6 +161,7 @@ pytest tests/phaseVIII/ -v
 ## CI/CD
 
 Phase VIII CI runs:
+
 - On push to main/develop
 - Nightly simulation at 2 AM UTC
 - Integration tests
@@ -163,6 +171,7 @@ See `.github/workflows/phaseVIII.yml`
 ## Metrics
 
 Phase VIII exposes metrics:
+
 - `phi_variance` - Φ_QEVF variance
 - `policy_decision_rate` - PR decision throughput
 - `ethics_score` - QEG ethical compliance

@@ -19,10 +19,12 @@ This document describes how SBOMs are generated, validated, and verified for the
 ## Overview
 
 QRATUM generates SBOMs in two industry-standard formats:
+
 - **CycloneDX 1.6** - Primary format for supply chain security
 - **SPDX 2.3** - Secondary format for license compliance
 
 SBOMs are generated for:
+
 - Python dependencies (from `pyproject.toml` and installed packages)
 - Rust dependencies (from `Cargo.toml` in multiple crates)
 - Repository-level dependencies (combined view)
@@ -229,6 +231,7 @@ cd .sbom && sha256sum -c hashes/sbom-checksums.sha256
 ### Step 1: Download SBOM Artifacts
 
 From GitHub Release:
+
 ```bash
 # Download the SBOM archive
 curl -LO https://github.com/robertringler/QRATUM/releases/download/v1.0.0/sbom-v1.0.0.tar.gz
@@ -242,6 +245,7 @@ tar -xzf sbom-v1.0.0.tar.gz
 ```
 
 From GitHub Actions (for specific commit):
+
 ```bash
 # Use GitHub CLI
 gh run download --name sbom-<commit-sha>
@@ -351,6 +355,7 @@ The CI pipeline enforces these policies:
 ### Policy Configuration
 
 Environment variables in CI:
+
 ```yaml
 POLICY_MAX_DEPS: 1000
 POLICY_REQUIRE_CYCLONEDX: true
@@ -397,21 +402,25 @@ MAX_ADDED_DEPS: 10
 ## Quick Reference
 
 ### Generate
+
 ```bash
 ./scripts/sbom/generate_sbom.sh
 ```
 
 ### Validate
+
 ```bash
 ./scripts/sbom/validate_sbom.sh
 ```
 
 ### Verify Hashes
+
 ```bash
 cd .sbom && sha256sum -c hashes/sbom-checksums.sha256
 ```
 
 ### View Dependencies
+
 ```bash
 python3 -c "import json; print('\\n'.join(c['name']+'@'+c['version'] for c in json.load(open('.sbom/cyclonedx/python-cyclonedx-1.6.json'))['components']))"
 ```
@@ -421,5 +430,6 @@ python3 -c "import json; print('\\n'.join(c['name']+'@'+c['version'] for c in js
 ## Contact
 
 For questions about SBOM generation or verification:
+
 - Open an issue on GitHub
 - Reference the specific commit SHA and SBOM hash

@@ -11,6 +11,7 @@ This directory stores measured ground truth data about the QRATUM repository sta
 When evidence collection is run, this directory will contain:
 
 ### Repository-Level Artifacts
+
 - `main_head_sha.txt` — Current HEAD SHA of origin/main
 - `open_pr_snapshot.json` — Full list of open PRs with metadata
 - `open_pr_snapshot.txt` — Human-readable PR list
@@ -19,6 +20,7 @@ When evidence collection is run, this directory will contain:
 - `evidence_manifest.json` — Validation manifest
 
 ### Per-PR Artifacts (for each Tier-1 PR)
+
 - `pr_<NUM>_head.log` — Recent commit history
 - `pr_<NUM>_head_sha.txt` — Branch HEAD SHA
 - `pr_<NUM>_meta.json` — PR metadata (mergeable, CI, reviews)

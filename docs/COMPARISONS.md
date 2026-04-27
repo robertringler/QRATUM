@@ -176,6 +176,7 @@ Detailed comparison of QRATUM-ASI with alternative AI solutions.
 **1. Only Deterministic, Auditable, Reversible AI at Scale**
 
 No competitor offers:
+
 - Cryptographically guaranteed determinism (same inputs → same outputs)
 - Complete Merkle-chained provenance (tamper-evident audit trail)
 - Contract-based rollback (return to any previous verified state)
@@ -187,6 +188,7 @@ No competitor offers:
 **2. Only Multi-Vertical AI with Unified Reasoning**
 
 No competitor offers:
+
 - 14 specialized domains in one platform
 - Cross-domain synthesis (e.g., drug discovery + climate + supply chain + finance)
 - Unified reasoning engine connecting all verticals
@@ -198,6 +200,7 @@ No competitor offers:
 **3. Only ASI Architecture with Immutable Safety Constraints**
 
 No competitor offers:
+
 - Constrained Recursive Self-Improvement (CRSI) framework
 - 8 Fatal Invariants (cannot be modified, even by ASI)
 - Prohibited goals enforcement (AI cannot propose dangerous goals)
@@ -209,6 +212,7 @@ No competitor offers:
 **4. Only Sovereign AI for Regulated Industries**
 
 No competitor offers:
+
 - Air-gapped deployment (no internet connectivity)
 - On-premises sovereignty (data never leaves organization)
 - Certification pathways (DO-178C, CMMC, ISO 27001)
@@ -252,27 +256,32 @@ Requirements                |                Requirements
 ### Competitive Moats
 
 **1. Technical Moat**
+
 - Years of R&D in deterministic, auditable AI
 - Merkle chain cryptographic infrastructure
 - Contract-based execution system
 - Difficult to replicate (architectural, not just algorithmic)
 
 **2. Regulatory Moat**
+
 - DO-178C, CMMC, ISO 27001 pathways in progress
 - 2-3 years ahead of competitors in certification
 - First-mover advantage in certified AI
 
 **3. Safety Moat**
+
 - Only ASI architecture with immutable constraints
 - 8 Fatal Invariants cannot be bypassed
 - Positioning for future AI governance standards
 
 **4. Sovereignty Moat**
+
 - Air-gapped deployment capability (unique)
 - Mandatory for classified government/defense
 - Cannot be commoditized by cloud providers
 
 **5. Multi-Domain Moat**
+
 - 14 verticals with unified reasoning (unique)
 - Cross-domain synthesis creates novel insights
 - Network effects (more verticals = more value)
@@ -282,6 +291,7 @@ Requirements                |                Requirements
 ## Conclusion
 
 **Choose QRATUM-ASI if**:
+
 - ✅ Data sovereignty is mandatory (government, defense, healthcare, finance)
 - ✅ Certification required (DO-178C, CMMC, ISO 27001, FDA, SEC)
 - ✅ Auditability is essential (legal, regulatory, security)
@@ -289,6 +299,7 @@ Requirements                |                Requirements
 - ✅ ASI readiness is strategic priority (future-proofing)
 
 **Choose Alternatives if**:
+
 - ❌ Consumer applications (Cloud AI: OpenAI, Anthropic)
 - ❌ Rapid prototyping (Cloud AI: simple API)
 - ❌ Research/education (Open Source AI: LLaMA, Mistral)

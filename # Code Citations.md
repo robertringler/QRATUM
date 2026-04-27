@@ -1,7 +1,7 @@
 # Code Citations
 
 ## License: MIT
-https://github.com/jamesgolick/enum_field/blob/bff7873bd0c48753a93f46e71f517da69fd5c7ce/MIT-LICENSE
+<https://github.com/jamesgolick/enum_field/blob/bff7873bd0c48753a93f46e71f517da69fd5c7ce/MIT-LICENSE>
 
 ```
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,10 +22,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
 
 ## License: unknown
-https://github.com/jnewland/lazy_record/blob/dff088eb8c5aed549bfbced20feded285fcc875c/MIT-LICENSE
+<https://github.com/jnewland/lazy_record/blob/dff088eb8c5aed549bfbced20feded285fcc875c/MIT-LICENSE>
 
 ```
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -46,10 +45,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
 
 ## License: BSD-3-Clause
-https://github.com/rubinius/rubinius/blob/84368419a49767ef9549a5778812e5f54b6c6223/build/libraries/libffi/src/powerpc/ppc_closure.S
+<https://github.com/rubinius/rubinius/blob/84368419a49767ef9549a5778812e5f54b6c6223/build/libraries/libffi/src/powerpc/ppc_closure.S>
 
 ```
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -70,10 +68,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
 
 ## License: BSD-3-Clause
-https://github.com/rubinius/rubinius/blob/84368419a49767ef9549a5778812e5f54b6c6223/build/libraries/libffi/src/nios2/ffi.c
+<https://github.com/rubinius/rubinius/blob/84368419a49767ef9549a5778812e5f54b6c6223/build/libraries/libffi/src/nios2/ffi.c>
 
 ```
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -94,10 +91,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
 
 ## License: BSD-3-Clause
-https://github.com/rubinius/rubinius/blob/84368419a49767ef9549a5778812e5f54b6c6223/build/libraries/libffi/src/nios2/sysv.S
+<https://github.com/rubinius/rubinius/blob/84368419a49767ef9549a5778812e5f54b6c6223/build/libraries/libffi/src/nios2/sysv.S>
 
 ```
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -118,4 +114,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-

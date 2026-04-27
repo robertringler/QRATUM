@@ -91,16 +91,19 @@ flowchart TD
 
 **Objective**: Multi-party participants reach consensus before session proceeds.
 
-**Inputs**: 
+**Inputs**:
+
 - Quorum configuration (initial threshold, decay parameters)
 - Quorum member list with reputation stakes
 
 **Outputs**:
+
 - Consensus decision (votes collected)
 - OR DecayJustification TXOs (if threshold adjusted)
 - OR CensorshipEvent TXO (if convergence fails)
 
 **Key Operations**:
+
 1. Initialize quorum state with initial threshold (e.g., 67%)
 2. Collect votes from active quorum members
 3. Check consensus (votes >= threshold × active members)
@@ -113,11 +116,13 @@ flowchart TD
    - Abort session
 
 **Anti-Censorship**:
+
 - Every threshold decay emits auditable TXO
 - External observers verify decay legitimacy
 - Timeout triggers investigation
 
 **Security Invariants**:
+
 - Byzantine tolerance (f faulty nodes in 3f+1 quorum)
 - Progressive decay prevents permanent deadlock
 - Audit trail ensures accountability
@@ -129,16 +134,19 @@ flowchart TD
 **Objective**: Reconstruct ephemeral keys and initialize RAM-only state.
 
 **Inputs**:
+
 - Quorum convergence result (including Shamir shares)
 - Session configuration
 
 **Outputs**:
+
 - Ephemeral biokey (512-bit, RAM-only)
 - Initialized Merkle ledger (RAM-only)
 - Canary state, snapshot manager, proxy manager
 - Watchdog validators
 
 **Key Operations**:
+
 1. Collect M-of-N Shamir shares from quorum members
 2. Reconstruct biokey using Lagrange interpolation
 3. Initialize in-memory Merkle ledger (zeroized on drop)
@@ -148,12 +156,14 @@ flowchart TD
 7. Rotate and activate watchdog validators
 
 **Security Invariants**:
+
 - Biokey never touches disk (RAM-only)
 - Shamir threshold enforced (M-of-N)
 - All state auto-zeroized on drop
 - No external persistence
 
 **Biokey Properties**:
+
 - 512-bit key material (SHA3-512 derivation)
 - Epoch counter for rotation tracking
 - Auto-wipe on drop via Zeroize trait
@@ -165,17 +175,20 @@ flowchart TD
 **Objective**: Execute computation with continuous monitoring and audit.
 
 **Inputs**:
+
 - Input TXOs from user
 - Ephemeral session state
 
 **Outputs**:
+
 - Updated Merkle ledger with all operations
 - Execution hash (ledger root)
 - Audit TXOs (canary, compliance, proxy, censorship)
 
 **Key Operations**:
 
-#### Canary Emission Loop:
+#### Canary Emission Loop
+
 1. Check if emission due (interval elapsed)
 2. Compute state hash (Merkle root)
 3. Generate canary probe (sequence, timestamp, state hash)
@@ -183,14 +196,16 @@ flowchart TD
 5. Emit to external observers
 6. If canary not acknowledged → Emit CensorshipEvent TXO
 
-#### Volatile Snapshot Path:
+#### Volatile Snapshot Path
+
 1. Check if snapshot due (interval elapsed)
 2. Serialize current execution state
 3. Encrypt with ephemeral biokey
 4. Store in bounded in-memory buffer
 5. If fault occurs → Restore from latest snapshot
 
-#### Proxy Approval Branch:
+#### Proxy Approval Branch
+
 1. Detect privileged operation request
 2. Submit approval request with justification
 3. Proxies bond reputation stake
@@ -199,7 +214,8 @@ flowchart TD
 6. If rejected → Abort operation, emit audit TXO
 7. On completion → Release bonded stakes
 
-#### Compliance ZKP Generation:
+#### Compliance ZKP Generation
+
 1. Identify applicable regulation (GDPR, HIPAA, etc.)
 2. Prepare private inputs (sensitive data)
 3. Prepare public inputs (claims)
@@ -207,14 +223,16 @@ flowchart TD
 5. Attach proof to operation TXO
 6. External verifiers validate proof
 
-#### Watchdog Validation:
+#### Watchdog Validation
+
 1. Check if epoch rotation due
 2. Rotate validators (nomadic pattern)
 3. Active validators audit execution
 4. Validators emit attestations
 5. Detect and report anomalies
 
-#### Rollback Capability:
+#### Rollback Capability
+
 1. Create ledger checkpoint
 2. Execute operation
 3. If error → Rollback to checkpoint
@@ -222,6 +240,7 @@ flowchart TD
 5. Rollback ONLY within current session
 
 **Security Invariants**:
+
 - All operations logged to ledger
 - Canaries prove liveness
 - Proxies stake reputation capital
@@ -235,13 +254,16 @@ flowchart TD
 **Objective**: Create minimal, blinded, signed Outcome TXOs (ONLY persistent artifacts).
 
 **Inputs**:
+
 - Execution hash (Merkle root)
 - Computation results
 
 **Outputs**:
+
 - Outcome TXOs (minimal, blinded, signed)
 
 **Key Operations**:
+
 1. Create minimal payload (computation result)
 2. Blind payload with SHA3-256 commitment
 3. Set quorum reveal threshold (e.g., 67%)
@@ -256,6 +278,7 @@ flowchart TD
 6. Return OutcomeTxo(s) as ONLY persistent artifact
 
 **Security Invariants**:
+
 - Minimal payload reduces attack surface
 - Blinded commitment prevents inspection
 - Quorum signatures provide attestation
@@ -263,6 +286,7 @@ flowchart TD
 - No intermediate state persists
 
 **Outcome TXO Properties**:
+
 - Content-addressed ID (SHA3-256)
 - CBOR primary encoding
 - Predecessor TXO links (provenance)
@@ -275,12 +299,15 @@ flowchart TD
 **Objective**: Explicitly zeroize ALL ephemeral state. Nothing persists except Outcome TXOs.
 
 **Inputs**:
+
 - Ephemeral session state (to be destroyed)
 
 **Outputs**:
+
 - None (all state destroyed)
 
 **Key Operations**:
+
 1. Zeroize biokey (512-bit key material)
 2. Zeroize Merkle ledger (all TXOs and nodes)
 3. Zeroize canary state (history and sequence)
@@ -292,6 +319,7 @@ flowchart TD
 9. Return control with Outcome TXOs only
 
 **Security Invariants**:
+
 - Explicit zeroization (not just drop)
 - Multi-pass memory scrubbing
 - Prevents memory forensics
@@ -299,6 +327,7 @@ flowchart TD
 - Anti-holographic (no state residue)
 
 **Zeroization Strategy**:
+
 - All sensitive types derive `Zeroize` and `ZeroizeOnDrop`
 - Explicit `zeroize()` call before drop
 - Overwrite memory with zeros
@@ -310,34 +339,40 @@ flowchart TD
 ## Architectural Guarantees
 
 ### Ephemeral Existence
+
 - System exists ONLY during Stage 2-5
 - No state between sessions
 - Complete lifecycle < 1 hour typical
 
 ### Zero Persistent State
+
 - Only Outcome TXOs survive Stage 5
 - All other data zeroized
 - No logs, no disk writes, no residuals
 
 ### Provable Censorship Resistance
+
 - Every suppression emits signed TXO
 - External observers verify liveness
 - Canary gaps trigger investigation
 - Decay justifications auditable
 
 ### Privacy-Preserving Compliance
+
 - ZKP proves regulations met
 - No sensitive data exposure
 - Verifiable by regulators
 - Blinded payloads prevent inspection
 
 ### Session-Bound Reversibility
+
 - Rollback within session only
 - No inter-session rollback
 - Audit trail for all rollbacks
 - Checkpoints zeroized on session end
 
 ### Forward Compatibility
+
 - Post-quantum migration hooks
 - Circuit upgradeability
 - Extensible TXO types
@@ -348,24 +383,28 @@ flowchart TD
 ## Anti-Censorship Mechanisms
 
 ### 1. Canary Probes
+
 - Regular emissions prove liveness
 - External observers verify stream
 - Missing canaries trigger alerts
 - Sequence gaps detected immediately
 
 ### 2. Decay Justification TXOs
+
 - Every threshold change auditable
 - Prevents covert manipulation
 - External verification of legitimacy
 - Accountability for decay decisions
 
 ### 3. Censorship Event TXOs
+
 - Suppression/delay automatically documented
 - Signed by observers
 - Provable evidence of censorship
 - Triggers investigation protocols
 
 ### 4. Watchdog Validators
+
 - Nomadic rotation prevents capture
 - Independent audit of execution
 - Byzantine fault tolerance
@@ -376,6 +415,7 @@ flowchart TD
 ## Fault Recovery
 
 ### Mid-Session Faults
+
 1. Detect execution failure
 2. Restore from latest volatile snapshot
 3. Decrypt with ephemeral biokey
@@ -384,6 +424,7 @@ flowchart TD
 6. Log recovery event to ledger
 
 ### Session-Level Faults
+
 - No recovery (session aborted)
 - Emit fault TXO with diagnostic
 - Quorum decides on retry
@@ -394,6 +435,7 @@ flowchart TD
 ## External Verification
 
 ### Canary Stream Verification
+
 ```
 1. Observer receives canary TXO
 2. Verify signature
@@ -404,6 +446,7 @@ flowchart TD
 ```
 
 ### Outcome TXO Verification
+
 ```
 1. Verify quorum signatures
 2. Check execution hash
@@ -413,6 +456,7 @@ flowchart TD
 ```
 
 ### Compliance ZKP Verification
+
 ```
 1. Extract public inputs
 2. Verify proof (Halo2/Risc0)
@@ -426,17 +470,20 @@ flowchart TD
 ## Implementation Notes
 
 ### Critical Paths
+
 - **Biokey reconstruction**: Must complete before any operation
 - **Canary emission**: Must not be delayed (triggers censorship detection)
 - **Zeroization**: Must be explicit and verifiable
 
 ### Performance Considerations
+
 - Merkle tree updates: O(log n) per operation
 - Shamir reconstruction: O(M²) for M-of-N shares
 - ZKP generation: Varies by circuit (1-60s typical)
 - Snapshot encryption: O(n) for state size n
 
 ### Memory Bounds
+
 - Ledger TXOs: Bounded by session duration
 - Canary history: Last 100 probes
 - Snapshots: Last 5 checkpoints
@@ -458,12 +505,14 @@ flowchart TD
 ## Future Enhancements
 
 ### Planned Amendments
+
 - **Federated Ephemeral Mesh**: Multi-node QRATUM instances
 - **Synthetic Rehearsal Mode**: Test mode with deterministic replay
 - **Post-Quantum Migration**: Lattice-based cryptography
 - **Hardware TEE Integration**: Intel SGX, AMD SEV, ARM TrustZone
 
 ### Research Directions
+
 - **Quantum-Resistant ZKP**: Beyond Halo2/Risc0
 - **Distributed Biokey**: Multi-party computation
 - **Probabilistic Censorship Detection**: ML-based anomaly detection
