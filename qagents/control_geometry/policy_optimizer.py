@@ -114,13 +114,16 @@ def control_policy(
     cache: DisplacementCache | None = None,
     weights: dict[str, float] | None = None,
     require_feasible: bool = True,
+    zero_tol: float = 1e-12,
 ) -> Action | None:
     """Baseline policy: pick the action with the highest scalar score.
 
     The score is :func:`control_directions.score_action`; weights
     default to :data:`control_directions.DEFAULT_WEIGHTS`. When
     ``require_feasible`` is ``True`` (default) infeasible actions are
-    filtered out. Ties are broken by the canonical action key.
+    filtered out. Ties (within ``zero_tol``) are broken by the
+    canonical action key, matching :func:`select_action` for
+    consistency.
     """
 
     used_weights = dict(DEFAULT_WEIGHTS)
@@ -142,8 +145,11 @@ def control_policy(
         s = score_action(a, m.delta_s, m, weights=used_weights)
         key = _action_key(a)
         if (
-            s > best_score
-            or (s == best_score and (best_key is None or key < best_key))
+            s > best_score + zero_tol
+            or (
+                abs(s - best_score) <= zero_tol
+                and (best_key is None or key < best_key)
+            )
         ):
             best = a
             best_score = s

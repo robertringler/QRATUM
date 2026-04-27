@@ -27,12 +27,20 @@ from qagents.mvri.state import State
 
 @dataclass(frozen=True)
 class ReachEdge:
-    """Edge in the reachability graph."""
+    """Edge in the reachability graph.
+
+    Fields
+    ------
+    src: source state.
+    dst: destination state, equal to ``F(src, action)``.
+    action: action that produces this transition from ``src`` to ``dst``.
+    weight: edge weight, equal to ``action_norm(action)``.
+    """
 
     src: State
     dst: State
     action: Action
-    weight: float  # action norm
+    weight: float
 
 
 @dataclass

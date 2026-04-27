@@ -334,8 +334,12 @@ def test_classify_action_space_deterministic():
 
 
 def test_default_weights_keys():
-    assert {"magnitude", "entropy_reduction", "constraint_compliance",
-            "stability"} <= set(DEFAULT_WEIGHTS.keys())
+    assert set(DEFAULT_WEIGHTS.keys()) == {
+        "magnitude",
+        "entropy_reduction",
+        "constraint_compliance",
+        "stability",
+    }
 
 
 # --------------------------------------------------------------------------- #

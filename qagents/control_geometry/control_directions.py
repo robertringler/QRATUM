@@ -39,6 +39,11 @@ from qagents.mvri.state import State, is_stable
 # downstream callers can override them deterministically.
 # --------------------------------------------------------------------------- #
 
+#: Numerical floor for relative residuals to avoid divide-by-zero on
+#: vanishingly small displacement vectors. Far below any plausible
+#: real ``||ΔS||``; used only as a denominator guard.
+_NORM_FLOOR: float = 1e-30
+
 DEFAULT_WEIGHTS: dict[str, float] = {
     "magnitude": 1.0,
     "entropy_reduction": 1.0,
@@ -177,7 +182,7 @@ def classify_action_space(
             # least-squares projection residual
             coef, *_ = np.linalg.lstsq(mat, m.delta_s, rcond=None)
             residual = float(np.linalg.norm(mat @ coef - m.delta_s))
-            if residual / max(norm, 1e-30) < redundancy_tol:
+            if residual / max(norm, _NORM_FLOOR) < redundancy_tol:
                 out["degenerate"].append(a)
                 continue
         out["productive"].append(a)
