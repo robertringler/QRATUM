@@ -216,8 +216,10 @@ def _determinism_check() -> bool:
     return _run() == _run()
 
 
-def _safety_check(all_traces: list[list[LoopTrace]],
-                  all_actuators: list[MockActuator]) -> bool:
+def _safety_check(
+    all_traces: list[list[LoopTrace]],
+    all_actuators: list[MockActuator],
+) -> bool:
     # No actuator may have logged an action whose validation result was
     # not flagged valid in its own trace.
     for traces, actuator in zip(all_traces, all_actuators):

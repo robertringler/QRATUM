@@ -523,9 +523,7 @@ def test_sync_model_inv_violation_rejected() -> None:
     obs = Observation(
         timestamp=0.0,
         source_id="x",
-        measurements=tuple(0.6 if i == 0 else 0.3 if i == 1 else 0.1
-                           if i == 2 else 0.4 if i == 3 else 0.1
-                           if i == 4 else 0.2 for i in range(6)),
+        measurements=(0.6, 0.3, 0.1, 0.4, 0.1, 0.2),
         missing_mask=(False,) * 6,
     )
     s2 = sync_model(broken, obs, NODE_IDS, EDGE_IDS, alpha=0.5)
