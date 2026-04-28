@@ -92,7 +92,8 @@ def execute_trajectory(
             steps.append(trace)
             failures.append(f"step:{index}:ObserverStateInvalid:{exc}")
             # Observer failure occurs before a valid planned action is selected
-            # or injected, so only step bookkeeping advances.
+            # or injected, so commit only advances the step index while
+            # preserving model_state and previous_action.
             control_loop.commit_execution_step()
             return TrajectoryExecutionTrace(tuple(steps), True, tuple(failures))
 

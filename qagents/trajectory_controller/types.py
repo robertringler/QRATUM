@@ -135,6 +135,8 @@ def action_to_vector(action: Action, state: State) -> np.ndarray:
         code = EDGE_ADJUST_CODE
         edges = tuple(sorted(state.edges))
         target = tuple(action.target.split("->", 1))
+        if len(target) != 2 or not target[0] or not target[1]:
+            raise ValueError(f"invalid edge target {action.target!r}")
         try:
             target_index = float(edges.index((target[0], target[1])))
         except ValueError as exc:

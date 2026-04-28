@@ -95,7 +95,7 @@ def _candidate_magnitudes(diff: float, epsilon: float) -> tuple[float, ...]:
     step = max(-eps, min(eps, float(diff)))
     half = step / 2.0
     values = (step, half, 0.0, -half, -step)
-    # Round before set-deduplication so semantically identical magnitudes
+    # Round before set deduplication so semantically identical magnitudes
     # produced by floating-point arithmetic are collapsed deterministically.
     dedup = sorted(
         {round(float(v), MAGNITUDE_PRECISION) for v in values},
