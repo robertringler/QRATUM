@@ -132,6 +132,7 @@ class ReasoningChain:
             "final_conclusion": self.final_conclusion,
         }
         serialized = json.dumps(chain_data, sort_keys=True)
+        return hashlib.sha256(serialized.encode()).hexdigest()
         return hashlib.sha3_256(serialized.encode()).hexdigest()
 
     def verify_provenance(self) -> bool:
@@ -185,6 +186,7 @@ class UnifiedReasoningEngine:
             ReasoningChain with complete provenance
         """
         self._chain_count += 1
+        chain_id = f"reasoning_chain_{self._chain_count}_{int(datetime.now(timezone.utc).timestamp())}"
         chain_id = (
             f"reasoning_chain_{self._chain_count}_{int(datetime.now(timezone.utc).timestamp())}"
         )

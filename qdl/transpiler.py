@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from .ast import BinaryOp, EconomicPrimitive, Number, SafetyGuard, SimulationKernel, WorldModelCall
+from .ast import (BinaryOp, EconomicPrimitive, Number, SafetyGuard,
+                  SimulationKernel, WorldModelCall)
 from .parser import Parser
 
 

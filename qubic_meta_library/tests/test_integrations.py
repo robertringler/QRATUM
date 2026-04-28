@@ -2,11 +2,8 @@
 
 import pytest
 
-from qubic_meta_library.integrations import (
-    QNimbusConnector,
-    QStackConnector,
-    QuASIMConnector,
-)
+from qubic_meta_library.integrations import (QNimbusConnector, QStackConnector,
+                                             QuASIMConnector)
 from qubic_meta_library.integrations.orchestrator import UnifiedOrchestrator
 from qubic_meta_library.models import Prompt
 

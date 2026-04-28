@@ -348,6 +348,7 @@ def demo_asi_orchestrator():
     """Demonstrate ASI orchestrator capabilities."""
     print("=" * 60)
     print("QRATUM-ASI Orchestrator Demo")
+    print("="*60 + "\n")
     print("=" * 60 + "\n")
 
     # Initialize orchestrator (ASI disabled by default)
@@ -391,6 +392,7 @@ def demo_asi_orchestrator():
     print(f"  Protected Boundaries: {stats['immutable_boundaries_count']}")
     print(f"  Prohibited Goals: {stats['prohibited_goals_count']}")
 
+    print("\n" + "="*60)
     print("\n" + "=" * 60)
     print("Demo Complete")
     print("=" * 60)

@@ -97,7 +97,8 @@ class TestLoad:
     def test_concurrent_reasoner(self):
         """Test concurrent reasoning operations."""
 
-        from qratum.bioinformatics.xenon.inference import NeuralSymbolicReasoner
+        from qratum.bioinformatics.xenon.inference import \
+            NeuralSymbolicReasoner
 
         def reason_task(i):
             reasoner = NeuralSymbolicReasoner(seed=42, enable_neural=False)

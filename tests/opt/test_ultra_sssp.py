@@ -1,14 +1,10 @@
 """Tests for UltraSSSP shortest path algorithm."""
 
+
 from quasim.opt.graph import QGraph
-from quasim.opt.ultra_sssp import (
-    FrontierBatch,
-    SSSPSimulationConfig,
-    UltraSSSP,
-    dijkstra_baseline,
-    run_sssp_simulation,
-    validate_sssp_results,
-)
+from quasim.opt.ultra_sssp import (FrontierBatch, SSSPSimulationConfig,
+                                   UltraSSSP, dijkstra_baseline,
+                                   run_sssp_simulation, validate_sssp_results)
 
 
 class TestDijkstraBaseline:
@@ -37,6 +33,8 @@ class TestDijkstraBaseline:
 
         assert distances[0] == 0.0
         assert distances[1] == 1.0
+        assert distances[2] == float('inf')
+        assert distances[3] == float('inf')
         assert distances[2] == float("inf")
         assert distances[3] == float("inf")
 
@@ -120,6 +118,18 @@ class TestUltraSSSP:
 
     def test_ultra_sssp_with_hierarchy(self):
         """Test UltraSSSP with hierarchical contraction."""
+        graph = QGraph.random_graph(
+            num_nodes=50,
+            edge_probability=0.1,
+            seed=42
+        )
+
+        sssp = UltraSSSP(
+            graph,
+            batch_size=10,
+            use_hierarchy=True,
+            hierarchy_levels=2
+        )
         graph = QGraph.random_graph(num_nodes=50, edge_probability=0.1, seed=42)
 
         sssp = UltraSSSP(graph, batch_size=10, use_hierarchy=True, hierarchy_levels=2)
@@ -132,6 +142,11 @@ class TestUltraSSSP:
 
     def test_ultra_sssp_matches_dijkstra(self):
         """Test that UltraSSSP matches Dijkstra results."""
+        graph = QGraph.random_graph(
+            num_nodes=30,
+            edge_probability=0.15,
+            seed=123
+        )
         graph = QGraph.random_graph(num_nodes=30, edge_probability=0.15, seed=123)
 
         # Run both algorithms
@@ -182,6 +197,8 @@ class TestValidation:
 
     def test_validate_identical_distances(self):
         """Test validation with identical distances."""
+        distances1 = [0.0, 1.0, 2.0, float('inf')]
+        distances2 = [0.0, 1.0, 2.0, float('inf')]
         distances1 = [0.0, 1.0, 2.0, float("inf")]
         distances2 = [0.0, 1.0, 2.0, float("inf")]
 

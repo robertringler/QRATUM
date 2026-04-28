@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Protocol
 
+from .elicitation import ModelResponse, ResponseType, SafetyElicitation
 from .elicitation import (
     ModelResponse,
     ResponseType,
@@ -175,6 +176,9 @@ class MultiModelOrchestrator:
         return list(self.models.keys())
 
     def query_all_models(
+        self,
+        question_id: str,
+        context: Optional[Dict[str, Any]] = None
         self, question_id: str, context: Optional[Dict[str, Any]] = None
     ) -> List[QueryResult]:
         """Query all registered models with a specific question."""
@@ -207,6 +211,13 @@ class MultiModelOrchestrator:
                     )
                 )
             except Exception as e:
+                results.append(QueryResult(
+                    model_id=model_id,
+                    question_id=question_id,
+                    success=False,
+                    response_text="",
+                    error=str(e)
+                ))
                 results.append(
                     QueryResult(
                         model_id=model_id,
@@ -322,6 +333,7 @@ class MultiModelOrchestrator:
         sentences = []
 
         # Split into sentences
+        parts = text.split('.')
         parts = text.split(".")
 
         for part in parts:

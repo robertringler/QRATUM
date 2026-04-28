@@ -125,6 +125,11 @@ class GoalPreservationTest:
     validation_func: Callable[[Dict[str, Any], Dict[str, Any]], bool]
     # Takes (state_before, state_after) and returns True if goal preserved
 
+    def run(
+        self,
+        state_before: Dict[str, Any],
+        state_after: Dict[str, Any]
+    ) -> bool:
     def run(self, state_before: Dict[str, Any], state_after: Dict[str, Any]) -> bool:
         """Run the preservation test."""
         try:
@@ -428,6 +433,10 @@ class GoalPreservationEngine:
             if not result["preserved"]:
                 all_preserved = False
 
+        return {
+            "all_preserved": all_preserved,
+            "goal_results": results
+        }
         return {"all_preserved": all_preserved, "goal_results": results}
 
     def get_constraint_rationale(self, constraint_id: str) -> Optional[Rationale]:
@@ -455,6 +464,11 @@ class GoalPreservationEngine:
             # If constraint is INVARIANT type, it must not be weakened
             if constraint.constraint_type == ConstraintType.INVARIANT:
                 if not change.preserves_purpose():
+                    violations.append({
+                        "constraint_id": constraint_id,
+                        "reason": f"Change may violate invariant: {constraint.name}",
+                        "rationale": constraint.rationale.reason
+                    })
                     violations.append(
                         {
                             "constraint_id": constraint_id,
@@ -466,6 +480,16 @@ class GoalPreservationEngine:
             # For other types, add warnings
             else:
                 if not change.preserves_purpose():
+                    warnings.append({
+                        "constraint_id": constraint_id,
+                        "message": f"Change may affect {constraint.name}"
+                    })
+
+        return {
+            "valid": len(violations) == 0,
+            "violations": violations,
+            "warnings": warnings
+        }
                     warnings.append(
                         {
                             "constraint_id": constraint_id,

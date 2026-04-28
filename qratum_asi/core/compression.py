@@ -102,6 +102,10 @@ class AbstractionCompressionEngine:
         # Performance baselines
         self.performance_baselines: Dict[str, float] = {}
 
+    def detect_patterns(
+        self,
+        codebase_analysis: Dict[str, Any]
+    ) -> List[Pattern]:
     def detect_patterns(self, codebase_analysis: Dict[str, Any]) -> List[Pattern]:
         """Detect repeated patterns across the codebase."""
         detected = []
@@ -127,6 +131,10 @@ class AbstractionCompressionEngine:
 
         return detected
 
+    def _detect_algorithm_patterns(
+        self,
+        algorithms: Dict[str, Any]
+    ) -> List[Pattern]:
     def _detect_algorithm_patterns(self, algorithms: Dict[str, Any]) -> List[Pattern]:
         """Detect repeated algorithmic patterns."""
         patterns = []
@@ -155,6 +163,10 @@ class AbstractionCompressionEngine:
 
         return patterns
 
+    def _detect_data_structure_patterns(
+        self,
+        data_structures: Dict[str, Any]
+    ) -> List[Pattern]:
     def _detect_data_structure_patterns(self, data_structures: Dict[str, Any]) -> List[Pattern]:
         """Detect repeated data structure patterns."""
         patterns = []
@@ -183,6 +195,10 @@ class AbstractionCompressionEngine:
 
         return patterns
 
+    def _detect_control_flow_patterns(
+        self,
+        control_flows: Dict[str, Any]
+    ) -> List[Pattern]:
     def _detect_control_flow_patterns(self, control_flows: Dict[str, Any]) -> List[Pattern]:
         """Detect repeated control flow patterns."""
         patterns = []
@@ -269,6 +285,11 @@ class AbstractionCompressionEngine:
         # 1. Compression ratio > 2.0 (at least 2x reduction)
         # 2. Performance not degraded (>=0.95)
         # 3. Net benefit > 1.5
+        worthwhile = (
+            compression_ratio >= 2.0 and
+            performance_impact >= 0.95 and
+            net_benefit >= 1.5
+        )
         worthwhile = compression_ratio >= 2.0 and performance_impact >= 0.95 and net_benefit >= 1.5
 
         return {
@@ -281,6 +302,11 @@ class AbstractionCompressionEngine:
             "new_complexity": primitive.complexity,
         }
 
+    def apply_abstraction(
+        self,
+        primitive_id: str,
+        performance_multiplier: float = 1.0
+    ) -> bool:
     def apply_abstraction(self, primitive_id: str, performance_multiplier: float = 1.0) -> bool:
         """Apply an abstraction to the system.
 
@@ -389,6 +415,10 @@ class AbstractionCompressionEngine:
             "current_concepts": last.total_concepts,
         }
 
+    def get_top_compression_opportunities(
+        self,
+        top_n: int = 5
+    ) -> List[Dict[str, Any]]:
     def get_top_compression_opportunities(self, top_n: int = 5) -> List[Dict[str, Any]]:
         """Get top opportunities for compression."""
         # Rank patterns by compression potential
@@ -399,6 +429,14 @@ class AbstractionCompressionEngine:
                 continue  # Already abstracted
 
             potential = pattern.get_compression_potential()
+            opportunities.append({
+                "pattern_id": pattern.pattern_id,
+                "pattern_type": pattern.pattern_type.value,
+                "description": pattern.description,
+                "compression_potential": potential,
+                "frequency": pattern.frequency,
+                "complexity": pattern.complexity_score
+            })
             opportunities.append(
                 {
                     "pattern_id": pattern.pattern_id,

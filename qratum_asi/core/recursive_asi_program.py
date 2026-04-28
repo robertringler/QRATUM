@@ -19,6 +19,15 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from qratum_asi.core.algorithm_discovery import (AlgorithmDiscoveryEngine,
+                                                 ExecutionTrace)
+from qratum_asi.core.compression import AbstractionCompressionEngine
+from qratum_asi.core.execution_feedback import (ExecutionFeedbackLoop,
+                                                TelemetryType)
+from qratum_asi.core.goal_preservation import GoalPreservationEngine
+from qratum_asi.core.system_model import QRATUMSystemModel
+from qratum_asi.core.verification import (SelfVerificationEngine,
+                                          VerificationLevel)
 from qratum_asi.core.algorithm_discovery import AlgorithmDiscoveryEngine, ExecutionTrace
 from qratum_asi.core.compression import AbstractionCompressionEngine
 from qratum_asi.core.execution_feedback import ExecutionFeedbackLoop, TelemetryType
@@ -56,6 +65,7 @@ class RecursiveIterationMetrics:
 
     timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
 
+    def get_improvement_velocity(self, previous: Optional['RecursiveIterationMetrics']) -> float:
     def get_improvement_velocity(self, previous: Optional["RecursiveIterationMetrics"]) -> float:
         """Calculate improvement velocity (improvements per second)."""
         if previous is None or self.iteration_duration == 0:
@@ -63,12 +73,14 @@ class RecursiveIterationMetrics:
 
         return self.improvements_implemented / self.iteration_duration
 
+    def is_progressing_toward_asi(self, previous: Optional['RecursiveIterationMetrics']) -> bool:
     def is_progressing_toward_asi(self, previous: Optional["RecursiveIterationMetrics"]) -> bool:
         """Check if progressing toward ASI based on success criteria."""
         if previous is None:
             return True  # First iteration, assume progress
 
         # Check: Each iteration improves future improvement speed
+        velocity_increasing = self.get_improvement_velocity(previous) > previous.get_improvement_velocity(None)
         velocity_increasing = self.get_improvement_velocity(
             previous
         ) > previous.get_improvement_velocity(None)
@@ -85,6 +97,12 @@ class RecursiveIterationMetrics:
         autonomous_repair = self.autonomous_fixes > 0
 
         # Progress if at least 3 of 4 criteria met
+        criteria_met = sum([
+            velocity_increasing,
+            simplifying_while_improving,
+            autonomy_increasing or self.human_interventions == 0,
+            autonomous_repair or self.autonomous_fixes > 0
+        ])
         criteria_met = sum(
             [
                 velocity_increasing,
@@ -304,6 +322,10 @@ class RecursiveASIDevelopmentProgram:
         state_before["implementation"] = {"version": 1}
         state_after["purpose"] = state_before.get("purpose", {})
 
+        results = self.goal_preservation.test_all_goals_preserved(
+            state_before,
+            state_after
+        )
         results = self.goal_preservation.test_all_goals_preserved(state_before, state_after)
 
         return results
@@ -334,6 +356,10 @@ class RecursiveASIDevelopmentProgram:
         # Get top opportunities
         opportunities = self.compression_engine.get_top_compression_opportunities()
 
+        return {
+            "patterns_detected": len(patterns),
+            "top_opportunities": opportunities
+        }
         return {"patterns_detected": len(patterns), "top_opportunities": opportunities}
 
     def _run_algorithm_discovery(self) -> Dict[str, Any]:
@@ -424,6 +450,12 @@ class RecursiveASIDevelopmentProgram:
         autonomous_repair_active = self.total_autonomous_fixes > 0
 
         # Overall ASI progress
+        criteria_met = sum([
+            bool(improvement_speed_increasing),
+            simpler_and_better,
+            guidance_advisory,
+            autonomous_repair_active
+        ])
         criteria_met = sum(
             [
                 bool(improvement_speed_increasing),

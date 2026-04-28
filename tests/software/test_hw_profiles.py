@@ -4,15 +4,9 @@ from __future__ import annotations
 
 import pytest
 
-from quasim.hw import (
-    PROFILES,
-    DeviceLimits,
-    PolicyEngine,
-    Profile,
-    ReconfigurationProfile,
-    TopologyDiscovery,
-    create_custom_profile,
-)
+from quasim.hw import (PROFILES, DeviceLimits, PolicyEngine, Profile,
+                       ReconfigurationProfile, TopologyDiscovery,
+                       create_custom_profile)
 
 
 def test_profile_dataclass():
