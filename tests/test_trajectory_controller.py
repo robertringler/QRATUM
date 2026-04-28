@@ -482,7 +482,7 @@ def test_horizon_one_edge_case() -> None:
     assert result.trajectory.horizon == 1
 
 
-def test_same_input_same_execution_trace_signature() -> None:
+def test_execution_trace_is_deterministic() -> None:
     traj = _trajectory_from_action(
         Action(type="node_activation_shift", target="n1", magnitude=0.0),
         horizon=2,
@@ -495,7 +495,7 @@ def test_same_input_same_execution_trace_signature() -> None:
     assert signature() == signature()
 
 
-def test_no_randomness_required_for_planning() -> None:
+def test_planner_api_has_no_rng_parameter_and_is_deterministic() -> None:
     # The planner has no RNG parameter and produces identical value output.
     r1 = plan_trajectory(_state(), _target(), 2, SafetyConfig(), _state())
     r2 = plan_trajectory(_state(), _target(), 2, SafetyConfig(), _state())
