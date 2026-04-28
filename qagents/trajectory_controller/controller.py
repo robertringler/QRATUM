@@ -10,6 +10,8 @@ from qagents.trajectory_controller.executor import execute_trajectory
 from qagents.trajectory_controller.planner import plan_trajectory
 from qagents.trajectory_controller.validator import validate_trajectory
 
+CONVERGENCE_TOLERANCE: float = 1e-3
+
 
 def run_trajectory_control(
     initial_state: State,
@@ -41,7 +43,9 @@ def run_trajectory_control(
             final_model_state=control_loop.model_state,
             acceptance_rate=0.0,
             safety_rejection_rate=1.0,
-            observer_converged=control_loop._observer.is_converged(tol=1e-3),  # noqa: SLF001
+            observer_converged=control_loop.observer.is_converged(
+                tol=CONVERGENCE_TOLERANCE
+            ),
         )
 
     valid, _reasons = validate_trajectory(
@@ -57,7 +61,9 @@ def run_trajectory_control(
             final_model_state=control_loop.model_state,
             acceptance_rate=0.0,
             safety_rejection_rate=1.0,
-            observer_converged=control_loop._observer.is_converged(tol=1e-3),  # noqa: SLF001
+            observer_converged=control_loop.observer.is_converged(
+                tol=CONVERGENCE_TOLERANCE
+            ),
         )
 
     execution = execute_trajectory(control_loop, plan.trajectory)
@@ -69,8 +75,10 @@ def run_trajectory_control(
         final_model_state=control_loop.model_state,
         acceptance_rate=(accepted / n_steps) if n_steps else 0.0,
         safety_rejection_rate=(1.0 if execution.aborted and accepted == 0 else 0.0),
-        observer_converged=control_loop._observer.is_converged(tol=1e-3),  # noqa: SLF001
+        observer_converged=control_loop.observer.is_converged(
+            tol=CONVERGENCE_TOLERANCE
+        ),
     )
 
 
-__all__ = ["run_trajectory_control"]
+__all__ = ["CONVERGENCE_TOLERANCE", "run_trajectory_control"]

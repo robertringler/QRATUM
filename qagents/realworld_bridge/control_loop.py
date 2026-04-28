@@ -87,12 +87,55 @@ class ControlLoop:
         return self._model_state
 
     @property
+    def sensor(self) -> Sensor:
+        return self._sensor
+
+    @property
+    def observer(self) -> StateObserver:
+        return self._observer
+
+    @property
+    def actuator(self) -> Actuator:
+        return self._actuator
+
+    @property
+    def safety_config(self) -> SafetyConfig:
+        return self._safety_config
+
+    @property
+    def node_ids(self) -> tuple[str, ...]:
+        return self._node_ids
+
+    @property
+    def edge_ids(self) -> tuple[Edge, ...]:
+        return self._edge_ids
+
+    @property
+    def sync_alpha(self) -> float:
+        return self._sync_alpha
+
+    @property
     def previous_action(self) -> Action | None:
         return self._previous_action
 
     @property
     def step_index(self) -> int:
         return self._step_index
+
+    def commit_execution_step(
+        self,
+        *,
+        model_state: State | None = None,
+        previous_action: Action | None = None,
+        update_previous_action: bool = False,
+    ) -> None:
+        """Advance loop bookkeeping for external planned-action execution."""
+
+        if model_state is not None:
+            self._model_state = model_state
+        if update_previous_action:
+            self._previous_action = previous_action
+        self._step_index += 1
 
     # ------------------------------------------------------------------ #
     # Single step — strict 9-step pipeline

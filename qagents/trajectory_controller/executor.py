@@ -44,22 +44,17 @@ def execute_trajectory(
     steps: list[TrajectoryStepTrace] = []
     failures: list[str] = []
 
-    # ControlLoop intentionally owns the bridge components.  Trajectory
-    # execution must reuse exactly those components to preserve the bridge's
-    # safety-gated execution semantics; no public "execute planned action"
-    # method exists yet, so this package treats these attributes as the
-    # integration seam and keeps all access localized here.
-    sensor = control_loop._sensor  # noqa: SLF001 - documented integration seam
-    observer = control_loop._observer  # noqa: SLF001
-    actuator = control_loop._actuator  # noqa: SLF001
-    safety_config = control_loop._safety_config  # noqa: SLF001
-    node_ids = control_loop._node_ids  # noqa: SLF001
-    edge_ids = control_loop._edge_ids  # noqa: SLF001
-    sync_alpha = control_loop._sync_alpha  # noqa: SLF001
+    sensor = control_loop.sensor
+    observer = control_loop.observer
+    actuator = control_loop.actuator
+    safety_config = control_loop.safety_config
+    node_ids = control_loop.node_ids
+    edge_ids = control_loop.edge_ids
+    sync_alpha = control_loop.sync_alpha
 
     for index, vector in enumerate(trajectory.actions):
-        model_state: State = control_loop._model_state  # noqa: SLF001
-        previous_action = control_loop._previous_action  # noqa: SLF001
+        model_state: State = control_loop.model_state
+        previous_action = control_loop.previous_action
         try:
             planned_action = vector_to_action(vector, model_state)
         except ValueError as exc:
@@ -96,7 +91,7 @@ def execute_trajectory(
             )
             steps.append(trace)
             failures.append(f"step:{index}:ObserverStateInvalid:{exc}")
-            control_loop._step_index += 1  # noqa: SLF001
+            control_loop.commit_execution_step()
             return TrajectoryExecutionTrace(tuple(steps), True, tuple(failures))
 
         synced_state = sync_model(
@@ -127,7 +122,7 @@ def execute_trajectory(
                 )
             )
             failures.extend(f"step:{index}:{reason}" for reason in step_reasons)
-            control_loop._step_index += 1  # noqa: SLF001
+            control_loop.commit_execution_step()
             return TrajectoryExecutionTrace(tuple(steps), True, tuple(failures))
 
         action_result = actuator.execute(planned_action)
@@ -145,7 +140,7 @@ def execute_trajectory(
                 )
             )
             failures.append(f"step:{index}:ACT:{reason}")
-            control_loop._step_index += 1  # noqa: SLF001
+            control_loop.commit_execution_step()
             return TrajectoryExecutionTrace(tuple(steps), True, tuple(failures))
 
         new_state, status = inject(synced_state, planned_action)
@@ -163,13 +158,17 @@ def execute_trajectory(
                 )
             )
             failures.extend(f"step:{index}:INJ:{reason}" for reason in reasons)
-            control_loop._previous_action = planned_action  # noqa: SLF001
-            control_loop._step_index += 1  # noqa: SLF001
+            control_loop.commit_execution_step(
+                previous_action=planned_action,
+                update_previous_action=True,
+            )
             return TrajectoryExecutionTrace(tuple(steps), True, tuple(failures))
 
-        control_loop._model_state = new_state  # noqa: SLF001
-        control_loop._previous_action = planned_action  # noqa: SLF001
-        control_loop._step_index += 1  # noqa: SLF001
+        control_loop.commit_execution_step(
+            model_state=new_state,
+            previous_action=planned_action,
+            update_previous_action=True,
+        )
         steps.append(
             TrajectoryStepTrace(
                 step=index,

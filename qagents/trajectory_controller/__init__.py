@@ -1,6 +1,9 @@
 """Deterministic finite-horizon trajectory control over RealWorldBridge."""
 
-from qagents.trajectory_controller.controller import run_trajectory_control
+from qagents.trajectory_controller.controller import (
+    CONVERGENCE_TOLERANCE,
+    run_trajectory_control,
+)
 from qagents.trajectory_controller.executor import execute_trajectory
 from qagents.trajectory_controller.planner import plan_trajectory, trajectory_cost
 from qagents.trajectory_controller.predictor import (
@@ -28,6 +31,7 @@ from qagents.trajectory_controller.validator import validate_trajectory
 
 __all__ = [
     "ACTION_VECTOR_DIM",
+    "CONVERGENCE_TOLERANCE",
     "EDGE_ADJUST_CODE",
     "LAMBDA_ACTION",
     "LAMBDA_ROC",
