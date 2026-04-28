@@ -13,7 +13,7 @@ from qagents.mvri.forward_model import forward_model
 from qagents.mvri.state import ForwardModelError, Inv, State, format_edge
 from qagents.realworld_bridge.safety_gate import SafetyConfig, validate_action
 from qagents.trajectory_controller.predictor import (
-    TrajectoryInvariantViolation,
+    TrajectoryInvariantViolationError,
     predict_rollout,
 )
 from qagents.trajectory_controller.types import (
@@ -96,7 +96,7 @@ def _candidate_magnitudes(diff: float, epsilon: float) -> tuple[float, ...]:
     half = step / 2.0
     values = (step, half, 0.0, -half, -step)
     # Round before set-deduplication so semantically identical magnitudes
-    # produced by floating arithmetic collapse deterministically.
+    # produced by floating-point arithmetic are collapsed deterministically.
     dedup = sorted(
         {round(float(v), MAGNITUDE_PRECISION) for v in values},
         key=lambda x: (abs(x - step), abs(x), x),
@@ -262,7 +262,7 @@ def plan_trajectory(
 
     try:
         predicted = predict_rollout(model_state, trajectory)
-    except TrajectoryInvariantViolation as exc:
+    except TrajectoryInvariantViolationError as exc:
         return TrajectoryPlanResult(
             trajectory=None,
             cost=inf,

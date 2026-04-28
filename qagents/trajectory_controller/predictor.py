@@ -48,11 +48,11 @@ def predict_rollout(
     :func:`realworld_bridge.world_model_sync.sync_model` with bounded
     correction. Topology is inherited from ``model_state`` and never altered.
     Any invariant violation aborts prediction with
-    :class:`TrajectoryInvariantViolation`.
+    :class:`TrajectoryInvariantViolationError`.
     """
 
     if not Inv(model_state):
-        raise TrajectoryInvariantViolation("initial model_state violates Inv")
+        raise TrajectoryInvariantViolationError("initial model_state violates Inv")
 
     states: list[State] = []
     current = model_state
@@ -64,7 +64,7 @@ def predict_rollout(
             action = vector_to_action(vector, current)
             candidate = forward_model(current, action)
         except (ForwardModelError, ValueError) as exc:
-            raise TrajectoryInvariantViolation(
+            raise TrajectoryInvariantViolationError(
                 f"step {index}: forward prediction failed: {exc}"
             ) from exc
 
@@ -73,11 +73,11 @@ def predict_rollout(
             or candidate.edges != topology[1]
             or candidate.initial_edges != topology[2]
         ):
-            raise TrajectoryInvariantViolation(
+            raise TrajectoryInvariantViolationError(
                 f"step {index}: prediction changed topology"
             )
         if not Inv(candidate):
-            raise TrajectoryInvariantViolation(
+            raise TrajectoryInvariantViolationError(
                 f"step {index}: forward candidate violates Inv"
             )
 
@@ -90,11 +90,11 @@ def predict_rollout(
             max_correction_magnitude=max_correction_magnitude,
         )
         if synced is current and candidate != current:
-            raise TrajectoryInvariantViolation(
+            raise TrajectoryInvariantViolationError(
                 f"step {index}: bounded correction rejected by sync_model"
             )
         if not Inv(synced):
-            raise TrajectoryInvariantViolation(
+            raise TrajectoryInvariantViolationError(
                 f"step {index}: synced prediction violates Inv"
             )
         if (
@@ -102,7 +102,7 @@ def predict_rollout(
             or synced.edges != topology[1]
             or synced.initial_edges != topology[2]
         ):
-            raise TrajectoryInvariantViolation(
+            raise TrajectoryInvariantViolationError(
                 f"step {index}: sync_model changed topology"
             )
         states.append(synced)

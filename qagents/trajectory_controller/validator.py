@@ -6,7 +6,7 @@ from qagents.mvri.forward_model import forward_model
 from qagents.mvri.state import ForwardModelError, Inv, State
 from qagents.realworld_bridge.safety_gate import SafetyConfig, validate_action
 from qagents.trajectory_controller.predictor import (
-    TrajectoryInvariantViolation,
+    TrajectoryInvariantViolationError,
     predict_rollout,
 )
 from qagents.trajectory_controller.types import Trajectory, vector_to_action
@@ -65,7 +65,7 @@ def validate_trajectory(
 
     try:
         predict_rollout(initial_state, trajectory)
-    except TrajectoryInvariantViolation as exc:
+    except TrajectoryInvariantViolationError as exc:
         reasons.append(f"rollout:INV:{exc}")
 
     return not reasons, tuple(reasons)

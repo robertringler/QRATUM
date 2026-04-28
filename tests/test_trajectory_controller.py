@@ -21,7 +21,7 @@ from qagents.realworld_bridge import (
 from qagents.trajectory_controller import (
     ACTION_VECTOR_DIM,
     Trajectory,
-    TrajectoryInvariantViolation,
+    TrajectoryInvariantViolationError,
     action_to_vector,
     execute_trajectory,
     plan_trajectory,
@@ -269,7 +269,7 @@ def test_predict_rollout_rejects_invalid_initial_state() -> None:
     traj = _trajectory_from_action(
         Action(type="node_activation_shift", target="n1", magnitude=0.0)
     )
-    with pytest.raises(TrajectoryInvariantViolation):
+    with pytest.raises(TrajectoryInvariantViolationError):
         predict_rollout(invalid, traj)
 
 
@@ -278,7 +278,7 @@ def test_predict_rollout_rejects_decode_failure() -> None:
         actions=(np.asarray([NODE_SHIFT_CODE, 99.0, 0.0, NO_SEED]),),
         horizon=1,
     )
-    with pytest.raises(TrajectoryInvariantViolation):
+    with pytest.raises(TrajectoryInvariantViolationError):
         predict_rollout(_state(), traj)
 
 
@@ -495,7 +495,7 @@ def test_execution_trace_is_deterministic() -> None:
     assert signature() == signature()
 
 
-def test_planner_api_has_no_rng_parameter_and_is_deterministic() -> None:
+def test_planner_deterministic_without_rng() -> None:
     # The planner has no RNG parameter and produces identical value output.
     r1 = plan_trajectory(_state(), _target(), 2, SafetyConfig(), _state())
     r2 = plan_trajectory(_state(), _target(), 2, SafetyConfig(), _state())
