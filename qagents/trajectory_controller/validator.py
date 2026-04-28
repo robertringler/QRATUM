@@ -60,6 +60,9 @@ def validate_trajectory(
         current = candidate
         prev = action
 
+    if reasons:
+        return False, tuple(reasons)
+
     try:
         predict_rollout(initial_state, trajectory)
     except TrajectoryInvariantViolation as exc:

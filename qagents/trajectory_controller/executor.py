@@ -44,7 +44,12 @@ def execute_trajectory(
     steps: list[TrajectoryStepTrace] = []
     failures: list[str] = []
 
-    sensor = control_loop._sensor  # noqa: SLF001 - integration with bridge internals
+    # ControlLoop intentionally owns the bridge components.  Trajectory
+    # execution must reuse exactly those components to preserve the bridge's
+    # safety-gated execution semantics; no public "execute planned action"
+    # method exists yet, so this package treats these attributes as the
+    # integration seam and keeps all access localized here.
+    sensor = control_loop._sensor  # noqa: SLF001 - documented integration seam
     observer = control_loop._observer  # noqa: SLF001
     actuator = control_loop._actuator  # noqa: SLF001
     safety_config = control_loop._safety_config  # noqa: SLF001

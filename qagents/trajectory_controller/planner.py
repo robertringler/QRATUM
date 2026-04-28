@@ -28,6 +28,7 @@ from qagents.trajectory_controller.types import (
 BEAM_WIDTH: int = 8
 MAX_CANDIDATES_PER_STEP: int = 32
 TARGET_TOL: float = 1e-9
+MAGNITUDE_PRECISION: int = 12
 
 
 @dataclass(frozen=True)
@@ -94,7 +95,12 @@ def _candidate_magnitudes(diff: float, epsilon: float) -> tuple[float, ...]:
     step = max(-eps, min(eps, float(diff)))
     half = step / 2.0
     values = (step, half, 0.0, -half, -step)
-    dedup = sorted({round(float(v), 12) for v in values}, key=lambda x: (abs(x - step), abs(x), x))
+    # Round before set-deduplication so semantically identical magnitudes
+    # produced by floating arithmetic collapse deterministically.
+    dedup = sorted(
+        {round(float(v), MAGNITUDE_PRECISION) for v in values},
+        key=lambda x: (abs(x - step), abs(x), x),
+    )
     return tuple(float(v) for v in dedup)
 
 
@@ -275,6 +281,7 @@ def plan_trajectory(
 
 __all__ = [
     "BEAM_WIDTH",
+    "MAGNITUDE_PRECISION",
     "MAX_CANDIDATES_PER_STEP",
     "TARGET_TOL",
     "plan_trajectory",
