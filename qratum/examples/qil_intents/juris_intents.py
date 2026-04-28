@@ -10,8 +10,7 @@ from qratum.platform import PlatformIntent
 contract_analysis_intent = PlatformIntent(
     vertical="JURIS",
     task="analyze_contract",
-    parameters={
-        "contract_text": """
+    parameters={"contract_text": """
         SERVICE AGREEMENT
         
         This Agreement is entered into between Company A ("Provider") and Company B ("Client").
@@ -30,8 +29,7 @@ contract_analysis_intent = PlatformIntent(
         
         6. CONFIDENTIALITY: Both parties must maintain confidentiality of proprietary information 
            for 5 years after termination.
-        """
-    },
+        """},
     requester_id="legal_team_001",
 )
 
@@ -93,8 +91,7 @@ compliance_check_intent = PlatformIntent(
 ma_contract_intent = PlatformIntent(
     vertical="JURIS",
     task="analyze_contract",
-    parameters={
-        "contract_text": """
+    parameters={"contract_text": """
         MERGER AGREEMENT
         
         Acquirer shall purchase 100% of Target's outstanding shares for $500M.
@@ -114,8 +111,7 @@ ma_contract_intent = PlatformIntent(
         - Regulatory approval from DOJ and FTC
         - Shareholder approval (66% threshold)
         - No material adverse change
-        """
-    },
+        """},
     requester_id="ma_team_corp_dev",
 )
 

@@ -38,8 +38,6 @@ from __future__ import annotations
 
 import argparse
 import sys
-import time
-from datetime import datetime
 from pathlib import Path
 
 # Add repository root to path
@@ -200,7 +198,7 @@ def run_experiment(args: argparse.Namespace) -> int:
 
     if verbose:
         print_banner()
-        print(f"Configuration:")
+        print("Configuration:")
         print(f"  Rule: {config.system_rule}")
         print(f"  Size: {config.system_size} cells")
         print(f"  Steps: {config.simulated_steps:,}")
@@ -240,11 +238,13 @@ def run_experiment(args: argparse.Namespace) -> int:
         print()
         print(f"Temporal Compression Ratio: {result.compression_ratio:.2f}×")
         print(f"Reproducibility: {'✅ Verified' if result.is_reproducible else '❌ Not Verified'}")
-        print(f"Chain Integrity: {'✅ Valid' if result.verification_chain.verify_integrity() else '❌ Invalid'}")
+        print(
+            f"Chain Integrity: {'✅ Valid' if result.verification_chain.verify_integrity() else '❌ Invalid'}"
+        )
         print()
         print(f"Hypothesis Evaluation: {result.hypothesis_evaluation['conclusion']}")
         print()
-        print(result.hypothesis_evaluation['interpretation'])
+        print(result.hypothesis_evaluation["interpretation"])
         print()
         print(f"Results saved to: {output_path}")
         print()

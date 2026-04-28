@@ -9,7 +9,6 @@ Covers:
 
 from __future__ import annotations
 
-import pytest
 from typing import Optional
 
 from qagents.framework.ciir import (
@@ -19,9 +18,8 @@ from qagents.framework.ciir import (
     State,
     accessible_state_space,
 )
-from qagents.framework.crs import Action, CRS, FailureMode, NOOP
-from qagents.framework.ric import Intent, RIC, TraceEntry
-
+from qagents.framework.crs import CRS, NOOP, Action, FailureMode
+from qagents.framework.ric import RIC, Intent
 
 # ===========================================================================
 # Shared domain fixtures
@@ -66,8 +64,10 @@ def transition_fn(state: State, action: Action) -> Optional[dict]:
 
 def invariant(state: State) -> bool:
     return (
-        isinstance(state.get("level"), int) and 0 <= state["level"] <= 5
-        and isinstance(state.get("resource"), int) and 0 <= state["resource"] <= 10
+        isinstance(state.get("level"), int)
+        and 0 <= state["level"] <= 5
+        and isinstance(state.get("resource"), int)
+        and 0 <= state["resource"] <= 10
         and state.get("mode") in VALID_MODES
     )
 
@@ -78,7 +78,7 @@ INTENT_MAP = {
     "acquire": Intent("acquire_resource", preferred_action="ACQUIRE_RESOURCE"),
     "release": Intent("release_resource", preferred_action="RELEASE_RESOURCE"),
     "elevate": Intent("increase_level", preferred_action="INCREASE_LEVEL"),
-    "hold":    Intent("hold", preferred_action="NOOP"),
+    "hold": Intent("hold", preferred_action="NOOP"),
 }
 
 
@@ -88,7 +88,9 @@ def intent_parser(raw: str) -> Optional[Intent]:
 
 def make_system(state: dict, constraints=None) -> tuple[CRS, RIC]:
     constraints = constraints or ALL_CONSTRAINTS
-    crs = CRS(state, ACTIONS, transition_fn, ConstraintAlgebra(ALL_CONSTRAINTS), constraints, invariant)
+    crs = CRS(
+        state, ACTIONS, transition_fn, ConstraintAlgebra(ALL_CONSTRAINTS), constraints, invariant
+    )
     ric = RIC(crs, OBSERVER, intent_parser)
     return crs, ric
 
@@ -96,6 +98,7 @@ def make_system(state: dict, constraints=None) -> tuple[CRS, RIC]:
 # ===========================================================================
 # CIIR tests
 # ===========================================================================
+
 
 class TestConstraint:
     def test_satisfies_true(self):
@@ -196,6 +199,7 @@ class TestAccessibleStateSpace:
 # CRS tests
 # ===========================================================================
 
+
 class TestCRS:
     def setup_method(self):
         self.algebra = ConstraintAlgebra(ALL_CONSTRAINTS)
@@ -274,6 +278,7 @@ class TestCRS:
 # ===========================================================================
 # RIC tests
 # ===========================================================================
+
 
 class TestRIC:
     def setup_method(self):

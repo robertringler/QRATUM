@@ -18,22 +18,22 @@ Usage:
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any
 import json
 import logging
+from dataclasses import dataclass
+from typing import Any
+
 import requests
 
-from qratum_chess.core.position import Position
 from qratum_chess.benchmarks.kaggle_config import KaggleConfig
-
+from qratum_chess.core.position import Position
 
 # Set up logging
 logger = logging.getLogger(__name__)
+import json
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
-import json
 
 from qratum_chess.core.position import Position
 
