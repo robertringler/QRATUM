@@ -57,8 +57,7 @@ def validate_trajectory(
         if not Inv(candidate):
             reasons.append(f"step:{index}:INV")
             break
-        else:
-            current = candidate
+        current = candidate
         prev = action
 
     try:

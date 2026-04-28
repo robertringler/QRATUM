@@ -5,6 +5,7 @@ from qagents.trajectory_controller.executor import execute_trajectory
 from qagents.trajectory_controller.planner import plan_trajectory, trajectory_cost
 from qagents.trajectory_controller.predictor import (
     TrajectoryInvariantViolation,
+    TrajectoryInvariantViolationError,
     predict_rollout,
 )
 from qagents.trajectory_controller.types import (
@@ -37,6 +38,7 @@ __all__ = [
     "Trajectory",
     "TrajectoryExecutionTrace",
     "TrajectoryInvariantViolation",
+    "TrajectoryInvariantViolationError",
     "TrajectoryPlanResult",
     "TrajectoryStepTrace",
     "action_to_vector",

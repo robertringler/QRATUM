@@ -13,8 +13,11 @@ from qagents.realworld_bridge.world_model_sync import (
 from qagents.trajectory_controller.types import Trajectory, vector_to_action
 
 
-class TrajectoryInvariantViolation(RuntimeError):  # noqa: N818 - formal name from spec
+class TrajectoryInvariantViolationError(RuntimeError):
     """Raised when predicted rollout would violate MVRI invariants."""
+
+
+TrajectoryInvariantViolation = TrajectoryInvariantViolationError
 
 
 def _node_edge_ids(state: State) -> tuple[tuple[str, ...], tuple[Edge, ...]]:
@@ -107,4 +110,8 @@ def predict_rollout(
     return tuple(states)
 
 
-__all__ = ["TrajectoryInvariantViolation", "predict_rollout"]
+__all__ = [
+    "TrajectoryInvariantViolation",
+    "TrajectoryInvariantViolationError",
+    "predict_rollout",
+]
