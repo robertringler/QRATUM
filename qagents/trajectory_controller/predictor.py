@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from qagents.control_geometry.sensitivity import state_to_vector
 from qagents.mvri.forward_model import forward_model
-from qagents.mvri.state import Edge, Inv, State
+from qagents.mvri.state import Edge, ForwardModelError, Inv, State
 from qagents.realworld_bridge.types import Observation
 from qagents.realworld_bridge.world_model_sync import (
     DEFAULT_MAX_CORRECTION,
@@ -62,7 +62,7 @@ def predict_rollout(
         try:
             action = vector_to_action(vector, current)
             candidate = forward_model(current, action)
-        except Exception as exc:  # noqa: BLE001 - explicit failure surface
+        except (ForwardModelError, ValueError) as exc:
             raise TrajectoryInvariantViolation(
                 f"step {index}: forward prediction failed: {exc}"
             ) from exc

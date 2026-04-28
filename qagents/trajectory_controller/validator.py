@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from qagents.mvri.forward_model import forward_model
-from qagents.mvri.state import Inv, State
+from qagents.mvri.state import ForwardModelError, Inv, State
 from qagents.realworld_bridge.safety_gate import SafetyConfig, validate_action
 from qagents.trajectory_controller.predictor import (
     TrajectoryInvariantViolation,
@@ -51,7 +51,7 @@ def validate_trajectory(
 
         try:
             candidate = forward_model(current, action)
-        except Exception as exc:  # noqa: BLE001 - explicit failure surface
+        except (ForwardModelError, ValueError) as exc:
             reasons.append(f"step:{index}:MVR:{exc}")
             break
         if not Inv(candidate):

@@ -10,7 +10,7 @@ import numpy as np
 from qagents.control_geometry.sensitivity import state_to_vector
 from qagents.mvri.action_space import Action
 from qagents.mvri.forward_model import forward_model
-from qagents.mvri.state import Inv, State, format_edge
+from qagents.mvri.state import ForwardModelError, Inv, State, format_edge
 from qagents.realworld_bridge.safety_gate import SafetyConfig, validate_action
 from qagents.trajectory_controller.predictor import (
     TrajectoryInvariantViolation,
@@ -218,7 +218,7 @@ def plan_trajectory(
                     continue
                 try:
                     next_state = forward_model(node.state, action)
-                except Exception as exc:  # noqa: BLE001 - explicit failure surface
+                except (ForwardModelError, ValueError) as exc:
                     rejected.append(f"step:{depth}:MVR:{exc}")
                     continue
                 if not Inv(next_state):
