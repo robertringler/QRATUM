@@ -23,7 +23,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from dataclasses import asdict
 from typing import Any
 
 from qagents.ciir_ric_bridge import CIIRRICBridge, CIIRRICRunResult
@@ -62,7 +61,9 @@ def _summarize(result: CIIRRICRunResult) -> dict[str, Any]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Run CIIR engine under RIC control with various LLM proposers.")
+    parser = argparse.ArgumentParser(
+        description="Run CIIR engine under RIC control with various LLM proposers."
+    )
     parser.add_argument("--steps", type=int, default=20)
     parser.add_argument("--rank", type=int, default=4)
     parser.add_argument("--rep-dim", type=int, default=8)
@@ -71,10 +72,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--output-dir", type=str, default="ric_ciir_output")
     parser.add_argument("--json", action="store_true", help="Emit results as JSON to stdout.")
-    parser.add_argument("--ric-v2", action="store_true", help="Use the trajectory-aware RIC v2 controller.")
+    parser.add_argument(
+        "--ric-v2", action="store_true", help="Use the trajectory-aware RIC v2 controller."
+    )
     parser.add_argument("--v2-seed", type=int, default=0)
     parser.add_argument(
-        "--v2-k", "--v2-horizon", dest="v2_k", type=int, default=5,
+        "--v2-k",
+        "--v2-horizon",
+        dest="v2_k",
+        type=int,
+        default=5,
         help="RIC v2 trajectory rollout horizon (number of forward steps).",
     )
     parser.add_argument("--v2-perturbations", type=int, default=2)
@@ -100,7 +107,9 @@ def main(argv: list[str] | None = None) -> int:
 
     print("=" * 72)
     mode = "v2 (trajectory-aware)" if args.ric_v2 else "v1 (deterministic)"
-    print(f"CIIR × RIC[{mode}] × LLM run — steps={args.steps}, rank={args.rank}, rep_dim={args.rep_dim}")
+    print(
+        f"CIIR × RIC[{mode}] × LLM run — steps={args.steps}, rank={args.rank}, rep_dim={args.rep_dim}"
+    )
     print("=" * 72)
     header = f"{'proposer':<16} {'steps':>6} {'abort@':>7} {'loss':>12} {'purity':>9} {'actions'}"
     print(header)

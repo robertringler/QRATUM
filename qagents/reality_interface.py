@@ -25,7 +25,7 @@ on safety violations).
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Callable, Mapping, Protocol
 
 ActionType = str  # "control" | "adjust" | "hold" | "abort"
@@ -240,7 +240,8 @@ class RealityInterfaceController:
         r_max = float(system_limits.get("risk_threshold", 1.0))
         sigma_min = float(system_limits.get("stability_threshold", 0.0))
         admissible = [
-            c for c in candidates
+            c
+            for c in candidates
             if c.type != "abort" and c.risk <= r_max and c.stability >= sigma_min
         ]
 
@@ -361,7 +362,9 @@ class RealityInterfaceController:
     ) -> dict[str, Any]:
         if chosen.type == "abort":
             return {
-                "trigger_condition": "constraint_violation" if conflicts else "no_admissible_action",
+                "trigger_condition": (
+                    "constraint_violation" if conflicts else "no_admissible_action"
+                ),
                 "action": "hold",
             }
         if chosen.stability < 0.5 or feasibility == 0:

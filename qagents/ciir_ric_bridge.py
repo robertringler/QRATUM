@@ -23,12 +23,11 @@ from dataclasses import dataclass, field
 from typing import Any, Mapping
 
 from qagents.reality_interface import (
+    Proposer,
     RealityInterfaceController,
     RICDecision,
-    Proposer,
 )
 from qagents.reality_interface_v2 import RICv2Controller, RICv2History
-
 
 # ---------------------------------------------------------------------------
 # Default intent / system limits
@@ -187,7 +186,10 @@ class CIIRRICBridge:
             world_state = snapshot_to_world_state(snapshot)
             if self.use_v2:
                 decision = self.ric.decide(
-                    self.intent, world_state, self.system_limits, history=self.history,
+                    self.intent,
+                    world_state,
+                    self.system_limits,
+                    history=self.history,
                 )
             else:
                 decision = self.ric.decide(self.intent, world_state, self.system_limits)
@@ -198,11 +200,14 @@ class CIIRRICBridge:
             magnitude = float(action.get("magnitude", 0.0))
             action_counts[atype] = action_counts.get(atype, 0) + 1
             if self.use_v2 and self.history is not None:
-                self.history.record(atype, metrics={
-                    "total_loss": float(world_state.get("total_loss", 0.0)),
-                    "purity": float(world_state.get("purity", 0.0)),
-                    "gradient_norm": float(world_state.get("gradient_norm", 0.0)),
-                })
+                self.history.record(
+                    atype,
+                    metrics={
+                        "total_loss": float(world_state.get("total_loss", 0.0)),
+                        "purity": float(world_state.get("purity", 0.0)),
+                        "gradient_norm": float(world_state.get("gradient_norm", 0.0)),
+                    },
+                )
 
             if atype == "abort":
                 aborted_at = int(getattr(snapshot, "step", executed))
@@ -252,7 +257,7 @@ class CIIRRICBridge:
         base = float(getattr(cfg, "_ric_base_lr", cfg.learning_rate))
         if not hasattr(cfg, "_ric_base_lr"):
             try:
-                setattr(cfg, "_ric_base_lr", base)
+                cfg._ric_base_lr = base
             except Exception:
                 return
         # Clamp magnitude into [0, 1]; map to scale ∈ [0.25, 4.0]

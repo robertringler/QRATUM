@@ -18,6 +18,7 @@ deterministic `failures.FailureRecord`s; no exception escapes this function.
 
 `print_trace` produces a human-inspectable rendering of any list of entries.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -43,22 +44,23 @@ from .failures import (
     STATUS_TYPE_II,
     STATUS_TYPE_III,
     STATUS_TYPE_IV,
-    FailureRecord,
     ConstraintViolation,
+    FailureRecord,
     IntentParseFailure,
     InvalidTransition,
     InvariantViolation,
 )
 from .ric import Intent, parse_intent, select_action
 
-
 # --------------------------------------------------------------------------
 # Trace schema
 # --------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class TraceEntry:
     """Mandatory trace schema (see spec §Trace Schema)."""
+
     step: int
     state_t: State
     intent_raw: str
@@ -67,7 +69,7 @@ class TraceEntry:
     action: Action
     state_t1: Optional[State]
     observation: Optional[Observation]
-    status: str            # STATUS_OK | STATUS_TYPE_I..IV
+    status: str  # STATUS_OK | STATUS_TYPE_I..IV
     failure: Optional[FailureRecord] = None
 
 
@@ -78,6 +80,7 @@ class TraceLog:
     The log itself is the *only* legitimate source of mutable state in the
     framework; states, observations and constraints remain immutable.
     """
+
     entries: List[TraceEntry] = field(default_factory=list)
 
     def append(self, entry: TraceEntry) -> None:
@@ -93,6 +96,7 @@ class TraceLog:
 # --------------------------------------------------------------------------
 # Single-tick execution
 # --------------------------------------------------------------------------
+
 
 def run_step(
     state: State,
@@ -227,7 +231,7 @@ def run_step(
             intent=intent,
             admissible=admissible,
             action=action,
-            state_t1=None,            # do NOT propagate an invariant-broken state
+            state_t1=None,  # do NOT propagate an invariant-broken state
             observation=None,
             status=STATUS_TYPE_IV,
             failure=failure.record(),
@@ -254,6 +258,7 @@ def run_step(
 # --------------------------------------------------------------------------
 # Multi-step driver and trace renderer
 # --------------------------------------------------------------------------
+
 
 def run(
     state: State,
