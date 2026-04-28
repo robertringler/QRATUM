@@ -46,7 +46,7 @@ from __future__ import annotations
 
 import random
 from dataclasses import dataclass, field
-from typing import Any, Callable, Mapping, Sequence
+from typing import Any, Callable, Mapping
 
 from qagents.reality_interface import (
     ACTION_TYPES,
@@ -60,7 +60,6 @@ from qagents.reality_interface import (
     _default_risk,
     _default_stability,
 )
-
 
 # ---------------------------------------------------------------------------
 # Trajectory dataclasses
@@ -154,10 +153,7 @@ class RICv2History:
             return {}
         first = self.recent_metrics[0]
         last = self.recent_metrics[-1]
-        return {
-            k: float(last.get(k, 0.0) - first.get(k, 0.0))
-            for k in last.keys() & first.keys()
-        }
+        return {k: float(last.get(k, 0.0) - first.get(k, 0.0)) for k in last.keys() & first.keys()}
 
 
 # ---------------------------------------------------------------------------
@@ -251,20 +247,16 @@ class RICv2Controller:
         candidates = self._build_candidates(magnitudes)
 
         # 4. Trajectory simulation (k-step rollout, mandatory)
-        trajectories = [
-            self._rollout(world_state, intent, system_limits, c)
-            for c in candidates
-        ]
+        trajectories = [self._rollout(world_state, intent, system_limits, c) for c in candidates]
 
         # 5. Admissibility filter
         feasibility, conflicts = self._align_state(world_state, interp["constraints"])
         r_max = float(system_limits.get("risk_threshold", 1.0))
         sigma_min = float(system_limits.get("stability_threshold", 0.0))
         admissible = [
-            t for t in trajectories
-            if t.type != "abort"
-            and t.max_risk <= r_max
-            and t.mean_stability >= sigma_min
+            t
+            for t in trajectories
+            if t.type != "abort" and t.max_risk <= r_max and t.mean_stability >= sigma_min
         ]
 
         # 6. Lexicographic selection

@@ -7,11 +7,11 @@ from typing import Any
 
 import pytest
 
-from qagents.reality_interface import (
-    ACTION_TYPES,
-    LinearSimulator,
-    RealityInterfaceController,
-    StaticProposer,
+from qagents.ciir_ric_bridge import (
+    CIIRRICBridge,
+    default_intent,
+    default_system_limits,
+    snapshot_to_world_state,
 )
 from qagents.llm_backends import (
     AnthropicProposer,
@@ -21,13 +21,12 @@ from qagents.llm_backends import (
     OpenAIProposer,
     available_backends,
 )
-from qagents.ciir_ric_bridge import (
-    CIIRRICBridge,
-    default_intent,
-    default_system_limits,
-    snapshot_to_world_state,
+from qagents.reality_interface import (
+    ACTION_TYPES,
+    LinearSimulator,
+    RealityInterfaceController,
+    StaticProposer,
 )
-
 
 # ---------------------------------------------------------------------------
 # RIC core
@@ -127,9 +126,16 @@ class TestRICPolicy:
 
     def test_minimal_intervention_among_admissible(self):
         # Hold has magnitude 0; should win when admissible.
-        ric = RealityInterfaceController(proposer=StaticProposer({
-            "control": 1.0, "adjust": 0.5, "hold": 0.0, "abort": 0.0,
-        }))
+        ric = RealityInterfaceController(
+            proposer=StaticProposer(
+                {
+                    "control": 1.0,
+                    "adjust": 0.5,
+                    "hold": 0.0,
+                    "abort": 0.0,
+                }
+            )
+        )
         d = ric.decide(_intent(), {"loss": 1.0}, _limits())
         assert d.selected_action["type"] == "hold"
 
@@ -148,9 +154,14 @@ class TestRICPolicy:
 
         ric = RealityInterfaceController(
             simulator=MarkerSim(),
-            proposer=StaticProposer({
-                "control": 0.1, "adjust": 0.5, "hold": 0.0, "abort": 0.0,
-            }),
+            proposer=StaticProposer(
+                {
+                    "control": 0.1,
+                    "adjust": 0.5,
+                    "hold": 0.0,
+                    "abort": 0.0,
+                }
+            ),
             stability_estimator=stab,
         )
         d = ric.decide(_intent(), {"loss": 1.0}, _limits())

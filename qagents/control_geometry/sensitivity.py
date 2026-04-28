@@ -87,9 +87,7 @@ def sensitivity_probe(
     base = state_to_vector(state)
     probed = state_to_vector(forward_model(state, _scaled_action(action, eps)))
     if probed.shape != base.shape:
-        raise RuntimeError(
-            "forward_model returned a state of different shape; cannot probe"
-        )
+        raise RuntimeError("forward_model returned a state of different shape; cannot probe")
     return (probed - base) / float(eps)
 
 

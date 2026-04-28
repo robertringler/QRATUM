@@ -111,9 +111,7 @@ class DeterministicEngine:
             )
 
             # Invariant 4: Verify authorization system is active
-            self.invariants.enforce_authorization_system(
-                has_authorization_check=True
-            )
+            self.invariants.enforce_authorization_system(has_authorization_check=True)
             self.invariants.enforce_authorization_system(has_authorization_check=True)
 
             # Invariant 5: Verify safety level is set

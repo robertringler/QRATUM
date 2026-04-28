@@ -20,21 +20,20 @@ CRS does NOT evaluate constraints directly — it delegates to CIIR.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Any, Callable, FrozenSet, Mapping, Optional
+from typing import Any, Callable, FrozenSet, Optional
 
 from qagents.framework.ciir import (
     Constraint,
     ConstraintAlgebra,
     State,
-    accessible_state_space,
 )
-
 
 # ---------------------------------------------------------------------------
 # Action space A
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True)
 class Action:
@@ -45,6 +44,7 @@ class Action:
     name : str
         Action identifier (element of Σ).
     """
+
     name: str
 
     def __repr__(self) -> str:
@@ -58,6 +58,7 @@ NOOP = Action(name="NOOP")  # Safe fallback action (always admissible by convent
 # Failure modes
 # ---------------------------------------------------------------------------
 
+
 class FailureMode(Enum):
     """Formal failure mode classification.
 
@@ -66,6 +67,7 @@ class FailureMode(Enum):
     Type III — Transition undefined: T_C(s, a) = ⊥
     Type IV  — Invariant breach:     T_C(s, a) ∉ Inv
     """
+
     TYPE_I_CONSTRAINT_VIOLATION = auto()
     TYPE_II_INTENT_PARSE_FAILURE = auto()
     TYPE_III_TRANSITION_UNDEFINED = auto()
@@ -74,6 +76,7 @@ class FailureMode(Enum):
 
 class CRSError(Exception):
     """Raised when CRS detects an irrecoverable failure."""
+
     def __init__(self, failure_mode: FailureMode, detail: str = "") -> None:
         self.failure_mode = failure_mode
         self.detail = detail
@@ -83,6 +86,7 @@ class CRSError(Exception):
 # ---------------------------------------------------------------------------
 # CRS — labeled typed state-transition system
 # ---------------------------------------------------------------------------
+
 
 class CRS:
     """Formal CRS := ⟨S, Σ, s₀, T, F⟩.
@@ -192,9 +196,8 @@ class CRS:
                 # T(s, a) = ⊥ — physically undefined transition
                 continue
             # Post-condition: T(s, a) ⊨ C_act AND T(s, a) ∈ Inv
-            if (
-                self._algebra.satisfies_all(successor, self._active)
-                and self.in_invariant(successor)
+            if self._algebra.satisfies_all(successor, self._active) and self.in_invariant(
+                successor
             ):
                 admissible.append(action)
 

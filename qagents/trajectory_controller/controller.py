@@ -43,9 +43,7 @@ def run_trajectory_control(
             final_model_state=control_loop.model_state,
             acceptance_rate=0.0,
             safety_rejection_rate=1.0,
-            observer_converged=control_loop.observer.is_converged(
-                tol=CONVERGENCE_TOLERANCE
-            ),
+            observer_converged=control_loop.observer.is_converged(tol=CONVERGENCE_TOLERANCE),
         )
 
     valid, _reasons = validate_trajectory(
@@ -61,9 +59,7 @@ def run_trajectory_control(
             final_model_state=control_loop.model_state,
             acceptance_rate=0.0,
             safety_rejection_rate=1.0,
-            observer_converged=control_loop.observer.is_converged(
-                tol=CONVERGENCE_TOLERANCE
-            ),
+            observer_converged=control_loop.observer.is_converged(tol=CONVERGENCE_TOLERANCE),
         )
 
     execution = execute_trajectory(control_loop, plan.trajectory)
@@ -75,9 +71,7 @@ def run_trajectory_control(
         final_model_state=control_loop.model_state,
         acceptance_rate=(accepted / n_steps) if n_steps else 0.0,
         safety_rejection_rate=(1.0 if execution.aborted and accepted == 0 else 0.0),
-        observer_converged=control_loop.observer.is_converged(
-            tol=CONVERGENCE_TOLERANCE
-        ),
+        observer_converged=control_loop.observer.is_converged(tol=CONVERGENCE_TOLERANCE),
     )
 
 

@@ -12,8 +12,16 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from qil.ast import (Authority, Capability, Constraint, HardwareSpec, Intent,
-                     Objective, TimeSpec, Trust)
+from qil.ast import (
+    Authority,
+    Capability,
+    Constraint,
+    HardwareSpec,
+    Intent,
+    Objective,
+    TimeSpec,
+    Trust,
+)
 from qil.grammar import GrammarConstants
 
 

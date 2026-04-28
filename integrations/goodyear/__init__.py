@@ -5,8 +5,7 @@ including access to 1,000+ pre-characterized tire materials and compounds.
 """
 
 from .materials_db import GoodyearMaterialsDatabase, MaterialRecord
-from .quantum_pilot import (GoodyearQuantumPilot, create_goodyear_library,
-                            load_goodyear_materials)
+from .quantum_pilot import GoodyearQuantumPilot, create_goodyear_library, load_goodyear_materials
 
 __all__ = [
     "GoodyearQuantumPilot",

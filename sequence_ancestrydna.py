@@ -28,10 +28,14 @@ sys.path.insert(0, str(Path(__file__).parent))
 # Import the new Genomic Rarity & Lineage Engine
 from genomic_rarity_engine import GenomicRarityAndLineageSystem
 from xenon.bioinformatics.full_genome_sequencing import (
-    FullGenomeSequencingPipeline, GenomeSequencingConfig)
+    FullGenomeSequencingPipeline,
+    GenomeSequencingConfig,
+)
 
 # Constants
-EXPECTED_SNP_COLUMNS = 5  # Number of expected columns in SNP data: rsid, chromosome, position, allele1, allele2
+EXPECTED_SNP_COLUMNS = (
+    5  # Number of expected columns in SNP data: rsid, chromosome, position, allele1, allele2
+)
 
 # Configure logging
 logging.basicConfig(
@@ -151,9 +155,7 @@ class AncestryDNAParser:
         stats = {
             "total_snps": len(self.snps),
             "total_chromosomes": len(self.chromosomes),
-            "snps_per_chromosome": {
-                chrom: len(snps) for chrom, snps in self.chromosomes.items()
-            },
+            "snps_per_chromosome": {chrom: len(snps) for chrom, snps in self.chromosomes.items()},
         }
 
         # Calculate allele statistics
@@ -228,8 +230,7 @@ class AncestryDNASequencingPipeline(FullGenomeSequencingPipeline):
 
         # Save rarity & lineage report
         rarity_report_path = self.rarity_system.generate_report(
-            rarity_lineage_results,
-            self.config.output_dir
+            rarity_lineage_results, self.config.output_dir
         )
         logger.info(f"✓ Rarity & Lineage analysis saved to {rarity_report_path}")
 
@@ -325,10 +326,18 @@ class AncestryDNASequencingPipeline(FullGenomeSequencingPipeline):
         logger.info(f"Audit Violations: {audit_summary['unresolved_critical']}")
         logger.info("=" * 60)
         logger.info("Tier-VI Rarity & Lineage Analysis:")
-        logger.info(f"  Genome-wide Rarity Percentile: {rarity_lineage_results['genome_wide_rarity'].get('rarity_percentile', 0):.2f}%")
-        logger.info(f"  Y-Haplogroup: {rarity_lineage_results['haplogroups'].get('y_chromosome', 'Unknown')}")
-        logger.info(f"  mtDNA Haplogroup: {rarity_lineage_results['haplogroups'].get('mitochondrial', 'Unknown')}")
-        logger.info(f"  Royal Connections: {rarity_lineage_results['royal_lineage'].get('total_royal_connections', 0)}")
+        logger.info(
+            f"  Genome-wide Rarity Percentile: {rarity_lineage_results['genome_wide_rarity'].get('rarity_percentile', 0):.2f}%"
+        )
+        logger.info(
+            f"  Y-Haplogroup: {rarity_lineage_results['haplogroups'].get('y_chromosome', 'Unknown')}"
+        )
+        logger.info(
+            f"  mtDNA Haplogroup: {rarity_lineage_results['haplogroups'].get('mitochondrial', 'Unknown')}"
+        )
+        logger.info(
+            f"  Royal Connections: {rarity_lineage_results['royal_lineage'].get('total_royal_connections', 0)}"
+        )
         logger.info("=" * 60)
 
         return deployment_report
@@ -392,16 +401,16 @@ def main():
     )
 
     # Run pipeline
-    pipeline = AncestryDNASequencingPipeline(
-        config=config, ancestrydna_parser=ancestrydna_parser
-    )
+    pipeline = AncestryDNASequencingPipeline(config=config, ancestrydna_parser=ancestrydna_parser)
     deployment_report = pipeline.run_ancestrydna_sequencing()
 
     # Print final status
     if deployment_report["status"] == "SUCCESS":
         print("\n✅ AncestryDNA genome sequencing completed successfully!")
         print(f"📊 Results saved to: {args.output_dir}")
-        print(f"📈 Processed {deployment_report['ancestrydna_summary']['ancestrydna_stats']['total_snps']:,} SNPs")
+        print(
+            f"📈 Processed {deployment_report['ancestrydna_summary']['ancestrydna_stats']['total_snps']:,} SNPs"
+        )
         sys.exit(0)
     else:
         print("\n❌ AncestryDNA genome sequencing failed!")

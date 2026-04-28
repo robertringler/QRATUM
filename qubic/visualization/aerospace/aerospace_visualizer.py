@@ -436,8 +436,7 @@ class AerospaceVisualizer(QubicVisualizer):
         warnings = []
 
         try:
-            from qubic.visualization.aerospace.renderers import \
-                structural_analysis
+            from qubic.visualization.aerospace.renderers import structural_analysis
 
             colormap = colormap or self.config.colormap
 
@@ -504,8 +503,7 @@ class AerospaceVisualizer(QubicVisualizer):
             warnings.append("Animation not implemented, rendering static frame")
 
         try:
-            from qubic.visualization.aerospace.renderers import \
-                structural_analysis
+            from qubic.visualization.aerospace.renderers import structural_analysis
 
             if title is None:
                 title = f"Mode {mode_index + 1}: {eigenfrequencies[mode_index]:.2f} Hz"
@@ -689,8 +687,7 @@ class AerospaceVisualizer(QubicVisualizer):
         warnings = []
 
         try:
-            from qubic.visualization.aerospace.renderers import \
-                avionics_display
+            from qubic.visualization.aerospace.renderers import avionics_display
 
             fig = avionics_display.render_sensor_fov(
                 sensor_position=sensor_position,
@@ -753,8 +750,7 @@ class AerospaceVisualizer(QubicVisualizer):
         warnings = []
 
         try:
-            from qubic.visualization.aerospace.renderers import \
-                avionics_display
+            from qubic.visualization.aerospace.renderers import avionics_display
 
             if title is None:
                 title = f"Radar Cross Section @ {frequency_ghz} GHz"

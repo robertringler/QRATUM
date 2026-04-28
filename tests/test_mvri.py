@@ -105,39 +105,25 @@ def test_validate_action_rejects_excess_magnitude():
 
 def test_validate_action_rejects_unknown_target():
     s = build_initial_state()
-    assert not validate_action(
-        Action("node_activation_shift", "ghost", 0.01), s
-    )
-    assert not validate_action(
-        Action("edge_weight_adjust", "n1->ghost", 0.01), s
-    )
+    assert not validate_action(Action("node_activation_shift", "ghost", 0.01), s)
+    assert not validate_action(Action("edge_weight_adjust", "n1->ghost", 0.01), s)
 
 
 def test_validate_action_requires_seed_for_noise():
     s = build_initial_state()
-    assert not validate_action(
-        Action("noise_injection", "n1", 0.01, seed=None), s
-    )
-    assert validate_action(
-        Action("noise_injection", "n1", 0.01, seed=7), s
-    )
+    assert not validate_action(Action("noise_injection", "n1", 0.01, seed=None), s)
+    assert validate_action(Action("noise_injection", "n1", 0.01, seed=7), s)
 
 
 def test_validate_action_rejects_nan_inf():
     s = build_initial_state()
-    assert not validate_action(
-        Action("node_activation_shift", "n1", float("nan")), s
-    )
-    assert not validate_action(
-        Action("node_activation_shift", "n1", float("inf")), s
-    )
+    assert not validate_action(Action("node_activation_shift", "n1", float("nan")), s)
+    assert not validate_action(Action("node_activation_shift", "n1", float("inf")), s)
 
 
 def test_validate_action_rejects_unknown_type():
     s = build_initial_state()
-    assert not validate_action(
-        Action("not_a_type", "n1", 0.01), s  # type: ignore[arg-type]
-    )
+    assert not validate_action(Action("not_a_type", "n1", 0.01), s)  # type: ignore[arg-type]
 
 
 # --------------------------------------------------------------------------- #

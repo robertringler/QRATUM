@@ -12,8 +12,6 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from qradle import DeterministicEngine, ExecutionContext
-from qratum.platform.reasoning_engine import (ReasoningStrategy,
-                                              UnifiedReasoningEngine)
 from qratum.platform.reasoning_engine import ReasoningStrategy, UnifiedReasoningEngine
 
 
@@ -360,13 +358,7 @@ class QRATUMAPIService:
 
     def list_verticals(self) -> List[Dict[str, Any]]:
         """List all available vertical modules."""
-        return [
-            {
-                "vertical_id": v_id,
-                **v_info
-            }
-            for v_id, v_info in self.VERTICALS.items()
-        ]
+        return [{"vertical_id": v_id, **v_info} for v_id, v_info in self.VERTICALS.items()]
         return [{"vertical_id": v_id, **v_info} for v_id, v_info in self.VERTICALS.items()]
 
     def verify_reasoning_chain(self, chain_id: str) -> Dict[str, Any]:

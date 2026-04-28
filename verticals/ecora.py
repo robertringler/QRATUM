@@ -7,13 +7,7 @@ weather prediction, and renewable site assessment.
 import math
 from typing import Any, Dict, List
 
-from qratum_platform.core import (ComputeSubstrate, PlatformContract,
-                                  VerticalModuleBase)
-from qratum_platform.core import (
-    ComputeSubstrate,
-    PlatformContract,
-    VerticalModuleBase,
-)
+from qratum_platform.core import ComputeSubstrate, PlatformContract, VerticalModuleBase
 from qratum_platform.substrates import VerticalModule, get_optimal_substrate
 
 

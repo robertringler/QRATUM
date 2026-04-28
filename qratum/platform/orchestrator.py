@@ -8,8 +8,6 @@ execution lifecycle with full event tracking and invariant enforcement.
 import logging
 from typing import Any, Dict
 
-from .core import (FATAL_INVARIANTS, EventType, PlatformContract,
-                   PlatformIntent, create_contract_from_intent, create_event)
 from .core import (
     FATAL_INVARIANTS,
     EventType,
@@ -200,9 +198,7 @@ class PlatformOrchestrator:
             self.event_chain.append(fail_event)
 
             self.contracts_failed += 1
-            self.logger.error(
-                f"Contract execution failed: {contract.contract_id}. Error: {e}"
-            )
+            self.logger.error(f"Contract execution failed: {contract.contract_id}. Error: {e}")
             self.logger.error(f"Contract execution failed: {contract.contract_id}. Error: {e}")
 
             raise
@@ -255,9 +251,7 @@ class PlatformOrchestrator:
         results = {}
 
         # Invariant #5: MerkleEventChain integrity
-        results["Invariant #5: MerkleEventChain integrity"] = (
-            self.event_chain.verify_integrity()
-        )
+        results["Invariant #5: MerkleEventChain integrity"] = self.event_chain.verify_integrity()
         results["Invariant #5: MerkleEventChain integrity"] = self.event_chain.verify_integrity()
 
         # Additional invariants would be verified here in production

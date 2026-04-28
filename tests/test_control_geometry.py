@@ -139,7 +139,7 @@ def test_local_reachability_filters_oversized_actions():
     s = build_initial_state()
     actions = [
         Action("node_activation_shift", "n2", -0.02),  # ok
-        Action("node_activation_shift", "n2", 1.0),    # oversize
+        Action("node_activation_shift", "n2", 1.0),  # oversize
     ]
     reach = local_reachability(s, actions)
     assert len(reach) == 1
@@ -171,16 +171,12 @@ def test_reachability_graph_is_reproducible():
     assert len(g1) == 2
     # Graph reproducibility: same nodes and same edge weights.
     assert g1.nodes == g2.nodes
-    assert sorted(e.weight for e in g1.edges) == sorted(
-        e.weight for e in g2.edges
-    )
+    assert sorted(e.weight for e in g1.edges) == sorted(e.weight for e in g2.edges)
 
 
 def test_reachability_cost_minimum_over_actions():
     s = build_initial_state()
-    target = local_reachability(
-        s, [Action("node_activation_shift", "n2", -0.02)]
-    ).pop()
+    target = local_reachability(s, [Action("node_activation_shift", "n2", -0.02)]).pop()
     actions = [
         Action("node_activation_shift", "n2", -0.04),  # different state
         Action("node_activation_shift", "n2", -0.02),  # exact reach
@@ -193,13 +189,9 @@ def test_reachability_cost_unreachable_returns_inf():
     s = build_initial_state()
     fake_target = build_initial_state()  # equal to s, so trivially reachable
     # Pass a target with no producing action → +inf.
-    bogus = local_reachability(
-        s, [Action("node_activation_shift", "n2", -0.02)]
-    ).pop()
+    bogus = local_reachability(s, [Action("node_activation_shift", "n2", -0.02)]).pop()
     # Action set that does NOT produce `bogus`.
-    cost = reachability_cost(
-        s, bogus, [Action("node_activation_shift", "n1", -0.02)]
-    )
+    cost = reachability_cost(s, bogus, [Action("node_activation_shift", "n1", -0.02)])
     assert math.isinf(cost)
     assert state_to_vector(fake_target) is not None  # sanity
 
@@ -306,10 +298,10 @@ def test_score_action_accepts_mapping_metrics():
 def test_classify_action_space_categories():
     s = build_initial_state()
     actions = [
-        Action("node_activation_shift", "n2", -0.02),       # productive
-        Action("node_activation_shift", "n2", -0.02),       # degenerate (dup)
-        Action("node_activation_shift", "n3", 0.05),        # unsafe (ER)
-        Action("node_activation_shift", "n1", 0.0),         # neutral
+        Action("node_activation_shift", "n2", -0.02),  # productive
+        Action("node_activation_shift", "n2", -0.02),  # degenerate (dup)
+        Action("node_activation_shift", "n3", 0.05),  # unsafe (ER)
+        Action("node_activation_shift", "n1", 0.0),  # neutral
     ]
     out = classify_action_space(s, actions)
     assert set(out.keys()) == {"productive", "neutral", "degenerate", "unsafe"}
@@ -328,9 +320,7 @@ def test_classify_action_space_deterministic():
     ]
     a = classify_action_space(s, actions)
     b = classify_action_space(s, actions)
-    assert {k: list(v) for k, v in a.items()} == {
-        k: list(v) for k, v in b.items()
-    }
+    assert {k: list(v) for k, v in a.items()} == {k: list(v) for k, v in b.items()}
 
 
 def test_default_weights_keys():
@@ -354,7 +344,7 @@ def test_select_action_picks_aligned_direction():
     candidates = [
         Action("node_activation_shift", "n1", -0.02),
         Action("node_activation_shift", "n2", -0.02),  # aligned
-        Action("node_activation_shift", "n2", 0.02),   # anti-aligned (also fails ER)
+        Action("node_activation_shift", "n2", 0.02),  # anti-aligned (also fails ER)
     ]
     chosen = select_action(s, obj, candidates)
     assert chosen is not None
@@ -400,7 +390,7 @@ def test_control_policy_picks_feasible_high_score():
     s = build_initial_state()
     candidates = [
         Action("node_activation_shift", "n2", -0.02),  # safe
-        Action("node_activation_shift", "n3", 0.05),   # unsafe
+        Action("node_activation_shift", "n3", 0.05),  # unsafe
     ]
     chosen = control_policy(s, candidates)
     assert chosen is not None
@@ -417,7 +407,7 @@ def test_policy_does_not_bypass_constraint_gate():
     """Policies must never select an action that fails Φ when require_feasible=True."""
     s = build_initial_state()
     candidates = [
-        Action("node_activation_shift", "n3", 0.05),   # ER fail
+        Action("node_activation_shift", "n3", 0.05),  # ER fail
         Action("edge_weight_adjust", "ghost->ghost", 0.01),  # fails action validation
     ]
     # control_policy uses require_feasible=True by default

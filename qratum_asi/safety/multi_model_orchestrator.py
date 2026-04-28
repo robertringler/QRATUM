@@ -8,7 +8,6 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Protocol
 
-from .elicitation import ModelResponse, ResponseType, SafetyElicitation
 from .elicitation import (
     ModelResponse,
     ResponseType,

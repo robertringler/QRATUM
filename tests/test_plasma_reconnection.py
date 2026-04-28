@@ -341,7 +341,7 @@ class TestSpectrum:
         g = Grid2D(nx=8, ny=8)
         s = MHDState(psi=np.zeros((g.nx, g.ny)), omega=np.zeros((g.nx, g.ny)), grid=g, eta=1e-2)
         S = lundquist_number(s, B_char=1.0, L=1.0)
-        assert S == pytest.approx(100.0)
+        assert pytest.approx(100.0) == S
 
     def test_lundquist_zero_eta_infinite(self):
         g = Grid2D(nx=8, ny=8)
@@ -453,9 +453,7 @@ class TestControl:
         sign-definite — see ``rhs`` docstring [V/D])."""
         s = self._state()
         target = gaussian_target_mask(s, s.grid.Lx / 2, s.grid.Ly / 4, sigma=0.4)
-        s2 = MHDState(
-            psi=s.psi.copy(), omega=s.omega.copy(), grid=s.grid, eta=s.eta, nu=s.nu
-        )
+        s2 = MHDState(psi=s.psi.copy(), omega=s.omega.copy(), grid=s.grid, eta=s.eta, nu=s.nu)
         ctrl = ReconnectionController(ControllerConfig(E_drive_amplitude=0.0, eta_boost=10.0))
         dt = recommended_dt(s.grid, eta=s.eta, nu=s.nu, B_max=1.0)
         for _ in range(10):

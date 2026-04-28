@@ -13,8 +13,7 @@ from pathlib import Path
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from qratum_asi.core.recursive_asi_program import \
-    RecursiveASIDevelopmentProgram
+from qratum_asi.core.recursive_asi_program import RecursiveASIDevelopmentProgram
 
 
 def print_section(title: str):

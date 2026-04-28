@@ -13,13 +13,14 @@ post-execution analysis report and a single-line verdict.
 Run with:
     PYTHONPATH=. python qagents/ciir_crs_ric/demo.py
 """
+
 from __future__ import annotations
 
 from typing import List, Tuple
 
 from .ciir import C_ACTIVE, MAX_CPU, Inv, Omega, State
 from .crs import A_FULL, admissible_actions
-from .executor import TraceEntry, TraceLog, print_trace, run_step
+from .executor import TraceLog, print_trace, run_step
 from .failures import (
     STATUS_OK,
     STATUS_TYPE_I,
@@ -28,10 +29,10 @@ from .failures import (
     STATUS_TYPE_IV,
 )
 
-
 # --------------------------------------------------------------------------
 # Case factories — each returns (label, initial_state, raw_intent, expected_status)
 # --------------------------------------------------------------------------
+
 
 def case_A() -> Tuple[str, State, str, str]:
     """Case A — valid execution: idle/empty system asked to allocate CPU."""
@@ -73,6 +74,7 @@ def case_D() -> Tuple[str, State, str, str]:
 # Determinism check
 # --------------------------------------------------------------------------
 
+
 def _determinism_check(state: State, raw: str) -> bool:
     """Run the same step twice and compare the entries structurally."""
     _, _, e1 = run_step(state, raw, step_index=0)
@@ -89,6 +91,7 @@ def _determinism_check(state: State, raw: str) -> bool:
 # Main driver
 # --------------------------------------------------------------------------
 
+
 def main() -> int:
     print("\n" + "#" * 78)
     print("# CIIR-CRS-RIC closed-loop execution — demo run")
@@ -103,8 +106,10 @@ def main() -> int:
         print(f"\n>>> {label}")
         print(f"    initial state  : {s0}")
         print(f"    initial Omega  : {Omega(s0) if Inv(s0) or True else 'n/a'}")
-        print(f"    initial A_C(s) : "
-              f"{{{', '.join(sorted(a.name for a in admissible_actions(s0, A_FULL, C_ACTIVE)))}}}")
+        print(
+            f"    initial A_C(s) : "
+            f"{{{', '.join(sorted(a.name for a in admissible_actions(s0, A_FULL, C_ACTIVE)))}}}"
+        )
         print(f"    raw intent     : {raw!r}")
         print(f"    expected       : {expected_status}")
 
@@ -190,13 +195,8 @@ def _print_report(log: TraceLog, expected: List[str], actual: List[str]) -> int:
     print("     T that can fail intrinsically (network, IO) would surface Type III.")
 
     print("\n8. Verdict")
-    case_ok = (actual == expected)
-    if (
-        case_ok
-        and not illegal_executed
-        and not bad_post
-        and determinism_ok
-    ):
+    case_ok = actual == expected
+    if case_ok and not illegal_executed and not bad_post and determinism_ok:
         print("   System is VALID under CIIR–CRS–RIC assumptions.")
         return 0
     reasons = []

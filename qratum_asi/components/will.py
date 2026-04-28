@@ -12,13 +12,7 @@ from qratum_asi.core.authorization import AuthorizationSystem
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.core.types import (PROHIBITED_GOALS, ASISafetyLevel,
-                                   GoalCategory)
-from qratum_asi.core.types import (
-    PROHIBITED_GOALS,
-    ASISafetyLevel,
-    GoalCategory,
-)
+from qratum_asi.core.types import PROHIBITED_GOALS, ASISafetyLevel, GoalCategory
 
 
 @dataclass

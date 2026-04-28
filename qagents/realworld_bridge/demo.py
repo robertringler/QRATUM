@@ -90,19 +90,9 @@ def _make_loop(
 
 def _print_trace(label: str, t: LoopTrace) -> None:
     sel = t.selected_action
-    sel_str = (
-        f"{sel.type}:{sel.target}@{sel.magnitude:+.4f}"
-        if sel is not None
-        else "None"
-    )
-    inj = (
-        t.injection_status.outcome
-        if t.injection_status is not None
-        else "n/a"
-    )
-    failed = tuple(
-        ",".join(vr.failed_checks) for vr in t.validation_results
-    )
+    sel_str = f"{sel.type}:{sel.target}@{sel.magnitude:+.4f}" if sel is not None else "None"
+    inj = t.injection_status.outcome if t.injection_status is not None else "n/a"
+    failed = tuple(",".join(vr.failed_checks) for vr in t.validation_results)
     print(
         f"[{label}] step={t.step:2d} obs.t={t.observation.timestamp:.1f} "
         f"sel={sel_str} inj={inj} fails={failed} "
@@ -197,17 +187,19 @@ def _determinism_check() -> bool:
     cfg = SafetyConfig(epsilon=EPSILON, mvri_constraint_check=True)
 
     def _run() -> tuple:
-        loop, _ = _make_loop(
-            MockSensor(obs_seq, "det"), seed=7, cfg=cfg
-        )
+        loop, _ = _make_loop(MockSensor(obs_seq, "det"), seed=7, cfg=cfg)
         r = loop.run(5)
         return tuple(
             (
                 t.step,
-                None if t.selected_action is None else (
-                    t.selected_action.type,
-                    t.selected_action.target,
-                    round(t.selected_action.magnitude, 12),
+                (
+                    None
+                    if t.selected_action is None
+                    else (
+                        t.selected_action.type,
+                        t.selected_action.target,
+                        round(t.selected_action.magnitude, 12),
+                    )
                 ),
             )
             for t in r.traces
@@ -231,11 +223,7 @@ def _safety_check(
             if sel is None:
                 continue
             if id(sel) in logged:
-                vr = next(
-                    v
-                    for v in trace.validation_results
-                    if v.action is sel
-                )
+                vr = next(v for v in trace.validation_results if v.action is sel)
                 if not vr.valid:
                     return False
     return True
@@ -275,10 +263,7 @@ def main() -> None:
     mvri_ok = _mvri_check(all_traces)
     observer_ok = True  # Mock observations are stable → EMA converges.
     traceability = _traceability(all_traces)
-    case_b_safety = (
-        all(t.selected_action is None for t in b_traces)
-        and len(b_traces) == 5
-    )
+    case_b_safety = all(t.selected_action is None for t in b_traces) and len(b_traces) == 5
     case_d_partial = len(d_traces) == 2
 
     valid = (
@@ -315,8 +300,7 @@ def main() -> None:
         reasons.append("sensor exhaustion did not terminate run early")
     print(
         f"VERDICT           : Bridge is "
-        f"{'VALID' if valid else 'NOT VALID'}"
-        + (f" due to: {reasons}" if reasons else "")
+        f"{'VALID' if valid else 'NOT VALID'}" + (f" due to: {reasons}" if reasons else "")
     )
 
 

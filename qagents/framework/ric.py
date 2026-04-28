@@ -20,16 +20,16 @@ The execution loop (Steps 1–9 of the formal lifecycle) is implemented in
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, Callable, Mapping, Optional
+from dataclasses import dataclass
+from typing import Callable, Optional
 
 from qagents.framework.ciir import ObserverMap, State
-from qagents.framework.crs import Action, CRS, FailureMode, NOOP
-
+from qagents.framework.crs import CRS, NOOP, Action, FailureMode
 
 # ---------------------------------------------------------------------------
 # Intent types
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True)
 class Intent:
@@ -45,6 +45,7 @@ class Intent:
         Optionally specifies a preferred action name.  RIC uses this only if
         the preferred action is admissible; otherwise it falls back to ρ.
     """
+
     goal: str
     priority: int = 0
     preferred_action: Optional[str] = None
@@ -53,6 +54,7 @@ class Intent:
 # ---------------------------------------------------------------------------
 # Trace record
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class TraceEntry:
@@ -84,6 +86,7 @@ class TraceEntry:
     status : str
         "OK" | "FAILED"
     """
+
     step: int
     state_before: dict
     raw_intent: str
@@ -113,9 +116,7 @@ class TraceEntry:
             "selected_action": self.selected_action,
             "state_after": self.state_after,
             "observation": self.observation,
-            "failure_mode": (
-                self.failure_mode.name if self.failure_mode is not None else None
-            ),
+            "failure_mode": (self.failure_mode.name if self.failure_mode is not None else None),
             "status": self.status,
         }
 
@@ -123,6 +124,7 @@ class TraceEntry:
 # ---------------------------------------------------------------------------
 # RIC controller
 # ---------------------------------------------------------------------------
+
 
 class RIC:
     """Formal RIC := ⟨π, ρ, A_C, Inv⟩.

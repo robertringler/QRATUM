@@ -36,16 +36,32 @@ class StrataModule(VerticalModuleBase):
         )
 
     def get_supported_tasks(self) -> List[str]:
-        return ["model_economy", "simulate_policy", "forecast_geopolitics",
-                "analyze_trade", "project_demographics", "plan_scenarios"]
+        return [
+            "model_economy",
+            "simulate_policy",
+            "forecast_geopolitics",
+            "analyze_trade",
+            "project_demographics",
+            "plan_scenarios",
+        ]
 
-    def execute_task(self, task: str, parameters: Dict[str, Any],
-                     contract: PlatformContract, event_chain: MerkleEventChain) -> Dict[str, Any]:
+    def execute_task(
+        self,
+        task: str,
+        parameters: Dict[str, Any],
+        contract: PlatformContract,
+        event_chain: MerkleEventChain,
+    ) -> Dict[str, Any]:
         if task not in self.get_supported_tasks():
             raise ValueError(f"Unknown task: {task}")
 
-        self.emit_task_event(EventType.TASK_STARTED, contract.contract_id, task,
-                             {"parameters": parameters}, event_chain)
+        self.emit_task_event(
+            EventType.TASK_STARTED,
+            contract.contract_id,
+            task,
+            {"parameters": parameters},
+            event_chain,
+        )
         return [
             "model_economy",
             "simulate_policy",
