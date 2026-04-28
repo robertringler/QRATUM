@@ -141,7 +141,7 @@ def _candidate_actions(
             )
         )
 
-    unique = { _action_key(action): action for action in candidates }
+    unique = {_action_key(action): action for action in candidates}
     ordered = tuple(unique[key] for key in sorted(unique))
     return ordered[:MAX_CANDIDATES_PER_STEP]
 

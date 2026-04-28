@@ -47,17 +47,16 @@ def validate_trajectory(
         for failed in result.failed_checks:
             reasons.append(f"step:{index}:{failed}")
         if not result.valid:
-            prev = action
-            continue
+            break
 
         try:
             candidate = forward_model(current, action)
         except Exception as exc:  # noqa: BLE001 - explicit failure surface
             reasons.append(f"step:{index}:MVR:{exc}")
-            prev = action
-            continue
+            break
         if not Inv(candidate):
             reasons.append(f"step:{index}:INV")
+            break
         else:
             current = candidate
         prev = action
