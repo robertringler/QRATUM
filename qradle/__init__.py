@@ -8,6 +8,14 @@ The foundational execution layer for QRATUM platform providing:
 - 8 Fatal Invariants enforcement
 """
 
+from qradle.contracts.system import ContractExecutor, ContractValidator
+from qradle.core.engine import (DeterministicEngine, ExecutionContext,
+                                ExecutionResult)
+from qradle.core.invariants import FatalInvariants, InvariantViolation
+from qradle.core.merkle import MerkleChain, MerkleProof
+from qradle.core.rollback import Checkpoint, RollbackManager
+from qradle.events.chain import Event, EventChain
+
 __version__ = "1.0.0"
 
 # Legacy module imports (from standalone files)

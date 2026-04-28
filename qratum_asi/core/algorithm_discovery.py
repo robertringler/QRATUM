@@ -125,6 +125,25 @@ class WastedWorkAnalyzer:
         # Identify operations performed many times (potential redundancy)
         for op, count in operation_counts.items():
             if count > trace.input_size * 0.1:  # >10% of input size
+                wasted_work["redundant_computations"].append({
+                    "operation": op,
+                    "count": count,
+                    "potential_saving": count * 0.5  # Estimate
+                })
+
+        # Identify opportunities
+        if trace.wasted_operations:
+            wasted_work["opportunities"].append({
+                "type": "eliminate_wasted_ops",
+                "potential_speedup": 1.0 + (len(trace.wasted_operations) / len(trace.operations_performed))
+            })
+
+        if trace.bottlenecks:
+            wasted_work["opportunities"].append({
+                "type": "optimize_bottlenecks",
+                "bottlenecks": trace.bottlenecks,
+                "potential_speedup": 1.5  # Estimate
+            })
                 wasted_work["redundant_computations"].append(
                     {"operation": op, "count": count, "potential_saving": count * 0.5}  # Estimate
                 )
@@ -197,6 +216,15 @@ class ProblemReformulator:
 
         # For graph problems
         if "graph" in problem_type.lower():
+            formulations.append(
+                ProblemReformulator.reformulate_sssp_as_propagation({})
+            )
+
+        # For optimization problems
+        if "optimization" in problem_type.lower() or "search" in problem_type.lower():
+            formulations.append(
+                ProblemReformulator.reformulate_as_constraint_satisfaction({})
+            )
             formulations.append(ProblemReformulator.reformulate_sssp_as_propagation({}))
 
         # For optimization problems
@@ -268,6 +296,7 @@ class DiscoveryValidator:
 
         for test_case in test_cases:
             if discovery.implementation is None:
+                return 0.0, float('inf')
                 return 0.0, float("inf")
 
             start = time.time()
@@ -318,6 +347,10 @@ class AlgorithmDiscoveryEngine:
         self.problem_reformulator = ProblemReformulator()
         self.discovery_validator = DiscoveryValidator()
 
+    def record_execution_trace(
+        self,
+        trace: ExecutionTrace
+    ):
     def record_execution_trace(self, trace: ExecutionTrace):
         """Record an execution trace for analysis."""
         self.execution_traces[trace.trace_id] = trace
@@ -328,6 +361,12 @@ class AlgorithmDiscoveryEngine:
 
         for trace in self.execution_traces.values():
             analysis = self.wasted_work_analyzer.analyze_trace(trace)
+            waste_analyses.append({
+                "trace_id": trace.trace_id,
+                "algorithm": trace.algorithm_name,
+                "efficiency_score": trace.get_efficiency_score(),
+                "waste_analysis": analysis
+            })
             waste_analyses.append(
                 {
                     "trace_id": trace.trace_id,
@@ -442,6 +481,17 @@ class AlgorithmDiscoveryEngine:
 
     def get_novel_discoveries(self) -> List[AlgorithmDiscovery]:
         """Get all novel discoveries."""
+        return [
+            discovery for discovery in self.discoveries.values()
+            if discovery.is_novel()
+        ]
+
+    def get_superior_discoveries(self) -> List[AlgorithmDiscovery]:
+        """Get discoveries that outperform baseline."""
+        return [
+            discovery for discovery in self.discoveries.values()
+            if discovery.is_superior()
+        ]
         return [discovery for discovery in self.discoveries.values() if discovery.is_novel()]
 
     def get_superior_discoveries(self) -> List[AlgorithmDiscovery]:

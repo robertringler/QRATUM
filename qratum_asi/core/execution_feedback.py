@@ -117,6 +117,10 @@ class TelemetryCollector:
         self, telemetry_type: TelemetryType, component: Optional[str] = None
     ) -> List[TelemetryEvent]:
         """Get events of a specific type."""
+        events = [
+            e for e in self.events
+            if e.telemetry_type == telemetry_type
+        ]
         events = [e for e in self.events if e.telemetry_type == telemetry_type]
 
         if component:
@@ -177,6 +181,10 @@ class PerformanceAnalyzer:
         cpu_events = telemetry_collector.get_events_by_type(
             TelemetryType.CPU_UTILIZATION, component_id
         )
+        cpu_utilization = (
+            statistics.mean([e.value for e in cpu_events])
+            if cpu_events else 0.0
+        )
         cpu_utilization = statistics.mean([e.value for e in cpu_events]) if cpu_events else 0.0
 
         # Calculate bottleneck score
@@ -229,6 +237,33 @@ class DecisionEngine:
         for component_id, profile in bottlenecks:
             # High cache miss rate -> consider data structure change
             if profile.cache_miss_rate > 0.3:
+                decisions.append(ArchitecturalDecision(
+                    decision_id=f"decision_cache_{component_id}_{datetime.utcnow().timestamp()}",
+                    description=f"Optimize data layout for {component_id}",
+                    rationale=f"Cache miss rate is {profile.cache_miss_rate:.2%}, indicating poor data locality",
+                    execution_evidence=[],  # Would include telemetry event IDs
+                    expected_impact="Reduce cache miss rate by 30-50%, improve latency by 20-40%"
+                ))
+
+            # High memory pressure -> consider memory optimization
+            if profile.memory_pressure > 0.7:
+                decisions.append(ArchitecturalDecision(
+                    decision_id=f"decision_memory_{component_id}_{datetime.utcnow().timestamp()}",
+                    description=f"Reduce memory footprint of {component_id}",
+                    rationale=f"Memory pressure is {profile.memory_pressure:.2%}, risking OOM",
+                    execution_evidence=[],
+                    expected_impact="Reduce memory usage by 20-40%"
+                ))
+
+            # High latency -> consider algorithmic improvement
+            if profile.avg_latency > 100.0:  # >100ms
+                decisions.append(ArchitecturalDecision(
+                    decision_id=f"decision_latency_{component_id}_{datetime.utcnow().timestamp()}",
+                    description=f"Optimize algorithm for {component_id}",
+                    rationale=f"Average latency is {profile.avg_latency:.2f}ms, P99 is {profile.p99_latency:.2f}ms",
+                    execution_evidence=[],
+                    expected_impact="Reduce latency by 30-60%"
+                ))
                 decisions.append(
                     ArchitecturalDecision(
                         decision_id=f"decision_cache_{component_id}_{datetime.utcnow().timestamp()}",
@@ -302,6 +337,10 @@ class ExecutionFeedbackLoop:
         """Record runtime telemetry."""
         self.telemetry_collector.record(telemetry_type, value, component, context)
 
+    def run_feedback_iteration(
+        self,
+        components: List[str]
+    ) -> Dict[str, Any]:
     def run_feedback_iteration(self, components: List[str]) -> Dict[str, Any]:
         """Run one iteration of the feedback loop.
 
@@ -330,6 +369,10 @@ class ExecutionFeedbackLoop:
 
         # Step 4: Calculate metrics
         implemented_decisions = [d for d in self.decisions.values() if d.implemented]
+        decisions_with_impact = [
+            d for d in implemented_decisions
+            if d.actual_impact is not None
+        ]
         decisions_with_impact = [d for d in implemented_decisions if d.actual_impact is not None]
 
         avg_impact = (
@@ -372,6 +415,11 @@ class ExecutionFeedbackLoop:
             "system_performance": system_performance,
         }
 
+    def implement_decision(
+        self,
+        decision_id: str,
+        actual_impact: float
+    ) -> bool:
     def implement_decision(self, decision_id: str, actual_impact: float) -> bool:
         """Mark a decision as implemented and record its impact.
 
@@ -397,6 +445,11 @@ class ExecutionFeedbackLoop:
         Returns evidence of improvement over iterations.
         """
         if len(self.metrics_history) < 2:
+            return {
+                "improved": False,
+                "reason": "Insufficient iterations",
+                "evidence": None
+            }
             return {"improved": False, "reason": "Insufficient iterations", "evidence": None}
 
         # Compare first and latest iterations

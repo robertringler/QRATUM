@@ -12,10 +12,8 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from xenon.bioinformatics.quantum_alignment import (
-    AlignmentConfig,
-    QuantumAlignmentEngine,
-)
+from xenon.bioinformatics.quantum_alignment import (AlignmentConfig,
+                                                    QuantumAlignmentEngine)
 
 
 class TestQuantumAlignmentEngine:

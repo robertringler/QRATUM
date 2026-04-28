@@ -5,6 +5,7 @@ Demonstrates basic usage of the QRATUM platform with multiple verticals.
 """
 
 from qratum.platform import PlatformIntent, PlatformOrchestrator
+from qratum.verticals import CapraModule, EcoraModule, JurisModule, VitraModule
 from qratum.verticals import (
     CapraModule,
     EcoraModule,

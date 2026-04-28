@@ -12,11 +12,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any
 
-from contracts.base import (
-    BaseContract,
-    generate_contract_id,
-    get_current_timestamp,
-)
+from contracts.base import (BaseContract, generate_contract_id,
+                            get_current_timestamp)
 
 
 @dataclass(frozen=True)

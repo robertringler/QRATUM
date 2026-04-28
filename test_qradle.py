@@ -7,6 +7,9 @@ Runs basic smoke tests to verify QRADLE functionality.
 
 import sys
 
+sys.path.insert(0, '.')
+
+
 sys.path.insert(0, ".")
 
 from qradle.core.engine import DeterministicEngine, ExecutionContext
@@ -156,6 +159,7 @@ def main():
     """Run all tests."""
     print("=" * 60)
     print("QRADLE Test Suite")
+    print("="*60 + "\n")
     print("=" * 60 + "\n")
 
     results = []
@@ -165,6 +169,9 @@ def main():
     results.append(("Rollback Manager", test_rollback()))
     results.append(("Deterministic Engine", test_deterministic_engine()))
 
+    print("="*60)
+    print("Test Summary")
+    print("="*60)
     print("=" * 60)
     print("Test Summary")
     print("=" * 60)

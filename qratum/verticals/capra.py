@@ -105,6 +105,8 @@ class CapraModule(VerticalModuleBase):
         sigma = params.get("volatility", 0.2)
 
         # Simple Black-Scholes approximation
+        d1 = (math.log(S/K) + (r + 0.5*sigma**2)*T) / (sigma*math.sqrt(T))
+        d2 = d1 - sigma*math.sqrt(T)
         d1 = (math.log(S / K) + (r + 0.5 * sigma**2) * T) / (sigma * math.sqrt(T))
         d2 = d1 - sigma * math.sqrt(T)
 
@@ -116,6 +118,7 @@ class CapraModule(VerticalModuleBase):
         if option_type == "call":
             price = S * N(d1) - K * math.exp(-r * T) * N(d2)
         else:
+            price = K * math.exp(-r*T) * N(-d2) - S * N(-d1)
             price = K * math.exp(-r * T) * N(-d2) - S * N(-d1)
 
         return {

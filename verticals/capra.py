@@ -8,6 +8,8 @@ import math
 import random
 from typing import Any, Dict
 
+from qratum_platform.core import (ComputeSubstrate, PlatformContract,
+                                  VerticalModuleBase)
 from qratum_platform.core import (
     ComputeSubstrate,
     PlatformContract,

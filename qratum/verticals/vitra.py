@@ -100,6 +100,7 @@ class VitraModule(VerticalModuleBase):
         sequence = params.get("sequence", "")
         seq_type = params.get("type", "dna").lower()
 
+        gc_content = (sequence.count('G') + sequence.count('C')) / max(len(sequence), 1)
         gc_content = (sequence.count("G") + sequence.count("C")) / max(len(sequence), 1)
 
         return {

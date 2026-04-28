@@ -12,17 +12,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from contracts import (
-    CapabilityContract,
-    ClusterTopology,
-    EventContract,
-    IntentContract,
-    TemporalContract,
-    create_capability_contract,
-    create_event_contract,
-    create_intent_contract,
-    create_temporal_contract,
-)
+from contracts import (CapabilityContract, ClusterTopology, EventContract,
+                       IntentContract, TemporalContract,
+                       create_capability_contract, create_event_contract,
+                       create_intent_contract, create_temporal_contract)
 from qcore.authority import AuthorizationResult
 from qcore.resolver import CapabilityResolver, ResolvedCapability
 from qil.ast import Intent

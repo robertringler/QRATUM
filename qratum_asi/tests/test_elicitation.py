@@ -2,6 +2,9 @@
 
 import pytest
 
+from qratum_asi.safety.elicitation import (ModelResponse, QuestionCategory,
+                                           ResponseType, SafetyElicitation,
+                                           SafetyQuestion)
 from qratum_asi.safety.elicitation import (
     ModelResponse,
     QuestionCategory,
@@ -73,6 +76,9 @@ class TestSafetyElicitation:
         """Test filtering questions by category."""
         elicitation = SafetyElicitation()
 
+        cap_questions = elicitation.get_questions_by_category(
+            QuestionCategory.CAPABILITY_EMERGENCE
+        )
         cap_questions = elicitation.get_questions_by_category(QuestionCategory.CAPABILITY_EMERGENCE)
 
         assert len(cap_questions) > 0

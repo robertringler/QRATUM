@@ -26,6 +26,9 @@ from quasim.opt.ultra_sssp import SSSPSimulationConfig, run_sssp_simulation
 
 def main():
     """Run UltraSSSP demonstration."""
+    parser = argparse.ArgumentParser(
+        description="UltraSSSP Large-Scale SSSP Simulation for QRATUM"
+    )
     parser = argparse.ArgumentParser(description="UltraSSSP Large-Scale SSSP Simulation for QRATUM")
 
     # Graph parameters
@@ -37,6 +40,12 @@ def main():
     )
     parser.add_argument(
         "--max-weight", type=float, default=10.0, help="Maximum edge weight (default: 10.0)"
+    )
+    parser.add_argument(
+        "--source",
+        type=int,
+        default=0,
+        help="Source node id (default: 0)"
     )
     parser.add_argument("--source", type=int, default=0, help="Source node id (default: 0)")
 
@@ -53,6 +62,11 @@ def main():
     parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
     parser.add_argument(
         "--no-validate", action="store_true", help="Skip validation against Dijkstra baseline"
+    )
+    parser.add_argument(
+        "--no-validate",
+        action="store_true",
+        help="Skip validation against Dijkstra baseline"
     )
 
     # Output options

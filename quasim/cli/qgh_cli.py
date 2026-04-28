@@ -7,14 +7,10 @@ import sys
 import click
 import numpy as np
 
-from quasim.qgh.demos import (
-    demo_av_fusion,
-    demo_distributed_monitoring,
-    demo_federated_consensus,
-    demo_portfolio_optimization,
-    demo_signal_processing,
-    demo_tensor_processing,
-)
+from quasim.qgh.demos import (demo_av_fusion, demo_distributed_monitoring,
+                              demo_federated_consensus,
+                              demo_portfolio_optimization,
+                              demo_signal_processing, demo_tensor_processing)
 from quasim.qgh.io import export_results_to_json
 
 

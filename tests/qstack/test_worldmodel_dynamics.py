@@ -1,5 +1,6 @@
 from qstack.qnx_agi.worldmodel.base import WorldModel
-from qstack.qnx_agi.worldmodel.dynamics import aerospace_step, finance_step, pharma_step
+from qstack.qnx_agi.worldmodel.dynamics import (aerospace_step, finance_step,
+                                                pharma_step)
 
 
 def test_worldmodel_dynamics_transitions():

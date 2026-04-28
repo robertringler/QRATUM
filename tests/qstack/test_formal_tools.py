@@ -1,12 +1,6 @@
-from qstack.qnx_agi.formal import (
-    AbstractLattice,
-    AbstractState,
-    Interval,
-    ModelChecker,
-    SymbolicExecutor,
-    TLASpecification,
-    propagate_affine,
-)
+from qstack.qnx_agi.formal import (AbstractLattice, AbstractState, Interval,
+                                   ModelChecker, SymbolicExecutor,
+                                   TLASpecification, propagate_affine)
 
 
 def test_interval_arithmetic_operations():

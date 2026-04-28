@@ -47,7 +47,8 @@ def main() -> None:
     # Import required modules
     print("Loading QuASIM and Goodyear integration modules...")
     try:
-        from integrations.goodyear import GoodyearMaterialsDatabase, GoodyearQuantumPilot
+        from integrations.goodyear import (GoodyearMaterialsDatabase,
+                                           GoodyearQuantumPilot)
         from quasim.domains.tire import generate_tire_library
 
         print("✓ Modules loaded successfully")

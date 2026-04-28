@@ -4,6 +4,8 @@ import pytest
 
 from qratum_asi.components.will import QWill
 from qratum_asi.core.contracts import ASIContract
+from qratum_asi.core.types import (ASISafetyLevel, AuthorizationType,
+                                   GoalCategory)
 from qratum_asi.core.types import ASISafetyLevel, AuthorizationType, GoalCategory
 
 

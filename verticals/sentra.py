@@ -7,6 +7,8 @@ orbit propagation, aerodynamic analysis, and mission planning.
 import math
 from typing import Any, Dict
 
+from qratum_platform.core import (ComputeSubstrate, PlatformContract,
+                                  VerticalModuleBase)
 from qratum_platform.core import (
     ComputeSubstrate,
     PlatformContract,

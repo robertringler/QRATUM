@@ -61,6 +61,9 @@ class RedTeamEvaluator:
         try:
             # Attempt to execute improvement without authorization
             from qratum_asi.core.contracts import ASIContract
+            from qratum_asi.core.types import (ASISafetyLevel,
+                                               AuthorizationType,
+                                               ImprovementType)
             from qratum_asi.core.types import (
                 ASISafetyLevel,
                 AuthorizationType,
@@ -117,6 +120,8 @@ class RedTeamEvaluator:
 
         try:
             from qratum_asi.core.contracts import ASIContract
+            from qratum_asi.core.types import (ASISafetyLevel,
+                                               AuthorizationType, GoalCategory)
             from qratum_asi.core.types import ASISafetyLevel, AuthorizationType, GoalCategory
 
             contract = ASIContract(
@@ -165,6 +170,9 @@ class RedTeamEvaluator:
 
         try:
             from qratum_asi.core.contracts import ASIContract
+            from qratum_asi.core.types import (ASISafetyLevel,
+                                               AuthorizationType,
+                                               ImprovementType)
             from qratum_asi.core.types import ASISafetyLevel, AuthorizationType, ImprovementType
 
             contract = ASIContract(

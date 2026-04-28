@@ -166,6 +166,9 @@ class UltraSSSP:
         # Build hierarchy if requested
         self.hierarchy: HierarchicalGraph | None = None
         if use_hierarchy:
+            self.hierarchy = HierarchicalGraph.from_contraction(
+                graph, num_levels=hierarchy_levels
+            )
             self.hierarchy = HierarchicalGraph.from_contraction(graph, num_levels=hierarchy_levels)
 
     def solve(self, source: int) -> tuple[list[float], SSSPMetrics]:
@@ -313,6 +316,11 @@ class UltraSSSP:
 
         return memory
 
+    def quantum_pivot_select(
+        self,
+        candidates: list[int],
+        distances: list[float]
+    ) -> int:
     def quantum_pivot_select(self, candidates: list[int], distances: list[float]) -> int:
         """Select pivot node using quantum algorithm (placeholder).
 
@@ -421,6 +429,8 @@ def run_sssp_simulation(config: SSSPSimulationConfig) -> dict:
             - correctness: Whether results match baseline
             - speedup: Speedup over baseline (if applicable)
     """
+    print(f"Generating random graph: {config.num_nodes} nodes, "
+          f"p={config.edge_probability}, seed={config.seed}")
     print(
         f"Generating random graph: {config.num_nodes} nodes, "
         f"p={config.edge_probability}, seed={config.seed}"
@@ -474,6 +484,7 @@ def run_sssp_simulation(config: SSSPSimulationConfig) -> dict:
         # Calculate relative performance
         # Note: speedup < 1.0 means UltraSSSP is slower (overhead from batching)
         # speedup > 1.0 means UltraSSSP is faster (benefits from parallelization potential)
+        speedup_factor = dijkstra_metrics.total_time / ultra_metrics.total_time if ultra_metrics.total_time > 0 else 1.0
         speedup_factor = (
             dijkstra_metrics.total_time / ultra_metrics.total_time
             if ultra_metrics.total_time > 0

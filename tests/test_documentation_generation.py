@@ -21,14 +21,11 @@ def test_documentation_generator_imports():
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
     # Test imports
-    from generate_documentation_package import (
-        DocumentationPackageGenerator,
-        ExecutiveSummaryGenerator,
-        ModuleInfo,
-        RepositoryParser,
-        TechnicalWhitePaperGenerator,
-        VisualizationGenerator,
-    )
+    from generate_documentation_package import (DocumentationPackageGenerator,
+                                                ExecutiveSummaryGenerator,
+                                                ModuleInfo, RepositoryParser,
+                                                TechnicalWhitePaperGenerator,
+                                                VisualizationGenerator)
 
     assert DocumentationPackageGenerator is not None
     assert RepositoryParser is not None
@@ -45,14 +42,12 @@ def test_appendix_generator_imports():
 
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-    from generate_appendices import (
-        generate_all_appendices,
-        generate_cuda_pseudocode,
-        generate_reporting_examples,
-        generate_reproducibility_proof,
-        generate_statistical_derivations,
-        generate_yaml_benchmark_spec,
-    )
+    from generate_appendices import (generate_all_appendices,
+                                     generate_cuda_pseudocode,
+                                     generate_reporting_examples,
+                                     generate_reproducibility_proof,
+                                     generate_statistical_derivations,
+                                     generate_yaml_benchmark_spec)
 
     assert generate_yaml_benchmark_spec is not None
     assert generate_cuda_pseudocode is not None

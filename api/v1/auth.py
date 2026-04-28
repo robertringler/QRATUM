@@ -38,12 +38,8 @@ except ImportError:
 
 try:
     from fastapi import Depends, HTTPException, status
-    from fastapi.security import (
-        APIKeyHeader,
-        HTTPAuthorizationCredentials,
-        HTTPBearer,
-        OAuth2PasswordBearer,
-    )
+    from fastapi.security import (APIKeyHeader, HTTPAuthorizationCredentials,
+                                  HTTPBearer, OAuth2PasswordBearer)
     from pydantic import BaseModel, Field
 
     FASTAPI_AVAILABLE = True
