@@ -7,13 +7,10 @@ __pycache__/
 *.pyc
 *.so
 
-# Environment files
-.env
-.env.local
-
-# Kaggle API credentials (never commit)
-.kaggle/
-kaggle.json
+# Rust build artifacts
+**/target/
+**/*.rs.bk
+Cargo.lock
 
 # Artifacts
 artifacts/real_world_sim_2025/
