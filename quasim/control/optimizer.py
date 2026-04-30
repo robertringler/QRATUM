@@ -4,13 +4,8 @@
 import numpy as np
 
 from quasim.info.geometry import fr_speed, free_energy, gaussian_w2, ou_step
-from quasim.quantum.lindblad import (
-    build_H,
-    bures_distance,
-    bures_fidelity,
-    mixed_step,
-    sld_qfi_numeric,
-)
+from quasim.quantum.lindblad import (build_H, bures_distance, bures_fidelity,
+                                     mixed_step, sld_qfi_numeric)
 
 
 def simulate(

@@ -4,7 +4,6 @@ Version: 1.0.0
 Status: Production
 """
 
-import pytest
 
 from omnilex.prediction import LitigationPredictionEngine
 
@@ -22,9 +21,7 @@ class TestLitigationPredictionEngine:
         engine = LitigationPredictionEngine(seed=42)
 
         result = engine.predict_outcome(
-            case_type="contract_breach",
-            jurisdiction="US",
-            key_facts={"claimed_damages": 100000}
+            case_type="contract_breach", jurisdiction="US", key_facts={"claimed_damages": 100000}
         )
 
         assert "plaintiff_win_probability" in result
@@ -35,19 +32,17 @@ class TestLitigationPredictionEngine:
         assert "caveats" in result
 
         # Probabilities should sum to 1
-        assert abs(
-            result["plaintiff_win_probability"] +
-            result["defendant_win_probability"] - 1.0
-        ) < 0.01
+        assert (
+            abs(result["plaintiff_win_probability"] + result["defendant_win_probability"] - 1.0)
+            < 0.01
+        )
 
     def test_predict_outcome_tort(self):
         """Test outcome prediction for tort case."""
         engine = LitigationPredictionEngine(seed=42)
 
         result = engine.predict_outcome(
-            case_type="negligence",
-            jurisdiction="US-CA",
-            key_facts={"claimed_damages": 500000}
+            case_type="negligence", jurisdiction="US-CA", key_facts={"claimed_damages": 500000}
         )
 
         assert result["case_type"] == "negligence"
@@ -131,13 +126,8 @@ class TestLitigationPredictionEngine:
         """Test settlement value calculation."""
         engine = LitigationPredictionEngine()
 
-        simulation = {
-            "plaintiff_win_prob": 0.65,
-            "defendant_win_prob": 0.35
-        }
-        damages = {
-            "mid_estimate": 100000
-        }
+        simulation = {"plaintiff_win_prob": 0.65, "defendant_win_prob": 0.35}
+        damages = {"mid_estimate": 100000}
 
         settlement = engine._calculate_settlement_value(simulation, damages)
 
@@ -164,7 +154,9 @@ class TestLitigationPredictionEngine:
 
         # Results should be identical
         assert result1["plaintiff_win_probability"] == result2["plaintiff_win_probability"]
-        assert result1["settlement_range"]["reasonable"] == result2["settlement_range"]["reasonable"]
+        assert (
+            result1["settlement_range"]["reasonable"] == result2["settlement_range"]["reasonable"]
+        )
 
     def test_different_seeds_different_results(self):
         """Test that different seeds produce different results."""
@@ -178,5 +170,8 @@ class TestLitigationPredictionEngine:
 
         # Results should differ (Monte Carlo variation)
         # Note: There's a tiny chance they could be the same, but extremely unlikely
-        assert result1["plaintiff_win_probability"] != result2["plaintiff_win_probability"] or \
-               result1["settlement_range"]["reasonable"] != result2["settlement_range"]["reasonable"]
+        assert (
+            result1["plaintiff_win_probability"] != result2["plaintiff_win_probability"]
+            or result1["settlement_range"]["reasonable"]
+            != result2["settlement_range"]["reasonable"]
+        )

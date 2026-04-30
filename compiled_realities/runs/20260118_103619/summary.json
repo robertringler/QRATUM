@@ -1,0 +1,64 @@
+{
+  "total_runs": 1290,
+  "cptp_runs": 90,
+  "lattice_runs": 1200,
+  "s_lab": {
+    "mean": 0.0,
+    "std": 0.0,
+    "max": 0.0,
+    "n_total": 1290,
+    "n_exceeding_5sigma": 0
+  },
+  "chi": {
+    "mean": -2.8508586182285036,
+    "std": 3.4803666679390073,
+    "min": -13.959182359151496,
+    "n_negative": 1140,
+    "n_total": 1200
+  },
+  "validity": {
+    "n_passed": 300,
+    "n_total": 1200,
+    "pass_rate": 0.25
+  },
+  "sensitivity_analysis": {
+    "individual_sensitivities": {
+      "cutoff_scale": {
+        "parameter": "cutoff_scale",
+        "sensitivity_mean": 0.0,
+        "sensitivity_std": 0.0,
+        "sensitivity_median": 0.0,
+        "n_points": 2
+      },
+      "dispersion_strength": {
+        "parameter": "dispersion_strength",
+        "sensitivity_mean": 2.9554519374976844,
+        "sensitivity_std": 0.3131017367666904,
+        "sensitivity_median": 2.907594358392446,
+        "n_points": 3
+      },
+      "dissipation_rate": {
+        "parameter": "dissipation_rate",
+        "sensitivity_mean": 0.0,
+        "sensitivity_std": 0.0,
+        "sensitivity_median": 0.0,
+        "n_points": 1
+      },
+      "n_sites": {
+        "parameter": "n_sites",
+        "sensitivity_mean": 0.016418980384854898,
+        "sensitivity_std": 0.0,
+        "sensitivity_median": 0.016418980384854898,
+        "n_points": 1
+      }
+    },
+    "bulk_sensitivity_mean": 0.9851506458325615,
+    "bulk_sensitivity_std": 1.393213404317022,
+    "boundary_sensitivity_mean": 0.016418980384854898,
+    "hypothesis_supported": true
+  },
+  "audit": {
+    "n_checks": 2580,
+    "n_passed": 2580
+  }
+}

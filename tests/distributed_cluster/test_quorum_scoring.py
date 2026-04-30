@@ -1,4 +1,5 @@
-from qunimbus.node_governance.node_policies import evaluate_node_policies, rank_nodes
+from qunimbus.node_governance.node_policies import (evaluate_node_policies,
+                                                    rank_nodes)
 
 
 def test_node_policy_scoring_and_ranking():

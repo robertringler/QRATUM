@@ -2,12 +2,8 @@
 
 import numpy as np
 
-from quasim.ownai.determinism import (
-    hash_array,
-    hash_preds,
-    set_seed,
-    verify_determinism,
-)
+from quasim.ownai.determinism import (hash_array, hash_preds, set_seed,
+                                      verify_determinism)
 
 
 def test_set_seed_numpy():

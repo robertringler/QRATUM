@@ -1,0 +1,25 @@
+[package]
+name = "qratum-crypto-rng"
+version = "1.0.0"
+edition = "2021"
+authors = ["QRATUM Team"]
+description = "NIST SP 800-90A HMAC-DRBG implementation for QRATUM"
+license = "Apache-2.0"
+
+[dependencies]
+# SHA-3 for HMAC-DRBG
+sha3 = "0.10"
+
+# Cryptographically secure entropy source
+getrandom = "0.2"
+
+# Zeroization of sensitive data
+zeroize = { version = "1.7", features = ["derive"] }
+
+[lib]
+name = "qratum_crypto_rng"
+path = "mod.rs"
+
+[features]
+default = []
+std = ["sha3/std", "zeroize/std"]

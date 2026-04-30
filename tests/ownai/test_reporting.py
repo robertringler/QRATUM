@@ -3,13 +3,10 @@
 import pytest
 
 from quasim.ownai.eval.benchmark import BenchmarkResult
-from quasim.ownai.eval.reporting import (
-    generate_ascii_chart,
-    generate_markdown_report,
-    generate_summary_table,
-    save_results_csv,
-    save_results_json,
-)
+from quasim.ownai.eval.reporting import (generate_ascii_chart,
+                                         generate_markdown_report,
+                                         generate_summary_table,
+                                         save_results_csv, save_results_json)
 
 
 @pytest.fixture

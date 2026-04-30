@@ -12,11 +12,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any
 
-from contracts.base import (
-    BaseContract,
-    generate_contract_id,
-    get_current_timestamp,
-)
+from contracts.base import (BaseContract, generate_contract_id,
+                            get_current_timestamp)
 
 
 @dataclass(frozen=True)
@@ -103,11 +100,13 @@ class TemporalContract(BaseContract):
 
         if current_time is None:
             from datetime import timezone
+
             current_time = datetime.now(timezone.utc)
 
         # Ensure current_time is timezone-aware
         if current_time.tzinfo is None:
             from datetime import timezone
+
             current_time = current_time.replace(tzinfo=timezone.utc)
 
         deadline = self.get_absolute_deadline()
@@ -127,11 +126,13 @@ class TemporalContract(BaseContract):
 
         if current_time is None:
             from datetime import timezone
+
             current_time = datetime.now(timezone.utc)
 
         # Ensure current_time is timezone-aware
         if current_time.tzinfo is None:
             from datetime import timezone
+
             current_time = current_time.replace(tzinfo=timezone.utc)
 
         deadline = self.get_absolute_deadline()
@@ -152,11 +153,13 @@ class TemporalContract(BaseContract):
 
         if current_time is None:
             from datetime import timezone
+
             current_time = datetime.now(timezone.utc)
 
         # Ensure current_time is timezone-aware
         if current_time.tzinfo is None:
             from datetime import timezone
+
             current_time = current_time.replace(tzinfo=timezone.utc)
 
         if self.window_start:

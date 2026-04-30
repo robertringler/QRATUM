@@ -10,10 +10,8 @@ from numpy.typing import NDArray
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
 from quasim.ownai.determinism import set_seed
-from quasim.ownai.revultra.feats import (
-    extract_symbolic_latents_batch,
-    extract_symbolic_latents_numeric,
-)
+from quasim.ownai.revultra.feats import (extract_symbolic_latents_batch,
+                                         extract_symbolic_latents_numeric)
 
 
 class SymbolicLatentTransformer:

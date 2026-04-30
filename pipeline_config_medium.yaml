@@ -1,0 +1,69 @@
+# Medium profile: single lattice + fast analyses to ensure D2 + alpha_d + logical fidelity
+version: 1
+quick: true
+random_seed: 42
+
+lattice:
+  sizes:
+    - [8, 8]
+  disorder_values: [0.0]
+
+noise:
+  gamma_scan_logspace: {start_exp: -3, end_exp: 1, points: 8}
+  target_time: 3.0   # increased to improve MSD exponent stability
+  dt: 0.04           # slightly finer than 0.05 but coarser than 0.02 for speed
+  refinement_factor: 2
+
+gamma_refine:
+  enable: true
+  relative_span: 0.3     # narrower window for speed
+  points: 3              # fewer sample points
+  per_point_timeout: 25  # slightly lower timeout per probe
+  short_target_time: 1.2 # reduced evolution time used only during refinement probes
+  early_stop_improvement: 0.05  # stop if >5% gap improvement achieved
+  msd_points: 16         # (placeholder; future hook to reduce MSD sampling if supported)
+
+analysis:
+  perform_convergence: true
+  perform_traj_variance: true
+  perform_phase_diagram: false
+  perform_msd: true
+  perform_otoc: false
+  perform_logical: true
+  enhanced_ramsey: false
+  bootstrap_samples: 64
+  msd_time_points: 40
+  perform_fss: false
+  fss_sizes: [8, 12, 16]
+
+ptq:
+  enable_delta: false
+  r0: 1.0
+  gamma_c: 1.0
+  u: 1.0
+  M: 800.0
+  require_valid: false
+
+quality_gates:
+  max_trace_deviation: 1.0e-9
+  min_dt_order: 3.5
+  max_bootstrap_halfwidth: 0.08
+  fractal_transport_tolerance: 0.30
+  positivity_tolerance: 1.0e-9
+  max_local_error: 1.0e-4
+  max_forced_d2_fraction: 0.5   # relaxed for medium profiling
+  min_logical_fidelity: 0.5
+
+report:
+  build_latex: false
+  keep_intermediate: false
+
+output:
+  root_dir: automation_runs
+  compress_archives: false
+
+parallel:
+  workers: 1
+
+runtime:
+  analysis_timeout_seconds: 180

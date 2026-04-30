@@ -1,12 +1,6 @@
-from qstack.qnx import (
-    QNXVM,
-    DeterministicScheduler,
-    OperatorLibrary,
-    QNXState,
-    SafetyConstraints,
-    SafetyEnvelope,
-    SafetyValidator,
-)
+from qstack.qnx import (QNXVM, DeterministicScheduler, OperatorLibrary,
+                        QNXState, SafetyConstraints, SafetyEnvelope,
+                        SafetyValidator)
 from qstack.qnx_agi.memory.working import WorkingMemory
 from qstack.qnx_agi.orchestrator.base import Orchestrator
 from qstack.qnx_agi.perception.encoders.finance import FinanceEncoder

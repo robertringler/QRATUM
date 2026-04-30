@@ -1,0 +1,12 @@
+metric,value
+total_games,300
+wins,0
+losses,0
+draws,300
+win_rate,0.0000
+elo_start,2500
+elo_end,2500
+elo_delta,0
+motifs_discovered,29100
+total_time_seconds,344.29
+games_per_second,0.8718
