@@ -3,7 +3,7 @@
 Deterministic Python counterpart to the LLM-facing system prompt at
 ``qagents/prompts/reality_interface_controller.md``.
 
-The controller implements the strict perception → model → action loop:
+The controller implements the strict perception -> model -> action loop:
 
     1. Intent decoding          -> goal, constraints, priority
     2. World alignment          -> feasibility, constraint conflicts
@@ -27,35 +27,12 @@ strict output schema specified in the prompt file.
 Simulation and proposal are pluggable callables so the controller can later
 wrap real engines (e.g. CIIR plasma reconnection control, MPPK swarm) without
 hard-coupling to them here.
-"""Reality Interface Controller (RIC) — deterministic bounded control operator.
-
-Implements the formal pipeline specified in
-``qagents/prompts/reality_interface_controller_v1.md``:
-
-    (intent, world_state, system_limits) →
-        (intent_interpretation, selected_action, predicted_outcome, fallback_plan)
-
-Pipeline (executed in strict order):
-    1. INTENT DECODING        — extract goal, constraints, priority
-    2. STATE ALIGNMENT        — feasibility + conflict set
-    3. ACTION CANDIDATE SET   — control / adjust / hold / abort
-    4. SIMULATION (mandatory) — predicted next state per candidate
-    5. ADMISSIBLE SET         — risk ≤ r_max ∧ stability ≥ σ_min
-    6. POLICY (lexicographic) — Safety > Stability > Minimal-intervention
-    7. CONFIDENCE             — proportional to stability score
-    8. FALLBACK PLAN          — trigger + recovery action
-
-The class is fully deterministic: the same (intent, world_state, system_limits)
-always produces the same output. A pluggable simulator/proposer interface
-allows wiring to CIIR dynamics or to LLM-based proposers; when no proposer
-is available, the deterministic baseline is used (failing closed to ``abort``
-on safety violations).
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, Mapping
+from typing import Any, Callable, Mapping, Protocol
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -244,8 +221,7 @@ def default_simulator(
     """Deterministic, conservative simulator.
 
     - ``risk`` rises with magnitude and with current ``instability``.
-    - ``stability_score`` falls with magnitude and rises with the world's
-      reported ``stability`` (defaulting to 1 - instability).
+    - ``stability_score`` falls with magnitude and rises with the current world stability (``stability`` key) (defaulting to 1 - instability).
     - ``expected_state`` echoes the world plus the proposed action so callers
       can inspect what was simulated.
     """
@@ -288,8 +264,6 @@ def default_simulator(
 # ---------------------------------------------------------------------------
 
 
-@dataclass
-from typing import Any, Callable, Mapping, Protocol
 
 ActionType = str  # "control" | "adjust" | "hold" | "abort"
 ACTION_TYPES: tuple[ActionType, ...] = ("control", "adjust", "hold", "abort")
@@ -626,7 +600,7 @@ class RealityInterfaceController:
             proposed_type, proposed_magnitude, world_state, system_limits
         )
 
-        # (1) Safety dominance — abort when unsafe.
+        # (1) Safety dominance -- abort when unsafe.
         if self._is_unsafe(violations, outcome, stability_threshold):
             abort_outcome = self.simulator("abort", 0.0, world_state, system_limits)
             return (
@@ -638,7 +612,7 @@ class RealityInterfaceController:
                 abort_outcome,
             )
 
-        # (2) Stability awareness — drop ``control`` to ``hold``/``adjust``
+        # (2) Stability awareness -- drop ``control`` to ``hold``/``adjust``
         # when stability is not strong.
         action_type = proposed_type
         magnitude = proposed_magnitude
@@ -648,7 +622,7 @@ class RealityInterfaceController:
         ):
             action_type = "adjust"
 
-        # (3) Minimal intervention — scale magnitude down with risk; if risk
+        # (3) Minimal intervention -- scale magnitude down with risk; if risk
         # is high relative to stability margin, hold.
         margin = outcome.stability_score - stability_threshold
         if margin <= 0.0:
@@ -678,7 +652,7 @@ class RealityInterfaceController:
     # ---- Public entry point ---------------------------------------------
 
     def step(self, payload: Mapping[str, Any]) -> ControlDecision:
-        """Run a full perception → model → action cycle.
+        """Run a full perception -> model -> action cycle.
 
         ``payload`` must contain ``intent``, ``world_state``, and
         ``system_limits`` keys (as in the spec).
@@ -742,20 +716,6 @@ class RealityInterfaceController:
             trigger_condition=trigger,
             action=downgrade[action.type],
         )
-    simulator
-        Object implementing :class:`Simulator`. Defaults to
-        :class:`LinearSimulator`.
-    proposer
-        Object implementing :class:`Proposer`. Defaults to
-        :class:`StaticProposer`. Use ``qagents.llm_backends`` to plug in
-        an LLM-backed proposer with deterministic fallback.
-    risk_estimator
-        Optional callable ``(predicted_state, system_limits) -> risk in [0, 1]``.
-        Defaults to a constraint-violation count heuristic.
-    stability_estimator
-        Optional callable ``(predicted_state, intent) -> sigma in [0, 1]``.
-        Defaults to ``1 - normalized_distance(predicted, intent.goal_state)``.
-    """
 
     def __init__(
         self,
@@ -781,7 +741,7 @@ class RealityInterfaceController:
     ) -> RICDecision:
         """Run the full RIC pipeline and return a strict 4-key decision."""
 
-        # 1. INTENT DECODING — never invent missing values
+        # 1. INTENT DECODING -- never invent missing values
         interp = self._decode_intent(intent)
 
         # 2. STATE ALIGNMENT
@@ -798,7 +758,7 @@ class RealityInterfaceController:
             if c.type != "abort" and c.risk <= r_max and c.stability >= sigma_min
         ]
 
-        # 6. POLICY — lexicographic: Safety > Stability > Minimal-intervention
+        # 6. POLICY -- lexicographic: Safety > Stability > Minimal-intervention
         chosen = self._apply_policy(
             candidates=candidates,
             admissible=admissible,
@@ -806,7 +766,7 @@ class RealityInterfaceController:
             conflicts=conflicts,
         )
 
-        # 7. CONFIDENCE — proportional to stability, zero if no valid prediction
+        # 7. CONFIDENCE -- proportional to stability, zero if no valid prediction
         confidence = 0.0 if chosen.predicted is None else max(0.0, min(1.0, chosen.stability))
         if chosen.type == "abort":
             confidence = 0.0
@@ -835,7 +795,7 @@ class RealityInterfaceController:
 
     @staticmethod
     def _decode_intent(intent: Mapping[str, Any]) -> dict[str, Any]:
-        # NEVER hallucinate — only echo provided keys; missing → safe defaults
+        # NEVER hallucinate -- only echo provided keys; missing -> safe defaults
         return {
             "goal": intent.get("goal", ""),
             "constraints": dict(intent.get("constraints", {})),
@@ -889,13 +849,13 @@ class RealityInterfaceController:
         feasibility: int,
         conflicts: list[str],
     ) -> _Candidate:
-        # RULE 1 — SAFETY DOMINANCE: infeasible state OR no admissible → abort
+        # RULE 1 -- SAFETY DOMINANCE: infeasible state OR no admissible -> abort
         if feasibility == 0 or conflicts or not admissible:
             for cand in candidates:
                 if cand.type == "abort":
                     return cand
 
-        # RULE 2 — STABILITY AWARENESS: prefer hold/adjust if any admissible
+        # RULE 2 -- STABILITY AWARENESS: prefer hold/adjust if any admissible
         # candidate has stability below 0.5 (system near instability).
         near_instability = any(c.stability < 0.5 for c in admissible)
         if near_instability:
@@ -904,7 +864,7 @@ class RealityInterfaceController:
                 # RULE 3 within stable subset
                 return min(stable_choices, key=lambda c: (c.magnitude, c.type))
 
-        # RULE 3 — MINIMAL INTERVENTION: argmin magnitude among admissible
+        # RULE 3 -- MINIMAL INTERVENTION: argmin magnitude among admissible
         return min(admissible, key=lambda c: (c.magnitude, c.type))
 
     @staticmethod
@@ -955,7 +915,7 @@ def _default_risk(predicted: Mapping[str, Any], system_limits: Mapping[str, Any]
 
 
 def _default_stability(predicted: Mapping[str, Any], intent: Mapping[str, Any]) -> float:
-    """Stability = 1 − normalized distance to ``intent.constraints`` numeric targets."""
+    """Stability = 1 - normalized distance to ``intent.constraints`` numeric targets."""
 
     targets: dict[str, Any] = {}
     constraints = intent.get("constraints", {}) or {}
@@ -979,11 +939,11 @@ def _constraint_satisfied(world_state: Mapping[str, Any], spec: Any) -> bool:
 
     Spec forms supported:
 
-    - ``{"min": x}`` / ``{"max": y}`` / ``{"min": x, "max": y}`` — applied to
+    - ``{"min": x}`` / ``{"max": y}`` / ``{"min": x, "max": y}`` -- applied to
       numeric value with same key (caller passes name as constraint key).
-    - ``{"key": k, "min"/"max": ...}`` — explicit key mapping.
-    - ``{"equals": v}`` — strict equality.
-    - bool/None — assumed satisfied.
+    - ``{"key": k, "min"/"max": ...}`` -- explicit key mapping.
+    - ``{"equals": v}`` -- strict equality.
+    - bool/None -- assumed satisfied.
     """
 
     if spec is None or isinstance(spec, bool):

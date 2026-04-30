@@ -6,6 +6,7 @@ Demonstrates the cross-model adversarial safety mapping framework
 for interrogating AI systems about Artificial Superintelligence safety.
 
 This script:
+    pass
 1. Initializes the safety elicitation framework
 2. Simulates multiple AI models with different perspectives
 3. Queries all models with standard ASI safety questions
@@ -118,6 +119,7 @@ def main():
     print()
 
     if summary['high_divergence_questions']:
+        pass
     if summary["high_divergence_questions"]:
         print("High Divergence Questions:")
         for item in summary["high_divergence_questions"]:

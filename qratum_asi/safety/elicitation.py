@@ -732,8 +732,7 @@ class SafetyElicitation:
                 for qid, count in sorted(
                     divergence_counts.items(),
                     key=lambda x: x[1],
-                    reverse=True
-                    divergence_counts.items(), key=lambda x: x[1], reverse=True
+                    reverse=True,
                 )[:5]
             ],
             "consensus_illusions_found": len(self.consensus_illusions),

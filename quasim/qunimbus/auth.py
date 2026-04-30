@@ -457,7 +457,7 @@ def cli_with_auth():
     ```
 
     Usage:
-        export QUNIMBUS_TOKEN="your-jwt-token"
+        export QUNIMBUS_TOKEN="${QUNIMBUS_TOKEN}"  # set via environment, not inline
         qunimbus ascend --query "test"
     """
 

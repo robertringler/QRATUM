@@ -343,8 +343,14 @@ def test_verify_jwt_without_pyjwt():
 
     from quasim.qunimbus.auth import verify_jwt
 
-    # Valid JWT structure (3 parts)
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+    # GAP-SEC-SECRET-013: This is the IANA JWT RFC 7519 §A.1 example token (public test fixture).
+    # It is not a real credential — the signing secret is also public ("your-256-bit-secret").
+    _TEST_JWT_FIXTURE = (
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ"
+        ".SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+    )
+    token = _TEST_JWT_FIXTURE
 
     ok, data = verify_jwt(token)
     assert isinstance(data, dict)
