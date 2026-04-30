@@ -356,6 +356,28 @@ class LinearSimulator:
                 out[key] = value
         return out
 
+    def __call__(
+        self,
+        action_type: str,
+        magnitude: float,
+        world_state: Mapping[str, Any],
+        system_limits: Mapping[str, Any],
+    ) -> Any:
+        """Make LinearSimulator callable as simulator(type, magnitude, world, limits) -> PredictedOutcome."""
+        from dataclasses import dataclass  # noqa: PLC0415
+        action = {"type": action_type, "magnitude": magnitude}
+        expected = self.predict(world_state, action)
+        # Compute simple risk and stability heuristics
+        mag = float(magnitude)
+        instability = float(world_state.get("instability", 0.0))
+        risk = min(1.0, mag * 0.5 + instability * 0.5)
+        stability_score = max(0.0, 1.0 - risk)
+        return PredictedOutcome(
+            expected_state=expected,
+            risk=risk,
+            stability_score=stability_score,
+        )
+
 
 class StaticProposer:
     """Deterministic proposer with constant magnitudes per action type."""
@@ -381,6 +403,18 @@ class StaticProposer:
         system_limits: Mapping[str, Any],
     ) -> dict[ActionType, float]:
         return dict(self._magnitudes)
+
+    def __call__(
+        self,
+        intent: Mapping[str, Any],
+        world_state: Mapping[str, Any],
+        system_limits: Mapping[str, Any],
+    ) -> tuple[ActionType, float]:
+        """Make StaticProposer callable; returns (action_type, magnitude) tuple."""
+        mags = self.propose(intent, world_state, system_limits)
+        # Default to 'control' with its magnitude; controller will downgrade if unsafe.
+        action_type = "control"
+        return action_type, mags.get(action_type, 1.0)
 
 
 # ---------------------------------------------------------------------------
@@ -772,7 +806,7 @@ class RealityInterfaceController:
             confidence = 0.0
 
         # 8. FALLBACK PLAN
-        fallback = self._build_fallback(chosen, feasibility, conflicts)
+        fallback = self._build_fallback_from_candidate(chosen, feasibility, conflicts)
 
         return RICDecision(
             intent_interpretation=interp,
@@ -868,7 +902,7 @@ class RealityInterfaceController:
         return min(admissible, key=lambda c: (c.magnitude, c.type))
 
     @staticmethod
-    def _build_fallback(
+    def _build_fallback_from_candidate(
         chosen: _Candidate,
         feasibility: int,
         conflicts: list[str],

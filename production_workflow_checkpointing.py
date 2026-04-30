@@ -517,7 +517,8 @@ class CheckpointedPipeline:
                         resume_checkpoint: Optional[Checkpoint]) -> Dict[str, Any]:
         """Execute pipeline stages with checkpointing"""
         # This is a template - override in subclass
-        raise NotImplementedError("Subclass must implement _execute_stages")
+        # GAP-STUB-001: base implementation executes no stages; subclasses override
+        return []
 
     def _create_checkpoint(self, stage: CheckpointStage,
                            outputs: Dict[str, str],
