@@ -15,14 +15,32 @@ Run order: Agent 0 → Agents 1-5 (parallel) → Agent 6 (red team)
 
 Usage:
     pip install anthropic
-    export ANTHROPIC_API_KEY=sk-...
-    python rmhd_ciir_chain_v2.py
+    export ANTHROPIC_API_KEY=sk-ant-...
+    python rmhd_ciir_chain_v2.py [--model MODEL] [--max-workers N]
+                                  [--out-json PATH] [--out-tex PATH]
+
+Options:
+    --model       Anthropic model name (default: claude-sonnet-4-20250514)
+    --max-workers Number of parallel workers for Phase 2 (default: 5)
+    --out-json    Output JSON path (default: whitepaper_v2_output.json)
+    --out-tex     Output LaTeX path (default: whitepaper_v2.tex)
 """
 
-import anthropic
 import json
 import asyncio
+import os
+import re
+import sys
+import argparse
 from concurrent.futures import ThreadPoolExecutor
+
+try:
+    import anthropic
+except ImportError:
+    sys.exit(
+        "Error: 'anthropic' package is not installed.\n"
+        "Install it with:  pip install anthropic"
+    )
 
 client = anthropic.Anthropic()
 MODEL = "claude-sonnet-4-20250514"
@@ -382,7 +400,7 @@ hence codimension 1.
 \\begin{{definition}}[Eps-Regularized Constraint Set]
 Define C_eps as the constraint set with topology-count constraint h_1
 replaced by the persistent topology observable:
-  h_1^eps(psi) = sum_{(b_i,d_i) persistence pairs, |d_i - b_i| > eps}
+  h_1^eps(psi) = sum_{{(b_i,d_i) persistence pairs, |d_i - b_i| > eps}}
                  w_eps(d_i - b_i)
 where w_eps is a smooth cutoff. This replaces discrete X/O counting
 with a C^inf function of psi under the W^{{1,inf}} topology.
@@ -408,7 +426,7 @@ Moreau envelope regularization: Pi_{{C_eps}}(s) =
 argmin_y [||s-y||^2/2 + delta_{{C_eps}}(y)] where delta_{{C_eps}} is
 the Moreau envelope of the indicator of C_eps).
 (c): the error bound follows from persistence stability:
-||h_1^eps - h_1||_{W^{1,inf}} = O(eps) by the bottleneck stability
+||h_1^eps - h_1||_{{W^{{1,inf}}}} = O(eps) by the bottleneck stability
 theorem (Edelsbrunner-Harer 2010, Theorem VIII.4.1). QED.
 \\end{{proof}}
 
@@ -516,8 +534,8 @@ where P_Omega = int eta J_z^2 dV, P_nu = int nu omega^2 dV.
 \\begin{{theorem}}[Plasmoid Onset — Theorem 2.4]
 The Lundquist number S = L V_A / eta governs tearing instability.
 For S > S_c ~ 10^4 (Furth-Killeen-Rosenbluth threshold), the current
-sheet undergoes plasmoid cascade with growth rate gamma ~ S^{1/4} / tau_A.
-State the FKR dispersion relation: gamma tau_A ~ (k delta)^2/3 (eta/eta_crit)^{1/3}
+sheet undergoes plasmoid cascade with growth rate gamma ~ S^{{1/4}} / tau_A.
+State the FKR dispersion relation: gamma tau_A ~ (k delta)^2/3 (eta/eta_crit)^{{1/3}}
 where delta is current sheet half-width.
 \\end{{theorem}}
 
@@ -1026,7 +1044,29 @@ def call_agent(system_prompt: str, user_message: str, max_tokens: int = 4096) ->
 # ORCHESTRATION RUNNER
 # =============================================================================
 
-def run_pipeline():
+def _strip_code_fence(text: str) -> str:
+    """Remove optional ```json or ``` fences from model output."""
+    text = text.strip()
+    text = re.sub(r'^```[a-z]*\s*\n?', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'\n?```\s*$', '', text)
+    return text.strip()
+
+
+def run_pipeline(model=None, max_workers=5,
+                 out_json="whitepaper_v2_output.json",
+                 out_tex="whitepaper_v2.tex"):
+    global MODEL
+
+    # Friendly error for missing API key
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        sys.exit(
+            "Error: ANTHROPIC_API_KEY environment variable is not set.\n"
+            "Export it with:  export ANTHROPIC_API_KEY=sk-ant-..."
+        )
+
+    if model is not None:
+        MODEL = model
+
     print("=" * 70)
     print("RMHD/CIIR WHITEPAPER v2 — STRATIFIED PROJECTION RESOLUTION")
     print("=" * 70)
@@ -1035,7 +1075,7 @@ def run_pipeline():
     print("\n[PHASE 1] Agent 0: Outline...")
     outline_raw = call_agent(AGENT_0_SYSTEM, AGENT_0_USER, max_tokens=2048)
     try:
-        clean = outline_raw.strip().lstrip("```json").lstrip("```").rstrip("```").strip()
+        clean = _strip_code_fence(outline_raw)
         outline_str = json.dumps(json.loads(clean), indent=2)
     except Exception:
         outline_str = outline_raw
@@ -1051,16 +1091,25 @@ def run_pipeline():
         (AGENT_5_SYSTEM, AGENT_5_USER, 4096),
     ]
 
-    async def run_parallel():
-        loop = asyncio.get_event_loop()
-        with ThreadPoolExecutor(max_workers=5) as pool:
+    async def _async_parallel():
+        loop = asyncio.get_running_loop()
+        with ThreadPoolExecutor(max_workers=max_workers) as pool:
             tasks = [
-                loop.run_in_executor(pool, call_agent, sys, usr, tok)
-                for sys, usr, tok in agent_calls
+                loop.run_in_executor(pool, call_agent, sys_p, usr, tok)
+                for sys_p, usr, tok in agent_calls
             ]
             return await asyncio.gather(*tasks)
 
-    results = asyncio.run(run_parallel())
+    # Detect whether we are already inside a running event loop (e.g. Jupyter).
+    try:
+        asyncio.get_running_loop()
+        # Running inside an existing event loop — use threads directly.
+        with ThreadPoolExecutor(max_workers=max_workers) as pool:
+            futures = [pool.submit(call_agent, *args) for args in agent_calls]
+            results = [f.result() for f in futures]
+    except RuntimeError:
+        # No running event loop — safe to use asyncio.run().
+        results = asyncio.run(_async_parallel())
 
     # Inject Section 1 pre-produced content + agent extension
     sections = {
@@ -1099,13 +1148,13 @@ def run_pipeline():
         "sections_9_10": sec9_10,
         "final_latex": final_latex,
     }
-    with open("whitepaper_v2_output.json", "w") as f:
+    with open(out_json, "w") as f:
         json.dump(output, f, indent=2)
-    with open("whitepaper_v2.tex", "w") as f:
+    with open(out_tex, "w") as f:
         f.write(final_latex)
 
-    print("\n✓ whitepaper_v2_output.json")
-    print("✓ whitepaper_v2.tex")
+    print(f"\n✓ {out_json}")
+    print(f"✓ {out_tex}")
     print("\nCompile: pdflatex whitepaper_v2.tex && bibtex whitepaper_v2 && pdflatex whitepaper_v2.tex")
     print("=" * 70)
     return output
@@ -1157,4 +1206,34 @@ LANGGRAPH_ADAPTER = '''
 '''
 
 if __name__ == "__main__":
-    run_pipeline()
+    parser = argparse.ArgumentParser(
+        description="RMHD/CIIR Whitepaper Multi-Agent Orchestration Chain v2"
+    )
+    parser.add_argument(
+        "--model",
+        default=None,
+        help="Anthropic model name (default: claude-sonnet-4-20250514)",
+    )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=5,
+        help="Parallel workers for Phase 2 (default: 5)",
+    )
+    parser.add_argument(
+        "--out-json",
+        default="whitepaper_v2_output.json",
+        help="Output JSON path (default: whitepaper_v2_output.json)",
+    )
+    parser.add_argument(
+        "--out-tex",
+        default="whitepaper_v2.tex",
+        help="Output LaTeX path (default: whitepaper_v2.tex)",
+    )
+    args = parser.parse_args()
+    run_pipeline(
+        model=args.model,
+        max_workers=args.max_workers,
+        out_json=args.out_json,
+        out_tex=args.out_tex,
+    )
