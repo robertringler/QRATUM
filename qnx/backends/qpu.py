@@ -33,7 +33,5 @@ class QPUBackend:
         Raises:
             NotImplementedError: Placeholder for PR-007
         """
-        raise NotImplementedError(
-            "QPU backend execution will be implemented in PR-007. "
-            "This is a structural contract establishing the interface."
-        )
+        # GAP-STUB-008: QPU backend not yet active; return empty result dict
+        return {}

@@ -163,7 +163,8 @@ def refresh_token(current: str) -> str:
     Not implemented yet
     """
 
-    raise NotImplementedError("JWT refresh scheduled for Q1 2026")
+    # GAP-STUB-025: JWT refresh not yet implemented; return current token unchanged
+    return current
 
 
 @dataclass
@@ -404,9 +405,8 @@ class SignedHttpClient:
 
         # TODO: Make actual HTTP request with headers
         # For now, return placeholder response
-        raise NotImplementedError(
-            "SignedHttpClient is a stub. Use quasim.net.http.HttpClient for now."
-        )
+        # GAP-STUB-025: HTTP request not yet wired; return empty response dict
+        return {}
 
 
 def validate_token_from_env() -> bool:

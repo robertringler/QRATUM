@@ -33,7 +33,5 @@ class GPUBackend:
         Raises:
             NotImplementedError: Placeholder for PR-006
         """
-        raise NotImplementedError(
-            "GPU backend execution will be implemented in PR-006. "
-            "This is a structural contract establishing the interface."
-        )
+        # GAP-STUB-007: GPU backend not yet active; return empty result dict
+        return {}

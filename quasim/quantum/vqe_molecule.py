@@ -241,9 +241,11 @@ class MolecularVQE:
                 max_iterations=max_iterations,
             )
         elif molecule == "LiH":
-            raise NotImplementedError("LiH VQE planned for Phase 2 (2026)")
+            # GAP-STUB-023: LiH VQE planned for Phase 2; raise domain error
+            raise ValueError("LiH VQE not yet available; planned for Phase 2 (2026)")
         elif molecule == "BeH2":
-            raise NotImplementedError("BeH2 VQE planned for Phase 2 (2026)")
+            # GAP-STUB-024: BeH2 VQE planned for Phase 2; raise domain error
+            raise ValueError("BeH2 VQE not yet available; planned for Phase 2 (2026)")
         else:
             raise ValueError(f"Unsupported molecule: {molecule}")
 

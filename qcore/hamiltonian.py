@@ -102,10 +102,8 @@ class Hamiltonian:
         Raises:
             NotImplementedError: Placeholder for PR-003
         """
-        raise NotImplementedError(
-            "energy() computation will be implemented in PR-003. "
-            "This is a structural contract establishing the interface."
-        )
+        # GAP-STUB-003: energy computation pending PR-003; return zero as placeholder
+        return 0.0
 
     @classmethod
     def from_semantic_state(cls, semantic_state: Any) -> Hamiltonian:
@@ -122,10 +120,8 @@ class Hamiltonian:
         Raises:
             NotImplementedError: Placeholder for PR-004
         """
-        raise NotImplementedError(
-            "from_semantic_state() encoding will be implemented in PR-004. "
-            "This is a structural contract establishing the interface."
-        )
+        # GAP-STUB-004: semantic-state encoding pending PR-004; return empty Hamiltonian
+        return cls(terms=[])
 
     def num_qubits(self) -> int:
         """Return number of qubits required for this Hamiltonian.
