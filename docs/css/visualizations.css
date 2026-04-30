@@ -1,0 +1,595 @@
+/* ============================================================================
+   QuASIM Technical Portal - Visualizations
+   ============================================================================ */
+
+/* Chart Containers */
+.chart-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: var(--space-6);
+  background-color: var(--surface-elevated);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.chart-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  color: var(--quantum-green);
+  margin-bottom: var(--space-4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chart-canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Architecture Diagrams */
+.architecture-diagram {
+  position: relative;
+  padding: var(--space-8);
+  background-color: var(--void-black);
+  border: 2px solid var(--quantum-green);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.architecture-layer {
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  background-color: var(--surface-elevated);
+  border-left: 4px solid var(--quantum-green);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.architecture-layer:hover {
+  background-color: rgba(0, 255, 136, 0.1);
+  border-left-color: var(--plasma-cyan);
+  transform: translateX(10px);
+}
+
+.architecture-layer-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  color: var(--quantum-green);
+  margin-bottom: var(--space-2);
+}
+
+.architecture-layer-components {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.architecture-component {
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--tactical-dark);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  color: var(--plasma-cyan);
+}
+
+/* Memory Hierarchy Pyramid */
+.memory-pyramid {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--space-8) 0;
+}
+
+.pyramid-level {
+  position: relative;
+  margin: var(--space-2) auto;
+  padding: var(--space-4);
+  background: linear-gradient(135deg, var(--surface-elevated), var(--tactical-dark));
+  border: 1px solid var(--quantum-green);
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: all var(--transition-base);
+}
+
+.pyramid-level:hover {
+  box-shadow: var(--glow-green);
+  transform: scale(1.05);
+}
+
+.pyramid-level:nth-child(1) { width: 40%; }
+.pyramid-level:nth-child(2) { width: 55%; }
+.pyramid-level:nth-child(3) { width: 70%; }
+.pyramid-level:nth-child(4) { width: 85%; }
+.pyramid-level:nth-child(5) { width: 100%; }
+
+.pyramid-level-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--quantum-green);
+  margin-bottom: var(--space-2);
+}
+
+.pyramid-level-spec {
+  font-size: var(--text-sm);
+  color: var(--muted-gray);
+}
+
+/* GPU Cluster Topology */
+.gpu-cluster {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background-color: var(--surface-elevated);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.gpu-node {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--tactical-dark);
+  border: 2px solid var(--quantum-green);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  position: relative;
+  transition: all var(--transition-base);
+}
+
+.gpu-node:hover {
+  box-shadow: var(--glow-green);
+  transform: scale(1.1);
+  z-index: 10;
+}
+
+.gpu-node-id {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--quantum-green);
+}
+
+.gpu-node-status {
+  font-size: var(--text-xs);
+  color: var(--muted-gray);
+}
+
+.gpu-connection {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(180deg, var(--quantum-green), var(--plasma-cyan));
+  transform-origin: top;
+}
+
+/* Quantum Gate Library */
+.gate-library {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-4);
+}
+
+.gate-card {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-elevated);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.gate-card:hover {
+  border-color: var(--plasma-cyan);
+  box-shadow: var(--glow-cyan);
+  transform: translateY(-5px);
+}
+
+.gate-symbol {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--quantum-green);
+  margin-bottom: var(--space-2);
+}
+
+.gate-name {
+  font-size: var(--text-xs);
+  color: var(--muted-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* STRIDE Threat Matrix */
+.threat-matrix {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.threat-row {
+  background-color: var(--surface-elevated);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.threat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+}
+
+.threat-category {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--quantum-green);
+  text-transform: uppercase;
+}
+
+.threat-percentage {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--plasma-cyan);
+}
+
+.threat-description {
+  font-size: var(--text-sm);
+  color: var(--muted-gray);
+  margin-bottom: var(--space-3);
+}
+
+.threat-progress {
+  width: 100%;
+  height: 8px;
+  background-color: var(--tactical-dark);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.threat-progress-bar {
+  height: 100%;
+  border-radius: var(--radius-xl);
+  transition: width 1s ease;
+}
+
+.threat-progress-bar.high {
+  background: linear-gradient(90deg, var(--quantum-green), var(--plasma-cyan));
+}
+
+.threat-progress-bar.medium {
+  background: linear-gradient(90deg, var(--warning-amber), var(--quantum-green));
+}
+
+.threat-progress-bar.low {
+  background: linear-gradient(90deg, var(--alert-crimson), var(--warning-amber));
+}
+
+/* Encryption Stack */
+.encryption-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.encryption-layer {
+  padding: var(--space-4);
+  background-color: var(--surface-elevated);
+  border-left: 4px solid var(--quantum-green);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+.encryption-layer:hover {
+  background-color: rgba(0, 255, 136, 0.05);
+  transform: translateX(10px);
+}
+
+.encryption-layer-name {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--quantum-green);
+  margin-bottom: var(--space-2);
+}
+
+.encryption-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--muted-gray);
+}
+
+.encryption-detail-label {
+  font-weight: 700;
+  color: var(--ghost-white);
+}
+
+/* Circular Gauge */
+.gauge-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.gauge-svg {
+  transform: rotate(-90deg);
+}
+
+.gauge-bg {
+  fill: none;
+  stroke: var(--tactical-dark);
+  stroke-width: 12;
+}
+
+.gauge-progress {
+  fill: none;
+  stroke: url(#gaugeGradient);
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s ease;
+}
+
+.gauge-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.gauge-value {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  color: var(--quantum-green);
+  line-height: 1;
+}
+
+.gauge-label {
+  font-size: var(--text-sm);
+  color: var(--muted-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Bloch Sphere Container */
+.bloch-sphere-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background-color: var(--void-black);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.bloch-sphere-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.bloch-controls {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* State Vector Visualization */
+.state-vector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.state-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background-color: var(--surface-elevated);
+  border-radius: var(--radius-md);
+}
+
+.state-label {
+  font-family: var(--font-code);
+  font-weight: 700;
+  color: var(--quantum-green);
+  min-width: 60px;
+}
+
+.state-bar {
+  flex: 1;
+  height: 8px;
+  background-color: var(--tactical-dark);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.state-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--quantum-green), var(--plasma-cyan));
+  border-radius: var(--radius-xl);
+  transition: width 0.5s ease;
+}
+
+.state-value {
+  font-family: var(--font-code);
+  font-size: var(--text-sm);
+  color: var(--muted-gray);
+  min-width: 80px;
+  text-align: right;
+}
+
+/* Tensor Network Diagram */
+.tensor-network {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-color: var(--void-black);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: var(--radius-lg);
+}
+
+.tensor-node {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: var(--surface-elevated);
+  border: 2px solid var(--quantum-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--quantum-green);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.tensor-node:hover {
+  box-shadow: var(--glow-green);
+  transform: scale(1.2);
+  z-index: 10;
+}
+
+.tensor-edge {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, var(--quantum-green), var(--plasma-cyan));
+  transform-origin: left;
+}
+
+/* Circuit Diagram */
+.circuit-diagram {
+  background-color: var(--void-black);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.circuit-wire {
+  position: relative;
+  height: 60px;
+  border-bottom: 2px solid var(--quantum-green);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.circuit-wire-label {
+  font-family: var(--font-code);
+  color: var(--quantum-green);
+  min-width: 40px;
+}
+
+.circuit-gate {
+  width: 50px;
+  height: 50px;
+  background-color: var(--surface-elevated);
+  border: 2px solid var(--plasma-cyan);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--plasma-cyan);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.circuit-gate:hover {
+  box-shadow: var(--glow-cyan);
+  transform: scale(1.1);
+}
+
+/* Benchmark Charts */
+.benchmark-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-6);
+}
+
+.benchmark-card {
+  background-color: var(--surface-elevated);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.benchmark-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  color: var(--quantum-green);
+  margin-bottom: var(--space-4);
+  text-transform: uppercase;
+}
+
+.benchmark-value {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  color: var(--plasma-cyan);
+  margin-bottom: var(--space-2);
+}
+
+.benchmark-unit {
+  font-size: var(--text-sm);
+  color: var(--muted-gray);
+}
+
+.benchmark-change {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.benchmark-change.positive {
+  color: var(--quantum-green);
+}
+
+.benchmark-change.negative {
+  color: var(--alert-crimson);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .gpu-cluster {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .benchmark-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .bloch-sphere-container {
+    height: 300px;
+  }
+  
+  .tensor-network {
+    height: 300px;
+  }
+}

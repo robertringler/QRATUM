@@ -3,14 +3,14 @@
 //! ## Lifecycle Stage: Execution (mid-session fault recovery)
 //!
 //! Volatile snapshots allow mid-session fault recovery without persistent storage.
-//! Snapshots exist only in RAM, encrypted with ephemeral keys, and are zeroized
+//! Snapshots exist only in RAM, encrypted with ChaCha20-Poly1305 AEAD, and are zeroized
 //! on session termination.
 //!
 //! ## Architectural Role
 //!
 //! - **Fault Recovery**: Resume from snapshot after transient failure
 //! - **Volatile Only**: Snapshots never touch disk (RAM-only)
-//! - **Encrypted**: Protected by ephemeral session key
+//! - **Encrypted**: Protected by ChaCha20-Poly1305 AEAD with ephemeral session key
 //! - **Bounded**: Limited snapshot history (memory constraints)
 //!
 //! ## Inputs → Outputs
@@ -20,14 +20,15 @@
 //!
 //! ## Security Rationale
 //!
-//! - Encryption prevents snapshot inspection
+//! - ChaCha20-Poly1305 provides authenticated encryption (confidentiality + integrity)
 //! - Ephemeral keys ensure snapshots useless after session
 //! - Zeroization prevents memory forensics
 //! - No persistent storage (anti-holographic)
+//! - Constant-time operations prevent timing attacks
 //!
 //! ## Forward Compatibility
 //!
-//! TODO: QRADLE post-quantum migration - replace XOR with AES-GCM or ChaCha20-Poly1305
+//! Ready for QRADLE post-quantum migration - can switch to AES-256-GCM or PQC AEAD
 
 
 extern crate alloc;
@@ -35,6 +36,10 @@ use alloc::vec::Vec;
 
 use sha3::{Sha3_256, Digest};
 use zeroize::{Zeroize, ZeroizeOnDrop};
+use chacha20poly1305::{
+    aead::{Aead, KeyInit, Payload},
+    ChaCha20Poly1305, Nonce,
+};
 
 /// Snapshot Configuration
 #[derive(Debug, Clone)]
@@ -95,15 +100,16 @@ impl VolatileSnapshot {
     /// # Inputs
     /// - `sequence`: Snapshot sequence number
     /// - `state_data`: Execution state to snapshot
-    /// - `encryption_key`: Ephemeral session key
+    /// - `encryption_key`: Ephemeral session key (must be 32 bytes for ChaCha20-Poly1305)
     ///
     /// # Outputs
-    /// - Encrypted `VolatileSnapshot`
+    /// - Encrypted `VolatileSnapshot` with authenticated encryption
     ///
     /// ## Security Rationale
-    /// - XOR-based encryption (placeholder, use AES-GCM in production)
-    /// - Nonce prevents deterministic encryption
-    /// - State hash for integrity verification
+    /// - ChaCha20-Poly1305 AEAD (Authenticated Encryption with Associated Data)
+    /// - Unique nonce per snapshot prevents nonce reuse
+    /// - State hash for additional integrity verification
+    /// - Constant-time encryption operations
     pub fn create(
         sequence: u64,
         state_data: &[u8],
@@ -111,27 +117,43 @@ impl VolatileSnapshot {
     ) -> Self {
         let timestamp = current_timestamp();
         
-        // Generate nonce from timestamp and sequence
+        // Generate unique nonce from timestamp and sequence
         let mut nonce_hasher = Sha3_256::new();
         nonce_hasher.update(&timestamp.to_le_bytes());
         nonce_hasher.update(&sequence.to_le_bytes());
-        let nonce: [u8; 32] = nonce_hasher.finalize().into();
+        let nonce_bytes: [u8; 32] = nonce_hasher.finalize().into();
         
-        // Compute state hash
+        // Compute state hash for integrity
         let mut state_hasher = Sha3_256::new();
         state_hasher.update(state_data);
         let state_hash: [u8; 32] = state_hasher.finalize().into();
         
-        // Encrypt state data (placeholder: XOR with key)
-        // TODO: Replace with AES-GCM or ChaCha20-Poly1305
-        let encrypted_data = xor_encrypt(state_data, encryption_key, &nonce);
+        // Encrypt state data with ChaCha20-Poly1305
+        // Use first 32 bytes of key for ChaCha20 key
+        let chacha_key: &[u8; 32] = encryption_key
+            .get(..32)
+            .and_then(|s| s.try_into().ok())
+            .expect("Encryption key must be at least 32 bytes for ChaCha20-Poly1305");
+        let cipher = ChaCha20Poly1305::new(chacha_key.into());
+        
+        // Use first 12 bytes of nonce_bytes for ChaCha20 nonce
+        let nonce = Nonce::from_slice(&nonce_bytes[..12]);
+        
+        // Encrypt with associated data (sequence number for context)
+        let payload = Payload {
+            msg: state_data,
+            aad: &sequence.to_le_bytes(),
+        };
+        
+        let encrypted_data = cipher.encrypt(nonce, payload)
+            .expect("ChaCha20-Poly1305 encryption failed");
         
         Self {
             sequence,
             timestamp,
             encrypted_data,
             state_hash,
-            nonce,
+            nonce: nonce_bytes,
         }
     }
     
@@ -146,19 +168,36 @@ impl VolatileSnapshot {
     /// - Decrypted state data or error
     ///
     /// ## Security Rationale
-    /// - Verifies state hash after decryption
+    /// - ChaCha20-Poly1305 verifies authentication tag automatically
+    /// - Additional state hash verification for defense-in-depth
     /// - Prevents tampered snapshot restoration
+    /// - Constant-time decryption operations
     pub fn restore(&self, encryption_key: &[u8; 64]) -> Result<Vec<u8>, &'static str> {
-        // Decrypt state data
-        let decrypted_data = xor_decrypt(&self.encrypted_data, encryption_key, &self.nonce);
+        // Decrypt state data with ChaCha20-Poly1305
+        let chacha_key: &[u8; 32] = encryption_key
+            .get(..32)
+            .and_then(|s| s.try_into().ok())
+            .expect("Encryption key must be at least 32 bytes for ChaCha20-Poly1305");
+        let cipher = ChaCha20Poly1305::new(chacha_key.into());
         
-        // Verify state hash
+        let nonce = Nonce::from_slice(&self.nonce[..12]);
+        
+        // Decrypt with associated data verification
+        let payload = Payload {
+            msg: &self.encrypted_data,
+            aad: &self.sequence.to_le_bytes(),
+        };
+        
+        let decrypted_data = cipher.decrypt(nonce, payload)
+            .map_err(|_| "Snapshot decryption failed - authentication tag mismatch")?;
+        
+        // Additional integrity verification with state hash (defense-in-depth)
         let mut hasher = Sha3_256::new();
         hasher.update(&decrypted_data);
         let computed_hash: [u8; 32] = hasher.finalize().into();
         
         if computed_hash != self.state_hash {
-            return Err("Snapshot integrity verification failed");
+            return Err("Snapshot integrity verification failed - hash mismatch");
         }
         
         Ok(decrypted_data)
@@ -268,29 +307,6 @@ impl SnapshotManager {
     pub fn snapshot_count(&self) -> usize {
         self.snapshots.len()
     }
-}
-
-/// XOR-based encryption (placeholder)
-///
-/// ## Security Rationale
-/// TODO: Replace with AES-GCM or ChaCha20-Poly1305 for production
-///
-/// This is a placeholder implementation. Use proper authenticated encryption.
-fn xor_encrypt(data: &[u8], key: &[u8; 64], nonce: &[u8; 32]) -> Vec<u8> {
-    let mut result = Vec::with_capacity(data.len());
-    
-    for (i, &byte) in data.iter().enumerate() {
-        let key_byte = key[i % 64] ^ nonce[i % 32];
-        result.push(byte ^ key_byte);
-    }
-    
-    result
-}
-
-/// XOR-based decryption (placeholder)
-fn xor_decrypt(data: &[u8], key: &[u8; 64], nonce: &[u8; 32]) -> Vec<u8> {
-    // XOR is symmetric
-    xor_encrypt(data, key, nonce)
 }
 
 /// Get current timestamp (milliseconds since epoch)

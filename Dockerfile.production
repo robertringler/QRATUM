@@ -27,11 +27,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # Copy requirements
-COPY requirements.txt requirements-prod.txt ./
+COPY requirements-minimal.txt ./
 
 # Install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements-prod.txt
+    pip install --no-cache-dir -r requirements-minimal.txt
 
 # Production stage
 FROM python:3.11-slim
@@ -60,6 +60,7 @@ COPY --chown=qratum:qratum qratum_asi ./qratum_asi
 COPY --chown=qratum:qratum verticals ./verticals
 COPY --chown=qratum:qratum configs ./configs
 COPY --chown=qratum:qratum qratum_fullstack_server.py ./
+COPY --chown=qratum:qratum cinematic_control_plane.py ./
 
 # Create directories for logs and checkpoints
 RUN mkdir -p /app/logs /app/checkpoints /app/audit && \

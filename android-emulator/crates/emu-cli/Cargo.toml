@@ -1,0 +1,41 @@
+[package]
+name = "emu-cli"
+description = "Command-line interface for the Android emulator - run, snapshot, trace"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "emu"
+path = "src/main.rs"
+
+[dependencies]
+log.workspace = true
+env_logger.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+clap.workspace = true
+serde = { workspace = true, features = ["derive"] }
+serde_json.workspace = true
+toml.workspace = true
+tokio.workspace = true
+
+# Internal dependencies
+emu-core = { path = "../emu-core" }
+emu-cpu = { path = "../emu-cpu" }
+emu-memory = { path = "../emu-memory" }
+emu-android-runtime = { path = "../emu-android-runtime" }
+emu-graphics = { path = "../emu-graphics" }
+emu-audio = { path = "../emu-audio" }
+emu-input = { path = "../emu-input" }
+emu-filesystem = { path = "../emu-filesystem" }
+emu-pc-compat = { path = "../emu-pc-compat" }
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "3.1"
+
+[features]
+default = []

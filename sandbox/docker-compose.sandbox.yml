@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  qradle:
+    build:
+      context: ..
+      dockerfile: Dockerfile.sandbox-qradle
+    container_name: qratum-sandbox-qradle
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - QRADLE_NETWORK=sandbox
+      - QRADLE_PORT=8001
+    volumes:
+      - ../qradle:/app/qradle:ro
+      - qradle-data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - qratum-sandbox
+    restart: unless-stopped
+
+  platform:
+    build:
+      context: ..
+      dockerfile: Dockerfile.sandbox-platform
+    container_name: qratum-sandbox-platform
+    ports:
+      - "8002:8002"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PORT=8002
+      - QRADLE_URL=http://qradle:8001
+    volumes:
+      - ..:/app:ro
+      - platform-data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      qradle:
+        condition: service_healthy
+    networks:
+      - qratum-sandbox
+    restart: unless-stopped
+
+networks:
+  qratum-sandbox:
+    name: qratum-sandbox
+    driver: bridge
+
+volumes:
+  qradle-data:
+    name: qratum-sandbox-qradle-data
+  platform-data:
+    name: qratum-sandbox-platform-data

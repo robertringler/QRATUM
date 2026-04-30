@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRATUM-Chess | Bob Visualization System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f5ff;
+            --secondary: #7b2cbf;
+            --accent: #ff006e;
+            --tactical: #ff6b6b;
+            --strategic: #4dabf7;
+            --conceptual: #da77f2;
+            --bg-dark: #0a0a0f;
+            --bg-panel: rgba(15, 15, 25, 0.92);
+            --bg-panel-dark: rgba(8, 8, 15, 0.95);
+            --border-glow: rgba(0, 245, 255, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --success: #00ff88;
+            --warning: #ffaa00;
+            --danger: #ff4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(180deg, rgba(10,10,15,0.98) 0%, rgba(10,10,15,0.9) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 245, 255, 0.2);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            margin-left: 10px;
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 600px 1fr;
+            gap: 15px;
+            padding: 70px 15px 15px 15px;
+            min-height: 100vh;
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--bg-panel);
+            border: 1px solid rgba(0, 245, 255, 0.15);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(0, 245, 255, 0.1);
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .panel-body {
+            padding: 15px;
+        }
+
+        /* Left Column */
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Board Panel */
+        .board-container {
+            background: var(--bg-panel-dark);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 1px;
+            border: 2px solid rgba(0, 245, 255, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .square {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+            transition: all 0.15s ease;
+        }
+
+        .square.light { background: rgba(140, 160, 170, 0.3); }
+        .square.dark { background: rgba(60, 80, 100, 0.4); }
+        .square.highlighted { box-shadow: inset 0 0 20px rgba(0, 245, 255, 0.5); }
+        .square.last-move { background: rgba(0, 245, 255, 0.2); }
+        .square.legal-move::after {
+            content: '';
+            position: absolute;
+            width: 30%;
+            height: 30%;
+            background: rgba(0, 255, 136, 0.4);
+            border-radius: 50%;
+        }
+
+        .piece {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .piece:hover { transform: scale(1.1); }
+
+        /* Eval Bar */
+        .eval-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .eval-bar {
+            flex: 1;
+            height: 20px;
+            background: linear-gradient(90deg, var(--danger) 0%, #333 50%, var(--success) 100%);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eval-indicator {
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            background: white;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: left 0.3s ease;
+        }
+
+        .eval-value {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        /* Tri-Cortex Panel */
+        .cortex-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .cortex-item {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+        }
+
+        .cortex-item.tactical { border-left: 3px solid var(--tactical); }
+        .cortex-item.strategic { border-left: 3px solid var(--strategic); }
+        .cortex-item.conceptual { border-left: 3px solid var(--conceptual); }
+
+        .cortex-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .cortex-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .cortex-item.tactical .cortex-value { color: var(--tactical); }
+        .cortex-item.strategic .cortex-value { color: var(--strategic); }
+        .cortex-item.conceptual .cortex-value { color: var(--conceptual); }
+
+        /* Contribution Bar */
+        .contrib-bar {
+            display: flex;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .contrib-segment {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .contrib-segment.tactical { background: var(--tactical); }
+        .contrib-segment.strategic { background: var(--strategic); }
+        .contrib-segment.conceptual { background: var(--conceptual); }
+
+        /* Heatmap */
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            margin-top: 10px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 2px;
+            transition: background 0.2s;
+        }
+
+        /* Search Tree */
+        .tree-container {
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tree-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Telemetry */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .metric {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .metric-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-value {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 20px;
+            color: var(--primary);
+            margin-top: 4px;
+        }
+
+        .metric-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .metric-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        /* Anti-Holographic */
+        .ah-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .ah-ring {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* Quantum Panel */
+        .quantum-disabled {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 150px;
+            color: var(--text-secondary);
+        }
+
+        .amplitude-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 100px;
+            padding: 10px 0;
+        }
+
+        .amplitude-bar {
+            flex: 1;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 2px 2px 0 0;
+            transition: height 0.3s;
+        }
+
+        /* Control Panel */
+        .control-section {
+            margin-bottom: 15px;
+        }
+
+        .control-section-title {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            border-radius: 4px;
+            color: var(--primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: rgba(0, 245, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 245, 255, 0.3);
+        }
+
+        .btn.primary {
+            background: var(--primary);
+            color: var(--bg-dark);
+        }
+
+        .btn.danger {
+            background: rgba(255, 0, 110, 0.2);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .toggle {
+            width: 40px;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle.active {
+            background: var(--primary);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: left 0.3s;
+        }
+
+        .toggle.active::after {
+            left: 22px;
+        }
+
+        /* Motif Tracker */
+        .motif-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .motif-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            margin-bottom: 6px;
+        }
+
+        .motif-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .motif-icon.tactical { background: rgba(255, 107, 107, 0.2); color: var(--tactical); }
+        .motif-icon.strategic { background: rgba(77, 171, 247, 0.2); color: var(--strategic); }
+        .motif-icon.conceptual { background: rgba(218, 119, 242, 0.2); color: var(--conceptual); }
+
+        /* Snapshot indicator */
+        .snapshot-indicator {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            padding: 10px 15px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid var(--success);
+            border-radius: 6px;
+            display: none;
+            animation: fadeInOut 2s forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-10px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .main-container {
+                grid-template-columns: 1fr 500px 1fr;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div style="display: flex; align-items: center;">
+            <span class="logo">QRATUM-CHESS</span>
+            <span class="logo-subtitle">BOB VISUALIZATION SYSTEM</span>
+        </div>
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-dot"></span>
+                <span>ENGINE ACTIVE</span>
+            </div>
+            <div class="status-item">
+                <span id="nps-display">0 N/s</span>
+            </div>
+            <div class="status-item">
+                <span id="move-display">Move: 1</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-container">
+        <!-- Left Column -->
+        <div class="left-column">
+            <!-- Tri-Cortex Diagnostics -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Tri-Cortex Diagnostics</span>
+                    <span style="font-size: 10px; color: var(--text-secondary);">LIVE</span>
+                </div>
+                <div class="panel-body">
+                    <div class="cortex-grid">
+                        <div class="cortex-item tactical">
+                            <div class="cortex-label">Tactical</div>
+                            <div class="cortex-value" id="tactical-value">33%</div>
+                        </div>
+                        <div class="cortex-item strategic">
+                            <div class="cortex-label">Strategic</div>
+                            <div class="cortex-value" id="strategic-value">33%</div>
+                        </div>
+                        <div class="cortex-item conceptual">
+                            <div class="cortex-label">Conceptual</div>
+                            <div class="cortex-value" id="conceptual-value">34%</div>
+                        </div>
+                    </div>
+                    <div class="contrib-bar">
+                        <div class="contrib-segment tactical" id="contrib-tactical" style="width: 33%"></div>
+                        <div class="contrib-segment strategic" id="contrib-strategic" style="width: 33%"></div>
+                        <div class="contrib-segment conceptual" id="contrib-conceptual" style="width: 34%"></div>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px;">TACTICAL HEATMAP</div>
+                        <div class="heatmap" id="tactical-heatmap"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Tree -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Search Tree Explorer</span>
+                    <div class="btn-group">
+                        <button class="btn" onclick="resetTreeView()">Reset</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="tree-container">
+                        <canvas class="tree-canvas" id="tree-canvas"></canvas>
+                    </div>
+                    <div class="metric-grid" style="margin-top: 10px;">
+                        <div class="metric">
+                            <div class="metric-label">Nodes</div>
+                            <div class="metric-value" id="tree-nodes">0</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Depth</div>
+                            <div class="metric-value" id="tree-depth">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Motif Tracker -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Motif & Novelty Tracker</span>
+                </div>
+                <div class="panel-body">
+                    <div class="motif-list" id="motif-list">
+                        <div class="motif-item">
+                            <div class="motif-icon tactical">⚔️</div>
+                            <div>
+                                <div style="font-weight: 600;">No motifs detected</div>
+                                <div style="font-size: 11px; color: var(--text-secondary);">Start a game to track patterns</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center - Board -->
+        <div>
+            <div class="board-container">
+                <div class="board" id="chess-board"></div>
+                <div class="eval-bar-container">
+                    <span style="font-size: 12px;">−</span>
+                    <div class="eval-bar">
+                        <div class="eval-indicator" id="eval-indicator"></div>
+                    </div>
+                    <span style="font-size: 12px;">+</span>
+                    <span class="eval-value" id="eval-value">0.00</span>
+                </div>
+            </div>
+
+            <!-- PV Line -->
+            <div class="panel" style="margin-top: 15px;">
+                <div class="panel-header">
+                    <span class="panel-title">Principal Variation</span>
+                </div>
+                <div class="panel-body">
+                    <div id="pv-line" style="font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--primary);">
+                        1. e4 e5 2. Nf3 Nc6 3. Bb5 ...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="left-column">
+            <!-- Telemetry -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Performance Telemetry</span>
+                </div>
+                <div class="panel-body">
+                    <div class="metric-grid">
+                        <div class="metric">
+                            <div class="metric-label">Nodes/sec</div>
+                            <div class="metric-value" id="metric-nps">0</div>
+                            <div class="metric-bar"><div class="metric-bar-fill" id="nps-bar" style="width: 0%"></div></div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Hash Hit Rate</div>
+                            <div class="metric-value" id="metric-hash">0%</div>
+                            <div class="metric-bar"><div class="metric-bar-fill" id="hash-bar" style="width: 0%"></div></div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Threads</div>
+                            <div class="metric-value" id="metric-threads">1/4</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">NN Latency</div>
+                            <div class="metric-value" id="metric-latency">0.0 ms</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anti-Holographic -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Anti-Holographic Indicators</span>
+                </div>
+                <div class="panel-body">
+                    <div class="ah-indicator">
+                        <div class="ah-ring" id="ah-score">0.0</div>
+                        <div>
+                            <div style="font-weight: 600;">Overall AH Score</div>
+                            <div style="font-size: 11px; color: var(--text-secondary);">Model-breaking index</div>
+                        </div>
+                    </div>
+                    <div class="metric-grid">
+                        <div class="metric">
+                            <div class="metric-label">Stochasticity</div>
+                            <div class="metric-value" id="ah-stoch">0%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Destabilization</div>
+                            <div class="metric-value" id="ah-destab">LOW</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quantum Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Quantum Layer</span>
+                    <div class="toggle" id="quantum-toggle" onclick="toggleQuantum()"></div>
+                </div>
+                <div class="panel-body">
+                    <div class="quantum-disabled" id="quantum-content">
+                        <div style="font-size: 30px; margin-bottom: 10px;">⚛️</div>
+                        <div>Quantum visualization disabled</div>
+                        <div style="font-size: 11px; margin-top: 5px;">Click toggle to enable</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Control Panel</span>
+                </div>
+                <div class="panel-body">
+                    <div class="control-section">
+                        <div class="control-section-title">Game Mode</div>
+                        <div class="btn-group">
+                            <button class="btn primary" onclick="newGame()">New Game</button>
+                            <button class="btn danger" onclick="stopGame()">Stop</button>
+                        </div>
+                    </div>
+                    <div class="control-section">
+                        <div class="control-section-title">Display</div>
+                        <div class="toggle-container">
+                            <span>3D Board</span>
+                            <div class="toggle" id="toggle-3d" onclick="toggle3D()"></div>
+                        </div>
+                        <div class="toggle-container">
+                            <span>Show Heatmaps</span>
+                            <div class="toggle active" id="toggle-heatmaps"></div>
+                        </div>
+                        <div class="toggle-container">
+                            <span>Audit Mode</span>
+                            <div class="toggle" id="toggle-audit" onclick="toggleAudit()"></div>
+                        </div>
+                    </div>
+                    <div class="control-section">
+                        <div class="control-section-title">Snapshot</div>
+                        <div class="btn-group">
+                            <button class="btn" onclick="captureSnapshot()">📸 Capture</button>
+                            <button class="btn" onclick="generateReport()">📄 Report</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Snapshot Indicator -->
+    <div class="snapshot-indicator" id="snapshot-indicator">
+        📸 Snapshot captured
+    </div>
+
+    <script>
+        // Initialize board
+        const PIECES = {
+            'K': '♔', 'Q': '♕', 'R': '♖', 'B': '♗', 'N': '♘', 'P': '♙',
+            'k': '♚', 'q': '♛', 'r': '♜', 'b': '♝', 'n': '♞', 'p': '♟',
+        };
+
+        let boardState = [
+            'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r',
+            'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
+            '', '', '', '', '', '', '', '',
+            '', '', '', '', '', '', '', '',
+            '', '', '', '', '', '', '', '',
+            '', '', '', '', '', '', '', '',
+            'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
+            'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R',
+        ];
+
+        function initBoard() {
+            const board = document.getElementById('chess-board');
+            board.innerHTML = '';
+            
+            for (let rank = 7; rank >= 0; rank--) {
+                for (let file = 0; file < 8; file++) {
+                    const idx = rank * 8 + file;
+                    const isLight = (file + rank) % 2 === 1;
+                    
+                    const square = document.createElement('div');
+                    square.className = `square ${isLight ? 'light' : 'dark'}`;
+                    square.dataset.index = idx;
+                    
+                    const piece = boardState[idx];
+                    if (piece) {
+                        const pieceEl = document.createElement('span');
+                        pieceEl.className = 'piece';
+                        pieceEl.textContent = PIECES[piece];
+                        square.appendChild(pieceEl);
+                    }
+                    
+                    square.addEventListener('click', () => handleSquareClick(idx));
+                    board.appendChild(square);
+                }
+            }
+        }
+
+        function handleSquareClick(idx) {
+            console.log('Clicked square:', idx);
+            // Highlight clicked square
+            document.querySelectorAll('.square').forEach(sq => sq.classList.remove('highlighted'));
+            document.querySelector(`[data-index="${idx}"]`).classList.add('highlighted');
+        }
+
+        // Initialize heatmap
+        function initHeatmap() {
+            const heatmap = document.getElementById('tactical-heatmap');
+            heatmap.innerHTML = '';
+            
+            for (let i = 0; i < 64; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'heatmap-cell';
+                const intensity = Math.random();
+                cell.style.background = `rgba(255, 107, 107, ${intensity * 0.8})`;
+                heatmap.appendChild(cell);
+            }
+        }
+
+        // Initialize tree canvas
+        function initTreeCanvas() {
+            const canvas = document.getElementById('tree-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            // Draw sample tree
+            ctx.strokeStyle = 'rgba(0, 245, 255, 0.3)';
+            ctx.fillStyle = 'rgba(0, 245, 255, 0.8)';
+            
+            // Root node
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, 30, 8, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw branches
+            const levels = 4;
+            const nodesPerLevel = [1, 3, 6, 10];
+            
+            let y = 30;
+            for (let level = 0; level < levels; level++) {
+                const nodes = nodesPerLevel[level];
+                const spacing = canvas.width / (nodes + 1);
+                const nextY = y + 60;
+                
+                for (let i = 0; i < nodes; i++) {
+                    const x = spacing * (i + 1);
+                    
+                    // Draw line to parent
+                    if (level > 0) {
+                        const parentX = canvas.width / 2;
+                        ctx.beginPath();
+                        ctx.moveTo(parentX, y - 30);
+                        ctx.lineTo(x, nextY - 8);
+                        ctx.stroke();
+                    }
+                    
+                    // Draw node
+                    const size = 8 - level;
+                    ctx.beginPath();
+                    ctx.arc(x, nextY, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                y = nextY;
+            }
+        }
+
+        // Update functions
+        function updateCortexDisplay(tactical, strategic, conceptual) {
+            document.getElementById('tactical-value').textContent = `${Math.round(tactical * 100)}%`;
+            document.getElementById('strategic-value').textContent = `${Math.round(strategic * 100)}%`;
+            document.getElementById('conceptual-value').textContent = `${Math.round(conceptual * 100)}%`;
+            
+            document.getElementById('contrib-tactical').style.width = `${tactical * 100}%`;
+            document.getElementById('contrib-strategic').style.width = `${strategic * 100}%`;
+            document.getElementById('contrib-conceptual').style.width = `${conceptual * 100}%`;
+        }
+
+        function updateEvaluation(value) {
+            const indicator = document.getElementById('eval-indicator');
+            const evalValue = document.getElementById('eval-value');
+            
+            // Map value (-10 to 10) to position (0% to 100%)
+            const pos = Math.min(100, Math.max(0, (value + 10) / 20 * 100));
+            indicator.style.left = `${pos}%`;
+            
+            evalValue.textContent = value >= 0 ? `+${value.toFixed(2)}` : value.toFixed(2);
+        }
+
+        function updateTelemetry(nps, hashRate, threads, latency) {
+            document.getElementById('metric-nps').textContent = formatNumber(nps);
+            document.getElementById('nps-display').textContent = `${formatNumber(nps)} N/s`;
+            document.getElementById('metric-hash').textContent = `${(hashRate * 100).toFixed(1)}%`;
+            document.getElementById('metric-threads').textContent = `${threads}/4`;
+            document.getElementById('metric-latency').textContent = `${latency.toFixed(2)} ms`;
+            
+            document.getElementById('nps-bar').style.width = `${Math.min(100, nps / 1000000 * 100)}%`;
+            document.getElementById('hash-bar').style.width = `${hashRate * 100}%`;
+        }
+
+        function formatNumber(n) {
+            if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`;
+            if (n >= 1000) return `${(n / 1000).toFixed(1)}K`;
+            return n.toString();
+        }
+
+        // Control functions
+        function newGame() {
+            console.log('Starting new game...');
+            initBoard();
+            showSnapshotIndicator('Game started');
+        }
+
+        function stopGame() {
+            console.log('Stopping game...');
+        }
+
+        function toggle3D() {
+            const toggle = document.getElementById('toggle-3d');
+            toggle.classList.toggle('active');
+        }
+
+        function toggleQuantum() {
+            const toggle = document.getElementById('quantum-toggle');
+            const content = document.getElementById('quantum-content');
+            toggle.classList.toggle('active');
+            
+            if (toggle.classList.contains('active')) {
+                content.innerHTML = `
+                    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 10px;">AMPLITUDE DISTRIBUTION</div>
+                    <div class="amplitude-bars" id="amplitude-bars"></div>
+                `;
+                initAmplitudeBars();
+            } else {
+                content.innerHTML = `
+                    <div style="font-size: 30px; margin-bottom: 10px;">⚛️</div>
+                    <div>Quantum visualization disabled</div>
+                    <div style="font-size: 11px; margin-top: 5px;">Click toggle to enable</div>
+                `;
+            }
+        }
+
+        function initAmplitudeBars() {
+            const container = document.getElementById('amplitude-bars');
+            if (!container) return;
+            
+            for (let i = 0; i < 16; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'amplitude-bar';
+                bar.style.height = `${Math.random() * 80 + 10}%`;
+                container.appendChild(bar);
+            }
+        }
+
+        function toggleAudit() {
+            const toggle = document.getElementById('toggle-audit');
+            toggle.classList.toggle('active');
+        }
+
+        function captureSnapshot() {
+            showSnapshotIndicator('Snapshot captured');
+        }
+
+        function generateReport() {
+            console.log('Generating report...');
+            alert('Report generation started...');
+        }
+
+        function resetTreeView() {
+            initTreeCanvas();
+        }
+
+        function showSnapshotIndicator(message) {
+            const indicator = document.getElementById('snapshot-indicator');
+            indicator.textContent = `📸 ${message}`;
+            indicator.style.display = 'block';
+            
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
+        }
+
+        // Simulation
+        function simulateUpdates() {
+            // Random cortex values
+            const tactical = 0.2 + Math.random() * 0.3;
+            const strategic = 0.2 + Math.random() * 0.3;
+            const conceptual = 1 - tactical - strategic;
+            updateCortexDisplay(tactical, strategic, conceptual);
+            
+            // Random evaluation
+            const eval = (Math.random() - 0.5) * 4;
+            updateEvaluation(eval);
+            
+            // Random telemetry
+            const nps = 500000 + Math.random() * 1000000;
+            const hashRate = 0.85 + Math.random() * 0.1;
+            updateTelemetry(nps, hashRate, 4, 0.1 + Math.random() * 0.05);
+            
+            // Anti-holographic
+            document.getElementById('ah-score').textContent = (Math.random() * 0.5).toFixed(2);
+            document.getElementById('ah-stoch').textContent = `${Math.round(Math.random() * 30)}%`;
+            
+            // Tree stats
+            document.getElementById('tree-nodes').textContent = formatNumber(1000 + Math.floor(Math.random() * 50000));
+            document.getElementById('tree-depth').textContent = 8 + Math.floor(Math.random() * 8);
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            initBoard();
+            initHeatmap();
+            initTreeCanvas();
+            
+            // Start simulation
+            setInterval(simulateUpdates, 1000);
+        });
+
+        window.addEventListener('resize', () => {
+            initTreeCanvas();
+        });
+    </script>
+</body>
+</html>

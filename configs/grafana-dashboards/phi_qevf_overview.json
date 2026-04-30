@@ -1,0 +1,49 @@
+{
+  "title": "Φ_QEVF Overview",
+  "uid": "phi-qevf-overview",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "RMSE/MAE Metrics",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "qevf_rmse", "legendFormat": "RMSE" },
+        { "expr": "qevf_mae", "legendFormat": "MAE" }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "KS Confidence",
+      "gridPos": { "x": 12, "y": 0, "w": 6, "h": 4 },
+      "targets": [
+        { "expr": "qevf_ks_confidence" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "steps": [
+              { "color": "red", "value": 0 },
+              { "color": "yellow", "value": 0.9 },
+              { "color": "green", "value": 0.95 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "table",
+      "title": "Anomaly Recall",
+      "gridPos": { "x": 12, "y": 4, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "qevf_anomaly_recall" }
+      ]
+    }
+  ]
+}

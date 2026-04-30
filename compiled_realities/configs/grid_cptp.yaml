@@ -1,0 +1,13 @@
+# CPTP Process-Tensor Model parameter grid (locked)
+model_type: cptp
+
+parameters:
+  dimension: [2, 4]
+  environment_coupling: [0.01, 0.1, 0.5]  # log-spaced
+  t1_t2_separation: [5, 10, 20]
+
+# Fixed parameters
+fixed:
+  n_timesteps: 50
+  dt: 0.1
+  lindblad_operators: "dephasing"  # or "amplitude_damping"
