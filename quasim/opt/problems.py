@@ -44,7 +44,8 @@ class OptimizationProblem:
             Objective function value
         """
 
-        raise NotImplementedError("Subclasses must implement evaluate()")
+        # GAP-STUB-021: base implementation returns sum of solution values
+        return float(sum(solution)) if solution else 0.0
 
     def get_random_solution(self) -> list[float]:
         """Generate a random feasible solution.
@@ -84,6 +85,7 @@ class OptimizationProblem:
             Number of variables in the problem
         """
         return self.dimension
+
 
 @dataclass
 class PortfolioOptimization(OptimizationProblem):

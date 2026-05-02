@@ -25,20 +25,11 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
-from xenon.molecular_dynamics_lab import (
-    DockingConfig,
-    DockingEngine,
-    HapticConfig,
-    HapticEngine,
-    MDConfig,
-    MDSimulator,
-    MolecularLabServer,
-    MolecularViewer,
-    PDBLoader,
-    ViewerConfig,
-    VRConfig,
-    VRController,
-)
+from xenon.molecular_dynamics_lab import (DockingConfig, DockingEngine,
+                                          HapticConfig, HapticEngine, MDConfig,
+                                          MDSimulator, MolecularLabServer,
+                                          MolecularViewer, PDBLoader,
+                                          ViewerConfig, VRConfig, VRController)
 from xenon.molecular_dynamics_lab.web.server import ServerConfig
 
 

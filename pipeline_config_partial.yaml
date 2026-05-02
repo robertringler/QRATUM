@@ -1,0 +1,64 @@
+# Partial automation pipeline configuration: only medium & large lattices (12x12,16x16)
+# Derived from pipeline_config.yaml; unchanged analysis/quality settings.
+version: 1
+random_seed: 42
+
+lattice:
+  sizes:
+    - [12, 12]
+    - [16, 16]
+  disorder_values: [0.0, 0.1, 0.2]
+
+noise:
+  gamma_scan_logspace: {start_exp: -3, end_exp: 1, points: 25}
+  target_time: 5.0
+  dt: 0.02
+  refinement_factor: 2
+
+analysis:
+  perform_convergence: true
+  perform_traj_variance: true
+  perform_phase_diagram: true
+  perform_msd: true
+  perform_otoc: true
+  perform_logical: true
+  enhanced_ramsey: false
+  bootstrap_samples: 256
+  msd_time_points: 80
+  perform_fss: true
+  fss_sizes: [12, 16]
+
+ptq:
+  enable_delta: false
+  r0: 1.0
+  gamma_c: 1.0
+  u: 1.0
+  M: 1000.0
+  require_valid: false
+
+quality_gates:
+  max_trace_deviation: 1.0e-9
+  min_dt_order: 3.5
+  max_bootstrap_halfwidth: 0.05
+  fractal_transport_tolerance: 0.15
+  positivity_tolerance: 1.0e-9
+  max_local_error: 1.0e-4
+  max_forced_d2_fraction: 0.3
+  min_logical_fidelity: 0.6
+
+report:
+  build_latex: false   # disable PDF build for speed in partial run
+  master_tex: blueprint_master.tex
+  output_pdf: blueprint_master.pdf
+  keep_intermediate: false
+
+output:
+  root_dir: automation_runs
+  compress_archives: true
+
+parallel:
+  workers: 1  # keep single worker to limit memory footprint for larger lattices
+
+logging:
+  level: INFO
+  json_metadata: true

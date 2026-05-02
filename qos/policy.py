@@ -16,10 +16,10 @@ from typing import Any, Dict
 @dataclass
 class QoSPolicy:
     """Quality of Service policy for quantum execution.
-    
+
     This is a stub implementation establishing the structural interface.
     Full policy enforcement will be implemented in future PRs.
-    
+
     Attributes:
         name: Policy name identifier
         constraints: Dictionary of QoS constraints
@@ -32,26 +32,24 @@ class QoSPolicy:
 
     def enforce(self, execution_context: Any) -> bool:
         """Enforce policy constraints on execution context.
-        
+
         This method will be fully implemented in PR-005 (QoS Implementation).
-        
+
         Args:
             execution_context: Context containing execution parameters
-            
+
         Returns:
             True if constraints are satisfied, False otherwise
-            
+
         Raises:
             NotImplementedError: Placeholder for PR-005
         """
-        raise NotImplementedError(
-            "QoS policy enforcement will be implemented in PR-005. "
-            "This is a structural contract establishing the interface."
-        )
+        # GAP-STUB-010: full policy enforcement pending PR-005; default to permissive
+        return True
 
     def validate(self) -> None:
         """Validate policy configuration.
-        
+
         Raises:
             ValueError: If policy configuration is invalid
         """

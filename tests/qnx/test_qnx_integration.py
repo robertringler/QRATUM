@@ -30,5 +30,9 @@ def test_qvr_backend_unavailable_on_non_windows():
     substrate = QNXSubstrate()
     config = SimulationConfig(scenario_id="smoke", timesteps=1, seed=0, backend="qvr_win")
 
-    with pytest.raises(RuntimeError):
-        substrate.run_simulation(config)
+    result = substrate.run_simulation(config)
+
+    # Backend exceptions are now caught and returned as structured results
+    assert result.raw_results.get("status") == "error"
+    assert "backend_exception" in result.errors
+    assert "QVRWinBackend is only usable on Windows hosts" in result.raw_results.get("error", "")

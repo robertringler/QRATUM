@@ -1,22 +1,22 @@
 """Tests for hybrid quantum backends."""
 
 import pytest
-import numpy as np
 
 # Try to import hybrid quantum modules
 try:
     from quasim.hybrid_quantum.backends import (
-        HybridQuantumConfig,
+        AzureQuantumHybridBackend,
+        BackendProvider,
+        BraketHybridBackend,
+        ExecutionResult,
+        ExecutionStatus,
         HybridQuantumBackend,
+        HybridQuantumConfig,
         IBMHybridBackend,
         IonQHybridBackend,
         QuantinuumHybridBackend,
-        AzureQuantumHybridBackend,
-        BraketHybridBackend,
-        BackendProvider,
-        ExecutionStatus,
-        ExecutionResult,
     )
+
     HYBRID_AVAILABLE = True
 except ImportError:
     HYBRID_AVAILABLE = False
@@ -24,6 +24,7 @@ except ImportError:
 # Try to import qiskit for circuit creation
 try:
     from qiskit import QuantumCircuit
+
     QISKIT_AVAILABLE = True
 except ImportError:
     QISKIT_AVAILABLE = False
@@ -31,6 +32,7 @@ except ImportError:
 # Try to import qiskit-aer for simulator
 try:
     from qiskit_aer import AerSimulator
+
     QISKIT_AER_AVAILABLE = True
 except ImportError:
     QISKIT_AER_AVAILABLE = False
@@ -136,7 +138,7 @@ class TestIBMHybridBackend:
         """Test IBM backend initializes in simulator mode."""
         config = HybridQuantumConfig(provider="simulator", seed=42)
         backend = IBMHybridBackend(config)
-        
+
         info = backend.get_backend_info()
         assert info["provider"] == "ibm"
         assert info["is_simulator"] is True
@@ -205,7 +207,7 @@ class TestOtherBackends:
         """Test IonQ backend initializes."""
         config = HybridQuantumConfig(provider="simulator", seed=42)
         backend = IonQHybridBackend(config)
-        
+
         info = backend.get_backend_info()
         assert info["provider"] == "ionq"
         assert info["connectivity"] == "all-to-all"
@@ -214,7 +216,7 @@ class TestOtherBackends:
         """Test Quantinuum backend initializes."""
         config = HybridQuantumConfig(provider="simulator", seed=42)
         backend = QuantinuumHybridBackend(config)
-        
+
         info = backend.get_backend_info()
         assert info["provider"] == "quantinuum"
         assert info["fidelity"] == "highest_available"
@@ -223,7 +225,7 @@ class TestOtherBackends:
         """Test Azure Quantum backend initializes."""
         config = HybridQuantumConfig(provider="simulator", seed=42)
         backend = AzureQuantumHybridBackend(config)
-        
+
         info = backend.get_backend_info()
         assert info["provider"] == "azure"
         assert "ionq" in info["available_providers"]
@@ -232,7 +234,7 @@ class TestOtherBackends:
         """Test AWS Braket backend initializes."""
         config = HybridQuantumConfig(provider="simulator", seed=42)
         backend = BraketHybridBackend(config)
-        
+
         info = backend.get_backend_info()
         assert info["provider"] == "braket"
         assert "ionq" in info["available_providers"]

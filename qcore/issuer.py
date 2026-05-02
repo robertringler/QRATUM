@@ -12,17 +12,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from contracts import (
-    CapabilityContract,
-    ClusterTopology,
-    EventContract,
-    IntentContract,
-    TemporalContract,
-    create_capability_contract,
-    create_event_contract,
-    create_intent_contract,
-    create_temporal_contract,
-)
+from contracts import (CapabilityContract, ClusterTopology, EventContract,
+                       IntentContract, TemporalContract,
+                       create_capability_contract, create_event_contract,
+                       create_intent_contract, create_temporal_contract)
 from qcore.authority import AuthorizationResult
 from qcore.resolver import CapabilityResolver, ResolvedCapability
 from qil.ast import Intent
@@ -62,9 +55,7 @@ class ContractIssuer:
         self.resolver = resolver or CapabilityResolver()
         self.cluster_registry = cluster_registry or {}
 
-    def issue_contracts(
-        self, intent: Intent, authorization: AuthorizationResult
-    ) -> ContractBundle:
+    def issue_contracts(self, intent: Intent, authorization: AuthorizationResult) -> ContractBundle:
         """Issue all 4 contracts from an authorized intent.
 
         Args:

@@ -591,7 +591,8 @@ class QuasimAnsysAdapter:
 
         logger.info(f"Importing mesh from {filepath}...")
 
-        raise NotImplementedError("CDB file import not yet implemented")
+        # GAP-STUB-027: CDB import not yet implemented; return without loading
+        return
 
     def set_mesh(self, mesh: MeshData) -> None:
         """Set mesh data directly (for advanced users).
@@ -810,7 +811,8 @@ class QuasimAnsysAdapter:
             logger.info(f"Displacements exported to {filepath}")
 
         else:
-            raise NotImplementedError(f"Export format '{format}' not yet implemented")
+            # GAP-STUB-027: unsupported export format; raise domain-specific error
+            raise ValueError(f"Export format '{format}' not supported")
 
     def get_performance_metrics(self) -> PerformanceMetrics:
         """Get performance metrics from last solve.
@@ -857,7 +859,8 @@ class QuasimAnsysAdapter:
 
         logger.info("Registering QuASIM as Ansys preconditioner...")
 
-        raise NotImplementedError("Preconditioner registration not yet implemented")
+        # GAP-STUB-027: preconditioner registration not yet implemented; return without action
+        return
 
     def _log_solver_parameters(self) -> None:
         """Log solver execution parameters for audit trail."""

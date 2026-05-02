@@ -75,7 +75,11 @@ class AuthorizationEngine:
             violations.append("Untrusted intent cannot be authorized")
 
         # Check hardware requirements
-        if intent.hardware and not intent.hardware.only_clusters and not intent.hardware.not_clusters:
+        if (
+            intent.hardware
+            and not intent.hardware.only_clusters
+            and not intent.hardware.not_clusters
+        ):
             violations.append("Hardware specification is empty")
 
         # Check for conflicting constraints
@@ -161,11 +165,7 @@ class AuthorizationEngine:
         Returns:
             List of authorized intent names
         """
-        return [
-            name
-            for name, result in self._authorized_intents.items()
-            if result.authorized
-        ]
+        return [name for name, result in self._authorized_intents.items() if result.authorized]
 
 
 def check_authority_constraints(intent: Intent) -> list[str]:

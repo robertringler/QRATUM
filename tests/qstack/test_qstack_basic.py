@@ -1,13 +1,7 @@
 from qstack.q import Attestor, KeyManager, QIdentity, Signer, SovereignObject
-from qstack.qnx import (
-    QNXVM,
-    DeterministicScheduler,
-    OperatorLibrary,
-    QNXState,
-    SafetyConstraints,
-    SafetyEnvelope,
-    SafetyValidator,
-)
+from qstack.qnx import (QNXVM, DeterministicScheduler, OperatorLibrary,
+                        QNXState, SafetyConstraints, SafetyEnvelope,
+                        SafetyValidator)
 from qstack.qnx_agi.memory.base import MemorySystem
 from qstack.qnx_agi.orchestrator.base import Orchestrator
 from qstack.qnx_agi.perception.base import PerceptionLayer

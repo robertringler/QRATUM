@@ -144,11 +144,14 @@ class ClimateGenePipeline:
         self.results: dict[str, ClimateGeneResult] = {}
 
         # Log initialization
-        self.merkle_chain.add_event("pipeline_initialized", {
-            "pipeline_id": self.pipeline_id,
-            "pipeline_type": "climate_gene_connections",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        })
+        self.merkle_chain.add_event(
+            "pipeline_initialized",
+            {
+                "pipeline_id": self.pipeline_id,
+                "pipeline_type": "climate_gene_connections",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            },
+        )
 
     def project_climate_exposure(
         self,
@@ -184,9 +187,7 @@ class ClimateGenePipeline:
             # In production, would integrate with ECORA climate models
 
             # Generate deterministic exposure levels
-            proj_hash = hashlib.sha3_256(
-                f"{scenario}_{pollutant}".encode()
-            ).hexdigest()
+            proj_hash = hashlib.sha3_256(f"{scenario}_{pollutant}".encode()).hexdigest()
             base_level = 10 + (int(proj_hash[:4], 16) % 50)
 
             exposure_levels = {
@@ -218,11 +219,14 @@ class ClimateGenePipeline:
         self.projections[projection.projection_id] = projection
 
         # Log to merkle chain
-        self.merkle_chain.add_event("climate_projection_completed", {
-            "projection_id": projection.projection_id,
-            "scenario": scenario,
-            "pollutant": pollutant,
-        })
+        self.merkle_chain.add_event(
+            "climate_projection_completed",
+            {
+                "projection_id": projection.projection_id,
+                "scenario": scenario,
+                "pollutant": pollutant,
+            },
+        )
 
         return projection
 
@@ -317,11 +321,14 @@ class ClimateGenePipeline:
         self.analyses[analysis.analysis_id] = analysis
 
         # Log to merkle chain
-        self.merkle_chain.add_event("epigenetic_analysis_completed", {
-            "analysis_id": analysis.analysis_id,
-            "exposure_id": exposure.projection_id,
-            "affected_genes": len(analysis.affected_genes),
-        })
+        self.merkle_chain.add_event(
+            "epigenetic_analysis_completed",
+            {
+                "analysis_id": analysis.analysis_id,
+                "exposure_id": exposure.projection_id,
+                "affected_genes": len(analysis.affected_genes),
+            },
+        )
 
         return analysis
 
@@ -395,11 +402,14 @@ class ClimateGenePipeline:
         self.results[result.result_id] = result
 
         # Log to merkle chain
-        self.merkle_chain.add_event("synthesis_completed", {
-            "result_id": result.result_id,
-            "connections_found": len(result.connections),
-            "confidence": result.confidence,
-        })
+        self.merkle_chain.add_event(
+            "synthesis_completed",
+            {
+                "result_id": result.result_id,
+                "connections_found": len(result.connections),
+                "confidence": result.confidence,
+            },
+        )
 
         return result
 

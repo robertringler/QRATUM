@@ -262,9 +262,7 @@ class MerkleVerifiedChannel:
             "payload": message.payload,
             "sender_id": message.sender_id,
         }
-        return hashlib.sha3_256(
-            json.dumps(content, sort_keys=True).encode()
-        ).hexdigest()
+        return hashlib.sha3_256(json.dumps(content, sort_keys=True).encode()).hexdigest()
 
     def _verify_merkle_proof(self, message: VerifiedMessage) -> bool:
         """Verify Merkle proof of a message.
@@ -288,9 +286,7 @@ class MerkleVerifiedChannel:
             "messages_received": len(self.received_messages),
             "valid_received": valid_received,
             "verification_rate": (
-                valid_received / len(self.received_messages)
-                if self.received_messages
-                else 1.0
+                valid_received / len(self.received_messages) if self.received_messages else 1.0
             ),
             "merkle_chain_valid": self.merkle_chain.verify_integrity(),
         }
@@ -358,9 +354,7 @@ class AuditChainLogger:
             else:
                 # Buffer for async commit
                 self._pending_logs.append(log_entry)
-                return hashlib.sha3_256(
-                    json.dumps(log_entry, sort_keys=True).encode()
-                ).hexdigest()
+                return hashlib.sha3_256(json.dumps(log_entry, sort_keys=True).encode()).hexdigest()
 
     def flush(self) -> int:
         """Flush pending logs to the audit chain.
@@ -371,9 +365,7 @@ class AuditChainLogger:
         with self._lock:
             committed_count = 0
             for log_entry in self._pending_logs:
-                event_hash = self.merkle_chain.add_event(
-                    log_entry["event_type"], log_entry
-                )
+                event_hash = self.merkle_chain.add_event(log_entry["event_type"], log_entry)
                 self._committed_logs.append(event_hash)
                 committed_count += 1
 

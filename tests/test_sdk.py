@@ -15,7 +15,8 @@ import pytest
 
 # Try to import SDK module
 try:
-    from integrations.sdk.python.quasim_client import Job, JobStatus, QuASIMClient
+    from integrations.sdk.python.quasim_client import (Job, JobStatus,
+                                                       QuASIMClient)
 
     SDK_AVAILABLE = True
 except ImportError:
@@ -80,15 +81,17 @@ class TestQuASIMClient:
 
     def test_client_custom_configuration(self):
         """Test client with custom configuration."""
+        # GAP-SEC-SECRET-014: test-only fixture key, not a real credential
+        _TEST_API_KEY = "test-key-123"  # noqa: S105
 
         client = QuASIMClient(
             api_url="https://api.quasim.com",
-            api_key="test-key-123",
+            api_key=_TEST_API_KEY,
             timeout=60,
             max_retries=5,
         )
         assert client.api_url == "https://api.quasim.com"
-        assert client.api_key == "test-key-123"
+        assert client.api_key == _TEST_API_KEY
         assert client.timeout == 60
         assert client.max_retries == 5
 

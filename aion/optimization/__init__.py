@@ -12,16 +12,16 @@ Status: Production
 from __future__ import annotations
 
 from .fusion import (
-    KernelFusion,
-    FusionPattern,
     CrossLanguageFuser,
+    FusionPattern,
+    KernelFusion,
     detect_fusion_patterns,
 )
 from .scheduler import (
     AdaptiveScheduler,
     CausalScheduler,
-    Task,
     ScheduleResult,
+    Task,
 )
 
 __all__ = [

@@ -5,11 +5,7 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-from xenon.bioinformatics.audit import (
-    AuditEntry,
-    AuditRegistry,
-    ViolationType,
-)
+from xenon.bioinformatics.audit import AuditEntry, AuditRegistry, ViolationType
 
 
 class TestAuditRegistry:

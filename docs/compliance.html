@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compliance & Security | QuASIM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/visualizations.css">
+</head>
+<body>
+  <div class="classification-banner">UNCLASSIFIED // FOR PUBLIC RELEASE</div>
+  <nav class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="navbar-brand">QuASIM</a>
+      <button class="navbar-toggle">☰</button>
+      <ul class="navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="architecture.html">Architecture</a></li>
+        <li><a href="performance.html">Performance</a></li>
+        <li><a href="compliance.html" class="active">Compliance</a></li>
+        <li><a href="whitepaper.html">Whitepaper</a></li>
+        <li><a href="api.html">API</a></li>
+        <li><a href="roadmap.html">Roadmap</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <section class="section">
+      <div class="container">
+        <h1 class="text-center text-green mb-8">Compliance & Security Dashboard</h1>
+        
+        <div class="grid grid-3 mb-8">
+          <div class="card text-center">
+            <div class="card-body">
+              <div class="chart-container" data-chart="gpu-gauge" data-value="97.8" data-label="DO-178C">
+                <canvas style="height: 150px;"></canvas>
+              </div>
+              <h3 class="mt-4">DO-178C Level A</h3>
+              <p class="text-sm text-muted">Aerospace Certification</p>
+            </div>
+          </div>
+          <div class="card text-center">
+            <div class="card-body">
+              <div class="chart-container" data-chart="gpu-gauge" data-value="99.3" data-label="CMMC">
+                <canvas style="height: 150px;"></canvas>
+              </div>
+              <h3 class="mt-4">CMMC 2.0 Level 2</h3>
+              <p class="text-sm text-muted">Defense Cybersecurity</p>
+            </div>
+          </div>
+          <div class="card text-center">
+            <div class="card-body">
+              <div class="chart-container" data-chart="gpu-gauge" data-value="98.75" data-label="NIST">
+                <canvas style="height: 150px;"></canvas>
+              </div>
+              <h3 class="mt-4">NIST 800-53 HIGH</h3>
+              <p class="text-sm text-muted">Federal Security Controls</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card mb-8">
+          <div class="card-header"><h3 class="card-title">STRIDE Threat Mitigation</h3></div>
+          <div class="card-body">
+            <div class="threat-matrix">
+              <div class="threat-row">
+                <div class="threat-header">
+                  <div class="threat-category">Spoofing</div>
+                  <div class="threat-percentage">100%</div>
+                </div>
+                <p class="threat-description">Identity spoofing and authentication bypass prevention</p>
+                <div class="threat-progress"><div class="threat-progress-bar high" style="width: 100%;"></div></div>
+              </div>
+              <div class="threat-row">
+                <div class="threat-header">
+                  <div class="threat-category">Tampering</div>
+                  <div class="threat-percentage">92%</div>
+                </div>
+                <p class="threat-description">Data and code integrity protection</p>
+                <div class="threat-progress"><div class="threat-progress-bar high" style="width: 92%;"></div></div>
+              </div>
+              <div class="threat-row">
+                <div class="threat-header">
+                  <div class="threat-category">Repudiation</div>
+                  <div class="threat-percentage">100%</div>
+                </div>
+                <p class="threat-description">Audit log protection and non-repudiation</p>
+                <div class="threat-progress"><div class="threat-progress-bar high" style="width: 100%;"></div></div>
+              </div>
+              <div class="threat-row">
+                <div class="threat-header">
+                  <div class="threat-category">Information Disclosure</div>
+                  <div class="threat-percentage">100%</div>
+                </div>
+                <p class="threat-description">Data leakage and unauthorized access prevention</p>
+                <div class="threat-progress"><div class="threat-progress-bar high" style="width: 100%;"></div></div>
+              </div>
+              <div class="threat-row">
+                <div class="threat-header">
+                  <div class="threat-category">Denial of Service</div>
+                  <div class="threat-percentage">89%</div>
+                </div>
+                <p class="threat-description">Resource exhaustion and availability protection</p>
+                <div class="threat-progress"><div class="threat-progress-bar medium" style="width: 89%;"></div></div>
+              </div>
+              <div class="threat-row">
+                <div class="threat-header">
+                  <div class="threat-category">Elevation of Privilege</div>
+                  <div class="threat-percentage">100%</div>
+                </div>
+                <p class="threat-description">Privilege escalation prevention</p>
+                <div class="threat-progress"><div class="threat-progress-bar high" style="width: 100%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card mb-8">
+          <div class="card-header"><h3 class="card-title">Encryption Stack</h3></div>
+          <div class="card-body">
+            <div class="encryption-stack">
+              <div class="encryption-layer">
+                <div class="encryption-layer-name">Data at Rest</div>
+                <div class="encryption-details">
+                  <div><span class="encryption-detail-label">Algorithm:</span> AES-256-GCM</div>
+                  <div><span class="encryption-detail-label">Key Mgmt:</span> HashiCorp Vault</div>
+                  <div><span class="encryption-detail-label">Standard:</span> FIPS 140-2 Level 3</div>
+                </div>
+              </div>
+              <div class="encryption-layer">
+                <div class="encryption-layer-name">Data in Transit</div>
+                <div class="encryption-details">
+                  <div><span class="encryption-detail-label">Protocol:</span> TLS 1.3</div>
+                  <div><span class="encryption-detail-label">Certificates:</span> X.509 v3</div>
+                  <div><span class="encryption-detail-label">Compliance:</span> PCI DSS, HIPAA</div>
+                </div>
+              </div>
+              <div class="encryption-layer">
+                <div class="encryption-layer-name">Data in Use</div>
+                <div class="encryption-details">
+                  <div><span class="encryption-detail-label">Technology:</span> Intel SGX / AMD SEV</div>
+                  <div><span class="encryption-detail-label">Enclaves:</span> Trusted Execution Environment</div>
+                  <div><span class="encryption-detail-label">Protection:</span> Memory encryption</div>
+                </div>
+              </div>
+              <div class="encryption-layer">
+                <div class="encryption-layer-name">Key Escrow</div>
+                <div class="encryption-details">
+                  <div><span class="encryption-detail-label">Scheme:</span> Shamir Secret Sharing</div>
+                  <div><span class="encryption-detail-label">Threshold:</span> 3-of-5</div>
+                  <div><span class="encryption-detail-label">Compliance:</span> FISMA, ITAR</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="chart-container" data-chart="compliance">
+          <h3 class="chart-title">NIST 800-53 Control Families</h3>
+          <canvas style="height: 400px;"></canvas>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="container"><div class="footer-bottom"><p>&copy; 2025 QuASIM Project. Licensed under Apache 2.0.</p></div></div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="js/visualizations.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

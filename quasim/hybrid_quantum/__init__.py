@@ -135,39 +135,39 @@ from .backends import (
     IonQHybridBackend,
     QuantinuumHybridBackend,
 )
-from .provenance import ProvenanceRecord, QuantumProvenanceWrapper
-from .rollback import RollbackManager, DualApprovalGate
-from .verification import QuantumVerifier, VerificationResult, TopologicalDiagnosticObserver
 
 # Import orchestrator components
 from .orchestrator import (
-    HybridQuantumOrchestrator,
-    TrustMetric,
-    FallbackStrategy,
     ExecutionContext,
-    OrchestratorStatus,
     ExecutionMode,
     FailureType,
+    FallbackStrategy,
+    HybridQuantumOrchestrator,
+    OrchestratorStatus,
     QuantumVerificationError,
+    TrustMetric,
 )
-
-# Import enhanced topological observer
-from .topological_observer import (
-    EnhancedTopologicalObserver,
-    TopologicalObservation,
-    CollapseMetrics,
-    FidelityMetrics,
-    DiagnosticFinding,
-    DiagnosticSeverity,
-    DiagnosticCategory,
-)
+from .provenance import ProvenanceRecord, QuantumProvenanceWrapper
 
 # Import reinjection engine
 from .reinjection_engine import (
-    ReinjectionEvaluationEngine,
-    ProposalArtifact,
-    ProposalStatus,
-    ProposalCluster,
-    PreValidationScore,
     MerkleTreeBuilder,
+    PreValidationScore,
+    ProposalArtifact,
+    ProposalCluster,
+    ProposalStatus,
+    ReinjectionEvaluationEngine,
 )
+from .rollback import DualApprovalGate, RollbackManager
+
+# Import enhanced topological observer
+from .topological_observer import (
+    CollapseMetrics,
+    DiagnosticCategory,
+    DiagnosticFinding,
+    DiagnosticSeverity,
+    EnhancedTopologicalObserver,
+    FidelityMetrics,
+    TopologicalObservation,
+)
+from .verification import QuantumVerifier, TopologicalDiagnosticObserver, VerificationResult

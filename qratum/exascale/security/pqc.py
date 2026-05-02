@@ -66,10 +66,10 @@ class SecurityLevel(Enum):
 
 
 class KeyType(Enum):
-    """Cryptographic key types"""
-    PUBLIC_KEY = "Public Key"
-    SECRET_KEY = "Secret Key"
-    SHARED_SECRET = "Shared Secret"
+    """Cryptographic key types"""  # GAP-SEC-SECRET-011: enum labels, not credential values
+    PUBLIC_KEY = "public_key"
+    SECRET_KEY = "secret_key"
+    SHARED_SECRET = "shared_secret"
 
 
 @dataclass

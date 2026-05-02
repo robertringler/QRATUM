@@ -19,8 +19,10 @@ from quasim.hcal.actuator import Actuator
 from quasim.hcal.audit import AuditLogger
 from quasim.hcal.backends.nvidia_nvml import NvidiaNvmlBackend
 from quasim.hcal.calibration import CalibrationLoop
-from quasim.hcal.loops.calibration import CalibrationResult, bias_trim_v1, power_sweep
-from quasim.hcal.policy import DeviceLimits, Environment, Policy, PolicyEngine, PolicyViolation
+from quasim.hcal.loops.calibration import (CalibrationResult, bias_trim_v1,
+                                           power_sweep)
+from quasim.hcal.policy import (DeviceLimits, Environment, Policy,
+                                PolicyEngine, PolicyViolation)
 from quasim.hcal.sensors import SensorManager, TelemetryReading
 from quasim.hcal.topology import TopologyDiscovery
 
@@ -68,7 +70,6 @@ class HCAL:
             audit_log_path=audit_log_path,
             dry_run=dry_run,
         )
-        self.actuator = Actuator(enable_actuation=not dry_run)
 
         # Initialize backends
         self.backends = {"nvidia_nvml": NvidiaNvmlBackend(dry_run=dry_run)}
@@ -96,7 +97,6 @@ class HCAL:
         Args:
             policy_path: Path to policy YAML file
             enable_actuation: Whether to enable hardware changes (overrides dry_run)
-            enable_actuation: Whether to enable hardware changes
             audit_log_dir: Directory for audit logs
 
         Returns:
@@ -105,8 +105,7 @@ class HCAL:
 
         # enable_actuation=True means dry_run=False
         dry_run = not enable_actuation
-        audit_log_path = audit_log_dir / "audit.log" if audit_log_dir else None
-        return cls(policy_path=policy_path, dry_run=dry_run, audit_log_path=audit_log_path)
+
         audit_log_path = None
         if audit_log_dir:
             audit_log_dir.mkdir(parents=True, exist_ok=True)
@@ -114,7 +113,7 @@ class HCAL:
 
         return cls(
             policy_path=policy_path,
-            dry_run=not enable_actuation,
+            dry_run=dry_run,
             audit_log_path=audit_log_path,
         )
 
@@ -486,11 +485,4 @@ __all__ = [
     "Policy",
     "CalibrationResult",
     "TelemetryReading",
-    "HCAL",
-    "Policy",
-    "PolicyEngine",
-    "PolicyViolation",
-    "DeviceLimits",
-    "Environment",
-    "__version__",
 ]

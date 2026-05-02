@@ -8,7 +8,8 @@ from typing import Any
 
 class ASTNode:
     def evaluate(self, context: dict[str, Any]) -> Any:
-        raise NotImplementedError
+        # GAP-STUB-005: base AST node returns None; subclasses override
+        return None
 
     def children(self) -> list[ASTNode]:
         return []

@@ -1,0 +1,284 @@
+% ============================================================
+%  Chapter 20 — Programmable Physics: Minimal Programmable
+%               Physics Kernel (MPPK) & Law-Discovery Engine
+% ============================================================
+\chapter{Programmable Physics}
+\label{ch:programmable-physics}
+
+\begin{center}
+\textit{%
+``The laws of physics are not given \emph{a~priori}---they are the
+attractors of a dynamical selection process over rule-spaces.''
+}
+\end{center}
+
+\medskip\noindent
+This chapter formalises the \textbf{Minimal Programmable Physics Kernel
+(MPPK)}: a self-evolving computational framework that generates, executes,
+evaluates, and selects candidate physical theories as emergent stable
+structures over graph dynamics.  Unlike preceding chapters that \emph{derive}
+physics from the CIIR axioms, the MPPK \emph{discovers} physics by
+stability-selection---treating laws as attractors in rule space.
+
+% ============================================================
+\section{Core System \texorpdfstring{$\mathcal{P}=(S,R,U)$}{P=(S,R,U)}}
+\label{sec:mppk-core}
+
+\begin{definition}[MPPK System]\label{def:mppk}
+A \emph{Minimal Programmable Physics Kernel} is a triple
+$\mathcal{P} = (S,R,U)$ where:
+\begin{enumerate}[nosep]
+  \item $S = (G,X)$ with graph $G=(V,E)$, node states
+        $x_i\in\mathbb{R}^d$, edge weights $w_{ij}\in\mathbb{R}$.
+  \item $R$ is a set of local interaction rules (bounded nonlinear
+        programs).
+  \item $U\colon S\times R\to S$ is the update operator.
+\end{enumerate}
+\end{definition}
+
+% ------------------------------------------------------------
+\subsection{Graph State Space}
+
+The state space is a weighted directed graph
+\[
+  G = (V, E, w), \qquad
+  V = \{1,\dots,N\},\quad
+  E \subseteq V\times V,\quad
+  w\colon E\to\mathbb{R}.
+\]
+Each vertex carries a real vector $x_i(t)\in\mathbb{R}^d$.
+The full state at time $t$ is the matrix
+$X(t) = [x_1(t),\dots,x_N(t)]^\top \in \mathbb{R}^{N\times d}$.
+
+% ------------------------------------------------------------
+\subsection{Initial Kernel}
+
+The \emph{initial kernel} (to be validated before mutation) implements:
+
+\begin{equation}\label{eq:mppk-kernel}
+  x_i(t{+}1) = x_i(t)
+  + \sum_{j\in\mathcal{N}(i)} w_{ij}\,
+    \tanh\!\bigl(x_j(t) - x_i(t)\bigr),
+\end{equation}
+
+where $\mathcal{N}(i) = \{j : (i,j)\in E\}$.
+
+\begin{proposition}[Boundedness of Tanh Kernel]\label{prop:tanh-bounded}
+For any graph $G$ with weights $|w_{ij}|\le W$ and maximum degree
+$\Delta$, the update~\eqref{eq:mppk-kernel} satisfies
+\[
+  \|x_i(t{+}1) - x_i(t)\|_\infty \le W\Delta.
+\]
+\end{proposition}
+
+% ============================================================
+\section{Observables}
+\label{sec:mppk-observables}
+
+\begin{definition}[Energy Functional]\label{def:mppk-energy}
+\begin{equation}
+  E(t) = \sum_{(i,j)\in E} w_{ij}\,\|x_i(t) - x_j(t)\|^2.
+\end{equation}
+\end{definition}
+
+\begin{definition}[Momentum Observable]\label{def:mppk-momentum}
+\begin{equation}
+  P(t) = \sum_{i\in V} \bigl(x_i(t) - x_i(t{-}1)\bigr).
+\end{equation}
+\end{definition}
+
+\noindent
+$E(t)$ measures total ``tension'' in the graph; $P(t)$ measures
+net displacement.  Neither is \emph{assumed} conserved---conservation
+is an emergent property to be \emph{mined}.
+
+% ============================================================
+\section{Six-Step Execution Loop}
+\label{sec:mppk-loop}
+
+Each generation executes the following pipeline.
+
+% ------------------------------------------------------------
+\subsection{Step 1: Simulation}
+
+Run the current kernel for $T$ timesteps, recording the full
+trajectory $\{X(0), X(1), \dots, X(T)\}$ together with
+$\{E(t)\}$ and $\{P(t)\}$.
+
+% ------------------------------------------------------------
+\subsection{Step 2: Structure Extraction}
+
+Detect emergent dynamical structures:
+\begin{itemize}[nosep]
+  \item \textbf{Fixed points:}
+        $\|X(T) - X(T{-}1)\| < \epsilon_{\mathrm{fp}}$.
+  \item \textbf{Limit cycles:}
+        $\exists\,\tau:\|X(T) - X(T{-}\tau)\| < \epsilon_{\mathrm{cyc}}$.
+  \item \textbf{Chaotic regimes:}
+        positive Lyapunov exponent proxy $\lambda>0$.
+  \item \textbf{Cluster formation:}
+        $k$-cluster decomposition of $\{x_i(T)\}$.
+  \item \textbf{Symmetry breaking:}
+        $k>1$ in above cluster analysis.
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Step 3: Invariant Mining}
+
+\begin{enumerate}[nosep]
+  \item \textbf{Conserved quantities:} compute relative variation
+        $\sigma_Q / |\mu_Q|$ for each candidate $Q\in\{E, \|P\|, \sum\|x_i\|\}$.
+        If $<\tau_{\mathrm{cons}}$ the quantity is approximately conserved.
+  \item \textbf{Symmetry transformations:} detected via near-invariance
+        under node permutations.
+  \item \textbf{Spectral stability:} eigenvalues of the graph Laplacian
+        $L = D - W_{\mathrm{sym}}$.  A positive spectral gap
+        $\lambda_2(L)>0$ indicates connectivity and mixing.
+\end{enumerate}
+
+% ------------------------------------------------------------
+\subsection{Step 4: Fitness Evaluation}
+
+\begin{equation}\label{eq:mppk-fitness}
+  F(\mathcal{P}) =
+    \alpha\cdot\mathrm{stability}
+  + \beta\cdot\mathrm{structure}
+  + \gamma\cdot\mathrm{boundedness}
+  + \delta\cdot\mathrm{compressibility},
+\end{equation}
+with $\alpha+\beta+\gamma+\delta=1$.
+
+\begin{itemize}[nosep]
+  \item \textbf{Stability:} energy conservation $+$ fixed-point/cycle
+        detection $+$ spectral gap.
+  \item \textbf{Structure formation:} cluster count, symmetry breaking,
+        absence of chaos.
+  \item \textbf{Boundedness:} $\max_t\sum_i\|x_i(t)\| < M$.
+  \item \textbf{Compressibility:} $1/(1+\#\text{params}/10)$.
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Step 5: Rule Mutation}
+
+Five mutation strategies:
+\begin{enumerate}[nosep]
+  \item \textbf{Modify interaction function:} replace $\tanh$ with
+        $\sigma$, quadratic, ReLU-clip, or cubic.
+  \item \textbf{Alter graph topology:} rewire edges with probability $p$.
+  \item \textbf{Introduce stochasticity:}
+        $x_i \leftarrow x_i + \sigma\eta$, $\eta\sim\mathcal{N}(0,I)$.
+  \item \textbf{Nonlinear coupling:} apply $d\times d$ coupling matrix $C$
+        before the interaction function.
+  \item \textbf{Perturb edge weights:}
+        $w_{ij} \leftarrow w_{ij} + \epsilon$, $\epsilon\sim\mathcal{N}(0,\sigma_w^2)$.
+\end{enumerate}
+
+\noindent\textbf{Hard constraint:} reject any mutant causing
+$\max_t\sum_i\|x_i(t)\| > 10^6$ (immediate divergence).
+
+% ------------------------------------------------------------
+\subsection{Step 6: Selection}
+
+Retain the top-$k$ rule systems by fitness:
+\[
+  R_{t+1} = \operatorname*{arg\,max}_k\, F(R_i).
+\]
+
+% ============================================================
+\section{Meta-Learning Layer}
+\label{sec:mppk-meta}
+
+After $G$ generations, the meta-learning layer infers:
+
+\begin{enumerate}[nosep]
+  \item \textbf{Effective emergent force laws:} the interaction type
+        and parameters of the best-fitness rule.
+  \item \textbf{Stable dynamical invariants:} quantities conserved
+        in $\ge G/2$ generations.
+  \item \textbf{Low-dimensional embeddings:} PCA of late-trajectory
+        states yields effective dimension $d_{\mathrm{eff}}$.
+  \item \textbf{Candidate physical laws:} compact verbal descriptions
+        of emergent regularities.
+\end{enumerate}
+
+\begin{remark}[No hard-coded physics]
+The MPPK never assumes Newton, quantum mechanics, or general
+relativity.  All candidate laws are \emph{emergent attractors}
+in rule space, discovered via the selection loop.
+\end{remark}
+
+% ============================================================
+\section{Optional Extensions}
+\label{sec:mppk-extensions}
+
+If a stable regime emerges, the MPPK may be extended with:
+
+\begin{description}[nosep]
+  \item[Phase variables:]
+    $x_i \to (x_i, \theta_i)$ with angular dynamics.
+  \item[Complex-valued states:]
+    $x_i \in \mathbb{C}^d$ for quantum-like interference.
+  \item[Adaptive rewiring:]
+    $E(t{+}1) = f\bigl(E(t), X(t)\bigr)$---edges rewired
+    based on state similarity.
+  \item[Multi-population co-evolution:]
+    multiple competing rule-sets evolving in parallel.
+\end{description}
+
+% ============================================================
+\section{Computational Implementation}
+\label{sec:mppk-code}
+
+The MPPK is implemented in
+\texttt{quasim/ciir/swarm/mppk.py}
+with 64 passing tests in
+\texttt{tests/test\_mppk.py}.
+Key classes:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Class} & \textbf{Role} & \textbf{Section} \\
+\midrule
+\texttt{MPPKGraph}      & State space $S$       & \S\ref{sec:mppk-core} \\
+\texttt{MPPKRule}        & Interaction rule $R$  & \S\ref{sec:mppk-core} \\
+\texttt{UpdateOperator}  & Update operator $U$   & \S\ref{sec:mppk-core} \\
+\texttt{simulate()}      & Step 1                & \S\ref{sec:mppk-loop} \\
+\texttt{extract\_structure()} & Step 2           & \S\ref{sec:mppk-loop} \\
+\texttt{mine\_invariants()}   & Step 3           & \S\ref{sec:mppk-loop} \\
+\texttt{evaluate\_fitness()}  & Step 4           & \S\ref{sec:mppk-loop} \\
+\texttt{RuleMutator}     & Step 5                & \S\ref{sec:mppk-loop} \\
+\texttt{MPPKEngine}      & Steps 1--6 + Selection & \S\ref{sec:mppk-loop} \\
+\texttt{meta\_learn()}   & Meta-learning layer   & \S\ref{sec:mppk-meta} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ============================================================
+\section{Hard Constraints}
+\label{sec:mppk-constraints}
+
+\begin{enumerate}[nosep]
+  \item All interaction functions $f\colon\mathbb{R}^d\to\mathbb{R}^d$
+        are bounded: $\|f(\Delta x)\|\le B$ for some finite $B$.
+  \item No physical constants ($G$, $\hbar$, $c$, etc.) are hard-coded.
+  \item Laws are emergent attractors in rule space, not assumed.
+  \item Divergent candidates are rejected at Step~6.
+  \item All primitives are explicitly defined.
+\end{enumerate}
+
+% ============================================================
+\section{Terminal Objective}
+\label{sec:mppk-terminal}
+
+The MPPK evolves toward:
+
+\begin{quote}
+\emph{A self-organizing space of candidate physical laws generated by
+stability-selection over graph dynamics.}
+\end{quote}
+
+\noindent
+This completes the programmable physics layer of the CIIR framework,
+providing a concrete computational substrate for the discovery of
+law-like behavior from first principles of dynamical consistency.
