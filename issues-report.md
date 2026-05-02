@@ -1,7 +1,7 @@
 ## Remaining Code Quality Issues
 ### Ruff Linting
-1319	      	[ ] invalid-syntax
- 948	W293  	[ ] blank-line-with-whitespace
+1321	      	[ ] invalid-syntax
+ 957	W293  	[ ] blank-line-with-whitespace
  294	N806  	[ ] non-lowercase-variable-in-function
  289	UP045 	[ ] non-pep604-annotation-optional
  195	UP006 	[ ] non-pep585-annotation
@@ -28,15 +28,14 @@
    6	SIM110	[ ] reimplemented-builtin
    4	B017  	[ ] assert-raises-exception
    4	C416  	[ ] unnecessary-comprehension
-   3	E722  	[ ] bare-except
    2	B011  	[ ] assert-false
+   2	E722  	[ ] bare-except
    2	E731  	[ ] lambda-assignment
    2	E741  	[ ] ambiguous-variable-name
    2	N812  	[ ] lowercase-imported-as-non-lowercase
    2	SIM113	[ ] enumerate-for-loop
    1	C408  	[ ] unnecessary-collection-call
    1	F404  	[ ] late-future-import
-   1	N811  	[ ] constant-imported-as-non-constant
    1	N816  	[ ] mixed-case-variable-in-global-scope
    1	SIM101	[ ] duplicate-isinstance-call
    1	SIM115	[ ] open-file-with-context-handler
@@ -44,8 +43,8 @@
    1	SIM222	[ ] expr-or-true
    1	SIM401	[ ] if-else-block-instead-of-dict-get
    1	UP007 	[ ] non-pep604-annotation-union
-Found 3871 errors.
+Found 3880 errors.
 [*] 10 fixable with the `--fix` option (1513 hidden fixes can be enabled with the `--unsafe-fixes` option).
 ### Type Checking (mypy)
-quasim-api is not a valid Python package name
+quasim-api contains __init__.py but is not a valid Python package name
 Type checking completed
