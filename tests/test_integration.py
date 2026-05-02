@@ -9,21 +9,6 @@ from qratum_platform.core import (PlatformIntent, QRATUMPlatform,
                                   SafetyViolation, VerticalModule)
 from verticals import (CAPRAModule, ECORAModule, FLUXAModule, JURISModule,
                        NEURAModule, SENTRAModule, VITRAModule)
-from qratum_platform.core import (
-    PlatformIntent,
-    QRATUMPlatform,
-    SafetyViolation,
-    VerticalModule,
-)
-from verticals import (
-    CAPRAModule,
-    ECORAModule,
-    FLUXAModule,
-    JURISModule,
-    NEURAModule,
-    SENTRAModule,
-    VITRAModule,
-)
 
 
 class TestPlatformIntegration:

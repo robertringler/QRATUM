@@ -139,7 +139,7 @@ def plasmoid_indicator(state: MHDState, k_band: tuple[float, float] = (4.0, 16.0
     k_lo, k_hi = k_band
     if k_lo < 0 or k_hi <= k_lo:
         raise ValueError("Invalid k_band.")
-    mask = (K >= k_lo) & (K <= k_hi)
+    mask = (k_lo <= K) & (k_hi >= K)
     return float(Pmag[mask].sum())
 
 

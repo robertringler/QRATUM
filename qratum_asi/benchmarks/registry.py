@@ -8,12 +8,8 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any
 
-from qratum_asi.benchmarks.types import (
-    BenchmarkCategory,
-    BenchmarkTask,
-    DifficultyLevel,
-    HumanBaseline,
-)
+from qratum_asi.benchmarks.types import (BenchmarkCategory, BenchmarkTask,
+                                         DifficultyLevel, HumanBaseline)
 
 
 @dataclass

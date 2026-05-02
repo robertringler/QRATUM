@@ -2,16 +2,11 @@
 
 import pytest
 
-from Aethernet.core.federation import (
-    AirGappedReplicator,
-    FederationCoordinator,
-    FederationRegistry,
-    FederationSite,
-    ReplicationMode,
-    SiteCredentials,
-    SiteType,
-    SyncStatus,
-)
+from Aethernet.core.federation import (AirGappedReplicator,
+                                       FederationCoordinator,
+                                       FederationRegistry, FederationSite,
+                                       ReplicationMode, SiteCredentials,
+                                       SiteType, SyncStatus)
 
 
 class TestSiteCredentials:

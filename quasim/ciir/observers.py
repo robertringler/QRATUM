@@ -24,10 +24,8 @@ from dataclasses import dataclass
 from typing import Sequence
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.theory import ObserverOperator, RealTensor, ComplexTensor
-
+from quasim.ciir.theory import ComplexTensor, ObserverOperator, RealTensor
 
 # ================================================================
 # Projection-Valued Measure (PVM)  — D8.2, T8.1

@@ -14,20 +14,13 @@ from pathlib import Path
 import pytest
 
 from qratum.oncology.registry.seer_medicare.medicare_claims import (
-    MEDPARParser,
-    NCHParser,
-    OUTSAFParser,
-    PDEParser,
-    get_parser_for_file,
-    parse_claims_directory,
-)
+    MEDPARParser, NCHParser, OUTSAFParser, PDEParser, get_parser_for_file,
+    parse_claims_directory)
 from qratum.oncology.registry.seer_medicare.privacy import PrivacyConfig
-from qratum.oncology.registry.seer_medicare.schema import ClaimSetting, CodeSystem
+from qratum.oncology.registry.seer_medicare.schema import (ClaimSetting,
+                                                           CodeSystem)
 from qratum.oncology.registry.seer_medicare.seer_registry import (
-    SEERRegistryParser,
-    filter_cases_by_site,
-    filter_cases_by_year,
-)
+    SEERRegistryParser, filter_cases_by_site, filter_cases_by_year)
 
 
 class TestSEERRegistryParser:

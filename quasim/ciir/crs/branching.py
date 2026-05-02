@@ -9,15 +9,12 @@ Implements:
 
 from __future__ import annotations
 
-import copy
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 import numpy as np
-from numpy.typing import NDArray
 
 from quasim.ciir.crs.graph import CRSGraph
 from quasim.ciir.crs.rewrite import RewriteEngine
-
 
 # ================================================================
 # Branch state

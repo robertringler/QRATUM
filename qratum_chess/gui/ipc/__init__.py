@@ -20,5 +20,6 @@ __all__ = [
 ]
 
 from qratum_chess.gui.ipc.engine_connector import EngineConnector, EngineType
-from qratum_chess.gui.ipc.messaging import IPCMessage, MessageQueue, MessageType
+from qratum_chess.gui.ipc.messaging import (IPCMessage, MessageQueue,
+                                            MessageType)
 from qratum_chess.gui.ipc.shared_memory import SharedBuffer, SharedMemoryBridge

@@ -5,13 +5,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-import pytest
-
-from qagents.reality_interface import ACTION_TYPES, StaticProposer
-from qagents.reality_interface_v2 import RICv2Controller, RICv2History
 from qagents.ciir_ric_bridge import CIIRRICBridge
 from qagents.llm_backends import DeterministicLLM
-
+from qagents.reality_interface import ACTION_TYPES, StaticProposer
+from qagents.reality_interface_v2 import RICv2Controller, RICv2History
 
 # ---------------------------------------------------------------------------
 # Helpers

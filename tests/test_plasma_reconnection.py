@@ -9,49 +9,25 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from quasim.ciir.plasma import (
-    CIIRSnapshot,
-    Constraints,
-    ControllerConfig,
-    EngineConfig,
-    Grid2D,
-    MHDState,
-    ObjectiveWeights,
-    ReconnectionController,
-    SpectrumSnapshot,
-    TopologySnapshot,
-    energy_release_rate,
-    evaluate_objective,
-    find_critical_points,
-    find_current_sheets,
-    fkr_growth_rate_estimate,
-    gaussian_target_mask,
-    growth_rates,
-    harris_sheet,
-    initial_state,
-    lundquist_number,
-    make_snapshot,
-    perturb_tearing,
-    plasmoid_growth_rate_estimate,
-    plasmoid_indicator,
-    recommended_dt,
-    reconnection_localization,
-    reconnection_rate_field,
-    run_reconnection_control,
-    spectrum,
-    stability_inequality,
-    step_rk2,
-    topology_snapshot,
-    zero_control,
-    zero_control_vector,
-)
-from quasim.ciir.plasma.mhd import (
-    ddx,
-    ddy,
-    invert_laplacian_periodic,
-    laplacian,
-    poisson_bracket,
-)
+from quasim.ciir.plasma import (CIIRSnapshot, Constraints, ControllerConfig,
+                                EngineConfig, Grid2D, MHDState,
+                                ObjectiveWeights, ReconnectionController,
+                                SpectrumSnapshot, TopologySnapshot,
+                                energy_release_rate, evaluate_objective,
+                                find_critical_points, find_current_sheets,
+                                fkr_growth_rate_estimate, gaussian_target_mask,
+                                growth_rates, harris_sheet, initial_state,
+                                lundquist_number, make_snapshot,
+                                perturb_tearing, plasmoid_growth_rate_estimate,
+                                plasmoid_indicator, recommended_dt,
+                                reconnection_localization,
+                                reconnection_rate_field,
+                                run_reconnection_control, spectrum,
+                                stability_inequality, step_rk2,
+                                topology_snapshot, zero_control,
+                                zero_control_vector)
+from quasim.ciir.plasma.mhd import (ddx, ddy, invert_laplacian_periodic,
+                                    laplacian, poisson_bracket)
 
 # ---------------------------------------------------------------------------
 # Grid + operators
@@ -341,7 +317,7 @@ class TestSpectrum:
         g = Grid2D(nx=8, ny=8)
         s = MHDState(psi=np.zeros((g.nx, g.ny)), omega=np.zeros((g.nx, g.ny)), grid=g, eta=1e-2)
         S = lundquist_number(s, B_char=1.0, L=1.0)
-        assert S == pytest.approx(100.0)
+        assert pytest.approx(100.0) == S
 
     def test_lundquist_zero_eta_infinite(self):
         g = Grid2D(nx=8, ny=8)

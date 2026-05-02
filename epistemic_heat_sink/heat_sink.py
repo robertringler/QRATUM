@@ -27,18 +27,9 @@ from typing import Any
 
 import numpy as np
 
-from .neurosymbolic import (
-    NeurosymbolicReasoner,
-    ReasoningMode,
-    ReasoningTrace,
-)
-from .zkml import (
-    FoldingScheme,
-    FoldingSchemeType,
-    IncrementalProofChain,
-    Plonky3ProofSystem,
-    ZKMLInferenceProof,
-)
+from .neurosymbolic import NeurosymbolicReasoner, ReasoningMode, ReasoningTrace
+from .zkml import (FoldingScheme, FoldingSchemeType, IncrementalProofChain,
+                   Plonky3ProofSystem, ZKMLInferenceProof)
 
 
 class EpistemicPhase(Enum):

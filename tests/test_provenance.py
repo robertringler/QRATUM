@@ -2,14 +2,10 @@
 
 import pytest
 
-from contracts.provenance import (
-    ComplianceStandard,
-    ProvenanceChainBuilder,
-    ProvenanceEntry,
-    ProvenanceType,
-    create_21cfr11_provenance,
-    create_do178c_provenance,
-)
+from contracts.provenance import (ComplianceStandard, ProvenanceChainBuilder,
+                                  ProvenanceEntry, ProvenanceType,
+                                  create_21cfr11_provenance,
+                                  create_do178c_provenance)
 
 
 class TestProvenanceEntry:

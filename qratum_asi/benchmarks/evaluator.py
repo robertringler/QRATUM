@@ -11,13 +11,9 @@ from datetime import datetime, timezone
 from typing import Any
 
 from qratum_asi.benchmarks.registry import BenchmarkRegistry
-from qratum_asi.benchmarks.types import (
-    BenchmarkResult,
-    BenchmarkTask,
-    EvaluationSummary,
-    HumanBaseline,
-    PerformanceLevel,
-)
+from qratum_asi.benchmarks.types import (BenchmarkResult, BenchmarkTask,
+                                         EvaluationSummary, HumanBaseline,
+                                         PerformanceLevel)
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType

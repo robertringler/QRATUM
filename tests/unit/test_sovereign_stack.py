@@ -12,22 +12,12 @@ Tests the formalized sovereign stack layers:
 
 import pytest
 
-from qratum.sovereign_stack import (
-    AetherNETLayer,
-    BaseSovereignLayer,
-    ConnectivityMode,
-    DESKTOPOSLayer,
-    DGECLayer,
-    LayerCapabilities,
-    LayerMetrics,
-    LayerStatus,
-    MICROOSLayer,
-    QRADLELayer,
-    QuASIMLayer,
-    SovereignStack,
-    VITRAE0Layer,
-    get_sovereign_stack,
-)
+from qratum.sovereign_stack import (AetherNETLayer, BaseSovereignLayer,
+                                    ConnectivityMode, DESKTOPOSLayer,
+                                    DGECLayer, LayerCapabilities, LayerMetrics,
+                                    LayerStatus, MICROOSLayer, QRADLELayer,
+                                    QuASIMLayer, SovereignStack, VITRAE0Layer,
+                                    get_sovereign_stack)
 
 
 class TestLayerCapabilities:

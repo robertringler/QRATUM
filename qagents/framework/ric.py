@@ -20,12 +20,11 @@ The execution loop (Steps 1–9 of the formal lifecycle) is implemented in
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, Callable, Mapping, Optional
+from dataclasses import dataclass
+from typing import Callable, Optional
 
 from qagents.framework.ciir import ObserverMap, State
-from qagents.framework.crs import Action, CRS, FailureMode, NOOP
-
+from qagents.framework.crs import CRS, NOOP, Action, FailureMode
 
 # ---------------------------------------------------------------------------
 # Intent types

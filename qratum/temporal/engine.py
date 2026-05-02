@@ -12,20 +12,14 @@ Key Capabilities:
 """
 
 import time
-import hashlib
-from typing import Callable, Any, List, Optional, Tuple, Dict
-from dataclasses import dataclass
-from datetime import datetime
 import uuid
+from dataclasses import dataclass
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
-from .constants import (
-    QRATUM_PEAK_FLOPS,
-    SPEED_OF_LIGHT,
-    TARGET_COMPRESSION_RATIO,
-    ParadoxStrategy,
-)
-from .state import TemporalState, StateChain, TemporalCoordinate
-from .verification import TemporalVerifier, TemporalProof
+from .constants import (QRATUM_PEAK_FLOPS, TARGET_COMPRESSION_RATIO,
+                        ParadoxStrategy)
+from .state import StateChain, TemporalCoordinate, TemporalState
+from .verification import TemporalProof, TemporalVerifier
 
 
 @dataclass
@@ -73,7 +67,7 @@ class TemporalEngine:
         ...     evolution_fn=climate_model,
         ... )
     """
-    
+
     def __init__(
         self,
         peak_flops: float = QRATUM_PEAK_FLOPS,
@@ -102,11 +96,11 @@ class TemporalEngine:
             temporal_resolution=temporal_resolution,
             enable_pqc=enable_pqc,
         )
-        
+
         self.verifier = TemporalVerifier(enable_pqc=enable_pqc)
         self.timelines: Dict[str, StateChain] = {}
         self.operation_count = 0
-        
+
     def forward(
         self,
         initial_state: Any,
@@ -139,16 +133,16 @@ class TemporalEngine:
             ... )
         """
         wall_start = time.time()
-        
+
         if timeline_id is None:
             timeline_id = f"timeline_{uuid.uuid4().hex[:8]}"
-        
+
         # Calculate number of steps based on temporal resolution
         if num_steps is None:
             num_steps = max(1, int(delta_t / self.config.temporal_resolution))
-        
+
         step_size = delta_t / num_steps
-        
+
         # Create initial temporal state
         initial_coord = TemporalCoordinate(
             state_hash="",  # Will be computed
@@ -157,27 +151,27 @@ class TemporalEngine:
             physical_t=wall_start,
             depth=0,
         )
-        
+
         initial_temporal_state = TemporalState(
             coordinate=initial_coord,
             data=initial_state,
             parent_hash=None,
         )
         initial_temporal_state.coordinate.state_hash = initial_temporal_state.compute_hash()
-        
+
         # Create state chain
         chain = StateChain(timeline_id=timeline_id)
         chain.add_state(initial_temporal_state)
-        
+
         # Evolve forward through time
         current_state = initial_state
         current_t = 0.0
-        
+
         for step in range(num_steps):
             # Apply evolution function
             current_state = evolution_fn(current_state, step_size)
             current_t += step_size
-            
+
             # Create temporal state for this step
             coord = TemporalCoordinate(
                 state_hash="",  # Will be computed
@@ -186,22 +180,22 @@ class TemporalEngine:
                 physical_t=time.time(),
                 depth=step + 1,
             )
-            
+
             temporal_state = TemporalState(
                 coordinate=coord,
                 data=current_state,
                 parent_hash=chain.states[-1].coordinate.state_hash,
             )
             temporal_state.coordinate.state_hash = temporal_state.compute_hash()
-            
+
             chain.add_state(temporal_state)
-        
+
         wall_end = time.time()
         wall_delta = wall_end - wall_start
-        
+
         # Store timeline
         self.timelines[timeline_id] = chain
-        
+
         # Generate proof
         final_state = chain.states[-1]
         proof = self.verifier.generate_proof(
@@ -210,16 +204,16 @@ class TemporalEngine:
             chain=chain,
             operation="forward",
         )
-        
+
         # Add performance metrics
         proof.metadata['wall_time'] = wall_delta
         proof.metadata['steps'] = num_steps
         proof.metadata['effective_velocity_c'] = proof.effective_velocity_c_multiple()
-        
+
         self.operation_count += 1
-        
+
         return final_state, proof
-    
+
     def backward(
         self,
         final_state: Any,
@@ -254,18 +248,18 @@ class TemporalEngine:
         # Ensure delta_t is negative for backward travel
         if delta_t > 0:
             delta_t = -delta_t
-        
+
         wall_start = time.time()
-        
+
         if timeline_id is None:
             timeline_id = f"timeline_{uuid.uuid4().hex[:8]}"
-        
+
         # Calculate number of steps
         if num_steps is None:
             num_steps = max(1, int(abs(delta_t) / self.config.temporal_resolution))
-        
+
         step_size = abs(delta_t) / num_steps
-        
+
         # Create final temporal state (this is our starting point for backward)
         final_coord = TemporalCoordinate(
             state_hash="",
@@ -274,27 +268,27 @@ class TemporalEngine:
             physical_t=wall_start,
             depth=0,
         )
-        
+
         final_temporal_state = TemporalState(
             coordinate=final_coord,
             data=final_state,
             parent_hash=None,
         )
         final_temporal_state.coordinate.state_hash = final_temporal_state.compute_hash()
-        
+
         # Create state chain
         chain = StateChain(timeline_id=timeline_id)
         chain.add_state(final_temporal_state)
-        
+
         # Evolve backward through time
         current_state = final_state
         current_t = 0.0
-        
+
         for step in range(num_steps):
             # Apply inverse function
             current_state = inverse_fn(current_state, step_size)
             current_t -= step_size  # Moving backward in time
-            
+
             # Create temporal state
             coord = TemporalCoordinate(
                 state_hash="",
@@ -303,22 +297,22 @@ class TemporalEngine:
                 physical_t=time.time(),
                 depth=step + 1,
             )
-            
+
             temporal_state = TemporalState(
                 coordinate=coord,
                 data=current_state,
                 parent_hash=chain.states[-1].coordinate.state_hash,
             )
             temporal_state.coordinate.state_hash = temporal_state.compute_hash()
-            
+
             chain.add_state(temporal_state)
-        
+
         wall_end = time.time()
         wall_delta = wall_end - wall_start
-        
+
         # Store timeline
         self.timelines[timeline_id] = chain
-        
+
         # Generate proof
         initial_state = chain.states[-1]
         proof = self.verifier.generate_proof(
@@ -327,15 +321,15 @@ class TemporalEngine:
             chain=chain,
             operation="backward",
         )
-        
+
         proof.metadata['wall_time'] = wall_delta
         proof.metadata['steps'] = num_steps
         proof.metadata['effective_velocity_c'] = proof.effective_velocity_c_multiple()
-        
+
         self.operation_count += 1
-        
+
         return initial_state, proof
-    
+
     def branch(
         self,
         branch_point: Any,
@@ -372,17 +366,17 @@ class TemporalEngine:
             ... )
         """
         results = {}
-        
+
         for branch_name, mutation_fn in branches:
             # Apply mutation to create branch-specific initial state
             branch_initial = mutation_fn(branch_point)
-            
+
             # Generate timeline ID
             if parent_timeline_id:
                 timeline_id = f"{parent_timeline_id}_branch_{branch_name}"
             else:
                 timeline_id = f"branch_{branch_name}_{uuid.uuid4().hex[:8]}"
-            
+
             # Evolve this branch forward
             final_state, proof = self.forward(
                 initial_state=branch_initial,
@@ -390,18 +384,18 @@ class TemporalEngine:
                 evolution_fn=evolution_fn,
                 timeline_id=timeline_id,
             )
-            
+
             # Mark as branch operation
             proof.operation = "branch"
             proof.metadata['branch_name'] = branch_name
             proof.metadata['parent_timeline'] = parent_timeline_id
-            
+
             results[branch_name] = (final_state, proof)
-        
+
         self.operation_count += 1
-        
+
         return results
-    
+
     def converge(
         self,
         branches: Dict[str, TemporalState],
@@ -423,16 +417,16 @@ class TemporalEngine:
             Tuple of (converged_state, proof)
         """
         wall_start = time.time()
-        
+
         if timeline_id is None:
             timeline_id = f"converged_{uuid.uuid4().hex[:8]}"
-        
+
         # Extract state data from all branches
         branch_states = [state.data for state in branches.values()]
-        
+
         # Apply convergence function
         converged_data = convergence_fn(branch_states)
-        
+
         # Create converged state
         coord = TemporalCoordinate(
             state_hash="",
@@ -441,7 +435,7 @@ class TemporalEngine:
             physical_t=time.time(),
             depth=0,
         )
-        
+
         converged_state = TemporalState(
             coordinate=coord,
             data=converged_data,
@@ -452,9 +446,9 @@ class TemporalEngine:
             }
         )
         converged_state.coordinate.state_hash = converged_state.compute_hash()
-        
+
         wall_end = time.time()
-        
+
         # Create minimal proof (no full chain for convergence)
         proof = TemporalProof(
             initial_state_hash=";".join(s.coordinate.state_hash for s in branches.values()),
@@ -470,11 +464,11 @@ class TemporalEngine:
                 'branch_names': list(branches.keys()),
             }
         )
-        
+
         self.operation_count += 1
-        
+
         return converged_state, proof
-    
+
     def verify_temporal_consistency(self, timeline_id: str) -> bool:
         """
         Verify cryptographic consistency of a timeline.
@@ -487,14 +481,14 @@ class TemporalEngine:
         """
         if timeline_id not in self.timelines:
             return False
-        
+
         chain = self.timelines[timeline_id]
         return self.verifier.verify_state_chain(chain)
-    
+
     def get_timeline(self, timeline_id: str) -> Optional[StateChain]:
         """Get a timeline by ID"""
         return self.timelines.get(timeline_id)
-    
+
     def get_statistics(self) -> Dict[str, Any]:
         """Get engine statistics"""
         return {

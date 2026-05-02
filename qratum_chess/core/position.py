@@ -15,17 +15,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
-from qratum_chess.core import (
-    RANK_1,
-    RANK_8,
-    SQUARE_NAMES,
-    BitBoard,
-    CastlingRights,
-    Color,
-    PieceType,
-    iter_bits,
-    lsb,
-)
+from qratum_chess.core import (RANK_1, RANK_8, SQUARE_NAMES, BitBoard,
+                               CastlingRights, Color, PieceType, iter_bits,
+                               lsb)
 
 if TYPE_CHECKING:
     pass

@@ -12,12 +12,9 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
 
-from qratum_asi.generalization.types import (
-    CognitiveDomain,
-    DomainCapability,
-    DomainCapabilityProfile,
-    SynthesisSafetyLevel,
-)
+from qratum_asi.generalization.types import (CognitiveDomain, DomainCapability,
+                                             DomainCapabilityProfile,
+                                             SynthesisSafetyLevel)
 
 
 @dataclass

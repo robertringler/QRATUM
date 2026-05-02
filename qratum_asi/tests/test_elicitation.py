@@ -5,13 +5,6 @@ import pytest
 from qratum_asi.safety.elicitation import (ModelResponse, QuestionCategory,
                                            ResponseType, SafetyElicitation,
                                            SafetyQuestion)
-from qratum_asi.safety.elicitation import (
-    ModelResponse,
-    QuestionCategory,
-    ResponseType,
-    SafetyElicitation,
-    SafetyQuestion,
-)
 
 
 class TestSafetyElicitation:

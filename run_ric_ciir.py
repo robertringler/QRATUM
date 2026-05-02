@@ -23,7 +23,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from dataclasses import asdict
 from typing import Any
 
 from qagents.ciir_ric_bridge import CIIRRICBridge, CIIRRICRunResult
@@ -31,7 +30,8 @@ from qagents.llm_backends import available_backends
 
 
 def _build_engine(args: argparse.Namespace):
-    from quasim.ciir.simulation.engine import CIIRSimulationEngine, SimulationConfig
+    from quasim.ciir.simulation.engine import (CIIRSimulationEngine,
+                                               SimulationConfig)
 
     cfg = SimulationConfig(
         rank=args.rank,

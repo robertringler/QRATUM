@@ -30,11 +30,11 @@ Compilation Stages:
 7. Verification: Merkle hash verification across all nodes
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple
-from enum import Enum
 import hashlib
+from dataclasses import dataclass, field
+from enum import Enum
 from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 
 class CompilationStage(Enum):
@@ -94,13 +94,13 @@ class CompilerFlags:
     static_linking: bool = True
     strip_timestamps: bool = True
     reproducible_build: bool = True
-    
+
     # Additional flags for determinism
     disable_vectorization: bool = False  # May cause reordering
     disable_loop_unrolling: bool = False  # Can be non-deterministic
     fixed_inlining: bool = True
     disable_prefetch: bool = True  # Hardware-dependent behavior
-    
+
     def to_nvcc_flags(self) -> List[str]:
         """
         Convert to NVCC command-line flags
@@ -114,33 +114,33 @@ class CompilerFlags:
             "-std=c++17",
             "--expt-relaxed-constexpr",
         ]
-        
+
         if self.fma_disabled:
             flags.append("--fmad=false")  # Disable FMA
-        
+
         if self.fast_math_disabled:
             flags.append("--use_fast_math=false")
-        
+
         if self.deterministic_reduce:
             flags.append("-DQRATUM_DETERMINISTIC_REDUCE=1")
-        
+
         if self.static_linking:
             flags.extend(["-static", "-static-libstdc++", "-static-libgcc"])
-        
+
         if self.strip_timestamps:
             flags.extend(["-D__DATE__=\"\"", "-D__TIME__=\"\"", "-D__TIMESTAMP__=\"\""])
-        
+
         if self.reproducible_build:
             flags.extend([
                 "-fdebug-prefix-map=/build=/",
                 "-ffile-prefix-map=/build=/",
             ])
-        
+
         if self.disable_prefetch:
             flags.append("-mno-prefetch")
-        
+
         return flags
-    
+
     def to_llvm_flags(self) -> List[str]:
         """
         Convert to LLVM/Clang command-line flags
@@ -153,13 +153,13 @@ class CompilerFlags:
             "-std=c++17",
             "-fno-strict-aliasing",
         ]
-        
+
         if self.fma_disabled:
             flags.append("-ffp-contract=off")
-        
+
         if self.fast_math_disabled:
             flags.append("-fno-fast-math")
-        
+
         if self.strip_timestamps:
             flags.extend([
                 "-Wno-builtin-macro-redefined",
@@ -167,19 +167,19 @@ class CompilerFlags:
                 "-D__TIME__=\"\"",
                 "-D__TIMESTAMP__=\"\"",
             ])
-        
+
         if self.reproducible_build:
             flags.extend([
                 "-fdebug-compilation-dir=.",
                 "-no-canonical-prefixes",
             ])
-        
+
         if self.disable_vectorization:
             flags.append("-fno-vectorize")
-        
+
         if self.disable_loop_unrolling:
             flags.append("-fno-unroll-loops")
-        
+
         return flags
 
 
@@ -207,7 +207,7 @@ class BuildEnvironment:
     source_hash: str = ""
     toolchain_hash: str = ""
     env_variables: Dict[str, str] = field(default_factory=dict)
-    
+
     def __post_init__(self):
         """Initialize fixed environment variables"""
         if not self.env_variables:
@@ -219,7 +219,7 @@ class BuildEnvironment:
                 "PYTHONHASHSEED": "0",
                 "CUDA_CACHE_DISABLE": "1",  # No caching variations
             }
-    
+
     def validate(self) -> bool:
         """
         Validate that build environment is deterministic
@@ -230,12 +230,12 @@ class BuildEnvironment:
         # Check that all required versions are pinned
         if not all([self.cuda_version, self.gcc_version, self.cmake_version]):
             return False
-        
+
         # Check that environment variables are set
         required_vars = ["SOURCE_DATE_EPOCH", "TZ", "LANG"]
         if not all(var in self.env_variables for var in required_vars):
             return False
-        
+
         return True
 
 
@@ -261,7 +261,7 @@ class CompilationArtifact:
     size_bytes: int = 0
     node_id: Optional[str] = None
     verified: bool = False
-    
+
     def compute_hash(self) -> str:
         """
         Compute SHA-256 Merkle hash of artifact
@@ -270,15 +270,15 @@ class CompilationArtifact:
             Hex-encoded SHA-256 hash
         """
         hasher = hashlib.sha256()
-        
+
         with open(self.path, "rb") as f:
             # Read in chunks to handle large files
             for chunk in iter(lambda: f.read(65536), b""):
                 hasher.update(chunk)
-        
+
         self.merkle_hash = hasher.hexdigest()
         return self.merkle_hash
-    
+
     def verify_against(self, other: 'CompilationArtifact') -> bool:
         """
         Verify this artifact against another from a different node
@@ -291,10 +291,10 @@ class CompilationArtifact:
         """
         if not self.merkle_hash:
             self.compute_hash()
-        
+
         if not other.merkle_hash:
             other.compute_hash()
-        
+
         return (
             self.merkle_hash == other.merkle_hash and
             self.size_bytes == other.size_bytes
@@ -308,7 +308,7 @@ class DeterministicCompilationPipeline:
     Manages the entire compilation process from source to verified binary,
     ensuring bit-identical results across all 3,125 nodes.
     """
-    
+
     def __init__(
         self,
         flags: Optional[CompilerFlags] = None,
@@ -325,7 +325,7 @@ class DeterministicCompilationPipeline:
         self.environment = environment or BuildEnvironment()
         self.artifacts: Dict[CompilationStage, CompilationArtifact] = {}
         self.violations: List[Tuple[DeterminismViolation, str]] = []
-    
+
     def validate_environment(self) -> bool:
         """
         Validate that compilation environment is deterministic
@@ -340,7 +340,7 @@ class DeterministicCompilationPipeline:
             True if environment is valid
         """
         return self.environment.validate()
-    
+
     def analyze_source_determinism(self, source_files: List[Path]) -> List[Tuple[DeterminismViolation, str]]:
         """
         Static analysis to detect potential determinism violations in source
@@ -360,30 +360,30 @@ class DeterministicCompilationPipeline:
             List of (violation_type, location) tuples
         """
         violations = []
-        
+
         # Stub: In real implementation, use static analysis tools
         # like clang-tidy, cppcheck, or custom LLVM passes
-        
+
         for source_file in source_files:
             # Check for timestamp macros
-            with open(source_file, 'r') as f:
+            with open(source_file) as f:
                 content = f.read()
-                
+
                 if any(macro in content for macro in ['__DATE__', '__TIME__', '__TIMESTAMP__']):
                     violations.append((
                         DeterminismViolation.TIMESTAMP_DEPENDENCY,
                         f"{source_file}: Timestamp macro usage"
                     ))
-                
+
                 if any(func in content for func in ['rand()', 'random()', 'drand48()']):
                     violations.append((
                         DeterminismViolation.RANDOM_NUMBER_USAGE,
                         f"{source_file}: Random number generation"
                     ))
-        
+
         self.violations.extend(violations)
         return violations
-    
+
     def compile_to_ptx(
         self,
         source_files: List[Path],
@@ -406,17 +406,17 @@ class DeterministicCompilationPipeline:
             PTX artifact with Merkle hash
         """
         # Stub: In real implementation, invoke nvcc with deterministic flags
-        
+
         artifact = CompilationArtifact(
             stage=CompilationStage.PTX_GENERATION,
             path=output_path,
         )
-        
+
         # Command would be:
         # nvcc {self.flags.to_nvcc_flags()} --ptx -o {output_path} {source_files}
-        
+
         return artifact
-    
+
     def compile_to_sass(
         self,
         ptx_file: Path,
@@ -439,17 +439,17 @@ class DeterministicCompilationPipeline:
             SASS artifact with Merkle hash
         """
         # Stub: In real implementation, invoke ptxas with deterministic flags
-        
+
         artifact = CompilationArtifact(
             stage=CompilationStage.SASS_GENERATION,
             path=output_path,
         )
-        
+
         # Command would be:
         # ptxas --gpu-name={self.flags.architecture} -o {output_path} {ptx_file}
-        
+
         return artifact
-    
+
     def link_static(
         self,
         object_files: List[Path],
@@ -472,17 +472,17 @@ class DeterministicCompilationPipeline:
             Linked binary artifact with Merkle hash
         """
         # Stub: In real implementation, invoke nvcc/ld with static linking
-        
+
         artifact = CompilationArtifact(
             stage=CompilationStage.LINKING,
             path=output_path,
         )
-        
+
         # Command would be:
         # nvcc -o {output_path} {object_files} -static -static-libstdc++
-        
+
         return artifact
-    
+
     def verify_reproducibility(
         self,
         artifacts: List[CompilationArtifact],
@@ -501,21 +501,21 @@ class DeterministicCompilationPipeline:
         """
         if len(artifacts) < 2:
             return True  # Nothing to compare
-        
+
         # Compute hashes for all artifacts
         for artifact in artifacts:
             if not artifact.merkle_hash:
                 artifact.compute_hash()
-        
+
         # Verify all hashes match
         reference_hash = artifacts[0].merkle_hash
-        
+
         for artifact in artifacts[1:]:
             if artifact.merkle_hash != reference_hash:
                 return False
-        
+
         return True
-    
+
     def full_pipeline(
         self,
         source_files: List[Path],
@@ -540,23 +540,23 @@ class DeterministicCompilationPipeline:
             Tuple of (success, list of artifacts)
         """
         artifacts = []
-        
+
         # Stage 1: Validate environment
         if not self.validate_environment():
             return False, artifacts
-        
+
         # Stage 2: Analyze source
         violations = self.analyze_source_determinism(source_files)
         if violations:
             # In production, might fail or warn
             pass
-        
+
         # Stage 3-5: Compilation stages (stubbed)
         # In real implementation, would execute actual compilation
-        
+
         # Stage 6: Verification (stubbed)
         # In real implementation, would verify across nodes
-        
+
         return True, artifacts
 
 
@@ -574,11 +574,11 @@ def get_default_pipeline() -> DeterministicCompilationPipeline:
         fast_math_disabled=True,
         deterministic_reduce=True,
     )
-    
+
     environment = BuildEnvironment(
         container_image="qratum/exascale-compiler:1.0.0",
         cuda_version="12.3",
         gcc_version="12.2.0",
     )
-    
+
     return DeterministicCompilationPipeline(flags, environment)

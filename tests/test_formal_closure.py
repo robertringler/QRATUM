@@ -91,7 +91,7 @@ class TestDimensionalConsistency:
         rho = random_density_matrix(d, rng)
         S = von_neumann_entropy(rho)
 
-        assert S <= np.log(d) + 1e-10
+        assert np.log(d) + 1e-10 >= S
         assert np.log(d) <= kappa_tilde * V_tilde + 1e-10
 
     def test_distortion_exponent_dimensionless(self):

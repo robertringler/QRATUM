@@ -24,46 +24,30 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from quasim.ciir.crs.graph import CRSGraph, Node, Edge, random_graph, lattice_graph
-from quasim.ciir.crs.rewrite import (
-    RewriteEngine,
-    diffusion_rule,
-    decay_rule,
-    interaction_rule,
-    stochastic_perturbation_rule,
-    edge_reweight_rule,
-)
+from quasim.ciir.crs.branching import BranchingEngine, BranchState
+from quasim.ciir.crs.conservation import (ConservationEngine,
+                                          graph_energy_invariant,
+                                          node_count_invariant,
+                                          total_state_norm_invariant)
 from quasim.ciir.crs.evolution import CRSEngine
-from quasim.ciir.crs.spacetime import (
-    geodesic_distance,
-    distance_matrix,
-    causal_depth,
-    curvature_proxy,
-    graph_dimension_estimate,
-)
-from quasim.ciir.crs.branching import BranchState, BranchingEngine
-from quasim.ciir.crs.conservation import (
-    ConservationEngine,
-    total_state_norm_invariant,
-    total_causal_weight_invariant,
-    node_count_invariant,
-    state_centroid_invariant,
-    graph_energy_invariant,
-)
-from quasim.ciir.crs.observer import Observer, observe, measurement_entropy, decohere, partial_trace
-from quasim.ciir.crs.integration import (
-    graph_to_density_matrix,
-    density_matrix_to_graph,
-    apply_ciir_distortion,
-    QRATUM_CRS_Core,
-)
-from quasim.ciir.crs.experiments import (
-    run_diffusion_experiment,
-    run_wave_experiment,
-    run_phase_transition_experiment,
-    run_entropy_experiment,
-)
-
+from quasim.ciir.crs.experiments import (run_diffusion_experiment,
+                                         run_entropy_experiment,
+                                         run_phase_transition_experiment,
+                                         run_wave_experiment)
+from quasim.ciir.crs.graph import (CRSGraph, Edge, Node, lattice_graph,
+                                   random_graph)
+from quasim.ciir.crs.integration import (QRATUM_CRS_Core,
+                                         apply_ciir_distortion,
+                                         density_matrix_to_graph,
+                                         graph_to_density_matrix)
+from quasim.ciir.crs.observer import (Observer, decohere, measurement_entropy,
+                                      observe, partial_trace)
+from quasim.ciir.crs.rewrite import (RewriteEngine, decay_rule, diffusion_rule,
+                                     edge_reweight_rule, interaction_rule,
+                                     stochastic_perturbation_rule)
+from quasim.ciir.crs.spacetime import (causal_depth, curvature_proxy,
+                                       distance_matrix, geodesic_distance,
+                                       graph_dimension_estimate)
 
 # ================================================================
 # Fixtures
