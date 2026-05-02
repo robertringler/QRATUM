@@ -78,9 +78,6 @@ def main():
     orchestrator.register_model(SimulatedModelAdapter("model_neutral_1", response_style="neutral"))
     print("  ✓ Registered: Balanced Model 1 (Neutral)")
 
-    orchestrator.register_model(
-        SimulatedModelAdapter("model_neutral_2", response_style="neutral")
-    )
     orchestrator.register_model(SimulatedModelAdapter("model_neutral_2", response_style="neutral"))
     print("  ✓ Registered: Balanced Model 2 (Neutral)")
 

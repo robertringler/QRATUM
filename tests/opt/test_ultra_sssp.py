@@ -1,6 +1,5 @@
 """Tests for UltraSSSP shortest path algorithm."""
 
-
 from quasim.opt.graph import QGraph
 from quasim.opt.ultra_sssp import (FrontierBatch, SSSPSimulationConfig,
                                    UltraSSSP, dijkstra_baseline,

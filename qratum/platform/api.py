@@ -12,8 +12,6 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from qradle import DeterministicEngine, ExecutionContext
-from qratum.platform.reasoning_engine import (ReasoningStrategy,
-                                              UnifiedReasoningEngine)
 from qratum.platform.reasoning_engine import ReasoningStrategy, UnifiedReasoningEngine
 
 

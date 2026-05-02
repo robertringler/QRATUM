@@ -13,8 +13,6 @@ This script demonstrates the core capabilities of all 7 vertical modules:
 """
 
 from qratum_platform.core import PlatformIntent, QRATUMPlatform, VerticalModule
-from verticals import (CAPRAModule, ECORAModule, FLUXAModule, JURISModule,
-                       NEURAModule, SENTRAModule, VITRAModule)
 from verticals import (
     CAPRAModule,
     ECORAModule,

@@ -45,9 +45,6 @@ from verticals import (
     VITRAModule,
 )
 
-# Import QRATUM-ASI
-from qratum_asi.orchestrator import QRATUMASI as ASIOrchestrator
-
 # Setup logging
 logging.basicConfig(
     level=os.getenv("QRATUM_LOG_LEVEL", "INFO"),
@@ -136,36 +133,49 @@ def health_check():
     )
 
 
-@app.route("/api/v1/qradle/contract", methods=["POST"])
-@app.route('/', methods=['GET'])
+@app.route("/", methods=["GET"])
 def index():
     """Root endpoint - QRATUM Platform welcome page."""
-    return jsonify({
-        "name": "QRATUM Full Stack Server",
-        "version": "2.0.0",
-        "status": "running",
-        "components": {
-            "qradle": qradle_engine is not None,
-            "platform": qratum_platform is not None,
-            "asi": asi_orchestrator is not None
-        },
-        "endpoints": {
-            "health": "/health",
-            "verticals": "/api/v1/verticals",
-            "qradle_contract": "POST /api/v1/qradle/contract",
-            "platform_execute": "POST /api/v1/platform/execute",
-            "asi_status": "/api/v1/asi/status",
-            "system_proof": "/api/v1/system/proof",
-            "audit_trail": "/api/v1/audit/trail"
-        },
-        "verticals": [
-            "juris", "vitra", "ecora", "capra", "sentra", "neura", "fluxa",
-            "spectra", "aegis", "logos", "synthos", "teragon", "helix", "nexus"
-        ]
-    })
+    return jsonify(
+        {
+            "name": "QRATUM Full Stack Server",
+            "version": "2.0.0",
+            "status": "running",
+            "components": {
+                "qradle": qradle_engine is not None,
+                "platform": qratum_platform is not None,
+                "asi": asi_orchestrator is not None,
+            },
+            "endpoints": {
+                "health": "/health",
+                "verticals": "/api/v1/verticals",
+                "qradle_contract": "POST /api/v1/qradle/contract",
+                "platform_execute": "POST /api/v1/platform/execute",
+                "asi_status": "/api/v1/asi/status",
+                "system_proof": "/api/v1/system/proof",
+                "audit_trail": "/api/v1/audit/trail",
+            },
+            "verticals": [
+                "juris",
+                "vitra",
+                "ecora",
+                "capra",
+                "sentra",
+                "neura",
+                "fluxa",
+                "spectra",
+                "aegis",
+                "logos",
+                "synthos",
+                "teragon",
+                "helix",
+                "nexus",
+            ],
+        }
+    )
 
 
-@app.route('/api/v1/qradle/contract', methods=['POST'])
+@app.route("/api/v1/qradle/contract", methods=["POST"])
 def create_contract():
     """Create and execute a QRADLE contract."""
     try:
@@ -296,17 +306,40 @@ def list_verticals():
 # Read-only telemetry and state streaming
 # ========================================
 
-@app.route('/api/v1/soi/qradle/state', methods=['GET'])
+
+@app.route("/api/v1/soi/qradle/state", methods=["GET"])
 def soi_qradle_state():
     """Get QRADLE system state for SOI display."""
     try:
+        if qradle_engine:
+            get_epoch = getattr(qradle_engine, "get_epoch", None)
+            epoch = get_epoch() if callable(get_epoch) else 0
+            
+            get_merkle_root = getattr(qradle_engine, "get_merkle_root", None)
+            merkle_root = get_merkle_root() if callable(get_merkle_root) else "0" * 64
+            
+            get_contract_count = getattr(qradle_engine, "get_contract_count", None)
+            contracts_executed = get_contract_count() if callable(get_contract_count) else 0
+            
+            get_last_checkpoint = getattr(qradle_engine, "get_last_checkpoint", None)
+            last_checkpoint = get_last_checkpoint() if callable(get_last_checkpoint) else None
+            
+            get_invariant_count = getattr(qradle_engine, "get_invariant_count", None)
+            invariants_checked = get_invariant_count() if callable(get_invariant_count) else 0
+        else:
+            epoch = 0
+            merkle_root = "0" * 64
+            contracts_executed = 0
+            last_checkpoint = None
+            invariants_checked = 0
+        
         state = {
-            "epoch": qradle_engine.get_epoch() if qradle_engine else 0,
-            "merkle_root": qradle_engine.get_merkle_root() if qradle_engine else "0" * 64,
-            "contracts_executed": qradle_engine.get_contract_count() if qradle_engine else 0,
-            "last_checkpoint": qradle_engine.get_last_checkpoint() if qradle_engine else None,
-            "invariants_checked": qradle_engine.get_invariant_count() if qradle_engine else 0,
-            "uptime_seconds": time.time() - app.config.get('start_time', time.time())
+            "epoch": epoch,
+            "merkle_root": merkle_root,
+            "contracts_executed": contracts_executed,
+            "last_checkpoint": last_checkpoint,
+            "invariants_checked": invariants_checked,
+            "uptime_seconds": time.time() - app.config.get("start_time", time.time()),
         }
         return jsonify({"success": True, **state})
     except Exception as e:
@@ -314,7 +347,7 @@ def soi_qradle_state():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-@app.route('/api/v1/soi/qradle/audit', methods=['GET'])
+@app.route("/api/v1/soi/qradle/audit", methods=["GET"])
 def soi_qradle_audit():
     """Get QRADLE audit trail for SOI."""
     try:
@@ -327,7 +360,7 @@ def soi_qradle_audit():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-@app.route('/api/v1/soi/qradle/checkpoints', methods=['GET'])
+@app.route("/api/v1/soi/qradle/checkpoints", methods=["GET"])
 def soi_qradle_checkpoints():
     """Get QRADLE checkpoints for SOI."""
     try:
@@ -339,7 +372,7 @@ def soi_qradle_checkpoints():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-@app.route('/api/v1/soi/qradle/proof', methods=['GET'])
+@app.route("/api/v1/soi/qradle/proof", methods=["GET"])
 def soi_qradle_proof():
     """Get QRADLE system proof for SOI verification."""
     try:
@@ -350,7 +383,7 @@ def soi_qradle_proof():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-@app.route('/api/v1/soi/aethernet/validators', methods=['GET'])
+@app.route("/api/v1/soi/aethernet/validators", methods=["GET"])
 def soi_aethernet_validators():
     """Get Aethernet validator registry for SOI."""
     try:
@@ -362,9 +395,14 @@ def soi_aethernet_validators():
             "jailed": 2,
             "slashed": 1,
             "validators": [
-                {"id": f"validator_{i:03d}", "stake": 100000 + i * 1000, "status": "active", "zone": f"Z{i % 4}"}
+                {
+                    "id": f"validator_{i:03d}",
+                    "stake": 100000 + i * 1000,
+                    "status": "active",
+                    "zone": f"Z{i % 4}",
+                }
                 for i in range(10)  # Sample validators
-            ]
+            ],
         }
         return jsonify({"success": True, **validators})
     except Exception as e:
@@ -372,7 +410,7 @@ def soi_aethernet_validators():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-@app.route('/api/v1/soi/aethernet/consensus', methods=['GET'])
+@app.route("/api/v1/soi/aethernet/consensus", methods=["GET"])
 def soi_aethernet_consensus():
     """Get Aethernet consensus state for SOI."""
     try:
@@ -384,7 +422,7 @@ def soi_aethernet_consensus():
             "total_power": 256000000,
             "quorum_percent": 70.3,
             "last_block_time": time.time() - 6,
-            "block_interval_avg": 6.2
+            "block_interval_avg": 6.2,
         }
         return jsonify({"success": True, **consensus})
     except Exception as e:
@@ -392,15 +430,31 @@ def soi_aethernet_consensus():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-@app.route('/api/v1/soi/aethernet/zones', methods=['GET'])
+@app.route("/api/v1/soi/aethernet/zones", methods=["GET"])
 def soi_aethernet_zones():
     """Get zone distribution for SOI."""
     try:
         zones = {
-            "Z0": {"validators": 64, "power": 64000000, "description": "Public - Full transparency"},
-            "Z1": {"validators": 96, "power": 96000000, "description": "Protected - Compliance required"},
-            "Z2": {"validators": 64, "power": 64000000, "description": "Sovereign - Government/Enterprise"},
-            "Z3": {"validators": 32, "power": 32000000, "description": "Air-gapped - Maximum security"}
+            "Z0": {
+                "validators": 64,
+                "power": 64000000,
+                "description": "Public - Full transparency",
+            },
+            "Z1": {
+                "validators": 96,
+                "power": 96000000,
+                "description": "Protected - Compliance required",
+            },
+            "Z2": {
+                "validators": 64,
+                "power": 64000000,
+                "description": "Sovereign - Government/Enterprise",
+            },
+            "Z3": {
+                "validators": 32,
+                "power": 32000000,
+                "description": "Air-gapped - Maximum security",
+            },
         }
         return jsonify({"success": True, "zones": zones})
     except Exception as e:
@@ -408,7 +462,7 @@ def soi_aethernet_zones():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-@app.route('/api/v1/soi/trajectory/health', methods=['GET'])
+@app.route("/api/v1/soi/trajectory/health", methods=["GET"])
 def soi_trajectory_health():
     """Get trajectory health for SOI."""
     try:
@@ -418,7 +472,7 @@ def soi_trajectory_health():
             "is_suspended": False,
             "anomalies_detected": 0,
             "time_to_next_checkpoint": 120,
-            "precursor_signals": []
+            "precursor_signals": [],
         }
         return jsonify({"success": True, **health})
     except Exception as e:
@@ -426,27 +480,19 @@ def soi_trajectory_health():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-@app.route('/api/v1/soi/metrics', methods=['GET'])
+@app.route("/api/v1/soi/metrics", methods=["GET"])
 def soi_metrics():
     """Get aggregated metrics for SOI."""
     try:
         metrics = {
             "timestamp": time.time(),
-            "qradle": {
-                "tps": 1250,
-                "latency_ms": 12,
-                "contracts_per_minute": 75000
-            },
+            "qradle": {"tps": 1250, "latency_ms": 12, "contracts_per_minute": 75000},
             "platform": {
                 "active_verticals": 14,
                 "requests_per_minute": 5000,
-                "avg_response_time_ms": 45
+                "avg_response_time_ms": 45,
             },
-            "asi": {
-                "mode": "simulation",
-                "intents_processed": 0,
-                "autonomous_actions": 0
-            }
+            "asi": {"mode": "simulation", "intents_processed": 0, "autonomous_actions": 0},
         }
         return jsonify({"success": True, **metrics})
     except Exception as e:
@@ -458,10 +504,9 @@ def main():
     """Main entry point."""
     global qradle_engine, qratum_platform, asi_orchestrator
 
-    
     # Record start time for uptime tracking
-    app.config['start_time'] = time.time()
-    
+    app.config["start_time"] = time.time()
+
     logger.info(f"Starting QRATUM Full Stack Server (component: {COMPONENT})")
 
     # Initialize components based on configuration
