@@ -304,38 +304,91 @@ where $\CL_H$ is the Hamiltonian superoperator
 constraint dissipator \textup{(}Definition~\textup{\ref{def:7.3})}.
 \end{definition}
 
-\begin{theorem}[Derivation of the CIIR Master Equation]
+\begin{theorem}[Construction of a Lindblad-form Generator Compatible
+  with CIIR]
 \label{thm:7.1}
 Let $X$ be a cognitive system satisfying
-Axioms~\textup{\ref{ax:4.1}}--\textup{\ref{ax:4.6}}.  The time
-evolution of the cognitive state $\rho(t) \in \mathfrak{D}(\HC_X)$
-is governed by the \emph{CIIR master equation}:
+Axioms~\textup{\ref{ax:4.1}}--\textup{\ref{ax:4.6}}.  Then the
+superoperator $\CL := \CL_H + \CD_\CM$ of
+Definition~\textup{\ref{def:7.4}} is a Lindblad-form generator on
+$\mathcal{T}_1(\HC_X)$, and the time evolution of the cognitive state
+$\rho(t) \in \mathfrak{D}(\HC_X)$ obeys the \emph{CIIR master
+equation}:
 \begin{equation}\label{eq:7.1}
   \frac{d\rho}{dt} = \CL(\rho)
   = -\frac{i}{\hbar_{\mathrm{eff}}}[\hatH_C, \rho]
   + \CD_\CM(\rho).
 \end{equation}
-This equation is derived, not assumed, from the following chain of
-deductions:
+This equation is \emph{constructed}, not derived from first
+principles, by piecing together the following compatibility steps:
 \begin{enumerate}
   \item[\textup{(D1)}] The constraint Hamiltonian $\hatH_C$
     (Definition~\ref{def:5.7}) is self-adjoint and bounded
     (Lemma~\ref{lem:5.4}).
   \item[\textup{(D2)}] The interface map $\Phi_X$ is CPTP
     (Axiom~\ref{ax:4.3}/Definition~\ref{def:3.18}), and generically
-    non-unitary (Proposition~\ref{prop:3.7}).
-  \item[\textup{(D3)}] The information lost in the CPTP channel
-    manifests as dissipation with rates $\gamma_k$ determined by the
-    constraint curvature (Definition~\ref{def:7.2}).
+    non-unitary (Proposition~\ref{prop:3.7}); hence dissipation in
+    the cognitive sector is necessary on structural grounds.
+  \item[\textup{(D3)}] The dissipation rates $\gamma_k$ are
+    \emph{posited} as the curvature-integral expression of
+    Definition~\textup{\ref{def:7.2}}.  This choice is a modeling
+    decision (it is the simplest covariant scalar built from
+    $\kappa$ and $d\mu_g$), not a derivation from a microscopic
+    system--bath model.  See
+    Remark~\textup{\ref{rem:7.1.scope}} and
+    \texttt{CIIR\_PROOF\_LEDGER\_v0.1.md}~\S7.3.
   \item[\textup{(D4)}] The most general time-homogeneous Markovian
     evolution preserving positivity, trace, and Hermiticity, generated
     by bounded operators, has the Lindblad form
     (Lemma~\ref{lem:7.4}).
-  \item[\textup{(D5)}] The constraint generators $\hatC_k$ are the
-    unique Lindblad operators consistent with the constraint algebra
-    $\CK(\HC)$ (Lemma~\ref{lem:7.5}).
+  \item[\textup{(D5)}] Given the modeling choice (D3) and the
+    constraint-algebra restriction $V_k \in \CK(\HC)$, the Lindblad
+    operators are determined up to a unitary mixing matrix
+    (Lemma~\ref{lem:7.5}); the canonical representative
+    $V_k = L_k = \sqrt{\gamma_k}\hatC_k$ is fixed by the choice of
+    orthonormal frame on $T\CM$.
 \end{enumerate}
 \end{theorem}
+
+\begin{remark}[Scope of Theorem~\ref{thm:7.1};
+  closure of ledger gaps G-M4 + G-L6]
+\label{rem:7.1.scope}
+Theorem~\ref{thm:7.1} is a \emph{construction theorem}, not a
+microscopic derivation.  In particular:
+\begin{itemize}
+  \item Steps (D1), (D2), (D4) are first-principle results
+    (self-adjointness of $\hatH_C$; CPTP-ness of $\Phi_X$; the
+    GKSL structure theorem in the bounded case).  They are valid
+    inputs.
+  \item Step (D3) is a \emph{modeling posit}: the specific
+    curvature-integral expression for $\gamma_k$
+    (Definition~\ref{def:7.2}) is the simplest scalar functional of
+    $(\kappa,d\mu_g,\hbar_{\mathrm{eff}})$ that vanishes on flat
+    constraint manifolds and respects the orthonormal-frame
+    invariance of Lemma~\ref{lem:7.2}(iii).  No system--bath
+    Hamiltonian is specified, no Born--Markov-secular hierarchy is
+    invoked, and no Davies weak-coupling limit is taken; the
+    derivation that would convert this posit into a theorem
+    (Lindblad--Davies microscopic derivation
+    applied to a CIIR-compatible
+    environment model) is left as future work.
+  \item Step (D5) is a \emph{constrained uniqueness} result, valid
+    only \emph{given} the modeling choice in (D3) and the
+    superselection-compatibility hypothesis $V_k \in \CK(\HC)$.
+\end{itemize}
+The change of name from "Derivation of the CIIR Master Equation"
+to "Construction of a Lindblad-form Generator Compatible with
+CIIR" closes the ledger gap-pair G-M4 / G-L6 along closure
+path~(b) of \texttt{CIIR\_PROOF\_LEDGER\_v0.1.md}~\S5.3:
+the master equation is no longer claimed to be \emph{the} CIIR
+master equation, but \emph{a} CIIR-compatible Lindblad-form
+generator.  Statements that depend on $\CL$ downstream
+(Theorem~\ref{thm:7.2}, Theorem~\ref{thm:7.3} and after) inherit
+this scope unchanged: they remain valid for the constructed
+$\CL$, and any system-specific microscopic derivation that
+replaces (D3) by a theorem will only \emph{narrow}, not
+contradict, their conclusions.
+\end{remark}
 
 \begin{proof}
 We establish each deduction step.
@@ -376,14 +429,16 @@ $\CL(\rho) = -i[H, \rho] + \sum_k (V_k\rho V_k^\dagger -
 \frac{1}{2}\{V_k^\dagger V_k, \rho\})$ for some self-adjoint $H$ and
 bounded operators $V_k$.
 
-\emph{Step 4 (Identification of Lindblad operators).}
+\emph{Step 4 (Choice of Lindblad operators).}
 The generator must be compatible with the constraint algebra $\CK(\HC)$
 in the following sense: $\CL$ must preserve each superselection sector
-(Proposition~\ref{prop:5.3}).  By Lemma~\ref{lem:7.5}, the unique
-choice (up to unitary mixing) of Lindblad operators $V_k \in \CK(\HC)$
-that produce the required dissipation rates is
-$V_k = L_k = \sqrt{\gamma_k}\hatC_k$, with $\gamma_k$ given by
-Definition~\ref{def:7.2}.
+(Proposition~\ref{prop:5.3}).  Restricting the GKSL operators to
+$V_k \in \CK(\HC)$ and adopting the modeling choice of
+Definition~\ref{def:7.2} for the dissipation rates $\gamma_k$
+(see Remark~\ref{rem:7.1.scope}: this step is a posit, not a
+derivation), Lemma~\ref{lem:7.5} fixes the Lindblad operators uniquely
+up to a unitary mixing matrix as
+$V_k = L_k = \sqrt{\gamma_k}\hatC_k$.
 
 \emph{Step 5 (Identification of Hamiltonian).}
 The self-adjoint part $H$ of the generator must lie in $\CK(\HC)$ to
@@ -464,10 +519,12 @@ Thus without loss of generality, $V_k = \sum_j a_{kj}\hatC_j$.
 
 By (iii), when $\kappa \equiv 0$ we need $\gamma_k = 0$ for all $k$, so
 $V_k = 0$.  Since $\kappa \equiv 0$ implies $\hatC_i$ commute
-(Theorem~\ref{thm:5.4}), the dissipation rates must be proportional
-to the curvature integral.  The most general choice is
-$V_k = \sum_j a_{kj}\hatC_j$ with $\sum_k a_{kj}^*a_{kl} = \gamma_j
-\delta_{jl}$ (i.e.\ the matrix $a$ satisfies
+(Theorem~\ref{thm:5.4}), and adopting the modeling choice of
+Definition~\ref{def:7.2} for the dependence of $\gamma_k$ on the
+curvature integral (a posit, not a derivation; see
+Remark~\ref{rem:7.1.scope}), the most general resulting
+choice is $V_k = \sum_j a_{kj}\hatC_j$ with $\sum_k a_{kj}^*a_{kl} =
+\gamma_j \delta_{jl}$ (i.e.\ the matrix $a$ satisfies
 $a^\dagger a = \mathrm{diag}(\gamma_1, \ldots, \gamma_n)$), which
 gives $V_k = \sqrt{\gamma_k}\sum_j U_{kj}\hatC_j$ for a unitary
 $U$.  Absorbing $U$ into the choice of orthonormal frame yields
@@ -1379,7 +1436,7 @@ Constraint dissipator & D~\ref{def:7.3} &
   D~\ref{def:7.2} \\
 Liouvillian & D~\ref{def:7.4} &
   D~\ref{def:7.1}, D~\ref{def:7.3} \\
-Master eqn derivation (T~\ref{thm:7.1}) & Thm.~\ref{thm:7.1} &
+Master eqn construction (T~\ref{thm:7.1}) & Thm.~\ref{thm:7.1} &
   L~\ref{lem:5.4}, Ax.~\ref{ax:4.3}, L~\ref{lem:7.4}, L~\ref{lem:7.5} \\
 Explicit master eqn (T~\ref{thm:7.2}) & Thm.~\ref{thm:7.2} &
   D~\ref{def:7.3}, D~\ref{def:5.7} \\

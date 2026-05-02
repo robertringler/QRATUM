@@ -206,7 +206,7 @@ File: `ch07_dynamics.tex`. Counts: 17 definitions, 6 lemmas, 5 propositions, 7 t
 | Ch7.D03 | 221 | Def  | Constraint Dissipator $\CD_\CM$                    | EMPIRICAL | n/a   | |
 | Ch7.L03 | 236 | Lem  | Properties of the Constraint Dissipator           | PROVED | L261–L288 | |
 | Ch7.D04 | 295 | Def  | Constraint Liouvillian $\CL = \CL_H + \CD_\CM$     | EMPIRICAL | n/a   | |
-| Ch7.T1  | 307 | Thm  | Derivation of the CIIR Master Equation             | DERIVED | L340–L397 | Rests on Ch7.D02 (Lindblad operator *choice*) — the form is *posited*, not derived from first principles. The "derivation" here is verifying the form is consistent. → G-L6. |
+| Ch7.T1  | 307 | Thm  | Construction of a Lindblad-form Generator Compatible with CIIR | CONSTRUCTED | L355–L426 | Phase 2.3 closed G-M4 + G-L6 along path (b) of §5.3: Theorem 7.1 was renamed from "Derivation of *the* CIIR master equation" to "Construction of a Lindblad-form generator compatible with CIIR"; (D3) of the construction is now explicitly flagged as a modeling posit (curvature-integral form of $\gamma_k$); (D5) is now stated as constrained uniqueness given (D3) + $V_k \in \CK(\HC)$. Microscopic Lindblad–Davies derivation deferred — see §7.3. |
 | Ch7.L04 | 399 | Lem  | GKSL Structure Theorem — Bounded Case              | PROVED | L415–L438 | Standard Lindblad–GKSL theorem, finite/bounded case. |
 | Ch7.L05 | 440 | Lem  | Uniqueness of Constraint Lindblad Operators        | DERIVED | L457–L479 | Up to unitary on the noise space — std. |
 | Ch7.T2  | 488 | Thm  | CIIR Master Equation — Explicit Form               | DERIVED | L528–L540 | |
@@ -429,7 +429,7 @@ either incomplete or circular.
 | **G-L3** | Ch5.L05, Ch7.T4(iii) | unsupported irreducibility hypothesis | "Uniqueness of constraint vacuum / equilibrium" assumes $\CK(\HC)$ acts irreducibly. Irreducibility is *not* proved as a property of every CIIR system, nor classified as an axiom. |
 | **G-L4** | Ch5.L08 | non-quantitative quantitative bound | Entanglement-curvature bound is asserted; proof gives only a one-sided inequality without tightness. The classical-limit invocation of $\hbar_{\mathrm{eff}}\to 0$ in Ch8.P3 then depends on this being a *parameter* of the system, but Ch5.D05 *defines* it. |
 | **G-L5** | Ch5.T4, Ch7.P2 | asymptotic without rate | "Classical emergence via decoherence" / "decoherence under CIIR" — asymptotic assertions with no convergence rate, no preferred-basis selection rate. Standard einselection-style argument is invoked but not mechanized. |
-| **G-L6** | Ch7.T1 | derivation-by-positing | "Derivation of the CIIR Master Equation" — but the Lindblad operators are *posited* in Ch7.D02 as "constraint Lindblad operators". The theorem verifies consistency, not first-principle derivation. |
+| **G-L6** | Ch7.T1 | derivation-by-positing | ~~"Derivation of the CIIR Master Equation" — but the Lindblad operators are *posited* in Ch7.D02 as "constraint Lindblad operators". The theorem verifies consistency, not first-principle derivation.~~ **Closed in Phase 2.3 along path (b) of §5.3:** Ch7.T1 retitled to "Construction of a Lindblad-form Generator Compatible with CIIR"; the construction-vs-derivation distinction is now explicit in the theorem statement (D3 = posit, D5 = constrained uniqueness) and in `Remark~\ref{rem:7.1.scope}`. See §7.3. |
 | **G-L7** | Ch8.T4 (ii), Ch8.P6 | bound conditional on Ax 4.4 | The exponential dimension bound from Ax 4.4 is invoked quantitatively. The claim's strength is no greater than that of Ax 4.4 itself. |
 
 ### 4.3 Missing proof obligations (M)
@@ -442,7 +442,7 @@ definitions or axioms) but never discharges.
 | **G-M1** | Ax 4.4 | A *constructive* example of a CIIR system with $\dim\HC = \exp(\kappa_{\max}\,\mathrm{vol}\CM)$ — the exponential is asserted as an upper bound but no instance is shown to *saturate* it; without this the axiom is informationally vacuous as a tight quantitative statement. |
 | **G-M2** | Ax 4.3 (IC1) | Uniqueness of $\Phi$ "up to unitary on $\HC$" is stated; no example showing the unitary class is non-trivial. |
 | **G-M3** | Ch5.D05 | "Effective Planck constant" is introduced as a curvature scaling; no proof that the resulting constant is dimensionally and physically consistent across all CIIR systems (vs. a free parameter). |
-| **G-M4** | Ch7.D02 | "Constraint Lindblad operators" are *defined* by a particular formula; no proof that they are the unique microscopically-derived operators (this is also G-L6). |
+| **G-M4** | Ch7.D02 | ~~"Constraint Lindblad operators" are *defined* by a particular formula; no proof that they are the unique microscopically-derived operators (this is also G-L6).~~ **Closed in Phase 2.3 along path (b) of §5.3:** Definition 7.2 is unchanged, but the role it plays in Theorem 7.1 is now explicitly that of a modeling posit (step D3), not a derived identity. The "uniqueness" claim of Lemma 7.5 is now a constrained-uniqueness result (given the D3 posit). See §7.3. |
 | **G-M5** | Ch3.D19 | Interface map $\Phi$ is required to be CPTP and to satisfy push-forward over $\CA$. No proof that the constraints (I1)+(I2)+push-forward are jointly satisfiable for *every* triple $(\CR,\CM,\HC)$ admitted by ch03. Existence is reduced to Ax 4.3 — i.e., to an axiom — rather than constructed. |
 
 ---
@@ -767,4 +767,167 @@ is made about gaps not listed here.
   derivation (Lindblad–Davies weak-coupling limit) or restatement
   of Ch7.T1 as a *construction* rather than a *derivation* of
   "the" CIIR master equation.
+
+### 7.3 Closure of G-M4 + G-L6 (Ch7.T1 — Lindblad operator construction)
+
+- **Status:** closed by closure path (b) of §5.3
+  (restate Theorem 7.1 as a *construction* of a Lindblad-form
+  generator compatible with CIIR, rather than a *derivation* of
+  *the* CIIR master equation).
+
+- **Reconstruction of the gap.** Theorem 7.1 (Ch7
+  §"CIIR Master Equation") was titled "Derivation of the CIIR
+  Master Equation" and asserted that equation (7.1) is
+  "derived, not assumed, from the following chain of deductions
+  (D1)–(D5)". Inspection of (D1)–(D5):
+  - (D1) = self-adjointness/boundedness of $\hat H_C$ — first-principle, valid.
+  - (D2) = CPTP-ness of $\Phi_X$ — first-principle, valid.
+  - (D3) = the curvature-integral expression
+    $\gamma_k = \tfrac{1}{\hbar_{\mathrm{eff}}} \int_\CM \kappa\,
+    |e_k|_g^2\, d\mu_g$ from Definition 7.2. **This is a posit**:
+    no system--bath Hamiltonian is fixed, no Born–Markov-secular
+    hierarchy is invoked, and no Davies weak-coupling limit is
+    taken. The expression is the simplest covariant scalar built
+    from $(\kappa, d\mu_g, \hbar_{\mathrm{eff}})$ that vanishes on
+    flat constraint manifolds and is orthonormal-frame invariant.
+  - (D4) = GKSL structure theorem (bounded case) — first-principle, valid.
+  - (D5) = Lemma 7.5 "Uniqueness of Constraint Lindblad Operators".
+    **The proof's pivotal sentence** "the dissipation rates *must
+    be* proportional to the curvature integral" is a load-bearing
+    posit, not a derivation. Once (D3) is granted, Lemma 7.5
+    correctly fixes $V_k = \sqrt{\gamma_k}\hat C_k$ up to unitary
+    mixing.
+
+  Hence the original "Derivation" claim was overreach: (D3) is a
+  modeling choice and (D5) is a constrained-uniqueness result
+  conditional on (D3). G-M4 (Ch7.D02 not microscopically derived)
+  and G-L6 (Ch7.T1 derivation-by-positing) are the same defect at
+  two grain sizes: the Lindblad-operator formula is posited, and
+  the master-equation theorem inherits this posit through (D3).
+
+- **Failure-type classification.** The gap is best classified as
+  **semantic under-specification** at the level of the theorem
+  *statement* (the word "Derivation" claims more than the proof
+  delivers), with the Definition-7.2 formula playing the role of
+  an unmarked modeling axiom. It is *not* a logical error inside
+  the proof — every individual step is correct as a conditional
+  statement. Closure is therefore a re-labelling exercise, not a
+  re-proof.
+
+- **Closure decision.** Of the two options listed in §5.3:
+  - (a) *Microscopic Lindblad–Davies derivation* of the
+    curvature-integral form for $\gamma_k$, applied to a specific
+    CIIR-environment model (cognitive system $X$ weakly coupled
+    to a structured constraint bath, Born–Markov-secular,
+    weak-coupling limit). Requires committing to a system--bath
+    Hamiltonian, computing bath correlation functions, and
+    showing that the Lamb-shifted dissipator reduces to
+    Definition 7.2 in some limit. **Rejected for this PR**:
+    out of scope for a docs-only edit; tracked as a Phase-3
+    open item below.
+  - (b) *Restate Ch7.T1 as a construction* of a Lindblad-form
+    generator compatible with CIIR, with (D3) explicitly flagged
+    as a modeling posit. **Adopted.** This is the surgical,
+    minimum-risk closure: it does not change a single equation,
+    every downstream reference (Theorem 7.2, Theorem 7.3,
+    propositions in Ch7, Theorem 8.8 in Ch8) remains valid by
+    construction.
+
+- **Source-file edits implementing the closure.**
+  - `chapters/ch07_dynamics.tex`:
+    - Theorem 7.1 heading changed
+      "Derivation of the CIIR Master Equation"
+      → "Construction of a Lindblad-form Generator Compatible
+      with CIIR" (label `thm:7.1` unchanged; all
+      `\ref{thm:7.1}` cross-references continue to resolve).
+    - Theorem statement preamble changed
+      "This equation is *derived, not assumed*, from the
+      following chain of deductions"
+      → "This equation is *constructed*, not derived from
+      first principles, by piecing together the following
+      compatibility steps".
+    - Step (D3) of the theorem statement rewritten to flag the
+      curvature-integral form of $\gamma_k$ as an explicit
+      modeling posit (with cross-reference to
+      `Remark~\ref{rem:7.1.scope}` and to this ledger entry).
+    - Step (D5) of the theorem statement rewritten as a
+      *constrained uniqueness* claim ("Given the modeling choice
+      (D3) and the constraint-algebra restriction
+      $V_k \in \CK(\HC)$, the Lindblad operators are determined
+      up to a unitary mixing matrix").
+    - Proof Step 4 retitled "Identification of Lindblad
+      operators" → "Choice of Lindblad operators"; body amended
+      to flag the curvature-rate posit explicitly.
+    - Lemma 7.5's proof: the load-bearing line "the dissipation
+      rates *must be* proportional to the curvature integral"
+      replaced with "adopting the modeling choice of
+      Definition 7.2 for the dependence of $\gamma_k$ on the
+      curvature integral (a posit, not a derivation; see
+      Remark~\ref{rem:7.1.scope})".
+    - New `Remark~\ref{rem:7.1.scope}` inserted immediately
+      after Theorem 7.1, documenting the scope of the
+      construction, classifying (D1)/(D2)/(D4) as
+      first-principle results, (D3) as a modeling posit, and
+      (D5) as constrained uniqueness; pointing forward to the
+      Lindblad–Davies derivation as future work; and stating
+      that downstream theorems inherit the construction's scope
+      unchanged.
+    - Summary-table row at the end of Ch7:
+      "Master eqn derivation (T~\ref{thm:7.1})"
+      → "Master eqn construction (T~\ref{thm:7.1})".
+  - `CIIR_PROOF_LEDGER_v0.1.md`:
+    - Ch7.T1 row: status `DERIVED` → `CONSTRUCTED`; comment
+      updated to record the closure-path (b) decision.
+    - Gap rows G-M4 and G-L6: original wording struck through
+      and a "Closed in Phase 2.3" note appended pointing to
+      this §7.3.
+    - This §7.3 closure entry.
+
+- **Untouched (load-bearing invariance).**
+  - Equation (7.1) is byte-identical before and after the edits.
+  - Definition 7.2 (constraint Lindblad operators), Definition 7.3
+    (constraint dissipator), Definition 7.4 (constraint
+    Liouvillian) are unchanged.
+  - Lemma 7.2 (well-definedness), Lemma 7.4 (GKSL),
+    Lemma 7.5 (uniqueness) — only the prose of Lemma 7.5's proof
+    changes; its statement and conclusions are unchanged.
+  - Theorem 7.2 (explicit form), Theorem 7.3 (well-posedness),
+    Theorem 7.4 (equilibrium), Theorem 7.5 (entropy
+    monotonicity), and the Ch8 references (Theorem 8.8
+    "Measurement-Dynamics Compatibility") all use $\CL$ as
+    *constructed* by Theorem 7.1; their proofs do not depend on
+    whether $\CL$ is derived or constructed, only on its
+    Lindblad form, so they remain valid verbatim.
+  - All `\ref{thm:7.1}` and `\ref{eq:7.1}` cross-references in
+    Ch7 (lines 53, 607, 1356, 1382, 1387) and elsewhere in the
+    monograph continue to resolve to the same theorem.
+
+- **Verification of internal consistency after the edits.**
+  - Environment balance in `chapters/ch07_dynamics.tex`:
+    `theorem` 7/7, `lemma` 6/6, `remark` 1/1, `proof` 19/19,
+    `corollary` 1/1, `definition` 17/17, `enumerate` 14/14,
+    `itemize` 4/4, `proposition` 5/5.
+  - New label `rem:7.1.scope` defined exactly once and
+    referenced 3× from inside Theorem 7.1 / Step 4 of its proof
+    / the proof of Lemma 7.5.
+  - The label `thm:7.1` is unchanged.
+
+- **Deferred (Phase-3 open item).** Microscopic Lindblad–Davies
+  derivation (closure path (a) of §5.3) of the curvature-integral
+  form for $\gamma_k$. This requires (i) committing to a specific
+  CIIR-environment Hamiltonian $H_{\mathrm{tot}} = H_S + H_B +
+  H_{SB}$ where $H_{SB}$ couples the cognitive system to a
+  structured bath via the constraint generators $\hat C_k$, (ii)
+  computing the bath spectral density and showing it is regular
+  enough for the weak-coupling limit, (iii) executing the
+  Born–Markov-secular reduction and verifying that the resulting
+  Lamb-shifted dissipator reduces to $\sum_k L_k \rho L_k^\dagger
+  - \tfrac{1}{2}\{L_k^\dagger L_k, \rho\}$ with $L_k =
+  \sqrt{\gamma_k}\hat C_k$ and $\gamma_k$ given by Definition 7.2
+  in some natural limit. Tracked as Priority-3 open item in §5.
+
+- **Remaining Priority-2 work.** §5.3 is now closed. Next
+  Priority-2 deliverables are (i) §5.4 G-M3 (effective Planck
+  constant normalization theorem in Ch5.D05), and (ii) §5.5
+  G-L3 (irreducibility of $\CK(\HC)$ in Ch5.L05 + Ch7.T4(iii)).
 
