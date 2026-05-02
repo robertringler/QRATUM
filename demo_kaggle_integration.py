@@ -21,9 +21,7 @@ print()
 # Import modules
 print("1. Importing Kaggle integration modules...")
 from qratum_chess.benchmarks.benchmark_kaggle import KaggleBenchmarkRunner
-from qratum_chess.benchmarks.kaggle_integration import (
-    KaggleLeaderboardLoader,
-)
+from qratum_chess.benchmarks.kaggle_integration import KaggleLeaderboardLoader
 from qratum_chess.search.aas import AsymmetricAdaptiveSearch
 
 print("   ✓ Modules imported successfully")

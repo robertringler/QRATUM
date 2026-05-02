@@ -6,14 +6,8 @@ import pytest
 
 try:
     from quasim.hybrid_quantum.reinjection_engine import (
-        MerkleNode,
-        MerkleTreeBuilder,
-        PreValidationScore,
-        ProposalArtifact,
-        ProposalCluster,
-        ProposalStatus,
-        ReinjectionEvaluationEngine,
-    )
+        MerkleNode, MerkleTreeBuilder, PreValidationScore, ProposalArtifact,
+        ProposalCluster, ProposalStatus, ReinjectionEvaluationEngine)
 
     REINJECTION_AVAILABLE = True
 except ImportError:

@@ -10,22 +10,15 @@ framework including:
 
 from __future__ import annotations
 
-import pytest
 import numpy as np
+import pytest
 
-from temporal_compression import (
-    CellularAutomaton,
-    Rule110,
-    Rule30,
-    TemporalMetrics,
-    CompressionStatistics,
-    VerificationChain,
-    StateVerifier,
-    AuditEntry,
-    TemporalCompressionExperiment,
-    ExperimentConfig,
-)
-from temporal_compression.automata import BranchingSimulator, AutomatonState
+from temporal_compression import (AuditEntry, CellularAutomaton,
+                                  CompressionStatistics, ExperimentConfig,
+                                  Rule30, Rule110, StateVerifier,
+                                  TemporalCompressionExperiment,
+                                  TemporalMetrics, VerificationChain)
+from temporal_compression.automata import AutomatonState, BranchingSimulator
 from temporal_compression.verification import EventType
 
 

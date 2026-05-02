@@ -21,7 +21,6 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-
 # ================================================================
 # Shared memory (M)
 # ================================================================
@@ -39,7 +38,7 @@ class TestKnowledgeGraph:
         assert m.size == 2
 
     def test_edge_creation_and_query(self):
-        from quasim.ciir.swarm.memory import KnowledgeGraph, NodeType, EdgeType
+        from quasim.ciir.swarm.memory import EdgeType, KnowledgeGraph, NodeType
         m = KnowledgeGraph()
         n0 = m.add_node(NodeType.AXIOM, "Ax1")
         n1 = m.add_node(NodeType.RULE, "R1")
@@ -49,7 +48,7 @@ class TestKnowledgeGraph:
         assert e.edge_type == EdgeType.DERIVATION
 
     def test_contradiction_detection(self):
-        from quasim.ciir.swarm.memory import KnowledgeGraph, NodeType, EdgeType
+        from quasim.ciir.swarm.memory import EdgeType, KnowledgeGraph, NodeType
         m = KnowledgeGraph()
         n0 = m.add_node(NodeType.AXIOM, "A1")
         n1 = m.add_node(NodeType.AXIOM, "A2")
@@ -94,9 +93,8 @@ class TestPhysicsLanguage:
         assert not sd.validate(oob)
 
     def test_rule_execution_deterministic(self):
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl, UpdateMode,
-        )
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         sd = StateDecl(dim=3)
         prog = PhysicsProgram(sd)
         prog.add_rule(RuleDecl(
@@ -109,9 +107,8 @@ class TestPhysicsLanguage:
         np.testing.assert_allclose(s_next, [1.0, 2.0, 3.0])
 
     def test_parallel_execution_averages(self):
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl, ScheduleMode,
-        )
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    ScheduleMode, StateDecl)
         sd = StateDecl(dim=2)
         prog = PhysicsProgram(sd, ScheduleMode.PARALLEL)
         prog.add_rule(RuleDecl("Double", lambda s, p, r: s * 2, {}))
@@ -137,9 +134,8 @@ class TestPhysicsLanguage:
         assert obs.shape == (2,)
 
     def test_run_produces_trajectory(self):
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl,
-        )
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         sd = StateDecl(dim=2)
         prog = PhysicsProgram(sd)
         prog.add_rule(RuleDecl("Scale", lambda s, p, r: s * 0.9, {}))
@@ -147,9 +143,8 @@ class TestPhysicsLanguage:
         assert len(traj) == 11  # initial + 10 steps
 
     def test_meta_rule_application(self):
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl, MetaRule,
-        )
+        from quasim.ciir.swarm.physics_lang import (MetaRule, PhysicsProgram,
+                                                    RuleDecl, StateDecl)
         sd = StateDecl(dim=2)
         prog = PhysicsProgram(sd)
         prog.add_rule(RuleDecl("R1", lambda s, p, r: s, {"alpha": 1.0}))
@@ -162,9 +157,8 @@ class TestPhysicsLanguage:
         assert len(traj) > 1
 
     def test_self_consistency(self):
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl,
-        )
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         sd = StateDecl(dim=3)
         prog = PhysicsProgram(sd)
         # Projection to unit sphere is idempotent
@@ -177,9 +171,8 @@ class TestPhysicsLanguage:
         assert prog.is_self_consistent(s)
 
     def test_complexity_measure(self):
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl,
-        )
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         sd = StateDecl(dim=2)
         prog = PhysicsProgram(sd)
         prog.add_rule(RuleDecl(
@@ -236,8 +229,8 @@ class TestFormalizer:
     """Tests for Agent FZ."""
 
     def test_formalize_axiom_system(self):
-        from quasim.ciir.swarm.formalizer import Formalizer
         from quasim.ciir.swarm.axiom_architect import AxiomArchitect
+        from quasim.ciir.swarm.formalizer import Formalizer
         aa = AxiomArchitect(dim=4)
         fz = Formalizer(dim=4)
         axioms = aa.generate_minimal_axioms()
@@ -315,10 +308,9 @@ class TestSimulator:
     """Tests for Agent SIM."""
 
     def test_run_produces_trajectory(self):
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         from quasim.ciir.swarm.simulator import Simulator
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl,
-        )
         sim = Simulator()
         sd = StateDecl(dim=3)
         prog = PhysicsProgram(sd)
@@ -328,10 +320,9 @@ class TestSimulator:
         assert len(result.energy_trace) >= 2
 
     def test_convergence_detection(self):
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         from quasim.ciir.swarm.simulator import Simulator
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl,
-        )
         sim = Simulator()
         sd = StateDecl(dim=2)
         prog = PhysicsProgram(sd)
@@ -341,10 +332,9 @@ class TestSimulator:
         assert result.converged
 
     def test_ensemble_run(self):
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         from quasim.ciir.swarm.simulator import Simulator
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl,
-        )
         sim = Simulator()
         sd = StateDecl(dim=3)
         prog = PhysicsProgram(sd)
@@ -363,6 +353,7 @@ class TestInvariantMiner:
     def test_mine_energy_invariant(self):
         from quasim.ciir.swarm.invariant_miner import InvariantMiner
         from quasim.ciir.swarm.simulator import SimulationResult
+
         # Constant trajectory → energy is perfectly conserved
         s = np.array([1.0, 0.0, 0.0])
         result = SimulationResult(
@@ -400,12 +391,12 @@ class TestConsistencyValidator:
     """Tests for Agent CV."""
 
     def test_valid_program_passes(self):
-        from quasim.ciir.swarm.consistency_validator import ConsistencyValidator
         from quasim.ciir.swarm.axiom_architect import AxiomArchitect
+        from quasim.ciir.swarm.consistency_validator import \
+            ConsistencyValidator
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         from quasim.ciir.swarm.simulator import SimulationResult
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl,
-        )
         cv = ConsistencyValidator()
         aa = AxiomArchitect(dim=3)
         axioms = aa.generate_minimal_axioms()
@@ -423,7 +414,8 @@ class TestConsistencyValidator:
         assert val.stability_pass
 
     def test_divergent_trajectory_fails_stability(self):
-        from quasim.ciir.swarm.consistency_validator import ConsistencyValidator
+        from quasim.ciir.swarm.consistency_validator import \
+            ConsistencyValidator
         from quasim.ciir.swarm.simulator import SimulationResult
 
         cv = ConsistencyValidator(max_norm=100)
@@ -482,10 +474,10 @@ class TestCompressionOptimizer:
     """Tests for Agent CO."""
 
     def test_complexity_measure(self):
-        from quasim.ciir.swarm.compression_optimizer import CompressionOptimizer
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl,
-        )
+        from quasim.ciir.swarm.compression_optimizer import \
+            CompressionOptimizer
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         co = CompressionOptimizer()
         sd = StateDecl(dim=2)
         prog = PhysicsProgram(sd)
@@ -494,10 +486,10 @@ class TestCompressionOptimizer:
         assert c >= 2  # At least diagonal entries
 
     def test_optimize_preserves_behavior(self):
-        from quasim.ciir.swarm.compression_optimizer import CompressionOptimizer
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl,
-        )
+        from quasim.ciir.swarm.compression_optimizer import \
+            CompressionOptimizer
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         co = CompressionOptimizer()
         sd = StateDecl(dim=2)
         prog = PhysicsProgram(sd)
@@ -516,9 +508,8 @@ class TestHypothesisMutator:
 
     def test_perturb_changes_params(self):
         from quasim.ciir.swarm.hypothesis_mutator import HypothesisMutator
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl,
-        )
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         hm = HypothesisMutator(seed=0)
         sd = StateDecl(dim=2)
         prog = PhysicsProgram(sd)
@@ -538,9 +529,8 @@ class TestHypothesisMutator:
 
     def test_crossover_combines_rules(self):
         from quasim.ciir.swarm.hypothesis_mutator import HypothesisMutator
-        from quasim.ciir.swarm.physics_lang import (
-            PhysicsProgram, StateDecl, RuleDecl,
-        )
+        from quasim.ciir.swarm.physics_lang import (PhysicsProgram, RuleDecl,
+                                                    StateDecl)
         hm = HypothesisMutator(seed=0)
         sd = StateDecl(dim=2)
         p1 = PhysicsProgram(sd)
@@ -639,8 +629,9 @@ class TestRequiredOutputs:
     def test_output5_matter_field_representations(self, evolution_result):
         """5. Matter/Field Representations — density matrix from trajectory."""
         _, results = evolution_result
-        from quasim.ciir.crs.integration import graph_to_density_matrix
         from quasim.ciir.crs.graph import CRSGraph, Node
+        from quasim.ciir.crs.integration import graph_to_density_matrix
+
         # Build a graph from trajectory states
         g = CRSGraph()
         for i, s in enumerate(results[-1].sim_result.trajectory[:5]):

@@ -28,7 +28,8 @@ from pathlib import Path
 from typing import Any
 
 from qratum_chess.benchmarks.motif_extractor import MotifExtractor, MotifType
-from qratum_chess.benchmarks.runner import BenchmarkConfig, BenchmarkRunner, BenchmarkSummary
+from qratum_chess.benchmarks.runner import (BenchmarkConfig, BenchmarkRunner,
+                                            BenchmarkSummary)
 from qratum_chess.search.aas import AsymmetricAdaptiveSearch
 
 # Configure logging

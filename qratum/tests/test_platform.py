@@ -10,15 +10,6 @@ import pytest
 from qratum.platform import (ContractStatus, EventType, MerkleEventChain,
                              PlatformIntent, PlatformOrchestrator,
                              create_contract_from_intent, create_event)
-from qratum.platform import (
-    ContractStatus,
-    EventType,
-    MerkleEventChain,
-    PlatformIntent,
-    PlatformOrchestrator,
-    create_contract_from_intent,
-    create_event,
-)
 
 
 class TestPlatformIntent:

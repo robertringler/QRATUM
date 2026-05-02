@@ -5,12 +5,12 @@ Provides mechanisms for reversing time in computational systems through
 causal reversal, entropy handling, and state recovery.
 """
 
-from typing import Callable, Any, Optional, List, Dict, Tuple
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from .constants import EntropyStrategy
-from .state import TemporalState, StateChain, TemporalCoordinate
+from .state import StateChain, TemporalState
 
 
 class ReversalStrategy(Enum):
@@ -40,7 +40,7 @@ class ReversalResult:
     strategy_used: ReversalStrategy
     entropy_handled: str
     metadata: Dict[str, Any]
-    
+
     def __str__(self) -> str:
         status = "SUCCESS" if self.success else "FAILED"
         return (f"ReversalResult({status}, confidence={self.confidence:.2f}, "
@@ -54,11 +54,11 @@ class CausalReversal:
     Provides deterministic reversal when inverse functions are available,
     allowing exact reconstruction of prior states.
     """
-    
+
     def __init__(self):
         """Initialize causal reversal"""
         self.reversal_count = 0
-    
+
     def reverse_single_step(
         self,
         current_state: Any,
@@ -78,9 +78,9 @@ class CausalReversal:
         """
         try:
             prior_state = inverse_fn(current_state, delta_t)
-            
+
             self.reversal_count += 1
-            
+
             return ReversalResult(
                 success=True,
                 prior_state=prior_state,
@@ -101,7 +101,7 @@ class CausalReversal:
                 entropy_handled="failed",
                 metadata={'error': str(e)}
             )
-    
+
     def reverse_chain(
         self,
         final_state: Any,
@@ -123,26 +123,26 @@ class CausalReversal:
         """
         states = [final_state]
         results = []
-        
+
         current_state = final_state
-        
+
         for _ in range(num_steps):
             result = self.reverse_single_step(
                 current_state=current_state,
                 inverse_fn=inverse_fn,
                 delta_t=step_size,
             )
-            
+
             results.append(result)
-            
+
             if result.success and result.prior_state is not None:
                 current_state = result.prior_state
                 states.append(current_state)
             else:
                 break
-        
+
         return states, results
-    
+
     def is_reversible(
         self,
         state: Any,
@@ -170,18 +170,18 @@ class CausalReversal:
         try:
             # Apply forward
             forward_state = forward_fn(state, delta_t)
-            
+
             # Apply inverse
             recovered_state = inverse_fn(forward_state, delta_t)
-            
+
             # Check if we recovered the original
             # For simple types
             if isinstance(state, (int, float)):
                 return abs(state - recovered_state) < tolerance
-            
+
             # For complex types, use string comparison (not ideal but works)
             return str(state) == str(recovered_state)
-            
+
         except Exception:
             return False
 
@@ -193,7 +193,7 @@ class EntropyReversal:
     Provides strategies for dealing with entropy in non-reversible systems,
     including probabilistic reconstruction and Merkle-guided recovery.
     """
-    
+
     def __init__(self, strategy: str = EntropyStrategy.MERKLE_RECOVER):
         """
         Initialize entropy reversal.
@@ -203,7 +203,7 @@ class EntropyReversal:
         """
         self.strategy = strategy
         self.reversal_count = 0
-    
+
     def reverse_with_entropy(
         self,
         current_state: Any,
@@ -235,7 +235,7 @@ class EntropyReversal:
             # Fallback to deterministic if possible
             if inverse_fn:
                 return self._reconstruct(current_state, inverse_fn, delta_t)
-            
+
             return ReversalResult(
                 success=False,
                 prior_state=None,
@@ -244,7 +244,7 @@ class EntropyReversal:
                 entropy_handled="no_strategy_available",
                 metadata={}
             )
-    
+
     def _reconstruct(
         self,
         current_state: Any,
@@ -264,12 +264,12 @@ class EntropyReversal:
         """
         try:
             prior_state = inverse_fn(current_state, delta_t)
-            
+
             # Confidence is less than 1.0 because entropy may have been lost
             confidence = 0.8  # Assume some information loss
-            
+
             self.reversal_count += 1
-            
+
             return ReversalResult(
                 success=True,
                 prior_state=prior_state,
@@ -287,7 +287,7 @@ class EntropyReversal:
                 entropy_handled="failed",
                 metadata={'error': str(e)}
             )
-    
+
     def _probabilistic_recover(
         self,
         current_state: Any,
@@ -306,12 +306,12 @@ class EntropyReversal:
         try:
             # Sample from prior distribution
             prior_state = prior_distribution()
-            
+
             # Confidence is low because we're guessing
             confidence = 0.3
-            
+
             self.reversal_count += 1
-            
+
             return ReversalResult(
                 success=True,
                 prior_state=prior_state,
@@ -329,7 +329,7 @@ class EntropyReversal:
                 entropy_handled="failed",
                 metadata={'error': str(e)}
             )
-    
+
     def _merkle_recover(
         self,
         current_state: Any,
@@ -350,18 +350,18 @@ class EntropyReversal:
             current_hash = None
             if isinstance(current_state, TemporalState):
                 current_hash = current_state.coordinate.state_hash
-            
+
             # Look for prior state in chain
             if len(merkle_chain.states) >= 2:
                 # Get second-to-last state (prior to current)
                 prior_temporal_state = merkle_chain.states[-2]
                 prior_state = prior_temporal_state.data
-                
+
                 # High confidence because we have the actual prior state
                 confidence = 0.95
-                
+
                 self.reversal_count += 1
-                
+
                 return ReversalResult(
                     success=True,
                     prior_state=prior_state,
@@ -382,7 +382,7 @@ class EntropyReversal:
                     entropy_handled="insufficient_chain_history",
                     metadata={'chain_length': len(merkle_chain.states)}
                 )
-                
+
         except Exception as e:
             return ReversalResult(
                 success=False,
@@ -392,7 +392,7 @@ class EntropyReversal:
                 entropy_handled="failed",
                 metadata={'error': str(e)}
             )
-    
+
     def get_statistics(self) -> Dict[str, Any]:
         """Get entropy reversal statistics"""
         return {
@@ -408,7 +408,7 @@ class CheckpointReversal:
     Rather than reversing every step, jump back to checkpoints and
     replay forward to the desired point.
     """
-    
+
     def __init__(self, checkpoint_interval: int = 100):
         """
         Initialize checkpoint reversal.
@@ -418,11 +418,11 @@ class CheckpointReversal:
         """
         self.checkpoint_interval = checkpoint_interval
         self.checkpoints: Dict[int, Any] = {}
-    
+
     def add_checkpoint(self, depth: int, state: Any) -> None:
         """Add a checkpoint at given depth"""
         self.checkpoints[depth] = state
-    
+
     def reverse_to_checkpoint(
         self,
         target_depth: int,
@@ -438,13 +438,13 @@ class CheckpointReversal:
         """
         # Find nearest checkpoint at or before target
         checkpoint_depths = sorted([d for d in self.checkpoints.keys() if d <= target_depth])
-        
+
         if checkpoint_depths:
             nearest_depth = checkpoint_depths[-1]
             return self.checkpoints[nearest_depth]
-        
+
         return None
-    
+
     def should_checkpoint(self, depth: int) -> bool:
         """Check if a checkpoint should be created at this depth"""
         return depth % self.checkpoint_interval == 0

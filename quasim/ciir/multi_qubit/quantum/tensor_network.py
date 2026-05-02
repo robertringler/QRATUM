@@ -25,7 +25,6 @@ Left-canonical form: Σ_{σ, α} (A^σ)^*_{α,β} (A^σ)_{α,γ} = δ_{β,γ}
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -57,7 +56,7 @@ class MPSState:
     def n(self) -> int:
         return self.n_qubits
 
-    def copy(self) -> "MPSState":
+    def copy(self) -> MPSState:
         return MPSState([t.copy() for t in self.tensors], self.chi_max)
 
     def norm(self) -> float:
@@ -322,7 +321,7 @@ def apply_two_qubit_gate(
     # mat[σ'_k * chi_L + α_L, σ'_{k+1} * chi_R + α_R] = Theta_new[σ'_k, σ'_{k+1}, α_L, α_R] ✓
 
     U, S, Vh = np.linalg.svd(mat, full_matrices=False)
-    chi_new = max(1, min(chi_max, int(np.sum(S > eps_svd))))
+    chi_new = max(1, min(chi_max, int(np.sum(eps_svd < S))))
 
     U = U[:, :chi_new]
     S_sqrt = np.sqrt(S[:chi_new])

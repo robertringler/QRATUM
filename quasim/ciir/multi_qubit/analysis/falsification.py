@@ -38,8 +38,8 @@ References
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from dataclasses import dataclass
+from typing import List, Optional
 
 import numpy as np
 from numpy.typing import NDArray
@@ -1066,11 +1066,10 @@ def run_s3_alpha_consistency(
     Checks agreement < 5 % and bracket [1.79, 1.87].
     Returns N* at which routes diverge (if at all).
     """
+    from quasim.ciir.multi_qubit.analysis.alpha_derivation import \
+        PARAMS as ALPHA_PARAMS
     from quasim.ciir.multi_qubit.analysis.alpha_derivation import (
-        cross_validate_routes,
-        default_ifs_parameters,
-        PARAMS as ALPHA_PARAMS,
-    )
+        cross_validate_routes, default_ifs_parameters)
 
     if N_list is None:
         N_list = [2, 4, 6]

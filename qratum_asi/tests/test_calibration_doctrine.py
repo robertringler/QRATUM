@@ -2,19 +2,17 @@
 
 from datetime import datetime
 
-from qratum_asi.core.calibration_doctrine import (
-    AXIOM_1_JURISDICTION,
-    AXIOM_4_DEFENSIVE,
-    AXIOM_5_ASI,
-    CALIBRATION_DOCTRINE,
-    CalibrationCategory,
-    CalibrationDoctrineEnforcer,
-    JurisdictionalClaim,
-    JurisdictionalProperty,
-    TrajectoryMetrics,
-    TrajectoryState,
-    get_doctrine_enforcer,
-)
+from qratum_asi.core.calibration_doctrine import (AXIOM_1_JURISDICTION,
+                                                  AXIOM_4_DEFENSIVE,
+                                                  AXIOM_5_ASI,
+                                                  CALIBRATION_DOCTRINE,
+                                                  CalibrationCategory,
+                                                  CalibrationDoctrineEnforcer,
+                                                  JurisdictionalClaim,
+                                                  JurisdictionalProperty,
+                                                  TrajectoryMetrics,
+                                                  TrajectoryState,
+                                                  get_doctrine_enforcer)
 
 
 class TestCalibrationDoctrine:

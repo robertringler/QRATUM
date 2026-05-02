@@ -20,33 +20,17 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Import QRADLE
 from qradle import QRADLEEngine
-
 # Import QRATUM-ASI
-from qratum_asi.orchestrator import ASIOrchestrator
-
-# Import QRATUM Platform
-from qratum_platform.core import PlatformIntent, QRATUMPlatform, VerticalModule
-
-# Import all verticals
-from verticals import (
-    AEGISModule,
-    CAPRAModule,
-    ECORAModule,
-    FLUXAModule,
-    HELIXModule,
-    JURISModule,
-    LOGOSModule,
-    NEURAModule,
-    NEXUSModule,
-    SENTRAModule,
-    SPECTRAModule,
-    SYNTHOSModule,
-    TERAGONModule,
-    VITRAModule,
-)
-
 # Import QRATUM-ASI
 from qratum_asi.orchestrator import QRATUMASI as ASIOrchestrator
+from qratum_asi.orchestrator import ASIOrchestrator
+# Import QRATUM Platform
+from qratum_platform.core import PlatformIntent, QRATUMPlatform, VerticalModule
+# Import all verticals
+from verticals import (AEGISModule, CAPRAModule, ECORAModule, FLUXAModule,
+                       HELIXModule, JURISModule, LOGOSModule, NEURAModule,
+                       NEXUSModule, SENTRAModule, SPECTRAModule, SYNTHOSModule,
+                       TERAGONModule, VITRAModule)
 
 # Setup logging
 logging.basicConfig(
@@ -458,10 +442,10 @@ def main():
     """Main entry point."""
     global qradle_engine, qratum_platform, asi_orchestrator
 
-    
+
     # Record start time for uptime tracking
     app.config['start_time'] = time.time()
-    
+
     logger.info(f"Starting QRATUM Full Stack Server (component: {COMPONENT})")
 
     # Initialize components based on configuration

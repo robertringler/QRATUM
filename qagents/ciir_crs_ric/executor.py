@@ -23,34 +23,13 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import FrozenSet, List, Optional, Tuple
 
-from .ciir import (
-    C_ACTIVE,
-    Constraint,
-    Inv,
-    Observation,
-    Omega,
-    State,
-)
-from .crs import (
-    A_FULL,
-    Action,
-    admissible_actions,
-    constrained_transition,
-)
-from .failures import (
-    STATUS_OK,
-    STATUS_TYPE_I,
-    STATUS_TYPE_II,
-    STATUS_TYPE_III,
-    STATUS_TYPE_IV,
-    FailureRecord,
-    ConstraintViolation,
-    IntentParseFailure,
-    InvalidTransition,
-    InvariantViolation,
-)
+from .ciir import C_ACTIVE, Constraint, Inv, Observation, Omega, State
+from .crs import A_FULL, Action, admissible_actions, constrained_transition
+from .failures import (STATUS_OK, STATUS_TYPE_I, STATUS_TYPE_II,
+                       STATUS_TYPE_III, STATUS_TYPE_IV, ConstraintViolation,
+                       FailureRecord, IntentParseFailure, InvalidTransition,
+                       InvariantViolation)
 from .ric import Intent, parse_intent, select_action
-
 
 # --------------------------------------------------------------------------
 # Trace schema

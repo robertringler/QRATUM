@@ -7,11 +7,7 @@ rollback capability, and invariants enforcement.
 
 import pytest
 
-from qradle import (
-    ContractStatus,
-    FatalInvariants,
-    QRADLEEngine,
-)
+from qradle import ContractStatus, FatalInvariants, QRADLEEngine
 
 
 class TestQRADLEEngine:

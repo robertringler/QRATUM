@@ -29,10 +29,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Callable
 
 import numpy as np
-from numpy.typing import NDArray
 
 from quasim.ciir.loss import CIIRLoss
 from quasim.ciir.theory import RealTensor

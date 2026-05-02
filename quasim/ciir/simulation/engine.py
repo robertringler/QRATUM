@@ -17,29 +17,25 @@ from __future__ import annotations
 
 import os
 import time
-from dataclasses import dataclass, field
-from typing import Any
+from dataclasses import dataclass
 
 import numpy as np
 
 from quasim.ciir.config import CIIRConfig
-from quasim.ciir.evolution import IntegrationMethod, evolve, project_density
+from quasim.ciir.evolution import project_density
 from quasim.ciir.loss import CIIRLoss
-from quasim.ciir.theory import CIIRTheory, build_default_theory
-
-from quasim.ciir.simulation.ciir_module import CIIRState, CIIRObserver, CIIRVisualizer
-from quasim.ciir.simulation.quasim_module import (
-    PrecisionMode, QuASIMTensor, TensorRuntime, TensorVisualizer,
-)
-from quasim.ciir.simulation.qratum_module import (
-    QRATUMHardware, ExecutionScheduler, PerformanceDashboard,
-)
-from quasim.ciir.simulation.export import (
-    SimulationExporter, ScreenshotCapture, TensorLogger, MetricsCSVWriter,
-)
-from quasim.ciir.simulation.dashboard import MetricsDashboard, MetricsSnapshot, print_dashboard
+from quasim.ciir.simulation.ciir_module import (CIIRObserver, CIIRState,
+                                                CIIRVisualizer)
+from quasim.ciir.simulation.dashboard import (MetricsDashboard,
+                                              MetricsSnapshot, print_dashboard)
+from quasim.ciir.simulation.export import SimulationExporter
 from quasim.ciir.simulation.interactive import InteractiveController
-from quasim.ciir.simulation.renderer import SimulationRenderer, render_simulation_frame
+from quasim.ciir.simulation.qratum_module import (PerformanceDashboard,
+                                                  QRATUMHardware)
+from quasim.ciir.simulation.quasim_module import (TensorRuntime,
+                                                  TensorVisualizer)
+from quasim.ciir.simulation.renderer import SimulationRenderer
+from quasim.ciir.theory import CIIRTheory, build_default_theory
 
 
 @dataclass
@@ -345,11 +341,11 @@ class CIIRSimulationEngine:
             perf_dashboard.plot_full_dashboard(self.hardware, save_path=perf_path)
 
         print(f"\n[Engine] Output: {self.config.output_dir}/")
-        print(f"  screenshots/         — PNG frames")
-        print(f"  metrics.csv          — Per-step metrics")
-        print(f"  tensor_log.json      — Tensor states")
-        print(f"  dashboard.png        — Metrics dashboard")
-        print(f"  performance_dashboard.png — Performance dashboard")
+        print("  screenshots/         — PNG frames")
+        print("  metrics.csv          — Per-step metrics")
+        print("  tensor_log.json      — Tensor states")
+        print("  dashboard.png        — Metrics dashboard")
+        print("  performance_dashboard.png — Performance dashboard")
 
 
 def run_and_capture_simulation(

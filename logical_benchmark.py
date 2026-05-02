@@ -32,7 +32,6 @@ import argparse
 import json
 import math
 import os
-
 # Project-local imports
 import sys
 from dataclasses import asdict, dataclass
@@ -45,15 +44,10 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from logical_encoding import (
-    build_channel_evolver,
-    choose_regions_block,
-    logical_channel_pauli_action,
-    phase_gate_event,
-    process_fidelity,
-    reconstruct_process_matrix,
-    run_ramsey,
-)
+from logical_encoding import (build_channel_evolver, choose_regions_block,
+                              logical_channel_pauli_action, phase_gate_event,
+                              process_fidelity, reconstruct_process_matrix,
+                              run_ramsey)
 
 try:
     # Optional: D2/OTOC sweep

@@ -10,10 +10,7 @@ from typing import Any
 
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.safety_hardening.types import (
-    OversightLevel,
-    OversightRequest,
-)
+from qratum_asi.safety_hardening.types import OversightLevel, OversightRequest
 
 
 @dataclass

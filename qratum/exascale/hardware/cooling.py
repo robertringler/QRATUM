@@ -12,9 +12,8 @@ Cooling Technologies:
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional
 from enum import Enum
-import math
+from typing import Dict, List
 
 
 class CoolingType(Enum):
@@ -52,7 +51,7 @@ class CoolingLoop:
     inlet_temp_c: float
     outlet_temp_c: float
     pressure_kpa: float
-    
+
     def heat_removal_kw(self) -> float:
         """
         Calculate heat removal capacity
@@ -64,14 +63,14 @@ class CoolingLoop:
             specific_heat = 4.186  # kJ/(kg·°C)
             density = 1.0  # kg/L
             temp_delta = self.outlet_temp_c - self.inlet_temp_c
-            
+
             # Q = ṁ × cp × ΔT
             # ṁ = flow_rate (L/min) × density (kg/L) × (1 min / 60 s)
             mass_flow_rate = self.flow_rate_lpm * density / 60.0  # kg/s
             heat_removal = mass_flow_rate * specific_heat * temp_delta
-            
+
             return heat_removal
-        
+
         return 0.0  # Unknown for other fluid types
 
 
@@ -92,7 +91,7 @@ class CoolingStrategy:
     target_pue: float
     max_rack_power_kw: float
     ambient_temp_range_c: tuple
-    
+
     def is_valid_configuration(self) -> bool:
         """Validate cooling configuration"""
         if self.target_pue < 1.0 or self.target_pue > 2.0:
@@ -122,19 +121,19 @@ class ThermalManagement:
     cooling_strategy: CoolingStrategy
     cooling_loops: List[CoolingLoop]
     monitoring_enabled: bool = True
-    
+
     def total_facility_power_mw(self) -> float:
         """Calculate total facility power including cooling"""
         return self.total_it_power_mw * self.target_pue
-    
+
     def cooling_power_mw(self) -> float:
         """Calculate power consumed by cooling infrastructure"""
         return self.total_facility_power_mw() - self.total_it_power_mw
-    
+
     def cooling_efficiency_percent(self) -> float:
         """Calculate cooling efficiency as percentage of IT power"""
         return (self.cooling_power_mw() / self.total_it_power_mw) * 100.0
-    
+
     def validate_capacity(self) -> bool:
         """
         Validate that cooling capacity meets requirements
@@ -146,10 +145,10 @@ class ThermalManagement:
             loop.heat_removal_kw() for loop in self.cooling_loops
         )
         required_capacity = self.total_it_power_mw * 1000.0  # Convert MW to kW
-        
+
         # Add 20% safety margin
         return total_cooling_capacity >= required_capacity * 1.2
-    
+
     def get_thermal_summary(self) -> Dict[str, any]:
         """Return comprehensive thermal management summary"""
         return {
@@ -184,11 +183,11 @@ def create_exascale_cooling() -> ThermalManagement:
         max_rack_power_kw=60.0,
         ambient_temp_range_c=(18.0, 27.0),
     )
-    
+
     # Create cooling loops (one per 10 racks)
     cooling_loops = []
     num_loops = 57  # 570 racks / 10 racks per loop
-    
+
     for i in range(num_loops):
         loop = CoolingLoop(
             loop_id=f"CL-{i:03d}",
@@ -199,7 +198,7 @@ def create_exascale_cooling() -> ThermalManagement:
             pressure_kpa=400.0,
         )
         cooling_loops.append(loop)
-    
+
     # Create thermal management system
     thermal_mgmt = ThermalManagement(
         total_it_power_mw=24.8,  # ~55 MW total IT power
@@ -208,7 +207,7 @@ def create_exascale_cooling() -> ThermalManagement:
         cooling_loops=cooling_loops,
         monitoring_enabled=True,
     )
-    
+
     return thermal_mgmt
 
 
@@ -231,13 +230,13 @@ def calculate_rack_cooling_requirements(
         Dictionary with cooling requirements
     """
     total_power_kw = nodes_per_rack * power_per_node_kw
-    
+
     # BTU/hr conversion (1 kW = 3412.14 BTU/hr)
     btu_per_hr = total_power_kw * 3412.14
-    
+
     # Cooling capacity with 20% margin
     required_capacity_kw = total_power_kw * 1.2
-    
+
     return {
         "total_power_kw": total_power_kw,
         "heat_output_btu_per_hr": btu_per_hr,

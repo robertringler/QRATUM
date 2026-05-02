@@ -21,11 +21,11 @@ Performance Targets:
 - Byzantine detection: < 1 μs
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
-from enum import Enum
 import hashlib
 import time
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Dict, List, Optional, Tuple
 
 
 class HashAlgorithm(Enum):
@@ -67,7 +67,7 @@ class MerkleNode:
     left_child: Optional['MerkleNode'] = None
     right_child: Optional['MerkleNode'] = None
     level: int = 0
-    
+
     def is_leaf(self) -> bool:
         """Check if node is a leaf"""
         return self.left_child is None and self.right_child is None
@@ -93,7 +93,7 @@ class MerkleProof:
     sibling_hashes: List[str]
     indices: List[int]
     algorithm: HashAlgorithm = HashAlgorithm.SHA256
-    
+
     def verify(self) -> bool:
         """
         Verify the Merkle proof (hardware-accelerated)
@@ -104,7 +104,7 @@ class MerkleProof:
             True if proof is valid
         """
         current_hash = self.leaf_hash
-        
+
         for sibling_hash, index in zip(self.sibling_hashes, self.indices):
             # Combine hashes in deterministic order
             if index == 0:
@@ -113,12 +113,12 @@ class MerkleProof:
             else:
                 # Current node is right child
                 combined = sibling_hash + current_hash
-            
+
             # Hardware-accelerated hash computation
             current_hash = hashlib.sha256(combined.encode()).hexdigest()
-        
+
         return current_hash == self.root_hash
-    
+
     def get_proof_size_bytes(self) -> int:
         """Return proof size in bytes"""
         # 32 bytes per hash + indices
@@ -150,12 +150,12 @@ class Packet:
     merkle_hash: str = ""
     merkle_proof: Optional[MerkleProof] = None
     verification_status: VerificationStatus = VerificationStatus.PENDING
-    
+
     def __post_init__(self):
         """Compute packet hash if not provided"""
         if not self.merkle_hash:
             self.merkle_hash = self._compute_hash()
-    
+
     def _compute_hash(self) -> str:
         """
         Compute cryptographic hash of packet (hardware-accelerated)
@@ -168,9 +168,9 @@ class Packet:
             f"{self.packet_id}:{self.source}:{self.destination}:"
             f"{self.sequence_number}:{self.timestamp_ns}:"
         ).encode() + self.payload
-        
+
         return hashlib.sha256(packet_data).hexdigest()
-    
+
     def size_bytes(self) -> int:
         """Return total packet size in bytes"""
         # Payload + headers (estimated 64 bytes)
@@ -209,7 +209,7 @@ class MerkleNIC:
     packets_verified: int = 0
     faults_detected: int = 0
     packets_dropped: int = 0
-    
+
     def verify_packet(self, packet: Packet) -> Tuple[bool, FaultType]:
         """
         Verify packet integrity using Merkle proof (hardware-accelerated)
@@ -223,16 +223,16 @@ class MerkleNIC:
         if not self.verification_enabled:
             packet.verification_status = VerificationStatus.SKIPPED
             return True, FaultType.NONE
-        
+
         # Check if packet has Merkle proof
         if not packet.merkle_proof:
             packet.verification_status = VerificationStatus.FAILED
             self.faults_detected += 1
             return False, FaultType.TAMPERING
-        
+
         # Hardware-accelerated proof verification
         is_valid = packet.merkle_proof.verify()
-        
+
         if is_valid:
             packet.verification_status = VerificationStatus.VERIFIED
             self.packets_verified += 1
@@ -242,7 +242,7 @@ class MerkleNIC:
             self.faults_detected += 1
             self.packets_dropped += 1
             return False, FaultType.CORRUPTION
-    
+
     def compute_packet_hash(self, packet: Packet) -> str:
         """
         Compute packet hash (hardware-accelerated)
@@ -254,7 +254,7 @@ class MerkleNIC:
             Cryptographic hash as hex string
         """
         return packet._compute_hash()
-    
+
     def generate_proof(self, packet: Packet, merkle_tree: 'MerkleTree') -> MerkleProof:
         """
         Generate Merkle proof for packet (hardware-accelerated)
@@ -268,14 +268,14 @@ class MerkleNIC:
         """
         # Simplified proof generation
         # In hardware, this is done in parallel with packet transmission
-        
+
         leaf_hash = packet.merkle_hash
         root_hash = merkle_tree.get_root_hash()
-        
+
         # Generate sibling hashes along path to root
         sibling_hashes = merkle_tree.get_sibling_path(leaf_hash)
         indices = merkle_tree.get_path_indices(leaf_hash)
-        
+
         return MerkleProof(
             root_hash=root_hash,
             leaf_hash=leaf_hash,
@@ -283,7 +283,7 @@ class MerkleNIC:
             indices=indices,
             algorithm=self.hash_algorithm,
         )
-    
+
     def get_throughput_gbps(self) -> float:
         """
         Get current throughput with verification enabled
@@ -297,7 +297,7 @@ class MerkleNIC:
         else:
             # Software verification would degrade performance
             return float(self.bandwidth_gbps) * 0.5
-    
+
     def get_verification_latency_ns(self) -> int:
         """
         Get packet verification latency
@@ -311,7 +311,7 @@ class MerkleNIC:
         else:
             # Software verification would be much slower
             return 5000
-    
+
     def get_statistics(self) -> Dict[str, any]:
         """Return NIC statistics"""
         return {
@@ -347,7 +347,7 @@ class MerkleTree:
     leaves: List[MerkleNode] = field(default_factory=list)
     hash_algorithm: HashAlgorithm = HashAlgorithm.SHA256
     tree_depth: int = 0
-    
+
     def build_tree(self, packet_hashes: List[str]) -> None:
         """
         Build Merkle tree from packet hashes (hardware-accelerated)
@@ -357,34 +357,34 @@ class MerkleTree:
         """
         if not packet_hashes:
             return
-        
+
         # Create leaf nodes
         self.leaves = [
             MerkleNode(hash_value=h, level=0)
             for h in packet_hashes
         ]
-        
+
         # Build tree bottom-up in hardware
         current_level = self.leaves[:]
         level = 1
-        
+
         while len(current_level) > 1:
             next_level = []
-            
+
             # Process pairs of nodes
             for i in range(0, len(current_level), 2):
                 left = current_level[i]
-                
+
                 if i + 1 < len(current_level):
                     right = current_level[i + 1]
                 else:
                     # Odd number of nodes, duplicate last
                     right = left
-                
+
                 # Hardware-accelerated hash combination
                 combined = left.hash_value + right.hash_value
                 parent_hash = hashlib.sha256(combined.encode()).hexdigest()
-                
+
                 parent = MerkleNode(
                     hash_value=parent_hash,
                     left_child=left,
@@ -392,17 +392,17 @@ class MerkleTree:
                     level=level,
                 )
                 next_level.append(parent)
-            
+
             current_level = next_level
             level += 1
-        
+
         self.root = current_level[0] if current_level else None
         self.tree_depth = level - 1
-    
+
     def get_root_hash(self) -> str:
         """Return Merkle root hash"""
         return self.root.hash_value if self.root else ""
-    
+
     def get_sibling_path(self, leaf_hash: str) -> List[str]:
         """
         Get sibling hashes along path from leaf to root
@@ -415,22 +415,22 @@ class MerkleTree:
         """
         # Simplified implementation for stub
         # Hardware implementation uses parallel lookup
-        
+
         siblings = []
-        
+
         # Find leaf index
         leaf_index = next(
             (i for i, leaf in enumerate(self.leaves) if leaf.hash_value == leaf_hash),
             None
         )
-        
+
         if leaf_index is None:
             return siblings
-        
+
         # Traverse up the tree collecting siblings
         current_index = leaf_index
         current_level = self.leaves[:]
-        
+
         while len(current_level) > 1:
             # Find sibling
             if current_index % 2 == 0:
@@ -439,10 +439,10 @@ class MerkleTree:
             else:
                 # Current is right child, sibling is left
                 sibling_index = current_index - 1
-            
+
             if sibling_index < len(current_level):
                 siblings.append(current_level[sibling_index].hash_value)
-            
+
             # Move to parent level
             current_index = current_index // 2
             # Build parent level (simplified)
@@ -451,9 +451,9 @@ class MerkleTree:
                 # Placeholder for parent
                 next_level.append(current_level[i])
             current_level = next_level
-        
+
         return siblings
-    
+
     def get_path_indices(self, leaf_hash: str) -> List[int]:
         """
         Get path indices from leaf to root
@@ -469,20 +469,20 @@ class MerkleTree:
             (i for i, leaf in enumerate(self.leaves) if leaf.hash_value == leaf_hash),
             None
         )
-        
+
         if leaf_index is None:
             return []
-        
+
         # Compute indices based on binary representation
         indices = []
         current_index = leaf_index
-        
+
         for _ in range(self.tree_depth):
             indices.append(current_index % 2)
             current_index = current_index // 2
-        
+
         return indices
-    
+
     def get_tree_statistics(self) -> Dict[str, any]:
         """Return tree statistics"""
         return {

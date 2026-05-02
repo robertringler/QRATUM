@@ -5,9 +5,8 @@ Tests quantitative forecasting and timeline simulation.
 
 import pytest
 
-from qratum_asi.discovery_acceleration.projections import (
-    DiscoveryProjectionsEngine,
-)
+from qratum_asi.discovery_acceleration.projections import \
+    DiscoveryProjectionsEngine
 from qratum_asi.discovery_acceleration.types import DiscoveryType
 
 

@@ -11,11 +11,10 @@ Publication-quality, 300 DPI, Nature-style colour palette.
 """
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
-import numpy as np
+from matplotlib.patches import FancyBboxPatch
 
 # ── colour palette (Nature / PRL style) ─────────────────────────
 C_ONTIC    = "#2C3E50"   # dark blue-grey  — ontic stratum

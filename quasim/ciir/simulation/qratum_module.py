@@ -15,18 +15,15 @@ qnx → distributed evolution executor
 
 from __future__ import annotations
 
-import time
 from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.theory import CIIRTheory, RealTensor
 from quasim.ciir.config import CIIRConfig
 from quasim.ciir.integration.hcal_bridge import HCALConstraintInjector
 from quasim.ciir.integration.qstack_bridge import QStackConstraintWeighter
-
+from quasim.ciir.theory import CIIRTheory, RealTensor
 
 # ================================================================
 # QRATUMHardware — Hardware control abstraction

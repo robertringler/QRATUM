@@ -13,12 +13,8 @@ from typing import Any, Dict
 
 import numpy as np
 
-from qratum_platform.core import (
-    ComputeSubstrate,
-    PlatformContract,
-    SafetyViolation,
-    VerticalModuleBase,
-)
+from qratum_platform.core import (ComputeSubstrate, PlatformContract,
+                                  SafetyViolation, VerticalModuleBase)
 
 
 class SPECTRAModule(VerticalModuleBase):

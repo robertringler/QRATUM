@@ -26,12 +26,12 @@ References:
   https://arxiv.org/abs/1803.05069
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple, Any
-from enum import Enum
 import hashlib
-import time
 import secrets
+import time
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 
 class MessageType(Enum):
@@ -80,7 +80,7 @@ class QuorumCertificate:
     replica_ids: Tuple[int, ...]  # Immutable tuple for frozen dataclass
     aggregated_signature: str
     timestamp_ns: int
-    
+
     def is_valid_quorum(self, total_replicas: int) -> bool:
         """
         Check if QC has valid quorum
@@ -94,7 +94,7 @@ class QuorumCertificate:
         f = (total_replicas - 1) // 3  # Byzantine tolerance
         quorum_size = 2 * f + 1
         return len(self.replica_ids) >= quorum_size
-    
+
     def compute_qc_hash(self) -> str:
         """Compute deterministic hash of QC"""
         data = (
@@ -135,12 +135,12 @@ class Proposal:
     pre_commit_qc: Optional[QuorumCertificate] = None
     commit_qc: Optional[QuorumCertificate] = None
     status: ProposalStatus = ProposalStatus.PROPOSED
-    
+
     def __post_init__(self):
         """Initialize proposal"""
         if self.timestamp_ns == 0:
             object.__setattr__(self, 'timestamp_ns', int(time.time() * 1e9))
-    
+
     def compute_proposal_hash(self) -> str:
         """
         Compute deterministic hash of proposal
@@ -153,7 +153,7 @@ class Proposal:
             f"{self.parent_hash}:{self.state_hash}:{self.timestamp_ns}"
         )
         return hashlib.sha256(data.encode('utf-8')).hexdigest()
-    
+
     def get_height(self) -> int:
         """Get height in proposal chain"""
         # In real implementation, would traverse parent chain
@@ -184,15 +184,15 @@ class BFTMessage:
     qc: Optional[QuorumCertificate] = None
     signature: str = ""
     timestamp_ns: int = 0
-    
+
     def __post_init__(self):
         """Initialize message"""
         if self.timestamp_ns == 0:
             object.__setattr__(self, 'timestamp_ns', int(time.time() * 1e9))
-        
+
         if not self.signature:
             object.__setattr__(self, 'signature', self.compute_signature())
-    
+
     def compute_signature(self) -> str:
         """
         Compute message signature
@@ -202,15 +202,15 @@ class BFTMessage:
         """
         proposal_hash = self.proposal.compute_proposal_hash()
         qc_hash = self.qc.compute_qc_hash() if self.qc else ""
-        
+
         data = (
             f"{self.message_id}:{self.message_type.value}:{self.sender_id}:"
             f"{self.view_number}:{proposal_hash}:{qc_hash}"
         )
-        
+
         # In real implementation: use SPHINCS+ from pqc.py
         return hashlib.sha256(data.encode('utf-8')).hexdigest()
-    
+
     def verify_signature(self) -> bool:
         """
         Verify message signature
@@ -249,24 +249,24 @@ class BFTReplica:
     highest_qc: Optional[QuorumCertificate] = None
     locked_qc: Optional[QuorumCertificate] = None
     is_faulty: bool = False
-    
+
     def __post_init__(self):
         """Initialize replica"""
         if not 0 <= self.replica_id < self.total_replicas:
             raise ValueError(f"Invalid replica_id: {self.replica_id}")
-        
+
         if self.total_replicas < 4:
             raise ValueError(f"Need at least 4 replicas, got {self.total_replicas}")
-    
+
     def get_byzantine_tolerance(self) -> int:
         """Get number of tolerated Byzantine failures"""
         return (self.total_replicas - 1) // 3
-    
+
     def get_quorum_size(self) -> int:
         """Get required quorum size (2f+1)"""
         f = self.get_byzantine_tolerance()
         return 2 * f + 1
-    
+
     def is_leader(self, view_number: int) -> bool:
         """
         Check if this replica is leader for given view
@@ -280,12 +280,12 @@ class BFTReplica:
         # Simple round-robin leader election
         leader_id = view_number % self.total_replicas
         return leader_id == self.replica_id
-    
+
     def get_leader_id(self, view_number: int) -> int:
         """Get leader ID for given view"""
         return view_number % self.total_replicas
-    
-    def propose(self, state_hash: str, 
+
+    def propose(self, state_hash: str,
                 payload: Optional[Dict[str, Any]] = None) -> Optional[Proposal]:
         """
         Create new proposal (only if leader)
@@ -299,14 +299,14 @@ class BFTReplica:
         """
         if not self.is_leader(self.current_view):
             return None
-        
+
         # Determine parent
         parent_hash = (
             self.highest_qc.proposal_hash
             if self.highest_qc
             else "genesis"
         )
-        
+
         proposal = Proposal(
             proposal_id=f"proposal_{self.current_view}_{self.replica_id}",
             view_number=self.current_view,
@@ -315,10 +315,10 @@ class BFTReplica:
             state_hash=state_hash,
             payload=payload,
         )
-        
+
         self.proposals[proposal.proposal_id] = proposal
         return proposal
-    
+
     def vote(self, proposal: Proposal, message_type: MessageType) -> Optional[BFTMessage]:
         """
         Vote on proposal
@@ -333,19 +333,19 @@ class BFTReplica:
         if self.is_faulty:
             # Byzantine behavior: don't vote or vote randomly
             return None
-        
+
         # Safety check: don't vote if proposal conflicts with locked QC
         if self.locked_qc:
             if proposal.view_number < self.locked_qc.view_number:
                 return None
-        
+
         # Record vote
         proposal_hash = proposal.compute_proposal_hash()
         vote_key = (self.current_view, proposal_hash)
         if vote_key not in self.votes:
             self.votes[vote_key] = set()
         self.votes[vote_key].add(self.replica_id)
-        
+
         # Create vote message
         message = BFTMessage(
             message_id=f"vote_{self.replica_id}_{self.current_view}_{message_type.value}",
@@ -355,10 +355,10 @@ class BFTReplica:
             proposal=proposal,
             qc=self.highest_qc,
         )
-        
+
         return message
-    
-    def process_votes(self, proposal_hash: str, 
+
+    def process_votes(self, proposal_hash: str,
                      votes: Set[int]) -> Optional[QuorumCertificate]:
         """
         Process votes and form QC if quorum reached
@@ -379,15 +379,15 @@ class BFTReplica:
                 aggregated_signature=self._aggregate_signatures(votes),
                 timestamp_ns=int(time.time() * 1e9),
             )
-            
+
             # Update highest QC
             if not self.highest_qc or qc.view_number > self.highest_qc.view_number:
                 self.highest_qc = qc
-            
+
             return qc
-        
+
         return None
-    
+
     def _aggregate_signatures(self, replica_ids: Set[int]) -> str:
         """
         Aggregate signatures from replicas
@@ -402,7 +402,7 @@ class BFTReplica:
         # For now, hash the set of replica IDs
         data = f"aggregated_{sorted(replica_ids)}"
         return hashlib.sha256(data.encode('utf-8')).hexdigest()
-    
+
     def update_locked_qc(self, qc: QuorumCertificate) -> None:
         """
         Update locked QC (safety critical)
@@ -412,11 +412,11 @@ class BFTReplica:
         """
         if not self.locked_qc or qc.view_number > self.locked_qc.view_number:
             self.locked_qc = qc
-    
+
     def advance_view(self) -> None:
         """Advance to next view"""
         self.current_view += 1
-        
+
         # Update role
         if self.is_leader(self.current_view):
             self.role = ReplicaRole.LEADER
@@ -445,12 +445,12 @@ class BFTHotStuffConsensus:
     pending_proposals: Dict[str, Proposal] = field(default_factory=dict)
     decided_proposals: Dict[str, Proposal] = field(default_factory=dict)
     view_timeout_ms: float = 5000.0  # 5 second timeout
-    
+
     def __post_init__(self):
         """Initialize consensus engine"""
         if self.total_replicas < 4:
             raise ValueError(f"Need at least 4 replicas, got {self.total_replicas}")
-        
+
         # Create replicas
         if not self.replicas:
             for i in range(self.total_replicas):
@@ -458,11 +458,11 @@ class BFTHotStuffConsensus:
                     replica_id=i,
                     total_replicas=self.total_replicas,
                 )
-    
+
     def get_byzantine_tolerance(self) -> int:
         """Get number of tolerated Byzantine failures"""
         return (self.total_replicas - 1) // 3
-    
+
     def submit_proposal(self, state_hash: str,
                        payload: Optional[Dict[str, Any]] = None) -> Optional[str]:
         """
@@ -477,14 +477,14 @@ class BFTHotStuffConsensus:
         """
         leader_id = self.current_view % self.total_replicas
         leader = self.replicas[leader_id]
-        
+
         proposal = leader.propose(state_hash=state_hash, payload=payload)
         if proposal:
             self.pending_proposals[proposal.proposal_id] = proposal
             return proposal.proposal_id
-        
+
         return None
-    
+
     def run_consensus_round(self, proposal_id: str) -> bool:
         """
         Run single consensus round for proposal
@@ -497,10 +497,10 @@ class BFTHotStuffConsensus:
         """
         if proposal_id not in self.pending_proposals:
             return False
-        
+
         proposal = self.pending_proposals[proposal_id]
         proposal_hash = proposal.compute_proposal_hash()
-        
+
         # Phase 1: PREPARE
         prepare_votes = set()
         for replica_id, replica in self.replicas.items():
@@ -508,18 +508,18 @@ class BFTHotStuffConsensus:
                 vote = replica.vote(proposal, MessageType.PREPARE)
                 if vote:
                     prepare_votes.add(replica_id)
-        
+
         # Check if quorum reached
         quorum_size = self.replicas[0].get_quorum_size()
         if len(prepare_votes) < quorum_size:
             return False
-        
+
         # Form PREPARE QC
         prepare_qc = self.replicas[0].process_votes(proposal_hash, prepare_votes)
         if prepare_qc:
             proposal.prepare_qc = prepare_qc
             proposal.status = ProposalStatus.PREPARED
-        
+
         # Phase 2: PRE-COMMIT
         pre_commit_votes = set()
         for replica_id, replica in self.replicas.items():
@@ -527,20 +527,20 @@ class BFTHotStuffConsensus:
                 vote = replica.vote(proposal, MessageType.PRE_COMMIT)
                 if vote:
                     pre_commit_votes.add(replica_id)
-        
+
         if len(pre_commit_votes) < quorum_size:
             return False
-        
+
         # Form PRE-COMMIT QC
         pre_commit_qc = self.replicas[0].process_votes(proposal_hash, pre_commit_votes)
         if pre_commit_qc:
             proposal.pre_commit_qc = pre_commit_qc
             proposal.status = ProposalStatus.PRE_COMMITTED
-            
+
             # Update locked QC for all replicas
             for replica in self.replicas.values():
                 replica.update_locked_qc(pre_commit_qc)
-        
+
         # Phase 3: COMMIT
         commit_votes = set()
         for replica_id, replica in self.replicas.items():
@@ -548,31 +548,31 @@ class BFTHotStuffConsensus:
                 vote = replica.vote(proposal, MessageType.COMMIT)
                 if vote:
                     commit_votes.add(replica_id)
-        
+
         if len(commit_votes) < quorum_size:
             return False
-        
+
         # Form COMMIT QC
         commit_qc = self.replicas[0].process_votes(proposal_hash, commit_votes)
         if commit_qc:
             proposal.commit_qc = commit_qc
             proposal.status = ProposalStatus.COMMITTED
-        
+
         # Phase 4: DECIDE
         # Once COMMIT QC formed, proposal is decided
         proposal.status = ProposalStatus.DECIDED
-        
+
         # Move to decided proposals
         del self.pending_proposals[proposal_id]
         self.decided_proposals[proposal_id] = proposal
-        
+
         # Advance view
         for replica in self.replicas.values():
             replica.advance_view()
         self.current_view += 1
-        
+
         return True
-    
+
     def inject_byzantine_faults(self, num_faults: int) -> List[int]:
         """
         Inject Byzantine faults for testing
@@ -586,18 +586,18 @@ class BFTHotStuffConsensus:
         f = self.get_byzantine_tolerance()
         if num_faults > f:
             raise ValueError(f"Cannot inject {num_faults} faults, max is {f}")
-        
+
         # Randomly select replicas to make faulty
         faulty_ids = secrets.SystemRandom().sample(
             range(self.total_replicas),
             num_faults
         )
-        
+
         for replica_id in faulty_ids:
             self.replicas[replica_id].is_faulty = True
-        
+
         return faulty_ids
-    
+
     def get_consensus_statistics(self) -> Dict[str, Any]:
         """
         Get consensus statistics
@@ -606,7 +606,7 @@ class BFTHotStuffConsensus:
             Dictionary of statistics
         """
         faulty_count = sum(1 for r in self.replicas.values() if r.is_faulty)
-        
+
         return {
             'total_replicas': self.total_replicas,
             'byzantine_tolerance': self.get_byzantine_tolerance(),

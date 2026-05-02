@@ -31,11 +31,9 @@ from qratum_chess.core.position import Move, Position
 from qratum_chess.kaggle.client import KaggleClient
 from qratum_chess.kaggle.config import KaggleConfig
 from qratum_chess.kaggle.leaderboard import LeaderboardTracker
-from qratum_chess.kaggle.submission import (
-    SubmissionFormatter,
-    SubmissionValidator,
-    create_submission_metadata,
-)
+from qratum_chess.kaggle.submission import (SubmissionFormatter,
+                                            SubmissionValidator,
+                                            create_submission_metadata)
 from qratum_chess.search.aas import AsymmetricAdaptiveSearch
 
 

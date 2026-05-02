@@ -14,15 +14,9 @@ import numpy as np
 
 from qagents.mvri.action_space import EPSILON
 from qagents.mvri.state import Inv, State, make_state
-from qagents.realworld_bridge import (
-    ControlLoop,
-    LoopTrace,
-    MockActuator,
-    MockSensor,
-    Observation,
-    SafetyConfig,
-    StateObserver,
-)
+from qagents.realworld_bridge import (ControlLoop, LoopTrace, MockActuator,
+                                      MockSensor, Observation, SafetyConfig,
+                                      StateObserver)
 
 # --------------------------------------------------------------------------- #
 # Fixtures

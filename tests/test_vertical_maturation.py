@@ -1,15 +1,9 @@
 """Tests for Vertical Maturation Module."""
 
-from verticals.maturation import (
-    TXO,
-    CrossVerticalIntent,
-    DeterministicPipeline,
-    PipelineStage,
-    PipelineStatus,
-    TXORouter,
-    TXOType,
-    VerticalCoordinator,
-)
+from verticals.maturation import (TXO, CrossVerticalIntent,
+                                  DeterministicPipeline, PipelineStage,
+                                  PipelineStatus, TXORouter, TXOType,
+                                  VerticalCoordinator)
 
 
 class TestTXO:

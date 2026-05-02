@@ -9,21 +9,14 @@ from unittest.mock import patch
 
 import pytest
 
-from qratum_chess.benchmarks.kaggle_config import (
-    KaggleCompetitionConfig,
-    KaggleConfig,
-    KaggleCredentials,
-    SubmissionFormat,
-)
+from qratum_chess.benchmarks.kaggle_config import (KaggleCompetitionConfig,
+                                                   KaggleConfig,
+                                                   KaggleCredentials,
+                                                   SubmissionFormat)
 from qratum_chess.benchmarks.kaggle_integration import (
-    KaggleBenchmarkPosition,
-    KaggleIntegration,
-    KaggleLeaderboardData,
-)
-from qratum_chess.benchmarks.kaggle_submission import (
-    KaggleSubmission,
-    SubmissionResult,
-)
+    KaggleBenchmarkPosition, KaggleIntegration, KaggleLeaderboardData)
+from qratum_chess.benchmarks.kaggle_submission import (KaggleSubmission,
+                                                       SubmissionResult)
 
 
 class TestKaggleCredentials:

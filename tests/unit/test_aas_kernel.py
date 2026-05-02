@@ -9,14 +9,10 @@ Tests the canonical kernel interfaces:
 
 import pytest
 
-from qratum_chess.search.aas_kernel import (
-    AASMetrics,
-    ChessAASKernel,
-    DepthBudget,
-    EntropyGradient,
-    OrthogonalSubspace,
-    create_aas_kernel,
-)
+from qratum_chess.search.aas_kernel import (AASMetrics, ChessAASKernel,
+                                            DepthBudget, EntropyGradient,
+                                            OrthogonalSubspace,
+                                            create_aas_kernel)
 
 
 class TestEntropyGradient:
