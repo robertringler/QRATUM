@@ -1,0 +1,11 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+3501,Quantum Algorithms,Variational quantum eigensolver for chemistry,D16,0.96,0.94,"Quantum computing;VQE",D4;D1,QuASIM,1,algorithm
+3502,Error Correction,Surface code quantum error correction,D16,0.95,0.92,"QEC;Topological codes",D15;D8,QuASIM,1,protocol
+3503,Quantum ML,Quantum machine learning for optimization,D16,0.93,0.95,"Quantum ML;Optimization",D8;D3,QuASIM,2,model
+3504,Post-Quantum Crypto,Lattice-based post-quantum cryptography,D16,0.94,0.96,"Cryptography;Lattice theory",D12;D20,QStack,1,protocol
+3505,Quantum Annealing,D-Wave style quantum annealing optimization,D16,0.89,0.90,"Quantum annealing;Combinatorial",D3;D11,QuASIM,2,optimization
+3525,Quantum Sensing,Quantum sensor network architecture,D16,0.91,0.88,"Quantum sensing;Networks",D12;D18,QNimbus,2,architecture
+3535,Quantum Networking,Quantum key distribution network,D16,0.92,0.93,"QKD;Quantum networking",D12;D20,QNimbus,2,network
+3545,Quantum Simulation,Hamiltonian simulation algorithms,D16,0.90,0.87,"Quantum simulation;Algorithms",D4;D13,QuASIM,2,algorithm
+3555,Variational Circuits,Variational quantum circuit optimization,D16,0.88,0.89,"VQC;Optimization",D8;D3,QuASIM,2,circuit
+3565,Quantum Compilation,Efficient quantum circuit compilation,D16,0.87,0.85,"Circuit synthesis;Optimization",D8;D15,QStack,3,compiler

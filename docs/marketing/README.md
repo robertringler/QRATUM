@@ -12,9 +12,18 @@ QuASIM × QuNimbus is an enterprise-grade quantum-classical simulation platform 
 
 | Document | Description | Status |
 |----------|-------------|--------|
+| [**Ontological Category Design Summary**](ONTOLOGICAL_CATEGORY_DESIGN_SUMMARY.md) | Executive overview + implementation roadmap | ✅ Ready |
+| [**Brand Identity Prism**](BRAND_IDENTITY_PRISM.md) | Ontological category design: "Deterministic Quantum Realms" | ✅ Ready |
+| [**Brand Guidelines**](BRAND_GUIDELINES.md) | Visual identity, colors, typography, tone | ✅ Ready |
 | [**Figma Quick Start**](FIGMA_QUICKSTART.md) | Quick reference for creating Figma assets | ✅ Ready |
 | [**Figma Integration Guide**](FIGMA_INTEGRATION_GUIDE.md) | Complete workflow and specifications | ✅ Ready |
-| [**Brand Guidelines**](BRAND_GUIDELINES.md) | Visual identity, colors, typography, tone | ✅ Ready |
+
+### Marketing Strategy
+
+| Document | Description | Status |
+|----------|-------------|--------|
+| [**3-Month GTM Strategy**](GTM_STRATEGY_3MONTH.md) | Go-to-market plan for Q1 2026 category launch | ✅ Ready |
+| [**Social Media Calendar**](SOCIAL_MEDIA_CONTENT_CALENDAR.md) | 1-week content calendar (LinkedIn/Instagram) | ✅ Ready |
 
 ### Marketing Materials
 
@@ -32,6 +41,10 @@ Start here: **[Figma Quick Start](FIGMA_QUICKSTART.md)**
 - Follow the export workflow
 
 ### For Marketers
+- **START HERE**: **[Ontological Category Design Summary](ONTOLOGICAL_CATEGORY_DESIGN_SUMMARY.md)** — Executive overview
+- **[Brand Identity Prism](BRAND_IDENTITY_PRISM.md)**: Ontological category design framework
+- **[3-Month GTM Strategy](GTM_STRATEGY_3MONTH.md)**: Launch plan for "Deterministic Quantum Realms"
+- **[Social Media Calendar](SOCIAL_MEDIA_CONTENT_CALENDAR.md)**: Week 1 content strategy
 - **[One-Pager](one_pager.md)**: Elevator pitch and key facts
 - **[Press Release](press_release.md)**: Official announcement template
 - **[Brand Guidelines](BRAND_GUIDELINES.md)**: Messaging and tone
@@ -39,6 +52,38 @@ Start here: **[Figma Quick Start](FIGMA_QUICKSTART.md)**
 ### For Developers
 - **[Figma Integration Guide](FIGMA_INTEGRATION_GUIDE.md)**: Technical workflow
 - Asset directories: `../assets/marketing/`, `../assets/social/`
+
+## Ontological Category Design: "Deterministic Quantum Realms"
+
+QRATUM creates and owns the "Deterministic Quantum Realms" category—a fundamental shift from probabilistic quantum simulation to absolute reproducibility architecture. This isn't competitive positioning; it's category creation.
+
+### The Category Shift
+
+**Legacy Problem (Competitors Solve)**:
+"How do we reduce noise and error rates in quantum simulations?"
+
+**QRATUM Problem (New Category)**:
+"How do we architect self-contained simulation universes where variability is mathematically impossible?"
+
+### Why We Have No Direct Competitors
+
+- **Certification Impossibility**: DO-178C Level A requires deterministic execution—probabilistic tools cannot certify
+- **Seed Replay Precision**: <1μs drift over 10,000 iterations—mathematical signature of realm-level architecture
+- **Mission Validation**: SpaceX/NASA <2% RMSE—guarantees, not confidence intervals
+- **Economic Bridge**: Φ_QEVF requires determinism—can't model ROI on probability
+
+### Brand Essence
+
+**"Realms Without Chaos"**
+
+We architect self-contained, reproducible universes where simulation variability is not managed but eliminated. While competitors optimize probabilistic systems, QRATUM eliminates probability.
+
+### Voice: Authoritative Quantum Physicist Declaring New Laws
+
+Content reads like peer-reviewed papers compressed into declarations. Contrarian statements backed by empirical data. Zero marketing fluff, zero buzzwords. We don't claim innovation—we declare ontological inevitability.
+
+**Example**:
+> "Quantum simulations aren't probabilistic—they're deterministic, or they're wrong. DO-178C Level A certification requires absolute reproducibility. When aerospace doesn't negotiate with probability, deterministic realms become the only valid architecture."
 
 ## Key Brand Elements
 

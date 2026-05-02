@@ -10,6 +10,7 @@ class QNimbusGuard:
 
     def __init__(self):
         """Initialize guard with banned patterns."""
+
         self.banned_patterns = [
             "bio-weapons",
             "bioweapons",
@@ -43,6 +44,7 @@ class QNimbusGuard:
         >>> guard.allow_query("bio-weapons design")
         False
         """
+
         query_lower = query.lower()
         return all(pattern not in query_lower for pattern in self.banned_patterns)
 
@@ -65,6 +67,7 @@ class QNimbusGuard:
         >>> guard.get_rejection_reason("bio-weapons")
         'Query contains banned pattern: bio-weapons'
         """
+
         query_lower = query.lower()
 
         for pattern in self.banned_patterns:

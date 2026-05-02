@@ -24,12 +24,9 @@ from quasim.net.http import HttpClient
 from quasim.policy.qnimbus_guard import QNimbusGuard
 from quasim.qunimbus.bridge import QNimbusBridge, QNimbusConfig
 from quasim.qunimbus.china_integration import ChinaPhotonicFactory
-from quasim.qunimbus.orchestrator import (
-    ComplianceFramework,
-    ExecutionMode,
-    OrchestrationConfig,
-    QuNimbusOrchestrator,
-)
+from quasim.qunimbus.orchestrator import (ComplianceFramework, ExecutionMode,
+                                          OrchestrationConfig,
+                                          QuNimbusOrchestrator)
 from quasim.qunimbus.pilot_factory import PilotFactory
 from quasim.runtime.determinism import set_seed
 from quasim.validation.compare import compare_observables
@@ -51,6 +48,7 @@ def cli():
 
     Wave 3: 1,000 pilots/day + China Photonic Factory integration.
     """
+
     pass
 
 
@@ -119,6 +117,7 @@ def orchestrate(
             --compliance "CMMC-L2,DO-178C,ISO-13485,China-MLPS" \\
             --mode "live_accelerated"
     """
+
     # Parse compliance frameworks
     compliance_list = []
     for c in compliance.split(","):
@@ -171,6 +170,7 @@ def generate_pilots(count: int, display_snapshot: bool):
     Example:
         qunimbus generate-pilots --count 100
     """
+
     factory = PilotFactory(target_per_day=1000)
 
     logger.info(f"Generating {count} Wave 3 pilots...")
@@ -201,6 +201,7 @@ def china_factory(connect: bool, pilot_count: int):
     Example:
         qunimbus china-factory --connect --pilot-count 50
     """
+
     factory = ChinaPhotonicFactory()
 
     if connect:
@@ -243,6 +244,7 @@ def prep_wave4(target: str, integrate: str):
             --target "10000_pilots_per_day" \\
             --integrate "india_qpi_ai,japan_quantum_optics"
     """
+
     logger.info("### Preparing Wave 4 Expansion")
     logger.info(f"Target: {target}")
     logger.info(f"New Integrations: {integrate}")
@@ -271,6 +273,7 @@ def metrics():
     Example:
         qunimbus metrics
     """
+
     logger.info("### QuNimbus Wave 3 Metrics")
     logger.info("| Metric              | Value         |")
     logger.info("|---------------------|---------------|")
@@ -309,6 +312,7 @@ def ascend_cmd(
         qunimbus ascend --query "real world simulation" --out artifacts/real_world_sim_2025
         qunimbus ascend --query "real world simulation" --dry-run
     """
+
     # Check policy guard
     guard = QNimbusGuard()
     if not guard.allow_query(query):
@@ -433,6 +437,7 @@ def validate_cmd(snapshot: str, metrics: str, tolerance: float, strict: bool):
         qunimbus validate --snapshot artifacts/real_world_sim_2025/earth_snapshot.hdf5
         qunimbus validate --snapshot artifacts/snapshot.hdf5 --strict --tolerance 0.01
     """
+
     logger.info(f"Validating snapshot: {snapshot}")
     logger.info(f"Metrics config: {metrics}")
     logger.info(f"Tolerance: {tolerance}")
@@ -496,6 +501,7 @@ def validate_cmd(snapshot: str, metrics: str, tolerance: float, strict: bool):
 
 def main():
     """Main entry point for CLI."""
+
     cli()
 
 

@@ -1,18 +1,18 @@
 """Deterministic CLI entrypoint for Q-Stack operations."""
+
 from __future__ import annotations
 
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict, List
-
-from qunimbus.synthetic.agents import EconomicAgent
+from typing import Any
 
 from qstack.session import SystemSession
+from qunimbus.synthetic.agents import EconomicAgent
 
 
 def _load_json(path: str | Path) -> Any:
-    with open(path, "r", encoding="utf-8") as handle:
+    with open(path, encoding="utf-8") as handle:
         return json.load(handle)
 
 
@@ -24,7 +24,7 @@ def _convert_complex_value(value: Any) -> Any:
     return value
 
 
-def _load_circuit(path: str | Path) -> List[List[complex]]:
+def _load_circuit(path: str | Path) -> list[list[complex]]:
     data = _load_json(path)
     converted = _convert_complex_value(data)
     if not isinstance(converted, list):
@@ -32,12 +32,12 @@ def _load_circuit(path: str | Path) -> List[List[complex]]:
     return converted  # type: ignore[return-value]
 
 
-def _load_qunimbus_scenario(path: str | Path) -> Dict[str, Any]:
+def _load_qunimbus_scenario(path: str | Path) -> dict[str, Any]:
     data = _load_json(path)
     agents_data = data.get("agents", [])
     shocks = data.get("shocks", [])
     steps = int(data.get("steps", len(shocks))) if shocks or data.get("steps") is not None else 0
-    agents: List[EconomicAgent] = []
+    agents: list[EconomicAgent] = []
     for agent in agents_data:
         agents.append(
             EconomicAgent(
@@ -49,7 +49,7 @@ def _load_qunimbus_scenario(path: str | Path) -> Dict[str, Any]:
     return {"agents": agents, "shocks": shocks, "steps": steps}
 
 
-def _dump_output(payload: Dict[str, Any]) -> None:
+def _dump_output(payload: dict[str, Any]) -> None:
     print(json.dumps(payload, sort_keys=True, indent=2, default=str))
 
 
@@ -72,7 +72,9 @@ def cmd_run_qnx(args: argparse.Namespace) -> None:
     session = build_session(args)
     session.kernel.boot()
     results = session.kernel.run_qnx_cycles(args.steps)
-    _dump_output({"qnx_results": results, "events": [event.event_id for event in session.event_bus.events]})
+    _dump_output(
+        {"qnx_results": results, "events": [event.event_id for event in session.event_bus.events]}
+    )
 
 
 def cmd_run_quasim(args: argparse.Namespace) -> None:
@@ -80,7 +82,9 @@ def cmd_run_quasim(args: argparse.Namespace) -> None:
     session.kernel.boot()
     circuit = _load_circuit(args.circuit)
     amplitudes = session.kernel.run_quasim(circuit)
-    _dump_output({"amplitudes": amplitudes, "events": [event.event_id for event in session.event_bus.events]})
+    _dump_output(
+        {"amplitudes": amplitudes, "events": [event.event_id for event in session.event_bus.events]}
+    )
 
 
 def cmd_run_qunimbus(args: argparse.Namespace) -> None:
@@ -88,7 +92,12 @@ def cmd_run_qunimbus(args: argparse.Namespace) -> None:
     session.kernel.boot()
     scenario = _load_qunimbus_scenario(args.scenario)
     result = session.kernel.run_qunimbus(scenario["agents"], scenario["shocks"], scenario["steps"])
-    _dump_output({"qunimbus_result": result, "events": [event.event_id for event in session.event_bus.events]})
+    _dump_output(
+        {
+            "qunimbus_result": result,
+            "events": [event.event_id for event in session.event_bus.events],
+        }
+    )
 
 
 def cmd_alignment_summary(args: argparse.Namespace) -> None:
@@ -120,13 +129,15 @@ def build_parser() -> argparse.ArgumentParser:
     qunimbus_parser.add_argument("--scenario", required=True, help="Path to JSON scenario file")
     qunimbus_parser.set_defaults(func=cmd_run_qunimbus)
 
-    alignment_parser = subparsers.add_parser("alignment-summary", help="Show constitutional and policy alignment details")
+    alignment_parser = subparsers.add_parser(
+        "alignment-summary", help="Show constitutional and policy alignment details"
+    )
     alignment_parser.set_defaults(func=cmd_alignment_summary)
 
     return parser
 
 
-def main(argv: List[str] | None = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
     args.func(args)

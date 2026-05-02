@@ -10,22 +10,15 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from analysis.fortune500_quasim_integration import (
-    CompanyProfile,
-    QIIComponents,
-    aggregate_sector_analysis,
-    analyze_company,
-    calculate_economic_leverage,
-    calculate_integration_compatibility,
-    calculate_qii,
-    calculate_strategic_value,
-    calculate_technical_feasibility,
-    enrich_company_data,
-    generate_synthetic_fortune500,
-)
+    CompanyProfile, QIIComponents, aggregate_sector_analysis, analyze_company,
+    calculate_economic_leverage, calculate_integration_compatibility,
+    calculate_qii, calculate_strategic_value, calculate_technical_feasibility,
+    enrich_company_data, generate_synthetic_fortune500)
 
 
 def test_company_profile_creation():
     """Test CompanyProfile dataclass creation."""
+
     company = CompanyProfile(
         rank=1,
         name="Test Company",
@@ -43,6 +36,7 @@ def test_company_profile_creation():
 
 def test_enrich_company_data_technology():
     """Test enrichment for technology sector company."""
+
     company = CompanyProfile(
         rank=1,
         name="Amazon",
@@ -64,6 +58,7 @@ def test_enrich_company_data_technology():
 
 def test_enrich_company_data_pharma():
     """Test enrichment for pharmaceutical company."""
+
     company = CompanyProfile(
         rank=50,
         name="Pfizer",
@@ -83,6 +78,7 @@ def test_enrich_company_data_pharma():
 
 def test_calculate_technical_feasibility():
     """Test technical feasibility score calculation."""
+
     company = CompanyProfile(
         rank=1,
         name="Test",
@@ -105,6 +101,7 @@ def test_calculate_technical_feasibility():
 
 def test_calculate_integration_compatibility():
     """Test integration compatibility score calculation."""
+
     company = CompanyProfile(
         rank=1,
         name="Test",
@@ -126,6 +123,7 @@ def test_calculate_integration_compatibility():
 
 def test_calculate_economic_leverage():
     """Test economic leverage score calculation."""
+
     # High revenue, high R&D company
     company = CompanyProfile(
         rank=10,
@@ -147,6 +145,7 @@ def test_calculate_economic_leverage():
 
 def test_calculate_strategic_value():
     """Test strategic value score calculation."""
+
     # Pharmaceutical company with quantum
     company = CompanyProfile(
         rank=20,
@@ -170,6 +169,7 @@ def test_calculate_strategic_value():
 
 def test_calculate_qii():
     """Test complete QII calculation."""
+
     company = CompanyProfile(
         rank=1,
         name="Test Company",
@@ -212,6 +212,7 @@ def test_calculate_qii():
 
 def test_analyze_company():
     """Test complete company analysis."""
+
     company = CompanyProfile(
         rank=1,
         name="Test Company",
@@ -233,6 +234,7 @@ def test_analyze_company():
 
 def test_aggregate_sector_analysis():
     """Test sector aggregation."""
+
     # Create multiple companies in same sector
     companies = [
         CompanyProfile(
@@ -265,6 +267,7 @@ def test_aggregate_sector_analysis():
 
 def test_generate_synthetic_fortune500():
     """Test synthetic data generation."""
+
     companies = generate_synthetic_fortune500()
 
     assert len(companies) == 500
@@ -279,6 +282,7 @@ def test_generate_synthetic_fortune500():
 
 def test_qii_components_dataclass():
     """Test QIIComponents dataclass."""
+
     components = QIIComponents(
         technical_feasibility=0.8,
         integration_compatibility=0.7,
@@ -294,6 +298,7 @@ def test_qii_components_dataclass():
 
 def test_data_matrix_export():
     """Test CSV data matrix export."""
+
     from analysis.fortune500_quasim_integration import export_data_matrix
 
     # Create sample analyses
@@ -336,6 +341,7 @@ def test_data_matrix_export():
 
 def test_json_export():
     """Test JSON summary export."""
+
     from analysis.fortune500_quasim_integration import export_json_summary
 
     companies = generate_synthetic_fortune500()[:50]  # Use subset
@@ -343,12 +349,13 @@ def test_json_export():
 
     # Aggregate by sector
     sectors = {}
-    for sector_name in set(a.profile.sector for a in analyses):
+    for sector_name in {a.profile.sector for a in analyses}:
         sector_analyses = [a for a in analyses if a.profile.sector == sector_name]
         sectors[sector_name] = aggregate_sector_analysis(sector_analyses, sector_name)
 
     # Calculate correlation
-    from analysis.fortune500_quasim_integration import calculate_correlation_matrix
+    from analysis.fortune500_quasim_integration import \
+        calculate_correlation_matrix
 
     correlation_data = calculate_correlation_matrix(analyses)
 
@@ -378,7 +385,9 @@ def test_json_export():
 
 def test_integration_pathways():
     """Test integration pathway identification."""
-    from analysis.fortune500_quasim_integration import identify_integration_pathways
+
+    from analysis.fortune500_quasim_integration import \
+        identify_integration_pathways
 
     # High compatibility company
     company = CompanyProfile(
@@ -412,7 +421,9 @@ def test_integration_pathways():
 
 def test_adoption_timeline():
     """Test adoption timeline determination."""
-    from analysis.fortune500_quasim_integration import determine_adoption_timeline
+
+    from analysis.fortune500_quasim_integration import \
+        determine_adoption_timeline
 
     assert determine_adoption_timeline(0.85) == "2025-2026"
     assert determine_adoption_timeline(0.65) == "2026-2027"
@@ -423,6 +434,7 @@ def test_adoption_timeline():
 
 def test_qii_score_bounds():
     """Test that QII scores are always within valid bounds."""
+
     companies = generate_synthetic_fortune500()
 
     for company in companies[:100]:  # Test subset
@@ -438,8 +450,9 @@ def test_qii_score_bounds():
 
 def test_sector_diversity():
     """Test that generated data includes diverse sectors."""
+
     companies = generate_synthetic_fortune500()
-    sectors = set(c.sector for c in companies)
+    sectors = {c.sector for c in companies}
 
     assert len(sectors) >= 10  # At least 10 different sectors
     assert "Technology" in sectors

@@ -1,0 +1,17 @@
+# VITRA Bioinformatics Intent Example
+# QIL for DNA Sequence Analysis
+
+vertical: VITRA
+operation: sequence_analysis
+user_id: researcher_bio_001
+session_id: vitra_session_456
+
+parameters:
+  sequence: ATGGCTAGCTAGCTAGCTAGCTGAATAG
+  sequence_type: dna
+  
+metadata:
+  organism: homo_sapiens
+  gene_name: SAMPLE_GENE
+  analysis_purpose: research
+  ethics_approval: IRB_2024_001

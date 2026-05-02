@@ -1,8 +1,9 @@
 """Global registry for Q-Stack components."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, Iterable, TypeVar
+from typing import Iterable, TypeVar
 
 from .contracts import Engine, Kernel, Module
 
@@ -13,11 +14,11 @@ T = TypeVar("T", Kernel, Module, Engine)
 class Registry:
     """Simple in-memory registry for kernels, modules, and engines."""
 
-    kernels: Dict[str, Kernel] = field(default_factory=dict)
-    modules: Dict[str, Module] = field(default_factory=dict)
-    engines: Dict[str, Engine] = field(default_factory=dict)
+    kernels: dict[str, Kernel] = field(default_factory=dict)
+    modules: dict[str, Module] = field(default_factory=dict)
+    engines: dict[str, Engine] = field(default_factory=dict)
 
-    def _register(self, store: Dict[str, T], component: T) -> None:
+    def _register(self, store: dict[str, T], component: T) -> None:
         name = component.name
         if name in store:
             raise ValueError(f"Component with name '{name}' is already registered")
@@ -25,14 +26,17 @@ class Registry:
 
     def register_kernel(self, kernel: Kernel) -> None:
         """Register a kernel instance."""
+
         self._register(self.kernels, kernel)
 
     def register_module(self, module: Module) -> None:
         """Register a module instance."""
+
         self._register(self.modules, module)
 
     def register_engine(self, engine: Engine) -> None:
         """Register an engine instance."""
+
         self._register(self.engines, engine)
 
     def get_kernel(self, name: str) -> Kernel:

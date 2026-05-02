@@ -1,10 +1,9 @@
 """Deterministic shock injectors."""
+
 from __future__ import annotations
 
-from typing import Dict
 
-
-def apply_price_shock(prices: Dict[str, float], shock: Dict[str, float]) -> Dict[str, float]:
+def apply_price_shock(prices: dict[str, float], shock: dict[str, float]) -> dict[str, float]:
     updated = dict(prices)
     for symbol, delta in sorted(shock.items()):
         updated[symbol] = updated.get(symbol, 0.0) + delta

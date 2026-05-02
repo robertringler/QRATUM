@@ -51,6 +51,7 @@ class CausalHistoryHash:
 
     def _compute_hash(self, event_id: str, data: NDArray[np.float64]) -> str:
         """Compute deterministic hash of event and data."""
+
         hasher = hashlib.new(self.hash_algo)
         hasher.update(event_id.encode("utf-8"))
         hasher.update(data.tobytes())
@@ -71,6 +72,7 @@ class CausalHistoryHash:
         str
             Event hash
         """
+
         event_hash = self._compute_hash(event_id, data)
         self._event_hashes[event_id] = event_hash
         self._history.append((event_id, event_hash))
@@ -95,6 +97,7 @@ class CausalHistoryHash:
         bool
             True if event exists in history
         """
+
         return event_id in self._event_hashes
 
     def get_history(self) -> list[tuple[str, str]]:
@@ -105,10 +108,12 @@ class CausalHistoryHash:
         list[tuple[str, str]]
             List of (event_id, event_hash) tuples
         """
+
         return list(self._history)
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary for testing/checkpointing."""
+
         return {
             "history_size": self.history_size,
             "hash_algo": self.hash_algo,
@@ -119,6 +124,7 @@ class CausalHistoryHash:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> CausalHistoryHash:
         """Deserialize from dictionary."""
+
         instance = cls(history_size=data["history_size"], hash_algo=data["hash_algo"])
         instance._history = deque(data["history"], maxlen=data["history_size"])
         instance._event_hashes = dict(data["event_hashes"])
@@ -173,6 +179,7 @@ class SuperpositionResolver:
         dict[str, Any]
             Resolution results with 'state', 'converged', 'iterations'
         """
+
         rng = rng or np.random.default_rng(42)
         state = np.copy(initial_state)
 
@@ -204,11 +211,13 @@ class SuperpositionResolver:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize configuration."""
+
         return {"max_iterations": self.max_iterations, "tolerance": self.tolerance}
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> SuperpositionResolver:
         """Deserialize from dictionary."""
+
         return cls(max_iterations=data["max_iterations"], tolerance=data["tolerance"])
 
 
@@ -242,6 +251,7 @@ class DistributedStreamMonitor:
 
     def __post_init__(self) -> None:
         """Initialize stream buffers."""
+
         for i in range(self.num_streams):
             self._buffers[i] = deque(maxlen=self.buffer_size)
             self._timestamps[i] = deque(maxlen=self.buffer_size)
@@ -258,6 +268,7 @@ class DistributedStreamMonitor:
         timestamp : float, optional
             Sample timestamp (auto-generated if None)
         """
+
         if stream_id not in self._buffers:
             self._buffers[stream_id] = deque(maxlen=self.buffer_size)
             self._timestamps[stream_id] = deque(maxlen=self.buffer_size)
@@ -279,6 +290,7 @@ class DistributedStreamMonitor:
         dict[str, float]
             Statistics including mean, std, min, max, count
         """
+
         if stream_id not in self._buffers or not self._buffers[stream_id]:
             return {"mean": 0.0, "std": 0.0, "min": 0.0, "max": 0.0, "count": 0}
 
@@ -304,6 +316,7 @@ class DistributedStreamMonitor:
         list[tuple[int, int]]
             List of (stream_i, stream_j) pairs with high correlation
         """
+
         synced_pairs = []
 
         for i in range(self.num_streams):
@@ -329,6 +342,7 @@ class DistributedStreamMonitor:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
+
         return {
             "num_streams": self.num_streams,
             "buffer_size": self.buffer_size,
@@ -339,6 +353,7 @@ class DistributedStreamMonitor:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> DistributedStreamMonitor:
         """Deserialize from dictionary."""
+
         instance = cls(num_streams=data["num_streams"], buffer_size=data["buffer_size"])
         instance._buffers = {
             int(k): deque(v, maxlen=data["buffer_size"]) for k, v in data["buffers"].items()
@@ -396,6 +411,7 @@ class SelfConsistencyPropagator:
         dict[str, Any]
             Propagation results with 'states', 'converged', 'iterations'
         """
+
         if adjacency is None:
             # Default to fully connected
             adjacency = np.ones((self.num_nodes, self.num_nodes)) - np.eye(self.num_nodes)
@@ -435,6 +451,7 @@ class SelfConsistencyPropagator:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize configuration."""
+
         return {
             "num_nodes": self.num_nodes,
             "damping": self.damping,
@@ -445,6 +462,7 @@ class SelfConsistencyPropagator:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> SelfConsistencyPropagator:
         """Deserialize from dictionary."""
+
         return cls(
             num_nodes=data["num_nodes"],
             damping=data["damping"],
@@ -482,6 +500,7 @@ class StabilityMonitor:
 
     def __post_init__(self) -> None:
         """Initialize metrics buffer."""
+
         self._metrics = deque(maxlen=self.window_size)
 
     def add_metric(self, value: float) -> None:
@@ -492,6 +511,7 @@ class StabilityMonitor:
         value : float
             Metric value to add
         """
+
         self._metrics.append(value)
 
     def is_stable(self) -> bool:
@@ -502,6 +522,7 @@ class StabilityMonitor:
         bool
             True if system appears stable
         """
+
         if len(self._metrics) < self.window_size // 2:
             return True  # Not enough data
 
@@ -529,6 +550,7 @@ class StabilityMonitor:
         dict[str, float]
             Statistics including mean, std, trend
         """
+
         if not self._metrics:
             return {"mean": 0.0, "std": 0.0, "trend": 0.0, "count": 0}
 
@@ -545,6 +567,7 @@ class StabilityMonitor:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
+
         return {
             "window_size": self.window_size,
             "threshold": self.threshold,
@@ -554,6 +577,7 @@ class StabilityMonitor:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> StabilityMonitor:
         """Deserialize from dictionary."""
+
         instance = cls(window_size=data["window_size"], threshold=data["threshold"])
         instance._metrics = deque(data["metrics"], maxlen=data["window_size"])
         return instance

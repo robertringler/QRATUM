@@ -12,7 +12,6 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -40,9 +39,9 @@ class OrchestrationConfig:
     """Configuration for QuNimbus orchestration."""
 
     parallel: bool = True
-    tasks: List[str] = None
-    auth: Optional[str] = None
-    compliance: List[ComplianceFramework] = None
+    tasks: list[str] = None
+    auth: str | None = None
+    compliance: list[ComplianceFramework] = None
     mode: ExecutionMode = ExecutionMode.LIVE_ACCELERATED
     wave: int = 3
     pilot_target: int = 1000
@@ -50,6 +49,7 @@ class OrchestrationConfig:
 
     def __post_init__(self):
         """Initialize default values."""
+
         if self.tasks is None:
             self.tasks = ["wave3_launch", "china_photonic_scale"]
         if self.compliance is None:
@@ -74,7 +74,7 @@ class ExecutionMetrics:
     qkd_latency_ms: float = 0.0
     fidelity_avg: float = 0.0
     veto_rate: float = 0.0
-    timestamp: Optional[datetime] = None
+    timestamp: datetime | None = None
 
 
 class QuNimbusOrchestrator:
@@ -86,28 +86,29 @@ class QuNimbusOrchestrator:
         Args:
             config: Configuration for orchestration
         """
+
         self.config = config
         self.metrics = ExecutionMetrics(timestamp=datetime.now())
         self._running = False
         logger.info(
-            f"QuNimbus v2.0 Wave {config.wave} Orchestrator initialized - "
-            f"Mode: {config.mode.value}"
+            f"QuNimbus v2.0 Wave {config.wave} Orchestrator initialized - Mode: {config.mode.value}"
         )
 
-    async def execute_wave3_launch(self) -> Dict:
+    async def execute_wave3_launch(self) -> dict:
         """Execute Wave 3 launch (1,000 pilots/day).
 
         Returns:
             Execution results with metrics
         """
+
         logger.info("[10:02:11] Wave 3 YAML: Auto-generated | 1,200 lines | 9+ verticals")
         logger.info(
             f"[10:02:13] Pilot Rate: {self.config.pilot_target}/day "
-            f"({self.config.pilot_target/24:.1f}/hr) | Efficiency Target: 22×"
+            f"({self.config.pilot_target / 24:.1f}/hr) | Efficiency Target: 22×"
         )
         logger.info("[10:02:15] RL Policy: 98.3% → 99.1% convergence | MERA: 100×")
         logger.info(
-            "[10:02:17] Pilot Factory: Gen 1–1,000 ACTIVE | " "10,000+ qubits (PsiQuantum + QuEra)"
+            "[10:02:17] Pilot Factory: Gen 1–1,000 ACTIVE | 10,000+ qubits (PsiQuantum + QuEra)"
         )
         logger.info("[10:02:19] Veto Rate: 0.8% | Auto-corrected in <0.1s")
 
@@ -128,16 +129,17 @@ class QuNimbusOrchestrator:
             "efficiency": f"{self.metrics.efficiency_multiplier}×",
             "mera_compression": f"{self.metrics.mera_compression}×",
             "rl_convergence": f"{self.metrics.rl_convergence}%",
-            "veto_rate": f"{self.metrics.veto_rate*100:.1f}%",
+            "veto_rate": f"{self.metrics.veto_rate * 100:.1f}%",
             "fidelity": self.metrics.fidelity_avg,
         }
 
-    async def execute_china_photonic_scale(self) -> Dict:
+    async def execute_china_photonic_scale(self) -> dict:
         """Execute China Photonic Factory integration.
 
         Returns:
             Execution results with metrics
         """
+
         logger.info("[10:02:21] China Photonic Factory: Integration INITIATED")
         logger.info("[10:02:23] Partner: Shenzhen Quantum Valley (1M+ photonic qubits/yr)")
         logger.info("[10:02:25] Tech: Room-temp qubits (PsiQuantum IP), 100× MERA")
@@ -171,12 +173,13 @@ class QuNimbusOrchestrator:
             "uptime": "100%",
         }
 
-    async def execute_parallel(self) -> Dict:
+    async def execute_parallel(self) -> dict:
         """Execute both tasks in parallel.
 
         Returns:
             Combined execution results
         """
+
         logger.info("QuNimbus v2.0 — DUAL EXECUTION: Wave 3 Launch + China Photonic Factory Scale")
         logger.info(
             f"Location: Akron, Ohio, US | Time: {datetime.now().strftime('%Y-%m-%d %H:%M')}"
@@ -213,6 +216,7 @@ class QuNimbusOrchestrator:
 
     def _display_global_impact(self):
         """Display global impact metrics."""
+
         logger.info("\n### Global Impact (10:02 AM EST)")
         logger.info("| Metric           | Akron    | China    | Combined    |")
         logger.info("|------------------|----------|----------|-------------|")
@@ -231,17 +235,19 @@ class QuNimbusOrchestrator:
 
     def _display_compliance_status(self):
         """Display compliance and security status."""
+
         logger.info("\n### Compliance & Security Bridge")
         logger.info("[10:02:31] OPA: MLPS L3 + CMMC L2 → PASS")
         logger.info("[10:02:32] FortiSIEM: Cross-border audit trail (Akron ↔ Shenzhen)")
         logger.info("[10:02:33] QKD: 1 Gbps (BB84 + photonic relay)")
 
-    async def orchestrate(self) -> Dict:
+    async def orchestrate(self) -> dict:
         """Main orchestration entry point.
 
         Returns:
             Orchestration results
         """
+
         self._running = True
 
         try:
@@ -275,4 +281,5 @@ class QuNimbusOrchestrator:
         Returns:
             Current metrics snapshot
         """
+
         return self.metrics

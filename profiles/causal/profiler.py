@@ -6,7 +6,7 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable, Dict, List
+from typing import Callable
 
 
 @dataclass
@@ -21,6 +21,7 @@ class PerturbationResult:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "function_name": self.function_name,
             "baseline_latency_ms": self.baseline_latency_ms,
@@ -35,11 +36,12 @@ class CausalInfluenceMap:
     """Map of causal contributions to total runtime."""
 
     total_runtime_ms: float
-    perturbations: List[PerturbationResult] = field(default_factory=list)
-    influence_scores: Dict[str, float] = field(default_factory=dict)
+    perturbations: list[PerturbationResult] = field(default_factory=list)
+    influence_scores: dict[str, float] = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "total_runtime_ms": self.total_runtime_ms,
             "perturbations": [p.to_dict() for p in self.perturbations],
@@ -49,20 +51,23 @@ class CausalInfluenceMap:
 
 class CausalProfiler:
     """
+
     Implements causal profiling using perturbation experiments.
     Injects micro-delays and measures downstream effects.
     """
 
     def __init__(self, delay_increment_ms: float = 1.0):
         self.delay_increment_ms = delay_increment_ms
-        self.results: List[PerturbationResult] = []
+        self.results: list[PerturbationResult] = []
 
     def inject_delay(self, duration_ms: float) -> None:
         """Inject a micro-delay (sleep)."""
+
         time.sleep(duration_ms / 1000.0)
 
     def measure_baseline(self, workload: Callable[[], None], repeat: int = 3) -> float:
         """Measure baseline latency without perturbations."""
+
         latencies = []
 
         for _ in range(repeat):
@@ -81,9 +86,11 @@ class CausalProfiler:
         repeat: int = 3,
     ) -> float:
         """
+
         Measure latency with injected delay at a specific point.
         inject_point should be a function that calls inject_delay internally.
         """
+
         latencies = []
 
         for _ in range(repeat):
@@ -101,8 +108,10 @@ class CausalProfiler:
         perturbed_workload: Callable[[], None],
     ) -> PerturbationResult:
         """
+
         Profile a function by comparing baseline and perturbed execution.
         """
+
         # Measure baseline
         baseline_latency = self.measure_baseline(baseline_workload)
 
@@ -125,9 +134,11 @@ class CausalProfiler:
 
     def compute_influence_map(self, total_runtime_ms: float) -> CausalInfluenceMap:
         """
+
         Compute causal influence scores for all profiled functions.
         Higher score = more impact on total runtime.
         """
+
         influence_scores = {}
 
         for result in self.results:
@@ -155,6 +166,7 @@ class CausalProfiler:
         output_path: str = "profiles/causal/influence_map.json",
     ) -> Path:
         """Save causal influence map to disk."""
+
         map_path = Path(output_path)
         map_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -165,6 +177,7 @@ class CausalProfiler:
 
     def generate_report(self, influence_map: CausalInfluenceMap) -> str:
         """Generate human-readable profiling report."""
+
         lines = [
             "Causal Profiling Report",
             "=" * 60,

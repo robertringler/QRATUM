@@ -22,6 +22,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
     Returns:
         CheckResult with pass/fail status and missing artifacts list
     """
+
     c = cfg["inputs"]["compliance"]
     need = ["psac_id", "sas_id", "der_letter"]
     missing = [k for k in need if not os.path.exists(c.get(k, ""))]

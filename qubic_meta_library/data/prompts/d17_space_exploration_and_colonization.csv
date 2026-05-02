@@ -1,0 +1,1001 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+4501,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.91,0.92,Life support;ISRU,D6;D14,QNimbus,1,simulation
+4502,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.73,0.76,,D6;D19,QNimbus,1,model
+4503,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.81,,D19;D14,QNimbus,1,analysis
+4504,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.79,0.78,,D13;D6,QNimbus,1,optimization
+4505,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.84,0.76,,D6;D13,QNimbus,1,design
+4506,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.76,0.78,,D19;D13,QNimbus,1,prediction
+4507,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.91,0.71,,D19;D13,QNimbus,1,simulation
+4508,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.75,0.7,,D6;D13,QNimbus,1,model
+4509,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.78,0.87,,D13,QNimbus,1,analysis
+4510,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.89,0.86,,D14,QNimbus,1,optimization
+4511,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.77,0.75,,D13;D19,QNimbus,1,design
+4512,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.84,0.88,,D13;D14,QNimbus,1,prediction
+4513,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.73,,D6,QNimbus,1,simulation
+4514,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.77,0.84,,D14;D6,QNimbus,1,model
+4515,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.75,,D6;D14,QNimbus,1,analysis
+4516,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.82,0.68,,D13;D19,QNimbus,1,optimization
+4517,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.77,0.91,,D6,QNimbus,1,design
+4518,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.87,,D19,QNimbus,1,prediction
+4519,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.78,,D19;D13,QNimbus,1,simulation
+4520,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.95,0.94,,D6,QNimbus,1,model
+4521,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.9,0.78,,D6;D13,QNimbus,1,analysis
+4522,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.95,0.89,,D14,QNimbus,1,optimization
+4523,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.78,0.69,,D19,QNimbus,1,design
+4524,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.84,0.89,,D14;D13,QNimbus,1,prediction
+4525,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.71,0.79,,D6,QNimbus,1,simulation
+4526,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.94,0.84,,D13,QNimbus,1,model
+4527,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.93,0.84,,D19;D13,QNimbus,1,analysis
+4528,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.75,0.73,,D14;D6,QNimbus,1,optimization
+4529,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.92,0.9,,D6,QNimbus,1,design
+4530,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.79,0.91,,D19;D14,QNimbus,1,prediction
+4531,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.74,0.71,,D14,QNimbus,1,simulation
+4532,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.77,0.81,,D6,QNimbus,1,model
+4533,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.87,0.74,,D6;D14,QNimbus,1,analysis
+4534,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.74,0.78,,D13,QNimbus,1,optimization
+4535,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.92,,D6,QNimbus,1,design
+4536,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.82,0.75,,D13,QNimbus,1,prediction
+4537,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.93,0.9,,D14,QNimbus,1,simulation
+4538,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.86,0.86,,D6;D19,QNimbus,1,model
+4539,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.75,0.72,,D19;D13,QNimbus,1,analysis
+4540,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.85,,D6,QNimbus,1,optimization
+4541,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.76,0.7,,D19,QNimbus,1,design
+4542,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.83,0.81,,D19,QNimbus,1,prediction
+4543,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.8,0.87,,D19,QNimbus,1,simulation
+4544,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.76,0.89,,D13;D14,QNimbus,1,model
+4545,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.71,0.91,,D19,QNimbus,1,analysis
+4546,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.73,0.84,,D6;D14,QNimbus,1,optimization
+4547,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.95,0.85,,D14,QNimbus,1,design
+4548,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.83,0.7,,D6,QNimbus,1,prediction
+4549,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.78,0.82,,D13,QNimbus,1,simulation
+4550,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.85,0.86,,D6;D14,QNimbus,1,model
+4551,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.94,0.77,,D14,QNimbus,1,analysis
+4552,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.85,0.91,,D14,QNimbus,1,optimization
+4553,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.7,0.8,,D13;D14,QNimbus,1,design
+4554,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.75,0.73,,D19;D13,QNimbus,1,prediction
+4555,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.94,0.92,,D13,QNimbus,1,simulation
+4556,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.7,0.78,,D6,QNimbus,1,model
+4557,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.89,,D6,QNimbus,1,analysis
+4558,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.91,0.83,,D13,QNimbus,1,optimization
+4559,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.92,,D13,QNimbus,1,design
+4560,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.9,0.71,,D13;D19,QNimbus,1,prediction
+4561,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.8,0.76,,D6,QNimbus,1,simulation
+4562,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.75,0.92,,D14;D19,QNimbus,1,model
+4563,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.76,0.77,,D6,QNimbus,1,analysis
+4564,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.79,0.84,,D14;D13,QNimbus,1,optimization
+4565,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.79,0.93,,D19,QNimbus,1,design
+4566,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.95,0.89,,D19,QNimbus,1,prediction
+4567,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.78,0.85,,D6,QNimbus,1,simulation
+4568,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.73,0.69,,D19,QNimbus,1,model
+4569,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.88,0.87,,D14,QNimbus,1,analysis
+4570,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.76,0.88,,D6;D19,QNimbus,1,optimization
+4571,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.85,0.87,,D14,QNimbus,1,design
+4572,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.8,0.69,,D14,QNimbus,1,prediction
+4573,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.72,0.81,,D13;D14,QNimbus,1,simulation
+4574,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.86,0.77,,D14,QNimbus,1,model
+4575,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.75,0.68,,D6,QNimbus,1,analysis
+4576,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.84,0.92,,D13,QNimbus,1,optimization
+4577,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.85,0.92,,D6,QNimbus,1,design
+4578,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.81,0.79,,D13;D14,QNimbus,1,prediction
+4579,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.78,0.9,,D13;D19,QNimbus,1,simulation
+4580,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.84,0.86,,D19,QNimbus,1,model
+4581,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.84,0.92,,D14;D13,QNimbus,1,analysis
+4582,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.85,0.84,,D14;D13,QNimbus,1,optimization
+4583,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.86,,D6,QNimbus,1,design
+4584,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.84,0.89,,D14,QNimbus,1,prediction
+4585,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.82,0.94,,D13;D14,QNimbus,1,simulation
+4586,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.85,0.71,,D14;D6,QNimbus,1,model
+4587,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.92,0.86,,D6,QNimbus,1,analysis
+4588,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.88,0.68,,D19,QNimbus,1,optimization
+4589,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.71,,D19,QNimbus,1,design
+4590,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.8,0.8,,D13,QNimbus,1,prediction
+4591,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.8,0.93,,D13;D6,QNimbus,1,simulation
+4592,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.87,0.78,,D6,QNimbus,1,model
+4593,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.75,0.87,,D14,QNimbus,1,analysis
+4594,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.71,,D14,QNimbus,1,optimization
+4595,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.88,0.78,,D6,QNimbus,1,design
+4596,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.89,0.87,,D13;D6,QNimbus,1,prediction
+4597,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.73,,D14,QNimbus,1,simulation
+4598,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.81,0.87,,D14;D6,QNimbus,1,model
+4599,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.82,,D13;D6,QNimbus,1,analysis
+4600,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.9,0.73,,D13,QNimbus,1,optimization
+4601,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.76,0.83,,D6,QNimbus,1,design
+4602,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.75,0.84,,D14;D6,QNimbus,1,prediction
+4603,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.71,0.73,,D6;D14,QNimbus,1,simulation
+4604,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.82,0.77,,D19,QNimbus,1,model
+4605,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.92,0.83,,D6,QNimbus,1,analysis
+4606,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.92,0.88,,D14;D13,QNimbus,1,optimization
+4607,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.91,0.9,,D13,QNimbus,1,design
+4608,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.9,0.77,,D6,QNimbus,1,prediction
+4609,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.7,0.89,,D6,QNimbus,1,simulation
+4610,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.71,0.7,,D13,QNimbus,1,model
+4611,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.94,0.78,,D6,QNimbus,1,analysis
+4612,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.73,0.72,,D14,QNimbus,1,optimization
+4613,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.89,0.81,,D13,QNimbus,1,design
+4614,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.85,0.91,,D14,QNimbus,1,prediction
+4615,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.71,0.78,,D13;D19,QNimbus,1,simulation
+4616,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.83,0.76,,D14,QNimbus,1,model
+4617,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.84,0.77,,D14;D6,QNimbus,1,analysis
+4618,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.9,0.86,,D19;D14,QNimbus,1,optimization
+4619,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.71,0.86,,D19;D14,QNimbus,1,design
+4620,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.85,,D19;D14,QNimbus,1,prediction
+4621,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.91,0.88,,D6;D14,QNimbus,1,simulation
+4622,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.75,0.88,,D13;D14,QNimbus,1,model
+4623,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.94,,D6,QNimbus,1,analysis
+4624,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.85,,D19,QNimbus,1,optimization
+4625,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.78,0.74,,D6,QNimbus,1,design
+4626,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.9,0.86,,D6;D13,QNimbus,1,prediction
+4627,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.78,0.74,,D13,QNimbus,1,simulation
+4628,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.71,0.89,,D19,QNimbus,1,model
+4629,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.84,0.73,,D6;D19,QNimbus,1,analysis
+4630,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.91,0.8,,D13;D6,QNimbus,1,optimization
+4631,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.74,0.8,,D6,QNimbus,1,design
+4632,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.77,0.83,,D13;D14,QNimbus,1,prediction
+4633,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.71,,D14,QNimbus,1,simulation
+4634,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.91,,D6;D14,QNimbus,1,model
+4635,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.77,0.92,,D6,QNimbus,1,analysis
+4636,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.82,0.77,,D19;D14,QNimbus,1,optimization
+4637,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.8,0.86,,D19,QNimbus,1,design
+4638,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.89,0.71,,D14,QNimbus,1,prediction
+4639,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.71,,D19,QNimbus,1,simulation
+4640,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.82,0.79,,D19;D13,QNimbus,1,model
+4641,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.82,0.74,,D19;D6,QNimbus,1,analysis
+4642,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.73,0.83,,D13,QNimbus,1,optimization
+4643,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.91,Life support;ISRU,D14,QNimbus,1,design
+4644,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.76,0.81,,D19,QNimbus,1,prediction
+4645,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.77,0.82,,D13;D14,QNimbus,1,simulation
+4646,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.82,0.69,,D6,QNimbus,1,model
+4647,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.73,0.77,,D13;D19,QNimbus,1,analysis
+4648,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.75,0.71,,D13,QNimbus,1,optimization
+4649,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.93,0.9,,D13;D14,QNimbus,1,design
+4650,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.84,0.88,,D14,QNimbus,1,prediction
+4651,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.76,0.73,,D13,QNimbus,1,simulation
+4652,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.87,,D19;D13,QNimbus,1,model
+4653,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.88,0.81,,D14;D6,QNimbus,1,analysis
+4654,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.94,0.85,,D19,QNimbus,1,optimization
+4655,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.8,0.74,,D14,QNimbus,1,design
+4656,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.93,0.71,,D13,QNimbus,1,prediction
+4657,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.94,0.78,,D6;D14,QNimbus,1,simulation
+4658,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.8,,D14,QNimbus,1,model
+4659,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.83,0.7,,D19,QNimbus,1,analysis
+4660,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.83,,D13,QNimbus,1,optimization
+4661,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.73,0.78,,D19;D14,QNimbus,1,design
+4662,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.9,0.83,,D13,QNimbus,1,prediction
+4663,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.85,0.71,,D14,QNimbus,1,simulation
+4664,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.75,,D14;D19,QNimbus,1,model
+4665,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.87,0.91,,D14;D13,QNimbus,1,analysis
+4666,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.9,0.82,,D6,QNimbus,1,optimization
+4667,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.88,0.7,,D6;D13,QNimbus,1,design
+4668,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.79,0.79,,D13,QNimbus,1,prediction
+4669,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.71,0.79,,D14,QNimbus,1,simulation
+4670,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.86,0.74,,D6,QNimbus,1,model
+4671,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.79,0.87,,D19;D6,QNimbus,1,analysis
+4672,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.86,0.83,,D19;D6,QNimbus,1,optimization
+4673,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.89,0.94,,D14,QNimbus,1,design
+4674,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.74,0.75,,D14,QNimbus,1,prediction
+4675,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.76,0.71,,D6;D14,QNimbus,1,simulation
+4676,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.93,0.82,,D14,QNimbus,1,model
+4677,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.87,0.81,,D14;D13,QNimbus,1,analysis
+4678,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.75,,D13;D19,QNimbus,1,optimization
+4679,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.83,,D19,QNimbus,1,design
+4680,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.92,0.88,,D19,QNimbus,1,prediction
+4681,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.95,0.93,,D14,QNimbus,1,simulation
+4682,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.81,0.89,,D14,QNimbus,1,model
+4683,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.87,0.88,,D6,QNimbus,1,analysis
+4684,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.85,0.7,,D14;D19,QNimbus,1,optimization
+4685,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.74,0.76,,D13,QNimbus,1,design
+4686,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.91,0.77,,D6,QNimbus,1,prediction
+4687,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.78,0.78,,D6;D13,QNimbus,1,simulation
+4688,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.72,,D14;D19,QNimbus,1,model
+4689,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.85,0.92,,D13,QNimbus,1,analysis
+4690,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.74,0.86,,D19;D6,QNimbus,1,optimization
+4691,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.91,0.86,,D6,QNimbus,1,design
+4692,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.72,0.93,,D14;D6,QNimbus,1,prediction
+4693,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.86,0.72,,D13,QNimbus,1,simulation
+4694,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.8,0.83,,D19;D13,QNimbus,1,model
+4695,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.79,,D6;D13,QNimbus,1,analysis
+4696,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.82,0.86,,D19;D6,QNimbus,1,optimization
+4697,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.74,0.85,,D14,QNimbus,1,design
+4698,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.91,0.8,,D6;D14,QNimbus,1,prediction
+4699,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.87,0.8,,D6;D19,QNimbus,1,simulation
+4700,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.89,0.7,,D19;D13,QNimbus,1,model
+4701,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.74,0.77,,D14;D13,QNimbus,1,analysis
+4702,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.7,,D19;D6,QNimbus,1,optimization
+4703,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.91,0.87,,D6;D14,QNimbus,1,design
+4704,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.71,,D13,QNimbus,1,prediction
+4705,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.74,0.74,,D6;D13,QNimbus,1,simulation
+4706,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.89,0.91,,D14,QNimbus,1,model
+4707,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.88,,D19;D13,QNimbus,1,analysis
+4708,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.93,,D13;D19,QNimbus,1,optimization
+4709,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.8,0.91,,D13;D6,QNimbus,1,design
+4710,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.77,0.78,,D19;D6,QNimbus,1,prediction
+4711,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.82,0.8,,D6;D19,QNimbus,1,simulation
+4712,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.76,0.69,,D19,QNimbus,1,model
+4713,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.75,0.8,,D13;D6,QNimbus,1,analysis
+4714,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.89,0.68,,D19,QNimbus,1,optimization
+4715,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.82,0.84,,D6;D14,QNimbus,1,design
+4716,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.92,0.73,,D6;D14,QNimbus,1,prediction
+4717,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.92,,D13,QNimbus,1,simulation
+4718,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.74,0.84,,D13,QNimbus,1,model
+4719,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.86,0.73,,D14;D19,QNimbus,1,analysis
+4720,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.94,0.79,,D19,QNimbus,1,optimization
+4721,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.85,0.81,,D14,QNimbus,1,design
+4722,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.88,0.73,,D6,QNimbus,1,prediction
+4723,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.94,,D13;D19,QNimbus,1,simulation
+4724,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.82,0.9,,D6,QNimbus,1,model
+4725,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.93,0.86,,D6,QNimbus,1,analysis
+4726,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.87,0.74,,D14,QNimbus,1,optimization
+4727,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.75,0.84,,D6,QNimbus,1,design
+4728,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.73,0.69,,D19,QNimbus,1,prediction
+4729,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.79,0.83,,D6,QNimbus,1,simulation
+4730,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.91,,D19,QNimbus,1,model
+4731,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.89,0.73,,D14,QNimbus,1,analysis
+4732,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.74,0.69,,D6,QNimbus,1,optimization
+4733,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.75,0.7,,D19,QNimbus,1,design
+4734,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.78,,D19,QNimbus,1,prediction
+4735,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.8,0.92,,D19,QNimbus,1,simulation
+4736,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.72,0.76,,D14;D13,QNimbus,1,model
+4737,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.84,0.93,,D6,QNimbus,1,analysis
+4738,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.76,0.93,,D14,QNimbus,1,optimization
+4739,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.85,0.71,,D19,QNimbus,1,design
+4740,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.86,0.91,,D14;D19,QNimbus,1,prediction
+4741,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.89,0.78,,D6,QNimbus,1,simulation
+4742,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.91,0.72,,D13;D14,QNimbus,1,model
+4743,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.86,0.89,,D14,QNimbus,1,analysis
+4744,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.71,0.84,,D14;D13,QNimbus,1,optimization
+4745,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.85,0.82,,D13;D19,QNimbus,1,design
+4746,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.84,0.84,,D6,QNimbus,1,prediction
+4747,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.83,,D19;D6,QNimbus,1,simulation
+4748,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.91,0.7,,D6,QNimbus,1,model
+4749,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.71,0.8,,D13,QNimbus,1,analysis
+4750,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.69,,D14,QNimbus,1,optimization
+4751,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.92,0.79,,D14,QNimbus,1,design
+4752,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.9,0.79,,D19;D13,QNimbus,1,prediction
+4753,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.81,0.76,,D6;D14,QNimbus,1,simulation
+4754,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.91,0.85,,D14;D19,QNimbus,1,model
+4755,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.83,,D13,QNimbus,1,analysis
+4756,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.88,0.85,,D19;D13,QNimbus,1,optimization
+4757,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.74,0.83,,D6,QNimbus,1,design
+4758,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.79,0.9,,D19,QNimbus,1,prediction
+4759,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.93,0.8,,D19,QNimbus,1,simulation
+4760,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.9,0.75,,D14;D6,QNimbus,1,model
+4761,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.72,0.75,,D6,QNimbus,1,analysis
+4762,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.71,,D14;D13,QNimbus,1,optimization
+4763,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.93,0.88,,D14;D6,QNimbus,1,design
+4764,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.83,0.77,,D6,QNimbus,1,prediction
+4765,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.71,0.71,,D19,QNimbus,1,simulation
+4766,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.71,0.89,,D6;D14,QNimbus,1,model
+4767,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.83,,D19;D14,QNimbus,1,analysis
+4768,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.82,,D6;D19,QNimbus,1,optimization
+4769,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.77,0.93,,D14,QNimbus,1,design
+4770,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.87,0.73,,D19;D6,QNimbus,1,prediction
+4771,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.88,0.71,,D14,QNimbus,1,simulation
+4772,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.86,0.74,,D6,QNimbus,1,model
+4773,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.75,,D19,QNimbus,1,analysis
+4774,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.75,0.93,,D14;D19,QNimbus,1,optimization
+4775,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.88,0.8,,D19,QNimbus,1,design
+4776,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.89,0.77,,D19,QNimbus,1,prediction
+4777,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.87,0.86,,D14;D19,QNimbus,1,simulation
+4778,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.86,0.69,,D19,QNimbus,1,model
+4779,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.89,0.75,,D13,QNimbus,1,analysis
+4780,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.75,0.84,,D13,QNimbus,1,optimization
+4781,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.78,0.86,,D13,QNimbus,1,design
+4782,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.85,0.9,,D19,QNimbus,1,prediction
+4783,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.69,,D13;D6,QNimbus,1,simulation
+4784,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.89,,D14,QNimbus,1,model
+4785,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.94,0.86,Life support;ISRU,D6;D14,QNimbus,1,analysis
+4786,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.91,0.82,,D13,QNimbus,1,optimization
+4787,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.72,0.84,,D13;D14,QNimbus,1,design
+4788,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.94,0.83,,D14;D13,QNimbus,1,prediction
+4789,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.76,0.76,,D19,QNimbus,1,simulation
+4790,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.86,0.75,,D14,QNimbus,1,model
+4791,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.91,0.76,,D13,QNimbus,1,analysis
+4792,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.76,0.87,,D14,QNimbus,1,optimization
+4793,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.78,0.72,,D6;D19,QNimbus,1,design
+4794,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.87,,D19,QNimbus,1,prediction
+4795,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.9,0.85,,D14;D19,QNimbus,1,simulation
+4796,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.89,0.82,,D13;D19,QNimbus,1,model
+4797,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.87,0.78,,D13,QNimbus,1,analysis
+4798,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.94,0.93,,D19;D6,QNimbus,1,optimization
+4799,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.76,0.81,,D14,QNimbus,1,design
+4800,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.89,0.89,,D14,QNimbus,1,prediction
+4801,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.94,0.81,,D19,QNimbus,2,simulation
+4802,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.9,0.71,,D13,QNimbus,2,model
+4803,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.8,,D19,QNimbus,2,analysis
+4804,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.8,,D19,QNimbus,2,optimization
+4805,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.74,0.84,,D13,QNimbus,2,design
+4806,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.9,0.86,,D13,QNimbus,2,prediction
+4807,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.84,,D14,QNimbus,2,simulation
+4808,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.71,0.88,,D14;D13,QNimbus,2,model
+4809,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.88,0.7,,D6,QNimbus,2,analysis
+4810,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.76,0.74,,D6,QNimbus,2,optimization
+4811,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.83,0.87,,D14,QNimbus,2,design
+4812,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.84,,D19,QNimbus,2,prediction
+4813,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.7,0.74,,D14,QNimbus,2,simulation
+4814,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.8,0.7,,D6,QNimbus,2,model
+4815,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.77,0.79,,D13,QNimbus,2,analysis
+4816,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.77,0.76,,D13,QNimbus,2,optimization
+4817,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.87,0.92,,D6;D14,QNimbus,2,design
+4818,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.89,0.72,,D6;D14,QNimbus,2,prediction
+4819,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.91,0.73,,D6;D13,QNimbus,2,simulation
+4820,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.77,0.7,,D14,QNimbus,2,model
+4821,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.81,0.79,,D14,QNimbus,2,analysis
+4822,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.7,0.75,,D13,QNimbus,2,optimization
+4823,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.81,0.8,,D19,QNimbus,2,design
+4824,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.79,0.82,,D14,QNimbus,2,prediction
+4825,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.82,0.86,,D6;D13,QNimbus,2,simulation
+4826,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.85,0.94,,D14,QNimbus,2,model
+4827,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.8,0.85,,D6;D13,QNimbus,2,analysis
+4828,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.86,0.8,,D19,QNimbus,2,optimization
+4829,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.82,,D14;D6,QNimbus,2,design
+4830,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.85,,D14;D13,QNimbus,2,prediction
+4831,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.73,0.93,,D19;D13,QNimbus,2,simulation
+4832,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.83,0.7,,D13,QNimbus,2,model
+4833,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.81,0.74,,D6,QNimbus,2,analysis
+4834,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.79,0.74,,D14;D13,QNimbus,2,optimization
+4835,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.75,0.8,,D19;D6,QNimbus,2,design
+4836,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.83,0.69,,D6;D14,QNimbus,2,prediction
+4837,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.76,,D14,QNimbus,2,simulation
+4838,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.71,0.89,,D14;D13,QNimbus,2,model
+4839,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.86,0.89,,D13,QNimbus,2,analysis
+4840,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.75,,D13;D19,QNimbus,2,optimization
+4841,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.91,0.89,,D19,QNimbus,2,design
+4842,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.91,0.74,,D13;D6,QNimbus,2,prediction
+4843,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.83,0.69,,D6;D19,QNimbus,2,simulation
+4844,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.94,0.84,,D14,QNimbus,2,model
+4845,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.82,,D14;D6,QNimbus,2,analysis
+4846,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.83,0.85,,D6;D19,QNimbus,2,optimization
+4847,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.87,0.87,,D14,QNimbus,2,design
+4848,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.89,,D6,QNimbus,2,prediction
+4849,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.82,0.84,,D19;D14,QNimbus,2,simulation
+4850,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.76,,D6,QNimbus,2,model
+4851,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.7,0.68,,D19,QNimbus,2,analysis
+4852,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.92,0.93,,D19,QNimbus,2,optimization
+4853,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.73,0.93,,D6;D19,QNimbus,2,design
+4854,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.89,0.7,,D14,QNimbus,2,prediction
+4855,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.79,0.69,,D6,QNimbus,2,simulation
+4856,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.79,0.7,,D6,QNimbus,2,model
+4857,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.92,,D19,QNimbus,2,analysis
+4858,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.82,0.73,,D6;D14,QNimbus,2,optimization
+4859,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.92,0.71,,D13,QNimbus,2,design
+4860,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.92,,D6,QNimbus,2,prediction
+4861,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.86,0.72,,D19;D13,QNimbus,2,simulation
+4862,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.92,0.79,,D6,QNimbus,2,model
+4863,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.89,,D14;D6,QNimbus,2,analysis
+4864,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.85,0.92,,D6;D19,QNimbus,2,optimization
+4865,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.76,0.9,,D14,QNimbus,2,design
+4866,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.75,0.83,,D6;D13,QNimbus,2,prediction
+4867,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.69,,D13;D19,QNimbus,2,simulation
+4868,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.69,,D19;D6,QNimbus,2,model
+4869,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.81,,D6,QNimbus,2,analysis
+4870,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.87,0.73,,D19,QNimbus,2,optimization
+4871,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.94,0.71,,D14;D6,QNimbus,2,design
+4872,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.87,0.93,,D14,QNimbus,2,prediction
+4873,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.78,0.87,,D6,QNimbus,2,simulation
+4874,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.75,0.8,,D19,QNimbus,2,model
+4875,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.92,,D19,QNimbus,2,analysis
+4876,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.94,0.74,,D14;D19,QNimbus,2,optimization
+4877,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.73,0.89,,D6,QNimbus,2,design
+4878,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.88,,D6,QNimbus,2,prediction
+4879,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.85,0.89,,D13;D6,QNimbus,2,simulation
+4880,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.94,0.92,,D19;D13,QNimbus,2,model
+4881,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.91,0.75,,D14,QNimbus,2,analysis
+4882,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.8,0.84,,D13;D6,QNimbus,2,optimization
+4883,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.91,0.79,,D19,QNimbus,2,design
+4884,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.92,0.9,,D14;D19,QNimbus,2,prediction
+4885,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.74,0.94,,D6;D13,QNimbus,2,simulation
+4886,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.91,0.94,,D19;D6,QNimbus,2,model
+4887,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.77,0.9,,D14,QNimbus,2,analysis
+4888,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.83,0.92,,D13;D19,QNimbus,2,optimization
+4889,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.86,0.83,,D14;D13,QNimbus,2,design
+4890,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.8,0.9,,D6;D14,QNimbus,2,prediction
+4891,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.89,0.73,,D6,QNimbus,2,simulation
+4892,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.82,0.69,,D6;D14,QNimbus,2,model
+4893,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.82,0.91,,D6,QNimbus,2,analysis
+4894,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.84,0.88,,D14;D19,QNimbus,2,optimization
+4895,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.71,0.87,,D6;D19,QNimbus,2,design
+4896,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.86,0.72,,D19,QNimbus,2,prediction
+4897,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.8,,D13,QNimbus,2,simulation
+4898,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.89,,D13;D19,QNimbus,2,model
+4899,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.71,0.84,,D6,QNimbus,2,analysis
+4900,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.85,0.8,,D14,QNimbus,2,optimization
+4901,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.78,0.93,,D19;D6,QNimbus,2,design
+4902,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.85,0.92,,D6,QNimbus,2,prediction
+4903,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.74,0.85,,D13,QNimbus,2,simulation
+4904,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.76,,D6,QNimbus,2,model
+4905,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.7,,D14;D19,QNimbus,2,analysis
+4906,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.89,0.88,,D6,QNimbus,2,optimization
+4907,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.83,0.74,,D13;D19,QNimbus,2,design
+4908,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.91,0.85,,D6;D13,QNimbus,2,prediction
+4909,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.78,0.77,,D6;D19,QNimbus,2,simulation
+4910,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.71,0.7,,D14,QNimbus,2,model
+4911,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.93,0.87,,D19;D14,QNimbus,2,analysis
+4912,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.91,0.85,,D14,QNimbus,2,optimization
+4913,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.86,0.86,,D19,QNimbus,2,design
+4914,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.92,,D19,QNimbus,2,prediction
+4915,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.77,0.89,,D19,QNimbus,2,simulation
+4916,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.71,0.71,,D19,QNimbus,2,model
+4917,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.86,0.71,,D19,QNimbus,2,analysis
+4918,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.74,0.84,,D19,QNimbus,2,optimization
+4919,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.76,0.87,,D13;D14,QNimbus,2,design
+4920,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.87,0.7,,D19,QNimbus,2,prediction
+4921,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.81,0.79,,D19,QNimbus,2,simulation
+4922,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.93,0.7,,D19;D13,QNimbus,2,model
+4923,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.78,0.92,,D14,QNimbus,2,analysis
+4924,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.74,0.92,,D14,QNimbus,2,optimization
+4925,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.91,0.7,,D19,QNimbus,2,design
+4926,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.89,0.85,,D14,QNimbus,2,prediction
+4927,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.97,0.86,Life support;ISRU,D13,QNimbus,2,simulation
+4928,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.85,0.77,,D19,QNimbus,2,model
+4929,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.83,,D14,QNimbus,2,analysis
+4930,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.9,0.94,,D14,QNimbus,2,optimization
+4931,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.82,0.8,,D19,QNimbus,2,design
+4932,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.75,0.92,,D6;D19,QNimbus,2,prediction
+4933,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.81,0.88,,D6,QNimbus,2,simulation
+4934,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.85,0.68,,D13,QNimbus,2,model
+4935,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.9,0.83,,D19,QNimbus,2,analysis
+4936,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.8,0.85,,D14,QNimbus,2,optimization
+4937,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.91,0.78,,D19,QNimbus,2,design
+4938,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.75,,D13;D19,QNimbus,2,prediction
+4939,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.89,0.7,,D19,QNimbus,2,simulation
+4940,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.7,0.71,,D19,QNimbus,2,model
+4941,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.74,0.89,,D13;D6,QNimbus,2,analysis
+4942,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.93,,D19;D14,QNimbus,2,optimization
+4943,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.79,0.92,,D19;D14,QNimbus,2,design
+4944,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.92,0.69,,D13;D6,QNimbus,2,prediction
+4945,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.93,0.88,,D19;D13,QNimbus,2,simulation
+4946,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.85,0.78,,D19;D14,QNimbus,2,model
+4947,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.81,0.91,,D19;D14,QNimbus,2,analysis
+4948,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.75,0.7,,D19,QNimbus,2,optimization
+4949,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.75,0.71,,D14;D19,QNimbus,2,design
+4950,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.9,0.88,,D6,QNimbus,2,prediction
+4951,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.71,0.81,,D13;D14,QNimbus,2,simulation
+4952,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.74,0.7,,D13;D14,QNimbus,2,model
+4953,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.74,0.88,,D6;D13,QNimbus,2,analysis
+4954,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.86,0.7,,D14,QNimbus,2,optimization
+4955,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.91,0.72,,D19;D6,QNimbus,2,design
+4956,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.73,0.93,,D6,QNimbus,2,prediction
+4957,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.74,0.78,,D14,QNimbus,2,simulation
+4958,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.94,0.87,,D13,QNimbus,2,model
+4959,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.92,0.84,,D14,QNimbus,2,analysis
+4960,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.94,0.76,,D14,QNimbus,2,optimization
+4961,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.94,0.81,,D14,QNimbus,2,design
+4962,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.72,0.94,,D13,QNimbus,2,prediction
+4963,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.73,0.9,,D19,QNimbus,2,simulation
+4964,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.93,,D13;D19,QNimbus,2,model
+4965,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.83,,D14,QNimbus,2,analysis
+4966,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.73,0.78,,D13;D19,QNimbus,2,optimization
+4967,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.73,0.88,,D13;D14,QNimbus,2,design
+4968,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.82,0.69,,D19;D6,QNimbus,2,prediction
+4969,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.71,0.83,,D19;D14,QNimbus,2,simulation
+4970,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.84,,D13,QNimbus,2,model
+4971,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.75,0.79,,D13,QNimbus,2,analysis
+4972,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.7,0.93,,D13,QNimbus,2,optimization
+4973,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.89,0.87,,D13,QNimbus,2,design
+4974,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.89,0.87,,D19;D6,QNimbus,2,prediction
+4975,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.71,0.69,,D13;D6,QNimbus,2,simulation
+4976,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.91,0.79,,D13;D19,QNimbus,2,model
+4977,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.78,,D6,QNimbus,2,analysis
+4978,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.87,0.93,,D6,QNimbus,2,optimization
+4979,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.9,,D14;D13,QNimbus,2,design
+4980,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.77,0.83,,D14,QNimbus,2,prediction
+4981,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.74,0.83,,D6;D13,QNimbus,2,simulation
+4982,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.91,0.86,,D13,QNimbus,2,model
+4983,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.71,0.88,,D13,QNimbus,2,analysis
+4984,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.86,0.75,,D19;D14,QNimbus,2,optimization
+4985,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.71,0.76,,D19,QNimbus,2,design
+4986,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.83,0.9,,D14,QNimbus,2,prediction
+4987,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.82,0.85,,D13,QNimbus,2,simulation
+4988,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.8,0.9,,D6;D14,QNimbus,2,model
+4989,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.83,0.9,,D6,QNimbus,2,analysis
+4990,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.77,0.93,,D6;D14,QNimbus,2,optimization
+4991,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.81,0.71,,D13,QNimbus,2,design
+4992,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.83,0.91,,D13,QNimbus,2,prediction
+4993,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.86,,D13;D19,QNimbus,2,simulation
+4994,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.79,0.82,,D13,QNimbus,2,model
+4995,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.89,0.68,,D6,QNimbus,2,analysis
+4996,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.75,0.91,,D19;D13,QNimbus,2,optimization
+4997,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.78,0.81,,D14,QNimbus,2,design
+4998,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.75,0.7,,D19,QNimbus,2,prediction
+4999,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.74,,D6;D14,QNimbus,2,simulation
+5000,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.9,,D14;D19,QNimbus,2,model
+5001,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.9,0.93,,D14,QNimbus,2,analysis
+5002,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.92,0.77,,D19;D14,QNimbus,2,optimization
+5003,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.72,0.72,,D19,QNimbus,2,design
+5004,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.87,,D14;D19,QNimbus,2,prediction
+5005,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.91,0.74,,D6;D14,QNimbus,2,simulation
+5006,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.93,0.91,,D13,QNimbus,2,model
+5007,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.7,0.86,,D13;D6,QNimbus,2,analysis
+5008,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.93,0.92,,D14,QNimbus,2,optimization
+5009,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.7,0.9,,D13;D14,QNimbus,2,design
+5010,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.74,0.84,,D14;D6,QNimbus,2,prediction
+5011,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.71,0.93,,D13,QNimbus,2,simulation
+5012,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.92,0.84,,D14,QNimbus,2,model
+5013,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.85,0.84,,D6;D14,QNimbus,2,analysis
+5014,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.71,0.77,,D19,QNimbus,2,optimization
+5015,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.74,0.69,,D19,QNimbus,2,design
+5016,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.73,0.78,,D13,QNimbus,2,prediction
+5017,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.94,0.83,,D13,QNimbus,2,simulation
+5018,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.75,0.83,,D14;D19,QNimbus,2,model
+5019,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.86,0.86,,D14;D13,QNimbus,2,analysis
+5020,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.76,0.69,,D19,QNimbus,2,optimization
+5021,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.75,0.89,,D13;D14,QNimbus,2,design
+5022,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.92,0.85,,D19;D13,QNimbus,2,prediction
+5023,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.72,0.71,,D14,QNimbus,2,simulation
+5024,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.79,0.75,,D13,QNimbus,2,model
+5025,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.73,,D14,QNimbus,2,analysis
+5026,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.85,0.76,,D6,QNimbus,2,optimization
+5027,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.85,0.7,,D14,QNimbus,2,design
+5028,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.72,0.76,,D13;D6,QNimbus,2,prediction
+5029,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.78,0.69,,D13,QNimbus,2,simulation
+5030,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.92,0.87,,D13;D19,QNimbus,2,model
+5031,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.88,0.76,,D13;D6,QNimbus,2,analysis
+5032,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.94,0.9,,D13,QNimbus,2,optimization
+5033,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.71,0.92,,D19;D6,QNimbus,2,design
+5034,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.87,0.74,,D6,QNimbus,2,prediction
+5035,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.87,0.9,,D13;D19,QNimbus,2,simulation
+5036,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.82,0.79,,D14;D19,QNimbus,2,model
+5037,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.8,0.7,,D13,QNimbus,2,analysis
+5038,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.87,0.71,,D13,QNimbus,2,optimization
+5039,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.72,,D13,QNimbus,2,design
+5040,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.89,0.87,,D14,QNimbus,2,prediction
+5041,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.81,0.89,,D19,QNimbus,2,simulation
+5042,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.8,0.8,,D13;D6,QNimbus,2,model
+5043,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.82,0.8,,D19,QNimbus,2,analysis
+5044,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.78,0.92,,D14,QNimbus,2,optimization
+5045,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.75,,D19,QNimbus,2,design
+5046,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.87,0.89,,D13;D19,QNimbus,2,prediction
+5047,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.9,0.86,,D6,QNimbus,2,simulation
+5048,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.91,,D13,QNimbus,2,model
+5049,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.88,,D13;D6,QNimbus,2,analysis
+5050,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.89,,D19;D13,QNimbus,2,optimization
+5051,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.74,0.86,,D13;D6,QNimbus,2,design
+5052,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.83,0.85,,D13,QNimbus,2,prediction
+5053,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.71,0.75,,D6;D19,QNimbus,2,simulation
+5054,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.94,,D14,QNimbus,2,model
+5055,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.83,,D13;D6,QNimbus,2,analysis
+5056,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.95,0.77,,D19;D13,QNimbus,2,optimization
+5057,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.86,0.76,,D14;D19,QNimbus,2,design
+5058,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.74,0.87,,D19,QNimbus,2,prediction
+5059,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.94,0.76,,D19,QNimbus,2,simulation
+5060,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.76,0.85,,D6;D13,QNimbus,2,model
+5061,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.75,0.71,,D14,QNimbus,2,analysis
+5062,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.92,0.68,,D14,QNimbus,2,optimization
+5063,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.83,0.76,,D14,QNimbus,2,design
+5064,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.89,0.86,,D14;D19,QNimbus,2,prediction
+5065,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.82,0.82,,D19,QNimbus,2,simulation
+5066,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.94,0.92,,D19,QNimbus,2,model
+5067,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.81,,D19;D6,QNimbus,2,analysis
+5068,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.88,0.75,,D19,QNimbus,2,optimization
+5069,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.91,0.93,Life support;ISRU,D6,QNimbus,2,design
+5070,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.86,0.81,,D13,QNimbus,2,prediction
+5071,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.74,0.8,,D14;D13,QNimbus,2,simulation
+5072,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.74,0.75,,D14;D13,QNimbus,2,model
+5073,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.9,,D19;D14,QNimbus,2,analysis
+5074,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.8,0.7,,D13;D19,QNimbus,2,optimization
+5075,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.84,0.7,,D6,QNimbus,2,design
+5076,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.7,0.75,,D14,QNimbus,2,prediction
+5077,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.75,0.74,,D19;D14,QNimbus,2,simulation
+5078,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.85,,D14;D19,QNimbus,2,model
+5079,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.82,0.82,,D14,QNimbus,2,analysis
+5080,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.75,0.9,,D13;D14,QNimbus,2,optimization
+5081,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.91,0.93,,D13,QNimbus,2,design
+5082,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.71,,D19;D6,QNimbus,2,prediction
+5083,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.94,,D6;D19,QNimbus,2,simulation
+5084,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.95,0.77,,D19,QNimbus,2,model
+5085,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.74,,D19,QNimbus,2,analysis
+5086,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.83,0.81,,D13;D14,QNimbus,2,optimization
+5087,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.84,0.89,,D13;D6,QNimbus,2,design
+5088,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.9,0.68,,D19,QNimbus,2,prediction
+5089,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.71,0.92,,D19,QNimbus,2,simulation
+5090,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.91,0.72,,D14;D6,QNimbus,2,model
+5091,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.85,0.73,,D19;D14,QNimbus,2,analysis
+5092,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.84,0.71,,D19;D6,QNimbus,2,optimization
+5093,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.94,0.84,,D13,QNimbus,2,design
+5094,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.93,0.69,,D14,QNimbus,2,prediction
+5095,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.79,0.89,,D14,QNimbus,2,simulation
+5096,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.78,0.86,,D14,QNimbus,2,model
+5097,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.82,0.76,,D13,QNimbus,2,analysis
+5098,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.72,,D19;D6,QNimbus,2,optimization
+5099,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.93,0.69,,D13,QNimbus,2,design
+5100,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.79,0.89,,D6,QNimbus,2,prediction
+5101,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.73,0.92,,D19;D14,QNimbus,3,simulation
+5102,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.87,0.92,,D6,QNimbus,3,model
+5103,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.78,0.68,,D19,QNimbus,3,analysis
+5104,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.79,0.87,,D19,QNimbus,3,optimization
+5105,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.93,,D19;D14,QNimbus,3,design
+5106,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.84,0.68,,D14,QNimbus,3,prediction
+5107,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.9,0.82,,D14;D19,QNimbus,3,simulation
+5108,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.7,0.74,,D14,QNimbus,3,model
+5109,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.73,,D6;D19,QNimbus,3,analysis
+5110,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.89,,D14;D19,QNimbus,3,optimization
+5111,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.86,0.85,,D6,QNimbus,3,design
+5112,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.89,0.82,,D13,QNimbus,3,prediction
+5113,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.86,,D14,QNimbus,3,simulation
+5114,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.83,0.72,,D19;D14,QNimbus,3,model
+5115,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.77,0.81,,D14,QNimbus,3,analysis
+5116,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.86,0.91,,D14,QNimbus,3,optimization
+5117,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.89,,D13,QNimbus,3,design
+5118,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.82,0.87,,D6,QNimbus,3,prediction
+5119,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.91,0.91,,D19,QNimbus,3,simulation
+5120,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.69,,D13;D6,QNimbus,3,model
+5121,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.94,0.84,,D6,QNimbus,3,analysis
+5122,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.81,0.78,,D19;D13,QNimbus,3,optimization
+5123,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.86,0.68,,D14,QNimbus,3,design
+5124,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.92,0.7,,D19,QNimbus,3,prediction
+5125,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.76,0.73,,D14;D13,QNimbus,3,simulation
+5126,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.93,0.81,,D6;D13,QNimbus,3,model
+5127,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.9,0.69,,D13,QNimbus,3,analysis
+5128,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.81,0.78,,D6,QNimbus,3,optimization
+5129,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.91,0.77,,D13,QNimbus,3,design
+5130,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.84,0.71,,D6,QNimbus,3,prediction
+5131,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.85,0.69,,D19;D13,QNimbus,3,simulation
+5132,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.89,0.87,,D19,QNimbus,3,model
+5133,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.91,0.91,,D14,QNimbus,3,analysis
+5134,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.93,0.78,,D14,QNimbus,3,optimization
+5135,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.9,0.7,,D6,QNimbus,3,design
+5136,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.73,0.91,,D13;D6,QNimbus,3,prediction
+5137,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.93,,D14;D13,QNimbus,3,simulation
+5138,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.73,0.77,,D19;D14,QNimbus,3,model
+5139,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.91,0.82,,D14,QNimbus,3,analysis
+5140,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.9,0.76,,D13,QNimbus,3,optimization
+5141,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.89,0.74,,D14,QNimbus,3,design
+5142,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.76,0.82,,D19,QNimbus,3,prediction
+5143,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.95,0.84,,D19,QNimbus,3,simulation
+5144,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.83,0.89,,D14,QNimbus,3,model
+5145,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.9,0.83,,D19,QNimbus,3,analysis
+5146,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.74,0.71,,D6,QNimbus,3,optimization
+5147,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.73,0.77,,D13,QNimbus,3,design
+5148,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.89,0.81,,D13,QNimbus,3,prediction
+5149,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.86,0.78,,D6,QNimbus,3,simulation
+5150,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.73,,D13,QNimbus,3,model
+5151,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.79,0.91,,D6;D19,QNimbus,3,analysis
+5152,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.93,0.86,,D19,QNimbus,3,optimization
+5153,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.73,0.73,,D14,QNimbus,3,design
+5154,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.85,0.85,,D19,QNimbus,3,prediction
+5155,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.7,0.77,,D13;D19,QNimbus,3,simulation
+5156,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.89,0.79,,D14,QNimbus,3,model
+5157,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.83,0.81,,D13;D19,QNimbus,3,analysis
+5158,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.74,0.73,,D19,QNimbus,3,optimization
+5159,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.74,0.71,,D13,QNimbus,3,design
+5160,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.78,0.76,,D13;D14,QNimbus,3,prediction
+5161,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.89,0.94,,D19,QNimbus,3,simulation
+5162,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.81,0.73,,D13;D6,QNimbus,3,model
+5163,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.83,0.92,,D14;D6,QNimbus,3,analysis
+5164,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.8,0.89,,D19;D6,QNimbus,3,optimization
+5165,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.82,0.84,,D19,QNimbus,3,design
+5166,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.75,0.8,,D13,QNimbus,3,prediction
+5167,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.89,0.69,,D6,QNimbus,3,simulation
+5168,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.89,0.73,,D6;D14,QNimbus,3,model
+5169,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.87,0.91,,D13;D19,QNimbus,3,analysis
+5170,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.91,,D14,QNimbus,3,optimization
+5171,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.91,0.69,,D6;D19,QNimbus,3,design
+5172,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.82,,D14,QNimbus,3,prediction
+5173,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.89,0.71,,D13,QNimbus,3,simulation
+5174,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.76,0.76,,D6,QNimbus,3,model
+5175,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.75,0.68,,D6,QNimbus,3,analysis
+5176,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.72,0.86,,D13,QNimbus,3,optimization
+5177,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.9,0.92,,D19,QNimbus,3,design
+5178,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.81,0.71,,D13;D19,QNimbus,3,prediction
+5179,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.88,0.79,,D14,QNimbus,3,simulation
+5180,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.88,0.71,,D14;D19,QNimbus,3,model
+5181,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.88,0.85,,D14;D13,QNimbus,3,analysis
+5182,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.87,0.76,,D13,QNimbus,3,optimization
+5183,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.88,0.9,,D6;D13,QNimbus,3,design
+5184,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.92,0.88,,D13;D6,QNimbus,3,prediction
+5185,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.94,0.7,,D14,QNimbus,3,simulation
+5186,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.85,0.69,,D6,QNimbus,3,model
+5187,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.73,0.78,,D6;D13,QNimbus,3,analysis
+5188,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.85,0.93,,D19,QNimbus,3,optimization
+5189,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.85,0.72,,D13,QNimbus,3,design
+5190,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.82,0.69,,D6,QNimbus,3,prediction
+5191,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.71,0.78,,D14;D13,QNimbus,3,simulation
+5192,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.72,0.83,,D13;D19,QNimbus,3,model
+5193,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.86,0.86,,D14,QNimbus,3,analysis
+5194,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.94,0.88,,D6;D14,QNimbus,3,optimization
+5195,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.8,0.82,,D13,QNimbus,3,design
+5196,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.89,0.82,,D13,QNimbus,3,prediction
+5197,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.72,0.8,,D19,QNimbus,3,simulation
+5198,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.8,0.8,,D14;D13,QNimbus,3,model
+5199,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.81,,D19,QNimbus,3,analysis
+5200,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.82,0.73,,D14;D19,QNimbus,3,optimization
+5201,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.87,0.76,,D19,QNimbus,3,design
+5202,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.82,0.79,,D14,QNimbus,3,prediction
+5203,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.75,,D6,QNimbus,3,simulation
+5204,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.73,,D14;D6,QNimbus,3,model
+5205,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.84,0.77,,D13,QNimbus,3,analysis
+5206,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.86,0.74,,D13;D14,QNimbus,3,optimization
+5207,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.73,0.82,,D6;D19,QNimbus,3,design
+5208,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.93,0.92,,D19,QNimbus,3,prediction
+5209,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.91,0.85,,D14;D6,QNimbus,3,simulation
+5210,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.78,0.85,,D19;D6,QNimbus,3,model
+5211,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.89,0.87,Life support;ISRU,D6,QNimbus,3,analysis
+5212,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.78,0.83,,D6;D14,QNimbus,3,optimization
+5213,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.73,0.83,,D14,QNimbus,3,design
+5214,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.76,0.72,,D19,QNimbus,3,prediction
+5215,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.75,0.73,,D13,QNimbus,3,simulation
+5216,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.92,0.73,,D6;D13,QNimbus,3,model
+5217,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.84,0.73,,D19,QNimbus,3,analysis
+5218,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.89,0.73,,D6,QNimbus,3,optimization
+5219,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.84,0.91,,D19,QNimbus,3,design
+5220,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.92,0.84,,D6,QNimbus,3,prediction
+5221,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.91,0.81,,D19,QNimbus,3,simulation
+5222,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.86,0.87,,D19,QNimbus,3,model
+5223,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.9,0.76,,D19;D13,QNimbus,3,analysis
+5224,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.72,,D6,QNimbus,3,optimization
+5225,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.9,0.83,,D14;D6,QNimbus,3,design
+5226,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.79,0.9,,D19;D14,QNimbus,3,prediction
+5227,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.74,0.89,,D13,QNimbus,3,simulation
+5228,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.72,,D6,QNimbus,3,model
+5229,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.85,,D6;D14,QNimbus,3,analysis
+5230,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.85,,D13,QNimbus,3,optimization
+5231,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.88,0.68,,D14,QNimbus,3,design
+5232,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.91,,D6;D13,QNimbus,3,prediction
+5233,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.79,0.77,,D13,QNimbus,3,simulation
+5234,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.91,0.9,,D19;D14,QNimbus,3,model
+5235,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.86,,D14,QNimbus,3,analysis
+5236,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.94,0.82,,D14,QNimbus,3,optimization
+5237,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.72,0.73,,D19;D13,QNimbus,3,design
+5238,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.86,0.83,,D19;D13,QNimbus,3,prediction
+5239,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.79,0.8,,D14;D19,QNimbus,3,simulation
+5240,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.77,0.77,,D6;D14,QNimbus,3,model
+5241,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.73,0.91,,D14;D6,QNimbus,3,analysis
+5242,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.88,0.85,,D13,QNimbus,3,optimization
+5243,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.88,0.74,,D19;D14,QNimbus,3,design
+5244,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.73,,D13,QNimbus,3,prediction
+5245,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.92,0.72,,D6;D14,QNimbus,3,simulation
+5246,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.9,0.87,,D14,QNimbus,3,model
+5247,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.93,0.91,,D19;D6,QNimbus,3,analysis
+5248,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.78,0.74,,D19;D14,QNimbus,3,optimization
+5249,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.85,,D13;D14,QNimbus,3,design
+5250,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.92,0.89,,D14,QNimbus,3,prediction
+5251,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.85,0.82,,D13,QNimbus,3,simulation
+5252,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.76,,D14,QNimbus,3,model
+5253,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.78,0.7,,D14;D13,QNimbus,3,analysis
+5254,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.74,0.83,,D14,QNimbus,3,optimization
+5255,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.94,0.69,,D13;D19,QNimbus,3,design
+5256,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.81,0.78,,D6;D13,QNimbus,3,prediction
+5257,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.89,0.86,,D14,QNimbus,3,simulation
+5258,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.89,0.84,,D14,QNimbus,3,model
+5259,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.94,0.71,,D19;D6,QNimbus,3,analysis
+5260,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.76,0.7,,D6;D13,QNimbus,3,optimization
+5261,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.85,0.77,,D13,QNimbus,3,design
+5262,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.94,0.76,,D19;D6,QNimbus,3,prediction
+5263,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.86,,D6,QNimbus,3,simulation
+5264,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.8,0.8,,D14,QNimbus,3,model
+5265,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.82,0.69,,D19,QNimbus,3,analysis
+5266,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.86,0.73,,D6,QNimbus,3,optimization
+5267,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.94,0.81,,D13;D6,QNimbus,3,design
+5268,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.69,,D6;D14,QNimbus,3,prediction
+5269,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.83,,D6,QNimbus,3,simulation
+5270,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.82,0.7,,D13,QNimbus,3,model
+5271,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.89,0.83,,D13;D14,QNimbus,3,analysis
+5272,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.94,0.76,,D19;D13,QNimbus,3,optimization
+5273,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.71,,D14,QNimbus,3,design
+5274,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.75,0.88,,D6,QNimbus,3,prediction
+5275,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.93,0.93,,D19;D13,QNimbus,3,simulation
+5276,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.8,0.81,,D13;D6,QNimbus,3,model
+5277,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.75,0.92,,D6;D14,QNimbus,3,analysis
+5278,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.74,0.75,,D19,QNimbus,3,optimization
+5279,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.83,0.69,,D13,QNimbus,3,design
+5280,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.88,,D14,QNimbus,3,prediction
+5281,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.87,0.84,,D13,QNimbus,3,simulation
+5282,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.86,0.79,,D19,QNimbus,3,model
+5283,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.82,0.74,,D19,QNimbus,3,analysis
+5284,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.87,0.91,,D6;D14,QNimbus,3,optimization
+5285,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.7,,D13,QNimbus,3,design
+5286,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.82,0.93,,D6,QNimbus,3,prediction
+5287,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.77,0.83,,D14,QNimbus,3,simulation
+5288,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.94,0.89,,D19;D13,QNimbus,3,model
+5289,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.87,0.77,,D6;D14,QNimbus,3,analysis
+5290,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.94,0.72,,D14,QNimbus,3,optimization
+5291,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.71,0.75,,D14,QNimbus,3,design
+5292,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.74,0.72,,D19,QNimbus,3,prediction
+5293,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.84,,D14,QNimbus,3,simulation
+5294,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.83,0.84,,D14;D6,QNimbus,3,model
+5295,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.9,,D19;D6,QNimbus,3,analysis
+5296,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.76,0.87,,D14,QNimbus,3,optimization
+5297,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.93,0.79,,D19,QNimbus,3,design
+5298,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.93,0.7,,D13;D6,QNimbus,3,prediction
+5299,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.92,,D6;D13,QNimbus,3,simulation
+5300,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.89,0.89,,D13,QNimbus,3,model
+5301,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.82,0.83,,D19;D14,QNimbus,3,analysis
+5302,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.88,0.9,,D19,QNimbus,3,optimization
+5303,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.82,0.86,,D19,QNimbus,3,design
+5304,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.8,0.72,,D13,QNimbus,3,prediction
+5305,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.92,,D19,QNimbus,3,simulation
+5306,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.71,0.87,,D14,QNimbus,3,model
+5307,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.83,0.71,,D13,QNimbus,3,analysis
+5308,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.83,0.86,,D19;D14,QNimbus,3,optimization
+5309,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.78,0.73,,D14;D6,QNimbus,3,design
+5310,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.89,0.75,,D19,QNimbus,3,prediction
+5311,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.8,0.9,,D14,QNimbus,3,simulation
+5312,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.94,0.83,,D19,QNimbus,3,model
+5313,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.95,0.77,,D14,QNimbus,3,analysis
+5314,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.85,0.94,,D13;D6,QNimbus,3,optimization
+5315,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.72,,D13,QNimbus,3,design
+5316,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.71,0.69,,D13,QNimbus,3,prediction
+5317,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.93,0.87,,D13,QNimbus,3,simulation
+5318,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.9,0.81,,D14;D13,QNimbus,3,model
+5319,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.74,0.8,,D13;D6,QNimbus,3,analysis
+5320,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.94,0.86,,D14,QNimbus,3,optimization
+5321,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.85,0.93,,D19;D13,QNimbus,3,design
+5322,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.84,0.82,,D6,QNimbus,3,prediction
+5323,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.88,0.86,,D13,QNimbus,3,simulation
+5324,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.71,,D19,QNimbus,3,model
+5325,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.71,0.77,,D14;D6,QNimbus,3,analysis
+5326,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.82,0.94,,D14;D13,QNimbus,3,optimization
+5327,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.82,0.89,,D6;D13,QNimbus,3,design
+5328,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.8,0.69,,D14,QNimbus,3,prediction
+5329,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.74,0.7,,D6,QNimbus,3,simulation
+5330,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.82,0.75,,D13,QNimbus,3,model
+5331,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.94,0.71,,D19,QNimbus,3,analysis
+5332,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.94,0.73,,D14,QNimbus,3,optimization
+5333,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.94,0.82,,D19;D6,QNimbus,3,design
+5334,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.71,,D14;D6,QNimbus,3,prediction
+5335,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.85,0.7,,D14,QNimbus,3,simulation
+5336,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.7,0.72,,D14;D19,QNimbus,3,model
+5337,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.76,0.83,,D13,QNimbus,3,analysis
+5338,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.73,0.78,,D13,QNimbus,3,optimization
+5339,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.87,0.69,,D6;D13,QNimbus,3,design
+5340,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.7,0.75,,D13,QNimbus,3,prediction
+5341,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.82,0.93,,D13;D6,QNimbus,3,simulation
+5342,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.75,0.79,,D6,QNimbus,3,model
+5343,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.93,0.7,,D14;D6,QNimbus,3,analysis
+5344,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.92,0.79,,D14;D19,QNimbus,3,optimization
+5345,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.86,0.8,,D6,QNimbus,3,design
+5346,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.94,0.68,,D6;D19,QNimbus,3,prediction
+5347,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.77,0.71,,D13,QNimbus,3,simulation
+5348,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.87,0.77,,D13,QNimbus,3,model
+5349,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.75,0.68,,D19;D13,QNimbus,3,analysis
+5350,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.93,0.71,,D6,QNimbus,3,optimization
+5351,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.77,0.84,,D19,QNimbus,4,design
+5352,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.71,0.7,,D6,QNimbus,4,prediction
+5353,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.88,0.92,Life support;ISRU,D13,QNimbus,4,simulation
+5354,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.87,0.88,,D6;D13,QNimbus,4,model
+5355,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.91,,D14,QNimbus,4,analysis
+5356,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.74,0.74,,D19;D13,QNimbus,4,optimization
+5357,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.92,0.9,,D19,QNimbus,4,design
+5358,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.83,0.94,,D6;D19,QNimbus,4,prediction
+5359,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.82,0.85,,D19;D14,QNimbus,4,simulation
+5360,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.91,0.79,,D19,QNimbus,4,model
+5361,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.73,0.81,,D13;D14,QNimbus,4,analysis
+5362,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.7,0.73,,D13,QNimbus,4,optimization
+5363,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.9,,D6,QNimbus,4,design
+5364,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.77,,D6;D13,QNimbus,4,prediction
+5365,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.75,0.7,,D19,QNimbus,4,simulation
+5366,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.8,0.87,,D6;D19,QNimbus,4,model
+5367,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.84,0.68,,D19;D6,QNimbus,4,analysis
+5368,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.93,0.76,,D13,QNimbus,4,optimization
+5369,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.91,0.72,,D13,QNimbus,4,design
+5370,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.89,0.89,,D13;D19,QNimbus,4,prediction
+5371,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.85,0.77,,D13,QNimbus,4,simulation
+5372,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.81,0.92,,D14;D19,QNimbus,4,model
+5373,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.8,,D14;D6,QNimbus,4,analysis
+5374,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.88,,D13,QNimbus,4,optimization
+5375,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.8,0.68,,D13,QNimbus,4,design
+5376,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.87,0.77,,D14;D6,QNimbus,4,prediction
+5377,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.89,0.77,,D13,QNimbus,4,simulation
+5378,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.78,0.77,,D14;D13,QNimbus,4,model
+5379,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.75,0.84,,D19;D14,QNimbus,4,analysis
+5380,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.88,,D13,QNimbus,4,optimization
+5381,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.91,0.78,,D19,QNimbus,4,design
+5382,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.76,0.71,,D14,QNimbus,4,prediction
+5383,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.91,0.93,,D6,QNimbus,4,simulation
+5384,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.89,0.76,,D13,QNimbus,4,model
+5385,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.7,,D19;D6,QNimbus,4,analysis
+5386,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.87,0.72,,D13,QNimbus,4,optimization
+5387,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.81,0.73,,D19,QNimbus,4,design
+5388,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.68,,D13,QNimbus,4,prediction
+5389,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.83,0.93,,D14,QNimbus,4,simulation
+5390,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.76,,D6;D14,QNimbus,4,model
+5391,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.72,0.72,,D13,QNimbus,4,analysis
+5392,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.88,0.7,,D6,QNimbus,4,optimization
+5393,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.74,0.75,,D14,QNimbus,4,design
+5394,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.78,0.78,,D13;D14,QNimbus,4,prediction
+5395,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.75,0.93,,D6;D14,QNimbus,4,simulation
+5396,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.75,0.93,,D6,QNimbus,4,model
+5397,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.81,0.92,,D6,QNimbus,4,analysis
+5398,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.88,0.75,,D13;D19,QNimbus,4,optimization
+5399,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.9,0.9,,D13;D6,QNimbus,4,design
+5400,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.92,,D13;D6,QNimbus,4,prediction
+5401,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.84,0.71,,D6,QNimbus,4,simulation
+5402,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.83,0.86,,D6,QNimbus,4,model
+5403,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.78,0.72,,D6,QNimbus,4,analysis
+5404,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.77,0.93,,D19,QNimbus,4,optimization
+5405,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.91,0.75,,D6;D19,QNimbus,4,design
+5406,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.72,0.82,,D19,QNimbus,4,prediction
+5407,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.94,0.92,,D6,QNimbus,4,simulation
+5408,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.93,0.71,,D14;D6,QNimbus,4,model
+5409,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.94,0.85,,D13,QNimbus,4,analysis
+5410,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.91,0.78,,D6,QNimbus,4,optimization
+5411,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.81,0.9,,D14,QNimbus,4,design
+5412,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.89,0.83,,D19,QNimbus,4,prediction
+5413,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.73,,D14,QNimbus,4,simulation
+5414,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.82,0.74,,D14;D19,QNimbus,4,model
+5415,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.95,0.74,,D19,QNimbus,4,analysis
+5416,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.76,0.8,,D19;D6,QNimbus,4,optimization
+5417,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.75,0.8,,D14,QNimbus,4,design
+5418,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.95,0.88,,D19,QNimbus,4,prediction
+5419,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.92,0.92,,D19;D13,QNimbus,4,simulation
+5420,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.75,0.73,,D14;D13,QNimbus,4,model
+5421,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.87,0.94,,D14,QNimbus,4,analysis
+5422,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.81,0.81,,D13;D19,QNimbus,4,optimization
+5423,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.74,0.8,,D14,QNimbus,4,design
+5424,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.78,,D13,QNimbus,4,prediction
+5425,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.86,,D6;D13,QNimbus,4,simulation
+5426,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.76,0.71,,D6;D19,QNimbus,4,model
+5427,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.74,0.78,,D6;D13,QNimbus,4,analysis
+5428,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.87,0.69,,D13;D19,QNimbus,4,optimization
+5429,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.75,,D6,QNimbus,4,design
+5430,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.89,0.79,,D13,QNimbus,4,prediction
+5431,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.7,0.8,,D19,QNimbus,4,simulation
+5432,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.89,0.77,,D13,QNimbus,4,model
+5433,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.89,0.72,,D13;D6,QNimbus,4,analysis
+5434,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.83,0.87,,D6,QNimbus,4,optimization
+5435,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.86,,D14,QNimbus,4,design
+5436,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.77,0.8,,D6,QNimbus,4,prediction
+5437,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.94,0.92,,D19,QNimbus,4,simulation
+5438,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.93,0.68,,D6;D14,QNimbus,4,model
+5439,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.83,0.81,,D19;D14,QNimbus,4,analysis
+5440,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.72,,D13;D14,QNimbus,4,optimization
+5441,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.81,0.74,,D14;D19,QNimbus,4,design
+5442,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.86,0.83,,D6,QNimbus,4,prediction
+5443,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.71,0.68,,D13;D6,QNimbus,4,simulation
+5444,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.93,,D6,QNimbus,4,model
+5445,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.72,0.7,,D6,QNimbus,4,analysis
+5446,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.9,0.73,,D6,QNimbus,4,optimization
+5447,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.76,0.74,,D14,QNimbus,4,design
+5448,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.81,0.72,,D13,QNimbus,4,prediction
+5449,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.91,,D6,QNimbus,4,simulation
+5450,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.79,,D19,QNimbus,4,model
+5451,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.93,0.7,,D14,QNimbus,4,analysis
+5452,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.9,,D19,QNimbus,4,optimization
+5453,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.91,0.83,,D6,QNimbus,4,design
+5454,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.75,0.84,,D14;D6,QNimbus,4,prediction
+5455,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.8,,D13;D6,QNimbus,4,simulation
+5456,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.79,0.76,,D19,QNimbus,4,model
+5457,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.81,0.81,,D19,QNimbus,4,analysis
+5458,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.87,0.86,,D19,QNimbus,4,optimization
+5459,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.68,,D6;D19,QNimbus,4,design
+5460,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.89,0.78,,D19;D14,QNimbus,4,prediction
+5461,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.91,0.78,,D19;D13,QNimbus,4,simulation
+5462,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.88,0.9,,D13,QNimbus,4,model
+5463,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.92,0.85,,D14,QNimbus,4,analysis
+5464,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.87,0.81,,D14,QNimbus,4,optimization
+5465,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.75,0.76,,D13;D6,QNimbus,4,design
+5466,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.74,0.88,,D19;D13,QNimbus,4,prediction
+5467,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.91,0.69,,D6;D14,QNimbus,4,simulation
+5468,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.78,0.87,,D14,QNimbus,4,model
+5469,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.81,0.85,,D6,QNimbus,4,analysis
+5470,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.92,0.93,,D19,QNimbus,4,optimization
+5471,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.77,0.94,,D13;D6,QNimbus,4,design
+5472,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.7,0.77,,D13;D14,QNimbus,4,prediction
+5473,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.88,0.79,,D6,QNimbus,4,simulation
+5474,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.73,0.79,,D6,QNimbus,4,model
+5475,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.81,0.86,,D13;D14,QNimbus,4,analysis
+5476,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.82,0.91,,D14,QNimbus,4,optimization
+5477,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.91,,D19,QNimbus,4,design
+5478,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.83,0.86,,D19,QNimbus,4,prediction
+5479,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.89,0.78,,D19,QNimbus,4,simulation
+5480,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.78,0.83,,D19,QNimbus,4,model
+5481,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.73,0.88,,D6,QNimbus,4,analysis
+5482,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.79,0.89,,D13;D19,QNimbus,4,optimization
+5483,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.85,0.87,,D13;D6,QNimbus,4,design
+5484,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.85,0.85,,D6,QNimbus,4,prediction
+5485,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.93,0.81,,D6,QNimbus,4,simulation
+5486,Habitat Design,Space habitat design for Mars colony using space exploration & colonization approaches,D17,0.76,0.82,,D13,QNimbus,4,model
+5487,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.89,0.79,,D19,QNimbus,4,analysis
+5488,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.84,0.83,,D19,QNimbus,4,optimization
+5489,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.72,0.76,,D19;D14,QNimbus,4,design
+5490,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.73,0.77,,D13,QNimbus,4,prediction
+5491,Habitat Design,Space habitat design for lunar base using space exploration & colonization approaches,D17,0.76,0.74,,D6,QNimbus,4,simulation
+5492,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.84,0.92,,D6,QNimbus,4,model
+5493,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.77,0.83,,D14;D13,QNimbus,4,analysis
+5494,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.94,0.76,,D13;D6,QNimbus,4,optimization
+5495,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.84,0.79,,D19,QNimbus,4,design
+5496,Habitat Design,Space habitat design for orbital station using space exploration & colonization approaches,D17,0.76,0.79,,D6,QNimbus,4,prediction
+5497,Life Support Systems,Life Support Systems simulation and optimization using space exploration & colonization approaches,D17,0.92,0.7,,D6,QNimbus,4,simulation
+5498,In-Situ Resource Utilization,In-Situ Resource Utilization simulation and optimization using space exploration & colonization approaches,D17,0.86,0.84,,D19;D6,QNimbus,4,model
+5499,Radiation Shielding,Radiation Shielding simulation and optimization using space exploration & colonization approaches,D17,0.78,0.79,,D6,QNimbus,4,analysis
+5500,Orbital Mechanics,Orbital Mechanics simulation and optimization using space exploration & colonization approaches,D17,0.83,0.86,,D19,QNimbus,4,optimization

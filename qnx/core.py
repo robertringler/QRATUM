@@ -18,7 +18,9 @@ class QNXSubstrate:
 
     def __init__(self) -> None:
         self.backends = get_backend_registry()
-        logger.info("QNXSubstrate initialised with backends", extra={"backends": list(self.backends)})
+        logger.info(
+            "QNXSubstrate initialised with backends", extra={"backends": list(self.backends)}
+        )
 
     def initialise_runtime(self) -> MutableMapping[str, Any]:
         """Return runtime metadata for lifecycle coordination."""
@@ -28,7 +30,9 @@ class QNXSubstrate:
             "available_backends": list(self.backends),
         }
 
-    def boot_backend(self, backend_name: str, config: SimulationConfig | None = None) -> MutableMapping[str, Any]:
+    def boot_backend(
+        self, backend_name: str, config: SimulationConfig | None = None
+    ) -> MutableMapping[str, Any]:
         """Perform a lightweight backend probe to confirm readiness."""
 
         backend = self._resolve_backend(backend_name)
@@ -58,7 +62,11 @@ class QNXSubstrate:
 
         logger.info(
             "Running simulation",
-            extra={"backend": config.backend, "scenario_id": config.scenario_id, "timesteps": config.timesteps},
+            extra={
+                "backend": config.backend,
+                "scenario_id": config.scenario_id,
+                "timesteps": config.timesteps,
+            },
         )
 
         start = time.perf_counter()
@@ -72,7 +80,9 @@ class QNXSubstrate:
             "seed": config.seed,
             "raw_results": raw_results,
         }
-        simulation_hash = compute_integrity_hash(json.dumps(hash_payload, sort_keys=True, default=str))
+        simulation_hash = compute_integrity_hash(
+            json.dumps(hash_payload, sort_keys=True, default=str)
+        )
         carbon_emissions = estimate_carbon(raw_results)
 
         errors = []
@@ -106,7 +116,9 @@ class QNXSubstrate:
         result = self.run_simulation(config)
 
         if rtos is not None:
-            rtos.send_ipc("simulation_complete", {"hash": result.simulation_hash, "backend": result.backend})
+            rtos.send_ipc(
+                "simulation_complete", {"hash": result.simulation_hash, "backend": result.backend}
+            )
             rtos.teardown()
 
         return result

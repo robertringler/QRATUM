@@ -13,16 +13,9 @@ from .simulator import QCSimulator
 
 # Multi-qubit and distributed simulation
 try:
-    from .quasim_dist import (
-        DistContext,
-        ShardedState,
-        dist_apply_gate,
-        init_cluster,
-        load_checkpoint,
-        profile,
-        save_checkpoint,
-        shard_state,
-    )
+    from .quasim_dist import (DistContext, ShardedState, dist_apply_gate,
+                              init_cluster, load_checkpoint, profile,
+                              save_checkpoint, shard_state)
     from .quasim_multi import MultiQubitSimulator
     from .quasim_tn import TensorNetworkEngine
 

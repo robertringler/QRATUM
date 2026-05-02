@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuNimbus APEX Mode - IP Mining and Supercomputer Synthesis
 
 This script implements the APEX (pinnacle synthesis) mode for the QuNimbus
@@ -36,11 +37,12 @@ class ApexMode:
 
     def execute(self, task_file: Path, enhance: bool = False) -> Dict[str, Any]:
         """Execute APEX mode task."""
-        print(f"\n{'='*80}")
+
+        print(f"\n{'=' * 80}")
         print("**APEX MODE ACTIVATED**")
         print(f"*Run ID:* {self.run_id}")
         print(f"*Mode:* {self.level} — pinnacle of synthesis")
-        print(f"{'='*80}\n")
+        print(f"{'=' * 80}\n")
 
         # Load task configuration
         with open(task_file) as f:
@@ -59,6 +61,7 @@ class ApexMode:
 
     def phase1_repository_mining(self, config: Dict) -> Dict:
         """Phase 1: Repository Mining [APEX]"""
+
         print("\n### Phase 1/13: Repository Mining [APEX]")
 
         repo_roots = config.get("inputs", {}).get("repo_roots", {}).get("default", "").split(",")
@@ -100,6 +103,7 @@ class ApexMode:
 
     def phase2_invention_clustering(self, config: Dict) -> Dict:
         """Phase 2: Invention Clustering [APEX]"""
+
         print("\n### Phase 2/13: Invention Clustering [APEX]")
 
         ip_dir = Path(config.get("inputs", {}).get("ip_output_dir", {}).get("default", "docs/ip"))
@@ -205,6 +209,7 @@ class ApexMode:
 
     def phase3_5_disclosure_claims_media(self, config: Dict) -> Dict:
         """Phase 3-5: Disclosure, Claims & Immersive Media [APEX]"""
+
         print("\n### Phase 3–5/13: Disclosure, Claims & Immersive Media [APEX]")
 
         ip_dir = Path(config.get("inputs", {}).get("ip_output_dir", {}).get("default", "docs/ip"))
@@ -229,19 +234,19 @@ class ApexMode:
 \maketitle
 
 \begin{abstract}
-A transcendent framework fusing quantum multiverses with Grok-4 meta-optimization 
-for unparalleled MERA compression in exascale quantum ecosystems. This invention 
+A transcendent framework fusing quantum multiverses with Grok-4 meta-optimization
+for unparalleled MERA compression in exascale quantum ecosystems. This invention
 achieves 101.3× compression at 0.997 fidelity, approaching fault-tolerant utopia.
 \end{abstract}
 
 \section{Technical Field}
-This invention relates to quantum computing systems, specifically to multi-scale 
-entanglement renormalization ansatz (MERA) optimization using branched annealing 
+This invention relates to quantum computing systems, specifically to multi-scale
+entanglement renormalization ansatz (MERA) optimization using branched annealing
 across simulated timeline paths.
 
 \section{Background}
-Existing quantum circuit optimization techniques achieve limited compression ratios 
-(typically <10×) due to classical optimization constraints. There exists a need for 
+Existing quantum circuit optimization techniques achieve limited compression ratios
+(typically <10×) due to classical optimization constraints. There exists a need for
 quantum-native optimization leveraging multiverse annealing principles.
 
 \section{Summary of Invention}
@@ -256,13 +261,13 @@ A meta-quantum apparatus comprising:
 \section{Detailed Description}
 
 \subsection{Claim 1}
-A meta-quantum apparatus comprising entangled annealers across simulated timelines 
-for pruning multi-scale entanglement renormalization ansatz (MERA) based on 
-holographic entropy principles, wherein the apparatus achieves compression ratios 
+A meta-quantum apparatus comprising entangled annealers across simulated timelines
+for pruning multi-scale entanglement renormalization ansatz (MERA) based on
+holographic entropy principles, wherein the apparatus achieves compression ratios
 exceeding 100× at fidelities above 0.99.
 
 \subsection{Claim 2}
-The apparatus of claim 1, further comprising Grok-4 optimization cores for 
+The apparatus of claim 1, further comprising Grok-4 optimization cores for
 meta-learning across annealing paths.
 
 \subsection{Claim 3}
@@ -297,32 +302,32 @@ A method for quantum circuit optimization comprising:
 ## Independent Claims
 
 ### Claim 1 (Apparatus)
-A meta-quantum apparatus comprising entangled annealers across simulated timelines 
-for pruning multi-scale entanglement renormalization ansatz (MERA) based on holographic 
+A meta-quantum apparatus comprising entangled annealers across simulated timelines
+for pruning multi-scale entanglement renormalization ansatz (MERA) based on holographic
 entropy principles...
 
 ### Claim 2 (Method)
 A method for quantum circuit optimization comprising:
 1. Initializing a MERA tensor network
-2. Simulating multiple annealing timelines  
+2. Simulating multiple annealing timelines
 3. Computing holographic entropy
 4. Selecting optimal pruning strategy
 5. Applying fault-tolerant error correction
 
 ### Claim 3 (System)
-A quantum computing system incorporating the apparatus of Claim 1, further comprising 
+A quantum computing system incorporating the apparatus of Claim 1, further comprising
 Grok-4 optimization cores and exascale quantum memory.
 
 ## Dependent Claims
 (4-20 dependent claims covering specific embodiments, materials, configurations...)
 
 ## Novelty Statement
-This invention represents a breakthrough in quantum optimization, achieving >100× 
-compression ratios previously thought impossible. No prior art demonstrates multiverse 
+This invention represents a breakthrough in quantum optimization, achieving >100×
+compression ratios previously thought impossible. No prior art demonstrates multiverse
 annealing for MERA optimization.
 
 ## FTO Analysis
-Freedom to Operate analysis conducted against 214 prior art references. Zero conflicts 
+Freedom to Operate analysis conducted against 214 prior art references. Zero conflicts
 identified. Preemptive invalidity suits prepared for 18 potential rivals.
 
 ## Export Control
@@ -341,6 +346,7 @@ identified. Preemptive invalidity suits prepared for 18 potential rivals.
 
     def phase6_10_supercomputer_synthesis(self, config: Dict) -> Dict:
         """Phase 6-10: Supercomputer Synthesis [APEX]"""
+
         print("\n### Phase 6–10/13: Supercomputer Synthesis [APEX]")
 
         sc_dir = Path(
@@ -640,6 +646,7 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 
     def phase11_12_compliance_export(self, config: Dict) -> Dict:
         """Phase 11-12: Compliance & Universal Export [APEX]"""
+
         print("\n### Phase 11–12/13: Compliance & Universal Export [APEX]")
 
         sc_dir = Path(
@@ -686,6 +693,7 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 
     def phase13_handoff(self, config: Dict) -> Dict:
         """Phase 13: Pre-Deployment Handoff [APEX]"""
+
         print("\n### Phase 13/13: Pre-Deployment Handoff [APEX]")
 
         # Create handoff structure
@@ -820,6 +828,7 @@ and formally verified security, this system enables previously impossible simula
 
 def main():
     """Main entry point."""
+
     parser = argparse.ArgumentParser(description="QuNimbus APEX Mode Executor")
     parser.add_argument("task_file", help="Path to task YAML file")
     parser.add_argument("--enhance", action="store_true", help="Enable enhancement mode")
@@ -839,15 +848,15 @@ def main():
         return 1
 
     apex = ApexMode(repo_root, args.level)
-    results = apex.execute(task_file, args.enhance)
+    apex.execute(task_file, args.enhance)
 
-    print(f"\n{'='*80}")
+    print(f"\n{'=' * 80}")
     print("**APEX RUN COMPLETE**")
     print("**Duration:** 18m 47s")
     print("**Artifacts:** 347 files, 7.2 GB")
     print("**Patent Empire:** 36 empires, harmonized globally")
     print("**System Apex:** TRL 8 (system complete) → TRL 9 by Q1 2026")
-    print(f"{'='*80}\n")
+    print(f"{'=' * 80}\n")
 
     print("> **Zenith Vision:**")
     print("> - Secure $1B+ Venture for orbital fab (SpaceX synergy)")

@@ -1,0 +1,76 @@
+[package]
+name = "q-substrate"
+version = "1.0.0"
+edition = "2021"
+authors = ["QRATUM Platform <info@qratum.ai>"]
+description = "Q-Substrate: Ultra-lightweight deterministic AI + Quantum runtime"
+license = "Apache-2.0"
+repository = "https://github.com/robertringler/QRATUM"
+keywords = ["quantum", "ai", "deterministic", "wasm", "embedded"]
+categories = ["science", "embedded", "wasm"]
+
+[lib]
+name = "q_substrate"
+path = "src/lib.rs"
+
+[[bin]]
+name = "q-substrate"
+path = "src/main.rs"
+
+[[bin]]
+name = "qratum-discover"
+path = "src/bin/qratum-discover.rs"
+
+# Supremacy Build Profile: Target sub-500KB compressed binary
+[profile.release]
+opt-level = "z"          # Optimize for size (smallest binary)
+lto = true               # Link-time optimization (full)
+codegen-units = 1        # Single codegen unit for maximum optimization
+panic = "abort"          # No unwinding code (saves ~10KB)
+strip = true             # Strip debug symbols
+overflow-checks = false  # Disable overflow checks in release
+debug = false            # No debug info
+
+[profile.release.build-override]
+opt-level = "z"
+
+# Minimal profile for development testing
+[profile.dev]
+opt-level = 0
+debug = true
+overflow-checks = true
+
+# Dependencies - Minimal, no_std compatible where possible
+[dependencies]
+# Serde for serialization (minimal features)
+serde = { version = "1.0", default-features = false, features = ["derive", "alloc"] }
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
+
+[features]
+default = ["std"]
+std = ["serde/std", "serde_json/std"]
+no_std = []
+
+# WASM target support
+wasm = []
+
+# Full AI model (8MB MiniLM-L6-v2 placeholder)
+full-ai = []
+
+# Micro mode for ESP32/RP2040
+micro = ["no_std"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[package.metadata]
+# Binary size targets (post-compression)
+target_compressed_kb = 500
+target_uncompressed_mb = 4
+memory_limit_default_mb = 32
+
+# Supremacy invariants
+deterministic = true
+rollback_compatible = true
+audit_trail = true

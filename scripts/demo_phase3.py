@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Demo script showcasing Phase III autonomous kernel evolution."""
+
 from __future__ import annotations
 
 import time
@@ -18,6 +19,7 @@ from schedules.scheduler import DifferentiableScheduler
 
 def demo_evolution():
     """Demonstrate kernel evolution with RL controller."""
+
     print("\n" + "=" * 70)
     print("DEMO 1: Self-Evolving Kernel Architectures")
     print("=" * 70)
@@ -63,6 +65,7 @@ def demo_evolution():
 
 def demo_precision():
     """Demonstrate hierarchical precision management."""
+
     print("\n" + "=" * 70)
     print("DEMO 2: Hierarchical Hybrid Precision Graphs")
     print("=" * 70)
@@ -97,6 +100,7 @@ def demo_precision():
 
 def demo_scheduling():
     """Demonstrate differentiable scheduling."""
+
     print("\n" + "=" * 70)
     print("DEMO 3: Differentiable Compiler Scheduling")
     print("=" * 70)
@@ -124,6 +128,7 @@ def demo_scheduling():
 
 def demo_quantum_search():
     """Demonstrate quantum-inspired optimization."""
+
     print("\n" + "=" * 70)
     print("DEMO 4: Quantum-Inspired Kernel Search")
     print("=" * 70)
@@ -148,6 +153,7 @@ def demo_quantum_search():
 
 def demo_memory_graph():
     """Demonstrate memory graph optimization."""
+
     print("\n" + "=" * 70)
     print("DEMO 5: Topological Memory Graph Optimizer")
     print("=" * 70)
@@ -181,6 +187,7 @@ def demo_memory_graph():
 
 def demo_causal_profiling():
     """Demonstrate causal profiling."""
+
     print("\n" + "=" * 70)
     print("DEMO 6: Causal Profiling & Counterfactual Benchmarking")
     print("=" * 70)
@@ -231,6 +238,7 @@ def demo_causal_profiling():
 
 def demo_energy():
     """Demonstrate energy monitoring."""
+
     print("\n" + "=" * 70)
     print("DEMO 7: Energy-Adaptive Regulation")
     print("=" * 70)
@@ -276,6 +284,7 @@ def demo_energy():
 
 def demo_verification():
     """Demonstrate formal verification."""
+
     print("\n" + "=" * 70)
     print("DEMO 8: Formal Stability Certification")
     print("=" * 70)
@@ -300,6 +309,7 @@ def demo_verification():
 
 def demo_federated():
     """Demonstrate federated learning."""
+
     print("\n" + "=" * 70)
     print("DEMO 9: Federated Kernel Intelligence")
     print("=" * 70)
@@ -365,6 +375,7 @@ def demo_federated():
 
 def main():
     """Run all demos."""
+
     print("\n")
     print("╔" + "═" * 68 + "╗")
     print("║" + " " * 10 + "Phase III Autonomous Kernel Evolution Demo" + " " * 15 + "║")

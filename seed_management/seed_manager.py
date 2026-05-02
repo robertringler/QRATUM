@@ -30,16 +30,19 @@ class SeedRecord:
 
     def __post_init__(self):
         """Compute hash digest after initialization."""
+
         if not self.hash_digest:
             self.hash_digest = self._compute_hash()
 
     def _compute_hash(self) -> str:
         """Compute SHA256 hash for verification."""
+
         data = f"{self.seed_value}|{self.timestamp}|{self.environment}|{self.replay_id}"
         return hashlib.sha256(data.encode()).hexdigest()
 
     def verify(self) -> bool:
         """Verify record integrity."""
+
         return self.hash_digest == self._compute_hash()
 
 
@@ -48,6 +51,7 @@ class SeedRepository:
 
     def __init__(self):
         """Initialize seed repository."""
+
         self._seeds: dict[str, SeedRecord] = {}
         self._seed_sequence: list[int] = []
 
@@ -57,6 +61,7 @@ class SeedRepository:
         Args:
             record: Seed record to store
         """
+
         self._seeds[record.replay_id] = record
         self._seed_sequence.append(record.seed_value)
 
@@ -69,6 +74,7 @@ class SeedRepository:
         Returns:
             Seed record if found, None otherwise
         """
+
         return self._seeds.get(replay_id)
 
     def get_sequence(self) -> list[int]:
@@ -77,6 +83,7 @@ class SeedRepository:
         Returns:
             List of seed values in storage order
         """
+
         return self._seed_sequence.copy()
 
     def get_all_records(self) -> list[SeedRecord]:
@@ -85,6 +92,7 @@ class SeedRepository:
         Returns:
             List of all seed records
         """
+
         return list(self._seeds.values())
 
     def count(self) -> int:
@@ -93,10 +101,12 @@ class SeedRepository:
         Returns:
             Number of seeds in repository
         """
+
         return len(self._seeds)
 
     def clear(self) -> None:
         """Clear all stored seeds."""
+
         self._seeds.clear()
         self._seed_sequence.clear()
 
@@ -115,6 +125,7 @@ class SeedManager:
             base_seed: Base seed for deterministic generation
             environment: Environment identifier
         """
+
         self.base_seed = base_seed
         self.environment = environment
         self.repository = SeedRepository()
@@ -129,6 +140,7 @@ class SeedManager:
         Returns:
             Seed record with metadata
         """
+
         if replay_id is None:
             replay_id = f"replay_{self.repository.count():06d}"
 
@@ -155,6 +167,7 @@ class SeedManager:
         Returns:
             List of seed records
         """
+
         batch = []
 
         for i in range(batch_size):
@@ -176,6 +189,7 @@ class SeedManager:
         Raises:
             ValueError: If seed record verification fails
         """
+
         if not seed_record.verify():
             raise ValueError("Seed record verification failed")
 
@@ -187,6 +201,7 @@ class SeedManager:
         Returns:
             Manifest dictionary with all seed records
         """
+
         records = [
             {
                 "seed_value": record.seed_value,
@@ -227,6 +242,7 @@ class DeterministicValidator:
         Returns:
             Tuple of (is_valid, drift_microseconds)
         """
+
         # Verify seed values match
         if original_record.seed_value != replay_record.seed_value:
             return False, float("inf")
@@ -257,6 +273,7 @@ class DeterministicValidator:
         Returns:
             Tuple of (is_deterministic, validation_report)
         """
+
         if len(batch1) != len(batch2):
             return False, {"error": "Batch sizes differ"}
 

@@ -7,13 +7,12 @@ import sys
 import click
 import numpy as np
 
-from quasim.terc_bridge.adapters import from_quasim_state, to_terc_observable_format
-from quasim.terc_bridge.observables import (
-    beta_metrics_from_cipher,
-    emergent_complexity,
-    ioc_period_candidates,
-    qgh_consensus_status,
-)
+from quasim.terc_bridge.adapters import (from_quasim_state,
+                                         to_terc_observable_format)
+from quasim.terc_bridge.observables import (beta_metrics_from_cipher,
+                                            emergent_complexity,
+                                            ioc_period_candidates,
+                                            qgh_consensus_status)
 from quasim.terc_bridge.registry import list_observables
 
 
@@ -25,6 +24,7 @@ def cli():
     Extract and emit observables from REVULTRA/QGH algorithms for
     TERC validation tiers.
     """
+
     pass
 
 
@@ -40,6 +40,7 @@ def emit(state_file: str | None, text: str | None, out: str, observable: str | N
         quasim-terc-obs emit --text "ATTACK" --out observables.json
         quasim-terc-obs emit --state-file state.json --out obs.json --observable beta_metrics
     """
+
     # Load input
     if state_file:
         state_input = from_quasim_state(state_file)
@@ -92,6 +93,7 @@ def emit(state_file: str | None, text: str | None, out: str, observable: str | N
 @cli.command("list")
 def list_cmd():
     """List all registered observables."""
+
     observables = list_observables()
 
     click.echo("Registered TERC Observables:")
@@ -111,6 +113,7 @@ def consensus(num_nodes: int, state_dim: int, out: str | None):
     Example:
         quasim-terc-obs consensus --num-nodes 10 --state-dim 5 --out consensus.json
     """
+
     click.echo(f"Computing consensus for {num_nodes} nodes, dimension {state_dim}...")
 
     # Generate random initial states
@@ -142,6 +145,7 @@ def validate(obs_file: str):
     Example:
         quasim-terc-obs validate --obs-file observables.json
     """
+
     try:
         with open(obs_file) as f:
             data = json.load(f)
@@ -166,7 +170,7 @@ def validate(obs_file: str):
 
         # List observables
         click.echo("\nObservables present:")
-        for key in data["observables"].keys():
+        for key in data["observables"]:
             click.echo(f"  - {key}")
 
     except json.JSONDecodeError as e:

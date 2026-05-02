@@ -1,5 +1,3 @@
-import pytest
-
 from qscenario.domains.aerospace import aerospace_launch_anomaly
 
 

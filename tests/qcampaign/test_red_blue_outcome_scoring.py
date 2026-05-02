@@ -1,6 +1,6 @@
-from qagents.base import Agent, LambdaPolicy, AgentObservation
+from qagents.base import Agent, LambdaPolicy
 from qcampaign.campaign import Campaign
-from qcampaign.teams import RedTeam, BlueTeam
+from qcampaign.teams import BlueTeam, RedTeam
 
 
 def test_scoring_rewards_low_incidents():

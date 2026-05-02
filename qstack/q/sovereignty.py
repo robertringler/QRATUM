@@ -8,6 +8,7 @@ from .identity import QIdentity
 @dataclass(frozen=True)
 class SovereignObject:
     """
+
     Bundles an identity with a set of claims and produces a deterministic digest.
     """
 

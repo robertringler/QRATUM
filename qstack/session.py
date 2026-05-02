@@ -1,8 +1,9 @@
 """SystemSession binds configuration, kernel, telemetry, and event bus."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict
+from typing import Any
 
 from qstack.alignment.constitution import DEFAULT_CONSTITUTION
 from qstack.alignment.evaluator import AlignmentEvaluator
@@ -21,7 +22,7 @@ class RunContext:
     node_id: str = "node-0"
     timestamp_seed: str = "0"
 
-    def as_dict(self) -> Dict[str, Any]:
+    def as_dict(self) -> dict[str, Any]:
         return {
             "scenario_name": self.scenario_name,
             "node_id": self.node_id,
@@ -48,7 +49,7 @@ class SystemSession:
         scenario_name: str = "default",
         node_id: str = "node-0",
         timestamp_seed: str | int = "0",
-    ) -> "SystemSession":
+    ) -> SystemSession:
         resolved_config = config or QStackConfig()
         run_context = RunContext(
             scenario_name=scenario_name,
@@ -76,7 +77,7 @@ class SystemSession:
             alignment_evaluator=alignment_evaluator,
         )
 
-    def as_dict(self) -> Dict[str, Any]:
+    def as_dict(self) -> dict[str, Any]:
         return {
             "config": self.config.to_dict(),
             "run_context": self.run_context.as_dict(),
@@ -84,7 +85,7 @@ class SystemSession:
             "telemetry": self.telemetry.as_dict(),
         }
 
-    def describe(self) -> Dict[str, Any]:
+    def describe(self) -> dict[str, Any]:
         return {
             "config": self.config.to_dict(),
             "run_context": self.run_context.as_dict(),
@@ -92,7 +93,7 @@ class SystemSession:
             "telemetry_entries": len(self.telemetry.entries),
         }
 
-    def alignment_summary(self) -> Dict[str, Any]:
+    def alignment_summary(self) -> dict[str, Any]:
         return {
             "constitution": self.alignment_evaluator.constitution.describe(),
             "policies": self.alignment_evaluator.policy_descriptions(),

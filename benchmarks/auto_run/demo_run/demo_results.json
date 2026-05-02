@@ -1,0 +1,35 @@
+{
+  "engine_test": {
+    "move": "h2h3",
+    "evaluation": -0.00016666666666666666,
+    "nodes": 1600,
+    "time_ms": 5984.8637479999525
+  },
+  "performance_metrics": {
+    "test_name": "quick_demo",
+    "overall_passed": false,
+    "duration_seconds": 6.534806489944458,
+    "results": [
+      {
+        "metric": "nodes_per_sec_1t",
+        "value": 280.99443407801436,
+        "unit": "nodes/sec",
+        "target": 70000000,
+        "passed": false
+      },
+      {
+        "metric": "hash_hit_rate",
+        "value": 0.0,
+        "unit": "ratio",
+        "target": 0.93,
+        "passed": false
+      }
+    ]
+  },
+  "motifs_discovered": 1,
+  "telemetry_samples": {
+    "time_per_move": 1,
+    "cortex_activations": 1,
+    "move_divergences": 1
+  }
+}

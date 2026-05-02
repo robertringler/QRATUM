@@ -1,4 +1,5 @@
 """
+
 Infinite Pilot Generator for QuNimbus
 Autonomous, continuous pilot generation across verticals
 """
@@ -21,6 +22,7 @@ class InfinitePilotFactory:
 
     def generate_pilot(self, vertical: str, index: int) -> dict:
         """Generate a single pilot"""
+
         workload_map = {
             "automotive": "QPE Battery Chem",
             "pharma": "VQE Protein Fold",
@@ -48,6 +50,7 @@ class InfinitePilotFactory:
 
     def generate_batch(self) -> list:
         """Generate a batch of pilots"""
+
         pilots = []
         for i in range(self.rate):
             vertical = self.verticals[i % len(self.verticals)]
@@ -63,6 +66,7 @@ class InfinitePilotFactory:
 
     def run_infinite(self):
         """Run infinite generation loop"""
+
         print(f"Infinite Pilot Factory: Generating {self.rate} pilots/hour")
         print(f"Verticals: {', '.join(self.verticals)}")
         batch = self.generate_batch()

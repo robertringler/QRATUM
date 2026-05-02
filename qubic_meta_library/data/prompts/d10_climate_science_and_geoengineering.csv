@@ -1,0 +1,101 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+901,Climate Intervention,Geoengineering approach for carbon removal using climate science & geoengineering approaches,D10,0.95,0.88,Carbon capture;Geoengineering,D18,QNimbus,1,simulation
+902,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.89,0.84,,D13;D18,QNimbus,1,model
+903,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.84,0.71,,D13;D5,QNimbus,1,analysis
+904,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.74,0.89,,D5,QNimbus,1,optimization
+905,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.82,0.9,,D18,QNimbus,1,design
+906,Climate Intervention,Geoengineering approach for ocean alkalinization using climate science & geoengineering approaches,D10,0.93,0.81,,D19,QNimbus,1,prediction
+907,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.75,0.75,,D19;D5,QNimbus,1,simulation
+908,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.86,0.92,,D5;D19,QNimbus,1,model
+909,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.82,0.7,,D13;D19,QNimbus,1,analysis
+910,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.76,0.85,,D19,QNimbus,1,optimization
+911,Climate Intervention,Geoengineering approach for solar management using climate science & geoengineering approaches,D10,0.93,0.82,,D5,QNimbus,1,design
+912,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.77,0.84,,D13,QNimbus,1,prediction
+913,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.92,0.78,,D5;D19,QNimbus,1,simulation
+914,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.71,0.75,,D19,QNimbus,1,model
+915,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.91,0.94,Carbon capture;Geoengineering,D13;D5,QNimbus,1,analysis
+916,Climate Intervention,Geoengineering approach for carbon removal using climate science & geoengineering approaches,D10,0.8,0.75,,D19,QNimbus,1,optimization
+917,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.92,0.71,,D19,QNimbus,1,design
+918,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.77,0.76,,D18,QNimbus,1,prediction
+919,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.86,0.94,,D5,QNimbus,1,simulation
+920,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.81,0.82,,D13;D5,QNimbus,1,model
+921,Climate Intervention,Geoengineering approach for ocean alkalinization using climate science & geoengineering approaches,D10,0.81,0.69,,D13,QNimbus,1,analysis
+922,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.89,0.7,,D18,QNimbus,1,optimization
+923,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.88,0.86,,D13,QNimbus,1,design
+924,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.71,0.88,,D5;D18,QNimbus,1,prediction
+925,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.92,0.94,,D19,QNimbus,1,simulation
+926,Climate Intervention,Geoengineering approach for solar management using climate science & geoengineering approaches,D10,0.73,0.75,,D19;D13,QNimbus,1,model
+927,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.74,0.69,,D13,QNimbus,1,analysis
+928,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.91,0.69,,D18,QNimbus,1,optimization
+929,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.92,0.9,Carbon capture;Geoengineering,D19,QNimbus,1,design
+930,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.77,0.73,,D5,QNimbus,1,prediction
+931,Climate Intervention,Geoengineering approach for carbon removal using climate science & geoengineering approaches,D10,0.82,0.87,,D13;D18,QNimbus,2,simulation
+932,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.72,0.7,,D13;D18,QNimbus,2,model
+933,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.79,0.85,,D5,QNimbus,2,analysis
+934,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.77,0.79,,D13,QNimbus,2,optimization
+935,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.92,0.91,,D19,QNimbus,2,design
+936,Climate Intervention,Geoengineering approach for ocean alkalinization using climate science & geoengineering approaches,D10,0.92,0.78,,D5,QNimbus,2,prediction
+937,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.73,0.88,,D18;D19,QNimbus,2,simulation
+938,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.83,0.93,,D19,QNimbus,2,model
+939,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.76,0.83,,D13;D18,QNimbus,2,analysis
+940,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.81,0.68,,D19;D13,QNimbus,2,optimization
+941,Climate Intervention,Geoengineering approach for solar management using climate science & geoengineering approaches,D10,0.78,0.92,,D18;D13,QNimbus,2,design
+942,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.9,0.84,,D19,QNimbus,2,prediction
+943,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.94,0.91,Carbon capture;Geoengineering,D5;D13,QNimbus,2,simulation
+944,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.91,0.91,,D13;D5,QNimbus,2,model
+945,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.82,0.94,,D5,QNimbus,2,analysis
+946,Climate Intervention,Geoengineering approach for carbon removal using climate science & geoengineering approaches,D10,0.86,0.82,,D5;D18,QNimbus,2,optimization
+947,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.83,0.75,,D19,QNimbus,2,design
+948,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.86,0.77,,D5;D19,QNimbus,2,prediction
+949,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.8,0.92,,D19,QNimbus,2,simulation
+950,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.8,0.76,,D19,QNimbus,2,model
+951,Climate Intervention,Geoengineering approach for ocean alkalinization using climate science & geoengineering approaches,D10,0.88,0.73,,D13,QNimbus,2,analysis
+952,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.76,0.76,,D13,QNimbus,2,optimization
+953,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.94,0.73,,D13,QNimbus,2,design
+954,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.72,0.92,,D18,QNimbus,2,prediction
+955,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.84,0.93,,D13,QNimbus,2,simulation
+956,Climate Intervention,Geoengineering approach for solar management using climate science & geoengineering approaches,D10,0.83,0.68,,D18;D13,QNimbus,2,model
+957,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.9,0.86,Carbon capture;Geoengineering,D18,QNimbus,2,analysis
+958,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.84,0.75,,D13,QNimbus,2,optimization
+959,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.79,0.74,,D5,QNimbus,2,design
+960,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.87,0.86,,D13;D18,QNimbus,2,prediction
+961,Climate Intervention,Geoengineering approach for carbon removal using climate science & geoengineering approaches,D10,0.91,0.81,,D19,QNimbus,3,simulation
+962,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.87,0.93,,D19;D5,QNimbus,3,model
+963,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.71,0.84,,D5,QNimbus,3,analysis
+964,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.79,0.72,,D13,QNimbus,3,optimization
+965,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.78,0.78,,D18,QNimbus,3,design
+966,Climate Intervention,Geoengineering approach for ocean alkalinization using climate science & geoengineering approaches,D10,0.77,0.82,,D5;D13,QNimbus,3,prediction
+967,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.9,0.83,,D13,QNimbus,3,simulation
+968,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.77,0.69,,D13,QNimbus,3,model
+969,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.77,0.68,,D18,QNimbus,3,analysis
+970,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.75,0.71,,D19,QNimbus,3,optimization
+971,Climate Intervention,Geoengineering approach for solar management using climate science & geoengineering approaches,D10,0.96,0.89,Carbon capture;Geoengineering,D13;D5,QNimbus,3,design
+972,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.85,0.85,,D5;D13,QNimbus,3,prediction
+973,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.86,0.9,,D18,QNimbus,3,simulation
+974,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.94,0.77,,D5,QNimbus,3,model
+975,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.73,0.92,,D19;D18,QNimbus,3,analysis
+976,Climate Intervention,Geoengineering approach for carbon removal using climate science & geoengineering approaches,D10,0.72,0.92,,D18,QNimbus,3,optimization
+977,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.72,0.78,,D18,QNimbus,3,design
+978,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.74,0.9,,D18;D5,QNimbus,3,prediction
+979,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.72,0.94,,D13,QNimbus,3,simulation
+980,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.92,0.76,,D18,QNimbus,3,model
+981,Climate Intervention,Geoengineering approach for ocean alkalinization using climate science & geoengineering approaches,D10,0.7,0.91,,D13;D19,QNimbus,3,analysis
+982,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.87,0.84,,D5,QNimbus,3,optimization
+983,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.75,0.76,,D13,QNimbus,3,design
+984,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.85,0.88,,D5;D18,QNimbus,3,prediction
+985,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.92,0.91,Carbon capture;Geoengineering,D18;D5,QNimbus,3,simulation
+986,Climate Intervention,Geoengineering approach for solar management using climate science & geoengineering approaches,D10,0.95,0.75,,D5,QNimbus,4,model
+987,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.9,0.83,,D18,QNimbus,4,analysis
+988,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.72,0.76,,D5,QNimbus,4,optimization
+989,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.85,0.71,,D18,QNimbus,4,design
+990,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.76,0.72,,D18;D13,QNimbus,4,prediction
+991,Climate Intervention,Geoengineering approach for carbon removal using climate science & geoengineering approaches,D10,0.73,0.93,,D19,QNimbus,4,simulation
+992,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.95,0.78,,D5;D19,QNimbus,4,model
+993,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.76,0.69,,D19;D5,QNimbus,4,analysis
+994,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.82,0.74,,D19;D5,QNimbus,4,optimization
+995,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.86,0.79,,D5,QNimbus,4,design
+996,Climate Intervention,Geoengineering approach for ocean alkalinization using climate science & geoengineering approaches,D10,0.88,0.92,,D5;D19,QNimbus,4,prediction
+997,Carbon Removal,Carbon Removal simulation and optimization using climate science & geoengineering approaches,D10,0.78,0.74,,D19,QNimbus,4,simulation
+998,Solar Radiation Management,Solar Radiation Management simulation and optimization using climate science & geoengineering approaches,D10,0.82,0.69,,D13;D5,QNimbus,4,model
+999,Ocean Alkalinization,Ocean Alkalinization simulation and optimization using climate science & geoengineering approaches,D10,0.88,0.69,,D18,QNimbus,4,analysis
+1000,Atmospheric Chemistry,Atmospheric Chemistry simulation and optimization using climate science & geoengineering approaches,D10,0.89,0.88,,D13,QNimbus,4,optimization

@@ -1,0 +1,160 @@
+site_name: QRATUM Documentation
+site_description: Comprehensive documentation for QRATUM - Certifiable Quantum-Classical Convergence Platform
+site_author: QRATUM Team
+site_url: https://robertringler.github.io/QRATUM/
+repo_name: robertringler/QRATUM
+repo_url: https://github.com/robertringler/QRATUM
+
+theme:
+  name: material
+  custom_dir: overrides
+  language: en
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep purple
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.tabs.link
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - getting-started/index.md
+      - Quick Start (5 min): getting-started/quickstart.md
+      - Installation: getting-started/installation.md
+      - Local Development: getting-started/local-development.md
+      - First Simulation: getting-started/first-simulation.md
+  - Tutorials:
+      - tutorials/index.md
+      - VQE for H₂ Molecule: tutorials/vqe-h2-molecule.md
+      - QAOA for MaxCut: tutorials/qaoa-maxcut.md
+      - Kubernetes Deployment: tutorials/kubernetes-deployment.md
+      - CI/CD Integration: tutorials/cicd-integration.md
+  - Reference:
+      - reference/index.md
+      - API Reference: reference/api-reference.md
+      - CLI Reference: reference/cli-reference.md
+      - Configuration: reference/configuration.md
+      - Code Examples: reference/code-examples.md
+  - Architecture:
+      - architecture/index.md
+      - System Overview: architecture/system-overview.md
+      - Components: architecture/components.md
+      - Data Flow: architecture/data-flow.md
+  - Compliance:
+      - compliance/index.md
+      - DO-178C Guidelines: compliance/do-178c.md
+      - NIST 800-53: compliance/nist-800-53.md
+      - CMMC 2.0: compliance/cmmc-2.md
+      - DFARS: compliance/dfars.md
+      - Audit Trail: compliance/audit-trail.md
+  - Advanced:
+      - advanced/index.md
+      - Performance Tuning: advanced/performance-tuning.md
+      - Custom Backends: advanced/custom-backends.md
+      - Troubleshooting: advanced/troubleshooting.md
+      - FAQ: advanced/faq.md
+  - Contributing: contributing.md
+
+plugins:
+  - search:
+      separator: '[\s\-\.]+'
+      lang:
+        - en
+  - tags
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: robertringler
+      repo: QRATUM
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets:
+      auto_append:
+        - includes/abbreviations.md
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra:
+  version:
+    provider: mike
+    default: latest
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/robertringler/QRATUM
+  analytics:
+    provider: google
+    property: G-XXXXXXXXXX  # Replace with actual tracking ID
+  generator: false
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+copyright: Copyright &copy; 2025 QRATUM Team - Apache 2.0 License

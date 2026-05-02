@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Finance Demo - QuASIM", layout="wide")
 
     st.title("💰 Intraday Risk & Liquidity Stress with Quantum Tensor Net Greeks")
@@ -15,10 +16,11 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
-    
+
     Stable VaR/ES estimation and robust liquidity stress under shocks
-    
+
     ### Key Performance Indicators (KPIs)
     - VaR_99, ES_97_5, drawdown_max, pnl_cvar_gap
     """
@@ -56,12 +58,13 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
-    
+
     ```bash
     # Run planning
     python -m quasim.demos.finance.cli plan --steps 200 --seed 42
-    
+
     # Run simulation with capture
     python -m quasim.demos.finance.cli simulate --seed 42 --capture
     ```

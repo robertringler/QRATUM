@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
-from quasim.simulation import FieldState, QCMGParameters, QuantacosmorphysigeneticField
+from quasim.simulation import (FieldState, QCMGParameters,
+                               QuantacosmorphysigeneticField)
 
 
 def test_qcmg_parameters_defaults():
     """Test QCMGParameters with default values."""
+
     params = QCMGParameters()
     assert params.coupling_strength == 1.0
     assert params.field_dimension == 3
@@ -17,6 +19,7 @@ def test_qcmg_parameters_defaults():
 
 def test_qcmg_parameters_custom():
     """Test QCMGParameters with custom values."""
+
     params = QCMGParameters(
         coupling_strength=2.5,
         field_dimension=5,
@@ -33,6 +36,7 @@ def test_qcmg_parameters_custom():
 
 def test_field_state_creation():
     """Test FieldState creation and validation."""
+
     state = FieldState(
         field_values=[1 + 0j, 2 + 0j, 3 + 0j],
         momentum=[0.5 + 0j, 0.5 + 0j, 0.5 + 0j],
@@ -47,6 +51,7 @@ def test_field_state_creation():
 
 def test_field_state_copy():
     """Test FieldState copy functionality."""
+
     state = FieldState(
         field_values=[1 + 0j, 2 + 0j],
         momentum=[0.5 + 0j, 0.5 + 0j],
@@ -68,6 +73,7 @@ def test_field_state_copy():
 
 def test_qcmg_field_initialization():
     """Test QuantacosmorphysigeneticField initialization."""
+
     params = QCMGParameters(field_dimension=4)
     field = QuantacosmorphysigeneticField(params)
 
@@ -78,6 +84,7 @@ def test_qcmg_field_initialization():
 
 def test_qcmg_field_initialize():
     """Test field initialization with default vacuum state."""
+
     params = QCMGParameters(field_dimension=3)
     field = QuantacosmorphysigeneticField(params)
     field.initialize()
@@ -92,6 +99,7 @@ def test_qcmg_field_initialize():
 
 def test_qcmg_field_evolve():
     """Test field evolution."""
+
     params = QCMGParameters(field_dimension=2, coupling_strength=0.5)
     field = QuantacosmorphysigeneticField(params)
 
@@ -114,6 +122,7 @@ def test_qcmg_field_evolve():
 
 def test_qcmg_field_simulate():
     """Test full simulation run."""
+
     params = QCMGParameters(field_dimension=2, evolution_steps=10)
     field = QuantacosmorphysigeneticField(params)
     field.initialize()
@@ -127,6 +136,7 @@ def test_qcmg_field_simulate():
 
 def test_qcmg_field_get_state():
     """Test getting current field state."""
+
     params = QCMGParameters(field_dimension=2)
     field = QuantacosmorphysigeneticField(params)
     field.initialize()
@@ -138,6 +148,7 @@ def test_qcmg_field_get_state():
 
 def test_qcmg_field_reset():
     """Test field reset functionality."""
+
     params = QCMGParameters(field_dimension=2)
     field = QuantacosmorphysigeneticField(params)
     field.initialize()

@@ -1,4 +1,5 @@
-from qnx_agi.worldmodel.grounding import GroundedState, ObservationAnchor, ConfidenceWeights
+from qnx_agi.worldmodel.grounding import (ConfidenceWeights, GroundedState,
+                                          ObservationAnchor)
 
 
 def test_grounded_state_blends_sim_and_observed():

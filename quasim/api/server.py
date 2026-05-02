@@ -58,6 +58,7 @@ def create_app() -> Any:
     Returns:
         Configured FastAPI application
     """
+
     # In production, this would create an actual FastAPI app
     # app = FastAPI(
     #     title="QuASIM API",
@@ -106,6 +107,7 @@ def create_app() -> Any:
     @app.get("/health")
     def health_check():
         """Health check endpoint."""
+
         return {"status": "healthy", "version": "0.1.0"}
 
     # Quantum simulation endpoints
@@ -119,6 +121,7 @@ def create_app() -> Any:
         Returns:
             Simulation job information
         """
+
         # In production, would dispatch to QCSimulator
         job_id = f"qc_job_{hash(str(request.circuit_spec))}"
         return SimulationResponse(job_id=job_id, status="queued", results=None)
@@ -133,6 +136,7 @@ def create_app() -> Any:
         Returns:
             Job status and results
         """
+
         return {
             "job_id": job_id,
             "status": "completed",
@@ -153,6 +157,7 @@ def create_app() -> Any:
         Returns:
             Digital twin information
         """
+
         return {
             "twin_id": request.twin_id,
             "system_type": request.system_type,
@@ -170,6 +175,7 @@ def create_app() -> Any:
         Returns:
             Simulation results
         """
+
         return {"twin_id": twin_id, "trajectory": [], "status": "completed"}
 
     # Optimization endpoints
@@ -183,6 +189,7 @@ def create_app() -> Any:
         Returns:
             Optimization results
         """
+
         job_id = f"opt_job_{hash(request.problem_type)}"
         return {"job_id": job_id, "status": "running", "algorithm": request.algorithm}
 
@@ -194,6 +201,7 @@ def create_app() -> Any:
         Returns:
             Cluster information and worker status
         """
+
         return {"num_workers": 4, "available_gpus": 4, "backend": "cuda", "utilization": 0.45}
 
     return app

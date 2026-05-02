@@ -25,6 +25,7 @@ def generate_model_card(
     description : str
         Model description
     """
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Filter results for this model
@@ -42,18 +43,18 @@ def generate_model_card(
 
     # Check determinism
     hashes = [r.prediction_hash for r in model_results]
-    deterministic = len(set(hashes)) == len(set((r.task, r.dataset, r.seed) for r in model_results))
+    deterministic = len(set(hashes)) == len({(r.task, r.dataset, r.seed) for r in model_results})
 
     # Generate card
     card = f"""# Model Card: {model_name}
 
 ## Model Details
 
-**Name:** {model_name}  
-**Version:** 0.1.0  
-**Type:** Symbolic-Latent Transformer (QuASIM-Own)  
-**Framework:** QuASIM-Own / scikit-learn  
-**Generated:** {datetime.now().isoformat()}  
+**Name:** {model_name}
+**Version:** 0.1.0
+**Type:** Symbolic-Latent Transformer (QuASIM-Own)
+**Framework:** QuASIM-Own / scikit-learn
+**Generated:** {datetime.now().isoformat()}
 
 {description}
 
@@ -67,9 +68,9 @@ This model is designed for deterministic, auditable AI tasks including:
 
 ## Performance Summary
 
-**Average Primary Metric:** {avg_primary:.4f}  
-**Average Inference Latency (p50):** {avg_latency:.2f} ms  
-**Deterministic:** {"✅ Yes" if deterministic else "❌ No"}  
+**Average Primary Metric:** {avg_primary:.4f}
+**Average Inference Latency (p50):** {avg_latency:.2f} ms
+**Deterministic:** {"✅ Yes" if deterministic else "❌ No"}
 
 ## Evaluation Results
 

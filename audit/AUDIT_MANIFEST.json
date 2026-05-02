@@ -1,0 +1,214 @@
+{
+  "commit": "8fc58a9107334a3b53b69a47580df64b185d3317",
+  "deliverables": {
+    "audit/COMPLETENESS_SCORECARD.md": {
+      "sha256": "cd5bd83a56fe950276dff965ce997272c9430a5f5f0d2dc487d076fbe5978080",
+      "size": 6683
+    },
+    "audit/EXECUTIVE_SUMMARY.md": {
+      "sha256": "67ea36e7a8e2de6c133ff025281fb6b91d2c8ab6b3b40986429e508afc0ac00d",
+      "size": 6184
+    },
+    "audit/GAP_REGISTRY.jsonl": {
+      "sha256": "45d8a3f8dbb0c56c5d842093349b0f7e298404f2f3deb3fe60532e01a8ef8679",
+      "size": 24766
+    },
+    "audit/GAP_REGISTRY.md": {
+      "sha256": "c2ab56404e7efd53d704d7cb3316dba4a31f1269882b90b8291a4c7e99d506c8",
+      "size": 19667
+    },
+    "audit/PROOF_LEDGER.md": {
+      "sha256": "6e9273b5364f3da636637e885450c59578f17ebc6b76e1d6aa94624ca1858ec6",
+      "size": 4855
+    },
+    "audit/REPRO_MANIFEST.md": {
+      "sha256": "f231bf99a4a49ba141bb69b1c48ec272a7c9ab3dd1908ce2a6c8d2fabd57e36d",
+      "size": 2653
+    },
+    "audit/UNIFIED_ARCHITECTURE_AS_IS.md": {
+      "sha256": "0e186806a90ace11b4e0b8e647bda2a633b253a75f4a7be1b508cc4f75d55bd5",
+      "size": 3932
+    },
+    "audit/artifacts/manifest.csv": {
+      "sha256": "253b4816da9f2e0435f0aecacd9e0583ca5442d75534032735a81fddfb90c8d4",
+      "size": 26787
+    },
+    "audit/benchmarks/coverage.md": {
+      "sha256": "4778a296161fd32bbef0a27155d9bbb369ff7b8e62308d2f7f96b6b01dd1b30b",
+      "size": 6135
+    },
+    "audit/benchmarks/missing.md": {
+      "sha256": "6829fa526e8fe61809442b9e3c1c5177a3680aae0171805691e6779ad7bcbf88",
+      "size": 824
+    },
+    "audit/cicd/findings.md": {
+      "sha256": "25f8d97b99297755933fb4f0aa175113eae1ee082e454402af86981d564780f1",
+      "size": 1012
+    },
+    "audit/cicd/matrix.csv": {
+      "sha256": "f79a2196c7875c9067b9b13715973921b6e495b5537bc1eaf8f2d274aeb02b8f",
+      "size": 5004
+    },
+    "audit/code/findings.jsonl": {
+      "sha256": "667da244c4add67ccbacd5fab064d4c203a446bb51dee3ae68f33145144768ec",
+      "size": 1079452
+    },
+    "audit/inventory/dependency_graph.json": {
+      "sha256": "385b8ca22421e5025b2cb7c0d699e3eadef1e1e6f0a687a676fcf12a9c89f190",
+      "size": 13324
+    },
+    "audit/inventory/file_index.jsonl": {
+      "sha256": "58f2aacb6eafc0016d15d263b960a2d7af3fb215a1028822309fb42a54050c42",
+      "size": 947264
+    },
+    "audit/inventory/orphans.txt": {
+      "sha256": "02b826802909c81a95db2c6aa3a654057fde2264e6c1895493733c55773d2144",
+      "size": 7989
+    },
+    "audit/inventory/summary.json": {
+      "sha256": "d14140f32bf69318c1ae2203c8337ad57af07a346b4e4bf903f710e0031f4259",
+      "size": 233
+    },
+    "audit/seams/api_matrix.csv": {
+      "sha256": "d9602b64d1c4f16b818b53d6e2bf1d1ad24d5a57caa8de2f422beac3305026d8",
+      "size": 5782
+    },
+    "audit/seams/disconnected.md": {
+      "sha256": "8c6c37e1af20d2b211d36053faa11f1bd92f89d7288e40b0a5565e443f4b3148",
+      "size": 4354
+    },
+    "audit/security/findings.jsonl": {
+      "sha256": "647fc329d427ce93bda026dc120d747f66f5d2efc95249075b917af112a85fa3",
+      "size": 4718
+    },
+    "audit/security/sbom_diff.md": {
+      "sha256": "29cb06af0f922f346949c98b10ccb821ba224c9c52d8e92d3d5adebaad5f0dbe",
+      "size": 906
+    },
+    "audit/subsystems/adapters/contract.md": {
+      "sha256": "6f4422ec448fd7a5f9aa96840fae911776a584bd83259717ac67deaba2dbc4e4",
+      "size": 581
+    },
+    "audit/subsystems/adapters/drift.md": {
+      "sha256": "4c8359e04a128e7056b4315e36a1f4e1443a9ef2f3c8de4f551d3879309c1148",
+      "size": 264
+    },
+    "audit/subsystems/ciir_crs_ric/contract.md": {
+      "sha256": "483a1f6434eb442cd1f71c35d87f4fd630549dd1e78f5842257ca9f17ab5a115",
+      "size": 848
+    },
+    "audit/subsystems/ciir_crs_ric/drift.md": {
+      "sha256": "793f692995c00edafa0e60c8e207e6ee436c0b39542946ede666d45eebbce940",
+      "size": 314
+    },
+    "audit/subsystems/control_geometry/contract.md": {
+      "sha256": "3f6cccd459862f29b8e8afba861d2a8f4ae1d042958ae22090858b8423998b93",
+      "size": 683
+    },
+    "audit/subsystems/control_geometry/drift.md": {
+      "sha256": "92f9afbff2fa386606fcd4ac505a6df032b61da4fca4c0859aa82b0a442b6e34",
+      "size": 178
+    },
+    "audit/subsystems/framework/contract.md": {
+      "sha256": "d8a95634cf92e5dd51ea0a341f4bc678f1da76c3bb97b7ae5e3e0f540ea14ed0",
+      "size": 493
+    },
+    "audit/subsystems/framework/drift.md": {
+      "sha256": "d8b3f9e7103a004244f212f2bc068cfccad7505cf1b77f4659a154b37240a244",
+      "size": 324
+    },
+    "audit/subsystems/mvri/contract.md": {
+      "sha256": "4d8073b3be4c811f8a9a3b2f50a317562b9ec68628bbcf804da90e80bf77b752",
+      "size": 586
+    },
+    "audit/subsystems/mvri/drift.md": {
+      "sha256": "6a93572d24a7470d7d1a41836303aa17a74ca5a0a1bd431f55759e4b7507a71f",
+      "size": 250
+    },
+    "audit/subsystems/quasim_ciir_plasma/contract.md": {
+      "sha256": "5b1799ba2446e6b064aa6b6ab633a2f01efd074f018b4ed8b636a96d2a8c86ff",
+      "size": 688
+    },
+    "audit/subsystems/quasim_ciir_plasma/drift.md": {
+      "sha256": "17ee9be1bc84ac5e5c0890ab550eeae114ead4fc9c070a3eddbf4dfc50ed93f6",
+      "size": 282
+    },
+    "audit/subsystems/quasim_quantum/contract.md": {
+      "sha256": "b50574a89d85743eb1cb8c2212c25e6bcc23809e2a1e10f41c20e7537724fc5f",
+      "size": 311
+    },
+    "audit/subsystems/quasim_quantum/drift.md": {
+      "sha256": "8c375216f8946228ee934a62f673b6f951c5a241e9cde6edfe6652799bf2895e",
+      "size": 310
+    },
+    "audit/subsystems/reality_interface/contract.md": {
+      "sha256": "5201d24ebf218baf99ade5f53ee879c34973ff0f62f87cf1e6eeece1664cfe40",
+      "size": 907
+    },
+    "audit/subsystems/reality_interface/drift.md": {
+      "sha256": "85aef404bbc147c28c997a64c92e513d9c259dc4589af3ef04d6ce6ea5cc4030",
+      "size": 273
+    },
+    "audit/subsystems/realworld_bridge/contract.md": {
+      "sha256": "3a338dedd70f074dff9b26f7e346f09b8dd3356c8c5316392f477f3a776d3a52",
+      "size": 778
+    },
+    "audit/subsystems/realworld_bridge/drift.md": {
+      "sha256": "deb9121f57cd05bb1715047094eee9311c54ab2d38c5bcd6d5b8b1690da7eebe",
+      "size": 304
+    },
+    "audit/subsystems/trajectory_controller/contract.md": {
+      "sha256": "a1cc0efe6a1bb4b12a866d753c754c86116e50aa52f5dd63489ad7d408c3afd8",
+      "size": 505
+    },
+    "audit/subsystems/trajectory_controller/drift.md": {
+      "sha256": "8169552392aee5c577d3a621fb6ec3dd7b562f0c7ff5e3290a175e2426a51be4",
+      "size": 255
+    },
+    "audit/tests/coverage_gap.csv": {
+      "sha256": "661f429c1a9b04e4a2752e9b1227dd406a46050e7529d1bb260051c362767377",
+      "size": 270746
+    },
+    "audit/tests/flaky_or_nondeterministic.md": {
+      "sha256": "c5a090d9ddf731fa3867ee13d9cb09878a0cdba73bd8d845e00165b84a07bcf7",
+      "size": 840
+    },
+    "audit/tests/missing_property_tests.md": {
+      "sha256": "687b64d9e011e18d84cd6094eeb13d9bc7b44fb414be3ce3c5f73a25f3a23a4d",
+      "size": 981
+    },
+    "audit/theory/ch03_primitive_definitions.md": {
+      "sha256": "ba048872ff60bc72bf521f710cdfc8a1b163c89cb783c051289141a39053ce08",
+      "size": 405
+    },
+    "audit/theory/ch04_axiom_system.md": {
+      "sha256": "9d4a8f075d5fce31323be821565c9d261aad0cf54e7e65fb4f47ca25df3ae1f7",
+      "size": 385
+    },
+    "audit/theory/ch05_algebraic_structure.md": {
+      "sha256": "8f9b90f0121814b1c62f41bb715c8c20ceb0d4f04e661a391cd925855a669916",
+      "size": 402
+    },
+    "audit/theory/ch06_representation_theory.md": {
+      "sha256": "dad3cb975b6be506e22f415e111b80348ae69b7b5107ddb08f4bf3861022fecb",
+      "size": 406
+    },
+    "audit/theory/ch07_dynamics.md": {
+      "sha256": "426ed9d2e691fdb956a3838d88986d8f789890811deee41cdc9b14d1aad362b4",
+      "size": 380
+    },
+    "audit/theory/ch08_measurement_theory.md": {
+      "sha256": "87276a9a559380c5d22ae37defbee2f06c19431e20b0c7c5d3cf43fbcd97a3ea",
+      "size": 400
+    },
+    "audit/theory/claims_matrix.csv": {
+      "sha256": "0dd1c76604caffaaa64b2f1a2d3e77eae9f1cafcc62de158cf19dea5fb67d824",
+      "size": 55403
+    },
+    "audit/theory/unproven_claims.md": {
+      "sha256": "2752030a7ede7b47fed8962eea6db1949c0af10141992ffbdd59a741dfaa71f8",
+      "size": 762
+    }
+  },
+  "generated": "2026-04-29T22:29:20Z"
+}

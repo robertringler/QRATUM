@@ -2,15 +2,13 @@
 
 import pytest
 
-from quasim.qunimbus.orchestrator import (
-    ExecutionMode,
-    OrchestrationConfig,
-    QuNimbusOrchestrator,
-)
+from quasim.qunimbus.orchestrator import (ExecutionMode, OrchestrationConfig,
+                                          QuNimbusOrchestrator)
 
 
 def test_orchestration_config_defaults():
     """Test OrchestrationConfig default values."""
+
     config = OrchestrationConfig()
 
     assert config.parallel is True
@@ -24,6 +22,7 @@ def test_orchestration_config_defaults():
 
 def test_orchestration_config_custom():
     """Test OrchestrationConfig with custom values."""
+
     config = OrchestrationConfig(
         parallel=False,
         tasks=["wave3_launch"],
@@ -41,6 +40,7 @@ def test_orchestration_config_custom():
 
 def test_orchestrator_initialization():
     """Test QuNimbusOrchestrator initialization."""
+
     config = OrchestrationConfig()
     orchestrator = QuNimbusOrchestrator(config)
 
@@ -53,6 +53,7 @@ def test_orchestrator_initialization():
 @pytest.mark.asyncio
 async def test_execute_wave3_launch():
     """Test Wave 3 launch execution."""
+
     config = OrchestrationConfig()
     orchestrator = QuNimbusOrchestrator(config)
 
@@ -71,6 +72,7 @@ async def test_execute_wave3_launch():
 @pytest.mark.asyncio
 async def test_execute_china_photonic_scale():
     """Test China Photonic Factory execution."""
+
     config = OrchestrationConfig()
     orchestrator = QuNimbusOrchestrator(config)
 
@@ -88,6 +90,7 @@ async def test_execute_china_photonic_scale():
 @pytest.mark.asyncio
 async def test_execute_parallel():
     """Test parallel execution of both tasks."""
+
     config = OrchestrationConfig(parallel=True)
     orchestrator = QuNimbusOrchestrator(config)
 
@@ -105,6 +108,7 @@ async def test_execute_parallel():
 @pytest.mark.asyncio
 async def test_orchestrate():
     """Test main orchestration entry point."""
+
     config = OrchestrationConfig()
     orchestrator = QuNimbusOrchestrator(config)
 
@@ -116,6 +120,7 @@ async def test_orchestrate():
 
 def test_get_metrics():
     """Test metrics retrieval."""
+
     config = OrchestrationConfig()
     orchestrator = QuNimbusOrchestrator(config)
 

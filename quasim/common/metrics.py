@@ -22,6 +22,7 @@ def rmse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     Returns:
         RMSE value
     """
+
     return float(np.sqrt(np.mean((y_true - y_pred) ** 2)))
 
 
@@ -35,6 +36,7 @@ def mae(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     Returns:
         MAE value
     """
+
     return float(np.mean(np.abs(y_true - y_pred)))
 
 
@@ -48,6 +50,7 @@ def wasserstein_1d(u: np.ndarray, v: np.ndarray) -> float:
     Returns:
         Wasserstein-1 distance
     """
+
     u_sorted = np.sort(u)
     v_sorted = np.sort(v)
 
@@ -71,6 +74,7 @@ def bures_fidelity(rho: np.ndarray, sigma: np.ndarray) -> float:
     Returns:
         Bures fidelity (0 to 1)
     """
+
     # Compute sqrt(rho)
     eigvals_rho, eigvecs_rho = np.linalg.eigh(rho)
     eigvals_rho = np.maximum(eigvals_rho, 0)  # Ensure non-negative
@@ -100,6 +104,7 @@ def pr_auc(y_true: np.ndarray, y_scores: np.ndarray, n_thresholds: int = 100) ->
     Returns:
         PR-AUC value
     """
+
     thresholds = np.linspace(0, 1, n_thresholds)
     precisions = []
     recalls = []
@@ -140,6 +145,7 @@ def mse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     Returns:
         MSE value
     """
+
     return float(np.mean((y_true - y_pred) ** 2))
 
 
@@ -154,4 +160,5 @@ def relative_error(y_true: np.ndarray, y_pred: np.ndarray, epsilon: float = 1e-1
     Returns:
         Mean relative error
     """
+
     return float(np.mean(np.abs((y_true - y_pred) / (np.abs(y_true) + epsilon))))

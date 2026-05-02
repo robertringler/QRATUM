@@ -18,19 +18,15 @@ import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
 
 import numpy as np
 
 # Add parent directories to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
-from integrations.kernels.cfd.pressure_poisson import (
-    Backend,
-    Precision,
-    PressurePoissonConfig,
-    PressurePoissonSolver,
-)
+from integrations.kernels.cfd.pressure_poisson import (Backend, Precision,
+                                                       PressurePoissonConfig,
+                                                       PressurePoissonSolver)
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -65,6 +61,7 @@ class CFDBenchmark:
         Returns:
             Benchmark result
         """
+
         logger.info("Running CFD benchmark: wing_coarse")
 
         config = PressurePoissonConfig(
@@ -107,6 +104,7 @@ class CFDBenchmark:
         Returns:
             Benchmark result
         """
+
         logger.info("Running CFD benchmark: wing_medium")
 
         config = PressurePoissonConfig(
@@ -150,6 +148,7 @@ class FEABenchmark:
         Returns:
             Benchmark result
         """
+
         logger.info("Running FEA benchmark: composite_plate")
 
         # Mock FEA simulation
@@ -197,6 +196,7 @@ class OrbitalMCBenchmark:
         Returns:
             Benchmark result
         """
+
         logger.info("Running Orbital MC benchmark: 1M trajectories")
 
         start_time = time.perf_counter()
@@ -233,13 +233,14 @@ class OrbitalMCBenchmark:
         )
 
 
-def write_csv_report(results: List[BenchmarkResult], output_path: Path):
+def write_csv_report(results: list[BenchmarkResult], output_path: Path):
     """Write benchmark results to CSV.
 
     Args:
         results: List of benchmark results
         output_path: Path to output CSV file
     """
+
     logger.info(f"Writing CSV report to {output_path}")
 
     with open(output_path, "w", newline="") as f:
@@ -283,13 +284,14 @@ def write_csv_report(results: List[BenchmarkResult], output_path: Path):
     logger.info(f"CSV report written to {output_path}")
 
 
-def write_markdown_report(results: List[BenchmarkResult], output_path: Path):
+def write_markdown_report(results: list[BenchmarkResult], output_path: Path):
     """Write benchmark results to Markdown.
 
     Args:
         results: List of benchmark results
         output_path: Path to output Markdown file
     """
+
     logger.info(f"Writing Markdown report to {output_path}")
 
     with open(output_path, "w") as f:
@@ -347,6 +349,7 @@ def main() -> int:
     Returns:
         Exit code (0 for success)
     """
+
     parser = argparse.ArgumentParser(description="QuASIM Aerospace Benchmark Harness")
     parser.add_argument(
         "--output-dir",
@@ -368,7 +371,7 @@ def main() -> int:
     logger.info("=" * 70)
 
     # Run benchmarks
-    results: List[BenchmarkResult] = []
+    results: list[BenchmarkResult] = []
 
     try:
         # CFD benchmarks
