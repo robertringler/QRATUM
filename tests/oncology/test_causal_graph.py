@@ -2,17 +2,11 @@
 
 import pytest
 
-from qratum.oncology.causal_graph import (
-    CancerHallmark,
-    CausalEdge,
-    CausalOncologyGraph,
-    EdgeType,
-    EpigeneticState,
-    MutationState,
-    NodeType,
-    OncogenicNode,
-    create_example_egfr_graph,
-)
+from qratum.oncology.causal_graph import (CancerHallmark, CausalEdge,
+                                          CausalOncologyGraph, EdgeType,
+                                          EpigeneticState, MutationState,
+                                          NodeType, OncogenicNode,
+                                          create_example_egfr_graph)
 
 
 class TestMutationState:

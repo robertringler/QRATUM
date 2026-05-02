@@ -18,12 +18,12 @@ reproduction from checkpoint. This includes not just model weights, but
 also RNG seeds, optimizer momentum, execution counters, and communication state.
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Any, Set
-from enum import Enum
 import hashlib
-import time
 import json
+import time
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Dict, List, Optional
 
 
 class CheckpointType(Enum):
@@ -60,7 +60,7 @@ class StateComponent:
     data_hash: str
     size_bytes: int
     merkle_proof: Optional[str] = None
-    
+
     def verify_integrity(self, data: bytes) -> bool:
         """
         Verify component data integrity
@@ -103,8 +103,8 @@ class DeterministicCheckpoint:
     merkle_root: Optional[str] = None
     state: CheckpointState = CheckpointState.CREATING
     metadata: Dict[str, Any] = field(default_factory=dict)
-    
-    def add_component(self, component_id: str, component_type: str, 
+
+    def add_component(self, component_id: str, component_type: str,
                      data: bytes) -> StateComponent:
         """
         Add state component to checkpoint
@@ -126,7 +126,7 @@ class DeterministicCheckpoint:
         )
         self.components[component_id] = component
         return component
-    
+
     def compute_merkle_root(self) -> str:
         """
         Compute Merkle root of all checkpoint components
@@ -137,11 +137,11 @@ class DeterministicCheckpoint:
         if not self.components:
             self.merkle_root = hashlib.sha256(b"empty").hexdigest()
             return self.merkle_root
-        
+
         # Sort components by ID for determinism
         component_ids = sorted(self.components.keys())
         leaves = [self.components[cid].data_hash for cid in component_ids]
-        
+
         # Build Merkle tree bottom-up
         tree = [leaves]
         while len(tree[-1]) > 1:
@@ -154,15 +154,15 @@ class DeterministicCheckpoint:
                     combined = prev_level[i] + prev_level[i]
                 level.append(hashlib.sha256(combined.encode('utf-8')).hexdigest())
             tree.append(level)
-        
+
         self.merkle_root = tree[-1][0]
-        
+
         # Compute Merkle proofs for each component
         self._compute_merkle_proofs(tree, component_ids)
-        
+
         return self.merkle_root
-    
-    def _compute_merkle_proofs(self, tree: List[List[str]], 
+
+    def _compute_merkle_proofs(self, tree: List[List[str]],
                                component_ids: List[str]) -> None:
         """
         Compute Merkle proof for each component
@@ -175,7 +175,7 @@ class DeterministicCheckpoint:
         # Full implementation would compute actual Merkle path
         for idx, component_id in enumerate(component_ids):
             self.components[component_id].merkle_proof = f"index_{idx}"
-    
+
     def verify_checkpoint(self) -> bool:
         """
         Verify checkpoint integrity via Merkle root
@@ -185,15 +185,15 @@ class DeterministicCheckpoint:
         """
         computed_root = self.compute_merkle_root()
         return computed_root == self.merkle_root
-    
+
     def get_total_size_bytes(self) -> int:
         """Get total checkpoint size in bytes"""
         return sum(comp.size_bytes for comp in self.components.values())
-    
+
     def get_component(self, component_id: str) -> Optional[StateComponent]:
         """Get component by ID"""
         return self.components.get(component_id)
-    
+
     def to_manifest(self) -> Dict[str, Any]:
         """
         Export checkpoint manifest
@@ -245,8 +245,8 @@ class CheckpointManager:
     checkpoint_history: List[str] = field(default_factory=list)
     async_write: bool = True
     verify_on_load: bool = True
-    
-    def create_checkpoint(self, checkpoint_id: str, 
+
+    def create_checkpoint(self, checkpoint_id: str,
                          checkpoint_type: CheckpointType = CheckpointType.SCHEDULED,
                          global_step: int = 0,
                          epoch: int = 0) -> DeterministicCheckpoint:
@@ -268,17 +268,17 @@ class CheckpointManager:
             global_step=global_step,
             epoch=epoch
         )
-        
+
         self.checkpoints[checkpoint_id] = checkpoint
         self.checkpoint_history.append(checkpoint_id)
-        
+
         # Manage checkpoint retention
         if len(self.checkpoint_history) > self.max_checkpoints:
             old_checkpoint_id = self.checkpoint_history.pop(0)
             self._delete_checkpoint(old_checkpoint_id)
-        
+
         return checkpoint
-    
+
     def save_checkpoint(self, checkpoint: DeterministicCheckpoint,
                        state_dict: Dict[str, Any]) -> bool:
         """
@@ -292,7 +292,7 @@ class CheckpointManager:
             True if save successful
         """
         checkpoint.state = CheckpointState.WRITING
-        
+
         try:
             # Add all state components
             for key, value in state_dict.items():
@@ -300,21 +300,21 @@ class CheckpointManager:
                 # Here we use string representation as placeholder
                 data = str(value).encode('utf-8')
                 checkpoint.add_component(key, type(value).__name__, data)
-            
+
             # Compute Merkle root for verification
             checkpoint.compute_merkle_root()
-            
+
             # In real implementation: write to disk/storage
             # For now, just mark as committed
             checkpoint.state = CheckpointState.COMMITTED
-            
+
             return True
-            
+
         except Exception as e:
             checkpoint.state = CheckpointState.FAILED
             checkpoint.metadata['error'] = str(e)
             return False
-    
+
     def load_checkpoint(self, checkpoint_id: str) -> Optional[Dict[str, Any]]:
         """
         Load checkpoint and restore state
@@ -327,14 +327,14 @@ class CheckpointManager:
         """
         if checkpoint_id not in self.checkpoints:
             return None
-        
+
         checkpoint = self.checkpoints[checkpoint_id]
-        
+
         # Verify checkpoint integrity if enabled
         if self.verify_on_load:
             if not checkpoint.verify_checkpoint():
                 return None
-        
+
         # In real implementation: load from disk/storage
         # For now, return placeholder
         state_dict = {
@@ -342,9 +342,9 @@ class CheckpointManager:
             'global_step': checkpoint.global_step,
             'epoch': checkpoint.epoch
         }
-        
+
         return state_dict
-    
+
     def _delete_checkpoint(self, checkpoint_id: str) -> None:
         """
         Delete old checkpoint
@@ -354,9 +354,9 @@ class CheckpointManager:
         """
         if checkpoint_id in self.checkpoints:
             del self.checkpoints[checkpoint_id]
-        
+
         # In real implementation: delete from disk/storage
-    
+
     def get_latest_checkpoint(self) -> Optional[DeterministicCheckpoint]:
         """Get most recent committed checkpoint"""
         for checkpoint_id in reversed(self.checkpoint_history):
@@ -364,7 +364,7 @@ class CheckpointManager:
             if checkpoint and checkpoint.state == CheckpointState.COMMITTED:
                 return checkpoint
         return None
-    
+
     def list_checkpoints(self, checkpoint_type: Optional[CheckpointType] = None) -> List[str]:
         """
         List all checkpoints
@@ -377,13 +377,13 @@ class CheckpointManager:
         """
         if checkpoint_type is None:
             return list(self.checkpoint_history)
-        
+
         return [
             checkpoint_id
             for checkpoint_id in self.checkpoint_history
             if self.checkpoints[checkpoint_id].checkpoint_type == checkpoint_type
         ]
-    
+
     def verify_all_checkpoints(self) -> Dict[str, bool]:
         """
         Verify integrity of all checkpoints
@@ -395,7 +395,7 @@ class CheckpointManager:
         for checkpoint_id, checkpoint in self.checkpoints.items():
             results[checkpoint_id] = checkpoint.verify_checkpoint()
         return results
-    
+
     def get_checkpoint_manifest(self, checkpoint_id: str) -> Optional[Dict[str, Any]]:
         """
         Get checkpoint manifest
@@ -408,7 +408,7 @@ class CheckpointManager:
         """
         checkpoint = self.checkpoints.get(checkpoint_id)
         return checkpoint.to_manifest() if checkpoint else None
-    
+
     def export_checkpoint_log(self) -> str:
         """
         Export checkpoint history as JSON
@@ -426,7 +426,7 @@ class CheckpointManager:
             ]
         }
         return json.dumps(log, indent=2)
-    
+
     def compute_checkpoint_chain_hash(self) -> str:
         """
         Compute hash of checkpoint chain for verification
@@ -439,10 +439,10 @@ class CheckpointManager:
             checkpoint = self.checkpoints.get(checkpoint_id)
             if checkpoint:
                 chain_data.append(checkpoint.merkle_root)
-        
+
         chain_str = ";".join(chain_data)
         return hashlib.sha256(chain_str.encode('utf-8')).hexdigest()
-    
+
     def create_emergency_checkpoint(self, rank: int, error_msg: str) -> DeterministicCheckpoint:
         """
         Create emergency checkpoint on failure detection
@@ -462,7 +462,7 @@ class CheckpointManager:
         checkpoint.metadata['rank'] = rank
         checkpoint.metadata['error'] = error_msg
         return checkpoint
-    
+
     def should_checkpoint(self, global_step: int, checkpoint_interval: int) -> bool:
         """
         Determine if checkpoint should be created
@@ -477,7 +477,7 @@ class CheckpointManager:
         if checkpoint_interval <= 0:
             return False
         return global_step % checkpoint_interval == 0
-    
+
     def estimate_checkpoint_time_seconds(self, checkpoint_size_gb: float,
                                         write_bandwidth_gbs: float = 10.0) -> float:
         """

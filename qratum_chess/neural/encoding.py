@@ -18,12 +18,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from qratum_chess.core import (
-    CastlingRights,
-    Color,
-    PieceType,
-    iter_bits,
-)
+from qratum_chess.core import CastlingRights, Color, PieceType, iter_bits
 from qratum_chess.core.position import Position
 
 

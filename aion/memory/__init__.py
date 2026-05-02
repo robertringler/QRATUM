@@ -11,16 +11,9 @@ Status: Production
 
 from __future__ import annotations
 
-from .regions import (
-    Allocation,
-    BorrowChecker,
-    MemoryBlock,
-    OwnershipTransfer,
-    Region,
-    RegionKind,
-    RegionLifetime,
-    RegionManager,
-)
+from .regions import (Allocation, BorrowChecker, MemoryBlock,
+                      OwnershipTransfer, Region, RegionKind, RegionLifetime,
+                      RegionManager)
 
 __all__ = [
     "Region",

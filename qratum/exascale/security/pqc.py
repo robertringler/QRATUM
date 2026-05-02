@@ -41,12 +41,11 @@ Key Features:
 - Batch signature verification for efficiency
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple, Union
-from enum import Enum
 import hashlib
 import secrets
-from pathlib import Path
+from dataclasses import dataclass
+from enum import Enum
+from typing import List, Optional
 
 
 class PQCAlgorithm(Enum):
@@ -54,7 +53,7 @@ class PQCAlgorithm(Enum):
     KYBER_1024 = "Kyber-1024"           # KEM, NIST Level 5
     DILITHIUM_5 = "Dilithium-5"         # Signature, NIST Level 5
     SPHINCS_PLUS_256F = "SPHINCS+-256f" # Hash signature, NIST Level 5
-    
+
 
 class SecurityLevel(Enum):
     """NIST security levels for post-quantum cryptography"""
@@ -107,14 +106,14 @@ class KyberKeyPair:
     node_id: Optional[str] = None
     generation_timestamp: Optional[int] = None
     seed: Optional[bytes] = None
-    
+
     def __post_init__(self):
         """Validate key sizes"""
         if len(self.public_key) != 1568:
             raise ValueError(f"Kyber-1024 public key must be 1,568 bytes, got {len(self.public_key)}")
         if len(self.secret_key) != 3168:
             raise ValueError(f"Kyber-1024 secret key must be 3,168 bytes, got {len(self.secret_key)}")
-    
+
     def get_fingerprint(self) -> str:
         """
         Compute SHA-256 fingerprint of public key
@@ -145,7 +144,7 @@ class KyberCiphertext:
     shared_secret: bytes
     recipient_node: Optional[str] = None
     sender_node: Optional[str] = None
-    
+
     def __post_init__(self):
         """Validate sizes"""
         if len(self.ciphertext) != 1568:
@@ -189,14 +188,14 @@ class DilithiumKeyPair:
     node_id: Optional[str] = None
     generation_timestamp: Optional[int] = None
     seed: Optional[bytes] = None
-    
+
     def __post_init__(self):
         """Validate key sizes"""
         if len(self.public_key) != 2592:
             raise ValueError(f"Dilithium-5 public key must be 2,592 bytes, got {len(self.public_key)}")
         if len(self.secret_key) != 4864:
             raise ValueError(f"Dilithium-5 secret key must be 4,864 bytes, got {len(self.secret_key)}")
-    
+
     def get_fingerprint(self) -> str:
         """
         Compute SHA-256 fingerprint of public key
@@ -227,7 +226,7 @@ class DilithiumSignature:
     signer_node: Optional[str] = None
     timestamp: Optional[int] = None
     counter: Optional[int] = None
-    
+
     def __post_init__(self):
         """Validate signature and hash sizes"""
         if not (4500 <= len(self.signature) <= 4700):
@@ -271,14 +270,14 @@ class SPHINCSPlusKeyPair:
     node_id: Optional[str] = None
     generation_timestamp: Optional[int] = None
     seed: Optional[bytes] = None
-    
+
     def __post_init__(self):
         """Validate key sizes"""
         if len(self.public_key) != 64:
             raise ValueError(f"SPHINCS+-256f public key must be 64 bytes, got {len(self.public_key)}")
         if len(self.secret_key) != 128:
             raise ValueError(f"SPHINCS+-256f secret key must be 128 bytes, got {len(self.secret_key)}")
-    
+
     def get_fingerprint(self) -> str:
         """
         Compute SHA-256 fingerprint of public key
@@ -310,7 +309,7 @@ class SPHINCSPlusSignature:
     signer_node: Optional[str] = None
     timestamp: Optional[int] = None
     purpose: Optional[str] = None
-    
+
     def __post_init__(self):
         """Validate signature size"""
         if len(self.signature) != 49856:
@@ -344,7 +343,7 @@ class KyberKEM:
         - Use session key caching with 1-hour expiration
         - Batch operations where possible
     """
-    
+
     def __init__(self, node_id: str):
         """
         Initialize Kyber KEM for a specific node
@@ -354,7 +353,7 @@ class KyberKEM:
         """
         self.node_id = node_id
         self.operation_counter = 0
-    
+
     def generate_keypair(
         self,
         seed: Optional[bytes] = None,
@@ -378,24 +377,24 @@ class KyberKEM:
         """
         if seed is None:
             seed = secrets.token_bytes(32)
-        
+
         if timestamp is None:
             timestamp = 0  # Use deterministic timestamp in production
-        
+
         # TODO: Implement actual Kyber-1024 key generation
         # For now, return placeholder with correct sizes
         # Key size multipliers: 1568 = 64 * 24.5 ≈ 64 * 25 bytes
         KYBER_PUBLIC_KEY_SIZE = 1568
         KYBER_SECRET_KEY_SIZE = 3168
-        
+
         public_key = hashlib.sha3_512(seed + b"public").digest() * 25  # 64 * 25 = 1600 bytes
         public_key = public_key[:KYBER_PUBLIC_KEY_SIZE]
-        
+
         secret_key = hashlib.sha3_512(seed + b"secret").digest() * 50  # 64 * 50 = 3200 bytes
         secret_key = secret_key[:KYBER_SECRET_KEY_SIZE]
-        
+
         self.operation_counter += 1
-        
+
         return KyberKeyPair(
             public_key=public_key,
             secret_key=secret_key,
@@ -403,7 +402,7 @@ class KyberKEM:
             generation_timestamp=timestamp,
             seed=seed
         )
-    
+
     def encapsulate(
         self,
         public_key: bytes,
@@ -427,22 +426,22 @@ class KyberKEM:
         """
         if len(public_key) != 1568:
             raise ValueError(f"Public key must be 1,568 bytes, got {len(public_key)}")
-        
+
         # TODO: Implement actual Kyber-1024 encapsulation
         # For now, return placeholder with correct sizes
         shared_secret = secrets.token_bytes(32)
         ciphertext = hashlib.sha3_512(public_key + shared_secret).digest() * 25
         ciphertext = ciphertext[:1568]
-        
+
         self.operation_counter += 1
-        
+
         return KyberCiphertext(
             ciphertext=ciphertext,
             shared_secret=shared_secret,
             recipient_node=recipient_node,
             sender_node=self.node_id
         )
-    
+
     def decapsulate(
         self,
         secret_key: bytes,
@@ -467,13 +466,13 @@ class KyberKEM:
             raise ValueError(f"Secret key must be 3,168 bytes, got {len(secret_key)}")
         if len(ciphertext) != 1568:
             raise ValueError(f"Ciphertext must be 1,568 bytes, got {len(ciphertext)}")
-        
+
         # TODO: Implement actual Kyber-1024 decapsulation
         # For now, return placeholder
         shared_secret = hashlib.sha3_256(secret_key[:32] + ciphertext[:32]).digest()
-        
+
         self.operation_counter += 1
-        
+
         return shared_secret
 
 
@@ -500,7 +499,7 @@ class DilithiumSigner:
         - Parallel verification across cores
         - Signature caching for repeated verifications
     """
-    
+
     def __init__(self, node_id: str):
         """
         Initialize Dilithium signature scheme for a specific node
@@ -510,7 +509,7 @@ class DilithiumSigner:
         """
         self.node_id = node_id
         self.operation_counter = 0
-    
+
     def generate_keypair(
         self,
         seed: Optional[bytes] = None,
@@ -530,19 +529,19 @@ class DilithiumSigner:
         """
         if seed is None:
             seed = secrets.token_bytes(32)
-        
+
         if timestamp is None:
             timestamp = 0
-        
+
         # TODO: Implement actual Dilithium-5 key generation
         public_key = hashlib.sha3_512(seed + b"dilithium_public").digest() * 41
         public_key = public_key[:2592]
-        
+
         secret_key = hashlib.sha3_512(seed + b"dilithium_secret").digest() * 76
         secret_key = secret_key[:4864]
-        
+
         self.operation_counter += 1
-        
+
         return DilithiumKeyPair(
             public_key=public_key,
             secret_key=secret_key,
@@ -550,7 +549,7 @@ class DilithiumSigner:
             generation_timestamp=timestamp,
             seed=seed
         )
-    
+
     def sign(
         self,
         message: bytes,
@@ -572,15 +571,15 @@ class DilithiumSigner:
         """
         if len(secret_key) != 4864:
             raise ValueError(f"Secret key must be 4,864 bytes, got {len(secret_key)}")
-        
+
         message_hash = hashlib.sha512(message).digest()
-        
+
         # TODO: Implement actual Dilithium-5 signing
         signature = hashlib.sha3_512(secret_key[:64] + message_hash).digest() * 72
         signature = signature[:4595]
-        
+
         self.operation_counter += 1
-        
+
         return DilithiumSignature(
             signature=signature,
             message_hash=message_hash,
@@ -588,7 +587,7 @@ class DilithiumSigner:
             timestamp=timestamp,
             counter=self.operation_counter
         )
-    
+
     def verify(
         self,
         message: bytes,
@@ -612,12 +611,12 @@ class DilithiumSigner:
             raise ValueError(f"Public key must be 2,592 bytes, got {len(public_key)}")
         if not (4500 <= len(signature) <= 4700):
             raise ValueError(f"Invalid signature size: {len(signature)}")
-        
+
         # TODO: Implement actual Dilithium-5 verification
         self.operation_counter += 1
-        
+
         return True  # Placeholder
-    
+
     def batch_verify(
         self,
         messages: List[bytes],
@@ -643,12 +642,12 @@ class DilithiumSigner:
         """
         if not (len(messages) == len(signatures) == len(public_keys)):
             raise ValueError("All lists must have same length")
-        
+
         # TODO: Implement actual batch verification with AVX-512
         results = []
         for msg, sig, pk in zip(messages, signatures, public_keys):
             results.append(self.verify(msg, sig, pk))
-        
+
         return results
 
 
@@ -679,7 +678,7 @@ class PQCMetrics:
     sphincs_sign_ms: float = 15.0
     sphincs_verify_ms: float = 1.5
     total_overhead_percent: float = 0.0
-    
+
     def is_within_target(self, target_percent: float = 3.0) -> bool:
         """
         Check if total overhead is within target
@@ -713,7 +712,7 @@ class PostQuantumCrypto:
         signature = pqc.dilithium.sign(b"important message", signing_keypair.secret_key)
         valid = pqc.dilithium.verify(b"important message", signature.signature, signing_keypair.public_key)
     """
-    
+
     def __init__(self, node_id: str):
         """
         Initialize post-quantum crypto for a specific node
@@ -725,7 +724,7 @@ class PostQuantumCrypto:
         self.kyber = KyberKEM(node_id)
         self.dilithium = DilithiumSigner(node_id)
         self.metrics = PQCMetrics()
-    
+
     def get_metrics(self) -> PQCMetrics:
         """
         Get current performance metrics
@@ -734,7 +733,7 @@ class PostQuantumCrypto:
             PQCMetrics object with performance data
         """
         return self.metrics
-    
+
     def validate_determinism(self, seed: bytes, iterations: int = 100) -> bool:
         """
         Validate that cryptographic operations are deterministic
@@ -751,12 +750,12 @@ class PostQuantumCrypto:
             True if all operations are deterministic, False otherwise
         """
         reference_keypair = self.kyber.generate_keypair(seed=seed)
-        
+
         for i in range(iterations - 1):
             test_keypair = self.kyber.generate_keypair(seed=seed)
             if test_keypair.public_key != reference_keypair.public_key:
                 return False
             if test_keypair.secret_key != reference_keypair.secret_key:
                 return False
-        
+
         return True

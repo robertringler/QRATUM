@@ -8,15 +8,11 @@ results while supporting asynchronous-compatible semantics.
 from __future__ import annotations
 
 from collections import deque
-from dataclasses import dataclass, field
-from typing import Sequence
 
 import numpy as np
-from numpy.typing import NDArray
 
 from quasim.ciir.crs.graph import CRSGraph, Node
 from quasim.ciir.crs.rewrite import RewriteEngine
-
 
 # ================================================================
 # CRS Evolution Engine
@@ -95,7 +91,7 @@ class CRSEngine:
 
     def _compute_update_order(self) -> list[int]:
         """Topological sort of nodes; falls back to id-order if cyclic."""
-        in_degree: dict[int, int] = {nid: 0 for nid in self.graph.nodes}
+        in_degree: dict[int, int] = dict.fromkeys(self.graph.nodes, 0)
         for nid in self.graph.nodes:
             for parent in self.graph._reverse_adj.get(nid, set()):
                 if parent in self.graph.nodes:

@@ -30,7 +30,8 @@ from typing import Any
 
 import numpy as np
 
-from quasim.ciir.simulation.engine import CIIRSimulationEngine, SimulationConfig
+from quasim.ciir.simulation.engine import (CIIRSimulationEngine,
+                                           SimulationConfig)
 
 # ================================================================
 # Configuration

@@ -7,27 +7,15 @@ from typing import Any
 
 import pytest
 
-from qagents.reality_interface import (
-    ACTION_TYPES,
-    LinearSimulator,
-    RealityInterfaceController,
-    StaticProposer,
-)
-from qagents.llm_backends import (
-    AnthropicProposer,
-    DeterministicLLM,
-    GeminiProposer,
-    LocalLLMProposer,
-    OpenAIProposer,
-    available_backends,
-)
-from qagents.ciir_ric_bridge import (
-    CIIRRICBridge,
-    default_intent,
-    default_system_limits,
-    snapshot_to_world_state,
-)
-
+from qagents.ciir_ric_bridge import (CIIRRICBridge, default_intent,
+                                     default_system_limits,
+                                     snapshot_to_world_state)
+from qagents.llm_backends import (AnthropicProposer, DeterministicLLM,
+                                  GeminiProposer, LocalLLMProposer,
+                                  OpenAIProposer, available_backends)
+from qagents.reality_interface import (ACTION_TYPES, LinearSimulator,
+                                       RealityInterfaceController,
+                                       StaticProposer)
 
 # ---------------------------------------------------------------------------
 # RIC core

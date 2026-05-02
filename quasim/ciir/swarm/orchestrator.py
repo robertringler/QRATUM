@@ -16,25 +16,22 @@ Fitness function:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.swarm.memory import KnowledgeGraph, NodeType, EdgeType
-from quasim.ciir.swarm.axiom_architect import AxiomArchitect, Axiom
-from quasim.ciir.swarm.formalizer import Formalizer
-from quasim.ciir.swarm.rule_synthesizer import RuleSynthesizer
-from quasim.ciir.swarm.simulator import Simulator, SimulationResult
-from quasim.ciir.swarm.invariant_miner import InvariantMiner
+from quasim.ciir.swarm.axiom_architect import AxiomArchitect
+from quasim.ciir.swarm.compression_optimizer import CompressionOptimizer
 from quasim.ciir.swarm.consistency_validator import ConsistencyValidator
 from quasim.ciir.swarm.empirical_mapper import EmpiricalMapper
-from quasim.ciir.swarm.compression_optimizer import CompressionOptimizer
+from quasim.ciir.swarm.formalizer import Formalizer
 from quasim.ciir.swarm.hypothesis_mutator import HypothesisMutator
-from quasim.ciir.swarm.physics_lang import (
-    PhysicsProgram, StateDecl, ScheduleMode,
-)
-
+from quasim.ciir.swarm.invariant_miner import InvariantMiner
+from quasim.ciir.swarm.memory import KnowledgeGraph
+from quasim.ciir.swarm.physics_lang import (PhysicsProgram, ScheduleMode,
+                                            StateDecl)
+from quasim.ciir.swarm.rule_synthesizer import RuleSynthesizer
+from quasim.ciir.swarm.simulator import SimulationResult, Simulator
 
 # ================================================================
 # Fitness & evolution results

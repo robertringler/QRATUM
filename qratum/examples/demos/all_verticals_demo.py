@@ -10,22 +10,6 @@ from qratum.verticals import (CapraModule, ChronaModule, CohoraModule,
                               GeonaModule, JurisModule, NeuraModule,
                               OrbiaModule, SentraModule, StrataModule,
                               VexorModule, VitraModule)
-from qratum.verticals import (
-    CapraModule,
-    ChronaModule,
-    CohoraModule,
-    EcoraModule,
-    FluxaModule,
-    FusiaModule,
-    GeonaModule,
-    JurisModule,
-    NeuraModule,
-    OrbiaModule,
-    SentraModule,
-    StrataModule,
-    VexorModule,
-    VitraModule,
-)
 
 
 def main():

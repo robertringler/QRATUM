@@ -10,14 +10,6 @@ from typing import Any, Dict
 
 from .core import (FATAL_INVARIANTS, EventType, PlatformContract,
                    PlatformIntent, create_contract_from_intent, create_event)
-from .core import (
-    FATAL_INVARIANTS,
-    EventType,
-    PlatformContract,
-    PlatformIntent,
-    create_contract_from_intent,
-    create_event,
-)
 from .event_chain import MerkleEventChain
 from .substrates import SubstrateSelector
 

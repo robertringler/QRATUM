@@ -12,13 +12,6 @@ from qratum_asi.safety.mega_prompt import (AnswerType, ConfidenceLevel,
                                            MegaPromptQuestion,
                                            MegaPromptResponse,
                                            MegaPromptSystem)
-from qratum_asi.safety.mega_prompt import (
-    AnswerType,
-    ConfidenceLevel,
-    MegaPromptQuestion,
-    MegaPromptResponse,
-    MegaPromptSystem,
-)
 
 
 class MegaPromptModelAdapter(ABC):

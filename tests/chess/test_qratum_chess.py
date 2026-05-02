@@ -276,7 +276,8 @@ class TestBenchmarks:
 
     def test_benchmark_runner_single_game(self):
         """Test BenchmarkRunner has run_single_game method."""
-        from qratum_chess.benchmarks.runner import BenchmarkConfig, BenchmarkRunner
+        from qratum_chess.benchmarks.runner import (BenchmarkConfig,
+                                                    BenchmarkRunner)
 
         config = BenchmarkConfig(
             run_performance=False,

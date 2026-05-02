@@ -4,46 +4,37 @@ import numpy as np
 import pytest
 
 try:
-    from quasim.quantum_kernels.tensor_networks import (
-        MPSSimulator,
-        MPSState,
-        PEPSSimulator,
-        TensorNetworkConfig,
-    )
+    from quasim.quantum_kernels.tensor_networks import (MPSSimulator, MPSState,
+                                                        PEPSSimulator,
+                                                        TensorNetworkConfig)
 
     TENSOR_NETWORKS_AVAILABLE = True
 except ImportError:
     TENSOR_NETWORKS_AVAILABLE = False
 
 try:
-    from quasim.quantum_kernels.classical_analogs import (
-        ClassicalQAOA,
-        ClassicalQAOAResult,
-        ClassicalVQE,
-        ClassicalVQEResult,
-    )
+    from quasim.quantum_kernels.classical_analogs import (ClassicalQAOA,
+                                                          ClassicalQAOAResult,
+                                                          ClassicalVQE,
+                                                          ClassicalVQEResult)
 
     CLASSICAL_ANALOGS_AVAILABLE = True
 except ImportError:
     CLASSICAL_ANALOGS_AVAILABLE = False
 
 try:
-    from quasim.quantum_kernels.quantum_kernels import (
-        QuantumFeatureEncoder,
-        QuantumKernel,
-        QuantumKernelConfig,
-    )
+    from quasim.quantum_kernels.quantum_kernels import (QuantumFeatureEncoder,
+                                                        QuantumKernel,
+                                                        QuantumKernelConfig)
 
     QUANTUM_KERNELS_AVAILABLE = True
 except ImportError:
     QUANTUM_KERNELS_AVAILABLE = False
 
 try:
-    from quasim.quantum_kernels.ahtc import (
-        AHTCAccelerator,
-        CompressionConfig,
-        CompressionResult,
-    )
+    from quasim.quantum_kernels.ahtc import (AHTCAccelerator,
+                                             CompressionConfig,
+                                             CompressionResult)
 
     AHTC_AVAILABLE = True
 except ImportError:

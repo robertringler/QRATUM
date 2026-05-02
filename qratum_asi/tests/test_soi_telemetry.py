@@ -10,14 +10,10 @@ Validates the SOI dashboard telemetry integration including:
 
 import pytest
 
-from qratum_asi.reinjection import (
-    AutonomousReinjectionOrchestrator,
-    DiscoveryDomain,
-    EvolutionDataPoint,
-    OptionalityMetrics,
-    SOIReinjectionTelemetry,
-    TelemetryEvent,
-)
+from qratum_asi.reinjection import (AutonomousReinjectionOrchestrator,
+                                    DiscoveryDomain, EvolutionDataPoint,
+                                    OptionalityMetrics,
+                                    SOIReinjectionTelemetry, TelemetryEvent)
 
 
 class TestTelemetryEvent:

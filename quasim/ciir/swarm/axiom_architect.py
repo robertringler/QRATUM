@@ -10,16 +10,13 @@ where each axiom's predicate is logically independent.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Callable
 
 import numpy as np
 from numpy.typing import NDArray
 
-from quasim.ciir.swarm.memory import (
-    KnowledgeGraph, NodeType, EdgeType,
-)
-
+from quasim.ciir.swarm.memory import KnowledgeGraph, NodeType
 
 # ================================================================
 # Axiom types

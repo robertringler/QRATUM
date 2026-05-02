@@ -17,10 +17,8 @@ from typing import Iterable
 
 import numpy as np
 
-from qagents.control_geometry.embedding import (
-    DisplacementCache,
-    action_to_displacement,
-)
+from qagents.control_geometry.embedding import (DisplacementCache,
+                                                action_to_displacement)
 from qagents.control_geometry.sensitivity import DEFAULT_EPS, vector_dim
 from qagents.mvri.action_space import Action
 from qagents.mvri.state import State

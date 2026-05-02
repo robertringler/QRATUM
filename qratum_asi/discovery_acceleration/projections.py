@@ -15,12 +15,10 @@ from __future__ import annotations
 import hashlib
 from typing import Any
 
-from qratum_asi.discovery_acceleration.types import (
-    DiscoveryProjection,
-    DiscoveryType,
-    RiskAssessment,
-    TimelineSimulation,
-)
+from qratum_asi.discovery_acceleration.types import (DiscoveryProjection,
+                                                     DiscoveryType,
+                                                     RiskAssessment,
+                                                     TimelineSimulation)
 
 
 class DiscoveryProjectionsEngine:
