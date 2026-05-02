@@ -21,6 +21,10 @@ from pathlib import Path
 # Add QRATUM to path
 sys.path.insert(0, str(Path(__file__).parent))
 
+from qratum_asi.safety.mega_prompt import MegaPromptSystem
+from qratum_asi.safety.mega_prompt_adapter import (MegaPromptOrchestrator,
+                                                   RefusalMegaPromptAdapter,
+                                                   SimulatedMegaPromptAdapter)
 from qratum_asi.safety.mega_prompt import (
     MegaPromptSystem,
 )
@@ -164,6 +168,10 @@ def main():
 
         print(f"        Responses: {', '.join(f'{k}={v}' for k, v in answer_types.items())}")
 
+        interrogation_results.append({
+            "question": question.to_dict(),
+            "responses": [r.to_dict() for r in responses]
+        })
         interrogation_results.append(
             {"question": question.to_dict(), "responses": [r.to_dict() for r in responses]}
         )
@@ -290,6 +298,7 @@ def main():
         f.write("OVERVIEW\n")
         f.write("-" * 80 + "\n")
         f.write("This interrogation used the QRATUM-ASI MEGA PROMPT framework to query\n")
+        f.write(f"{len(orchestrator.adapters)} AI models with {len(system.questions)} standardized questions about\n")
         f.write(
             f"{len(orchestrator.adapters)} AI models with {len(system.questions)} standardized questions about\n"
         )
@@ -300,6 +309,7 @@ def main():
         f.write(f"Questions: {summary['total_questions']}\n")
         f.write(f"Models: {len(orchestrator.adapters)}\n")
         f.write(f"Total Responses: {summary['total_responses']}\n")
+        f.write(f"Valid Responses: {valid_count} ({(valid_count/len(all_validations)*100):.1f}%)\n\n")
         f.write(
             f"Valid Responses: {valid_count} ({(valid_count/len(all_validations)*100):.1f}%)\n\n"
         )

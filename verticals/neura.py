@@ -7,6 +7,8 @@ brain connectivity mapping, BCI signal processing, and cognitive modeling.
 import random
 from typing import Any, Dict, List
 
+from qratum_platform.core import (ComputeSubstrate, PlatformContract,
+                                  VerticalModuleBase)
 from qratum_platform.core import (
     ComputeSubstrate,
     PlatformContract,

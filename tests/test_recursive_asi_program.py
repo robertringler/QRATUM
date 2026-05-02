@@ -116,6 +116,10 @@ class TestVerificationEngine:
 
     def test_graph_structure_validation(self):
         """Test graph structure validator."""
+        valid_graph = {
+            "nodes": [0, 1, 2],
+            "edges": [{"from": 0, "to": 1, "weight": 1.0}]
+        }
         valid_graph = {"nodes": [0, 1, 2], "edges": [{"from": 0, "to": 1, "weight": 1.0}]}
 
         result = GraphOperationValidator.validate_graph_structure(valid_graph)
@@ -361,6 +365,11 @@ class TestExecutionFeedback:
         """Test recording telemetry."""
         loop = ExecutionFeedbackLoop()
 
+        loop.record_telemetry(
+            TelemetryType.LATENCY,
+            50.0,
+            "test_component"
+        )
         loop.record_telemetry(TelemetryType.LATENCY, 50.0, "test_component")
 
         assert len(loop.telemetry_collector.events) > 0

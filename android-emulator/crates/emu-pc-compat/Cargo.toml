@@ -1,0 +1,30 @@
+[package]
+name = "emu-pc-compat"
+description = "PC Game Compatibility Research Layer - Win32 syscall shim, DirectX→Vulkan abstraction"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+log.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+bitflags.workspace = true
+byteorder.workspace = true
+parking_lot.workspace = true
+serde = { workspace = true, features = ["derive"] }
+
+# Internal dependencies
+emu-cpu = { path = "../emu-cpu" }
+emu-memory = { path = "../emu-memory" }
+emu-graphics = { path = "../emu-graphics" }
+
+[dev-dependencies]
+env_logger.workspace = true
+
+[features]
+default = []
+dx-to-vulkan = []
+syscall-trace = []

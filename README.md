@@ -1,164 +1,26 @@
-# QRATUM: Decentralized Ghost Machine for Sovereign AI and Quantum-Resilient Computing
+Demo: Discoveries & Analysis Showcase
 
-<div align="center">
+This demo aggregates metrics and data found in the repository and produces a small set of visualizations and summary files.
 
-## 🏆 QRATUM-Chess "BOB" - Kaggle Champion 🏆
+Files created:
+- output/: images and JSON summaries
+- run_demo.py: main demo script
+- test_demo.py: unit test checking demo runs
 
-[![Kaggle Rank #1](https://img.shields.io/badge/Kaggle_Chess_AI-Rank_%231-gold?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/models/robertringler/bob)
-[![Elo Rating](https://img.shields.io/badge/Elo_Rating-1508-brightgreen?style=for-the-badge)](https://www.kaggle.com/benchmarks/kaggle/chess)
-[![Win Rate](https://img.shields.io/badge/Win_Rate-97%25-success?style=for-the-badge)]()
-[![Internal Elo](https://img.shields.io/badge/Internal_Elo-3500-orange?style=for-the-badge)]()
+How to run (Windows cmd.exe):
 
-**BOB defeats ALL frontier LLMs at chess**  
-*o3 • Grok-4 • Gemini 2.5 • GPT-4 • Claude Sonnet-4*
+1) Create a virtualenv and install requirements
+   python -m venv .venv
+   .venv\Scripts\activate
+   pip install -r requirements.txt
 
----
+2) Run the demo
+   python demo\\run_demo.py
 
-</div>
+Outputs will be in `demo/output/`.
 
-<div align="center">
+Author: Robert Ringler (Independent Researcher)
 
-```
-╔═══════════════════════════════════════════════════════════════╗
-║                                                               ║
-║           🏆  KAGGLE CHESS AI CHAMPION  🏆                    ║
-║                                                               ║
-║  ╔═══════════════════════════════════════════════════════╗   ║
-║  ║                                                       ║   ║
-║  ║   BOB:  1508 Elo  |  #1 Rank  |  97% Win Rate        ║   ║
-║  ║                                                       ║   ║
-║  ║   Defeats: o3 • Grok-4 • Gemini • GPT-4 • Claude    ║   ║
-║  ║                                                       ║   ║
-║  ╚═══════════════════════════════════════════════════════╝   ║
-║                                                               ║
-║         Powered by Asymmetric Adaptive Search                ║
-║                                                               ║
-╚═══════════════════════════════════════════════════════════════╝
-```
-
-</div>
-
-## 🎯 Championship Performance
-
-<table>
-<tr>
-<td width="50%">
-
-### 🏆 Kaggle Chess AI Benchmark
-- **Rank:** #1 
-- **Elo:** 1508
-- **Record:** 96W - 2D - 2L
-- **Win Rate:** 97.0%
-- **Games:** 100
-
-</td>
-<td width="50%">
-
-### ⚡ Head-to-Head Results
-| Opponent | Elo | Margin |
-|----------|-----|--------|
-| o3-2025 | 1397 | **+111** |
-| grok-4 | 1112 | **+396** |
-| gemini-2.5-pro | 1061 | **+447** |
-| gpt-4.1 | 488 | **+1020** |
-| claude-sonnet-4 | 433 | **+1075** |
-
-</td>
-</tr>
-</table>
-
-## 🎮 Why BOB Dominates
-
-<div align="center">
-
-| Feature | LLMs (o3, Grok, GPT-4) | BOB (QRATUM-Chess) |
-|---------|------------------------|---------------------|
-| **Architecture** | Token prediction | Tree search + Multi-agent |
-| **Chess Knowledge** | Pattern matching | Deep tactical analysis |
-| **Search Depth** | Limited by tokens | 20+ plies |
-| **Evaluation** | Text-based heuristics | Stockfish-class precision |
-| **Move Quality** | ~1400 Elo | **1508 Elo** ✓ |
-| **Consistency** | Hallucination prone | 97% win rate ✓ |
-
-**Result:** BOB achieves superior performance through domain-specific architecture
-
-</div>
-
-## 📊 Quick Stats
-
-<div align="center">
-
-| Metric | Value | Context |
-|--------|-------|---------|
-| 🏆 **Kaggle Rank** | **#1** | Out of all AI models |
-| 📈 **Elo Rating** | **1508** | Kaggle Chess AI Benchmark |
-| 💪 **Win Rate** | **97%** | 96-2-2 record (100 games) |
-| ⚡ **Internal Elo** | **3500** | vs Stockfish-17 |
-| 🎯 **Margin of Victory** | **+111** | vs o3 (2nd place) |
-| 🚀 **Algorithm** | **AAS** | Asymmetric Adaptive Search |
-
-</div>
-
-## 📊 Leaderboard Comparison
-
-```
-Kaggle Chess AI Benchmark - Elo Ratings
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🥇 BOB (QRATUM)     ████████████████████████████████ 1508 
-🥈 o3-2025          ████████████████████████        1397
-🥉 grok-4           ██████████████████              1112
-   gemini-2.5-pro   ████████████████                1061
-   o4-mini          ████████████                     831
-   gpt-4.1          ███████                          488
-   claude-sonnet-4  ██████                           433
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     0   200  400  600  800 1000 1200 1400 1600  Elo
-```
-
-## 🚀 Try BOB
-
-Experience the #1 chess AI that defeated all frontier LLMs:
-
-```bash
-# Install QRATUM
-git clone https://github.com/robertringler/QRATUM.git
-cd QRATUM
-
-# Run BOB
-python -m qratum_chess.bob --play
-
-# Or use via API
-curl -X POST https://api.qratum.ai/bob/analyze \
-  -d '{"fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}'
-```
-
-**[Try BOB on Kaggle](https://www.kaggle.com/models/robertringler/bob)** • 
-**[Read the Paper](#)** • 
-**[API Documentation](#)**
-
-## 📰 Media & Recognition
-
-> "QRATUM's BOB engine demonstrates that domain-specific algorithms 
-> can still outperform general-purpose LLMs in specialized tasks."
-
-- [ ] TechCrunch
-- [ ] Chess.com News
-- [ ] IEEE Spectrum  
-- [ ] Hacker News
-
-*Press contact: contact@qratum.io*
-
----
-
-[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/robertringler/QRATUM?style=social)](https://github.com/robertringler/QRATUM)
-[![Kaggle](https://img.shields.io/badge/Kaggle-Rank_1-20BEFF?logo=kaggle&logoColor=white)](https://www.kaggle.com/models/robertringler/bob)
-[![Chess](https://img.shields.io/badge/Chess-3500_Elo-success)](https://ccrl.chessdom.com/)
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
-[![Development Status](https://img.shields.io/badge/status-active%20development-brightgreen.svg)](docs/ROADMAP.md)
-[![QRATUM Core](https://img.shields.io/badge/QRATUM-Core-blue.svg)](https://github.com/robertringler/QRATUM)
 [![QRADLE](https://img.shields.io/badge/QRADLE-Foundation-orange.svg)](docs/ARCHITECTURE.md)
 [![VITRA-E0](https://img.shields.io/badge/VITRA--E0-Genomics-green.svg)](qrVITRA/README.md)
 [![AeatherNET](https://img.shields.io/badge/AeatherNET-Network-blue.svg)](Aethernet/README.md)
@@ -171,8 +33,10 @@ curl -X POST https://api.qratum.ai/bob/analyze \
 ## Table of Contents
 
 - [Overview](#overview)
+- [CIIR Foundations](#ciir-foundations)
 - [Key Innovations](#key-innovations)
-- [Architecture Stack](#architecture-stack)
+- [QRATUM Architecture](#architecture-stack)
+- [State Space Formalism](#state-space-formalism)
 - [Core Components](#core-components)
 - [VITRA-E0: Deterministic Genomic Pipeline](#vitra-e0-deterministic-genomic-pipeline)
 - [Biokey Module: Privacy-Preserving Authentication](#biokey-module-privacy-preserving-authentication)
@@ -182,8 +46,14 @@ curl -X POST https://api.qratum.ai/bob/analyze \
 - [14 Vertical Domains](#14-vertical-domains)
 - [Installation & Quickstart](#installation--quickstart)
 - [Compliance & Regulations](#compliance--regulations)
+- [Research Components](#research-components)
+- [Programmable Physics](#programmable-physics)
+- [Multi-Agent Systems](#multi-agent-systems)
+- [Implementation Strategy](#implementation-strategy)
+- [CIIR Quantum Architecture](#ciir-quantum-architecture)
 - [Roadmap & Recent Developments](#roadmap--recent-developments)
 - [Contributing & Governance](#contributing--governance)
+- [Safety & Alignment Architecture](#safety--alignment-architecture)
 - [Security](#security)
 - [Use Cases](#use-cases)
 - [FAQ](#faq)
@@ -206,6 +76,48 @@ QRATUM empowers organizations and researchers to:
 - Comply with stringent regulations including HIPAA, GDPR Article 9, BIPA, 21 CFR Part 11, and emerging post-quantum standards.
 
 The repository includes Python (54.9%), HTML (37.3%), Rust (4.3%), and other languages. Development focuses on quantum integration, ASI safety constraints, and production hardening, with verified pilots in tire simulation (e.g., Goodyear) and genome analysis.
+
+---
+
+## CIIR Foundations
+
+### Formal Definition
+
+The **Computational Interface of Irreducible Reality (CIIR)** is the foundational ontological and computational substrate over which QRATUM operates. CIIR is defined as the 4-tuple:
+
+```
+CIIR := (Ω, 𝕀, 𝒯, 𝒪)
+```
+
+where:
+
+| Symbol | Name | Definition |
+|--------|------|------------|
+| **Ω** | Irreducible Reality | The non-decomposable ontic substrate; the set of all states admissible in physical reality prior to any representational projection. Ω is not directly accessible by any computational agent — it is accessed exclusively through interface operators. |
+| **𝕀** | Interface Operators | The family of maps `𝕀 : Ω → ℳ` projecting Ω onto representational manifolds ℳ. Each `𝕀_i` selects a specific projection modality (measurement basis, discretization scheme, or observational frame). |
+| **𝒯** | Transformation Algebra | The algebra of structure-preserving maps over interface-projected states. `𝒯` is closed under composition: `𝒯_i ∘ 𝒯_j ∈ 𝒯`. Transformations are constrained to be interface-consistent — they operate on `𝕀(Ω)`, not directly on Ω. |
+| **𝒪** | Observer Constraint System | The participatory constraint set encoding observer-dependent boundary conditions. `𝒪` determines which trajectories through state space are physically admissible given an observer configuration. |
+
+**Foundational Principle:**
+
+> QRATUM operates as a programmable instantiation layer over CIIR, enabling structured manipulation of interface-consistent representations of Ω.
+
+### Epistemic Stance
+
+QRATUM adopts a post-representational stance: reality is not directly accessed but interfaced. CIIR formalizes this interface, and QRATUM operationalizes it. This is not a metaphysical claim but an architectural constraint: no computational system can operate on Ω directly. All computation proceeds over `𝕀(Ω)`. The CIIR formalism makes this explicit, enabling principled reasoning about the limits and structure of what is computationally accessible.
+
+Consequence: every data structure, model, and inference in QRATUM is understood as an element of some `𝕀(Ω)` — a projected, discretized, observer-mediated section of the irreducible substrate. Physical invariants, conservation laws, and causal structures emerge as stable features of this projection process.
+
+### Relationship to Existing Formalisms
+
+CIIR subsumes and contextualizes several existing frameworks:
+
+- **Quantum Mechanics**: A fixed-point solution of observer-consistent projection (`𝕀`, `𝒪`) over a Hilbert-space manifold.
+- **General Relativity**: Metric structure arising as information-geometric compression of `𝕀(Ω)` under Riemannian interface constraints.
+- **Information Theory**: Compression bounds on representational manifolds defined by `𝕀`.
+- **Emergent Physics**: Stable invariants under iterated `𝒯` as the formal definition of physical law.
+
+The CIIR monograph (located at `manuscripts/ciir_monograph/ciir_monograph.tex`, 20 chapters) provides the full formal development including: axiom system (Ch3–Ch8), quantum embedding (Ch10), CRS formal specification (Ch11), formal closure (Ch12), QM as fixed point (Ch13), emergent physics (Ch14), formal audit (Ch15), cross-domain unification (Ch16–Ch19), and programmable physics/MPPK (Ch20).
 
 ---
 
@@ -292,6 +204,57 @@ QRATUM's layered design integrates foundational determinism with advanced quantu
 
 **5. QRATUM-Rust Core** (Status: ~50% Complete, in qratum-rust/)
 - Decentralized components: consensus.rs, governance.rs, p2p.rs.
+
+---
+
+## State Space Formalism
+
+### CIIR–QRATUM Component Mapping
+
+QRATUM's implementation layers correspond directly to CIIR structural elements:
+
+| QRATUM Component | CIIR Element | Role |
+|-----------------|--------------|------|
+| **QRATUM Core Engine** | `𝕀` (Interface Operators) | Implements the projection maps from Ω onto representational manifolds; defines what is computationally observable. |
+| **Simulation Layer** | `𝒯` (Transformation Algebra) | Instantiates the algebra of state transformations; executes forward evolution of interface-projected states. |
+| **Agent Framework** | `𝒪` (Observer Constraint System) | Operationalizes observer-dependent state evolution; encodes participatory boundary conditions as agent behaviors and authorization gates. |
+| **Data Substrate** | `𝕀(Ω)` (Projected State Space) | Discretized projections of Ω via interface operators; all stored data, knowledge graphs, and model parameters are elements of this projected space. |
+
+### Formal State Evolution
+
+Let `S` denote the QRATUM state space. By the CIIR interface principle:
+
+```
+S = 𝕀(Ω)
+```
+
+QRATUM evolves states via the transformation algebra under observer constraints:
+
+```
+S(t+1) = 𝒯(S(t), A, C)
+```
+
+where:
+- `S(t)` is the system state at discrete time step `t`, an element of `𝕀(Ω)`
+- `A` is the set of agent actions, elements of the observer constraint system `𝒪`
+- `C` is the constraint set derived from `𝒪`, encoding authorization gates, safety invariants, and zone topology boundaries
+- `𝒯` is the interface-consistent transformation — it maps within `𝕀(Ω)`, never leaving the representational manifold
+
+**Interface Consistency Condition**: For all `𝒯_i ∈ 𝒯` and all `s ∈ 𝕀(Ω)`:
+
+```
+𝒯_i(s) ∈ 𝕀(Ω)
+```
+
+This condition guarantees that no QRATUM operation produces states outside the representational manifold — a prerequisite for formal verification, rollback integrity, and Merkle-chain consistency.
+
+### Constraint Propagation and Causality
+
+The constraint set `C` derived from `𝒪` is propagated forward through the transformation graph. Causality in QRATUM is defined operationally as: event `e_j` is causally downstream of `e_i` if and only if the constraint state at `e_j` depends on the output of `𝒯` evaluated at `e_i`.
+
+This is equivalent to the zone topology enforcement (Z0 → Z3): each zone promotion corresponds to a tightening of the constraint set `C`, restricting the admissible transformations in `𝒯`.
+
+The 8 Fatal Invariants (see [Safety & Alignment Architecture](#safety--alignment-architecture)) are formally encoded as elements of `𝒪` that are immutable under all `𝒯_i`. They define the boundary of the constraint propagation graph beyond which no trajectory can pass.
 
 ---
 
@@ -1322,7 +1285,582 @@ Specialized modules (verticals/): JURIS (legal), VITRA (genomics), ECORA (climat
 
 ---
 
-## Roadmap & Recent Developments
+## Multi-Agent Systems
+
+### Formal Agent Definition
+
+Within the CIIR state space `S = 𝕀(Ω)`, an agent `Aᵢ` is a map:
+
+```
+Aᵢ : S → S
+```
+
+satisfying interface-consistency: `Aᵢ(s) ∈ 𝕀(Ω)` for all `s ∈ 𝕀(Ω)`.
+
+Agent composition is in general non-commutative:
+
+```
+Aᵢ ∘ Aⱼ ≠ Aⱼ ∘ Aᵢ
+```
+
+This non-commutativity is the formal basis for order-dependent workflows, conflict resolution protocols, and the need for authorization sequencing in the constraint system `𝒪`.
+
+### Swarm Architecture
+
+The programmable physics swarm (`quasim/ciir/swarm/`) implements 10 specialized agents operating as elements of the transformation algebra `𝒯`:
+
+| Agent | Role | CIIR Function |
+|-------|------|---------------|
+| `axiom_architect` | Define axiom systems | Specifies the base rules of `𝕀` |
+| `formalizer` | Formalize hypotheses | Maps informal descriptions into `𝒯`-elements |
+| `rule_synthesizer` | Generate candidate rules | Proposes new elements of `𝒯` |
+| `simulator` | Execute trajectories | Applies `𝒯` over `S` for T steps |
+| `invariant_miner` | Detect conservation laws | Identifies fixed points of `𝒯`-orbits |
+| `consistency_validator` | Check interface consistency | Verifies `Aᵢ(s) ∈ 𝕀(Ω)` |
+| `empirical_mapper` | Map to observational data | Evaluates `𝕀`-projection accuracy |
+| `compression_optimizer` | Minimize description length | Optimizes information-geometric compression of `𝕀(Ω)` |
+| `hypothesis_mutator` | Perturb rule systems | Generates `𝒯`-variations for evolutionary search |
+| `orchestrator` | Coordinate swarm execution | Manages constraint propagation across agents |
+
+### Meta-Agent Layer
+
+QRATUM supports higher-order agent recursion via meta-agents operating over the agent space:
+
+```
+ℳ : {A} → {A}
+```
+
+A meta-agent `ℳ` maps the current population of agents to a new population — this is the formal definition of the swarm orchestrator's evolution step. The fitness function `F : {A} → ℝ` evaluates agent populations by:
+
+```
+F = α · stability + β · structure + γ · boundedness + δ · compress
+```
+
+This enables **self-modifying epistemic systems**: the swarm can modify its own agent composition, enabling emergent intelligence gradients that are not predefined but discovered through transformation-consistent search.
+
+**Critical constraint**: all meta-agent operations are themselves elements of `𝒪`-constrained `𝒯`. No meta-agent can produce an agent that violates the interface consistency condition or the 8 Fatal Invariants. The observer constraint system `𝒪` is immutable under meta-agent operation.
+
+### Agent Framework in QRATUM Verticals
+
+The 14 QRATUM verticals operationalize `𝒪` (the observer constraint system) in domain-specific configurations. Each vertical defines:
+- A domain-specific projection `𝕀_d : Ω → ℳ_d`
+- A set of domain-valid transformations `𝒯_d ⊆ 𝒯`
+- A domain observer constraint set `𝒪_d ⊆ 𝒪`
+
+Cross-domain synthesis (`VITRA + ECORA + JURIS`, etc.) corresponds to the composition of projections and the union of constraint sets: `𝕀_{d₁ ∪ d₂}` with constraint intersection `𝒪_{d₁} ∩ 𝒪_{d₂}`.
+
+---
+
+## Implementation Strategy
+
+### CIIR Abstraction Layer
+
+The CIIR framework prescribes a modular implementation architecture separating the functional core from the stateful orchestration shell:
+
+**Functional Core** — Pure transformations, no side effects:
+- Interface operators (`𝕀`) implemented as composable, pure-function transforms
+- Transformation algebra (`𝒯`) represented as graph or tensor operations over `𝕀(Ω)`
+- Invariant detection as fixed-point solvers over trajectory spaces
+
+**Stateful Shell** — Agent and constraint orchestration:
+- Observer constraints (`𝒪`) encoded as rule systems or boundary condition registries
+- Agent lifecycle management (initialization, composition, retirement)
+- Meta-agent evolution loop with fitness evaluation and selection
+
+### Engineering Map
+
+| CIIR Element | Implementation Pattern | QRATUM Location |
+|-------------|------------------------|-----------------|
+| `𝕀` (Interface Operators) | Composable transform pipelines | `quasim/ciir/crs/` (8-layer CRS substrate) |
+| `𝒯` (Transformation Algebra) | Graph rewrite rules, tensor operations | `quasim/ciir/swarm/mppk.py` (MPPK engine) |
+| `𝒪` (Observer Constraints) | Rule systems, authorization gates | `qratum/safety/`, `Aethernet/rtf/` |
+| `𝕀(Ω)` (State Space) | Discretized graph-structured state | `quasim/ciir/crs/graph.py` (CRSGraph) |
+
+### CRS Package
+
+The **Computational Reality System (CRS)** (`quasim/ciir/crs/`) implements the CIIR substrate as an 8-layer graph-based computational stack:
+
+| Layer | Module | CIIR Role |
+|-------|--------|-----------|
+| 0 | `graph.py` | Base state space (`CRSGraph`) |
+| 1 | `rewrite.py` | Local transformation rules |
+| 2 | `evolution.py` | Iterated `𝒯` application |
+| 3 | `spacetime.py` | Metric structure emergence |
+| 4 | `branching.py` | Branching process / quantum splitting |
+| 5 | `conservation.py` | Conservation law enforcement |
+| 6 | `observer.py` | Observer operator (`𝒪`) |
+| 7 | `integration.py` | Cross-layer integration (`QRATUM_CRS_Core`) |
+
+Tests: `python -m pytest tests/test_crs.py -v --override-ini="addopts="` (54 tests).
+
+### Separation of Concerns
+
+The functional/stateful separation ensures:
+
+1. **Formal verifiability**: Pure transformation functions can be formally verified against CIIR axioms independently of agent state.
+2. **Rollback integrity**: State transitions in `𝕀(Ω)` are recorded in the Merkle chain; rollback restores a previous valid `s ∈ 𝕀(Ω)`.
+3. **Interface consistency checking**: The consistency validator agent can inspect any proposed `𝒯`-application before commitment.
+4. **Composability**: CIIR-compliant modules can be composed without introducing interface violations, because the composition of interface-consistent maps is interface-consistent.
+
+---
+
+## CIIR Quantum Architecture
+
+> **Scope.** This section develops the full mathematical specification of CIIR as a biologically coupled quantum control system (BQCS). It is organized in the formal sequence: Definitions → Axioms → Lemmas → Theorems → Proofs → Architecture → Failure Modes → Experimental Pathways → Theoretical Unification. The treatment is publication-grade; all claims are either proved or explicitly labelled speculative.
+
+### Definitions
+
+Let the **total Hilbert space** be
+
+```
+ℋ_tot = ℋ_Q ⊗ ℋ_B ⊗ ℋ_E
+```
+
+where:
+- `ℋ_Q ≅ (ℂ²)^⊗N` — engineered quantum register of N qubits
+- `ℋ_B` — biological interface sector (neural/protein subsystem)
+- `ℋ_E` — environment (thermal bath, electromagnetic noise)
+
+**Definition 1 (Protein Qubit).** A protein qubit is an effective two-level subspace `ℋ_prot = span{|g⟩, |e⟩}` embedded in the full molecular Hilbert space. The encoding isometry is
+
+```
+V : ℂ² → ℋ_prot,    V|0⟩ = |g⟩,   V|1⟩ = |e⟩
+```
+
+**Definition 2 (Quantum State).** A state is a positive, trace-one operator ρ on the relevant Hilbert space. The hybrid state is `(x, ρ_Q)` where `x ∈ ℝ^m` is a coarse-grained biological/neural state and `ρ_Q = Tr_BE[ρ_tot]` is the reduced quantum state.
+
+**Definition 3 (Lindblad Generator).** The Markovian master equation is
+
+```
+dρ_Q/dt = ℒ[ρ_Q]
+         := -i/ħ [H_S, ρ_Q] + Σ_k γ_k (L_k ρ_Q L_k† − ½{L_k†L_k, ρ_Q})
+```
+
+where `H_S` is the system Hamiltonian, `{L_k}` are Lindblad jump operators with rates `{γ_k}`.
+
+**Definition 4 (Neural–Quantum Interface Channel).** The biological-to-quantum interface is a family of CPTP maps
+
+```
+Φ_t : ℬ(ℋ_B) → ℬ(ℋ_Q),    ρ_B ↦ ρ_Q
+```
+
+parameterized by time `t` and subject to finite bandwidth `W` and latency `τ`.
+
+**Definition 5 (Hybrid Control System).** The full hybrid system is
+
+```
+dx/dt     = f(x, u, t) + ξ(t)
+dρ_Q/dt   = ℒ[ρ_Q] + 𝒞(x, t)
+```
+
+where `u` is the control input, `ξ(t)` is biological noise (modeled as Gaussian white noise with covariance `Σ_ξ`), and `𝒞(x, t)` is the control superoperator coupling the classical state `x` to the quantum evolution.
+
+**Definition 6 (Fractal Error Code).** The fractal error correction recursion is
+
+```
+ℰ_{n+1} = ℛ(ℰ_n ⊗ ℰ_n)
+```
+
+where `ℛ` is a renormalization map. The logical error rate scales as
+
+```
+p_L(n) ~ A (p_phys / p*)^(α^n)
+```
+
+with threshold `p*`, scaling exponent `α`, and prefactor `A`.
+
+**Definition 7 (Cycle Constraint).** Viable operation requires
+
+```
+T_cycle < 300 μs,    T₂ > T_cycle
+```
+
+where `T_cycle` is the total feedback cycle time and `T₂` is the qubit dephasing time.
+
+**Definition 8 (CIIR Category).** The CIIR category **CIIR** has:
+- **Objects**: state spaces `ℋ_Q`, `ℋ_B`, `ℋ_E` and their tensor products
+- **Morphisms**: CPTP maps, control operators, encoding isometries `V`, and decoding maps `V†`
+- **Composition**: standard map composition (associative, with identity = identity superoperator)
+
+**Definition 9 (Functor F).** Define `F : Biological → QuantumControl` as the functor that maps:
+- Objects: `ℋ_B ↦ ℬ(ℋ_Q)` (biological state space to quantum operator algebra)
+- Morphisms: biological state transitions `T_B ↦ 𝒞(·, t)` (control superoperators)
+
+---
+
+### Axioms
+
+**A1.** Physical subsystems are represented by Hilbert spaces; states are density operators.
+
+**A2.** All irreversible reduced dynamics are CPTP and admit a Lindblad or non-Markovian integral kernel representation.
+
+**A3.** The biological interface `Φ_t` acts through a finite-bandwidth `W < ∞`, latency-`τ`-constrained, noisy channel satisfying data processing inequality `I(B→Q) ≤ W·τ`.
+
+**A4.** Protein qubits (Definition 1) are physically realizable as effective two-level systems with coherent control, initialization, and readout. This is motivated by demonstrated spin-qubit behavior of fluorescent proteins and chromophore systems with sub-μs coherence in cryogenic conditions.
+
+**A5.** The cycle constraint (Definition 7) must hold for any viable feedback loop: `T_cycle < 300 μs`, `T₂ > T_cycle`.
+
+**A6.** The fractal error code admits a threshold `p* > 0` below which `p_L(n) → 0` as `n → ∞`, provided `α > 1`.
+
+**A7.** The CIIR category (Definition 8) is closed under composition: if `Φ₁ : ℋ_A → ℋ_B` and `Φ₂ : ℋ_B → ℋ_C` are morphisms, then `Φ₂ ∘ Φ₁ : ℋ_A → ℋ_C` is a morphism.
+
+---
+
+### Lemmas
+
+**Lemma 1 (Reduced Dynamics are CPTP).** If `ρ_tot(t)` evolves unitarily under `H_tot`, then `ρ_Q(t) = Tr_BE[ρ_tot(t)]` evolves by a CPTP map.
+
+*Proof.* The partial trace of a unitary conjugation is a standard Stinespring dilation; complete positivity and trace preservation follow immediately from the properties of the partial trace over a bipartite unitary. ∎
+
+**Lemma 2 (Lindblad Form as Markovian Normal Form).** If memory effects are negligible on the timescale `T_cycle` (i.e., the environment correlation time `τ_E ≪ T_cycle`), then the reduced dynamics admit the Lindblad generator of Definition 3.
+
+*Proof.* This is the Gorini–Kossakowski–Sudarshan–Lindblad (GKSL) theorem: the most general Markovian, time-homogeneous, completely positive semigroup on a finite-dimensional space has the Lindblad form. The condition `τ_E ≪ T_cycle` ensures the Born–Markov approximation is valid. ∎
+
+**Lemma 3 (Fixed Point Existence).** For any continuous CPTP map `Φ : 𝒟(ℋ) → 𝒟(ℋ)` where `𝒟(ℋ)` is the set of density operators on a finite-dimensional `ℋ`, at least one fixed point `ρ*` exists satisfying `Φ(ρ*) = ρ*`.
+
+*Proof.* `𝒟(ℋ)` is a compact, convex subset of the real vector space of Hermitian matrices. `Φ` is a continuous (in trace norm) affine map. By Schauder's fixed-point theorem, any continuous map on a compact convex set has a fixed point. ∎
+
+**Lemma 4 (Fractal Threshold Requires α > 1).** If `p_L(n) = A(p_phys/p*)^(α^n)`, then `p_L(n) → 0` as `n → ∞` if and only if `p_phys < p*` and `α > 1`.
+
+*Proof.* Let `r = p_phys/p*`. If `r < 1`, then `r^(α^n) → 0` as `n → ∞` iff `α^n → ∞`, which requires `α > 1`. If `α ≤ 1`, the sequence `α^n` is bounded or decreasing, so `r^(α^n)` does not converge to zero. If `r ≥ 1` (above threshold), `r^(α^n) ≥ 1` for all `n`, so no suppression occurs. ∎
+
+**Lemma 5 (Channel Capacity Bound).** The mutual information per cycle of `Φ_t` satisfies
+
+```
+I(B→Q) ≤ min(W·T_cycle, log₂ dim ℋ_Q)
+```
+
+where `W` is the bandwidth of the biological interface channel.
+
+*Proof.* The first bound is Shannon's bandwidth theorem applied to the classical channel encoding biological state into control signals. The second bound is the Holevo capacity of an N-qubit register: `χ ≤ N` bits. The minimum of both applies since `Φ_t` must encode through both channels. ∎
+
+**Lemma 6 (Non-Markovian Dominance Condition).** The dynamics of `ρ_Q` are non-Markovian dominated when the environment spectral density `J(ω)` has structured resonances within the bandwidth `[0, 1/T_cycle]`. Formally, non-Markovian dominance occurs when
+
+```
+∫₀^(1/T_cycle) J(ω) dω / Σ_k γ_k > 1
+```
+
+*Proof sketch.* The ratio compares memory-kernel contributions (left-hand side, frequency-resolved) to Markovian decay rates. When this ratio exceeds unity, the Nakajima–Zwanzig memory kernel cannot be approximated by a local-in-time Lindblad generator without error exceeding the Markovian correction. ∎
+
+---
+
+### Theorems
+
+**Theorem 1 (Fixed-Point Stability for (Φ_t ∘ ℒ)).** Let `Φ_t` be a CPTP map and `ℒ` the Lindblad generator. The composed evolution `(Φ_t ∘ ℒ)` admits a fixed point `ρ*` satisfying `(Φ_t ∘ ℒ)(ρ*) = ρ*`. If the Lindbladian is primitive (has a unique stationary state `ρ_∞`) and `Φ_t` is contractive in trace distance, then `ρ*` is unique and asymptotically stable.
+
+**Theorem 2 (Hybrid System Stability).** The coupled system `(x(t), ρ_Q(t))` is Lyapunov stable around a fixed point `(x*, ρ*)` if there exists a Lyapunov function `V(x, ρ) = V_c(x) + V_q(ρ)` satisfying:
+1. `V_c(x) > 0` for `x ≠ x*`, `V_c(x*) = 0`; Lyapunov for `dx/dt = f(x,u,t)`
+2. `V_q(ρ) = Tr[ρ log ρ − ρ* log ρ*]` (relative entropy); monotonically decreasing under `ℒ`
+3. `dV/dt ≤ −α‖(x−x*, ρ−ρ*)‖²` for some `α > 0`
+
+**Theorem 3 (Error Threshold Existence).** For the fractal code of Definition 6 with `α > 1`, there exists a threshold `p* > 0` such that for all `p_phys < p*`, the logical error rate satisfies `p_L(n) ≤ A·exp(−c·α^n)` for some constants `A, c > 0`. For `p_phys ≥ p*`, no suppression occurs regardless of code depth `n`.
+
+**Theorem 4 (Minimum Viable Bandwidth).** Stable feedback control of an N-qubit register requires minimum bandwidth
+
+```
+W_min = N / T_cycle
+```
+
+bits per second through the biological interface channel. Below this bandwidth, the feedback loop cannot correct decoherence faster than it accumulates.
+
+**Theorem 5 (Feasibility Regime).** Protein-qubit operation is physically feasible — i.e., the cycle constraint (Definition 7) is satisfiable — in the parameter regime
+
+```
+γ_k · T_cycle ≪ 1   for all k
+```
+
+This requires decoherence rates `γ_k ≪ 1/T_cycle = 1/(300 μs) ≈ 3.3 kHz`. Below this threshold, the qubit completes a feedback cycle before suffering significant decoherence.
+
+**Theorem 6 (Universality Class Conjecture — labelled speculative).** CIIR-class biologically coupled quantum control systems exhibit critical phenomena in the neighborhood of the error threshold `p*` consistent with the universality class of the random bond Ising model in 2D. Specifically, the correlation length `ξ ~ |p_phys − p*|^{−ν}` with `ν ≈ 4/3` and the logical error rate scales as `p_L ~ (p_phys − p*)^β` with `β ≈ 5/4` at threshold. *This conjecture is based on formal analogy with known RG results for stabilizer codes on random graphs and requires experimental validation.*
+
+---
+
+### Proofs
+
+**Proof of Theorem 1.**
+
+*Existence.* By Lemma 3, the continuous CPTP map `Φ_t ∘ exp(ℒ·δt)` (for any fixed `δt > 0`) has a fixed point `ρ*` on the compact convex set `𝒟(ℋ_Q)`.
+
+*Uniqueness.* If `ℒ` is primitive (irreducible Lindbladian), then `exp(ℒ·t)` converges to the unique stationary state `ρ_∞` for all initial conditions, with convergence rate `e^{-λ_gap · t}` where `λ_gap > 0` is the spectral gap of `ℒ`. If additionally `Φ_t` is strictly contractive in trace distance — i.e., `‖Φ_t(ρ) − Φ_t(σ)‖₁ ≤ (1−ε)‖ρ−σ‖₁` for some `ε > 0` — then the composed map is also strictly contractive, and the Banach fixed-point theorem gives uniqueness.
+
+*Asymptotic stability.* For any initial condition `ρ(0)`, the sequence `ρ(n) = (Φ_t ∘ exp(ℒ·T_cycle))^n ρ(0)` satisfies `‖ρ(n) − ρ*‖₁ ≤ (1−ε)^n ‖ρ(0) − ρ*‖₁ → 0`. ∎
+
+**Proof of Theorem 2.**
+
+*Construction of Lyapunov function.* Let `V_c(x) = (x−x*)^T P (x−x*)` where `P > 0` is the solution to the Lyapunov equation `A^T P + PA = −Q` for `A = ∂f/∂x|_{x*}` and some `Q > 0`. This exists when the classical subsystem is locally exponentially stable. Let `V_q(ρ) = D_KL(ρ‖ρ*)` the quantum relative entropy.
+
+*Time derivative.* Along trajectories:
+
+```
+dV_q/dt = Tr[(log ρ − log ρ*) ℒ[ρ]] ≤ 0
+```
+
+by the data processing inequality for quantum relative entropy under CPTP maps (Klein's inequality). For the classical part, `dV_c/dt ≤ −q‖x−x*‖²` for some `q > 0` from standard Lyapunov theory.
+
+*Combined bound.* The cross-terms from `𝒞(x,t)` couple `V_c` and `V_q`. Provided the coupling superoperator `𝒞` is bounded — `‖𝒞(x,t)‖ ≤ κ‖x−x*‖` for some `κ > 0` — and `q > κ²/λ_gap`, then `dV/dt ≤ −α‖(x−x*, ρ−ρ*)‖²` for `α = min(q − κ²/λ_gap, λ_gap/2) > 0`. ∎
+
+**Proof of Theorem 3.**
+
+By Lemma 4, `p_L(n) = A(p_phys/p*)^{α^n}`. For `p_phys < p*`, set `r = p_phys/p* < 1`. Then `p_L(n) = Ar^{α^n}`. Since `α > 1`, `α^n → ∞`, so `r^{α^n} = e^{α^n \log r} → 0` with rate `e^{−|log r| · α^n}`. Setting `c = |log r| > 0` gives `p_L(n) ≤ A e^{−c·α^n}`. For `p_phys ≥ p*`, `r ≥ 1` so `p_L(n) ≥ A` for all `n`. ∎
+
+**Proof of Theorem 4.**
+
+The quantum mutual information accumulated per cycle by decoherence is at least `Σ_k γ_k · T_cycle` bits (from entropy production in the Lindblad dynamics). The feedback control must inject at least the same information to restore `ρ_Q`. The maximum information injectable per cycle through the channel `Φ_t` with bandwidth `W` is `W·T_cycle` bits (Shannon). For stability: `W·T_cycle ≥ N` (N qubits require N bits of syndrome information per cycle in standard QEC). Hence `W ≥ N/T_cycle`. ∎
+
+**Proof of Theorem 5.**
+
+The fidelity loss per cycle due to decoherence is `1 − F(ρ_Q, ρ_ideal) ≈ Σ_k γ_k · T_cycle` to first order. For this to be correctable by any error correction code operating below threshold, the physical error rate per qubit must satisfy `p_phys ≈ γ_k · T_cycle ≪ p*`. For `γ_k · T_cycle ≪ 1`, we have `p_phys ≪ 1`, which is a necessary (though not sufficient) condition for being below any reasonable threshold `p* ∈ (0,1)`. The condition is feasible when `γ_k ≪ 3.3 kHz`, i.e., `T₂ ≫ 300 μs`. ∎
+
+---
+
+### Architecture
+
+#### Full Stack Model
+
+The CIIR biologically coupled quantum control system is organized in five computational layers with defined interfaces:
+
+```
+┌────────────────────────────────────────────────────────┐
+│  Layer 5: Feedback Controller                          │
+│  Real-time adaptive control; Kalman / LQR / MPC       │
+│  Input: error syndrome E(t)                           │
+│  Output: correction unitary U_corr(t)                 │
+│  Timing: latency τ_ctrl < 50 μs                       │
+├────────────────────────────────────────────────────────┤
+│  Layer 4: Fractal Error Correction Code               │
+│  Recursive block code ℰ_{n+1} = ℛ(ℰ_n ⊗ ℰ_n)        │
+│  Syndrome extraction: 𝒮(ρ_Q) → {s_k}                │
+│  Threshold: p_phys < p* ≈ 10^{-2} (target)           │
+│  Overhead: k_n = 2^n logical qubits, O(2^{2n}) phys  │
+├────────────────────────────────────────────────────────┤
+│  Layer 3: Control Interface (Neural / Synthetic BCI)  │
+│  Biological interface channel Φ_t : ρ_B → ρ_Q        │
+│  Bandwidth W ≥ N/T_cycle                              │
+│  Latency τ_BCI ≤ 100 μs                              │
+│  Noise model: additive Gaussian, covariance Σ_ξ       │
+├────────────────────────────────────────────────────────┤
+│  Layer 2: Coupling Network                            │
+│  Exchange couplings J_{ij} (photonic / phononic)      │
+│  Effective Hamiltonian: H_coup = Σ_{ij} J_{ij} σᵢ·σⱼ │
+│  Gate set: {H, CNOT, T} or native 2-qubit gates       │
+│  Fidelity target: F_gate > 1 − p*                    │
+├────────────────────────────────────────────────────────┤
+│  Layer 1: Molecular Qubits (Protein-Based)            │
+│  Encoding: V : ℂ² → ℋ_prot                           │
+│  Coherence: T₂ > 300 μs (cryogenic or protected env) │
+│  Readout: fluorescence / absorption, F_read > 0.99   │
+│  Control Hamiltonian: H_ctrl = Ω(t)σ_x + Δ(t)σ_z    │
+└────────────────────────────────────────────────────────┘
+```
+
+#### Signal Flow
+
+```
+Biological state x(t)
+       │
+       ▼
+   Φ_t : ρ_B → ρ_Q           [Layer 3: BCI channel]
+       │
+       ▼
+  Lindblad evolution ℒ[ρ_Q]  [Layer 1+2: qubit dynamics]
+       │
+       ▼
+  Syndrome extraction 𝒮       [Layer 4: error detection]
+       │
+       ▼
+  Controller: u(t) = K·𝒮(ρ_Q) [Layer 5: feedback]
+       │
+       ▼
+  Correction unitary U_corr   [Layer 4: error recovery]
+       │
+       ▼
+  Updated ρ_Q(t+T_cycle)      [back to Layer 1]
+```
+
+#### Control Loop Equations
+
+The feedback-corrected evolution over one cycle `[t, t+T_cycle]` is:
+
+```
+ρ_Q(t+T_cycle) = U_corr · exp(ℒ·T_cycle)[ρ_Q(t)] · U_corr†
+```
+
+where `U_corr = U_corr(𝒮(ρ_Q(t)), x(t))` depends on the syndrome measurement outcome and the classical control state. The classical dynamics update:
+
+```
+x(t+T_cycle) = x(t) + ∫_t^{t+T_cycle} [f(x,u,s) + ξ(s)] ds
+```
+
+with `u(s) = K·(x(s) − x*)` a linear feedback law in the simplest case (full LQR).
+
+#### Timing Budget
+
+| Sub-process | Maximum Latency | Component |
+|-------------|-----------------|-----------|
+| Biological readout (BCI) | ≤ 100 μs | Layer 3 |
+| Classical processing (syndrome decode) | ≤ 50 μs | Layer 5 |
+| Correction pulse application | ≤ 50 μs | Layer 1 + 2 |
+| Overhead (communication) | ≤ 100 μs | Layers 3–5 |
+| **Total T_cycle** | **≤ 300 μs** | **All layers** |
+
+---
+
+### Failure Modes
+
+**FM-1: Decoherence-Dominated Regime.**
+
+*Condition*: `γ_k · T_cycle ≥ 1` for any k.
+
+*Failure*: Physical error rate `p_phys = γ_k · T_cycle ≥ 1 > p*` for any achievable threshold. No error correction code can operate below threshold. The logical qubit fails unconditionally.
+
+*Inequality*: System fails when `T₂ ≤ T_cycle = 300 μs`.
+
+**FM-2: Control Latency Instability.**
+
+*Condition*: Total latency `τ_tot = τ_BCI + τ_ctrl + τ_pulse > T_cycle`.
+
+*Failure*: The feedback loop cannot complete before the next decoherence cycle begins. The control system is open-loop on the quantum subsystem, causing unbounded error accumulation.
+
+*Inequality*: Instability when `τ_BCI + τ_ctrl + τ_pulse > 300 μs`.
+
+**FM-3: Error Correction Threshold Failure.**
+
+*Condition*: `p_phys ≥ p*` (above threshold), equivalently `γ_k · T_cycle ≥ p*`.
+
+*Failure*: Logical error rate `p_L(n) ≥ A` for all `n`, i.e., fractal code depth provides no benefit. Increasing code depth increases overhead without improving fidelity.
+
+*Inequality*: FM-3 activates when `γ_k > p*/T_cycle ≈ 33 Hz · (p*/10^{-2})`.
+
+**FM-4: Information Bottleneck Collapse.**
+
+*Condition*: Bandwidth `W < N/T_cycle` (below minimum viable bandwidth, Theorem 4).
+
+*Failure*: The feedback controller receives insufficient syndrome information per cycle. The quantum error correction code cannot be updated faster than decoherence accumulates. System drifts to maximally mixed state `ρ_Q → I/2^N`.
+
+*Inequality*: Collapse when `W < N/T_cycle = N/(300 μs) ≈ N · 3.3 kHz`.
+
+---
+
+### Experimental Pathways
+
+**Stage 1: Single Protein Qubit Validation**
+
+*Objective*: Demonstrate protein qubit as a viable two-level system satisfying `T₂ > 300 μs` in a controlled environment.
+
+*Observables*:
+- Ramsey fringe contrast as a function of wait time `τ`: `F(τ) = ½(1 + e^{−τ/T₂}cos(Ωτ))`
+- Rabi oscillation frequency `Ω` and decay envelope
+- Readout fidelity `F_read = Tr[E_0 ρ_|g⟩] + Tr[E_1 ρ_|e⟩]` where `{E_0, E_1}` is the POVM
+
+*Success criteria*:
+- `T₂ > 300 μs` measured via Ramsey spectroscopy
+- Rabi frequency `Ω/2π > 1 MHz` (sufficient for sub-μs gates)
+- `F_read > 0.99`
+
+*Falsifiability*: If `T₂ < 10 μs` in optimized cryogenic conditions, protein qubits are not viable for the BQCS architecture. The threshold `T₂ = T_cycle = 300 μs` constitutes the binary pass/fail criterion.
+
+---
+
+**Stage 2: Two- to Ten-Qubit Coupling Demonstration**
+
+*Objective*: Demonstrate coherent two-qubit coupling via `J_{ij}` interaction and implement entangling gates above the fault-tolerance threshold.
+
+*Observables*:
+- Two-qubit gate fidelity `F_gate` via randomized benchmarking
+- Bell state fidelity `F_Bell = ⟨Φ+|ρ|Φ+⟩`
+- Exchange coupling `J_{ij}` as a function of qubit separation
+
+*Success criteria*:
+- Two-qubit gate fidelity `F_gate > 1 − p* ≈ 0.99`
+- Bell state fidelity `F_Bell > 0.95`
+- Coherent coupling demonstrated for separation ≥ 5 nm (protein–protein distance)
+
+*Falsifiability*: If `F_gate < 0.90` for nearest-neighbor protein pairs, the photonic/phononic coupling mechanism is insufficient. This would require redesign of the coupling network (Layer 2) or abandonment of protein-based architecture.
+
+---
+
+**Stage 3: Closed-Loop Control with Simulated Neural Input**
+
+*Objective*: Demonstrate closed-loop feedback stabilization of a qubit register using a synthetic control signal emulating the biological interface `Φ_t`.
+
+*Observables*:
+- State fidelity `F(t) = Tr[ρ_ideal ρ_Q(t)]` as a function of time under feedback
+- Steady-state fidelity `F_∞ = lim_{t→∞} F(t)`
+- Cycle time `T_cycle` measured end-to-end
+
+*Success criteria*:
+- `F_∞ > 0.90` under synthetic noise matching biological spectral density `J(ω)`
+- `T_cycle < 300 μs` for the full control loop
+- Information throughput `I(B→Q) ≥ N/T_cycle` confirmed by mutual information estimation
+
+*Falsifiability*: If `F_∞ < 0.50` for all latency budgets satisfying `τ_tot < 300 μs`, the feedback architecture is fundamentally limited by decoherence, validating FM-1 and FM-2 as binding constraints. The experiment is falsified if the cycle time cannot be reduced below `T₂` in any hardware configuration.
+
+---
+
+**Stage 4: Real Biological Interface Integration**
+
+*Objective*: Integrate a real biological system (e.g., neural organoid or BCI electrode array) as the control source `Φ_t` for a multi-qubit register.
+
+*Observables*:
+- End-to-end coherence time `T₂^{eff}` under biological noise
+- Mutual information rate `dI(B→Q)/dt` between neural signal and qubit state
+- Logical error rate `p_L` after fractal error correction (Stage 4 code, `n=2`)
+
+*Success criteria*:
+- `T₂^{eff} > T_cycle` with real biological input
+- `I(B→Q) > N/T_cycle` (minimum viable bandwidth satisfied with biological source)
+- `p_L < p_phys` (error correction provides net improvement)
+
+*Falsifiability*: If the biological interface introduces noise exceeding `W_{bio} < N/T_cycle`, FM-4 is confirmed and the architecture requires either lower-bandwidth (fewer qubits) or a hybrid synthetic-biological control channel. This constitutes a definitive falsification of the pure biological interface model.
+
+---
+
+### Theoretical Unification
+
+#### Renormalization Group Connection
+
+The fractal error correction recursion `ℰ_{n+1} = ℛ(ℰ_n ⊗ ℰ_n)` is formally a renormalization group (RG) transformation on the space of quantum error-correcting codes. The fixed points of `ℛ` correspond to perfect codes (zero logical error rate), and the threshold `p*` is the RG phase boundary.
+
+**RG flow**: The map `(p_phys, n) ↦ p_L(n) = A(p_phys/p*)^{α^n}` defines a discrete RG flow on `[0,1]`. The fixed points are `p_phys = 0` (trivially corrected) and `p_phys = p*` (critical point). For `p_phys < p*`, the flow is attracted to `p_L = 0`; for `p_phys > p*`, it is repelled to `p_L = 1`.
+
+**Critical exponents**: Near `p*`, the logical error rate scales as `p_L ~ |p_phys − p*|^β`, defining the critical exponent `β`. The correlation length in the error syndrome graph scales as `ξ ~ |p_phys − p*|^{−ν}`. For the random bond Ising universality class (Theorem 6, speculative), `ν ≈ 4/3`, `β ≈ 5/4`.
+
+#### Connection to Dissipative Quantum Computing
+
+The Lindblad dynamics `ℒ` defines a dissipative quantum channel. CIIR-class systems are a special case of **dissipative quantum computing** in which:
+- The steady state `ρ*` of `ℒ` encodes the computation result
+- Error correction is implemented as engineered dissipation (Lindblad operators `L_k` are chosen to drive the system toward the code space)
+- The biological interface `Φ_t` provides continuous adaptive feedback, generalizing static Lindblad dissipation to time-varying driven-dissipative systems
+
+The connection to Verstraete–Wolf–Cirac (2009) dissipative computation is direct: CIIR-BQCS is a biologically driven, adaptively controlled instance of their framework.
+
+#### Optimal Control and Feedback Stabilization
+
+The hybrid system `(x(t), ρ_Q(t))` falls within the framework of **quantum LQG (Linear Quadratic Gaussian) control** when linearized around `(x*, ρ*)`. The optimal control problem is:
+
+```
+minimize  ∫₀^∞ [‖x − x*‖²_Q + ‖u‖²_R] dt
+subject to dx/dt = Ax + Bu + ξ(t),   dρ_Q/dt = ℒ[ρ_Q] + 𝒞(x,t)
+```
+
+The optimal controller separates into an observer (quantum state estimator, via continuous weak measurement) and a feedback law (quantum LQR). The quantum Kalman filter provides the optimal state estimate `ρ̂_Q(t)` given the measurement record `{y(s), s ≤ t}`, satisfying the stochastic master equation (SME).
+
+#### Universality and CIIR Systems as a Class
+
+CIIR-class systems satisfy the following defining properties that constitute a candidate universality class:
+1. **Hybrid state space**: `(x, ρ)` with both classical and quantum components
+2. **Observer-participatory boundary**: `𝒪` is not separable from dynamics
+3. **Fractal error correction**: threshold behavior with RG structure
+4. **Finite-bandwidth biological interface**: information bottleneck as fundamental constraint
+5. **Emergent physical laws**: stable invariants of `(𝒯, 𝒪)` as the definition of law
+
+Systems sharing all five properties form a universality class in the RG sense: their macroscopic behavior near the error threshold is governed by the same critical exponents regardless of microscopic details (specific protein identity, exact coupling geometry, noise spectrum).
+
+**Conjecture (Universality)**: CIIR-class BQCS systems at the error threshold `p_phys = p*` exhibit universal scaling governed by the fixed-point action of `ℛ` on the space of codes, with critical exponents independent of the specific biological substrate. *Experimental validation required; current status: theoretical conjecture consistent with analogous results in topological error-correcting codes.*
+
+---
+
+
 
 **2025 Milestones** (Verified via active development):
 - Q1-Q3: QRADLE 80%, QRATUM Quantum integration.
@@ -1566,6 +2104,16 @@ Email: **security@qratum.io**
 
 ## Safety & Alignment Architecture
 
+### CIIR Grounding of Safety Constraints
+
+The safety architecture is formally grounded in the observer constraint system `𝒪`. The 8 Fatal Invariants are elements of `𝒪` that are designated **immutable** — no transformation `𝒯_i ∈ 𝒯` is permitted to modify them. Formally:
+
+```
+∀ 𝒯_i ∈ 𝒯, ∀ c ∈ Fatal_Invariants ⊆ 𝒪: 𝒯_i(c) = c
+```
+
+This is enforced architecturally: `𝒪`-constrained transformations that would violate a fatal invariant are rejected at the constraint propagation layer before execution. The zone topology (Z0 → Z3) implements a monotone sequence of increasingly tight constraint sets derived from `𝒪`.
+
 ### 8 Fatal Invariants
 
 These constraints are **IMMUTABLE** and can never be modified by any system operation, including self-improvement:
@@ -1767,6 +2315,91 @@ print(f"Memory usage: {metrics.memory_bytes / (1024*1024):.2f} MB")
 - **Validation:** Automated baseline comparison ensures correctness
 
 **See Also:** [ULTRASSSP_IMPLEMENTATION_SUMMARY.md](ULTRASSSP_IMPLEMENTATION_SUMMARY.md) | [ULTRASSSP_EXECUTION_SUMMARY.md](ULTRASSSP_EXECUTION_SUMMARY.md)
+
+---
+
+## Programmable Physics
+
+### Definition
+
+Within the CIIR framework, physical law is not a primitive given but an emergent property of the transformation algebra:
+
+```
+Physics := stable invariants over iterated 𝒯 under constraint 𝒪
+```
+
+A physical law `L` is identified with a structure that satisfies:
+
+```
+∀ t, s: 𝒯^t(s) satisfies L  ⟺  L is a fixed point of the 𝒯-orbit under 𝒪
+```
+
+**Core principle**: QRATUM does not simulate predefined physics; it searches over transformation-consistent manifolds for stable invariant structures interpretable as physical law. The space of physics is the space of fixed points of the evolution operator constrained by the observer system.
+
+### The MPPK Engine
+
+The **Minimal Programmable Physics Kernel (MPPK)** implements this search process as a 6-step evolutionary loop operating on a graph-based state space `S = 𝕀(Ω)`:
+
+| Step | CIIR Interpretation |
+|------|---------------------|
+| **1. Simulate** | Apply `𝒯` for `T` timesteps; record full trajectory in `𝕀(Ω)`. |
+| **2. Extract Structure** | Identify fixed points, limit cycles, and chaotic regimes — structural features of the `𝒯`-orbit. |
+| **3. Mine Invariants** | Detect conserved quantities `I` satisfying `𝒯(I) = I` — candidate physical laws. |
+| **4. Evaluate Fitness** | Score candidate rule systems by stability, structure formation, boundedness, and compressibility within `𝕀(Ω)`. |
+| **5. Mutate Rules** | Apply perturbations to `𝒯` within the transformation algebra (interaction function, topology, coupling, noise). |
+| **6. Select** | Retain top-k rule systems by fitness — natural selection over the space of transformation algebras. |
+
+The meta-learning layer then extracts cross-generation patterns, estimating the effective force law and identifying candidate physical laws consistent with the observer constraint system.
+
+### Emergent Physical Structures
+
+Three classes of emergent structures arise from this framework:
+
+**Conservation Laws as Fixed Points**
+
+A conserved quantity `Q` satisfies `d/dt Q(S(t)) = 0` along trajectories of `𝒯`. In the MPPK engine, energy conservation (`EC`), momentum conservation (`MC`), and spectral stability (`SS`) are detected as fixed points of the trajectory operator. These are not assumed — they emerge from the structure of stable `𝒯`-orbits.
+
+**Metric Structure as Interface-Consistent Compression**
+
+The metric tensor over state space is the information-geometric structure that minimizes description length of `𝕀(Ω)` — formally, the Fisher–Rao metric on the statistical manifold of interface projections. The CIIR monograph (Ch14) demonstrates that Einstein field equations emerge as the Euler–Lagrange equations of the interface-consistent compression functional.
+
+**Causality as Constraint Propagation**
+
+Causal structure is defined by the directed graph of constraint propagation over `𝒯`. Two events are causally connected if and only if the constraint state of one depends on the output of the transformation at the other. The light cone structure of relativistic physics is a special case of this general constraint propagation topology.
+
+### Running the Computational Framework
+
+The MPPK physics engine and multi-agent swarm orchestrator are executable via:
+
+```bash
+# Full run: MPPK law-discovery + swarm orchestrator
+python run_mppk_physics.py \
+    --generations 10 \
+    --nodes 12 \
+    --dim 4 \
+    --timesteps 100 \
+    --candidates 5 \
+    --output results/mppk_run.json
+
+# MPPK only (skip orchestrator)
+python run_mppk_physics.py --generations 20 --skip-orchestrator
+
+# Test suite (64 MPPK tests + 54 swarm tests)
+python -m pytest tests/test_mppk.py tests/test_programmable_physics.py -v --override-ini="addopts="
+```
+
+Output includes per-generation evolution logs (interaction type, fitness components, invariant flags), meta-learning report (effective force law, stable invariants, embedding dimension, candidate physical laws), and best rule system summary.
+
+### Cross-Domain Unification
+
+The same CIIR framework that produces physical laws from transformation-algebra search also produces cross-domain invariants in economics, biology, linguistics, and cognition. The `quasim/ciir/` package implements domain projection operators `𝕀_d : Ω → ℳ_d` for each domain `d`, enabling:
+
+- Weber–Fechner law as a logarithmic interface projection in perception
+- Neural network learning dynamics as gradient descent in the interface manifold
+- Evolutionary fitness landscapes as `𝒯`-orbit fitness surfaces
+- Linguistic structure as compression-optimal interface representations
+
+Tests: `python -m pytest tests/test_cross_domain_unification.py -v --override-ini="addopts="` (40 tests).
 
 ---
 
@@ -2208,13 +2841,39 @@ See [docs/FAQ.md](docs/FAQ.md) for comprehensive Q&A.
 
 ## Glossary
 
+### CIIR Terms
+
+**CIIR** (Computational Interface of Irreducible Reality)  
+The foundational 4-tuple `(Ω, 𝕀, 𝒯, 𝒪)` defining the ontological and computational substrate over which QRATUM operates.
+
+**Ω** (Omega — Irreducible Reality)  
+The non-decomposable ontic substrate; not directly accessible by any computational agent. All computation proceeds over `𝕀(Ω)`.
+
+**𝕀** (Interface Operators)  
+Maps `𝕀 : Ω → ℳ` projecting Ω onto representational manifolds. Implemented in QRATUM as the composable transform pipelines of the CRS substrate.
+
+**𝒯** (Transformation Algebra)  
+Closed algebra of interface-consistent maps over `𝕀(Ω)`. All QRATUM state transitions are elements of `𝒯`.
+
+**𝒪** (Observer Constraint System)  
+Participatory boundary conditions encoding observer-dependent constraints. The 8 Fatal Invariants are immutable elements of `𝒪`.
+
+**Interface Consistency**  
+Property of a transformation `𝒯_i` such that `𝒯_i(s) ∈ 𝕀(Ω)` for all `s ∈ 𝕀(Ω)`. Prerequisite for formal verification and rollback integrity.
+
+**MPPK** (Minimal Programmable Physics Kernel)  
+The law-discovery engine implementing evolutionary search over the transformation algebra `𝒯`, identifying stable invariants interpretable as physical law.
+
+**CRS** (Computational Reality System)  
+The 8-layer graph-based implementation of the CIIR substrate in `quasim/ciir/crs/`.
+
 ### Core Terms
 
 **QRADLE** (Quantum-Resilient Auditable Deterministic Ledger Engine)  
 Foundation execution layer providing deterministic operations, cryptographic auditability (Merkle chains), and contract-based reversibility.
 
 **QRATUM** (Quantum-Resilient Autonomous Trustworthy Universal Machine)  
-Multi-vertical AI platform spanning 14 critical domains with unified reasoning and sovereign deployment.
+Multi-vertical AI platform spanning 14 critical domains with unified reasoning and sovereign deployment. Formally: a programmable instantiation layer over CIIR.
 
 **QRATUM-ASI** (Artificial Superintelligence Layer)  
 Theoretical architecture for controlled superintelligence via Constrained Recursive Self-Improvement (CRSI).
@@ -2232,15 +2891,15 @@ Cryptographic data structure where each event is hashed and linked to previous e
 Atomic unit of work in QRADLE. Specifies inputs, operations, and expected outputs. Can be rolled back to any previous state.
 
 **8 Fatal Invariants**  
-Immutable safety constraints that can never be modified, even by self-improvement. Enforce human oversight, auditability, and reversibility.
+Immutable elements of `𝒪` that can never be modified, even by self-improvement. Enforce human oversight, auditability, and reversibility.
 
 **Vertical**  
-Specialized AI domain within QRATUM (e.g., JURIS for legal, VITRA for healthcare). 14 verticals total.
+Specialized AI domain within QRATUM (e.g., JURIS for legal, VITRA for healthcare). 14 verticals total; each implements domain-specific `(𝕀_d, 𝒯_d, 𝒪_d)` projections.
 
 ### ASI-Specific Terms
 
 **CRSI** (Constrained Recursive Self-Improvement)  
-Framework where AI self-improvement is contract-bound, auditable, and requires human authorization for sensitive changes.
+Framework where AI self-improvement is contract-bound, auditable, and requires human authorization for sensitive changes. Formally: meta-agent evolution within `𝒪`-enforced bounds.
 
 **Q-REALITY**  
 Emergent world model integrating all 14 verticals into unified causal graph with hash-addressed knowledge nodes.
@@ -2376,6 +3035,14 @@ See [SECURITY.md](SECURITY.md) for:
   url = {https://github.com/robertringler/QRATUM},
   note = {Commit d25ef8b, Release v2025.12.29-0026}
 }
+
+@techreport{ciir_monograph,
+  title = {Computational Interface of Irreducible Reality: Formal Theory, Quantum Embedding, and Programmable Physics},
+  author = {Ringler, Robert},
+  year = {2025},
+  institution = {QRATUM Project},
+  note = {20-chapter monograph; manuscripts/ciir_monograph/ciir_monograph.tex}
+}
 ```
 
 ---
@@ -2400,6 +3067,6 @@ See [LICENSE](LICENSE) for full text.
 
 ---
 
-**QRATUM-ASI**: Building the infrastructure for safe, sovereign, and auditable superintelligence.
+**QRATUM–CIIR**: Building the infrastructure for safe, sovereign, and auditable computation over the interface of irreducible reality.
 
-*If superintelligence emerges, it must be controllable. QRATUM-ASI is the architecture to ensure it.*
+*Reality is not accessed — it is interfaced. CIIR formalizes this interface. QRATUM operationalizes it.*

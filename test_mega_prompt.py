@@ -16,6 +16,14 @@ from pathlib import Path
 # Add QRATUM to path
 sys.path.insert(0, str(Path(__file__).parent))
 
+from qratum_asi.safety.mega_prompt import (AnswerType, ConfidenceLevel,
+                                           MandatoryResponseRules,
+                                           MegaPromptCategory,
+                                           MegaPromptResponse,
+                                           MegaPromptSystem)
+from qratum_asi.safety.mega_prompt_adapter import (MegaPromptOrchestrator,
+                                                   RefusalMegaPromptAdapter,
+                                                   SimulatedMegaPromptAdapter)
 from qratum_asi.safety.mega_prompt import (
     AnswerType,
     ConfidenceLevel,

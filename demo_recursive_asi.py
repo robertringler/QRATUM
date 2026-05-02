@@ -13,7 +13,8 @@ from pathlib import Path
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from qratum_asi.core.recursive_asi_program import RecursiveASIDevelopmentProgram
+from qratum_asi.core.recursive_asi_program import \
+    RecursiveASIDevelopmentProgram
 
 
 def print_section(title: str):
@@ -41,7 +42,7 @@ PHASE II  - Self-Verification Engine
 PHASE III - Goal Preservation Under Change
 PHASE IV  - Abstraction Compression Engine
 PHASE V   - Autonomous Algorithm Discovery
-PHASE VI  - Cognition ↔ Execution Feedback Loop
+PHASE VI  - Cognition <-> Execution Feedback Loop
 
 The system will run multiple iterations, demonstrating capability emergence.
 """
@@ -164,6 +165,7 @@ The system will run multiple iterations, demonstrating capability emergence.
     print(f"  Total Decisions: {feedback_status['total_decisions']}")
     print(f"  Implemented: {feedback_status['implemented_decisions']}")
     print(f"  Current Performance: {feedback_status['current_performance']:.2f}")
+    print(f"  Improvement Demonstrated: {'✓ YES' if feedback_status['improvement_demonstrated'] else '✗ NO'}")
     print(
         f"  Improvement Demonstrated: {'✓ YES' if feedback_status['improvement_demonstrated'] else '✗ NO'}"
     )

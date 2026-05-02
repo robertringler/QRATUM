@@ -1,0 +1,398 @@
+claim_id,kind,label,caption,path,line,status
+CLAIM-0001,definition,,\begin{definition}[Anti-holographic map],main_revtex.tex,97,asserted-only
+CLAIM-0002,definition,,\begin{definition}[Anti-holographic map],main_revtex.tex,175,asserted-only
+CLAIM-0003,theorem,thm:existence,\begin{theorem}[Existence of anti-holographic embeddings],main_revtex.tex,202,asserted-only
+CLAIM-0004,proof,,\begin{proof},main_revtex.tex,209,proof-block-present
+CLAIM-0005,proof,sec:model,\begin{proof},main_revtex.tex,238,proof-block-present
+CLAIM-0006,proof,sec:numerics,\begin{proof},main_revtex.tex,284,proof-block-present
+CLAIM-0007,definition,def:antiholo,\begin{definition}[Anti-holographic map],main_revtex_clean.tex,124,asserted-only
+CLAIM-0008,definition,,\begin{definition}[Entanglement skeleton],main_revtex_clean.tex,168,asserted-only
+CLAIM-0009,theorem,thm:existence,\begin{theorem}[Existence of anti-holographic embeddings],main_revtex_clean.tex,179,asserted-only
+CLAIM-0010,proof,,\begin{proof},main_revtex_clean.tex,194,proof-block-present
+CLAIM-0011,corollary,cor:interpolation,\begin{corollary},main_revtex_clean.tex,227,asserted-only
+CLAIM-0012,definition,,\begin{definition}[Anti-holographic map],main_revtex_final.tex,91,asserted-only
+CLAIM-0013,theorem,thm:existence,\begin{theorem}[Existence of anti-holographic embeddings],main_revtex_final.tex,118,asserted-only
+CLAIM-0014,proof,sec:model,\begin{proof},main_revtex_final.tex,125,proof-block-present
+CLAIM-0015,definition,,\begin{definition}[Anti-holographic map],main_revtex_new.tex,89,asserted-only
+CLAIM-0016,theorem,thm:existence,\begin{theorem}[Existence of anti-holographic embeddings],main_revtex_new.tex,116,asserted-only
+CLAIM-0017,proof,,\begin{proof},main_revtex_new.tex,123,proof-block-present
+CLAIM-0018,proof,sec:model,\begin{proof},main_revtex_new.tex,155,proof-block-present
+CLAIM-0019,proof,sec:numerics,\begin{proof},main_revtex_new.tex,202,proof-block-present
+CLAIM-0020,definition,eq:anti_holographic_condition,\begin{definition}[Anti-Holographic Information Flow],manuscripts/anti_holographic_theory/manuscript.tex,122,asserted-only
+CLAIM-0021,definition,def:reality,\begin{definition}[Reality Space],manuscripts/ciir/manuscript.tex,166,asserted-only
+CLAIM-0022,definition,def:constraint,\begin{definition}[Constraint Manifold],manuscripts/ciir/manuscript.tex,173,asserted-only
+CLAIM-0023,definition,def:cognitive,\begin{definition}[Cognitive State Space],manuscripts/ciir/manuscript.tex,185,asserted-only
+CLAIM-0024,definition,def:interface,\begin{definition}[Interface Map],manuscripts/ciir/manuscript.tex,198,asserted-only
+CLAIM-0025,definition,def:observable,\begin{definition}[Observable Algebra],manuscripts/ciir/manuscript.tex,214,asserted-only
+CLAIM-0026,definition,def:subspace,\begin{definition}[Constraint-Image Subspace],manuscripts/ciir/manuscript.tex,225,asserted-only
+CLAIM-0027,definition,def:calg,\begin{definition}[Constraint Operator Algebra],manuscripts/ciir/manuscript.tex,307,asserted-only
+CLAIM-0028,proposition,prop:commutation,\begin{proposition}[Constraint Commutation Relations],manuscripts/ciir/manuscript.tex,315,asserted-only
+CLAIM-0029,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,329,proof-block-present
+CLAIM-0030,corollary,cor:flat,\begin{corollary}[Flatness Commutativity],manuscripts/ciir/manuscript.tex,343,asserted-only
+CLAIM-0031,theorem,thm:representation,\begin{theorem}[CIIR Representation Theorem],manuscripts/ciir/manuscript.tex,367,asserted-only
+CLAIM-0032,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,384,proof-block-present
+CLAIM-0033,theorem,thm:independence,\begin{theorem}[Independence of Axioms],manuscripts/ciir/manuscript.tex,415,asserted-only
+CLAIM-0034,proof,,\begin{proof}[Proof sketch],manuscripts/ciir/manuscript.tex,421,proof-block-present
+CLAIM-0035,definition,def:hamiltonian,\begin{definition}[Constraint Hamiltonian],manuscripts/ciir/manuscript.tex,450,asserted-only
+CLAIM-0036,definition,def:dissipator,\begin{definition}[Constraint Dissipator],manuscripts/ciir/manuscript.tex,460,asserted-only
+CLAIM-0037,theorem,thm:master,\begin{theorem}[CIIR Master Equation],manuscripts/ciir/manuscript.tex,475,asserted-only
+CLAIM-0038,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,488,proof-block-present
+CLAIM-0039,definition,prop:equilibrium,\begin{definition}[Constraint-Equilibrium State],manuscripts/ciir/manuscript.tex,501,asserted-only
+CLAIM-0040,proposition,prop:equilibrium,\begin{proposition}[Existence of Equilibrium],manuscripts/ciir/manuscript.tex,505,asserted-only
+CLAIM-0041,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,514,proof-block-present
+CLAIM-0042,definition,,\begin{definition}[CIIR Observable],manuscripts/ciir/manuscript.tex,525,asserted-only
+CLAIM-0043,definition,eq:expectation,\begin{definition}[Expectation Value],manuscripts/ciir/manuscript.tex,531,asserted-only
+CLAIM-0044,definition,eq:collapse,\begin{definition}[Post-Measurement Update],manuscripts/ciir/manuscript.tex,544,asserted-only
+CLAIM-0045,theorem,thm:distortion,\begin{theorem}[Constraint-Induced Measurement Distortion],manuscripts/ciir/manuscript.tex,554,asserted-only
+CLAIM-0046,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,568,proof-block-present
+CLAIM-0047,definition,def:centropy,\begin{definition}[Constraint Entropy],manuscripts/ciir/manuscript.tex,581,asserted-only
+CLAIM-0048,theorem,thm:entropy,\begin{theorem}[Constraint Entropy Non-Decrease],manuscripts/ciir/manuscript.tex,591,asserted-only
+CLAIM-0049,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,603,proof-block-present
+CLAIM-0050,definition,def:symgroup,\begin{definition}[Constraint Symmetry Group],manuscripts/ciir/manuscript.tex,614,asserted-only
+CLAIM-0051,theorem,thm:noether,"\begin{theorem}[CIIR N{\""o}ther Theorem]",manuscripts/ciir/manuscript.tex,624,asserted-only
+CLAIM-0052,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,636,proof-block-present
+CLAIM-0053,corollary,cor:invariant,\begin{corollary}[Information Invariant],manuscripts/ciir/manuscript.tex,648,asserted-only
+CLAIM-0054,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,655,proof-block-present
+CLAIM-0055,theorem,thm:noninvert,\begin{theorem}[Interface Non-Invertibility],manuscripts/ciir/manuscript.tex,664,asserted-only
+CLAIM-0056,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,671,proof-block-present
+CLAIM-0057,theorem,thm:interference,\begin{theorem}[Cognitive Interference Theorem],manuscripts/ciir/manuscript.tex,680,asserted-only
+CLAIM-0058,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,696,proof-block-present
+CLAIM-0059,theorem,thm:cidistortion,\begin{theorem}[Constraint-Induced Distortion Theorem],manuscripts/ciir/manuscript.tex,707,asserted-only
+CLAIM-0060,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,720,proof-block-present
+CLAIM-0061,theorem,thm:decoherence,\begin{theorem}[Decoherence Monotonicity],manuscripts/ciir/manuscript.tex,729,asserted-only
+CLAIM-0062,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,741,proof-block-present
+CLAIM-0063,theorem,thm:entbound,\begin{theorem}[Constraint Entropy Bound],manuscripts/ciir/manuscript.tex,749,asserted-only
+CLAIM-0064,proof,thm:capacity,\begin{proof},manuscripts/ciir/manuscript.tex,759,proof-block-present
+CLAIM-0065,theorem,thm:capacity,\begin{theorem}[Constraint Capacity Theorem],manuscripts/ciir/manuscript.tex,763,asserted-only
+CLAIM-0066,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,776,proof-block-present
+CLAIM-0067,theorem,thm:superposition,\begin{theorem}[Cognitive Superposition Principle],manuscripts/ciir/manuscript.tex,782,asserted-only
+CLAIM-0068,proof,thm:nocloning,\begin{proof},manuscripts/ciir/manuscript.tex,789,proof-block-present
+CLAIM-0069,theorem,thm:nocloning,\begin{theorem}[No-Cloning in CIIR],manuscripts/ciir/manuscript.tex,793,asserted-only
+CLAIM-0070,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,800,proof-block-present
+CLAIM-0071,theorem,thm:continuity,\begin{theorem}[Interface Continuity],manuscripts/ciir/manuscript.tex,808,asserted-only
+CLAIM-0072,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,820,proof-block-present
+CLAIM-0073,theorem,thm:finitedim,\begin{theorem}[Finite-Dimensional Model Existence],manuscripts/ciir/manuscript.tex,854,asserted-only
+CLAIM-0074,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,861,proof-block-present
+CLAIM-0075,theorem,thm:infinitedim,\begin{theorem}[Infinite-Dimensional Model Existence],manuscripts/ciir/manuscript.tex,887,asserted-only
+CLAIM-0076,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,894,proof-block-present
+CLAIM-0077,definition,def:empmap,\begin{definition}[Empirical Interpretation Map],manuscripts/ciir/manuscript.tex,907,asserted-only
+CLAIM-0078,proposition,prop:tomo,\begin{proposition}[Tomographic Completeness],manuscripts/ciir/manuscript.tex,921,asserted-only
+CLAIM-0079,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,928,proof-block-present
+CLAIM-0080,theorem,thm:bandwidth,\begin{theorem}[Constraint-Bandwidth Trade-off],manuscripts/ciir/manuscript.tex,950,asserted-only
+CLAIM-0081,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,961,proof-block-present
+CLAIM-0082,theorem,thm:classicallimit,\begin{theorem}[Classical Probability as Limiting Case],manuscripts/ciir/manuscript.tex,1016,asserted-only
+CLAIM-0083,proof,thm:bayesian,\begin{proof},manuscripts/ciir/manuscript.tex,1024,proof-block-present
+CLAIM-0084,theorem,thm:bayesian,\begin{theorem}[Bayesian Inference as Measurement Update],manuscripts/ciir/manuscript.tex,1028,asserted-only
+CLAIM-0085,proof,thm:qcog,\begin{proof},manuscripts/ciir/manuscript.tex,1038,proof-block-present
+CLAIM-0086,theorem,thm:qcog,\begin{theorem}[Quantum Cognition as Special Case],manuscripts/ciir/manuscript.tex,1042,asserted-only
+CLAIM-0087,proof,,\begin{proof},manuscripts/ciir/manuscript.tex,1050,proof-block-present
+CLAIM-0088,definition,def:3.1,\begin{definition}[Reality Space],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,44,asserted-only
+CLAIM-0089,definition,def:3.2,\begin{definition}[Borel Structure on $\CR$],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,78,asserted-only
+CLAIM-0090,lemma,lem:3.1,\begin{lemma}[Standard Borel Property],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,89,asserted-only
+CLAIM-0091,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,96,proof-block-present
+CLAIM-0092,proposition,prop:3.1,\begin{proposition}[Existence of Non-Trivial Reality Spaces],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,106,asserted-only
+CLAIM-0093,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,113,proof-block-present
+CLAIM-0094,definition,def:3.3,\begin{definition}[Smooth Manifold Structure],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,141,asserted-only
+CLAIM-0095,definition,def:3.4,\begin{definition}[Riemannian Metric on $\CM$],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,151,asserted-only
+CLAIM-0096,definition,def:3.5,\begin{definition}[Levi-Civita Connection],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,166,asserted-only
+CLAIM-0097,definition,def:3.6,\begin{definition}[Riemannian Volume Form],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,177,asserted-only
+CLAIM-0098,definition,def:3.7,\begin{definition}[Constraint Manifold],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,187,asserted-only
+CLAIM-0099,definition,def:3.8,\begin{definition}[Constraint Curvature],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,208,asserted-only
+CLAIM-0100,lemma,lem:3.2,\begin{lemma}[Continuity of Constraint Curvature],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,223,asserted-only
+CLAIM-0101,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,230,proof-block-present
+CLAIM-0102,definition,def:3.9,\begin{definition}[Constraint Curvature 2-Form],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,240,asserted-only
+CLAIM-0103,lemma,lem:3.3,\begin{lemma}[Tensoriality of the Constraint Curvature 2-Form],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,253,asserted-only
+CLAIM-0104,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,259,proof-block-present
+CLAIM-0105,proposition,prop:3.2,\begin{proposition}[Bianchi Identity for Constraint Curvature],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,281,asserted-only
+CLAIM-0106,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,291,proof-block-present
+CLAIM-0107,definition,def:3.10,\begin{definition}[Complex Hilbert Space],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,306,asserted-only
+CLAIM-0108,definition,def:3.11,\begin{definition}[Cognitive State Space],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,329,asserted-only
+CLAIM-0109,lemma,lem:3.4,\begin{lemma}[Separability and Dimension],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,346,asserted-only
+CLAIM-0110,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,355,proof-block-present
+CLAIM-0111,definition,def:3.12,\begin{definition}[Bounded Operator Algebra],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,363,asserted-only
+CLAIM-0112,definition,def:3.13,\begin{definition}[Trace-Class Operators],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,377,asserted-only
+CLAIM-0113,definition,def:3.14,\begin{definition}[Density Operator Space],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,390,asserted-only
+CLAIM-0114,proposition,prop:3.3,\begin{proposition}[Topological Properties of $\mathfrak{D}(\HC)$],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,405,asserted-only
+CLAIM-0115,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,419,proof-block-present
+CLAIM-0116,lemma,lem:3.5,\begin{lemma}[Spectral Decomposition of Density Operators],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,442,asserted-only
+CLAIM-0117,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,453,proof-block-present
+CLAIM-0118,definition,def:3.15,\begin{definition}[Ontic Operator Algebra],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,468,asserted-only
+CLAIM-0119,definition,def:3.16,\begin{definition}[Complete Positivity],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,487,asserted-only
+CLAIM-0120,definition,def:3.17,\begin{definition}[Trace Preservation],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,500,asserted-only
+CLAIM-0121,definition,def:3.17b,\begin{definition}[Push-Forward on the Operator Algebra],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,508,asserted-only
+CLAIM-0122,definition,def:3.18,\begin{definition}[Interface Map],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,525,asserted-only
+CLAIM-0123,proposition,prop:3.4,\begin{proposition}[Kraus Representation],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,545,asserted-only
+CLAIM-0124,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,557,proof-block-present
+CLAIM-0125,lemma,lem:3.6,\begin{lemma}[Interface Maps are Contractive],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,568,asserted-only
+CLAIM-0126,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,575,proof-block-present
+CLAIM-0127,proposition,prop:3.5,\begin{proposition}[Stinespring Dilation of Interface Map],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,582,asserted-only
+CLAIM-0128,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,595,proof-block-present
+CLAIM-0129,definition,def:3.19,\begin{definition}[Self-Adjoint Operator],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,607,asserted-only
+CLAIM-0130,definition,def:3.20,\begin{definition}[Observable Algebra],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,616,asserted-only
+CLAIM-0131,proposition,prop:3.6,\begin{proposition}[Algebraic Properties of $\CA(\HC)$],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,629,asserted-only
+CLAIM-0132,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,643,proof-block-present
+CLAIM-0133,lemma,lem:3.7,\begin{lemma}[Spectral Theorem for Observables],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,660,asserted-only
+CLAIM-0134,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,671,proof-block-present
+CLAIM-0135,definition,def:3.21,\begin{definition}[Constraint-Image Subspace],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,685,asserted-only
+CLAIM-0136,proposition,prop:3.7,\begin{proposition}[Properties of the Constraint-Image Subspace],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,699,asserted-only
+CLAIM-0137,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,714,proof-block-present
+CLAIM-0138,lemma,lem:3.8,\begin{lemma}[Dimension Bound on Constraint-Image Subspace],manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,733,asserted-only
+CLAIM-0139,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch03_primitive_definitions.tex,740,proof-block-present
+CLAIM-0140,theorem,thm:4.1,\begin{theorem}[Independence of Axioms],manuscripts/ciir_monograph/chapters/ch04_axiom_system.tex,386,asserted-only
+CLAIM-0141,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch04_axiom_system.tex,396,proof-block-present
+CLAIM-0142,theorem,thm:4.2,\begin{theorem}[Consistency of the Axiom System],manuscripts/ciir_monograph/chapters/ch04_axiom_system.tex,596,asserted-only
+CLAIM-0143,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch04_axiom_system.tex,605,proof-block-present
+CLAIM-0144,theorem,thm:4.3,\begin{theorem}[Sufficiency of the Axiom System],manuscripts/ciir_monograph/chapters/ch04_axiom_system.tex,715,asserted-only
+CLAIM-0145,proof,,\begin{proof}[Proof outline],manuscripts/ciir_monograph/chapters/ch04_axiom_system.tex,744,proof-block-present
+CLAIM-0146,definition,def:5.1,\begin{definition}[Constraint Frame],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,76,asserted-only
+CLAIM-0147,definition,def:5.2,\begin{definition}[Constraint Operator Algebra],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,91,asserted-only
+CLAIM-0148,definition,def:5.3,\begin{definition}[Constraint Generators],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,123,asserted-only
+CLAIM-0149,lemma,lem:5.1,\begin{lemma}[Boundedness of Constraint Generators],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,133,asserted-only
+CLAIM-0150,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,145,proof-block-present
+CLAIM-0151,proposition,prop:5.1,\begin{proposition}[$C^*$-Algebra Structure of $\CK(\HC)$],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,161,asserted-only
+CLAIM-0152,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,176,proof-block-present
+CLAIM-0153,lemma,lem:5.2,\begin{lemma}[Self-Adjoint Part],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,199,asserted-only
+CLAIM-0154,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,207,proof-block-present
+CLAIM-0155,definition,def:5.4,\begin{definition}[Holonomy Tensor],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,227,asserted-only
+CLAIM-0156,lemma,lem:5.3,\begin{lemma}[Antisymmetry of the Holonomy Tensor],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,243,asserted-only
+CLAIM-0157,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,248,proof-block-present
+CLAIM-0158,definition,def:5.5,\begin{definition}[Effective Planck Constant],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,257,asserted-only
+CLAIM-0159,definition,def:5.6,\begin{definition}[Holonomy Operator],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,285,asserted-only
+CLAIM-0160,theorem,thm:5.1,\begin{theorem}[Commutation Relations],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,299,asserted-only
+CLAIM-0161,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,325,proof-block-present
+CLAIM-0162,corollary,cor:5.1,\begin{corollary}[Lie Algebra Structure],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,391,asserted-only
+CLAIM-0163,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,407,proof-block-present
+CLAIM-0164,definition,def:5.7,\begin{definition}[Constraint Hamiltonian],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,421,asserted-only
+CLAIM-0165,lemma,lem:5.4,\begin{lemma}[Well-Definedness of $\hatH_C$],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,432,asserted-only
+CLAIM-0166,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,446,proof-block-present
+CLAIM-0167,proposition,prop:5.2,\begin{proposition}[Spectral Properties of $\hatH_C$],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,475,asserted-only
+CLAIM-0168,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,491,proof-block-present
+CLAIM-0169,definition,def:5.8,\begin{definition}[Constraint Vacuum],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,502,asserted-only
+CLAIM-0170,lemma,lem:5.5,\begin{lemma}[Uniqueness of the Constraint Vacuum],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,511,asserted-only
+CLAIM-0171,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,519,proof-block-present
+CLAIM-0172,definition,def:5.9,\begin{definition}[State Functional],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,543,asserted-only
+CLAIM-0173,lemma,lem:5.6,\begin{lemma}[Properties of the State Functional],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,556,asserted-only
+CLAIM-0174,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,573,proof-block-present
+CLAIM-0175,definition,def:5.10,\begin{definition}[GNS Triple],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,586,asserted-only
+CLAIM-0176,theorem,thm:5.2,\begin{theorem}[CIIR Representation Theorem],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,606,asserted-only
+CLAIM-0177,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,632,proof-block-present
+CLAIM-0178,theorem,thm:5.3,\begin{theorem}[Functoriality of CIIR Representations],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,681,asserted-only
+CLAIM-0179,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,704,proof-block-present
+CLAIM-0180,definition,def:5.11,\begin{definition}[Superselection Sectors],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,730,asserted-only
+CLAIM-0181,proposition,prop:5.3,\begin{proposition}[Decomposition into Superselection Sectors],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,741,asserted-only
+CLAIM-0182,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,762,proof-block-present
+CLAIM-0183,lemma,lem:5.7,\begin{lemma}[Superselection and Density Operators],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,786,asserted-only
+CLAIM-0184,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,804,proof-block-present
+CLAIM-0185,definition,def:5.12,\begin{definition}[Joint Constraint Operator Algebra],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,825,asserted-only
+CLAIM-0186,proposition,prop:5.4,\begin{proposition}[Properties of the Joint Algebra],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,841,asserted-only
+CLAIM-0187,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,858,proof-block-present
+CLAIM-0188,lemma,lem:5.8,\begin{lemma}[Entanglement and Constraint Curvature],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,880,asserted-only
+CLAIM-0189,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,899,proof-block-present
+CLAIM-0190,proposition,prop:5.5,\begin{proposition}[Partial Trace Reduction],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,914,asserted-only
+CLAIM-0191,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,935,proof-block-present
+CLAIM-0192,theorem,thm:5.4,\begin{theorem}[Classical Emergence via Decoherence],manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,955,asserted-only
+CLAIM-0193,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex,976,proof-block-present
+CLAIM-0194,definition,def:6.1,\begin{definition}[Cognitive System],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,84,asserted-only
+CLAIM-0195,definition,def:6.2,\begin{definition}[Constraint Morphism],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,101,asserted-only
+CLAIM-0196,definition,def:6.3,\begin{definition}[Composition of Constraint Morphisms],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,160,asserted-only
+CLAIM-0197,definition,def:6.4,\begin{definition}[Identity Constraint Morphism],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,172,asserted-only
+CLAIM-0198,theorem,thm:6.1,\begin{theorem}[CogSys is a Well-Defined Category],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,180,asserted-only
+CLAIM-0199,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,203,proof-block-present
+CLAIM-0200,lemma,lem:6.1,\begin{lemma}[Constraint Morphisms Preserve CPTP Structure],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,272,asserted-only
+CLAIM-0201,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,284,proof-block-present
+CLAIM-0202,lemma,lem:6.2,\begin{lemma}[Hom-sets in CogSys],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,309,asserted-only
+CLAIM-0203,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,322,proof-block-present
+CLAIM-0204,definition,def:6.5,\begin{definition}[CIIR Representation],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,341,asserted-only
+CLAIM-0205,definition,def:6.6,\begin{definition}[Representation Morphism],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,357,asserted-only
+CLAIM-0206,definition,def:6.7,\begin{definition}[Composition of Representation Morphisms],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,386,asserted-only
+CLAIM-0207,definition,def:6.8,\begin{definition}[Identity Representation Morphism],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,393,asserted-only
+CLAIM-0208,theorem,thm:6.2,\begin{theorem}[$\mathbf{Hilb_{CIIR}}$ is a Well-Defined Category],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,399,asserted-only
+CLAIM-0209,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,413,proof-block-present
+CLAIM-0210,lemma,lem:6.3,\begin{lemma}[Isomorphisms in $\mathbf{Hilb_{CIIR}}$],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,442,asserted-only
+CLAIM-0211,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,451,proof-block-present
+CLAIM-0212,definition,def:6.9,\begin{definition}[Action of $\mathbf{F}$ on Objects],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,467,asserted-only
+CLAIM-0213,definition,def:6.10,\begin{definition}[Action of $\mathbf{F}$ on Morphisms],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,480,asserted-only
+CLAIM-0214,lemma,lem:6.4,\begin{lemma}[$\mathbf{F}(f)$ is a Well-Defined Representation Morphism],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,489,asserted-only
+CLAIM-0215,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,496,proof-block-present
+CLAIM-0216,theorem,thm:6.3,\begin{theorem}[$\mathbf{F}$ is a Well-Defined Functor],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,524,asserted-only
+CLAIM-0217,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,531,proof-block-present
+CLAIM-0218,theorem,thm:6.4,\begin{theorem}[Functoriality of $\mathbf{F}$],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,542,asserted-only
+CLAIM-0219,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,553,proof-block-present
+CLAIM-0220,lemma,lem:6.5,\begin{lemma}[Faithfulness of $\mathbf{F}$],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,570,asserted-only
+CLAIM-0221,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,583,proof-block-present
+CLAIM-0222,definition,def:6.11,\begin{definition}[Unitary Equivalence of Cognitive Systems],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,609,asserted-only
+CLAIM-0223,theorem,thm:6.5,\begin{theorem}[Unitary Equivalence is a Congruence],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,626,asserted-only
+CLAIM-0224,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,647,proof-block-present
+CLAIM-0225,proposition,prop:6.1,\begin{proposition}[CIIR Representation Theorem Revisited],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,693,asserted-only
+CLAIM-0226,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,701,proof-block-present
+CLAIM-0227,definition,def:6.12,\begin{definition}[Natural Transformation between Interface Maps],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,727,asserted-only
+CLAIM-0228,definition,def:6.13,\begin{definition}[Vertical Composition of Natural Transformations],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,754,asserted-only
+CLAIM-0229,definition,def:6.14,\begin{definition}[Horizontal Composition of Natural Transformations],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,765,asserted-only
+CLAIM-0230,theorem,thm:6.6,\begin{theorem}[Natural Transformations form a Category],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,781,asserted-only
+CLAIM-0231,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,790,proof-block-present
+CLAIM-0232,lemma,lem:6.6,\begin{lemma}[Natural Isomorphisms in the Functor Category],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,826,asserted-only
+CLAIM-0233,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,836,proof-block-present
+CLAIM-0234,proposition,prop:6.2,\begin{proposition}[Interface Map Deformation],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,849,asserted-only
+CLAIM-0235,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,870,proof-block-present
+CLAIM-0236,definition,def:6.15,\begin{definition}[Tensor Product in $\mathbf{CogSys}$],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,894,asserted-only
+CLAIM-0237,definition,def:6.16,\begin{definition}[Unit Object in $\mathbf{CogSys}$],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,934,asserted-only
+CLAIM-0238,theorem,thm:6.7,\begin{theorem}[$\mathbf{CogSys}$ and $\mathbf{Hilb_{CIIR}}$ are,manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,951,asserted-only
+CLAIM-0239,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,966,proof-block-present
+CLAIM-0240,lemma,lem:6.7,\begin{lemma}[Tensor Product of Morphisms],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1018,asserted-only
+CLAIM-0241,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1030,proof-block-present
+CLAIM-0242,lemma,lem:6.8,\begin{lemma}[Monoidal Coherence Isomorphism],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1053,asserted-only
+CLAIM-0243,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1072,proof-block-present
+CLAIM-0244,lemma,lem:6.9,\begin{lemma}[Unit Coherence Isomorphism],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1108,asserted-only
+CLAIM-0245,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1118,proof-block-present
+CLAIM-0246,theorem,thm:6.8,\begin{theorem}[$\mathbf{F}$ is a Strong Symmetric Monoidal Functor],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1124,asserted-only
+CLAIM-0247,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1150,proof-block-present
+CLAIM-0248,proposition,prop:6.3,\begin{proposition}[Tensor Product Preserves Probabilistic Interpretation],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1186,asserted-only
+CLAIM-0249,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1206,proof-block-present
+CLAIM-0250,proposition,prop:6.4,\begin{proposition}[Representation Theorem for Entangled States],manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1222,asserted-only
+CLAIM-0251,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch06_representation_theory.tex,1244,proof-block-present
+CLAIM-0252,definition,def:7.1,\begin{definition}[Hamiltonian Superoperator],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,84,asserted-only
+CLAIM-0253,lemma,lem:7.1,\begin{lemma}[Properties of $\CL_H$],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,103,asserted-only
+CLAIM-0254,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,123,proof-block-present
+CLAIM-0255,definition,def:7.2,\begin{definition}[Constraint Lindblad Operators],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,156,asserted-only
+CLAIM-0256,lemma,lem:7.2,\begin{lemma}[Well-Definedness of the Lindblad Operators],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,179,asserted-only
+CLAIM-0257,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,196,proof-block-present
+CLAIM-0258,definition,def:7.3,\begin{definition}[Constraint Dissipator],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,221,asserted-only
+CLAIM-0259,lemma,lem:7.3,\begin{lemma}[Properties of the Constraint Dissipator],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,236,asserted-only
+CLAIM-0260,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,261,proof-block-present
+CLAIM-0261,definition,def:7.4,\begin{definition}[Constraint Liouvillian],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,295,asserted-only
+CLAIM-0262,theorem,thm:7.1,\begin{theorem}[Derivation of the CIIR Master Equation],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,307,asserted-only
+CLAIM-0263,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,340,proof-block-present
+CLAIM-0264,lemma,lem:7.4,\begin{lemma}[GKSL Structure Theorem — Bounded Case],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,399,asserted-only
+CLAIM-0265,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,415,proof-block-present
+CLAIM-0266,lemma,lem:7.5,\begin{lemma}[Uniqueness of Constraint Lindblad Operators],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,440,asserted-only
+CLAIM-0267,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,457,proof-block-present
+CLAIM-0268,theorem,thm:7.2,\begin{theorem}[CIIR Master Equation — Explicit Form],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,488,asserted-only
+CLAIM-0269,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,528,proof-block-present
+CLAIM-0270,definition,def:7.5,\begin{definition}[Quantum Dynamical Semigroup],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,547,asserted-only
+CLAIM-0271,theorem,thm:7.3,\begin{theorem}[Well-Posedness of the CIIR Evolution],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,567,asserted-only
+CLAIM-0272,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,591,proof-block-present
+CLAIM-0273,definition,def:7.6,\begin{definition}[Constraint Equilibrium],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,646,asserted-only
+CLAIM-0274,definition,def:7.7,\begin{definition}[Effective Temperature],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,653,asserted-only
+CLAIM-0275,definition,def:7.8,\begin{definition}[Constraint Gibbs State],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,667,asserted-only
+CLAIM-0276,theorem,thm:7.4,\begin{theorem}[Existence and Structure of Equilibrium States],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,678,asserted-only
+CLAIM-0277,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,699,proof-block-present
+CLAIM-0278,proposition,prop:7.1,\begin{proposition}[Approach to Equilibrium],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,756,asserted-only
+CLAIM-0279,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,771,proof-block-present
+CLAIM-0280,definition,def:7.9,\begin{definition}[Von Neumann Entropy],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,791,asserted-only
+CLAIM-0281,definition,def:7.10,\begin{definition}[Constraint Entropy],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,802,asserted-only
+CLAIM-0282,lemma,lem:7.6,\begin{lemma}[Properties of the Constraint Entropy],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,815,asserted-only
+CLAIM-0283,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,828,proof-block-present
+CLAIM-0284,definition,def:7.11,\begin{definition}[Entropy Production Rate],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,849,asserted-only
+CLAIM-0285,theorem,thm:7.5,\begin{theorem}[Entropy Monotonicity — Second Law],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,858,asserted-only
+CLAIM-0286,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,874,proof-block-present
+CLAIM-0287,corollary,cor:7.1,\begin{corollary}[Lyapunov Function],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,917,asserted-only
+CLAIM-0288,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,925,proof-block-present
+CLAIM-0289,definition,def:7.12,\begin{definition}[Trace Distance],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,936,asserted-only
+CLAIM-0290,definition,def:7.13,\begin{definition}[Information Current],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,947,asserted-only
+CLAIM-0291,definition,def:7.14,\begin{definition}[Quantum Mutual Information],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,957,asserted-only
+CLAIM-0292,theorem,thm:7.6,\begin{theorem}[Contraction of Distinguishability],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,968,asserted-only
+CLAIM-0293,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,990,proof-block-present
+CLAIM-0294,theorem,thm:7.7,\begin{theorem}[Data-Processing Inequality for CIIR],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1016,asserted-only
+CLAIM-0295,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1038,proof-block-present
+CLAIM-0296,proposition,prop:7.2,\begin{proposition}[Decoherence under CIIR Evolution],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1070,asserted-only
+CLAIM-0297,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1084,proof-block-present
+CLAIM-0298,proposition,prop:7.3,\begin{proposition}[Holevo Bound for Constraint-Encoded Information],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1101,asserted-only
+CLAIM-0299,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1116,proof-block-present
+CLAIM-0300,definition,def:7.15,\begin{definition}[Evolution Morphism],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1131,asserted-only
+CLAIM-0301,definition,def:7.16,\begin{definition}[Dynamical CogSys Category],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1141,asserted-only
+CLAIM-0302,proposition,prop:7.4,\begin{proposition}[Compatibility of Dynamics with the Functor],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1160,asserted-only
+CLAIM-0303,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1173,proof-block-present
+CLAIM-0304,definition,def:7.17,\begin{definition}[Time-Evolution Natural Transformation],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1185,asserted-only
+CLAIM-0305,proposition,prop:7.5,\begin{proposition}[Naturality of Time Evolution],manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1193,asserted-only
+CLAIM-0306,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch07_dynamics.tex,1206,proof-block-present
+CLAIM-0307,definition,def:8.1,\begin{definition}[Constraint Observable],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,106,asserted-only
+CLAIM-0308,definition,def:8.2,\begin{definition}[Spectral Measure of a Constraint Observable],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,118,asserted-only
+CLAIM-0309,lemma,lem:8.1,\begin{lemma}[PVM Properties from Observable Algebra],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,132,asserted-only
+CLAIM-0310,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,155,proof-block-present
+CLAIM-0311,definition,def:8.3,\begin{definition}[CIIR Projection-Valued Measure (PVM)],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,172,asserted-only
+CLAIM-0312,definition,def:8.4,\begin{definition}[CIIR POVM],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,188,asserted-only
+CLAIM-0313,theorem,thm:8.1,\begin{theorem}[Construction of Measurement Operators from,manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,206,asserted-only
+CLAIM-0314,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,230,proof-block-present
+CLAIM-0315,definition,def:8.5,\begin{definition}[Measurement Probability Functional],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,285,asserted-only
+CLAIM-0316,lemma,lem:8.2,\begin{lemma}[Probability Measure Properties],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,297,asserted-only
+CLAIM-0317,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,313,proof-block-present
+CLAIM-0318,definition,def:8.6,\begin{definition}[Interface-Induced State],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,333,asserted-only
+CLAIM-0319,theorem,thm:8.2,\begin{theorem}[Derivation of the Born Rule],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,345,asserted-only
+CLAIM-0320,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,371,proof-block-present
+CLAIM-0321,corollary,cor:8.1,\begin{corollary}[Born Rule for Discrete Spectra],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,411,asserted-only
+CLAIM-0322,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,427,proof-block-present
+CLAIM-0323,definition,def:8.7,\begin{definition}[Measurement Instrument],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,443,asserted-only
+CLAIM-0324,lemma,lem:8.3,\begin{lemma}[Properties of the Measurement Instrument],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,456,asserted-only
+CLAIM-0325,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,477,proof-block-present
+CLAIM-0326,theorem,thm:8.3,\begin{theorem}[Measurement Update Rule],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,496,asserted-only
+CLAIM-0327,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,520,proof-block-present
+CLAIM-0328,definition,def:8.8,\begin{definition}[Non-Selective Measurement Map],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,552,asserted-only
+CLAIM-0329,lemma,lem:8.4,\begin{lemma}[CPTP Property of Non-Selective Measurement],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,562,asserted-only
+CLAIM-0330,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,576,proof-block-present
+CLAIM-0331,definition,def:8.9,\begin{definition}[Distortion Map],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,604,asserted-only
+CLAIM-0332,definition,def:8.10,\begin{definition}[Distinguishability Metrics],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,624,asserted-only
+CLAIM-0333,theorem,thm:8.4,\begin{theorem}[Distortion Contraction Bound],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,637,asserted-only
+CLAIM-0334,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,664,proof-block-present
+CLAIM-0335,corollary,cor:8.2,\begin{corollary}[Flat Constraint Limit],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,749,asserted-only
+CLAIM-0336,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,760,proof-block-present
+CLAIM-0337,definition,def:8.11,\begin{definition}[Distortion Kernel],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,770,asserted-only
+CLAIM-0338,lemma,lem:8.5,\begin{lemma}[Dimension Deficit],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,792,asserted-only
+CLAIM-0339,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,800,proof-block-present
+CLAIM-0340,theorem,thm:8.5,\begin{theorem}[Non-Invertibility of the Distortion Map],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,814,asserted-only
+CLAIM-0341,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,835,proof-block-present
+CLAIM-0342,proposition,prop:8.1,\begin{proposition}[Quantitative Non-Invertibility],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,870,asserted-only
+CLAIM-0343,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,887,proof-block-present
+CLAIM-0344,definition,def:8.12,\begin{definition}[Superposition State],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,912,asserted-only
+CLAIM-0345,lemma,lem:8.6,\begin{lemma}[Normalisation of Superposition States],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,925,asserted-only
+CLAIM-0346,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,931,proof-block-present
+CLAIM-0347,definition,def:8.13,\begin{definition}[Interference Term],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,938,asserted-only
+CLAIM-0348,theorem,thm:8.6,\begin{theorem}[Interference from Non-Commutativity],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,948,asserted-only
+CLAIM-0349,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,985,proof-block-present
+CLAIM-0350,proposition,prop:8.2,\begin{proposition}[Interference and Constraint Curvature],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1032,asserted-only
+CLAIM-0351,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1053,proof-block-present
+CLAIM-0352,definition,def:8.14,\begin{definition}[Measurement Context],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1077,asserted-only
+CLAIM-0353,definition,def:8.15,\begin{definition}[Context-Dependent Probability],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1091,asserted-only
+CLAIM-0354,lemma,lem:8.7,\begin{lemma}[Context-Independent Marginals],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1109,asserted-only
+CLAIM-0355,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1117,proof-block-present
+CLAIM-0356,definition,def:8.16,\begin{definition}[Joint Outcome Probability],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1132,asserted-only
+CLAIM-0357,theorem,thm:8.7,\begin{theorem}[Contextuality from Constraint Algebra],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1147,asserted-only
+CLAIM-0358,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1172,proof-block-present
+CLAIM-0359,proposition,prop:8.3,\begin{proposition}[Classical Limit: No Contextuality],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1217,asserted-only
+CLAIM-0360,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1231,proof-block-present
+CLAIM-0361,definition,def:8.17,\begin{definition}[Measurement-Dynamical Composition],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1257,asserted-only
+CLAIM-0362,theorem,thm:8.8,\begin{theorem}[Measurement-Dynamics Compatibility],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1269,asserted-only
+CLAIM-0363,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1300,proof-block-present
+CLAIM-0364,definition,def:8.18,\begin{definition}[Measurement-Equipped Cognitive System],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1342,asserted-only
+CLAIM-0365,definition,def:8.19,\begin{definition}[Measurement Morphism],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1356,asserted-only
+CLAIM-0366,definition,def:8.20,\begin{definition}[Category $\mathbf{CogSys}_{\mathrm{meas}}$],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1372,asserted-only
+CLAIM-0367,theorem,thm:8.9,\begin{theorem}[Functoriality of Distortion],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1388,asserted-only
+CLAIM-0368,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1411,proof-block-present
+CLAIM-0369,definition,def:8.21,\begin{definition}[Generalised Measurement Instrument],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1436,asserted-only
+CLAIM-0370,lemma,lem:8.8,\begin{lemma}[POVM from Interface Map Dilation],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1452,asserted-only
+CLAIM-0371,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1474,proof-block-present
+CLAIM-0372,proposition,prop:8.4,\begin{proposition}[Non-Projective Measurements and Distortion],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1485,asserted-only
+CLAIM-0373,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1499,proof-block-present
+CLAIM-0374,definition,def:8.22,\begin{definition}[Distortion Entropy],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1515,asserted-only
+CLAIM-0375,proposition,prop:8.5,\begin{proposition}[Monotonicity of Distortion Entropy],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1527,asserted-only
+CLAIM-0376,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1546,proof-block-present
+CLAIM-0377,proposition,prop:8.6,\begin{proposition}[Distortion Entropy Bound],manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1567,asserted-only
+CLAIM-0378,proof,,\begin{proof},manuscripts/ciir_monograph/chapters/ch08_measurement_theory.tex,1577,proof-block-present
+CLAIM-0379,definition,def:theory-tuple,\begin{definition}[CIIR Theory Tuple],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,64,asserted-only
+CLAIM-0380,definition,def:density,\begin{definition}[Density Operator Construction],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,90,asserted-only
+CLAIM-0381,definition,def:operator-algebra,\begin{definition}[Operator Algebra],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,103,asserted-only
+CLAIM-0382,theorem,thm:loss,\begin{theorem}[CIIR Loss Functional],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,123,asserted-only
+CLAIM-0383,proof,,\begin{proof},manuscripts/ciir_monograph/ciir_quasim_formalization.tex,135,proof-block-present
+CLAIM-0384,proposition,prop:gradient,\begin{proposition}[Gradient of the Loss],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,164,asserted-only
+CLAIM-0385,definition,def:proj-grad,\begin{definition}[Projected Gradient Dynamics],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,181,asserted-only
+CLAIM-0386,definition,def:strang,\begin{definition}[Strang Splitting],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,194,asserted-only
+CLAIM-0387,proposition,prop:stability,\begin{proposition}[Stability],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,207,asserted-only
+CLAIM-0388,definition,def:tensor-layout,\begin{definition}[Tensor Layout],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,220,asserted-only
+CLAIM-0389,definition,def:contractions,\begin{definition}[Core Tensor Contractions],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,238,asserted-only
+CLAIM-0390,definition,def:modules,\begin{definition}[Module Structure],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,261,asserted-only
+CLAIM-0391,definition,def:api,\begin{definition}[Core API],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,283,asserted-only
+CLAIM-0392,definition,def:hcal,\begin{definition}[HCAL Bridge],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,309,asserted-only
+CLAIM-0393,definition,def:qstack,\begin{definition}[qstack Bridge],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,323,asserted-only
+CLAIM-0394,definition,def:qnx,\begin{definition}[qnx Bridge],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,334,asserted-only
+CLAIM-0395,theorem,thm:noncomm,\begin{theorem}[Non-Commutative Measurement Effects],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,352,asserted-only
+CLAIM-0396,proof,,\begin{proof},manuscripts/ciir_monograph/ciir_quasim_formalization.tex,360,proof-block-present
+CLAIM-0397,theorem,thm:interference,\begin{theorem}[Interference from Non-Commutativity],manuscripts/ciir_monograph/ciir_quasim_formalization.tex,374,asserted-only

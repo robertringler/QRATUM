@@ -42,6 +42,7 @@ fn main() {
             commands::run_ghz_state,
             commands::get_quantum_state,
             commands::apply_quantum_gate,
+            commands::run_quantum_circuit,
             // AI inference
             commands::run_ai_inference,
             commands::classify_text,

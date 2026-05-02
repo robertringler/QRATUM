@@ -29,7 +29,6 @@ class AdversaryType(Enum):
     NEURAL = "neural"
     HUMAN_GM = "human_gm"
     KAGGLE = "kaggle"  # Kaggle leaderboard benchmark positions
-    KAGGLE = "kaggle"
 
 
 @dataclass

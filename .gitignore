@@ -7,13 +7,10 @@ __pycache__/
 *.pyc
 *.so
 
-# Environment files
-.env
-.env.local
-
-# Kaggle API credentials (never commit)
-.kaggle/
-kaggle.json
+# Rust build artifacts
+**/target/
+**/*.rs.bk
+Cargo.lock
 
 # Artifacts
 artifacts/real_world_sim_2025/
@@ -59,6 +56,7 @@ coverage.json
 
 # QuASIM-Own runtime directories
 runs/
+!compiled_realities/runs/
 reports/
 .cache/quasim_datasets/
 
@@ -134,7 +132,33 @@ package-lock.json
 # Build logs
 build_*.log
 qratum_asi/output/
+results/ancestrydna_sequencing/
+results/ancestrydna_sequencing_test/
+results/ancestrydna_advanced/
+results/wgs_test/
+results/wgs_analysis/
+results/benchmarking/
+
+# Tier-I advancement framework
+tier1_roadmap.json
+tier1_config.json
+tier1_metrics.json
+tier1_progress.json
+database_cache/
+checkpoints/
+test_checkpoints/
+validation_results/
+api_cache.db
 
 # Rust build artifacts
 target/
 
+# SBOM generated artifacts (keep directory structure)
+.sbom/cyclonedx/*.json
+.sbom/spdx/*.json
+.sbom/hashes/*.sha256
+.sbom/hashes/*.sha512
+.sbom/provenance/*.json
+.sbom/diffs/*.json
+# Temporal compression experiment outputs
+artifacts/temporal_compression/

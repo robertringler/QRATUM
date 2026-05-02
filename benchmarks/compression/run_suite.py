@@ -42,19 +42,12 @@ if str(_repo_root) not in sys.path:
 
 # Import generators and validators
 from benchmarks.compression.generators.quantum_states import (  # noqa: E402
-    generate_ghz_state,
-    generate_product_state,
-    generate_random_circuit_state,
-    generate_random_state,
-    generate_w_state,
-)
+    generate_ghz_state, generate_product_state, generate_random_circuit_state,
+    generate_random_state, generate_w_state)
 from benchmarks.compression.validators.compression_ratio import (  # noqa: E402
-    aggregate_compression_statistics,
-    validate_compression_claim,
-)
-from benchmarks.compression.validators.fidelity import (  # noqa: E402
-    validate_fidelity_bound,
-)
+    aggregate_compression_statistics, validate_compression_claim)
+from benchmarks.compression.validators.fidelity import \
+    validate_fidelity_bound  # noqa: E402
 
 # Import AHTC compression
 try:

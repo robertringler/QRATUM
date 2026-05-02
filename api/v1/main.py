@@ -32,12 +32,8 @@ logger = logging.getLogger(__name__)
 
 
 if FASTAPI_AVAILABLE:
-    from api.v1.auth import (
-        RefreshTokenRequest,
-        RevokeTokenRequest,
-        TokenManager,
-        TokenResponse,
-    )
+    from api.v1.auth import (RefreshTokenRequest, RevokeTokenRequest,
+                             TokenManager, TokenResponse)
     from api.v1.jobs import router as jobs_router
     from api.v1.jobs import validation_router
     from api.v1.middleware import setup_middleware

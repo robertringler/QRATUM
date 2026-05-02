@@ -15,7 +15,8 @@ from datetime import datetime
 from typing import Any
 
 try:
-    from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect, status
+    from fastapi import (APIRouter, Depends, HTTPException, WebSocket,
+                         WebSocketDisconnect, status)
     from pydantic import BaseModel, Field
 
     FASTAPI_AVAILABLE = True

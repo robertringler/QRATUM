@@ -2,14 +2,12 @@
 
 import numpy as np
 
-from quasim.terc_bridge.observables import (
-    beta_metrics_from_cipher,
-    emergent_complexity,
-    ioc_period_candidates,
-    qgh_consensus_status,
-    stability_assessment,
-    stream_synchronization_metrics,
-)
+from quasim.terc_bridge.observables import (beta_metrics_from_cipher,
+                                            emergent_complexity,
+                                            ioc_period_candidates,
+                                            qgh_consensus_status,
+                                            stability_assessment,
+                                            stream_synchronization_metrics)
 
 
 class TestBetaMetricsFromCipher:

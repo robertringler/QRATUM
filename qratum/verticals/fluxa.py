@@ -36,6 +36,16 @@ class FluxaModule(VerticalModuleBase):
         )
 
     def get_supported_tasks(self) -> List[str]:
+        return ["optimize_routes", "forecast_demand", "optimize_inventory",
+                "design_network", "assess_risk", "analyze_sustainability"]
+
+    def execute_task(self, task: str, parameters: Dict[str, Any],
+                     contract: PlatformContract, event_chain: MerkleEventChain) -> Dict[str, Any]:
+        if task not in self.get_supported_tasks():
+            raise ValueError(f"Unknown task: {task}")
+
+        self.emit_task_event(EventType.TASK_STARTED, contract.contract_id, task,
+                             {"parameters": parameters}, event_chain)
         return [
             "optimize_routes",
             "forecast_demand",

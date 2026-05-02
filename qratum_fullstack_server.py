@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from qradle import QRADLEEngine
 
 # Import QRATUM-ASI
-from qratum_asi.orchestrator import QRATUMASI as ASIOrchestrator
+from qratum_asi.orchestrator import ASIOrchestrator
 
 # Import QRATUM Platform
 from qratum_platform.core import PlatformIntent, QRATUMPlatform, VerticalModule

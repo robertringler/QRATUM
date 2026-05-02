@@ -124,6 +124,10 @@ class EventChain:
         Returns:
             List of events for the contract
         """
+        return [
+            e for e in self.events
+            if e.data.get("contract_id") == contract_id
+        ]
         return [e for e in self.events if e.data.get("contract_id") == contract_id]
 
     def export_events(self) -> list[dict[str, Any]]:

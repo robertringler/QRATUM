@@ -10,7 +10,8 @@ from pathlib import Path
 from typing import Any, Sequence
 
 from .loader import iter_raw_messages
-from .models import ConversationSummary, NormalizedTurn, RawConversation, RawMessage
+from .models import (ConversationSummary, NormalizedTurn, RawConversation,
+                     RawMessage)
 
 _ALLOWED_ROLES = {"user", "assistant", "system", "tool"}
 

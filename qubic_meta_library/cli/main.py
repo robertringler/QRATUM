@@ -4,13 +4,9 @@ import json
 
 import click
 
-from qubic_meta_library.services import (
-    Dashboard,
-    ExecutionEngine,
-    PatentAnalyzer,
-    PromptLoader,
-    SynergyMapper,
-)
+from qubic_meta_library.services import (Dashboard, ExecutionEngine,
+                                         PatentAnalyzer, PromptLoader,
+                                         SynergyMapper)
 
 
 @click.group()

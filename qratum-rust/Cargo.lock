@@ -483,6 +483,7 @@ dependencies = [
  "criterion",
  "libm",
  "getrandom",
+ "libm",
  "minicbor",
  "rand_core",
  "sha3",

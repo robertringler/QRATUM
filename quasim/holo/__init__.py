@@ -1,5 +1,8 @@
 """Holographic and boundary coupling modules."""
 
+from .anti_tensor import compress, compute_fidelity, decompress
+from .boundary import (boundary_projection, bulk_boundary_hamiltonian,
+                       check_probability_conservation, evolve_open_boundary)
 from .anti_tensor import (
     adaptive_truncate,
     compress,

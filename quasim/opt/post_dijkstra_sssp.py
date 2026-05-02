@@ -378,7 +378,10 @@ class MinimumFinder:
         Returns:
             Minimum (distance, node) tuple
         """
-        raise NotImplementedError
+        # GAP-STUB-019: base MinimumFinder delegates to linear scan
+        if not candidates:
+            return (float("inf"), -1)
+        return min(candidates, key=lambda x: x[0])
 
     def find_k_minimum(
         self, candidates: list[tuple[float, int]], k: int
@@ -392,7 +395,11 @@ class MinimumFinder:
         Returns:
             List of k minimum tuples
         """
-        raise NotImplementedError
+        # GAP-STUB-020: base MinimumFinder delegates to sorted linear scan
+        if not candidates:
+            return []
+        sorted_candidates = sorted(candidates, key=lambda x: x[0])
+        return sorted_candidates[:k]
 
 
 class ClassicalMinimumFinder(MinimumFinder):

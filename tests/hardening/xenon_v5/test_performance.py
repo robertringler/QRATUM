@@ -76,7 +76,8 @@ class TestPerformance:
     def test_neural_symbolic_performance(self):
         """Test neural-symbolic reasoner meets performance targets."""
 
-        from qratum.bioinformatics.xenon.inference import NeuralSymbolicReasoner
+        from qratum.bioinformatics.xenon.inference import \
+            NeuralSymbolicReasoner
 
         reasoner = NeuralSymbolicReasoner(seed=42, enable_neural=False)
 
