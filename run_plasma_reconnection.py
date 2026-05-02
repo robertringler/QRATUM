@@ -17,12 +17,8 @@ from pathlib import Path
 
 import numpy as np
 
-from quasim.ciir.plasma import (
-    ControllerConfig,
-    EngineConfig,
-    ObjectiveWeights,
-    run_reconnection_control,
-)
+from quasim.ciir.plasma import (ControllerConfig, EngineConfig,
+                                ObjectiveWeights, run_reconnection_control)
 
 
 def _parse_args() -> argparse.Namespace:

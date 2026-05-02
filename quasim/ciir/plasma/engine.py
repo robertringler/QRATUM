@@ -27,23 +27,11 @@ import numpy as np
 from numpy.typing import NDArray
 
 from .ciir import CIIRSnapshot, make_snapshot
-from .control import (
-    ControllerConfig,
-    ObjectiveValue,
-    ObjectiveWeights,
-    ReconnectionController,
-    evaluate_objective,
-    gaussian_target_mask,
-    zero_control_vector,
-)
-from .mhd import (
-    Grid2D,
-    MHDState,
-    harris_sheet,
-    perturb_tearing,
-    recommended_dt,
-    step_rk2,
-)
+from .control import (ControllerConfig, ObjectiveValue, ObjectiveWeights,
+                      ReconnectionController, evaluate_objective,
+                      gaussian_target_mask, zero_control_vector)
+from .mhd import (Grid2D, MHDState, harris_sheet, perturb_tearing,
+                  recommended_dt, step_rk2)
 
 FloatArray = NDArray[np.floating]
 

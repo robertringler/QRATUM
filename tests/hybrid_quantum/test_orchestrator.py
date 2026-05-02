@@ -5,16 +5,13 @@ import time
 import pytest
 
 try:
-    from quasim.hybrid_quantum.orchestrator import (
-        ExecutionContext,
-        ExecutionMode,
-        FailureType,
-        FallbackStrategy,
-        HybridQuantumOrchestrator,
-        OrchestratorStatus,
-        QuantumVerificationError,
-        TrustMetric,
-    )
+    from quasim.hybrid_quantum.orchestrator import (ExecutionContext,
+                                                    ExecutionMode, FailureType,
+                                                    FallbackStrategy,
+                                                    HybridQuantumOrchestrator,
+                                                    OrchestratorStatus,
+                                                    QuantumVerificationError,
+                                                    TrustMetric)
 
     ORCHESTRATOR_AVAILABLE = True
 except ImportError:

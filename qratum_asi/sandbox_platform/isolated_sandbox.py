@@ -17,13 +17,11 @@ from enum import Enum
 from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
-from qratum_asi.sandbox_platform.types import (
-    IsolationLevel,
-    ResourceAllocation,
-    SandboxConfig,
-    SandboxEvaluationResult,
-    SandboxProposal,
-)
+from qratum_asi.sandbox_platform.types import (IsolationLevel,
+                                               ResourceAllocation,
+                                               SandboxConfig,
+                                               SandboxEvaluationResult,
+                                               SandboxProposal)
 
 
 class ContainerStatus(Enum):

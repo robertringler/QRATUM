@@ -10,12 +10,12 @@ Strategies:
 - CHRONOLOGY_PROTECTION: Reject paradoxical computations
 """
 
-from typing import List, Optional, Tuple, Dict, Any, Callable
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from .constants import ParadoxStrategy
-from .state import TemporalState, StateChain, TemporalCoordinate
+from .state import StateChain, TemporalCoordinate, TemporalState
 
 
 class ParadoxType(Enum):
@@ -46,7 +46,7 @@ class ParadoxDetection:
     description: str
     severity: float
     resolution: Optional[str] = None
-    
+
     def __str__(self) -> str:
         return (f"{self.paradox_type.value.upper()} paradox at depth {self.state_depth} "
                 f"in {self.timeline_id}: {self.description}")
@@ -59,11 +59,11 @@ class CausalityValidator:
     Ensures that cause always precedes effect and that no causal loops
     or contradictions exist in the timeline.
     """
-    
+
     def __init__(self):
         """Initialize causality validator"""
         self.detections: List[ParadoxDetection] = []
-    
+
     def validate_causal_chain(
         self,
         chain: StateChain,
@@ -80,15 +80,15 @@ class CausalityValidator:
             Tuple of (is_valid, list_of_paradoxes)
         """
         paradoxes = []
-        
+
         if len(chain.states) < 2:
             return True, paradoxes
-        
+
         # Check for temporal ordering violations
         for i in range(1, len(chain.states)):
             prev_state = chain.states[i - 1]
             curr_state = chain.states[i]
-            
+
             # Check computational time ordering
             if curr_state.coordinate.computational_t < prev_state.coordinate.computational_t:
                 paradoxes.append(ParadoxDetection(
@@ -98,7 +98,7 @@ class CausalityValidator:
                     description="Computational time moves backward",
                     severity=0.9,
                 ))
-            
+
             # Check physical time ordering
             if curr_state.coordinate.physical_t < prev_state.coordinate.physical_t:
                 paradoxes.append(ParadoxDetection(
@@ -108,7 +108,7 @@ class CausalityValidator:
                     description="Physical time moves backward",
                     severity=0.8,
                 ))
-            
+
             # Check parent hash consistency
             if curr_state.parent_hash != prev_state.coordinate.state_hash:
                 paradoxes.append(ParadoxDetection(
@@ -118,13 +118,13 @@ class CausalityValidator:
                     description="Parent hash mismatch",
                     severity=1.0,
                 ))
-        
+
         # Check for causal consistency using custom function
         if causality_fn:
             for i in range(1, len(chain.states)):
                 prev_state = chain.states[i - 1]
                 curr_state = chain.states[i]
-                
+
                 if not causality_fn(prev_state.data, curr_state.data):
                     paradoxes.append(ParadoxDetection(
                         paradox_type=ParadoxType.CONSISTENCY,
@@ -133,10 +133,10 @@ class CausalityValidator:
                         description="Causality violation detected by custom function",
                         severity=0.7,
                     ))
-        
+
         self.detections.extend(paradoxes)
         return len(paradoxes) == 0, paradoxes
-    
+
     def detect_grandfather_paradox(
         self,
         initial_state: TemporalState,
@@ -163,7 +163,7 @@ class CausalityValidator:
                 severity=1.0,
             )
         return None
-    
+
     def detect_bootstrap_paradox(
         self,
         chain: StateChain,
@@ -180,7 +180,7 @@ class CausalityValidator:
             List of detected paradoxes
         """
         paradoxes = []
-        
+
         for state in chain.states:
             if not has_external_origin_fn(state.data):
                 paradoxes.append(ParadoxDetection(
@@ -190,9 +190,9 @@ class CausalityValidator:
                     description="Information appears without external origin",
                     severity=0.6,
                 ))
-        
+
         return paradoxes
-    
+
     def detect_causal_loop(
         self,
         chain: StateChain,
@@ -209,13 +209,13 @@ class CausalityValidator:
             List of detected paradoxes
         """
         paradoxes = []
-        
+
         # Look for repeated states (potential loops)
         seen_states: Dict[int, int] = {}
-        
+
         for i, state in enumerate(chain.states):
             state_id = hash(str(state.data))  # Simple hash
-            
+
             if state_id in seen_states:
                 prev_idx = seen_states[state_id]
                 if state_equality_fn(chain.states[prev_idx].data, state.data):
@@ -228,7 +228,7 @@ class CausalityValidator:
                     ))
             else:
                 seen_states[state_id] = i
-        
+
         return paradoxes
 
 
@@ -241,7 +241,7 @@ class ParadoxResolver:
     - MANY_WORLDS: Branch on paradox
     - CHRONOLOGY_PROTECTION: Reject paradoxical computations
     """
-    
+
     def __init__(self, strategy: str = ParadoxStrategy.NOVIKOV):
         """
         Initialize paradox resolver.
@@ -252,7 +252,7 @@ class ParadoxResolver:
         self.strategy = strategy
         self.validator = CausalityValidator()
         self.resolutions: List[ParadoxDetection] = []
-    
+
     def resolve(
         self,
         paradox: ParadoxDetection,
@@ -277,7 +277,7 @@ class ParadoxResolver:
         else:
             # Unknown strategy, default to chronology protection
             return self._resolve_chronology_protection(paradox, chain)
-    
+
     def _resolve_novikov(
         self,
         paradox: ParadoxDetection,
@@ -294,16 +294,16 @@ class ParadoxResolver:
         # We reject the paradoxical branch
         paradox.resolution = "novikov_rejected"
         self.resolutions.append(paradox)
-        
+
         # Truncate chain at paradox point
         if paradox.state_depth > 0:
             truncated_chain = StateChain(timeline_id=chain.timeline_id)
             for i in range(paradox.state_depth):
                 truncated_chain.add_state(chain.states[i])
             return True, truncated_chain
-        
+
         return False, None
-    
+
     def _resolve_many_worlds(
         self,
         paradox: ParadoxDetection,
@@ -318,10 +318,10 @@ class ParadoxResolver:
         # Create a new branch at the paradox point
         paradox.resolution = "many_worlds_branch"
         self.resolutions.append(paradox)
-        
+
         # Create new timeline ID for the branch
         new_timeline_id = f"{chain.timeline_id}_mw_{len(self.resolutions)}"
-        
+
         # Copy chain up to paradox point into new timeline
         new_chain = StateChain(timeline_id=new_timeline_id)
         for i in range(min(paradox.state_depth, len(chain.states))):
@@ -341,9 +341,9 @@ class ParadoxResolver:
                 metadata=state.metadata.copy(),
             )
             new_chain.add_state(new_state)
-        
+
         return True, new_chain
-    
+
     def _resolve_chronology_protection(
         self,
         paradox: ParadoxDetection,
@@ -357,10 +357,10 @@ class ParadoxResolver:
         """
         paradox.resolution = "chronology_protection_rejected"
         self.resolutions.append(paradox)
-        
+
         # Completely reject the paradoxical timeline
         return False, None
-    
+
     def check_and_resolve(
         self,
         chain: StateChain,
@@ -381,27 +381,27 @@ class ParadoxResolver:
             chain=chain,
             causality_fn=causality_fn,
         )
-        
+
         if is_valid:
             return True, chain, []
-        
+
         # Resolve each paradox
         current_chain = chain
         resolved_paradoxes = []
-        
+
         for paradox in paradoxes:
             success, new_chain = self.resolve(paradox, current_chain)
             resolved_paradoxes.append(paradox)
-            
+
             if not success:
                 # Resolution failed
                 return False, current_chain, resolved_paradoxes
-            
+
             if new_chain:
                 current_chain = new_chain
-        
+
         return True, current_chain, resolved_paradoxes
-    
+
     def get_statistics(self) -> Dict[str, Any]:
         """Get resolver statistics"""
         return {
@@ -411,7 +411,7 @@ class ParadoxResolver:
             'resolutions_by_type': self._count_by_type(self.resolutions),
             'detections_by_type': self._count_by_type(self.validator.detections),
         }
-    
+
     def _count_by_type(self, detections: List[ParadoxDetection]) -> Dict[str, int]:
         """Count paradoxes by type"""
         counts: Dict[str, int] = {}

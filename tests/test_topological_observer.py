@@ -10,15 +10,12 @@ Version: 1.0.0
 import numpy as np
 import pytest
 
-from topological_observer import (
-    BettiNumbers,
-    PersistenceDiagram,
-    PersistentHomologyObserver,
-    TopologicalAnnotation,
-    TopologicalInstrumentationLayer,
-    compute_betti_numbers,
-    compute_persistent_homology,
-)
+from topological_observer import (BettiNumbers, PersistenceDiagram,
+                                  PersistentHomologyObserver,
+                                  TopologicalAnnotation,
+                                  TopologicalInstrumentationLayer,
+                                  compute_betti_numbers,
+                                  compute_persistent_homology)
 from topological_observer.observer import InvariantType, ObservationStatus
 
 

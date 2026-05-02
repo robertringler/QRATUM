@@ -40,10 +40,9 @@ def experiment_controllability(n_qubits: int = 2, n_steps: int = 300) -> dict:
     Success: maximum fidelity achieved exceeds initial by > 0.05.
     """
     print("[Exp 1] Controllability test …")
-    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
     from quasim.ciir.multi_qubit.quantum.density_matrix import (
-        DensityMatrixSimulator, LindbladParams
-    )
+        DensityMatrixSimulator, LindbladParams)
+    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
 
     params = LindbladParams(n_qubits=n_qubits, gamma_ad=0.1, gamma_dp=0.02)
     qsim = DensityMatrixSimulator(params)
@@ -131,7 +130,8 @@ def experiment_threshold() -> dict:
 def experiment_fractal_scaling() -> dict:
     """Fit log p_L(n) ~ α^n and verify super-exponential suppression."""
     print("[Exp 3] Fractal scaling law …")
-    from quasim.ciir.multi_qubit.error_correction.fractal_qec import FractalQEC, fit_fractal_scaling
+    from quasim.ciir.multi_qubit.error_correction.fractal_qec import (
+        FractalQEC, fit_fractal_scaling)
 
     qec = FractalQEC(n_levels=10)
     test_p_values = [0.001, 0.003, 0.005, 0.008, 0.01]
@@ -167,12 +167,11 @@ def experiment_fractal_scaling() -> dict:
 def experiment_closed_loop_stability(n_qubits: int = 2, n_steps: int = 400) -> dict:
     """Demonstrate Lyapunov convergence under noisy x(t)."""
     print("[Exp 4] Closed-loop stability …")
-    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
     from quasim.ciir.multi_qubit.analysis.stability import LyapunovAnalyzer
-    from quasim.ciir.multi_qubit.quantum.density_matrix import (
-        DensityMatrixSimulator, LindbladParams
-    )
     from quasim.ciir.multi_qubit.control.controller import HybridController
+    from quasim.ciir.multi_qubit.quantum.density_matrix import (
+        DensityMatrixSimulator, LindbladParams)
+    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
 
     sim = HybridSimulation(
         n_qubits=n_qubits, m=4, dt=0.01, n_steps=n_steps,
@@ -227,8 +226,8 @@ def experiment_closed_loop_stability(n_qubits: int = 2, n_steps: int = 400) -> d
 def experiment_failure_modes(n_qubits: int = 2) -> dict:
     """Explicitly trigger each failure mode and record behaviour."""
     print("[Exp 5] Failure mode simulation …")
-    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
     from quasim.ciir.multi_qubit.error_correction.fractal_qec import FractalQEC
+    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
 
     modes = {
         "high_decoherence": dict(gamma_ad=0.5, gamma_dp=0.3, n_steps=200),
@@ -338,12 +337,11 @@ def main() -> None:
     # --- Plots ---
     if do_plots:
         print("\n[Plots] Generating …")
-        from quasim.ciir.multi_qubit.visualization.plots import plot_all
         from quasim.ciir.multi_qubit.analysis.stability import LyapunovAnalyzer
-        from quasim.ciir.multi_qubit.quantum.density_matrix import (
-            DensityMatrixSimulator, LindbladParams
-        )
         from quasim.ciir.multi_qubit.control.controller import HybridController
+        from quasim.ciir.multi_qubit.quantum.density_matrix import (
+            DensityMatrixSimulator, LindbladParams)
+        from quasim.ciir.multi_qubit.visualization.plots import plot_all
 
         params_q = LindbladParams(n_qubits=n_q)
         ctrl = HybridController(n_qubits=n_q, m=4)

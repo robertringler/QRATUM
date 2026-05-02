@@ -9,18 +9,12 @@ Rejects systems violating:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.swarm.memory import (
-    KnowledgeGraph, NodeType, EdgeType,
-)
 from quasim.ciir.swarm.axiom_architect import Axiom
 from quasim.ciir.swarm.physics_lang import PhysicsProgram
 from quasim.ciir.swarm.simulator import SimulationResult
-
 
 # ================================================================
 # Validation result

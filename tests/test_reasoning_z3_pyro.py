@@ -69,7 +69,8 @@ def test_pyro_probabilistic_reasoning():
 
 def test_multi_vertical_synthesis_with_z3():
     """Test multi-vertical synthesis using Z3 for deductive reasoning."""
-    from qratum.platform.reasoning_engine import ReasoningStrategy, UnifiedReasoningEngine
+    from qratum.platform.reasoning_engine import (ReasoningStrategy,
+                                                  UnifiedReasoningEngine)
 
     engine = UnifiedReasoningEngine()
 
@@ -92,7 +93,8 @@ def test_multi_vertical_synthesis_with_z3():
 
 def test_multi_vertical_synthesis_with_pyro():
     """Test multi-vertical synthesis using Pyro for Bayesian reasoning."""
-    from qratum.platform.reasoning_engine import ReasoningStrategy, UnifiedReasoningEngine
+    from qratum.platform.reasoning_engine import (ReasoningStrategy,
+                                                  UnifiedReasoningEngine)
 
     engine = UnifiedReasoningEngine()
 
@@ -113,7 +115,8 @@ def test_multi_vertical_synthesis_with_pyro():
 
 def test_reasoning_chain_export():
     """Test that reasoning chains can be exported for audit."""
-    from qratum.platform.reasoning_engine import ReasoningStrategy, UnifiedReasoningEngine
+    from qratum.platform.reasoning_engine import (ReasoningStrategy,
+                                                  UnifiedReasoningEngine)
 
     engine = UnifiedReasoningEngine()
 

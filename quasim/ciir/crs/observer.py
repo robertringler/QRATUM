@@ -12,8 +12,7 @@ from dataclasses import dataclass, field
 import numpy as np
 from numpy.typing import NDArray
 
-from quasim.ciir.crs.graph import CRSGraph, Node, Edge
-
+from quasim.ciir.crs.graph import CRSGraph
 
 # ================================================================
 # Observer primitive

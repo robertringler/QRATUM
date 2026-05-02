@@ -3,12 +3,8 @@
 import pytest
 
 from contracts.base import BaseContract, get_current_timestamp
-from contracts.enforcement import (
-    ContractEnforcer,
-    EnforcementCheckpoint,
-    EnforcementResult,
-    create_enforced_contract,
-)
+from contracts.enforcement import (ContractEnforcer, EnforcementCheckpoint,
+                                   EnforcementResult, create_enforced_contract)
 from qradle.core.invariants import InvariantViolation
 from qradle.core.zones import SecurityZone
 

@@ -1,7 +1,8 @@
 """Seeding utilities for reproducible simulations."""
 
-import numpy as np
 from typing import List
+
+import numpy as np
 
 
 def generate_seed_sequence(base_seed: int, n_seeds: int) -> List[int]:

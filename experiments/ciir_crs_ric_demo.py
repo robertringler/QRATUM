@@ -32,18 +32,17 @@ Test cases:
 
 from __future__ import annotations
 
-import json
 import sys
 from pathlib import Path
-from typing import Any, Optional
+from typing import Optional
 
 # Ensure repository root is on the path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from qagents.framework.ciir import Constraint, ConstraintAlgebra, ObserverMap, State
-from qagents.framework.crs import Action, CRS, FailureMode, NOOP
-from qagents.framework.ric import Intent, RIC, TraceEntry
-
+from qagents.framework.ciir import (Constraint, ConstraintAlgebra, ObserverMap,
+                                    State)
+from qagents.framework.crs import CRS, NOOP, Action, FailureMode
+from qagents.framework.ric import RIC, Intent, TraceEntry
 
 # ===========================================================================
 # Domain constants
@@ -182,7 +181,7 @@ def intent_parser(raw: str) -> Optional[Intent]:
     Returns None (⊥) for unrecognised or malformed inputs.
     """
     key = raw.strip().lower()
-    return INTENT_REGISTRY.get(key, None)  # None = ⊥
+    return INTENT_REGISTRY.get(key)  # None = ⊥
 
 
 # ===========================================================================
@@ -310,23 +309,23 @@ def print_analysis(results: dict[str, TraceEntry]) -> None:
     # Type I
     b_fm = results["B"].failure_mode
     print(f"  Type I  (constraint violation) — triggered: {b_fm == FailureMode.TYPE_I_CONSTRAINT_VIOLATION}")
-    print(f"    Response: deterministic NOOP, status=FAILED, no transition.")
+    print("    Response: deterministic NOOP, status=FAILED, no transition.")
 
     # Type II
     d = results["D"]
     d_fm = d.failure_mode
     print(f"  Type II (parse failure)        — triggered: {d_fm == FailureMode.TYPE_II_INTENT_PARSE_FAILURE}")
-    print(f"    Response: deterministic NOOP, status=FAILED, no transition.")
+    print("    Response: deterministic NOOP, status=FAILED, no transition.")
 
     # Type III — demonstrate by attempting NOOP with empty admissible set
     # (covered internally; shown via Case B which also produces the same guard path)
-    print(f"  Type III (transition undefined) — enforced by T returning ⊥ for")
-    print(f"    out-of-range actions; excluded from A_C(s) before dispatch.")
+    print("  Type III (transition undefined) — enforced by T returning ⊥ for")
+    print("    out-of-range actions; excluded from A_C(s) before dispatch.")
 
     # Type IV — invariant breach path
     c_fm = results["C"].failure_mode
     print(f"  Type IV (invariant breach)     — triggered: {c_fm == FailureMode.TYPE_IV_INVARIANT_BREACH}")
-    print(f"    Response: Step 3 pre-check halts execution; status=FAILED, no transition.")
+    print("    Response: Step 3 pre-check halts execution; status=FAILED, no transition.")
 
     # -----------------------------------------------------------------------
     # E. Traceability

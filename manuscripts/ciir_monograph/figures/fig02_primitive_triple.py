@@ -11,11 +11,10 @@ Publication-quality, 300 DPI.
 """
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import cm
-from mpl_toolkits.mplot3d import Axes3D
 
 # ── Colours ──
 C_BG       = "#FAFAFA"

@@ -20,15 +20,9 @@ from typing import Iterable, Sequence
 import numpy as np
 
 from qagents.control_geometry.control_directions import (
-    DEFAULT_WEIGHTS,
-    compute_action_metrics,
-    score_action,
-)
+    DEFAULT_WEIGHTS, compute_action_metrics, score_action)
 from qagents.control_geometry.embedding import DisplacementCache
-from qagents.control_geometry.sensitivity import (
-    DEFAULT_EPS,
-    vector_dim,
-)
+from qagents.control_geometry.sensitivity import DEFAULT_EPS, vector_dim
 from qagents.mvri.action_space import EPSILON, Action, validate_action
 from qagents.mvri.state import State
 

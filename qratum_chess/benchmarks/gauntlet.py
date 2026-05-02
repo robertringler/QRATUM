@@ -390,8 +390,10 @@ class AdversarialGauntlet:
             Accuracy score (move accuracy as win rate proxy).
         """
         try:
-            from qratum_chess.benchmarks.benchmark_kaggle import KaggleBenchmarkRunner
-            from qratum_chess.benchmarks.kaggle_integration import KaggleLeaderboardLoader
+            from qratum_chess.benchmarks.benchmark_kaggle import \
+                KaggleBenchmarkRunner
+            from qratum_chess.benchmarks.kaggle_integration import \
+                KaggleLeaderboardLoader
 
             # Load Kaggle data
             loader = KaggleLeaderboardLoader()

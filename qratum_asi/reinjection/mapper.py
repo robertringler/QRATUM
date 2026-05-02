@@ -13,10 +13,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from qradle.merkle import MerkleChain
-from qratum_asi.reinjection.types import (
-    DiscoveryDomain,
-    ReinjectionCandidate,
-)
+from qratum_asi.reinjection.types import DiscoveryDomain, ReinjectionCandidate
 
 
 @dataclass

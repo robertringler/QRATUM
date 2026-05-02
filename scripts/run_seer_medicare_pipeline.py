@@ -44,25 +44,21 @@ repo_root = Path(__file__).parent.parent
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
-from qratum.oncology.registry.seer_medicare.cohort import CohortBuilder, CohortDefinition
+from qratum.oncology.registry.seer_medicare.cohort import (CohortBuilder,
+                                                           CohortDefinition)
 from qratum.oncology.registry.seer_medicare.features import FeatureEngineer
-from qratum.oncology.registry.seer_medicare.io import (
-    RunArtifacts,
-    create_dataset_manifest,
-    create_output_directory,
-)
+from qratum.oncology.registry.seer_medicare.io import (RunArtifacts,
+                                                       create_dataset_manifest,
+                                                       create_output_directory)
 from qratum.oncology.registry.seer_medicare.linkages import PatientLinker
-from qratum.oncology.registry.seer_medicare.medicare_claims import parse_claims_directory
+from qratum.oncology.registry.seer_medicare.medicare_claims import \
+    parse_claims_directory
 from qratum.oncology.registry.seer_medicare.privacy import (
-    DUAComplianceChecker,
-    PrivacyConfig,
-    SafeLogger,
-)
-from qratum.oncology.registry.seer_medicare.seer_registry import SEERRegistryParser
+    DUAComplianceChecker, PrivacyConfig, SafeLogger)
+from qratum.oncology.registry.seer_medicare.seer_registry import \
+    SEERRegistryParser
 from qratum.oncology.registry.seer_medicare.timelines import (
-    CodeMappingLibrary,
-    TreatmentTimelineBuilder,
-)
+    CodeMappingLibrary, TreatmentTimelineBuilder)
 
 # Configure logging
 logging.basicConfig(
@@ -454,11 +450,10 @@ def run_qratum_analysis(
         Dictionary of QRATUM results
     """
     try:
-        from qratum.oncology.causal_graph import CausalOncologyGraph, NodeType, OncogenicNode
+        from qratum.oncology.causal_graph import (CausalOncologyGraph,
+                                                  NodeType, OncogenicNode)
         from qratum.oncology.intervention_search import (
-            XENONInterventionSearch,
-            create_example_drug_library,
-        )
+            XENONInterventionSearch, create_example_drug_library)
     except ImportError:
         return {
             "status": "error",

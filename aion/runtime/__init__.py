@@ -15,7 +15,8 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
-from aion.optimization.scheduler import AdaptiveScheduler, Device, DeviceKind, ScheduleResult, Task
+from aion.optimization.scheduler import (AdaptiveScheduler, Device, DeviceKind,
+                                         ScheduleResult, Task)
 from aion.proof.verifier import ProofTerm, ProofVerifier
 from aion.sir.hypergraph import HyperGraph
 from aion.sir.vertices import HardwareAffinity, Vertex, VertexType

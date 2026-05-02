@@ -28,10 +28,9 @@ from __future__ import annotations
 import json
 import os
 from dataclasses import dataclass
-from typing import Any, Callable, Mapping
+from typing import Any, Mapping
 
-from qagents.reality_interface import ACTION_TYPES, ActionType, Proposer, StaticProposer
-
+from qagents.reality_interface import ACTION_TYPES, ActionType, Proposer
 
 # ---------------------------------------------------------------------------
 # Deterministic baseline

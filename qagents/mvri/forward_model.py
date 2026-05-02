@@ -12,12 +12,8 @@ from __future__ import annotations
 import numpy as np
 
 from qagents.mvri.action_space import Action
-from qagents.mvri.state import (
-    ForwardModelError,
-    State,
-    parse_edge,
-    replace_state,
-)
+from qagents.mvri.state import (ForwardModelError, State, parse_edge,
+                                replace_state)
 
 
 def _clip(value: float, lo: float, hi: float) -> float:

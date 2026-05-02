@@ -29,26 +29,14 @@ CIIR Monograph Ch 20 (Programmable Physics).
 
 __version__ = "0.1.0"
 
-from quasim.ciir.swarm.memory import KnowledgeGraph, KNode, KEdge
-from quasim.ciir.swarm.physics_lang import (
-    PhysicsProgram,
-    StateDecl,
-    RuleDecl,
-    InteractionSpec,
-    MetaRule,
-)
-from quasim.ciir.swarm.orchestrator import Orchestrator, EvolutionResult
-from quasim.ciir.swarm.mppk import (
-    MPPKEngine,
-    MPPKGraph,
-    MPPKNode,
-    MPPKEdge,
-    MPPKRule,
-    UpdateOperator,
-    Trajectory,
-    GenerationResult,
-    MetaLearningReport,
-)
+from quasim.ciir.swarm.memory import KEdge, KNode, KnowledgeGraph
+from quasim.ciir.swarm.mppk import (GenerationResult, MetaLearningReport,
+                                    MPPKEdge, MPPKEngine, MPPKGraph, MPPKNode,
+                                    MPPKRule, Trajectory, UpdateOperator)
+from quasim.ciir.swarm.orchestrator import EvolutionResult, Orchestrator
+from quasim.ciir.swarm.physics_lang import (InteractionSpec, MetaRule,
+                                            PhysicsProgram, RuleDecl,
+                                            StateDecl)
 
 __all__ = [
     "KnowledgeGraph",

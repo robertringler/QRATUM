@@ -14,16 +14,13 @@ Features:
 from __future__ import annotations
 
 import json
-import sys
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-import numpy as np
-
 from .automata import BranchingSimulator, CellularAutomaton
-from .metrics import TemporalMetrics, TimingMeasurement
+from .metrics import TemporalMetrics
 from .verification import EventType, StateVerifier, VerificationChain
 
 
@@ -71,7 +68,7 @@ class ExperimentConfig:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "ExperimentConfig":
+    def from_dict(cls, data: dict[str, Any]) -> ExperimentConfig:
         """Create from dictionary."""
         return cls(**data)
 
@@ -172,7 +169,7 @@ class TemporalCompressionExperiment:
             ExperimentResult with all metrics and verification data
         """
         experiment_start = time.time()
-        self.log(f"Starting temporal compression experiment")
+        self.log("Starting temporal compression experiment")
         self.log(f"Configuration: Rule {self.config.system_rule}, "
                  f"Size {self.config.system_size}, "
                  f"Steps {self.config.simulated_steps}")
@@ -240,7 +237,7 @@ class TemporalCompressionExperiment:
             hypothesis_evaluation=hypothesis_eval,
         )
 
-        self.log(f"Experiment complete!")
+        self.log("Experiment complete!")
         self.log(f"Compression ratio: {result.compression_ratio:.2f}×")
         self.log(f"Total execution time: {result.execution_time:.2f}s")
 
@@ -480,7 +477,7 @@ class TemporalCompressionExperiment:
             "# Temporal Compression Experiment Report",
             "",
             f"**Generated:** {time.strftime('%Y-%m-%d %H:%M:%S')}",
-            f"**Platform:** QRATUM Temporal Compression Framework v1.0",
+            "**Platform:** QRATUM Temporal Compression Framework v1.0",
             "",
             "## Executive Summary",
             "",

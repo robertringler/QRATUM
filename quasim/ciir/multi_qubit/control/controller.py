@@ -26,12 +26,11 @@ where H_0 is the drift Hamiltonian.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import List, Optional, Sequence, Tuple
+from typing import List, Optional, Tuple
 
 import numpy as np
 from numpy.typing import NDArray
-from scipy.linalg import solve_continuous_are, solve_discrete_are
+from scipy.linalg import solve_continuous_are
 
 CMatrix = NDArray[np.complex128]
 RMatrix = NDArray[np.float64]

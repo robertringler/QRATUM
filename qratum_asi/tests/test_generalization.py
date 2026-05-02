@@ -8,29 +8,19 @@ import pytest
 
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
-from qratum_asi.generalization.domain_registry import (
-    ExtendedDomainRegistry,
-)
-from qratum_asi.generalization.hypothesis_generator import (
-    HypothesisGenerator,
-)
-from qratum_asi.generalization.reasoning_engine import (
-    GeneralReasoningEngine,
-    ReasoningContext,
-    ReasoningMode,
-)
-from qratum_asi.generalization.state_space import (
-    AHTCEncoder,
-    UniversalStateSpace,
-)
-from qratum_asi.generalization.types import (
-    CognitiveDomain,
-    CrossDomainHypothesis,
-    DomainCapability,
-    GenerationConstraints,
-    HypothesisType,
-    SynthesisSafetyLevel,
-)
+from qratum_asi.generalization.domain_registry import ExtendedDomainRegistry
+from qratum_asi.generalization.hypothesis_generator import HypothesisGenerator
+from qratum_asi.generalization.reasoning_engine import (GeneralReasoningEngine,
+                                                        ReasoningContext,
+                                                        ReasoningMode)
+from qratum_asi.generalization.state_space import (AHTCEncoder,
+                                                   UniversalStateSpace)
+from qratum_asi.generalization.types import (CognitiveDomain,
+                                             CrossDomainHypothesis,
+                                             DomainCapability,
+                                             GenerationConstraints,
+                                             HypothesisType,
+                                             SynthesisSafetyLevel)
 
 
 class TestCognitiveDomain:

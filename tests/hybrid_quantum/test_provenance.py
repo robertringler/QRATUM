@@ -5,21 +5,17 @@ import json
 import pytest
 
 try:
-    from quasim.hybrid_quantum.provenance import (
-        ProvenanceRecord,
-        ProvenanceStatus,
-        QuantumProvenanceWrapper,
-    )
+    from quasim.hybrid_quantum.provenance import (ProvenanceRecord,
+                                                  ProvenanceStatus,
+                                                  QuantumProvenanceWrapper)
 
     PROVENANCE_AVAILABLE = True
 except ImportError:
     PROVENANCE_AVAILABLE = False
 
 try:
-    from quasim.hybrid_quantum.backends import (
-        HybridQuantumConfig,
-        IBMHybridBackend,
-    )
+    from quasim.hybrid_quantum.backends import (HybridQuantumConfig,
+                                                IBMHybridBackend)
 
     BACKENDS_AVAILABLE = True
 except ImportError:

@@ -37,12 +37,11 @@ Security Properties:
 - Deterministic: Reproducible builds and verification
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple, Any
-from enum import Enum
 import hashlib
 import time
-from pathlib import Path
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Dict, List, Optional, Tuple
 
 
 class IsolationLevel(Enum):
@@ -115,7 +114,7 @@ class SecurePackage:
     merkle_root: Optional[str] = None
     provenance: Dict[str, Any] = field(default_factory=dict)
     metadata: Dict[str, str] = field(default_factory=dict)
-    
+
     def compute_package_hash(self) -> str:
         """
         Compute hash of package metadata
@@ -128,7 +127,7 @@ class SecurePackage:
             f"{self.build_timestamp_ns}:{self.content_hash}:{self.signer_id}"
         )
         return hashlib.sha256(data.encode('utf-8')).hexdigest()
-    
+
     def verify_signature(self) -> bool:
         """
         Verify package signature
@@ -141,7 +140,7 @@ class SecurePackage:
         expected_hash = self.compute_package_hash()
         signature_data = f"{expected_hash}:{self.signature}"
         return len(self.signature) > 0
-    
+
     def verify_integrity(self) -> bool:
         """
         Verify package integrity
@@ -152,14 +151,14 @@ class SecurePackage:
         # Verify signature
         if not self.verify_signature():
             return False
-        
+
         # Verify Merkle root if present
         if self.merkle_root:
             # In real implementation: verify Merkle tree
             return len(self.merkle_root) == 64  # SHA-256 hex length
-        
+
         return True
-    
+
     def get_provenance_chain(self) -> List[str]:
         """
         Get complete provenance chain
@@ -168,22 +167,22 @@ class SecurePackage:
             List of provenance entries
         """
         chain = []
-        
+
         # Build system
         if 'build_system' in self.provenance:
             chain.append(f"Built on: {self.provenance['build_system']}")
-        
+
         # Build inputs
         if 'source_hash' in self.provenance:
             chain.append(f"Source: {self.provenance['source_hash']}")
-        
+
         # Compiler version
         if 'compiler_version' in self.provenance:
             chain.append(f"Compiler: {self.provenance['compiler_version']}")
-        
+
         # Signer
         chain.append(f"Signed by: {self.signer_id}")
-        
+
         return chain
 
 
@@ -212,16 +211,16 @@ class TransferManifest:
     created_ns: int = 0
     authorized_by: str = ""
     chain_of_custody: List[Tuple[str, int, str]] = field(default_factory=list)
-    
+
     def __post_init__(self):
         """Initialize manifest"""
         if self.created_ns == 0:
             object.__setattr__(self, 'created_ns', int(time.time() * 1e9))
-    
+
     def add_package(self, package: SecurePackage) -> None:
         """Add package to manifest"""
         self.packages.append(package)
-    
+
     def add_custody_entry(self, handler: str, notes: str) -> None:
         """
         Add chain of custody entry
@@ -232,7 +231,7 @@ class TransferManifest:
         """
         timestamp_ns = int(time.time() * 1e9)
         self.chain_of_custody.append((handler, timestamp_ns, notes))
-    
+
     def compute_manifest_hash(self) -> str:
         """
         Compute hash of manifest
@@ -246,7 +245,7 @@ class TransferManifest:
             f"{self.source_system}:{self.dest_system}:{package_hashes}"
         )
         return hashlib.sha256(data.encode('utf-8')).hexdigest()
-    
+
     def verify_all_packages(self) -> Dict[str, bool]:
         """
         Verify all packages in manifest
@@ -258,7 +257,7 @@ class TransferManifest:
         for package in self.packages:
             results[package.package_id] = package.verify_integrity()
         return results
-    
+
     def get_total_packages(self) -> int:
         """Get total number of packages"""
         return len(self.packages)
@@ -287,7 +286,7 @@ class AirGapDeployment:
     status: DeploymentStatus = DeploymentStatus.PENDING
     verification_results: Dict[str, bool] = field(default_factory=dict)
     rollback_plan: Optional[Dict[str, Any]] = None
-    
+
     def verify_packages(self) -> bool:
         """
         Verify all packages before installation
@@ -296,14 +295,14 @@ class AirGapDeployment:
             True if all packages verified successfully
         """
         results = self.manifest.verify_all_packages()
-        
+
         if not all(results.values()):
             self.status = DeploymentStatus.FAILED
             return False
-        
+
         self.status = DeploymentStatus.VERIFIED
         return True
-    
+
     def install_on_node(self, node_id: str) -> bool:
         """
         Install packages on target node
@@ -316,26 +315,26 @@ class AirGapDeployment:
         """
         if self.status != DeploymentStatus.VERIFIED:
             return False
-        
+
         if node_id not in self.target_nodes:
             return False
-        
+
         # Simulate installation
         self.status = DeploymentStatus.INSTALLING
-        
+
         # In real implementation: perform actual installation
         # For now, mark as successful
         self.verification_results[node_id] = True
-        
+
         # Check if all nodes complete
         if len(self.verification_results) == len(self.target_nodes):
             if all(self.verification_results.values()):
                 self.status = DeploymentStatus.INSTALLED
             else:
                 self.status = DeploymentStatus.FAILED
-        
+
         return True
-    
+
     def rollback(self) -> bool:
         """
         Rollback deployment
@@ -345,11 +344,11 @@ class AirGapDeployment:
         """
         if not self.rollback_plan:
             return False
-        
+
         # Execute rollback
         self.status = DeploymentStatus.ROLLED_BACK
         return True
-    
+
     def get_deployment_report(self) -> Dict[str, Any]:
         """
         Get deployment report
@@ -397,7 +396,7 @@ class SovereignDeployment:
     compliance_requirements: List[str] = field(default_factory=list)
     clearance_levels: List[str] = field(default_factory=list)
     air_gap_deployment: Optional[AirGapDeployment] = None
-    
+
     def verify_sovereignty_compliance(self) -> Dict[str, bool]:
         """
         Verify sovereignty compliance
@@ -406,19 +405,19 @@ class SovereignDeployment:
             Map of requirement -> compliance_status
         """
         compliance = {}
-        
+
         # Check data residency
         compliance['data_residency'] = bool(self.data_residency)
-        
+
         # Check classification
         compliance['classification'] = bool(self.classification_level)
-        
+
         # Check compliance requirements
         for requirement in self.compliance_requirements:
             compliance[requirement] = True  # Simplified
-        
+
         return compliance
-    
+
     def get_sovereignty_report(self) -> Dict[str, Any]:
         """
         Get sovereignty compliance report
@@ -427,11 +426,11 @@ class SovereignDeployment:
             Dictionary with compliance details
         """
         compliance = self.verify_sovereignty_compliance()
-        
+
         deployment_report = {}
         if self.air_gap_deployment:
             deployment_report = self.air_gap_deployment.get_deployment_report()
-        
+
         return {
             'deployment_id': self.deployment_id,
             'nation': self.nation,
@@ -448,7 +447,7 @@ class AirGapDeploymentBuilder:
     """
     Builder for air-gap deployment configurations
     """
-    
+
     @staticmethod
     def create_standard_deployment(
         deployment_id: str,
@@ -475,10 +474,10 @@ class AirGapDeploymentBuilder:
             source_system="build_system",
             dest_system="air_gap_cluster",
         )
-        
+
         for package in packages:
             manifest.add_package(package)
-        
+
         # Create deployment
         deployment = AirGapDeployment(
             deployment_id=deployment_id,
@@ -487,9 +486,9 @@ class AirGapDeploymentBuilder:
             manifest=manifest,
             target_nodes=target_nodes,
         )
-        
+
         return deployment
-    
+
     @staticmethod
     def create_sovereign_deployment(
         deployment_id: str,
@@ -518,7 +517,7 @@ class AirGapDeploymentBuilder:
             target_nodes=target_nodes,
             transfer_method=TransferMethod.SECURE_COURIER,
         )
-        
+
         # Create sovereign deployment
         sovereign = SovereignDeployment(
             deployment_id=deployment_id,
@@ -534,9 +533,9 @@ class AirGapDeploymentBuilder:
             clearance_levels=["top_secret", "sci"],
             air_gap_deployment=air_gap,
         )
-        
+
         return sovereign
-    
+
     @staticmethod
     def create_package(
         package_id: str,
@@ -570,12 +569,12 @@ class AirGapDeploymentBuilder:
             signer_id=signer_id,
             provenance=provenance if provenance else {},
         )
-        
+
         # Compute signature
         package_hash = package.compute_package_hash()
         # In real implementation: sign with SPHINCS+
         package.signature = hashlib.sha256(f"{package_hash}:{signer_id}".encode()).hexdigest()
-        
+
         return package
 
 
@@ -583,7 +582,7 @@ class DeploymentVerifier:
     """
     Verifies air-gap deployments
     """
-    
+
     @staticmethod
     def verify_deployment(deployment: AirGapDeployment) -> Dict[str, Any]:
         """
@@ -600,21 +599,21 @@ class DeploymentVerifier:
             'checks': {},
             'passed': True,
         }
-        
+
         # Verify packages
         package_results = deployment.manifest.verify_all_packages()
         report['checks']['packages'] = all(package_results.values())
         report['package_details'] = package_results
-        
+
         # Verify manifest integrity
         manifest_hash = deployment.manifest.compute_manifest_hash()
         report['checks']['manifest'] = len(manifest_hash) == 64
         report['manifest_hash'] = manifest_hash
-        
+
         # Verify chain of custody
         report['checks']['chain_of_custody'] = len(deployment.manifest.chain_of_custody) > 0
-        
+
         # Overall verification
         report['passed'] = all(report['checks'].values())
-        
+
         return report

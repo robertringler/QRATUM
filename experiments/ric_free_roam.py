@@ -44,21 +44,19 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
-import os
 import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 # Make repo importable when run as a script
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from qagents.reality_interface_v2 import RICv2Controller, RICv2History  # noqa: E402
 from qagents.llm_backends import available_backends  # noqa: E402
-
+from qagents.reality_interface_v2 import (RICv2Controller,  # noqa: E402
+                                          RICv2History)
 
 # ---------------------------------------------------------------------------
 # Catalog: questions (intents) and task regimes (world states)

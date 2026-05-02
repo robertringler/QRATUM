@@ -20,17 +20,11 @@ CRS does NOT evaluate constraints directly — it delegates to CIIR.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Any, Callable, FrozenSet, Mapping, Optional
+from typing import Any, Callable, FrozenSet, Optional
 
-from qagents.framework.ciir import (
-    Constraint,
-    ConstraintAlgebra,
-    State,
-    accessible_state_space,
-)
-
+from qagents.framework.ciir import Constraint, ConstraintAlgebra, State
 
 # ---------------------------------------------------------------------------
 # Action space A

@@ -3,12 +3,10 @@
 import pytest
 
 from qratum_asi.safety.elicitation import ResponseType, SafetyElicitation
-from qratum_asi.safety.multi_model_orchestrator import (
-    MultiModelOrchestrator,
-    QueryResult,
-    RefusalModelAdapter,
-    SimulatedModelAdapter,
-)
+from qratum_asi.safety.multi_model_orchestrator import (MultiModelOrchestrator,
+                                                        QueryResult,
+                                                        RefusalModelAdapter,
+                                                        SimulatedModelAdapter)
 
 
 class TestBaseModelAdapter:
