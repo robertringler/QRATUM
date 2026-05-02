@@ -6,7 +6,6 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict
 
 
 @dataclass
@@ -21,6 +20,7 @@ class ScheduleParams:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "block_size": self.block_size,
             "thread_count": self.thread_count,
@@ -32,6 +32,7 @@ class ScheduleParams:
     @classmethod
     def from_dict(cls, data: dict) -> ScheduleParams:
         """Create from dictionary."""
+
         return cls(**data)
 
 
@@ -46,10 +47,11 @@ class ScheduleMetadata:
     loss_value: float = 0.0
     optimization_steps: int = 0
     timestamp: float = field(default_factory=time.time)
-    benchmark_trace: Dict[str, float] = field(default_factory=dict)
+    benchmark_trace: dict[str, float] = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "schedule_id": self.schedule_id,
             "params": self.params.to_dict(),
@@ -67,13 +69,15 @@ class DifferentiableScheduler:
 
     def __init__(self, learning_rate: float = 0.01):
         self.learning_rate = learning_rate
-        self.schedules: Dict[str, ScheduleMetadata] = {}
+        self.schedules: dict[str, ScheduleMetadata] = {}
 
     def compute_latency_loss(self, params: ScheduleParams) -> float:
         """
+
         Compute latency loss function (differentiable approximation).
         Lower is better.
         """
+
         # Simplified model: latency depends on block size and thread count
         # Real implementation would use actual hardware measurements
 
@@ -103,9 +107,11 @@ class DifferentiableScheduler:
 
     def compute_energy_loss(self, params: ScheduleParams) -> float:
         """
+
         Compute energy loss function (differentiable approximation).
         Lower is better.
         """
+
         # Energy increases with thread count and register pressure
         norm_threads = params.thread_count / 128.0
         norm_registers = params.register_pressure / 32.0
@@ -118,8 +124,9 @@ class DifferentiableScheduler:
 
         return energy_loss
 
-    def compute_gradients(self, params: ScheduleParams, epsilon: float = 1e-5) -> Dict[str, float]:
+    def compute_gradients(self, params: ScheduleParams, epsilon: float = 1e-5) -> dict[str, float]:
         """
+
         Compute numerical gradients for all parameters.
         Uses finite differences.
         """
@@ -162,11 +169,13 @@ class DifferentiableScheduler:
         self, schedule_id: str, initial_params: ScheduleParams | None = None, steps: int = 100
     ) -> ScheduleMetadata:
         """
+
         Optimize schedule parameters using gradient descent.
         """
+
         params = initial_params or ScheduleParams()
 
-        for step in range(steps):
+        for _step in range(steps):
             # Compute gradients
             gradients = self.compute_gradients(params)
 
@@ -210,6 +219,7 @@ class DifferentiableScheduler:
 
     def save_schedule(self, schedule_id: str, output_dir: str = "schedules") -> Path:
         """Save optimized schedule to disk."""
+
         if schedule_id not in self.schedules:
             raise ValueError(f"No schedule found for {schedule_id}")
 

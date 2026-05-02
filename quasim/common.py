@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuASIM Common Utilities for Vertical Demos
 
 Shared functions for profile-aware evolutionary optimization across
@@ -20,6 +21,7 @@ matplotlib.use("Agg")  # Non-interactive backend
 
 def load_profile(profile_path: str) -> dict:
     """Load vertical profile from JSON."""
+
     with open(profile_path) as f:
         return json.load(f)
 
@@ -33,6 +35,7 @@ def evolutionary_optimization(
     seed: int = 42,
 ) -> tuple:
     """
+
     Generic evolutionary algorithm to optimize alpha parameter.
 
     Args:
@@ -46,6 +49,7 @@ def evolutionary_optimization(
     Returns:
         (best_alpha, best_metrics, best_fitness, optimization_history)
     """
+
     np.random.seed(seed)
 
     alpha_min, alpha_max = profile["alpha_bounds"]
@@ -120,6 +124,7 @@ def create_visualization_generic(
     metrics: dict, profile: dict, x_key: str, y_keys: list, labels: list, titles: list
 ) -> str:
     """
+
     Create generic visualization and return as base64-encoded PNG.
 
     Args:
@@ -133,6 +138,7 @@ def create_visualization_generic(
     Returns:
         Base64-encoded PNG string
     """
+
     n_plots = len(y_keys)
     fig, axes = plt.subplots(n_plots, 1, figsize=(10, 4 * n_plots))
 
@@ -175,6 +181,7 @@ def create_visualization_generic(
 
 def calculate_fidelity(metrics: dict, targets: dict, metric_keys: list) -> float:
     """
+
     Calculate overall fidelity as 1 - mean relative error.
 
     Args:
@@ -185,6 +192,7 @@ def calculate_fidelity(metrics: dict, targets: dict, metric_keys: list) -> float
     Returns:
         Fidelity score (0-1, higher is better)
     """
+
     errors = []
     for key in metric_keys:
         actual = metrics.get(key, 0)
@@ -212,6 +220,7 @@ def generate_report(
     output_file: str,
 ) -> None:
     """
+
     Generate standardized JSON report for vertical demo.
 
     Args:
@@ -226,6 +235,7 @@ def generate_report(
         compliance_tags: List of compliance standards
         output_file: Output filename
     """
+
     report = {
         "profile": profile["name"],
         "description": profile["description"],

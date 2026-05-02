@@ -25,6 +25,7 @@ def results_to_dict_list(results: list[BenchmarkResult]) -> list[dict[str, Any]]
     list[dict]
         List of result dictionaries
     """
+
     return [
         {
             "task": r.task,
@@ -54,6 +55,7 @@ def save_results_csv(results: list[BenchmarkResult], output_path: Path) -> None:
     output_path : Path
         Output CSV file path
     """
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     dict_list = results_to_dict_list(results)
@@ -77,6 +79,7 @@ def save_results_json(results: list[BenchmarkResult], output_path: Path) -> None
     output_path : Path
         Output JSON file path
     """
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     dict_list = results_to_dict_list(results)
@@ -98,6 +101,7 @@ def generate_summary_table(results: list[BenchmarkResult]) -> dict[str, dict[str
     dict
         Summary statistics
     """
+
     # Group by (task, model)
     groups = {}
 
@@ -155,6 +159,7 @@ def generate_markdown_report(
     title : str
         Report title
     """
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     summary = generate_summary_table(results)
@@ -172,7 +177,7 @@ def generate_markdown_report(
     ]
 
     # Group by task
-    tasks = sorted(set(s["task"] for s in summary.values()))
+    tasks = sorted({s["task"] for s in summary.values()})
 
     for task in tasks:
         lines.append(f"### {task}")
@@ -240,6 +245,7 @@ def generate_ascii_chart(values: list[float], labels: list[str], max_width: int 
     str
         ASCII chart
     """
+
     if not values:
         return ""
 

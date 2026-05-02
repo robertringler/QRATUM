@@ -1,8 +1,8 @@
 """Deterministic order book simulation."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Tuple
 
 
 @dataclass
@@ -28,8 +28,8 @@ class OrderBook:
     """Price-time priority deterministic order book."""
 
     def __init__(self) -> None:
-        self.bids: List[Order] = []
-        self.asks: List[Order] = []
+        self.bids: list[Order] = []
+        self.asks: list[Order] = []
         self._next_id = 1
 
     def _sort_books(self) -> None:
@@ -37,7 +37,9 @@ class OrderBook:
         self.asks.sort(key=lambda o: (o.price, o.order_id))
 
     def submit(self, agent_id: str, side: str, price: float, quantity: float) -> Order:
-        order = Order(order_id=self._next_id, agent_id=agent_id, side=side, price=price, quantity=quantity)
+        order = Order(
+            order_id=self._next_id, agent_id=agent_id, side=side, price=price, quantity=quantity
+        )
         self._next_id += 1
         if side == "buy":
             self.bids.append(order)
@@ -46,13 +48,13 @@ class OrderBook:
         self._sort_books()
         return order
 
-    def top_of_book(self) -> Tuple[Order | None, Order | None]:
+    def top_of_book(self) -> tuple[Order | None, Order | None]:
         bid = self.bids[0] if self.bids else None
         ask = self.asks[0] if self.asks else None
         return bid, ask
 
-    def match(self) -> List[Trade]:
-        trades: List[Trade] = []
+    def match(self) -> list[Trade]:
+        trades: list[Trade] = []
         if self.bids and self.asks and self.bids[0].price >= self.asks[0].price:
             bid = self.bids[0]
             ask = self.asks[0]
@@ -77,7 +79,7 @@ class OrderBook:
             self._sort_books()
         return trades
 
-    def depth(self) -> Dict[str, float]:
+    def depth(self) -> dict[str, float]:
         return {
             "bid_qty": sum(order.quantity for order in self.bids),
             "ask_qty": sum(order.quantity for order in self.asks),

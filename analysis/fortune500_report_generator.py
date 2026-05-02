@@ -29,12 +29,14 @@ class Fortune500ReportGenerator:
             json_summary_path: Path to the JSON summary file
             matrix_csv_path: Path to the data matrix CSV file
         """
+
         with open(json_summary_path) as f:
             self.data = json.load(f)
         self.matrix_path = matrix_csv_path
 
     def generate_executive_summary(self) -> str:
         """Generate executive summary section."""
+
         stats = self.data["overall_statistics"]
         top_20_count = len(self.data["top_20_companies"])
         sector_count = self.data["metadata"]["sectors_analyzed"]
@@ -93,10 +95,12 @@ specific companies, sectors, and integration pathways that maximize adoption pro
 commercial success.
 
 """
+
         return content
 
     def generate_methodology(self) -> str:
         """Generate methodology section."""
+
         content = """# Methodology
 
 ## Data Ingestion and Preparation
@@ -157,7 +161,7 @@ programs through:
 ### R&D Investment Estimation
 Research and development spending was estimated using validated industry-specific ratios:
 - Pharmaceuticals/Biotechnology: 18-20% of revenue
-- Technology/Semiconductors: 15-16% of revenue  
+- Technology/Semiconductors: 15-16% of revenue
 - Aerospace & Defense: 4% of revenue
 - Automotive/Manufacturing: 3-5% of revenue
 - Default sectors: 2% of revenue
@@ -191,7 +195,7 @@ Measures the company's existing computational and quantum-adjacent infrastructur
 
 **Scoring Logic**:
 ```
-T = 0.30 * HPC_present + 0.25 * AI_ML_present + 
+T = 0.30 * HPC_present + 0.25 * AI_ML_present +
     Cloud_maturity_score + 0.20 * Quantum_present
 ```
 
@@ -205,7 +209,7 @@ Assesses how readily QuASIM can integrate with existing technology stacks:
 
 **Scoring Logic**:
 ```
-I = 0.35 * Digital_twin + 0.30 * Predictive_analytics + 
+I = 0.35 * Digital_twin + 0.30 * Predictive_analytics +
     0.25 * Cloud_compatibility + 0.10 * Standardization
 ```
 
@@ -214,7 +218,7 @@ Evaluates financial capacity and incentives for QuASIM adoption:
 
 - Revenue Scale (30% weight): Company size and resource availability
   - >$100B revenue: 0.30
-  - $50B-$100B: 0.25  
+  - $50B-$100B: 0.25
   - $20B-$50B: 0.20
   - <$20B: 0.10
 
@@ -283,10 +287,12 @@ This white paper follows APA 7th edition formatting guidelines with:
 - Reference list citing all data sources and theoretical frameworks
 
 """
+
         return content
 
     def generate_sectoral_analysis(self) -> str:
         """Generate detailed sectoral analysis section."""
+
         sectors = self.data["sector_summaries"]
 
         # Sort sectors by mean QII
@@ -303,20 +309,23 @@ to lowest integration readiness.
         for sector_name, sector_data in sorted_sectors:
             content += f"""## {sector_name}
 
-**Integration Potential**: {sector_data["integration_potential"]}  
-**Companies Analyzed**: {sector_data["company_count"]}  
-**Mean QII**: {sector_data["mean_qii"]:.4f}  
-**Median QII**: {sector_data["median_qii"]:.4f}  
+**Integration Potential**: {sector_data["integration_potential"]}
+**Companies Analyzed**: {sector_data["company_count"]}
+**Mean QII**: {sector_data["mean_qii"]:.4f}
+**Median QII**: {sector_data["median_qii"]:.4f}
 **Standard Deviation**: {sector_data["std_qii"]:.4f}
 
 ### Top Companies in Sector
 """
+
             for i, company in enumerate(sector_data["top_companies"], 1):
                 content += f"{i}. {company}\n"
 
             content += """
+
 ### Key Challenges
 """
+
             if sector_data["key_challenges"]:
                 for challenge in sector_data["key_challenges"]:
                     content += f"- {challenge}\n"
@@ -324,11 +333,13 @@ to lowest integration readiness.
                 content += "- None identified (sector shows high readiness)\n"
 
             content += f"""
+
 ### Recommended Approach
 {sector_data["recommended_approach"]}
 
 ### Sector-Specific Insights
 """
+
             # Add sector-specific analysis
             if sector_data["mean_qii"] >= 0.65:
                 content += f"""The {sector_name} sector demonstrates exceptional readiness for QuASIM integration,
@@ -338,6 +349,7 @@ and strategic alignment with quantum-accelerated simulation workflows. Recommend
 includes direct enterprise engagement, customized pilot programs, and co-development of
 industry-specific QuASIM templates.
 """
+
             elif sector_data["mean_qii"] >= 0.50:
                 content += f"""The {sector_name} sector presents medium-high integration potential with a mean QII
 of {sector_data["mean_qii"]:.3f}. While some companies in this sector show strong readiness,
@@ -346,6 +358,7 @@ computing maturity. A tiered approach is recommended: target high-QII companies 
 engagement while developing educational programs and proof-of-concept demonstrations for
 companies requiring additional preparation.
 """
+
             elif sector_data["mean_qii"] >= 0.35:
                 content += f"""The {sector_name} sector shows moderate integration readiness with a mean QII of
 {sector_data["mean_qii"]:.3f}. Adoption barriers likely include limited HPC infrastructure,
@@ -353,6 +366,7 @@ legacy technology stacks, and lower R&D investment intensity. Recommended approa
 partnership models, phased rollout strategies, and clear ROI demonstrations to justify
 capital investment in quantum-accelerated capabilities.
 """
+
             else:
                 content += f"""The {sector_name} sector currently presents lower integration readiness with a mean
 QII of {sector_data["mean_qii"]:.3f}. Companies in this sector may lack the technical
@@ -368,6 +382,7 @@ value. Timeline for this sector likely extends to 2028-2030 and beyond.
 
     def generate_top_companies_analysis(self) -> str:
         """Generate analysis of top 20 companies."""
+
         top_20 = self.data["top_20_companies"]
 
         content = """# Top 20 High-Potential Companies
@@ -380,11 +395,13 @@ scores, representing immediate opportunities for market entry and pilot program 
 | Rank | Company | Sector | QII Score | Adoption Timeline |
 |------|---------|--------|-----------|-------------------|
 """
+
         for company in top_20:
             content += f"| {company['rank']} | {company['name']} | {company['sector']} | "
             content += f"{company['qii_score']:.4f} | {company['adoption_timeline']} |\n"
 
         content += """
+
 ## Detailed Company Profiles
 
 """
@@ -392,8 +409,8 @@ scores, representing immediate opportunities for market entry and pilot program 
         for i, company in enumerate(top_20, 1):
             content += f"""### {i}. {company["name"]} (Rank #{company["rank"]})
 
-**Sector**: {company["sector"]}  
-**QII Score**: {company["qii_score"]:.4f}  
+**Sector**: {company["sector"]}
+**QII Score**: {company["qii_score"]:.4f}
 **Projected Adoption Timeline**: {company["adoption_timeline"]}
 
 **Integration Readiness**: This company demonstrates exceptional quantum computing readiness,
@@ -420,6 +437,7 @@ computing backends.
 
     def generate_cross_industry_trends(self) -> str:
         """Generate cross-industry trends section."""
+
         stats = self.data["overall_statistics"]
         corr = self.data["correlation_analysis"]
 
@@ -451,7 +469,7 @@ quantum-accelerated workflows.
 
 **Correlation Coefficient**: r = {corr["correlation_rnd_qii"]:.4f}
 
-Statistical analysis reveals a {self._interpret_correlation(corr["correlation_rnd_qii"])} 
+Statistical analysis reveals a {self._interpret_correlation(corr["correlation_rnd_qii"])}
 correlation between R&D spending as a percentage of revenue and QuASIM Integration Index scores.
 
 **Interpretation**: Companies that invest heavily in research and development demonstrate
@@ -591,10 +609,12 @@ Companies scoring high on these factors demonstrate 3-5x higher QII scores, vali
 importance in driving adoption.
 
 """
+
         return content
 
     def _interpret_correlation(self, r: float) -> str:
         """Interpret correlation coefficient."""
+
         abs_r = abs(r)
         if abs_r >= 0.70:
             strength = "strong"
@@ -610,6 +630,7 @@ importance in driving adoption.
 
     def generate_adoption_forecast(self) -> str:
         """Generate adoption forecast and market sizing section."""
+
         content = """# Adoption Forecasts and Market Sizing (2025-2030)
 
 ## Market Opportunity Analysis
@@ -771,10 +792,12 @@ To achieve projected penetration rates, QuASIM must differentiate on:
 **Financial Services**: Emphasize regulatory compliance, security, portfolio optimization ROI
 
 """
+
         return content
 
     def generate_integration_pathways(self) -> str:
         """Generate detailed integration pathways section."""
+
         content = """# Detailed Integration Pathways
 
 This section provides technical specifications for QuASIM integration across different
@@ -1025,10 +1048,12 @@ for scalability, resilience, and DevOps integration.
 - Establish support and escalation procedures
 
 """
+
         return content
 
     def generate_appendix(self) -> str:
         """Generate appendix with data references."""
+
         content = f"""# Appendix
 
 ## A. Data Matrix Reference
@@ -1036,8 +1061,8 @@ for scalability, resilience, and DevOps integration.
 The complete 500×15 data matrix containing all companies, QII scores, and component
 analyses is available in:
 
-**File**: `{self.matrix_path.name}`  
-**Location**: `{self.matrix_path.parent}/`  
+**File**: `{self.matrix_path.name}`
+**Location**: `{self.matrix_path.parent}/`
 **Format**: CSV (UTF-8 encoding)
 
 ### Matrix Structure
@@ -1081,8 +1106,8 @@ df <- read.csv("{self.matrix_path}")
 
 Comprehensive analysis results are available in structured JSON format:
 
-**File**: `fortune500_quasim_analysis.json`  
-**Location**: `{self.matrix_path.parent}/`  
+**File**: `fortune500_quasim_analysis.json`
+**Location**: `{self.matrix_path.parent}/`
 **Format**: JSON (UTF-8 encoding)
 
 ### JSON Structure
@@ -1103,20 +1128,20 @@ Telecommunications, Aerospace & Defense, and others.
 
 ## E. QII Component Definitions
 
-**Technical Feasibility (T)**: Measures existing computational and quantum infrastructure.  
-**Integration Compatibility (I)**: Assesses technology stack readiness.  
-**Economic Leverage (E)**: Evaluates financial capacity and ROI potential.  
+**Technical Feasibility (T)**: Measures existing computational and quantum infrastructure.
+**Integration Compatibility (I)**: Assesses technology stack readiness.
+**Economic Leverage (E)**: Evaluates financial capacity and ROI potential.
 **Strategic Value (S)**: Quantifies strategic importance of quantum computing.
 
 ## F. Glossary
 
-**QII**: QuASIM Integration Index - composite metric (0-1) measuring quantum readiness  
-**QuASIM**: Quantum-Accelerated Simulation Infrastructure & Management platform  
-**HPC**: High-Performance Computing - supercomputing infrastructure  
-**API**: Application Programming Interface - software interface  
-**SDK**: Software Development Kit - development tools  
-**ML**: Machine Learning - artificial intelligence  
-**R&D**: Research & Development  
+**QII**: QuASIM Integration Index - composite metric (0-1) measuring quantum readiness
+**QuASIM**: Quantum-Accelerated Simulation Infrastructure & Management platform
+**HPC**: High-Performance Computing - supercomputing infrastructure
+**API**: Application Programming Interface - software interface
+**SDK**: Software Development Kit - development tools
+**ML**: Machine Learning - artificial intelligence
+**R&D**: Research & Development
 
 ## G. Contact Information
 
@@ -1124,15 +1149,17 @@ For questions regarding this analysis: info@quasim.io
 
 ---
 
-**Document Version**: 1.0  
-**Publication Date**: 2025  
+**Document Version**: 1.0
+**Publication Date**: 2025
 **Classification**: Company Confidential - Fortune 500 Analysis
 
 """
+
         return content
 
     def generate_complete_report(self) -> str:
         """Generate the complete white paper."""
+
         sections = [
             self.generate_executive_summary(),
             self.generate_methodology(),
@@ -1148,13 +1175,14 @@ For questions regarding this analysis: info@quasim.io
         title = """# Fortune 500 QuASIM Integration Analysis
 ## Comprehensive Market Assessment and Strategic Entry Plan
 
-**Version**: 1.0  
-**Date**: 2025  
+**Version**: 1.0
+**Date**: 2025
 **Classification**: Company Confidential
 
 ---
 
 """
+
         return title + "\n\n".join(sections)
 
     def save_report(self, output_path: Path) -> None:
@@ -1163,6 +1191,7 @@ For questions regarding this analysis: info@quasim.io
         Args:
             output_path: Path where the report should be saved
         """
+
         report = self.generate_complete_report()
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(report)
@@ -1172,6 +1201,7 @@ For questions regarding this analysis: info@quasim.io
 
 def main():
     """Generate the Fortune 500 QuASIM Integration white paper."""
+
     # Assuming the analysis has already been run
     data_dir = Path(__file__).resolve().parents[1] / "data"
     reports_dir = Path(__file__).resolve().parents[1] / "reports"

@@ -7,14 +7,10 @@ import sys
 import click
 import numpy as np
 
-from quasim.qgh.demos import (
-    demo_av_fusion,
-    demo_distributed_monitoring,
-    demo_federated_consensus,
-    demo_portfolio_optimization,
-    demo_signal_processing,
-    demo_tensor_processing,
-)
+from quasim.qgh.demos import (demo_av_fusion, demo_distributed_monitoring,
+                              demo_federated_consensus,
+                              demo_portfolio_optimization,
+                              demo_signal_processing, demo_tensor_processing)
 from quasim.qgh.io import export_results_to_json
 
 
@@ -26,6 +22,7 @@ def cli():
     Distributed quantum system algorithms including causal history,
     superposition resolution, stream monitoring, and consensus propagation.
     """
+
     pass
 
 
@@ -55,6 +52,7 @@ def demo(section: str, export: str | None):
         quasim-qgh demo --section tensor
         quasim-qgh demo --section all --export qgh_results.json
     """
+
     demos_to_run = []
 
     if section == "all":
@@ -107,6 +105,7 @@ def resolve(state: str, iterations: int, tolerance: float):
     Example:
         quasim-qgh resolve --state "0.5,0.3,0.15,0.05" --iterations 50
     """
+
     from quasim.qgh.nonspec_algorithms import SuperpositionResolver
 
     try:
@@ -140,6 +139,7 @@ def monitor(num_streams: int, samples: int, threshold: float):
     Example:
         quasim-qgh monitor --num-streams 4 --samples 100
     """
+
     from quasim.qgh.nonspec_algorithms import DistributedStreamMonitor
 
     click.echo(f"Monitoring {num_streams} streams with {samples} samples each...")

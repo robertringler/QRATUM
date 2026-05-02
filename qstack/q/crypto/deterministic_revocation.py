@@ -1,9 +1,9 @@
 """Deterministic revocation list tracking."""
+
 from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass, field
-from typing import Dict
 
 from ..identity import QIdentity
 
@@ -14,7 +14,7 @@ def _reason_hash(reason: str) -> str:
 
 @dataclass
 class DeterministicRevocationList:
-    revoked: Dict[str, str] = field(default_factory=dict)
+    revoked: dict[str, str] = field(default_factory=dict)
 
     def revoke(self, identity: QIdentity, reason: str) -> None:
         self.revoked[identity.name] = _reason_hash(reason)
@@ -25,5 +25,5 @@ class DeterministicRevocationList:
     def verify_reason(self, identity: QIdentity, reason: str) -> bool:
         return self.revoked.get(identity.name) == _reason_hash(reason)
 
-    def export(self) -> Dict[str, str]:
+    def export(self) -> dict[str, str]:
         return dict(self.revoked)

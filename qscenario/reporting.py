@@ -1,12 +1,12 @@
 """Structured scenario reporting."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List
 
 from qscenario.outcomes import OutcomeSummary
-from qscenario.timeline import Timeline
 from qscenario.scenario import ScenarioConfig, ScenarioState
+from qscenario.timeline import Timeline
 
 
 @dataclass
@@ -15,9 +15,9 @@ class ScenarioReport:
     timeline: Timeline
     outcome: OutcomeSummary
     state: ScenarioState
-    results: List[Dict[str, object]]
+    results: list[dict[str, object]]
 
-    def serialize(self) -> Dict[str, object]:
+    def serialize(self) -> dict[str, object]:
         return {
             "config": self.config.__dict__,
             "timeline": self.timeline.describe(),
@@ -37,9 +37,11 @@ class ScenarioReport:
             "narrative": self.narrative(),
         }
 
-    def narrative(self) -> List[str]:
-        lines: List[str] = []
-        lines.append(f"Scenario {self.config.name} executed over {len(self.timeline.describe())} ticks.")
+    def narrative(self) -> list[str]:
+        lines: list[str] = []
+        lines.append(
+            f"Scenario {self.config.name} executed over {len(self.timeline.describe())} ticks."
+        )
         if self.outcome.incidents:
             lines.append(f"Incidents observed: {len(self.outcome.incidents)}")
         if self.outcome.metrics:
@@ -48,7 +50,7 @@ class ScenarioReport:
         lines.append(f"Outcome classified as {self.outcome.classify()}.")
         return lines
 
-    def _format_result(self, result: Dict[str, object]) -> Dict[str, object]:
+    def _format_result(self, result: dict[str, object]) -> dict[str, object]:
         event = result["event"]
         formatted = {
             "tick": result["tick"],

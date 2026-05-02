@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Energy Demo - QuASIM", layout="wide")
 
     st.title("⚡ Grid Dispatch with Renewables & Storage Under Uncertainty")
@@ -15,10 +16,11 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
-    
+
     Minimize cost and curtailment subject to stability constraints
-    
+
     ### Key Performance Indicators (KPIs)
     - LMP_cost, curtailment_pct, reserve_viols, CO2_tonnes
     """
@@ -58,12 +60,13 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
-    
+
     ```bash
     # Run planning
     python -m quasim.demos.energy.cli plan --steps 200 --seed 42
-    
+
     # Run simulation with capture
     python -m quasim.demos.energy.cli simulate --seed 42 --capture
     ```

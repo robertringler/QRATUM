@@ -1,0 +1,94 @@
+# NEURA - Neuroscience & BCI Examples
+# Quantum Intent Language (QIL) for Neuroscience and Brain-Computer Interfaces
+
+# Example 1: Neural Network Simulation
+intent:
+  vertical: NEURA
+  operation: simulate_neurons
+  parameters:
+    num_neurons: 1000
+    simulation_time_ms: 5000
+    connectivity: 0.15
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_use
+    - irb_approval_required
+    - privacy_compliance
+  user_id: "neuroscientist_001"
+  session_id: "neura_session_001"
+
+# Example 2: EEG Signal Analysis
+intent:
+  vertical: NEURA
+  operation: analyze_eeg
+  parameters:
+    num_channels: 64
+    duration_s: 300  # 5 minutes
+    sampling_rate_hz: 500
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_use
+    - irb_approval_required
+    - privacy_compliance
+    - informed_consent_obtained
+  user_id: "eeg_researcher_001"
+
+# Example 3: Brain Connectivity Mapping
+intent:
+  vertical: NEURA
+  operation: connectivity_mapping
+  parameters:
+    num_regions: 90  # AAL atlas regions
+    modality: "fMRI"
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_use
+    - irb_approval_required
+    - privacy_compliance
+  user_id: "neuroimaging_scientist_001"
+
+# Example 4: BCI Signal Processing (Motor Imagery)
+intent:
+  vertical: NEURA
+  operation: process_bci_signal
+  parameters:
+    signal_type: "motor_imagery"
+    num_trials: 200
+    channels: ["C3", "C4", "Cz", "FC1", "FC2"]
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_use
+    - irb_approval_required
+    - privacy_compliance
+    - informed_consent_obtained
+  user_id: "bci_engineer_001"
+
+# Example 5: Cognitive Modeling (Working Memory)
+intent:
+  vertical: NEURA
+  operation: cognitive_model
+  parameters:
+    task_type: "working_memory"
+    difficulty: 0.7
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_use
+    - irb_approval_required
+    - privacy_compliance
+  user_id: "cognitive_scientist_001"
+
+# Example 6: P300 BCI for Communication
+intent:
+  vertical: NEURA
+  operation: process_bci_signal
+  parameters:
+    signal_type: "p300"
+    num_trials: 150
+    channels: ["Pz", "Cz", "Fz", "P3", "P4"]
+  compliance_attestations:
+    - research_use_only
+    - not_clinical_use
+    - irb_approval_required
+    - privacy_compliance
+    - informed_consent_obtained
+  user_id: "assistive_tech_researcher_001"

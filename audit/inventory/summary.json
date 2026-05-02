@@ -1,0 +1,12 @@
+{
+  "files_total": 3991,
+  "python_files": 2089,
+  "public_symbols": 5977,
+  "untested_symbols": 2218,
+  "code_findings": 6615,
+  "security_findings": 28,
+  "orphans": 179,
+  "workflows": 56,
+  "tex_claims": 397,
+  "artifacts": 202
+}

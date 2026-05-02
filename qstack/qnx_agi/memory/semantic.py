@@ -1,8 +1,8 @@
 """Semantic memory implemented as a simple knowledge graph."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Tuple
 
 from .storage.graph_db import GraphDB
 
@@ -14,5 +14,5 @@ class SemanticMemory:
     def upsert_fact(self, subject: str, predicate: str, obj: str) -> None:
         self.graph.add_edge(subject, predicate, obj)
 
-    def query(self, subject: str) -> List[Tuple[str, str]]:
+    def query(self, subject: str) -> list[tuple[str, str]]:
         return self.graph.neighbors(subject)

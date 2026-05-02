@@ -36,6 +36,7 @@ class SpaceXTelemetryAdapter:
         Args:
             endpoint: gRPC endpoint for telemetry service
         """
+
         self.endpoint = endpoint
         self._connected = False
 
@@ -45,6 +46,7 @@ class SpaceXTelemetryAdapter:
         Returns:
             True if connection successful
         """
+
         # In production, would establish actual gRPC connection
         self._connected = True
         return self._connected
@@ -61,6 +63,7 @@ class SpaceXTelemetryAdapter:
         Raises:
             ValueError: If schema validation fails
         """
+
         required_fields = ["timestamp", "vehicle_id"]
 
         for field_name in required_fields:
@@ -102,6 +105,7 @@ class SpaceXTelemetryAdapter:
         Returns:
             Tuple of (is_valid, list of validation errors)
         """
+
         errors = []
 
         # Validate timestamp
@@ -138,6 +142,7 @@ class SpaceXTelemetryAdapter:
         Returns:
             Tuple of (successful_count, failed_count, error_messages)
         """
+
         successful = 0
         failed = 0
         errors = []
@@ -160,4 +165,5 @@ class SpaceXTelemetryAdapter:
 
     def disconnect(self) -> None:
         """Disconnect from telemetry service."""
+
         self._connected = False

@@ -9,11 +9,13 @@ import os
 
 import torch.distributed as dist
 
-from quasim.qc.quasim_dist import init_cluster, initialize_zero_state, profile, shard_state
+from quasim.qc.quasim_dist import (init_cluster, initialize_zero_state,
+                                   profile, shard_state)
 
 
 def main():
     """Main distributed execution."""
+
     # Initialize distributed context
     rank = int(os.environ.get("RANK", 0))
     print(f"Rank {rank}: Initializing PyTorch cluster...")

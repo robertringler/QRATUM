@@ -17,7 +17,9 @@ def restrictive_policy(event, state):
 def test_policy_variants_comparison():
     sandbox = PolicySandbox(base_policies={"allow_all": base_policy})
     sandbox.variants.append(PolicyVariant(name="baseline"))
-    sandbox.variants.append(PolicyVariant(name="restrictive", rules={"restrict": restrictive_policy}))
+    sandbox.variants.append(
+        PolicyVariant(name="restrictive", rules={"restrict": restrictive_policy})
+    )
 
     comparison = sandbox.run(finance_liquidity_crunch)
     classifications = comparison.summarize()["classifications"]

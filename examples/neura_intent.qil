@@ -1,0 +1,19 @@
+# NEURA Neuroscience & BCI Intent Example
+# QIL for EEG Signal Analysis
+
+vertical: NEURA
+operation: eeg_analysis
+user_id: neuroscientist_001
+session_id: neura_session_303
+
+parameters:
+  sampling_rate_hz: 256
+  channels: [Fp1, Fp2, F3, F4, C3, C4, P3, P4, O1, O2]
+  duration_s: 120
+  
+metadata:
+  study_id: EEG_STUDY_2024
+  subject_id: SUBJ_001_ANON
+  irb_approval: IRB_NEURO_2024_005
+  condition: resting_state
+  eyes: closed

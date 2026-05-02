@@ -2,7 +2,7 @@ import pytest
 
 from qstack.quasim import QuantumCircuit
 from qstack.quasim.quantum.gates import identity
-from qstack.qunimbus import QuNimbusEngine, ValuationInput, valuation_operator
+from qstack.qunimbus import QuNimbusEngine, valuation_operator
 
 
 def test_quasim_and_qunimbus_interfaces():

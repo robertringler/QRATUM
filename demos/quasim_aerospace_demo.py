@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuASIM × Aerospace & Defense Demo
 
 Profile-aware trajectory optimization for launch vehicle ascent profiles.
@@ -18,21 +19,19 @@ import numpy as np
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from quasim.common import (
-    calculate_fidelity,
-    evolutionary_optimization,
-    generate_report,
-    load_profile,
-)
+from quasim.common import (calculate_fidelity, evolutionary_optimization,
+                           generate_report, load_profile)
 
 
 def simulate_trajectory(alpha: float, profile: dict, seed: int = 42) -> dict:
     """
+
     Simulate ascent trajectory with given thrust profile alpha.
 
     This is a simplified surrogate model for demonstration purposes.
     Real QuASIM would use cuQuantum tensor network simulation.
     """
+
     np.random.seed(seed)
 
     targets = profile["targets"]
@@ -72,6 +71,7 @@ def simulate_trajectory(alpha: float, profile: dict, seed: int = 42) -> dict:
 
 def evaluate_fitness(metrics: dict, profile: dict) -> float:
     """Evaluate trajectory fitness against profile targets."""
+
     targets = profile["targets"]
     tolerances = profile["tolerances"]
     weights = profile["weights"]
@@ -96,6 +96,7 @@ def evaluate_fitness(metrics: dict, profile: dict) -> float:
 
 def create_visualization(metrics: dict, profile: dict) -> str:
     """Create trajectory visualization and return as base64-encoded PNG."""
+
     import base64
     import io
 

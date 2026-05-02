@@ -1,0 +1,95 @@
+# CAPRA - Financial Risk & Derivatives Examples
+# Quantum Intent Language (QIL) for Financial Modeling
+
+# Example 1: Option Pricing (Black-Scholes)
+intent:
+  vertical: CAPRA
+  operation: price_option
+  parameters:
+    type: "call"
+    spot_price: 150.0
+    strike_price: 155.0
+    time_to_expiry_years: 0.25  # 3 months
+    volatility: 0.25
+    risk_free_rate: 0.04
+    method: "black_scholes"
+  compliance_attestations:
+    - not_investment_advice
+    - financial_advisor_consultation
+    - risk_disclosure_acknowledged
+  user_id: "quantitative_analyst_001"
+  session_id: "capra_session_001"
+
+# Example 2: Value at Risk Calculation
+intent:
+  vertical: CAPRA
+  operation: calculate_var
+  parameters:
+    portfolio_value: 5000000
+    confidence: 0.99
+    horizon_days: 10
+    volatility: 0.18
+  compliance_attestations:
+    - not_investment_advice
+    - financial_advisor_consultation
+    - risk_disclosure_acknowledged
+  user_id: "risk_manager_001"
+
+# Example 3: Portfolio Optimization
+intent:
+  vertical: CAPRA
+  operation: optimize_portfolio
+  parameters:
+    assets: ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA"]
+    risk_tolerance: 0.6
+  compliance_attestations:
+    - not_investment_advice
+    - financial_advisor_consultation
+    - risk_disclosure_acknowledged
+    - regulatory_compliance_verified
+  user_id: "portfolio_manager_001"
+
+# Example 4: Credit Risk Assessment
+intent:
+  vertical: CAPRA
+  operation: credit_risk
+  parameters:
+    credit_score: 720
+    debt_to_income: 0.35
+    loan_amount: 250000
+  compliance_attestations:
+    - not_investment_advice
+    - financial_advisor_consultation
+    - risk_disclosure_acknowledged
+  user_id: "credit_analyst_001"
+
+# Example 5: Stress Testing
+intent:
+  vertical: CAPRA
+  operation: stress_test
+  parameters:
+    portfolio_value: 10000000
+    scenario: "market_crash"
+  compliance_attestations:
+    - not_investment_advice
+    - financial_advisor_consultation
+    - risk_disclosure_acknowledged
+  user_id: "risk_officer_001"
+
+# Example 6: Monte Carlo Option Pricing
+intent:
+  vertical: CAPRA
+  operation: price_option
+  parameters:
+    type: "put"
+    spot_price: 100.0
+    strike_price: 95.0
+    time_to_expiry_years: 0.5
+    volatility: 0.30
+    risk_free_rate: 0.03
+    method: "monte_carlo"
+  compliance_attestations:
+    - not_investment_advice
+    - financial_advisor_consultation
+    - risk_disclosure_acknowledged
+  user_id: "derivatives_trader_001"

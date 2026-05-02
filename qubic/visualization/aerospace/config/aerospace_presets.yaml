@@ -1,0 +1,110 @@
+# QRATUM Aerospace Visualization Presets
+# Rendering configuration presets for different use cases
+
+draft:
+  # Fast rendering for development iteration
+  compliance_mode: DEVELOPMENT
+  render_backend: matplotlib
+  resolution: [1280, 720]
+  dpi: 72
+  target_fps: 30
+  enable_audit_log: false
+  show_velocity_vectors: true
+  show_pressure_gradients: false
+  show_streamlines: true
+  streamline_density: 50
+  enable_hud: false
+  show_telemetry: false
+  figsize: [10, 8]
+  colormap: viridis
+  style: dark_background
+  alpha: 0.8
+
+production:
+  # Balanced quality and performance for production use
+  compliance_mode: DO178C_LEVEL_B
+  render_backend: matplotlib
+  resolution: [1920, 1080]
+  dpi: 150
+  target_fps: 60
+  enable_audit_log: true
+  show_velocity_vectors: true
+  show_pressure_gradients: true
+  show_streamlines: true
+  streamline_density: 100
+  enable_hud: true
+  hud_opacity: 0.8
+  show_telemetry: true
+  figsize: [12, 10]
+  colormap: viridis
+  style: dark_background
+  show_colorbar: true
+  show_axes: true
+  alpha: 0.8
+
+cinematic:
+  # Maximum quality for presentation and publications
+  compliance_mode: DEVELOPMENT
+  render_backend: matplotlib
+  resolution: [3840, 2160]
+  dpi: 300
+  target_fps: 60
+  enable_audit_log: false
+  show_velocity_vectors: true
+  show_pressure_gradients: true
+  show_streamlines: true
+  streamline_density: 200
+  enable_hud: true
+  hud_opacity: 0.9
+  show_telemetry: true
+  figsize: [16, 12]
+  colormap: plasma
+  style: dark_background
+  show_colorbar: true
+  show_axes: true
+  alpha: 0.9
+
+compliance_do178c:
+  # DO-178C Level A compliant settings
+  compliance_mode: DO178C_LEVEL_A
+  render_backend: matplotlib
+  seed: 42
+  resolution: [1920, 1080]
+  dpi: 150
+  target_fps: 60
+  enable_audit_log: true
+  show_velocity_vectors: true
+  show_pressure_gradients: true
+  show_streamlines: true
+  streamline_density: 100
+  enable_hud: true
+  hud_opacity: 0.8
+  show_telemetry: true
+  figsize: [12, 10]
+  colormap: viridis
+  style: dark_background
+  show_colorbar: true
+  show_axes: true
+  alpha: 0.8
+
+headless:
+  # CI/cluster rendering without display
+  compliance_mode: DO178C_LEVEL_A
+  render_backend: headless
+  seed: 42
+  resolution: [1920, 1080]
+  dpi: 150
+  target_fps: 60
+  enable_audit_log: true
+  show_velocity_vectors: true
+  show_pressure_gradients: true
+  show_streamlines: true
+  streamline_density: 100
+  enable_hud: false
+  show_telemetry: false
+  figsize: [12, 10]
+  colormap: viridis
+  style: dark_background
+  show_colorbar: true
+  show_axes: true
+  alpha: 0.8

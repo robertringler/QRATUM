@@ -13,6 +13,7 @@ from quasim.policy import ConfigurationMutation, PolicyDecision, PolicyReasoner
 
 def main():
     """Run Phase VIII integration demo."""
+
     print("=" * 70)
     print("QuASIM Phase VIII: Autonomous Governance Demo")
     print("=" * 70)

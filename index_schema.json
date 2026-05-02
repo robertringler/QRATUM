@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Automation Index",
+  "type": "object",
+  "required": ["config_hash", "timestamp", "records", "task_count", "any_failure"],
+  "properties": {
+    "config_hash": {"type": "string"},
+    "timestamp": {"type": "number"},
+    "records": {"type": "array"},
+    "latex": {"type": ["object", "null"]},
+    "appendix": {"type": ["string", "null"]},
+    "quick_mode": {"type": ["boolean", "null"]},
+    "task_count": {"type": "integer", "minimum": 0},
+    "any_failure": {"type": "boolean"},
+    "aggregate_cpu_time": {"type": ["number", "null"]},
+    "aggregate_wall_time": {"type": ["number", "null"]},
+    "tasks_per_second": {"type": ["number", "null"]},
+    "peak_rss_bytes": {"type": ["number", "null"]}
+  }
+}

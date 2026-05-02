@@ -5,7 +5,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import List
 
 
 class ClassificationLabel(str, Enum):
@@ -38,6 +37,5 @@ class SentenceRecord:
     sentence_index: int
     text: str
     classification: ClassificationLabel
-    domains: List[str]
+    domains: list[str]
     source_path: Path
-

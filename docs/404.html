@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Access Denied | QuASIM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title glitch text-crimson">ACCESS DENIED</h1>
+      <pre class="text-crimson" style="font-size: 0.8rem; line-height: 1.2; margin: 2rem 0;">
+ERROR: RESOURCE_NOT_FOUND
+SYSTEM: QuASIM Portal v2.4.0
+STATUS: 404 NOT FOUND
+TIMESTAMP: [REDACTED]
+      </pre>
+      <div class="terminal" style="max-width: 600px; margin: 2rem auto;">
+        <div class="terminal-header">
+          <button class="terminal-button close"></button>
+          <button class="terminal-button minimize"></button>
+          <button class="terminal-button maximize"></button>
+          <span class="terminal-title">system-error.log</span>
+        </div>
+        <div class="terminal-body" style="min-height: 150px;">
+          <div class="terminal-line">
+            <span class="terminal-prompt text-crimson">ERROR:</span>
+            <span class="terminal-command">Requested resource not found in quantum state space</span>
+          </div>
+          <div class="terminal-line">
+            <span class="terminal-prompt text-amber">WARN:</span>
+            <span class="terminal-command">Attempting reality reconciliation...</span>
+          </div>
+          <div class="terminal-line">
+            <span class="terminal-prompt text-green">INFO:</span>
+            <span class="terminal-command">Use navigation links to return to known space-time</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-cta">
+        <a href="index.html" class="btn btn-primary">Return to Home</a>
+        <a href="architecture.html" class="btn btn-secondary">View Architecture</a>
+      </div>
+    </div>
+  </section>
+  <script src="js/main.js"></script>
+</body>
+</html>

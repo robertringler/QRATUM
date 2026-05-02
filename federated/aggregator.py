@@ -6,7 +6,6 @@ import hashlib
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List
 
 
 @dataclass
@@ -22,6 +21,7 @@ class AnonymizedTelemetry:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "deployment_hash": self.deployment_hash,
             "kernel_config_hash": self.kernel_config_hash,
@@ -45,6 +45,7 @@ class AggregatedPerformance:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "kernel_config_hash": self.kernel_config_hash,
             "sample_count": self.sample_count,
@@ -57,6 +58,7 @@ class AggregatedPerformance:
 
 class FederatedAggregator:
     """
+
     Aggregates anonymized performance data across deployments.
     Implements secure aggregation without sharing raw data.
     """
@@ -64,28 +66,31 @@ class FederatedAggregator:
     def __init__(self, aggregation_dir: str = "federated/aggregated"):
         self.aggregation_dir = Path(aggregation_dir)
         self.aggregation_dir.mkdir(parents=True, exist_ok=True)
-        self.telemetry: List[AnonymizedTelemetry] = []
-        self.aggregated: Dict[str, AggregatedPerformance] = {}
+        self.telemetry: list[AnonymizedTelemetry] = []
+        self.aggregated: dict[str, AggregatedPerformance] = {}
 
     def anonymize_deployment_id(self, deployment_id: str) -> str:
         """Anonymize deployment ID using hash."""
+
         return hashlib.sha256(deployment_id.encode()).hexdigest()[:16]
 
-    def anonymize_kernel_config(self, config: Dict) -> str:
+    def anonymize_kernel_config(self, config: dict) -> str:
         """Anonymize kernel configuration using hash."""
+
         config_str = json.dumps(config, sort_keys=True)
         return hashlib.sha256(config_str.encode()).hexdigest()[:16]
 
     def add_telemetry(
         self,
         deployment_id: str,
-        kernel_config: Dict,
+        kernel_config: dict,
         latency_ms: float,
         energy_j: float,
         throughput_gops: float,
         timestamp: float,
     ) -> None:
         """Add anonymized telemetry record."""
+
         telemetry = AnonymizedTelemetry(
             deployment_hash=self.anonymize_deployment_id(deployment_id),
             kernel_config_hash=self.anonymize_kernel_config(kernel_config),
@@ -96,13 +101,15 @@ class FederatedAggregator:
         )
         self.telemetry.append(telemetry)
 
-    def aggregate_performance(self) -> Dict[str, AggregatedPerformance]:
+    def aggregate_performance(self) -> dict[str, AggregatedPerformance]:
         """
+
         Aggregate performance data by kernel configuration.
         Computes mean and standard deviation.
         """
+
         # Group by kernel config hash
-        grouped: Dict[str, List[AnonymizedTelemetry]] = {}
+        grouped: dict[str, list[AnonymizedTelemetry]] = {}
 
         for record in self.telemetry:
             config_hash = record.kernel_config_hash
@@ -139,16 +146,19 @@ class FederatedAggregator:
 
         return self.aggregated
 
-    def predict_performance(self, kernel_config: Dict) -> AggregatedPerformance | None:
+    def predict_performance(self, kernel_config: dict) -> AggregatedPerformance | None:
         """
+
         Predict performance for a kernel configuration using aggregated data.
         Returns None if no data available for this configuration.
         """
+
         config_hash = self.anonymize_kernel_config(kernel_config)
         return self.aggregated.get(config_hash)
 
     def save_aggregated_data(self) -> Path:
         """Save aggregated data to disk."""
+
         output_path = self.aggregation_dir / "aggregated_performance.json"
 
         data = {
@@ -162,8 +172,9 @@ class FederatedAggregator:
 
         return output_path
 
-    def export_telemetry_schema(self) -> Dict:
+    def export_telemetry_schema(self) -> dict:
         """Export telemetry schema for documentation."""
+
         return {
             "schema_version": "1.0",
             "fields": {

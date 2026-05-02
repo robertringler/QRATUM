@@ -6,7 +6,7 @@ import json
 import tempfile
 import zipfile
 from pathlib import Path
-from typing import Iterable, Iterator, List
+from typing import Iterable
 
 from .models import RawConversation, RawMessage
 
@@ -51,8 +51,8 @@ def _load_json(path: Path):
         return json.load(fh)
 
 
-def _conversations_from_payload(payload) -> List[RawConversation]:
-    conversations: List[RawConversation] = []
+def _conversations_from_payload(payload) -> list[RawConversation]:
+    conversations: list[RawConversation] = []
     if isinstance(payload, list):
         items = payload
     elif isinstance(payload, dict):
@@ -67,11 +67,11 @@ def _conversations_from_payload(payload) -> List[RawConversation]:
     return conversations
 
 
-def load_raw_conversations(root: Path) -> List[RawConversation]:
+def load_raw_conversations(root: Path) -> list[RawConversation]:
     """Load every conversation from the export root."""
 
     root = Path(root)
-    conversations: List[RawConversation] = []
+    conversations: list[RawConversation] = []
     conversations_file = root / "conversations.json"
     if conversations_file.exists():
         payload = _load_json(conversations_file)

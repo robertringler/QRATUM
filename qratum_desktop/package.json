@@ -1,0 +1,13 @@
+{
+  "name": "qratum-desktop",
+  "version": "0.4.0",
+  "description": "Phase 4 AI + Quantum desktop (~18-25 MB)",
+  "scripts": {
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.5.0"
+  }
+}

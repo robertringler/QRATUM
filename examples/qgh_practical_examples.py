@@ -5,20 +5,18 @@ Demonstrates practical applications of QGH non-speculative algorithms
 in real-world scenarios.
 """
 
-
 import numpy as np
 
-from quasim.qgh.nonspec_algorithms import (
-    CausalHistoryHash,
-    DistributedStreamMonitor,
-    SelfConsistencyPropagator,
-    StabilityMonitor,
-    SuperpositionResolver,
-)
+from quasim.qgh.nonspec_algorithms import (CausalHistoryHash,
+                                           DistributedStreamMonitor,
+                                           SelfConsistencyPropagator,
+                                           StabilityMonitor,
+                                           SuperpositionResolver)
 
 
 def example_federated_learning():
     """Federated learning with consensus."""
+
     print("=" * 70)
     print("Example 1: Federated Learning Consensus")
     print("=" * 70)
@@ -54,6 +52,7 @@ def example_federated_learning():
 
 def example_autonomous_vehicle_fusion():
     """Multi-sensor fusion for autonomous vehicles."""
+
     print("=" * 70)
     print("Example 2: Autonomous Vehicle Sensor Fusion")
     print("=" * 70)
@@ -106,6 +105,7 @@ def example_autonomous_vehicle_fusion():
 
 def example_portfolio_risk_monitoring():
     """Portfolio risk and stability monitoring."""
+
     print("=" * 70)
     print("Example 3: Portfolio Risk Monitoring")
     print("=" * 70)
@@ -146,6 +146,7 @@ def example_portfolio_risk_monitoring():
 
 def example_event_tracking():
     """Causal event tracking."""
+
     print("=" * 70)
     print("Example 4: Quantum Measurement Event Tracking")
     print("=" * 70)
@@ -179,6 +180,7 @@ def example_event_tracking():
 
 def example_superposition_resolution():
     """Quantum superposition resolution."""
+
     print("=" * 70)
     print("Example 5: Quantum State Resolution")
     print("=" * 70)
@@ -193,6 +195,7 @@ def example_superposition_resolution():
 
     def normalize_probability(state):
         """Consistency function: must sum to 1.0."""
+
         return state / np.sum(state)
 
     result = resolver.resolve(initial_state, normalize_probability)
@@ -207,6 +210,7 @@ def example_superposition_resolution():
 
 def main():
     """Run all examples."""
+
     examples = [
         example_federated_learning,
         example_autonomous_vehicle_fusion,
@@ -214,8 +218,6 @@ def main():
         example_event_tracking,
         example_superposition_resolution,
     ]
-
-    results = {}
 
     for example_fn in examples:
         example_fn()

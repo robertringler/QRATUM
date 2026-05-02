@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Agritech Demo - QuASIM", layout="wide")
 
     st.title("🌾 Irrigation & Yield Optimization with Weather Uncertainty")
@@ -15,10 +16,11 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
-    
+
     Maximize yield per water input under weather/soil dynamics
-    
+
     ### Key Performance Indicators (KPIs)
     - yield_kg_ha, water_use_eff, risk_of_loss, profit_margin
     """
@@ -58,12 +60,13 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
-    
+
     ```bash
     # Run planning
     python -m quasim.demos.agritech.cli plan --steps 200 --seed 42
-    
+
     # Run simulation with capture
     python -m quasim.demos.agritech.cli simulate --seed 42 --capture
     ```

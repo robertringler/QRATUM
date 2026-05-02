@@ -1,0 +1,28 @@
+{"rule_id": "UNSAFE-SUBPROCESS", "severity": "major", "path": ".github/workflows/sbom.yml", "line": 182, "snippet": "                  result = subprocess.run(cmd, capture_output=True, text=True, check=True, shell=True)"}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "README_OLD.md", "line": 186, "snippet": "    ibmq_token=\"YOUR_API_TOKEN_HERE\","}
+{"rule_id": "UNSAFE-EVAL", "severity": "major", "path": "aion/runtime/__init__.py", "line": 254, "snippet": "    def eval(self, source: str) -> Any:"}
+{"rule_id": "UNSAFE-EVAL", "severity": "major", "path": "aion/runtime/__init__.py", "line": 287, "snippet": "                result = self.eval(line)"}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "docs-site/docs/advanced/troubleshooting.md", "line": 127, "snippet": "    ibmq_token=\"your_actual_token\""}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "docs-site/docs/getting-started/installation.md", "line": 120, "snippet": "    ibmq_token=\"YOUR_API_TOKEN_HERE\","}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "docs-site/docs/reference/api-reference.md", "line": 46, "snippet": "    ibmq_token=\"your_api_token\","}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "docs-site/docs/tutorials/vqe-h2-molecule.md", "line": 138, "snippet": "    ibmq_token=\"YOUR_API_TOKEN\","}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "docs/API_REFERENCE.md", "line": 430, "snippet": "client = QRATUMClient(api_key=\"your-api-key\")"}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "docs/AUTO_MERGE_SYSTEM.md", "line": 57, "snippet": "export GITHUB_TOKEN=\"your_github_token\""}
+{"rule_id": "UNSAFE-EVAL", "severity": "major", "path": "docs/BOB_TECHNICAL_SPEC.md", "line": 134, "snippet": "eval(position) = "}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "docs/PR_AUTO_RESOLUTION.md", "line": 80, "snippet": "export GITHUB_TOKEN=\"your_token_here\""}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "docs/PR_AUTO_RESOLUTION.md", "line": 87, "snippet": "export GITHUB_TOKEN=\"your_token_here\""}
+{"rule_id": "UNSAFE-EVAL", "severity": "major", "path": "docs/ownai/ownai_overview.md", "line": 232, "snippet": "- \u2705 No `eval()` or `exec()` usage"}
+{"rule_id": "UNSAFE-EXEC", "severity": "major", "path": "docs/ownai/ownai_overview.md", "line": 232, "snippet": "- \u2705 No `eval()` or `exec()` usage"}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "figma/README.md", "line": 117, "snippet": "export FIGMA_TOKEN=\"your_figma_token\""}
+{"rule_id": "UNSAFE-PICKLE", "severity": "major", "path": "production_workflow_checkpointing.py", "line": 279, "snippet": "                    data = pickle.load(f)"}
+{"rule_id": "UNSAFE-PICKLE", "severity": "major", "path": "production_workflow_checkpointing.py", "line": 282, "snippet": "                    data = pickle.load(f)"}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "qratum/exascale/security/pqc.py", "line": 72, "snippet": "    SHARED_SECRET = \"Shared Secret\""}
+{"rule_id": "UNSAFE-PICKLE", "severity": "major", "path": "qratum/temporal/state.py", "line": 150, "snippet": "        state_dict = pickle.loads(data)"}
+{"rule_id": "UNSAFE-EVAL", "severity": "major", "path": "quasim/cli/quasim_own.py", "line": 85, "snippet": "def eval(run: str, metrics: str):"}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "quasim/qunimbus/auth.py", "line": 460, "snippet": "        export QUNIMBUS_TOKEN=\"your-jwt-token\""}
+{"rule_id": "UNSAFE-EVAL", "severity": "major", "path": "scripts/run_validation.py", "line": 297, "snippet": "                if \"eval(\" in content or \"exec(\" in content:"}
+{"rule_id": "UNSAFE-EXEC", "severity": "major", "path": "scripts/run_validation.py", "line": 297, "snippet": "                if \"eval(\" in content or \"exec(\" in content:"}
+{"rule_id": "UNSAFE-SUBPROCESS", "severity": "major", "path": "scripts/validate_quasim_master.py", "line": 29, "snippet": "        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=60)"}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "tests/qunimbus/test_qunimbus_enhancements.py", "line": 347, "snippet": "    token = \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\""}
+{"rule_id": "HARDCODED-SECRET", "severity": "block", "path": "tests/test_sdk.py", "line": 87, "snippet": "            api_key=\"test-key-123\","}
+{"rule_id": "UNSAFE-EVAL", "severity": "major", "path": "xenon/bioinformatics/inference/neural_symbolic.py", "line": 435, "snippet": "        self.model.eval()"}

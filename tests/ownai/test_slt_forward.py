@@ -9,6 +9,7 @@ from quasim.ownai.models.slt import build_slt
 
 def test_slt_build():
     """Test building SLT model."""
+
     model = build_slt(task="text-cls", seed=42)
     assert model is not None
     assert model.task == "text-cls"
@@ -16,6 +17,7 @@ def test_slt_build():
 
 def test_slt_text_classification():
     """Test SLT on text classification task."""
+
     set_seed(42)
 
     # Load small dataset
@@ -38,6 +40,7 @@ def test_slt_text_classification():
 
 def test_slt_tabular_classification():
     """Test SLT on tabular classification task."""
+
     set_seed(42)
 
     # Load small dataset
@@ -60,6 +63,7 @@ def test_slt_tabular_classification():
 
 def test_slt_determinism():
     """Test that SLT produces deterministic predictions."""
+
     texts, y = loaders.load_text("imdb-mini")
     X_train = texts[:100]
     y_train = y[:100]
@@ -85,6 +89,7 @@ def test_slt_determinism():
 
 def test_slt_with_symbolic_features():
     """Test SLT with symbolic features enabled."""
+
     texts, y = loaders.load_text("imdb-mini")
     X_train = texts[:50]
     y_train = y[:50]
@@ -99,6 +104,7 @@ def test_slt_with_symbolic_features():
 
 def test_slt_without_symbolic_features():
     """Test SLT without symbolic features."""
+
     texts, y = loaders.load_text("imdb-mini")
     X_train = texts[:50]
     y_train = y[:50]

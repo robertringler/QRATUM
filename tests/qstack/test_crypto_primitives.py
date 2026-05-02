@@ -1,17 +1,8 @@
-from qstack.q import (
-    DeterministicMerkleTree,
-    DeterministicLedger,
-    DeterministicKeyExchange,
-    DeterministicAccessControlList,
-    DeterministicCapabilityToken,
-    CapabilityAuthority,
-    DeterministicRevocationList,
-    SovereignClusterReplication,
-    KeyManager,
-    QIdentity,
-    Attestor,
-    Signer,
-)
+from qstack.q import (Attestor, CapabilityAuthority,
+                      DeterministicAccessControlList, DeterministicKeyExchange,
+                      DeterministicLedger, DeterministicRevocationList,
+                      KeyManager, QIdentity, Signer,
+                      SovereignClusterReplication)
 
 
 def test_merkle_and_ledger_replication():

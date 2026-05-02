@@ -1,6 +1,6 @@
+from qledger.query import LedgerQuery
 from qledger.record import LedgerRecord
 from qledger.store import LedgerStore
-from qledger.query import LedgerQuery
 
 
 def test_policy_violation_recorded_and_queryable():

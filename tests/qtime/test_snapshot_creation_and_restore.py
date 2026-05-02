@@ -1,6 +1,6 @@
-from qtime.snapshot import Snapshot
 from qtime.registry import SnapshotRegistry
 from qtime.restore import restore_snapshot
+from qtime.snapshot import Snapshot
 
 
 def test_snapshot_creation_and_restore_roundtrip():
