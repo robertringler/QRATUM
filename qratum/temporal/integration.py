@@ -8,11 +8,11 @@ Integrates temporal computing with existing QRATUM exascale components:
 - Merkle Verification for hardware-accelerated state hashing
 """
 
-from typing import Optional, Any, Dict, List
 from dataclasses import dataclass
+from typing import Any, Dict, List, Optional
 
 from .engine import TemporalEngine
-from .state import TemporalState, StateChain
+from .state import TemporalState
 
 
 @dataclass
@@ -43,7 +43,7 @@ class QDRIntegration:
     Uses deterministic AllReduce for temporal state synchronization across
     distributed nodes, ensuring bit-identical results.
     """
-    
+
     def __init__(self, num_nodes: int = 1):
         """
         Initialize QDR integration.
@@ -53,7 +53,7 @@ class QDRIntegration:
         """
         self.num_nodes = num_nodes
         self.sync_count = 0
-    
+
     def synchronize_states(
         self,
         local_states: List[TemporalState],
@@ -73,12 +73,12 @@ class QDRIntegration:
         # For now, we just return the input (single-node case)
         self.sync_count += 1
         return local_states
-    
+
     def barrier(self) -> None:
         """Synchronization barrier across all nodes"""
         # Would call QDR barrier
         pass
-    
+
     def get_rank(self) -> int:
         """Get rank of current node"""
         return 0  # Single node for now
@@ -91,7 +91,7 @@ class AetherFabricIntegration:
     Uses deterministic routing for timeline coordination across distributed
     nodes, ensuring consistent timeline branching and merging.
     """
-    
+
     def __init__(self, num_nodes: int = 1):
         """
         Initialize AetherFabric integration.
@@ -101,7 +101,7 @@ class AetherFabricIntegration:
         """
         self.num_nodes = num_nodes
         self.message_count = 0
-    
+
     def route_timeline_state(
         self,
         state: TemporalState,
@@ -120,7 +120,7 @@ class AetherFabricIntegration:
         # In real implementation, would use AetherFabric-X
         self.message_count += 1
         return True
-    
+
     def broadcast_branch_event(
         self,
         timeline_id: str,
@@ -147,11 +147,11 @@ class PQCIntegration:
     Adds post-quantum signatures to temporal proofs, ensuring security
     against quantum attacks.
     """
-    
+
     def __init__(self):
         """Initialize PQC integration"""
         self.signature_count = 0
-    
+
     def sign_state(self, state: TemporalState) -> str:
         """
         Sign temporal state with PQC signature.
@@ -168,7 +168,7 @@ class PQCIntegration:
             PQC signature (placeholder)
         """
         import hashlib
-        
+
         # PLACEHOLDER: This is NOT quantum-resistant!
         # Production implementation should use:
         # - CRYSTALS-Dilithium for signatures
@@ -178,7 +178,7 @@ class PQCIntegration:
         signature = f"PQC_PLACEHOLDER:{hashlib.sha256(state_hash.encode()).hexdigest()}"
         self.signature_count += 1
         return signature
-    
+
     def verify_signature(self, state: TemporalState, signature: str) -> bool:
         """
         Verify PQC signature on state.
@@ -198,7 +198,7 @@ class PQCIntegration:
         # 1. Extract public key from state or key registry
         # 2. Verify signature using PQC algorithm
         # 3. Validate timestamp and nonce
-        
+
         # For placeholder, we just check format consistency
         expected = self.sign_state(state)
         return signature == expected
@@ -211,12 +211,12 @@ class MerkleHardwareAcceleration:
     Uses specialized hardware (if available) to accelerate Merkle tree
     operations for high-throughput state verification.
     """
-    
+
     def __init__(self):
         """Initialize Merkle hardware acceleration"""
         self.hash_count = 0
         self.hw_available = False  # Would detect real hardware
-    
+
     def accelerated_hash(self, data: bytes) -> str:
         """
         Compute hash with hardware acceleration.
@@ -228,14 +228,14 @@ class MerkleHardwareAcceleration:
             Hash digest
         """
         import hashlib
-        
+
         # In real implementation, would use specialized hardware
         # For now, use standard SHA-256
         hasher = hashlib.sha256()
         hasher.update(data)
         self.hash_count += 1
         return hasher.hexdigest()
-    
+
     def batch_hash(self, data_list: List[bytes]) -> List[str]:
         """
         Compute multiple hashes in parallel.
@@ -256,7 +256,7 @@ class TemporalEngineDistributed:
     Extends TemporalEngine with distributed computing capabilities,
     integrating QDR, AetherFabric-X, PQC, and hardware acceleration.
     """
-    
+
     def __init__(self, config: Optional[ExascaleConfig] = None):
         """
         Initialize distributed temporal engine.
@@ -266,9 +266,9 @@ class TemporalEngineDistributed:
         """
         if config is None:
             config = ExascaleConfig()
-        
+
         self.config = config
-        
+
         # Initialize base engine
         total_flops = config.num_nodes * config.peak_flops_per_node
         self.engine = TemporalEngine(
@@ -277,13 +277,13 @@ class TemporalEngineDistributed:
             merkle_verified=config.enable_merkle_hw,
             enable_pqc=config.enable_pqc,
         )
-        
+
         # Initialize integrations
         self.qdr = QDRIntegration(num_nodes=config.num_nodes) if config.enable_qdr else None
         self.aetherfabric = AetherFabricIntegration(num_nodes=config.num_nodes) if config.enable_aetherfabric else None
         self.pqc = PQCIntegration() if config.enable_pqc else None
         self.merkle_hw = MerkleHardwareAcceleration() if config.enable_merkle_hw else None
-    
+
     def forward_distributed(
         self,
         initial_state: Any,
@@ -299,7 +299,7 @@ class TemporalEngineDistributed:
         # Synchronize before computation
         if self.qdr:
             self.qdr.barrier()
-        
+
         # Perform local computation
         result = self.engine.forward(
             initial_state=initial_state,
@@ -307,41 +307,41 @@ class TemporalEngineDistributed:
             evolution_fn=evolution_fn,
             **kwargs
         )
-        
+
         # Synchronize after computation
         if self.qdr:
             self.qdr.barrier()
-        
+
         return result
-    
+
     def get_statistics(self) -> Dict[str, Any]:
         """Get distributed engine statistics"""
         stats = self.engine.get_statistics()
-        
+
         stats['distributed'] = {
             'num_nodes': self.config.num_nodes,
             'total_peak_flops': self.config.num_nodes * self.config.peak_flops_per_node,
         }
-        
+
         if self.qdr:
             stats['qdr'] = {
                 'sync_count': self.qdr.sync_count,
             }
-        
+
         if self.aetherfabric:
             stats['aetherfabric'] = {
                 'message_count': self.aetherfabric.message_count,
             }
-        
+
         if self.pqc:
             stats['pqc'] = {
                 'signature_count': self.pqc.signature_count,
             }
-        
+
         if self.merkle_hw:
             stats['merkle_hw'] = {
                 'hash_count': self.merkle_hw.hash_count,
                 'hw_available': self.merkle_hw.hw_available,
             }
-        
+
         return stats

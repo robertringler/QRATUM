@@ -10,28 +10,18 @@ Provides :class:`QRATUM_CRS_Core` as the unified interface.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any
-
 import numpy as np
 from numpy.typing import NDArray
 
-from quasim.ciir.crs.graph import CRSGraph, Node, Edge
-from quasim.ciir.crs.evolution import CRSEngine
-from quasim.ciir.crs.rewrite import RewriteEngine
-from quasim.ciir.crs.conservation import (
-    ConservationEngine,
-    total_state_norm_invariant,
-    total_causal_weight_invariant,
-    node_count_invariant,
-    graph_energy_invariant,
-)
 from quasim.ciir.crs.branching import BranchingEngine
-from quasim.ciir.crs.spacetime import (
-    graph_dimension_estimate,
-    curvature_proxy,
-)
-
+from quasim.ciir.crs.conservation import (ConservationEngine,
+                                          graph_energy_invariant,
+                                          node_count_invariant,
+                                          total_causal_weight_invariant,
+                                          total_state_norm_invariant)
+from quasim.ciir.crs.evolution import CRSEngine
+from quasim.ciir.crs.graph import CRSGraph, Edge, Node
+from quasim.ciir.crs.spacetime import curvature_proxy, graph_dimension_estimate
 
 # ================================================================
 # Density-matrix bridge

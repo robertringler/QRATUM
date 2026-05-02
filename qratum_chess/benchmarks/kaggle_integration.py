@@ -18,24 +18,20 @@ Usage:
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any
 import json
 import logging
+from dataclasses import dataclass
+from typing import Any
+
 import requests
 
-from qratum_chess.core.position import Position
 from qratum_chess.benchmarks.kaggle_config import KaggleConfig
-
+from qratum_chess.core.position import Position
 
 # Set up logging
 logger = logging.getLogger(__name__)
-from dataclasses import dataclass, field
+from dataclasses import field
 from pathlib import Path
-from typing import Any
-import json
-
-from qratum_chess.core.position import Position
 
 
 @dataclass
@@ -74,7 +70,7 @@ class KaggleBenchmarkPosition:
     expected_move: str | None = None
     difficulty: float | None = None
     position: Position | None = None
-    
+
     def __post_init__(self):
         """Initialize Position object from FEN."""
         if self.position is None and self.fen:
@@ -97,7 +93,7 @@ class KaggleLeaderboardData:
     positions: list[KaggleBenchmarkPosition]
     leaderboard_entries: list[dict[str, Any]]
     metadata: dict[str, Any]
-    
+
     def get_position_by_id(self, position_id: str) -> KaggleBenchmarkPosition | None:
         """Get a position by its ID.
         
@@ -111,7 +107,7 @@ class KaggleLeaderboardData:
             if pos.position_id == position_id:
                 return pos
         return None
-    
+
     def get_top_engines(self, n: int = 10) -> list[dict[str, Any]]:
         """Get top N engines from leaderboard.
         
@@ -133,7 +129,7 @@ class KaggleIntegration:
     
     Handles data loading, parsing, and position extraction from Kaggle.
     """
-    
+
     def __init__(self, config: KaggleConfig | None = None):
         """Initialize Kaggle integration.
         
@@ -141,7 +137,7 @@ class KaggleIntegration:
             config: Kaggle configuration. If None, uses default config.
         """
         self.config = config
-    
+
     def load_leaderboard_from_file(self, filepath: str) -> KaggleLeaderboardData:
         """Load leaderboard data from a local JSON file.
         
@@ -155,11 +151,11 @@ class KaggleIntegration:
             FileNotFoundError: If file doesn't exist.
             ValueError: If JSON is invalid.
         """
-        with open(filepath, 'r') as f:
+        with open(filepath) as f:
             data = json.load(f)
-        
+
         return self._parse_leaderboard_data(data)
-    
+
     def download_leaderboard_data(
         self,
         competition_id: str | None = None,
@@ -179,26 +175,26 @@ class KaggleIntegration:
         """
         if self.config is None:
             raise ValueError("Config required for API access")
-        
+
         if competition_id is None:
             competition_id = self.config.competition.competition_id
-        
+
         # Download leaderboard data
         url = f"https://www.kaggle.com/api/v1/competitions/{competition_id}/leaderboard"
         headers = self.config.get_auth_headers()
-        
+
         response = requests.get(url, headers=headers)
         response.raise_for_status()
-        
+
         data = response.json()
-        
+
         # Save to file if requested
         if save_path:
             with open(save_path, 'w') as f:
                 json.dump(data, f, indent=2)
-        
+
         return self._parse_leaderboard_data(data)
-    
+
     def download_benchmark_positions(
         self,
         competition_id: str | None = None,
@@ -215,31 +211,31 @@ class KaggleIntegration:
         """
         if self.config is None:
             raise ValueError("Config required for API access")
-        
+
         if competition_id is None:
             competition_id = self.config.competition.competition_id
-        
+
         # Try to download test data
         url = f"https://www.kaggle.com/api/v1/competitions/{competition_id}/data/list"
         headers = self.config.get_auth_headers()
-        
+
         response = requests.get(url, headers=headers)
-        
+
         if response.status_code == 200:
             data = response.json()
-            
+
             # Save to file if requested
             if save_path:
                 with open(save_path, 'w') as f:
                     json.dump(data, f, indent=2)
-            
+
             # Parse positions from data
             return self._extract_positions_from_data(data)
         else:
             # If API call fails, log warning and return empty list
             logger.warning(f"Could not download benchmark positions: {response.status_code}")
             return []
-    
+
     def _parse_leaderboard_data(self, data: dict[str, Any]) -> KaggleLeaderboardData:
         """Parse leaderboard data from JSON.
         
@@ -251,28 +247,28 @@ class KaggleIntegration:
         """
         # Extract positions from data
         positions = self._extract_positions_from_data(data)
-        
+
         # Extract leaderboard entries
         leaderboard_entries = []
         if "submissions" in data:
             leaderboard_entries = data["submissions"]
         elif "leaderboard" in data:
             leaderboard_entries = data["leaderboard"]
-        
+
         # Extract metadata
         metadata = {
             "competition_id": data.get("competition_id", "unknown"),
             "total_positions": len(positions),
             "total_entries": len(leaderboard_entries),
-            "last_updated": data.get("last_updated", None),
+            "last_updated": data.get("last_updated"),
         }
-        
+
         return KaggleLeaderboardData(
             positions=positions,
             leaderboard_entries=leaderboard_entries,
             metadata=metadata
         )
-    
+
     def _extract_positions_from_data(
         self,
         data: dict[str, Any]
@@ -286,12 +282,12 @@ class KaggleIntegration:
             List of benchmark positions.
         """
         positions = []
-        
+
         # Try different data formats
         raw_positions = data.get("test_positions", [])
         if not raw_positions:
             raw_positions = data.get("positions", [])
-        
+
         for pos_data in raw_positions:
             fen = pos_data.get("fen", "")
             if fen:
@@ -307,7 +303,7 @@ class KaggleIntegration:
                     ))
                 except ValueError:
                     logger.warning(f"Invalid FEN skipped: {fen}")
-        
+
         return positions
 
 
@@ -335,11 +331,11 @@ class KaggleLeaderboardLoader:
     Handles various Kaggle API response formats and extracts
     chess positions for benchmarking.
     """
-    
+
     def __init__(self):
         """Initialize the Kaggle leaderboard loader."""
         self.leaderboard: KaggleLeaderboard | None = None
-    
+
     def load_from_file(self, filepath: str | Path) -> KaggleLeaderboard:
         """Load leaderboard data from a JSON file.
         
@@ -354,15 +350,15 @@ class KaggleLeaderboardLoader:
             json.JSONDecodeError: If the file is not valid JSON.
         """
         filepath = Path(filepath)
-        
+
         if not filepath.exists():
             raise FileNotFoundError(f"Kaggle leaderboard file not found: {filepath}")
-        
-        with open(filepath, 'r') as f:
+
+        with open(filepath) as f:
             data = json.load(f)
-        
+
         return self.parse_leaderboard(data)
-    
+
     def load_from_dict(self, data: dict[str, Any]) -> KaggleLeaderboard:
         """Load leaderboard data from a dictionary.
         
@@ -373,7 +369,7 @@ class KaggleLeaderboardLoader:
             Parsed leaderboard data.
         """
         return self.parse_leaderboard(data)
-    
+
     def parse_leaderboard(self, data: dict[str, Any]) -> KaggleLeaderboard:
         """Parse leaderboard data from Kaggle API response.
         
@@ -386,11 +382,11 @@ class KaggleLeaderboardLoader:
         # Extract basic metadata
         benchmark_name = data.get("benchmarkName", "chess")
         version = str(data.get("version", "1"))
-        
+
         # Parse submissions
         submissions = []
         submissions_data = data.get("submissions", [])
-        
+
         for idx, sub_data in enumerate(submissions_data):
             submission = KaggleSubmission(
                 team_name=sub_data.get("teamName", f"Team_{idx}"),
@@ -400,10 +396,10 @@ class KaggleLeaderboardLoader:
                 metadata=sub_data.get("metadata", {})
             )
             submissions.append(submission)
-        
+
         # Parse test positions
         test_positions = self._extract_test_positions(data)
-        
+
         leaderboard = KaggleLeaderboard(
             benchmark_name=benchmark_name,
             version=version,
@@ -411,10 +407,10 @@ class KaggleLeaderboardLoader:
             test_positions=test_positions,
             metadata={k: v for k, v in data.items() if k not in ["submissions", "testData"]}
         )
-        
+
         self.leaderboard = leaderboard
         return leaderboard
-    
+
     def _extract_test_positions(self, data: dict[str, Any]) -> list[KaggleBenchmarkPosition]:
         """Extract test positions from Kaggle data.
         
@@ -425,7 +421,7 @@ class KaggleLeaderboardLoader:
             List of KaggleBenchmarkPosition instances.
         """
         positions = []
-        
+
         # Try different data structures
         position_data = None
         if "positions" in data:
@@ -436,11 +432,11 @@ class KaggleLeaderboardLoader:
             position_data = data["benchmark_positions"]
         elif "data" in data and isinstance(data["data"], list):
             position_data = data["data"]
-        
+
         if position_data is None:
             # Try to find FEN strings in any field
             position_data = self._find_fen_strings(data)
-        
+
         if position_data:
             for i, pos_entry in enumerate(position_data):
                 if isinstance(pos_entry, dict):
@@ -453,12 +449,12 @@ class KaggleLeaderboardLoader:
                     )
                 else:
                     continue
-                
+
                 if position:
                     positions.append(position)
-        
+
         return positions
-    
+
     def _parse_position_entry(
         self,
         entry: dict[str, Any],
@@ -479,16 +475,16 @@ class KaggleLeaderboardLoader:
             if field in entry:
                 fen = entry[field]
                 break
-        
+
         if not fen:
             return None
-        
+
         # Extract other fields
         position_id = entry.get("id", entry.get("position_id", f"pos_{index}"))
         description = entry.get("description", entry.get("category", ""))
-        expected_move = entry.get("expected_move", entry.get("best_move", None))
-        difficulty = entry.get("difficulty", entry.get("rating", None))
-        
+        expected_move = entry.get("expected_move", entry.get("best_move"))
+        difficulty = entry.get("difficulty", entry.get("rating"))
+
         return KaggleBenchmarkPosition(
             position_id=str(position_id),
             fen=fen,
@@ -496,7 +492,7 @@ class KaggleLeaderboardLoader:
             expected_move=expected_move,
             difficulty=difficulty
         )
-    
+
     def _find_fen_strings(self, data: dict[str, Any]) -> list[str]:
         """Recursively find FEN strings in data.
         
@@ -507,7 +503,7 @@ class KaggleLeaderboardLoader:
             List of FEN strings found.
         """
         fen_strings = []
-        
+
         def search_dict(d):
             if isinstance(d, dict):
                 for key, value in d.items():
@@ -518,10 +514,10 @@ class KaggleLeaderboardLoader:
             elif isinstance(d, list):
                 for item in d:
                     search_dict(item)
-        
+
         search_dict(data)
         return fen_strings
-    
+
     def _looks_like_fen(self, s: str) -> bool:
         """Check if a string looks like a FEN string.
         
@@ -533,23 +529,23 @@ class KaggleLeaderboardLoader:
         """
         if not isinstance(s, str):
             return False
-        
+
         parts = s.split()
-        
+
         # FEN should have 6 parts
         if len(parts) != 6:
             return False
-        
+
         # First part should be board position with 7 slashes
         if parts[0].count('/') != 7:
             return False
-        
+
         # Second part should be w or b
         if parts[1] not in ['w', 'b']:
             return False
-        
+
         return True
-    
+
     def create_sample_positions(self) -> list[KaggleBenchmarkPosition]:
         """Create sample benchmark positions for testing.
         
@@ -563,7 +559,7 @@ class KaggleLeaderboardLoader:
             ("tactics", "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4", "Tactical position"),
             ("complex", "r1bq1rk1/pp2ppbp/2np1np1/8/2BNP3/2N1BP2/PPPQ2PP/R3K2R w KQ - 2 10", "Complex middlegame"),
         ]
-        
+
         positions = []
         for pos_id, fen, desc in sample_fens:
             positions.append(KaggleBenchmarkPosition(
@@ -571,7 +567,7 @@ class KaggleLeaderboardLoader:
                 fen=fen,
                 description=desc
             ))
-        
+
         return positions
 
     def _extract_positions_from_data(self, data: dict) -> list[KaggleBenchmarkPosition]:
@@ -584,7 +580,7 @@ class KaggleLeaderboardLoader:
             List of benchmark positions.
         """
         positions = []
-        
+
         # Check various possible locations for test data
         test_data = data.get("testData", [])
         if not test_data:
@@ -593,15 +589,15 @@ class KaggleLeaderboardLoader:
             test_data = data.get("positions", [])
         if not test_data:
             test_data = data.get("benchmarkData", [])
-        
+
         for idx, test_item in enumerate(test_data):
             # Extract FEN string
             fen = self._extract_fen(test_item, idx)
-            
+
             if fen:
                 try:
                     position_obj = Position.from_fen(fen)
-                    
+
                     benchmark_pos = KaggleBenchmarkPosition(
                         fen=fen,
                         position=position_obj,
@@ -616,13 +612,13 @@ class KaggleLeaderboardLoader:
                     # Skip invalid positions
                     print(f"Warning: Failed to parse position {idx}: {e}")
                     continue
-        
+
         # If no positions found, generate standard test positions
         if not positions:
             positions = self._generate_standard_positions()
-        
+
         return positions
-    
+
     def _extract_fen(self, test_item: dict[str, Any], idx: int) -> str | None:
         """Extract FEN string from a test item.
         
@@ -641,9 +637,9 @@ class KaggleLeaderboardLoader:
             fen = test_item.get("position")
         if not fen:
             fen = test_item.get("board")
-        
+
         return fen
-    
+
     def _generate_standard_positions(self) -> list[KaggleBenchmarkPosition]:
         """Generate standard chess benchmark positions.
         
@@ -701,7 +697,7 @@ class KaggleLeaderboardLoader:
                 "difficulty": "medium"
             }
         ]
-        
+
         positions = []
         for pos_data in standard_positions:
             try:
@@ -716,9 +712,9 @@ class KaggleLeaderboardLoader:
                 positions.append(benchmark_pos)
             except (ValueError, KeyError):
                 continue
-        
+
         return positions
-    
+
     def extract_positions(
         self,
         leaderboard: KaggleLeaderboard | None = None
@@ -733,12 +729,12 @@ class KaggleLeaderboardLoader:
         """
         if leaderboard is None:
             leaderboard = self.leaderboard
-        
+
         if leaderboard is None:
             raise ValueError("No leaderboard data loaded")
-        
+
         return leaderboard.test_positions
-    
+
     def get_top_submissions(
         self,
         n: int = 10,
@@ -755,18 +751,18 @@ class KaggleLeaderboardLoader:
         """
         if leaderboard is None:
             leaderboard = self.leaderboard
-        
+
         if leaderboard is None:
             raise ValueError("No leaderboard data loaded")
-        
+
         # Sort by rank (lower is better) or score (higher is better)
         sorted_submissions = sorted(
             leaderboard.submissions,
             key=lambda s: (s.rank, -s.score)
         )
-        
+
         return sorted_submissions[:n]
-    
+
     def export_positions_to_fen_file(
         self,
         filepath: str | Path,
@@ -779,7 +775,7 @@ class KaggleLeaderboardLoader:
             leaderboard: Leaderboard to export from (uses self.leaderboard if None).
         """
         positions = self.extract_positions(leaderboard)
-        
+
         filepath = Path(filepath)
         with open(filepath, 'w') as f:
             for pos in positions:
@@ -796,12 +792,12 @@ def download_kaggle_leaderboard(output_path: str | Path) -> bool:
         True if download was successful, False otherwise.
     """
     import subprocess
-    
+
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    
+
     url = "https://www.kaggle.com/api/v1/benchmarks/kaggle/chess/versions/1/leaderboard"
-    
+
     try:
         # Use curl to download
         result = subprocess.run(
@@ -810,7 +806,7 @@ def download_kaggle_leaderboard(output_path: str | Path) -> bool:
             text=True,
             timeout=30
         )
-        
+
         if result.returncode == 0 and output_path.exists():
             return True
         else:

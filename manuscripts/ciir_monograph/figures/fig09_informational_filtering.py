@@ -20,13 +20,13 @@ Publication-quality, 4K-equivalent at 300 DPI.
 """
 
 import matplotlib
+
 matplotlib.use("Agg")
+import warnings
+
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 from matplotlib import cm
-from mpl_toolkits.mplot3d import Axes3D
-import warnings
 
 # ── Nature / Science colour palette ──────────────────────────────
 C_BG       = "#FAFAFA"

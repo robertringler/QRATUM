@@ -6,8 +6,9 @@ Unified web interface for accessing all QRATUM services
 """
 
 import os
+
 import requests
-from flask import Flask, render_template_string, jsonify
+from flask import Flask, jsonify, render_template_string
 from flask_cors import CORS
 
 app = Flask(__name__)

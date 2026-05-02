@@ -22,22 +22,17 @@ from typing import Any
 
 from qradle.merkle import MerkleChain
 from qratum_asi.reinjection.audit import AuditReport, AuditReportGenerator
-from qratum_asi.reinjection.contracts import (
-    ReinjectionContract,
-    create_reinjection_contract,
-)
+from qratum_asi.reinjection.contracts import (ReinjectionContract,
+                                              create_reinjection_contract)
 from qratum_asi.reinjection.mapper import DiscoveryPriorMapper
 from qratum_asi.reinjection.sandbox import SandboxOrchestrator
-from qratum_asi.reinjection.types import (
-    DiscoveryDomain,
-    ReinjectionCandidate,
-    ReinjectionResult,
-    ReinjectionScore,
-    ReinjectionStatus,
-    SandboxResult,
-    ValidationLevel,
-)
-from qratum_asi.reinjection.validator import ReinjectionValidator, ValidationResult
+from qratum_asi.reinjection.types import (DiscoveryDomain,
+                                          ReinjectionCandidate,
+                                          ReinjectionResult, ReinjectionScore,
+                                          ReinjectionStatus, SandboxResult,
+                                          ValidationLevel)
+from qratum_asi.reinjection.validator import (ReinjectionValidator,
+                                              ValidationResult)
 
 
 @dataclass

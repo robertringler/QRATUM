@@ -11,15 +11,11 @@ Implements multiple search strategies:
 from __future__ import annotations
 
 from qratum_chess.search.aas import AsymmetricAdaptiveSearch
-from qratum_chess.search.aas_kernel import (
-    AASKernel,
-    AASMetrics,
-    ChessAASKernel,
-    DepthBudget,
-    EntropyGradient,
-    OrthogonalSubspace,
-    create_aas_kernel,
-)
+from qratum_chess.search.aas_kernel import (AASKernel, AASMetrics,
+                                            ChessAASKernel, DepthBudget,
+                                            EntropyGradient,
+                                            OrthogonalSubspace,
+                                            create_aas_kernel)
 from qratum_chess.search.alphabeta import AlphaBetaSearch
 from qratum_chess.search.mcts import MCTSSearch
 

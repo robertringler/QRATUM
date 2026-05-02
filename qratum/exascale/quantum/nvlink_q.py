@@ -24,12 +24,12 @@ Architecture:
 └──────────────┘              └──────────────┘
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple, Any
-from enum import Enum
-import time
 import hashlib
 import struct
+import time
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Dict, List, Optional, Set
 
 
 class NVLinkQProtocol(Enum):
@@ -85,11 +85,11 @@ class NVLinkQCapabilities:
     supports_rdma: bool = True
     supports_coherence: bool = True
     quantum_timing_sync: bool = True
-    
+
     def get_max_throughput_gbs(self) -> float:
         """Get maximum throughput in GB/s"""
         return self.bandwidth_tbs * 1024.0  # TB/s to GB/s
-    
+
     def estimate_transfer_time_us(self, data_size_mb: float) -> float:
         """
         Estimate transfer time for given data size
@@ -103,7 +103,7 @@ class NVLinkQCapabilities:
         data_gb = data_size_mb / 1024.0
         transfer_time_s = data_gb / self.bandwidth_tbs
         transfer_time_us = transfer_time_s * 1_000_000.0
-        
+
         # Add latency overhead
         return transfer_time_us + (self.latency_ns / 1000.0)
 
@@ -137,15 +137,15 @@ class NVLinkQPacket:
     timestamp_ns: int = 0
     checksum: str = ""
     payload: Optional[bytes] = None
-    
+
     def __post_init__(self):
         """Initialize packet"""
         if self.timestamp_ns == 0:
             object.__setattr__(self, 'timestamp_ns', int(time.time() * 1e9))
-        
+
         if not self.checksum and self.payload:
             object.__setattr__(self, 'checksum', self.compute_checksum())
-    
+
     def compute_checksum(self) -> str:
         """
         Compute packet checksum
@@ -155,7 +155,7 @@ class NVLinkQPacket:
         """
         if not self.payload:
             return ""
-        
+
         # Include metadata in checksum
         metadata = struct.pack(
             'QQQQ',
@@ -164,10 +164,10 @@ class NVLinkQPacket:
             self.dest_id,
             self.data_size_bytes,
         )
-        
+
         data = metadata + self.payload
         return hashlib.sha256(data).hexdigest()
-    
+
     def verify_checksum(self) -> bool:
         """
         Verify packet integrity
@@ -177,10 +177,10 @@ class NVLinkQPacket:
         """
         if not self.checksum or not self.payload:
             return False
-        
+
         computed = self.compute_checksum()
         return computed == self.checksum
-    
+
     def get_packet_overhead_bytes(self) -> int:
         """Get packet overhead (header + checksum)"""
         # Header: 8 fields × 8 bytes + checksum (32 bytes)
@@ -217,12 +217,12 @@ class NVLinkQTransfer:
     start_time_ns: int = 0
     completion_time_ns: Optional[int] = None
     status: str = "pending"
-    
+
     def __post_init__(self):
         """Initialize transfer"""
         if self.start_time_ns == 0:
             object.__setattr__(self, 'start_time_ns', int(time.time() * 1e9))
-    
+
     def get_progress(self) -> float:
         """
         Get transfer progress
@@ -232,14 +232,14 @@ class NVLinkQTransfer:
         """
         if not self.packets:
             return 0.0
-        
+
         transferred_bytes = sum(p.data_size_bytes for p in self.packets)
         return min(1.0, transferred_bytes / self.total_size_bytes)
-    
+
     def is_complete(self) -> bool:
         """Check if transfer is complete"""
         return self.status == "completed"
-    
+
     def get_elapsed_time_us(self) -> float:
         """
         Get elapsed transfer time
@@ -251,9 +251,9 @@ class NVLinkQTransfer:
             elapsed_ns = self.completion_time_ns - self.start_time_ns
         else:
             elapsed_ns = int(time.time() * 1e9) - self.start_time_ns
-        
+
         return elapsed_ns / 1000.0  # Convert to microseconds
-    
+
     def get_effective_bandwidth_gbs(self) -> float:
         """
         Calculate effective bandwidth
@@ -263,11 +263,11 @@ class NVLinkQTransfer:
         """
         if not self.is_complete():
             return 0.0
-        
+
         elapsed_s = self.get_elapsed_time_us() / 1_000_000.0
         if elapsed_s == 0:
             return 0.0
-        
+
         size_gb = self.total_size_bytes / (1024.0 ** 3)
         return size_gb / elapsed_s
 
@@ -300,7 +300,7 @@ class NVLinkQInterface:
     packet_counter: int = 0
     total_bytes_sent: int = 0
     total_bytes_received: int = 0
-    
+
     def create_transfer(self, protocol: NVLinkQProtocol,
                        direction: TransferDirection,
                        data_size_bytes: int) -> NVLinkQTransfer:
@@ -325,7 +325,7 @@ class NVLinkQInterface:
         else:
             source_id = self.gpu_id
             dest_id = self.quantum_module_id
-        
+
         transfer = NVLinkQTransfer(
             transfer_id=f"transfer_{len(self.completed_transfers)}",
             protocol=protocol,
@@ -334,9 +334,9 @@ class NVLinkQInterface:
             dest_id=dest_id,
             total_size_bytes=data_size_bytes,
         )
-        
+
         return transfer
-    
+
     def send_data(self, protocol: NVLinkQProtocol,
                  data_size_bytes: int,
                  priority: TransferPriority = TransferPriority.NORMAL) -> str:
@@ -357,14 +357,14 @@ class NVLinkQInterface:
             direction=TransferDirection.GPU_TO_QUANTUM,
             data_size_bytes=data_size_bytes,
         )
-        
+
         # Packetize data
         max_packet_size = self.capabilities.max_packet_size_kb * 1024
         remaining_bytes = data_size_bytes
-        
+
         while remaining_bytes > 0:
             packet_size = min(remaining_bytes, max_packet_size)
-            
+
             packet = NVLinkQPacket(
                 packet_id=self.packet_counter,
                 protocol=protocol,
@@ -374,18 +374,18 @@ class NVLinkQInterface:
                 data_size_bytes=packet_size,
                 priority=priority,
             )
-            
+
             transfer.packets.append(packet)
             self.packet_counter += 1
             remaining_bytes -= packet_size
-        
+
         # Register transfer
         transfer.status = "transmitting"
         self.active_transfers[transfer.transfer_id] = transfer
         self.total_bytes_sent += data_size_bytes
-        
+
         return transfer.transfer_id
-    
+
     def receive_data(self, protocol: NVLinkQProtocol,
                     expected_size_bytes: int) -> str:
         """
@@ -404,14 +404,14 @@ class NVLinkQInterface:
             direction=TransferDirection.QUANTUM_TO_GPU,
             data_size_bytes=expected_size_bytes,
         )
-        
+
         # Register transfer
         transfer.status = "receiving"
         self.active_transfers[transfer.transfer_id] = transfer
         self.total_bytes_received += expected_size_bytes
-        
+
         return transfer.transfer_id
-    
+
     def complete_transfer(self, transfer_id: str) -> bool:
         """
         Mark transfer as completed
@@ -424,17 +424,17 @@ class NVLinkQInterface:
         """
         if transfer_id not in self.active_transfers:
             return False
-        
+
         transfer = self.active_transfers[transfer_id]
         transfer.status = "completed"
         transfer.completion_time_ns = int(time.time() * 1e9)
-        
+
         # Move to completed
         del self.active_transfers[transfer_id]
         self.completed_transfers.add(transfer_id)
-        
+
         return True
-    
+
     def send_quantum_parameters(self, num_parameters: int,
                                parameter_size_bytes: int = 8) -> str:
         """
@@ -453,7 +453,7 @@ class NVLinkQInterface:
             data_size_bytes=total_size,
             priority=TransferPriority.HIGH,
         )
-    
+
     def receive_measurement_results(self, num_measurements: int,
                                    result_size_bytes: int = 8) -> str:
         """
@@ -471,7 +471,7 @@ class NVLinkQInterface:
             protocol=NVLinkQProtocol.MEASUREMENT_STREAM,
             expected_size_bytes=total_size,
         )
-    
+
     def synchronize(self) -> bool:
         """
         Synchronize quantum-classical timing
@@ -485,12 +485,12 @@ class NVLinkQInterface:
             data_size_bytes=64,  # Minimal sync packet
             priority=TransferPriority.CRITICAL,
         )
-        
+
         # Simulate sync completion
         self.complete_transfer(transfer_id)
-        
+
         return True
-    
+
     def get_interface_statistics(self) -> Dict[str, Any]:
         """
         Get interface statistics
@@ -500,7 +500,7 @@ class NVLinkQInterface:
         """
         active_count = len(self.active_transfers)
         completed_count = len(self.completed_transfers)
-        
+
         # Calculate average bandwidth
         avg_bandwidth_gbs = 0.0
         if completed_count > 0:
@@ -510,7 +510,7 @@ class NVLinkQInterface:
                 # For now, estimate based on capabilities
                 bandwidths.append(self.capabilities.get_max_throughput_gbs())
             avg_bandwidth_gbs = sum(bandwidths) / len(bandwidths) if bandwidths else 0.0
-        
+
         return {
             'interface_id': self.interface_id,
             'gpu_id': self.gpu_id,
@@ -542,7 +542,7 @@ class NVLinkQFabric:
     fabric_id: str
     interfaces: Dict[str, NVLinkQInterface] = field(default_factory=dict)
     topology: str = "all-to-all"
-    
+
     def create_interface(self, gpu_id: int, quantum_module_id: int) -> str:
         """
         Create NVLink-Q interface
@@ -555,16 +555,16 @@ class NVLinkQFabric:
             Interface ID
         """
         interface_id = f"nvlink_q_{gpu_id}_{quantum_module_id}"
-        
+
         interface = NVLinkQInterface(
             interface_id=interface_id,
             gpu_id=gpu_id,
             quantum_module_id=quantum_module_id,
         )
-        
+
         self.interfaces[interface_id] = interface
         return interface_id
-    
+
     def get_interface(self, gpu_id: int, quantum_module_id: int) -> Optional[NVLinkQInterface]:
         """
         Get interface for GPU-quantum pair
@@ -578,7 +578,7 @@ class NVLinkQFabric:
         """
         interface_id = f"nvlink_q_{gpu_id}_{quantum_module_id}"
         return self.interfaces.get(interface_id)
-    
+
     def synchronize_all(self) -> Dict[str, bool]:
         """
         Synchronize all interfaces
@@ -590,7 +590,7 @@ class NVLinkQFabric:
         for interface_id, interface in self.interfaces.items():
             results[interface_id] = interface.synchronize()
         return results
-    
+
     def get_fabric_statistics(self) -> Dict[str, Any]:
         """
         Get fabric-wide statistics
@@ -603,7 +603,7 @@ class NVLinkQFabric:
         total_completed = sum(len(i.completed_transfers) for i in self.interfaces.values())
         total_bytes_sent = sum(i.total_bytes_sent for i in self.interfaces.values())
         total_bytes_received = sum(i.total_bytes_received for i in self.interfaces.values())
-        
+
         return {
             'fabric_id': self.fabric_id,
             'topology': self.topology,
@@ -620,7 +620,7 @@ class NVLinkQInterfaceBuilder:
     """
     Builder for NVLink-Q fabric configurations
     """
-    
+
     @staticmethod
     def create_standard_fabric(num_gpus: int, num_quantum_modules: int,
                               fabric_id: str = "nvlink_q_fabric_0") -> NVLinkQFabric:
@@ -636,13 +636,13 @@ class NVLinkQInterfaceBuilder:
             NVLinkQFabric instance
         """
         fabric = NVLinkQFabric(fabric_id=fabric_id)
-        
+
         # Create interfaces (one-to-one mapping for simplicity)
         for i in range(min(num_gpus, num_quantum_modules)):
             fabric.create_interface(gpu_id=i, quantum_module_id=i)
-        
+
         return fabric
-    
+
     @staticmethod
     def create_full_mesh_fabric(num_gpus: int, num_quantum_modules: int,
                                fabric_id: str = "nvlink_q_fabric_mesh") -> NVLinkQFabric:
@@ -658,10 +658,10 @@ class NVLinkQInterfaceBuilder:
             NVLinkQFabric instance
         """
         fabric = NVLinkQFabric(fabric_id=fabric_id, topology="full_mesh")
-        
+
         # Create all possible interfaces
         for gpu_id in range(num_gpus):
             for module_id in range(num_quantum_modules):
                 fabric.create_interface(gpu_id=gpu_id, quantum_module_id=module_id)
-        
+
         return fabric

@@ -4,25 +4,13 @@ from __future__ import annotations
 
 import pytest
 
-from qagents.adapters import (
-    IMMUTABLE_BOUNDARIES,
-    PROHIBITED_GOALS,
-    ciir_proposer,
-    ciir_simulator,
-    crs_proposer,
-    crs_simulator,
-    make_ciir_controller,
-    make_crs_controller,
-    make_qratum_controller,
-    qratum_proposer,
-    qratum_simulator,
-)
-from qagents.reality_interface import (
-    ACTION_TYPES,
-    ControlDecision,
-    IntentInterpretation,
-    PredictedOutcome,
-)
+from qagents.adapters import (IMMUTABLE_BOUNDARIES, PROHIBITED_GOALS,
+                              ciir_proposer, ciir_simulator, crs_proposer,
+                              crs_simulator, make_ciir_controller,
+                              make_crs_controller, make_qratum_controller,
+                              qratum_proposer, qratum_simulator)
+from qagents.reality_interface import (ACTION_TYPES, ControlDecision,
+                                       IntentInterpretation, PredictedOutcome)
 
 # ---------------------------------------------------------------------------
 # QRATUM adapter

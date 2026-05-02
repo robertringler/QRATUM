@@ -33,11 +33,8 @@ from __future__ import annotations
 import math
 from typing import Any, Mapping
 
-from qagents.reality_interface import (
-    IntentInterpretation,
-    PredictedOutcome,
-    RealityInterfaceController,
-)
+from qagents.reality_interface import (IntentInterpretation, PredictedOutcome,
+                                       RealityInterfaceController)
 
 
 def _clamp01(value: float) -> float:

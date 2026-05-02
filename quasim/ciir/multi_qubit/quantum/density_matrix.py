@@ -21,8 +21,8 @@ compatibility with the rest of the CIIR simulation stack.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import List, Optional, Sequence
+from dataclasses import dataclass
+from typing import List
 
 import numpy as np
 from numpy.typing import NDArray

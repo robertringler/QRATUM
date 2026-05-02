@@ -13,14 +13,12 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-from contracts.base import (
-    BaseContract,
-    compute_contract_hash,
-    generate_contract_id,
-    get_current_timestamp,
-)
-from qradle.core.invariants import FatalInvariants, InvariantType, InvariantViolation
-from qradle.core.zones import SecurityZone, ZoneContext, ZoneDeterminismEnforcer
+from contracts.base import (BaseContract, compute_contract_hash,
+                            generate_contract_id, get_current_timestamp)
+from qradle.core.invariants import (FatalInvariants, InvariantType,
+                                    InvariantViolation)
+from qradle.core.zones import (SecurityZone, ZoneContext,
+                               ZoneDeterminismEnforcer)
 
 
 class EnforcementResult(Enum):

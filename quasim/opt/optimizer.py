@@ -13,6 +13,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Any
+
 import numpy as np
 
 from .problems import OptimizationProblem
@@ -21,28 +22,28 @@ from .problems import OptimizationProblem
 try:
     from qiskit import QuantumCircuit
     from qiskit.circuit import Parameter
-    from qiskit_aer import AerSimulator
+    from qiskit.circuit.library import RealAmplitudes, TwoLocal
     from qiskit.quantum_info import SparsePauliOp
-    from qiskit.circuit.library import TwoLocal, RealAmplitudes
-    
+    from qiskit_aer import AerSimulator
+
     # Try new API first, fall back to old
     try:
         from qiskit.primitives import BackendEstimatorV2 as BackendEstimator
     except ImportError:
         from qiskit.primitives import Estimator as BackendEstimator
-    
+
     # Algorithms may be in different locations
     try:
+        from qiskit_algorithms.minimum_eigensolvers import QAOA, VQE
         from qiskit_algorithms.optimizers import COBYLA, SLSQP
-        from qiskit_algorithms.minimum_eigensolvers import VQE, QAOA
     except ImportError:
         try:
+            from qiskit.algorithms.minimum_eigensolvers import QAOA, VQE
             from qiskit.algorithms.optimizers import COBYLA, SLSQP
-            from qiskit.algorithms.minimum_eigensolvers import VQE, QAOA
         except ImportError:
             # Very old version or missing package
             QISKIT_AVAILABLE = False
-    
+
     if 'QISKIT_AVAILABLE' not in locals():
         QISKIT_AVAILABLE = True
 except ImportError:
@@ -139,31 +140,31 @@ class QuantumOptimizer:
 
         try:
             from qiskit.primitives import Sampler
-            
+
             # Create quantum backend
             backend = AerSimulator(seed_simulator=self.random_seed)
 
             # Build Hamiltonian from problem
             num_qubits = min(problem.get_dimension(), 10)  # Limit for simulation
-            
+
             # Convert problem to QUBO/Ising Hamiltonian
             pauli_list = []
-            
+
             # Add interaction terms (simplified for general problems)
             for i in range(num_qubits):
                 pauli_str = "I" * i + "Z" + "I" * (num_qubits - i - 1)
                 pauli_list.append((pauli_str, -1.0))
-            
+
             # Add coupling terms
             for i in range(num_qubits - 1):
                 pauli_str = "I" * i + "ZZ" + "I" * (num_qubits - i - 2)
                 pauli_list.append((pauli_str, 0.5))
-            
+
             hamiltonian = SparsePauliOp.from_list(pauli_list)
 
             # Create QAOA instance with optimizer
             optimizer = COBYLA(maxiter=self.max_iterations, tol=self.convergence_tolerance)
-            
+
             # Create sampler primitive
             sampler = Sampler()
 
@@ -226,23 +227,23 @@ class QuantumOptimizer:
         T_initial = initial_params.get("temperature", 10.0)
         T_final = 0.01
         cooling_rate = initial_params.get("cooling_rate", 0.95)
-        
+
         # Initialize
         current_solution = problem.get_random_solution()
         current_value = problem.evaluate(current_solution)
         best_solution = current_solution.copy()
         best_value = current_value
-        
+
         temperature = T_initial
         iterations = 0
 
         while temperature > T_final and iterations < self.max_iterations:
             iterations += 1
-            
+
             # Generate neighbor solution
             neighbor = current_solution.copy()
             idx = rng.randint(0, len(neighbor))
-            
+
             # Handle different solution types
             if isinstance(neighbor[idx], (int, np.integer)):
                 # Binary/integer variable
@@ -250,25 +251,25 @@ class QuantumOptimizer:
             else:
                 # Continuous variable
                 neighbor[idx] = rng.randn()
-            
+
             neighbor_value = problem.evaluate(neighbor)
-            
+
             # Acceptance criterion
             if problem.is_minimization:
                 delta = neighbor_value - current_value
             else:
                 delta = current_value - neighbor_value
-            
+
             if delta < 0 or rng.random() < np.exp(-delta / temperature):
                 current_solution = neighbor
                 current_value = neighbor_value
-                
+
                 # Update best
                 if (problem.is_minimization and current_value < best_value) or \
                    (not problem.is_minimization and current_value > best_value):
                     best_solution = current_solution.copy()
                     best_value = current_value
-            
+
             # Cool down
             temperature *= cooling_rate
 
@@ -290,12 +291,12 @@ class QuantumOptimizer:
 
         best_solution = problem.get_random_solution()
         best_value = problem.evaluate(best_solution)
-        
+
         # Try multiple random samples
         for i in range(min(self.max_iterations, 1000)):
             candidate = problem.get_random_solution()
             value = problem.evaluate(candidate)
-            
+
             if (problem.is_minimization and value < best_value) or \
                (not problem.is_minimization and value > best_value):
                 best_solution = candidate
@@ -330,34 +331,34 @@ class QuantumOptimizer:
 
         try:
             from qiskit.primitives import Estimator
-            
+
             # Create quantum backend
             backend = AerSimulator(seed_simulator=self.random_seed)
 
             # Build Hamiltonian
             num_qubits = min(problem.get_dimension(), 6)  # Limit for VQE simulation
-            
+
             # Create a simple molecular Hamiltonian (H2-like)
             pauli_list = []
-            
+
             # Identity term
             pauli_list.append(("I" * num_qubits, -0.8105))
-            
+
             # Single-qubit Z terms
             for i in range(num_qubits):
                 pauli_str = "I" * i + "Z" + "I" * (num_qubits - i - 1)
                 pauli_list.append((pauli_str, 0.1716))
-            
+
             # Two-qubit ZZ terms
             if num_qubits >= 2:
                 pauli_list.append(("ZZ" + "I" * (num_qubits - 2), -0.2228))
                 pauli_list.append(("Z" + "I" * (num_qubits - 2) + "Z", 0.1686))
-            
+
             # Pauli X, Y terms for chemical accuracy
             if num_qubits >= 2:
                 pauli_list.append(("XX" + "I" * (num_qubits - 2), 0.0453))
                 pauli_list.append(("YY" + "I" * (num_qubits - 2), 0.0453))
-            
+
             hamiltonian = SparsePauliOp.from_list(pauli_list)
 
             # Create ansatz circuit (hardware-efficient or chemistry-inspired)
@@ -372,7 +373,7 @@ class QuantumOptimizer:
 
             # Create optimizer
             optimizer = SLSQP(maxiter=self.max_iterations, tol=self.convergence_tolerance)
-            
+
             # Create estimator primitive
             estimator = Estimator()
 
@@ -430,17 +431,17 @@ class QuantumOptimizer:
         """
         # First phase: Quantum exploration with QAOA
         qaoa_result = self._optimize_qaoa(problem, initial_params)
-        
+
         # Second phase: Classical refinement with simulated annealing
         # Use QAOA solution as starting point
         sa_params = {
             "temperature": 1.0,  # Lower temperature for refinement
             "cooling_rate": 0.98,
         }
-        
+
         # Create temporary problem with QAOA solution as hint
         sa_result = self._optimize_annealing(problem, sa_params)
-        
+
         # Return better of the two
         if problem.is_minimization:
             if sa_result["objective_value"] < qaoa_result["objective_value"]:
@@ -460,9 +461,9 @@ class QuantumOptimizer:
                 result = qaoa_result
                 result["algorithm"] = "hybrid"
                 result["note"] = "Quantum result was optimal"
-        
+
         result["qaoa_value"] = qaoa_result["objective_value"]
         result["sa_value"] = sa_result["objective_value"]
-        
+
         return result
 

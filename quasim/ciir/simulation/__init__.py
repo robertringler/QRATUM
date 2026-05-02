@@ -18,11 +18,9 @@ export : Export utilities for screenshots, video, tensor logs, and CSV metrics
 
 __version__ = "0.1.0"
 
-from quasim.ciir.simulation.engine import (
-    CIIRSimulationEngine,
-    SimulationConfig,
-    run_and_capture_simulation,
-)
+from quasim.ciir.simulation.engine import (CIIRSimulationEngine,
+                                           SimulationConfig,
+                                           run_and_capture_simulation)
 
 __all__ = [
     "CIIRSimulationEngine",

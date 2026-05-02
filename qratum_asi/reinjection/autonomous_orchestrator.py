@@ -28,11 +28,9 @@ from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
 from qratum_asi.reinjection.audit import AuditReport, AuditReportGenerator
-from qratum_asi.reinjection.engine import ReinjectionCycleResult, ReinjectionEngine
-from qratum_asi.reinjection.types import (
-    DiscoveryDomain,
-    ValidationLevel,
-)
+from qratum_asi.reinjection.engine import (ReinjectionCycleResult,
+                                           ReinjectionEngine)
+from qratum_asi.reinjection.types import DiscoveryDomain, ValidationLevel
 from qratum_asi.reinjection.validator import ReinjectionValidator
 
 

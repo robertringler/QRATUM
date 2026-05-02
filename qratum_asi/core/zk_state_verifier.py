@@ -23,12 +23,9 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 
-from .calibration_doctrine import (
-    CalibrationDoctrineEnforcer,
-    JurisdictionalProperty,
-    TrajectoryState,
-    get_doctrine_enforcer,
-)
+from .calibration_doctrine import (CalibrationDoctrineEnforcer,
+                                   JurisdictionalProperty, TrajectoryState,
+                                   get_doctrine_enforcer)
 
 
 class TransitionType(Enum):

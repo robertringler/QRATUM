@@ -11,9 +11,11 @@ from typing import Any
 
 import numpy as np
 
-from quasim.ciir.simulation.ciir_module import CIIRState, CIIRObserver, CIIRVisualizer
-from quasim.ciir.simulation.quasim_module import TensorRuntime, TensorVisualizer
-from quasim.ciir.simulation.qratum_module import PerformanceDashboard, QRATUMHardware
+from quasim.ciir.simulation.ciir_module import CIIRState, CIIRVisualizer
+from quasim.ciir.simulation.qratum_module import (PerformanceDashboard,
+                                                  QRATUMHardware)
+from quasim.ciir.simulation.quasim_module import (TensorRuntime,
+                                                  TensorVisualizer)
 
 
 class SimulationRenderer:
@@ -192,7 +194,7 @@ def _plot_metrics_on_ax(ax: Any, hardware: QRATUMHardware, state: CIIRState) -> 
         f"Avg step:     {perf.get('avg_step_time_s', 0) * 1000:.2f}ms",
         f"Throughput:   {perf.get('throughput_steps_per_s', 0):.1f} steps/s",
         "",
-        f"Current state (batch 0):",
+        "Current state (batch 0):",
         f"  Purity:   {float(state.purity[0]):.4f}",
         f"  Entropy:  {float(state.entropy[0]):.4f}",
     ]

@@ -21,10 +21,8 @@ from typing import Any
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.strategic_agency.types import (
-    ExplorationConstraints,
-    ExplorationMode,
-)
+from qratum_asi.strategic_agency.types import (ExplorationConstraints,
+                                               ExplorationMode)
 
 
 class GateStatus(Enum):

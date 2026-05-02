@@ -21,10 +21,8 @@ to GPU tensor libraries (torch.einsum, jax.numpy.einsum, tf.einsum).
 from __future__ import annotations
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.theory import CIIRTheory, RealTensor, ComplexTensor
-
+from quasim.ciir.theory import CIIRTheory, ComplexTensor, RealTensor
 
 # ================================================================
 # Batch density matrix construction

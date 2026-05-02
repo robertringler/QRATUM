@@ -110,7 +110,8 @@ print("   Running performance benchmarks...")
 start = time.time()
 
 # Run just performance metrics with the live engine
-from qratum_chess.benchmarks.metrics import PerformanceMetrics, PerformanceReport
+from qratum_chess.benchmarks.metrics import (PerformanceMetrics,
+                                             PerformanceReport)
 
 perf = PerformanceMetrics()
 report = PerformanceReport(test_name="quick_demo")

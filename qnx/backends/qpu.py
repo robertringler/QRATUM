@@ -53,9 +53,9 @@ q
     This is a stub implementation establishing the structural interface.
     Full QPU backend will be implemented in a future PR.
     """
-    
+
     _warned = False
-    
+
     def __init__(self):
         """Initialize QPU backend stub with clarification warning."""
         if not QPUBackend._warned:
@@ -68,7 +68,7 @@ q
                 stacklevel=2
             )
             QPUBackend._warned = True
-    
+
     @property
     def available(self) -> bool:
         """Check if QPU backend is available.
@@ -77,7 +77,7 @@ q
             Always False - quantum hardware not integrated
         """
         return False
-    
+
     def is_available(self) -> bool:
         """Check if QPU backend is available.
         

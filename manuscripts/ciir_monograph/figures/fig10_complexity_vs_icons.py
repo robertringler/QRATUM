@@ -22,11 +22,11 @@ Publication-quality, 4K-equivalent at 300 DPI.
 """
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import FancyBboxPatch, Circle, Rectangle, Polygon
-from matplotlib import cm
+from matplotlib.patches import Circle, FancyBboxPatch
 
 # ── Colour palette ──
 C_BG       = "#FAFAFA"

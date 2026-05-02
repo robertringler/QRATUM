@@ -24,22 +24,20 @@ from pathlib import Path
 from typing import Any, Callable
 from uuid import uuid4
 
-from aion.concurrency.lattice import ConcurrencyEffect, EffectChecker, EffectLattice
+from aion.concurrency.lattice import (ConcurrencyEffect, EffectChecker,
+                                      EffectLattice)
 from aion.memory.regions import Region, RegionKind, RegionManager
-from aion.optimization.fusion import CrossLanguageFuser, KernelFusion, detect_fusion_patterns
-from aion.optimization.scheduler import (
-    AdaptiveScheduler,
-    CausalScheduler,
-    Device,
-    DeviceKind,
-    ScheduleResult,
-    Task,
-)
+from aion.optimization.fusion import (CrossLanguageFuser, KernelFusion,
+                                      detect_fusion_patterns)
+from aion.optimization.scheduler import (AdaptiveScheduler, CausalScheduler,
+                                         Device, DeviceKind, ScheduleResult,
+                                         Task)
 from aion.proof.synthesis import ProofSynthesizer
 from aion.proof.verifier import ProofKind, ProofTerm, ProofVerifier
 from aion.sir.edges import EdgeType, HyperEdge, ParallelismKind
 from aion.sir.hypergraph import GraphBuilder, HyperGraph, merge_graphs
-from aion.sir.vertices import AIONType, EffectKind, HardwareAffinity, Provenance, Vertex, VertexType
+from aion.sir.vertices import (AIONType, EffectKind, HardwareAffinity,
+                               Provenance, Vertex, VertexType)
 
 
 class ExecutionPhase(Enum):

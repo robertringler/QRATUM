@@ -18,7 +18,6 @@ from numpy.typing import NDArray
 
 from quasim.ciir.crs.graph import CRSGraph
 
-
 # ================================================================
 # Geodesic distances
 # ================================================================
@@ -118,8 +117,8 @@ def causal_depth(graph: CRSGraph) -> dict[int, int]:
     dict[int, int]
         Mapping node_id → depth.
     """
-    depth: dict[int, int] = {nid: 0 for nid in graph.nodes}
-    in_degree: dict[int, int] = {nid: 0 for nid in graph.nodes}
+    depth: dict[int, int] = dict.fromkeys(graph.nodes, 0)
+    in_degree: dict[int, int] = dict.fromkeys(graph.nodes, 0)
     for nid in graph.nodes:
         for parent in graph._reverse_adj.get(nid, set()):
             if parent in graph.nodes:

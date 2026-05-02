@@ -33,7 +33,6 @@ from typing import List, Tuple
 import numpy as np
 from numpy.typing import NDArray
 
-
 # ---------------------------------------------------------------------------
 # [[7,1,3]] Steane-code inspired single-level logical error rate
 # ---------------------------------------------------------------------------
@@ -55,6 +54,7 @@ def steane_logical_error_rate(p_phys: float) -> float:
     float — logical error probability per logical gate
     """
     from math import comb
+
     # Weight-2 patterns (and above) that cannot be corrected
     p_L = sum(
         comb(7, k) * (p_phys ** k) * ((1 - p_phys) ** (7 - k))

@@ -19,11 +19,9 @@ import math
 from dataclasses import dataclass
 from typing import Any
 
-from qratum_asi.generalization.types import (
-    CognitiveDomain,
-    CompressionMetrics,
-    UniversalStateVector,
-)
+from qratum_asi.generalization.types import (CognitiveDomain,
+                                             CompressionMetrics,
+                                             UniversalStateVector)
 
 # Compression constants
 MIN_ENTROPY_REDUCTION = 0.0

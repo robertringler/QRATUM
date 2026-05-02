@@ -13,10 +13,10 @@ Key Features:
 - ≥ 100 PB/s bisection bandwidth
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple
-from enum import Enum
 import hashlib
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Dict, List
 
 
 class NetworkTopology(Enum):
@@ -56,11 +56,11 @@ class NetworkLink:
     state: LinkState = LinkState.UP
     merkle_verified: bool = True
     error_count: int = 0
-    
+
     def is_operational(self) -> bool:
         """Check if link is operational"""
         return self.state == LinkState.UP
-    
+
     def calculate_transfer_time_us(self, message_size_bytes: int) -> float:
         """
         Calculate message transfer time in microseconds
@@ -75,7 +75,7 @@ class NetworkLink:
         bytes_per_us = (self.bandwidth_gbps * 1e9) / (8 * 1e6)
         transfer_time = message_size_bytes / bytes_per_us
         latency_us = self.latency_ns / 1000.0
-        
+
         return transfer_time + latency_us
 
 
@@ -108,12 +108,12 @@ class AetherFabricX:
     max_latency_ns: int = 500
     deterministic_routing: bool = True
     merkle_verification: bool = True
-    
+
     def __post_init__(self):
         """Initialize network fabric"""
         if not self.links:
             self.links = self._generate_topology()
-    
+
     def _generate_topology(self) -> List[NetworkLink]:
         """
         Generate network topology links
@@ -121,18 +121,18 @@ class AetherFabricX:
         For Dragonfly+ with 3,125 nodes, organized into groups
         """
         links = []
-        
+
         if self.topology_type == NetworkTopology.DRAGONFLY_PLUS:
             # Dragonfly+ organization: groups with local and global links
             # Simplified model for demonstration
             nodes_per_group = 32
             num_groups = (self.total_nodes + nodes_per_group - 1) // nodes_per_group
-            
+
             # Local links within groups
             for group in range(num_groups):
                 group_start = group * nodes_per_group
                 group_end = min(group_start + nodes_per_group, self.total_nodes)
-                
+
                 for i in range(group_start, group_end):
                     for j in range(i + 1, group_end):
                         link_id = f"L{i:05d}-{j:05d}"
@@ -143,7 +143,7 @@ class AetherFabricX:
                             bandwidth_gbps=800,
                             latency_ns=50,
                         ))
-            
+
             # Global links between groups (simplified)
             for g1 in range(num_groups):
                 for g2 in range(g1 + 1, num_groups):
@@ -158,9 +158,9 @@ class AetherFabricX:
                         bandwidth_gbps=800,
                         latency_ns=100,  # Higher latency for global links
                     ))
-        
+
         return links
-    
+
     def calculate_path_latency(self, source: str, dest: str, hops: int) -> int:
         """
         Calculate end-to-end latency for a path
@@ -175,7 +175,7 @@ class AetherFabricX:
         """
         # Assume average 50 ns per hop
         return hops * 50
-    
+
     def validate_determinism(self) -> bool:
         """
         Validate that network maintains deterministic properties
@@ -187,19 +187,19 @@ class AetherFabricX:
         """
         if not self.deterministic_routing:
             return False
-        
+
         for link in self.links:
             if not link.merkle_verified:
                 return False
-        
+
         return True
-    
+
     def get_network_summary(self) -> Dict[str, any]:
         """Return comprehensive network summary"""
         total_bandwidth_tbps = sum(
             link.bandwidth_gbps for link in self.links if link.is_operational()
         ) / 1000.0
-        
+
         return {
             "topology_type": self.topology_type.value,
             "total_nodes": self.total_nodes,
@@ -212,7 +212,7 @@ class AetherFabricX:
             "merkle_verification": self.merkle_verification,
             "determinism_validated": self.validate_determinism(),
         }
-    
+
     def compute_merkle_root(self, message: bytes) -> str:
         """
         Compute Merkle root for message verification
@@ -244,7 +244,7 @@ def create_exascale_network(total_nodes: int = 3125) -> AetherFabricX:
         deterministic_routing=True,
         merkle_verification=True,
     )
-    
+
     return network
 
 

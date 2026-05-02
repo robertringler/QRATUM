@@ -18,13 +18,7 @@ from typing import Any
 from ..memory.regions import Region, RegionLifetime
 from ..sir.edges import HyperEdge
 from ..sir.hypergraph import HyperGraph
-from ..sir.vertices import (
-    AIONType,
-    EffectKind,
-    Provenance,
-    Vertex,
-    VertexType,
-)
+from ..sir.vertices import AIONType, EffectKind, Provenance, Vertex, VertexType
 
 
 class CNodeKind(Enum):

@@ -26,17 +26,11 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from quasim.ciir.distortion import analyse_distortion
-from quasim.ciir.evolution import IntegrationMethod, evolve
+from quasim.ciir.evolution import evolve
 from quasim.ciir.loss import CIIRLoss
-from quasim.ciir.observers import (
-    MeasurementContext,
-    ObserverOperator,
-    PVM,
-    born_distribution,
-    contextuality_witness,
-    interference_term,
-    superposition_expectation,
-)
+from quasim.ciir.observers import (MeasurementContext, ObserverOperator,
+                                   contextuality_witness, interference_term,
+                                   superposition_expectation)
 from quasim.ciir.theory import CIIRTheory, build_default_theory
 
 

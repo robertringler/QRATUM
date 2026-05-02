@@ -7,30 +7,20 @@ import math
 import numpy as np
 import pytest
 
-from qagents.control_geometry import (
-    DEFAULT_EPS,
-    DEFAULT_WEIGHTS,
-    ActionMetrics,
-    DisplacementCache,
-    ReachabilityGraph,
-    action_norm,
-    action_similarity,
-    action_to_displacement,
-    classify_action_space,
-    compute_action_metrics,
-    control_policy,
-    controllability_rank,
-    controllability_spectrum,
-    displacement_matrix,
-    local_reachability,
-    reachability_cost,
-    reachability_graph,
-    score_action,
-    select_action,
-    sensitivity_probe,
-    state_to_vector,
-    vector_dim,
-)
+from qagents.control_geometry import (DEFAULT_EPS, DEFAULT_WEIGHTS,
+                                      ActionMetrics, DisplacementCache,
+                                      ReachabilityGraph, action_norm,
+                                      action_similarity,
+                                      action_to_displacement,
+                                      classify_action_space,
+                                      compute_action_metrics, control_policy,
+                                      controllability_rank,
+                                      controllability_spectrum,
+                                      displacement_matrix, local_reachability,
+                                      reachability_cost, reachability_graph,
+                                      score_action, select_action,
+                                      sensitivity_probe, state_to_vector,
+                                      vector_dim)
 from qagents.mvri.action_space import EPSILON, Action
 from qagents.mvri.demo import build_initial_state
 

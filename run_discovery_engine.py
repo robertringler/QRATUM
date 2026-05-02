@@ -31,7 +31,8 @@ def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "vulnerability"
 
     if mode == "vulnerability":
-        from qratum_asi.examples.vulnerability_discovery_demo import main as vuln_main
+        from qratum_asi.examples.vulnerability_discovery_demo import \
+            main as vuln_main
 
         vuln_main()
     elif mode == "qforge":

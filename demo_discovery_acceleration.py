@@ -18,16 +18,12 @@ sys.path.insert(0, ".")
 
 from datetime import datetime
 
-from qratum_asi.discovery_acceleration.contracts import (
-    create_discovery_contract,
-)
-from qratum_asi.discovery_acceleration.federated_gwas import (
-    FederatedGWASPipeline,
-)
+from qratum_asi.discovery_acceleration.contracts import \
+    create_discovery_contract
+from qratum_asi.discovery_acceleration.federated_gwas import \
+    FederatedGWASPipeline
 from qratum_asi.discovery_acceleration.workflows import (
-    DiscoveryAccelerationEngine,
-    DiscoveryType,
-)
+    DiscoveryAccelerationEngine, DiscoveryType)
 
 
 def print_header(title: str):

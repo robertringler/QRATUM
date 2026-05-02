@@ -46,21 +46,13 @@ from __future__ import annotations
 
 import random
 from dataclasses import dataclass, field
-from typing import Any, Callable, Mapping, Sequence
+from typing import Any, Callable, Mapping
 
-from qagents.reality_interface import (
-    ACTION_TYPES,
-    ActionType,
-    LinearSimulator,
-    Proposer,
-    RICDecision,
-    Simulator,
-    StaticProposer,
-    _constraint_satisfied,
-    _default_risk,
-    _default_stability,
-)
-
+from qagents.reality_interface import (ACTION_TYPES, ActionType,
+                                       LinearSimulator, Proposer, RICDecision,
+                                       Simulator, StaticProposer,
+                                       _constraint_satisfied, _default_risk,
+                                       _default_stability)
 
 # ---------------------------------------------------------------------------
 # Trajectory dataclasses

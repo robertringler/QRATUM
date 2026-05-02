@@ -10,13 +10,10 @@ Formal state space: S = (V × R^d) × (V×V × [0,1])
 from __future__ import annotations
 
 import copy
-from collections import deque
 from dataclasses import dataclass, field
-from typing import Iterator
 
 import numpy as np
 from numpy.typing import NDArray
-
 
 # ================================================================
 # Primitives

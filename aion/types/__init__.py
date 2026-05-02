@@ -11,15 +11,9 @@ Status: Production
 
 from __future__ import annotations
 
-from .type_system import (
-    AIONTypeSystem,
-    DependentType,
-    LinearContext,
-    RefinementType,
-    TypeChecker,
-    TypeContext,
-    TypeJudgment,
-)
+from .type_system import (AIONTypeSystem, DependentType, LinearContext,
+                          RefinementType, TypeChecker, TypeContext,
+                          TypeJudgment)
 
 __all__ = [
     "AIONTypeSystem",

@@ -17,8 +17,7 @@ Nothing in this module mutates state — all functions are pure.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, FrozenSet, Mapping, Optional
-
+from typing import Any, Callable, Mapping, Optional
 
 # ---------------------------------------------------------------------------
 # State space S
