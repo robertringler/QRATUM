@@ -77,6 +77,14 @@ class OptimizationProblem:
         # Check additional constraints
         return all(constraint(solution) for constraint in self.constraints)
 
+    def get_dimension(self) -> int:
+        """Get the problem dimension.
+
+        Returns:
+            Number of variables in the problem
+        """
+        return self.dimension
+
 
 @dataclass
 class PortfolioOptimization(OptimizationProblem):

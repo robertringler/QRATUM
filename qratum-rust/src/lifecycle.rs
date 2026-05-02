@@ -370,7 +370,7 @@ fn stage3_execution(
         let snapshot_data = b"execution state"; // Placeholder
         let _seq = state.snapshots.create_snapshot(
             snapshot_data,
-            state.biokey.key_material(),
+            state.biokey.key_material().expect("Biokey material required for snapshot"),
         );
     }
     

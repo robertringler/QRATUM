@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-12-29T04:44:06Z",
+  "main_head_sha": "4aeda8534ac154d220ac194bf4eeb1a0d98cc9be",
+  "collection_method": "github_api_mcp",
+  "tier1_prs": {
+    "370": {
+      "title": "Tensor Compression (AHTC)",
+      "state": "open",
+      "draft": false,
+      "head_sha": "69666642325b9a34b56596381b5a9bc5faef05d2",
+      "evidence_complete": true
+    },
+    "387": {
+      "title": "Quantum UI / WASM Pod Isolation",
+      "state": "open",
+      "draft": false,
+      "head_sha": "86f68bfd60232e7ebee1070ab5742d4b0b9ea9a1",
+      "evidence_complete": true
+    },
+    "378": {
+      "title": "Epistemic Heat Sink / zkML",
+      "state": "open",
+      "draft": true,
+      "head_sha": "237fc56bcf86f316c07393832bb3ba9a3bbec775",
+      "evidence_complete": true
+    },
+    "197": {
+      "title": "Code Quality (PEP 8)",
+      "state": "open",
+      "draft": false,
+      "head_sha": "8684c5caaadd86de089d4bc2846ad5d34707c01c",
+      "evidence_complete": true
+    },
+    "149": {
+      "title": "Exception Handling",
+      "state": "open",
+      "draft": false,
+      "head_sha": "5e4f88e778880256ab773b55a79838e0cbd14f12",
+      "evidence_complete": true
+    }
+  },
+  "evidence_artifacts_captured": 30,
+  "validation_status": "complete"
+}

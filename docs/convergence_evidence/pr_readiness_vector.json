@@ -1,0 +1,99 @@
+{
+  "model": "R_PR = <M, C, D, F, Σ, κ>",
+  "components": {
+    "M": "Mergeable flag (1=mergeable, 0=blocked)",
+    "C": "CI completeness ratio (0.0-1.0)",
+    "D": "Draft/WIP state (1=draft/wip, 0=ready)",
+    "F": "File churn entropy (Shannon over touched paths)",
+    "Σ": "Provenance integrity (1=consistent, 0=inconsistent)",
+    "κ": "Conflict risk coefficient vs main"
+  },
+  "pr_vectors": {
+    "370": {
+      "M": 1,
+      "C": 0.5,
+      "D": 0,
+      "F": 0.280735,
+      "Σ": 1,
+      "κ": 0.264575,
+      "interpretation": {
+        "mergeable": true,
+        "ci_completeness": "50% (pending verification)",
+        "draft_wip": false,
+        "file_churn_entropy": "0.280735",
+        "provenance_integrity": "consistent",
+        "conflict_risk": "0.264575"
+      }
+    }
+,
+    "387": {
+      "M": 1,
+      "C": 0.5,
+      "D": 0,
+      "F": 0.316993,
+      "Σ": 1,
+      "κ": 0.3,
+      "interpretation": {
+        "mergeable": true,
+        "ci_completeness": "50% (pending verification)",
+        "draft_wip": false,
+        "file_churn_entropy": "0.316993",
+        "provenance_integrity": "consistent",
+        "conflict_risk": "0.3"
+      }
+    }
+,
+    "378": {
+      "M": 0,
+      "C": 0.5,
+      "D": 1,
+      "F": 0.332193,
+      "Σ": 1,
+      "κ": 0.316228,
+      "interpretation": {
+        "mergeable": false,
+        "ci_completeness": "50% (pending verification)",
+        "draft_wip": true,
+        "file_churn_entropy": "0.332193",
+        "provenance_integrity": "consistent",
+        "conflict_risk": "0.316228"
+      }
+    }
+,
+    "197": {
+      "M": 1,
+      "C": 0.5,
+      "D": 0,
+      "F": 0.854303,
+      "Σ": 1,
+      "κ": 1.93132,
+      "interpretation": {
+        "mergeable": true,
+        "ci_completeness": "50% (pending verification)",
+        "draft_wip": false,
+        "file_churn_entropy": "0.854303",
+        "provenance_integrity": "consistent",
+        "conflict_risk": "1.93132"
+      }
+    }
+,
+    "149": {
+      "M": 1,
+      "C": 0.5,
+      "D": 1,
+      "F": 0.490689,
+      "Σ": 1,
+      "κ": 0.547723,
+      "interpretation": {
+        "mergeable": true,
+        "ci_completeness": "50% (pending verification)",
+        "draft_wip": true,
+        "file_churn_entropy": "0.490689",
+        "provenance_integrity": "consistent",
+        "conflict_risk": "0.547723"
+      }
+    }
+
+  },
+  "timestamp": "2025-12-29T20:57:10Z"
+}

@@ -1,9 +1,13 @@
 """Holographic and boundary coupling modules."""
 
 from .anti_tensor import (
+    adaptive_truncate,
     compress,
     compute_fidelity,
+    compute_mutual_information,
     decompress,
+    hierarchical_decompose,
+    reconstruct,
 )
 from .boundary import (
     boundary_projection,
@@ -20,4 +24,8 @@ __all__ = [
     "compress",
     "decompress",
     "compute_fidelity",
+    "compute_mutual_information",
+    "hierarchical_decompose",
+    "adaptive_truncate",
+    "reconstruct",
 ]

@@ -7,8 +7,9 @@ Unified web interface for accessing all QRATUM services
 
 import os
 import time
+
 import requests
-from flask import Flask, render_template_string, jsonify
+from flask import Flask, jsonify, render_template_string
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -58,6 +59,42 @@ SERVICES = {
         'name': 'Loki',
         'description': 'Log Aggregation'
     }
+    "qradle": {
+        "url": "http://qradle:8000",
+        "external_url": "http://10.0.0.1:8001",
+        "name": "QRADLE Foundation Engine",
+        "description": "Core blockchain and cryptographic operations",
+    },
+    "platform": {
+        "url": "http://qratum-platform:8000",
+        "external_url": "http://10.0.0.1:8002",
+        "name": "QRATUM Platform",
+        "description": "14 vertical AI modules",
+    },
+    "asi": {
+        "url": "http://qratum-asi:8000",
+        "external_url": "http://10.0.0.1:8003",
+        "name": "QRATUM-ASI",
+        "description": "Autonomous Systems Intelligence",
+    },
+    "grafana": {
+        "url": "http://grafana:3000",
+        "external_url": "http://10.0.0.1:3000",
+        "name": "Grafana",
+        "description": "Monitoring & Visualization",
+    },
+    "prometheus": {
+        "url": "http://prometheus:9090",
+        "external_url": "http://10.0.0.1:9090",
+        "name": "Prometheus",
+        "description": "Metrics Collection",
+    },
+    "loki": {
+        "url": "http://loki:3100",
+        "external_url": "http://10.0.0.1:3100",
+        "name": "Loki",
+        "description": "Log Aggregation",
+    },
 }
 
 HTML_TEMPLATE = """
@@ -246,6 +283,7 @@ HTML_TEMPLATE = """
 </html>
 """
 
+
 def check_service_status(url):
     """Check if a service is healthy."""
     try:
@@ -262,47 +300,61 @@ def check_service_status(url):
     except requests.RequestException:
         return "unknown"
 
-@app.route('/')
+
+@app.route("/")
 def index():
     """Main control plane interface."""
     services_data = {}
 
     for service_id, service_info in SERVICES.items():
-        status = check_service_status(service_info['url'])
+        status = check_service_status(service_info["url"])
         status_class = status
         status_icon = "●"
 
         # Add icons
         icons = {
-            'qradle': '🔗',
-            'platform': '🏗️',
-            'asi': '🧠',
-            'grafana': '📊',
-            'prometheus': '📈',
-            'loki': '📝'
+            "qradle": "🔗",
+            "platform": "🏗️",
+            "asi": "🧠",
+            "grafana": "📊",
+            "prometheus": "📈",
+            "loki": "📝",
         }
 
         services_data[service_id] = {
             **service_info,
-            'status_class': status_class,
-            'status_icon': status_icon,
-            'icon': icons.get(service_id, '🔧')
+            "status_class": status_class,
+            "status_icon": status_icon,
+            "icon": icons.get(service_id, "🔧"),
         }
 
     return render_template_string(HTML_TEMPLATE, services=services_data)
 
-@app.route('/api/status')
+
+@app.route("/api/status")
 def api_status():
     """API endpoint for service status."""
     status_data = {}
 
     for service_id, service_info in SERVICES.items():
-        status = check_service_status(service_info['url'])
+        status = check_service_status(service_info["url"])
         status_data[service_id] = {
             **service_info,
-            'status': status,
-            'reachable': status != 'unknown'
+            "status": status,
+            "reachable": status != "unknown",
         }
+
+    return jsonify(
+        {
+            "timestamp": os.times()[4],  # Using process time as timestamp
+            "services": status_data,
+            "overall_status": (
+                "healthy"
+                if all(s["status"] == "healthy" for s in status_data.values())
+                else "degraded"
+            ),
+        }
+    )
 
     # Determine overall system status with more granularity
     statuses = [s['status'] for s in status_data.values()]
@@ -328,6 +380,6 @@ def api_status():
         'overall_status': overall_status
     })
 
-if __name__ == '__main__':
-    port = int(os.getenv('PORT', '8080'))
-    app.run(host='0.0.0.0', port=port, debug=False)
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", "8080"))
+    app.run(host="0.0.0.0", port=port, debug=False)
