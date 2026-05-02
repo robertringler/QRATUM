@@ -13,15 +13,10 @@ Test Categories:
 import numpy as np
 import pytest
 
-from quasim.holo.anti_tensor import (
-    adaptive_truncate,
-    compress,
-    compute_fidelity,
-    compute_mutual_information,
-    decompress,
-    hierarchical_decompose,
-    reconstruct,
-)
+from quasim.holo.anti_tensor import (adaptive_truncate, compress,
+                                     compute_fidelity,
+                                     compute_mutual_information, decompress,
+                                     hierarchical_decompose, reconstruct)
 
 
 class TestMutualInformation:
@@ -29,6 +24,7 @@ class TestMutualInformation:
 
     def test_product_state_zero_mutual_info(self):
         """Product state |00⟩ should have zero mutual information."""
+
         state = np.array([1, 0, 0, 0], dtype=complex)
         M = compute_mutual_information(state)
 
@@ -38,6 +34,7 @@ class TestMutualInformation:
 
     def test_entangled_state_nonzero_mutual_info(self):
         """Bell state should have non-zero mutual information."""
+
         # Bell state: (|00⟩ + |11⟩) / √2
         state = np.array([1, 0, 0, 1], dtype=complex) / np.sqrt(2)
         M = compute_mutual_information(state)
@@ -52,6 +49,7 @@ class TestHierarchicalDecomposition:
 
     def test_decomposition_structure(self):
         """Decomposition should return expected structure."""
+
         state = np.random.randn(8) + 1j * np.random.randn(8)
         state /= np.linalg.norm(state)
 
@@ -65,6 +63,7 @@ class TestHierarchicalDecomposition:
 
     def test_decomposition_preserves_state(self):
         """Decomposition should allow reconstruction of original state."""
+
         state = np.random.randn(16) + 1j * np.random.randn(16)
         state /= np.linalg.norm(state)
 
@@ -82,6 +81,7 @@ class TestAdaptiveTruncation:
 
     def test_truncation_reduces_components(self):
         """Truncation should reduce number of components."""
+
         state = np.random.randn(32) + 1j * np.random.randn(32)
         state /= np.linalg.norm(state)
 
@@ -97,6 +97,7 @@ class TestAdaptiveTruncation:
 
     def test_small_epsilon_preserves_components(self):
         """Small epsilon should preserve most components."""
+
         state = np.random.randn(16) + 1j * np.random.randn(16)
         state /= np.linalg.norm(state)
 
@@ -113,6 +114,7 @@ class TestFidelityComputation:
 
     def test_identical_states_unit_fidelity(self):
         """Identical states should have fidelity = 1."""
+
         state = np.array([1, 0], dtype=complex)
         fidelity = compute_fidelity(state, state)
 
@@ -120,6 +122,7 @@ class TestFidelityComputation:
 
     def test_orthogonal_states_zero_fidelity(self):
         """Orthogonal states should have fidelity = 0."""
+
         state1 = np.array([1, 0], dtype=complex)
         state2 = np.array([0, 1], dtype=complex)
         fidelity = compute_fidelity(state1, state2)
@@ -128,6 +131,7 @@ class TestFidelityComputation:
 
     def test_fidelity_range(self):
         """Fidelity should be in range [0, 1]."""
+
         state1 = np.random.randn(8) + 1j * np.random.randn(8)
         state2 = np.random.randn(8) + 1j * np.random.randn(8)
         state1 /= np.linalg.norm(state1)
@@ -143,6 +147,7 @@ class TestCompression:
 
     def test_compress_basic(self):
         """Basic compression should succeed."""
+
         state = np.random.randn(32) + 1j * np.random.randn(32)
         state /= np.linalg.norm(state)
 
@@ -154,6 +159,7 @@ class TestCompression:
 
     def test_compress_meets_fidelity_target(self):
         """Compression should meet fidelity target."""
+
         state = np.random.randn(64) + 1j * np.random.randn(64)
         state /= np.linalg.norm(state)
 
@@ -165,6 +171,7 @@ class TestCompression:
 
     def test_compress_returns_metadata(self):
         """Compression should return complete metadata."""
+
         state = np.random.randn(16) + 1j * np.random.randn(16)
         state /= np.linalg.norm(state)
 
@@ -184,6 +191,7 @@ class TestCompression:
 
     def test_compress_invalid_input(self):
         """Compression should reject invalid input."""
+
         # Zero tensor
         state = np.zeros(8, dtype=complex)
 
@@ -192,6 +200,7 @@ class TestCompression:
 
     def test_compress_small_state(self):
         """Compression should handle small states."""
+
         # 2-qubit state
         state = np.array([1, 0, 0, 0], dtype=complex)
 
@@ -205,6 +214,7 @@ class TestDecompression:
 
     def test_decompress_basic(self):
         """Basic decompression should succeed."""
+
         state = np.random.randn(16) + 1j * np.random.randn(16)
         state /= np.linalg.norm(state)
 
@@ -216,6 +226,7 @@ class TestDecompression:
 
     def test_compress_decompress_cycle(self):
         """Compress-decompress cycle should preserve fidelity."""
+
         state = np.random.randn(32) + 1j * np.random.randn(32)
         state /= np.linalg.norm(state)
 
@@ -233,6 +244,7 @@ class TestPerformance:
     @pytest.mark.parametrize("n_qubits", [4, 5, 6])
     def test_scalability(self, n_qubits):
         """Compression should scale to different qubit counts."""
+
         dim = 2**n_qubits
         state = np.random.randn(dim) + 1j * np.random.randn(dim)
         state /= np.linalg.norm(state)
@@ -244,6 +256,7 @@ class TestPerformance:
 
     def test_compression_ratio(self):
         """Compression should achieve reasonable compression ratio."""
+
         # Large enough state to benefit from compression
         state = np.random.randn(128) + 1j * np.random.randn(128)
         state /= np.linalg.norm(state)
@@ -259,6 +272,7 @@ class TestEntanglementPreservation:
 
     def test_bell_state_preservation(self):
         """Bell state entanglement should be preserved."""
+
         # Bell state: (|00⟩ + |11⟩) / √2
         state = np.array([1, 0, 0, 1], dtype=complex) / np.sqrt(2)
 
@@ -269,6 +283,7 @@ class TestEntanglementPreservation:
 
     def test_ghz_state_preservation(self):
         """GHZ state entanglement should be preserved."""
+
         # 3-qubit GHZ state: (|000⟩ + |111⟩) / √2
         state = np.zeros(8, dtype=complex)
         state[0] = 1 / np.sqrt(2)
@@ -284,6 +299,7 @@ class TestDeterminism:
 
     def test_reproducible_compression(self):
         """Compression should be reproducible with same input."""
+
         np.random.seed(42)
         state = np.random.randn(32) + 1j * np.random.randn(32)
         state /= np.linalg.norm(state)
@@ -303,6 +319,7 @@ class TestBenchmarks:
     @pytest.mark.slow
     def test_benchmark_50_qubit(self):
         """Benchmark compression for 50-qubit system."""
+
         dim = 2**10  # Smaller for testing, full would be 2^50
         state = np.random.randn(dim) + 1j * np.random.randn(dim)
         state /= np.linalg.norm(state)
@@ -316,6 +333,7 @@ class TestBenchmarks:
     @pytest.mark.slow
     def test_benchmark_compression_sweep(self):
         """Benchmark compression vs fidelity trade-off."""
+
         state = np.random.randn(256) + 1j * np.random.randn(256)
         state /= np.linalg.norm(state)
 

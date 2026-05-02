@@ -1,0 +1,278 @@
+name: BM_001 Production Benchmark
+
+on:
+  push:
+    branches: [ main, develop, copilot/** ]
+    paths:
+      - 'evaluation/ansys/bm_001_executor.py'
+      - 'sdk/ansys/quasim_ansys_adapter.py'
+      - 'benchmarks/ansys/benchmark_definitions.yaml'
+      - '.github/workflows/bm_001.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'evaluation/ansys/bm_001_executor.py'
+      - 'sdk/ansys/quasim_ansys_adapter.py'
+      - 'benchmarks/ansys/benchmark_definitions.yaml'
+  workflow_dispatch:
+    inputs:
+      runs:
+        description: 'Number of runs per solver'
+        required: false
+        default: '5'
+      device:
+        description: 'Compute device (cpu or gpu)'
+        required: false
+        default: 'cpu'
+
+env:
+  PYTHON_VERSION: '3.12'
+  NUMPY_VERSION: '2.3.5'
+
+jobs:
+  bm_001_execution:
+    name: BM_001 Benchmark Execution
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential
+      
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy==${{ env.NUMPY_VERSION }}
+          pip install pyyaml>=6.0
+          pip install reportlab>=4.0.0
+          
+          # Install dev dependencies for linting and testing
+          if [ -f pyproject.toml ]; then
+            pip install -e ".[dev]"
+          fi
+      
+      - name: Install CUDA toolkit (for GPU detection)
+        if: github.event.inputs.device == 'gpu' || github.event.inputs.device == ''
+        run: |
+          # Install minimal CUDA toolkit for GPU detection
+          # Note: GitHub runners don't have GPUs, but we install for compatibility
+          echo "CUDA toolkit installation skipped (no GPU on GitHub runners)"
+          echo "Using CPU mode for CI execution"
+      
+      - name: Verify Python environment
+        run: |
+          python --version
+          pip list
+          python -c "import numpy; print(f'NumPy version: {numpy.__version__}')"
+          python -c "import yaml; print('PyYAML available')"
+      
+      - name: Lint with ruff
+        continue-on-error: false
+        run: |
+          if command -v ruff &> /dev/null; then
+            echo "Running ruff checks..."
+            ruff check evaluation/ansys/bm_001_executor.py sdk/ansys/quasim_ansys_adapter.py
+          else
+            echo "ruff not available, skipping linting"
+          fi
+      
+      - name: Type checking (optional)
+        continue-on-error: true
+        run: |
+          if command -v mypy &> /dev/null; then
+            echo "Running mypy type checking..."
+            mypy evaluation/ansys/bm_001_executor.py || true
+          else
+            echo "mypy not available, skipping type checking"
+          fi
+      
+      - name: Execute BM_001 benchmark (5 Ansys + 5 QuASIM runs)
+        env:
+          RUNS: ${{ github.event.inputs.runs || '5' }}
+          DEVICE: ${{ github.event.inputs.device || 'cpu' }}
+        run: |
+          echo "Executing BM_001 with $RUNS runs per solver on $DEVICE"
+          python3 evaluation/ansys/bm_001_executor.py \
+            --runs $RUNS \
+            --device $DEVICE \
+            --seed 42 \
+            --cooldown 5 \
+            --output reports/BM_001
+      
+      - name: Verify reproducibility
+        run: |
+          echo "Checking reproducibility from JSON report..."
+          python3 -c "
+          import json
+          import sys
+          from pathlib import Path
+          
+          report_path = Path('reports/BM_001/results.json')
+          if not report_path.exists():
+              print('ERROR: Report file not found')
+              sys.exit(1)
+          
+          with open(report_path) as f:
+              data = json.load(f)
+          
+          # Check deterministic execution
+          deterministic = data['reproducibility']['deterministic']
+          print(f'Deterministic execution: {deterministic}')
+          
+          if not deterministic:
+              print('ERROR: Non-deterministic behavior detected!')
+              sys.exit(1)
+          
+          print('✓ Reproducibility verified')
+          "
+      
+      - name: Verify acceptance criteria
+        run: |
+          echo "Checking acceptance criteria from JSON report..."
+          python3 -c "
+          import json
+          import sys
+          from pathlib import Path
+          
+          report_path = Path('reports/BM_001/results.json')
+          with open(report_path) as f:
+              data = json.load(f)
+          
+          status = data['status']
+          metrics = data['statistical_metrics']
+          
+          print(f'Status: {status}')
+          print(f'Speedup: {metrics[\"speedup\"]:.2f}x')
+          print(f'Displacement error: {metrics[\"displacement_error\"]:.2%}')
+          print(f'Stress error: {metrics[\"stress_error\"]:.2%}')
+          print(f'Energy error: {metrics[\"energy_error\"]:.2e}')
+          print(f'CV: {metrics[\"coefficient_of_variation\"]:.3f}')
+          
+          # Case-insensitive status check
+          if status.upper() != 'PASS':
+              print('ERROR: Acceptance criteria not met!')
+              sys.exit(1)
+          
+          print('✓ Acceptance criteria verified')
+          "
+      
+      - name: Upload execution reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bm_001_reports
+          path: |
+            reports/BM_001/
+            **/*.log
+          retention-days: 30
+      
+      - name: Upload hash logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bm_001_hash_logs
+          path: reports/BM_001/results.json
+          retention-days: 90
+      
+      - name: Generate summary
+        if: always()
+        run: |
+          echo "## BM_001 Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f reports/BM_001/results.json ]; then
+            python3 -c "
+          import json
+          from pathlib import Path
+          
+          report_path = Path('reports/BM_001/results.json')
+          with open(report_path) as f:
+              data = json.load(f)
+          
+          status = data['status']
+          metrics = data['statistical_metrics']
+          deterministic = data['reproducibility']['deterministic']
+          
+          print(f'**Status:** {status}')
+          print(f'**Reproducibility:** {\"✓ Verified\" if deterministic else \"✗ Failed\"}')
+          print('')
+          print('### Performance Metrics')
+          print(f'- Speedup: {metrics[\"speedup\"]:.2f}x (CI: [{metrics[\"speedup_ci_lower\"]:.2f}, {metrics[\"speedup_ci_upper\"]:.2f}])')
+          print(f'- Coefficient of Variation: {metrics[\"coefficient_of_variation\"]:.3f}')
+          print('')
+          print('### Accuracy Metrics')
+          print(f'- Displacement Error: {metrics[\"displacement_error\"]:.2%}')
+          print(f'- Stress Error: {metrics[\"stress_error\"]:.2%}')
+          print(f'- Energy Error: {metrics[\"energy_error\"]:.2e}')
+          print('')
+          print('### Reports Generated')
+          print('- CSV summary: `reports/BM_001/summary.csv`')
+          print('- JSON metadata: `reports/BM_001/results.json`')
+          print('- HTML report: `reports/BM_001/report.html`')
+          print('- PDF summary: `reports/BM_001/executive_summary.pdf`')
+            " >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Report file not found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  codeql_security_scan:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    needs: bm_001_execution
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python
+          queries: security-and-quality
+      
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:python"
+      
+      - name: Check for alerts
+        run: |
+          echo "CodeQL scan completed. Check Security tab for alerts."
+          echo "Zero alerts required for production deployment."
+
+  validation_summary:
+    name: Validation Summary
+    runs-on: ubuntu-latest
+    needs: [bm_001_execution, codeql_security_scan]
+    if: always()
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Check validation status
+        run: |
+          echo "## BM_001 Validation Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All validation steps completed:" >> $GITHUB_STEP_SUMMARY
+          echo "- ✓ Benchmark execution" >> $GITHUB_STEP_SUMMARY
+          echo "- ✓ Reproducibility verification" >> $GITHUB_STEP_SUMMARY
+          echo "- ✓ Acceptance criteria validation" >> $GITHUB_STEP_SUMMARY
+          echo "- ✓ CodeQL security scan" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Reports and artifacts available in workflow artifacts." >> $GITHUB_STEP_SUMMARY

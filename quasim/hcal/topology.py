@@ -64,6 +64,7 @@ class TopologyDiscovery:
 
     def __init__(self):
         """Initialize topology discovery."""
+
         self.topology: Optional[Topology] = None
 
     def discover(self) -> Topology:
@@ -72,6 +73,7 @@ class TopologyDiscovery:
         Returns:
             Topology instance with discovered hardware.
         """
+
         devices = []
         interconnects = []
         numa_nodes = {}
@@ -105,6 +107,7 @@ class TopologyDiscovery:
         Returns:
             List of CPU devices.
         """
+
         devices = []
 
         try:
@@ -148,6 +151,7 @@ class TopologyDiscovery:
         Returns:
             List of GPU devices.
         """
+
         devices = []
 
         try:
@@ -187,6 +191,7 @@ class TopologyDiscovery:
         Returns:
             List of FPGA devices.
         """
+
         devices = []
 
         try:
@@ -219,6 +224,7 @@ class TopologyDiscovery:
         Returns:
             List of interconnects.
         """
+
         interconnects = []
 
         # Check for NVLink between GPUs
@@ -268,6 +274,7 @@ class TopologyDiscovery:
         Returns:
             Dictionary mapping NUMA node to device IDs.
         """
+
         numa_nodes = {}
 
         # Assign devices to NUMA nodes (simplified)
@@ -288,6 +295,7 @@ class TopologyDiscovery:
         Returns:
             Device instance or None if not found.
         """
+
         if not self.topology:
             return None
 
@@ -306,6 +314,7 @@ class TopologyDiscovery:
         Returns:
             List of devices of the specified type.
         """
+
         if not self.topology:
             return []
 

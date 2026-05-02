@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Export QuASIM valuation dashboard as interactive HTML.
 
 This script generates a standalone HTML page with all dashboard visualizations
@@ -16,11 +17,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import plotly.io as pio
-from quasim_valuation_dashboard import (
-    create_dcf_waterfall_chart,
-    create_monte_carlo_waterfall,
-    create_sensitivity_heatmap,
-)
+from quasim_valuation_dashboard import (create_dcf_waterfall_chart,
+                                        create_monte_carlo_waterfall,
+                                        create_sensitivity_heatmap)
 
 # Output path
 OUTPUT_PATH = Path(__file__).parent.parent / "valuation_dashboard.html"
@@ -28,6 +27,7 @@ OUTPUT_PATH = Path(__file__).parent.parent / "valuation_dashboard.html"
 
 def create_html_dashboard():
     """Create standalone HTML dashboard with all figures."""
+
     # Create figures
     fig_dcf = create_dcf_waterfall_chart()
     fig_heatmap = create_sensitivity_heatmap()
@@ -193,6 +193,7 @@ def create_html_dashboard():
 
 def main():
     """Generate and save interactive HTML dashboard."""
+
     print("QuASIM Valuation Dashboard — Interactive HTML Export")
     print("=" * 50)
 

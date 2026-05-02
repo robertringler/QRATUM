@@ -1,0 +1,66 @@
+/**
+ * tensor_contraction.comp — GPU Tensor Contraction Compute Shader (GLSL 460)
+ *
+ * Performs batched tensor contractions on the GPU:
+ *
+ *   C_i(ρ) = Tr(K_i · ρ) = Σ_{d,e} K_i[d,e] · ρ_b[d,e]
+ *   einsum: 'de,bde->b'
+ *
+ * This is the core computational kernel for:
+ *   1. Constraint evaluation: C_i(ρ) for all i, b
+ *   2. Observer evaluation: ⟨O_j⟩ = Tr(O_j ρ) for all j, b
+ *
+ * Buffer layout:
+ *   binding 0: density matrices ρ — float[B * D * D]
+ *   binding 1: operator kernels K — float[N_ops * D * D]
+ *   binding 2: output values     — float[B * N_ops]
+ *   binding 3: parameters        — { B, D, N_ops, padding }
+ */
+#version 460
+
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+// ---- Storage buffers ----
+layout(std430, binding = 0) readonly buffer DensityBuffer {
+    float rho[];  // rho[b * D * D + d * D + e]
+};
+
+layout(std430, binding = 1) readonly buffer OperatorBuffer {
+    float ops[];  // ops[i * D * D + d * D + e]
+};
+
+layout(std430, binding = 2) writeonly buffer OutputBuffer {
+    float result[];  // result[b * N_ops + i]
+};
+
+layout(std430, binding = 3) readonly buffer ParamsBuffer {
+    uint batch_size;
+    uint dim;
+    uint n_ops;
+    uint _padding;
+};
+
+void main() {
+    uint global_id = gl_GlobalInvocationID.x;
+
+    // Map global_id → (batch_index, operator_index)
+    uint total_work = batch_size * n_ops;
+    if (global_id >= total_work) return;
+
+    uint b = global_id / n_ops;  // Batch index
+    uint i = global_id % n_ops;  // Operator index
+
+    // Compute Tr(K_i · ρ_b) = Σ_{d,e} K_i[d,e] · ρ_b[d,e]
+    float trace_val = 0.0;
+    uint rho_base = b * dim * dim;
+    uint ops_base = i * dim * dim;
+
+    for (uint d = 0; d < dim; ++d) {
+        for (uint e = 0; e < dim; ++e) {
+            uint idx = d * dim + e;
+            trace_val += ops[ops_base + idx] * rho[rho_base + idx];
+        }
+    }
+
+    result[b * n_ops + i] = trace_val;
+}

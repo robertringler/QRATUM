@@ -20,6 +20,7 @@ KRYPTOS_K4 = (
 
 def main():
     """Run K4 analysis demo."""
+
     print("=" * 70)
     print("REVULTRA Analysis: Kryptos K4")
     print("=" * 70)
@@ -54,11 +55,11 @@ def main():
     print("-" * 40)
     ioc = rev.index_of_coincidence_tensor(KRYPTOS_K4, max_period=20)
     ioc_peaks = find_peaks(ioc, threshold=0.2)
-    print(f"  IoC Peaks at periods: {[p+1 for p in ioc_peaks]}")
+    print(f"  IoC Peaks at periods: {[p + 1 for p in ioc_peaks]}")
     print("  Top 3 IoC values:")
     ioc_sorted = sorted(enumerate(ioc), key=lambda x: x[1], reverse=True)[:3]
     for period, value in ioc_sorted:
-        print(f"    Period {period+1}: {value:.4f}")
+        print(f"    Period {period + 1}: {value:.4f}")
     print()
 
     # 4. Spectral Autocorrelation
@@ -66,7 +67,7 @@ def main():
     print("-" * 40)
     autocorr = rev.spectral_autocorrelation(KRYPTOS_K4, max_lag=30)
     autocorr_peaks = find_peaks(autocorr[1:], threshold=0.3)  # Skip lag 0
-    print(f"  Autocorrelation peaks at lags: {[p+1 for p in autocorr_peaks]}")
+    print(f"  Autocorrelation peaks at lags: {[p + 1 for p in autocorr_peaks]}")
     print()
 
     # 5. Pattern Mining
@@ -121,7 +122,7 @@ def main():
     print("=" * 70)
     print(f"• Complexity score: {complexity['score']:.2f}/100")
     print(f"• {len(patterns)} recurring patterns detected")
-    print(f"• Potential periods: {[p+1 for p in ioc_peaks] if ioc_peaks else 'None detected'}")
+    print(f"• Potential periods: {[p + 1 for p in ioc_peaks] if ioc_peaks else 'None detected'}")
     print(f"• Chi-squared: {chi2:.2f} (compare to ~26 for random)")
     print()
 

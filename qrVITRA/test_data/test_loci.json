@@ -1,0 +1,42 @@
+[
+  {
+    "chromosome": "chr1",
+    "position": 12345,
+    "ref_allele": "A",
+    "alt_allele": "G",
+    "quality": 35.0,
+    "depth": 20
+  },
+  {
+    "chromosome": "chr1",
+    "position": 67890,
+    "ref_allele": "C",
+    "alt_allele": "T",
+    "quality": 40.0,
+    "depth": 25
+  },
+  {
+    "chromosome": "chr2",
+    "position": 11111,
+    "ref_allele": "G",
+    "alt_allele": "A",
+    "quality": 38.0,
+    "depth": 22
+  },
+  {
+    "chromosome": "chr2",
+    "position": 22222,
+    "ref_allele": "T",
+    "alt_allele": "C",
+    "quality": 42.0,
+    "depth": 28
+  },
+  {
+    "chromosome": "chr3",
+    "position": 33333,
+    "ref_allele": "A",
+    "alt_allele": "T",
+    "quality": 36.0,
+    "depth": 19
+  }
+]

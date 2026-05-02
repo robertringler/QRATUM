@@ -5,6 +5,7 @@ from quasim.meta import MCKAction, MCKState, MetaControllerKernel
 
 def test_mck_initialization():
     """Test MCK initialization with seed."""
+
     mck = MetaControllerKernel(seed=42)
     assert mck.seed == 42
     assert mck.learning_rate == 0.01
@@ -14,6 +15,7 @@ def test_mck_initialization():
 
 def test_mck_state_observation():
     """Test state observation."""
+
     mck = MetaControllerKernel(seed=42)
 
     state = mck.observe_state(
@@ -30,6 +32,7 @@ def test_mck_state_observation():
 
 def test_mck_action_selection():
     """Test action selection with deterministic seed."""
+
     mck = MetaControllerKernel(seed=42)
 
     state = mck.observe_state(
@@ -46,6 +49,7 @@ def test_mck_action_selection():
 
 def test_mck_reward_computation():
     """Test reward computation."""
+
     mck = MetaControllerKernel(seed=42)
 
     prev_state = MCKState(
@@ -72,6 +76,7 @@ def test_mck_reward_computation():
 
 def test_mck_q_value_update():
     """Test Q-value update."""
+
     mck = MetaControllerKernel(seed=42)
 
     state = MCKState(
@@ -100,6 +105,7 @@ def test_mck_q_value_update():
 
 def test_mck_checkpoint_save_load(tmp_path):
     """Test checkpoint save and load for deterministic replay."""
+
     mck = MetaControllerKernel(seed=42)
 
     # Train for a few episodes
@@ -137,6 +143,7 @@ def test_mck_checkpoint_save_load(tmp_path):
 
 def test_mck_convergence():
     """Test MCK convergence over multiple episodes."""
+
     mck = MetaControllerKernel(seed=42)
 
     initial_variance = 0.30
@@ -175,6 +182,7 @@ def test_mck_convergence():
 
 def test_mck_performance_metrics():
     """Test performance metrics retrieval."""
+
     mck = MetaControllerKernel(seed=42)
 
     # Initial metrics

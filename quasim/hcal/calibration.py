@@ -22,6 +22,7 @@ class CalibrationLoop:
             parameters: Routine parameters
             actuator: Actuator instance
         """
+
         self.device = device
         self.routine = routine
         self.parameters = parameters
@@ -41,6 +42,7 @@ class CalibrationLoop:
         Returns:
             Calibration results
         """
+
         result = {
             "device": self.device,
             "routine": self.routine,

@@ -31,11 +31,13 @@ class ProfileManager:
 
     def __init__(self):
         """Initialize profile manager."""
+
         self.profiles = {}
         self._load_default_profiles()
 
     def _load_default_profiles(self):
         """Load default optimization profiles."""
+
         # Low-latency profile: Maximize performance
         self.profiles["low-latency"] = ReconfigProfile(
             name="low-latency",
@@ -108,6 +110,7 @@ class ProfileManager:
         Returns:
             ReconfigProfile instance or None.
         """
+
         return self.profiles.get(name)
 
     def create_custom_profile(
@@ -128,6 +131,7 @@ class ProfileManager:
         Returns:
             ReconfigProfile instance.
         """
+
         profile = ReconfigProfile(
             name=name,
             profile_type=ProfileType.CUSTOM,
@@ -145,6 +149,7 @@ class ProfileManager:
         Returns:
             List of profile names.
         """
+
         return list(self.profiles.keys())
 
     def apply_profile(
@@ -160,6 +165,7 @@ class ProfileManager:
         Returns:
             Setpoints dictionary or None.
         """
+
         profile = self.get_profile(profile_name)
         if not profile:
             return None

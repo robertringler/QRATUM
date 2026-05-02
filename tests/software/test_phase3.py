@@ -6,37 +6,29 @@ import time
 
 # Verification tests
 from certs.verifier import StabilityVerifier
-
 # Energy monitor tests
 from evolve.energy_monitor import EnergyMonitor
-
 # Introspection tests
 from evolve.introspection import IntrospectionAgent, KernelMetrics
-
 # Precision manager tests
 from evolve.precision_manager import PrecisionLevel, PrecisionManager
-
 # RL controller tests
 from evolve.rl_controller import RLController
-
 # Federated learning tests
 from federated.aggregator import FederatedAggregator
-
 # Memory optimizer tests
 from memgraph.memory_optimizer import MemoryGraphOptimizer
-
 # Causal profiler tests
 from profiles.causal.profiler import CausalProfiler
-
 # Quantum search tests
 from quantum_search.ising_optimizer import IsingOptimizer
-
 # Scheduler tests
 from schedules.scheduler import DifferentiableScheduler
 
 
 def test_introspection_agent():
     """Test introspection agent metrics collection."""
+
     agent = IntrospectionAgent(log_dir="/tmp/evolve_test/logs")
 
     metrics = KernelMetrics(
@@ -57,6 +49,7 @@ def test_introspection_agent():
 
 def test_rl_controller_evolution():
     """Test RL controller population evolution."""
+
     controller = RLController(population_size=10, seed=42)
 
     # Initialize population
@@ -76,6 +69,7 @@ def test_rl_controller_evolution():
 
 def test_precision_manager():
     """Test hierarchical precision management."""
+
     manager = PrecisionManager(map_dir="/tmp/evolve_test/precision_maps")
 
     # Create precision map
@@ -96,6 +90,7 @@ def test_precision_manager():
 
 def test_energy_monitor():
     """Test energy monitoring and thermal control."""
+
     monitor = EnergyMonitor(max_temp_celsius=85.0, max_power_watts=400.0)
 
     # Sample telemetry (normal conditions)
@@ -118,6 +113,7 @@ def test_energy_monitor():
 
 def test_differentiable_scheduler():
     """Test differentiable scheduling optimization."""
+
     scheduler = DifferentiableScheduler(learning_rate=0.01)
 
     # Optimize schedule
@@ -131,6 +127,7 @@ def test_differentiable_scheduler():
 
 def test_ising_optimizer():
     """Test quantum-inspired Ising optimization."""
+
     optimizer = IsingOptimizer(num_parameters=5, seed=42)
 
     # Run simulated annealing
@@ -149,6 +146,7 @@ def test_ising_optimizer():
 
 def test_memory_graph_optimizer():
     """Test topological memory graph optimization."""
+
     optimizer = MemoryGraphOptimizer()
 
     # Build graph
@@ -169,6 +167,7 @@ def test_memory_graph_optimizer():
 
 def test_causal_profiler():
     """Test causal profiling."""
+
     profiler = CausalProfiler(delay_increment_ms=1.0)
 
     # Define simple workloads
@@ -191,6 +190,7 @@ def test_causal_profiler():
 
 def test_federated_aggregator():
     """Test federated learning aggregator."""
+
     aggregator = FederatedAggregator(aggregation_dir="/tmp/evolve_test/federated")
 
     # Add telemetry from multiple deployments
@@ -236,6 +236,7 @@ def test_federated_aggregator():
 
 def test_stability_verifier():
     """Test formal stability verification."""
+
     verifier = StabilityVerifier()
 
     # Verify kernel
@@ -255,6 +256,7 @@ def test_stability_verifier():
 
 def test_end_to_end_evolution():
     """Test end-to-end evolution workflow."""
+
     # Initialize components
     agent = IntrospectionAgent(log_dir="/tmp/evolve_test/e2e_logs")
     controller = RLController(population_size=5, seed=42)

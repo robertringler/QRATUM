@@ -23,7 +23,7 @@ import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterable, Mapping, MutableMapping, Optional
+from typing import Iterable, Mapping, MutableMapping
 
 import numpy as np
 import pandas as pd
@@ -91,17 +91,14 @@ class VerificationResult:
 class TelemetryVerifier:
     """Compare live telemetry frames with deterministic baseline references."""
 
-    def __init__(self, config: Optional[VerificationConfig] = None) -> None:
+    def __init__(self, config: VerificationConfig | None = None) -> None:
         self.config = config or VerificationConfig()
         self.config.archive_dir.mkdir(parents=True, exist_ok=True)
         self.pricing_model = QuantumPricingModel()
 
     @staticmethod
     def _to_frame(dataset: Iterable[Mapping[str, float]] | pd.DataFrame) -> pd.DataFrame:
-        if isinstance(dataset, pd.DataFrame):
-            frame = dataset.copy()
-        else:
-            frame = pd.DataFrame(list(dataset))
+        frame = dataset.copy() if isinstance(dataset, pd.DataFrame) else pd.DataFrame(list(dataset))
         required = {"timestamp", "metric", "baseline", "live"}
         missing = required.difference(frame.columns)
         if missing:
@@ -113,7 +110,7 @@ class TelemetryVerifier:
         self,
         live_dataset: Iterable[Mapping[str, float]] | pd.DataFrame,
         baseline_dataset: Iterable[Mapping[str, float]] | pd.DataFrame,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: dict[str, str] | None = None,
     ) -> VerificationResult:
         """Compute verification statistics and persist archival artefacts.
 
@@ -203,7 +200,7 @@ class TelemetryVerifier:
         provenance.setdefault("rolling_window_hours", str(self.config.rolling_window_hours))
         provenance.setdefault("tolerance_pct", f"{self.config.tolerance_pct:.2f}")
         provenance.setdefault("commit", os.getenv("GITHUB_SHA", "UNKNOWN"))
-        summary_payload: Dict[str, object] = {
+        summary_payload: dict[str, object] = {
             "timestamp": timestamp,
             "rmse": rmse,
             "variance_pct": variance_pct,

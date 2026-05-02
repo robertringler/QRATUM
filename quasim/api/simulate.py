@@ -3,12 +3,13 @@
 This module exposes a stable ``run_scenario`` API used by the QNX substrate to
 route requests to different engines (modern, legacy, QVR, or future adapters).
 """
+
 from __future__ import annotations
 
 import hashlib
 import json
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, MutableMapping, Optional
+from typing import Any, Callable, MutableMapping
 
 from quantum.python.quasim_sim import simulate as quasim_simulate
 
@@ -23,7 +24,7 @@ class ScenarioResult:
     timesteps: int
     seed: int
     engine: str
-    raw_output: Dict[str, Any]
+    raw_output: dict[str, Any]
 
     @property
     def simulation_hash(self) -> str:
@@ -32,7 +33,7 @@ class ScenarioResult:
         data = json.dumps(self.raw_output, sort_keys=True, default=str).encode()
         return hashlib.sha256(data).hexdigest()
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "scenario_id": self.scenario_id,
             "timesteps": self.timesteps,
@@ -43,7 +44,7 @@ class ScenarioResult:
         }
 
 
-_ENGINE_REGISTRY: Dict[str, Callable[..., MutableMapping[str, Any]]] = {}
+_ENGINE_REGISTRY: dict[str, Callable[..., MutableMapping[str, Any]]] = {}
 
 
 def register_engine(name: str, fn: Callable[..., MutableMapping[str, Any]]) -> None:
@@ -53,7 +54,7 @@ def register_engine(name: str, fn: Callable[..., MutableMapping[str, Any]]) -> N
 
 
 def _run_modern_engine(
-    *, scenario_id: str, timesteps: int, seed: int, extra: Optional[Dict[str, Any]]
+    *, scenario_id: str, timesteps: int, seed: int, extra: dict[str, Any] | None
 ) -> MutableMapping[str, Any]:
     spec = ScenarioSpec(scenario_id=scenario_id, timesteps=timesteps, seed=seed, extra=extra or {})
     circuit = build_circuit(spec)
@@ -64,7 +65,10 @@ def _run_modern_engine(
         "timesteps": timesteps,
         "seed": seed,
         "precision": "fp8",
-        "circuit_summary": {"num_gates": len(circuit), "gate_size": len(circuit[0]) if circuit else 0},
+        "circuit_summary": {
+            "num_gates": len(circuit),
+            "gate_size": len(circuit[0]) if circuit else 0,
+        },
         "result": [complex(value) for value in result],
     }
 
@@ -74,7 +78,7 @@ def run_scenario(
     timesteps: int,
     seed: int,
     engine: str = "quasim_modern",
-    extra: Optional[Dict[str, Any]] = None,
+    extra: dict[str, Any] | None = None,
 ) -> ScenarioResult:
     """Execute a simulation scenario via a registered engine."""
 

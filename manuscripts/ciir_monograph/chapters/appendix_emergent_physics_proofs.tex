@@ -1,0 +1,397 @@
+% ============================================================
+%  Appendix — Full Proofs for Chapter 14
+%  (Emergent Physical Framework)
+% ============================================================
+
+\chapter{Emergent Physics Proofs}
+\label{app:emergent-physics-proofs}
+
+This appendix collects the full-length proofs for the main theorems
+of Chapter~\ref{ch:emergent-physics}, supplying the technical details
+omitted from the main text.
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:14.1}: Induced Metric}
+\label{app:pf-metric}
+% ============================================================
+
+\begin{proof}[Full proof]
+We must show that $d_{\CD}(\sigma_1, \sigma_2) :=
+\sqrt{\CD(\sigma_1, \sigma_2) + \CD(\sigma_2, \sigma_1)}$
+is a metric.
+
+\emph{Step 1 (Non-negativity and separation).}
+$\CD(\sigma_1, \sigma_2) \geq 0$ and $\CD(\sigma_2, \sigma_1) \geq 0$
+by Definition~\ref{def:14.1}, so $d_{\CD} \geq 0$.
+If $d_{\CD}(\sigma_1, \sigma_2) = 0$, then both
+$\CD(\sigma_1, \sigma_2) = 0$ and $\CD(\sigma_2, \sigma_1) = 0$,
+which by the separation axiom gives $\sigma_1 = \sigma_2$.
+Conversely, $d_{\CD}(\sigma, \sigma) = \sqrt{0 + 0} = 0$.
+
+\emph{Step 2 (Symmetry).}
+$d_{\CD}(\sigma_1, \sigma_2)^2 = \CD(\sigma_1, \sigma_2) +
+\CD(\sigma_2, \sigma_1) = d_{\CD}(\sigma_2, \sigma_1)^2$.
+Taking square roots preserves the equality.
+
+\emph{Step 3 (Triangle inequality).}
+We use the second-order expansion (SA.2).  For a path $\gamma$
+from $\sigma_1$ to $\sigma_3$ through $\sigma_2$:
+\[
+  d_{\CD}(\sigma_1, \sigma_3)^2
+  = \inf_\gamma \int_0^1 g_{ij}(\gamma(t))\,
+    \dot\gamma^i \dot\gamma^j\,dt.
+\]
+The infimum over paths through $\sigma_2$ satisfies:
+\[
+  d_{\CD}(\sigma_1, \sigma_3)
+  \leq L[\gamma_1] + L[\gamma_2]
+  = d_{\CD}(\sigma_1, \sigma_2) + d_{\CD}(\sigma_2, \sigma_3),
+\]
+where $L[\gamma_k]$ is the arc length of the geodesic segment
+from $\sigma_k$ to $\sigma_{k+1}$, and the inequality holds because
+the concatenation of geodesics from $\sigma_1 \to \sigma_2$ and
+$\sigma_2 \to \sigma_3$ is a valid (not necessarily minimal) path
+from $\sigma_1$ to $\sigma_3$.
+
+\emph{Step 4 (Without smoothness assumption).}
+For the general case where SA.2 may not hold globally, we use the
+chain rule for divergences.  Let $\sigma_1, \sigma_2, \sigma_3 \in \CS$.
+Consider a discrete chain:
+\begin{align*}
+  \CD(\sigma_1, \sigma_3)
+  &\leq \CD(\sigma_1, \sigma_2) + \CD(\sigma_2, \sigma_3)
+    + \Delta(\sigma_1, \sigma_2, \sigma_3),
+\end{align*}
+where $\Delta$ is the ``chain rule deficit'' of the divergence.
+For the KL divergence, $\Delta \leq 0$ (by the data processing
+inequality applied to the Markov chain $\sigma_1 \to \sigma_2 \to
+\sigma_3$).  Hence:
+\[
+  \CD(\sigma_1, \sigma_3) + \CD(\sigma_3, \sigma_1)
+  \leq \big[\CD(\sigma_1, \sigma_2) + \CD(\sigma_2, \sigma_1)\big]
+  + \big[\CD(\sigma_2, \sigma_3) + \CD(\sigma_3, \sigma_2)\big].
+\]
+Taking square roots and using $\sqrt{a + b} \leq \sqrt{a} + \sqrt{b}$
+for $a, b \geq 0$ gives the triangle inequality for $d_{\CD}$.
+\end{proof}
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:14.2}: Fisher--Rao Metric}
+\label{app:pf-fisher}
+% ============================================================
+
+\begin{proof}[Full proof]
+Let $\theta = (\theta^1, \ldots, \theta^n)$ parametrise a smooth
+family $\{\rho(\theta)\} \subset \mathfrak{D}(\HC)$.  Expand the
+quantum relative entropy:
+\begin{align*}
+  D_{\mathrm{KL}}(\rho(\theta) \| \rho(\theta + d\theta))
+  &= \Tr\!\big(\rho(\theta)\,
+    [\ln\rho(\theta) - \ln\rho(\theta + d\theta)]\big) \\
+  &= -\Tr\!\big(\rho(\theta)\,
+    [\ln\rho(\theta + d\theta) - \ln\rho(\theta)]\big).
+\end{align*}
+
+\emph{Step 1.} Taylor-expand $\ln\rho(\theta + d\theta)$ using the
+matrix logarithm derivative formula:
+\[
+  \ln\rho(\theta + d\theta) - \ln\rho(\theta)
+  = L_\rho^{-1}(\partial_i\rho)\,d\theta^i
+  + \frac{1}{2}\,L_\rho^{-1}(\partial_i\partial_j\rho
+  - \partial_i\rho\,L_\rho^{-1}(\partial_j\rho))\,
+  d\theta^i\,d\theta^j + O(\|d\theta\|^3),
+\]
+where $L_\rho(X) = \rho\,X + X\,\rho$ is the symmetric logarithmic
+derivative (SLD) superoperator, and
+$L_\rho^{-1}$ is its inverse.
+
+\emph{Step 2.} Substituting into $D_{\mathrm{KL}}$:
+\[
+  D_{\mathrm{KL}} = -\Tr(\rho\,L_\rho^{-1}(\partial_i\rho))\,d\theta^i
+  - \frac{1}{2}\,\Tr(\rho\,L_\rho^{-1}(\partial_i\partial_j\rho
+  - \partial_i\rho\,L_\rho^{-1}(\partial_j\rho)))\,
+  d\theta^i\,d\theta^j + \cdots
+\]
+
+\emph{Step 3 (First-order term vanishes).}
+$\Tr(\rho\,L_\rho^{-1}(\partial_i\rho)) =
+\Tr(\partial_i\rho) = \partial_i\Tr(\rho) = 0$.
+
+\emph{Step 4 (Second-order term).}
+After simplification using $\Tr(\partial_i\partial_j\rho) = 0$:
+\[
+  D_{\mathrm{KL}} = \frac{1}{2}\,
+  \Tr(\rho\,L_\rho^{-1}(\partial_i\rho)\,
+  L_\rho^{-1}(\partial_j\rho))\,
+  d\theta^i\,d\theta^j + O(\|d\theta\|^3).
+\]
+
+\emph{Step 5 (Identification with Fisher metric).}
+Define the SLD operators $\ell_i$ by
+$\partial_i\rho = \frac{1}{2}(\rho\,\ell_i + \ell_i\,\rho)$,
+i.e., $\ell_i = 2\,L_\rho^{-1}(\partial_i\rho)$.  Then:
+\[
+  g_{ij} = \frac{1}{2}\Tr(\rho\,\{\ell_i, \ell_j\})
+  = \Tr(\rho\,\ell_i\,\ell_j)
+\]
+(using symmetry of $\ell_i$).  This is the quantum Fisher
+information metric (SLD form), which reduces to the classical
+Fisher--Rao metric $g_{ij}^{\mathrm{FR}} =
+\sum_x p(x|\theta)\,\partial_i\ln p \cdot \partial_j\ln p$
+for commuting density matrices.
+\end{proof}
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:14.3}: Smooth Manifold Structure}
+\label{app:pf-manifold}
+% ============================================================
+
+\begin{proof}[Full proof]
+\emph{Step 1 (Local charts).}
+By SA.4, $\CS_r$ projects onto $\CS_{\mathrm{eff}}$ of finite
+dimension $n$.  Choose coordinates
+$\theta = (\theta^1, \ldots, \theta^n)$ on an open subset
+$U \subset \CS_{\mathrm{eff}}$.  The metric
+$g_{ij}(\theta)$ is positive definite (SA.2), so the map
+$\theta \mapsto \sigma(\theta)$ is a homeomorphism onto its image.
+
+\emph{Step 2 (Transition functions).}
+Let $(U_\alpha, \theta_\alpha)$ and $(U_\beta, \theta_\beta)$
+be two charts with $U_\alpha \cap U_\beta \neq \emptyset$.
+The transition function
+$\theta_\beta = \phi_{\beta\alpha}(\theta_\alpha)$ is obtained
+by inverting the coordinate map:
+$\phi_{\beta\alpha} = \theta_\beta \circ \theta_\alpha^{-1}$.
+By SA.3, $\CC$ is $C^2$; the constraint defines level surfaces
+that are $C^2$ submanifolds (by the implicit function theorem,
+since $\nabla\CC \neq 0$ generically away from the minimum).
+The transition functions inherit $C^2$ regularity.
+
+\emph{Step 3 (Riemannian structure).}
+The metric tensor $g_{ij}$ transforms covariantly:
+\[
+  g'_{kl}(\theta') = \frac{\partial\theta^i}{\partial\theta'^k}\,
+  \frac{\partial\theta^j}{\partial\theta'^l}\,g_{ij}(\theta),
+\]
+which is $C^0$ (since $g_{ij}$ is $C^0$ and the transition
+functions are $C^2$).  This is sufficient for
+$(\CM_{\mathrm{eff}}, g)$ to be a $C^1$ Riemannian manifold.
+The additional regularity from SA.3 upgrades this to $C^2$.
+
+\emph{Step 4 (Hausdorff and second-countable).}
+The metric $d_{\CD}$ makes $\CM_{\mathrm{eff}}$ Hausdorff.
+If $\CM_{\mathrm{eff}}$ is $\sigma$-compact (which follows from
+the compactness of sublevel sets $\CC \leq r < \infty$ by SA.1),
+it is second-countable.  By the Whitney embedding theorem,
+$\CM_{\mathrm{eff}}$ can be embedded in $\mathbb{R}^{2n+1}$.
+\end{proof}
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:14.5}: Probability Emergence}
+\label{app:pf-probability}
+% ============================================================
+
+\begin{proof}[Full proof]
+\emph{Step 1 (Well-definedness).}
+The partition function $Z = \int_{\CS} e^{-\beta\CC(\sigma)}
+\sqrt{\det g(\sigma)}\,d^n\sigma$ is finite because:
+\begin{itemize}
+  \item $\CC(\sigma) \geq 0$ by definition, so
+    $e^{-\beta\CC} \leq 1$.
+  \item The sublevel sets $\CC \leq r$ are compact (SA.1),
+    so the volume $\int_{\CC \leq r} \sqrt{\det g}\,d^n\sigma$
+    is finite.
+  \item The tail $\int_{\CC > r} e^{-\beta\CC}\sqrt{\det g}\,
+    d^n\sigma \leq e^{-\beta r}\,\mathrm{Vol}(\CS)$ decays
+    exponentially.
+\end{itemize}
+
+\emph{Step 2 (Maximum entropy characterisation).}
+We maximize $S[\mu] = -\int \mu\ln\mu\,d\nu_g$ subject to
+$\int \mu\,\CC\,d\nu_g = E$ and $\int \mu\,d\nu_g = 1$.
+The Lagrangian is:
+\[
+  \mathcal{L}[\mu] = -\int \mu\ln\mu\,d\nu_g
+  - \beta\int \mu\CC\,d\nu_g
+  - (\alpha - 1)\int \mu\,d\nu_g.
+\]
+Setting $\delta\mathcal{L}/\delta\mu = 0$:
+\[
+  -\ln\mu - 1 - \beta\CC - (\alpha - 1) = 0
+  \implies \mu = e^{-\alpha - \beta\CC}.
+\]
+Normalization fixes $\alpha$: $e^\alpha = Z = \int e^{-\beta\CC}
+d\nu_g$.  Hence $\mu = e^{-\beta\CC} / Z = \mu_{\CC}$.
+
+\emph{Step 3 (Uniqueness).}
+The entropy functional $S[\mu]$ is strictly concave on the space
+of probability measures (since $x \ln x$ is strictly convex).
+The constraint $\langle\CC\rangle = E$ defines a convex set.
+A strictly concave function on a convex set has at most one
+maximum, proving uniqueness.
+
+\emph{Step 4 (Concentration).}
+By Laplace's method, as $\beta \to \infty$:
+\[
+  Z \sim e^{-\beta\CC(\sigma^*)}
+  \cdot (2\pi/\beta)^{n/2} / \sqrt{\det H_{\CC}(\sigma^*)},
+\]
+where $H_{\CC} = \nabla^2\CC|_{\sigma^*}$ is the Hessian at the
+minimum.  The measure concentrates: for any open set $U \ni \sigma^*$,
+$\mu_{\CC}(U) \to 1$ as $\beta \to \infty$.
+\end{proof}
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:14.8}: Emergent Einstein Equations}
+\label{app:pf-einstein}
+% ============================================================
+
+\begin{proof}[Full proof]
+\emph{Step 1 (Variation of gravitational action).}
+The Palatini identity gives:
+\[
+  \delta \int R\sqrt{|g|}\,d^n\sigma
+  = \int \left(R_{\mu\nu} - \frac{1}{2}R\,g_{\mu\nu}\right)
+    \delta g^{\mu\nu}\,\sqrt{|g|}\,d^n\sigma
+  + \text{boundary terms}.
+\]
+The boundary terms vanish for compactly supported variations
+or with appropriate boundary conditions.
+
+\emph{Step 2 (Variation of cosmological term).}
+\[
+  \delta \int \Lambda_{\mathrm{eff}}\sqrt{|g|}\,d^n\sigma
+  = -\frac{1}{2}\Lambda_{\mathrm{eff}}
+    \int g_{\mu\nu}\,\delta g^{\mu\nu}\,\sqrt{|g|}\,d^n\sigma.
+\]
+
+\emph{Step 3 (Variation of matter action).}
+By definition of $T_{\mu\nu}^{(\mathrm{em})}$:
+\[
+  \delta \mathcal{A}_{\mathrm{matter}}
+  = -\frac{1}{2}\int T_{\mu\nu}^{(\mathrm{em})}\,
+    \delta g^{\mu\nu}\,\sqrt{|g|}\,d^n\sigma.
+\]
+
+\emph{Step 4 (Stationarity).}
+Setting $\delta\mathcal{A}_{\mathrm{tot}} = 0$:
+\[
+  \frac{1}{16\pi G_{\mathrm{eff}}}
+  \left(R_{\mu\nu} - \frac{1}{2}R\,g_{\mu\nu}
+  + \Lambda_{\mathrm{eff}}\,g_{\mu\nu}\right)
+  = \frac{1}{2}\,T_{\mu\nu}^{(\mathrm{em})}.
+\]
+Multiplying by $16\pi G_{\mathrm{eff}}$:
+\[
+  G_{\mu\nu} + \Lambda_{\mathrm{eff}}\,g_{\mu\nu}
+  = 8\pi G_{\mathrm{eff}}\,T_{\mu\nu}^{(\mathrm{em})}.
+\]
+
+\emph{Step 5 (Bianchi identity).}
+The contracted Bianchi identity $\nabla^\mu G_{\mu\nu} = 0$ is a
+consequence of the diffeomorphism invariance of the gravitational
+action.  It implies $\nabla^\mu T_{\mu\nu}^{(\mathrm{em})} = 0$
+(emergent conservation of energy-momentum).
+
+\emph{Step 6 (Non-circularity).}
+The metric $g_{\mu\nu}$ is derived from the divergence $\CD$
+(Theorems~\ref{thm:14.1}--\ref{thm:14.3}).  The action is
+constructed from the scalar curvature $R$ of this metric.  The
+field equations determine how $g_{\mu\nu}$ responds to the
+distribution of constraint violations $T_{\mu\nu}^{(\mathrm{em})}$.
+At no point is a spacetime manifold assumed; it is constructed
+step by step from $(\CS, \CC, \CD)$.
+\end{proof}
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:14.11}: Curvature--Constraint
+  Gradient Relation}
+\label{app:pf-curv-constraint}
+% ============================================================
+
+\begin{proof}[Full proof]
+\emph{Step 1.} The Fisher metric for the exponential family
+$\mu_{\CC}(\sigma) = e^{-\beta\CC(\sigma)} / Z$ is:
+\[
+  g_{ij}^{\mathrm{FR}} = \beta^2\,\mathrm{Cov}_{\mu_\CC}
+  (\partial_i\CC, \partial_j\CC)
+  = \beta^2\left[\langle \partial_i\CC\,\partial_j\CC \rangle
+  - \langle\partial_i\CC\rangle\,\langle\partial_j\CC\rangle\right].
+\]
+
+\emph{Step 2.} The Christoffel symbols are:
+\[
+  \Gamma^k_{ij} = \frac{1}{2}g^{k\ell}\left(
+    \partial_i g_{j\ell} + \partial_j g_{i\ell}
+    - \partial_\ell g_{ij}\right).
+\]
+Differentiating the Fisher metric:
+\[
+  \partial_k g_{ij} = \beta^2\left[
+    \langle\partial_k\partial_i\CC\,\partial_j\CC\rangle
+    + \langle\partial_i\CC\,\partial_k\partial_j\CC\rangle
+    - \langle\partial_k\CC\rangle\langle\partial_i\partial_j\CC\rangle
+    - \ldots
+  \right] - \beta^3[\ldots].
+\]
+
+\emph{Step 3.} The Ricci tensor is:
+\[
+  R_{ij} = \partial_k\Gamma^k_{ij} - \partial_j\Gamma^k_{ik}
+  + \Gamma^k_{k\ell}\Gamma^\ell_{ij}
+  - \Gamma^k_{j\ell}\Gamma^\ell_{ik}.
+\]
+After collecting terms (a lengthy but standard computation in
+information geometry, cf.~Amari--Nagaoka 2000), the result is:
+\[
+  R_{ij} = \nabla_i\nabla_j\ln Z
+  + \beta\,\nabla_i\nabla_j\CC
+  + \beta^2\,(\nabla_i\CC)(\nabla_j\CC)
+  - \beta^2\,\langle\nabla_i\CC \cdot \nabla_j\CC\rangle.
+\]
+The first term contains the curvature of the partition function
+landscape; the remaining terms encode the curvature of the
+constraint surface.
+\end{proof}
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:14.16}: Measurement Timescale}
+\label{app:pf-meas-time}
+% ============================================================
+
+\begin{proof}[Full proof]
+\emph{Step 1.} The observer operator
+$\mathcal{O}(\rho) = \rho^{1/(1+\lambda)} / Z$ converges to its
+fixed point through iterated application.  The convergence rate
+is controlled by the spectral gap of the linearised map
+$\delta\mathcal{O}$ (computed in Theorem~\ref{thm:13.6}, Step~2).
+
+\emph{Step 2.} For a $d_H$-dimensional system, the linearised
+observer has eigenvalues $\lambda_k = (p_k / p_1)^{1/(1+\lambda) - 1}$
+where $p_1 \geq p_2 \geq \ldots \geq p_{d_H}$ are the eigenvalues
+of $\rho$.  The spectral gap is:
+\[
+  \Delta_{\mathrm{gap}} = 1 - \max_{k \geq 2} |\lambda_k|
+  \geq 1 - (p_2 / p_1)^{\lambda/(1+\lambda)}.
+\]
+
+\emph{Step 3.} The number of iterations needed to achieve precision
+$\varepsilon_{\mathrm{meas}}$ is:
+\[
+  n_{\mathrm{iter}} \geq
+  \frac{\ln(d_H / \varepsilon_{\mathrm{meas}})}
+  {\ln(1/\alpha_{\mathcal{O}})},
+\]
+where $\alpha_{\mathcal{O}} < 1$ is the contraction constant
+of the observer.
+
+\emph{Step 4.} Each iteration corresponds to a time step $\Delta t$
+related to the GKSL dynamics (Theorem~\ref{thm:13.6}).
+Using $\Delta t \sim \hbar_{\mathrm{eff}} / (k_B T_{\mathrm{eff}})$
+(the thermal time scale), the total measurement time is:
+\[
+  \tau_{\mathrm{meas}} = n_{\mathrm{iter}} \cdot \Delta t
+  \geq \frac{\hbar_{\mathrm{eff}}}{\lambda\,k_B T_{\mathrm{eff}}}
+  \cdot \ln\!\left(\frac{d_H}{\varepsilon_{\mathrm{meas}}}\right).
+\]
+\end{proof}

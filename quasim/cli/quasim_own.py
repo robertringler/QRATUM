@@ -8,22 +8,18 @@ import click
 
 from quasim.ownai.determinism import set_seed
 from quasim.ownai.eval.benchmark import benchmark_model, run_benchmark_suite
-from quasim.ownai.eval.reporting import (
-    generate_markdown_report,
-    save_results_csv,
-    save_results_json,
-)
+from quasim.ownai.eval.reporting import (generate_markdown_report,
+                                         save_results_csv, save_results_json)
 from quasim.ownai.integration.model_card import generate_model_card
 from quasim.ownai.integration.qgh_hooks import QGHLedger, create_run_id
 from quasim.ownai.integration.terc_observables import (
-    collect_terc_observables,
-    save_terc_observables,
-)
+    collect_terc_observables, save_terc_observables)
 
 
 @click.group()
 def cli():
     """QuASIM-Own: Deterministic AI with Symbolic-Latent Transformer (Modo)."""
+
     pass
 
 
@@ -35,6 +31,7 @@ def cli():
 @click.option("--out", default="runs/default", help="Output directory")
 def train(model: str, task: str, dataset: str, seed: int, out: str):
     """Train a model on a dataset."""
+
     click.echo(f"Training {model} on {task}/{dataset} with seed={seed}")
 
     set_seed(seed)
@@ -87,6 +84,7 @@ def train(model: str, task: str, dataset: str, seed: int, out: str):
 @click.option("--metrics", default="all", help="Metrics to compute")
 def eval(run: str, metrics: str):
     """Evaluate a trained model."""
+
     run_dir = Path(run)
 
     if not run_dir.exists():
@@ -115,6 +113,7 @@ def eval(run: str, metrics: str):
 @click.option("--report", default="reports/own", help="Report output directory")
 def benchmark(suite: str, repeat: int, cpu_only: bool, report: str):
     """Run comprehensive benchmarks."""
+
     click.echo(f"🚀 Running {suite} benchmark suite with {repeat} repeats...")
 
     if cpu_only:
@@ -173,6 +172,7 @@ def benchmark(suite: str, repeat: int, cpu_only: bool, report: str):
 @click.option("--out", required=True, help="Output file path")
 def export(run: str, format: str, out: str):
     """Export a trained model."""
+
     click.echo(f"Exporting model from {run} to {out} (format: {format})")
 
     # For now, just copy the results file
@@ -200,6 +200,7 @@ def export(run: str, format: str, out: str):
 @click.option("--out", required=True, help="Output model card path")
 def modelcard(run: str, out: str):
     """Generate model card for a trained model."""
+
     run_dir = Path(run)
     results_file = run_dir / "results.json"
 

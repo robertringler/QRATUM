@@ -16,6 +16,7 @@ def compute_persistent_homology(point_cloud: np.ndarray) -> dict:
     Returns:
         Dictionary containing Betti numbers (β₀, β₁, β₂)
     """
+
     np.random.seed(42)
 
     # Minimal implementation - would integrate with ripser/gudhi
@@ -41,6 +42,7 @@ def compute_persistent_homology(point_cloud: np.ndarray) -> dict:
 
 def run_experiment():
     """Execute TDA baseline experiment."""
+
     np.random.seed(42)
 
     # Generate synthetic point cloud

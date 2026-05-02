@@ -6,7 +6,6 @@ import json
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Dict, List
 
 
 class PrecisionLevel(Enum):
@@ -31,6 +30,7 @@ class PrecisionZone:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "zone_id": self.zone_id,
             "precision": self.precision.value,
@@ -44,13 +44,14 @@ class PrecisionMap:
     """Precision mapping for a kernel."""
 
     kernel_id: str
-    zones: List[PrecisionZone]
+    zones: list[PrecisionZone]
     global_error_budget: float = 1e-5
     accumulated_error: float = 0.0
     fallback_precision: PrecisionLevel = PrecisionLevel.FP32
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "kernel_id": self.kernel_id,
             "zones": [z.to_dict() for z in self.zones],
@@ -62,6 +63,7 @@ class PrecisionMap:
     @classmethod
     def from_dict(cls, data: dict) -> PrecisionMap:
         """Create from dictionary."""
+
         zones = [
             PrecisionZone(
                 zone_id=z["zone_id"],
@@ -86,10 +88,11 @@ class PrecisionManager:
     def __init__(self, map_dir: str = "evolve/precision_maps"):
         self.map_dir = Path(map_dir)
         self.map_dir.mkdir(parents=True, exist_ok=True)
-        self.precision_maps: Dict[str, PrecisionMap] = {}
+        self.precision_maps: dict[str, PrecisionMap] = {}
 
     def create_default_map(self, kernel_id: str) -> PrecisionMap:
         """Create default hierarchical precision map for a kernel."""
+
         zones = [
             PrecisionZone(
                 zone_id="outer",
@@ -122,9 +125,11 @@ class PrecisionManager:
 
     def update_accumulated_error(self, kernel_id: str, error: float) -> bool:
         """
+
         Update accumulated error for a kernel.
         Returns True if fallback is needed.
         """
+
         if kernel_id not in self.precision_maps:
             self.create_default_map(kernel_id)
 
@@ -142,6 +147,7 @@ class PrecisionManager:
 
     def _apply_fallback(self, precision_map: PrecisionMap) -> None:
         """Apply fallback to higher precision."""
+
         print(
             f"Warning: Accumulated error {precision_map.accumulated_error:.2e} "
             f"exceeds budget {precision_map.global_error_budget:.2e}"
@@ -157,6 +163,7 @@ class PrecisionManager:
 
     def save_map(self, kernel_id: str) -> Path:
         """Save precision map to disk."""
+
         if kernel_id not in self.precision_maps:
             raise ValueError(f"No precision map for kernel {kernel_id}")
 
@@ -170,6 +177,7 @@ class PrecisionManager:
 
     def load_map(self, kernel_id: str) -> PrecisionMap:
         """Load precision map from disk."""
+
         map_path = self.map_dir / f"{kernel_id}_precision.json"
 
         if not map_path.exists():
@@ -185,6 +193,7 @@ class PrecisionManager:
 
     def get_precision_for_zone(self, kernel_id: str, zone_id: str) -> PrecisionLevel:
         """Get precision level for a specific zone."""
+
         if kernel_id not in self.precision_maps:
             self.create_default_map(kernel_id)
 

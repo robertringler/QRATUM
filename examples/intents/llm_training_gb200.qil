@@ -1,0 +1,14 @@
+# QIL Intent: LLM Training on NVIDIA GB200
+# This intent specifies large language model training on GB200 NVL72 clusters
+
+INTENT llm_training_gb200 {
+    OBJECTIVE train_llama3_70b
+    HARDWARE ONLY GB200
+    CONSTRAINT GPU_VRAM >= 1000
+    CONSTRAINT GPU_COUNT >= 8
+    CAPABILITY llm_training
+    CAPABILITY distributed_training
+    TIME deadline: 7200s
+    AUTHORITY user: mlops_team
+    TRUST level: verified
+}
