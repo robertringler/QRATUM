@@ -14,8 +14,8 @@ Failure modes are explicitly triggered via parameter overrides.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
+from dataclasses import dataclass
+from typing import List, Optional
 
 import numpy as np
 from numpy.typing import NDArray
@@ -29,12 +29,12 @@ class SimulationResult:
     """Container for hybrid simulation output."""
 
     times: NDArray
-    x_traj: List[RMatrix]          # classical trajectory
-    rho_traj: List[CMatrix]        # quantum trajectory
-    u_traj: List[RMatrix]          # control signal
-    entropy_traj: NDArray          # entanglement entropy vs time
-    fidelity_traj: NDArray         # fidelity to target state
-    lyapunov_traj: NDArray         # Lyapunov V(x, ρ)
+    x_traj: List[RMatrix]  # classical trajectory
+    rho_traj: List[CMatrix]  # quantum trajectory
+    u_traj: List[RMatrix]  # control signal
+    entropy_traj: NDArray  # entanglement entropy vs time
+    fidelity_traj: NDArray  # fidelity to target state
+    lyapunov_traj: NDArray  # Lyapunov V(x, ρ)
     params: dict
 
 
@@ -78,7 +78,7 @@ class HybridSimulation:
         self.gamma_ad = gamma_ad
         self.gamma_dp = gamma_dp
         self.gamma_dep = gamma_dep
-        self.dim = 2 ** n_qubits
+        self.dim = 2**n_qubits
 
     def run(
         self,
@@ -91,12 +91,12 @@ class HybridSimulation:
 
         Returns SimulationResult with full trajectories.
         """
+        from quasim.ciir.multi_qubit.control.controller import HybridController
         from quasim.ciir.multi_qubit.quantum.density_matrix import (
             DensityMatrixSimulator,
             LindbladParams,
             _gksl_rhs,
         )
-        from quasim.ciir.multi_qubit.control.controller import HybridController
 
         rng = np.random.default_rng(seed)
 
@@ -192,9 +192,7 @@ class HybridSimulation:
             params=self._param_dict(),
         )
 
-    def _lyapunov(
-        self, x: RMatrix, rho: CMatrix, rho_star: CMatrix
-    ) -> float:
+    def _lyapunov(self, x: RMatrix, rho: CMatrix, rho_star: CMatrix) -> float:
         """V(x, ρ) = ‖x‖² + S(ρ ‖ ρ*)  (quantum relative entropy)."""
         x_norm2 = float(np.dot(x, x))
         S_rel = _quantum_relative_entropy(rho, rho_star)

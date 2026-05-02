@@ -11,18 +11,18 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 import numpy as np
-from numpy.typing import NDArray
 
+from quasim.ciir.swarm.invariant_miner import DetectedInvariant
 from quasim.ciir.swarm.memory import (
-    KnowledgeGraph, NodeType, EdgeType,
+    KnowledgeGraph,
+    NodeType,
 )
 from quasim.ciir.swarm.simulator import SimulationResult
-from quasim.ciir.swarm.invariant_miner import DetectedInvariant
-
 
 # ================================================================
 # Empirical mapping result
 # ================================================================
+
 
 @dataclass
 class EmpiricalMapping:
@@ -46,6 +46,7 @@ class EmpiricalMapping:
 # ================================================================
 # Empirical Mapper agent
 # ================================================================
+
 
 class EmpiricalMapper:
     """Map simulation outputs to known physics domains."""
@@ -104,7 +105,8 @@ class EmpiricalMapper:
         )
 
     def map_quantum_mechanics(
-        self, result: SimulationResult,
+        self,
+        result: SimulationResult,
     ) -> EmpiricalMapping:
         """Check for quantum mechanics signatures.
 
@@ -134,7 +136,7 @@ class EmpiricalMapper:
         details["superposition_ratio"] = superposition_ratio
 
         # Born rule: check |ψ|² sums to ~ constant
-        prob = np.sum(final ** 2)
+        prob = np.sum(final**2)
         details["born_probability_sum"] = float(prob)
 
         score = 0.0
@@ -152,7 +154,8 @@ class EmpiricalMapper:
         )
 
     def map_relativity(
-        self, result: SimulationResult,
+        self,
+        result: SimulationResult,
     ) -> EmpiricalMapping:
         """Check for relativistic signatures.
 

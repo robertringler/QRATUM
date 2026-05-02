@@ -43,7 +43,7 @@ References
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import List, Tuple
 
 import numpy as np
 from numpy.typing import NDArray
@@ -55,6 +55,7 @@ RVec = NDArray[np.float64]
 # ---------------------------------------------------------------------------
 # Utility: matrix exponential from eigendecomposition
 # ---------------------------------------------------------------------------
+
 
 def _matrix_exp(A: CMatrix) -> CMatrix:
     """exp(A) via eigendecomposition (A must be Hermitian)."""
@@ -89,6 +90,7 @@ def _density_from_theta(
 # Symmetric logarithmic derivative (SLD)
 # ---------------------------------------------------------------------------
 
+
 def sld(rho: CMatrix, drho: CMatrix, eps: float = 1e-8) -> CMatrix:
     r"""Compute the SLD L such that ∂ρ = ½(ρL + Lρ).
 
@@ -115,6 +117,7 @@ def sld(rho: CMatrix, drho: CMatrix, eps: float = 1e-8) -> CMatrix:
 # ---------------------------------------------------------------------------
 # Quantum Fisher metric
 # ---------------------------------------------------------------------------
+
 
 def quantum_fisher_metric(
     theta: RVec,
@@ -175,6 +178,7 @@ def quantum_fisher_metric(
 # Cost function: negative fidelity
 # ---------------------------------------------------------------------------
 
+
 def fidelity_cost(
     theta: RVec,
     H0: CMatrix,
@@ -202,8 +206,10 @@ def fidelity_gradient(
         theta_m = theta.copy()
         theta_p[k] += eps_fd
         theta_m[k] -= eps_fd
-        grad[k] = (fidelity_cost(theta_p, H0, H_ops, rho_target)
-                   - fidelity_cost(theta_m, H0, H_ops, rho_target)) / (2.0 * eps_fd)
+        grad[k] = (
+            fidelity_cost(theta_p, H0, H_ops, rho_target)
+            - fidelity_cost(theta_m, H0, H_ops, rho_target)
+        ) / (2.0 * eps_fd)
     return grad
 
 
@@ -211,16 +217,17 @@ def fidelity_gradient(
 # Natural gradient controller
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class GeometricControlResult:
     """Output of one natural-gradient control step."""
 
-    theta: RVec            # updated parameters
-    rho: CMatrix           # updated density matrix
-    cost: float            # J(θ)
-    fidelity: float        # F(ρ, ρ_target)
-    grad_norm: float       # ‖∇J‖
-    nat_grad_norm: float   # ‖g⁻¹ ∇J‖
+    theta: RVec  # updated parameters
+    rho: CMatrix  # updated density matrix
+    cost: float  # J(θ)
+    fidelity: float  # F(ρ, ρ_target)
+    grad_norm: float  # ‖∇J‖
+    nat_grad_norm: float  # ‖g⁻¹ ∇J‖
 
 
 class NaturalGradientController:

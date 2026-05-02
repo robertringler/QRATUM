@@ -9,6 +9,7 @@ These tests exercise:
 * Config profile loader
 * Health / readiness contract
 """
+
 from __future__ import annotations
 
 import io
@@ -22,15 +23,15 @@ import pytest
 from qratum_framework import (
     DEFAULT_PROFILE,
     PROFILES,
+    VERDICT_A,
+    VERDICT_A0,
+    VERDICT_B,
     FalsificationVerdict,
     MerkleLedger,
     Operator,
     OperatorResult,
     StrictCIIRBackend,
     UnifiedTraceEntry,
-    VERDICT_A,
-    VERDICT_A0,
-    VERDICT_B,
     check_health,
     check_readiness,
     hash_entry,
@@ -39,7 +40,6 @@ from qratum_framework import (
 from qratum_framework.cli import main as cli_main
 from qratum_framework.falsifier import _DemoFalsifier
 from qratum_framework.trace import GENESIS_HASH, hash_state
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -272,15 +272,11 @@ class TestFalsificationVerdict:
     @pytest.mark.parametrize("bad_verdict", ["X", "", "a", "C"])
     def test_invalid_verdict_rejected(self, bad_verdict):
         with pytest.raises(ValueError):
-            FalsificationVerdict(
-                domain="d", verdict=bad_verdict, snr=1.0, overlap_with_ground=0.5
-            )
+            FalsificationVerdict(domain="d", verdict=bad_verdict, snr=1.0, overlap_with_ground=0.5)
 
     def test_negative_snr_rejected(self):
         with pytest.raises(ValueError):
-            FalsificationVerdict(
-                domain="d", verdict=VERDICT_B, snr=-0.1, overlap_with_ground=0.5
-            )
+            FalsificationVerdict(domain="d", verdict=VERDICT_B, snr=-0.1, overlap_with_ground=0.5)
 
     @pytest.mark.parametrize("bad_overlap", [-0.01, 1.01, 2.0])
     def test_overlap_must_be_in_unit_interval(self, bad_overlap):

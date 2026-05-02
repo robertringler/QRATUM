@@ -9,12 +9,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from qubic_meta_library.integrations.qnimbus_connector import (
-    CloudExecutionResult, QNimbusConnector)
-from qubic_meta_library.integrations.qstack_connector import (
-    MLExecutionResult, QStackConnector)
-from qubic_meta_library.integrations.quasim_connector import (QuASIMConnector,
-                                                              SimulationResult)
+from qubic_meta_library.integrations.qnimbus_connector import CloudExecutionResult, QNimbusConnector
+from qubic_meta_library.integrations.qstack_connector import MLExecutionResult, QStackConnector
+from qubic_meta_library.integrations.quasim_connector import QuASIMConnector, SimulationResult
 from qubic_meta_library.models import Prompt
 
 

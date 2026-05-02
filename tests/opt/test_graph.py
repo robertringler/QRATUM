@@ -146,12 +146,7 @@ class TestHierarchicalGraph:
 
     def test_from_contraction(self):
         """Test hierarchical graph creation by contraction."""
-        base = QGraph.random_graph(
-            num_nodes=20,
-            edge_probability=0.2,
-            seed=42,
-            directed=True
-        )
+        base = QGraph.random_graph(num_nodes=20, edge_probability=0.2, seed=42, directed=True)
         base = QGraph.random_graph(num_nodes=20, edge_probability=0.2, seed=42, directed=True)
 
         hierarchy = HierarchicalGraph.from_contraction(
@@ -161,7 +156,7 @@ class TestHierarchicalGraph:
         assert hierarchy.num_levels == 3
         assert hierarchy.levels[0].num_nodes == 20
         assert hierarchy.levels[1].num_nodes == 10  # 50% of 20
-        assert hierarchy.levels[2].num_nodes == 5   # 50% of 10
+        assert hierarchy.levels[2].num_nodes == 5  # 50% of 10
         assert hierarchy.levels[2].num_nodes == 5  # 50% of 10
 
         # Check that mappings exist

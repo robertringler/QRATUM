@@ -173,7 +173,9 @@ def _run_scenario(
             anomalies.append(f"Inf loss at step {snapshot.step}")
             break
         if snapshot.gradient_norm > 1e10:
-            anomalies.append(f"Gradient explosion at step {snapshot.step}: {snapshot.gradient_norm:.2e}")
+            anomalies.append(
+                f"Gradient explosion at step {snapshot.step}: {snapshot.gradient_norm:.2e}"
+            )
 
     elapsed = time.time() - t0
 
@@ -183,8 +185,8 @@ def _run_scenario(
     # Determine pass/fail
     passed = len(anomalies) == 0
     if metrics.losses and len(metrics.losses) >= 2 and metrics.losses[-1] > metrics.losses[0] * 10:
-            anomalies.append("Loss divergence detected")
-            passed = False
+        anomalies.append("Loss divergence detected")
+        passed = False
 
     result = ScenarioResult(
         name=name,
@@ -228,7 +230,9 @@ def _compute_summary(
     summary["n_steps"] = len(metrics.steps)
     summary["initial_loss"] = float(losses[0])
     summary["final_loss"] = float(losses[-1])
-    summary["loss_reduction_pct"] = float((losses[0] - losses[-1]) / max(abs(losses[0]), 1e-12) * 100)
+    summary["loss_reduction_pct"] = float(
+        (losses[0] - losses[-1]) / max(abs(losses[0]), 1e-12) * 100
+    )
     summary["mean_gradient_norm"] = float(grads.mean())
     summary["final_gradient_norm"] = float(grads[-1])
     summary["mean_purity"] = float(purities.mean())
@@ -237,7 +241,9 @@ def _compute_summary(
     summary["final_entropy"] = float(entropies[-1])
     summary["mean_step_time_ms"] = float(step_times.mean())
     summary["total_time_ms"] = float(step_times.sum())
-    summary["throughput_steps_per_s"] = float(len(metrics.steps) / max(step_times.sum() / 1000, 1e-12))
+    summary["throughput_steps_per_s"] = float(
+        len(metrics.steps) / max(step_times.sum() / 1000, 1e-12)
+    )
 
     # Convergence check
     if len(losses) >= 10:
@@ -497,6 +503,7 @@ def generate_convergence_plots(
         Paths to generated plot files.
     """
     import matplotlib
+
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 

@@ -14,7 +14,7 @@ This script verifies all major components are working correctly.
 
 import sys
 
-sys.path.insert(0, '.')
+sys.path.insert(0, ".")
 sys.path.insert(0, ".")
 
 # Version constants
@@ -130,7 +130,9 @@ def test_asi():
     # Create orchestrator
     orchestrator = QRATUMASIOrchestrator(enable_asi_operations=False)
     print("✓ ASI Orchestrator initialized")
-    print(f"✓ ASI Operations: {'ENABLED' if orchestrator.enable_asi_operations else 'DISABLED (safe default)'}")
+    print(
+        f"✓ ASI Operations: {'ENABLED' if orchestrator.enable_asi_operations else 'DISABLED (safe default)'}"
+    )
     print(
         f"✓ ASI Operations: {'ENABLED' if orchestrator.enable_asi_operations else 'DISABLED (safe default)'}"
     )
@@ -340,7 +342,7 @@ def main():
     print("\n" + "=" * 70)
     print("  QRATUM FULL STACK VERIFICATION")
     print("  Version 1.0.0 - Production Ready")
-    print("="*70)
+    print("=" * 70)
     print(f"  Version {VERIFICATION_VERSION} - {VERIFICATION_LABEL}")
     print(f"  QuASIM {QUASIM_VERSION} - {TASK_STATUS}")
     print("=" * 70)

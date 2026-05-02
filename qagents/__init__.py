@@ -12,8 +12,6 @@ from qagents.adapters import (
     qratum_simulator,
 )
 from qagents.base import Agent, AgentLog, AgentObservation, AgentPolicy, AgentState, LambdaPolicy
-from qagents.base import (Agent, AgentLog, AgentObservation, AgentPolicy,
-                          AgentState, LambdaPolicy)
 from qagents.interaction import InteractionBus, Message
 from qagents.observation import filtered_observation, merge_observations
 from qagents.reality_interface import (
@@ -29,9 +27,14 @@ from qagents.reality_interface import (
 )
 from qagents.registry import AgentRegistry
 from qagents.rewards import aggregate_rewards, shaped_reward
-from qagents.strategy import (DeterminismChecker, PolicyAdapter,
-                              ScriptedStrategy, Strategy, StrategyDecision,
-                              ThresholdStrategy)
+from qagents.strategy import (
+    DeterminismChecker,
+    PolicyAdapter,
+    ScriptedStrategy,
+    Strategy,
+    StrategyDecision,
+    ThresholdStrategy,
+)
 
 __all__ = [
     "Agent",

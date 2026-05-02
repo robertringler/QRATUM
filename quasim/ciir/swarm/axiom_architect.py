@@ -10,20 +10,21 @@ where each axiom's predicate is logically independent.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Callable
 
 import numpy as np
 from numpy.typing import NDArray
 
 from quasim.ciir.swarm.memory import (
-    KnowledgeGraph, NodeType, EdgeType,
+    KnowledgeGraph,
+    NodeType,
 )
-
 
 # ================================================================
 # Axiom types
 # ================================================================
+
 
 @dataclass
 class Axiom:
@@ -47,6 +48,7 @@ class Axiom:
 # ================================================================
 # Axiom Architect agent
 # ================================================================
+
 
 class AxiomArchitect:
     """Generate minimal, non-redundant axiom systems."""
@@ -103,7 +105,9 @@ class AxiomArchitect:
         return axioms
 
     def check_independence(
-        self, axioms: list[Axiom], test_states: list[NDArray],
+        self,
+        axioms: list[Axiom],
+        test_states: list[NDArray],
     ) -> list[tuple[str, bool]]:
         """Test pairwise independence: for each axiom, find a state
         that violates it while satisfying all others."""
@@ -120,13 +124,12 @@ class AxiomArchitect:
         return results
 
     def check_consistency(
-        self, axioms: list[Axiom], test_states: list[NDArray],
+        self,
+        axioms: list[Axiom],
+        test_states: list[NDArray],
     ) -> bool:
         """Check that at least one test state satisfies all axioms."""
-        return any(
-            all(ax.predicate(s) for ax in axioms)
-            for s in test_states
-        )
+        return any(all(ax.predicate(s) for ax in axioms) for s in test_states)
 
     def publish_to_memory(
         self,

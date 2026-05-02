@@ -26,36 +26,37 @@ from typing import Any
 
 class QPUBackendNotAvailable(NotImplementedError):
     """Exception raised when QPU backend is not available."""
+
     pass
 
 
 class QPUBackend:
     """QPU backend for quantum computation.
-q    
-    WARNING: This is a STUB implementation. No quantum hardware is available.
-    QRATUM is a classical simulation framework with quantum-ready interfaces.
-    
-    For quantum algorithm development, use the quantum-ready interfaces:
-    - QuantumMinimumFinder in quasim.opt.post_dijkstra_sssp
-    - Qiskit/PennyLane integrations in quantum/ module
-    
-    Attributes:
-        available: Always False for stub implementation
-        
-    Example:
-        >>> backend = QPUBackend()
-        >>> backend.is_available()
-        False
-        >>> # For quantum-ready code, use:
-        >>> from quasim.opt.post_dijkstra_sssp import QuantumMinimumFinder
-        >>> finder = QuantumMinimumFinder(use_qpu=False)  # Classical fallback
+    q
+        WARNING: This is a STUB implementation. No quantum hardware is available.
+        QRATUM is a classical simulation framework with quantum-ready interfaces.
 
-    This is a stub implementation establishing the structural interface.
-    Full QPU backend will be implemented in a future PR.
+        For quantum algorithm development, use the quantum-ready interfaces:
+        - QuantumMinimumFinder in quasim.opt.post_dijkstra_sssp
+        - Qiskit/PennyLane integrations in quantum/ module
+
+        Attributes:
+            available: Always False for stub implementation
+
+        Example:
+            >>> backend = QPUBackend()
+            >>> backend.is_available()
+            False
+            >>> # For quantum-ready code, use:
+            >>> from quasim.opt.post_dijkstra_sssp import QuantumMinimumFinder
+            >>> finder = QuantumMinimumFinder(use_qpu=False)  # Classical fallback
+
+        This is a stub implementation establishing the structural interface.
+        Full QPU backend will be implemented in a future PR.
     """
-    
+
     _warned = False
-    
+
     def __init__(self):
         """Initialize QPU backend stub with clarification warning."""
         if not QPUBackend._warned:
@@ -65,22 +66,22 @@ q
                 "Quantum hardware integration is NOT available. "
                 "Use quantum-ready interfaces with classical fallback.",
                 UserWarning,
-                stacklevel=2
+                stacklevel=2,
             )
             QPUBackend._warned = True
-    
+
     @property
     def available(self) -> bool:
         """Check if QPU backend is available.
-        
+
         Returns:
             Always False - quantum hardware not integrated
         """
         return False
-    
+
     def is_available(self) -> bool:
         """Check if QPU backend is available.
-        
+
         Returns:
             Always False - quantum hardware not integrated
         """
@@ -88,10 +89,10 @@ q
 
     def run(self, task: Any) -> Any:
         """Execute task on QPU backend.
-        
+
         WARNING: This method always raises QPUBackendNotAvailable.
         QRATUM does not have quantum hardware integration.
-        
+
 
         This method will be implemented in PR-007 (Quantum Backend).
 
@@ -100,7 +101,7 @@ q
 
         Returns:
             Never returns - always raises exception
-            
+
             Execution result
 
         Raises:

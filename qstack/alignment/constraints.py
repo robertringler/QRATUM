@@ -4,9 +4,11 @@ from __future__ import annotations
 
 from typing import Tuple
 
-from qstack.alignment.constitution import (ARTICLE_QNX_SAFETY,
-                                           ARTICLE_QUASIM_BOUNDS,
-                                           ARTICLE_QUNIMBUS_GOVERNANCE)
+from qstack.alignment.constitution import (
+    ARTICLE_QNX_SAFETY,
+    ARTICLE_QUASIM_BOUNDS,
+    ARTICLE_QUNIMBUS_GOVERNANCE,
+)
 from qstack.alignment.violations import ViolationSeverity
 from qstack.config import QNXConfig, QuASIMConfig, QuNimbusConfig
 

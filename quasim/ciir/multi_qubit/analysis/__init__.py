@@ -2,8 +2,8 @@
 
 from .stability import (
     LyapunovAnalyzer,
-    spectral_gap,
     lindbladian_matrix,
+    spectral_gap,
 )
 
 __all__ = ["LyapunovAnalyzer", "spectral_gap", "lindbladian_matrix"]

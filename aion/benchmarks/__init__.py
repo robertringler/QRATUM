@@ -249,16 +249,14 @@ class SQLAggregationBenchmark:
         from ..lifters.sql_lifter import SQLLifter
 
         lifter = SQLLifter()
-        return lifter.lift(
-            """
+        return lifter.lift("""
             SELECT category, SUM(value), AVG(value), COUNT(*)
             FROM metrics
             WHERE timestamp > '2024-01-01'
             GROUP BY category
             ORDER BY SUM(value) DESC
             LIMIT 100
-        """
-        )
+        """)
 
     def run(self, iterations: int = 10) -> BenchmarkResult:
         """Run the benchmark."""
@@ -303,8 +301,7 @@ class MixedPipelineBenchmark:
         from ..language import AIONCompiler
 
         compiler = AIONCompiler()
-        return compiler.compile(
-            f"""
+        return compiler.compile(f"""
             // Define regions
             region HotData : GPU_Stream0 Thread
             region Result : CPU Static
@@ -322,8 +319,7 @@ class MixedPipelineBenchmark:
             move result into Result
             
             return result
-        """
-        )
+        """)
 
     def run(self, iterations: int = 10) -> BenchmarkResult:
         """Run the benchmark."""

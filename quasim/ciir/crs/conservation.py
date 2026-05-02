@@ -10,17 +10,17 @@ Implements Noether-analog invariant detection:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Callable
 
 import numpy as np
 
 from quasim.ciir.crs.graph import CRSGraph
 
-
 # ================================================================
 # Invariant primitive
 # ================================================================
+
 
 @dataclass
 class Invariant:
@@ -44,6 +44,7 @@ class Invariant:
 # ================================================================
 # Conservation engine
 # ================================================================
+
 
 class ConservationEngine:
     """Registry and checker of conserved quantities.
@@ -92,6 +93,7 @@ class ConservationEngine:
 # ================================================================
 # Built-in invariants
 # ================================================================
+
 
 def total_state_norm_invariant(tol: float = 0.1) -> Invariant:
     r"""Σ_v ||s_v||₂ — total state norm."""

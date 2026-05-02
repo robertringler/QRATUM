@@ -84,12 +84,8 @@ def sync_model(
     lo, hi = model_state.bounds
     new_vec[:n_nodes] = np.clip(new_vec[:n_nodes], lo, hi)
 
-    activations = {
-        n: float(new_vec[i]) for i, n in enumerate(node_ids)
-    }
-    edge_weights = {
-        e: float(new_vec[n_nodes + j]) for j, e in enumerate(edge_ids)
-    }
+    activations = {n: float(new_vec[i]) for i, n in enumerate(node_ids)}
+    edge_weights = {e: float(new_vec[n_nodes + j]) for j, e in enumerate(edge_ids)}
     # Preserve untracked edges so topology is unchanged.
     for e, w in model_state.edge_weights:
         edge_weights.setdefault(e, w)

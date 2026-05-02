@@ -8,10 +8,6 @@ import json
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 
-from qratum_asi.safety.mega_prompt import (AnswerType, ConfidenceLevel,
-                                           MegaPromptQuestion,
-                                           MegaPromptResponse,
-                                           MegaPromptSystem)
 from qratum_asi.safety.mega_prompt import (
     AnswerType,
     ConfidenceLevel,

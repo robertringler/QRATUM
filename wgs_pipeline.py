@@ -45,28 +45,32 @@ logger = logging.getLogger(__name__)
 # INPUT FORMAT DEFINITIONS
 # ============================================================================
 
+
 class InputFormat(Enum):
     """Supported input formats for WGS pipeline"""
+
     FASTQ = "fastq"  # Raw paired-end sequencing
-    BAM = "bam"      # Aligned reads (Binary Alignment Map)
-    CRAM = "cram"    # Compressed aligned reads
-    VCF = "vcf"      # Variant Call Format
+    BAM = "bam"  # Aligned reads (Binary Alignment Map)
+    CRAM = "cram"  # Compressed aligned reads
+    VCF = "vcf"  # Variant Call Format
     ARRAY = "array"  # Legacy SNP arrays (AncestryDNA/23andMe)
 
 
 class VariantType(Enum):
     """Types of genetic variants"""
-    SNP = "SNP"                    # Single Nucleotide Polymorphism
-    INDEL = "INDEL"                # Insertion/Deletion
-    SV_DEL = "SV_DELETION"         # Structural Variant: Deletion
-    SV_DUP = "SV_DUPLICATION"      # Structural Variant: Duplication
-    SV_INV = "SV_INVERSION"        # Structural Variant: Inversion
+
+    SNP = "SNP"  # Single Nucleotide Polymorphism
+    INDEL = "INDEL"  # Insertion/Deletion
+    SV_DEL = "SV_DELETION"  # Structural Variant: Deletion
+    SV_DUP = "SV_DUPLICATION"  # Structural Variant: Duplication
+    SV_INV = "SV_INVERSION"  # Structural Variant: Inversion
     SV_TRANS = "SV_TRANSLOCATION"  # Structural Variant: Translocation
-    MEI = "MOBILE_ELEMENT"         # Mobile Element Insertion
+    MEI = "MOBILE_ELEMENT"  # Mobile Element Insertion
 
 
 class FunctionalImpact(Enum):
     """Functional impact categories"""
+
     CODING = "coding"
     REGULATORY = "regulatory"
     SPLICE = "splice_site"
@@ -79,9 +83,11 @@ class FunctionalImpact(Enum):
 # DATA STRUCTURES
 # ============================================================================
 
+
 @dataclass
 class AlignmentConfig:
     """Configuration for read alignment"""
+
     reference_genome: str = "GRCh38"
     aligner: str = "BWA-MEM2"
     threads: int = 8
@@ -101,6 +107,7 @@ class AlignmentConfig:
 @dataclass
 class VariantCallConfig:
     """Configuration for variant calling"""
+
     caller: str = "DeepVariant"  # or GATK
     min_depth: int = 10
     min_quality: int = 30
@@ -118,6 +125,7 @@ class VariantCallConfig:
 @dataclass
 class Variant:
     """Complete variant representation for WGS"""
+
     # Core identification
     variant_id: str
     chromosome: str
@@ -154,6 +162,7 @@ class Variant:
 @dataclass
 class ReadAlignment:
     """Aligned read representation"""
+
     read_id: str
     chromosome: str
     position: int
@@ -168,6 +177,7 @@ class ReadAlignment:
 @dataclass
 class StructuralVariant:
     """Structural variant representation"""
+
     sv_id: str
     chromosome: str
     start_position: int
@@ -185,6 +195,7 @@ class StructuralVariant:
 @dataclass
 class PhasingBlock:
     """Phased haplotype block"""
+
     block_id: str
     chromosome: str
     start_position: int
@@ -202,18 +213,19 @@ class PhasingBlock:
 # WGS PIPELINE CORE
 # ============================================================================
 
+
 class WGSPipeline:
     """Production-grade whole genome sequencing pipeline"""
 
     def __init__(self, config: Optional[Dict] = None):
         """Initialize WGS pipeline
-        
+
         Args:
             config: Pipeline configuration dictionary
         """
         self.config = config or {}
-        self.alignment_config = AlignmentConfig(**self.config.get('alignment', {}))
-        self.variant_config = VariantCallConfig(**self.config.get('variant_calling', {}))
+        self.alignment_config = AlignmentConfig(**self.config.get("alignment", {}))
+        self.variant_config = VariantCallConfig(**self.config.get("variant_calling", {}))
 
         # Initialize subsystems
         self.rarity_system = GenomicRarityAndLineageSystem()
@@ -241,11 +253,11 @@ class WGSPipeline:
 
     def ingest_fastq(self, fastq_r1: str, fastq_r2: str) -> bool:
         """Ingest paired-end FASTQ files
-        
+
         Args:
             fastq_r1: Path to forward reads FASTQ
             fastq_r2: Path to reverse reads FASTQ
-            
+
         Returns:
             Success status
         """
@@ -271,19 +283,19 @@ class WGSPipeline:
 
     def ingest_bam(self, bam_path: str) -> bool:
         """Ingest BAM/CRAM aligned reads
-        
+
         Args:
             bam_path: Path to BAM/CRAM file
-            
+
         Returns:
             Success status
         """
         logger.info(f"Ingesting BAM/CRAM: {bam_path}")
 
         # Detect format
-        if bam_path.endswith('.bam'):
+        if bam_path.endswith(".bam"):
             self.input_format = InputFormat.BAM
-        elif bam_path.endswith('.cram'):
+        elif bam_path.endswith(".cram"):
             self.input_format = InputFormat.CRAM
         else:
             logger.error("Unknown alignment format")
@@ -301,10 +313,10 @@ class WGSPipeline:
 
     def ingest_vcf(self, vcf_path: str) -> bool:
         """Ingest VCF variant calls
-        
+
         Args:
             vcf_path: Path to VCF file
-            
+
         Returns:
             Success status
         """
@@ -328,11 +340,11 @@ class WGSPipeline:
 
     def ingest_array(self, array_path: str, array_type: str = "AncestryDNA") -> bool:
         """Ingest legacy SNP array data with resolution limitations
-        
+
         Args:
             array_path: Path to array file
             array_type: Array platform (AncestryDNA, 23andMe)
-            
+
         Returns:
             Success status
         """
@@ -360,8 +372,8 @@ class WGSPipeline:
         """Generate SHA256 hash of file for reproducibility"""
         sha256 = hashlib.sha256()
 
-        open_func = gzip.open if filepath.endswith('.gz') else open
-        with open_func(filepath, 'rb') as f:
+        open_func = gzip.open if filepath.endswith(".gz") else open
+        with open_func(filepath, "rb") as f:
             while chunk := f.read(chunk_size):
                 sha256.update(chunk)
 
@@ -369,21 +381,21 @@ class WGSPipeline:
 
     def _parse_vcf(self, vcf_path: str) -> List[Variant]:
         """Parse VCF file into Variant objects
-        
+
         In production, would use pysam/cyvcf2 for proper VCF parsing.
         This is a simplified implementation for demonstration.
         """
         variants = []
 
-        open_func = gzip.open if vcf_path.endswith('.gz') else open
-        mode = 'rt' if vcf_path.endswith('.gz') else 'r'
+        open_func = gzip.open if vcf_path.endswith(".gz") else open
+        mode = "rt" if vcf_path.endswith(".gz") else "r"
 
         with open_func(vcf_path, mode) as f:
             for line in f:
-                if line.startswith('#'):
+                if line.startswith("#"):
                     continue
 
-                parts = line.strip().split('\t')
+                parts = line.strip().split("\t")
                 if len(parts) < 10:
                     continue
 
@@ -399,17 +411,17 @@ class WGSPipeline:
                     var_type = VariantType.SNP
 
                 # Parse genotype
-                gt_fields = sample.split(':')
+                gt_fields = sample.split(":")
                 genotype = gt_fields[0] if gt_fields else "0/0"
 
                 variant = Variant(
-                    variant_id=var_id if var_id != '.' else f"{chrom}:{pos}",
+                    variant_id=var_id if var_id != "." else f"{chrom}:{pos}",
                     chromosome=chrom,
                     position=int(pos),
                     ref_allele=ref,
                     alt_allele=alt,
                     variant_type=var_type,
-                    quality_score=float(qual) if qual != '.' else 0.0,
+                    quality_score=float(qual) if qual != "." else 0.0,
                     depth=30,  # Would parse from INFO/FORMAT
                     genotype=genotype,
                 )
@@ -424,12 +436,12 @@ class WGSPipeline:
 
         with open(array_path) as f:
             for line in f:
-                if line.startswith('#'):
+                if line.startswith("#"):
                     continue
-                if line.startswith('rsid'):
+                if line.startswith("rsid"):
                     continue  # Header
 
-                parts = line.strip().split('\t')
+                parts = line.strip().split("\t")
                 if len(parts) < 5:
                     continue
 
@@ -460,7 +472,7 @@ class WGSPipeline:
 
     def align_reads(self) -> bool:
         """Perform read alignment using BWA-MEM2 equivalent
-        
+
         Returns:
             Success status
         """
@@ -500,7 +512,7 @@ class WGSPipeline:
 
     def call_variants(self) -> bool:
         """Call variants from aligned reads (DeepVariant/GATK equivalent)
-        
+
         Returns:
             Success status
         """
@@ -534,7 +546,7 @@ class WGSPipeline:
 
     def _call_snps_indels(self) -> int:
         """Call SNPs and INDELs
-        
+
         In production, would use DeepVariant or GATK HaplotypeCaller.
         Returns number of variants called.
         """
@@ -554,7 +566,7 @@ class WGSPipeline:
         sample_size = 10000
 
         for i in range(sample_size):
-            chrom = np.random.choice(list(range(1, 23)) + ['X', 'Y'])
+            chrom = np.random.choice(list(range(1, 23)) + ["X", "Y"])
             pos = np.random.randint(1, 250000000)
 
             variant = Variant(
@@ -562,11 +574,11 @@ class WGSPipeline:
                 chromosome=str(chrom),
                 position=pos,
                 ref_allele="A",
-                alt_allele=np.random.choice(['C', 'G', 'T']),
+                alt_allele=np.random.choice(["C", "G", "T"]),
                 variant_type=VariantType.SNP if i < sample_size * 0.9 else VariantType.INDEL,
                 quality_score=np.random.uniform(30, 100),
                 depth=np.random.randint(10, 60),
-                genotype=np.random.choice(['0/1', '1/1']),
+                genotype=np.random.choice(["0/1", "1/1"]),
             )
 
             self.variants.append(variant)
@@ -575,7 +587,7 @@ class WGSPipeline:
 
     def _call_structural_variants(self) -> int:
         """Call structural variants (CNVs, inversions, translocations)
-        
+
         In production, would use tools like Manta, DELLY, or Lumpy.
         Returns number of SVs called.
         """
@@ -590,7 +602,7 @@ class WGSPipeline:
 
         # Create subset for demonstration
         for i in range(min(100, num_svs)):
-            chrom = str(np.random.choice(list(range(1, 23)) + ['X', 'Y']))
+            chrom = str(np.random.choice(list(range(1, 23)) + ["X", "Y"]))
             start = np.random.randint(1, 240000000)
             size = np.random.randint(self.variant_config.min_sv_size, 10000)
 
@@ -599,11 +611,13 @@ class WGSPipeline:
                 chromosome=chrom,
                 start_position=start,
                 end_position=start + size,
-                sv_type=np.random.choice([
-                    VariantType.SV_DEL,
-                    VariantType.SV_DUP,
-                    VariantType.SV_INV,
-                ]),
+                sv_type=np.random.choice(
+                    [
+                        VariantType.SV_DEL,
+                        VariantType.SV_DUP,
+                        VariantType.SV_INV,
+                    ]
+                ),
                 size=size,
                 quality_score=np.random.uniform(20, 100),
                 supporting_reads=np.random.randint(5, 50),
@@ -619,7 +633,7 @@ class WGSPipeline:
 
     def annotate_variants(self) -> bool:
         """Annotate variants with gnomAD, ClinVar, functional impact
-        
+
         Returns:
             Success status
         """
@@ -637,7 +651,7 @@ class WGSPipeline:
 
     def _annotate_single_variant(self, variant: Variant) -> None:
         """Annotate a single variant
-        
+
         In production, would query:
         - gnomAD for population frequencies
         - ClinVar for clinical significance
@@ -652,22 +666,27 @@ class WGSPipeline:
         }
 
         # Simulate functional impact
-        variant.functional_impact = np.random.choice([
-            FunctionalImpact.CODING,
-            FunctionalImpact.REGULATORY,
-            FunctionalImpact.INTRONIC,
-            FunctionalImpact.INTERGENIC,
-        ], p=[0.05, 0.10, 0.40, 0.45])
+        variant.functional_impact = np.random.choice(
+            [
+                FunctionalImpact.CODING,
+                FunctionalImpact.REGULATORY,
+                FunctionalImpact.INTRONIC,
+                FunctionalImpact.INTERGENIC,
+            ],
+            p=[0.05, 0.10, 0.40, 0.45],
+        )
 
         # Simulate ClinVar for coding variants
         if variant.functional_impact == FunctionalImpact.CODING and np.random.random() < 0.01:
-            variant.clinvar_significance = np.random.choice([
-                "Benign",
-                "Likely benign",
-                "Uncertain significance",
-                "Likely pathogenic",
-                "Pathogenic",
-            ])
+            variant.clinvar_significance = np.random.choice(
+                [
+                    "Benign",
+                    "Likely benign",
+                    "Uncertain significance",
+                    "Likely pathogenic",
+                    "Pathogenic",
+                ]
+            )
 
     # ========================================================================
     # PHASING & HAPLOTYPE RECONSTRUCTION
@@ -675,7 +694,7 @@ class WGSPipeline:
 
     def phase_variants(self) -> bool:
         """Perform long-range phasing and haplotype reconstruction
-        
+
         Returns:
             Success status
         """
@@ -692,7 +711,7 @@ class WGSPipeline:
 
     def _create_phasing_blocks(self) -> None:
         """Create phased haplotype blocks
-        
+
         In production, would use tools like SHAPEIT, Eagle, or WhatsHap.
         """
         # Group variants by chromosome
@@ -711,7 +730,7 @@ class WGSPipeline:
             # Create blocks of ~100 variants
             block_size = 100
             for i in range(0, len(variants), block_size):
-                block_variants = variants[i:i+block_size]
+                block_variants = variants[i : i + block_size]
                 if len(block_variants) < 10:
                     continue
 
@@ -736,7 +755,7 @@ class WGSPipeline:
 
     def analyze_genome(self) -> Dict:
         """Perform comprehensive genome analysis
-        
+
         Returns:
             Analysis results dictionary
         """
@@ -745,13 +764,15 @@ class WGSPipeline:
         # Convert variants to format expected by rarity engine
         snp_data = []
         for variant in self.variants[:10000]:  # Sample for performance
-            snp_data.append({
-                "rsid": variant.variant_id,
-                "chromosome": variant.chromosome,
-                "position": variant.position,
-                "allele1": variant.ref_allele,
-                "allele2": variant.alt_allele,
-            })
+            snp_data.append(
+                {
+                    "rsid": variant.variant_id,
+                    "chromosome": variant.chromosome,
+                    "position": variant.position,
+                    "allele1": variant.ref_allele,
+                    "allele2": variant.alt_allele,
+                }
+            )
 
         # Run rarity and lineage analysis
         rarity_results = self.rarity_system.analyze_genome(snp_data)
@@ -762,7 +783,9 @@ class WGSPipeline:
             "total_variants": len(self.variants),
             "structural_variants": len(self.structural_variants),
             "phasing_blocks": len(self.phasing_blocks),
-            "resolution": "WHOLE_GENOME" if self.input_format != InputFormat.ARRAY else "ARRAY_LIMITED",
+            "resolution": (
+                "WHOLE_GENOME" if self.input_format != InputFormat.ARRAY else "ARRAY_LIMITED"
+            ),
         }
 
         rarity_results["wgs_metrics"] = wgs_metrics
@@ -772,11 +795,11 @@ class WGSPipeline:
 
     def generate_report(self, analysis_results: Dict, output_dir: str) -> str:
         """Generate comprehensive multi-volume report
-        
+
         Args:
             analysis_results: Analysis results
             output_dir: Output directory
-            
+
         Returns:
             Path to main report
         """
@@ -784,63 +807,87 @@ class WGSPipeline:
 
         # Volume I: Data & Methods
         vol1_path = os.path.join(output_dir, "volume_1_data_methods.json")
-        with open(vol1_path, 'w') as f:
-            json.dump({
-                "volume": "I - Data & Methods",
-                "pipeline_metadata": self.pipeline_metadata,
-                "alignment_config": asdict(self.alignment_config),
-                "variant_config": asdict(self.variant_config),
-            }, f, indent=2)
+        with open(vol1_path, "w") as f:
+            json.dump(
+                {
+                    "volume": "I - Data & Methods",
+                    "pipeline_metadata": self.pipeline_metadata,
+                    "alignment_config": asdict(self.alignment_config),
+                    "variant_config": asdict(self.variant_config),
+                },
+                f,
+                indent=2,
+            )
 
         # Volume II: Genome-Wide Rarity Results
         vol2_path = os.path.join(output_dir, "volume_2_rarity_results.json")
-        with open(vol2_path, 'w') as f:
-            json.dump({
-                "volume": "II - Genome-Wide Rarity Results",
-                "genome_wide_rarity": analysis_results.get("genome_wide_rarity", {}),
-                "variant_rarity_sample": analysis_results.get("variant_rarity_sample", []),
-                "haplotype_blocks": analysis_results.get("haplotype_blocks", {}),
-            }, f, indent=2)
+        with open(vol2_path, "w") as f:
+            json.dump(
+                {
+                    "volume": "II - Genome-Wide Rarity Results",
+                    "genome_wide_rarity": analysis_results.get("genome_wide_rarity", {}),
+                    "variant_rarity_sample": analysis_results.get("variant_rarity_sample", []),
+                    "haplotype_blocks": analysis_results.get("haplotype_blocks", {}),
+                },
+                f,
+                indent=2,
+            )
 
         # Volume III: Lineage Intelligence
         vol3_path = os.path.join(output_dir, "volume_3_lineage_intelligence.json")
-        with open(vol3_path, 'w') as f:
-            json.dump({
-                "volume": "III - Lineage Intelligence",
-                "haplogroups": analysis_results.get("haplogroups", {}),
-                "royal_lineage": analysis_results.get("royal_lineage", {}),
-            }, f, indent=2)
+        with open(vol3_path, "w") as f:
+            json.dump(
+                {
+                    "volume": "III - Lineage Intelligence",
+                    "haplogroups": analysis_results.get("haplogroups", {}),
+                    "royal_lineage": analysis_results.get("royal_lineage", {}),
+                },
+                f,
+                indent=2,
+            )
 
         # Volume IV: Interpretation & Uncertainty
         vol4_path = os.path.join(output_dir, "volume_4_interpretation.json")
-        with open(vol4_path, 'w') as f:
-            json.dump({
-                "volume": "IV - Interpretation, Uncertainty, Constraints",
-                "confidence_intervals": {
-                    "rarity_percentile": "±5%",
-                    "lineage_probabilities": "See individual paths",
-                    "haplogroup_assignment": ">95%",
+        with open(vol4_path, "w") as f:
+            json.dump(
+                {
+                    "volume": "IV - Interpretation, Uncertainty, Constraints",
+                    "confidence_intervals": {
+                        "rarity_percentile": "±5%",
+                        "lineage_probabilities": "See individual paths",
+                        "haplogroup_assignment": ">95%",
+                    },
+                    "limitations": {
+                        "array_data": (
+                            "Limited to ~600K SNPs, not whole genome"
+                            if self.input_format == InputFormat.ARRAY
+                            else None
+                        ),
+                        "historical_records": "Incomplete prior to 1500s",
+                        "reference_databases": "European bias in current genomic databases",
+                    },
+                    "prohibitions": [
+                        "No legal titles or inheritance claims",
+                        "No deterministic descent from named monarchs",
+                        "All royal connections are probabilistic",
+                    ],
                 },
-                "limitations": {
-                    "array_data": "Limited to ~600K SNPs, not whole genome" if self.input_format == InputFormat.ARRAY else None,
-                    "historical_records": "Incomplete prior to 1500s",
-                    "reference_databases": "European bias in current genomic databases",
-                },
-                "prohibitions": [
-                    "No legal titles or inheritance claims",
-                    "No deterministic descent from named monarchs",
-                    "All royal connections are probabilistic",
-                ],
-            }, f, indent=2)
+                f,
+                indent=2,
+            )
 
         # Master summary
         summary_path = os.path.join(output_dir, "wgs_analysis_summary.json")
-        with open(summary_path, 'w') as f:
-            json.dump({
-                "report_type": "Whole Genome Sequencing Analysis",
-                "volumes": [vol1_path, vol2_path, vol3_path, vol4_path],
-                "analysis_results": analysis_results,
-            }, f, indent=2)
+        with open(summary_path, "w") as f:
+            json.dump(
+                {
+                    "report_type": "Whole Genome Sequencing Analysis",
+                    "volumes": [vol1_path, vol2_path, vol3_path, vol4_path],
+                    "analysis_results": analysis_results,
+                },
+                f,
+                indent=2,
+            )
 
         logger.info(f"Multi-volume report generated in {output_dir}")
         return summary_path
@@ -850,6 +897,7 @@ class WGSPipeline:
 # COMMAND-LINE INTERFACE
 # ============================================================================
 
+
 def main():
     """Main entry point for WGS pipeline"""
     parser = argparse.ArgumentParser(
@@ -858,15 +906,15 @@ def main():
 
     # Input options
     input_group = parser.add_mutually_exclusive_group(required=True)
-    input_group.add_argument('--fastq-r1', help="Forward FASTQ file (requires --fastq-r2)")
-    input_group.add_argument('--bam', help="BAM/CRAM alignment file")
-    input_group.add_argument('--vcf', help="VCF variant file")
-    input_group.add_argument('--array', help="SNP array file (AncestryDNA/23andMe)")
+    input_group.add_argument("--fastq-r1", help="Forward FASTQ file (requires --fastq-r2)")
+    input_group.add_argument("--bam", help="BAM/CRAM alignment file")
+    input_group.add_argument("--vcf", help="VCF variant file")
+    input_group.add_argument("--array", help="SNP array file (AncestryDNA/23andMe)")
 
-    parser.add_argument('--fastq-r2', help="Reverse FASTQ file (for paired-end)")
-    parser.add_argument('--output-dir', default="results/wgs_analysis", help="Output directory")
-    parser.add_argument('--seed', type=int, default=42, help="Random seed for reproducibility")
-    parser.add_argument('--threads', type=int, default=8, help="Number of threads")
+    parser.add_argument("--fastq-r2", help="Reverse FASTQ file (for paired-end)")
+    parser.add_argument("--output-dir", default="results/wgs_analysis", help="Output directory")
+    parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")
+    parser.add_argument("--threads", type=int, default=8, help="Number of threads")
 
     args = parser.parse_args()
 
@@ -878,8 +926,8 @@ def main():
 
     # Initialize pipeline
     config = {
-        'alignment': {'seed': args.seed, 'threads': args.threads},
-        'variant_calling': {'seed': args.seed},
+        "alignment": {"seed": args.seed, "threads": args.threads},
+        "variant_calling": {"seed": args.seed},
     }
 
     pipeline = WGSPipeline(config)

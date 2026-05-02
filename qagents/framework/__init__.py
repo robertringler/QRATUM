@@ -10,8 +10,8 @@ Three strictly separated modules:
 from qagents.framework.ciir import (
     Constraint,
     ConstraintAlgebra,
-    State,
     ObserverMap,
+    State,
 )
 from qagents.framework.crs import CRS, Action, FailureMode
 from qagents.framework.ric import RIC, Intent, TraceEntry

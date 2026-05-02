@@ -559,9 +559,7 @@ class TensorNetworkEngine:
         from quasim.holo.anti_tensor import compress
 
         state = self.get_state_vector()
-        compressed_state, achieved_fidelity, metadata = compress(
-            state, fidelity=fidelity
-        )
+        compressed_state, achieved_fidelity, metadata = compress(state, fidelity=fidelity)
 
         return {
             "compressed_state": compressed_state,

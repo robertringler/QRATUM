@@ -14,6 +14,7 @@ plus a top-level wrapper bundling per-row records, the matrix summary,
 and the regression verdict roll-up.  The Markdown writer renders a
 small fixed-width table for human review in CI logs.
 """
+
 from __future__ import annotations
 
 import json
@@ -36,7 +37,7 @@ if TYPE_CHECKING:
 class EvalReport:
     """Top-level report produced by an eval matrix run."""
 
-    rows: Sequence["MatrixRow"]
+    rows: Sequence[MatrixRow]
     verdicts: Sequence[RegressionVerdict]
     summary: Mapping[str, float]
     thresholds: RegressionThresholds
@@ -53,9 +54,7 @@ class EvalReport:
             "thresholds": {
                 "max_anomaly_rate": self.thresholds.max_anomaly_rate,
                 "max_lift_cluster_rate": self.thresholds.max_lift_cluster_rate,
-                "max_cluster_activation_index": (
-                    self.thresholds.max_cluster_activation_index
-                ),
+                "max_cluster_activation_index": (self.thresholds.max_cluster_activation_index),
             },
             "rows": [r.to_dict() for r in self.rows],
             "verdicts": [v.to_dict() for v in self.verdicts],
@@ -64,7 +63,7 @@ class EvalReport:
 
 
 def build_report(
-    rows: Sequence["MatrixRow"],
+    rows: Sequence[MatrixRow],
     *,
     thresholds: Optional[RegressionThresholds] = None,
 ) -> EvalReport:
@@ -73,9 +72,7 @@ def build_report(
     verdicts = detect_regressions(rows, thresholds=th)
     summary = dict(matrix_summary(rows))
     summary["regressions"] = float(sum(1 for v in verdicts if v.regression))
-    return EvalReport(
-        rows=tuple(rows), verdicts=tuple(verdicts), summary=summary, thresholds=th
-    )
+    return EvalReport(rows=tuple(rows), verdicts=tuple(verdicts), summary=summary, thresholds=th)
 
 
 def write_json_report(report: EvalReport, path: str | Path) -> Path:
@@ -113,7 +110,9 @@ def write_markdown_report(report: EvalReport, path: str | Path) -> Path:
         f"{report.summary.get('max_lift_cluster_rate', 0.0):.3f}"
     )
     lines.append("")
-    lines.append("| prompt | persona | anomaly_rate | cluster_activation_index | lift_cluster_rate | regression |")
+    lines.append(
+        "| prompt | persona | anomaly_rate | cluster_activation_index | lift_cluster_rate | regression |"
+    )
     lines.append("|---|---|---:|---:|---:|---|")
     for v in report.verdicts:
         lines.append(

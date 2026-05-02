@@ -33,10 +33,10 @@ from typing import List, Tuple
 import numpy as np
 from numpy.typing import NDArray
 
-
 # ---------------------------------------------------------------------------
 # [[7,1,3]] Steane-code inspired single-level logical error rate
 # ---------------------------------------------------------------------------
+
 
 def steane_logical_error_rate(p_phys: float) -> float:
     r"""Compute logical error rate for one level of a [[7,1,3]] code.
@@ -55,10 +55,10 @@ def steane_logical_error_rate(p_phys: float) -> float:
     float — logical error probability per logical gate
     """
     from math import comb
+
     # Weight-2 patterns (and above) that cannot be corrected
     p_L = sum(
-        comb(7, k) * (p_phys ** k) * ((1 - p_phys) ** (7 - k))
-        for k in range(2, 8)  # k ≥ t+1 = 2
+        comb(7, k) * (p_phys**k) * ((1 - p_phys) ** (7 - k)) for k in range(2, 8)  # k ≥ t+1 = 2
     )
     return float(np.clip(p_L, 0.0, 1.0))
 
@@ -66,6 +66,7 @@ def steane_logical_error_rate(p_phys: float) -> float:
 # ---------------------------------------------------------------------------
 # Fractal recursion
 # ---------------------------------------------------------------------------
+
 
 def fractal_recursion(
     p_phys: float,
@@ -99,6 +100,7 @@ def fractal_recursion(
     if p_star is None:
         # Threshold: p_L(1) = p_phys when p_phys = p_star  →  solve numerically
         from scipy.optimize import brentq
+
         try:
             p_star = brentq(lambda p: steane_logical_error_rate(p) - p, 1e-8, 0.5)
         except Exception:
@@ -128,6 +130,7 @@ def fractal_recursion(
 # ---------------------------------------------------------------------------
 # Fit scaling law: log p_L(n) ~ α^n · const
 # ---------------------------------------------------------------------------
+
 
 def fit_fractal_scaling(rates: List[float]) -> Tuple[float, float]:
     r"""Fit log p_L(n) = A · α^n + B to the recursion data.
@@ -171,6 +174,7 @@ def fit_fractal_scaling(rates: List[float]) -> Tuple[float, float]:
 # High-level FractalQEC class
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class FractalQECResult:
     """Results of a fractal QEC simulation."""
@@ -178,7 +182,7 @@ class FractalQECResult:
     p_phys: float
     p_star: float
     alpha: float
-    rates: List[float]          # p_L at each level (0 = physical)
+    rates: List[float]  # p_L at each level (0 = physical)
     alpha_fit: float
     r_squared: float
     below_threshold: bool
@@ -199,10 +203,9 @@ class FractalQEC:
         self.n_levels = n_levels
         # Compute p_star once
         from scipy.optimize import brentq
+
         try:
-            self._p_star = brentq(
-                lambda p: steane_logical_error_rate(p) - p, 1e-8, 0.5
-            )
+            self._p_star = brentq(lambda p: steane_logical_error_rate(p) - p, 1e-8, 0.5)
         except Exception:
             self._p_star = 1 / 21.0
 

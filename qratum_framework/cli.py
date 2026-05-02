@@ -12,6 +12,7 @@ The CLI is implemented with ``argparse`` to keep ``qratum_framework`` free
 of additional runtime dependencies (``click`` is only an optional dep of
 the broader project).
 """
+
 from __future__ import annotations
 
 import argparse
@@ -40,9 +41,7 @@ def _build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="command", required=True)
 
     # run --------------------------------------------------------------
-    run_p = sub.add_parser(
-        "run", help="Execute a sequence of intents through the default backend."
-    )
+    run_p = sub.add_parser("run", help="Execute a sequence of intents through the default backend.")
     run_p.add_argument(
         "intents",
         nargs="*",
@@ -378,9 +377,7 @@ def _cmd_drift(args: argparse.Namespace) -> int:
 
     persona_tokens = _read_tokens(args.persona_tokens)
     baseline_tokens = _read_tokens(args.baseline_tokens)
-    state = discover_clusters(
-        persona_tokens=persona_tokens, baseline_tokens=baseline_tokens
-    )
+    state = discover_clusters(persona_tokens=persona_tokens, baseline_tokens=baseline_tokens)
 
     persona_freqs = {}
     baseline_freqs = {}
@@ -424,22 +421,11 @@ def _cmd_eval(args: argparse.Namespace) -> int:
         print(json.dumps(report.to_dict(), indent=2, sort_keys=True, default=str))
     else:
         print(f"runs            : {int(report.summary.get('n_runs', 0))}")
-        print(
-            f"baseline runs   : {int(report.summary.get('n_baseline_runs', 0))}"
-        )
-        print(
-            f"max anomaly_rate: {report.summary.get('max_anomaly_rate', 0.0):.3f}"
-        )
-        print(
-            f"max lift_rate   : "
-            f"{report.summary.get('max_lift_cluster_rate', 0.0):.3f}"
-        )
-        print(
-            f"regressions     : {int(report.summary.get('regressions', 0))}"
-        )
-        print(
-            f"verdict         : {'FAIL' if report.has_regression else 'PASS'}"
-        )
+        print(f"baseline runs   : {int(report.summary.get('n_baseline_runs', 0))}")
+        print(f"max anomaly_rate: {report.summary.get('max_anomaly_rate', 0.0):.3f}")
+        print(f"max lift_rate   : " f"{report.summary.get('max_lift_cluster_rate', 0.0):.3f}")
+        print(f"regressions     : {int(report.summary.get('regressions', 0))}")
+        print(f"verdict         : {'FAIL' if report.has_regression else 'PASS'}")
 
     if args.regression and report.has_regression:
         return 1

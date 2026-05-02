@@ -23,6 +23,7 @@ Edges with negative weights (i.e. baseline-dominant pairs) are dropped
 before clustering, since modularity-style objectives are defined for
 non-negative weights.  See :func:`qratum_framework.observability.clusters.lift.positive_lift_subgraph`.
 """
+
 from __future__ import annotations
 
 from typing import Dict, FrozenSet, Iterable, List, Mapping, Sequence, Set, Tuple
@@ -158,6 +159,7 @@ def spectral_communities(
 def _has_networkx() -> bool:
     try:
         import networkx  # noqa: F401
+
         return True
     except ImportError:
         return False

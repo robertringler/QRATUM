@@ -93,8 +93,7 @@ def _loop(
         sensor=MockSensor(tuple(_obs(float(i)) for i in range(observations)), "traj"),
         observer=StateObserver(s0, 0.5, NODE_IDS, EDGE_IDS),
         actuator=actuator or MockActuator(),
-        safety_config=safety_config
-        or SafetyConfig(epsilon=EPSILON, mvri_constraint_check=True),
+        safety_config=safety_config or SafetyConfig(epsilon=EPSILON, mvri_constraint_check=True),
         initial_state=s0,
         node_ids=NODE_IDS,
         edge_ids=EDGE_IDS,
@@ -161,9 +160,7 @@ def test_decode_rejects_out_of_range_target() -> None:
 
 
 def test_plan_valid_trajectory_generation() -> None:
-    result = plan_trajectory(
-        _state(), _target(), 2, SafetyConfig(epsilon=EPSILON), _state()
-    )
+    result = plan_trajectory(_state(), _target(), 2, SafetyConfig(epsilon=EPSILON), _state())
     assert result.valid
     assert result.trajectory is not None
     assert result.trajectory.horizon == 2
@@ -171,9 +168,7 @@ def test_plan_valid_trajectory_generation() -> None:
 
 
 def test_plan_rejects_non_positive_horizon() -> None:
-    result = plan_trajectory(
-        _state(), _target(), 0, SafetyConfig(epsilon=EPSILON), _state()
-    )
+    result = plan_trajectory(_state(), _target(), 0, SafetyConfig(epsilon=EPSILON), _state())
     assert not result.valid
     assert result.trajectory is None
     assert result.failure_reasons == ("horizon:non_positive",)
@@ -266,9 +261,7 @@ def test_predict_rollout_rejects_invalid_initial_state() -> None:
         bounds=s.bounds,
         initial_edges=frozenset({("n1", "n2")}),
     )
-    traj = _trajectory_from_action(
-        Action(type="node_activation_shift", target="n1", magnitude=0.0)
-    )
+    traj = _trajectory_from_action(Action(type="node_activation_shift", target="n1", magnitude=0.0))
     with pytest.raises(TrajectoryInvariantViolationError):
         predict_rollout(invalid, traj)
 
@@ -296,18 +289,14 @@ def test_predict_rollout_is_deterministic() -> None:
 
 
 def test_validate_trajectory_accepts_valid_zero_action() -> None:
-    traj = _trajectory_from_action(
-        Action(type="node_activation_shift", target="n1", magnitude=0.0)
-    )
+    traj = _trajectory_from_action(Action(type="node_activation_shift", target="n1", magnitude=0.0))
     valid, reasons = validate_trajectory(traj, _state(), SafetyConfig())
     assert valid
     assert reasons == ()
 
 
 def test_validate_trajectory_mag_violation() -> None:
-    traj = _trajectory_from_action(
-        Action(type="node_activation_shift", target="n1", magnitude=0.5)
-    )
+    traj = _trajectory_from_action(Action(type="node_activation_shift", target="n1", magnitude=0.5))
     valid, reasons = validate_trajectory(traj, _state(), SafetyConfig(epsilon=0.05))
     assert not valid
     assert any(reason.endswith(":MAG") for reason in reasons)
@@ -361,9 +350,7 @@ def test_validate_trajectory_mvri_check_can_be_disabled() -> None:
     traj = _trajectory_from_action(
         Action(type="node_activation_shift", target="n1", magnitude=-0.01)
     )
-    valid, reasons = validate_trajectory(
-        traj, _state(), SafetyConfig(mvri_constraint_check=False)
-    )
+    valid, reasons = validate_trajectory(traj, _state(), SafetyConfig(mvri_constraint_check=False))
     assert valid
     assert not any(reason.endswith(":MVR") for reason in reasons)
 
@@ -386,9 +373,7 @@ def test_execute_trajectory_success_trace() -> None:
 
 
 def test_execute_trajectory_aborts_on_invalid_validation() -> None:
-    traj = _trajectory_from_action(
-        Action(type="node_activation_shift", target="n1", magnitude=0.5)
-    )
+    traj = _trajectory_from_action(Action(type="node_activation_shift", target="n1", magnitude=0.5))
     trace = execute_trajectory(_loop(1), traj)
     assert trace.aborted
     assert len(trace.steps) == 1
@@ -421,9 +406,7 @@ def test_execute_aborts_on_sensor_exhausted_preserves_prior_steps() -> None:
 
 def test_execute_mid_execution_actuator_failure() -> None:
     actuator = ExternalActuatorAdapter(lambda _a: False, "bad")
-    traj = _trajectory_from_action(
-        Action(type="node_activation_shift", target="n1", magnitude=0.0)
-    )
+    traj = _trajectory_from_action(Action(type="node_activation_shift", target="n1", magnitude=0.0))
     trace = execute_trajectory(_loop(1, actuator=actuator), traj)
     assert trace.aborted
     assert len(trace.steps) == 1
@@ -432,17 +415,13 @@ def test_execute_mid_execution_actuator_failure() -> None:
 
 def test_execute_does_not_call_actuator_for_invalid_action() -> None:
     actuator = MockActuator()
-    traj = _trajectory_from_action(
-        Action(type="node_activation_shift", target="n1", magnitude=0.5)
-    )
+    traj = _trajectory_from_action(Action(type="node_activation_shift", target="n1", magnitude=0.5))
     execute_trajectory(_loop(1, actuator=actuator), traj)
     assert actuator.get_log() == ()
 
 
 def test_execute_trace_step_action_is_immutable() -> None:
-    traj = _trajectory_from_action(
-        Action(type="node_activation_shift", target="n1", magnitude=0.0)
-    )
+    traj = _trajectory_from_action(Action(type="node_activation_shift", target="n1", magnitude=0.0))
     trace = execute_trajectory(_loop(1), traj)
     step = trace.steps[0]
     assert isinstance(step, TrajectoryStepTrace)
@@ -456,9 +435,7 @@ def test_execute_trace_step_action_is_immutable() -> None:
 
 
 def test_run_trajectory_control_returns_control_run_result() -> None:
-    result = run_trajectory_control(
-        _state(), _state(), 2, _loop(2), SafetyConfig(epsilon=EPSILON)
-    )
+    result = run_trajectory_control(_state(), _state(), 2, _loop(2), SafetyConfig(epsilon=EPSILON))
     assert result.n_steps == 2
     assert result.acceptance_rate == 1.0
 
@@ -508,9 +485,7 @@ def test_planner_returns_typed_result() -> None:
 
 
 def test_execution_trace_failure_reasons_are_structured_tuple() -> None:
-    traj = _trajectory_from_action(
-        Action(type="node_activation_shift", target="n1", magnitude=0.5)
-    )
+    traj = _trajectory_from_action(Action(type="node_activation_shift", target="n1", magnitude=0.5))
     trace = execute_trajectory(_loop(1), traj)
     assert isinstance(trace.failure_reasons, tuple)
     assert all(isinstance(reason, str) for reason in trace.failure_reasons)

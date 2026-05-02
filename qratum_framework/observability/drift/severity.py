@@ -12,6 +12,7 @@ This rule is monotone in both inputs and lets the engine surface a
 bounded categorical alongside the raw counts so downstream consumers
 (CI, dashboards) can branch on it without re-deriving thresholds.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass

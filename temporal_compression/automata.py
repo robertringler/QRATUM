@@ -20,7 +20,7 @@ from __future__ import annotations
 import hashlib
 import struct
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
@@ -64,7 +64,7 @@ class AutomatonState:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "AutomatonState":
+    def from_dict(cls, data: dict[str, Any]) -> AutomatonState:
         """Create state from dictionary."""
         return cls(
             step=data["step"],
@@ -199,7 +199,7 @@ class CellularAutomaton:
         if self.track_history:
             self.history.append(self.capture_state())
 
-    def clone(self) -> "CellularAutomaton":
+    def clone(self) -> CellularAutomaton:
         """Create a clone of current automaton with same state."""
         clone = CellularAutomaton(
             rule=self.rule,
@@ -223,7 +223,7 @@ class CellularAutomaton:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "CellularAutomaton":
+    def from_dict(cls, data: dict[str, Any]) -> CellularAutomaton:
         """Create automaton from dictionary."""
         return cls(
             rule=data["rule"],

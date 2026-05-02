@@ -13,15 +13,14 @@ All plots are saved to ``results/`` directory (created if needed).
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
-from typing import List, Optional, Tuple
-
-import numpy as np
-from numpy.typing import NDArray
+from typing import List, Tuple
 
 # matplotlib backend must be set before pyplot import
 import matplotlib
+import numpy as np
+from numpy.typing import NDArray
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
@@ -46,6 +45,7 @@ def _bloch_coords(rho: CMatrix) -> Tuple[float, float, float]:
 def _reduced_qubit(rho: CMatrix, n_qubits: int, qubit: int = 0) -> CMatrix:
     """Partial trace to get single-qubit reduced state."""
     from quasim.ciir.multi_qubit.quantum.density_matrix import _partial_trace
+
     return _partial_trace(rho, n_qubits, [qubit])
 
 
@@ -78,16 +78,14 @@ def plot_bloch_trajectory(
     ax.plot_wireframe(xsph, ysph, zsph, color="lightgrey", alpha=0.3, linewidth=0.5)
 
     # Axes
-    for vec, label in [
-        ([1.1, 0, 0], "x"), ([0, 1.1, 0], "y"), ([0, 0, 1.1], "z")
-    ]:
+    for vec, label in [([1.1, 0, 0], "x"), ([0, 1.1, 0], "y"), ([0, 0, 1.1], "z")]:
         ax.quiver(0, 0, 0, *vec, color="black", linewidth=1, arrow_length_ratio=0.1)
         ax.text(*[1.15 * v for v in vec], label, fontsize=10)
 
     n = len(xs)
     colors = plt.cm.viridis(np.linspace(0, 1, n))
     for i in range(n - 1):
-        ax.plot(xs[i:i+2], ys[i:i+2], zs[i:i+2], color=colors[i], linewidth=1.5)
+        ax.plot(xs[i : i + 2], ys[i : i + 2], zs[i : i + 2], color=colors[i], linewidth=1.5)
 
     ax.scatter(*[xs[-1]], *[ys[-1]], *[zs[-1]], color="red", s=50, zorder=5, label="final")
     ax.scatter(*[xs[0]], *[ys[0]], *[zs[0]], color="blue", s=50, zorder=5, label="initial")
@@ -172,7 +170,9 @@ def plot_phase_diagram(
     outdir = _ensure_results_dir()
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.loglog(p_phys_arr, p_L_final_arr, "b-o", markersize=4, linewidth=2, label="p_L (8 levels)")
-    ax.loglog(p_phys_arr, p_phys_arr, "k--", linewidth=1.5, alpha=0.5, label="p_L = p_phys (no code)")
+    ax.loglog(
+        p_phys_arr, p_phys_arr, "k--", linewidth=1.5, alpha=0.5, label="p_L = p_phys (no code)"
+    )
     ax.axvline(p_star, color="red", linestyle="--", linewidth=1.5, label=f"p* = {p_star:.4f}")
     ax.fill_betweenx([1e-30, 1], 0, p_star, alpha=0.1, color="green", label="below threshold")
     ax.fill_betweenx([1e-30, 1], p_star, 1, alpha=0.1, color="red", label="above threshold")
@@ -221,10 +221,10 @@ def plot_lyapunov(
     return out
 
 
-def plot_all(sim_result, lyap_result, qec_results: dict, p_phys_arr, p_L_arr, p_star: float) -> List[Path]:
+def plot_all(
+    sim_result, lyap_result, qec_results: dict, p_phys_arr, p_L_arr, p_star: float
+) -> List[Path]:
     """Generate all required plots and return list of output paths."""
-    from quasim.ciir.multi_qubit.simulation.hybrid_sim import SimulationResult
-    from quasim.ciir.multi_qubit.analysis.stability import LyapunovResult
 
     n_q = sim_result.params["n_qubits"]
     paths = []
@@ -233,9 +233,11 @@ def plot_all(sim_result, lyap_result, qec_results: dict, p_phys_arr, p_L_arr, p_
     paths.append(plot_entanglement_entropy(sim_result.times, sim_result.entropy_traj))
     paths.append(plot_error_rate_recursion(qec_results, p_star))
     paths.append(plot_phase_diagram(p_phys_arr, p_L_arr, p_star))
-    paths.append(plot_lyapunov(
-        sim_result.times,
-        lyap_result.V_traj,
-        lyap_result.dV_traj,
-    ))
+    paths.append(
+        plot_lyapunov(
+            sim_result.times,
+            lyap_result.V_traj,
+            lyap_result.dV_traj,
+        )
+    )
     return paths

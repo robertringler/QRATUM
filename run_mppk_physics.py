@@ -19,16 +19,15 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
 import time
 from pathlib import Path
 
 import numpy as np
 
 from quasim.ciir.swarm.mppk import (
-    MPPKEngine,
     GenerationResult,
     MetaLearningReport,
+    MPPKEngine,
 )
 from quasim.ciir.swarm.orchestrator import Orchestrator
 
@@ -43,12 +42,17 @@ def format_generation(g: GenerationResult) -> dict:
         "has_coupling_matrix": g.rule.coupling_matrix is not None,
         "trajectory_timesteps": g.trajectory.T,
         "final_energy": g.trajectory.energies[-1] if g.trajectory.energies else None,
-        "energy_range": [
-            float(min(g.trajectory.energies)),
-            float(max(g.trajectory.energies)),
-        ] if g.trajectory.energies else None,
-        "final_momentum_norm": float(np.linalg.norm(g.trajectory.momenta[-1]))
-            if g.trajectory.momenta else None,
+        "energy_range": (
+            [
+                float(min(g.trajectory.energies)),
+                float(max(g.trajectory.energies)),
+            ]
+            if g.trajectory.energies
+            else None
+        ),
+        "final_momentum_norm": (
+            float(np.linalg.norm(g.trajectory.momenta[-1])) if g.trajectory.momenta else None
+        ),
         "structure": {
             "has_fixed_point": g.structure.has_fixed_point,
             "has_limit_cycle": g.structure.has_limit_cycle,
@@ -100,7 +104,7 @@ def run_mppk(
     print("=" * 72)
     print("  MINIMAL PROGRAMMABLE PHYSICS KERNEL — Law-Discovery Engine")
     print("=" * 72)
-    print(f"\n  Configuration:")
+    print("\n  Configuration:")
     print(f"    Nodes:       {n_nodes}")
     print(f"    Dimensions:  {dim}")
     print(f"    Timesteps:   {timesteps}")
@@ -154,7 +158,7 @@ def run_mppk(
     print(f"  Stable invariants:         {meta.stable_invariants}")
     print(f"  Embedding dimension:       {meta.embedding_dim}")
     print(f"  Explained variance ratio:  {meta.explained_variance_ratio:.4f}")
-    print(f"  Candidate physical laws:")
+    print("  Candidate physical laws:")
     for law in meta.candidate_laws:
         print(f"    • {law}")
 
@@ -278,22 +282,25 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Run MPPK Law-Discovery Engine and Swarm Orchestrator",
     )
-    parser.add_argument("--generations", type=int, default=10,
-                        help="Number of evolution generations (default: 10)")
-    parser.add_argument("--nodes", type=int, default=12,
-                        help="Number of graph nodes (default: 12)")
-    parser.add_argument("--dim", type=int, default=4,
-                        help="State vector dimension (default: 4)")
-    parser.add_argument("--timesteps", type=int, default=100,
-                        help="Simulation timesteps per generation (default: 100)")
-    parser.add_argument("--candidates", type=int, default=5,
-                        help="Candidate mutations per generation (default: 5)")
-    parser.add_argument("--seed", type=int, default=42,
-                        help="Random seed (default: 42)")
-    parser.add_argument("--output", type=str, default=None,
-                        help="Output JSON file path")
-    parser.add_argument("--skip-orchestrator", action="store_true",
-                        help="Skip the swarm orchestrator run")
+    parser.add_argument(
+        "--generations", type=int, default=10, help="Number of evolution generations (default: 10)"
+    )
+    parser.add_argument("--nodes", type=int, default=12, help="Number of graph nodes (default: 12)")
+    parser.add_argument("--dim", type=int, default=4, help="State vector dimension (default: 4)")
+    parser.add_argument(
+        "--timesteps",
+        type=int,
+        default=100,
+        help="Simulation timesteps per generation (default: 100)",
+    )
+    parser.add_argument(
+        "--candidates", type=int, default=5, help="Candidate mutations per generation (default: 5)"
+    )
+    parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
+    parser.add_argument("--output", type=str, default=None, help="Output JSON file path")
+    parser.add_argument(
+        "--skip-orchestrator", action="store_true", help="Skip the swarm orchestrator run"
+    )
     args = parser.parse_args()
 
     # Run MPPK engine

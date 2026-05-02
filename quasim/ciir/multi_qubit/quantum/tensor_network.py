@@ -25,7 +25,6 @@ Left-canonical form: Σ_{σ, α} (A^σ)^*_{α,β} (A^σ)_{α,γ} = δ_{β,γ}
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -38,6 +37,7 @@ RVec = NDArray[np.float64]
 # ---------------------------------------------------------------------------
 # MPS data structure
 # ---------------------------------------------------------------------------
+
 
 class MPSState:
     r"""Matrix Product State for a pure N-qubit state.
@@ -57,7 +57,7 @@ class MPSState:
     def n(self) -> int:
         return self.n_qubits
 
-    def copy(self) -> "MPSState":
+    def copy(self) -> MPSState:
         return MPSState([t.copy() for t in self.tensors], self.chi_max)
 
     def norm(self) -> float:
@@ -76,12 +76,13 @@ class MPSState:
 # MPS constructors
 # ---------------------------------------------------------------------------
 
+
 def mps_ground_state(n_qubits: int, chi_max: int = 64) -> MPSState:
     """Return |00…0⟩ as an MPS with bond dimension 1 (product state)."""
     tensors = []
     for _ in range(n_qubits):
         t = np.zeros((2, 1, 1), dtype=complex)
-        t[0, 0, 0] = 1.0   # |0⟩
+        t[0, 0, 0] = 1.0  # |0⟩
         tensors.append(t)
     return MPSState(tensors, chi_max)
 
@@ -138,7 +139,7 @@ def mps_random(
     rng = np.random.default_rng(seed)
 
     # Build a random state vector and decompose to MPS
-    psi = rng.standard_normal(2 ** n_qubits) + 1j * rng.standard_normal(2 ** n_qubits)
+    psi = rng.standard_normal(2**n_qubits) + 1j * rng.standard_normal(2**n_qubits)
     psi /= np.linalg.norm(psi)
     return _vector_to_mps(psi, n_qubits, chi_max)
 
@@ -146,6 +147,7 @@ def mps_random(
 # ---------------------------------------------------------------------------
 # State-vector reconstruction (exact, O(2^N · N · χ²))
 # ---------------------------------------------------------------------------
+
 
 def mps_to_vector(mps: MPSState) -> CMatrix:
     """Contract MPS tensors to the full state vector of shape (2^N,).
@@ -161,19 +163,17 @@ def mps_to_vector(mps: MPSState) -> CMatrix:
     n = mps.n_qubits
 
     # result[σ₁, α] = A[0][σ₁, 0, α]  (squeeze chi_L = 1)
-    result = mps.tensors[0][:, 0, :].copy()   # (d=2, chi_R_0)
+    result = mps.tensors[0][:, 0, :].copy()  # (d=2, chi_R_0)
 
     for k in range(1, n):
-        A = mps.tensors[k]   # (d=2, chi_L, chi_R)
-        d_cur = result.shape[0]    # 2^k
+        A = mps.tensors[k]  # (d=2, chi_L, chi_R)
+        d_cur = result.shape[0]  # 2^k
         chi_R = A.shape[2]
 
         # new_result[σ₁…σ_{k-1}, σ_k, β] = result[σ₁…σ_{k-1}, α] · A[σ_k, α, β]
         # For σ_k ∈ {0, 1}: new[:, σ_k, :] = result @ A[σ_k, :, :]
         # Stack along σ_k axis then reshape to (2^{k+1}, chi_R)
-        new_result = np.stack(
-            [result @ A[s] for s in range(2)], axis=1
-        )  # (d_cur, 2, chi_R)
+        new_result = np.stack([result @ A[s] for s in range(2)], axis=1)  # (d_cur, 2, chi_R)
         result = new_result.reshape(d_cur * 2, chi_R)
 
     return result[:, 0]
@@ -182,6 +182,7 @@ def mps_to_vector(mps: MPSState) -> CMatrix:
 # ---------------------------------------------------------------------------
 # Convert state vector to MPS via sequential SVDs
 # ---------------------------------------------------------------------------
+
 
 def _vector_to_mps(psi: CMatrix, n_qubits: int, chi_max: int = 64) -> MPSState:
     """Convert a full state vector to left-canonical MPS via sequential SVDs.
@@ -193,7 +194,7 @@ def _vector_to_mps(psi: CMatrix, n_qubits: int, chi_max: int = 64) -> MPSState:
     d = 2
     tensors = []
     chi_left = 1
-    remaining = psi.astype(complex).copy()   # shape (2^N,)
+    remaining = psi.astype(complex).copy()  # shape (2^N,)
 
     for k in range(n_qubits - 1):
         dim_right = 2 ** (n_qubits - k - 1)
@@ -210,7 +211,7 @@ def _vector_to_mps(psi: CMatrix, n_qubits: int, chi_max: int = 64) -> MPSState:
         # Transpose to (d, chi_left, chi_new): tensor[σ, α_L, α_R] ✓
         tensors.append(U.reshape(chi_left, d, chi_new).transpose(1, 0, 2))
 
-        remaining = np.diag(S) @ Vh   # (chi_new, dim_right)
+        remaining = np.diag(S) @ Vh  # (chi_new, dim_right)
         chi_left = chi_new
 
     # Last tensor: remaining has shape (chi_left, d)
@@ -225,6 +226,7 @@ def _vector_to_mps(psi: CMatrix, n_qubits: int, chi_max: int = 64) -> MPSState:
 # Left canonicalization via sequential QR decompositions
 # ---------------------------------------------------------------------------
 
+
 def _left_canonicalize(mps: MPSState) -> None:
     """Convert MPS to left-canonical form in place via QR decompositions.
 
@@ -235,24 +237,23 @@ def _left_canonicalize(mps: MPSState) -> None:
     """
     n = mps.n_qubits
     for k in range(n - 1):
-        A = mps.tensors[k]    # (d, chi_L, chi_R)
+        A = mps.tensors[k]  # (d, chi_L, chi_R)
         d, chi_L, chi_R = A.shape
-        mat = A.reshape(d * chi_L, chi_R)   # rows: (σ, α_L), cols: α_R
-        Q, R = np.linalg.qr(mat)            # Q: (d*chi_L, chi_new), R: (chi_new, chi_R)
+        mat = A.reshape(d * chi_L, chi_R)  # rows: (σ, α_L), cols: α_R
+        Q, R = np.linalg.qr(mat)  # Q: (d*chi_L, chi_new), R: (chi_new, chi_R)
         chi_new = Q.shape[1]
         mps.tensors[k] = Q.reshape(d, chi_L, chi_new)
 
-        B = mps.tensors[k + 1]   # (d, chi_R, chi_R2) where chi_R = chi_new now expected
+        B = mps.tensors[k + 1]  # (d, chi_R, chi_R2) where chi_R = chi_new now expected
         # Absorb R: new_B[σ, i, j] = Σ_m R[i, m] * B[σ, m, j]
         # = R @ B[σ] for each σ
-        mps.tensors[k + 1] = np.stack(
-            [R @ B[s] for s in range(d)], axis=0
-        )   # (d, chi_new, chi_R2)
+        mps.tensors[k + 1] = np.stack([R @ B[s] for s in range(d)], axis=0)  # (d, chi_new, chi_R2)
 
 
 # ---------------------------------------------------------------------------
 # Local gate application
 # ---------------------------------------------------------------------------
+
 
 def apply_single_qubit_gate(mps: MPSState, gate: CMatrix, site: int) -> MPSState:
     """Apply a 2×2 unitary gate to qubit `site`.
@@ -260,14 +261,13 @@ def apply_single_qubit_gate(mps: MPSState, gate: CMatrix, site: int) -> MPSState
     Returns a new MPS (original not modified).
     """
     mps_new = mps.copy()
-    A = mps_new.tensors[site]    # (d, chi_L, chi_R)
+    A = mps_new.tensors[site]  # (d, chi_L, chi_R)
     # A_new[σ', α, β] = Σ_σ gate[σ', σ] A[σ, α, β]
     # = np.tensordot(gate, A, axes=([1], [0]))  → (d, d, chi_L, chi_R)[σ', σ, α, β]
     # then take diagonal over σ: not needed; just contract:
     mps_new.tensors[site] = np.stack(
-        [sum(gate[s_new, s] * A[s] for s in range(2)) for s_new in range(2)],
-        axis=0
-    )   # (d, chi_L, chi_R)
+        [sum(gate[s_new, s] * A[s] for s in range(2)) for s_new in range(2)], axis=0
+    )  # (d, chi_L, chi_R)
     return mps_new
 
 
@@ -290,8 +290,8 @@ def apply_two_qubit_gate(
         chi_max = mps.chi_max
 
     mps_new = mps.copy()
-    A = mps_new.tensors[site]          # (d, chi_L, chi_M)
-    B = mps_new.tensors[site + 1]      # (d, chi_M, chi_R)
+    A = mps_new.tensors[site]  # (d, chi_L, chi_M)
+    B = mps_new.tensors[site + 1]  # (d, chi_M, chi_R)
 
     d = 2
     chi_L = A.shape[1]
@@ -322,15 +322,15 @@ def apply_two_qubit_gate(
     # mat[σ'_k * chi_L + α_L, σ'_{k+1} * chi_R + α_R] = Theta_new[σ'_k, σ'_{k+1}, α_L, α_R] ✓
 
     U, S, Vh = np.linalg.svd(mat, full_matrices=False)
-    chi_new = max(1, min(chi_max, int(np.sum(S > eps_svd))))
+    chi_new = max(1, min(chi_max, int(np.sum(eps_svd < S))))
 
     U = U[:, :chi_new]
     S_sqrt = np.sqrt(S[:chi_new])
     Vh = Vh[:chi_new, :]
 
     # Absorb √S into both sides
-    U_s = U * S_sqrt[np.newaxis, :]    # (d * chi_L, chi_new)
-    V_s = (Vh.T * S_sqrt[np.newaxis, :]).T   # (chi_new, d * chi_R)
+    U_s = U * S_sqrt[np.newaxis, :]  # (d * chi_L, chi_new)
+    V_s = (Vh.T * S_sqrt[np.newaxis, :]).T  # (chi_new, d * chi_R)
 
     # Reshape back:
     # A_new: (d * chi_L, chi_new) → (d, chi_L, chi_new)
@@ -345,6 +345,7 @@ def apply_two_qubit_gate(
 # ---------------------------------------------------------------------------
 # Entanglement entropy from Schmidt spectrum
 # ---------------------------------------------------------------------------
+
 
 def entanglement_entropy_at_bond(mps: MPSState, bond: int) -> float:
     r"""Von Neumann entropy S = −Σ_α λ_α² log λ_α² at bond `bond`.
@@ -363,7 +364,7 @@ def entanglement_entropy_at_bond(mps: MPSState, bond: int) -> float:
     d_right = 2 ** (n - bond - 1)
     mat = psi.reshape(d_left, d_right)
     _, S, _ = np.linalg.svd(mat, full_matrices=False)
-    S2 = (S ** 2).real
+    S2 = (S**2).real
     S2 = S2[S2 > 1e-15]
     return float(-np.sum(S2 * np.log(S2))) if len(S2) > 0 else 0.0
 
@@ -371,6 +372,7 @@ def entanglement_entropy_at_bond(mps: MPSState, bond: int) -> float:
 # ---------------------------------------------------------------------------
 # Inner product and fidelity
 # ---------------------------------------------------------------------------
+
 
 def mps_overlap(mps1: MPSState, mps2: MPSState) -> complex:
     r"""Compute ⟨ψ₁|ψ₂⟩ via sequential transfer-matrix contraction.
@@ -382,8 +384,8 @@ def mps_overlap(mps1: MPSState, mps2: MPSState) -> complex:
     T = np.ones((1, 1), dtype=complex)
 
     for k in range(n):
-        A1 = mps1.tensors[k]   # (d, chi1_L, chi1_R)
-        A2 = mps2.tensors[k]   # (d, chi2_L, chi2_R)
+        A1 = mps1.tensors[k]  # (d, chi1_L, chi1_R)
+        A2 = mps2.tensors[k]  # (d, chi2_L, chi2_R)
         chi1_R = A1.shape[2]
         chi2_R = A2.shape[2]
 
@@ -393,8 +395,10 @@ def mps_overlap(mps1: MPSState, mps2: MPSState) -> complex:
         #                     = Σ_σ A1[σ].conj().T @ TA2[σ]
         new_T = np.zeros((chi1_R, chi2_R), dtype=complex)
         for s in range(2):
-            TA2_s = T @ A2[s]                 # (chi1_L, chi2_R)
-            new_T += A1[s].conj().T @ TA2_s   # (chi1_R, chi1_L) @ (chi1_L, chi2_R) = (chi1_R, chi2_R)
+            TA2_s = T @ A2[s]  # (chi1_L, chi2_R)
+            new_T += (
+                A1[s].conj().T @ TA2_s
+            )  # (chi1_R, chi1_L) @ (chi1_L, chi2_R) = (chi1_R, chi2_R)
 
         T = new_T
 
@@ -410,6 +414,7 @@ def mps_fidelity(mps1: MPSState, mps2: MPSState) -> float:
 # Reduced density matrix
 # ---------------------------------------------------------------------------
 
+
 def mps_reduced_density_matrix(mps: MPSState, keep: List[int]) -> CMatrix:
     r"""Compute ρ_A = Tr_B(|ψ⟩⟨ψ|) by reconstructing the full state vector.
 
@@ -423,7 +428,7 @@ def mps_reduced_density_matrix(mps: MPSState, keep: List[int]) -> CMatrix:
     perm = keep_sorted + trace_qubits
 
     n_keep = len(keep_sorted)
-    d_keep = 2 ** n_keep
+    d_keep = 2**n_keep
     d_trace = 2 ** (n - n_keep)
 
     psi_tensor = psi.reshape([2] * n)
@@ -436,6 +441,7 @@ def mps_reduced_density_matrix(mps: MPSState, keep: List[int]) -> CMatrix:
 # Density matrix from MPS
 # ---------------------------------------------------------------------------
 
+
 def mps_to_density_matrix(mps: MPSState) -> CMatrix:
     """Compute ρ = |ψ⟩⟨ψ| from MPS (only for small N)."""
     psi = mps_to_vector(mps)
@@ -446,9 +452,11 @@ def mps_to_density_matrix(mps: MPSState) -> CMatrix:
 # Trotter-Suzuki Hamiltonian evolution (TEBD)
 # ---------------------------------------------------------------------------
 
+
 def _make_two_site_gate(H_pair: CMatrix, dt: float) -> CMatrix:
     r"""Compute two-site gate exp(−i H_pair dt) via matrix exponentiation."""
     from scipy.linalg import expm
+
     return expm(-1j * dt * H_pair).astype(complex)
 
 
@@ -493,6 +501,7 @@ def mps_evolve_trotter(
 # Quantum-trajectory Lindblad evolution (MCWF)
 # ---------------------------------------------------------------------------
 
+
 def mps_lindblad_trajectory(
     mps0: MPSState,
     H: CMatrix,
@@ -521,9 +530,7 @@ def mps_lindblad_trajectory(
     n = mps0.n_qubits
 
     # Build effective Hamiltonian
-    H_eff = H.astype(complex) - 0.5j * sum(
-        L.conj().T @ L for L in lindblad_ops
-    )
+    H_eff = H.astype(complex) - 0.5j * sum(L.conj().T @ L for L in lindblad_ops)
     exp_H_eff = expm(-1j * dt * H_eff)
 
     current = mps0.copy()
@@ -536,10 +543,9 @@ def mps_lindblad_trajectory(
         psi_new = exp_H_eff @ psi
 
         # Jump probabilities
-        dp_k = np.array([
-            dt * float(np.real(psi.conj() @ (L.conj().T @ L) @ psi))
-            for L in lindblad_ops
-        ])
+        dp_k = np.array(
+            [dt * float(np.real(psi.conj() @ (L.conj().T @ L) @ psi)) for L in lindblad_ops]
+        )
         dp_total = float(np.clip(np.sum(dp_k), 0.0, 1.0))
 
         r = rng.uniform()
@@ -566,6 +572,7 @@ def mps_lindblad_trajectory(
 # ---------------------------------------------------------------------------
 # Scalability comparison helper
 # ---------------------------------------------------------------------------
+
 
 def compare_exact_vs_mps(
     n_qubits: int,

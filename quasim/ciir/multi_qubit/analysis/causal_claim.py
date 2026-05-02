@@ -75,6 +75,7 @@ PARAMS = {
 # Lindbladian helpers
 # ---------------------------------------------------------------------------
 
+
 def _lindblad_dissipator(rho: CMatrix, lindblad_ops: List[CMatrix]) -> CMatrix:
     """Σ_k D[L_k]ρ — standard Lindblad dissipator."""
     out = np.zeros_like(rho)
@@ -92,6 +93,7 @@ def _gksl_step_rk4(
     dt: float,
 ) -> CMatrix:
     """One RK4 step of the GKSL master equation."""
+
     def f(r: CMatrix) -> CMatrix:
         coherent = -1j * (H @ r - r @ H)
         return coherent + _lindblad_dissipator(r, lindblad_ops)
@@ -149,6 +151,7 @@ def _apply_depolarizing_noise(rho: CMatrix, p: float) -> CMatrix:
 # ---------------------------------------------------------------------------
 # Model A: CIIR evolution with constraint projection
 # ---------------------------------------------------------------------------
+
 
 def simulate_ciir_model(
     rho0: CMatrix,
@@ -213,7 +216,10 @@ def simulate_standard_model(
     Convenience wrapper for simulate_ciir_model with with_constraint=False.
     """
     return simulate_ciir_model(
-        rho0, H, ops, n_steps,
+        rho0,
+        H,
+        ops,
+        n_steps,
         with_constraint=False,
         dt=dt,
         noise_strength=noise_strength,
@@ -223,6 +229,7 @@ def simulate_standard_model(
 # ---------------------------------------------------------------------------
 # Distinguishing observable
 # ---------------------------------------------------------------------------
+
 
 def state_fidelity(rho: CMatrix, sigma: CMatrix) -> float:
     """Fidelity F(ρ, σ) = Tr(ρ σ)  (simplified; valid when one state is pure)."""
@@ -276,6 +283,7 @@ def compute_distinguishing_observable(
 # Ramsey protocol
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class RamseyProtocol:
     """Parameters for the CIIR distinguishing Ramsey experiment.
@@ -287,6 +295,7 @@ class RamseyProtocol:
     p_noise         : depolarizing noise strength  (should exceed p*)
     dt              : time step
     """
+
     tau_noise_steps: int
     tau_free_steps: int
     p_noise: float
@@ -356,14 +365,18 @@ def run_ramsey_experiment(
 
     # Noise phase
     ciir_noise = simulate_ciir_model(
-        rho0, H, ops,
+        rho0,
+        H,
+        ops,
         n_steps=protocol.tau_noise_steps,
         with_constraint=True,
         dt=protocol.dt,
         noise_strength=protocol.p_noise,
     )
     std_noise = simulate_standard_model(
-        rho0, H, ops,
+        rho0,
+        H,
+        ops,
         n_steps=protocol.tau_noise_steps,
         dt=protocol.dt,
         noise_strength=protocol.p_noise,
@@ -371,22 +384,24 @@ def run_ramsey_experiment(
 
     # Free evolution phase (no noise)
     ciir_free = simulate_ciir_model(
-        ciir_noise[-1], H, ops,
+        ciir_noise[-1],
+        H,
+        ops,
         n_steps=protocol.tau_free_steps,
         with_constraint=True,
         dt=protocol.dt,
         noise_strength=0.0,
     )
     std_free = simulate_standard_model(
-        std_noise[-1], H, ops,
+        std_noise[-1],
+        H,
+        ops,
         n_steps=protocol.tau_free_steps,
         dt=protocol.dt,
         noise_strength=0.0,
     )
 
-    observable = compute_distinguishing_observable(
-        ciir_free, std_free, rho0
-    )
+    observable = compute_distinguishing_observable(ciir_free, std_free, rho0)
 
     return {
         "protocol": protocol,
@@ -401,6 +416,7 @@ def run_ramsey_experiment(
 # Numerical noise floor (local copy; mirrors falsification.py)
 # ---------------------------------------------------------------------------
 
+
 def compute_sigma_numerical(n_steps: int, dim: int, dt: float) -> float:
     r"""Estimate double-precision numerical noise floor σ_numerical.
 
@@ -410,16 +426,17 @@ def compute_sigma_numerical(n_steps: int, dim: int, dt: float) -> float:
     cancellation error.
     """
     eps = np.finfo(float).eps
-    return float(eps * dim ** 2 * n_steps * 20 * dt)
+    return float(eps * dim**2 * n_steps * 20 * dt)
 
 
 # ---------------------------------------------------------------------------
 # Standalone system builders (no cross-module import required)
 # ---------------------------------------------------------------------------
 
+
 def _build_default_hamiltonian_local(N: int) -> CMatrix:
     """Simple N-qubit Hamiltonian: Σ Z_i + Σ XX_{i,i+1}."""
-    dim = 2 ** N
+    dim = 2**N
     sz = np.array([[1, 0], [0, -1]], dtype=complex)
     sx = np.array([[0, 1], [1, 0]], dtype=complex)
     I2 = np.eye(2, dtype=complex)
@@ -459,6 +476,7 @@ def _build_default_lindblad_local(N: int, gamma: float = 0.02) -> List[CMatrix]:
 # Linear GKSL step (no physicality enforcement — used in superoperator build)
 # ---------------------------------------------------------------------------
 
+
 def _gksl_step_linear(
     rho: CMatrix,
     H: CMatrix,
@@ -470,6 +488,7 @@ def _gksl_step_linear(
     Used only for building the superoperator in Route A of
     :func:`derive_projector_from_fixed_point`.
     """
+
     def f(r: CMatrix) -> CMatrix:
         return -1j * (H @ r - r @ H) + _lindblad_dissipator(r, lindblad_ops)
 
@@ -483,6 +502,7 @@ def _gksl_step_linear(
 # ---------------------------------------------------------------------------
 # Superoperator construction
 # ---------------------------------------------------------------------------
+
 
 def _build_ciir_superoperator_linear(
     H: CMatrix,
@@ -524,7 +544,9 @@ def _build_ciir_superoperator_linear(
 
         # Depolarising (linear in ρ):  D(ρ) = (1-p)ρ + (p/d) Tr(ρ) I
         tr_j = 1.0 if row == col else 0.0  # Tr(e_{row,col}) = δ_{row,col}
-        r = (1.0 - noise_strength) * rho_j + (noise_strength / dim) * tr_j * np.eye(dim, dtype=complex)
+        r = (1.0 - noise_strength) * rho_j + (noise_strength / dim) * tr_j * np.eye(
+            dim, dtype=complex
+        )
 
         # Constraint projection (linear, no normalisation)
         r = Pi @ r @ Pi
@@ -540,6 +562,7 @@ def _build_ciir_superoperator_linear(
 # ---------------------------------------------------------------------------
 # PROJECTOR DERIVATION FROM FIXED-POINT CONDITION
 # ---------------------------------------------------------------------------
+
 
 def derive_projector_from_fixed_point(
     ciir_params: Optional[dict] = None,
@@ -604,7 +627,7 @@ def derive_projector_from_fixed_point(
     noise_strength = float(ciir_params.get("noise_strength", 0.15))
     max_iter = int(ciir_params.get("max_iter", 2000))
 
-    dim = 2 ** N
+    dim = 2**N
     H: CMatrix = ciir_params.get("H", _build_default_hamiltonian_local(N))
     ops: List[CMatrix] = ciir_params.get("ops", _build_default_lindblad_local(N, gamma))
     Pi_assumed = _build_constraint_projector(dim)
@@ -654,9 +677,7 @@ def derive_projector_from_fixed_point(
 
     if N <= 4:
         try:
-            S = _build_ciir_superoperator_linear(
-                H, ops, Pi_assumed, dt, noise_strength, dim
-            )
+            S = _build_ciir_superoperator_linear(H, ops, Pi_assumed, dt, noise_strength, dim)
             eigvals_S, eigvecs_S = np.linalg.eig(S)
             idx_S = int(np.argmax(np.abs(eigvals_S)))
             v_star = eigvecs_S[:, idx_S]
@@ -709,10 +730,11 @@ def derive_projector_from_fixed_point(
 # RESCREENING THE CAUSAL CLAIM WITH DERIVED Π_C
 # ---------------------------------------------------------------------------
 
+
 def _observable_trajectory(
     traj: List[CMatrix],
     Pi: CMatrix,
-) -> "np.ndarray":
+) -> np.ndarray:
     """Compute ⟨Π⟩(t) = Tr(Π ρ(t)) for each step in traj."""
     return np.array([float(np.real(np.trace(Pi @ rho))) for rho in traj])
 
@@ -736,7 +758,7 @@ def _delta_O_max_with_projector(
 
     Supports optional perturbations for artifact tests.
     """
-    dim = 2 ** N
+    dim = 2**N
     if H is None:
         H = _build_default_hamiltonian_local(N)
     if ops is None:
@@ -762,13 +784,19 @@ def _delta_O_max_with_projector(
             rho0 /= tr
 
     ciir_traj = simulate_ciir_model(
-        rho0, H, ops, n_steps,
+        rho0,
+        H,
+        ops,
+        n_steps,
         with_constraint=True,
         dt=dt,
         noise_strength=noise_strength * perturb_gamma_factor,
     )
     std_traj = simulate_standard_model(
-        rho0, H, ops, n_steps,
+        rho0,
+        H,
+        ops,
+        n_steps,
         dt=dt,
         noise_strength=noise_strength * perturb_gamma_factor,
     )
@@ -859,7 +887,7 @@ def rescreen_causal_claim(
     dt = float(ciir_params.get("dt", 0.01))
     gamma = float(ciir_params.get("gamma", 0.02))
     noise_strength = float(ciir_params.get("noise_strength", 0.15))
-    dim = 2 ** N
+    dim = 2**N
 
     H: CMatrix = ciir_params.get("H", _build_default_hamiltonian_local(N))
     ops: List[CMatrix] = ciir_params.get("ops", _build_default_lindblad_local(N, gamma))
@@ -871,12 +899,21 @@ def rescreen_causal_claim(
 
     # ── Steps 2–3: run trajectories and compute ΔO ───────────────────────────
     ciir_traj = simulate_ciir_model(
-        rho0, H, ops, n_steps,
-        with_constraint=True, dt=dt, noise_strength=noise_strength,
+        rho0,
+        H,
+        ops,
+        n_steps,
+        with_constraint=True,
+        dt=dt,
+        noise_strength=noise_strength,
     )
     std_traj = simulate_standard_model(
-        rho0, H, ops, n_steps,
-        dt=dt, noise_strength=noise_strength,
+        rho0,
+        H,
+        ops,
+        n_steps,
+        dt=dt,
+        noise_strength=noise_strength,
     )
 
     O_ciir = _observable_trajectory(ciir_traj, Pi_derived)
@@ -892,38 +929,78 @@ def rescreen_causal_claim(
     # AH-1: MPS truncation (bond-dimension proxy)
     chi_base = max(2, dim // 2)
     chi_2x = chi_base * 2
-    eps_trunc = float(np.finfo(float).eps * dim) if chi_2x ** 2 >= dim else 1.0 / (chi_2x ** 2 * dim)
+    eps_trunc = float(np.finfo(float).eps * dim) if chi_2x**2 >= dim else 1.0 / (chi_2x**2 * dim)
     dO_ah1 = _delta_O_max_with_projector(
-        N, n_steps, dt, gamma, noise_strength, Pi_derived,
+        N,
+        n_steps,
+        dt,
+        gamma,
+        noise_strength,
+        Pi_derived,
         truncation_eps=eps_trunc,
     )
     change_ah1 = abs(dO_ah1 - delta_O_max) / max(delta_O_max, 1e-15)
-    ah1 = {"passed": change_ah1 < 0.01, "value": change_ah1, "threshold": 0.01,
-           "detail": f"ε_trunc={eps_trunc:.2e}, change={change_ah1:.4f}"}
+    ah1 = {
+        "passed": change_ah1 < 0.01,
+        "value": change_ah1,
+        "threshold": 0.01,
+        "detail": f"ε_trunc={eps_trunc:.2e}, change={change_ah1:.4f}",
+    }
 
     # AH-2: RK4 step-size (halve dt, double n_steps)
     dO_ah2 = _delta_O_max_with_projector(
-        N, n_steps * 2, dt / 2.0, gamma, noise_strength, Pi_derived,
+        N,
+        n_steps * 2,
+        dt / 2.0,
+        gamma,
+        noise_strength,
+        Pi_derived,
     )
     change_ah2 = abs(dO_ah2 - delta_O_max) / max(delta_O_max, 1e-15)
-    ah2 = {"passed": change_ah2 < 0.01, "value": change_ah2, "threshold": 0.01,
-           "detail": f"dt/2={dt/2:.4f}, change={change_ah2:.4f}"}
+    ah2 = {
+        "passed": change_ah2 < 0.01,
+        "value": change_ah2,
+        "threshold": 0.01,
+        "detail": f"dt/2={dt/2:.4f}, change={change_ah2:.4f}",
+    }
 
     # AH-3: Initial state sensitivity
     dO_ah3 = _delta_O_max_with_projector(
-        N, n_steps, dt, gamma, noise_strength, Pi_derived,
-        perturb_rho0=1e-6, rng_seed=123,
+        N,
+        n_steps,
+        dt,
+        gamma,
+        noise_strength,
+        Pi_derived,
+        perturb_rho0=1e-6,
+        rng_seed=123,
     )
     change_ah3 = abs(dO_ah3 - delta_O_max) / max(delta_O_max, 1e-15)
-    ah3 = {"passed": change_ah3 < 0.10, "value": change_ah3, "threshold": 0.10,
-           "detail": f"ε=1e-6, change={change_ah3:.4f}"}
+    ah3 = {
+        "passed": change_ah3 < 0.10,
+        "value": change_ah3,
+        "threshold": 0.10,
+        "detail": f"ε=1e-6, change={change_ah3:.4f}",
+    }
 
     # AH-4: Noise parameter sensitivity (γ ± 20 %)
     dO_ah4_hi = _delta_O_max_with_projector(
-        N, n_steps, dt, gamma, noise_strength, Pi_derived, perturb_gamma_factor=1.2,
+        N,
+        n_steps,
+        dt,
+        gamma,
+        noise_strength,
+        Pi_derived,
+        perturb_gamma_factor=1.2,
     )
     dO_ah4_lo = _delta_O_max_with_projector(
-        N, n_steps, dt, gamma, noise_strength, Pi_derived, perturb_gamma_factor=0.8,
+        N,
+        n_steps,
+        dt,
+        gamma,
+        noise_strength,
+        Pi_derived,
+        perturb_gamma_factor=0.8,
     )
     # PASS: ΔO_max does not linearly track γ (bounded variation)
     gamma_variation = max(
@@ -931,8 +1008,12 @@ def rescreen_causal_claim(
         abs(dO_ah4_lo - delta_O_max) / max(delta_O_max, 1e-15),
     )
     # Decoherence artifact: ΔO_max ∝ γ → variation ≈ 0.2.  Allow up to 0.3.
-    ah4 = {"passed": gamma_variation < 0.30, "value": gamma_variation, "threshold": 0.30,
-           "detail": f"γ±20%, max_variation={gamma_variation:.4f}"}
+    ah4 = {
+        "passed": gamma_variation < 0.30,
+        "value": gamma_variation,
+        "threshold": 0.30,
+        "detail": f"γ±20%, max_variation={gamma_variation:.4f}",
+    }
 
     # AH-5: N-scaling (use N_scan but skip large N for artifact test)
     n_scan_ah5 = [n for n in N_scan if n <= 8]
@@ -945,19 +1026,33 @@ def rescreen_causal_claim(
         try:
             Pi_n, _ = derive_projector_from_fixed_point(params_n, tol=tol)
             dO_n = _delta_O_max_with_projector(
-                N_val, n_steps, dt, gamma, noise_strength, Pi_n,
+                N_val,
+                n_steps,
+                dt,
+                gamma,
+                noise_strength,
+                Pi_n,
             )
             dO_ah5_vals.append(dO_n)
         except Exception:
             dO_ah5_vals.append(0.0)
     # PASS if all values > 0 and monotonically non-negative (bounded positive signal)
-    ah5_pass = len(dO_ah5_vals) > 0 and all(v >= 0.0 for v in dO_ah5_vals) and max(dO_ah5_vals) > sigma
-    ah5 = {"passed": ah5_pass, "value": float(np.mean(dO_ah5_vals)) if dO_ah5_vals else 0.0,
-           "threshold": float(sigma),
-           "detail": f"N={n_scan_ah5}, ΔO_max={[f'{v:.4f}' for v in dO_ah5_vals]}"}
+    ah5_pass = (
+        len(dO_ah5_vals) > 0 and all(v >= 0.0 for v in dO_ah5_vals) and max(dO_ah5_vals) > sigma
+    )
+    ah5 = {
+        "passed": ah5_pass,
+        "value": float(np.mean(dO_ah5_vals)) if dO_ah5_vals else 0.0,
+        "threshold": float(sigma),
+        "detail": f"N={n_scan_ah5}, ΔO_max={[f'{v:.4f}' for v in dO_ah5_vals]}",
+    }
 
     artifact_results: Dict = {
-        "AH-1": ah1, "AH-2": ah2, "AH-3": ah3, "AH-4": ah4, "AH-5": ah5,
+        "AH-1": ah1,
+        "AH-2": ah2,
+        "AH-3": ah3,
+        "AH-4": ah4,
+        "AH-5": ah5,
     }
     all_pass = all(r["passed"] for r in artifact_results.values())
     n_pass = sum(r["passed"] for r in artifact_results.values())
@@ -1020,10 +1115,22 @@ def rescreen_causal_claim(
     # Control-performance split estimate (for A0)
     O_ciir_final = float(O_ciir[-1])
     O_std_final = float(O_std[-1])
-    O_ground_ciir = float(np.real(np.trace(
-        np.outer(np.zeros(dim, dtype=complex).__setitem__(0, 1) or np.eye(dim, dtype=complex)[0],
-                 np.eye(dim, dtype=complex)[0]) @ ciir_traj[-1]
-    ))) if False else float(np.real(ciir_traj[-1][0, 0]))
+    O_ground_ciir = (
+        float(
+            np.real(
+                np.trace(
+                    np.outer(
+                        np.zeros(dim, dtype=complex).__setitem__(0, 1)
+                        or np.eye(dim, dtype=complex)[0],
+                        np.eye(dim, dtype=complex)[0],
+                    )
+                    @ ciir_traj[-1]
+                )
+            )
+        )
+        if False
+        else float(np.real(ciir_traj[-1][0, 0]))
+    )
     O_ground_std = float(np.real(std_traj[-1][0, 0]))
 
     control_split = {
@@ -1046,21 +1153,30 @@ def rescreen_causal_claim(
         try:
             Pi_n, cert_n = derive_projector_from_fixed_point(params_n, tol=tol)
             dO_n = _delta_O_max_with_projector(
-                N_val, n_steps_val, dt, gamma, noise_strength, Pi_n,
+                N_val,
+                n_steps_val,
+                dt,
+                gamma,
+                noise_strength,
+                Pi_n,
             )
-            n_scaling.append({
-                "N": N_val,
-                "delta_O_max": dO_n,
-                "n_steps": n_steps_val,
-                "overlap_with_ground": cert_n["overlap_with_ground"],
-            })
+            n_scaling.append(
+                {
+                    "N": N_val,
+                    "delta_O_max": dO_n,
+                    "n_steps": n_steps_val,
+                    "overlap_with_ground": cert_n["overlap_with_ground"],
+                }
+            )
         except Exception as exc:
-            n_scaling.append({
-                "N": N_val,
-                "delta_O_max": None,
-                "error": str(exc),
-                "n_steps": n_steps_val,
-            })
+            n_scaling.append(
+                {
+                    "N": N_val,
+                    "delta_O_max": None,
+                    "error": str(exc),
+                    "n_steps": n_steps_val,
+                }
+            )
 
     return {
         "projector": Pi_derived,
