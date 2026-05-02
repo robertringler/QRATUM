@@ -60,19 +60,46 @@ pub enum Visibility {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum StatementKind {
-    Assignment { target: String, value: String },
-    Return { value: Option<String> },
-    If { condition: String, then_block: Vec<AstNode>, else_block: Option<Vec<AstNode>> },
-    While { condition: String, body: Vec<AstNode> },
-    For { iterator: String, iterable: String, body: Vec<AstNode> },
+    Assignment {
+        target: String,
+        value: String,
+    },
+    Return {
+        value: Option<String>,
+    },
+    If {
+        condition: String,
+        then_block: Vec<AstNode>,
+        else_block: Option<Vec<AstNode>>,
+    },
+    While {
+        condition: String,
+        body: Vec<AstNode>,
+    },
+    For {
+        iterator: String,
+        iterable: String,
+        body: Vec<AstNode>,
+    },
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum ExpressionKind {
-    Literal { value: String },
-    Identifier { name: String },
-    BinaryOp { left: String, op: String, right: String },
-    FunctionCall { name: String, args: Vec<String> },
+    Literal {
+        value: String,
+    },
+    Identifier {
+        name: String,
+    },
+    BinaryOp {
+        left: String,
+        op: String,
+        right: String,
+    },
+    FunctionCall {
+        name: String,
+        args: Vec<String>,
+    },
 }
 
 // Intent specification from MiniLM
@@ -105,12 +132,8 @@ pub fn generate_ast(intent: IntentSpec) -> Result<AstNode, String> {
         IntentType::Module { name, purpose } => {
             generate_module_ast(&name, &purpose, &intent.language)
         }
-        IntentType::FileIO { operation } => {
-            generate_fileio_ast(&operation, &intent.language)
-        }
-        IntentType::Threading { operation } => {
-            generate_threading_ast(&operation, &intent.language)
-        }
+        IntentType::FileIO { operation } => generate_fileio_ast(&operation, &intent.language),
+        IntentType::Threading { operation } => generate_threading_ast(&operation, &intent.language),
     }
 }
 
@@ -136,7 +159,7 @@ fn generate_function_ast(
 // Struct AST builder
 fn generate_struct_ast(name: &str, purpose: &str, language: &str) -> Result<AstNode, String> {
     let fields = extract_fields(purpose);
-    
+
     match language {
         "rust" => Ok(AstNode::Struct {
             name: name.to_string(),
@@ -243,9 +266,7 @@ fn generate_rust_threading(_operation: &str) -> Result<AstNode, String> {
         name: "spawn_thread".to_string(),
         params: vec![],
         return_type: Some("JoinHandle<()>".to_string()),
-        body: Box::new(AstNode::Block {
-            statements: vec![],
-        }),
+        body: Box::new(AstNode::Block { statements: vec![] }),
     })
 }
 
@@ -254,9 +275,7 @@ fn generate_python_threading(_operation: &str) -> Result<AstNode, String> {
         name: "run_thread".to_string(),
         params: vec![],
         return_type: None,
-        body: Box::new(AstNode::Block {
-            statements: vec![],
-        }),
+        body: Box::new(AstNode::Block { statements: vec![] }),
     })
 }
 

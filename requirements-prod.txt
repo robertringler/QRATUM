@@ -35,5 +35,9 @@ pyyaml==6.0.1
 # CLI
 click==8.1.7
 
+# Web framework
+flask==3.0.0
+gunicorn==21.2.0
+
 # Visualization (optional)
 matplotlib==3.7.4

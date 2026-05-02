@@ -1,8 +1,8 @@
 """Authorization system for QRATUM-ASI."""
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set
 from datetime import datetime
+from typing import Dict, List, Optional, Set
 
 from qratum_asi.core.types import ASISafetyLevel, AuthorizationType
 
@@ -31,7 +31,7 @@ class AuthorizationRequest:
 @dataclass
 class AuthorizationSystem:
     """Authorization system for ASI operations.
-    
+
     Enforces human oversight requirements based on safety levels.
     All sensitive operations require explicit human authorization.
     """

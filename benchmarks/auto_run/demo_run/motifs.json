@@ -1,0 +1,48 @@
+{
+  "total_motifs": 1,
+  "extraction_timestamp": 1767102242.9151502,
+  "thresholds": {
+    "novelty_threshold": 0.5,
+    "divergence_threshold": 0.5,
+    "min_cortex_activation": 0.3
+  },
+  "motifs_by_type": {
+    "tactical": 1,
+    "strategic": 0,
+    "opening": 0,
+    "endgame": 0,
+    "conceptual": 0
+  },
+  "motifs_by_phase": {
+    "opening": 1,
+    "middlegame": 0,
+    "endgame": 0
+  },
+  "motifs": [
+    {
+      "motif_id": "MOTIF_0001",
+      "motif_type": "tactical",
+      "game_phase": "opening",
+      "position_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "move_sequence": [
+        "h2h3"
+      ],
+      "evaluation": 0.0,
+      "novelty_score": 0.65,
+      "cortex_weights": {
+        "tactical": 0.6,
+        "strategic": 0.3,
+        "conceptual": 0.1,
+        "timestamp": 1767102236.379193
+      },
+      "novelty_pressure": 0.45,
+      "engine_comparison": {
+        "engine_move": "e2e4",
+        "selected_move": "h2h3",
+        "divergence": 0.65
+      },
+      "discovery_timestamp": 1767102236.3795443,
+      "description": "Novel move diverging from engine baseline"
+    }
+  ]
+}

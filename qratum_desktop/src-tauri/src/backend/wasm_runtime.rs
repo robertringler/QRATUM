@@ -9,12 +9,12 @@ impl WasmRuntime {
     pub fn new() -> Self {
         Self {}
     }
-    
+
     pub fn load_module(&self, _module_path: &str) -> Result<(), String> {
         // TODO: Load WASM module
         Ok(())
     }
-    
+
     pub fn execute(&self, _function: &str, _args: Vec<u8>) -> Result<Vec<u8>, String> {
         // TODO: Execute WASM function
         Ok(vec![])

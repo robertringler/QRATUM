@@ -13,15 +13,10 @@ Test Categories:
 import numpy as np
 import pytest
 
-from quasim.holo.anti_tensor import (
-    adaptive_truncate,
-    compress,
-    compute_fidelity,
-    compute_mutual_information,
-    decompress,
-    hierarchical_decompose,
-    reconstruct,
-)
+from quasim.holo.anti_tensor import (adaptive_truncate, compress,
+                                     compute_fidelity,
+                                     compute_mutual_information, decompress,
+                                     hierarchical_decompose, reconstruct)
 
 
 class TestMutualInformation:

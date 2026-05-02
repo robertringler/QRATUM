@@ -1,582 +1,651 @@
 # VITRA-E0 Standard Operating Procedures (SOP)
+# Biokey-Enabled Sovereign Genomic Operations
 
-**Document Version**: 1.0.0  
-**Last Updated**: 2024-12-24  
-**Classification**: Internal Use Only  
-**Review Frequency**: Quarterly
+**Version**: 1.0.0  
+**Effective Date**: 2024-12-24  
+**Classification**: CONTROLLED UNCLASSIFIED  
+**Review Cycle**: Quarterly  
 
 ---
 
 ## Table of Contents
 
-1. [Introduction](#introduction)
-2. [Scope and Purpose](#scope-and-purpose)
-3. [Roles and Responsibilities](#roles-and-responsibilities)
-4. [FIDO2 Key Management](#fido2-key-management)
-5. [Zone Promotion Procedures](#zone-promotion-procedures)
-6. [Rollback Procedures](#rollback-procedures)
-7. [Air-Gap Deployment](#air-gap-deployment)
-8. [Pipeline Execution](#pipeline-execution)
-9. [Reproducibility Validation](#reproducibility-validation)
-10. [Incident Response](#incident-response)
-11. [Audit and Compliance](#audit-and-compliance)
-12. [Appendices](#appendices)
+1. [Biokey Overview](#1-biokey-overview)
+2. [Ephemeral Biokey Derivation](#2-ephemeral-biokey-derivation)
+3. [Dual Biokey + FIDO2 Workflow](#3-dual-biokey--fido2-workflow)
+4. [Zero-Knowledge Proof Verification](#4-zero-knowledge-proof-verification)
+5. [Zone Promotions with Biokey](#5-zone-promotions-with-biokey)
+6. [Air-Gapped Biokey Operations](#6-air-gapped-biokey-operations)
+7. [Incident Response](#7-incident-response)
+8. [Compliance & Legal](#8-compliance--legal)
 
 ---
 
-## 1. Introduction
+## 1. Biokey Overview
 
-This document defines standard operating procedures for the VITRA-E0 sovereign entropy anchor for deterministic genomics. It covers:
+### 1.1 Purpose
 
-- FIDO2 key management and custody
-- Zone topology operations (Z0 → Z1 → Z2 → Z3)
-- Pipeline execution and validation
-- Emergency rollback procedures
-- Compliance and audit requirements
+Biokeys provide ephemeral biometric authentication for sovereign genomic operations without storing plaintext genetic data.
 
-### 1.1 Document Conventions
+### 1.2 Security Properties
 
-- 🔴 **CRITICAL**: Mandatory security controls
-- 🟡 **IMPORTANT**: Strongly recommended practices
-- 🟢 **OPTIONAL**: Best practices for enhanced security
+- **Ephemeral**: Keys exist only in RAM (never written to disk)
+- **Zero-Knowledge**: Public hash doesn't reveal DNA sequence
+- **Dual-Control**: Critical operations require 2 operators
+- **Compliant**: HIPAA/GDPR/BIPA regulations met
 
----
+### 1.3 Key Terminology
 
-## 2. Scope and Purpose
-
-### 2.1 Scope
-
-This SOP applies to:
-- All VITRA-E0 pipeline executions
-- Zone promotion and rollback operations
-- FIDO2 signature holders (Authorities A and B)
-- System administrators managing VITRA-E0 infrastructure
-- QA and compliance personnel validating genomics outputs
-
-### 2.2 Purpose
-
-To ensure:
-- **Determinism**: Bit-identical VCF outputs across runs
-- **Auditability**: Cryptographic provenance for all operations
-- **Security**: Dual authorization for critical promotions
-- **Compliance**: HIPAA, CMMC, FDA 21 CFR Part 11, ISO 27001
+| Term | Definition |
+|------|-----------|
+| **Biokey** | Ephemeral cryptographic key derived from genomic SNPs |
+| **Public Hash** | SHA3-256 hash of private key (safe to store) |
+| **ZKP** | Zero-Knowledge Proof (verify without revealing genome) |
+| **Dual-Sig** | Dual signature requiring 2 operators + 2 FIDO2 keys |
+| **tmpfs** | RAM-only filesystem (no disk writes) |
 
 ---
 
-## 3. Roles and Responsibilities
+## 2. Ephemeral Biokey Derivation
 
-### 3.1 Technical Authority (Signature A Holder)
+### 2.1 Prerequisites
 
-**Responsibilities**:
-- Execute and validate pipeline runs in Z1
-- Sign Z1 → Z2 promotions (single signature)
-- Co-sign Z2 → Z3 promotions (dual signature)
-- Monitor pipeline performance and GIAB metrics
-- Maintain FIDO2 hardware device (Key A)
+- Operator VCF file (WGS data, QUAL≥30, DP≥10)
+- Access to secure workstation
+- merkler-static binary installed
+- Sufficient RAM (≥4GB for tmpfs)
 
-**Required Skills**:
-- Nextflow pipeline execution
-- GPU computing (NVIDIA Parabricks)
-- GIAB validation interpretation
-- Merkle provenance verification
+### 2.2 Procedure
 
-### 3.2 Compliance Authority (Signature B Holder)
-
-**Responsibilities**:
-- Review GIAB validation reports (F1 ≥ 0.995)
-- Co-sign Z2 → Z3 promotions (dual signature)
-- Authorize emergency rollbacks
-- Audit Merkle provenance chains
-- Maintain FIDO2 hardware device (Key B)
-
-**Required Skills**:
-- Genomics quality control
-- Regulatory compliance (HIPAA, FDA)
-- Audit trail analysis
-- CBOR/Merkle chain validation
-
-### 3.3 System Administrator
-
-**Responsibilities**:
-- Deploy and maintain zone infrastructure
-- Manage Guix container deployments
-- Configure air-gapped Z3 environment
-- Monitor system resources (GPU, storage)
-- Backup genesis Merkle and FIDO2 pubkeys
-
----
-
-## 4. FIDO2 Key Management
-
-### 4.1 Key Generation 🔴 CRITICAL
-
-**Procedure**:
-
-1. **Obtain FIDO2 Hardware Devices**
-   - YubiKey 5 (or equivalent FIDO2 device)
-   - Separate devices for Key A and Key B
-   - Purchase from authorized distributors
-
-2. **Generate Ed25519 Key Pairs**
-   ```bash
-   # Key A (Technical Authority)
-   ssh-keygen -t ed25519 -f epoch_a -N "" -C "vitra-e0-epoch-a"
-   
-   # Key B (Compliance Authority)
-   ssh-keygen -t ed25519 -f epoch_b -N "" -C "vitra-e0-epoch-b"
-   ```
-
-3. **Extract Public Key Binaries**
-   ```bash
-   # Convert to 32-byte binary format (implementation-specific)
-   # Store in qrVITRA/merkler-static/injected/epoch_pubkey_*.bin
-   ```
-
-4. **Store Private Keys on FIDO2 Devices**
-   - Transfer private keys to YubiKey PIV slots
-   - Delete private keys from filesystem
-   - Verify: `ls epoch_a` should fail after transfer
-
-### 4.2 Key Custody 🔴 CRITICAL
-
-**Physical Security**:
-- Store Key A and Key B in separate secure locations
-- Use tamper-evident containers
-- Maintain access logs
-
-**Backup**:
-- Create encrypted offline backups of private keys
-- Split backup using Shamir's Secret Sharing (3-of-5 threshold)
-- Store shares in geographically separated vaults
-- Test recovery annually
-
-### 4.3 Key Rotation 🟡 IMPORTANT
-
-**Annual Rotation Procedure**:
-
-1. Generate new epoch key pairs (epoch_a_v2, epoch_b_v2)
-2. Update genesis Merkle with new pubkeys
-3. Sign final promotion with old keys
-4. Activate new keys for subsequent promotions
-5. Archive old keys in secure cold storage
-6. Document rotation in audit log
-
-**Rotation Triggers** (immediate):
-- Key compromise suspected
-- FIDO2 device loss or theft
-- Authority role change
-- Security audit recommendation
-
----
-
-## 5. Zone Promotion Procedures
-
-### 5.1 Z0 → Z1 (Auto-Promotion)
-
-**Trigger**: Genesis initialization  
-**Authorization**: Automatic (no signature required)
-
-**Procedure**:
+**Step 1: Verify VCF File Integrity**
 
 ```bash
-# Initialize genesis
-cd qrVITRA/scripts
-./init_genesis_merkle.sh
+# Check file exists and is readable
+ls -lh /path/to/operator.vcf.gz
 
-# Deploy zone topology
-./deploy_zones.sh
-
-# Verify Z0 immutability
-cat zones/Z0/ZONE_METADATA.json | jq '.properties.immutable'
-# Expected: true
+# Verify checksum (if available)
+sha256sum /path/to/operator.vcf.gz
+# Compare with registered checksum
 ```
 
-**Verification**:
-- Z0 contains genesis Merkle root
-- FIDO2 pubkeys injected into merkler-static
-- Z1 staging directory created
-
-### 5.2 Z1 → Z2 (Production Promotion) 🔴 CRITICAL
-
-**Trigger**: Successful GIAB validation (F1 ≥ 0.995)  
-**Authorization**: Single FIDO2 signature A  
-**Authority**: Technical Lead
-
-**Prerequisites**:
-- Pipeline execution in Z1 complete
-- GIAB F1 score ≥ 0.995 verified
-- Precision ≥ 0.998, Recall ≥ 0.992
-- Merkle DAG generated and validated
-
-**Procedure**:
+**Step 2: Derive Biokey**
 
 ```bash
-# 1. Review GIAB validation
-cat results/validation/sample_validation.json | jq '.overall.f1_score'
-# Expected: ≥ 0.995
+# Navigate to VITRA-E0 directory
+cd /path/to/qrVITRA
 
-# 2. Extract Merkle DAG hash
-MERKLE_HASH=$(sha256sum results/provenance/provenance_dag.cbor | awk '{print $1}')
+# Derive biokey (opens new shell with active session)
+./scripts/biokey/derive_biokey.sh operator-id /path/to/operator.vcf.gz 192
 
-# 3. Sign with FIDO2 Key A (Technical Authority)
-echo -n "$MERKLE_HASH" | ssh-keygen -Y sign -f /path/to/yubikey/epoch_a -n vitra-e0 > signature_a.sig
+# Output should show:
+# - Public hash
+# - Loci count
+# - Session start time
+# - Environment variables
+```
+
+**Step 3: Verify Session Active**
+
+```bash
+# Check environment variables
+echo $VITRA_BIOKEY_PUBLIC_HASH
+echo $VITRA_BIOKEY_OPERATOR
+echo $VITRA_BIOKEY_SESSION_START
+
+# Verify tmpfs mounted
+mount | grep vitra-biokey
+```
+
+**Step 4: Register Biokey**
+
+Biokey is automatically registered in `configs/operator_biokeys.json`.
+
+Verify entry:
+
+```bash
+cat configs/operator_biokeys.json | grep operator-id
+```
+
+### 2.3 Session Management
+
+**Session Timeout**: 60 minutes (default)
+
+**Manual Session Extension**:
+
+```bash
+# Re-export session start time
+export VITRA_BIOKEY_TIMESTAMP=$(date +%s)
+```
+
+**Session Cleanup**:
+
+```bash
+# Exit shell to trigger automatic cleanup
+exit
+
+# Verify cleanup
+mount | grep vitra-biokey  # Should be empty
+```
+
+### 2.4 Troubleshooting
+
+| Issue | Resolution |
+|-------|-----------|
+| "VCF file not found" | Verify path, check permissions |
+| "Insufficient high-quality SNPs" | Use different VCF or lower quality threshold |
+| "tmpfs mount failed" | Check sudo access, verify RAM available |
+| "Session timeout" | Re-derive biokey (session expired) |
+
+---
+
+## 3. Dual Biokey + FIDO2 Workflow
+
+### 3.1 When Required
+
+Dual authorization required for:
+
+- **SENSITIVE**: System configuration (biokey + FIDO2)
+- **CRITICAL**: Zone promotions, self-improvement (dual biokey + dual FIDO2)
+- **EXISTENTIAL**: Architecture changes (dual biokey + dual FIDO2 + board)
+
+### 3.2 Procedure
+
+**Step 1: Operator A Derives Biokey**
+
+```bash
+# Terminal 1: Operator A
+./scripts/biokey/derive_biokey.sh operator-alice /secure/alice.vcf.gz
+
+# Keep this terminal open
+```
+
+**Step 2: Operator B Derives Biokey**
+
+```bash
+# Terminal 2: Operator B (separate workstation)
+./scripts/biokey/derive_biokey.sh operator-bob /secure/bob.vcf.gz
+
+# Keep this terminal open
+```
+
+**Step 3: Verify FIDO2 Devices**
+
+```bash
+# Check device A (Operator A workstation)
+ls -l /dev/hidraw0
+
+# Check device B (Operator B workstation)
+ls -l /dev/hidraw1
+```
+
+**Step 4: Execute Critical Operation**
+
+```bash
+# From Operator A terminal
+./scripts/deploy_zones.sh promote-z2-to-z3
+
+# System prompts for:
+# 1. Operator A biokey verification
+# 2. Operator B biokey verification
+# 3. FIDO2 device A authentication
+# 4. FIDO2 device B authentication
+```
+
+**Step 5: Verify Dual Signature**
+
+```bash
+# Check promotion record
+cat zones/Z3/promotion_z2_z3.json
+
+# Should contain both operator hashes
+```
+
+### 3.3 Geographic Separation
+
+For high-security operations, enforce geographic separation:
+
+- Operator A: Site 1
+- Operator B: Site 2 (≥100km away)
+- FIDO2 devices registered to different physical locations
+
+Verify in `configs/operator_biokeys.json`:
+
+```json
+{
+  "operator_a": {
+    "location": "Site-1-Building-A"
+  },
+  "operator_b": {
+    "location": "Site-2-Building-B"
+  }
+}
+```
+
+---
+
+## 4. Zero-Knowledge Proof Verification
+
+### 4.1 Purpose
+
+Verify operator credentials without revealing genome data.
+
+### 4.2 Procedure
+
+**Step 1: Generate Challenge**
+
+```bash
+# Verifier generates random challenge
+./scripts/biokey/verify_biokey.sh operator-alice
+
+# Output: 256-bit hex challenge
+```
+
+**Step 2: Operator Generates Proof**
+
+```bash
+# Operator (with active biokey session) generates proof
+merkler-static prove $VITRA_BIOKEY_JSON <challenge-hex> > proof.json
+```
+
+**Step 3: Verify Proof**
+
+```bash
+# Verifier checks proof
+merkler-static verify-zkp proof.json
+
+# Output: VALID or INVALID
+```
+
+**Step 4: Document Verification**
+
+```bash
+# Log verification result
+echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) - ZKP verification: operator-alice - VALID" >> audit.log
+```
+
+### 4.3 Security Notes
+
+- Challenge must be unique per session (prevent replay)
+- Proof doesn't reveal private key or genome data
+- Network traffic contains no DNA sequences
+- Public hash is safe to transmit over insecure channels
+
+---
+
+## 5. Zone Promotions with Biokey
+
+### 5.1 Zone Topology
+
+| Zone | Description | Authorization | Air-Gap |
+|------|-------------|---------------|---------|
+| Z0 | Genesis (immutable) | None | No |
+| Z1 | Staging | Auto-promoted | No |
+| Z2 | Production | Biokey + FIDO2 | No |
+| Z3 | Archive | Dual Biokey + Dual FIDO2 | Yes |
+
+### 5.2 Z1 → Z2 Promotion
+
+**Authorization**: Single biokey + FIDO2
+
+```bash
+# 1. Derive biokey
+./scripts/biokey/derive_biokey.sh operator-director /secure/director.vcf.gz
+
+# 2. Insert FIDO2 key
+# (Physical device at /dev/hidraw0)
+
+# 3. Execute promotion
+./scripts/deploy_zones.sh promote-z1-to-z2
+
+# 4. Verify promotion
+cat zones/Z2/promotion_z1_z2.json
+```
+
+### 5.3 Z2 → Z3 Promotion
+
+**Authorization**: Dual biokey + dual FIDO2
+
+```bash
+# 1. Operator A derives biokey
+./scripts/biokey/derive_biokey.sh operator-director /secure/director.vcf.gz
+
+# 2. Operator B derives biokey (separate terminal/workstation)
+./scripts/biokey/derive_biokey.sh operator-cso /secure/cso.vcf.gz
+
+# 3. Insert both FIDO2 keys
 
 # 4. Execute promotion
-cd zones
-./promote_Z1_to_Z2.sh results/provenance/provenance_dag.cbor signature_a.sig
+./scripts/deploy_zones.sh promote-z2-to-z3
 
-# 5. Verify promotion
-cat Z2/artifacts/promotion_*/promotion_manifest.json | jq '.signatures.fido2_a'
+# 5. Activate air-gap
+sudo ifconfig eth0 down  # Disable network
+
+# 6. Mount Z3 as read-only
+sudo mount -o remount,ro zones/Z3
 ```
 
-**Verification Checklist**:
-- [ ] GIAB F1 ≥ 0.995
-- [ ] Signature A valid
-- [ ] Merkle DAG copied to Z2
-- [ ] Promotion manifest created
-- [ ] Audit log updated
+### 5.4 Rollback Procedure
 
-### 5.3 Z2 → Z3 (Archive Promotion) 🔴 CRITICAL
-
-**Trigger**: Long-term archival requirement  
-**Authorization**: Dual FIDO2 signatures A + B  
-**Authorities**: Technical Lead + Compliance Lead
-
-**Prerequisites**:
-- Pipeline validated in Z2
-- Air-gap environment prepared
-- Network isolation verified
-- Dual signature holders available
-
-**Procedure**:
+If promotion needs to be reversed:
 
 ```bash
-# 1. Prepare air-gapped Z3 environment
-# - Disconnect network
-# - Verify: ping -c 1 8.8.8.8 (should fail)
+# 1. Verify biokey session active
 
-# 2. Extract Merkle DAG hash
-MERKLE_HASH=$(sha256sum Z2/artifacts/promotion_*/provenance_dag.cbor | awk '{print $1}')
-
-# 3. Sign with FIDO2 Key A (Technical Authority)
-echo -n "$MERKLE_HASH" | ssh-keygen -Y sign -f /yubikey/epoch_a -n vitra-e0 > sig_a.sig
-
-# 4. Sign with FIDO2 Key B (Compliance Authority)
-echo -n "$MERKLE_HASH" | ssh-keygen -Y sign -f /yubikey/epoch_b -n vitra-e0 > sig_b.sig
-
-# 5. Execute promotion
-./promote_Z2_to_Z3.sh Z2/artifacts/promotion_*/provenance_dag.cbor sig_a.sig sig_b.sig
-
-# 6. Verify air-gap isolation
-ip link show | grep -i "state up"  # No active interfaces
-```
-
-**Verification Checklist**:
-- [ ] Network isolation verified
-- [ ] Dual signatures valid
-- [ ] Merkle DAG copied to Z3
-- [ ] Z3 marked immutable
-- [ ] Physical access logged
-
----
-
-## 6. Rollback Procedures
-
-### 6.1 Emergency Rollback Authorization 🔴 CRITICAL
-
-**Triggers** (emergency only):
-- Critical pipeline bug discovered
-- Data integrity compromised
-- Security vulnerability in pipeline
-- Regulatory compliance failure
-
-**Authorization**: Dual FIDO2 signatures A + B + written justification
-
-### 6.2 Z3 → Z2 Rollback
-
-**Prerequisites**:
-- Written justification (incident report)
-- Dual signature holders present
-- Emergency authorization from management
-- Security team notified
-
-**Procedure**:
-
-```bash
-# 1. Document justification
-JUSTIFICATION="Critical bug in DeepVariant 1.5.0 affects variant calling accuracy. Rollback to validated Z2 snapshot pending fix."
-
-# 2. Extract artifact hash
-ARTIFACT_HASH=$(sha256sum Z3/artifacts/promotion_*/provenance_dag.cbor | awk '{print $1}')
-
-# 3. Dual signatures required
-echo -n "$ARTIFACT_HASH" | ssh-keygen -Y sign -f /yubikey/epoch_a -n vitra-e0 > sig_a.sig
-echo -n "$ARTIFACT_HASH" | ssh-keygen -Y sign -f /yubikey/epoch_b -n vitra-e0 > sig_b.sig
-
-# 4. Execute rollback
-./rollback_Z3_to_Z2.sh Z3/artifacts/promotion_*/provenance_dag.cbor sig_a.sig sig_b.sig "$JUSTIFICATION"
-
-# 5. Notify stakeholders
-echo "Z3 → Z2 rollback executed. Incident: $JUSTIFICATION" | mail -s "VITRA-E0 Rollback" security@org.com
-```
-
-**Post-Rollback Actions**:
-1. Conduct security review
-2. Update pipeline to fix root cause
-3. Re-validate with GIAB
-4. Document in compliance audit
-5. Schedule retrospective
-
----
-
-## 7. Air-Gap Deployment
-
-### 7.1 Z3 Air-Gap Configuration 🔴 CRITICAL
-
-**Network Isolation**:
-
-```bash
-# Disable all network interfaces
-sudo ip link set eth0 down
-sudo ip link set wlan0 down
-
-# Verify isolation
-ping -c 1 8.8.8.8  # Should fail
-curl -I https://google.com  # Should fail
-
-# Physical verification
-# - Remove ethernet cable
-# - Disable WiFi hardware switch
-# - Tape over ethernet port
-```
-
-**Container Deployment**:
-
-```bash
-# Transfer SquashFS container via USB
-mount /dev/sdb1 /mnt/usb
-cp /mnt/usb/vitra-e0-v1.0.squashfs /opt/vitra/containers/
-
-# Verify hash
-sha256sum /opt/vitra/containers/vitra-e0-v1.0.squashfs
-# Compare with manifest from online system
-
-# Mount container
-sudo mount -t squashfs -o loop,ro /opt/vitra/containers/vitra-e0-v1.0.squashfs /opt/vitra/runtime
-```
-
-**Access Control**:
-- Two-person rule (witnesses required)
-- Physical access log
-- Video surveillance
-- Badge access only
-
----
-
-## 8. Pipeline Execution
-
-### 8.1 Standard Pipeline Run
-
-**Prerequisites**:
-- FASTQ files validated (MD5 checksums)
-- Reference genome indexed (GRCh38)
-- GIAB truth set available (if Z2+ promotion)
-- GPU available (NVIDIA A100 recommended)
-
-**Execution**:
-
-```bash
-# Load Nextflow
-module load nextflow/23.04.0
-
-# Run pipeline in Z1 (staging)
-nextflow run qrVITRA/nextflow/vitra-e0-germline.nf \
-  --fastq_r1 /data/HG001_R1.fastq.gz \
-  --fastq_r2 /data/HG001_R2.fastq.gz \
-  --ref /data/GRCh38.fa \
-  --giab_truth /data/HG001_truth.vcf.gz \
-  --giab_bed /data/HG001_highconf.bed \
-  --outdir ./results_Z1 \
-  --sample_id HG001 \
-  --zone Z1 \
-  -profile guix,gpu \
-  -resume
-
-# Monitor execution
-tail -f .nextflow.log
-```
-
-**Performance Expectations**:
-- ALIGN_FQ2BAM: 30-45 minutes (30x WGS on A100)
-- CALL_VARIANTS: 25-30 minutes
-- GIAB_VALIDATE: 3-5 minutes
-- PROVENANCE: <5 seconds
-- **Total**: ~1 hour for 30x WGS
-
-### 8.2 Reproducibility Testing
-
-```bash
-# Run pipeline 3 times
-for i in {1..3}; do
-  nextflow run qrVITRA/nextflow/vitra-e0-germline.nf \
-    --fastq_r1 /data/HG001_R1.fastq.gz \
-    --fastq_r2 /data/HG001_R2.fastq.gz \
-    --ref /data/GRCh38.fa \
-    --outdir ./run_$i \
-    --sample_id HG001_run_$i \
-    -profile guix,gpu
-done
-
-# Verify bit-identical VCFs
-cd qrVITRA/scripts
-./verify_reproducibility.sh \
-  --vcf run_1/vcf/HG001.vcf.gz \
-  --merkle-chain run_1/provenance/provenance_dag.cbor \
-  --giab-truth /data/HG001_truth.vcf.gz \
-  --num-runs 3 \
-  --output-dir ./reproducibility_report
-```
-
----
-
-## 9. Reproducibility Validation
-
-### 9.1 VCF Hash Verification
-
-```bash
-# Extract variants (skip headers)
-zcat run_1/vcf/HG001.vcf.gz | grep -v '^#' | sha256sum > hash_1.txt
-zcat run_2/vcf/HG001.vcf.gz | grep -v '^#' | sha256sum > hash_2.txt
-zcat run_3/vcf/HG001.vcf.gz | grep -v '^#' | sha256sum > hash_3.txt
-
-# Compare
-diff hash_1.txt hash_2.txt  # Should be identical
-diff hash_2.txt hash_3.txt  # Should be identical
-```
-
-**Expected Result**: All hashes identical (bit-for-bit reproducibility)
-
-### 9.2 GIAB F1 Score Threshold
-
-**Z2 Promotion Criteria**:
-- Overall F1 ≥ 0.995
-- SNP F1 ≥ 0.995
-- Indel F1 ≥ 0.990
-- Precision ≥ 0.998
-- Recall ≥ 0.992
-
-**Validation**:
-
-```bash
-cat results/validation/sample_validation.json | jq '
+# 2. Create rollback record
+cat > zones/Z2/rollback_$(date +%s).json <<EOF
 {
-  "Overall F1": .overall.f1_score,
-  "SNP F1": .by_variant_type.snp.f1_score,
-  "Indel F1": .by_variant_type.indel.f1_score,
-  "Z2 Eligible": .zone_promotion.z2_eligible
-}'
+  "rollback_from": "Z3",
+  "rollback_to": "Z2",
+  "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "operator": "$VITRA_BIOKEY_OPERATOR",
+  "reason": "Detected error in promoted data",
+  "authorized_by": "Chief Scientific Officer"
+}
+EOF
+
+# 3. Restore from Z2 backup
+cp -r zones/Z2_backup/* zones/Z2/
+
+# 4. Document in audit log
 ```
 
 ---
 
-## 10. Incident Response
+## 6. Air-Gapped Biokey Operations
 
-### 10.1 Key Compromise
+### 6.1 VCF Transport Protocol
 
-**Immediate Actions**:
-1. Revoke compromised key
-2. Generate new epoch key pair
-3. Update genesis Merkle with new pubkey
-4. Notify all pipeline users
-5. Invalidate pending promotions
-6. Conduct forensic analysis
-
-**Escalation**:
-- Security team (immediate)
-- Legal/compliance (within 24h)
-- Regulatory bodies (if PHI affected)
-
-### 10.2 Pipeline Failure
-
-**Triage**:
+**Encrypted USB Transport**:
 
 ```bash
-# Check Nextflow logs
-tail -100 .nextflow.log
+# 1. Encrypt VCF file
+gpg --encrypt --recipient operator@domain.com operator.vcf.gz
 
-# Check GPU status
-nvidia-smi
+# 2. Copy to encrypted USB
+cp operator.vcf.gz.gpg /media/encrypted-usb/
 
-# Check disk space
-df -h
+# 3. Physically transport USB to air-gapped system
 
-# Check Merkle chain
-cat results/provenance/provenance.log
+# 4. On air-gapped system, decrypt
+gpg --decrypt operator.vcf.gz.gpg > operator.vcf.gz
+
+# 5. Verify integrity
+sha256sum operator.vcf.gz
+# Compare with known-good checksum
+
+# 6. Derive biokey
+./scripts/biokey/derive_biokey.sh operator-id operator.vcf.gz
 ```
 
-**Resolution Paths**:
-- GPU OOM: Reduce batch size or use `--low-memory`
-- Disk full: Clean work directory (`nextflow clean -f`)
-- GIAB fail: Review validation metrics, adjust thresholds
+### 6.2 Air-Gap Verification
+
+```bash
+# Verify no network connectivity
+ping -c 1 8.8.8.8 || echo "Air-gap confirmed"
+
+# Check interfaces disabled
+ip link show | grep "state DOWN"
+
+# Verify no DNS resolution
+nslookup example.com || echo "DNS disabled"
+```
+
+### 6.3 Air-Gapped Pipeline Execution
+
+```bash
+# Ensure all dependencies pre-installed
+nextflow run nextflow/vitra-e0-germline.nf \
+  --fastq_r1 sample_R1.fastq.gz \
+  --fastq_r2 sample_R2.fastq.gz \
+  --ref /data/GRCh38.fa \
+  --biokey-required true \
+  --safety-level CRITICAL \
+  -profile airgap,gpu,biokey \
+  -offline
+```
 
 ---
 
-## 11. Audit and Compliance
+## 7. Incident Response
 
-### 11.1 Monthly Audit Checklist
+### 7.1 Biokey Compromise
 
-- [ ] Review all Z1 → Z2 promotions
-- [ ] Verify FIDO2 signature validity
-- [ ] Check GIAB F1 scores (≥0.995)
-- [ ] Validate Merkle chain continuity
-- [ ] Review air-gap access logs (Z3)
-- [ ] Test FIDO2 key backups
-- [ ] Verify reproducibility (3-run test)
-- [ ] Document any rollbacks with justification
+**Indicators**:
+- Unauthorized operations signed with operator biokey
+- VCF file accessed without authorization
+- Suspicious biokey derivations in audit log
 
-### 11.2 Compliance Mapping
+**Response**:
 
-| Requirement | VITRA-E0 Control | Evidence |
-|-------------|------------------|----------|
-| HIPAA § 164.312(a)(1) | Unique user identification | FIDO2 signatures |
-| HIPAA § 164.312(b) | Audit controls | Merkle provenance chain |
-| FDA 21 CFR 11.10(e) | Audit trail | CBOR Merkle DAG |
-| FDA 21 CFR 11.50 | Signature manifestations | Dual FIDO2 signatures |
-| CMMC Level 3 AC.L3-3.1.5 | Dual authorization | Z3 promotions |
-| ISO 27001 A.9.4.2 | Secure log-on | FIDO2 hardware keys |
+```bash
+# IMMEDIATE (within 15 minutes):
+
+# 1. Revoke biokey
+./scripts/biokey/revoke_biokey.sh operator-id "COMPROMISED"
+
+# 2. Remove from operator registry
+# Edit configs/operator_biokeys.json, set status: "revoked"
+
+# 3. Kill all active sessions
+pkill -u operator-id
+
+# 4. Shred all tmpfs
+find /dev/shm -name "*biokey*" -exec shred -n 3 -z -u {} \;
+
+# 5. Alert security team
+echo "SECURITY INCIDENT: Biokey compromise operator-id $(date)" | \
+  mail -s "URGENT: Biokey Compromise" security@domain.com
+
+# SHORT-TERM (within 24 hours):
+
+# 6. Forensic analysis
+# - Review audit logs for unauthorized operations
+# - Identify all operations signed with compromised biokey
+
+# 7. Rollback compromised operations
+# - Use Merkle chain to identify affected blocks
+# - Rollback to last known-good state
+
+# 8. Re-sequence operator
+# - Obtain new VCF file from fresh sequencing
+# - Register new biokey
+
+# LONG-TERM (within 1 week):
+
+# 9. Root cause analysis
+# 10. Update security procedures
+# 11. Mandatory security training for all operators
+```
+
+### 7.2 Memory Dump Attack
+
+**Detection**:
+
+```bash
+# Monitor for unauthorized memory access
+ps aux | grep gcore  # Check for memory dump tools
+dmesg | grep -i "memory dump"  # Check kernel logs
+```
+
+**Response**:
+
+```bash
+# 1. Terminate biokey session immediately
+exit
+
+# 2. Verify memory wiped
+# (Automatic with zeroize on drop)
+
+# 3. Report incident
+./scripts/report_incident.sh "memory-dump-attempt" "$OPERATOR_ID"
+
+# 4. Re-derive biokey in secure environment
+```
+
+### 7.3 Replay Attack
+
+**Detection**:
+
+Merkle chain shows duplicate timestamps or out-of-order operations.
+
+**Response**:
+
+```bash
+# 1. Identify replayed signature
+# Check Merkle chain for duplicate entries
+
+# 2. Invalidate affected operations
+# Rollback to pre-replay state
+
+# 3. Enforce stricter timestamp validation
+# Update provenance module with tighter time windows
+```
 
 ---
 
-## 12. Appendices
+## 8. Compliance & Legal
 
-### Appendix A: Glossary
+### 8.1 HIPAA Compliance
 
-- **Merkle DAG**: Directed Acyclic Graph with cryptographic hashing
-- **FIDO2**: Fast Identity Online 2.0 authentication standard
-- **GIAB**: Genome in a Bottle (NIST reference materials)
-- **CBOR**: Concise Binary Object Representation
-- **VCF**: Variant Call Format
+**Requirements**:
+- No PHI (Protected Health Information) on disk
+- Audit trail for all genomic operations
+- Encryption at rest and in transit
+- Access controls (biokey authentication)
 
-### Appendix B: References
+**VITRA-E0 Implementation**:
 
-- NIST GIAB: https://www.nist.gov/programs-projects/genome-bottle
-- NVIDIA Parabricks: https://docs.nvidia.com/clara/parabricks/
-- FIDO Alliance: https://fidoalliance.org/fido2/
-- FDA 21 CFR Part 11: https://www.fda.gov/regulatory-information/search-fda-guidance-documents/part-11-electronic-records-electronic-signatures-scope-and-application
+| Requirement | Implementation |
+|-------------|----------------|
+| PHI Storage | VCF in RAM-only tmpfs |
+| Audit Trail | Merkle chain with all operations |
+| Encryption | GPG for VCF transport, HTTPS for network |
+| Access Control | Biokey + FIDO2 authentication |
 
-### Appendix C: Contact Information
+**Verification**:
 
-- **Technical Authority (Key A)**: tech-lead@org.com
-- **Compliance Authority (Key B)**: compliance@org.com
-- **Security Team**: security@org.com
-- **Emergency Hotline**: +1-555-VITRA-E0
+```bash
+# 1. Verify no VCF on disk
+find / -name "*.vcf" -o -name "*.vcf.gz" 2>/dev/null | grep -v /media/backup
+
+# 2. Check audit trail
+cat zones/Z2/provenance.json | jq '.workflow'
+
+# 3. Verify encryption
+gpg --list-keys operator@domain.com
+```
+
+### 8.2 GDPR Article 9 (Genetic Data)
+
+**Principles**:
+
+1. **Lawfulness**: Explicit consent from operator
+2. **Purpose Limitation**: Biokey for authentication only
+3. **Data Minimization**: Only public hash stored
+4. **Accuracy**: Operator can update VCF
+5. **Storage Limitation**: Ephemeral (session-based)
+6. **Integrity & Confidentiality**: ZKP + dual-control
+
+**Consent Form**:
+
+```
+BIOKEY ENROLLMENT CONSENT FORM
+
+I, [Operator Name], consent to:
+
+1. Derivation of cryptographic keys from my genomic data
+2. Storage of public hash (not revealing genome) in operator registry
+3. Use of biokey for authentication in genomic operations
+4. Ephemeral nature of biokey (destroyed after session)
+
+I understand:
+- My genome data is NOT stored on disk
+- Public hash does NOT reveal my DNA sequence
+- I can revoke consent at any time
+- My biokey will be destroyed on session exit
+
+Signature: _______________  Date: __________
+```
+
+### 8.3 BIPA (Biometric Information Privacy Act)
+
+**Requirements**:
+
+1. Written policy
+2. Informed consent
+3. Retention schedule
+4. Destruction protocol
+5. Security measures
+6. No sale of biometric data
+
+**VITRA-E0 Compliance**:
+
+| Requirement | Implementation |
+|-------------|----------------|
+| Written Policy | This SOP document |
+| Informed Consent | Biokey enrollment form |
+| Retention | Session-based (ephemeral) |
+| Destruction | Auto-wipe on exit (shred -n 3) |
+| Security | ZKP, dual-control, air-gap |
+| No Sale | Public hash never sold |
+
+### 8.4 21 CFR Part 11 (Electronic Signatures)
+
+**Requirements**:
+
+- Signature uniqueness
+- Signature non-repudiation
+- Audit trail
+- Timestamp accuracy
+
+**VITRA-E0 Implementation**:
+
+```bash
+# Biokey signature includes:
+# 1. Operator public hash (unique)
+# 2. Timestamp (accurate)
+# 3. Message hash (non-repudiation)
+# 4. Merkle chain entry (audit trail)
+
+# Example signature
+{
+  "operator": "operator-alice",
+  "public_hash": "a1b2c3...",
+  "timestamp": "2024-12-24T00:00:00Z",
+  "message_hash": "d4e5f6...",
+  "merkle_block": 12345
+}
+```
 
 ---
 
-**Document Control**
+## Appendix A: Glossary
 
-- **Approved By**: [Name, Title]
-- **Approval Date**: [YYYY-MM-DD]
-- **Next Review**: [YYYY-MM-DD]
-- **Revision History**:
-  - v1.0.0 (2024-12-24): Initial release
+| Term | Definition |
+|------|-----------|
+| **SNP** | Single Nucleotide Polymorphism (genetic variation) |
+| **VCF** | Variant Call Format (genomic data file) |
+| **tmpfs** | Temporary filesystem (RAM-only, no disk) |
+| **SHA3-256** | Secure Hash Algorithm 3 (256-bit, post-quantum) |
+| **FIDO2** | Fast Identity Online 2 (hardware authentication) |
+| **HSM** | Hardware Security Module (secure key storage) |
+| **APT** | Advanced Persistent Threat (nation-state adversary) |
+
+## Appendix B: Contact Information
+
+| Role | Contact |
+|------|---------|
+| Security Incidents | security@qratum.ai |
+| Biokey Support | biokey-support@qratum.ai |
+| Compliance Questions | compliance@qratum.ai |
+| General Inquiries | contact@qratum.ai |
+
+## Appendix C: Revision History
+
+| Version | Date | Changes | Approved By |
+|---------|------|---------|-------------|
+| 1.0.0 | 2024-12-24 | Initial release | Chief Scientific Officer |
+
+---
+
+**END OF DOCUMENT**

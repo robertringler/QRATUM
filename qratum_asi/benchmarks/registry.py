@@ -4,7 +4,7 @@ Maintains a registry of benchmark tasks across all cognitive domains
 with human baselines for measuring progress toward superintelligence.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any
 
@@ -270,9 +270,7 @@ class BenchmarkRegistry:
         """Get a task by ID."""
         return self.tasks.get(task_id)
 
-    def get_tasks_by_category(
-        self, category: BenchmarkCategory
-    ) -> list[BenchmarkTask]:
+    def get_tasks_by_category(self, category: BenchmarkCategory) -> list[BenchmarkTask]:
         """Get all tasks in a category."""
         task_ids = self.categories_index.get(category, [])
         return [self.tasks[tid] for tid in task_ids]
@@ -326,8 +324,7 @@ class BenchmarkRegistry:
             "total_tasks": len(self.tasks),
             "total_categories": len(self.categories_index),
             "tasks_per_category": {
-                cat.value: len(tasks)
-                for cat, tasks in self.categories_index.items()
+                cat.value: len(tasks) for cat, tasks in self.categories_index.items()
             },
             "total_baselines": len(self.baselines),
         }

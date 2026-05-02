@@ -10,7 +10,8 @@ from typing import Any
 
 import numpy as np
 
-from quasim.qgh.nonspec_algorithms import SelfConsistencyPropagator, StabilityMonitor
+from quasim.qgh.nonspec_algorithms import (SelfConsistencyPropagator,
+                                           StabilityMonitor)
 from quasim.revultra.algorithms import REVULTRAAlgorithms
 from quasim.revultra.metrics import find_peaks
 

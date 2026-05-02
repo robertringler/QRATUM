@@ -1,8 +1,8 @@
 // QRATUM Deterministic Code Generation Engine (DCGE)
 // Compiler-anchored code generation with >99% compile success
 
-pub mod grammar;
 pub mod ast;
+pub mod grammar;
 pub mod ir;
 pub mod validator;
 
@@ -116,26 +116,31 @@ impl CodeGenerator {
                 }
                 Ok(code)
             }
-            AstNode::Function { name, params, return_type, body } => {
+            AstNode::Function {
+                name,
+                params,
+                return_type,
+                body,
+            } => {
                 let mut code = format!("fn {}(", name);
-                
+
                 for (i, param) in params.iter().enumerate() {
                     if i > 0 {
                         code.push_str(", ");
                     }
                     code.push_str(&format!("{}: {}", param.name, param.param_type));
                 }
-                
+
                 code.push(')');
-                
+
                 if let Some(ret) = return_type {
                     code.push_str(&format!(" -> {}", ret));
                 }
-                
+
                 code.push_str(" {\n");
                 code.push_str(&self.emit_rust(body)?);
                 code.push_str("}\n");
-                
+
                 Ok(code)
             }
             AstNode::Block { statements } => {
@@ -166,19 +171,21 @@ impl CodeGenerator {
 
     fn emit_python(&self, ast: &AstNode) -> Result<String, String> {
         match ast {
-            AstNode::Function { name, params, body, .. } => {
+            AstNode::Function {
+                name, params, body, ..
+            } => {
                 let mut code = format!("def {}(", name);
-                
+
                 for (i, param) in params.iter().enumerate() {
                     if i > 0 {
                         code.push_str(", ");
                     }
                     code.push_str(&param.name);
                 }
-                
+
                 code.push_str("):\n");
                 code.push_str(&self.emit_python(body)?);
-                
+
                 Ok(code)
             }
             AstNode::Block { statements } => {
@@ -196,20 +203,22 @@ impl CodeGenerator {
 
     fn emit_javascript(&self, ast: &AstNode) -> Result<String, String> {
         match ast {
-            AstNode::Function { name, params, body, .. } => {
+            AstNode::Function {
+                name, params, body, ..
+            } => {
                 let mut code = format!("function {}(", name);
-                
+
                 for (i, param) in params.iter().enumerate() {
                     if i > 0 {
                         code.push_str(", ");
                     }
                     code.push_str(&param.name);
                 }
-                
+
                 code.push_str(") {\n");
                 code.push_str(&self.emit_javascript(body)?);
                 code.push_str("}\n");
-                
+
                 Ok(code)
             }
             AstNode::Block { statements } => {
@@ -227,21 +236,26 @@ impl CodeGenerator {
 
     fn emit_c(&self, ast: &AstNode) -> Result<String, String> {
         match ast {
-            AstNode::Function { name, params, return_type, body } => {
+            AstNode::Function {
+                name,
+                params,
+                return_type,
+                body,
+            } => {
                 let ret_type = return_type.as_ref().map(|s| s.as_str()).unwrap_or("void");
                 let mut code = format!("{} {}(", ret_type, name);
-                
+
                 for (i, param) in params.iter().enumerate() {
                     if i > 0 {
                         code.push_str(", ");
                     }
                     code.push_str(&format!("{} {}", param.param_type, param.name));
                 }
-                
+
                 code.push_str(") {\n");
                 code.push_str(&self.emit_c(body)?);
                 code.push_str("}\n");
-                
+
                 Ok(code)
             }
             _ => Ok("/* statement */".to_string()),
@@ -256,7 +270,9 @@ impl CodeGenerator {
         ir: &TypedIR,
     ) -> Result<(AstNode, String, ValidationResult), String> {
         // Regenerate AST subtree based on errors
-        let fixed_ast = self.validator.regenerate_on_failure(&ast, &validation.errors)?;
+        let fixed_ast = self
+            .validator
+            .regenerate_on_failure(&ast, &validation.errors)?;
         let fixed_source = self.emit_source(&fixed_ast)?;
         let fixed_validation = self.validator.validate(&fixed_source, &fixed_ast, ir);
 
@@ -290,7 +306,7 @@ mod tests {
 
         let result = generator.generate(intent);
         assert!(result.is_ok());
-        
+
         if let Ok(code) = result {
             assert!(code.source.contains("fn test_function"));
             assert!(code.generation_time_ms < 1000); // Should be fast

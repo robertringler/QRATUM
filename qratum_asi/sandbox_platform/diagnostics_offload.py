@@ -6,8 +6,6 @@ keeping production paths clean and performant.
 
 from __future__ import annotations
 
-import hashlib
-import json
 import queue
 import threading
 import time

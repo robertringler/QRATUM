@@ -1,0 +1,36 @@
+{
+  "total_open_prs": 5,
+  "tier1_prs": [
+    {
+      "number": 370,
+      "title": "Replace AHTC placeholder stubs with production SVD-based tensor compression",
+      "state": "open",
+      "draft": false
+    },
+    {
+      "number": 387,
+      "title": "Phase 4: Advanced quantum gates, WASM pod isolation, and dashboard UI panels",
+      "state": "open",
+      "draft": false
+    },
+    {
+      "number": 378,
+      "title": "Implement topological observer and epistemic heat sink modules",
+      "state": "open",
+      "draft": true
+    },
+    {
+      "number": 197,
+      "title": "Code quality improvements: PEP 8 formatting, documentation cleanup, and syntax error fixes",
+      "state": "open",
+      "draft": false
+    },
+    {
+      "number": 149,
+      "title": "[WIP] Replace qnx/core.py with improved exception handling and serialization",
+      "state": "open",
+      "draft": false
+    }
+  ],
+  "captured_at": "2025-12-29T04:44:06Z"
+}

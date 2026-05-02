@@ -12,11 +12,11 @@ import pytest
 
 from qratum_asi.reinjection import (
     AutonomousReinjectionOrchestrator,
+    DiscoveryDomain,
+    EvolutionDataPoint,
+    OptionalityMetrics,
     SOIReinjectionTelemetry,
     TelemetryEvent,
-    OptionalityMetrics,
-    EvolutionDataPoint,
-    DiscoveryDomain,
 )
 
 

@@ -1,0 +1,22 @@
+[package]
+name = "qratum-crypto-kdf"
+version = "1.0.0"
+edition = "2021"
+authors = ["QRATUM Team"]
+description = "HKDF-SHA3-512 key derivation for QRATUM"
+license = "Apache-2.0"
+
+[dependencies]
+# SHA-3 for HKDF
+sha3 = "0.10"
+
+# Zeroization of sensitive data
+zeroize = { version = "1.7", features = ["derive"] }
+
+[lib]
+name = "qratum_crypto_kdf"
+path = "mod.rs"
+
+[features]
+default = []
+std = ["sha3/std", "zeroize/std"]

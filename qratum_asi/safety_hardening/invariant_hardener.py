@@ -6,20 +6,16 @@ make violation mathematically impossible rather than just difficult.
 
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-import hashlib
-import json
 from typing import Any
 
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.events import ASIEvent, ASIEventType
-
 from qratum_asi.safety_hardening.types import (
+    FATAL_INVARIANTS,
     InvariantStrength,
     ProofType,
     SafetyProof,
     SafetyViolationAttempt,
-    FATAL_INVARIANTS,
-    SI_HARDENED_INVARIANTS,
 )
 
 
@@ -45,9 +41,7 @@ class HardenedInvariant:
     proof: SafetyProof | None
     enforcement_mechanisms: list[str]
     violation_attempts: list[SafetyViolationAttempt] = field(default_factory=list)
-    last_verified: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    last_verified: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
 @dataclass
@@ -387,7 +381,11 @@ class InvariantHardener:
         invariant_id = f"inv_{self._invariant_counter:04d}"
 
         # Create proof based on strength
-        proof = self._create_impossibility_proof(name) if strength == InvariantStrength.ABSOLUTE else None
+        proof = (
+            self._create_impossibility_proof(name)
+            if strength == InvariantStrength.ABSOLUTE
+            else None
+        )
 
         hardened = HardenedInvariant(
             invariant_id=invariant_id,
@@ -431,13 +429,12 @@ class InvariantHardener:
         return {
             "total_invariants": len(self.hardened_invariants),
             "absolute_invariants": sum(
-                1 for h in self.hardened_invariants.values()
+                1
+                for h in self.hardened_invariants.values()
                 if h.strength == InvariantStrength.ABSOLUTE
             ),
             "total_proofs": len(self.impossibility_proofs),
             "total_violation_attempts": len(self.violation_attempts),
-            "blocked_attempts": sum(
-                1 for a in self.violation_attempts if a.blocked
-            ),
+            "blocked_attempts": sum(1 for a in self.violation_attempts if a.blocked),
             "merkle_chain_valid": self.merkle_chain.verify_integrity(),
         }

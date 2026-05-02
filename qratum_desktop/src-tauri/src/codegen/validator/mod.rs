@@ -37,7 +37,11 @@ impl CompilerValidator {
 
         // Step 2: Type check validation
         if let Err(type_errors) = ir.validate(ast) {
-            errors.extend(type_errors.into_iter().map(|e| format!("Type error: {}", e)));
+            errors.extend(
+                type_errors
+                    .into_iter()
+                    .map(|e| format!("Type error: {}", e)),
+            );
         }
 
         // Step 3: Compile test (simulate)
@@ -73,7 +77,7 @@ impl CompilerValidator {
         // Basic Rust syntax checks
         let braces_open = source.matches('{').count();
         let braces_close = source.matches('}').count();
-        
+
         if braces_open != braces_close {
             return Err("Unmatched braces".to_string());
         }
@@ -84,12 +88,14 @@ impl CompilerValidator {
     fn validate_python_syntax(&self, source: &str) -> Result<(), String> {
         // Basic Python syntax checks
         let lines: Vec<&str> = source.lines().collect();
-        
+
         for (i, line) in lines.iter().enumerate() {
             let trimmed = line.trim();
             if trimmed.ends_with(':') && i + 1 < lines.len() {
                 let next_line = lines[i + 1].trim();
-                if next_line.is_empty() || !next_line.starts_with(' ') && !next_line.starts_with('\t') {
+                if next_line.is_empty()
+                    || !next_line.starts_with(' ') && !next_line.starts_with('\t')
+                {
                     return Err(format!("Indentation error after line {}", i + 1));
                 }
             }
@@ -104,11 +110,11 @@ impl CompilerValidator {
         let braces_close = source.matches('}').count();
         let parens_open = source.matches('(').count();
         let parens_close = source.matches(')').count();
-        
+
         if braces_open != braces_close {
             return Err("Unmatched braces".to_string());
         }
-        
+
         if parens_open != parens_close {
             return Err("Unmatched parentheses".to_string());
         }
@@ -128,7 +134,7 @@ impl CompilerValidator {
     fn validate_compile(&self, source: &str) -> Result<(), String> {
         // Simulate compilation check
         // In production, this would actually invoke a compiler or use WASM-based compilation
-        
+
         if source.len() > 100000 {
             return Err("Source code too large".to_string());
         }
@@ -148,7 +154,7 @@ impl CompilerValidator {
     ) -> Result<AstNode, String> {
         // Analyze errors and regenerate problematic AST subtree
         // This ensures we never surface invalid code
-        
+
         for error in errors {
             if error.contains("Unmatched braces") {
                 // Fix brace matching issues
@@ -198,7 +204,7 @@ mod tests {
         let source = "fn test() {}";
         let ast = AstNode::Block { statements: vec![] };
         let ir = TypedIR::new();
-        
+
         let result = validator.validate(source, &ast, &ir);
         assert!(result.success || !result.errors.is_empty());
     }

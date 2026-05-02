@@ -1,9 +1,9 @@
 // Typed IR Layer - Minimal typed intermediate representation
 // Symbol tables, type constraints, error propagation
 
-use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
 use crate::codegen::ast::AstNode;
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TypedIR {
@@ -126,9 +126,12 @@ impl TypedIR {
 
     pub fn add_symbol(&mut self, symbol: Symbol) -> Result<(), String> {
         let current = &mut self.symbols.scopes[self.symbols.current_scope];
-        
+
         if current.symbols.contains_key(&symbol.name) {
-            return Err(format!("Symbol '{}' already defined in this scope", symbol.name));
+            return Err(format!(
+                "Symbol '{}' already defined in this scope",
+                symbol.name
+            ));
         }
 
         current.symbols.insert(symbol.name.clone(), symbol);
@@ -137,13 +140,13 @@ impl TypedIR {
 
     pub fn lookup_symbol(&self, name: &str) -> Option<&Symbol> {
         let mut scope_idx = self.symbols.current_scope;
-        
+
         loop {
             let scope = &self.symbols.scopes[scope_idx];
             if let Some(symbol) = scope.symbols.get(name) {
                 return Some(symbol);
             }
-            
+
             match scope.parent {
                 Some(parent_idx) => scope_idx = parent_idx,
                 None => return None,

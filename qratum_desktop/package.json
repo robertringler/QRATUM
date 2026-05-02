@@ -1,7 +1,7 @@
 {
   "name": "qratum-desktop",
-  "version": "0.1.0",
-  "description": "Ultra-lightweight AI desktop (8-35 MB)",
+  "version": "0.4.0",
+  "description": "Phase 4 AI + Quantum desktop (~18-25 MB)",
   "scripts": {
     "tauri": "tauri",
     "dev": "tauri dev",

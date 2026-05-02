@@ -9,12 +9,8 @@ import json
 
 import numpy as np
 
-from quasim.terc_bridge import (
-    beta_metrics_from_cipher,
-    emergent_complexity,
-    ioc_period_candidates,
-    qgh_consensus_status,
-)
+from quasim.terc_bridge import (beta_metrics_from_cipher, emergent_complexity,
+                                ioc_period_candidates, qgh_consensus_status)
 from quasim.terc_bridge.registry import list_observables
 
 

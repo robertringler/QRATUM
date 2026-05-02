@@ -62,7 +62,10 @@ impl Grammar {
                 if &top == current_token {
                     token_idx += 1;
                 } else {
-                    return Err(format!("Parse error: expected {}, got {}", top, current_token));
+                    return Err(format!(
+                        "Parse error: expected {}, got {}",
+                        top, current_token
+                    ));
                 }
             } else {
                 let key = (top.clone(), current_token.clone());
@@ -73,7 +76,10 @@ impl Grammar {
                         stack.push(symbol.clone());
                     }
                 } else {
-                    return Err(format!("No production for {} with lookahead {}", top, current_token));
+                    return Err(format!(
+                        "No production for {} with lookahead {}",
+                        top, current_token
+                    ));
                 }
             }
         }
@@ -85,18 +91,44 @@ impl Grammar {
 // Rust grammar builder
 pub fn build_rust_grammar() -> Grammar {
     let mut g = Grammar::new("rust".to_string());
-    
+
     g.non_terminals = vec![
-        "program", "item", "function", "struct", "enum", "impl", "trait",
-        "stmt", "expr", "pattern", "type", "block"
-    ].iter().map(|s| s.to_string()).collect();
-    
+        "program", "item", "function", "struct", "enum", "impl", "trait", "stmt", "expr",
+        "pattern", "type", "block",
+    ]
+    .iter()
+    .map(|s| s.to_string())
+    .collect();
+
     g.terminals = vec![
-        "fn", "struct", "enum", "impl", "trait", "let", "mut", "pub",
-        "if", "else", "while", "for", "match", "return",
-        "identifier", "literal", "->", "{", "}", "(", ")", ";", ","
-    ].iter().map(|s| s.to_string()).collect();
-    
+        "fn",
+        "struct",
+        "enum",
+        "impl",
+        "trait",
+        "let",
+        "mut",
+        "pub",
+        "if",
+        "else",
+        "while",
+        "for",
+        "match",
+        "return",
+        "identifier",
+        "literal",
+        "->",
+        "{",
+        "}",
+        "(",
+        ")",
+        ";",
+        ",",
+    ]
+    .iter()
+    .map(|s| s.to_string())
+    .collect();
+
     // Minimal production rules
     g.productions = vec![
         ProductionRule {
@@ -111,7 +143,13 @@ pub fn build_rust_grammar() -> Grammar {
         },
         ProductionRule {
             lhs: "function".to_string(),
-            rhs: vec!["fn".to_string(), "identifier".to_string(), "(", ")", "block".to_string()],
+            rhs: vec![
+                "fn".to_string(),
+                "identifier".to_string(),
+                "(",
+                ")",
+                "block".to_string(),
+            ],
             action: Some("build_function".to_string()),
         },
         ProductionRule {
@@ -130,23 +168,46 @@ pub fn build_rust_grammar() -> Grammar {
             action: Some("build_literal_expr".to_string()),
         },
     ];
-    
+
     g
 }
 
 // Python grammar builder
 pub fn build_python_grammar() -> Grammar {
     let mut g = Grammar::new("python".to_string());
-    
+
     g.non_terminals = vec![
-        "program", "stmt", "func_def", "class_def", "expr", "assignment"
-    ].iter().map(|s| s.to_string()).collect();
-    
+        "program",
+        "stmt",
+        "func_def",
+        "class_def",
+        "expr",
+        "assignment",
+    ]
+    .iter()
+    .map(|s| s.to_string())
+    .collect();
+
     g.terminals = vec![
-        "def", "class", "return", "if", "else", "for", "while",
-        "identifier", "literal", ":", "=", "(", ")", ","
-    ].iter().map(|s| s.to_string()).collect();
-    
+        "def",
+        "class",
+        "return",
+        "if",
+        "else",
+        "for",
+        "while",
+        "identifier",
+        "literal",
+        ":",
+        "=",
+        "(",
+        ")",
+        ",",
+    ]
+    .iter()
+    .map(|s| s.to_string())
+    .collect();
+
     g.productions = vec![
         ProductionRule {
             lhs: "program".to_string(),
@@ -160,59 +221,97 @@ pub fn build_python_grammar() -> Grammar {
         },
         ProductionRule {
             lhs: "func_def".to_string(),
-            rhs: vec!["def".to_string(), "identifier".to_string(), "(", ")", ":".to_string(), "stmt".to_string()],
+            rhs: vec![
+                "def".to_string(),
+                "identifier".to_string(),
+                "(",
+                ")",
+                ":".to_string(),
+                "stmt".to_string(),
+            ],
             action: Some("build_function".to_string()),
         },
     ];
-    
+
     g
 }
 
 // JavaScript grammar builder
 pub fn build_js_grammar() -> Grammar {
     let mut g = Grammar::new("javascript".to_string());
-    
-    g.non_terminals = vec![
-        "program", "stmt", "func_decl", "expr", "assignment"
-    ].iter().map(|s| s.to_string()).collect();
-    
+
+    g.non_terminals = vec!["program", "stmt", "func_decl", "expr", "assignment"]
+        .iter()
+        .map(|s| s.to_string())
+        .collect();
+
     g.terminals = vec![
-        "function", "const", "let", "var", "return", "if", "else",
-        "identifier", "literal", "=>", "=", "(", ")", "{", "}", ";"
-    ].iter().map(|s| s.to_string()).collect();
-    
-    g.productions = vec![
-        ProductionRule {
-            lhs: "program".to_string(),
-            rhs: vec!["stmt".to_string()],
-            action: Some("build_program".to_string()),
-        },
-    ];
-    
+        "function",
+        "const",
+        "let",
+        "var",
+        "return",
+        "if",
+        "else",
+        "identifier",
+        "literal",
+        "=>",
+        "=",
+        "(",
+        ")",
+        "{",
+        "}",
+        ";",
+    ]
+    .iter()
+    .map(|s| s.to_string())
+    .collect();
+
+    g.productions = vec![ProductionRule {
+        lhs: "program".to_string(),
+        rhs: vec!["stmt".to_string()],
+        action: Some("build_program".to_string()),
+    }];
+
     g
 }
 
 // C grammar builder
 pub fn build_c_grammar() -> Grammar {
     let mut g = Grammar::new("c".to_string());
-    
-    g.non_terminals = vec![
-        "program", "declaration", "func_def", "stmt", "expr"
-    ].iter().map(|s| s.to_string()).collect();
-    
+
+    g.non_terminals = vec!["program", "declaration", "func_def", "stmt", "expr"]
+        .iter()
+        .map(|s| s.to_string())
+        .collect();
+
     g.terminals = vec![
-        "int", "void", "char", "float", "return", "if", "else", "while",
-        "identifier", "literal", "(", ")", "{", "}", ";"
-    ].iter().map(|s| s.to_string()).collect();
-    
-    g.productions = vec![
-        ProductionRule {
-            lhs: "program".to_string(),
-            rhs: vec!["func_def".to_string()],
-            action: Some("build_program".to_string()),
-        },
-    ];
-    
+        "int",
+        "void",
+        "char",
+        "float",
+        "return",
+        "if",
+        "else",
+        "while",
+        "identifier",
+        "literal",
+        "(",
+        ")",
+        "{",
+        "}",
+        ";",
+    ]
+    .iter()
+    .map(|s| s.to_string())
+    .collect();
+
+    g.productions = vec![ProductionRule {
+        lhs: "program".to_string(),
+        rhs: vec!["func_def".to_string()],
+        action: Some("build_program".to_string()),
+    }];
+
     g
 }
 
