@@ -10,11 +10,11 @@ This module provides security testing tools for QRATUM:
 
 from quasim.security.adversarial import (
     AdversarialResult,
-    ByzantineSimulator,
-    TimingAnalyzer,
-    EntropyStarvationTest,
-    CensorshipProber,
     AdversarialTestSuite,
+    ByzantineSimulator,
+    CensorshipProber,
+    EntropyStarvationTest,
+    TimingAnalyzer,
 )
 
 __all__ = [

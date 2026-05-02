@@ -11,8 +11,6 @@ from input parsing to QRATUM analysis without errors.
 from __future__ import annotations
 
 import csv
-import json
-import tempfile
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -23,9 +21,8 @@ from qratum.oncology.registry.seer_medicare.features import FeatureEngineer
 from qratum.oncology.registry.seer_medicare.io import (
     RunArtifacts,
     create_dataset_manifest,
-    create_output_directory,
 )
-from qratum.oncology.registry.seer_medicare.linkages import LinkedPatient, PatientLinker
+from qratum.oncology.registry.seer_medicare.linkages import PatientLinker
 from qratum.oncology.registry.seer_medicare.medicare_claims import parse_claims_directory
 from qratum.oncology.registry.seer_medicare.privacy import (
     DUAComplianceChecker,
@@ -35,9 +32,6 @@ from qratum.oncology.registry.seer_medicare.privacy import (
 from qratum.oncology.registry.seer_medicare.quality import DataValidator
 from qratum.oncology.registry.seer_medicare.schema import (
     ClaimEvent,
-    ClaimSetting,
-    CodeSystem,
-    RegistryCase,
 )
 from qratum.oncology.registry.seer_medicare.seer_registry import SEERRegistryParser
 from qratum.oncology.registry.seer_medicare.timelines import (
@@ -72,7 +66,9 @@ def synthetic_data_dir(tmp_path: Path) -> dict[str, Path]:
                 "DATE_OF_DIAGNOSIS": f"{dx_year}{dx_month:02d}{dx_day:02d}",
                 "PRIMARY_SITE": "LUNG" if i % 3 == 0 else ("BREAST" if i % 3 == 1 else "COLON"),
                 "HISTOLOGY": "ADENOCARCINOMA" if i % 2 == 0 else "SQUAMOUS",
-                "STAGE": "IV" if i % 4 == 0 else ("III" if i % 4 == 1 else ("II" if i % 4 == 2 else "I")),
+                "STAGE": (
+                    "IV" if i % 4 == 0 else ("III" if i % 4 == 1 else ("II" if i % 4 == 2 else "I"))
+                ),
                 "AGE": str(65 + i),
                 "SEX": "M" if i % 2 == 0 else "F",
                 "RACE": "01",
@@ -154,7 +150,9 @@ class TestEndToEndPipeline:
         claims_dir = synthetic_data_dir["claims_dir"]
         output_dir = synthetic_data_dir["output_dir"]
 
-        privacy_config = PrivacyConfig(min_cell_size=3, salt="test_salt")  # Lower threshold for test
+        privacy_config = PrivacyConfig(
+            min_cell_size=3, salt="test_salt"
+        )  # Lower threshold for test
         safe_logger = SafeLogger("test", privacy_config)
 
         # Step 1: Create dataset manifest
@@ -228,9 +226,7 @@ class TestEndToEndPipeline:
                 baseline = feature_engineer.extract_baseline_features(timeline)
                 assert baseline.patient_key == timeline.patient_key
 
-                state = feature_engineer.extract_state_features(
-                    timeline, timeline.index_date
-                )
+                state = feature_engineer.extract_state_features(timeline, timeline.index_date)
                 assert state.assessment_date == timeline.index_date
 
         # Step 7: Get summary statistics
@@ -429,8 +425,7 @@ class TestEndToEndPipeline:
 
             # Run search with average state
             avg_state = {
-                k: sum(s[k] for s in state_dicts) / len(state_dicts)
-                for k in state_dicts[0].keys()
+                k: sum(s[k] for s in state_dicts) / len(state_dicts) for k in state_dicts[0].keys()
             }
             sequences = search.search_best_sequences(
                 initial_tumor_state=avg_state,

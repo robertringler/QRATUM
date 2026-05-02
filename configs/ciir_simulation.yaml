@@ -1,0 +1,40 @@
+# ============================================================
+# CIIR Simulation Configuration
+#
+# Configuration for the full CIIR → QuASIM → QRATUM 3D
+# simulation with automated screenshot capture and metrics export.
+#
+# Usage:
+#   quasim-ciir simulate --config configs/ciir_simulation.yaml
+# ============================================================
+
+# State manifold dimensions
+rank: 4                     # Ontic dimension R (D3.1)
+rep_dim: 8                  # Cognitive representation dimension D (D3.11)
+batch_size: 4               # Number of parallel states
+
+# Theory structure
+n_constraints: 3            # Number of constraint operators (D5.2)
+n_observers: 2              # Number of observer operators (D3.20)
+
+# Evolution parameters (Ch7)
+n_steps: 200                # Maximum evolution steps
+lr: 0.01                    # Learning rate / time step η
+method: projected_gradient  # gradient | projected_gradient | strang_splitting
+tol: 1.0e-06                # Convergence tolerance
+
+# Loss functional weights (Ch8 §2)
+entropy_weight: 0.01        # Regularisation coefficient γ
+
+# Screenshot capture
+screenshot_interval: 50     # Capture every N steps (0 = disable)
+screenshot_dpi: 150         # PNG resolution
+
+# Export
+output_path: ciir_output    # Output directory
+log_tensors: true           # Log tensor states to JSON
+log_metrics: true           # Log per-step metrics to CSV
+
+# Runtime
+seed: 42                    # Random seed for reproducibility
+precision: fp64             # Numerical precision: fp32 | fp64

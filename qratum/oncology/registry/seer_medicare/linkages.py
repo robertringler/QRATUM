@@ -182,7 +182,7 @@ class PatientLinker:
         self.safe_logger.info(f"Loading enrollment file: {filepath.name}")
 
         count = 0
-        with open(filepath, "r", encoding=encoding) as f:
+        with open(filepath, encoding=encoding) as f:
             reader = csv.DictReader(f, delimiter=delimiter)
 
             for row in reader:

@@ -103,22 +103,24 @@ class ExtendedDomainRegistry:
     """
 
     # Original QRATUM verticals for backward compatibility
-    CORE_VERTICALS = frozenset([
-        CognitiveDomain.VITRA,
-        CognitiveDomain.CAPRA,
-        CognitiveDomain.STRATA,
-        CognitiveDomain.ECORA,
-        CognitiveDomain.NEURA,
-        CognitiveDomain.FLUXA,
-        CognitiveDomain.CHRONA,
-        CognitiveDomain.COHORA,
-        CognitiveDomain.FUSIA,
-        CognitiveDomain.GEONA,
-        CognitiveDomain.JURIS,
-        CognitiveDomain.ORBIA,
-        CognitiveDomain.SENTRA,
-        CognitiveDomain.VEXOR,
-    ])
+    CORE_VERTICALS = frozenset(
+        [
+            CognitiveDomain.VITRA,
+            CognitiveDomain.CAPRA,
+            CognitiveDomain.STRATA,
+            CognitiveDomain.ECORA,
+            CognitiveDomain.NEURA,
+            CognitiveDomain.FLUXA,
+            CognitiveDomain.CHRONA,
+            CognitiveDomain.COHORA,
+            CognitiveDomain.FUSIA,
+            CognitiveDomain.GEONA,
+            CognitiveDomain.JURIS,
+            CognitiveDomain.ORBIA,
+            CognitiveDomain.SENTRA,
+            CognitiveDomain.VEXOR,
+        ]
+    )
 
     def __init__(self):
         """Initialize the domain registry with all domains."""
@@ -669,9 +671,7 @@ class ExtendedDomainRegistry:
         """Get extended domains beyond core verticals."""
         return [d for d in self.domains.keys() if d not in self.CORE_VERTICALS]
 
-    def get_domains_with_capability(
-        self, capability: DomainCapability
-    ) -> list[CognitiveDomain]:
+    def get_domains_with_capability(self, capability: DomainCapability) -> list[CognitiveDomain]:
         """Get all domains that have a specific capability."""
         return self.capability_index.get(capability, [])
 
@@ -681,9 +681,7 @@ class ExtendedDomainRegistry:
         """Get interconnection between two domains."""
         return self.interconnections.get((source, target))
 
-    def get_connected_domains(
-        self, domain: CognitiveDomain
-    ) -> list[tuple[CognitiveDomain, float]]:
+    def get_connected_domains(self, domain: CognitiveDomain) -> list[tuple[CognitiveDomain, float]]:
         """Get all domains connected to a given domain with connection strength."""
         connected = []
         for (source, target), conn in self.interconnections.items():

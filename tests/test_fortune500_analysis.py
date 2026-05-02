@@ -10,18 +10,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from analysis.fortune500_quasim_integration import (
-    CompanyProfile,
-    QIIComponents,
-    aggregate_sector_analysis,
-    analyze_company,
-    calculate_economic_leverage,
-    calculate_integration_compatibility,
-    calculate_qii,
-    calculate_strategic_value,
-    calculate_technical_feasibility,
-    enrich_company_data,
-    generate_synthetic_fortune500,
-)
+    CompanyProfile, QIIComponents, aggregate_sector_analysis, analyze_company,
+    calculate_economic_leverage, calculate_integration_compatibility,
+    calculate_qii, calculate_strategic_value, calculate_technical_feasibility,
+    enrich_company_data, generate_synthetic_fortune500)
 
 
 def test_company_profile_creation():
@@ -362,7 +354,8 @@ def test_json_export():
         sectors[sector_name] = aggregate_sector_analysis(sector_analyses, sector_name)
 
     # Calculate correlation
-    from analysis.fortune500_quasim_integration import calculate_correlation_matrix
+    from analysis.fortune500_quasim_integration import \
+        calculate_correlation_matrix
 
     correlation_data = calculate_correlation_matrix(analyses)
 
@@ -393,7 +386,8 @@ def test_json_export():
 def test_integration_pathways():
     """Test integration pathway identification."""
 
-    from analysis.fortune500_quasim_integration import identify_integration_pathways
+    from analysis.fortune500_quasim_integration import \
+        identify_integration_pathways
 
     # High compatibility company
     company = CompanyProfile(
@@ -428,7 +422,8 @@ def test_integration_pathways():
 def test_adoption_timeline():
     """Test adoption timeline determination."""
 
-    from analysis.fortune500_quasim_integration import determine_adoption_timeline
+    from analysis.fortune500_quasim_integration import \
+        determine_adoption_timeline
 
     assert determine_adoption_timeline(0.85) == "2025-2026"
     assert determine_adoption_timeline(0.65) == "2026-2027"

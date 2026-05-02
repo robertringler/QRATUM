@@ -13,13 +13,8 @@ Status: Production
 from __future__ import annotations
 
 from omnilex.engine import QRATUMOmniLexEngine
-from omnilex.ontology import (
-    InterpretiveCanon,
-    Jurisdiction,
-    LegalDomain,
-    LegalTradition,
-    ReasoningFramework,
-)
+from omnilex.ontology import (InterpretiveCanon, Jurisdiction, LegalDomain,
+                              LegalTradition, ReasoningFramework)
 from omnilex.qil_legal import LegalQILIntent
 
 __all__ = [

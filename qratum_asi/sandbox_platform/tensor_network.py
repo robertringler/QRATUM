@@ -212,9 +212,7 @@ class TensorNetworkPrecomputer:
             return None
 
         # Compute synchronously
-        return self._compute_and_cache(
-            computation_type, parameters, compute_func, input_hash
-        )
+        return self._compute_and_cache(computation_type, parameters, compute_func, input_hash)
 
     def _compute_and_cache(
         self,
@@ -348,7 +346,9 @@ class TensorNetworkPrecomputer:
         computation: HybridComputation,
         classical_func: Callable[[dict[str, Any]], dict[str, Any]],
         quantum_func: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
-        combiner_func: Callable[[dict[str, Any], dict[str, Any] | None], dict[str, Any]] | None = None,
+        combiner_func: (
+            Callable[[dict[str, Any], dict[str, Any] | None], dict[str, Any]] | None
+        ) = None,
     ) -> HybridComputation:
         """Execute a hybrid computation.
 

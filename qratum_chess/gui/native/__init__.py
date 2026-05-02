@@ -22,7 +22,7 @@ __all__ = [
     "TextureAtlas",
 ]
 
-from qratum_chess.gui.native.renderer import GPURenderer, GPUConfig, RenderTarget
-from qratum_chess.gui.native.shaders import ShaderProgram, ShaderManager
 from qratum_chess.gui.native.buffers import BufferManager, GPUBuffer
+from qratum_chess.gui.native.renderer import GPUConfig, GPURenderer, RenderTarget
+from qratum_chess.gui.native.shaders import ShaderManager, ShaderProgram
 from qratum_chess.gui.native.textures import TextureAtlas, TextureManager

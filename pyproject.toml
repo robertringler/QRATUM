@@ -99,6 +99,7 @@ qnx = "qnx.cli:cli"
 qstack = "qstack.launch:main"
 xenon = "xenon.cli:cli"
 qubic-viz = "qubic.visualization.cli:cli"
+quasim-ciir = "quasim.ciir.cli:cli"
 
 [tool.setuptools.packages.find]
 where = ["."]

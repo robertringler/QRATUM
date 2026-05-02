@@ -86,7 +86,7 @@ class CPUBackend:
         
         Args:
             task: Task to execute
-            
+
         Returns:
             Never returns - always raises exception
             

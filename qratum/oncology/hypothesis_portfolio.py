@@ -312,9 +312,7 @@ class HypothesisPortfolio:
         if min_evidence_level is not None:
             min_idx = evidence_order.index(min_evidence_level)
             candidates = [
-                h
-                for h in candidates
-                if evidence_order.index(h.evidence_level) >= min_idx
+                h for h in candidates if evidence_order.index(h.evidence_level) >= min_idx
             ]
 
         if max_risk is not None and max_risk in risk_order:
@@ -413,9 +411,7 @@ class HypothesisPortfolio:
                 common_failure_modes[5]["mitigation_hypotheses"].append(hypothesis.hypothesis_id)
 
         # Calculate coverage
-        covered_modes = sum(
-            1 for mode in common_failure_modes if mode["mitigation_hypotheses"]
-        )
+        covered_modes = sum(1 for mode in common_failure_modes if mode["mitigation_hypotheses"])
         coverage_rate = covered_modes / len(common_failure_modes)
 
         return {
@@ -427,9 +423,7 @@ class HypothesisPortfolio:
             "disclaimer": self.RESEARCH_DISCLAIMER,
         }
 
-    def _generate_recommendations(
-        self, failure_modes: list[dict[str, Any]]
-    ) -> list[str]:
+    def _generate_recommendations(self, failure_modes: list[dict[str, Any]]) -> list[str]:
         """Generate recommendations based on gap analysis."""
         recommendations = []
 

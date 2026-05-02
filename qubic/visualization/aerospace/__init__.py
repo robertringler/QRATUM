@@ -9,12 +9,8 @@ Maintains DO-178C Level A design patterns for deterministic, auditable rendering
 from __future__ import annotations
 
 from qubic.visualization.aerospace.aerospace_visualizer import (
-    AerospaceVisualizer,
-    AerospaceVizConfig,
-    ComplianceMode,
-    FrameAuditRecord,
-    RenderBackend,
-)
+    AerospaceVisualizer, AerospaceVizConfig, ComplianceMode, FrameAuditRecord,
+    RenderBackend)
 
 __all__ = [
     "AerospaceVisualizer",

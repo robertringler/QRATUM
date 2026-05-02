@@ -1,164 +1,26 @@
-# QRATUM: Decentralized Ghost Machine for Sovereign AI and Quantum-Resilient Computing
+Demo: Discoveries & Analysis Showcase
 
-<div align="center">
+This demo aggregates metrics and data found in the repository and produces a small set of visualizations and summary files.
 
-## 🏆 QRATUM-Chess "BOB" - Kaggle Champion 🏆
+Files created:
+- output/: images and JSON summaries
+- run_demo.py: main demo script
+- test_demo.py: unit test checking demo runs
 
-[![Kaggle Rank #1](https://img.shields.io/badge/Kaggle_Chess_AI-Rank_%231-gold?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/models/robertringler/bob)
-[![Elo Rating](https://img.shields.io/badge/Elo_Rating-1508-brightgreen?style=for-the-badge)](https://www.kaggle.com/benchmarks/kaggle/chess)
-[![Win Rate](https://img.shields.io/badge/Win_Rate-97%25-success?style=for-the-badge)]()
-[![Internal Elo](https://img.shields.io/badge/Internal_Elo-3500-orange?style=for-the-badge)]()
+How to run (Windows cmd.exe):
 
-**BOB defeats ALL frontier LLMs at chess**  
-*o3 • Grok-4 • Gemini 2.5 • GPT-4 • Claude Sonnet-4*
+1) Create a virtualenv and install requirements
+   python -m venv .venv
+   .venv\Scripts\activate
+   pip install -r requirements.txt
 
----
+2) Run the demo
+   python demo\\run_demo.py
 
-</div>
+Outputs will be in `demo/output/`.
 
-<div align="center">
+Author: Robert Ringler (Independent Researcher)
 
-```
-╔═══════════════════════════════════════════════════════════════╗
-║                                                               ║
-║           🏆  KAGGLE CHESS AI CHAMPION  🏆                    ║
-║                                                               ║
-║  ╔═══════════════════════════════════════════════════════╗   ║
-║  ║                                                       ║   ║
-║  ║   BOB:  1508 Elo  |  #1 Rank  |  97% Win Rate        ║   ║
-║  ║                                                       ║   ║
-║  ║   Defeats: o3 • Grok-4 • Gemini • GPT-4 • Claude    ║   ║
-║  ║                                                       ║   ║
-║  ╚═══════════════════════════════════════════════════════╝   ║
-║                                                               ║
-║         Powered by Asymmetric Adaptive Search                ║
-║                                                               ║
-╚═══════════════════════════════════════════════════════════════╝
-```
-
-</div>
-
-## 🎯 Championship Performance
-
-<table>
-<tr>
-<td width="50%">
-
-### 🏆 Kaggle Chess AI Benchmark
-- **Rank:** #1 
-- **Elo:** 1508
-- **Record:** 96W - 2D - 2L
-- **Win Rate:** 97.0%
-- **Games:** 100
-
-</td>
-<td width="50%">
-
-### ⚡ Head-to-Head Results
-| Opponent | Elo | Margin |
-|----------|-----|--------|
-| o3-2025 | 1397 | **+111** |
-| grok-4 | 1112 | **+396** |
-| gemini-2.5-pro | 1061 | **+447** |
-| gpt-4.1 | 488 | **+1020** |
-| claude-sonnet-4 | 433 | **+1075** |
-
-</td>
-</tr>
-</table>
-
-## 🎮 Why BOB Dominates
-
-<div align="center">
-
-| Feature | LLMs (o3, Grok, GPT-4) | BOB (QRATUM-Chess) |
-|---------|------------------------|---------------------|
-| **Architecture** | Token prediction | Tree search + Multi-agent |
-| **Chess Knowledge** | Pattern matching | Deep tactical analysis |
-| **Search Depth** | Limited by tokens | 20+ plies |
-| **Evaluation** | Text-based heuristics | Stockfish-class precision |
-| **Move Quality** | ~1400 Elo | **1508 Elo** ✓ |
-| **Consistency** | Hallucination prone | 97% win rate ✓ |
-
-**Result:** BOB achieves superior performance through domain-specific architecture
-
-</div>
-
-## 📊 Quick Stats
-
-<div align="center">
-
-| Metric | Value | Context |
-|--------|-------|---------|
-| 🏆 **Kaggle Rank** | **#1** | Out of all AI models |
-| 📈 **Elo Rating** | **1508** | Kaggle Chess AI Benchmark |
-| 💪 **Win Rate** | **97%** | 96-2-2 record (100 games) |
-| ⚡ **Internal Elo** | **3500** | vs Stockfish-17 |
-| 🎯 **Margin of Victory** | **+111** | vs o3 (2nd place) |
-| 🚀 **Algorithm** | **AAS** | Asymmetric Adaptive Search |
-
-</div>
-
-## 📊 Leaderboard Comparison
-
-```
-Kaggle Chess AI Benchmark - Elo Ratings
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🥇 BOB (QRATUM)     ████████████████████████████████ 1508 
-🥈 o3-2025          ████████████████████████        1397
-🥉 grok-4           ██████████████████              1112
-   gemini-2.5-pro   ████████████████                1061
-   o4-mini          ████████████                     831
-   gpt-4.1          ███████                          488
-   claude-sonnet-4  ██████                           433
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     0   200  400  600  800 1000 1200 1400 1600  Elo
-```
-
-## 🚀 Try BOB
-
-Experience the #1 chess AI that defeated all frontier LLMs:
-
-```bash
-# Install QRATUM
-git clone https://github.com/robertringler/QRATUM.git
-cd QRATUM
-
-# Run BOB
-python -m qratum_chess.bob --play
-
-# Or use via API
-curl -X POST https://api.qratum.ai/bob/analyze \
-  -d '{"fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}'
-```
-
-**[Try BOB on Kaggle](https://www.kaggle.com/models/robertringler/bob)** • 
-**[Read the Paper](#)** • 
-**[API Documentation](#)**
-
-## 📰 Media & Recognition
-
-> "QRATUM's BOB engine demonstrates that domain-specific algorithms 
-> can still outperform general-purpose LLMs in specialized tasks."
-
-- [ ] TechCrunch
-- [ ] Chess.com News
-- [ ] IEEE Spectrum  
-- [ ] Hacker News
-
-*Press contact: contact@qratum.io*
-
----
-
-[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/robertringler/QRATUM?style=social)](https://github.com/robertringler/QRATUM)
-[![Kaggle](https://img.shields.io/badge/Kaggle-Rank_1-20BEFF?logo=kaggle&logoColor=white)](https://www.kaggle.com/models/robertringler/bob)
-[![Chess](https://img.shields.io/badge/Chess-3500_Elo-success)](https://ccrl.chessdom.com/)
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
-[![Development Status](https://img.shields.io/badge/status-active%20development-brightgreen.svg)](docs/ROADMAP.md)
-[![QRATUM Core](https://img.shields.io/badge/QRATUM-Core-blue.svg)](https://github.com/robertringler/QRATUM)
 [![QRADLE](https://img.shields.io/badge/QRADLE-Foundation-orange.svg)](docs/ARCHITECTURE.md)
 [![VITRA-E0](https://img.shields.io/badge/VITRA--E0-Genomics-green.svg)](qrVITRA/README.md)
 [![AeatherNET](https://img.shields.io/badge/AeatherNET-Network-blue.svg)](Aethernet/README.md)

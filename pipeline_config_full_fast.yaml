@@ -1,0 +1,47 @@
+# Reduced full-style config for faster end-to-end demonstration
+version: 1
+random_seed: 42
+
+lattice:
+  sizes:
+    - [8, 8]
+    - [12, 12]
+  disorder_values: [0.0, 0.2]
+
+noise:
+  gamma_scan_logspace: {start_exp: -3, end_exp: 1, points: 12}
+  target_time: 4.0
+  dt: 0.02
+  refinement_factor: 2
+
+analysis:
+  perform_convergence: true
+  perform_traj_variance: false
+  perform_phase_diagram: false
+  perform_msd: true
+  perform_otoc: false
+  perform_logical: true
+  enhanced_ramsey: false
+  bootstrap_samples: 128
+  msd_time_points: 60
+  perform_fss: true
+  fss_sizes: [8, 12]
+
+quality_gates:
+  max_trace_deviation: 1.0e-9
+  min_dt_order: 3.5
+  max_bootstrap_halfwidth: 0.05
+  fractal_transport_tolerance: 0.20
+  positivity_tolerance: 1.0e-9
+  max_local_error: 1.0e-4
+
+report:
+  build_latex: false
+  keep_intermediate: false
+
+output:
+  root_dir: automation_runs
+  compress_archives: false
+
+parallel:
+  workers: 2
