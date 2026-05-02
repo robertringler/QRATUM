@@ -674,7 +674,7 @@ class TestStreamCLI:
         assert rc == 0
         # ledger file may be empty if no events fired; the file exists
         # only when we actually produced events.
-        if os.path.exists(str(ledger_path)) and os.path.getsize(str(ledger_path)) > 0:
+        if ledger_path.exists() and ledger_path.stat().st_size > 0:
             buf = io.StringIO()
             with redirect_stdout(buf):
                 rc2 = cli_main(["ledger", str(ledger_path), "--verify-only"])
