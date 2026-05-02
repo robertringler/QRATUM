@@ -1,11 +1,7 @@
 """Unit tests for QuASIM×QuNimbus Phase VII components."""
 
-from quasim.qunimbus.phaseVII import (
-    DVLLedger,
-    QMPActivation,
-    TrustKernel,
-    ValuationEngine,
-)
+from quasim.qunimbus.phaseVII import (DVLLedger, QMPActivation, TrustKernel,
+                                      ValuationEngine)
 
 
 class TestQMPActivation:

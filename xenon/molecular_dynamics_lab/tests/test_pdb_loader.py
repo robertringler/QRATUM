@@ -5,12 +5,8 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-from xenon.molecular_dynamics_lab.core.pdb_loader import (
-    Atom,
-    Chain,
-    PDBLoader,
-    Residue,
-)
+from xenon.molecular_dynamics_lab.core.pdb_loader import (Atom, Chain,
+                                                          PDBLoader, Residue)
 
 # Sample PDB content for testing
 SAMPLE_PDB = """HEADER    PLANT PROTEIN                           15-APR-81   1CRN

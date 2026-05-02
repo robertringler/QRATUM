@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation | QuASIM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <div class="classification-banner">UNCLASSIFIED // FOR PUBLIC RELEASE</div>
+  <nav class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="navbar-brand">QuASIM</a>
+      <button class="navbar-toggle">☰</button>
+      <ul class="navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="architecture.html">Architecture</a></li>
+        <li><a href="performance.html">Performance</a></li>
+        <li><a href="compliance.html">Compliance</a></li>
+        <li><a href="whitepaper.html">Whitepaper</a></li>
+        <li><a href="api.html" class="active">API</a></li>
+        <li><a href="roadmap.html">Roadmap</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <section class="section">
+      <div class="container-narrow">
+        <h1 class="text-center text-green mb-8">API Documentation</h1>
+        
+        <div class="card mb-6">
+          <div class="card-header"><h3 class="card-title">Quick Start</h3></div>
+          <div class="card-body">
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-block-lang">Bash</span>
+                <button class="code-block-copy">Copy</button>
+              </div>
+              <pre><code>pip install quasim
+quasim --version</code></pre>
+            </div>
+          </div>
+        </div>
+        
+        <div class="accordion mb-8">
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>QuantumSimulator</span>
+              <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <p>Initialize a quantum simulator with GPU acceleration.</p>
+                <div class="code-block mt-4">
+                  <pre><code>from quasim import QuantumSimulator
+
+sim = QuantumSimulator(
+    qubits=32,
+    backend='cuQuantum',
+    gpus=[0, 1, 2, 3],
+    precision='fp32'
+)</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>QuantumCircuit</span>
+              <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <p>Build quantum circuits with gates and measurements.</p>
+                <div class="code-block mt-4">
+                  <pre><code>from quasim.circuits import QuantumCircuit
+
+circuit = QuantumCircuit(4)
+circuit.h(0)
+circuit.cx(0, 1)
+circuit.cx(1, 2)
+circuit.cx(2, 3)
+circuit.measure_all()</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Execute & Measure</span>
+              <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <p>Run circuits and analyze results.</p>
+                <div class="code-block mt-4">
+                  <pre><code>result = sim.run(circuit, shots=1024)
+print(f"Fidelity: {result.fidelity:.4f}")
+print(f"Counts: {result.counts}")</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header"><h3 class="card-title">Configuration Options</h3></div>
+          <div class="card-body">
+            <div class="table-wrapper">
+              <table class="table">
+                <thead>
+                  <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>qubits</code></td><td>int</td><td>Required</td><td>Number of qubits (1-40)</td></tr>
+                  <tr><td><code>backend</code></td><td>str</td><td>'cuQuantum'</td><td>Simulation backend</td></tr>
+                  <tr><td><code>gpus</code></td><td>list</td><td>[0]</td><td>GPU device IDs</td></tr>
+                  <tr><td><code>precision</code></td><td>str</td><td>'fp32'</td><td>fp16, fp32, or fp64</td></tr>
+                  <tr><td><code>seed</code></td><td>int</td><td>None</td><td>Random seed</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="container"><div class="footer-bottom"><p>&copy; 2025 QuASIM Project. Licensed under Apache 2.0.</p></div></div>
+  </footer>
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -21,8 +21,10 @@ to GPU tensor libraries (torch.einsum, jax.numpy.einsum, tf.einsum).
 from __future__ import annotations
 
 import numpy as np
+from numpy.typing import NDArray
 
-from quasim.ciir.theory import CIIRTheory, ComplexTensor, RealTensor
+from quasim.ciir.theory import CIIRTheory, RealTensor, ComplexTensor
+
 
 # ================================================================
 # Batch density matrix construction
@@ -73,10 +75,12 @@ def batch_constraint_eval(rho: RealTensor, K: RealTensor) -> RealTensor:
 def batch_constraint_violation(rho: RealTensor, K: RealTensor) -> RealTensor:
     r"""C_i(ρ)² for all constraints.  Shape (B, n_constraints)."""
     c = batch_constraint_eval(rho, K)
-    return c**2
+    return c ** 2
 
 
-def batch_constraint_gradient(rho: RealTensor, K: RealTensor, weights: RealTensor) -> RealTensor:
+def batch_constraint_gradient(
+    rho: RealTensor, K: RealTensor, weights: RealTensor
+) -> RealTensor:
     r"""∂(Σ λ_i C_i²)/∂ρ = Σ 2λ_i C_i(ρ) K_i.
 
     einsum: 'bi,i,ide->bde'
@@ -260,14 +264,6 @@ def stack_operators(theory: CIIRTheory) -> tuple[RealTensor, RealTensor | Comple
     K : array, shape (n_constraints, D, D)
     O : array, shape (n_observers, D, D)
     """
-    K = (
-        np.stack([c.matrix for c in theory.constraints], axis=0)
-        if theory.constraints
-        else np.empty((0, 0, 0))
-    )
-    O = (
-        np.stack([o.matrix for o in theory.observers], axis=0)
-        if theory.observers
-        else np.empty((0, 0, 0))
-    )
+    K = np.stack([c.matrix for c in theory.constraints], axis=0) if theory.constraints else np.empty((0, 0, 0))
+    O = np.stack([o.matrix for o in theory.observers], axis=0) if theory.observers else np.empty((0, 0, 0))
     return K, O

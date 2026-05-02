@@ -19,6 +19,6 @@ __all__ = [
     "EngineConnector",
 ]
 
-from qratum_chess.gui.ipc.shared_memory import SharedMemoryBridge, SharedBuffer
-from qratum_chess.gui.ipc.messaging import IPCMessage, MessageType, MessageQueue
 from qratum_chess.gui.ipc.engine_connector import EngineConnector, EngineType
+from qratum_chess.gui.ipc.messaging import IPCMessage, MessageQueue, MessageType
+from qratum_chess.gui.ipc.shared_memory import SharedBuffer, SharedMemoryBridge

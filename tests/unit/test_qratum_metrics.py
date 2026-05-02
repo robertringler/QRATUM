@@ -8,11 +8,12 @@ Tests the QRATUM directive-mandated metrics:
 """
 
 import pytest
+
 from qratum.metrics import (
-    QRATUMMetrics,
     MetricMeasurement,
-    MetricStatus,
     MetricsAggregator,
+    MetricStatus,
+    QRATUMMetrics,
     validate_module_metrics,
 )
 

@@ -1,0 +1,73 @@
+# Robust automation pipeline configuration
+# Emphasizes genuine (unforced) D2, MSD exponent alpha_d, gamma optimization, and PTQ instanton metrics.
+version: 1
+random_seed: 42
+
+lattice:
+  sizes:
+    - [8, 8]
+    - [12, 12]
+    - [16, 16]
+  disorder_values: [0.0, 0.1, 0.2]
+
+noise:
+  gamma_scan_logspace: {start_exp: -3, end_exp: 1, points: 25}
+  target_time: 6.0          # Slightly longer to stabilize MSD exponent extraction
+  dt: 0.02
+  refinement_factor: 2
+
+analysis:
+  perform_convergence: true
+  perform_traj_variance: true
+  perform_phase_diagram: true
+  perform_msd: true
+  perform_otoc: true
+  perform_logical: true
+  enhanced_ramsey: false
+  bootstrap_samples: 256
+  msd_time_points: 100      # more time samples for better log-log fit
+  perform_fss: true
+  fss_sizes: [8, 12, 16]
+
+ptq:
+  enable_delta: false       # Will be auto-enabled by robust.auto_enable_ptq if set true there
+  r0: 1.0
+  gamma_c: 1.0
+  u: 1.0
+  M: 1000.0
+  require_valid: false
+
+robust:
+  enabled: true
+  gamma_optimize: true
+  gamma_candidates: [0.5, 0.75, 1.0, 1.25, 1.5]
+  probe_T: 2.5
+  probe_timeout: 70
+  auto_enable_ptq: true     # turns on PTQ instanton metrics during robust run
+
+quality_gates:
+  max_trace_deviation: 1.0e-9
+  min_dt_order: 3.5
+  max_bootstrap_halfwidth: 0.05
+  fractal_transport_tolerance: 0.15
+  positivity_tolerance: 1.0e-9
+  max_local_error: 1.0e-4
+  max_forced_d2_fraction: 0.3
+  min_logical_fidelity: 0.6
+
+report:
+  build_latex: false        # disable PDF to save time
+  master_tex: blueprint_master.tex
+  output_pdf: blueprint_master.pdf
+  keep_intermediate: false
+
+output:
+  root_dir: automation_runs
+  compress_archives: true
+
+parallel:
+  workers: 1
+
+logging:
+  level: INFO
+  json_metadata: true

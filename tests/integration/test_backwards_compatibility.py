@@ -13,20 +13,9 @@ class TestBackwardsCompatibility:
     def test_existing_qratum_imports_work(self):
         """Verify all existing qratum.* imports still function."""
         # Core imports that existed before platform integration
-        from qratum import (
-            Circuit,
-            DensityMatrix,
-            Measurement,
-            QRATUMConfig,
-            Result,
-            Simulator,
-            StateVector,
-            __version__,
-            gates,
-            get_config,
-            reset_config,
-            set_config,
-        )
+        from qratum import (Circuit, DensityMatrix, Measurement, QRATUMConfig,
+                            Result, Simulator, StateVector, __version__, gates,
+                            get_config, reset_config, set_config)
 
         # Verify no import errors
         assert Circuit is not None
@@ -99,7 +88,8 @@ class TestBackwardsCompatibility:
         """Verify new platform imports work alongside existing imports."""
         # Old imports
         # New imports
-        from qratum import PlatformConfig, QRATUMConfig, QRATUMPlatform, Simulator, create_platform
+        from qratum import (PlatformConfig, QRATUMConfig, QRATUMPlatform,
+                            Simulator, create_platform)
 
         # Both should work
         assert QRATUMConfig is not None

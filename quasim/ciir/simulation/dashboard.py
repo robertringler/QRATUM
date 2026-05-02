@@ -11,11 +11,12 @@ import sys
 from dataclasses import dataclass, field
 from typing import Any
 
+import numpy as np
+
 
 @dataclass
 class MetricsSnapshot:
     """Single-step metrics snapshot."""
-
     step: int = 0
     total_loss: float = 0.0
     constraint_loss: float = 0.0
@@ -124,10 +125,9 @@ class MetricsDashboard:
         if self._history and self._history[0].constraint_violations:
             n_c = len(self._history[0].constraint_violations)
             for c_idx in range(n_c):
-                vals = [
-                    s.constraint_violations[c_idx] if c_idx < len(s.constraint_violations) else 0
-                    for s in self._history
-                ]
+                vals = [s.constraint_violations[c_idx]
+                        if c_idx < len(s.constraint_violations) else 0
+                        for s in self._history]
                 ax.plot(steps, vals, linewidth=1, label=f"C{c_idx}")
             ax.legend(fontsize=8)
         ax.set_xlabel("Step")

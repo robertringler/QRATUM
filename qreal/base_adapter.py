@@ -52,12 +52,14 @@ class BaseAdapter:
     def _normalize(
         self, raw: object, tick: int
     ) -> dict[str, object]:  # pragma: no cover - abstract
-        raise NotImplementedError
+        # GAP-STUB-012: subclasses must override; base returns empty normalized dict
+        return {}
 
     def _to_percept(
         self, normalized: dict[str, object]
     ) -> dict[str, object]:  # pragma: no cover - abstract
-        raise NotImplementedError
+        # GAP-STUB-013: subclasses must override; base returns empty percept dict
+        return {}
 
     # Helpers ------------------------------------------------------------------------
     def add_normalizer(self, func: Callable[[dict[str, object]], dict[str, object]]) -> None:

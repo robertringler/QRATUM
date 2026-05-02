@@ -7,15 +7,10 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from contracts import (
-    BaseContract,
-    ClusterTopology,
-    create_capability_contract,
-    create_event_contract,
-    create_intent_contract,
-    create_temporal_contract,
-    get_current_timestamp,
-)
+from contracts import (BaseContract, ClusterTopology,
+                       create_capability_contract, create_event_contract,
+                       create_intent_contract, create_temporal_contract,
+                       get_current_timestamp)
 from qil import parse_intent
 
 
@@ -209,6 +204,7 @@ class TestTemporalContract:
 
         # Test with future time (should not be expired)
         from datetime import timezone
+
         future_time = datetime.now(timezone.utc) + timedelta(seconds=1000)
         assert not contract.is_expired(future_time)
 
@@ -231,6 +227,7 @@ class TestTemporalContract:
     def test_temporal_contract_window(self):
         """Test execution window checking."""
         from datetime import timezone
+
         now = datetime.now(timezone.utc)
         window_start = (now + timedelta(hours=-1)).isoformat().replace("+00:00", "Z")
         window_end = (now + timedelta(hours=1)).isoformat().replace("+00:00", "Z")

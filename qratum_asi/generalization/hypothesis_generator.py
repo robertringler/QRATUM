@@ -14,7 +14,6 @@ Key Features:
 from __future__ import annotations
 
 import hashlib
-import json
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
@@ -22,17 +21,15 @@ from typing import Any
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
-
+from qratum_asi.generalization.domain_registry import ExtendedDomainRegistry
 from qratum_asi.generalization.types import (
+    PROHIBITED_SYNTHESIS_TARGETS,
     CognitiveDomain,
     CrossDomainHypothesis,
-    DomainCapability,
     GenerationConstraints,
     HypothesisType,
     SynthesisSafetyLevel,
-    PROHIBITED_SYNTHESIS_TARGETS,
 )
-from qratum_asi.generalization.domain_registry import ExtendedDomainRegistry
 
 
 @dataclass
@@ -248,9 +245,7 @@ class HypothesisGenerator:
         novelty_dist = self._compute_novelty_distribution(all_hypotheses)
 
         # Determine if human review is required
-        human_review_required = self._requires_human_review(
-            all_hypotheses, effective_constraints
-        )
+        human_review_required = self._requires_human_review(all_hypotheses, effective_constraints)
 
         result = GenerationResult(
             generation_id=generation_id,
@@ -349,11 +344,14 @@ class HypothesisGenerator:
 
         # Ensure invariants are preserved
         preserve_invariants = list(
-            set(constraints.preserve_invariants + [
-                "human_oversight_requirement",
-                "merkle_chain_integrity",
-                "determinism_guarantee",
-            ])
+            set(
+                constraints.preserve_invariants
+                + [
+                    "human_oversight_requirement",
+                    "merkle_chain_integrity",
+                    "determinism_guarantee",
+                ]
+            )
         )
 
         # Add default forbidden topics
@@ -411,7 +409,7 @@ class HypothesisGenerator:
 
         # Generate one hypothesis per domain pair for cross-domain templates
         for i, domain_a in enumerate(domains[:3]):
-            for domain_b in domains[i + 1: i + 3]:
+            for domain_b in domains[i + 1 : i + 3]:
                 self._hypothesis_counter += 1
                 hyp_id = f"hyp_{self._hypothesis_counter:06d}"
 
@@ -427,16 +425,19 @@ class HypothesisGenerator:
                 elif template.hypothesis_type == HypothesisType.COUNTERFACTUAL:
                     statement = f"If {domain_a.value} principles applied to {domain_b.value}, different outcomes would follow regarding: {goal}"
                 else:
-                    statement = f"Hypothesis connecting {domain_a.value} and {domain_b.value}: {goal}"
+                    statement = (
+                        f"Hypothesis connecting {domain_a.value} and {domain_b.value}: {goal}"
+                    )
 
                 # Compute scores
                 novelty = (
-                    template.typical_novelty_range[0] +
-                    (template.typical_novelty_range[1] - template.typical_novelty_range[0]) * 0.5
+                    template.typical_novelty_range[0]
+                    + (template.typical_novelty_range[1] - template.typical_novelty_range[0]) * 0.5
                 )
                 confidence = (
-                    template.typical_confidence_range[0] +
-                    (template.typical_confidence_range[1] - template.typical_confidence_range[0]) * 0.5
+                    template.typical_confidence_range[0]
+                    + (template.typical_confidence_range[1] - template.typical_confidence_range[0])
+                    * 0.5
                 )
 
                 # Adjust for domain distance
@@ -564,9 +565,7 @@ class HypothesisGenerator:
 
     def get_generator_stats(self) -> dict[str, Any]:
         """Get generator statistics."""
-        total_hypotheses = sum(
-            len(r.hypotheses_generated) for r in self.generation_history
-        )
+        total_hypotheses = sum(len(r.hypotheses_generated) for r in self.generation_history)
         total_filtered = sum(r.hypotheses_filtered for r in self.generation_history)
 
         return {

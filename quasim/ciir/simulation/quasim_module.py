@@ -27,14 +27,19 @@ from enum import Enum
 from typing import Any
 
 import numpy as np
+from numpy.typing import NDArray
 
+from quasim.ciir.theory import CIIRTheory, RealTensor
 from quasim.ciir.loss import CIIRLoss
 from quasim.ciir.tensors import (
     batch_constraint_eval,
+    batch_constraint_violation,
     batch_observer_eval,
     stack_operators,
+    state_to_density,
+    tensorized_ciir_loss,
 )
-from quasim.ciir.theory import CIIRTheory, RealTensor
+
 
 # ================================================================
 # Precision modes
@@ -43,7 +48,6 @@ from quasim.ciir.theory import CIIRTheory, RealTensor
 
 class PrecisionMode(Enum):
     """Supported numerical precision modes."""
-
     FP32 = "fp32"
     FP64 = "fp64"
 
@@ -107,9 +111,10 @@ class QuASIMTensor:
         if self.data.ndim == 2:
             return float(np.linalg.norm(self.data, ord=2))
         elif self.data.ndim == 3:
-            return float(
-                max(np.linalg.norm(self.data[b], ord=2) for b in range(self.data.shape[0]))
-            )
+            return float(max(
+                np.linalg.norm(self.data[b], ord=2)
+                for b in range(self.data.shape[0])
+            ))
         return self.frobenius_norm
 
     def trace(self) -> RealTensor:
@@ -191,13 +196,11 @@ class TensorRuntime:
         components = self.loss_fn.loss_components(rho)
 
         # Log contraction
-        self._contraction_log.append(
-            {
-                "loss": loss,
-                "grad_norm": float(np.linalg.norm(grad)),
-                **components,
-            }
-        )
+        self._contraction_log.append({
+            "loss": loss,
+            "grad_norm": float(np.linalg.norm(grad)),
+            **components,
+        })
 
         return loss, grad, components
 
@@ -324,11 +327,7 @@ class TensorVisualizer:
         d2 /= np.linalg.norm(d2)
 
         alphas, betas, losses = runtime.loss_landscape_2d(
-            rho_center,
-            d1,
-            d2,
-            n_grid=20,
-            extent=0.3,
+            rho_center, d1, d2, n_grid=20, extent=0.3,
         )
 
         A, B = np.meshgrid(alphas, betas, indexing="ij")

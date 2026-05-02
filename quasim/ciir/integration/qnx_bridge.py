@@ -9,15 +9,15 @@ CIIR mapping: evolution loop ↔ distributed step execution
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
 
 from quasim.ciir.config import CIIRConfig
-from quasim.ciir.evolution import IntegrationMethod, evolve
+from quasim.ciir.evolution import IntegrationMethod, evolve, project_density
 from quasim.ciir.loss import CIIRLoss
-from quasim.ciir.theory import CIIRTheory
+from quasim.ciir.theory import CIIRTheory, RealTensor, build_default_theory
 
 
 @dataclass
@@ -139,14 +139,12 @@ class QNXDistributedEvolver:
                 tol=self.config.tol,
                 record_every=self.config.record_every,
             )
-            shard_results.append(
-                {
-                    "shard": s,
-                    "converged": result.converged,
-                    "n_steps": result.n_steps,
-                    "final_loss": result.losses[-1] if result.losses else None,
-                }
-            )
+            shard_results.append({
+                "shard": s,
+                "converged": result.converged,
+                "n_steps": result.n_steps,
+                "final_loss": result.losses[-1] if result.losses else None,
+            })
 
         return {
             "n_shards": self.n_shards,

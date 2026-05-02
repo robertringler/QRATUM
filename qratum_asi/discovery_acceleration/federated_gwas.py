@@ -26,18 +26,18 @@ from typing import Any
 from qradle.core.zones import SecurityZone, ZoneContext, get_zone_enforcer
 from qradle.merkle import MerkleChain
 from qratum_asi.core.zk_state_verifier import (
+    StateCommitment,
+    TransitionType,
     ZKProof,
     ZKProofGenerator,
     ZKStateVerifier,
     ZKVerificationContext,
-    StateCommitment,
-    TransitionType,
 )
 
 
 class GWASPhase(Enum):
     """Phases of GWAS analysis."""
-    
+
     COHORT_REGISTRATION = "cohort_registration"
     QUALITY_CONTROL = "quality_control"
     VARIANT_CALLING = "variant_calling"
@@ -52,7 +52,7 @@ class GWASPhase(Enum):
 @dataclass
 class GWASCohort:
     """Represents a federated GWAS cohort node.
-    
+
     Attributes:
         cohort_id: Unique cohort identifier
         site_name: Name of the federated site
@@ -63,7 +63,7 @@ class GWASCohort:
         endpoint: Aethernet endpoint (None for air-gapped)
         zone: Security zone classification
     """
-    
+
     cohort_id: str
     site_name: str
     sample_count: int
@@ -73,7 +73,7 @@ class GWASCohort:
     endpoint: str | None = None
     zone: str = "Z2"
     is_registered: bool = False
-    
+
     def compute_commitment(self) -> str:
         """Compute cryptographic commitment for cohort registration."""
         content = {
@@ -83,10 +83,8 @@ class GWASCohort:
             "phenotype": self.phenotype,
             "ancestry": self.ancestry,
         }
-        return hashlib.sha3_256(
-            json.dumps(content, sort_keys=True).encode()
-        ).hexdigest()
-    
+        return hashlib.sha3_256(json.dumps(content, sort_keys=True).encode()).hexdigest()
+
     def to_dict(self) -> dict[str, Any]:
         """Serialize cohort."""
         return {
@@ -104,7 +102,7 @@ class GWASCohort:
 @dataclass
 class ZKVariantProof:
     """Zero-knowledge proof for variant presence without revealing genotype.
-    
+
     Attributes:
         proof_id: Unique proof identifier
         cohort_id: Source cohort
@@ -113,21 +111,21 @@ class ZKVariantProof:
         proof: ZK proof data
         timestamp: Proof generation timestamp
     """
-    
+
     proof_id: str
     cohort_id: str
     variant_id: str
     commitment: str
     proof: ZKProof
     timestamp: str
-    
+
     def verify(self, verifier: ZKStateVerifier, context: ZKVerificationContext) -> bool:
         """Verify the ZK proof.
-        
+
         Args:
             verifier: ZK state verifier
             context: Verification context
-            
+
         Returns:
             True if proof is valid
         """
@@ -138,7 +136,7 @@ class ZKVariantProof:
             state_version=1,
             zone_id=context.zone_id,
         )
-        
+
         result, _ = verifier.verify_proof(self.proof, commitment, context)
         return result.value == "valid"
 
@@ -146,7 +144,7 @@ class ZKVariantProof:
 @dataclass
 class GWASResult:
     """Result of a GWAS analysis.
-    
+
     Attributes:
         result_id: Unique result identifier
         phenotype: Analyzed phenotype
@@ -159,7 +157,7 @@ class GWASResult:
         provenance_chain: Merkle proof of provenance
         projections: Quantitative projections
     """
-    
+
     result_id: str
     phenotype: str
     total_cohorts: int
@@ -171,7 +169,7 @@ class GWASResult:
     provenance_chain: str
     timestamp: str
     projections: dict[str, Any] = field(default_factory=dict)
-    
+
     def to_dict(self) -> dict[str, Any]:
         """Serialize result."""
         return {
@@ -191,10 +189,10 @@ class GWASResult:
 
 class FederatedGWASPipeline:
     """Federated GWAS Pipeline with ZK Privacy.
-    
+
     Implements privacy-preserving genome-wide association studies
     across multiple federated cohorts using zero-knowledge proofs.
-    
+
     Key Capabilities:
     - Register cohorts with biokey authorization
     - Generate ZK proofs for variant statistics
@@ -202,31 +200,36 @@ class FederatedGWASPipeline:
     - Perform meta-analysis with full provenance
     - Generate reproducible, auditable results
     """
-    
+
     def __init__(self, pipeline_id: str | None = None):
         """Initialize the pipeline.
-        
+
         Args:
             pipeline_id: Optional pipeline identifier
         """
-        self.pipeline_id = pipeline_id or f"gwas_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
+        self.pipeline_id = (
+            pipeline_id or f"gwas_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
+        )
         self.merkle_chain = MerkleChain()
         self.zone_enforcer = get_zone_enforcer()
         self.zk_generator = ZKProofGenerator(seed=42)
         self.zk_verifier = ZKStateVerifier()
-        
+
         # Pipeline state
         self.cohorts: dict[str, GWASCohort] = {}
         self.variant_proofs: dict[str, list[ZKVariantProof]] = {}
         self.current_phase = GWASPhase.COHORT_REGISTRATION
         self.results: list[GWASResult] = []
-        
+
         # Log initialization
-        self.merkle_chain.add_event("pipeline_initialized", {
-            "pipeline_id": self.pipeline_id,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        })
-    
+        self.merkle_chain.add_event(
+            "pipeline_initialized",
+            {
+                "pipeline_id": self.pipeline_id,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            },
+        )
+
     def register_cohort(
         self,
         cohort_id: str,
@@ -239,7 +242,7 @@ class FederatedGWASPipeline:
         approver_id: str,
     ) -> GWASCohort:
         """Register a federated cohort with dual-control authorization.
-        
+
         Args:
             cohort_id: Unique cohort identifier
             site_name: Name of federated site
@@ -249,13 +252,13 @@ class FederatedGWASPipeline:
             biokey: Biokey for authorization
             actor_id: Actor performing registration
             approver_id: Approver for dual-control
-            
+
         Returns:
             Registered GWASCohort
         """
         # Hash biokey for storage (never store raw biokey)
         biokey_hash = hashlib.sha3_256(biokey.encode()).hexdigest()
-        
+
         cohort = GWASCohort(
             cohort_id=cohort_id,
             site_name=site_name,
@@ -264,7 +267,7 @@ class FederatedGWASPipeline:
             ancestry=ancestry,
             biokey_hash=biokey_hash,
         )
-        
+
         # Create zone context for Z2 (sensitive) operation
         # Use 'create' operation type which is allowed in Z2
         context = ZoneContext(
@@ -273,27 +276,30 @@ class FederatedGWASPipeline:
             actor_id=actor_id,
             approvers=[approver_id],
         )
-        
+
         # Execute with zone enforcement
         def register_operation():
             cohort.is_registered = True
             return {"cohort_id": cohort_id, "commitment": cohort.compute_commitment()}
-        
+
         result = self.zone_enforcer.execute_in_zone(context, register_operation)
-        
+
         self.cohorts[cohort_id] = cohort
-        
+
         # Log registration
-        self.merkle_chain.add_event("cohort_registered", {
-            "cohort_id": cohort_id,
-            "site_name": site_name,
-            "sample_count": sample_count,
-            "phenotype": phenotype,
-            "commitment": result["commitment"],
-        })
-        
+        self.merkle_chain.add_event(
+            "cohort_registered",
+            {
+                "cohort_id": cohort_id,
+                "site_name": site_name,
+                "sample_count": sample_count,
+                "phenotype": phenotype,
+                "commitment": result["commitment"],
+            },
+        )
+
         return cohort
-    
+
     def generate_variant_proof(
         self,
         cohort_id: str,
@@ -302,36 +308,36 @@ class FederatedGWASPipeline:
         actor_id: str,
     ) -> ZKVariantProof:
         """Generate ZK proof for variant statistics.
-        
+
         Args:
             cohort_id: Source cohort identifier
             variant_id: Variant identifier (chr:pos:ref:alt)
             statistics: Variant statistics (AF, p-value, etc.)
             actor_id: Actor generating proof
-            
+
         Returns:
             ZKVariantProof for the variant
         """
         if cohort_id not in self.cohorts:
             raise ValueError(f"Cohort not registered: {cohort_id}")
-        
+
         # Compute commitment to statistics (hides actual values)
         stats_json = json.dumps(statistics, sort_keys=True)
         commitment = hashlib.sha3_256(stats_json.encode()).hexdigest()
-        
+
         # Generate ZK proof
-        prev_state = f"variant_none".encode()
+        prev_state = b"variant_none"
         next_state = f"variant_{variant_id}:{commitment}".encode()
-        
+
         proof = self.zk_generator.generate_proof(
             prev_state=prev_state,
             next_state=next_state,
             transition_witness=stats_json.encode(),
             transition_type=TransitionType.TXO_EXECUTION,
         )
-        
+
         proof_id = f"vproof_{cohort_id}_{variant_id}_{len(self.variant_proofs.get(variant_id, []))}"
-        
+
         variant_proof = ZKVariantProof(
             proof_id=proof_id,
             cohort_id=cohort_id,
@@ -340,22 +346,25 @@ class FederatedGWASPipeline:
             proof=proof,
             timestamp=datetime.now(timezone.utc).isoformat(),
         )
-        
+
         # Store proof
         if variant_id not in self.variant_proofs:
             self.variant_proofs[variant_id] = []
         self.variant_proofs[variant_id].append(variant_proof)
-        
+
         # Log proof generation
-        self.merkle_chain.add_event("variant_proof_generated", {
-            "proof_id": proof_id,
-            "cohort_id": cohort_id,
-            "variant_id": variant_id,
-            "commitment": commitment,
-        })
-        
+        self.merkle_chain.add_event(
+            "variant_proof_generated",
+            {
+                "proof_id": proof_id,
+                "cohort_id": cohort_id,
+                "variant_id": variant_id,
+                "commitment": commitment,
+            },
+        )
+
         return variant_proof
-    
+
     def aggregate_variant_statistics(
         self,
         variant_id: str,
@@ -363,19 +372,19 @@ class FederatedGWASPipeline:
         approver_id: str,
     ) -> dict[str, Any]:
         """Aggregate variant statistics across cohorts using ZK proofs.
-        
+
         Args:
             variant_id: Variant to aggregate
             actor_id: Actor performing aggregation
             approver_id: Approver for dual-control
-            
+
         Returns:
             Aggregated statistics (meta-analysis results)
         """
         proofs = self.variant_proofs.get(variant_id, [])
         if not proofs:
             raise ValueError(f"No proofs found for variant: {variant_id}")
-        
+
         # Create verification context
         context = ZKVerificationContext(
             current_time=time.time(),
@@ -383,13 +392,13 @@ class FederatedGWASPipeline:
             zone_id="Z2",
             epoch_id=1,
         )
-        
+
         # Verify all proofs
         verified_proofs = []
         for proof in proofs:
             if proof.verify(self.zk_verifier, context):
                 verified_proofs.append(proof)
-        
+
         # Create zone context for Z2 operation
         # Use 'execute' operation type which is allowed in Z2
         zone_context = ZoneContext(
@@ -398,7 +407,7 @@ class FederatedGWASPipeline:
             actor_id=actor_id,
             approvers=[approver_id],
         )
-        
+
         # Perform aggregation
         def aggregate_operation():
             # In production, this would perform secure aggregation
@@ -408,7 +417,7 @@ class FederatedGWASPipeline:
                 for p in verified_proofs
                 if p.cohort_id in self.cohorts
             )
-            
+
             return {
                 "variant_id": variant_id,
                 "num_cohorts": len(verified_proofs),
@@ -418,18 +427,21 @@ class FederatedGWASPipeline:
                 "heterogeneity_i2": 0.2,
                 "commitments": [p.commitment for p in verified_proofs],
             }
-        
+
         result = self.zone_enforcer.execute_in_zone(zone_context, aggregate_operation)
-        
+
         # Log aggregation
-        self.merkle_chain.add_event("variant_aggregated", {
-            "variant_id": variant_id,
-            "num_cohorts": result["num_cohorts"],
-            "total_samples": result["total_samples"],
-        })
-        
+        self.merkle_chain.add_event(
+            "variant_aggregated",
+            {
+                "variant_id": variant_id,
+                "num_cohorts": result["num_cohorts"],
+                "total_samples": result["total_samples"],
+            },
+        )
+
         return result
-    
+
     def run_association_analysis(
         self,
         phenotype: str,
@@ -438,25 +450,24 @@ class FederatedGWASPipeline:
         approver_id: str = "admin",
     ) -> GWASResult:
         """Run full GWAS association analysis.
-        
+
         Args:
             phenotype: Phenotype being analyzed
             significance_threshold: p-value threshold for significance
             actor_id: Actor running analysis
             approver_id: Approver for dual-control
-            
+
         Returns:
             GWASResult with significant associations
         """
         # Validate cohorts for phenotype
         relevant_cohorts = [
-            c for c in self.cohorts.values()
-            if c.phenotype == phenotype and c.is_registered
+            c for c in self.cohorts.values() if c.phenotype == phenotype and c.is_registered
         ]
-        
+
         if not relevant_cohorts:
             raise ValueError(f"No registered cohorts for phenotype: {phenotype}")
-        
+
         # Create zone context for Z2 operation
         # Use 'execute' operation type which is allowed in Z2
         zone_context = ZoneContext(
@@ -465,14 +476,14 @@ class FederatedGWASPipeline:
             actor_id=actor_id,
             approvers=[approver_id],
         )
-        
+
         # Run analysis
         def analysis_operation():
             # Simulate GWAS results
             # In production, this would aggregate ZK proofs across all variants
-            
+
             total_samples = sum(c.sample_count for c in relevant_cohorts)
-            
+
             # Simulated significant variants (using synthetic data)
             significant_variants = [
                 {
@@ -500,39 +511,37 @@ class FederatedGWASPipeline:
                     "se": 0.015,
                 },
             ]
-            
+
             # Top loci
             top_loci = [
                 {"locus": "6p21.32", "gene": "HLA", "num_variants": 45},
                 {"locus": "9p21.3", "gene": "CDKN2A/B", "num_variants": 12},
                 {"locus": "10q25.2", "gene": "TCF7L2", "num_variants": 8},
             ]
-            
+
             # Pathway enrichment
             pathway_enrichment = [
                 {"pathway": "Immune system process", "p_value": 1e-15, "num_genes": 25},
                 {"pathway": "Cell cycle regulation", "p_value": 5e-10, "num_genes": 12},
                 {"pathway": "Glucose homeostasis", "p_value": 2e-8, "num_genes": 8},
             ]
-            
+
             return {
                 "total_samples": total_samples,
                 "significant_variants": significant_variants,
                 "top_loci": top_loci,
                 "pathway_enrichment": pathway_enrichment,
             }
-        
-        analysis_result = self.zone_enforcer.execute_in_zone(
-            zone_context, analysis_operation
-        )
-        
+
+        analysis_result = self.zone_enforcer.execute_in_zone(zone_context, analysis_operation)
+
         # Generate Manhattan plot hash (deterministic)
         manhattan_data = json.dumps(analysis_result["significant_variants"], sort_keys=True)
         manhattan_hash = hashlib.sha3_256(manhattan_data.encode()).hexdigest()
-        
+
         # Create result
         result_id = f"gwas_{phenotype}_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
-        
+
         result = GWASResult(
             result_id=result_id,
             phenotype=phenotype,
@@ -551,31 +560,34 @@ class FederatedGWASPipeline:
                 "data_privacy_score": 0.99,
             },
         )
-        
+
         self.results.append(result)
-        
+
         # Log result
-        self.merkle_chain.add_event("gwas_completed", {
-            "result_id": result_id,
-            "phenotype": phenotype,
-            "total_cohorts": result.total_cohorts,
-            "total_samples": result.total_samples,
-            "significant_variants_count": len(result.significant_variants),
-        })
-        
+        self.merkle_chain.add_event(
+            "gwas_completed",
+            {
+                "result_id": result_id,
+                "phenotype": phenotype,
+                "total_cohorts": result.total_cohorts,
+                "total_samples": result.total_samples,
+                "significant_variants_count": len(result.significant_variants),
+            },
+        )
+
         return result
-    
+
     def verify_provenance(self) -> bool:
         """Verify provenance chain integrity.
-        
+
         Returns:
             True if chain is valid
         """
         return self.merkle_chain.verify_integrity()
-    
+
     def get_pipeline_stats(self) -> dict[str, Any]:
         """Get pipeline statistics.
-        
+
         Returns:
             Statistics dictionary
         """

@@ -1,5 +1,25 @@
-# QRATUM: Decentralized Ghost Machine for Sovereign AI and Quantum-Resilient Computing
+Demo: Discoveries & Analysis Showcase
 
+This demo aggregates metrics and data found in the repository and produces a small set of visualizations and summary files.
+
+Files created:
+- output/: images and JSON summaries
+- run_demo.py: main demo script
+- test_demo.py: unit test checking demo runs
+
+How to run (Windows cmd.exe):
+
+1) Create a virtualenv and install requirements
+   python -m venv .venv
+   .venv\Scripts\activate
+   pip install -r requirements.txt
+
+2) Run the demo
+   python demo\\run_demo.py
+
+Outputs will be in `demo/output/`.
+
+Author: Robert Ringler (Independent Researcher)
 
 [![QRADLE](https://img.shields.io/badge/QRADLE-Foundation-orange.svg)](docs/ARCHITECTURE.md)
 [![VITRA-E0](https://img.shields.io/badge/VITRA--E0-Genomics-green.svg)](qrVITRA/README.md)

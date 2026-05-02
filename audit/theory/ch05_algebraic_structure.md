@@ -1,0 +1,9 @@
+# Chapter audit: ch05_algebraic_structure
+_Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22:27:58Z
+
+- Theorems: 4
+- Lemmas: 8
+- Definitions: 12
+- Proof blocks: 18
+- File: `manuscripts/ciir_monograph/chapters/ch05_algebraic_structure.tex` (47409 B, 1163 lines)
+- Status: present and standalone; not `\input`-included by `ciir_quasim_formalization.tex` (GAP-DOC-MONO-002).

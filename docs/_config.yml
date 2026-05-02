@@ -1,0 +1,44 @@
+# GitHub Pages Configuration for QuASIM Technical Portal
+
+# Site settings
+title: QuASIM Technical Portal
+description: Quantum-Accelerated Simulation and Modeling Engine - Production-Grade Quantum Simulation Platform
+baseurl: ""
+url: "https://robertringler.github.io/QRATUM"
+
+# Build settings
+markdown: kramdown
+theme: null
+plugins: []
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - README.md
+
+# Include hidden files
+include:
+  - _config.yml
+
+# Sass/SCSS settings
+sass:
+  style: compressed
+  sass_dir: css
+
+# Collections (if needed in future)
+collections: {}
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+# Security
+webrick:
+  headers:
+    Content-Security-Policy: "default-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com"

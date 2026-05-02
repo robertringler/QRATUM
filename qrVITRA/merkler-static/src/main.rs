@@ -1,297 +1,275 @@
-//! merkler-static: Self-Hashing Merkle Provenance Binary
+//! VITRA-E0 Merkler-Static: Biokey-Enabled Merkle Chain Builder
 //!
-//! This binary creates cryptographically-chained provenance records for
-//! deterministic whole genome sequencing pipelines. It implements:
-//! - Self-hashing (detects tampering)
-//! - CUDA PTX kernel anchoring (prevents compiler substitution)
-//! - NVIDIA driver manifest verification
-//! - Dual FIDO2 Ed25519 signatures (zone promotions)
-//! - CBOR-encoded Merkle DAG output
+//! Command-line tool for ephemeral biokey operations in sovereign genomics.
 
-#![no_std]
-#![no_main]
+mod biokey;
+mod zkp;
+mod fido2;
 
-extern crate alloc;
+use biokey::{EphemeralBiokey, SnpLocus};
+use zkp::BiokeyZkp;
+use fido2::DualBiokeySignature;
+use serde_json;
+use std::io::{self, Write, Read};
 
-use alloc::string::{String, ToString};
-use alloc::vec::Vec;
-use alloc::format;
-use core::panic::PanicInfo;
-use sha3::{Digest, Sha3_256};
-use minicbor::{Encode, Encoder};
-use ed25519_dalek::{Signature, Verifier, VerifyingKey};
+const VERSION: &str = "1.0.0";
 
-/// Self-hash of this binary (injected post-build by build.sh)
-/// 32 bytes placeholder replaced with actual SHA3-256 hash
-static MERKLER_SELF_HASH: [u8; 32] = [0x00; 32];
-
-/// CUDA PTX kernel hash (extracted from Parabricks container)
-/// 32 bytes SHA3-256 of compiled PTX code
-static CUDA_PTX_HASH: [u8; 32] = [0x00; 32];
-
-/// NVIDIA driver manifest hash (version + capabilities)
-/// 32 bytes SHA3-256 of driver metadata
-static DRIVER_MANIFEST_HASH: [u8; 32] = [0x00; 32];
-
-/// FIDO2 epoch public key A (for dual signature verification)
-/// 32 bytes Ed25519 public key
-static EPOCH_PUBKEY_A: [u8; 32] = [0x00; 32];
-
-/// FIDO2 epoch public key B (for dual signature verification)
-/// 32 bytes Ed25519 public key
-static EPOCH_PUBKEY_B: [u8; 32] = [0x00; 32];
-
-/// Genesis Merkle root (immutable Z0 anchor)
-/// First link in the provenance chain
-static GENESIS_MERKLE_ROOT: [u8; 32] = [0x00; 32];
-
-/// Merkle provenance node in the DAG
-#[derive(Encode)]
-struct MerkleNode {
-    /// Node identifier (hash of content)
-    #[n(0)]
-    node_hash: [u8; 32],
-    
-    /// Parent node hash (creates chain)
-    #[n(1)]
-    parent_hash: [u8; 32],
-    
-    /// Stage identifier (align, call_variants, validate)
-    #[n(2)]
-    stage: u32,
-    
-    /// Input file hash
-    #[n(3)]
-    input_hash: [u8; 32],
-    
-    /// Output file hash
-    #[n(4)]
-    output_hash: [u8; 32],
-    
-    /// Tool version hash (parabricks, deepvariant)
-    #[n(5)]
-    tool_hash: [u8; 32],
-    
-    /// Unix epoch timestamp
-    #[n(6)]
-    timestamp: u64,
-    
-    /// CUDA epoch hash (PTX + driver)
-    #[n(7)]
-    cuda_epoch_hash: [u8; 32],
-    
-    /// FIDO2 signature A (optional for Z0→Z1)
-    #[n(8)]
-    signature_a: Option<[u8; 64]>,
-    
-    /// FIDO2 signature B (required for Z2→Z3)
-    #[n(9)]
-    signature_b: Option<[u8; 64]>,
+fn print_usage() {
+    println!("VITRA-E0 Merkler-Static v{}", VERSION);
+    println!("Biokey-Enabled Merkle Chain Builder for Sovereign Genomics");
+    println!();
+    println!("USAGE:");
+    println!("  merkler-static <command> [options]");
+    println!();
+    println!("COMMANDS:");
+    println!("  derive-biokey <loci-json>    Derive ephemeral biokey from SNP loci");
+    println!("  generate-challenge           Generate random ZKP challenge");
+    println!("  prove <biokey-json> <challenge-hex>  Generate ZKP proof");
+    println!("  verify-zkp <proof-json>      Verify zero-knowledge proof");
+    println!("  dual-sign <biokey-a> <biokey-b> <message>  Create dual signature");
+    println!("  verify-dual <signature-json> <message>     Verify dual signature");
+    println!("  version                      Show version information");
+    println!("  help                         Show this help message");
+    println!();
+    println!("EXAMPLES:");
+    println!("  # Derive biokey from SNP loci");
+    println!("  merkler-static derive-biokey loci.json");
+    println!();
+    println!("  # Generate ZKP challenge");
+    println!("  merkler-static generate-challenge");
+    println!();
+    println!("  # Create ZKP proof");
+    println!("  merkler-static prove biokey.json <challenge>");
+    println!();
+    println!("SECURITY:");
+    println!("  - Biokeys exist only in RAM (never written to disk)");
+    println!("  - Automatic memory wiping on exit");
+    println!("  - Zero-knowledge proofs don't reveal genome data");
+    println!("  - Dual signatures require two operators");
 }
 
-/// Merkle DAG containing all provenance nodes
-#[derive(Encode)]
-struct MerkleDAG {
-    /// DAG version
-    #[n(0)]
-    version: u32,
+fn derive_biokey_from_json(loci_json: &str) -> Result<(), Box<dyn std::error::Error>> {
+    // Parse SNP loci from JSON
+    let loci: Vec<SnpLocus> = serde_json::from_str(loci_json)?;
     
-    /// Genesis root anchor
-    #[n(1)]
-    genesis_root: [u8; 32],
-    
-    /// All provenance nodes
-    #[n(2)]
-    nodes: Vec<MerkleNode>,
-    
-    /// Self-hash of merkler-static binary
-    #[n(3)]
-    merkler_hash: [u8; 32],
-}
-
-/// Compute SHA3-256 hash of data
-fn sha3_256(data: &[u8]) -> [u8; 32] {
-    let mut hasher = Sha3_256::new();
-    hasher.update(data);
-    let result = hasher.finalize();
-    let mut hash = [0u8; 32];
-    hash.copy_from_slice(&result);
-    hash
-}
-
-/// Compute CUDA epoch hash (PTX + driver manifest)
-fn compute_cuda_epoch_hash() -> [u8; 32] {
-    let mut combined = Vec::new();
-    combined.extend_from_slice(&CUDA_PTX_HASH);
-    combined.extend_from_slice(&DRIVER_MANIFEST_HASH);
-    sha3_256(&combined)
-}
-
-/// Verify dual FIDO2 signatures
-fn verify_dual_signatures(
-    message: &[u8],
-    sig_a: Option<&[u8; 64]>,
-    sig_b: Option<&[u8; 64]>,
-) -> bool {
-    // Verify signature A if present
-    if let Some(sig_bytes) = sig_a {
-        match VerifyingKey::from_bytes(&EPOCH_PUBKEY_A) {
-            Ok(pubkey) => {
-                match Signature::from_bytes(sig_bytes) {
-                    Ok(signature) => {
-                        if pubkey.verify(message, &signature).is_err() {
-                            return false;
-                        }
-                    }
-                    Err(_) => return false,
-                }
-            }
-            Err(_) => return false,
-        }
+    if loci.len() < 128 {
+        eprintln!("WARNING: Less than 128 loci provided ({}). Recommend 128-256 for security.", loci.len());
     }
     
-    // Verify signature B if present
-    if let Some(sig_bytes) = sig_b {
-        match VerifyingKey::from_bytes(&EPOCH_PUBKEY_B) {
-            Ok(pubkey) => {
-                match Signature::from_bytes(sig_bytes) {
-                    Ok(signature) => {
-                        if pubkey.verify(message, &signature).is_err() {
-                            return false;
-                        }
-                    }
-                    Err(_) => return false,
-                }
-            }
-            Err(_) => return false,
-        }
-    }
+    // Derive biokey
+    let biokey = EphemeralBiokey::derive_from_loci(&loci);
     
-    true
+    // Output results (public hash only, never private key)
+    println!("Biokey derived successfully!");
+    println!("Loci count: {}", biokey.loci_count);
+    println!("Public hash: {}", biokey.public_hash_hex());
+    println!();
+    println!("SECURITY: Private key stored in RAM only. Will be wiped on exit.");
+    
+    // Export to environment variable format
+    println!();
+    println!("Export to environment (for scripts):");
+    println!("export VITRA_BIOKEY_PUBLIC_HASH={}", biokey.public_hash_hex());
+    println!("export VITRA_BIOKEY_LOCI_COUNT={}", biokey.loci_count);
+    
+    Ok(())
 }
 
-/// Create a new Merkle node for a pipeline stage
-fn create_merkle_node(
-    parent_hash: [u8; 32],
-    stage: u32,
-    input_hash: [u8; 32],
-    output_hash: [u8; 32],
-    tool_hash: [u8; 32],
-    timestamp: u64,
-    signature_a: Option<[u8; 64]>,
-    signature_b: Option<[u8; 64]>,
-) -> MerkleNode {
-    let cuda_epoch_hash = compute_cuda_epoch_hash();
+fn generate_challenge() {
+    let challenge = BiokeyZkp::generate_challenge();
+    println!("Random ZKP challenge generated:");
+    println!("{}", hex::encode(challenge));
+}
+
+fn generate_proof(biokey_json: &str, challenge_hex: &str) -> Result<(), Box<dyn std::error::Error>> {
+    // Parse biokey loci
+    let loci: Vec<SnpLocus> = serde_json::from_str(biokey_json)?;
+    let biokey = EphemeralBiokey::derive_from_loci(&loci);
     
-    // Compute node hash from all fields
-    let mut combined = Vec::new();
-    combined.extend_from_slice(&parent_hash);
-    combined.extend_from_slice(&stage.to_le_bytes());
-    combined.extend_from_slice(&input_hash);
-    combined.extend_from_slice(&output_hash);
-    combined.extend_from_slice(&tool_hash);
-    combined.extend_from_slice(&timestamp.to_le_bytes());
-    combined.extend_from_slice(&cuda_epoch_hash);
+    // Parse challenge
+    let challenge_bytes = hex::decode(challenge_hex)?;
+    if challenge_bytes.len() != 32 {
+        return Err("Challenge must be 32 bytes (64 hex characters)".into());
+    }
+    let mut challenge = [0u8; 32];
+    challenge.copy_from_slice(&challenge_bytes);
     
-    let node_hash = sha3_256(&combined);
+    // Generate proof
+    let proof = BiokeyZkp::prove(&biokey, &challenge);
     
-    MerkleNode {
-        node_hash,
-        parent_hash,
-        stage,
-        input_hash,
-        output_hash,
-        tool_hash,
+    // Output proof as JSON
+    println!("{}", proof.to_json()?);
+    
+    Ok(())
+}
+
+fn verify_zkp(proof_json: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let proof: BiokeyZkp = BiokeyZkp::from_json(proof_json)?;
+    
+    // Note: In a real system, we'd need the public hash to verify
+    // This simplified version just checks format
+    println!("ZKP format valid: {}", proof.challenge.len() == 32 && proof.response.len() == 32);
+    println!("Challenge: {}", hex::encode(proof.challenge));
+    println!("Response: {}", hex::encode(proof.response));
+    
+    Ok(())
+}
+
+fn create_dual_signature(
+    biokey_a_json: &str,
+    biokey_b_json: &str,
+    message: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
+    // Parse biokeys
+    let loci_a: Vec<SnpLocus> = serde_json::from_str(biokey_a_json)?;
+    let loci_b: Vec<SnpLocus> = serde_json::from_str(biokey_b_json)?;
+    
+    let biokey_a = EphemeralBiokey::derive_from_loci(&loci_a);
+    let biokey_b = EphemeralBiokey::derive_from_loci(&loci_b);
+    
+    // Get current timestamp
+    let timestamp = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)?
+        .as_secs();
+    
+    // Create dual signature
+    let signature = DualBiokeySignature::create(
+        &biokey_a,
+        &biokey_b,
+        message.as_bytes(),
         timestamp,
-        cuda_epoch_hash,
-        signature_a,
-        signature_b,
-    }
+    );
+    
+    // Output signature as JSON
+    println!("{}", signature.to_json()?);
+    
+    Ok(())
 }
 
-/// Build complete Merkle DAG from pipeline stages
-fn build_merkle_dag(stages: Vec<MerkleNode>) -> MerkleDAG {
-    MerkleDAG {
-        version: 1,
-        genesis_root: GENESIS_MERKLE_ROOT,
-        nodes: stages,
-        merkler_hash: MERKLER_SELF_HASH,
-    }
+fn verify_dual_signature(signature_json: &str, message: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let signature: DualBiokeySignature = DualBiokeySignature::from_json(signature_json)?;
+    
+    let valid = signature.verify(message.as_bytes());
+    
+    println!("Dual signature verification: {}", if valid { "VALID" } else { "INVALID" });
+    println!("Operator A: {}", signature.operator_a_hash_hex());
+    println!("Operator B: {}", signature.operator_b_hash_hex());
+    println!("Timestamp: {}", signature.timestamp);
+    
+    Ok(())
 }
 
-/// Main entry point (no_std requires custom start)
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
-    // Self-hash verification
-    // In production, this would read the binary and verify MERKLER_SELF_HASH
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
     
-    // CUDA epoch verification
-    let cuda_epoch = compute_cuda_epoch_hash();
+    if args.len() < 2 {
+        print_usage();
+        std::process::exit(1);
+    }
     
-    // Example: Build a simple Merkle chain for 3 pipeline stages
-    // Stage 0: ALIGN (FASTQ → BAM)
-    let stage0 = create_merkle_node(
-        GENESIS_MERKLE_ROOT,
-        0,
-        [0x01; 32], // input FASTQ hash (placeholder)
-        [0x02; 32], // output BAM hash (placeholder)
-        [0x03; 32], // parabricks fq2bam hash
-        1735009200, // 2024-12-24 timestamp
-        None,       // Z0→Z1 auto-promoted
-        None,
-    );
+    let command = &args[1];
     
-    // Stage 1: CALL_VARIANTS (BAM → VCF)
-    let stage1 = create_merkle_node(
-        stage0.node_hash,
-        1,
-        [0x02; 32], // input BAM hash
-        [0x04; 32], // output VCF hash (placeholder)
-        [0x05; 32], // deepvariant hash
-        1735009500,
-        None,
-        None,
-    );
-    
-    // Stage 2: VALIDATE (VCF + GIAB truth → F1 score)
-    let stage2 = create_merkle_node(
-        stage1.node_hash,
-        2,
-        [0x04; 32], // input VCF hash
-        [0x06; 32], // validation report hash (placeholder)
-        [0x07; 32], // vcfeval hash
-        1735009800,
-        Some([0x0A; 64]), // Z1→Z2 requires signature A (placeholder)
-        None,
-    );
-    
-    let stages = alloc::vec![stage0, stage1, stage2];
-    
-    // Verify signatures
-    for stage in &stages {
-        let message = stage.node_hash;
-        if !verify_dual_signatures(&message, stage.signature_a.as_ref(), stage.signature_b.as_ref()) {
-            // Signature verification failed - abort
-            loop {}
+    let result = match command.as_str() {
+        "version" => {
+            println!("merkler-static v{}", VERSION);
+            println!("VITRA-E0 Biokey-Enabled Merkle Chain Builder");
+            Ok(())
         }
+        "help" | "--help" | "-h" => {
+            print_usage();
+            Ok(())
+        }
+        "derive-biokey" => {
+            if args.len() < 3 {
+                eprintln!("ERROR: Missing loci JSON argument");
+                print_usage();
+                std::process::exit(1);
+            }
+            
+            // Read from file or stdin
+            let loci_json = if args[2] == "-" {
+                let mut buffer = String::new();
+                io::stdin().read_to_string(&mut buffer).expect("Failed to read stdin");
+                buffer
+            } else {
+                std::fs::read_to_string(&args[2]).expect("Failed to read loci file")
+            };
+            
+            derive_biokey_from_json(&loci_json)
+        }
+        "generate-challenge" => {
+            generate_challenge();
+            Ok(())
+        }
+        "prove" => {
+            if args.len() < 4 {
+                eprintln!("ERROR: Missing biokey JSON and challenge arguments");
+                std::process::exit(1);
+            }
+            
+            let biokey_json = std::fs::read_to_string(&args[2])
+                .expect("Failed to read biokey file");
+            let challenge_hex = &args[3];
+            
+            generate_proof(&biokey_json, challenge_hex)
+        }
+        "verify-zkp" => {
+            if args.len() < 3 {
+                eprintln!("ERROR: Missing proof JSON argument");
+                std::process::exit(1);
+            }
+            
+            let proof_json = std::fs::read_to_string(&args[2])
+                .expect("Failed to read proof file");
+            
+            verify_zkp(&proof_json)
+        }
+        "dual-sign" => {
+            if args.len() < 5 {
+                eprintln!("ERROR: Missing biokey and message arguments");
+                std::process::exit(1);
+            }
+            
+            let biokey_a_json = std::fs::read_to_string(&args[2])
+                .expect("Failed to read biokey A file");
+            let biokey_b_json = std::fs::read_to_string(&args[3])
+                .expect("Failed to read biokey B file");
+            let message = &args[4];
+            
+            create_dual_signature(&biokey_a_json, &biokey_b_json, message)
+        }
+        "verify-dual" => {
+            if args.len() < 4 {
+                eprintln!("ERROR: Missing signature and message arguments");
+                std::process::exit(1);
+            }
+            
+            let signature_json = std::fs::read_to_string(&args[2])
+                .expect("Failed to read signature file");
+            let message = &args[3];
+            
+            verify_dual_signature(&signature_json, message)
+        }
+        _ => {
+            eprintln!("ERROR: Unknown command: {}", command);
+            print_usage();
+            std::process::exit(1);
+        }
+    };
+    
+    if let Err(e) = result {
+        eprintln!("ERROR: {}", e);
+        std::process::exit(1);
     }
-    
-    // Build DAG
-    let dag = build_merkle_dag(stages);
-    
-    // Encode to CBOR (in production, write to stdout/file)
-    let mut cbor_buffer = Vec::new();
-    let mut encoder = Encoder::new(&mut cbor_buffer);
-    if dag.encode(&mut encoder, &mut ()).is_ok() {
-        // Success - CBOR encoded Merkle DAG
-    }
-    
-    // Exit cleanly
-    loop {}
 }
 
-/// Panic handler (required for no_std)
-#[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
-    loop {}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn test_version_constant() {
+        assert!(!VERSION.is_empty());
+        assert!(VERSION.contains('.'));
+    }
 }

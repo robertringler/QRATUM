@@ -9,12 +9,9 @@ Status: Production
 
 from __future__ import annotations
 
-import hashlib
-import json
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 from contracts.base import (
     BaseContract,
@@ -22,7 +19,7 @@ from contracts.base import (
     generate_contract_id,
     get_current_timestamp,
 )
-from qradle.core.invariants import FatalInvariants, InvariantViolation, InvariantType
+from qradle.core.invariants import FatalInvariants, InvariantType, InvariantViolation
 from qradle.core.zones import SecurityZone, ZoneContext, ZoneDeterminismEnforcer
 
 
@@ -107,27 +104,21 @@ class ContractEnforcer:
         try:
             # Check contract immutability (Invariant 3)
             FatalInvariants.enforce_contract_immutability(
-                contract_id=contract.contract_id,
-                modified=False  # New contracts are not modified
+                contract_id=contract.contract_id, modified=False  # New contracts are not modified
             )
 
             # Check authorization system (Invariant 4)
-            FatalInvariants.enforce_authorization_system(
-                has_authorization_check=bool(actor_id)
-            )
+            FatalInvariants.enforce_authorization_system(has_authorization_check=bool(actor_id))
 
             # Check safety level (Invariant 5)
             FatalInvariants.enforce_safety_level_system(
-                operation="contract_creation",
-                has_safety_level=bool(safety_level)
+                operation="contract_creation", has_safety_level=bool(safety_level)
             )
 
             # Check human oversight for sensitive levels (Invariant 1)
             authorized = safety_level in ("ROUTINE", "ELEVATED") or True  # Simplified
             FatalInvariants.enforce_human_oversight(
-                operation="contract_creation",
-                safety_level=safety_level,
-                authorized=authorized
+                operation="contract_creation", safety_level=safety_level, authorized=authorized
             )
 
             # Zone enforcement
@@ -198,14 +189,12 @@ class ContractEnforcer:
         try:
             # Check Merkle integrity (Invariant 2)
             FatalInvariants.enforce_merkle_integrity(
-                chain_valid=merkle_chain_valid,
-                last_hash="current"
+                chain_valid=merkle_chain_valid, last_hash="current"
             )
 
             # Check rollback capability (Invariant 6)
             FatalInvariants.enforce_rollback_capability(
-                checkpoint_available=has_checkpoint,
-                checkpoint_id="execution_checkpoint"
+                checkpoint_available=has_checkpoint, checkpoint_id="execution_checkpoint"
             )
 
             # Check human oversight for sensitive operations (Invariant 1)
@@ -214,9 +203,7 @@ class ContractEnforcer:
                 # For sensitive levels, require explicit authorization
                 authorized = True  # In production, verify actual authorization
             FatalInvariants.enforce_human_oversight(
-                operation="contract_execution",
-                safety_level=safety_level,
-                authorized=authorized
+                operation="contract_execution", safety_level=safety_level, authorized=authorized
             )
 
             # Zone enforcement
@@ -285,15 +272,13 @@ class ContractEnforcer:
         try:
             # Check event emission (Invariant 7)
             FatalInvariants.enforce_event_emission(
-                event_emitted=events_emitted > 0,
-                operation="contract_completion"
+                event_emitted=events_emitted > 0, operation="contract_completion"
             )
 
             # Check determinism if expected hash provided (Invariant 8)
             if expected_hash is not None:
                 FatalInvariants.enforce_determinism(
-                    result_hash=output_hash,
-                    expected_hash=expected_hash
+                    result_hash=output_hash, expected_hash=expected_hash
                 )
 
             result = EnforcementResult.PASSED
@@ -354,8 +339,7 @@ class ContractEnforcer:
         try:
             # Check rollback capability (Invariant 6)
             FatalInvariants.enforce_rollback_capability(
-                checkpoint_available=bool(target_checkpoint_id),
-                checkpoint_id=target_checkpoint_id
+                checkpoint_available=bool(target_checkpoint_id), checkpoint_id=target_checkpoint_id
             )
 
             # Zone enforcement with dual-control for Z2+
@@ -520,9 +504,7 @@ def create_enforced_contract(
     Returns:
         EnforcedContract with enforcement metadata
     """
-    checkpoints = enforcer.get_enforcement_checkpoints(
-        contract_id=wrapped_contract.contract_id
-    )
+    checkpoints = enforcer.get_enforcement_checkpoints(contract_id=wrapped_contract.contract_id)
 
     all_passed = all(c.result == EnforcementResult.PASSED for c in checkpoints)
     status = "enforced" if all_passed and checkpoints else "pending"

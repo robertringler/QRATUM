@@ -11,9 +11,9 @@ from typing import Any
 
 import numpy as np
 
-from quasim.ciir.simulation.ciir_module import CIIRState, CIIRVisualizer
-from quasim.ciir.simulation.qratum_module import PerformanceDashboard, QRATUMHardware
+from quasim.ciir.simulation.ciir_module import CIIRState, CIIRObserver, CIIRVisualizer
 from quasim.ciir.simulation.quasim_module import TensorRuntime, TensorVisualizer
+from quasim.ciir.simulation.qratum_module import PerformanceDashboard, QRATUMHardware
 
 
 class SimulationRenderer:
@@ -88,8 +88,7 @@ class SimulationRenderer:
         step = states[-1].step if states else 0
         fig.suptitle(
             f"CIIR → QuASIM → QRATUM Simulation  |  Step {step}",
-            fontsize=14,
-            fontweight="bold",
+            fontsize=14, fontweight="bold",
         )
         plt.tight_layout()
 
@@ -122,20 +121,12 @@ def _plot_manifold_on_ax(ax: Any, states: list[CIIRState]) -> None:
         coords = np.array([s.manifold_embedding_3d()[b] for s in states])
         colors = np.linspace(0, 1, len(coords))
         ax.scatter(
-            coords[:, 0],
-            coords[:, 1],
-            coords[:, 2],
-            c=colors,
-            cmap="viridis",
-            s=8,
-            alpha=0.7,
+            coords[:, 0], coords[:, 1], coords[:, 2],
+            c=colors, cmap="viridis", s=8, alpha=0.7,
         )
         ax.plot(
-            coords[:, 0],
-            coords[:, 1],
-            coords[:, 2],
-            alpha=0.3,
-            linewidth=0.5,
+            coords[:, 0], coords[:, 1], coords[:, 2],
+            alpha=0.3, linewidth=0.5,
         )
     ax.set_xlabel("λ₁")
     ax.set_ylabel("λ₂")
@@ -148,22 +139,13 @@ def _plot_constraints_on_ax(ax: Any, state: CIIRState) -> None:
     points, violations = state.constraint_surface_samples(100)
     v_norm = violations / max(violations.max(), 1e-12)
     ax.scatter(
-        points[:, 0],
-        points[:, 1],
-        points[:, 2],
-        c=v_norm,
-        cmap="hot_r",
-        s=15,
-        alpha=0.6,
+        points[:, 0], points[:, 1], points[:, 2],
+        c=v_norm, cmap="hot_r", s=15, alpha=0.6,
     )
     current = state.manifold_embedding_3d()
     ax.scatter(
-        current[:, 0],
-        current[:, 1],
-        current[:, 2],
-        c="blue",
-        s=80,
-        marker="*",
+        current[:, 0], current[:, 1], current[:, 2],
+        c="blue", s=80, marker="*",
     )
     ax.set_xlabel("λ₁")
     ax.set_ylabel("λ₂")
@@ -174,7 +156,8 @@ def _plot_constraints_on_ax(ax: Any, state: CIIRState) -> None:
 def _plot_loss_on_ax(ax: Any, contraction_log: list[dict]) -> None:
     """Plot loss convergence on a given axes."""
     if not contraction_log:
-        ax.text(0.5, 0.5, "No data", ha="center", va="center", transform=ax.transAxes)
+        ax.text(0.5, 0.5, "No data", ha="center", va="center",
+                transform=ax.transAxes)
         return
     steps = range(len(contraction_log))
     losses = [e["loss"] for e in contraction_log]
@@ -209,7 +192,7 @@ def _plot_metrics_on_ax(ax: Any, hardware: QRATUMHardware, state: CIIRState) -> 
         f"Avg step:     {perf.get('avg_step_time_s', 0) * 1000:.2f}ms",
         f"Throughput:   {perf.get('throughput_steps_per_s', 0):.1f} steps/s",
         "",
-        "Current state (batch 0):",
+        f"Current state (batch 0):",
         f"  Purity:   {float(state.purity[0]):.4f}",
         f"  Entropy:  {float(state.entropy[0]):.4f}",
     ]
@@ -220,12 +203,8 @@ def _plot_metrics_on_ax(ax: Any, hardware: QRATUMHardware, state: CIIRState) -> 
             lines.append(f"  C{i} value: {float(cv[0, i]):.6f}")
 
     ax.text(
-        0.05,
-        0.95,
-        "\n".join(lines),
-        transform=ax.transAxes,
-        fontsize=8,
-        family="monospace",
+        0.05, 0.95, "\n".join(lines),
+        transform=ax.transAxes, fontsize=8, family="monospace",
         verticalalignment="top",
     )
     ax.set_title("Metrics Dashboard")

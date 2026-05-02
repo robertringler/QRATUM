@@ -29,8 +29,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+from typing import Callable
 
 import numpy as np
+from numpy.typing import NDArray
 
 from quasim.ciir.loss import CIIRLoss
 from quasim.ciir.theory import RealTensor
@@ -101,7 +103,9 @@ def projected_gradient_step(rho: RealTensor, grad: RealTensor, lr: float) -> Rea
 # ================================================================
 
 
-def unitary_half_step(rho: RealTensor, hamiltonian: RealTensor, dt: float) -> RealTensor:
+def unitary_half_step(
+    rho: RealTensor, hamiltonian: RealTensor, dt: float
+) -> RealTensor:
     r"""e^{-iH dt/2} ρ e^{iH dt/2}.
 
     Uses eigendecomposition for matrix exponentiation.

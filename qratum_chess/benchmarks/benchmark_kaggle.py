@@ -9,7 +9,6 @@ Usage:
     python qratum_chess/benchmarks/benchmark_kaggle.py --submit
     python qratum_chess/benchmarks/benchmark_kaggle.py --submit --message "QRATUM v1.0"
     python qratum_chess/benchmarks/benchmark_kaggle.py --input kaggle_data.json
-"""Kaggle Chess Benchmark Runner for QRATUM-Chess.
 
 This module runs the QRATUM AsymmetricAdaptiveSearch engine against
 Kaggle benchmark positions and analyzes the results.
@@ -51,13 +50,13 @@ from qratum_chess.core.position import Position
 def print_banner() -> None:
     """Print the Kaggle benchmark banner."""
     banner = """
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                                                                              ║
-║   🤖 QRATUM Chess - Kaggle Leaderboard Benchmark                             ║
-║                                                                              ║
-║   AsymmetricAdaptiveSearch vs Kaggle Chess Positions                         ║
-║                                                                              ║
-╚══════════════════════════════════════════════════════════════════════════════╝
++==============================================================================+
+|                                                                              |
+|    QRATUM Chess - Kaggle Leaderboard Benchmark                             |
+|                                                                              |
+|   AsymmetricAdaptiveSearch vs Kaggle Chess Positions                         |
+|                                                                              |
++==============================================================================+
 """
     print(banner)
 

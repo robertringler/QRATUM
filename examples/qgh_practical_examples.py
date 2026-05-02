@@ -7,13 +7,11 @@ in real-world scenarios.
 
 import numpy as np
 
-from quasim.qgh.nonspec_algorithms import (
-    CausalHistoryHash,
-    DistributedStreamMonitor,
-    SelfConsistencyPropagator,
-    StabilityMonitor,
-    SuperpositionResolver,
-)
+from quasim.qgh.nonspec_algorithms import (CausalHistoryHash,
+                                           DistributedStreamMonitor,
+                                           SelfConsistencyPropagator,
+                                           StabilityMonitor,
+                                           SuperpositionResolver)
 
 
 def example_federated_learning():

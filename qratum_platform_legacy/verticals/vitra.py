@@ -6,12 +6,11 @@ and molecular dynamics with strict research safety controls.
 
 import hashlib
 import math
-from typing import Any, Dict, FrozenSet, List
-
 from platform.core.base import VerticalModuleBase
 from platform.core.events import EventType, ExecutionEvent
 from platform.core.intent import PlatformContract
 from platform.core.substrates import ComputeSubstrate
+from typing import Any, Dict, FrozenSet, List
 
 
 class VitraModule(VerticalModuleBase):
@@ -181,7 +180,10 @@ class VitraModule(VerticalModuleBase):
         composition = {}
         for char in valid_chars:
             count = sequence.count(char)
-            composition[char] = {"count": count, "frequency": count / len(sequence) if sequence else 0}
+            composition[char] = {
+                "count": count,
+                "frequency": count / len(sequence) if sequence else 0,
+            }
 
         # Identify motifs (simplified pattern matching)
         motifs = self._find_motifs(sequence, sequence_type)
@@ -281,7 +283,9 @@ class VitraModule(VerticalModuleBase):
 
         # Deterministic binding affinity calculation
         interaction_hash = hashlib.sha256(f"{drug_smiles}{target_sequence}".encode()).hexdigest()
-        binding_affinity = -10.0 + (int(interaction_hash[:4], 16) % 150) / 10.0  # -10 to +5 kcal/mol
+        binding_affinity = (
+            -10.0 + (int(interaction_hash[:4], 16) % 150) / 10.0
+        )  # -10 to +5 kcal/mol
 
         # Calculate interaction metrics
         kd_estimate = math.exp(binding_affinity / (0.001987 * 298.15))  # Kd in M
@@ -416,14 +420,18 @@ class VitraModule(VerticalModuleBase):
         if seq_type == "protein":
             # Look for simple motifs
             if "RGD" in sequence:
-                motifs.append({"motif": "RGD", "type": "cell_adhesion", "position": sequence.find("RGD")})
+                motifs.append(
+                    {"motif": "RGD", "type": "cell_adhesion", "position": sequence.find("RGD")}
+                )
             if "KDEL" in sequence:
                 motifs.append(
                     {"motif": "KDEL", "type": "er_retention", "position": sequence.find("KDEL")}
                 )
         else:  # DNA
             if "TATA" in sequence:
-                motifs.append({"motif": "TATA", "type": "promoter", "position": sequence.find("TATA")})
+                motifs.append(
+                    {"motif": "TATA", "type": "promoter", "position": sequence.find("TATA")}
+                )
 
         return motifs
 

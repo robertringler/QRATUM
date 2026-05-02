@@ -36,8 +36,8 @@ repo_root = Path(__file__).parent
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
+from qratum_chess.benchmarks.runner import BenchmarkConfig, BenchmarkRunner
 from qratum_chess.self_modifying import SelfModifyingEngine
-from qratum_chess.benchmarks.runner import BenchmarkRunner, BenchmarkConfig
 
 
 # Custom JSON serializer for numpy types (module level to avoid repeated imports)
@@ -49,7 +49,7 @@ def json_serializer(obj):
         return float(obj)
     elif isinstance(obj, np.ndarray):
         return obj.tolist()
-    elif hasattr(obj, '__dict__'):
+    elif hasattr(obj, "__dict__"):
         return str(obj)
     return str(obj)
 
@@ -82,42 +82,45 @@ def parse_args() -> argparse.Namespace:
         description="Run QRATUM-Chess Self-Modifying Engine Simulation",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    
+
     parser.add_argument(
-        "--games", "-g",
+        "--games",
+        "-g",
         type=int,
         default=100,
         help="Number of games to simulate (default: 100, max recommended: 100000)",
     )
-    
+
     parser.add_argument(
-        "--output-dir", "-o",
+        "--output-dir",
+        "-o",
         type=str,
         default="benchmarks/self_modifying_full_run",
         help="Base output directory for results",
     )
-    
+
     parser.add_argument(
-        "--checkpoint-dir", "-c",
+        "--checkpoint-dir",
+        "-c",
         type=str,
         default="checkpoints",
         help="Directory for checkpoint files",
     )
-    
+
     parser.add_argument(
         "--checkpoint-interval",
         type=int,
         default=1000,
         help="Save checkpoint every N games (default: 1000)",
     )
-    
+
     parser.add_argument(
         "--resume",
         type=str,
         default=None,
         help="Resume from checkpoint file",
     )
-    
+
     # Engine parameters
     parser.add_argument(
         "--tactical-weight",
@@ -125,48 +128,48 @@ def parse_args() -> argparse.Namespace:
         default=0.4,
         help="Tactical cortex weight (default: 0.4)",
     )
-    
+
     parser.add_argument(
         "--strategic-weight",
         type=float,
         default=0.4,
         help="Strategic cortex weight (default: 0.4)",
     )
-    
+
     parser.add_argument(
         "--conceptual-weight",
         type=float,
         default=0.2,
         help="Conceptual cortex weight (default: 0.2)",
     )
-    
+
     parser.add_argument(
         "--novelty-pressure",
         type=float,
         default=0.5,
         help="Initial novelty pressure (default: 0.5)",
     )
-    
+
     parser.add_argument(
         "--memory-decay",
         type=float,
         default=0.01,
         help="Memory kernel decay factor (default: 0.01)",
     )
-    
+
     parser.add_argument(
         "--recursive-depth-limit",
         type=int,
         default=10,
         help="Maximum recursion depth for self-modification (default: 10)",
     )
-    
+
     parser.add_argument(
         "--no-ontology-evolution",
         action="store_true",
         help="Disable ontology evolution",
     )
-    
+
     # Benchmark options
     parser.add_argument(
         "--record-motifs",
@@ -174,28 +177,30 @@ def parse_args() -> argparse.Namespace:
         default=True,
         help="Enable motif discovery and recording (default: True)",
     )
-    
+
     parser.add_argument(
-        "--verbose", "-v",
+        "--verbose",
+        "-v",
         action="store_true",
         help="Enable verbose output",
     )
-    
+
     parser.add_argument(
-        "--quiet", "-q",
+        "--quiet",
+        "-q",
         action="store_true",
         help="Minimal output (only progress and results)",
     )
-    
+
     return parser.parse_args()
 
 
 def create_engine(args: argparse.Namespace) -> SelfModifyingEngine:
     """Create and configure the self-modifying engine.
-    
+
     Args:
         args: Parsed command line arguments.
-        
+
     Returns:
         Configured SelfModifyingEngine instance.
     """
@@ -208,16 +213,16 @@ def create_engine(args: argparse.Namespace) -> SelfModifyingEngine:
         ontology_evolution=not args.no_ontology_evolution,
         recursive_depth_limit=args.recursive_depth_limit,
     )
-    
+
     return engine
 
 
 def create_benchmark_config(args: argparse.Namespace) -> BenchmarkConfig:
     """Create benchmark configuration from arguments.
-    
+
     Args:
         args: Parsed command line arguments.
-        
+
     Returns:
         Benchmark configuration.
     """
@@ -234,31 +239,31 @@ def create_benchmark_config(args: argparse.Namespace) -> BenchmarkConfig:
 
 def run_simulation(args: argparse.Namespace) -> int:
     """Run the complete self-modifying simulation.
-    
+
     Args:
         args: Parsed command line arguments.
-        
+
     Returns:
         Exit code (0 for success, 1 for failure).
     """
     if not args.quiet:
         print_banner()
-    
+
     now = datetime.now()
     timestamp = now.strftime("%Y%m%d_%H%M%S")
-    
+
     if not args.quiet:
         print(f"Simulation started at: {now.strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"Session timestamp: {timestamp}")
         print(f"Target games: {args.games}")
         print()
-    
+
     # Create engine
     if not args.quiet:
         print("Initializing SelfModifyingEngine...")
-    
+
     engine = create_engine(args)
-    
+
     # Resume from checkpoint if specified
     if args.resume:
         if not args.quiet:
@@ -270,7 +275,7 @@ def run_simulation(args: argparse.Namespace) -> int:
         except Exception as e:
             print(f"  Warning: Failed to load checkpoint: {e}")
             print("  Starting fresh simulation")
-    
+
     if not args.quiet:
         print("  Engine configuration:")
         print(f"    Tactical weight: {engine.engine_config.tactical_weight:.2f}")
@@ -278,76 +283,82 @@ def run_simulation(args: argparse.Namespace) -> int:
         print(f"    Conceptual weight: {engine.engine_config.conceptual_weight:.2f}")
         print(f"    Novelty pressure: {engine.engine_config.novelty_pressure:.2f}")
         print(f"    Memory decay: {engine.engine_config.memory_decay:.4f}")
-        print(f"    Ontology evolution: {'ON' if engine.engine_config.ontology_evolution else 'OFF'}")
+        print(
+            f"    Ontology evolution: {'ON' if engine.engine_config.ontology_evolution else 'OFF'}"
+        )
         print(f"    Recursive depth limit: {engine.engine_config.recursive_depth_limit}")
         print()
-    
+
     # Create benchmark config and runner
     config = create_benchmark_config(args)
     runner = BenchmarkRunner(config)
-    
+
     # Create checkpoint directory
     checkpoint_dir = Path(args.checkpoint_dir)
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Create output directory
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Run simulation
     if not args.quiet:
         print("=" * 60)
         print("EXECUTING SELF-MODIFYING SIMULATION")
         print("=" * 60)
         print()
-    
+
     start_game = engine.games_played
     target_games = args.games
     simulation_start = time.perf_counter()
-    
+
     try:
         for i in range(start_game + 1, start_game + target_games + 1):
             # Run single game
             game_summary = runner.run_single_game(engine)
             runner.log_game_summary(game_summary)
-            
+
             # Progress output
             if not args.quiet and (i % 10 == 0 or i == start_game + 1):
                 elapsed = time.perf_counter() - simulation_start
                 games_done = i - start_game
                 games_per_sec = games_done / max(1, elapsed)
                 eta_seconds = (target_games - games_done) / max(0.001, games_per_sec)
-                
+
                 current_elo = engine.elo_history[-1] if engine.elo_history else 2500.0
                 motif_count = len(engine.discovered_motifs)
-                
-                print(f"Game {i}/{start_game + target_games} | "
-                      f"ELO: {current_elo:.0f} | "
-                      f"Motifs: {motif_count} | "
-                      f"Speed: {games_per_sec:.1f} games/s | "
-                      f"ETA: {eta_seconds/60:.1f}m")
-            
+
+                print(
+                    f"Game {i}/{start_game + target_games} | "
+                    f"ELO: {current_elo:.0f} | "
+                    f"Motifs: {motif_count} | "
+                    f"Speed: {games_per_sec:.1f} games/s | "
+                    f"ETA: {eta_seconds/60:.1f}m"
+                )
+
             # Verbose output
             if args.verbose:
-                print(f"  Result: {game_summary['result']} | "
-                      f"Moves: {game_summary['move_count']} | "
-                      f"Avg eval: {game_summary['avg_evaluation']:.3f} | "
-                      f"Avg novelty: {game_summary['avg_novelty_pressure']:.3f}")
-            
+                print(
+                    f"  Result: {game_summary['result']} | "
+                    f"Moves: {game_summary['move_count']} | "
+                    f"Avg eval: {game_summary['avg_evaluation']:.3f} | "
+                    f"Avg novelty: {game_summary['avg_novelty_pressure']:.3f}"
+                )
+
             # Periodic checkpoint
             if i % args.checkpoint_interval == 0:
                 checkpoint_path = checkpoint_dir / f"self_modifying_{i}.ckpt"
                 engine.save_checkpoint(str(checkpoint_path))
                 if not args.quiet:
                     print(f"  📁 Checkpoint saved: {checkpoint_path}")
-    
+
     except KeyboardInterrupt:
         print("\n\n⚠️  Simulation interrupted by user")
         print("Saving final checkpoint...")
         final_checkpoint = checkpoint_dir / f"self_modifying_interrupted_{engine.games_played}.ckpt"
         engine.save_checkpoint(str(final_checkpoint))
         print(f"  Checkpoint saved: {final_checkpoint}")
-    
+
     except Exception as e:
         print(f"\n\n❌ Simulation error: {e}")
         print("Saving error checkpoint...")
@@ -356,12 +367,13 @@ def run_simulation(args: argparse.Namespace) -> int:
         print(f"  Checkpoint saved: {error_checkpoint}")
         if args.verbose:
             import traceback
+
             traceback.print_exc()
         return 1
-    
+
     simulation_end = time.perf_counter()
     total_time = simulation_end - simulation_start
-    
+
     # Compile summary
     if not args.quiet:
         print()
@@ -369,10 +381,10 @@ def run_simulation(args: argparse.Namespace) -> int:
         print("COMPILING RESULTS")
         print("=" * 60)
         print()
-    
+
     summary = runner.compile_full_summary()
     engine_summary = engine.get_engine_summary()
-    
+
     # Print summary
     if not args.quiet:
         print("SIMULATION SUMMARY")
@@ -383,8 +395,12 @@ def run_simulation(args: argparse.Namespace) -> int:
         print()
         print("RESULTS:")
         print(f"  Wins: {summary['results']['wins']} ({summary['results']['win_rate']*100:.1f}%)")
-        print(f"  Draws: {summary['results']['draws']} ({summary['results']['draw_rate']*100:.1f}%)")
-        print(f"  Losses: {summary['results']['losses']} ({summary['results']['loss_rate']*100:.1f}%)")
+        print(
+            f"  Draws: {summary['results']['draws']} ({summary['results']['draw_rate']*100:.1f}%)"
+        )
+        print(
+            f"  Losses: {summary['results']['losses']} ({summary['results']['loss_rate']*100:.1f}%)"
+        )
         print()
         print("ELO PROGRESSION:")
         print(f"  Start: {summary['elo']['start']:.0f}")
@@ -400,34 +416,45 @@ def run_simulation(args: argparse.Namespace) -> int:
         print(f"  Parameter changes: {engine_summary['meta_dynamics']['parameter_changes_count']}")
         print()
         print("CURRENT ENGINE STATE:")
-        print(f"  Tactical weight: {engine_summary['current_state']['rules']['tactical_weight']:.4f}")
-        print(f"  Strategic weight: {engine_summary['current_state']['rules']['strategic_weight']:.4f}")
+        print(
+            f"  Tactical weight: {engine_summary['current_state']['rules']['tactical_weight']:.4f}"
+        )
+        print(
+            f"  Strategic weight: {engine_summary['current_state']['rules']['strategic_weight']:.4f}"
+        )
         print(f"  Novelty weight: {engine_summary['current_state']['rules']['novelty_weight']:.4f}")
         print(f"  Search depth: {engine_summary['current_state']['parameters']['search_depth']}")
-        print(f"  Novelty pressure: {engine_summary['current_state']['parameters']['novelty_pressure']:.4f}")
-    
+        print(
+            f"  Novelty pressure: {engine_summary['current_state']['parameters']['novelty_pressure']:.4f}"
+        )
+
     # Save results
     if not args.quiet:
         print()
         print("Saving results...")
-    
+
     # Save final checkpoint
     final_checkpoint = checkpoint_dir / f"self_modifying_final_{engine.games_played}.ckpt"
     engine.save_checkpoint(str(final_checkpoint))
-    
+
     # Save JSON results
     results_file = output_dir / f"simulation_results_{timestamp}.json"
-    with open(results_file, 'w') as f:
-        json.dump({
-            "simulation_summary": summary,
-            "engine_summary": engine_summary,
-            "timestamp": timestamp,
-            "args": vars(args),
-        }, f, indent=2, default=json_serializer)
-    
+    with open(results_file, "w") as f:
+        json.dump(
+            {
+                "simulation_summary": summary,
+                "engine_summary": engine_summary,
+                "timestamp": timestamp,
+                "args": vars(args),
+            },
+            f,
+            indent=2,
+            default=json_serializer,
+        )
+
     # Save CSV summary
     csv_file = output_dir / f"simulation_metrics_{timestamp}.csv"
-    with open(csv_file, 'w') as f:
+    with open(csv_file, "w") as f:
         f.write("metric,value\n")
         f.write(f"total_games,{summary['total_games']}\n")
         f.write(f"wins,{summary['results']['wins']}\n")
@@ -440,11 +467,11 @@ def run_simulation(args: argparse.Namespace) -> int:
         f.write(f"motifs_discovered,{summary['motifs']['total_discovered']}\n")
         f.write(f"total_time_seconds,{total_time:.2f}\n")
         f.write(f"games_per_second,{summary['performance']['games_per_second']:.4f}\n")
-    
+
     # Generate HTML report
     html_file = output_dir / f"simulation_report_{timestamp}.html"
     _generate_html_report(html_file, summary, engine_summary, timestamp)
-    
+
     if not args.quiet:
         print()
         print("=" * 60)
@@ -457,7 +484,7 @@ def run_simulation(args: argparse.Namespace) -> int:
         print(f"  • HTML: {html_file.name}")
         print(f"  • Checkpoint: {final_checkpoint}")
         print()
-    
+
     return 0
 
 
@@ -597,8 +624,8 @@ def _generate_html_report(
 </body>
 </html>
 """
-    
-    with open(filepath, 'w') as f:
+
+    with open(filepath, "w") as f:
         f.write(html_content)
 
 

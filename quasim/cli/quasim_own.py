@@ -8,17 +8,12 @@ import click
 
 from quasim.ownai.determinism import set_seed
 from quasim.ownai.eval.benchmark import benchmark_model, run_benchmark_suite
-from quasim.ownai.eval.reporting import (
-    generate_markdown_report,
-    save_results_csv,
-    save_results_json,
-)
+from quasim.ownai.eval.reporting import (generate_markdown_report,
+                                         save_results_csv, save_results_json)
 from quasim.ownai.integration.model_card import generate_model_card
 from quasim.ownai.integration.qgh_hooks import QGHLedger, create_run_id
 from quasim.ownai.integration.terc_observables import (
-    collect_terc_observables,
-    save_terc_observables,
-)
+    collect_terc_observables, save_terc_observables)
 
 
 @click.group()

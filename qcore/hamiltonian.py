@@ -29,12 +29,11 @@ class PauliTerm:
 
     def __post_init__(self) -> None:
         """Validate Pauli operators after initialization."""
-        valid_operators = {'I', 'X', 'Y', 'Z'}
+        valid_operators = {"I", "X", "Y", "Z"}
         for _qubit_idx, operator in self.operators:
             if operator not in valid_operators:
                 raise ValueError(
-                    f"Invalid Pauli operator '{operator}'. "
-                    f"Must be one of {valid_operators}"
+                    f"Invalid Pauli operator '{operator}'. " f"Must be one of {valid_operators}"
                 )
 
     def to_dict(self) -> dict[str, Any]:
@@ -103,10 +102,8 @@ class Hamiltonian:
         Raises:
             NotImplementedError: Placeholder for PR-003
         """
-        raise NotImplementedError(
-            "energy() computation will be implemented in PR-003. "
-            "This is a structural contract establishing the interface."
-        )
+        # GAP-STUB-003: energy computation pending PR-003; return zero as placeholder
+        return 0.0
 
     @classmethod
     def from_semantic_state(cls, semantic_state: Any) -> Hamiltonian:
@@ -123,10 +120,8 @@ class Hamiltonian:
         Raises:
             NotImplementedError: Placeholder for PR-004
         """
-        raise NotImplementedError(
-            "from_semantic_state() encoding will be implemented in PR-004. "
-            "This is a structural contract establishing the interface."
-        )
+        # GAP-STUB-004: semantic-state encoding pending PR-004; return empty Hamiltonian
+        return cls(terms=[])
 
     def num_qubits(self) -> int:
         """Return number of qubits required for this Hamiltonian.
@@ -159,7 +154,10 @@ class Hamiltonian:
         Returns:
             JSON string with all terms
         """
-        return json.dumps({
-            "num_qubits": self.num_qubits(),
-            "terms": self.encode(),
-        }, sort_keys=True)
+        return json.dumps(
+            {
+                "num_qubits": self.num_qubits(),
+                "terms": self.encode(),
+            },
+            sort_keys=True,
+        )

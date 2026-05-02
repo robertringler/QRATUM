@@ -25,8 +25,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from quasim.ciir.loss import CIIRLoss
 from quasim.ciir.theory import build_default_theory
+from quasim.ciir.loss import CIIRLoss
+
 
 # ================================================================
 # Fixtures
@@ -43,7 +44,9 @@ def theory():
 def rho_batch(theory):
     """Batch of density matrices."""
     rng = np.random.default_rng(42)
-    return theory.manifold.density_matrix(theory.manifold.random_state(batch=2, rng=rng))
+    return theory.manifold.density_matrix(
+        theory.manifold.random_state(batch=2, rng=rng)
+    )
 
 
 @pytest.fixture
@@ -152,7 +155,7 @@ class TestCIIRObserver:
     """Tests for CIIRObserver."""
 
     def test_observe(self, theory, rho_batch):
-        from quasim.ciir.simulation.ciir_module import CIIRObserver, CIIRState
+        from quasim.ciir.simulation.ciir_module import CIIRState, CIIRObserver
 
         state = CIIRState(rho=rho_batch, theory=theory)
         observer = CIIRObserver(theory=theory)
@@ -173,7 +176,7 @@ class TestCIIRObserver:
         np.testing.assert_allclose(comm, comm.T, atol=1e-10)
 
     def test_expectation_values(self, theory, rho_batch):
-        from quasim.ciir.simulation.ciir_module import CIIRObserver, CIIRState
+        from quasim.ciir.simulation.ciir_module import CIIRState, CIIRObserver
 
         state = CIIRState(rho=rho_batch, theory=theory)
         observer = CIIRObserver(theory=theory)
@@ -281,8 +284,8 @@ class TestQRATUMHardware:
     """Tests for QRATUMHardware."""
 
     def test_inject_constraints(self, theory, rho_batch):
-        from quasim.ciir.config import CIIRConfig
         from quasim.ciir.simulation.qratum_module import QRATUMHardware
+        from quasim.ciir.config import CIIRConfig
 
         hw = QRATUMHardware(theory=theory, config=CIIRConfig(seed=42))
         result = hw.inject_constraints(rho_batch)
@@ -292,8 +295,8 @@ class TestQRATUMHardware:
             np.testing.assert_allclose(np.trace(result[b]), 1.0, atol=1e-4)
 
     def test_record_and_summary(self, theory):
-        from quasim.ciir.config import CIIRConfig
         from quasim.ciir.simulation.qratum_module import QRATUMHardware
+        from quasim.ciir.config import CIIRConfig
 
         hw = QRATUMHardware(theory=theory, config=CIIRConfig(seed=42))
         hw.record_step_metrics(0, 1.5, 0.5, np.array([0.1, 0.2]), 0.001)
@@ -307,12 +310,13 @@ class TestPerformanceDashboard:
     """Tests for PerformanceDashboard."""
 
     def test_plot_dashboard(self, theory, tmpdir):
+        from quasim.ciir.simulation.qratum_module import QRATUMHardware, PerformanceDashboard
         from quasim.ciir.config import CIIRConfig
-        from quasim.ciir.simulation.qratum_module import PerformanceDashboard, QRATUMHardware
 
         hw = QRATUMHardware(theory=theory, config=CIIRConfig(seed=42))
         for i in range(10):
-            hw.record_step_metrics(i, 1.0 - i * 0.05, 0.5 - i * 0.02, np.array([0.1, 0.05]), 0.001)
+            hw.record_step_metrics(i, 1.0 - i * 0.05, 0.5 - i * 0.02,
+                                   np.array([0.1, 0.05]), 0.001)
 
         dash = PerformanceDashboard()
         path = os.path.join(tmpdir, "dashboard.png")
@@ -331,7 +335,6 @@ class TestExport:
 
     def test_screenshot_capture(self, tmpdir):
         import matplotlib.pyplot as plt
-
         from quasim.ciir.simulation.export import ScreenshotCapture
 
         cap = ScreenshotCapture(os.path.join(tmpdir, "screenshots"))
@@ -399,16 +402,11 @@ class TestMetricsDashboard:
 
         db = MetricsDashboard()
         for i in range(30):
-            db.record(
-                MetricsSnapshot(
-                    step=i,
-                    total_loss=1.0 / (i + 1),
-                    gradient_norm=0.5 / (i + 1),
-                    purity=0.3,
-                    entropy=1.2,
-                    constraint_violations=[0.1, 0.05],
-                )
-            )
+            db.record(MetricsSnapshot(
+                step=i, total_loss=1.0 / (i + 1), gradient_norm=0.5 / (i + 1),
+                purity=0.3, entropy=1.2,
+                constraint_violations=[0.1, 0.05],
+            ))
         path = os.path.join(tmpdir, "dashboard.png")
         fig = db.plot(save_path=path)
         assert fig is not None
@@ -501,12 +499,8 @@ class TestSimulationEngine:
         )
 
         cfg = SimulationConfig(
-            rep_dim=4,
-            batch_size=2,
-            n_constraints=2,
-            n_observers=1,
-            n_steps=5,
-            output_dir="/tmp/ciir_step_test",
+            rep_dim=4, batch_size=2, n_constraints=2, n_observers=1,
+            n_steps=5, output_dir="/tmp/ciir_step_test",
         )
         engine = CIIRSimulationEngine(cfg)
         engine.init()

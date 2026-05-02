@@ -137,9 +137,7 @@ try:
     from qratum import Circuit as QRATUMCircuit
     from qratum import DensityMatrix as QRATUMDensityMatrix
     from qratum import Measurement as QRATUMMeasurement
-    from qratum import (
-        QRATUMConfig,
-    )
+    from qratum import QRATUMConfig
     from qratum import Result as QRATUMResult
     from qratum import Simulator as QRATUMSimulator
     from qratum import StateVector as QRATUMStateVector

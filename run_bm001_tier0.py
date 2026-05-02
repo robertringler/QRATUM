@@ -21,13 +21,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent / "evaluation" / "ansys"))
 sys.path.insert(0, str(Path(__file__).parent / "sdk" / "ansys"))
 
-from performance_runner import (
-    AnsysBaselineExecutor,
-    BenchmarkDefinition,
-    PerformanceComparer,
-    QuasimExecutor,
-    ReportGenerator,
-)
+from performance_runner import (AnsysBaselineExecutor, BenchmarkDefinition,
+                                PerformanceComparer, QuasimExecutor,
+                                ReportGenerator)
 
 # Configure logging
 logging.basicConfig(

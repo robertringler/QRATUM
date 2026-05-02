@@ -1,0 +1,52 @@
+% RevTeX 4.2 PRX-style source (revised version)
+\documentclass[aps,prx,twocolumn,superscriptaddress,floatfix]{revtex4-2}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{amsthm}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{float}
+
+% Allow page breaks in long displayed equations
+\allowdisplaybreaks
+
+% TikZ defaults
+\tikzset{every picture/.style={font=\scriptsize, line width=0.7pt}}
+
+% Theorem environments
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\bibliographystyle{apsrev4-2}
+
+\begin{document}
+
+\title{The Anti-holographic Entangled Universe:\ A Framework for Super-extensive Entropy Scaling}
+
+\author{Robert Ringler}
+\affiliation{Independent Researcher}
+\date{\today}
+
+\begin{abstract}
+We introduce the Anti-holographic Entangled Universe (AEU), a theoretical framework in which cosmological degrees of freedom exhibit emergent non-local entanglement structures that violate conventional holographic entropy bounds while preserving causality and unitarity. We provide rigorous mathematical foundations for anti-holographic mappings, prove existence theorems under physically motivated axioms, and construct explicit lattice and continuum models realizing the required entanglement patterns. Our analysis includes dynamical properties, modified correlation functions, anomalous transport, and numerical simulations validating the theoretical predictions. We derive observational signatures for early-universe cosmology and discuss connections to quantum gravity, many-body physics, and condensed matter systems. This framework opens new avenues for understanding the emergence of spacetime from quantum entanglement with entropy scaling intermediate between area-law and volume-law regimes.
+\end{abstract}
+
+\maketitle
+
+% (file continues...)

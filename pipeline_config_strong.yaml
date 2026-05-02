@@ -1,0 +1,65 @@
+# Stronger findings configuration: deeper gamma sweeps, enable MSD, bootstrap, larger lattice.
+version: 1
+random_seed: 137
+
+lattice:
+  sizes:
+    - [16, 16]
+  disorder_values: [0.0, 0.2]
+
+noise:
+  gamma_scan_logspace: {start_exp: -4, end_exp: 1, points: 40}
+  target_time: 6.0
+  dt: 0.02
+  refinement_factor: 2
+
+analysis:
+  perform_convergence: true
+  perform_traj_variance: false
+  perform_phase_diagram: true
+  perform_msd: true
+  perform_otoc: false
+  perform_logical: true
+  enhanced_ramsey: false
+  bootstrap_samples: 512
+  msd_time_points: 120
+  perform_fss: false
+  fss_sizes: []
+
+ptq:
+  enable_delta: false
+  r0: 1.0
+  gamma_c: 1.0
+  u: 1.0
+  M: 1000.0
+  require_valid: false
+
+quality_gates:
+  max_trace_deviation: 1.0e-9
+  min_dt_order: 3.5
+  max_bootstrap_halfwidth: 0.08
+  fractal_transport_tolerance: 0.20
+  positivity_tolerance: 1.0e-9
+  max_local_error: 1.0e-4
+  max_forced_d2_fraction: 0.5
+  min_logical_fidelity: 0.55
+
+report:
+  build_latex: true
+  master_tex: blueprint_master.tex
+  output_pdf: blueprint_master.pdf
+  keep_intermediate: false
+
+output:
+  root_dir: automation_runs
+  compress_archives: true
+
+parallel:
+  workers: 2
+
+logging:
+  level: INFO
+  json_metadata: true
+
+runtime:
+  analysis_timeout_seconds: 360

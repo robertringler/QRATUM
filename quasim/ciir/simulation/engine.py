@@ -17,35 +17,34 @@ from __future__ import annotations
 
 import os
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import Any
 
 import numpy as np
 
 from quasim.ciir.config import CIIRConfig
-from quasim.ciir.evolution import project_density
+from quasim.ciir.evolution import IntegrationMethod, evolve, project_density
 from quasim.ciir.loss import CIIRLoss
-from quasim.ciir.simulation.ciir_module import CIIRObserver, CIIRState, CIIRVisualizer
-from quasim.ciir.simulation.dashboard import MetricsDashboard, MetricsSnapshot, print_dashboard
-from quasim.ciir.simulation.export import (
-    SimulationExporter,
-)
-from quasim.ciir.simulation.interactive import InteractiveController
-from quasim.ciir.simulation.qratum_module import (
-    PerformanceDashboard,
-    QRATUMHardware,
-)
-from quasim.ciir.simulation.quasim_module import (
-    TensorRuntime,
-    TensorVisualizer,
-)
-from quasim.ciir.simulation.renderer import SimulationRenderer
 from quasim.ciir.theory import CIIRTheory, build_default_theory
+
+from quasim.ciir.simulation.ciir_module import CIIRState, CIIRObserver, CIIRVisualizer
+from quasim.ciir.simulation.quasim_module import (
+    PrecisionMode, QuASIMTensor, TensorRuntime, TensorVisualizer,
+)
+from quasim.ciir.simulation.qratum_module import (
+    QRATUMHardware, ExecutionScheduler, PerformanceDashboard,
+)
+from quasim.ciir.simulation.export import (
+    SimulationExporter, ScreenshotCapture, TensorLogger, MetricsCSVWriter,
+)
+from quasim.ciir.simulation.dashboard import MetricsDashboard, MetricsSnapshot, print_dashboard
+from quasim.ciir.simulation.interactive import InteractiveController
+from quasim.ciir.simulation.renderer import SimulationRenderer, render_simulation_frame
 
 
 @dataclass
 class SimulationConfig:
     """Configuration for the simulation engine."""
-
     # Manifold dimensions
     rank: int = 4
     rep_dim: int = 8
@@ -181,15 +180,8 @@ class CIIRSimulationEngine:
         # 10. Exporter
         self.exporter = SimulationExporter(output_dir=cfg.output_dir, dpi=cfg.screenshot_dpi)
         csv_fields = [
-            "step",
-            "total_loss",
-            "constraint_loss",
-            "observer_loss",
-            "entropy_loss",
-            "gradient_norm",
-            "purity",
-            "entropy",
-            "step_time_ms",
+            "step", "total_loss", "constraint_loss", "observer_loss",
+            "entropy_loss", "gradient_norm", "purity", "entropy", "step_time_ms",
         ]
         self.exporter.init(fieldnames=csv_fields)
 
@@ -212,7 +204,8 @@ class CIIRSimulationEngine:
 
         # 1. Compute loss and gradient
         lr = self.controller.learning_rate if self.controller else self.config.learning_rate
-        loss, grad, components = self.tensor_runtime.compute_loss_and_gradient(self.ciir_state.rho)
+        loss, grad, components = self.tensor_runtime.compute_loss_and_gradient(
+            self.ciir_state.rho)
 
         # 2. Gradient step
         rho_new = self.ciir_state.rho - lr * grad
@@ -225,7 +218,8 @@ class CIIRSimulationEngine:
 
         # 5. Update state
         self.current_step += 1
-        self.ciir_state = CIIRState(rho=rho_new, theory=self.theory, step=self.current_step)
+        self.ciir_state = CIIRState(
+            rho=rho_new, theory=self.theory, step=self.current_step)
 
         # Keep bounded history for trajectory visualization
         self._state_history.append(self.ciir_state)
@@ -248,11 +242,8 @@ class CIIRSimulationEngine:
             purity=float(self.ciir_state.purity[0]),
             entropy=float(self.ciir_state.entropy[0]),
             constraint_violations=self.ciir_state.constraint_values[0].tolist(),
-            observer_expectations=(
-                self.ciir_observer.expectation_values(self.ciir_state)[0].tolist()
-                if self.ciir_observer
-                else []
-            ),
+            observer_expectations=self.ciir_observer.expectation_values(
+                self.ciir_state)[0].tolist() if self.ciir_observer else [],
         )
 
         # Record to dashboard
@@ -283,36 +274,32 @@ class CIIRSimulationEngine:
 
             # Log metrics to CSV
             if self.exporter and self.exporter.metrics_writer and cfg.log_metrics:
-                self.exporter.metrics_writer.write_row(
-                    {
-                        "step": snapshot.step,
-                        "total_loss": snapshot.total_loss,
-                        "constraint_loss": snapshot.constraint_loss,
-                        "observer_loss": snapshot.observer_loss,
-                        "entropy_loss": snapshot.entropy_loss,
-                        "gradient_norm": snapshot.gradient_norm,
-                        "purity": snapshot.purity,
-                        "entropy": snapshot.entropy,
-                        "step_time_ms": snapshot.step_time_ms,
-                    }
-                )
+                self.exporter.metrics_writer.write_row({
+                    "step": snapshot.step,
+                    "total_loss": snapshot.total_loss,
+                    "constraint_loss": snapshot.constraint_loss,
+                    "observer_loss": snapshot.observer_loss,
+                    "entropy_loss": snapshot.entropy_loss,
+                    "gradient_norm": snapshot.gradient_norm,
+                    "purity": snapshot.purity,
+                    "entropy": snapshot.entropy,
+                    "step_time_ms": snapshot.step_time_ms,
+                })
 
             # Log tensor state
             if self.exporter and self.exporter.tensor_logger and cfg.log_tensors:
-                self.exporter.tensor_logger.log(
-                    snapshot.step,
-                    {
-                        "loss": snapshot.total_loss,
-                        "grad_norm": snapshot.gradient_norm,
-                        "purity": snapshot.purity,
-                        "entropy": snapshot.entropy,
-                        "constraint_violations": snapshot.constraint_violations,
-                        "observer_expectations": snapshot.observer_expectations,
-                    },
-                )
+                self.exporter.tensor_logger.log(snapshot.step, {
+                    "loss": snapshot.total_loss,
+                    "grad_norm": snapshot.gradient_norm,
+                    "purity": snapshot.purity,
+                    "entropy": snapshot.entropy,
+                    "constraint_violations": snapshot.constraint_violations,
+                    "observer_expectations": snapshot.observer_expectations,
+                })
 
             # Screenshot at intervals
-            if cfg.screenshot_interval > 0 and self.current_step % cfg.screenshot_interval == 0:
+            if (cfg.screenshot_interval > 0 and
+                    self.current_step % cfg.screenshot_interval == 0):
                 self._capture_screenshot()
 
             # Console output
@@ -334,7 +321,8 @@ class CIIRSimulationEngine:
             runtime=self.tensor_runtime,
             hardware=self.hardware,
         )
-        path = self.exporter.screenshot_capture.capture(fig, prefix="sim", step=self.current_step)
+        path = self.exporter.screenshot_capture.capture(
+            fig, prefix="sim", step=self.current_step)
         print(f"  [Screenshot] {path}")
 
     def shutdown(self) -> None:
@@ -352,15 +340,16 @@ class CIIRSimulationEngine:
         # Generate final performance dashboard
         if self.hardware and self.config.output_dir:
             perf_dashboard = PerformanceDashboard()
-            perf_path = os.path.join(self.config.output_dir, "performance_dashboard.png")
+            perf_path = os.path.join(
+                self.config.output_dir, "performance_dashboard.png")
             perf_dashboard.plot_full_dashboard(self.hardware, save_path=perf_path)
 
         print(f"\n[Engine] Output: {self.config.output_dir}/")
-        print("  screenshots/         — PNG frames")
-        print("  metrics.csv          — Per-step metrics")
-        print("  tensor_log.json      — Tensor states")
-        print("  dashboard.png        — Metrics dashboard")
-        print("  performance_dashboard.png — Performance dashboard")
+        print(f"  screenshots/         — PNG frames")
+        print(f"  metrics.csv          — Per-step metrics")
+        print(f"  tensor_log.json      — Tensor states")
+        print(f"  dashboard.png        — Metrics dashboard")
+        print(f"  performance_dashboard.png — Performance dashboard")
 
 
 def run_and_capture_simulation(
@@ -419,10 +408,8 @@ def run_and_capture_simulation(
     print("║  CIIR → QuASIM → QRATUM Simulation Engine       ║")
     print("╠══════════════════════════════════════════════════╣")
     print(f"║  Manifold: R={config.rank} D={config.rep_dim} B={config.batch_size}")
-    print(
-        f"║  Theory:   C={config.n_constraints} O={config.n_observers}"
-        f" η={config.learning_rate} γ={config.entropy_weight}"
-    )
+    print(f"║  Theory:   C={config.n_constraints} O={config.n_observers}"
+          f" η={config.learning_rate} γ={config.entropy_weight}")
     print(f"║  Steps:    {config.n_steps}  Screenshots: every {config.screenshot_interval}")
     print(f"║  Output:   {config.output_dir}")
     print("╚══════════════════════════════════════════════════╝\n")

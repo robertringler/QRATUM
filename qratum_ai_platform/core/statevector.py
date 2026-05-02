@@ -175,5 +175,97 @@ class StateVector:
                 lines.append(f"  |{basis}⟩: {amp:.4f} (prob: {prob:.4f})")
         return "\n".join(lines)
 
+    def compress(self, fidelity: float = 0.995) -> 'CompressedStateVector':
+        """Return AHTC-compressed representation.
 
-__all__ = ["StateVector"]
+        Args:
+            fidelity: Target fidelity (default: 0.995 for 99.5%)
+
+        Returns:
+            CompressedStateVector object
+
+        Example:
+            >>> sv = StateVector.random_state(10)
+            >>> compressed = sv.compress(fidelity=0.995)
+        """
+        from quasim.holo.anti_tensor import compress
+
+        compressed_data, achieved_fidelity, metadata = compress(
+            self.data, fidelity=fidelity
+        )
+
+        return CompressedStateVector(
+            compressed_data=compressed_data,
+            num_qubits=self.num_qubits,
+            fidelity=achieved_fidelity,
+            metadata=metadata,
+        )
+
+    @classmethod
+    def from_compressed(cls, compressed: 'CompressedStateVector') -> 'StateVector':
+        """Reconstruct from compressed format.
+
+        Args:
+            compressed: CompressedStateVector object
+
+        Returns:
+            Decompressed StateVector
+
+        Example:
+            >>> compressed = sv.compress()
+            >>> recovered = StateVector.from_compressed(compressed)
+        """
+        from quasim.holo.anti_tensor import decompress
+
+        data = decompress(compressed.compressed_data)
+        return cls(data, compressed.num_qubits)
+
+
+class CompressedStateVector:
+    """Compressed state vector using AHTC.
+
+    Attributes:
+        compressed_data: Compressed representation dictionary
+        num_qubits: Number of qubits in original state
+        fidelity: Achieved compression fidelity
+        metadata: Compression metadata
+    """
+
+    def __init__(
+        self,
+        compressed_data: dict,
+        num_qubits: int,
+        fidelity: float,
+        metadata: dict,
+    ):
+        """Initialize compressed state vector.
+
+        Args:
+            compressed_data: Compressed data from AHTC
+            num_qubits: Number of qubits
+            fidelity: Achieved fidelity
+            metadata: Compression metadata
+        """
+        self.compressed_data = compressed_data
+        self.num_qubits = num_qubits
+        self.fidelity = fidelity
+        self.metadata = metadata
+
+    def decompress(self) -> StateVector:
+        """Decompress to StateVector.
+
+        Returns:
+            Decompressed StateVector
+        """
+        return StateVector.from_compressed(self)
+
+    def __repr__(self) -> str:
+        """String representation."""
+        ratio = self.metadata.get('compression_ratio', 0)
+        return (
+            f"CompressedStateVector({self.num_qubits} qubits, "
+            f"fidelity={self.fidelity:.4f}, ratio={ratio:.2f}x)"
+        )
+
+
+__all__ = ["StateVector", "CompressedStateVector"]
