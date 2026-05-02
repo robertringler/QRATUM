@@ -10,8 +10,7 @@ from typing import Any
 import numpy as np
 
 from .environment import EnvironmentalConditions, RoadSurface, WeatherCondition
-from .geometry import (TireGeometry, TireStructure, TireType, TreadDesign,
-                       TreadPattern)
+from .geometry import TireGeometry, TireStructure, TireType, TreadDesign, TreadPattern
 from .materials import CompoundType, MaterialProperties, TireCompound
 from .simulation import TireSimulation
 

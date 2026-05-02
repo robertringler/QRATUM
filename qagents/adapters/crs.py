@@ -150,9 +150,7 @@ def crs_simulator(
         "pillar": world_state.get("pillar"),
         "tampering_score": tampering,
         "rollback_available": world_state.get("rollback_available", True),
-        "human_oversight_pending": bool(
-            world_state.get("human_oversight_pending", False)
-        ),
+        "human_oversight_pending": bool(world_state.get("human_oversight_pending", False)),
     }
     if block is not None:
         expected_state["safety_block"] = block

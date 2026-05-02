@@ -11,20 +11,20 @@ from __future__ import annotations
 
 import numpy as np
 
-from quasim.ciir.crs.graph import CRSGraph, Node, Edge, lattice_graph, random_graph
+from quasim.ciir.crs.evolution import CRSEngine
+from quasim.ciir.crs.graph import lattice_graph, random_graph
 from quasim.ciir.crs.rewrite import (
     RewriteEngine,
-    diffusion_rule,
     decay_rule,
+    diffusion_rule,
     interaction_rule,
     stochastic_perturbation_rule,
 )
-from quasim.ciir.crs.evolution import CRSEngine
-
 
 # ================================================================
 # 1. Diffusion
 # ================================================================
+
 
 def run_diffusion_experiment(
     n_nodes: int = 100,
@@ -85,9 +85,7 @@ def run_diffusion_experiment(
 
     for t in range(n_steps):
         metrics = crs.step()
-        norms = np.array(
-            [float(np.linalg.norm(n.state)) for n in crs.graph.nodes.values()]
-        )
+        norms = np.array([float(np.linalg.norm(n.state)) for n in crs.graph.nodes.values()])
         mn = float(norms.mean()) if len(norms) > 0 else 0.0
         mx = float(norms.max()) if len(norms) > 0 else 0.0
         sd = float(norms.std()) if len(norms) > 0 else 0.0
@@ -110,6 +108,7 @@ def run_diffusion_experiment(
 # ================================================================
 # 2. Wave propagation
 # ================================================================
+
 
 def run_wave_experiment(
     n_nodes: int = 100,
@@ -164,18 +163,14 @@ def run_wave_experiment(
 
     for t in range(n_steps):
         metrics = crs.step()
-        norms = np.array(
-            [float(np.linalg.norm(n.state)) for n in crs.graph.nodes.values()]
-        )
+        norms = np.array([float(np.linalg.norm(n.state)) for n in crs.graph.nodes.values()])
         mn = float(norms.mean()) if len(norms) > 0 else 0.0
         mx = float(norms.max()) if len(norms) > 0 else 0.0
         # Energy: sum of squared norms (kinetic energy analog)
         energy = float(np.sum(norms**2))
 
         # Oscillation index: std of state component 0 across nodes
-        comp0 = np.array(
-            [float(n.state[0]) for n in crs.graph.nodes.values()]
-        )
+        comp0 = np.array([float(n.state[0]) for n in crs.graph.nodes.values()])
         osc = float(np.std(comp0))
 
         steps_list.append(t + 1)
@@ -196,6 +191,7 @@ def run_wave_experiment(
 # ================================================================
 # 3. Phase transition
 # ================================================================
+
 
 def run_phase_transition_experiment(
     n_nodes: int = 50,
@@ -254,6 +250,7 @@ def run_phase_transition_experiment(
 # 4. Entropy growth
 # ================================================================
 
+
 def run_entropy_experiment(
     n_nodes: int = 100,
     d_state: int = 4,
@@ -306,9 +303,7 @@ def run_entropy_experiment(
         p = p[p > 0]
         entropy = float(-np.sum(p * np.log(p)))
 
-        norms = np.array(
-            [float(np.linalg.norm(n.state)) for n in crs.graph.nodes.values()]
-        )
+        norms = np.array([float(np.linalg.norm(n.state)) for n in crs.graph.nodes.values()])
         steps_list.append(t + 1)
         entropies.append(entropy)
         mean_norms.append(float(norms.mean()))

@@ -10,11 +10,11 @@ We deliberately do *not* spin up an HTTP server here — that would couple
 the spine to a web framework choice.  Instead, we expose pure functions
 that any FastAPI / Flask / aiohttp adapter can wrap.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Mapping
-
 
 #: Canonical health states.  Mapped 1:1 to HTTP status by the wrapping
 #: service (``OK`` → 200, ``DEGRADED`` → 200, ``UNHEALTHY`` → 503).

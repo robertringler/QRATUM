@@ -144,11 +144,7 @@ def qratum_proposer(
     current_osr = _f(world_state.get("OSR"), 1.0)
     max_magnitude = _clamp01(_f(system_limits.get("max_magnitude"), 1.0))
 
-    gap = (
-        0.0
-        if target_osr <= 0.0
-        else max(0.0, (target_osr - current_osr) / target_osr)
-    )
+    gap = 0.0 if target_osr <= 0.0 else max(0.0, (target_osr - current_osr) / target_osr)
 
     magnitude = min(max_magnitude, _clamp01(gap))
     if magnitude == 0.0:

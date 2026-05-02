@@ -657,19 +657,19 @@ class MultiQubitSimulator:
             from quasim.holo.anti_tensor import compress as ahtc_compress
 
             compressed_state, fidelity, metadata = ahtc_compress(self.state, fidelity=0.995)
-            
+
             # Flatten the compressed_state dictionary for npz serialization
             # Extract cores (U, S, Vh) as separate arrays
-            U, S, Vh = compressed_state['cores']
+            U, S, Vh = compressed_state["cores"]
             checkpoint_data["compressed_U"] = U
             checkpoint_data["compressed_S"] = S
             checkpoint_data["compressed_Vh"] = Vh
-            checkpoint_data["original_shape"] = np.array(compressed_state['original_shape'])
-            checkpoint_data["original_size"] = compressed_state['original_size']
-            checkpoint_data["matrix_shape"] = np.array(compressed_state['matrix_shape'])
-            checkpoint_data["method"] = compressed_state['method']
-            checkpoint_data["ranks"] = np.array(compressed_state['ranks'])
-            
+            checkpoint_data["original_shape"] = np.array(compressed_state["original_shape"])
+            checkpoint_data["original_size"] = compressed_state["original_size"]
+            checkpoint_data["matrix_shape"] = np.array(compressed_state["matrix_shape"])
+            checkpoint_data["method"] = compressed_state["method"]
+            checkpoint_data["ranks"] = np.array(compressed_state["ranks"])
+
             checkpoint_data["fidelity"] = fidelity
             checkpoint_data["compression_metadata"] = metadata
         else:
@@ -679,8 +679,8 @@ class MultiQubitSimulator:
         np.savez_compressed(path, **checkpoint_data)
 
         # Also save JSON metadata
-        metadata_path = path.replace('.npz', '_metadata.json')
-        with open(metadata_path, 'w') as f:
+        metadata_path = path.replace(".npz", "_metadata.json")
+        with open(metadata_path, "w") as f:
             # Convert numpy types to python types for JSON
             json_metadata = {
                 "num_qubits": int(self.num_qubits),
@@ -715,18 +715,18 @@ class MultiQubitSimulator:
 
             # Reconstruct the compressed_state dictionary from saved arrays
             compressed_state = {
-                'cores': [
+                "cores": [
                     checkpoint["compressed_U"],
                     checkpoint["compressed_S"],
-                    checkpoint["compressed_Vh"]
+                    checkpoint["compressed_Vh"],
                 ],
-                'original_shape': tuple(checkpoint["original_shape"]),
-                'original_size': int(checkpoint["original_size"]),
-                'matrix_shape': tuple(checkpoint["matrix_shape"]),
-                'method': str(checkpoint["method"]),
-                'ranks': list(checkpoint["ranks"]),
+                "original_shape": tuple(checkpoint["original_shape"]),
+                "original_size": int(checkpoint["original_size"]),
+                "matrix_shape": tuple(checkpoint["matrix_shape"]),
+                "method": str(checkpoint["method"]),
+                "ranks": list(checkpoint["ranks"]),
             }
-            
+
             self.state = decompress(compressed_state)
         else:
             self.state = checkpoint["state"]

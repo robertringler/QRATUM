@@ -21,12 +21,11 @@ Verifies:
 """
 
 import numpy as np
-import pytest
-
 
 # ============================================================
 # Helpers
 # ============================================================
+
 
 def random_metric(n: int, rng: np.random.Generator) -> np.ndarray:
     """Generate a random positive-definite metric tensor g_{ij}."""
@@ -54,15 +53,12 @@ def christoffel_symbols(g: np.ndarray, dg: np.ndarray) -> np.ndarray:
             for j in range(n):
                 val = 0.0
                 for l in range(n):
-                    val += 0.5 * g_inv[k, l] * (
-                        dg[i, j, l] + dg[j, i, l] - dg[l, i, j]
-                    )
+                    val += 0.5 * g_inv[k, l] * (dg[i, j, l] + dg[j, i, l] - dg[l, i, j])
                 Gamma[k, i, j] = val
     return Gamma
 
 
-def riemann_tensor(Gamma: np.ndarray,
-                   dGamma: np.ndarray) -> np.ndarray:
+def riemann_tensor(Gamma: np.ndarray, dGamma: np.ndarray) -> np.ndarray:
     """Compute Riemann curvature tensor R^k_{l,i,j}.
 
     Parameters
@@ -80,13 +76,10 @@ def riemann_tensor(Gamma: np.ndarray,
         for l in range(n):
             for i in range(n):
                 for j in range(n):
-                    R[k, l, i, j] = (
-                        dGamma[i, k, j, l] - dGamma[j, k, i, l]
-                    )
+                    R[k, l, i, j] = dGamma[i, k, j, l] - dGamma[j, k, i, l]
                     for m in range(n):
                         R[k, l, i, j] += (
-                            Gamma[k, i, m] * Gamma[m, j, l]
-                            - Gamma[k, j, m] * Gamma[m, i, l]
+                            Gamma[k, i, m] * Gamma[m, j, l] - Gamma[k, j, m] * Gamma[m, i, l]
                         )
     return R
 
@@ -108,27 +101,28 @@ def scalar_curvature(Ric: np.ndarray, g: np.ndarray) -> float:
     return float(np.sum(g_inv * Ric))
 
 
-def constraint_functional(sigma: np.ndarray,
-                          sigma_star: np.ndarray,
-                          scale: float = 1.0) -> float:
+def constraint_functional(sigma: np.ndarray, sigma_star: np.ndarray, scale: float = 1.0) -> float:
     """Quadratic constraint functional C(σ) = scale * ||σ - σ*||²."""
     diff = sigma - sigma_star
     return float(scale * np.dot(diff, diff))
 
 
-def kl_divergence_gaussian(mu1: np.ndarray, cov1: np.ndarray,
-                           mu2: np.ndarray,
-                           cov2: np.ndarray) -> float:
+def kl_divergence_gaussian(
+    mu1: np.ndarray, cov1: np.ndarray, mu2: np.ndarray, cov2: np.ndarray
+) -> float:
     """KL divergence between two multivariate Gaussians."""
     n = len(mu1)
     cov2_inv = np.linalg.inv(cov2)
     diff = mu2 - mu1
-    return float(0.5 * (
-        np.trace(cov2_inv @ cov1)
-        + diff @ cov2_inv @ diff
-        - n
-        + np.log(np.linalg.det(cov2) / np.linalg.det(cov1))
-    ))
+    return float(
+        0.5
+        * (
+            np.trace(cov2_inv @ cov1)
+            + diff @ cov2_inv @ diff
+            - n
+            + np.log(np.linalg.det(cov2) / np.linalg.det(cov1))
+        )
+    )
 
 
 def symmetrized_distance(D12: float, D21: float) -> float:
@@ -136,10 +130,9 @@ def symmetrized_distance(D12: float, D21: float) -> float:
     return np.sqrt(D12 + D21)
 
 
-def fisher_metric_numerical(log_prob_fn, theta: np.ndarray,
-                            n_samples: int,
-                            rng: np.random.Generator,
-                            eps: float = 1e-4) -> np.ndarray:
+def fisher_metric_numerical(
+    log_prob_fn, theta: np.ndarray, n_samples: int, rng: np.random.Generator, eps: float = 1e-4
+) -> np.ndarray:
     """Numerically estimate Fisher information matrix via finite differences."""
     n = len(theta)
     g = np.zeros((n, n))
@@ -151,9 +144,7 @@ def fisher_metric_numerical(log_prob_fn, theta: np.ndarray,
             theta_m = theta.copy()
             theta_p[k] += eps
             theta_m[k] -= eps
-            grad[k] = (log_prob_fn(theta_p) - log_prob_fn(theta_m)) / (
-                2 * eps
-            )
+            grad[k] = (log_prob_fn(theta_p) - log_prob_fn(theta_m)) / (2 * eps)
         g += np.outer(grad, grad)
     return g / n_samples
 
@@ -161,6 +152,7 @@ def fisher_metric_numerical(log_prob_fn, theta: np.ndarray,
 # ============================================================
 # Section 1: Metric Space from Divergence (Theorem 14.1)
 # ============================================================
+
 
 class TestMetricEmergence:
     """Verify metric space properties from symmetrized divergence."""
@@ -238,6 +230,7 @@ class TestMetricEmergence:
 # Section 2: Fisher Information Metric (Theorem 14.2)
 # ============================================================
 
+
 class TestFisherMetric:
     """Verify Fisher information metric properties."""
 
@@ -275,9 +268,7 @@ class TestFisherMetric:
                 D_pm = kl_divergence_gaussian(mu, cov, mu + dmu_i - dmu_j, cov)
                 D_mp = kl_divergence_gaussian(mu, cov, mu - dmu_i + dmu_j, cov)
                 D_mm = kl_divergence_gaussian(mu, cov, mu - dmu_i - dmu_j, cov)
-                g_numerical[i, j] = (D_pp - D_pm - D_mp + D_mm) / (
-                    4 * eps * eps
-                )
+                g_numerical[i, j] = (D_pp - D_pm - D_mp + D_mm) / (4 * eps * eps)
         # For identity covariance Gaussians, Fisher metric = I
         assert np.allclose(g_numerical, np.eye(n), atol=1e-4)
 
@@ -285,6 +276,7 @@ class TestFisherMetric:
 # ============================================================
 # Section 3: Christoffel Symbols
 # ============================================================
+
 
 class TestChristoffelSymbols:
     """Verify Christoffel symbol properties."""
@@ -315,16 +307,14 @@ class TestChristoffelSymbols:
                 for j in range(n):
                     cov_deriv = dg[k, i, j]
                     for l in range(n):
-                        cov_deriv -= (
-                            Gamma[l, k, i] * g[l, j]
-                            + Gamma[l, k, j] * g[i, l]
-                        )
+                        cov_deriv -= Gamma[l, k, i] * g[l, j] + Gamma[l, k, j] * g[i, l]
                     assert abs(cov_deriv) < 1e-10
 
 
 # ============================================================
 # Section 4: Riemann Curvature Tensor (Theorem 14.4)
 # ============================================================
+
 
 class TestRiemannCurvature:
     """Verify Riemann curvature tensor symmetries."""
@@ -383,6 +373,7 @@ class TestRiemannCurvature:
 # Section 5: Probability from Constraints (Theorem 14.5)
 # ============================================================
 
+
 class TestProbabilityEmergence:
     """Verify probability measure from constraint minimization."""
 
@@ -394,11 +385,9 @@ class TestProbabilityEmergence:
         beta = 1.0
         N_samples = 50000
         # Monte Carlo integration over [-5, 5]^n
-        volume = 10.0 ** n
+        volume = 10.0**n
         samples = rng.uniform(-5, 5, (N_samples, n))
-        C_vals = np.array([
-            constraint_functional(s, sigma_star) for s in samples
-        ])
+        C_vals = np.array([constraint_functional(s, sigma_star) for s in samples])
         weights = np.exp(-beta * C_vals)
         Z = np.mean(weights) * volume
         # μ_C(σ) = exp(-β C(σ)) / Z, so ∫ μ_C dσ = Z / Z = 1
@@ -429,9 +418,7 @@ class TestProbabilityEmergence:
         N_samples = 5000
         for beta in [1.0, 10.0, 100.0]:
             samples = rng.standard_normal((N_samples, n))
-            C_vals = np.array([
-                constraint_functional(s, sigma_star) for s in samples
-            ])
+            C_vals = np.array([constraint_functional(s, sigma_star) for s in samples])
             weights = np.exp(-beta * C_vals)
             weights /= np.sum(weights)
             # Weighted mean should approach sigma_star
@@ -448,9 +435,7 @@ class TestProbabilityEmergence:
         beta = 1.0
         N = 1000
         samples = rng.standard_normal((N, n))
-        C_vals = np.array([
-            constraint_functional(s, sigma_star) for s in samples
-        ])
+        C_vals = np.array([constraint_functional(s, sigma_star) for s in samples])
         # Boltzmann weights
         w_boltz = np.exp(-beta * C_vals)
         w_boltz /= np.sum(w_boltz)
@@ -468,6 +453,7 @@ class TestProbabilityEmergence:
 # ============================================================
 # Section 6: Action and Dynamics (Theorems 14.6-14.7)
 # ============================================================
+
 
 class TestDynamicsEmergence:
     """Verify Euler-Lagrange dynamics and time emergence."""
@@ -501,7 +487,7 @@ class TestDynamicsEmergence:
         gamma[1] = gamma[0]  # initial velocity = 0
         # Euler integration of γ̈ = -V'(γ) = -γ
         for t in range(1, steps):
-            gamma[t + 1] = 2 * gamma[t] - gamma[t - 1] - dt ** 2 * gamma[t]
+            gamma[t + 1] = 2 * gamma[t] - gamma[t - 1] - dt**2 * gamma[t]
         # Should return to x ≈ 1 after one period
         assert abs(gamma[-1] - 1.0) < 0.1
 
@@ -533,9 +519,7 @@ class TestDynamicsEmergence:
         entropies = []
         for beta in beta_values:
             samples = rng.standard_normal((N_particles, n))
-            C_vals = np.array([
-                constraint_functional(s, sigma_star) for s in samples
-            ])
+            C_vals = np.array([constraint_functional(s, sigma_star) for s in samples])
             w = np.exp(-beta * C_vals)
             w /= np.sum(w)
             S = -np.sum(w[w > 0] * np.log(w[w > 0]))
@@ -547,6 +531,7 @@ class TestDynamicsEmergence:
 # ============================================================
 # Section 7: Einstein Equations (Theorem 14.8)
 # ============================================================
+
 
 class TestEinsteinEquations:
     """Verify emergent Einstein equation properties."""
@@ -601,6 +586,7 @@ class TestEinsteinEquations:
 # Section 8: Path Integral and Interference (Theorems 14.9, Cor 14.4)
 # ============================================================
 
+
 class TestPathIntegral:
     """Verify path integral emergence and interference."""
 
@@ -623,9 +609,7 @@ class TestPathIntegral:
             A1 = np.exp(1j * phi1)
             A2 = np.exp(1j * phi2)
             lhs = abs(A1 + A2) ** 2
-            rhs = abs(A1) ** 2 + abs(A2) ** 2 + 2 * np.real(
-                A1.conj() * A2
-            )
+            rhs = abs(A1) ** 2 + abs(A2) ** 2 + 2 * np.real(A1.conj() * A2)
             assert abs(lhs - rhs) < 1e-12
 
     def test_stationary_phase_classical_limit(self):
@@ -657,6 +641,7 @@ class TestPathIntegral:
 # ============================================================
 # Section 9: Limit Recovery (Theorems 14.12-14.14)
 # ============================================================
+
 
 class TestLimitRecovery:
     """Verify classical, quantum, and GR recovery limits."""
@@ -710,13 +695,14 @@ class TestLimitRecovery:
 # Section 10: Novel Predictions (Theorems 14.15-14.17)
 # ============================================================
 
+
 class TestNovelPredictions:
     """Verify falsifiable predictions from the framework."""
 
     def test_discrete_curvature_correction(self):
         """Lattice corrections scale as ℓ_CRS²."""
         l_crs_values = [1.0, 0.1, 0.01, 0.001]
-        corrections = [l ** 2 for l in l_crs_values]
+        corrections = [l**2 for l in l_crs_values]
         # Corrections should decrease quadratically
         for i in range(1, len(corrections)):
             ratio = corrections[i] / corrections[i - 1]
@@ -753,6 +739,7 @@ class TestNovelPredictions:
 # Section 11: Dimensional Consistency
 # ============================================================
 
+
 class TestDimensionalConsistency:
     """Verify dimensional consistency across the framework."""
 
@@ -769,7 +756,7 @@ class TestDimensionalConsistency:
         """ℏ_eff = ℓ_0² / κ̃_max."""
         l_0 = 1.0
         kappa_max = 2.0
-        hbar_eff = l_0 ** 2 / kappa_max
+        hbar_eff = l_0**2 / kappa_max
         assert hbar_eff > 0
         assert abs(hbar_eff - 0.5) < 1e-12
 
@@ -777,7 +764,7 @@ class TestDimensionalConsistency:
         """Λ_eff = C(σ*_vac) / ℓ_0² is dimensionless per ℓ_0²."""
         l_0 = 1.0
         C_vac = 0.01
-        Lambda = C_vac / l_0 ** 2
+        Lambda = C_vac / l_0**2
         assert Lambda >= 0
         assert np.isfinite(Lambda)
 
@@ -785,6 +772,7 @@ class TestDimensionalConsistency:
 # ============================================================
 # Section 12: Information-Geometric Dictionary (Theorem 14.10)
 # ============================================================
+
 
 class TestInfoGeometry:
     """Verify information-geometric interpretations."""
@@ -818,8 +806,5 @@ class TestInfoGeometry:
         L_straight = np.linalg.norm(theta_end - theta_start)
         # Any detour is longer
         theta_mid = np.array([2.0, 0.0])  # detour point
-        L_detour = (
-            np.linalg.norm(theta_mid - theta_start)
-            + np.linalg.norm(theta_end - theta_mid)
-        )
+        L_detour = np.linalg.norm(theta_mid - theta_start) + np.linalg.norm(theta_end - theta_mid)
         assert L_straight < L_detour

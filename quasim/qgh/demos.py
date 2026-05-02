@@ -7,11 +7,13 @@ from typing import Any
 
 import numpy as np
 
-from quasim.qgh.nonspec_algorithms import (CausalHistoryHash,
-                                           DistributedStreamMonitor,
-                                           SelfConsistencyPropagator,
-                                           StabilityMonitor,
-                                           SuperpositionResolver)
+from quasim.qgh.nonspec_algorithms import (
+    CausalHistoryHash,
+    DistributedStreamMonitor,
+    SelfConsistencyPropagator,
+    StabilityMonitor,
+    SuperpositionResolver,
+)
 
 logger = logging.getLogger(__name__)
 

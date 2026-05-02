@@ -6,8 +6,7 @@ informational field evolution based on quantum field theory principles.
 
 from __future__ import annotations
 
-from .field_evolution import (FieldState, QCMGParameters,
-                              QuantacosmorphysigeneticField)
+from .field_evolution import FieldState, QCMGParameters, QuantacosmorphysigeneticField
 
 __all__ = [
     "FieldState",

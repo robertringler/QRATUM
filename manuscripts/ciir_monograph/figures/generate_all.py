@@ -19,13 +19,13 @@ import time
 FIGURE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 FIGURES = [
-    ("fig01_ciir_architecture.py",   "CIIR Architecture Overview"),
-    ("fig02_primitive_triple.py",    "Primitive Triple (S, C, D)"),
-    ("fig03_recursive_loop.py",      "CRS–CIIR–Observer Recursive Loop"),
-    ("fig04_emergent_geometry.py",   "Emergent Metric Geometry Pipeline"),
+    ("fig01_ciir_architecture.py", "CIIR Architecture Overview"),
+    ("fig02_primitive_triple.py", "Primitive Triple (S, C, D)"),
+    ("fig03_recursive_loop.py", "CRS–CIIR–Observer Recursive Loop"),
+    ("fig04_emergent_geometry.py", "Emergent Metric Geometry Pipeline"),
     ("fig05_probability_emergence.py", "Probability from Constraint Minimization"),
-    ("fig06_emergent_gravity.py",    "Emergent Spacetime & Gravity"),
-    ("fig07_crs_architecture.py",    "CRS 8-Layer Architecture"),
+    ("fig06_emergent_gravity.py", "Emergent Spacetime & Gravity"),
+    ("fig07_crs_architecture.py", "CRS 8-Layer Architecture"),
     ("fig08_functorial_structure.py", "Functorial Structure CogSys → Hilb"),
     ("fig09_informational_filtering.py", "Topological Manifold of Informational Filtering"),
     ("fig10_complexity_vs_icons.py", "Objective Complexity vs Interface Icons"),

@@ -26,12 +26,11 @@ where H_0 is the drift Hamiltonian.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import List, Optional, Sequence, Tuple
+from typing import List, Optional, Tuple
 
 import numpy as np
 from numpy.typing import NDArray
-from scipy.linalg import solve_continuous_are, solve_discrete_are
+from scipy.linalg import solve_continuous_are
 
 CMatrix = NDArray[np.complex128]
 RMatrix = NDArray[np.float64]
@@ -40,6 +39,7 @@ RMatrix = NDArray[np.float64]
 # ---------------------------------------------------------------------------
 # Utility: Pauli matrices for building control Hamiltonians
 # ---------------------------------------------------------------------------
+
 
 def _kron_embed(op: CMatrix, qubit: int, n_qubits: int) -> CMatrix:
     I1 = np.eye(2, dtype=complex)
@@ -64,7 +64,7 @@ def control_hamiltonian(n_qubits: int) -> Tuple[CMatrix, List[CMatrix]]:
     Drift: random hermitian (represents natural coupling)
     Controls: σ_x, σ_y, σ_z on each qubit (3N control fields)
     """
-    dim = 2 ** n_qubits
+    dim = 2**n_qubits
     rng = np.random.default_rng(42)
     A = rng.standard_normal((dim, dim)) + 1j * rng.standard_normal((dim, dim))
     H0 = 0.05 * (A + A.conj().T)  # small drift
@@ -79,6 +79,7 @@ def control_hamiltonian(n_qubits: int) -> Tuple[CMatrix, List[CMatrix]]:
 # ---------------------------------------------------------------------------
 # Classical LQR
 # ---------------------------------------------------------------------------
+
 
 class ClassicalLQR:
     r"""LQR stabilizer for ẋ = A x + B u.
@@ -146,9 +147,9 @@ def _default_lqr(m: int = 4) -> ClassicalLQR:
     # Block: double integrator for m/2 modes
     half = m // 2
     A = np.zeros((m, m))
-    A[:half, half:] = np.eye(half)    # ẋ₁ = x₂
+    A[:half, half:] = np.eye(half)  # ẋ₁ = x₂
     B = np.zeros((m, half))
-    B[half:, :] = np.eye(half)        # ẋ₂ = u
+    B[half:, :] = np.eye(half)  # ẋ₂ = u
     Q = np.eye(m)
     R = 0.1 * np.eye(half)
     return ClassicalLQR(A, B, Q, R)
@@ -157,6 +158,7 @@ def _default_lqr(m: int = 4) -> ClassicalLQR:
 # ---------------------------------------------------------------------------
 # Pontryagin optimal quantum controller
 # ---------------------------------------------------------------------------
+
 
 class PontryaginController:
     r"""Pontryagin optimal control for the quantum subsystem.
@@ -192,10 +194,10 @@ class PontryaginController:
         """
         amps = []
         for Hk in self.H_k:
-            comm = Hk @ rho - rho @ Hk          # [H_k, ρ]
-            val = np.trace(P @ comm)             # Tr(P [H_k, ρ])
+            comm = Hk @ rho - rho @ Hk  # [H_k, ρ]
+            val = np.trace(P @ comm)  # Tr(P [H_k, ρ])
             u_k = (1j / (self.r * self.hbar)) * val
-            amps.append(float(np.real(u_k)))     # real part only
+            amps.append(float(np.real(u_k)))  # real part only
         return amps
 
     def hamiltonian(
@@ -217,6 +219,7 @@ class PontryaginController:
 # Hybrid controller: maps classical x(t) → quantum H_ctrl
 # ---------------------------------------------------------------------------
 
+
 class HybridController:
     """Hybrid classical–quantum controller.
 
@@ -237,7 +240,7 @@ class HybridController:
     def __init__(self, n_qubits: int = 2, m: int = 4) -> None:
         self.n_qubits = n_qubits
         self.m = m
-        self.dim = 2 ** n_qubits
+        self.dim = 2**n_qubits
         self.H0, self.H_k = control_hamiltonian(n_qubits)
         self.lqr = _default_lqr(m)
         self.pontryagin = PontryaginController(self.H_k)
@@ -254,9 +257,7 @@ class HybridController:
             alpha = float(x[k % self.m]) * 0.01
             H = H + alpha * Hk
         # Pontryagin corrections (small scale)
-        H_pont = self.pontryagin.hamiltonian(
-            np.zeros_like(self.H0), rho, rho_target, scale=0.05
-        )
+        H_pont = self.pontryagin.hamiltonian(np.zeros_like(self.H0), rho, rho_target, scale=0.05)
         return H + H_pont
 
     def step_classical(

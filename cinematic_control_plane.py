@@ -7,12 +7,14 @@ Unified web interface for accessing all QRATUM services
 
 import os
 import time
+
 import requests
-from flask import Flask, render_template_string, jsonify, request
+from flask import Flask, jsonify, render_template_string, request
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+
 
 # Service endpoints (internal Docker network)
 # External URLs can be overridden via environment variables
@@ -21,13 +23,44 @@ def get_external_url(service_name, default_url):
     env_var = f"QRATUM_{service_name.upper()}_URL"
     return os.getenv(env_var, default_url)
 
+
 SERVICES = {
-    'qradle': {'url': 'http://qradle:8000', 'port': 8001, 'name': 'QRADLE Foundation Engine', 'description': 'Core blockchain and cryptographic operations'},
-    'platform': {'url': 'http://qratum-platform:8000', 'port': 8002, 'name': 'QRATUM Platform', 'description': '14 vertical AI modules'},
-    'asi': {'url': 'http://qratum-asi:8000', 'port': 8003, 'name': 'QRATUM-ASI', 'description': 'Autonomous Systems Intelligence'},
-    'grafana': {'url': 'http://grafana:3000', 'port': 3000, 'name': 'Grafana', 'description': 'Monitoring & Visualization'},
-    'prometheus': {'url': 'http://prometheus:9090', 'port': 9090, 'name': 'Prometheus', 'description': 'Metrics Collection'},
-    'loki': {'url': 'http://loki:3100', 'port': 3100, 'name': 'Loki', 'description': 'Log Aggregation'}
+    "qradle": {
+        "url": "http://qradle:8000",
+        "port": 8001,
+        "name": "QRADLE Foundation Engine",
+        "description": "Core blockchain and cryptographic operations",
+    },
+    "platform": {
+        "url": "http://qratum-platform:8000",
+        "port": 8002,
+        "name": "QRATUM Platform",
+        "description": "14 vertical AI modules",
+    },
+    "asi": {
+        "url": "http://qratum-asi:8000",
+        "port": 8003,
+        "name": "QRATUM-ASI",
+        "description": "Autonomous Systems Intelligence",
+    },
+    "grafana": {
+        "url": "http://grafana:3000",
+        "port": 3000,
+        "name": "Grafana",
+        "description": "Monitoring & Visualization",
+    },
+    "prometheus": {
+        "url": "http://prometheus:9090",
+        "port": 9090,
+        "name": "Prometheus",
+        "description": "Metrics Collection",
+    },
+    "loki": {
+        "url": "http://loki:3100",
+        "port": 3100,
+        "name": "Loki",
+        "description": "Log Aggregation",
+    },
 }
 
 HTML_TEMPLATE = """
@@ -220,10 +253,10 @@ HTML_TEMPLATE = """
 def check_service_status(url):
     """Check if a service is healthy."""
     try:
-        timeout = int(os.getenv('QRATUM_HEALTH_CHECK_TIMEOUT', '10'))
+        timeout = int(os.getenv("QRATUM_HEALTH_CHECK_TIMEOUT", "10"))
     except (ValueError, TypeError):
         timeout = 10  # Default to 10 seconds if env var is invalid
-    
+
     try:
         response = requests.get(f"{url}/health", timeout=timeout)
         if response.status_code == 200:
@@ -233,34 +266,36 @@ def check_service_status(url):
     except requests.RequestException:
         return "unknown"
 
+
 def get_hostname_and_scheme():
     """Extract hostname and scheme from the current request.
-    
+
     Handles both IPv4 and IPv6 addresses properly, removing port and brackets.
     """
     hostname = request.host
     scheme = request.scheme
-    
+
     # Remove port: use rsplit to handle colons in IPv6 addresses
     # For IPv6, format can be [::1]:8080 or [::1] or ::1
-    if ':' in hostname:
+    if ":" in hostname:
         # Check if it's an IPv6 address with brackets
-        if hostname.startswith('['):
+        if hostname.startswith("["):
             # Extract hostname between brackets
-            if ']' in hostname:
-                hostname = hostname.split(']')[0][1:]  # Remove [ and everything after ]
+            if "]" in hostname:
+                hostname = hostname.split("]")[0][1:]  # Remove [ and everything after ]
             # If malformed (no closing bracket), hostname remains as-is
         else:
             # Regular hostname:port or bare IPv6 (less common in HTTP Host header)
-            hostname = hostname.rsplit(':', 1)[0]
-    
+            hostname = hostname.rsplit(":", 1)[0]
+
     return hostname, scheme
+
 
 @app.route("/")
 def index():
     """Main control plane interface."""
     services_data = {}
-    
+
     hostname, scheme = get_hostname_and_scheme()
 
     for service_id, service_info in SERVICES.items():
@@ -277,7 +312,7 @@ def index():
             "prometheus": "📈",
             "loki": "📝",
         }
-        
+
         # Construct external URL dynamically based on request hostname
         external_url = f"{scheme}://{hostname}:{service_info['port']}"
 
@@ -296,7 +331,7 @@ def index():
 def api_status():
     """API endpoint for service status."""
     status_data = {}
-    
+
     hostname, scheme = get_hostname_and_scheme()
 
     for service_id, service_info in SERVICES.items():
@@ -334,6 +369,7 @@ def api_status():
             "overall_status": overall_status,
         }
     )
+
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "8080"))

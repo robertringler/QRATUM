@@ -78,8 +78,7 @@ class MockSensor(Sensor):
     def read(self) -> Observation:
         if self._cursor >= len(self._observations):
             raise SensorExhausted(
-                f"MockSensor[{self._source_id}] exhausted after "
-                f"{len(self._observations)} reads"
+                f"MockSensor[{self._source_id}] exhausted after " f"{len(self._observations)} reads"
             )
         obs = self._observations[self._cursor]
         self._cursor += 1
@@ -127,9 +126,7 @@ class RealSensorAdapter(Sensor):
         source_id: str,
         expected_length: int,
         timestamp_provider: Callable[[], float],
-        missing_mask_provider: Callable[
-            [tuple[float, ...]], tuple[bool, ...]
-        ],
+        missing_mask_provider: Callable[[tuple[float, ...]], tuple[bool, ...]],
     ) -> None:
         if expected_length < 0:
             raise ValueError("expected_length must be non-negative")
@@ -143,9 +140,7 @@ class RealSensorAdapter(Sensor):
         try:
             measurements = self._reader()
         except Exception as exc:  # noqa: BLE001 - explicit promotion
-            raise SensorReadError(
-                f"reader for sensor {self._source_id!r} raised: {exc!r}"
-            ) from exc
+            raise SensorReadError(f"reader for sensor {self._source_id!r} raised: {exc!r}") from exc
 
         if not isinstance(measurements, tuple):
             try:

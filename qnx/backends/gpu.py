@@ -24,20 +24,21 @@ from typing import Any
 
 class GPUBackendNotAvailable(NotImplementedError):
     """Exception raised when GPU backend is not available."""
+
     pass
 
 
 class GPUBackend:
     """GPU backend for accelerated computation.
-    
+
     WARNING: This is a STUB implementation. No GPU acceleration is available.
     All method calls will raise GPUBackendNotAvailable.
-    
+
     For correctness-verified computation, use the reference CPU implementation.
-    
+
     Attributes:
         available: Always False for stub implementation
-        
+
     Example:
         >>> backend = GPUBackend()
         >>> backend.is_available()
@@ -47,9 +48,9 @@ class GPUBackend:
     This is a stub implementation establishing the structural interface.
     Full GPU backend will be implemented in a future PR.
     """
-    
+
     _warned = False
-    
+
     def __init__(self):
         """Initialize GPU backend stub with deprecation warning."""
         if not GPUBackend._warned:
@@ -58,22 +59,22 @@ class GPUBackend:
                 "GPU acceleration is NOT available. "
                 "Use CPUBackend or reference implementations for production.",
                 UserWarning,
-                stacklevel=2
+                stacklevel=2,
             )
             GPUBackend._warned = True
-    
+
     @property
     def available(self) -> bool:
         """Check if GPU backend is available.
-        
+
         Returns:
             Always False for stub implementation
         """
         return False
-    
+
     def is_available(self) -> bool:
         """Check if GPU backend is available.
-        
+
         Returns:
             Always False for stub implementation
         """
@@ -81,9 +82,9 @@ class GPUBackend:
 
     def run(self, task: Any) -> Any:
         """Execute task on GPU backend.
-        
+
         WARNING: This method always raises GPUBackendNotAvailable.
-        
+
 
         This method will be implemented in PR-006 (Backend Implementation).
 
@@ -92,7 +93,7 @@ class GPUBackend:
 
         Returns:
             Never returns - always raises exception
-            
+
             Execution result
 
         Raises:

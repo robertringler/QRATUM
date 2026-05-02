@@ -58,7 +58,9 @@ class CriticalPoint:
     det_hessian: float
 
 
-def _hessian_components(psi: FloatArray, dx: float, dy: float) -> tuple[FloatArray, FloatArray, FloatArray]:
+def _hessian_components(
+    psi: FloatArray, dx: float, dy: float
+) -> tuple[FloatArray, FloatArray, FloatArray]:
     """Return ``(ψ_xx, ψ_yy, ψ_xy)`` with periodic boundaries [V]."""
     psi_xx = (np.roll(psi, -1, axis=0) - 2.0 * psi + np.roll(psi, 1, axis=0)) / (dx * dx)
     psi_yy = (np.roll(psi, -1, axis=1) - 2.0 * psi + np.roll(psi, 1, axis=1)) / (dy * dy)

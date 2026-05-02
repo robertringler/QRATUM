@@ -1,5 +1,4 @@
-from qstack.q import (Attestor, IdentityRegistry, KeyManager, Ledger,
-                      QIdentity, Signer, TrustGraph)
+from qstack.q import Attestor, IdentityRegistry, KeyManager, Ledger, QIdentity, Signer, TrustGraph
 
 
 def test_identity_attestation_and_registry():

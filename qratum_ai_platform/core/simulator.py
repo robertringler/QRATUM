@@ -249,9 +249,7 @@ class Simulator:
 
         return f"Simulator(backend={self.backend}, precision={self.precision})"
 
-    def run_with_compression(
-        self, circuit: Circuit, compression_fidelity: float = 0.995
-    ) -> Result:
+    def run_with_compression(self, circuit: Circuit, compression_fidelity: float = 0.995) -> Result:
         """Run with intermediate state compression for memory efficiency.
 
         Args:
@@ -306,9 +304,7 @@ class Simulator:
                 del metadata
                 del decompressed
         # Measure
-        result = Measurement.measure_statevector(
-            state.data, shots=1024, seed=self.seed
-        )
+        result = Measurement.measure_statevector(state.data, shots=1024, seed=self.seed)
         return result
 
 

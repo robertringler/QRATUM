@@ -40,10 +40,10 @@ Verifies:
 import numpy as np
 import pytest
 
-
 # ============================================================
 # Helpers
 # ============================================================
+
 
 def random_density(d: int, rng: np.random.Generator) -> np.ndarray:
     """Random density matrix of dimension d."""
@@ -80,6 +80,7 @@ def shannon_entropy(p: np.ndarray) -> float:
 # ============================================================
 # Test Classes
 # ============================================================
+
 
 class TestDomainProjection:
     """Verify domain projection apparatus (Def 16.1, Lemma 16.1)."""
@@ -330,10 +331,7 @@ class TestBiochemistry:
         p = np.array([0.8, 0.2])  # initial populations
         dt = 0.01
         for _ in range(1000):
-            dp = np.array([
-                -gamma_12 * p[0] + gamma_21 * p[1],
-                gamma_12 * p[0] - gamma_21 * p[1]
-            ])
+            dp = np.array([-gamma_12 * p[0] + gamma_21 * p[1], gamma_12 * p[0] - gamma_21 * p[1]])
             p = p + dt * dp
             p = np.clip(p, 0, 1)
             p /= p.sum()
@@ -478,8 +476,7 @@ class TestEmergence:
         # For A⊗I + I⊗B: eigs {a_i + b_j}, which has sum structure
         # σ_z ⊗ σ_z has eigs {1·1, 1·(−1), (−1)·1, (−1)·(−1)} = {1,−1,−1,1}
         # This is NOT in O^(1), confirming level >= 2
-        np.testing.assert_allclose(np.sort(eigs), np.array([-1, -1, 1, 1]),
-                                   atol=1e-12)
+        np.testing.assert_allclose(np.sort(eigs), np.array([-1, -1, 1, 1]), atol=1e-12)
 
     def test_filtration_exhaustive(self):
         """O^(N) = full tensor product algebra."""

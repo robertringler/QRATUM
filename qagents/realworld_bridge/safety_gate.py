@@ -100,9 +100,7 @@ def check_roc(
 
     if previous_action is None:
         return True
-    return _action_distance(action, previous_action) <= float(
-        config.max_rate_of_change
-    )
+    return _action_distance(action, previous_action) <= float(config.max_rate_of_change)
 
 
 def check_mvr(

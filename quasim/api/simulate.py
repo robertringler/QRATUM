@@ -45,6 +45,7 @@ class ScenarioResult:
             Dictionary containing all scenario result fields including scenario_id,
             timesteps, seed, engine, simulation_hash, and raw_output
         """
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "scenario_id": self.scenario_id,

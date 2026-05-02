@@ -26,13 +26,11 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from quasim.ciir.distortion import analyse_distortion
-from quasim.ciir.evolution import IntegrationMethod, evolve
+from quasim.ciir.evolution import evolve
 from quasim.ciir.loss import CIIRLoss
 from quasim.ciir.observers import (
     MeasurementContext,
     ObserverOperator,
-    PVM,
-    born_distribution,
     contextuality_witness,
     interference_term,
     superposition_expectation,
@@ -64,9 +62,7 @@ def run_constraint_satisfaction(
         theory = build_default_theory(seed=seed)
 
     rng = np.random.default_rng(seed)
-    rho = theory.manifold.density_matrix(
-        theory.manifold.random_state(batch=4, rng=rng)
-    )
+    rho = theory.manifold.density_matrix(theory.manifold.random_state(batch=4, rng=rng))
 
     loss_fn = CIIRLoss(theory=theory)
     result = evolve(loss_fn, rho, n_steps=n_steps, lr=lr)
@@ -95,8 +91,7 @@ def run_constraint_satisfaction(
             "n_steps": float(result.n_steps),
             "converged": float(result.converged),
         },
-        details=f"Loss: {initial_loss:.4f} → {final_loss:.4f}, "
-        f"Violation: {mean_violation:.6f}",
+        details=f"Loss: {initial_loss:.4f} → {final_loss:.4f}, " f"Violation: {mean_violation:.6f}",
         elapsed_s=elapsed,
     )
 
@@ -150,8 +145,7 @@ def run_interference_test(seed: int = 42) -> BenchmarkResult:
             "error_plus": err_plus,
             "error_minus": err_minus,
         },
-        details=f"Errors: |Δ+|={err_plus:.2e}, |Δ-|={err_minus:.2e}, "
-        f"cross={cross:.4f}",
+        details=f"Errors: |Δ+|={err_plus:.2e}, |Δ-|={err_minus:.2e}, " f"cross={cross:.4f}",
         elapsed_s=elapsed,
     )
 
@@ -168,9 +162,7 @@ def run_convergence_stability(
     for s in range(n_seeds):
         theory = build_default_theory(seed=s)
         rng = np.random.default_rng(s)
-        rho = theory.manifold.density_matrix(
-            theory.manifold.random_state(batch=2, rng=rng)
-        )
+        rho = theory.manifold.density_matrix(theory.manifold.random_state(batch=2, rng=rng))
         loss_fn = CIIRLoss(theory=theory)
         result = evolve(loss_fn, rho, n_steps=n_steps, lr=lr)
         final_losses.append(result.losses[-1] if result.losses else float("inf"))
@@ -222,9 +214,11 @@ def run_distortion_verification(seed: int = 42) -> BenchmarkResult:
         passed=analysis.bound_satisfied,
         metrics={
             "bound_satisfied": float(analysis.bound_satisfied),
-            "max_ratio": float(analysis.ratio[np.triu_indices_from(analysis.ratio, k=1)].max())
-            if N > 1
-            else 0.0,
+            "max_ratio": (
+                float(analysis.ratio[np.triu_indices_from(analysis.ratio, k=1)].max())
+                if N > 1
+                else 0.0
+            ),
             "contraction_factor": theory.interface.contraction_factor,
             "n_non_invertible_pairs": float(len(analysis.non_invertible_pairs)),
         },
@@ -245,9 +239,7 @@ def run_contextuality_test(seed: int = 42) -> BenchmarkResult:
     O_shared = ObserverOperator(matrix=np.diag(rng.standard_normal(D)), name="shared")
 
     # Context 1: shared + commuting partner
-    O_partner1 = ObserverOperator(
-        matrix=np.diag(rng.standard_normal(D)), name="partner1"
-    )
+    O_partner1 = ObserverOperator(matrix=np.diag(rng.standard_normal(D)), name="partner1")
     ctx1 = MeasurementContext(observables=[O_shared, O_partner1])
 
     # Context 2: shared + non-commuting partner
@@ -275,8 +267,7 @@ def run_contextuality_test(seed: int = 42) -> BenchmarkResult:
             "context1_compatible": float(ctx1_compatible),
             "context2_compatible": float(ctx2.is_compatible()),
         },
-        details=f"TVD between contexts: {tvd:.6f}, "
-        f"Ctx1 compatible: {ctx1_compatible}",
+        details=f"TVD between contexts: {tvd:.6f}, " f"Ctx1 compatible: {ctx1_compatible}",
         elapsed_s=elapsed,
     )
 
@@ -297,7 +288,6 @@ def run_all_benchmarks(verbose: bool = True) -> list[BenchmarkResult]:
         results.append(result)
         if verbose:
             status = "✓ PASS" if result.passed else "✗ FAIL"
-            print(f"  [{status}] {result.name}: {result.details} "
-                  f"({result.elapsed_s:.2f}s)")
+            print(f"  [{status}] {result.name}: {result.details} " f"({result.elapsed_s:.2f}s)")
 
     return results

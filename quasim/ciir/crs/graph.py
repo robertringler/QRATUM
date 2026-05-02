@@ -10,17 +10,15 @@ Formal state space: S = (V × R^d) × (V×V × [0,1])
 from __future__ import annotations
 
 import copy
-from collections import deque
 from dataclasses import dataclass, field
-from typing import Iterator
 
 import numpy as np
 from numpy.typing import NDArray
 
-
 # ================================================================
 # Primitives
 # ================================================================
+
 
 @dataclass(frozen=False)
 class Node:
@@ -69,6 +67,7 @@ class Edge:
 # ================================================================
 # CRS Graph
 # ================================================================
+
 
 class CRSGraph:
     """Directed weighted graph implementing the CRS causal substrate.
@@ -192,6 +191,7 @@ class CRSGraph:
 # ================================================================
 # Graph generators
 # ================================================================
+
 
 def random_graph(
     n_nodes: int,

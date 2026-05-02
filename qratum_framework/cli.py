@@ -12,6 +12,7 @@ The CLI is implemented with ``argparse`` to keep ``qratum_framework`` free
 of additional runtime dependencies (``click`` is only an optional dep of
 the broader project).
 """
+
 from __future__ import annotations
 
 import argparse
@@ -24,8 +25,7 @@ from qratum_framework.config import DEFAULT_PROFILE, PROFILES, load_profile
 from qratum_framework.falsifier import _DemoFalsifier
 from qratum_framework.health import check_health, check_readiness
 from qratum_framework.operator import Operator, StrictCIIRBackend
-from qratum_framework.trace import MerkleLedger, UnifiedTraceEntry, hash_entry
-
+from qratum_framework.trace import MerkleLedger, UnifiedTraceEntry
 
 # ---------------------------------------------------------------------------
 # Builders
@@ -41,9 +41,7 @@ def _build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="command", required=True)
 
     # run --------------------------------------------------------------
-    run_p = sub.add_parser(
-        "run", help="Execute a sequence of intents through the default backend."
-    )
+    run_p = sub.add_parser("run", help="Execute a sequence of intents through the default backend.")
     run_p.add_argument(
         "intents",
         nargs="*",
@@ -177,7 +175,7 @@ def _cmd_ledger(args: argparse.Namespace) -> int:
     third-party reproducers can audit a run without re-executing it.
     """
     try:
-        with open(args.path, "r", encoding="utf-8") as fh:
+        with open(args.path, encoding="utf-8") as fh:
             lines = [ln for ln in fh.read().splitlines() if ln.strip()]
     except OSError as exc:
         print(f"ledger read failed: {exc}", file=sys.stderr)

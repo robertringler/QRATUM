@@ -16,13 +16,14 @@ import numpy as np
 from numpy.typing import NDArray
 
 from quasim.ciir.swarm.physics_lang import (
-    PhysicsProgram, RuleDecl, UpdateMode,
+    PhysicsProgram,
+    RuleDecl,
 )
-
 
 # ================================================================
 # Compression result
 # ================================================================
+
 
 @dataclass
 class CompressionResult:
@@ -45,6 +46,7 @@ class CompressionResult:
 # ================================================================
 # Compression Optimizer agent
 # ================================================================
+
 
 class CompressionOptimizer:
     """Minimize rule complexity while preserving behavior."""
