@@ -7,44 +7,19 @@ from __future__ import annotations
 
 import pytest
 
-from qagents.ciir_crs_ric.ciir import (
-    C_ACTIVE,
-    Constraint,
-    Inv,
-    MAX_CPU,
-    Observation,
-    Omega,
-    State,
-    all_satisfied,
-    phi,
-)
-from qagents.ciir_crs_ric.crs import (
-    A_FULL,
-    Action,
-    admissible_actions,
-    constrained_transition,
-    transition,
-)
-from qagents.ciir_crs_ric.executor import (
-    TraceEntry,
-    print_trace,
-    run,
-    run_step,
-)
-from qagents.ciir_crs_ric.failures import (
-    STATUS_OK,
-    STATUS_TYPE_I,
-    STATUS_TYPE_II,
-    STATUS_TYPE_III,
-    STATUS_TYPE_IV,
-    ConstraintViolation,
-    IntentParseFailure,
-    InvalidTransition,
-    InvariantViolation,
-    classify,
-)
+from qagents.ciir_crs_ric.ciir import (C_ACTIVE, MAX_CPU, Constraint, Inv,
+                                       Observation, Omega, State,
+                                       all_satisfied, phi)
+from qagents.ciir_crs_ric.crs import (A_FULL, Action, admissible_actions,
+                                      constrained_transition, transition)
+from qagents.ciir_crs_ric.executor import print_trace, run, run_step
+from qagents.ciir_crs_ric.failures import (STATUS_OK, STATUS_TYPE_I,
+                                           STATUS_TYPE_II, STATUS_TYPE_III,
+                                           STATUS_TYPE_IV, ConstraintViolation,
+                                           IntentParseFailure,
+                                           InvalidTransition,
+                                           InvariantViolation, classify)
 from qagents.ciir_crs_ric.ric import Intent, parse_intent, select_action
-
 
 # --------------------------------------------------------------------------
 # CIIR layer

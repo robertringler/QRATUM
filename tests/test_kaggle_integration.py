@@ -12,13 +12,9 @@ repo_root = Path(__file__).parent.parent
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
-from qratum_chess.benchmarks.benchmark_kaggle import (
-    KaggleBenchmarkResult,
-    KaggleBenchmarkRunner,
-)
-from qratum_chess.benchmarks.kaggle_integration import (
-    KaggleLeaderboardLoader,
-)
+from qratum_chess.benchmarks.benchmark_kaggle import (KaggleBenchmarkResult,
+                                                      KaggleBenchmarkRunner)
+from qratum_chess.benchmarks.kaggle_integration import KaggleLeaderboardLoader
 from qratum_chess.core.position import Position
 
 
@@ -167,7 +163,8 @@ def test_gauntlet_integration():
     """Test Kaggle integration with AdversarialGauntlet."""
     print("Testing gauntlet integration...")
 
-    from qratum_chess.benchmarks.gauntlet import AdversarialGauntlet, AdversaryType
+    from qratum_chess.benchmarks.gauntlet import (AdversarialGauntlet,
+                                                  AdversaryType)
 
     # Verify Kaggle adversary type exists
     assert hasattr(AdversaryType, "KAGGLE")

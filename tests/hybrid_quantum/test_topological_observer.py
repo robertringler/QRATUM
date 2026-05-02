@@ -4,14 +4,9 @@ import pytest
 
 try:
     from quasim.hybrid_quantum.topological_observer import (
-        CollapseMetrics,
-        DiagnosticCategory,
-        DiagnosticFinding,
-        DiagnosticSeverity,
-        EnhancedTopologicalObserver,
-        FidelityMetrics,
-        TopologicalObservation,
-    )
+        CollapseMetrics, DiagnosticCategory, DiagnosticFinding,
+        DiagnosticSeverity, EnhancedTopologicalObserver, FidelityMetrics,
+        TopologicalObservation)
 
     OBSERVER_AVAILABLE = True
 except ImportError:

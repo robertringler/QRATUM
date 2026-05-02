@@ -18,11 +18,11 @@ CIIR monograph Ch 3–8; CRS internal spec §0–§7.
 
 __version__ = "0.1.0"
 
-from quasim.ciir.crs.graph import CRSGraph, Node, Edge
-from quasim.ciir.crs.evolution import CRSEngine
 from quasim.ciir.crs.branching import BranchState
-from quasim.ciir.crs.observer import Observer
+from quasim.ciir.crs.evolution import CRSEngine
+from quasim.ciir.crs.graph import CRSGraph, Edge, Node
 from quasim.ciir.crs.integration import QRATUM_CRS_Core
+from quasim.ciir.crs.observer import Observer
 
 __all__ = [
     "CRSGraph",

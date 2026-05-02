@@ -10,9 +10,7 @@ from typing import Any
 
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.safety_hardening.types import (
-    CorrigibilityStatus,
-)
+from qratum_asi.safety_hardening.types import CorrigibilityStatus
 
 
 @dataclass

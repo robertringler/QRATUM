@@ -35,7 +35,9 @@ def test_seeding_uses_sha3():
 
 def test_reasoning_engine_uses_sha3():
     """Test that reasoning engine uses SHA-3 for provenance hashing."""
-    from qratum.platform.reasoning_engine import ReasoningChain, ReasoningNode, ReasoningStrategy
+    from qratum.platform.reasoning_engine import (ReasoningChain,
+                                                  ReasoningNode,
+                                                  ReasoningStrategy)
 
     # Create a simple reasoning chain
     node = ReasoningNode(

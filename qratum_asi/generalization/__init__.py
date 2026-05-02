@@ -15,34 +15,22 @@ Status: Prototype (SI Transition Phase 1)
 Constraints: 8 Fatal Invariants preserved, human-approved bounded improvements
 """
 
-from qratum_asi.generalization.domain_registry import (
-    DomainDefinition,
-    DomainInterconnection,
-    ExtendedDomainRegistry,
-)
+from qratum_asi.generalization.domain_registry import (DomainDefinition,
+                                                       DomainInterconnection,
+                                                       ExtendedDomainRegistry)
 from qratum_asi.generalization.hypothesis_generator import (
-    GenerationConstraints,
-    HypothesisGenerator,
-    HypothesisType,
-)
-from qratum_asi.generalization.reasoning_engine import (
-    CrossDomainSynthesizer,
-    GeneralReasoningEngine,
-    ReasoningMode,
-)
-from qratum_asi.generalization.state_space import (
-    AHTCEncoder,
-    StateCompressor,
-    UniversalStateSpace,
-)
-from qratum_asi.generalization.types import (
-    CognitiveDomain,
-    CompressionMetrics,
-    CrossDomainHypothesis,
-    DomainCapability,
-    SynthesisResult,
-    UniversalStateVector,
-)
+    GenerationConstraints, HypothesisGenerator, HypothesisType)
+from qratum_asi.generalization.reasoning_engine import (CrossDomainSynthesizer,
+                                                        GeneralReasoningEngine,
+                                                        ReasoningMode)
+from qratum_asi.generalization.state_space import (AHTCEncoder,
+                                                   StateCompressor,
+                                                   UniversalStateSpace)
+from qratum_asi.generalization.types import (CognitiveDomain,
+                                             CompressionMetrics,
+                                             CrossDomainHypothesis,
+                                             DomainCapability, SynthesisResult,
+                                             UniversalStateVector)
 
 __all__ = [
     # Types

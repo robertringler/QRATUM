@@ -6,12 +6,6 @@ from qratum_asi.components.evolve import QEvolve
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.types import (ASISafetyLevel, AuthorizationType,
                                    ImprovementType, ValidationCriteria)
-from qratum_asi.core.types import (
-    ASISafetyLevel,
-    AuthorizationType,
-    ImprovementType,
-    ValidationCriteria,
-)
 
 
 class TestQEvolve:

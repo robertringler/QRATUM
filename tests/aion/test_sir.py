@@ -2,21 +2,11 @@
 
 from __future__ import annotations
 
-from aion.sir.edges import (
-    ControlFlowKind,
-    EdgeType,
-    HyperEdge,
-    ParallelismKind,
-)
+from aion.sir.edges import (ControlFlowKind, EdgeType, HyperEdge,
+                            ParallelismKind)
 from aion.sir.hypergraph import GraphBuilder, HyperGraph
-from aion.sir.vertices import (
-    AIONType,
-    EffectKind,
-    HardwareAffinity,
-    Provenance,
-    Vertex,
-    VertexType,
-)
+from aion.sir.vertices import (AIONType, EffectKind, HardwareAffinity,
+                               Provenance, Vertex, VertexType)
 
 
 class TestVertex:

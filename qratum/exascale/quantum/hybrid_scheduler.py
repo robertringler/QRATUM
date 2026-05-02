@@ -23,15 +23,13 @@ Architecture:
 └─────────────┘     └──────────────┘     └──────────────┘
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple, Any, Callable
-from enum import Enum
-import time
 import hashlib
+import time
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Dict, List, Optional, Set, Tuple
 
-from qratum.exascale.quantum.ptaq import (
-    PTAQ1000, QuantumCircuit, QuantumJob, GateType
-)
+from qratum.exascale.quantum.ptaq import PTAQ1000, QuantumCircuit, QuantumJob
 
 
 class WorkloadType(Enum):
@@ -88,7 +86,7 @@ class ClassicalTask:
     gpu_id: Optional[int] = None
     requires_quantum_result: bool = False
     state: TaskState = TaskState.PENDING
-    
+
     def compute_task_hash(self) -> str:
         """Compute deterministic hash of task"""
         data = f"{self.task_id}:{self.workload_id}:{self.operation}"
@@ -117,7 +115,7 @@ class QuantumTask:
     requires_classical_input: bool = False
     module_ids: Optional[List[int]] = None
     state: TaskState = TaskState.PENDING
-    
+
     def compute_task_hash(self) -> str:
         """Compute deterministic hash of task"""
         circuit_hash = self.circuit.compute_circuit_hash()
@@ -151,19 +149,19 @@ class HybridWorkload:
     priority: int = 1
     deadline_ms: Optional[float] = None
     status: str = "queued"
-    
+
     def add_classical_task(self, task: ClassicalTask) -> None:
         """Add classical task to workload"""
         self.classical_tasks.append(task)
         if task.task_id not in self.task_dependencies:
             self.task_dependencies[task.task_id] = set()
-    
+
     def add_quantum_task(self, task: QuantumTask) -> None:
         """Add quantum task to workload"""
         self.quantum_tasks.append(task)
         if task.task_id not in self.task_dependencies:
             self.task_dependencies[task.task_id] = set()
-    
+
     def add_dependency(self, task_id: str, dependency_id: str) -> None:
         """
         Add task dependency
@@ -175,7 +173,7 @@ class HybridWorkload:
         if task_id not in self.task_dependencies:
             self.task_dependencies[task_id] = set()
         self.task_dependencies[task_id].add(dependency_id)
-    
+
     def get_ready_tasks(self, completed_tasks: Set[str]) -> Tuple[List[ClassicalTask], List[QuantumTask]]:
         """
         Get tasks ready for execution
@@ -188,23 +186,23 @@ class HybridWorkload:
         """
         ready_classical = []
         ready_quantum = []
-        
+
         # Check classical tasks
         for task in self.classical_tasks:
             if task.state == TaskState.PENDING:
                 deps = self.task_dependencies.get(task.task_id, set())
                 if deps.issubset(completed_tasks):
                     ready_classical.append(task)
-        
+
         # Check quantum tasks
         for task in self.quantum_tasks:
             if task.state == TaskState.PENDING:
                 deps = self.task_dependencies.get(task.task_id, set())
                 if deps.issubset(completed_tasks):
                     ready_quantum.append(task)
-        
+
         return ready_classical, ready_quantum
-    
+
     def estimate_total_time_ms(self) -> float:
         """
         Estimate total workload execution time
@@ -219,7 +217,7 @@ class HybridWorkload:
             for t in self.quantum_tasks
         )
         return classical_time + quantum_time
-    
+
     def get_total_tasks(self) -> int:
         """Get total number of tasks"""
         return len(self.classical_tasks) + len(self.quantum_tasks)
@@ -280,17 +278,17 @@ class HybridScheduler:
     gpu_allocations: Dict[int, Optional[str]] = field(default_factory=dict)
     quantum_allocations: Dict[int, Optional[str]] = field(default_factory=dict)
     allocation_history: List[ResourceAllocation] = field(default_factory=list)
-    
+
     def __post_init__(self):
         """Initialize scheduler resources"""
         # Initialize GPU allocations (None = idle)
         for gpu_id in range(self.num_gpus):
             self.gpu_allocations[gpu_id] = None
-        
+
         # Initialize quantum module allocations
         for module in self.quantum_processor.modules:
             self.quantum_allocations[module.module_id] = None
-    
+
     def submit_workload(self, workload: HybridWorkload) -> str:
         """
         Submit hybrid workload for execution
@@ -303,12 +301,12 @@ class HybridScheduler:
         """
         workload.status = "queued"
         self.workload_queue.append(workload)
-        
+
         # Sort by priority (stable sort preserves submission order)
         self.workload_queue.sort(key=lambda w: w.priority)
-        
+
         return workload.workload_id
-    
+
     def should_use_quantum(self, task: QuantumTask) -> bool:
         """
         Decide whether to use quantum or classical simulation
@@ -330,7 +328,7 @@ class HybridScheduler:
             # Default: use quantum for circuits that benefit
             circuit_size = task.circuit.num_qubits
             return circuit_size >= 50  # Classical simulation infeasible above 50 qubits
-    
+
     def allocate_gpu(self, task: ClassicalTask) -> Optional[int]:
         """
         Allocate GPU for classical task
@@ -347,10 +345,10 @@ class HybridScheduler:
                 self.gpu_allocations[gpu_id] = task.task_id
                 task.gpu_id = gpu_id
                 return gpu_id
-        
+
         return None
-    
-    def allocate_quantum_modules(self, task: QuantumTask, 
+
+    def allocate_quantum_modules(self, task: QuantumTask,
                                  num_modules: int = 1) -> Optional[List[int]]:
         """
         Allocate quantum modules for quantum task
@@ -367,16 +365,16 @@ class HybridScheduler:
             module_id for module_id, allocation in self.quantum_allocations.items()
             if allocation is None
         ]
-        
+
         if len(idle_modules) >= num_modules:
             allocated = idle_modules[:num_modules]
             for module_id in allocated:
                 self.quantum_allocations[module_id] = task.task_id
             task.module_ids = allocated
             return allocated
-        
+
         return None
-    
+
     def schedule_step(self) -> Dict[str, Any]:
         """
         Execute one scheduling step
@@ -386,19 +384,19 @@ class HybridScheduler:
         """
         scheduled_classical = 0
         scheduled_quantum = 0
-        
+
         # Process active workloads
         for workload_id, workload in list(self.active_workloads.items()):
             # Get ready tasks
             ready_classical, ready_quantum = workload.get_ready_tasks(self.completed_tasks)
-            
+
             # Schedule classical tasks
             for task in ready_classical:
                 gpu_id = self.allocate_gpu(task)
                 if gpu_id is not None:
                     task.state = TaskState.EXECUTING_CLASSICAL
                     scheduled_classical += 1
-                    
+
                     # Record allocation
                     allocation = ResourceAllocation(
                         task_id=task.task_id,
@@ -407,7 +405,7 @@ class HybridScheduler:
                         estimated_completion_ms=task.estimated_time_ms,
                     )
                     self.allocation_history.append(allocation)
-            
+
             # Schedule quantum tasks
             for task in ready_quantum:
                 if self.should_use_quantum(task):
@@ -416,7 +414,7 @@ class HybridScheduler:
                     if module_ids is not None:
                         task.state = TaskState.EXECUTING_QUANTUM
                         scheduled_quantum += 1
-                        
+
                         # Submit to PTAQ-1000
                         job = QuantumJob(
                             job_id=task.task_id,
@@ -425,7 +423,7 @@ class HybridScheduler:
                             num_shots=task.num_shots,
                         )
                         self.quantum_processor.submit_job(job)
-                        
+
                         # Record allocation
                         allocation = ResourceAllocation(
                             task_id=task.task_id,
@@ -449,20 +447,20 @@ class HybridScheduler:
                     if gpu_id is not None:
                         task.state = TaskState.EXECUTING_CLASSICAL
                         scheduled_classical += 1
-        
+
         # Try to activate queued workloads
         if self.workload_queue:
             workload = self.workload_queue.pop(0)
             workload.status = "active"
             self.active_workloads[workload.workload_id] = workload
-        
+
         return {
             'scheduled_classical': scheduled_classical,
             'scheduled_quantum': scheduled_quantum,
             'active_workloads': len(self.active_workloads),
             'queued_workloads': len(self.workload_queue),
         }
-    
+
     def complete_task(self, task_id: str) -> bool:
         """
         Mark task as completed
@@ -478,15 +476,15 @@ class HybridScheduler:
             if allocation == task_id:
                 self.gpu_allocations[gpu_id] = None
                 break
-        
+
         # Release quantum allocation
         for module_id, allocation in self.quantum_allocations.items():
             if allocation == task_id:
                 self.quantum_allocations[module_id] = None
-        
+
         # Mark task as completed
         self.completed_tasks.add(task_id)
-        
+
         # Check if workload is complete
         for workload_id, workload in list(self.active_workloads.items()):
             all_tasks = (
@@ -498,9 +496,9 @@ class HybridScheduler:
                 workload.status = "completed"
                 del self.active_workloads[workload_id]
                 self.completed_workloads.add(workload_id)
-        
+
         return True
-    
+
     def get_scheduler_statistics(self) -> Dict[str, Any]:
         """
         Get scheduler statistics
@@ -511,16 +509,16 @@ class HybridScheduler:
         # GPU utilization
         idle_gpus = sum(1 for a in self.gpu_allocations.values() if a is None)
         gpu_utilization = 1.0 - (idle_gpus / self.num_gpus) if self.num_gpus > 0 else 0.0
-        
+
         # Quantum utilization
         idle_modules = sum(1 for a in self.quantum_allocations.values() if a is None)
         total_modules = len(self.quantum_allocations)
         quantum_utilization = 1.0 - (idle_modules / total_modules) if total_modules > 0 else 0.0
-        
+
         # Task counts
         total_tasks = sum(w.get_total_tasks() for w in self.active_workloads.values())
         total_tasks += sum(w.get_total_tasks() for w in self.workload_queue)
-        
+
         return {
             'scheduling_policy': self.scheduling_policy.value,
             'num_gpus': self.num_gpus,
@@ -542,8 +540,8 @@ class HybridSchedulerInterface:
     
     Provides convenient methods for submitting and managing hybrid workloads.
     """
-    
-    def __init__(self, num_gpus: int = 16, 
+
+    def __init__(self, num_gpus: int = 16,
                  processor_id: str = "PTAQ-1000-0",
                  policy: SchedulingPolicy = SchedulingPolicy.ADVANTAGE_BASED):
         """
@@ -555,15 +553,15 @@ class HybridSchedulerInterface:
             policy: Scheduling policy
         """
         from qratum.exascale.quantum.ptaq import PTAQ1000
-        
+
         self.quantum_processor = PTAQ1000(processor_id=processor_id)
         self.scheduler = HybridScheduler(
             num_gpus=num_gpus,
             quantum_processor=self.quantum_processor,
             scheduling_policy=policy,
         )
-    
-    def create_workload(self, workload_id: str, 
+
+    def create_workload(self, workload_id: str,
                        workload_type: WorkloadType) -> HybridWorkload:
         """
         Create new hybrid workload
@@ -576,7 +574,7 @@ class HybridSchedulerInterface:
             HybridWorkload instance
         """
         return HybridWorkload(workload_id=workload_id, workload_type=workload_type)
-    
+
     def submit(self, workload: HybridWorkload) -> str:
         """
         Submit workload for execution
@@ -588,7 +586,7 @@ class HybridSchedulerInterface:
             Workload ID
         """
         return self.scheduler.submit_workload(workload)
-    
+
     def run_scheduling_loop(self, num_steps: int = 100) -> Dict[str, Any]:
         """
         Run scheduling loop for specified steps
@@ -601,12 +599,12 @@ class HybridSchedulerInterface:
         """
         for _ in range(num_steps):
             self.scheduler.schedule_step()
-            
+
             # Simulate task completion (in real system: wait for hardware)
             time.sleep(0.001)
-        
+
         return self.scheduler.get_scheduler_statistics()
-    
+
     def get_statistics(self) -> Dict[str, Any]:
         """Get scheduler statistics"""
         return self.scheduler.get_scheduler_statistics()

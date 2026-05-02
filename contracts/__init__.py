@@ -14,45 +14,20 @@ from contracts.base import (BaseContract, compute_contract_hash,
                             generate_contract_id, get_current_timestamp)
 from contracts.capability import (CapabilityContract, ClusterTopology,
                                   create_capability_contract)
-from contracts.base import (
-    BaseContract,
-    compute_contract_hash,
-    generate_contract_id,
-    get_current_timestamp,
-)
-from contracts.capability import (
-    CapabilityContract,
-    ClusterTopology,
-    create_capability_contract,
-)
-from contracts.enforcement import (
-    ContractEnforcer,
-    EnforcedContract,
-    EnforcementCheckpoint,
-    EnforcementResult,
-    create_enforced_contract,
-)
+from contracts.enforcement import (ContractEnforcer, EnforcedContract,
+                                   EnforcementCheckpoint, EnforcementResult,
+                                   create_enforced_contract)
 from contracts.event import EventContract, create_event_contract
 from contracts.intent import IntentContract, create_intent_contract
-from contracts.provenance import (
-    ComplianceArtifact,
-    ComplianceStandard,
-    ProvenanceChainBuilder,
-    ProvenanceContract,
-    ProvenanceEntry,
-    ProvenanceType,
-    create_21cfr11_provenance,
-    create_do178c_provenance,
-)
-from contracts.rollback_proof import (
-    RollbackContract,
-    RollbackOrchestrator,
-    RollbackProof,
-    RollbackProofGenerator,
-    RollbackReason,
-    StateSnapshot,
-    create_rollback_contract,
-)
+from contracts.provenance import (ComplianceArtifact, ComplianceStandard,
+                                  ProvenanceChainBuilder, ProvenanceContract,
+                                  ProvenanceEntry, ProvenanceType,
+                                  create_21cfr11_provenance,
+                                  create_do178c_provenance)
+from contracts.rollback_proof import (RollbackContract, RollbackOrchestrator,
+                                      RollbackProof, RollbackProofGenerator,
+                                      RollbackReason, StateSnapshot,
+                                      create_rollback_contract)
 from contracts.temporal import TemporalContract, create_temporal_contract
 
 __all__ = [

@@ -7,23 +7,12 @@ import pytest
 
 from qradle.core.zones import SecurityZone
 from qratum_asi.discovery_acceleration.contracts import (
-    DISCOVERY_CONTRACT_TEMPLATES,
-    ContractStatus,
-    CrossVerticalIntent,
-    DiscoveryContract,
-    IntentType,
-    VerticalBinding,
-    create_discovery_contract,
-)
+    DISCOVERY_CONTRACT_TEMPLATES, ContractStatus, CrossVerticalIntent,
+    DiscoveryContract, IntentType, VerticalBinding, create_discovery_contract)
 from qratum_asi.discovery_acceleration.federated_gwas import (
-    FederatedGWASPipeline,
-    GWASCohort,
-)
+    FederatedGWASPipeline, GWASCohort)
 from qratum_asi.discovery_acceleration.workflows import (
-    DiscoveryAccelerationEngine,
-    DiscoveryType,
-    WorkflowStage,
-)
+    DiscoveryAccelerationEngine, DiscoveryType, WorkflowStage)
 
 
 class TestDiscoveryAccelerationEngine:

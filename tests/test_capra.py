@@ -1,6 +1,7 @@
 """Tests for CAPRA Financial Risk module."""
 
-from qratum_platform.core import ComputeSubstrate, PlatformContract, PlatformIntent, VerticalModule
+from qratum_platform.core import (ComputeSubstrate, PlatformContract,
+                                  PlatformIntent, VerticalModule)
 from verticals.capra import CAPRAModule
 
 

@@ -26,40 +26,23 @@ explicitly stated, and integrate with the existing MVRI ``State``,
 """
 
 from qagents.control_geometry.control_directions import (
-    DEFAULT_WEIGHTS,
-    ActionMetrics,
-    classify_action_space,
-    compute_action_metrics,
-    score_action,
-)
+    DEFAULT_WEIGHTS, ActionMetrics, classify_action_space,
+    compute_action_metrics, score_action)
 from qagents.control_geometry.controllability_rank import (
-    controllability_rank,
-    controllability_spectrum,
-    displacement_matrix,
-)
-from qagents.control_geometry.embedding import (
-    DisplacementCache,
-    action_similarity,
-    action_to_displacement,
-)
-from qagents.control_geometry.policy_optimizer import (
-    control_policy,
-    select_action,
-)
-from qagents.control_geometry.reachability import (
-    ReachabilityGraph,
-    ReachEdge,
-    action_norm,
-    local_reachability,
-    reachability_cost,
-    reachability_graph,
-)
-from qagents.control_geometry.sensitivity import (
-    DEFAULT_EPS,
-    sensitivity_probe,
-    state_to_vector,
-    vector_dim,
-)
+    controllability_rank, controllability_spectrum, displacement_matrix)
+from qagents.control_geometry.embedding import (DisplacementCache,
+                                                action_similarity,
+                                                action_to_displacement)
+from qagents.control_geometry.policy_optimizer import (control_policy,
+                                                       select_action)
+from qagents.control_geometry.reachability import (ReachabilityGraph,
+                                                   ReachEdge, action_norm,
+                                                   local_reachability,
+                                                   reachability_cost,
+                                                   reachability_graph)
+from qagents.control_geometry.sensitivity import (DEFAULT_EPS,
+                                                  sensitivity_probe,
+                                                  state_to_vector, vector_dim)
 
 __all__ = [
     # sensitivity

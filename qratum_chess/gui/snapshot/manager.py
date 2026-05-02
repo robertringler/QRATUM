@@ -13,13 +13,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Callable
 
-from qratum_chess.gui.snapshot.capture import FullSnapshot, SnapshotCapture, SnapshotConfig
-from qratum_chess.gui.snapshot.events import (
-    EventDetector,
-    GamePhase,
-    SnapshotEvent,
-    SnapshotTrigger,
-)
+from qratum_chess.gui.snapshot.capture import (FullSnapshot, SnapshotCapture,
+                                               SnapshotConfig)
+from qratum_chess.gui.snapshot.events import (EventDetector, GamePhase,
+                                              SnapshotEvent, SnapshotTrigger)
 
 if TYPE_CHECKING:
     pass

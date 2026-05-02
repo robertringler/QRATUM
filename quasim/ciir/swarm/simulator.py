@@ -11,11 +11,8 @@ from dataclasses import dataclass, field
 import numpy as np
 from numpy.typing import NDArray
 
-from quasim.ciir.swarm.memory import (
-    KnowledgeGraph, NodeType, EdgeType,
-)
+from quasim.ciir.swarm.memory import KnowledgeGraph, NodeType
 from quasim.ciir.swarm.physics_lang import PhysicsProgram
-
 
 # ================================================================
 # Simulation result

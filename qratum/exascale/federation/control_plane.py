@@ -30,15 +30,13 @@ Design Principles:
 - Byzantine fault tolerance for adversarial environments
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple, Any
-from enum import Enum
-import time
 import hashlib
+import time
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Dict, List, Optional, Set, Tuple
 
-from qratum.exascale.federation.bft_hotstuff import (
-    BFTHotStuffConsensus, Proposal, ProposalStatus
-)
+from qratum.exascale.federation.bft_hotstuff import BFTHotStuffConsensus
 
 
 class SiteStatus(Enum):
@@ -99,15 +97,15 @@ class Site:
     last_heartbeat_ns: int = 0
     state_version: int = 0
     state_hash: str = ""
-    
+
     def __post_init__(self):
         """Initialize site"""
         if self.last_heartbeat_ns == 0:
             object.__setattr__(self, 'last_heartbeat_ns', int(time.time() * 1e9))
-        
+
         if not self.state_hash:
             object.__setattr__(self, 'state_hash', self.compute_state_hash())
-    
+
     def compute_state_hash(self) -> str:
         """
         Compute hash of site state
@@ -120,11 +118,11 @@ class Site:
             f"{self.status.value}:{self.state_version}"
         )
         return hashlib.sha256(data.encode('utf-8')).hexdigest()
-    
+
     def send_heartbeat(self) -> None:
         """Update heartbeat timestamp"""
         object.__setattr__(self, 'last_heartbeat_ns', int(time.time() * 1e9))
-    
+
     def is_healthy(self, max_age_ms: float = 5000.0) -> bool:
         """
         Check if site is healthy based on heartbeat
@@ -137,16 +135,16 @@ class Site:
         """
         if self.status != SiteStatus.HEALTHY:
             return False
-        
+
         current_ns = int(time.time() * 1e9)
         age_ms = (current_ns - self.last_heartbeat_ns) / 1_000_000.0
-        
+
         return age_ms <= max_age_ms
-    
+
     def can_reach(self, site_id: str) -> bool:
         """Check if this site can reach another site"""
         return site_id in self.connected_sites
-    
+
     def update_state(self, new_state_hash: str) -> None:
         """
         Update site state
@@ -179,16 +177,16 @@ class FederatedJob:
     state_hash: str = ""
     status: str = "pending"
     created_ns: int = 0
-    
+
     def __post_init__(self):
         """Initialize job"""
         if self.created_ns == 0:
             object.__setattr__(self, 'created_ns', int(time.time() * 1e9))
-    
+
     def get_all_sites(self) -> List[str]:
         """Get all sites involved in job"""
         return [self.primary_site] + self.replica_sites
-    
+
     def can_execute_on_sites(self, available_sites: Set[str]) -> bool:
         """
         Check if job can execute with available sites
@@ -222,12 +220,12 @@ class GlobalState:
     site_states: Dict[str, str] = field(default_factory=dict)
     last_consensus_ns: int = 0
     pending_updates: List[Tuple[str, str]] = field(default_factory=list)
-    
+
     def __post_init__(self):
         """Initialize global state"""
         if not self.state_hash:
             object.__setattr__(self, 'state_hash', self.compute_global_hash())
-    
+
     def compute_global_hash(self) -> str:
         """
         Compute hash of global state
@@ -242,7 +240,7 @@ class GlobalState:
         )
         data = f"{self.version}:{site_data}"
         return hashlib.sha256(data.encode('utf-8')).hexdigest()
-    
+
     def update_site_state(self, site_id: str, state_hash: str) -> None:
         """
         Update state for specific site
@@ -253,14 +251,14 @@ class GlobalState:
         """
         self.site_states[site_id] = state_hash
         self.pending_updates.append((site_id, state_hash))
-    
+
     def commit_updates(self) -> None:
         """Commit pending updates to global state"""
         object.__setattr__(self, 'version', self.version + 1)
         object.__setattr__(self, 'state_hash', self.compute_global_hash())
         object.__setattr__(self, 'last_consensus_ns', int(time.time() * 1e9))
         self.pending_updates.clear()
-    
+
     def verify_consistency(self) -> bool:
         """
         Verify global state consistency
@@ -300,7 +298,7 @@ class FederationControlPlane:
     mode: FederationMode = FederationMode.NORMAL
     jobs: Dict[str, FederatedJob] = field(default_factory=dict)
     active_operations: Dict[str, CrossSiteOperation] = field(default_factory=dict)
-    
+
     def __post_init__(self):
         """Initialize control plane"""
         # Initialize consensus if not provided
@@ -313,7 +311,7 @@ class FederationControlPlane:
                     'consensus',
                     BFTHotStuffConsensus(total_replicas=min(total_nodes, 3125))
                 )
-    
+
     def add_site(self, site: Site) -> None:
         """
         Add site to federation
@@ -323,8 +321,8 @@ class FederationControlPlane:
         """
         self.sites[site.site_id] = site
         self.global_state.update_site_state(site.site_id, site.state_hash)
-    
-    def update_site_connectivity(self, site_id: str, 
+
+    def update_site_connectivity(self, site_id: str,
                                  connected_sites: Set[str]) -> None:
         """
         Update connectivity information for site
@@ -335,7 +333,7 @@ class FederationControlPlane:
         """
         if site_id in self.sites:
             self.sites[site_id].connected_sites = connected_sites
-    
+
     def monitor_sites(self) -> Dict[str, SiteStatus]:
         """
         Monitor health of all sites
@@ -345,7 +343,7 @@ class FederationControlPlane:
         """
         site_statuses = {}
         healthy_count = 0
-        
+
         for site_id, site in self.sites.items():
             if site.is_healthy():
                 site_statuses[site_id] = SiteStatus.HEALTHY
@@ -354,14 +352,14 @@ class FederationControlPlane:
                 # Check if partitioned
                 reachable = len(site.connected_sites)
                 total_sites = len(self.sites)
-                
+
                 if reachable < total_sites / 2:
                     site.status = SiteStatus.PARTITIONED
                     site_statuses[site_id] = SiteStatus.PARTITIONED
                 else:
                     site.status = SiteStatus.DEGRADED
                     site_statuses[site_id] = SiteStatus.DEGRADED
-        
+
         # Update federation mode
         if healthy_count == len(self.sites):
             self.mode = FederationMode.NORMAL
@@ -369,9 +367,9 @@ class FederationControlPlane:
             self.mode = FederationMode.DEGRADED
         else:
             self.mode = FederationMode.EMERGENCY
-        
+
         return site_statuses
-    
+
     def submit_federated_job(self, job: FederatedJob) -> str:
         """
         Submit job spanning multiple sites
@@ -387,15 +385,15 @@ class FederationControlPlane:
             site_id for site_id, site in self.sites.items()
             if site.status == SiteStatus.HEALTHY
         )
-        
+
         if not job.can_execute_on_sites(available_sites):
             raise RuntimeError(f"Insufficient sites for job {job.job_id}")
-        
+
         self.jobs[job.job_id] = job
         job.status = "submitted"
-        
+
         return job.job_id
-    
+
     def synchronize_state(self, site_id: str, new_state_hash: str) -> bool:
         """
         Synchronize state for site (requires consensus)
@@ -409,14 +407,14 @@ class FederationControlPlane:
         """
         if site_id not in self.sites:
             return False
-        
+
         # Update site state
         site = self.sites[site_id]
         site.update_state(new_state_hash)
-        
+
         # Update global state
         self.global_state.update_site_state(site_id, new_state_hash)
-        
+
         # Run consensus for strong consistency
         if self.consensus:
             proposal_id = self.consensus.submit_proposal(
@@ -427,16 +425,16 @@ class FederationControlPlane:
                     'new_state_hash': new_state_hash,
                 }
             )
-            
+
             if proposal_id:
                 # Run consensus
                 success = self.consensus.run_consensus_round(proposal_id)
                 if success:
                     self.global_state.commit_updates()
                     return True
-        
+
         return False
-    
+
     def handle_partition(self, partitioned_sites: Set[str]) -> Dict[str, Any]:
         """
         Handle network partition
@@ -450,7 +448,7 @@ class FederationControlPlane:
         # Identify majority partition
         majority_size = len(self.sites) / 2 + 1
         connected_sites = set(self.sites.keys()) - partitioned_sites
-        
+
         if len(connected_sites) >= majority_size:
             # Majority partition continues operation
             recovery_plan = {
@@ -468,9 +466,9 @@ class FederationControlPlane:
                 'action': 'wait_for_quorum',
             }
             self.mode = FederationMode.EMERGENCY
-        
+
         return recovery_plan
-    
+
     def migrate_job(self, job_id: str, from_site: str, to_site: str) -> bool:
         """
         Migrate job between sites
@@ -485,22 +483,22 @@ class FederationControlPlane:
         """
         if job_id not in self.jobs:
             return False
-        
+
         job = self.jobs[job_id]
-        
+
         # Verify destination site is healthy
         if to_site not in self.sites or self.sites[to_site].status != SiteStatus.HEALTHY:
             return False
-        
+
         # Update job assignment
         if job.primary_site == from_site:
             job.primary_site = to_site
         elif from_site in job.replica_sites:
             job.replica_sites.remove(from_site)
             job.replica_sites.append(to_site)
-        
+
         return True
-    
+
     def get_federation_statistics(self) -> Dict[str, Any]:
         """
         Get federation statistics
@@ -513,17 +511,17 @@ class FederationControlPlane:
         for status in SiteStatus:
             count = sum(1 for s in self.sites.values() if s.status == status)
             site_stats[status.value] = count
-        
+
         # Job statistics
         job_stats = {}
         for job in self.jobs.values():
             job_stats[job.status] = job_stats.get(job.status, 0) + 1
-        
+
         # Consensus statistics
         consensus_stats = {}
         if self.consensus:
             consensus_stats = self.consensus.get_consensus_statistics()
-        
+
         return {
             'federation_id': self.federation_id,
             'mode': self.mode.value,
@@ -537,7 +535,7 @@ class FederationControlPlane:
             'active_operations': len(self.active_operations),
             'consensus': consensus_stats,
         }
-    
+
     def verify_global_consistency(self) -> bool:
         """
         Verify global state consistency across all sites
@@ -547,14 +545,14 @@ class FederationControlPlane:
         """
         if not self.global_state.verify_consistency():
             return False
-        
+
         # Verify each site state matches global state
         for site_id, expected_hash in self.global_state.site_states.items():
             if site_id in self.sites:
                 actual_hash = self.sites[site_id].state_hash
                 if actual_hash != expected_hash:
                     return False
-        
+
         return True
 
 
@@ -562,7 +560,7 @@ class FederationBuilder:
     """
     Builder for standard federation configurations
     """
-    
+
     @staticmethod
     def create_standard_federation(
         federation_id: str = "qratum_exascale_federation"
@@ -577,7 +575,7 @@ class FederationBuilder:
             FederationControlPlane instance
         """
         control_plane = FederationControlPlane(federation_id=federation_id)
-        
+
         # Define standard sites
         sites_config = [
             ("us-east", "Virginia, USA"),
@@ -586,7 +584,7 @@ class FederationBuilder:
             ("asia-pacific", "Tokyo, Japan"),
             ("middle-east", "Dubai, UAE"),
         ]
-        
+
         # Create sites
         for site_id, location in sites_config:
             site = Site(
@@ -594,13 +592,13 @@ class FederationBuilder:
                 location=location,
                 num_nodes=625,  # 625 nodes per site
             )
-            
+
             # Full mesh connectivity (all sites can reach all sites)
             site.connected_sites = set(s[0] for s in sites_config if s[0] != site_id)
-            
+
             control_plane.add_site(site)
-        
+
         # Commit initial global state
         control_plane.global_state.commit_updates()
-        
+
         return control_plane

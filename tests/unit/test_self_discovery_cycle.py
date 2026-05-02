@@ -11,18 +11,11 @@ Tests the autonomous discovery loop implementation:
 
 import pytest
 
-from qratum.discovery import (
-    DiscoveryEntry,
-    DiscoveryLedger,
-    DiscoveryStatus,
-    EmpiricalDelta,
-    Hypothesis,
-    SearchResult,
-    SelfDiscoveryCycle,
-    StateSpaceModel,
-    StatisticalVerificationAgent,
-    create_sdc_for_domain,
-)
+from qratum.discovery import (DiscoveryEntry, DiscoveryLedger, DiscoveryStatus,
+                              EmpiricalDelta, Hypothesis, SearchResult,
+                              SelfDiscoveryCycle, StateSpaceModel,
+                              StatisticalVerificationAgent,
+                              create_sdc_for_domain)
 
 
 class TestHypothesis:

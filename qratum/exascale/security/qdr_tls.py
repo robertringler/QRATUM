@@ -41,19 +41,13 @@ Standards Compliance:
 - FIPS 140-3 compliant implementations
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple, Union
-from enum import Enum
 import hashlib
-import secrets
 import time
-from pathlib import Path
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Dict, List, Optional
 
-from .pqc import (
-    KyberKEM, KyberKeyPair, KyberCiphertext,
-    DilithiumSigner, DilithiumKeyPair, DilithiumSignature,
-    SPHINCSPlusKeyPair, SPHINCSPlusSignature
-)
+from .pqc import DilithiumSigner, KyberKEM
 
 
 class TLSVersion(Enum):
@@ -71,7 +65,7 @@ class CipherSuite(Enum):
     """
     # Primary cipher suite (mandatory)
     X25519_KYBER1024_DILITHIUM5_AES256GCM_SHA384 = "X25519-Kyber1024-Dilithium5-AES256GCM-SHA384"
-    
+
     # Alternative cipher suites
     X25519_KYBER1024_ECDSA384_CHACHA20POLY1305_SHA384 = "X25519-Kyber1024-ECDSA384-ChaCha20Poly1305-SHA384"
 
@@ -165,7 +159,7 @@ class TLSCertificate:
     signature_dilithium: bytes
     signature_ecdsa: bytes
     extensions: Dict[str, str] = field(default_factory=dict)
-    
+
     def is_valid(self, current_time: Optional[int] = None) -> bool:
         """
         Check if certificate is currently valid
@@ -178,9 +172,9 @@ class TLSCertificate:
         """
         if current_time is None:
             current_time = int(time.time())
-        
+
         return self.not_before <= current_time <= self.not_after
-    
+
     def get_fingerprint(self) -> str:
         """
         Compute SHA-256 fingerprint of certificate
@@ -217,7 +211,7 @@ class HandshakeMessage:
     sequence_number: int
     timestamp: int
     merkle_hash: Optional[str] = None
-    
+
     def compute_hash(self) -> str:
         """
         Compute SHA-384 hash of handshake message
@@ -260,7 +254,7 @@ class SessionKeys:
     server_mac_key: bytes
     master_secret: bytes
     created_at: int
-    
+
     def __post_init__(self):
         """Validate key sizes"""
         if len(self.client_write_key) != 32:
@@ -273,7 +267,7 @@ class SessionKeys:
             raise ValueError("Server IV must be 12 bytes")
         if len(self.master_secret) != 48:
             raise ValueError("Master secret must be 48 bytes")
-    
+
     def should_rotate(self, rotation_interval_sec: int) -> bool:
         """
         Check if keys should be rotated
@@ -320,7 +314,7 @@ class QDRTLS:
         - Throughput: 95+ Gbps
         - Overhead: ~2.5% (within 3% target)
     """
-    
+
     def __init__(
         self,
         node_id: str,
@@ -338,15 +332,15 @@ class QDRTLS:
         self.node_id = node_id
         self.config = config or QDRTLSConfig()
         self.certificate = certificate
-        
+
         # Initialize PQC primitives
         self.kyber = KyberKEM(node_id)
         self.dilithium = DilithiumSigner(node_id)
-        
+
         # Session state
-        self.sessions: Dict[str, 'SecureTransport'] = {}
+        self.sessions: Dict[str, SecureTransport] = {}
         self.handshake_counter = 0
-    
+
     def create_server_transport(
         self,
         client_node_id: str
@@ -362,7 +356,7 @@ class QDRTLS:
         """
         session_id = f"{self.node_id}-{client_node_id}-{self.handshake_counter}"
         self.handshake_counter += 1
-        
+
         transport = SecureTransport(
             local_node_id=self.node_id,
             remote_node_id=client_node_id,
@@ -372,10 +366,10 @@ class QDRTLS:
             kyber=self.kyber,
             dilithium=self.dilithium
         )
-        
+
         self.sessions[session_id] = transport
         return transport
-    
+
     def create_client_transport(
         self,
         server_node_id: str
@@ -391,7 +385,7 @@ class QDRTLS:
         """
         session_id = f"{self.node_id}-{server_node_id}-{self.handshake_counter}"
         self.handshake_counter += 1
-        
+
         transport = SecureTransport(
             local_node_id=self.node_id,
             remote_node_id=server_node_id,
@@ -401,10 +395,10 @@ class QDRTLS:
             kyber=self.kyber,
             dilithium=self.dilithium
         )
-        
+
         self.sessions[session_id] = transport
         return transport
-    
+
     def cleanup_expired_sessions(self):
         """
         Remove expired sessions to free memory
@@ -414,13 +408,13 @@ class QDRTLS:
         """
         current_time = int(time.time())
         expired_sessions = []
-        
+
         for session_id, transport in self.sessions.items():
             if transport.session_keys is not None:
                 age = current_time - transport.session_keys.created_at
                 if age > self.config.session_timeout_sec:
                     expired_sessions.append(session_id)
-        
+
         for session_id in expired_sessions:
             del self.sessions[session_id]
 
@@ -442,7 +436,7 @@ class SecureTransport:
         Not thread-safe. Use one transport per connection per thread.
         For concurrent connections, create multiple transports.
     """
-    
+
     def __init__(
         self,
         local_node_id: str,
@@ -472,21 +466,21 @@ class SecureTransport:
         self.config = config
         self.kyber = kyber
         self.dilithium = dilithium
-        
+
         # Handshake state
         self.state = HandshakeState.START
         self.handshake_messages: List[HandshakeMessage] = []
         self.sequence_number = 0
-        
+
         # Session keys (established during handshake)
         self.session_keys: Optional[SessionKeys] = None
-        
+
         # Performance metrics
         self.handshake_start_time: Optional[float] = None
         self.handshake_duration_ms: Optional[float] = None
         self.bytes_sent = 0
         self.bytes_received = 0
-    
+
     def perform_handshake(
         self,
         server_certificate: Optional[TLSCertificate] = None,
@@ -509,25 +503,25 @@ class SecureTransport:
         Performance: ~8 ms for complete handshake
         """
         self.handshake_start_time = time.time()
-        
+
         try:
             if self.is_server:
                 self._server_handshake(client_certificate)
             else:
                 self._client_handshake(server_certificate, client_certificate)
-            
+
             # Derive session keys from shared secret
             self._derive_session_keys()
-            
+
             self.state = HandshakeState.ESTABLISHED
             self.handshake_duration_ms = (time.time() - self.handshake_start_time) * 1000
-            
+
             return True
-        
-        except Exception as e:
+
+        except Exception:
             self.state = HandshakeState.CLOSED
             return False
-    
+
     def _client_handshake(
         self,
         server_certificate: Optional[TLSCertificate],
@@ -536,27 +530,27 @@ class SecureTransport:
         """Client-side handshake implementation (stub)"""
         # ClientHello
         self._send_handshake_message(HandshakeState.CLIENT_HELLO, b"client_hello_data")
-        
+
         # Receive ServerHello, ServerCertificate, ServerKeyExchange
         self.state = HandshakeState.SERVER_HELLO
-        
+
         # Generate ephemeral Kyber key pair
         client_kyber_keypair = self.kyber.generate_keypair()
-        
+
         # Encapsulate shared secret with server's public key
         # (In production, extract server's key from certificate)
         server_kyber_public_key = b'\x00' * 1568  # Placeholder
         kyber_ciphertext = self.kyber.encapsulate(server_kyber_public_key)
-        
+
         # ClientKeyExchange
         self._send_handshake_message(
             HandshakeState.CLIENT_KEY_EXCHANGE,
             kyber_ciphertext.ciphertext
         )
-        
+
         # ClientFinished
         self._send_handshake_message(HandshakeState.CLIENT_FINISHED, b"client_finished")
-    
+
     def _server_handshake(
         self,
         client_certificate: Optional[TLSCertificate]
@@ -564,31 +558,31 @@ class SecureTransport:
         """Server-side handshake implementation (stub)"""
         # Receive ClientHello
         self.state = HandshakeState.CLIENT_HELLO
-        
+
         # ServerHello
         self._send_handshake_message(HandshakeState.SERVER_HELLO, b"server_hello_data")
-        
+
         # ServerCertificate
         self._send_handshake_message(HandshakeState.SERVER_CERT, b"server_cert_data")
-        
+
         # Generate ephemeral Kyber key pair
         server_kyber_keypair = self.kyber.generate_keypair()
-        
+
         # ServerKeyExchange
         self._send_handshake_message(
             HandshakeState.SERVER_KEY_EXCHANGE,
             server_kyber_keypair.public_key
         )
-        
+
         # ServerHelloDone
         self._send_handshake_message(HandshakeState.SERVER_HELLO_DONE, b"")
-        
+
         # Receive ClientKeyExchange
         # (In production, decapsulate client's ciphertext)
-        
+
         # ServerFinished
         self._send_handshake_message(HandshakeState.SERVER_FINISHED, b"server_finished")
-    
+
     def _send_handshake_message(self, message_type: HandshakeState, payload: bytes):
         """Send a handshake message"""
         message = HandshakeMessage(
@@ -598,11 +592,11 @@ class SecureTransport:
             timestamp=int(time.time())
         )
         message.merkle_hash = message.compute_hash()
-        
+
         self.handshake_messages.append(message)
         self.sequence_number += 1
         self.bytes_sent += len(payload)
-    
+
     def _derive_session_keys(self):
         """
         Derive session keys from master secret using HKDF
@@ -612,7 +606,7 @@ class SecureTransport:
         """
         # TODO: Implement actual HKDF key derivation from Kyber shared secret
         # For now, use deterministic placeholder based on session ID
-        
+
         # Derive master secret deterministically from session ID
         master_secret_input = (
             self.session_id.encode() +
@@ -620,7 +614,7 @@ class SecureTransport:
             self.remote_node_id.encode()
         )
         master_secret = hashlib.sha384(master_secret_input).digest()  # 48 bytes
-        
+
         self.session_keys = SessionKeys(
             client_write_key=hashlib.sha256(master_secret + b"client_write").digest(),
             server_write_key=hashlib.sha256(master_secret + b"server_write").digest(),
@@ -631,7 +625,7 @@ class SecureTransport:
             master_secret=master_secret,
             created_at=int(time.time())
         )
-    
+
     def encrypt(self, plaintext: bytes) -> bytes:
         """
         Encrypt application data with AES-256-GCM
@@ -646,12 +640,12 @@ class SecureTransport:
         """
         if self.session_keys is None:
             raise RuntimeError("Handshake not completed")
-        
+
         # TODO: Implement actual AES-256-GCM encryption
         # For now, return placeholder
         self.bytes_sent += len(plaintext)
         return plaintext  # Placeholder
-    
+
     def decrypt(self, ciphertext: bytes) -> bytes:
         """
         Decrypt application data with AES-256-GCM
@@ -666,12 +660,12 @@ class SecureTransport:
         """
         if self.session_keys is None:
             raise RuntimeError("Handshake not completed")
-        
+
         # TODO: Implement actual AES-256-GCM decryption
         # For now, return placeholder
         self.bytes_received += len(ciphertext)
         return ciphertext  # Placeholder
-    
+
     def close(self):
         """
         Close the TLS connection gracefully
@@ -681,11 +675,11 @@ class SecureTransport:
         if self.state != HandshakeState.CLOSED:
             # TODO: Send close_notify alert
             self.state = HandshakeState.CLOSED
-            
+
             # Securely erase session keys
             if self.session_keys is not None:
                 self.session_keys = None
-    
+
     def get_performance_metrics(self) -> Dict[str, float]:
         """
         Get performance metrics for this connection
@@ -724,7 +718,7 @@ class QDRTLSMetrics:
     active_sessions: int = 0
     total_handshakes: int = 0
     failed_handshakes: int = 0
-    
+
     def is_within_target(self, target_percent: float = 3.0) -> bool:
         """
         Check if CPU overhead is within target

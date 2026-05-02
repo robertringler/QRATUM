@@ -712,7 +712,7 @@ def derive_projector_from_fixed_point(
 def _observable_trajectory(
     traj: List[CMatrix],
     Pi: CMatrix,
-) -> "np.ndarray":
+) -> np.ndarray:
     """Compute ⟨Π⟩(t) = Tr(Π ρ(t)) for each step in traj."""
     return np.array([float(np.real(np.trace(Pi @ rho))) for rho in traj])
 

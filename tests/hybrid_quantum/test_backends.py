@@ -4,18 +4,16 @@ import pytest
 
 # Try to import hybrid quantum modules
 try:
-    from quasim.hybrid_quantum.backends import (
-        AzureQuantumHybridBackend,
-        BackendProvider,
-        BraketHybridBackend,
-        ExecutionResult,
-        ExecutionStatus,
-        HybridQuantumBackend,
-        HybridQuantumConfig,
-        IBMHybridBackend,
-        IonQHybridBackend,
-        QuantinuumHybridBackend,
-    )
+    from quasim.hybrid_quantum.backends import (AzureQuantumHybridBackend,
+                                                BackendProvider,
+                                                BraketHybridBackend,
+                                                ExecutionResult,
+                                                ExecutionStatus,
+                                                HybridQuantumBackend,
+                                                HybridQuantumConfig,
+                                                IBMHybridBackend,
+                                                IonQHybridBackend,
+                                                QuantinuumHybridBackend)
 
     HYBRID_AVAILABLE = True
 except ImportError:

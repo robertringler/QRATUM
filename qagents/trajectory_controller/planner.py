@@ -13,17 +13,11 @@ from qagents.mvri.forward_model import forward_model
 from qagents.mvri.state import ForwardModelError, Inv, State, format_edge
 from qagents.realworld_bridge.safety_gate import SafetyConfig, validate_action
 from qagents.trajectory_controller.predictor import (
-    TrajectoryInvariantViolationError,
-    predict_rollout,
-)
-from qagents.trajectory_controller.types import (
-    LAMBDA_ACTION,
-    LAMBDA_ROC,
-    LAMBDA_STATE,
-    Trajectory,
-    TrajectoryPlanResult,
-    action_to_vector,
-)
+    TrajectoryInvariantViolationError, predict_rollout)
+from qagents.trajectory_controller.types import (LAMBDA_ACTION, LAMBDA_ROC,
+                                                 LAMBDA_STATE, Trajectory,
+                                                 TrajectoryPlanResult,
+                                                 action_to_vector)
 
 BEAM_WIDTH: int = 8
 MAX_CANDIDATES_PER_STEP: int = 32

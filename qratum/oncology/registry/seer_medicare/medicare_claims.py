@@ -15,7 +15,8 @@ from datetime import date
 from pathlib import Path
 from typing import Generator, Optional
 
-from .privacy import PrivacyConfig, SafeLogger, create_claim_id_hash, create_patient_key
+from .privacy import (PrivacyConfig, SafeLogger, create_claim_id_hash,
+                      create_patient_key)
 from .schema import ClaimEvent, ClaimSetting, CodeSystem
 
 logger = logging.getLogger(__name__)

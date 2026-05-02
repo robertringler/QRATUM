@@ -14,8 +14,8 @@ Failure modes are explicitly triggered via parameter overrides.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
+from dataclasses import dataclass
+from typing import List, Optional
 
 import numpy as np
 from numpy.typing import NDArray
@@ -91,12 +91,9 @@ class HybridSimulation:
 
         Returns SimulationResult with full trajectories.
         """
-        from quasim.ciir.multi_qubit.quantum.density_matrix import (
-            DensityMatrixSimulator,
-            LindbladParams,
-            _gksl_rhs,
-        )
         from quasim.ciir.multi_qubit.control.controller import HybridController
+        from quasim.ciir.multi_qubit.quantum.density_matrix import (
+            DensityMatrixSimulator, LindbladParams, _gksl_rhs)
 
         rng = np.random.default_rng(seed)
 

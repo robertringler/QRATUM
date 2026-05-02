@@ -49,13 +49,11 @@ Standards & References:
 - IPA (Inner Product Argument) commitment scheme
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple, Union, Any
-from enum import Enum
 import hashlib
-import secrets
 import time
-from pathlib import Path
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Dict, List, Optional, Tuple
 
 
 class ProofType(Enum):
@@ -109,7 +107,7 @@ class CircuitConstraint:
     public_inputs: List[int]
     private_inputs: List[int]
     description: str
-    
+
     def evaluate(self) -> bool:
         """
         Evaluate constraint satisfaction (for testing)
@@ -147,7 +145,7 @@ class Circuit:
     num_constraints: int
     degree: int
     description: str
-    
+
     def get_complexity(self) -> Dict[str, int]:
         """
         Get circuit complexity metrics
@@ -162,7 +160,7 @@ class Circuit:
             "degree": self.degree,
             "total_variables": self.num_public_inputs + self.num_private_inputs
         }
-    
+
     def estimate_proving_time_ms(self) -> float:
         """
         Estimate proving time based on circuit complexity
@@ -172,10 +170,10 @@ class Circuit:
         """
         # Rough estimate: ~0.1 ms per constraint for simple circuits
         base_time = self.num_constraints * 0.1
-        
+
         # Adjust for degree (higher degree = more work)
         degree_factor = 1.0 + (self.degree / 10.0)
-        
+
         return base_time * degree_factor
 
 
@@ -197,7 +195,7 @@ class ProofInstance:
     public_inputs: List[int]
     private_inputs: List[int]
     metadata: Dict[str, str] = field(default_factory=dict)
-    
+
     def to_canonical_bytes(self) -> bytes:
         """
         Convert instance to canonical byte representation
@@ -207,13 +205,13 @@ class ProofInstance:
         """
         # Deterministic serialization
         parts = [self.instance_id.encode('utf-8')]
-        
+
         for value in self.public_inputs:
             parts.append(value.to_bytes(32, 'big', signed=True))
-        
+
         for value in self.private_inputs:
             parts.append(value.to_bytes(32, 'big', signed=True))
-        
+
         return b'|'.join(parts)
 
 
@@ -244,7 +242,7 @@ class ZeroKnowledgeProof:
     timestamp: int
     proof_type: ProofType
     metadata: Dict[str, str] = field(default_factory=dict)
-    
+
     def get_size_bytes(self) -> int:
         """
         Get proof size in bytes
@@ -253,7 +251,7 @@ class ZeroKnowledgeProof:
             Proof size in bytes
         """
         return len(self.proof_data)
-    
+
     def get_fingerprint(self) -> str:
         """
         Compute SHA-256 fingerprint of proof
@@ -262,7 +260,7 @@ class ZeroKnowledgeProof:
             Hex-encoded fingerprint
         """
         return hashlib.sha256(self.proof_data).hexdigest()
-    
+
     def to_canonical_bytes(self) -> bytes:
         """
         Convert proof to canonical byte representation
@@ -275,13 +273,13 @@ class ZeroKnowledgeProof:
             self.proof_data,
             self.circuit_id.encode('utf-8'),
         ]
-        
+
         for value in self.public_inputs:
             parts.append(value.to_bytes(32, 'big', signed=True))
-        
+
         parts.append(self.prover_node.encode('utf-8'))
         parts.append(self.timestamp.to_bytes(8, 'big'))
-        
+
         return b'|'.join(parts)
 
 
@@ -309,7 +307,7 @@ class AggregatedProof:
     total_proofs_aggregated: int
     prover_node: str
     timestamp: int
-    
+
     def get_compression_ratio(self) -> float:
         """
         Calculate compression ratio (aggregated vs individual proofs)
@@ -319,11 +317,11 @@ class AggregatedProof:
         """
         if self.total_proofs_aggregated == 0:
             return 0.0
-        
+
         # Assume ~1.5 KB per individual proof
         individual_size = self.total_proofs_aggregated * 1536
         aggregated_size = len(self.proof_data)
-        
+
         return individual_size / aggregated_size if aggregated_size > 0 else 0.0
 
 
@@ -349,7 +347,7 @@ class VerificationKey:
     commitment_scheme: str = "IPA"  # Inner Product Argument
     curve: str = "Pallas"            # Pallas curve (Halo2 default)
     created_at: int = 0
-    
+
     def get_fingerprint(self) -> str:
         """
         Compute SHA-256 fingerprint of verification key
@@ -399,7 +397,7 @@ class Halo2Prover:
         # Verify proof
         valid = prover.verify(proof, circuit)
     """
-    
+
     def __init__(self, node_id: str):
         """
         Initialize Halo2 prover
@@ -411,7 +409,7 @@ class Halo2Prover:
         self.circuits: Dict[str, Circuit] = {}
         self.verification_keys: Dict[str, VerificationKey] = {}
         self.proof_counter = 0
-    
+
     def create_hash_chain_circuit(
         self,
         chain_length: int,
@@ -431,7 +429,7 @@ class Halo2Prover:
             Circuit for hash chain verification
         """
         circuit_id = f"hash_chain_{chain_length}_{hash_function}"
-        
+
         # Create constraints (simplified)
         constraints = []
         for i in range(chain_length):
@@ -443,7 +441,7 @@ class Halo2Prover:
                 description=f"Hash step {i}: h_{i+1} = hash(h_{i})"
             )
             constraints.append(constraint)
-        
+
         circuit = Circuit(
             circuit_id=circuit_id,
             circuit_type=CircuitType.HASH_CHAIN,
@@ -454,10 +452,10 @@ class Halo2Prover:
             degree=8,  # Typical for hash circuits
             description=f"{chain_length}-step {hash_function} hash chain"
         )
-        
+
         self.circuits[circuit_id] = circuit
         return circuit
-    
+
     def create_merkle_tree_circuit(
         self,
         tree_depth: int
@@ -474,7 +472,7 @@ class Halo2Prover:
             Circuit for Merkle tree inclusion
         """
         circuit_id = f"merkle_tree_{tree_depth}"
-        
+
         constraints = []
         for i in range(tree_depth):
             constraint = CircuitConstraint(
@@ -485,7 +483,7 @@ class Halo2Prover:
                 description=f"Merkle level {i}"
             )
             constraints.append(constraint)
-        
+
         circuit = Circuit(
             circuit_id=circuit_id,
             circuit_type=CircuitType.MERKLE_TREE,
@@ -496,10 +494,10 @@ class Halo2Prover:
             degree=8,
             description=f"Merkle tree inclusion proof (depth {tree_depth})"
         )
-        
+
         self.circuits[circuit_id] = circuit
         return circuit
-    
+
     def create_range_circuit(
         self,
         bit_width: int
@@ -517,7 +515,7 @@ class Halo2Prover:
             Circuit for range proof
         """
         circuit_id = f"range_{bit_width}"
-        
+
         # Range proof requires bit decomposition
         constraints = []
         for i in range(bit_width):
@@ -529,7 +527,7 @@ class Halo2Prover:
                 description=f"Bit {i} is 0 or 1"
             )
             constraints.append(constraint)
-        
+
         circuit = Circuit(
             circuit_id=circuit_id,
             circuit_type=CircuitType.RANGE,
@@ -540,10 +538,10 @@ class Halo2Prover:
             degree=4,
             description=f"{bit_width}-bit range proof"
         )
-        
+
         self.circuits[circuit_id] = circuit
         return circuit
-    
+
     def setup(self, circuit: Circuit) -> VerificationKey:
         """
         Setup verification key for a circuit
@@ -561,23 +559,23 @@ class Halo2Prover:
         """
         # TODO: Implement actual Halo2 setup
         # For now, return placeholder verification key
-        
+
         vk_id = f"vk_{circuit.circuit_id}"
-        
+
         # Generate placeholder verification key data
         vk_data = hashlib.sha512(circuit.circuit_id.encode()).digest() * 32
         vk_data = vk_data[:2048]  # ~2 KB verification key
-        
+
         vk = VerificationKey(
             vk_id=vk_id,
             circuit_id=circuit.circuit_id,
             vk_data=vk_data,
             created_at=int(time.time())
         )
-        
+
         self.verification_keys[circuit.circuit_id] = vk
         return vk
-    
+
     def prove(
         self,
         circuit: Circuit,
@@ -608,23 +606,23 @@ class Halo2Prover:
             raise ValueError(f"Expected {circuit.num_public_inputs} public inputs, got {len(instance.public_inputs)}")
         if len(instance.private_inputs) != circuit.num_private_inputs:
             raise ValueError(f"Expected {circuit.num_private_inputs} private inputs, got {len(instance.private_inputs)}")
-        
+
         # Ensure verification key exists
         if circuit.circuit_id not in self.verification_keys:
             self.setup(circuit)
-        
+
         # TODO: Implement actual Halo2 proving
         # For now, generate placeholder proof
-        
+
         proof_id = f"proof_{self.node_id}_{self.proof_counter}"
         self.proof_counter += 1
-        
+
         # Generate deterministic proof data
         # Proof size: ~1,536 bytes = 24 * 64 bytes
         HALO2_PROOF_SIZE = 1536
         HASH_BLOCK_SIZE = 64
         PROOF_MULTIPLIER = HALO2_PROOF_SIZE // HASH_BLOCK_SIZE  # 24
-        
+
         proof_input = (
             circuit.circuit_id.encode() +
             instance.to_canonical_bytes() +
@@ -632,7 +630,7 @@ class Halo2Prover:
         )
         proof_data = hashlib.sha512(proof_input).digest() * PROOF_MULTIPLIER
         proof_data = proof_data[:HALO2_PROOF_SIZE]
-        
+
         proof = ZeroKnowledgeProof(
             proof_id=proof_id,
             proof_data=proof_data,
@@ -642,9 +640,9 @@ class Halo2Prover:
             timestamp=int(time.time()),
             proof_type=proof_type
         )
-        
+
         return proof
-    
+
     def verify(
         self,
         proof: ZeroKnowledgeProof,
@@ -670,22 +668,22 @@ class Halo2Prover:
                 if proof.circuit_id not in self.circuits:
                     return VerificationResult.UNSUPPORTED_CIRCUIT, f"Unknown circuit: {proof.circuit_id}"
                 circuit = self.circuits[proof.circuit_id]
-            
+
             if circuit.circuit_id not in self.verification_keys:
                 return VerificationResult.UNSUPPORTED_CIRCUIT, f"No verification key for circuit: {circuit.circuit_id}"
-            
+
             # Validate proof structure
             if len(proof.public_inputs) != circuit.num_public_inputs:
                 return VerificationResult.MALFORMED, "Public input count mismatch"
-            
+
             # TODO: Implement actual Halo2 verification
             # For now, always return valid
-            
+
             return VerificationResult.VALID, None
-        
+
         except Exception as e:
             return VerificationResult.INVALID, str(e)
-    
+
     def aggregate_proofs(
         self,
         proofs: List[ZeroKnowledgeProof]
@@ -706,19 +704,19 @@ class Halo2Prover:
         """
         if not proofs:
             raise ValueError("Cannot aggregate empty proof list")
-        
+
         # TODO: Implement actual Halo2 aggregation
         # For now, generate placeholder aggregated proof
-        
+
         aggregated_id = f"aggregated_{self.node_id}_{int(time.time())}"
-        
+
         # Combine all proof data
         combined_data = b''.join(p.proof_data for p in proofs)
         aggregated_data = hashlib.sha512(combined_data).digest() * 24
         aggregated_data = aggregated_data[:1536]  # Same size as individual proof!
-        
+
         child_ids = [p.proof_id for p in proofs]
-        
+
         return AggregatedProof(
             aggregated_proof_id=aggregated_id,
             proof_data=aggregated_data,
@@ -728,7 +726,7 @@ class Halo2Prover:
             prover_node=self.node_id,
             timestamp=int(time.time())
         )
-    
+
     def batch_verify(
         self,
         proofs: List[ZeroKnowledgeProof],
@@ -750,13 +748,13 @@ class Halo2Prover:
         """
         # TODO: Implement actual batch verification with SIMD
         # For now, verify individually
-        
+
         results = []
         for i, proof in enumerate(proofs):
             circuit = circuits[i] if circuits else None
             result = self.verify(proof, circuit)
             results.append(result)
-        
+
         return results
 
 
@@ -785,7 +783,7 @@ class ZKMetrics:
     proofs_generated: int = 0
     proofs_verified: int = 0
     proofs_aggregated: int = 0
-    
+
     def is_within_target(self, target_percent: float = 3.0) -> bool:
         """
         Check if total overhead is within target

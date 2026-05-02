@@ -24,16 +24,9 @@ from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.theory import (
-    CIIRTheory,
-    RealTensor,
-    StateManifold,
-    build_default_theory,
-)
 from quasim.ciir.observers import PVM, born_distribution, measurement_update
-
+from quasim.ciir.theory import CIIRTheory, RealTensor
 
 # ================================================================
 # CIIRState — State representation with manifold geometry

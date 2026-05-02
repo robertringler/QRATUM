@@ -24,13 +24,9 @@ from typing import Callable, Literal
 from qagents.mvri.action_space import EPSILON, Action, validate_action
 from qagents.mvri.constraint_gate import constraint_gate
 from qagents.mvri.forward_model import forward_model
-from qagents.mvri.metrics import (
-    acceptance_rate,
-    delta_entropy,
-    delta_mutual_information,
-    delta_transfer_entropy,
-    violation_count,
-)
+from qagents.mvri.metrics import (acceptance_rate, delta_entropy,
+                                  delta_mutual_information,
+                                  delta_transfer_entropy, violation_count)
 from qagents.mvri.state import Inv, State
 
 LoopOutcome = Literal[

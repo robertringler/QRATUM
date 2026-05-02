@@ -25,14 +25,10 @@ from typing import Any
 
 from qradle.core.zones import SecurityZone, ZoneContext, get_zone_enforcer
 from qradle.merkle import MerkleChain
-from qratum_asi.core.zk_state_verifier import (
-    StateCommitment,
-    TransitionType,
-    ZKProof,
-    ZKProofGenerator,
-    ZKStateVerifier,
-    ZKVerificationContext,
-)
+from qratum_asi.core.zk_state_verifier import (StateCommitment, TransitionType,
+                                               ZKProof, ZKProofGenerator,
+                                               ZKStateVerifier,
+                                               ZKVerificationContext)
 
 
 class GWASPhase(Enum):

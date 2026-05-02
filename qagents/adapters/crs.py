@@ -37,11 +37,8 @@ from __future__ import annotations
 
 from typing import Any, Iterable, Mapping
 
-from qagents.reality_interface import (
-    IntentInterpretation,
-    PredictedOutcome,
-    RealityInterfaceController,
-)
+from qagents.reality_interface import (IntentInterpretation, PredictedOutcome,
+                                       RealityInterfaceController)
 
 #: Frozen invariants — these must never be modified by a CRSI step.
 #: Mirrors ``qratum_asi.orchestrator_master.IMMUTABLE_BOUNDARIES``.

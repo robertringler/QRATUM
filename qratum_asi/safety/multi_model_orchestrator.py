@@ -9,11 +9,6 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Protocol
 
 from .elicitation import ModelResponse, ResponseType, SafetyElicitation
-from .elicitation import (
-    ModelResponse,
-    ResponseType,
-    SafetyElicitation,
-)
 
 
 class ModelInterface(Protocol):

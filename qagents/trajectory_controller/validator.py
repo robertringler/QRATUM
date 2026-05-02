@@ -6,9 +6,7 @@ from qagents.mvri.forward_model import forward_model
 from qagents.mvri.state import ForwardModelError, Inv, State
 from qagents.realworld_bridge.safety_gate import SafetyConfig, validate_action
 from qagents.trajectory_controller.predictor import (
-    TrajectoryInvariantViolationError,
-    predict_rollout,
-)
+    TrajectoryInvariantViolationError, predict_rollout)
 from qagents.trajectory_controller.types import Trajectory, vector_to_action
 
 

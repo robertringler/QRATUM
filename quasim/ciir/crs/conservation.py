@@ -10,13 +10,12 @@ Implements Noether-analog invariant detection:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Callable
 
 import numpy as np
 
 from quasim.ciir.crs.graph import CRSGraph
-
 
 # ================================================================
 # Invariant primitive

@@ -2,14 +2,9 @@
 
 import pytest
 
-from qradle.core.zones import (
-    DEFAULT_ZONE_POLICIES,
-    SecurityZone,
-    ZoneContext,
-    ZoneDeterminismEnforcer,
-    ZoneViolation,
-    enforce_zone,
-)
+from qradle.core.zones import (DEFAULT_ZONE_POLICIES, SecurityZone,
+                               ZoneContext, ZoneDeterminismEnforcer,
+                               ZoneViolation, enforce_zone)
 
 
 class TestSecurityZones:

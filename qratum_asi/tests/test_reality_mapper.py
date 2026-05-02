@@ -2,14 +2,9 @@
 
 import pytest
 
-from qratum_asi.safety.elicitation import (
-    ModelResponse,
-    ResponseType,
-    SafetyElicitation,
-)
-from qratum_asi.safety.reality_mapper import (
-    SafetyRealityMapper,
-)
+from qratum_asi.safety.elicitation import (ModelResponse, ResponseType,
+                                           SafetyElicitation)
+from qratum_asi.safety.reality_mapper import SafetyRealityMapper
 
 
 class TestSafetyRealityMapper:

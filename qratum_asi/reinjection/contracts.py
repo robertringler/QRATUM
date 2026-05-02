@@ -14,11 +14,8 @@ from enum import Enum
 from typing import Any
 
 from qradle.merkle import MerkleChain
-from qratum_asi.reinjection.types import (
-    ReinjectionCandidate,
-    ReinjectionStatus,
-    ValidationLevel,
-)
+from qratum_asi.reinjection.types import (ReinjectionCandidate,
+                                          ReinjectionStatus, ValidationLevel)
 
 
 class ReinjectionContractStatus(Enum):

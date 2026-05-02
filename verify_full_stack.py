@@ -75,7 +75,8 @@ def test_qratum():
     print_header("QRATUM PLATFORM VERIFICATION")
 
     from qratum.platform.api import APIRequest, QRATUMAPIService
-    from qratum.platform.reasoning_engine import ReasoningStrategy, UnifiedReasoningEngine
+    from qratum.platform.reasoning_engine import (ReasoningStrategy,
+                                                  UnifiedReasoningEngine)
 
     print("\n✓ Imports successful")
 
@@ -119,11 +120,9 @@ def test_asi():
     """Test QRATUM-ASI Layer."""
     print_header("QRATUM-ASI LAYER VERIFICATION")
 
-    from qratum_asi.orchestrator_master import (
-        IMMUTABLE_BOUNDARIES,
-        PROHIBITED_GOALS,
-        QRATUMASIOrchestrator,
-    )
+    from qratum_asi.orchestrator_master import (IMMUTABLE_BOUNDARIES,
+                                                PROHIBITED_GOALS,
+                                                QRATUMASIOrchestrator)
 
     print("\n✓ Imports successful")
 
@@ -162,13 +161,11 @@ def test_calibration_doctrine():
     """Test 12 Calibration Doctrine."""
     print_header("CALIBRATION DOCTRINE VERIFICATION (12 AXIOMS)")
 
-    from qratum_asi.core.calibration_doctrine import (
-        CALIBRATION_DOCTRINE,
-        JurisdictionalProperty,
-        TrajectoryMetrics,
-        TrajectoryState,
-        get_doctrine_enforcer,
-    )
+    from qratum_asi.core.calibration_doctrine import (CALIBRATION_DOCTRINE,
+                                                      JurisdictionalProperty,
+                                                      TrajectoryMetrics,
+                                                      TrajectoryState,
+                                                      get_doctrine_enforcer)
 
     print("\n✓ Imports successful")
 
@@ -228,13 +225,11 @@ def test_zk_verification():
 
     import time
 
-    from qratum_asi.core.zk_state_verifier import (
-        TransitionType,
-        ZKProofGenerator,
-        ZKStateVerifier,
-        ZKVerificationContext,
-        generate_commitment,
-    )
+    from qratum_asi.core.zk_state_verifier import (TransitionType,
+                                                   ZKProofGenerator,
+                                                   ZKStateVerifier,
+                                                   ZKVerificationContext,
+                                                   generate_commitment)
 
     print("\n✓ Imports successful")
 
@@ -296,7 +291,8 @@ def verify_integration():
 
     from qradle import DeterministicEngine
     from qratum.platform.api import QRATUMAPIService
-    from qratum_asi.core.calibration_doctrine import CALIBRATION_DOCTRINE, get_doctrine_enforcer
+    from qratum_asi.core.calibration_doctrine import (CALIBRATION_DOCTRINE,
+                                                      get_doctrine_enforcer)
     from qratum_asi.core.zk_state_verifier import ZKStateVerifier
     from qratum_asi.orchestrator_master import QRATUMASIOrchestrator
 

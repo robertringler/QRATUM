@@ -1,7 +1,6 @@
 """Tests for Lattice Field Model."""
 
 import numpy as np
-import pytest
 
 from compiled_realities.models.lattice_field import LatticeFieldModel
 
@@ -17,9 +16,9 @@ def test_lattice_model_initialization():
         'n_timesteps': 50,
         'dt': 0.01,
     }
-    
+
     model = LatticeFieldModel(config, seed=42)
-    
+
     assert model.n_sites == 32
     assert model.cutoff == 10
     assert model.dispersion == 0.5
@@ -38,10 +37,10 @@ def test_lattice_simulation_runs():
         'n_timesteps': 20,
         'dt': 0.01,
     }
-    
+
     model = LatticeFieldModel(config, seed=42)
     results = model.run_simulation(intervention=0)
-    
+
     assert 'observables_t1' in results
     assert 'effective_metric_data' in results
     assert isinstance(results['observables_t1'], (float, np.floating))
@@ -58,10 +57,10 @@ def test_lattice_twin_simulations():
         'n_timesteps': 20,
         'dt': 0.01,
     }
-    
+
     model = LatticeFieldModel(config, seed=42)
     results_I0, results_I1 = model.run_twin_simulations()
-    
+
     assert 'observables_t1' in results_I0
     assert 'observables_t1' in results_I1
     assert isinstance(results_I0['observables_t1'], (float, np.floating))
@@ -79,10 +78,10 @@ def test_lattice_effective_metric():
         'n_timesteps': 20,
         'dt': 0.01,
     }
-    
+
     model = LatticeFieldModel(config, seed=42)
     metric_data = model.effective_metric_data
-    
+
     assert 'c_eff' in metric_data
     assert 'dispersion_deviation' in metric_data
     assert 'attenuation_margin' in metric_data
@@ -101,10 +100,10 @@ def test_lattice_observable_extraction():
         'n_timesteps': 20,
         'dt': 0.01,
     }
-    
+
     model = LatticeFieldModel(config, seed=42)
     results = model.run_simulation(intervention=0)
     obs = model.get_observable_t1(results)
-    
+
     assert isinstance(obs, (float, np.floating))
     assert obs >= 0  # Energy should be non-negative
