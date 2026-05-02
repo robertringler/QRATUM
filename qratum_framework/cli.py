@@ -153,6 +153,56 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     ev_p.add_argument("--json", action="store_true", help="Print the JSON report.")
 
+    # stream (SDE) -----------------------------------------------------
+    st_p = sub.add_parser(
+        "stream",
+        help=(
+            "Run the Streaming Drift Engine over a token stream and print "
+            "tier transitions."
+        ),
+    )
+    st_p.add_argument(
+        "--source",
+        required=True,
+        help=(
+            "Path to a whitespace-separated token file consumed as the "
+            "live persona stream."
+        ),
+    )
+    st_p.add_argument(
+        "--baseline",
+        required=True,
+        help=(
+            "Path to a whitespace-separated baseline token file forming "
+            "the reference window W_0."
+        ),
+    )
+    st_p.add_argument(
+        "--profile",
+        default=DEFAULT_PROFILE,
+        choices=sorted(PROFILES),
+        help="Named pipeline profile (default: %(default)s).",
+    )
+    st_p.add_argument(
+        "--scorer",
+        choices=("kl", "mmd"),
+        default=None,
+        help="Override the SDE scorer (default: profile.sde.scorer).",
+    )
+    st_p.add_argument(
+        "--ledger",
+        default=None,
+        help="Optional path to write the resulting Merkle ledger as JSONL.",
+    )
+    st_p.add_argument(
+        "--halt-fails",
+        action="store_true",
+        help="Exit non-zero if any HALT event is emitted (CI gate).",
+    )
+    st_p.add_argument(
+        "--json", action="store_true", help="Emit a JSON event log to stdout."
+    )
+
     return p
 
 
@@ -447,6 +497,102 @@ def _cmd_eval(args: argparse.Namespace) -> int:
 
 
 # ---------------------------------------------------------------------------
+# Streaming Drift Engine subcommand
+# ---------------------------------------------------------------------------
+
+
+def _cmd_stream(args: argparse.Namespace) -> int:
+    """Run the Streaming Drift Engine over a token file.
+
+    Reads a whitespace-separated persona token file and a paired
+    baseline token file, drives them through
+    :class:`qratum_framework.sde.StreamingDriftEngine`, and prints the
+    resulting tier transitions.  When ``--ledger PATH`` is supplied
+    the per-event :class:`UnifiedTraceEntry` chain is written as JSONL
+    so it can be re-verified later with ``qratum ledger PATH``.
+    """
+    from qratum_framework.sde import (
+        StreamingDriftEngine,
+        Token,
+        WindowSnapshot,
+    )
+    from qratum_framework.sde.config import (
+        build_buffer,
+        build_evaluator,
+        build_scorer,
+        load_sde_config,
+    )
+
+    overrides: dict = {}
+    if args.scorer is not None:
+        overrides["scorer"] = args.scorer
+    sde_cfg = load_sde_config(args.profile, overrides=overrides)
+
+    persona_tokens = _read_tokens(args.source)
+    baseline_tokens = _read_tokens(args.baseline)
+    if not persona_tokens:
+        print(f"source {args.source!r} is empty", file=sys.stderr)
+        return 2
+    if not baseline_tokens:
+        print(f"baseline {args.baseline!r} is empty", file=sys.stderr)
+        return 2
+
+    baseline_window = WindowSnapshot(
+        tokens=tuple(Token(value=v) for v in baseline_tokens), tick=0
+    )
+    buffer = build_buffer(sde_cfg)
+    scorer = build_scorer(sde_cfg)
+    evaluator = build_evaluator(sde_cfg)
+    ledger = MerkleLedger() if args.ledger else None
+
+    engine = StreamingDriftEngine(
+        buffer=buffer,
+        scorer=scorer,
+        evaluator=evaluator,
+        baseline_window=baseline_window,
+        ledger=ledger,
+        run_id=f"cli-stream-{args.profile}",
+    )
+
+    for value in persona_tokens:
+        engine.step(Token(value=value))
+
+    snap = engine.snapshot()
+    events = engine.events
+    halt_count = sum(1 for e in events if e.tier.value == "HALT")
+
+    if args.ledger and ledger is not None:
+        with open(args.ledger, "w", encoding="utf-8") as fh:
+            fh.write(ledger.to_jsonl())
+
+    if args.json:
+        out = {
+            "snapshot": snap.to_dict(),
+            "events": [e.to_dict() for e in events],
+            "config": sde_cfg.to_dict(),
+        }
+        print(json.dumps(out, indent=2, sort_keys=True, default=str))
+    else:
+        print(f"profile     : {args.profile}")
+        print(f"scorer      : {sde_cfg.scorer}")
+        print(f"tokens      : {len(persona_tokens)}")
+        print(f"events      : {len(events)}")
+        print(f"halts       : {halt_count}")
+        print(f"final tier  : {snap.tier.value}")
+        print(f"final d_t   : {snap.d_t:.6f}")
+        for e in events:
+            print(
+                f"  tick={e.tick:>5d} {e.previous_tier.value:>5s} -> "
+                f"{e.tier.value:<5s} d_t={e.d_t:.4f} "
+                f"Δd={e.delta_d:+.4f} Δ²d={e.delta2_d:+.4f}"
+            )
+
+    if args.halt_fails and halt_count > 0:
+        return 1
+    return 0
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 
@@ -460,6 +606,7 @@ _COMMANDS = {
     "clusters": _cmd_clusters,
     "drift": _cmd_drift,
     "eval": _cmd_eval,
+    "stream": _cmd_stream,
 }
 
 
