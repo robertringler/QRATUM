@@ -24,8 +24,7 @@ from qratum_framework.config import DEFAULT_PROFILE, PROFILES, load_profile
 from qratum_framework.falsifier import _DemoFalsifier
 from qratum_framework.health import check_health, check_readiness
 from qratum_framework.operator import Operator, StrictCIIRBackend
-from qratum_framework.trace import MerkleLedger, UnifiedTraceEntry, hash_entry
-
+from qratum_framework.trace import MerkleLedger, UnifiedTraceEntry
 
 # ---------------------------------------------------------------------------
 # Builders
@@ -102,6 +101,58 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     ver_p.add_argument("--json", action="store_true")
 
+    # clusters ---------------------------------------------------------
+    cl_p = sub.add_parser(
+        "clusters",
+        help="Run Layer B cluster discovery on persona/baseline token files.",
+    )
+    cl_p.add_argument(
+        "--persona-tokens",
+        required=True,
+        help="Path to a whitespace-separated persona token file.",
+    )
+    cl_p.add_argument(
+        "--baseline-tokens",
+        required=True,
+        help="Path to a whitespace-separated baseline token file.",
+    )
+    cl_p.add_argument("--window", type=int, default=64)
+    cl_p.add_argument("--seed", type=int, default=0)
+    cl_p.add_argument("--json", action="store_true", help="Emit full state JSON.")
+
+    # drift ------------------------------------------------------------
+    dr_p = sub.add_parser(
+        "drift",
+        help="Run Layer A drift detection on a persona token stream.",
+    )
+    dr_p.add_argument("--persona-tokens", required=True)
+    dr_p.add_argument("--baseline-tokens", required=True)
+    dr_p.add_argument("--utterance", required=True, help="The user prompt U.")
+    dr_p.add_argument("--persona", default="persona")
+    dr_p.add_argument("--json", action="store_true")
+
+    # eval -------------------------------------------------------------
+    ev_p = sub.add_parser(
+        "eval",
+        help="Run Layer C evaluation matrix and emit a regression report.",
+    )
+    ev_p.add_argument(
+        "--report-json",
+        default=None,
+        help="Optional path to write the JSON report.",
+    )
+    ev_p.add_argument(
+        "--report-md",
+        default=None,
+        help="Optional path to write the Markdown report.",
+    )
+    ev_p.add_argument(
+        "--regression",
+        action="store_true",
+        help="Exit non-zero if any non-baseline row regresses.",
+    )
+    ev_p.add_argument("--json", action="store_true", help="Print the JSON report.")
+
     return p
 
 
@@ -177,7 +228,7 @@ def _cmd_ledger(args: argparse.Namespace) -> int:
     third-party reproducers can audit a run without re-executing it.
     """
     try:
-        with open(args.path, "r", encoding="utf-8") as fh:
+        with open(args.path, encoding="utf-8") as fh:
             lines = [ln for ln in fh.read().splitlines() if ln.strip()]
     except OSError as exc:
         print(f"ledger read failed: {exc}", file=sys.stderr)
@@ -288,6 +339,114 @@ def _cmd_verify(args: argparse.Namespace) -> int:
 
 
 # ---------------------------------------------------------------------------
+# Observability subcommands (Layers A, B, C)
+# ---------------------------------------------------------------------------
+
+
+def _read_tokens(path: str) -> list:
+    with open(path, encoding="utf-8") as fh:
+        return fh.read().split()
+
+
+def _cmd_clusters(args: argparse.Namespace) -> int:
+    """Run Layer B (cluster discovery) on two token files."""
+    from qratum_framework.observability.clusters import discover_clusters
+
+    persona = _read_tokens(args.persona_tokens)
+    baseline = _read_tokens(args.baseline_tokens)
+    state = discover_clusters(
+        persona_tokens=persona,
+        baseline_tokens=baseline,
+        window=args.window,
+        seed=args.seed,
+    )
+    if args.json:
+        print(json.dumps(state.to_dict(), indent=2, sort_keys=True, default=str))
+    else:
+        schema = state.to_schema()
+        print(json.dumps(schema, indent=2, sort_keys=True, default=str))
+    return 0
+
+
+def _cmd_drift(args: argparse.Namespace) -> int:
+    """Run Layer A (drift detection) on a persona/baseline token pair."""
+    from qratum_framework.observability.clusters import discover_clusters
+    from qratum_framework.observability.drift import (
+        DriftEngine,
+        deterministic_logprob,
+    )
+
+    persona_tokens = _read_tokens(args.persona_tokens)
+    baseline_tokens = _read_tokens(args.baseline_tokens)
+    state = discover_clusters(
+        persona_tokens=persona_tokens, baseline_tokens=baseline_tokens
+    )
+
+    persona_freqs = {}
+    baseline_freqs = {}
+    for t in persona_tokens:
+        persona_freqs[t] = persona_freqs.get(t, 0.0) + 1.0
+    for t in baseline_tokens:
+        baseline_freqs[t] = baseline_freqs.get(t, 0.0) + 1.0
+    engine = DriftEngine()
+    report = engine.score(
+        tokens=persona_tokens,
+        utterance=args.utterance,
+        clusters=state,
+        persona_model=deterministic_logprob(persona_freqs),
+        baseline_model=deterministic_logprob(baseline_freqs),
+        persona=args.persona,
+    )
+    payload = report.to_dict() if args.json else report.to_schema()
+    print(json.dumps(payload, indent=2, sort_keys=True, default=str))
+    return 0 if not report.anomaly_detected else 1
+
+
+def _cmd_eval(args: argparse.Namespace) -> int:
+    """Run Layer C (eval matrix) and optionally fail on regression."""
+    from qratum_framework.observability.eval import EvalRunner
+    from qratum_framework.observability.eval.reports import (
+        build_report,
+        write_json_report,
+        write_markdown_report,
+    )
+
+    runner = EvalRunner()
+    rows = runner.run()
+    report = build_report(rows)
+
+    if args.report_json:
+        write_json_report(report, args.report_json)
+    if args.report_md:
+        write_markdown_report(report, args.report_md)
+
+    if args.json:
+        print(json.dumps(report.to_dict(), indent=2, sort_keys=True, default=str))
+    else:
+        print(f"runs            : {int(report.summary.get('n_runs', 0))}")
+        print(
+            f"baseline runs   : {int(report.summary.get('n_baseline_runs', 0))}"
+        )
+        print(
+            f"max anomaly_rate: {report.summary.get('max_anomaly_rate', 0.0):.3f}"
+        )
+        print(
+            f"max lift_rate   : "
+            f"{report.summary.get('max_lift_cluster_rate', 0.0):.3f}"
+        )
+        print(
+            f"regressions     : {int(report.summary.get('regressions', 0))}"
+        )
+        print(
+            f"verdict         : {'FAIL' if report.has_regression else 'PASS'}"
+        )
+
+    if args.regression and report.has_regression:
+        return 1
+    return 0
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 
@@ -298,6 +457,9 @@ _COMMANDS = {
     "ledger": _cmd_ledger,
     "falsify": _cmd_falsify,
     "verify": _cmd_verify,
+    "clusters": _cmd_clusters,
+    "drift": _cmd_drift,
+    "eval": _cmd_eval,
 }
 
 
