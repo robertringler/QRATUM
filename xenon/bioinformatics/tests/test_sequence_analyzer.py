@@ -2,8 +2,7 @@
 
 import pytest
 
-from xenon.bioinformatics.sequence_analyzer import (ProteinSequence,
-                                                    SequenceAnalyzer)
+from xenon.bioinformatics.sequence_analyzer import ProteinSequence, SequenceAnalyzer
 
 
 class TestProteinSequence:

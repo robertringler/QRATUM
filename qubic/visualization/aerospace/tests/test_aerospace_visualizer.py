@@ -8,9 +8,13 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from qubic.visualization.aerospace import (AerospaceVisualizer,
-                                           AerospaceVizConfig, ComplianceMode,
-                                           FrameAuditRecord, RenderBackend)
+from qubic.visualization.aerospace import (
+    AerospaceVisualizer,
+    AerospaceVizConfig,
+    ComplianceMode,
+    FrameAuditRecord,
+    RenderBackend,
+)
 
 
 @pytest.fixture

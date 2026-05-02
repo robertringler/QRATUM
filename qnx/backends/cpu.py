@@ -24,23 +24,24 @@ from typing import Any
 
 class CPUBackendStub(NotImplementedError):
     """Exception raised when CPU backend stub method is called."""
+
     pass
 
 
 class CPUBackend:
     """CPU backend for classical computation.
-    
+
     WARNING: This is a STUB implementation establishing the interface.
     For production use, use reference implementations in quasim.opt module.
-    
+
     The reference implementations provide:
     - Verified correctness against Dijkstra baseline
     - Deterministic execution
     - Full test coverage
-    
+
     Attributes:
         available: Always False for stub (use reference implementations)
-        
+
     Example:
         >>> # Instead of using this stub, use:
         >>> from quasim.opt.ultra_sssp import dijkstra_baseline
@@ -49,9 +50,9 @@ class CPUBackend:
     This is a stub implementation establishing the structural interface.
     Full CPU backend will be implemented in a future PR.
     """
-    
+
     _warned = False
-    
+
     def __init__(self):
         """Initialize CPU backend stub with guidance warning."""
         if not CPUBackend._warned:
@@ -60,22 +61,22 @@ class CPUBackend:
                 "For production, use reference implementations in quasim.opt module: "
                 "dijkstra_baseline() or PostDijkstraSSSP.solve()",
                 UserWarning,
-                stacklevel=2
+                stacklevel=2,
             )
             CPUBackend._warned = True
-    
+
     @property
     def available(self) -> bool:
         """Check if CPU backend is available.
-        
+
         Returns:
             False - use reference implementations instead
         """
         return False
-    
+
     def is_available(self) -> bool:
         """Check if CPU backend is available.
-        
+
         Returns:
             False - use reference implementations instead
         """
@@ -83,10 +84,10 @@ class CPUBackend:
 
     def run(self, task: Any) -> Any:
         """Execute task on CPU backend.
-        
+
         WARNING: This method always raises CPUBackendStub.
         Use reference implementations instead.
-        
+
 
         This method will be implemented in PR-006 (Backend Implementation).
 
@@ -95,7 +96,7 @@ class CPUBackend:
 
         Returns:
             Never returns - always raises exception
-            
+
             Execution result
 
         Raises:

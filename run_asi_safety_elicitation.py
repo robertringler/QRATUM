@@ -21,9 +21,6 @@ from pathlib import Path
 # Add QRATUM to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from qratum_asi.safety import (MultiModelOrchestrator, RefusalModelAdapter,
-                               SafetyElicitation, SafetyRealityMapper,
-                               SimulatedModelAdapter)
 from qratum_asi.safety import (
     MultiModelOrchestrator,
     RefusalModelAdapter,
@@ -78,9 +75,7 @@ def main():
     orchestrator.register_model(SimulatedModelAdapter("model_neutral_1", response_style="neutral"))
     print("  ✓ Registered: Balanced Model 1 (Neutral)")
 
-    orchestrator.register_model(
-        SimulatedModelAdapter("model_neutral_2", response_style="neutral")
-    )
+    orchestrator.register_model(SimulatedModelAdapter("model_neutral_2", response_style="neutral"))
     orchestrator.register_model(SimulatedModelAdapter("model_neutral_2", response_style="neutral"))
     print("  ✓ Registered: Balanced Model 2 (Neutral)")
 
@@ -118,7 +113,7 @@ def main():
         print(f"  {resp_type}: {count}")
     print()
 
-    if summary['high_divergence_questions']:
+    if summary["high_divergence_questions"]:
         pass
     if summary["high_divergence_questions"]:
         print("High Divergence Questions:")

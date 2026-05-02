@@ -30,22 +30,16 @@ class DisplacementCache:
     inputs collide deterministically.
     """
 
-    _store: dict[tuple[State, Action, float], np.ndarray] = field(
-        default_factory=dict
-    )
+    _store: dict[tuple[State, Action, float], np.ndarray] = field(default_factory=dict)
 
-    def get(
-        self, key: tuple[State, Action, float]
-    ) -> np.ndarray | None:
+    def get(self, key: tuple[State, Action, float]) -> np.ndarray | None:
         cached = self._store.get(key)
         if cached is None:
             return None
         # Return a copy so callers cannot mutate the cached vector.
         return cached.copy()
 
-    def put(
-        self, key: tuple[State, Action, float], value: np.ndarray
-    ) -> None:
+    def put(self, key: tuple[State, Action, float], value: np.ndarray) -> None:
         self._store[key] = value.copy()
 
     def __len__(self) -> int:

@@ -31,8 +31,10 @@ logger = logging.getLogger(__name__)
 # REFERENCE POPULATION DATA STRUCTURES
 # ============================================================================
 
+
 class PopulationGroup(Enum):
     """Major global population groups based on gnomAD-style stratification"""
+
     AFR = "African/African American"
     AMR = "Latino/Admixed American"
     EAS = "East Asian"
@@ -47,6 +49,7 @@ class PopulationGroup(Enum):
 
 class HaplotypeGroup(Enum):
     """Major Y-chromosome and mtDNA haplogroups"""
+
     # Y-chromosome haplogroups
     Y_R1a = "R1a (European/Central Asian)"
     Y_R1b = "R1b (Western European)"
@@ -67,6 +70,7 @@ class HaplotypeGroup(Enum):
 
 class RoyalHouse(Enum):
     """Major European royal and noble houses"""
+
     PLANTAGENET = "House of Plantagenet"
     TUDOR = "House of Tudor"
     STUART = "House of Stuart"
@@ -84,9 +88,11 @@ class RoyalHouse(Enum):
 # RARITY METRICS DATA STRUCTURES
 # ============================================================================
 
+
 @dataclass
 class VariantRarity:
     """Rarity metrics for individual genetic variants"""
+
     rsid: str
     chromosome: str
     position: int
@@ -111,6 +117,7 @@ class VariantRarity:
 @dataclass
 class HaplotypeBlock:
     """Extended haplotype block for IBD analysis"""
+
     chromosome: str
     start_position: int
     end_position: int
@@ -130,6 +137,7 @@ class HaplotypeBlock:
 @dataclass
 class GenomeWideRarity:
     """Composite genome-wide rarity assessment"""
+
     total_snps: int
 
     # Variant-level statistics
@@ -153,9 +161,11 @@ class GenomeWideRarity:
 # LINEAGE TRACING DATA STRUCTURES
 # ============================================================================
 
+
 @dataclass
 class LineageNode:
     """Node in probabilistic lineage graph"""
+
     node_id: str
     name: Optional[str] = None
     birth_year: Optional[int] = None
@@ -179,6 +189,7 @@ class LineageNode:
 @dataclass
 class LineagePath:
     """Probabilistic descent path"""
+
     path_id: str
     nodes: List[LineageNode] = field(default_factory=list)
 
@@ -200,6 +211,7 @@ class LineagePath:
 @dataclass
 class RoyalDescentAnalysis:
     """Analysis of potential royal descent"""
+
     subject_id: str
 
     # Direct royal lines
@@ -221,12 +233,13 @@ class RoyalDescentAnalysis:
 # GLOBAL GENOMIC RARITY ENGINE
 # ============================================================================
 
+
 class GlobalGenomicRarityEngine:
     """Implements multi-level genomic rarity analysis"""
 
     def __init__(self, reference_populations: Optional[Dict] = None):
         """Initialize with reference population data
-        
+
         Args:
             reference_populations: Reference allele frequency data (gnomAD-style)
         """
@@ -235,14 +248,14 @@ class GlobalGenomicRarityEngine:
 
     def _load_default_references(self) -> Dict:
         """Load default reference population data
-        
+
         In production, this would load from gnomAD, 1000 Genomes, etc.
         For this implementation, we use statistically realistic priors.
         """
         # Default allele frequency distributions based on empirical data
         return {
             "common_threshold": 0.05,  # >5% frequency
-            "rare_threshold": 0.01,    # 1-5% frequency
+            "rare_threshold": 0.01,  # 1-5% frequency
             "ultra_rare_threshold": 0.0001,  # <0.01% frequency
             "population_weights": {
                 PopulationGroup.EUR: 0.30,
@@ -251,15 +264,15 @@ class GlobalGenomicRarityEngine:
                 PopulationGroup.SAS: 0.15,
                 PopulationGroup.AMR: 0.10,
                 PopulationGroup.OTH: 0.05,
-            }
+            },
         }
 
     def analyze_variant_rarity(self, variant: Dict) -> VariantRarity:
         """Analyze rarity of individual variant
-        
+
         Args:
             variant: Variant data (rsid, chromosome, position, alleles)
-            
+
         Returns:
             VariantRarity metrics
         """
@@ -295,7 +308,7 @@ class GlobalGenomicRarityEngine:
 
     def _estimate_global_frequency(self, variant: Dict) -> float:
         """Estimate global allele frequency
-        
+
         In production, this queries actual databases.
         Here we use position-based heuristics.
         """
@@ -327,13 +340,15 @@ class GlobalGenomicRarityEngine:
         # Most variants are common (low rarity), few are rare (high rarity)
         return 100.0 * (1.0 - np.exp(-3.0 * rarity_score))
 
-    def analyze_haplotype_blocks(self, variants: List[Dict], window_size: int = 50) -> List[HaplotypeBlock]:
+    def analyze_haplotype_blocks(
+        self, variants: List[Dict], window_size: int = 50
+    ) -> List[HaplotypeBlock]:
         """Identify and analyze extended haplotype blocks
-        
+
         Args:
             variants: List of variants sorted by position
             window_size: Number of variants per block
-            
+
         Returns:
             List of HaplotypeBlock objects
         """
@@ -350,7 +365,7 @@ class GlobalGenomicRarityEngine:
 
             # Create sliding windows
             for i in range(0, len(chrom_variants), window_size):
-                window = chrom_variants[i:i+window_size]
+                window = chrom_variants[i : i + window_size]
                 if len(window) < 10:  # Skip small windows
                     continue
 
@@ -402,10 +417,10 @@ class GlobalGenomicRarityEngine:
 
     def calculate_genome_wide_rarity(self, variants: List[Dict]) -> GenomeWideRarity:
         """Calculate composite genome-wide rarity metrics
-        
+
         Args:
             variants: All variants in genome
-            
+
         Returns:
             GenomeWideRarity assessment
         """
@@ -416,8 +431,7 @@ class GlobalGenomicRarityEngine:
 
         # Count by rarity category
         ultra_rare = sum(1 for r in variant_rarities if r.is_ultra_rare)
-        rare = sum(1 for r in variant_rarities
-                  if r.rarity_score > 0.5 and not r.is_ultra_rare)
+        rare = sum(1 for r in variant_rarities if r.rarity_score > 0.5 and not r.is_ultra_rare)
         private = sum(1 for r in variant_rarities if r.is_private)
 
         # Calculate composite score
@@ -452,6 +466,7 @@ class GlobalGenomicRarityEngine:
 # ROYAL & NOBLE LINEAGE TRACING SYSTEM
 # ============================================================================
 
+
 class RoyalLineageTracer:
     """Implements probabilistic royal and noble lineage inference"""
 
@@ -463,7 +478,7 @@ class RoyalLineageTracer:
 
     def _load_royal_signatures(self) -> Dict:
         """Load known genetic signatures of royal houses
-        
+
         In production, this would load actual Y-DNA and mtDNA haplogroups
         of documented royal lineages from historical genetic studies.
         """
@@ -509,12 +524,14 @@ class RoyalLineageTracer:
             "succession_records": [],
         }
 
-    def infer_haplogroups(self, variants: List[Dict]) -> Tuple[Optional[HaplotypeGroup], Optional[HaplotypeGroup]]:
+    def infer_haplogroups(
+        self, variants: List[Dict]
+    ) -> Tuple[Optional[HaplotypeGroup], Optional[HaplotypeGroup]]:
         """Infer Y-chromosome and mtDNA haplogroups from variant data
-        
+
         Args:
             variants: All variants
-            
+
         Returns:
             Tuple of (Y-haplogroup, mt-haplogroup)
         """
@@ -551,15 +568,19 @@ class RoyalLineageTracer:
         # H is most common in Europe
         return HaplotypeGroup.MT_H
 
-    def trace_royal_lineages(self, variants: List[Dict], y_haplogroup: Optional[HaplotypeGroup],
-                            mt_haplogroup: Optional[HaplotypeGroup]) -> RoyalDescentAnalysis:
+    def trace_royal_lineages(
+        self,
+        variants: List[Dict],
+        y_haplogroup: Optional[HaplotypeGroup],
+        mt_haplogroup: Optional[HaplotypeGroup],
+    ) -> RoyalDescentAnalysis:
         """Trace potential royal and noble lineages
-        
+
         Args:
             variants: All genome variants
             y_haplogroup: Inferred Y-chromosome haplogroup
             mt_haplogroup: Inferred mtDNA haplogroup
-            
+
         Returns:
             RoyalDescentAnalysis with probabilistic lineage paths
         """
@@ -591,17 +612,21 @@ class RoyalLineageTracer:
         logger.info(f"Found {analysis.total_royal_connections} potential royal connections")
         return analysis
 
-    def _construct_lineage_paths(self, house: RoyalHouse, variants: List[Dict],
-                                 y_haplogroup: Optional[HaplotypeGroup],
-                                 mt_haplogroup: Optional[HaplotypeGroup]) -> List[LineagePath]:
+    def _construct_lineage_paths(
+        self,
+        house: RoyalHouse,
+        variants: List[Dict],
+        y_haplogroup: Optional[HaplotypeGroup],
+        mt_haplogroup: Optional[HaplotypeGroup],
+    ) -> List[LineagePath]:
         """Construct probabilistic lineage paths to royal house
-        
+
         Args:
             house: Royal house to trace to
             variants: Genome variants
             y_haplogroup: Y-chromosome haplogroup
             mt_haplogroup: mtDNA haplogroup
-            
+
         Returns:
             List of LineagePath objects with probability estimates
         """
@@ -639,7 +664,7 @@ class RoyalLineageTracer:
                 name=f"Ancestor Generation {gen}",
                 birth_year=current_year - 30 - (gen * 25),
                 y_haplogroup=y_haplogroup,
-                probability=0.9 ** gen,  # Probability decreases with generations
+                probability=0.9**gen,  # Probability decreases with generations
             )
             path.nodes.append(ancestor_node)
 
@@ -660,7 +685,9 @@ class RoyalLineageTracer:
         path.temporal_plausibility = self._calculate_temporal_plausibility(path)
         path.genomic_evidence_strength = 0.7  # Haplogroup match
         path.historical_evidence_strength = 0.3  # Limited historical records
-        path.combined_evidence = (path.genomic_evidence_strength + path.historical_evidence_strength) / 2.0
+        path.combined_evidence = (
+            path.genomic_evidence_strength + path.historical_evidence_strength
+        ) / 2.0
         path.royal_intersections = [house]
 
         paths.append(path)
@@ -676,8 +703,8 @@ class RoyalLineageTracer:
         total_checks = 0
 
         for i in range(len(path.nodes) - 1):
-            if path.nodes[i].birth_year and path.nodes[i+1].birth_year:
-                age_diff = path.nodes[i+1].birth_year - path.nodes[i].birth_year
+            if path.nodes[i].birth_year and path.nodes[i + 1].birth_year:
+                age_diff = path.nodes[i + 1].birth_year - path.nodes[i].birth_year
                 # Plausible if parent 15-60 years older
                 if 15 <= age_diff <= 60:
                     plausible_count += 1
@@ -690,6 +717,7 @@ class RoyalLineageTracer:
 # INTEGRATED ANALYSIS SYSTEM
 # ============================================================================
 
+
 class GenomicRarityAndLineageSystem:
     """Integrated Tier-VI Genomic-Genealogical Intelligence System"""
 
@@ -701,10 +729,10 @@ class GenomicRarityAndLineageSystem:
 
     def analyze_genome(self, variants: List[Dict]) -> Dict:
         """Perform complete genome rarity and lineage analysis
-        
+
         Args:
             variants: All genome variants
-            
+
         Returns:
             Complete analysis results dictionary
         """
@@ -719,7 +747,9 @@ class GenomicRarityAndLineageSystem:
 
         # Phase 1: Variant-level rarity analysis
         logger.info("Phase 1: Variant-level rarity analysis")
-        variant_rarities = [self.rarity_engine.analyze_variant_rarity(v) for v in variants[:100]]  # Sample
+        variant_rarities = [
+            self.rarity_engine.analyze_variant_rarity(v) for v in variants[:100]
+        ]  # Sample
         results["variant_rarity_sample"] = [asdict(vr) for vr in variant_rarities[:10]]
 
         # Phase 2: Haplotype block analysis
@@ -747,7 +777,9 @@ class GenomicRarityAndLineageSystem:
 
         # Phase 5: Royal lineage tracing
         logger.info("Phase 5: Royal lineage tracing")
-        royal_analysis = self.lineage_tracer.trace_royal_lineages(variants, y_haplogroup, mt_haplogroup)
+        royal_analysis = self.lineage_tracer.trace_royal_lineages(
+            variants, y_haplogroup, mt_haplogroup
+        )
         results["royal_lineage"] = self._serialize_royal_analysis(royal_analysis)
 
         logger.info("Analysis complete")
@@ -758,7 +790,11 @@ class GenomicRarityAndLineageSystem:
         return {
             "subject_id": analysis.subject_id,
             "total_royal_connections": analysis.total_royal_connections,
-            "highest_probability_house": analysis.highest_probability_house.value if analysis.highest_probability_house else None,
+            "highest_probability_house": (
+                analysis.highest_probability_house.value
+                if analysis.highest_probability_house
+                else None
+            ),
             "highest_probability": analysis.highest_probability,
             "direct_paths_count": len(analysis.direct_royal_paths),
             "collateral_paths_count": len(analysis.collateral_paths),
@@ -779,11 +815,11 @@ class GenomicRarityAndLineageSystem:
 
     def generate_report(self, analysis_results: Dict, output_path: str) -> str:
         """Generate comprehensive analysis report
-        
+
         Args:
             analysis_results: Results from analyze_genome()
             output_path: Directory for output files
-            
+
         Returns:
             Path to main report file
         """
@@ -791,7 +827,7 @@ class GenomicRarityAndLineageSystem:
 
         # Save JSON results
         json_path = os.path.join(output_path, "genomic_rarity_lineage_analysis.json")
-        with open(json_path, 'w') as f:
+        with open(json_path, "w") as f:
             json.dump(analysis_results, f, indent=2)
 
         logger.info(f"Analysis report saved to {json_path}")

@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import numpy as np
 
-from xenon.molecular_dynamics_lab.core.md_simulator import (MDConfig,
-                                                            MDSimulator,
-                                                            SimulationState,
-                                                            TrajectoryFrame)
+from xenon.molecular_dynamics_lab.core.md_simulator import (
+    MDConfig,
+    MDSimulator,
+    SimulationState,
+    TrajectoryFrame,
+)
 
 
 class TestMDConfig:

@@ -8,33 +8,12 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pytest
 
-from qratum_asi.core.algorithm_discovery import (AlgorithmDiscoveryEngine,
-                                                 ExecutionTrace)
-from qratum_asi.core.compression import (AbstractionCompressionEngine,
-                                         PatternType)
-from qratum_asi.core.execution_feedback import (ExecutionFeedbackLoop,
-                                                TelemetryType)
-from qratum_asi.core.goal_preservation import GoalPreservationEngine
-from qratum_asi.core.recursive_asi_program import \
-    RecursiveASIDevelopmentProgram
-from qratum_asi.core.system_model import (ComponentType, FailureMode,
-                                          QRATUMSystemModel)
-from qratum_asi.core.verification import (GraphOperationValidator,
-                                          SelfVerificationEngine,
-                                          SSSPValidator)
-from qratum_asi.core.algorithm_discovery import (
-    AlgorithmDiscoveryEngine,
-    ExecutionTrace,
-)
+from qratum_asi.core.algorithm_discovery import AlgorithmDiscoveryEngine, ExecutionTrace
 from qratum_asi.core.compression import AbstractionCompressionEngine, PatternType
 from qratum_asi.core.execution_feedback import ExecutionFeedbackLoop, TelemetryType
 from qratum_asi.core.goal_preservation import GoalPreservationEngine
 from qratum_asi.core.recursive_asi_program import RecursiveASIDevelopmentProgram
-from qratum_asi.core.system_model import (
-    ComponentType,
-    FailureMode,
-    QRATUMSystemModel,
-)
+from qratum_asi.core.system_model import ComponentType, FailureMode, QRATUMSystemModel
 from qratum_asi.core.verification import (
     GraphOperationValidator,
     SelfVerificationEngine,
@@ -130,10 +109,7 @@ class TestVerificationEngine:
 
     def test_graph_structure_validation(self):
         """Test graph structure validator."""
-        valid_graph = {
-            "nodes": [0, 1, 2],
-            "edges": [{"from": 0, "to": 1, "weight": 1.0}]
-        }
+        valid_graph = {"nodes": [0, 1, 2], "edges": [{"from": 0, "to": 1, "weight": 1.0}]}
         valid_graph = {"nodes": [0, 1, 2], "edges": [{"from": 0, "to": 1, "weight": 1.0}]}
 
         result = GraphOperationValidator.validate_graph_structure(valid_graph)
@@ -206,15 +182,9 @@ class TestGoalPreservation:
         """Test recording architectural changes."""
         engine = GoalPreservationEngine()
 
-        state_before = {
-            "implementation": {"version": 1},
-            "purpose": {"goal": "safety"}
-        }
+        state_before = {"implementation": {"version": 1}, "purpose": {"goal": "safety"}}
 
-        state_after = {
-            "implementation": {"version": 2},
-            "purpose": {"goal": "safety"}
-        }
+        state_after = {"implementation": {"version": 2}, "purpose": {"goal": "safety"}}
         state_before = {"implementation": {"version": 1}, "purpose": {"goal": "safety"}}
 
         state_after = {"implementation": {"version": 2}, "purpose": {"goal": "safety"}}
@@ -388,11 +358,7 @@ class TestExecutionFeedback:
         """Test recording telemetry."""
         loop = ExecutionFeedbackLoop()
 
-        loop.record_telemetry(
-            TelemetryType.LATENCY,
-            50.0,
-            "test_component"
-        )
+        loop.record_telemetry(TelemetryType.LATENCY, 50.0, "test_component")
         loop.record_telemetry(TelemetryType.LATENCY, 50.0, "test_component")
 
         assert len(loop.telemetry_collector.events) > 0

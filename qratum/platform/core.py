@@ -255,7 +255,9 @@ def create_event(
         Immutable Event
     """
     timestamp = datetime.now(timezone.utc).isoformat()
-    event_id = f"event_{hashlib.sha256(f'{contract_id}_{timestamp}_{emitter}'.encode()).hexdigest()[:16]}"
+    event_id = (
+        f"event_{hashlib.sha256(f'{contract_id}_{timestamp}_{emitter}'.encode()).hexdigest()[:16]}"
+    )
     event_id = (
         f"event_{hashlib.sha256(f'{contract_id}_{timestamp}_{emitter}'.encode()).hexdigest()[:16]}"
     )

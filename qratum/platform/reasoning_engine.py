@@ -186,7 +186,9 @@ class UnifiedReasoningEngine:
             ReasoningChain with complete provenance
         """
         self._chain_count += 1
-        chain_id = f"reasoning_chain_{self._chain_count}_{int(datetime.now(timezone.utc).timestamp())}"
+        chain_id = (
+            f"reasoning_chain_{self._chain_count}_{int(datetime.now(timezone.utc).timestamp())}"
+        )
         chain_id = (
             f"reasoning_chain_{self._chain_count}_{int(datetime.now(timezone.utc).timestamp())}"
         )

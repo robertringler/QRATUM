@@ -36,16 +36,32 @@ class FusiaModule(VerticalModuleBase):
         )
 
     def get_supported_tasks(self) -> List[str]:
-        return ["simulate_plasma", "calculate_neutronics", "optimize_reactor",
-                "analyze_safety", "model_fuel_cycle", "design_fusion_reactor"]
+        return [
+            "simulate_plasma",
+            "calculate_neutronics",
+            "optimize_reactor",
+            "analyze_safety",
+            "model_fuel_cycle",
+            "design_fusion_reactor",
+        ]
 
-    def execute_task(self, task: str, parameters: Dict[str, Any],
-                     contract: PlatformContract, event_chain: MerkleEventChain) -> Dict[str, Any]:
+    def execute_task(
+        self,
+        task: str,
+        parameters: Dict[str, Any],
+        contract: PlatformContract,
+        event_chain: MerkleEventChain,
+    ) -> Dict[str, Any]:
         if task not in self.get_supported_tasks():
             raise ValueError(f"Unknown task: {task}")
 
-        self.emit_task_event(EventType.TASK_STARTED, contract.contract_id, task,
-                             {"parameters": parameters}, event_chain)
+        self.emit_task_event(
+            EventType.TASK_STARTED,
+            contract.contract_id,
+            task,
+            {"parameters": parameters},
+            event_chain,
+        )
         return [
             "simulate_plasma",
             "calculate_neutronics",

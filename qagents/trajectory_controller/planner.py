@@ -152,7 +152,9 @@ def _candidate_actions(
     return ordered[:MAX_CANDIDATES_PER_STEP]
 
 
-def _compatible_states(current_state: State, target_state: State, model_state: State) -> tuple[str, ...]:
+def _compatible_states(
+    current_state: State, target_state: State, model_state: State
+) -> tuple[str, ...]:
     reasons: list[str] = []
     if not Inv(current_state):
         reasons.append("current_state:INV")
@@ -217,7 +219,9 @@ def plan_trajectory(
         for node in beam:
             candidates = _candidate_actions(node.state, target_state, safety_config)
             for action in candidates:
-                validation = validate_action(action, node.state, safety_config, node.previous_action)
+                validation = validate_action(
+                    action, node.state, safety_config, node.previous_action
+                )
                 if not validation.valid:
                     for failed in validation.failed_checks:
                         rejected.append(f"step:{depth}:{failed}")

@@ -61,9 +61,7 @@ def internal_consistency(s_new: State) -> bool:
     return no_invalid_states(s_new)
 
 
-def reproducibility(
-    s_prev: State, action: Action | None = None
-) -> bool:
+def reproducibility(s_prev: State, action: Action | None = None) -> bool:
     """AUD: ``F(s_prev, action)`` is deterministic for fixed ``action``.
 
     We verify this *structurally* by re-running the pure forward model

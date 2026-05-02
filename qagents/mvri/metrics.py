@@ -34,18 +34,12 @@ def delta_entropy(s_prev: State, s_new: State) -> float:
     return H(s_new) - H(s_prev)
 
 
-def _node_aligned_distributions(
-    s_prev: State, s_new: State
-) -> tuple[list[float], list[float]]:
+def _node_aligned_distributions(s_prev: State, s_new: State) -> tuple[list[float], list[float]]:
     """Return (p, q) over the union of node ids, normalized."""
 
     nodes = sorted(set(s_prev.nodes) | set(s_new.nodes))
-    p_raw = [
-        abs(dict(s_prev.activations).get(n, 0.0)) for n in nodes
-    ]
-    q_raw = [
-        abs(dict(s_new.activations).get(n, 0.0)) for n in nodes
-    ]
+    p_raw = [abs(dict(s_prev.activations).get(n, 0.0)) for n in nodes]
+    q_raw = [abs(dict(s_new.activations).get(n, 0.0)) for n in nodes]
     sp = sum(p_raw) or 1.0
     sq = sum(q_raw) or 1.0
     return [x / sp for x in p_raw], [x / sq for x in q_raw]

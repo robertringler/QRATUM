@@ -43,9 +43,7 @@ LAMBDA_ROC: Final[float] = 0.1
 def _freeze_vector(vec: np.ndarray) -> np.ndarray:
     out = np.asarray(vec, dtype=np.float64).copy()
     if out.shape != (ACTION_VECTOR_DIM,):
-        raise ValueError(
-            f"action vector must have shape {(ACTION_VECTOR_DIM,)}, got {out.shape!r}"
-        )
+        raise ValueError(f"action vector must have shape {(ACTION_VECTOR_DIM,)}, got {out.shape!r}")
     out.setflags(write=False)
     return out
 
@@ -65,9 +63,7 @@ class Trajectory:
         if self.horizon <= 0:
             raise ValueError("horizon must be positive")
         if len(self.actions) != self.horizon:
-            raise ValueError(
-                f"len(actions)={len(self.actions)} must equal horizon={self.horizon}"
-            )
+            raise ValueError(f"len(actions)={len(self.actions)} must equal horizon={self.horizon}")
         object.__setattr__(
             self,
             "actions",
@@ -164,9 +160,7 @@ def vector_to_action(vector: np.ndarray, state: State) -> Action:
 
     vec = np.asarray(vector, dtype=np.float64)
     if vec.shape != (ACTION_VECTOR_DIM,):
-        raise ValueError(
-            f"action vector must have shape {(ACTION_VECTOR_DIM,)}, got {vec.shape!r}"
-        )
+        raise ValueError(f"action vector must have shape {(ACTION_VECTOR_DIM,)}, got {vec.shape!r}")
     code = int(round(float(vec[0])))
     target_index = int(round(float(vec[1])))
     magnitude = float(vec[2])
