@@ -43,6 +43,9 @@ class GPUBackend:
         >>> backend.is_available()
         False
         >>> backend.run(task)  # Raises GPUBackendNotAvailable
+
+    This is a stub implementation establishing the structural interface.
+    Full GPU backend will be implemented in a future PR.
     """
     
     _warned = False
@@ -81,12 +84,17 @@ class GPUBackend:
         
         WARNING: This method always raises GPUBackendNotAvailable.
         
+
+        This method will be implemented in PR-006 (Backend Implementation).
+
         Args:
             task: Task to execute
 
         Returns:
             Never returns - always raises exception
             
+            Execution result
+
         Raises:
             GPUBackendNotAvailable: GPU backend is not implemented
         """
@@ -96,3 +104,5 @@ class GPUBackend:
             "Use CPUBackend or reference implementations for production. "
             "GPU support planned for PR-006 (Backend Implementation)."
         )
+        # GAP-STUB-007: GPU backend not yet active; return empty result dict
+        return {}

@@ -45,6 +45,9 @@ class CPUBackend:
         >>> # Instead of using this stub, use:
         >>> from quasim.opt.ultra_sssp import dijkstra_baseline
         >>> distances, metrics = dijkstra_baseline(graph, source=0)
+
+    This is a stub implementation establishing the structural interface.
+    Full CPU backend will be implemented in a future PR.
     """
     
     _warned = False
@@ -84,12 +87,17 @@ class CPUBackend:
         WARNING: This method always raises CPUBackendStub.
         Use reference implementations instead.
         
+
+        This method will be implemented in PR-006 (Backend Implementation).
+
         Args:
             task: Task to execute
 
         Returns:
             Never returns - always raises exception
             
+            Execution result
+
         Raises:
             CPUBackendStub: Stub method called; use reference implementations
         """
@@ -100,3 +108,5 @@ class CPUBackend:
             "quasim.opt.post_dijkstra_sssp.PostDijkstraSSSP.solve(). "
             "Full backend planned for PR-006."
         )
+        # GAP-STUB-006: CPU backend not yet active; return empty result dict
+        return {}

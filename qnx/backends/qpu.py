@@ -31,7 +31,7 @@ class QPUBackendNotAvailable(NotImplementedError):
 
 class QPUBackend:
     """QPU backend for quantum computation.
-    
+q    
     WARNING: This is a STUB implementation. No quantum hardware is available.
     QRATUM is a classical simulation framework with quantum-ready interfaces.
     
@@ -49,6 +49,9 @@ class QPUBackend:
         >>> # For quantum-ready code, use:
         >>> from quasim.opt.post_dijkstra_sssp import QuantumMinimumFinder
         >>> finder = QuantumMinimumFinder(use_qpu=False)  # Classical fallback
+
+    This is a stub implementation establishing the structural interface.
+    Full QPU backend will be implemented in a future PR.
     """
     
     _warned = False
@@ -89,12 +92,17 @@ class QPUBackend:
         WARNING: This method always raises QPUBackendNotAvailable.
         QRATUM does not have quantum hardware integration.
         
+
+        This method will be implemented in PR-007 (Quantum Backend).
+
         Args:
             task: Task to execute
 
         Returns:
             Never returns - always raises exception
             
+            Execution result
+
         Raises:
             QPUBackendNotAvailable: QPU backend is not implemented
         """
@@ -105,3 +113,5 @@ class QPUBackend:
             "Use quantum-ready interfaces with classical fallback: "
             "quasim.opt.post_dijkstra_sssp.QuantumMinimumFinder(use_qpu=False)"
         )
+        # GAP-STUB-008: QPU backend not yet active; return empty result dict
+        return {}
