@@ -1,428 +1,412 @@
-# QRATUM (formerly QuASIM)
+# 1. QRATUM
 
-**Classical simulation framework with planned quantum extensions.**
+**A modular, deterministic, traceable execution framework for constraint-governed multi-agent computation, with a verifiable Merkle-anchored execution ledger and a plugin-based subsystem architecture.**
 
-[![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-research%2Fbeta-yellow.svg)](#what-is-actually-here)
-
-> **TRANSPARENCY NOTICE**
->
-> This README has been rewritten from a deterministic, evidence-based audit of the
-> source tree. Earlier versions of this README contained extensive marketing
-> claims (Byzantine-fault-tolerant decentralized ghost machine, 14 verticals,
-> "quantum-resilient computing platform", DO-178C alignment, named industry
-> pilots, etc.) that **could not be substantiated** from the code, tests, or
-> runtime behavior in this repository. Those claims have been removed.
->
-> What follows is what is **actually present, importable, and testable** in the
-> tree on this branch as of the audit commit. Anything not listed here
-> should be treated as unverified. See
-> [`QUANTUM_CAPABILITY_AUDIT.md`](QUANTUM_CAPABILITY_AUDIT.md) and
-> [`_DOCUMENTATION_DISCLAIMER.md`](_DOCUMENTATION_DISCLAIMER.md) for
-> historical context.
+[![Status](https://img.shields.io/badge/status-research%2Fbeta-yellow.svg)](#12-roadmap)
 
 ---
 
-## What is actually here
+## 2. System Overview
 
-QRATUM is a Python-first research codebase organized around a small core that
-**does work** and a much larger periphery of partial, experimental, or stalled
-subsystems. The verifiable core is built around a deterministic
-constraint-governed control framework called **CIIR–CRS–RIC** and several
-companion modules (MVRI, control geometry, real-world bridge, trajectory
-controller, RIC adapters). These modules are the only parts of the repository
-that are continuously executable and covered by passing tests in this clone.
+QRATUM is a Python-first computational framework that composes three properties most multi-agent systems treat as optional:
 
-The repository also contains:
+1. **Constraint-governed execution** — every state transition is gated by an explicit constraint algebra; transitions that would violate an invariant are rejected, not retried silently.
+2. **Bit-exact determinism** — given identical inputs and configuration, every run produces byte-identical outputs and an identical execution trace. No wall-clock timestamps, no global RNG, no dictionary-order dependence in canonical encoders.
+3. **Cryptographic traceability** — every accepted step is appended to a Merkle-anchored ledger keyed by canonical-JSON SHA-256 over the step payload, so a third party can replay the run and verify each entry independently.
 
-- **Rust crates** for cryptographic and networking primitives (mixed build state).
-- **Genomics** support code under `qrVITRA/merkler-static/` (Rust, biokey + ZKP).
-- **Plasma reconnection** simulation under `quasim/ciir/plasma/` (Python, NumPy/SciPy).
-- A large amount of **stalled or non-importable** code (`api.v1`, `aion.executor`,
-  `quantum.python`, several `qnx*` paths) that test files still try to import.
-- A large **documentation corpus** (130+ Markdown files at the repository root)
-  much of which describes goals, plans, and historical claims rather than
-  shipping behavior.
+It exists because typical agent stacks freely interleave LLM calls, stochastic samplers, and side-effecting tools without a verification layer. That is acceptable for exploratory work but unacceptable when the same pipeline must be (a) auditable after the fact, (b) reproducible across machines, and (c) safe to extend with new agents or new physics modules without breaking guarantees the rest of the system relies on. QRATUM is the substrate that makes those three things hold simultaneously.
 
-A summary of what builds, imports, and tests cleanly is given in the
-[Execution Truth Table](#execution-truth-table) below.
+The system targets a research-and-production hybrid envelope: rigorous enough that a falsification protocol can be applied to its claims, modular enough that experimental subsystems (plasma reconnection control, biokey-derived signing, trajectory controllers) live as plugins on the same spine.
 
 ---
 
-## Repository layout (folder-level)
+## 3. Core Design Principles
 
-This is a folder-level map. Individual file enumeration is impractical
-(2,169 `.py` files, 142 `.rs` files, 274 `test_*.py` files, ~134 top-level
-directories). Categories below are derived from directory names and observed
-contents, not from external documentation.
-
-| Category | Locations |
-|---|---|
-| **Verified deterministic control core** | `qagents/ciir_crs_ric/`, `qagents/framework/`, `qagents/mvri/`, `qagents/control_geometry/`, `qagents/realworld_bridge/`, `qagents/trajectory_controller/`, `qagents/adapters/`, `qagents/reality_interface.py`, `qagents/reality_interface_v2.py`, `qagents/ciir_ric_bridge.py`, `qagents/llm_backends.py` |
-| **CIIR plasma + multi-qubit analysis (Python)** | `quasim/ciir/plasma/`, `quasim/ciir/multi_qubit/` |
-| **CIIR / Quasim simulation modules (mixed)** | `quasim/` (large), including `quasim/quantum/`, `quasim/hybrid_quantum/`, `quasim/qc/`, `quasim/opt/`, `quasim/terc_bridge/`, `quasim/qunimbus/`, `quasim/cli/`, `quasim/hcal/` |
-| **Genomics / Merkle ledger (Rust)** | `qrVITRA/merkler-static/` |
-| **Cryptographic primitives (Rust)** | `crypto/kdf/`, `crypto/pqc/`, `crypto/rng/` |
-| **Networking (Rust)** | `Aethernet/`, `q-substrate/`, `qratum-rust/`, `android-emulator/`, `qratum_desktop/src-tauri/` |
-| **CLIs declared in `pyproject.toml`** | `quasim/cli/`, `quasim/ciir/cli.py`, `quasim/qunimbus/cli.py`, `qnx/cli.py`, `qstack/launch.py`, `xenon/cli.py`, `qubic/visualization/cli.py`, `quasim/hcal/cli.py` |
-| **Higher-level platform layers** | `qratum/`, `qratum_platform/`, `qratum_ai_platform/`, `qratum_aas/`, `qratum_asi/`, `qratum_chess/`, `qratum_desktop/`, `qratum_fullstack_server.py`, `qratum_platform.py`, `qratum_platform_legacy/` |
-| **Other claimed subsystems (varying state)** | `aion/`, `qnx/`, `qnx_agi/`, `qstack/`, `qstack-superrepo/`, `qil/`, `qcore/`, `qos/`, `qsk/`, `qmp/`, `qdl/`, `qledger/`, `qnode/`, `qcampaign/`, `qconstitution/`, `qintervention/`, `qreal/`, `qscenario/`, `qtime/`, `qubic/`, `qubic-design-studio/`, `qubic-viz/`, `qubic_meta_library/`, `omnilex/`, `epistemic_heat_sink/`, `topological_observer/`, `unification/`, `verticals/`, `xenon/` |
-| **Tests** | `tests/` (274 files), Rust `#[cfg(test)]` blocks in each crate |
-| **Docs / manuscripts** | 130+ root `*.md` files, `manuscripts/` (LaTeX monograph), `docs/`, `docs-site/` |
-| **Build / CI** | `Makefile`, `Dockerfile*`, `docker-compose*.yml`, `.github/`, `pyproject.toml`, `requirements*.txt`, `setup.py`, `setup.cfg` |
-
----
-
-## Execution Truth Table
-
-Status was determined by running `pytest`, `cargo test`, module imports, and
-syntax checks against the tree on this branch.
-
-**Test environment used for the numbers below:** Python 3.12, `pytest` 9.0,
-`numpy` 2.4, `scipy` 1.17, `pyyaml` 6+, Rust stable (`cargo` from the
-default rustup channel). Qiskit, PennyLane, Cirq, matplotlib, and torch
-were **not** installed — these are listed as optional extras
-(`[quantum]`, `[viz]`) in `pyproject.toml`.
-
-### Python tests
-
-| Scope | Result |
-|---|---|
-| Top-level `tests/test_*.py` (entire flat suite) | **1857 passed**, 78 failed, 18 errors, 4 skipped, 245 warnings |
-| Whole `tests/` tree (recursive) | 2 passed, 13 skipped, **3162 errors during collection** (most are `ModuleNotFoundError` for `api.v1`, `aion.executor`, `quantum.python`, `qnx*`, etc.) |
-| Verified control core (`test_ciir_crs_ric_strict`, `test_mvri`, `test_control_geometry`, `test_realworld_bridge`, `test_trajectory_controller`, `test_ric_adapters`, `test_reality_interface_controller`, `test_ric_v2`, `test_ric_ciir_bridge`, `test_ciir_crs_ric`, `test_plasma_reconnection`, `test_ciir_falsification`, `test_ciir_gaps_1_4_8`, `test_ciir_extensions`, `test_multi_qubit_controller`) | **617 passed, 0 failed** |
-
-### Rust crates
-
-| Crate | `cargo test` |
-|---|---|
-| `qrVITRA/merkler-static/` | **22 passed, 0 failed** |
-| `crypto/kdf/` | **9 passed, 0 failed** |
-| `Aethernet/` | **43 passed, 1 failed** (`rtf::api::tests::test_rollback_in_z1`) |
-| `qratum-rust/` | **Build fails** (12 compile errors in lib test) |
-| `crypto/pqc/` | **Build fails** (8 compile errors) |
-| `crypto/rng/` | **Build fails** (1 compile error) |
-| `q-substrate/`, `android-emulator/`, `qratum_desktop/src-tauri/` | Not exercised in this run |
-
-### CLI entrypoints declared in `pyproject.toml`
-
-| Entry point | Import / syntax check |
-|---|---|
-| `quasim-ciir` (`quasim.ciir.cli`) | OK |
-| `quasim-revultra` (`quasim.cli.revultra_cli`) | OK |
-| `quasim-qgh` (`quasim.cli.qgh_cli`) | OK |
-| `quasim-terc-obs` (`quasim.cli.terc_obs_cli`) | OK |
-| `quasim-tire` (`quasim.cli.tire_cli`) | OK |
-| `qunimbus` (`quasim.qunimbus.cli`) | OK |
-| `qnx` (`qnx.cli`) | OK |
-| `qstack` (`qstack.launch`) | OK |
-| `qubic-viz` (`qubic.visualization.cli`) | Imports require `matplotlib` (optional dep, not in base `requirements.txt`) |
-| `xenon` (`xenon.cli`) | **Broken — `SyntaxError` at `xenon/cli.py:248` (`from __future__` not at top of file)** |
-| `quasim-hcal` (`quasim.hcal.cli`) | **Broken — `SyntaxError` at `quasim/hcal/cli.py:790` (unterminated triple-quoted string)** |
-
-`pyproject.toml` itself contains a **duplicate `quasim-ciir` script entry**
-(lines 92 and 103), which makes some tooling refuse to load it under
-`-o`/strict-key parsers.
-
-### Module classification
-
-| Class | Examples | Evidence |
+| Invariant | What it means concretely | Where it is enforced |
 |---|---|---|
-| **Fully operational** | `qagents.ciir_crs_ric`, `qagents.framework`, `qagents.mvri`, `qagents.control_geometry`, `qagents.realworld_bridge`, `qagents.trajectory_controller`, `qagents.adapters`, `qagents.reality_interface[_v2]`, `qagents.ciir_ric_bridge`, `quasim.ciir.plasma`, `quasim.ciir.multi_qubit` (analysis pieces covered by tests), `qrVITRA/merkler-static`, `crypto/kdf`, `Aethernet` (43/44) | passing tests |
-| **Partially working** | `quasim.quantum.qaoa_optimization`, `quasim.quantum.vqe_molecule`, `quasim.opt.optimizer`, `quasim.hybrid_quantum.*`, `quasim.qc.simulator` | code present and importable, but Qiskit-dependent paths fall back when `qiskit` is absent; tests fail with `ImportError: Qiskit is required for qaoa/vqe` when run without the `[quantum]` extra |
-| **Stubbed / placeholder** | Files raising `NotImplementedError`, including the `quantum.python` package referenced by `tests/test_qstack_core.py` and similar | failing tests with `NotImplementedError` / `ModuleNotFoundError` |
-| **Broken (syntax / import)** | `xenon/cli.py`, `quasim/hcal/cli.py`, `qratum-rust` lib, `crypto/pqc`, `crypto/rng` | compile errors / SyntaxError above |
-| **Unreachable to test runner** | Modules referenced by `tests/aion/`, `tests/qnx/`, `tests/qnx_integration/`, `tests/qstack/`, `tests/integration/`, `tests/unit/test_sovereign_stack.py`, `tests/hardening/xenon_v5/`, `tests/ownai/`, `tests/distributed_cluster/`, `tests/hcal/`, `tests/chess/test_kaggle_integration.py`, `tests/benchmarks/compression/`, `tests/telemetry/test_verifier_accuracy.py`, `tests/static/`, `tests/verify/`, `tests/test_qratum_core.py`, `tests/test_qstack_core.py`, `tests/test_alignment_basic.py`, `tests/test_kernel_alignment_integration.py`, `tests/test_provenance.py`, `tests/test_hcal_cli.py` | all error during collection with `ModuleNotFoundError` for `api.v1`, `aion.executor`, `quantum.python`, etc. |
+| **Determinism** | No `time.time()`, no global RNG, no unordered iteration in any path that influences output. All randomness is seeded and explicit. | `qagents/control_geometry/`, `qagents/mvri/`, `qratum_framework/trace.py` (canonical-JSON, sorted keys, metadata excluded from hashes). |
+| **Traceability** | Every accepted step yields a `TraceEntry` with the prior hash, payload hash, and verdict. The chain is appendable but tamper-evident. | `qratum_framework/trace.py` (`UnifiedTraceEntry`, `MerkleLedger`). |
+| **Reproducibility** | Two runs with identical config and seed produce identical ledgers and identical hash chains. CI compares hashes, not floats. | Profiles in `qratum_framework/config.py` (`quick`, `medium`, `strong`, `full_fast`, `full_report`). |
+| **Modular isolation** | Subsystems communicate through typed adapters; a misbehaving plugin cannot corrupt the spine, only its own trace entries. | `qagents/adapters/`, `OperatorBackend` Protocol in `qratum_framework/operator.py`. |
+| **Execution safety** | Failure modes are named (Type I–IV in CIIR–CRS–RIC), so refusal to act is a first-class outcome, not an exception leak. The executor never raises into user code. | `qagents/ciir_crs_ric/failures.py`, `qagents/ciir_crs_ric/executor.py` (9-step `run_step`, never raises). |
+| **Verifiable computation** | Claims about behavior are stated as falsifiable verdicts (A / A0 / B) and screened by a published protocol. | `qratum_framework/falsifier.py`, `quasim/ciir/multi_qubit/analysis/falsification.py`. |
+
+These invariants are not aspirational. They are the gating conditions for the test suites under `tests/test_qratum_framework.py`, `tests/test_ciir_crs_ric_strict.py`, `tests/test_mvri.py`, `tests/test_realworld_bridge.py`, `tests/test_control_geometry.py`, and `tests/test_ric_*.py`.
 
 ---
 
-## Verified Capability Registry
-
-Each capability below has **all of**: code present, importable on a clean
-checkout, and at least one passing test in `tests/`.
-
-| Capability | Implementation | Tests |
-|---|---|---|
-| **CIIR–CRS–RIC strict 5-module loop** (Type I–IV failures, deterministic 9-step executor, `T_C` with pre/post φ checks, explicit admissible-action enumeration, immutable trace) | `qagents/ciir_crs_ric/{ciir,crs,ric,executor,failures,demo}.py` | `tests/test_ciir_crs_ric_strict.py` (33 tests) |
-| **CIIR–CRS–RIC framework variant** (constraint algebra, observer map, intent → action loop) | `qagents/framework/{ciir,crs,ric}.py`, `experiments/ciir_crs_ric_demo.py` | `tests/test_ciir_crs_ric.py` (48 tests) |
-| **MVRI — Minimal Viable Reality Injector** (typed immutable State, deterministic forward model, ER/CS/SS/IC/AUD constraint gate, ΔH/ΔMI/ΔTE metrics, probe policy) | `qagents/mvri/{state,action_space,forward_model,constraint_gate,injector,loop,metrics,policy,demo}.py` | `tests/test_mvri.py` (38 tests) |
-| **Control geometry** (sensitivity probes, displacement embedding, local reachability, controllability rank/SVD, action classifier, controllability-weighted policy) | `qagents/control_geometry/*.py` | `tests/test_control_geometry.py` (40 tests) |
-| **Real-world bridge** (Sensor/Actuator ABCs, EMA observer, world-model sync, multi-criteria safety gate, strict 9-step control loop) | `qagents/realworld_bridge/*.py` | `tests/test_realworld_bridge.py` (45 tests) |
-| **Trajectory controller** (numeric action vectors, deterministic planner/predictor/validator/executor over MVRI + RealWorldBridge) | `qagents/trajectory_controller/*.py` | `tests/test_trajectory_controller.py` |
-| **Reality Interface Controller (RIC v1)** (deterministic perception→model→action, strict 4-key output, pluggable simulator/proposer) | `qagents/reality_interface.py`, `qagents/prompts/reality_interface_controller.md` | `tests/test_reality_interface_controller.py` (24 tests) |
-| **RIC v2 trajectory-aware controller** (k-step rollout, seeded perturbations, anti-deadlock + entropy injection, enriched 4-key output) | `qagents/reality_interface_v2.py` | `tests/test_ric_v2.py` (18 tests) |
-| **RIC ↔ CIIR bridge** (snapshot → world_state, action → learning_rate; opt-in v2 wiring) | `qagents/ciir_ric_bridge.py`, `run_ric_ciir.py` | `tests/test_ric_ciir_bridge.py` (27 tests) |
-| **RIC adapters** for QRATUM (OSR/CEI/SF/HRD), CIIR (loss/violation), CRS (CRSI w/ immutable boundaries) | `qagents/adapters/{qratum,ciir,crs}.py` | `tests/test_ric_adapters.py` (23 tests) |
-| **LLM backend abstraction with deterministic fallback** | `qagents/llm_backends.py` | covered by RIC/bridge tests |
-| **CIIR plasma reconnection control** (2-D RMHD ψ–ω, X/O-points & current sheets, FFT shell spectra, FKR/plasmoid scaling, F1–F5 failure modes, controller stitched to engine) | `quasim/ciir/plasma/*.py`, `run_plasma_reconnection.py` | `tests/test_plasma_reconnection.py` (55 tests) |
-| **CIIR multi-qubit analysis tools** (α-derivation, causal claim with falsification protocol, unified evolution) | `quasim/ciir/multi_qubit/analysis/{alpha_derivation,causal_claim,falsification,unified_evolution}.py`, `run_falsification.py`, `run_multi_qubit_ciir.py` | `tests/test_ciir_gaps_1_4_8.py`, `tests/test_ciir_extensions.py`, `tests/test_multi_qubit_controller.py`, `tests/test_ciir_falsification.py` |
-| **TERC observable bridge** (`to_terc_observable_format` → `{observables, format_version="1.0", source="quasim-revultra-qgh"}`) | `quasim/terc_bridge/adapters.py` | `tests/test_terc_bridge_observables.py` |
-| **Merkle ledger / biokey / ZKP / FIDO2 dual-sig** (Rust) | `qrVITRA/merkler-static/src/{biokey,zkp,fido2,...}.rs` | 22 Rust tests pass |
-| **KDF crate** (Rust) | `crypto/kdf/` | 9 Rust tests pass |
-
-The verified Python core comprises **617 passing tests** across these
-modules, and Rust adds 22 (merkler-static) + 9 (kdf) + 43 (Aethernet,
-1 still failing).
-
----
-
-## Quantum Capability Ledger
-
-| Claim | Implementation in tree | Status |
-|---|---|---|
-| **QAOA via Qiskit** | `quasim/quantum/qaoa_optimization.py` (`QuantumCircuit`, `Sampler`, `SparsePauliOp`; guarded `try/except` import; `QISKIT_AVAILABLE` flag) | ⚠ PARTIAL — code is real, but only runs when the `[quantum]` extra is installed; tests fail with `ImportError: Qiskit is required for qaoa` in a base install |
-| **VQE via Qiskit** | `quasim/quantum/vqe_molecule.py`, `quasim/quantum/core.py` | ⚠ PARTIAL — same guarded pattern |
-| **Generic quantum optimizer** | `quasim/opt/optimizer.py`, `quasim/hybrid_quantum/{__init__,backends}.py`, `quasim/qc/simulator.py` | ⚠ PARTIAL — `import qiskit` present; behavior under base install: import-time fallback; tests assume Qiskit |
-| **CIIR multi-qubit causal-claim falsification protocol** (5-step, S1/S2/S3 secondary objectives, `derive_projector_from_fixed_point` with spectral N≤4 + power-iteration routes) | `quasim/ciir/multi_qubit/analysis/{causal_claim,falsification}.py`, `run_falsification.py` | ✓ VERIFIED (Python/NumPy; 54 + 25 tests) — but produces a **classical** numerical result (Verdict A0, SNR≈2×10¹³ for default N=3, n_steps=50) and is explicitly **a falsification protocol** of a quantum-mechanical causal claim, not a quantum-hardware execution |
-| **2-D reduced MHD plasma simulation with CIIR control** | `quasim/ciir/plasma/*.py` | ✓ VERIFIED — classical PDE simulation in NumPy/SciPy; 55 tests |
-| **"Quantum-resilient computing platform" / Byzantine-fault-tolerant decentralized ghost machine / on-chain governance / HotStuff BFT / libp2p gossip** | searched | ✗ CLAIMED ONLY — `qratum-rust` (the crate that would host this) **does not compile** in this clone; nothing demonstrates BFT consensus end-to-end |
-| **Post-quantum cryptography (SPHINCS+, Kyber, Dilithium)** | `crypto/pqc/` | ✗ CLAIMED ONLY in this clone — `cargo build` fails with 8 errors; no passing PQC tests |
-| **"Quantum-accelerated pipelines / cuQuantum / GPU quantum acceleration"** | searched | ✗ CLAIMED ONLY — no `cuquantum` import found; no GPU quantum path is exercised |
-| **"Goodyear Quantum Tire Pilot" and other named industrial pilots** | only documentation references | ✗ CLAIMED ONLY — confirmed by the repo's own `_DOCUMENTATION_DISCLAIMER.md` |
-| **DO-178C / regulatory certifications (HIPAA, GDPR, BIPA, 21 CFR Part 11, etc.)** | only documentation references | ✗ CLAIMED ONLY — no certification artifacts; doc files describe inspired-by practices |
-
-**Mathematical correctness check.** The numerical kernels we ran (CIIR
-deterministic loops, MVRI metrics, control-geometry SVD/cosine, plasma RMHD
-update, falsification SNR routes) are written in standard NumPy/SciPy and
-produce stable, deterministic outputs across reseeded runs covered by
-existing tests. They are **classical** simulations and are not, and do not
-claim in code to be, executions on quantum hardware.
-
----
-
-## System Dependency Graph (verified subsystems only)
+## 4. Architecture Breakdown
 
 ```
-                     ┌──────────────────────────┐
-                     │      LLM backends        │
-                     │  qagents/llm_backends.py │
-                     │ (deterministic fallback) │
-                     └────────────┬─────────────┘
-                                  │
-                                  ▼
-   ┌──────────────────────┐   ┌──────────────────────┐
-   │ Reality Interface    │   │ Reality Interface v2 │
-   │ qagents/             │   │ qagents/             │
-   │ reality_interface.py │◄──┤ reality_interface_v2 │
-   └──────────┬───────────┘   └──────────┬───────────┘
-              │                          │
-              ▼                          ▼
-       ┌──────────────────────────────────────┐
-       │   RIC ↔ CIIR bridge                  │
-       │   qagents/ciir_ric_bridge.py         │
-       │   run_ric_ciir.py                    │
-       └──────────┬───────────────────────────┘
-                  │
-                  ▼
-   ┌──────────────────────────┐         ┌─────────────────────┐
-   │   CIIR–CRS–RIC strict    │  uses   │   RIC adapters      │
-   │   qagents/ciir_crs_ric/  │◄────────┤   qagents/adapters/ │
-   │   qagents/framework/     │         │   {qratum,ciir,crs} │
-   └─────────┬────────────────┘         └─────────────────────┘
-             │
-             ├────────────► MVRI (qagents/mvri/)
-             │                 │
-             │                 ▼
-             │           Forward model + constraint gate (ER/CS/SS/IC/AUD)
-             │
-             ├────────────► Control geometry (qagents/control_geometry/)
-             │                 │
-             │                 ▼
-             │           Sensitivity, reachability, SVD, policy
-             │
-             ├────────────► Real-world bridge (qagents/realworld_bridge/)
-             │                 │
-             │                 ▼
-             │           Sensors / Actuators / safety gate
-             │
-             └────────────► Trajectory controller (qagents/trajectory_controller/)
-
-
-   ┌──────────────────────────┐    ┌──────────────────────────────┐
-   │ CIIR plasma reconnection │    │ CIIR multi-qubit analysis    │
-   │ quasim/ciir/plasma/      │    │ quasim/ciir/multi_qubit/     │
-   │ run_plasma_reconnection  │    │ run_falsification.py         │
-   │ (RMHD + control + spec)  │    │ run_multi_qubit_ciir.py      │
-   └──────────────────────────┘    └──────────────────────────────┘
-
-   ┌──────────────────────────┐    ┌──────────────────────────────┐
-   │ Merkle ledger + biokey   │    │ KDF (Rust)                   │
-   │ qrVITRA/merkler-static   │    │ crypto/kdf                   │
-   │ (Rust: biokey, zkp,      │    │                              │
-   │  fido2, merkle)          │    │                              │
-   └──────────────────────────┘    └──────────────────────────────┘
+                                qratum_framework/
+                            ┌────────────────────────┐
+                            │  Operator (spine)      │
+                            │  ├─ OperatorBackend ◄──┼─── pluggable
+                            │  ├─ MerkleLedger       │
+                            │  ├─ Falsifier (A/A0/B) │
+                            │  └─ Health / Config    │
+                            └──────────┬─────────────┘
+                                       │ run_step
+                       ┌───────────────┼───────────────────────────┐
+                       ▼               ▼                           ▼
+              ┌────────────────┐  ┌────────────────┐      ┌────────────────────┐
+              │  CIIR–CRS–RIC  │  │ Reality        │      │ Domain plugins     │
+              │  control core  │  │ Interface      │      │ (plasma, VITRA-E0, │
+              │  (qagents/...) │  │ Controller     │      │  trajectory, ...)  │
+              └───────┬────────┘  └───────┬────────┘      └─────────┬──────────┘
+                      │                   │                         │
+                      ▼                   ▼                         ▼
+              ┌────────────────┐  ┌────────────────┐      ┌────────────────────┐
+              │ MVRI           │  │ RIC adapters   │      │ Real-world bridge  │
+              │ (state/inj.)   │  │ (qratum/ciir/  │      │ (sensors/actuators)│
+              │                │  │  crs)          │      │                    │
+              └────────────────┘  └────────────────┘      └────────────────────┘
+                                                                    │
+                                                                    ▼
+                                                           ┌──────────────────┐
+                                                           │  Trace ledger    │
+                                                           │  (Merkle chain)  │
+                                                           └──────────────────┘
 ```
 
-Modules outside this graph (`qratum*`, `qratum_platform*`, `qratum_ai_platform`,
-`qratum_chess`, `qratum_desktop`, `qstack*`, `qnx*`, `qnx_agi`, `aion`,
-`epistemic_heat_sink`, `topological_observer`, `xenon`, `qubic*`,
-`omnilex`, `verticals`, `unification`, etc.) are present in the tree but
-were **not verified** as part of the executable graph in this audit. Their
-relationship to the verified core in code is mostly through `qagents/`
-adapters and `quasim/` shared modules; their own end-to-end behavior is
-either untested in this clone or blocked by import failures (see Gap report
-below).
+### 3.1 Control layer — CIIR–CRS–RIC
+
+The deterministic execution core. Three coupled modules:
+
+- **CIIR** (`qagents/ciir_crs_ric/ciir.py`, `qagents/framework/ciir.py`) — Constraint-governed Iterated Inference. Defines `State`, `Constraint`, the satisfaction predicate `phi`, the invariant predicate `Inv`, and the observer map `Omega` (which redacts internal-only fields).
+- **CRS** (`qagents/ciir_crs_ric/crs.py`, `qagents/framework/crs.py`) — Constrained Reactive System. Pure transition function `T` plus its constrained form `T_C` with explicit pre- and post-`phi` checks. Action sets are enumerated, never inferred.
+- **RIC** (`qagents/ciir_crs_ric/ric.py`, `qagents/reality_interface.py`, `qagents/reality_interface_v2.py`) — Reality Interface Controller. A perception → model → action loop with a strict 4-key output contract (`intent_interpretation`, `selected_action`, `predicted_outcome`, `fallback_plan`). RIC v2 adds k-step rollouts, seeded bounded perturbations, anti-deadlock heuristics.
+
+The `Operator` (`qratum_framework/operator.py`) wraps these via the `OperatorBackend` Protocol; the default `StrictCIIRBackend` delegates to `qagents.ciir_crs_ric.executor.run_step`, a 9-step pipeline that never raises.
+
+### 3.2 Orchestration layer — multi-agent coordination
+
+- **RIC adapters** (`qagents/adapters/{qratum,ciir,crs}.py`) translate between the controller's abstract action space and three concrete domain encodings (OSR/CEI/SF/HRD; loss/violation; CRSI). Each adapter ships a `Simulator`, a `Proposer`, and a `make_<sys>_controller` builder.
+- **CIIR↔RIC↔LLM bridge** (`qagents/ciir_ric_bridge.py`, `qagents/llm_backends.py`) maps controller snapshots to world-state inputs and action verdicts to learning-rate signals; LLM backends (OpenAI, Anthropic, Gemini, Local, plus a `DeterministicLLM`) fall back deterministically when no SDK or key is present.
+- **Trajectory controller** (`qagents/trajectory_controller/`) plans, predicts, validates, and executes numeric action vectors `[type_code, target_index, magnitude, seed]` over the real-world bridge and MVRI.
+
+### 3.3 State / ledger system
+
+- **Trace** (`qratum_framework/trace.py`) — `UnifiedTraceEntry` + `MerkleLedger`. Hashing uses canonical JSON (sorted keys, no whitespace) over a payload that explicitly excludes the `metadata` field, so cosmetic edits never alter the chain. `iter_with_hashes` provides a public audit cursor.
+- **MVRI** (`qagents/mvri/`) — Minimal Viable Reality Injector. Typed immutable `State`, entropy `H`, invariant `Inv`, the action gate `validate_action`, and the constraint gate (`ER/CS/SS/IC/AUD` predicates) feed every accepted injection into the loop trace.
+- **Real-world bridge** (`qagents/realworld_bridge/`) — typed `Sensor`/`Actuator` ABCs, an EMA-based `StateObserver` with a canonical nodes↔edges bijection, a four-stage safety gate (`MAG → TGT → ROC → MVR`), and a strict 9-step `ControlLoop`.
+
+### 3.4 Plugin / module system
+
+A subsystem becomes a QRATUM plugin by satisfying three contracts:
+
+1. Implement `OperatorBackend` (one method, `run_step`).
+2. Emit `TraceEntry`-compatible dictionaries.
+3. Register failure modes (subclasses of the named exceptions in `qagents/ciir_crs_ric/failures.py`).
+
+Existing plugins demonstrate the pattern:
+
+| Plugin | Path | Domain |
+|---|---|---|
+| Plasma reconnection control | `quasim/ciir/plasma/` | 2D RMHD ψ–ω, X/O-points, plasmoid scaling, controller |
+| CIIR multi-qubit falsification | `quasim/ciir/multi_qubit/analysis/` | projector derivation, A/A0/B verdicts |
+| VITRA-E0 sovereign genomics | `qrVITRA/merkler-static/` (Rust) | biokey, FIDO2 dual-signature, ZKP |
+| Control geometry | `qagents/control_geometry/` | sensitivity, reachability, controllability rank |
+
+### 3.5 CLI + API
+
+- **CLI**: `qratum` (entry point declared in `pyproject.toml` as `qratum = qratum_framework.cli:main`). Subcommands: `run`, `simulate`, `ledger`, `falsify`, `verify`.
+- **Programmatic API**: `from qratum_framework import Operator, MerkleLedger, FalsificationVerdict, PROFILES, check_health, check_readiness`. Adapter builders are re-exported from `qagents.adapters` and `qagents`.
 
 ---
 
-## Gap and integrity report (severity-ranked)
+## 5. Data / Execution Flow
 
-### Critical (blocks declared functionality)
-1. **`xenon/cli.py` will not parse** — `SyntaxError` at line 248 (`from __future__ import annotations` placed after other code). The `xenon` console-script entry in `pyproject.toml` therefore cannot load.
-2. **`quasim/hcal/cli.py` will not parse** — `SyntaxError` at line 790 (unterminated triple-quoted docstring). The `quasim-hcal` console-script entry cannot load.
-3. **`qratum-rust` does not compile** (12 errors). README claims around BFT consensus, libp2p gossip, on-chain governance, slashing, and ZK state transitions reference this crate; none are demonstrable here.
-4. **`crypto/pqc` does not compile** (8 errors); **`crypto/rng` does not compile** (1 error). Post-quantum-crypto claims (SPHINCS+, Kyber, Dilithium) are not demonstrable.
-5. **`pyproject.toml` has a duplicate `quasim-ciir` script entry** (lines 92 & 103), causing strict TOML parsers to error (e.g., `pytest -o`).
-6. **Massive collection failures in `tests/`** — 3162 test items error at import time when running the whole tree, due to missing modules (`api.v1`, `aion.executor`, `quantum.python`, several `qnx*`, `quantum.python`). The flat `tests/test_*.py` set still has 1857 passing, but ~78 named failures and 18 errors persist.
+```
+INPUT (CLI args / API call / config profile)
+   │
+   ▼
+[ 1 ] Profile resolution           qratum_framework/config.py → PROFILES[name]
+[ 2 ] Health / readiness check     qratum_framework/health.py
+[ 3 ] Operator construction        Operator(backend=StrictCIIRBackend(), ledger=MerkleLedger())
+   │
+   ▼
+[ 4 ] Per-step loop (Operator.run_step):
+        ├── 4a parse_intent          (RIC)
+        ├── 4b build Observation     (RIC; not raw State — Omega-filtered)
+        ├── 4c select_action         (RIC + adapter Proposer)
+        ├── 4d enumerate admissible  (CRS)
+        ├── 4e pre-phi check         (CIIR Constraint algebra)
+        ├── 4f apply T_C             (CRS: pure transition under constraint)
+        ├── 4g post-phi + Inv check  (CIIR)
+        ├── 4h validate_action gate  (MVRI / safety_gate)
+        └── 4i emit TraceEntry       (verdict ∈ {accept, reject(Type I–IV), hold})
+   │
+   ▼
+[ 5 ] Ledger append                  MerkleLedger.append(entry)
+        canonical_json(payload) → SHA-256 → linked to prev_hash
+[ 6 ] Falsification screen (opt.)    Falsifier → {A, A0, B}
+   │
+   ▼
+OUTPUT
+   ├── ledger.jsonl  (append-only, replayable)
+   ├── final state   (Omega-filtered)
+   └── verdict       (FalsificationVerdict)
+```
 
-### High (claims-vs-code divergence)
-7. **README marketing claims removed** in this rewrite — original README claimed Byzantine-fault-tolerant consensus, "decentralized ghost machine", quantum-resilience, 14 vertical domains, named industry pilots (Goodyear), and DO-178C alignment. None of these are observable in code or tests. The repository's own `_DOCUMENTATION_DISCLAIMER.md` and `QUANTUM_CAPABILITY_AUDIT.md` independently corroborate that.
-8. **"Quantum" terminology overuse**. The genuine quantum-library code (`quasim/quantum/qaoa_optimization.py`, `vqe_molecule.py`, `core.py`) **does** use Qiskit primitives, but: (a) Qiskit is not installed by default; (b) tests for these paths fail with `ImportError` in a base install; (c) all "quantum-accelerated", "quantum-resilient", and "cuQuantum" claims in earlier docs are unsupported by code.
-9. **"Quantum hardware tier", "SpaceX-NASA CI workflows", "hardware tier bundles"** — referenced only in zip files at the repo root (`quasim-hardware-tier.zip`, `quasim-executive-brief.zip`); no live, importable hardware-tier module is present.
-
-### Medium (housekeeping / hygiene)
-10. **`Aethernet` has 1 failing test** (`rtf::api::tests::test_rollback_in_z1`); 110 compiler warnings.
-11. **`tests/test_merkle_chain_determinism`** asserts an exact hash that does not match observed output — the determinism contract for this chain is currently broken or test fixture is stale.
-12. **Many top-level `.md` files are partially or fully outdated** (the repo even ships `_DOCUMENTATION_DISCLAIMER.md` listing the affected docs). Pruning or clearly marking these would improve discoverability.
-13. **Heavy `__pycache__` and large binary artifacts** committed (e.g., `*.zip`, `*.pdf`, `*.png`, `run_*.zip` artifacts). These should normally be in `.gitignore`.
-14. **`pyproject.toml` has a duplicate package configuration** (see #5).
-
-### Low
-15. **`quasim` → `qratum` rename** is partially complete: a deprecation shim warns on import (`tests/conftest.py:19`), but the migration path described in `MIGRATION.md` is not enforced and most code still imports `quasim.*`.
+Inputs never bypass the constraint algebra. Failures short-circuit at the earliest gate that detects them, are typed (`Type I` precondition / `Type II` postcondition / `Type III` invariant / `Type IV` admissibility), and are recorded in the ledger with the same hashing discipline as accepted steps. A rejected step is part of the audit trail, not noise.
 
 ---
 
-## Installation
+## 6. Key Features
 
-The minimum needed to run the verified core:
+- **Deterministic execution** — canonical-JSON hashing, seeded RNG, no global state; bit-exact reruns.
+- **Multi-agent coordination** — RIC adapters bridge a single controller to multiple domain encodings (qratum / CIIR / CRS) without state aliasing.
+- **Audit trail** — every step (accepted *and* rejected) is committed to a Merkle-linked ledger; tamper detection is O(1) per entry on replay.
+- **Runtime validation** — four-stage safety gate (`MAG → TGT → ROC → MVR`), constraint algebra pre/post-checks, observer-state invariants.
+- **Extensibility** — plugin contract is one Protocol method (`run_step`) plus typed trace entries; no central registry to fight.
+- **Falsification protocol** — verdicts A / A0 / B with a published 5-step screen (baseline / null / signal / artifacts / verdict).
+- **Fault isolation** — failures are typed, never silent; the operator catches and records them, the loop never raises into caller code.
+- **Health and readiness probes** — `check_health()` and `check_readiness()` for orchestration layers.
+- **CLI + programmatic parity** — every CLI subcommand is a thin shell over a public API call.
+- **Profiles** — `quick`, `medium`, `strong`, `full_fast`, `full_report` cover the latency / coverage trade space without ad-hoc flags.
+
+---
+
+## 7. Installation
+
+### Prerequisites
+
+- Python **3.10+**
+- `pip` ≥ 23
+- (Optional) Rust **1.75+** with `cargo` for the `qrVITRA/merkler-static/` and `Aethernet/` crates.
+- (Optional) NumPy / SciPy for the plasma reconnection plugin (`quasim/ciir/plasma/`).
+
+### Install
 
 ```bash
+git clone https://github.com/robertringler/QRATUM.git
+cd QRATUM
+
 python -m venv .venv
-source .venv/bin/activate           # Windows: .venv\Scripts\activate
-pip install -r requirements.txt     # numpy, pyyaml, click, scipy ...
-pip install pytest                   # for tests
+source .venv/bin/activate      # POSIX
+# .venv\Scripts\activate       # Windows
+
+pip install -e .
 ```
 
-Optional extras (these correspond to declared `[project.optional-dependencies]`
-groups and **are required** for the partially-implemented quantum and viz
-paths):
+This exposes the `qratum` console script and the `qratum_framework` and `qagents` packages.
+
+### Optional Rust components
 
 ```bash
-pip install -e .[quantum]           # qiskit, qiskit-aer, pennylane, pyscf
-pip install -e .[viz]               # matplotlib, imageio, plotly, ...
-pip install -e .[dev]               # pytest, ruff, mypy, bandit, pandas, ...
+# Genomics / biokey + ZKP + FIDO2 dual-signature
+cd qrVITRA/merkler-static && ./build.sh && cargo test
+
+# Networking primitives
+cd Aethernet && cargo test
 ```
 
-For the Rust components that build:
+### Verifying the install
 
 ```bash
-cd qrVITRA/merkler-static && cargo build && cargo test    # 22 tests pass
-cd Aethernet                && cargo build && cargo test  # 43/44 tests pass
-cd crypto/kdf               && cargo build && cargo test  # 9 tests pass
+PYTHONPATH=. python -m pytest tests/test_qratum_framework.py --override-ini="addopts=" -q
 ```
 
-The following Rust crates are known not to build on this branch:
-`qratum-rust`, `crypto/pqc`, `crypto/rng`.
+A clean run reports the unified-spine test count and exits with code 0.
 
 ---
 
-## How to run what works
+## 8. Usage Examples
+
+### 7.1 CLI
 
 ```bash
-# 1. Verified Python control core (617 tests, deterministic)
-PYTHONPATH=. python -m pytest \
-    tests/test_ciir_crs_ric_strict.py \
-    tests/test_ciir_crs_ric.py \
-    tests/test_mvri.py \
-    tests/test_control_geometry.py \
-    tests/test_realworld_bridge.py \
-    tests/test_trajectory_controller.py \
-    tests/test_ric_adapters.py \
-    tests/test_reality_interface_controller.py \
-    tests/test_ric_v2.py \
-    tests/test_ric_ciir_bridge.py \
-    tests/test_plasma_reconnection.py \
-    tests/test_ciir_falsification.py \
-    tests/test_ciir_gaps_1_4_8.py \
-    tests/test_ciir_extensions.py \
-    tests/test_multi_qubit_controller.py \
-    -c /dev/null --override-ini="addopts=" -q
+# Run a deterministic controller pass under a named profile
+qratum run --profile medium --seed 42 --ledger out/ledger.jsonl
 
-# 2. Demos for individual subsystems
-PYTHONPATH=. python -m qagents.ciir_crs_ric.demo
-PYTHONPATH=. python -m qagents.mvri.demo
-PYTHONPATH=. python -m qagents.realworld_bridge.demo
-PYTHONPATH=. python -m qagents.trajectory_controller.demo
-PYTHONPATH=. python run_ric_ciir.py
-PYTHONPATH=. python run_plasma_reconnection.py
-PYTHONPATH=. python run_multi_qubit_ciir.py
-PYTHONPATH=. python run_falsification.py --N 3 --n-steps 50
+# Replay and verify a previously emitted ledger
+qratum verify --ledger out/ledger.jsonl
 
-# 3. Rust components that build
-( cd qrVITRA/merkler-static && cargo test )
-( cd Aethernet              && cargo test )
-( cd crypto/kdf             && cargo test )
+# Apply the falsification screen to the resulting trace
+qratum falsify --ledger out/ledger.jsonl
+
+# Pure simulation (no domain plugin, useful for CI smoke)
+qratum simulate --steps 100 --seed 42
+
+# Inspect ledger entries
+qratum ledger --ledger out/ledger.jsonl --head 10
 ```
 
-The full top-level Python suite (`pytest tests/test_*.py`) currently reports
-**1857 passed / 78 failed / 18 errors / 4 skipped / 245 warnings**. The
-failures are dominated by missing optional dependencies (`qiskit`,
-`matplotlib`) and a handful of legitimately broken tests (see Gap report).
+### 7.2 Programmatic API
+
+```python
+from qratum_framework import (
+    Operator, MerkleLedger, PROFILES, FalsificationVerdict,
+    check_health, check_readiness,
+)
+from qratum_framework.operator import StrictCIIRBackend
+
+assert check_health().ok and check_readiness().ok
+
+ledger = MerkleLedger()
+op = Operator(backend=StrictCIIRBackend(), ledger=ledger, profile=PROFILES["medium"])
+
+for step in range(100):
+    entry = op.run_step(input_payload={"step": step, "seed": 42})
+    if entry.verdict.kind == "reject":
+        # Typed failure modes: Type I–IV
+        print("rejected:", entry.verdict.failure_type, entry.verdict.reason)
+
+# Replay-style audit
+for prev_hash, payload_hash, entry in ledger.iter_with_hashes():
+    assert entry.prev_hash == prev_hash
+
+# Falsification screen
+verdict: FalsificationVerdict = op.falsify(ledger)
+assert verdict in {FalsificationVerdict.A, FalsificationVerdict.A0, FalsificationVerdict.B}
+```
+
+### 7.3 Custom backend (plugin)
+
+```python
+from qratum_framework.operator import Operator, OperatorBackend
+from qratum_framework.trace import UnifiedTraceEntry, MerkleLedger
+
+class MyBackend(OperatorBackend):
+    def run_step(self, state, action, *, profile):
+        # ... pure, deterministic, no global RNG ...
+        return UnifiedTraceEntry(
+            step=state.step + 1,
+            payload={"action": action, "result": ...},
+            metadata={"backend": "MyBackend"},  # excluded from hashing
+        )
+
+op = Operator(backend=MyBackend(), ledger=MerkleLedger())
+```
 
 ---
 
-## Limitations (explicit)
+## 9. Configuration Model
 
-- **No quantum hardware execution.** All "quantum" code in this repository
-  is either (a) classical NumPy/SciPy with quantum-mechanical motivation, or
-  (b) Qiskit-based circuits intended to run on a Qiskit `Sampler`/`Aer`
-  simulator — never on real QPUs in any path that this repository
-  exercises.
-- **No working consensus / decentralized network.** `qratum-rust` does not
-  compile in this clone; there is no end-to-end demonstration of BFT
-  consensus, libp2p gossip, or on-chain governance.
-- **No certified compliance.** Despite extensive documentation language
-  around HIPAA / GDPR Article 9 / BIPA / 21 CFR Part 11 / DO-178C, no
-  certification evidence is present in the code or build artifacts.
-- **No working post-quantum crypto stack** in this clone — `crypto/pqc` and
-  `crypto/rng` fail to compile.
-- **Two declared CLIs are syntactically broken** (`xenon`, `quasim-hcal`) and
-  cannot start.
-- **Whole-tree test execution is broken** by import errors in many
-  subsystems (`api.v1`, `aion.executor`, `quantum.python`, several `qnx*`).
-  Only the curated subset above runs cleanly.
-- **`pyproject.toml` has a duplicate `quasim-ciir` script entry**, which
-  some tools refuse to parse.
+### 8.1 Hierarchy
 
----
+Resolution order (highest precedence first):
 
-## Research artifacts
+1. **CLI flags** — `--profile`, `--seed`, `--ledger`, `--steps`, etc.
+2. **Programmatic overrides** — keyword arguments to `Operator(...)`.
+3. **Environment variables** — see §9.3.
+4. **Profile** — one of the named entries in `qratum_framework/config.py::PROFILES`.
+5. **Built-in defaults** — conservative; `quick` profile equivalent.
 
-- `manuscripts/ciir_monograph/` — LaTeX monograph (Ch. 1–22) accompanying
-  the CIIR–CRS–RIC framework, falsification protocol (Ch. 22.4), and the
-  unified extensions registry (Ch. 22.5). The monograph references modules
-  enumerated in the [Verified Capability Registry](#verified-capability-registry).
-- `main_revtex*.tex` and accompanying figures (`critical_scaling.*`,
-  `entropy_scaling.*`, `quantum_phase_diagram.*`,
-  `transport_characterization.*`).
-- Numerous `*.md` reports under the repository root document earlier
-  experiments. Treat these as historical unless they are corroborated by a
-  passing test in `tests/`.
+### 8.2 Profiles
+
+| Profile | Intent |
+|---|---|
+| `quick` | Smoke / CI; minimal step budget. |
+| `medium` | Default for development runs. |
+| `strong` | Tighter safety-gate thresholds; longer rollouts. |
+| `full_fast` | Production sweep; coverage over latency. |
+| `full_report` | Coverage + falsification screen + full ledger emission. |
+
+Profiles are *data*, not code paths. Adding a profile means adding a dict entry, not a branch.
+
+### 8.3 Environment variables (conceptual)
+
+| Variable | Purpose |
+|---|---|
+| `QRATUM_PROFILE` | Default profile when `--profile` is absent. |
+| `QRATUM_LEDGER` | Default ledger path. |
+| `QRATUM_SEED` | Default seed; required for reproducibility. |
+| `QRATUM_LLM_BACKEND` | One of `deterministic`, `openai`, `anthropic`, `gemini`, `local`. Falls back to `deterministic` when SDK or key is absent. |
+| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` / `GOOGLE_API_KEY` | Credentials for non-deterministic backends; *never required for default operation*. |
+
+Missing credentials must not cause hard failures or process exits — the LLM layer is required to fall back deterministically (see `qagents/llm_backends.py`).
 
 ---
 
-## License
+## 10. Development Guide
 
-Apache 2.0 — see [LICENSE](LICENSE).
+### 9.1 Adding a module
 
-## Author
+1. Place the module under an existing namespace (`qagents/<your_module>/` for control-layer code, `quasim/<your_module>/` for simulation-domain code).
+2. Define typed inputs and outputs (dataclasses or TypedDict).
+3. Forbid global mutable state and global RNG. Inject a `random.Random(seed)` if you need stochasticity.
+4. Add a dedicated test file under `tests/test_<your_module>.py`. Follow the pattern of `tests/test_mvri.py` or `tests/test_control_geometry.py`.
+5. Re-export your public surface from the appropriate `__init__.py`.
 
-Robert Ringler (independent researcher).
+### 9.2 Registering an agent / adapter
 
-## Citation
+1. Implement a `Simulator`, a `Proposer`, and a `make_<sys>_controller` builder following the templates in `qagents/adapters/{qratum,ciir,crs}.py`.
+2. Re-export from `qagents/adapters/__init__.py`.
+3. Add adapter tests to `tests/test_ric_adapters.py`.
 
-If you use the verified CIIR–CRS–RIC / MVRI / control-geometry /
-real-world-bridge / plasma-reconnection code in academic work, please cite
-the CIIR monograph in `manuscripts/ciir_monograph/` and reference this
-repository at the commit you used.
+### 9.3 Extending execution rules
+
+To add a new constraint or invariant to CIIR–CRS–RIC:
+
+1. Define the predicate in `qagents/ciir_crs_ric/ciir.py` (constraint) or `qagents/framework/ciir.py` (algebra).
+2. Wire it into `phi` (precondition), `Inv` (invariant), or both.
+3. If the violation is structurally new, declare a new failure type in `qagents/ciir_crs_ric/failures.py` (Type I–IV taxonomy).
+4. The executor's 9-step `run_step` will pick it up via the existing `OperatorBackend` contract — do not modify the executor itself for domain rules.
+
+### 9.4 Test commands (verified)
+
+```bash
+PYTHONPATH=. python -m pytest tests/test_qratum_framework.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ciir_crs_ric_strict.py     --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_mvri.py                    --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_realworld_bridge.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_control_geometry.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ric_v2.py                  --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ric_ciir_bridge.py         --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_plasma_reconnection.py     --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ciir_falsification.py      --override-ini="addopts=" -q
+```
+
+---
+
+## 11. Safety, Determinism & Verification Guarantees
+
+### 10.1 Execution constraints
+
+- The constraint algebra (`phi`, `Inv`) is checked **twice** per step: pre-transition and post-transition.
+- The safety gate runs four sequential checks (`MAG`, `TGT`, `ROC`, `MVR`). All four are evaluated before a verdict is emitted, so failure reports are complete, not first-hit.
+- The `ControlLoop` advances `model_state` only on *accepted* injection; a rejected step never mutates the state used by the next step's planner.
+- `SensorExhausted` ends a run early but cleanly; the ledger remains valid.
+
+### 10.2 Reproducibility enforcement
+
+- Hashing is over **canonical JSON**: keys sorted, no whitespace, `metadata` field excluded from the hash domain.
+- All RNG is seeded; no module reads `time.time()` or `os.urandom()` on the determinism path.
+- Profiles are pure data; flipping a profile cannot inject non-determinism via a code path.
+- CI compares ledger hashes across machines, not floating-point outputs. A diverging hash is a hard failure.
+
+### 10.3 Invalid-state handling
+
+- Failure modes are named: **Type I** (precondition violation), **Type II** (postcondition violation), **Type III** (invariant violation), **Type IV** (admissibility violation).
+- The executor's 9-step `run_step` never raises into caller code; it returns a `TraceEntry` whose verdict carries the failure type.
+- The ledger records rejections with the same hashing discipline as acceptances; an attacker cannot hide a rejected step by reordering.
+- The falsifier reduces the ledger to one of `{A, A0, B}`:
+  - **A** — claim verified within tolerance.
+  - **A0** — claim verified but mechanism differs from declared (e.g. amplitude damping rather than causal geometry).
+  - **B** — claim falsified.
+
+### 10.4 Cryptographic verification surface
+
+- Per-entry hash: SHA-256 over canonical-JSON payload.
+- Chain link: each entry stores the prior `payload_hash` as `prev_hash`; `MerkleLedger.iter_with_hashes` is the public audit cursor.
+- Optional Rust-side biokey signing (`qrVITRA/merkler-static/`) provides ephemeral SNP-derived keys, FIDO2 dual-signature, and ZKP attestation for sovereign-genomics use cases.
+
+---
+
+## 12. Roadmap
+
+The following are tracked extension directions; none are required for current operation.
+
+- **Spine hardening** — strict mypy on `qratum_framework/`, atomic ledger writes with `fsync`, ledger-load verification, size caps on trace metadata.
+- **Distributed ledger mode** — multi-writer ledger with deterministic merge, suitable for federated agent runs.
+- **Hardware falsification** — execute the 5-step falsification protocol against physical quantum hardware (`run_falsification.py` is the simulator entry point today).
+- **Plugin SDK** — package the `OperatorBackend` Protocol, trace dataclasses, and failure taxonomy as a stand-alone wheel so out-of-tree plugins do not need to vendor `qagents/`.
+- **Plasma reconnection (extended)** — controller-aware mesh refinement for `quasim/ciir/plasma/`, FKR/plasmoid scaling at higher Lundquist numbers.
+- **Trajectory controller (k-step)** — extend RIC v2's k-step rollout into the trajectory controller for end-to-end horizon-aware planning over the real-world bridge.
+- **Formal verification** — discharge invariants `phi` and `Inv` to an SMT backend on a bounded fragment of the action space.
+
+Research directions (no committed timeline): falsification of causal-geometry claims at larger N, biokey-bound ledgers for genomics-grade reproducibility, and unification of MVRI's entropy/MI/TE metrics with CIIR's stability inequality.
