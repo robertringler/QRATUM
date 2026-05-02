@@ -16,9 +16,10 @@
 > runtime behavior in this repository. Those claims have been removed.
 >
 > What follows is what is **actually present, importable, and testable** in the
-> tree on this branch. Anything not listed here should be treated as
-> unverified. See [`QUANTUM_CAPABILITY_AUDIT.md`](QUANTUM_CAPABILITY_AUDIT.md)
-> and [`_DOCUMENTATION_DISCLAIMER.md`](_DOCUMENTATION_DISCLAIMER.md) for
+> tree on this branch as of the audit commit. Anything not listed here
+> should be treated as unverified. See
+> [`QUANTUM_CAPABILITY_AUDIT.md`](QUANTUM_CAPABILITY_AUDIT.md) and
+> [`_DOCUMENTATION_DISCLAIMER.md`](_DOCUMENTATION_DISCLAIMER.md) for
 > historical context.
 
 ---
@@ -76,15 +77,19 @@ contents, not from external documentation.
 ## Execution Truth Table
 
 Status was determined by running `pytest`, `cargo test`, module imports, and
-syntax checks against the tree on this branch (Python 3.12, Rust stable,
-`pip install pytest numpy pyyaml scipy`; Qiskit and matplotlib **not**
-installed).
+syntax checks against the tree on this branch.
+
+**Test environment used for the numbers below:** Python 3.12, `pytest` 9.0,
+`numpy` 2.4, `scipy` 1.17, `pyyaml` 6+, Rust stable (`cargo` from the
+default rustup channel). Qiskit, PennyLane, Cirq, matplotlib, and torch
+were **not** installed — these are listed as optional extras
+(`[quantum]`, `[viz]`) in `pyproject.toml`.
 
 ### Python tests
 
 | Scope | Result |
 |---|---|
-| Top-level `tests/test_*.py` (entire flat suite) | **1857 passed**, 78 failed, 18 errors, 4 skipped |
+| Top-level `tests/test_*.py` (entire flat suite) | **1857 passed**, 78 failed, 18 errors, 4 skipped, 245 warnings |
 | Whole `tests/` tree (recursive) | 2 passed, 13 skipped, **3162 errors during collection** (most are `ModuleNotFoundError` for `api.v1`, `aion.executor`, `quantum.python`, `qnx*`, etc.) |
 | Verified control core (`test_ciir_crs_ric_strict`, `test_mvri`, `test_control_geometry`, `test_realworld_bridge`, `test_trajectory_controller`, `test_ric_adapters`, `test_reality_interface_controller`, `test_ric_v2`, `test_ric_ciir_bridge`, `test_ciir_crs_ric`, `test_plasma_reconnection`, `test_ciir_falsification`, `test_ciir_gaps_1_4_8`, `test_ciir_extensions`, `test_multi_qubit_controller`) | **617 passed, 0 failed** |
 
