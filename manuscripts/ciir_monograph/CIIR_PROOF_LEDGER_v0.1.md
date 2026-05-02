@@ -534,3 +534,103 @@ gaps actually present in ch03–ch08:
 ---
 
 *End of `CIIR_PROOF_LEDGER_v0.1.md` (Phase 1, draft).*
+
+---
+
+## 7. Phase-2 closure log (in progress)
+
+This section is appended as Phase-2 closure work begins. Each entry
+records: which gap, which closure path was taken (out of the options
+in §5), and the precise source-file edits that implement it. No claim
+is made about gaps not listed here.
+
+### 7.1 Closure of G-L1 + G-S4 (Born-rule double-status)
+
+- **Status:** closed by the conservative path (option (b) in §5.1).
+- **Decision.** Axiom 4.5 (Measurement Collapse) remains the
+  *primary* statement of the Born rule in the present version of the
+  monograph. Theorem 8.2 is reframed as a
+  *compatibility / propagation* result, not an independent derivation.
+  A genuine Gleason / Busch-style derivation (option (a) of §5.1) is
+  explicitly recorded as deferred future work. This eliminates the
+  circularity (G-L1) without committing the monograph to a Gleason
+  proof at v0.x, and resolves the axiom-vs-theorem overlap (G-S4) by
+  picking one of the two as primary.
+- **Source-file edits implementing the closure.**
+  - `chapters/ch08_measurement_theory.tex`
+    - Chapter intro (was lines 47–56, "central thesis is that
+      Axiom 4.5 is *derivable*…") rewritten as a compatibility /
+      propagation framing, with forward-pointer to
+      `Remark~\ref{rem:8.born-status}`.
+    - Bullet item in the chapter-summary list — was "The Born rule is
+      *derived* from the trace structure" — replaced by "The Born
+      rule of Axiom 4.5(MC1) is shown to *propagate* through the
+      trace structure".
+    - Subsection heading "Derivation of the Born Rule" → "Compatibility
+      of the Born Rule with the Interface Map".
+    - Subsection lead-in paragraph rewritten to state explicitly that
+      this is *not* a Gleason-style independent derivation.
+    - `\begin{theorem}[Derivation of the Born Rule]` →
+      `\begin{theorem}[Born-Rule Compatibility of the Interface Map]`.
+      Statement clause "Axiom 4.5(MC1) is derived, not assumed"
+      replaced by an explicit description of the result as a
+      compatibility / propagation theorem; clause (iii) now explicitly
+      labels Definition 5.9 as the algebraic restatement of (MC1).
+    - Step 4 of the proof: phrase "the Born rule … is therefore a
+      *derived* consequence of …" → "the Born expression … is
+      therefore the propagation of Axiom 4.5(MC1) along …", and the
+      final sentence "No independent probabilistic axiom is required"
+      → "This is a compatibility / propagation result; it does not
+      eliminate Axiom 4.5".
+    - New `\begin{remark}\label{rem:8.born-status}[Status of the Born
+      rule in CIIR; closure of ledger gaps G-L1, G-S4]` inserted
+      immediately after the proof of Theorem 8.2. The remark spells
+      out (a) that the Born rule appears both as Axiom 4.5(MC1) and
+      as Theorem 8.2; (b) that Step 1 of the proof invokes
+      Definition 5.9 which is itself the algebraic restatement of
+      (MC1); (c) that a genuinely independent derivation would
+      proceed via Gleason / Busch and is deferred; (d) cross-references
+      this ledger.
+    - Corollary 8.1 renamed "Born Rule for Discrete Spectra" →
+      "Born-Rule Compatibility for Discrete Spectra" (statement and
+      proof unchanged — they remain a special case of Theorem 8.2).
+    - Chapter-summary "Axiom 4.5 status" entry rewritten: was "now a
+      *theorem* … reducing the independent axiom count from 6 to 5";
+      now states honestly that Axiom 4.5 remains an axiom in the
+      present monograph, that Theorem 8.2 / 8.3 are
+      compatibility / consistency statements, and that the axiom
+      count is 6 (not 5). Cross-references this ledger and
+      `Remark~\ref{rem:8.born-status}`.
+    - Dependency-graph row label "Born rule (T 8.2)" → "Born-rule
+      compat. (T 8.2)"; dependency list now includes
+      `Ax.~\ref{ax:4.5}` alongside `D~\ref{def:5.9}` to make the
+      dependency on the axiom explicit.
+  - `chapters/ch04_axiom_system.tex`
+    - `Remark~\ref{rem:4.5}` (immediately following Axiom 4.5)
+      extended with a "Status as primary statement of the Born rule"
+      paragraph that points forward to `Remark~\ref{rem:8.born-status}`
+      and references this ledger. The axiom statement itself
+      (MC1)/(MC2)/(MC3) is unchanged.
+
+- **Untouched.** No other chapter, no other claim, no proof of any
+  other theorem, no axiom statement, and no definition was edited
+  during this closure. In particular, Definition 5.9 is unchanged.
+
+- **Verification of internal consistency after the edits.**
+  - All cross-references resolve to the same labels as before
+    (`thm:8.2`, `cor:8.1`, `def:5.9`, `ax:4.5`, `rem:4.5`).
+  - The new label `rem:8.born-status` is introduced once in
+    `ch08_measurement_theory.tex` and referenced from
+    `ch04_axiom_system.tex` and from the chapter-summary block in
+    `ch08_measurement_theory.tex`.
+  - The mathematical content of Theorem 8.2's proof is unchanged;
+    only its surrounding *labelling* and *interpretation* are
+    corrected. Therefore no downstream theorem (Theorem 8.3,
+    Corollary 8.1, Proposition 6.3) requires its proof to be redone.
+
+- **Remaining Priority-1 work.** G-S1 (Ax 4.1 independence
+  counter-model $\mathfrak M_1$) is *not* closed by the present
+  edit set. It requires a genuine non-empty replacement of $\CR$
+  that fails (OP1) for a different reason; this is recorded as the
+  next Phase-2 deliverable after Born-rule closure.
+
