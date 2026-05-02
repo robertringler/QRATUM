@@ -2,14 +2,9 @@
 
 import pytest
 
-from Aethernet.core.validator import (
-    SlashingReason,
-    Validator,
-    ValidatorCredentials,
-    ValidatorRegistry,
-    ValidatorStake,
-    ValidatorStatus,
-)
+from Aethernet.core.validator import (SlashingReason, Validator,
+                                      ValidatorCredentials, ValidatorRegistry,
+                                      ValidatorStake, ValidatorStatus)
 
 
 class TestValidatorCredentials:

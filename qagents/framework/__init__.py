@@ -7,12 +7,8 @@ Three strictly separated modules:
     ric   — deterministic controller (intent parser π, admissible set A_C, ρ)
 """
 
-from qagents.framework.ciir import (
-    Constraint,
-    ConstraintAlgebra,
-    State,
-    ObserverMap,
-)
+from qagents.framework.ciir import (Constraint, ConstraintAlgebra, ObserverMap,
+                                    State)
 from qagents.framework.crs import CRS, Action, FailureMode
 from qagents.framework.ric import RIC, Intent, TraceEntry
 

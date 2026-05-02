@@ -10,13 +10,12 @@ from qagents.realworld_bridge.observer import ObserverStateInvalid
 from qagents.realworld_bridge.safety_gate import validate_action
 from qagents.realworld_bridge.sensors import SensorExhausted
 from qagents.realworld_bridge.types import ActionValidationResult
-from qagents.realworld_bridge.world_model_sync import drift_magnitude, sync_model
-from qagents.trajectory_controller.types import (
-    Trajectory,
-    TrajectoryExecutionTrace,
-    TrajectoryStepTrace,
-    vector_to_action,
-)
+from qagents.realworld_bridge.world_model_sync import (drift_magnitude,
+                                                       sync_model)
+from qagents.trajectory_controller.types import (Trajectory,
+                                                 TrajectoryExecutionTrace,
+                                                 TrajectoryStepTrace,
+                                                 vector_to_action)
 
 
 def _rejected_result(action: Action, reasons: tuple[str, ...]) -> ActionValidationResult:

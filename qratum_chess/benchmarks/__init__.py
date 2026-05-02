@@ -12,42 +12,26 @@ Implements comprehensive performance certification framework:
 
 from __future__ import annotations
 
-from qratum_chess.benchmarks.benchmark_kaggle import (
-    KaggleBenchmarkResult,
-    KaggleBenchmarkRunner,
-    KaggleBenchmarkSummary,
-)
+from qratum_chess.benchmarks.benchmark_kaggle import (KaggleBenchmarkResult,
+                                                      KaggleBenchmarkRunner,
+                                                      KaggleBenchmarkSummary)
 from qratum_chess.benchmarks.elo import EloCertification
 from qratum_chess.benchmarks.gauntlet import AdversarialGauntlet
 from qratum_chess.benchmarks.kaggle_config import KaggleConfig, load_config
-from qratum_chess.benchmarks.kaggle_integration import (
-    KaggleBenchmarkPosition,
-    KaggleIntegration,
-    KaggleLeaderboardData,
-)
+from qratum_chess.benchmarks.kaggle_integration import \
+    KaggleBenchmarkPosition  # noqa: F811 - re-export alias
+from qratum_chess.benchmarks.kaggle_integration import (KaggleIntegration,
+                                                        KaggleLeaderboardData)
 from qratum_chess.benchmarks.kaggle_submission import (
-    KaggleBenchmarkPosition,
-    KaggleLeaderboard,
-    KaggleLeaderboardLoader,
-    KaggleSubmission,
-    SubmissionResult,
-    download_kaggle_leaderboard,
-)
-from qratum_chess.benchmarks.kaggle_integration import (
-    KaggleBenchmarkPosition,  # noqa: F811 - re-export alias
-)
+    KaggleBenchmarkPosition, KaggleLeaderboard, KaggleLeaderboardLoader,
+    KaggleSubmission, SubmissionResult, download_kaggle_leaderboard)
 from qratum_chess.benchmarks.metrics import PerformanceMetrics
 from qratum_chess.benchmarks.resilience import ResilienceTest
-from qratum_chess.benchmarks.runner import (
-    BenchmarkConfig,
-    BenchmarkRunner,
-    BenchmarkSummary,
-    CertificationResult,
-)
+from qratum_chess.benchmarks.runner import (BenchmarkConfig, BenchmarkRunner,
+                                            BenchmarkSummary,
+                                            CertificationResult)
 from qratum_chess.benchmarks.telemetry import TelemetryOutput
 from qratum_chess.benchmarks.torture import StrategicTortureSuite
-from qratum_chess.benchmarks.resilience import ResilienceTest
-from qratum_chess.benchmarks.telemetry import TelemetryOutput
 
 # Kaggle integration imports disabled due to file corruption in kaggle_integration.py
 # The file contains duplicate class definitions and mismatched parameters that need cleanup.

@@ -7,43 +7,25 @@ controller → actuator pipeline. The pipeline is closed by
 canonical 9-step sequence with no reordering and no shortcuts.
 """
 
-from qagents.realworld_bridge.actuators import (
-    Actuator,
-    ExternalActuatorAdapter,
-    MockActuator,
-)
+from qagents.realworld_bridge.actuators import (Actuator,
+                                                ExternalActuatorAdapter,
+                                                MockActuator)
 from qagents.realworld_bridge.control_loop import ControlLoop
-from qagents.realworld_bridge.observer import (
-    ObserverStateInvalid,
-    StateObserver,
-)
-from qagents.realworld_bridge.safety_gate import (
-    SafetyConfig,
-    check_mag,
-    check_mvr,
-    check_roc,
-    check_tgt,
-    validate_action,
-)
-from qagents.realworld_bridge.sensors import (
-    MockSensor,
-    RealSensorAdapter,
-    Sensor,
-    SensorExhausted,
-    SensorReadError,
-)
-from qagents.realworld_bridge.types import (
-    ActionResult,
-    ActionValidationResult,
-    ControlRunResult,
-    LoopTrace,
-    Observation,
-)
-from qagents.realworld_bridge.world_model_sync import (
-    DEFAULT_MAX_CORRECTION,
-    drift_magnitude,
-    sync_model,
-)
+from qagents.realworld_bridge.observer import (ObserverStateInvalid,
+                                               StateObserver)
+from qagents.realworld_bridge.safety_gate import (SafetyConfig, check_mag,
+                                                  check_mvr, check_roc,
+                                                  check_tgt, validate_action)
+from qagents.realworld_bridge.sensors import (MockSensor, RealSensorAdapter,
+                                              Sensor, SensorExhausted,
+                                              SensorReadError)
+from qagents.realworld_bridge.types import (ActionResult,
+                                            ActionValidationResult,
+                                            ControlRunResult, LoopTrace,
+                                            Observation)
+from qagents.realworld_bridge.world_model_sync import (DEFAULT_MAX_CORRECTION,
+                                                       drift_magnitude,
+                                                       sync_model)
 
 __all__ = [
     "DEFAULT_MAX_CORRECTION",

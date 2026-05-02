@@ -144,7 +144,7 @@ def growth_rates(snapshots: list[SpectrumSnapshot], eps: float = 1.0e-30) -> Flo
     gammas = np.full(n_bins, np.nan, dtype=np.float64)
     for kb in range(n_bins):
         E = np.array([s.E_mag[kb] for s in snapshots], dtype=np.float64)
-        if not np.all(E > eps):
+        if not np.all(eps < E):
             continue
         logE = np.log(E)
         # Slope of log(E) vs t = 2 γ (since E ∝ A^2).
@@ -187,7 +187,7 @@ def plasmoid_growth_rate_estimate(S: float, tau_A: float = 1.0, S_c: float = 1.0
     """
     if S <= 0.0:
         raise ValueError("S must be positive.")
-    if S < S_c:
+    if S_c > S:
         return None
     return (1.0 / tau_A) * S ** 0.25
 

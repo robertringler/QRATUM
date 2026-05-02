@@ -22,13 +22,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Mapping
 
-from qagents.reality_interface import (
-    RealityInterfaceController,
-    RICDecision,
-    Proposer,
-)
+from qagents.reality_interface import (Proposer, RealityInterfaceController,
+                                       RICDecision)
 from qagents.reality_interface_v2 import RICv2Controller, RICv2History
-
 
 # ---------------------------------------------------------------------------
 # Default intent / system limits
@@ -252,7 +248,7 @@ class CIIRRICBridge:
         base = float(getattr(cfg, "_ric_base_lr", cfg.learning_rate))
         if not hasattr(cfg, "_ric_base_lr"):
             try:
-                setattr(cfg, "_ric_base_lr", base)
+                cfg._ric_base_lr = base
             except Exception:
                 return
         # Clamp magnitude into [0, 1]; map to scale ∈ [0.25, 4.0]

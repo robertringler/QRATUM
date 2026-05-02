@@ -253,7 +253,7 @@ class MHDState:
         divB = ddx(Bx, self.grid.dx) + ddy(By, self.grid.dy)
         return float(np.max(np.abs(divB)))
 
-    def copy(self) -> "MHDState":
+    def copy(self) -> MHDState:
         return MHDState(
             psi=self.psi.copy(),
             omega=self.omega.copy(),

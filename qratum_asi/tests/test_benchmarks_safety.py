@@ -170,7 +170,8 @@ class TestInvariantHardener:
     def test_fatal_invariants_are_absolute(self):
         """Test fatal invariants have ABSOLUTE strength."""
         from qratum_asi.safety_hardening import InvariantHardener
-        from qratum_asi.safety_hardening.types import FATAL_INVARIANTS, InvariantStrength
+        from qratum_asi.safety_hardening.types import (FATAL_INVARIANTS,
+                                                       InvariantStrength)
 
         hardener = InvariantHardener()
 
@@ -443,11 +444,9 @@ class TestSafetyIntegration:
 
     def test_all_modules_initialize(self):
         """Test all safety modules can initialize together."""
-        from qratum_asi.safety_hardening import (
-            CorrigibilityPreserver,
-            InvariantHardener,
-            ScalableOversight,
-        )
+        from qratum_asi.safety_hardening import (CorrigibilityPreserver,
+                                                 InvariantHardener,
+                                                 ScalableOversight)
 
         hardener = InvariantHardener()
         oversight = ScalableOversight()
@@ -459,11 +458,9 @@ class TestSafetyIntegration:
     def test_merkle_chain_tracks_all_events(self):
         """Test Merkle chain records events from all modules."""
         from qratum_asi.core.chain import ASIMerkleChain
-        from qratum_asi.safety_hardening import (
-            CorrigibilityPreserver,
-            InvariantHardener,
-            ScalableOversight,
-        )
+        from qratum_asi.safety_hardening import (CorrigibilityPreserver,
+                                                 InvariantHardener,
+                                                 ScalableOversight)
 
         chain = ASIMerkleChain()
 

@@ -24,19 +24,6 @@ from qratum_asi.safety.mega_prompt import (AnswerType, ConfidenceLevel,
 from qratum_asi.safety.mega_prompt_adapter import (MegaPromptOrchestrator,
                                                    RefusalMegaPromptAdapter,
                                                    SimulatedMegaPromptAdapter)
-from qratum_asi.safety.mega_prompt import (
-    AnswerType,
-    ConfidenceLevel,
-    MandatoryResponseRules,
-    MegaPromptCategory,
-    MegaPromptResponse,
-    MegaPromptSystem,
-)
-from qratum_asi.safety.mega_prompt_adapter import (
-    MegaPromptOrchestrator,
-    RefusalMegaPromptAdapter,
-    SimulatedMegaPromptAdapter,
-)
 
 
 def test_question_set():

@@ -13,15 +13,14 @@ All plots are saved to ``results/`` directory (created if needed).
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
-from typing import List, Optional, Tuple
-
-import numpy as np
-from numpy.typing import NDArray
+from typing import List, Tuple
 
 # matplotlib backend must be set before pyplot import
 import matplotlib
+import numpy as np
+from numpy.typing import NDArray
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
@@ -223,8 +222,6 @@ def plot_lyapunov(
 
 def plot_all(sim_result, lyap_result, qec_results: dict, p_phys_arr, p_L_arr, p_star: float) -> List[Path]:
     """Generate all required plots and return list of output paths."""
-    from quasim.ciir.multi_qubit.simulation.hybrid_sim import SimulationResult
-    from quasim.ciir.multi_qubit.analysis.stability import LyapunovResult
 
     n_q = sim_result.params["n_qubits"]
     paths = []

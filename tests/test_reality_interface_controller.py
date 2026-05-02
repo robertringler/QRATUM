@@ -4,15 +4,10 @@ from __future__ import annotations
 
 import pytest
 
-from qagents.reality_interface import (
-    ACTION_TYPES,
-    ControlDecision,
-    FallbackPlan,
-    PredictedOutcome,
-    RealityInterfaceController,
-    SelectedAction,
-    default_simulator,
-)
+from qagents.reality_interface import (ACTION_TYPES, ControlDecision,
+                                       FallbackPlan, PredictedOutcome,
+                                       RealityInterfaceController,
+                                       SelectedAction, default_simulator)
 
 # ---------------------------------------------------------------------------
 # Fixtures / helpers

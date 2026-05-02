@@ -19,13 +19,8 @@ from typing import Any
 from ..memory.regions import Region
 from ..sir.edges import HyperEdge, ParallelismKind
 from ..sir.hypergraph import HyperGraph
-from ..sir.vertices import (
-    AIONType,
-    EffectKind,
-    HardwareAffinity,
-    Provenance,
-    Vertex,
-)
+from ..sir.vertices import (AIONType, EffectKind, HardwareAffinity, Provenance,
+                            Vertex)
 
 
 class CUDANodeKind(Enum):

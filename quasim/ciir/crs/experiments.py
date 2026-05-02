@@ -11,16 +11,11 @@ from __future__ import annotations
 
 import numpy as np
 
-from quasim.ciir.crs.graph import CRSGraph, Node, Edge, lattice_graph, random_graph
-from quasim.ciir.crs.rewrite import (
-    RewriteEngine,
-    diffusion_rule,
-    decay_rule,
-    interaction_rule,
-    stochastic_perturbation_rule,
-)
 from quasim.ciir.crs.evolution import CRSEngine
-
+from quasim.ciir.crs.graph import lattice_graph, random_graph
+from quasim.ciir.crs.rewrite import (RewriteEngine, decay_rule, diffusion_rule,
+                                     interaction_rule,
+                                     stochastic_perturbation_rule)
 
 # ================================================================
 # 1. Diffusion

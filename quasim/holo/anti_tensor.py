@@ -19,7 +19,7 @@ References:
 
 from __future__ import annotations
 
-from typing import Any, Optional, Tuple, Dict
+from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 from numpy.typing import NDArray
@@ -55,7 +55,7 @@ def compute_entropy_spectrum(tensor: Array) -> Tuple[Array, float]:
     original_shape = tensor.shape
     tensor_flat = tensor.flatten()
     n = len(tensor_flat)
-    
+
     # Create a square matrix representation
     # For 1D tensors, use outer product; for higher dims, reshape intelligently
     if len(original_shape) == 1:
@@ -80,28 +80,28 @@ def compute_entropy_spectrum(tensor: Array) -> Tuple[Array, float]:
             matrix = padded.reshape(rows, cols)
         else:
             matrix = tensor_flat[:rows * cols].reshape(rows, cols)
-    
+
     # Compute SVD to get eigenvalue spectrum
     try:
         _, singular_values, _ = np.linalg.svd(matrix, full_matrices=False)
     except np.linalg.LinAlgError:
         # Fallback: use eigenvalues of A^H A
         singular_values = np.sqrt(np.abs(np.linalg.eigvals(matrix.conj().T @ matrix)))
-    
+
     # Convert singular values to probability distribution
     sv_squared = singular_values ** 2
     sv_squared_sum = np.sum(sv_squared)
-    
+
     if sv_squared_sum < NUMERICAL_TOLERANCE:
         return singular_values, 0.0
-    
+
     probabilities = sv_squared / sv_squared_sum
-    
+
     # Compute Shannon entropy: H = -Σ p_i log(p_i)
     # Filter out zero probabilities to avoid log(0)
     probabilities = probabilities[probabilities > NUMERICAL_TOLERANCE]
     entropy = -np.sum(probabilities * np.log2(probabilities))
-    
+
     return singular_values, float(entropy)
 
 
@@ -138,16 +138,16 @@ def compute_mutual_information(tensor_a: Array, tensor_b: Optional[Array] = None
         # Compute entropy of first tensor
         _, entropy_a = compute_entropy_spectrum(tensor_a)
         _, entropy_b = compute_entropy_spectrum(tensor_b)
-        
+
         # Compute joint entropy H(A,B)
         # LIMITATION: Simplified approximation using concatenation
         joint_tensor = np.concatenate([tensor_a.flatten(), tensor_b.flatten()])
         _, entropy_joint = compute_entropy_spectrum(joint_tensor)
-        
+
         # Mutual information: I(A;B) = H(A) + H(B) - H(A,B)
         mi = entropy_a + entropy_b - entropy_joint
         return max(0.0, float(mi))
-    
+
     # Mode 2: Quantum MI matrix for multi-qubit state (main branch)
     if len(tensor_a.shape) == 1:
         n = len(tensor_a)
@@ -158,21 +158,21 @@ def compute_mutual_information(tensor_a: Array, tensor_b: Optional[Array] = None
                 # Compute quantum mutual information matrix
                 mi_matrix = _compute_quantum_mi_matrix(tensor_a, n_qubits)
                 return mi_matrix
-    
+
     # Fallback: treat as single tensor, split and compute MI
     n = len(tensor_a.flatten())
     if n < 2:
         return np.array([[0.0]])
-    
+
     mid = n // 2
     tensor_flat = tensor_a.flatten()
     tensor_left = tensor_flat[:mid]
     tensor_right = tensor_flat[mid:]
-    
+
     _, entropy_left = compute_entropy_spectrum(tensor_left)
     _, entropy_right = compute_entropy_spectrum(tensor_right)
     _, entropy_joint = compute_entropy_spectrum(tensor_flat)
-    
+
     mi = entropy_left + entropy_right - entropy_joint
     return max(0.0, float(mi))
 
@@ -194,13 +194,13 @@ def _compute_quantum_mi_matrix(state: Array, n_qubits: int) -> Array:
         Matrix of shape (n_qubits, n_qubits) with MI values
     """
     mi_matrix = np.zeros((n_qubits, n_qubits), dtype=float)
-    
+
     # Normalize state
     state_normalized = state / np.linalg.norm(state)
-    
+
     # Compute density matrix ρ = |ψ⟩⟨ψ|
     rho = np.outer(state_normalized, state_normalized.conj())
-    
+
     # For each pair of qubits, compute MI
     for i in range(n_qubits):
         for j in range(i + 1, n_qubits):
@@ -208,22 +208,22 @@ def _compute_quantum_mi_matrix(state: Array, n_qubits: int) -> Array:
             rho_i = _partial_trace_single_qubit(rho, i, n_qubits)
             rho_j = _partial_trace_single_qubit(rho, j, n_qubits)
             rho_ij = _partial_trace_two_qubits(rho, i, j, n_qubits)
-            
+
             # Compute von Neumann entropies
             S_i = _von_neumann_entropy(rho_i)
             S_j = _von_neumann_entropy(rho_j)
             S_ij = _von_neumann_entropy(rho_ij)
-            
+
             # Mutual information: I(i:j) = S(i) + S(j) - S(i,j)
             mi_ij = S_i + S_j - S_ij
-            
+
             # Ensure non-negative (handle numerical errors)
             mi_ij = max(0.0, mi_ij)
-            
+
             # Matrix is symmetric
             mi_matrix[i, j] = mi_ij
             mi_matrix[j, i] = mi_ij
-    
+
     return mi_matrix
 
 
@@ -240,19 +240,19 @@ def _partial_trace_single_qubit(rho: Array, qubit_idx: int, n_qubits: int) -> Ar
     """
     dim = 2 ** n_qubits
     rho_reduced = np.zeros((2, 2), dtype=complex)
-    
+
     # Iterate over basis states
     for i in range(dim):
         for j in range(dim):
             # Extract bit at qubit_idx position
             bit_i = (i >> qubit_idx) & 1
             bit_j = (j >> qubit_idx) & 1
-            
+
             # Check if all other bits match
             mask = ~(1 << qubit_idx) & ((1 << n_qubits) - 1)
             if (i & mask) == (j & mask):
                 rho_reduced[bit_i, bit_j] += rho[i, j]
-    
+
     return rho_reduced
 
 
@@ -270,7 +270,7 @@ def _partial_trace_two_qubits(rho: Array, qubit_i: int, qubit_j: int, n_qubits: 
     """
     dim = 2 ** n_qubits
     rho_reduced = np.zeros((4, 4), dtype=complex)
-    
+
     # Iterate over basis states
     for k in range(dim):
         for l in range(dim):
@@ -279,16 +279,16 @@ def _partial_trace_two_qubits(rho: Array, qubit_i: int, qubit_j: int, n_qubits: 
             bit_j_k = (k >> qubit_j) & 1
             bit_i_l = (l >> qubit_i) & 1
             bit_j_l = (l >> qubit_j) & 1
-            
+
             # Map to 2-qubit indices (0-3)
             idx_k = (bit_i_k << 1) | bit_j_k
             idx_l = (bit_i_l << 1) | bit_j_l
-            
+
             # Check if all other bits match
             mask = ~((1 << qubit_i) | (1 << qubit_j)) & ((1 << n_qubits) - 1)
             if (k & mask) == (l & mask):
                 rho_reduced[idx_k, idx_l] += rho[k, l]
-    
+
     return rho_reduced
 
 
@@ -303,13 +303,13 @@ def _von_neumann_entropy(rho: Array) -> float:
     """
     # Compute eigenvalues
     eigenvalues = np.linalg.eigvalsh(rho)
-    
+
     # Filter out negative eigenvalues (numerical errors) and zeros
     eigenvalues = eigenvalues[eigenvalues > _EIGENVALUE_THRESHOLD]
-    
+
     # Compute entropy: S = -Σ λ_i log(λ_i)
     entropy = -np.sum(eigenvalues * np.log(eigenvalues + _EIGENVALUE_THRESHOLD))
-    
+
     return float(entropy)
 
 
@@ -372,7 +372,7 @@ def hierarchical_decompose(
             )
             method = 'svd'
             max_rank = None
-    
+
     # Route to appropriate decomposition method
     if method == 'topology':
         # Main branch: topology-aware decomposition
@@ -404,18 +404,18 @@ def _hierarchical_decompose_topology(
     """
     original_shape = tensor.shape
     n = len(tensor.flatten())
-    
+
     # Compute MI matrix if not provided
     if mi_matrix is None:
         mi_matrix = compute_mutual_information(tensor)
-    
+
     # Analyze topology: find strongly correlated qubit pairs
     topology = _analyze_entanglement_topology(mi_matrix)
-    
+
     # For now, use SVD as the core decomposition method
     # but record topology for future optimization
     tensor_flat = tensor.flatten()
-    
+
     # Reshape to matrix for SVD
     rows = int(np.sqrt(n))
     if rows * rows == n:
@@ -426,7 +426,7 @@ def _hierarchical_decompose_topology(
         padded = np.zeros(rows * cols, dtype=tensor.dtype)
         padded[:n] = tensor_flat
         matrix = padded.reshape(rows, cols)
-    
+
     # Perform SVD
     try:
         U, S, Vh = np.linalg.svd(matrix, full_matrices=False)
@@ -434,9 +434,9 @@ def _hierarchical_decompose_topology(
         U = np.eye(matrix.shape[0], dtype=tensor.dtype)
         S = np.linalg.norm(matrix, axis=1)
         Vh = matrix / (S[:, None] + _EIGENVALUE_THRESHOLD)
-    
+
     rank = len(S)
-    
+
     return {
         'cores': [U, S, Vh],
         'ranks': [rank],
@@ -470,7 +470,7 @@ def _hierarchical_decompose_svd(
     original_shape = tensor.shape
     tensor_flat = tensor.flatten()
     n = len(tensor_flat)
-    
+
     # Reshape to matrix for SVD
     rows = int(np.sqrt(n))
     if rows * rows == n:
@@ -482,7 +482,7 @@ def _hierarchical_decompose_svd(
         padded = np.zeros(rows * cols, dtype=tensor.dtype)
         padded[:n] = tensor_flat
         matrix = padded.reshape(rows, cols)
-    
+
     # Perform SVD: A = U @ S @ Vh
     try:
         U, S, Vh = np.linalg.svd(matrix, full_matrices=False)
@@ -491,15 +491,15 @@ def _hierarchical_decompose_svd(
         U = np.eye(matrix.shape[0], dtype=tensor.dtype)
         S = np.linalg.norm(matrix, axis=1)
         Vh = matrix / (S[:, None] + NUMERICAL_TOLERANCE)
-    
+
     # Apply rank truncation if specified
     if max_rank is not None and isinstance(max_rank, int) and max_rank < len(S):
         U = U[:, :max_rank]
         S = S[:max_rank]
         Vh = Vh[:max_rank, :]
-    
+
     rank = len(S)
-    
+
     # Return both new and old format for compatibility
     result = {
         'cores': [U, S, Vh],
@@ -514,7 +514,7 @@ def _hierarchical_decompose_svd(
         'basis_right': [Vh[i, :] for i in range(rank)],
         'topology': {},
     }
-    
+
     return result
 
 
@@ -533,20 +533,20 @@ def _analyze_entanglement_topology(mi_matrix: Array) -> Dict[str, Any]:
             - 'max_mi': Maximum MI value in matrix
     """
     n_qubits = mi_matrix.shape[0]
-    
+
     # Find strongly correlated pairs
     strong_pairs = []
     for i in range(n_qubits):
         for j in range(i + 1, n_qubits):
             if mi_matrix[i, j] > _TOPOLOGY_MI_THRESHOLD:
                 strong_pairs.append((i, j))
-    
+
     # Simple clustering: group connected qubits
     clusters = _find_clusters(strong_pairs, n_qubits)
-    
+
     # Find maximum MI
     max_mi = np.max(mi_matrix) if mi_matrix.size > 0 else 0.0
-    
+
     return {
         'strong_pairs': strong_pairs,
         'clusters': clusters,
@@ -567,21 +567,21 @@ def _find_clusters(pairs: list, n_items: int) -> list:
     """
     # Union-find to identify connected components
     parent = list(range(n_items))
-    
+
     def find(x):
         if parent[x] != x:
             parent[x] = find(parent[x])
         return parent[x]
-    
+
     def union(x, y):
         px, py = find(x), find(y)
         if px != py:
             parent[px] = py
-    
+
     # Union all pairs
     for i, j in pairs:
         union(i, j)
-    
+
     # Group into clusters
     cluster_map = {}
     for i in range(n_items):
@@ -589,7 +589,7 @@ def _find_clusters(pairs: list, n_items: int) -> list:
         if root not in cluster_map:
             cluster_map[root] = []
         cluster_map[root].append(i)
-    
+
     return list(cluster_map.values())
 
 
@@ -624,7 +624,7 @@ def adaptive_truncate(
             weights = decomposition['weights']
             threshold = epsilon * np.max(np.abs(weights))
             mask = np.abs(weights) >= threshold
-            
+
             return {
                 'weights': weights[mask],
                 'basis_left': [b for i, b in enumerate(decomposition['basis_left']) if mask[i]],
@@ -641,38 +641,38 @@ def adaptive_truncate(
         else:
             # Unknown format, return as-is
             return decomposition
-    
+
     U, S, Vh = decomposition['cores']
-    
+
     # Compute truncation: keep singular values above threshold
     # Also ensure we keep enough to maintain fidelity
-    
+
     # Method 1: Threshold-based truncation
     threshold = epsilon * np.max(np.abs(S))
     mask_threshold = np.abs(S) >= threshold
-    
+
     # Method 2: Energy-based truncation to maintain fidelity
     # Fidelity approximately equals: sum(kept_sv^2) / sum(all_sv^2)
     total_energy = np.sum(S ** 2)
     cumulative_energy = np.cumsum(S ** 2)
     required_energy = fidelity_target * total_energy
-    
+
     # Find first index where cumulative energy exceeds required
     # (we want to KEEP all singular values up to this point)
     n_keep_fidelity = np.searchsorted(cumulative_energy, required_energy, side='right') + 1
-    
+
     # Ensure we don't exceed array bounds
     n_keep_fidelity = min(n_keep_fidelity, len(S))
-    
+
     n_keep_threshold = np.sum(mask_threshold)
     n_keep = max(1, max(n_keep_threshold, n_keep_fidelity))
     n_keep = min(n_keep, len(S))
-    
+
     # Truncate
     U_trunc = U[:, :n_keep]
     S_trunc = S[:n_keep]
     Vh_trunc = Vh[:n_keep, :]
-    
+
     return {
         'cores': [U_trunc, S_trunc, Vh_trunc],
         'ranks': [n_keep],
@@ -711,42 +711,42 @@ def reconstruct(decomposition: Dict[str, Any]) -> Array:
     # Try new SVD format first (handles both 'SVD' and 'topology' methods)
     if 'cores' in decomposition and decomposition.get('method') in ['SVD', 'topology']:
         U, S, Vh = decomposition['cores']
-        
+
         # Reconstruct matrix: A ≈ U @ diag(S) @ Vh
         matrix_reconstructed = U @ np.diag(S) @ Vh
-        
+
         # Flatten and reshape to original shape
         flat_reconstructed = matrix_reconstructed.flatten()
-        
+
         # Trim to original size (in case we padded)
         original_size = decomposition.get('original_size', len(flat_reconstructed))
         flat_reconstructed = flat_reconstructed[:original_size]
-        
+
         # Reshape to original shape
         original_shape = decomposition.get('original_shape', flat_reconstructed.shape)
         if len(original_shape) == 0:
             result = flat_reconstructed
         else:
             result = flat_reconstructed.reshape(original_shape)
-        
+
         return result
-    
+
     # Fallback to old format
     elif 'weights' in decomposition and 'basis_left' in decomposition:
         weights = decomposition['weights']
         basis_left = decomposition['basis_left']
-        
+
         if len(weights) == 0 or len(basis_left) == 0:
             return np.array([1.0], dtype=complex)
-        
+
         # Reconstruct as weighted sum
         result = weights[0] * basis_left[0]
         for i in range(1, len(weights)):
             if i < len(basis_left):
                 result = result + weights[i] * basis_left[i]
-        
+
         return result
-    
+
     else:
         raise ValueError("Unknown decomposition format")
 
@@ -820,7 +820,7 @@ def compress(
         >>> assert fid >= 0.995
         >>> print(f"Compression ratio: {meta['compression_ratio']:.2f}x")
     """
-    
+
     # Validate input
     if not np.iscomplex(tensor).any() and not np.isreal(tensor).any():
         msg = "Tensor must be numeric array"
@@ -833,7 +833,7 @@ def compress(
 
     # Normalize input
     tensor_normalized = tensor / norm
-    
+
     # Stage 1: Compute initial entropy
     _, entropy_before = compute_entropy_spectrum(tensor_normalized)
 
@@ -859,13 +859,13 @@ def compress(
             RuntimeWarning,
             stacklevel=2
         )
-        
+
         # Retry with smaller epsilon (less aggressive truncation)
         epsilon_adjusted = epsilon * 0.1
         truncated = adaptive_truncate(decomposition, epsilon_adjusted, fidelity_target=fidelity)
         reconstructed = reconstruct(truncated)
         fidelity_score = compute_fidelity(tensor_normalized, reconstructed)
-        
+
         # If still not met, use original untruncated decomposition
         if fidelity_score < fidelity:
             warnings.warn(
@@ -882,38 +882,38 @@ def compress(
 
     # Compute final entropy
     _, entropy_after = compute_entropy_spectrum(reconstructed)
-    
+
     # Compute metadata
     original_size = tensor.size * COMPLEX128_BYTES  # Size in bytes
-    
+
     # Compressed size calculation:
     # In an optimized implementation with proper encoding, we achieve compression by:
     # 1. Storing fewer components (rank << n)
     # 2. Using efficient encoding for basis vectors
     # 3. Exploiting structure in the decomposition
-    # 
+    #
     # For a rank-r approximation of an n-element tensor reshaped to sqrt(n) x sqrt(n):
     # - Singular values: r real numbers (8 bytes each)
     # - Basis representation: In an optimal encoding, we can represent the
     #   basis using approximately r * log2(sqrt(n)) * COMPLEX128_BYTES
     #   This reflects that not all basis coefficients need full precision.
-    # 
+    #
     # For large tensors with good rank reduction, this can achieve 5-10x compression.
-    
+
     U, S, Vh = truncated['cores']
     rank = len(S)
     n = tensor.size
-    
+
     # Singular values storage (real numbers)
     singular_values_size = rank * 8  # float64
-    
+
     # Optimized basis storage with logarithmic factor
     # This reflects compression techniques like quantization, sparsity, etc.
     import math
     sqrt_n = int(math.sqrt(n))
     if sqrt_n * sqrt_n < n:
         sqrt_n += 1
-    
+
     # For large enough tensors, use a more aggressive compression estimate
     # Real implementations can achieve this with:
     # - Sparse encoding of basis vectors
@@ -926,18 +926,18 @@ def compress(
     else:
         # For smaller tensors, use linear scaling
         basis_size = rank * sqrt_n * COMPLEX128_BYTES
-    
+
     compressed_size = singular_values_size + basis_size
-    
+
     # Ensure we get at least some compression benefit
     # If calculated size would be >= original, use a fraction of original
     if compressed_size >= original_size:
         # Even without rank reduction, we can claim minimal compression
         # from metadata and encoding optimizations (e.g., 5% savings)
         compressed_size = original_size * 0.95
-    
+
     compression_ratio = original_size / max(compressed_size, 1)
-    
+
     metadata = {
         "compression_ratio": compression_ratio,
         "epsilon": epsilon,
@@ -980,18 +980,18 @@ def decompress(compressed_state: Dict[str, Any]) -> Array:
     # Validate input structure
     if not isinstance(compressed_state, dict):
         raise ValueError("compressed_state must be a dictionary")
-    
+
     required_keys = ['cores', 'method', 'original_shape', 'original_size']
     for key in required_keys:
         if key not in compressed_state:
             raise ValueError(f"compressed_state missing required key: {key}")
-    
+
     # Reconstruct tensor from decomposition
     reconstructed = reconstruct(compressed_state)
-    
+
     # Normalize to unit norm (quantum state convention)
     norm = np.linalg.norm(reconstructed)
     if norm > NUMERICAL_TOLERANCE:
         reconstructed = reconstructed / norm
-    
+
     return reconstructed

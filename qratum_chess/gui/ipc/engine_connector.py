@@ -21,17 +21,13 @@ from typing import Any, Callable
 
 import numpy as np
 
-from qratum_chess.gui.ipc.messaging import (
-    IPCMessage,
-    MessageQueue,
-    MessageRouter,
-    MessageType,
-    create_ah_metrics,
-    create_board_update,
-    create_cortex_heatmap,
-    create_telemetry,
-    create_tree_update,
-)
+from qratum_chess.gui.ipc.messaging import (IPCMessage, MessageQueue,
+                                            MessageRouter, MessageType,
+                                            create_ah_metrics,
+                                            create_board_update,
+                                            create_cortex_heatmap,
+                                            create_telemetry,
+                                            create_tree_update)
 from qratum_chess.gui.ipc.shared_memory import DoubleBuffer, SharedMemoryBridge
 
 

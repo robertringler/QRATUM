@@ -25,7 +25,6 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-
 # ================================================================
 # Graph state space (S)
 # ================================================================
@@ -34,7 +33,7 @@ class TestMPPKGraph:
     """Tests for the graph-based state space."""
 
     def test_add_nodes_and_edges(self):
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, MPPKEdge
+        from quasim.ciir.swarm.mppk import MPPKEdge, MPPKGraph, MPPKNode
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.array([1.0, 2.0])))
         g.add_node(MPPKNode(1, np.array([3.0, 4.0])))
@@ -44,7 +43,7 @@ class TestMPPKGraph:
         assert g.dim == 2
 
     def test_neighbors(self):
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, MPPKEdge
+        from quasim.ciir.swarm.mppk import MPPKEdge, MPPKGraph, MPPKNode
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.zeros(3)))
         g.add_node(MPPKNode(1, np.ones(3)))
@@ -72,7 +71,7 @@ class TestMPPKGraph:
         np.testing.assert_array_equal(X, X_out)
 
     def test_laplacian_is_symmetric(self):
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, MPPKEdge
+        from quasim.ciir.swarm.mppk import MPPKEdge, MPPKGraph, MPPKNode
         g = MPPKGraph()
         for i in range(4):
             g.add_node(MPPKNode(i, np.zeros(2)))
@@ -83,7 +82,7 @@ class TestMPPKGraph:
         np.testing.assert_allclose(L, L.T, atol=1e-12)
 
     def test_laplacian_zero_row_sum(self):
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, MPPKEdge
+        from quasim.ciir.swarm.mppk import MPPKEdge, MPPKGraph, MPPKNode
         g = MPPKGraph()
         for i in range(3):
             g.add_node(MPPKNode(i, np.zeros(2)))
@@ -94,7 +93,7 @@ class TestMPPKGraph:
         np.testing.assert_allclose(row_sums, 0, atol=1e-12)
 
     def test_copy_is_independent(self):
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, MPPKEdge
+        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.array([1.0])))
         g2 = g.copy()
@@ -140,12 +139,13 @@ class TestInteractionRules:
         assert np.all(np.abs(result) <= 1.0)
 
     def test_registry_complete(self):
-        from quasim.ciir.swarm.mppk import INTERACTION_REGISTRY, InteractionType
+        from quasim.ciir.swarm.mppk import (INTERACTION_REGISTRY,
+                                            InteractionType)
         for t in InteractionType:
             assert t in INTERACTION_REGISTRY
 
     def test_default_rule_is_tanh(self):
-        from quasim.ciir.swarm.mppk import make_default_rule, InteractionType
+        from quasim.ciir.swarm.mppk import InteractionType, make_default_rule
         rule = make_default_rule()
         assert rule.interaction_type == InteractionType.TANH
         assert rule.noise_sigma == 0.0
@@ -159,7 +159,7 @@ class TestUpdateOperator:
     """Tests for the update operator implementing the initial kernel."""
 
     def _make_triangle_graph(self, dim=2):
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, MPPKEdge
+        from quasim.ciir.swarm.mppk import MPPKEdge, MPPKGraph, MPPKNode
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.array([1.0, 0.0])))
         g.add_node(MPPKNode(1, np.array([0.0, 1.0])))
@@ -180,9 +180,8 @@ class TestUpdateOperator:
 
     def test_kernel_formula_manual_check(self):
         """Verify x_i(t+1) = x_i(t) + Σ w_ij tanh(x_j - x_i) by hand."""
-        from quasim.ciir.swarm.mppk import (
-            MPPKGraph, MPPKNode, MPPKEdge, UpdateOperator, make_default_rule,
-        )
+        from quasim.ciir.swarm.mppk import (MPPKEdge, MPPKGraph, MPPKNode,
+                                            UpdateOperator, make_default_rule)
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.array([1.0])))
         g.add_node(MPPKNode(1, np.array([3.0])))
@@ -209,10 +208,9 @@ class TestUpdateOperator:
         assert updater.prev_states.shape == (3, 2)
 
     def test_noisy_rule_adds_randomness(self):
-        from quasim.ciir.swarm.mppk import (
-            MPPKGraph, MPPKNode, MPPKEdge, UpdateOperator, MPPKRule,
-            tanh_interaction, InteractionType,
-        )
+        from quasim.ciir.swarm.mppk import (InteractionType, MPPKEdge,
+                                            MPPKGraph, MPPKNode, MPPKRule,
+                                            UpdateOperator, tanh_interaction)
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.zeros(3)))
         g.add_node(MPPKNode(1, np.zeros(3)))
@@ -233,9 +231,8 @@ class TestObservables:
     """Tests for E(t) and P(t) computation."""
 
     def test_energy_nonnegative_positive_weights(self):
-        from quasim.ciir.swarm.mppk import (
-            MPPKGraph, MPPKNode, MPPKEdge, compute_energy,
-        )
+        from quasim.ciir.swarm.mppk import (MPPKEdge, MPPKGraph, MPPKNode,
+                                            compute_energy)
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.array([1.0, 0.0])))
         g.add_node(MPPKNode(1, np.array([0.0, 1.0])))
@@ -244,9 +241,8 @@ class TestObservables:
         assert E >= 0
 
     def test_energy_zero_identical_states(self):
-        from quasim.ciir.swarm.mppk import (
-            MPPKGraph, MPPKNode, MPPKEdge, compute_energy,
-        )
+        from quasim.ciir.swarm.mppk import (MPPKEdge, MPPKGraph, MPPKNode,
+                                            compute_energy)
         g = MPPKGraph()
         s = np.array([2.0, 3.0])
         g.add_node(MPPKNode(0, s.copy()))
@@ -256,9 +252,8 @@ class TestObservables:
 
     def test_energy_formula_manual(self):
         """E = Σ w_ij ||x_i - x_j||²."""
-        from quasim.ciir.swarm.mppk import (
-            MPPKGraph, MPPKNode, MPPKEdge, compute_energy,
-        )
+        from quasim.ciir.swarm.mppk import (MPPKEdge, MPPKGraph, MPPKNode,
+                                            compute_energy)
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.array([0.0])))
         g.add_node(MPPKNode(1, np.array([3.0])))
@@ -267,7 +262,8 @@ class TestObservables:
         assert compute_energy(g) == pytest.approx(18.0)
 
     def test_momentum_zero_without_prev(self):
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, compute_momentum
+        from quasim.ciir.swarm.mppk import (MPPKGraph, MPPKNode,
+                                            compute_momentum)
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.array([1.0, 2.0])))
         P = compute_momentum(g, None)
@@ -275,7 +271,8 @@ class TestObservables:
 
     def test_momentum_formula_manual(self):
         """P = Σ_i (x_i(t) - x_i(t-1))."""
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, compute_momentum
+        from quasim.ciir.swarm.mppk import (MPPKGraph, MPPKNode,
+                                            compute_momentum)
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.array([2.0])))
         g.add_node(MPPKNode(1, np.array([5.0])))
@@ -293,7 +290,7 @@ class TestSimulation:
     """Tests for trajectory simulation."""
 
     def _make_graph(self, n=5, d=3):
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, MPPKEdge
+        from quasim.ciir.swarm.mppk import MPPKEdge, MPPKGraph, MPPKNode
         rng = np.random.default_rng(42)
         g = MPPKGraph()
         for i in range(n):
@@ -304,26 +301,26 @@ class TestSimulation:
         return g
 
     def test_trajectory_length(self):
-        from quasim.ciir.swarm.mppk import simulate, make_default_rule
+        from quasim.ciir.swarm.mppk import make_default_rule, simulate
         g = self._make_graph()
         traj = simulate(g, make_default_rule(), T=50)
         assert traj.T == 51  # initial + 50 steps
 
     def test_trajectory_records_energy(self):
-        from quasim.ciir.swarm.mppk import simulate, make_default_rule
+        from quasim.ciir.swarm.mppk import make_default_rule, simulate
         g = self._make_graph()
         traj = simulate(g, make_default_rule(), T=20)
         assert len(traj.energies) == 21
         assert all(np.isfinite(e) for e in traj.energies)
 
     def test_trajectory_records_momentum(self):
-        from quasim.ciir.swarm.mppk import simulate, make_default_rule
+        from quasim.ciir.swarm.mppk import make_default_rule, simulate
         g = self._make_graph()
         traj = simulate(g, make_default_rule(), T=10)
         assert len(traj.momenta) == 11
 
     def test_trajectory_states_have_correct_shape(self):
-        from quasim.ciir.swarm.mppk import simulate, make_default_rule
+        from quasim.ciir.swarm.mppk import make_default_rule, simulate
         g = self._make_graph(n=8, d=5)
         traj = simulate(g, make_default_rule(), T=10)
         for S in traj.states:
@@ -331,7 +328,7 @@ class TestSimulation:
 
     def test_simulation_bounded_with_tanh(self):
         """tanh kernel should keep dynamics bounded."""
-        from quasim.ciir.swarm.mppk import simulate, make_default_rule
+        from quasim.ciir.swarm.mppk import make_default_rule, simulate
         g = self._make_graph(n=10, d=4)
         traj = simulate(g, make_default_rule(), T=200)
         assert all(n < 1e6 for n in traj.norms)
@@ -346,6 +343,7 @@ class TestStructureExtraction:
 
     def test_fixed_point_detected(self):
         from quasim.ciir.swarm.mppk import Trajectory, extract_structure
+
         # All states identical → fixed point
         s = np.array([[1.0, 0.0], [0.0, 1.0]])
         traj = Trajectory(states=[s] * 20, energies=[1.0] * 20)
@@ -361,6 +359,7 @@ class TestStructureExtraction:
 
     def test_cluster_detection(self):
         from quasim.ciir.swarm.mppk import Trajectory, extract_structure
+
         # Two tight clusters
         cluster_a = np.array([0.0, 0.0])
         cluster_b = np.array([10.0, 10.0])
@@ -375,6 +374,7 @@ class TestStructureExtraction:
 
     def test_chaos_proxy(self):
         from quasim.ciir.swarm.mppk import Trajectory, extract_structure
+
         # Rapidly diverging states → chaotic
         rng = np.random.default_rng(0)
         states = [rng.standard_normal((3, 2)) * (2.0 ** t) for t in range(30)]
@@ -391,9 +391,8 @@ class TestInvariantMining:
     """Tests for conserved quantity and spectral stability detection."""
 
     def test_energy_conservation_detected(self):
-        from quasim.ciir.swarm.mppk import (
-            Trajectory, mine_invariants, MPPKGraph, MPPKNode, MPPKEdge,
-        )
+        from quasim.ciir.swarm.mppk import (MPPKEdge, MPPKGraph, MPPKNode,
+                                            Trajectory, mine_invariants)
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.zeros(2)))
         g.add_node(MPPKNode(1, np.ones(2)))
@@ -409,9 +408,8 @@ class TestInvariantMining:
         assert report.energy_rel_var < 0.01
 
     def test_spectral_gap_positive(self):
-        from quasim.ciir.swarm.mppk import (
-            Trajectory, mine_invariants, MPPKGraph, MPPKNode, MPPKEdge,
-        )
+        from quasim.ciir.swarm.mppk import (MPPKEdge, MPPKGraph, MPPKNode,
+                                            Trajectory, mine_invariants)
         g = MPPKGraph()
         for i in range(4):
             g.add_node(MPPKNode(i, np.zeros(2)))
@@ -425,9 +423,8 @@ class TestInvariantMining:
         assert report.spectral_stable
 
     def test_laplacian_eigenvalues_sorted(self):
-        from quasim.ciir.swarm.mppk import (
-            Trajectory, mine_invariants, MPPKGraph, MPPKNode, MPPKEdge,
-        )
+        from quasim.ciir.swarm.mppk import (MPPKEdge, MPPKGraph, MPPKNode,
+                                            Trajectory, mine_invariants)
         g = MPPKGraph()
         for i in range(5):
             g.add_node(MPPKNode(i, np.zeros(3)))
@@ -448,10 +445,10 @@ class TestFitnessEvaluation:
     """Tests for the fitness function."""
 
     def test_fitness_in_unit_interval(self):
-        from quasim.ciir.swarm.mppk import (
-            evaluate_fitness, Trajectory, StructureReport, InvariantReport,
-            make_default_rule, MPPKGraph, MPPKNode,
-        )
+        from quasim.ciir.swarm.mppk import (InvariantReport, MPPKGraph,
+                                            MPPKNode, StructureReport,
+                                            Trajectory, evaluate_fitness,
+                                            make_default_rule)
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.zeros(2)))
         traj = Trajectory(
@@ -469,10 +466,10 @@ class TestFitnessEvaluation:
         assert 0 <= f.compressibility <= 1
 
     def test_divergent_trajectory_penalized(self):
-        from quasim.ciir.swarm.mppk import (
-            evaluate_fitness, Trajectory, StructureReport, InvariantReport,
-            make_default_rule, MPPKGraph, MPPKNode,
-        )
+        from quasim.ciir.swarm.mppk import (InvariantReport, MPPKGraph,
+                                            MPPKNode, StructureReport,
+                                            Trajectory, evaluate_fitness,
+                                            make_default_rule)
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.zeros(2)))
         traj = Trajectory(norms=[1e7])  # Divergent
@@ -482,10 +479,10 @@ class TestFitnessEvaluation:
         assert f.boundedness == 0.0
 
     def test_more_structure_higher_fitness(self):
-        from quasim.ciir.swarm.mppk import (
-            evaluate_fitness, Trajectory, StructureReport, InvariantReport,
-            make_default_rule, MPPKGraph, MPPKNode,
-        )
+        from quasim.ciir.swarm.mppk import (InvariantReport, MPPKGraph,
+                                            MPPKNode, StructureReport,
+                                            Trajectory, evaluate_fitness,
+                                            make_default_rule)
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.zeros(2)))
         traj = Trajectory(norms=[1.0] * 10, energies=[1.0] * 10)
@@ -507,7 +504,7 @@ class TestRuleMutation:
     """Tests for all 5 mutation strategies."""
 
     def _make_graph(self):
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, MPPKEdge
+        from quasim.ciir.swarm.mppk import MPPKEdge, MPPKGraph, MPPKNode
         g = MPPKGraph()
         for i in range(4):
             g.add_node(MPPKNode(i, np.random.randn(3)))
@@ -669,9 +666,8 @@ class TestOptionalExtensions:
         assert pn.state.shape == (2,)
 
     def test_adaptive_rewire(self):
-        from quasim.ciir.swarm.mppk import (
-            MPPKGraph, MPPKNode, MPPKEdge, adaptive_rewire,
-        )
+        from quasim.ciir.swarm.mppk import (MPPKEdge, MPPKGraph, MPPKNode,
+                                            adaptive_rewire)
         g = MPPKGraph()
         # Two close nodes + one far node
         g.add_node(MPPKNode(0, np.array([0.0, 0.0])))
@@ -739,9 +735,8 @@ class TestDimensionalConsistency:
     """Verify dimensional consistency across all operations."""
 
     def test_state_dim_preserved_through_update(self):
-        from quasim.ciir.swarm.mppk import (
-            MPPKGraph, MPPKNode, MPPKEdge, UpdateOperator, make_default_rule,
-        )
+        from quasim.ciir.swarm.mppk import (MPPKEdge, MPPKGraph, MPPKNode,
+                                            UpdateOperator, make_default_rule)
         g = MPPKGraph()
         d = 5
         for i in range(4):
@@ -753,9 +748,8 @@ class TestDimensionalConsistency:
             assert n.state.shape == (d,)
 
     def test_energy_is_scalar(self):
-        from quasim.ciir.swarm.mppk import (
-            MPPKGraph, MPPKNode, MPPKEdge, compute_energy,
-        )
+        from quasim.ciir.swarm.mppk import (MPPKEdge, MPPKGraph, MPPKNode,
+                                            compute_energy)
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.zeros(7)))
         g.add_node(MPPKNode(1, np.ones(7)))
@@ -764,7 +758,8 @@ class TestDimensionalConsistency:
         assert isinstance(E, float)
 
     def test_momentum_dim_matches_state(self):
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, compute_momentum
+        from quasim.ciir.swarm.mppk import (MPPKGraph, MPPKNode,
+                                            compute_momentum)
         d = 6
         g = MPPKGraph()
         g.add_node(MPPKNode(0, np.ones(d)))
@@ -773,7 +768,7 @@ class TestDimensionalConsistency:
         assert P.shape == (d,)
 
     def test_laplacian_shape_matches_nodes(self):
-        from quasim.ciir.swarm.mppk import MPPKGraph, MPPKNode, MPPKEdge
+        from quasim.ciir.swarm.mppk import MPPKEdge, MPPKGraph, MPPKNode
         n = 7
         g = MPPKGraph()
         for i in range(n):

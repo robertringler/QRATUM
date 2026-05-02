@@ -23,10 +23,8 @@ from typing import Iterable, Mapping
 
 import numpy as np
 
-from qagents.control_geometry.embedding import (
-    DisplacementCache,
-    action_to_displacement,
-)
+from qagents.control_geometry.embedding import (DisplacementCache,
+                                                action_to_displacement)
 from qagents.control_geometry.sensitivity import DEFAULT_EPS
 from qagents.mvri.action_space import Action
 from qagents.mvri.constraint_gate import constraint_gate

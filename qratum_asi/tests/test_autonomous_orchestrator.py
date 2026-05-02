@@ -11,14 +11,11 @@ Validates the autonomous discovery monitoring and reinjection system including:
 
 import pytest
 
-from qratum_asi.reinjection import (
-    ArtifactSensitivity,
-    AutonomousReinjectionOrchestrator,
-    DiscoveryArtifact,
-    DiscoveryDomain,
-    PropagationTarget,
-    ReinjectionStatusSummary,
-)
+from qratum_asi.reinjection import (ArtifactSensitivity,
+                                    AutonomousReinjectionOrchestrator,
+                                    DiscoveryArtifact, DiscoveryDomain,
+                                    PropagationTarget,
+                                    ReinjectionStatusSummary)
 
 
 class TestDiscoveryArtifact:
