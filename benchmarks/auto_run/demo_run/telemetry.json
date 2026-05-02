@@ -1,0 +1,102 @@
+{
+  "current": {
+    "node_density": {},
+    "time_distribution": {
+      "count": 1,
+      "min": 5984.8637479999525,
+      "max": 5984.8637479999525,
+      "mean": 5984.8637479999525,
+      "median": 5984.8637479999525,
+      "p95": 5984.8637479999525,
+      "p99": 5984.8637479999525,
+      "histogram": {
+        "bin_edges": [
+          5984.8637479999525,
+          5985.8637479999525,
+          5986.8637479999525,
+          5987.8637479999525,
+          5988.8637479999525,
+          5989.8637479999525,
+          5990.8637479999525,
+          5991.8637479999525,
+          5992.8637479999525,
+          5993.8637479999525,
+          5994.8637479999525,
+          5995.8637479999525,
+          5996.8637479999525,
+          5997.8637479999525,
+          5998.8637479999525,
+          5999.8637479999525,
+          6000.8637479999525,
+          6001.8637479999525,
+          6002.8637479999525,
+          6003.8637479999525,
+          6004.8637479999525
+        ],
+        "counts": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "bin_width": 1
+      },
+      "timestamp": 1767102242.9149566
+    },
+    "neural_drift": {
+      "error": "No drift data recorded"
+    },
+    "branching_entropy": {
+      "entropy_values": [
+        0.0
+      ],
+      "mean_entropy": 0.0,
+      "trend_slope": 0,
+      "is_stabilizing": false,
+      "timestamp": 1767102242.9149678
+    },
+    "elo_confidence": {
+      "error": "No Elo data recorded"
+    },
+    "cortex_activations": [
+      {
+        "tactical": 0.6,
+        "strategic": 0.3,
+        "conceptual": 0.1,
+        "timestamp": 1767102236.379193
+      }
+    ],
+    "novelty_pressure": [
+      0.45
+    ],
+    "move_divergence": [
+      {
+        "position": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "selected_move": "h2h3",
+        "engine_move": "e2e4",
+        "divergence": 0.65,
+        "timestamp": 1767102236.3795443
+      }
+    ],
+    "pattern_inventions": [],
+    "abstraction_signals": []
+  },
+  "history_count": 0,
+  "export_timestamp": 1767102242.9149716
+}

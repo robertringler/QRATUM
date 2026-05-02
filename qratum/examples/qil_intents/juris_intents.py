@@ -6,7 +6,6 @@ Example intents for legal contract analysis, reasoning, and compliance.
 
 from qratum.platform import PlatformIntent
 
-
 # Example 1: Contract Risk Analysis
 contract_analysis_intent = PlatformIntent(
     vertical="JURIS",
@@ -123,11 +122,11 @@ ma_contract_intent = PlatformIntent(
 
 def print_intent_examples():
     """Print all example intents"""
-    
+
     print("JURIS (Legal AI) - QIL Intent Examples")
     print("=" * 80)
     print()
-    
+
     examples = [
         ("Contract Risk Analysis", contract_analysis_intent),
         ("Legal Reasoning (IRAC)", legal_reasoning_intent),
@@ -135,7 +134,7 @@ def print_intent_examples():
         ("Compliance Check", compliance_check_intent),
         ("M&A Contract Analysis", ma_contract_intent),
     ]
-    
+
     for name, intent in examples:
         print(f"\n{name}")
         print("-" * 80)

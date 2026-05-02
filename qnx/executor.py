@@ -16,7 +16,7 @@ from qnx.core import QNXSubstrate
 
 class QNXExecutor:
     """High-level executor interface for quantum/classical execution.
-    
+
     Delegates to the existing QNXSubstrate for actual task execution,
     providing a clean separation between executor API and substrate implementation.
     """
@@ -27,12 +27,12 @@ class QNXExecutor:
 
     def dispatch(self, task: Any) -> Any:
         """Dispatch a task for execution.
-        
+
         Delegates to the substrate's run_simulation() method.
-        
+
         Args:
             task: Task configuration to execute
-            
+
         Returns:
             Result from substrate execution
         """

@@ -1,0 +1,493 @@
+# SEER-Medicare Treatment Code Mappings
+#
+# IMPORTANT DISCLAIMER:
+# These mappings are NOT clinically authoritative.
+# They are starting points that REQUIRE validation by domain experts.
+# Users should review, extend, and validate mappings for their specific study.
+#
+# Format:
+#   - code: Medical code (CPT, HCPCS, NDC, etc.)
+#   - code_system: Code system (cpt, hcpcs, ndc, icd10_px, etc.)
+#   - treatment_type: Category (surgery, radiation, chemo_admin, chemo_drug, immunotherapy, targeted)
+#   - drug_name: Drug name if applicable
+#   - description: Human-readable description
+#   - confidence: Confidence level (0.0-1.0)
+#
+# Treatment Types:
+#   - surgery: Surgical procedures
+#   - radiation: Radiation therapy
+#   - chemo_admin: Chemotherapy administration (not specific drugs)
+#   - chemo_drug: Specific chemotherapy drugs
+#   - immunotherapy: Immune checkpoint inhibitors, etc.
+#   - targeted: Targeted therapy agents
+#
+# To extend: Add new mappings to this file or create additional YAML files
+
+mappings:
+  # ============================================
+  # CHEMOTHERAPY ADMINISTRATION (CPT)
+  # ============================================
+  - code: "96413"
+    code_system: "cpt"
+    treatment_type: "chemo_admin"
+    drug_name: ""
+    description: "Chemo admin IV infusion first hour"
+    confidence: 0.9
+
+  - code: "96415"
+    code_system: "cpt"
+    treatment_type: "chemo_admin"
+    drug_name: ""
+    description: "Chemo admin IV infusion add-on"
+    confidence: 0.9
+
+  - code: "96416"
+    code_system: "cpt"
+    treatment_type: "chemo_admin"
+    drug_name: ""
+    description: "Chemo admin IV prolonged infusion"
+    confidence: 0.9
+
+  - code: "96417"
+    code_system: "cpt"
+    treatment_type: "chemo_admin"
+    drug_name: ""
+    description: "Chemo admin IV infusion each additional"
+    confidence: 0.9
+
+  - code: "96401"
+    code_system: "cpt"
+    treatment_type: "chemo_admin"
+    drug_name: ""
+    description: "Chemo admin subcut/IM non-hormonal"
+    confidence: 0.9
+
+  - code: "96402"
+    code_system: "cpt"
+    treatment_type: "chemo_admin"
+    drug_name: ""
+    description: "Chemo admin subcut/IM hormonal"
+    confidence: 0.9
+
+  - code: "96409"
+    code_system: "cpt"
+    treatment_type: "chemo_admin"
+    drug_name: ""
+    description: "Chemo admin IV push single drug"
+    confidence: 0.9
+
+  - code: "96411"
+    code_system: "cpt"
+    treatment_type: "chemo_admin"
+    drug_name: ""
+    description: "Chemo admin IV push additional drug"
+    confidence: 0.9
+
+  # ============================================
+  # RADIATION THERAPY (CPT)
+  # ============================================
+  - code: "77385"
+    code_system: "cpt"
+    treatment_type: "radiation"
+    drug_name: ""
+    description: "IMRT simple"
+    confidence: 0.9
+
+  - code: "77386"
+    code_system: "cpt"
+    treatment_type: "radiation"
+    drug_name: ""
+    description: "IMRT complex"
+    confidence: 0.9
+
+  - code: "77401"
+    code_system: "cpt"
+    treatment_type: "radiation"
+    drug_name: ""
+    description: "Radiation treatment delivery superficial"
+    confidence: 0.9
+
+  - code: "77402"
+    code_system: "cpt"
+    treatment_type: "radiation"
+    drug_name: ""
+    description: "Radiation treatment delivery MV"
+    confidence: 0.9
+
+  - code: "77407"
+    code_system: "cpt"
+    treatment_type: "radiation"
+    drug_name: ""
+    description: "Radiation treatment intermediate"
+    confidence: 0.9
+
+  - code: "77412"
+    code_system: "cpt"
+    treatment_type: "radiation"
+    drug_name: ""
+    description: "Radiation treatment complex"
+    confidence: 0.9
+
+  - code: "77427"
+    code_system: "cpt"
+    treatment_type: "radiation"
+    drug_name: ""
+    description: "Radiation treatment management weekly"
+    confidence: 0.9
+
+  - code: "77520"
+    code_system: "cpt"
+    treatment_type: "radiation"
+    drug_name: ""
+    description: "Proton treatment simple"
+    confidence: 0.9
+
+  - code: "77522"
+    code_system: "cpt"
+    treatment_type: "radiation"
+    drug_name: ""
+    description: "Proton treatment simple complex"
+    confidence: 0.9
+
+  - code: "77523"
+    code_system: "cpt"
+    treatment_type: "radiation"
+    drug_name: ""
+    description: "Proton treatment intermediate"
+    confidence: 0.9
+
+  - code: "77525"
+    code_system: "cpt"
+    treatment_type: "radiation"
+    drug_name: ""
+    description: "Proton treatment complex"
+    confidence: 0.9
+
+  # ============================================
+  # SURGERY - LUNG (CPT)
+  # ============================================
+  - code: "32480"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Lobectomy"
+    confidence: 0.9
+
+  - code: "32482"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Bilobectomy"
+    confidence: 0.9
+
+  - code: "32440"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Pneumonectomy total"
+    confidence: 0.9
+
+  - code: "32442"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Pneumonectomy extrapleural"
+    confidence: 0.9
+
+  - code: "32663"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "VATS lobectomy"
+    confidence: 0.9
+
+  - code: "32666"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "VATS wedge resection"
+    confidence: 0.9
+
+  - code: "32505"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Wedge resection lung"
+    confidence: 0.9
+
+  # ============================================
+  # SURGERY - BREAST (CPT)
+  # ============================================
+  - code: "19301"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Mastectomy partial"
+    confidence: 0.9
+
+  - code: "19303"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Mastectomy simple complete"
+    confidence: 0.9
+
+  - code: "19305"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Mastectomy radical"
+    confidence: 0.9
+
+  - code: "19307"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Mastectomy modified radical"
+    confidence: 0.9
+
+  # ============================================
+  # SURGERY - COLORECTAL (CPT)
+  # ============================================
+  - code: "44140"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Colectomy partial with anastomosis"
+    confidence: 0.9
+
+  - code: "44145"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Colectomy partial with coloproctostomy"
+    confidence: 0.9
+
+  - code: "44150"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Colectomy total abdominal"
+    confidence: 0.9
+
+  - code: "44204"
+    code_system: "cpt"
+    treatment_type: "surgery"
+    drug_name: ""
+    description: "Laparoscopic colectomy partial"
+    confidence: 0.9
+
+  # ============================================
+  # IMMUNOTHERAPY (HCPCS J-CODES)
+  # ============================================
+  - code: "J9271"
+    code_system: "hcpcs"
+    treatment_type: "immunotherapy"
+    drug_name: "pembrolizumab"
+    description: "Pembrolizumab 1mg"
+    confidence: 0.9
+
+  - code: "J9228"
+    code_system: "hcpcs"
+    treatment_type: "immunotherapy"
+    drug_name: "ipilimumab"
+    description: "Ipilimumab 1mg"
+    confidence: 0.9
+
+  - code: "J9299"
+    code_system: "hcpcs"
+    treatment_type: "immunotherapy"
+    drug_name: "nivolumab"
+    description: "Nivolumab 1mg"
+    confidence: 0.9
+
+  - code: "J9173"
+    code_system: "hcpcs"
+    treatment_type: "immunotherapy"
+    drug_name: "durvalumab"
+    description: "Durvalumab 10mg"
+    confidence: 0.9
+
+  - code: "J9023"
+    code_system: "hcpcs"
+    treatment_type: "immunotherapy"
+    drug_name: "atezolizumab"
+    description: "Atezolizumab 10mg"
+    confidence: 0.9
+
+  - code: "J9030"
+    code_system: "hcpcs"
+    treatment_type: "immunotherapy"
+    drug_name: "avelumab"
+    description: "Avelumab 10mg"
+    confidence: 0.9
+
+  # ============================================
+  # CHEMOTHERAPY DRUGS (HCPCS J-CODES)
+  # ============================================
+  - code: "J9305"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "pemetrexed"
+    description: "Pemetrexed 10mg"
+    confidence: 0.85
+
+  - code: "J9045"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "carboplatin"
+    description: "Carboplatin 50mg"
+    confidence: 0.85
+
+  - code: "J9267"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "paclitaxel"
+    description: "Paclitaxel 1mg"
+    confidence: 0.85
+
+  - code: "J9060"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "cisplatin"
+    description: "Cisplatin 10mg"
+    confidence: 0.85
+
+  - code: "J9190"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "fluorouracil"
+    description: "Fluorouracil 500mg"
+    confidence: 0.85
+
+  - code: "J9206"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "irinotecan"
+    description: "Irinotecan 20mg"
+    confidence: 0.85
+
+  - code: "J9263"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "oxaliplatin"
+    description: "Oxaliplatin 0.5mg"
+    confidence: 0.85
+
+  - code: "J9355"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "trastuzumab"
+    description: "Trastuzumab 10mg"
+    confidence: 0.85
+
+  - code: "J9035"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "bevacizumab"
+    description: "Bevacizumab 10mg"
+    confidence: 0.85
+
+  - code: "J9041"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "bortezomib"
+    description: "Bortezomib 0.1mg"
+    confidence: 0.85
+
+  - code: "J9070"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "cyclophosphamide"
+    description: "Cyclophosphamide 100mg"
+    confidence: 0.85
+
+  - code: "J9171"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "docetaxel"
+    description: "Docetaxel 1mg"
+    confidence: 0.85
+
+  - code: "J9181"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "etoposide"
+    description: "Etoposide 10mg"
+    confidence: 0.85
+
+  - code: "J9201"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "gemcitabine"
+    description: "Gemcitabine 200mg"
+    confidence: 0.85
+
+  - code: "J9310"
+    code_system: "hcpcs"
+    treatment_type: "chemo_drug"
+    drug_name: "rituximab"
+    description: "Rituximab 100mg"
+    confidence: 0.85
+
+  # ============================================
+  # TARGETED THERAPY (HCPCS J-CODES)
+  # ============================================
+  - code: "J9042"
+    code_system: "hcpcs"
+    treatment_type: "targeted"
+    drug_name: "brentuximab"
+    description: "Brentuximab vedotin 1mg"
+    confidence: 0.85
+
+  - code: "J9034"
+    code_system: "hcpcs"
+    treatment_type: "targeted"
+    drug_name: "bendamustine"
+    description: "Bendamustine 1mg"
+    confidence: 0.85
+
+  - code: "J9301"
+    code_system: "hcpcs"
+    treatment_type: "targeted"
+    drug_name: "obinutuzumab"
+    description: "Obinutuzumab 10mg"
+    confidence: 0.85
+
+  - code: "J9303"
+    code_system: "hcpcs"
+    treatment_type: "targeted"
+    drug_name: "panitumumab"
+    description: "Panitumumab 10mg"
+    confidence: 0.85
+
+  - code: "J9055"
+    code_system: "hcpcs"
+    treatment_type: "targeted"
+    drug_name: "cetuximab"
+    description: "Cetuximab 10mg"
+    confidence: 0.85
+
+  # ============================================
+  # HORMONAL THERAPY (HCPCS)
+  # ============================================
+  - code: "J9217"
+    code_system: "hcpcs"
+    treatment_type: "hormonal"
+    drug_name: "leuprolide"
+    description: "Leuprolide acetate 3.75mg"
+    confidence: 0.85
+
+  - code: "J9218"
+    code_system: "hcpcs"
+    treatment_type: "hormonal"
+    drug_name: "leuprolide"
+    description: "Leuprolide acetate 7.5mg"
+    confidence: 0.85
+
+  - code: "J9202"
+    code_system: "hcpcs"
+    treatment_type: "hormonal"
+    drug_name: "goserelin"
+    description: "Goserelin acetate 3.6mg"
+    confidence: 0.85

@@ -9,9 +9,9 @@ Status: Production
 
 from __future__ import annotations
 
+from .edges import EdgeType, HyperEdge
+from .hypergraph import GraphBuilder, HyperGraph
 from .vertices import Vertex, VertexType
-from .edges import HyperEdge, EdgeType
-from .hypergraph import HyperGraph, GraphBuilder
 
 __all__ = [
     "Vertex",
