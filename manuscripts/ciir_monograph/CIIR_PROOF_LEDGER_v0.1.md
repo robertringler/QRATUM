@@ -120,7 +120,7 @@ File: `ch05_algebraic_structure.tex`. Counts: 12 definitions, 8 lemmas, 5 propos
 | Ch5.L02 | 199 | Lem  | Self-Adjoint Part                                           | PROVED  | L207–L216 | |
 | Ch5.D04 | 227 | Def  | Holonomy Tensor                                             | EMPIRICAL | n/a   | Pulled back from Levi-Civita. |
 | Ch5.L03 | 243 | Lem  | Antisymmetry of the Holonomy Tensor                         | PROVED  | L248–L255 | Std. |
-| Ch5.D05 | 257 | Def  | Effective Planck Constant                                   | EMPIRICAL | n/a   | $\hbar_{\mathrm{eff}}$ is *defined* via curvature-based scaling — load-bearing in Ch5.T1. |
+| Ch5.D05 | 257 | Def  | Effective Planck Constant                                   | NORMALIZATION-DECLARED | L257–L271 + Prop~5.1.normalization + Rem~5.2.scope | Phase 2.4 closed G-M3: Prop 5.1.normalization establishes well-definedness/range/dimensional-consistency/classical-limit-consistency from Ax 4.2 + Ax 4.4 + Def 3.6/3.8; Rem 5.2.scope explicitly declares D5.5 as a per-system normalization choice with free-parameter status for systems where the curvature-integral form is unmotivated. See §7.4. |
 | Ch5.D06 | 285 | Def  | Holonomy Operator                                           | EMPIRICAL | n/a   | |
 | Ch5.T1  | 299 | Thm  | Commutation Relations $[\hat C_i,\hat C_j]=i\hbar_{\mathrm{eff}}\hat\Omega_{ij}$ | DERIVED | L325–L389 | Holds *given* the parallel-transport / Levi-Civita ID + Ax 4.4. |
 | Ch5.C1  | 391 | Cor  | Lie Algebra Structure                                       | PROVED  | L407–L414 | From T1. |
@@ -128,7 +128,7 @@ File: `ch05_algebraic_structure.tex`. Counts: 12 definitions, 8 lemmas, 5 propos
 | Ch5.L04 | 432 | Lem  | Well-Definedness of $\hat H_C$                              | DERIVED | L446–L473 | Uses Ax 4.2 + Ax 4.4. |
 | Ch5.P02 | 475 | Prop | Spectral Properties of $\hat H_C$                           | DERIVED | L491–L500 | |
 | Ch5.D08 | 502 | Def  | Constraint Vacuum                                           | EMPIRICAL | n/a   | |
-| Ch5.L05 | 511 | Lem  | Uniqueness of the Constraint Vacuum                         | DERIVED (cond.) | L519–L534 | **Conditional on irreducibility of $\CK(\HC)$** — irreducibility itself is *not* established as a property of every CIIR system. → flag as G-L3 partial. |
+| Ch5.L05 | 511 | Lem  | Uniqueness of the Constraint Vacuum (Conditional on Irreducibility of $\CK(\HC)$) | DERIVED (cond.) | L519–L534 + Rem~5.5.scope | Phase 2.5 closed G-L3: header now explicitly states the irreducibility condition; Rem 5.5.scope documents the structural status of irreducibility (not an axiom, not universally provable; sector decomposition supplies the unconditional fallback). See §7.5. |
 | Ch5.D09 | 543 | Def  | State Functional $\omega_\rho(A):=\Tr(\rho A)$              | EMPIRICAL | n/a   | **Critical:** this definition is what Theorem 8.2 later "derives" the Born rule from. The Born rule's content is encoded *here*, before the Born derivation is stated. See G-L1. |
 | Ch5.L06 | 556 | Lem  | Properties of the State Functional                          | PROVED  | L573–L584 | Positivity + normalization, std. |
 | Ch5.D10 | 586 | Def  | GNS Triple                                                  | PROVED  | std (GNS) | |
@@ -215,7 +215,7 @@ File: `ch07_dynamics.tex`. Counts: 17 definitions, 6 lemmas, 5 propositions, 7 t
 | Ch7.D06 | 646 | Def  | Constraint Equilibrium                             | EMPIRICAL | n/a   | |
 | Ch7.D07 | 653 | Def  | Effective Temperature                              | EMPIRICAL | n/a   | |
 | Ch7.D08 | 667 | Def  | Constraint Gibbs State                             | EMPIRICAL | n/a   | |
-| **Ch7.T4** | 678 | Thm  | **Existence and Structure of Equilibrium States**  | **OPEN G-S3** | L699–L754 | Hypothesis: `dim H_X = d < ∞`. Existence proof uses Schauder–Tychonoff on compact $\mathfrak D(\HC)$; infinite-dim $\mathfrak D$ is **not** norm-compact, so the proof method does not extend. Sub-claim (iii) Uniqueness requires irreducibility of $\CK(\HC)$ — itself not guaranteed. → also G-L3. |
+| **Ch7.T4** | 678 | Thm  | **Existence and Structure of Equilibrium States**  | **OPEN G-S3** | L699–L754 | Hypothesis: `dim H_X = d < ∞`. Existence proof uses Schauder–Tychonoff on compact $\mathfrak D(\HC)$; infinite-dim $\mathfrak D$ is **not** norm-compact, so the proof method does not extend. Sub-claim (iii) **closed G-L3 in Phase 2.5** — sub-claim header now explicitly states "Conditional uniqueness given irreducibility of $\CK(\HC)$"; forward-pointer to `Remark~\ref{rem:5.5.scope}` documents the closure path; sector-decomposed (iv) supplies the unconditional fallback. Outer G-S3 (infinite-dim existence) remains open. See §7.5. |
 | Ch7.P1  | 756 | Prop | Approach to Equilibrium                            | DERIVED | L771–L784 | Uses spectral gap of $\CL$; finite-dim only (inherits G-S2/3). |
 | Ch7.D09 | 791 | Def  | Von Neumann Entropy                                | EMPIRICAL | n/a   | |
 | Ch7.D10 | 802 | Def  | Constraint Entropy                                 | EMPIRICAL | n/a   | |
@@ -426,7 +426,7 @@ either incomplete or circular.
 |-------|-----------|--------------|------------------|
 | **G-L1** | Ch8.T2, Ch8.C1, Ch8.T3, Ch6.P3 | circular derivation | Born rule "derived" from `ω_ρ(A):=Tr(ρA)` (Ch5.D09) which already encodes the Born rule. Genuine independence (Gleason's theorem, dim≥3) is not invoked. |
 | **G-L2** | Ch4.T3 | proof outline only | Sufficiency theorem has only `\begin{proof}[Proof outline]`. Closure is deferred to chapters 5–8 in prose form; no formal QED. |
-| **G-L3** | Ch5.L05, Ch7.T4(iii) | unsupported irreducibility hypothesis | "Uniqueness of constraint vacuum / equilibrium" assumes $\CK(\HC)$ acts irreducibly. Irreducibility is *not* proved as a property of every CIIR system, nor classified as an axiom. |
+| **G-L3** | Ch5.L05, Ch7.T4(iii) | ~~unsupported irreducibility hypothesis~~ | ~~"Uniqueness of constraint vacuum / equilibrium" assumes $\CK(\HC)$ acts irreducibly. Irreducibility is *not* proved as a property of every CIIR system, nor classified as an axiom.~~ **Closed in Phase 2.5 along closure path of §5.5:** L5.5 retitled "Uniqueness of the Constraint Vacuum (Conditional on Irreducibility of $\CK(\HC)$)"; T7.4(iii) sub-claim header retitled "Conditional uniqueness given irreducibility of $\CK(\HC)$"; new `Remark~\ref{rem:5.5.scope}` documents the structural status of irreducibility, the unconditional sector-decomposed fallback (L5.5 body + T7.4(iv)), and the closure rationale. See §7.5. |
 | **G-L4** | Ch5.L08 | non-quantitative quantitative bound | Entanglement-curvature bound is asserted; proof gives only a one-sided inequality without tightness. The classical-limit invocation of $\hbar_{\mathrm{eff}}\to 0$ in Ch8.P3 then depends on this being a *parameter* of the system, but Ch5.D05 *defines* it. |
 | **G-L5** | Ch5.T4, Ch7.P2 | asymptotic without rate | "Classical emergence via decoherence" / "decoherence under CIIR" — asymptotic assertions with no convergence rate, no preferred-basis selection rate. Standard einselection-style argument is invoked but not mechanized. |
 | **G-L6** | Ch7.T1 | derivation-by-positing | ~~"Derivation of the CIIR Master Equation" — but the Lindblad operators are *posited* in Ch7.D02 as "constraint Lindblad operators". The theorem verifies consistency, not first-principle derivation.~~ **Closed in Phase 2.3 along path (b) of §5.3:** Ch7.T1 retitled to "Construction of a Lindblad-form Generator Compatible with CIIR"; the construction-vs-derivation distinction is now explicit in the theorem statement (D3 = posit, D5 = constrained uniqueness) and in `Remark~\ref{rem:7.1.scope}`. See §7.3. |
@@ -441,7 +441,7 @@ definitions or axioms) but never discharges.
 |-------|--------|------------------------------|
 | **G-M1** | Ax 4.4 | A *constructive* example of a CIIR system with $\dim\HC = \exp(\kappa_{\max}\,\mathrm{vol}\CM)$ — the exponential is asserted as an upper bound but no instance is shown to *saturate* it; without this the axiom is informationally vacuous as a tight quantitative statement. |
 | **G-M2** | Ax 4.3 (IC1) | Uniqueness of $\Phi$ "up to unitary on $\HC$" is stated; no example showing the unitary class is non-trivial. |
-| **G-M3** | Ch5.D05 | "Effective Planck constant" is introduced as a curvature scaling; no proof that the resulting constant is dimensionally and physically consistent across all CIIR systems (vs. a free parameter). |
+| **G-M3** | Ch5.D05 | ~~"Effective Planck constant" is introduced as a curvature scaling; no proof that the resulting constant is dimensionally and physically consistent across all CIIR systems (vs. a free parameter).~~ **Closed in Phase 2.4 along closure path of §5.4 (both options jointly):** new `Proposition~\ref{prop:5.1.normalization}` ("Normalization of $\hbar_{\mathrm{eff}}$") establishes well-definedness, range, dimensional consistency, and classical-limit consistency from Ax 4.2 + Ax 4.4 + Def 3.6/3.8; new `Remark~\ref{rem:5.2.scope}` declares D5.5 to be a per-system normalization choice and documents free-parameter status for systems where the curvature-integral form is unmotivated. See §7.4. |
 | **G-M4** | Ch7.D02 | ~~"Constraint Lindblad operators" are *defined* by a particular formula; no proof that they are the unique microscopically-derived operators (this is also G-L6).~~ **Closed in Phase 2.3 along path (b) of §5.3:** Definition 7.2 is unchanged, but the role it plays in Theorem 7.1 is now explicitly that of a modeling posit (step D3), not a derived identity. The "uniqueness" claim of Lemma 7.5 is now a constrained-uniqueness result (given the D3 posit). See §7.3. |
 | **G-M5** | Ch3.D19 | Interface map $\Phi$ is required to be CPTP and to satisfy push-forward over $\CA$. No proof that the constraints (I1)+(I2)+push-forward are jointly satisfiable for *every* triple $(\CR,\CM,\HC)$ admitted by ch03. Existence is reduced to Ax 4.3 — i.e., to an axiom — rather than constructed. |
 
@@ -930,4 +930,204 @@ is made about gaps not listed here.
   Priority-2 deliverables are (i) §5.4 G-M3 (effective Planck
   constant normalization theorem in Ch5.D05), and (ii) §5.5
   G-L3 (irreducibility of $\CK(\HC)$ in Ch5.L05 + Ch7.T4(iii)).
+
+### 7.4 Closure of G-M3 (Ch5.D5.5 — Effective Planck constant normalization)
+
+- **Status:** closed by closure path of §5.4 (both options adopted
+  jointly): a normalization theorem for the curvature-integral form,
+  *and* an explicit declaration of free-per-system-parameter status.
+
+- **Reconstruction of the gap.** Definition 5.5 introduces
+  $\hbar_{\mathrm{eff}} := 1/(\kappa_{\max}\cdot\mathrm{vol}(\CM))$
+  (with the boundary case $\hbar_{\mathrm{eff}} = 0$ when
+  $\mathrm{vol}(\CM) = \infty$ per Axiom 4.4 HR2), but the *status*
+  of this formula in CIIR is not stated:
+  - It is not labelled a theorem with explicit hypotheses
+    establishing well-definedness, dimensional consistency, or
+    cross-system applicability;
+  - it is not classified as a per-system free parameter, leaving
+    the reader to assume universality across all CIIR systems
+    in the manner of Planck's $\hbar$;
+  - downstream load-bearing uses (Theorem 5.1 commutation
+    relations; Definition 7.2 dissipation rates; Theorem 7.1
+    master equation; Proposition 8.3 classical limit) inherit
+    this ambiguity.
+
+  The ledger registered this as G-M3 with the §5.4 closure path
+  offering two non-exclusive options: (i) prove a normalization
+  theorem, or (ii) declare $\hbar_{\mathrm{eff}}$ a free
+  per-system parameter.
+
+- **Failure-type classification.** Semantic under-specification at
+  the level of definition status: the *content* of D5.5 is fine,
+  but its *role* in the formal hierarchy is left implicit.
+  Closure is therefore an additive exercise (add a Proposition + a
+  scope Remark) rather than a re-proof.
+
+- **Closure decision.** Adopt **both** options jointly. The
+  curvature-integral form admits a clean normalization theorem
+  (Proposition 5.1.normalization) directly from existing axioms
+  (Ax 4.2 + Ax 4.4) and existing definitions (Def 3.6/3.8), so
+  there is no reason not to state it. Independently, the explicit
+  free-per-system-parameter declaration ensures that downstream
+  results which only require $\hbar_{\mathrm{eff}}$ to be a
+  positive scalar invariant of the constraint manifold remain
+  available even when the curvature-integral form is unmotivated.
+
+- **Source-file edits implementing the closure.**
+  - `chapters/ch05_algebraic_structure.tex`:
+    - Inserted `Proposition~\ref{prop:5.1.normalization}`
+      ("Normalization of $\hbar_{\mathrm{eff}}$") immediately
+      after Definition 5.5 + Remark 5.2. Establishes:
+      (N1) existence and finiteness of inputs (Ax 4.2 + Def
+      3.6); (N2) range $\hbar_{\mathrm{eff}} \in [0, \infty]$
+      with boundary cases as in D5.5; (N3) dimensional
+      consistency / isometry invariance of $(\CM, g)$; (N4)
+      classical-limit consistency with Theorem 5.1 (CR1) and
+      Axiom 4.4 HR2.
+    - Added a 12-line proof of Proposition 5.1.normalization
+      drawing only on existing axioms and definitions (no new
+      constructions).
+    - Inserted `Remark~\ref{rem:5.2.scope}` immediately after
+      the proposition. Records: (a) D5.5 is a per-system
+      normalization choice, not a universal physical constant;
+      (b) for systems where the curvature-integral form is
+      unmotivated, $\hbar_{\mathrm{eff}}$ is to be treated as a
+      free per-system parameter; (c) all downstream invocations
+      (T5.1, D7.2, T7.1, Prop 8.3) remain valid in the
+      free-parameter reading because they depend only on
+      $\hbar_{\mathrm{eff}}$ being a positive scalar invariant.
+  - `CIIR_PROOF_LEDGER_v0.1.md`:
+    - Ch5.D05 row: status `EMPIRICAL` → `NORMALIZATION-DECLARED`;
+      comment updated.
+    - G-M3 entry: original wording struck through and a
+      "Closed in Phase 2.4" note appended pointing to this §7.4.
+    - This §7.4 closure entry.
+
+- **Untouched (load-bearing invariance).**
+  - The formula in Definition 5.5 is byte-identical.
+  - All references `\ref{def:5.5}` (10 across Ch5/Ch7/Ch8)
+    continue to resolve.
+  - Theorem 5.1, Definition 7.2, Theorem 7.1, Proposition 8.3
+    are all unchanged; Proposition 5.1.normalization is a
+    *new* statement, not a modification of any existing one.
+
+- **Verification.** Environment balance in
+  `ch05_algebraic_structure.tex`: theorem 4/4, lemma 8/8,
+  remark 4/4, proof 19/19, corollary 1/1, definition 12/12,
+  enumerate 16/16, itemize 2/2, proposition 6/6. New labels
+  `prop:5.1.normalization` (1 def, 3 refs) and `rem:5.2.scope`
+  (1 def, 0 refs — pointed at only from the ledger) resolve.
+
+### 7.5 Closure of G-L3 (Ch5.L5.5 + Ch7.T7.4(iii) — Irreducibility hypothesis)
+
+- **Status:** closed by closure path of §5.5: state both
+  uniqueness claims as conditional in their headers, document the
+  structural status of irreducibility, point to the
+  sector-decomposed fallback as the unconditional content.
+
+- **Reconstruction of the gap.** Lemma 5.5 ("Uniqueness of the
+  Constraint Vacuum") is proved *conditional on* irreducibility
+  of $\CK(\HC)$ — the hypothesis is stated in the body but the
+  header advertises an unconditional uniqueness result. Theorem
+  7.4(iii) ("Uniqueness criterion") suffers the same defect: the
+  irreducibility hypothesis appears in the sub-claim's body but
+  not in its sub-header. Irreducibility itself is not (a) an
+  axiom of CIIR, nor (b) a theorem of every CIIR system. Indeed,
+  the existence of a non-trivial superselection sector decomposition
+  (Definition 5.11) is the typical mechanism by which
+  irreducibility fails. The ledger registered this as G-L3 with
+  the §5.5 closure path: state both uniqueness claims as
+  conditional in their headers (rather than promote irreducibility
+  to an axiom or attempt a structural existence theorem for
+  irreducibility).
+
+- **Failure-type classification.** Semantic under-specification at
+  the level of theorem/lemma headers. The *content* of L5.5 and
+  T7.4(iii) is correct; only the headers overstate the result.
+  Closure is a header-rewriting exercise plus a scope remark.
+
+- **Closure decision.** Make conditionality explicit in both
+  headers, document the structural status of irreducibility in a
+  scope remark, and explicitly point at L5.5's reducible-case
+  paragraph and T7.4(iv) sector-decomposition as the unconditional
+  fallback.
+
+- **Source-file edits implementing the closure.**
+  - `chapters/ch05_algebraic_structure.tex`:
+    - Lemma 5.5 retitled
+      "Uniqueness of the Constraint Vacuum"
+      → "Uniqueness of the Constraint Vacuum (Conditional on
+      Irreducibility of $\CK(\HC)$)"
+      (label `lem:5.5` and the lemma body+proof unchanged).
+    - Inserted `Remark~\ref{rem:5.5.scope}` immediately after
+      the proof. Documents: (a) irreducibility is a structural
+      property of $X$, not an axiom and not a theorem of every
+      CIIR system; (b) it can fail when $\HC$ admits a
+      non-trivial superselection decomposition (Def 5.11); (c)
+      the reducible-case paragraph already in L5.5's proof
+      supplies the sector-wise fallback; (d) the same
+      conditional pattern reappears in T7.4(iii), with T7.4(iv)
+      supplying the sector-decomposed equilibrium structure.
+  - `chapters/ch07_dynamics.tex`:
+    - Theorem 7.4 sub-claim (iii) header retitled
+      "Uniqueness criterion"
+      → "Conditional uniqueness given irreducibility of
+      $\CK(\HC)$".
+    - Sub-claim (iii) body now ends with a parenthetical
+      forward-reference to T7.4(iv) for the
+      irreducibility-fails case and to
+      Remark `rem:5.5.scope` for the closure record.
+  - `CIIR_PROOF_LEDGER_v0.1.md`:
+    - Ch5.L05 row: header text updated to include the
+      conditional clause; comment updated to record the
+      Phase 2.5 closure.
+    - Ch7.T4 row: comment updated to record that sub-claim (iii)
+      is now explicitly conditional in its header (G-L3 closed);
+      the outer G-S3 (infinite-dim existence) remains open.
+    - G-L3 entry: original wording struck through and a "Closed
+      in Phase 2.5" note appended pointing to this §7.5.
+    - This §7.5 closure entry.
+
+- **Untouched (load-bearing invariance).**
+  - The bodies and proofs of Lemma 5.5 and Theorem 7.4 are
+    unchanged; only the headers and the surrounding remark/
+    forward-reference change.
+  - All references `\ref{lem:5.5}` and `\ref{thm:7.4}` resolve
+    unchanged.
+  - Proposition 7.1 (Approach to Equilibrium), which is stated
+    "Under the conditions of Theorem 7.4(iii) (irreducible
+    constraint algebra)", remains valid verbatim; in fact, its
+    own header *already* makes the conditionality explicit, so
+    G-L3 closure is a uniform sweep that brings L5.5 + T7.4(iii)
+    in line with that style.
+
+- **Verification.** Environment balance in
+  `ch05_algebraic_structure.tex` (theorem 4/4, lemma 8/8,
+  remark 4/4, proof 19/19, corollary 1/1, definition 12/12,
+  enumerate 16/16, itemize 2/2, proposition 6/6) and
+  `ch07_dynamics.tex` (theorem 7/7, lemma 6/6, remark 1/1,
+  proof 19/19, corollary 1/1, definition 17/17, enumerate
+  14/14, itemize 4/4, proposition 5/5). New label
+  `rem:5.5.scope` (Ch5: 1 def, 0 refs from Ch5; Ch7: 1 ref
+  from T7.4(iii) body) resolves.
+
+- **Open items deliberately not closed in this PR.**
+  - The outer G-S3 (existence of equilibrium states in
+    infinite-dimensional $\HC$) remains open and is unchanged
+    by this Phase. Sub-claim (iii) closure does not affect the
+    Schauder–Tychonoff compactness gap in sub-claim (i).
+  - A structural existence theorem for irreducibility of
+    $\CK(\HC)$ on the full $\HC$ is not attempted; the closure
+    here adopts the §5.5 path of headering-as-conditional.
+
+- **Priority status update.** With G-M3 and G-L3 both closed in
+  this Phase 2.4 + 2.5 PR, and with G-M4 + G-L6 closed in the
+  prior Phase 2.3 PR, all four Priority-2 ledger items
+  (§§5.3–5.5) are now closed. The next deliverable in the
+  closure log is the Priority-3 cohort, beginning with G-S3
+  (infinite-dimensional existence of equilibrium states,
+  Theorem 7.4(i)) and the deferred microscopic Lindblad–Davies
+  derivation (Phase-3 follow-up to G-M4 + G-L6 along the
+  unfollowed §5.3 closure path (a)).
 
