@@ -70,7 +70,6 @@ class HCAL:
             audit_log_path=audit_log_path,
             dry_run=dry_run,
         )
-        self.actuator = Actuator(enable_actuation=not dry_run)
 
         # Initialize backends
         self.backends = {"nvidia_nvml": NvidiaNvmlBackend(dry_run=dry_run)}
@@ -488,11 +487,4 @@ __all__ = [
     "Policy",
     "CalibrationResult",
     "TelemetryReading",
-    "HCAL",
-    "Policy",
-    "PolicyEngine",
-    "PolicyViolation",
-    "DeviceLimits",
-    "Environment",
-    "__version__",
 ]
