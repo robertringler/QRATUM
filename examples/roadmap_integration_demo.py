@@ -19,6 +19,7 @@ from telemetry_api import NASATelemetryAdapter, SpaceXTelemetryAdapter
 
 def demo_deterministic_simulation():
     """Demonstrate deterministic simulation with QuASIM."""
+
     print("\n" + "=" * 70)
     print("Demo 1: Deterministic Simulation with Seed Management")
     print("=" * 70 + "\n")
@@ -57,6 +58,7 @@ def demo_deterministic_simulation():
 
 def demo_spacex_telemetry():
     """Demonstrate SpaceX telemetry ingestion."""
+
     print("\n" + "=" * 70)
     print("Demo 2: SpaceX Falcon 9 Telemetry Ingestion")
     print("=" * 70 + "\n")
@@ -81,7 +83,7 @@ def demo_spacex_telemetry():
 
     print("Raw telemetry data:")
     print(f"  T+{raw_data['timestamp']:.1f}s")
-    print(f"  Altitude: {raw_data['altitude']/1000:.1f} km")
+    print(f"  Altitude: {raw_data['altitude'] / 1000:.1f} km")
     print(f"  Velocity: {raw_data['velocity']:.1f} m/s")
 
     # Parse and validate
@@ -101,6 +103,7 @@ def demo_spacex_telemetry():
 
 def demo_nasa_telemetry():
     """Demonstrate NASA telemetry ingestion."""
+
     print("\n" + "=" * 70)
     print("Demo 3: NASA Orion/SLS Telemetry Ingestion")
     print("=" * 70 + "\n")
@@ -121,9 +124,9 @@ def demo_nasa_telemetry():
     print(f"  Vehicle: {telemetry.vehicle_system}")
     print(f"  MET: {telemetry.met:.1f}s")
     print(
-        f"  Position: [{telemetry.state_vector[0]/1000:.0f}, "
-        f"{telemetry.state_vector[1]/1000:.0f}, "
-        f"{telemetry.state_vector[2]/1000:.0f}] km"
+        f"  Position: [{telemetry.state_vector[0] / 1000:.0f}, "
+        f"{telemetry.state_vector[1] / 1000:.0f}, "
+        f"{telemetry.state_vector[2] / 1000:.0f}] km"
     )
     print(f"  GNC Mode: {telemetry.gnc_mode}")
     print(f"  Validation: {'✓ Valid' if is_valid else '✗ Invalid'}")
@@ -139,6 +142,7 @@ def demo_nasa_telemetry():
 
 def demo_montecarlo_validation():
     """Demonstrate Monte-Carlo fidelity validation."""
+
     print("\n" + "=" * 70)
     print("Demo 4: Monte-Carlo Fidelity Validation")
     print("=" * 70 + "\n")
@@ -179,6 +183,7 @@ def demo_montecarlo_validation():
 
 def demo_certification_package():
     """Demonstrate certification package validation."""
+
     print("\n" + "=" * 70)
     print("Demo 5: Certification Data Package Status")
     print("=" * 70 + "\n")
@@ -213,6 +218,7 @@ def demo_certification_package():
 
 def main():
     """Run all demos."""
+
     print("\n" + "#" * 70)
     print("# QuASIM-SpaceX-NASA Integration Roadmap Demonstration")
     print("# DO-178C Level A / ECSS-Q-ST-80C / NASA E-HBK-4008")

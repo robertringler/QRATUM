@@ -1,0 +1,24 @@
+[package]
+name = "emu-input"
+description = "Input emulation - touch, keyboard, mouse, gamepad HID support"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+log.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+bitflags.workspace = true
+parking_lot.workspace = true
+crossbeam-channel.workspace = true
+serde = { workspace = true, features = ["derive"] }
+
+[dev-dependencies]
+env_logger.workspace = true
+
+[features]
+default = []
+gamepad = []

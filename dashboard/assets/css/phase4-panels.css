@@ -1,0 +1,571 @@
+/**
+ * QRATUM Dashboard - Phase 4 Panel Styles
+ * Quantum Simulation and Code Generation UI
+ * @version 4.0.0
+ */
+
+/* ========================================== */
+/* PHASE 4: QUANTUM SIMULATION PANEL STYLES */
+/* ========================================== */
+
+.quantum-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.quantum-state-card.wide {
+    grid-column: span 2;
+}
+
+.phase-badge {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+}
+
+/* Qubit Grid Visualization */
+.qubit-grid {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    overflow-x: auto;
+}
+
+.qubit-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.qubit-row.header {
+    background: var(--bg-hover);
+    font-weight: 600;
+    color: var(--accent-cyan);
+}
+
+.qubit-row.state:hover {
+    background: var(--bg-hover);
+}
+
+.qubit-label {
+    min-width: 120px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.qubit-header {
+    width: 24px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+}
+
+.qubit-bit {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.7rem;
+}
+
+.qubit-bit.bit-zero {
+    background: var(--bg-card);
+    color: var(--text-muted);
+}
+
+.qubit-bit.bit-one {
+    background: var(--accent-cyan);
+    color: var(--bg-dark);
+}
+
+.qubit-amplitude {
+    min-width: 100px;
+}
+
+.amplitude-bar {
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 4px;
+    font-size: 0.65rem;
+    color: var(--bg-dark);
+    font-weight: 600;
+    min-width: 40px;
+}
+
+.qubit-phase {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 80px;
+}
+
+.phase-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border-glow);
+    position: relative;
+}
+
+.phase-indicator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 2px;
+    background: var(--accent-cyan);
+    transform-origin: left center;
+}
+
+.phase-value {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+}
+
+.qubit-row.more {
+    justify-content: center;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Quantum Legend */
+.quantum-legend {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+.legend-color.amplitude-high {
+    background: var(--accent-cyan);
+}
+
+.legend-color.amplitude-low {
+    background: var(--bg-card);
+}
+
+.legend-color.phase-indicator {
+    border: 2px solid var(--accent-emerald);
+    border-radius: 50%;
+}
+
+/* Gate Control Panel */
+.gate-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.gate-section h3 {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.button-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.gate-btn {
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--border-glow);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    color: var(--accent-cyan);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.gate-btn:hover {
+    background: var(--accent-cyan);
+    color: var(--bg-dark);
+    border-color: var(--accent-cyan);
+}
+
+.gate-btn.phase4 {
+    border-color: var(--accent-emerald);
+    color: var(--accent-emerald);
+}
+
+.gate-btn.phase4:hover {
+    background: var(--accent-emerald);
+    color: var(--bg-dark);
+}
+
+.gate-btn.two-qubit,
+.gate-btn.three-qubit {
+    width: auto;
+    padding: 0 1rem;
+}
+
+.qubit-selector {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem;
+    margin-top: var(--spacing-md);
+    align-items: center;
+}
+
+.qubit-selector label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.qubit-selector select {
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+}
+
+/* Quantum Metrics */
+.metric-display {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+}
+
+.metric-item {
+    text-align: center;
+}
+
+.metric-item .metric-label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.metric-item .metric-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    font-family: var(--font-mono);
+}
+
+/* WASM Pod Status */
+.isolation-badge {
+    background: var(--accent-emerald);
+    color: var(--bg-dark);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.pod-status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.pod-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: 0.75rem;
+    background: var(--bg-hover);
+    border-radius: var(--radius-sm);
+}
+
+.pod-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.pod-memory {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+.pod-status-indicator {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+.pod-status-indicator.online {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--accent-emerald);
+}
+
+.pod-status-indicator.standby {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--warning);
+}
+
+.pod-info {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--bg-hover);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.pod-info p {
+    margin: 0.25rem 0;
+}
+
+/* ========================================== */
+/* PHASE 4: CODE GENERATION PANEL STYLES */
+/* ========================================== */
+
+.codegen-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.codegen-input-card {
+    grid-row: span 2;
+}
+
+.codegen-output-card.wide,
+.benchmark-card.wide {
+    grid-column: span 2;
+}
+
+.codegen-form textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.codegen-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+}
+
+.code-output {
+    background: var(--bg-darker);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-md);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.code-output code {
+    color: var(--accent-cyan);
+}
+
+/* AST and IR Viewers */
+.ast-viewer,
+.ir-viewer {
+    background: var(--bg-darker);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-md);
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+}
+
+.ast-tree,
+.ir-tree {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.placeholder-text {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Footprint Metrics */
+.footprint-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-md);
+}
+
+.footprint-item {
+    text-align: center;
+    padding: var(--spacing-md);
+    background: var(--bg-hover);
+    border-radius: var(--radius-sm);
+}
+
+.footprint-item.total {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%);
+}
+
+.footprint-label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.footprint-item.total .footprint-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footprint-value {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    font-family: var(--font-mono);
+}
+
+.footprint-item.total .footprint-value {
+    color: white;
+}
+
+.regression-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--bg-hover);
+    border-radius: var(--radius-sm);
+}
+
+.regression-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.regression-value {
+    font-weight: 700;
+    font-family: var(--font-mono);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-sm);
+}
+
+.regression-value.pass {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--accent-emerald);
+}
+
+.regression-value.fail {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--error);
+}
+
+/* Benchmark Table */
+.benchmark-table {
+    overflow-x: auto;
+}
+
+.benchmark-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.benchmark-table th,
+.benchmark-table td {
+    padding: var(--spacing-md);
+    text-align: left;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.benchmark-table th {
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.benchmark-table td {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+}
+
+.benchmark-table td.highlight {
+    color: var(--accent-emerald);
+    font-weight: 700;
+}
+
+.supremacy-note {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: linear-gradient(135deg, rgba(91, 33, 182, 0.3) 0%, rgba(0, 245, 255, 0.1) 100%);
+    border-radius: var(--radius-sm);
+    border-left: 4px solid var(--accent-cyan);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.supremacy-note strong {
+    color: var(--accent-cyan);
+}
+
+/* Responsive Adjustments for Phase 4 Panels */
+@media (max-width: 768px) {
+    .quantum-grid,
+    .codegen-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quantum-state-card.wide,
+    .codegen-output-card.wide,
+    .benchmark-card.wide {
+        grid-column: span 1;
+    }
+    
+    .metric-display {
+        grid-template-columns: 1fr;
+    }
+    
+    .footprint-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .qubit-selector {
+        grid-template-columns: 1fr;
+    }
+}

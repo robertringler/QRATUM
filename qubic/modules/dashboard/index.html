@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUBIC Module Dashboard | 100 Modules</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: #000010;
+            color: #00f5ff;
+            min-height: 100vh;
+        }
+        
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, rgba(0,0,30,0.9) 0%, transparent 100%);
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #00f5ff, #ff00ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #888;
+            letter-spacing: 4px;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0,0,30,0.8);
+            border-top: 1px solid #00f5ff40;
+            border-bottom: 1px solid #00f5ff40;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            color: #00f5ff;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+        
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .search-input {
+            width: 500px;
+            padding: 15px 25px;
+            background: rgba(0,0,30,0.9);
+            border: 1px solid #00f5ff40;
+            border-radius: 30px;
+            color: #00f5ff;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: #00f5ff;
+            box-shadow: 0 0 30px #00f5ff30;
+        }
+        
+        .search-input::placeholder {
+            color: #555;
+        }
+        
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 30px 0;
+            padding: 0 20px;
+        }
+        
+        .cat-btn {
+            padding: 10px 20px;
+            background: rgba(0,0,30,0.8);
+            border: 1px solid #00f5ff30;
+            color: #00f5ff;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 13px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cat-btn:hover, .cat-btn.active {
+            background: #00f5ff;
+            color: #000;
+        }
+        
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px 40px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        .module-card {
+            background: rgba(0,0,30,0.9);
+            border: 1px solid #00f5ff20;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--color);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color);
+            box-shadow: 0 10px 40px rgba(0,245,255,0.2);
+        }
+        
+        .module-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .module-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .module-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            color: var(--color);
+            margin-bottom: 8px;
+        }
+        
+        .module-desc {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .module-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 10px;
+            padding: 4px 10px;
+            background: var(--color)20;
+            color: var(--color);
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #444;
+            font-size: 12px;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px #00f5ff40; }
+            50% { box-shadow: 0 0 40px #00f5ff60; }
+        }
+        
+        .module-card:hover {
+            animation: glow 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    
+    <div class="container">
+        <div class="header">
+            <div class="logo">QUBIC</div>
+            <div class="subtitle">QUANTUM UNIFIED BIOINFORMATICS INTERACTIVE CONSOLE</div>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-value">100</div>
+                <div class="stat-label">TOTAL MODULES</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">10</div>
+                <div class="stat-label">CATEGORIES</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">∞</div>
+                <div class="stat-label">POSSIBILITIES</div>
+            </div>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search modules..." oninput="filterModules()">
+        </div>
+        
+        <div class="category-nav">
+            <button class="cat-btn active" onclick="filterCategory('all')">ALL (100)</button>
+            <button class="cat-btn" onclick="filterCategory('quantum')">QUANTUM (10)</button>
+            <button class="cat-btn" onclick="filterCategory('bioinformatics')">BIOINFORMATICS (10)</button>
+            <button class="cat-btn" onclick="filterCategory('neural')">NEURAL (10)</button>
+            <button class="cat-btn" onclick="filterCategory('physics')">PHYSICS (10)</button>
+            <button class="cat-btn" onclick="filterCategory('chemistry')">CHEMISTRY (10)</button>
+            <button class="cat-btn" onclick="filterCategory('crypto')">CRYPTO (10)</button>
+            <button class="cat-btn" onclick="filterCategory('network')">NETWORK (10)</button>
+            <button class="cat-btn" onclick="filterCategory('space')">SPACE (10)</button>
+            <button class="cat-btn" onclick="filterCategory('financial')">FINANCIAL (10)</button>
+            <button class="cat-btn" onclick="filterCategory('data')">DATA (10)</button>
+        </div>
+        
+        <div class="modules-grid" id="modulesGrid">
+            
+            <div class="module-card" style="--color: #00f5ff" data-category="quantum" onclick="launchModule('quantum_state_viewer')">
+                <div class="module-category">quantum</div>
+                <div class="module-icon">⚛️</div>
+                <div class="module-title">Quantum State Viewer</div>
+                <div class="module-desc">Visualize quantum state vectors and superposition</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff00ff" data-category="quantum" onclick="launchModule('qubit_simulator')">
+                <div class="module-category">quantum</div>
+                <div class="module-icon">🔮</div>
+                <div class="module-title">Qubit Simulator</div>
+                <div class="module-desc">Interactive qubit manipulation and measurement</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ff88" data-category="quantum" onclick="launchModule('entanglement_lab')">
+                <div class="module-category">quantum</div>
+                <div class="module-icon">🔗</div>
+                <div class="module-title">Entanglement Lab</div>
+                <div class="module-desc">Explore quantum entanglement between particles</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ffaa00" data-category="quantum" onclick="launchModule('quantum_gate_designer')">
+                <div class="module-category">quantum</div>
+                <div class="module-icon">🚪</div>
+                <div class="module-title">Gate Designer</div>
+                <div class="module-desc">Design and test quantum gate circuits</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff3366" data-category="quantum" onclick="launchModule('decoherence_monitor')">
+                <div class="module-category">quantum</div>
+                <div class="module-icon">📉</div>
+                <div class="module-title">Decoherence Monitor</div>
+                <div class="module-desc">Track quantum decoherence over time</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #9933ff" data-category="quantum" onclick="launchModule('bell_state_analyzer')">
+                <div class="module-category">quantum</div>
+                <div class="module-icon">🔔</div>
+                <div class="module-title">Bell State Analyzer</div>
+                <div class="module-desc">Analyze Bell states and violations</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #33ffcc" data-category="quantum" onclick="launchModule('quantum_walk')">
+                <div class="module-category">quantum</div>
+                <div class="module-icon">🚶</div>
+                <div class="module-title">Quantum Walk</div>
+                <div class="module-desc">Visualize quantum random walks</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff9933" data-category="quantum" onclick="launchModule('grover_search')">
+                <div class="module-category">quantum</div>
+                <div class="module-icon">🔍</div>
+                <div class="module-title">Grover Search</div>
+                <div class="module-desc">Interactive Grover's algorithm visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #66ff33" data-category="quantum" onclick="launchModule('shor_factoring')">
+                <div class="module-category">quantum</div>
+                <div class="module-icon">🔢</div>
+                <div class="module-title">Shor Factoring</div>
+                <div class="module-desc">Shor's algorithm for integer factorization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff66cc" data-category="quantum" onclick="launchModule('vqe_optimizer')">
+                <div class="module-category">quantum</div>
+                <div class="module-icon">📈</div>
+                <div class="module-title">VQE Optimizer</div>
+                <div class="module-desc">Variational Quantum Eigensolver optimization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ff88" data-category="bioinformatics" onclick="launchModule('dna_sequencer')">
+                <div class="module-category">bioinformatics</div>
+                <div class="module-icon">🧬</div>
+                <div class="module-title">DNA Sequencer</div>
+                <div class="module-desc">Real-time DNA sequence analysis</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff6633" data-category="bioinformatics" onclick="launchModule('protein_folder')">
+                <div class="module-category">bioinformatics</div>
+                <div class="module-icon">🔬</div>
+                <div class="module-title">Protein Folder</div>
+                <div class="module-desc">3D protein folding visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #33ccff" data-category="bioinformatics" onclick="launchModule('genome_browser')">
+                <div class="module-category">bioinformatics</div>
+                <div class="module-icon">📊</div>
+                <div class="module-title">Genome Browser</div>
+                <div class="module-desc">Interactive genome navigation</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #99ff33" data-category="bioinformatics" onclick="launchModule('phylo_tree')">
+                <div class="module-category">bioinformatics</div>
+                <div class="module-icon">🌳</div>
+                <div class="module-title">Phylogenetic Tree</div>
+                <div class="module-desc">Evolutionary relationship visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff3399" data-category="bioinformatics" onclick="launchModule('mutation_tracker')">
+                <div class="module-category">bioinformatics</div>
+                <div class="module-icon">🦠</div>
+                <div class="module-title">Mutation Tracker</div>
+                <div class="module-desc">Track genetic mutations in real-time</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ffcc00" data-category="bioinformatics" onclick="launchModule('rna_structure')">
+                <div class="module-category">bioinformatics</div>
+                <div class="module-icon">🔄</div>
+                <div class="module-title">RNA Structure</div>
+                <div class="module-desc">RNA secondary structure prediction</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ffcc" data-category="bioinformatics" onclick="launchModule('crispr_designer')">
+                <div class="module-category">bioinformatics</div>
+                <div class="module-icon">✂️</div>
+                <div class="module-title">CRISPR Designer</div>
+                <div class="module-desc">Design CRISPR gene edits</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff9966" data-category="bioinformatics" onclick="launchModule('metabolic_pathway')">
+                <div class="module-category">bioinformatics</div>
+                <div class="module-icon">🔀</div>
+                <div class="module-title">Metabolic Pathway</div>
+                <div class="module-desc">Metabolic network visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #cc33ff" data-category="bioinformatics" onclick="launchModule('expression_heatmap')">
+                <div class="module-category">bioinformatics</div>
+                <div class="module-icon">🌡️</div>
+                <div class="module-title">Expression Heatmap</div>
+                <div class="module-desc">Gene expression heatmap analysis</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #66ffcc" data-category="bioinformatics" onclick="launchModule('variant_caller')">
+                <div class="module-category">bioinformatics</div>
+                <div class="module-icon">📋</div>
+                <div class="module-title">Variant Caller</div>
+                <div class="module-desc">Identify genetic variants</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff00ff" data-category="neural" onclick="launchModule('neural_network')">
+                <div class="module-category">neural</div>
+                <div class="module-icon">🧠</div>
+                <div class="module-title">Neural Network</div>
+                <div class="module-desc">Deep learning architecture visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00f5ff" data-category="neural" onclick="launchModule('activation_maps')">
+                <div class="module-category">neural</div>
+                <div class="module-icon">🗺️</div>
+                <div class="module-title">Activation Maps</div>
+                <div class="module-desc">CNN activation map visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ffaa00" data-category="neural" onclick="launchModule('gradient_flow')">
+                <div class="module-category">neural</div>
+                <div class="module-icon">➡️</div>
+                <div class="module-title">Gradient Flow</div>
+                <div class="module-desc">Backpropagation gradient visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ff88" data-category="neural" onclick="launchModule('attention_viz')">
+                <div class="module-category">neural</div>
+                <div class="module-icon">👁️</div>
+                <div class="module-title">Attention Viz</div>
+                <div class="module-desc">Transformer attention visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff3366" data-category="neural" onclick="launchModule('embedding_space')">
+                <div class="module-category">neural</div>
+                <div class="module-icon">🌐</div>
+                <div class="module-title">Embedding Space</div>
+                <div class="module-desc">High-dimensional embedding projection</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #9933ff" data-category="neural" onclick="launchModule('loss_landscape')">
+                <div class="module-category">neural</div>
+                <div class="module-icon">⛰️</div>
+                <div class="module-title">Loss Landscape</div>
+                <div class="module-desc">3D loss function landscape</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #33ffcc" data-category="neural" onclick="launchModule('gan_generator')">
+                <div class="module-category">neural</div>
+                <div class="module-icon">🎨</div>
+                <div class="module-title">GAN Generator</div>
+                <div class="module-desc">Generative adversarial network output</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff9933" data-category="neural" onclick="launchModule('reinforcement_env')">
+                <div class="module-category">neural</div>
+                <div class="module-icon">🎮</div>
+                <div class="module-title">RL Environment</div>
+                <div class="module-desc">Reinforcement learning environment</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #66ff33" data-category="neural" onclick="launchModule('autoencoder_latent')">
+                <div class="module-category">neural</div>
+                <div class="module-icon">🔐</div>
+                <div class="module-title">Autoencoder Latent</div>
+                <div class="module-desc">Latent space visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff66cc" data-category="neural" onclick="launchModule('transformer_layers')">
+                <div class="module-category">neural</div>
+                <div class="module-icon">📚</div>
+                <div class="module-title">Transformer Layers</div>
+                <div class="module-desc">Layer-by-layer transformer analysis</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff3366" data-category="physics" onclick="launchModule('particle_collider')">
+                <div class="module-category">physics</div>
+                <div class="module-icon">💥</div>
+                <div class="module-title">Particle Collider</div>
+                <div class="module-desc">High-energy particle collision simulation</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00f5ff" data-category="physics" onclick="launchModule('wave_equation')">
+                <div class="module-category">physics</div>
+                <div class="module-icon">🌊</div>
+                <div class="module-title">Wave Equation</div>
+                <div class="module-desc">2D wave equation visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ffaa00" data-category="physics" onclick="launchModule('electromagnetic_field')">
+                <div class="module-category">physics</div>
+                <div class="module-icon">⚡</div>
+                <div class="module-title">EM Field</div>
+                <div class="module-desc">Electromagnetic field visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ff88" data-category="physics" onclick="launchModule('fluid_dynamics')">
+                <div class="module-category">physics</div>
+                <div class="module-icon">💧</div>
+                <div class="module-title">Fluid Dynamics</div>
+                <div class="module-desc">Navier-Stokes fluid simulation</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff00ff" data-category="physics" onclick="launchModule('pendulum_chaos')">
+                <div class="module-category">physics</div>
+                <div class="module-icon">🔄</div>
+                <div class="module-title">Pendulum Chaos</div>
+                <div class="module-desc">Double pendulum chaotic motion</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #33ccff" data-category="physics" onclick="launchModule('orbital_mechanics')">
+                <div class="module-category">physics</div>
+                <div class="module-icon">🌍</div>
+                <div class="module-title">Orbital Mechanics</div>
+                <div class="module-desc">Gravitational orbit simulation</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #9933ff" data-category="physics" onclick="launchModule('black_hole')">
+                <div class="module-category">physics</div>
+                <div class="module-icon">🕳️</div>
+                <div class="module-title">Black Hole</div>
+                <div class="module-desc">Black hole gravitational lensing</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff9933" data-category="physics" onclick="launchModule('string_vibrations')">
+                <div class="module-category">physics</div>
+                <div class="module-icon">🎸</div>
+                <div class="module-title">String Vibrations</div>
+                <div class="module-desc">String theory vibration modes</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #66ff33" data-category="physics" onclick="launchModule('plasma_dynamics')">
+                <div class="module-category">physics</div>
+                <div class="module-icon">🔥</div>
+                <div class="module-title">Plasma Dynamics</div>
+                <div class="module-desc">Magnetohydrodynamic plasma simulation</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ffcc" data-category="physics" onclick="launchModule('superconductor')">
+                <div class="module-category">physics</div>
+                <div class="module-icon">❄️</div>
+                <div class="module-title">Superconductor</div>
+                <div class="module-desc">Superconductivity visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ff88" data-category="chemistry" onclick="launchModule('molecular_viewer')">
+                <div class="module-category">chemistry</div>
+                <div class="module-icon">⚗️</div>
+                <div class="module-title">Molecular Viewer</div>
+                <div class="module-desc">3D molecular structure visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff6633" data-category="chemistry" onclick="launchModule('reaction_kinetics')">
+                <div class="module-category">chemistry</div>
+                <div class="module-icon">⏱️</div>
+                <div class="module-title">Reaction Kinetics</div>
+                <div class="module-desc">Chemical reaction rate visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #33ccff" data-category="chemistry" onclick="launchModule('periodic_explorer')">
+                <div class="module-category">chemistry</div>
+                <div class="module-icon">📋</div>
+                <div class="module-title">Periodic Explorer</div>
+                <div class="module-desc">Interactive periodic table</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #9933ff" data-category="chemistry" onclick="launchModule('orbital_viewer')">
+                <div class="module-category">chemistry</div>
+                <div class="module-icon">🔵</div>
+                <div class="module-title">Orbital Viewer</div>
+                <div class="module-desc">Atomic orbital visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ffcc00" data-category="chemistry" onclick="launchModule('bond_analyzer')">
+                <div class="module-category">chemistry</div>
+                <div class="module-icon">🔗</div>
+                <div class="module-title">Bond Analyzer</div>
+                <div class="module-desc">Chemical bond strength analysis</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff3399" data-category="chemistry" onclick="launchModule('spectroscopy')">
+                <div class="module-category">chemistry</div>
+                <div class="module-icon">🌈</div>
+                <div class="module-title">Spectroscopy</div>
+                <div class="module-desc">Molecular spectroscopy simulation</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ffcc" data-category="chemistry" onclick="launchModule('catalyst_sim')">
+                <div class="module-category">chemistry</div>
+                <div class="module-icon">⚡</div>
+                <div class="module-title">Catalyst Sim</div>
+                <div class="module-desc">Catalytic reaction simulation</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff9966" data-category="chemistry" onclick="launchModule('crystal_structure')">
+                <div class="module-category">chemistry</div>
+                <div class="module-icon">💎</div>
+                <div class="module-title">Crystal Structure</div>
+                <div class="module-desc">Crystal lattice visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #66ffcc" data-category="chemistry" onclick="launchModule('solubility_map')">
+                <div class="module-category">chemistry</div>
+                <div class="module-icon">💧</div>
+                <div class="module-title">Solubility Map</div>
+                <div class="module-desc">Solubility phase diagram</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #cc33ff" data-category="chemistry" onclick="launchModule('thermodynamics')">
+                <div class="module-category">chemistry</div>
+                <div class="module-icon">🌡️</div>
+                <div class="module-title">Thermodynamics</div>
+                <div class="module-desc">Thermodynamic process visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff3366" data-category="crypto" onclick="launchModule('hash_visualizer')">
+                <div class="module-category">crypto</div>
+                <div class="module-icon">🔐</div>
+                <div class="module-title">Hash Visualizer</div>
+                <div class="module-desc">Cryptographic hash visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ffaa00" data-category="crypto" onclick="launchModule('blockchain_explorer')">
+                <div class="module-category">crypto</div>
+                <div class="module-icon">⛓️</div>
+                <div class="module-title">Blockchain Explorer</div>
+                <div class="module-desc">Blockchain network visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00f5ff" data-category="crypto" onclick="launchModule('encryption_flow')">
+                <div class="module-category">crypto</div>
+                <div class="module-icon">🔒</div>
+                <div class="module-title">Encryption Flow</div>
+                <div class="module-desc">Encryption algorithm visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ff88" data-category="crypto" onclick="launchModule('key_exchange')">
+                <div class="module-category">crypto</div>
+                <div class="module-icon">🔑</div>
+                <div class="module-title">Key Exchange</div>
+                <div class="module-desc">Diffie-Hellman key exchange viz</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff00ff" data-category="crypto" onclick="launchModule('merkle_tree')">
+                <div class="module-category">crypto</div>
+                <div class="module-icon">🌲</div>
+                <div class="module-title">Merkle Tree</div>
+                <div class="module-desc">Merkle tree structure visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #9933ff" data-category="crypto" onclick="launchModule('zero_knowledge')">
+                <div class="module-category">crypto</div>
+                <div class="module-icon">❓</div>
+                <div class="module-title">Zero Knowledge</div>
+                <div class="module-desc">Zero-knowledge proof visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #33ffcc" data-category="crypto" onclick="launchModule('signature_verify')">
+                <div class="module-category">crypto</div>
+                <div class="module-icon">✍️</div>
+                <div class="module-title">Signature Verify</div>
+                <div class="module-desc">Digital signature verification</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff9933" data-category="crypto" onclick="launchModule('entropy_analyzer')">
+                <div class="module-category">crypto</div>
+                <div class="module-icon">🎲</div>
+                <div class="module-title">Entropy Analyzer</div>
+                <div class="module-desc">Randomness and entropy analysis</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #66ff33" data-category="crypto" onclick="launchModule('cipher_wheel')">
+                <div class="module-category">crypto</div>
+                <div class="module-icon">⚙️</div>
+                <div class="module-title">Cipher Wheel</div>
+                <div class="module-desc">Classical cipher visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff66cc" data-category="crypto" onclick="launchModule('quantum_crypto')">
+                <div class="module-category">crypto</div>
+                <div class="module-icon">🔮</div>
+                <div class="module-title">Quantum Crypto</div>
+                <div class="module-desc">Quantum cryptography simulation</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00f5ff" data-category="network" onclick="launchModule('network_topology')">
+                <div class="module-category">network</div>
+                <div class="module-icon">🕸️</div>
+                <div class="module-title">Network Topology</div>
+                <div class="module-desc">Network graph visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff00ff" data-category="network" onclick="launchModule('packet_flow')">
+                <div class="module-category">network</div>
+                <div class="module-icon">📦</div>
+                <div class="module-title">Packet Flow</div>
+                <div class="module-desc">Network packet flow visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ffaa00" data-category="network" onclick="launchModule('firewall_monitor')">
+                <div class="module-category">network</div>
+                <div class="module-icon">🛡️</div>
+                <div class="module-title">Firewall Monitor</div>
+                <div class="module-desc">Firewall rule visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ff88" data-category="network" onclick="launchModule('latency_map')">
+                <div class="module-category">network</div>
+                <div class="module-icon">🌍</div>
+                <div class="module-title">Latency Map</div>
+                <div class="module-desc">Global network latency heatmap</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff3366" data-category="network" onclick="launchModule('ddos_simulator')">
+                <div class="module-category">network</div>
+                <div class="module-icon">🎯</div>
+                <div class="module-title">DDoS Simulator</div>
+                <div class="module-desc">DDoS attack visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #9933ff" data-category="network" onclick="launchModule('protocol_analyzer')">
+                <div class="module-category">network</div>
+                <div class="module-icon">📡</div>
+                <div class="module-title">Protocol Analyzer</div>
+                <div class="module-desc">Network protocol analysis</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #33ffcc" data-category="network" onclick="launchModule('dns_resolver')">
+                <div class="module-category">network</div>
+                <div class="module-icon">🔍</div>
+                <div class="module-title">DNS Resolver</div>
+                <div class="module-desc">DNS resolution visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff9933" data-category="network" onclick="launchModule('load_balancer')">
+                <div class="module-category">network</div>
+                <div class="module-icon">⚖️</div>
+                <div class="module-title">Load Balancer</div>
+                <div class="module-desc">Load distribution visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #66ff33" data-category="network" onclick="launchModule('vpn_tunnel')">
+                <div class="module-category">network</div>
+                <div class="module-icon">🚇</div>
+                <div class="module-title">VPN Tunnel</div>
+                <div class="module-desc">VPN tunnel visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff66cc" data-category="network" onclick="launchModule('mesh_network')">
+                <div class="module-category">network</div>
+                <div class="module-icon">🔷</div>
+                <div class="module-title">Mesh Network</div>
+                <div class="module-desc">Mesh network topology</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ffaa00" data-category="space" onclick="launchModule('solar_system')">
+                <div class="module-category">space</div>
+                <div class="module-icon">☀️</div>
+                <div class="module-title">Solar System</div>
+                <div class="module-desc">Interactive solar system model</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00f5ff" data-category="space" onclick="launchModule('star_map')">
+                <div class="module-category">space</div>
+                <div class="module-icon">⭐</div>
+                <div class="module-title">Star Map</div>
+                <div class="module-desc">3D star catalog visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff00ff" data-category="space" onclick="launchModule('galaxy_merger')">
+                <div class="module-category">space</div>
+                <div class="module-icon">🌌</div>
+                <div class="module-title">Galaxy Merger</div>
+                <div class="module-desc">Galaxy collision simulation</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ff88" data-category="space" onclick="launchModule('exoplanet_finder')">
+                <div class="module-category">space</div>
+                <div class="module-icon">🔭</div>
+                <div class="module-title">Exoplanet Finder</div>
+                <div class="module-desc">Exoplanet transit detection</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff3366" data-category="space" onclick="launchModule('asteroid_tracker')">
+                <div class="module-category">space</div>
+                <div class="module-icon">☄️</div>
+                <div class="module-title">Asteroid Tracker</div>
+                <div class="module-desc">Near-Earth asteroid tracking</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #9933ff" data-category="space" onclick="launchModule('cosmic_web')">
+                <div class="module-category">space</div>
+                <div class="module-icon">🕸️</div>
+                <div class="module-title">Cosmic Web</div>
+                <div class="module-desc">Large-scale structure visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #33ffcc" data-category="space" onclick="launchModule('pulsar_timing')">
+                <div class="module-category">space</div>
+                <div class="module-icon">📻</div>
+                <div class="module-title">Pulsar Timing</div>
+                <div class="module-desc">Pulsar signal analysis</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff9933" data-category="space" onclick="launchModule('redshift_map')">
+                <div class="module-category">space</div>
+                <div class="module-icon">🔴</div>
+                <div class="module-title">Redshift Map</div>
+                <div class="module-desc">Cosmological redshift visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #666699" data-category="space" onclick="launchModule('dark_matter')">
+                <div class="module-category">space</div>
+                <div class="module-icon">🌑</div>
+                <div class="module-title">Dark Matter</div>
+                <div class="module-desc">Dark matter distribution map</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #66ff33" data-category="space" onclick="launchModule('gravitational_waves')">
+                <div class="module-category">space</div>
+                <div class="module-icon">〰️</div>
+                <div class="module-title">Gravitational Waves</div>
+                <div class="module-desc">Gravitational wave detection</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ff88" data-category="financial" onclick="launchModule('market_depth')">
+                <div class="module-category">financial</div>
+                <div class="module-icon">📊</div>
+                <div class="module-title">Market Depth</div>
+                <div class="module-desc">Order book depth visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff3366" data-category="financial" onclick="launchModule('volatility_surface')">
+                <div class="module-category">financial</div>
+                <div class="module-icon">📈</div>
+                <div class="module-title">Volatility Surface</div>
+                <div class="module-desc">Options volatility surface</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00f5ff" data-category="financial" onclick="launchModule('correlation_matrix')">
+                <div class="module-category">financial</div>
+                <div class="module-icon">🔢</div>
+                <div class="module-title">Correlation Matrix</div>
+                <div class="module-desc">Asset correlation heatmap</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ffaa00" data-category="financial" onclick="launchModule('risk_dashboard')">
+                <div class="module-category">financial</div>
+                <div class="module-icon">⚠️</div>
+                <div class="module-title">Risk Dashboard</div>
+                <div class="module-desc">Portfolio risk metrics</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff00ff" data-category="financial" onclick="launchModule('monte_carlo_sim')">
+                <div class="module-category">financial</div>
+                <div class="module-icon">🎲</div>
+                <div class="module-title">Monte Carlo Sim</div>
+                <div class="module-desc">Monte Carlo price simulation</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #9933ff" data-category="financial" onclick="launchModule('candlestick_chart')">
+                <div class="module-category">financial</div>
+                <div class="module-icon">🕯️</div>
+                <div class="module-title">Candlestick Chart</div>
+                <div class="module-desc">Advanced candlestick analysis</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #33ffcc" data-category="financial" onclick="launchModule('sentiment_tracker')">
+                <div class="module-category">financial</div>
+                <div class="module-icon">😊</div>
+                <div class="module-title">Sentiment Tracker</div>
+                <div class="module-desc">Market sentiment analysis</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff9933" data-category="financial" onclick="launchModule('flow_analyzer')">
+                <div class="module-category">financial</div>
+                <div class="module-icon">💰</div>
+                <div class="module-title">Flow Analyzer</div>
+                <div class="module-desc">Money flow visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #66ff33" data-category="financial" onclick="launchModule('yield_curve')">
+                <div class="module-category">financial</div>
+                <div class="module-icon">📉</div>
+                <div class="module-title">Yield Curve</div>
+                <div class="module-desc">Interest rate yield curve</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff66cc" data-category="financial" onclick="launchModule('portfolio_optimizer')">
+                <div class="module-category">financial</div>
+                <div class="module-icon">🎯</div>
+                <div class="module-title">Portfolio Optimizer</div>
+                <div class="module-desc">Efficient frontier visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00f5ff" data-category="data" onclick="launchModule('scatter_3d')">
+                <div class="module-category">data</div>
+                <div class="module-icon">📍</div>
+                <div class="module-title">3D Scatter</div>
+                <div class="module-desc">3D scatter plot visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff00ff" data-category="data" onclick="launchModule('parallel_coords')">
+                <div class="module-category">data</div>
+                <div class="module-icon">📏</div>
+                <div class="module-title">Parallel Coords</div>
+                <div class="module-desc">Parallel coordinates plot</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #00ff88" data-category="data" onclick="launchModule('treemap_viz')">
+                <div class="module-category">data</div>
+                <div class="module-icon">🗺️</div>
+                <div class="module-title">Treemap</div>
+                <div class="module-desc">Hierarchical treemap visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ffaa00" data-category="data" onclick="launchModule('sankey_flow')">
+                <div class="module-category">data</div>
+                <div class="module-icon">➡️</div>
+                <div class="module-title">Sankey Flow</div>
+                <div class="module-desc">Sankey diagram flow visualization</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff3366" data-category="data" onclick="launchModule('chord_diagram')">
+                <div class="module-category">data</div>
+                <div class="module-icon">🔄</div>
+                <div class="module-title">Chord Diagram</div>
+                <div class="module-desc">Relationship chord diagram</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #9933ff" data-category="data" onclick="launchModule('force_graph')">
+                <div class="module-category">data</div>
+                <div class="module-icon">🕸️</div>
+                <div class="module-title">Force Graph</div>
+                <div class="module-desc">Force-directed graph layout</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #33ffcc" data-category="data" onclick="launchModule('sunburst_chart')">
+                <div class="module-category">data</div>
+                <div class="module-icon">☀️</div>
+                <div class="module-title">Sunburst Chart</div>
+                <div class="module-desc">Hierarchical sunburst chart</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff9933" data-category="data" onclick="launchModule('radar_chart')">
+                <div class="module-category">data</div>
+                <div class="module-icon">📡</div>
+                <div class="module-title">Radar Chart</div>
+                <div class="module-desc">Multi-dimensional radar chart</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #66ff33" data-category="data" onclick="launchModule('stream_graph')">
+                <div class="module-category">data</div>
+                <div class="module-icon">🌊</div>
+                <div class="module-title">Stream Graph</div>
+                <div class="module-desc">Time-series stream graph</div>
+            </div>
+        
+            
+            <div class="module-card" style="--color: #ff66cc" data-category="data" onclick="launchModule('hexbin_map')">
+                <div class="module-category">data</div>
+                <div class="module-icon">🔷</div>
+                <div class="module-title">Hexbin Map</div>
+                <div class="module-desc">Hexagonal binning heatmap</div>
+            </div>
+        
+        </div>
+        
+        <div class="footer">
+            QUBIC v2.0 | 100 Interactive Visualization Modules | Powered by Three.js & WebGL
+        </div>
+    </div>
+
+    <script>
+        // Background animation
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                size: Math.random() * 2
+            });
+        }
+        
+        function animateBg() {
+            ctx.fillStyle = 'rgba(0, 0, 16, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00f5ff';
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            requestAnimationFrame(animateBg);
+        }
+        
+        animateBg();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Filtering
+        let currentCategory = 'all';
+        
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(category)) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            filterModules();
+        }
+        
+        function filterModules() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.module-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.module-title').textContent.toLowerCase();
+                const desc = card.querySelector('.module-desc').textContent.toLowerCase();
+                const category = card.dataset.category;
+                
+                const matchesSearch = title.includes(search) || desc.includes(search);
+                const matchesCategory = currentCategory === 'all' || category === currentCategory;
+                
+                card.style.display = (matchesSearch && matchesCategory) ? 'block' : 'none';
+            });
+        }
+        
+        // Module launch
+        function launchModule(moduleId) {
+            window.location.href = '../' + moduleId + '/index.html';
+        }
+    </script>
+</body>
+</html>

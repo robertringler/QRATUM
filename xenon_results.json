@@ -1,0 +1,131 @@
+{
+  "summary": {
+    "iterations": 20,
+    "converged": false,
+    "final_entropy": 0.7403971749910787,
+    "mechanisms_discovered": 10
+  },
+  "runtime_summary": {
+    "iterations": 19,
+    "total_mechanisms": 10,
+    "targets": 1,
+    "evidence": {
+      "EGFR_target": {
+        "n_mechanisms": 10,
+        "total_evidence": 1.0,
+        "max_posterior": 0.4967200805209178,
+        "mean_posterior": 0.10000000000000002,
+        "entropy": 0.7403971749910787
+      }
+    }
+  },
+  "mechanisms": [
+    {
+      "name": "EGFR_target_template_6",
+      "posterior": 0.4967200805209178,
+      "provenance": [
+        "bayesian_update_5:perturbation",
+        "bayesian_update_6:kinetics",
+        "bayesian_update_7:perturbation",
+        "bayesian_update_8:kinetics",
+        "bayesian_update_9:kinetics",
+        "bayesian_update_10:kinetics",
+        "bayesian_update_11:perturbation",
+        "bayesian_update_12:concentration",
+        "bayesian_update_13:perturbation",
+        "bayesian_update_14:perturbation",
+        "bayesian_update_15:concentration",
+        "bayesian_update_16:concentration",
+        "bayesian_update_17:kinetics",
+        "bayesian_update_18:perturbation",
+        "bayesian_update_19:concentration"
+      ],
+      "states": [
+        {
+          "name": "EGFR_inactive",
+          "molecule": "EGFR",
+          "properties": {
+            "active": false
+          },
+          "concentration": 48.15675855197608,
+          "free_energy": -10.0
+        },
+        {
+          "name": "EGFR_active",
+          "molecule": "EGFR",
+          "properties": {
+            "active": true
+          },
+          "concentration": 51.47791431418133,
+          "free_energy": -12.0
+        }
+      ],
+      "transitions": [
+        {
+          "source": "EGFR_inactive",
+          "target": "EGFR_active",
+          "rate_constant": 0.07485138631745679,
+          "activation_energy": 15.0,
+          "reversible": true,
+          "reverse_rate": 0.007485138631745679,
+          "stoichiometry": {}
+        }
+      ],
+      "hash": "860691373659065dcc12b9de5cd7ce557d2d3c2eda0906b2ac1bafb372a23175"
+    },
+    {
+      "name": "EGFR_target_mutant_5_9",
+      "posterior": 0.4967200805209178,
+      "provenance": [
+        "topology_mutation",
+        "bayesian_update_5:perturbation",
+        "bayesian_update_6:kinetics",
+        "bayesian_update_7:perturbation",
+        "bayesian_update_8:kinetics",
+        "bayesian_update_9:kinetics",
+        "bayesian_update_10:kinetics",
+        "bayesian_update_11:perturbation",
+        "bayesian_update_12:concentration",
+        "bayesian_update_13:perturbation",
+        "bayesian_update_14:perturbation",
+        "bayesian_update_15:concentration",
+        "bayesian_update_16:concentration",
+        "bayesian_update_17:kinetics",
+        "bayesian_update_18:perturbation",
+        "bayesian_update_19:concentration"
+      ],
+      "states": [
+        {
+          "name": "EGFR_inactive",
+          "molecule": "EGFR",
+          "properties": {
+            "active": false
+          },
+          "concentration": 48.15675855197608,
+          "free_energy": -10.0
+        },
+        {
+          "name": "EGFR_active",
+          "molecule": "EGFR",
+          "properties": {
+            "active": true
+          },
+          "concentration": 51.47791431418133,
+          "free_energy": -12.0
+        }
+      ],
+      "transitions": [
+        {
+          "source": "EGFR_inactive",
+          "target": "EGFR_active",
+          "rate_constant": 0.07485138631745679,
+          "activation_energy": 15.0,
+          "reversible": true,
+          "reverse_rate": 0.007485138631745679,
+          "stoichiometry": {}
+        }
+      ],
+      "hash": "860691373659065dcc12b9de5cd7ce557d2d3c2eda0906b2ac1bafb372a23175"
+    }
+  ]
+}

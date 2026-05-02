@@ -147,6 +147,10 @@ class QNXSubstrate:
         }
         canonical = _canonical_serialize(hash_payload)
         simulation_hash = compute_integrity_hash(canonical)
+        simulation_hash = compute_integrity_hash(
+            json.dumps(hash_payload, sort_keys=True, default=str)
+        )
+        carbon_emissions = estimate_carbon(raw_results)
 
         # extract structured errors/warnings from backend result if present
         if isinstance(raw_results, dict):

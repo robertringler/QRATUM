@@ -78,6 +78,7 @@ class QuASIMGenerator:
         Args:
             output_dir: Output directory for artifacts
         """
+
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -95,6 +96,7 @@ class QuASIMGenerator:
         Returns:
             Path to generated JSON file
         """
+
         if vehicles is None:
             vehicles = ["Falcon9", "SLS"]
 
@@ -176,6 +178,7 @@ class QuASIMGenerator:
         Returns:
             Path to generated log file
         """
+
         entries = []
         random.seed(42)
 
@@ -235,6 +238,7 @@ class QuASIMGenerator:
         Returns:
             Path to generated CSV file
         """
+
         import csv
 
         random.seed(42)
@@ -288,6 +292,7 @@ class QuASIMGenerator:
         Returns:
             Path to generated JSON file
         """
+
         artifacts = [
             "MC_Results_1024.json",
             "seed_audit.log",
@@ -361,6 +366,7 @@ class QuASIMGenerator:
         Returns:
             Dictionary mapping artifact type to file path
         """
+
         print("\n" + "=" * 70)
         print("QuASIM Certification Artifact Generator")
         print("SpaceX-NASA Integration Roadmap (90-Day Implementation)")
@@ -382,6 +388,7 @@ class QuASIMGenerator:
 
 def main():
     """Main entry point."""
+
     import argparse
 
     parser = argparse.ArgumentParser(description="Generate QuASIM certification artifacts")

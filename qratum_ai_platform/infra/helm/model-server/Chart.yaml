@@ -1,0 +1,13 @@
+apiVersion: v2
+name: model-server
+description: QRATUM Model Server - FastAPI-based ML model serving
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - ml
+  - model-serving
+  - fastapi
+  - ai
+maintainers:
+  - name: QRATUM Team

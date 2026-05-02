@@ -1,6 +1,8 @@
-# QuASIM Full Stack Quick Start
+# QRATUM Full Stack Quick Start
 
-This guide shows you how to quickly run the full QuASIM Autonomous Systems platform locally using Docker Compose.
+This guide shows you how to quickly run the full QRATUM Autonomous Systems platform locally using Docker Compose.
+
+**Note:** QRATUM (formerly QuASIM) is the world's first Certifiable Quantum-Classical Convergence (CQCC) platform.
 
 ## Prerequisites
 

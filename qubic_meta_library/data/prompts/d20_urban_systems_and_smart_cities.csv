@@ -1,0 +1,1001 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+7501,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.9,0.93,Smart infrastructure;Urban analytics,D12,QNimbus,1,simulation
+7502,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.77,,D11,QNimbus,1,model
+7503,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.85,,D8;D19,QNimbus,1,analysis
+7504,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.91,,D11;D12,QNimbus,1,optimization
+7505,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.86,,D11;D8,QNimbus,1,design
+7506,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.92,0.89,,D12;D8,QNimbus,1,prediction
+7507,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.86,,D12;D8,QNimbus,1,simulation
+7508,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.94,,D19,QNimbus,1,model
+7509,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.89,,D19;D8,QNimbus,1,analysis
+7510,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.78,,D8,QNimbus,1,optimization
+7511,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.76,0.93,,D12,QNimbus,1,design
+7512,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.8,,D12;D8,QNimbus,1,prediction
+7513,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.81,,D11;D12,QNimbus,1,simulation
+7514,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.74,,D12,QNimbus,1,model
+7515,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.82,,D12;D11,QNimbus,1,analysis
+7516,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.76,0.73,,D12,QNimbus,1,optimization
+7517,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.7,,D8,QNimbus,1,design
+7518,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.94,,D8;D19,QNimbus,1,prediction
+7519,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.89,,D12,QNimbus,1,simulation
+7520,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.74,,D19;D11,QNimbus,1,model
+7521,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.71,0.84,,D12;D11,QNimbus,1,analysis
+7522,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.89,,D11,QNimbus,1,optimization
+7523,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.76,,D11,QNimbus,1,design
+7524,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.76,,D12,QNimbus,1,prediction
+7525,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.87,,D12,QNimbus,1,simulation
+7526,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.81,0.77,,D19,QNimbus,1,model
+7527,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.68,,D11;D19,QNimbus,1,analysis
+7528,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.78,,D19,QNimbus,1,optimization
+7529,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.7,,D19,QNimbus,1,design
+7530,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.86,,D12;D8,QNimbus,1,prediction
+7531,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.76,0.83,,D19;D11,QNimbus,1,simulation
+7532,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.7,,D8,QNimbus,1,model
+7533,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.78,,D19;D11,QNimbus,1,analysis
+7534,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.88,,D12;D8,QNimbus,1,optimization
+7535,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.68,,D8,QNimbus,1,design
+7536,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.77,0.87,,D8;D11,QNimbus,1,prediction
+7537,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.74,,D12,QNimbus,1,simulation
+7538,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.92,,D11,QNimbus,1,model
+7539,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.76,,D12;D19,QNimbus,1,analysis
+7540,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.83,,D19;D8,QNimbus,1,optimization
+7541,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.75,0.88,,D8;D11,QNimbus,1,design
+7542,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.72,,D12;D8,QNimbus,1,prediction
+7543,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.8,,D8;D19,QNimbus,1,simulation
+7544,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.87,,D11,QNimbus,1,model
+7545,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.83,,D19,QNimbus,1,analysis
+7546,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.88,0.94,,D11,QNimbus,1,optimization
+7547,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.83,,D12;D11,QNimbus,1,design
+7548,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.78,,D12;D8,QNimbus,1,prediction
+7549,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.87,,D8,QNimbus,1,simulation
+7550,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.72,,D12,QNimbus,1,model
+7551,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.77,0.81,,D12,QNimbus,1,analysis
+7552,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.87,,D8;D19,QNimbus,1,optimization
+7553,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.75,,D19;D11,QNimbus,1,design
+7554,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.84,,D12;D8,QNimbus,1,prediction
+7555,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.91,,D11,QNimbus,1,simulation
+7556,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.85,0.76,,D8;D19,QNimbus,1,model
+7557,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.73,,D19;D11,QNimbus,1,analysis
+7558,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.74,,D19,QNimbus,1,optimization
+7559,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.73,,D8,QNimbus,1,design
+7560,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.75,,D8;D12,QNimbus,1,prediction
+7561,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.77,0.92,,D19,QNimbus,1,simulation
+7562,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.78,,D19,QNimbus,1,model
+7563,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.76,,D12;D11,QNimbus,1,analysis
+7564,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.83,,D19,QNimbus,1,optimization
+7565,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.7,,D12;D8,QNimbus,1,design
+7566,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.71,0.89,,D12;D11,QNimbus,1,prediction
+7567,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.84,,D8,QNimbus,1,simulation
+7568,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.93,,D12,QNimbus,1,model
+7569,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.93,,D8;D12,QNimbus,1,analysis
+7570,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.8,,D12,QNimbus,1,optimization
+7571,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.7,0.69,,D19,QNimbus,1,design
+7572,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.69,,D19;D11,QNimbus,1,prediction
+7573,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.85,,D12;D19,QNimbus,1,simulation
+7574,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.71,,D12,QNimbus,1,model
+7575,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.8,,D19,QNimbus,1,analysis
+7576,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.93,0.7,,D12,QNimbus,1,optimization
+7577,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.93,,D11,QNimbus,1,design
+7578,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.68,,D19,QNimbus,1,prediction
+7579,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.89,,D19,QNimbus,1,simulation
+7580,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.76,,D11;D8,QNimbus,1,model
+7581,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.87,0.72,,D8;D12,QNimbus,1,analysis
+7582,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.77,,D8;D11,QNimbus,1,optimization
+7583,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.72,,D8,QNimbus,1,design
+7584,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.82,,D19;D11,QNimbus,1,prediction
+7585,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.76,,D11;D8,QNimbus,1,simulation
+7586,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.8,0.83,,D19,QNimbus,1,model
+7587,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.94,,D11;D19,QNimbus,1,analysis
+7588,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.74,,D8,QNimbus,1,optimization
+7589,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.68,,D19,QNimbus,1,design
+7590,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.85,,D19,QNimbus,1,prediction
+7591,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.89,0.93,,D19,QNimbus,1,simulation
+7592,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.92,,D12,QNimbus,1,model
+7593,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.89,,D8;D12,QNimbus,1,analysis
+7594,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.94,,D11;D19,QNimbus,1,optimization
+7595,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.76,,D12,QNimbus,1,design
+7596,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.94,0.87,,D19;D8,QNimbus,1,prediction
+7597,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.73,,D11;D12,QNimbus,1,simulation
+7598,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.92,,D19,QNimbus,1,model
+7599,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.82,,D8,QNimbus,1,analysis
+7600,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.91,,D8;D19,QNimbus,1,optimization
+7601,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.73,0.94,,D12;D8,QNimbus,1,design
+7602,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.84,,D8,QNimbus,1,prediction
+7603,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.93,,D19,QNimbus,1,simulation
+7604,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.88,,D11;D12,QNimbus,1,model
+7605,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.8,,D11;D19,QNimbus,1,analysis
+7606,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.86,0.77,,D11;D8,QNimbus,1,optimization
+7607,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.71,,D11,QNimbus,1,design
+7608,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.86,,D19,QNimbus,1,prediction
+7609,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.86,,D12;D8,QNimbus,1,simulation
+7610,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.86,,D11;D19,QNimbus,1,model
+7611,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.71,0.93,,D19,QNimbus,1,analysis
+7612,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.94,,D11,QNimbus,1,optimization
+7613,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.91,,D12;D8,QNimbus,1,design
+7614,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.86,,D19;D12,QNimbus,1,prediction
+7615,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.82,,D8,QNimbus,1,simulation
+7616,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.87,0.84,,D19;D8,QNimbus,1,model
+7617,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.77,,D11,QNimbus,1,analysis
+7618,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.87,,D19;D8,QNimbus,1,optimization
+7619,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.71,,D12;D8,QNimbus,1,design
+7620,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.93,,D11,QNimbus,1,prediction
+7621,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.9,0.74,,D11;D19,QNimbus,1,simulation
+7622,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.82,,D12,QNimbus,1,model
+7623,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.87,,D12;D8,QNimbus,1,analysis
+7624,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.7,,D11,QNimbus,1,optimization
+7625,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.74,,D8;D12,QNimbus,1,design
+7626,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.85,0.85,,D19;D8,QNimbus,1,prediction
+7627,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.88,,D19;D8,QNimbus,1,simulation
+7628,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.7,,D8,QNimbus,1,model
+7629,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.76,,D19,QNimbus,1,analysis
+7630,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.84,,D11,QNimbus,1,optimization
+7631,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.71,0.68,,D11;D8,QNimbus,1,design
+7632,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.92,,D19;D12,QNimbus,1,prediction
+7633,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.93,,D12,QNimbus,1,simulation
+7634,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.9,,D8,QNimbus,1,model
+7635,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.77,,D8;D12,QNimbus,1,analysis
+7636,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.91,0.78,,D12;D8,QNimbus,1,optimization
+7637,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.75,,D12,QNimbus,1,design
+7638,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.8,,D12,QNimbus,1,prediction
+7639,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.94,,D12,QNimbus,1,simulation
+7640,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.93,,D19,QNimbus,1,model
+7641,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.78,0.77,,D19,QNimbus,1,analysis
+7642,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.68,,D19;D12,QNimbus,1,optimization
+7643,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.87,Smart infrastructure;Urban analytics,D12;D8,QNimbus,1,design
+7644,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.84,,D12;D19,QNimbus,1,prediction
+7645,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.85,,D19;D12,QNimbus,1,simulation
+7646,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.92,0.88,,D19,QNimbus,1,model
+7647,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.82,,D19,QNimbus,1,analysis
+7648,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.77,,D19;D8,QNimbus,1,optimization
+7649,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.84,,D19,QNimbus,1,design
+7650,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.9,,D11;D12,QNimbus,1,prediction
+7651,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.83,0.84,,D19,QNimbus,1,simulation
+7652,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.87,,D8,QNimbus,1,model
+7653,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.73,,D11,QNimbus,1,analysis
+7654,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.83,,D11,QNimbus,1,optimization
+7655,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.86,,D19,QNimbus,1,design
+7656,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.73,0.81,,D12,QNimbus,1,prediction
+7657,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.75,,D11,QNimbus,1,simulation
+7658,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.92,,D8,QNimbus,1,model
+7659,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.75,,D11;D12,QNimbus,1,analysis
+7660,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.74,,D8;D12,QNimbus,1,optimization
+7661,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.77,0.71,,D8;D11,QNimbus,1,design
+7662,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.88,,D8,QNimbus,1,prediction
+7663,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.81,,D12,QNimbus,1,simulation
+7664,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.78,,D19,QNimbus,1,model
+7665,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.92,,D19,QNimbus,1,analysis
+7666,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.8,0.89,,D11,QNimbus,1,optimization
+7667,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.88,,D8,QNimbus,1,design
+7668,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.93,,D19;D12,QNimbus,1,prediction
+7669,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.78,,D11,QNimbus,1,simulation
+7670,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.79,,D12,QNimbus,1,model
+7671,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.76,0.73,,D8,QNimbus,1,analysis
+7672,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.92,,D12,QNimbus,1,optimization
+7673,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.87,,D19;D11,QNimbus,1,design
+7674,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.8,,D12;D19,QNimbus,1,prediction
+7675,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.92,,D8,QNimbus,1,simulation
+7676,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.7,0.69,,D8;D11,QNimbus,1,model
+7677,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.9,,D19,QNimbus,1,analysis
+7678,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.85,,D8,QNimbus,1,optimization
+7679,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.92,,D12;D19,QNimbus,1,design
+7680,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.74,,D11;D12,QNimbus,1,prediction
+7681,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.74,0.74,,D8,QNimbus,1,simulation
+7682,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.87,,D11,QNimbus,1,model
+7683,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.83,,D11;D12,QNimbus,1,analysis
+7684,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.92,,D12;D19,QNimbus,1,optimization
+7685,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.73,,D19;D12,QNimbus,1,design
+7686,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.87,0.73,,D12,QNimbus,1,prediction
+7687,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.69,,D11,QNimbus,1,simulation
+7688,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.85,,D11,QNimbus,1,model
+7689,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.71,,D19;D8,QNimbus,1,analysis
+7690,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.82,,D11;D8,QNimbus,1,optimization
+7691,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.94,0.93,,D11;D12,QNimbus,1,design
+7692,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.88,,D19,QNimbus,1,prediction
+7693,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.83,,D8,QNimbus,1,simulation
+7694,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.85,,D11;D8,QNimbus,1,model
+7695,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.7,,D8,QNimbus,1,analysis
+7696,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.72,0.69,,D12,QNimbus,1,optimization
+7697,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.85,,D8,QNimbus,1,design
+7698,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.79,,D8,QNimbus,1,prediction
+7699,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.86,,D12,QNimbus,1,simulation
+7700,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.72,,D19;D12,QNimbus,1,model
+7701,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.72,0.87,,D11;D12,QNimbus,1,analysis
+7702,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.75,,D8,QNimbus,1,optimization
+7703,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.69,,D11,QNimbus,1,design
+7704,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.83,,D12,QNimbus,1,prediction
+7705,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.83,,D19,QNimbus,1,simulation
+7706,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.85,0.91,,D8,QNimbus,1,model
+7707,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.9,,D12;D19,QNimbus,1,analysis
+7708,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.87,,D11,QNimbus,1,optimization
+7709,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.74,,D19,QNimbus,1,design
+7710,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.71,,D8;D11,QNimbus,1,prediction
+7711,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.72,0.71,,D11,QNimbus,1,simulation
+7712,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.75,,D8,QNimbus,1,model
+7713,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.73,,D11,QNimbus,1,analysis
+7714,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.72,,D12,QNimbus,1,optimization
+7715,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.73,,D11,QNimbus,1,design
+7716,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.75,0.88,,D12;D8,QNimbus,1,prediction
+7717,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.91,,D8,QNimbus,1,simulation
+7718,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.81,,D19,QNimbus,1,model
+7719,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.92,,D12;D19,QNimbus,1,analysis
+7720,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.75,,D19,QNimbus,1,optimization
+7721,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.85,0.76,,D19;D8,QNimbus,1,design
+7722,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.73,,D8;D19,QNimbus,1,prediction
+7723,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.89,,D12;D11,QNimbus,1,simulation
+7724,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.86,,D12;D11,QNimbus,1,model
+7725,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.71,,D11;D8,QNimbus,1,analysis
+7726,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.91,0.85,,D12,QNimbus,1,optimization
+7727,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.76,,D11,QNimbus,1,design
+7728,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.81,,D11,QNimbus,1,prediction
+7729,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.87,,D19;D8,QNimbus,1,simulation
+7730,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.68,,D19;D11,QNimbus,1,model
+7731,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.82,0.87,,D8;D19,QNimbus,1,analysis
+7732,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.84,,D12,QNimbus,1,optimization
+7733,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.74,,D8;D19,QNimbus,1,design
+7734,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.9,,D8,QNimbus,1,prediction
+7735,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.92,,D11,QNimbus,1,simulation
+7736,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.77,0.93,,D11,QNimbus,1,model
+7737,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.84,,D8;D12,QNimbus,1,analysis
+7738,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.75,,D11;D19,QNimbus,1,optimization
+7739,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.77,,D11,QNimbus,1,design
+7740,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.68,,D12;D8,QNimbus,1,prediction
+7741,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.92,0.88,,D11,QNimbus,1,simulation
+7742,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.91,,D19;D11,QNimbus,1,model
+7743,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.68,,D11;D12,QNimbus,1,analysis
+7744,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.79,,D19,QNimbus,1,optimization
+7745,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.73,,D12,QNimbus,1,design
+7746,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.85,0.68,,D11,QNimbus,1,prediction
+7747,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.71,,D12,QNimbus,1,simulation
+7748,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.8,,D11,QNimbus,1,model
+7749,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.78,,D8,QNimbus,1,analysis
+7750,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.73,,D8;D11,QNimbus,1,optimization
+7751,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.77,0.69,,D8,QNimbus,1,design
+7752,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.82,,D19;D11,QNimbus,1,prediction
+7753,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.9,,D8;D11,QNimbus,1,simulation
+7754,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.83,,D19,QNimbus,1,model
+7755,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.85,,D19,QNimbus,1,analysis
+7756,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.83,0.75,,D19,QNimbus,1,optimization
+7757,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.93,,D19;D12,QNimbus,1,design
+7758,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.82,,D12,QNimbus,1,prediction
+7759,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.71,,D11,QNimbus,1,simulation
+7760,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.85,,D11,QNimbus,1,model
+7761,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.78,0.68,,D11;D12,QNimbus,1,analysis
+7762,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.93,,D19,QNimbus,1,optimization
+7763,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.7,,D12,QNimbus,1,design
+7764,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.79,,D11,QNimbus,1,prediction
+7765,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.91,,D8;D19,QNimbus,1,simulation
+7766,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.75,0.87,,D8,QNimbus,1,model
+7767,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.82,,D12,QNimbus,1,analysis
+7768,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.86,,D11;D12,QNimbus,1,optimization
+7769,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.7,,D19;D12,QNimbus,1,design
+7770,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.78,,D12;D19,QNimbus,1,prediction
+7771,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.72,0.86,,D8,QNimbus,1,simulation
+7772,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.75,,D12,QNimbus,1,model
+7773,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.76,,D11,QNimbus,1,analysis
+7774,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.72,,D12;D11,QNimbus,1,optimization
+7775,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.8,,D12;D11,QNimbus,1,design
+7776,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.7,0.72,,D19;D11,QNimbus,1,prediction
+7777,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.91,,D8,QNimbus,1,simulation
+7778,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.9,,D19,QNimbus,1,model
+7779,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.88,,D8,QNimbus,1,analysis
+7780,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.74,,D12;D8,QNimbus,1,optimization
+7781,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.76,0.94,,D19;D12,QNimbus,1,design
+7782,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.86,,D12;D19,QNimbus,1,prediction
+7783,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.75,,D11,QNimbus,1,simulation
+7784,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.71,,D8,QNimbus,1,model
+7785,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.91,Smart infrastructure;Urban analytics,D19,QNimbus,1,analysis
+7786,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.87,0.7,,D8;D19,QNimbus,1,optimization
+7787,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.93,,D11;D8,QNimbus,1,design
+7788,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.88,,D8,QNimbus,1,prediction
+7789,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.72,,D8,QNimbus,1,simulation
+7790,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.89,,D11,QNimbus,1,model
+7791,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.8,0.79,,D8,QNimbus,1,analysis
+7792,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.92,,D12,QNimbus,1,optimization
+7793,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.7,,D11;D19,QNimbus,1,design
+7794,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.72,,D12,QNimbus,1,prediction
+7795,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.88,,D19;D11,QNimbus,1,simulation
+7796,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.93,0.72,,D8,QNimbus,1,model
+7797,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.8,,D11,QNimbus,1,analysis
+7798,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.79,,D19;D12,QNimbus,1,optimization
+7799,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.72,,D8,QNimbus,1,design
+7800,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.82,,D11,QNimbus,1,prediction
+7801,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.7,0.84,,D19;D11,QNimbus,2,simulation
+7802,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.74,,D12,QNimbus,2,model
+7803,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.8,,D11,QNimbus,2,analysis
+7804,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.78,,D8;D11,QNimbus,2,optimization
+7805,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.94,,D12;D8,QNimbus,2,design
+7806,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.93,0.75,,D12,QNimbus,2,prediction
+7807,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.87,,D12,QNimbus,2,simulation
+7808,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.82,,D8;D11,QNimbus,2,model
+7809,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.74,,D8,QNimbus,2,analysis
+7810,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.93,,D19;D8,QNimbus,2,optimization
+7811,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.91,0.79,,D19;D11,QNimbus,2,design
+7812,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.91,,D8,QNimbus,2,prediction
+7813,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.87,,D12,QNimbus,2,simulation
+7814,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.87,,D12,QNimbus,2,model
+7815,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.78,,D12;D11,QNimbus,2,analysis
+7816,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.79,0.82,,D19;D12,QNimbus,2,optimization
+7817,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.84,,D11;D12,QNimbus,2,design
+7818,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.71,,D12;D8,QNimbus,2,prediction
+7819,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.91,,D12;D19,QNimbus,2,simulation
+7820,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.9,,D11,QNimbus,2,model
+7821,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.94,0.72,,D12;D8,QNimbus,2,analysis
+7822,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.92,,D11;D19,QNimbus,2,optimization
+7823,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.93,,D8,QNimbus,2,design
+7824,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.79,,D12;D11,QNimbus,2,prediction
+7825,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.85,,D19;D11,QNimbus,2,simulation
+7826,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.75,0.86,,D12;D19,QNimbus,2,model
+7827,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.74,,D11,QNimbus,2,analysis
+7828,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.69,,D8,QNimbus,2,optimization
+7829,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.72,,D8,QNimbus,2,design
+7830,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.9,,D12;D8,QNimbus,2,prediction
+7831,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.94,0.69,,D8,QNimbus,2,simulation
+7832,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.77,,D11,QNimbus,2,model
+7833,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.69,,D8,QNimbus,2,analysis
+7834,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.82,,D8,QNimbus,2,optimization
+7835,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.88,,D19;D12,QNimbus,2,design
+7836,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.8,0.7,,D8,QNimbus,2,prediction
+7837,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.77,,D12;D19,QNimbus,2,simulation
+7838,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.69,,D11;D12,QNimbus,2,model
+7839,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.77,,D19,QNimbus,2,analysis
+7840,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.89,,D19,QNimbus,2,optimization
+7841,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.82,0.79,,D12;D19,QNimbus,2,design
+7842,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.78,,D8;D19,QNimbus,2,prediction
+7843,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.84,,D11,QNimbus,2,simulation
+7844,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.72,,D8,QNimbus,2,model
+7845,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.75,,D19;D11,QNimbus,2,analysis
+7846,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.87,0.76,,D11,QNimbus,2,optimization
+7847,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.81,,D12,QNimbus,2,design
+7848,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.78,,D19;D11,QNimbus,2,prediction
+7849,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.92,,D12;D19,QNimbus,2,simulation
+7850,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.86,,D11;D8,QNimbus,2,model
+7851,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.9,0.68,,D19;D11,QNimbus,2,analysis
+7852,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.87,,D19,QNimbus,2,optimization
+7853,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.77,,D12,QNimbus,2,design
+7854,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.71,,D12;D8,QNimbus,2,prediction
+7855,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.69,,D12;D19,QNimbus,2,simulation
+7856,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.93,0.69,,D12;D19,QNimbus,2,model
+7857,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.82,,D19;D11,QNimbus,2,analysis
+7858,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.88,,D11,QNimbus,2,optimization
+7859,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.79,,D8;D19,QNimbus,2,design
+7860,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.77,,D19,QNimbus,2,prediction
+7861,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.71,0.88,,D12,QNimbus,2,simulation
+7862,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.69,,D12;D19,QNimbus,2,model
+7863,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.75,,D11,QNimbus,2,analysis
+7864,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.7,,D8;D19,QNimbus,2,optimization
+7865,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.7,,D19,QNimbus,2,design
+7866,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.88,0.9,,D8;D11,QNimbus,2,prediction
+7867,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.88,,D11;D8,QNimbus,2,simulation
+7868,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.8,,D12,QNimbus,2,model
+7869,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.71,,D19,QNimbus,2,analysis
+7870,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.81,,D11,QNimbus,2,optimization
+7871,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.91,0.7,,D11;D12,QNimbus,2,design
+7872,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.79,,D12,QNimbus,2,prediction
+7873,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.84,,D12,QNimbus,2,simulation
+7874,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.72,,D8,QNimbus,2,model
+7875,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.82,,D19,QNimbus,2,analysis
+7876,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.74,0.75,,D12,QNimbus,2,optimization
+7877,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.9,,D11,QNimbus,2,design
+7878,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.81,,D8;D11,QNimbus,2,prediction
+7879,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.88,,D12;D11,QNimbus,2,simulation
+7880,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.9,,D19;D12,QNimbus,2,model
+7881,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.74,0.81,,D8,QNimbus,2,analysis
+7882,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.85,,D19;D8,QNimbus,2,optimization
+7883,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.88,,D11,QNimbus,2,design
+7884,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.78,,D19,QNimbus,2,prediction
+7885,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.89,,D8;D12,QNimbus,2,simulation
+7886,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.94,0.9,,D11;D12,QNimbus,2,model
+7887,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.93,,D8,QNimbus,2,analysis
+7888,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.87,,D11,QNimbus,2,optimization
+7889,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.73,,D12,QNimbus,2,design
+7890,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.72,,D12,QNimbus,2,prediction
+7891,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.75,0.72,,D8;D11,QNimbus,2,simulation
+7892,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.91,,D12;D11,QNimbus,2,model
+7893,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.91,,D19,QNimbus,2,analysis
+7894,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.93,,D11;D19,QNimbus,2,optimization
+7895,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.8,,D19;D11,QNimbus,2,design
+7896,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.72,0.87,,D19,QNimbus,2,prediction
+7897,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.85,,D12;D8,QNimbus,2,simulation
+7898,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.84,,D19;D8,QNimbus,2,model
+7899,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.74,,D8;D19,QNimbus,2,analysis
+7900,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.79,,D8,QNimbus,2,optimization
+7901,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.94,0.7,,D11,QNimbus,2,design
+7902,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.93,,D12;D11,QNimbus,2,prediction
+7903,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.91,,D11,QNimbus,2,simulation
+7904,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.69,,D11;D19,QNimbus,2,model
+7905,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.78,,D11,QNimbus,2,analysis
+7906,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.86,0.93,,D19;D8,QNimbus,2,optimization
+7907,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.83,,D11,QNimbus,2,design
+7908,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.87,,D11;D12,QNimbus,2,prediction
+7909,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.93,,D12;D19,QNimbus,2,simulation
+7910,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.79,,D12,QNimbus,2,model
+7911,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.8,0.86,,D12,QNimbus,2,analysis
+7912,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.75,,D12,QNimbus,2,optimization
+7913,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.72,,D19,QNimbus,2,design
+7914,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.79,,D12,QNimbus,2,prediction
+7915,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.87,,D8,QNimbus,2,simulation
+7916,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.81,0.77,,D19,QNimbus,2,model
+7917,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.84,,D12;D8,QNimbus,2,analysis
+7918,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.93,,D8;D11,QNimbus,2,optimization
+7919,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.93,,D8;D12,QNimbus,2,design
+7920,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.86,,D11,QNimbus,2,prediction
+7921,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.85,0.69,,D8;D19,QNimbus,2,simulation
+7922,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.69,,D19,QNimbus,2,model
+7923,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.89,,D19,QNimbus,2,analysis
+7924,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.88,,D19,QNimbus,2,optimization
+7925,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.81,,D11;D12,QNimbus,2,design
+7926,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.71,0.76,,D8,QNimbus,2,prediction
+7927,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.86,Smart infrastructure;Urban analytics,D12,QNimbus,2,simulation
+7928,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.78,,D12,QNimbus,2,model
+7929,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.8,,D8,QNimbus,2,analysis
+7930,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.81,,D8;D11,QNimbus,2,optimization
+7931,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.81,0.84,,D8,QNimbus,2,design
+7932,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.8,,D12,QNimbus,2,prediction
+7933,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.79,,D8;D12,QNimbus,2,simulation
+7934,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.8,,D11;D19,QNimbus,2,model
+7935,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.82,,D12,QNimbus,2,analysis
+7936,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.89,0.78,,D8,QNimbus,2,optimization
+7937,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.73,,D19,QNimbus,2,design
+7938,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.73,,D8,QNimbus,2,prediction
+7939,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.81,,D12;D11,QNimbus,2,simulation
+7940,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.87,,D11,QNimbus,2,model
+7941,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.76,0.73,,D19;D12,QNimbus,2,analysis
+7942,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.82,,D8;D12,QNimbus,2,optimization
+7943,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.74,,D11;D19,QNimbus,2,design
+7944,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.74,,D12,QNimbus,2,prediction
+7945,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.8,,D19;D12,QNimbus,2,simulation
+7946,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.9,0.7,,D12,QNimbus,2,model
+7947,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.84,,D12,QNimbus,2,analysis
+7948,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.77,,D8,QNimbus,2,optimization
+7949,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.82,,D11;D12,QNimbus,2,design
+7950,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.74,,D8;D12,QNimbus,2,prediction
+7951,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.72,0.94,,D8;D11,QNimbus,2,simulation
+7952,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.88,,D19;D12,QNimbus,2,model
+7953,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.82,,D8,QNimbus,2,analysis
+7954,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.83,,D11,QNimbus,2,optimization
+7955,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.71,,D12;D8,QNimbus,2,design
+7956,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.89,0.84,,D12;D8,QNimbus,2,prediction
+7957,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.9,,D12,QNimbus,2,simulation
+7958,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.93,,D11;D8,QNimbus,2,model
+7959,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.83,,D11,QNimbus,2,analysis
+7960,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.93,,D19,QNimbus,2,optimization
+7961,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.77,0.8,,D19,QNimbus,2,design
+7962,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.91,,D8,QNimbus,2,prediction
+7963,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.81,,D19,QNimbus,2,simulation
+7964,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.75,,D8;D12,QNimbus,2,model
+7965,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.92,,D12,QNimbus,2,analysis
+7966,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.76,0.91,,D12,QNimbus,2,optimization
+7967,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.76,,D12,QNimbus,2,design
+7968,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.78,,D11;D12,QNimbus,2,prediction
+7969,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.7,,D19;D12,QNimbus,2,simulation
+7970,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.78,,D12;D11,QNimbus,2,model
+7971,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.84,0.76,,D11,QNimbus,2,analysis
+7972,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.86,,D19,QNimbus,2,optimization
+7973,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.91,,D11;D19,QNimbus,2,design
+7974,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.71,,D8,QNimbus,2,prediction
+7975,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.87,,D11,QNimbus,2,simulation
+7976,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.71,0.75,,D8,QNimbus,2,model
+7977,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.87,,D19;D12,QNimbus,2,analysis
+7978,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.88,,D12;D11,QNimbus,2,optimization
+7979,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.7,,D8;D12,QNimbus,2,design
+7980,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.82,,D12,QNimbus,2,prediction
+7981,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.83,0.8,,D8,QNimbus,2,simulation
+7982,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.92,,D8,QNimbus,2,model
+7983,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.87,,D12;D19,QNimbus,2,analysis
+7984,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.8,,D11;D8,QNimbus,2,optimization
+7985,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.75,,D8,QNimbus,2,design
+7986,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.79,0.72,,D12,QNimbus,2,prediction
+7987,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.84,,D12,QNimbus,2,simulation
+7988,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.82,,D8;D12,QNimbus,2,model
+7989,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.69,,D19,QNimbus,2,analysis
+7990,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.78,,D11,QNimbus,2,optimization
+7991,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.74,0.7,,D8,QNimbus,2,design
+7992,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.83,,D8,QNimbus,2,prediction
+7993,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.7,,D11,QNimbus,2,simulation
+7994,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.93,,D19;D11,QNimbus,2,model
+7995,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.81,,D19;D12,QNimbus,2,analysis
+7996,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.73,0.86,,D11,QNimbus,2,optimization
+7997,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.72,,D12;D19,QNimbus,2,design
+7998,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.86,,D19,QNimbus,2,prediction
+7999,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.82,,D11,QNimbus,2,simulation
+8000,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.72,,D12,QNimbus,2,model
+8001,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.89,0.71,,D8,QNimbus,2,analysis
+8002,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.75,,D12,QNimbus,2,optimization
+8003,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.88,,D8,QNimbus,2,design
+8004,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.84,,D19,QNimbus,2,prediction
+8005,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.93,,D11,QNimbus,2,simulation
+8006,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.71,0.75,,D12,QNimbus,2,model
+8007,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.77,,D19;D8,QNimbus,2,analysis
+8008,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.75,,D8;D12,QNimbus,2,optimization
+8009,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.85,,D8,QNimbus,2,design
+8010,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.76,,D12,QNimbus,2,prediction
+8011,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.73,0.78,,D12;D8,QNimbus,2,simulation
+8012,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.85,,D11;D12,QNimbus,2,model
+8013,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.77,,D8,QNimbus,2,analysis
+8014,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.93,,D19,QNimbus,2,optimization
+8015,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.89,,D12,QNimbus,2,design
+8016,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.91,0.75,,D8;D12,QNimbus,2,prediction
+8017,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.8,,D19,QNimbus,2,simulation
+8018,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.93,,D19,QNimbus,2,model
+8019,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.73,,D8,QNimbus,2,analysis
+8020,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.91,,D8,QNimbus,2,optimization
+8021,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.88,0.86,,D12;D11,QNimbus,2,design
+8022,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.73,,D12,QNimbus,2,prediction
+8023,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.92,,D11,QNimbus,2,simulation
+8024,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.71,,D8,QNimbus,2,model
+8025,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.72,,D12;D19,QNimbus,2,analysis
+8026,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.78,0.92,,D11;D8,QNimbus,2,optimization
+8027,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.79,,D12;D11,QNimbus,2,design
+8028,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.7,,D8,QNimbus,2,prediction
+8029,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.87,,D12;D19,QNimbus,2,simulation
+8030,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.72,,D11,QNimbus,2,model
+8031,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.71,0.91,,D11,QNimbus,2,analysis
+8032,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.76,,D12,QNimbus,2,optimization
+8033,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.7,,D8;D11,QNimbus,2,design
+8034,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.82,,D11,QNimbus,2,prediction
+8035,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.91,,D11,QNimbus,2,simulation
+8036,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.77,0.78,,D12,QNimbus,2,model
+8037,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.92,,D12;D8,QNimbus,2,analysis
+8038,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.91,,D19,QNimbus,2,optimization
+8039,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.88,,D8,QNimbus,2,design
+8040,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.92,,D12,QNimbus,2,prediction
+8041,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.83,0.75,,D8,QNimbus,2,simulation
+8042,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.83,,D19;D12,QNimbus,2,model
+8043,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.81,,D12,QNimbus,2,analysis
+8044,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.74,,D11;D19,QNimbus,2,optimization
+8045,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.81,,D11,QNimbus,2,design
+8046,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.93,0.78,,D11;D8,QNimbus,2,prediction
+8047,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.73,,D19;D11,QNimbus,2,simulation
+8048,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.74,,D12,QNimbus,2,model
+8049,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.71,,D19,QNimbus,2,analysis
+8050,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.9,,D11,QNimbus,2,optimization
+8051,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.91,0.83,,D12,QNimbus,2,design
+8052,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.8,,D8;D19,QNimbus,2,prediction
+8053,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.92,,D11;D19,QNimbus,2,simulation
+8054,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.72,,D12,QNimbus,2,model
+8055,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.82,,D8;D19,QNimbus,2,analysis
+8056,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.72,0.79,,D8,QNimbus,2,optimization
+8057,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.92,,D11,QNimbus,2,design
+8058,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.81,,D19,QNimbus,2,prediction
+8059,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.69,,D8;D11,QNimbus,2,simulation
+8060,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.84,,D8,QNimbus,2,model
+8061,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.86,0.86,,D11,QNimbus,2,analysis
+8062,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.89,,D8,QNimbus,2,optimization
+8063,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.89,,D11,QNimbus,2,design
+8064,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.92,,D11;D8,QNimbus,2,prediction
+8065,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.76,,D19;D11,QNimbus,2,simulation
+8066,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.85,0.82,,D11,QNimbus,2,model
+8067,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.88,,D12,QNimbus,2,analysis
+8068,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.7,,D11,QNimbus,2,optimization
+8069,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.86,Smart infrastructure;Urban analytics,D8,QNimbus,2,design
+8070,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.75,,D8;D19,QNimbus,2,prediction
+8071,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.78,0.89,,D11,QNimbus,2,simulation
+8072,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.85,,D11,QNimbus,2,model
+8073,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.69,,D19,QNimbus,2,analysis
+8074,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.79,,D19,QNimbus,2,optimization
+8075,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.92,,D19;D11,QNimbus,2,design
+8076,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.71,0.77,,D11,QNimbus,2,prediction
+8077,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.85,,D19;D12,QNimbus,2,simulation
+8078,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.9,,D19;D8,QNimbus,2,model
+8079,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.85,,D8;D12,QNimbus,2,analysis
+8080,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.75,,D12,QNimbus,2,optimization
+8081,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.77,0.81,,D12;D19,QNimbus,2,design
+8082,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.91,,D12;D11,QNimbus,2,prediction
+8083,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.75,,D11;D12,QNimbus,2,simulation
+8084,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.92,,D12;D8,QNimbus,2,model
+8085,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.85,,D8,QNimbus,2,analysis
+8086,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.94,0.86,,D19,QNimbus,2,optimization
+8087,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.71,,D19,QNimbus,2,design
+8088,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.83,,D12,QNimbus,2,prediction
+8089,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.71,,D8,QNimbus,2,simulation
+8090,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.74,,D12;D11,QNimbus,2,model
+8091,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.73,0.92,,D12;D19,QNimbus,2,analysis
+8092,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.76,,D12;D11,QNimbus,2,optimization
+8093,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.8,,D12;D8,QNimbus,2,design
+8094,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.93,,D19;D12,QNimbus,2,prediction
+8095,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.72,,D19,QNimbus,2,simulation
+8096,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.84,0.8,,D19,QNimbus,2,model
+8097,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.77,,D11,QNimbus,2,analysis
+8098,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.9,,D19;D8,QNimbus,2,optimization
+8099,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.91,,D8,QNimbus,2,design
+8100,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.83,,D12,QNimbus,2,prediction
+8101,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.75,0.89,,D12,QNimbus,3,simulation
+8102,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.88,,D11,QNimbus,3,model
+8103,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.73,,D19,QNimbus,3,analysis
+8104,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.7,,D19,QNimbus,3,optimization
+8105,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.72,,D11,QNimbus,3,design
+8106,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.79,0.85,,D12,QNimbus,3,prediction
+8107,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.9,,D8;D12,QNimbus,3,simulation
+8108,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.72,,D8;D11,QNimbus,3,model
+8109,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.89,,D11,QNimbus,3,analysis
+8110,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.7,,D8,QNimbus,3,optimization
+8111,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.94,0.78,,D12;D19,QNimbus,3,design
+8112,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.93,,D11,QNimbus,3,prediction
+8113,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.77,,D12;D19,QNimbus,3,simulation
+8114,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.77,,D8;D11,QNimbus,3,model
+8115,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.82,,D11;D12,QNimbus,3,analysis
+8116,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.83,0.7,,D19,QNimbus,3,optimization
+8117,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.75,,D8;D12,QNimbus,3,design
+8118,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.81,,D11,QNimbus,3,prediction
+8119,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.77,,D11,QNimbus,3,simulation
+8120,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.78,,D12;D19,QNimbus,3,model
+8121,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.75,0.77,,D19,QNimbus,3,analysis
+8122,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.74,,D8,QNimbus,3,optimization
+8123,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.73,,D11;D8,QNimbus,3,design
+8124,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.75,,D8,QNimbus,3,prediction
+8125,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.79,,D8;D19,QNimbus,3,simulation
+8126,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.91,0.8,,D12;D8,QNimbus,3,model
+8127,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.7,,D8,QNimbus,3,analysis
+8128,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.93,,D8,QNimbus,3,optimization
+8129,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.91,,D19;D11,QNimbus,3,design
+8130,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.7,,D8;D19,QNimbus,3,prediction
+8131,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.94,0.86,,D19,QNimbus,3,simulation
+8132,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.82,,D11;D19,QNimbus,3,model
+8133,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.72,,D8,QNimbus,3,analysis
+8134,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.86,,D19,QNimbus,3,optimization
+8135,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.89,,D19;D12,QNimbus,3,design
+8136,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.94,0.87,,D11,QNimbus,3,prediction
+8137,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.9,,D11;D8,QNimbus,3,simulation
+8138,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.88,,D11;D8,QNimbus,3,model
+8139,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.71,,D8,QNimbus,3,analysis
+8140,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.7,,D8,QNimbus,3,optimization
+8141,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.94,0.85,,D8;D12,QNimbus,3,design
+8142,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.75,,D8,QNimbus,3,prediction
+8143,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.93,,D19,QNimbus,3,simulation
+8144,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.73,,D12;D8,QNimbus,3,model
+8145,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.71,,D19;D12,QNimbus,3,analysis
+8146,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.82,0.87,,D12,QNimbus,3,optimization
+8147,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.76,,D11,QNimbus,3,design
+8148,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.85,,D8;D11,QNimbus,3,prediction
+8149,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.87,,D11,QNimbus,3,simulation
+8150,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.88,,D19,QNimbus,3,model
+8151,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.76,0.81,,D8;D19,QNimbus,3,analysis
+8152,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.83,,D19,QNimbus,3,optimization
+8153,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.9,,D8;D12,QNimbus,3,design
+8154,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.85,,D11,QNimbus,3,prediction
+8155,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.81,,D12,QNimbus,3,simulation
+8156,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.77,0.7,,D19,QNimbus,3,model
+8157,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.78,,D8;D12,QNimbus,3,analysis
+8158,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.8,,D19,QNimbus,3,optimization
+8159,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.87,,D11;D12,QNimbus,3,design
+8160,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.93,,D19;D11,QNimbus,3,prediction
+8161,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.94,0.76,,D8;D12,QNimbus,3,simulation
+8162,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.85,,D19,QNimbus,3,model
+8163,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.87,,D11,QNimbus,3,analysis
+8164,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.78,,D8,QNimbus,3,optimization
+8165,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.84,,D8;D11,QNimbus,3,design
+8166,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.94,0.88,,D11,QNimbus,3,prediction
+8167,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.85,,D11,QNimbus,3,simulation
+8168,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.83,,D11;D12,QNimbus,3,model
+8169,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.76,,D19,QNimbus,3,analysis
+8170,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.81,,D8,QNimbus,3,optimization
+8171,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.75,0.74,,D8;D19,QNimbus,3,design
+8172,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.94,,D12,QNimbus,3,prediction
+8173,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.89,,D12,QNimbus,3,simulation
+8174,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.88,,D19;D12,QNimbus,3,model
+8175,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.69,,D11,QNimbus,3,analysis
+8176,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.86,0.72,,D12;D19,QNimbus,3,optimization
+8177,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.7,,D12;D11,QNimbus,3,design
+8178,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.9,,D12,QNimbus,3,prediction
+8179,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.89,,D12,QNimbus,3,simulation
+8180,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.71,,D8,QNimbus,3,model
+8181,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.84,0.69,,D12,QNimbus,3,analysis
+8182,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.77,,D19,QNimbus,3,optimization
+8183,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.87,,D8,QNimbus,3,design
+8184,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.76,,D11;D12,QNimbus,3,prediction
+8185,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.84,,D12;D11,QNimbus,3,simulation
+8186,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.77,0.84,,D11;D19,QNimbus,3,model
+8187,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.79,,D19;D8,QNimbus,3,analysis
+8188,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.81,,D19,QNimbus,3,optimization
+8189,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.74,,D11,QNimbus,3,design
+8190,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.83,,D12,QNimbus,3,prediction
+8191,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.83,0.7,,D8;D11,QNimbus,3,simulation
+8192,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.86,,D8;D11,QNimbus,3,model
+8193,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.8,,D12;D8,QNimbus,3,analysis
+8194,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.88,,D11;D8,QNimbus,3,optimization
+8195,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.91,,D11,QNimbus,3,design
+8196,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.75,0.81,,D8;D11,QNimbus,3,prediction
+8197,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.88,,D11;D19,QNimbus,3,simulation
+8198,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.82,,D19,QNimbus,3,model
+8199,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.74,,D19;D11,QNimbus,3,analysis
+8200,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.82,,D8,QNimbus,3,optimization
+8201,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.77,0.9,,D8,QNimbus,3,design
+8202,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.84,,D11;D19,QNimbus,3,prediction
+8203,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.72,,D12,QNimbus,3,simulation
+8204,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.81,,D12,QNimbus,3,model
+8205,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.81,,D11,QNimbus,3,analysis
+8206,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.84,0.79,,D19;D12,QNimbus,3,optimization
+8207,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.86,,D19,QNimbus,3,design
+8208,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.9,,D19,QNimbus,3,prediction
+8209,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.83,,D12;D19,QNimbus,3,simulation
+8210,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.81,,D8;D19,QNimbus,3,model
+8211,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.92,0.95,Smart infrastructure;Urban analytics,D11,QNimbus,3,analysis
+8212,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.92,,D19;D8,QNimbus,3,optimization
+8213,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.87,,D19,QNimbus,3,design
+8214,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.87,,D11,QNimbus,3,prediction
+8215,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.68,,D11;D19,QNimbus,3,simulation
+8216,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.83,0.74,,D11,QNimbus,3,model
+8217,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.89,,D8,QNimbus,3,analysis
+8218,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.71,,D19;D12,QNimbus,3,optimization
+8219,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.84,,D8;D12,QNimbus,3,design
+8220,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.69,,D12,QNimbus,3,prediction
+8221,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.78,0.8,,D11;D12,QNimbus,3,simulation
+8222,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.84,,D19;D11,QNimbus,3,model
+8223,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.71,,D19,QNimbus,3,analysis
+8224,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.84,,D8;D19,QNimbus,3,optimization
+8225,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.78,,D19;D8,QNimbus,3,design
+8226,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.8,0.8,,D8,QNimbus,3,prediction
+8227,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.87,,D8,QNimbus,3,simulation
+8228,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.89,,D12,QNimbus,3,model
+8229,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.87,,D11;D12,QNimbus,3,analysis
+8230,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.94,,D12,QNimbus,3,optimization
+8231,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.87,0.83,,D11,QNimbus,3,design
+8232,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.81,,D8,QNimbus,3,prediction
+8233,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.93,,D12;D19,QNimbus,3,simulation
+8234,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.73,,D19;D8,QNimbus,3,model
+8235,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.84,,D19;D8,QNimbus,3,analysis
+8236,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.7,0.81,,D19;D12,QNimbus,3,optimization
+8237,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.91,,D12,QNimbus,3,design
+8238,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.86,,D19,QNimbus,3,prediction
+8239,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.93,,D8,QNimbus,3,simulation
+8240,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.88,,D12,QNimbus,3,model
+8241,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.73,0.72,,D19,QNimbus,3,analysis
+8242,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.78,,D8,QNimbus,3,optimization
+8243,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.79,,D12;D19,QNimbus,3,design
+8244,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.83,,D12;D11,QNimbus,3,prediction
+8245,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.71,,D11,QNimbus,3,simulation
+8246,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.72,0.72,,D8,QNimbus,3,model
+8247,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.73,,D19;D11,QNimbus,3,analysis
+8248,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.69,,D19;D11,QNimbus,3,optimization
+8249,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.93,,D12;D19,QNimbus,3,design
+8250,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.88,,D12;D11,QNimbus,3,prediction
+8251,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.81,0.74,,D12,QNimbus,3,simulation
+8252,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.73,,D11,QNimbus,3,model
+8253,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.72,,D8,QNimbus,3,analysis
+8254,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.78,,D8,QNimbus,3,optimization
+8255,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.85,,D12,QNimbus,3,design
+8256,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.72,0.77,,D19;D11,QNimbus,3,prediction
+8257,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.81,,D19,QNimbus,3,simulation
+8258,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.79,,D8,QNimbus,3,model
+8259,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.71,,D12,QNimbus,3,analysis
+8260,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.77,,D8;D12,QNimbus,3,optimization
+8261,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.71,0.84,,D19,QNimbus,3,design
+8262,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.79,,D12,QNimbus,3,prediction
+8263,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.7,,D12;D19,QNimbus,3,simulation
+8264,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.69,,D11;D19,QNimbus,3,model
+8265,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.89,,D8,QNimbus,3,analysis
+8266,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.9,0.8,,D12;D11,QNimbus,3,optimization
+8267,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.88,,D12;D19,QNimbus,3,design
+8268,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.85,,D8;D12,QNimbus,3,prediction
+8269,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.92,,D19,QNimbus,3,simulation
+8270,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.73,,D11,QNimbus,3,model
+8271,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.86,0.77,,D19;D11,QNimbus,3,analysis
+8272,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.8,,D19,QNimbus,3,optimization
+8273,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.78,,D12,QNimbus,3,design
+8274,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.85,,D11;D8,QNimbus,3,prediction
+8275,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.81,,D8,QNimbus,3,simulation
+8276,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.75,0.79,,D8;D19,QNimbus,3,model
+8277,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.91,,D11,QNimbus,3,analysis
+8278,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.8,,D12,QNimbus,3,optimization
+8279,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.86,,D11,QNimbus,3,design
+8280,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.73,,D19,QNimbus,3,prediction
+8281,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.79,0.9,,D8;D19,QNimbus,3,simulation
+8282,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.81,,D8;D12,QNimbus,3,model
+8283,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.77,,D11;D12,QNimbus,3,analysis
+8284,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.78,,D8;D12,QNimbus,3,optimization
+8285,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.88,,D8,QNimbus,3,design
+8286,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.87,0.79,,D12,QNimbus,3,prediction
+8287,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.78,,D8,QNimbus,3,simulation
+8288,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.79,,D19,QNimbus,3,model
+8289,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.89,,D12;D8,QNimbus,3,analysis
+8290,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.71,,D8;D12,QNimbus,3,optimization
+8291,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.84,0.69,,D12,QNimbus,3,design
+8292,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.8,,D19,QNimbus,3,prediction
+8293,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.92,,D11,QNimbus,3,simulation
+8294,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.79,,D8;D11,QNimbus,3,model
+8295,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.78,,D12;D8,QNimbus,3,analysis
+8296,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.87,0.78,,D11;D12,QNimbus,3,optimization
+8297,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.8,,D19;D12,QNimbus,3,design
+8298,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.68,,D8,QNimbus,3,prediction
+8299,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.69,,D8,QNimbus,3,simulation
+8300,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.88,,D8,QNimbus,3,model
+8301,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.87,0.92,,D11,QNimbus,3,analysis
+8302,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.73,,D12,QNimbus,3,optimization
+8303,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.9,,D19;D11,QNimbus,3,design
+8304,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.78,,D19,QNimbus,3,prediction
+8305,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.86,,D11;D19,QNimbus,3,simulation
+8306,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.77,0.74,,D8;D19,QNimbus,3,model
+8307,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.77,,D19,QNimbus,3,analysis
+8308,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.85,,D12,QNimbus,3,optimization
+8309,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.89,,D11;D8,QNimbus,3,design
+8310,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.7,,D8,QNimbus,3,prediction
+8311,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.86,0.83,,D11;D19,QNimbus,3,simulation
+8312,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.71,,D12,QNimbus,3,model
+8313,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.74,,D19;D11,QNimbus,3,analysis
+8314,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.88,,D12;D19,QNimbus,3,optimization
+8315,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.77,,D12,QNimbus,3,design
+8316,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.74,0.85,,D8,QNimbus,3,prediction
+8317,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.88,,D19;D12,QNimbus,3,simulation
+8318,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.93,,D8,QNimbus,3,model
+8319,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.79,,D12,QNimbus,3,analysis
+8320,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.7,,D19,QNimbus,3,optimization
+8321,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.85,0.89,,D19,QNimbus,3,design
+8322,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.86,,D12,QNimbus,3,prediction
+8323,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.73,,D19,QNimbus,3,simulation
+8324,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.92,,D8,QNimbus,3,model
+8325,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.89,,D8;D11,QNimbus,3,analysis
+8326,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.74,0.87,,D11,QNimbus,3,optimization
+8327,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.84,,D19,QNimbus,3,design
+8328,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.91,,D11,QNimbus,3,prediction
+8329,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.8,,D19;D11,QNimbus,3,simulation
+8330,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.91,,D19;D11,QNimbus,3,model
+8331,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.78,0.71,,D8,QNimbus,3,analysis
+8332,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.8,,D19,QNimbus,3,optimization
+8333,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.94,,D12;D19,QNimbus,3,design
+8334,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.93,,D19,QNimbus,3,prediction
+8335,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.74,,D8,QNimbus,3,simulation
+8336,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.93,0.8,,D19,QNimbus,3,model
+8337,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.77,,D11;D8,QNimbus,3,analysis
+8338,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.85,,D19;D11,QNimbus,3,optimization
+8339,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.88,,D11,QNimbus,3,design
+8340,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.85,,D8,QNimbus,3,prediction
+8341,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.8,0.77,,D8;D12,QNimbus,3,simulation
+8342,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.8,,D11,QNimbus,3,model
+8343,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.8,,D11;D19,QNimbus,3,analysis
+8344,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.76,,D11,QNimbus,3,optimization
+8345,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.77,,D12;D19,QNimbus,3,design
+8346,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.72,0.74,,D8,QNimbus,3,prediction
+8347,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.82,,D12;D19,QNimbus,3,simulation
+8348,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.87,,D19;D12,QNimbus,3,model
+8349,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.9,,D8;D19,QNimbus,3,analysis
+8350,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.69,,D11,QNimbus,3,optimization
+8351,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.9,0.87,,D19,QNimbus,4,design
+8352,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.86,,D12,QNimbus,4,prediction
+8353,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.92,Smart infrastructure;Urban analytics,D8,QNimbus,4,simulation
+8354,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.91,,D11;D19,QNimbus,4,model
+8355,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.72,,D12;D11,QNimbus,4,analysis
+8356,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.95,0.7,,D11;D8,QNimbus,4,optimization
+8357,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.93,,D19;D8,QNimbus,4,design
+8358,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.77,,D19;D12,QNimbus,4,prediction
+8359,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.76,,D11,QNimbus,4,simulation
+8360,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.94,,D19,QNimbus,4,model
+8361,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.84,0.78,,D12;D19,QNimbus,4,analysis
+8362,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.72,,D8;D12,QNimbus,4,optimization
+8363,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.75,,D11;D8,QNimbus,4,design
+8364,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.86,,D8,QNimbus,4,prediction
+8365,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.85,,D8,QNimbus,4,simulation
+8366,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.83,0.7,,D8,QNimbus,4,model
+8367,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.73,,D11;D12,QNimbus,4,analysis
+8368,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.81,,D8;D12,QNimbus,4,optimization
+8369,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.78,,D11,QNimbus,4,design
+8370,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.78,0.78,,D8,QNimbus,4,prediction
+8371,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.94,0.92,,D11,QNimbus,4,simulation
+8372,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.94,,D12;D11,QNimbus,4,model
+8373,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.9,,D19,QNimbus,4,analysis
+8374,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.73,,D11,QNimbus,4,optimization
+8375,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.75,,D12,QNimbus,4,design
+8376,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.72,0.73,,D8,QNimbus,4,prediction
+8377,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.76,,D19,QNimbus,4,simulation
+8378,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.76,0.82,,D11;D12,QNimbus,4,model
+8379,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.7,0.89,,D12;D19,QNimbus,4,analysis
+8380,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.84,,D19,QNimbus,4,optimization
+8381,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.84,0.88,,D8,QNimbus,4,design
+8382,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.92,,D19,QNimbus,4,prediction
+8383,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.84,,D8,QNimbus,4,simulation
+8384,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.79,,D12;D19,QNimbus,4,model
+8385,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.75,,D12,QNimbus,4,analysis
+8386,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.85,0.86,,D8;D11,QNimbus,4,optimization
+8387,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.72,,D11,QNimbus,4,design
+8388,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.72,,D11,QNimbus,4,prediction
+8389,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.92,,D8;D19,QNimbus,4,simulation
+8390,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.71,,D19;D8,QNimbus,4,model
+8391,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.79,0.83,,D19;D12,QNimbus,4,analysis
+8392,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.92,,D8;D11,QNimbus,4,optimization
+8393,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.73,,D19,QNimbus,4,design
+8394,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.88,,D12;D8,QNimbus,4,prediction
+8395,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.84,,D11;D12,QNimbus,4,simulation
+8396,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.79,0.89,,D11;D12,QNimbus,4,model
+8397,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.86,,D8,QNimbus,4,analysis
+8398,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.88,,D11,QNimbus,4,optimization
+8399,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.74,,D11,QNimbus,4,design
+8400,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.84,,D8,QNimbus,4,prediction
+8401,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.83,0.81,,D11,QNimbus,4,simulation
+8402,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.82,,D19;D8,QNimbus,4,model
+8403,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.79,,D8,QNimbus,4,analysis
+8404,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.85,,D8,QNimbus,4,optimization
+8405,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.83,,D8,QNimbus,4,design
+8406,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.89,0.74,,D12,QNimbus,4,prediction
+8407,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.9,,D12;D11,QNimbus,4,simulation
+8408,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.85,,D19;D11,QNimbus,4,model
+8409,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.86,,D12;D8,QNimbus,4,analysis
+8410,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.8,,D12,QNimbus,4,optimization
+8411,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.8,0.92,,D19,QNimbus,4,design
+8412,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.73,,D12,QNimbus,4,prediction
+8413,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.81,,D19;D8,QNimbus,4,simulation
+8414,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.85,,D19,QNimbus,4,model
+8415,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.88,,D19,QNimbus,4,analysis
+8416,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.78,0.8,,D11,QNimbus,4,optimization
+8417,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.82,,D12;D11,QNimbus,4,design
+8418,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.74,,D19,QNimbus,4,prediction
+8419,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.92,,D12,QNimbus,4,simulation
+8420,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.85,,D12;D11,QNimbus,4,model
+8421,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.86,0.75,,D8,QNimbus,4,analysis
+8422,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.89,,D12,QNimbus,4,optimization
+8423,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.77,,D12,QNimbus,4,design
+8424,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.82,,D12,QNimbus,4,prediction
+8425,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.83,,D8,QNimbus,4,simulation
+8426,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.81,0.76,,D11,QNimbus,4,model
+8427,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.8,,D8,QNimbus,4,analysis
+8428,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.78,,D12,QNimbus,4,optimization
+8429,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.76,,D12;D11,QNimbus,4,design
+8430,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.88,,D19,QNimbus,4,prediction
+8431,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.7,0.86,,D8;D19,QNimbus,4,simulation
+8432,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.91,,D8;D12,QNimbus,4,model
+8433,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.83,0.69,,D8,QNimbus,4,analysis
+8434,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.89,0.82,,D12,QNimbus,4,optimization
+8435,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.68,,D8;D12,QNimbus,4,design
+8436,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.95,0.94,,D11,QNimbus,4,prediction
+8437,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.79,,D19,QNimbus,4,simulation
+8438,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.76,,D12,QNimbus,4,model
+8439,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.82,,D8;D12,QNimbus,4,analysis
+8440,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.77,0.76,,D19,QNimbus,4,optimization
+8441,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.85,0.68,,D8;D19,QNimbus,4,design
+8442,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.93,,D12,QNimbus,4,prediction
+8443,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.69,,D8;D11,QNimbus,4,simulation
+8444,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.74,,D12;D19,QNimbus,4,model
+8445,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.86,,D12;D11,QNimbus,4,analysis
+8446,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.86,0.88,,D19,QNimbus,4,optimization
+8447,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.79,,D12,QNimbus,4,design
+8448,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.84,,D11,QNimbus,4,prediction
+8449,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.9,,D8,QNimbus,4,simulation
+8450,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.77,,D19;D12,QNimbus,4,model
+8451,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.9,0.74,,D19,QNimbus,4,analysis
+8452,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.76,,D12;D8,QNimbus,4,optimization
+8453,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.73,,D11,QNimbus,4,design
+8454,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.68,,D19,QNimbus,4,prediction
+8455,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.71,,D11,QNimbus,4,simulation
+8456,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.9,0.69,,D11,QNimbus,4,model
+8457,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.92,,D11,QNimbus,4,analysis
+8458,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.87,,D12;D19,QNimbus,4,optimization
+8459,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.85,,D8,QNimbus,4,design
+8460,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.69,,D11,QNimbus,4,prediction
+8461,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.86,0.94,,D8,QNimbus,4,simulation
+8462,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.92,,D8,QNimbus,4,model
+8463,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.87,,D11,QNimbus,4,analysis
+8464,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.69,,D8,QNimbus,4,optimization
+8465,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.86,0.7,,D11,QNimbus,4,design
+8466,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.7,0.76,,D8;D11,QNimbus,4,prediction
+8467,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.9,0.82,,D11,QNimbus,4,simulation
+8468,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.79,0.9,,D12;D11,QNimbus,4,model
+8469,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.78,,D12,QNimbus,4,analysis
+8470,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.78,,D11,QNimbus,4,optimization
+8471,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.78,0.82,,D11;D19,QNimbus,4,design
+8472,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.73,,D11,QNimbus,4,prediction
+8473,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.95,0.76,,D8;D12,QNimbus,4,simulation
+8474,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.85,0.82,,D12;D19,QNimbus,4,model
+8475,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.92,0.87,,D11;D8,QNimbus,4,analysis
+8476,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.84,0.89,,D19,QNimbus,4,optimization
+8477,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.93,0.7,,D12;D8,QNimbus,4,design
+8478,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.74,,D8,QNimbus,4,prediction
+8479,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.74,0.79,,D12,QNimbus,4,simulation
+8480,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.91,,D12,QNimbus,4,model
+8481,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.76,0.8,,D12;D19,QNimbus,4,analysis
+8482,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.92,,D12,QNimbus,4,optimization
+8483,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.87,0.72,,D11,QNimbus,4,design
+8484,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.84,0.8,,D12;D19,QNimbus,4,prediction
+8485,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.91,0.91,,D19,QNimbus,4,simulation
+8486,Urban Planning,Smart city planning for energy distribution using urban systems & smart cities approaches,D20,0.87,0.78,,D12,QNimbus,4,model
+8487,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.75,,D12;D11,QNimbus,4,analysis
+8488,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.8,0.82,,D8,QNimbus,4,optimization
+8489,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.94,0.9,,D8,QNimbus,4,design
+8490,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.71,,D19;D8,QNimbus,4,prediction
+8491,Urban Planning,Smart city planning for traffic flow using urban systems & smart cities approaches,D20,0.8,0.79,,D12;D11,QNimbus,4,simulation
+8492,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.73,0.83,,D19;D11,QNimbus,4,model
+8493,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.81,0.74,,D8,QNimbus,4,analysis
+8494,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.94,,D12,QNimbus,4,optimization
+8495,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.88,0.9,,D19;D11,QNimbus,4,design
+8496,Urban Planning,Smart city planning for waste management using urban systems & smart cities approaches,D20,0.9,0.79,,D8;D11,QNimbus,4,prediction
+8497,Traffic Optimization,Traffic Optimization simulation and optimization using urban systems & smart cities approaches,D20,0.82,0.87,,D19;D12,QNimbus,4,simulation
+8498,Smart Infrastructure,Smart Infrastructure simulation and optimization using urban systems & smart cities approaches,D20,0.71,0.89,,D12,QNimbus,4,model
+8499,Energy Management,Energy Management simulation and optimization using urban systems & smart cities approaches,D20,0.72,0.79,,D12;D19,QNimbus,4,analysis
+8500,Waste Systems,Waste Systems simulation and optimization using urban systems & smart cities approaches,D20,0.75,0.83,,D8,QNimbus,4,optimization

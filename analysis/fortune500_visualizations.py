@@ -19,11 +19,13 @@ DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 
 def _svg_header(width: int, height: int) -> str:
     """Generate SVG header."""
+
     return f"<svg xmlns='http://www.w3.org/2000/svg' width='{width}' height='{height}' viewBox='0 0 {width} {height}'>"
 
 
 def _write_svg(path: Path, svg_content: str) -> None:
     """Write SVG content to file."""
+
     path.write_text(svg_content, encoding="utf-8")
 
 
@@ -36,6 +38,7 @@ def create_qii_distribution_histogram(
         qii_scores: List of QII scores from all companies
         filename: Output filename
     """
+
     width, height = 800, 500
     margin = 80
     chart_width = width - 2 * margin
@@ -49,10 +52,7 @@ def create_qii_distribution_histogram(
 
     counts = [0] * bins
     for score in qii_scores:
-        if score >= max_score:
-            idx = bins - 1
-        else:
-            idx = int((score - min_score) / bin_width)
+        idx = bins - 1 if score >= max_score else int((score - min_score) / bin_width)
         counts[idx] += 1
 
     max_count = max(counts)
@@ -96,10 +96,7 @@ def create_qii_distribution_histogram(
     # Draw bars
     bar_width_px = chart_width / bins
     for idx, count in enumerate(counts):
-        if max_count > 0:
-            bar_height = (count / max_count) * (chart_height - 40)
-        else:
-            bar_height = 0
+        bar_height = count / max_count * (chart_height - 40) if max_count > 0 else 0
         x = margin + idx * bar_width_px
         y = height - margin - bar_height
 
@@ -121,7 +118,7 @@ def create_qii_distribution_histogram(
 
         # X-axis tick
         bin_start = min_score + idx * bin_width
-        bin_end = bin_start + bin_width
+        bin_start + bin_width
         svg_parts.append(
             f"<text x='{x + bar_width_px / 2}' y='{height - margin + 20}' text-anchor='middle' "
             f"class='label'>{bin_start:.1f}</text>"
@@ -145,6 +142,7 @@ def create_sector_comparison_chart(
         sector_data: Dictionary of sector analysis data
         filename: Output filename
     """
+
     width, height = 900, 600
     margin = 120
     chart_width = width - 2 * margin
@@ -238,6 +236,7 @@ def create_adoption_timeline_chart(filename: str = "adoption_timeline.svg") -> N
     Args:
         filename: Output filename
     """
+
     width, height = 900, 500
     margin = 80
     chart_width = width - 2 * margin
@@ -318,7 +317,7 @@ def create_adoption_timeline_chart(filename: str = "adoption_timeline.svg") -> N
     svg_parts.append(f"<polygon points='{area_points}' fill='#3B82F6' opacity='0.2'/>")
 
     # Adoption phases
-    phase_y = margin + 20
+    margin + 20
     svg_parts.append(
         "<text x='140' y='60' class='label' fill='#666' font-style='italic'>Early Adopters</text>"
     )
@@ -343,6 +342,7 @@ def create_correlation_scatter_plot(
         qii_scores: List of QII scores
         filename: Output filename
     """
+
     width, height = 800, 600
     margin = 100
     chart_width = width - 2 * margin
@@ -468,6 +468,7 @@ def create_component_radar_chart(
         s_score: Strategic value score
         filename: Output filename
     """
+
     width, height = 500, 500
     center_x, center_y = width / 2, height / 2
     radius = 180
@@ -504,7 +505,7 @@ def create_component_radar_chart(
 
     # Draw axes
     angles = [i * (2 * np.pi / len(scores)) - np.pi / 2 for i in range(len(scores))]
-    for idx, (angle, label) in enumerate(zip(angles, labels)):
+    for _idx, (angle, label) in enumerate(zip(angles, labels)):
         x_end = center_x + radius * np.cos(angle)
         y_end = center_y + radius * np.sin(angle)
 
@@ -557,6 +558,7 @@ def create_component_radar_chart(
 
 def main():
     """Generate all Fortune 500 visualizations."""
+
     VIS_DIR.mkdir(parents=True, exist_ok=True)
 
     # Load analysis data

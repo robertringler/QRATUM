@@ -18,14 +18,15 @@ import random
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, Dict, MutableMapping, Optional
+from typing import Any, Callable, MutableMapping
 
-from runtime.python.quasim.runtime import Config as RuntimeConfig, runtime as runtime_context
-
+from runtime.python.quasim.runtime import Config as RuntimeConfig
+from runtime.python.quasim.runtime import runtime as runtime_context
 
 # ---------------------------------------------------------------------------
 # Dataclass for internal standardized return payload
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class ScenarioResult:
@@ -33,15 +34,32 @@ class ScenarioResult:
     timesteps: int
     seed: int
     engine: str
-    raw_output: Dict[str, Any]
+    raw_output: dict[str, Any]
 
     @property
     def simulation_hash(self) -> str:
-        """Deterministic SHA-256 hash of raw_output."""
+        """Deterministic SHA-256 hash of raw_output.
+
+        Returns:
+            Hexadecimal string representation of SHA-256 hash of the JSON-serialized
+            raw_output dictionary, ensuring deterministic verification of simulation results
+        """
         data = json.dumps(self.raw_output, sort_keys=True, default=str).encode()
         return hashlib.sha256(data).hexdigest()
 
     def to_dict(self) -> Dict[str, Any]:
+        """Convert the ScenarioResult to a dictionary representation.
+
+        Returns:
+            Dictionary containing all scenario result fields including scenario_id,
+            timesteps, seed, engine, simulation_hash, and raw_output
+        """
+        """Deterministic SHA-256 hash of raw_output."""
+
+        data = json.dumps(self.raw_output, sort_keys=True, default=str).encode()
+        return hashlib.sha256(data).hexdigest()
+
+    def to_dict(self) -> dict[str, Any]:
         return {
             "scenario_id": self.scenario_id,
             "timesteps": self.timesteps,
@@ -57,11 +75,19 @@ class ScenarioResult:
 # QNX backends call this same API.
 # ---------------------------------------------------------------------------
 
-_ENGINE_REGISTRY: Dict[str, Callable[..., MutableMapping[str, Any]]] = {}
+_ENGINE_REGISTRY: dict[str, Callable[..., MutableMapping[str, Any]]] = {}
 
 
 def register_engine(name: str, fn: Callable[..., MutableMapping[str, Any]]):
+    """Register a backend engine function.
+
+    Args:
+        name: Unique identifier for the engine (e.g., "quasim_modern", "qvr_win")
+        fn: Callable that accepts scenario_id, timesteps, seed, and extra kwargs
+            and returns a dictionary containing simulation results
+    """
     """Register a backend engine function."""
+
     _ENGINE_REGISTRY[name] = fn
 
 
@@ -70,7 +96,7 @@ def register_engine(name: str, fn: Callable[..., MutableMapping[str, Any]]):
 # ---------------------------------------------------------------------------
 
 
-def _complex_to_json(value: complex) -> Dict[str, float]:
+def _complex_to_json(value: complex) -> dict[str, float]:
     return {"real": float(value.real), "imag": float(value.imag)}
 
 
@@ -94,7 +120,7 @@ def _generate_tensors(seed: int, timesteps: int) -> list[list[complex]]:
 
 
 def _run_modern_backend(
-    *, scenario_id: str, timesteps: int, seed: int, extra: Optional[Dict[str, Any]]
+    *, scenario_id: str, timesteps: int, seed: int, extra: dict[str, Any] | None
 ) -> MutableMapping[str, Any]:
     tensors = _generate_tensors(seed, timesteps)
     with runtime_context(RuntimeConfig()) as handle:
@@ -114,7 +140,7 @@ def _run_modern_backend(
 
 
 def _run_legacy_backend(
-    *, scenario_id: str, timesteps: int, seed: int, extra: Optional[Dict[str, Any]]
+    *, scenario_id: str, timesteps: int, seed: int, extra: dict[str, Any] | None
 ) -> MutableMapping[str, Any]:
     # Legacy mode reuses the same runtime but applies a deterministic postprocess
     tensors = _generate_tensors(seed, timesteps)
@@ -137,7 +163,7 @@ def _run_legacy_backend(
 
 
 def _run_qvr_backend(
-    *, scenario_id: str, timesteps: int, seed: int, extra: Optional[Dict[str, Any]]
+    *, scenario_id: str, timesteps: int, seed: int, extra: dict[str, Any] | None
 ) -> MutableMapping[str, Any]:
     if os.name != "nt":  # pragma: no cover - platform-specific
         raise RuntimeError("QVR backend requires Windows")
@@ -188,14 +214,27 @@ def run_scenario(
     timesteps: int,
     seed: int,
     engine: str = "quasim_modern",
-    extra: Optional[Dict[str, Any]] = None,
+    extra: dict[str, Any] | None = None,
 ) -> ScenarioResult:
     """
+
     Execute a simulation scenario via a registered engine.
 
     This function routes calls to the appropriate backend (modern, legacy,
     QVR Windows interface, adapters, HPC wraps, etc.).
+
+    Args:
+        scenario_id: Unique identifier for the simulation scenario
+        timesteps: Number of simulation timesteps to execute
+        seed: Random seed for deterministic reproducibility
+        engine: Name of the registered engine to use (default: "quasim_modern")
+        extra: Optional dictionary of additional parameters passed to the engine
+
+    Returns:
+        ScenarioResult object containing scenario_id, timesteps, seed, engine name,
+        simulation hash, and raw output from the backend engine
     """
+
     if engine not in _ENGINE_REGISTRY:
         raise ValueError(
             f"Engine '{engine}' is not registered. "

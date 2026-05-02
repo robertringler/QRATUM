@@ -22,6 +22,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
     Returns:
         CheckResult with pass/fail status and convergence value
     """
+
     min_conv = cfg["policy"]["tolerances"]["rl_convergence_min"]
     path = cfg["inputs"]["artifacts"]["rl_convergence_json"]
 

@@ -1,0 +1,21 @@
+[package]
+name = "qratum-crypto-pqc"
+version = "1.0.0"
+edition = "2021"
+authors = ["QRATUM Team"]
+description = "Post-Quantum Cryptography implementations for QRATUM"
+license = "MIT"
+
+[dependencies]
+# SHA-3 for quantum-resistant hashing
+sha3 = "0.10"
+
+# Cryptographically secure RNG (getrandom) for key generation
+getrandom = "0.2"
+
+[lib]
+name = "qratum_crypto_pqc"
+path = "mod.rs"
+
+[features]
+default = []

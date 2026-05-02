@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Unit tests for PR auto-resolver
 """
 
@@ -19,6 +20,7 @@ class TestPRIssue(unittest.TestCase):
 
     def test_create_issue(self):
         """Test creating a PR issue"""
+
         issue = PRIssue(
             type="conflict",
             description="Merge conflict in file.py",
@@ -37,6 +39,7 @@ class TestPRAutoResolver(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures"""
+
         self.mock_github = Mock()
         self.mock_repo = Mock()
 
@@ -47,12 +50,14 @@ class TestPRAutoResolver(unittest.TestCase):
 
     def test_initialization(self):
         """Test PRAutoResolver initialization"""
+
         self.assertIsNotNone(self.resolver)
         self.assertEqual(self.resolver.MAX_ATTEMPTS, 3)
         self.assertEqual(self.resolver.MERGE_THRESHOLD_COVERAGE, 0.0)
 
     def test_get_open_prs_all(self):
         """Test getting all open PRs"""
+
         mock_pr1 = Mock()
         mock_pr2 = Mock()
         self.mock_repo.get_pulls.return_value = [mock_pr1, mock_pr2]
@@ -64,6 +69,7 @@ class TestPRAutoResolver(unittest.TestCase):
 
     def test_get_open_prs_specific(self):
         """Test getting a specific PR"""
+
         mock_pr = Mock()
         self.mock_repo.get_pull.return_value = mock_pr
 
@@ -75,6 +81,7 @@ class TestPRAutoResolver(unittest.TestCase):
 
     def test_audit_pr_no_issues(self):
         """Test auditing a PR with no issues"""
+
         mock_pr = Mock()
         mock_pr.mergeable = True
         mock_pr.head.sha = "abc123"
@@ -95,6 +102,7 @@ class TestPRAutoResolver(unittest.TestCase):
 
     def test_audit_pr_with_conflict(self):
         """Test auditing a PR with merge conflict"""
+
         mock_pr = Mock()
         mock_pr.mergeable = False
         mock_pr.head.sha = "abc123"
@@ -118,6 +126,7 @@ class TestPRAutoResolver(unittest.TestCase):
 
     def test_audit_pr_with_ci_failure(self):
         """Test auditing a PR with CI failure"""
+
         mock_pr = Mock()
         mock_pr.mergeable = True
         mock_pr.head.sha = "abc123"
@@ -144,6 +153,7 @@ class TestPRAutoResolver(unittest.TestCase):
 
     def test_check_merge_criteria_with_critical_issue(self):
         """Test merge criteria with critical unfixed issue"""
+
         mock_pr = Mock()
         mock_pr.mergeable = True
         mock_pr.head.sha = "abc123"
@@ -164,6 +174,7 @@ class TestPRAutoResolver(unittest.TestCase):
 
     def test_check_merge_criteria_not_mergeable(self):
         """Test merge criteria when PR not mergeable"""
+
         mock_pr = Mock()
         mock_pr.mergeable = False
         mock_pr.head.sha = "abc123"
@@ -175,6 +186,7 @@ class TestPRAutoResolver(unittest.TestCase):
     @patch("pr_auto_resolver.subprocess.run")
     def test_auto_resolve_file_conflict_documentation(self, mock_run):
         """Test auto-resolving conflict in documentation file"""
+
         import tempfile
 
         # Create a test file with conflict markers
@@ -182,6 +194,7 @@ class TestPRAutoResolver(unittest.TestCase):
             test_file = Path(f.name)
             f.write(
                 """
+
 Some content
 <<<<<<< HEAD
 Original content
@@ -214,6 +227,7 @@ class TestPRResolutionResult(unittest.TestCase):
 
     def test_create_result(self):
         """Test creating a resolution result"""
+
         result = PRResolutionResult(
             pr_number=123,
             status="success",

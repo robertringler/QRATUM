@@ -13,6 +13,7 @@ class TestFluentAdapter:
 
     def test_fluent_adapter_help(self):
         """Test that Fluent adapter help works."""
+
         result = subprocess.run(
             ["python3", "integrations/adapters/fluent/quasim_fluent_driver.py", "--help"],
             capture_output=True,
@@ -23,6 +24,7 @@ class TestFluentAdapter:
 
     def test_fluent_adapter_minimal_run(self):
         """Test Fluent adapter with minimal inputs."""
+
         with tempfile.TemporaryDirectory() as tmpdir:
             tmpdir_path = Path(tmpdir)
 
@@ -67,6 +69,7 @@ class TestFluentAdapter:
 
     def test_fluent_adapter_with_boundary_conditions(self):
         """Test Fluent adapter with boundary conditions."""
+
         with tempfile.TemporaryDirectory() as tmpdir:
             tmpdir_path = Path(tmpdir)
 

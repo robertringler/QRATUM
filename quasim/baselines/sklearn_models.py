@@ -20,6 +20,7 @@ def get_logistic_regression(seed: int = 42) -> LogisticRegression:
     LogisticRegression
         Configured classifier
     """
+
     set_seed(seed)
     return LogisticRegression(
         random_state=seed,
@@ -41,6 +42,7 @@ def get_linear_svc(seed: int = 42) -> LinearSVC:
     LinearSVC
         Configured classifier
     """
+
     set_seed(seed)
     return LinearSVC(
         random_state=seed,
@@ -62,6 +64,7 @@ def get_linear_svr(seed: int = 42) -> LinearSVR:
     LinearSVR
         Configured regressor
     """
+
     set_seed(seed)
     return LinearSVR(
         random_state=seed,
@@ -84,6 +87,7 @@ def get_random_forest_classifier(seed: int = 42, n_estimators: int = 100) -> Ran
     RandomForestClassifier
         Configured classifier
     """
+
     set_seed(seed)
     return RandomForestClassifier(
         n_estimators=n_estimators,
@@ -108,6 +112,7 @@ def get_random_forest_regressor(seed: int = 42, n_estimators: int = 100) -> Rand
     RandomForestRegressor
         Configured regressor
     """
+
     set_seed(seed)
     return RandomForestRegressor(
         n_estimators=n_estimators,
@@ -125,4 +130,5 @@ def get_linear_regression() -> LinearRegression:
     LinearRegression
         Configured regressor
     """
+
     return LinearRegression()

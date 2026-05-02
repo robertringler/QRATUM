@@ -3,18 +3,16 @@
 import pytest
 
 from quasim.ownai.eval.benchmark import BenchmarkResult
-from quasim.ownai.eval.reporting import (
-    generate_ascii_chart,
-    generate_markdown_report,
-    generate_summary_table,
-    save_results_csv,
-    save_results_json,
-)
+from quasim.ownai.eval.reporting import (generate_ascii_chart,
+                                         generate_markdown_report,
+                                         generate_summary_table,
+                                         save_results_csv, save_results_json)
 
 
 @pytest.fixture
 def sample_results():
     """Create sample benchmark results."""
+
     return [
         BenchmarkResult(
             task="tabular-cls",
@@ -63,6 +61,7 @@ def sample_results():
 
 def test_save_results_csv(sample_results, tmp_path):
     """Test saving results to CSV."""
+
     output_path = tmp_path / "results.csv"
     save_results_csv(sample_results, output_path)
 
@@ -78,6 +77,7 @@ def test_save_results_csv(sample_results, tmp_path):
 
 def test_save_results_json(sample_results, tmp_path):
     """Test saving results to JSON."""
+
     output_path = tmp_path / "results.json"
     save_results_json(sample_results, output_path)
 
@@ -93,6 +93,7 @@ def test_save_results_json(sample_results, tmp_path):
 
 def test_generate_summary_table(sample_results):
     """Test generating summary table."""
+
     summary = generate_summary_table(sample_results)
 
     assert len(summary) == 2  # 2 unique (task, model) combinations
@@ -107,6 +108,7 @@ def test_generate_summary_table(sample_results):
 
 def test_generate_markdown_report(sample_results, tmp_path):
     """Test generating Markdown report."""
+
     output_path = tmp_path / "report.md"
     generate_markdown_report(sample_results, output_path, title="Test Report")
 
@@ -122,6 +124,7 @@ def test_generate_markdown_report(sample_results, tmp_path):
 
 def test_generate_ascii_chart():
     """Test generating ASCII chart."""
+
     values = [0.8, 0.6, 0.9, 0.7]
     labels = ["model_a", "model_b", "model_c", "model_d"]
 

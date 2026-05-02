@@ -22,6 +22,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
     Returns:
         CheckResult with pass/fail status and Φ_QEVF value
     """
+
     y = cfg["inputs"]["economics"]["phi_inputs_yaml"]
 
     try:

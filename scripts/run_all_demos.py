@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuASIM Demo Runner
 Executes all vertical demos with validation and artifact collection.
 """
@@ -11,6 +12,7 @@ from pathlib import Path
 
 def run_demos(mode="simulation", quick=False):
     """Run all vertical demos."""
+
     verticals = [
         "aerospace",
         "telecom",

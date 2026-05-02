@@ -1,0 +1,11 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+1,Quantum Simulation,Quantum materials simulation for novel superconductors,D1,0.95,0.92,"Quantum chemistry;DFT",D4;D7,QuASIM,1,simulation
+2,Material Discovery,AI-driven high-entropy alloy discovery,D1,0.88,0.85,"Machine learning;Alloy design",D6;D11,QStack,1,model
+3,Property Prediction,Neural network-based material property prediction,D1,0.82,0.87,"Deep learning;Material science",D2;D8,QStack,1,prediction
+4,Nanostructure Design,Carbon nanotube structure optimization,D1,0.91,0.89,"Molecular dynamics;Optimization",D7;D13,QuASIM,1,design
+5,Composite Materials,Multi-scale composite material modeling,D1,0.85,0.84,"FEA;Multi-physics",D6;D15,QuASIM,2,simulation
+15,Nanostructure Optimization,AI-driven nanostructure design and optimization,D1,0.88,0.90,"ML;Structural optimization",D7;D8,QStack,1,optimization
+25,Thermal Conductivity,High thermal conductivity material design,D1,0.83,0.86,"Thermal analysis;Material science",D2;D13,QuASIM,2,simulation
+35,Coating Technology,Advanced protective coating development,D1,0.79,0.82,"Surface chemistry;Durability",D6;D7,QuASIM,2,material
+45,Smart Materials,Shape-memory alloy optimization,D1,0.87,0.88,"Material science;Control systems",D11;D8,QuASIM,2,design
+55,Metamaterials,Electromagnetic metamaterial design,D1,0.90,0.85,"EM simulation;Nanofabrication",D7;D16,QuASIM,3,simulation

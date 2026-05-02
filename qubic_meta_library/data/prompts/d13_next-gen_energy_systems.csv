@@ -1,0 +1,501 @@
+id,category,description,domain,patentability_score,commercial_potential,keystone_nodes,synergy_connections,execution_layers,phase_deployment,output_type
+2001,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.94,0.87,Fusion physics;Advanced storage,D2;D10,QuASIM,1,simulation
+2002,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.73,0.82,,D10,QuASIM,1,model
+2003,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.82,0.8,,D2,QuASIM,1,analysis
+2004,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.88,0.78,,D17;D2,QuASIM,1,optimization
+2005,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.75,0.93,,D2,QuASIM,1,design
+2006,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.95,0.88,,D17,QuASIM,1,prediction
+2007,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.73,0.85,,D17;D7,QuASIM,1,simulation
+2008,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.86,0.87,,D10;D17,QuASIM,1,model
+2009,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.72,0.88,,D2,QuASIM,1,analysis
+2010,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.71,0.92,,D7,QuASIM,1,optimization
+2011,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.75,0.84,,D2,QuASIM,1,design
+2012,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.89,0.9,,D17,QuASIM,1,prediction
+2013,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.84,0.79,,D7,QuASIM,1,simulation
+2014,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.73,0.87,,D10,QuASIM,1,model
+2015,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.83,0.71,,D7,QuASIM,1,analysis
+2016,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.8,0.88,,D10,QuASIM,1,optimization
+2017,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.73,0.92,,D2;D17,QuASIM,1,design
+2018,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.7,0.75,,D10,QuASIM,1,prediction
+2019,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.91,0.75,,D2,QuASIM,1,simulation
+2020,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.74,0.84,,D7;D10,QuASIM,1,model
+2021,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.81,0.78,,D7;D10,QuASIM,1,analysis
+2022,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.75,0.85,,D7,QuASIM,1,optimization
+2023,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.87,0.79,,D17;D10,QuASIM,1,design
+2024,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.93,0.83,,D10,QuASIM,1,prediction
+2025,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.7,0.86,,D7,QuASIM,1,simulation
+2026,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.9,0.69,,D17,QuASIM,1,model
+2027,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.77,0.79,,D10,QuASIM,1,analysis
+2028,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.95,0.8,,D17,QuASIM,1,optimization
+2029,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.74,0.86,,D2,QuASIM,1,design
+2030,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.73,0.83,,D10;D2,QuASIM,1,prediction
+2031,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.73,0.75,,D7;D17,QuASIM,1,simulation
+2032,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.9,0.77,,D7,QuASIM,1,model
+2033,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.73,0.9,,D10,QuASIM,1,analysis
+2034,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.9,0.79,,D17;D10,QuASIM,1,optimization
+2035,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.94,0.92,,D7,QuASIM,1,design
+2036,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.82,0.71,,D10,QuASIM,1,prediction
+2037,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.77,0.82,,D7;D17,QuASIM,1,simulation
+2038,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.91,0.77,,D10;D2,QuASIM,1,model
+2039,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.76,0.88,,D10;D7,QuASIM,1,analysis
+2040,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.85,0.74,,D2;D7,QuASIM,1,optimization
+2041,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.77,0.86,,D10,QuASIM,1,design
+2042,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.79,0.91,,D7;D10,QuASIM,1,prediction
+2043,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.78,0.86,,D10,QuASIM,1,simulation
+2044,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.85,0.89,,D10,QuASIM,1,model
+2045,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.87,0.75,,D17,QuASIM,1,analysis
+2046,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.78,0.83,,D10,QuASIM,1,optimization
+2047,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.91,0.74,,D10,QuASIM,1,design
+2048,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.78,0.71,,D7,QuASIM,1,prediction
+2049,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.92,0.81,,D17,QuASIM,1,simulation
+2050,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.75,0.82,,D10,QuASIM,1,model
+2051,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.92,0.72,,D2;D7,QuASIM,1,analysis
+2052,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.84,0.86,,D2,QuASIM,1,optimization
+2053,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.82,0.85,,D10,QuASIM,1,design
+2054,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.77,0.91,,D17,QuASIM,1,prediction
+2055,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.71,0.73,,D10;D2,QuASIM,1,simulation
+2056,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.8,0.89,,D7;D2,QuASIM,1,model
+2057,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.72,0.7,,D10,QuASIM,1,analysis
+2058,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.72,0.86,,D2,QuASIM,1,optimization
+2059,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.81,0.86,,D2;D10,QuASIM,1,design
+2060,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.77,0.75,,D17,QuASIM,1,prediction
+2061,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.83,0.81,,D17;D10,QuASIM,1,simulation
+2062,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.73,0.88,,D2;D7,QuASIM,1,model
+2063,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.86,0.87,,D17,QuASIM,1,analysis
+2064,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.81,0.79,,D7,QuASIM,1,optimization
+2065,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.88,0.8,,D2,QuASIM,1,design
+2066,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.94,0.73,,D17,QuASIM,1,prediction
+2067,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.8,0.84,,D7;D10,QuASIM,1,simulation
+2068,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.94,0.82,,D10,QuASIM,1,model
+2069,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.74,0.81,,D2,QuASIM,1,analysis
+2070,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.91,0.85,,D10,QuASIM,1,optimization
+2071,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.77,0.8,,D17,QuASIM,1,design
+2072,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.96,0.89,Fusion physics;Advanced storage,D17;D7,QuASIM,1,prediction
+2073,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.78,0.7,,D10,QuASIM,1,simulation
+2074,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.73,0.82,,D10,QuASIM,1,model
+2075,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.8,0.85,,D17,QuASIM,1,analysis
+2076,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.71,0.93,,D17,QuASIM,1,optimization
+2077,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.76,0.73,,D10;D2,QuASIM,1,design
+2078,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.92,0.86,,D17,QuASIM,1,prediction
+2079,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.85,0.83,,D17,QuASIM,1,simulation
+2080,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.78,0.91,,D7,QuASIM,1,model
+2081,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.85,0.88,,D2;D17,QuASIM,1,analysis
+2082,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.91,0.85,,D10,QuASIM,1,optimization
+2083,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.86,0.84,,D2;D10,QuASIM,1,design
+2084,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.82,0.92,,D2,QuASIM,1,prediction
+2085,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.71,0.82,,D2,QuASIM,1,simulation
+2086,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.81,0.86,,D10,QuASIM,1,model
+2087,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.93,0.89,,D17,QuASIM,1,analysis
+2088,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.87,0.7,,D7;D17,QuASIM,1,optimization
+2089,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.77,0.82,,D17;D2,QuASIM,1,design
+2090,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.75,0.72,,D17,QuASIM,1,prediction
+2091,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.83,0.75,,D7,QuASIM,1,simulation
+2092,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.87,0.78,,D7,QuASIM,1,model
+2093,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.83,0.86,,D2;D10,QuASIM,1,analysis
+2094,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.72,0.88,,D17;D2,QuASIM,1,optimization
+2095,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.92,0.75,,D17;D2,QuASIM,1,design
+2096,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.73,0.68,,D17,QuASIM,1,prediction
+2097,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.8,0.71,,D17,QuASIM,1,simulation
+2098,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.78,0.93,,D7,QuASIM,1,model
+2099,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.87,0.7,,D2,QuASIM,1,analysis
+2100,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.86,0.79,,D7,QuASIM,1,optimization
+2101,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.73,0.84,,D7,QuASIM,1,design
+2102,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.94,0.89,,D10;D17,QuASIM,1,prediction
+2103,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.95,0.71,,D17;D2,QuASIM,1,simulation
+2104,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.91,0.74,,D7,QuASIM,1,model
+2105,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.9,0.73,,D7,QuASIM,1,analysis
+2106,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.74,0.79,,D17,QuASIM,1,optimization
+2107,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.87,0.91,,D17;D7,QuASIM,1,design
+2108,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.73,0.7,,D17;D7,QuASIM,1,prediction
+2109,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.89,0.93,,D7;D10,QuASIM,1,simulation
+2110,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.85,0.88,,D17,QuASIM,1,model
+2111,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.9,0.91,,D17,QuASIM,1,analysis
+2112,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.73,0.8,,D7,QuASIM,1,optimization
+2113,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.93,0.7,,D10;D7,QuASIM,1,design
+2114,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.78,0.76,,D2;D7,QuASIM,1,prediction
+2115,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.86,0.81,,D2,QuASIM,1,simulation
+2116,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.89,0.69,,D10,QuASIM,1,model
+2117,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.76,0.84,,D10;D17,QuASIM,1,analysis
+2118,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.79,0.92,,D7,QuASIM,1,optimization
+2119,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.91,0.85,,D10,QuASIM,1,design
+2120,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.89,0.86,,D7;D10,QuASIM,1,prediction
+2121,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.72,0.9,,D7,QuASIM,1,simulation
+2122,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.92,0.69,,D10;D7,QuASIM,1,model
+2123,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.95,0.75,,D10;D2,QuASIM,1,analysis
+2124,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.76,0.73,,D10,QuASIM,1,optimization
+2125,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.83,0.74,,D2,QuASIM,1,design
+2126,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.83,0.87,,D2;D7,QuASIM,1,prediction
+2127,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.78,0.87,,D10;D7,QuASIM,1,simulation
+2128,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.83,0.85,,D2,QuASIM,1,model
+2129,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.91,0.72,,D2,QuASIM,1,analysis
+2130,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.86,0.88,,D7;D2,QuASIM,1,optimization
+2131,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.81,0.84,,D7;D10,QuASIM,1,design
+2132,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.94,0.91,,D7,QuASIM,1,prediction
+2133,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.83,0.92,,D10;D17,QuASIM,1,simulation
+2134,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.73,0.89,,D17;D10,QuASIM,1,model
+2135,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.91,0.75,,D17,QuASIM,1,analysis
+2136,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.71,0.84,,D7,QuASIM,1,optimization
+2137,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.84,0.8,,D17,QuASIM,1,design
+2138,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.83,0.81,,D17;D7,QuASIM,1,prediction
+2139,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.91,0.82,,D10;D2,QuASIM,1,simulation
+2140,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.82,0.9,,D17;D10,QuASIM,1,model
+2141,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.75,0.7,,D2,QuASIM,1,analysis
+2142,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.71,0.73,,D17;D7,QuASIM,1,optimization
+2143,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.97,0.95,Fusion physics;Advanced storage,D10,QuASIM,1,design
+2144,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.89,0.73,,D7,QuASIM,1,prediction
+2145,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.76,0.89,,D10,QuASIM,1,simulation
+2146,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.76,0.7,,D17;D2,QuASIM,1,model
+2147,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.83,0.9,,D17,QuASIM,1,analysis
+2148,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.73,0.91,,D10,QuASIM,1,optimization
+2149,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.77,0.74,,D17;D7,QuASIM,1,design
+2150,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.89,0.75,,D2;D17,QuASIM,1,prediction
+2151,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.94,0.86,,D17,QuASIM,2,simulation
+2152,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.95,0.92,,D17;D10,QuASIM,2,model
+2153,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.73,0.93,,D7,QuASIM,2,analysis
+2154,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.89,0.87,,D10,QuASIM,2,optimization
+2155,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.9,0.7,,D2,QuASIM,2,design
+2156,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.8,0.73,,D2,QuASIM,2,prediction
+2157,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.76,0.87,,D17,QuASIM,2,simulation
+2158,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.76,0.71,,D10,QuASIM,2,model
+2159,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.83,0.82,,D2;D17,QuASIM,2,analysis
+2160,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.78,0.78,,D7;D2,QuASIM,2,optimization
+2161,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.78,0.71,,D17;D2,QuASIM,2,design
+2162,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.78,0.81,,D2,QuASIM,2,prediction
+2163,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.8,0.9,,D10;D17,QuASIM,2,simulation
+2164,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.92,0.78,,D10;D17,QuASIM,2,model
+2165,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.73,0.84,,D17,QuASIM,2,analysis
+2166,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.86,0.79,,D17;D10,QuASIM,2,optimization
+2167,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.76,0.79,,D17;D10,QuASIM,2,design
+2168,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.77,0.74,,D2;D7,QuASIM,2,prediction
+2169,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.78,0.82,,D10;D2,QuASIM,2,simulation
+2170,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.77,0.89,,D7,QuASIM,2,model
+2171,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.93,0.74,,D2,QuASIM,2,analysis
+2172,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.75,0.79,,D17,QuASIM,2,optimization
+2173,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.76,0.78,,D10,QuASIM,2,design
+2174,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.87,0.89,,D10,QuASIM,2,prediction
+2175,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.72,0.73,,D7,QuASIM,2,simulation
+2176,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.85,0.94,,D17;D7,QuASIM,2,model
+2177,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.9,0.73,,D17;D7,QuASIM,2,analysis
+2178,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.83,0.92,,D2;D7,QuASIM,2,optimization
+2179,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.91,0.71,,D10,QuASIM,2,design
+2180,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.94,0.92,,D10,QuASIM,2,prediction
+2181,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.77,0.8,,D7,QuASIM,2,simulation
+2182,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.73,0.88,,D2;D17,QuASIM,2,model
+2183,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.93,0.71,,D10,QuASIM,2,analysis
+2184,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.86,0.83,,D10;D7,QuASIM,2,optimization
+2185,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.9,0.78,,D17,QuASIM,2,design
+2186,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.74,0.92,,D7;D17,QuASIM,2,prediction
+2187,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.88,0.75,,D2;D7,QuASIM,2,simulation
+2188,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.92,0.85,,D7;D2,QuASIM,2,model
+2189,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.81,0.74,,D7;D17,QuASIM,2,analysis
+2190,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.93,0.69,,D10;D2,QuASIM,2,optimization
+2191,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.71,0.76,,D2,QuASIM,2,design
+2192,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.77,0.7,,D7,QuASIM,2,prediction
+2193,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.92,0.91,,D2;D10,QuASIM,2,simulation
+2194,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.77,0.89,,D2,QuASIM,2,model
+2195,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.92,0.8,,D10,QuASIM,2,analysis
+2196,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.95,0.7,,D10;D17,QuASIM,2,optimization
+2197,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.73,0.92,,D2;D10,QuASIM,2,design
+2198,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.83,0.69,,D7,QuASIM,2,prediction
+2199,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.9,0.91,,D10;D17,QuASIM,2,simulation
+2200,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.81,0.86,,D2;D17,QuASIM,2,model
+2201,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.77,0.82,,D10,QuASIM,2,analysis
+2202,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.8,0.87,,D2,QuASIM,2,optimization
+2203,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.94,0.9,,D17,QuASIM,2,design
+2204,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.85,0.72,,D10;D17,QuASIM,2,prediction
+2205,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.91,0.93,,D7,QuASIM,2,simulation
+2206,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.84,0.75,,D17;D7,QuASIM,2,model
+2207,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.76,0.78,,D7,QuASIM,2,analysis
+2208,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.94,0.86,,D17;D10,QuASIM,2,optimization
+2209,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.75,0.77,,D17,QuASIM,2,design
+2210,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.72,0.8,,D2,QuASIM,2,prediction
+2211,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.94,0.85,,D7,QuASIM,2,simulation
+2212,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.78,0.83,,D10;D7,QuASIM,2,model
+2213,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.71,0.9,,D2,QuASIM,2,analysis
+2214,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.88,0.88,Fusion physics;Advanced storage,D2;D17,QuASIM,2,optimization
+2215,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.74,0.7,,D2,QuASIM,2,design
+2216,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.88,0.87,,D10,QuASIM,2,prediction
+2217,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.72,0.9,,D2,QuASIM,2,simulation
+2218,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.73,0.87,,D7;D2,QuASIM,2,model
+2219,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.89,0.77,,D17,QuASIM,2,analysis
+2220,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.94,0.9,,D2;D17,QuASIM,2,optimization
+2221,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.8,0.77,,D2;D10,QuASIM,2,design
+2222,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.9,0.88,,D7,QuASIM,2,prediction
+2223,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.95,0.84,,D17,QuASIM,2,simulation
+2224,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.87,0.9,,D17,QuASIM,2,model
+2225,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.71,0.72,,D10,QuASIM,2,analysis
+2226,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.86,0.8,,D2,QuASIM,2,optimization
+2227,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.84,0.82,,D2;D17,QuASIM,2,design
+2228,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.73,0.92,,D10;D7,QuASIM,2,prediction
+2229,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.84,0.79,,D2;D10,QuASIM,2,simulation
+2230,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.83,0.71,,D2;D17,QuASIM,2,model
+2231,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.71,0.85,,D7;D2,QuASIM,2,analysis
+2232,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.71,0.77,,D2;D7,QuASIM,2,optimization
+2233,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.86,0.89,,D2,QuASIM,2,design
+2234,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.76,0.89,,D10,QuASIM,2,prediction
+2235,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.83,0.74,,D2,QuASIM,2,simulation
+2236,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.94,0.71,,D7,QuASIM,2,model
+2237,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.93,0.85,,D10;D7,QuASIM,2,analysis
+2238,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.72,0.93,,D7,QuASIM,2,optimization
+2239,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.71,0.89,,D17,QuASIM,2,design
+2240,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.92,0.79,,D2,QuASIM,2,prediction
+2241,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.87,0.91,,D2,QuASIM,2,simulation
+2242,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.9,0.74,,D17;D2,QuASIM,2,model
+2243,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.9,0.76,,D2;D17,QuASIM,2,analysis
+2244,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.7,0.7,,D2,QuASIM,2,optimization
+2245,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.9,0.75,,D17,QuASIM,2,design
+2246,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.81,0.71,,D2;D17,QuASIM,2,prediction
+2247,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.74,0.7,,D2;D7,QuASIM,2,simulation
+2248,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.85,0.92,,D17,QuASIM,2,model
+2249,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.95,0.73,,D7;D10,QuASIM,2,analysis
+2250,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.8,0.92,,D10,QuASIM,2,optimization
+2251,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.89,0.74,,D7;D2,QuASIM,2,design
+2252,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.72,0.91,,D2,QuASIM,2,prediction
+2253,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.75,0.89,,D7;D10,QuASIM,2,simulation
+2254,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.72,0.82,,D2,QuASIM,2,model
+2255,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.9,0.69,,D10,QuASIM,2,analysis
+2256,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.7,0.91,,D7,QuASIM,2,optimization
+2257,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.88,0.68,,D10,QuASIM,2,design
+2258,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.74,0.81,,D7;D2,QuASIM,2,prediction
+2259,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.74,0.92,,D10;D2,QuASIM,2,simulation
+2260,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.77,0.74,,D7,QuASIM,2,model
+2261,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.82,0.92,,D2;D7,QuASIM,2,analysis
+2262,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.78,0.93,,D2,QuASIM,2,optimization
+2263,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.71,0.68,,D7;D10,QuASIM,2,design
+2264,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.77,0.8,,D17,QuASIM,2,prediction
+2265,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.93,0.77,,D10;D2,QuASIM,2,simulation
+2266,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.83,0.75,,D2;D7,QuASIM,2,model
+2267,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.71,0.71,,D2,QuASIM,2,analysis
+2268,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.71,0.86,,D2,QuASIM,2,optimization
+2269,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.72,0.83,,D17;D7,QuASIM,2,design
+2270,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.7,0.9,,D2,QuASIM,2,prediction
+2271,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.77,0.83,,D2,QuASIM,2,simulation
+2272,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.77,0.76,,D2,QuASIM,2,model
+2273,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.82,0.8,,D7,QuASIM,2,analysis
+2274,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.94,0.92,,D10,QuASIM,2,optimization
+2275,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.72,0.72,,D10,QuASIM,2,design
+2276,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.77,0.93,,D10,QuASIM,2,prediction
+2277,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.83,0.89,,D2,QuASIM,2,simulation
+2278,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.8,0.8,,D2,QuASIM,2,model
+2279,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.83,0.87,,D17;D7,QuASIM,2,analysis
+2280,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.87,0.93,,D10;D7,QuASIM,2,optimization
+2281,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.91,0.75,,D7;D2,QuASIM,2,design
+2282,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.87,0.8,,D17;D2,QuASIM,2,prediction
+2283,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.89,0.84,,D17,QuASIM,2,simulation
+2284,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.9,0.78,,D17,QuASIM,2,model
+2285,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.94,0.86,Fusion physics;Advanced storage,D7;D17,QuASIM,2,analysis
+2286,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.75,0.83,,D2,QuASIM,2,optimization
+2287,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.75,0.92,,D7;D17,QuASIM,2,design
+2288,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.82,0.87,,D7,QuASIM,2,prediction
+2289,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.86,0.72,,D2;D17,QuASIM,2,simulation
+2290,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.81,0.69,,D7,QuASIM,2,model
+2291,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.83,0.76,,D17,QuASIM,2,analysis
+2292,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.88,0.89,,D7;D17,QuASIM,2,optimization
+2293,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.95,0.92,,D7;D17,QuASIM,2,design
+2294,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.92,0.91,,D10;D7,QuASIM,2,prediction
+2295,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.94,0.69,,D17,QuASIM,2,simulation
+2296,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.83,0.92,,D17;D2,QuASIM,2,model
+2297,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.82,0.86,,D7,QuASIM,2,analysis
+2298,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.89,0.82,,D17;D2,QuASIM,2,optimization
+2299,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.71,0.7,,D2,QuASIM,2,design
+2300,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.77,0.81,,D2,QuASIM,2,prediction
+2301,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.8,0.85,,D7,QuASIM,3,simulation
+2302,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.73,0.69,,D17,QuASIM,3,model
+2303,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.7,0.77,,D2,QuASIM,3,analysis
+2304,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.88,0.84,,D10,QuASIM,3,optimization
+2305,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.8,0.9,,D7;D10,QuASIM,3,design
+2306,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.76,0.76,,D10;D2,QuASIM,3,prediction
+2307,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.77,0.72,,D17,QuASIM,3,simulation
+2308,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.85,0.89,,D7,QuASIM,3,model
+2309,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.89,0.74,,D7,QuASIM,3,analysis
+2310,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.9,0.75,,D17,QuASIM,3,optimization
+2311,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.79,0.76,,D2,QuASIM,3,design
+2312,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.72,0.79,,D7;D10,QuASIM,3,prediction
+2313,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.72,0.91,,D7,QuASIM,3,simulation
+2314,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.73,0.73,,D10,QuASIM,3,model
+2315,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.81,0.92,,D10,QuASIM,3,analysis
+2316,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.72,0.89,,D10,QuASIM,3,optimization
+2317,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.81,0.7,,D2;D7,QuASIM,3,design
+2318,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.88,0.86,,D2;D10,QuASIM,3,prediction
+2319,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.82,0.89,,D7,QuASIM,3,simulation
+2320,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.94,0.87,,D17,QuASIM,3,model
+2321,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.7,0.79,,D2;D17,QuASIM,3,analysis
+2322,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.88,0.9,,D7,QuASIM,3,optimization
+2323,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.75,0.76,,D2;D17,QuASIM,3,design
+2324,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.82,0.9,,D17;D7,QuASIM,3,prediction
+2325,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.78,0.87,,D10,QuASIM,3,simulation
+2326,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.79,0.84,,D17;D10,QuASIM,3,model
+2327,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.87,0.88,,D7,QuASIM,3,analysis
+2328,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.81,0.89,,D2,QuASIM,3,optimization
+2329,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.84,0.92,,D2,QuASIM,3,design
+2330,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.87,0.72,,D17;D10,QuASIM,3,prediction
+2331,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.74,0.73,,D2,QuASIM,3,simulation
+2332,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.73,0.79,,D2,QuASIM,3,model
+2333,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.75,0.91,,D7;D2,QuASIM,3,analysis
+2334,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.87,0.82,,D7,QuASIM,3,optimization
+2335,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.76,0.83,,D10;D7,QuASIM,3,design
+2336,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.83,0.9,,D10;D2,QuASIM,3,prediction
+2337,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.92,0.8,,D10,QuASIM,3,simulation
+2338,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.75,0.91,,D7;D10,QuASIM,3,model
+2339,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.86,0.92,,D7,QuASIM,3,analysis
+2340,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.89,0.8,,D10;D2,QuASIM,3,optimization
+2341,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.72,0.74,,D10;D7,QuASIM,3,design
+2342,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.91,0.79,,D10,QuASIM,3,prediction
+2343,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.81,0.79,,D10;D2,QuASIM,3,simulation
+2344,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.79,0.89,,D17;D2,QuASIM,3,model
+2345,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.81,0.87,,D17;D10,QuASIM,3,analysis
+2346,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.91,0.91,,D17;D10,QuASIM,3,optimization
+2347,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.93,0.85,,D17,QuASIM,3,design
+2348,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.91,0.8,,D10;D7,QuASIM,3,prediction
+2349,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.77,0.8,,D10,QuASIM,3,simulation
+2350,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.71,0.89,,D2;D17,QuASIM,3,model
+2351,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.81,0.69,,D10,QuASIM,3,analysis
+2352,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.84,0.86,,D10,QuASIM,3,optimization
+2353,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.91,0.76,,D17,QuASIM,3,design
+2354,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.86,0.76,,D2,QuASIM,3,prediction
+2355,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.82,0.92,,D10;D2,QuASIM,3,simulation
+2356,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.9,0.96,Fusion physics;Advanced storage,D7;D17,QuASIM,3,model
+2357,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.9,0.76,,D2,QuASIM,3,analysis
+2358,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.7,0.91,,D2;D17,QuASIM,3,optimization
+2359,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.83,0.8,,D7;D2,QuASIM,3,design
+2360,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.77,0.81,,D10,QuASIM,3,prediction
+2361,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.82,0.92,,D7,QuASIM,3,simulation
+2362,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.92,0.81,,D17,QuASIM,3,model
+2363,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.9,0.82,,D7;D17,QuASIM,3,analysis
+2364,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.81,0.84,,D17;D2,QuASIM,3,optimization
+2365,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.86,0.83,,D17;D2,QuASIM,3,design
+2366,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.94,0.81,,D7;D10,QuASIM,3,prediction
+2367,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.83,0.79,,D7,QuASIM,3,simulation
+2368,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.74,0.82,,D2,QuASIM,3,model
+2369,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.7,0.73,,D17,QuASIM,3,analysis
+2370,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.83,0.94,,D10;D7,QuASIM,3,optimization
+2371,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.76,0.91,,D2,QuASIM,3,design
+2372,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.87,0.83,,D10;D7,QuASIM,3,prediction
+2373,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.74,0.72,,D10,QuASIM,3,simulation
+2374,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.91,0.8,,D2,QuASIM,3,model
+2375,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.92,0.77,,D7,QuASIM,3,analysis
+2376,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.9,0.84,,D7,QuASIM,3,optimization
+2377,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.82,0.74,,D7;D17,QuASIM,3,design
+2378,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.71,0.81,,D7;D10,QuASIM,3,prediction
+2379,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.77,0.93,,D2,QuASIM,3,simulation
+2380,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.82,0.74,,D10,QuASIM,3,model
+2381,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.82,0.74,,D7;D17,QuASIM,3,analysis
+2382,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.91,0.76,,D7,QuASIM,3,optimization
+2383,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.89,0.72,,D17,QuASIM,3,design
+2384,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.79,0.8,,D7;D10,QuASIM,3,prediction
+2385,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.71,0.83,,D2;D17,QuASIM,3,simulation
+2386,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.77,0.76,,D10,QuASIM,3,model
+2387,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.93,0.83,,D2;D10,QuASIM,3,analysis
+2388,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.73,0.84,,D10,QuASIM,3,optimization
+2389,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.84,0.83,,D2,QuASIM,3,design
+2390,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.86,0.82,,D17,QuASIM,3,prediction
+2391,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.72,0.75,,D7,QuASIM,3,simulation
+2392,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.88,0.9,,D2,QuASIM,3,model
+2393,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.81,0.8,,D10;D7,QuASIM,3,analysis
+2394,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.77,0.78,,D7,QuASIM,3,optimization
+2395,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.79,0.82,,D10;D7,QuASIM,3,design
+2396,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.76,0.85,,D17,QuASIM,3,prediction
+2397,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.91,0.76,,D17,QuASIM,3,simulation
+2398,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.78,0.85,,D17;D10,QuASIM,3,model
+2399,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.8,0.84,,D17,QuASIM,3,analysis
+2400,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.86,0.84,,D7;D2,QuASIM,3,optimization
+2401,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.73,0.72,,D7,QuASIM,3,design
+2402,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.89,0.91,,D17;D10,QuASIM,3,prediction
+2403,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.73,0.76,,D10;D17,QuASIM,3,simulation
+2404,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.95,0.85,,D17;D10,QuASIM,3,model
+2405,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.74,0.9,,D10,QuASIM,3,analysis
+2406,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.83,0.72,,D7,QuASIM,3,optimization
+2407,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.78,0.77,,D17,QuASIM,3,design
+2408,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.83,0.7,,D10,QuASIM,3,prediction
+2409,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.82,0.77,,D7;D10,QuASIM,3,simulation
+2410,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.8,0.75,,D17,QuASIM,3,model
+2411,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.88,0.75,,D10,QuASIM,3,analysis
+2412,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.73,0.81,,D10;D7,QuASIM,3,optimization
+2413,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.79,0.86,,D10,QuASIM,3,design
+2414,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.78,0.81,,D10,QuASIM,3,prediction
+2415,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.82,0.79,,D17;D10,QuASIM,3,simulation
+2416,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.86,0.78,,D10,QuASIM,3,model
+2417,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.83,0.75,,D17,QuASIM,3,analysis
+2418,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.95,0.88,,D10,QuASIM,3,optimization
+2419,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.88,0.71,,D2;D17,QuASIM,3,design
+2420,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.9,0.89,,D2;D17,QuASIM,3,prediction
+2421,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.94,0.85,,D7,QuASIM,3,simulation
+2422,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.72,0.87,,D7,QuASIM,3,model
+2423,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.75,0.72,,D2,QuASIM,3,analysis
+2424,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.83,0.71,,D2,QuASIM,3,optimization
+2425,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.75,0.83,,D10,QuASIM,3,design
+2426,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.73,0.87,,D17,QuASIM,4,prediction
+2427,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.95,0.87,Fusion physics;Advanced storage,D17;D2,QuASIM,4,simulation
+2428,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.9,0.92,,D10,QuASIM,4,model
+2429,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.72,0.83,,D17,QuASIM,4,analysis
+2430,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.82,0.74,,D7,QuASIM,4,optimization
+2431,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.9,0.83,,D10,QuASIM,4,design
+2432,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.92,0.76,,D7,QuASIM,4,prediction
+2433,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.71,0.82,,D7,QuASIM,4,simulation
+2434,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.92,0.79,,D17,QuASIM,4,model
+2435,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.89,0.86,,D10;D17,QuASIM,4,analysis
+2436,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.78,0.78,,D2,QuASIM,4,optimization
+2437,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.7,0.73,,D7;D17,QuASIM,4,design
+2438,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.73,0.78,,D2;D17,QuASIM,4,prediction
+2439,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.84,0.9,,D10,QuASIM,4,simulation
+2440,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.9,0.82,,D10,QuASIM,4,model
+2441,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.81,0.91,,D10;D2,QuASIM,4,analysis
+2442,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.86,0.78,,D7;D17,QuASIM,4,optimization
+2443,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.92,0.71,,D17,QuASIM,4,design
+2444,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.72,0.8,,D10;D7,QuASIM,4,prediction
+2445,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.93,0.83,,D17,QuASIM,4,simulation
+2446,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.7,0.92,,D17,QuASIM,4,model
+2447,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.84,0.9,,D2,QuASIM,4,analysis
+2448,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.78,0.72,,D2,QuASIM,4,optimization
+2449,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.85,0.73,,D17,QuASIM,4,design
+2450,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.82,0.76,,D10,QuASIM,4,prediction
+2451,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.86,0.9,,D2;D17,QuASIM,4,simulation
+2452,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.71,0.77,,D7,QuASIM,4,model
+2453,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.88,0.69,,D7;D2,QuASIM,4,analysis
+2454,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.94,0.78,,D2;D17,QuASIM,4,optimization
+2455,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.8,0.72,,D2,QuASIM,4,design
+2456,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.86,0.72,,D17;D2,QuASIM,4,prediction
+2457,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.77,0.89,,D17;D10,QuASIM,4,simulation
+2458,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.92,0.81,,D17,QuASIM,4,model
+2459,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.92,0.89,,D7;D10,QuASIM,4,analysis
+2460,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.87,0.77,,D7;D17,QuASIM,4,optimization
+2461,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.89,0.74,,D10,QuASIM,4,design
+2462,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.91,0.93,,D17;D2,QuASIM,4,prediction
+2463,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.93,0.77,,D10,QuASIM,4,simulation
+2464,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.85,0.94,,D17;D10,QuASIM,4,model
+2465,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.87,0.92,,D17,QuASIM,4,analysis
+2466,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.78,0.7,,D7;D10,QuASIM,4,optimization
+2467,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.94,0.9,,D7,QuASIM,4,design
+2468,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.82,0.86,,D2;D17,QuASIM,4,prediction
+2469,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.73,0.87,,D17,QuASIM,4,simulation
+2470,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.78,0.8,,D17,QuASIM,4,model
+2471,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.93,0.69,,D17,QuASIM,4,analysis
+2472,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.74,0.83,,D7,QuASIM,4,optimization
+2473,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.7,0.91,,D7,QuASIM,4,design
+2474,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.89,0.72,,D10;D7,QuASIM,4,prediction
+2475,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.78,0.82,,D2,QuASIM,4,simulation
+2476,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.72,0.83,,D17,QuASIM,4,model
+2477,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.92,0.72,,D10,QuASIM,4,analysis
+2478,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.79,0.78,,D10,QuASIM,4,optimization
+2479,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.84,0.9,,D10,QuASIM,4,design
+2480,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.87,0.94,,D7,QuASIM,4,prediction
+2481,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.8,0.85,,D7;D17,QuASIM,4,simulation
+2482,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.92,0.91,,D2;D10,QuASIM,4,model
+2483,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.78,0.92,,D10,QuASIM,4,analysis
+2484,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.79,0.69,,D10;D7,QuASIM,4,optimization
+2485,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.77,0.88,,D10,QuASIM,4,design
+2486,Fusion Reactor Design,Fusion reactor divertor optimization using next-gen energy systems approaches,D13,0.73,0.87,,D10,QuASIM,4,prediction
+2487,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.93,0.84,,D17;D10,QuASIM,4,simulation
+2488,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.82,0.8,,D17;D2,QuASIM,4,model
+2489,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.77,0.86,,D2;D7,QuASIM,4,analysis
+2490,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.77,0.69,,D7;D17,QuASIM,4,optimization
+2491,Fusion Reactor Design,Fusion reactor blanket design using next-gen energy systems approaches,D13,0.77,0.89,,D17,QuASIM,4,design
+2492,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.92,0.71,,D7,QuASIM,4,prediction
+2493,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.93,0.78,,D2,QuASIM,4,simulation
+2494,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.86,0.7,,D7;D17,QuASIM,4,model
+2495,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.89,0.94,,D7;D2,QuASIM,4,analysis
+2496,Fusion Reactor Design,Fusion reactor plasma containment using next-gen energy systems approaches,D13,0.78,0.74,,D10,QuASIM,4,optimization
+2497,Advanced Batteries,Advanced Batteries simulation and optimization using next-gen energy systems approaches,D13,0.74,0.88,,D2;D7,QuASIM,4,design
+2498,Supercapacitors,Supercapacitors simulation and optimization using next-gen energy systems approaches,D13,0.88,0.83,,D7,QuASIM,4,prediction
+2499,Hydrogen Storage,Hydrogen Storage simulation and optimization using next-gen energy systems approaches,D13,0.85,0.88,,D7,QuASIM,4,simulation
+2500,Grid Integration,Grid Integration simulation and optimization using next-gen energy systems approaches,D13,0.7,0.76,,D10;D2,QuASIM,4,model

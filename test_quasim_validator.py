@@ -27,6 +27,7 @@ class TestDeterministicValidation:
 
     def test_deterministic_replay_with_seed(self):
         """Verify deterministic replay with fixed seed."""
+
         seed = 42
         cfg = Config(simulation_precision="fp32", max_workspace_mb=64, seed=seed)
 
@@ -49,6 +50,7 @@ class TestDeterministicValidation:
 
     def test_simulation_convergence(self):
         """Verify simulation converges for various circuit sizes."""
+
         cfg = Config(simulation_precision="fp64", max_workspace_mb=128)
 
         circuit_sizes = [2, 4, 8, 16]
@@ -64,6 +66,7 @@ class TestDeterministicValidation:
 
     def test_precision_modes(self):
         """Verify all precision modes are supported."""
+
         precisions = ["fp8", "fp16", "fp32", "fp64"]
 
         circuit = [[1 + 0j, 1 + 0j, 1 + 0j, 1 + 0j]]
@@ -81,6 +84,7 @@ class TestFidelityMetrics:
 
     def test_montecarlo_fidelity_requirements(self):
         """Verify Monte-Carlo results meet fidelity requirements (≥ 0.97 ± 0.005)."""
+
         # Check if Monte-Carlo results exist
         mc_path = Path("montecarlo_campaigns/MC_Results_1024.json")
 
@@ -96,9 +100,9 @@ class TestFidelityMetrics:
         tolerance = stats["target_tolerance"]
 
         # Verify mean fidelity is within tolerance
-        assert abs(mean_fidelity - target) <= tolerance, (
-            f"Mean fidelity {mean_fidelity:.4f} outside tolerance " f"of {target} ± {tolerance}"
-        )
+        assert (
+            abs(mean_fidelity - target) <= tolerance
+        ), f"Mean fidelity {mean_fidelity:.4f} outside tolerance of {target} ± {tolerance}"
 
         # Verify acceptance criteria met
         assert stats["acceptance_criteria_met"], "Fidelity acceptance criteria not met"
@@ -110,6 +114,7 @@ class TestFidelityMetrics:
 
     def test_trajectory_envelope_compliance(self):
         """Verify all trajectories converge within ±1% of nominal envelope."""
+
         mc_path = Path("montecarlo_campaigns/MC_Results_1024.json")
 
         if not mc_path.exists():
@@ -135,6 +140,7 @@ class TestTrotterConvergence:
 
     def test_trotter_error_threshold(self):
         """Verify Trotter-error ≤ 1×10⁻¹⁰ for deterministic validation."""
+
         # Simulated Trotter error calculation
         # In production, this would compare Trotter vs expm propagation
 
@@ -162,6 +168,7 @@ class TestSchemaCompliance:
 
     def test_seed_audit_schema_validation(self):
         """Verify seed audit log schema compliance (≥ 99%)."""
+
         log_path = Path("seed_management/seed_audit.log")
 
         if not log_path.exists():
@@ -201,6 +208,7 @@ class TestSchemaCompliance:
 
     def test_timestamp_synchronization(self):
         """Verify timestamp synchronization < 1μs drift across replay cycles."""
+
         log_path = Path("seed_management/seed_audit.log")
 
         if not log_path.exists():
@@ -225,6 +233,7 @@ class TestCoverageCompliance:
 
     def test_mcdc_coverage_complete(self):
         """Verify MC/DC coverage meets DO-178C §6.4.4 requirements."""
+
         import csv
 
         coverage_path = Path("montecarlo_campaigns/coverage_matrix.csv")
@@ -241,9 +250,9 @@ class TestCoverageCompliance:
 
         coverage_rate = covered_conditions / len(entries)
 
-        assert coverage_rate == 1.0, (
-            f"MC/DC coverage {coverage_rate:.2%} incomplete " "(all conditions must be covered)"
-        )
+        assert (
+            coverage_rate == 1.0
+        ), f"MC/DC coverage {coverage_rate:.2%} incomplete (all conditions must be covered)"
 
 
 class TestCertificationReadiness:
@@ -251,6 +260,7 @@ class TestCertificationReadiness:
 
     def test_certification_package_zero_anomalies(self):
         """Verify zero open anomalies at CDP freeze."""
+
         cdp_path = Path("cdp_artifacts/CDP_v1.0.json")
 
         if not cdp_path.exists():
@@ -271,6 +281,7 @@ class TestCertificationReadiness:
 
     def test_verification_evidence_complete(self):
         """Verify all verification evidence items are present and verified."""
+
         cdp_path = Path("cdp_artifacts/CDP_v1.0.json")
 
         if not cdp_path.exists():
@@ -298,6 +309,7 @@ class TestRuntimeBehavior:
 
     def test_runtime_context_manager(self):
         """Verify runtime context manager works correctly."""
+
         cfg = Config(simulation_precision="fp32", max_workspace_mb=64)
 
         circuit = [[1 + 0j, 1 + 0j]]
@@ -315,6 +327,7 @@ class TestRuntimeBehavior:
 
     def test_runtime_without_context_fails(self):
         """Verify runtime requires context manager."""
+
         from quasim import Runtime
 
         cfg = Config(simulation_precision="fp32", max_workspace_mb=64)

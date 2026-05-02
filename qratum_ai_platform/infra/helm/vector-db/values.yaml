@@ -1,0 +1,109 @@
+# Default values for vector-db
+replicaCount: 1
+
+image:
+  repository: milvusdb/milvus
+  pullPolicy: IfNotPresent
+  tag: "v2.3.0"
+
+service:
+  type: ClusterIP
+  port: 19530
+  grpcPort: 19530
+  httpPort: 9091
+
+persistence:
+  enabled: true
+  storageClass: "standard"
+  accessMode: ReadWriteOnce
+  size: 50Gi
+  mountPath: /var/lib/milvus
+
+resources:
+  requests:
+    memory: "4Gi"
+    cpu: "2000m"
+  limits:
+    memory: "16Gi"
+    cpu: "8000m"
+
+env:
+  - name: ETCD_ENDPOINTS
+    value: "etcd:2379"
+  - name: MINIO_ADDRESS
+    value: "minio:9000"
+  - name: PULSAR_ADDRESS
+    value: "pulsar://pulsar:6650"
+
+# Etcd configuration (metadata storage)
+etcd:
+  enabled: true
+  replicaCount: 3
+  persistence:
+    enabled: true
+    size: 10Gi
+
+# MinIO configuration (object storage)
+minio:
+  enabled: true
+  mode: standalone
+  persistence:
+    enabled: true
+    size: 100Gi
+  resources:
+    requests:
+      memory: 2Gi
+      cpu: 1000m
+
+# Pulsar configuration (message queue)
+pulsar:
+  enabled: true
+  persistence:
+    enabled: true
+    size: 20Gi
+
+# Monitoring
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+
+livenessProbe:
+  tcpSocket:
+    port: 19530
+  initialDelaySeconds: 60
+  periodSeconds: 30
+
+readinessProbe:
+  tcpSocket:
+    port: 19530
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "9091"
+
+# Index configuration
+indexConfig:
+  # Default index type for vectors
+  indexType: "IVF_FLAT"
+  metricType: "L2"
+  nlist: 1024
+
+# Collection auto-flush
+autoFlush:
+  enabled: true
+  interval: 1s
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

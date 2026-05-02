@@ -17,6 +17,7 @@ def compute_eeg_correlation(eeg_signal: np.ndarray, consciousness_metric: np.nda
     Returns:
         Dictionary with correlation statistics
     """
+
     np.random.seed(42)
 
     # Ensure same length
@@ -41,6 +42,7 @@ def compute_eeg_correlation(eeg_signal: np.ndarray, consciousness_metric: np.nda
 
 def run_experiment():
     """Execute EEG correlation experiment."""
+
     np.random.seed(42)
 
     # Generate synthetic EEG signal and consciousness metric

@@ -28,6 +28,7 @@ class StateManager:
         Args:
             state: New state dictionary
         """
+
         self.history.append(state.copy())
 
         # Trim history if needed
@@ -40,6 +41,7 @@ class StateManager:
         Returns:
             Current state dictionary, or empty dict if no history
         """
+
         if not self.history:
             return {}
         return self.history[-1].copy()
@@ -53,6 +55,7 @@ class StateManager:
         Returns:
             State dictionary at the given index
         """
+
         if not self.history:
             raise IndexError("No state history available")
         return self.history[index].copy()
@@ -66,12 +69,14 @@ class StateManager:
         Returns:
             List of state dictionaries
         """
+
         if n is None:
             return [s.copy() for s in self.history]
         return [s.copy() for s in self.history[-n:]]
 
     def clear_history(self) -> None:
         """Clear all state history."""
+
         self.history.clear()
 
     def rollback(self, steps: int = 1) -> None:
@@ -80,6 +85,7 @@ class StateManager:
         Args:
             steps: Number of steps to rollback
         """
+
         if steps < 1:
             raise ValueError("Steps must be positive")
         if steps >= len(self.history):

@@ -69,6 +69,7 @@ class QuantumEthicalGovernor:
         min_sustainability_score : float
             Minimum required sustainability score (0-100)
         """
+
         self.energy_budget = energy_budget
         self.equity_threshold = equity_threshold
         self.min_sustainability_score = min_sustainability_score
@@ -103,6 +104,7 @@ class QuantumEthicalGovernor:
         ResourceMetrics
             Recorded resource metrics
         """
+
         metrics = ResourceMetrics(
             energy_consumption=energy_consumption,
             compute_time=compute_time,
@@ -148,6 +150,7 @@ class QuantumEthicalGovernor:
         FairnessMetrics
             Fairness assessment metrics
         """
+
         # Calculate Gini coefficient
         gini = self._calculate_gini(resource_distribution)
 
@@ -203,6 +206,7 @@ class QuantumEthicalGovernor:
         EthicalAssessment
             Ethical compliance assessment
         """
+
         # Use latest metrics if not provided
         if resource_metrics is None and self.resource_history:
             resource_metrics = self.resource_history[-1]
@@ -296,6 +300,7 @@ class QuantumEthicalGovernor:
         Dict[str, Any]
             DVL emission record
         """
+
         dvl_record = {
             "record_type": "ethical_compliance",
             "timestamp": assessment.timestamp,
@@ -324,6 +329,7 @@ class QuantumEthicalGovernor:
         Dict[str, Any]
             Performance summary
         """
+
         if not self.assessment_history:
             return {
                 "assessments_count": 0,
@@ -361,6 +367,7 @@ class QuantumEthicalGovernor:
         float
             Gini coefficient (0-1)
         """
+
         if not distribution or len(distribution) < 2:
             return 0.0
 
@@ -388,6 +395,7 @@ class QuantumEthicalGovernor:
         float
             Access equity score (0-100)
         """
+
         if not access_counts:
             return 100.0
 
@@ -420,6 +428,7 @@ class QuantumEthicalGovernor:
         float
             Priority fairness score (0-100)
         """
+
         if not priority_levels or not resource_distribution:
             return 100.0
 

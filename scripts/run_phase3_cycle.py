@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Complete Phase III evolution cycle integrating all components."""
+
 from __future__ import annotations
 
 import time
@@ -18,6 +19,7 @@ from schedules.scheduler import DifferentiableScheduler
 
 def simulate_kernel_execution(genome, precision_map):
     """Simulate kernel execution with given parameters."""
+
     # Simplified simulation based on genome parameters
     base_latency = 100.0
     latency = base_latency + genome.tile_size / 5.0 + genome.warp_count * 0.5
@@ -53,6 +55,7 @@ def run_evolution_cycle(
     seed: int = 42,
 ):
     """
+
     Run a complete Phase III evolution cycle.
 
     Integrates:
@@ -66,6 +69,7 @@ def run_evolution_cycle(
     - Formal verification
     - Federated learning aggregation
     """
+
     print("=" * 80)
     print("Phase III Complete Evolution Cycle")
     print("=" * 80)
@@ -79,7 +83,7 @@ def run_evolution_cycle(
     scheduler = DifferentiableScheduler(learning_rate=0.02)
     quantum_opt = IsingOptimizer(num_parameters=5, seed=seed)
     mem_opt = MemoryGraphOptimizer()
-    profiler = CausalProfiler(delay_increment_ms=1.0)
+    CausalProfiler(delay_increment_ms=1.0)
     verifier = StabilityVerifier()
     fed_agg = FederatedAggregator(aggregation_dir="federated/aggregated")
 
@@ -138,13 +142,11 @@ def run_evolution_cycle(
             control = energy_monitor.apply_feedback_control(telemetry)
 
             # Update precision management
-            needs_fallback = precision_mgr.update_accumulated_error(
-                kernel_id, result["accumulated_error"]
-            )
+            precision_mgr.update_accumulated_error(kernel_id, result["accumulated_error"])
 
             # Evaluate fitness (penalize if throttled)
             throttle_penalty = (1.0 - control["throttle_factor"]) * 50.0
-            fitness = controller.evaluate_fitness(
+            controller.evaluate_fitness(
                 genome,
                 result["latency_ms"] + throttle_penalty,
                 result["energy_j"],
@@ -263,6 +265,7 @@ def run_evolution_cycle(
 
 def main():
     """Main entry point."""
+
     import argparse
 
     parser = argparse.ArgumentParser(description="Run Phase III autonomous evolution cycle")

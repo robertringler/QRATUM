@@ -1,0 +1,80 @@
+%apsrev4-2.bst 2019-01-14 (MD) hand-edited version of apsrev4-1.bst
+%Control: key (0)
+%Control: author (72) initials jnrlst
+%Control: editor formatted (1) identically to author
+%Control: production of article title (-1) disabled
+%Control: page (0) single
+%Control: year (1) truncated
+%Control: production of eprint (0) enabled
+\begin{thebibliography}{3}%
+\makeatletter
+\providecommand \@ifxundefined [1]{%
+ \@ifx{#1\undefined}
+}%
+\providecommand \@ifnum [1]{%
+ \ifnum #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \@ifx [1]{%
+ \ifx #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \natexlab [1]{#1}%
+\providecommand \enquote  [1]{``#1''}%
+\providecommand \bibnamefont  [1]{#1}%
+\providecommand \bibfnamefont [1]{#1}%
+\providecommand \citenamefont [1]{#1}%
+\providecommand \href@noop [0]{\@secondoftwo}%
+\providecommand \href [0]{\begingroup \@sanitize@url \@href}%
+\providecommand \@href[1]{\@@startlink{#1}\@@href}%
+\providecommand \@@href[1]{\endgroup#1\@@endlink}%
+\providecommand \@sanitize@url [0]{\catcode `\\12\catcode `\$12\catcode
+  `\&12\catcode `\#12\catcode `\^12\catcode `\_12\catcode `\%12\relax}%
+\providecommand \@@startlink[1]{}%
+\providecommand \@@endlink[0]{}%
+\providecommand \url  [0]{\begingroup\@sanitize@url \@url }%
+\providecommand \@url [1]{\endgroup\@href {#1}{\urlprefix }}%
+\providecommand \urlprefix  [0]{URL }%
+\providecommand \Eprint [0]{\href }%
+\providecommand \doibase [0]{https://doi.org/}%
+\providecommand \selectlanguage [0]{\@gobble}%
+\providecommand \bibinfo  [0]{\@secondoftwo}%
+\providecommand \bibfield  [0]{\@secondoftwo}%
+\providecommand \translation [1]{[#1]}%
+\providecommand \BibitemOpen [0]{}%
+\providecommand \bibitemStop [0]{}%
+\providecommand \bibitemNoStop [0]{.\EOS\space}%
+\providecommand \EOS [0]{\spacefactor3000\relax}%
+\providecommand \BibitemShut  [1]{\csname bibitem#1\endcsname}%
+\let\auto@bib@innerbib\@empty
+%</preamble>
+\bibitem [{\citenamefont {Maldacena}(1998)}]{Maldacena1998}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Maldacena}},\ }\href {https://doi.org/10.4310/ATMP.1998.v2.n2.a1} {\bibfield
+   {journal} {\bibinfo  {journal} {Adv. Theor. Math. Phys.}\ }\textbf {\bibinfo
+  {volume} {2}},\ \bibinfo {pages} {231} (\bibinfo {year} {1998})},\ \Eprint
+  {https://arxiv.org/abs/hep-th/9711200} {hep-th/9711200} \BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Witten}(1998)}]{Witten1998}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+  {Witten}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Adv.
+  Theor. Math. Phys.}\ }\textbf {\bibinfo {volume} {2}},\ \bibinfo {pages}
+  {253} (\bibinfo {year} {1998})},\ \Eprint
+  {https://arxiv.org/abs/hep-th/9802150} {hep-th/9802150} \BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Gubser}\ \emph {et~al.}(1998)\citenamefont {Gubser},
+  \citenamefont {Klebanov},\ and\ \citenamefont {Polyakov}}]{Gubser1998}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.~S.}\ \bibnamefont
+  {Gubser}}, \bibinfo {author} {\bibfnamefont {I.~R.}\ \bibnamefont
+  {Klebanov}},\ and\ \bibinfo {author} {\bibfnamefont {A.~M.}\ \bibnamefont
+  {Polyakov}},\ }\href {https://doi.org/10.1016/S0370-2693(98)00377-3}
+  {\bibfield  {journal} {\bibinfo  {journal} {Phys. Lett. B}\ }\textbf
+  {\bibinfo {volume} {428}},\ \bibinfo {pages} {105} (\bibinfo {year}
+  {1998})},\ \Eprint {https://arxiv.org/abs/hep-th/9802109} {hep-th/9802109}
+  \BibitemShut {NoStop}%
+\end{thebibliography}%

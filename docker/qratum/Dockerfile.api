@@ -1,0 +1,51 @@
+# QRATUM Platform API - Production Docker Image
+# REST API Gateway for all 14 verticals
+#
+# Version: 1.0.0
+
+FROM python:3.11-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd -r qratum && useradd -r -g qratum qratum
+
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements.txt requirements-prod.txt ./
+RUN pip install --no-cache-dir -r requirements-prod.txt \
+    && pip install --no-cache-dir fastapi uvicorn[standard] pydantic
+
+# Copy application code
+COPY qradle/ ./qradle/
+COPY qratum/ ./qratum/
+COPY setup.py ./
+
+# Install packages
+RUN pip install --no-cache-dir -e .
+
+# Create API server script
+COPY docker/qratum/api_server.py ./
+
+# Create directories
+RUN mkdir -p /app/logs && chown -R qratum:qratum /app
+
+# Expose API port
+EXPOSE 8000
+
+# Switch to non-root user
+USER qratum
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Start API server
+CMD ["python", "api_server.py"]
+
+LABEL maintainer="QRATUM Team"
+LABEL version="1.0.0"
+LABEL description="QRATUM Platform API Gateway"

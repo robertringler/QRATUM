@@ -1,0 +1,28 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'qratum-production'
+
+scrape_configs:
+  - job_name: 'qradle'
+    static_configs:
+      - targets: ['qradle:8000']
+        labels:
+          component: 'qradle'
+  
+  - job_name: 'platform'
+    static_configs:
+      - targets: ['qratum-platform:8000']
+        labels:
+          component: 'platform'
+  
+  - job_name: 'asi'
+    static_configs:
+      - targets: ['qratum-asi:8000']
+        labels:
+          component: 'asi'
+  
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

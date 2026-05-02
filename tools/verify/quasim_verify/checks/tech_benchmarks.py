@@ -24,6 +24,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
     Returns:
         CheckResult with pass/fail status and detailed metrics
     """
+
     try:
         bench_dir = cfg["inputs"]["artifacts"]["benchmarks_npz_dir"]
         min_speedup = cfg["policy"]["tolerances"].get("benchmark_speedup_min", 10.0)
@@ -77,7 +78,11 @@ def run(cfg: dict[str, Any]) -> CheckResult:
         return CheckResult(
             id="TECH-001",
             passed=all_pass,
-            details={"results": results, "min_speedup": min_speedup, "files_checked": len(npz_files)},
+            details={
+                "results": results,
+                "min_speedup": min_speedup,
+                "files_checked": len(npz_files),
+            },
             evidence_paths=evidence_paths,
         )
 

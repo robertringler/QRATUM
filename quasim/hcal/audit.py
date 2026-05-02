@@ -17,6 +17,7 @@ class AuditLogger:
         Args:
             log_dir: Directory for audit logs
         """
+
         self.log_dir = log_dir
         self._prev_hash = "0" * 64
         self._log_file = None
@@ -33,6 +34,7 @@ class AuditLogger:
             event_type: Type of event
             data: Event data
         """
+
         if not self._log_file:
             return
 
