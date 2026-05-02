@@ -24,10 +24,7 @@ from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
 from qratum_asi.reinjection.autonomous_orchestrator import (
-    AutonomousReinjectionOrchestrator,
-    DiscoveryArtifact,
-    PropagationResult,
-)
+    AutonomousReinjectionOrchestrator, DiscoveryArtifact, PropagationResult)
 from qratum_asi.reinjection.engine import ReinjectionCycleResult
 
 
@@ -331,7 +328,8 @@ class SOIReinjectionTelemetry:
                     vertical_impacts[vertical] = impact
 
         # Build simplified dependency graph from module-level constant
-        from qratum_asi.reinjection.autonomous_orchestrator import CROSS_VERTICAL_DEPENDENCIES
+        from qratum_asi.reinjection.autonomous_orchestrator import \
+            CROSS_VERTICAL_DEPENDENCIES
 
         dependency_graph = {
             domain.value: [{"target": target.value, "weight": weight} for target, weight in deps]

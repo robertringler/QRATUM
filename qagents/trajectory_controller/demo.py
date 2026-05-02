@@ -6,19 +6,10 @@ import numpy as np
 
 from qagents.mvri.action_space import EPSILON
 from qagents.mvri.state import make_state
-from qagents.realworld_bridge import (
-    ControlLoop,
-    MockActuator,
-    MockSensor,
-    Observation,
-    SafetyConfig,
-    StateObserver,
-)
-from qagents.trajectory_controller import (
-    execute_trajectory,
-    plan_trajectory,
-    validate_trajectory,
-)
+from qagents.realworld_bridge import (ControlLoop, MockActuator, MockSensor,
+                                      Observation, SafetyConfig, StateObserver)
+from qagents.trajectory_controller import (execute_trajectory, plan_trajectory,
+                                           validate_trajectory)
 
 NODE_IDS = ("n1", "n2", "n3")
 EDGE_IDS = (("n1", "n2"), ("n1", "n3"), ("n2", "n3"))

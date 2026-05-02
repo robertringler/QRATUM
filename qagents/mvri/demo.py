@@ -17,18 +17,10 @@ from qagents.mvri.constraint_gate import constraint_gate
 from qagents.mvri.forward_model import forward_model
 from qagents.mvri.injector import inject
 from qagents.mvri.loop import MVRITraceEntry, identity_pipeline, run_mvri_loop
-from qagents.mvri.metrics import (
-    delta_entropy,
-    delta_mutual_information,
-    delta_transfer_entropy,
-)
+from qagents.mvri.metrics import (delta_entropy, delta_mutual_information,
+                                  delta_transfer_entropy)
 from qagents.mvri.policy import PROBE_POLICY, make_probe_policy
-from qagents.mvri.state import (
-    H,
-    Inv,
-    State,
-    make_state,
-)
+from qagents.mvri.state import H, Inv, State, make_state
 
 # --------------------------------------------------------------------------- #
 # Fixtures

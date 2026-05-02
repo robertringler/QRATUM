@@ -8,7 +8,6 @@ import pytest
 
 from qradle.core.invariants import (FatalInvariants, InvariantType,
                                     InvariantViolation)
-from qradle.core.invariants import FatalInvariants, InvariantType, InvariantViolation
 
 
 class TestFatalInvariants:

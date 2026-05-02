@@ -8,7 +8,6 @@ from qratum_asi import QRATUMASI
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.types import (ASISafetyLevel, AuthorizationType,
                                    ReasoningStrategy)
-from qratum_asi.core.types import ASISafetyLevel, AuthorizationType, ReasoningStrategy
 
 
 def main():

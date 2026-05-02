@@ -10,11 +10,6 @@ from typing import Any, Dict, List
 
 from qratum_platform.core import (ComputeSubstrate, PlatformContract,
                                   VerticalModuleBase)
-from qratum_platform.core import (
-    ComputeSubstrate,
-    PlatformContract,
-    VerticalModuleBase,
-)
 from qratum_platform.substrates import VerticalModule, get_optimal_substrate
 from qratum_platform.utils import compute_deterministic_seed
 

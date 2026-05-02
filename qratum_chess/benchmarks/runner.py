@@ -19,12 +19,16 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from qratum_chess.benchmarks.elo import EloCertification, EloCertificationResult
-from qratum_chess.benchmarks.gauntlet import AdversarialGauntlet, GauntletReport
-from qratum_chess.benchmarks.metrics import PerformanceMetrics, PerformanceReport
+from qratum_chess.benchmarks.elo import (EloCertification,
+                                         EloCertificationResult)
+from qratum_chess.benchmarks.gauntlet import (AdversarialGauntlet,
+                                              GauntletReport)
+from qratum_chess.benchmarks.metrics import (PerformanceMetrics,
+                                             PerformanceReport)
 from qratum_chess.benchmarks.resilience import ResilienceReport, ResilienceTest
 from qratum_chess.benchmarks.telemetry import TelemetryOutput
-from qratum_chess.benchmarks.torture import StrategicTortureSuite, TortureSuiteReport
+from qratum_chess.benchmarks.torture import (StrategicTortureSuite,
+                                             TortureSuiteReport)
 
 
 @dataclass

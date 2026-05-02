@@ -12,18 +12,13 @@ from datetime import date, timedelta
 import pytest
 
 from qratum.oncology.registry.seer_medicare.linkages import LinkedPatient
-from qratum.oncology.registry.seer_medicare.schema import (
-    ClaimEvent,
-    ClaimSetting,
-    CodeSystem,
-    RegistryCase,
-    VitalStatus,
-)
+from qratum.oncology.registry.seer_medicare.schema import (ClaimEvent,
+                                                           ClaimSetting,
+                                                           CodeSystem,
+                                                           RegistryCase,
+                                                           VitalStatus)
 from qratum.oncology.registry.seer_medicare.timelines import (
-    CodeMapping,
-    CodeMappingLibrary,
-    TreatmentTimelineBuilder,
-)
+    CodeMapping, CodeMappingLibrary, TreatmentTimelineBuilder)
 
 
 class TestCodeMappingLibrary:

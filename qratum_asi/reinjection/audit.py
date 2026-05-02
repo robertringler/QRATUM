@@ -16,11 +16,8 @@ from typing import Any
 
 from qradle.merkle import MerkleChain
 from qratum_asi.reinjection.contracts import ReinjectionContract
-from qratum_asi.reinjection.types import (
-    AuditRecord,
-    DiscoveryDomain,
-    ReinjectionResult,
-)
+from qratum_asi.reinjection.types import (AuditRecord, DiscoveryDomain,
+                                          ReinjectionResult)
 
 
 @dataclass

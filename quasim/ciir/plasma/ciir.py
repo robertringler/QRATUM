@@ -235,7 +235,7 @@ def make_snapshot(
     spec = spectrum(state)
     S = lundquist_number(state)
     inst_norm = _instability_norm(spec, k_band)
-    plasmoid = bool(S > C.S_critical)
+    plasmoid = bool(C.S_critical < S)
     stable = control_norm > inst_norm and not plasmoid
     return CIIRSnapshot(
         t=state.t,

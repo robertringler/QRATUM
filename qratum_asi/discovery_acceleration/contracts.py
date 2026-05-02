@@ -20,9 +20,7 @@ from enum import Enum
 from typing import Any
 
 from qradle.merkle import MerkleChain
-from qratum_asi.discovery_acceleration.workflows import (
-    DiscoveryType,
-)
+from qratum_asi.discovery_acceleration.workflows import DiscoveryType
 
 
 class ContractStatus(Enum):

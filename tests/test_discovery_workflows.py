@@ -6,12 +6,8 @@ Tests all 5 specialized workflow pipelines (Discovery 2-6).
 import pytest
 
 from qratum_asi.discovery_acceleration.pipelines import (
-    ClimateGenePipeline,
-    EconomicBioPipeline,
-    LongevityPipeline,
-    NaturalCompoundPipeline,
-    PersonalizedDrugPipeline,
-)
+    ClimateGenePipeline, EconomicBioPipeline, LongevityPipeline,
+    NaturalCompoundPipeline, PersonalizedDrugPipeline)
 
 
 class TestPersonalizedDrugPipeline:

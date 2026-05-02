@@ -11,9 +11,7 @@ info       Display theory tuple summary
 from __future__ import annotations
 
 import json
-import sys
 import time
-from pathlib import Path
 
 import click
 import numpy as np
@@ -200,7 +198,8 @@ def simulate(config_path, steps, screenshot_interval, output, batch, dim,
     and tensor log export. Captures high-resolution screenshots at
     specified intervals.
     """
-    from quasim.ciir.simulation.engine import SimulationConfig, run_and_capture_simulation
+    from quasim.ciir.simulation.engine import (SimulationConfig,
+                                               run_and_capture_simulation)
 
     if config_path:
         import yaml

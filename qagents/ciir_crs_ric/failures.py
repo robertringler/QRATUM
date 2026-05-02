@@ -12,7 +12,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Dict, Optional
 
-
 # Status literals appearing in TraceEntry.status -----------------------------
 STATUS_OK: str = "OK"
 STATUS_TYPE_I: str = "TYPE_I"     # Constraint violation (pre or post)

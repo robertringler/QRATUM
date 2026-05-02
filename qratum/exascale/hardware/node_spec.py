@@ -14,8 +14,8 @@ Node Composition:
 """
 
 from dataclasses import dataclass
-from typing import List, Dict, Any
 from enum import Enum
+from typing import Any, Dict, List
 
 
 class MemoryType(Enum):
@@ -54,7 +54,7 @@ class GPU_GB200_NVL72:
     tdp_watts: int = 1000
     cuda_cores: int = 18432
     tensor_cores: int = 576
-    
+
     def peak_power_kw(self) -> float:
         """Return peak power in kilowatts"""
         return self.tdp_watts / 1000.0
@@ -89,7 +89,7 @@ class CPU_EPYC_9754:
     tdp_watts: int = 360
     pcie_gen: int = 5
     pcie_lanes: int = 128
-    
+
     def peak_power_kw(self) -> float:
         """Return peak power in kilowatts"""
         return self.tdp_watts / 1000.0
@@ -119,7 +119,7 @@ class ComputeNode:
     nvlink_topology: str
     aetherfabric_nics: int
     merkle_verification: bool = True
-    
+
     def __post_init__(self):
         """Validate node configuration"""
         if len(self.gpus) != 16:
@@ -128,27 +128,27 @@ class ComputeNode:
             raise ValueError(f"Node must have exactly 2 CPUs, got {len(self.cpus)}")
         if self.system_memory_gb < 1500:
             raise ValueError(f"System memory must be ≥ 1500 GB, got {self.system_memory_gb}")
-    
+
     def total_fp64_tflops(self) -> float:
         """Calculate total FP64 performance"""
         return sum(gpu.fp64_tflops for gpu in self.gpus)
-    
+
     def total_fp8_tflops(self) -> float:
         """Calculate total FP8 (AI) performance"""
         return sum(gpu.fp8_tflops for gpu in self.gpus)
-    
+
     def total_memory_gb(self) -> int:
         """Calculate total memory (GPU + system)"""
         gpu_memory = sum(gpu.memory_gb for gpu in self.gpus)
         return gpu_memory + self.system_memory_gb
-    
+
     def peak_power_kw(self) -> float:
         """Calculate peak power consumption in kilowatts"""
         gpu_power = sum(gpu.peak_power_kw() for gpu in self.gpus)
         cpu_power = sum(cpu.peak_power_kw() for cpu in self.cpus)
         # Add 10% for other components (NICs, memory, cooling)
         return (gpu_power + cpu_power) * 1.1
-    
+
     def get_specifications(self) -> Dict[str, Any]:
         """Return comprehensive node specifications"""
         return {
@@ -174,7 +174,7 @@ class NodeSpecification:
     """
     Factory for creating standard CN-QES node configurations
     """
-    
+
     @staticmethod
     def create_standard_node(node_id: str) -> ComputeNode:
         """
@@ -188,7 +188,7 @@ class NodeSpecification:
         """
         gpus = [GPU_GB200_NVL72() for _ in range(16)]
         cpus = [CPU_EPYC_9754() for _ in range(2)]
-        
+
         return ComputeNode(
             node_id=node_id,
             gpus=gpus,
@@ -198,7 +198,7 @@ class NodeSpecification:
             aetherfabric_nics=8,  # 8× 800 Gbps NICs
             merkle_verification=True,
         )
-    
+
     @staticmethod
     def calculate_system_performance(num_nodes: int) -> Dict[str, float]:
         """
@@ -211,7 +211,7 @@ class NodeSpecification:
             Dictionary with performance metrics
         """
         node = NodeSpecification.create_standard_node("sample")
-        
+
         return {
             "nodes": num_nodes,
             "gpus": num_nodes * 16,

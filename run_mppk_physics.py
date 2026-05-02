@@ -19,17 +19,13 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
 import time
 from pathlib import Path
 
 import numpy as np
 
-from quasim.ciir.swarm.mppk import (
-    MPPKEngine,
-    GenerationResult,
-    MetaLearningReport,
-)
+from quasim.ciir.swarm.mppk import (GenerationResult, MetaLearningReport,
+                                    MPPKEngine)
 from quasim.ciir.swarm.orchestrator import Orchestrator
 
 
@@ -100,7 +96,7 @@ def run_mppk(
     print("=" * 72)
     print("  MINIMAL PROGRAMMABLE PHYSICS KERNEL — Law-Discovery Engine")
     print("=" * 72)
-    print(f"\n  Configuration:")
+    print("\n  Configuration:")
     print(f"    Nodes:       {n_nodes}")
     print(f"    Dimensions:  {dim}")
     print(f"    Timesteps:   {timesteps}")
@@ -154,7 +150,7 @@ def run_mppk(
     print(f"  Stable invariants:         {meta.stable_invariants}")
     print(f"  Embedding dimension:       {meta.embedding_dim}")
     print(f"  Explained variance ratio:  {meta.explained_variance_ratio:.4f}")
-    print(f"  Candidate physical laws:")
+    print("  Candidate physical laws:")
     for law in meta.candidate_laws:
         print(f"    • {law}")
 

@@ -9,17 +9,6 @@ from qratum_platform.core import (ComputeSubstrate, ExecutionEvent,
                                   PlatformIntent, QRATUMPlatform,
                                   SafetyViolation, VerticalModule,
                                   VerticalModuleBase)
-from qratum_platform.core import (
-    ComputeSubstrate,
-    ExecutionEvent,
-    MerkleEventChain,
-    PlatformContract,
-    PlatformIntent,
-    QRATUMPlatform,
-    SafetyViolation,
-    VerticalModule,
-    VerticalModuleBase,
-)
 
 
 class TestVerticalModuleEnum:

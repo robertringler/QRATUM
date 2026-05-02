@@ -15,12 +15,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-from contracts.base import (
-    BaseContract,
-    compute_contract_hash,
-    generate_contract_id,
-    get_current_timestamp,
-)
+from contracts.base import (BaseContract, compute_contract_hash,
+                            generate_contract_id, get_current_timestamp)
 
 
 class ProvenanceType(Enum):

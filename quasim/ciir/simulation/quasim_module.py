@@ -27,19 +27,11 @@ from enum import Enum
 from typing import Any
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.theory import CIIRTheory, RealTensor
 from quasim.ciir.loss import CIIRLoss
-from quasim.ciir.tensors import (
-    batch_constraint_eval,
-    batch_constraint_violation,
-    batch_observer_eval,
-    stack_operators,
-    state_to_density,
-    tensorized_ciir_loss,
-)
-
+from quasim.ciir.tensors import (batch_constraint_eval, batch_observer_eval,
+                                 stack_operators)
+from quasim.ciir.theory import CIIRTheory, RealTensor
 
 # ================================================================
 # Precision modes

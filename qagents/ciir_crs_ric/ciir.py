@@ -18,9 +18,8 @@ constraint name.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, replace
 from typing import Callable, FrozenSet, Tuple
-
 
 # --------------------------------------------------------------------------
 # Typed state space S

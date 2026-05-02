@@ -79,11 +79,9 @@ Examples:
 
     # Import AION modules
     try:
-        from aion.executor import (
-            create_default_asi_config,
-            generate_ascii_report,
-            run_full_qratum_asi_on_aion,
-        )
+        from aion.executor import (create_default_asi_config,
+                                   generate_ascii_report,
+                                   run_full_qratum_asi_on_aion)
     except ImportError as e:
         print(f"Error: Could not import AION modules: {e}")
         print("Please ensure AION is properly installed.")

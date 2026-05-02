@@ -19,15 +19,9 @@ from typing import List, Tuple
 
 from .ciir import C_ACTIVE, MAX_CPU, Inv, Omega, State
 from .crs import A_FULL, admissible_actions
-from .executor import TraceEntry, TraceLog, print_trace, run_step
-from .failures import (
-    STATUS_OK,
-    STATUS_TYPE_I,
-    STATUS_TYPE_II,
-    STATUS_TYPE_III,
-    STATUS_TYPE_IV,
-)
-
+from .executor import TraceLog, print_trace, run_step
+from .failures import (STATUS_OK, STATUS_TYPE_I, STATUS_TYPE_II,
+                       STATUS_TYPE_III, STATUS_TYPE_IV)
 
 # --------------------------------------------------------------------------
 # Case factories — each returns (label, initial_state, raw_intent, expected_status)

@@ -14,7 +14,8 @@ from enum import Enum
 from typing import Any, Callable
 
 from qradle.merkle import MerkleChain
-from qratum_asi.sandbox_platform.types import SandboxEvaluationResult, SandboxProposal
+from qratum_asi.sandbox_platform.types import (SandboxEvaluationResult,
+                                               SandboxProposal)
 
 
 class SpeculativeStatus(Enum):

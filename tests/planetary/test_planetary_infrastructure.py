@@ -14,57 +14,25 @@ This module tests all components of the planetary infrastructure including:
 
 import pytest
 
-from qratum.planetary.agents import (
-    AgentNetwork,
-    AgentObservation,
-    AgentType,
-    AIGovernanceAgent,
-    DataValidatorAgent,
-    EconomicAgent,
-    NodeAgent,
-    SecurityAgent,
-)
-from qratum.planetary.deployment import (
-    DeploymentRoadmap,
-    MilestoneStatus,
-    PhaseType,
-)
-from qratum.planetary.economics import (
-    EconomicEngine,
-    TokenType,
-    TransactionFee,
-)
-from qratum.planetary.infrastructure import (
-    GlobalInfrastructure,
-    NodeType,
-)
-from qratum.planetary.integration import (
-    DomainIntegration,
-    DomainType,
-    KPIMonitor,
-    SectorAdapter,
-)
-from qratum.planetary.optimization import (
-    ContinuousOptimizer,
-    PolicyAdjuster,
-    PredictiveSimulator,
-    RiskAnalyzer,
-    RiskLevel,
-)
-from qratum.planetary.security import (
-    AdaptiveConsensus,
-    ConsensusType,
-    CrossChainBridge,
-    CryptoAlgorithm,
-    DisasterRecovery,
-    QuantumResistantCrypto,
-    SecurityLayer,
-)
-from qratum.planetary.simulation import (
-    MetricsCollector,
-    PlanetarySimulation,
-    ScenarioType,
-)
+from qratum.planetary.agents import (AgentNetwork, AgentObservation, AgentType,
+                                     AIGovernanceAgent, DataValidatorAgent,
+                                     EconomicAgent, NodeAgent, SecurityAgent)
+from qratum.planetary.deployment import (DeploymentRoadmap, MilestoneStatus,
+                                         PhaseType)
+from qratum.planetary.economics import (EconomicEngine, TokenType,
+                                        TransactionFee)
+from qratum.planetary.infrastructure import GlobalInfrastructure, NodeType
+from qratum.planetary.integration import (DomainIntegration, DomainType,
+                                          KPIMonitor, SectorAdapter)
+from qratum.planetary.optimization import (ContinuousOptimizer, PolicyAdjuster,
+                                           PredictiveSimulator, RiskAnalyzer,
+                                           RiskLevel)
+from qratum.planetary.security import (AdaptiveConsensus, ConsensusType,
+                                       CrossChainBridge, CryptoAlgorithm,
+                                       DisasterRecovery,
+                                       QuantumResistantCrypto, SecurityLayer)
+from qratum.planetary.simulation import (MetricsCollector, PlanetarySimulation,
+                                         ScenarioType)
 
 
 class TestGlobalInfrastructure:

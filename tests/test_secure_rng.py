@@ -9,7 +9,8 @@ import pytest
 
 def test_security_module_uses_secure_rng():
     """Test that security module uses secrets.token_bytes for key generation."""
-    from qratum.planetary.security import CryptoAlgorithm, QuantumResistantCrypto
+    from qratum.planetary.security import (CryptoAlgorithm,
+                                           QuantumResistantCrypto)
 
     crypto = QuantumResistantCrypto()
 
@@ -131,7 +132,8 @@ def test_key_rotation():
 
 def test_crypto_statistics():
     """Test that crypto statistics are properly tracked."""
-    from qratum.planetary.security import CryptoAlgorithm, QuantumResistantCrypto
+    from qratum.planetary.security import (CryptoAlgorithm,
+                                           QuantumResistantCrypto)
 
     crypto = QuantumResistantCrypto()
 

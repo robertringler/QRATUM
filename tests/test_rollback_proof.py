@@ -2,13 +2,9 @@
 
 import pytest
 
-from contracts.rollback_proof import (
-    RollbackOrchestrator,
-    RollbackProofGenerator,
-    RollbackReason,
-    StateSnapshot,
-    create_rollback_contract,
-)
+from contracts.rollback_proof import (RollbackOrchestrator,
+                                      RollbackProofGenerator, RollbackReason,
+                                      StateSnapshot, create_rollback_contract)
 
 
 class TestStateSnapshot:

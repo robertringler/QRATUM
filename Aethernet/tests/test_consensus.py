@@ -1,14 +1,9 @@
 """Tests for Aethernet Consensus Module."""
 
-from Aethernet.core.consensus import (
-    BFTConsensus,
-    BlockHeader,
-    ConsensusPhase,
-    ConsensusVote,
-    QuorumState,
-    TrajectoryAwareConsensus,
-    VoteType,
-)
+from Aethernet.core.consensus import (BFTConsensus, BlockHeader,
+                                      ConsensusPhase, ConsensusVote,
+                                      QuorumState, TrajectoryAwareConsensus,
+                                      VoteType)
 
 
 class TestBlockHeader:

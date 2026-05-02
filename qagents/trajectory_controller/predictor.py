@@ -6,10 +6,8 @@ from qagents.control_geometry.sensitivity import state_to_vector
 from qagents.mvri.forward_model import forward_model
 from qagents.mvri.state import Edge, ForwardModelError, Inv, State
 from qagents.realworld_bridge.types import Observation
-from qagents.realworld_bridge.world_model_sync import (
-    DEFAULT_MAX_CORRECTION,
-    sync_model,
-)
+from qagents.realworld_bridge.world_model_sync import (DEFAULT_MAX_CORRECTION,
+                                                       sync_model)
 from qagents.trajectory_controller.types import Trajectory, vector_to_action
 
 

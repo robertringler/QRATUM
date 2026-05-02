@@ -5,7 +5,8 @@ Tests compliance mapping and artifact generation.
 
 import pytest
 
-from qratum_asi.discovery_acceleration.compliance_mapper import ComplianceMapper
+from qratum_asi.discovery_acceleration.compliance_mapper import \
+    ComplianceMapper
 from qratum_asi.discovery_acceleration.types import DiscoveryType
 
 

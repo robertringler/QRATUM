@@ -24,12 +24,8 @@ from typing import Any, TypeVar
 
 import numpy as np
 
-from .homology import (
-    BettiNumbers,
-    PersistenceDiagram,
-    PersistentHomologyObserver,
-    TopologicalAnnotation,
-)
+from .homology import (BettiNumbers, PersistenceDiagram,
+                       PersistentHomologyObserver, TopologicalAnnotation)
 
 T = TypeVar("T")
 

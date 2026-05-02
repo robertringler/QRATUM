@@ -3,19 +3,15 @@
 import time
 
 from qratum_asi.core.calibration_doctrine import TrajectoryState
-from qratum_asi.core.zk_state_verifier import (
-    ReplayCache,
-    StateCommitment,
-    TransitionType,
-    VerificationResult,
-    ZKProof,
-    ZKProofGenerator,
-    ZKStateTransition,
-    ZKStateVerifier,
-    ZKVerificationContext,
-    generate_commitment,
-    verify_state_transition,
-)
+from qratum_asi.core.zk_state_verifier import (ReplayCache, StateCommitment,
+                                               TransitionType,
+                                               VerificationResult, ZKProof,
+                                               ZKProofGenerator,
+                                               ZKStateTransition,
+                                               ZKStateVerifier,
+                                               ZKVerificationContext,
+                                               generate_commitment,
+                                               verify_state_transition)
 
 
 class TestStateCommitment:

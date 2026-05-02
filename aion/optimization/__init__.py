@@ -11,18 +11,9 @@ Status: Production
 
 from __future__ import annotations
 
-from .fusion import (
-    CrossLanguageFuser,
-    FusionPattern,
-    KernelFusion,
-    detect_fusion_patterns,
-)
-from .scheduler import (
-    AdaptiveScheduler,
-    CausalScheduler,
-    ScheduleResult,
-    Task,
-)
+from .fusion import (CrossLanguageFuser, FusionPattern, KernelFusion,
+                     detect_fusion_patterns)
+from .scheduler import AdaptiveScheduler, CausalScheduler, ScheduleResult, Task
 
 __all__ = [
     "KernelFusion",

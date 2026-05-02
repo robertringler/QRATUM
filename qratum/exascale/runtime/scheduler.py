@@ -20,11 +20,10 @@ explicitly ordered. Our scheduler enforces strict ordering using:
 3. Fixed kernel launch order within each stream
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple, Any
-from enum import Enum
 import hashlib
-import time
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 
 class KernelPriority(Enum):
@@ -74,7 +73,7 @@ class GPUResource:
     memory_total_gb: float
     sm_count: int = 144  # GB200 has 144 SMs
     sm_utilization: float = 0.0
-    
+
     def allocate_memory(self, size_gb: float) -> bool:
         """
         Allocate GPU memory
@@ -89,14 +88,14 @@ class GPUResource:
             self.memory_available_gb -= size_gb
             return True
         return False
-    
+
     def free_memory(self, size_gb: float) -> None:
         """Free GPU memory"""
         self.memory_available_gb = min(
             self.memory_available_gb + size_gb,
             self.memory_total_gb
         )
-    
+
     def get_memory_utilization(self) -> float:
         """Get current memory utilization (0.0 to 1.0)"""
         return 1.0 - (self.memory_available_gb / self.memory_total_gb)
@@ -130,7 +129,7 @@ class KernelDescriptor:
     estimated_duration_us: float = 0.0
     dependencies: Set[int] = field(default_factory=set)
     state: KernelState = KernelState.QUEUED
-    
+
     def compute_kernel_hash(self) -> str:
         """
         Compute deterministic hash of kernel configuration
@@ -143,7 +142,7 @@ class KernelDescriptor:
             f"{self.block_dim}:{self.shared_memory_bytes}"
         )
         return hashlib.sha256(data.encode('utf-8')).hexdigest()
-    
+
     def is_ready(self, completed_kernels: Set[int]) -> bool:
         """
         Check if kernel is ready to execute
@@ -155,11 +154,11 @@ class KernelDescriptor:
             True if all dependencies are satisfied
         """
         return self.dependencies.issubset(completed_kernels)
-    
+
     def add_dependency(self, kernel_id: int) -> None:
         """Add kernel dependency"""
         self.dependencies.add(kernel_id)
-    
+
     def get_total_threads(self) -> int:
         """Get total number of threads launched"""
         grid_size = self.grid_dim[0] * self.grid_dim[1] * self.grid_dim[2]
@@ -189,7 +188,7 @@ class KernelQueue:
     executing_kernels: Set[int] = field(default_factory=set)
     completed_kernels: Set[int] = field(default_factory=set)
     max_concurrent_kernels: int = 1  # Default: serialize all kernels
-    
+
     def enqueue_kernel(self, kernel: KernelDescriptor) -> None:
         """
         Add kernel to queue
@@ -202,10 +201,10 @@ class KernelQueue:
         """
         kernel.state = KernelState.QUEUED
         self.queued_kernels.append(kernel)
-        
+
         # Sort by priority (stable sort preserves submission order within priority)
         self.queued_kernels.sort(key=lambda k: k.priority.value)
-    
+
     def get_next_kernel(self) -> Optional[KernelDescriptor]:
         """
         Get next kernel ready for execution
@@ -216,16 +215,16 @@ class KernelQueue:
         # Check if we can launch more kernels
         if len(self.executing_kernels) >= self.max_concurrent_kernels:
             return None
-        
+
         # Find first ready kernel
         for i, kernel in enumerate(self.queued_kernels):
             if kernel.is_ready(self.completed_kernels):
                 kernel.state = KernelState.READY
                 self.queued_kernels.pop(i)
                 return kernel
-        
+
         return None
-    
+
     def launch_kernel(self, kernel: KernelDescriptor) -> bool:
         """
         Mark kernel as executing
@@ -238,11 +237,11 @@ class KernelQueue:
         """
         if kernel.kernel_id in self.executing_kernels:
             return False
-        
+
         kernel.state = KernelState.EXECUTING
         self.executing_kernels.add(kernel.kernel_id)
         return True
-    
+
     def complete_kernel(self, kernel_id: int) -> bool:
         """
         Mark kernel as completed
@@ -255,15 +254,15 @@ class KernelQueue:
         """
         if kernel_id not in self.executing_kernels:
             return False
-        
+
         self.executing_kernels.remove(kernel_id)
         self.completed_kernels.add(kernel_id)
         return True
-    
+
     def get_queue_depth(self) -> int:
         """Get number of queued kernels"""
         return len(self.queued_kernels)
-    
+
     def is_idle(self) -> bool:
         """Check if queue is idle"""
         return len(self.queued_kernels) == 0 and len(self.executing_kernels) == 0
@@ -297,7 +296,7 @@ class DeterministicScheduler:
     kernel_counter: int = 0
     kernel_registry: Dict[int, KernelDescriptor] = field(default_factory=dict)
     use_default_stream: bool = True
-    
+
     def __post_init__(self):
         """Initialize scheduler resources"""
         # Initialize GPU resources (GB200 specs)
@@ -309,7 +308,7 @@ class DeterministicScheduler:
                 memory_total_gb=192.0,
                 sm_count=144
             )
-        
+
         # Initialize kernel queues
         if self.use_default_stream:
             # Single default stream per GPU
@@ -328,7 +327,7 @@ class DeterministicScheduler:
                         stream_type=stream_type,
                         max_concurrent_kernels=4  # Limited parallelism
                     )
-    
+
     def schedule_kernel(self, kernel_name: str, operation_id: str,
                        gpu_id: int = 0,
                        priority: KernelPriority = KernelPriority.NORMAL,
@@ -355,7 +354,7 @@ class DeterministicScheduler:
         # Generate kernel ID deterministically
         kernel_id = self.kernel_counter
         self.kernel_counter += 1
-        
+
         # Create kernel descriptor
         kernel = KernelDescriptor(
             kernel_id=kernel_id,
@@ -367,20 +366,20 @@ class DeterministicScheduler:
             block_dim=block_dim,
             dependencies=dependencies if dependencies else set()
         )
-        
+
         # Register kernel
         self.kernel_registry[kernel_id] = kernel
-        
+
         # Determine target stream
         actual_stream = StreamType.DEFAULT if self.use_default_stream else stream_type
         queue_key = (gpu_id, actual_stream)
-        
+
         # Enqueue kernel
         if queue_key in self.kernel_queues:
             self.kernel_queues[queue_key].enqueue_kernel(kernel)
-        
+
         return kernel_id
-    
+
     def execute_ready_kernels(self) -> List[int]:
         """
         Execute all ready kernels across all queues
@@ -389,29 +388,29 @@ class DeterministicScheduler:
             List of launched kernel IDs
         """
         launched = []
-        
+
         # Process queues in deterministic order (sorted by GPU ID and stream type)
-        queue_keys = sorted(self.kernel_queues.keys(), 
+        queue_keys = sorted(self.kernel_queues.keys(),
                           key=lambda k: (k[0], k[1].value))
-        
+
         for queue_key in queue_keys:
             queue = self.kernel_queues[queue_key]
-            
+
             while True:
                 kernel = queue.get_next_kernel()
                 if kernel is None:
                     break
-                
+
                 # Launch kernel
                 if queue.launch_kernel(kernel):
                     launched.append(kernel.kernel_id)
-                    
+
                     # In real implementation: actual CUDA kernel launch
                     # For now, immediately mark as completed for simulation
                     # queue.complete_kernel(kernel.kernel_id)
-        
+
         return launched
-    
+
     def mark_kernel_completed(self, kernel_id: int) -> bool:
         """
         Mark kernel as completed
@@ -425,15 +424,15 @@ class DeterministicScheduler:
         kernel = self.kernel_registry.get(kernel_id)
         if not kernel:
             return False
-        
+
         # Find queue containing this kernel
         for queue_key, queue in self.kernel_queues.items():
             if kernel_id in queue.executing_kernels:
                 kernel.state = KernelState.COMPLETED
                 return queue.complete_kernel(kernel_id)
-        
+
         return False
-    
+
     def wait_for_completion(self) -> None:
         """
         Wait for all queued and executing kernels to complete
@@ -444,7 +443,7 @@ class DeterministicScheduler:
         for queue in self.kernel_queues.values():
             for kernel_id in list(queue.executing_kernels):
                 queue.complete_kernel(kernel_id)
-    
+
     def get_scheduler_statistics(self) -> Dict[str, Any]:
         """
         Get scheduler statistics
@@ -455,7 +454,7 @@ class DeterministicScheduler:
         total_queued = sum(q.get_queue_depth() for q in self.kernel_queues.values())
         total_executing = sum(len(q.executing_kernels) for q in self.kernel_queues.values())
         total_completed = sum(len(q.completed_kernels) for q in self.kernel_queues.values())
-        
+
         return {
             'total_kernels': self.kernel_counter,
             'queued': total_queued,
@@ -468,7 +467,7 @@ class DeterministicScheduler:
                 for gpu_id, resource in self.gpu_resources.items()
             }
         }
-    
+
     def compute_schedule_hash(self) -> str:
         """
         Compute hash of kernel execution schedule
@@ -482,10 +481,10 @@ class DeterministicScheduler:
             kernel = self.kernel_registry.get(kernel_id)
             if kernel:
                 kernel_hashes.append(kernel.compute_kernel_hash())
-        
+
         schedule_str = ";".join(kernel_hashes)
         return hashlib.sha256(schedule_str.encode('utf-8')).hexdigest()
-    
+
     def verify_determinism(self, other_schedule_hash: str) -> bool:
         """
         Verify schedule matches another run

@@ -25,14 +25,6 @@ from qratum_asi.safety.mega_prompt import MegaPromptSystem
 from qratum_asi.safety.mega_prompt_adapter import (MegaPromptOrchestrator,
                                                    RefusalMegaPromptAdapter,
                                                    SimulatedMegaPromptAdapter)
-from qratum_asi.safety.mega_prompt import (
-    MegaPromptSystem,
-)
-from qratum_asi.safety.mega_prompt_adapter import (
-    MegaPromptOrchestrator,
-    RefusalMegaPromptAdapter,
-    SimulatedMegaPromptAdapter,
-)
 
 
 def print_header(text: str, char: str = "="):

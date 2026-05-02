@@ -38,8 +38,6 @@ from __future__ import annotations
 
 import argparse
 import sys
-import time
-from datetime import datetime
 from pathlib import Path
 
 # Add repository root to path
@@ -47,10 +45,8 @@ repo_root = Path(__file__).parent
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
-from temporal_compression import (
-    ExperimentConfig,
-    TemporalCompressionExperiment,
-)
+from temporal_compression import (ExperimentConfig,
+                                  TemporalCompressionExperiment)
 
 
 def print_banner() -> None:
@@ -200,7 +196,7 @@ def run_experiment(args: argparse.Namespace) -> int:
 
     if verbose:
         print_banner()
-        print(f"Configuration:")
+        print("Configuration:")
         print(f"  Rule: {config.system_rule}")
         print(f"  Size: {config.system_size} cells")
         print(f"  Steps: {config.simulated_steps:,}")
