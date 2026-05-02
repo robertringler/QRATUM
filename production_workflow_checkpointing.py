@@ -7,7 +7,7 @@ genomics pipelines. Enables fault tolerance and efficient resource utilization.
 
 Features:
 - Automatic checkpoint creation at pipeline stages
-- State persistence to disk with compression
+- State persistence to disk with compression (JSON-based, GAP-SEC-UNSAFE-003/004)
 - Fast restart from last successful checkpoint
 - Progress tracking and ETA estimation
 - Integration with WGS pipeline
@@ -20,7 +20,6 @@ import gzip
 import hashlib
 import json
 import logging
-import pickle
 import sqlite3
 import time
 from dataclasses import asdict, dataclass
@@ -203,21 +202,22 @@ class CheckpointManager:
 
     def _save_checkpoint_to_disk(self, checkpoint: Checkpoint) -> Path:
         """Save checkpoint to disk with optional compression"""
-        filename = f"{checkpoint.checkpoint_id}.pkl"
+        filename = f"{checkpoint.checkpoint_id}.json"
         if self.compress:
             filename += ".gz"
 
         file_path = self.checkpoint_dir / filename
 
-        # Serialize checkpoint
+        # Serialize checkpoint — GAP-SEC-UNSAFE-003/004: use JSON, not pickle
         data = checkpoint.to_dict()
+        serialized = json.dumps(data, default=str).encode("utf-8")
 
         if self.compress:
             with gzip.open(file_path, 'wb') as f:
-                pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
+                f.write(serialized)
         else:
             with open(file_path, 'wb') as f:
-                pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
+                f.write(serialized)
 
         file_size = file_path.stat().st_size
         logger.debug(f"Checkpoint saved: {file_path} ({file_size} bytes)")
@@ -272,15 +272,16 @@ class CheckpointManager:
 
         file_path, compressed = row
 
-        # Load from disk
+        # Load from disk — GAP-SEC-UNSAFE-003/004: use JSON, not pickle
         try:
             if compressed:
                 with gzip.open(file_path, 'rb') as f:
-                    data = pickle.load(f)
+                    raw = f.read()
             else:
                 with open(file_path, 'rb') as f:
-                    data = pickle.load(f)
+                    raw = f.read()
 
+            data = json.loads(raw.decode("utf-8"))
             checkpoint = Checkpoint.from_dict(data)
             logger.info(f"Checkpoint loaded: {checkpoint_id}")
             return checkpoint
@@ -516,7 +517,8 @@ class CheckpointedPipeline:
                         resume_checkpoint: Optional[Checkpoint]) -> Dict[str, Any]:
         """Execute pipeline stages with checkpointing"""
         # This is a template - override in subclass
-        raise NotImplementedError("Subclass must implement _execute_stages")
+        # GAP-STUB-001: base implementation executes no stages; subclasses override
+        return []
 
     def _create_checkpoint(self, stage: CheckpointStage,
                            outputs: Dict[str, str],

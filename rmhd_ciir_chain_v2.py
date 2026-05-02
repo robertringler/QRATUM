@@ -1,5 +1,5 @@
 """
-RMHD/CIIR Whitepaper — Multi-Agent Orchestration Chain v2
+RMHD/CIIR Whitepaper -- Multi-Agent Orchestration Chain v2
 ==========================================================
 Incorporates:
   - Stratified projection resolution (Whitney stratification of C)
@@ -15,20 +15,38 @@ Run order: Agent 0 → Agents 1-5 (parallel) → Agent 6 (red team)
 
 Usage:
     pip install anthropic
-    export ANTHROPIC_API_KEY=sk-...
-    python rmhd_ciir_chain_v2.py
+    export ANTHROPIC_API_KEY=sk-ant-...
+    python rmhd_ciir_chain_v2.py [--model MODEL] [--max-workers N]
+                                  [--out-json PATH] [--out-tex PATH]
+
+Options:
+    --model       Anthropic model name (default: claude-sonnet-4-20250514)
+    --max-workers Number of parallel workers for Phase 2 (default: 5)
+    --out-json    Output JSON path (default: whitepaper_v2_output.json)
+    --out-tex     Output LaTeX path (default: whitepaper_v2.tex)
 """
 
-import anthropic
 import json
 import asyncio
+import os
+import re
+import sys
+import argparse
 from concurrent.futures import ThreadPoolExecutor
+
+try:
+    import anthropic
+except ImportError:
+    sys.exit(
+        "Error: 'anthropic' package is not installed.\n"
+        "Install it with:  pip install anthropic"
+    )
 
 client = anthropic.Anthropic()
 MODEL = "claude-sonnet-4-20250514"
 
 # =============================================================================
-# SECTION 1 LATEX — already produced by prior agent run, injected directly
+# SECTION 1 LATEX -- already produced by prior agent run, injected directly
 # =============================================================================
 
 SECTION_1_LATEX = r"""
@@ -86,11 +104,11 @@ underpinning $\|R_{\mathrm{ctrl}}\| > \|R_{\mathrm{instab}}\|$.
 """
 
 # =============================================================================
-# FULL TECHNICAL CONTEXT — injected into every agent
+# FULL TECHNICAL CONTEXT -- injected into every agent
 # =============================================================================
 
 RMHD_CIIR_DOCUMENT = r"""
-PROJECTED CONSTRAINED RMHD / CIIR FRAMEWORK — FULL TECHNICAL CONTEXT
+PROJECTED CONSTRAINED RMHD / CIIR FRAMEWORK -- FULL TECHNICAL CONTEXT
 
 STATE SPACE:
   M = H^2_per(Omega) x H^2_per(Omega),  Omega = [0,L_x) x [0,L_y)
@@ -146,7 +164,7 @@ STRATIFIED PROJECTION (reconnection singularity resolution):
     Pi_C smooth on C_reg (Theorem 5.2' holds)
     Pi_{C_eps} Lipschitz near C_sing with L_eps -> inf as eps -> 0
     Finite resistivity eta > 0 regularizes: topology changes over
-    scale eps_rec = (eta tau_rec)^{1/2} — system approaches but
+    scale eps_rec = (eta tau_rec)^{1/2} -- system approaches but
     never reaches C_sing at finite eta
   Revised results:
     Theorem 5.2': Pi_C is C^inf on C_reg; Lipschitz near C_sing
@@ -175,7 +193,7 @@ FALSIFIABILITY:
 """
 
 # =============================================================================
-# NOTATION REGISTRY — from Agent 0 outline JSON, fully resolved
+# NOTATION REGISTRY -- from Agent 0 outline JSON, fully resolved
 # =============================================================================
 
 NOTATION_REGISTRY = r"""
@@ -300,7 +318,7 @@ FALSIFIABILITY:
 """
 
 # =============================================================================
-# AGENT 0 — ORCHESTRATOR
+# AGENT 0 -- ORCHESTRATOR
 # =============================================================================
 
 AGENT_0_SYSTEM = f"""You are the lead architect for a rigorous mathematical physics whitepaper.
@@ -334,8 +352,8 @@ is injected directly. Your outline should reflect 10 sections total
 Produce the section outline JSON."""
 
 # =============================================================================
-# AGENT 1 — MATHEMATICAL FOUNDATIONS
-# (Section 1 already produced — agent writes extended appendix material)
+# AGENT 1 -- MATHEMATICAL FOUNDATIONS
+# (Section 1 already produced -- agent writes extended appendix material)
 # =============================================================================
 
 AGENT_1_SYSTEM = f"""You are a functional analyst writing for a rigorous mathematical physics
@@ -343,7 +361,7 @@ whitepaper. Output LaTeX section body only (no preamble).
 Every claim: definition, lemma, proposition, theorem, proof, or remark.
 No informal prose without a formal counterpart.
 
-NOTATION REGISTRY (mandatory — use only these symbols):
+NOTATION REGISTRY (mandatory -- use only these symbols):
 {NOTATION_REGISTRY}"""
 
 AGENT_1_USER = f"""Context:
@@ -374,7 +392,7 @@ Define C_sing as the closed singular stratum.
 State: in 2D RMHD with periodic BC and state space M = H^2_per x H^2_per,
 C_sing has codimension 1 in C.
 Argument: a generic path in M crosses C_sing transversally (one condition:
-det Hess psi = 0 at a critical point of psi) — this is one real equation,
+det Hess psi = 0 at a critical point of psi) -- this is one real equation,
 hence codimension 1.
 \\end{{proposition}}
 
@@ -382,13 +400,13 @@ hence codimension 1.
 \\begin{{definition}}[Eps-Regularized Constraint Set]
 Define C_eps as the constraint set with topology-count constraint h_1
 replaced by the persistent topology observable:
-  h_1^eps(psi) = sum_{(b_i,d_i) persistence pairs, |d_i - b_i| > eps}
+  h_1^eps(psi) = sum_{{(b_i,d_i) persistence pairs, |d_i - b_i| > eps}}
                  w_eps(d_i - b_i)
 where w_eps is a smooth cutoff. This replaces discrete X/O counting
 with a C^inf function of psi under the W^{{1,inf}} topology.
 \\end{{definition}}
 
-\\begin{{theorem}}[Revised Projection Smoothness — Theorem 5.2']
+\\begin{{theorem}}[Revised Projection Smoothness -- Theorem 5.2']
 (a) Pi_C is C^inf on C_reg.
 (b) On N_eps(C_sing) (eps-neighborhood of singular stratum),
     Pi_{{C_eps}} is Lipschitz continuous with constant L_eps.
@@ -408,12 +426,12 @@ Moreau envelope regularization: Pi_{{C_eps}}(s) =
 argmin_y [||s-y||^2/2 + delta_{{C_eps}}(y)] where delta_{{C_eps}} is
 the Moreau envelope of the indicator of C_eps).
 (c): the error bound follows from persistence stability:
-||h_1^eps - h_1||_{W^{1,inf}} = O(eps) by the bottleneck stability
+||h_1^eps - h_1||_{{W^{{1,inf}}}} = O(eps) by the bottleneck stability
 theorem (Edelsbrunner-Harer 2010, Theorem VIII.4.1). QED.
 \\end{{proof}}
 
 3. REVISED CONSTRAINT PRESERVATION THEOREM
-\\begin{{theorem}}[Approximate Constraint Preservation — Theorem 6.1']
+\\begin{{theorem}}[Approximate Constraint Preservation -- Theorem 6.1']
 Let [tau_rec - delta, tau_rec + delta] denote a reconnection interval
 with delta ~ eps_rec / V_A, eps_rec = (eta tau_rec)^{{1/2}}.
 (a) Outside reconnection intervals: s(t) in C_reg exactly.
@@ -437,7 +455,7 @@ Post-reconnection: once the current sheet disperses (t >> tau_rec),
 eps_rec -> 0 and the state returns to C_reg (part c). QED.
 \\end{{proof}}
 
-4. IMPACT ON STABILITY — ISS REPLACEMENT
+4. IMPACT ON STABILITY -- ISS REPLACEMENT
 \\begin{{theorem}}[Input-to-State Stability near C_sing]
 On C_reg, the main stability Theorem 7.1 holds:
   ||R_ctrl|| > ||R_instab|| implies exponential stability.
@@ -454,20 +472,20 @@ C_sing is not a failure of the framework. It is the mathematical signature
 of a physical phase transition in field-line topology. The projection
 operator Pi_C loses smoothness at C_sing for the same reason that phase
 transitions are non-analytic in thermodynamics: the system crosses a
-structural boundary. Finite resistivity eta > 0 is not an approximation —
+structural boundary. Finite resistivity eta > 0 is not an approximation --
 it is the physical regularization that makes real reconnection possible
 and prevents the system from reaching C_sing exactly. The eps_rec layer
 is the physical reconnection current sheet.
 \\end{{remark}}
 
-Cite: Edelsbrunner & Harer, Computational Topology (2010) — persistence stability.
-Cite: de Silva, Morozov, Vejdemo-Johansson (2011) — Reeb graph stability.
-Cite: Rockafellar & Wets, Variational Analysis (1998) — Lipschitz projection.
-Cite: Sontag (1989) Syst. Control Lett. — ISS framework.
-Cite: Biskamp, Magnetic Reconnection in Plasmas (2000) — Sweet-Parker regularization."""
+Cite: Edelsbrunner & Harer, Computational Topology (2010) -- persistence stability.
+Cite: de Silva, Morozov, Vejdemo-Johansson (2011) -- Reeb graph stability.
+Cite: Rockafellar & Wets, Variational Analysis (1998) -- Lipschitz projection.
+Cite: Sontag (1989) Syst. Control Lett. -- ISS framework.
+Cite: Biskamp, Magnetic Reconnection in Plasmas (2000) -- Sweet-Parker regularization."""
 
 # =============================================================================
-# AGENT 2 — RMHD PHYSICS & HAMILTONIAN STRUCTURE
+# AGENT 2 -- RMHD PHYSICS & HAMILTONIAN STRUCTURE
 # =============================================================================
 
 AGENT_2_SYSTEM = f"""You are a mathematical physicist writing a section of a rigorous
@@ -495,7 +513,7 @@ Write Section 2: "Reduced Resistive MHD: Hamiltonian Structure and Conservation 
    State the Lie-Poisson structure on the dual of a semidirect product algebra
    (Morrison-Greene 1980).
 
-\\begin{{theorem}}[Hamiltonian Structure of RMHD — Theorem 2.1]
+\\begin{{theorem}}[Hamiltonian Structure of RMHD -- Theorem 2.1]
 The non-dissipative RMHD equations (nu=eta=0) have Lie-Poisson Hamiltonian
 structure d_t x = J (delta H / delta x). The dissipative system is a
 perturbation: d_t x = J delta H/delta x + D(x) where D encodes eta, nu terms.
@@ -507,17 +525,17 @@ perturbation: d_t x = J delta H/delta x + D(x) where D encodes eta, nu terms.
    via {{C_i, H}} = 0 in the Lie-Poisson bracket.
    Show Casimirs are conserved only at nu=eta=0; state implications.
 
-\\begin{{theorem}}[Energy Evolution — Theorem 2.2]
+\\begin{{theorem}}[Energy Evolution -- Theorem 2.2]
 dH/dt = -P_Omega - P_nu + control power
 where P_Omega = int eta J_z^2 dV, P_nu = int nu omega^2 dV.
 \\end{{theorem}}
 
 4. Lundquist number and plasmoid onset:
-\\begin{{theorem}}[Plasmoid Onset — Theorem 2.4]
+\\begin{{theorem}}[Plasmoid Onset -- Theorem 2.4]
 The Lundquist number S = L V_A / eta governs tearing instability.
 For S > S_c ~ 10^4 (Furth-Killeen-Rosenbluth threshold), the current
-sheet undergoes plasmoid cascade with growth rate gamma ~ S^{1/4} / tau_A.
-State the FKR dispersion relation: gamma tau_A ~ (k delta)^2/3 (eta/eta_crit)^{1/3}
+sheet undergoes plasmoid cascade with growth rate gamma ~ S^{{1/4}} / tau_A.
+State the FKR dispersion relation: gamma tau_A ~ (k delta)^2/3 (eta/eta_crit)^{{1/3}}
 where delta is current sheet half-width.
 \\end{{theorem}}
 
@@ -531,7 +549,7 @@ Cite: Biskamp (2000) Magnetic Reconnection in Plasmas, Cambridge.
 Cite: Furth, Killeen, Rosenbluth (1963) Phys. Fluids 6:459."""
 
 # =============================================================================
-# AGENT 3 — ARAKAWA DISCRETIZATION & ALGORITHMS
+# AGENT 3 -- ARAKAWA DISCRETIZATION & ALGORITHMS
 # =============================================================================
 
 AGENT_3_SYSTEM = f"""You are a numerical analyst writing sections on structure-preserving
@@ -555,7 +573,7 @@ SECTION 3: "Structure-Preserving Discretization: Arakawa Schemes"
    Write J_2 and J_3 stencils in full (standard Arakawa 1966 forms).
    Define J_Ar = (J_1 + J_2 + J_3)/3.
 
-\\begin{{theorem}}[Arakawa Conservation — Theorem 3.1]
+\\begin{{theorem}}[Arakawa Conservation -- Theorem 3.1]
 J_Ar simultaneously conserves:
   (a) Discrete energy: sum_{{ij}} psi_{{ij}} J_Ar(phi,omega)_{{ij}} = 0
   (b) Discrete enstrophy: sum_{{ij}} omega_{{ij}} J_Ar(phi,omega)_{{ij}} = 0
@@ -565,13 +583,13 @@ Proof: show each J_k conserves one of these; J_Ar as average conserves all.
 
 2. FFT Poisson solver:
    omega = nabla^2 phi => phi_hat = -omega_hat / k^2 in Fourier space.
-\\begin{{proposition}}[Spectral Accuracy — Proposition 3.3]
+\\begin{{proposition}}[Spectral Accuracy -- Proposition 3.3]
 FFT inversion achieves O(h^inf) accuracy for smooth periodic data.
 State: computational cost O(N log N) per solve.
 \\end{{proposition}}
 
 3. CFL stability:
-\\begin{{lemma}}[CFL Condition — Lemma 3.4]
+\\begin{{lemma}}[CFL Condition -- Lemma 3.4]
 Dt <= min(h/|v|_max, h^2/(4(eta+nu)))
 First term: advective CFL. Second: diffusive CFL.
 \\end{{lemma}}
@@ -600,12 +618,12 @@ Output: trajectory {{s_n}}, control history {{u_n}}, diagnostics
 3. Return {{s_n}}, {{u_n}}, diagnostics
 \\end{{algorithm}}
 
-\\begin{{proposition}}[Sign-Following Policy — Proposition 8.2]
+\\begin{{proposition}}[Sign-Following Policy -- Proposition 8.2]
 The control law E_drive = A_E w_target sign(J_z) avoids flux reversal:
 it drives reconnection in the direction of existing current, never opposing it.
 \\end{{proposition}}
 
-\\begin{{lemma}}[Projection Ordering Theorem — Lemma 8.3]
+\\begin{{lemma}}[Projection Ordering Theorem -- Lemma 8.3]
 Applying Pi_C after the complete Strang step (not within substeps)
 minimizes the projection correction ||Pi_C(s_tilde) - s_tilde||_M to O(Dt^2).
 Proof sketch: within-step projection introduces O(Dt) perturbations that
@@ -618,7 +636,7 @@ Cite: Blanes & Casas, Geometric Numerical Integration (2016).
 Cite: Hesthaven, Gottlieb, Gottlieb, Spectral Methods (2007)."""
 
 # =============================================================================
-# AGENT 4 — CONTROL THEORY
+# AGENT 4 -- CONTROL THEORY
 # =============================================================================
 
 AGENT_4_SYSTEM = f"""You are a control theorist writing on nonlinear control of
@@ -648,14 +666,14 @@ Write Section 4: "Control-Theoretic Formulation and Optimal Control."
    h_3: reconnection rate proxy R_hat = int |eta J_z| w_target dV
 
 3. Optimal control problem:
-\\begin{{theorem}}[Existence of Optimal Control — Theorem 4.2]
+\\begin{{theorem}}[Existence of Optimal Control -- Theorem 4.2]
 Under: (i) U_ad weakly closed, bounded; (ii) f,g continuous; (iii) J[u] coercive;
 there exists u* in U_ad minimizing J[u] = int_0^T [alpha R + beta I_plasmoid + gamma P] dt.
 Proof: standard direct method in calculus of variations (Lions 1971, Chapter 1).
 \\end{{theorem}}
 
 4. First-order optimality conditions:
-\\begin{{theorem}}[Adjoint Equations — Theorem 4.3]
+\\begin{{theorem}}[Adjoint Equations -- Theorem 4.3]
 At optimum u*, the adjoint variables lambda_psi, lambda_omega satisfy:
   -d_t lambda_psi  = (delta F/delta psi)^* lambda + delta L/delta psi
   -d_t lambda_omega = (delta F/delta omega)^* lambda + delta L/delta omega
@@ -669,14 +687,14 @@ Linearize at Harris sheet equilibrium x_bar:
   delta x_dot = A delta x + B u
 Kalman condition (Galerkin truncation to N_g modes):
   rank[B, AB, A^2 B, ..., A^{{N_g-1}} B] = N_g
-\\begin{{theorem}}[Local Controllability — Theorem 4.1]
+\\begin{{theorem}}[Local Controllability -- Theorem 4.1]
 The RMHD system with control u = (E_drive, eta_eff, F_omega) is locally
 controllable near the Harris sheet equilibrium psi_bar = ln(cosh(x/lambda_cs))
 in the Galerkin truncation to N_g <= 4 * (modal multiplicity) modes.
 \\end{{theorem}}
 
 6. Lyapunov stability:
-\\begin{{theorem}}[Lyapunov Stability — Theorem 4.4 / Proposition 4.4]
+\\begin{{theorem}}[Lyapunov Stability -- Theorem 4.4 / Proposition 4.4]
 Let V = H + eps Z with eps > 0 small.
 Hypotheses: (H1) nu, eta > 0; (H2) ||u||_{{U_ad}} <= M bounded;
 (H3) control law satisfies dissipation inequality:
@@ -684,7 +702,7 @@ Hypotheses: (H1) nu, eta > 0; (H2) ||u||_{{U_ad}} <= M bounded;
 where c_diss arises from the nu, eta dissipation in d_t V.
 Conclusion: V_dot <= -(c_diss - kappa) ||x - x_bar||^2_M,
 so x_bar is locally exponentially stable.
-Warning: global stability cannot be claimed — V may not be radially unbounded.
+Warning: global stability cannot be claimed -- V may not be radially unbounded.
 \\end{{theorem}}
 
 Cite: Isidori, Nonlinear Control Systems (1995).
@@ -692,7 +710,7 @@ Cite: Lions, Optimal Control of Systems Governed by PDEs (1971).
 Cite: Curtain & Zwart, Infinite-Dimensional Linear Systems Theory (1995)."""
 
 # =============================================================================
-# AGENT 5 — CIIR SYNTHESIS
+# AGENT 5 -- CIIR SYNTHESIS
 # =============================================================================
 
 AGENT_5_SYSTEM = f"""You are a mathematical systems theorist writing the synthesis section
@@ -731,24 +749,24 @@ Note: X/O counting uses persistent topology observable h_1^eps (Section 1
 Appendix) to ensure continuity through reconnection events.
 \\end{{definition}}
 
-\\begin{{theorem}}[Constraint Preservation — Theorem 5.1]
+\\begin{{theorem}}[Constraint Preservation -- Theorem 5.1]
 If s_0 in C_reg and dynamics projected by Pi_C on C_reg, then s(t) in C_reg exactly.
 During reconnection intervals [tau_rec - delta, tau_rec + delta]:
 delta_C(t) <= K eps_rec + C_num Dt^2 (Theorem 6.1', Section 1 Appendix).
 \\end{{theorem}}
 
-\\begin{{theorem}}[Projection Regularity — Theorem 5.2 (revised to 5.2')]
+\\begin{{theorem}}[Projection Regularity -- Theorem 5.2 (revised to 5.2')]
 (a) Pi_C is C^inf on C_reg (smooth stratum).
 (b) Pi_{{C_eps}} is Lipschitz on N_eps(C_sing) with error O(eps).
 (Proof: Section 1 Appendix, Theorem 5.2'.)
 \\end{{theorem}}
 
 \\begin{{definition}}[Failure Modes F1-F5]
-F1: Unobserved instability — instability in ker(dh), undetectable via y.
-F2: Controller lag — tau_ctrl > tau_instab, controller too slow.
-F3: Model-experiment mismatch — ||C_model - C_measured|| > eps_0.
-F4: Actuator saturation — ||u||_{{U_ad}} at boundary of U_ad.
-F5: Plasmoid cascade — S > S_c, instability exceeds control bandwidth.
+F1: Unobserved instability -- instability in ker(dh), undetectable via y.
+F2: Controller lag -- tau_ctrl > tau_instab, controller too slow.
+F3: Model-experiment mismatch -- ||C_model - C_measured|| > eps_0.
+F4: Actuator saturation -- ||u||_{{U_ad}} at boundary of U_ad.
+F5: Plasmoid cascade -- S > S_c, instability exceeds control bandwidth.
 Each characterized by an inequality on (tau_ctrl, tau_instab, dim ker dh).
 \\end{{definition}}
 
@@ -763,7 +781,7 @@ Central boxed result:
 
 Name: the CIIR Projected RMHD System (CPRS).
 
-\\begin{{theorem}}[Well-Posedness of CPRS — Theorem 6.1 / revised 6.1']
+\\begin{{theorem}}[Well-Posedness of CPRS -- Theorem 6.1 / revised 6.1']
 Under:
   (A1) C nonempty, closed in M (Section 1, Proposition 1.3)
   (A2) Phi_Dt Lipschitz with constant L_Phi near x_bar
@@ -787,7 +805,7 @@ R (Recursion)   <-> iteration x_{{k+1}} = Pi_C(Phi_Dt(x_k, u_k))
 The C-I-R triad is now a mathematically precise object.
 \\end{{definition}}
 
-\\begin{{proposition}}[Hard vs. Soft Projection — Proposition 6.3]
+\\begin{{proposition}}[Hard vs. Soft Projection -- Proposition 6.3]
 Hard projection Pi^hard_C: enforces invariants c_i = 0 only
   (solenoidality, incompressibility, Poisson antisymmetry).
   Preserves Hamiltonian structure at discrete level.
@@ -807,7 +825,7 @@ Cite: Nagurney & Zhang, Projected Dynamical Systems (1996).
 Cite: Henry, Geometric Theory of Semilinear Parabolic Equations (1981)."""
 
 # =============================================================================
-# AGENT 6 — RED TEAM PEER REVIEWER
+# AGENT 6 -- RED TEAM PEER REVIEWER
 # =============================================================================
 
 AGENT_6_SYSTEM = """You are an anonymous reviewer for Communications in Mathematical Physics.
@@ -827,20 +845,20 @@ def build_agent_6_user(sections: dict) -> str:
 {assembled}
 
 Check rigorously for:
-1. UNDEFINED NOTATION — symbol used before definition
-2. MISSING PROOF STEPS — theorems without proof, sketch, or citation
-3. OVERCLAIMING — conclusions stronger than proof supports
-4. PHYSICAL UNJUSTIFIABILITY — assumptions false for turbulent MHD
+1. UNDEFINED NOTATION -- symbol used before definition
+2. MISSING PROOF STEPS -- theorems without proof, sketch, or citation
+3. OVERCLAIMING -- conclusions stronger than proof supports
+4. PHYSICAL UNJUSTIFIABILITY -- assumptions false for turbulent MHD
    (specifically: convexity of C, Lipschitz on Phi_Dt, bounded pi,
     the ISS gain bound near C_sing, the codimension-1 claim for C_sing)
 5. DIMENSIONAL/NORM INCONSISTENCY
 6. CIRCULAR REASONING
-7. CONTROLLABILITY GAPS — Kalman rank condition in infinite dimensions
-8. PROJECTION NONUNIQUENESS — set-valued Pi_C treated as single-valued
+7. CONTROLLABILITY GAPS -- Kalman rank condition in infinite dimensions
+8. PROJECTION NONUNIQUENESS -- set-valued Pi_C treated as single-valued
 9. DISCRETIZATION-CONTINUUM MISMATCH
-10. ANALOGY AS IDENTITY — especially qubit/CPRS Lyapunov/dephasing connection
-11. STRATIFICATION GAPS — Whitney conditions not verified for RMHD C_sing
-12. ISS CLAIM — verify that class KL/K functions are explicitly constructed,
+10. ANALOGY AS IDENTITY -- especially qubit/CPRS Lyapunov/dephasing connection
+11. STRATIFICATION GAPS -- Whitney conditions not verified for RMHD C_sing
+12. ISS CLAIM -- verify that class KL/K functions are explicitly constructed,
     not merely asserted
 
 Output format per issue:
@@ -854,7 +872,7 @@ OVERALL RECOMMENDATION: [Accept/Major Revision/Reject]
 JUSTIFICATION: [one sentence]"""
 
 # =============================================================================
-# AGENT 7 — EXPERIMENTAL FALSIFIABILITY
+# AGENT 7 -- EXPERIMENTAL FALSIFIABILITY
 # =============================================================================
 
 AGENT_7_SYSTEM = f"""You are an experimental and computational physicist writing the
@@ -881,14 +899,14 @@ SECTION 9: "Experimental Falsifiability and Connection to CIIR Monograph Ch. 12"
 \\item[S3] Signal injection: activate control u != 0 with target R_max < R_hat_baseline.
            Measure Dpsi_controlled = psi_controlled - psi_uncontrolled.
 \\item[S4] Artifact screening: verify Dpsi_controlled not caused by:
-           (a) numerical projection artifact (run at 2x resolution — must persist),
+           (a) numerical projection artifact (run at 2x resolution -- must persist),
            (b) boundary condition artifact (run with different L_x, L_y),
            (c) initial condition sensitivity (run 10 randomized ICs).
 \\item[S5] Verdict: CIIR prediction confirmed iff
            SNR = |<Dpsi_controlled>| / sigma_noise >= SNR_min ~ 10^3.
 \\end{{enumerate}}
 
-2. Prediction 1 — spectral signature of Pi_C:
+2. Prediction 1 -- spectral signature of Pi_C:
 The theory predicts a spectral rolloff steeper than k^{{-5/3}} for k > k*
 where k* = (eta/nu)^{{1/4}} k_inj.
 This would be refuted if: controlled and uncontrolled runs at identical
@@ -896,20 +914,20 @@ eta, nu, N show no slope change at k*.
 Confirmation requires: N >= 512, eta/nu in [0.1, 10], measured at
 t = 10 tau_Alfven.
 
-3. Prediction 2 — reconnection rate suppression:
+3. Prediction 2 -- reconnection rate suppression:
 Sweet-Parker rate: v_rec = V_A (eta / (V_A L))^{{1/2}}.
 Under CIIR control: v_rec_controlled = min(v_rec, R_max / int J dV).
 For eta = 10^{{-3}}, V_A = 1, L = 1: v_rec ~ 0.032.
 With R_max = 0.02: predict v_rec_controlled <= 0.022 (within 10% of bound).
 This would be refuted if: v_rec_controlled > R_max / int J by more than 10%.
 
-4. Prediction 3 — fixed-point convergence scaling:
+4. Prediction 3 -- fixed-point convergence scaling:
 Theory (Theorem 6.1 contraction): k* <= C log(1/eps) / log(1/r),
 r = L_Phi L_pi < 1. Predict k* ~ O(N^alpha), alpha < 1.
 Numerical test: measure k* for N in {{128, 256, 512, 1024}}, fit alpha.
 This would be refuted if alpha >= 1.
 
-5. Prediction 4 — stratified projection signature:
+5. Prediction 4 -- stratified projection signature:
 During reconnection events (identifiable by X-point count change in h_1),
 the theory predicts delta_C spike of magnitude K eps_rec + C_num Dt^2,
 followed by recovery within t_return ~ eps_rec^2 / eta.
@@ -917,7 +935,7 @@ This would be refuted if: delta_C does not recover after reconnection,
 or if spike magnitude scales differently from eps_rec = (eta tau_rec)^{{1/2}}.
 
 6. Connection to CIIR monograph Ch. 12:
-\\begin{{theorem}}[Formal Closure — Connection 9.4]
+\\begin{{theorem}}[Formal Closure -- Connection 9.4]
 Ch. 12 Theorem 12.3 states that projected dynamics are closed under composition.
 The CPRS fixed point x* is an instance of this closure.
 Formal mapping: Lyapunov decay V(x_k) ~ exp(-eps k Dt) <->
@@ -957,14 +975,14 @@ Cite: Biskamp (2000) for RMHD benchmarks.
 Cite: Edelsbrunner & Harer (2010) for persistence stability."""
 
 # =============================================================================
-# AGENT 8 — FINAL INTEGRATOR
+# AGENT 8 -- FINAL INTEGRATOR
 # =============================================================================
 
 AGENT_8_SYSTEM = """You are the final editor of a mathematical physics whitepaper.
 Role: INTEGRATION, CONSISTENCY, RESOLUTION.
 Output: complete LaTeX document, compilable with pdflatex.
 Use \\documentclass{amsart}.
-Do not suppress criticisms — unresolvable fatal flaws become
+Do not suppress criticisms -- unresolvable fatal flaws become
 \\begin{remark}[Open Problem] environments."""
 
 def build_agent_8_user(outline: str, sections: dict, review: str, sec9_10: str) -> str:
@@ -1026,16 +1044,38 @@ def call_agent(system_prompt: str, user_message: str, max_tokens: int = 4096) ->
 # ORCHESTRATION RUNNER
 # =============================================================================
 
-def run_pipeline():
+def _strip_code_fence(text: str) -> str:
+    """Remove optional ```json or ``` fences from model output."""
+    text = text.strip()
+    text = re.sub(r'^```[a-z]*\s*\n?', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'\n?```\s*$', '', text)
+    return text.strip()
+
+
+def run_pipeline(model=None, max_workers=5,
+                 out_json="whitepaper_v2_output.json",
+                 out_tex="whitepaper_v2.tex"):
+    global MODEL
+
+    # Friendly error for missing API key
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        sys.exit(
+            "Error: ANTHROPIC_API_KEY environment variable is not set.\n"
+            "Export it with:  export ANTHROPIC_API_KEY=sk-ant-..."
+        )
+
+    if model is not None:
+        MODEL = model
+
     print("=" * 70)
-    print("RMHD/CIIR WHITEPAPER v2 — STRATIFIED PROJECTION RESOLUTION")
+    print("RMHD/CIIR WHITEPAPER v2 -- STRATIFIED PROJECTION RESOLUTION")
     print("=" * 70)
 
     # Phase 1: Agent 0
     print("\n[PHASE 1] Agent 0: Outline...")
     outline_raw = call_agent(AGENT_0_SYSTEM, AGENT_0_USER, max_tokens=2048)
     try:
-        clean = outline_raw.strip().lstrip("```json").lstrip("```").rstrip("```").strip()
+        clean = _strip_code_fence(outline_raw)
         outline_str = json.dumps(json.loads(clean), indent=2)
     except Exception:
         outline_str = outline_raw
@@ -1051,16 +1091,25 @@ def run_pipeline():
         (AGENT_5_SYSTEM, AGENT_5_USER, 4096),
     ]
 
-    async def run_parallel():
-        loop = asyncio.get_event_loop()
-        with ThreadPoolExecutor(max_workers=5) as pool:
+    async def _async_parallel():
+        loop = asyncio.get_running_loop()
+        with ThreadPoolExecutor(max_workers=max_workers) as pool:
             tasks = [
-                loop.run_in_executor(pool, call_agent, sys, usr, tok)
-                for sys, usr, tok in agent_calls
+                loop.run_in_executor(pool, call_agent, sys_p, usr, tok)
+                for sys_p, usr, tok in agent_calls
             ]
             return await asyncio.gather(*tasks)
 
-    results = asyncio.run(run_parallel())
+    # Detect whether we are already inside a running event loop (e.g. Jupyter).
+    try:
+        asyncio.get_running_loop()
+        # Running inside an existing event loop — use threads directly.
+        with ThreadPoolExecutor(max_workers=max_workers) as pool:
+            futures = [pool.submit(call_agent, *args) for args in agent_calls]
+            results = [f.result() for f in futures]
+    except RuntimeError:
+        # No running event loop — safe to use asyncio.run().
+        results = asyncio.run(_async_parallel())
 
     # Inject Section 1 pre-produced content + agent extension
     sections = {
@@ -1099,13 +1148,13 @@ def run_pipeline():
         "sections_9_10": sec9_10,
         "final_latex": final_latex,
     }
-    with open("whitepaper_v2_output.json", "w") as f:
+    with open(out_json, "w") as f:
         json.dump(output, f, indent=2)
-    with open("whitepaper_v2.tex", "w") as f:
+    with open(out_tex, "w") as f:
         f.write(final_latex)
 
-    print("\n✓ whitepaper_v2_output.json")
-    print("✓ whitepaper_v2.tex")
+    print(f"\n✓ {out_json}")
+    print(f"✓ {out_tex}")
     print("\nCompile: pdflatex whitepaper_v2.tex && bibtex whitepaper_v2 && pdflatex whitepaper_v2.tex")
     print("=" * 70)
     return output
@@ -1115,7 +1164,7 @@ def run_pipeline():
 # =============================================================================
 
 LANGGRAPH_ADAPTER = '''
-# LangGraph adapter — pip install langgraph langchain-anthropic
+# LangGraph adapter -- pip install langgraph langchain-anthropic
 #
 # from langgraph.graph import StateGraph, END
 # from typing import TypedDict, Optional
@@ -1157,4 +1206,34 @@ LANGGRAPH_ADAPTER = '''
 '''
 
 if __name__ == "__main__":
-    run_pipeline()
+    parser = argparse.ArgumentParser(
+        description="RMHD/CIIR Whitepaper Multi-Agent Orchestration Chain v2"
+    )
+    parser.add_argument(
+        "--model",
+        default=None,
+        help="Anthropic model name (default: claude-sonnet-4-20250514)",
+    )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=5,
+        help="Parallel workers for Phase 2 (default: 5)",
+    )
+    parser.add_argument(
+        "--out-json",
+        default="whitepaper_v2_output.json",
+        help="Output JSON path (default: whitepaper_v2_output.json)",
+    )
+    parser.add_argument(
+        "--out-tex",
+        default="whitepaper_v2.tex",
+        help="Output LaTeX path (default: whitepaper_v2.tex)",
+    )
+    args = parser.parse_args()
+    run_pipeline(
+        model=args.model,
+        max_workers=args.max_workers,
+        out_json=args.out_json,
+        out_tex=args.out_tex,
+    )

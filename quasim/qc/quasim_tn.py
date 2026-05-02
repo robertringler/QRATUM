@@ -541,3 +541,53 @@ class TensorNetworkEngine:
 
         entropy = -np.sum(eigenvalues * np.log2(eigenvalues))
         return float(entropy)
+
+    def compress_state(self, fidelity: float = 0.995) -> dict[str, Any]:
+        """Compress current state using AHTC.
+
+        Args:
+            fidelity: Target fidelity (default: 0.995 for 99.5% fidelity)
+
+        Returns:
+            Dictionary containing compressed state representation
+
+        Example:
+            >>> engine = TensorNetworkEngine(num_qubits=10)
+            >>> engine.initialize_state()
+            >>> compressed = engine.compress_state(fidelity=0.995)
+        """
+        from quasim.holo.anti_tensor import compress
+
+        state = self.get_state_vector()
+        compressed_state, achieved_fidelity, metadata = compress(
+            state, fidelity=fidelity
+        )
+
+        return {
+            "compressed_state": compressed_state,
+            "fidelity": achieved_fidelity,
+            "metadata": metadata,
+        }
+
+    def load_compressed_state(self, compressed: dict[str, Any]) -> None:
+        """Load state from AHTC compressed format.
+
+        Args:
+            compressed: Compressed state dictionary from compress_state()
+
+        Example:
+            >>> engine = TensorNetworkEngine(num_qubits=10)
+            >>> compressed = engine.compress_state()
+            >>> engine.load_compressed_state(compressed)
+        """
+        from quasim.holo.anti_tensor import decompress
+
+        compressed_state = compressed["compressed_state"]
+        state = decompress(compressed_state)
+
+        # Set state from decompressed vector
+        if self.use_mps:
+            self.state_tensor = state.reshape([2] * self.num_qubits)
+            self.mps_tensors = self._tensor_to_mps()
+        else:
+            self.state_tensor = state.reshape([2] * self.num_qubits)

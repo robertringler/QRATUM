@@ -573,6 +573,14 @@ class KaggleLeaderboardLoader:
             ))
         
         return positions
+
+    def _extract_positions_from_data(self, data: dict) -> list[KaggleBenchmarkPosition]:
+        """Extract benchmark positions from raw API data.
+
+        Args:
+            data: Raw data from Kaggle API.
+
+        Returns:
             List of benchmark positions.
         """
         positions = []

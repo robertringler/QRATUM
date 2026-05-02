@@ -255,10 +255,6 @@ def main():
                 "validation_analysis": all_validations,
                 "summary": summary,
             },
-            "interrogation_results": interrogation_results,
-            "validation_analysis": all_validations,
-            "summary": summary,
-        }, f, indent=2)
             f,
             indent=2,
         )

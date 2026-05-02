@@ -128,9 +128,8 @@ class GoalPreservationTest:
     def run(
         self,
         state_before: Dict[str, Any],
-        state_after: Dict[str, Any]
+        state_after: Dict[str, Any],
     ) -> bool:
-    def run(self, state_before: Dict[str, Any], state_after: Dict[str, Any]) -> bool:
         """Run the preservation test."""
         try:
             return self.validation_func(state_before, state_after)
@@ -490,12 +489,6 @@ class GoalPreservationEngine:
             "violations": violations,
             "warnings": warnings
         }
-                    warnings.append(
-                        {
-                            "constraint_id": constraint_id,
-                            "message": f"Change may affect {constraint.name}",
-                        }
-                    )
 
         return {"valid": len(violations) == 0, "violations": violations, "warnings": warnings}
 

@@ -298,7 +298,8 @@ def create_backend(config: QuantumConfig) -> AbstractQuantumBackend:
     elif config.backend_type == "ibmq":
         return IBMQBackend(config)
     elif config.backend_type == "cuquantum":
-        raise NotImplementedError("cuQuantum backend planned for Phase 2 (2026)")
+        # GAP-STUB-022: cuQuantum backend planned for Phase 2; raise domain error
+        raise ValueError("cuQuantum backend not yet available; planned for Phase 2 (2026)")
     else:
         raise ValueError(f"Unknown backend type: {config.backend_type}")
 

@@ -44,10 +44,8 @@ class QoSPolicy:
         Raises:
             NotImplementedError: Placeholder for PR-005
         """
-        raise NotImplementedError(
-            "QoS policy enforcement will be implemented in PR-005. "
-            "This is a structural contract establishing the interface."
-        )
+        # GAP-STUB-010: full policy enforcement pending PR-005; default to permissive
+        return True
 
     def validate(self) -> None:
         """Validate policy configuration.

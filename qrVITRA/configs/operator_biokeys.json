@@ -1,0 +1,83 @@
+{
+  "version": "1.0.0",
+  "operators": [
+    {
+      "id": "operator-alice",
+      "name": "Dr. Alice Smith",
+      "role": "Chief Genomics Officer",
+      "public_hash": "placeholder-will-be-generated-on-enrollment",
+      "registered": "2024-12-24T00:00:00Z",
+      "authorization_level": "CRITICAL",
+      "status": "active"
+    },
+    {
+      "id": "operator-bob",
+      "name": "Dr. Bob Johnson",
+      "role": "Senior Bioinformatician",
+      "public_hash": "placeholder-will-be-generated-on-enrollment",
+      "registered": "2024-12-24T00:00:00Z",
+      "authorization_level": "SENSITIVE",
+      "status": "active"
+    }
+  ],
+  "policies": {
+    "min_loci": 128,
+    "max_loci": 256,
+    "session_timeout_minutes": 60,
+    "dual_authorization_required": ["SENSITIVE", "CRITICAL", "EXISTENTIAL"],
+    "min_quality_score": 30,
+    "min_depth": 10,
+    "zkp_challenge_size_bytes": 32,
+    "hash_algorithm": "SHA3-256"
+  },
+  "authorization_levels": {
+    "ROUTINE": {
+      "description": "Basic operations, no biokey required",
+      "operations": ["query", "read", "view"]
+    },
+    "ELEVATED": {
+      "description": "Complex analysis, logging only",
+      "operations": ["analyze", "compute", "simulate"]
+    },
+    "SENSITIVE": {
+      "description": "System configuration, biokey + FIDO2 required",
+      "operations": ["configure", "update", "modify"],
+      "requires_biokey": true,
+      "requires_fido2": true
+    },
+    "CRITICAL": {
+      "description": "Self-improvement and zone promotions, dual authorization required",
+      "operations": ["self_improve", "zone_promote", "deploy"],
+      "requires_dual_biokey": true,
+      "requires_dual_fido2": true
+    },
+    "EXISTENTIAL": {
+      "description": "Architecture changes, dual authorization + board approval required",
+      "operations": ["architecture_change", "safety_boundary_modify"],
+      "requires_dual_biokey": true,
+      "requires_dual_fido2": true,
+      "requires_board_approval": true
+    }
+  },
+  "compliance": {
+    "hipaa": {
+      "enabled": true,
+      "phi_storage": "ram_only",
+      "audit_logging": true,
+      "encryption": "required"
+    },
+    "gdpr": {
+      "enabled": true,
+      "data_minimization": true,
+      "explicit_consent": true,
+      "erasure_rights": true
+    },
+    "bipa": {
+      "enabled": true,
+      "written_policy": true,
+      "informed_consent": true,
+      "retention_schedule": "session_based",
+      "destruction_protocol": "auto_wipe"
+    }
+  }
+}
