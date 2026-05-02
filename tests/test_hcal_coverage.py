@@ -12,6 +12,7 @@ class TestHCALDiscoverPlanApply:
 
     def test_discover_without_policy(self):
         """Test discover without a policy file."""
+
         hcal = HCAL(dry_run=True)
         topology = hcal.discover(full=False)
 
@@ -21,6 +22,7 @@ class TestHCALDiscoverPlanApply:
 
     def test_discover_full(self):
         """Test full discovery."""
+
         hcal = HCAL(dry_run=True)
         topology = hcal.discover(full=True)
 
@@ -30,6 +32,7 @@ class TestHCALDiscoverPlanApply:
 
     def test_plan_without_devices(self):
         """Test plan creation without specifying devices."""
+
         hcal = HCAL(dry_run=True)
         plan = hcal.plan(profile="balanced")
 
@@ -40,6 +43,7 @@ class TestHCALDiscoverPlanApply:
 
     def test_plan_with_unknown_profile(self):
         """Test plan with an unknown profile."""
+
         hcal = HCAL(dry_run=True)
         plan = hcal.plan(profile="unknown-profile")
 
@@ -49,6 +53,7 @@ class TestHCALDiscoverPlanApply:
 
     def test_apply_with_empty_plan(self):
         """Test applying an empty plan."""
+
         hcal = HCAL(dry_run=True)
         plan = {"plan_id": "test", "devices": {}}
         result = hcal.apply(plan)
@@ -58,6 +63,7 @@ class TestHCALDiscoverPlanApply:
 
     def test_apply_with_actuation_override(self):
         """Test applying plan with actuation override."""
+
         hcal = HCAL(dry_run=True)
         plan = {"plan_id": "test", "devices": {"GPU0": {"power_limit_w": 200}}}
 
@@ -68,6 +74,7 @@ class TestHCALDiscoverPlanApply:
 
     def test_discover_topology(self):
         """Test discover_topology method."""
+
         hcal = HCAL(dry_run=True)
         topology = hcal.discover_topology()
 
@@ -80,6 +87,7 @@ class TestPolicyEngineAdditional:
 
     def test_policy_engine_default(self):
         """Test PolicyEngine with default settings."""
+
         engine = PolicyEngine()
 
         assert engine.environment is not None
@@ -88,6 +96,7 @@ class TestPolicyEngineAdditional:
 
     def test_policy_engine_custom_config(self, tmp_path):
         """Test PolicyEngine with custom configuration."""
+
         policy_data = {
             "environment": "LAB",
             "allowed_backends": ["nvml"],
@@ -110,6 +119,7 @@ class TestPolicyEngineAdditional:
 
     def test_is_backend_allowed(self):
         """Test backend validation."""
+
         engine = PolicyEngine()
 
         assert engine.is_backend_allowed("nvml")
@@ -117,6 +127,7 @@ class TestPolicyEngineAdditional:
 
     def test_is_device_allowed_with_allowlist(self, tmp_path):
         """Test device allowlist enforcement."""
+
         policy_data = {
             "environment": "DEV",
             "allowed_backends": ["nvml"],
@@ -138,6 +149,7 @@ class TestPolicyEngineAdditional:
 
     def test_rate_limiter_reset(self):
         """Test rate limiter over time."""
+
         import time
 
         engine = PolicyEngine()
@@ -160,6 +172,7 @@ class TestPolicyEngineAdditional:
 
     def test_validate_operation_with_invalid_device(self, tmp_path):
         """Test operation validation with device not on allowlist."""
+
         policy_data = {
             "environment": "DEV",
             "allowed_backends": ["nvml"],
@@ -190,6 +203,7 @@ class TestHCALWithPolicyFile:
 
     def test_hcal_from_policy_with_audit(self, tmp_path):
         """Test HCAL.from_policy with audit logging."""
+
         policy_data = {
             "environment": "DEV",
             "allowed_backends": ["nvml"],
@@ -215,6 +229,7 @@ class TestHCALWithPolicyFile:
 
     def test_plan_with_device_filtering(self, tmp_path):
         """Test plan creation with device filtering."""
+
         policy_data = {
             "environment": "DEV",
             "allowed_backends": ["nvml"],
@@ -240,6 +255,7 @@ class TestHCALWithPolicyFile:
 
     def test_get_audit_log(self):
         """Test getting audit log."""
+
         hcal = HCAL(dry_run=True)
         log = hcal.get_audit_log()
 
@@ -247,6 +263,7 @@ class TestHCALWithPolicyFile:
 
     def test_verify_audit_chain(self):
         """Test audit chain verification."""
+
         hcal = HCAL(dry_run=True)
         valid = hcal.verify_audit_chain()
 

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Iterable, List, Tuple
+from typing import Iterable
 
 
 @dataclass
@@ -46,6 +46,7 @@ class QEVFParameters:
 
 def phi_qevf(params: QEVFParameters) -> float:
     """Compute Φ_QEVF using the calibrated hybrid economic model."""
+
     params.validate()
     numerator = params.energy * params.eta_ent
     denominator = params.c_q + params.c_c
@@ -60,7 +61,7 @@ def entanglement_to_revenue(
     yields: Iterable[float],
     params: QEVFParameters,
     revenue_scale: float,
-) -> List[Tuple[float, float]]:
+) -> list[tuple[float, float]]:
     """Map entanglement yields to projected revenue flux.
 
     Args:
@@ -71,8 +72,9 @@ def entanglement_to_revenue(
     Returns:
         List of tuples containing (entanglement_yield, revenue_flux).
     """
+
     params.validate()
-    curve: List[Tuple[float, float]] = []
+    curve: list[tuple[float, float]] = []
     phi_value = phi_qevf(params)
     for ent_yield in yields:
         if ent_yield <= 0:
@@ -84,6 +86,7 @@ def entanglement_to_revenue(
 
 def simulate_ops_per_kwh(params: QEVFParameters, entanglement_ops: float) -> float:
     """Estimate operations per kWh based on entanglement output."""
+
     params.validate()
     if entanglement_ops <= 0:
         raise ValueError("Entanglement operations must be positive")
@@ -93,6 +96,7 @@ def simulate_ops_per_kwh(params: QEVFParameters, entanglement_ops: float) -> flo
 
 def default_parameters() -> QEVFParameters:
     """Default parameter set achieving ≥ 1 × 10¹⁷ ops/kWh."""
+
     return QEVFParameters(
         c_q=2.7e3,
         c_c=1.9e3,

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Generate all Defense-Grade PR Compliance Agent files
 Generates OPA policies, control matrices, templates, scripts, and documentation
 """
@@ -12,6 +13,7 @@ BASE_DIR = Path(__file__).parent.parent
 
 def create_opa_policies():
     """Generate all OPA Rego policy files"""
+
     policies_dir = BASE_DIR / "policies" / "rego"
     policies_dir.mkdir(parents=True, exist_ok=True)
 
@@ -176,6 +178,7 @@ compliant if {
 
 def create_control_matrices():
     """Generate compliance control matrices"""
+
     matrices_dir = BASE_DIR / "matrices"
     matrices_dir.mkdir(parents=True, exist_ok=True)
 
@@ -233,6 +236,7 @@ SI.L2-3.14.1,Flaw Remediation,System Integrity,Implemented,Patch Management
 
 def create_templates():
     """Generate compliance document templates"""
+
     templates_dir = BASE_DIR / "templates"
     templates_dir.mkdir(parents=True, exist_ok=True)
 
@@ -338,6 +342,7 @@ def create_templates():
 
 def create_scripts():
     """Generate compliance automation scripts"""
+
     scripts_dir = BASE_DIR / "scripts"
 
     # SBOM Generator
@@ -467,6 +472,7 @@ if __name__ == "__main__":
 
 def create_documentation():
     """Generate comprehensive documentation"""
+
     docs_dir = Path(__file__).parent.parent.parent / "docs"
 
     # Compliance README
@@ -565,6 +571,7 @@ For compliance questions: compliance@quasim.example.com
 
 def main():
     """Generate all compliance files"""
+
     print("Generating Defense-Grade PR Compliance Agent files...")
     print("=" * 60)
 

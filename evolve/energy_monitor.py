@@ -6,7 +6,6 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
 
 
 @dataclass
@@ -22,6 +21,7 @@ class ThermalTelemetry:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "timestamp": self.timestamp,
             "temperature_celsius": self.temperature_celsius,
@@ -46,6 +46,7 @@ class EfficiencyDashboard:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "total_energy_j": self.total_energy_j,
             "average_power_w": self.average_power_w,
@@ -59,6 +60,7 @@ class EfficiencyDashboard:
 
 class EnergyMonitor:
     """
+
     Energy-adaptive regulation using thermal telemetry.
     Implements closed-loop control with throttling.
     """
@@ -70,16 +72,18 @@ class EnergyMonitor:
     ):
         self.max_temp_celsius = max_temp_celsius
         self.max_power_watts = max_power_watts
-        self.telemetry_history: List[ThermalTelemetry] = []
+        self.telemetry_history: list[ThermalTelemetry] = []
         self.throttle_events = 0
 
     def sample_telemetry(
         self, temperature: float, power: float, gflops: float, duration_s: float = 1.0
     ) -> ThermalTelemetry:
         """
+
         Sample thermal and energy telemetry.
         In real implementation, would query NVML/ROCm APIs.
         """
+
         energy = power * duration_s
         efficiency = gflops / power if power > 0 else 0.0
 
@@ -96,9 +100,11 @@ class EnergyMonitor:
 
     def check_thermal_limits(self, telemetry: ThermalTelemetry) -> bool:
         """
+
         Check if thermal limits are exceeded.
         Returns True if throttling is needed.
         """
+
         needs_throttle = False
 
         if telemetry.temperature_celsius > self.max_temp_celsius:
@@ -114,9 +120,11 @@ class EnergyMonitor:
 
     def compute_throttle_factor(self, telemetry: ThermalTelemetry) -> float:
         """
+
         Compute throttling factor based on thermal conditions.
         Returns value in [0.5, 1.0] where 1.0 = no throttling.
         """
+
         # Temperature-based throttling
         temp_factor = 1.0
         if telemetry.temperature_celsius > self.max_temp_celsius:
@@ -134,11 +142,13 @@ class EnergyMonitor:
         # Take minimum (most restrictive)
         return min(temp_factor, power_factor)
 
-    def apply_feedback_control(self, telemetry: ThermalTelemetry) -> Dict[str, float]:
+    def apply_feedback_control(self, telemetry: ThermalTelemetry) -> dict[str, float]:
         """
+
         Apply feedback control algorithm.
         Returns control parameters for throttling/migration.
         """
+
         needs_throttle = self.check_thermal_limits(telemetry)
 
         if needs_throttle:
@@ -158,6 +168,7 @@ class EnergyMonitor:
 
     def generate_dashboard(self) -> EfficiencyDashboard:
         """Generate efficiency dashboard from collected telemetry."""
+
         if not self.telemetry_history:
             return EfficiencyDashboard()
 
@@ -182,6 +193,7 @@ class EnergyMonitor:
         self, dashboard: EfficiencyDashboard, output_path: str = "evolve/energy_dashboard.json"
     ) -> Path:
         """Save dashboard to disk."""
+
         dashboard_path = Path(output_path)
         dashboard_path.parent.mkdir(parents=True, exist_ok=True)
 

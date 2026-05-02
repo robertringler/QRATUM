@@ -1,4 +1,5 @@
 """Adapter layer wrapping the QNX substrate for deterministic orchestration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -6,7 +7,6 @@ from typing import Any, Mapping
 
 from qnx.core import QNXSubstrate
 from qnx.types import SecurityLevel, SimulationConfig, SubstrateResult
-
 from qstack.config import QNXConfig
 
 

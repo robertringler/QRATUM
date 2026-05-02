@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XENON | Real-Time Quantum Simulation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyan: #00f5ff;
+            --magenta: #ff00ff;
+            --purple: #8b5cf6;
+            --green: #00ff88;
+            --orange: #ff8800;
+            --red: #ff3366;
+            --bg: #000008;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--bg);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .ui-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .ui-layer > * { pointer-events: auto; }
+
+        /* Header */
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(0,0,8,0.9) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 6px;
+        }
+
+        .status-live {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--green);
+            border-radius: 20px;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: livePulse 1s infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
+        }
+
+        /* Simulation Mode Selector */
+        .mode-selector {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            padding: 5px;
+            background: rgba(0, 0, 20, 0.8);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            border-radius: 30px;
+        }
+
+        .mode-btn {
+            padding: 10px 25px;
+            background: transparent;
+            border: none;
+            color: var(--cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .mode-btn:hover { background: rgba(0, 245, 255, 0.2); }
+        .mode-btn.active {
+            background: var(--cyan);
+            color: var(--bg);
+        }
+
+        /* Left Panel - Simulation Controls */
+        .panel-left {
+            position: absolute;
+            left: 20px;
+            top: 140px;
+            width: 300px;
+        }
+
+        .panel {
+            background: rgba(0, 0, 20, 0.85);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .panel-header {
+            padding: 15px 20px;
+            background: rgba(0, 245, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 245, 255, 0.2);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--cyan);
+        }
+
+        .panel-body { padding: 20px; }
+
+        /* Real-time Metrics */
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .metric-label { font-size: 12px; color: #888; }
+
+        .metric-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            color: var(--cyan);
+        }
+
+        .metric-value.green { color: var(--green); }
+        .metric-value.orange { color: var(--orange); }
+        .metric-value.magenta { color: var(--magenta); }
+
+        /* Waveform Display */
+        .waveform-container {
+            height: 80px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .waveform-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Right Panel - Live Data */
+        .panel-right {
+            position: absolute;
+            right: 20px;
+            top: 140px;
+            width: 320px;
+        }
+
+        /* Sequence Stream */
+        .sequence-stream {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            height: 120px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.5);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .sequence-line {
+            white-space: nowrap;
+            animation: sequenceScroll 0.5s linear;
+        }
+
+        .base-A { color: #00ff88; }
+        .base-T { color: #ff3366; }
+        .base-G { color: #ffaa00; }
+        .base-C { color: #00aaff; }
+
+        @keyframes sequenceScroll {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Energy Graph */
+        .energy-graph {
+            height: 100px;
+            position: relative;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .energy-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Progress Ring */
+        .progress-ring-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .progress-ring {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring circle {
+            fill: none;
+            stroke-width: 8;
+        }
+
+        .progress-ring .bg { stroke: rgba(255,255,255,0.1); }
+        .progress-ring .progress {
+            stroke: url(#progressGradient);
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.3s;
+        }
+
+        .progress-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            color: var(--cyan);
+        }
+
+        .progress-label {
+            font-size: 10px;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        /* Bottom Timeline */
+        .timeline {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            padding: 15px 25px;
+            background: rgba(0, 0, 20, 0.9);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 11px;
+        }
+
+        .timeline-track {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .timeline-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            border-radius: 3px;
+            transition: width 0.3s;
+            position: relative;
+        }
+
+        .timeline-progress::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -4px;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--cyan);
+        }
+
+        .timeline-phases {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 10px;
+            color: #666;
+        }
+
+        .timeline-phase.active { color: var(--cyan); }
+        .timeline-phase.complete { color: var(--green); }
+
+        /* Floating Particles Info */
+        .particle-info {
+            position: absolute;
+            background: rgba(0,0,20,0.9);
+            border: 1px solid var(--cyan);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 11px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 100;
+        }
+
+        .particle-info.visible { opacity: 1; }
+
+        /* Control Buttons */
+        .control-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .ctrl-btn {
+            flex: 1;
+            padding: 12px;
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            color: var(--cyan);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .ctrl-btn:hover {
+            background: var(--cyan);
+            color: var(--bg);
+        }
+
+        .ctrl-btn.active {
+            background: var(--cyan);
+            color: var(--bg);
+        }
+
+        .ctrl-btn.danger {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .ctrl-btn.danger:hover {
+            background: var(--red);
+            color: white;
+        }
+
+        /* Scanline Effect */
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.1) 0px,
+                rgba(0,0,0,0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+    <div id="canvas-container"></div>
+
+    <div class="ui-layer">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">XENON</div>
+            <div class="status-live">
+                <div class="live-dot"></div>
+                <span>LIVE SIMULATION</span>
+            </div>
+            <div style="font-size: 12px; color: #666;">
+                <span id="clock"></span>
+            </div>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="mode-selector">
+            <button class="mode-btn active" onclick="setMode('genome')">GENOME</button>
+            <button class="mode-btn" onclick="setMode('mechanism')">MECHANISM</button>
+            <button class="mode-btn" onclick="setMode('quantum')">QUANTUM</button>
+            <button class="mode-btn" onclick="setMode('energy')">ENERGY</button>
+        </div>
+
+        <!-- Left Panel -->
+        <div class="panel-left">
+            <div class="panel">
+                <div class="panel-header">⚡ REAL-TIME METRICS</div>
+                <div class="panel-body">
+                    <div class="metric-row">
+                        <span class="metric-label">Sequences/sec</span>
+                        <span class="metric-value green" id="seq-rate">0</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Entropy</span>
+                        <span class="metric-value orange" id="entropy">2.100</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Posterior Max</span>
+                        <span class="metric-value magenta" id="posterior">0.000</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Active Particles</span>
+                        <span class="metric-value" id="particles">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">📊 WAVEFORM</div>
+                <div class="panel-body">
+                    <div class="waveform-container">
+                        <canvas class="waveform-canvas" id="waveform"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">🎛️ CONTROLS</div>
+                <div class="panel-body">
+                    <div class="control-row">
+                        <button class="ctrl-btn active" id="playBtn" onclick="toggleSimulation()">▶ PLAY</button>
+                        <button class="ctrl-btn" onclick="resetSimulation()">↺ RESET</button>
+                    </div>
+                    <div class="control-row">
+                        <button class="ctrl-btn" onclick="setSpeed(0.5)">0.5x</button>
+                        <button class="ctrl-btn active" onclick="setSpeed(1)">1x</button>
+                        <button class="ctrl-btn" onclick="setSpeed(2)">2x</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="panel-right">
+            <div class="panel">
+                <div class="panel-header">🧬 SEQUENCE STREAM</div>
+                <div class="panel-body">
+                    <div class="sequence-stream" id="sequence-stream"></div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">⚛️ SIMULATION PROGRESS</div>
+                <div class="panel-body">
+                    <div class="progress-ring-container">
+                        <div class="progress-ring">
+                            <svg width="120" height="120">
+                                <defs>
+                                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#00f5ff"/>
+                                        <stop offset="100%" stop-color="#ff00ff"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle class="bg" cx="60" cy="60" r="52"/>
+                                <circle class="progress" id="progressCircle" cx="60" cy="60" r="52" 
+                                        stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
+                            </svg>
+                            <div class="progress-center">
+                                <div class="progress-value" id="progressValue">0%</div>
+                                <div class="progress-label">COMPLETE</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">📈 ENERGY LANDSCAPE</div>
+                <div class="panel-body">
+                    <div class="energy-graph">
+                        <canvas class="energy-canvas" id="energyGraph"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline">
+            <div class="timeline-header">
+                <span>PIPELINE PROGRESS</span>
+                <span id="timeline-time">00:00 / 00:30</span>
+            </div>
+            <div class="timeline-track">
+                <div class="timeline-progress" id="timeline-progress" style="width: 0%"></div>
+            </div>
+            <div class="timeline-phases">
+                <span class="timeline-phase active" id="phase1">ALIGNMENT</span>
+                <span class="timeline-phase" id="phase2">FUSION</span>
+                <span class="timeline-phase" id="phase3">ENTROPY</span>
+                <span class="timeline-phase" id="phase4">INFERENCE</span>
+                <span class="timeline-phase" id="phase5">COMPLETE</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Particle Info Tooltip -->
+    <div class="particle-info" id="particle-info">
+        <div><strong>Node:</strong> <span id="info-node">-</span></div>
+        <div><strong>Energy:</strong> <span id="info-energy">-</span></div>
+        <div><strong>State:</strong> <span id="info-state">-</span></div>
+    </div>
+
+    <script>
+        // ============================================
+        // XENON Real-Time Simulation Engine
+        // ============================================
+
+        let scene, camera, renderer, controls, composer;
+        let simulationRunning = true;
+        let simulationSpeed = 1.0;
+        let simulationProgress = 0;
+        let currentMode = 'genome';
+        let clock = new THREE.Clock();
+
+        // Simulation objects
+        let dnaHelix, quantumField, mechanismNetwork, energySurface;
+        let particles = [];
+        let flowParticles = [];
+
+        // Data streams
+        let waveformData = new Array(100).fill(0);
+        let energyData = new Array(100).fill(0);
+        let sequenceBuffer = [];
+
+        // Initialize
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x000008, 0.008);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 20, 40);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setClearColor(0x000008);
+            renderer.toneMapping = THREE.ReinhardToneMapping;
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Post-processing
+            composer = new THREE.EffectComposer(renderer);
+            const renderPass = new THREE.RenderPass(scene, camera);
+            composer.addPass(renderPass);
+            
+            const bloomPass = new THREE.UnrealBloomPass(
+                new THREE.Vector2(window.innerWidth, window.innerHeight),
+                1.5, 0.4, 0.85
+            );
+            bloomPass.threshold = 0;
+            bloomPass.strength = 2;
+            bloomPass.radius = 1;
+            composer.addPass(bloomPass);
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.5;
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+            scene.add(ambientLight);
+
+            const pointLight1 = new THREE.PointLight(0x00f5ff, 3, 100);
+            pointLight1.position.set(30, 30, 30);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0xff00ff, 2, 100);
+            pointLight2.position.set(-30, -20, 30);
+            scene.add(pointLight2);
+
+            // Create visualizations
+            createDNAHelix();
+            createQuantumField();
+            createMechanismNetwork();
+            createBackgroundParticles();
+            createGrid();
+
+            // Events
+            window.addEventListener('resize', onWindowResize);
+            renderer.domElement.addEventListener('mousemove', onMouseMove);
+
+            // Start simulation
+            animate();
+            startDataStreams();
+        }
+
+        // Create DNA Double Helix
+        function createDNAHelix() {
+            dnaHelix = new THREE.Group();
+            
+            const helixRadius = 3;
+            const helixHeight = 30;
+            const turns = 4;
+            const pointsPerTurn = 30;
+            const totalPoints = turns * pointsPerTurn;
+
+            // Create two strands
+            for (let strand = 0; strand < 2; strand++) {
+                const points = [];
+                const phaseOffset = strand * Math.PI;
+
+                for (let i = 0; i <= totalPoints; i++) {
+                    const t = i / totalPoints;
+                    const angle = t * turns * Math.PI * 2 + phaseOffset;
+                    const x = Math.cos(angle) * helixRadius;
+                    const y = (t - 0.5) * helixHeight;
+                    const z = Math.sin(angle) * helixRadius;
+                    points.push(new THREE.Vector3(x, y, z));
+                }
+
+                const curve = new THREE.CatmullRomCurve3(points);
+                const geometry = new THREE.TubeGeometry(curve, totalPoints * 2, 0.2, 8, false);
+                const material = new THREE.MeshPhongMaterial({
+                    color: strand === 0 ? 0x00f5ff : 0xff00ff,
+                    emissive: strand === 0 ? 0x004455 : 0x440044,
+                    shininess: 100,
+                    transparent: true,
+                    opacity: 0.9,
+                });
+                const tube = new THREE.Mesh(geometry, material);
+                dnaHelix.add(tube);
+            }
+
+            // Add base pairs
+            for (let i = 0; i < totalPoints; i += 3) {
+                const t = i / totalPoints;
+                const angle1 = t * turns * Math.PI * 2;
+                const angle2 = angle1 + Math.PI;
+                const y = (t - 0.5) * helixHeight;
+
+                const x1 = Math.cos(angle1) * helixRadius;
+                const z1 = Math.sin(angle1) * helixRadius;
+                const x2 = Math.cos(angle2) * helixRadius;
+                const z2 = Math.sin(angle2) * helixRadius;
+
+                const baseGeometry = new THREE.CylinderGeometry(0.1, 0.1, helixRadius * 2, 8);
+                const baseMaterial = new THREE.MeshBasicMaterial({
+                    color: ['#00ff88', '#ff3366', '#ffaa00', '#00aaff'][i % 4],
+                    transparent: true,
+                    opacity: 0.6,
+                });
+                const basePair = new THREE.Mesh(baseGeometry, baseMaterial);
+                basePair.position.set((x1 + x2) / 2, y, (z1 + z2) / 2);
+                basePair.rotation.z = Math.PI / 2;
+                basePair.rotation.y = angle1;
+                dnaHelix.add(basePair);
+            }
+
+            scene.add(dnaHelix);
+        }
+
+        // Create Quantum Field Visualization
+        function createQuantumField() {
+            quantumField = new THREE.Group();
+            
+            const geometry = new THREE.BufferGeometry();
+            const count = 2000;
+            const positions = new Float32Array(count * 3);
+            const colors = new Float32Array(count * 3);
+            const sizes = new Float32Array(count);
+
+            for (let i = 0; i < count; i++) {
+                const i3 = i * 3;
+                // Spherical distribution
+                const radius = 15 + Math.random() * 10;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                
+                positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+                positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                positions[i3 + 2] = radius * Math.cos(phi);
+
+                // Color based on position
+                const hue = (positions[i3 + 1] + 15) / 30;
+                colors[i3] = hue;
+                colors[i3 + 1] = 1 - hue;
+                colors[i3 + 2] = 1;
+
+                sizes[i] = Math.random() * 3 + 1;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.5,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending,
+            });
+
+            const points = new THREE.Points(geometry, material);
+            quantumField.add(points);
+            quantumField.visible = false;
+            scene.add(quantumField);
+        }
+
+        // Create Mechanism Network
+        function createMechanismNetwork() {
+            mechanismNetwork = new THREE.Group();
+
+            const nodeCount = 8;
+            const nodes = [];
+            const nodeGeometry = new THREE.IcosahedronGeometry(1, 2);
+
+            for (let i = 0; i < nodeCount; i++) {
+                const angle = (i / nodeCount) * Math.PI * 2;
+                const radius = 10;
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius;
+                const y = Math.sin(i * 0.8) * 3;
+
+                const material = new THREE.MeshPhongMaterial({
+                    color: new THREE.Color().setHSL(i / nodeCount, 0.8, 0.5),
+                    emissive: new THREE.Color().setHSL(i / nodeCount, 0.8, 0.2),
+                    shininess: 100,
+                    transparent: true,
+                    opacity: 0.9,
+                });
+
+                const node = new THREE.Mesh(nodeGeometry, material);
+                node.position.set(x, y, z);
+                node.userData = { index: i, energy: -10 - Math.random() * 30 };
+                mechanismNetwork.add(node);
+                nodes.push(node);
+
+                // Glow ring
+                const ringGeometry = new THREE.TorusGeometry(1.5, 0.05, 16, 32);
+                const ringMaterial = new THREE.MeshBasicMaterial({
+                    color: 0x00f5ff,
+                    transparent: true,
+                    opacity: 0.5,
+                });
+                const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                ring.position.copy(node.position);
+                ring.rotation.x = Math.PI / 2;
+                mechanismNetwork.add(ring);
+            }
+
+            // Create edges
+            const edges = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,0],[0,4],[2,6]];
+            edges.forEach(([a, b]) => {
+                const points = [nodes[a].position, nodes[b].position];
+                const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                const material = new THREE.LineBasicMaterial({
+                    color: 0x00f5ff,
+                    transparent: true,
+                    opacity: 0.3,
+                });
+                mechanismNetwork.add(new THREE.Line(geometry, material));
+
+                // Flow particle
+                const flowGeometry = new THREE.SphereGeometry(0.2, 8, 8);
+                const flowMaterial = new THREE.MeshBasicMaterial({
+                    color: 0x00ff88,
+                    transparent: true,
+                    opacity: 0.9,
+                });
+                const flow = new THREE.Mesh(flowGeometry, flowMaterial);
+                flow.userData = { start: a, end: b, progress: Math.random() };
+                mechanismNetwork.add(flow);
+                flowParticles.push({ mesh: flow, nodes: [nodes[a], nodes[b]] });
+            });
+
+            mechanismNetwork.visible = false;
+            scene.add(mechanismNetwork);
+        }
+
+        // Create Background Particles
+        function createBackgroundParticles() {
+            const geometry = new THREE.BufferGeometry();
+            const count = 3000;
+            const positions = new Float32Array(count * 3);
+            const colors = new Float32Array(count * 3);
+
+            for (let i = 0; i < count; i++) {
+                const i3 = i * 3;
+                positions[i3] = (Math.random() - 0.5) * 200;
+                positions[i3 + 1] = (Math.random() - 0.5) * 200;
+                positions[i3 + 2] = (Math.random() - 0.5) * 200;
+
+                colors[i3] = Math.random() * 0.3;
+                colors[i3 + 1] = Math.random() * 0.5 + 0.5;
+                colors[i3 + 2] = 1;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.5,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.6,
+                blending: THREE.AdditiveBlending,
+            });
+
+            const points = new THREE.Points(geometry, material);
+            scene.add(points);
+            particles.push(points);
+        }
+
+        // Create Grid
+        function createGrid() {
+            const gridHelper = new THREE.GridHelper(100, 50, 0x00f5ff, 0x001122);
+            gridHelper.position.y = -20;
+            gridHelper.material.transparent = true;
+            gridHelper.material.opacity = 0.3;
+            scene.add(gridHelper);
+        }
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+            const elapsed = clock.getElapsedTime();
+
+            if (simulationRunning) {
+                // Update simulation progress
+                simulationProgress += delta * simulationSpeed * 0.02;
+                if (simulationProgress > 1) simulationProgress = 0;
+                updateProgress(simulationProgress);
+
+                // Rotate DNA helix
+                if (dnaHelix && dnaHelix.visible) {
+                    dnaHelix.rotation.y += 0.01 * simulationSpeed;
+                }
+
+                // Animate quantum field
+                if (quantumField && quantumField.visible) {
+                    const positions = quantumField.children[0].geometry.attributes.position.array;
+                    for (let i = 0; i < positions.length; i += 3) {
+                        positions[i] += Math.sin(elapsed + i) * 0.02 * simulationSpeed;
+                        positions[i + 1] += Math.cos(elapsed + i * 0.5) * 0.02 * simulationSpeed;
+                    }
+                    quantumField.children[0].geometry.attributes.position.needsUpdate = true;
+                    quantumField.rotation.y += 0.005 * simulationSpeed;
+                }
+
+                // Animate mechanism network
+                if (mechanismNetwork && mechanismNetwork.visible) {
+                    mechanismNetwork.children.forEach((child, i) => {
+                        if (child.type === 'Mesh' && child.geometry.type === 'IcosahedronGeometry') {
+                            child.rotation.x += 0.01 * simulationSpeed;
+                            child.rotation.y += 0.01 * simulationSpeed;
+                            child.scale.setScalar(1 + Math.sin(elapsed * 2 + i) * 0.1);
+                        }
+                    });
+
+                    // Animate flow particles
+                    flowParticles.forEach(fp => {
+                        fp.mesh.userData.progress += 0.02 * simulationSpeed;
+                        if (fp.mesh.userData.progress > 1) fp.mesh.userData.progress = 0;
+                        fp.mesh.position.lerpVectors(
+                            fp.nodes[0].position,
+                            fp.nodes[1].position,
+                            fp.mesh.userData.progress
+                        );
+                    });
+                }
+
+                // Animate background particles
+                particles.forEach(p => {
+                    p.rotation.y += 0.0005 * simulationSpeed;
+                });
+            }
+
+            controls.update();
+            composer.render();
+
+            // Update UI metrics
+            updateMetrics();
+        }
+
+        // Start Data Streams
+        function startDataStreams() {
+            // Waveform update
+            setInterval(() => {
+                if (simulationRunning) {
+                    waveformData.shift();
+                    waveformData.push(Math.sin(Date.now() * 0.01) * 0.5 + Math.random() * 0.5);
+                    drawWaveform();
+                }
+            }, 50);
+
+            // Energy graph update
+            setInterval(() => {
+                if (simulationRunning) {
+                    energyData.shift();
+                    energyData.push(-20 - Math.random() * 20 + Math.sin(Date.now() * 0.002) * 10);
+                    drawEnergyGraph();
+                }
+            }, 100);
+
+            // Sequence stream
+            setInterval(() => {
+                if (simulationRunning) {
+                    addSequenceLine();
+                }
+            }, 200);
+
+            // Clock update
+            setInterval(updateClock, 1000);
+        }
+
+        // Draw Waveform
+        function drawWaveform() {
+            const canvas = document.getElementById('waveform');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+
+            const w = canvas.offsetWidth;
+            const h = canvas.offsetHeight;
+
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#00f5ff';
+            ctx.lineWidth = 2;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#00f5ff';
+
+            waveformData.forEach((v, i) => {
+                const x = (i / waveformData.length) * w;
+                const y = h / 2 + v * h * 0.4;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+        }
+
+        // Draw Energy Graph
+        function drawEnergyGraph() {
+            const canvas = document.getElementById('energyGraph');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+
+            const w = canvas.offsetWidth;
+            const h = canvas.offsetHeight;
+
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(0, 0, w, h);
+
+            // Create gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, h);
+            gradient.addColorStop(0, 'rgba(255,0,255,0.8)');
+            gradient.addColorStop(1, 'rgba(0,245,255,0.2)');
+
+            ctx.beginPath();
+            ctx.fillStyle = gradient;
+            ctx.moveTo(0, h);
+
+            energyData.forEach((v, i) => {
+                const x = (i / energyData.length) * w;
+                const y = h - ((v + 50) / 50) * h;
+                ctx.lineTo(x, y);
+            });
+
+            ctx.lineTo(w, h);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw line
+            ctx.beginPath();
+            ctx.strokeStyle = '#ff00ff';
+            ctx.lineWidth = 2;
+            energyData.forEach((v, i) => {
+                const x = (i / energyData.length) * w;
+                const y = h - ((v + 50) / 50) * h;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+        }
+
+        // Add Sequence Line
+        function addSequenceLine() {
+            const container = document.getElementById('sequence-stream');
+            const bases = 'ATGC';
+            let sequence = '';
+
+            for (let i = 0; i < 40; i++) {
+                const base = bases[Math.floor(Math.random() * 4)];
+                sequence += `<span class="base-${base}">${base}</span>`;
+            }
+
+            const line = document.createElement('div');
+            line.className = 'sequence-line';
+            line.innerHTML = sequence;
+            container.insertBefore(line, container.firstChild);
+
+            if (container.children.length > 8) {
+                container.removeChild(container.lastChild);
+            }
+        }
+
+        // Update Metrics
+        function updateMetrics() {
+            const seqRate = Math.floor(100 + Math.sin(Date.now() * 0.001) * 50);
+            const entropy = (2.1 - simulationProgress * 1.4).toFixed(3);
+            const posterior = (simulationProgress * 0.497).toFixed(3);
+            const particleCount = Math.floor(3000 + Math.random() * 100);
+
+            document.getElementById('seq-rate').textContent = seqRate;
+            document.getElementById('entropy').textContent = entropy;
+            document.getElementById('posterior').textContent = posterior;
+            document.getElementById('particles').textContent = particleCount;
+        }
+
+        // Update Progress
+        function updateProgress(progress) {
+            const percent = Math.floor(progress * 100);
+            document.getElementById('progressValue').textContent = `${percent}%`;
+            
+            const circle = document.getElementById('progressCircle');
+            const circumference = 326.73;
+            circle.style.strokeDashoffset = circumference * (1 - progress);
+
+            document.getElementById('timeline-progress').style.width = `${percent}%`;
+
+            const phases = ['phase1', 'phase2', 'phase3', 'phase4', 'phase5'];
+            const phaseProgress = Math.floor(progress * 5);
+            phases.forEach((p, i) => {
+                const el = document.getElementById(p);
+                el.className = 'timeline-phase';
+                if (i < phaseProgress) el.classList.add('complete');
+                else if (i === phaseProgress) el.classList.add('active');
+            });
+
+            const elapsed = Math.floor(progress * 30);
+            document.getElementById('timeline-time').textContent = 
+                `${String(Math.floor(elapsed / 60)).padStart(2, '0')}:${String(elapsed % 60).padStart(2, '0')} / 00:30`;
+        }
+
+        // Update Clock
+        function updateClock() {
+            document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+        }
+
+        // Mode Switching
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            dnaHelix.visible = mode === 'genome';
+            quantumField.visible = mode === 'quantum';
+            mechanismNetwork.visible = mode === 'mechanism' || mode === 'energy';
+        }
+
+        // Simulation Controls
+        function toggleSimulation() {
+            simulationRunning = !simulationRunning;
+            const btn = document.getElementById('playBtn');
+            btn.textContent = simulationRunning ? '▶ PLAY' : '⏸ PAUSE';
+            btn.classList.toggle('active', simulationRunning);
+        }
+
+        function resetSimulation() {
+            simulationProgress = 0;
+            updateProgress(0);
+        }
+
+        function setSpeed(speed) {
+            simulationSpeed = speed;
+            document.querySelectorAll('.control-row:last-child .ctrl-btn').forEach(b => {
+                b.classList.toggle('active', parseFloat(b.textContent) === speed);
+            });
+        }
+
+        // Mouse Interaction
+        function onMouseMove(event) {
+            // Could add raycasting for node hover info
+        }
+
+        // Window Resize
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

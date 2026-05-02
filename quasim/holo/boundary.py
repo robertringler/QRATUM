@@ -35,6 +35,7 @@ def bulk_boundary_hamiltonian(
         >>> boundary = np.array([[1, 0], [0, -1]])
         >>> H_total = bulk_boundary_hamiltonian(bulk, boundary, 0.1)
     """
+
     n_bulk = bulk_H.shape[0]
     n_boundary = boundary_H.shape[0]
 
@@ -85,6 +86,7 @@ def evolve_open_boundary(
         >>> H = np.array([[0, 1], [1, 0]], dtype=complex)
         >>> psi_final = evolve_open_boundary(psi0, H, 0.01, 0.1)
     """
+
     # Unitary evolution
     U = np.linalg.matrix_power(np.eye(len(hamiltonian)) - 1j * hamiltonian * dt, 1)
     state = U @ initial_state
@@ -124,6 +126,7 @@ def check_probability_conservation(
         >>> is_ok, dev = check_probability_conservation(state)
         >>> assert is_ok and dev < 1e-10
     """
+
     norm_squared = np.vdot(evolved_state, evolved_state).real
     deviation = abs(norm_squared - 1.0)
     is_conserved = deviation < tolerance
@@ -152,6 +155,7 @@ def boundary_projection(
         >>> state = np.array([1, 0, 0, 0], dtype=complex)  # Product state
         >>> boundary = boundary_projection(state, 2, 2)
     """
+
     # Reshape state into bulk ⊗ boundary structure
     state_reshaped = bulk_state.reshape(n_bulk, n_boundary)
 

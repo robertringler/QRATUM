@@ -8,6 +8,7 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Transportation Demo - QuASIM", layout="wide")
 
     st.title("🚛 Fleet Routing with Stochastic ETA & Charging")
@@ -15,10 +16,11 @@ def main():
 
     st.markdown(
         """
+
     ## Overview
-    
+
     Minimize lateness + energy cost under depot constraints
-    
+
     ### Key Performance Indicators (KPIs)
     - on_time_pct, energy_cost, km_traveled, charge_wait_time
     """
@@ -58,12 +60,13 @@ def main():
 
     st.markdown(
         """
+
     ## How to Run
-    
+
     ```bash
     # Run planning
     python -m quasim.demos.transportation.cli plan --steps 200 --seed 42
-    
+
     # Run simulation with capture
     python -m quasim.demos.transportation.cli simulate --seed 42 --capture
     ```

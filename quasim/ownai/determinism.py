@@ -29,6 +29,7 @@ def set_seed(seed: int = 1337) -> None:
     >>> np.random.randint(0, 100)
     51
     """
+
     # Set Python random seed
     random.seed(seed)
 
@@ -75,6 +76,7 @@ def hash_array(arr: np.ndarray) -> str:
     >>> len(h)
     64
     """
+
     return hashlib.sha256(arr.tobytes()).hexdigest()
 
 
@@ -99,6 +101,7 @@ def hash_preds(predictions: Any) -> str:
     >>> len(h)
     64
     """
+
     # Convert to numpy if needed
     if hasattr(predictions, "numpy"):
         predictions = predictions.detach().cpu().numpy()
@@ -140,6 +143,7 @@ def verify_determinism(func, *args, seed: int = 1337, n_runs: int = 2, **kwargs)
     >>> verify_determinism(random_func, seed=42, n_runs=3)
     True
     """
+
     hashes = []
 
     for _ in range(n_runs):

@@ -6,7 +6,6 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
 
 
 @dataclass
@@ -20,6 +19,7 @@ class ArithmeticInvariant:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "invariant_id": self.invariant_id,
             "constraint_type": self.constraint_type,
@@ -35,13 +35,14 @@ class VerificationCertificate:
     kernel_id: str
     timestamp: float = field(default_factory=time.time)
     verified: bool = False
-    invariants: List[ArithmeticInvariant] = field(default_factory=list)
+    invariants: list[ArithmeticInvariant] = field(default_factory=list)
     floating_point_stable: bool = False
     max_error_bound: float = 0.0
     verification_method: str = "symbolic"
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "kernel_id": self.kernel_id,
             "timestamp": self.timestamp,
@@ -55,15 +56,17 @@ class VerificationCertificate:
 
 class StabilityVerifier:
     """
+
     Formal verification for floating-point stability.
     Simplified symbolic verification (real implementation would use Z3/CBMC).
     """
 
     def __init__(self):
-        self.certificates: Dict[str, VerificationCertificate] = {}
+        self.certificates: dict[str, VerificationCertificate] = {}
 
-    def create_invariants(self, kernel_id: str) -> List[ArithmeticInvariant]:
+    def create_invariants(self, kernel_id: str) -> list[ArithmeticInvariant]:
         """Create standard arithmetic invariants for a kernel."""
+
         invariants = [
             ArithmeticInvariant(
                 invariant_id=f"{kernel_id}_bounds",
@@ -85,35 +88,43 @@ class StabilityVerifier:
 
     def verify_bounds(self, invariant: ArithmeticInvariant) -> bool:
         """
+
         Verify bounds constraint.
         Simplified: always true for demonstration.
         Real implementation would use SMT solver.
         """
+
         # Symbolic bounds checking would go here
         # For now, assume verification passes
         return True
 
     def verify_monotonicity(self, invariant: ArithmeticInvariant) -> bool:
         """
+
         Verify monotonicity constraint.
         Simplified verification.
         """
+
         # Real implementation would analyze control flow
         return True
 
     def verify_stability(self, invariant: ArithmeticInvariant) -> bool:
         """
+
         Verify numerical stability.
         Checks that small input changes don't cause large output changes.
         """
+
         # Real implementation would use interval arithmetic or symbolic execution
         return True
 
     def verify_floating_point_stability(self, kernel_id: str, precision: str = "fp32") -> bool:
         """
+
         Verify floating-point stability for a kernel.
         Checks for common numerical issues.
         """
+
         # Simplified checks
         stability_checks = {
             "no_catastrophic_cancellation": True,
@@ -127,8 +138,10 @@ class StabilityVerifier:
 
     def compute_error_bound(self, precision: str = "fp32") -> float:
         """
+
         Compute maximum error bound for a given precision.
         """
+
         error_bounds = {
             "fp8": 1e-2,
             "fp16": 1e-3,
@@ -140,8 +153,10 @@ class StabilityVerifier:
 
     def verify_kernel(self, kernel_id: str, precision: str = "fp32") -> VerificationCertificate:
         """
+
         Perform complete verification for a kernel.
         """
+
         # Create invariants
         invariants = self.create_invariants(kernel_id)
 
@@ -177,6 +192,7 @@ class StabilityVerifier:
 
     def save_certificate(self, kernel_id: str, output_dir: str = "certs") -> Path:
         """Save verification certificate to disk."""
+
         if kernel_id not in self.certificates:
             raise ValueError(f"No certificate found for kernel {kernel_id}")
 
@@ -193,6 +209,7 @@ class StabilityVerifier:
 
     def generate_report(self, kernel_id: str) -> str:
         """Generate human-readable verification report."""
+
         if kernel_id not in self.certificates:
             return f"No certificate found for kernel {kernel_id}"
 

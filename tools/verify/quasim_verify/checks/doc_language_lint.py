@@ -23,6 +23,7 @@ def run(cfg: dict[str, Any]) -> CheckResult:
     Returns:
         CheckResult with pass/fail status and list of banned phrase hits
     """
+
     bans = cfg["policy"].get("ban_phrases_unless_evidence", [])
 
     # Check if evidence checks passed

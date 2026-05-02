@@ -38,9 +38,10 @@ def compute_emission_intensity(
         >>> t = np.linspace(0, 10, 100)
         >>> I = compute_emission_intensity(psi, d, t)
     """
+
     intensity = np.zeros(len(time_points))
 
-    for i, t in enumerate(time_points):
+    for i, _t in enumerate(time_points):
         # Compute expectation value of dipole operator
         dipole_expectation = state.conj() @ dipole_operator @ state
 
@@ -82,6 +83,7 @@ def rabi_oscillation(
     Reference:
         Rabi, I.I. (1937). "Space Quantization in a Gyrating Magnetic Field"
     """
+
     # Generalized Rabi frequency
     omega_eff = np.sqrt(omega_rabi**2 + detuning**2)
 
@@ -122,6 +124,7 @@ def interference_pattern(
         >>> sigma_x = np.array([[0, 1], [1, 0]], dtype=complex)
         >>> I = interference_pattern(psi1, psi2, 0, sigma_x)
     """
+
     # Normalize states
     state_1 = state_1 / np.linalg.norm(state_1)
     state_2 = state_2 / np.linalg.norm(state_2)
@@ -162,7 +165,8 @@ def multi_state_superposition_intensity(
         >>> t = np.linspace(0, 10, 100)
         >>> I = multi_state_superposition_intensity(c, E, d, t)
     """
-    n_states = len(amplitudes)
+
+    len(amplitudes)
     intensity = np.zeros(len(time_points))
 
     for t_idx, t in enumerate(time_points):

@@ -16,6 +16,7 @@ class TestCLI:
 
     def test_cli_help(self) -> None:
         """Test CLI help command."""
+
         runner = CliRunner()
         result = runner.invoke(cli, ["--help"])
 
@@ -24,6 +25,7 @@ class TestCLI:
 
     def test_discover_command(self) -> None:
         """Test discover command."""
+
         runner = CliRunner()
         result = runner.invoke(cli, ["discover"])
 
@@ -33,6 +35,7 @@ class TestCLI:
 
     def test_discover_command_json(self) -> None:
         """Test discover command with JSON output."""
+
         runner = CliRunner()
         result = runner.invoke(cli, ["discover", "--json"])
 
@@ -45,6 +48,7 @@ class TestCLI:
 
     def test_validate_policy_command(self, tmp_path: Path) -> None:
         """Test validate-policy command with valid policy."""
+
         policy_data = {
             "environment": "DEV",
             "allowed_backends": ["cpu", "cuda"],
@@ -64,6 +68,7 @@ class TestCLI:
 
     def test_validate_policy_command_invalid(self, tmp_path: Path) -> None:
         """Test validate-policy command with invalid policy."""
+
         policy_data = {
             "environment": "INVALID",
             "allowed_backends": ["cpu"],
@@ -82,6 +87,7 @@ class TestCLI:
 
     def test_validate_policy_command_missing_file(self) -> None:
         """Test validate-policy command with missing file."""
+
         runner = CliRunner()
         result = runner.invoke(cli, ["validate-policy", "/nonexistent/policy.yaml"])
 

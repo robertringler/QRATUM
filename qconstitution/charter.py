@@ -1,8 +1,8 @@
 """Constitutional charter definitions."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict
 
 from qconstitution.articles import ArticleSet, ConstitutionalArticle
 
@@ -18,11 +18,15 @@ class ConstitutionalVersion:
 class Charter:
     active: ConstitutionalVersion
 
-    def article_index(self) -> Dict[str, ConstitutionalArticle]:
+    def article_index(self) -> dict[str, ConstitutionalArticle]:
         return {art.article_id: art for art in self.active.articles.articles}
 
-    def describe(self) -> Dict[str, object]:
-        return {"version_id": self.active.version_id, "enacted_tick": self.active.enacted_tick, "articles": self.active.articles.as_dict()}
+    def describe(self) -> dict[str, object]:
+        return {
+            "version_id": self.active.version_id,
+            "enacted_tick": self.active.enacted_tick,
+            "articles": self.active.articles.as_dict(),
+        }
 
 
 def default_charter() -> Charter:

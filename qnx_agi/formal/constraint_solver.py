@@ -1,4 +1,5 @@
 """Constraint solver using simple interval checks."""
+
 from __future__ import annotations
 
 from .abstract_domains.interval import Interval

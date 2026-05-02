@@ -1,9 +1,8 @@
 """Deterministic transport ensures ordering."""
-from __future__ import annotations
 
-from typing import List
+from __future__ import annotations
 
 
 class DeterministicTransport:
-    def order(self, messages: List[dict]) -> List[dict]:
-        return sorted(messages, key=lambda m: (m.get('epoch', 0), m.get('id', 0)))
+    def order(self, messages: list[dict]) -> list[dict]:
+        return sorted(messages, key=lambda m: (m.get("epoch", 0), m.get("id", 0)))

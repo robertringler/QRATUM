@@ -1,11 +1,13 @@
 from qnode.config import NodeConfig
 from qnode.incident_log import IncidentLog
-from qnode.policies import syscall_allowlist_policy, budget_policy
-from qnode.syscalls import SyscallRouter, SyscallError
+from qnode.policies import budget_policy, syscall_allowlist_policy
+from qnode.syscalls import SyscallError, SyscallRouter
 
 
 def test_syscall_policy_enforcement():
-    config = NodeConfig(node_id="n1", identity_ref="id", allowed_syscalls=["ping"], policy_limits={"ping": 2})
+    config = NodeConfig(
+        node_id="n1", identity_ref="id", allowed_syscalls=["ping"], policy_limits={"ping": 2}
+    )
     log = IncidentLog()
     policies = [syscall_allowlist_policy(config.allowed_syscalls), budget_policy(config.budget_for)]
     router = SyscallRouter(config, policies, log)

@@ -21,7 +21,9 @@ def test_qvr_backend_handles_process(monkeypatch):
         pass
 
     def _fake_run(cmd, input, capture_output, check):
-        return DummyCompletedProcess(stdout=json.dumps({"ok": True}).encode(), stderr=b"", returncode=0)
+        return DummyCompletedProcess(
+            stdout=json.dumps({"ok": True}).encode(), stderr=b"", returncode=0
+        )
 
     monkeypatch.setattr("qnx.backends.qvr_win.subprocess.run", _fake_run)
     monkeypatch.setattr("qnx.backends.qvr_win._is_windows", lambda: True)

@@ -1,5 +1,5 @@
-from qtime.snapshot import Snapshot
 from qtime.differ import SnapshotDiffer
+from qtime.snapshot import Snapshot
 
 
 def test_snapshot_diff_detects_changes():

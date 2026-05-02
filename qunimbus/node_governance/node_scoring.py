@@ -1,12 +1,11 @@
 """Node scoring based on scenario outcomes."""
-from __future__ import annotations
 
-from typing import Dict
+from __future__ import annotations
 
 from qscenario.reporting import ScenarioReport
 
 
-def score_node(report: ScenarioReport) -> Dict[str, object]:
+def score_node(report: ScenarioReport) -> dict[str, object]:
     incidents = len(report.outcome.incidents)
     metric_score = sum(report.outcome.metrics.values()) if report.outcome.metrics else 0
     compliance = 0 if incidents else 1

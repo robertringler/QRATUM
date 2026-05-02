@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import numpy as np
 
@@ -25,17 +25,18 @@ class RunCapture:
         frame_counter: Current frame number
     """
 
-    frames: List[np.ndarray] = field(default_factory=list)
-    metadata: List[Dict[str, Any]] = field(default_factory=list)
-    output_dir: Optional[Path] = None
+    frames: list[np.ndarray] = field(default_factory=list)
+    metadata: list[dict[str, Any]] = field(default_factory=list)
+    output_dir: Path | None = None
     frame_counter: int = 0
 
-    def record(self, step_dict: Dict[str, Any]) -> None:
+    def record(self, step_dict: dict[str, Any]) -> None:
         """Record a simulation step.
 
         Args:
             step_dict: Dictionary with step data including 'frame' key
         """
+
         if "frame" in step_dict:
             frame = step_dict["frame"]
 
@@ -59,11 +60,11 @@ class RunCapture:
 
     def finalize(
         self,
-        mp4_path: Optional[Union[str, Path]] = None,
-        gif_path: Optional[Union[str, Path]] = None,
+        mp4_path: str | Path | None = None,
+        gif_path: str | Path | None = None,
         save_pngs: bool = False,
         fps: int = 30,
-    ) -> Dict[str, Path]:
+    ) -> dict[str, Path]:
         """Finalize capture and encode videos.
 
         Args:
@@ -75,6 +76,7 @@ class RunCapture:
         Returns:
             Dictionary of generated artifact paths
         """
+
         if not self.frames:
             return {}
 
@@ -128,6 +130,7 @@ class RunCapture:
 
     def clear(self) -> None:
         """Clear all captured frames and metadata."""
+
         self.frames.clear()
         self.metadata.clear()
         self.frame_counter = 0
@@ -150,6 +153,7 @@ def create_dummy_frame(
     Returns:
         RGB frame as numpy array
     """
+
     frame = np.zeros((height, width, 3), dtype=np.uint8)
 
     if pattern == "checkerboard":

@@ -13,7 +13,7 @@ Features:
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict
+from typing import Any
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -28,12 +28,13 @@ class QuASIMOmniGraphNode:
         Args:
             node_id: Unique node identifier
         """
+
         self.node_id = node_id
         self.inputs = {}
         self.outputs = {}
         logger.info(f"QuASIM OmniGraph Node initialized: {node_id}")
 
-    def compute(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
+    def compute(self, inputs: dict[str, Any]) -> dict[str, Any]:
         """Compute physics step.
 
         Args:
@@ -42,6 +43,7 @@ class QuASIMOmniGraphNode:
         Returns:
             Output data (pressure, velocity fields, etc.)
         """
+
         logger.info(f"Computing QuASIM physics step for node {self.node_id}")
 
         # In production, would invoke QuASIM kernels
@@ -54,7 +56,7 @@ class QuASIMOmniGraphNode:
         logger.info("Physics step completed")
         return outputs
 
-    def update_usd_stage(self, stage, prim_path: str, fields: Dict[str, Any]):
+    def update_usd_stage(self, stage, prim_path: str, fields: dict[str, Any]):
         """Update USD stage with physics fields.
 
         Args:
@@ -62,6 +64,7 @@ class QuASIMOmniGraphNode:
             prim_path: Path to USD primitive
             fields: Physics fields to write
         """
+
         logger.info(f"Updating USD stage at {prim_path}")
         # In production, would write to USD stage
         logger.info("USD stage updated")
@@ -69,6 +72,7 @@ class QuASIMOmniGraphNode:
 
 def register_node():
     """Register node with OmniGraph runtime."""
+
     logger.info("Registering QuASIM OmniGraph node")
     # In production, would register with Omniverse
     return QuASIMOmniGraphNode

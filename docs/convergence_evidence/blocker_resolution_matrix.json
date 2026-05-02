@@ -1,0 +1,74 @@
+{
+  "resolution_lattice": [
+    {
+      "pr": 370,
+      "title": "Tensor Compression (AHTC)",
+      "blocker_type": "None",
+      "resolution_condition": "Ready for gated convergence",
+      "status": "READY",
+      "priority": 1,
+      "estimated_resolution": "Immediate"
+    },
+    {
+      "pr": 387,
+      "title": "Quantum UI / WASM Pod Isolation",
+      "blocker_type": "Review gap",
+      "resolution_condition": "≥2 maintainer approvals",
+      "status": "PENDING_REVIEW",
+      "priority": 2,
+      "estimated_resolution": "1-2 days"
+    },
+    {
+      "pr": 378,
+      "title": "Epistemic Heat Sink / zkML",
+      "blocker_type": "Draft",
+      "resolution_condition": "Draft → Ready transition evidence",
+      "status": "BLOCKED",
+      "priority": 5,
+      "estimated_resolution": "Author action required",
+      "remediation_steps": [
+        "Exit draft mode",
+        "Request review",
+        "Await CI completion"
+      ]
+    },
+    {
+      "pr": 197,
+      "title": "Code Quality (PEP 8)",
+      "blocker_type": "Churn risk",
+      "resolution_condition": "Path-overlap entropy < 0.45",
+      "status": "CAUTION",
+      "priority": 4,
+      "estimated_resolution": "Careful review required",
+      "current_entropy": "0.59",
+      "remediation_steps": [
+        "Review conflict surface",
+        "Consider PR splitting",
+        "Verify CI passes"
+      ]
+    },
+    {
+      "pr": 149,
+      "title": "Exception Handling",
+      "blocker_type": "WIP ambiguity",
+      "resolution_condition": "Remove WIP marker + CI green",
+      "status": "NEEDS_CLARIFICATION",
+      "priority": 3,
+      "estimated_resolution": "Author clarification + CI",
+      "remediation_steps": [
+        "Confirm WIP status",
+        "Remove [WIP] marker if complete",
+        "Verify CI passes"
+      ]
+    }
+  ],
+  "summary": {
+    "total_prs": 5,
+    "ready": 1,
+    "pending_review": 1,
+    "needs_clarification": 1,
+    "caution": 1,
+    "blocked": 1
+  },
+  "timestamp": "2025-12-29T20:57:10Z"
+}

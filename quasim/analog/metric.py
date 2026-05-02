@@ -38,6 +38,7 @@ def refractive_index_to_metric(
     Reference:
         Unruh (1981), "Experimental Black-Hole Evaporation?"
     """
+
     n_points = len(refractive_index)
 
     # Simplified 2x2 metric (time, space)
@@ -89,6 +90,7 @@ def geodesic_propagation(
         >>> g = refractive_index_to_metric(np.ones(64))
         >>> x, p = geodesic_propagation(0.5, 1.0, g, 100, 0.01)
     """
+
     n_points = len(metric)
 
     positions = np.zeros(n_steps)
@@ -158,6 +160,7 @@ def check_normalization_preservation(
         >>> g = refractive_index_to_metric(np.ones(64))
         >>> is_ok, dev = check_normalization_preservation(psi, g)
     """
+
     n_points = len(wavefunction)
 
     # Compute measure √|g| for each point
@@ -195,6 +198,7 @@ def effective_potential_from_metric(
         >>> g = refractive_index_to_metric(np.linspace(1, 2, 64))
         >>> V = effective_potential_from_metric(g)
     """
+
     n_points = len(metric)
     potential = np.zeros(n_points)
 
@@ -236,6 +240,7 @@ def acoustic_black_hole_metric(
     Reference:
         Unruh (1981), Barcelo et al. (2005)
     """
+
     x = np.linspace(0, 1, n_points)
 
     # Flow velocity increasing toward horizon

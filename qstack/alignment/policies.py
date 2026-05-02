@@ -1,11 +1,13 @@
 """Alignment policies enforcing constitutional constraints."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List
 
 from qstack.alignment import constraints
-from qstack.alignment.constitution import ARTICLE_QNX_SAFETY, ARTICLE_QUASIM_BOUNDS, ARTICLE_QUNIMBUS_GOVERNANCE
+from qstack.alignment.constitution import (ARTICLE_QNX_SAFETY,
+                                           ARTICLE_QUASIM_BOUNDS,
+                                           ARTICLE_QUNIMBUS_GOVERNANCE)
 from qstack.alignment.violations import AlignmentViolation, ViolationSeverity
 from qstack.config import QStackConfig
 
@@ -17,16 +19,23 @@ class AlignmentPolicy:
     policy_id: str
     description: str
 
-    def evaluate(self, operation: str, config: QStackConfig, context: Dict) -> List[AlignmentViolation]:
-        raise NotImplementedError
+    def evaluate(
+        self, operation: str, config: QStackConfig, context: dict
+    ) -> list[AlignmentViolation]:
+        # GAP-STUB-014: base policy has no violations; subclasses override
+        return []
 
 
 class SafetyFirstPolicy(AlignmentPolicy):
     def __init__(self) -> None:
-        super().__init__("policy.safety_first", "Enforces baseline safety invariants across QNX/QuASIM/QuNimbus.")
+        super().__init__(
+            "policy.safety_first", "Enforces baseline safety invariants across QNX/QuASIM/QuNimbus."
+        )
 
-    def evaluate(self, operation: str, config: QStackConfig, context: Dict) -> List[AlignmentViolation]:
-        violations: List[AlignmentViolation] = []
+    def evaluate(
+        self, operation: str, config: QStackConfig, context: dict
+    ) -> list[AlignmentViolation]:
+        violations: list[AlignmentViolation] = []
         if operation.startswith("qnx."):
             for article_id, message, severity in constraints.check_qnx_config(config.qnx):
                 violations.append(
@@ -65,10 +74,14 @@ class SafetyFirstPolicy(AlignmentPolicy):
 
 class DeterminismPolicy(AlignmentPolicy):
     def __init__(self) -> None:
-        super().__init__("policy.determinism", "Ensures deterministic seeds are configured where applicable.")
+        super().__init__(
+            "policy.determinism", "Ensures deterministic seeds are configured where applicable."
+        )
 
-    def evaluate(self, operation: str, config: QStackConfig, context: Dict) -> List[AlignmentViolation]:
-        violations: List[AlignmentViolation] = []
+    def evaluate(
+        self, operation: str, config: QStackConfig, context: dict
+    ) -> list[AlignmentViolation]:
+        violations: list[AlignmentViolation] = []
         if operation.startswith("qnx.") and config.qnx.seed is None:
             violations.append(
                 AlignmentViolation(
@@ -94,10 +107,14 @@ class DeterminismPolicy(AlignmentPolicy):
 
 class GovernancePolicy(AlignmentPolicy):
     def __init__(self) -> None:
-        super().__init__("policy.governance", "Maintains governance enforcement for economic evaluations.")
+        super().__init__(
+            "policy.governance", "Maintains governance enforcement for economic evaluations."
+        )
 
-    def evaluate(self, operation: str, config: QStackConfig, context: Dict) -> List[AlignmentViolation]:
-        violations: List[AlignmentViolation] = []
+    def evaluate(
+        self, operation: str, config: QStackConfig, context: dict
+    ) -> list[AlignmentViolation]:
+        violations: list[AlignmentViolation] = []
         if operation == "qunimbus.synthetic_market" and not config.qunimbus.enable_node_governance:
             violations.append(
                 AlignmentViolation(
@@ -111,5 +128,5 @@ class GovernancePolicy(AlignmentPolicy):
         return violations
 
 
-def default_policies() -> List[AlignmentPolicy]:
+def default_policies() -> list[AlignmentPolicy]:
     return [SafetyFirstPolicy(), DeterminismPolicy(), GovernancePolicy()]

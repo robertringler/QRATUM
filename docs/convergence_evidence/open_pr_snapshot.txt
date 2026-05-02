@@ -1,0 +1,16 @@
+Tier-1 PR Snapshot - Captured: 2025-12-29T04:44:06Z
+
+PR #370: Replace AHTC placeholder stubs with production SVD-based tensor compression
+  State: OPEN | Draft: NO | Commits: 11 | +1427/-103 | Files: 7
+
+PR #387: Phase 4: Advanced quantum gates, WASM pod isolation, and dashboard UI panels  
+  State: OPEN | Draft: NO | Commits: 7 | +3135/-145 | Files: 9
+
+PR #378: Implement topological observer and epistemic heat sink modules
+  State: OPEN | Draft: YES | Commits: 3 | +3747/-2 | Files: 10
+
+PR #197: Code quality improvements: PEP 8 formatting, documentation cleanup, and syntax error fixes
+  State: OPEN | Draft: NO | Commits: 13 | +1724/-591 | Files: 373
+
+PR #149: [WIP] Replace qnx/core.py with improved exception handling and serialization
+  State: OPEN | Draft: NO | Commits: 5 | +301/-52 | Files: 30

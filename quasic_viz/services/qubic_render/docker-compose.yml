@@ -1,0 +1,99 @@
+services:
+  # Main render service
+  qubic-render:
+    build: .
+    container_name: quasic-viz-render
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./outputs:/app/outputs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - quasic-net
+
+  # Dask scheduler for distributed computing
+  scheduler:
+    build: .
+    container_name: quasic-scheduler
+    command: dask scheduler
+    ports:
+      - "8786:8786"
+      - "8787:8787"
+    networks:
+      - quasic-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8787/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Dynamic GPU worker with auto-detection
+  worker_dynamic:
+    build: .
+    container_name: quasic-worker
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - SCHEDULER_ADDRESS=${SCHEDULER_ADDRESS:-tcp://scheduler:8786}
+    command: >
+      dask worker ${SCHEDULER_ADDRESS:-tcp://scheduler:8786}
+      --nthreads 1
+      --memory-limit 0
+      --resources "GPU=1"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    depends_on:
+      - scheduler
+    networks:
+      - quasic-net
+    restart: unless-stopped
+
+  # Dashboard and visualization server
+  dashboard:
+    build: .
+    container_name: quasic-dashboard
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - SCHEDULER_ADDRESS=${SCHEDULER_ADDRESS:-tcp://scheduler:8786}
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    depends_on:
+      - scheduler
+    volumes:
+      - ./outputs:/app/outputs
+    networks:
+      - quasic-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  quasic-net:
+    driver: bridge

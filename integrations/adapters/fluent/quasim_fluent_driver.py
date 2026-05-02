@@ -40,6 +40,7 @@ class FluentMesh:
         Args:
             mesh_path: Path to Fluent mesh file (.msh)
         """
+
         self.mesh_path = mesh_path
         self.nodes: list[tuple[float, float, float]] = []
         self.cells: list[list[int]] = []
@@ -51,6 +52,7 @@ class FluentMesh:
         Returns:
             True if successful, False otherwise
         """
+
         logger.info(f"Loading Fluent mesh from {self.mesh_path}")
         if not self.mesh_path.exists():
             logger.error(f"Mesh file not found: {self.mesh_path}")
@@ -67,6 +69,7 @@ class FluentMesh:
         Returns:
             Dictionary with tensor representation
         """
+
         return {
             "type": "fluent_mesh",
             "num_nodes": len(self.nodes),
@@ -84,6 +87,7 @@ class BoundaryConditions:
         Args:
             bc_path: Optional path to YAML boundary condition file
         """
+
         self.bc_path = bc_path
         self.conditions: dict[str, Any] = {}
 
@@ -93,6 +97,7 @@ class BoundaryConditions:
         Returns:
             True if successful, False otherwise
         """
+
         if self.bc_path is None:
             logger.warning("No boundary conditions file specified")
             return True
@@ -118,6 +123,7 @@ class BoundaryConditions:
         Returns:
             Dictionary with QuASIM-compatible BC representation
         """
+
         return {
             "type": "boundary_conditions",
             "conditions": self.conditions,
@@ -133,6 +139,7 @@ class QuASIMJob:
         Args:
             job_path: Path to JSON job configuration
         """
+
         self.job_path = job_path
         self.config: dict[str, Any] = {}
 
@@ -142,6 +149,7 @@ class QuASIMJob:
         Returns:
             True if successful, False otherwise
         """
+
         if not self.job_path.exists():
             logger.error(f"Job config not found: {self.job_path}")
             return False
@@ -170,6 +178,7 @@ class QuASIMKernel:
         Args:
             config: Job configuration
         """
+
         self.config = config
         self.solver = config.get("solver", "pressure_poisson")
         self.max_iterations = config.get("max_iterations", 1000)
@@ -185,6 +194,7 @@ class QuASIMKernel:
         Returns:
             Dictionary with simulation results
         """
+
         logger.info(f"Running QuASIM kernel: {self.solver}")
         logger.info(f"Max iterations: {self.max_iterations}, Tolerance: {self.tolerance}")
 
@@ -206,7 +216,7 @@ class QuASIMKernel:
         }
 
         logger.info(f"Simulation completed: {results['status']}")
-        logger.info(f"Iterations: {results['iterations']}, " f"Residual: {results['residual']:.2e}")
+        logger.info(f"Iterations: {results['iterations']}, Residual: {results['residual']:.2e}")
 
         return results
 
@@ -225,6 +235,7 @@ class ResultWriter:
         Returns:
             True if successful
         """
+
         logger.info(f"Writing CSV results to {output_path}")
         with open(output_path, "w") as f:
             f.write("# QuASIM CFD Results\n")
@@ -246,6 +257,7 @@ class ResultWriter:
         Returns:
             True if successful
         """
+
         logger.info(f"HDF5 output requested: {output_path}")
         logger.warning("HDF5 output requires h5py; writing metadata only")
         # In production, would write actual HDF5 with h5py
@@ -262,6 +274,7 @@ class ResultWriter:
         Returns:
             True if successful
         """
+
         logger.info(f"VTK output requested: {output_path}")
         logger.warning("VTK output requires vtk library; writing CSV instead")
         # In production, would write actual VTK
@@ -274,6 +287,7 @@ def main() -> int:
     Returns:
         Exit code (0 for success, non-zero for failure)
     """
+
     parser = argparse.ArgumentParser(
         description="QuASIM Fluent Driver - CFD adapter for Ansys Fluent"
     )

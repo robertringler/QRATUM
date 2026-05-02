@@ -1,0 +1,902 @@
+[
+  {
+    "id": "quantum_state_viewer",
+    "title": "Quantum State Viewer",
+    "description": "Visualize quantum state vectors and superposition",
+    "color": "#00f5ff",
+    "icon": "\u269b\ufe0f",
+    "category": "quantum",
+    "component": "quasim"
+  },
+  {
+    "id": "qubit_simulator",
+    "title": "Qubit Simulator",
+    "description": "Interactive qubit manipulation and measurement",
+    "color": "#ff00ff",
+    "icon": "\ud83d\udd2e",
+    "category": "quantum",
+    "component": "quasim"
+  },
+  {
+    "id": "entanglement_lab",
+    "title": "Entanglement Lab",
+    "description": "Explore quantum entanglement between particles",
+    "color": "#00ff88",
+    "icon": "\ud83d\udd17",
+    "category": "quantum",
+    "component": "quasim"
+  },
+  {
+    "id": "quantum_gate_designer",
+    "title": "Gate Designer",
+    "description": "Design and test quantum gate circuits",
+    "color": "#ffaa00",
+    "icon": "\ud83d\udeaa",
+    "category": "quantum",
+    "component": "quasim"
+  },
+  {
+    "id": "decoherence_monitor",
+    "title": "Decoherence Monitor",
+    "description": "Track quantum decoherence over time",
+    "color": "#ff3366",
+    "icon": "\ud83d\udcc9",
+    "category": "quantum",
+    "component": "quasim"
+  },
+  {
+    "id": "bell_state_analyzer",
+    "title": "Bell State Analyzer",
+    "description": "Analyze Bell states and violations",
+    "color": "#9933ff",
+    "icon": "\ud83d\udd14",
+    "category": "quantum",
+    "component": "quasim"
+  },
+  {
+    "id": "quantum_walk",
+    "title": "Quantum Walk",
+    "description": "Visualize quantum random walks",
+    "color": "#33ffcc",
+    "icon": "\ud83d\udeb6",
+    "category": "quantum",
+    "component": "quasim"
+  },
+  {
+    "id": "grover_search",
+    "title": "Grover Search",
+    "description": "Interactive Grover's algorithm visualization",
+    "color": "#ff9933",
+    "icon": "\ud83d\udd0d",
+    "category": "quantum",
+    "component": "quasim"
+  },
+  {
+    "id": "shor_factoring",
+    "title": "Shor Factoring",
+    "description": "Shor's algorithm for integer factorization",
+    "color": "#66ff33",
+    "icon": "\ud83d\udd22",
+    "category": "quantum",
+    "component": "quasim"
+  },
+  {
+    "id": "vqe_optimizer",
+    "title": "VQE Optimizer",
+    "description": "Variational Quantum Eigensolver optimization",
+    "color": "#ff66cc",
+    "icon": "\ud83d\udcc8",
+    "category": "quantum",
+    "component": "quasim"
+  },
+  {
+    "id": "dna_sequencer",
+    "title": "DNA Sequencer",
+    "description": "Real-time DNA sequence analysis",
+    "color": "#00ff88",
+    "icon": "\ud83e\uddec",
+    "category": "bioinformatics",
+    "component": "xenon"
+  },
+  {
+    "id": "protein_folder",
+    "title": "Protein Folder",
+    "description": "3D protein folding visualization",
+    "color": "#ff6633",
+    "icon": "\ud83d\udd2c",
+    "category": "bioinformatics",
+    "component": "xenon"
+  },
+  {
+    "id": "genome_browser",
+    "title": "Genome Browser",
+    "description": "Interactive genome navigation",
+    "color": "#33ccff",
+    "icon": "\ud83d\udcca",
+    "category": "bioinformatics",
+    "component": "xenon"
+  },
+  {
+    "id": "phylo_tree",
+    "title": "Phylogenetic Tree",
+    "description": "Evolutionary relationship visualization",
+    "color": "#99ff33",
+    "icon": "\ud83c\udf33",
+    "category": "bioinformatics",
+    "component": "xenon"
+  },
+  {
+    "id": "mutation_tracker",
+    "title": "Mutation Tracker",
+    "description": "Track genetic mutations in real-time",
+    "color": "#ff3399",
+    "icon": "\ud83e\udda0",
+    "category": "bioinformatics",
+    "component": "xenon"
+  },
+  {
+    "id": "rna_structure",
+    "title": "RNA Structure",
+    "description": "RNA secondary structure prediction",
+    "color": "#ffcc00",
+    "icon": "\ud83d\udd04",
+    "category": "bioinformatics",
+    "component": "xenon"
+  },
+  {
+    "id": "crispr_designer",
+    "title": "CRISPR Designer",
+    "description": "Design CRISPR gene edits",
+    "color": "#00ffcc",
+    "icon": "\u2702\ufe0f",
+    "category": "bioinformatics",
+    "component": "xenon"
+  },
+  {
+    "id": "metabolic_pathway",
+    "title": "Metabolic Pathway",
+    "description": "Metabolic network visualization",
+    "color": "#ff9966",
+    "icon": "\ud83d\udd00",
+    "category": "bioinformatics",
+    "component": "xenon"
+  },
+  {
+    "id": "expression_heatmap",
+    "title": "Expression Heatmap",
+    "description": "Gene expression heatmap analysis",
+    "color": "#cc33ff",
+    "icon": "\ud83c\udf21\ufe0f",
+    "category": "bioinformatics",
+    "component": "xenon"
+  },
+  {
+    "id": "variant_caller",
+    "title": "Variant Caller",
+    "description": "Identify genetic variants",
+    "color": "#66ffcc",
+    "icon": "\ud83d\udccb",
+    "category": "bioinformatics",
+    "component": "xenon"
+  },
+  {
+    "id": "neural_network",
+    "title": "Neural Network",
+    "description": "Deep learning architecture visualization",
+    "color": "#ff00ff",
+    "icon": "\ud83e\udde0",
+    "category": "neural",
+    "component": "autonomous"
+  },
+  {
+    "id": "activation_maps",
+    "title": "Activation Maps",
+    "description": "CNN activation map visualization",
+    "color": "#00f5ff",
+    "icon": "\ud83d\uddfa\ufe0f",
+    "category": "neural",
+    "component": "autonomous"
+  },
+  {
+    "id": "gradient_flow",
+    "title": "Gradient Flow",
+    "description": "Backpropagation gradient visualization",
+    "color": "#ffaa00",
+    "icon": "\u27a1\ufe0f",
+    "category": "neural",
+    "component": "autonomous"
+  },
+  {
+    "id": "attention_viz",
+    "title": "Attention Viz",
+    "description": "Transformer attention visualization",
+    "color": "#00ff88",
+    "icon": "\ud83d\udc41\ufe0f",
+    "category": "neural",
+    "component": "autonomous"
+  },
+  {
+    "id": "embedding_space",
+    "title": "Embedding Space",
+    "description": "High-dimensional embedding projection",
+    "color": "#ff3366",
+    "icon": "\ud83c\udf10",
+    "category": "neural",
+    "component": "autonomous"
+  },
+  {
+    "id": "loss_landscape",
+    "title": "Loss Landscape",
+    "description": "3D loss function landscape",
+    "color": "#9933ff",
+    "icon": "\u26f0\ufe0f",
+    "category": "neural",
+    "component": "autonomous"
+  },
+  {
+    "id": "gan_generator",
+    "title": "GAN Generator",
+    "description": "Generative adversarial network output",
+    "color": "#33ffcc",
+    "icon": "\ud83c\udfa8",
+    "category": "neural",
+    "component": "autonomous"
+  },
+  {
+    "id": "reinforcement_env",
+    "title": "RL Environment",
+    "description": "Reinforcement learning environment",
+    "color": "#ff9933",
+    "icon": "\ud83c\udfae",
+    "category": "neural",
+    "component": "autonomous"
+  },
+  {
+    "id": "autoencoder_latent",
+    "title": "Autoencoder Latent",
+    "description": "Latent space visualization",
+    "color": "#66ff33",
+    "icon": "\ud83d\udd10",
+    "category": "neural",
+    "component": "autonomous"
+  },
+  {
+    "id": "transformer_layers",
+    "title": "Transformer Layers",
+    "description": "Layer-by-layer transformer analysis",
+    "color": "#ff66cc",
+    "icon": "\ud83d\udcda",
+    "category": "neural",
+    "component": "autonomous"
+  },
+  {
+    "id": "particle_collider",
+    "title": "Particle Collider",
+    "description": "High-energy particle collision simulation",
+    "color": "#ff3366",
+    "icon": "\ud83d\udca5",
+    "category": "physics",
+    "component": "quasim"
+  },
+  {
+    "id": "wave_equation",
+    "title": "Wave Equation",
+    "description": "2D wave equation visualization",
+    "color": "#00f5ff",
+    "icon": "\ud83c\udf0a",
+    "category": "physics",
+    "component": "quasim"
+  },
+  {
+    "id": "electromagnetic_field",
+    "title": "EM Field",
+    "description": "Electromagnetic field visualization",
+    "color": "#ffaa00",
+    "icon": "\u26a1",
+    "category": "physics",
+    "component": "quasim"
+  },
+  {
+    "id": "fluid_dynamics",
+    "title": "Fluid Dynamics",
+    "description": "Navier-Stokes fluid simulation",
+    "color": "#00ff88",
+    "icon": "\ud83d\udca7",
+    "category": "physics",
+    "component": "quasim"
+  },
+  {
+    "id": "pendulum_chaos",
+    "title": "Pendulum Chaos",
+    "description": "Double pendulum chaotic motion",
+    "color": "#ff00ff",
+    "icon": "\ud83d\udd04",
+    "category": "physics",
+    "component": "quasim"
+  },
+  {
+    "id": "orbital_mechanics",
+    "title": "Orbital Mechanics",
+    "description": "Gravitational orbit simulation",
+    "color": "#33ccff",
+    "icon": "\ud83c\udf0d",
+    "category": "physics",
+    "component": "quasim"
+  },
+  {
+    "id": "black_hole",
+    "title": "Black Hole",
+    "description": "Black hole gravitational lensing",
+    "color": "#9933ff",
+    "icon": "\ud83d\udd73\ufe0f",
+    "category": "physics",
+    "component": "quasim"
+  },
+  {
+    "id": "string_vibrations",
+    "title": "String Vibrations",
+    "description": "String theory vibration modes",
+    "color": "#ff9933",
+    "icon": "\ud83c\udfb8",
+    "category": "physics",
+    "component": "quasim"
+  },
+  {
+    "id": "plasma_dynamics",
+    "title": "Plasma Dynamics",
+    "description": "Magnetohydrodynamic plasma simulation",
+    "color": "#66ff33",
+    "icon": "\ud83d\udd25",
+    "category": "physics",
+    "component": "quasim"
+  },
+  {
+    "id": "superconductor",
+    "title": "Superconductor",
+    "description": "Superconductivity visualization",
+    "color": "#00ffcc",
+    "icon": "\u2744\ufe0f",
+    "category": "physics",
+    "component": "quasim"
+  },
+  {
+    "id": "molecular_viewer",
+    "title": "Molecular Viewer",
+    "description": "3D molecular structure visualization",
+    "color": "#00ff88",
+    "icon": "\u2697\ufe0f",
+    "category": "chemistry",
+    "component": "quasim"
+  },
+  {
+    "id": "reaction_kinetics",
+    "title": "Reaction Kinetics",
+    "description": "Chemical reaction rate visualization",
+    "color": "#ff6633",
+    "icon": "\u23f1\ufe0f",
+    "category": "chemistry",
+    "component": "quasim"
+  },
+  {
+    "id": "periodic_explorer",
+    "title": "Periodic Explorer",
+    "description": "Interactive periodic table",
+    "color": "#33ccff",
+    "icon": "\ud83d\udccb",
+    "category": "chemistry",
+    "component": "quasim"
+  },
+  {
+    "id": "orbital_viewer",
+    "title": "Orbital Viewer",
+    "description": "Atomic orbital visualization",
+    "color": "#9933ff",
+    "icon": "\ud83d\udd35",
+    "category": "chemistry",
+    "component": "quasim"
+  },
+  {
+    "id": "bond_analyzer",
+    "title": "Bond Analyzer",
+    "description": "Chemical bond strength analysis",
+    "color": "#ffcc00",
+    "icon": "\ud83d\udd17",
+    "category": "chemistry",
+    "component": "quasim"
+  },
+  {
+    "id": "spectroscopy",
+    "title": "Spectroscopy",
+    "description": "Molecular spectroscopy simulation",
+    "color": "#ff3399",
+    "icon": "\ud83c\udf08",
+    "category": "chemistry",
+    "component": "quasim"
+  },
+  {
+    "id": "catalyst_sim",
+    "title": "Catalyst Sim",
+    "description": "Catalytic reaction simulation",
+    "color": "#00ffcc",
+    "icon": "\u26a1",
+    "category": "chemistry",
+    "component": "quasim"
+  },
+  {
+    "id": "crystal_structure",
+    "title": "Crystal Structure",
+    "description": "Crystal lattice visualization",
+    "color": "#ff9966",
+    "icon": "\ud83d\udc8e",
+    "category": "chemistry",
+    "component": "quasim"
+  },
+  {
+    "id": "solubility_map",
+    "title": "Solubility Map",
+    "description": "Solubility phase diagram",
+    "color": "#66ffcc",
+    "icon": "\ud83d\udca7",
+    "category": "chemistry",
+    "component": "quasim"
+  },
+  {
+    "id": "thermodynamics",
+    "title": "Thermodynamics",
+    "description": "Thermodynamic process visualization",
+    "color": "#cc33ff",
+    "icon": "\ud83c\udf21\ufe0f",
+    "category": "chemistry",
+    "component": "quasim"
+  },
+  {
+    "id": "hash_visualizer",
+    "title": "Hash Visualizer",
+    "description": "Cryptographic hash visualization",
+    "color": "#ff3366",
+    "icon": "\ud83d\udd10",
+    "category": "crypto",
+    "component": "quasim"
+  },
+  {
+    "id": "blockchain_explorer",
+    "title": "Blockchain Explorer",
+    "description": "Blockchain network visualization",
+    "color": "#ffaa00",
+    "icon": "\u26d3\ufe0f",
+    "category": "crypto",
+    "component": "quasim"
+  },
+  {
+    "id": "encryption_flow",
+    "title": "Encryption Flow",
+    "description": "Encryption algorithm visualization",
+    "color": "#00f5ff",
+    "icon": "\ud83d\udd12",
+    "category": "crypto",
+    "component": "quasim"
+  },
+  {
+    "id": "key_exchange",
+    "title": "Key Exchange",
+    "description": "Diffie-Hellman key exchange viz",
+    "color": "#00ff88",
+    "icon": "\ud83d\udd11",
+    "category": "crypto",
+    "component": "quasim"
+  },
+  {
+    "id": "merkle_tree",
+    "title": "Merkle Tree",
+    "description": "Merkle tree structure visualization",
+    "color": "#ff00ff",
+    "icon": "\ud83c\udf32",
+    "category": "crypto",
+    "component": "quasim"
+  },
+  {
+    "id": "zero_knowledge",
+    "title": "Zero Knowledge",
+    "description": "Zero-knowledge proof visualization",
+    "color": "#9933ff",
+    "icon": "\u2753",
+    "category": "crypto",
+    "component": "quasim"
+  },
+  {
+    "id": "signature_verify",
+    "title": "Signature Verify",
+    "description": "Digital signature verification",
+    "color": "#33ffcc",
+    "icon": "\u270d\ufe0f",
+    "category": "crypto",
+    "component": "quasim"
+  },
+  {
+    "id": "entropy_analyzer",
+    "title": "Entropy Analyzer",
+    "description": "Randomness and entropy analysis",
+    "color": "#ff9933",
+    "icon": "\ud83c\udfb2",
+    "category": "crypto",
+    "component": "quasim"
+  },
+  {
+    "id": "cipher_wheel",
+    "title": "Cipher Wheel",
+    "description": "Classical cipher visualization",
+    "color": "#66ff33",
+    "icon": "\u2699\ufe0f",
+    "category": "crypto",
+    "component": "quasim"
+  },
+  {
+    "id": "quantum_crypto",
+    "title": "Quantum Crypto",
+    "description": "Quantum cryptography simulation",
+    "color": "#ff66cc",
+    "icon": "\ud83d\udd2e",
+    "category": "crypto",
+    "component": "quasim"
+  },
+  {
+    "id": "network_topology",
+    "title": "Network Topology",
+    "description": "Network graph visualization",
+    "color": "#00f5ff",
+    "icon": "\ud83d\udd78\ufe0f",
+    "category": "network",
+    "component": "autonomous"
+  },
+  {
+    "id": "packet_flow",
+    "title": "Packet Flow",
+    "description": "Network packet flow visualization",
+    "color": "#ff00ff",
+    "icon": "\ud83d\udce6",
+    "category": "network",
+    "component": "autonomous"
+  },
+  {
+    "id": "firewall_monitor",
+    "title": "Firewall Monitor",
+    "description": "Firewall rule visualization",
+    "color": "#ffaa00",
+    "icon": "\ud83d\udee1\ufe0f",
+    "category": "network",
+    "component": "autonomous"
+  },
+  {
+    "id": "latency_map",
+    "title": "Latency Map",
+    "description": "Global network latency heatmap",
+    "color": "#00ff88",
+    "icon": "\ud83c\udf0d",
+    "category": "network",
+    "component": "autonomous"
+  },
+  {
+    "id": "ddos_simulator",
+    "title": "DDoS Simulator",
+    "description": "DDoS attack visualization",
+    "color": "#ff3366",
+    "icon": "\ud83c\udfaf",
+    "category": "network",
+    "component": "autonomous"
+  },
+  {
+    "id": "protocol_analyzer",
+    "title": "Protocol Analyzer",
+    "description": "Network protocol analysis",
+    "color": "#9933ff",
+    "icon": "\ud83d\udce1",
+    "category": "network",
+    "component": "autonomous"
+  },
+  {
+    "id": "dns_resolver",
+    "title": "DNS Resolver",
+    "description": "DNS resolution visualization",
+    "color": "#33ffcc",
+    "icon": "\ud83d\udd0d",
+    "category": "network",
+    "component": "autonomous"
+  },
+  {
+    "id": "load_balancer",
+    "title": "Load Balancer",
+    "description": "Load distribution visualization",
+    "color": "#ff9933",
+    "icon": "\u2696\ufe0f",
+    "category": "network",
+    "component": "autonomous"
+  },
+  {
+    "id": "vpn_tunnel",
+    "title": "VPN Tunnel",
+    "description": "VPN tunnel visualization",
+    "color": "#66ff33",
+    "icon": "\ud83d\ude87",
+    "category": "network",
+    "component": "autonomous"
+  },
+  {
+    "id": "mesh_network",
+    "title": "Mesh Network",
+    "description": "Mesh network topology",
+    "color": "#ff66cc",
+    "icon": "\ud83d\udd37",
+    "category": "network",
+    "component": "autonomous"
+  },
+  {
+    "id": "solar_system",
+    "title": "Solar System",
+    "description": "Interactive solar system model",
+    "color": "#ffaa00",
+    "icon": "\u2600\ufe0f",
+    "category": "space",
+    "component": "quasim"
+  },
+  {
+    "id": "star_map",
+    "title": "Star Map",
+    "description": "3D star catalog visualization",
+    "color": "#00f5ff",
+    "icon": "\u2b50",
+    "category": "space",
+    "component": "quasim"
+  },
+  {
+    "id": "galaxy_merger",
+    "title": "Galaxy Merger",
+    "description": "Galaxy collision simulation",
+    "color": "#ff00ff",
+    "icon": "\ud83c\udf0c",
+    "category": "space",
+    "component": "quasim"
+  },
+  {
+    "id": "exoplanet_finder",
+    "title": "Exoplanet Finder",
+    "description": "Exoplanet transit detection",
+    "color": "#00ff88",
+    "icon": "\ud83d\udd2d",
+    "category": "space",
+    "component": "quasim"
+  },
+  {
+    "id": "asteroid_tracker",
+    "title": "Asteroid Tracker",
+    "description": "Near-Earth asteroid tracking",
+    "color": "#ff3366",
+    "icon": "\u2604\ufe0f",
+    "category": "space",
+    "component": "quasim"
+  },
+  {
+    "id": "cosmic_web",
+    "title": "Cosmic Web",
+    "description": "Large-scale structure visualization",
+    "color": "#9933ff",
+    "icon": "\ud83d\udd78\ufe0f",
+    "category": "space",
+    "component": "quasim"
+  },
+  {
+    "id": "pulsar_timing",
+    "title": "Pulsar Timing",
+    "description": "Pulsar signal analysis",
+    "color": "#33ffcc",
+    "icon": "\ud83d\udcfb",
+    "category": "space",
+    "component": "quasim"
+  },
+  {
+    "id": "redshift_map",
+    "title": "Redshift Map",
+    "description": "Cosmological redshift visualization",
+    "color": "#ff9933",
+    "icon": "\ud83d\udd34",
+    "category": "space",
+    "component": "quasim"
+  },
+  {
+    "id": "dark_matter",
+    "title": "Dark Matter",
+    "description": "Dark matter distribution map",
+    "color": "#666699",
+    "icon": "\ud83c\udf11",
+    "category": "space",
+    "component": "quasim"
+  },
+  {
+    "id": "gravitational_waves",
+    "title": "Gravitational Waves",
+    "description": "Gravitational wave detection",
+    "color": "#66ff33",
+    "icon": "\u3030\ufe0f",
+    "category": "space",
+    "component": "quasim"
+  },
+  {
+    "id": "market_depth",
+    "title": "Market Depth",
+    "description": "Order book depth visualization",
+    "color": "#00ff88",
+    "icon": "\ud83d\udcca",
+    "category": "financial",
+    "component": "autonomous"
+  },
+  {
+    "id": "volatility_surface",
+    "title": "Volatility Surface",
+    "description": "Options volatility surface",
+    "color": "#ff3366",
+    "icon": "\ud83d\udcc8",
+    "category": "financial",
+    "component": "autonomous"
+  },
+  {
+    "id": "correlation_matrix",
+    "title": "Correlation Matrix",
+    "description": "Asset correlation heatmap",
+    "color": "#00f5ff",
+    "icon": "\ud83d\udd22",
+    "category": "financial",
+    "component": "autonomous"
+  },
+  {
+    "id": "risk_dashboard",
+    "title": "Risk Dashboard",
+    "description": "Portfolio risk metrics",
+    "color": "#ffaa00",
+    "icon": "\u26a0\ufe0f",
+    "category": "financial",
+    "component": "autonomous"
+  },
+  {
+    "id": "monte_carlo_sim",
+    "title": "Monte Carlo Sim",
+    "description": "Monte Carlo price simulation",
+    "color": "#ff00ff",
+    "icon": "\ud83c\udfb2",
+    "category": "financial",
+    "component": "autonomous"
+  },
+  {
+    "id": "candlestick_chart",
+    "title": "Candlestick Chart",
+    "description": "Advanced candlestick analysis",
+    "color": "#9933ff",
+    "icon": "\ud83d\udd6f\ufe0f",
+    "category": "financial",
+    "component": "autonomous"
+  },
+  {
+    "id": "sentiment_tracker",
+    "title": "Sentiment Tracker",
+    "description": "Market sentiment analysis",
+    "color": "#33ffcc",
+    "icon": "\ud83d\ude0a",
+    "category": "financial",
+    "component": "autonomous"
+  },
+  {
+    "id": "flow_analyzer",
+    "title": "Flow Analyzer",
+    "description": "Money flow visualization",
+    "color": "#ff9933",
+    "icon": "\ud83d\udcb0",
+    "category": "financial",
+    "component": "autonomous"
+  },
+  {
+    "id": "yield_curve",
+    "title": "Yield Curve",
+    "description": "Interest rate yield curve",
+    "color": "#66ff33",
+    "icon": "\ud83d\udcc9",
+    "category": "financial",
+    "component": "autonomous"
+  },
+  {
+    "id": "portfolio_optimizer",
+    "title": "Portfolio Optimizer",
+    "description": "Efficient frontier visualization",
+    "color": "#ff66cc",
+    "icon": "\ud83c\udfaf",
+    "category": "financial",
+    "component": "autonomous"
+  },
+  {
+    "id": "scatter_3d",
+    "title": "3D Scatter",
+    "description": "3D scatter plot visualization",
+    "color": "#00f5ff",
+    "icon": "\ud83d\udccd",
+    "category": "data",
+    "component": "qubic"
+  },
+  {
+    "id": "parallel_coords",
+    "title": "Parallel Coords",
+    "description": "Parallel coordinates plot",
+    "color": "#ff00ff",
+    "icon": "\ud83d\udccf",
+    "category": "data",
+    "component": "qubic"
+  },
+  {
+    "id": "treemap_viz",
+    "title": "Treemap",
+    "description": "Hierarchical treemap visualization",
+    "color": "#00ff88",
+    "icon": "\ud83d\uddfa\ufe0f",
+    "category": "data",
+    "component": "qubic"
+  },
+  {
+    "id": "sankey_flow",
+    "title": "Sankey Flow",
+    "description": "Sankey diagram flow visualization",
+    "color": "#ffaa00",
+    "icon": "\u27a1\ufe0f",
+    "category": "data",
+    "component": "qubic"
+  },
+  {
+    "id": "chord_diagram",
+    "title": "Chord Diagram",
+    "description": "Relationship chord diagram",
+    "color": "#ff3366",
+    "icon": "\ud83d\udd04",
+    "category": "data",
+    "component": "qubic"
+  },
+  {
+    "id": "force_graph",
+    "title": "Force Graph",
+    "description": "Force-directed graph layout",
+    "color": "#9933ff",
+    "icon": "\ud83d\udd78\ufe0f",
+    "category": "data",
+    "component": "qubic"
+  },
+  {
+    "id": "sunburst_chart",
+    "title": "Sunburst Chart",
+    "description": "Hierarchical sunburst chart",
+    "color": "#33ffcc",
+    "icon": "\u2600\ufe0f",
+    "category": "data",
+    "component": "qubic"
+  },
+  {
+    "id": "radar_chart",
+    "title": "Radar Chart",
+    "description": "Multi-dimensional radar chart",
+    "color": "#ff9933",
+    "icon": "\ud83d\udce1",
+    "category": "data",
+    "component": "qubic"
+  },
+  {
+    "id": "stream_graph",
+    "title": "Stream Graph",
+    "description": "Time-series stream graph",
+    "color": "#66ff33",
+    "icon": "\ud83c\udf0a",
+    "category": "data",
+    "component": "qubic"
+  },
+  {
+    "id": "hexbin_map",
+    "title": "Hexbin Map",
+    "description": "Hexagonal binning heatmap",
+    "color": "#ff66cc",
+    "icon": "\ud83d\udd37",
+    "category": "data",
+    "component": "qubic"
+  }
+]

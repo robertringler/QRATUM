@@ -10,6 +10,7 @@ from .registry import REG
 
 def main():
     """Main entry point for quasim-verify CLI."""
+
     ap = argparse.ArgumentParser(
         "quasim-verify",
         description="QuASIM × QuNimbus claim and compliance verification tool",
@@ -102,14 +103,21 @@ def main():
     sarif_out = cfg["outputs"]["report_sarif"]
     sarif_results = []
     for r in results:
-        level = "error" if not r.passed and r.severity == "error" else "warning" if not r.passed else "note"
+        level = (
+            "error"
+            if not r.passed and r.severity == "error"
+            else "warning" if not r.passed else "note"
+        )
         message = r.details.get("error", "Check passed")
         sarif_results.append(
             {
                 "ruleId": r.id,
                 "level": level,
                 "message": {"text": str(message)},
-                "locations": [{"physicalLocation": {"artifactLocation": {"uri": p}}} for p in r.evidence_paths[:1]],
+                "locations": [
+                    {"physicalLocation": {"artifactLocation": {"uri": p}}}
+                    for p in r.evidence_paths[:1]
+                ],
             }
         )
 

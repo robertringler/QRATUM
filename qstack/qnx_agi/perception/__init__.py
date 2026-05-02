@@ -1,7 +1,7 @@
-from .base import PerceptionLayer, Percept
 from .abstraction_classifier import AbstractionClassifier
-from .multimodal import fuse
+from .base import Percept, PerceptionLayer
 from .encoders import AerospaceEncoder, FinanceEncoder, PharmaEncoder
+from .multimodal import fuse
 
 __all__ = [
     "PerceptionLayer",

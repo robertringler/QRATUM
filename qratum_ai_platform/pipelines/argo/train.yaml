@@ -1,0 +1,81 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: model-training-pipeline
+  namespace: qratum-ml
+spec:
+  entrypoint: train-model
+  
+  arguments:
+    parameters:
+    - name: model-name
+      value: "qratum-model-v1"
+    - name: dataset-path
+      value: "s3://qratum-data/training"
+    - name: epochs
+      value: "10"
+  
+  templates:
+  - name: train-model
+    steps:
+    - - name: data-prep
+        template: prepare-data
+    - - name: train
+        template: training
+    - - name: evaluate
+        template: evaluation
+    - - name: register
+        template: register-model
+  
+  - name: prepare-data
+    container:
+      image: qratum/data-prep:latest
+      command: [python]
+      args: 
+        - /app/prep.py
+        - --dataset={{workflow.parameters.dataset-path}}
+      resources:
+        requests:
+          memory: 4Gi
+          cpu: 2
+  
+  - name: training
+    container:
+      image: qratum/trainer:latest
+      command: [python]
+      args:
+        - /app/train.py
+        - --model={{workflow.parameters.model-name}}
+        - --epochs={{workflow.parameters.epochs}}
+      resources:
+        requests:
+          memory: 16Gi
+          cpu: 4
+          nvidia.com/gpu: 1
+        limits:
+          nvidia.com/gpu: 1
+  
+  - name: evaluation
+    container:
+      image: qratum/evaluator:latest
+      command: [python]
+      args:
+        - /app/evaluate.py
+        - --model={{workflow.parameters.model-name}}
+      resources:
+        requests:
+          memory: 8Gi
+          cpu: 2
+  
+  - name: register-model
+    container:
+      image: qratum/mlflow:latest
+      command: [sh, -c]
+      args:
+        - |
+          mlflow models log --model-uri=/models/{{workflow.parameters.model-name}}
+          /hooks/sign_artifact.sh /models/{{workflow.parameters.model-name}}
+      resources:
+        requests:
+          memory: 2Gi
+          cpu: 1

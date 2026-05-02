@@ -1,0 +1,48 @@
+{
+  "parabricks_version": "4.0",
+  "reference_genome": "GRCh38",
+  "alignment": {
+    "algorithm": "bwa-mem",
+    "threads": 32,
+    "optical_duplicate_distance": 100,
+    "mark_duplicates": true
+  },
+  "variant_calling": {
+    "algorithm": "deepvariant",
+    "model": "wgs",
+    "min_mapping_quality": 20,
+    "min_base_quality": 10,
+    "ploidy": 2,
+    "emit_ref_confidence": "GVCF"
+  },
+  "quality_filters": {
+    "min_snp_quality": 30,
+    "min_indel_quality": 30,
+    "min_depth": 10,
+    "max_depth": 500,
+    "min_allele_balance": 0.2
+  },
+  "giab_validation": {
+    "enabled": true,
+    "truth_vcf": "/data/references/HG001_GRCh38_truth.vcf.gz",
+    "confidence_bed": "/data/references/HG001_GRCh38_confidence.bed",
+    "min_f1_score": 0.995
+  },
+  "gpu_acceleration": {
+    "enabled": true,
+    "device": "cuda",
+    "num_gpus": 4,
+    "gpu_memory_limit": "40GB"
+  },
+  "determinism": {
+    "seed": 42,
+    "sort_order": "coordinate",
+    "reproducible_mode": true
+  },
+  "biokey_enforcement": {
+    "enabled": true,
+    "required_for_validation": true,
+    "required_for_provenance": true,
+    "safety_level": "SENSITIVE"
+  }
+}

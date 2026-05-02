@@ -1,0 +1,57 @@
+workflow,triggers,jobs,references_demo,path
+algorithms-ci.yml,"push, pull_request",5,N,.github/workflows/algorithms-ci.yml
+audit.yml,"schedule, workflow_dispatch, push",4,N,.github/workflows/audit.yml
+auto-merge.yml,"pull_request, workflow_dispatch",5,N,.github/workflows/auto-merge.yml
+bm_001.yml,"push, pull_request, workflow_dispatch",6,N,.github/workflows/bm_001.yml
+ci.yml,"push, pull_request",5,N,.github/workflows/ci.yml
+code-review-autofix.yml,"pull_request, push, workflow_dispatch",4,N,.github/workflows/code-review-autofix.yml
+compliance_snapshot.yml,"push, pull_request, schedule",4,N,.github/workflows/compliance_snapshot.yml
+compression-benchmarks.yml,"schedule, workflow_dispatch",4,N,.github/workflows/compression-benchmarks.yml
+convergence-evidence-gate.yml,"workflow_dispatch, schedule",3,N,.github/workflows/convergence-evidence-gate.yml
+cuda-build.yml,"push, pull_request",3,N,.github/workflows/cuda-build.yml
+demo_aerospace.yml,"push, pull_request, workflow_dispatch",6,Y,.github/workflows/demo_aerospace.yml
+demo_agritech.yml,"push, pull_request, workflow_dispatch",6,Y,.github/workflows/demo_agritech.yml
+demo_energy.yml,"push, pull_request, workflow_dispatch",6,Y,.github/workflows/demo_energy.yml
+demo_finance.yml,"push, pull_request, workflow_dispatch",6,Y,.github/workflows/demo_finance.yml
+demo_healthcare.yml,"push, pull_request, workflow_dispatch",6,Y,.github/workflows/demo_healthcare.yml
+demo_manufacturing.yml,"push, pull_request, workflow_dispatch",6,Y,.github/workflows/demo_manufacturing.yml
+demo_telecom.yml,"push, pull_request, workflow_dispatch",6,Y,.github/workflows/demo_telecom.yml
+demo_transportation.yml,"push, pull_request, workflow_dispatch",6,Y,.github/workflows/demo_transportation.yml
+docs.yml,"push, pull_request, workflow_dispatch",5,N,.github/workflows/docs.yml
+generate_valuation.yml,"schedule, workflow_dispatch",2,N,.github/workflows/generate_valuation.yml
+hcal-ci.yml,"push, pull_request",16,N,.github/workflows/hcal-ci.yml
+hcal-policy-gate.yml,"pull_request, release",7,N,.github/workflows/hcal-policy-gate.yml
+main-guard.yml,push,2,N,.github/workflows/main-guard.yml
+ord.yml,"schedule, workflow_dispatch",3,N,.github/workflows/ord.yml
+ownai-ci.yml,"push, pull_request",3,N,.github/workflows/ownai-ci.yml
+ownai-nightly.yml,"schedule, workflow_dispatch",2,N,.github/workflows/ownai-nightly.yml
+phaseVIII.yml,"push, pull_request, schedule, workflow_dispatch",10,N,.github/workflows/phaseVIII.yml
+phase_vi1_ci.yml,,1,N,.github/workflows/phase_vi1_ci.yml
+pr-auto-resolution.yml,"pull_request, schedule, workflow_dispatch",4,N,.github/workflows/pr-auto-resolution.yml
+pr-checks.yml,pull_request,9,N,.github/workflows/pr-checks.yml
+pr-compliance.yml,pull_request,5,N,.github/workflows/pr-compliance.yml
+pr-defense-compliance.yml,pull_request,7,N,.github/workflows/pr-defense-compliance.yml
+pylint.yml,,1,N,.github/workflows/pylint.yml
+qcmg-sim-exec.yml,"push, pull_request, schedule, workflow_dispatch",9,N,.github/workflows/qcmg-sim-exec.yml
+qnimbus.yml,"workflow_dispatch, push",3,N,.github/workflows/qnimbus.yml
+qnx-ci.yml,"push, pull_request",3,N,.github/workflows/qnx-ci.yml
+qratum-production-ci.yml,"push, pull_request, workflow_dispatch, pull_request, push",22,N,.github/workflows/qratum-production-ci.yml
+quantacosmic-validation.yml,"pull_request, push",3,N,.github/workflows/quantacosmic-validation.yml
+quasim-ci.yml,,1,N,.github/workflows/quasim-ci.yml
+quasim-full-package-builder.yml,"workflow_dispatch, push",3,N,.github/workflows/quasim-full-package-builder.yml
+quasim-master-build.yml,"push, pull_request",5,N,.github/workflows/quasim-master-build.yml
+quasim-validation-sweep.yml,"push, pull_request, workflow_dispatch",5,N,.github/workflows/quasim-validation-sweep.yml
+qubic-render-ci.yml,"push, pull_request",4,N,.github/workflows/qubic-render-ci.yml
+qubic-viz-ci.yml,"push, pull_request",4,N,.github/workflows/qubic-viz-ci.yml
+qunimbus-global-ci.yml,"push, schedule, workflow_dispatch",8,N,.github/workflows/qunimbus-global-ci.yml
+qunimbus-validate.yml,"push, pull_request, workflow_dispatch",10,N,.github/workflows/qunimbus-validate.yml
+render_mermaid.yml,"push, pull_request",3,N,.github/workflows/render_mermaid.yml
+repo-audit-autofix.yml,"workflow_dispatch, schedule",3,N,.github/workflows/repo-audit-autofix.yml
+sbom.yml,"push, pull_request, release, workflow_dispatch",9,N,.github/workflows/sbom.yml
+spacex-demo.yml,"push, workflow_dispatch",3,Y,.github/workflows/spacex-demo.yml
+validate_terc.yml,"push, pull_request, workflow_dispatch",5,N,.github/workflows/validate_terc.yml
+valuation.yaml,"workflow_dispatch, pull_request",3,N,.github/workflows/valuation.yaml
+verify.yml,"pull_request, push",3,N,.github/workflows/verify.yml
+vertical-demo.yml,"push, workflow_dispatch",3,Y,.github/workflows/vertical-demo.yml
+video.yml,"push, pull_request",3,N,.github/workflows/video.yml
+xenon_production_gates.yml,"pull_request, push",8,N,.github/workflows/xenon_production_gates.yml

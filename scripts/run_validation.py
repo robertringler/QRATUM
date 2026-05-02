@@ -40,6 +40,7 @@ class ModuleValidator:
 
     def discover_modules(self) -> List[Dict]:
         """Discover all executable modules and kernels."""
+
         modules = []
 
         # Python modules in quasim/
@@ -148,6 +149,7 @@ class ModuleValidator:
 
     def _get_subsystem(self, module_path: Path) -> str:
         """Determine the subsystem from the module path."""
+
         parts = module_path.parts
         if "quasim" in parts:
             idx = parts.index("quasim")
@@ -157,6 +159,7 @@ class ModuleValidator:
 
     def validate_python_module(self, module: Dict) -> Tuple[str, str]:
         """Validate a Python module."""
+
         module_path = module["path"]
 
         # Test 1: Syntax validation
@@ -212,6 +215,7 @@ class ModuleValidator:
 
     def validate_cpp_module(self, module: Dict) -> Tuple[str, str]:
         """Validate a C++ module."""
+
         module_path = module["path"]
 
         # For C++ modules, we check syntax and compilation would be tested in CI
@@ -235,6 +239,7 @@ class ModuleValidator:
 
     def validate_deterministic_reproducibility(self, module: Dict) -> bool:
         """Test deterministic reproducibility across backends."""
+
         # This is a simplified check - full implementation would run actual tests
         # For now, we check if the module has deterministic patterns
 
@@ -250,15 +255,13 @@ class ModuleValidator:
             has_random = "random" in content.lower()
 
             # If using random without seed management, flag as non-deterministic
-            if has_random and not has_seed:
-                return False
-
-            return True
+            return not (has_random and not has_seed)
         except Exception:
             return True  # Default to pass if can't read
 
     def check_fidelity_threshold(self, module: Dict) -> bool:
         """Check if module meets empirical fidelity threshold ≥ 0.995."""
+
         # Check for reference data
         ref_file = self.reference_dir / f"{module['name'].replace('/', '_')}.json"
 
@@ -277,6 +280,7 @@ class ModuleValidator:
 
     def check_compliance(self, module: Dict) -> Dict[str, bool]:
         """Check compliance with standards."""
+
         compliance = {
             "DO-178C": True,  # Assume compliant unless proven otherwise
             "CMMC": True,
@@ -304,6 +308,7 @@ class ModuleValidator:
 
     def validate_module(self, module: Dict) -> Dict:
         """Validate a single module."""
+
         print(f"  Validating: {module['name']}...")
 
         if module["type"] == "python":
@@ -342,6 +347,7 @@ class ModuleValidator:
 
     def run_validation(self) -> List[Dict]:
         """Run full validation sweep."""
+
         print("=" * 80)
         print("QuASIM Full Module + Kernel Validation Sweep")
         print("=" * 80)
@@ -360,6 +366,7 @@ class ModuleValidator:
 
     def generate_report(self, output_path: Path) -> None:
         """Generate Markdown validation report."""
+
         # Count results
         validated = sum(1 for r in self.results if r["status"] == ValidationStatus.VALIDATED)
         pending = sum(1 for r in self.results if r["status"] == ValidationStatus.PENDING)
@@ -462,6 +469,7 @@ class ModuleValidator:
 
 def main():
     """Main entry point."""
+
     parser = argparse.ArgumentParser(description="QuASIM Full Module + Kernel Validation Sweep")
     parser.add_argument(
         "--full",
@@ -484,10 +492,7 @@ def main():
     args = parser.parse_args()
 
     # Determine repo root
-    if args.repo_root:
-        repo_root = Path(args.repo_root)
-    else:
-        repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(args.repo_root) if args.repo_root else Path(__file__).resolve().parents[1]
 
     # Create validator
     validator = ModuleValidator(repo_root, full_sweep=args.full)

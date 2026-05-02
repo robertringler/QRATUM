@@ -13,7 +13,9 @@ def _build_parser() -> argparse.ArgumentParser:
 
     simulate = subparsers.add_parser("simulate", help="Run a simulation")
     simulate.add_argument("--scenario", required=True, help="Scenario identifier")
-    simulate.add_argument("--timesteps", type=int, default=1, help="Number of timesteps to simulate")
+    simulate.add_argument(
+        "--timesteps", type=int, default=1, help="Number of timesteps to simulate"
+    )
     simulate.add_argument("--seed", type=int, default=None, help="Optional random seed")
     simulate.add_argument(
         "--backend",

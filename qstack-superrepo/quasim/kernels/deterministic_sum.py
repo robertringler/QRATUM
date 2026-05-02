@@ -1,4 +1,5 @@
 """Deterministic summation kernel for demonstration purposes."""
+
 from __future__ import annotations
 
 from typing import Iterable, Sequence

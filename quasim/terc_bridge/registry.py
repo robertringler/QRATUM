@@ -21,6 +21,7 @@ def register_observable(name: str, func: Callable[..., Any]) -> None:
     func : Callable
         Observable extraction function
     """
+
     _OBSERVABLE_REGISTRY[name] = func
     logger.info(f"Registered observable: {name}")
 
@@ -38,6 +39,7 @@ def get_observable(name: str) -> Callable[..., Any] | None:
     Callable or None
         Observable function if registered, None otherwise
     """
+
     return _OBSERVABLE_REGISTRY.get(name)
 
 
@@ -49,6 +51,7 @@ def list_observables() -> list[str]:
     list[str]
         List of observable names
     """
+
     return list(_OBSERVABLE_REGISTRY.keys())
 
 
@@ -63,14 +66,13 @@ def register_observables(runtime: Any = None) -> None:
     runtime : Any, optional
         QuASIM runtime object (for future integration)
     """
-    from quasim.terc_bridge.observables import (
-        beta_metrics_from_cipher,
-        emergent_complexity,
-        ioc_period_candidates,
-        qgh_consensus_status,
-        stability_assessment,
-        stream_synchronization_metrics,
-    )
+
+    from quasim.terc_bridge.observables import (beta_metrics_from_cipher,
+                                                emergent_complexity,
+                                                ioc_period_candidates,
+                                                qgh_consensus_status,
+                                                stability_assessment,
+                                                stream_synchronization_metrics)
 
     # Register REVULTRA observables
     register_observable("beta_metrics", beta_metrics_from_cipher)
@@ -111,6 +113,7 @@ def compute_observable(name: str, *args: Any, **kwargs: Any) -> Any:
     ValueError
         If observable is not registered
     """
+
     func = get_observable(name)
     if func is None:
         raise ValueError(f"Observable '{name}' not registered. Available: {list_observables()}")
