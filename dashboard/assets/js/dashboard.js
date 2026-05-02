@@ -1050,5 +1050,8 @@
             logToConsole(`Job cancelled: ${job.name}`, 'warning');
         }
     };
+    
+    // Expose showToast globally for Phase 4 panels
+    window.showToast = showToast;
 
 })();

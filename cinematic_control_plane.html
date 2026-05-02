@@ -105,37 +105,37 @@
             <div class="service-card">
                 <h3>🔗 QRADLE Foundation Engine <span class="status healthy">●</span></h3>
                 <p>Core blockchain and cryptographic operations engine</p>
-                <a href="http://localhost:8001" class="service-link" target="_blank">Access QRADLE →</a>
+                <a href="#" class="service-link" data-port="8001" target="_blank">Access QRADLE →</a>
             </div>
 
             <div class="service-card">
                 <h3>🏗️ QRATUM Platform <span class="status healthy">●</span></h3>
                 <p>14 vertical AI modules for comprehensive intelligence</p>
-                <a href="http://localhost:8002" class="service-link" target="_blank">Access Platform →</a>
+                <a href="#" class="service-link" data-port="8002" target="_blank">Access Platform →</a>
             </div>
 
             <div class="service-card">
                 <h3>🧠 QRATUM-ASI <span class="status healthy">●</span></h3>
                 <p>Autonomous Systems Intelligence layer</p>
-                <a href="http://localhost:8003" class="service-link" target="_blank">Access ASI →</a>
+                <a href="#" class="service-link" data-port="8003" target="_blank">Access ASI →</a>
             </div>
 
             <div class="service-card">
                 <h3>📊 Monitoring & Visualization <span class="status healthy">●</span></h3>
                 <p>Grafana dashboards for system metrics</p>
-                <a href="http://localhost:3000" class="service-link" target="_blank">Access Grafana →</a>
+                <a href="#" class="service-link" data-port="3000" target="_blank">Access Grafana →</a>
             </div>
 
             <div class="service-card">
                 <h3>📈 Prometheus Metrics <span class="status healthy">●</span></h3>
                 <p>Time-series metrics collection</p>
-                <a href="http://localhost:9090" class="service-link" target="_blank">Access Prometheus →</a>
+                <a href="#" class="service-link" data-port="9090" target="_blank">Access Prometheus →</a>
             </div>
 
             <div class="service-card">
                 <h3>📝 Log Aggregation <span class="status healthy">●</span></h3>
                 <p>Loki centralized logging</p>
-                <a href="http://localhost:3100" class="service-link" target="_blank">Access Loki →</a>
+                <a href="#" class="service-link" data-port="3100" target="_blank">Access Loki →</a>
             </div>
         </div>
 
@@ -146,6 +146,27 @@
     </div>
 
     <script>
+        // Dynamically set service URLs based on current hostname
+        document.addEventListener('DOMContentLoaded', () => {
+            const serviceLinks = document.querySelectorAll('.service-link[data-port]');
+            const hostname = window.location.hostname;
+            const protocol = window.location.protocol;
+            
+            serviceLinks.forEach(link => {
+                const portStr = link.getAttribute('data-port');
+                // Validate that port is a valid number
+                const port = parseInt(portStr, 10);
+                if (isNaN(port) || port < 1 || port > 65535) {
+                    console.error('Invalid port:', portStr);
+                    link.style.opacity = '0.5';
+                    link.style.cursor = 'not-allowed';
+                    link.onclick = (e) => e.preventDefault();
+                    return;
+                }
+                link.href = `${protocol}//${hostname}:${port}`;
+            });
+        });
+
         // Auto-refresh status every 30 seconds
         setInterval(() => {
             location.reload();

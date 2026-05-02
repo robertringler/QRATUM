@@ -22,6 +22,8 @@
     
     <!-- Dashboard Styles -->
     <link rel="stylesheet" href="assets/css/dashboard.css">
+    <!-- Phase 4 Panel Styles -->
+    <link rel="stylesheet" href="assets/css/phase4-panels.css">
     
     <!-- Desktop Integration (loaded conditionally for Electron) -->
     <script>
@@ -60,6 +62,14 @@
                 <button class="nav-tab" data-view="monitoring" aria-selected="false">
                     <span class="nav-icon">📊</span>
                     <span class="nav-label">Monitoring</span>
+                </button>
+                <button class="nav-tab" data-view="quantum" aria-selected="false">
+                    <span class="nav-icon">⚛️</span>
+                    <span class="nav-label">Quantum</span>
+                </button>
+                <button class="nav-tab" data-view="codegen" aria-selected="false">
+                    <span class="nav-icon">🔧</span>
+                    <span class="nav-label">DCGE</span>
                 </button>
                 <button class="nav-tab" data-view="results" aria-selected="false">
                     <span class="nav-icon">🔬</span>
@@ -401,6 +411,360 @@
             </section>
 
             <!-- ========================================== -->
+            <!-- QUANTUM SIMULATION VIEW (Phase 4) -->
+            <!-- ========================================== -->
+            <section class="view" id="quantum-view" aria-label="Quantum Simulation">
+                <div class="view-header">
+                    <h1>Quantum Simulation</h1>
+                    <div class="view-actions">
+                        <span class="phase-badge">Phase 4 | Mini QuASIM</span>
+                        <button class="btn btn-primary" id="quantum-reset-btn">
+                            <span>🔄</span> Reset State
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="quantum-grid">
+                    <!-- Qubit State Visualization -->
+                    <div class="card quantum-state-card wide">
+                        <div class="card-header">
+                            <h2 class="card-title">Qubit State Visualization</h2>
+                            <div class="card-actions">
+                                <span class="qubit-info">12 Qubits | 4096 States</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="qubit-grid" class="qubit-grid" aria-label="Qubit state visualization">
+                                <!-- Qubit visualization populated by JS -->
+                            </div>
+                            <div class="quantum-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color amplitude-high"></span>
+                                    <span>High Amplitude</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color amplitude-low"></span>
+                                    <span>Low Amplitude</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color phase-indicator"></span>
+                                    <span>Phase (angle)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Gate Control Panel -->
+                    <div class="card gate-control-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Gate Operations</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="gate-buttons">
+                                <div class="gate-section">
+                                    <h3>Single-Qubit Gates</h3>
+                                    <div class="button-row">
+                                        <button class="gate-btn" data-gate="H" title="Hadamard">H</button>
+                                        <button class="gate-btn" data-gate="X" title="Pauli-X">X</button>
+                                        <button class="gate-btn" data-gate="Y" title="Pauli-Y">Y</button>
+                                        <button class="gate-btn" data-gate="Z" title="Pauli-Z">Z</button>
+                                    </div>
+                                    <div class="button-row">
+                                        <button class="gate-btn phase4" data-gate="S" title="Phase Gate (S)">S</button>
+                                        <button class="gate-btn phase4" data-gate="T" title="T Gate">T</button>
+                                    </div>
+                                </div>
+                                <div class="gate-section">
+                                    <h3>Multi-Qubit Gates</h3>
+                                    <div class="button-row">
+                                        <button class="gate-btn two-qubit" data-gate="CNOT" title="CNOT">CNOT</button>
+                                        <button class="gate-btn three-qubit phase4" data-gate="Toffoli" title="Toffoli (CCNOT)">Toffoli</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="qubit-selector">
+                                <label for="target-qubit">Target Qubit:</label>
+                                <select id="target-qubit">
+                                    <option value="0">Qubit 0</option>
+                                    <option value="1">Qubit 1</option>
+                                    <option value="2">Qubit 2</option>
+                                    <option value="3">Qubit 3</option>
+                                    <option value="4">Qubit 4</option>
+                                    <option value="5">Qubit 5</option>
+                                    <option value="6">Qubit 6</option>
+                                    <option value="7">Qubit 7</option>
+                                    <option value="8">Qubit 8</option>
+                                    <option value="9">Qubit 9</option>
+                                    <option value="10">Qubit 10</option>
+                                    <option value="11">Qubit 11</option>
+                                </select>
+                                <label for="control-qubit">Control Qubit:</label>
+                                <select id="control-qubit">
+                                    <option value="0">Qubit 0</option>
+                                    <option value="1" selected>Qubit 1</option>
+                                    <option value="2">Qubit 2</option>
+                                    <option value="3">Qubit 3</option>
+                                    <option value="4">Qubit 4</option>
+                                    <option value="5">Qubit 5</option>
+                                    <option value="6">Qubit 6</option>
+                                    <option value="7">Qubit 7</option>
+                                    <option value="8">Qubit 8</option>
+                                    <option value="9">Qubit 9</option>
+                                    <option value="10">Qubit 10</option>
+                                    <option value="11">Qubit 11</option>
+                                </select>
+                                <label for="control-qubit2">Control 2 (Toffoli):</label>
+                                <select id="control-qubit2">
+                                    <option value="0">Qubit 0</option>
+                                    <option value="1">Qubit 1</option>
+                                    <option value="2" selected>Qubit 2</option>
+                                    <option value="3">Qubit 3</option>
+                                    <option value="4">Qubit 4</option>
+                                    <option value="5">Qubit 5</option>
+                                    <option value="6">Qubit 6</option>
+                                    <option value="7">Qubit 7</option>
+                                    <option value="8">Qubit 8</option>
+                                    <option value="9">Qubit 9</option>
+                                    <option value="10">Qubit 10</option>
+                                    <option value="11">Qubit 11</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quantum Metrics -->
+                    <div class="card quantum-metrics-card">
+                        <div class="card-header">
+                            <h2 class="card-title">State Metrics</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="metric-display">
+                                <div class="metric-item">
+                                    <span class="metric-label">Entropy</span>
+                                    <span class="metric-value" id="quantum-entropy">0.000</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">States (non-zero)</span>
+                                    <span class="metric-value" id="nonzero-states">1</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Gate Count</span>
+                                    <span class="metric-value" id="gate-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- WASM Pod Status -->
+                    <div class="card wasm-pod-card">
+                        <div class="card-header">
+                            <h2 class="card-title">WASM Pod Isolation</h2>
+                            <span class="isolation-badge">Sandboxed</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="pod-status">
+                                <div class="pod-item">
+                                    <span class="pod-name">Mini QuASIM Pod</span>
+                                    <span class="pod-memory">2 MB limit</span>
+                                    <span class="pod-status-indicator online">Active</span>
+                                </div>
+                                <div class="pod-item">
+                                    <span class="pod-name">OS Supreme Pod</span>
+                                    <span class="pod-memory">64 KB limit</span>
+                                    <span class="pod-status-indicator online">Active</span>
+                                </div>
+                                <div class="pod-item">
+                                    <span class="pod-name">MiniLM Pod</span>
+                                    <span class="pod-memory">8 MB limit</span>
+                                    <span class="pod-status-indicator standby">Standby</span>
+                                </div>
+                            </div>
+                            <div class="pod-info">
+                                <p>Full sandboxing: No host memory/filesystem access</p>
+                                <p>Deterministic execution enforced</p>
+                                <p>Pod-level rollback on failure</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- CODE GENERATION VIEW (Phase 4 - DCGE) -->
+            <!-- ========================================== -->
+            <section class="view" id="codegen-view" aria-label="Code Generation">
+                <div class="view-header">
+                    <h1>DCGE - Code Generation</h1>
+                    <div class="view-actions">
+                        <span class="phase-badge">Deterministic Code Generation Engine</span>
+                    </div>
+                </div>
+                
+                <div class="codegen-grid">
+                    <!-- Code Generation Input -->
+                    <div class="card codegen-input-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Generate Code</h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="codegen-form" class="codegen-form">
+                                <div class="form-group">
+                                    <label for="codegen-prompt">Code Intent / Prompt</label>
+                                    <textarea id="codegen-prompt" rows="4" 
+                                        placeholder="Describe the code you want to generate...&#10;e.g., 'Create a function that sorts an array using quicksort'"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="codegen-language">Language</label>
+                                        <select id="codegen-language">
+                                            <option value="rust" selected>Rust</option>
+                                            <option value="python">Python</option>
+                                            <option value="javascript">JavaScript</option>
+                                            <option value="c">C</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="codegen-type">Intent Type</label>
+                                        <select id="codegen-type">
+                                            <option value="function">Function</option>
+                                            <option value="struct">Struct/Class</option>
+                                            <option value="module">Module</option>
+                                            <option value="fileio">File I/O</option>
+                                            <option value="threading">Threading</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Generate Code</button>
+                                    <button type="button" class="btn btn-secondary" id="validate-code-btn">Validate</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Generated Code Output -->
+                    <div class="card codegen-output-card wide">
+                        <div class="card-header">
+                            <h2 class="card-title">Generated Code</h2>
+                            <div class="card-actions">
+                                <button class="btn-icon" id="copy-code-btn" title="Copy to clipboard">📋</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <pre id="generated-code" class="code-output"><code>// Generated code will appear here...</code></pre>
+                        </div>
+                    </div>
+                    
+                    <!-- AST View -->
+                    <div class="card ast-card">
+                        <div class="card-header">
+                            <h2 class="card-title">AST Structure</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="ast-viewer" class="ast-viewer">
+                                <span class="placeholder-text">AST will be displayed after code generation</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Typed IR View -->
+                    <div class="card ir-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Typed IR</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="ir-viewer" class="ir-viewer">
+                                <span class="placeholder-text">Typed IR will be displayed after code generation</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Footprint Metrics -->
+                    <div class="card footprint-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Binary Footprint</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="footprint-metrics">
+                                <div class="footprint-item">
+                                    <span class="footprint-label">.text</span>
+                                    <span class="footprint-value" id="text-size">0 bytes</span>
+                                </div>
+                                <div class="footprint-item">
+                                    <span class="footprint-label">.stack</span>
+                                    <span class="footprint-value" id="stack-size">0 bytes</span>
+                                </div>
+                                <div class="footprint-item">
+                                    <span class="footprint-label">.heap</span>
+                                    <span class="footprint-value" id="heap-size">0 bytes</span>
+                                </div>
+                                <div class="footprint-item total">
+                                    <span class="footprint-label">Total</span>
+                                    <span class="footprint-value" id="total-size">0 bytes</span>
+                                </div>
+                            </div>
+                            <div class="regression-status">
+                                <span class="regression-label">Regression Delta:</span>
+                                <span class="regression-value pass" id="regression-delta">PASS</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- DCGE Benchmark -->
+                    <div class="card benchmark-card wide">
+                        <div class="card-header">
+                            <h2 class="card-title">DCGE Benchmark vs Copilot/Cursor</h2>
+                        </div>
+                        <div class="card-body">
+                            <!-- Note: Benchmark values shown are example/placeholder data for demonstration purposes -->
+                            <div class="benchmark-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Metric</th>
+                                            <th>DCGE</th>
+                                            <th>Copilot*</th>
+                                            <th>Cursor*</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Correctness Score</td>
+                                            <td class="highlight">100%</td>
+                                            <td>87%</td>
+                                            <td>91%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Determinism</td>
+                                            <td class="highlight">PASS</td>
+                                            <td>FAIL</td>
+                                            <td>FAIL</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Code Footprint</td>
+                                            <td class="highlight">Minimal</td>
+                                            <td>Medium</td>
+                                            <td>Medium</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Compile Success</td>
+                                            <td class="highlight">>99%</td>
+                                            <td>~85%</td>
+                                            <td>~88%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">* Example values for demonstration. Actual benchmarks pending.</p>
+                            </div>
+                            <div class="supremacy-note">
+                                <strong>Supremacy Note:</strong> DCGE guarantees deterministic, minimal-footprint code generation with compiler-validated output.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
             <!-- RESULTS VIEW -->
             <!-- ========================================== -->
             <section class="view" id="results-view" aria-label="Results Visualization">
@@ -724,5 +1088,8 @@
     <script src="assets/js/websocket.js"></script>
     <script src="assets/js/visualization.js"></script>
     <script src="assets/js/dashboard.js"></script>
+    <!-- Phase 4 Panel Scripts -->
+    <script src="assets/js/quantum-panel.js"></script>
+    <script src="assets/js/codegen-panel.js"></script>
 </body>
 </html>

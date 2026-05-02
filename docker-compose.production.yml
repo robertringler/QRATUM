@@ -1,4 +1,4 @@
-# QRATUM Production Stack - Docker Compose# QRATUM Production Stack - Docker Compose
+# QRATUM Production Stack - Docker Compose
 # 
 # Complete deployment of QRADLE + QRATUM + QRATUM-ASI
 # Designed for sovereign, on-premises, and air-gapped environments
@@ -152,7 +152,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:?GRAFANA_PASSWORD must be set for Grafana admin password}
       - GF_USERS_ALLOW_SIGN_UP=false
     networks:
       - qratum-network
@@ -205,7 +205,7 @@ services:
       - QRATUM_COMPONENT=control-plane
       - QRATUM_ENV=production
       - PORT=8080
-    command: python cinematic_control_plane.py
+    command: gunicorn -w 4 -b 0.0.0.0:8080 cinematic_control_plane:app
     networks:
       - qratum-network
     depends_on:

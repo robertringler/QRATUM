@@ -8,20 +8,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pytest
 
-from qratum_asi.core.algorithm_discovery import (AlgorithmDiscoveryEngine,
-                                                 ExecutionTrace)
-from qratum_asi.core.compression import (AbstractionCompressionEngine,
-                                         PatternType)
-from qratum_asi.core.execution_feedback import (ExecutionFeedbackLoop,
-                                                TelemetryType)
-from qratum_asi.core.goal_preservation import GoalPreservationEngine
-from qratum_asi.core.recursive_asi_program import \
-    RecursiveASIDevelopmentProgram
-from qratum_asi.core.system_model import (ComponentType, FailureMode,
-                                          QRATUMSystemModel)
-from qratum_asi.core.verification import (GraphOperationValidator,
-                                          SelfVerificationEngine,
-                                          SSSPValidator)
 from qratum_asi.core.algorithm_discovery import (
     AlgorithmDiscoveryEngine,
     ExecutionTrace,
@@ -206,15 +192,6 @@ class TestGoalPreservation:
         """Test recording architectural changes."""
         engine = GoalPreservationEngine()
 
-        state_before = {
-            "implementation": {"version": 1},
-            "purpose": {"goal": "safety"}
-        }
-
-        state_after = {
-            "implementation": {"version": 2},
-            "purpose": {"goal": "safety"}
-        }
         state_before = {"implementation": {"version": 1}, "purpose": {"goal": "safety"}}
 
         state_after = {"implementation": {"version": 2}, "purpose": {"goal": "safety"}}

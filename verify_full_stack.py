@@ -75,8 +75,6 @@ def test_qratum():
     print_header("QRATUM PLATFORM VERIFICATION")
 
     from qratum.platform.api import APIRequest, QRATUMAPIService
-    from qratum.platform.reasoning_engine import (ReasoningStrategy,
-                                                  UnifiedReasoningEngine)
     from qratum.platform.reasoning_engine import ReasoningStrategy, UnifiedReasoningEngine
 
     print("\n✓ Imports successful")
@@ -121,9 +119,6 @@ def test_asi():
     """Test QRATUM-ASI Layer."""
     print_header("QRATUM-ASI LAYER VERIFICATION")
 
-    from qratum_asi.orchestrator_master import (IMMUTABLE_BOUNDARIES,
-                                                PROHIBITED_GOALS,
-                                                QRATUMASIOrchestrator)
     from qratum_asi.orchestrator_master import (
         IMMUTABLE_BOUNDARIES,
         PROHIBITED_GOALS,
