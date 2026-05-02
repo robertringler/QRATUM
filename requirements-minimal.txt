@@ -4,7 +4,8 @@
 # Web framework
 flask==3.0.0
 flask-cors==4.0.0
-gunicorn==21.2.0
+# gunicorn >= 22.0.0 patches HTTP request/response smuggling advisories.
+gunicorn==22.0.0
 werkzeug>=3.0.0
 
 # HTTP client
