@@ -50,15 +50,15 @@ Standards Compliance:
 - ISO/IEC 14888-3 (Digital signatures with appendix)
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple
-from enum import Enum
 import hashlib
 import secrets
 import time
+from dataclasses import dataclass, field
+from enum import Enum
 from pathlib import Path
+from typing import Dict, List, Optional, Set, Tuple
 
-from .pqc import SPHINCSPlusKeyPair, SPHINCSPlusSignature, PQCAlgorithm, SecurityLevel
+from .pqc import SPHINCSPlusKeyPair, SPHINCSPlusSignature
 
 
 class SignatureType(Enum):
@@ -121,7 +121,7 @@ class BinaryMetadata:
     build_id: Optional[str] = None
     dependencies: Dict[str, str] = field(default_factory=dict)
     metadata: Dict[str, str] = field(default_factory=dict)
-    
+
     def is_expired(self, current_time: Optional[int] = None) -> bool:
         """
         Check if signature has expired
@@ -134,12 +134,12 @@ class BinaryMetadata:
         """
         if self.expiration_timestamp == 0:
             return False  # Never expires
-        
+
         if current_time is None:
             current_time = int(time.time())
-        
+
         return current_time > self.expiration_timestamp
-    
+
     def to_canonical_bytes(self) -> bytes:
         """
         Convert metadata to canonical byte representation
@@ -159,18 +159,18 @@ class BinaryMetadata:
             self.signing_timestamp.to_bytes(8, 'big'),
             self.expiration_timestamp.to_bytes(8, 'big'),
         ]
-        
+
         if self.version:
             parts.append(self.version.encode('utf-8'))
         if self.build_id:
             parts.append(self.build_id.encode('utf-8'))
-        
+
         # Sorted dependencies for determinism
         for dep_name in sorted(self.dependencies.keys()):
             dep_hash = self.dependencies[dep_name]
             parts.append(dep_name.encode('utf-8'))
             parts.append(dep_hash.encode('utf-8'))
-        
+
         return b'|'.join(parts)
 
 
@@ -196,7 +196,7 @@ class SignedBinary:
     signature_format: SignatureFormat
     public_key: bytes
     certificate_chain: Optional[List[bytes]] = None
-    
+
     def get_size_breakdown(self) -> Dict[str, int]:
         """
         Get size breakdown of signed binary components
@@ -217,7 +217,7 @@ class SignedBinary:
                 len(self.public_key)
             )
         }
-    
+
     def calculate_overhead_percent(self) -> float:
         """
         Calculate signature overhead as percentage of binary size
@@ -227,10 +227,10 @@ class SignedBinary:
         """
         if not self.binary_content:
             return 0.0
-        
+
         binary_size = len(self.binary_content)
         overhead_size = self.get_size_breakdown()["total_overhead_bytes"]
-        
+
         return (overhead_size / binary_size) * 100.0
 
 
@@ -260,7 +260,7 @@ class SigningPolicy:
     require_certificate_chain: bool = False
     enforce_expiration: bool = True
     verify_dependencies: bool = True
-    
+
     def validate_metadata(self, metadata: BinaryMetadata) -> Tuple[bool, Optional[str]]:
         """
         Validate metadata against policy
@@ -273,24 +273,24 @@ class SigningPolicy:
         """
         if self.require_build_id and not metadata.build_id:
             return False, "Build ID is required by policy"
-        
+
         if self.require_version and not metadata.version:
             return False, "Version is required by policy"
-        
+
         if self.require_dependencies and not metadata.dependencies:
             return False, "Dependencies are required by policy"
-        
+
         if self.allowed_signers and metadata.signer_node not in self.allowed_signers:
             return False, f"Signer {metadata.signer_node} not in allowed signers list"
-        
+
         if self.enforce_expiration and metadata.is_expired():
             return False, "Signature has expired"
-        
+
         if self.max_signature_age_days > 0:
             age_days = (int(time.time()) - metadata.signing_timestamp) / 86400
             if age_days > self.max_signature_age_days:
                 return False, f"Signature age ({age_days:.1f} days) exceeds maximum ({self.max_signature_age_days} days)"
-        
+
         return True, None
 
 
@@ -328,7 +328,7 @@ class SPHINCSPlusSigner:
         
         signer.save_signed_binary(signed_binary, "/path/to/nvcc.signed")
     """
-    
+
     def __init__(self, node_id: str, policy: Optional[SigningPolicy] = None):
         """
         Initialize SPHINCS+ binary signer
@@ -340,7 +340,7 @@ class SPHINCSPlusSigner:
         self.node_id = node_id
         self.policy = policy or SigningPolicy()
         self.operation_counter = 0
-    
+
     def generate_keypair(
         self,
         seed: Optional[bytes] = None,
@@ -367,20 +367,20 @@ class SPHINCSPlusSigner:
         """
         if seed is None:
             seed = secrets.token_bytes(32)
-        
+
         if timestamp is None:
             timestamp = int(time.time())
-        
+
         # TODO: Implement actual SPHINCS+-256f key generation
         # For now, return placeholder with correct sizes
         public_key = hashlib.sha256(seed + b"sphincs_public").digest() * 2
         public_key = public_key[:64]
-        
+
         secret_key = hashlib.sha512(seed + b"sphincs_secret").digest() * 2
         secret_key = secret_key[:128]
-        
+
         self.operation_counter += 1
-        
+
         return SPHINCSPlusKeyPair(
             public_key=public_key,
             secret_key=secret_key,
@@ -388,7 +388,7 @@ class SPHINCSPlusSigner:
             generation_timestamp=timestamp,
             seed=seed
         )
-    
+
     def sign_binary(
         self,
         binary_path: str,
@@ -428,19 +428,19 @@ class SPHINCSPlusSigner:
         binary_path_obj = Path(binary_path)
         if not binary_path_obj.exists():
             raise FileNotFoundError(f"Binary not found: {binary_path}")
-        
+
         with open(binary_path_obj, 'rb') as f:
             binary_content = f.read()
-        
+
         # Compute binary hash
         binary_hash = hashlib.sha512(binary_content).hexdigest()
-        
+
         # Create metadata
         signing_timestamp = int(time.time())
         expiration_timestamp = 0
         if expiration_days > 0:
             expiration_timestamp = signing_timestamp + (expiration_days * 86400)
-        
+
         metadata = BinaryMetadata(
             binary_path=str(binary_path_obj.absolute()),
             binary_size=len(binary_content),
@@ -453,27 +453,27 @@ class SPHINCSPlusSigner:
             build_id=build_id,
             dependencies=dependencies or {}
         )
-        
+
         # Validate metadata against policy
         is_valid, error_msg = self.policy.validate_metadata(metadata)
         if not is_valid:
             raise ValueError(f"Metadata validation failed: {error_msg}")
-        
+
         # Create message to sign (metadata + binary hash)
         message = metadata.to_canonical_bytes()
         message_hash = hashlib.sha512(message).digest()
-        
+
         # Generate SPHINCS+ signature
         signature = self._sign_message(message, secret_key)
-        
+
         # Extract public key from secret key (first 64 bytes)
         public_key = self._derive_public_key(secret_key)
-        
+
         self.operation_counter += 1
-        
+
         # Create signed binary
         binary_content_field = binary_content if signature_format == SignatureFormat.EMBEDDED else None
-        
+
         return SignedBinary(
             binary_content=binary_content_field,
             metadata=metadata,
@@ -481,7 +481,7 @@ class SPHINCSPlusSigner:
             signature_format=signature_format,
             public_key=public_key
         )
-    
+
     def _sign_message(self, message: bytes, secret_key: bytes) -> SPHINCSPlusSignature:
         """
         Sign a message with SPHINCS+-256f
@@ -497,19 +497,19 @@ class SPHINCSPlusSigner:
         """
         if len(secret_key) != 128:
             raise ValueError(f"Secret key must be 128 bytes, got {len(secret_key)}")
-        
+
         message_hash = hashlib.sha512(message).digest()
-        
+
         # TODO: Implement actual SPHINCS+-256f signing
         # For now, return placeholder with correct size
         # Signature size: 49,856 bytes = 779 * 64 bytes
         SPHINCS_SIGNATURE_SIZE = 49856
         SPHINCS_HASH_BLOCK_SIZE = 64
         SIGNATURE_MULTIPLIER = SPHINCS_SIGNATURE_SIZE // SPHINCS_HASH_BLOCK_SIZE  # 779
-        
+
         signature = hashlib.sha512(secret_key + message_hash).digest() * SIGNATURE_MULTIPLIER
         signature = signature[:SPHINCS_SIGNATURE_SIZE]
-        
+
         return SPHINCSPlusSignature(
             signature=signature,
             message_hash=message_hash,
@@ -517,7 +517,7 @@ class SPHINCSPlusSigner:
             timestamp=int(time.time()),
             purpose="binary_signing"
         )
-    
+
     def _derive_public_key(self, secret_key: bytes) -> bytes:
         """
         Derive public key from secret key
@@ -531,7 +531,7 @@ class SPHINCSPlusSigner:
         # TODO: Implement actual public key derivation
         # For now, use hash as placeholder
         return hashlib.sha256(secret_key).digest() * 2
-    
+
     def save_signed_binary(
         self,
         signed_binary: SignedBinary,
@@ -552,7 +552,7 @@ class SPHINCSPlusSigner:
             - MANIFEST: Creates .manifest file with all signatures
         """
         output_path_obj = Path(output_path)
-        
+
         if signed_binary.signature_format == SignatureFormat.DETACHED:
             # Save signature in separate .sig file
             sig_path = output_path_obj.with_suffix('.sig')
@@ -563,12 +563,12 @@ class SPHINCSPlusSigner:
                 f.write(signed_binary.metadata.to_canonical_bytes())
                 f.write(b'\n---PUBLIC_KEY---\n')
                 f.write(signed_binary.public_key)
-        
+
         elif signed_binary.signature_format == SignatureFormat.EMBEDDED:
             # Append signature to binary content
             if signed_binary.binary_content is None:
                 raise ValueError("Binary content required for embedded signature")
-            
+
             with open(output_path_obj, 'wb') as f:
                 f.write(signed_binary.binary_content)
                 f.write(b'\n---SIGNATURE---\n')
@@ -577,7 +577,7 @@ class SPHINCSPlusSigner:
                 f.write(signed_binary.metadata.to_canonical_bytes())
                 f.write(b'\n---PUBLIC_KEY---\n')
                 f.write(signed_binary.public_key)
-        
+
         elif signed_binary.signature_format == SignatureFormat.MANIFEST:
             # Save to manifest file
             manifest_path = output_path_obj.with_suffix('.manifest')
@@ -609,7 +609,7 @@ class BinarySigner:
         # Verify toolchain
         status = signer.verify_toolchain("/usr/bin/nvcc")
     """
-    
+
     def __init__(
         self,
         node_id: str,
@@ -628,7 +628,7 @@ class BinarySigner:
         self.signer = SPHINCSPlusSigner(node_id, policy)
         self.keypair = keypair or self.signer.generate_keypair()
         self.signed_binaries: Dict[str, SignedBinary] = {}
-    
+
     def sign_toolchain(
         self,
         binaries: List[str],
@@ -649,7 +649,7 @@ class BinarySigner:
             Dictionary mapping binary path to SignedBinary
         """
         signed_binaries = {}
-        
+
         for binary_path in binaries:
             # Determine signature type from binary name
             binary_name = Path(binary_path).name.lower()
@@ -659,7 +659,7 @@ class BinarySigner:
                 sig_type = SignatureType.CUDA_KERNEL
             else:
                 sig_type = SignatureType.LIBRARY
-            
+
             signed = self.signer.sign_binary(
                 binary_path=binary_path,
                 secret_key=self.keypair.secret_key,
@@ -668,15 +668,15 @@ class BinarySigner:
                 build_id=build_id,
                 expiration_days=expiration_days
             )
-            
+
             signed_binaries[binary_path] = signed
             self.signed_binaries[binary_path] = signed
-            
+
             # Save signature
             self.signer.save_signed_binary(signed, binary_path)
-        
+
         return signed_binaries
-    
+
     def verify_binary(
         self,
         binary_path: str,
@@ -696,23 +696,23 @@ class BinarySigner:
         """
         # TODO: Implement actual SPHINCS+ verification
         # For now, return placeholder
-        
+
         try:
             binary_path_obj = Path(binary_path)
             if not binary_path_obj.exists():
                 return VerificationStatus.CORRUPTED, "Binary file not found"
-            
+
             # Check if signature file exists
             sig_path = binary_path_obj.with_suffix('.sig')
             if not sig_path.exists():
                 return VerificationStatus.UNKNOWN_SIGNER, "No signature file found"
-            
+
             # Placeholder verification
             return VerificationStatus.VALID, None
-        
+
         except Exception as e:
             return VerificationStatus.INVALID, str(e)
-    
+
     def get_signing_statistics(self) -> Dict[str, int]:
         """
         Get statistics about signed binaries
@@ -725,7 +725,7 @@ class BinarySigner:
             sb.get_size_breakdown()["total_overhead_bytes"]
             for sb in self.signed_binaries.values()
         )
-        
+
         return {
             "total_binaries_signed": total_binaries,
             "total_overhead_bytes": total_overhead_bytes,

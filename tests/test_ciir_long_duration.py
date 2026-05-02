@@ -6,16 +6,13 @@ import json
 import os
 import tempfile
 
-from quasim.ciir.long_duration_runner import (
-    LongRunConfig,
-    LongRunResult,
-    StepRecord,
-    _detect_anomaly,
-    _recover_engine,
-    generate_long_run_plots,
-    run_long_duration,
-)
-from quasim.ciir.simulation.engine import CIIRSimulationEngine, SimulationConfig
+from quasim.ciir.long_duration_runner import (LongRunConfig, LongRunResult,
+                                              StepRecord, _detect_anomaly,
+                                              _recover_engine,
+                                              generate_long_run_plots,
+                                              run_long_duration)
+from quasim.ciir.simulation.engine import (CIIRSimulationEngine,
+                                           SimulationConfig)
 
 # ================================================================
 # StepRecord

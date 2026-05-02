@@ -11,12 +11,8 @@ Capabilities:
 
 from typing import Any, Dict
 
-from qratum_platform.core import (
-    ComputeSubstrate,
-    PlatformContract,
-    SafetyViolation,
-    VerticalModuleBase,
-)
+from qratum_platform.core import (ComputeSubstrate, PlatformContract,
+                                  SafetyViolation, VerticalModuleBase)
 
 
 class NEXUSModule(VerticalModuleBase):

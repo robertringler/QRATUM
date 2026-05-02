@@ -9,10 +9,9 @@ Publication-quality, 300 DPI.
 """
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-from matplotlib.patches import FancyBboxPatch, FancyArrowPatch, Arc
 import numpy as np
 
 # ── Colours ──

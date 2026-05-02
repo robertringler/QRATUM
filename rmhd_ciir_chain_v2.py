@@ -26,12 +26,12 @@ Options:
     --out-tex     Output LaTeX path (default: whitepaper_v2.tex)
 """
 
-import json
+import argparse
 import asyncio
+import json
 import os
 import re
 import sys
-import argparse
 from concurrent.futures import ThreadPoolExecutor
 
 try:
@@ -321,24 +321,24 @@ FALSIFIABILITY:
 # AGENT 0 -- ORCHESTRATOR
 # =============================================================================
 
-AGENT_0_SYSTEM = f"""You are the lead architect for a rigorous mathematical physics whitepaper.
+AGENT_0_SYSTEM = """You are the lead architect for a rigorous mathematical physics whitepaper.
 Role: DECOMPOSITION ONLY. Do not write prose sections.
 
 Output valid JSON only. Schema:
-{{
+{
   "title": "string",
   "sections": [
-    {{
+    {
       "number": int,
       "title": "string",
       "agent": "Agent N",
       "core_objects": ["..."],
       "key_results": ["theorem/proposition names"],
       "depends_on_sections": [int]
-    }}
+    }
   ],
   "open_problems": ["..."]
-}}
+}
 
 The notation registry is injected separately. Do not redefine symbols."""
 
@@ -775,8 +775,8 @@ SECTION 6: "Projected Constrained Dynamics and Time Integration"
 Central boxed result:
 
 \\begin{{equation}}\\boxed{{
-  x_{{k+1}} = \Pi_{{\mathcal{{C}}}}\!\left(\Phi_{{\Delta t}}(x_k,\, u_k)\right),
-  \quad u_k = \pi(h(x_k),\, \mathcal{{C}})
+  x_{{k+1}} = \\Pi_{{\\mathcal{{C}}}}\\!\\left(\\Phi_{{\\Delta t}}(x_k,\\, u_k)\right),
+  \\quad u_k = \\pi(h(x_k),\\, \\mathcal{{C}})
 }}\\end{{equation}}
 
 Name: the CIIR Projected RMHD System (CPRS).

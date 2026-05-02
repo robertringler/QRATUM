@@ -32,11 +32,11 @@ The generated PTX/SASS must be identical across:
 - Different compiler invocations
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set, Tuple
+import hashlib
+from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-import hashlib
+from typing import Dict, List, Optional, Tuple
 
 
 class PTXVersion(Enum):
@@ -95,13 +95,13 @@ class PTXGenerationConfig:
     max_registers: int = 255
     deterministic_ptx: bool = True
     inline_threshold: int = 100  # Fixed, not adaptive
-    
+
     # Additional determinism flags
     disable_loop_unrolling: bool = False
     disable_constant_folding: bool = False
     disable_dead_code_elimination: bool = False
     preserve_unreachable: bool = True
-    
+
     def to_nvcc_flags(self) -> List[str]:
         """
         Convert configuration to NVCC command-line flags
@@ -110,32 +110,32 @@ class PTXGenerationConfig:
             List of NVCC flags for PTX generation
         """
         flags = [
-            f"--ptx",
+            "--ptx",
             f"-ptx-version={self.ptx_version.value}",
             f"--maxrregcount={self.max_registers}",
         ]
-        
+
         # Critical: Disable FMA for determinism
         if not self.fma_enabled:
             flags.append("--fmad=false")
-        
+
         if not self.fast_math:
             flags.append("--use_fast_math=false")
-        
+
         if self.flush_to_zero:
             flags.append("--ftz=true")
         else:
             flags.append("--ftz=false")
-        
+
         if self.deterministic_ptx:
             flags.extend([
                 "-D__CUDA_NO_HALF_OPERATORS__",  # Reduce variation
                 "-D__CUDA_NO_HALF_CONVERSIONS__",
                 "--def-load-cache=ca",  # Fixed cache policy
             ])
-        
+
         return flags
-    
+
     def validate_determinism(self) -> bool:
         """
         Validate that configuration ensures deterministic PTX
@@ -146,15 +146,15 @@ class PTXGenerationConfig:
         # FMA must be disabled
         if self.fma_enabled:
             return False
-        
+
         # Fast math breaks determinism
         if self.fast_math:
             return False
-        
+
         # Must use deterministic scheduling
         if self.instruction_scheduling == InstructionScheduling.AGGRESSIVE:
             return False
-        
+
         return True
 
 
@@ -181,7 +181,7 @@ class SASSGenerationConfig:
     disable_code_motion: bool = True
     disable_prefetch: bool = True
     fixed_barrier_sync: bool = True
-    
+
     def to_ptxas_flags(self) -> List[str]:
         """
         Convert configuration to ptxas command-line flags
@@ -192,18 +192,18 @@ class SASSGenerationConfig:
         flags = [
             f"--gpu-name={self.architecture.value}",
         ]
-        
+
         if self.deterministic_sass:
             flags.extend([
                 "--no-optimize-bindings",  # Prevent reordering
                 "--disable-optimizer-constants",  # Fixed constants
             ])
-        
+
         if self.disable_code_motion:
             flags.append("--def-load-cache=ca")  # Fixed memory access
-        
+
         return flags
-    
+
     def validate_determinism(self) -> bool:
         """
         Validate that configuration ensures deterministic SASS
@@ -214,11 +214,11 @@ class SASSGenerationConfig:
         # Adaptive register allocation is non-deterministic
         if self.register_allocation == RegisterAllocationStrategy.ADAPTIVE:
             return False
-        
+
         # Aggressive scheduling can reorder
         if self.instruction_scheduling == InstructionScheduling.AGGRESSIVE:
             return False
-        
+
         return True
 
 
@@ -243,7 +243,7 @@ class PTXArtifact:
     hash: str = ""
     size_bytes: int = 0
     instruction_count: int = 0
-    
+
     def compute_hash(self) -> str:
         """
         Compute SHA-256 hash of PTX file
@@ -252,22 +252,22 @@ class PTXArtifact:
             Hex-encoded SHA-256 hash
         """
         hasher = hashlib.sha256()
-        
+
         with open(self.path, "rb") as f:
             content = f.read()
             hasher.update(content)
-            
+
             # Count instructions (lines starting with '\t')
             self.instruction_count = sum(
                 1 for line in content.decode('utf-8').split('\n')
                 if line.strip().startswith('\t')
             )
-        
+
         self.hash = hasher.hexdigest()
         self.size_bytes = self.path.stat().st_size
-        
+
         return self.hash
-    
+
     def verify_determinism(self, reference: 'PTXArtifact') -> bool:
         """
         Verify PTX is identical to reference
@@ -280,10 +280,10 @@ class PTXArtifact:
         """
         if not self.hash:
             self.compute_hash()
-        
+
         if not reference.hash:
             reference.compute_hash()
-        
+
         return (
             self.hash == reference.hash and
             self.size_bytes == reference.size_bytes and
@@ -312,7 +312,7 @@ class SASSArtifact:
     hash: str = ""
     size_bytes: int = 0
     instruction_count: int = 0
-    
+
     def compute_hash(self) -> str:
         """
         Compute SHA-256 hash of SASS file
@@ -321,16 +321,16 @@ class SASSArtifact:
             Hex-encoded SHA-256 hash
         """
         hasher = hashlib.sha256()
-        
+
         with open(self.path, "rb") as f:
             content = f.read()
             hasher.update(content)
-        
+
         self.hash = hasher.hexdigest()
         self.size_bytes = self.path.stat().st_size
-        
+
         return self.hash
-    
+
     def verify_determinism(self, reference: 'SASSArtifact') -> bool:
         """
         Verify SASS is identical to reference
@@ -343,10 +343,10 @@ class SASSArtifact:
         """
         if not self.hash:
             self.compute_hash()
-        
+
         if not reference.hash:
             reference.compute_hash()
-        
+
         return (
             self.hash == reference.hash and
             self.size_bytes == reference.size_bytes
@@ -360,7 +360,7 @@ class DeterministicPTXGenerator:
     Generates reproducible PTX code from CUDA sources with guaranteed
     bit-identical output across all nodes and compilation runs.
     """
-    
+
     def __init__(self, config: Optional[PTXGenerationConfig] = None):
         """
         Initialize PTX generator
@@ -369,10 +369,10 @@ class DeterministicPTXGenerator:
             config: PTX generation configuration
         """
         self.config = config or PTXGenerationConfig()
-        
+
         if not self.config.validate_determinism():
             raise ValueError("PTX configuration is not deterministic")
-    
+
     def generate_ptx(
         self,
         source_files: List[Path],
@@ -398,29 +398,29 @@ class DeterministicPTXGenerator:
             PTX artifact with verification hash
         """
         # Stub: In real implementation, would invoke nvcc
-        
+
         # Build command
         cmd = ["nvcc"] + self.config.to_nvcc_flags()
-        
+
         if include_dirs:
             for inc_dir in include_dirs:
                 cmd.extend(["-I", str(inc_dir)])
-        
+
         cmd.extend(["-o", str(output_path)])
         cmd.extend([str(f) for f in source_files])
-        
+
         # Execute compilation (stubbed)
         # subprocess.run(cmd, env=deterministic_env, check=True)
-        
+
         artifact = PTXArtifact(
             path=output_path,
             ptx_version=self.config.ptx_version,
             source_files=source_files,
             config=self.config,
         )
-        
+
         return artifact
-    
+
     def verify_ptx_determinism(
         self,
         artifacts: List[PTXArtifact],
@@ -436,18 +436,18 @@ class DeterministicPTXGenerator:
         """
         if len(artifacts) < 2:
             return True, None
-        
+
         reference = artifacts[0]
         reference.compute_hash()
-        
+
         for i, artifact in enumerate(artifacts[1:], 1):
             artifact.compute_hash()
-            
+
             if not artifact.verify_determinism(reference):
                 return False, f"PTX mismatch: node {i} differs from reference"
-        
+
         return True, None
-    
+
     def analyze_ptx_instructions(self, ptx_file: Path) -> Dict[str, int]:
         """
         Analyze PTX instructions for non-determinism indicators
@@ -464,22 +464,22 @@ class DeterministicPTXGenerator:
             Dictionary of instruction counts by type
         """
         instruction_counts = {}
-        
-        with open(ptx_file, 'r') as f:
+
+        with open(ptx_file) as f:
             for line in f:
                 line = line.strip()
-                
+
                 # Count FMA instructions (should be zero)
                 if 'fma.' in line:
                     instruction_counts['fma'] = instruction_counts.get('fma', 0) + 1
-                
+
                 # Count other relevant instructions
                 if 'mad.' in line:
                     instruction_counts['mad'] = instruction_counts.get('mad', 0) + 1
-                
+
                 if 'bra.' in line:
                     instruction_counts['branch'] = instruction_counts.get('branch', 0) + 1
-        
+
         return instruction_counts
 
 
@@ -490,7 +490,7 @@ class DeterministicSASSGenerator:
     Generates reproducible GPU machine code from PTX with guaranteed
     bit-identical output.
     """
-    
+
     def __init__(self, config: Optional[SASSGenerationConfig] = None):
         """
         Initialize SASS generator
@@ -499,10 +499,10 @@ class DeterministicSASSGenerator:
             config: SASS generation configuration
         """
         self.config = config or SASSGenerationConfig()
-        
+
         if not self.config.validate_determinism():
             raise ValueError("SASS configuration is not deterministic")
-    
+
     def generate_sass(
         self,
         ptx_file: Path,
@@ -526,23 +526,23 @@ class DeterministicSASSGenerator:
             SASS artifact with verification hash
         """
         # Stub: In real implementation, would invoke ptxas
-        
+
         # Build command
         cmd = ["ptxas"] + self.config.to_ptxas_flags()
         cmd.extend(["-o", str(output_path), str(ptx_file)])
-        
+
         # Execute assembly (stubbed)
         # subprocess.run(cmd, env=deterministic_env, check=True)
-        
+
         artifact = SASSArtifact(
             path=output_path,
             architecture=self.config.architecture,
             ptx_source=ptx_file,
             config=self.config,
         )
-        
+
         return artifact
-    
+
     def verify_sass_determinism(
         self,
         artifacts: List[SASSArtifact],
@@ -558,18 +558,18 @@ class DeterministicSASSGenerator:
         """
         if len(artifacts) < 2:
             return True, None
-        
+
         reference = artifacts[0]
         reference.compute_hash()
-        
+
         for i, artifact in enumerate(artifacts[1:], 1):
             artifact.compute_hash()
-            
+
             if not artifact.verify_determinism(reference):
                 return False, f"SASS mismatch: node {i} differs from reference"
-        
+
         return True, None
-    
+
     def disassemble_sass(self, sass_file: Path) -> str:
         """
         Disassemble SASS for inspection
@@ -583,9 +583,9 @@ class DeterministicSASSGenerator:
             Disassembled SASS code as string
         """
         # Stub: In real implementation, would use cuobjdump or nvdisasm
-        
+
         # Command: nvdisasm -c sass_file
-        
+
         return "// SASS disassembly (stub)"
 
 
@@ -602,7 +602,7 @@ def get_default_ptx_generator() -> DeterministicPTXGenerator:
         fast_math=False,
         instruction_scheduling=InstructionScheduling.DETERMINISTIC,
     )
-    
+
     return DeterministicPTXGenerator(config)
 
 
@@ -618,5 +618,5 @@ def get_default_sass_generator() -> DeterministicSASSGenerator:
         register_allocation=RegisterAllocationStrategy.LINEAR,
         instruction_scheduling=InstructionScheduling.DETERMINISTIC,
     )
-    
+
     return DeterministicSASSGenerator(config)

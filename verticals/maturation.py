@@ -19,10 +19,7 @@ from enum import Enum
 from typing import Any, Callable
 
 from contracts.base import compute_contract_hash, get_current_timestamp
-from contracts.provenance import (
-    ProvenanceChainBuilder,
-    ProvenanceType,
-)
+from contracts.provenance import ProvenanceChainBuilder, ProvenanceType
 
 
 class PipelineStatus(Enum):

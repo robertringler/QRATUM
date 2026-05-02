@@ -9,28 +9,15 @@ import pytest
 
 from qagents.mvri.action_space import EPSILON, Action
 from qagents.mvri.state import Inv, State, make_state
-from qagents.realworld_bridge import (
-    ActionResult,
-    ControlLoop,
-    ExternalActuatorAdapter,
-    LoopTrace,
-    MockActuator,
-    MockSensor,
-    Observation,
-    ObserverStateInvalid,
-    RealSensorAdapter,
-    SafetyConfig,
-    Sensor,
-    SensorExhausted,
-    SensorReadError,
-    StateObserver,
-    check_mag,
-    check_roc,
-    check_tgt,
-    drift_magnitude,
-    sync_model,
-    validate_action,
-)
+from qagents.realworld_bridge import (ActionResult, ControlLoop,
+                                      ExternalActuatorAdapter, LoopTrace,
+                                      MockActuator, MockSensor, Observation,
+                                      ObserverStateInvalid, RealSensorAdapter,
+                                      SafetyConfig, Sensor, SensorExhausted,
+                                      SensorReadError, StateObserver,
+                                      check_mag, check_roc, check_tgt,
+                                      drift_magnitude, sync_model,
+                                      validate_action)
 
 # --------------------------------------------------------------------------- #
 # Fixtures

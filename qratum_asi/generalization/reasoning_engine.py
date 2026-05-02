@@ -25,17 +25,12 @@ from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.contracts import ASIContract
 from qratum_asi.core.events import ASIEvent, ASIEventType
 from qratum_asi.core.types import ReasoningStrategy
-from qratum_asi.generalization.domain_registry import (
-    ExtendedDomainRegistry,
-)
-from qratum_asi.generalization.types import (
-    PROHIBITED_SYNTHESIS_TARGETS,
-    CognitiveDomain,
-    CrossDomainHypothesis,
-    HypothesisType,
-    SynthesisResult,
-    SynthesisSafetyLevel,
-)
+from qratum_asi.generalization.domain_registry import ExtendedDomainRegistry
+from qratum_asi.generalization.types import (PROHIBITED_SYNTHESIS_TARGETS,
+                                             CognitiveDomain,
+                                             CrossDomainHypothesis,
+                                             HypothesisType, SynthesisResult,
+                                             SynthesisSafetyLevel)
 
 
 class ReasoningMode(Enum):

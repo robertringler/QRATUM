@@ -25,7 +25,7 @@ def lower_to_python(graph: Graph) -> Callable:
                     values[id(node)] = inputs[0] / inputs[1]
                 else:
                     values[id(node)] = inputs
-        outputs = [values.get(id(out), None) for out in graph.outputs]
+        outputs = [values.get(id(out)) for out in graph.outputs]
         return outputs[0] if len(outputs) == 1 else outputs
 
     return execute

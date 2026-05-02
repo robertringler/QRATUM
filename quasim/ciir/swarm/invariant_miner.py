@@ -12,11 +12,8 @@ from typing import Callable
 import numpy as np
 from numpy.typing import NDArray
 
-from quasim.ciir.swarm.memory import (
-    KnowledgeGraph, NodeType, EdgeType,
-)
+from quasim.ciir.swarm.memory import KnowledgeGraph, NodeType
 from quasim.ciir.swarm.simulator import SimulationResult
-
 
 # ================================================================
 # Invariant types

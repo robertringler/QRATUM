@@ -41,7 +41,6 @@ from typing import Callable
 import numpy as np
 from numpy.typing import NDArray
 
-
 # ====================================================================
 # I. GRAPH STATE SPACE  S = (V, E)
 # ====================================================================
@@ -146,7 +145,7 @@ class MPPKGraph:
         D = np.diag(W.sum(axis=1))
         return D - W
 
-    def copy(self) -> "MPPKGraph":
+    def copy(self) -> MPPKGraph:
         """Deep copy the graph."""
         g = MPPKGraph()
         for n in self.nodes.values():
@@ -414,7 +413,7 @@ def extract_structure(
 
     # --- Limit cycle detection ---
     # Check if trajectory returns close to a previous state
-    if traj.T > cycle_window:
+    if cycle_window < traj.T:
         final = traj.states[-1]
         for i in range(max(0, traj.T - cycle_window), traj.T - 2):
             if np.linalg.norm(final - traj.states[i]) < fp_tol * 10:
@@ -778,7 +777,7 @@ class MetaLearningReport:
 
 
 def meta_learn(
-    generation_results: list["GenerationResult"],
+    generation_results: list[GenerationResult],
     variance_threshold: float = 0.9,
 ) -> MetaLearningReport:
     """After multiple generations, infer emergent laws and embeddings."""

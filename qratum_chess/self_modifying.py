@@ -19,7 +19,8 @@ import numpy as np
 
 from qratum_chess.core import Color, PieceType
 from qratum_chess.core.position import Move, Position
-from qratum_chess.search.aas import AASConfig, AASStats, AsymmetricAdaptiveSearch
+from qratum_chess.search.aas import (AASConfig, AASStats,
+                                     AsymmetricAdaptiveSearch)
 
 
 @dataclass

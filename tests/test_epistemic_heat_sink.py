@@ -11,20 +11,10 @@ import numpy as np
 import pytest
 
 from epistemic_heat_sink import (  # Neurosymbolic; Heat Sink; zkML
-    ConceptBottleneck,
-    EpistemicHeatSink,
-    EpistemicState,
-    ErrorCost,
-    FoldingScheme,
-    IncrementalProofChain,
-    NeurosymbolicReasoner,
-    Plonky3ProofSystem,
-    ReasoningTrace,
-    SymbolicConcept,
-    create_concept_bottleneck,
-    create_heat_sink,
-    create_zkml_prover,
-)
+    ConceptBottleneck, EpistemicHeatSink, EpistemicState, ErrorCost,
+    FoldingScheme, IncrementalProofChain, NeurosymbolicReasoner,
+    Plonky3ProofSystem, ReasoningTrace, SymbolicConcept,
+    create_concept_bottleneck, create_heat_sink, create_zkml_prover)
 from epistemic_heat_sink.heat_sink import EpistemicPhase
 from epistemic_heat_sink.neurosymbolic import ConceptType, ReasoningMode
 from epistemic_heat_sink.zkml import FoldingSchemeType, ProofSystemType

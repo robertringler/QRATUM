@@ -25,7 +25,8 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from automation.logical_benchmark import BenchmarkConfig, benchmark  # type: ignore
+from automation.logical_benchmark import (BenchmarkConfig,  # type: ignore
+                                          benchmark)
 
 
 def parse_sizes(arg: List[str]) -> List[Tuple[int, int]]:

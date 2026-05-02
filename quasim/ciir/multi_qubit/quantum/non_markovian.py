@@ -38,8 +38,8 @@ The module exposes a helper to verify this limit numerically.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import List, Optional
+from dataclasses import dataclass
+from typing import List
 
 import numpy as np
 from numpy.typing import NDArray

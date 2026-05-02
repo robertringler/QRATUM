@@ -4,23 +4,17 @@ import pytest
 
 try:
     from quasim.hybrid_quantum.verification import (
-        QuantumVerifier,
-        TopologicalDiagnosticObserver,
-        VerificationResult,
-        VerificationStatus,
-    )
+        QuantumVerifier, TopologicalDiagnosticObserver, VerificationResult,
+        VerificationStatus)
 
     VERIFICATION_AVAILABLE = True
 except ImportError:
     VERIFICATION_AVAILABLE = False
 
 try:
-    from quasim.hybrid_quantum.rollback import (
-        Checkpoint,
-        CheckpointStatus,
-        DualApprovalGate,
-        RollbackManager,
-    )
+    from quasim.hybrid_quantum.rollback import (Checkpoint, CheckpointStatus,
+                                                DualApprovalGate,
+                                                RollbackManager)
 
     ROLLBACK_AVAILABLE = True
 except ImportError:

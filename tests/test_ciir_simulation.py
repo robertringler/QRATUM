@@ -25,9 +25,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from quasim.ciir.theory import build_default_theory
 from quasim.ciir.loss import CIIRLoss
-
+from quasim.ciir.theory import build_default_theory
 
 # ================================================================
 # Fixtures
@@ -155,7 +154,7 @@ class TestCIIRObserver:
     """Tests for CIIRObserver."""
 
     def test_observe(self, theory, rho_batch):
-        from quasim.ciir.simulation.ciir_module import CIIRState, CIIRObserver
+        from quasim.ciir.simulation.ciir_module import CIIRObserver, CIIRState
 
         state = CIIRState(rho=rho_batch, theory=theory)
         observer = CIIRObserver(theory=theory)
@@ -176,7 +175,7 @@ class TestCIIRObserver:
         np.testing.assert_allclose(comm, comm.T, atol=1e-10)
 
     def test_expectation_values(self, theory, rho_batch):
-        from quasim.ciir.simulation.ciir_module import CIIRState, CIIRObserver
+        from quasim.ciir.simulation.ciir_module import CIIRObserver, CIIRState
 
         state = CIIRState(rho=rho_batch, theory=theory)
         observer = CIIRObserver(theory=theory)
@@ -284,8 +283,8 @@ class TestQRATUMHardware:
     """Tests for QRATUMHardware."""
 
     def test_inject_constraints(self, theory, rho_batch):
-        from quasim.ciir.simulation.qratum_module import QRATUMHardware
         from quasim.ciir.config import CIIRConfig
+        from quasim.ciir.simulation.qratum_module import QRATUMHardware
 
         hw = QRATUMHardware(theory=theory, config=CIIRConfig(seed=42))
         result = hw.inject_constraints(rho_batch)
@@ -295,8 +294,8 @@ class TestQRATUMHardware:
             np.testing.assert_allclose(np.trace(result[b]), 1.0, atol=1e-4)
 
     def test_record_and_summary(self, theory):
-        from quasim.ciir.simulation.qratum_module import QRATUMHardware
         from quasim.ciir.config import CIIRConfig
+        from quasim.ciir.simulation.qratum_module import QRATUMHardware
 
         hw = QRATUMHardware(theory=theory, config=CIIRConfig(seed=42))
         hw.record_step_metrics(0, 1.5, 0.5, np.array([0.1, 0.2]), 0.001)
@@ -310,8 +309,9 @@ class TestPerformanceDashboard:
     """Tests for PerformanceDashboard."""
 
     def test_plot_dashboard(self, theory, tmpdir):
-        from quasim.ciir.simulation.qratum_module import QRATUMHardware, PerformanceDashboard
         from quasim.ciir.config import CIIRConfig
+        from quasim.ciir.simulation.qratum_module import (PerformanceDashboard,
+                                                          QRATUMHardware)
 
         hw = QRATUMHardware(theory=theory, config=CIIRConfig(seed=42))
         for i in range(10):
@@ -335,6 +335,7 @@ class TestExport:
 
     def test_screenshot_capture(self, tmpdir):
         import matplotlib.pyplot as plt
+
         from quasim.ciir.simulation.export import ScreenshotCapture
 
         cap = ScreenshotCapture(os.path.join(tmpdir, "screenshots"))
@@ -381,7 +382,8 @@ class TestMetricsDashboard:
     """Tests for MetricsDashboard."""
 
     def test_record_and_converge(self):
-        from quasim.ciir.simulation.dashboard import MetricsDashboard, MetricsSnapshot
+        from quasim.ciir.simulation.dashboard import (MetricsDashboard,
+                                                      MetricsSnapshot)
 
         db = MetricsDashboard()
         for i in range(20):
@@ -390,7 +392,8 @@ class TestMetricsDashboard:
         assert db.is_converged(tol=0.01)
 
     def test_not_converged(self):
-        from quasim.ciir.simulation.dashboard import MetricsDashboard, MetricsSnapshot
+        from quasim.ciir.simulation.dashboard import (MetricsDashboard,
+                                                      MetricsSnapshot)
 
         db = MetricsDashboard()
         for i in range(20):
@@ -398,7 +401,8 @@ class TestMetricsDashboard:
         assert not db.is_converged(tol=0.01)
 
     def test_plot(self, tmpdir):
-        from quasim.ciir.simulation.dashboard import MetricsDashboard, MetricsSnapshot
+        from quasim.ciir.simulation.dashboard import (MetricsDashboard,
+                                                      MetricsSnapshot)
 
         db = MetricsDashboard()
         for i in range(30):
@@ -431,10 +435,8 @@ class TestInteractiveController:
         assert ctrl.constraint_weights[1] == 2.0
 
     def test_preset(self):
-        from quasim.ciir.simulation.interactive import (
-            InteractiveController,
-            ParameterPreset,
-        )
+        from quasim.ciir.simulation.interactive import (InteractiveController,
+                                                        ParameterPreset)
 
         ctrl = InteractiveController(n_constraints=3, n_observers=2)
         preset = ParameterPreset(name="fast", learning_rate=0.1, entropy_weight=0.001)
@@ -462,10 +464,8 @@ class TestSimulationEngine:
     """Integration tests for CIIRSimulationEngine."""
 
     def test_run_and_capture(self, tmpdir):
-        from quasim.ciir.simulation.engine import (
-            SimulationConfig,
-            run_and_capture_simulation,
-        )
+        from quasim.ciir.simulation.engine import (SimulationConfig,
+                                                   run_and_capture_simulation)
 
         engine = run_and_capture_simulation(
             config=SimulationConfig(
@@ -493,10 +493,8 @@ class TestSimulationEngine:
         assert len(screenshots) == 2  # steps 5 and 10
 
     def test_step_by_step(self):
-        from quasim.ciir.simulation.engine import (
-            CIIRSimulationEngine,
-            SimulationConfig,
-        )
+        from quasim.ciir.simulation.engine import (CIIRSimulationEngine,
+                                                   SimulationConfig)
 
         cfg = SimulationConfig(
             rep_dim=4, batch_size=2, n_constraints=2, n_observers=1,
@@ -514,7 +512,8 @@ class TestSimulationEngine:
         engine.shutdown()
 
     def test_convergence_check(self):
-        from quasim.ciir.simulation.dashboard import MetricsDashboard, MetricsSnapshot
+        from quasim.ciir.simulation.dashboard import (MetricsDashboard,
+                                                      MetricsSnapshot)
 
         db = MetricsDashboard()
         # Feed identical losses → should converge
@@ -524,10 +523,8 @@ class TestSimulationEngine:
 
     def test_loss_decreases(self, tmpdir):
         """Verify loss generally decreases over evolution."""
-        from quasim.ciir.simulation.engine import (
-            SimulationConfig,
-            run_and_capture_simulation,
-        )
+        from quasim.ciir.simulation.engine import (SimulationConfig,
+                                                   run_and_capture_simulation)
 
         engine = run_and_capture_simulation(
             config=SimulationConfig(

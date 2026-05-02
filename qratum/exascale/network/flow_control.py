@@ -22,10 +22,10 @@ Performance Targets:
 - Deterministic latency under load
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
-from enum import Enum
 from collections import deque
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Dict, Optional, Tuple
 
 
 class FlowState(Enum):
@@ -72,13 +72,13 @@ class CreditCounter:
     reserved_credits: int = 0
     min_threshold: int = 0
     credit_type: CreditType = CreditType.PACKET_BASED
-    
+
     def __post_init__(self):
         """Initialize counter"""
         if self.min_threshold == 0:
             # Default to 25% of max
             self.min_threshold = self.max_credits // 4
-    
+
     def has_credits(self, required: int) -> bool:
         """
         Check if sufficient credits available
@@ -91,7 +91,7 @@ class CreditCounter:
         """
         available = self.current_credits - self.reserved_credits
         return available >= required
-    
+
     def allocate_credits(self, amount: int) -> bool:
         """
         Allocate credits for packet transmission
@@ -104,11 +104,11 @@ class CreditCounter:
         """
         if not self.has_credits(amount):
             return False
-        
+
         self.current_credits -= amount
         self.reserved_credits += amount
         return True
-    
+
     def return_credits(self, amount: int) -> None:
         """
         Return credits after packet transmission complete
@@ -118,7 +118,7 @@ class CreditCounter:
         """
         self.reserved_credits -= amount
         # Credits are returned by receiver via credit update
-    
+
     def receive_credit_update(self, amount: int) -> None:
         """
         Receive credit update from receiver
@@ -130,7 +130,7 @@ class CreditCounter:
             self.current_credits + amount,
             self.max_credits
         )
-    
+
     def get_state(self) -> FlowState:
         """
         Get current flow state based on credits
@@ -139,14 +139,14 @@ class CreditCounter:
             Current flow state
         """
         available = self.current_credits - self.reserved_credits
-        
+
         if available <= 0:
             return FlowState.BLOCKED
         elif available < self.min_threshold:
             return FlowState.THROTTLED
         else:
             return FlowState.OPEN
-    
+
     def get_utilization(self) -> float:
         """
         Get buffer utilization percentage
@@ -182,7 +182,7 @@ class FlowControlBuffer:
     total_bytes: int = 0
     credit_counter: Optional[CreditCounter] = None
     priority_queues: Dict[PriorityClass, deque] = field(default_factory=dict)
-    
+
     def __post_init__(self):
         """Initialize buffer"""
         if self.credit_counter is None:
@@ -191,11 +191,11 @@ class FlowControlBuffer:
                 current_credits=self.capacity_packets,
                 credit_type=CreditType.PACKET_BASED,
             )
-        
+
         # Initialize priority queues
         for priority in PriorityClass:
             self.priority_queues[priority] = deque()
-    
+
     def can_enqueue(self, packet_size: int) -> bool:
         """
         Check if packet can be enqueued
@@ -209,7 +209,7 @@ class FlowControlBuffer:
         packets_ok = len(self.packets) < self.capacity_packets
         bytes_ok = self.total_bytes + packet_size <= self.capacity_bytes
         return packets_ok and bytes_ok
-    
+
     def enqueue(self, packet: any, priority: PriorityClass = PriorityClass.MEDIUM) -> bool:
         """
         Enqueue packet with priority
@@ -222,16 +222,16 @@ class FlowControlBuffer:
             True if enqueued successfully
         """
         packet_size = getattr(packet, 'size_bytes', lambda: 1500)()
-        
+
         if not self.can_enqueue(packet_size):
             return False
-        
+
         self.packets.append((packet, priority))
         self.priority_queues[priority].append(packet)
         self.total_bytes += packet_size
-        
+
         return True
-    
+
     def dequeue(self) -> Optional[Tuple[any, PriorityClass]]:
         """
         Dequeue highest priority packet
@@ -243,23 +243,23 @@ class FlowControlBuffer:
         for priority in sorted(PriorityClass, key=lambda p: p.value):
             if self.priority_queues[priority]:
                 packet = self.priority_queues[priority].popleft()
-                
+
                 # Remove from main queue
                 self.packets = deque(
                     (p, pr) for p, pr in self.packets if p != packet
                 )
-                
+
                 # Update byte count
                 packet_size = getattr(packet, 'size_bytes', lambda: 1500)()
                 self.total_bytes -= packet_size
-                
+
                 # Return credits
                 self.credit_counter.receive_credit_update(1)
-                
+
                 return (packet, priority)
-        
+
         return None
-    
+
     def get_occupancy(self) -> Dict[str, any]:
         """Return buffer occupancy statistics"""
         return {
@@ -304,7 +304,7 @@ class FlowControlLink:
     credits_received: int = 0
     packets_blocked: int = 0
     packets_transmitted: int = 0
-    
+
     def __post_init__(self):
         """Initialize link buffers"""
         if self.send_buffer is None:
@@ -313,14 +313,14 @@ class FlowControlLink:
                 capacity_packets=1024,
                 capacity_bytes=16 * 1024 * 1024,  # 16 MB
             )
-        
+
         if self.recv_buffer is None:
             self.recv_buffer = FlowControlBuffer(
                 buffer_id=f"{self.link_id}_recv",
                 capacity_packets=1024,
                 capacity_bytes=16 * 1024 * 1024,  # 16 MB
             )
-    
+
     def can_send(self, packet_size: int = 1) -> bool:
         """
         Check if packet can be sent (credits available)
@@ -332,7 +332,7 @@ class FlowControlLink:
             True if can send
         """
         return self.send_buffer.credit_counter.has_credits(packet_size)
-    
+
     def send_packet(
         self,
         packet: any,
@@ -352,20 +352,20 @@ class FlowControlLink:
         if not self.can_send(1):
             self.packets_blocked += 1
             return False
-        
+
         # Allocate credits
         if not self.send_buffer.credit_counter.allocate_credits(1):
             self.packets_blocked += 1
             return False
-        
+
         # Transmit packet (simulated)
         self.packets_transmitted += 1
-        
+
         # Return reserved credits after transmission
         self.send_buffer.credit_counter.return_credits(1)
-        
+
         return True
-    
+
     def receive_packet(self, packet: any) -> bool:
         """
         Receive packet and enqueue to buffer
@@ -377,7 +377,7 @@ class FlowControlLink:
             True if received successfully
         """
         return self.recv_buffer.enqueue(packet)
-    
+
     def send_credit_update(self, credits: int) -> None:
         """
         Send credit update to sender
@@ -387,7 +387,7 @@ class FlowControlLink:
         """
         self.credits_sent += credits
         # In hardware, this triggers credit update packet
-    
+
     def receive_credit_update(self, credits: int) -> None:
         """
         Receive credit update from receiver
@@ -397,11 +397,11 @@ class FlowControlLink:
         """
         self.credits_received += credits
         self.send_buffer.credit_counter.receive_credit_update(credits)
-    
+
     def get_flow_state(self) -> FlowState:
         """Get current flow state"""
         return self.send_buffer.credit_counter.get_state()
-    
+
     def get_statistics(self) -> Dict[str, any]:
         """Return link flow control statistics"""
         return {
@@ -448,7 +448,7 @@ class FlowControlManager:
     credit_update_interval: int = 100  # nanoseconds
     enable_priority_qos: bool = True
     hardware_acceleration: bool = True
-    
+
     def add_link(self, link: FlowControlLink) -> None:
         """
         Add link to flow control management
@@ -457,7 +457,7 @@ class FlowControlManager:
             link: Link to manage
         """
         self.links[link.link_id] = link
-    
+
     def send_packet(
         self,
         link_id: str,
@@ -478,16 +478,16 @@ class FlowControlManager:
         link = self.links.get(link_id)
         if not link:
             return False
-        
+
         success = link.send_packet(packet, priority)
-        
+
         if success:
             self.total_packets_sent += 1
         else:
             self.total_packets_blocked += 1
-        
+
         return success
-    
+
     def update_credits(self) -> None:
         """
         Periodic credit update (hardware-triggered)
@@ -499,15 +499,15 @@ class FlowControlManager:
             # Calculate credits to return based on free buffer space
             recv_buffer = link.recv_buffer
             available_packets = recv_buffer.capacity_packets - len(recv_buffer.packets)
-            
+
             if available_packets > 0:
                 # Send credit update
                 link.send_credit_update(available_packets)
-                
+
                 # Simulate credit reception on remote sender
                 # In hardware, this is done via credit update packets
                 link.receive_credit_update(available_packets)
-    
+
     def check_deadlock_freedom(self) -> bool:
         """
         Verify deadlock-free operation
@@ -519,7 +519,7 @@ class FlowControlManager:
         """
         # Simplified check: ensure all links have some available credits
         # Full implementation uses graph analysis
-        
+
         for link in self.links.values():
             if link.get_flow_state() == FlowState.BLOCKED:
                 # Check if globally blocked
@@ -529,14 +529,14 @@ class FlowControlManager:
                 )
                 if all_blocked:
                     return False
-        
+
         return True
-    
+
     def get_global_statistics(self) -> Dict[str, any]:
         """Return global flow control statistics"""
         total_blocked = sum(link.packets_blocked for link in self.links.values())
         total_transmitted = sum(link.packets_transmitted for link in self.links.values())
-        
+
         # Calculate flow states
         flow_states = {}
         for state in FlowState:
@@ -544,7 +544,7 @@ class FlowControlManager:
                 1 for link in self.links.values()
                 if link.get_flow_state() == state
             )
-        
+
         return {
             "total_links": len(self.links),
             "total_packets_sent": total_transmitted,
@@ -556,7 +556,7 @@ class FlowControlManager:
             "hardware_acceleration": self.hardware_acceleration,
             "priority_qos_enabled": self.enable_priority_qos,
         }
-    
+
     def validate_determinism(self) -> bool:
         """
         Validate deterministic flow control
@@ -573,16 +573,16 @@ class FlowControlManager:
             # Check send buffer
             if link.send_buffer.capacity_packets <= 0:
                 return False
-            
+
             # Check recv buffer
             if link.recv_buffer.capacity_packets <= 0:
                 return False
-            
+
             # Verify credit counter integrity
             counter = link.send_buffer.credit_counter
             if counter.current_credits > counter.max_credits:
                 return False
-        
+
         return True
 
 
@@ -611,13 +611,13 @@ def create_flow_control_link(
         capacity_packets=buffer_size_packets,
         capacity_bytes=buffer_size_packets * 1500,  # Assume 1500 byte packets
     )
-    
+
     recv_buffer = FlowControlBuffer(
         buffer_id=f"{link_id}_recv",
         capacity_packets=buffer_size_packets,
         capacity_bytes=buffer_size_packets * 1500,
     )
-    
+
     return FlowControlLink(
         link_id=link_id,
         source_node=source_node,

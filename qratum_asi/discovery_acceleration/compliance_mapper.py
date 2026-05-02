@@ -24,11 +24,8 @@ from typing import Any
 
 from qradle.merkle import MerkleChain
 from qratum_asi.discovery_acceleration.types import (
-    ComplianceArtifact,
-    ComplianceMapping,
-    ComplianceValidationResult,
-    DiscoveryType,
-)
+    ComplianceArtifact, ComplianceMapping, ComplianceValidationResult,
+    DiscoveryType)
 
 
 class ComplianceMapper:

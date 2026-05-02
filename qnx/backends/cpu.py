@@ -49,9 +49,9 @@ class CPUBackend:
     This is a stub implementation establishing the structural interface.
     Full CPU backend will be implemented in a future PR.
     """
-    
+
     _warned = False
-    
+
     def __init__(self):
         """Initialize CPU backend stub with guidance warning."""
         if not CPUBackend._warned:
@@ -63,7 +63,7 @@ class CPUBackend:
                 stacklevel=2
             )
             CPUBackend._warned = True
-    
+
     @property
     def available(self) -> bool:
         """Check if CPU backend is available.
@@ -72,7 +72,7 @@ class CPUBackend:
             False - use reference implementations instead
         """
         return False
-    
+
     def is_available(self) -> bool:
         """Check if CPU backend is available.
         

@@ -1,14 +1,11 @@
 """Tests for the XENONInterventionSearch module."""
 
-from qratum.oncology.intervention_search import (
-    AdaptiveTherapyPlan,
-    DrugProfile,
-    InterventionNode,
-    InterventionType,
-    TreatmentSequence,
-    XENONInterventionSearch,
-    create_example_drug_library,
-)
+from qratum.oncology.intervention_search import (AdaptiveTherapyPlan,
+                                                 DrugProfile, InterventionNode,
+                                                 InterventionType,
+                                                 TreatmentSequence,
+                                                 XENONInterventionSearch,
+                                                 create_example_drug_library)
 
 
 class TestDrugProfile:

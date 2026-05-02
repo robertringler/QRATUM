@@ -7,8 +7,9 @@ Unified web interface for accessing all QRATUM services
 
 import os
 import time
+
 import requests
-from flask import Flask, render_template_string, jsonify, request
+from flask import Flask, jsonify, render_template_string, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -223,7 +224,7 @@ def check_service_status(url):
         timeout = int(os.getenv('QRATUM_HEALTH_CHECK_TIMEOUT', '10'))
     except (ValueError, TypeError):
         timeout = 10  # Default to 10 seconds if env var is invalid
-    
+
     try:
         response = requests.get(f"{url}/health", timeout=timeout)
         if response.status_code == 200:
@@ -240,7 +241,7 @@ def get_hostname_and_scheme():
     """
     hostname = request.host
     scheme = request.scheme
-    
+
     # Remove port: use rsplit to handle colons in IPv6 addresses
     # For IPv6, format can be [::1]:8080 or [::1] or ::1
     if ':' in hostname:
@@ -253,14 +254,14 @@ def get_hostname_and_scheme():
         else:
             # Regular hostname:port or bare IPv6 (less common in HTTP Host header)
             hostname = hostname.rsplit(':', 1)[0]
-    
+
     return hostname, scheme
 
 @app.route("/")
 def index():
     """Main control plane interface."""
     services_data = {}
-    
+
     hostname, scheme = get_hostname_and_scheme()
 
     for service_id, service_info in SERVICES.items():
@@ -277,7 +278,7 @@ def index():
             "prometheus": "📈",
             "loki": "📝",
         }
-        
+
         # Construct external URL dynamically based on request hostname
         external_url = f"{scheme}://{hostname}:{service_info['port']}"
 
@@ -296,7 +297,7 @@ def index():
 def api_status():
     """API endpoint for service status."""
     status_data = {}
-    
+
     hostname, scheme = get_hostname_and_scheme()
 
     for service_id, service_info in SERVICES.items():

@@ -9,37 +9,25 @@ import pytest
 
 from qagents.mvri.action_space import EPSILON, Action
 from qagents.mvri.state import Inv, State, make_state
-from qagents.realworld_bridge import (
-    ControlLoop,
-    ExternalActuatorAdapter,
-    MockActuator,
-    MockSensor,
-    Observation,
-    SafetyConfig,
-    StateObserver,
-)
-from qagents.trajectory_controller import (
-    ACTION_VECTOR_DIM,
-    Trajectory,
-    TrajectoryInvariantViolationError,
-    action_to_vector,
-    execute_trajectory,
-    plan_trajectory,
-    predict_rollout,
-    run_trajectory_control,
-    trajectory_cost,
-    validate_trajectory,
-    vector_to_action,
-)
-from qagents.trajectory_controller.planner import BEAM_WIDTH, MAX_CANDIDATES_PER_STEP
-from qagents.trajectory_controller.types import (
-    EDGE_ADJUST_CODE,
-    NO_SEED,
-    NODE_SHIFT_CODE,
-    TrajectoryExecutionTrace,
-    TrajectoryPlanResult,
-    TrajectoryStepTrace,
-)
+from qagents.realworld_bridge import (ControlLoop, ExternalActuatorAdapter,
+                                      MockActuator, MockSensor, Observation,
+                                      SafetyConfig, StateObserver)
+from qagents.trajectory_controller import (ACTION_VECTOR_DIM, Trajectory,
+                                           TrajectoryInvariantViolationError,
+                                           action_to_vector,
+                                           execute_trajectory, plan_trajectory,
+                                           predict_rollout,
+                                           run_trajectory_control,
+                                           trajectory_cost,
+                                           validate_trajectory,
+                                           vector_to_action)
+from qagents.trajectory_controller.planner import (BEAM_WIDTH,
+                                                   MAX_CANDIDATES_PER_STEP)
+from qagents.trajectory_controller.types import (EDGE_ADJUST_CODE, NO_SEED,
+                                                 NODE_SHIFT_CODE,
+                                                 TrajectoryExecutionTrace,
+                                                 TrajectoryPlanResult,
+                                                 TrajectoryStepTrace)
 
 NODE_IDS: tuple[str, ...] = ("n1", "n2", "n3")
 EDGE_IDS: tuple[tuple[str, str], ...] = (

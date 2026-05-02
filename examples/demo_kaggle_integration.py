@@ -22,7 +22,8 @@ if __name__ == "__main__":
 
 import time
 
-from qratum_chess.benchmarks.kaggle_config import KaggleConfig, KaggleCredentials
+from qratum_chess.benchmarks.kaggle_config import (KaggleConfig,
+                                                   KaggleCredentials)
 from qratum_chess.benchmarks.kaggle_integration import KaggleIntegration
 from qratum_chess.benchmarks.kaggle_submission import KaggleSubmission
 from qratum_chess.search.aas import AASConfig, AsymmetricAdaptiveSearch
@@ -79,7 +80,8 @@ def main():
         mock_config = KaggleConfig(use_env_credentials=False)
     except FileNotFoundError:
         # Mock credentials for demo when real credentials don't exist
-        from qratum_chess.benchmarks.kaggle_config import KaggleCompetitionConfig, SubmissionFormat
+        from qratum_chess.benchmarks.kaggle_config import (
+            KaggleCompetitionConfig, SubmissionFormat)
 
         mock_config = object.__new__(KaggleConfig)
         mock_config.credentials = KaggleCredentials(username="demo_user", key="demo_key")

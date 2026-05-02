@@ -13,11 +13,11 @@ Key Features:
 - Cryptographic verification of seed integrity
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
-from enum import Enum
 import hashlib
 import time
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Dict, List, Optional, Tuple
 
 
 class SeedDerivationMethod(Enum):
@@ -57,7 +57,7 @@ class GlobalSeed:
     timestamp: float = field(default_factory=time.time)
     merkle_root: Optional[str] = None
     verified: bool = False
-    
+
     def derive_rank_seed(self, rank: int, method: SeedDerivationMethod = SeedDerivationMethod.HASH_CHAIN) -> int:
         """
         Derive deterministic per-rank seed
@@ -76,23 +76,23 @@ class GlobalSeed:
         """
         if method == SeedDerivationMethod.HASH_CHAIN:
             # Hash(global_seed || rank || epoch)
-            data = f"{self.value}:{rank}:{self.epoch.value}".encode('utf-8')
+            data = f"{self.value}:{rank}:{self.epoch.value}".encode()
             hash_digest = hashlib.sha256(data).digest()
             return int.from_bytes(hash_digest[:8], byteorder='big')
-        
+
         elif method == SeedDerivationMethod.MERKLE_PATH:
             # Use Merkle path for seed derivation (placeholder)
             # In production: construct Merkle path from rank to root
-            data = f"{self.merkle_root}:{rank}".encode('utf-8')
+            data = f"{self.merkle_root}:{rank}".encode()
             hash_digest = hashlib.sha256(data).digest()
             return int.from_bytes(hash_digest[:8], byteorder='big')
-        
+
         else:  # DETERMINISTIC_KDF
             # HKDF-like derivation (simplified)
-            data = f"kdf:{self.value}:{rank}:{self.epoch.value}".encode('utf-8')
+            data = f"kdf:{self.value}:{rank}:{self.epoch.value}".encode()
             hash_digest = hashlib.sha512(data).digest()
             return int.from_bytes(hash_digest[:8], byteorder='big')
-    
+
     def derive_operation_seed(self, rank: int, operation_id: str) -> int:
         """
         Derive seed for specific operation within a rank
@@ -105,7 +105,7 @@ class GlobalSeed:
             64-bit operation-specific seed
         """
         rank_seed = self.derive_rank_seed(rank)
-        data = f"{rank_seed}:{operation_id}".encode('utf-8')
+        data = f"{rank_seed}:{operation_id}".encode()
         hash_digest = hashlib.sha256(data).digest()
         return int.from_bytes(hash_digest[:8], byteorder='big')
 
@@ -128,7 +128,7 @@ class SeedManager:
     current_epoch: ExecutionEpoch = ExecutionEpoch.INITIALIZATION
     seed_history: Dict[ExecutionEpoch, GlobalSeed] = field(default_factory=dict)
     derivation_method: SeedDerivationMethod = SeedDerivationMethod.HASH_CHAIN
-    
+
     def generate_epoch_seed(self, epoch: ExecutionEpoch) -> GlobalSeed:
         """
         Generate new global seed for given epoch
@@ -143,25 +143,25 @@ class SeedManager:
             GlobalSeed for the epoch
         """
         # Deterministic epoch seed: Hash(initial_seed || epoch)
-        data = f"{self.initial_seed}:{epoch.value}".encode('utf-8')
+        data = f"{self.initial_seed}:{epoch.value}".encode()
         hash_digest = hashlib.sha256(data).digest()
         epoch_seed_value = int.from_bytes(hash_digest[:8], byteorder='big')
-        
+
         global_seed = GlobalSeed(
             value=epoch_seed_value,
             epoch=epoch,
             timestamp=time.time()
         )
-        
+
         self.seed_history[epoch] = global_seed
         return global_seed
-    
+
     def get_current_seed(self) -> GlobalSeed:
         """Get global seed for current epoch"""
         if self.current_epoch not in self.seed_history:
             return self.generate_epoch_seed(self.current_epoch)
         return self.seed_history[self.current_epoch]
-    
+
     def transition_epoch(self, new_epoch: ExecutionEpoch) -> GlobalSeed:
         """
         Transition to new execution epoch
@@ -174,7 +174,7 @@ class SeedManager:
         """
         self.current_epoch = new_epoch
         return self.generate_epoch_seed(new_epoch)
-    
+
     def compute_merkle_root(self, num_ranks: int) -> str:
         """
         Compute Merkle root for seed distribution
@@ -186,14 +186,14 @@ class SeedManager:
             Merkle root hash as hex string
         """
         current_seed = self.get_current_seed()
-        
+
         # Build Merkle tree of per-rank seeds
         leaves = []
         for rank in range(num_ranks):
             rank_seed = current_seed.derive_rank_seed(rank, self.derivation_method)
-            leaf_hash = hashlib.sha256(f"{rank_seed}".encode('utf-8')).hexdigest()
+            leaf_hash = hashlib.sha256(f"{rank_seed}".encode()).hexdigest()
             leaves.append(leaf_hash)
-        
+
         # Build tree bottom-up
         tree = [leaves]
         while len(tree[-1]) > 1:
@@ -206,11 +206,11 @@ class SeedManager:
                     combined = prev_level[i] + prev_level[i]
                 level.append(hashlib.sha256(combined.encode('utf-8')).hexdigest())
             tree.append(level)
-        
+
         merkle_root = tree[-1][0]
         current_seed.merkle_root = merkle_root
         return merkle_root
-    
+
     def verify_rank_seed(self, rank: int, seed_value: int) -> bool:
         """
         Verify that rank received correct seed
@@ -243,7 +243,7 @@ class ExecutionOrder:
     global_counter: int = 0
     rank_counters: Dict[int, int] = field(default_factory=dict)
     operation_log: List[Tuple[int, str, int]] = field(default_factory=list)  # (global_id, op_name, rank)
-    
+
     def next_operation_id(self, rank: int, operation_name: str) -> int:
         """
         Get next operation ID for deterministic ordering
@@ -257,21 +257,21 @@ class ExecutionOrder:
         """
         operation_id = self.global_counter
         self.global_counter += 1
-        
+
         # Track per-rank counter
         if rank not in self.rank_counters:
             self.rank_counters[rank] = 0
         self.rank_counters[rank] += 1
-        
+
         # Log operation
         self.operation_log.append((operation_id, operation_name, rank))
-        
+
         return operation_id
-    
+
     def get_rank_operation_count(self, rank: int) -> int:
         """Get total operations executed by rank"""
         return self.rank_counters.get(rank, 0)
-    
+
     def verify_determinism(self, other: 'ExecutionOrder') -> bool:
         """
         Verify that execution order matches another run
@@ -284,18 +284,18 @@ class ExecutionOrder:
         """
         if self.global_counter != other.global_counter:
             return False
-        
+
         if self.rank_counters != other.rank_counters:
             return False
-        
+
         # Check operation log matches
         if len(self.operation_log) != len(other.operation_log):
             return False
-        
+
         for (g1, op1, r1), (g2, op2, r2) in zip(self.operation_log, other.operation_log):
             if g1 != g2 or op1 != op2 or r1 != r2:
                 return False
-        
+
         return True
 
 
@@ -325,7 +325,7 @@ class GlobalStateManager:
     num_ranks: int = 1
     rank_id: int = 0
     state_checkpoints: Dict[str, Dict] = field(default_factory=dict)
-    
+
     def initialize_global_state(self, num_ranks: int, rank_id: int) -> None:
         """
         Initialize global state for all ranks
@@ -338,19 +338,19 @@ class GlobalStateManager:
         """
         self.num_ranks = num_ranks
         self.rank_id = rank_id
-        
+
         # Generate and verify seed distribution
         merkle_root = self.seed_manager.compute_merkle_root(num_ranks)
-        
+
         # Each rank verifies it has correct seed
         current_seed = self.seed_manager.get_current_seed()
         rank_seed = current_seed.derive_rank_seed(rank_id)
-        
+
         if not self.seed_manager.verify_rank_seed(rank_id, rank_seed):
             raise RuntimeError(f"Rank {rank_id} seed verification failed!")
-        
+
         current_seed.verified = True
-    
+
     def get_operation_seed(self, operation_id: str) -> int:
         """
         Get deterministic seed for operation
@@ -363,7 +363,7 @@ class GlobalStateManager:
         """
         current_seed = self.seed_manager.get_current_seed()
         return current_seed.derive_operation_seed(self.rank_id, operation_id)
-    
+
     def register_operation(self, operation_name: str) -> int:
         """
         Register operation and get deterministic ordering ID
@@ -375,7 +375,7 @@ class GlobalStateManager:
             Global operation ID for ordering
         """
         return self.execution_order.next_operation_id(self.rank_id, operation_name)
-    
+
     def transition_to_epoch(self, epoch: ExecutionEpoch) -> None:
         """
         Transition to new execution epoch
@@ -388,7 +388,7 @@ class GlobalStateManager:
         new_seed = self.seed_manager.transition_epoch(epoch)
         self.seed_manager.compute_merkle_root(self.num_ranks)
         new_seed.verified = True
-    
+
     def checkpoint_state(self, checkpoint_name: str) -> Dict:
         """
         Save current global state
@@ -422,10 +422,10 @@ class GlobalStateManager:
                 'rank_id': self.rank_id
             }
         }
-        
+
         self.state_checkpoints[checkpoint_name] = state
         return state
-    
+
     def restore_state(self, checkpoint_name: str) -> None:
         """
         Restore global state from checkpoint
@@ -435,13 +435,13 @@ class GlobalStateManager:
         """
         if checkpoint_name not in self.state_checkpoints:
             raise ValueError(f"Checkpoint '{checkpoint_name}' not found")
-        
+
         # Note: Full restoration would require careful reconstruction
         # This is a placeholder for the restoration logic
         state = self.state_checkpoints[checkpoint_name]
         self.num_ranks = state['rank_info']['num_ranks']
         self.rank_id = state['rank_info']['rank_id']
-    
+
     def compute_state_hash(self) -> str:
         """
         Compute hash of current global state for verification
@@ -452,7 +452,7 @@ class GlobalStateManager:
         state = self.checkpoint_state('_temp_hash')
         state_str = str(sorted(state.items()))
         return hashlib.sha256(state_str.encode('utf-8')).hexdigest()
-    
+
     def verify_global_consistency(self, other_state_hash: str) -> bool:
         """
         Verify state consistency across ranks

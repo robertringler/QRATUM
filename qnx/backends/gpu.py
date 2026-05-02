@@ -47,9 +47,9 @@ class GPUBackend:
     This is a stub implementation establishing the structural interface.
     Full GPU backend will be implemented in a future PR.
     """
-    
+
     _warned = False
-    
+
     def __init__(self):
         """Initialize GPU backend stub with deprecation warning."""
         if not GPUBackend._warned:
@@ -61,7 +61,7 @@ class GPUBackend:
                 stacklevel=2
             )
             GPUBackend._warned = True
-    
+
     @property
     def available(self) -> bool:
         """Check if GPU backend is available.
@@ -70,7 +70,7 @@ class GPUBackend:
             Always False for stub implementation
         """
         return False
-    
+
     def is_available(self) -> bool:
         """Check if GPU backend is available.
         

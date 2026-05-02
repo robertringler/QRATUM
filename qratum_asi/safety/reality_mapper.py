@@ -15,10 +15,6 @@ from datetime import datetime
 from typing import Any, Dict, List
 
 from .elicitation import ResponseType, SafetyElicitation
-from .elicitation import (
-    ResponseType,
-    SafetyElicitation,
-)
 
 
 @dataclass

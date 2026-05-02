@@ -15,10 +15,7 @@ from typing import Any
 
 from qradle.merkle import MerkleChain
 from qratum_asi.reinjection.mapper import DiscoveryPriorMapper, MappingResult
-from qratum_asi.reinjection.types import (
-    ReinjectionCandidate,
-    SandboxResult,
-)
+from qratum_asi.reinjection.types import ReinjectionCandidate, SandboxResult
 
 
 @dataclass

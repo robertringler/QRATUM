@@ -16,28 +16,22 @@ from pathlib import Path
 
 import pytest
 
-from qratum.oncology.registry.seer_medicare.cohort import CohortBuilder, CohortDefinition
+from qratum.oncology.registry.seer_medicare.cohort import (CohortBuilder,
+                                                           CohortDefinition)
 from qratum.oncology.registry.seer_medicare.features import FeatureEngineer
-from qratum.oncology.registry.seer_medicare.io import (
-    RunArtifacts,
-    create_dataset_manifest,
-)
+from qratum.oncology.registry.seer_medicare.io import (RunArtifacts,
+                                                       create_dataset_manifest)
 from qratum.oncology.registry.seer_medicare.linkages import PatientLinker
-from qratum.oncology.registry.seer_medicare.medicare_claims import parse_claims_directory
+from qratum.oncology.registry.seer_medicare.medicare_claims import \
+    parse_claims_directory
 from qratum.oncology.registry.seer_medicare.privacy import (
-    DUAComplianceChecker,
-    PrivacyConfig,
-    SafeLogger,
-)
+    DUAComplianceChecker, PrivacyConfig, SafeLogger)
 from qratum.oncology.registry.seer_medicare.quality import DataValidator
-from qratum.oncology.registry.seer_medicare.schema import (
-    ClaimEvent,
-)
-from qratum.oncology.registry.seer_medicare.seer_registry import SEERRegistryParser
+from qratum.oncology.registry.seer_medicare.schema import ClaimEvent
+from qratum.oncology.registry.seer_medicare.seer_registry import \
+    SEERRegistryParser
 from qratum.oncology.registry.seer_medicare.timelines import (
-    CodeMappingLibrary,
-    TreatmentTimelineBuilder,
-)
+    CodeMappingLibrary, TreatmentTimelineBuilder)
 
 
 @pytest.fixture
@@ -402,11 +396,10 @@ class TestEndToEndPipeline:
 
         # Try QRATUM integration
         try:
-            from qratum.oncology.causal_graph import CausalOncologyGraph, NodeType, OncogenicNode
+            from qratum.oncology.causal_graph import (CausalOncologyGraph,
+                                                      NodeType, OncogenicNode)
             from qratum.oncology.intervention_search import (
-                XENONInterventionSearch,
-                create_example_drug_library,
-            )
+                XENONInterventionSearch, create_example_drug_library)
 
             # Create graph
             graph = CausalOncologyGraph(name="test_graph", seed=42)
