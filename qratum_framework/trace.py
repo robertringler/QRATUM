@@ -193,6 +193,17 @@ class MerkleLedger:
     def entries(self) -> List[UnifiedTraceEntry]:
         return [n.entry for n in self._nodes]
 
+    def iter_with_hashes(self) -> Iterable[Tuple[UnifiedTraceEntry, str, str]]:
+        """Yield ``(entry, prev_hash, chain_hash)`` triples in append order.
+
+        Public, read-only audit cursor over the ledger.  External verifiers
+        (the CLI's ``ledger`` subcommand, third-party reproducers, …) use
+        this instead of poking at internal nodes so that the chain layout
+        can evolve without breaking callers.
+        """
+        for node in self._nodes:
+            yield node.entry, node.prev_hash, node.chain_hash
+
     def __len__(self) -> int:  # pragma: no cover — convenience
         return len(self._nodes)
 

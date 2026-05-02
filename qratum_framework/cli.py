@@ -212,12 +212,10 @@ def _cmd_ledger(args: argparse.Namespace) -> int:
     # The on-disk chain hashes must equal what we just recomputed.  This is
     # what catches deliberate or accidental tampering.
     on_disk_match = True
-    prev = ledger._genesis  # accessed for parity-check; intentional
-    for i, node in enumerate(ledger._nodes):  # noqa: SLF001 — internal audit
-        if node.chain_hash != expected_chain[i] or node.prev_hash != expected_prev[i]:
+    for i, (_, prev_hash, chain_hash) in enumerate(ledger.iter_with_hashes()):
+        if chain_hash != expected_chain[i] or prev_hash != expected_prev[i]:
             on_disk_match = False
             break
-        prev = node.chain_hash
 
     chain_ok = ledger.verify() and on_disk_match
 
