@@ -339,12 +339,6 @@ def soi_qradle_state():
             "contracts_executed": contracts_executed,
             "last_checkpoint": last_checkpoint,
             "invariants_checked": invariants_checked,
-            "uptime_seconds": time.time() - app.config.get('start_time', time.time())
-            "epoch": qradle_engine.get_epoch() if qradle_engine else 0,
-            "merkle_root": qradle_engine.get_merkle_root() if qradle_engine else "0" * 64,
-            "contracts_executed": qradle_engine.get_contract_count() if qradle_engine else 0,
-            "last_checkpoint": qradle_engine.get_last_checkpoint() if qradle_engine else None,
-            "invariants_checked": qradle_engine.get_invariant_count() if qradle_engine else 0,
             "uptime_seconds": time.time() - app.config.get("start_time", time.time()),
         }
         return jsonify({"success": True, **state})
