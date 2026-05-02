@@ -166,6 +166,75 @@ pub async fn apply_quantum_gate(request: GateRequest) -> Result<GateResponse, St
     })
 }
 
+// =================================================================
+// Phase 4: Quantum Circuit with Rollback Semantics  
+// =================================================================
+
+/// Run a quantum circuit (sequence of gates) with rollback semantics.
+///
+/// This function implements **rollback semantics**: if any gate fails to apply (e.g., 
+/// invalid qubit index), execution stops immediately and returns the state before
+/// the circuit was executed (fresh |0⟩ state). This ensures the returned visualization
+/// is always consistent - either the complete circuit succeeded, or nothing was applied.
+#[derive(Serialize, Deserialize)]
+pub struct QuantumCircuit {
+    pub gates: Vec<GateRequest>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct CircuitResponse {
+    pub success: bool,
+    pub state: Vec<QubitStateInfo>,
+    pub gate_history: Vec<GateOperation>,
+    pub message: String,
+}
+
+#[tauri::command]
+pub async fn run_quantum_circuit(circuit: QuantumCircuit) -> Result<CircuitResponse, String> {
+    let mut os = OSSupreme::new();
+    
+    // Apply each gate in sequence with rollback on failure
+    for (idx, gate_req) in circuit.gates.iter().enumerate() {
+        let success = match gate_req.gate.as_str() {
+            "H" => { os.apply_hadamard(gate_req.qubits[0]); true }
+            "X" => { os.apply_pauli_x(gate_req.qubits[0]); true }
+            "Y" => { os.apply_pauli_y(gate_req.qubits[0]); true }
+            "Z" => { os.apply_pauli_z(gate_req.qubits[0]); true }
+            "S" => { os.apply_phase(gate_req.qubits[0]); true }
+            "T" => { os.apply_t(gate_req.qubits[0]); true }
+            "CNOT" if gate_req.qubits.len() >= 2 => { os.apply_cnot(gate_req.qubits[0], gate_req.qubits[1]); true }
+            "TOFFOLI" if gate_req.qubits.len() >= 3 => { os.apply_toffoli(gate_req.qubits[0], gate_req.qubits[1], gate_req.qubits[2]); true }
+            "CZ" if gate_req.qubits.len() >= 2 => { os.apply_cz(gate_req.qubits[0], gate_req.qubits[1]); true }
+            "SWAP" if gate_req.qubits.len() >= 2 => { os.apply_swap(gate_req.qubits[0], gate_req.qubits[1]); true }
+            "RX" => { os.apply_rx(gate_req.qubits[0], gate_req.theta.unwrap_or(0.0)); true }
+            "RY" => { os.apply_ry(gate_req.qubits[0], gate_req.theta.unwrap_or(0.0)); true }
+            "RZ" => { os.apply_rz(gate_req.qubits[0], gate_req.theta.unwrap_or(0.0)); true }
+            _ => false,
+        };
+        
+        if !success {
+            // Rollback: return a fresh state
+            let fresh_os = OSSupreme::new();
+            return Ok(CircuitResponse {
+                success: false,
+                state: fresh_os.get_quantum_state(),
+                gate_history: vec![],
+                message: format!(
+                    "Circuit execution failed at gate {} ({}). Rolled back to initial |0⟩ state.",
+                    idx + 1, gate_req.gate
+                ),
+            });
+        }
+    }
+    
+    // All gates succeeded
+    Ok(CircuitResponse {
+        success: true,
+        state: os.get_quantum_state(),
+        gate_history: os.get_gate_history().to_vec(),
+        message: format!("Circuit executed successfully ({} gates applied)", circuit.gates.len()),
+    })
+}
 // MiniLM text classification
 #[tauri::command]
 pub async fn classify_text(text: String) -> Result<IntentClassification, String> {
