@@ -29,6 +29,13 @@ from typing import Dict, FrozenSet, Iterable, List, Mapping, Sequence, Set, Tupl
 
 EdgeKey = Tuple[str, str]
 
+#: Floating-point tolerance for label-propagation tie-breaking.
+#: Two candidate community weights within this distance are treated
+#: as a tie; the lex-smaller label wins (deterministic).  The value
+#: is well below any meaningful edge weight in practice but well
+#: above double-precision arithmetic noise.
+_LABEL_TIE_EPSILON: float = 1e-12
+
 
 # ---------------------------------------------------------------------------
 # Public dispatcher
@@ -223,8 +230,8 @@ def _greedy_modularity(weighted_edges: Mapping[EdgeKey, float]) -> List[FrozenSe
             best_label = label[n]
             best_w = tally.get(best_label, 0.0)
             for lab, w in sorted(tally.items()):
-                if w > best_w + 1e-12 or (
-                    abs(w - best_w) <= 1e-12 and lab < best_label
+                if w > best_w + _LABEL_TIE_EPSILON or (
+                    abs(w - best_w) <= _LABEL_TIE_EPSILON and lab < best_label
                 ):
                     best_label = lab
                     best_w = w

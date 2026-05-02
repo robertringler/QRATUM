@@ -89,8 +89,14 @@ class SimpleEmissionModel:
         self.filler = tuple(filler or self.DEFAULT_FILLER)
 
     def __call__(self, prompt: PromptSpec, persona: Persona) -> Sequence[str]:
-        # Drift rate ∈ [0, 1]; neutral baseline (τ=0.2) emits 0% stylistic
-        # tokens by construction; nerdy (τ=0.7) emits ~35%.
+        # Drift rate ∈ [0, 1].  The constants 0.2 and 0.7 are calibrated
+        # against the default persona table:
+        #   * 0.2 is the neutral baseline temperature (drift_rate→0
+        #     there, by construction);
+        #   * 0.7 is a scaling factor chosen so the nerdy persona
+        #     (τ=0.7) emits ~35% stylistic tokens — enough signal for
+        #     the regression test to trip without overwhelming the
+        #     topical content.
         drift_rate = max(0.0, min(1.0, (persona.temperature - 0.2) * 0.7))
         seed_bytes = hashlib.sha256(
             f"{prompt.id}|{persona.name}".encode()
@@ -225,6 +231,12 @@ class EvalRunner:
                 )
 
                 # Cluster discovery: persona stream vs. paired baseline.
+                # Window bounds: ``min(64, max(8, len(tokens)))`` —
+                #   * 8  is the floor (must be > the minimum window size
+                #         that supports any pair-counting at all);
+                #   * 64 is the ceiling (well below the spec's default
+                #         256 so short emission streams still produce
+                #         multiple windows for stability scoring).
                 # For the baseline row itself, both streams are the
                 # baseline so no clusters can emerge — the report is
                 # therefore trivially clean.

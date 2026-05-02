@@ -72,7 +72,11 @@ def deterministic_embedding(text: str, *, dim: int = _EMBED_DIM) -> Sequence[flo
         cur = hashlib.sha256(cur).digest()
     vec = []
     for i in range(dim):
-        # Map 4 bytes → signed int → float in roughly [-1, 1].
+        # Map 4 bytes → unsigned 32-bit int → float in roughly [-1, 1].
+        # ``(x / 2**32)`` rescales the unsigned int into the unit
+        # interval [0, 1); ``* 2.0 - 1.0`` then linearly maps that
+        # onto [-1, 1).  After the L2-normalise below, the result is
+        # a deterministic point on the unit sphere.
         chunk = raw[i * 4 : i * 4 + 4]
         x = int.from_bytes(chunk, "big", signed=False)
         vec.append((x / 2**32) * 2.0 - 1.0)
