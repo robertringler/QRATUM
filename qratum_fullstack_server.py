@@ -311,7 +311,35 @@ def list_verticals():
 def soi_qradle_state():
     """Get QRADLE system state for SOI display."""
     try:
+        if qradle_engine:
+            get_epoch = getattr(qradle_engine, "get_epoch", None)
+            epoch = get_epoch() if callable(get_epoch) else 0
+            
+            get_merkle_root = getattr(qradle_engine, "get_merkle_root", None)
+            merkle_root = get_merkle_root() if callable(get_merkle_root) else "0" * 64
+            
+            get_contract_count = getattr(qradle_engine, "get_contract_count", None)
+            contracts_executed = get_contract_count() if callable(get_contract_count) else 0
+            
+            get_last_checkpoint = getattr(qradle_engine, "get_last_checkpoint", None)
+            last_checkpoint = get_last_checkpoint() if callable(get_last_checkpoint) else None
+            
+            get_invariant_count = getattr(qradle_engine, "get_invariant_count", None)
+            invariants_checked = get_invariant_count() if callable(get_invariant_count) else 0
+        else:
+            epoch = 0
+            merkle_root = "0" * 64
+            contracts_executed = 0
+            last_checkpoint = None
+            invariants_checked = 0
+        
         state = {
+            "epoch": epoch,
+            "merkle_root": merkle_root,
+            "contracts_executed": contracts_executed,
+            "last_checkpoint": last_checkpoint,
+            "invariants_checked": invariants_checked,
+            "uptime_seconds": time.time() - app.config.get('start_time', time.time())
             "epoch": qradle_engine.get_epoch() if qradle_engine else 0,
             "merkle_root": qradle_engine.get_merkle_root() if qradle_engine else "0" * 64,
             "contracts_executed": qradle_engine.get_contract_count() if qradle_engine else 0,

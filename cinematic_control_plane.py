@@ -6,6 +6,7 @@ Unified web interface for accessing all QRATUM services
 """
 
 import os
+import time
 
 import requests
 from flask import Flask, jsonify, render_template_string
@@ -15,7 +16,49 @@ app = Flask(__name__)
 CORS(app)
 
 # Service endpoints (internal Docker network)
+# External URLs can be overridden via environment variables
+def get_external_url(service_name, default_url):
+    """Get external URL for a service, allowing environment override."""
+    env_var = f"QRATUM_{service_name.upper()}_URL"
+    return os.getenv(env_var, default_url)
+
 SERVICES = {
+    'qradle': {
+        'url': 'http://qradle:8000',
+        'external_url': get_external_url('qradle', 'http://localhost:8001'),
+        'name': 'QRADLE Foundation Engine',
+        'description': 'Core blockchain and cryptographic operations'
+    },
+    'platform': {
+        'url': 'http://qratum-platform:8000',
+        'external_url': get_external_url('platform', 'http://localhost:8002'),
+        'name': 'QRATUM Platform',
+        'description': '14 vertical AI modules'
+    },
+    'asi': {
+        'url': 'http://qratum-asi:8000',
+        'external_url': get_external_url('asi', 'http://localhost:8003'),
+        'name': 'QRATUM-ASI',
+        'description': 'Autonomous Systems Intelligence'
+    },
+    'grafana': {
+        'url': 'http://grafana:3000',
+        'external_url': get_external_url('grafana', 'http://localhost:3000'),
+        'name': 'Grafana',
+        'description': 'Monitoring & Visualization'
+    },
+    'prometheus': {
+        'url': 'http://prometheus:9090',
+        'external_url': get_external_url('prometheus', 'http://localhost:9090'),
+        'name': 'Prometheus',
+        'description': 'Metrics Collection'
+    },
+    'loki': {
+        'url': 'http://loki:3100',
+        'external_url': get_external_url('loki', 'http://localhost:3100'),
+        'name': 'Loki',
+        'description': 'Log Aggregation'
+    }
     "qradle": {
         "url": "http://qradle:8000",
         "external_url": "http://10.0.0.1:8001",
@@ -198,7 +241,7 @@ HTML_TEMPLATE = """
 
         <div class="service-grid">
             {% for service_id, service in services.items() %}
-            <div class="service-card">
+            <div class="service-card" data-service="{{ service_id }}">
                 <h3>{{ service.icon }} {{ service.name }} <span class="status {{ service.status_class }}">{{ service.status_icon }}</span></h3>
                 <p>{{ service.description }}</p>
                 <p><strong>Endpoint:</strong> {{ service.external_url }}</p>
@@ -214,10 +257,27 @@ HTML_TEMPLATE = """
     </div>
 
     <script>
-        // Auto-refresh every 30 seconds
-        setTimeout(() => {
-            location.reload();
-        }, 30000);
+        // Auto-refresh status every 30 seconds using fetch
+        async function updateStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                
+                // Update service statuses
+                for (const [serviceId, serviceInfo] of Object.entries(data.services)) {
+                    const statusElements = document.querySelectorAll(`[data-service="${serviceId}"] .status`);
+                    statusElements.forEach(el => {
+                        el.className = `status ${serviceInfo.status}`;
+                        el.textContent = '●';
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to update status:', error);
+            }
+        }
+        
+        // Update status every 30 seconds
+        setInterval(updateStatus, 30000);
     </script>
 </body>
 </html>
@@ -227,12 +287,17 @@ HTML_TEMPLATE = """
 def check_service_status(url):
     """Check if a service is healthy."""
     try:
-        response = requests.get(f"{url}/health", timeout=5)
+        timeout = int(os.getenv('QRATUM_HEALTH_CHECK_TIMEOUT', '10'))
+    except (ValueError, TypeError):
+        timeout = 10  # Default to 10 seconds if env var is invalid
+    
+    try:
+        response = requests.get(f"{url}/health", timeout=timeout)
         if response.status_code == 200:
             return "healthy"
         else:
             return "unhealthy"
-    except:
+    except requests.RequestException:
         return "unknown"
 
 
@@ -291,6 +356,29 @@ def api_status():
         }
     )
 
+    # Determine overall system status with more granularity
+    statuses = [s['status'] for s in status_data.values()]
+    healthy_count = sum(1 for s in statuses if s == 'healthy')
+    unhealthy_count = sum(1 for s in statuses if s == 'unhealthy')
+    unknown_count = sum(1 for s in statuses if s == 'unknown')
+    
+    if healthy_count == len(statuses) and len(statuses) > 0:
+        overall_status = 'healthy'
+    elif healthy_count > 0 and unhealthy_count > 0:
+        # Some services healthy, some explicitly unhealthy
+        overall_status = 'partial'
+    elif healthy_count > 0 and unhealthy_count == 0 and unknown_count > 0:
+        # Some services healthy, the rest unknown
+        overall_status = 'degraded'
+    else:
+        # No healthy services at all
+        overall_status = 'down'
+
+    return jsonify({
+        'timestamp': time.time(),
+        'services': status_data,
+        'overall_status': overall_status
+    })
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "8080"))
