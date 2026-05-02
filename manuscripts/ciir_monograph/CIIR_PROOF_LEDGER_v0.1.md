@@ -634,3 +634,137 @@ is made about gaps not listed here.
   that fails (OP1) for a different reason; this is recorded as the
   next Phase-2 deliverable after Born-rule closure.
 
+### 7.2 Closure of G-S1 (Ax 4.1 independence countermodel $\mathfrak M_1$)
+
+- **Status:** closed by closure path (c) of §5.1
+  (reclassify as model-relative + non-degenerate replacement),
+  combined with a structural finding about the typing of
+  Axiom 4.1.
+
+- **Reconstruction.** The original $\mathfrak M_1$ in the proof of
+  Theorem 4.1 (Ch4 §"Axiom Independence") is
+  $\mathfrak M_1 = (\CR, \CM, \iota, \HC, \Phi, \CA(\HC))
+  = (\emptyset, \{m_0\}, \text{"empty embedding"}, \mathbb C,
+  \mathrm{id}, \mathbb R)$.
+  - **Locally OK:** the cognitive piece
+    $(\HC=\mathbb C, \Phi=\mathrm{id}, \CA(\HC)=\mathbb R)$
+    trivially satisfies the *content* of Ax 4.3–Ax 4.6 read as
+    statements about $\HC$ alone; the constraint piece
+    $(\CM=\{m_0\}, g\equiv 0, \hatC\equiv 0)$ satisfies (C1) and
+    (C3)–(C5) of Def 3.7 in isolation.
+  - **Global inconsistency.** Definition 3.7 (C2) requires $\iota$
+    to be an injective continuous map $\CM \hookrightarrow \CR$.
+    With $\CM = \{m_0\}$ and $\CR = \emptyset$ no such function
+    exists: there is no function from a non-empty set to the empty
+    set, let alone an injective one. The phrase "vacuously
+    well-defined" in the original proof is not vacuously true; it
+    is a typing error, and the proof itself flags it on the same
+    line. Therefore $\mathfrak M_1$ has no well-typed witness, and
+    "Ax 4.2–4.6 hold" cannot be honestly evaluated against it.
+
+- **Failure-type classification.** The defect in $\mathfrak M_1$ is
+  **semantic under-specification**, not an independence violation
+  and not a hidden dependency:
+  - *Not an independence violation.* The intent of $\mathfrak M_1$
+    (find a model in which Ax 4.1 fails alone) is sound; the
+    construction simply does not produce such a model.
+  - *Not a hidden dependency.* No theorem deduces (OP1) or (OP2)
+    from Ax 4.2–4.6.
+  - *Semantic under-specification.* Clauses (OP1) and (OP2) of
+    Axiom 4.1 restate, at the level of an *axiom*, properties that
+    Definition 3.1 already imposes at the level of the *type*
+    "reality space": Def 3.1(i) requires $\CR \neq \emptyset$ and
+    Def 3.1(ii)–(v) requires $(\CR, d_\CR)$ to be a complete
+    separable metric space (i.e. Polish). Hence any tuple
+    violating (OP1) or (OP2) of Ax 4.1 is, by Def 3.1, *not* a
+    reality space at all. The substantive content of Axiom 4.1 is
+    therefore concentrated in **(OP3)** (realist independence of
+    $\CR$ from the cognitive apparatus).
+
+- **Closure decision.** Of the three options listed in §5.1:
+  - (c1) *Strengthen the axiom* (admit empty-$\CR$ models) —
+    rejected; would destroy the realist core.
+  - (c2) *Derive Ax 4.1 from Ax 4.2–4.6* — rejected; no such
+    derivation is available without reading Ax 4.3 / Ax 4.6 as
+    covertly entailing a $\Phi$-independent ontic stratum, which
+    would itself reintroduce G-S1 elsewhere.
+  - (c3) *Reclassify as model-relative + supply a non-degenerate
+    countermodel for the substantive (OP3) content* — adopted.
+
+- **Source-file edits implementing the closure.**
+  - `chapters/ch04_axiom_system.tex`:
+    - New `Remark~\ref{rem:4.1.substantive}` inserted immediately
+      after `Remark~\ref{rem:4.1}` in §"Axiom 4.1 — Ontological
+      Priority". States the (OP1)/(OP2) type-level redundancy with
+      Def 3.1, identifies (OP3) as the substantive content, and
+      points forward to the new analysis subsection and to this
+      ledger entry.
+    - Final paragraph of the proof of Theorem 4.1 amended: the
+      conclusion now reads "the six axioms are mutually
+      independent (with the caveat for $k=1$ discussed in the
+      next subsection and resolved by the non-degenerate
+      replacement $\mathfrak M_1'$ of
+      Lemma~\ref{lem:4.1.gs1.replacement})". The proof of
+      Theorem 4.1 is otherwise unchanged.
+    - New subsection §"Countermodel Analysis: $\mathfrak M_1$
+      Revisited (Closure of Ledger Gap G-S1)"
+      (`\label{sec:ch4:gs1}`) inserted between the proof of
+      Theorem 4.1 and §Consistency. Contains:
+      - (A) Reconstruction of $\mathfrak M_1$ as written, with
+        explicit identification of the locally-OK pieces and the
+        global typing failure.
+      - (B) Classification of the failure as *semantic
+        under-specification*, with the new
+        `Remark~\ref{rem:4.1.op1op2.redundant}` recording the
+        (OP1)/(OP2) type-level redundancy with Def 3.1 and the
+        identification of (OP3) as the substantive content.
+      - (C) Closure path (c1)/(c2)/(c3) discussion plus
+        `Lemma~\ref{lem:4.1.gs1.replacement}` (existence of a
+        non-degenerate $\mathfrak M_1'$ violating only (OP3)) with
+        full proof: $\CR := \HC^\star = \mathbb C$ defined as a
+        function of a fixed cognitive system $X^\star$;
+        $\CM=\{m_0\}$, $\iota(m_0)=0$, $\HC=\mathbb C$,
+        $\Phi=\mathrm{id}$. Verifies Def 3.1, Def 3.7, failure of
+        (OP3), and Ax 4.2–4.6 individually.
+      - `Remark~\ref{rem:4.1.gs1.scope}` recording the scope of
+        the closure and the future-revision options
+        (drop (OP1)/(OP2) entirely, or retain as type-level
+        reminder).
+  - `CIIR_PROOF_LEDGER_v0.1.md`: this §7.2 closure entry.
+
+- **Untouched.** No other axiom statement, no other countermodel
+  $\mathfrak M_2,\dots,\mathfrak M_6$, no other theorem, no other
+  proof, no definition (in particular Def 3.1, Def 3.7, Ax 4.1
+  itself) was edited. The replacement $\mathfrak M_1'$ is added as
+  a *lemma* in a new subsection rather than substituted in-place
+  for $\mathfrak M_1$, so that the proof of Theorem 4.1 continues
+  to compile and read as before, and so that downstream references
+  to $\mathfrak M_1$ (e.g. the dependency-graph rows
+  `Independence (T~\ref{thm:4.1})` later in Ch4) remain valid.
+
+- **Verification of internal consistency after the edits.**
+  - All cross-references resolve: existing labels (`def:3.1`,
+    `def:3.7`, `ax:4.1`, `ax:4.2`–`ax:4.6`, `rem:4.1`,
+    `thm:4.1`, `lem:3.1`) are unchanged; new labels
+    (`rem:4.1.substantive`, `sec:ch4:gs1`,
+    `rem:4.1.op1op2.redundant`, `lem:4.1.gs1.replacement`,
+    `rem:4.1.gs1.scope`) are introduced exactly once each in
+    `chapters/ch04_axiom_system.tex` and referenced from the
+    forward-pointer `Remark~\ref{rem:4.1.substantive}` and from
+    each other.
+  - The mathematical content of Theorem 4.1 (statement and proof)
+    is unchanged except for the trailing parenthetical
+    cross-reference; the lemma $\mathfrak M_1'$ is purely
+    *additional*, so no downstream theorem (Theorem 4.2
+    Consistency, Theorem 4.3 Sufficiency) requires its proof to
+    be redone.
+
+- **Remaining Priority-1 work.** With G-L1, G-S4 (Phase 2.1) and
+  G-S1 (Phase 2.2 — this entry) closed, the Priority-1 ladder of
+  §5 is exhausted. The next deliverable in the closure log is
+  Priority-2 item §5.3 — **G-M4 + G-L6 (Lindblad operator
+  uniqueness)** — Ch7.D02 + Ch7.T1 either microscopic
+  derivation (Lindblad–Davies weak-coupling limit) or restatement
+  of Ch7.T1 as a *construction* rather than a *derivation* of
+  "the" CIIR master equation.
+

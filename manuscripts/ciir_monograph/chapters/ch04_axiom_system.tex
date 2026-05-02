@@ -81,6 +81,24 @@ measurability and regular probability measures
 (Lemma~\ref{lem:3.1}).
 \end{remark}
 
+\begin{remark}[(OP1)/(OP2) redundancy and the substantive content of
+  Axiom~\ref{ax:4.1}; pointer to G-S1 closure]
+\label{rem:4.1.substantive}
+Definition~\ref{def:3.1} requires every reality space to be
+non-empty (Def~\ref{def:3.1}(i)) and Polish
+(Def~\ref{def:3.1}(ii)--(v)).  Clauses \textup{(OP1)} and
+\textup{(OP2)} of Axiom~\ref{ax:4.1} therefore restate, at the level
+of an axiom, properties that are already part of the type ``reality
+space''.  The substantive (i.e.\ non-typing) content of
+Axiom~\ref{ax:4.1} is concentrated in clause \textup{(OP3)}.  The
+independence-of-axioms argument for Axiom~\ref{ax:4.1} is given by a
+non-degenerate countermodel that violates only \textup{(OP3)};
+see~\S\ref{sec:ch4:gs1} and
+Lemma~\ref{lem:4.1.gs1.replacement} for the construction and the
+ledger entry \texttt{CIIR\_PROOF\_LEDGER\_v0.1.md}~\S7.2 for the
+closure record.
+\end{remark}
+
 % ============================================================
 \subsection{Axiom 4.2 — Constraint Boundedness}
 \label{sec:ch4:ax2}
@@ -594,8 +612,214 @@ $\HC_{12} := \HC_1 \oplus \HC_2 = \mathbb{C}^2 \oplus \mathbb{C}^2
 \medskip\noindent
 Since each model $\mathfrak{M}_k$ satisfies all axioms except
 Axiom~$k$, no axiom is deducible from the remaining five.  Hence the
-six axioms are mutually independent.
+six axioms are mutually independent (with the caveat for $k=1$
+discussed in the next subsection and resolved by the non-degenerate
+replacement $\mathfrak{M}_1'$ of
+Lemma~\ref{lem:4.1.gs1.replacement}).
 \end{proof}
+
+% ============================================================
+\subsection{Countermodel Analysis: $\mathfrak{M}_1$ Revisited
+  \textnormal{(Closure of Ledger Gap G-S1)}}
+\label{sec:ch4:gs1}
+% ============================================================
+
+The countermodel $\mathfrak{M}_1$ used in the proof of
+Theorem~\ref{thm:4.1} sets $\CR := \emptyset$ in order to falsify
+clause (OP1) of Axiom~\ref{ax:4.1} while preserving
+Axioms~\ref{ax:4.2}--\ref{ax:4.6}.  As recorded in
+\texttt{manuscripts/ciir_monograph/CIIR\_PROOF\_LEDGER\_v0.1.md},
+gap~\textnormal{G-S1}, the construction is degenerate at the level of
+typing: no embedding $\iota : \CM \hookrightarrow \emptyset$ exists
+when $\CM \neq \emptyset$, so $(\CM,g,\iota,\hatC)$ is not a
+constraint manifold per Definition~\ref{def:3.7}, and there is no
+witness data with respect to which Axioms~\ref{ax:4.2}--\ref{ax:4.6}
+can even be evaluated.  This subsection (i)~explicitly reconstructs
+$\mathfrak{M}_1$, (ii)~classifies the failure mode, (iii)~installs a
+non-degenerate replacement $\mathfrak{M}_1'$, and (iv)~records the
+structural observation that (OP1) and (OP2) are
+type-level-redundant with Definition~\ref{def:3.1}.
+
+\subsubsection*{(A) Reconstruction of \texorpdfstring{$\mathfrak{M}_1$}{M\_1}
+  as written}
+
+The model is presented (proof of Theorem~\ref{thm:4.1}, Model
+$\mathfrak{M}_1$ paragraph) as
+\[
+  \mathfrak{M}_1 \;=\; \bigl(\CR,\,\CM,\,\iota,\,\HC,\,\Phi,\,\CA(\HC)\bigr)
+  \;=\; \bigl(\emptyset,\,\{m_0\},\,\text{``empty embedding''},\,
+                \mathbb{C},\,\mathrm{id},\,\mathbb{R}\bigr).
+\]
+Locally, two of its three components are well-formed:
+\begin{itemize}
+  \item the cognitive piece $(\HC = \mathbb{C},\Phi=\mathrm{id},
+    \CA(\HC)=\mathbb{R})$ trivially satisfies the
+    Axioms~\ref{ax:4.3}--\ref{ax:4.6} content (CP, TP, dimension
+    bound, Born rule, tensor composition) when read as statements
+    \emph{about $\HC$ alone};
+  \item the constraint piece $(\CM=\{m_0\},g\equiv 0,\hatC\equiv 0)$
+    satisfies (C1) and (C3)--(C5) of
+    Definition~\ref{def:3.7} considered in isolation, with
+    $\kappa(m_0)=0$.
+\end{itemize}
+The global inconsistency lives entirely in clause (C2) of
+Definition~\ref{def:3.7}: $\iota$ is required to be an injective
+continuous map $\CM \to \CR$, but with $\CM=\{m_0\}$ and
+$\CR=\emptyset$ no such function exists, so $\iota$ has no possible
+referent.  The phrase ``vacuously well-defined since $\CR=\emptyset$''
+in the original proof is therefore not vacuously true; it is a
+type error, and the proof itself acknowledges it in the same line.
+
+\subsubsection*{(B) Classification of the failure mode}
+
+The G-S1 failure is \emph{not} an independence violation
+(Axiom~\ref{ax:4.1} need not follow from
+Axioms~\ref{ax:4.2}--\ref{ax:4.6}; nothing in $\mathfrak{M}_1$ shows
+it does), and \emph{not} a hidden dependency
+(none of Axioms~\ref{ax:4.2}--\ref{ax:4.6} entails (OP1)).  It is a
+\emph{semantic under-specification}: clauses (OP1) and (OP2) of
+Axiom~\ref{ax:4.1} restate, at the level of an axiom, properties
+that Definition~\ref{def:3.1} already imposes at the level of the
+\emph{type} ``reality space''.
+
+\begin{remark}[(OP1) and (OP2) are type-level redundant]
+\label{rem:4.1.op1op2.redundant}
+Definition~\ref{def:3.1} fixes the meaning of ``reality space'' as a
+triple $(\CR,d_{\CR},\tau_{\CR})$ in which (i)~$\CR$ is non-empty,
+(ii)~$d_{\CR}$ is a metric, (iii)~$\tau_{\CR}$ is the metric topology,
+(iv)~$(\CR,d_{\CR})$ is complete, and (v)~$(\CR,d_{\CR})$ is
+separable.  In particular, every reality space in the sense of
+Definition~\ref{def:3.1} satisfies $\CR \neq \emptyset$ and is
+Polish.  Hence any tuple violating clause (OP1) or clause (OP2) of
+Axiom~\ref{ax:4.1} is, by Definition~\ref{def:3.1}, not a reality
+space at all, and the surrounding objects $\CM$, $\Phi$, $\CA(\HC)$,
+which are typed in terms of $\CR$, are not constructible.
+
+The substantive content of Axiom~\ref{ax:4.1} is therefore confined
+to clause~(OP3): the realist-independence claim that the existence
+and topological properties of $\CR$ do not depend on any cognitive
+system $X$, constraint manifold $\CM_X$, or interface map $\Phi_X$.
+A genuine independence-of-axioms argument for Axiom~\ref{ax:4.1}
+must produce a model in which (OP3) fails while
+Definition~\ref{def:3.1} (hence (OP1) and (OP2)) and
+Axioms~\ref{ax:4.2}--\ref{ax:4.6} all hold.
+\end{remark}
+
+\subsubsection*{(C) Closure path: reclassify and replace}
+
+Three closure paths were on the table for G-S1
+(\texttt{CIIR\_PROOF\_LEDGER\_v0.1.md} \S5, Priority~1):
+\begin{enumerate}
+  \item[(c1)] strengthen Axiom~\ref{ax:4.1} so that empty-$\CR$
+    models are admissible;
+  \item[(c2)] derive Axiom~\ref{ax:4.1} from
+    Axioms~\ref{ax:4.2}--\ref{ax:4.6};
+  \item[(c3)] reclassify the independence claim and supply a
+    non-degenerate countermodel for the substantive (OP3) content.
+\end{enumerate}
+Path~(c1) is rejected because it would destroy the realist core of
+the framework (Remark~\ref{rem:4.1}).  Path~(c2) is rejected because
+no such derivation is available without reading Axiom~\ref{ax:4.3}
+or Axiom~\ref{ax:4.6} as covertly entailing the existence of a
+$\Phi$-independent ontic stratum, which would itself reintroduce
+G-S1 elsewhere.  We therefore adopt path~(c3): the countermodel is
+restated as a model violating (OP3) only.
+
+\begin{lemma}[Non-degenerate replacement $\mathfrak{M}_1'$ for
+  Axiom~\ref{ax:4.1}; closure of G-S1]
+\label{lem:4.1.gs1.replacement}
+There exists a tuple $\mathfrak{M}_1' = (\CR,\CM,\iota,\HC,\Phi,
+\CA(\HC))$ such that:
+\begin{enumerate}
+  \item[\textup{(i)}] $(\CR,d_{\CR},\tau_{\CR})$ is a reality space
+    in the sense of Definition~\textup{\ref{def:3.1}}, and
+    $(\CM,g,\iota,\hatC)$ is a constraint manifold in the sense of
+    Definition~\textup{\ref{def:3.7}};
+  \item[\textup{(ii)}] Axiom~\textup{\ref{ax:4.1}} fails: clauses
+    \textup{(OP1)} and \textup{(OP2)} hold, but clause~\textup{(OP3)}
+    fails;
+  \item[\textup{(iii)}] Axioms~\textup{\ref{ax:4.2}},
+    \textup{\ref{ax:4.3}}, \textup{\ref{ax:4.4}},
+    \textup{\ref{ax:4.5}}, and \textup{\ref{ax:4.6}} all hold.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Fix once and for all a cognitive system $X^\star$ with cognitive
+state space $\HC^\star := \mathbb{C}$.  Define
+\[
+  \CR \;:=\; \HC^\star \;=\; \mathbb{C},
+  \qquad
+  d_{\CR}(z,z') := |z - z'|,
+  \qquad
+  \tau_{\CR} := \text{the metric topology of } d_{\CR}.
+\]
+Then $(\CR,d_{\CR},\tau_{\CR})$ is non-empty, complete, and
+separable as a metric space (the standard Polish structure on
+$\mathbb{C}$ as a real $2$-manifold), so
+Definition~\textup{\ref{def:3.1}} is satisfied; in particular
+clauses \textup{(OP1)} and \textup{(OP2)} of
+Axiom~\textup{\ref{ax:4.1}} hold for $\CR$.
+
+Set $\CM := \{m_0\}$ (one-point Riemannian manifold, $g \equiv 0$,
+$\hatC \equiv 0$, $\kappa \equiv 0$) and $\iota(m_0) := 0 \in \CR$;
+this is an injective continuous map, so
+Definition~\textup{\ref{def:3.7}} is satisfied and $\iota$ has a
+genuine, well-typed referent (\emph{no} appeal to a vacuous
+embedding is needed).  Set $\HC := \mathbb{C}$, $\Phi := \mathrm{id}$
+on $\CB(\CR_{\mathrm{op}}) \cong \mathbb{C}$ (the
+operationalisation of $\CR = \mathbb{C}$ at the single contact point
+$0$), and $\CA(\HC) := \mathbb{R}$.
+
+\textit{Failure of \textup{(OP3)}.}  By construction
+$\CR := \HC^\star$ is defined as a function of the cognitive system
+$X^\star$: the carrier set, the metric, and the topology of $\CR$ are
+all read off from $\HC^\star$.  Concretely, replacing $X^\star$ by a
+cognitive system $Y^\star$ with $\HC^{Y^\star} = \mathbb{C}^2$ would
+re-define $\CR$ to be $\mathbb{C}^2$, with a different metric and
+topology.  Hence the existence and topological properties of $\CR$
+are \emph{not} independent of the cognitive system, and clause
+\textup{(OP3)} fails.
+
+\textit{The remaining axioms.}
+\begin{itemize}
+  \item Ax.~\ref{ax:4.2}: $\kappa_{\max} = 0 < \infty$, so
+    constraint boundedness holds.
+  \item Ax.~\ref{ax:4.3}: $\Phi = \mathrm{id}$ on $\mathbb{C}$ is
+    completely positive, trace-preserving, and surjective; the
+    push-forward condition (I3) is trivial in dimension~$1$.
+  \item Ax.~\ref{ax:4.4}: $\dim(\HC) = 1 \leq \exp(0\cdot 0) = 1$.
+  \item Ax.~\ref{ax:4.5}: the only observable is $\lambda\,\id$
+    ($\lambda\in\mathbb{R}$); the Born rule, state-update, and
+    repeatability clauses are trivially satisfied.
+  \item Ax.~\ref{ax:4.6}: $\HC_{12} = \mathbb{C}\otimes\mathbb{C}
+    \cong \mathbb{C}$; $\kappa_{12} = 0 \leq 0\cdot 0$.
+\end{itemize}
+This establishes (i)--(iii).
+\end{proof}
+
+\begin{remark}
+\label{rem:4.1.gs1.scope}
+Lemma~\ref{lem:4.1.gs1.replacement} is the targeted closure of
+G-S1: it produces a model that genuinely demonstrates the
+independence of \emph{the substantive content of}
+Axiom~\ref{ax:4.1} (clause (OP3)) from
+Axioms~\ref{ax:4.2}--\ref{ax:4.6}, without smuggling in a typing
+violation.  Combined with
+Remark~\ref{rem:4.1.op1op2.redundant}, the overall conclusion of
+Theorem~\ref{thm:4.1} is therefore that the six axioms are
+mutually independent \emph{up to the type-level redundancy of
+\textup{(OP1)} and \textup{(OP2)} with Definition~\ref{def:3.1}}.
+A future revision of this monograph may either (i)~drop
+\textup{(OP1)} and \textup{(OP2)} from the statement of
+Axiom~\ref{ax:4.1} on the grounds that they are subsumed by
+Definition~\ref{def:3.1}, or (ii)~retain them as a
+``type-level reminder'' with a footnote pointing to this remark.
+The present revision retains them and records the redundancy here,
+so that no downstream theorem statement, proof, or reference
+breaks.  See
+\texttt{CIIR\_PROOF\_LEDGER\_v0.1.md} \S7.2.
+\end{remark}
 
 % ============================================================
 \subsection{Consistency}
