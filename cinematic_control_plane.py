@@ -9,9 +9,6 @@ import os
 import time
 import requests
 from flask import Flask, render_template_string, jsonify, request
-
-import requests
-from flask import Flask, jsonify, render_template_string
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -259,8 +256,6 @@ def get_hostname_and_scheme():
     
     return hostname, scheme
 
-@app.route('/')
-
 @app.route("/")
 def index():
     """Main control plane interface."""
@@ -288,10 +283,7 @@ def index():
 
         services_data[service_id] = {
             **service_info,
-            'external_url': external_url,
-            'status_class': status_class,
-            'status_icon': status_icon,
-            'icon': icons.get(service_id, '🔧')
+            "external_url": external_url,
             "status_class": status_class,
             "status_icon": status_icon,
             "icon": icons.get(service_id, "🔧"),
@@ -308,58 +300,40 @@ def api_status():
     hostname, scheme = get_hostname_and_scheme()
 
     for service_id, service_info in SERVICES.items():
-        status = check_service_status(service_info['url'])
-        
+        status = check_service_status(service_info["url"])
+
         # Construct external URL dynamically based on request hostname
         external_url = f"{scheme}://{hostname}:{service_info['port']}"
-        
+
         status_data[service_id] = {
             **service_info,
-            'external_url': external_url,
-            'status': status,
-            'reachable': status != 'unknown'
-        status = check_service_status(service_info["url"])
-        status_data[service_id] = {
-            **service_info,
+            "external_url": external_url,
             "status": status,
             "reachable": status != "unknown",
         }
 
+    # Determine overall system status with more granularity
+    statuses = [s["status"] for s in status_data.values()]
+    healthy_count = sum(1 for s in statuses if s == "healthy")
+    unhealthy_count = sum(1 for s in statuses if s == "unhealthy")
+    unknown_count = sum(1 for s in statuses if s == "unknown")
+
+    if healthy_count == len(statuses) and len(statuses) > 0:
+        overall_status = "healthy"
+    elif healthy_count > 0 and unhealthy_count > 0:
+        overall_status = "partial"
+    elif healthy_count > 0 and unhealthy_count == 0 and unknown_count > 0:
+        overall_status = "degraded"
+    else:
+        overall_status = "down"
+
     return jsonify(
         {
-            "timestamp": os.times()[4],  # Using process time as timestamp
+            "timestamp": time.time(),
             "services": status_data,
-            "overall_status": (
-                "healthy"
-                if all(s["status"] == "healthy" for s in status_data.values())
-                else "degraded"
-            ),
+            "overall_status": overall_status,
         }
     )
-
-    # Determine overall system status with more granularity
-    statuses = [s['status'] for s in status_data.values()]
-    healthy_count = sum(1 for s in statuses if s == 'healthy')
-    unhealthy_count = sum(1 for s in statuses if s == 'unhealthy')
-    unknown_count = sum(1 for s in statuses if s == 'unknown')
-    
-    if healthy_count == len(statuses) and len(statuses) > 0:
-        overall_status = 'healthy'
-    elif healthy_count > 0 and unhealthy_count > 0:
-        # Some services healthy, some explicitly unhealthy
-        overall_status = 'partial'
-    elif healthy_count > 0 and unhealthy_count == 0 and unknown_count > 0:
-        # Some services healthy, the rest unknown
-        overall_status = 'degraded'
-    else:
-        # No healthy services at all
-        overall_status = 'down'
-
-    return jsonify({
-        'timestamp': time.time(),
-        'services': status_data,
-        'overall_status': overall_status
-    })
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "8080"))
