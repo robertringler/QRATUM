@@ -33,10 +33,8 @@ repo_root = Path(__file__).parent
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
-from qratum_chess.benchmarks.auto_benchmark import (
-    AutoBenchmark,
-    AutoBenchmarkConfig,
-)
+from qratum_chess.benchmarks.auto_benchmark import (AutoBenchmark,
+                                                    AutoBenchmarkConfig)
 from qratum_chess.benchmarks.runner import BenchmarkConfig
 
 

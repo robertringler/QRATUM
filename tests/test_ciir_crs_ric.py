@@ -9,19 +9,12 @@ Covers:
 
 from __future__ import annotations
 
-import pytest
 from typing import Optional
 
-from qagents.framework.ciir import (
-    Constraint,
-    ConstraintAlgebra,
-    ObserverMap,
-    State,
-    accessible_state_space,
-)
-from qagents.framework.crs import Action, CRS, FailureMode, NOOP
-from qagents.framework.ric import Intent, RIC, TraceEntry
-
+from qagents.framework.ciir import (Constraint, ConstraintAlgebra, ObserverMap,
+                                    State, accessible_state_space)
+from qagents.framework.crs import CRS, NOOP, Action, FailureMode
+from qagents.framework.ric import RIC, Intent
 
 # ===========================================================================
 # Shared domain fixtures

@@ -1,14 +1,10 @@
 """Tests for PostDijkstra SSSP algorithm."""
 
 from quasim.opt.graph import QGraph
-from quasim.opt.post_dijkstra_sssp import (
-    BucketedFrontier,
-    ClassicalMinimumFinder,
-    DeltaBucket,
-    LowerBoundPruner,
-    PostDijkstraSSSP,
-    QuantumMinimumFinder,
-)
+from quasim.opt.post_dijkstra_sssp import (BucketedFrontier,
+                                           ClassicalMinimumFinder, DeltaBucket,
+                                           LowerBoundPruner, PostDijkstraSSSP,
+                                           QuantumMinimumFinder)
 from quasim.opt.ultra_sssp import dijkstra_baseline, validate_sssp_results
 
 

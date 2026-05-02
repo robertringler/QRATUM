@@ -15,7 +15,8 @@ from typing import Any, Callable
 from uuid import uuid4
 
 from .edges import EdgeGroup, EdgeType, HyperEdge, ParallelismKind
-from .vertices import AIONType, EffectKind, HardwareAffinity, Vertex, VertexType
+from .vertices import (AIONType, EffectKind, HardwareAffinity, Vertex,
+                       VertexType)
 
 
 @dataclass

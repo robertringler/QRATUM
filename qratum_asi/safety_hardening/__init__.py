@@ -14,27 +14,17 @@ Status: Prototype (SI Transition Phase 5)
 Constraints: 8 Fatal Invariants preserved and strengthened
 """
 
-from qratum_asi.safety_hardening.corrigibility import (
-    CorrigibilityCheck,
-    CorrigibilityPreserver,
-    ShutdownCapability,
-)
-from qratum_asi.safety_hardening.invariant_hardener import (
-    HardenedInvariant,
-    ImpossibilityProof,
-    InvariantHardener,
-)
+from qratum_asi.safety_hardening.corrigibility import (CorrigibilityCheck,
+                                                       CorrigibilityPreserver,
+                                                       ShutdownCapability)
+from qratum_asi.safety_hardening.invariant_hardener import (HardenedInvariant,
+                                                            ImpossibilityProof,
+                                                            InvariantHardener)
 from qratum_asi.safety_hardening.scalable_oversight import (
-    NovelDomainHandler,
-    OversightEscalation,
-    ScalableOversight,
-)
-from qratum_asi.safety_hardening.types import (
-    CorrigibilityStatus,
-    InvariantStrength,
-    OversightLevel,
-    SafetyProof,
-)
+    NovelDomainHandler, OversightEscalation, ScalableOversight)
+from qratum_asi.safety_hardening.types import (CorrigibilityStatus,
+                                               InvariantStrength,
+                                               OversightLevel, SafetyProof)
 
 __all__ = [
     # Types

@@ -20,12 +20,7 @@ from dataclasses import replace
 from enum import Enum
 from typing import FrozenSet, Optional, Tuple
 
-from .ciir import (
-    Constraint,
-    State,
-    all_satisfied,
-)
-
+from .ciir import Constraint, State, all_satisfied
 
 # --------------------------------------------------------------------------
 # Action space A

@@ -23,19 +23,11 @@ Status: Production
 __version__ = "1.0.0"
 __author__ = "QRATUM Team"
 
-from .homology import (
-    BettiNumbers,
-    PersistenceDiagram,
-    PersistentHomologyObserver,
-    TopologicalAnnotation,
-    compute_betti_numbers,
-    compute_persistent_homology,
-)
-from .observer import (
-    InvariantAssertion,
-    ObservationResult,
-    TopologicalInstrumentationLayer,
-)
+from .homology import (BettiNumbers, PersistenceDiagram,
+                       PersistentHomologyObserver, TopologicalAnnotation,
+                       compute_betti_numbers, compute_persistent_homology)
+from .observer import (InvariantAssertion, ObservationResult,
+                       TopologicalInstrumentationLayer)
 
 __all__ = [
     "PersistentHomologyObserver",

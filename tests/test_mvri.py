@@ -7,40 +7,17 @@ import math
 import numpy as np
 import pytest
 
-from qagents.mvri import (
-    EPSILON,
-    Action,
-    H,
-    Inv,
-    State,
-    acceptance_rate,
-    causal_structure,
-    constraint_gate,
-    delta_entropy,
-    delta_mutual_information,
-    delta_transfer_entropy,
-    entropy_reduction,
-    forward_model,
-    inject,
-    internal_consistency,
-    make_probe_policy,
-    make_state,
-    probe_policy,
-    reproducibility,
-    run_mvri_loop,
-    structural_stability,
-    validate_action,
-    violation_count,
-)
-from qagents.mvri.demo import (
-    build_initial_state,
-    build_invalid_initial_state,
-    case_a,
-    case_b,
-    case_c,
-    case_d,
-    determinism_check,
-)
+from qagents.mvri import (EPSILON, Action, H, Inv, State, acceptance_rate,
+                          causal_structure, constraint_gate, delta_entropy,
+                          delta_mutual_information, delta_transfer_entropy,
+                          entropy_reduction, forward_model, inject,
+                          internal_consistency, make_probe_policy, make_state,
+                          probe_policy, reproducibility, run_mvri_loop,
+                          structural_stability, validate_action,
+                          violation_count)
+from qagents.mvri.demo import (build_initial_state,
+                               build_invalid_initial_state, case_a, case_b,
+                               case_c, case_d, determinism_check)
 from qagents.mvri.state import ForwardModelError, StateError
 
 # --------------------------------------------------------------------------- #

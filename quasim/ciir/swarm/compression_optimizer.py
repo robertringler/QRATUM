@@ -15,10 +15,7 @@ from dataclasses import dataclass
 import numpy as np
 from numpy.typing import NDArray
 
-from quasim.ciir.swarm.physics_lang import (
-    PhysicsProgram, RuleDecl, UpdateMode,
-)
-
+from quasim.ciir.swarm.physics_lang import PhysicsProgram, RuleDecl
 
 # ================================================================
 # Compression result

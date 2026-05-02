@@ -20,18 +20,12 @@ __version__ = "1.0.0"
 
 # Legacy module imports (from standalone files)
 from qradle.contract_types import Contract, ContractExecution, ContractStatus
-from qradle.contracts.system import ContractExecutor, ContractValidator
-
 # Core engine imports (from core package)
-from qradle.core.engine import DeterministicEngine, ExecutionContext, ExecutionResult
 from qradle.core.invariants import FatalInvariants as CoreFatalInvariants
-from qradle.core.invariants import InvariantViolation
 from qradle.core.merkle import MerkleChain as CoreMerkleChain
-from qradle.core.merkle import MerkleProof
 from qradle.core.rollback import Checkpoint as CoreCheckpoint
 from qradle.core.rollback import RollbackManager as CoreRollbackManager
 from qradle.engine import QRADLEEngine
-from qradle.events.chain import Event, EventChain
 from qradle.invariants import FatalInvariants
 from qradle.merkle import MerkleChain, MerkleNode
 from qradle.rollback import Checkpoint, RollbackManager

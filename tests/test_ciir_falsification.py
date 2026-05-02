@@ -19,7 +19,6 @@ Coverage
 from __future__ import annotations
 
 import numpy as np
-import pytest
 
 # ---------------------------------------------------------------------------
 # Shared helpers
@@ -34,10 +33,7 @@ NOISE = 0.15
 
 def _build(N=N_SMALL):
     from quasim.ciir.multi_qubit.analysis.falsification import (
-        _build_hamiltonian,
-        _build_lindblad_ops,
-        _build_initial_state,
-    )
+        _build_hamiltonian, _build_initial_state, _build_lindblad_ops)
     dim = 2 ** N
     H = _build_hamiltonian(N)
     ops = _build_lindblad_ops(N, GAMMA)
@@ -51,24 +47,28 @@ def _build(N=N_SMALL):
 
 class TestSigmaNumerical:
     def test_positive(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import compute_sigma_numerical
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            compute_sigma_numerical
         s = compute_sigma_numerical(50, 4, 0.01)
         assert s > 0
 
     def test_small(self):
         """σ_numerical must be far below any macroscopic signal (< 1e-8)."""
-        from quasim.ciir.multi_qubit.analysis.falsification import compute_sigma_numerical
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            compute_sigma_numerical
         s = compute_sigma_numerical(50, 4, 0.01)
         assert s < 1e-8
 
     def test_scales_with_n_steps(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import compute_sigma_numerical
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            compute_sigma_numerical
         s1 = compute_sigma_numerical(50, 4, 0.01)
         s2 = compute_sigma_numerical(100, 4, 0.01)
         assert s2 > s1
 
     def test_scales_with_dim(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import compute_sigma_numerical
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            compute_sigma_numerical
         s4 = compute_sigma_numerical(50, 4, 0.01)
         s8 = compute_sigma_numerical(50, 8, 0.01)
         assert s8 > s4
@@ -80,41 +80,48 @@ class TestSigmaNumerical:
 
 class TestRunCIIRTrajectory:
     def test_returns_keys(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_ciir_trajectory
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_ciir_trajectory
         r = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         for k in ("trajectory", "fidelity", "entropy", "model"):
             assert k in r
 
     def test_trajectory_length(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_ciir_trajectory
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_ciir_trajectory
         r = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         assert len(r["trajectory"]) == N_STEPS + 1
 
     def test_fidelity_in_01(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_ciir_trajectory
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_ciir_trajectory
         r = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         fid = r["fidelity"]
         assert np.all(fid >= -1e-9) and np.all(fid <= 1.0 + 1e-9)
 
     def test_density_matrices_hermitian(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_ciir_trajectory
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_ciir_trajectory
         r = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         for rho in r["trajectory"]:
             assert np.allclose(rho, rho.conj().T, atol=1e-10)
 
     def test_density_matrices_trace_one(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_ciir_trajectory
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_ciir_trajectory
         r = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         for rho in r["trajectory"]:
             assert abs(np.trace(rho).real - 1.0) < 1e-9
 
     def test_model_label(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_ciir_trajectory
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_ciir_trajectory
         r = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         assert r["model"] == "CIIR_A"
 
     def test_entropy_non_negative(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_ciir_trajectory
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_ciir_trajectory
         r = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         assert np.all(r["entropy"] >= -1e-10)
 
@@ -125,23 +132,27 @@ class TestRunCIIRTrajectory:
 
 class TestRunNullTrajectory:
     def test_returns_keys(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_null_trajectory
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_null_trajectory
         r = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         for k in ("trajectory", "fidelity", "entropy", "model"):
             assert k in r
 
     def test_model_label(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_null_trajectory
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_null_trajectory
         r = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         assert r["model"] == "NULL_B"
 
     def test_fidelity_in_01(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_null_trajectory
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_null_trajectory
         r = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         assert np.all(r["fidelity"] >= -1e-9) and np.all(r["fidelity"] <= 1.0 + 1e-9)
 
     def test_trace_preserved(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_null_trajectory
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_null_trajectory
         r = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         for rho in r["trajectory"]:
             assert abs(np.trace(rho).real - 1.0) < 1e-9
@@ -155,8 +166,7 @@ class TestSignalDirection:
     def test_ciir_fidelity_exceeds_null(self):
         """Model A (CIIR) fidelity should be ≥ Model B (null) at most time steps."""
         from quasim.ciir.multi_qubit.analysis.falsification import (
-            run_ciir_trajectory, run_null_trajectory,
-        )
+            run_ciir_trajectory, run_null_trajectory)
         c = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         b = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         delta = c["fidelity"] - b["fidelity"]
@@ -166,8 +176,7 @@ class TestSignalDirection:
     def test_final_fidelity_ciir_gt_null(self):
         """At the final step, CIIR should outperform null."""
         from quasim.ciir.multi_qubit.analysis.falsification import (
-            run_ciir_trajectory, run_null_trajectory,
-        )
+            run_ciir_trajectory, run_null_trajectory)
         c = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         b = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         assert c["fidelity"][-1] >= b["fidelity"][-1] - 1e-8
@@ -180,8 +189,7 @@ class TestSignalDirection:
 class TestSignalMetrics:
     def _run(self):
         from quasim.ciir.multi_qubit.analysis.falsification import (
-            run_ciir_trajectory, run_null_trajectory, compute_signal_metrics,
-        )
+            compute_signal_metrics, run_ciir_trajectory, run_null_trajectory)
         c = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         b = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         return compute_signal_metrics(c, b)
@@ -218,8 +226,7 @@ class TestAH1:
     def test_returns_artifact_result(self):
         from quasim.ciir.multi_qubit.analysis.falsification import (
             compute_signal_metrics, run_ciir_trajectory, run_null_trajectory,
-            test_ah1_bond_dimension,
-        )
+            test_ah1_bond_dimension)
         c = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         b = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         delta = compute_signal_metrics(c, b)["delta_O_max"]
@@ -232,8 +239,7 @@ class TestAH1:
         """For exact density matrices (small N) the truncation artifact is tiny."""
         from quasim.ciir.multi_qubit.analysis.falsification import (
             compute_signal_metrics, run_ciir_trajectory, run_null_trajectory,
-            test_ah1_bond_dimension,
-        )
+            test_ah1_bond_dimension)
         c = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         b = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         delta = compute_signal_metrics(c, b)["delta_O_max"]
@@ -245,8 +251,7 @@ class TestAH2:
     def test_returns_artifact_result(self):
         from quasim.ciir.multi_qubit.analysis.falsification import (
             compute_signal_metrics, run_ciir_trajectory, run_null_trajectory,
-            test_ah2_step_size,
-        )
+            test_ah2_step_size)
         c = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         b = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         delta = compute_signal_metrics(c, b)["delta_O_max"]
@@ -258,8 +263,7 @@ class TestAH2:
         """Signal should be stable under step-size halving (RK4 is order-4)."""
         from quasim.ciir.multi_qubit.analysis.falsification import (
             compute_signal_metrics, run_ciir_trajectory, run_null_trajectory,
-            test_ah2_step_size,
-        )
+            test_ah2_step_size)
         c = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         b = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         delta = compute_signal_metrics(c, b)["delta_O_max"]
@@ -271,8 +275,7 @@ class TestAH3:
     def test_returns_artifact_result(self):
         from quasim.ciir.multi_qubit.analysis.falsification import (
             compute_signal_metrics, run_ciir_trajectory, run_null_trajectory,
-            test_ah3_initial_state,
-        )
+            test_ah3_initial_state)
         c = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         b = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         delta = compute_signal_metrics(c, b)["delta_O_max"]
@@ -284,8 +287,7 @@ class TestAH3:
         """ε=1e-6 perturbation should leave ΔO_max stable."""
         from quasim.ciir.multi_qubit.analysis.falsification import (
             compute_signal_metrics, run_ciir_trajectory, run_null_trajectory,
-            test_ah3_initial_state,
-        )
+            test_ah3_initial_state)
         c = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         b = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         delta = compute_signal_metrics(c, b)["delta_O_max"]
@@ -297,8 +299,7 @@ class TestAH4:
     def test_returns_artifact_result(self):
         from quasim.ciir.multi_qubit.analysis.falsification import (
             compute_signal_metrics, run_ciir_trajectory, run_null_trajectory,
-            test_ah4_noise_sensitivity,
-        )
+            test_ah4_noise_sensitivity)
         c = run_ciir_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         b = run_null_trajectory(N_SMALL, N_STEPS, DT, GAMMA, NOISE)
         delta = compute_signal_metrics(c, b)["delta_O_max"]
@@ -310,20 +311,23 @@ class TestAH4:
 
 class TestAH5:
     def test_returns_artifact_result(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import test_ah5_n_scaling
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            test_ah5_n_scaling
         r = test_ah5_n_scaling(N_STEPS, DT, GAMMA, NOISE, N_list=[2, 4])
         assert r.label == "AH-5"
         assert isinstance(r.passed, bool)
 
     def test_passes_for_small_N_list(self):
         """Signal should be positive and bounded for N=2,4 — CIIR geometric prediction."""
-        from quasim.ciir.multi_qubit.analysis.falsification import test_ah5_n_scaling
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            test_ah5_n_scaling
         r = test_ah5_n_scaling(N_STEPS, DT, GAMMA, NOISE, N_list=[2, 4])
         # CIIR predicts bounded positive signal across N (50% code subspace)
         assert r.passed
 
     def test_detail_contains_N_values(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import test_ah5_n_scaling
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            test_ah5_n_scaling
         r = test_ah5_n_scaling(N_STEPS, DT, GAMMA, NOISE, N_list=[2, 4])
         assert "N=" in r.detail or "N_list" in r.detail
 
@@ -334,7 +338,8 @@ class TestAH5:
 
 class TestClassifyVerdict:
     def _fake_artifact(self, passed: bool, label: str = "AH-X"):
-        from quasim.ciir.multi_qubit.analysis.falsification import ArtifactResult
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            ArtifactResult
         return ArtifactResult(
             label=label,
             passed=passed,
@@ -345,27 +350,31 @@ class TestClassifyVerdict:
         )
 
     def test_verdict_A_high_snr_all_pass(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import classify_verdict
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            classify_verdict
         arts = [self._fake_artifact(True, f"AH-{i}") for i in range(1, 6)]
         v = classify_verdict(delta_O_max=0.05, sigma_numerical=1e-13, artifact_results=arts)
         assert v.letter == "A"
 
     def test_verdict_C_low_snr(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import classify_verdict
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            classify_verdict
         arts = [self._fake_artifact(True, f"AH-{i}") for i in range(1, 6)]
         # SNR < 1: delta_O_max < sigma
         v = classify_verdict(delta_O_max=1e-14, sigma_numerical=1e-13, artifact_results=arts)
         assert v.letter == "C"
 
     def test_verdict_B_medium_snr(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import classify_verdict
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            classify_verdict
         arts = [self._fake_artifact(True, f"AH-{i}") for i in range(1, 6)]
         # SNR = 3 (between 1 and 5)
         v = classify_verdict(delta_O_max=3e-13, sigma_numerical=1e-13, artifact_results=arts)
         assert v.letter == "B"
 
     def test_verdict_C_artifact_fail(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import classify_verdict
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            classify_verdict
         arts = [self._fake_artifact(True, f"AH-{i}") for i in range(1, 5)]
         arts.append(self._fake_artifact(False, "AH-5"))  # one failure
         # Any artifact failure → C regardless of SNR
@@ -373,7 +382,8 @@ class TestClassifyVerdict:
         assert v.letter == "C"
 
     def test_verdict_fields(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import classify_verdict
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            classify_verdict
         arts = [self._fake_artifact(True, f"AH-{i}") for i in range(1, 6)]
         v = classify_verdict(delta_O_max=0.05, sigma_numerical=1e-13, artifact_results=arts)
         assert v.snr > 0
@@ -387,7 +397,8 @@ class TestClassifyVerdict:
 
 class TestFullProtocol:
     def _run(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_falsification_protocol
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_falsification_protocol
         return run_falsification_protocol(
             N=2,
             n_steps=15,
@@ -436,21 +447,24 @@ class TestFullProtocol:
 
 class TestSecondaryS1:
     def test_returns_expected_keys(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_s1_stress_regimes
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_s1_stress_regimes
         r = run_s1_stress_regimes(N=2, n_steps=15, dt=0.02, gamma=0.02, noise_strength=0.15)
         for k in ("delta_baseline", "delta_high_entanglement",
                   "delta_long_memory", "delta_rapid_control"):
             assert k in r
 
     def test_all_deltas_non_negative(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_s1_stress_regimes
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_s1_stress_regimes
         r = run_s1_stress_regimes(N=2, n_steps=15, dt=0.02, gamma=0.02, noise_strength=0.15)
         for k in ("delta_baseline", "delta_high_entanglement",
                   "delta_long_memory", "delta_rapid_control"):
             assert r[k] >= 0.0
 
     def test_trends_are_valid_strings(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_s1_stress_regimes
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_s1_stress_regimes
         r = run_s1_stress_regimes(N=2, n_steps=15, dt=0.02, gamma=0.02, noise_strength=0.15)
         valid_trends = {"STRENGTHENED", "WEAKENED", "STABLE"}
         for k in ("trend_high_entanglement", "trend_long_memory", "trend_rapid_control"):
@@ -459,41 +473,47 @@ class TestSecondaryS1:
 
 class TestSecondaryS2:
     def test_returns_expected_keys(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_s2_controller_comparison
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_s2_controller_comparison
         r = run_s2_controller_comparison(N=2, n_steps=15, dt=0.02, gamma=0.02, noise_strength=0.15)
         for k in ("delta_lqr", "delta_pontryagin", "delta_natural_gradient",
                   "geometric_enhances_signal", "nat_grad_vs_lqr_ratio"):
             assert k in r
 
     def test_all_deltas_non_negative(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_s2_controller_comparison
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_s2_controller_comparison
         r = run_s2_controller_comparison(N=2, n_steps=15, dt=0.02, gamma=0.02, noise_strength=0.15)
         assert r["delta_lqr"] >= 0.0
         assert r["delta_pontryagin"] >= 0.0
         assert r["delta_natural_gradient"] >= 0.0
 
     def test_geometric_enhances_is_bool(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_s2_controller_comparison
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_s2_controller_comparison
         r = run_s2_controller_comparison(N=2, n_steps=15, dt=0.02, gamma=0.02, noise_strength=0.15)
         assert isinstance(r["geometric_enhances_signal"], (bool, np.bool_))
 
 
 class TestSecondaryS3:
     def test_returns_expected_keys(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_s3_alpha_consistency
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_s3_alpha_consistency
         r = run_s3_alpha_consistency(N_list=[2, 4], gamma=0.02)
         for k in ("per_N", "n_star_diverge", "all_agree_5pct", "all_in_range"):
             assert k in r
 
     def test_per_N_structure(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_s3_alpha_consistency
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_s3_alpha_consistency
         r = run_s3_alpha_consistency(N_list=[2], gamma=0.02)
         entry = r["per_N"][0]
         for k in ("N", "alpha_spectral", "alpha_hausdorff", "agreement", "both_in_range"):
             assert k in entry
 
     def test_alpha_positive(self):
-        from quasim.ciir.multi_qubit.analysis.falsification import run_s3_alpha_consistency
+        from quasim.ciir.multi_qubit.analysis.falsification import \
+            run_s3_alpha_consistency
         r = run_s3_alpha_consistency(N_list=[2], gamma=0.02)
         for entry in r["per_N"]:
             assert entry["alpha_spectral"] > 0
@@ -508,8 +528,7 @@ class TestEpistemicConstraints:
     def test_ec1_every_verdict_has_counterargument(self):
         """EC-1: every verdict must have a counterargument."""
         from quasim.ciir.multi_qubit.analysis.falsification import (
-            ArtifactResult, classify_verdict,
-        )
+            ArtifactResult, classify_verdict)
         arts = [
             ArtifactResult(f"AH-{i}", True, 0.001, 0.01, "d", "ca")
             for i in range(1, 6)
@@ -521,8 +540,7 @@ class TestEpistemicConstraints:
     def test_ec3_sigma_reported(self):
         """EC-3: σ_numerical must be present in signal metrics."""
         from quasim.ciir.multi_qubit.analysis.falsification import (
-            run_ciir_trajectory, run_null_trajectory, compute_signal_metrics,
-        )
+            compute_signal_metrics, run_ciir_trajectory, run_null_trajectory)
         c = run_ciir_trajectory(2, 10, 0.02, 0.02, 0.15)
         b = run_null_trajectory(2, 10, 0.02, 0.02, 0.15)
         m = compute_signal_metrics(c, b)
@@ -532,9 +550,8 @@ class TestEpistemicConstraints:
     def test_ec4_artifact_is_binary(self):
         """EC-4: artifact hypothesis results are strictly boolean."""
         from quasim.ciir.multi_qubit.analysis.falsification import (
-            test_ah1_bond_dimension, compute_signal_metrics,
-            run_ciir_trajectory, run_null_trajectory,
-        )
+            compute_signal_metrics, run_ciir_trajectory, run_null_trajectory,
+            test_ah1_bond_dimension)
         c = run_ciir_trajectory(2, 10, 0.02, 0.02, 0.15)
         b = run_null_trajectory(2, 10, 0.02, 0.02, 0.15)
         delta = compute_signal_metrics(c, b)["delta_O_max"]

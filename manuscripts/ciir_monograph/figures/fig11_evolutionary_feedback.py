@@ -21,12 +21,13 @@ Publication-quality, 4K-equivalent at 300 DPI.
 """
 
 import matplotlib
+
 matplotlib.use("Agg")
+import warnings
+
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import FancyBboxPatch, FancyArrowPatch, Circle
-from matplotlib import cm
-import warnings
+from matplotlib.patches import Circle
 
 # ── Colour palette ──
 C_BG       = "#FAFAFA"

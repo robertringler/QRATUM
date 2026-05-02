@@ -126,48 +126,25 @@ def check_hybrid_backends() -> dict[str, bool]:
 
 
 # Import core components (defined below in submodules)
-from .backends import (
-    AzureQuantumHybridBackend,
-    BraketHybridBackend,
-    HybridQuantumBackend,
-    HybridQuantumConfig,
-    IBMHybridBackend,
-    IonQHybridBackend,
-    QuantinuumHybridBackend,
-)
-
+from .backends import (AzureQuantumHybridBackend, BraketHybridBackend,
+                       HybridQuantumBackend, HybridQuantumConfig,
+                       IBMHybridBackend, IonQHybridBackend,
+                       QuantinuumHybridBackend)
 # Import orchestrator components
-from .orchestrator import (
-    ExecutionContext,
-    ExecutionMode,
-    FailureType,
-    FallbackStrategy,
-    HybridQuantumOrchestrator,
-    OrchestratorStatus,
-    QuantumVerificationError,
-    TrustMetric,
-)
+from .orchestrator import (ExecutionContext, ExecutionMode, FailureType,
+                           FallbackStrategy, HybridQuantumOrchestrator,
+                           OrchestratorStatus, QuantumVerificationError,
+                           TrustMetric)
 from .provenance import ProvenanceRecord, QuantumProvenanceWrapper
-
 # Import reinjection engine
-from .reinjection_engine import (
-    MerkleTreeBuilder,
-    PreValidationScore,
-    ProposalArtifact,
-    ProposalCluster,
-    ProposalStatus,
-    ReinjectionEvaluationEngine,
-)
+from .reinjection_engine import (MerkleTreeBuilder, PreValidationScore,
+                                 ProposalArtifact, ProposalCluster,
+                                 ProposalStatus, ReinjectionEvaluationEngine)
 from .rollback import DualApprovalGate, RollbackManager
-
 # Import enhanced topological observer
-from .topological_observer import (
-    CollapseMetrics,
-    DiagnosticCategory,
-    DiagnosticFinding,
-    DiagnosticSeverity,
-    EnhancedTopologicalObserver,
-    FidelityMetrics,
-    TopologicalObservation,
-)
-from .verification import QuantumVerifier, TopologicalDiagnosticObserver, VerificationResult
+from .topological_observer import (CollapseMetrics, DiagnosticCategory,
+                                   DiagnosticFinding, DiagnosticSeverity,
+                                   EnhancedTopologicalObserver,
+                                   FidelityMetrics, TopologicalObservation)
+from .verification import (QuantumVerifier, TopologicalDiagnosticObserver,
+                           VerificationResult)

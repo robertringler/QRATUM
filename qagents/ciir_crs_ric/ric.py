@@ -24,7 +24,6 @@ from typing import FrozenSet, Optional
 from .ciir import Observation
 from .crs import Action
 
-
 # --------------------------------------------------------------------------
 # Intent space I
 # --------------------------------------------------------------------------

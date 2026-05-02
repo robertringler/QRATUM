@@ -11,16 +11,6 @@ Provides the foundational components for deterministic, auditable execution:
 from .core import (FATAL_INVARIANTS, ContractStatus, Event, EventType,
                    PlatformContract, PlatformIntent,
                    create_contract_from_intent, create_event)
-from .core import (
-    FATAL_INVARIANTS,
-    ContractStatus,
-    Event,
-    EventType,
-    PlatformContract,
-    PlatformIntent,
-    create_contract_from_intent,
-    create_event,
-)
 from .event_chain import MerkleEventChain
 from .orchestrator import PlatformOrchestrator
 from .substrates import ComputeSubstrate, SubstrateSelector

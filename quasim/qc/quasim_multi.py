@@ -657,7 +657,7 @@ class MultiQubitSimulator:
             from quasim.holo.anti_tensor import compress as ahtc_compress
 
             compressed_state, fidelity, metadata = ahtc_compress(self.state, fidelity=0.995)
-            
+
             # Flatten the compressed_state dictionary for npz serialization
             # Extract cores (U, S, Vh) as separate arrays
             U, S, Vh = compressed_state['cores']
@@ -669,7 +669,7 @@ class MultiQubitSimulator:
             checkpoint_data["matrix_shape"] = np.array(compressed_state['matrix_shape'])
             checkpoint_data["method"] = compressed_state['method']
             checkpoint_data["ranks"] = np.array(compressed_state['ranks'])
-            
+
             checkpoint_data["fidelity"] = fidelity
             checkpoint_data["compression_metadata"] = metadata
         else:
@@ -726,7 +726,7 @@ class MultiQubitSimulator:
                 'method': str(checkpoint["method"]),
                 'ranks': list(checkpoint["ranks"]),
             }
-            
+
             self.state = decompress(compressed_state)
         else:
             self.state = checkpoint["state"]

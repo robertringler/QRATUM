@@ -9,15 +9,10 @@ Generates variant physics programs via:
 from __future__ import annotations
 
 import copy
-from dataclasses import dataclass
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.swarm.physics_lang import (
-    PhysicsProgram, RuleDecl, StateDecl,
-)
-
+from quasim.ciir.swarm.physics_lang import PhysicsProgram, StateDecl
 
 # ================================================================
 # Hypothesis Mutator agent

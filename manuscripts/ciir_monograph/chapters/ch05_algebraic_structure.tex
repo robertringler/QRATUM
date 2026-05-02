@@ -282,6 +282,106 @@ theory reduces to a classical interface model.  This is the CIIR
 analogue of the classical limit $\hbar \to 0$ in quantum mechanics.
 \end{remark}
 
+\begin{proposition}[Normalization of $\hbar_{\mathrm{eff}}$]
+\label{prop:5.1.normalization}
+The expression for $\hbar_{\mathrm{eff}}$ in
+Definition~\textup{\ref{def:5.5}} is a well-defined normalization on
+every cognitive system $X$ satisfying
+Axioms~\textup{\ref{ax:4.1}}--\textup{\ref{ax:4.6}}.  Specifically:
+\begin{enumerate}
+  \item[\textup{(N1)}] \textbf{Existence and finiteness of inputs.}
+    By Axiom~\textup{\ref{ax:4.2}},
+    $\kappa_{\max} := \sup_{m\in\CM}\kappa(m) < \infty$, and by
+    Definition~\textup{\ref{def:3.6}}, $\mathrm{vol}(\CM) =
+    \int_\CM d\mu_g \in (0, \infty]$ exists.  In particular,
+    the product $\kappa_{\max}\cdot\mathrm{vol}(\CM)$ is well-defined
+    in $[0, \infty]$.
+  \item[\textup{(N2)}] \textbf{Range.} The map
+    $X \mapsto \hbar_{\mathrm{eff}}(X) := 1 / (\kappa_{\max}\cdot
+    \mathrm{vol}(\CM))$ takes values in
+    $[0, \infty]$, with the boundary cases interpreted as in
+    Definition~\textup{\ref{def:5.5}}: $\hbar_{\mathrm{eff}} = 0$
+    when $\mathrm{vol}(\CM) = \infty$
+    \textup{(}case HR2 of Axiom~\textup{\ref{ax:4.4}})\textup{,} and
+    $\hbar_{\mathrm{eff}} = \infty$ in the degenerate limit
+    $\kappa_{\max}\cdot\mathrm{vol}(\CM) \to 0$.
+  \item[\textup{(N3)}] \textbf{Dimensional consistency.}
+    Both $\kappa$ and $d\mu_g$ are constructed from the constraint
+    geometry $(\CM, g)$ \textup{(}Definitions~\textup{\ref{def:3.6},
+    \ref{def:3.8})}, so $\hbar_{\mathrm{eff}}$ is a pure scalar
+    invariant of the constraint manifold; in particular, it is
+    invariant under isometries of $(\CM, g)$ and depends on no
+    auxiliary choice of basis or frame.
+  \item[\textup{(N4)}] \textbf{Classical-limit consistency.}
+    If $\kappa \equiv 0$ \textup{(}flat constraint manifold\textup{)},
+    then $\kappa_{\max} = 0$, the formula degenerates, and the
+    constraint generators commute by Theorem~\textup{\ref{thm:5.1}}
+    (CR1).  This is consistent with
+    Remark~\textup{\ref{rem:5.2}}: the classical limit
+    $\hbar_{\mathrm{eff}} \to 0$ corresponds either to
+    $\mathrm{vol}(\CM) \to \infty$ \textup{(}Axiom~\textup{\ref{ax:4.4}}
+    HR2\textup{)} or to vanishing curvature
+    \textup{(}Theorem~\textup{\ref{thm:5.1}} CR1\textup{)}.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(N1) follows from Axiom~\ref{ax:4.2} and the definition of
+$d\mu_g$ in Definition~\ref{def:3.6}.  (N2) is direct from (N1) and
+the limiting cases declared in Definition~\ref{def:5.5}.  (N3) is the
+observation that $\kappa$ is the curvature scalar of the Levi-Civita
+connection (Definitions~\ref{def:3.5}, \ref{def:3.8}) and $d\mu_g$
+is the Riemannian volume form (Definition~\ref{def:3.6}); both are
+isometry invariants of $(\CM, g)$, so their product (and therefore
+its reciprocal) is also an isometry invariant.  (N4) collects the
+two limit regimes already identified in Definition~\ref{def:5.5}
+and Remark~\ref{rem:5.2} and matches each with a consequence of
+Theorem~\ref{thm:5.1}.
+\end{proof}
+
+\begin{remark}[Scope of Definition~\ref{def:5.5} as a normalization
+  choice; closure of ledger gap G-M3]
+\label{rem:5.2.scope}
+The construction in Definition~\ref{def:5.5} is best understood as a
+\emph{normalization choice} for the cognitive system $X$, not a
+universal physical constant in the sense of Planck's constant
+$\hbar$ in quantum mechanics:
+\begin{itemize}
+  \item Different cognitive systems $X, X'$ in general have different
+    constraint manifolds $(\CM_X, g_X)$ and so different values
+    $\hbar_{\mathrm{eff}}(X), \hbar_{\mathrm{eff}}(X')$.  CIIR makes
+    no claim of cross-system universality: each system carries its
+    own $\hbar_{\mathrm{eff}}$, well-defined by
+    Proposition~\textup{\ref{prop:5.1.normalization}}.
+  \item For applications where the curvature-integral form of
+    Definition~\textup{\ref{def:5.5}} is unmotivated by the
+    underlying constraint geometry, $\hbar_{\mathrm{eff}}$ is to
+    be treated as a \emph{free per-system parameter} of the
+    cognitive system, constrained only by
+    $\hbar_{\mathrm{eff}} \in [0, \infty]$ and the dimensional
+    consistency requirement (N3) of
+    Proposition~\textup{\ref{prop:5.1.normalization}}.  All
+    downstream results that invoke
+    Definition~\textup{\ref{def:5.5}}
+    \textup{(}Theorem~\textup{\ref{thm:5.1}},
+    Definition~\textup{\ref{def:7.2}},
+    Theorem~\textup{\ref{thm:7.1}},
+    Proposition~\textup{8.3} of
+    Chapter~\textup{8}\textup{)}
+    remain valid in this free-parameter reading because they
+    depend only on $\hbar_{\mathrm{eff}}$ being a positive scalar
+    invariant of the constraint manifold, not on its specific
+    curvature-integral form.
+\end{itemize}
+This explicit declaration closes the ledger gap G-M3 of
+\texttt{CIIR\_PROOF\_LEDGER\_v0.1.md}~\S5.4 jointly along both
+options listed there: a normalization theorem
+(\textup{Proposition~\textup{\ref{prop:5.1.normalization}}}) is
+provided, \emph{and} an explicit free-per-system-parameter
+declaration is provided.  See \texttt{CIIR\_PROOF\_LEDGER\_v0.1.md}~\S7.4
+for the full closure record.
+\end{remark}
+
 \begin{definition}[Holonomy Operator]
 \label{def:5.6}
 The \emph{holonomy operator} associated with the pair $(e_i, e_j)$ is
@@ -508,7 +608,8 @@ vacuum exists, the corresponding density operator is
 $\rho_0 := |\psi_0\rangle\langle\psi_0| \in \mathfrak{D}(\HC)$.
 \end{definition}
 
-\begin{lemma}[Uniqueness of the Constraint Vacuum]
+\begin{lemma}[Uniqueness of the Constraint Vacuum
+  (Conditional on Irreducibility of $\CK(\HC)$)]
 \label{lem:5.5}
 If the constraint operator algebra $\CK(\HC)$ acts irreducibly on
 $\HC$, then the constraint vacuum \textup{(}if it exists\textup{)} is
@@ -532,6 +633,46 @@ the kernels of all $\hatC_i$, which is at most one-dimensional in each
 irreducible component where it is non-trivial.  Uniqueness up to phase
 follows when $\dim V_0 = 1$.
 \end{proof}
+
+\begin{remark}[Scope of Lemma~\ref{lem:5.5} and the irreducibility
+  hypothesis; closure of ledger gap G-L3]
+\label{rem:5.5.scope}
+Lemma~\ref{lem:5.5} is a \emph{conditional} uniqueness result.  Its
+hypothesis — that the constraint operator algebra $\CK(\HC)$ acts
+irreducibly on $\HC$ — is not asserted as a property of every
+CIIR system, nor is it elevated to an axiom.  Concretely:
+\begin{itemize}
+  \item Irreducibility of $\CK(\HC)$ is a \emph{structural} property
+    of the cognitive system $X$.  It holds, for example, whenever
+    $\HC$ is generated cyclically from any non-zero vector by
+    polynomials in the constraint generators $\{\hatC_i\}$ and the
+    identity, but it can fail when $\HC$ admits a non-trivial
+    superselection decomposition
+    (Definition~\textup{\ref{def:5.11}}).
+  \item In the reducible case, Lemma~\ref{lem:5.5}'s proof already
+    decomposes $\HC$ into irreducible subrepresentations; uniqueness
+    up to phase then holds within each irreducible component but
+    not globally.  This sector-wise weakening is the operative
+    statement when irreducibility of $\CK(\HC)$ on the full space
+    $\HC$ cannot be established.
+  \item The same conditional pattern reappears in
+    Theorem~\textup{\ref{thm:7.4}(iii)}: equilibrium uniqueness
+    holds \emph{conditional on} irreducibility of $\CK(\HC)$.  When
+    irreducibility fails, Theorem~\textup{\ref{thm:7.4}(iv)}
+    delivers a sector-decomposed equilibrium structure rather than
+    a unique state.
+\end{itemize}
+Stating the conditionality explicitly in the lemma header (and in
+Theorem~\textup{\ref{thm:7.4}(iii)}) closes the ledger gap G-L3 of
+\texttt{CIIR\_PROOF\_LEDGER\_v0.1.md}~\S5.5 along the closure path
+recorded there: irreducibility is neither demoted to an axiom nor
+proved as a theorem of every CIIR system; instead, both uniqueness
+claims are now stated as \emph{conditional}, with the
+sector-decomposed fallback (Lemma~\textup{\ref{lem:5.5}} body and
+Theorem~\textup{\ref{thm:7.4}(iv)}) supplying the unconditional
+content.  See \texttt{CIIR\_PROOF\_LEDGER\_v0.1.md}~\S7.5 for the
+full closure record.
+\end{remark}
 
 % ============================================================
 \subsection{GNS Construction and the CIIR Representation Theorem}

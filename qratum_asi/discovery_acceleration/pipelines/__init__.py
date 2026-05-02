@@ -15,21 +15,16 @@ Status: Production Ready
 QuASIM: v2025.12.26
 """
 
-from qratum_asi.discovery_acceleration.pipelines.climate_gene import (
-    ClimateGenePipeline,
-)
-from qratum_asi.discovery_acceleration.pipelines.economic_bio import (
-    EconomicBioPipeline,
-)
-from qratum_asi.discovery_acceleration.pipelines.longevity import (
-    LongevityPipeline,
-)
-from qratum_asi.discovery_acceleration.pipelines.natural_compound import (
-    NaturalCompoundPipeline,
-)
-from qratum_asi.discovery_acceleration.pipelines.personalized_drug import (
-    PersonalizedDrugPipeline,
-)
+from qratum_asi.discovery_acceleration.pipelines.climate_gene import \
+    ClimateGenePipeline
+from qratum_asi.discovery_acceleration.pipelines.economic_bio import \
+    EconomicBioPipeline
+from qratum_asi.discovery_acceleration.pipelines.longevity import \
+    LongevityPipeline
+from qratum_asi.discovery_acceleration.pipelines.natural_compound import \
+    NaturalCompoundPipeline
+from qratum_asi.discovery_acceleration.pipelines.personalized_drug import \
+    PersonalizedDrugPipeline
 
 __all__ = [
     "PersonalizedDrugPipeline",

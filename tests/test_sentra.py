@@ -1,6 +1,7 @@
 """Tests for SENTRA Aerospace & Defense module."""
 
-from qratum_platform.core import ComputeSubstrate, PlatformContract, PlatformIntent, VerticalModule
+from qratum_platform.core import (ComputeSubstrate, PlatformContract,
+                                  PlatformIntent, VerticalModule)
 from verticals.sentra import SENTRAModule
 
 

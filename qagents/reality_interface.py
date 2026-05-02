@@ -364,7 +364,6 @@ class LinearSimulator:
         system_limits: Mapping[str, Any],
     ) -> Any:
         """Make LinearSimulator callable as simulator(type, magnitude, world, limits) -> PredictedOutcome."""
-        from dataclasses import dataclass  # noqa: PLC0415
         action = {"type": action_type, "magnitude": magnitude}
         expected = self.predict(world_state, action)
         # Compute simple risk and stability heuristics

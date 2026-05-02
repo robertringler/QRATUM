@@ -13,10 +13,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from qagents.control_geometry.sensitivity import (
-    DEFAULT_EPS,
-    sensitivity_probe,
-)
+from qagents.control_geometry.sensitivity import DEFAULT_EPS, sensitivity_probe
 from qagents.mvri.action_space import Action
 from qagents.mvri.state import State
 

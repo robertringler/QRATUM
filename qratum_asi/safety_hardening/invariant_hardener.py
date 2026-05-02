@@ -10,13 +10,10 @@ from typing import Any
 
 from qratum_asi.core.chain import ASIMerkleChain
 from qratum_asi.core.events import ASIEvent, ASIEventType
-from qratum_asi.safety_hardening.types import (
-    FATAL_INVARIANTS,
-    InvariantStrength,
-    ProofType,
-    SafetyProof,
-    SafetyViolationAttempt,
-)
+from qratum_asi.safety_hardening.types import (FATAL_INVARIANTS,
+                                               InvariantStrength, ProofType,
+                                               SafetyProof,
+                                               SafetyViolationAttempt)
 
 
 @dataclass

@@ -44,24 +44,32 @@
 \section{Measurement Theory \& Constraint-Induced Distortion}
 \label{sec:ch8:measurement}
 
-This chapter derives the measurement process in CIIR from first
-principles.  No new axioms are introduced; every result follows from
-Axioms~\ref{ax:4.1}--\ref{ax:4.6} and the algebraic and dynamical
-structures of Chapters~5--7.
+This chapter develops the measurement process in CIIR from the axiom
+system of Chapter~4 and the algebraic and dynamical structures of
+Chapters~5--7.  No new axioms are introduced.
 
-The central thesis is that Axiom~\ref{ax:4.5} (Measurement Collapse)
-is not an independent postulate but is \emph{derivable} from the
-interface map structure (Axiom~\ref{ax:4.3}), the observable algebra
-(Definition~\ref{def:3.20}), and the spectral theorem
-(Lemma~\ref{lem:3.7}).
+Throughout this chapter the Born rule is the content of
+Axiom~\ref{ax:4.5}(MC1).  Theorem~\ref{thm:8.2} below shows how that
+rule \emph{propagates} through the CPTP interface map
+(Axiom~\ref{ax:4.3}/Definition~\ref{def:3.18}) and the observable
+algebra (Definition~\ref{def:3.20}) onto the spectral measure of any
+constraint observable, yielding the explicit form
+$p(\Delta) = \Tr(E^{\hatO}(\Delta)\,\rho)$.  In this sense
+Theorem~\ref{thm:8.2} is a \emph{compatibility} statement: it does
+\emph{not} replace Axiom~\ref{ax:4.5} by a Gleason-style derivation
+from non-contextual probability assignments.  See
+Remark~\ref{rem:8.born-status} for a full discussion of this point and
+its place in the proof ledger.
 
 The central results are:
 \begin{enumerate}
   \item Measurement operators (PVM and POVM) are \emph{constructed}
     from the constraint operator algebra $\CK(\HC)$ and the observable
     algebra $\CA(\HC)$ (Theorem~\ref{thm:8.1}).
-  \item The Born rule is \emph{derived} from the trace structure of the
-    interface map (Theorem~\ref{thm:8.2}).
+  \item The Born rule of Axiom~\ref{ax:4.5}(MC1) is shown to
+    \emph{propagate} through the trace structure of the interface
+    map onto the spectral measure of any constraint observable
+    (Theorem~\ref{thm:8.2}); see also Remark~\ref{rem:8.born-status}.
   \item The measurement update rule is derived as a completely positive,
     trace-non-increasing map (Theorem~\ref{thm:8.3}).
   \item The constraint-induced distortion map satisfies a metric
@@ -274,13 +282,17 @@ $\CB(\CR_{\mathrm{op}})$ via the dilation isomorphism.
 \end{proof}
 
 % ============================================================
-\subsection{Derivation of the Born Rule}
+\subsection{Compatibility of the Born Rule with the Interface Map}
 \label{sec:ch8:born}
 % ============================================================
 
-We now derive the Born probability rule from the trace structure of the
-interface map, showing it is a consequence of the CIIR axioms rather
-than an independent postulate.
+We now show that the Born rule of Axiom~\ref{ax:4.5}(MC1) propagates
+through the CPTP interface map onto the spectral measure of an
+arbitrary constraint observable.  No probabilistic axiom beyond
+Axiom~\ref{ax:4.5} is introduced; in particular, this subsection is
+\emph{not} a Gleason-style independent derivation of the Born rule
+from non-contextual probability assignments
+(see Remark~\ref{rem:8.born-status}).
 
 \begin{definition}[Measurement Probability Functional]
 \label{def:8.5}
@@ -342,7 +354,7 @@ where $\Phi$ is the interface map
 (Definition~\ref{def:3.18}/Axiom~\ref{ax:4.3}).
 \end{definition}
 
-\begin{theorem}[Derivation of the Born Rule]
+\begin{theorem}[Born-Rule Compatibility of the Interface Map]
 \label{thm:8.2}
 Let $X$ be a cognitive system satisfying
 Axioms~\textup{\ref{ax:4.1}}--\textup{\ref{ax:4.6}}, let
@@ -355,7 +367,7 @@ $\Delta \subseteq \mathbb{R}$ is
 \[
   p(\Delta) = \Tr(E^{\hatO}(\Delta)\,\rho).
 \]
-This identity is a consequence of:
+This identity follows from:
 \begin{enumerate}
   \item[\textup{(i)}] the complete positivity and trace preservation
     of $\Phi$ \textup{(}Definition~\textup{\ref{def:3.18}(I1)--(I2))},
@@ -363,9 +375,14 @@ This identity is a consequence of:
     \textup{(}Lemma~\textup{\ref{lem:3.7})}, and
   \item[\textup{(iii)}] the state functional
     $\omega_\rho(A) = \Tr(\rho\,A)$
-    \textup{(}Definition~\textup{\ref{def:5.9})}.
+    \textup{(}Definition~\textup{\ref{def:5.9})}, which is the
+    algebraic restatement of Axiom~\textup{\ref{ax:4.5}(MC1)}.
 \end{enumerate}
-In particular, Axiom~\textup{\ref{ax:4.5}(MC1)} is derived, not assumed.
+The theorem therefore states that Axiom~\textup{\ref{ax:4.5}(MC1)} is
+\emph{compatible} with — and is propagated by — the interface-map and
+spectral-measure structure; it does \emph{not} replace
+Axiom~\textup{\ref{ax:4.5}} by an independent derivation
+(cf.~Remark~\textup{\ref{rem:8.born-status}}).
 \end{theorem}
 
 \begin{proof}
@@ -398,17 +415,61 @@ function $f = \chi_\Delta$, $\mu(\Delta) = \omega_\rho(E^{\hatO}(\Delta))
 The density operator $\rho = \Phi(\sigma)$ arises from the CPTP
 interface map.  Since $\Phi$ is trace-preserving
 (Definition~\ref{def:3.18}(I2)), we have $\Tr(\rho) = \Tr(\sigma) = 1$,
-so $\rho \in \mathfrak{D}(\HC)$.  The Born rule
-$p(\Delta) = \Tr(E^{\hatO}(\Delta)\,\rho)$ is therefore a
-\emph{derived} consequence of:
-(a)~the positive normalised functional $\omega_\rho$ induced by the
-interface map, (b)~the spectral decomposition theorem, and
-(c)~the Riesz representation theorem.
+so $\rho \in \mathfrak{D}(\HC)$.  The Born expression
+$p(\Delta) = \Tr(E^{\hatO}(\Delta)\,\rho)$ is therefore the
+propagation of Axiom~\ref{ax:4.5}(MC1) along
+(a)~the positive normalised functional $\omega_\rho$ associated with
+the interface-induced state, (b)~the spectral decomposition theorem,
+and (c)~the Riesz representation theorem.
 
-No independent probabilistic axiom is required.
+This is a compatibility / propagation result; it does not eliminate
+Axiom~\ref{ax:4.5}.
 \end{proof}
 
-\begin{corollary}[Born Rule for Discrete Spectra]
+\begin{remark}[Status of the Born rule in CIIR; closure of ledger gaps
+\textnormal{G-L1, G-S4}]
+\label{rem:8.born-status}
+The Born rule occurs in two places in this monograph.
+\begin{enumerate}
+  \item[(a)] As Axiom~\ref{ax:4.5}(MC1) in Chapter~4, where it is
+    \emph{posited} as part of the CIIR axiom system.
+  \item[(b)] As Theorem~\ref{thm:8.2} above, where the same expression
+    $p(\Delta) = \Tr(E^{\hatO}(\Delta)\,\rho)$ is recovered for the
+    interface-induced state $\rho = \Phi(\sigma)$.
+\end{enumerate}
+Step~1 of the proof of Theorem~\ref{thm:8.2} invokes the state
+functional $\omega_\rho(A) = \Tr(\rho\,A)$ of
+Definition~\ref{def:5.9}.  That definition is itself the algebraic
+restatement of (MC1): it asserts that the probability functional on
+$\CA(\HC)$ induced by $\rho$ has the trace form.  Consequently
+Theorem~\ref{thm:8.2} does \emph{not} derive (MC1) from weaker
+probabilistic premises; rather, it shows that (MC1) is internally
+consistent with — and propagates correctly through — the
+interface-map and spectral-measure structure of CIIR.
+
+A genuinely independent derivation of the Born rule would proceed via
+Gleason's theorem (resp.~Busch's theorem for POVMs): start from a
+non-contextual frame functional on the projection lattice (resp.~on
+the effect algebra) of $\HC$ in dimension $\geq 3$ and a $\sigma$-
+additivity condition, and conclude that every such functional has the
+form $A \mapsto \Tr(\rho\,A)$ for a unique $\rho \in
+\mathfrak{D}(\HC)$.  Such a derivation would let
+Definition~\ref{def:5.9} and Axiom~\ref{ax:4.5}(MC1) be replaced by a
+single \emph{theorem} of CIIR, eliminating the redundancy.
+
+This monograph (v0.x) takes the conservative path: Axiom~\ref{ax:4.5}
+is the primary statement of the Born rule, Definition~\ref{def:5.9}
+is its algebraic restatement, and Theorem~\ref{thm:8.2} is a
+consistency / propagation result.  The Gleason-style upgrade is
+deferred to a future revision and is recorded in the proof ledger as
+the closure path for ledger items
+\textnormal{G-L1} (circular derivation) and
+\textnormal{G-S4} (axiom-vs-theorem overlap).  See
+\texttt{manuscripts/ciir\_monograph/CIIR\_PROOF\_LEDGER\_v0.1.md},
+\S{}4.1--4.2 and \S{}5 (Priority~1).
+\end{remark}
+
+\begin{corollary}[Born-Rule Compatibility for Discrete Spectra]
 \label{cor:8.1}
 If $\hatO$ has a discrete spectrum
 $\sigma(\hatO) = \{\lambda_1, \lambda_2, \ldots\}$ with spectral
@@ -1733,14 +1794,21 @@ D~\ref{def:8.22} & Distortion entropy &
     (D~\ref{def:8.22}) is compatible with the entropy production
     results of Theorem~\ref{thm:7.5}.
 
-  \item \textbf{Axiom 4.5 status:}
-    Axiom~\ref{ax:4.5} (Measurement Collapse) is now a
-    \emph{theorem}: the Born rule (MC1) is
-    Theorem~\ref{thm:8.2}, the state update (MC2) is
-    Theorem~\ref{thm:8.3}(i)--(ii), and repeatability (MC3) is
-    Theorem~\ref{thm:8.3}(ii).  The axiom can be replaced by a
-    theorem in the logical structure of CIIR, reducing the
-    independent axiom count from 6 to 5.
+  \item \textbf{Axiom 4.5 status (revised; ledger items G-L1, G-S4).}
+    Axiom~\ref{ax:4.5} (Measurement Collapse) remains an
+    \emph{axiom} of CIIR in the present version of this monograph.
+    Theorem~\ref{thm:8.2} establishes that the Born rule (MC1)
+    \emph{propagates} consistently through the interface map and the
+    spectral calculus; Theorem~\ref{thm:8.3} establishes the same for
+    state update (MC2) and repeatability (MC3).  These results are
+    compatibility / consistency statements, not Gleason-style
+    independent derivations, since their proofs invoke
+    Definition~\ref{def:5.9} which is the algebraic restatement of
+    (MC1).  A future revision may replace Axiom~\ref{ax:4.5} by a
+    Gleason / Busch-style theorem, at which point the independent
+    axiom count would drop from 6 to 5; until then, the count is 6.
+    See Remark~\ref{rem:8.born-status} and
+    \texttt{CIIR\_PROOF\_LEDGER\_v0.1.md} \S{}5 (Priority~1).
 \end{enumerate}
 
 % ============================================================
@@ -1763,8 +1831,8 @@ CIIR POVM & D~\ref{def:8.4} &
   D~\ref{def:8.3} \\
 Meas.\ ops constr.\ (T~\ref{thm:8.1}) & Thm.~\ref{thm:8.1} &
   L~\ref{lem:8.1}, D~\ref{def:3.18}, P~\ref{prop:3.4} \\
-Born rule (T~\ref{thm:8.2}) & Thm.~\ref{thm:8.2} &
-  D~\ref{def:5.9}, L~\ref{lem:8.2}, L~\ref{lem:3.7} \\
+Born-rule compat.\ (T~\ref{thm:8.2}) & Thm.~\ref{thm:8.2} &
+  Ax.~\ref{ax:4.5}, D~\ref{def:5.9}, L~\ref{lem:8.2}, L~\ref{lem:3.7} \\
 Meas.\ update (T~\ref{thm:8.3}) & Thm.~\ref{thm:8.3} &
   T~\ref{thm:8.2}, T~\ref{thm:7.3} \\
 Distortion contraction (T~\ref{thm:8.4}) & Thm.~\ref{thm:8.4} &

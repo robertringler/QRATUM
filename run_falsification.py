@@ -32,12 +32,8 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).parent))
 
 from quasim.ciir.multi_qubit.analysis.falsification import (
-    PROTOCOL_PARAMS,
-    run_falsification_protocol,
-    ArtifactResult,
-    FalsificationVerdict,
-)
-
+    PROTOCOL_PARAMS, ArtifactResult, FalsificationVerdict,
+    run_falsification_protocol)
 
 # ────────────────────────────────────────────────────────────────
 # FORMATTING HELPERS

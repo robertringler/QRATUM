@@ -49,82 +49,47 @@ Usage:
 
 # Type definitions
 # Audit
-from qratum_asi.reinjection.audit import (
-    DOMAIN_COMPLIANCE_FRAMEWORKS,
-    AuditReport,
-    AuditReportGenerator,
-    ComplianceCheck,
-)
-
+from qratum_asi.reinjection.audit import (DOMAIN_COMPLIANCE_FRAMEWORKS,
+                                          AuditReport, AuditReportGenerator,
+                                          ComplianceCheck)
 # Autonomous orchestrator
 from qratum_asi.reinjection.autonomous_orchestrator import (
-    CROSS_VERTICAL_DEPENDENCIES,
-    ArtifactSensitivity,
-    AutonomousReinjectionOrchestrator,
-    DiscoveryArtifact,
-    PropagationResult,
-    PropagationTarget,
-    ReinjectionStatusSummary,
-    SystemState,
-    create_artifact_from_discovery_result,
-)
-
+    CROSS_VERTICAL_DEPENDENCIES, ArtifactSensitivity,
+    AutonomousReinjectionOrchestrator, DiscoveryArtifact, PropagationResult,
+    PropagationTarget, ReinjectionStatusSummary, SystemState,
+    create_artifact_from_discovery_result)
 # Contracts
-from qratum_asi.reinjection.contracts import (
-    ApprovalRecord,
-    ReinjectionContract,
-    ReinjectionContractStatus,
-    create_reinjection_contract,
-)
-
+from qratum_asi.reinjection.contracts import (ApprovalRecord,
+                                              ReinjectionContract,
+                                              ReinjectionContractStatus,
+                                              create_reinjection_contract)
 # Core engine
 from qratum_asi.reinjection.engine import (
-    ReinjectionCycleResult,
-    ReinjectionEngine,
-    create_synthetic_discovery_candidate,
-)
-
+    ReinjectionCycleResult, ReinjectionEngine,
+    create_synthetic_discovery_candidate)
 # Mapper
-from qratum_asi.reinjection.mapper import (
-    DOMAIN_PRIOR_TYPES,
-    DiscoveryPriorMapper,
-    MappingResult,
-    PriorUpdate,
-)
-
+from qratum_asi.reinjection.mapper import (DOMAIN_PRIOR_TYPES,
+                                           DiscoveryPriorMapper, MappingResult,
+                                           PriorUpdate)
 # Sandbox
-from qratum_asi.reinjection.sandbox import (
-    RollbackTest,
-    SandboxOrchestrator,
-    SandboxState,
-)
-
+from qratum_asi.reinjection.sandbox import (RollbackTest, SandboxOrchestrator,
+                                            SandboxState)
 # SOI Telemetry integration
-from qratum_asi.reinjection.soi_telemetry import (
-    EvolutionDataPoint,
-    OptionalityMetrics,
-    SOIReinjectionTelemetry,
-    TelemetryEvent,
-)
-from qratum_asi.reinjection.types import (
-    AuditRecord,
-    DiscoveryDomain,
-    ReinjectionCandidate,
-    ReinjectionResult,
-    ReinjectionScore,
-    ReinjectionStatus,
-    SandboxResult,
-    ValidationLevel,
-)
-
+from qratum_asi.reinjection.soi_telemetry import (EvolutionDataPoint,
+                                                  OptionalityMetrics,
+                                                  SOIReinjectionTelemetry,
+                                                  TelemetryEvent)
+from qratum_asi.reinjection.types import (AuditRecord, DiscoveryDomain,
+                                          ReinjectionCandidate,
+                                          ReinjectionResult, ReinjectionScore,
+                                          ReinjectionStatus, SandboxResult,
+                                          ValidationLevel)
 # Validator
-from qratum_asi.reinjection.validator import (
-    DOMAIN_CONFIDENCE_THRESHOLDS,
-    MINIMUM_COMPOSITE_SCORE,
-    MINIMUM_MUTUAL_INFORMATION,
-    ReinjectionValidator,
-    ValidationResult,
-)
+from qratum_asi.reinjection.validator import (DOMAIN_CONFIDENCE_THRESHOLDS,
+                                              MINIMUM_COMPOSITE_SCORE,
+                                              MINIMUM_MUTUAL_INFORMATION,
+                                              ReinjectionValidator,
+                                              ValidationResult)
 
 __version__ = "1.0.0"
 

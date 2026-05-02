@@ -9,13 +9,8 @@ Status: Production
 
 from __future__ import annotations
 
-from .lattice import (
-    ConcurrencyEffect,
-    EffectCapability,
-    EffectChecker,
-    EffectLattice,
-    FunctionEffect,
-)
+from .lattice import (ConcurrencyEffect, EffectCapability, EffectChecker,
+                      EffectLattice, FunctionEffect)
 
 __all__ = [
     "ConcurrencyEffect",
