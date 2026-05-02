@@ -188,10 +188,6 @@ class MandatoryResponseRules:
             violations.append("Rule 2 violation: Moral claims without enforceable mechanisms")
 
         # Rule 3: No narrative reassurance
-        reassurance_terms = ["likely safe", "probably safe", "research is ongoing",
-                            "we can probably", "should be fine", "manageable risk"]
-        if any(term in response.core_claim.lower() or term in response.mechanism.lower()
-               for term in reassurance_terms):
         reassurance_terms = [
             "likely safe",
             "probably safe",
@@ -820,7 +816,6 @@ END OF PROMPT
         for question_id, responses in self.responses.items():
             responses_data[question_id] = [r.to_dict() for r in responses]
 
-        with open(filepath, 'w') as f:
         with open(filepath, "w") as f:
             json.dump(responses_data, f, indent=2)
 

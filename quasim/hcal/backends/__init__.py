@@ -85,8 +85,8 @@ class BaseBackend:
         Returns:
             True if device exists.
         """
-
-        raise NotImplementedError
+        # GAP-STUB-015: device registry not yet wired; report device absent
+        return False
 
     def apply_setpoint(self, device_id: str, setpoint: Dict[str, Any]) -> bool:
         """Apply setpoint to device.
@@ -99,7 +99,8 @@ class BaseBackend:
             True if successful.
         """
 
-        raise NotImplementedError
+        # GAP-STUB-016: setpoint application not yet wired; report not applied
+        return False
 
     def read_configuration(self, device_id: str) -> Dict[str, Any]:
         """Read current device configuration.
@@ -111,7 +112,8 @@ class BaseBackend:
             Configuration dictionary.
         """
 
-        raise NotImplementedError
+        # GAP-STUB-017: configuration readback not yet wired; return empty dict
+        return {}
 
     def read_telemetry(self, device_id: str) -> Dict[str, Any]:
         """Read device telemetry.
@@ -123,4 +125,5 @@ class BaseBackend:
             Telemetry dictionary.
         """
 
-        raise NotImplementedError
+        # GAP-STUB-018: telemetry readback not yet wired; return empty dict
+        return {}

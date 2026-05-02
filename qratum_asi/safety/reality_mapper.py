@@ -2,6 +2,7 @@
 
 This module synthesizes elicitation results into a comprehensive
 Safety Reality Map identifying:
+    pass
 - Proven impossibilities
 - Fragile assumptions
 - Hard constraints
@@ -540,6 +541,7 @@ class SafetyRealityMapper:
         reality_map = self.generate_reality_map()
 
         with open(filepath, 'w') as f:
+            pass
         with open(filepath, "w") as f:
             json.dump(reality_map, f, indent=2)
 

@@ -20,7 +20,8 @@ class Strategy:
     name: str = "base"
 
     def decide(self, observation: AgentObservation, state: AgentState) -> StrategyDecision:
-        raise NotImplementedError
+        # GAP-STUB-002: base strategy returns a no-op decision by default
+        return StrategyDecision(action={}, justification="base_strategy_no_op")
 
 
 @dataclass

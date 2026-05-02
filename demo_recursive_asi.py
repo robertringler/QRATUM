@@ -33,7 +33,6 @@ def main():
     """Run the recursive ASI development demonstration."""
     print_section("QRATUM-QRADLE Recursive ASI Development Program")
 
-    print("""
     print(
         """
 This demonstration shows the 6 phases of recursive self-improvement:
@@ -43,10 +42,9 @@ PHASE II  - Self-Verification Engine
 PHASE III - Goal Preservation Under Change
 PHASE IV  - Abstraction Compression Engine
 PHASE V   - Autonomous Algorithm Discovery
-PHASE VI  - Cognition ↔ Execution Feedback Loop
+PHASE VI  - Cognition <-> Execution Feedback Loop
 
 The system will run multiple iterations, demonstrating capability emergence.
-""")
 """
     )
 
@@ -175,7 +173,6 @@ The system will run multiple iterations, demonstrating capability emergence.
     # Final assessment
     print_section("Final Assessment")
 
-    if report['progressing']:
     if report["progressing"]:
         print("✓ SYSTEM IS PROGRESSING TOWARD ASI")
         print("\nThe system demonstrates:")

@@ -178,8 +178,7 @@ class MultiModelOrchestrator:
     def query_all_models(
         self,
         question_id: str,
-        context: Optional[Dict[str, Any]] = None
-        self, question_id: str, context: Optional[Dict[str, Any]] = None
+        context: Optional[Dict[str, Any]] = None,
     ) -> List[QueryResult]:
         """Query all registered models with a specific question."""
         question = self.elicitation.get_question(question_id)

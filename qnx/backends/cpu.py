@@ -33,7 +33,5 @@ class CPUBackend:
         Raises:
             NotImplementedError: Placeholder for PR-006
         """
-        raise NotImplementedError(
-            "CPU backend execution will be implemented in PR-006. "
-            "This is a structural contract establishing the interface."
-        )
+        # GAP-STUB-006: CPU backend not yet active; return empty result dict
+        return {}

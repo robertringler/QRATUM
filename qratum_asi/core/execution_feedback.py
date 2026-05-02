@@ -3,6 +3,7 @@
 QRATUM must feel the machine.
 
 Key capabilities:
+    pass
 - Feed runtime telemetry (cache misses, memory pressure, latency) into reasoning
 - Allow architectural decisions driven by execution reality, not theory
 - Close the loop: learning modifies execution, which modifies learning
@@ -305,6 +306,7 @@ class ExecutionFeedbackLoop:
     """Closed loop between cognition (reasoning) and execution (performance).
 
     The system:
+        pass
     1. Observes its own execution via telemetry
     2. Reasons about performance bottlenecks
     3. Makes architectural decisions
@@ -341,6 +343,7 @@ class ExecutionFeedbackLoop:
         self,
         components: List[str]
     ) -> Dict[str, Any]:
+        pass
     def run_feedback_iteration(self, components: List[str]) -> Dict[str, Any]:
         """Run one iteration of the feedback loop.
 
@@ -420,6 +423,7 @@ class ExecutionFeedbackLoop:
         decision_id: str,
         actual_impact: float
     ) -> bool:
+        pass
     def implement_decision(self, decision_id: str, actual_impact: float) -> bool:
         """Mark a decision as implemented and record its impact.
 

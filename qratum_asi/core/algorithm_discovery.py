@@ -144,9 +144,6 @@ class WastedWorkAnalyzer:
                 "bottlenecks": trace.bottlenecks,
                 "potential_speedup": 1.5  # Estimate
             })
-                wasted_work["redundant_computations"].append(
-                    {"operation": op, "count": count, "potential_saving": count * 0.5}  # Estimate
-                )
 
         # Identify opportunities
         if trace.wasted_operations:
@@ -347,10 +344,6 @@ class AlgorithmDiscoveryEngine:
         self.problem_reformulator = ProblemReformulator()
         self.discovery_validator = DiscoveryValidator()
 
-    def record_execution_trace(
-        self,
-        trace: ExecutionTrace
-    ):
     def record_execution_trace(self, trace: ExecutionTrace):
         """Record an execution trace for analysis."""
         self.execution_traces[trace.trace_id] = trace
