@@ -235,7 +235,6 @@ pub async fn run_quantum_circuit(circuit: QuantumCircuit) -> Result<CircuitRespo
         message: format!("Circuit executed successfully ({} gates applied)", circuit.gates.len()),
     })
 }
-
 // MiniLM text classification
 #[tauri::command]
 pub async fn classify_text(text: String) -> Result<IntentClassification, String> {
