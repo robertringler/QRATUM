@@ -6,21 +6,28 @@ Unified web interface for accessing all QRATUM services
 """
 
 import os
+import time
 import requests
-from flask import Flask, render_template_string, jsonify
+from flask import Flask, render_template_string, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
 # Service endpoints (internal Docker network)
+# External URLs can be overridden via environment variables
+def get_external_url(service_name, default_url):
+    """Get external URL for a service, allowing environment override."""
+    env_var = f"QRATUM_{service_name.upper()}_URL"
+    return os.getenv(env_var, default_url)
+
 SERVICES = {
-    'qradle': {'url': 'http://qradle:8000', 'external_url': 'http://10.0.0.1:8001', 'name': 'QRADLE Foundation Engine', 'description': 'Core blockchain and cryptographic operations'},
-    'platform': {'url': 'http://qratum-platform:8000', 'external_url': 'http://10.0.0.1:8002', 'name': 'QRATUM Platform', 'description': '14 vertical AI modules'},
-    'asi': {'url': 'http://qratum-asi:8000', 'external_url': 'http://10.0.0.1:8003', 'name': 'QRATUM-ASI', 'description': 'Autonomous Systems Intelligence'},
-    'grafana': {'url': 'http://grafana:3000', 'external_url': 'http://10.0.0.1:3000', 'name': 'Grafana', 'description': 'Monitoring & Visualization'},
-    'prometheus': {'url': 'http://prometheus:9090', 'external_url': 'http://10.0.0.1:9090', 'name': 'Prometheus', 'description': 'Metrics Collection'},
-    'loki': {'url': 'http://loki:3100', 'external_url': 'http://10.0.0.1:3100', 'name': 'Loki', 'description': 'Log Aggregation'}
+    'qradle': {'url': 'http://qradle:8000', 'port': 8001, 'name': 'QRADLE Foundation Engine', 'description': 'Core blockchain and cryptographic operations'},
+    'platform': {'url': 'http://qratum-platform:8000', 'port': 8002, 'name': 'QRATUM Platform', 'description': '14 vertical AI modules'},
+    'asi': {'url': 'http://qratum-asi:8000', 'port': 8003, 'name': 'QRATUM-ASI', 'description': 'Autonomous Systems Intelligence'},
+    'grafana': {'url': 'http://grafana:3000', 'port': 3000, 'name': 'Grafana', 'description': 'Monitoring & Visualization'},
+    'prometheus': {'url': 'http://prometheus:9090', 'port': 9090, 'name': 'Prometheus', 'description': 'Metrics Collection'},
+    'loki': {'url': 'http://loki:3100', 'port': 3100, 'name': 'Loki', 'description': 'Log Aggregation'}
 }
 
 HTML_TEMPLATE = """
@@ -167,7 +174,7 @@ HTML_TEMPLATE = """
 
         <div class="service-grid">
             {% for service_id, service in services.items() %}
-            <div class="service-card">
+            <div class="service-card" data-service="{{ service_id }}">
                 <h3>{{ service.icon }} {{ service.name }} <span class="status {{ service.status_class }}">{{ service.status_icon }}</span></h3>
                 <p>{{ service.description }}</p>
                 <p><strong>Endpoint:</strong> {{ service.external_url }}</p>
@@ -183,74 +190,151 @@ HTML_TEMPLATE = """
     </div>
 
     <script>
-        // Auto-refresh every 30 seconds
-        setTimeout(() => {
-            location.reload();
-        }, 30000);
+        // Auto-refresh status every 30 seconds using fetch
+        async function updateStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                
+                // Update service statuses
+                for (const [serviceId, serviceInfo] of Object.entries(data.services)) {
+                    const statusElements = document.querySelectorAll(`[data-service="${serviceId}"] .status`);
+                    statusElements.forEach(el => {
+                        el.className = `status ${serviceInfo.status}`;
+                        el.textContent = '●';
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to update status:', error);
+            }
+        }
+        
+        // Update status every 30 seconds
+        setInterval(updateStatus, 30000);
     </script>
 </body>
 </html>
 """
 
+
 def check_service_status(url):
     """Check if a service is healthy."""
     try:
-        response = requests.get(f"{url}/health", timeout=5)
+        timeout = int(os.getenv('QRATUM_HEALTH_CHECK_TIMEOUT', '10'))
+    except (ValueError, TypeError):
+        timeout = 10  # Default to 10 seconds if env var is invalid
+    
+    try:
+        response = requests.get(f"{url}/health", timeout=timeout)
         if response.status_code == 200:
             return "healthy"
         else:
             return "unhealthy"
-    except:
+    except requests.RequestException:
         return "unknown"
 
-@app.route('/')
+def get_hostname_and_scheme():
+    """Extract hostname and scheme from the current request.
+    
+    Handles both IPv4 and IPv6 addresses properly, removing port and brackets.
+    """
+    hostname = request.host
+    scheme = request.scheme
+    
+    # Remove port: use rsplit to handle colons in IPv6 addresses
+    # For IPv6, format can be [::1]:8080 or [::1] or ::1
+    if ':' in hostname:
+        # Check if it's an IPv6 address with brackets
+        if hostname.startswith('['):
+            # Extract hostname between brackets
+            if ']' in hostname:
+                hostname = hostname.split(']')[0][1:]  # Remove [ and everything after ]
+            # If malformed (no closing bracket), hostname remains as-is
+        else:
+            # Regular hostname:port or bare IPv6 (less common in HTTP Host header)
+            hostname = hostname.rsplit(':', 1)[0]
+    
+    return hostname, scheme
+
+@app.route("/")
 def index():
     """Main control plane interface."""
     services_data = {}
+    
+    hostname, scheme = get_hostname_and_scheme()
 
     for service_id, service_info in SERVICES.items():
-        status = check_service_status(service_info['url'])
+        status = check_service_status(service_info["url"])
         status_class = status
         status_icon = "●"
 
         # Add icons
         icons = {
-            'qradle': '🔗',
-            'platform': '🏗️',
-            'asi': '🧠',
-            'grafana': '📊',
-            'prometheus': '📈',
-            'loki': '📝'
+            "qradle": "🔗",
+            "platform": "🏗️",
+            "asi": "🧠",
+            "grafana": "📊",
+            "prometheus": "📈",
+            "loki": "📝",
         }
+        
+        # Construct external URL dynamically based on request hostname
+        external_url = f"{scheme}://{hostname}:{service_info['port']}"
 
         services_data[service_id] = {
             **service_info,
-            'status_class': status_class,
-            'status_icon': status_icon,
-            'icon': icons.get(service_id, '🔧')
+            "external_url": external_url,
+            "status_class": status_class,
+            "status_icon": status_icon,
+            "icon": icons.get(service_id, "🔧"),
         }
 
     return render_template_string(HTML_TEMPLATE, services=services_data)
 
-@app.route('/api/status')
+
+@app.route("/api/status")
 def api_status():
     """API endpoint for service status."""
     status_data = {}
+    
+    hostname, scheme = get_hostname_and_scheme()
 
     for service_id, service_info in SERVICES.items():
-        status = check_service_status(service_info['url'])
+        status = check_service_status(service_info["url"])
+
+        # Construct external URL dynamically based on request hostname
+        external_url = f"{scheme}://{hostname}:{service_info['port']}"
+
         status_data[service_id] = {
             **service_info,
-            'status': status,
-            'reachable': status != 'unknown'
+            "external_url": external_url,
+            "status": status,
+            "reachable": status != "unknown",
         }
 
-    return jsonify({
-        'timestamp': os.times()[4],  # Using process time as timestamp
-        'services': status_data,
-        'overall_status': 'healthy' if all(s['status'] == 'healthy' for s in status_data.values()) else 'degraded'
-    })
+    # Determine overall system status with more granularity
+    statuses = [s["status"] for s in status_data.values()]
+    healthy_count = sum(1 for s in statuses if s == "healthy")
+    unhealthy_count = sum(1 for s in statuses if s == "unhealthy")
+    unknown_count = sum(1 for s in statuses if s == "unknown")
 
-if __name__ == '__main__':
-    port = int(os.getenv('PORT', '8080'))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    if healthy_count == len(statuses) and len(statuses) > 0:
+        overall_status = "healthy"
+    elif healthy_count > 0 and unhealthy_count > 0:
+        overall_status = "partial"
+    elif healthy_count > 0 and unhealthy_count == 0 and unknown_count > 0:
+        overall_status = "degraded"
+    else:
+        overall_status = "down"
+
+    return jsonify(
+        {
+            "timestamp": time.time(),
+            "services": status_data,
+            "overall_status": overall_status,
+        }
+    )
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", "8080"))
+    app.run(host="0.0.0.0", port=port, debug=False)

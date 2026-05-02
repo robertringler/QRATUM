@@ -86,6 +86,7 @@ class OptimizationProblem:
         """
         return self.dimension
 
+
 @dataclass
 class PortfolioOptimization(OptimizationProblem):
     """Portfolio optimization problem for finance applications.

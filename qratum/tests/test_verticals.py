@@ -7,15 +7,6 @@ of the VerticalModuleBase interface.
 
 import pytest
 
-from qratum.platform import (MerkleEventChain, PlatformIntent,
-                             create_contract_from_intent)
-from qratum.verticals import (CapraModule, ChronaModule, CohoraModule,
-                              EcoraModule, FluxaModule, FusiaModule,
-                              GeonaModule, JurisModule, NeuraModule,
-                              OrbiaModule, SentraModule, StrataModule,
-                              VexorModule, VitraModule)
-
-
 from qratum.platform import MerkleEventChain, PlatformIntent, create_contract_from_intent
 from qratum.verticals import (
     CapraModule,

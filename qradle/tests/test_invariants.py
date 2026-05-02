@@ -6,8 +6,6 @@ Tests that all 8 fatal invariants are properly enforced.
 
 import pytest
 
-from qradle.core.invariants import (FatalInvariants, InvariantType,
-                                    InvariantViolation)
 from qradle.core.invariants import FatalInvariants, InvariantType, InvariantViolation
 
 

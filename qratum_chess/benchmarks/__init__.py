@@ -32,6 +32,9 @@ from qratum_chess.benchmarks.kaggle_submission import (
     KaggleSubmission,
     SubmissionResult,
     download_kaggle_leaderboard,
+    from,
+    import,
+    qratum_chess.benchmarks.kaggle_integration,
 )
 from qratum_chess.benchmarks.kaggle_integration import (
     KaggleBenchmarkPosition,  # noqa: F811 - re-export alias

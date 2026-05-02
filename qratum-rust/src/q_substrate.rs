@@ -207,23 +207,94 @@ impl QSubstrate {
         self.get_probabilities()
     }
 
+    /// Check if a single qubit index is within range.
+    fn qubit_in_range(&self, q: usize) -> bool {
+        q < self.num_qubits
+    }
+
+    /// Check if two qubit indices are within range.
+    fn two_qubits_in_range(&self, q1: usize, q2: usize) -> bool {
+        q1 < self.num_qubits && q2 < self.num_qubits
+    }
+
+    /// Check if three qubit indices are within range.
+    fn three_qubits_in_range(&self, q1: usize, q2: usize, q3: usize) -> bool {
+        q1 < self.num_qubits && q2 < self.num_qubits && q3 < self.num_qubits
+    }
+
     /// Apply a single quantum gate
     fn apply_gate(&mut self, gate: &QuantumGate) {
         match gate {
-            QuantumGate::Hadamard(q) => self.apply_hadamard(*q),
-            QuantumGate::PauliX(q) => self.apply_pauli_x(*q),
-            QuantumGate::PauliY(q) => self.apply_pauli_y(*q),
-            QuantumGate::PauliZ(q) => self.apply_pauli_z(*q),
-            QuantumGate::CNOT(c, t) => self.apply_cnot(*c, *t),
-            QuantumGate::CZ(c, t) => self.apply_cz(*c, *t),
-            QuantumGate::T(q) => self.apply_t(*q),
-            QuantumGate::S(q) => self.apply_s(*q),
-            QuantumGate::RX(q, theta) => self.apply_rx(*q, *theta),
-            QuantumGate::RY(q, theta) => self.apply_ry(*q, *theta),
-            QuantumGate::RZ(q, theta) => self.apply_rz(*q, *theta),
-            QuantumGate::Toffoli(c1, c2, t) => self.apply_toffoli(*c1, *c2, *t),
-            QuantumGate::SWAP(q1, q2) => self.apply_swap(*q1, *q2),
-            QuantumGate::Measure(q) => { self.measure_qubit(*q); }
+            QuantumGate::Hadamard(q) => {
+                if self.qubit_in_range(*q) {
+                    self.apply_hadamard(*q);
+                }
+            }
+            QuantumGate::PauliX(q) => {
+                if self.qubit_in_range(*q) {
+                    self.apply_pauli_x(*q);
+                }
+            }
+            QuantumGate::PauliY(q) => {
+                if self.qubit_in_range(*q) {
+                    self.apply_pauli_y(*q);
+                }
+            }
+            QuantumGate::PauliZ(q) => {
+                if self.qubit_in_range(*q) {
+                    self.apply_pauli_z(*q);
+                }
+            }
+            QuantumGate::CNOT(c, t) => {
+                if self.two_qubits_in_range(*c, *t) {
+                    self.apply_cnot(*c, *t);
+                }
+            }
+            QuantumGate::CZ(c, t) => {
+                if self.two_qubits_in_range(*c, *t) {
+                    self.apply_cz(*c, *t);
+                }
+            }
+            QuantumGate::T(q) => {
+                if self.qubit_in_range(*q) {
+                    self.apply_t(*q);
+                }
+            }
+            QuantumGate::S(q) => {
+                if self.qubit_in_range(*q) {
+                    self.apply_s(*q);
+                }
+            }
+            QuantumGate::RX(q, theta) => {
+                if self.qubit_in_range(*q) {
+                    self.apply_rx(*q, *theta);
+                }
+            }
+            QuantumGate::RY(q, theta) => {
+                if self.qubit_in_range(*q) {
+                    self.apply_ry(*q, *theta);
+                }
+            }
+            QuantumGate::RZ(q, theta) => {
+                if self.qubit_in_range(*q) {
+                    self.apply_rz(*q, *theta);
+                }
+            }
+            QuantumGate::Toffoli(c1, c2, t) => {
+                if self.three_qubits_in_range(*c1, *c2, *t) {
+                    self.apply_toffoli(*c1, *c2, *t);
+                }
+            }
+            QuantumGate::SWAP(q1, q2) => {
+                if self.two_qubits_in_range(*q1, *q2) {
+                    self.apply_swap(*q1, *q2);
+                }
+            }
+            QuantumGate::Measure(q) => {
+                if self.qubit_in_range(*q) {
+                    self.measure_qubit(*q);
+                }
+            }
         }
     }
 
@@ -266,8 +337,11 @@ impl QSubstrate {
                 let j = i | mask;
                 let a = self.state[i];
                 let b = self.state[j];
-                self.state[i] = Complex::new(b.im, -b.re);
-                self.state[j] = Complex::new(-a.im, a.re);
+                // Pauli-Y: [[0, -i], [i, 0]]
+                // |0⟩ -> i|1⟩: i * b = i*(b.re + i*b.im) = -b.im + i*b.re
+                // |1⟩ -> -i|0⟩: -i * a = -i*(a.re + i*a.im) = a.im - i*a.re
+                self.state[i] = Complex::new(-b.im, b.re);
+                self.state[j] = Complex::new(a.im, -a.re);
             }
         }
     }
@@ -439,15 +513,28 @@ impl QSubstrate {
             }
         }
 
+        // Clamp probability to avoid edge cases from floating-point rounding errors
+        // This prevents sqrt of negative numbers or values > 1.0
+        prob_one = prob_one.max(0.0).min(1.0);
+
         // Deterministic "measurement" for simulation (use prob > 0.5)
         let result = prob_one > 0.5;
         self.measurements.push(result);
 
-        // Collapse state
+        // Collapse state with division by zero protection
+        let prob_zero = 1.0 - prob_one;
         let normalization = if result {
-            1.0 / libm::sqrt(prob_one)
+            if prob_one > 1e-10 {
+                1.0 / libm::sqrt(prob_one)
+            } else {
+                return result;  // Skip normalization if probability too small
+            }
         } else {
-            1.0 / libm::sqrt(1.0 - prob_one)
+            if prob_zero > 1e-10 {
+                1.0 / libm::sqrt(prob_zero)
+            } else {
+                return result;  // Skip normalization if probability too small
+            }
         };
 
         for i in 0..self.state.len() {
@@ -466,17 +553,40 @@ impl QSubstrate {
         self.state.iter().map(|c| c.norm_sq()).collect()
     }
 
+    /// Check if input matches code generation keywords
+    fn matches_code_generation(input: &str) -> bool {
+        input.contains("generate code") 
+            || input.contains("create code")
+            || input.contains("write code")
+            || (input.contains("generate") && input.contains("function"))
+            || (input.contains("create") && input.contains("function"))
+    }
+
+    /// Check if input matches quantum execution keywords
+    fn matches_quantum_execution(input: &str) -> bool {
+        (input.contains("quantum") && (input.contains("run") || input.contains("execute") || input.contains("simulate")))
+            || input.contains("qubit")
+            || input.contains("circuit")
+            || input.contains("entangle")
+            || input.contains("superposition")
+            || input.contains("bell state")
+            || input.contains("hadamard")
+    }
+
     /// Classify intent from natural language input
     pub fn classify_intent(&self, input: &str) -> IntentResult {
         let input_lower = input.to_lowercase();
         let mut entities: Vec<(String, String)> = Vec::new();
 
+        // Check for negative keywords that invalidate positive matches
+        let has_negation = input_lower.contains("don't") 
+            || input_lower.contains("do not") 
+            || input_lower.contains("never")
+            || input_lower.contains("avoid")
+            || input_lower.contains("not");
+
         // Keyword-based classification with confidence scoring
-        let (intent, confidence) = if input_lower.contains("generate") 
-            || input_lower.contains("create") 
-            || input_lower.contains("write")
-            || input_lower.contains("code") 
-        {
+        let (intent, confidence) = if !has_negation && Self::matches_code_generation(&input_lower) {
             // Extract language entity
             for lang in &["rust", "python", "javascript", "typescript", "go", "java", "c++", "c"] {
                 if input_lower.contains(lang) {
@@ -491,38 +601,32 @@ impl QSubstrate {
                 }
             }
             (IntentType::CodeGeneration, 0.92)
-        } else if input_lower.contains("quantum") 
-            || input_lower.contains("qubit")
-            || input_lower.contains("circuit")
-            || input_lower.contains("entangle")
-            || input_lower.contains("superposition")
-        {
+        } else if !has_negation && Self::matches_quantum_execution(&input_lower) {
             (IntentType::QuantumExecution, 0.95)
-        } else if input_lower.contains("analyze") 
-            || input_lower.contains("data")
-            || input_lower.contains("statistics")
+        } else if input_lower.contains("analyze data") 
+            || input_lower.contains("data analysis")
+            || (input_lower.contains("statistics") && input_lower.contains("calculate"))
         {
             (IntentType::DataAnalysis, 0.85)
-        } else if input_lower.contains("file")
-            || input_lower.contains("read")
-            || input_lower.contains("save")
-            || input_lower.contains("load")
+        } else if (input_lower.contains("file") && (input_lower.contains("read") || input_lower.contains("write")))
+            || input_lower.contains("save file")
+            || input_lower.contains("load file")
         {
             (IntentType::FileOperation, 0.88)
-        } else if input_lower.contains("search")
-            || input_lower.contains("find")
-            || input_lower.contains("query")
+        } else if input_lower.contains("search for")
+            || input_lower.contains("find ")
+            || input_lower.contains("query ")
         {
             (IntentType::Search, 0.87)
-        } else if input_lower.contains("explain")
-            || input_lower.contains("what")
-            || input_lower.contains("how")
-            || input_lower.contains("document")
+        } else if input_lower.starts_with("explain")
+            || input_lower.starts_with("what is")
+            || input_lower.starts_with("how does")
+            || input_lower.contains("document this")
         {
             (IntentType::Explain, 0.80)
-        } else if input_lower.contains("optimize")
-            || input_lower.contains("improve")
-            || input_lower.contains("faster")
+        } else if input_lower.contains("optimize this")
+            || input_lower.contains("make faster")
+            || input_lower.contains("improve performance")
         {
             (IntentType::Optimize, 0.83)
         } else {

@@ -41,12 +41,6 @@ def main():
     parser.add_argument(
         "--max-weight", type=float, default=10.0, help="Maximum edge weight (default: 10.0)"
     )
-    parser.add_argument(
-        "--source",
-        type=int,
-        default=0,
-        help="Source node id (default: 0)"
-    )
     parser.add_argument("--source", type=int, default=0, help="Source node id (default: 0)")
 
     # Algorithm parameters
@@ -62,11 +56,6 @@ def main():
     parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
     parser.add_argument(
         "--no-validate", action="store_true", help="Skip validation against Dijkstra baseline"
-    )
-    parser.add_argument(
-        "--no-validate",
-        action="store_true",
-        help="Skip validation against Dijkstra baseline"
     )
 
     # Output options
