@@ -22,8 +22,6 @@ from qratum_chess.benchmarks.gauntlet import AdversarialGauntlet
 from qratum_chess.benchmarks.kaggle_config import KaggleConfig, load_config
 from qratum_chess.benchmarks.kaggle_integration import (  # noqa: F811 - re-export alias
     KaggleBenchmarkPosition,
-)
-from qratum_chess.benchmarks.kaggle_integration import (
     KaggleIntegration,
     KaggleLeaderboardData,
 )

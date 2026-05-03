@@ -15,9 +15,10 @@ the candidate tier.  De-escalation is immediate.  The HALT tier
 additionally requires positive drift acceleration so that a transient
 spike at HALT amplitude does not trip the actuator.
 """
+
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -155,9 +156,7 @@ class AlarmEvaluator:
 
     # --- main API -------------------------------------------------------
 
-    def evaluate(
-        self, reading: DriftReading, *, window_hash: str
-    ) -> Optional[DriftEvent]:
+    def evaluate(self, reading: DriftReading, *, window_hash: str) -> Optional[DriftEvent]:
         """Return a :class:`DriftEvent` on tier change, else ``None``.
 
         ``window_hash`` is captured so that consumers (the Merkle

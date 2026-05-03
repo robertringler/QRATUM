@@ -13,9 +13,10 @@ Built-in profile values mirror the spec defaults exactly; per-profile
 deviation is reserved for tuning and currently uniform across all
 profiles for safety.
 """
+
 from __future__ import annotations
 
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Dict, Mapping, Optional
 
@@ -65,7 +66,7 @@ class SDEConfig:
         if self.n_debounce < 1:
             raise ValueError(f"n_debounce must be >= 1, got {self.n_debounce}")
 
-    def with_overrides(self, **kwargs: Any) -> "SDEConfig":
+    def with_overrides(self, **kwargs: Any) -> SDEConfig:
         """Return a copy with selected fields overridden (immutable update)."""
         return replace(self, **kwargs)
 
@@ -84,9 +85,7 @@ class SDEConfig:
 #: Built-in SDE sub-block per pipeline profile.  Keys mirror
 #: :data:`qratum_framework.config.PROFILES` exactly so that
 #: ``load_sde_config(name)`` always resolves.
-SDE_PROFILES: Dict[str, SDEConfig] = {
-    name: SDEConfig() for name in PROFILES
-}
+SDE_PROFILES: Dict[str, SDEConfig] = {name: SDEConfig() for name in PROFILES}
 
 
 def load_sde_config(
@@ -107,9 +106,7 @@ def load_sde_config(
     Unknown profile names raise :class:`KeyError`.
     """
     if name not in SDE_PROFILES:
-        raise KeyError(
-            f"unknown profile {name!r}; available: {sorted(SDE_PROFILES)}"
-        )
+        raise KeyError(f"unknown profile {name!r}; available: {sorted(SDE_PROFILES)}")
     cfg = SDE_PROFILES[name]
 
     if yaml_path is not None and Path(yaml_path).exists():
@@ -117,16 +114,10 @@ def load_sde_config(
             import yaml  # type: ignore[import-not-found]
 
             data = yaml.safe_load(Path(yaml_path).read_text(encoding="utf-8")) or {}
-            block = (
-                ((data.get("profiles") or {}).get(name) or {}).get("sde") or {}
-            )
+            block = ((data.get("profiles") or {}).get(name) or {}).get("sde") or {}
             if isinstance(block, Mapping) and block:
                 cfg = cfg.with_overrides(
-                    **{
-                        k: v
-                        for k, v in block.items()
-                        if k in cfg.__dataclass_fields__
-                    }
+                    **{k: v for k, v in block.items() if k in cfg.__dataclass_fields__}
                 )
         except Exception:
             # YAML is best-effort; never fail config resolution because
@@ -135,11 +126,7 @@ def load_sde_config(
 
     if overrides:
         cfg = cfg.with_overrides(
-            **{
-                k: v
-                for k, v in overrides.items()
-                if k in cfg.__dataclass_fields__
-            }
+            **{k: v for k, v in overrides.items() if k in cfg.__dataclass_fields__}
         )
     return cfg
 

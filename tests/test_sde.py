@@ -15,13 +15,12 @@ Coverage:
 * CLI ``qratum stream`` — happy path, ``--halt-fails`` exit code,
   ``--ledger`` round-trip
 """
+
 from __future__ import annotations
 
 import asyncio
 import io
 import json
-import os
-import tempfile
 from contextlib import redirect_stdout
 
 import numpy as np
@@ -52,7 +51,6 @@ from qratum_framework.sde.config import (
 )
 from qratum_framework.trace import MerkleLedger
 
-
 # ---------------------------------------------------------------------------
 # Token / WindowSnapshot
 # ---------------------------------------------------------------------------
@@ -77,9 +75,7 @@ class TestToken:
 
 class TestWindowSnapshot:
     def test_canonical_hash_is_deterministic(self) -> None:
-        a = WindowSnapshot(
-            tokens=tuple(Token(value=v) for v in [1, 2, 3]), tick=10
-        )
+        a = WindowSnapshot(tokens=tuple(Token(value=v) for v in [1, 2, 3]), tick=10)
         b = WindowSnapshot(
             tokens=tuple(Token(value=v, timestamp=999.0) for v in [1, 2, 3]),
             tick=99,
@@ -88,12 +84,8 @@ class TestWindowSnapshot:
         assert a.canonical_hash() == b.canonical_hash()
 
     def test_canonical_hash_differs_for_different_values(self) -> None:
-        a = WindowSnapshot(
-            tokens=tuple(Token(value=v) for v in [1, 2, 3]), tick=0
-        )
-        b = WindowSnapshot(
-            tokens=tuple(Token(value=v) for v in [1, 2, 4]), tick=0
-        )
+        a = WindowSnapshot(tokens=tuple(Token(value=v) for v in [1, 2, 3]), tick=0)
+        b = WindowSnapshot(tokens=tuple(Token(value=v) for v in [1, 2, 4]), tick=0)
         assert a.canonical_hash() != b.canonical_hash()
 
     def test_embeddings_returns_none_if_any_missing(self) -> None:
@@ -237,8 +229,7 @@ class TestKLDriftScorer:
 def _ws_emb(values, tick: int = 0) -> WindowSnapshot:
     return WindowSnapshot(
         tokens=tuple(
-            Token(value=i, embedding=np.asarray(v, dtype=float))
-            for i, v in enumerate(values)
+            Token(value=i, embedding=np.asarray(v, dtype=float)) for i, v in enumerate(values)
         ),
         tick=tick,
     )
@@ -371,9 +362,7 @@ def _make_engine(
     depth: int = 16,
     min_window: int = 4,
 ):
-    baseline = WindowSnapshot(
-        tokens=tuple(Token(value=v) for v in baseline_values), tick=0
-    )
+    baseline = WindowSnapshot(tokens=tuple(Token(value=v) for v in baseline_values), tick=0)
     return StreamingDriftEngine(
         buffer=RollingWindowBuffer(depth=depth, min_window=min_window),
         scorer=KLDriftScorer(),
@@ -404,9 +393,7 @@ class TestStreamingDriftEngine:
             assert engine.step(Token(value=10.0)) is None
 
     def test_step_emits_event_on_drift(self) -> None:
-        engine = _make_engine(
-            baseline_values=[0.0] * 16, min_window=4, depth=8, n_debounce=1
-        )
+        engine = _make_engine(baseline_values=[0.0] * 16, min_window=4, depth=8, n_debounce=1)
         # Drive 8 wildly out-of-distribution tokens.  Scoring starts at
         # tick 4 and at least one event should fire.
         events = [engine.step(Token(value=100.0)) for _ in range(8)]
@@ -428,9 +415,7 @@ class TestStreamingDriftEngine:
         seq = [10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0]
 
         def run_once():
-            engine = _make_engine(
-                baseline_values=baseline, min_window=4, depth=8, n_debounce=1
-            )
+            engine = _make_engine(baseline_values=baseline, min_window=4, depth=8, n_debounce=1)
             for v in seq:
                 engine.step(Token(value=v))
             return [json.dumps(e.to_dict(), sort_keys=True) for e in engine.events]
@@ -457,16 +442,12 @@ class TestStreamingDriftEngine:
     def test_ledger_halt_entry_has_type_ii_status(self) -> None:
         ledger = MerkleLedger()
         # Custom thresholds so we can force HALT cleanly.
-        baseline = WindowSnapshot(
-            tokens=tuple(Token(value=v) for v in [0.0] * 16), tick=0
-        )
+        baseline = WindowSnapshot(tokens=tuple(Token(value=v) for v in [0.0] * 16), tick=0)
         engine = StreamingDriftEngine(
             buffer=RollingWindowBuffer(depth=8, min_window=4),
             scorer=KLDriftScorer(),
             evaluator=AlarmEvaluator(
-                AlarmThresholds(
-                    theta_low=0.001, theta_high=0.005, theta_halt=0.01
-                ),
+                AlarmThresholds(theta_low=0.001, theta_high=0.005, theta_halt=0.01),
                 n_debounce=1,
             ),
             baseline_window=baseline,
@@ -474,9 +455,7 @@ class TestStreamingDriftEngine:
         )
         for v in [100.0] * 8:
             engine.step(Token(value=v))
-        halt_entries = [
-            e for e in ledger.entries if e.action == "SDE_HALT_INJECT"
-        ]
+        halt_entries = [e for e in ledger.entries if e.action == "SDE_HALT_INJECT"]
         assert halt_entries, "expected at least one HALT-injection entry"
         for e in halt_entries:
             assert e.status == "TYPE_II"
@@ -492,16 +471,12 @@ class TestStreamingDriftEngine:
         async def cb(ev: DriftEvent) -> None:
             invocations.append(ev.tier)
 
-        baseline = WindowSnapshot(
-            tokens=tuple(Token(value=v) for v in [0.0] * 16), tick=0
-        )
+        baseline = WindowSnapshot(tokens=tuple(Token(value=v) for v in [0.0] * 16), tick=0)
         engine = StreamingDriftEngine(
             buffer=RollingWindowBuffer(depth=8, min_window=4),
             scorer=KLDriftScorer(),
             evaluator=AlarmEvaluator(
-                AlarmThresholds(
-                    theta_low=0.001, theta_high=0.005, theta_halt=0.01
-                ),
+                AlarmThresholds(theta_low=0.001, theta_high=0.005, theta_halt=0.01),
                 n_debounce=1,
             ),
             baseline_window=baseline,

@@ -155,18 +155,12 @@ def _build_parser() -> argparse.ArgumentParser:
     # stream (SDE) -----------------------------------------------------
     st_p = sub.add_parser(
         "stream",
-        help=(
-            "Run the Streaming Drift Engine over a token stream and print "
-            "tier transitions."
-        ),
+        help=("Run the Streaming Drift Engine over a token stream and print " "tier transitions."),
     )
     st_p.add_argument(
         "--source",
         required=True,
-        help=(
-            "Path to a whitespace-separated token file consumed as the "
-            "live persona stream."
-        ),
+        help=("Path to a whitespace-separated token file consumed as the " "live persona stream."),
     )
     st_p.add_argument(
         "--baseline",
@@ -198,9 +192,7 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Exit non-zero if any HALT event is emitted (CI gate).",
     )
-    st_p.add_argument(
-        "--json", action="store_true", help="Emit a JSON event log to stdout."
-    )
+    st_p.add_argument("--json", action="store_true", help="Emit a JSON event log to stdout.")
 
     return p
 
@@ -523,9 +515,7 @@ def _cmd_stream(args: argparse.Namespace) -> int:
         print(f"baseline {args.baseline!r} is empty", file=sys.stderr)
         return 2
 
-    baseline_window = WindowSnapshot(
-        tokens=tuple(Token(value=v) for v in baseline_tokens), tick=0
-    )
+    baseline_window = WindowSnapshot(tokens=tuple(Token(value=v) for v in baseline_tokens), tick=0)
     buffer = build_buffer(sde_cfg)
     scorer = build_scorer(sde_cfg)
     evaluator = build_evaluator(sde_cfg)

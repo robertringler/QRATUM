@@ -25,6 +25,7 @@ Public API
 * :class:`SDEConfig` — config sub-block extending
   :class:`qratum_framework.config.PipelineProfile`
 """
+
 from qratum_framework.sde.buffer import RollingWindowBuffer
 from qratum_framework.sde.config import SDEConfig
 from qratum_framework.sde.engine import (

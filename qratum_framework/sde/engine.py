@@ -11,9 +11,10 @@ slow the producer down by holding the loop in the callback.  It never
 mutates pipeline state directly and never silently swallows
 exceptions.
 """
+
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, AsyncIterator, Awaitable, Callable, Dict, List, Optional
 
 from qratum_framework.sde.buffer import RollingWindowBuffer
@@ -27,7 +28,6 @@ from qratum_framework.sde.tokens import Token, WindowSnapshot
 from qratum_framework.trace import (
     MerkleLedger,
     UnifiedTraceEntry,
-    hash_state,
 )
 
 #: A coroutine that the engine awaits whenever a HALT event is emitted.
@@ -141,9 +141,7 @@ class StreamingDriftEngine:
             return None
         reading = self._scorer.score(snapshot, self._baseline)
         self._last_reading = reading
-        event = self._evaluator.evaluate(
-            reading, window_hash=snapshot.canonical_hash()
-        )
+        event = self._evaluator.evaluate(reading, window_hash=snapshot.canonical_hash())
         if event is None:
             return None
         self._events.append(event)

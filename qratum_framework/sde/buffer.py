@@ -5,6 +5,7 @@ and emits a frozen :class:`WindowSnapshot` once it has accumulated at
 least ``MIN_WINDOW`` tokens.  Below the minimum it returns ``None`` so
 that the scorer does not see an under-populated window.
 """
+
 from __future__ import annotations
 
 from collections import deque
@@ -37,9 +38,7 @@ class RollingWindowBuffer:
         if min_window <= 0:
             raise ValueError(f"min_window must be positive, got {min_window}")
         if min_window > depth:
-            raise ValueError(
-                f"min_window ({min_window}) must not exceed depth ({depth})"
-            )
+            raise ValueError(f"min_window ({min_window}) must not exceed depth ({depth})")
         self._depth = int(depth)
         self._min_window = int(min_window)
         self._buf: Deque[Token] = deque(maxlen=self._depth)

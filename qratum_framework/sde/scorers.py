@@ -17,9 +17,10 @@ baseline)``.  Degenerate inputs — windows below ``min_window``, zero
 variance, missing embeddings — return ``d_t = 0.0`` with the
 ``DEGENERATE`` flag set, never raise.
 """
+
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Dict, Iterable, Optional, Protocol, Tuple
 
 import numpy as np
@@ -72,9 +73,7 @@ class DriftScorer(Protocol):
 
     name: str
 
-    def score(
-        self, window: WindowSnapshot, baseline: WindowSnapshot
-    ) -> DriftReading: ...
+    def score(self, window: WindowSnapshot, baseline: WindowSnapshot) -> DriftReading: ...
 
     def reset(self) -> None: ...
 
@@ -97,13 +96,9 @@ class _BaseScorer:
         self._prev_d = None
         self._prev_delta = None
 
-    def _wrap(
-        self, d_t: float, *, tick: int, flags: Iterable[str] = ()
-    ) -> DriftReading:
+    def _wrap(self, d_t: float, *, tick: int, flags: Iterable[str] = ()) -> DriftReading:
         delta_d = 0.0 if self._prev_d is None else float(d_t - self._prev_d)
-        delta2_d = (
-            0.0 if self._prev_delta is None else float(delta_d - self._prev_delta)
-        )
+        delta2_d = 0.0 if self._prev_delta is None else float(delta_d - self._prev_delta)
         # Sanitise non-finite scores defensively — they would corrupt
         # downstream tier comparisons.
         if not np.isfinite(d_t):
@@ -149,9 +144,7 @@ class KLDriftScorer(_BaseScorer):
 
     # --- main scoring API ----------------------------------------------
 
-    def score(
-        self, window: WindowSnapshot, baseline: WindowSnapshot
-    ) -> DriftReading:
+    def score(self, window: WindowSnapshot, baseline: WindowSnapshot) -> DriftReading:
         if len(window) == 0 or len(baseline) == 0:
             return self._wrap(0.0, tick=window.tick, flags=(DEGENERATE,))
 
@@ -252,9 +245,7 @@ class MMDDriftScorer(_BaseScorer):
             raise ValueError(f"epsilon must be positive, got {epsilon}")
         self._epsilon = float(epsilon)
 
-    def score(
-        self, window: WindowSnapshot, baseline: WindowSnapshot
-    ) -> DriftReading:
+    def score(self, window: WindowSnapshot, baseline: WindowSnapshot) -> DriftReading:
         if len(window) == 0 or len(baseline) == 0:
             return self._wrap(0.0, tick=window.tick, flags=(DEGENERATE,))
         x = window.embeddings
@@ -268,7 +259,7 @@ class MMDDriftScorer(_BaseScorer):
         if sigma <= 0.0 or not np.isfinite(sigma):
             return self._wrap(0.0, tick=window.tick, flags=(DEGENERATE,))
 
-        gamma = 1.0 / (2.0 * (sigma ** 2) + self._epsilon)
+        gamma = 1.0 / (2.0 * (sigma**2) + self._epsilon)
         k_xx = self._rbf(x, x, gamma)
         k_yy = self._rbf(y, y, gamma)
         k_xy = self._rbf(x, y, gamma)

@@ -11,11 +11,12 @@ with identical token-value sequences produce byte-identical event
 logs, in keeping with the rest of the operational spine
 (``qratum_framework.trace``).
 """
+
 from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Optional, Tuple
 
 import numpy as np

@@ -45,12 +45,6 @@ from qratum_framework.operator import (
     OperatorResult,
     StrictCIIRBackend,
 )
-from qratum_framework.trace import (
-    GENESIS_HASH,
-    MerkleLedger,
-    UnifiedTraceEntry,
-    hash_entry,
-)
 
 # SDE (Module I — Streaming Drift Engine).  Imported lazily-friendly: the
 # import has zero side-effects beyond defining the public names.
@@ -69,6 +63,12 @@ from qratum_framework.sde import (
     StreamingDriftEngine,
     Token,
     WindowSnapshot,
+)
+from qratum_framework.trace import (
+    GENESIS_HASH,
+    MerkleLedger,
+    UnifiedTraceEntry,
+    hash_entry,
 )
 
 __all__ = [
