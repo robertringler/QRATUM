@@ -9,22 +9,17 @@ Rejects systems violating:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.swarm.memory import (
-    KnowledgeGraph, NodeType, EdgeType,
-)
 from quasim.ciir.swarm.axiom_architect import Axiom
 from quasim.ciir.swarm.physics_lang import PhysicsProgram
 from quasim.ciir.swarm.simulator import SimulationResult
 
-
 # ================================================================
 # Validation result
 # ================================================================
+
 
 @dataclass
 class ValidationResult:
@@ -50,6 +45,7 @@ class ValidationResult:
 # ================================================================
 # Consistency Validator agent
 # ================================================================
+
 
 class ConsistencyValidator:
     """Reject systems violating logical consistency, closure, or stability."""
@@ -86,13 +82,17 @@ class ConsistencyValidator:
         )
 
     def _check_axioms(
-        self, axioms: list[Axiom], result: SimulationResult,
+        self,
+        axioms: list[Axiom],
+        result: SimulationResult,
     ) -> bool:
         """Check all axioms hold for the final state."""
         return all(ax.predicate(result.final_state) for ax in axioms)
 
     def _check_closure(
-        self, program: PhysicsProgram, result: SimulationResult,
+        self,
+        program: PhysicsProgram,
+        result: SimulationResult,
     ) -> bool:
         """Check that rule application preserves the state space."""
         s = result.final_state
@@ -113,7 +113,7 @@ class ConsistencyValidator:
 
         # Check late trajectory is not diverging
         if len(norms) > self.stability_window:
-            late = norms[-self.stability_window:]
+            late = norms[-self.stability_window :]
             if late[-1] > 2 * late[0] and late[-1] > 1.0:
                 return False
 

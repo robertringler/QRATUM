@@ -76,6 +76,7 @@ PARAMS = {
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _build_lindbladian_matrix(H: CMatrix, lindblad_ops: List[CMatrix]) -> CMatrix:
     """Build the (d², d²) Lindbladian superoperator in vec(ρ) basis."""
     d = H.shape[0]
@@ -100,6 +101,7 @@ def _sorted_negative_eigenvalues(eigvals: NDArray) -> NDArray:
 # ---------------------------------------------------------------------------
 # Route A — Spectral derivation
 # ---------------------------------------------------------------------------
+
 
 def derive_alpha_spectral(
     H: CMatrix,
@@ -193,6 +195,7 @@ def derive_alpha_spectral(
 # Route B — Hausdorff dimension derivation
 # ---------------------------------------------------------------------------
 
+
 def derive_alpha_hausdorff(
     n_copies: float,
     scale_factor: float,
@@ -246,6 +249,7 @@ def derive_alpha_hausdorff(
 # Default IFS parameters matching observed α range
 # ---------------------------------------------------------------------------
 
+
 def default_ifs_parameters() -> Tuple[float, float]:
     """Return (n_copies, scale_factor) matching the centre of α ∈ [1.79, 1.87].
 
@@ -262,6 +266,7 @@ def default_ifs_parameters() -> Tuple[float, float]:
 # ---------------------------------------------------------------------------
 # Consistency check
 # ---------------------------------------------------------------------------
+
 
 def verify_alpha_in_range(alpha: float) -> bool:
     """Return True iff α ∈ [1.5, 2.5] (broad physical range)."""
@@ -300,9 +305,7 @@ def cross_validate_routes(
         "alpha_hausdorff": alpha_h,
         "info_hausdorff": info_h,
         "agreement": agreement,
-        "both_in_broad_range": (
-            verify_alpha_in_range(alpha_s) and verify_alpha_in_range(alpha_h)
-        ),
+        "both_in_broad_range": (verify_alpha_in_range(alpha_s) and verify_alpha_in_range(alpha_h)),
         "summary": (
             f"Route A (spectral): α = {alpha_s:.4f}, "
             f"Route B (Hausdorff): α = {alpha_h:.4f}, "

@@ -26,9 +26,7 @@ from quasim.opt.ultra_sssp import SSSPSimulationConfig, run_sssp_simulation
 
 def main():
     """Run UltraSSSP demonstration."""
-    parser = argparse.ArgumentParser(
-        description="UltraSSSP Large-Scale SSSP Simulation for QRATUM"
-    )
+    parser = argparse.ArgumentParser(description="UltraSSSP Large-Scale SSSP Simulation for QRATUM")
     parser = argparse.ArgumentParser(description="UltraSSSP Large-Scale SSSP Simulation for QRATUM")
 
     # Graph parameters

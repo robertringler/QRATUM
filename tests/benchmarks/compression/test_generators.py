@@ -3,7 +3,9 @@
 import numpy as np
 
 from benchmarks.compression.generators.quantum_states import (
-    generate_ghz_state, generate_random_state)
+    generate_ghz_state,
+    generate_random_state,
+)
 
 
 class TestRandomStateGenerator:

@@ -8,19 +8,18 @@ Edge types: Derivation, Dependency, Contradiction, Equivalence
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Any
-
-import numpy as np
-
 
 # ================================================================
 # Type enumerations
 # ================================================================
 
+
 class NodeType(Enum):
     """Knowledge graph node types."""
+
     AXIOM = auto()
     RULE = auto()
     THEORY = auto()
@@ -32,6 +31,7 @@ class NodeType(Enum):
 
 class EdgeType(Enum):
     """Knowledge graph edge types."""
+
     DERIVATION = auto()
     DEPENDENCY = auto()
     CONTRADICTION = auto()
@@ -43,6 +43,7 @@ class EdgeType(Enum):
 # ================================================================
 # Primitives
 # ================================================================
+
 
 @dataclass
 class KNode:
@@ -97,6 +98,7 @@ class KEdge:
 # ================================================================
 # Knowledge graph
 # ================================================================
+
 
 class KnowledgeGraph:
     r"""Global typed knowledge graph M = (N, E, τ).
@@ -159,10 +161,13 @@ class KnowledgeGraph:
     def has_contradiction(self, node_a: int, node_b: int) -> bool:
         """Check whether a contradiction edge exists between two nodes."""
         return any(
-            e for e in self.edges
+            e
+            for e in self.edges
             if e.edge_type == EdgeType.CONTRADICTION
-            and ((e.source == node_a and e.target == node_b)
-                 or (e.source == node_b and e.target == node_a))
+            and (
+                (e.source == node_a and e.target == node_b)
+                or (e.source == node_b and e.target == node_a)
+            )
         )
 
     @property
@@ -173,5 +178,6 @@ class KnowledgeGraph:
     def summary(self) -> dict[str, int]:
         """Return counts of each node type."""
         from collections import Counter
+
         counts = Counter(n.node_type.name for n in self.nodes.values())
         return dict(counts)

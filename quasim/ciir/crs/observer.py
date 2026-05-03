@@ -12,12 +12,12 @@ from dataclasses import dataclass, field
 import numpy as np
 from numpy.typing import NDArray
 
-from quasim.ciir.crs.graph import CRSGraph, Node, Edge
-
+from quasim.ciir.crs.graph import CRSGraph
 
 # ================================================================
 # Observer primitive
 # ================================================================
+
 
 @dataclass
 class Observer:
@@ -37,15 +37,14 @@ class Observer:
 
     id: int
     accessible_nodes: set[int] = field(default_factory=set)
-    memory: NDArray[np.floating] = field(
-        default_factory=lambda: np.zeros(1)
-    )
+    memory: NDArray[np.floating] = field(default_factory=lambda: np.zeros(1))
     resolution: float = 1.0
 
 
 # ================================================================
 # Observation functions
 # ================================================================
+
 
 def observe(
     observer: Observer,
@@ -119,6 +118,7 @@ def measurement_entropy(
 # ================================================================
 # Decoherence and partial trace
 # ================================================================
+
 
 def decohere(
     graph: CRSGraph,

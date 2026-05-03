@@ -32,6 +32,7 @@ RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 # Experiment 1: Controllability
 # ---------------------------------------------------------------------------
 
+
 def experiment_controllability(n_qubits: int = 2, n_steps: int = 300) -> dict:
     """Steer quantum state toward target and measure fidelity gain.
 
@@ -40,10 +41,11 @@ def experiment_controllability(n_qubits: int = 2, n_steps: int = 300) -> dict:
     Success: maximum fidelity achieved exceeds initial by > 0.05.
     """
     print("[Exp 1] Controllability test …")
-    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
     from quasim.ciir.multi_qubit.quantum.density_matrix import (
-        DensityMatrixSimulator, LindbladParams
+        DensityMatrixSimulator,
+        LindbladParams,
     )
+    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
 
     params = LindbladParams(n_qubits=n_qubits, gamma_ad=0.1, gamma_dp=0.02)
     qsim = DensityMatrixSimulator(params)
@@ -56,8 +58,13 @@ def experiment_controllability(n_qubits: int = 2, n_steps: int = 300) -> dict:
     initial_fidelity = float(np.real(np.trace(rho_target @ rho0)))
 
     sim = HybridSimulation(
-        n_qubits=n_qubits, m=4, dt=0.01, n_steps=n_steps,
-        noise_classical=0.01, gamma_ad=0.1, gamma_dp=0.02
+        n_qubits=n_qubits,
+        m=4,
+        dt=0.01,
+        n_steps=n_steps,
+        noise_classical=0.01,
+        gamma_ad=0.1,
+        gamma_dp=0.02,
     )
     result = sim.run(rho0=rho0, rho_target=rho_target, seed=1)
     final_fidelity = float(result.fidelity_traj[-1])
@@ -78,16 +85,19 @@ def experiment_controllability(n_qubits: int = 2, n_steps: int = 300) -> dict:
         "fidelity_gain": float(fidelity_gain),
         "epsilon": float(epsilon),
         "passed": passed,
-        "note": "Controllability: fidelity gain > 0.05 demonstrated via Lindblad relaxation + Pontryagin control"
+        "note": "Controllability: fidelity gain > 0.05 demonstrated via Lindblad relaxation + Pontryagin control",
     }
     status = "PASS" if passed else "MARGINAL"
-    print(f"    Fidelity: initial={initial_fidelity:.4f} final={final_fidelity:.4f} gain={fidelity_gain:.4f}  {status}")
+    print(
+        f"    Fidelity: initial={initial_fidelity:.4f} final={final_fidelity:.4f} gain={fidelity_gain:.4f}  {status}"
+    )
     return out, result
 
 
 # ---------------------------------------------------------------------------
 # Experiment 2: Threshold Verification
 # ---------------------------------------------------------------------------
+
 
 def experiment_threshold() -> dict:
     """Sweep p_phys and identify empirical threshold p*."""
@@ -108,8 +118,8 @@ def experiment_threshold() -> dict:
     # (below threshold, p_L < p_phys; above, p_L > p_phys)
     crossings = []
     for i in range(len(p_range) - 1):
-        if (p_finals[i] - p_range[i]) * (p_finals[i+1] - p_range[i+1]) < 0:
-            crossings.append(0.5 * (p_range[i] + p_range[i+1]))
+        if (p_finals[i] - p_range[i]) * (p_finals[i + 1] - p_range[i + 1]) < 0:
+            crossings.append(0.5 * (p_range[i] + p_range[i + 1]))
     p_star_empirical = float(crossings[0]) if crossings else p_star_theoretical
 
     out = {
@@ -128,6 +138,7 @@ def experiment_threshold() -> dict:
 # Experiment 3: Fractal Scaling Law
 # ---------------------------------------------------------------------------
 
+
 def experiment_fractal_scaling() -> dict:
     """Fit log p_L(n) ~ α^n and verify super-exponential suppression."""
     print("[Exp 3] Fractal scaling law …")
@@ -142,13 +153,15 @@ def experiment_fractal_scaling() -> dict:
         res = qec.run(p)
         alpha_f, r2 = fit_fractal_scaling(res.rates)
         rates_dict[f"{p:.3f}"] = res.rates
-        alpha_fits.append({
-            "p_phys": p,
-            "alpha_theory": float(res.alpha),
-            "alpha_fit": float(alpha_f),
-            "r_squared": float(r2),
-            "below_threshold": res.below_threshold
-        })
+        alpha_fits.append(
+            {
+                "p_phys": p,
+                "alpha_theory": float(res.alpha),
+                "alpha_fit": float(alpha_f),
+                "r_squared": float(r2),
+                "below_threshold": res.below_threshold,
+            }
+        )
         print(f"    p={p:.3f}: α_theory={res.alpha:.3f}, α_fit={alpha_f:.3f}, R²={r2:.3f}")
 
     out = {
@@ -164,19 +177,26 @@ def experiment_fractal_scaling() -> dict:
 # Experiment 4: Closed-Loop Stability
 # ---------------------------------------------------------------------------
 
+
 def experiment_closed_loop_stability(n_qubits: int = 2, n_steps: int = 400) -> dict:
     """Demonstrate Lyapunov convergence under noisy x(t)."""
     print("[Exp 4] Closed-loop stability …")
-    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
     from quasim.ciir.multi_qubit.analysis.stability import LyapunovAnalyzer
-    from quasim.ciir.multi_qubit.quantum.density_matrix import (
-        DensityMatrixSimulator, LindbladParams
-    )
     from quasim.ciir.multi_qubit.control.controller import HybridController
+    from quasim.ciir.multi_qubit.quantum.density_matrix import (
+        DensityMatrixSimulator,
+        LindbladParams,
+    )
+    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
 
     sim = HybridSimulation(
-        n_qubits=n_qubits, m=4, dt=0.01, n_steps=n_steps,
-        noise_classical=0.1, gamma_ad=0.01, gamma_dp=0.005
+        n_qubits=n_qubits,
+        m=4,
+        dt=0.01,
+        n_steps=n_steps,
+        noise_classical=0.1,
+        gamma_ad=0.01,
+        gamma_dp=0.005,
     )
     result = sim.run(seed=42)
 
@@ -224,11 +244,12 @@ def experiment_closed_loop_stability(n_qubits: int = 2, n_steps: int = 400) -> d
 # Experiment 5: Failure Modes
 # ---------------------------------------------------------------------------
 
+
 def experiment_failure_modes(n_qubits: int = 2) -> dict:
     """Explicitly trigger each failure mode and record behaviour."""
     print("[Exp 5] Failure mode simulation …")
-    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
     from quasim.ciir.multi_qubit.error_correction.fractal_qec import FractalQEC
+    from quasim.ciir.multi_qubit.simulation.hybrid_sim import HybridSimulation
 
     modes = {
         "high_decoherence": dict(gamma_ad=0.5, gamma_dp=0.3, n_steps=200),
@@ -278,6 +299,7 @@ def experiment_failure_modes(n_qubits: int = 2) -> dict:
 # Main
 # ---------------------------------------------------------------------------
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Multi-Qubit CIIR Controller Experiments")
     parser.add_argument("--n-qubits", type=int, default=2, help="Number of qubits (2-6)")
@@ -298,8 +320,9 @@ def main() -> None:
 
     # --- Experiment 2 ---
     exp2, p_range, p_finals = experiment_threshold()
-    report["experiment_2_threshold"] = {k: v for k, v in exp2.items()
-                                        if k not in ("p_phys_sweep", "p_L_final_sweep")}
+    report["experiment_2_threshold"] = {
+        k: v for k, v in exp2.items() if k not in ("p_phys_sweep", "p_L_final_sweep")
+    }
     report["experiment_2_threshold"]["n_sweep_points"] = len(p_range)
 
     # --- Experiment 3 ---
@@ -338,12 +361,13 @@ def main() -> None:
     # --- Plots ---
     if do_plots:
         print("\n[Plots] Generating …")
-        from quasim.ciir.multi_qubit.visualization.plots import plot_all
         from quasim.ciir.multi_qubit.analysis.stability import LyapunovAnalyzer
-        from quasim.ciir.multi_qubit.quantum.density_matrix import (
-            DensityMatrixSimulator, LindbladParams
-        )
         from quasim.ciir.multi_qubit.control.controller import HybridController
+        from quasim.ciir.multi_qubit.quantum.density_matrix import (
+            DensityMatrixSimulator,
+            LindbladParams,
+        )
+        from quasim.ciir.multi_qubit.visualization.plots import plot_all
 
         params_q = LindbladParams(n_qubits=n_q)
         ctrl = HybridController(n_qubits=n_q, m=4)

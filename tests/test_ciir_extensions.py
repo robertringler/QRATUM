@@ -18,14 +18,14 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-
 # ---------------------------------------------------------------------------
 # Helpers shared across tests
 # ---------------------------------------------------------------------------
 
+
 def _bell_rho(n_qubits: int = 2):
     """Bell state density matrix |Φ+⟩⟨Φ+|."""
-    dim = 2 ** n_qubits
+    dim = 2**n_qubits
     psi = np.zeros(dim, dtype=complex)
     psi[0] = 1.0 / np.sqrt(2)
     psi[3] = 1.0 / np.sqrt(2)
@@ -34,7 +34,7 @@ def _bell_rho(n_qubits: int = 2):
 
 def _ground_rho(n_qubits: int = 2):
     """Ground state |00...0⟩⟨00...0| density matrix."""
-    dim = 2 ** n_qubits
+    dim = 2**n_qubits
     rho = np.zeros((dim, dim), dtype=complex)
     rho[0, 0] = 1.0
     return rho
@@ -47,15 +47,15 @@ def _random_hermitian(d: int, seed: int = 0):
 
 
 def _lindblad_ops_2q(gamma: float = 0.01):
-    from quasim.ciir.multi_qubit.quantum.density_matrix import (
-        amplitude_damping_ops, dephasing_ops
-    )
+    from quasim.ciir.multi_qubit.quantum.density_matrix import amplitude_damping_ops, dephasing_ops
+
     ops = amplitude_damping_ops(2, gamma) + dephasing_ops(2, gamma)
     return ops
 
 
 def _hamiltonian_2q():
     from quasim.ciir.multi_qubit.control.controller import control_hamiltonian
+
     H0, _ = control_hamiltonian(2)
     return H0
 
@@ -64,55 +64,63 @@ def _hamiltonian_2q():
 # GAP 6 — Non-Markovian dynamics
 # ===========================================================================
 
+
 class TestMemoryKernel:
     def test_exponential_at_zero(self):
         from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel
+
         k = MemoryKernel("exponential", lambda_=2.0, strength=1.0)
         assert k(0.0) == pytest.approx(2.0, rel=1e-6)
 
     def test_exponential_decays(self):
         from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel
+
         k = MemoryKernel("exponential", lambda_=1.0, strength=1.0)
         assert k(1.0) < k(0.0)
         assert k(2.0) < k(1.0)
 
     def test_oscillatory_at_zero(self):
         from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel
+
         k = MemoryKernel("oscillatory", gamma=0.5, omega=2.0, strength=1.0)
         assert k(0.0) == pytest.approx(1.0, rel=1e-6)
 
     def test_negative_time_returns_zero(self):
         from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel
+
         k = MemoryKernel("exponential", lambda_=1.0, strength=1.0)
         assert k(-1.0) == 0.0
 
     def test_norm_positive(self):
         from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel
+
         k = MemoryKernel("exponential", lambda_=1.0, strength=1.0)
         assert k.norm() > 0.0
 
     def test_oscillatory_norm_finite(self):
         from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel
+
         k = MemoryKernel("oscillatory", gamma=1.0, omega=5.0, strength=0.1)
         assert np.isfinite(k.norm())
 
     def test_unknown_kernel_raises(self):
         from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel
+
         k = MemoryKernel("bad_type", strength=1.0)
         with pytest.raises(ValueError):
             k(1.0)
 
     def test_zero_strength(self):
         from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel
+
         k = MemoryKernel("exponential", lambda_=1.0, strength=0.0)
         assert k(0.5) == 0.0
 
 
 class TestNonMarkovianEvolver:
     def _evolver(self, kernel_type="exponential", strength=0.01):
-        from quasim.ciir.multi_qubit.quantum.non_markovian import (
-            MemoryKernel, NonMarkovianEvolver
-        )
+        from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel, NonMarkovianEvolver
+
         H = _hamiltonian_2q()
         ops = _lindblad_ops_2q(0.01)
         kernel = MemoryKernel(kernel_type, lambda_=2.0, strength=strength)
@@ -147,9 +155,8 @@ class TestNonMarkovianEvolver:
             assert np.all(eigvals >= -1e-10)
 
     def test_initial_state_in_trajectory(self):
-        from quasim.ciir.multi_qubit.quantum.non_markovian import (
-            MemoryKernel, NonMarkovianEvolver
-        )
+        from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel, NonMarkovianEvolver
+
         H = _hamiltonian_2q()
         ops = _lindblad_ops_2q(0.01)
         kernel = MemoryKernel("exponential", lambda_=2.0, strength=0.01)
@@ -168,10 +175,9 @@ class TestNonMarkovianEvolver:
 
     def test_zero_strength_reduces_to_markovian_shape(self):
         """With zero memory strength, output should be close to Markovian."""
-        from quasim.ciir.multi_qubit.quantum.non_markovian import (
-            MemoryKernel, NonMarkovianEvolver
-        )
         from quasim.ciir.multi_qubit.quantum.density_matrix import evolve_rk4
+        from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel, NonMarkovianEvolver
+
         H = _hamiltonian_2q()
         ops = _lindblad_ops_2q(0.01)
         kernel = MemoryKernel("exponential", lambda_=1.0, strength=0.0)
@@ -190,9 +196,8 @@ class TestNonMarkovianEvolver:
         assert fid > 0.8  # high overlap expected
 
     def test_history_grows(self):
-        from quasim.ciir.multi_qubit.quantum.non_markovian import (
-            MemoryKernel, NonMarkovianEvolver
-        )
+        from quasim.ciir.multi_qubit.quantum.non_markovian import MemoryKernel, NonMarkovianEvolver
+
         H = _hamiltonian_2q()
         ops = _lindblad_ops_2q(0.01)
         kernel = MemoryKernel("exponential", lambda_=2.0, strength=0.01)
@@ -206,14 +211,17 @@ class TestNonMarkovianEvolver:
 # GAP 7 — Information-geometric control
 # ===========================================================================
 
+
 class TestExponentialFamily:
     def _setup(self, n_qubits=2):
         from quasim.ciir.multi_qubit.control.controller import control_hamiltonian
+
         H0, H_ops = control_hamiltonian(n_qubits)
         return H0, H_ops[:3]  # use first 3 controls
 
     def test_density_is_valid(self):
         from quasim.ciir.multi_qubit.control.geometric_control import _density_from_theta
+
         H0, H_ops = self._setup()
         theta = np.zeros(len(H_ops))
         rho = _density_from_theta(theta, H0, H_ops)
@@ -223,6 +231,7 @@ class TestExponentialFamily:
 
     def test_density_hermitian(self):
         from quasim.ciir.multi_qubit.control.geometric_control import _density_from_theta
+
         H0, H_ops = self._setup()
         theta = np.array([0.1, -0.2, 0.05])
         rho = _density_from_theta(theta, H0, H_ops)
@@ -230,6 +239,7 @@ class TestExponentialFamily:
 
     def test_density_changes_with_theta(self):
         from quasim.ciir.multi_qubit.control.geometric_control import _density_from_theta
+
         H0, H_ops = self._setup()
         rho1 = _density_from_theta(np.zeros(3), H0, H_ops)
         rho2 = _density_from_theta(np.array([1.0, 0.0, 0.0]), H0, H_ops)
@@ -239,6 +249,7 @@ class TestExponentialFamily:
 class TestSLD:
     def test_sld_hermitian(self):
         from quasim.ciir.multi_qubit.control.geometric_control import sld
+
         rho = _ground_rho(2) * 0.9 + _bell_rho(2) * 0.1
         rho = 0.5 * (rho + rho.conj().T)
         rho /= np.trace(rho).real
@@ -251,6 +262,7 @@ class TestSLD:
     def test_sld_definition_satisfied(self):
         """Check ∂ρ = ½(ρL + Lρ) approximately."""
         from quasim.ciir.multi_qubit.control.geometric_control import sld
+
         rho = np.eye(4, dtype=complex) / 4 + 0.01 * _random_hermitian(4, seed=5)
         rho = 0.5 * (rho + rho.conj().T)
         rho /= np.trace(rho).real
@@ -266,11 +278,13 @@ class TestSLD:
 class TestQuantumFisherMetric:
     def _setup(self):
         from quasim.ciir.multi_qubit.control.controller import control_hamiltonian
+
         H0, H_ops = control_hamiltonian(2)
         return H0, H_ops[:2]  # 2 parameters for speed
 
     def test_fisher_metric_shape(self):
         from quasim.ciir.multi_qubit.control.geometric_control import quantum_fisher_metric
+
         H0, H_ops = self._setup()
         theta = np.zeros(2)
         G = quantum_fisher_metric(theta, H0, H_ops)
@@ -278,6 +292,7 @@ class TestQuantumFisherMetric:
 
     def test_fisher_metric_symmetric(self):
         from quasim.ciir.multi_qubit.control.geometric_control import quantum_fisher_metric
+
         H0, H_ops = self._setup()
         theta = np.zeros(2)
         G = quantum_fisher_metric(theta, H0, H_ops)
@@ -285,6 +300,7 @@ class TestQuantumFisherMetric:
 
     def test_fisher_metric_psd(self):
         from quasim.ciir.multi_qubit.control.geometric_control import quantum_fisher_metric
+
         H0, H_ops = self._setup()
         theta = np.zeros(2)
         G = quantum_fisher_metric(theta, H0, H_ops)
@@ -296,6 +312,7 @@ class TestNaturalGradientController:
     def _controller(self):
         from quasim.ciir.multi_qubit.control.controller import control_hamiltonian
         from quasim.ciir.multi_qubit.control.geometric_control import NaturalGradientController
+
         H0, H_ops = control_hamiltonian(2)
         return NaturalGradientController(H0, H_ops[:2], eta=0.1, reg=1e-3)
 
@@ -348,35 +365,42 @@ class TestNaturalGradientController:
 # GAP 2 + GAP 3 — Hardware parameters and spectral gap scaling
 # ===========================================================================
 
+
 class TestSuperconductingParams:
     def test_gamma_ad_positive(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import SuperconductingParams
+
         p = SuperconductingParams(T1_s=100e-6)
         assert p.gamma_ad > 0.0
 
     def test_gamma_ad_value(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import SuperconductingParams
+
         p = SuperconductingParams(T1_s=100e-6)
         assert p.gamma_ad == pytest.approx(10000.0, rel=1e-6)
 
     def test_gamma_dp_non_negative(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import SuperconductingParams
+
         p = SuperconductingParams(T1_s=100e-6, T2_s=50e-6)
         assert p.gamma_dp >= 0.0
 
     def test_gamma_total_greater_than_parts(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import SuperconductingParams
+
         p = SuperconductingParams(T1_s=100e-6, T2_s=50e-6)
         assert p.gamma_total >= p.gamma_ad
         assert p.gamma_total >= p.gamma_dp
 
     def test_total_latency_positive(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import SuperconductingParams
+
         p = SuperconductingParams()
         assert p.total_latency_s > 0.0
 
     def test_gate_fidelity_loss_small(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import SuperconductingParams
+
         p = SuperconductingParams()
         # Per-gate fidelity loss should be < 1%
         assert p.gate_fidelity_loss_per_gate < 0.01
@@ -385,11 +409,13 @@ class TestSuperconductingParams:
 class TestTrappedIonParams:
     def test_gamma_ad_very_small(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import TrappedIonParams
+
         p = TrappedIonParams(T1_s=1.0)
         assert p.gamma_ad == pytest.approx(1.0, rel=1e-6)
 
     def test_gamma_total_positive(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import TrappedIonParams
+
         p = TrappedIonParams()
         assert p.gamma_total >= 0.0
 
@@ -397,8 +423,10 @@ class TestTrappedIonParams:
 class TestUnitConversion:
     def test_conversion_returns_dict(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import (
-            SuperconductingParams, scale_to_simulation
+            SuperconductingParams,
+            scale_to_simulation,
         )
+
         p = SuperconductingParams()
         result = scale_to_simulation(p)
         assert "gamma_ad_sim" in result
@@ -406,8 +434,10 @@ class TestUnitConversion:
 
     def test_simulation_rates_dimensionless(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import (
-            SuperconductingParams, scale_to_simulation
+            SuperconductingParams,
+            scale_to_simulation,
         )
+
         p = SuperconductingParams()
         result = scale_to_simulation(p, sim_time_unit_s=1e-6)
         # In simulation units (1μs = 1 t.u.), γ_ad = γ_ad_Hz × 1e-6
@@ -416,8 +446,10 @@ class TestUnitConversion:
 
     def test_latency_steps_non_negative(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import (
-            SuperconductingParams, scale_to_simulation
+            SuperconductingParams,
+            scale_to_simulation,
         )
+
         p = SuperconductingParams()
         result = scale_to_simulation(p)
         assert result["latency_steps"] >= 0
@@ -426,6 +458,7 @@ class TestUnitConversion:
 class TestLatencyAnalysis:
     def test_tau_max_formula(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import max_tolerable_latency
+
         gamma = 20000.0  # 20 kHz
         epsilon = 0.05
         tau_max = max_tolerable_latency(gamma, epsilon)
@@ -433,13 +466,16 @@ class TestLatencyAnalysis:
 
     def test_tau_max_scales_with_epsilon(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import max_tolerable_latency
+
         gamma = 20000.0
         assert max_tolerable_latency(gamma, 0.1) > max_tolerable_latency(gamma, 0.05)
 
     def test_assessment_returns_result(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import (
-            SuperconductingParams, assess_latency
+            SuperconductingParams,
+            assess_latency,
         )
+
         p = SuperconductingParams()
         result = assess_latency(p, epsilon=0.05)
         assert hasattr(result, "tau_max_s")
@@ -448,29 +484,35 @@ class TestLatencyAnalysis:
 
     def test_assessment_margin_positive(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import (
-            SuperconductingParams, assess_latency
+            SuperconductingParams,
+            assess_latency,
         )
+
         p = SuperconductingParams()
         result = assess_latency(p)
         assert result.margin_ratio > 0.0
 
     def test_zero_gamma_returns_inf(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import max_tolerable_latency
+
         assert max_tolerable_latency(0.0) == float("inf")
 
 
 class TestSpectralGapScaling:
     def _build_H(self, n):
         from quasim.ciir.multi_qubit.control.controller import control_hamiltonian
+
         H0, _ = control_hamiltonian(n)
         return H0
 
     def _build_ops(self, n, gamma):
         from quasim.ciir.multi_qubit.quantum.density_matrix import amplitude_damping_ops
+
         return amplitude_damping_ops(n, gamma)
 
     def test_scaling_returns_dict(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import spectral_gap_scaling
+
         result = spectral_gap_scaling(
             N_values=[2],
             gamma_values=[0.01],
@@ -483,6 +525,7 @@ class TestSpectralGapScaling:
 
     def test_gap_non_negative(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import spectral_gap_scaling
+
         result = spectral_gap_scaling(
             N_values=[2],
             gamma_values=[0.01, 0.05],
@@ -495,6 +538,7 @@ class TestSpectralGapScaling:
 
     def test_gap_increases_with_gamma(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import spectral_gap_scaling
+
         result = spectral_gap_scaling(
             N_values=[2],
             gamma_values=[0.01, 0.1],
@@ -508,8 +552,10 @@ class TestSpectralGapScaling:
 
     def test_fit_returns_dict(self):
         from quasim.ciir.multi_qubit.analysis.hardware_params import (
-            spectral_gap_scaling, fit_gap_scaling
+            fit_gap_scaling,
+            spectral_gap_scaling,
         )
+
         result = spectral_gap_scaling(
             N_values=[2],
             gamma_values=[0.01, 0.02, 0.05, 0.1],
@@ -527,28 +573,26 @@ class TestSpectralGapScaling:
 # GAP 5 — Tensor Network MPS
 # ===========================================================================
 
+
 class TestMPSConstructors:
     def test_ground_state_norm(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_ground_state, mps_to_vector
-        )
+        from quasim.ciir.multi_qubit.quantum.tensor_network import mps_ground_state, mps_to_vector
+
         mps = mps_ground_state(3)
         psi = mps_to_vector(mps)
         assert abs(np.linalg.norm(psi) - 1.0) < 1e-10
 
     def test_ground_state_first_component(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_ground_state, mps_to_vector
-        )
+        from quasim.ciir.multi_qubit.quantum.tensor_network import mps_ground_state, mps_to_vector
+
         for n in [2, 3, 4]:
             mps = mps_ground_state(n)
             psi = mps_to_vector(mps)
             assert abs(psi[0] - 1.0) < 1e-10
 
     def test_product_state_correct(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_product_state, mps_to_vector
-        )
+        from quasim.ciir.multi_qubit.quantum.tensor_network import mps_product_state, mps_to_vector
+
         mps = mps_product_state([1, 0])  # |10⟩
         psi = mps_to_vector(mps)
         # |10⟩ = index 2 in standard ordering (σ₁=1, σ₂=0 → 2)
@@ -556,17 +600,15 @@ class TestMPSConstructors:
         assert abs(np.linalg.norm(psi) - 1.0) < 1e-10
 
     def test_bell_state_norm(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_bell_state, mps_to_vector
-        )
+        from quasim.ciir.multi_qubit.quantum.tensor_network import mps_bell_state, mps_to_vector
+
         mps = mps_bell_state(2)
         psi = mps_to_vector(mps)
         assert abs(np.linalg.norm(psi) - 1.0) < 1e-10
 
     def test_bell_state_entangled(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_bell_state, mps_to_vector
-        )
+        from quasim.ciir.multi_qubit.quantum.tensor_network import mps_bell_state, mps_to_vector
+
         mps = mps_bell_state(2)
         psi = mps_to_vector(mps)
         # |Φ+⟩ = (|00⟩ + |11⟩)/√2 → components 0 and 3
@@ -574,9 +616,8 @@ class TestMPSConstructors:
         assert abs(abs(psi[3]) - 1.0 / np.sqrt(2)) < 1e-10
 
     def test_random_mps_norm(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_random, mps_to_vector
-        )
+        from quasim.ciir.multi_qubit.quantum.tensor_network import mps_random, mps_to_vector
+
         for n in [2, 3, 4]:
             mps = mps_random(n, chi_max=4, seed=n)
             psi = mps_to_vector(mps)
@@ -584,6 +625,7 @@ class TestMPSConstructors:
 
     def test_n_qubits_attribute(self):
         from quasim.ciir.multi_qubit.quantum.tensor_network import mps_ground_state
+
         for n in [2, 3, 5, 8]:
             mps = mps_ground_state(n)
             assert mps.n_qubits == n
@@ -593,8 +635,11 @@ class TestMPSGates:
     def test_single_qubit_x_gate(self):
         """X|0⟩ = |1⟩."""
         from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_ground_state, apply_single_qubit_gate, mps_to_vector
+            apply_single_qubit_gate,
+            mps_ground_state,
+            mps_to_vector,
         )
+
         X = np.array([[0, 1], [1, 0]], dtype=complex)
         mps = mps_ground_state(2)
         mps_x = apply_single_qubit_gate(mps, X, site=0)
@@ -604,8 +649,11 @@ class TestMPSGates:
 
     def test_single_qubit_gate_norm(self):
         from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_random, apply_single_qubit_gate, mps_to_vector
+            apply_single_qubit_gate,
+            mps_random,
+            mps_to_vector,
         )
+
         H_gate = np.array([[1, 1], [1, -1]], dtype=complex) / np.sqrt(2)
         mps = mps_random(3, chi_max=4, seed=7)
         mps_h = apply_single_qubit_gate(mps, H_gate, site=1)
@@ -615,13 +663,17 @@ class TestMPSGates:
     def test_cnot_creates_entanglement(self):
         """CNOT|+0⟩ = |Φ+⟩."""
         from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_ground_state, apply_single_qubit_gate, apply_two_qubit_gate, mps_to_vector
+            apply_single_qubit_gate,
+            apply_two_qubit_gate,
+            mps_ground_state,
+            mps_to_vector,
         )
+
         H_gate = np.array([[1, 1], [1, -1]], dtype=complex) / np.sqrt(2)
         CNOT = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]], dtype=complex)
         mps = mps_ground_state(2)
         mps = apply_single_qubit_gate(mps, H_gate, site=0)  # |+0⟩
-        mps = apply_two_qubit_gate(mps, CNOT, site=0, chi_max=4)   # |Φ+⟩
+        mps = apply_two_qubit_gate(mps, CNOT, site=0, chi_max=4)  # |Φ+⟩
         psi = mps_to_vector(mps)
         assert abs(np.linalg.norm(psi) - 1.0) < 1e-8
         # Bell state: psi[0] = psi[3] = 1/√2
@@ -631,24 +683,30 @@ class TestMPSGates:
 class TestMPSEntanglement:
     def test_product_state_zero_entropy(self):
         from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_ground_state, entanglement_entropy_at_bond
+            entanglement_entropy_at_bond,
+            mps_ground_state,
         )
+
         mps = mps_ground_state(4)
         S = entanglement_entropy_at_bond(mps, bond=1)
         assert abs(S) < 1e-10
 
     def test_bell_state_max_entropy(self):
         from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_bell_state, entanglement_entropy_at_bond
+            entanglement_entropy_at_bond,
+            mps_bell_state,
         )
+
         mps = mps_bell_state(2)
         S = entanglement_entropy_at_bond(mps, bond=0)
         assert abs(S - np.log(2)) < 1e-8
 
     def test_entropy_non_negative(self):
         from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_random, entanglement_entropy_at_bond
+            entanglement_entropy_at_bond,
+            mps_random,
         )
+
         mps = mps_random(4, chi_max=8, seed=13)
         for bond in range(3):
             S = entanglement_entropy_at_bond(mps, bond=bond)
@@ -657,17 +715,15 @@ class TestMPSEntanglement:
 
 class TestMPSOverlap:
     def test_self_overlap_one(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_ground_state, mps_overlap
-        )
+        from quasim.ciir.multi_qubit.quantum.tensor_network import mps_ground_state, mps_overlap
+
         mps = mps_ground_state(3)
         ov = mps_overlap(mps, mps)
         assert abs(ov - 1.0) < 1e-10
 
     def test_orthogonal_states(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_product_state, mps_overlap
-        )
+        from quasim.ciir.multi_qubit.quantum.tensor_network import mps_overlap, mps_product_state
+
         mps_00 = mps_product_state([0, 0])
         mps_11 = mps_product_state([1, 1])
         ov = mps_overlap(mps_00, mps_11)
@@ -675,8 +731,11 @@ class TestMPSOverlap:
 
     def test_fidelity_bell_with_ground(self):
         from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_bell_state, mps_ground_state, mps_fidelity
+            mps_bell_state,
+            mps_fidelity,
+            mps_ground_state,
         )
+
         bell = mps_bell_state(2)
         ground = mps_ground_state(2)
         F = mps_fidelity(bell, ground)
@@ -684,9 +743,8 @@ class TestMPSOverlap:
         assert abs(F - 0.5) < 1e-8
 
     def test_fidelity_self_one(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_random, mps_fidelity
-        )
+        from quasim.ciir.multi_qubit.quantum.tensor_network import mps_fidelity, mps_random
+
         mps = mps_random(3, chi_max=4, seed=17)
         assert abs(mps_fidelity(mps, mps) - 1.0) < 1e-8
 
@@ -705,8 +763,10 @@ class TestMPSEvolution:
 
     def test_trotter_returns_list(self):
         from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_ground_state, mps_evolve_trotter
+            mps_evolve_trotter,
+            mps_ground_state,
         )
+
         mps = mps_ground_state(3)
         H_pairs = self._nn_hamiltonian(3)
         traj = mps_evolve_trotter(mps, H_pairs, dt=0.01, n_steps=5, record_every=2)
@@ -714,8 +774,11 @@ class TestMPSEvolution:
 
     def test_trotter_norm_preserved(self):
         from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_random, mps_evolve_trotter, mps_to_vector
+            mps_evolve_trotter,
+            mps_random,
+            mps_to_vector,
         )
+
         mps = mps_random(3, chi_max=4, seed=21)
         H_pairs = self._nn_hamiltonian(3)
         traj = mps_evolve_trotter(mps, H_pairs, dt=0.01, n_steps=10, record_every=5)
@@ -726,10 +789,12 @@ class TestMPSEvolution:
 
 class TestMPSMCWF:
     def test_trajectory_returns_list(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_ground_state, mps_lindblad_trajectory
-        )
         from quasim.ciir.multi_qubit.quantum.density_matrix import amplitude_damping_ops
+        from quasim.ciir.multi_qubit.quantum.tensor_network import (
+            mps_ground_state,
+            mps_lindblad_trajectory,
+        )
+
         H = _hamiltonian_2q()
         ops = amplitude_damping_ops(2, 0.01)
         mps = mps_ground_state(2)
@@ -737,10 +802,13 @@ class TestMPSMCWF:
         assert len(traj) == 6  # initial + 5 steps
 
     def test_trajectory_norm_preserved(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_bell_state, mps_lindblad_trajectory, mps_to_vector
-        )
         from quasim.ciir.multi_qubit.quantum.density_matrix import amplitude_damping_ops
+        from quasim.ciir.multi_qubit.quantum.tensor_network import (
+            mps_bell_state,
+            mps_lindblad_trajectory,
+            mps_to_vector,
+        )
+
         H = _hamiltonian_2q()
         ops = amplitude_damping_ops(2, 0.01)
         mps = mps_bell_state(2)
@@ -754,6 +822,7 @@ class TestMPSScalability:
     def test_large_n_ground_state(self):
         """Ground state MPS should be trivially constructible at N=12."""
         from quasim.ciir.multi_qubit.quantum.tensor_network import mps_ground_state
+
         mps = mps_ground_state(12)
         assert mps.n_qubits == 12
         # Bond dim should be 1 for product state
@@ -764,31 +833,30 @@ class TestMPSScalability:
     def test_mps_memory_smaller_than_exact(self):
         """For N=6, MPS memory should be much smaller than exact dm."""
         from quasim.ciir.multi_qubit.quantum.tensor_network import mps_random
+
         n = 6
         mps = mps_random(n, chi_max=8, seed=42)
         mps_bytes = sum(t.nbytes for t in mps.tensors)
-        exact_bytes = (2 ** n) ** 2 * 16  # complex128 density matrix
+        exact_bytes = (2**n) ** 2 * 16  # complex128 density matrix
         assert mps_bytes < exact_bytes
 
     def test_vector_to_mps_roundtrip(self):
         """Converting psi → MPS → psi should preserve the state vector."""
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            _vector_to_mps, mps_to_vector
-        )
+        from quasim.ciir.multi_qubit.quantum.tensor_network import _vector_to_mps, mps_to_vector
+
         rng = np.random.default_rng(99)
         for n in [2, 3, 4]:
-            psi = rng.standard_normal(2 ** n) + 1j * rng.standard_normal(2 ** n)
+            psi = rng.standard_normal(2**n) + 1j * rng.standard_normal(2**n)
             psi /= np.linalg.norm(psi)
-            mps = _vector_to_mps(psi, n, chi_max=2 ** n)
+            mps = _vector_to_mps(psi, n, chi_max=2**n)
             psi_rec = mps_to_vector(mps)
             # Overlap should be 1 up to global phase
             ov = abs(np.dot(psi.conj(), psi_rec))
             assert ov == pytest.approx(1.0, abs=1e-8)
 
     def test_mps_density_matrix_valid(self):
-        from quasim.ciir.multi_qubit.quantum.tensor_network import (
-            mps_random, mps_to_density_matrix
-        )
+        from quasim.ciir.multi_qubit.quantum.tensor_network import mps_random, mps_to_density_matrix
+
         mps = mps_random(3, chi_max=8, seed=33)
         rho = mps_to_density_matrix(mps)
         assert abs(np.trace(rho).real - 1.0) < 1e-8

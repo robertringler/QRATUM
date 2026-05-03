@@ -16,6 +16,7 @@ This module owns that shape and offers
 can ride the existing Merkle-chained ledger — the audit substrate
 Logging Requirement A in the plan calls for.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -102,9 +103,7 @@ def drift_to_trace_entry(
         "n_anomalies": float(len(report.off_topic_tokens)),
         "n_tokens": float(report.n_tokens),
         "density": (
-            float(len(report.off_topic_tokens)) / float(report.n_tokens)
-            if report.n_tokens
-            else 0.0
+            float(len(report.off_topic_tokens)) / float(report.n_tokens) if report.n_tokens else 0.0
         ),
     }
     return UnifiedTraceEntry(

@@ -13,14 +13,15 @@ import numpy as np
 from numpy.typing import NDArray
 
 from quasim.ciir.swarm.memory import (
-    KnowledgeGraph, NodeType, EdgeType,
+    KnowledgeGraph,
+    NodeType,
 )
 from quasim.ciir.swarm.simulator import SimulationResult
-
 
 # ================================================================
 # Invariant types
 # ================================================================
+
 
 @dataclass
 class DetectedInvariant:
@@ -66,6 +67,7 @@ class DetectedAttractor:
 # Invariant Miner agent
 # ================================================================
 
+
 class InvariantMiner:
     """Detect conserved quantities and symmetries."""
 
@@ -73,7 +75,8 @@ class InvariantMiner:
         self.tolerance = tolerance
 
     def mine_invariants(
-        self, result: SimulationResult,
+        self,
+        result: SimulationResult,
     ) -> list[DetectedInvariant]:
         """Detect conserved quantities from a simulation trajectory."""
         trajectory = result.trajectory
@@ -85,7 +88,7 @@ class InvariantMiner:
         # 1. Total energy (norm squared)
         energy_inv = self._check_invariant(
             "Energy",
-            lambda s: float(np.sum(s ** 2)),
+            lambda s: float(np.sum(s**2)),
             trajectory,
         )
         invariants.append(energy_inv)
@@ -142,9 +145,7 @@ class InvariantMiner:
         cluster_tol: float = 0.1,
     ) -> list[DetectedAttractor]:
         """Cluster converged final states into attractors."""
-        final_states = [
-            r.final_state for r in results if r.converged
-        ]
+        final_states = [r.final_state for r in results if r.converged]
         if not final_states:
             return []
 
@@ -164,16 +165,19 @@ class InvariantMiner:
                     cluster.append(t)
                     used.add(j)
 
-            attractors.append(DetectedAttractor(
-                attractor_type="fixed_point",
-                state=np.mean(cluster, axis=0),
-                basin_size=len(cluster),
-            ))
+            attractors.append(
+                DetectedAttractor(
+                    attractor_type="fixed_point",
+                    state=np.mean(cluster, axis=0),
+                    basin_size=len(cluster),
+                )
+            )
 
         return attractors
 
     def get_conserved(
-        self, invariants: list[DetectedInvariant],
+        self,
+        invariants: list[DetectedInvariant],
     ) -> list[DetectedInvariant]:
         """Filter to well-conserved quantities (relative variation < tolerance)."""
         return [i for i in invariants if i.relative_variation < self.tolerance]

@@ -61,7 +61,7 @@ class ActionMetrics:
     """
 
     delta_s: np.ndarray
-    delta_h: float            # ΔH = H(s_new) - H(s_prev)
+    delta_h: float  # ΔH = H(s_new) - H(s_prev)
     constraints_passed: bool
     stable: bool
 

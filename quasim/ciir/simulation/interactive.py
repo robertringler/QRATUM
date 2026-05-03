@@ -14,6 +14,7 @@ from typing import Any, Callable
 @dataclass
 class ParameterPreset:
     """Named parameter configuration for quick switching."""
+
     name: str
     learning_rate: float = 0.01
     entropy_weight: float = 0.01

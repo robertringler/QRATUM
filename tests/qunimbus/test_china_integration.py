@@ -1,8 +1,10 @@
 """Tests for China Photonic Factory integration."""
 
-from quasim.qunimbus.china_integration import (ChinaFactoryConfig,
-                                               ChinaFactoryMetrics,
-                                               ChinaPhotonicFactory)
+from quasim.qunimbus.china_integration import (
+    ChinaFactoryConfig,
+    ChinaFactoryMetrics,
+    ChinaPhotonicFactory,
+)
 
 
 def test_china_factory_config_defaults():

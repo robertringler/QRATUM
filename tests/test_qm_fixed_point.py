@@ -18,12 +18,11 @@ Verifies:
 """
 
 import numpy as np
-import pytest
-
 
 # ============================================================
 # Helpers
 # ============================================================
+
 
 def random_density_matrix(d: int, rng: np.random.Generator) -> np.ndarray:
     """Generate a random density matrix of dimension d."""
@@ -75,7 +74,7 @@ def observer_operator(rho: np.ndarray, lam: float) -> np.ndarray:
     beta = 1.0 / (1.0 + lam)
     eigvals, eigvecs = np.linalg.eigh(rho)
     eigvals = np.maximum(eigvals, 0.0)  # numerical safety
-    eigvals_beta = eigvals ** beta
+    eigvals_beta = eigvals**beta
     Z = np.sum(eigvals_beta)
     if Z < 1e-15:
         return np.eye(rho.shape[0]) / rho.shape[0]
@@ -83,8 +82,7 @@ def observer_operator(rho: np.ndarray, lam: float) -> np.ndarray:
     return rho_out
 
 
-def make_lindblad_kraus(d: int, n_ops: int,
-                        rng: np.random.Generator) -> list[np.ndarray]:
+def make_lindblad_kraus(d: int, n_ops: int, rng: np.random.Generator) -> list[np.ndarray]:
     """Generate random Lindblad/Kraus operators satisfying Σ K†K = I."""
     kraus = []
     for _ in range(n_ops):
@@ -92,9 +90,7 @@ def make_lindblad_kraus(d: int, n_ops: int,
         kraus.append(K)
     total = sum(K.conj().T @ K for K in kraus)
     eigvals, eigvecs = np.linalg.eigh(total)
-    sqrt_inv = eigvecs @ np.diag(
-        1.0 / np.sqrt(np.maximum(eigvals, 1e-15))
-    ) @ eigvecs.conj().T
+    sqrt_inv = eigvecs @ np.diag(1.0 / np.sqrt(np.maximum(eigvals, 1e-15))) @ eigvecs.conj().T
     return [K @ sqrt_inv for K in kraus]
 
 
@@ -107,10 +103,15 @@ def apply_channel(kraus: list[np.ndarray], rho: np.ndarray) -> np.ndarray:
     return result
 
 
-def crs_update(states: np.ndarray, adj: np.ndarray,
-               alpha: float, delta: float, c: float,
-               sigma_eta: float,
-               rng: np.random.Generator) -> np.ndarray:
+def crs_update(
+    states: np.ndarray,
+    adj: np.ndarray,
+    alpha: float,
+    delta: float,
+    c: float,
+    sigma_eta: float,
+    rng: np.random.Generator,
+) -> np.ndarray:
     """One step of the CRS update rule (Eq. 12.6).
 
     Parameters
@@ -129,19 +130,12 @@ def crs_update(states: np.ndarray, adj: np.ndarray,
         neighbors = np.where(adj[v] > 0)[0]
         if len(neighbors) > 0:
             s_bar = np.mean(states[neighbors], axis=0)
-            coupling = c * np.sum(
-                adj[v, neighbors, np.newaxis] * states[neighbors], axis=0
-            )
+            coupling = c * np.sum(adj[v, neighbors, np.newaxis] * states[neighbors], axis=0)
         else:
             s_bar = np.zeros(d)
             coupling = np.zeros(d)
         noise = sigma_eta * rng.standard_normal(d)
-        new_states[v] = (
-            (1 - alpha - delta) * states[v]
-            + alpha * s_bar
-            + coupling
-            + noise
-        )
+        new_states[v] = (1 - alpha - delta) * states[v] + alpha * s_bar + coupling + noise
     return new_states
 
 
@@ -168,13 +162,18 @@ def crs_to_density(states: np.ndarray, d_hilbert: int) -> np.ndarray:
     return np.outer(psi, psi.conj())
 
 
-def loop_iteration(states: np.ndarray, adj: np.ndarray,
-                   d_hilbert: int,
-                   kraus: list[np.ndarray],
-                   lam: float,
-                   alpha: float, delta: float, c: float,
-                   sigma_eta: float,
-                   rng: np.random.Generator) -> tuple[np.ndarray, np.ndarray]:
+def loop_iteration(
+    states: np.ndarray,
+    adj: np.ndarray,
+    d_hilbert: int,
+    kraus: list[np.ndarray],
+    lam: float,
+    alpha: float,
+    delta: float,
+    c: float,
+    sigma_eta: float,
+    rng: np.random.Generator,
+) -> tuple[np.ndarray, np.ndarray]:
     """One full CRS→CIIR→Observer→CRS loop iteration.
 
     Returns (new_states, rho_out).
@@ -198,8 +197,8 @@ def loop_iteration(states: np.ndarray, adj: np.ndarray,
         if k_idx < len(eigvals):
             mode_weight = np.abs(eigvals[k_idx])
             for v in range(N):
-                back_states[v, k_idx % d_state] += (
-                    mode_weight * np.real(eigvecs[v % d_hilbert, k_idx])
+                back_states[v, k_idx % d_state] += mode_weight * np.real(
+                    eigvecs[v % d_hilbert, k_idx]
                 )
 
     return back_states, rho_obs
@@ -208,6 +207,7 @@ def loop_iteration(states: np.ndarray, adj: np.ndarray,
 # ============================================================
 # Section 1: Observer Operator Properties (Theorem 13.1)
 # ============================================================
+
 
 class TestObserverOperator:
     """Verify properties of the observer operator O(ρ)."""
@@ -221,9 +221,7 @@ class TestObserverOperator:
             rho_obs = observer_operator(rho, lam)
             assert is_hermitian(rho_obs), f"Not Hermitian for λ={lam}"
             assert is_positive_semidefinite(rho_obs), f"Not PSD for λ={lam}"
-            assert abs(np.trace(rho_obs) - 1.0) < 1e-10, (
-                f"Trace != 1 for λ={lam}"
-            )
+            assert abs(np.trace(rho_obs) - 1.0) < 1e-10, f"Trace != 1 for λ={lam}"
 
     def test_identity_limit(self):
         """lim_{λ→0} O(ρ) = ρ."""
@@ -254,9 +252,7 @@ class TestObserverOperator:
         _, evecs_obs = np.linalg.eigh(rho_obs)
         # Check overlap matrix is diagonal (up to phases)
         overlap = evecs_rho.conj().T @ evecs_obs
-        assert np.allclose(
-            np.abs(overlap) ** 2, np.eye(d), atol=1e-8
-        )
+        assert np.allclose(np.abs(overlap) ** 2, np.eye(d), atol=1e-8)
 
     def test_uniqueness_strict_convexity(self):
         """Verify uniqueness via consistency of repeated application."""
@@ -286,6 +282,7 @@ class TestObserverOperator:
 # ============================================================
 # Section 2: Density Matrix Validity
 # ============================================================
+
 
 class TestDensityMatrixValidity:
     """Verify density matrix properties throughout the loop."""
@@ -324,6 +321,7 @@ class TestDensityMatrixValidity:
 # ============================================================
 # Section 3: Born Rule Consistency (Theorem 13.5)
 # ============================================================
+
 
 class TestBornRule:
     """Verify the Born rule P(E) = Tr(ρE) at fixed point."""
@@ -383,22 +381,19 @@ class TestBornRule:
 # Section 4: Lindblad Generator (Theorem 13.6)
 # ============================================================
 
+
 class TestLindbladGenerator:
     """Verify GKSL structure of the loop generator."""
 
-    def _gksl_generator(self, H: np.ndarray,
-                        L_ops: list[np.ndarray],
-                        gammas: list[float],
-                        rho: np.ndarray) -> np.ndarray:
+    def _gksl_generator(
+        self, H: np.ndarray, L_ops: list[np.ndarray], gammas: list[float], rho: np.ndarray
+    ) -> np.ndarray:
         """Compute L(ρ) = -i[H,ρ] + Σ γ_k(L_k ρ L_k† - ½{L_k†L_k, ρ})."""
         d = rho.shape[0]
         result = -1j * (H @ rho - rho @ H)
         for k, (L, gamma) in enumerate(zip(L_ops, gammas)):
             LdL = L.conj().T @ L
-            result += gamma * (
-                L @ rho @ L.conj().T
-                - 0.5 * (LdL @ rho + rho @ LdL)
-            )
+            result += gamma * (L @ rho @ L.conj().T - 0.5 * (LdL @ rho + rho @ LdL))
         return result
 
     def test_gksl_preserves_trace(self):
@@ -407,8 +402,7 @@ class TestLindbladGenerator:
         d = 4
         H = rng.standard_normal((d, d)) + 1j * rng.standard_normal((d, d))
         H = (H + H.conj().T) / 2  # Hermitian
-        L_ops = [rng.standard_normal((d, d)) + 1j * rng.standard_normal((d, d))
-                 for _ in range(3)]
+        L_ops = [rng.standard_normal((d, d)) + 1j * rng.standard_normal((d, d)) for _ in range(3)]
         gammas = [0.1, 0.2, 0.15]
         rho = random_density_matrix(d, rng)
         L_rho = self._gksl_generator(H, L_ops, gammas, rho)
@@ -420,8 +414,7 @@ class TestLindbladGenerator:
         d = 4
         H = rng.standard_normal((d, d)) + 1j * rng.standard_normal((d, d))
         H = (H + H.conj().T) / 2
-        L_ops = [rng.standard_normal((d, d)) + 1j * rng.standard_normal((d, d))
-                 for _ in range(3)]
+        L_ops = [rng.standard_normal((d, d)) + 1j * rng.standard_normal((d, d)) for _ in range(3)]
         gammas = [0.1, 0.2, 0.15]
         rho = random_density_matrix(d, rng)
         L_rho = self._gksl_generator(H, L_ops, gammas, rho)
@@ -457,6 +450,7 @@ class TestLindbladGenerator:
 # Section 5: Entropy Monotonicity
 # ============================================================
 
+
 class TestEntropyMonotonicity:
     """Verify entropy behaviour under the loop components."""
 
@@ -467,9 +461,7 @@ class TestEntropyMonotonicity:
         rho = random_pure_state(d, rng)  # S = 0
         # Depolarizing channel (unital)
         p = 0.1
-        kraus = [
-            np.sqrt(1 - 3 * p / 4) * np.eye(d)
-        ]
+        kraus = [np.sqrt(1 - 3 * p / 4) * np.eye(d)]
         # Add Pauli-like errors for dimension d
         for j in range(d):
             for k in range(d):
@@ -480,9 +472,7 @@ class TestEntropyMonotonicity:
         # Normalize
         total = sum(K.conj().T @ K for K in kraus)
         eigv, eigvec = np.linalg.eigh(total)
-        sqrt_inv = eigvec @ np.diag(
-            1.0 / np.sqrt(np.maximum(eigv, 1e-15))
-        ) @ eigvec.conj().T
+        sqrt_inv = eigvec @ np.diag(1.0 / np.sqrt(np.maximum(eigv, 1e-15))) @ eigvec.conj().T
         kraus_norm = [K @ sqrt_inv for K in kraus]
         rho_out = apply_channel(kraus_norm, rho)
         S_in = von_neumann_entropy(rho)
@@ -505,6 +495,7 @@ class TestEntropyMonotonicity:
 # ============================================================
 # Section 6: Trace Preservation
 # ============================================================
+
 
 class TestTracePreservation:
     """Verify trace preservation at each loop stage."""
@@ -536,9 +527,16 @@ class TestTracePreservation:
         np.fill_diagonal(adj, 0)
         kraus = make_lindblad_kraus(d_hilbert, 3, rng)
         _, rho_out = loop_iteration(
-            states, adj, d_hilbert, kraus,
-            lam=0.3, alpha=0.1, delta=0.05, c=0.01,
-            sigma_eta=0.01, rng=rng,
+            states,
+            adj,
+            d_hilbert,
+            kraus,
+            lam=0.3,
+            alpha=0.1,
+            delta=0.05,
+            c=0.01,
+            sigma_eta=0.01,
+            rng=rng,
         )
         assert abs(np.trace(rho_out) - 1.0) < 1e-10
 
@@ -546,6 +544,7 @@ class TestTracePreservation:
 # ============================================================
 # Section 7: Kraus Completeness
 # ============================================================
+
 
 class TestKrausCompleteness:
     """Verify Kraus operator completeness relation."""
@@ -565,12 +564,13 @@ class TestKrausCompleteness:
         n_ops = 3
         kraus = make_lindblad_kraus(d, n_ops, rng)
         assert len(kraus) == n_ops
-        assert n_ops <= d ** 2
+        assert n_ops <= d**2
 
 
 # ============================================================
 # Section 8: Fixed-Point Convergence (Theorem 13.9)
 # ============================================================
+
 
 class TestFixedPointConvergence:
     """Verify fixed-point convergence of the CRS–CIIR–Observer loop."""
@@ -587,9 +587,16 @@ class TestFixedPointConvergence:
         prev_rho = None
         for _ in range(30):
             states, rho = loop_iteration(
-                states, adj, d_hilbert, kraus,
-                lam=0.3, alpha=0.2, delta=0.1, c=0.01,
-                sigma_eta=0.001, rng=rng,
+                states,
+                adj,
+                d_hilbert,
+                kraus,
+                lam=0.3,
+                alpha=0.2,
+                delta=0.1,
+                c=0.01,
+                sigma_eta=0.001,
+                rng=rng,
             )
             if prev_rho is not None:
                 distances.append(trace_distance(rho, prev_rho))
@@ -611,9 +618,16 @@ class TestFixedPointConvergence:
 
         for _ in range(50):
             states, rho = loop_iteration(
-                states, adj, d_hilbert, kraus,
-                lam=0.3, alpha=0.2, delta=0.1, c=0.01,
-                sigma_eta=0.001, rng=rng,
+                states,
+                adj,
+                d_hilbert,
+                kraus,
+                lam=0.3,
+                alpha=0.2,
+                delta=0.1,
+                c=0.01,
+                sigma_eta=0.001,
+                rng=rng,
             )
         assert is_hermitian(rho)
         assert is_positive_semidefinite(rho)
@@ -623,6 +637,7 @@ class TestFixedPointConvergence:
 # ============================================================
 # Section 9: CRS → QM Mapping Stability
 # ============================================================
+
 
 class TestCRStoQMStability:
     """Verify stability of the CRS → QM mapping."""
@@ -652,10 +667,7 @@ class TestCRStoQMStability:
         for k in range(min(d_hilbert, d_state)):
             if k < len(eigvals):
                 for v in range(N):
-                    back_states[v, k] += (
-                        np.abs(eigvals[k])
-                        * np.real(eigvecs[v % d_hilbert, k])
-                    )
+                    back_states[v, k] += np.abs(eigvals[k]) * np.real(eigvecs[v % d_hilbert, k])
         rho2 = crs_to_density(back_states, d_hilbert)
         # Should still be a valid density matrix
         assert is_positive_semidefinite(rho2)
@@ -665,6 +677,7 @@ class TestCRStoQMStability:
 # ============================================================
 # Section 10: Perturbation Robustness (Theorem 13.10)
 # ============================================================
+
 
 class TestPerturbationRobustness:
     """Verify structural stability under perturbations."""
@@ -694,9 +707,16 @@ class TestPerturbationRobustness:
         # Run with higher noise
         for _ in range(30):
             states, rho = loop_iteration(
-                states, adj, d_hilbert, kraus,
-                lam=0.3, alpha=0.2, delta=0.1, c=0.01,
-                sigma_eta=0.1, rng=rng,  # higher noise
+                states,
+                adj,
+                d_hilbert,
+                kraus,
+                lam=0.3,
+                alpha=0.2,
+                delta=0.1,
+                c=0.01,
+                sigma_eta=0.1,
+                rng=rng,  # higher noise
             )
         assert is_positive_semidefinite(rho)
         assert abs(np.trace(rho) - 1.0) < 1e-10
@@ -705,6 +725,7 @@ class TestPerturbationRobustness:
 # ============================================================
 # Section 11: Hilbert Space Structure (Theorem 13.4)
 # ============================================================
+
 
 class TestHilbertSpaceEmergence:
     """Verify emergence of Hilbert space structure."""
@@ -722,7 +743,7 @@ class TestHilbertSpaceEmergence:
         rho_phi = np.outer(phi, phi.conj())
         D = trace_distance(rho_psi, rho_phi)
         fidelity = np.abs(psi.conj() @ phi) ** 2
-        fidelity_from_D = 1.0 - D ** 2
+        fidelity_from_D = 1.0 - D**2
         # For pure states: D = sqrt(1 - |⟨ψ|φ⟩|²), so F = 1 - D²
         assert abs(fidelity - fidelity_from_D) < 1e-10
 
@@ -756,6 +777,7 @@ class TestHilbertSpaceEmergence:
 # ============================================================
 # Section 12: Contractivity and Convergence Rate
 # ============================================================
+
 
 class TestContractivity:
     """Verify contraction properties of loop components."""

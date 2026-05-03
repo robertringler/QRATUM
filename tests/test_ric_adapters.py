@@ -77,9 +77,7 @@ def test_qratum_proposer_holds_when_target_met():
 
 def test_qratum_proposer_adjusts_to_close_gap():
     intent = IntentInterpretation(goal="meet osr", constraints={"target_OSR": 2.0})
-    action_type, magnitude = qratum_proposer(
-        intent, _qratum_world(OSR=1.0), {"max_magnitude": 1.0}
-    )
+    action_type, magnitude = qratum_proposer(intent, _qratum_world(OSR=1.0), {"max_magnitude": 1.0})
     assert action_type == "adjust"
     assert 0.0 < magnitude <= 1.0
 
@@ -160,9 +158,7 @@ def test_ciir_simulator_hold_is_idempotent():
 
 
 def test_ciir_simulator_loss_is_clamped_non_negative():
-    outcome = ciir_simulator(
-        "adjust", 1.0, _ciir_world(loss=0.1, gradient_norm=10.0), {}
-    )
+    outcome = ciir_simulator("adjust", 1.0, _ciir_world(loss=0.1, gradient_norm=10.0), {})
     assert outcome.expected_state["loss"] >= 0.0
     assert 0.0 <= outcome.stability_score <= 1.0
 
@@ -278,9 +274,7 @@ def test_crs_simulator_abort_is_always_safe_even_under_block():
 
 def test_crs_proposer_holds_when_blocked():
     intent = IntentInterpretation(goal="self-improve", constraints={"step": 0.2})
-    action_type, magnitude = crs_proposer(
-        intent, _crs_world(human_oversight_pending=True), {}
-    )
+    action_type, magnitude = crs_proposer(intent, _crs_world(human_oversight_pending=True), {})
     assert action_type == "hold"
     assert magnitude == 0.0
 

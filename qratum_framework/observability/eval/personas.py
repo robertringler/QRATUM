@@ -18,6 +18,7 @@ Production deployments swap the deterministic emission model out for a
 real LLM and the ``stylistic_tokens`` field becomes irrelevant — but
 the persona name + temperature still parameterise the matrix.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass

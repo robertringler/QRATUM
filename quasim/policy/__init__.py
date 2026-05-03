@@ -4,9 +4,14 @@ Phase VIII additions: PolicyReasoner for automated compliance checks.
 """
 
 # Phase VIII Policy Reasoner
-from quasim.policy.reasoner import (ConfigurationMutation, PolicyDecision,
-                                    PolicyEvaluation, PolicyFramework,
-                                    PolicyReasoner, PolicyRule)
+from quasim.policy.reasoner import (
+    ConfigurationMutation,
+    PolicyDecision,
+    PolicyEvaluation,
+    PolicyFramework,
+    PolicyReasoner,
+    PolicyRule,
+)
 
 __all__ = [
     # Phase VIII

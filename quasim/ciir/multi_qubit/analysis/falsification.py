@@ -38,8 +38,8 @@ References
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from dataclasses import dataclass
+from typing import List, Optional
 
 import numpy as np
 from numpy.typing import NDArray
@@ -52,18 +52,18 @@ CMatrix = NDArray[np.complex128]
 
 PROTOCOL_PARAMS = {
     # Primary experiment
-    "N_default": 3,            # qubits (dim = 2^N)
-    "n_steps": 50,             # integration steps
-    "dt": 0.01,                # time step
-    "gamma": 0.02,             # Lindblad noise rate
-    "noise_strength": 0.15,    # depolarizing noise (> p* = 0.1)
+    "N_default": 3,  # qubits (dim = 2^N)
+    "n_steps": 50,  # integration steps
+    "dt": 0.01,  # time step
+    "gamma": 0.02,  # Lindblad noise rate
+    "noise_strength": 0.15,  # depolarizing noise (> p* = 0.1)
     # N-scaling scan
-    "N_scan": [2, 4, 6, 8, 10],   # N=12 omitted by default (slow)
+    "N_scan": [2, 4, 6, 8, 10],  # N=12 omitted by default (slow)
     # Artifact thresholds
-    "ah1_bond_dim_change_threshold": 0.01,   # 1 %
-    "ah2_step_change_threshold": 0.01,        # 1 %
-    "ah3_init_change_threshold": 0.10,        # 10 %
-    "ah4_gamma_variation": 0.20,              # ±20 %
+    "ah1_bond_dim_change_threshold": 0.01,  # 1 %
+    "ah2_step_change_threshold": 0.01,  # 1 %
+    "ah3_init_change_threshold": 0.10,  # 10 %
+    "ah4_gamma_variation": 0.20,  # ±20 %
     # Verdict thresholds (in units of σ_numerical)
     "verdict_a_threshold": 5.0,
     "verdict_b_low_threshold": 1.0,
@@ -74,13 +74,14 @@ PROTOCOL_PARAMS = {
 # SYSTEM BUILDERS
 # ────────────────────────────────────────────────────────────────
 
+
 def _build_hamiltonian(N: int, entangling: bool = False) -> CMatrix:
     """N-qubit Hamiltonian.
 
     Standard: Σ Z_i + Σ XX_{i,i+1} (nearest-neighbour).
     Entangling (high-S regime): add ZZ long-range coupling.
     """
-    dim = 2 ** N
+    dim = 2**N
     sz = np.array([[1, 0], [0, -1]], dtype=complex)
     sx = np.array([[0, 1], [1, 0]], dtype=complex)
     I2 = np.eye(2, dtype=complex)
@@ -140,6 +141,7 @@ def _build_constraint_projector(dim: int) -> CMatrix:
 # CORE EVOLUTION PRIMITIVES
 # ────────────────────────────────────────────────────────────────
 
+
 def _lindblad_dissipator(rho: CMatrix, ops: List[CMatrix]) -> CMatrix:
     out = np.zeros_like(rho)
     for L in ops:
@@ -151,6 +153,7 @@ def _lindblad_dissipator(rho: CMatrix, ops: List[CMatrix]) -> CMatrix:
 
 def _gksl_rk4(rho: CMatrix, H: CMatrix, ops: List[CMatrix], dt: float) -> CMatrix:
     """One RK4 step of the GKSL master equation."""
+
     def f(r: CMatrix) -> CMatrix:
         return -1j * (H @ r - r @ H) + _lindblad_dissipator(r, ops)
 
@@ -197,6 +200,7 @@ def _von_neumann_entropy(rho: CMatrix) -> float:
 # σ_NUMERICAL ESTIMATE
 # ────────────────────────────────────────────────────────────────
 
+
 def compute_sigma_numerical(n_steps: int, dim: int, dt: float) -> float:
     r"""Estimate the double-precision numerical noise floor σ_numerical.
 
@@ -219,16 +223,17 @@ def compute_sigma_numerical(n_steps: int, dim: int, dt: float) -> float:
     -------
     σ_numerical : estimated numerical noise floor (additive, on fidelity)
     """
-    eps = np.finfo(float).eps          # ≈ 2.2e-16
-    rk4_ops = 20                       # RK4 stages + complex accumulation
-    rate_proxy = 1.0                   # O(||H|| + γ) ~ O(1)
-    sigma = eps * dim ** 2 * n_steps * rk4_ops * rate_proxy * dt
+    eps = np.finfo(float).eps  # ≈ 2.2e-16
+    rk4_ops = 20  # RK4 stages + complex accumulation
+    rate_proxy = 1.0  # O(||H|| + γ) ~ O(1)
+    sigma = eps * dim**2 * n_steps * rk4_ops * rate_proxy * dt
     return float(sigma)
 
 
 # ────────────────────────────────────────────────────────────────
 # CIIR MODEL — Step 1  (constraint + unified corrections)
 # ────────────────────────────────────────────────────────────────
+
 
 def _memory_kernel(tau: float, lam: float = 2.0, strength: float = 0.05) -> float:
     return strength * lam * np.exp(-lam * tau)
@@ -260,7 +265,7 @@ def run_ciir_trajectory(
     -------
     dict with keys: trajectory, fidelity, entropy, dt, N, model
     """
-    dim = 2 ** N
+    dim = 2**N
     if H is None:
         H = _build_hamiltonian(N)
     if ops is None:
@@ -354,6 +359,7 @@ def run_ciir_trajectory(
 # NULL MODEL — Step 2  (standard GKSL only)
 # ────────────────────────────────────────────────────────────────
 
+
 def run_null_trajectory(
     N: int,
     n_steps: int,
@@ -373,7 +379,7 @@ def run_null_trajectory(
       1. Depolarizing noise at ``noise_strength``.
       2. Standard GKSL RK4 step.
     """
-    dim = 2 ** N
+    dim = 2**N
     if H is None:
         H = _build_hamiltonian(N)
     if ops is None:
@@ -411,6 +417,7 @@ def run_null_trajectory(
 # ────────────────────────────────────────────────────────────────
 # STEP 3 — SIGNAL QUANTIFICATION
 # ────────────────────────────────────────────────────────────────
+
 
 def compute_signal_metrics(
     ciir_result: dict,
@@ -465,15 +472,17 @@ def compute_signal_metrics(
 # STEP 4 — ARTIFACT ELIMINATION
 # ────────────────────────────────────────────────────────────────
 
+
 @dataclass
 class ArtifactResult:
     """Result of a single artifact hypothesis test."""
-    label: str               # AH-1 … AH-5
-    passed: bool             # True = PASS, False = FAIL
-    value: float             # measured perturbation magnitude
-    threshold: float         # pass/fail threshold
-    detail: str              # description of sub-experiment
-    counterargument: str     # strongest argument against this PASS/FAIL
+
+    label: str  # AH-1 … AH-5
+    passed: bool  # True = PASS, False = FAIL
+    value: float  # measured perturbation magnitude
+    threshold: float  # pass/fail threshold
+    detail: str  # description of sub-experiment
+    counterargument: str  # strongest argument against this PASS/FAIL
 
 
 def test_ah1_bond_dimension(
@@ -495,7 +504,7 @@ def test_ah1_bond_dimension(
     PASS: ΔO_max changes by < 1 % when bond dimension is doubled.
     """
     threshold = PROTOCOL_PARAMS["ah1_bond_dim_change_threshold"]
-    dim = 2 ** N
+    dim = 2**N
 
     # Truncation magnitude: ε_trunc ~ 1/(chi² * dim)  (double-precision bond fidelity)
     # For chi >= sqrt(dim/2) the MPS is exact and ε_trunc → machine precision.
@@ -503,10 +512,10 @@ def test_ah1_bond_dimension(
     chi_doubled = chi_baseline * chi_factor
     # For small N, the doubled bond dimension already exceeds sqrt(dim),
     # giving near-exact representation; use machine-precision-level perturbation.
-    if chi_doubled ** 2 >= dim:
+    if chi_doubled**2 >= dim:
         eps_trunc = np.finfo(float).eps * dim
     else:
-        eps_trunc = 1.0 / (chi_doubled ** 2 * dim)
+        eps_trunc = 1.0 / (chi_doubled**2 * dim)
 
     # Perturb the trajectories with truncation-level noise and re-measure
     H = _build_hamiltonian(N)
@@ -656,7 +665,7 @@ def test_ah3_initial_state(
     PASS: ΔO_max changes by < 10 %.
     """
     threshold = PROTOCOL_PARAMS["ah3_init_change_threshold"]
-    dim = 2 ** N
+    dim = 2**N
     rng = np.random.default_rng(seed=123)
 
     rho0 = _build_initial_state(dim)
@@ -675,8 +684,12 @@ def test_ah3_initial_state(
     H = _build_hamiltonian(N)
     ops = _build_lindblad_ops(N, gamma)
 
-    ciir_r = run_ciir_trajectory(N, n_steps, dt, gamma, noise_strength, H=H, ops=ops, rho0=rho0_perturbed)
-    null_r = run_null_trajectory(N, n_steps, dt, gamma, noise_strength, H=H, ops=ops, rho0=rho0_perturbed)
+    ciir_r = run_ciir_trajectory(
+        N, n_steps, dt, gamma, noise_strength, H=H, ops=ops, rho0=rho0_perturbed
+    )
+    null_r = run_null_trajectory(
+        N, n_steps, dt, gamma, noise_strength, H=H, ops=ops, rho0=rho0_perturbed
+    )
     metrics = compute_signal_metrics(ciir_r, null_r)
     delta_perturbed = metrics["delta_O_max"]
 
@@ -819,7 +832,8 @@ def test_ah5_n_scaling(
 
     # Count non-decreasing steps
     n_nondec = sum(
-        1 for i in range(len(valid) - 1)
+        1
+        for i in range(len(valid) - 1)
         if valid[i + 1][1] >= valid[i][1] * 0.90  # allow 10 % fluctuation
     )
     fraction_nondec = n_nondec / (len(valid) - 1)
@@ -861,10 +875,12 @@ def test_ah5_n_scaling(
 # STEP 5 — VERDICT
 # ────────────────────────────────────────────────────────────────
 
+
 @dataclass
 class FalsificationVerdict:
     """Outcome of the complete falsification protocol."""
-    letter: str                    # "A", "B", or "C"
+
+    letter: str  # "A", "B", or "C"
     snr: float
     delta_O_max: float
     sigma_numerical: float
@@ -872,7 +888,7 @@ class FalsificationVerdict:
     all_artifacts_pass: bool
     n_artifacts_pass: int
     justification: str
-    counterargument: str           # strongest argument against this verdict
+    counterargument: str  # strongest argument against this verdict
 
 
 def classify_verdict(
@@ -957,6 +973,7 @@ def classify_verdict(
 # SECONDARY OBJECTIVES
 # ────────────────────────────────────────────────────────────────
 
+
 def run_s1_stress_regimes(
     N: int = 3,
     n_steps: int = 50,
@@ -973,15 +990,22 @@ def run_s1_stress_regimes(
 
     Reports ΔO_max in each regime and compares to baseline.
     """
-    dim = 2 ** N
+    dim = 2**N
     H_std = _build_hamiltonian(N, entangling=False)
     H_ent = _build_hamiltonian(N, entangling=True)
     ops = _build_lindblad_ops(N, gamma)
 
     def _delta(H, nm_lam, g_eta):
         c = run_ciir_trajectory(
-            N, n_steps, dt, gamma, noise_strength,
-            H=H, ops=ops, nm_lambda=nm_lam, geom_eta=g_eta,
+            N,
+            n_steps,
+            dt,
+            gamma,
+            noise_strength,
+            H=H,
+            ops=ops,
+            nm_lambda=nm_lam,
+            geom_eta=g_eta,
         )
         b = run_null_trajectory(N, n_steps, dt, gamma, noise_strength, H=H, ops=ops)
         return compute_signal_metrics(c, b)["delta_O_max"]
@@ -1033,15 +1057,22 @@ def run_s2_controller_comparison(
 
     def _delta(g_eta, nm_str):
         c = run_ciir_trajectory(
-            N, n_steps, dt, gamma, noise_strength,
-            H=H, ops=ops, geom_eta=g_eta, nm_strength=nm_str,
+            N,
+            n_steps,
+            dt,
+            gamma,
+            noise_strength,
+            H=H,
+            ops=ops,
+            geom_eta=g_eta,
+            nm_strength=nm_str,
         )
         b = run_null_trajectory(N, n_steps, dt, gamma, noise_strength, H=H, ops=ops)
         return compute_signal_metrics(c, b)["delta_O_max"]
 
-    delta_lqr = _delta(0.0, 0.0)          # no geometry, no memory
+    delta_lqr = _delta(0.0, 0.0)  # no geometry, no memory
     delta_pontryagin = _delta(0.05, 0.05)  # default CIIR
-    delta_nat_grad = _delta(0.10, 0.08)    # stronger geometry
+    delta_nat_grad = _delta(0.10, 0.08)  # stronger geometry
 
     geometric_enhances = delta_nat_grad > delta_lqr
 
@@ -1050,9 +1081,7 @@ def run_s2_controller_comparison(
         "delta_pontryagin": delta_pontryagin,
         "delta_natural_gradient": delta_nat_grad,
         "geometric_enhances_signal": geometric_enhances,
-        "nat_grad_vs_lqr_ratio": (
-            delta_nat_grad / max(delta_lqr, 1e-15)
-        ),
+        "nat_grad_vs_lqr_ratio": (delta_nat_grad / max(delta_lqr, 1e-15)),
     }
 
 
@@ -1066,10 +1095,10 @@ def run_s3_alpha_consistency(
     Checks agreement < 5 % and bracket [1.79, 1.87].
     Returns N* at which routes diverge (if at all).
     """
+    from quasim.ciir.multi_qubit.analysis.alpha_derivation import PARAMS as ALPHA_PARAMS
     from quasim.ciir.multi_qubit.analysis.alpha_derivation import (
         cross_validate_routes,
         default_ifs_parameters,
-        PARAMS as ALPHA_PARAMS,
     )
 
     if N_list is None:
@@ -1081,16 +1110,20 @@ def run_s3_alpha_consistency(
         H = _build_hamiltonian(N)
         ops = _build_lindblad_ops(N, gamma)
         cv = cross_validate_routes(H, ops, n_copies=n_copies, scale_factor=scale)
-        results.append({
-            "N": N,
-            "alpha_spectral": cv["alpha_spectral"],
-            "alpha_hausdorff": cv["alpha_hausdorff"],
-            "agreement": cv["agreement"],
-            "both_in_range": (
-                ALPHA_PARAMS["alpha_low"] <= cv["alpha_spectral"] <= ALPHA_PARAMS["alpha_high"]
-                and ALPHA_PARAMS["alpha_low"] <= cv["alpha_hausdorff"] <= ALPHA_PARAMS["alpha_high"]
-            ),
-        })
+        results.append(
+            {
+                "N": N,
+                "alpha_spectral": cv["alpha_spectral"],
+                "alpha_hausdorff": cv["alpha_hausdorff"],
+                "agreement": cv["agreement"],
+                "both_in_range": (
+                    ALPHA_PARAMS["alpha_low"] <= cv["alpha_spectral"] <= ALPHA_PARAMS["alpha_high"]
+                    and ALPHA_PARAMS["alpha_low"]
+                    <= cv["alpha_hausdorff"]
+                    <= ALPHA_PARAMS["alpha_high"]
+                ),
+            }
+        )
 
     # Find N* where routes diverge by > 5 %
     alpha_h0 = results[0]["alpha_hausdorff"] if results else 1.83
@@ -1104,8 +1137,7 @@ def run_s3_alpha_consistency(
         "per_N": results,
         "n_star_diverge": n_star,
         "all_agree_5pct": all(
-            r["agreement"] / max(r["alpha_hausdorff"], 1e-15) < 0.05
-            for r in results
+            r["agreement"] / max(r["alpha_hausdorff"], 1e-15) < 0.05 for r in results
         ),
         "all_in_range": all(r["both_in_range"] for r in results),
     }
@@ -1114,6 +1146,7 @@ def run_s3_alpha_consistency(
 # ────────────────────────────────────────────────────────────────
 # FULL PROTOCOL RUNNER
 # ────────────────────────────────────────────────────────────────
+
 
 def run_falsification_protocol(
     N: int = PROTOCOL_PARAMS["N_default"],
@@ -1175,8 +1208,11 @@ def run_falsification_protocol(
         "artifacts": {r.label: r for r in artifacts},
         "verdict": verdict,
         "params": {
-            "N": N, "n_steps": n_steps, "dt": dt,
-            "gamma": gamma, "noise_strength": noise_strength,
+            "N": N,
+            "n_steps": n_steps,
+            "dt": dt,
+            "gamma": gamma,
+            "noise_strength": noise_strength,
             "N_scan": N_scan,
         },
     }

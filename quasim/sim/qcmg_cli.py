@@ -11,8 +11,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from quasim.sim.qcmg_field import (QCMGParameters,
-                                   QuantacosmomorphysigeneticField)
+from quasim.sim.qcmg_field import QCMGParameters, QuantacosmomorphysigeneticField
 
 
 def create_parser() -> argparse.ArgumentParser:

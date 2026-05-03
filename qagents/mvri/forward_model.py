@@ -62,18 +62,14 @@ def forward_model(state: State, action: Action) -> State:
         new_acts = dict(state.activations)
         if node not in new_acts:
             return replace_state(state, step=state.step + 1)
-        new_acts[node] = _clip(
-            float(new_acts[node]) + float(action.magnitude), lo, hi
-        )
+        new_acts[node] = _clip(float(new_acts[node]) + float(action.magnitude), lo, hi)
         return replace_state(state, activations=new_acts, step=state.step + 1)
 
     if action.type == "noise_injection":
         if action.seed is None:
             # Forward model is total but cannot proceed without a seed:
             # surface this clearly. (validate_action would have caught it.)
-            raise ForwardModelError(
-                "noise_injection requires an explicit integer seed"
-            )
+            raise ForwardModelError("noise_injection requires an explicit integer seed")
         rng = np.random.default_rng(int(action.seed))
         node = action.target
         new_acts = dict(state.activations)

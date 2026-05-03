@@ -20,7 +20,9 @@ import numpy as np
 import pytest
 
 from xenon.bioinformatics.full_genome_sequencing import (
-    FullGenomeSequencingPipeline, GenomeSequencingConfig)
+    FullGenomeSequencingPipeline,
+    GenomeSequencingConfig,
+)
 
 
 class TestFullGenomeSequencingPipeline:

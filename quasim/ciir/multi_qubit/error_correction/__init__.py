@@ -2,9 +2,9 @@
 
 from .fractal_qec import (
     FractalQEC,
-    steane_logical_error_rate,
-    fractal_recursion,
     fit_fractal_scaling,
+    fractal_recursion,
+    steane_logical_error_rate,
 )
 
 __all__ = [

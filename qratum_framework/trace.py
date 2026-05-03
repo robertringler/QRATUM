@@ -15,11 +15,12 @@ Key properties (deterministic by construction):
   preferred over wall-clock provenance.  Wall-clock metadata, if needed,
   travels in a separate ``metadata`` field that is excluded from hashing.
 """
+
 from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple
 
 #: Canonical genesis hash for the head of an empty Merkle ledger.  The empty

@@ -12,6 +12,7 @@ row; the runner-level ``detect_regressions`` helper aggregates over a
 list of rows and exposes a single non-zero exit suitable for
 ``qratum eval --regression``.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -69,7 +70,7 @@ class RegressionVerdict:
 
 
 def detect_regressions(
-    rows: Iterable["MatrixRow"],
+    rows: Iterable[MatrixRow],
     *,
     thresholds: RegressionThresholds | None = None,
     skip_baseline: bool = True,
@@ -100,13 +101,10 @@ def detect_regressions(
         reasons: List[str] = []
         m = row.metrics
         if m.anomaly_rate > th.max_anomaly_rate:
-            reasons.append(
-                f"anomaly_rate {m.anomaly_rate:.3f} > {th.max_anomaly_rate:.3f}"
-            )
+            reasons.append(f"anomaly_rate {m.anomaly_rate:.3f} > {th.max_anomaly_rate:.3f}")
         if m.lift_cluster_rate > th.max_lift_cluster_rate:
             reasons.append(
-                f"lift_cluster_rate {m.lift_cluster_rate:.3f} "
-                f"> {th.max_lift_cluster_rate:.3f}"
+                f"lift_cluster_rate {m.lift_cluster_rate:.3f} " f"> {th.max_lift_cluster_rate:.3f}"
             )
         if m.cluster_activation_index > th.max_cluster_activation_index:
             reasons.append(

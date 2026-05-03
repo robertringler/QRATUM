@@ -16,20 +16,20 @@ The `Constraint` value is parameterised by a pure predicate so that the
 constraint *set* is data, not code, and `phi` does not need to switch on the
 constraint name.
 """
+
 from __future__ import annotations
 
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, replace
 from typing import Callable, FrozenSet, Tuple
-
 
 # --------------------------------------------------------------------------
 # Typed state space S
 # --------------------------------------------------------------------------
 
 #: System budget constants — define the legal box of S.
-MAX_CPU: int = 8           # hard upper bound on cpu_used
-MAX_MEM: int = 16          # hard upper bound on mem_used
-TOTAL_BUDGET: int = 20     # invariant: cpu_used + mem_used <= TOTAL_BUDGET
+MAX_CPU: int = 8  # hard upper bound on cpu_used
+MAX_MEM: int = 16  # hard upper bound on mem_used
+TOTAL_BUDGET: int = 20  # invariant: cpu_used + mem_used <= TOTAL_BUDGET
 
 
 @dataclass(frozen=True)
@@ -40,9 +40,10 @@ class State:
     `State`, never mutate.  Status values are restricted to a small string
     enum-like set so that the parser/controller can reason about reachability.
     """
+
     cpu_used: int
     mem_used: int
-    status: str            # one of: 'idle', 'running', 'halted'
+    status: str  # one of: 'idle', 'running', 'halted'
     internal_notes: str = ""  # NOT exposed via Omega — internal-only field
 
     def __post_init__(self) -> None:
@@ -60,6 +61,7 @@ class State:
 # Observer map Omega — partial projection of the state
 # --------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Observation:
     """Result of Omega(s).
@@ -68,11 +70,12 @@ class Observation:
     by design.  The numeric fields are exposed exactly; consumers of an
     Observation must NOT downcast it back into a State.
     """
+
     cpu_used: int
     mem_used: int
     status: str
-    cpu_free: int          # derived field
-    mem_free: int          # derived field
+    cpu_free: int  # derived field
+    mem_free: int  # derived field
 
 
 def Omega(s: State) -> Observation:
@@ -95,6 +98,7 @@ def Omega(s: State) -> Observation:
 # Constraint set C and satisfaction predicate phi
 # --------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Constraint:
     """A named, pure predicate over State.
@@ -103,6 +107,7 @@ class Constraint:
     invokes the predicate.  Decoupling identity (name) from the predicate body
     makes constraints data-like and enables fast inspection and logging.
     """
+
     name: str
     predicate: Callable[[State], bool]
     description: str = ""
@@ -146,6 +151,7 @@ def all_satisfied(s: State, constraints: FrozenSet[Constraint]) -> Tuple[bool, T
 # Invariant Inv ⊆ S
 # --------------------------------------------------------------------------
 
+
 def Inv(s: State) -> bool:
     """System invariant.
 
@@ -167,23 +173,25 @@ def Inv(s: State) -> bool:
 # Default constraint set C_active
 # --------------------------------------------------------------------------
 
-C_ACTIVE: FrozenSet[Constraint] = frozenset({
-    Constraint(
-        name="cpu_in_range",
-        predicate=lambda s: 0 <= s.cpu_used <= MAX_CPU,
-        description="0 <= cpu_used <= MAX_CPU",
-    ),
-    Constraint(
-        name="mem_in_range",
-        predicate=lambda s: 0 <= s.mem_used <= MAX_MEM,
-        description="0 <= mem_used <= MAX_MEM",
-    ),
-    Constraint(
-        name="not_halted_for_alloc",
-        predicate=lambda s: s.status != "halted",
-        description="halted state forbids further allocation/scheduling",
-    ),
-})
+C_ACTIVE: FrozenSet[Constraint] = frozenset(
+    {
+        Constraint(
+            name="cpu_in_range",
+            predicate=lambda s: 0 <= s.cpu_used <= MAX_CPU,
+            description="0 <= cpu_used <= MAX_CPU",
+        ),
+        Constraint(
+            name="mem_in_range",
+            predicate=lambda s: 0 <= s.mem_used <= MAX_MEM,
+            description="0 <= mem_used <= MAX_MEM",
+        ),
+        Constraint(
+            name="not_halted_for_alloc",
+            predicate=lambda s: s.status != "halted",
+            description="halted state forbids further allocation/scheduling",
+        ),
+    }
+)
 
 
 __all__ = [

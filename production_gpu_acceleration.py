@@ -28,6 +28,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class GPUDevice:
     """GPU device information"""
+
     id: int
     name: str
     compute_capability: Tuple[int, int]
@@ -50,23 +51,26 @@ class GPUManager:
         try:
             # Try nvidia-smi command
             result = subprocess.run(
-                ['nvidia-smi', '--query-gpu=index,name,compute_cap,memory.total,memory.free,driver_version',
-                 '--format=csv,noheader,nounits'],
+                [
+                    "nvidia-smi",
+                    "--query-gpu=index,name,compute_cap,memory.total,memory.free,driver_version",
+                    "--format=csv,noheader,nounits",
+                ],
                 capture_output=True,
                 text=True,
-                timeout=5
+                timeout=5,
             )
 
             if result.returncode == 0:
                 self.cuda_available = True
 
-                for line in result.stdout.strip().split('\n'):
+                for line in result.stdout.strip().split("\n"):
                     if line:
-                        parts = [p.strip() for p in line.split(',')]
+                        parts = [p.strip() for p in line.split(",")]
                         if len(parts) >= 6:
                             gpu_id = int(parts[0])
                             name = parts[1]
-                            compute_cap = tuple(map(int, parts[2].split('.')))
+                            compute_cap = tuple(map(int, parts[2].split(".")))
                             total_mem = int(float(parts[3]))
                             free_mem = int(float(parts[4]))
                             driver = parts[5]
@@ -78,7 +82,7 @@ class GPUManager:
                                 total_memory_mb=total_mem,
                                 free_memory_mb=free_mem,
                                 driver_version=driver,
-                                cuda_version=self._get_cuda_version()
+                                cuda_version=self._get_cuda_version(),
                             )
                             self.gpus.append(gpu)
 
@@ -96,19 +100,16 @@ class GPUManager:
         """Get CUDA version"""
         try:
             result = subprocess.run(
-                ['nvcc', '--version'],
-                capture_output=True,
-                text=True,
-                timeout=5
+                ["nvcc", "--version"], capture_output=True, text=True, timeout=5
             )
 
             if result.returncode == 0:
                 # Parse version from output
-                for line in result.stdout.split('\n'):
-                    if 'release' in line.lower():
-                        parts = line.split('release')
+                for line in result.stdout.split("\n"):
+                    if "release" in line.lower():
+                        parts = line.split("release")
                         if len(parts) > 1:
-                            version = parts[1].strip().split(',')[0].strip()
+                            version = parts[1].strip().split(",")[0].strip()
                             return version
         except:
             pass
@@ -135,17 +136,17 @@ class GPUManager:
                     "total_memory_mb": gpu.total_memory_mb,
                     "free_memory_mb": gpu.free_memory_mb,
                     "driver_version": gpu.driver_version,
-                    "cuda_version": gpu.cuda_version
+                    "cuda_version": gpu.cuda_version,
                 }
                 for gpu in self.gpus
-            ]
+            ],
         }
 
 
 class GPUAcceleratedAlignment:
     """
     GPU-accelerated sequence alignment
-    
+
     Uses CUDA to accelerate Smith-Waterman and BWA-MEM style alignment.
     Falls back to CPU if GPU unavailable.
     """
@@ -160,18 +161,22 @@ class GPUAcceleratedAlignment:
         else:
             logger.info("GPU not available, using CPU fallback")
 
-    def align_reads(self, fastq_r1: str, fastq_r2: Optional[str] = None,
-                    output_bam: str = "aligned.bam",
-                    threads: int = 8) -> Dict[str, Any]:
+    def align_reads(
+        self,
+        fastq_r1: str,
+        fastq_r2: Optional[str] = None,
+        output_bam: str = "aligned.bam",
+        threads: int = 8,
+    ) -> Dict[str, Any]:
         """
         Align paired-end or single-end reads to reference genome
-        
+
         Args:
             fastq_r1: Path to R1 FASTQ file
             fastq_r2: Path to R2 FASTQ file (optional, for paired-end)
             output_bam: Output BAM file path
             threads: Number of CPU threads (used even with GPU for I/O)
-        
+
         Returns:
             Alignment statistics
         """
@@ -187,13 +192,16 @@ class GPUAcceleratedAlignment:
             result = self._align_cpu(fastq_r1, fastq_r2, output_bam, threads)
 
         elapsed_time = time.time() - start_time
-        result['elapsed_time_seconds'] = elapsed_time
-        result['throughput_reads_per_second'] = result['total_reads'] / elapsed_time if elapsed_time > 0 else 0
+        result["elapsed_time_seconds"] = elapsed_time
+        result["throughput_reads_per_second"] = (
+            result["total_reads"] / elapsed_time if elapsed_time > 0 else 0
+        )
 
         return result
 
-    def _align_gpu(self, fastq_r1: str, fastq_r2: Optional[str],
-                   output_bam: str, threads: int) -> Dict[str, Any]:
+    def _align_gpu(
+        self, fastq_r1: str, fastq_r2: Optional[str], output_bam: str, threads: int
+    ) -> Dict[str, Any]:
         """GPU-accelerated alignment using CUDA"""
 
         # Use Clara Parabricks if available, otherwise use GPU-accelerated BWA-MEM
@@ -208,16 +216,13 @@ class GPUAcceleratedAlignment:
             logger.info("Using NVIDIA Clara Parabricks for GPU acceleration")
             try:
                 result = subprocess.run(
-                    parabricks_cmd,
-                    capture_output=True,
-                    text=True,
-                    timeout=7200  # 2 hour timeout
+                    parabricks_cmd, capture_output=True, text=True, timeout=7200  # 2 hour timeout
                 )
 
                 if result.returncode == 0:
                     stats = self._parse_alignment_stats(result.stdout)
-                    stats['acceleration_method'] = 'Clara_Parabricks'
-                    stats['gpu_id'] = gpu.id
+                    stats["acceleration_method"] = "Clara_Parabricks"
+                    stats["gpu_id"] = gpu.id
                     return stats
             except Exception as e:
                 logger.warning(f"Parabricks failed: {e}, falling back to BWA-MEM")
@@ -226,40 +231,40 @@ class GPUAcceleratedAlignment:
         logger.info("Using BWA-MEM with GPU-optimized scheduling")
         return self._align_bwa_mem_gpu_scheduled(fastq_r1, fastq_r2, output_bam, threads, gpu)
 
-    def _align_cpu(self, fastq_r1: str, fastq_r2: Optional[str],
-                   output_bam: str, threads: int) -> Dict[str, Any]:
+    def _align_cpu(
+        self, fastq_r1: str, fastq_r2: Optional[str], output_bam: str, threads: int
+    ) -> Dict[str, Any]:
         """CPU-based alignment using BWA-MEM"""
 
         logger.info(f"Using BWA-MEM with {threads} threads (CPU)")
 
         # Build BWA-MEM command
         cmd = [
-            'bwa', 'mem',
-            '-t', str(threads),
-            '-M',  # Mark shorter split hits as secondary
-            '-R', '@RG\\tID:sample\\tSM:sample\\tPL:ILLUMINA',
+            "bwa",
+            "mem",
+            "-t",
+            str(threads),
+            "-M",  # Mark shorter split hits as secondary
+            "-R",
+            "@RG\\tID:sample\\tSM:sample\\tPL:ILLUMINA",
             self.reference_genome,
-            fastq_r1
+            fastq_r1,
         ]
 
         if fastq_r2:
             cmd.append(fastq_r2)
 
         # Add samtools sorting
-        cmd_str = ' '.join(cmd) + f' | samtools sort -@ {threads} -o {output_bam}'
+        cmd_str = " ".join(cmd) + f" | samtools sort -@ {threads} -o {output_bam}"
 
         try:
             result = subprocess.run(
-                cmd_str,
-                shell=True,
-                capture_output=True,
-                text=True,
-                timeout=28800  # 8 hour timeout
+                cmd_str, shell=True, capture_output=True, text=True, timeout=28800  # 8 hour timeout
             )
 
             if result.returncode == 0:
                 stats = self._parse_bwa_mem_stats(result.stderr)
-                stats['acceleration_method'] = 'CPU_BWA_MEM'
+                stats["acceleration_method"] = "CPU_BWA_MEM"
                 return stats
             else:
                 logger.error(f"BWA-MEM failed: {result.stderr}")
@@ -272,70 +277,70 @@ class GPUAcceleratedAlignment:
             logger.error(f"Alignment error: {e}")
             return {"error": str(e)}
 
-    def _build_parabricks_command(self, fastq_r1: str, fastq_r2: Optional[str],
-                                   output_bam: str) -> Optional[List[str]]:
+    def _build_parabricks_command(
+        self, fastq_r1: str, fastq_r2: Optional[str], output_bam: str
+    ) -> Optional[List[str]]:
         """Build Clara Parabricks command if available"""
 
         # Check if pbrun is available
         try:
-            subprocess.run(['pbrun', '--version'], capture_output=True, timeout=5)
+            subprocess.run(["pbrun", "--version"], capture_output=True, timeout=5)
         except:
             return None
 
         cmd = [
-            'pbrun', 'fq2bam',
-            '--ref', self.reference_genome,
-            '--in-fq', fastq_r1,
+            "pbrun",
+            "fq2bam",
+            "--ref",
+            self.reference_genome,
+            "--in-fq",
+            fastq_r1,
         ]
 
         if fastq_r2:
-            cmd.extend(['--in-fq', fastq_r2])
+            cmd.extend(["--in-fq", fastq_r2])
 
-        cmd.extend([
-            '--out-bam', output_bam,
-            '--tmp-dir', '/tmp/parabricks'
-        ])
+        cmd.extend(["--out-bam", output_bam, "--tmp-dir", "/tmp/parabricks"])
 
         return cmd
 
-    def _align_bwa_mem_gpu_scheduled(self, fastq_r1: str, fastq_r2: Optional[str],
-                                      output_bam: str, threads: int, gpu: GPUDevice) -> Dict[str, Any]:
+    def _align_bwa_mem_gpu_scheduled(
+        self, fastq_r1: str, fastq_r2: Optional[str], output_bam: str, threads: int, gpu: GPUDevice
+    ) -> Dict[str, Any]:
         """BWA-MEM with GPU-aware task scheduling"""
 
         # Set GPU environment variables for optimal scheduling
         env = os.environ.copy()
-        env['CUDA_VISIBLE_DEVICES'] = str(gpu.id)
+        env["CUDA_VISIBLE_DEVICES"] = str(gpu.id)
 
         # Use standard BWA-MEM but with optimized threading for GPU system
         cmd = [
-            'bwa', 'mem',
-            '-t', str(min(threads, 16)),  # Limit threads when GPU available
-            '-M',
-            '-R', '@RG\\tID:sample\\tSM:sample\\tPL:ILLUMINA',
+            "bwa",
+            "mem",
+            "-t",
+            str(min(threads, 16)),  # Limit threads when GPU available
+            "-M",
+            "-R",
+            "@RG\\tID:sample\\tSM:sample\\tPL:ILLUMINA",
             self.reference_genome,
-            fastq_r1
+            fastq_r1,
         ]
 
         if fastq_r2:
             cmd.append(fastq_r2)
 
         # Run and sort
-        cmd_str = ' '.join(cmd) + f' | samtools sort -@ {threads} -o {output_bam}'
+        cmd_str = " ".join(cmd) + f" | samtools sort -@ {threads} -o {output_bam}"
 
         try:
             result = subprocess.run(
-                cmd_str,
-                shell=True,
-                capture_output=True,
-                text=True,
-                env=env,
-                timeout=28800
+                cmd_str, shell=True, capture_output=True, text=True, env=env, timeout=28800
             )
 
             if result.returncode == 0:
                 stats = self._parse_bwa_mem_stats(result.stderr)
-                stats['acceleration_method'] = 'BWA_MEM_GPU_Scheduled'
-                stats['gpu_id'] = gpu.id
+                stats["acceleration_method"] = "BWA_MEM_GPU_Scheduled"
+                stats["gpu_id"] = gpu.id
                 return stats
             else:
                 # Fallback to pure CPU
@@ -347,12 +352,7 @@ class GPUAcceleratedAlignment:
 
     def _parse_alignment_stats(self, output: str) -> Dict[str, Any]:
         """Parse alignment statistics from output"""
-        stats = {
-            "total_reads": 0,
-            "mapped_reads": 0,
-            "properly_paired": 0,
-            "mapping_rate": 0.0
-        }
+        stats = {"total_reads": 0, "mapped_reads": 0, "properly_paired": 0, "mapping_rate": 0.0}
 
         # Parse from tool output (simplified)
         # Real implementation would parse actual tool output
@@ -361,29 +361,24 @@ class GPUAcceleratedAlignment:
 
     def _parse_bwa_mem_stats(self, stderr: str) -> Dict[str, Any]:
         """Parse BWA-MEM statistics from stderr"""
-        stats = {
-            "total_reads": 0,
-            "mapped_reads": 0,
-            "properly_paired": 0,
-            "mapping_rate": 0.0
-        }
+        stats = {"total_reads": 0, "mapped_reads": 0, "properly_paired": 0, "mapping_rate": 0.0}
 
         # BWA-MEM outputs stats to stderr
         # Parse lines like: "[M::process] read 1000000 sequences"
 
-        for line in stderr.split('\n'):
-            if 'process] read' in line and 'sequences' in line:
+        for line in stderr.split("\n"):
+            if "process] read" in line and "sequences" in line:
                 try:
                     parts = line.split()
-                    reads_idx = parts.index('read') + 1
-                    stats['total_reads'] = int(parts[reads_idx])
+                    reads_idx = parts.index("read") + 1
+                    stats["total_reads"] = int(parts[reads_idx])
                 except:
                     pass
 
         # Estimate mapped reads (would need to parse BAM for exact count)
-        stats['mapped_reads'] = int(stats['total_reads'] * 0.95)  # ~95% typical
-        stats['properly_paired'] = int(stats['total_reads'] * 0.90)  # ~90% typical
-        stats['mapping_rate'] = 0.95
+        stats["mapped_reads"] = int(stats["total_reads"] * 0.95)  # ~95% typical
+        stats["properly_paired"] = int(stats["total_reads"] * 0.90)  # ~90% typical
+        stats["mapping_rate"] = 0.95
 
         return stats
 
@@ -391,7 +386,7 @@ class GPUAcceleratedAlignment:
 class GPUAcceleratedVariantCalling:
     """
     GPU-accelerated variant calling
-    
+
     Uses deep learning models on GPU for faster, more accurate variant calling.
     """
 
@@ -400,16 +395,17 @@ class GPUAcceleratedVariantCalling:
         self.gpu_manager = gpu_manager
         self.use_gpu = gpu_manager.cuda_available
 
-    def call_variants(self, input_bam: str, output_vcf: str,
-                      model: str = "deepvariant") -> Dict[str, Any]:
+    def call_variants(
+        self, input_bam: str, output_vcf: str, model: str = "deepvariant"
+    ) -> Dict[str, Any]:
         """
         Call variants from aligned reads
-        
+
         Args:
             input_bam: Input BAM file
             output_vcf: Output VCF file
             model: Model to use (deepvariant, parabricks, etc.)
-        
+
         Returns:
             Variant calling statistics
         """
@@ -426,7 +422,7 @@ class GPUAcceleratedVariantCalling:
             result = self._call_variants_cpu(input_bam, output_vcf)
 
         elapsed_time = time.time() - start_time
-        result['elapsed_time_seconds'] = elapsed_time
+        result["elapsed_time_seconds"] = elapsed_time
 
         return result
 
@@ -438,25 +434,28 @@ class GPUAcceleratedVariantCalling:
 
         # DeepVariant docker command with GPU
         cmd = [
-            'docker', 'run',
-            '--gpus', f'"device={gpu.id}"',
-            '-v', '/data:/data',
-            'google/deepvariant:latest',
-            '/opt/deepvariant/bin/run_deepvariant',
-            '--model_type=WGS',
-            '--ref=' + self.reference_genome,
-            '--reads=' + input_bam,
-            '--output_vcf=' + output_vcf,
-            '--num_shards=$(nproc)'
+            "docker",
+            "run",
+            "--gpus",
+            f'"device={gpu.id}"',
+            "-v",
+            "/data:/data",
+            "google/deepvariant:latest",
+            "/opt/deepvariant/bin/run_deepvariant",
+            "--model_type=WGS",
+            "--ref=" + self.reference_genome,
+            "--reads=" + input_bam,
+            "--output_vcf=" + output_vcf,
+            "--num_shards=$(nproc)",
         ]
 
         try:
             result = subprocess.run(
-                ' '.join(cmd),
+                " ".join(cmd),
                 shell=True,
                 capture_output=True,
                 text=True,
-                timeout=14400  # 4 hour timeout
+                timeout=14400,  # 4 hour timeout
             )
 
             if result.returncode == 0:
@@ -464,7 +463,7 @@ class GPUAcceleratedVariantCalling:
                     "method": "DeepVariant_GPU",
                     "gpu_id": gpu.id,
                     "total_variants": self._count_variants(output_vcf),
-                    "status": "success"
+                    "status": "success",
                 }
             else:
                 logger.warning("DeepVariant GPU failed, falling back to CPU")
@@ -478,25 +477,24 @@ class GPUAcceleratedVariantCalling:
         """Call variants using Parabricks GPU"""
 
         cmd = [
-            'pbrun', 'haplotypecaller',
-            '--ref', self.reference_genome,
-            '--in-bam', input_bam,
-            '--out-variants', output_vcf
+            "pbrun",
+            "haplotypecaller",
+            "--ref",
+            self.reference_genome,
+            "--in-bam",
+            input_bam,
+            "--out-variants",
+            output_vcf,
         ]
 
         try:
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=7200
-            )
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=7200)
 
             if result.returncode == 0:
                 return {
                     "method": "Parabricks_HaplotypeCaller",
                     "total_variants": self._count_variants(output_vcf),
-                    "status": "success"
+                    "status": "success",
                 }
         except:
             pass
@@ -509,31 +507,30 @@ class GPUAcceleratedVariantCalling:
         logger.info("Using GATK HaplotypeCaller (CPU)")
 
         cmd = [
-            'gatk', 'HaplotypeCaller',
-            '-R', self.reference_genome,
-            '-I', input_bam,
-            '-O', output_vcf
+            "gatk",
+            "HaplotypeCaller",
+            "-R",
+            self.reference_genome,
+            "-I",
+            input_bam,
+            "-O",
+            output_vcf,
         ]
 
         try:
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=14400
-            )
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=14400)
 
             if result.returncode == 0:
                 return {
                     "method": "GATK_HaplotypeCaller_CPU",
                     "total_variants": self._count_variants(output_vcf),
-                    "status": "success"
+                    "status": "success",
                 }
             else:
                 return {
                     "method": "GATK_HaplotypeCaller_CPU",
                     "status": "failed",
-                    "error": result.stderr
+                    "error": result.stderr,
                 }
 
         except Exception as e:
@@ -543,17 +540,18 @@ class GPUAcceleratedVariantCalling:
         """Count variants in VCF file"""
         try:
             with open(vcf_file) as f:
-                count = sum(1 for line in f if not line.startswith('#'))
+                count = sum(1 for line in f if not line.startswith("#"))
             return count
         except:
             return 0
 
 
-def benchmark_gpu_acceleration(reference_genome: str, fastq_r1: str,
-                                fastq_r2: Optional[str] = None) -> Dict[str, Any]:
+def benchmark_gpu_acceleration(
+    reference_genome: str, fastq_r1: str, fastq_r2: Optional[str] = None
+) -> Dict[str, Any]:
     """
     Benchmark GPU vs CPU performance
-    
+
     Returns comparative metrics for GPU and CPU execution.
     """
     gpu_manager = GPUManager()
@@ -561,7 +559,7 @@ def benchmark_gpu_acceleration(reference_genome: str, fastq_r1: str,
     benchmark_results = {
         "system_info": gpu_manager.get_device_info(),
         "alignment": {},
-        "variant_calling": {}
+        "variant_calling": {},
     }
 
     # Test alignment
@@ -569,26 +567,28 @@ def benchmark_gpu_acceleration(reference_genome: str, fastq_r1: str,
 
     logger.info("Benchmarking alignment (GPU)...")
     gpu_align_result = aligner.align_reads(fastq_r1, fastq_r2, "test_gpu.bam")
-    benchmark_results['alignment']['gpu'] = gpu_align_result
+    benchmark_results["alignment"]["gpu"] = gpu_align_result
 
     logger.info("Benchmarking alignment (CPU)...")
     aligner.use_gpu = False
     cpu_align_result = aligner.align_reads(fastq_r1, fastq_r2, "test_cpu.bam")
-    benchmark_results['alignment']['cpu'] = cpu_align_result
+    benchmark_results["alignment"]["cpu"] = cpu_align_result
 
     # Calculate speedup
-    if 'elapsed_time_seconds' in gpu_align_result and 'elapsed_time_seconds' in cpu_align_result:
-        speedup = cpu_align_result['elapsed_time_seconds'] / gpu_align_result['elapsed_time_seconds']
-        benchmark_results['alignment']['speedup'] = f"{speedup:.2f}x"
+    if "elapsed_time_seconds" in gpu_align_result and "elapsed_time_seconds" in cpu_align_result:
+        speedup = (
+            cpu_align_result["elapsed_time_seconds"] / gpu_align_result["elapsed_time_seconds"]
+        )
+        benchmark_results["alignment"]["speedup"] = f"{speedup:.2f}x"
 
     return benchmark_results
 
 
 def main():
     """Demo/test GPU acceleration"""
-    print("\n" + "="*80)
+    print("\n" + "=" * 80)
     print("PRODUCTION GPU ACCELERATION - DEVICE DETECTION")
-    print("="*80 + "\n")
+    print("=" * 80 + "\n")
 
     gpu_manager = GPUManager()
     device_info = gpu_manager.get_device_info()
@@ -599,13 +599,15 @@ def main():
         print("\n✅ GPU acceleration AVAILABLE")
         print(f"   Detected {len(gpu_manager.gpus)} GPU(s)")
         for gpu in gpu_manager.gpus:
-            print(f"   - {gpu.name}: {gpu.total_memory_mb} MB, Compute {gpu.compute_capability[0]}.{gpu.compute_capability[1]}")
+            print(
+                f"   - {gpu.name}: {gpu.total_memory_mb} MB, Compute {gpu.compute_capability[0]}.{gpu.compute_capability[1]}"
+            )
     else:
         print("\n⚠️  GPU acceleration NOT available")
         print("   Falling back to CPU execution")
 
-    print("\n" + "="*80 + "\n")
+    print("\n" + "=" * 80 + "\n")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

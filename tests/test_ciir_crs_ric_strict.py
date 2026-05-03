@@ -3,15 +3,16 @@
 Covers determinism, separation of concerns, all four failure modes, and the
 observer-map contract.
 """
+
 from __future__ import annotations
 
 import pytest
 
 from qagents.ciir_crs_ric.ciir import (
     C_ACTIVE,
+    MAX_CPU,
     Constraint,
     Inv,
-    MAX_CPU,
     Observation,
     Omega,
     State,
@@ -26,7 +27,6 @@ from qagents.ciir_crs_ric.crs import (
     transition,
 )
 from qagents.ciir_crs_ric.executor import (
-    TraceEntry,
     print_trace,
     run,
     run_step,
@@ -45,10 +45,10 @@ from qagents.ciir_crs_ric.failures import (
 )
 from qagents.ciir_crs_ric.ric import Intent, parse_intent, select_action
 
-
 # --------------------------------------------------------------------------
 # CIIR layer
 # --------------------------------------------------------------------------
+
 
 class TestCIIR:
     def test_state_is_immutable(self):
@@ -99,6 +99,7 @@ class TestCIIR:
 # CRS layer
 # --------------------------------------------------------------------------
 
+
 class TestCRS:
     def test_transition_pure(self):
         s = State(1, 1, "idle")
@@ -146,6 +147,7 @@ class TestCRS:
 # RIC layer (no raw-State access)
 # --------------------------------------------------------------------------
 
+
 class TestRIC:
     def test_parse_intent_canonical(self):
         assert parse_intent("increase_cpu") is Intent.INCREASE_CPU
@@ -180,6 +182,7 @@ class TestRIC:
 # --------------------------------------------------------------------------
 # Executor 9-step loop & trace
 # --------------------------------------------------------------------------
+
 
 class TestExecutor:
     def test_case_A_valid(self):
@@ -249,6 +252,7 @@ class TestExecutor:
 # --------------------------------------------------------------------------
 # Failures taxonomy
 # --------------------------------------------------------------------------
+
 
 class TestFailures:
     def test_classify_known(self):

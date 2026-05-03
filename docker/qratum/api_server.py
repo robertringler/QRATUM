@@ -165,11 +165,5 @@ if __name__ == "__main__":
     port = int(os.getenv("API_PORT", "8000"))
     host = os.getenv("API_HOST", "0.0.0.0")
 
-    uvicorn.run(
-        app,
-        host=host,
-        port=port,
-        log_level="info",
-        access_log=True
-    )
+    uvicorn.run(app, host=host, port=port, log_level="info", access_log=True)
     uvicorn.run(app, host=host, port=port, log_level="info", access_log=True)

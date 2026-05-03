@@ -15,6 +15,7 @@ Strict module hygiene:
       of mutable objects, no time-dependent branches.
     * If no valid action exists OR the intent is bottom, NOOP is returned.
 """
+
 from __future__ import annotations
 
 from enum import Enum
@@ -24,13 +25,14 @@ from typing import FrozenSet, Optional
 from .ciir import Observation
 from .crs import Action
 
-
 # --------------------------------------------------------------------------
 # Intent space I
 # --------------------------------------------------------------------------
 
+
 class Intent(Enum):
     """High-level user intents.  pi maps raw strings to elements of I."""
+
     INCREASE_CPU = "increase_cpu"
     DECREASE_CPU = "decrease_cpu"
     INCREASE_MEM = "increase_mem"

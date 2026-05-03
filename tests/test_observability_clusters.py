@@ -1,4 +1,5 @@
 """Tests for Layer B — Cluster Discovery Engine."""
+
 from __future__ import annotations
 
 import json
@@ -240,9 +241,7 @@ def test_discover_clusters_state_round_trip():
 def test_discover_clusters_membership_index_lookup():
     persona = (["alpha", "beta"]) * 6
     baseline = (["the", "and"]) * 6
-    state = discover_clusters(
-        persona_tokens=persona, baseline_tokens=baseline, window=2
-    )
+    state = discover_clusters(persona_tokens=persona, baseline_tokens=baseline, window=2)
     idx = state.membership_index()
     # Token in some cluster has at least one cluster id.
     assert all(isinstance(v, list) for v in idx.values())

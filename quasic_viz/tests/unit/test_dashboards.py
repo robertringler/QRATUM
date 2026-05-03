@@ -11,8 +11,7 @@ class TestWebGPUDashboard:
     def test_get_latest_frame_json(self):
         """Test getting latest frame as JSON."""
 
-        from quasic_viz.dashboards.webgpu_dashboard import \
-            get_latest_frame_json
+        from quasic_viz.dashboards.webgpu_dashboard import get_latest_frame_json
 
         json_str = get_latest_frame_json()
         assert isinstance(json_str, str)
@@ -22,8 +21,7 @@ class TestWebGPUDashboard:
     def test_update_frame_data(self):
         """Test updating frame data."""
 
-        from quasic_viz.dashboards.webgpu_dashboard import (
-            get_latest_frame_json, update_frame_data)
+        from quasic_viz.dashboards.webgpu_dashboard import get_latest_frame_json, update_frame_data
 
         update_frame_data([1, 2, 3], {"temp": [100, 200]})
         json_str = get_latest_frame_json()

@@ -29,8 +29,8 @@ from qratum_framework.falsifier import (
     VERDICT_A,
     VERDICT_A0,
     VERDICT_B,
-    Falsifier,
     FalsificationVerdict,
+    Falsifier,
 )
 from qratum_framework.health import (
     HealthReport,

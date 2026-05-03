@@ -1,8 +1,7 @@
 import zipfile
 from pathlib import Path
 
-from chatgpt_scraper.loader import (find_export_root, iter_raw_messages,
-                                    load_raw_conversations)
+from chatgpt_scraper.loader import find_export_root, iter_raw_messages, load_raw_conversations
 
 FIXTURE_DIR = Path(__file__).parent / "data" / "export_dir"
 

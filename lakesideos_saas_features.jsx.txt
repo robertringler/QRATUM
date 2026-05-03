@@ -1,0 +1,1019 @@
+import { useState } from "react";
+
+const FEATURES = [
+  {
+    id: "guestdna",
+    code: "F-01",
+    label: "GuestDNA Engine",
+    category: "INTELLIGENCE",
+    status: "NEW",
+    tier: "Growth+",
+    color: "#38bdf8",
+    icon: "◈",
+    tagline: "Persistent guest intelligence that compounds across every stay",
+    problem: "Independent motels lose 100% of guest knowledge when a stay ends. Chains have loyalty programs with 10 years of behavioral data. LakesideOS can close this gap by building a lightweight CRM layer that runs automatically.",
+    sections: [
+      {
+        title: "MODULE DEFINITION",
+        content: [
+          "Service name: guest-intelligence-service",
+          "Layer: sits between Execution Engine and Data Intelligence Layer",
+          "Trigger: fires on every check-in, check-out, phone call capture, and OTA booking sync"
+        ]
+      },
+      {
+        title: "DATA CAPTURE PIPELINE",
+        content: [
+          "Phone number + first name (minimum viable identity anchor)",
+          "Booking source (OTA / direct / walk-in / phone)",
+          "Room type, length of stay, rate paid",
+          "Check-in date, check-out date, day of week",
+          "Demand driver tag: auto-inferred (medical, contractor, leisure, transient)",
+          "Satisfaction signal: post-stay review left? Rating? Came back?",
+          "Referral signal: did they mention how they found us?"
+        ]
+      },
+      {
+        title: "GUEST PROFILE SCHEMA",
+        content: [
+          "guest_id (hashed phone or email)",
+          "visit_count, total_nights, total_revenue",
+          "avg_rate_paid, preferred_room_type",
+          "stay_pattern: weekend-only / weekday / extended",
+          "demand_driver: medical | contractor | leisure | transient | unknown",
+          "churn_risk_score: days since last visit vs. historical frequency",
+          "reactivation_eligible: boolean + recommended message",
+          "lifetime_value_estimate: projected 12-month revenue"
+        ]
+      },
+      {
+        title: "AUTOMATED OUTPUTS",
+        content: [
+          "Weekly 'Guest Intelligence Digest': top 5 guests due for re-engagement",
+          "Reactivation SMS campaign: auto-drafted, operator approves before send",
+          "Segment reports: how many contractor guests vs. leisure this month?",
+          "LTV ranking: which guests are most valuable? Prioritize their experience.",
+          "Churn alert: guest who stayed monthly hasn't returned in 45 days → flag"
+        ]
+      },
+      {
+        title: "MONETIZATION ANGLE",
+        content: [
+          "Operator tier ($499/mo): full GuestDNA with reactivation automation",
+          "Growth tier ($199/mo): read-only guest history, no automation",
+          "Upsell framing: 'Your 47 repeat guests represent $31,200 in annual revenue. One reactivation campaign pays for 6 months of LakesideOS.'",
+          "Network effect: as dataset grows → demand driver predictions improve"
+        ]
+      }
+    ]
+  },
+  {
+    id: "pricepulse",
+    code: "F-02",
+    label: "PricePulse — Dynamic Rate Engine",
+    category: "REVENUE",
+    status: "NEW",
+    tier: "Operator+",
+    color: "#34d399",
+    icon: "◉",
+    tagline: "Real-time rate optimization that reacts to demand signals, not gut feeling",
+    problem: "Most independent motels set rates once per season and leave money on the table every weekend. PricePulse replaces manual rate-setting with a continuous optimization loop tied to real market signals.",
+    sections: [
+      {
+        title: "SIGNAL INPUTS (real-time feeds)",
+        content: [
+          "Competitor rate scraping: 5 closest competitors, checked every 4 hours",
+          "OTA availability signals: if competitors are nearly sold out → raise rate",
+          "Local event calendar feed: sports, concerts, graduations, festivals within 30 miles",
+          "Weather data: holiday weekend + good weather = leisure demand spike",
+          "Current occupancy (from operator dashboard input or PMS sync)",
+          "Historical rate-to-occupancy correlation (built from operator's own past data)",
+          "Day-of-week baseline: Mon–Thu vs. Fri–Sun elasticity model"
+        ]
+      },
+      {
+        title: "RATE DECISION ENGINE",
+        content: [
+          "Base rate: set by operator (floor price, never go below)",
+          "Demand multiplier: 1.0x (baseline) → 1.5x (high demand) → 0.85x (trough fill)",
+          "Event premium: +$15–$40 automatically flagged for operator approval",
+          "Last-minute discount logic: if 8pm and rooms unsold → suggest fill rate",
+          "Weekly/monthly rate floor: never let dynamic pricing undercut extended-stay math",
+          "Competitive floor: never price above nearest competitor by >$12 without UVP reason"
+        ]
+      },
+      {
+        title: "OUTPUT FORMAT",
+        content: [
+          "Daily rate recommendation pushed to operator dashboard at 6am",
+          "Confidence score: HIGH / MEDIUM / LOW with reasoning",
+          "One-tap approve or override",
+          "If OTA-integrated: push approved rate automatically",
+          "Revenue impact estimate: 'This rate vs. last week's rate = +$180 projected'"
+        ]
+      },
+      {
+        title: "TECHNICAL IMPLEMENTATION",
+        content: [
+          "Rate scraper: Playwright + rotating proxies for OTA competitor pages",
+          "Event feed: Google Events API + Ticketmaster API + manual local event input",
+          "ML model (phase 2): train on operator's own rate/occupancy history",
+          "Phase 1 (MVP): rule-based heuristics, no ML required",
+          "OTA push: Booking.com API (if available) or manual operator action"
+        ]
+      },
+      {
+        title: "REVENUE IMPACT MODEL",
+        content: [
+          "Conservative: +8% ADR improvement × current occupancy = measurable lift",
+          "Base case: eliminate 15% of undersold weekend nights at below-market rate",
+          "Optimistic: capture event premiums that currently go to competitors",
+          "At 20 rooms, 65% occupancy, $78 ADR: +$8 ADR improvement = +$34k/year",
+          "ROI on $499/mo tier: break-even at 4.3 recovered room-nights per month"
+        ]
+      }
+    ]
+  },
+  {
+    id: "signalwatch",
+    code: "F-03",
+    label: "SignalWatch — Demand Early Warning",
+    category: "INTELLIGENCE",
+    status: "NEW",
+    tier: "Growth+",
+    color: "#f59e0b",
+    icon: "◎",
+    tagline: "Know demand is coming 14–30 days before it arrives. Fill rooms before competitors react.",
+    problem: "Independent operators learn about local demand events the same day everyone else does. SignalWatch creates a forward-looking demand intelligence feed specific to Summit County — giving Lakeside Motel a 14–30 day advantage window.",
+    sections: [
+      {
+        title: "SIGNAL SOURCES",
+        content: [
+          "Local event scrapers: Eventbrite, local newspaper event calendars, Facebook Events",
+          "Sports schedules: University of Akron, Kent State, local high school tournaments",
+          "Hospital system calendars: major surgeries, treatment programs with known scheduling patterns",
+          "Industrial project feeds: permit databases, LinkedIn job postings for local contractors",
+          "Real estate displacement: Zillow / Redfin foreclosure/sale volume spikes = displacement demand",
+          "Weather forecast: 14-day window for Portage Lakes leisure demand",
+          "Competitor availability: if competitors are filling up 3 weeks out → flag"
+        ]
+      },
+      {
+        title: "SIGNAL CLASSIFICATION ENGINE",
+        content: [
+          "Signal type: LEISURE | CONTRACTOR | MEDICAL | DISPLACEMENT | TRANSIENT",
+          "Demand magnitude: LOW / MEDIUM / HIGH / SURGE",
+          "Confidence: how many corroborating signals confirm this event?",
+          "Lead time: how many days until the demand window?",
+          "Recommended action: raise rate? Run promo? Alert front desk? Contact HR dept?"
+        ]
+      },
+      {
+        title: "OPERATOR ALERTS",
+        content: [
+          "Push notification: 'Fishing tournament at Portage Lakes in 18 days. Historically +22% weekend occupancy. Recommend rate +$15.'",
+          "Email digest: weekly forward-looking demand calendar",
+          "Dashboard widget: 30-day demand heat map (green/yellow/red by week)",
+          "Missed signal alerts: 'This event was not captured until 3 days prior. Adding to watch list.'"
+        ]
+      },
+      {
+        title: "PROACTIVE MARKETING TRIGGERS",
+        content: [
+          "Auto-draft Google Business Post: 'Staying for the [Event]? Reserve your room early.'",
+          "Auto-draft social post for operator approval",
+          "Suggested ad budget increase + timing for Agent 07 (Paid Ads)",
+          "OTA promotion trigger: create limited-time visibility boost before demand spike"
+        ]
+      }
+    ]
+  },
+  {
+    id: "pmsbridge",
+    code: "F-04",
+    label: "PMSBridge — Property Management Sync",
+    category: "INTEGRATION",
+    status: "NEW",
+    tier: "All Tiers",
+    color: "#a78bfa",
+    icon: "▣",
+    tagline: "Two-way sync with every PMS, OTA, and channel manager. LakesideOS becomes the intelligence layer, not another silo.",
+    problem: "LakesideOS's value is only as good as the data it receives. Without real occupancy, real revenue, and real booking data, agents produce estimates. PMSBridge converts estimates into facts.",
+    sections: [
+      {
+        title: "INTEGRATION TARGETS (priority order)",
+        content: [
+          "Tier 1 — Direct API: Cloudbeds, Guesty, Beds24, Little Hotelier, WebRezPro",
+          "Tier 2 — Channel Manager sync: SiteMinder, RateGain, Lodgify",
+          "Tier 3 — OTA direct: Booking.com Partner API, Expedia EQC API",
+          "Tier 4 — Manual CSV upload (fallback for operators with no PMS)",
+          "Tier 5 — Email parsing: extract booking confirmations from Gmail/Outlook (MVP path)"
+        ]
+      },
+      {
+        title: "DATA INGESTED FROM PMS",
+        content: [
+          "Real-time occupancy (rooms sold / rooms available)",
+          "Actual ADR, RevPAR, total revenue",
+          "Booking lead time distribution",
+          "Cancellation rate by channel",
+          "No-show rate",
+          "Length of stay distribution",
+          "Room type performance (which rooms sell first?)"
+        ]
+      },
+      {
+        title: "DATA PUSHED TO PMS",
+        content: [
+          "PricePulse rate recommendations (approved by operator)",
+          "Promo codes generated by marketing campaigns",
+          "Minimum stay restrictions for high-demand periods",
+          "Stop-sell triggers for overbooking prevention"
+        ]
+      },
+      {
+        title: "NO-PMS PATH (MVP critical)",
+        content: [
+          "Operator inputs occupancy manually in dashboard: 5-second daily check-in",
+          "Email receipt parser: forward booking confirmations → auto-populate",
+          "OTA calendar scrape: read availability calendar as occupancy proxy",
+          "Weekly revenue input form: total revenue, total rooms sold, top channel"
+        ]
+      },
+      {
+        title: "TECHNICAL ARCHITECTURE",
+        content: [
+          "Integration service: pms-bridge-service (Node.js + webhook receivers)",
+          "OAuth2 integration for each PMS partner",
+          "Webhook-first, polling fallback",
+          "Data normalization layer: convert all PMS formats → LakesideOS schema",
+          "Sync frequency: real-time for availability, hourly for revenue, daily for analytics"
+        ]
+      }
+    ]
+  },
+  {
+    id: "staffos",
+    code: "F-05",
+    label: "StaffOS — Frontline Execution Layer",
+    category: "OPERATIONS",
+    status: "NEW",
+    tier: "Growth+",
+    color: "#f87171",
+    icon: "◆",
+    tagline: "AI-generated tasks delivered to the right person at the right moment. Strategy dies at the front desk. StaffOS keeps it alive.",
+    problem: "The gap between LakesideOS producing a great recommendation and that recommendation actually being executed is called 'the front desk.' StaffOS closes that gap with a lightweight mobile-first interface designed for non-technical hospitality workers.",
+    sections: [
+      {
+        title: "CORE CONCEPT",
+        content: [
+          "StaffOS is NOT a full PMS or hotel management system",
+          "It is a task delivery interface: what does this employee need to do RIGHT NOW?",
+          "Input: recommendations from all 11 agents + Revenue Engine",
+          "Output: a prioritized, human-readable task queue per staff role",
+          "Philosophy: never show an employee more than 5 tasks at once"
+        ]
+      },
+      {
+        title: "ROLE-BASED TASK ROUTING",
+        content: [
+          "Owner/Manager: strategic tasks, revenue decisions, ad approvals, rate approvals",
+          "Front Desk: guest scripts, upsell prompts, review ask timing, check-in alerts",
+          "Housekeeping: room priority queue (checkout rooms first, VIP guest rooms next)",
+          "Maintenance: flagged issues from guest feedback before they become reviews"
+        ]
+      },
+      {
+        title: "TASK TYPES (auto-generated by agent system)",
+        content: [
+          "CALL TASK: 'Guest [Name] hasn't returned in 47 days. Suggested reactivation text drafted. Send? [Y/N]'",
+          "RATE TASK: 'PricePulse recommends $94 tonight (up from $79). Approve? [Y/N]'",
+          "REVIEW TASK: 'Room 7 checkout 2 hours ago. Send review request now? [Y/N]'",
+          "CONTENT TASK: 'Post this Google Business update today. [Preview] [Post Now]'",
+          "ALERT TASK: '3-star review posted 20 min ago. Respond before end of day. [Draft Response]'",
+          "UPSELL TASK: '[Name] is checking in tonight, has stayed 3 times, always takes room 12. Upgrade offer?'"
+        ]
+      },
+      {
+        title: "MOBILE INTERFACE SPEC",
+        content: [
+          "PWA (Progressive Web App): no app store required, works on any smartphone",
+          "Daily briefing: push notification at 8am with top 3 tasks for the day",
+          "One-tap approve/reject for AI-drafted actions",
+          "Shift handoff report: auto-generated summary of what happened and what's pending",
+          "Offline mode: task queue available even without signal (sync when reconnected)"
+        ]
+      },
+      {
+        title: "EXECUTION FEEDBACK LOOP",
+        content: [
+          "When staff completes a task → outcome captured (did guest leave review? did rate book?)",
+          "Outcome data feeds back into agent system to improve future recommendations",
+          "This is the 'RESULT → NEW DATA' loop that makes LakesideOS a compounding system",
+          "Weekly staff performance report: tasks completed, outcomes achieved, revenue attributed"
+        ]
+      }
+    ]
+  },
+  {
+    id: "competitorradar",
+    code: "F-06",
+    label: "CompetitorRadar — Live Market Intelligence",
+    category: "INTELLIGENCE",
+    status: "NEW",
+    tier: "Growth+",
+    color: "#fb923c",
+    icon: "◑",
+    tagline: "A live competitive dashboard that updates every 4 hours. Know when a competitor drops their rate before your guests do.",
+    problem: "Agent 02 (Competitive Intelligence) is a one-time snapshot. Markets move daily. CompetitorRadar converts the static competitive analysis into a live feed that continuously updates the operator's strategic position.",
+    sections: [
+      {
+        title: "TRACKED DATA POINTS (per competitor, every 4 hours)",
+        content: [
+          "Current nightly rate (weekday / weekend)",
+          "OTA availability (full / limited / sold out)",
+          "Recent review activity: new reviews, rating changes",
+          "Google ranking position for target keywords",
+          "Promotion or discount signals (OTA 'genius deal' flags, sale badges)",
+          "New photos uploaded (signals renovation or product improvement)",
+          "Response rate changes (signals ownership/management change)"
+        ]
+      },
+      {
+        title: "AUTOMATED INTELLIGENCE ALERTS",
+        content: [
+          "Rate drop alert: 'Competitor A dropped rate by $18 tonight. Your current rate is $12 above theirs.'",
+          "Sold-out alert: 'Competitors B and C are sold out this Friday. Recommend rate increase to $109.'",
+          "Review surge alert: 'Competitor D received 6 new reviews this week (avg 4.8). Monitor.'",
+          "New listing alert: 'New Airbnb listing appeared 0.8 miles from property. Profile attached.'"
+        ]
+      },
+      {
+        title: "COMPETITIVE POSITION SCORE",
+        content: [
+          "Weekly composite score: Lakeside vs. market on price, rating, digital presence",
+          "Trend arrow: improving / holding / declining position",
+          "Gap analysis: which competitor attribute is closing in on Lakeside's lead?",
+          "Opportunity flag: which competitor weakness can be exploited this week?"
+        ]
+      },
+      {
+        title: "TECHNICAL IMPLEMENTATION",
+        content: [
+          "Scraping layer: Playwright headless browser for OTA rate extraction",
+          "Rate limiting + proxy rotation to avoid blocks",
+          "Competitor registry: operator defines which properties to track (minimum 3, max 10)",
+          "Data store: TimescaleDB (time-series Postgres) for rate history",
+          "Compliance note: only scraping publicly available data, standard web scraping terms apply"
+        ]
+      }
+    ]
+  },
+  {
+    id: "reviewai",
+    code: "F-07",
+    label: "ReviewAI — Autonomous Reputation Engine",
+    category: "REPUTATION",
+    status: "NEW",
+    tier: "Growth+",
+    color: "#4ade80",
+    icon: "◐",
+    tagline: "Automated review request timing, AI-drafted responses, and reputation recovery — all running in the background.",
+    problem: "Agent 10 (Reputation) produced a strategy. ReviewAI is the automated execution of that strategy — running 24/7 without operator intervention except for one-tap approvals.",
+    sections: [
+      {
+        title: "AUTOMATED REVIEW REQUEST PIPELINE",
+        content: [
+          "Trigger: 4 hours after check-in → satisfaction pulse text (catches issues before checkout)",
+          "Trigger: 45 minutes after checkout → 'Thanks for staying' text with review link",
+          "Trigger: if no review left in 48 hours → one follow-up (max)",
+          "Suppression logic: do NOT send to guests who had a complaint during stay",
+          "Channel routing: Google review link for 4+ star guests; internal feedback for 1–3 star guests",
+          "Timing optimization: learns which send-times get highest open rates per property"
+        ]
+      },
+      {
+        title: "AI RESPONSE DRAFTING",
+        content: [
+          "New review detected → AI drafts response within 5 minutes",
+          "Response tone calibrated to: review sentiment, star rating, complaint type",
+          "Draft pushed to operator: 'New 4-star review. Response drafted. [Preview] [Post] [Edit]'",
+          "Auto-post option: operator can enable for 5-star reviews only (safest automation)",
+          "Response library: trained on hospitality best practices + brand voice from Agent 08"
+        ]
+      },
+      {
+        title: "NEGATIVE REVIEW RECOVERY PROTOCOL",
+        content: [
+          "1-star review → immediate push notification to owner (not just dashboard)",
+          "AI drafts de-escalation response + offline resolution offer",
+          "Internal ticket created: what physical issue needs to be fixed?",
+          "7-day follow-up: did guest update their review? Track outcomes.",
+          "Pattern detection: 3+ reviews mentioning same issue → maintenance alert escalated to StaffOS"
+        ]
+      },
+      {
+        title: "REPUTATION ANALYTICS",
+        content: [
+          "Review velocity chart: reviews per week trending up/down?",
+          "Sentiment breakdown: what % of reviews mention cleanliness, staff, value, location?",
+          "Response rate + response time (Google rewards fast responses in rankings)",
+          "Competitor rating gap tracker: are you closing on or falling behind competitors?",
+          "NPS equivalent score: derived from review language analysis"
+        ]
+      }
+    ]
+  },
+  {
+    id: "localnetwork",
+    code: "F-08",
+    label: "LocalNetwork — B2B Referral Engine",
+    category: "GROWTH",
+    status: "NEW",
+    tier: "Operator+",
+    color: "#c084fc",
+    icon: "◧",
+    tagline: "Systematize the referral relationships that chains can't build. Turn local businesses into a permanent booking pipeline.",
+    problem: "Independent motels have a structural advantage over chains: they can build real local relationships. Hospitals, auto shops, employers, and moving companies send guests constantly — but only to properties they've been introduced to. LocalNetwork automates the introduction and tracks the revenue.",
+    sections: [
+      {
+        title: "REFERRAL PARTNER CATEGORIES",
+        content: [
+          "Healthcare: hospital patient services, cancer center social workers, outpatient surgery centers",
+          "Industrial: HR departments at manufacturers, staffing agencies for contractor placement",
+          "Auto: AAA-affiliated repair shops, dealership service centers (breakdown displacement)",
+          "Real estate: relocation coordinators, property managers during tenant transitions",
+          "Legal: insurance adjusters (displacement claims), law firm clients awaiting case resolution",
+          "Education: university housing overflow during orientation, graduation, move-in periods",
+          "Government: county social services for emergency displacement vouchers"
+        ]
+      },
+      {
+        title: "PARTNER OUTREACH AUTOMATION",
+        content: [
+          "Agent-generated partner list: ranked by expected referral volume × ease of relationship",
+          "Outreach sequence: email template → phone follow-up script → leave-behind PDF",
+          "LakesideOS drafts all materials: partner-specific pitch, rate card, contact card",
+          "CRM tracking: which partners have been contacted, responded, sent guests?",
+          "Referral tracking code: each partner gets a code → attributed bookings → revenue report"
+        ]
+      },
+      {
+        title: "PARTNER PORTAL (lightweight)",
+        content: [
+          "Simple web page per partner (no login required)",
+          "Current availability at-a-glance",
+          "One-click 'Reserve for my client' form",
+          "Direct line to front desk with partner ID pre-filled",
+          "Monthly statement: 'You referred 3 guests this month (12 nights, $1,080 revenue). Thank you.'"
+        ]
+      },
+      {
+        title: "REVENUE ATTRIBUTION MODEL",
+        content: [
+          "Each referral partner tagged in GuestDNA",
+          "Monthly referral revenue report by partner",
+          "Commission / reciprocal referral option: operator can offer 5% commission or reciprocal referrals",
+          "Top partner leaderboard: visible to operator, drives relationship investment decisions",
+          "ROI per partner: revenue generated vs. time invested in relationship"
+        ]
+      }
+    ]
+  },
+  {
+    id: "contentpilot",
+    code: "F-09",
+    label: "ContentPilot — Autonomous Marketing Publisher",
+    category: "MARKETING",
+    status: "NEW",
+    tier: "Growth+",
+    color: "#22d3ee",
+    icon: "◩",
+    tagline: "AI generates, schedules, and publishes property marketing content across all channels. Operator reviews. One tap to publish.",
+    problem: "Agent 06 produced a content strategy. ContentPilot executes it autonomously — generating context-aware content based on current occupancy, upcoming events, season, and competitive signals, then delivering it to every channel.",
+    sections: [
+      {
+        title: "CONTENT GENERATION TRIGGERS",
+        content: [
+          "Low occupancy trigger: occupancy <55% → promotional content generated",
+          "High demand trigger: competitors sold out → urgency content generated",
+          "Seasonal trigger: 14 days before peak season → awareness content generated",
+          "Event trigger: SignalWatch detects local event → relevant content generated",
+          "Review trigger: new 5-star review → social proof content generated",
+          "Rate change trigger: PricePulse approves new rate → announcement content generated",
+          "Weekly default: if no triggers fire → evergreen content from pillar library"
+        ]
+      },
+      {
+        title: "CONTENT TYPES GENERATED",
+        content: [
+          "Google Business Profile post (event, offer, update, product)",
+          "Facebook post with image prompt (describes photo to take if new, or uses library)",
+          "Instagram caption + hashtag block",
+          "SMS promo draft for reactivation campaigns (GuestDNA integration)",
+          "OTA special offer description",
+          "Blog post outline (for SEO — Agent 04 keyword integration)",
+          "Response to comment/DM templates"
+        ]
+      },
+      {
+        title: "APPROVAL WORKFLOW",
+        content: [
+          "All content queued in ContentPilot dashboard: calendar view",
+          "Operator reviews weekly (15 minutes): approve / edit / reject each item",
+          "Auto-publish for pre-approved content types (Google posts, Facebook posts)",
+          "Hold queue for anything requiring new photography or pricing confirmation",
+          "Brand voice guardrails: Agent 08 brand voice embedded in generation prompt"
+        ]
+      },
+      {
+        title: "PERFORMANCE FEEDBACK LOOP",
+        content: [
+          "Track: post reach, engagement, click-through (via UTM parameters)",
+          "Best-performing content types surfaced in weekly report",
+          "A/B test tracking: did promotional post correlate with booking spike?",
+          "Content calendar performance score: benchmark against previous 4 weeks"
+        ]
+      }
+    ]
+  },
+  {
+    id: "benchmarkiq",
+    code: "F-10",
+    label: "BenchmarkIQ — Industry Performance Intelligence",
+    category: "ANALYTICS",
+    status: "NEW",
+    tier: "Operator+",
+    color: "#fbbf24",
+    icon: "◪",
+    tagline: "Know exactly how Lakeside Motel ranks against the Summit County lodging market — not just against itself.",
+    problem: "Operators look at their own revenue and don't know if it's good or bad without context. BenchmarkIQ provides anonymous aggregate benchmarking across the LakesideOS operator network, giving every property access to market intelligence previously available only to chains.",
+    sections: [
+      {
+        title: "BENCHMARKING DATA SOURCES",
+        content: [
+          "Network data: anonymized, aggregated from all LakesideOS operators (with consent)",
+          "Public OTA data: scraped occupancy signals and rate distributions",
+          "STR (Smith Travel Research) methodology: industry-standard metrics applied to indie motels",
+          "ODOT + Ohio Tourism data: macro demand benchmarks for Summit County",
+          "CompetitorRadar data: competitor rate and availability patterns"
+        ]
+      },
+      {
+        title: "BENCHMARK METRICS",
+        content: [
+          "ADR percentile: 'Your ADR of $84 is at the 67th percentile for Summit County budget motels'",
+          "Occupancy percentile: 'Your 61% occupancy is at the 43rd percentile — growth opportunity'",
+          "RevPAR index (RPI): your RevPAR vs. competitive set RevPAR",
+          "Review rating percentile: 'Your 4.3 Google rating ranks #3 of 12 comparable properties'",
+          "Digital presence score: website, SEO, social — percentile vs. competitive set",
+          "Revenue per available room per month: normalized for property size"
+        ]
+      },
+      {
+        title: "PEER GROUP DEFINITION",
+        content: [
+          "Peer group auto-assigned: independent motels, 15–40 rooms, Summit County / NE Ohio",
+          "Operator can request peer group adjustment",
+          "Minimum peer group: 5 properties (privacy protection)",
+          "Seasonal normalization: compare like-for-like periods, not raw month-to-month"
+        ]
+      },
+      {
+        title: "STRATEGIC IMPLICATIONS OUTPUT",
+        content: [
+          "'You are underpriced vs. market on weekends. PricePulse already flagged this.'",
+          "'Your review count is 31% below median for your peer group. ReviewAI can close this gap in 90 days.'",
+          "'Your direct booking rate (22%) is above median (18%). Strong signal — invest more in website.'",
+          "Quarterly benchmark report: PDF exportable for owner records or lender presentations"
+        ]
+      }
+    ]
+  },
+  {
+    id: "whitelabel",
+    code: "F-11",
+    label: "AgencyOS — White-Label & Partner Mode",
+    category: "GTM",
+    status: "STRATEGIC",
+    tier: "Enterprise",
+    color: "#818cf8",
+    icon: "∞",
+    tagline: "Turn LakesideOS into a platform. Local marketing agencies and hospitality consultants become distribution channels.",
+    problem: "The fastest path to scale is not direct sales to motels — it's enabling the people who already serve motels. Local marketing agencies, hospitality consultants, and regional hotel associations can become LakesideOS resellers, each managing a portfolio of properties from a single dashboard.",
+    sections: [
+      {
+        title: "PARTNER TYPES",
+        content: [
+          "Tier A — Marketing Agency: manages 5–25 independent properties. White-label dashboard, own branding.",
+          "Tier B — Hospitality Consultant: advises 2–10 properties, uses LakesideOS as their tooling.",
+          "Tier C — Regional Hotel Association: distributes to member properties as a member benefit.",
+          "Tier D — Franchise Systems: independent franchise chains (50–200 properties) needing revenue intelligence."
+        ]
+      },
+      {
+        title: "WHITE-LABEL CAPABILITIES",
+        content: [
+          "Custom domain: 'powered by [Agency Name]' not 'powered by LakesideOS'",
+          "Custom color scheme and logo per agency account",
+          "Client portfolio view: agency sees all property dashboards in one grid",
+          "Bulk agent runs: run competitive analysis across all 15 client properties simultaneously",
+          "Agency-level reporting: aggregate performance across client portfolio",
+          "Client-facing reports: auto-generated PDF reports branded as agency deliverables"
+        ]
+      },
+      {
+        title: "REVENUE MODEL",
+        content: [
+          "Agency pricing: $299/mo base + $49/mo per property managed",
+          "20-property agency: $299 + (20 × $49) = $1,279/mo vs. $499 × 20 = $9,980 direct",
+          "Agency margin: agency charges clients $150–$300/mo, keeps delta as service fee",
+          "LakesideOS revenue per agency at scale is lower per-property but near-zero CAC",
+          "Partner referral: agencies who refer direct clients get 20% recurring commission"
+        ]
+      },
+      {
+        title: "IMPLEMENTATION REQUIREMENTS",
+        content: [
+          "Multi-tenant architecture: all existing services must be tenant-isolated",
+          "Role-based access: Agency Admin > Property Manager > Staff roles",
+          "Billing isolation: each property billed separately, agency sees consolidated invoice",
+          "Data isolation: no cross-contamination of property data between agency clients",
+          "This requires architectural investment — Phase 3+ feature, not MVP"
+        ]
+      }
+    ]
+  }
+];
+
+const CATEGORIES = ["ALL", "INTELLIGENCE", "REVENUE", "OPERATIONS", "INTEGRATION", "MARKETING", "REPUTATION", "GROWTH", "ANALYTICS", "GTM"];
+
+const categoryColors = {
+  INTELLIGENCE: "#38bdf8",
+  REVENUE: "#34d399",
+  OPERATIONS: "#f87171",
+  INTEGRATION: "#a78bfa",
+  MARKETING: "#22d3ee",
+  REPUTATION: "#4ade80",
+  GROWTH: "#c084fc",
+  ANALYTICS: "#fbbf24",
+  GTM: "#818cf8",
+};
+
+export default function LakesideOSFeatures() {
+  const [activeFeature, setActiveFeature] = useState(FEATURES[0].id);
+  const [activeCategory, setActiveCategory] = useState("ALL");
+  const [activeTab, setActiveTab] = useState(0);
+
+  const filtered = activeCategory === "ALL" ? FEATURES : FEATURES.filter(f => f.category === activeCategory);
+  const feature = FEATURES.find(f => f.id === activeFeature) || FEATURES[0];
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#060a14",
+      color: "#e2e8f0",
+      fontFamily: "'IBM Plex Mono', 'Courier New', monospace",
+      display: "flex",
+      flexDirection: "column"
+    }}>
+      {/* Top bar */}
+      <div style={{
+        background: "#070c18",
+        borderBottom: "1px solid #0d1829",
+        padding: "0.75rem 1.5rem",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        position: "sticky",
+        top: 0,
+        zIndex: 200
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div style={{
+            background: "#0d1829",
+            border: "1px solid #1e3a5f",
+            borderRadius: "4px",
+            padding: "0.3rem 0.6rem",
+            fontSize: "0.65rem",
+            letterSpacing: "0.2em",
+            color: "#38bdf8"
+          }}>
+            LAKESIDE OS
+          </div>
+          <span style={{ fontSize: "0.8rem", color: "#334155", letterSpacing: "0.05em" }}>
+            SaaS Feature Expansion v2.0
+          </span>
+        </div>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          {["NEW", "STRATEGIC"].map(s => (
+            <div key={s} style={{
+              fontSize: "0.6rem",
+              letterSpacing: "0.15em",
+              padding: "0.2rem 0.5rem",
+              borderRadius: "3px",
+              background: s === "NEW" ? "#0d2b1f" : "#1a1040",
+              color: s === "NEW" ? "#34d399" : "#818cf8",
+              border: `1px solid ${s === "NEW" ? "#34d39944" : "#818cf844"}`
+            }}>{s}</div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ display: "flex", flex: 1, overflow: "hidden", height: "calc(100vh - 56px)" }}>
+        {/* Left panel: feature list */}
+        <div style={{
+          width: "300px",
+          minWidth: "300px",
+          background: "#070c18",
+          borderRight: "1px solid #0d1829",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden"
+        }}>
+          {/* Category filter */}
+          <div style={{
+            padding: "0.75rem",
+            borderBottom: "1px solid #0d1829",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.3rem"
+          }}>
+            {CATEGORIES.map(c => (
+              <button
+                key={c}
+                onClick={() => setActiveCategory(c)}
+                style={{
+                  fontSize: "0.58rem",
+                  letterSpacing: "0.1em",
+                  padding: "0.2rem 0.5rem",
+                  borderRadius: "3px",
+                  background: activeCategory === c ? "#0d1829" : "transparent",
+                  border: `1px solid ${activeCategory === c ? (categoryColors[c] || "#38bdf8") : "#1e293b"}`,
+                  color: activeCategory === c ? (categoryColors[c] || "#38bdf8") : "#475569",
+                  cursor: "pointer",
+                  fontFamily: "inherit"
+                }}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+
+          {/* Feature list */}
+          <div style={{ overflowY: "auto", flex: 1 }}>
+            {filtered.map(f => (
+              <button
+                key={f.id}
+                onClick={() => { setActiveFeature(f.id); setActiveTab(0); }}
+                style={{
+                  width: "100%",
+                  textAlign: "left",
+                  padding: "0.8rem 1rem",
+                  background: activeFeature === f.id ? "#0d1829" : "transparent",
+                  border: "none",
+                  borderLeft: `3px solid ${activeFeature === f.id ? f.color : "transparent"}`,
+                  borderBottom: "1px solid #0a1220",
+                  cursor: "pointer",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.3rem"
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                    <span style={{ color: f.color, fontSize: "0.75rem" }}>{f.icon}</span>
+                    <span style={{ fontSize: "0.6rem", color: "#334155", letterSpacing: "0.1em" }}>{f.code}</span>
+                  </div>
+                  <div style={{ display: "flex", gap: "0.3rem" }}>
+                    <span style={{
+                      fontSize: "0.5rem",
+                      letterSpacing: "0.1em",
+                      color: categoryColors[f.category] || "#64748b",
+                      background: `${categoryColors[f.category]}15` || "#0d1829",
+                      padding: "0.15rem 0.4rem",
+                      borderRadius: "2px"
+                    }}>{f.category}</span>
+                    <span style={{
+                      fontSize: "0.5rem",
+                      letterSpacing: "0.08em",
+                      color: f.status === "NEW" ? "#34d399" : "#818cf8",
+                      background: f.status === "NEW" ? "#0d2b1f" : "#1a1040",
+                      padding: "0.15rem 0.4rem",
+                      borderRadius: "2px"
+                    }}>{f.status}</span>
+                  </div>
+                </div>
+                <div style={{
+                  fontSize: "0.78rem",
+                  fontWeight: 600,
+                  color: activeFeature === f.id ? "#f1f5f9" : "#94a3b8",
+                  lineHeight: 1.3
+                }}>
+                  {f.label}
+                </div>
+                <div style={{
+                  fontSize: "0.65rem",
+                  color: "#334155",
+                  letterSpacing: "0.05em"
+                }}>
+                  Tier: {f.tier}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Right panel: feature detail */}
+        <div style={{ flex: 1, overflowY: "auto", background: "#060a14" }}>
+          {/* Feature header */}
+          <div style={{
+            padding: "1.5rem 2rem",
+            borderBottom: "1px solid #0d1829",
+            background: "#070c18"
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "0.75rem" }}>
+              <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                <span style={{ color: feature.color, fontSize: "1.2rem" }}>{feature.icon}</span>
+                <div style={{
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.2em",
+                  color: feature.color,
+                  background: `${feature.color}15`,
+                  border: `1px solid ${feature.color}33`,
+                  padding: "0.2rem 0.6rem",
+                  borderRadius: "3px"
+                }}>{feature.code} · {feature.category}</div>
+              </div>
+              <div style={{
+                fontSize: "0.6rem",
+                letterSpacing: "0.1em",
+                color: "#64748b",
+                background: "#0d1829",
+                border: "1px solid #1e293b",
+                padding: "0.2rem 0.6rem",
+                borderRadius: "3px"
+              }}>TIER: {feature.tier}</div>
+            </div>
+
+            <h1 style={{
+              fontSize: "1.3rem",
+              fontWeight: 700,
+              color: "#f1f5f9",
+              marginBottom: "0.5rem",
+              lineHeight: 1.2,
+              letterSpacing: "-0.02em"
+            }}>
+              {feature.label}
+            </h1>
+
+            <p style={{
+              fontSize: "0.82rem",
+              color: feature.color,
+              marginBottom: "0.75rem",
+              lineHeight: 1.5,
+              fontStyle: "italic"
+            }}>
+              {feature.tagline}
+            </p>
+
+            <div style={{
+              background: "#0d1829",
+              border: `1px solid ${feature.color}22`,
+              borderRadius: "4px",
+              padding: "0.75rem 1rem",
+              fontSize: "0.78rem",
+              color: "#94a3b8",
+              lineHeight: 1.6
+            }}>
+              <span style={{ color: "#475569", letterSpacing: "0.1em", fontSize: "0.6rem" }}>PROBLEM STATEMENT · </span>
+              {feature.problem}
+            </div>
+          </div>
+
+          {/* Tab nav */}
+          <div style={{
+            display: "flex",
+            borderBottom: "1px solid #0d1829",
+            background: "#070c18",
+            padding: "0 1.5rem"
+          }}>
+            {feature.sections.map((s, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveTab(i)}
+                style={{
+                  padding: "0.6rem 0.8rem",
+                  background: "transparent",
+                  border: "none",
+                  borderBottom: `2px solid ${activeTab === i ? feature.color : "transparent"}`,
+                  color: activeTab === i ? feature.color : "#475569",
+                  cursor: "pointer",
+                  fontSize: "0.65rem",
+                  letterSpacing: "0.1em",
+                  fontFamily: "inherit",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                {s.title}
+              </button>
+            ))}
+          </div>
+
+          {/* Tab content */}
+          <div style={{ padding: "1.5rem 2rem", maxWidth: "800px" }}>
+            <div style={{
+              fontSize: "0.7rem",
+              letterSpacing: "0.15em",
+              color: feature.color,
+              marginBottom: "1rem",
+              textTransform: "uppercase"
+            }}>
+              {feature.sections[activeTab].title}
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              {feature.sections[activeTab].content.map((item, i) => {
+                const isNote = item.startsWith("Note:") || item.startsWith("Compliance") || item.startsWith("Philosophy");
+                const isBold = item.includes(":") && item.split(":")[0].length < 40 && !item.startsWith("'");
+                const isQuote = item.startsWith("'");
+
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      display: "flex",
+                      gap: "0.75rem",
+                      alignItems: "flex-start",
+                      padding: "0.6rem 0.8rem",
+                      background: isNote ? `${feature.color}08` : isQuote ? "#0d1829" : "transparent",
+                      borderRadius: "4px",
+                      border: isNote ? `1px solid ${feature.color}22` : isQuote ? "1px solid #1e293b" : "none"
+                    }}
+                  >
+                    <span style={{
+                      color: feature.color,
+                      flexShrink: 0,
+                      marginTop: "0.1rem",
+                      fontSize: "0.6rem"
+                    }}>
+                      {isNote ? "⚠" : isQuote ? "»" : "›"}
+                    </span>
+                    <div style={{ fontSize: "0.83rem", color: "#94a3b8", lineHeight: 1.6 }}>
+                      {isBold && !isQuote ? (
+                        <>
+                          <span style={{ color: "#e2e8f0", fontWeight: 600 }}>
+                            {item.split(":")[0]}:
+                          </span>
+                          {item.slice(item.indexOf(":") + 1)}
+                        </>
+                      ) : isQuote ? (
+                        <span style={{ color: "#64748b", fontStyle: "italic" }}>{item}</span>
+                      ) : item}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Architecture integration note */}
+          <div style={{
+            margin: "0 2rem 2rem",
+            padding: "1rem",
+            background: "#070c18",
+            border: "1px solid #0d1829",
+            borderRadius: "4px",
+            maxWidth: "800px"
+          }}>
+            <div style={{ fontSize: "0.6rem", letterSpacing: "0.15em", color: "#334155", marginBottom: "0.5rem" }}>
+              ARCHITECTURE INTEGRATION · WHERE THIS FITS IN LAKESIDEOS STACK
+            </div>
+            <div style={{
+              display: "flex",
+              gap: "0.5rem",
+              flexWrap: "wrap",
+              alignItems: "center",
+              fontSize: "0.7rem",
+              color: "#475569"
+            }}>
+              {["External Data → Data Intelligence Layer", "Agent System (A1–A11)", "Orchestrator (A12)", "Revenue Engine", "Execution Engine / StaffOS", "Frontend Dashboard"].map((step, i, arr) => (
+                <span key={step} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <span style={{
+                    color: i === 4 && feature.id === "staffos" ? feature.color :
+                           i === 3 && feature.id === "pricepulse" ? feature.color :
+                           i === 0 && ["signalwatch","competitorradar"].includes(feature.id) ? feature.color :
+                           i === 5 && feature.id === "reviewai" ? feature.color :
+                           "#334155",
+                    fontWeight: 600
+                  }}>{step}</span>
+                  {i < arr.length - 1 && <span style={{ color: "#1e293b" }}>→</span>}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

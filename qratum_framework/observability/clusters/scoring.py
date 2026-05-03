@@ -8,6 +8,7 @@ where ``density`` is the within-cluster edge density of the lift-weighted
 graph and ``stability`` is the Jaccard overlap of cluster membership
 across two consecutive observation windows.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -60,15 +61,13 @@ def cluster_density(tokens: Iterable[str], weighted: Mapping[EdgeKey, float]) ->
     total_possible = n * (n - 1) / 2.0
     member_set = set(members)
     present = 0
-    for (i, j) in weighted:
+    for i, j in weighted:
         if i in member_set and j in member_set:
             present += 1
     return present / total_possible if total_possible > 0 else 0.0
 
 
-def jaccard_stability(
-    current: Iterable[str], previous: Iterable[FrozenSet[str]]
-) -> float:
+def jaccard_stability(current: Iterable[str], previous: Iterable[FrozenSet[str]]) -> float:
     """Best Jaccard overlap of ``current`` against any cluster in ``previous``.
 
     Stability over time is the spec's third multiplicative term in the

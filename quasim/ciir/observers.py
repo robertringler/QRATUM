@@ -24,10 +24,8 @@ from dataclasses import dataclass
 from typing import Sequence
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.theory import ObserverOperator, RealTensor, ComplexTensor
-
+from quasim.ciir.theory import ComplexTensor, ObserverOperator, RealTensor
 
 # ================================================================
 # Projection-Valued Measure (PVM)  — D8.2, T8.1
@@ -141,10 +139,12 @@ def born_distribution(rho: RealTensor, pvm: PVM) -> RealTensor:
     probs : array, shape (B, n_outcomes) or (n_outcomes,)
     """
     if rho.ndim == 2:
-        return np.array([born_probability(rho, pvm.projectors[o])
-                         for o in range(len(pvm.eigenvalues))])
-    return np.stack([born_probability(rho, pvm.projectors[o])
-                     for o in range(len(pvm.eigenvalues))], axis=1)
+        return np.array(
+            [born_probability(rho, pvm.projectors[o]) for o in range(len(pvm.eigenvalues))]
+        )
+    return np.stack(
+        [born_probability(rho, pvm.projectors[o]) for o in range(len(pvm.eigenvalues))], axis=1
+    )
 
 
 # ================================================================
@@ -222,9 +222,7 @@ def sequential_measurement(
 # ================================================================
 
 
-def interference_term(
-    psi1: RealTensor, psi2: RealTensor, O: RealTensor | ComplexTensor
-) -> float:
+def interference_term(psi1: RealTensor, psi2: RealTensor, O: RealTensor | ComplexTensor) -> float:
     r"""Compute Re⟨ψ₁|O|ψ₂⟩.
 
     From T8.6: E_{ψ±}[O] = ½(E_{ψ₁} + E_{ψ₂}) ± Re⟨ψ₁|O|ψ₂⟩

@@ -7,10 +7,15 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from contracts import (BaseContract, ClusterTopology,
-                       create_capability_contract, create_event_contract,
-                       create_intent_contract, create_temporal_contract,
-                       get_current_timestamp)
+from contracts import (
+    BaseContract,
+    ClusterTopology,
+    create_capability_contract,
+    create_event_contract,
+    create_intent_contract,
+    create_temporal_contract,
+    get_current_timestamp,
+)
 from qil import parse_intent
 
 

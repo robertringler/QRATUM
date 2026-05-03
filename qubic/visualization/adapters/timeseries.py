@@ -67,7 +67,9 @@ class TimeSeriesAdapter(SimulationAdapter):
         if not path.exists():
             raise FileNotFoundError(f"File not found: {path}")
 
-        raise ValueError("GAP-STUB-027: file-based loading is not implemented; pass data as list directly")
+        raise ValueError(
+            "GAP-STUB-027: file-based loading is not implemented; pass data as list directly"
+        )
 
     def _load_from_list(self, data_list: list[dict[str, Any]]) -> VisualizationData:
         """Load time-series from list of dictionaries.

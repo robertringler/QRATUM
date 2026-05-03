@@ -10,32 +10,28 @@ Provides :class:`QRATUM_CRS_Core` as the unified interface.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any
-
 import numpy as np
 from numpy.typing import NDArray
 
-from quasim.ciir.crs.graph import CRSGraph, Node, Edge
-from quasim.ciir.crs.evolution import CRSEngine
-from quasim.ciir.crs.rewrite import RewriteEngine
+from quasim.ciir.crs.branching import BranchingEngine
 from quasim.ciir.crs.conservation import (
     ConservationEngine,
-    total_state_norm_invariant,
-    total_causal_weight_invariant,
-    node_count_invariant,
     graph_energy_invariant,
+    node_count_invariant,
+    total_causal_weight_invariant,
+    total_state_norm_invariant,
 )
-from quasim.ciir.crs.branching import BranchingEngine
+from quasim.ciir.crs.evolution import CRSEngine
+from quasim.ciir.crs.graph import CRSGraph, Edge, Node
 from quasim.ciir.crs.spacetime import (
-    graph_dimension_estimate,
     curvature_proxy,
+    graph_dimension_estimate,
 )
-
 
 # ================================================================
 # Density-matrix bridge
 # ================================================================
+
 
 def graph_to_density_matrix(graph: CRSGraph) -> NDArray[np.floating]:
     r"""Construct a density matrix from graph state vectors.
@@ -124,6 +120,7 @@ def density_matrix_to_graph(
 # CIIR distortion bridge
 # ================================================================
 
+
 def apply_ciir_distortion(
     graph: CRSGraph,
     kappa_min: float = 1.0,
@@ -158,6 +155,7 @@ def apply_ciir_distortion(
 # ================================================================
 # QRATUM_CRS_Core — unified interface
 # ================================================================
+
 
 class QRATUM_CRS_Core:
     """Unified CRS interface integrating evolution, conservation, and branching.
@@ -219,13 +217,9 @@ class QRATUM_CRS_Core:
                 diameter=self.distortion_diameter,
             )
 
-        conservation_report = self.conservation.check_invariants(
-            before, self.engine.graph
-        )
+        conservation_report = self.conservation.check_invariants(before, self.engine.graph)
         metrics["conservation"] = conservation_report
-        metrics["conservation_violations"] = sum(
-            1 for r in conservation_report if r["violated"]
-        )
+        metrics["conservation_violations"] = sum(1 for r in conservation_report if r["violated"])
         return metrics
 
     # ---- full experiment --------------------------------------------

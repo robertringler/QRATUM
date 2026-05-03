@@ -180,19 +180,9 @@ def replace_state(
 ) -> State:
     """Pure update: returns a new State with the given fields replaced."""
 
-    new_acts = (
-        tuple(sorted(activations.items()))
-        if activations is not None
-        else s.activations
-    )
-    new_ew = (
-        tuple(sorted(edge_weights.items()))
-        if edge_weights is not None
-        else s.edge_weights
-    )
-    new_edges = (
-        frozenset(edge_weights.keys()) if edge_weights is not None else s.edges
-    )
+    new_acts = tuple(sorted(activations.items())) if activations is not None else s.activations
+    new_ew = tuple(sorted(edge_weights.items())) if edge_weights is not None else s.edge_weights
+    new_edges = frozenset(edge_weights.keys()) if edge_weights is not None else s.edges
     return State(
         nodes=tuple(k for k, _ in new_acts),
         activations=new_acts,

@@ -60,9 +60,7 @@ def controllability_spectrum(
     :func:`controllability_rank` is derived.
     """
 
-    m = displacement_matrix(
-        state, list(sampled_actions), eps=eps, cache=cache
-    )
+    m = displacement_matrix(state, list(sampled_actions), eps=eps, cache=cache)
     if m.size == 0:
         return np.zeros((0,), dtype=float)
     return np.linalg.svd(m, compute_uv=False)

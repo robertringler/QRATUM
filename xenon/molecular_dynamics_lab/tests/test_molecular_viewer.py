@@ -3,7 +3,12 @@
 from __future__ import annotations
 
 from xenon.molecular_dynamics_lab.core.molecular_viewer import (
-    Label, MolecularViewer, Selection, StyleSpec, ViewerConfig)
+    Label,
+    MolecularViewer,
+    Selection,
+    StyleSpec,
+    ViewerConfig,
+)
 
 
 class TestViewerConfig:

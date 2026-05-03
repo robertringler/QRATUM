@@ -43,20 +43,14 @@ class StateObserver:
         edge_ids: tuple[Edge, ...],
     ) -> None:
         if not (0.0 < float(smoothing_alpha) <= 1.0):
-            raise ValueError(
-                f"smoothing_alpha must be in (0, 1]; got {smoothing_alpha!r}"
-            )
+            raise ValueError(f"smoothing_alpha must be in (0, 1]; got {smoothing_alpha!r}")
 
         # Validate that node/edge ids match the initial state schema.
         if tuple(node_ids) != tuple(initial_state.nodes):
-            raise ValueError(
-                "node_ids must equal initial_state.nodes (same order)"
-            )
+            raise ValueError("node_ids must equal initial_state.nodes (same order)")
         for e in edge_ids:
             if e not in initial_state.edges:
-                raise ValueError(
-                    f"edge_id {e!r} not present in initial_state.edges"
-                )
+                raise ValueError(f"edge_id {e!r} not present in initial_state.edges")
 
         self._alpha: float = float(smoothing_alpha)
         self._node_ids: tuple[str, ...] = tuple(node_ids)
@@ -88,13 +82,8 @@ class StateObserver:
         lo, hi = self._initial_state.bounds
         n_nodes = len(self._node_ids)
         clipped = np.clip(vec, lo, hi)
-        activations = {
-            node: float(clipped[i]) for i, node in enumerate(self._node_ids)
-        }
-        edge_weights = {
-            edge: float(vec[n_nodes + j])
-            for j, edge in enumerate(self._edge_ids)
-        }
+        activations = {node: float(clipped[i]) for i, node in enumerate(self._node_ids)}
+        edge_weights = {edge: float(vec[n_nodes + j]) for j, edge in enumerate(self._edge_ids)}
         # Preserve any edges in the initial state that we are not
         # tracking (so the observer cannot introduce/remove edges).
         for e, w in self._initial_state.edge_weights:

@@ -140,7 +140,9 @@ def test_safety_dominance_aborts_below_stability_threshold():
 
 def test_safety_dominance_handles_explicit_violations_list():
     ctrl = RealityInterfaceController()
-    payload = _stable_payload(world_state={"instability": 0.05, "stability": 0.95, "violations": ["over_pressure"]})
+    payload = _stable_payload(
+        world_state={"instability": 0.05, "stability": 0.95, "violations": ["over_pressure"]}
+    )
     decision = ctrl.step(payload)
     assert decision.selected_action.type == "abort"
 

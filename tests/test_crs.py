@@ -24,46 +24,43 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from quasim.ciir.crs.graph import CRSGraph, Node, Edge, random_graph, lattice_graph
-from quasim.ciir.crs.rewrite import (
-    RewriteEngine,
-    diffusion_rule,
-    decay_rule,
-    interaction_rule,
-    stochastic_perturbation_rule,
-    edge_reweight_rule,
-)
-from quasim.ciir.crs.evolution import CRSEngine
-from quasim.ciir.crs.spacetime import (
-    geodesic_distance,
-    distance_matrix,
-    causal_depth,
-    curvature_proxy,
-    graph_dimension_estimate,
-)
-from quasim.ciir.crs.branching import BranchState, BranchingEngine
+from quasim.ciir.crs.branching import BranchingEngine, BranchState
 from quasim.ciir.crs.conservation import (
     ConservationEngine,
-    total_state_norm_invariant,
-    total_causal_weight_invariant,
-    node_count_invariant,
-    state_centroid_invariant,
     graph_energy_invariant,
+    node_count_invariant,
+    total_state_norm_invariant,
 )
-from quasim.ciir.crs.observer import Observer, observe, measurement_entropy, decohere, partial_trace
-from quasim.ciir.crs.integration import (
-    graph_to_density_matrix,
-    density_matrix_to_graph,
-    apply_ciir_distortion,
-    QRATUM_CRS_Core,
-)
+from quasim.ciir.crs.evolution import CRSEngine
 from quasim.ciir.crs.experiments import (
     run_diffusion_experiment,
-    run_wave_experiment,
-    run_phase_transition_experiment,
     run_entropy_experiment,
+    run_phase_transition_experiment,
+    run_wave_experiment,
 )
-
+from quasim.ciir.crs.graph import CRSGraph, Edge, Node, lattice_graph, random_graph
+from quasim.ciir.crs.integration import (
+    QRATUM_CRS_Core,
+    apply_ciir_distortion,
+    density_matrix_to_graph,
+    graph_to_density_matrix,
+)
+from quasim.ciir.crs.observer import Observer, decohere, measurement_entropy, observe, partial_trace
+from quasim.ciir.crs.rewrite import (
+    RewriteEngine,
+    decay_rule,
+    diffusion_rule,
+    edge_reweight_rule,
+    interaction_rule,
+    stochastic_perturbation_rule,
+)
+from quasim.ciir.crs.spacetime import (
+    causal_depth,
+    curvature_proxy,
+    distance_matrix,
+    geodesic_distance,
+    graph_dimension_estimate,
+)
 
 # ================================================================
 # Fixtures
@@ -253,8 +250,13 @@ class TestEvolution:
         engine = CRSEngine(graph=lattice, rewrite_engine=rw, seed=42)
         m = engine.step()
         expected_keys = {
-            "step", "n_nodes", "n_edges", "mean_state_norm",
-            "max_state_norm", "total_causal_weight", "entropy_estimate",
+            "step",
+            "n_nodes",
+            "n_edges",
+            "mean_state_norm",
+            "max_state_norm",
+            "total_causal_weight",
+            "entropy_estimate",
         }
         assert expected_keys.issubset(set(m.keys()))
 
@@ -324,9 +326,7 @@ class TestBranching:
             max_branches=10,
         )
         # The engine starts with a single branch; add another manually
-        be.states.append(
-            BranchState(graph=small_graph.copy(), amplitude=0.5 + 0j, label="extra")
-        )
+        be.states.append(BranchState(graph=small_graph.copy(), amplitude=0.5 + 0j, label="extra"))
         be.normalize()
         probs = be.probabilities()
         assert abs(sum(probs) - 1.0) < 1e-10
@@ -334,9 +334,7 @@ class TestBranching:
     def test_branching_engine_collapse(self, small_graph):
         rng = np.random.default_rng(42)
         be = BranchingEngine(initial_graph=small_graph.copy())
-        be.states.append(
-            BranchState(graph=small_graph.copy(), amplitude=0.6 + 0j, label="extra")
-        )
+        be.states.append(BranchState(graph=small_graph.copy(), amplitude=0.6 + 0j, label="extra"))
         be.normalize()
         collapsed = be.collapse(rng)
         assert isinstance(collapsed, CRSGraph)
@@ -344,18 +342,14 @@ class TestBranching:
     def test_branching_prune(self, small_graph):
         be = BranchingEngine(initial_graph=small_graph.copy(), max_branches=1)
         # Add a second branch with small amplitude
-        be.states.append(
-            BranchState(graph=small_graph.copy(), amplitude=0.01 + 0j, label="small")
-        )
+        be.states.append(BranchState(graph=small_graph.copy(), amplitude=0.01 + 0j, label="small"))
         be.normalize()
         be.prune()
         assert len(be.states) <= 2  # pruning keeps top max_branches
 
     def test_probabilities_normalized(self, small_graph):
         be = BranchingEngine(initial_graph=small_graph.copy())
-        be.states.append(
-            BranchState(graph=small_graph.copy(), amplitude=0.5 - 0.1j, label="extra")
-        )
+        be.states.append(BranchState(graph=small_graph.copy(), amplitude=0.5 - 0.1j, label="extra"))
         be.normalize()
         probs = be.probabilities()
         assert abs(sum(probs) - 1.0) < 1e-10
@@ -446,7 +440,7 @@ class TestObserver:
         sub = partial_trace(small_graph, keep_nodes={0, 1, 2})
         assert sub.node_count == 3
         # Edges not involving kept nodes should be removed
-        for (s, t) in sub.edges:
+        for s, t in sub.edges:
             assert s in {0, 1, 2}
             assert t in {0, 1, 2}
 
@@ -457,8 +451,10 @@ class TestObserver:
         g_after = decohere(lattice, obs, decoherence_rate=0.5, rng=rng)
         # States within the observer's reach should be modified
         changed = sum(
-            1 for nid in obs.accessible_nodes
-            if nid in g_before.nodes and nid in g_after.nodes
+            1
+            for nid in obs.accessible_nodes
+            if nid in g_before.nodes
+            and nid in g_after.nodes
             and not np.allclose(g_before.nodes[nid].state, g_after.nodes[nid].state)
         )
         # With decoherence_rate=0.5, at least some nodes should change
@@ -566,7 +562,11 @@ class TestExperiments:
 
     def test_phase_transition_experiment(self):
         result = run_phase_transition_experiment(
-            n_nodes=10, d_state=3, n_steps=10, n_points=3, seed=42,
+            n_nodes=10,
+            d_state=3,
+            n_steps=10,
+            n_points=3,
+            seed=42,
         )
         assert "p_values" in result
         assert len(result["p_values"]) == 3

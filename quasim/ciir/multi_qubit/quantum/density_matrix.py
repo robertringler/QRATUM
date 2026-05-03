@@ -21,8 +21,8 @@ compatibility with the rest of the CIIR simulation stack.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import List, Optional, Sequence
+from dataclasses import dataclass
+from typing import List
 
 import numpy as np
 from numpy.typing import NDArray
@@ -58,6 +58,7 @@ def _kron_embed(op: CMatrix, qubit: int, n_qubits: int) -> CMatrix:
 # ---------------------------------------------------------------------------
 # Lindblad jump operators
 # ---------------------------------------------------------------------------
+
 
 def amplitude_damping_ops(n_qubits: int, gamma: float) -> List[CMatrix]:
     r"""Return amplitude-damping Lindblad operators √γ·σ_- for each qubit.
@@ -100,6 +101,7 @@ def depolarizing_ops(n_qubits: int, gamma: float) -> List[CMatrix]:
 # Lindblad dissipator
 # ---------------------------------------------------------------------------
 
+
 def lindblad_superop(rho: CMatrix, lindblad_ops: List[CMatrix]) -> CMatrix:
     r"""Compute the Lindblad dissipator Σ_k D[L_k]ρ.
 
@@ -126,6 +128,7 @@ def lindblad_superop(rho: CMatrix, lindblad_ops: List[CMatrix]) -> CMatrix:
 # GKSL right-hand side
 # ---------------------------------------------------------------------------
 
+
 def _gksl_rhs(
     rho: CMatrix,
     H: CMatrix,
@@ -141,6 +144,7 @@ def _gksl_rhs(
 # ---------------------------------------------------------------------------
 # Runge–Kutta 4 integrator
 # ---------------------------------------------------------------------------
+
 
 def evolve_rk4(
     rho0: CMatrix,
@@ -198,14 +202,15 @@ def evolve_rk4(
 # Parameters dataclass
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class LindbladParams:
     """Physical noise parameters for the Lindblad solver."""
 
     n_qubits: int = 2
-    gamma_ad: float = 0.01   # amplitude-damping rate (1/T1)
+    gamma_ad: float = 0.01  # amplitude-damping rate (1/T1)
     gamma_dp: float = 0.005  # dephasing rate (1/2T2 - 1/2T1)
-    gamma_dep: float = 0.0   # depolarizing rate
+    gamma_dep: float = 0.0  # depolarizing rate
     hbar: float = 1.0
 
     def build_ops(self) -> List[CMatrix]:
@@ -224,6 +229,7 @@ class LindbladParams:
 # High-level simulator class
 # ---------------------------------------------------------------------------
 
+
 class DensityMatrixSimulator:
     """High-level wrapper for multi-qubit Lindblad simulation.
 
@@ -238,7 +244,7 @@ class DensityMatrixSimulator:
         if not (2 <= params.n_qubits <= 6):
             raise ValueError("n_qubits must be between 2 and 6.")
         self.params = params
-        self.dim = 2 ** params.n_qubits
+        self.dim = 2**params.n_qubits
         self._ops = params.build_ops()
 
     @property
@@ -260,11 +266,11 @@ class DensityMatrixSimulator:
         if self.n_qubits < 2:
             raise ValueError("Bell state requires at least 2 qubits.")
         phi_plus = np.zeros(self.dim, dtype=complex)
-        phi_plus[0] = 1.0 / np.sqrt(2)   # |00…0⟩
+        phi_plus[0] = 1.0 / np.sqrt(2)  # |00…0⟩
         phi_plus[self.dim // 2 + 1] = 1.0 / np.sqrt(2)  # |11…0⟩ approx
         # Correct: |Φ+⟩ = (|00⟩+|11⟩)/√2 embedded in full space
         phi_plus = np.zeros(self.dim, dtype=complex)
-        phi_plus[0] = 1.0 / np.sqrt(2)      # |00⟩ ⊗ |0…0⟩
+        phi_plus[0] = 1.0 / np.sqrt(2)  # |00⟩ ⊗ |0…0⟩
         phi_plus[3 * (self.dim // 4)] = 1.0 / np.sqrt(2)  # |11⟩ ⊗ |0…0⟩
         # For 2 qubits: indices 0=|00⟩, 3=|11⟩
         if self.n_qubits == 2:
@@ -320,7 +326,7 @@ class DensityMatrixSimulator:
 
 def _partial_trace(rho: CMatrix, n_qubits: int, keep: List[int]) -> CMatrix:
     """Partial trace: keep only the qubits in `keep`."""
-    d = 2 ** n_qubits
+    d = 2**n_qubits
     d_keep = 2 ** len(keep)
     d_trace = d // d_keep
 
@@ -332,17 +338,19 @@ def _partial_trace(rho: CMatrix, n_qubits: int, keep: List[int]) -> CMatrix:
     # Build einsum string: trace over qubits not in keep
     # Input indices: a0 a1 … a_{n-1} b0 b1 … b_{n-1}
     # Output: kept row, kept col
-    in_chars = [chr(ord('a') + i) for i in range(n_qubits)]
-    out_chars = [chr(ord('A') + i) for i in range(n_qubits)]
+    in_chars = [chr(ord("a") + i) for i in range(n_qubits)]
+    out_chars = [chr(ord("A") + i) for i in range(n_qubits)]
 
     # For traced qubits: in_char == out_char (set equal for contraction)
     for tq in trace_qubits:
         out_chars[tq] = in_chars[tq]
 
-    lhs = ''.join(in_chars) + ''.join(out_chars)
+    lhs = "".join(in_chars) + "".join(out_chars)
     # RHS: kept in, kept out
-    rhs = ''.join(in_chars[k] for k in keep) + ''.join(
-        out_chars[k] for k in keep if out_chars[k] != in_chars[k]
+    rhs = "".join(in_chars[k] for k in keep) + "".join(
+        out_chars[k]
+        for k in keep
+        if out_chars[k] != in_chars[k]
         # but we want the kept out chars to be different
     )
     # Simpler manual loop for reliability
@@ -364,5 +372,5 @@ def _partial_trace(rho: CMatrix, n_qubits: int, keep: List[int]) -> CMatrix:
 
     # Result shape: (2,)*len(keep) x (2,)*len(keep) — need to reshape
     n_keep = len(keep)
-    result = result.reshape(2 ** n_keep, 2 ** n_keep)
+    result = result.reshape(2**n_keep, 2**n_keep)
     return result

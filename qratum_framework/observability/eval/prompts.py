@@ -6,6 +6,7 @@ Prompts are kept in code (not YAML on disk) so the eval harness has
 zero filesystem dependencies for the smoke tests; richer corpora can
 still be loaded externally and passed to :class:`EvalRunner`.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass

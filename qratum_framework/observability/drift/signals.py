@@ -23,6 +23,7 @@ This mirrors the convention codified for ``qagents/llm_backends.py``:
 LLM backends fall back deterministically when the SDK or API key is
 missing rather than hard-failing.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -32,14 +33,12 @@ from typing import Mapping, Protocol, Sequence
 
 #: Scorer protocol: ``embed(token | utterance) -> sequence of floats``.
 class RelevanceScorer(Protocol):  # pragma: no cover - structural typing
-    def __call__(self, text: str) -> Sequence[float]:
-        ...
+    def __call__(self, text: str) -> Sequence[float]: ...
 
 
 #: Scorer protocol: ``logprob(token, *, condition: str) -> float``.
 class LogprobScorer(Protocol):  # pragma: no cover - structural typing
-    def __call__(self, token: str, *, condition: str) -> float:
-        ...
+    def __call__(self, token: str, *, condition: str) -> float: ...
 
 
 # ---------------------------------------------------------------------------

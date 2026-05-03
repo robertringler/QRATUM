@@ -23,17 +23,14 @@ def create_sample_files():
 
     # Sample mesh (mock)
     mesh_path = Path("mesh.msh")
-    mesh_path.write_text(
-        """# Fluent Mesh File
+    mesh_path.write_text("""# Fluent Mesh File
 # Mock wing mesh - 32x32x16 cells
 # In production, export from Fluent
-"""
-    )
+""")
 
     # Boundary conditions
     bc_path = Path("boundary_conditions.yaml")
-    bc_path.write_text(
-        """inlet:
+    bc_path.write_text("""inlet:
   type: velocity-inlet
   velocity: [10.0, 0.0, 0.0]  # m/s
   temperature: 300.0  # K
@@ -45,8 +42,7 @@ outlet:
 walls:
   type: wall
   condition: no-slip
-"""
-    )
+""")
 
     # Job configuration
     job_config_path = Path("job_config.json")

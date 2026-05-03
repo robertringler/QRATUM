@@ -24,8 +24,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from quasim.sim import (QCMGParameters, QCMGState,
-                        QuantacosmomorphysigeneticField)
+from quasim.sim import QCMGParameters, QCMGState, QuantacosmomorphysigeneticField
 
 
 class TestQCMGParameters:

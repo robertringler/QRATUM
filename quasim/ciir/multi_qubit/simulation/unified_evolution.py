@@ -42,7 +42,7 @@ References
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from typing import List
 
 import numpy as np
 from numpy.typing import NDArray
@@ -62,7 +62,7 @@ PARAMS = {
     "geom_eta": 0.05,
     "geom_n_ctrl_ops": 2,
     # Hardware scaling (simulation natural units)
-    "hw_gamma_sim": 0.01,   # scaled decoherence rate per step
+    "hw_gamma_sim": 0.01,  # scaled decoherence rate per step
     "hw_latency_steps": 2,  # integer number of latency steps
     # Integration parameters
     "dt": 0.05,
@@ -74,6 +74,7 @@ PARAMS = {
 # ---------------------------------------------------------------------------
 # Minimal helpers (avoid re-importing heavy modules in each step)
 # ---------------------------------------------------------------------------
+
 
 def _lindblad_dissipator(rho: CMatrix, ops: List[CMatrix]) -> CMatrix:
     out = np.zeros_like(rho)
@@ -87,6 +88,7 @@ def _lindblad_dissipator(rho: CMatrix, ops: List[CMatrix]) -> CMatrix:
 def _gksl_rk4(rho: CMatrix, H: CMatrix, ops: List[CMatrix], dt: float) -> CMatrix:
     def f(r):
         return -1j * (H @ r - r @ H) + _lindblad_dissipator(r, ops)
+
     k1 = f(rho)
     k2 = f(rho + 0.5 * dt * k1)
     k3 = f(rho + 0.5 * dt * k2)
@@ -167,6 +169,7 @@ def _state_fidelity(rho: CMatrix, sigma: CMatrix) -> float:
 # UnifiedCIIREvolver
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class UnifiedCIIREvolver:
     r"""Unified four-track CIIR evolver.
@@ -235,17 +238,20 @@ class UnifiedCIIREvolver:
         mem_corr = np.zeros_like(rho)
         if use_nm and len(self._history) > 0:
             mem_corr = _memory_term(
-                self._history, self._times, t,
-                self.ops, self.nm_lambda, self.nm_strength, self.dt,
+                self._history,
+                self._times,
+                t,
+                self.ops,
+                self.nm_lambda,
+                self.nm_strength,
+                self.dt,
             )
 
         # Track 3: Geometric control correction
         geom_corr = np.zeros_like(rho)
         if use_geom and self.ops:
             H_ctrl = self.ops[0].conj().T @ self.ops[0]  # proxy control op
-            geom_corr = _natural_gradient_correction(
-                rho, self.rho_target, H_ctrl, self.geom_eta
-            )
+            geom_corr = _natural_gradient_correction(rho, self.rho_target, H_ctrl, self.geom_eta)
 
         # Track 1 + memory: GKSL step with corrections
         def f_unified(r: CMatrix) -> CMatrix:
@@ -301,9 +307,10 @@ class UnifiedCIIREvolver:
 # Default system builders
 # ---------------------------------------------------------------------------
 
+
 def _default_hamiltonian(N: int) -> CMatrix:
     """Simple N-qubit Hamiltonian: sum of single-qubit Z and nearest-neighbor XX."""
-    dim = 2 ** N
+    dim = 2**N
     H = np.zeros((dim, dim), dtype=complex)
     sz = np.array([[1, 0], [0, -1]], dtype=complex)
     sx = np.array([[0, 1], [1, 0]], dtype=complex)
@@ -344,6 +351,7 @@ def _default_lindblad_ops(N: int, gamma: float = 0.01) -> List[CMatrix]:
 # Main experiment runner
 # ---------------------------------------------------------------------------
 
+
 def run_unified_experiment(
     N: int = 3,
     n_steps: int = PARAMS["n_steps_default"],
@@ -374,7 +382,7 @@ def run_unified_experiment(
     if N > 12:
         raise ValueError(f"N={N} exceeds maximum supported size (N ≤ 12).")
 
-    dim = 2 ** N
+    dim = 2**N
     H = _default_hamiltonian(N)
     ops = _default_lindblad_ops(N, gamma=gamma)
 
@@ -418,11 +426,7 @@ def run_unified_experiment(
     # Memory effect: integral of kernel over [0, n_steps * dt]
     t_max = n_steps * dt
     ts = np.linspace(0, t_max, max(100, n_steps * 10))
-    k_vals = (
-        PARAMS["nm_strength"]
-        * PARAMS["nm_lambda"]
-        * np.exp(-PARAMS["nm_lambda"] * ts)
-    )
+    k_vals = PARAMS["nm_strength"] * PARAMS["nm_lambda"] * np.exp(-PARAMS["nm_lambda"] * ts)
     dt_ts = ts[1] - ts[0]
     memory_effect_strength = float(
         dt_ts * (0.5 * np.abs(k_vals[0]) + np.sum(np.abs(k_vals[1:-1])) + 0.5 * np.abs(k_vals[-1]))
