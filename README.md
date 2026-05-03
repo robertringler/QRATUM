@@ -6,6 +6,8 @@
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-research%2Fbeta-yellow.svg)](#12-roadmap)
 
+> **Lakeside Orchestration UI (Vite + React):** See [DEPLOY.md](DEPLOY.md) for Vercel deployment setup and automation.
+
 ---
 
 ## 2. System Overview
