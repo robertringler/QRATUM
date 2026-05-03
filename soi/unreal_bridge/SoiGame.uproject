@@ -1,6 +1,6 @@
 {
     "FileVersion": 3,
-    "EngineAssociation": "5.3",
+    "EngineAssociation": "5.7",
     "Category": "",
     "Description": "QRATUM Sovereign Operations Interface - UE5 Edition",
     "Modules": [
@@ -11,6 +11,18 @@
             "AdditionalDependencies": [
                 "Engine",
                 "CoreUObject"
+            ]
+        },
+        {
+            "Name": "QRATUM",
+            "Type": "Runtime",
+            "LoadingPhase": "Default",
+            "AdditionalDependencies": [
+                "Engine",
+                "CoreUObject",
+                "UMG",
+                "CommonUI",
+                "Niagara"
             ]
         }
     ],

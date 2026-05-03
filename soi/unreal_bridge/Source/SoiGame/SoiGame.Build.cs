@@ -1,3 +1,11 @@
+// SoiGame.Build.cs
+// QRATUM Sovereign Operations Interface — UE5 module.
+// Rust telemetry core linkage is GATED on the presence of the prebuilt
+// shared library on disk. If absent, the module compiles with
+// SOI_RUST_AVAILABLE=0 and telemetry calls become no-ops. Build the Rust
+// crate (soi/rust_core/soi_telemetry_core) and re-run UBT to enable.
+
+using System.IO;
 using UnrealBuildTool;
 
 public class SoiGame : ModuleRules
@@ -6,11 +14,11 @@ public class SoiGame : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] 
-        { 
-            "Core", 
-            "CoreUObject", 
-            "Engine", 
+        PublicDependencyModuleNames.AddRange(new string[]
+        {
+            "Core",
+            "CoreUObject",
+            "Engine",
             "InputCore",
             "CommonUI",
             "UMG",
@@ -19,23 +27,43 @@ public class SoiGame : ModuleRules
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
 
-        // Link to Rust dynamic library
-        string RustLibPath = System.IO.Path.Combine(ModuleDirectory, "..", "..", "..", "rust_core", "soi_telemetry_core", "target", "release");
-        
+        // Path to Rust dynamic library (built via `cargo build --release`).
+        string RustLibPath = Path.Combine(ModuleDirectory, "..", "..", "..", "rust_core", "soi_telemetry_core", "target", "release");
+
+        bool bRustAvailable = false;
+
         if (Target.Platform == UnrealTargetPlatform.Win64)
         {
-            PublicAdditionalLibraries.Add(System.IO.Path.Combine(RustLibPath, "soi_telemetry_core.dll.lib"));
-            RuntimeDependencies.Add(System.IO.Path.Combine(RustLibPath, "soi_telemetry_core.dll"));
+            string ImportLib = Path.Combine(RustLibPath, "soi_telemetry_core.dll.lib");
+            string Dll       = Path.Combine(RustLibPath, "soi_telemetry_core.dll");
+            if (File.Exists(ImportLib) && File.Exists(Dll))
+            {
+                PublicAdditionalLibraries.Add(ImportLib);
+                RuntimeDependencies.Add(Dll);
+                bRustAvailable = true;
+            }
         }
         else if (Target.Platform == UnrealTargetPlatform.Linux)
         {
-            PublicAdditionalLibraries.Add(System.IO.Path.Combine(RustLibPath, "libsoi_telemetry_core.so"));
-            RuntimeDependencies.Add(System.IO.Path.Combine(RustLibPath, "libsoi_telemetry_core.so"));
+            string So = Path.Combine(RustLibPath, "libsoi_telemetry_core.so");
+            if (File.Exists(So))
+            {
+                PublicAdditionalLibraries.Add(So);
+                RuntimeDependencies.Add(So);
+                bRustAvailable = true;
+            }
         }
         else if (Target.Platform == UnrealTargetPlatform.Mac)
         {
-            PublicAdditionalLibraries.Add(System.IO.Path.Combine(RustLibPath, "libsoi_telemetry_core.dylib"));
-            RuntimeDependencies.Add(System.IO.Path.Combine(RustLibPath, "libsoi_telemetry_core.dylib"));
+            string Dylib = Path.Combine(RustLibPath, "libsoi_telemetry_core.dylib");
+            if (File.Exists(Dylib))
+            {
+                PublicAdditionalLibraries.Add(Dylib);
+                RuntimeDependencies.Add(Dylib);
+                bRustAvailable = true;
+            }
         }
+
+        PublicDefinitions.Add("SOI_RUST_AVAILABLE=" + (bRustAvailable ? "1" : "0"));
     }
 }
