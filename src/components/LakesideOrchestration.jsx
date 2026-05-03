@@ -604,7 +604,7 @@ Extended-stay guests are the highest LTV segment. They deserve a dedicated sales
 For OTA booking inquiries, contact form submissions, and Google Messages:
 - Response time target: <15 minutes (this alone separates top performers)
 - Response template for each inquiry type
-- Mobile notification setup so no inquiry goes unresponced`
+- Mobile notification setup so no inquiry goes unresponded`
   },
   {
     id: "agent6",
