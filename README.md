@@ -57,6 +57,17 @@ Runs structured evaluation matrices:
 * **Regression detection** with explicit CI failure thresholds on anomaly rate, cluster activation index, and lift-cluster rate.
 * **Structured JSON + Markdown reporting** for machine ingestion and human review.
 
+### Layer D — Streaming Drift Engine (`qratum_framework/sde/`)
+
+Runs *orthogonally* to Layers A–C and to the canonical CIIR–CRS–RIC 9-step loop. Where Layers A–C scope a completed run against its baseline, the SDE scores constraint-boundary proximity *during* execution on the same token stream the domain executor produces, and emits real-time tier transitions:
+
+* **Rolling window** of depth `L` (`RollingWindowBuffer`, default 256) gated by a minimum population (`MIN_WINDOW`, default 32) before scoring begins.
+* **Drift score** `d_t = D_KL(W_t ∥ W₀)` (default `KLDriftScorer`, numeric histogram or categorical counts, ε-smoothed) or `d_t = MMD(W_t, W₀)` with RBF kernel and median-bandwidth heuristic (`MMDDriftScorer`); first/second differences `Δd_t` and `Δ²d_t` tracked per reading.
+* **Alarm tiers** OK / WATCH / ALERT / HALT with `N_debounce` consecutive-reading escalation and immediate de-escalation. HALT requires *both* `d_t > θ_halt` *and* `Δ²d_t > 0` so transient spikes do not trip the actuator.
+* **Single actuator privilege** — on HALT, the engine awaits a `halt_callback` *before* the next token (backpressure) and projects the event onto the unified `MerkleLedger` as a `TYPE_II` `SDE_HALT_INJECT` entry. The SDE never mutates pipeline state directly and never silently swallows exceptions.
+
+Output is a stream of `DriftEvent` records (tier, `d_t`, `Δd_t`, `Δ²d_t`, `window_hash`) and an `SDESnapshot` for non-interrupting introspection. Determinism is inherited from the spine: identical token sequences produce byte-identical event logs.
+
 ### Architecture diagram
 
 ```
@@ -85,6 +96,17 @@ Runs structured evaluation matrices:
                 │   MerkleLedger (qratum_framework.trace)  │
                 │   optional tamper-evident audit log      │
                 └──────────────────────────────────────────┘
+                                   ▲
+                                   │ TYPE_II SDE_HALT_INJECT entries
+                                   │
+            ┌──────────────────────┴────────────────────────┐
+            │   Streaming Drift Engine  (D)                 │
+            │   qratum_framework/sde/ — runs orthogonally   │
+            │   rolling window → KL / MMD scorer            │
+            │   → AlarmEvaluator (OK/WATCH/ALERT/HALT,      │
+            │     debounce + Δ² gate) → DriftEvent          │
+            │   HALT awaits halt_callback (backpressure)    │
+            └───────────────────────────────────────────────┘
 ```
 
 ---
