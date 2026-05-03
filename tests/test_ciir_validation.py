@@ -271,6 +271,7 @@ class TestConvergencePlots:
     def test_generate_plots(self):
         """Verify plots are generated without error."""
         import matplotlib
+
         matplotlib.use("Agg")
 
         # Run a tiny subset for speed

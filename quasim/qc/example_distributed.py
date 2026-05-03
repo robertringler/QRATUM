@@ -12,10 +12,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from quasim.qc.quasim_dist import (init_cluster, initialize_zero_state,
-                                   profile, shard_state)
-from quasim.qc.quasim_multi import (MultiQubitSimulator, create_bell_plus,
-                                    create_ghz_state_exact)
+from quasim.qc.quasim_dist import init_cluster, initialize_zero_state, profile, shard_state
+from quasim.qc.quasim_multi import MultiQubitSimulator, create_bell_plus, create_ghz_state_exact
 from quasim.qc.quasim_tn import TensorNetworkEngine
 
 

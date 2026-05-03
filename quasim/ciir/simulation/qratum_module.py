@@ -15,18 +15,15 @@ qnx → distributed evolution executor
 
 from __future__ import annotations
 
-import time
 from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.theory import CIIRTheory, RealTensor
 from quasim.ciir.config import CIIRConfig
 from quasim.ciir.integration.hcal_bridge import HCALConstraintInjector
 from quasim.ciir.integration.qstack_bridge import QStackConstraintWeighter
-
+from quasim.ciir.theory import CIIRTheory, RealTensor
 
 # ================================================================
 # QRATUMHardware — Hardware control abstraction
@@ -99,17 +96,21 @@ class QRATUMHardware:
             Wall-clock time for this step.
         """
         self._step_times.append(elapsed_s)
-        self._metrics_log.append({
-            "step": step,
-            "loss": loss,
-            "grad_norm": grad_norm,
-            "constraint_violations": constraint_norms.tolist()
-            if isinstance(constraint_norms, np.ndarray)
-            else constraint_norms,
-            "elapsed_s": elapsed_s,
-            "cumulative_time_s": sum(self._step_times),
-            "throughput_steps_per_s": (step + 1) / max(sum(self._step_times), 1e-12),
-        })
+        self._metrics_log.append(
+            {
+                "step": step,
+                "loss": loss,
+                "grad_norm": grad_norm,
+                "constraint_violations": (
+                    constraint_norms.tolist()
+                    if isinstance(constraint_norms, np.ndarray)
+                    else constraint_norms
+                ),
+                "elapsed_s": elapsed_s,
+                "cumulative_time_s": sum(self._step_times),
+                "throughput_steps_per_s": (step + 1) / max(sum(self._step_times), 1e-12),
+            }
+        )
 
     @property
     def metrics_log(self) -> list[dict[str, Any]]:
@@ -170,16 +171,18 @@ class ExecutionScheduler:
         """
         task_id = f"ciir-evo-{len(self._task_queue)}"
         assert self.hardware.qstack is not None
-        self._task_queue.append({
-            "task_id": task_id,
-            "type": "evolution",
-            "n_steps": n_steps,
-            "lr": lr,
-            "method": method,
-            "status": "queued",
-            "priority": self.hardware.qstack.base_priority,
-            "constraint_priorities": self.hardware.qstack.constraint_priorities(),
-        })
+        self._task_queue.append(
+            {
+                "task_id": task_id,
+                "type": "evolution",
+                "n_steps": n_steps,
+                "lr": lr,
+                "method": method,
+                "status": "queued",
+                "priority": self.hardware.qstack.base_priority,
+                "constraint_priorities": self.hardware.qstack.constraint_priorities(),
+            }
+        )
         return task_id
 
     def schedule_measurement(self, observer_index: int) -> str:
@@ -190,13 +193,15 @@ class ExecutionScheduler:
         task_id : str
         """
         task_id = f"ciir-meas-{len(self._task_queue)}"
-        self._task_queue.append({
-            "task_id": task_id,
-            "type": "measurement",
-            "observer_index": observer_index,
-            "status": "queued",
-            "priority": 2.0,  # Measurements get high priority
-        })
+        self._task_queue.append(
+            {
+                "task_id": task_id,
+                "type": "measurement",
+                "observer_index": observer_index,
+                "status": "queued",
+                "priority": 2.0,  # Measurements get high priority
+            }
+        )
         return task_id
 
     def next_task(self) -> dict[str, Any] | None:
@@ -335,8 +340,12 @@ class PerformanceDashboard:
             f"Throughput: {summary['performance']['throughput_steps_per_s']:.1f} steps/s",
         ]
         ax.text(
-            0.05, 0.95, "\n".join(text_lines),
-            transform=ax.transAxes, fontsize=9, family="monospace",
+            0.05,
+            0.95,
+            "\n".join(text_lines),
+            transform=ax.transAxes,
+            fontsize=9,
+            family="monospace",
             verticalalignment="top",
         )
 

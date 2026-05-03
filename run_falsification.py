@@ -33,11 +33,10 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from quasim.ciir.multi_qubit.analysis.falsification import (
     PROTOCOL_PARAMS,
-    run_falsification_protocol,
     ArtifactResult,
     FalsificationVerdict,
+    run_falsification_protocol,
 )
-
 
 # ────────────────────────────────────────────────────────────────
 # FORMATTING HELPERS
@@ -78,6 +77,7 @@ def _ah_line(r: ArtifactResult) -> str:
 # ────────────────────────────────────────────────────────────────
 # REPORT SECTIONS
 # ────────────────────────────────────────────────────────────────
+
 
 def section1(result: dict) -> str:
     p = result["params"]
@@ -138,9 +138,15 @@ def section3(result: dict) -> str:
     s1 = sec["s1_stress"]
     lines.append(_h2("S1 — Stress Regime Scan"))
     lines.append(f"  Baseline         ΔO_max = {s1['delta_baseline']:.6f}")
-    lines.append(f"  High entanglement ΔO_max = {s1['delta_high_entanglement']:.6f}  → {s1['trend_high_entanglement']}")
-    lines.append(f"  Long memory      ΔO_max = {s1['delta_long_memory']:.6f}  → {s1['trend_long_memory']}")
-    lines.append(f"  Rapid control    ΔO_max = {s1['delta_rapid_control']:.6f}  → {s1['trend_rapid_control']}")
+    lines.append(
+        f"  High entanglement ΔO_max = {s1['delta_high_entanglement']:.6f}  → {s1['trend_high_entanglement']}"
+    )
+    lines.append(
+        f"  Long memory      ΔO_max = {s1['delta_long_memory']:.6f}  → {s1['trend_long_memory']}"
+    )
+    lines.append(
+        f"  Rapid control    ΔO_max = {s1['delta_rapid_control']:.6f}  → {s1['trend_rapid_control']}"
+    )
 
     # S2
     s2 = sec["s2_controllers"]
@@ -308,6 +314,7 @@ def section5(result: dict, elapsed: float) -> str:
 # SERIALISATION (JSON-safe)
 # ────────────────────────────────────────────────────────────────
 
+
 def _to_json_safe(obj):
     if isinstance(obj, np.ndarray):
         return obj.tolist()
@@ -385,25 +392,44 @@ def _make_summary(result: dict) -> dict:
 # MAIN
 # ────────────────────────────────────────────────────────────────
 
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="CIIR Falsification Protocol Runner")
-    parser.add_argument("--N", type=int, default=PROTOCOL_PARAMS["N_default"],
-                        help="Number of qubits (default 3)")
-    parser.add_argument("--n-steps", type=int, default=PROTOCOL_PARAMS["n_steps"],
-                        help="Integration steps (default 50)")
-    parser.add_argument("--dt", type=float, default=PROTOCOL_PARAMS["dt"],
-                        help="Time step (default 0.01)")
-    parser.add_argument("--gamma", type=float, default=PROTOCOL_PARAMS["gamma"],
-                        help="Lindblad noise rate (default 0.02)")
-    parser.add_argument("--noise-strength", type=float,
-                        default=PROTOCOL_PARAMS["noise_strength"],
-                        help="Depolarizing noise (default 0.15, > p*=0.1)")
-    parser.add_argument("--N-scan", type=int, nargs="+", default=[2, 4, 6],
-                        help="N values for AH-5 and S3 (default 2 4 6)")
-    parser.add_argument("--no-secondary", action="store_true",
-                        help="Skip S1–S3 secondary objectives")
-    parser.add_argument("--output", type=str, default=None,
-                        help="Path to save JSON summary")
+    parser.add_argument(
+        "--N", type=int, default=PROTOCOL_PARAMS["N_default"], help="Number of qubits (default 3)"
+    )
+    parser.add_argument(
+        "--n-steps",
+        type=int,
+        default=PROTOCOL_PARAMS["n_steps"],
+        help="Integration steps (default 50)",
+    )
+    parser.add_argument(
+        "--dt", type=float, default=PROTOCOL_PARAMS["dt"], help="Time step (default 0.01)"
+    )
+    parser.add_argument(
+        "--gamma",
+        type=float,
+        default=PROTOCOL_PARAMS["gamma"],
+        help="Lindblad noise rate (default 0.02)",
+    )
+    parser.add_argument(
+        "--noise-strength",
+        type=float,
+        default=PROTOCOL_PARAMS["noise_strength"],
+        help="Depolarizing noise (default 0.15, > p*=0.1)",
+    )
+    parser.add_argument(
+        "--N-scan",
+        type=int,
+        nargs="+",
+        default=[2, 4, 6],
+        help="N values for AH-5 and S3 (default 2 4 6)",
+    )
+    parser.add_argument(
+        "--no-secondary", action="store_true", help="Skip S1–S3 secondary objectives"
+    )
+    parser.add_argument("--output", type=str, default=None, help="Path to save JSON summary")
     args = parser.parse_args(argv)
 
     print(_h1("CIIR FALSIFICATION PROTOCOL — AUTONOMOUS EXECUTION"))

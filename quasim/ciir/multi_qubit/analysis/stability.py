@@ -33,9 +33,8 @@ RMatrix = NDArray[np.float64]
 # Lindbladian superoperator matrix
 # ---------------------------------------------------------------------------
 
-def lindbladian_matrix(
-    H: CMatrix, lindblad_ops: List[CMatrix], hbar: float = 1.0
-) -> CMatrix:
+
+def lindbladian_matrix(H: CMatrix, lindblad_ops: List[CMatrix], hbar: float = 1.0) -> CMatrix:
     r"""Build the (d², d²) Lindbladian superoperator L in vec(ρ) representation.
 
     dρ/dt = L[ρ]  ←→  d vec(ρ)/dt = M · vec(ρ)
@@ -96,14 +95,15 @@ def spectral_gap(
 # Lyapunov analyzer
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class LyapunovResult:
     """Result of a Lyapunov stability analysis."""
 
-    V_traj: NDArray            # V(t)
-    dV_traj: NDArray           # numerical dV/dt
+    V_traj: NDArray  # V(t)
+    dV_traj: NDArray  # numerical dV/dt
     converged: bool
-    convergence_time: float    # first time V < V_threshold
+    convergence_time: float  # first time V < V_threshold
     x_norm2_traj: NDArray
     S_rel_traj: NDArray
     spectral_gap: float

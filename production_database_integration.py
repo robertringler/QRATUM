@@ -50,10 +50,7 @@ class DatabaseCache:
     def get(self, key: str) -> Optional[Dict[str, Any]]:
         """Get cached value"""
         cursor = self.conn.cursor()
-        cursor.execute(
-            "SELECT value, timestamp, expiry_hours FROM api_cache WHERE key = ?",
-            (key,)
-        )
+        cursor.execute("SELECT value, timestamp, expiry_hours FROM api_cache WHERE key = ?", (key,))
         row = cursor.fetchone()
 
         if row:
@@ -77,7 +74,7 @@ class DatabaseCache:
             INSERT OR REPLACE INTO api_cache (key, value, timestamp, expiry_hours)
             VALUES (?, ?, ?, ?)
             """,
-            (key, json.dumps(value), time.time(), expiry_hours)
+            (key, json.dumps(value), time.time(), expiry_hours),
         )
         self.conn.commit()
 
@@ -90,7 +87,7 @@ class DatabaseCache:
             DELETE FROM api_cache 
             WHERE (? - timestamp) / 3600 > expiry_hours
             """,
-            (current_time,)
+            (current_time,),
         )
         self.conn.commit()
         logger.info(f"Cleared {cursor.rowcount} expired cache entries")
@@ -140,26 +137,17 @@ class GnomADIntegration:
             return cached
 
         # Make API request
-        headers = {
-            'Content-Type': 'application/json',
-            'User-Agent': 'QRATUM/1.0'
-        }
+        headers = {"Content-Type": "application/json", "User-Agent": "QRATUM/1.0"}
 
-        data = {
-            'query': query,
-            'variables': variables or {}
-        }
+        data = {"query": query, "variables": variables or {}}
 
         try:
             req = urllib.request.Request(
-                self.base_url,
-                data=json.dumps(data).encode('utf-8'),
-                headers=headers,
-                method='POST'
+                self.base_url, data=json.dumps(data).encode("utf-8"), headers=headers, method="POST"
             )
 
             with urllib.request.urlopen(req, timeout=30) as response:
-                result = json.loads(response.read().decode('utf-8'))
+                result = json.loads(response.read().decode("utf-8"))
 
             # Cache the result
             self.cache.set(cache_key, result, expiry_hours=168)  # 1 week
@@ -207,20 +195,20 @@ class GnomADIntegration:
 
         result = self._make_request(query, variables)
 
-        if 'data' in result and result['data'].get('variant'):
-            variant_data = result['data']['variant']
-            genome = variant_data.get('genome', {})
+        if "data" in result and result["data"].get("variant"):
+            variant_data = result["data"]["variant"]
+            genome = variant_data.get("genome", {})
 
             return {
                 "variant_id": variant_id,
-                "allele_frequency": genome.get('af', 0),
-                "allele_count": genome.get('ac', 0),
-                "allele_number": genome.get('an', 0),
-                "homozygote_count": genome.get('ac_hom', 0),
-                "popmax_af": genome.get('faf95', {}).get('popmax'),
-                "popmax_population": genome.get('faf95', {}).get('popmax_population'),
-                "flags": variant_data.get('flags', []),
-                "source": "gnomAD_v4"
+                "allele_frequency": genome.get("af", 0),
+                "allele_count": genome.get("ac", 0),
+                "allele_number": genome.get("an", 0),
+                "homozygote_count": genome.get("ac_hom", 0),
+                "popmax_af": genome.get("faf95", {}).get("popmax"),
+                "popmax_population": genome.get("faf95", {}).get("popmax_population"),
+                "flags": variant_data.get("flags", []),
+                "source": "gnomAD_v4",
             }
 
         return {"variant_id": variant_id, "found": False}
@@ -231,10 +219,7 @@ class GnomADIntegration:
 
         for variant in variants:
             freq_data = self.get_variant_frequency(
-                variant['chrom'],
-                variant['pos'],
-                variant['ref'],
-                variant['alt']
+                variant["chrom"], variant["pos"], variant["ref"], variant["alt"]
             )
             results.append(freq_data)
 
@@ -261,7 +246,7 @@ class ClinVarIntegration:
         cached = self.cache.get(cache_key)
         if cached:
             logger.debug("Cache hit for ClinVar query")
-            return cached['response']
+            return cached["response"]
 
         # Build URL
         url = f"{self.base_url}/{endpoint}.fcgi"
@@ -269,12 +254,12 @@ class ClinVarIntegration:
         full_url = f"{url}?{query_string}"
 
         try:
-            req = urllib.request.Request(full_url, headers={'User-Agent': 'QRATUM/1.0'})
+            req = urllib.request.Request(full_url, headers={"User-Agent": "QRATUM/1.0"})
             with urllib.request.urlopen(req, timeout=30) as response:
-                result = response.read().decode('utf-8')
+                result = response.read().decode("utf-8")
 
             # Cache the result
-            self.cache.set(cache_key, {'response': result}, expiry_hours=168)
+            self.cache.set(cache_key, {"response": result}, expiry_hours=168)
 
             return result
 
@@ -287,46 +272,43 @@ class ClinVarIntegration:
         # Search by location
         search_term = f"{chrom}[Chromosome] AND {pos}[Base Position]"
 
-        params = {
-            'db': 'clinvar',
-            'term': search_term,
-            'retmode': 'json',
-            'retmax': '10'
-        }
+        params = {"db": "clinvar", "term": search_term, "retmode": "json", "retmax": "10"}
 
-        search_result = self._make_request('esearch', params)
+        search_result = self._make_request("esearch", params)
 
         if not search_result:
             return {"found": False}
 
         try:
             search_data = json.loads(search_result)
-            id_list = search_data.get('esearchresult', {}).get('idlist', [])
+            id_list = search_data.get("esearchresult", {}).get("idlist", [])
 
             if not id_list:
                 return {"found": False, "location": f"{chrom}:{pos}"}
 
             # Fetch details for first match
-            summary_params = {
-                'db': 'clinvar',
-                'id': id_list[0],
-                'retmode': 'json'
-            }
+            summary_params = {"db": "clinvar", "id": id_list[0], "retmode": "json"}
 
-            summary_result = self._make_request('esummary', summary_params)
+            summary_result = self._make_request("esummary", summary_params)
             summary_data = json.loads(summary_result)
 
             # Extract clinical significance
-            result_data = summary_data.get('result', {}).get(id_list[0], {})
+            result_data = summary_data.get("result", {}).get(id_list[0], {})
 
             return {
                 "found": True,
                 "clinvar_id": id_list[0],
-                "clinical_significance": result_data.get('clinical_significance', {}).get('description', 'Unknown'),
-                "review_status": result_data.get('clinical_significance', {}).get('review_status', 'Unknown'),
-                "variation_type": result_data.get('variation_set', [{}])[0].get('variation_type', 'Unknown'),
-                "germline_classification": result_data.get('germline_classification', {}),
-                "source": "ClinVar"
+                "clinical_significance": result_data.get("clinical_significance", {}).get(
+                    "description", "Unknown"
+                ),
+                "review_status": result_data.get("clinical_significance", {}).get(
+                    "review_status", "Unknown"
+                ),
+                "variation_type": result_data.get("variation_set", [{}])[0].get(
+                    "variation_type", "Unknown"
+                ),
+                "germline_classification": result_data.get("germline_classification", {}),
+                "source": "ClinVar",
             }
 
         except (json.JSONDecodeError, KeyError) as e:
@@ -350,23 +332,23 @@ class dbSNPIntegration:
         cache_key = f"dbsnp:{chrom}:{pos}"
         cached = self.cache.get(cache_key)
         if cached:
-            return cached.get('rsid')
+            return cached.get("rsid")
 
         # Use SPDI notation for query
         spdi = f"NC_000{str(chrom).zfill(2)}:{pos}:1:A"  # Example
 
         try:
             url = f"{self.base_url}/spdi/{spdi}/rsids"
-            req = urllib.request.Request(url, headers={'User-Agent': 'QRATUM/1.0'})
+            req = urllib.request.Request(url, headers={"User-Agent": "QRATUM/1.0"})
 
             with urllib.request.urlopen(req, timeout=30) as response:
-                data = json.loads(response.read().decode('utf-8'))
+                data = json.loads(response.read().decode("utf-8"))
 
-            rsids = data.get('data', {}).get('rsids', [])
+            rsids = data.get("data", {}).get("rsids", [])
             rsid = rsids[0] if rsids else None
 
             # Cache result
-            self.cache.set(cache_key, {'rsid': rsid}, expiry_hours=720)  # 30 days
+            self.cache.set(cache_key, {"rsid": rsid}, expiry_hours=720)  # 30 days
 
             return rsid
 
@@ -404,14 +386,11 @@ class EnsemblIntegration:
             url = f"{url}?{query_string}"
 
         try:
-            headers = {
-                'Content-Type': 'application/json',
-                'User-Agent': 'QRATUM/1.0'
-            }
+            headers = {"Content-Type": "application/json", "User-Agent": "QRATUM/1.0"}
             req = urllib.request.Request(url, headers=headers)
 
             with urllib.request.urlopen(req, timeout=30) as response:
-                result = json.loads(response.read().decode('utf-8'))
+                result = json.loads(response.read().decode("utf-8"))
 
             # Cache result
             self.cache.set(cache_key, result, expiry_hours=168)
@@ -428,27 +407,27 @@ class EnsemblIntegration:
         region = f"{chrom}:{pos}-{pos}:{alleles}:1"
         endpoint = f"vep/human/region/{region}"
 
-        result = self._make_request(endpoint, {'content-type': 'application/json'})
+        result = self._make_request(endpoint, {"content-type": "application/json"})
 
         if isinstance(result, list) and len(result) > 0:
             variant_data = result[0]
-            consequences = variant_data.get('transcript_consequences', [])
+            consequences = variant_data.get("transcript_consequences", [])
 
             if consequences:
                 most_severe = consequences[0]
 
                 return {
-                    "most_severe_consequence": variant_data.get('most_severe_consequence'),
-                    "gene_symbol": most_severe.get('gene_symbol'),
-                    "gene_id": most_severe.get('gene_id'),
-                    "transcript_id": most_severe.get('transcript_id'),
-                    "biotype": most_severe.get('biotype'),
-                    "impact": most_severe.get('impact'),
-                    "consequence_terms": most_severe.get('consequence_terms', []),
-                    "amino_acids": most_severe.get('amino_acids'),
-                    "codons": most_severe.get('codons'),
-                    "protein_position": most_severe.get('protein_position'),
-                    "source": "Ensembl_VEP"
+                    "most_severe_consequence": variant_data.get("most_severe_consequence"),
+                    "gene_symbol": most_severe.get("gene_symbol"),
+                    "gene_id": most_severe.get("gene_id"),
+                    "transcript_id": most_severe.get("transcript_id"),
+                    "biotype": most_severe.get("biotype"),
+                    "impact": most_severe.get("impact"),
+                    "consequence_terms": most_severe.get("consequence_terms", []),
+                    "amino_acids": most_severe.get("amino_acids"),
+                    "codons": most_severe.get("codons"),
+                    "protein_position": most_severe.get("protein_position"),
+                    "source": "Ensembl_VEP",
                 }
 
         return {"found": False}
@@ -457,7 +436,7 @@ class EnsemblIntegration:
 class ProductionDatabaseIntegration:
     """
     Unified production-grade database integration
-    
+
     Combines all reference databases with caching, rate limiting,
     and error handling.
     """
@@ -477,7 +456,7 @@ class ProductionDatabaseIntegration:
     def annotate_variant(self, chrom: str, pos: int, ref: str, alt: str) -> Dict[str, Any]:
         """
         Complete variant annotation from all databases
-        
+
         Returns comprehensive annotation including:
         - Population frequencies (gnomAD)
         - Clinical significance (ClinVar)
@@ -488,46 +467,47 @@ class ProductionDatabaseIntegration:
 
         annotation = {
             "variant": f"{chrom}:{pos}:{ref}:{alt}",
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
         # gnomAD frequency
         try:
             gnomad_data = self.gnomad.get_variant_frequency(chrom, pos, ref, alt)
-            annotation['gnomad'] = gnomad_data
+            annotation["gnomad"] = gnomad_data
         except Exception as e:
             logger.error(f"gnomAD annotation failed: {e}")
-            annotation['gnomad'] = {"error": str(e)}
+            annotation["gnomad"] = {"error": str(e)}
 
         # ClinVar clinical significance
         try:
             clinvar_data = self.clinvar.search_variant(chrom, pos, ref, alt)
-            annotation['clinvar'] = clinvar_data
+            annotation["clinvar"] = clinvar_data
         except Exception as e:
             logger.error(f"ClinVar annotation failed: {e}")
-            annotation['clinvar'] = {"error": str(e)}
+            annotation["clinvar"] = {"error": str(e)}
 
         # dbSNP rsID
         try:
             rsid = self.dbsnp.get_rsid(chrom, pos)
-            annotation['dbsnp'] = {"rsid": rsid} if rsid else {"found": False}
+            annotation["dbsnp"] = {"rsid": rsid} if rsid else {"found": False}
         except Exception as e:
             logger.error(f"dbSNP annotation failed: {e}")
-            annotation['dbsnp'] = {"error": str(e)}
+            annotation["dbsnp"] = {"error": str(e)}
 
         # Ensembl VEP consequences
         try:
             alleles = f"{ref}/{alt}"
             vep_data = self.ensembl.get_variant_consequences(chrom, pos, alleles)
-            annotation['ensembl'] = vep_data
+            annotation["ensembl"] = vep_data
         except Exception as e:
             logger.error(f"Ensembl annotation failed: {e}")
-            annotation['ensembl'] = {"error": str(e)}
+            annotation["ensembl"] = {"error": str(e)}
 
         return annotation
 
-    def annotate_variants_batch(self, variants: List[Dict[str, Any]],
-                                  max_variants: int = 1000) -> List[Dict[str, Any]]:
+    def annotate_variants_batch(
+        self, variants: List[Dict[str, Any]], max_variants: int = 1000
+    ) -> List[Dict[str, Any]]:
         """Batch annotate multiple variants"""
         logger.info(f"Batch annotating {len(variants)} variants")
 
@@ -537,10 +517,7 @@ class ProductionDatabaseIntegration:
                 logger.info(f"Processed {i}/{len(variants)} variants")
 
             annotation = self.annotate_variant(
-                variant['chrom'],
-                variant['pos'],
-                variant['ref'],
-                variant['alt']
+                variant["chrom"], variant["pos"], variant["ref"], variant["alt"]
             )
             results.append(annotation)
 
@@ -556,16 +533,19 @@ class ProductionDatabaseIntegration:
         cursor.execute("SELECT COUNT(*) FROM api_cache")
         total_entries = cursor.fetchone()[0]
 
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT COUNT(*) FROM api_cache 
             WHERE (? - timestamp) / 3600 > expiry_hours
-        """, (time.time(),))
+        """,
+            (time.time(),),
+        )
         expired_entries = cursor.fetchone()[0]
 
         return {
             "total_cache_entries": total_entries,
             "expired_entries": expired_entries,
-            "active_entries": total_entries - expired_entries
+            "active_entries": total_entries - expired_entries,
         }
 
 
@@ -574,22 +554,14 @@ def main():
     integration = ProductionDatabaseIntegration()
 
     # Test variant
-    test_variant = {
-        'chrom': '1',
-        'pos': 69270,
-        'ref': 'A',
-        'alt': 'G'
-    }
+    test_variant = {"chrom": "1", "pos": 69270, "ref": "A", "alt": "G"}
 
-    print("\n" + "="*80)
+    print("\n" + "=" * 80)
     print("PRODUCTION DATABASE INTEGRATION TEST")
-    print("="*80)
+    print("=" * 80)
 
     annotation = integration.annotate_variant(
-        test_variant['chrom'],
-        test_variant['pos'],
-        test_variant['ref'],
-        test_variant['alt']
+        test_variant["chrom"], test_variant["pos"], test_variant["ref"], test_variant["alt"]
     )
 
     print(json.dumps(annotation, indent=2))
@@ -600,5 +572,5 @@ def main():
     print(json.dumps(stats, indent=2))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

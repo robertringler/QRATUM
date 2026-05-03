@@ -1,8 +1,7 @@
 from pathlib import Path
 
 from chatgpt_scraper.loader import load_raw_conversations
-from chatgpt_scraper.normalize import (build_ledger, normalize_conversation,
-                                       summarize_conversation)
+from chatgpt_scraper.normalize import build_ledger, normalize_conversation, summarize_conversation
 
 FIXTURE_DIR = Path(__file__).parent / "data" / "export_dir"
 

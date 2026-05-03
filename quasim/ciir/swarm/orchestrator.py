@@ -16,33 +16,35 @@ Fitness function:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 import numpy as np
-from numpy.typing import NDArray
 
-from quasim.ciir.swarm.memory import KnowledgeGraph, NodeType, EdgeType
-from quasim.ciir.swarm.axiom_architect import AxiomArchitect, Axiom
-from quasim.ciir.swarm.formalizer import Formalizer
-from quasim.ciir.swarm.rule_synthesizer import RuleSynthesizer
-from quasim.ciir.swarm.simulator import Simulator, SimulationResult
-from quasim.ciir.swarm.invariant_miner import InvariantMiner
+from quasim.ciir.swarm.axiom_architect import AxiomArchitect
+from quasim.ciir.swarm.compression_optimizer import CompressionOptimizer
 from quasim.ciir.swarm.consistency_validator import ConsistencyValidator
 from quasim.ciir.swarm.empirical_mapper import EmpiricalMapper
-from quasim.ciir.swarm.compression_optimizer import CompressionOptimizer
+from quasim.ciir.swarm.formalizer import Formalizer
 from quasim.ciir.swarm.hypothesis_mutator import HypothesisMutator
+from quasim.ciir.swarm.invariant_miner import InvariantMiner
+from quasim.ciir.swarm.memory import KnowledgeGraph
 from quasim.ciir.swarm.physics_lang import (
-    PhysicsProgram, StateDecl, ScheduleMode,
+    PhysicsProgram,
+    ScheduleMode,
+    StateDecl,
 )
-
+from quasim.ciir.swarm.rule_synthesizer import RuleSynthesizer
+from quasim.ciir.swarm.simulator import SimulationResult, Simulator
 
 # ================================================================
 # Fitness & evolution results
 # ================================================================
 
+
 @dataclass
 class FitnessScores:
     """Multi-objective fitness decomposition."""
+
     consistency: float = 0.0
     empirical_fit: float = 0.0
     simplicity: float = 0.0
@@ -75,6 +77,7 @@ class EvolutionResult:
 # ================================================================
 # Orchestrator
 # ================================================================
+
 
 class Orchestrator:
     r"""Coordinate all swarm agents and execute the evolution loop.
@@ -140,7 +143,9 @@ class Orchestrator:
         rule_struct = self.formalizer.formalize_rules(rules)
         cat_struct = self.formalizer.derive_category_structure(axiom_struct, rule_struct)
         self.formalizer.publish_to_memory(
-            self.memory, [axiom_struct, rule_struct, cat_struct], generation=0,
+            self.memory,
+            [axiom_struct, rule_struct, cat_struct],
+            generation=0,
         )
         self.rule_synthesizer.publish_to_memory(self.memory, rules, generation=0)
 
@@ -166,18 +171,25 @@ class Orchestrator:
             # Step 5: Optimize (CO)
             if sim_result.trajectory:
                 self.compression_optimizer.optimize(
-                    program, sim_result.trajectory, behavior_tol=0.5,
+                    program,
+                    sim_result.trajectory,
+                    behavior_tol=0.5,
                 )
 
             # Step 6: Mutate (HM) → population
             variants = self.hypothesis_mutator.generate_variants(
-                program, n_variants=population_size,
+                program,
+                n_variants=population_size,
             )
 
             # Step 7: Select (fitness-based)
             best_prog = program
             best_fitness = self._compute_fitness(
-                program, sim_result, validation.passed, mappings, invariants,
+                program,
+                sim_result,
+                validation.passed,
+                mappings,
+                invariants,
             )
 
             for variant in variants:
@@ -185,12 +197,18 @@ class Orchestrator:
                 v_s0 /= np.linalg.norm(v_s0)
                 v_result = self.simulator.run(variant, v_s0, steps_per_sim)
                 v_valid = self.consistency_validator.validate(
-                    variant, axioms, v_result,
+                    variant,
+                    axioms,
+                    v_result,
                 )
                 v_inv = self.invariant_miner.mine_invariants(v_result)
                 v_map = self.empirical_mapper.map_all(v_result, v_inv)
                 v_fitness = self._compute_fitness(
-                    variant, v_result, v_valid.passed, v_map, v_inv,
+                    variant,
+                    v_result,
+                    v_valid.passed,
+                    v_map,
+                    v_inv,
                 )
                 if v_fitness.total > best_fitness.total:
                     best_fitness = v_fitness
@@ -199,14 +217,16 @@ class Orchestrator:
 
             program = best_prog
 
-            results.append(EvolutionResult(
-                generation=gen,
-                best_fitness=best_fitness,
-                best_program=program,
-                sim_result=sim_result,
-                population_size=population_size,
-                memory_size=self.memory.size,
-            ))
+            results.append(
+                EvolutionResult(
+                    generation=gen,
+                    best_fitness=best_fitness,
+                    best_program=program,
+                    sim_result=sim_result,
+                    population_size=population_size,
+                    memory_size=self.memory.size,
+                )
+            )
 
         return results
 
@@ -237,10 +257,7 @@ class Orchestrator:
         n_score = len(conserved) / max(len(invariants), 1)
 
         total = (
-            self.alpha * c_score
-            + self.beta * e_score
-            + self.gamma * s_score
-            + self.delta * n_score
+            self.alpha * c_score + self.beta * e_score + self.gamma * s_score + self.delta * n_score
         )
 
         return FitnessScores(
@@ -261,11 +278,7 @@ class Orchestrator:
             program.add_rule(rule)
 
         # Add consistency checks
-        program.add_consistency_check(
-            lambda s: bool(np.isfinite(np.linalg.norm(s)))
-        )
-        program.add_consistency_check(
-            lambda s: float(np.linalg.norm(s)) < 1e6
-        )
+        program.add_consistency_check(lambda s: bool(np.isfinite(np.linalg.norm(s))))
+        program.add_consistency_check(lambda s: float(np.linalg.norm(s)) < 1e6)
 
         return program

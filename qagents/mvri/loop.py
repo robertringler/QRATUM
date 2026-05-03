@@ -33,9 +33,7 @@ from qagents.mvri.metrics import (
 )
 from qagents.mvri.state import Inv, State
 
-LoopOutcome = Literal[
-    "accepted", "rejected", "invalid_action", "invariant_halt"
-]
+LoopOutcome = Literal["accepted", "rejected", "invalid_action", "invariant_halt"]
 
 
 @dataclass(frozen=True)
@@ -186,9 +184,7 @@ def run_mvri_loop(
             outcome = "rejected"
             state_t1 = s_current
             constraints_failed_t = tuple(failed)
-            constraints_passed = tuple(
-                c for c in _ALL_CONSTRAINTS if c not in failed
-            )
+            constraints_passed = tuple(c for c in _ALL_CONSTRAINTS if c not in failed)
 
         # Step 8: log full trace entry (observational metrics only).
         metrics = {

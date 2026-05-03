@@ -71,8 +71,7 @@ def select_action(
     obj = np.asarray(objective_vector, dtype=float)
     if obj.shape != (vector_dim(state),):
         raise ValueError(
-            f"objective_vector shape {obj.shape!r} != state vector dim "
-            f"{(vector_dim(state),)!r}"
+            f"objective_vector shape {obj.shape!r} != state vector dim " f"{(vector_dim(state),)!r}"
         )
 
     best: Action | None = None
@@ -90,9 +89,8 @@ def select_action(
         s = float(np.dot(m.delta_s, obj))
         # numerical robustness: treat scores within zero_tol as ties
         key = _action_key(a)
-        if (
-            s > best_score + zero_tol
-            or (abs(s - best_score) <= zero_tol and (best_key is None or key < best_key))
+        if s > best_score + zero_tol or (
+            abs(s - best_score) <= zero_tol and (best_key is None or key < best_key)
         ):
             best = a
             best_score = s
@@ -144,12 +142,8 @@ def control_policy(
             continue
         s = score_action(a, m.delta_s, m, weights=used_weights)
         key = _action_key(a)
-        if (
-            s > best_score + zero_tol
-            or (
-                abs(s - best_score) <= zero_tol
-                and (best_key is None or key < best_key)
-            )
+        if s > best_score + zero_tol or (
+            abs(s - best_score) <= zero_tol and (best_key is None or key < best_key)
         ):
             best = a
             best_score = s

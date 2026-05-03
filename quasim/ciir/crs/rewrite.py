@@ -9,18 +9,18 @@ neighborhood.  Rules are:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Callable
 
 import numpy as np
 from numpy.typing import NDArray
 
-from quasim.ciir.crs.graph import CRSGraph, Node, Edge
-
+from quasim.ciir.crs.graph import CRSGraph, Node
 
 # ================================================================
 # Rewrite primitives
 # ================================================================
+
 
 @dataclass
 class RewriteRule:
@@ -86,6 +86,7 @@ class RewriteEngine:
 # ================================================================
 # Built-in rules
 # ================================================================
+
 
 def diffusion_rule(diffusion_rate: float = 0.1) -> RewriteRule:
     r"""Diffusion: s_v' = (1-α) s_v + α mean(s_n).

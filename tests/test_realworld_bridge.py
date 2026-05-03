@@ -75,9 +75,7 @@ def _make_loop(
     n_candidates: int = 6,
 ) -> tuple[ControlLoop, MockActuator, StateObserver]:
     s0 = initial or _state()
-    cfg = cfg or SafetyConfig(
-        epsilon=EPSILON, mvri_constraint_check=True
-    )
+    cfg = cfg or SafetyConfig(epsilon=EPSILON, mvri_constraint_check=True)
     observer = StateObserver(
         initial_state=s0,
         smoothing_alpha=0.3,
@@ -191,9 +189,7 @@ def test_mock_sensor_deterministic_construction() -> None:
 
 
 def test_observer_ema_updates_non_missing() -> None:
-    obs = StateObserver(
-        _state(), 0.5, NODE_IDS, EDGE_IDS
-    )
+    obs = StateObserver(_state(), 0.5, NODE_IDS, EDGE_IDS)
     initial = obs.estimate_vector().copy()
     target = Observation(
         timestamp=0.0,
@@ -304,9 +300,7 @@ def test_external_actuator_writer_exception() -> None:
         raise RuntimeError("nope")
 
     a = ExternalActuatorAdapter(boom, "ext", latency_ms=1.5)
-    r = a.execute(
-        Action(type="node_activation_shift", target="n1", magnitude=0.0)
-    )
+    r = a.execute(Action(type="node_activation_shift", target="n1", magnitude=0.0))
     assert r.success is False
     assert r.failure_reason and "nope" in r.failure_reason
     assert r.latency_ms == 1.5
@@ -314,9 +308,7 @@ def test_external_actuator_writer_exception() -> None:
 
 def test_external_actuator_writer_returns_false() -> None:
     a = ExternalActuatorAdapter(lambda _a: False, "ext")
-    r = a.execute(
-        Action(type="node_activation_shift", target="n1", magnitude=0.0)
-    )
+    r = a.execute(Action(type="node_activation_shift", target="n1", magnitude=0.0))
     assert r.success is False
     assert r.failure_reason == "writer returned False"
 
@@ -359,9 +351,7 @@ def test_tgt_blocks_nonexistent_target() -> None:
 
 
 def test_roc_blocks_excessive_change() -> None:
-    cfg = SafetyConfig(
-        epsilon=0.05, max_rate_of_change=0.001, mvri_constraint_check=False
-    )
+    cfg = SafetyConfig(epsilon=0.05, max_rate_of_change=0.001, mvri_constraint_check=False)
     prev = Action(type="node_activation_shift", target="n1", magnitude=0.0)
     cur = Action(type="node_activation_shift", target="n1", magnitude=0.04)
     assert check_roc(cur, prev, cfg) is False
@@ -373,9 +363,7 @@ def test_mvr_blocks_constraint_violation() -> None:
     # Build a noise_injection action without seed — F will raise inside
     # check_mvr → fails closed → MVR failure.
     cfg = SafetyConfig(epsilon=0.05, mvri_constraint_check=True)
-    a = Action(
-        type="noise_injection", target="n1", magnitude=0.01, seed=None
-    )
+    a = Action(type="noise_injection", target="n1", magnitude=0.01, seed=None)
     res = validate_action(a, _state(), cfg, previous_action=None)
     assert "MVR" in res.failed_checks
 
@@ -386,12 +374,8 @@ def test_all_four_checks_collected_when_all_fail() -> None:
         max_rate_of_change=0.0,
         mvri_constraint_check=True,
     )
-    prev = Action(
-        type="node_activation_shift", target="n1", magnitude=0.0
-    )
-    bad = Action(
-        type="node_activation_shift", target="missing", magnitude=0.5
-    )
+    prev = Action(type="node_activation_shift", target="n1", magnitude=0.0)
+    bad = Action(type="node_activation_shift", target="missing", magnitude=0.5)
     res = validate_action(bad, _state(), cfg, previous_action=prev)
     # Need MAG, TGT, ROC, MVR.
     assert set(res.failed_checks) >= {"MAG", "TGT", "ROC", "MVR"}
@@ -491,10 +475,7 @@ def test_sync_model_correction_bounded() -> None:
     )
     # Each dimension at most 0.05 closer.
     assert abs(s2.activation("n1") - s.activation("n1")) <= 0.05 + 1e-12
-    assert (
-        abs(s2.weight(("n2", "n3")) - s.weight(("n2", "n3")))
-        <= 0.05 + 1e-12
-    )
+    assert abs(s2.weight(("n2", "n3")) - s.weight(("n2", "n3"))) <= 0.05 + 1e-12
 
 
 def test_sync_model_inv_violation_rejected() -> None:
@@ -553,9 +534,7 @@ def test_full_step_executes_in_order() -> None:
 
 
 def test_actuator_not_called_when_no_valid_action() -> None:
-    sensor = MockSensor(
-        tuple(_baseline_obs(float(i)) for i in range(3)), "src"
-    )
+    sensor = MockSensor(tuple(_baseline_obs(float(i)) for i in range(3)), "src")
     cfg = SafetyConfig(epsilon=0.0, mvri_constraint_check=False)
     loop, actuator, _ = _make_loop(sensor, seed=2, cfg=cfg)
     loop.run(3)
@@ -563,9 +542,7 @@ def test_actuator_not_called_when_no_valid_action() -> None:
 
 
 def test_sensor_exhausted_terminates_run_early() -> None:
-    sensor = MockSensor(
-        tuple(_baseline_obs(float(i)) for i in range(2)), "src"
-    )
+    sensor = MockSensor(tuple(_baseline_obs(float(i)) for i in range(2)), "src")
     loop, _, _ = _make_loop(sensor, seed=3)
     res = loop.run(10)
     assert res.n_steps == 2
@@ -574,9 +551,7 @@ def test_sensor_exhausted_terminates_run_early() -> None:
 def test_observer_state_invalid_aborts_step_only() -> None:
     # Build an observer that will yield an invalid state on first
     # update by monkey-patching ``get_state`` to raise.
-    sensor = MockSensor(
-        tuple(_baseline_obs(float(i)) for i in range(2)), "src"
-    )
+    sensor = MockSensor(tuple(_baseline_obs(float(i)) for i in range(2)), "src")
     loop, _, observer = _make_loop(sensor, seed=4)
     calls = {"n": 0}
     real_get_state = observer.get_state
@@ -598,9 +573,7 @@ def test_observer_state_invalid_aborts_step_only() -> None:
 def test_model_state_only_updates_on_accepted_injection() -> None:
     # Force epsilon=0 so no candidate ever gets accepted; model_state
     # must remain == initial.
-    sensor = MockSensor(
-        tuple(_baseline_obs(float(i)) for i in range(3)), "src"
-    )
+    sensor = MockSensor(tuple(_baseline_obs(float(i)) for i in range(3)), "src")
     cfg = SafetyConfig(epsilon=0.0, mvri_constraint_check=False)
     s0 = _state()
     loop, _, _ = _make_loop(sensor, seed=5, cfg=cfg, initial=s0)
@@ -609,24 +582,17 @@ def test_model_state_only_updates_on_accepted_injection() -> None:
 
 
 def test_acceptance_rate_computed() -> None:
-    sensor = MockSensor(
-        tuple(_baseline_obs(float(i)) for i in range(5)), "src"
-    )
+    sensor = MockSensor(tuple(_baseline_obs(float(i)) for i in range(5)), "src")
     loop, _, _ = _make_loop(sensor, seed=6)
     res = loop.run(5)
     accepted = sum(
-        1
-        for t in res.traces
-        if t.injection_status is not None
-        and t.injection_status.accepted
+        1 for t in res.traces if t.injection_status is not None and t.injection_status.accepted
     )
     assert math.isclose(res.acceptance_rate, accepted / 5)
 
 
 def test_safety_rejection_rate_computed() -> None:
-    sensor = MockSensor(
-        tuple(_baseline_obs(float(i)) for i in range(4)), "src"
-    )
+    sensor = MockSensor(tuple(_baseline_obs(float(i)) for i in range(4)), "src")
     cfg = SafetyConfig(epsilon=0.0, mvri_constraint_check=False)
     loop, _, _ = _make_loop(sensor, seed=7, cfg=cfg)
     res = loop.run(4)
@@ -645,12 +611,14 @@ def test_identical_seed_identical_run() -> None:
     sig1 = tuple(
         (
             t.step,
-            None
-            if t.selected_action is None
-            else (
-                t.selected_action.type,
-                t.selected_action.target,
-                round(t.selected_action.magnitude, 12),
+            (
+                None
+                if t.selected_action is None
+                else (
+                    t.selected_action.type,
+                    t.selected_action.target,
+                    round(t.selected_action.magnitude, 12),
+                )
             ),
         )
         for t in r1
@@ -658,12 +626,14 @@ def test_identical_seed_identical_run() -> None:
     sig2 = tuple(
         (
             t.step,
-            None
-            if t.selected_action is None
-            else (
-                t.selected_action.type,
-                t.selected_action.target,
-                round(t.selected_action.magnitude, 12),
+            (
+                None
+                if t.selected_action is None
+                else (
+                    t.selected_action.type,
+                    t.selected_action.target,
+                    round(t.selected_action.magnitude, 12),
+                )
             ),
         )
         for t in r2

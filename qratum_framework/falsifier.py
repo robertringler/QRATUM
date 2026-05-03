@@ -7,11 +7,11 @@ ground truth.  This module provides the *contract* every domain falsifier
 must conform to, plus a lightweight reference verdict object usable by the
 ``qratum falsify`` CLI.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, Mapping, Optional, Protocol
-
+from typing import Any, Dict, Mapping, Protocol
 
 #: Verdict A — the falsifier could not refute the claim; signal is well above
 #: noise *and* its geometry matches the predicted ground truth.
@@ -90,8 +90,7 @@ class Falsifier(Protocol):
 
     domain: str
 
-    def run(self, *, seed: int = 0, **kwargs: Any) -> FalsificationVerdict:
-        ...
+    def run(self, *, seed: int = 0, **kwargs: Any) -> FalsificationVerdict: ...
 
 
 # ---------------------------------------------------------------------------

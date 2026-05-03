@@ -32,18 +32,16 @@ Test cases:
 
 from __future__ import annotations
 
-import json
 import sys
 from pathlib import Path
-from typing import Any, Optional
+from typing import Optional
 
 # Ensure repository root is on the path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from qagents.framework.ciir import Constraint, ConstraintAlgebra, ObserverMap, State
-from qagents.framework.crs import Action, CRS, FailureMode, NOOP
-from qagents.framework.ric import Intent, RIC, TraceEntry
-
+from qagents.framework.crs import CRS, NOOP, Action, FailureMode
+from qagents.framework.ric import RIC, Intent, TraceEntry
 
 # ===========================================================================
 # Domain constants
@@ -99,6 +97,7 @@ ALGEBRA = ConstraintAlgebra(ALL_CONSTRAINTS)
 # CRS — Transition function T
 # ===========================================================================
 
+
 def transition_fn(state: State, action: Action) -> Optional[dict]:
     """T : S × A → S ∪ {⊥}.
 
@@ -141,14 +140,13 @@ def transition_fn(state: State, action: Action) -> Optional[dict]:
 
 # Observable subspace: expose mode and level, but NOT resource count.
 # This demonstrates limited observability (Proposition 7.3).
-OBSERVER = ObserverMap(
-    projection=lambda s: {"level": s.get("level"), "mode": s.get("mode")}
-)
+OBSERVER = ObserverMap(projection=lambda s: {"level": s.get("level"), "mode": s.get("mode")})
 
 
 # ===========================================================================
 # CIIR — Invariant Inv ⊆ S
 # ===========================================================================
+
 
 def invariant(state: State) -> bool:
     """Inv: level ∈ [0,5] ∧ resource ∈ [0,10] ∧ mode ∈ VALID_MODES."""
@@ -167,11 +165,11 @@ def invariant(state: State) -> bool:
 
 # Intent registry: maps string keys to Intent objects
 INTENT_REGISTRY: dict[str, Intent] = {
-    "acquire":           Intent(goal="acquire_resource",   priority=1, preferred_action="ACQUIRE_RESOURCE"),
-    "release":           Intent(goal="release_resource",   priority=1, preferred_action="RELEASE_RESOURCE"),
-    "elevate":           Intent(goal="increase_level",     priority=2, preferred_action="INCREASE_LEVEL"),
-    "reduce_level":      Intent(goal="decrease_level",     priority=1, preferred_action="DECREASE_LEVEL"),
-    "hold":              Intent(goal="hold_position",      priority=0, preferred_action="NOOP"),
+    "acquire": Intent(goal="acquire_resource", priority=1, preferred_action="ACQUIRE_RESOURCE"),
+    "release": Intent(goal="release_resource", priority=1, preferred_action="RELEASE_RESOURCE"),
+    "elevate": Intent(goal="increase_level", priority=2, preferred_action="INCREASE_LEVEL"),
+    "reduce_level": Intent(goal="decrease_level", priority=1, preferred_action="DECREASE_LEVEL"),
+    "hold": Intent(goal="hold_position", priority=0, preferred_action="NOOP"),
 }
 
 
@@ -182,12 +180,13 @@ def intent_parser(raw: str) -> Optional[Intent]:
     Returns None (⊥) for unrecognised or malformed inputs.
     """
     key = raw.strip().lower()
-    return INTENT_REGISTRY.get(key, None)  # None = ⊥
+    return INTENT_REGISTRY.get(key)  # None = ⊥
 
 
 # ===========================================================================
 # Helper: build CRS for a given scenario state and constraints
 # ===========================================================================
+
 
 def build_system(
     state: dict,
@@ -217,6 +216,7 @@ def build_system(
 # ===========================================================================
 # Test case runner
 # ===========================================================================
+
 
 def run_case(
     label: str,
@@ -249,6 +249,7 @@ def run_case(
 # Analysis report
 # ===========================================================================
 
+
 def print_analysis(results: dict[str, TraceEntry]) -> None:
     """Print structured analysis report."""
     print(f"\n\n{'#' * 70}")
@@ -271,7 +272,7 @@ def print_analysis(results: dict[str, TraceEntry]) -> None:
     e1 = ric_a.step("acquire", {"level": 2, "resource": 3, "mode": "active"})
     crs_b, ric_b = build_system({"level": 2, "resource": 3, "mode": "active"})
     e2 = ric_b.step("acquire", {"level": 2, "resource": 3, "mode": "active"})
-    same = (e1.selected_action == e2.selected_action and e1.state_after == e2.state_after)
+    same = e1.selected_action == e2.selected_action and e1.state_after == e2.state_after
     print(f"  Re-run match: {same}  (action={e1.selected_action}, state={e1.state_after})")
 
     # -----------------------------------------------------------------------
@@ -309,24 +310,30 @@ def print_analysis(results: dict[str, TraceEntry]) -> None:
 
     # Type I
     b_fm = results["B"].failure_mode
-    print(f"  Type I  (constraint violation) — triggered: {b_fm == FailureMode.TYPE_I_CONSTRAINT_VIOLATION}")
-    print(f"    Response: deterministic NOOP, status=FAILED, no transition.")
+    print(
+        f"  Type I  (constraint violation) — triggered: {b_fm == FailureMode.TYPE_I_CONSTRAINT_VIOLATION}"
+    )
+    print("    Response: deterministic NOOP, status=FAILED, no transition.")
 
     # Type II
     d = results["D"]
     d_fm = d.failure_mode
-    print(f"  Type II (parse failure)        — triggered: {d_fm == FailureMode.TYPE_II_INTENT_PARSE_FAILURE}")
-    print(f"    Response: deterministic NOOP, status=FAILED, no transition.")
+    print(
+        f"  Type II (parse failure)        — triggered: {d_fm == FailureMode.TYPE_II_INTENT_PARSE_FAILURE}"
+    )
+    print("    Response: deterministic NOOP, status=FAILED, no transition.")
 
     # Type III — demonstrate by attempting NOOP with empty admissible set
     # (covered internally; shown via Case B which also produces the same guard path)
-    print(f"  Type III (transition undefined) — enforced by T returning ⊥ for")
-    print(f"    out-of-range actions; excluded from A_C(s) before dispatch.")
+    print("  Type III (transition undefined) — enforced by T returning ⊥ for")
+    print("    out-of-range actions; excluded from A_C(s) before dispatch.")
 
     # Type IV — invariant breach path
     c_fm = results["C"].failure_mode
-    print(f"  Type IV (invariant breach)     — triggered: {c_fm == FailureMode.TYPE_IV_INVARIANT_BREACH}")
-    print(f"    Response: Step 3 pre-check halts execution; status=FAILED, no transition.")
+    print(
+        f"  Type IV (invariant breach)     — triggered: {c_fm == FailureMode.TYPE_IV_INVARIANT_BREACH}"
+    )
+    print("    Response: Step 3 pre-check halts execution; status=FAILED, no transition.")
 
     # -----------------------------------------------------------------------
     # E. Traceability
@@ -382,9 +389,18 @@ def print_analysis(results: dict[str, TraceEntry]) -> None:
     # -----------------------------------------------------------------------
     print("\n### FINAL VERDICT")
     a_ok = results["A"].status == "OK"
-    b_blocked = results["B"].status == "FAILED" and results["B"].failure_mode == FailureMode.TYPE_I_CONSTRAINT_VIOLATION
-    c_blocked = results["C"].status == "FAILED" and results["C"].failure_mode == FailureMode.TYPE_IV_INVARIANT_BREACH
-    d_blocked = results["D"].status == "FAILED" and results["D"].failure_mode == FailureMode.TYPE_II_INTENT_PARSE_FAILURE
+    b_blocked = (
+        results["B"].status == "FAILED"
+        and results["B"].failure_mode == FailureMode.TYPE_I_CONSTRAINT_VIOLATION
+    )
+    c_blocked = (
+        results["C"].status == "FAILED"
+        and results["C"].failure_mode == FailureMode.TYPE_IV_INVARIANT_BREACH
+    )
+    d_blocked = (
+        results["D"].status == "FAILED"
+        and results["D"].failure_mode == FailureMode.TYPE_II_INTENT_PARSE_FAILURE
+    )
 
     all_pass = a_ok and b_blocked and c_blocked and d_blocked
 
@@ -404,16 +420,21 @@ def print_analysis(results: dict[str, TraceEntry]) -> None:
         )
     else:
         failed = []
-        if not a_ok: failed.append("valid execution failed")
-        if not b_blocked: failed.append("constraint violation not blocked")
-        if not c_blocked: failed.append("invariant breach not blocked")
-        if not d_blocked: failed.append("parse failure not handled")
+        if not a_ok:
+            failed.append("valid execution failed")
+        if not b_blocked:
+            failed.append("constraint violation not blocked")
+        if not c_blocked:
+            failed.append("invariant breach not blocked")
+        if not d_blocked:
+            failed.append("parse failure not handled")
         print(f"\n  System is NOT VALID due to: {', '.join(failed)}")
 
 
 # ===========================================================================
 # Main
 # ===========================================================================
+
 
 def main() -> None:
     print("CIIR–CRS–RIC Constraint-Governed Closed-Loop Execution Demo")

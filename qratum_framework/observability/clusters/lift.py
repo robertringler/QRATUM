@@ -9,6 +9,7 @@ Probabilities are estimated as smoothed frequencies over the relevant
 stream's total edge weight, with a configurable minimum-support floor
 that drops noisy edges before community detection.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -116,9 +117,7 @@ def positive_lift_subgraph(
     return {k: v for k, v in weighted.items() if v > threshold}
 
 
-def average_lift(
-    tokens: Iterable[str], weighted: Mapping[EdgeKey, float]
-) -> float:
+def average_lift(tokens: Iterable[str], weighted: Mapping[EdgeKey, float]) -> float:
     """Mean per-edge lift over edges incident to ``tokens``.
 
     Used by :mod:`.scoring` to compute ``mean(lift(tokens))`` for a

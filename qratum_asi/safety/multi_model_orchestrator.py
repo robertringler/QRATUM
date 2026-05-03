@@ -9,11 +9,6 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Protocol
 
 from .elicitation import ModelResponse, ResponseType, SafetyElicitation
-from .elicitation import (
-    ModelResponse,
-    ResponseType,
-    SafetyElicitation,
-)
 
 
 class ModelInterface(Protocol):
@@ -210,13 +205,15 @@ class MultiModelOrchestrator:
                     )
                 )
             except Exception as e:
-                results.append(QueryResult(
-                    model_id=model_id,
-                    question_id=question_id,
-                    success=False,
-                    response_text="",
-                    error=str(e)
-                ))
+                results.append(
+                    QueryResult(
+                        model_id=model_id,
+                        question_id=question_id,
+                        success=False,
+                        response_text="",
+                        error=str(e),
+                    )
+                )
                 results.append(
                     QueryResult(
                         model_id=model_id,
@@ -332,7 +329,7 @@ class MultiModelOrchestrator:
         sentences = []
 
         # Split into sentences
-        parts = text.split('.')
+        parts = text.split(".")
         parts = text.split(".")
 
         for part in parts:

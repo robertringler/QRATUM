@@ -166,16 +166,12 @@ class LongRunResult:
         s: dict[str, Any] = {
             "n_steps": self.n_steps,
             "total_elapsed_s": round(self.total_elapsed_s, 3),
-            "throughput_steps_per_s": round(
-                self.n_steps / max(self.total_elapsed_s, 1e-12), 1
-            ),
+            "throughput_steps_per_s": round(self.n_steps / max(self.total_elapsed_s, 1e-12), 1),
             "initial_loss": float(losses[0]),
             "final_loss": float(losses[-1]),
             "min_loss": float(losses.min()),
             "loss_reduction_pct": round(
-                (float(losses[0]) - float(losses[-1]))
-                / max(abs(float(losses[0])), 1e-12)
-                * 100,
+                (float(losses[0]) - float(losses[-1])) / max(abs(float(losses[0])), 1e-12) * 100,
                 2,
             ),
             "mean_gradient_norm": round(float(grads.mean()), 6),
@@ -402,12 +398,8 @@ def run_long_duration(
         print(f"║  Duration:   {config.duration_hours}h ({duration_s:.0f}s)")
         if config.max_steps > 0:
             print(f"║  Max steps:  {config.max_steps}")
-        print(
-            f"║  Manifold:   R={config.rank} D={config.rep_dim} B={config.batch_size}"
-        )
-        print(
-            f"║  Theory:     C={config.n_constraints} O={config.n_observers}"
-        )
+        print(f"║  Manifold:   R={config.rank} D={config.rep_dim} B={config.batch_size}")
+        print(f"║  Theory:     C={config.n_constraints} O={config.n_observers}")
         print(f"║  Seed:       {config.seed}")
         print(f"║  Output:     {config.output_dir}")
         print("╚══════════════════════════════════════════════════╝\n")
@@ -445,9 +437,7 @@ def run_long_duration(
         # Anomaly detection
         anomaly = _detect_anomaly(record)
         if anomaly is not None:
-            result.anomalies.append(
-                {"step": record.step, "type": anomaly, "timestamp_s": elapsed}
-            )
+            result.anomalies.append({"step": record.step, "type": anomaly, "timestamp_s": elapsed})
             consecutive_failures += 1
 
             if verbose:
@@ -496,9 +486,7 @@ def run_long_duration(
 
         # Incremental checkpoint
         if config.checkpoint_interval > 0 and step_idx % config.checkpoint_interval == 0:
-            ckpt_path = os.path.join(
-                config.output_dir, f"checkpoint_step{record.step}.json"
-            )
+            ckpt_path = os.path.join(config.output_dir, f"checkpoint_step{record.step}.json")
             result.save_checkpoint(ckpt_path)
             if verbose:
                 print(f"  📁 Checkpoint saved: {ckpt_path}")

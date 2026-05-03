@@ -25,8 +25,10 @@ logger = logging.getLogger(__name__)
 # BENCHMARK CONFIGURATION
 # ============================================================================
 
+
 class Platform(Enum):
     """Genomics platforms for comparison"""
+
     QRATUM = "QRATUM"
     NIH_BROAD = "NIH/Broad (GATK)"
     UK_BIOBANK = "UK Biobank (DRAGEN)"
@@ -38,6 +40,7 @@ class Platform(Enum):
 
 class WorkloadType(Enum):
     """Types of genomics workloads"""
+
     WGS_30X = "Whole Genome Sequencing (30×)"
     WES = "Whole Exome Sequencing"
     RNASEQ = "RNA-Seq"
@@ -50,9 +53,11 @@ class WorkloadType(Enum):
 # DATA STRUCTURES
 # ============================================================================
 
+
 @dataclass
 class BenchmarkMetrics:
     """Performance metrics for a single benchmark run"""
+
     platform: str
     workload: str
 
@@ -97,6 +102,7 @@ class BenchmarkMetrics:
 @dataclass
 class PlatformProfile:
     """Comprehensive profile of a genomics platform"""
+
     name: str
     organization: str
 
@@ -131,23 +137,23 @@ class PlatformProfile:
     def weighted_score(self) -> float:
         """Calculate weighted overall score"""
         weights = {
-            'throughput': 0.20,
-            'accuracy': 0.25,
-            'cost_efficiency': 0.15,
-            'reproducibility': 0.15,
-            'transparency': 0.10,
-            'scalability': 0.10,
-            'innovation': 0.05,
+            "throughput": 0.20,
+            "accuracy": 0.25,
+            "cost_efficiency": 0.15,
+            "reproducibility": 0.15,
+            "transparency": 0.10,
+            "scalability": 0.10,
+            "innovation": 0.05,
         }
 
         return (
-            self.throughput_score * weights['throughput'] +
-            self.accuracy_score * weights['accuracy'] +
-            self.cost_efficiency_score * weights['cost_efficiency'] +
-            self.reproducibility_score * weights['reproducibility'] +
-            self.transparency_score * weights['transparency'] +
-            self.scalability_score * weights['scalability'] +
-            self.innovation_score * weights['innovation']
+            self.throughput_score * weights["throughput"]
+            + self.accuracy_score * weights["accuracy"]
+            + self.cost_efficiency_score * weights["cost_efficiency"]
+            + self.reproducibility_score * weights["reproducibility"]
+            + self.transparency_score * weights["transparency"]
+            + self.scalability_score * weights["scalability"]
+            + self.innovation_score * weights["innovation"]
         )
 
 
@@ -273,6 +279,7 @@ PLATFORM_PROFILES = {
 # BENCHMARKING ENGINE
 # ============================================================================
 
+
 class BenchmarkingEngine:
     """Engine for running and analyzing genomics benchmarks"""
 
@@ -284,7 +291,7 @@ class BenchmarkingEngine:
 
     def generate_comparison_matrix(self) -> Dict:
         """Generate comprehensive comparison matrix
-        
+
         Returns:
             Dictionary with comparison data
         """
@@ -316,18 +323,15 @@ class BenchmarkingEngine:
 
         # Performance metrics
         matrix["metrics"]["throughput"] = {
-            p.value: prof.max_throughput_samples_per_day
-            for p, prof in self.profiles.items()
+            p.value: prof.max_throughput_samples_per_day for p, prof in self.profiles.items()
         }
 
         matrix["metrics"]["latency"] = {
-            p.value: prof.typical_latency_hours
-            for p, prof in self.profiles.items()
+            p.value: prof.typical_latency_hours for p, prof in self.profiles.items()
         }
 
         matrix["metrics"]["cost"] = {
-            p.value: prof.cost_per_sample_usd
-            for p, prof in self.profiles.items()
+            p.value: prof.cost_per_sample_usd for p, prof in self.profiles.items()
         }
 
         # Scores
@@ -345,15 +349,14 @@ class BenchmarkingEngine:
         }
 
         matrix["scores"]["weighted"] = {
-            p.value: prof.weighted_score()
-            for p, prof in self.profiles.items()
+            p.value: prof.weighted_score() for p, prof in self.profiles.items()
         }
 
         return matrix
 
     def calculate_normalized_metrics(self) -> Dict:
         """Calculate metrics normalized to QRATUM baseline
-        
+
         Returns:
             Normalized metrics dictionary
         """
@@ -363,8 +366,10 @@ class BenchmarkingEngine:
 
         for platform, profile in self.profiles.items():
             normalized[platform.value] = {
-                "throughput_relative": profile.max_throughput_samples_per_day / qratum_profile.max_throughput_samples_per_day,
-                "latency_relative": qratum_profile.typical_latency_hours / profile.typical_latency_hours,
+                "throughput_relative": profile.max_throughput_samples_per_day
+                / qratum_profile.max_throughput_samples_per_day,
+                "latency_relative": qratum_profile.typical_latency_hours
+                / profile.typical_latency_hours,
                 "cost_relative": qratum_profile.cost_per_sample_usd / profile.cost_per_sample_usd,
                 "hardware_scale": profile.total_cores / qratum_profile.total_cores,
             }
@@ -373,7 +378,7 @@ class BenchmarkingEngine:
 
     def generate_recommendations(self) -> Dict:
         """Generate strategic recommendations based on benchmarks
-        
+
         Returns:
             Recommendations dictionary
         """
@@ -392,11 +397,13 @@ class BenchmarkingEngine:
         score_gap = best_score - qratum_score
 
         if score_gap > 1.0:
-            recommendations["priority_areas"].append({
-                "area": "Overall Performance",
-                "gap": score_gap,
-                "priority": "High",
-            })
+            recommendations["priority_areas"].append(
+                {
+                    "area": "Overall Performance",
+                    "gap": score_gap,
+                    "priority": "High",
+                }
+            )
 
         # Immediate recommendations
         recommendations["immediate"] = [
@@ -462,10 +469,10 @@ class BenchmarkingEngine:
 
     def export_report(self, output_path: str) -> str:
         """Export comprehensive benchmark report
-        
+
         Args:
             output_path: Directory for output files
-            
+
         Returns:
             Path to main report file
         """
@@ -474,19 +481,19 @@ class BenchmarkingEngine:
         # Generate comparison matrix
         comparison = self.generate_comparison_matrix()
         comparison_path = os.path.join(output_path, "comparison_matrix.json")
-        with open(comparison_path, 'w') as f:
+        with open(comparison_path, "w") as f:
             json.dump(comparison, f, indent=2)
 
         # Generate normalized metrics
         normalized = self.calculate_normalized_metrics()
         normalized_path = os.path.join(output_path, "normalized_metrics.json")
-        with open(normalized_path, 'w') as f:
+        with open(normalized_path, "w") as f:
             json.dump(normalized, f, indent=2)
 
         # Generate recommendations
         recommendations = self.generate_recommendations()
         recommendations_path = os.path.join(output_path, "recommendations.json")
-        with open(recommendations_path, 'w') as f:
+        with open(recommendations_path, "w") as f:
             json.dump(recommendations, f, indent=2)
 
         # Generate summary
@@ -498,8 +505,9 @@ class BenchmarkingEngine:
                 "rank": sorted(
                     [(p.value, prof.weighted_score()) for p, prof in self.profiles.items()],
                     key=lambda x: x[1],
-                    reverse=True
-                ).index((Platform.QRATUM.value, self.profiles[Platform.QRATUM].weighted_score())) + 1,
+                    reverse=True,
+                ).index((Platform.QRATUM.value, self.profiles[Platform.QRATUM].weighted_score()))
+                + 1,
             },
             "key_strengths": [
                 "Cost-efficiency (10/10)",
@@ -517,7 +525,7 @@ class BenchmarkingEngine:
         }
 
         summary_path = os.path.join(output_path, "benchmark_summary.json")
-        with open(summary_path, 'w') as f:
+        with open(summary_path, "w") as f:
             json.dump(summary, f, indent=2)
 
         logger.info(f"Benchmark report exported to {output_path}")
@@ -528,17 +536,13 @@ class BenchmarkingEngine:
 # CLI
 # ============================================================================
 
+
 def main():
     """Main entry point"""
-    parser = argparse.ArgumentParser(
-        description="QRATUM Benchmarking Framework"
-    )
-    parser.add_argument('--generate-report', action='store_true',
-                       help="Generate benchmark report")
-    parser.add_argument('--output-dir', default='results/benchmarking',
-                       help="Output directory")
-    parser.add_argument('--verbose', action='store_true',
-                       help="Verbose logging")
+    parser = argparse.ArgumentParser(description="QRATUM Benchmarking Framework")
+    parser.add_argument("--generate-report", action="store_true", help="Generate benchmark report")
+    parser.add_argument("--output-dir", default="results/benchmarking", help="Output directory")
+    parser.add_argument("--verbose", action="store_true", help="Verbose logging")
 
     args = parser.parse_args()
 
@@ -566,7 +570,7 @@ def main():
         rankings = sorted(
             [(p.value, prof.weighted_score()) for p, prof in engine.profiles.items()],
             key=lambda x: x[1],
-            reverse=True
+            reverse=True,
         )
 
         print("\nPlatform Rankings:")
@@ -588,4 +592,5 @@ def main():
 
 if __name__ == "__main__":
     import sys
+
     sys.exit(main())

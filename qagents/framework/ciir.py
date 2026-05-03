@@ -17,8 +17,7 @@ Nothing in this module mutates state — all functions are pure.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, FrozenSet, Mapping, Optional
-
+from typing import Any, Callable, Mapping, Optional
 
 # ---------------------------------------------------------------------------
 # State space S
@@ -37,6 +36,7 @@ def state_eq(s1: State, s2: State) -> bool:
 # ---------------------------------------------------------------------------
 # Constraint  c ∈ C
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True)
 class Constraint:
@@ -69,6 +69,7 @@ class Constraint:
 # ---------------------------------------------------------------------------
 # Constraint algebra  (C, ⊑, ⊓, ⊤, ⊥)
 # ---------------------------------------------------------------------------
+
 
 class ConstraintAlgebra:
     """Finite constraint algebra over a fixed state space.
@@ -138,6 +139,7 @@ class ConstraintAlgebra:
 # Observer map  Ω : S → O
 # ---------------------------------------------------------------------------
 
+
 class ObserverMap:
     """Formal observer map Ω : S → O.
 
@@ -174,6 +176,7 @@ class ObserverMap:
 # ---------------------------------------------------------------------------
 # Accessible state predicate
 # ---------------------------------------------------------------------------
+
 
 def accessible_state_space(
     state: State,

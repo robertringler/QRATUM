@@ -26,20 +26,19 @@ Options:
     --out-tex     Output LaTeX path (default: whitepaper_v2.tex)
 """
 
-import json
+import argparse
 import asyncio
+import json
 import os
 import re
 import sys
-import argparse
 from concurrent.futures import ThreadPoolExecutor
 
 try:
     import anthropic
 except ImportError:
     sys.exit(
-        "Error: 'anthropic' package is not installed.\n"
-        "Install it with:  pip install anthropic"
+        "Error: 'anthropic' package is not installed.\n" "Install it with:  pip install anthropic"
     )
 
 client = anthropic.Anthropic()
@@ -321,24 +320,24 @@ FALSIFIABILITY:
 # AGENT 0 -- ORCHESTRATOR
 # =============================================================================
 
-AGENT_0_SYSTEM = f"""You are the lead architect for a rigorous mathematical physics whitepaper.
+AGENT_0_SYSTEM = """You are the lead architect for a rigorous mathematical physics whitepaper.
 Role: DECOMPOSITION ONLY. Do not write prose sections.
 
 Output valid JSON only. Schema:
-{{
+{
   "title": "string",
   "sections": [
-    {{
+    {
       "number": int,
       "title": "string",
       "agent": "Agent N",
       "core_objects": ["..."],
       "key_results": ["theorem/proposition names"],
       "depends_on_sections": [int]
-    }}
+    }
   ],
   "open_problems": ["..."]
-}}
+}
 
 The notation registry is injected separately. Do not redefine symbols."""
 
@@ -775,8 +774,8 @@ SECTION 6: "Projected Constrained Dynamics and Time Integration"
 Central boxed result:
 
 \\begin{{equation}}\\boxed{{
-  x_{{k+1}} = \Pi_{{\mathcal{{C}}}}\!\left(\Phi_{{\Delta t}}(x_k,\, u_k)\right),
-  \quad u_k = \pi(h(x_k),\, \mathcal{{C}})
+  x_{{k+1}} = \\Pi_{{\\mathcal{{C}}}}\\!\\left(\\Phi_{{\\Delta t}}(x_k,\\, u_k)\right),
+  \\quad u_k = \\pi(h(x_k),\\, \\mathcal{{C}})
 }}\\end{{equation}}
 
 Name: the CIIR Projected RMHD System (CPRS).
@@ -836,10 +835,9 @@ and stratified geometry.
 Per issue: Section / Flaw Type / Severity (Fatal|Major|Minor) / Description / Required Fix.
 Do not soften. End with: OVERALL RECOMMENDATION and one-sentence justification."""
 
+
 def build_agent_6_user(sections: dict) -> str:
-    assembled = "\n\n".join(
-        f"=== {k} ===\n{v}" for k, v in sections.items()
-    )
+    assembled = "\n\n".join(f"=== {k} ===\n{v}" for k, v in sections.items())
     return f"""Review the following whitepaper draft:
 
 {assembled}
@@ -870,6 +868,7 @@ REQUIRED FIX: [precise instruction]
 
 OVERALL RECOMMENDATION: [Accept/Major Revision/Reject]
 JUSTIFICATION: [one sentence]"""
+
 
 # =============================================================================
 # AGENT 7 -- EXPERIMENTAL FALSIFIABILITY
@@ -985,6 +984,7 @@ Use \\documentclass{amsart}.
 Do not suppress criticisms -- unresolvable fatal flaws become
 \\begin{remark}[Open Problem] environments."""
 
+
 def build_agent_8_user(outline: str, sections: dict, review: str, sec9_10: str) -> str:
     all_secs = "\n\n".join(f"% === {k} ===\n{v}" for k, v in sections.items())
     return f"""OUTLINE: {outline}
@@ -1027,34 +1027,38 @@ TASKS:
 
 Output the complete LaTeX source."""
 
+
 # =============================================================================
 # HELPERS
 # =============================================================================
+
 
 def call_agent(system_prompt: str, user_message: str, max_tokens: int = 4096) -> str:
     response = client.messages.create(
         model=MODEL,
         max_tokens=max_tokens,
         system=system_prompt,
-        messages=[{"role": "user", "content": user_message}]
+        messages=[{"role": "user", "content": user_message}],
     )
     return response.content[0].text
+
 
 # =============================================================================
 # ORCHESTRATION RUNNER
 # =============================================================================
 
+
 def _strip_code_fence(text: str) -> str:
     """Remove optional ```json or ``` fences from model output."""
     text = text.strip()
-    text = re.sub(r'^```[a-z]*\s*\n?', '', text, flags=re.IGNORECASE)
-    text = re.sub(r'\n?```\s*$', '', text)
+    text = re.sub(r"^```[a-z]*\s*\n?", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\n?```\s*$", "", text)
     return text.strip()
 
 
-def run_pipeline(model=None, max_workers=5,
-                 out_json="whitepaper_v2_output.json",
-                 out_tex="whitepaper_v2.tex"):
+def run_pipeline(
+    model=None, max_workers=5, out_json="whitepaper_v2_output.json", out_tex="whitepaper_v2.tex"
+):
     global MODEL
 
     # Friendly error for missing API key
@@ -1113,8 +1117,7 @@ def run_pipeline(model=None, max_workers=5,
 
     # Inject Section 1 pre-produced content + agent extension
     sections = {
-        "Section 1 (Foundations + Stratification Appendix)":
-            SECTION_1_LATEX + "\n\n" + results[0],
+        "Section 1 (Foundations + Stratification Appendix)": SECTION_1_LATEX + "\n\n" + results[0],
         "Section 2 (Hamiltonian Structure)": results[1],
         "Sections 3+8 (Discretization + Algorithms)": results[2],
         "Section 4 (Control Theory)": results[3],
@@ -1134,9 +1137,7 @@ def run_pipeline(model=None, max_workers=5,
 
     print("\n[PHASE 3] Agent 8: Final integration...")
     final_latex = call_agent(
-        AGENT_8_SYSTEM,
-        build_agent_8_user(outline_str, sections, review, sec9_10),
-        max_tokens=8192
+        AGENT_8_SYSTEM, build_agent_8_user(outline_str, sections, review, sec9_10), max_tokens=8192
     )
     print("  ✓ Final document assembled")
 
@@ -1155,15 +1156,18 @@ def run_pipeline(model=None, max_workers=5,
 
     print(f"\n✓ {out_json}")
     print(f"✓ {out_tex}")
-    print("\nCompile: pdflatex whitepaper_v2.tex && bibtex whitepaper_v2 && pdflatex whitepaper_v2.tex")
+    print(
+        "\nCompile: pdflatex whitepaper_v2.tex && bibtex whitepaper_v2 && pdflatex whitepaper_v2.tex"
+    )
     print("=" * 70)
     return output
+
 
 # =============================================================================
 # LANGGRAPH ADAPTER
 # =============================================================================
 
-LANGGRAPH_ADAPTER = '''
+LANGGRAPH_ADAPTER = """
 # LangGraph adapter -- pip install langgraph langchain-anthropic
 #
 # from langgraph.graph import StateGraph, END
@@ -1203,7 +1207,7 @@ LANGGRAPH_ADAPTER = '''
 # g.add_edge("a6","a7"); g.add_edge("a7","a8"); g.add_edge("a8", END)
 # app = g.compile()
 # result = app.invoke({})
-'''
+"""
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

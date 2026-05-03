@@ -34,8 +34,7 @@ from typing import Any, Callable, Dict, List, Optional
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -44,15 +43,18 @@ logger = logging.getLogger(__name__)
 # ENUMS AND DATA CLASSES
 # ============================================================================
 
+
 class EnhancementPhase(Enum):
     """Enhancement implementation phases"""
+
     IMMEDIATE = "immediate"  # 0-6 months
-    MID_TERM = "mid_term"    # 6-12 months
+    MID_TERM = "mid_term"  # 6-12 months
     LONG_TERM = "long_term"  # 12-24 months
 
 
 class EnhancementStatus(Enum):
     """Status of enhancement implementation"""
+
     NOT_STARTED = "not_started"
     IN_PROGRESS = "in_progress"
     COMPLETED = "completed"
@@ -62,6 +64,7 @@ class EnhancementStatus(Enum):
 
 class EnhancementPriority(Enum):
     """Priority level for enhancements"""
+
     CRITICAL = "critical"
     HIGH = "high"
     MEDIUM = "medium"
@@ -71,6 +74,7 @@ class EnhancementPriority(Enum):
 @dataclass
 class Enhancement:
     """Represents a single enhancement to the platform"""
+
     id: str
     name: str
     description: str
@@ -88,15 +92,16 @@ class Enhancement:
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization"""
         data = asdict(self)
-        data['phase'] = self.phase.value
-        data['priority'] = self.priority.value
-        data['status'] = self.status.value
+        data["phase"] = self.phase.value
+        data["priority"] = self.priority.value
+        data["status"] = self.status.value
         return data
 
 
 # ============================================================================
 # ROADMAP MANAGEMENT
 # ============================================================================
+
 
 class RoadmapManager:
     """Manages strategic roadmap and enhancement tracking"""
@@ -121,8 +126,8 @@ class RoadmapManager:
                 impact_metrics={
                     "accuracy_improvement": "5-10%",
                     "data_coverage": "250M+ variants",
-                    "cost": "Free (API)"
-                }
+                    "cost": "Free (API)",
+                },
             ),
             Enhancement(
                 id="IMM-02",
@@ -131,10 +136,7 @@ class RoadmapManager:
                 phase=EnhancementPhase.IMMEDIATE,
                 priority=EnhancementPriority.CRITICAL,
                 estimated_effort_hours=30,
-                impact_metrics={
-                    "clinical_annotations": "1M+ variants",
-                    "cost": "Free (API)"
-                }
+                impact_metrics={"clinical_annotations": "1M+ variants", "cost": "Free (API)"},
             ),
             Enhancement(
                 id="IMM-03",
@@ -143,10 +145,7 @@ class RoadmapManager:
                 phase=EnhancementPhase.IMMEDIATE,
                 priority=EnhancementPriority.HIGH,
                 estimated_effort_hours=60,
-                impact_metrics={
-                    "fault_tolerance": "100%",
-                    "restart_overhead": "<5 minutes"
-                }
+                impact_metrics={"fault_tolerance": "100%", "restart_overhead": "<5 minutes"},
             ),
             Enhancement(
                 id="IMM-04",
@@ -155,10 +154,7 @@ class RoadmapManager:
                 phase=EnhancementPhase.IMMEDIATE,
                 priority=EnhancementPriority.HIGH,
                 estimated_effort_hours=80,
-                impact_metrics={
-                    "speedup": "5-10x",
-                    "throughput_increase": "500-1000%"
-                }
+                impact_metrics={"speedup": "5-10x", "throughput_increase": "500-1000%"},
             ),
             Enhancement(
                 id="IMM-05",
@@ -167,10 +163,7 @@ class RoadmapManager:
                 phase=EnhancementPhase.IMMEDIATE,
                 priority=EnhancementPriority.MEDIUM,
                 estimated_effort_hours=50,
-                impact_metrics={
-                    "scalability": "Multi-node support",
-                    "reproducibility": "Enhanced"
-                }
+                impact_metrics={"scalability": "Multi-node support", "reproducibility": "Enhanced"},
             ),
         ]
 
@@ -186,8 +179,8 @@ class RoadmapManager:
                 dependencies=["IMM-05"],
                 impact_metrics={
                     "throughput_increase": "100-1000x",
-                    "scalability": "Unlimited nodes"
-                }
+                    "scalability": "Unlimited nodes",
+                },
             ),
             Enhancement(
                 id="MID-02",
@@ -196,10 +189,7 @@ class RoadmapManager:
                 phase=EnhancementPhase.MID_TERM,
                 priority=EnhancementPriority.HIGH,
                 estimated_effort_hours=300,
-                impact_metrics={
-                    "speedup": "20-30x",
-                    "cost": "$100K+ hardware"
-                }
+                impact_metrics={"speedup": "20-30x", "cost": "$100K+ hardware"},
             ),
             Enhancement(
                 id="MID-03",
@@ -208,10 +198,7 @@ class RoadmapManager:
                 phase=EnhancementPhase.MID_TERM,
                 priority=EnhancementPriority.HIGH,
                 estimated_effort_hours=150,
-                impact_metrics={
-                    "read_length": "10-100kb",
-                    "accuracy": "99%+ with consensus"
-                }
+                impact_metrics={"read_length": "10-100kb", "accuracy": "99%+ with consensus"},
             ),
             Enhancement(
                 id="MID-04",
@@ -223,8 +210,8 @@ class RoadmapManager:
                 impact_metrics={
                     "accuracy_improvement": "1-2%",
                     "sensitivity": "99%+",
-                    "precision": "99.5%+"
-                }
+                    "precision": "99.5%+",
+                },
             ),
             Enhancement(
                 id="MID-05",
@@ -235,8 +222,8 @@ class RoadmapManager:
                 estimated_effort_hours=100,
                 impact_metrics={
                     "io_throughput": "2-5x improvement",
-                    "storage_efficiency": "30-50% compression"
-                }
+                    "storage_efficiency": "30-50% compression",
+                },
             ),
         ]
 
@@ -252,8 +239,8 @@ class RoadmapManager:
                 dependencies=["MID-04"],
                 impact_metrics={
                     "quantum_advantage": "TBD",
-                    "use_cases": "Symbolic genomics, optimization"
-                }
+                    "use_cases": "Symbolic genomics, optimization",
+                },
             ),
             Enhancement(
                 id="LONG-02",
@@ -264,8 +251,8 @@ class RoadmapManager:
                 estimated_effort_hours=200,
                 impact_metrics={
                     "validation": "Clinical-grade",
-                    "credibility": "National recognition"
-                }
+                    "credibility": "National recognition",
+                },
             ),
             Enhancement(
                 id="LONG-03",
@@ -275,10 +262,7 @@ class RoadmapManager:
                 priority=EnhancementPriority.MEDIUM,
                 estimated_effort_hours=150,
                 dependencies=["MID-01"],
-                impact_metrics={
-                    "observability": "Real-time",
-                    "debugging": "Advanced"
-                }
+                impact_metrics={"observability": "Real-time", "debugging": "Advanced"},
             ),
         ]
 
@@ -293,13 +277,10 @@ class RoadmapManager:
         data = {
             "version": "1.0.0",
             "last_updated": datetime.now().isoformat(),
-            "enhancements": {
-                enh_id: enh.to_dict()
-                for enh_id, enh in self.enhancements.items()
-            }
+            "enhancements": {enh_id: enh.to_dict() for enh_id, enh in self.enhancements.items()},
         }
 
-        with open(self.roadmap_file, 'w') as f:
+        with open(self.roadmap_file, "w") as f:
             json.dump(data, f, indent=2)
 
         logger.info(f"Roadmap saved to {self.roadmap_file}")
@@ -314,27 +295,26 @@ class RoadmapManager:
             data = json.load(f)
 
         # Reconstruct Enhancement objects
-        for enh_id, enh_data in data.get('enhancements', {}).items():
+        for enh_id, enh_data in data.get("enhancements", {}).items():
             self.enhancements[enh_id] = Enhancement(
-                id=enh_data['id'],
-                name=enh_data['name'],
-                description=enh_data['description'],
-                phase=EnhancementPhase(enh_data['phase']),
-                priority=EnhancementPriority(enh_data['priority']),
-                status=EnhancementStatus(enh_data['status']),
-                dependencies=enh_data.get('dependencies', []),
-                impact_metrics=enh_data.get('impact_metrics', {}),
-                estimated_effort_hours=enh_data.get('estimated_effort_hours', 0),
-                actual_effort_hours=enh_data.get('actual_effort_hours', 0),
-                start_date=enh_data.get('start_date'),
-                completion_date=enh_data.get('completion_date'),
-                notes=enh_data.get('notes', '')
+                id=enh_data["id"],
+                name=enh_data["name"],
+                description=enh_data["description"],
+                phase=EnhancementPhase(enh_data["phase"]),
+                priority=EnhancementPriority(enh_data["priority"]),
+                status=EnhancementStatus(enh_data["status"]),
+                dependencies=enh_data.get("dependencies", []),
+                impact_metrics=enh_data.get("impact_metrics", {}),
+                estimated_effort_hours=enh_data.get("estimated_effort_hours", 0),
+                actual_effort_hours=enh_data.get("actual_effort_hours", 0),
+                start_date=enh_data.get("start_date"),
+                completion_date=enh_data.get("completion_date"),
+                notes=enh_data.get("notes", ""),
             )
 
         logger.info(f"Loaded {len(self.enhancements)} enhancements from roadmap")
 
-    def update_enhancement_status(self, enh_id: str, status: EnhancementStatus,
-                                   notes: str = ""):
+    def update_enhancement_status(self, enh_id: str, status: EnhancementStatus, notes: str = ""):
         """Update status of an enhancement"""
         if enh_id not in self.enhancements:
             logger.error(f"Enhancement {enh_id} not found")
@@ -391,12 +371,13 @@ class RoadmapManager:
 # MODULAR ENHANCEMENT SYSTEM
 # ============================================================================
 
+
 class EnhancementPlugin(ABC):
     """Abstract base class for enhancement plugins"""
 
     def __init__(self, config: Dict[str, Any]):
         self.config = config
-        self.enabled = config.get('enabled', True)
+        self.enabled = config.get("enabled", True)
         self.name = self.__class__.__name__
 
     @abstractmethod
@@ -440,7 +421,7 @@ class DatabaseIntegrationPlugin(EnhancementPlugin):
             "base_url": "https://gnomad.broadinstitute.org/api",
             "version": "v4",
             "connected": False,  # Stub
-            "cache_enabled": True
+            "cache_enabled": True,
         }
 
     def _init_clinvar(self) -> Dict[str, Any]:
@@ -449,7 +430,7 @@ class DatabaseIntegrationPlugin(EnhancementPlugin):
             "base_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils",
             "version": "latest",
             "connected": False,  # Stub
-            "cache_enabled": True
+            "cache_enabled": True,
         }
 
     def _init_dbsnp(self) -> Dict[str, Any]:
@@ -458,7 +439,7 @@ class DatabaseIntegrationPlugin(EnhancementPlugin):
             "base_url": "https://api.ncbi.nlm.nih.gov/variation/v0",
             "version": "b156",
             "connected": False,  # Stub
-            "cache_enabled": True
+            "cache_enabled": True,
         }
 
     def _init_ensembl(self) -> Dict[str, Any]:
@@ -467,7 +448,7 @@ class DatabaseIntegrationPlugin(EnhancementPlugin):
             "base_url": "https://rest.ensembl.org",
             "version": "GRCh38",
             "connected": False,  # Stub
-            "cache_enabled": True
+            "cache_enabled": True,
         }
 
     def execute(self, variant_list: List[Dict[str, Any]] = None, **kwargs) -> Dict[str, Any]:
@@ -486,7 +467,7 @@ class DatabaseIntegrationPlugin(EnhancementPlugin):
             "ensembl_genes": int(len(variant_list) * 0.85),  # ~85% in genes
             "execution_time_seconds": 0.1,
             "cache_hits": 0,
-            "cache_misses": len(variant_list)
+            "cache_misses": len(variant_list),
         }
 
         return results
@@ -498,7 +479,7 @@ class DatabaseIntegrationPlugin(EnhancementPlugin):
             "clinvar": {"status": "stub", "test_query": "pending"},
             "dbsnp": {"status": "stub", "test_query": "pending"},
             "ensembl": {"status": "stub", "test_query": "pending"},
-            "overall_status": "ready_for_implementation"
+            "overall_status": "ready_for_implementation",
         }
 
 
@@ -530,7 +511,7 @@ class GPUAccelerationPlugin(EnhancementPlugin):
         logger.info(f"GPU acceleration stub for {alignment_task.get('reads', 0)} reads")
 
         # Simulate speedup
-        cpu_time = alignment_task.get('reads', 0) * 0.001  # 1ms per read on CPU
+        cpu_time = alignment_task.get("reads", 0) * 0.001  # 1ms per read on CPU
         gpu_time = cpu_time / 8.0  # 8x speedup on GPU
 
         results = {
@@ -538,7 +519,7 @@ class GPUAccelerationPlugin(EnhancementPlugin):
             "estimated_cpu_time_seconds": cpu_time,
             "estimated_gpu_time_seconds": gpu_time,
             "estimated_speedup": "8x",
-            "status": "stub_implementation"
+            "status": "stub_implementation",
         }
 
         return results
@@ -550,7 +531,7 @@ class GPUAccelerationPlugin(EnhancementPlugin):
             "cuda_available": False,
             "driver_version": "stub",
             "compute_capability": "stub",
-            "status": "ready_for_implementation"
+            "status": "ready_for_implementation",
         }
 
 
@@ -561,8 +542,8 @@ class WorkflowOrchestrationPlugin(EnhancementPlugin):
         """Initialize workflow orchestration"""
         logger.info(f"Initializing {self.name}")
 
-        self.orchestrator = self.config.get('orchestrator', 'nextflow')
-        self.workflow_dir = Path(self.config.get('workflow_dir', 'workflows'))
+        self.orchestrator = self.config.get("orchestrator", "nextflow")
+        self.workflow_dir = Path(self.config.get("workflow_dir", "workflows"))
 
         return True
 
@@ -579,8 +560,8 @@ class WorkflowOrchestrationPlugin(EnhancementPlugin):
                 "Multi-node execution",
                 "Automatic checkpointing",
                 "Resource management",
-                "Containerization"
-            ]
+                "Containerization",
+            ],
         }
 
         return results
@@ -591,7 +572,7 @@ class WorkflowOrchestrationPlugin(EnhancementPlugin):
             "orchestrator": self.orchestrator,
             "installed": False,
             "workflows_defined": 0,
-            "status": "ready_for_implementation"
+            "status": "ready_for_implementation",
         }
 
 
@@ -610,27 +591,29 @@ class ValidationFramework:
         results = {
             "timestamp": datetime.now().isoformat(),
             "total_plugins": len(plugins),
-            "validations": []
+            "validations": [],
         }
 
         for plugin in plugins:
             logger.info(f"Validating {plugin.name}")
             validation = plugin.validate()
-            validation['plugin_name'] = plugin.name
-            results['validations'].append(validation)
+            validation["plugin_name"] = plugin.name
+            results["validations"].append(validation)
 
         # Save results
-        output_file = self.output_dir / f"validation_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        with open(output_file, 'w') as f:
+        output_file = (
+            self.output_dir / f"validation_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        )
+        with open(output_file, "w") as f:
             json.dump(results, f, indent=2)
 
         logger.info(f"Validation results saved to {output_file}")
 
         return results
 
-    def run_reproducibility_test(self, pipeline_func: Callable,
-                                  test_data: Dict[str, Any],
-                                  num_runs: int = 3) -> Dict[str, Any]:
+    def run_reproducibility_test(
+        self, pipeline_func: Callable, test_data: Dict[str, Any], num_runs: int = 3
+    ) -> Dict[str, Any]:
         """Test reproducibility across multiple runs"""
         logger.info(f"Running reproducibility test ({num_runs} runs)")
 
@@ -643,9 +626,7 @@ class ValidationFramework:
             results_list.append(result)
 
             # Hash the result for comparison
-            result_hash = hashlib.sha256(
-                json.dumps(result, sort_keys=True).encode()
-            ).hexdigest()
+            result_hash = hashlib.sha256(json.dumps(result, sort_keys=True).encode()).hexdigest()
             hashes.append(result_hash)
 
         # Check if all hashes are identical
@@ -656,7 +637,7 @@ class ValidationFramework:
             "num_runs": num_runs,
             "unique_results": len(set(hashes)),
             "result_hashes": hashes,
-            "status": "PASS" if reproducible else "FAIL"
+            "status": "PASS" if reproducible else "FAIL",
         }
 
         return report
@@ -665,6 +646,7 @@ class ValidationFramework:
 # ============================================================================
 # METRICS AND TELEMETRY
 # ============================================================================
+
 
 class MetricsTracker:
     """Track performance metrics and improvements"""
@@ -686,7 +668,7 @@ class MetricsTracker:
             "transparency_score": 10.0,
             "cost_efficiency_score": 10.0,
             "innovation_score": 9.0,
-            "overall_score": 7.75
+            "overall_score": 7.75,
         }
 
     def update_metrics(self, new_metrics: Dict[str, Any]):
@@ -704,10 +686,10 @@ class MetricsTracker:
 
                 if isinstance(baseline_value, (int, float)):
                     # For throughput, higher is better
-                    if 'throughput' in key.lower():
+                    if "throughput" in key.lower():
                         improvement = (current_value / baseline_value - 1) * 100
                     # For latency/cost, lower is better
-                    elif 'latency' in key.lower() or 'cost' in key.lower():
+                    elif "latency" in key.lower() or "cost" in key.lower():
                         improvement = (1 - current_value / baseline_value) * 100
                     # For scores/accuracy, higher is better
                     else:
@@ -716,7 +698,7 @@ class MetricsTracker:
                     improvements[key] = {
                         "baseline": baseline_value,
                         "current": current_value,
-                        "improvement_percent": round(improvement, 2)
+                        "improvement_percent": round(improvement, 2),
                     }
 
         return improvements
@@ -727,16 +709,17 @@ class MetricsTracker:
             "timestamp": datetime.now().isoformat(),
             "baseline": self.baseline_metrics,
             "current": self.current_metrics,
-            "improvements": self.calculate_improvements()
+            "improvements": self.calculate_improvements(),
         }
 
-        with open(self.metrics_file, 'w') as f:
+        with open(self.metrics_file, "w") as f:
             json.dump(data, f, indent=2)
 
 
 # ============================================================================
 # MAIN FRAMEWORK
 # ============================================================================
+
 
 class Tier1AdvancementFramework:
     """Main framework for Tier-I advancement"""
@@ -757,10 +740,7 @@ class Tier1AdvancementFramework:
         default_config = {
             "database_integration": {"enabled": True},
             "gpu_acceleration": {"enabled": True},
-            "workflow_orchestration": {
-                "enabled": True,
-                "orchestrator": "nextflow"
-            }
+            "workflow_orchestration": {"enabled": True, "orchestrator": "nextflow"},
         }
 
         if os.path.exists(self.config_file):
@@ -774,30 +754,28 @@ class Tier1AdvancementFramework:
         logger.info("Initializing enhancement plugins")
 
         # Database integration
-        if self.config.get('database_integration', {}).get('enabled'):
-            plugin = DatabaseIntegrationPlugin(self.config['database_integration'])
+        if self.config.get("database_integration", {}).get("enabled"):
+            plugin = DatabaseIntegrationPlugin(self.config["database_integration"])
             plugin.initialize()
-            self.plugins['database_integration'] = plugin
+            self.plugins["database_integration"] = plugin
 
         # GPU acceleration
-        if self.config.get('gpu_acceleration', {}).get('enabled'):
-            plugin = GPUAccelerationPlugin(self.config['gpu_acceleration'])
+        if self.config.get("gpu_acceleration", {}).get("enabled"):
+            plugin = GPUAccelerationPlugin(self.config["gpu_acceleration"])
             plugin.initialize()
-            self.plugins['gpu_acceleration'] = plugin
+            self.plugins["gpu_acceleration"] = plugin
 
         # Workflow orchestration
-        if self.config.get('workflow_orchestration', {}).get('enabled'):
-            plugin = WorkflowOrchestrationPlugin(self.config['workflow_orchestration'])
+        if self.config.get("workflow_orchestration", {}).get("enabled"):
+            plugin = WorkflowOrchestrationPlugin(self.config["workflow_orchestration"])
             plugin.initialize()
-            self.plugins['workflow_orchestration'] = plugin
+            self.plugins["workflow_orchestration"] = plugin
 
         logger.info(f"Initialized {len(self.plugins)} plugins")
 
     def run_validation(self) -> Dict[str, Any]:
         """Run validation suite"""
-        return self.validation_framework.run_validation_suite(
-            list(self.plugins.values())
-        )
+        return self.validation_framework.run_validation_suite(list(self.plugins.values()))
 
     def generate_progress_report(self, output_file: str = None) -> Dict[str, Any]:
         """Generate comprehensive progress report"""
@@ -809,16 +787,13 @@ class Tier1AdvancementFramework:
             "roadmap_summary": self.roadmap_manager.get_summary(),
             "metrics": self.metrics_tracker.calculate_improvements(),
             "plugins": {
-                name: {
-                    "enabled": plugin.enabled,
-                    "validation": plugin.validate()
-                }
+                name: {"enabled": plugin.enabled, "validation": plugin.validate()}
                 for name, plugin in self.plugins.items()
-            }
+            },
         }
 
         if output_file:
-            with open(output_file, 'w') as f:
+            with open(output_file, "w") as f:
                 json.dump(report, f, indent=2)
             logger.info(f"Progress report saved to {output_file}")
 
@@ -828,9 +803,9 @@ class Tier1AdvancementFramework:
         """Print ASCII dashboard to console"""
         summary = self.roadmap_manager.get_summary()
 
-        print("\n" + "="*80)
+        print("\n" + "=" * 80)
         print("QRATUM TIER-I ADVANCEMENT FRAMEWORK - DASHBOARD")
-        print("="*80)
+        print("=" * 80)
 
         print("\n📊 ROADMAP SUMMARY")
         print(f"  Total Enhancements: {summary['total_enhancements']}")
@@ -838,15 +813,15 @@ class Tier1AdvancementFramework:
         print(f"  Actual Effort: {summary['total_actual_hours']} hours")
 
         print("\n📈 BY PHASE")
-        for phase, count in summary['by_phase'].items():
+        for phase, count in summary["by_phase"].items():
             print(f"  {phase:12s}: {count:2d}")
 
         print("\n✅ BY STATUS")
-        for status, count in summary['by_status'].items():
+        for status, count in summary["by_status"].items():
             print(f"  {status:12s}: {count:2d}")
 
         print("\n🔥 BY PRIORITY")
-        for priority, count in summary['by_priority'].items():
+        for priority, count in summary["by_priority"].items():
             print(f"  {priority:12s}: {count:2d}")
 
         print("\n🔌 PLUGINS")
@@ -860,49 +835,33 @@ class Tier1AdvancementFramework:
             for metric, data in list(improvements.items())[:5]:
                 print(f"  {metric:30s}: {data['improvement_percent']:+.1f}%")
 
-        print("\n" + "="*80 + "\n")
+        print("\n" + "=" * 80 + "\n")
 
 
 # ============================================================================
 # CLI INTERFACE
 # ============================================================================
 
+
 def main():
     """Main entry point"""
-    parser = argparse.ArgumentParser(
-        description="QRATUM Tier-I Strategic Advancement Framework"
+    parser = argparse.ArgumentParser(description="QRATUM Tier-I Strategic Advancement Framework")
+
+    parser.add_argument("--init", action="store_true", help="Initialize framework and roadmap")
+
+    parser.add_argument("--dashboard", action="store_true", help="Show progress dashboard")
+
+    parser.add_argument("--validate", action="store_true", help="Run validation suite")
+
+    parser.add_argument(
+        "--report", type=str, metavar="FILE", help="Generate progress report to file"
     )
 
     parser.add_argument(
-        '--init',
-        action='store_true',
-        help='Initialize framework and roadmap'
-    )
-
-    parser.add_argument(
-        '--dashboard',
-        action='store_true',
-        help='Show progress dashboard'
-    )
-
-    parser.add_argument(
-        '--validate',
-        action='store_true',
-        help='Run validation suite'
-    )
-
-    parser.add_argument(
-        '--report',
-        type=str,
-        metavar='FILE',
-        help='Generate progress report to file'
-    )
-
-    parser.add_argument(
-        '--update-status',
+        "--update-status",
         nargs=3,
-        metavar=('ENHANCEMENT_ID', 'STATUS', 'NOTES'),
-        help='Update enhancement status'
+        metavar=("ENHANCEMENT_ID", "STATUS", "NOTES"),
+        help="Update enhancement status",
     )
 
     args = parser.parse_args()
@@ -933,9 +892,7 @@ def main():
         enh_id, status_str, notes = args.update_status
         try:
             status = EnhancementStatus(status_str)
-            framework.roadmap_manager.update_enhancement_status(
-                enh_id, status, notes
-            )
+            framework.roadmap_manager.update_enhancement_status(enh_id, status, notes)
             print(f"Updated {enh_id} to {status.value}")
         except ValueError:
             print(f"Invalid status: {status_str}")
@@ -949,5 +906,5 @@ def main():
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

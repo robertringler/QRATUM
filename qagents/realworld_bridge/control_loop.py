@@ -55,9 +55,7 @@ class ControlLoop:
         rng: np.random.Generator,
     ) -> None:
         if not isinstance(rng, np.random.Generator):
-            raise TypeError(
-                "ControlLoop requires an explicit numpy.random.Generator"
-            )
+            raise TypeError("ControlLoop requires an explicit numpy.random.Generator")
         if int(n_candidates) <= 0:
             raise ValueError("n_candidates must be positive")
         if not (0.0 < float(sync_alpha) <= 1.0):
@@ -187,15 +185,12 @@ class ControlLoop:
 
         # 5. candidate generation via probe_policy (deterministic given rng)
         candidates: tuple[Action, ...] = tuple(
-            probe_policy(synced_state, self._rng)
-            for _ in range(self._n_candidates)
+            probe_policy(synced_state, self._rng) for _ in range(self._n_candidates)
         )
 
         # 6. validate every candidate; collect ALL results
         validation_results: list[ActionValidationResult] = [
-            validate_action(
-                a, synced_state, self._safety_config, self._previous_action
-            )
+            validate_action(a, synced_state, self._safety_config, self._previous_action)
             for a in candidates
         ]
 
@@ -214,9 +209,7 @@ class ControlLoop:
         post_state: State = self._model_state
         if selected_action is not None:
             action_result = self._actuator.execute(selected_action)
-            new_state, injection_status = inject(
-                synced_state, selected_action
-            )
+            new_state, injection_status = inject(synced_state, selected_action)
             if injection_status.accepted:
                 post_state = new_state
 
@@ -259,16 +252,9 @@ class ControlLoop:
                 break
 
         accepted = sum(
-            1
-            for t in traces
-            if t.injection_status is not None
-            and t.injection_status.accepted
+            1 for t in traces if t.injection_status is not None and t.injection_status.accepted
         )
-        no_valid = sum(
-            1
-            for t in traces
-            if t.selected_action is None and t.failure_reason is None
-        )
+        no_valid = sum(1 for t in traces if t.selected_action is None and t.failure_reason is None)
         n = len(traces)
         acceptance_rate = (accepted / n) if n > 0 else 0.0
         safety_rejection_rate = (no_valid / n) if n > 0 else 0.0

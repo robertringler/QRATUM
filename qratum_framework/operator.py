@@ -18,17 +18,17 @@ genomic, consensus, …) plug in by implementing the
 :class:`OperatorBackend` protocol — yielding the **one adapter contract**
 described in §4 of the plan.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, Iterable, List, Mapping, Optional, Protocol, Tuple
+from typing import Any, Dict, Iterable, Mapping, Optional, Protocol, Tuple
 
 from qratum_framework.trace import (
     MerkleLedger,
     UnifiedTraceEntry,
     hash_state,
 )
-
 
 # ---------------------------------------------------------------------------
 # Backend protocol — the unified adapter contract
@@ -104,8 +104,8 @@ class StrictCIIRBackend:
         from qagents.ciir_crs_ric.ciir import State
 
         self._State = State
-        self._state: Any = initial if initial is not None else State(
-            cpu_used=0, mem_used=0, status="idle"
+        self._state: Any = (
+            initial if initial is not None else State(cpu_used=0, mem_used=0, status="idle")
         )
 
     # --- OperatorBackend protocol --------------------------------------

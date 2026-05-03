@@ -2,8 +2,8 @@
 
 from .controller import (
     ClassicalLQR,
-    PontryaginController,
     HybridController,
+    PontryaginController,
     control_hamiltonian,
 )
 

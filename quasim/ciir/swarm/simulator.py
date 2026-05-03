@@ -12,14 +12,15 @@ import numpy as np
 from numpy.typing import NDArray
 
 from quasim.ciir.swarm.memory import (
-    KnowledgeGraph, NodeType, EdgeType,
+    KnowledgeGraph,
+    NodeType,
 )
 from quasim.ciir.swarm.physics_lang import PhysicsProgram
-
 
 # ================================================================
 # Simulation result
 # ================================================================
+
 
 @dataclass
 class SimulationResult:
@@ -47,6 +48,7 @@ class SimulationResult:
 # Simulator agent
 # ================================================================
 
+
 class Simulator:
     """Execute rule sets over state spaces."""
 
@@ -66,7 +68,7 @@ class Simulator:
         """
         trajectory = [initial_state.copy()]
         state = initial_state.copy()
-        energy_trace = [float(np.sum(state ** 2))]
+        energy_trace = [float(np.sum(state**2))]
         converged = False
 
         for _ in range(steps):
@@ -78,7 +80,7 @@ class Simulator:
             delta = np.linalg.norm(new_state - state)
             state = new_state
             trajectory.append(state.copy())
-            energy_trace.append(float(np.sum(state ** 2)))
+            energy_trace.append(float(np.sum(state**2)))
 
             if delta < convergence_tol:
                 converged = True

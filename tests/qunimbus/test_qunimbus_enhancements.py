@@ -192,16 +192,14 @@ def test_strict_mode_fails_on_missing_observable():
     with tempfile.TemporaryDirectory() as tmpdir:
         # Create config with expected observables
         config_path = f"{tmpdir}/config.yml"
-        Path(config_path).write_text(
-            """version: 1
+        Path(config_path).write_text("""version: 1
 observables:
   test_observable:
     source: "/nonexistent"
     reduce: "mean"
     expected: 100
     tolerance_abs: 10
-"""
-        )
+""")
 
         # Create empty snapshot
         snapshot_path = f"{tmpdir}/snapshot.hdf5"
@@ -238,16 +236,14 @@ def test_strict_mode_passes_with_all_observables():
     with tempfile.TemporaryDirectory() as tmpdir:
         # Create config
         config_path = f"{tmpdir}/config.yml"
-        Path(config_path).write_text(
-            """version: 1
+        Path(config_path).write_text("""version: 1
 observables:
   test_observable:
     source: "/data"
     reduce: "mean"
     expected: 100
     tolerance_abs: 10
-"""
-        )
+""")
 
         # Create snapshot with matching data
         snapshot_path = f"{tmpdir}/snapshot.hdf5"

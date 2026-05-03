@@ -98,9 +98,9 @@ def spectrum(state: MHDState, n_bins: Optional[int] = None) -> SpectrumSnapshot:
     phi_hat[0, 0] = 0.0
     Jz_hat[0, 0] = 0.0
 
-    Pmag = K2 * (psi_hat.real ** 2 + psi_hat.imag ** 2)
-    Pkin = K2 * (phi_hat.real ** 2 + phi_hat.imag ** 2)
-    PJz = Jz_hat.real ** 2 + Jz_hat.imag ** 2
+    Pmag = K2 * (psi_hat.real**2 + psi_hat.imag**2)
+    Pkin = K2 * (phi_hat.real**2 + phi_hat.imag**2)
+    PJz = Jz_hat.real**2 + Jz_hat.imag**2
 
     centers, bin_idx = _shell_bin(KX, KY, n_bins)
     E_mag = np.zeros(n_bins)
@@ -144,7 +144,7 @@ def growth_rates(snapshots: list[SpectrumSnapshot], eps: float = 1.0e-30) -> Flo
     gammas = np.full(n_bins, np.nan, dtype=np.float64)
     for kb in range(n_bins):
         E = np.array([s.E_mag[kb] for s in snapshots], dtype=np.float64)
-        if not np.all(E > eps):
+        if not np.all(eps < E):
             continue
         logE = np.log(E)
         # Slope of log(E) vs t = 2 γ (since E ∝ A^2).
@@ -180,16 +180,18 @@ def fkr_growth_rate_estimate(S: float, delta_prime: float = 1.0, tau_A: float = 
     return (1.0 / tau_A) * S ** (-3.0 / 5.0) * (max(delta_prime, 0.0)) ** (4.0 / 5.0)
 
 
-def plasmoid_growth_rate_estimate(S: float, tau_A: float = 1.0, S_c: float = 1.0e4) -> Optional[float]:
+def plasmoid_growth_rate_estimate(
+    S: float, tau_A: float = 1.0, S_c: float = 1.0e4
+) -> Optional[float]:
     r"""Plasmoid scaling :math:`\gamma_{\max} \sim \tau_A^{-1} S^{1/4}` for :math:`S > S_c` [V].
 
     Returns ``None`` if ``S < S_c`` (plasmoid regime not reached).
     """
     if S <= 0.0:
         raise ValueError("S must be positive.")
-    if S < S_c:
+    if S_c > S:
         return None
-    return (1.0 / tau_A) * S ** 0.25
+    return (1.0 / tau_A) * S**0.25
 
 
 __all__ = [

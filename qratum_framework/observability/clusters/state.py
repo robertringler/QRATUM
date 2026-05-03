@@ -9,6 +9,7 @@ serialisable state object that:
 * is the input the drift engine (Layer A) consumes via
   :class:`qratum_framework.observability.drift.engine.DriftEngine`.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -124,8 +125,7 @@ class ClusterEngineState:
             "window_index": int(self.window_index),
             "clusters": [c.to_dict() for c in self.clusters],
             "edge_weights": [
-                {"i": k[0], "j": k[1], "w": float(v)}
-                for k, v in sorted(self.edge_weights.items())
+                {"i": k[0], "j": k[1], "w": float(v)} for k, v in sorted(self.edge_weights.items())
             ],
             "accumulator": dict(self.accumulator.to_dict()),
             "previous_membership": [sorted(m) for m in self.previous_membership],
@@ -150,9 +150,7 @@ class ClusterEngineState:
             key = (i, j) if i <= j else (j, i)
             edges[key] = float(e["w"])
         acc = CoOccurrenceAccumulator.from_dict(payload.get("accumulator", {}) or {})
-        prev = tuple(
-            frozenset(m) for m in (payload.get("previous_membership", []) or [])
-        )
+        prev = tuple(frozenset(m) for m in (payload.get("previous_membership", []) or []))
         return cls(
             clusters=clusters,
             edge_weights=edges,

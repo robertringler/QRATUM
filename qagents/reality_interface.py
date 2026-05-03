@@ -157,9 +157,7 @@ class ControlDecision:
 # ---------------------------------------------------------------------------
 
 #: ``simulator(action_type, magnitude, world_state, system_limits) -> PredictedOutcome``.
-Simulator = Callable[
-    [str, float, Mapping[str, Any], Mapping[str, Any]], PredictedOutcome
-]
+Simulator = Callable[[str, float, Mapping[str, Any], Mapping[str, Any]], PredictedOutcome]
 
 #: ``proposer(intent_interpretation, world_state, system_limits) -> (action_type, magnitude)``.
 Proposer = Callable[
@@ -202,9 +200,7 @@ def default_proposer(
 
     max_magnitude = _clamp01(_coerce_float(system_limits.get("max_magnitude"), 1.0))
     urgency = _clamp01(_coerce_float(intent.constraints.get("urgency"), 0.5))
-    instability = _clamp01(
-        _coerce_float(world_state.get("instability"), 0.0)
-    )
+    instability = _clamp01(_coerce_float(world_state.get("instability"), 0.0))
     # Higher urgency and higher instability both push toward smaller, safer
     # interventions. We bias toward minimal magnitude.
     base = 0.5 * urgency * (1.0 - instability)
@@ -262,7 +258,6 @@ def default_simulator(
 # ---------------------------------------------------------------------------
 # Controller
 # ---------------------------------------------------------------------------
-
 
 
 ActionType = str  # "control" | "adjust" | "hold" | "abort"
@@ -364,7 +359,6 @@ class LinearSimulator:
         system_limits: Mapping[str, Any],
     ) -> Any:
         """Make LinearSimulator callable as simulator(type, magnitude, world, limits) -> PredictedOutcome."""
-        from dataclasses import dataclass  # noqa: PLC0415
         action = {"type": action_type, "magnitude": magnitude}
         expected = self.predict(world_state, action)
         # Compute simple risk and stability heuristics
@@ -544,15 +538,11 @@ class RealityInterfaceController:
                     lo = _coerce_float(bound.get("min"), float("-inf"))
                     hi = _coerce_float(bound.get("max"), float("inf"))
                     if value < lo or value > hi:
-                        violations.append(
-                            f"safety_bound:{key} out of [{lo}, {hi}] (value={value})"
-                        )
+                        violations.append(f"safety_bound:{key} out of [{lo}, {hi}] (value={value})")
                 elif isinstance(bound, (list, tuple)) and len(bound) == 2:
                     lo, hi = (_coerce_float(bound[0]), _coerce_float(bound[1]))
                     if value < lo or value > hi:
-                        violations.append(
-                            f"safety_bound:{key} out of [{lo}, {hi}] (value={value})"
-                        )
+                        violations.append(f"safety_bound:{key} out of [{lo}, {hi}] (value={value})")
 
         for key, value in intent.constraints.items():
             if key.endswith("_max") and key[:-4] in world_state:
@@ -589,9 +579,7 @@ class RealityInterfaceController:
             return True
         return outcome.stability_score < stability_threshold
 
-    def _confidence(
-        self, outcome: PredictedOutcome, stability_threshold: float
-    ) -> float:
+    def _confidence(self, outcome: PredictedOutcome, stability_threshold: float) -> float:
         margin = outcome.stability_score - stability_threshold
         # Confidence proportional to stability margin and inversely to risk.
         confidence = _clamp01(max(0.0, margin) * (1.0 - outcome.risk))
@@ -614,9 +602,7 @@ class RealityInterfaceController:
         stability_threshold = self._stability_threshold(system_limits)
 
         # Always propose + simulate first; predict-before-act is mandatory.
-        proposed_type, proposed_magnitude = self.proposer(
-            intent, world_state, system_limits
-        )
+        proposed_type, proposed_magnitude = self.proposer(intent, world_state, system_limits)
         if proposed_type not in ACTION_TYPES:
             raise ValueError(
                 f"proposer returned unsupported type {proposed_type!r}; "
@@ -625,14 +611,10 @@ class RealityInterfaceController:
         proposed_magnitude = _clamp01(_coerce_float(proposed_magnitude, 0.0))
 
         # Cap proposed magnitude by system_limits.max_magnitude (never exceed limits).
-        max_magnitude = _clamp01(
-            _coerce_float(system_limits.get("max_magnitude"), 1.0)
-        )
+        max_magnitude = _clamp01(_coerce_float(system_limits.get("max_magnitude"), 1.0))
         proposed_magnitude = min(proposed_magnitude, max_magnitude)
 
-        outcome = self.simulator(
-            proposed_type, proposed_magnitude, world_state, system_limits
-        )
+        outcome = self.simulator(proposed_type, proposed_magnitude, world_state, system_limits)
 
         # (1) Safety dominance -- abort when unsafe.
         if self._is_unsafe(violations, outcome, stability_threshold):
@@ -650,10 +632,7 @@ class RealityInterfaceController:
         # when stability is not strong.
         action_type = proposed_type
         magnitude = proposed_magnitude
-        if (
-            action_type == "control"
-            and outcome.stability_score < STRONG_STABILITY_BAND
-        ):
+        if action_type == "control" and outcome.stability_score < STRONG_STABILITY_BAND:
             action_type = "adjust"
 
         # (3) Minimal intervention -- scale magnitude down with risk; if risk
@@ -668,18 +647,14 @@ class RealityInterfaceController:
 
         # Re-simulate the *finalized* action so the returned prediction
         # reflects what will actually be executed.
-        final_outcome = self.simulator(
-            action_type, magnitude, world_state, system_limits
-        )
+        final_outcome = self.simulator(action_type, magnitude, world_state, system_limits)
 
         # (4) Predict-before-act: confidence is 0 if no prediction; we always
         # have one here, so derive it from stability margin and risk.
         confidence = self._confidence(final_outcome, stability_threshold)
 
         return (
-            SelectedAction(
-                type=action_type, magnitude=magnitude, confidence=confidence
-            ),
+            SelectedAction(type=action_type, magnitude=magnitude, confidence=confidence),
             final_outcome,
         )
 
@@ -788,7 +763,8 @@ class RealityInterfaceController:
         r_max = float(system_limits.get("risk_threshold", 1.0))
         sigma_min = float(system_limits.get("stability_threshold", 0.0))
         admissible = [
-            c for c in candidates
+            c
+            for c in candidates
             if c.type != "abort" and c.risk <= r_max and c.stability >= sigma_min
         ]
 
@@ -909,7 +885,9 @@ class RealityInterfaceController:
     ) -> dict[str, Any]:
         if chosen.type == "abort":
             return {
-                "trigger_condition": "constraint_violation" if conflicts else "no_admissible_action",
+                "trigger_condition": (
+                    "constraint_violation" if conflicts else "no_admissible_action"
+                ),
                 "action": "hold",
             }
         if chosen.stability < 0.5 or feasibility == 0:

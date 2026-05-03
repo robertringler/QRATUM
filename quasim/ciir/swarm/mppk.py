@@ -41,10 +41,10 @@ from typing import Callable
 import numpy as np
 from numpy.typing import NDArray
 
-
 # ====================================================================
 # I. GRAPH STATE SPACE  S = (V, E)
 # ====================================================================
+
 
 @dataclass
 class MPPKNode:
@@ -146,7 +146,7 @@ class MPPKGraph:
         D = np.diag(W.sum(axis=1))
         return D - W
 
-    def copy(self) -> "MPPKGraph":
+    def copy(self) -> MPPKGraph:
         """Deep copy the graph."""
         g = MPPKGraph()
         for n in self.nodes.values():
@@ -160,13 +160,15 @@ class MPPKGraph:
 # II. INTERACTION RULES  R
 # ====================================================================
 
+
 class InteractionType(Enum):
     """Type tag for rule interaction functions."""
-    TANH = auto()        # Original kernel
-    SIGMOID = auto()     # Smoother saturation
-    QUADRATIC = auto()   # Polynomial coupling
-    RELU_CLIP = auto()   # Piecewise linear, clipped
-    CUBIC = auto()       # Higher-order nonlinearity
+
+    TANH = auto()  # Original kernel
+    SIGMOID = auto()  # Smoother saturation
+    QUADRATIC = auto()  # Polynomial coupling
+    RELU_CLIP = auto()  # Piecewise linear, clipped
+    CUBIC = auto()  # Higher-order nonlinearity
 
 
 @dataclass
@@ -207,7 +209,7 @@ def sigmoid_interaction(diff: NDArray) -> NDArray:
 
 def quadratic_interaction(diff: NDArray) -> NDArray:
     """Quadratic: diff · (1 − ||diff||²/4), bounded."""
-    norm_sq = np.sum(diff ** 2)
+    norm_sq = np.sum(diff**2)
     return diff * max(0.0, 1.0 - norm_sq / 4.0)
 
 
@@ -218,8 +220,8 @@ def relu_clip_interaction(diff: NDArray) -> NDArray:
 
 def cubic_interaction(diff: NDArray) -> NDArray:
     """Cubic: tanh(diff³ / (1 + ||diff||²))."""
-    norm_sq = np.sum(diff ** 2)
-    return np.tanh(diff ** 3 / (1.0 + norm_sq))
+    norm_sq = np.sum(diff**2)
+    return np.tanh(diff**3 / (1.0 + norm_sq))
 
 
 INTERACTION_REGISTRY: dict[InteractionType, Callable] = {
@@ -243,6 +245,7 @@ def make_default_rule() -> MPPKRule:
 # ====================================================================
 # III. UPDATE OPERATOR  U
 # ====================================================================
+
 
 class UpdateOperator:
     r"""Execute rule application: x_i(t+1) = x_i(t) + Σ w_ij f(x_j − x_i).
@@ -292,6 +295,7 @@ class UpdateOperator:
 # IV. OBSERVABLES — Energy & Momentum
 # ====================================================================
 
+
 def compute_energy(graph: MPPKGraph) -> float:
     r"""E(t) = Σ_{i,j} w_ij ||x_i(t) − x_j(t)||²."""
     E = 0.0
@@ -319,6 +323,7 @@ def compute_total_norm(graph: MPPKGraph) -> float:
 # ====================================================================
 # V. TRAJECTORY & SIMULATION
 # ====================================================================
+
 
 @dataclass
 class Trajectory:
@@ -372,6 +377,7 @@ def simulate(
 # VI. STRUCTURE EXTRACTION (STEP 2)
 # ====================================================================
 
+
 @dataclass
 class StructureReport:
     """Detected dynamical structures.
@@ -414,7 +420,7 @@ def extract_structure(
 
     # --- Limit cycle detection ---
     # Check if trajectory returns close to a previous state
-    if traj.T > cycle_window:
+    if cycle_window < traj.T:
         final = traj.states[-1]
         for i in range(max(0, traj.T - cycle_window), traj.T - 2):
             if np.linalg.norm(final - traj.states[i]) < fp_tol * 10:
@@ -463,6 +469,7 @@ def _simple_cluster(X: NDArray, tol: float) -> int:
 # VII. INVARIANT MINING (STEP 3)
 # ====================================================================
 
+
 @dataclass
 class InvariantReport:
     """Mined invariants and symmetries.
@@ -486,9 +493,7 @@ class InvariantReport:
     momentum_rel_var: float = 1.0
     norm_conserved: bool = False
     norm_rel_var: float = 1.0
-    laplacian_eigenvalues: NDArray = field(
-        default_factory=lambda: np.array([])
-    )
+    laplacian_eigenvalues: NDArray = field(default_factory=lambda: np.array([]))
     spectral_gap: float = 0.0
     spectral_stable: bool = False
 
@@ -536,6 +541,7 @@ def mine_invariants(
 # ====================================================================
 # VIII. FITNESS EVALUATION (STEP 4)
 # ====================================================================
+
 
 @dataclass
 class FitnessResult:
@@ -625,6 +631,7 @@ def _count_rule_params(rule: MPPKRule) -> int:
 # ====================================================================
 # IX. RULE MUTATION (STEP 5)
 # ====================================================================
+
 
 class RuleMutator:
     """Generate candidate rule variations.
@@ -752,6 +759,7 @@ class RuleMutator:
 # X. META-LEARNING LAYER
 # ====================================================================
 
+
 @dataclass
 class MetaLearningReport:
     """Inferred emergent laws after multiple generations.
@@ -778,7 +786,7 @@ class MetaLearningReport:
 
 
 def meta_learn(
-    generation_results: list["GenerationResult"],
+    generation_results: list[GenerationResult],
     variance_threshold: float = 0.9,
 ) -> MetaLearningReport:
     """After multiple generations, infer emergent laws and embeddings."""
@@ -788,15 +796,9 @@ def meta_learn(
         return report
 
     # --- Stable invariants: quantities conserved in ≥ half of generations ---
-    energy_conserved_count = sum(
-        1 for g in generation_results if g.invariants.energy_conserved
-    )
-    momentum_conserved_count = sum(
-        1 for g in generation_results if g.invariants.momentum_conserved
-    )
-    norm_conserved_count = sum(
-        1 for g in generation_results if g.invariants.norm_conserved
-    )
+    energy_conserved_count = sum(1 for g in generation_results if g.invariants.energy_conserved)
+    momentum_conserved_count = sum(1 for g in generation_results if g.invariants.momentum_conserved)
+    norm_conserved_count = sum(1 for g in generation_results if g.invariants.norm_conserved)
     half = len(generation_results) / 2
     if energy_conserved_count >= half:
         report.stable_invariants.append("Energy")
@@ -827,9 +829,7 @@ def meta_learn(
 
     # --- Effective force law ---
     best = max(generation_results, key=lambda g: g.fitness.total)
-    report.effective_force_law = (
-        f"f(Δx) = {best.rule.interaction_type.name.lower()}(Δx)"
-    )
+    report.effective_force_law = f"f(Δx) = {best.rule.interaction_type.name.lower()}(Δx)"
     if best.rule.noise_sigma > 0:
         report.effective_force_law += f" + N(0, {best.rule.noise_sigma:.4f})"
 
@@ -840,9 +840,7 @@ def meta_learn(
             f"remain approximately constant under evolution."
         )
     if best.structure.has_fixed_point:
-        report.candidate_laws.append(
-            "Equilibrium law: the system possesses stable fixed points."
-        )
+        report.candidate_laws.append("Equilibrium law: the system possesses stable fixed points.")
     if best.structure.n_clusters > 1:
         report.candidate_laws.append(
             f"Clustering law: dynamics spontaneously break into "
@@ -861,9 +859,11 @@ def meta_learn(
 # XI. OPTIONAL EXTENSIONS
 # ====================================================================
 
+
 @dataclass
 class PhaseNode(MPPKNode):
     """Extended node with phase variable: x_i → (x_i, θ_i)."""
+
     phase: float = 0.0
 
 
@@ -916,6 +916,7 @@ def adaptive_rewire(
 # ====================================================================
 # XII. GENERATION RESULT & FULL ENGINE
 # ====================================================================
+
 
 @dataclass
 class GenerationResult:
@@ -998,8 +999,15 @@ class MPPKEngine:
 
         # STEP 4 — Fitness evaluation
         fitness = evaluate_fitness(
-            traj, structure, invariants, rule, g,
-            self.alpha, self.beta, self.gamma, self.delta,
+            traj,
+            structure,
+            invariants,
+            rule,
+            g,
+            self.alpha,
+            self.beta,
+            self.gamma,
+            self.delta,
         )
 
         return GenerationResult(
@@ -1040,7 +1048,9 @@ class MPPKEngine:
         for gen in range(1, generations):
             # STEP 5 — Mutation
             candidates = self.mutator.generate_candidates(
-                best_rule, best_graph, n=n_candidates,
+                best_rule,
+                best_graph,
+                n=n_candidates,
             )
 
             # Evaluate each candidate
@@ -1049,8 +1059,7 @@ class MPPKEngine:
                 try:
                     c_result = self.run_generation(c_graph, c_rule, T, gen)
                     # Reject immediate divergence
-                    if (c_result.trajectory.norms
-                            and max(c_result.trajectory.norms) > 1e6):
+                    if c_result.trajectory.norms and max(c_result.trajectory.norms) > 1e6:
                         continue
                     scored.append((c_result.fitness.total, c_rule, c_graph, c_result))
                 except (ValueError, FloatingPointError):

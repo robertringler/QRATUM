@@ -11,24 +11,26 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import Callable, Any
+from typing import Any, Callable
 
 import numpy as np
 from numpy.typing import NDArray
-
 
 # ================================================================
 # Enumerations
 # ================================================================
 
+
 class UpdateMode(Enum):
     """Execution model for rule application."""
+
     DETERMINISTIC = auto()
     PROBABILISTIC = auto()
 
 
 class ScheduleMode(Enum):
     """Rule scheduling discipline."""
+
     SEQUENTIAL = auto()
     PARALLEL = auto()
 
@@ -36,6 +38,7 @@ class ScheduleMode(Enum):
 # ================================================================
 # State declarations
 # ================================================================
+
 
 @dataclass
 class StateDecl:
@@ -72,6 +75,7 @@ class StateDecl:
 # Rule declarations
 # ================================================================
 
+
 @dataclass
 class RuleDecl:
     r"""Physics rule declaration.
@@ -103,6 +107,7 @@ class RuleDecl:
 # Interaction specifications
 # ================================================================
 
+
 @dataclass
 class InteractionSpec:
     r"""Interaction between two state subsystems.
@@ -133,6 +138,7 @@ class InteractionSpec:
 # Meta-rules (rules that modify rules)
 # ================================================================
 
+
 @dataclass
 class MetaRule:
     r"""Meta-programming construct: a rule that modifies other rules.
@@ -156,6 +162,7 @@ class MetaRule:
 # ================================================================
 # Physics Program
 # ================================================================
+
 
 class PhysicsProgram:
     r"""A complete programmable physics system P = (S, R, U, Φ, C).
@@ -288,8 +295,12 @@ class PhysicsProgram:
         """Kolmogorov-proxy complexity: total parameter count."""
         total = 0
         for rule in self.rules:
-            total += sum(
-                np.prod(np.array(v).shape) if isinstance(v, np.ndarray) else 1
-                for v in rule.params.values()
-            ) if rule.params else 0
+            total += (
+                sum(
+                    np.prod(np.array(v).shape) if isinstance(v, np.ndarray) else 1
+                    for v in rule.params.values()
+                )
+                if rule.params
+                else 0
+            )
         return int(total)

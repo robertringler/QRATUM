@@ -18,8 +18,7 @@ def create_opa_policies():
     policies_dir.mkdir(parents=True, exist_ok=True)
 
     # NIST 800-53
-    (policies_dir / "nist80053.rego").write_text(
-        """package nist80053
+    (policies_dir / "nist80053.rego").write_text("""package nist80053
 
 # NIST 800-53 Rev 5 HIGH Baseline Policy
 import future.keywords.if
@@ -69,12 +68,10 @@ compliant if {
     input.vulnerability_scanning == true
     input.patch_sla_critical <= 15
 }
-"""
-    )
+""")
 
     # NIST 800-171
-    (policies_dir / "nist800171.rego").write_text(
-        """package nist800171
+    (policies_dir / "nist800171.rego").write_text("""package nist800171
 
 # NIST 800-171 R3 CUI Protection Policy
 import future.keywords.if
@@ -119,12 +116,10 @@ compliant if {
     input.cui_protection.identification == true
     input.cui_protection.marking == true
 }
-"""
-    )
+""")
 
     # CMMC
-    (policies_dir / "cmmc.rego").write_text(
-        """package cmmc
+    (policies_dir / "cmmc.rego").write_text("""package cmmc
 
 # CMMC 2.0 Level 2 Policy
 import future.keywords.if
@@ -170,8 +165,7 @@ compliant if {
 compliant if {
     input.system_integrity.flaw_remediation == true
 }
-"""
-    )
+""")
 
     print(f"✓ Created OPA policies in {policies_dir}")
 
@@ -241,8 +235,7 @@ def create_templates():
     templates_dir.mkdir(parents=True, exist_ok=True)
 
     # System Security Plan
-    (templates_dir / "SSP.md.j2").write_text(
-        """# System Security Plan (SSP)
+    (templates_dir / "SSP.md.j2").write_text("""# System Security Plan (SSP)
 ## {{ system_name }}
 
 **Classification:** {{ classification }}
@@ -325,8 +318,7 @@ def create_templates():
 
 ---
 **Classification:** {{ classification }}
-"""
-    )
+""")
 
     # Plan of Action and Milestones
     (templates_dir / "POAM.csv.j2").write_text(
@@ -346,8 +338,7 @@ def create_scripts():
     scripts_dir = BASE_DIR / "scripts"
 
     # SBOM Generator
-    (scripts_dir / "sbom_generator.py").write_text(
-        """#!/usr/bin/env python3
+    (scripts_dir / "sbom_generator.py").write_text("""#!/usr/bin/env python3
 \"\"\"Generate Software Bill of Materials (SBOM) in SPDX 2.3 format\"\"\"
 
 import json
@@ -403,12 +394,10 @@ def generate_sbom(output_file="sbom.spdx.json"):
 
 if __name__ == "__main__":
     generate_sbom()
-"""
-    )
+""")
 
     # MC/DC Analyzer
-    (scripts_dir / "mcdc_analyzer.py").write_text(
-        """#!/usr/bin/env python3
+    (scripts_dir / "mcdc_analyzer.py").write_text("""#!/usr/bin/env python3
 \"\"\"MC/DC (Modified Condition/Decision Coverage) Analyzer for DO-178C Level A\"\"\"
 
 import json
@@ -464,8 +453,7 @@ if __name__ == "__main__":
     import sys
     coverage_file = sys.argv[1] if len(sys.argv) > 1 else "coverage.json"
     analyze_mcdc_coverage(coverage_file)
-"""
-    )
+""")
 
     print(f"✓ Created automation scripts in {scripts_dir}")
 
@@ -479,8 +467,7 @@ def create_documentation():
     compliance_docs = docs_dir / "compliance"
     compliance_docs.mkdir(parents=True, exist_ok=True)
 
-    (compliance_docs / "README.md").write_text(
-        """# QuASIM Compliance Framework
+    (compliance_docs / "README.md").write_text("""# QuASIM Compliance Framework
 
 Comprehensive compliance automation for Defense, Aerospace, and Critical Infrastructure.
 
@@ -563,8 +550,7 @@ gh run watch --exit-status --workflow "PR Defense Compliance"
 ## Support
 
 For compliance questions: compliance@quasim.example.com
-"""
-    )
+""")
 
     print(f"✓ Created documentation in {docs_dir}")
 

@@ -71,11 +71,7 @@ class ContractValidator:
             if not contract.get("authorized", False):
                 errors.append(f"Operation at {safety_level} level requires authorization")
 
-        return ContractValidationResult(
-            valid=len(errors) == 0,
-            errors=errors,
-            warnings=warnings
-        )
+        return ContractValidationResult(valid=len(errors) == 0, errors=errors, warnings=warnings)
         return ContractValidationResult(valid=len(errors) == 0, errors=errors, warnings=warnings)
 
 

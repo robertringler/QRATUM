@@ -36,16 +36,32 @@ class OrbiaModule(VerticalModuleBase):
         )
 
     def get_supported_tasks(self) -> List[str]:
-        return ["propagate_orbit", "optimize_constellation", "avoid_collision",
-                "analyze_link_budget", "plan_mission", "assess_space_situation"]
+        return [
+            "propagate_orbit",
+            "optimize_constellation",
+            "avoid_collision",
+            "analyze_link_budget",
+            "plan_mission",
+            "assess_space_situation",
+        ]
 
-    def execute_task(self, task: str, parameters: Dict[str, Any],
-                     contract: PlatformContract, event_chain: MerkleEventChain) -> Dict[str, Any]:
+    def execute_task(
+        self,
+        task: str,
+        parameters: Dict[str, Any],
+        contract: PlatformContract,
+        event_chain: MerkleEventChain,
+    ) -> Dict[str, Any]:
         if task not in self.get_supported_tasks():
             raise ValueError(f"Unknown task: {task}")
 
-        self.emit_task_event(EventType.TASK_STARTED, contract.contract_id, task,
-                             {"parameters": parameters}, event_chain)
+        self.emit_task_event(
+            EventType.TASK_STARTED,
+            contract.contract_id,
+            task,
+            {"parameters": parameters},
+            event_chain,
+        )
         return [
             "propagate_orbit",
             "optimize_constellation",

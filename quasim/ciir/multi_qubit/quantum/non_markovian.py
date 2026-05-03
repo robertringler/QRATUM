@@ -38,8 +38,8 @@ The module exposes a helper to verify this limit numerically.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import List, Optional
+from dataclasses import dataclass
+from typing import List
 
 import numpy as np
 from numpy.typing import NDArray
@@ -94,6 +94,7 @@ class MemoryKernel:
 # Non-Markovian dissipator
 # ---------------------------------------------------------------------------
 
+
 def _lindblad_dissipator(rho: CMatrix, lindblad_ops: List[CMatrix]) -> CMatrix:
     """Standard Lindblad dissipator Σ_k D[L_k]ρ."""
     out = np.zeros_like(rho)
@@ -120,6 +121,7 @@ def _gksl_rhs_nm(
 # ---------------------------------------------------------------------------
 # Non-Markovian evolver
 # ---------------------------------------------------------------------------
+
 
 class NonMarkovianEvolver:
     r"""Time-evolve ρ under a memory-kernel non-Markovian GKSL equation.
@@ -249,6 +251,7 @@ class NonMarkovianEvolver:
 # ---------------------------------------------------------------------------
 # Markovian limit check
 # ---------------------------------------------------------------------------
+
 
 def markovian_limit_rhs(
     rho: CMatrix,

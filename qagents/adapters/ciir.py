@@ -85,9 +85,7 @@ def ciir_simulator(
     violation = _clamp01(_f(world_state.get("constraint_violation"), 0.0))
     grad_norm = max(0.0, _f(world_state.get("gradient_norm"), loss))
     entropy = _f(world_state.get("entropy"), 0.0)
-    projection_strength = _clamp01(
-        _f(system_limits.get("projection_strength"), 1.0)
-    )
+    projection_strength = _clamp01(_f(system_limits.get("projection_strength"), 1.0))
 
     if action_type == "abort":
         return PredictedOutcome(

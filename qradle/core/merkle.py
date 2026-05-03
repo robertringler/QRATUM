@@ -121,11 +121,7 @@ class MerkleChain:
         timestamp = datetime.now(timezone.utc).isoformat()
         previous_hash = self.nodes[-1].node_hash if self.nodes else self._genesis_hash
 
-        node = MerkleNode(
-            data=data,
-            timestamp=timestamp,
-            previous_hash=previous_hash
-        )
+        node = MerkleNode(data=data, timestamp=timestamp, previous_hash=previous_hash)
         node = MerkleNode(data=data, timestamp=timestamp, previous_hash=previous_hash)
 
         self.nodes.append(node)
@@ -178,7 +174,7 @@ class MerkleChain:
         node = self.nodes[node_index]
 
         # For a linear chain, the proof path includes all subsequent hashes
-        proof_path = [n.node_hash for n in self.nodes[node_index + 1:]]
+        proof_path = [n.node_hash for n in self.nodes[node_index + 1 :]]
         proof_path = [n.node_hash for n in self.nodes[node_index + 1 :]]
 
         return MerkleProof(

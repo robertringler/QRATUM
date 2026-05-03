@@ -73,13 +73,9 @@ def predict_rollout(
             or candidate.edges != topology[1]
             or candidate.initial_edges != topology[2]
         ):
-            raise TrajectoryInvariantViolationError(
-                f"step {index}: prediction changed topology"
-            )
+            raise TrajectoryInvariantViolationError(f"step {index}: prediction changed topology")
         if not Inv(candidate):
-            raise TrajectoryInvariantViolationError(
-                f"step {index}: forward candidate violates Inv"
-            )
+            raise TrajectoryInvariantViolationError(f"step {index}: forward candidate violates Inv")
 
         synced = sync_model(
             current,
@@ -94,17 +90,13 @@ def predict_rollout(
                 f"step {index}: bounded correction rejected by sync_model"
             )
         if not Inv(synced):
-            raise TrajectoryInvariantViolationError(
-                f"step {index}: synced prediction violates Inv"
-            )
+            raise TrajectoryInvariantViolationError(f"step {index}: synced prediction violates Inv")
         if (
             synced.nodes != topology[0]
             or synced.edges != topology[1]
             or synced.initial_edges != topology[2]
         ):
-            raise TrajectoryInvariantViolationError(
-                f"step {index}: sync_model changed topology"
-            )
+            raise TrajectoryInvariantViolationError(f"step {index}: sync_model changed topology")
         states.append(synced)
         current = synced
 

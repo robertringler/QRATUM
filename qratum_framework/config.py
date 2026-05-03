@@ -8,9 +8,10 @@ This module ships those profiles as in-process defaults so the framework
 boots without a config file present, and provides ``load_profile`` for
 overriding any field from a YAML file when one *is* available.
 """
+
 from __future__ import annotations
 
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Dict, Mapping, Optional
 
@@ -32,7 +33,7 @@ class PipelineProfile:
     falsification_seed_count: int = 1
     record_metrics: bool = True
 
-    def with_overrides(self, **kwargs: Any) -> "PipelineProfile":
+    def with_overrides(self, **kwargs: Any) -> PipelineProfile:
         """Return a copy with selected fields overridden (immutable update)."""
         return replace(self, **kwargs)
 
@@ -43,9 +44,7 @@ PROFILES: Dict[str, PipelineProfile] = {
     "quick": PipelineProfile(name="quick", n_steps=8, seed=0, falsification_seed_count=1),
     "medium": PipelineProfile(name="medium", n_steps=32, seed=0, falsification_seed_count=2),
     "strong": PipelineProfile(name="strong", n_steps=128, seed=0, falsification_seed_count=4),
-    "full_fast": PipelineProfile(
-        name="full_fast", n_steps=256, seed=0, falsification_seed_count=4
-    ),
+    "full_fast": PipelineProfile(name="full_fast", n_steps=256, seed=0, falsification_seed_count=4),
     "full_report": PipelineProfile(
         name="full_report", n_steps=1024, seed=0, falsification_seed_count=8
     ),
@@ -75,9 +74,7 @@ def load_profile(
     Unknown profile names raise :class:`KeyError`.
     """
     if name not in PROFILES:
-        raise KeyError(
-            f"unknown profile {name!r}; available: {sorted(PROFILES)}"
-        )
+        raise KeyError(f"unknown profile {name!r}; available: {sorted(PROFILES)}")
     profile = PROFILES[name]
 
     if yaml_path is not None and Path(yaml_path).exists():
