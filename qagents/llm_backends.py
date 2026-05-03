@@ -28,10 +28,9 @@ from __future__ import annotations
 import json
 import os
 from dataclasses import dataclass
-from typing import Any, Callable, Mapping
+from typing import Any, Mapping
 
-from qagents.reality_interface import ACTION_TYPES, ActionType, Proposer, StaticProposer
-
+from qagents.reality_interface import ACTION_TYPES, ActionType, Proposer
 
 # ---------------------------------------------------------------------------
 # Deterministic baseline
@@ -89,7 +88,8 @@ def _build_prompt(
     payload = {
         "intent": dict(intent),
         "world_state": {
-            k: v for k, v in world_state.items()
+            k: v
+            for k, v in world_state.items()
             if isinstance(v, (int, float, str, bool)) or v is None
         },
         "system_limits": dict(system_limits),

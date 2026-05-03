@@ -76,7 +76,9 @@ class RollbackManager:
 
         # Generate checkpoint ID if not provided
         if checkpoint_id is None:
-            checkpoint_id = f"checkpoint_{state_hash[:16]}_{int(datetime.now(timezone.utc).timestamp())}"
+            checkpoint_id = (
+                f"checkpoint_{state_hash[:16]}_{int(datetime.now(timezone.utc).timestamp())}"
+            )
             checkpoint_id = (
                 f"checkpoint_{state_hash[:16]}_{int(datetime.now(timezone.utc).timestamp())}"
             )

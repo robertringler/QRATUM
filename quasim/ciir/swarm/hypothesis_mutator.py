@@ -9,19 +9,18 @@ Generates variant physics programs via:
 from __future__ import annotations
 
 import copy
-from dataclasses import dataclass
 
 import numpy as np
-from numpy.typing import NDArray
 
 from quasim.ciir.swarm.physics_lang import (
-    PhysicsProgram, RuleDecl, StateDecl,
+    PhysicsProgram,
+    StateDecl,
 )
-
 
 # ================================================================
 # Hypothesis Mutator agent
 # ================================================================
+
 
 class HypothesisMutator:
     """Generate variant physics programs via mutation."""
@@ -54,9 +53,9 @@ class HypothesisMutator:
         if new_prog.state_decl.bounds is not None:
             lo, hi = new_prog.state_decl.bounds
             if self.rng.random() < mutation_rate:
-                lo *= (1 + self.rng.standard_normal() * 0.1)
+                lo *= 1 + self.rng.standard_normal() * 0.1
             if self.rng.random() < mutation_rate:
-                hi *= (1 + self.rng.standard_normal() * 0.1)
+                hi *= 1 + self.rng.standard_normal() * 0.1
             if lo < hi:
                 new_prog.state_decl.bounds = (lo, hi)
         return new_prog

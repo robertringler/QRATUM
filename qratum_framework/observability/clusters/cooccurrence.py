@@ -18,6 +18,7 @@ supplied by the caller, never touches a global RNG, and returns sorted
 edges from :meth:`edges` so two equivalent runs produce byte-identical
 outputs.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -174,9 +175,7 @@ class CoOccurrenceAccumulator:
             "max_vocab": self.max_vocab,
             "windows_seen": self._windows_seen,
             "vocab": self.vocab,
-            "node_counts": {
-                tok: dict(self._node_counts[tok]) for tok in sorted(self._node_counts)
-            },
+            "node_counts": {tok: dict(self._node_counts[tok]) for tok in sorted(self._node_counts)},
             "edges": [
                 {"i": k[0], "j": k[1], "persona": v["persona"], "baseline": v["baseline"]}
                 for k, v in self.edges()

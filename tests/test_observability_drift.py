@@ -1,4 +1,5 @@
 """Tests for Layer A — RIC Drift Engine."""
+
 from __future__ import annotations
 
 from typing import Dict, List
@@ -95,32 +96,21 @@ def test_severity_none_when_no_anomalies():
 
 def test_severity_high_requires_density_and_lift():
     th = SeverityThresholds()
-    sev = classify_severity(
-        n_anomalies=4, n_tokens=10, peak_lift=3.0, thresholds=th
-    )
+    sev = classify_severity(n_anomalies=4, n_tokens=10, peak_lift=3.0, thresholds=th)
     assert sev == "high"
 
 
 def test_severity_medium_when_density_or_lift_only():
     th = SeverityThresholds()
     # Density only.
-    assert (
-        classify_severity(n_anomalies=2, n_tokens=10, peak_lift=0.1, thresholds=th)
-        == "medium"
-    )
+    assert classify_severity(n_anomalies=2, n_tokens=10, peak_lift=0.1, thresholds=th) == "medium"
     # Lift only.
-    assert (
-        classify_severity(n_anomalies=1, n_tokens=100, peak_lift=2.5, thresholds=th)
-        == "medium"
-    )
+    assert classify_severity(n_anomalies=1, n_tokens=100, peak_lift=2.5, thresholds=th) == "medium"
 
 
 def test_severity_low_when_both_below_medium():
     th = SeverityThresholds()
-    assert (
-        classify_severity(n_anomalies=1, n_tokens=200, peak_lift=0.1, thresholds=th)
-        == "low"
-    )
+    assert classify_severity(n_anomalies=1, n_tokens=200, peak_lift=0.1, thresholds=th) == "low"
 
 
 # ---------------------------------------------------------------------------
@@ -134,9 +124,7 @@ def _make_engine(**cfg):
 
 def test_drift_engine_no_anomaly_when_relevance_high():
     """relevance >= θ_r → no token is gated, regardless of lift/cluster."""
-    clusters = _StubClusters(
-        idx={"x": ["C0"]}, lifts={"C0": 5.0}
-    )
+    clusters = _StubClusters(idx={"x": ["C0"]}, lifts={"C0": 5.0})
     p = deterministic_logprob({"x": 100.0})
     b = deterministic_logprob({"x": 0.001})
     eng = _make_engine(relevance_threshold=-2.0, k_threshold=0)  # θ_r impossibly low
@@ -152,9 +140,7 @@ def test_drift_engine_no_anomaly_when_relevance_high():
 
 
 def test_drift_engine_fires_when_all_three_gates_open():
-    clusters = _StubClusters(
-        idx={"goblin": ["C0"]}, lifts={"C0": 5.0}
-    )
+    clusters = _StubClusters(idx={"goblin": ["C0"]}, lifts={"C0": 5.0})
     p = deterministic_logprob({"goblin": 100.0})
     b = deterministic_logprob({"the": 100.0})
     eng = _make_engine(
@@ -214,8 +200,11 @@ def test_drift_engine_emits_strict_schema_keys():
     b = deterministic_logprob({"a": 1.0})
     eng = _make_engine()
     rep = eng.score(
-        tokens=["a"], utterance="x", clusters=clusters,
-        persona_model=p, baseline_model=b,
+        tokens=["a"],
+        utterance="x",
+        clusters=clusters,
+        persona_model=p,
+        baseline_model=b,
     )
     schema = rep.to_schema()
     assert set(schema.keys()) == {

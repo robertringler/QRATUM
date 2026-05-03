@@ -135,11 +135,11 @@ def plasmoid_indicator(state: MHDState, k_band: tuple[float, float] = (4.0, 16.0
     KX, KY = g.kgrid()
     K = np.sqrt(KX * KX + KY * KY)
     psi_hat = np.fft.fft2(state.psi) / (g.nx * g.ny)
-    Pmag = (KX * KX + KY * KY) * (psi_hat.real ** 2 + psi_hat.imag ** 2)
+    Pmag = (KX * KX + KY * KY) * (psi_hat.real**2 + psi_hat.imag**2)
     k_lo, k_hi = k_band
     if k_lo < 0 or k_hi <= k_lo:
         raise ValueError("Invalid k_band.")
-    mask = (K >= k_lo) & (K <= k_hi)
+    mask = (k_lo <= K) & (k_hi >= K)
     return float(Pmag[mask].sum())
 
 
@@ -240,9 +240,7 @@ class ReconnectionController:
         return ControlVector(E_drive=E_drive, eta_eff=eta_eff, F_omega=F_omega)
 
 
-def gaussian_target_mask(
-    state: MHDState, x0: float, y0: float, sigma: float
-) -> FloatArray:
+def gaussian_target_mask(state: MHDState, x0: float, y0: float, sigma: float) -> FloatArray:
     r"""Periodic-aware Gaussian weight :math:`\exp(-r^2/(2\sigma^2))` centered at ``(x0, y0)``."""
     if sigma <= 0.0:
         raise ValueError("sigma must be positive.")

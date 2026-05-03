@@ -7,8 +7,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from qubic.visualization.aerospace import (AerospaceVisualizer,
-                                           AerospaceVizConfig, ComplianceMode)
+from qubic.visualization.aerospace import AerospaceVisualizer, AerospaceVizConfig, ComplianceMode
 
 
 def generate_all_demos():

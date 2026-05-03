@@ -175,7 +175,7 @@ class StateVector:
                 lines.append(f"  |{basis}⟩: {amp:.4f} (prob: {prob:.4f})")
         return "\n".join(lines)
 
-    def compress(self, fidelity: float = 0.995) -> 'CompressedStateVector':
+    def compress(self, fidelity: float = 0.995) -> "CompressedStateVector":
         """Return AHTC-compressed representation.
 
         Args:
@@ -190,9 +190,7 @@ class StateVector:
         """
         from quasim.holo.anti_tensor import compress
 
-        compressed_data, achieved_fidelity, metadata = compress(
-            self.data, fidelity=fidelity
-        )
+        compressed_data, achieved_fidelity, metadata = compress(self.data, fidelity=fidelity)
 
         return CompressedStateVector(
             compressed_data=compressed_data,
@@ -202,7 +200,7 @@ class StateVector:
         )
 
     @classmethod
-    def from_compressed(cls, compressed: 'CompressedStateVector') -> 'StateVector':
+    def from_compressed(cls, compressed: "CompressedStateVector") -> "StateVector":
         """Reconstruct from compressed format.
 
         Args:
@@ -261,7 +259,7 @@ class CompressedStateVector:
 
     def __repr__(self) -> str:
         """String representation."""
-        ratio = self.metadata.get('compression_ratio', 0)
+        ratio = self.metadata.get("compression_ratio", 0)
         return (
             f"CompressedStateVector({self.num_qubits} qubits, "
             f"fidelity={self.fidelity:.4f}, ratio={ratio:.2f}x)"

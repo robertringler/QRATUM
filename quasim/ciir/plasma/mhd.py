@@ -253,7 +253,7 @@ class MHDState:
         divB = ddx(Bx, self.grid.dx) + ddy(By, self.grid.dy)
         return float(np.max(np.abs(divB)))
 
-    def copy(self) -> "MHDState":
+    def copy(self) -> MHDState:
         return MHDState(
             psi=self.psi.copy(),
             omega=self.omega.copy(),
@@ -298,16 +298,17 @@ def harris_sheet(grid: Grid2D, B0: float = 1.0, a: float = 0.5) -> FloatArray:
     psi_y = B0 * a * (np.log(np.cosh((y - y1) / a)) - np.log(np.cosh((y - y2) / a)))
     # Linear correction: choose c1 so that the periodic extension psi_y(Ly) ≈ psi_y(0).
     # We approximate psi_y(Ly) by extrapolating the last row using the spacing dy.
-    psi_at_Ly = B0 * a * (
-        np.log(np.cosh((grid.Ly - y1) / a)) - np.log(np.cosh((grid.Ly - y2) / a))
-    )
+    psi_at_Ly = B0 * a * (np.log(np.cosh((grid.Ly - y1) / a)) - np.log(np.cosh((grid.Ly - y2) / a)))
     c1 = (psi_at_Ly - psi_y[0]) / grid.Ly
     psi = psi_raw - c1 * Y
     return psi.astype(np.float64)
 
 
 def perturb_tearing(
-    grid: Grid2D, amplitude: float = 1.0e-3, mode: int = 1, rng: Optional[np.random.Generator] = None
+    grid: Grid2D,
+    amplitude: float = 1.0e-3,
+    mode: int = 1,
+    rng: Optional[np.random.Generator] = None,
 ) -> FloatArray:
     r"""Tearing-seed flux perturbation :math:`\delta \psi = A \cos(k_x x)
     \,e^{-(y-L_y/4)^2/a_p^2}` localised on the lower sheet [V/D].
@@ -398,7 +399,9 @@ def step_rk2(state: MHDState, dt: float, control: ControlHook = zero_control) ->
     return state
 
 
-def recommended_dt(grid: Grid2D, eta: float, nu: float, B_max: float = 1.0, safety: float = 0.2) -> float:
+def recommended_dt(
+    grid: Grid2D, eta: float, nu: float, B_max: float = 1.0, safety: float = 0.2
+) -> float:
     r"""Conservative time step from CFL + diffusive limits [V/D].
 
     .. math::

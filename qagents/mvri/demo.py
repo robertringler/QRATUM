@@ -159,9 +159,7 @@ def _trace_case(case_name: str, state: State, action: Action) -> MVRITraceEntry:
     else:
         s_t1 = state
         outcome = "rejected"
-        passed_ids = tuple(
-            c for c in ("ER", "CS", "SS", "IC", "AUD") if c not in failed
-        )
+        passed_ids = tuple(c for c in ("ER", "CS", "SS", "IC", "AUD") if c not in failed)
         failed_ids = tuple(failed)
 
     metrics = {
@@ -189,9 +187,7 @@ def case_a() -> MVRITraceEntry:
     state = build_initial_state()
     # Reduce a high-mass activation slightly: this *concentrates* mass
     # further (still high) — entropy goes down or stays equal, ER passes.
-    action = Action(
-        type="node_activation_shift", target="n2", magnitude=-0.04
-    )
+    action = Action(type="node_activation_shift", target="n2", magnitude=-0.04)
     return _trace_case("CASE A: within-bound, constraint-satisfying", state, action)
 
 
@@ -199,9 +195,7 @@ def case_b() -> MVRITraceEntry:
     """Magnitude exceeds ε → rejected at validate_action."""
 
     state = build_initial_state()
-    action = Action(
-        type="node_activation_shift", target="n1", magnitude=0.5  # > ε=0.05
-    )
+    action = Action(type="node_activation_shift", target="n1", magnitude=0.5)  # > ε=0.05
     return _trace_case("CASE B: |magnitude| > ε", state, action)
 
 
@@ -212,9 +206,7 @@ def case_c() -> MVRITraceEntry:
     # Pushing the *smallest* mass upward equalises the distribution and
     # therefore raises Shannon entropy. Magnitude is within ε so this
     # passes validate_action and reaches the gate.
-    action = Action(
-        type="node_activation_shift", target="n3", magnitude=+0.05
-    )
+    action = Action(type="node_activation_shift", target="n3", magnitude=+0.05)
     return _trace_case("CASE C: ER violation", state, action)
 
 
@@ -222,9 +214,7 @@ def case_d() -> MVRITraceEntry:
     """Initial state violates Inv → Type IV halt before any action."""
 
     state = build_invalid_initial_state()
-    action = Action(
-        type="node_activation_shift", target="n1", magnitude=0.0
-    )
+    action = Action(type="node_activation_shift", target="n1", magnitude=0.0)
     return _trace_case("CASE D: Inv violated at S₀", state, action)
 
 
@@ -237,9 +227,7 @@ def determinism_check() -> bool:
     """Same (state, action, seed) twice ⇒ identical outcome."""
 
     s = build_initial_state()
-    a = Action(
-        type="noise_injection", target="n2", magnitude=0.03, seed=12345
-    )
+    a = Action(type="noise_injection", target="n2", magnitude=0.03, seed=12345)
     s1, st1 = inject(s, a)
     s2, st2 = inject(s, a)
     return s1 == s2 and st1.outcome == st2.outcome
@@ -281,19 +269,11 @@ def main() -> None:
         epsilon=EPSILON,
     )
 
-    accepted_metrics = [
-        e.metrics for e in result.trace if e.outcome == "accepted"
-    ]
+    accepted_metrics = [e.metrics for e in result.trace if e.outcome == "accepted"]
     if accepted_metrics:
-        avg_dh = sum(m["delta_H"] for m in accepted_metrics) / len(
-            accepted_metrics
-        )
-        avg_dmi = sum(m["delta_MI"] for m in accepted_metrics) / len(
-            accepted_metrics
-        )
-        avg_dte = sum(m["delta_TE"] for m in accepted_metrics) / len(
-            accepted_metrics
-        )
+        avg_dh = sum(m["delta_H"] for m in accepted_metrics) / len(accepted_metrics)
+        avg_dmi = sum(m["delta_MI"] for m in accepted_metrics) / len(accepted_metrics)
+        avg_dte = sum(m["delta_TE"] for m in accepted_metrics) / len(accepted_metrics)
     else:
         avg_dh = avg_dmi = avg_dte = 0.0
 
@@ -303,9 +283,7 @@ def main() -> None:
 
     det_ok = determinism_check()
     print("\n1. Determinism")
-    print(
-        f"   identical (state, action, seed) → identical outcome: {det_ok}"
-    )
+    print(f"   identical (state, action, seed) → identical outcome: {det_ok}")
 
     print("\n2. Constraint Enforcement")
     print(f"   CASE A failed constraints: {list(a.constraints_failed)}")
@@ -314,22 +292,12 @@ def main() -> None:
     print(f"   CASE D failed constraints: {list(d.constraints_failed)}")
 
     print("\n3. Invariant Preservation")
-    inv_ok = all(
-        Inv(e.state_t1) for e in (a, b, c, d) if e.outcome == "accepted"
-    )
-    inv_ok = inv_ok and all(
-        Inv(e.state_t1)
-        for e in result.trace
-        if e.outcome == "accepted"
-    )
+    inv_ok = all(Inv(e.state_t1) for e in (a, b, c, d) if e.outcome == "accepted")
+    inv_ok = inv_ok and all(Inv(e.state_t1) for e in result.trace if e.outcome == "accepted")
     print(f"   all accepted states satisfy Inv: {inv_ok}")
 
     print("\n4. Rejection Semantics")
-    rej_unchanged = (
-        b.state_t == b.state_t1
-        and c.state_t == c.state_t1
-        and d.state_t == d.state_t1
-    )
+    rej_unchanged = b.state_t == b.state_t1 and c.state_t == c.state_t1 and d.state_t == d.state_t1
     print(f"   rejected/halt steps left state unchanged: {rej_unchanged}")
 
     print("\n5. Metric Behavior")
@@ -368,10 +336,7 @@ def main() -> None:
 
     print("\n8. Verdict")
     if det_ok and inv_ok and rej_unchanged:
-        print(
-            "   MVRI is VALID: constraint-preserving, deterministic, "
-            "and rejection-complete."
-        )
+        print("   MVRI is VALID: constraint-preserving, deterministic, " "and rejection-complete.")
     else:
         reasons = []
         if not det_ok:

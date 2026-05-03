@@ -34,10 +34,7 @@ class TestFatalInvariants:
     def test_merkle_integrity_enforcement(self):
         """Test Invariant 2: Merkle chain integrity."""
         # Should pass with valid chain
-        FatalInvariants.enforce_merkle_integrity(
-            chain_valid=True,
-            last_hash="abc123"
-        )
+        FatalInvariants.enforce_merkle_integrity(chain_valid=True, last_hash="abc123")
         FatalInvariants.enforce_merkle_integrity(chain_valid=True, last_hash="abc123")
 
         # Should fail with invalid chain
@@ -48,10 +45,7 @@ class TestFatalInvariants:
     def test_contract_immutability_enforcement(self):
         """Test Invariant 3: Contract immutability."""
         # Should pass for unmodified contract
-        FatalInvariants.enforce_contract_immutability(
-            contract_id="contract_123",
-            modified=False
-        )
+        FatalInvariants.enforce_contract_immutability(contract_id="contract_123", modified=False)
         FatalInvariants.enforce_contract_immutability(contract_id="contract_123", modified=False)
 
         # Should fail for modified contract
@@ -62,9 +56,7 @@ class TestFatalInvariants:
     def test_authorization_system_enforcement(self):
         """Test Invariant 4: Authorization system."""
         # Should pass when authorization check is present
-        FatalInvariants.enforce_authorization_system(
-            has_authorization_check=True
-        )
+        FatalInvariants.enforce_authorization_system(has_authorization_check=True)
         FatalInvariants.enforce_authorization_system(has_authorization_check=True)
 
         # Should fail when authorization check is bypassed
@@ -75,10 +67,7 @@ class TestFatalInvariants:
     def test_safety_level_system_enforcement(self):
         """Test Invariant 5: Safety level system."""
         # Should pass when safety level is set
-        FatalInvariants.enforce_safety_level_system(
-            operation="test_op",
-            has_safety_level=True
-        )
+        FatalInvariants.enforce_safety_level_system(operation="test_op", has_safety_level=True)
         FatalInvariants.enforce_safety_level_system(operation="test_op", has_safety_level=True)
 
         # Should fail when safety level is missing
@@ -103,10 +92,7 @@ class TestFatalInvariants:
     def test_event_emission_enforcement(self):
         """Test Invariant 7: Event emission requirement."""
         # Should pass when event is emitted
-        FatalInvariants.enforce_event_emission(
-            event_emitted=True,
-            operation="test_op"
-        )
+        FatalInvariants.enforce_event_emission(event_emitted=True, operation="test_op")
         FatalInvariants.enforce_event_emission(event_emitted=True, operation="test_op")
 
         # Should fail when event is not emitted
@@ -117,10 +103,7 @@ class TestFatalInvariants:
     def test_determinism_enforcement(self):
         """Test Invariant 8: Determinism guarantee."""
         # Should pass when hashes match
-        FatalInvariants.enforce_determinism(
-            result_hash="abc123",
-            expected_hash="abc123"
-        )
+        FatalInvariants.enforce_determinism(result_hash="abc123", expected_hash="abc123")
         FatalInvariants.enforce_determinism(result_hash="abc123", expected_hash="abc123")
 
         # Should fail when hashes don't match

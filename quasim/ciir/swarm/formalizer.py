@@ -12,21 +12,21 @@ Constructs formal representations:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
 
-from quasim.ciir.swarm.memory import (
-    KnowledgeGraph, NodeType, EdgeType,
-)
 from quasim.ciir.swarm.axiom_architect import Axiom
+from quasim.ciir.swarm.memory import (
+    KnowledgeGraph,
+    NodeType,
+)
 from quasim.ciir.swarm.physics_lang import RuleDecl
-
 
 # ================================================================
 # Formal structures
 # ================================================================
+
 
 @dataclass
 class FormalStructure:
@@ -53,6 +53,7 @@ class FormalStructure:
 # Formalizer agent
 # ================================================================
 
+
 class Formalizer:
     """Convert computational objects into strict symbolic structures."""
 
@@ -60,7 +61,8 @@ class Formalizer:
         self.dim = dim
 
     def formalize_axiom_system(
-        self, axioms: list[Axiom],
+        self,
+        axioms: list[Axiom],
     ) -> FormalStructure:
         """Map axiom set to an algebraic structure.
 
@@ -84,7 +86,8 @@ class Formalizer:
         )
 
     def construct_metric_tensor(
-        self, states: list[NDArray],
+        self,
+        states: list[NDArray],
     ) -> NDArray:
         r"""Construct Fisher information metric from state ensemble.
 
@@ -108,7 +111,8 @@ class Formalizer:
         return g
 
     def formalize_rules(
-        self, rules: list[RuleDecl],
+        self,
+        rules: list[RuleDecl],
     ) -> FormalStructure:
         """Convert a rule set into an operator algebra description."""
         return FormalStructure(

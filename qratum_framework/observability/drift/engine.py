@@ -15,6 +15,7 @@ Implements the spec's anomaly function::
 with the exact gating logic and a single ``DriftReport`` return value
 matching the spec's output schema.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -127,9 +128,7 @@ class DriftEngine:
         for tok in tokens:
             rel = relevance(tok, utterance, embedder=self._embedder)
             lift_v = log_lift(tok, persona_model, baseline_model, persona=persona)
-            clust = (
-                cluster_membership_score(tok, clusters) if clusters is not None else 0.0
-            )
+            clust = cluster_membership_score(tok, clusters) if clusters is not None else 0.0
             gated = (
                 rel < cfg.relevance_threshold
                 and clust > cfg.cluster_threshold

@@ -18,10 +18,10 @@ from numpy.typing import NDArray
 
 from quasim.ciir.crs.graph import CRSGraph
 
-
 # ================================================================
 # Geodesic distances
 # ================================================================
+
 
 def geodesic_distance(graph: CRSGraph, a: int, b: int) -> float:
     r"""Shortest-path distance from *a* to *b* using 1/w as edge length.
@@ -108,6 +108,7 @@ def distance_matrix(graph: CRSGraph) -> NDArray[np.floating]:
 # Causal depth
 # ================================================================
 
+
 def causal_depth(graph: CRSGraph) -> dict[int, int]:
     """Longest path from any root to each node (causal depth).
 
@@ -118,16 +119,14 @@ def causal_depth(graph: CRSGraph) -> dict[int, int]:
     dict[int, int]
         Mapping node_id → depth.
     """
-    depth: dict[int, int] = {nid: 0 for nid in graph.nodes}
-    in_degree: dict[int, int] = {nid: 0 for nid in graph.nodes}
+    depth: dict[int, int] = dict.fromkeys(graph.nodes, 0)
+    in_degree: dict[int, int] = dict.fromkeys(graph.nodes, 0)
     for nid in graph.nodes:
         for parent in graph._reverse_adj.get(nid, set()):
             if parent in graph.nodes:
                 in_degree[nid] = in_degree.get(nid, 0) + 1
 
-    queue: deque[int] = deque(
-        nid for nid, deg in in_degree.items() if deg == 0
-    )
+    queue: deque[int] = deque(nid for nid, deg in in_degree.items() if deg == 0)
     visited = 0
     while queue:
         u = queue.popleft()
@@ -155,6 +154,7 @@ def causal_depth(graph: CRSGraph) -> dict[int, int]:
 # ================================================================
 # Emergent metric tensor
 # ================================================================
+
 
 def emergent_metric_tensor(
     graph: CRSGraph,
@@ -198,11 +198,7 @@ def emergent_metric_tensor(
             D_pair[i, j] = d
             D_pair[j, i] = d
 
-    G = 0.5 * (
-        dists[:, None] ** 2
-        + dists[None, :] ** 2
-        - D_pair ** 2
-    )
+    G = 0.5 * (dists[:, None] ** 2 + dists[None, :] ** 2 - D_pair**2)
 
     # Extract top-k eigenvalues → metric tensor
     eigvals, eigvecs = np.linalg.eigh(G)
@@ -220,6 +216,7 @@ def emergent_metric_tensor(
 # ================================================================
 # Curvature proxy
 # ================================================================
+
 
 def curvature_proxy(graph: CRSGraph, node_id: int) -> float:
     r"""Estimate curvature from ball-volume scaling.
@@ -248,6 +245,7 @@ def curvature_proxy(graph: CRSGraph, node_id: int) -> float:
 # ================================================================
 # Dimension estimate
 # ================================================================
+
 
 def graph_dimension_estimate(graph: CRSGraph) -> float:
     r"""Estimate effective dimension from ball-volume scaling.

@@ -5,13 +5,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-import pytest
-
-from qagents.reality_interface import ACTION_TYPES, StaticProposer
-from qagents.reality_interface_v2 import RICv2Controller, RICv2History
 from qagents.ciir_ric_bridge import CIIRRICBridge
 from qagents.llm_backends import DeterministicLLM
-
+from qagents.reality_interface import ACTION_TYPES, StaticProposer
+from qagents.reality_interface_v2 import RICv2Controller, RICv2History
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -85,7 +82,11 @@ class TestRICv2Determinism:
         outs = set()
         for s in range(10):
             ric = RICv2Controller(proposer=prop, seed=s, n_perturbations=4)
-            d = ric.decide({"goal": ""}, {"loss": 0.0}, {"safety_bounds": {}, "risk_threshold": 1.0, "stability_threshold": 0.0})
+            d = ric.decide(
+                {"goal": ""},
+                {"loss": 0.0},
+                {"safety_bounds": {}, "risk_threshold": 1.0, "stability_threshold": 0.0},
+            )
             outs.add(d.selected_action["magnitude"])
         # At least two different magnitudes across 10 seeds (entropy injection)
         assert len(outs) >= 2
@@ -177,12 +178,20 @@ class TestAntiDeadlock:
     def test_exploration_pressure_breaks_hold_lock(self):
         # Construct a scenario where hold otherwise dominates (lowest magnitude
         # and equal stability), then accumulate a hold streak.
-        prop = StaticProposer({
-            "control": 0.4, "adjust": 0.2, "hold": 0.0, "abort": 0.0,
-        })
+        prop = StaticProposer(
+            {
+                "control": 0.4,
+                "adjust": 0.2,
+                "hold": 0.0,
+                "abort": 0.0,
+            }
+        )
         ric = RICv2Controller(
-            proposer=prop, seed=3, n_perturbations=2,
-            hold_streak_threshold=2, exploration_bonus=0.5,
+            proposer=prop,
+            seed=3,
+            n_perturbations=2,
+            hold_streak_threshold=2,
+            exploration_bonus=0.5,
         )
         history = RICv2History()
         # Pre-load a hold streak.
@@ -260,16 +269,20 @@ class TestBridgeV2:
 
     def test_v2_opt_in(self):
         bridge = CIIRRICBridge(
-            engine=StubEngine(), proposer=DeterministicLLM(),
-            use_v2=True, v2_seed=42,
+            engine=StubEngine(),
+            proposer=DeterministicLLM(),
+            use_v2=True,
+            v2_seed=42,
         )
         assert bridge.use_v2 is True
         assert bridge.history is not None
 
     def test_v2_run_records_history(self):
         bridge = CIIRRICBridge(
-            engine=StubEngine(), proposer=DeterministicLLM(),
-            use_v2=True, v2_seed=1,
+            engine=StubEngine(),
+            proposer=DeterministicLLM(),
+            use_v2=True,
+            v2_seed=1,
         )
         result = bridge.run(n_steps=4)
         assert result.n_steps_executed >= 1

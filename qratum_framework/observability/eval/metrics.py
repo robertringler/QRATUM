@@ -10,6 +10,7 @@ Matrix-level aggregation reduces the per-run metrics over a (prompt,
 persona) matrix into a single row used by the regression detector and
 the report writer.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -65,7 +66,7 @@ def aggregate_run(
     )
 
 
-def matrix_summary(rows: Iterable["MatrixRow"]) -> Mapping[str, float]:
+def matrix_summary(rows: Iterable[MatrixRow]) -> Mapping[str, float]:
     """Reduce per-cell rows to a few headline numbers for CI logs.
 
     ``rows`` are :class:`MatrixRow` objects from

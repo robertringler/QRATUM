@@ -5,11 +5,6 @@ Demonstrates all 14 vertical modules in action.
 """
 
 from qratum.platform import PlatformIntent, PlatformOrchestrator
-from qratum.verticals import (CapraModule, ChronaModule, CohoraModule,
-                              EcoraModule, FluxaModule, FusiaModule,
-                              GeonaModule, JurisModule, NeuraModule,
-                              OrbiaModule, SentraModule, StrataModule,
-                              VexorModule, VitraModule)
 from qratum.verticals import (
     CapraModule,
     ChronaModule,

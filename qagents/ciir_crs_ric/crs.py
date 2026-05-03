@@ -14,6 +14,7 @@ on BOTH the pre-state and the post-state of the *raw* transition.  This is the
 only legal path from one State to another in the system; `executor.py` is
 required to route every action through this function.
 """
+
 from __future__ import annotations
 
 from dataclasses import replace
@@ -26,20 +27,21 @@ from .ciir import (
     all_satisfied,
 )
 
-
 # --------------------------------------------------------------------------
 # Action space A
 # --------------------------------------------------------------------------
 
+
 class Action(Enum):
     """Complete action space A."""
-    ALLOCATE_CPU = "allocate_cpu"   # +1 CPU unit
-    RELEASE_CPU = "release_cpu"     # -1 CPU unit
-    ALLOCATE_MEM = "allocate_mem"   # +1 MEM unit
-    RELEASE_MEM = "release_mem"     # -1 MEM unit
-    START = "start"                 # status: idle -> running
-    STOP = "stop"                   # status: running -> idle
-    NOOP = "noop"                   # identity action (safe fallback)
+
+    ALLOCATE_CPU = "allocate_cpu"  # +1 CPU unit
+    RELEASE_CPU = "release_cpu"  # -1 CPU unit
+    ALLOCATE_MEM = "allocate_mem"  # +1 MEM unit
+    RELEASE_MEM = "release_mem"  # -1 MEM unit
+    START = "start"  # status: idle -> running
+    STOP = "stop"  # status: running -> idle
+    NOOP = "noop"  # identity action (safe fallback)
 
 
 #: The full action space, exposed as an immutable frozenset.
@@ -49,6 +51,7 @@ A_FULL: FrozenSet[Action] = frozenset(Action)
 # --------------------------------------------------------------------------
 # Raw transition T : S x A -> S
 # --------------------------------------------------------------------------
+
 
 def transition(s: State, a: Action) -> State:
     """Raw deterministic transition T(s, a) -> s'.
@@ -79,6 +82,7 @@ def transition(s: State, a: Action) -> State:
 # --------------------------------------------------------------------------
 # Constrained transition T_C : S x A x C -> S ∪ {None}
 # --------------------------------------------------------------------------
+
 
 def constrained_transition(
     s: State,
@@ -117,6 +121,7 @@ def constrained_transition(
 # --------------------------------------------------------------------------
 # Admissible action set A_C(s) — explicit enumeration
 # --------------------------------------------------------------------------
+
 
 def admissible_actions(
     s: State,

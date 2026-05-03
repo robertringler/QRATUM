@@ -55,8 +55,8 @@ For laser-driven trapped-ion systems (Ca⁺, Be⁺):
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from dataclasses import dataclass
+from typing import Dict, List
 
 import numpy as np
 from numpy.typing import NDArray
@@ -77,16 +77,16 @@ class SuperconductingParams:
     """
 
     # Coherence
-    T1_s: float = 100e-6          # amplitude damping time (100 μs)
-    T2_s: float = 50e-6           # total dephasing time (50 μs)
+    T1_s: float = 100e-6  # amplitude damping time (100 μs)
+    T2_s: float = 50e-6  # total dephasing time (50 μs)
 
     # Gate and latency
-    gate_time_s: float = 30e-9    # single/two-qubit gate duration (30 ns)
-    readout_latency_s: float = 350e-9   # measurement + signal processing (350 ns)
-    classical_proc_s: float = 2e-6     # classical processor decision (2 μs)
+    gate_time_s: float = 30e-9  # single/two-qubit gate duration (30 ns)
+    readout_latency_s: float = 350e-9  # measurement + signal processing (350 ns)
+    classical_proc_s: float = 2e-6  # classical processor decision (2 μs)
 
     # Control bandwidth
-    drive_frequency_Hz: float = 5e9    # qubit drive frequency (5 GHz)
+    drive_frequency_Hz: float = 5e9  # qubit drive frequency (5 GHz)
     control_bandwidth_Hz: float = 100e6  # analog bandwidth (100 MHz)
 
     @property
@@ -134,12 +134,12 @@ class TrappedIonParams:
     All times in seconds, all rates in Hz.
     """
 
-    T1_s: float = 1.0              # electronic coherence (1 s)
-    T2_s: float = 1.0              # motional decoherence
-    gate_time_s: float = 50e-6     # sideband gate (50 μs)
+    T1_s: float = 1.0  # electronic coherence (1 s)
+    T2_s: float = 1.0  # motional decoherence
+    gate_time_s: float = 50e-6  # sideband gate (50 μs)
     readout_latency_s: float = 1e-3  # fluorescence readout (1 ms)
     classical_proc_s: float = 10e-6  # classical processing (10 μs)
-    lamb_dicke_eta: float = 0.1    # Lamb-Dicke parameter
+    lamb_dicke_eta: float = 0.1  # Lamb-Dicke parameter
 
     @property
     def gamma_ad(self) -> float:
@@ -162,6 +162,7 @@ class TrappedIonParams:
 # ---------------------------------------------------------------------------
 # Simulation unit conversion
 # ---------------------------------------------------------------------------
+
 
 def scale_to_simulation(
     params: SuperconductingParams,
@@ -213,6 +214,7 @@ def scale_to_simulation(
 # Maximum latency analysis
 # ---------------------------------------------------------------------------
 
+
 def max_tolerable_latency(
     gamma_total_Hz: float,
     epsilon: float = 0.05,
@@ -243,7 +245,7 @@ class LatencyAssessment:
     tau_max_s: float
     actual_latency_s: float
     is_realistic: bool
-    margin_ratio: float   # tau_max / actual_latency (>1 means feasible)
+    margin_ratio: float  # tau_max / actual_latency (>1 means feasible)
     recommendation: str
 
 
@@ -281,6 +283,7 @@ def assess_latency(
 # ---------------------------------------------------------------------------
 # Spectral gap scaling law (GAP 3)
 # ---------------------------------------------------------------------------
+
 
 def spectral_gap_scaling(
     N_values: List[int],

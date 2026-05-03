@@ -2,9 +2,13 @@
 
 import pytest
 
-from qratum_platform.core import (ComputeSubstrate, PlatformContract,
-                                  PlatformIntent, SafetyViolation,
-                                  VerticalModule)
+from qratum_platform.core import (
+    ComputeSubstrate,
+    PlatformContract,
+    PlatformIntent,
+    SafetyViolation,
+    VerticalModule,
+)
 from verticals.vitra import VITRAModule
 
 

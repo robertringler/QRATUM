@@ -13,17 +13,17 @@ Built-in rule templates:
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Callable
-
 import numpy as np
 from numpy.typing import NDArray
 
 from quasim.ciir.swarm.memory import (
-    KnowledgeGraph, NodeType, EdgeType,
+    KnowledgeGraph,
+    NodeType,
 )
 from quasim.ciir.swarm.physics_lang import (
-    RuleDecl, MetaRule, UpdateMode,
+    MetaRule,
+    RuleDecl,
+    UpdateMode,
 )
 
 
@@ -50,7 +50,9 @@ class RuleSynthesizer:
             A = matrix.copy()
 
         def apply_fn(
-            state: NDArray, params: dict, rng: np.random.Generator,
+            state: NDArray,
+            params: dict,
+            rng: np.random.Generator,
         ) -> NDArray:
             return params["A"] @ state
 
@@ -71,7 +73,9 @@ class RuleSynthesizer:
         W = self.rng.standard_normal((self.dim, self.dim)) * 0.5
 
         def apply_fn(
-            state: NDArray, params: dict, rng: np.random.Generator,
+            state: NDArray,
+            params: dict,
+            rng: np.random.Generator,
         ) -> NDArray:
             return state + params["alpha"] * np.tanh(params["W"] @ state)
 
@@ -91,7 +95,9 @@ class RuleSynthesizer:
         r"""s' = s + σ·η where η ~ N(0, I)."""
 
         def apply_fn(
-            state: NDArray, params: dict, rng: np.random.Generator,
+            state: NDArray,
+            params: dict,
+            rng: np.random.Generator,
         ) -> NDArray:
             noise = rng.standard_normal(state.shape) * params["sigma"]
             return state + noise
@@ -112,7 +118,9 @@ class RuleSynthesizer:
         r"""Project state onto unit sphere: s' = s/||s|| · target_norm."""
 
         def apply_fn(
-            state: NDArray, params: dict, rng: np.random.Generator,
+            state: NDArray,
+            params: dict,
+            rng: np.random.Generator,
         ) -> NDArray:
             n = np.linalg.norm(state)
             if n > 1e-30:

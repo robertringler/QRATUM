@@ -28,12 +28,11 @@ Verifies:
 """
 
 import numpy as np
-import pytest
-
 
 # ============================================================
 # Helpers
 # ============================================================
+
 
 def random_spd(n: int, rng: np.random.Generator) -> np.ndarray:
     """Random symmetric positive-definite matrix."""
@@ -46,11 +45,15 @@ def kl_divergence_gaussian(mu1, cov1, mu2, cov2):
     n = len(mu1)
     cov2_inv = np.linalg.inv(cov2)
     diff = mu2 - mu1
-    return float(0.5 * (
-        np.trace(cov2_inv @ cov1)
-        + diff @ cov2_inv @ diff - n
-        + np.log(np.linalg.det(cov2) / np.linalg.det(cov1))
-    ))
+    return float(
+        0.5
+        * (
+            np.trace(cov2_inv @ cov1)
+            + diff @ cov2_inv @ diff
+            - n
+            + np.log(np.linalg.det(cov2) / np.linalg.det(cov1))
+        )
+    )
 
 
 def sym_distance(D12: float, D21: float) -> float:
@@ -71,9 +74,7 @@ def christoffel_from_metric_deriv(g, dg):
         for i in range(n):
             for j in range(n):
                 for l in range(n):
-                    Gamma[k, i, j] += 0.5 * g_inv[k, l] * (
-                        dg[i, j, l] + dg[j, i, l] - dg[l, i, j]
-                    )
+                    Gamma[k, i, j] += 0.5 * g_inv[k, l] * (dg[i, j, l] + dg[j, i, l] - dg[l, i, j])
     return Gamma
 
 
@@ -100,15 +101,14 @@ def sld_fisher_metric(rho, drho_list):
                     if eigvals[k] + eigvals[l] > 1e-14:
                         elem = eigvecs[:, k].conj() @ drho_list[i] @ eigvecs[:, l]
                         elem2 = eigvecs[:, k].conj() @ drho_list[j] @ eigvecs[:, l]
-                        g[i, j] += 2 * np.real(elem * elem2.conj()) / (
-                            eigvals[k] + eigvals[l]
-                        )
+                        g[i, j] += 2 * np.real(elem * elem2.conj()) / (eigvals[k] + eigvals[l])
     return g
 
 
 # ============================================================
 # Section 1: Axiom Consistency (Lemma 15.1)
 # ============================================================
+
 
 class TestAxiomConsistency:
     """Verify the Gaussian model satisfies SA.1'--SA.4'."""
@@ -135,7 +135,7 @@ class TestAxiomConsistency:
             D = kl_divergence_gaussian(sigma, cov, sigma + dsigma, cov)
             expected = 0.5 * np.dot(dsigma, dsigma)
             # Should agree to O(||dsigma||^3)
-            assert abs(D - expected) < 1e-3 * eps_scale ** 3 + 1e-14
+            assert abs(D - expected) < 1e-3 * eps_scale**3 + 1e-14
 
     def test_sa3_hessian_positive_definite(self):
         """H_{ij}(0) = 2δ_{ij} for C(σ) = ||σ||²."""
@@ -156,6 +156,7 @@ class TestAxiomConsistency:
 # ============================================================
 # Section 2: Axiom Independence (Lemma 15.2)
 # ============================================================
+
 
 class TestAxiomIndependence:
     """Verify models that violate exactly one axiom each."""
@@ -187,7 +188,7 @@ class TestAxiomIndependence:
         """C(σ) = |σ| is not C² at origin."""
         # |σ| is C¹ but not C² at σ=0
         eps = 1e-8
-        d2C = (abs(eps) - 2 * abs(0) + abs(-eps)) / eps ** 2
+        d2C = (abs(eps) - 2 * abs(0) + abs(-eps)) / eps**2
         # For |σ|, this finite difference gives 0/eps² which is ~0
         # But the true second derivative doesn't exist (delta function)
         assert True  # The model exists (pathological but valid)
@@ -210,6 +211,7 @@ class TestAxiomIndependence:
 # ============================================================
 # Section 3: Metric Admissibility (Theorem 15.1)
 # ============================================================
+
 
 class TestMetricAdmissibility:
     """Verify necessary and sufficient conditions."""
@@ -241,9 +243,11 @@ class TestMetricAdmissibility:
 
     def test_non_admissible_divergence(self):
         """A divergence violating subadditivity is not metrically admissible."""
+
         # Pathological: D(a,b) = (a-b)^4 (quartic, not subadditive for sqrt)
         def D_quartic(a, b):
             return (a - b) ** 4
+
         a, b, c = 0.0, 1.0, 3.0
         d_ab = np.sqrt(D_quartic(a, b) + D_quartic(b, a))
         d_bc = np.sqrt(D_quartic(b, c) + D_quartic(c, b))
@@ -257,6 +261,7 @@ class TestMetricAdmissibility:
 # ============================================================
 # Section 4: Bregman Divergence (Corollary 15.1)
 # ============================================================
+
 
 class TestBregmanAdmissibility:
     """Verify Bregman divergence metric admissibility."""
@@ -295,6 +300,7 @@ class TestBregmanAdmissibility:
 # ============================================================
 # Section 5: Rank-Deficient Fisher Metric (Theorem 15.2)
 # ============================================================
+
 
 class TestRankDeficientFisher:
     """Verify Fisher metric for rank-deficient density matrices."""
@@ -355,6 +361,7 @@ class TestRankDeficientFisher:
 # Section 6: Petz Monotone Metric Family (Theorem 15.3)
 # ============================================================
 
+
 class TestPetzClassification:
     """Verify properties of Petz monotone metric family."""
 
@@ -409,6 +416,7 @@ class TestPetzClassification:
 # Section 7: Completeness (Theorems 15.4-15.6)
 # ============================================================
 
+
 class TestCompleteness:
     """Verify metric completeness and geodesic completeness."""
 
@@ -418,7 +426,7 @@ class TestCompleteness:
         r = 5.0
         rng = np.random.default_rng(42)
         # Generate Cauchy sequence approaching origin
-        seq = [rng.standard_normal(n) * (0.5 ** k) for k in range(20)]
+        seq = [rng.standard_normal(n) * (0.5**k) for k in range(20)]
         # Verify it converges (last elements near 0)
         assert np.linalg.norm(seq[-1]) < 0.01
 
@@ -441,10 +449,7 @@ class TestCompleteness:
             grid_size = int(np.ceil(2 * np.sqrt(r) / eps))
             for i in range(grid_size):
                 for j in range(grid_size):
-                    p = np.array([
-                        -np.sqrt(r) + i * eps,
-                        -np.sqrt(r) + j * eps
-                    ])
+                    p = np.array([-np.sqrt(r) + i * eps, -np.sqrt(r) + j * eps])
                     if np.dot(p, p) <= r:
                         grid_points.append(p)
             assert len(grid_points) > 0
@@ -463,6 +468,7 @@ class TestCompleteness:
 # ============================================================
 # Section 8: Large Deviation Principle (Theorem 15.7)
 # ============================================================
+
 
 class TestLargeDeviation:
     """Verify LDP rate function and concentration."""
@@ -488,9 +494,7 @@ class TestLargeDeviation:
         for N in [100, 1000, 10000]:
             samples = rng.choice(3, size=N, p=p_true)
             p_emp = np.bincount(samples, minlength=3) / N
-            kl = np.sum(p_emp[p_emp > 0] * np.log(
-                p_emp[p_emp > 0] / p_true[p_emp > 0]
-            ))
+            kl = np.sum(p_emp[p_emp > 0] * np.log(p_emp[p_emp > 0] / p_true[p_emp > 0]))
             # KL should decrease roughly as 1/N
             assert kl < 1.0 / np.sqrt(N) + 0.1
 
@@ -515,9 +519,7 @@ class TestLargeDeviation:
             # Adjust to satisfy constraint
             mu_pert *= np.sum(mu_boltz) / np.sum(mu_pert)
             mu_pert /= np.sum(mu_pert)
-            kl_pert = np.sum(mu_pert[mu_pert > 0] * np.log(
-                mu_pert[mu_pert > 0] / nu0[mu_pert > 0]
-            ))
+            kl_pert = np.sum(mu_pert[mu_pert > 0] * np.log(mu_pert[mu_pert > 0] / nu0[mu_pert > 0]))
             # Boltzmann should have lower or equal KL
             # (approximately, since perturbation changes E too)
             assert kl_boltz < kl_pert + 0.5
@@ -543,6 +545,7 @@ class TestLargeDeviation:
 # Section 9: Ricci Tensor Step-by-Step (Theorem 15.8b)
 # ============================================================
 
+
 class TestRicciDerivation:
     """Verify step-by-step Ricci tensor computation."""
 
@@ -561,8 +564,12 @@ class TestRicciDerivation:
             for j in range(n):
                 for k in range(n):
                     psi3_sym[i, j, k] = (
-                        psi3[i, j, k] + psi3[i, k, j] + psi3[j, i, k]
-                        + psi3[j, k, i] + psi3[k, i, j] + psi3[k, j, i]
+                        psi3[i, j, k]
+                        + psi3[i, k, j]
+                        + psi3[j, i, k]
+                        + psi3[j, k, i]
+                        + psi3[k, i, j]
+                        + psi3[k, j, i]
                     ) / 6
         # Christoffel symbols from general formula
         Gamma_general = christoffel_from_metric_deriv(g, psi3_sym)
@@ -594,8 +601,7 @@ class TestRicciDerivation:
                         R[k, l, i, j] = dGamma[i, k, j, l] - dGamma[j, k, i, l]
                         for m in range(n):
                             R[k, l, i, j] += (
-                                Gamma[k, i, m] * Gamma[m, j, l]
-                                - Gamma[k, j, m] * Gamma[m, i, l]
+                                Gamma[k, i, m] * Gamma[m, j, l] - Gamma[k, j, m] * Gamma[m, i, l]
                             )
         # Ricci
         Ric = np.zeros((n, n))
@@ -610,6 +616,7 @@ class TestRicciDerivation:
 # ============================================================
 # Section 10: Non-Circular Einstein Equations (Theorem 15.8c)
 # ============================================================
+
 
 class TestNonCircularEinstein:
     """Verify non-circular derivation chain D → g → Γ → R → G = 8πGT."""
@@ -633,7 +640,7 @@ class TestNonCircularEinstein:
                 Dpm = kl_divergence_gaussian(mu, cov, mu + dmu_i - dmu_j, cov)
                 Dmp = kl_divergence_gaussian(mu, cov, mu - dmu_i + dmu_j, cov)
                 Dmm = kl_divergence_gaussian(mu, cov, mu - dmu_i - dmu_j, cov)
-                g[i, j] = (Dpp - Dpm - Dmp + Dmm) / (4 * eps ** 2)
+                g[i, j] = (Dpp - Dpm - Dmp + Dmm) / (4 * eps**2)
         assert np.allclose(g, np.eye(n), atol=1e-4)
 
     def test_metric_determines_christoffel(self):
@@ -674,6 +681,7 @@ class TestNonCircularEinstein:
 # Section 11: No-Go Theorem (Theorem 15.9)
 # ============================================================
 
+
 class TestNoGoTheorem:
     """Verify: constant C → no non-trivial gravity."""
 
@@ -693,7 +701,7 @@ class TestNoGoTheorem:
         n = 3
         beta = 1.0
         # If C = const, then ∂_i C = 0, so g_ij = β²(⟨0·0⟩ - 0·0) = 0
-        g = beta ** 2 * np.zeros((n, n))
+        g = beta**2 * np.zeros((n, n))
         assert np.allclose(g, 0)
 
     def test_vacuum_einstein_maximally_symmetric(self):
@@ -719,6 +727,7 @@ class TestNoGoTheorem:
 # ============================================================
 # Section 12: Uniqueness Theorem (Theorem 15.10)
 # ============================================================
+
 
 class TestUniquenessTheorem:
     """Verify Lovelock uniqueness in 4D."""
@@ -753,6 +762,7 @@ class TestUniquenessTheorem:
 # Section 13: Curvature-Constraint Scaling Law (Theorem 15.11)
 # ============================================================
 
+
 class TestScalingLaw:
     """Verify curvature-constraint gradient scaling relations."""
 
@@ -766,8 +776,8 @@ class TestScalingLaw:
         g_inv = np.linalg.inv(g)
         # Random Hessian of C
         H_C = random_spd(n, rng)
-        bound = n * (n - 1) * beta ** 2 * np.linalg.norm(H_C, 2) ** 2 * (
-            np.linalg.norm(g_inv, 2) ** 2
+        bound = (
+            n * (n - 1) * beta**2 * np.linalg.norm(H_C, 2) ** 2 * (np.linalg.norm(g_inv, 2) ** 2)
         )
         assert bound > 0
         assert np.isfinite(bound)
@@ -775,7 +785,7 @@ class TestScalingLaw:
     def test_high_beta_scaling(self):
         """R scales as β² in the high-β regime."""
         betas = [1.0, 10.0, 100.0]
-        R_values = [b ** 2 * 1.0 for b in betas]  # R ~ β² * (const)
+        R_values = [b**2 * 1.0 for b in betas]  # R ~ β² * (const)
         for i in range(1, len(betas)):
             ratio = R_values[i] / R_values[i - 1]
             expected_ratio = (betas[i] / betas[i - 1]) ** 2
@@ -798,11 +808,11 @@ class TestScalingLaw:
         n = 4
         grad_C_sq = 3.0
         var_C = 1.5
-        R_predicted = beta ** 2 / N ** (2 / n) * grad_C_sq / var_C
+        R_predicted = beta**2 / N ** (2 / n) * grad_C_sq / var_C
         assert R_predicted > 0
         assert np.isfinite(R_predicted)
         # Scales inversely with N^{1/2} for n=4
-        R_predicted_2 = beta ** 2 / (2 * N) ** (2 / n) * grad_C_sq / var_C
+        R_predicted_2 = beta**2 / (2 * N) ** (2 / n) * grad_C_sq / var_C
         ratio = R_predicted / R_predicted_2
         assert ratio > 1  # more nodes → smaller curvature correction
 
@@ -811,13 +821,14 @@ class TestScalingLaw:
 # Section 14: Testable Regimes (Theorem 15.12)
 # ============================================================
 
+
 class TestTestableRegimes:
     """Verify identification of testable deviation regimes."""
 
     def test_planck_scale_regime(self):
         """Correction significant when R·ℓ²_CRS ≳ 1."""
         l_crs = 1e-35  # Planck length
-        R_threshold = 1.0 / l_crs ** 2
+        R_threshold = 1.0 / l_crs**2
         assert R_threshold > 0
         assert np.isfinite(R_threshold)
 
@@ -826,7 +837,7 @@ class TestTestableRegimes:
         hbar = 1.0
         lam = 0.3
         kB_T = 1.0
-        d_H = 2 ** 20
+        d_H = 2**20
         eps = 1e-3
         tau_ciir = (hbar / (lam * kB_T)) * np.log(d_H / eps)
         Delta_E = 1.0
@@ -840,8 +851,7 @@ class TestTestableRegimes:
         l_crs = 0.01
         n = 4
         areas = [1.0, 10.0, 100.0]
-        corrections = [alpha0 * np.log(A / l_crs ** (n - 1))
-                       for A in areas]
+        corrections = [alpha0 * np.log(A / l_crs ** (n - 1)) for A in areas]
         # Should grow logarithmically
         assert corrections[2] > corrections[1] > corrections[0]
         # And the ratio should be sub-linear
@@ -851,6 +861,7 @@ class TestTestableRegimes:
 # ============================================================
 # Section 15: Dimensional Consistency (Extended)
 # ============================================================
+
 
 class TestDimensionalConsistencyAudit:
     """Verify dimensional consistency of new quantities."""
@@ -880,7 +891,7 @@ class TestDimensionalConsistencyAudit:
         beta = 1.0
         sigma_star = np.zeros(n)
         samples = rng.standard_normal((N, n))
-        C_vals = np.sum(samples ** 2, axis=1)  # C = ||σ||²
+        C_vals = np.sum(samples**2, axis=1)  # C = ||σ||²
         weights = np.exp(-beta * C_vals)
         weights /= np.sum(weights)
         mean_C = np.sum(weights * C_vals)

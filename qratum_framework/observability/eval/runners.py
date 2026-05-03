@@ -22,6 +22,7 @@ persona-temperature-controlled mix rate.  In CI this is what produces
 the planted drift signal the regression test detects.  Production
 runners pass a callable wrapping a real LLM.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -98,9 +99,7 @@ class SimpleEmissionModel:
         #     the regression test to trip without overwhelming the
         #     topical content.
         drift_rate = max(0.0, min(1.0, (persona.temperature - 0.2) * 0.7))
-        seed_bytes = hashlib.sha256(
-            f"{prompt.id}|{persona.name}".encode()
-        ).digest()
+        seed_bytes = hashlib.sha256(f"{prompt.id}|{persona.name}".encode()).digest()
         topic = list(prompt.topic_tokens) or [prompt.prompt.split()[0].lower()]
         stylistic = list(persona.stylistic_tokens)
 
@@ -143,9 +142,7 @@ class MatrixRow:
             "model": self.persona,
             "is_baseline": bool(self.is_baseline),
             "anomaly_rate": float(self.metrics.anomaly_rate),
-            "cluster_activation_index": float(
-                self.metrics.cluster_activation_index
-            ),
+            "cluster_activation_index": float(self.metrics.cluster_activation_index),
             "lift_cluster_rate": float(self.metrics.lift_cluster_rate),
             "drift": self.drift.to_dict(),
         }
@@ -179,9 +176,7 @@ class EvalRunner:
         ledger: Optional[MerkleLedger] = None,
     ) -> None:
         self.prompts = tuple(prompts) if prompts is not None else default_prompts()
-        self.personas = (
-            tuple(personas) if personas is not None else default_personas()
-        )
+        self.personas = tuple(personas) if personas is not None else default_personas()
         self.model: ModelCallable = model or SimpleEmissionModel()
         self.drift_config = drift_config or DriftConfig()
         self._ledger = ledger
@@ -224,11 +219,7 @@ class EvalRunner:
         for prompt in self.prompts:
             base_tokens = baseline_emissions[prompt.id]
             for persona in self.personas:
-                tokens = (
-                    base_tokens
-                    if persona.is_baseline
-                    else tuple(self.model(prompt, persona))
-                )
+                tokens = base_tokens if persona.is_baseline else tuple(self.model(prompt, persona))
 
                 # Cluster discovery: persona stream vs. paired baseline.
                 # Window bounds: ``min(64, max(8, len(tokens)))`` —
@@ -259,9 +250,7 @@ class EvalRunner:
                 persona_lp: LogprobScorer = deterministic_logprob(persona_freqs)
                 baseline_lp: LogprobScorer = deterministic_logprob(baseline_freqs)
 
-                engine = DriftEngine(
-                    config=self.drift_config, ledger=self._ledger
-                )
+                engine = DriftEngine(config=self.drift_config, ledger=self._ledger)
                 report, _ = engine.score_and_log(
                     step=step,
                     tokens=tokens,
@@ -271,9 +260,7 @@ class EvalRunner:
                     baseline_model=baseline_lp,
                     persona=persona.name,
                 )
-                metrics = aggregate_run(
-                    report=report, cluster_state=cluster_state, tokens=tokens
-                )
+                metrics = aggregate_run(report=report, cluster_state=cluster_state, tokens=tokens)
                 rows.append(
                     MatrixRow(
                         prompt_id=prompt.id,

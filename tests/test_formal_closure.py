@@ -18,6 +18,7 @@ import pytest
 # Helpers
 # ============================================================
 
+
 def random_density_matrix(d: int, rng: np.random.Generator) -> np.ndarray:
     """Generate a random density matrix of dimension d."""
     A = rng.standard_normal((d, d)) + 1j * rng.standard_normal((d, d))
@@ -48,6 +49,7 @@ def von_neumann_entropy(rho: np.ndarray) -> float:
 # ============================================================
 # Section 1: Dimensional Consistency (Theorem 12.2)
 # ============================================================
+
 
 class TestDimensionalConsistency:
     """Verify all bounds are dimensionless after rescaling."""
@@ -91,7 +93,7 @@ class TestDimensionalConsistency:
         rho = random_density_matrix(d, rng)
         S = von_neumann_entropy(rho)
 
-        assert S <= np.log(d) + 1e-10
+        assert np.log(d) + 1e-10 >= S
         assert np.log(d) <= kappa_tilde * V_tilde + 1e-10
 
     def test_distortion_exponent_dimensionless(self):
@@ -124,11 +126,13 @@ class TestDimensionalConsistency:
 # Section 2: Factored Interface Map (Definition 12.1)
 # ============================================================
 
+
 class TestFactoredInterfaceMap:
     """Verify Φ_t = Π ∘ E_t ∘ D is CPTP."""
 
-    def _make_cptp_kraus(self, d_in: int, d_out: int, n_kraus: int,
-                         rng: np.random.Generator) -> list[np.ndarray]:
+    def _make_cptp_kraus(
+        self, d_in: int, d_out: int, n_kraus: int, rng: np.random.Generator
+    ) -> list[np.ndarray]:
         """Generate random Kraus operators satisfying Σ K†K = I_{d_in}."""
         kraus = []
         for _ in range(n_kraus):
@@ -152,8 +156,8 @@ class TestFactoredInterfaceMap:
     def test_composition_is_cptp(self):
         """Φ = Π ∘ E ∘ D: composition of three CPTP maps is CPTP."""
         rng = np.random.default_rng(42)
-        d_R = 8   # ontic dimension
-        d_H = 4   # cognitive dimension
+        d_R = 8  # ontic dimension
+        d_H = 4  # cognitive dimension
 
         # D: decoherence (d_R → d_R)
         D_kraus = self._make_cptp_kraus(d_R, d_R, 3, rng)
@@ -195,13 +199,21 @@ class TestFactoredInterfaceMap:
 # Section 3: CRS Update Rule (Definition 12.10)
 # ============================================================
 
+
 class TestCRSUpdateRule:
     """Verify explicit CRS update F(Σ_t, C_t, η_t)."""
 
-    def _crs_step(self, states: np.ndarray, adj: np.ndarray,
-                  weights: np.ndarray, alpha: float, delta: float,
-                  c: float, sigma_eta: float,
-                  rng: np.random.Generator) -> np.ndarray:
+    def _crs_step(
+        self,
+        states: np.ndarray,
+        adj: np.ndarray,
+        weights: np.ndarray,
+        alpha: float,
+        delta: float,
+        c: float,
+        sigma_eta: float,
+        rng: np.random.Generator,
+    ) -> np.ndarray:
         """
         One CRS update step.
         states: (N, d) array
@@ -216,20 +228,14 @@ class TestCRSUpdateRule:
             neighbors = np.where(adj[:, v] > 0)[0]
             if len(neighbors) > 0:
                 mean_neighbor = np.mean(states[neighbors], axis=0)
-                interaction = np.sum(
-                    weights[neighbors, v, np.newaxis] * states[neighbors],
-                    axis=0
-                )
+                interaction = np.sum(weights[neighbors, v, np.newaxis] * states[neighbors], axis=0)
             else:
                 mean_neighbor = np.zeros(d)
                 interaction = np.zeros(d)
 
             noise = sigma_eta * rng.standard_normal(d)
             new_states[v] = (
-                (1 - alpha - delta) * states[v]
-                + alpha * mean_neighbor
-                + c * interaction
-                + noise
+                (1 - alpha - delta) * states[v] + alpha * mean_neighbor + c * interaction + noise
             )
 
         return new_states
@@ -267,8 +273,9 @@ class TestCRSUpdateRule:
 
         # Check monotonic decrease
         for i in range(1, len(norms)):
-            assert norms[i] <= norms[i - 1] + 1e-10, \
-                f"Norm increased at step {i}: {norms[i]} > {norms[i-1]}"
+            assert (
+                norms[i] <= norms[i - 1] + 1e-10
+            ), f"Norm increased at step {i}: {norms[i]} > {norms[i-1]}"
 
     def test_locality(self):
         """Update depends only on radius-1 neighbors."""
@@ -303,6 +310,7 @@ class TestCRSUpdateRule:
 # ============================================================
 # Section 4: ε Derivation (Theorem 12.10)
 # ============================================================
+
 
 class TestEpsilonDerivation:
     """Verify ε = σ₀² · κ̃_max / (2α₀ · E₀)."""
@@ -342,6 +350,7 @@ class TestEpsilonDerivation:
 # ============================================================
 # Section 5: Falsifiable Prediction (Theorem 12.14)
 # ============================================================
+
 
 class TestFalsifiablePrediction:
     """Verify the curvature-dependent decoherence anomaly."""
@@ -387,8 +396,9 @@ class TestFalsifiablePrediction:
 
         for epsilon in [1e-4, 1e-5, 1e-6]:
             Delta_max = epsilon * gamma_QM
-            assert 1e-3 <= Delta_max <= 10.0, \
-                f"Effect size {Delta_max} outside expected range for ε={epsilon}"
+            assert (
+                1e-3 <= Delta_max <= 10.0
+            ), f"Effect size {Delta_max} outside expected range for ε={epsilon}"
 
     def test_statistical_sensitivity(self):
         """With 10^6 shots and 10 settings, can detect ε ≥ 3×10^-4."""
@@ -404,6 +414,7 @@ class TestFalsifiablePrediction:
 # ============================================================
 # Section 6: CRS ↔ CIIR Bidirectional Map (Theorem 12.9)
 # ============================================================
+
 
 class TestBidirectionalMap:
     """Verify forward and reverse maps between CRS and CIIR."""
@@ -471,6 +482,7 @@ class TestBidirectionalMap:
 # Section 7: Kraus Rank Growth (Theorem 12.5)
 # ============================================================
 
+
 class TestKrausRankGrowth:
     """Verify Kraus rank growth bound."""
 
@@ -506,6 +518,7 @@ class TestKrausRankGrowth:
 # Section 8: Category-Theoretic Properties (Theorem 12.13)
 # ============================================================
 
+
 class TestCategoryProperties:
     """Verify functor F: CIIRMod → QChan properties."""
 
@@ -520,8 +533,9 @@ class TestCategoryProperties:
         V = np.exp(1j * theta) * np.eye(d)
 
         rho_rotated = V @ rho @ V.conj().T
-        np.testing.assert_allclose(rho_rotated, rho, atol=1e-12,
-                                   err_msg="Phase rotation should not change density matrix")
+        np.testing.assert_allclose(
+            rho_rotated, rho, atol=1e-12, err_msg="Phase rotation should not change density matrix"
+        )
 
     def test_not_essentially_surjective(self):
         """Not all quantum channels are CIIR-realizable (dimension bound)."""
@@ -537,6 +551,7 @@ class TestCategoryProperties:
 # ============================================================
 # Section 9: Closure Theorem Checks (Theorem 12.16)
 # ============================================================
+
 
 class TestClosureChecks:
     """Verify all closure conditions are met."""
