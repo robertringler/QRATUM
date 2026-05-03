@@ -162,3 +162,7 @@ target/
 .sbom/diffs/*.json
 # Temporal compression experiment outputs
 artifacts/temporal_compression/
+
+# Vite + Vercel deployment
+.vercel
+.env*
