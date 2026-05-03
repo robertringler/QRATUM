@@ -1,7 +1,12 @@
-# Exclude everything from the Vercel deployment, then re-include only the
-# Vite + React frontend. Without this, Vercel auto-detects the Python `api/`
-# directory and tries to build FastAPI serverless functions, which fails the
-# zero-config Vite deployment.
+# Vercel deploy scope: Vite + React frontend only.
+#
+# This repo also contains a Python project (root pyproject.toml, requirements*.txt,
+# api/*.py FastAPI app, hundreds of *.py modules). Vercel's auto-detector treats
+# any of those as a signal to build a FastAPI serverless function alongside the
+# Vite frontend, which fails because there is no FastAPI entrypoint at the
+# conventional paths (api/main.py, api/index.py, etc.).
+#
+# Strategy: deny-by-default, then re-include only the Vite app inputs.
 
 # Ignore everything by default
 *
@@ -17,3 +22,17 @@
 !src/**
 !public
 !public/**
+
+# Defensive explicit exclusions of Python signals, even though `*` already
+# covers them. These are listed so the intent is unambiguous and so that any
+# future re-include rule cannot accidentally pull them back in.
+pyproject.toml
+poetry.lock
+requirements.txt
+requirements-*.txt
+setup.py
+setup.cfg
+Pipfile
+Pipfile.lock
+api/
+**/*.py
