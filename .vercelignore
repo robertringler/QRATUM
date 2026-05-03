@@ -1,0 +1,19 @@
+# Exclude everything from the Vercel deployment, then re-include only the
+# Vite + React frontend. Without this, Vercel auto-detects the Python `api/`
+# directory and tries to build FastAPI serverless functions, which fails the
+# zero-config Vite deployment.
+
+# Ignore everything by default
+*
+
+# Re-include only files needed to build and serve the Vite app
+!index.html
+!package.json
+!package-lock.json
+!vite.config.js
+!vercel.json
+!.gitignore
+!src
+!src/**
+!public
+!public/**
