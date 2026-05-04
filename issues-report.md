@@ -26,7 +26,7 @@
   22	SIM105	[ ] suppressible-exception
   18	B023  	[ ] function-uses-loop-variable
   16	SIM118	[ ] in-dict-keys
-  14	I001  	[*] unsorted-imports
+  13	I001  	[*] unsorted-imports
   12	N815  	[ ] mixed-case-variable-in-class-scope
   11	N818  	[ ] error-suffix-on-exception-name
   10	SIM110	[ ] reimplemented-builtin
@@ -50,8 +50,8 @@
    1	SIM222	[ ] expr-or-true
    1	SIM401	[ ] if-else-block-instead-of-dict-get
    1	UP007 	[ ] non-pep604-annotation-union
-Found 4858 errors.
-[*] 14 fixable with the `--fix` option (2192 hidden fixes can be enabled with the `--unsafe-fixes` option).
+Found 4857 errors.
+[*] 13 fixable with the `--fix` option (2192 hidden fixes can be enabled with the `--unsafe-fixes` option).
 ### Type Checking (mypy)
 quasim-api contains __init__.py but is not a valid Python package name
 Type checking completed
