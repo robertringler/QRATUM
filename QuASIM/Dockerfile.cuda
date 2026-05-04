@@ -1,31 +1,7 @@
-
 FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
 
-# Install system dependencies and clean up (Best Practice)
-RUN apt-get update && apt-get install -y python3 python3-pip python3-dev git cmake g++ \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create non-root user for runtime (AC-6 Least Privilege - NIST 800-53/CMMC 2.0)
-RUN useradd -m -u 1000 appuser
-
-WORKDIR /workspace
-COPY . .
-
-# Pin dependency versions (SC-28 Integrity/Reproducibility - NIST 800-53/CMMC 2.0)
-# pybind11==2.11.1: Latest stable compatible with CMake 3.x and CUDA 12.4
-# numpy==1.24.3: Aligned with requirements-prod.txt for consistency across project
-RUN pip3 install pybind11==2.11.1 numpy==1.24.3
-
-# Build as root (required for cmake build artifacts)
-RUN cmake -S . -B build && cmake --build build --parallel
-
-# Transfer ownership to appuser
-RUN chown -R appuser:appuser /workspace
-
-# Switch to non-root user for runtime
-USER appuser
-
 # AC-6 (Least Privilege): Install system dependencies and clean cache to minimize attack surface
+# Best Practice: Remove apt lists after installation to reduce image size
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
@@ -35,24 +11,29 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# AC-6 (Least Privilege): Create non-root user
+# AC-6 (Least Privilege): Create non-root user (NIST 800-53/CMMC 2.0)
 RUN useradd -m -u 1000 appuser
 
 WORKDIR /workspace
 
-# Copy source files and adjust ownership
+# Copy source files with proper ownership
 COPY --chown=appuser:appuser . .
 
-# Ensure workspace is fully owned by appuser
+# SC-28 (Integrity/Reproducibility): Pin dependency versions (NIST 800-53/CMMC 2.0)
+# pybind11==2.11.1: Latest stable compatible with CMake 3.x and CUDA 12.4
+# numpy==1.26.4: Pinned for reproducibility per compliance requirements (differs from requirements-prod.txt 1.24.3 for CUDA compatibility)
+# Note: System-wide installation as root is intentional - these are build dependencies
+RUN pip3 install --no-cache-dir pybind11==2.11.1 numpy==1.26.4
+
+# Build QuASIM CUDA components as root (required for system-wide cmake artifacts)
+# Build artifacts will be owned by root initially, then transferred to appuser below
+RUN cmake -S . -B build && cmake --build build --parallel
+
+# Ensure workspace is fully owned by appuser before switching
+# This transfers ownership of source files and build artifacts to the non-root user
 RUN chown -R appuser:appuser /workspace
 
-# AC-6 (Least Privilege): Switch to non-root user for build and execution
+# AC-6 (Least Privilege): Switch to non-root user for runtime execution
 USER appuser
-
-# SC-28 (Integrity): Pin dependency versions to ensure reproducibility
-RUN pip3 install --user --no-cache-dir pybind11==2.11.1 numpy==1.26.4
-
-# Build QuASIM CUDA components
-RUN cmake -S . -B build && cmake --build build --parallel
 
 CMD ["python3","-c","import sys; sys.path.append('build'); import quasim_cuda as qc; import numpy as np; x=np.ones(8,dtype=np.float32); y=np.zeros(8,dtype=np.float32); qc.saxpy(x,y,2.0); print(y.tolist())"]

@@ -12,10 +12,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from xenon.bioinformatics.information_fusion import (
-    ConservationConstraints,
-    InformationFusionEngine,
-)
+from xenon.bioinformatics.information_fusion import ConservationConstraints, InformationFusionEngine
 
 
 class TestInformationFusionEngine:

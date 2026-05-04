@@ -1,0 +1,48 @@
+{
+  "formula": "Ω(PR) = M · C · (1-D) · 1/(1+F) · Σ · 1/(1+κ)",
+  "interpretation": "Higher Ω converges first",
+  "convergence_sequence": [
+    {
+      "rank": 1,
+      "pr": 370,
+      "title": "Tensor Compression (AHTC)",
+      "omega_score": 0.308721,
+      "recommendation": "Proceed with gated merge"
+    }
+,
+    {
+      "rank": 2,
+      "pr": 387,
+      "title": "Quantum UI / WASM Pod Isolation",
+      "omega_score": 0.292041,
+      "recommendation": "Proceed with gated merge"
+    }
+,
+    {
+      "rank": 3,
+      "pr": 197,
+      "title": "Code Quality (PEP 8)",
+      "omega_score": 0.091987,
+      "recommendation": "Await remediation"
+    }
+,
+    {
+      "rank": 4,
+      "pr": 378,
+      "title": "Epistemic Heat Sink / zkML",
+      "omega_score": 0.000000,
+      "recommendation": "Await remediation"
+    }
+,
+    {
+      "rank": 5,
+      "pr": 149,
+      "title": "Exception Handling",
+      "omega_score": 0.000000,
+      "recommendation": "Await remediation"
+    }
+
+  ],
+  "trust_monotonicity": "∀ PRᵢ, Ω(PRᵢ) > Ω(PRᵢ₊₁) ⇒ 𝕋(i) ≥ 𝕋(i+1)",
+  "timestamp": "2025-12-29T20:57:10Z"
+}

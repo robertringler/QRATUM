@@ -86,9 +86,15 @@ hcal-nvidia = [
 hcal-amd = [
     "pyrsmi>=1.0",
 ]
+observability = [
+    "networkx>=3.0",
+    "scikit-learn>=1.3.0",
+]
 
 [project.scripts]
+qratum = "qratum_framework.cli:main"
 quasim-hcal = "quasim.hcal.cli:main"
+quasim-ciir = "quasim.ciir.cli:cli"
 quasim-revultra = "quasim.cli.revultra_cli:cli"
 quasim-qgh = "quasim.cli.qgh_cli:cli"
 quasim-terc-obs = "quasim.cli.terc_obs_cli:cli"
@@ -102,7 +108,7 @@ qubic-viz = "qubic.visualization.cli:cli"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["qratum*", "quasim*", "qnx*", "qstack*", "qubic*", "xenon*", "api*"]
+include = ["qratum*", "qratum_framework*", "quasim*", "qnx*", "qstack*", "qubic*", "xenon*", "api*", "qil*", "qcore*", "contracts*", "events*", "spine*", "adapters*", "omnilex*", "qratum_platform*", "verticals*", "aion*", "qdl*", "epistemic_heat_sink*", "topological_observer*"]
 
 [tool.black]
 line-length = 100
@@ -154,7 +160,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["quasim", "src", "QuASIM", "qstack", "qagents", "sdk", "integrations", "qubic"]
+source = ["quasim", "src", "QuASIM", "qstack", "qagents", "sdk", "integrations", "qubic", "qil", "qcore", "contracts", "events", "spine", "adapters", "epistemic_heat_sink", "topological_observer", "qratum_chess"]
 branch = true
 omit = [
     "*/tests/*",

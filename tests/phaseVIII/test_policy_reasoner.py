@@ -1,11 +1,6 @@
 """Tests for Policy Reasoner."""
 
-from quasim.policy import (
-    ConfigurationMutation,
-    PolicyDecision,
-    PolicyFramework,
-    PolicyReasoner,
-)
+from quasim.policy import ConfigurationMutation, PolicyDecision, PolicyFramework, PolicyReasoner
 
 
 def test_policy_reasoner_initialization():

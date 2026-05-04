@@ -4,6 +4,9 @@ from typing import Dict
 
 from ..logging import get_logger
 from ..types import SimulationBackend
+from .cpu import CPUBackend
+from .gpu import GPUBackend
+from .qpu import QPUBackend
 from .quasim_legacy_v120 import QuasimLegacyV120Backend
 from .quasim_modern import QuasimModernBackend
 from .qvr_win import QVRWinBackend
@@ -33,4 +36,4 @@ def get_backend_registry() -> dict[str, SimulationBackend]:
     return registry
 
 
-__all__ = ["get_backend_registry"]
+__all__ = ["get_backend_registry", "CPUBackend", "GPUBackend", "QPUBackend"]

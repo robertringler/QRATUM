@@ -7,11 +7,7 @@ and workflow integration.
 import pytest
 
 from qratum import PlatformConfig, QRATUMPlatform, create_platform
-from qratum.core.exceptions import (
-    BackendSelectionError,
-    PlatformConfigError,
-    WorkflowExecutionError,
-)
+from qratum.core.exceptions import PlatformConfigError
 
 
 class TestPlatformIntegration:
@@ -107,9 +103,7 @@ class TestPlatformIntegration:
         )
 
         problem_data = {"edges": [[0, 1], [1, 2], [2, 3]]}
-        result = platform.run_qaoa(
-            problem_type="maxcut", problem_data=problem_data, p_layers=3
-        )
+        result = platform.run_qaoa(problem_type="maxcut", problem_data=problem_data, p_layers=3)
 
         assert result is not None
         assert "problem_type" in result

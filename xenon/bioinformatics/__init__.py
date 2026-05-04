@@ -13,11 +13,7 @@ Provides tools for:
 - Pathway analysis
 """
 
-from xenon.bioinformatics.audit import (
-    AuditEntry,
-    AuditRegistry,
-    ViolationType,
-)
+from xenon.bioinformatics.audit import AuditEntry, AuditRegistry, ViolationType
 from xenon.bioinformatics.drug_target_scoring import DrugCandidate, DrugTargetScorer
 from xenon.bioinformatics.inference import (
     ConstraintType,

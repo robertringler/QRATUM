@@ -1,0 +1,37 @@
+# Contract Breach Analysis - QIL Example
+# QRATUM-OMNILEX Legal Intent Language
+
+LEGAL_INTENT {
+    intent_id: "OMNILEX-breach-001"
+    compute_task: "irac_analysis"
+    
+    jurisdiction: {
+        primary: "US-CA"
+        secondary: []
+    }
+    
+    domain: "contract"
+    reasoning: "irac"
+    attorney_supervised: true
+    
+    facts: """
+    AlphaCorp and BetaServices entered into a written service agreement on January 1, 2024.
+    The agreement required BetaServices to provide IT support services for 12 months with
+    response time of 4 hours for critical issues.
+    
+    On March 15, 2024, AlphaCorp experienced a critical server outage affecting production.
+    AlphaCorp contacted BetaServices at 9:00 AM requesting immediate assistance.
+    BetaServices did not respond until 6:00 PM the same day (9 hours later).
+    
+    The delay caused AlphaCorp to lose $50,000 in revenue from inability to process orders.
+    AlphaCorp had previously notified BetaServices that timely response was essential due
+    to e-commerce operations.
+    
+    AlphaCorp now seeks to recover damages for breach of contract.
+    """
+    
+    question: """
+    Did BetaServices breach the service agreement, and if so, what damages may AlphaCorp
+    recover under California law?
+    """
+}

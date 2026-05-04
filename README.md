@@ -1,479 +1,412 @@
-# QRATUM - Quantum-Classical Hybrid Materials Simulation Framework
+# 1. QRATUM
 
-### Rigorous NISQ-Era Quantum Computing with Classical Validation
-High-Assurance • Reproducible • Scientifically Validated • Materials Science Focus
+**A modular, deterministic, traceable execution framework for constraint-governed multi-agent computation, with a verifiable Merkle-anchored execution ledger and a plugin-based subsystem architecture.**
 
-[![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
-[![Development Status](https://img.shields.io/badge/status-prototype-yellow.svg)](QUANTUM_INTEGRATION_ROADMAP.md)
+[![Status](https://img.shields.io/badge/status-research%2Fbeta-yellow.svg)](#12-roadmap)
 
 ---
 
-## ⚠️ IMPORTANT DISCLAIMER
+## 2. System Overview
 
-**QRATUM is a PROTOTYPE research platform for NISQ-era quantum computing (December 2025).**
+QRATUM is a Python-first computational framework that composes three properties most multi-agent systems treat as optional:
 
-This project implements **genuine quantum algorithms** using Qiskit, but with critical limitations:
-- **Small systems only**: H₂ molecules (~2 qubits), small graphs (~10 nodes)
-- **Classical simulation**: Runs on classical computers simulating quantum behavior
-- **No quantum advantage**: Classical methods are faster for all current problem sizes
-- **Research/educational focus**: Demonstrating quantum algorithms, not production deployment
+1. **Constraint-governed execution** — every state transition is gated by an explicit constraint algebra; transitions that would violate an invariant are rejected, not retried silently.
+2. **Bit-exact determinism** — given identical inputs and configuration, every run produces byte-identical outputs and an identical execution trace. No wall-clock timestamps, no global RNG, no dictionary-order dependence in canonical encoders.
+3. **Cryptographic traceability** — every accepted step is appended to a Merkle-anchored ledger keyed by canonical-JSON SHA-256 over the step payload, so a third party can replay the run and verify each entry independently.
 
-**NOT suitable for**:
-- Production materials design
-- Large-scale tire optimization
-- Real-time industrial applications
-- Any claims of "quantum acceleration" over classical methods
+It exists because typical agent stacks freely interleave LLM calls, stochastic samplers, and side-effecting tools without a verification layer. That is acceptable for exploratory work but unacceptable when the same pipeline must be (a) auditable after the fact, (b) reproducible across machines, and (c) safe to extend with new agents or new physics modules without breaking guarantees the rest of the system relies on. QRATUM is the substrate that makes those three things hold simultaneously.
 
-See [QUANTUM_CAPABILITY_AUDIT.md](QUANTUM_CAPABILITY_AUDIT.md) for detailed analysis.
+The system targets a research-and-production hybrid envelope: rigorous enough that a falsification protocol can be applied to its claims, modular enough that experimental subsystems (plasma reconnection control, biokey-derived signing, trajectory controllers) live as plugins on the same spine.
 
 ---
 
-## 🎯 Category Positioning: Certifiable Quantum-Classical Convergence
+## 3. Core Design Principles
 
-**QRATUM created a new computational category.** Traditional quantum computers cannot be certified for mission-critical systems. Classical HPC is performance-bounded. QRATUM introduced **Certifiable Quantum-Classical Convergence (CQCC)** — combining quantum-enhanced performance with aerospace certification and defense compliance.
+| Invariant | What it means concretely | Where it is enforced |
+|---|---|---|
+| **Determinism** | No `time.time()`, no global RNG, no unordered iteration in any path that influences output. All randomness is seeded and explicit. | `qagents/control_geometry/`, `qagents/mvri/`, `qratum_framework/trace.py` (canonical-JSON, sorted keys, metadata excluded from hashes). |
+| **Traceability** | Every accepted step yields a `TraceEntry` with the prior hash, payload hash, and verdict. The chain is appendable but tamper-evident. | `qratum_framework/trace.py` (`UnifiedTraceEntry`, `MerkleLedger`). |
+| **Reproducibility** | Two runs with identical config and seed produce identical ledgers and identical hash chains. CI compares hashes, not floats. | Profiles in `qratum_framework/config.py` (`quick`, `medium`, `strong`, `full_fast`, `full_report`). |
+| **Modular isolation** | Subsystems communicate through typed adapters; a misbehaving plugin cannot corrupt the spine, only its own trace entries. | `qagents/adapters/`, `OperatorBackend` Protocol in `qratum_framework/operator.py`. |
+| **Execution safety** | Failure modes are named (Type I–IV in CIIR–CRS–RIC), so refusal to act is a first-class outcome, not an exception leak. The executor never raises into user code. | `qagents/ciir_crs_ric/failures.py`, `qagents/ciir_crs_ric/executor.py` (9-step `run_step`, never raises). |
+| **Verifiable computation** | Claims about behavior are stated as falsifiable verdicts (A / A0 / B) and screened by a published protocol. | `qratum_framework/falsifier.py`, `quasim/ciir/multi_qubit/analysis/falsification.py`. |
 
-**📚 Category Documentation:**
-- **[CATEGORY_INDEX.md](CATEGORY_INDEX.md)** — Navigation hub for all category documents
-- **[CATEGORY_DEFINITION.md](CATEGORY_DEFINITION.md)** — The laws and physics of CQCC
-- **[LIGHTNING_STRIKE_NARRATIVE.md](LIGHTNING_STRIKE_NARRATIVE.md)** — Category introduction strategy
-
-**Key Insight:** We don't compete in quantum computing. We created a market where we're the only inhabitant.
-
----
-
-## Current Capabilities (December 2025)
-
-### ✅ Implemented Quantum Algorithms
-
-**Variational Quantum Eigensolver (VQE)**:
-- H₂ molecule ground state energy calculation
-- Validated against classical Hartree-Fock
-- 2-4 qubits (small molecules only)
-- Runs on Qiskit Aer simulator
-- Example: `examples/quantum_h2_vqe.py`
-
-**Quantum Approximate Optimization Algorithm (QAOA)**:
-- MaxCut graph partitioning (4-10 nodes)
-- Ising spin glass models (proxy for materials defects)
-- Approximation ratio tracking vs. classical optimal
-- Example: `examples/quantum_maxcut_qaoa.py`
-
-**Quantum Infrastructure**:
-- Qiskit-based quantum circuit simulation
-- Configurable shot counts (statistical analysis)
-- Seed management for reproducibility
-- Optional IBM Quantum hardware access (requires API token)
-
-### ✅ Classical Simulation
-
-- **NumPy-based numerical methods**: Fast classical computation
-- **Deterministic execution**: Reproducible via seed management
-- **Modular architecture**: Clean separation of quantum and classical components
-- **Development tooling**: pytest, ruff, type hints, CI/CD
-
-### ❌ NOT Currently Implemented
-
-- **Large-scale quantum simulation**: Limited to ~10-20 qubits effectively
-- **cuQuantum GPU acceleration**: Planned for Phase 2
-- **Real materials optimization**: Current examples are toy problems
-- **Quantum error correction**: NISQ-era devices have no error correction
-- **Quantum speedup**: Classical methods outperform on all current problem sizes
-
+These invariants are not aspirational. They are the gating conditions for the test suites under `tests/test_qratum_framework.py`, `tests/test_ciir_crs_ric_strict.py`, `tests/test_mvri.py`, `tests/test_realworld_bridge.py`, `tests/test_control_geometry.py`, and `tests/test_ric_*.py`.
 
 ---
 
-## Architecture
-
-QRATUM follows a hybrid quantum-classical architecture:
+## 4. Architecture Breakdown
 
 ```
-quasim/
-├── quantum/             # ✨ NEW: Genuine quantum computing
-│   ├── core.py          # Backend configuration (Qiskit Aer, IBM Quantum)
-│   ├── vqe_molecule.py  # VQE for molecular ground states
-│   └── qaoa_optimization.py  # QAOA for combinatorial problems
-├── opt/                 # Classical optimization (fallbacks)
-├── sim/                 # Classical simulation primitives
-├── api/                 # API interfaces
-└── hcal/                # Hardware abstraction
-
-examples/
-├── quantum_h2_vqe.py    # H₂ molecule VQE demonstration
-└── quantum_maxcut_qaoa.py  # MaxCut QAOA demonstration
-
-tests/
-└── quantum/             # Quantum module tests (with/without dependencies)
+                                qratum_framework/
+                            ┌────────────────────────┐
+                            │  Operator (spine)      │
+                            │  ├─ OperatorBackend ◄──┼─── pluggable
+                            │  ├─ MerkleLedger       │
+                            │  ├─ Falsifier (A/A0/B) │
+                            │  └─ Health / Config    │
+                            └──────────┬─────────────┘
+                                       │ run_step
+                       ┌───────────────┼───────────────────────────┐
+                       ▼               ▼                           ▼
+              ┌────────────────┐  ┌────────────────┐      ┌────────────────────┐
+              │  CIIR–CRS–RIC  │  │ Reality        │      │ Domain plugins     │
+              │  control core  │  │ Interface      │      │ (plasma, VITRA-E0, │
+              │  (qagents/...) │  │ Controller     │      │  trajectory, ...)  │
+              └───────┬────────┘  └───────┬────────┘      └─────────┬──────────┘
+                      │                   │                         │
+                      ▼                   ▼                         ▼
+              ┌────────────────┐  ┌────────────────┐      ┌────────────────────┐
+              │ MVRI           │  │ RIC adapters   │      │ Real-world bridge  │
+              │ (state/inj.)   │  │ (qratum/ciir/  │      │ (sensors/actuators)│
+              │                │  │  crs)          │      │                    │
+              └────────────────┘  └────────────────┘      └────────────────────┘
+                                                                    │
+                                                                    ▼
+                                                           ┌──────────────────┐
+                                                           │  Trace ledger    │
+                                                           │  (Merkle chain)  │
+                                                           └──────────────────┘
 ```
 
-### Design Principles
-- **Transparency**: Honest about quantum limitations
-- **Validation**: All quantum results compared to classical
-- **Reproducibility**: Seed management for deterministic behavior
-- **Modularity**: Quantum modules are optional dependencies
-- **NISQ-Aware**: Designed for noisy, limited-qubit devices
+### 3.1 Control layer — CIIR–CRS–RIC
+
+The deterministic execution core. Three coupled modules:
+
+- **CIIR** (`qagents/ciir_crs_ric/ciir.py`, `qagents/framework/ciir.py`) — Constraint-governed Iterated Inference. Defines `State`, `Constraint`, the satisfaction predicate `phi`, the invariant predicate `Inv`, and the observer map `Omega` (which redacts internal-only fields).
+- **CRS** (`qagents/ciir_crs_ric/crs.py`, `qagents/framework/crs.py`) — Constrained Reactive System. Pure transition function `T` plus its constrained form `T_C` with explicit pre- and post-`phi` checks. Action sets are enumerated, never inferred.
+- **RIC** (`qagents/ciir_crs_ric/ric.py`, `qagents/reality_interface.py`, `qagents/reality_interface_v2.py`) — Reality Interface Controller. A perception → model → action loop with a strict 4-key output contract (`intent_interpretation`, `selected_action`, `predicted_outcome`, `fallback_plan`). RIC v2 adds k-step rollouts, seeded bounded perturbations, anti-deadlock heuristics.
+
+The `Operator` (`qratum_framework/operator.py`) wraps these via the `OperatorBackend` Protocol; the default `StrictCIIRBackend` delegates to `qagents.ciir_crs_ric.executor.run_step`, a 9-step pipeline that never raises.
+
+### 3.2 Orchestration layer — multi-agent coordination
+
+- **RIC adapters** (`qagents/adapters/{qratum,ciir,crs}.py`) translate between the controller's abstract action space and three concrete domain encodings (OSR/CEI/SF/HRD; loss/violation; CRSI). Each adapter ships a `Simulator`, a `Proposer`, and a `make_<sys>_controller` builder.
+- **CIIR↔RIC↔LLM bridge** (`qagents/ciir_ric_bridge.py`, `qagents/llm_backends.py`) maps controller snapshots to world-state inputs and action verdicts to learning-rate signals; LLM backends (OpenAI, Anthropic, Gemini, Local, plus a `DeterministicLLM`) fall back deterministically when no SDK or key is present.
+- **Trajectory controller** (`qagents/trajectory_controller/`) plans, predicts, validates, and executes numeric action vectors `[type_code, target_index, magnitude, seed]` over the real-world bridge and MVRI.
+
+### 3.3 State / ledger system
+
+- **Trace** (`qratum_framework/trace.py`) — `UnifiedTraceEntry` + `MerkleLedger`. Hashing uses canonical JSON (sorted keys, no whitespace) over a payload that explicitly excludes the `metadata` field, so cosmetic edits never alter the chain. `iter_with_hashes` provides a public audit cursor.
+- **MVRI** (`qagents/mvri/`) — Minimal Viable Reality Injector. Typed immutable `State`, entropy `H`, invariant `Inv`, the action gate `validate_action`, and the constraint gate (`ER/CS/SS/IC/AUD` predicates) feed every accepted injection into the loop trace.
+- **Real-world bridge** (`qagents/realworld_bridge/`) — typed `Sensor`/`Actuator` ABCs, an EMA-based `StateObserver` with a canonical nodes↔edges bijection, a four-stage safety gate (`MAG → TGT → ROC → MVR`), and a strict 9-step `ControlLoop`.
+
+### 3.4 Plugin / module system
+
+A subsystem becomes a QRATUM plugin by satisfying three contracts:
+
+1. Implement `OperatorBackend` (one method, `run_step`).
+2. Emit `TraceEntry`-compatible dictionaries.
+3. Register failure modes (subclasses of the named exceptions in `qagents/ciir_crs_ric/failures.py`).
+
+Existing plugins demonstrate the pattern:
+
+| Plugin | Path | Domain |
+|---|---|---|
+| Plasma reconnection control | `quasim/ciir/plasma/` | 2D RMHD ψ–ω, X/O-points, plasmoid scaling, controller |
+| CIIR multi-qubit falsification | `quasim/ciir/multi_qubit/analysis/` | projector derivation, A/A0/B verdicts |
+| VITRA-E0 sovereign genomics | `qrVITRA/merkler-static/` (Rust) | biokey, FIDO2 dual-signature, ZKP |
+| Control geometry | `qagents/control_geometry/` | sensitivity, reachability, controllability rank |
+
+### 3.5 CLI + API
+
+- **CLI**: `qratum` (entry point declared in `pyproject.toml` as `qratum = qratum_framework.cli:main`). Subcommands: `run`, `simulate`, `ledger`, `falsify`, `verify`.
+- **Programmatic API**: `from qratum_framework import Operator, MerkleLedger, FalsificationVerdict, PROFILES, check_health, check_readiness`. Adapter builders are re-exported from `qagents.adapters` and `qagents`.
 
 ---
 
-## NISQ-Era Quantum Computing Reality Check
+## 5. Data / Execution Flow
 
-**What NISQ means (2025)**:
-- **N**oisy: Error rates ~0.1-1% per gate
-- **I**ntermediate-**S**cale: 50-1000 qubits (but effective qubits much lower)
-- **Q**uantum: Real quantum devices, but no error correction
+```
+INPUT (CLI args / API call / config profile)
+   │
+   ▼
+[ 1 ] Profile resolution           qratum_framework/config.py → PROFILES[name]
+[ 2 ] Health / readiness check     qratum_framework/health.py
+[ 3 ] Operator construction        Operator(backend=StrictCIIRBackend(), ledger=MerkleLedger())
+   │
+   ▼
+[ 4 ] Per-step loop (Operator.run_step):
+        ├── 4a parse_intent          (RIC)
+        ├── 4b build Observation     (RIC; not raw State — Omega-filtered)
+        ├── 4c select_action         (RIC + adapter Proposer)
+        ├── 4d enumerate admissible  (CRS)
+        ├── 4e pre-phi check         (CIIR Constraint algebra)
+        ├── 4f apply T_C             (CRS: pure transition under constraint)
+        ├── 4g post-phi + Inv check  (CIIR)
+        ├── 4h validate_action gate  (MVRI / safety_gate)
+        └── 4i emit TraceEntry       (verdict ∈ {accept, reject(Type I–IV), hold})
+   │
+   ▼
+[ 5 ] Ledger append                  MerkleLedger.append(entry)
+        canonical_json(payload) → SHA-256 → linked to prev_hash
+[ 6 ] Falsification screen (opt.)    Falsifier → {A, A0, B}
+   │
+   ▼
+OUTPUT
+   ├── ledger.jsonl  (append-only, replayable)
+   ├── final state   (Omega-filtered)
+   └── verdict       (FalsificationVerdict)
+```
 
-**Practical implications**:
-- Circuit depth limited to ~100-5000 gates before noise dominates
-- Effective qubit counts: ~10-50 for useful computation
-- Probabilistic results require 1000+ shots for statistics
-- Classical simulation is often faster for small problems
-- Quantum advantage exists only for specific problems at specific scales
-
-**Current QRATUM quantum capabilities are for**:
-- Research and algorithm development
-- Educational demonstrations
-- Validating quantum algorithm implementations
-- Exploring quantum-classical hybrid workflows
-
-**NOT for**:
-- Production optimization
-- Claims of "quantum acceleration"
-- Large-scale materials simulation
-- Industrial deployment
+Inputs never bypass the constraint algebra. Failures short-circuit at the earliest gate that detects them, are typed (`Type I` precondition / `Type II` postcondition / `Type III` invariant / `Type IV` admissibility), and are recorded in the ledger with the same hashing discipline as accepted steps. A rejected step is part of the audit trail, not noise.
 
 ---
 
-## Installation
+## 6. Key Features
+
+- **Deterministic execution** — canonical-JSON hashing, seeded RNG, no global state; bit-exact reruns.
+- **Multi-agent coordination** — RIC adapters bridge a single controller to multiple domain encodings (qratum / CIIR / CRS) without state aliasing.
+- **Audit trail** — every step (accepted *and* rejected) is committed to a Merkle-linked ledger; tamper detection is O(1) per entry on replay.
+- **Runtime validation** — four-stage safety gate (`MAG → TGT → ROC → MVR`), constraint algebra pre/post-checks, observer-state invariants.
+- **Extensibility** — plugin contract is one Protocol method (`run_step`) plus typed trace entries; no central registry to fight.
+- **Falsification protocol** — verdicts A / A0 / B with a published 5-step screen (baseline / null / signal / artifacts / verdict).
+- **Fault isolation** — failures are typed, never silent; the operator catches and records them, the loop never raises into caller code.
+- **Health and readiness probes** — `check_health()` and `check_readiness()` for orchestration layers.
+- **CLI + programmatic parity** — every CLI subcommand is a thin shell over a public API call.
+- **Profiles** — `quick`, `medium`, `strong`, `full_fast`, `full_report` cover the latency / coverage trade space without ad-hoc flags.
+
+---
+
+## 7. Installation
 
 ### Prerequisites
-- Python 3.10 or later
-- pip package manager
 
-### Basic Installation (Classical + Quantum)
+- Python **3.10+**
+- `pip` ≥ 23
+- (Optional) Rust **1.75+** with `cargo` for the `qrVITRA/merkler-static/` and `Aethernet/` crates.
+- (Optional) NumPy / SciPy for the plasma reconnection plugin (`quasim/ciir/plasma/`).
+
+### Install
 
 ```bash
 git clone https://github.com/robertringler/QRATUM.git
 cd QRATUM
 
-# Install with quantum computing dependencies
-pip install -r requirements.txt
+python -m venv .venv
+source .venv/bin/activate      # POSIX
+# .venv\Scripts\activate       # Windows
 
-# Or install without quantum (classical only)
-pip install numpy pyyaml click matplotlib pytest
+pip install -e .
 ```
 
-### Verifying Quantum Installation
+This exposes the `qratum` console script and the `qratum_framework` and `qagents` packages.
 
-```python
-from quasim.quantum import check_quantum_dependencies, get_quantum_status
-
-print(get_quantum_status())
-# Output: "Quantum computing enabled with: qiskit, pennylane"
-```
-
-### IBM Quantum Hardware Access (Optional)
-
-To run on real quantum hardware:
-1. Create account at https://quantum-computing.ibm.com/
-2. Get API token from your account
-3. Configure in code:
-
-```python
-from quasim.quantum.core import QuantumConfig, QuantumBackend
-
-config = QuantumConfig(
-    backend_type="ibmq",
-    ibmq_token="YOUR_API_TOKEN_HERE",
-    shots=1024
-)
-```
-
-### Running Tests
+### Optional Rust components
 
 ```bash
-# Run all tests (including quantum if available)
-pytest tests/
+# Genomics / biokey + ZKP + FIDO2 dual-signature
+cd qrVITRA/merkler-static && ./build.sh && cargo test
 
-# Run only quantum tests
-pytest tests/quantum/
-
-# Skip slow quantum tests
-pytest tests/ -m "not slow"
-
-# Run with coverage
-pytest --cov=quasim tests/
+# Networking primitives
+cd Aethernet && cargo test
 ```
 
----
+### Verifying the install
 
-## Usage Examples
-
-### Example 1: VQE for H₂ Molecule
-
-```python
-from quasim.quantum.core import QuantumConfig
-from quasim.quantum.vqe_molecule import MolecularVQE
-
-# Configure quantum backend
-config = QuantumConfig(
-    backend_type="simulator",  # Use "ibmq" for real hardware
-    shots=1024,
-    seed=42
-)
-
-# Create VQE instance
-vqe = MolecularVQE(config)
-
-# Compute H₂ ground state energy
-result = vqe.compute_h2_energy(
-    bond_length=0.735,  # Angstroms
-    basis="sto3g",
-    use_classical_reference=True,
-    max_iterations=100
-)
-
-print(f"Ground state energy: {result.energy:.6f} Hartree")
-print(f"Classical reference: {result.classical_energy:.6f} Hartree")
-print(f"Error: {result.error_vs_classical:.6f} Hartree")
-
-# Expected: ~-1.137 Hartree (exact), QAOA within ~1-5% on simulator
-```
-
-Run the full example:
 ```bash
-python examples/quantum_h2_vqe.py
+PYTHONPATH=. python -m pytest tests/test_qratum_framework.py --override-ini="addopts=" -q
 ```
 
-### Example 2: QAOA for MaxCut
+A clean run reports the unified-spine test count and exits with code 0.
 
-```python
-from quasim.quantum.core import QuantumConfig
-from quasim.quantum.qaoa_optimization import QAOA
+---
 
-# Configure quantum backend
-config = QuantumConfig(backend_type="simulator", shots=1024)
+## 8. Usage Examples
 
-# Create QAOA solver with 3 layers
-qaoa = QAOA(config, p_layers=3)
+### 7.1 CLI
 
-# Define graph edges
-edges = [(0, 1), (1, 2), (2, 3), (3, 0), (0, 2)]
-
-# Solve MaxCut
-result = qaoa.solve_maxcut(
-    edges=edges,
-    max_iterations=100,
-    classical_reference=True  # Compare to exact solution
-)
-
-print(f"Best cut: {result.solution}")
-print(f"Cut value: {abs(result.energy):.0f} edges")
-print(f"Approximation ratio: {result.approximation_ratio:.2%}")
-
-# Expected: 0.7-0.95 approximation ratio for small graphs
-```
-
-Run the full example:
 ```bash
-python examples/quantum_maxcut_qaoa.py
+# Run a deterministic controller pass under a named profile
+qratum run --profile medium --seed 42 --ledger out/ledger.jsonl
+
+# Replay and verify a previously emitted ledger
+qratum verify --ledger out/ledger.jsonl
+
+# Apply the falsification screen to the resulting trace
+qratum falsify --ledger out/ledger.jsonl
+
+# Pure simulation (no domain plugin, useful for CI smoke)
+qratum simulate --steps 100 --seed 42
+
+# Inspect ledger entries
+qratum ledger --ledger out/ledger.jsonl --head 10
 ```
 
-### Example 3: Ising Model (Materials Science Proxy)
+### 7.2 Programmatic API
 
 ```python
-import numpy as np
-from quasim.quantum.core import QuantumConfig
-from quasim.quantum.qaoa_optimization import QAOA
-
-# 3-spin Ising model (proxy for lattice defects)
-coupling_matrix = np.array([
-    [0, -1, 0.5],
-    [-1, 0, -1],
-    [0.5, -1, 0]
-])
-
-config = QuantumConfig(backend_type="simulator", shots=1024)
-qaoa = QAOA(config, p_layers=3)
-
-result = qaoa.solve_ising(
-    coupling_matrix=coupling_matrix,
-    max_iterations=50
+from qratum_framework import (
+    Operator, MerkleLedger, PROFILES, FalsificationVerdict,
+    check_health, check_readiness,
 )
+from qratum_framework.operator import StrictCIIRBackend
 
-print(f"Optimal spin configuration: {result.solution}")
-print(f"Ground state energy: {result.energy:.4f}")
+assert check_health().ok and check_readiness().ok
 
-# Interpretation: '0'=spin up, '1'=spin down
+ledger = MerkleLedger()
+op = Operator(backend=StrictCIIRBackend(), ledger=ledger, profile=PROFILES["medium"])
+
+for step in range(100):
+    entry = op.run_step(input_payload={"step": step, "seed": 42})
+    if entry.verdict.kind == "reject":
+        # Typed failure modes: Type I–IV
+        print("rejected:", entry.verdict.failure_type, entry.verdict.reason)
+
+# Replay-style audit
+for prev_hash, payload_hash, entry in ledger.iter_with_hashes():
+    assert entry.prev_hash == prev_hash
+
+# Falsification screen
+verdict: FalsificationVerdict = op.falsify(ledger)
+assert verdict in {FalsificationVerdict.A, FalsificationVerdict.A0, FalsificationVerdict.B}
+```
+
+### 7.3 Custom backend (plugin)
+
+```python
+from qratum_framework.operator import Operator, OperatorBackend
+from qratum_framework.trace import UnifiedTraceEntry, MerkleLedger
+
+class MyBackend(OperatorBackend):
+    def run_step(self, state, action, *, profile):
+        # ... pure, deterministic, no global RNG ...
+        return UnifiedTraceEntry(
+            step=state.step + 1,
+            payload={"action": action, "result": ...},
+            metadata={"backend": "MyBackend"},  # excluded from hashing
+        )
+
+op = Operator(backend=MyBackend(), ledger=MerkleLedger())
 ```
 
 ---
 
-## Benchmarks & Validation
+## 9. Configuration Model
 
-### VQE Accuracy (H₂ Molecule)
+### 8.1 Hierarchy
 
-| Method | Energy (Hartree) | Error vs. Exact | Runtime |
-|--------|------------------|-----------------|---------|
-| Classical HF (exact) | -1.137 | 0% (reference) | <1s |
-| QRATUM VQE (simulator) | -1.12 to -1.14 | 1-5% | 30-60s |
-| Real IBM Quantum | -1.0 to -1.2 | 5-15% | 5-10min (queue) |
+Resolution order (highest precedence first):
 
-*Tested on H₂ at 0.735Å, STO-3G basis, 1024 shots, p=2 layers*
+1. **CLI flags** — `--profile`, `--seed`, `--ledger`, `--steps`, etc.
+2. **Programmatic overrides** — keyword arguments to `Operator(...)`.
+3. **Environment variables** — see §9.3.
+4. **Profile** — one of the named entries in `qratum_framework/config.py::PROFILES`.
+5. **Built-in defaults** — conservative; `quick` profile equivalent.
 
-### QAOA Approximation Ratios (MaxCut)
+### 8.2 Profiles
 
-| Graph Size | Classical Optimal | QAOA (p=3) | Approx. Ratio | Runtime |
-|------------|-------------------|------------|---------------|---------|
-| 4 nodes | 4 edges | 3-4 edges | 0.75-1.0 | ~20s |
-| 8 nodes | 8 edges | 6-8 edges | 0.75-1.0 | ~60s |
-| 12 nodes | 12 edges | 9-11 edges | 0.75-0.92 | ~120s |
+| Profile | Intent |
+|---|---|
+| `quick` | Smoke / CI; minimal step budget. |
+| `medium` | Default for development runs. |
+| `strong` | Tighter safety-gate thresholds; longer rollouts. |
+| `full_fast` | Production sweep; coverage over latency. |
+| `full_report` | Coverage + falsification screen + full ledger emission. |
 
-*Classical brute force becomes impractical beyond ~20 nodes*
+Profiles are *data*, not code paths. Adding a profile means adding a dict entry, not a branch.
 
-### Why Classical is Still Faster (2025)
+### 8.3 Environment variables (conceptual)
 
-QRATUM quantum algorithms run on **classical simulators** that:
-- Scale exponentially with qubit count (2^n states)
-- Are practical only up to ~30 qubits on modern hardware
-- Take seconds to minutes for problems solvable classically in milliseconds
+| Variable | Purpose |
+|---|---|
+| `QRATUM_PROFILE` | Default profile when `--profile` is absent. |
+| `QRATUM_LEDGER` | Default ledger path. |
+| `QRATUM_SEED` | Default seed; required for reproducibility. |
+| `QRATUM_LLM_BACKEND` | One of `deterministic`, `openai`, `anthropic`, `gemini`, `local`. Falls back to `deterministic` when SDK or key is absent. |
+| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` / `GOOGLE_API_KEY` | Credentials for non-deterministic backends; *never required for default operation*. |
 
-**Real quantum hardware** (IBM, Google, etc.):
-- Has queue times (minutes to hours)
-- Suffers from noise (requires error mitigation)
-- Currently offers no speedup for problems QuASIM can handle
-
-**Quantum advantage** exists theoretically but is not demonstrated in QRATUM because:
-- Problem sizes are too small (limited by NISQ noise)
-- Classical algorithms are highly optimized
-- Quantum error correction not yet available
+Missing credentials must not cause hard failures or process exits — the LLM layer is required to fall back deterministically (see `qagents/llm_backends.py`).
 
 ---
 
-## Roadmap
+## 10. Development Guide
 
-### Phase 1 (2025) - Current Implementation ✅
-- [x] VQE for H₂ molecule
-- [x] QAOA for MaxCut and Ising models
-- [x] Qiskit integration with simulators
-- [x] Classical validation and benchmarking
-- [x] Honest documentation of limitations
+### 9.1 Adding a module
 
-### Phase 2 (2026) - Expanded Quantum Capabilities 🚧
-- [ ] Larger molecules (LiH, BeH₂) with 4-6 qubits
-- [ ] Error mitigation techniques (measurement error, ZNE)
-- [ ] cuQuantum GPU acceleration for simulation
-- [ ] Integration with real IBM Quantum backends
-- [ ] Pennylane multi-backend support
+1. Place the module under an existing namespace (`qagents/<your_module>/` for control-layer code, `quasim/<your_module>/` for simulation-domain code).
+2. Define typed inputs and outputs (dataclasses or TypedDict).
+3. Forbid global mutable state and global RNG. Inject a `random.Random(seed)` if you need stochasticity.
+4. Add a dedicated test file under `tests/test_<your_module>.py`. Follow the pattern of `tests/test_mvri.py` or `tests/test_control_geometry.py`.
+5. Re-export your public surface from the appropriate `__init__.py`.
 
-### Phase 3 (2027) - Materials Science Applications 🔮
-- [ ] Small materials property calculations
-- [ ] Hybrid quantum-classical workflows for materials design
-- [ ] Integration with classical DFT codes (PySCF, Gaussian)
-- [ ] Tensor network methods for larger systems
-- [ ] Fault-tolerant quantum computing exploration (if available)
+### 9.2 Registering an agent / adapter
 
-### Long-term Vision (2028+) - Practical Quantum Advantage 🌟
-- [ ] Error-corrected logical qubits (when available)
-- [ ] Larger-scale materials simulations (>50 qubits)
-- [ ] Quantum machine learning for materials discovery
-- [ ] Integration with HPC clusters and quantum co-processors
-- [ ] Real industrial applications (tire materials, polymers, etc.)
+1. Implement a `Simulator`, a `Proposer`, and a `make_<sys>_controller` builder following the templates in `qagents/adapters/{qratum,ciir,crs}.py`.
+2. Re-export from `qagents/adapters/__init__.py`.
+3. Add adapter tests to `tests/test_ric_adapters.py`.
 
-**Caveat**: Long-term roadmap depends on quantum hardware development outside our control.
+### 9.3 Extending execution rules
 
----
+To add a new constraint or invariant to CIIR–CRS–RIC:
 
-## Scientific Integrity Statement
+1. Define the predicate in `qagents/ciir_crs_ric/ciir.py` (constraint) or `qagents/framework/ciir.py` (algebra).
+2. Wire it into `phi` (precondition), `Inv` (invariant), or both.
+3. If the violation is structurally new, declare a new failure type in `qagents/ciir_crs_ric/failures.py` (Type I–IV taxonomy).
+4. The executor's 9-step `run_step` will pick it up via the existing `OperatorBackend` contract — do not modify the executor itself for domain rules.
 
-QRATUM is committed to **rigorous scientific transparency**:
+### 9.4 Test commands (verified)
 
-1. **No false quantum claims**: All quantum capabilities are clearly documented with limitations
-2. **Classical validation**: Every quantum result is compared to classical methods
-3. **Honest benchmarking**: No cherry-picking of favorable results
-4. **Open source**: All code is available for review and validation
-5. **NISQ-aware**: Designed for current noisy quantum devices, not idealized quantum computers
-
-We acknowledge that:
-- Current quantum computing (2025) does not provide speedup for our problem sizes
-- Classical simulation will remain competitive for small problems indefinitely
-- Quantum advantage requires larger, error-corrected quantum computers (not yet available)
-- This is a research and educational platform, not a production system
-
----
-
-## Alternatives and Related Work
-
-If you need production-ready quantum computing tools:
-
-### Quantum Frameworks
-- **Qiskit** (IBM): Industry-standard quantum computing framework
-- **PennyLane** (Xanadu): Quantum machine learning focus
-- **Cirq** (Google): Google's quantum framework
-- **Amazon Braket**: Cloud quantum computing service
-
-### Classical Materials Simulation
-- **PySCF**: Ab initio quantum chemistry (Python)
-- **Gaussian**: Commercial quantum chemistry software
-- **VASP**: DFT for materials science
-- **LAMMPS**: Molecular dynamics
-
-### When to use QRATUM
-- Learning quantum algorithms (VQE, QAOA)
-- Prototyping hybrid quantum-classical workflows
-- Educational demonstrations
-- Research on NISQ-era algorithm development
-
-### When NOT to use QRATUM
-- Production materials optimization (use classical DFT)
-- Large-scale simulations (use HPC + VASP/Gaussian)
-- Industrial deployment (not ready for production)
-- Claims of "quantum acceleration" (not achieved)
-
----
-
-## Contributing
-
-We welcome contributions that:
-- Add validated quantum algorithms with benchmarks
-- Improve documentation and examples
-- Fix bugs or improve code quality
-- Add tests and validation
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-**We do NOT accept**:
-- Unsubstantiated quantum claims
-- Code without validation against classical methods
-- Features claiming quantum advantage without proof
-
----
-
-## Citation
-
-If you use QRATUM in research, please cite:
-
-```bibtex
-@software{qratum2025,
-  title = {QRATUM: Quantum-Classical Hybrid Materials Simulation Framework},
-  author = {QRATUM Development Team},
-  year = {2025},
-  url = {https://github.com/robertringler/QRATUM},
-  note = {NISQ-era quantum computing research platform}
-}
+```bash
+PYTHONPATH=. python -m pytest tests/test_qratum_framework.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ciir_crs_ric_strict.py     --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_mvri.py                    --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_realworld_bridge.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_control_geometry.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ric_v2.py                  --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ric_ciir_bridge.py         --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_plasma_reconnection.py     --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ciir_falsification.py      --override-ini="addopts=" -q
 ```
 
 ---
 
-## License
+## 11. Safety, Determinism & Verification Guarantees
 
-Apache 2.0 License - See [LICENSE](LICENSE) file for details.
+### 10.1 Execution constraints
+
+- The constraint algebra (`phi`, `Inv`) is checked **twice** per step: pre-transition and post-transition.
+- The safety gate runs four sequential checks (`MAG`, `TGT`, `ROC`, `MVR`). All four are evaluated before a verdict is emitted, so failure reports are complete, not first-hit.
+- The `ControlLoop` advances `model_state` only on *accepted* injection; a rejected step never mutates the state used by the next step's planner.
+- `SensorExhausted` ends a run early but cleanly; the ledger remains valid.
+
+### 10.2 Reproducibility enforcement
+
+- Hashing is over **canonical JSON**: keys sorted, no whitespace, `metadata` field excluded from the hash domain.
+- All RNG is seeded; no module reads `time.time()` or `os.urandom()` on the determinism path.
+- Profiles are pure data; flipping a profile cannot inject non-determinism via a code path.
+- CI compares ledger hashes across machines, not floating-point outputs. A diverging hash is a hard failure.
+
+### 10.3 Invalid-state handling
+
+- Failure modes are named: **Type I** (precondition violation), **Type II** (postcondition violation), **Type III** (invariant violation), **Type IV** (admissibility violation).
+- The executor's 9-step `run_step` never raises into caller code; it returns a `TraceEntry` whose verdict carries the failure type.
+- The ledger records rejections with the same hashing discipline as acceptances; an attacker cannot hide a rejected step by reordering.
+- The falsifier reduces the ledger to one of `{A, A0, B}`:
+  - **A** — claim verified within tolerance.
+  - **A0** — claim verified but mechanism differs from declared (e.g. amplitude damping rather than causal geometry).
+  - **B** — claim falsified.
+
+### 10.4 Cryptographic verification surface
+
+- Per-entry hash: SHA-256 over canonical-JSON payload.
+- Chain link: each entry stores the prior `payload_hash` as `prev_hash`; `MerkleLedger.iter_with_hashes` is the public audit cursor.
+- Optional Rust-side biokey signing (`qrVITRA/merkler-static/`) provides ephemeral SNP-derived keys, FIDO2 dual-signature, and ZKP attestation for sovereign-genomics use cases.
 
 ---
 
-## Acknowledgments
+## 12. Roadmap
 
-- **IBM Quantum**: Qiskit framework and quantum computing access
-- **Quantum Computing Community**: NISQ-era algorithm research
-- **Classical Chemistry**: PySCF for validation calculations
-- **Open Source**: NumPy, SciPy, and scientific Python ecosystem
+The following are tracked extension directions; none are required for current operation.
 
+- **Spine hardening** — strict mypy on `qratum_framework/`, atomic ledger writes with `fsync`, ledger-load verification, size caps on trace metadata.
+- **Distributed ledger mode** — multi-writer ledger with deterministic merge, suitable for federated agent runs.
+- **Hardware falsification** — execute the 5-step falsification protocol against physical quantum hardware (`run_falsification.py` is the simulator entry point today).
+- **Plugin SDK** — package the `OperatorBackend` Protocol, trace dataclasses, and failure taxonomy as a stand-alone wheel so out-of-tree plugins do not need to vendor `qagents/`.
+- **Plasma reconnection (extended)** — controller-aware mesh refinement for `quasim/ciir/plasma/`, FKR/plasmoid scaling at higher Lundquist numbers.
+- **Trajectory controller (k-step)** — extend RIC v2's k-step rollout into the trajectory controller for end-to-end horizon-aware planning over the real-world bridge.
+- **Formal verification** — discharge invariants `phi` and `Inv` to an SMT backend on a bounded fragment of the action space.
+
+Research directions (no committed timeline): falsification of causal-geometry claims at larger N, biokey-bound ledgers for genomics-grade reproducibility, and unification of MVRI's entropy/MI/TE metrics with CIIR's stability inequality.

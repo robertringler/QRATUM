@@ -76,7 +76,9 @@ class TireSimulationAdapter(SimulationAdapter):
 
         # Placeholder for actual file parsing
         # In production, this would parse Ansys CDB, VTK, or custom formats
-        raise NotImplementedError("File-based loading not yet implemented. Use dictionary input.")
+        raise ValueError(
+            "GAP-STUB-027: file-based loading is not implemented; pass data as dict directly"
+        )
 
     def _load_from_dict(self, data: dict[str, Any]) -> VisualizationData:
         """Load tire data from dictionary.

@@ -1,0 +1,54 @@
+# Contract Review - QIL Example
+# QRATUM-OMNILEX Legal Intent Language
+
+LEGAL_INTENT {
+    intent_id: "OMNILEX-review-001"
+    compute_task: "contract_review"
+    
+    jurisdiction: {
+        primary: "US"
+        secondary: []
+    }
+    
+    domain: "service_agreement"
+    reasoning: "irac"
+    attorney_supervised: true
+    
+    facts: """
+    SERVICE AGREEMENT
+    
+    This Agreement is entered into between Provider Inc. ("Provider") and Client Corp ("Client").
+    
+    1. SERVICES: Provider shall provide software development services as described in
+       Statements of Work to be agreed upon separately.
+    
+    2. PAYMENT: Client shall pay Provider's standard rates. Payment due within 30 days
+       of invoice.
+    
+    3. INTELLECTUAL PROPERTY: All work product, including pre-existing materials, shall
+       become the sole property of Provider. Client receives a limited license to use
+       deliverables for internal purposes only.
+    
+    4. INDEMNIFICATION: Client shall indemnify, defend and hold harmless Provider from
+       any and all claims, damages, liabilities and expenses arising out of or related
+       to this Agreement, including without limitation claims related to the services
+       or work product.
+    
+    5. LIABILITY: Provider's liability shall be limited to the fees paid by Client in
+       the preceding 12 months.
+    
+    6. TERM: This Agreement shall automatically renew for successive one-year terms
+       unless terminated by either party with 90 days written notice.
+    
+    7. TERMINATION: Provider may terminate this Agreement at any time for any reason
+       with 30 days notice. Client may terminate only for cause with 90 days notice.
+    
+    8. DISPUTES: All disputes shall be resolved by binding arbitration in Provider's
+       home jurisdiction. Client waives any right to participate in class action lawsuits.
+    """
+    
+    question: """
+    Review this service agreement for risks, red flags, and missing provisions.
+    What are the key concerns and recommendations?
+    """
+}

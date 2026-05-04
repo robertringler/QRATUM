@@ -192,8 +192,7 @@ class TestPRAutoResolver(unittest.TestCase):
         # Create a test file with conflict markers
         with tempfile.NamedTemporaryFile(mode="w", suffix=".md", delete=False) as f:
             test_file = Path(f.name)
-            f.write(
-                """
+            f.write("""
 
 Some content
 <<<<<<< HEAD
@@ -202,8 +201,7 @@ Original content
 New content
 >>>>>>> branch
 More content
-"""
-            )
+""")
 
         try:
             result = self.resolver._auto_resolve_file_conflict(str(test_file))

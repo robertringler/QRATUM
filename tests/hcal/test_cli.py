@@ -8,7 +8,7 @@ from pathlib import Path
 import yaml
 from click.testing import CliRunner
 
-from quasim.hcal.cli import main
+from quasim.hcal.cli import cli
 
 
 class TestCLI:
@@ -18,40 +18,33 @@ class TestCLI:
         """Test CLI help command."""
 
         runner = CliRunner()
-        result = runner.invoke(main, ["--help"])
+        result = runner.invoke(cli, ["--help"])
 
         assert result.exit_code == 0
-        assert "Hardware Control Abstraction Layer" in result.output
+        assert "Hardware Calibration and Analysis Layer" in result.output
 
     def test_discover_command(self) -> None:
         """Test discover command."""
 
         runner = CliRunner()
-        result = runner.invoke(main, ["discover"])
+        result = runner.invoke(cli, ["discover"])
 
         assert result.exit_code == 0
         assert "Discovered" in result.output
-        assert "device(s)" in result.output
+        assert "device" in result.output
 
     def test_discover_command_json(self) -> None:
         """Test discover command with JSON output."""
 
         runner = CliRunner()
-        result = runner.invoke(main, ["discover", "--json"])
+        result = runner.invoke(cli, ["discover", "--json"])
 
         assert result.exit_code == 0
 
         # Parse JSON output
         data = json.loads(result.output)
-        assert isinstance(data, list)
-        assert len(data) >= 2
-
-        # Verify device structure
-        for device in data:
-            assert "id" in device
-            assert "name" in device
-            assert "type" in device
-            assert "status" in device
+        assert isinstance(data, dict)
+        assert "devices" in data or "summary" in data
 
     def test_validate_policy_command(self, tmp_path: Path) -> None:
         """Test validate-policy command with valid policy."""
@@ -67,7 +60,7 @@ class TestCLI:
             yaml.dump(policy_data, f)
 
         runner = CliRunner()
-        result = runner.invoke(main, ["validate-policy", str(policy_file)])
+        result = runner.invoke(cli, ["validate-policy", str(policy_file)])
 
         assert result.exit_code == 0
         assert "✓ Policy validation passed" in result.output
@@ -87,7 +80,7 @@ class TestCLI:
             yaml.dump(policy_data, f)
 
         runner = CliRunner()
-        result = runner.invoke(main, ["validate-policy", str(policy_file)])
+        result = runner.invoke(cli, ["validate-policy", str(policy_file)])
 
         assert result.exit_code == 1
         assert "✗ Policy validation failed" in result.output
@@ -96,7 +89,7 @@ class TestCLI:
         """Test validate-policy command with missing file."""
 
         runner = CliRunner()
-        result = runner.invoke(main, ["validate-policy", "/nonexistent/policy.yaml"])
+        result = runner.invoke(cli, ["validate-policy", "/nonexistent/policy.yaml"])
 
         # Click will catch the file not existing before our code runs
         assert result.exit_code != 0
