@@ -1,4 +1,5 @@
 # QRATUM Architecture Diff — Before vs After Remediation
+
 _Phase_: U8 Final Verification  
 _Generated_: 2026-04-30
 

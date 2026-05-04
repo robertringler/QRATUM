@@ -36,6 +36,7 @@ This document describes the implementation of a **Tier-VI Genomic–Genealogical
 ### 1. Variant-Level Rarity Analysis
 
 For each SNP in the genome:
+
 - **Global Allele Frequency**: Position in worldwide population distribution
 - **Population-Specific Frequencies**: Stratification across major groups (EUR, AFR, EAS, SAS, AMR)
 - **Rarity Score**: Normalized metric (0-1) with 1 being ultra-rare
@@ -43,6 +44,7 @@ For each SNP in the genome:
 - **Classification**: Common (>5%), Rare (1-5%), Ultra-rare (<0.01%), Private (unique)
 
 **Example Output:**
+
 ```json
 {
   "rsid": "rs3131972",
@@ -58,12 +60,14 @@ For each SNP in the genome:
 ### 2. Haplotype Block Analysis
 
 Extended haplotype blocks are identified and analyzed for:
+
 - **IBD Signatures**: Identity-by-descent scoring
 - **Founder Effects**: Runs of homozygosity indicating population bottlenecks
 - **Block Length**: Physical genomic span in base pairs
 - **Population Prevalence**: Distribution across global populations
 
 **Key Metrics:**
+
 - IBD Score: Measures shared ancestry segments
 - Founder Signature: Boolean indicator of founder effects
 - Block Length: Longer blocks suggest recent shared ancestry
@@ -71,6 +75,7 @@ Extended haplotype blocks are identified and analyzed for:
 ### 3. Genome-Wide Rarity Assessment
 
 Composite analysis across all variants:
+
 - **Total SNPs Analyzed**: 677,436
 - **Ultra-Rare Count**: Variants with frequency < 0.0001
 - **Private Variants**: Not found in reference databases
@@ -79,6 +84,7 @@ Composite analysis across all variants:
 - **Rarity Percentile**: Position in global distribution
 
 **Example Results:**
+
 ```
 Genome-wide Rarity Percentile: 17.38%
 (More common than 82.62% of global population)
@@ -89,7 +95,9 @@ Private variants: 892
 ### 4. Haplogroup Determination
 
 #### Y-Chromosome Haplogroups
+
 Major paternal lineages identified:
+
 - **R1b**: Western European (most common in British Isles, Iberia)
 - **R1a**: Eastern European / Central Asian
 - **I1**: Scandinavian
@@ -99,7 +107,9 @@ Major paternal lineages identified:
 - **Q**: Native American / Central Asian
 
 #### Mitochondrial Haplogroups
+
 Major maternal lineages:
+
 - **H**: European (most common, 40-50% of Europeans)
 - **J**: Near Eastern / European
 - **T**: European / Near Eastern
@@ -108,6 +118,7 @@ Major maternal lineages:
 - **L**: African
 
 **Example Output:**
+
 ```
 Y-Haplogroup: R1b (Western European)
 mtDNA Haplogroup: H (European)
@@ -118,6 +129,7 @@ mtDNA Haplogroup: H (European)
 #### Royal Houses Analyzed
 
 The system traces potential connections to:
+
 - **House of Plantagenet** (1154-1485)
 - **House of Tudor** (1485-1603)
 - **House of Stuart** (1603-1714)
@@ -132,6 +144,7 @@ The system traces potential connections to:
 #### Lineage Path Construction
 
 For each potential royal connection:
+
 1. **Probabilistic Nodes**: Ancestor nodes with confidence intervals
 2. **Temporal Validation**: Birth/death year plausibility checks
 3. **Genomic Evidence**: Haplogroup matching, IBD segments
@@ -139,6 +152,7 @@ For each potential royal connection:
 5. **Combined Probability**: Bayesian fusion of evidence streams
 
 **Example Path:**
+
 ```
 Modern Subject (2025)
   ↓ 1 generation (probability: 0.90)
@@ -157,6 +171,7 @@ Historical Evidence Strength: 0.30
 #### Royal Connection Results
 
 **Example Analysis:**
+
 ```
 Total Royal Connections: 6
 Highest Probability House: House of Tudor
@@ -174,13 +189,16 @@ Connections by House:
 ## Comparison with Existing Platforms
 
 ### Consumer Platforms (Ancestry, 23andMe)
+
 **Their Capabilities:**
+
 - Basic ethnicity estimates
 - Simple relative matching
 - Health trait predictions
 - Y/mt haplogroup (basic)
 
 **Our Advantages:**
+
 - ✅ Multi-level rarity quantification
 - ✅ IBD segment analysis with founder detection
 - ✅ Genome-wide composite rarity metrics
@@ -190,13 +208,16 @@ Connections by House:
 - ✅ Research-grade population genetics
 
 ### Academic Tools (PLINK, ADMIXTURE)
+
 **Their Capabilities:**
+
 - Population structure analysis
 - Association studies
 - Linkage analysis
 - Basic QC metrics
 
 **Our Advantages:**
+
 - ✅ Integrated rarity + lineage system
 - ✅ Royal house-specific signatures
 - ✅ Temporal plausibility validation
@@ -209,11 +230,13 @@ Connections by House:
 ### Reference Databases
 
 **Population Genetics:**
+
 - gnomAD-style allele frequency distributions
 - 1000 Genomes Project population stratification
 - Ancient DNA reference panels
 
 **Genealogical Records:**
+
 - Royal house genetic signatures (Y-DNA, mtDNA)
 - Historical peerage records
 - Documented noble lineages
@@ -222,17 +245,20 @@ Connections by House:
 ### Analytical Methods
 
 **Rarity Scoring:**
+
 ```python
 rarity_score = -log10(allele_frequency) / 6.0
 rarity_percentile = 100 * (1 - exp(-3.0 * rarity_score))
 ```
 
 **IBD Detection:**
+
 ```python
 ibd_score = (block_length_bp / 1000000) * (1 - heterozygosity_rate)
 ```
 
 **Lineage Probability:**
+
 ```python
 path_probability = base_probability ^ generations
 temporal_plausibility = valid_age_gaps / total_gaps
@@ -242,6 +268,7 @@ combined_evidence = (genomic_strength + historical_strength) / 2
 ### Computational Performance
 
 **Processing Time:**
+
 - Variant rarity analysis: ~10 seconds (677K SNPs)
 - Haplotype block identification: ~2 seconds
 - Genome-wide metrics: ~1 second
@@ -250,6 +277,7 @@ combined_evidence = (genomic_strength + historical_strength) / 2
 - **Total: ~14 seconds** (additional to base pipeline)
 
 **Memory Usage:**
+
 - Peak: ~150 MB (additional)
 - Base pipeline: ~42 MB
 - Total: ~192 MB
@@ -261,6 +289,7 @@ combined_evidence = (genomic_strength + historical_strength) / 2
 For the AncestryDNA.txt dataset:
 
 **Genome-Wide Rarity:**
+
 - Total SNPs: 677,436
 - Rarity Percentile: 17.38% (more common than 82.62% of population)
 - Ultra-rare variants: ~15,000
@@ -268,7 +297,8 @@ For the AncestryDNA.txt dataset:
 - Rarity Z-score: -0.17 (slightly below population mean)
 
 **Haplogroups:**
-- Y-Chromosome: R1b (Western European) 
+
+- Y-Chromosome: R1b (Western European)
   - Common in British Isles, France, Iberia
   - Present in ~50% of Western European males
 - Mitochondrial: H (European)
@@ -276,6 +306,7 @@ For the AncestryDNA.txt dataset:
   - Present in ~40-50% of Europeans
 
 **Royal Connections:**
+
 - 6 potential royal house connections identified
 - Houses: Plantagenet, Tudor, Stuart, Hanover, Habsburg, Bourbon
 - Highest probability: 12% (House of Tudor)
@@ -289,6 +320,7 @@ The genome shows typical Western European ancestry patterns with R1b/H haplogrou
 ### Confidence Bounds
 
 All probabilistic inferences include confidence intervals:
+
 - **Rarity Percentiles**: ±5% (based on reference database size)
 - **Lineage Probabilities**: Confidence intervals calculated per path
 - **Haplogroup Assignment**: >95% confidence for major groups
@@ -346,16 +378,19 @@ The system generates:
 ### Interpreting Results
 
 **High Rarity (>80th percentile):**
+
 - Indicates unusual genetic profile
 - May suggest isolated ancestry or recent admixture
 - Check for ultra-rare or private variants
 
 **Royal Connections:**
+
 - Probabilities >10%: Worth investigating further
 - Probabilities 1-10%: Plausible but uncertain
 - Probabilities <1%: Statistically insignificant
 
 **Haplogroups:**
+
 - Match expected for reported ancestry
 - Unexpected haplogroups suggest unreported ancestry
 - Sub-haplogroup resolution requires targeted sequencing
@@ -392,18 +427,21 @@ The system generates:
 ## References
 
 ### Genomic Databases
+
 1. gnomAD Consortium - Global allele frequencies
 2. 1000 Genomes Project - Population diversity
 3. Human Genome Diversity Project
 4. Ancient DNA databases (Allen Ancient DNA Resource)
 
 ### Royal Genealogy
+
 1. Royal house Y-DNA studies (Larmuseau et al.)
 2. European peerage records
 3. Burke's Peerage & Baronetage
 4. Historical census and parish records
 
 ### Methodology
+
 1. Williams & Beer (2010) - Partial Information Decomposition
 2. Schreiber (2000) - Transfer Entropy
 3. Population genetics theory (Cavalli-Sforza, Menozzi, Piazza)

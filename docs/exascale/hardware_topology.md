@@ -5,6 +5,7 @@
 The QRATUM ExaScale Initiative (QEI) represents a revolutionary approach to supercomputing architecture, targeting 2.5+ ExaFLOPS peak performance for TOP500 #1 position by 2028. This document details the complete hardware topology, from individual GPU compute nodes through rack-scale integration to facility-level infrastructure.
 
 **Key Performance Targets:**
+
 - **Peak Performance:** 2.5 ExaFLOPS (FP64), 10+ ExaFLOPS (FP16/TF32)
 - **Scale:** 50,000 NVIDIA H100/H200 GPUs across 6,250 CN-QES nodes
 - **Power Efficiency:** 50+ GFLOPS/Watt (GREEN500 target)
@@ -30,6 +31,7 @@ The Compute Node - Quantum Enhanced Substrate (CN-QES) forms the fundamental bui
 | Node Power | Total | - | **7,480** |
 
 **Node Performance:**
+
 - **Peak FP64:** 400 TFLOPS (8 × 50 TFLOPS per H100)
 - **Peak FP16/TF32:** 1,600 TFLOPS
 - **Memory Bandwidth:** 25.6 TB/s aggregate GPU memory
@@ -54,6 +56,7 @@ All-to-all 900 GB/s bidirectional connectivity
 ```
 
 **NVLink Characteristics:**
+
 - **Link Speed:** 900 GB/s per NVSwitch
 - **Latency:** < 2 μs GPU-to-GPU within node
 - **Topology:** Fat-tree with 4:1 oversubscription to host
@@ -63,12 +66,14 @@ All-to-all 900 GB/s bidirectional connectivity
 ### CPU-GPU Coherence
 
 **PCIe 5.0 Connectivity:**
+
 - 2 × AMD EPYC 9654 CPUs with 128 PCIe 5.0 lanes each
 - 16 lanes per GPU (x16 Gen5) = 64 GB/s bidirectional
 - CPU-GPU coherence via GPU Direct RDMA
 - Zero-copy transfers for < 4 KB payloads
 
 **Memory Hierarchy:**
+
 ```
 L1: GPU Register File (32 KB/SM, 132 SMs = 4.2 MB)
 L2: GPU L2 Cache (50 MB per H100)
@@ -93,6 +98,7 @@ L6: Distributed Storage (50 PB @ 10 TB/s)
 | **Rack Total** | **42U** | - | **62.50** |
 
 **Rack Performance:**
+
 - **Peak FP64:** 3.2 PFLOPS per rack
 - **GPU Count:** 64 GPUs per rack
 - **Network Uplink:** 51.2 Tb/s aggregate to spine
@@ -117,12 +123,14 @@ The QRATUM ExaScale system employs aggressive direct liquid cooling to manage 62
 | Coolant Distribution | Rear-door heat exchanger + cold plates | GPU/CPU direct contact |
 
 **Cold Plate Design:**
+
 - Micro-channel cold plates bonded to GPU/CPU dies
 - Thermal Interface Material (TIM): Indium alloy (κ > 80 W/m·K)
 - Cold plate efficiency: > 95% heat removal
 - Temperature gradient: < 10°C die-to-coolant
 
 **Cooling Topology:**
+
 ```
 Facility Chiller (5 MW capacity, N+1 redundant)
     |
@@ -144,6 +152,7 @@ Heat Rejection (Cooling towers, 50 MW capacity)
 ```
 
 **Power Usage Effectiveness (PUE):**
+
 - Target PUE: 1.15
 - Cooling Power: 6.75 MW (15% of 45 MW)
 - Facility Overhead: 2.25 MW (5% lighting, monitoring, etc.)
@@ -173,12 +182,14 @@ CN-QES Node Power Supplies (12V/48V rails)
 ```
 
 **Power Budget per Rack:**
+
 - Compute: 59.84 kW (CN-QES nodes)
 - Networking: 2.00 kW (ToR switches)
 - Infrastructure: 0.66 kW (PDUs, monitoring)
 - **Total:** 62.50 kW per rack
 
 **Uninterruptible Power Supply (UPS):**
+
 - Capacity: 50 MVA (20-second holdup)
 - Battery: Li-ion, 15 MWh
 - Diesel Generators: 4 × 15 MW (N+1 redundant)
@@ -189,6 +200,7 @@ CN-QES Node Power Supplies (12V/48V rails)
 ### Data Center Layout
 
 **Facility Dimensions:**
+
 - Floor Space: 20,000 m² (215,000 sq ft)
 - Raised Floor Height: 1.2 m (4 ft)
 - Ceiling Height: 6 m (20 ft)
@@ -253,6 +265,7 @@ The QRATUM ExaScale network implements a modified Dragonfly+ topology optimized 
 | Spine (Tier-3) | 128 | 1600G | 256 | 410 Tb/s |
 
 **Network Performance:**
+
 - **Node-to-Node Latency:** < 500 ns (intra-group)
 - **Cross-Group Latency:** < 2 μs (via global spine)
 - **Bisection Bandwidth:** 410 Tb/s (system-wide)
@@ -271,12 +284,14 @@ The QRATUM ExaScale network implements a modified Dragonfly+ topology optimized 
 | Archive | Tape (LTO-9) | 500 PB | 1 TB/s | 60 s |
 
 **Local NVMe Storage:**
+
 - 6,250 nodes × 8 drives × 30.72 TB = 1.536 EB raw
 - Effective capacity: 49.2 PB (3% formatted + parity)
 - RAID-6 with distributed parity
 - Checkpointing: 49.2 PB / 10 TB/s = 82 minutes (full system)
 
 **Lustre Parallel Filesystem:**
+
 - 100 Object Storage Servers (OSS)
 - 500 Object Storage Targets (OSTs)
 - Metadata Servers (MDS): 10 active + 10 standby
@@ -289,12 +304,14 @@ The QRATUM ExaScale network implements a modified Dragonfly+ topology optimized 
 ### Seismic and Structural
 
 **Seismic Design:**
+
 - Seismic Zone: 4 (high seismic activity)
 - Base Isolation: Friction pendulum bearings
 - Rack Anchoring: 4-point seismic bracing per rack
 - Design Acceleration: 0.4g horizontal, 0.2g vertical
 
 **Floor Loading:**
+
 - Dead Load: 12 kN/m² (250 lb/sq ft)
 - Live Load: 7 kN/m² (150 lb/sq ft)
 - Concentrated Load: 30 kN per rack footprint
@@ -323,6 +340,7 @@ The QRATUM ExaScale network implements a modified Dragonfly+ topology optimized 
 ### Environmental Monitoring
 
 **Sensors per Rack:**
+
 - Temperature: 8 sensors (inlet/outlet per node)
 - Humidity: 2 sensors (top/bottom)
 - Airflow: 2 differential pressure sensors
@@ -331,6 +349,7 @@ The QRATUM ExaScale network implements a modified Dragonfly+ topology optimized 
 - Power: 3 current/voltage sensors per phase
 
 **Facility-Wide Monitoring:**
+
 - Total Sensors: ~15,000 (20 per rack × 781 racks)
 - Polling Rate: 1 Hz (critical), 0.1 Hz (non-critical)
 - Data Retention: 1 year full resolution
@@ -376,48 +395,58 @@ The QRATUM ExaScale network implements a modified Dragonfly+ topology optimized 
 ### Theoretical Peak Performance
 
 **FP64 (Double Precision):**
+
 - 50,000 GPUs × 50 TFLOPS = 2,500 PFLOPS = **2.5 ExaFLOPS**
 
 **TF32/FP16 (AI/ML Workloads):**
+
 - 50,000 GPUs × 200 TFLOPS = 10,000 PFLOPS = **10 ExaFLOPS**
 
 **INT8 (Inference):**
+
 - 50,000 GPUs × 400 TOPS = 20,000 POPS = **20 ExaOPS**
 
 ### Sustained Performance (HPL)
 
 **LINPACK Efficiency Projection:**
+
 - Network overhead: 5% (DSR routing + topology)
 - Memory bandwidth: 8% (DGEMM cache misses)
 - Load imbalance: 2% (stragglers, OS jitter)
 - **Efficiency:** 85%
 
 **Sustained HPL Performance:**
+
 - 2.5 ExaFLOPS × 0.85 = **2.125 ExaFLOPS** (85% efficiency)
 
 **Comparison to TOP500 #1 (as of June 2024):**
+
 - Current #1: Frontier (ORNL) @ 1.194 ExaFLOPS
 - **QRATUM Advantage:** 1.78× faster
 
 ### Energy Efficiency
 
 **GREEN500 Efficiency:**
+
 - Sustained HPL: 2.125 ExaFLOPS = 2.125 × 10¹⁸ FLOPS
 - System Power: 35 MW = 35 × 10⁶ W
 - **Efficiency:** 60.7 GFLOPS/Watt
 
 **Comparison to GREEN500 #1 (as of November 2023):**
+
 - Current #1: Henri (CEA) @ 65.4 GFLOPS/Watt
 - **QRATUM Target:** 50-65 GFLOPS/Watt (top 3)
 
 ### Reliability and Availability
 
 **Mean Time Between Failures (MTBF):**
+
 - Component failure rate: λ = 1/(100,000 hours) per GPU
 - System failure rate: 50,000 × λ = 0.5 failures/hour
 - **System MTBF:** 2 hours
 
 **Mitigation Strategies:**
+
 1. **Checkpoint/Restart:** Every 15 minutes (< 10% overhead)
 2. **Proactive Replacement:** SMART monitoring, predict failures 24h ahead
 3. **N+1 Spares:** 2% spare nodes (125 nodes) for hot-swap
@@ -430,6 +459,7 @@ The QRATUM ExaScale network implements a modified Dragonfly+ topology optimized 
 ### Thermal Simulation
 
 **Computational Fluid Dynamics (CFD) Results:**
+
 - Solver: ANSYS Fluent, 50M cell mesh
 - Max GPU Temperature: 78°C (within 80°C spec)
 - Max CPU Temperature: 82°C (within 95°C spec)
@@ -439,6 +469,7 @@ The QRATUM ExaScale network implements a modified Dragonfly+ topology optimized 
 ### Power Integrity
 
 **SPICE Simulation (PDN):**
+
 - Voltage Droop: < 50 mV at 700A transient (H100)
 - Power Supply Rejection Ratio (PSRR): > 60 dB @ 100 kHz
 - Decoupling Capacitance: 2,000 μF per GPU rail
@@ -447,6 +478,7 @@ The QRATUM ExaScale network implements a modified Dragonfly+ topology optimized 
 ### Structural Analysis
 
 **Finite Element Analysis (FEA):**
+
 - Maximum Stress: 180 MPa (< 250 MPa yield for steel)
 - Deflection: < 2 mm at center of raised floor
 - Natural Frequency: 15 Hz (> 10 Hz, avoids seismic resonance)
@@ -455,29 +487,34 @@ The QRATUM ExaScale network implements a modified Dragonfly+ topology optimized 
 ## Manufacturing and Integration Plan
 
 ### Phase 1: Component Procurement (Months 1-18)
+
 1. Secure GPU allocation (DOE/DOD priority)
 2. AetherFabric-X ASIC tapeout and validation (Months 1-12)
 3. CN-QES node design and pilot build (Months 6-12)
 4. Facility site preparation (Months 1-18)
 
 ### Phase 2: Node Integration (Months 12-24)
+
 1. CN-QES node mass production (100 nodes/week)
 2. Burn-in testing (72-hour torture test per node)
 3. Network switch integration and testing
 4. Cooling system installation
 
 ### Phase 3: Rack Assembly (Months 18-30)
+
 1. Rack-level integration (10 racks/week)
 2. End-to-end power and cooling validation
 3. Network topology validation (DSR routing tests)
 
 ### Phase 4: Facility Deployment (Months 24-36)
+
 1. Rolling deployment (26 racks/week)
 2. Network commissioning (leaf → spine → global)
 3. System software installation (QDR runtime)
 4. Acceptance testing (HPL, HPCG, Graph500)
 
 ### Phase 5: Production (Month 36+)
+
 1. TOP500 submission (June 2028)
 2. Science and engineering workload onboarding
 3. Continuous monitoring and optimization

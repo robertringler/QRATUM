@@ -46,18 +46,21 @@ This document describes the decentralized "ghost machine" architecture implement
 **Purpose**: Implement BFT-style consensus for TXO finalization at the protocol level.
 
 **Key Features**:
+
 - **ConsensusType**: Support for BFT-HotStuff and Tendermint-like algorithms
 - **ValidatorRegistry**: Manages active validator set with stake and reputation tracking
 - **ConsensusEngine Trait**: Defines protocol for proposing, voting, and finalizing TXOs
 - **Slashing Mechanism**: Punishes malicious validators for double-signing, invalid proposals, and Byzantine behavior
 
 **Security Properties**:
+
 - 2/3 supermajority required for TXO finalization
 - Validator slashing creates economic disincentive for attacks
 - All consensus events auditable via TXO emission
 - Byzantine fault tolerance up to f faulty nodes in 3f+1 quorum
 
 **Integration**:
+
 - TXOs must pass through consensus before finalization
 - Lifecycle integrates consensus at execution stage
 - Validator set synchronized via P2P network
@@ -67,6 +70,7 @@ This document describes the decentralized "ghost machine" architecture implement
 **Purpose**: Enable self-amending protocol through on-chain governance.
 
 **Key Features**:
+
 - **GovernanceProposal**: Protocol changes proposed with threshold requirements
 - **Stake-Weighted Voting**: Votes weighted by validator stake to prevent Sybil attacks
 - **Time-Locked Execution**: Mandatory waiting period after approval before execution
@@ -74,6 +78,7 @@ This document describes the decentralized "ghost machine" architecture implement
 - **Merkle-Logged Votes**: All votes recorded in audit trail
 
 **Proposal Types**:
+
 - Parameter changes (consensus threshold, reward rates, etc.)
 - Protocol upgrades (version migrations)
 - Validator set changes (add/remove validators)
@@ -81,12 +86,14 @@ This document describes the decentralized "ghost machine" architecture implement
 - Emergency actions (circuit breakers)
 
 **Security Properties**:
+
 - Proposals require threshold approval (default: 67%)
 - Voting period enforced (default: 10 epochs)
 - Timelock prevents rushed changes (default: 5 epochs)
 - All governance actions auditable
 
 **Integration**:
+
 - Python GovernanceProtocol class interfaces with Rust governance state
 - Protocol upgrades flow through governance approval
 - Lifecycle checks governance state each epoch
@@ -96,24 +103,28 @@ This document describes the decentralized "ghost machine" architecture implement
 **Purpose**: Enable decentralized communication without central coordinator.
 
 **Key Features**:
+
 - **TxoMempool**: Priority-ordered pending TXO pool
 - **TXO Gossip**: Broadcast and receive TXOs across network
 - **Ledger Synchronization**: Sync state from specific epochs
 - **Peer Reputation**: Track peer reliability and ban malicious actors
 
 **Security Properties**:
+
 - All messages authenticated with sender signatures
 - TXO integrity verified via content addressing (SHA3-256)
 - Rate limiting and flood protection
 - Peer reputation prevents eclipse attacks
 
 **Implementation Notes**:
+
 - Production-quality skeleton with libp2p placeholders
 - Real implementation would use libp2p gossipsub for TXO broadcast
 - Would include Kademlia DHT for peer discovery
 - Would support NAT traversal and relay nodes
 
 **Integration**:
+
 - Lifecycle initializes P2P network during ephemeral materialization
 - Consensus engine uses P2P to broadcast proposals and votes
 - Validator set synchronized across network
@@ -123,24 +134,28 @@ This document describes the decentralized "ghost machine" architecture implement
 **Purpose**: Align economic interests with network security through stake-based rewards and slashing.
 
 **Key Features**:
+
 - **Stake Registry**: Tracks validator stakes and delegations
 - **Reward Distribution**: Proportional rewards for successful participation
 - **Slashing Mechanism**: Penalizes violations by burning stake
 - **Lock Periods**: Stake locked for configurable epochs before withdrawal
 
 **Economic Model**:
+
 - Validators earn rewards proportional to their stake
 - Rewards distributed each epoch from reward pool
 - Slashing burns stake (removed from circulation)
 - Lock periods prevent rapid stake changes
 
 **Security Properties**:
+
 - Stake creates economic incentive for honest behavior
 - Slashing rate configurable (default: 10% per violation)
 - Reward rate configurable (default: 1% per epoch)
 - All stake changes auditable and irreversible
 
 **Integration**:
+
 - Lifecycle updates incentives each epoch
 - Consensus engine triggers slashing on violations
 - Governance can adjust reward and slashing rates
@@ -150,23 +165,27 @@ This document describes the decentralized "ghost machine" architecture implement
 **Purpose**: Enable privacy-preserving state transitions with zero-knowledge proofs.
 
 **Key Features**:
+
 - **StateCommitment**: Cryptographic commitment to state (SHA3-256)
 - **ZkStateTransition**: ZK proof that transition follows protocol rules
 - **TransitionType**: Support for different transition types (TXO, validator, governance, stake)
 - **ZkStateVerifier**: Verifies proofs without revealing state
 
 **Security Properties**:
+
 - State commitments are binding and hiding
 - Transition proofs are sound (cannot prove false statements)
 - Zero-knowledge property prevents information leakage
 - Integrates with compliance proofs to hide actor identity
 
 **Implementation Notes**:
+
 - Production-quality skeleton with placeholder verification
 - Real implementation would use Halo2, Risc0, or similar ZK system
 - Proof verification is constant time (succinct)
 
 **Integration**:
+
 - Compliance proofs use ZK state transitions
 - State commitments logged in audit trail
 - Never exposes actor identity or transaction details
@@ -176,23 +195,27 @@ This document describes the decentralized "ghost machine" architecture implement
 **Purpose**: Enable protocol evolution without hard forks through on-chain governance.
 
 **Key Features**:
+
 - **ProtocolUpgrade**: Versioned upgrades with WASM migrations
 - **UpgradeManager**: Schedules and activates approved upgrades
 - **Version Compatibility**: Semantic versioning with compatibility checks
 - **WASM Migration**: Sandboxed state migration execution
 
 **Security Properties**:
+
 - All upgrades require governance approval
 - WASM provides sandboxed execution for migrations
 - Activation epoch coordinates network-wide upgrade
 - Rollback protection prevents downgrade attacks
 
 **Implementation Notes**:
+
 - Production-quality skeleton with WASM placeholders
 - Real implementation would use Wasmer or Wasmtime for WASM execution
 - Would enforce gas limits on migration execution
 
 **Integration**:
+
 - Lifecycle checks for pending upgrades each epoch
 - Governance approval required before scheduling
 - Upgrade history maintained for audit
@@ -202,23 +225,27 @@ This document describes the decentralized "ghost machine" architecture implement
 **Purpose**: Provide censorship-resistant communication through multiple transport channels.
 
 **Key Features**:
+
 - **Channel Types**: TCP (clearnet), Tor, I2P, Offline (sneakernet)
 - **Automatic Fallback**: Switches to alternative channels on failure
 - **Channel Statistics**: Track usage and failures per channel
 - **Pluggable Transports**: Easy to add new transport types
 
 **Security Properties**:
+
 - Multiple transport options prevent single point of censorship
 - Anonymity networks hide validator identity and location
 - Offline channels enable air-gapped operation
 - Transport abstraction prevents transport-specific vulnerabilities
 
 **Implementation Notes**:
+
 - This is a transport abstraction only (no evasion logic for export compliance)
 - Real implementation would integrate with Tor daemon, I2P router, etc.
 - Would include offline message queue for sneakernet
 
 **Integration**:
+
 - P2P network uses transport layer for all communication
 - Can configure preferred channels per deployment
 - Automatically falls back on censorship detection
@@ -228,11 +255,13 @@ This document describes the decentralized "ghost machine" architecture implement
 The 5-stage QRATUM lifecycle now integrates the decentralized ghost machine:
 
 ### Stage 1: Quorum Convergence (Protocol-Enforced)
+
 - Validators reach consensus before session start
 - Quorum threshold enforced by consensus engine
 - Byzantine fault tolerance prevents single-party attacks
 
 ### Stage 2: Ephemeral Materialization
+
 - Biokey reconstruction (existing)
 - Ledger initialization (existing)
 - **P2P network setup** (new)
@@ -242,6 +271,7 @@ The 5-stage QRATUM lifecycle now integrates the decentralized ghost machine:
 - **Protocol upgrade check** (new)
 
 ### Stage 3: Execution
+
 - TXOs proposed to consensus engine
 - TXOs gossiped via P2P network
 - Validators vote on proposals
@@ -250,6 +280,7 @@ The 5-stage QRATUM lifecycle now integrates the decentralized ghost machine:
 - **Governance proposals processed** (new)
 
 ### Stage 4: Outcome Commitment
+
 - TXOs finalized via consensus
 - Validator signatures collected
 - **Validator rewards distributed** (new)
@@ -257,6 +288,7 @@ The 5-stage QRATUM lifecycle now integrates the decentralized ghost machine:
 - Outcome TXOs committed
 
 ### Stage 5: Total Self-Destruction
+
 - All ephemeral state zeroized (existing)
 - P2P connections closed
 - Consensus state cleared
@@ -267,12 +299,14 @@ The 5-stage QRATUM lifecycle now integrates the decentralized ghost machine:
 ### Threat Model
 
 **Assumptions**:
+
 - Adversary can control up to f < n/3 validators (Byzantine)
 - Adversary can attempt to censor or delay messages
 - Adversary has significant computational resources
 - Adversary cannot break cryptographic primitives (SHA3-256, ed25519)
 
 **Attack Vectors**:
+
 1. **Double-spending**: Prevented by consensus (requires 2/3 majority)
 2. **Censorship**: Mitigated by anti-censorship transport and audit trail
 3. **Eclipse attack**: Prevented by peer reputation and diverse peer selection
@@ -292,21 +326,25 @@ The 5-stage QRATUM lifecycle now integrates the decentralized ghost machine:
 ## Performance Considerations
 
 ### Consensus Overhead
+
 - Consensus adds latency (2-3 rounds of voting)
 - BFT-HotStuff optimizes with pipelining
 - Tendermint provides instant finality
 
 ### P2P Network
+
 - Gossip protocol has O(log N) message complexity
 - Mempool limits prevent memory exhaustion
 - Rate limiting prevents spam
 
 ### Validator Set Size
+
 - Larger validator set = higher security
 - Larger validator set = higher latency
 - Recommend 100-1000 validators for production
 
 ### ZK Proof Generation
+
 - Proof generation is computationally expensive (prover)
 - Proof verification is fast (verifier)
 - Recommend batching proofs when possible
@@ -314,6 +352,7 @@ The 5-stage QRATUM lifecycle now integrates the decentralized ghost machine:
 ## Deployment Guide
 
 ### Minimal Deployment (Single Node)
+
 ```rust
 use qratum::*;
 
@@ -329,6 +368,7 @@ let outcomes = run_qratum_session_with_config(input_txos, config)?;
 ```
 
 ### Multi-Validator Deployment
+
 1. Deploy validator nodes with unique identities
 2. Configure P2P network (bootstrap peers, port configuration)
 3. Register validators in validator registry with initial stakes
@@ -337,6 +377,7 @@ let outcomes = run_qratum_session_with_config(input_txos, config)?;
 6. Monitor via audit trail TXOs
 
 ### Censorship-Resistant Deployment
+
 1. Configure multiple transport channels (TCP + Tor + I2P)
 2. Deploy validators in diverse geographic locations
 3. Use hidden services for anonymity
@@ -346,6 +387,7 @@ let outcomes = run_qratum_session_with_config(input_txos, config)?;
 ## Future Enhancements
 
 ### Short-Term (Next Release)
+
 - [ ] Implement actual libp2p integration for P2P network
 - [ ] Add ed25519 signature verification for votes
 - [ ] Implement WASM runtime for protocol upgrades
@@ -353,6 +395,7 @@ let outcomes = run_qratum_session_with_config(input_txos, config)?;
 - [ ] Implement Merkle tree for vote logging
 
 ### Medium-Term (Next 6 Months)
+
 - [ ] Integrate real ZK proof system (Halo2 or Risc0)
 - [ ] Implement formal governance voting UI
 - [ ] Add validator delegation support
@@ -360,6 +403,7 @@ let outcomes = run_qratum_session_with_config(input_txos, config)?;
 - [ ] Add protocol metric dashboards
 
 ### Long-Term (Next Year)
+
 - [ ] Post-quantum cryptography migration
 - [ ] Sharding for horizontal scalability
 - [ ] Zero-knowledge VM integration

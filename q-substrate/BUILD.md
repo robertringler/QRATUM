@@ -3,6 +3,7 @@
 ## Overview
 
 Q-Substrate is an ultra-lightweight deterministic AI + Quantum runtime targeting:
+
 - **Binary size**: 400-500 KB compressed
 - **Memory footprint**: ≤32 MB default, configurable
 - **Features**: MiniLM Q4 inference + 12-qubit quantum simulation + DCGE code generation
@@ -10,12 +11,14 @@ Q-Substrate is an ultra-lightweight deterministic AI + Quantum runtime targeting
 ## Quick Build
 
 ### Standard Build
+
 ```bash
 cd q-substrate
 cargo build --release
 ```
 
 ### Size-Optimized Build (Sub-500KB Target)
+
 ```bash
 cd q-substrate
 RUSTFLAGS="-C opt-level=z -C lto=fat -C codegen-units=1 -C panic=abort" \
@@ -26,6 +29,7 @@ ls -la target/release/q-substrate
 ```
 
 ### Compressed Build (UPX)
+
 ```bash
 # Build release binary
 cargo build --release
@@ -40,25 +44,31 @@ lzma -9 target/release/q-substrate
 ## Build Profiles
 
 ### Desktop (Full Features)
+
 ```bash
 cargo build --release
 ```
+
 - 12 qubits
 - Full MiniLM inference
 - 32 MB memory limit
 
 ### Micro (ESP32/RP2040)
+
 ```bash
 cargo build --release --features micro --no-default-features
 ```
+
 - 8 qubits
 - Streaming inference
 - 4 MB memory limit
 
 ### WASM Browser
+
 ```bash
 cargo build --release --target wasm32-unknown-unknown --features wasm
 ```
+
 - 12 qubits
 - Browser-compatible
 - WebGL integration ready
@@ -99,6 +109,7 @@ cargo run --release -- --benchmark
 ## Supremacy Invariants
 
 The build must preserve these invariants:
+
 1. **ℛ(t) ≥ 0**: Non-negative resources at all times
 2. **Deterministic**: Same inputs always produce same outputs
 3. **Pod Isolation**: AI, Quantum, DCGE modules isolated
@@ -134,16 +145,19 @@ strip = true             # Strip symbols
 ## Cross-Compilation
 
 ### ARM64 (Raspberry Pi)
+
 ```bash
 cargo build --release --target aarch64-unknown-linux-gnu
 ```
 
 ### ESP32
+
 ```bash
 cargo build --release --target xtensa-esp32-espidf
 ```
 
 ### WASM
+
 ```bash
 cargo build --release --target wasm32-unknown-unknown
 wasm-opt -Oz target/wasm32-unknown-unknown/release/q_substrate.wasm -o q-substrate.wasm

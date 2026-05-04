@@ -93,22 +93,26 @@ The build script executes the following steps:
 ## Testing & Verification
 
 ### Build Testing
+
 - ✅ Script executes successfully from clean state
 - ✅ All artifacts generate correctly
 - ✅ Checksums validate properly
 - ✅ Build logs capture all operations
 
 ### Python Package Testing
+
 - ✅ Wheel installs successfully
 - ✅ Modules import correctly (quasim, qnx, api, xenon, etc.)
 - ✅ No missing dependencies in core functionality
 
 ### TypeScript SDK Testing
+
 - ✅ Compiles successfully (minor type warnings present but non-blocking)
 - ✅ Generates proper type definitions
 - ✅ Creates usable JavaScript artifacts
 
 ### Desktop Application Testing
+
 - ✅ Packages successfully with electron-builder
 - ✅ Creates Linux unpacked distribution
 - ✅ Includes complete Electron runtime
@@ -173,12 +177,14 @@ The build script is designed for CI/CD environments:
 ## Design Decisions
 
 ### Why dist/ is not committed
+
 - The dist/ directory is 257 MB (mostly Electron runtime)
 - Git repositories should not contain large binary artifacts
 - Artifacts can be rebuilt deterministically from source
 - CI/CD systems can generate and upload artifacts separately
 
 ### Why use shell script
+
 - Cross-platform compatible (bash available on all platforms)
 - No additional runtime dependencies
 - Easy to debug and modify
@@ -186,6 +192,7 @@ The build script is designed for CI/CD environments:
 - Follows existing QRATUM build patterns (see Makefile)
 
 ### Build Artifact Structure
+
 - Organized by component (python, typescript, desktop)
 - Includes all necessary deployment files
 - Self-documented with BUILD_MANIFEST.md

@@ -159,6 +159,7 @@ is_valid, messages = enhanced_prior.validate_mechanism_with_structure(
 ### SequenceAnalyzer
 
 **Key Features:**
+
 - FASTA parsing (UniProt, NCBI formats)
 - Needleman-Wunsch alignment
 - Molecular weight calculation
@@ -169,6 +170,7 @@ is_valid, messages = enhanced_prior.validate_mechanism_with_structure(
 - Conservation scoring (Shannon entropy)
 
 **Performance:**
+
 - FASTA parsing: 10K sequences/second
 - Alignment: <100ms for sequences up to 1000 residues
 - Conservation: O(n×m) where n=sequences, m=length
@@ -176,6 +178,7 @@ is_valid, messages = enhanced_prior.validate_mechanism_with_structure(
 ### LiteratureMiner
 
 **Key Features:**
+
 - PubMed XML parsing
 - Protein-protein interaction extraction
 - Citation counting
@@ -189,6 +192,7 @@ is_valid, messages = enhanced_prior.validate_mechanism_with_structure(
 ### OntologyIntegrator
 
 **Key Features:**
+
 - Gene Ontology (GO) terms
 - ChEBI chemical compounds
 - UniProt protein annotations
@@ -198,13 +202,15 @@ is_valid, messages = enhanced_prior.validate_mechanism_with_structure(
 - Mechanistic link discovery
 
 **Data Sources:**
-- GO: http://geneontology.org/
-- ChEBI: https://www.ebi.ac.uk/chebi/
-- UniProt: https://www.uniprot.org/
+
+- GO: <http://geneontology.org/>
+- ChEBI: <https://www.ebi.ac.uk/chebi/>
+- UniProt: <https://www.uniprot.org/>
 
 ### StructureAnalyzer
 
 **Key Features:**
+
 - PDB parsing (simplified)
 - RMSD calculation (Cα atoms)
 - Binding site prediction
@@ -213,6 +219,7 @@ is_valid, messages = enhanced_prior.validate_mechanism_with_structure(
 - Surface residue identification
 
 **Limitations:**
+
 - Phase 1: No full mmCIF support
 - Phase 1: Simplified secondary structure
 - Phase 2+: DSSP integration, full structure refinement
@@ -220,6 +227,7 @@ is_valid, messages = enhanced_prior.validate_mechanism_with_structure(
 ### PathwayAnalyzer
 
 **Key Features:**
+
 - Metabolic pathway modeling
 - Flux balance analysis (simplified)
 - Bottleneck identification
@@ -232,6 +240,7 @@ is_valid, messages = enhanced_prior.validate_mechanism_with_structure(
 ### DrugTargetScorer
 
 **Key Features:**
+
 - Lipinski's rule of five
 - Drug-likeness scoring
 - ADMET prediction (heuristic)
@@ -244,6 +253,7 @@ is_valid, messages = enhanced_prior.validate_mechanism_with_structure(
 ### MultiOmicsIntegrator
 
 **Key Features:**
+
 - Cross-omics correlation
 - Biomarker discovery (t-test, FDR correction)
 - Pathway enrichment
@@ -251,6 +261,7 @@ is_valid, messages = enhanced_prior.validate_mechanism_with_structure(
 - Feature vector generation
 
 **Statistical Methods:**
+
 - Pearson correlation
 - Welch's t-test
 - Benjamini-Hochberg FDR
@@ -340,6 +351,6 @@ See main repository CONTRIBUTING.md for guidelines.
 
 ## Support
 
-- Issues: https://github.com/robertringler/QRATUM/issues
+- Issues: <https://github.com/robertringler/QRATUM/issues>
 - Documentation: This README and module docstrings
 - Examples: `demo.py`

@@ -1,7 +1,9 @@
 # QRATUM Audit — Executive Summary
+
 _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22:27:58Z
 
 ## Scope
+
 - Tracked files audited: **3991** (every file inventoried with sha256 + line count; see `audit/inventory/file_index.jsonl`).
 - Python files parsed via AST: **2089** with **5977** public symbols.
 - Workflows audited: **56** under `.github/workflows/`.
@@ -9,11 +11,13 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 - Binary/figure/data artifacts inventoried: **202** (see `audit/artifacts/manifest.csv`).
 
 ## Methodology disclosure (honest)
+
 - **Full machine coverage**: every tracked file enumerated, sha256-hashed, line-counted, language-classified, and grep+AST-scanned for the rule set in `audit/code/findings.jsonl` and `audit/security/findings.jsonl`. `lines_read == lines_total` in `file_index.jsonl` for every non-binary file ≤ 5 MB.
 - **Targeted human-style review** is concentrated on the CIIR/CRS/RIC/MVRI/Trajectory/RealWorld-Bridge/Control-Geometry/Adapters surfaces (~30 files, line-by-line) and on the manuscript `manuscripts/ciir_monograph/chapters/ch03..ch08.tex`.
-- Exhaustive line-by-line *human* reading of all 3991 files in a single agent session is not feasible; this audit is driven by deterministic automated rules with targeted deep reads where human judgment is required.
+- Exhaustive line-by-line _human_ reading of all 3991 files in a single agent session is not feasible; this audit is driven by deterministic automated rules with targeted deep reads where human judgment is required.
 
 ## Headline counts
+
 - **Gap registry**: 80 total — `block`=7, `info`=1, `major`=54, `minor`=18
 - **Code findings (info+minor+major)**: 6615; `STUB-NOTIMPL`=36, `STUB-TODO`=196.
 - **Security findings**: 28; CWE-tagged in `audit/security/findings.jsonl`.
@@ -22,6 +26,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 - **Orphan code files** (no inbound import/doc reference): 179.
 
 ## Top blockers (≤ 20)
+
 1. **GAP-SEC-SECRET-011** [block/harden] — Hardcoded credential pattern at qratum/exascale/security/pqc.py:72 (evidence: `qratum/exascale/security/pqc.py:72 :: SHARED_SECRET = "Shared Secret"`)
 2. **GAP-SEC-SECRET-012** [block/harden] — Hardcoded credential pattern at quasim/qunimbus/auth.py:460 (evidence: `quasim/qunimbus/auth.py:460 :: export QUNIMBUS_TOKEN="your-jwt-token"`)
 3. **GAP-SEC-SECRET-013** [block/harden] — Hardcoded credential pattern at tests/qunimbus/test_qunimbus_enhancements.py:347 (evidence: `tests/qunimbus/test_qunimbus_enhancements.py:347 :: token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4f`)
@@ -43,6 +48,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 19. **GAP-STUB-012** [major/finish-stub] — NotImplementedError stub at qreal/base_adapter.py:55 (evidence: `qreal/base_adapter.py:55 :: raise NotImplementedError`)
 
 ## Hand-off
+
 `audit/GAP_REGISTRY.jsonl` (80 entries, deduplicated, every entry has id/area/severity/evidence/proposed_fix_class/proposed_owner_subsystem) is the unit of work for Prompt #2.
 
 **AUDIT COMPLETE — handing GAP_REGISTRY to Prompt #2.**

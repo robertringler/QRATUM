@@ -3,6 +3,7 @@
 ## Overview
 
 This guide provides step-by-step instructions for deploying the complete QRATUM stack in production environments, including:
+
 - **QRADLE**: Deterministic execution foundation
 - **QRATUM Platform**: 14 vertical AI modules
 - **QRATUM-ASI**: Theoretical ASI scaffolding (simulation mode)
@@ -10,12 +11,15 @@ This guide provides step-by-step instructions for deploying the complete QRATUM 
 ## Deployment Modes
 
 ### 1. On-Premises Deployment
+
 Full stack on your own infrastructure with complete data sovereignty.
 
 ### 2. Air-Gapped Deployment
+
 Completely isolated network with no internet connectivity.
 
 ### 3. Private Cloud Deployment
+
 Dedicated VPC with no public internet egress.
 
 ## Prerequisites
@@ -23,12 +27,14 @@ Dedicated VPC with no public internet egress.
 ### Hardware Requirements
 
 **Minimum (Development/Testing)**:
+
 - 16 GB RAM
 - 4-core CPU
 - 100 GB SSD storage
 - Linux (Ubuntu 20.04+, RHEL 8+, or compatible)
 
 **Recommended (Production)**:
+
 - 64 GB RAM (128 GB for large-scale)
 - 16+ core CPU (32+ recommended)
 - 500 GB NVMe SSD storage
@@ -52,6 +58,7 @@ cd QRATUM
 ```
 
 For air-gapped deployment, create archive:
+
 ```bash
 # On internet-connected machine
 tar -czf qratum-deployment.tar.gz QRATUM/
@@ -71,6 +78,7 @@ vim config/production.yml
 ```
 
 Key configuration parameters:
+
 - `QRADLE_MODE`: Set to `production`
 - `ENABLE_INVARIANTS`: Always `true` in production
 - `LOG_LEVEL`: `INFO` or `WARNING` for production
@@ -162,8 +170,8 @@ environment:
 
 Access monitoring dashboards:
 
-- **Prometheus**: http://localhost:9090
-- **Grafana**: http://localhost:3000 (default: admin/changeme)
+- **Prometheus**: <http://localhost:9090>
+- **Grafana**: <http://localhost:3000> (default: admin/changeme)
 - **Logs**: Check with `docker-compose logs -f`
 
 Configure alerts in `config/prometheus-alerts.yml`.
@@ -308,6 +316,7 @@ secrets:
 1. Enable deterministic mode: `QRADLE_DETERMINISTIC=strict`
 2. Maintain complete audit logs
 3. Generate certification artifacts:
+
    ```bash
    docker-compose exec qradle python -m qradle.compliance.do178c
    ```
@@ -397,10 +406,11 @@ docker-compose -f docker-compose.production.yml up -d --no-deps qratum-api
 ## Support
 
 For production support:
-- **Email**: support@qratum.io
-- **Security Issues**: security@qratum.io
-- **Documentation**: https://docs.qratum.io
-- **GitHub Issues**: https://github.com/robertringler/QRATUM/issues
+
+- **Email**: <support@qratum.io>
+- **Security Issues**: <security@qratum.io>
+- **Documentation**: <https://docs.qratum.io>
+- **GitHub Issues**: <https://github.com/robertringler/QRATUM/issues>
 
 ## License
 

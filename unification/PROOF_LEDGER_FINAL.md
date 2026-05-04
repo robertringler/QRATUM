@@ -1,4 +1,5 @@
 # QRATUM Proof Ledger — Final
+
 _Phase_: U6 Quantum Proof Closure  
 _Generated_: 2026-04-30  
 _Input_: `audit/PROOF_LEDGER.md`

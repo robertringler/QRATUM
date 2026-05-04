@@ -22,6 +22,7 @@ This document presents a novel post-Dijkstra shortest-path algorithm that struct
 - Theoretical foundations (delta-stepping, hierarchical decomposition)
 
 **Key Theoretical Results**:
+
 - Time Complexity: O(V + E + W/Δ) vs. Dijkstra's O((V+E) log V)
 - Space Complexity: O(V + E + B) where B << V (number of active buckets)
 - Parallel Complexity: O((V+E)/P + W/Δ) with P processors
@@ -58,6 +59,7 @@ This document presents a novel post-Dijkstra shortest-path algorithm that struct
    - Cache-efficient memory access patterns
 
 **Clean Separation**:
+
 - Frontier management (BucketedFrontier, DeltaBucket)
 - Relaxation logic (_relax_batch_correctness)
 - Ordering strategy (bucketed delta-stepping)
@@ -66,6 +68,7 @@ This document presents a novel post-Dijkstra shortest-path algorithm that struct
 ### C. Simulation & Benchmark Suite ✅
 
 **Files**:
+
 - `benchmarks/post_dijkstra_benchmark.py` (450+ lines)
 - `demo_post_dijkstra.py` (180+ lines)
 - `tests/opt/test_post_dijkstra_sssp.py` (460+ lines)
@@ -73,11 +76,13 @@ This document presents a novel post-Dijkstra shortest-path algorithm that struct
 **Graph Sizes Tested**: 10² → 10⁴ nodes (scalable to 10⁶+)
 
 **Weight Distributions**:
+
 - ✅ Uniform: U(1, 10)
 - ✅ Heavy-tailed: Pareto(α=1.5)
 - ✅ Near-uniform: N(5, 0.5) [worst case for bucketing]
 
 **Metrics Tracked**:
+
 - ✅ Wall-clock runtime (seconds)
 - ✅ Memory usage (MB)
 - ✅ Relaxations performed
@@ -86,6 +91,7 @@ This document presents a novel post-Dijkstra shortest-path algorithm that struct
 - ✅ Phase timing breakdown
 
 **Test Coverage**:
+
 - ✅ Simple paths and cycles
 - ✅ Disconnected components
 - ✅ Dense and sparse graphs
@@ -106,7 +112,8 @@ This document presents a novel post-Dijkstra shortest-path algorithm that struct
 | 100 nodes  | 985   | 0.0004       | 0.0009           | 0.44x   | ✓ PASS      |
 | 200 nodes  | 2003  | 0.0009       | 0.0019           | 0.47x   | ✓ PASS      |
 
-**Analysis**: 
+**Analysis**:
+
 - Current overhead from bucketing dominates on small graphs
 - Expected crossover point: V > 10⁴ nodes (not yet tested at scale)
 - Lower-bound pruning shows 10-30% reduction in edge relaxations
@@ -121,6 +128,7 @@ This document presents a novel post-Dijkstra shortest-path algorithm that struct
 **Innovation**: Replace strict priority queue with distance buckets
 
 **Implementation**:
+
 ```python
 class BucketedFrontier:
     def insert(node, distance):
@@ -132,6 +140,7 @@ class BucketedFrontier:
 ```
 
 **Benefits**:
+
 - Reduced ordering overhead: O(1) vs. O(log V)
 - Batch processing opportunities
 - Epsilon-relaxed ordering
@@ -143,6 +152,7 @@ class BucketedFrontier:
 **Innovation**: Multi-scale graph abstraction with portal nodes
 
 **Implementation**:
+
 - Graph contraction with configurable levels
 - Supernode mapping
 - Portal node identification (future work)
@@ -156,6 +166,7 @@ class BucketedFrontier:
 **Innovation**: Process multiple edges in parallel-friendly batches
 
 **Implementation**:
+
 ```python
 def _relax_batch_correctness(batch):
     # Collect edge updates
@@ -169,6 +180,7 @@ def _relax_batch_correctness(batch):
 ```
 
 **Benefits**:
+
 - SIMD vectorization opportunities
 - Better cache locality
 - Multi-core parallelism potential
@@ -180,11 +192,13 @@ def _relax_batch_correctness(batch):
 **Innovation**: Landmark-based distance bounds without heuristics
 
 **Implementation**:
+
 - Farthest-point landmark sampling
 - Precomputed landmark distances
 - Triangle inequality bounds
 
 **Pruning Rule**:
+
 ```python
 if dist[u] + w(u,v) > dist[v] + lower_bound(u, v):
     skip  # This edge cannot improve distance
@@ -197,6 +211,7 @@ if dist[u] + w(u,v) > dist[v] + lower_bound(u, v):
 **Innovation**: Abstract interface for swappable minimum-finding strategies
 
 **Implementation**:
+
 ```python
 class MinimumFinder:
     def find_minimum(candidates) -> (distance, node)
@@ -215,6 +230,7 @@ class QuantumMinimumFinder(MinimumFinder):
 ### Test Results
 
 **Unit Tests**: 25+ test cases in `tests/opt/test_post_dijkstra_sssp.py`
+
 - ✅ Bucket data structures
 - ✅ Frontier management
 - ✅ Minimum finders
@@ -222,6 +238,7 @@ class QuantumMinimumFinder(MinimumFinder):
 - ✅ Algorithm correctness on various topologies
 
 **Integration Tests**:
+
 - ✅ Simple paths (3-5 nodes)
 - ✅ Triangle graphs
 - ✅ Random graphs (50-200 nodes)
@@ -235,6 +252,7 @@ class QuantumMinimumFinder(MinimumFinder):
 ### Known Limitations
 
 **Issue**: Numerical precision on large graphs (V > 1000)
+
 - Symptom: Occasional mismatches in distance values (< 1e-6 difference)
 - Cause: Floating-point accumulation in bucketed relaxation
 - Mitigation: Tolerance-based validation, verification warnings
@@ -248,21 +266,25 @@ class QuantumMinimumFinder(MinimumFinder):
 ### When PostDijkstra Underperforms Dijkstra
 
 **1. Small Graphs (V < 1000)**
+
 - Overhead from bucketing, hierarchy, landmarks dominates
 - **Recommendation**: Use Dijkstra directly
 - **Evidence**: 0.4-0.5x speedup on V=50-200 nodes
 
 **2. Dense Graphs (E ≈ V²)**
+
 - Edge relaxation (O(E) term) dominates
 - Bucketing provides little benefit
 - **Recommendation**: Consider all-pairs algorithms
 
 **3. Unit Weights**
+
 - Simple BFS is optimal: O(V + E)
 - PostDijkstra overhead unnecessary
 - **Recommendation**: Use BFS for unit-weight graphs
 
 **4. Near-Uniform Weights**
+
 - All weights ≈ w₀ ± ε
 - Requires very small Δ (≈ ε)
 - Results in many buckets, high overhead
@@ -271,6 +293,7 @@ class QuantumMinimumFinder(MinimumFinder):
 ### Expected Crossover Point
 
 **Hypothesis**: PostDijkstra achieves >1.0x speedup when:
+
 - V > 10,000 nodes
 - E/V < 20 (sparse)
 - Parallel execution available
@@ -358,6 +381,7 @@ PostDijkstra SSSP successfully implements a novel shortest-path algorithm that *
 5. ✅ Quantum-ready minimum finding
 
 **Key Achievements**:
+
 - Exact correctness maintained (no approximation)
 - General non-negative weights supported
 - QRATUM-native integration
@@ -365,12 +389,14 @@ PostDijkstra SSSP successfully implements a novel shortest-path algorithm that *
 - Formal specification with complexity analysis
 
 **Honest Assessment**:
+
 - Small-scale overhead confirmed (V < 1000)
 - Theoretical improvements documented
 - Expected large-scale advantages (V > 10⁴)
 - Failure regimes explicitly stated
 
 **Success Criteria Met**:
+
 - ✅ Algorithmic innovation beyond Dijkstra
 - ✅ Formal correctness guarantees
 - ✅ Clean QRATUM integration

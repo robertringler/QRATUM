@@ -100,6 +100,7 @@ print(f"Merkle Hash: {chain.merkle_hash}")
 ```
 
 **Capabilities**:
+
 - Formal theorem proving (Lean4)
 - Symbolic reasoning (Z3 SMT solver)
 - Probabilistic inference (Pyro/NumPyro)
@@ -129,6 +130,7 @@ result = quasim.execute_task(
 ```
 
 **Capabilities**:
+
 - Qiskit/Cirq integration
 - Variational algorithms (VQE, QAOA)
 - Quantum error correction
@@ -150,6 +152,7 @@ with otel.trace_span("execute_contract", {"contract_id": "123"}):
 ```
 
 **Components**:
+
 - OpenTelemetry: Distributed tracing
 - Prometheus: Metrics collection
 - Grafana: Visualization dashboards
@@ -161,17 +164,20 @@ with otel.trace_span("execute_contract", {"contract_id": "123"}):
 Standardized evaluation across dimensions:
 
 **Reasoning Benchmarks**:
+
 - ARC (Abstraction and Reasoning Corpus)
 - GSM8K (Grade School Math)
 - MATH (Competition Mathematics)
 - GPQA (Graduate-Level Physics)
 
 **Safety Benchmarks**:
+
 - TruthfulQA
 - HarmBench
 - Jailbreak resistance
 
 **Performance Benchmarks**:
+
 - Throughput: Target 100K+ TXO/sec
 - Latency: Target <5ms p99
 - Scalability: 10M+ TXO ledger
@@ -274,6 +280,7 @@ All enhancements maintain QRATUM's 8 Fatal Invariants:
 See [CONTRIBUTING.md](../CONTRIBUTING.md) for contribution guidelines.
 
 All enhancements must:
+
 1. Maintain the 8 Fatal Invariants
 2. Include formal verification where applicable
 3. Add comprehensive tests

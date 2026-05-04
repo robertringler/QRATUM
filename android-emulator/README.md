@@ -5,6 +5,7 @@ A fully functional, legally compliant Android emulator and PC game compatibility
 ## Overview
 
 This project provides:
+
 - **Core Emulator Kernel**: ARMv8 ↔ x86-64 CPU emulation with dynamic binary translation
 - **Android Runtime Layer**: Clean-room ART implementation with Bionic libc compatibility
 - **GPU & Graphics**: Vulkan translation layer with OpenGL ES backend
@@ -15,6 +16,7 @@ This project provides:
 ## Legal Notice
 
 ⚠️ **IMPORTANT**: This implementation is original work written from scratch:
+
 - No proprietary code is included
 - No copyrighted game assets are bundled
 - No DRM bypass or reverse-engineered code
@@ -152,6 +154,7 @@ cargo bench
 ## Performance
 
 The emulator uses several optimization techniques:
+
 - Dynamic binary translation for hot code paths
 - Copy-on-write memory snapshots
 - Shader caching for graphics translation
@@ -160,6 +163,7 @@ The emulator uses several optimization techniques:
 ## Contributing
 
 Contributions are welcome! Please ensure:
+
 1. All code is original or properly licensed (Apache 2.0, MIT, BSD)
 2. No proprietary code or reverse-engineered material
 3. Tests are included for new functionality

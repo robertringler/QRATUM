@@ -4,7 +4,7 @@ Welcome to the official documentation for **QRATUM** - the world's first **Certi
 
 <div class="grid cards" markdown>
 
--   :material-clock-fast:{ .lg .middle } __Quick Start in 5 Minutes__
+- :material-clock-fast:{ .lg .middle } **Quick Start in 5 Minutes**
 
     ---
 
@@ -12,7 +12,7 @@ Welcome to the official documentation for **QRATUM** - the world's first **Certi
 
     [:octicons-arrow-right-24: Quick Start](getting-started/quickstart.md)
 
--   :material-book-open-variant:{ .lg .middle } __Tutorials__
+- :material-book-open-variant:{ .lg .middle } **Tutorials**
 
     ---
 
@@ -20,7 +20,7 @@ Welcome to the official documentation for **QRATUM** - the world's first **Certi
 
     [:octicons-arrow-right-24: Tutorials](tutorials/index.md)
 
--   :material-api:{ .lg .middle } __API Reference__
+- :material-api:{ .lg .middle } **API Reference**
 
     ---
 
@@ -28,7 +28,7 @@ Welcome to the official documentation for **QRATUM** - the world's first **Certi
 
     [:octicons-arrow-right-24: Reference](reference/index.md)
 
--   :material-certificate:{ .lg .middle } __Compliance__
+- :material-certificate:{ .lg .middle } **Compliance**
 
     ---
 

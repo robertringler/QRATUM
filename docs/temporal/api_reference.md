@@ -22,6 +22,7 @@ class TemporalEngine:
 ```
 
 **Parameters:**
+
 - `peak_flops`: Peak computational performance in FLOPS
 - `deterministic`: Enable deterministic execution
 - `merkle_verified`: Enable Merkle verification
@@ -30,6 +31,7 @@ class TemporalEngine:
 - `enable_pqc`: Enable post-quantum cryptography
 
 #### forward()
+
 ```python
 def forward(
     self,
@@ -46,6 +48,7 @@ Travel forward in computational time.
 **Returns:** `(final_state, proof)`
 
 #### backward()
+
 ```python
 def backward(
     self,
@@ -62,6 +65,7 @@ Travel backward in computational time.
 **Returns:** `(initial_state, proof)`
 
 #### branch()
+
 ```python
 def branch(
     self,
@@ -78,6 +82,7 @@ Create parallel timeline branches.
 **Returns:** Dictionary mapping branch names to `(final_state, proof)`
 
 #### converge()
+
 ```python
 def converge(
     self,
@@ -103,6 +108,7 @@ class FTLComputation:
 ```
 
 #### compress_time()
+
 ```python
 def compress_time(
     self,
@@ -118,6 +124,7 @@ Simulate time faster than real-time.
 **Returns:** `(final_state, velocity_metrics)`
 
 #### inverse_causality()
+
 ```python
 def inverse_causality(
     self,
@@ -132,6 +139,7 @@ Compute backward from desired outcome.
 **Returns:** `(initial_state, velocity_metrics)`
 
 #### parallel_reality_search()
+
 ```python
 def parallel_reality_search(
     self,
@@ -160,6 +168,7 @@ class PossibilityOracle:
 ```
 
 #### precompute_all()
+
 ```python
 def precompute_all(
     self,
@@ -175,6 +184,7 @@ Precompute all possibilities.
 **Returns:** `(possibility_space, velocity_metrics)`
 
 #### query()
+
 ```python
 def query(
     self,
@@ -199,6 +209,7 @@ class TimelineManager:
 ```
 
 #### create_timeline()
+
 ```python
 def create_timeline(
     self,
@@ -210,6 +221,7 @@ def create_timeline(
 Create new timeline.
 
 #### branch_timeline()
+
 ```python
 def branch_timeline(
     self,
@@ -225,6 +237,7 @@ Branch timeline into children.
 **Returns:** Dictionary mapping branch names to Timeline objects
 
 #### merge_timelines()
+
 ```python
 def merge_timelines(
     self,
@@ -237,6 +250,7 @@ def merge_timelines(
 Merge multiple timelines.
 
 #### find_optimal_timeline()
+
 ```python
 def find_optimal_timeline(
     self,
@@ -261,11 +275,13 @@ class ParadoxResolver:
 ```
 
 **Strategies:**
+
 - `"novikov"`: Self-consistency principle
 - `"many_worlds"`: Branch on paradox
 - `"chronology_protection"`: Reject paradox
 
 #### check_and_resolve()
+
 ```python
 def check_and_resolve(
     self,
@@ -290,6 +306,7 @@ class CausalityValidator:
 ```
 
 #### validate_causal_chain()
+
 ```python
 def validate_causal_chain(
     self,
@@ -384,6 +401,7 @@ class TemporalProof:
 ## Constants
 
 ### Physical Constants
+
 ```python
 SPEED_OF_LIGHT = 299_792_458  # m/s
 PLANCK_TIME = 5.391247e-44     # seconds
@@ -391,6 +409,7 @@ PLANCK_LENGTH = 1.616255e-35   # meters
 ```
 
 ### Time Constants
+
 ```python
 SECONDS_PER_MINUTE = 60
 SECONDS_PER_HOUR = 3600
@@ -399,6 +418,7 @@ SECONDS_PER_YEAR = 31_557_600
 ```
 
 ### QRATUM Constants
+
 ```python
 QRATUM_PEAK_FLOPS = 2.5e18
 OPERATIONS_PER_LIGHT_METER = 8.3e9
@@ -406,6 +426,7 @@ TARGET_COMPRESSION_RATIO = 1e9
 ```
 
 ### Strategies
+
 ```python
 class ParadoxStrategy:
     NOVIKOV = "novikov"

@@ -1,7 +1,9 @@
 # Benchmark coverage
+
 _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22:27:58Z
 
 Discovered benchmark assets:
+
 - `.github/workflows/compression-benchmarks.yml` (7220 B, lang=yaml)
 - `BENCHMARK_REPORT.md` (9228 B, lang=markdown)
 - `IMPLEMENTATION_SUMMARY_AUTOMATED_BENCHMARKING.md` (9643 B, lang=markdown)

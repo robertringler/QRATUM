@@ -11,6 +11,7 @@ C = (h, τ, t, d, T)
 ```
 
 Where:
+
 - `h`: State hash (cryptographic identifier)
 - `τ`: Computational time (simulated time)
 - `t`: Physical time (wall-clock time)
@@ -26,6 +27,7 @@ v_eff = Δτ / Δt
 ```
 
 Where:
+
 - `Δτ`: Change in computational time
 - `Δt`: Change in physical time
 
@@ -46,6 +48,7 @@ Minimum distinguishable time step:
 ```
 
 Where:
+
 - `f_peak`: Peak FLOPS
 - `e`: Operations per time step
 
@@ -68,6 +71,7 @@ S(t + Δt) = Φ(S(t), Δt)
 ```
 
 Where:
+
 - `S(t)`: State at time t
 - `Φ`: Evolution operator
 - `Δt`: Time step
@@ -115,6 +119,7 @@ B(S, {μ_1, μ_2, ..., μ_k}) = {S_1, S_2, ..., S_k}
 ```
 
 Where:
+
 - `μ_i`: Mutation operators
 - `S_i = μ_i(S)`: Initial state for branch i
 
@@ -137,6 +142,7 @@ S_merged = Γ({S_1, S_2, ..., S_k})
 ```
 
 Common choices for `Γ`:
+
 - **Average:** `Γ(S) = (1/k) Σ S_i`
 - **Maximum:** `Γ(S) = max{S_i}`
 - **Weighted:** `Γ(S) = Σ w_i S_i` where `Σ w_i = 1`
@@ -152,6 +158,7 @@ h(S) = H(data(S) || coord(S) || parent(S))
 ```
 
 Where:
+
 - `H`: SHA-256 hash function
 - `||`: Concatenation operator
 - `data(S)`: State data
@@ -163,16 +170,19 @@ Where:
 For chain of states `{S_0, S_1, ..., S_n}`:
 
 **Level 0 (leaves):**
+
 ```
 h_i^(0) = h(S_i)
 ```
 
 **Level k:**
+
 ```
 h_i^(k) = H(h_{2i}^(k-1) || h_{2i+1}^(k-1))
 ```
 
 **Merkle root:**
+
 ```
 r = h_0^(log_2 n)
 ```
@@ -184,6 +194,7 @@ To verify `S_i` is in chain with root `r`:
 **Proof:** `π = {h_1, h_2, ..., h_m}` where `m = O(log n)`
 
 **Verification:**
+
 ```
 Verify(r, S_i, π) = (root_computed(h(S_i), π) == r)
 ```
@@ -222,6 +233,7 @@ S_entropy(S(t)) ≥ S_entropy(S(t - Δt))
 ```
 
 When moving backward, entropy must be handled:
+
 - **Exact reversal:** `S_entropy(S_reconstructed) = S_entropy(S_original)`
 - **Approximate:** `|S_entropy(S_reconstructed) - S_entropy(S_original)| ≤ ε`
 
@@ -262,6 +274,7 @@ For 2.5 ExaFLOPS.
 ### 7.1 Time Complexity
 
 **Forward evolution (n steps):**
+
 ```
 T_forward(n) = O(n × C_Φ)
 ```
@@ -269,6 +282,7 @@ T_forward(n) = O(n × C_Φ)
 Where `C_Φ` is the cost of evolution operator.
 
 **Timeline branching (k branches, n steps each):**
+
 ```
 T_branch(k, n) = O(k × n × C_Φ)
 ```
@@ -278,6 +292,7 @@ Can be parallelized: `T_parallel(k, n) = O(n × C_Φ)` on k processors.
 ### 7.2 Space Complexity
 
 **State chain (n states):**
+
 ```
 S_chain(n) = O(n × s)
 ```
@@ -285,6 +300,7 @@ S_chain(n) = O(n × s)
 Where `s` is size of single state.
 
 **With differencing:**
+
 ```
 S_chain_diff(n) = O(s + n × δ)
 ```
@@ -320,6 +336,7 @@ V(t, s) = max_{a} [R(s, a) + γ V(t+1, Φ(s, a))]
 ```
 
 Where:
+
 - `V`: Value function
 - `R`: Reward function
 - `γ`: Discount factor
@@ -375,6 +392,7 @@ P(outcome_i) = |⟨i|ψ⟩|^2
 ```
 
 Where:
+
 - `|T⟩`: Timeline basis state
 - `α_T`: Amplitude for timeline T
 - `Σ |α_T|^2 = 1`

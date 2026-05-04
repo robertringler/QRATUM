@@ -1,7 +1,6 @@
 """Tests for diagnostics."""
 
 import numpy as np
-
 from compiled_realities.diagnostics.chi_effective import (
     compute_chi_effective,
     compute_chi_statistics,

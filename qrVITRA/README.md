@@ -9,6 +9,7 @@ VITRA-E0 is a production-grade, air-gapped whole genome sequencing (WGS) pipelin
 ### What is a Biokey?
 
 An **ephemeral cryptographic key** derived from an operator's genomic SNP loci that:
+
 - **Exists only in RAM** (never written to disk)
 - **Provides biometric authentication** (derived from immutable genetic data)
 - **Supports Zero-Knowledge Proof** (prove possession without revealing genome)
@@ -319,5 +320,5 @@ Apache 2.0 - See [LICENSE](../../LICENSE)
 
 ## Contact
 
-For security issues: security@qratum.ai  
-For general inquiries: contact@qratum.ai  
+For security issues: <security@qratum.ai>  
+For general inquiries: <contact@qratum.ai>  

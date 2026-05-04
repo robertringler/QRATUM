@@ -6,7 +6,7 @@ Complete guide for submitting BOB to Kaggle Chess AI Benchmark.
 
 ### 1. Kaggle Account Setup
 
-1. Create account at https://www.kaggle.com
+1. Create account at <https://www.kaggle.com>
 2. Go to Account Settings → API
 3. Click "Create New API Token"
 4. Save `kaggle.json` to `~/.kaggle/`
@@ -19,6 +19,7 @@ pip install kaggle
 ```
 
 Verify installation:
+
 ```bash
 kaggle --version
 ```
@@ -57,6 +58,7 @@ cd /path/to/QRATUM
 ```
 
 This will:
+
 - ✅ Run validation tests
 - ✅ Check package size
 - ✅ Verify required files
@@ -160,6 +162,7 @@ kaggle benchmarks leaderboard --benchmark kaggle/chess
 #### 1. "Package too large"
 
 **Solution:** Remove unnecessary files:
+
 ```bash
 # Check size
 du -sh kaggle_models/bob/
@@ -172,6 +175,7 @@ find kaggle_models/bob -type d -name "__pycache__" -delete
 #### 2. "Missing kaggle.json"
 
 **Solution:** Set up Kaggle credentials:
+
 ```bash
 mkdir -p ~/.kaggle
 # Copy kaggle.json from Kaggle account settings
@@ -181,6 +185,7 @@ chmod 600 ~/.kaggle/kaggle.json
 #### 3. "Import errors"
 
 **Solution:** Ensure all dependencies are in `requirements.txt`:
+
 ```bash
 pip install -r kaggle_models/bob/requirements.txt
 ```
@@ -188,6 +193,7 @@ pip install -r kaggle_models/bob/requirements.txt
 #### 4. "Illegal move detected"
 
 **Solution:** Verify move legality in tests:
+
 ```python
 import chess
 
@@ -257,11 +263,13 @@ Elo is calculated using standard FIDE formula based on expected vs actual scores
 ### Monitor Results
 
 Check model page:
+
 ```
 https://www.kaggle.com/models/robertringler/bob
 ```
 
 View benchmark results:
+
 ```
 https://www.kaggle.com/benchmarks/chess
 ```
@@ -283,9 +291,10 @@ kaggle models create-version kaggle_models/bob/ \
 ## Support
 
 For issues:
-- GitHub: https://github.com/robertringler/QRATUM/issues
+
+- GitHub: <https://github.com/robertringler/QRATUM/issues>
 - Email: [Your email]
-- Kaggle: https://www.kaggle.com/robertringler
+- Kaggle: <https://www.kaggle.com/robertringler>
 
 ## License
 

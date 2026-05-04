@@ -17,6 +17,7 @@ This document describes the fixes applied to resolve CI failures in PR #53 which
 **Issue**: `permissions-check` job failed because it tried to use `origin/main` which doesn't exist in shallow clones.
 
 **Solution**: Updated to use GitHub context variable `${{ github.event.pull_request.base.sha }}` and added fallback:
+
 ```yaml
 - name: Check for unsafe script execution
   run: |
@@ -35,6 +36,7 @@ This document describes the fixes applied to resolve CI failures in PR #53 which
 **Issue**: Dockerfile security check didn't handle the case when no Dockerfiles exist.
 
 **Solution**: Added better messaging:
+
 ```yaml
 # Check if we found any Dockerfiles
 if ! find . -name "Dockerfile*" -type f | grep -q .; then
@@ -45,6 +47,7 @@ fi
 ### 2. Added pr-compliance.yml
 
 Created comprehensive code quality compliance workflow with:
+
 - Ruff linting
 - Black formatting checks
 - isort import sorting checks
@@ -62,6 +65,7 @@ Added `sbom.spdx.json` to exclude generated Software Bill of Materials files fro
 ### 4. Added Documentation
 
 Created `.github/workflows/README-COMPLIANCE.md` with:
+
 - Workflow descriptions
 - Usage examples
 - Troubleshooting guide
@@ -79,6 +83,7 @@ Created `.github/workflows/README-COMPLIANCE.md` with:
 ## Workflow Behavior
 
 All workflows are designed to be **informative but non-blocking**:
+
 - They provide detailed feedback on code quality and security issues
 - They use `continue-on-error: true` on most steps
 - They generate summaries visible in PR checks
@@ -87,6 +92,7 @@ All workflows are designed to be **informative but non-blocking**:
 ## Compatibility
 
 The new workflows:
+
 - ✅ Don't conflict with existing `pr-checks.yml`
 - ✅ Use least-privilege permissions
 - ✅ Follow GitHub Actions best practices
@@ -96,6 +102,7 @@ The new workflows:
 ## Next Steps
 
 Once these workflows are merged:
+
 1. Monitor first PR to verify workflows run successfully
 2. Review findings from security scans
 3. Consider addressing high-priority security vulnerabilities

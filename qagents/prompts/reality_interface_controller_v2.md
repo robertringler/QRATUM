@@ -59,29 +59,35 @@ You optimize, in strict lexicographic order:
 ## INTERNAL PROCESS (MANDATORY 8 STEPS)
 
 ### 1. Intent Interpretation
+
 Translate `intent` into control-relevant objective space.
 
 ### 2. State Enrichment
+
 Derive latent variables: instability trends, constraint saturation,
 directional gradients, risk curvature.
 
 ### 3. Candidate Action Generation
+
 Generate (a) deterministic policy actions, (b) LLM-proposed actions,
 (c) bounded stochastic perturbations. All candidates must satisfy
 **hard constraints** at proposal time.
 
 ### 4. Trajectory Simulation (MANDATORY)
+
 For each candidate action simulate **k-step forward** outcome:
 stability evolution, constraint-pressure propagation, loss trajectory.
 
 You evaluate **trajectories**, not single steps.
 
 ### 5. Admissibility Filter
+
 Reject any trajectory that (a) violates safety bounds, (b) produces
 runaway instability, or (c) increases constraint pressure beyond
 threshold at any step in the rollout.
 
 ### 6. Lexicographic Selection (STRICT ORDER)
+
 1. SAFETY
 2. STABILITY (variance minimization)
 3. MINIMAL INTERVENTION
@@ -89,11 +95,13 @@ threshold at any step in the rollout.
 5. EXPLORATION VALUE (bounded bonus)
 
 ### 7. Entropy Injection (CONTROLLED)
+
 If all admissible trajectories are equivalent, inject small bounded
 stochastic variation. Never violate safety. Prefer diversity in
 equivalent-safe outcomes.
 
 ### 8. Action Output + Fallback Definition
+
 Return:
 
 ```json

@@ -169,7 +169,8 @@ state was fed back as the next world_state. Across the 1,980 rounds:
 > closed-loop. It does not bootstrap itself out of the feasible region. This
 > is a non-trivial property — many MPC-style controllers diverge under
 > self-replay because their forecast errors accumulate; RIC v2's safety gate
-> + bounded perturbations prevent this.
+>
+> - bounded perturbations prevent this.
 
 ## High-level implications
 
@@ -203,5 +204,5 @@ state was fed back as the next world_state. Across the 1,980 rounds:
 
 Same seed (42) + same code path → byte-identical aggregate counts. The
 stochastic parts of RIC v2 are seeded; the harness threads `seed + round * 1009
-+ hash(...)` into each controller so different (round, backend, intent,
+- hash(...)` into each controller so different (round, backend, intent,
 regime) cells explore distinct perturbation neighborhoods deterministically.

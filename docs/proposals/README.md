@@ -9,6 +9,7 @@ This directory contains proposals for new features and enhancements to QRATUM.
 **Status:** Pending Approval
 
 Military-grade anonymity and stealth capabilities including:
+
 - Nym Mixnet integration for metadata protection
 - Post-quantum cryptography (Kyber + Dilithium)
 - Ring signatures for validator anonymity

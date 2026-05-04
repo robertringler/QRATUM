@@ -50,6 +50,7 @@ Array
 **Reference**: GRCh38 (latest human genome assembly)
 
 **Configuration**:
+
 ```python
 AlignmentConfig(
     reference_genome="GRCh38",
@@ -63,6 +64,7 @@ AlignmentConfig(
 ```
 
 **Process**:
+
 1. Index reference genome
 2. Align forward reads
 3. Align reverse reads
@@ -78,6 +80,7 @@ AlignmentConfig(
 **Structural Variants**: Manta, DELLY, or Lumpy
 
 **Configuration**:
+
 ```python
 VariantCallConfig(
     caller="DeepVariant",
@@ -92,6 +95,7 @@ VariantCallConfig(
 ```
 
 **Variant Types Detected**:
+
 - SNPs (Single Nucleotide Polymorphisms)
 - INDELs (Insertions/Deletions)
 - Structural Variants:
@@ -102,6 +106,7 @@ VariantCallConfig(
   - Mobile Element Insertions (MEI)
 
 **Expected Yield** (30× WGS):
+
 - ~4-5 million SNPs
 - ~500K INDELs
 - ~8-12K structural variants
@@ -130,6 +135,7 @@ VariantCallConfig(
    - Intergenic variants
 
 **Annotation Process**:
+
 ```python
 for variant in variants:
     # Population frequencies
@@ -157,6 +163,7 @@ for variant in variants:
 **Algorithm**: SHAPEIT/Eagle/WhatsHap equivalent
 
 **Process**:
+
 1. Identify heterozygous variants
 2. Construct long-range haplotype blocks
 3. Phase variants using statistical inference
@@ -164,6 +171,7 @@ for variant in variants:
 5. Calculate phase quality scores
 
 **Phasing Block Structure**:
+
 ```python
 PhasingBlock(
     block_id="BLOCK_123",
@@ -179,6 +187,7 @@ PhasingBlock(
 ```
 
 **IBD Detection**:
+
 - Identifies shared genomic segments
 - Estimates generational distance
 - Detects founder effects and bottlenecks
@@ -209,6 +218,7 @@ PhasingBlock(
      - Elite/founder lineages
 
 **Rarity Scoring**:
+
 ```python
 # Variant rarity score
 rarity_score = -log10(allele_frequency) / 6.0  # Normalized [0,1]
@@ -222,23 +232,27 @@ percentile = 100 * (1 - exp(-3.0 * mean_rarity))
 ### 6. Royal & Elite Lineage Intelligence (Production-Grade)
 
 **Y-Chromosome Phylogeny**:
+
 - High-resolution haplogroup determination (YFull-class depth)
 - Major haplogroups: R1a, R1b, I1, I2, J2, E1b, Q, N, O, etc.
 - Sub-haplogroup resolution with WGS data
 - Elite lineage enrichment detection
 
 **Mitochondrial Phylogeny**:
+
 - Full mtDNA sequencing (16,569 bp)
 - Complete haplogroup tree
 - Major haplogroups: H, J, T, U, K, L, M, N, etc.
 - Maternal lineage tracing
 
 **Autosomal Analysis**:
+
 - IBD segment matching with elite-associated haplotypes
 - Founder lineage detection
 - Admixture proportion estimation
 
 **Probabilistic Lineage Graphs**:
+
 ```
 Modern Subject (2025)
   ↓ P=0.90
@@ -258,6 +272,7 @@ Combined Score: 0.50
 ```
 
 **Bayesian Evidence Fusion**:
+
 ```python
 path_probability = (
     genomic_evidence * genomic_weight +
@@ -271,6 +286,7 @@ path_probability = (
 The pipeline generates four comprehensive volumes:
 
 #### Volume I: Data & Methods
+
 ```json
 {
   "pipeline_metadata": {
@@ -288,6 +304,7 @@ The pipeline generates four comprehensive volumes:
 ```
 
 #### Volume II: Genome-Wide Rarity Results
+
 ```json
 {
   "genome_wide_rarity": {
@@ -310,6 +327,7 @@ The pipeline generates four comprehensive volumes:
 ```
 
 #### Volume III: Lineage Intelligence
+
 ```json
 {
   "haplogroups": {
@@ -330,6 +348,7 @@ The pipeline generates four comprehensive volumes:
 ```
 
 #### Volume IV: Interpretation, Uncertainty, Constraints
+
 ```json
 {
   "confidence_intervals": {
@@ -399,6 +418,7 @@ results/wgs_analysis/
 ### Computational Requirements
 
 **Input Format**: FASTQ (30× WGS, ~100GB paired-end)
+
 - Alignment: ~8-12 hours (16 cores)
 - Variant calling: ~6-10 hours (16 cores)
 - Annotation: ~2-4 hours
@@ -407,6 +427,7 @@ results/wgs_analysis/
 - **Total**: ~18-28 hours
 
 **Input Format**: BAM (pre-aligned)
+
 - Variant calling: ~6-10 hours
 - Annotation: ~2-4 hours
 - Phasing: ~1-2 hours
@@ -414,12 +435,14 @@ results/wgs_analysis/
 - **Total**: ~10-16 hours
 
 **Input Format**: VCF (pre-called)
+
 - Annotation: ~2-4 hours
 - Phasing: ~1-2 hours
 - Analysis: ~30 minutes
 - **Total**: ~4-6 hours
 
 **Input Format**: Array (~600K SNPs)
+
 - Annotation: ~5 minutes
 - Phasing: ~2 minutes
 - Analysis: ~15 seconds
@@ -497,6 +520,7 @@ assert results1['haplogroups'] == results2['haplogroups']
 ### Audit Trail
 
 Every output includes:
+
 - Input file hashes
 - Configuration hashes
 - Pipeline version
@@ -551,12 +575,14 @@ The system **must not**:
 ### Dependencies
 
 **Core**:
+
 - Python 3.8+
 - NumPy 1.20+
 - (Optional) pysam for BAM/VCF parsing
 - (Optional) cyvcf2 for fast VCF parsing
 
 **External Tools** (for production use):
+
 - BWA-MEM2 (alignment)
 - DeepVariant or GATK (variant calling)
 - Manta/DELLY (SV calling)

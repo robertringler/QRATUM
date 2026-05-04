@@ -55,6 +55,7 @@ Throughout this guide, you'll find:
 ## Table of Contents
 
 ### Part I: Computer & Technology Fundamentals
+
 1. [What Is a Computer?](#part-i-computer--technology-fundamentals)
 2. [Files and Folders](#12-files-and-folders)
 3. [What Is Software?](#13-what-is-software)
@@ -63,6 +64,7 @@ Throughout this guide, you'll find:
 6. [The Internet and Downloading](#16-the-internet-and-downloading)
 
 ### Part II: Understanding QRATUM
+
 1. [What Is QRATUM?](#part-ii-understanding-qratum)
 2. [What Problem Does QRATUM Solve?](#22-what-problem-does-qratum-solve)
 3. [What Is Simulation?](#23-what-is-simulation)
@@ -70,12 +72,14 @@ Throughout this guide, you'll find:
 5. [Who Uses QRATUM and Why?](#25-who-uses-qratum-and-why)
 
 ### Part III: Preparing Your Computer
+
 1. [Checking Your System](#part-iii-preparing-your-computer-environment)
 2. [Installing Prerequisites](#32-installing-prerequisites)
 3. [Opening the Terminal](#33-opening-the-terminal)
 4. [Creating a Workspace](#34-creating-a-workspace)
 
 ### Part IV: Installing QRATUM
+
 1. [What Is Git?](#part-iv-installing-qratum)
 2. [Installing Git](#42-installing-git)
 3. [Downloading QRATUM](#43-downloading-qratum)
@@ -83,22 +87,26 @@ Throughout this guide, you'll find:
 5. [Verifying Installation](#45-verifying-installation)
 
 ### Part V: Understanding What QRATUM Does
+
 1. [QRATUM's Workflow](#part-v-understanding-what-qratum-does)
 2. [Inputs Explained](#52-inputs-explained)
 3. [The Processing Phase](#53-the-processing-phase)
 4. [Outputs Explained](#54-outputs-explained)
 
 ### Part VI: Your First QRATUM Experiments
+
 1. [Experiment 1: Basic Simulation](#part-vi-your-first-qratum-experiments)
 2. [Experiment 2: Changing Parameters](#62-experiment-2-changing-parameters)
 3. [Experiment 3: Exploring Results](#63-experiment-3-exploring-results)
 
 ### Part VII: Troubleshooting & Problem Solving
+
 1. [Problem-Solving Framework](#part-vii-troubleshooting--problem-solving)
 2. [Error Library](#72-error-library)
 3. [Getting Help](#73-getting-help)
 
 ### Appendices
+
 - [Appendix A: Complete Glossary](#appendix-a-complete-glossary)
 - [Appendix B: Command Quick Reference](#appendix-b-command-quick-reference)
 - [Appendix C: Further Learning Resources](#appendix-c-further-learning-resources)
@@ -194,6 +202,7 @@ This office worker has different areas of their workspace:
 **Real-world analogy:** A calculator that can do billions of calculations per second.
 
 **What it does:**
+
 - Processes all instructions
 - Does math and logic
 - Coordinates everything else
@@ -207,6 +216,7 @@ This office worker has different areas of their workspace:
 **Real-world analogy:** Your desk where you spread out papers you're currently working on.
 
 **What it does:**
+
 - Holds currently-running programs
 - Stores data being processed right now
 - Clears when computer turns off
@@ -220,6 +230,7 @@ This office worker has different areas of their workspace:
 **Real-world analogy:** Filing cabinets that keep documents even when the office is closed.
 
 **What it does:**
+
 - Stores your files permanently
 - Keeps data when power is off
 - Holds installed programs
@@ -302,6 +313,7 @@ document.txt
 ```
 
 Common file extensions:
+
 - `.txt` = Plain text file
 - `.pdf` = PDF document
 - `.jpg` or `.png` = Image file
@@ -376,7 +388,8 @@ Folders can contain other folders. This creates a **hierarchy** or **tree struct
 
 A **file path** is like a mailing address for a file. It tells the computer exactly where to find something.
 
-**Real-world analogy:** 
+**Real-world analogy:**
+
 - Country → State → City → Street → House Number
 - Computer → Drive → Folder → Subfolder → File
 
@@ -459,12 +472,15 @@ You understand this section if you can:
 There are two main types of things on your computer:
 
 **Programs (Software):** Instructions that tell the computer what to do
+
 - Examples: Web browser, word processor, QRATUM
 
 **Data:** Information that programs work with
+
 - Examples: Documents, photos, your simulation results
 
-**Analogy:** 
+**Analogy:**
+
 - **Program** = A recipe (instructions)
 - **Data** = Ingredients (what the instructions work with)
 
@@ -511,11 +527,13 @@ There are two main types of things on your computer:
 ### Types of Programs
 
 **GUI Programs** (Graphical User Interface):
+
 - You click buttons and menus
 - Visual, user-friendly
 - Examples: Web browsers, word processors, photo editors
 
 **CLI Programs** (Command Line Interface):
+
 - You type commands
 - Text-based, powerful, precise
 - Examples: Git, Python, **QRATUM**
@@ -664,16 +682,19 @@ An **operating system** (OS) is the main software that runs your computer. It's 
 ### How to Check Your Operating System
 
 **On Windows:**
+
 1. Press the Windows key + R
 2. Type `winver` and press Enter
 3. A window shows your Windows version
 
 **On macOS:**
+
 1. Click the Apple () menu in the top-left corner
 2. Click "About This Mac"
 3. You'll see the macOS version (like "macOS Sonoma")
 
 **On Linux:**
+
 1. Open a terminal
 2. Type `cat /etc/os-release` and press Enter
 3. You'll see distribution information
@@ -690,6 +711,7 @@ Some instructions in this guide are different depending on your OS:
 | Install software | Executables (.exe) | DMG or Homebrew | Package manager |
 
 **Throughout this guide:**
+
 - 📘 Blue = Windows-specific
 - 📙 Yellow = macOS-specific  
 - 📗 Green = Linux-specific
@@ -764,16 +786,19 @@ Instead of clicking buttons, you type commands.
 <summary>📘 <strong>Windows Instructions</strong> (click to expand)</summary>
 
 **Option 1: Command Prompt**
+
 1. Press the Windows key (⊞)
 2. Type `cmd`
 3. Click "Command Prompt" in the results
 
 **Option 2: PowerShell (Recommended)**
+
 1. Press the Windows key (⊞)
 2. Type `powershell`
 3. Click "Windows PowerShell" in the results
 
 **Option 3: Windows Terminal (Best, if available)**
+
 1. Press the Windows key (⊞)
 2. Type `terminal`
 3. Click "Windows Terminal" in the results
@@ -784,16 +809,19 @@ Instead of clicking buttons, you type commands.
 <summary>📙 <strong>macOS Instructions</strong> (click to expand)</summary>
 
 **Option 1: Spotlight Search**
+
 1. Press Command (⌘) + Space
 2. Type `terminal`
 3. Press Enter
 
 **Option 2: Finder**
+
 1. Open Finder
 2. Go to Applications → Utilities
 3. Double-click "Terminal"
 
 **Option 3: Launchpad**
+
 1. Click Launchpad in the Dock
 2. Type `terminal` in the search
 3. Click the Terminal icon
@@ -804,14 +832,17 @@ Instead of clicking buttons, you type commands.
 <summary>📗 <strong>Linux Instructions</strong> (click to expand)</summary>
 
 **Option 1: Keyboard Shortcut**
+
 - Press Ctrl + Alt + T (works on most Linux distributions)
 
 **Option 2: Application Menu**
+
 1. Click "Activities" or application menu
 2. Search for "Terminal"
 3. Click the Terminal icon
 
 **Option 3: Right-click Desktop**
+
 - On some distributions, right-click desktop → "Open Terminal"
 
 </details>
@@ -901,7 +932,7 @@ Here are the basic commands you'll need for QRATUM:
 ╚═══════════════════════════════════════════════════════════════════════╝
 ```
 
-### Practice Session: Try It Yourself!
+### Practice Session: Try It Yourself
 
 Open your terminal and follow along:
 
@@ -1021,6 +1052,7 @@ You understand this section if you can:
 6. Use Ctrl+C to stop a command
 
 **Try this challenge:**
+
 1. Open terminal
 2. Navigate to your Documents folder
 3. Create a folder called "QRATUMtest"
@@ -1094,11 +1126,13 @@ We'll cover Git in detail in Part IV.
 **⚠️ Only download from trusted sources:**
 
 For QRATUM, the only official source is:
+
 ```
 https://github.com/robertringler/QRATUM
 ```
 
 **Red flags to avoid:**
+
 - URLs that don't match exactly
 - Pop-up downloads
 - Email attachments claiming to be QRATUM
@@ -1380,6 +1414,7 @@ Before installing QRATUM, verify your computer meets these requirements:
    - System type (64-bit or 32-bit)
 
 For storage:
+
 1. Open File Explorer
 2. Click "This PC"
 3. See free space under each drive
@@ -1396,6 +1431,7 @@ For storage:
    - macOS version
 
 For storage:
+
 1. Click "Storage" tab in About This Mac
 2. Or: Apple menu → "System Preferences" → "Storage"
 
@@ -1405,6 +1441,7 @@ For storage:
 <summary>📗 <strong>Linux</strong></summary>
 
 Open terminal and run:
+
 ```bash
 # Check CPU
 lscpu | grep "Model name"
@@ -1434,7 +1471,7 @@ Python is the programming language QRATUM is built with.
 <details>
 <summary>📘 <strong>Windows</strong></summary>
 
-1. Go to https://www.python.org/downloads/
+1. Go to <https://www.python.org/downloads/>
 2. Click "Download Python 3.x.x" (get version 3.10 or newer)
 3. Run the downloaded installer
 4. **IMPORTANT:** Check "Add Python to PATH" at the bottom!
@@ -1447,11 +1484,13 @@ Python is the programming language QRATUM is built with.
 <summary>📙 <strong>macOS</strong></summary>
 
 **Option 1: Official installer**
-1. Go to https://www.python.org/downloads/
+
+1. Go to <https://www.python.org/downloads/>
 2. Download the macOS installer
 3. Run and follow prompts
 
 **Option 2: Homebrew (if installed)**
+
 ```bash
 brew install python
 ```
@@ -1545,7 +1584,7 @@ For QRATUM, we use Git to download the project from GitHub.
 <details>
 <summary>📘 <strong>Windows</strong></summary>
 
-1. Go to https://git-scm.com/download/win
+1. Go to <https://git-scm.com/download/win>
 2. Download will start automatically
 3. Run the installer
 4. Accept all defaults (click "Next" through all screens)
@@ -1557,12 +1596,14 @@ For QRATUM, we use Git to download the project from GitHub.
 <summary>📙 <strong>macOS</strong></summary>
 
 **Option 1: Automatic**
+
 1. Open Terminal
 2. Type `git --version`
 3. If not installed, macOS will prompt to install developer tools
 4. Click "Install" and wait
 
 **Option 2: Homebrew**
+
 ```bash
 brew install git
 ```
@@ -1633,6 +1674,7 @@ pip3 install -r requirements.txt   # Mac/Linux
 ```
 
 **Note:** If you see errors, try:
+
 - On Windows: `python -m pip install -r requirements.txt`
 - On Mac/Linux: `python3 -m pip install -r requirements.txt`
 
@@ -1786,18 +1828,22 @@ When something goes wrong:
 ## 7.2 Error Library
 
 ### "command not found"
+
 **Meaning:** The program isn't installed or not in PATH
 **Fix:** Install the program or check PATH settings
 
 ### "No such file or directory"
+
 **Meaning:** The file/folder doesn't exist where you said it does
 **Fix:** Check spelling, verify location with `pwd` and `ls`
 
 ### "Permission denied"
+
 **Meaning:** You don't have rights to access this
 **Fix:** On Mac/Linux, try adding `sudo` before the command
 
 ### "ModuleNotFoundError"
+
 **Meaning:** A Python library is missing
 **Fix:** Run `pip install <module_name>`
 
@@ -1809,8 +1855,8 @@ If you're stuck:
 
 1. **Check documentation:** Read README.md and docs/ folder
 2. **Search online:** Many errors have solutions already posted
-3. **GitHub Issues:** https://github.com/robertringler/QRATUM/issues
-4. **Email support:** security@qratum.io
+3. **GitHub Issues:** <https://github.com/robertringler/QRATUM/issues>
+4. **Email support:** <security@qratum.io>
 
 ---
 
@@ -1847,13 +1893,16 @@ If you're stuck:
 # Appendix C: Further Learning Resources
 
 **Python Basics:**
-- https://www.python.org/about/gettingstarted/
-- https://docs.python.org/3/tutorial/
+
+- <https://www.python.org/about/gettingstarted/>
+- <https://docs.python.org/3/tutorial/>
 
 **Git Basics:**
-- https://git-scm.com/book/en/v2/Getting-Started-Git-Basics
+
+- <https://git-scm.com/book/en/v2/Getting-Started-Git-Basics>
 
 **QRATUM Specific:**
+
 - Main documentation: docs/ folder
 - Architecture: QRATUM_ARCHITECTURE.md
 - API reference: docs/API_REFERENCE.md
@@ -1872,7 +1921,7 @@ A: Basic functionality works on most modern computers. Complex simulations benef
 A: Yes, the Apache 2.0 license allows commercial use.
 
 **Q: Where do I report bugs?**
-A: GitHub Issues at https://github.com/robertringler/QRATUM/issues
+A: GitHub Issues at <https://github.com/robertringler/QRATUM/issues>
 
 ---
 
@@ -1901,6 +1950,7 @@ python3 demo_qratum_platform.py
 You've completed the QRATUM Absolute Beginners Guide!
 
 **You now can:**
+
 - ✅ Understand how computers and terminals work
 - ✅ Explain what QRATUM is and why it matters
 - ✅ Install and run QRATUM on your computer
@@ -1908,6 +1958,7 @@ You've completed the QRATUM Absolute Beginners Guide!
 - ✅ Know where to find help
 
 **Next steps:**
+
 1. Explore the other documentation in the `docs/` folder
 2. Try running different demo scripts
 3. Read the README.md for advanced features

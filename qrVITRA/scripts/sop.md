@@ -1,4 +1,5 @@
 # VITRA-E0 Standard Operating Procedures (SOP)
+
 # Biokey-Enabled Sovereign Genomic Operations
 
 **Version**: 1.0.0  
@@ -411,6 +412,7 @@ nextflow run nextflow/vitra-e0-germline.nf \
 ### 7.1 Biokey Compromise
 
 **Indicators**:
+
 - Unauthorized operations signed with operator biokey
 - VCF file accessed without authorization
 - Suspicious biokey derivations in audit log
@@ -508,6 +510,7 @@ Merkle chain shows duplicate timestamps or out-of-order operations.
 ### 8.1 HIPAA Compliance
 
 **Requirements**:
+
 - No PHI (Protected Health Information) on disk
 - Audit trail for all genomic operations
 - Encryption at rest and in transit
@@ -635,10 +638,10 @@ Signature: _______________  Date: __________
 
 | Role | Contact |
 |------|---------|
-| Security Incidents | security@qratum.ai |
-| Biokey Support | biokey-support@qratum.ai |
-| Compliance Questions | compliance@qratum.ai |
-| General Inquiries | contact@qratum.ai |
+| Security Incidents | <security@qratum.ai> |
+| Biokey Support | <biokey-support@qratum.ai> |
+| Compliance Questions | <compliance@qratum.ai> |
+| General Inquiries | <contact@qratum.ai> |
 
 ## Appendix C: Revision History
 
