@@ -23,6 +23,7 @@ class PerceptionLayer:
 
     def process(self, raw: Any, modality: str = "generic") -> list[Percept]:
         """Convert raw payloads into deterministic percepts."""
+
         features = self._extract_features(raw)
         percept = Percept(modality=modality, value=raw, features=features)
         return [percept]

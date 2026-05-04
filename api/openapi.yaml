@@ -1,0 +1,1076 @@
+openapi: 3.0.3
+info:
+  title: QRATUM Platform API
+  description: |
+    QRATUM (Quantum Resource Allocation, Tensor Analysis, and Unified Modeling) Platform API.
+    
+    This API provides endpoints for:
+    - Job submission (quantum simulations, tensor analysis)
+    - Real-time status monitoring (WebSocket support)
+    - Results retrieval and visualization
+    - Resource allocation dashboards
+    
+    ## Security
+    All endpoints require OAuth2/OIDC authentication. API keys are supported for
+    service-to-service communication.
+    
+    ## Compliance
+    - DO-178C Level A certification maintained
+    - NIST 800-53 security controls enforced
+    - CMMC 2.0 Level 2 compliant
+    - DFARS requirements met
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  contact:
+    name: QRATUM Team
+    url: https://github.com/robertringler/QRATUM
+
+servers:
+  - url: https://api.qratum.io/v1
+    description: Production server
+  - url: https://staging-api.qratum.io/v1
+    description: Staging server
+  - url: http://localhost:8000/v1
+    description: Local development
+
+tags:
+  - name: Authentication
+    description: OAuth2/OIDC authentication endpoints
+  - name: Jobs
+    description: Job submission and management
+  - name: Status
+    description: Real-time status monitoring
+  - name: Results
+    description: Results retrieval and visualization
+  - name: Resources
+    description: Resource allocation dashboard
+  - name: Health
+    description: Health and readiness checks
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Returns the health status of the API
+      operationId: healthCheck
+      security: []
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /readiness:
+    get:
+      tags:
+        - Health
+      summary: Readiness check
+      description: Returns readiness status for Kubernetes probes
+      operationId: readinessCheck
+      security: []
+      responses:
+        '200':
+          description: Service is ready
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadinessResponse'
+
+  /auth/token:
+    post:
+      tags:
+        - Authentication
+      summary: Get access token
+      description: |
+        Exchange credentials for an access token using OAuth2 client credentials flow.
+        Integrates with HashiCorp Vault for secrets management.
+      operationId: getToken
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        '200':
+          description: Token granted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh access token
+      description: Exchange a refresh token for a new access token
+      operationId: refreshToken
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Token refreshed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          description: Invalid or expired refresh token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/revoke:
+    post:
+      tags:
+        - Authentication
+      summary: Revoke token
+      description: Revoke an access or refresh token
+      operationId: revokeToken
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeTokenRequest'
+      responses:
+        '200':
+          description: Token revoked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+
+  /jobs:
+    get:
+      tags:
+        - Jobs
+      summary: List jobs
+      description: List all jobs with optional filtering
+      operationId: listJobs
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      parameters:
+        - name: status
+          in: query
+          description: Filter by job status
+          schema:
+            $ref: '#/components/schemas/JobStatus'
+        - name: job_type
+          in: query
+          description: Filter by job type
+          schema:
+            $ref: '#/components/schemas/JobType'
+        - name: limit
+          in: query
+          description: Maximum number of results
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Offset for pagination
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: List of jobs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobListResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      tags:
+        - Jobs
+      summary: Submit a new job
+      description: |
+        Submit a new simulation job (quantum circuit, tensor analysis, etc.)
+        Job is queued for execution and returns immediately with a job ID.
+      operationId: submitJob
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobSubmitRequest'
+      responses:
+        '201':
+          description: Job submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobSubmitResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /jobs/{job_id}:
+    get:
+      tags:
+        - Jobs
+      summary: Get job details
+      description: Get detailed information about a specific job
+      operationId: getJob
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: Job details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetail'
+        '404':
+          description: Job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Jobs
+      summary: Cancel job
+      description: Cancel a queued or running job
+      operationId: cancelJob
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: Job cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobCancelResponse'
+        '400':
+          description: Job cannot be cancelled (already completed or failed)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /jobs/{job_id}/status:
+    get:
+      tags:
+        - Status
+      summary: Get job status
+      description: Get the current status of a job
+      operationId: getJobStatus
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: Job status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatusResponse'
+        '404':
+          description: Job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /jobs/{job_id}/results:
+    get:
+      tags:
+        - Results
+      summary: Get job results
+      description: |
+        Get the results of a completed job.
+        Returns simulation outputs, metrics, and visualization data.
+      operationId: getJobResults
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+        - name: format
+          in: query
+          description: Output format
+          schema:
+            type: string
+            enum: [json, csv, hdf5]
+            default: json
+      responses:
+        '200':
+          description: Job results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResultsResponse'
+        '400':
+          description: Job not completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /jobs/{job_id}/artifacts:
+    get:
+      tags:
+        - Results
+      summary: List job artifacts
+      description: List all artifacts generated by a job
+      operationId: listJobArtifacts
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: List of artifacts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtifactListResponse'
+        '404':
+          description: Job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /jobs/{job_id}/artifacts/{artifact_id}:
+    get:
+      tags:
+        - Results
+      summary: Download artifact
+      description: Download a specific artifact
+      operationId: downloadArtifact
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+        - name: artifact_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Artifact download
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Artifact not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /resources:
+    get:
+      tags:
+        - Resources
+      summary: Get resource allocation dashboard
+      description: |
+        Get current resource allocation and utilization metrics.
+        Includes cluster status, GPU availability, and queue depth.
+      operationId: getResources
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      responses:
+        '200':
+          description: Resource allocation data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceDashboard'
+
+  /resources/clusters:
+    get:
+      tags:
+        - Resources
+      summary: List available clusters
+      description: List all available compute clusters (EKS, GKE, AKS)
+      operationId: listClusters
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      responses:
+        '200':
+          description: List of clusters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterListResponse'
+
+  /resources/quotas:
+    get:
+      tags:
+        - Resources
+      summary: Get resource quotas
+      description: Get current user's resource quotas and usage
+      operationId: getQuotas
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      responses:
+        '200':
+          description: Resource quotas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotaResponse'
+
+  /validate:
+    post:
+      tags:
+        - Jobs
+      summary: Validate job configuration
+      description: Validate a job configuration without submitting
+      operationId: validateJob
+      security:
+        - bearerAuth: []
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobSubmitRequest'
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResponse'
+
+  /ws/status:
+    get:
+      tags:
+        - Status
+      summary: WebSocket status endpoint
+      description: |
+        WebSocket endpoint for real-time job status updates.
+        
+        Connect via `wss://api.qratum.io/v1/ws/status?token={access_token}`
+        
+        Message format:
+        - Subscribe: `{"action": "subscribe", "job_id": "uuid"}`
+        - Unsubscribe: `{"action": "unsubscribe", "job_id": "uuid"}`
+        - Status update: `{"type": "status", "job_id": "uuid", "status": "running", "progress": 0.5}`
+      operationId: wsStatus
+      security:
+        - bearerAuth: []
+      responses:
+        '101':
+          description: Switching to WebSocket protocol
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT token obtained from `/auth/token` endpoint.
+        Include as `Authorization: Bearer <token>` header.
+    
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: |
+        API key for service-to-service communication.
+        Generated from QRATUM dashboard or via Vault.
+    
+    oauth2:
+      type: oauth2
+      description: OAuth2 with OIDC for user authentication
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.qratum.io/authorize
+          tokenUrl: https://auth.qratum.io/token
+          scopes:
+            read:jobs: Read job information
+            write:jobs: Submit and manage jobs
+            read:resources: Read resource information
+            admin: Administrative access
+
+  parameters:
+    JobId:
+      name: job_id
+      in: path
+      required: true
+      description: Unique job identifier
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - version
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+        version:
+          type: string
+          example: "1.0.0"
+        timestamp:
+          type: string
+          format: date-time
+
+    ReadinessResponse:
+      type: object
+      required:
+        - ready
+        - dependencies
+      properties:
+        ready:
+          type: boolean
+        dependencies:
+          type: object
+          additionalProperties:
+            type: string
+            enum: [ok, degraded, unavailable]
+          example:
+            vault: ok
+            redis: ok
+            postgres: ok
+
+    TokenRequest:
+      type: object
+      required:
+        - grant_type
+      properties:
+        grant_type:
+          type: string
+          enum: [client_credentials, password]
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        scope:
+          type: string
+          example: "read:jobs write:jobs"
+
+    RefreshTokenRequest:
+      type: object
+      required:
+        - refresh_token
+      properties:
+        refresh_token:
+          type: string
+
+    RevokeTokenRequest:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+        token_type_hint:
+          type: string
+          enum: [access_token, refresh_token]
+
+    TokenResponse:
+      type: object
+      required:
+        - access_token
+        - token_type
+        - expires_in
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          enum: [Bearer]
+        expires_in:
+          type: integer
+          description: Token lifetime in seconds
+          example: 3600
+        refresh_token:
+          type: string
+        scope:
+          type: string
+
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - error_description
+      properties:
+        error:
+          type: string
+          example: invalid_request
+        error_description:
+          type: string
+          example: The request was invalid
+        request_id:
+          type: string
+          format: uuid
+          description: Request ID for audit logging
+
+    JobStatus:
+      type: string
+      enum:
+        - queued
+        - running
+        - completed
+        - failed
+        - cancelled
+
+    JobType:
+      type: string
+      enum:
+        - quantum_circuit
+        - tensor_analysis
+        - vqe
+        - qaoa
+        - digital_twin
+        - cfd
+        - fea
+        - orbital_mc
+
+    JobSubmitRequest:
+      type: object
+      required:
+        - job_type
+        - config
+      properties:
+        job_type:
+          $ref: '#/components/schemas/JobType'
+        name:
+          type: string
+          maxLength: 128
+          example: "H2 VQE Simulation"
+        config:
+          type: object
+          description: Job-type specific configuration
+          additionalProperties: true
+        priority:
+          type: integer
+          minimum: 1
+          maximum: 10
+          default: 5
+          description: Job priority (1=lowest, 10=highest)
+        timeout_seconds:
+          type: integer
+          minimum: 60
+          maximum: 86400
+          default: 3600
+        tags:
+          type: array
+          items:
+            type: string
+          maxItems: 10
+        callback_url:
+          type: string
+          format: uri
+          description: URL to POST results when job completes
+
+    JobSubmitResponse:
+      type: object
+      required:
+        - job_id
+        - status
+        - submitted_at
+      properties:
+        job_id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/JobStatus'
+        submitted_at:
+          type: string
+          format: date-time
+        estimated_duration_seconds:
+          type: integer
+
+    JobListResponse:
+      type: object
+      required:
+        - jobs
+        - total
+        - limit
+        - offset
+      properties:
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobSummary'
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+
+    JobSummary:
+      type: object
+      required:
+        - job_id
+        - job_type
+        - status
+        - submitted_at
+      properties:
+        job_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        job_type:
+          $ref: '#/components/schemas/JobType'
+        status:
+          $ref: '#/components/schemas/JobStatus'
+        submitted_at:
+          type: string
+          format: date-time
+        started_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+        progress:
+          type: number
+          minimum: 0
+          maximum: 1
+
+    JobDetail:
+      allOf:
+        - $ref: '#/components/schemas/JobSummary'
+        - type: object
+          properties:
+            config:
+              type: object
+            priority:
+              type: integer
+            timeout_seconds:
+              type: integer
+            tags:
+              type: array
+              items:
+                type: string
+            cluster:
+              type: string
+            worker_id:
+              type: string
+            error_message:
+              type: string
+
+    JobStatusResponse:
+      type: object
+      required:
+        - job_id
+        - status
+        - progress
+      properties:
+        job_id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/JobStatus'
+        progress:
+          type: number
+          minimum: 0
+          maximum: 1
+        message:
+          type: string
+        metrics:
+          type: object
+          properties:
+            elapsed_seconds:
+              type: number
+            cpu_utilization:
+              type: number
+            memory_mb:
+              type: integer
+            gpu_utilization:
+              type: number
+
+    JobCancelResponse:
+      type: object
+      required:
+        - job_id
+        - status
+        - cancelled_at
+      properties:
+        job_id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/JobStatus'
+        cancelled_at:
+          type: string
+          format: date-time
+
+    JobResultsResponse:
+      type: object
+      required:
+        - job_id
+        - status
+        - results
+      properties:
+        job_id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/JobStatus'
+        completed_at:
+          type: string
+          format: date-time
+        results:
+          type: object
+          description: Job-type specific results
+          additionalProperties: true
+        metrics:
+          type: object
+          properties:
+            execution_time_seconds:
+              type: number
+            fidelity:
+              type: number
+            energy:
+              type: number
+            iterations:
+              type: integer
+        visualization_url:
+          type: string
+          format: uri
+
+    ArtifactListResponse:
+      type: object
+      required:
+        - artifacts
+      properties:
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artifact'
+
+    Artifact:
+      type: object
+      required:
+        - artifact_id
+        - filename
+        - content_type
+        - size_bytes
+        - created_at
+      properties:
+        artifact_id:
+          type: string
+          format: uuid
+        filename:
+          type: string
+        content_type:
+          type: string
+        size_bytes:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        download_url:
+          type: string
+          format: uri
+
+    ValidationResponse:
+      type: object
+      required:
+        - valid
+      properties:
+        valid:
+          type: boolean
+        errors:
+          type: array
+          items:
+            type: string
+        warnings:
+          type: array
+          items:
+            type: string
+
+    ResourceDashboard:
+      type: object
+      required:
+        - timestamp
+        - clusters
+        - queue_depth
+        - utilization
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        clusters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClusterSummary'
+        queue_depth:
+          type: integer
+        jobs_running:
+          type: integer
+        jobs_queued:
+          type: integer
+        utilization:
+          type: object
+          properties:
+            cpu:
+              type: number
+            memory:
+              type: number
+            gpu:
+              type: number
+
+    ClusterSummary:
+      type: object
+      required:
+        - cluster_id
+        - provider
+        - region
+        - status
+      properties:
+        cluster_id:
+          type: string
+        name:
+          type: string
+        provider:
+          type: string
+          enum: [aws, gcp, azure]
+        region:
+          type: string
+        status:
+          type: string
+          enum: [online, degraded, offline]
+        nodes:
+          type: integer
+        gpus_available:
+          type: integer
+        gpus_total:
+          type: integer
+
+    ClusterListResponse:
+      type: object
+      required:
+        - clusters
+      properties:
+        clusters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClusterSummary'
+
+    QuotaResponse:
+      type: object
+      required:
+        - quotas
+        - usage
+      properties:
+        quotas:
+          type: object
+          properties:
+            max_concurrent_jobs:
+              type: integer
+            max_gpu_hours_per_month:
+              type: integer
+            max_storage_gb:
+              type: integer
+        usage:
+          type: object
+          properties:
+            concurrent_jobs:
+              type: integer
+            gpu_hours_this_month:
+              type: number
+            storage_gb:
+              type: number

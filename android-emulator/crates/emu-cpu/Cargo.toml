@@ -1,0 +1,31 @@
+[package]
+name = "emu-cpu"
+description = "ARMv8 ↔ x86-64 CPU emulation with dynamic binary translation"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+log.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+bitflags.workspace = true
+byteorder.workspace = true
+parking_lot.workspace = true
+memmap2.workspace = true
+libc.workspace = true
+serde = { workspace = true, features = ["derive"] }
+
+# Internal dependencies
+emu-memory = { path = "../emu-memory" }
+
+[dev-dependencies]
+proptest.workspace = true
+env_logger.workspace = true
+
+[features]
+default = []
+deterministic = []
+trace = []

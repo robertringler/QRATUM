@@ -9,6 +9,7 @@ from quasim.qunimbus.china_integration import (
 
 def test_china_factory_config_defaults():
     """Test ChinaFactoryConfig default values."""
+
     config = ChinaFactoryConfig()
 
     assert config.partner == "Shenzhen Quantum Valley"
@@ -23,6 +24,7 @@ def test_china_factory_config_defaults():
 
 def test_china_factory_config_custom():
     """Test ChinaFactoryConfig with custom values."""
+
     config = ChinaFactoryConfig(
         pilots_per_day=1000,
         qkd_latency_ms=0.2,
@@ -36,6 +38,7 @@ def test_china_factory_config_custom():
 
 def test_china_factory_initialization():
     """Test ChinaPhotonicFactory initialization."""
+
     factory = ChinaPhotonicFactory()
 
     assert factory.config.partner == "Shenzhen Quantum Valley"
@@ -48,6 +51,7 @@ def test_china_factory_initialization():
 
 def test_china_factory_custom_config():
     """Test ChinaPhotonicFactory with custom config."""
+
     config = ChinaFactoryConfig(pilots_per_day=800)
     factory = ChinaPhotonicFactory(config)
 
@@ -56,6 +60,7 @@ def test_china_factory_custom_config():
 
 def test_china_factory_connect():
     """Test connection to China Photonic Factory."""
+
     factory = ChinaPhotonicFactory()
 
     result = factory.connect()
@@ -66,6 +71,7 @@ def test_china_factory_connect():
 
 def test_china_factory_generate_pilots():
     """Test pilot generation at China factory."""
+
     factory = ChinaPhotonicFactory()
 
     result = factory.generate_pilots(count=100)
@@ -78,6 +84,7 @@ def test_china_factory_generate_pilots():
 
 def test_china_factory_multiple_generations():
     """Test multiple pilot generations."""
+
     factory = ChinaPhotonicFactory()
 
     factory.generate_pilots(100)
@@ -88,6 +95,7 @@ def test_china_factory_multiple_generations():
 
 def test_china_factory_get_metrics():
     """Test metrics retrieval."""
+
     factory = ChinaPhotonicFactory()
 
     metrics = factory.get_metrics()
@@ -100,6 +108,7 @@ def test_china_factory_get_metrics():
 
 def test_china_factory_compliance_status():
     """Test compliance status retrieval."""
+
     factory = ChinaPhotonicFactory()
 
     compliance = factory.get_compliance_status()
@@ -117,6 +126,7 @@ def test_china_factory_compliance_status():
 
 def test_china_factory_disconnect():
     """Test disconnection from China factory."""
+
     factory = ChinaPhotonicFactory()
 
     factory.connect()
@@ -128,6 +138,7 @@ def test_china_factory_disconnect():
 
 def test_china_factory_metrics_fields():
     """Test that metrics have all required fields."""
+
     factory = ChinaPhotonicFactory()
     metrics = factory.get_metrics()
 

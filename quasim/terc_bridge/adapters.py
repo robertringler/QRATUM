@@ -32,6 +32,7 @@ def from_quasim_state(agent_or_path: str | Path | dict[str, Any]) -> str | np.nd
     >>> isinstance(result, str)
     True
     """
+
     # Handle file path
     if isinstance(agent_or_path, (str, Path)):
         path = Path(agent_or_path)
@@ -114,6 +115,7 @@ def extract_trajectory_text(state: dict[str, Any]) -> str:
     str
         Extracted text trajectory
     """
+
     if "trajectory" in state:
         return str(state["trajectory"])
     if "sequence" in state:
@@ -143,6 +145,7 @@ def extract_node_states(state: dict[str, Any]) -> np.ndarray:
     np.ndarray
         Extracted node states, shape (num_nodes, state_dim)
     """
+
     if "node_states" in state:
         data = state["node_states"]
         if isinstance(data, list):

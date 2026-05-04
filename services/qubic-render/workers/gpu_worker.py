@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 
 class RenderWorker:
@@ -16,12 +16,13 @@ class RenderWorker:
 
     def __init__(self, worker_id: str, gpu_device: int = 0) -> None:
         """Initialize render worker."""
+
         self.worker_id = worker_id
         self.gpu_device = gpu_device
         self.current_job: Optional[str] = None
         self.is_busy = False
 
-    async def process_job(self, job: Dict[str, Any]) -> Dict[str, Any]:
+    async def process_job(self, job: dict[str, Any]) -> dict[str, Any]:
         """Process a render job.
 
         Args:
@@ -30,6 +31,7 @@ class RenderWorker:
         Returns:
             Job result dictionary
         """
+
         self.is_busy = True
         self.current_job = job.get("job_id")
 
@@ -55,4 +57,5 @@ class RenderWorker:
         Returns:
             True if worker is not busy
         """
+
         return not self.is_busy

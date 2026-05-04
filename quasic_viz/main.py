@@ -8,6 +8,7 @@ from __future__ import annotations
 
 def main() -> None:
     """Run the QuASIC visualization server."""
+
     try:
         import uvicorn
 

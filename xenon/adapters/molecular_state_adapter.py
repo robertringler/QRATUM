@@ -21,6 +21,7 @@ class MolecularStateAdapter:
         Args:
             state: MolecularState instance to adapt
         """
+
         self.state = state
 
     def to_viz_model(self) -> dict[str, any]:
@@ -29,6 +30,7 @@ class MolecularStateAdapter:
         Returns:
             Dictionary with state properties for visualization
         """
+
         return {
             "id": self.state.state_id,
             "protein": self.state.protein_name,
@@ -52,6 +54,7 @@ class MolecularStateAdapter:
         Returns:
             VisualizationData with energy surface mesh
         """
+
         # Create a grid for the energy surface
         x = np.linspace(-5, 5, resolution)
         y = np.linspace(-5, 5, resolution)
@@ -110,6 +113,7 @@ class MolecularStateAdapter:
         Returns:
             VisualizationData with point cloud
         """
+
         # Generate random points in 3D space (simplified molecular representation)
         np.random.seed(hash(self.state.state_id) % (2**32))
         positions = np.random.randn(num_points, 3)

@@ -19,6 +19,7 @@ class TestConfig:
 
     def test_default_config(self):
         """Test default configuration values."""
+
         cfg = Config()
         assert cfg.simulation_precision == "fp32"
         assert cfg.max_workspace_mb == 1024
@@ -27,6 +28,7 @@ class TestConfig:
 
     def test_custom_config(self):
         """Test custom configuration values."""
+
         cfg = Config(
             simulation_precision="fp64",
             max_workspace_mb=2048,
@@ -40,6 +42,7 @@ class TestConfig:
 
     def test_precision_modes(self):
         """Test all supported precision modes."""
+
         precisions = ["fp8", "fp16", "fp32", "fp64"]
         for precision in precisions:
             cfg = Config(simulation_precision=precision)
@@ -47,6 +50,7 @@ class TestConfig:
 
     def test_backend_modes(self):
         """Test all supported backend modes."""
+
         backends = ["cpu", "cuda", "rocm"]
         for backend in backends:
             cfg = Config(backend=backend)
@@ -58,6 +62,7 @@ class TestRuntime:
 
     def test_runtime_initialization(self, default_config):
         """Test runtime initialization with config."""
+
         rt = Runtime(default_config)
         assert rt.config == default_config
         assert rt.average_latency == 0.0
@@ -65,6 +70,7 @@ class TestRuntime:
 
     def test_runtime_context_manager(self, default_config):
         """Test runtime context manager lifecycle."""
+
         rt = Runtime(default_config)
         assert not rt._initialized
 
@@ -75,6 +81,7 @@ class TestRuntime:
 
     def test_runtime_helper_function(self, default_config):
         """Test the runtime() context manager helper."""
+
         with runtime(default_config) as rt:
             assert isinstance(rt, Runtime)
             assert rt._initialized
@@ -82,6 +89,7 @@ class TestRuntime:
 
     def test_simulation_requires_context(self, default_config):
         """Test that simulation fails without context manager."""
+
         rt = Runtime(default_config)
         circuit = [[1 + 0j, 1 + 0j]]
 
@@ -94,6 +102,7 @@ class TestSimulation:
 
     def test_simple_simulation(self, default_config, simple_circuit):
         """Test basic simulation execution."""
+
         with runtime(default_config) as rt:
             result = rt.simulate(simple_circuit)
 
@@ -103,6 +112,7 @@ class TestSimulation:
 
     def test_deterministic_replay(self, simple_circuit):
         """Test deterministic simulation with fixed seed."""
+
         cfg = Config(seed=42)
 
         with runtime(cfg) as rt1:
@@ -117,6 +127,7 @@ class TestSimulation:
 
     def test_different_seeds_produce_different_results(self, simple_circuit):
         """Test that different seeds can produce different results."""
+
         cfg1 = Config(seed=42)
         cfg2 = Config(seed=123)
 
@@ -132,6 +143,7 @@ class TestSimulation:
 
     def test_complex_circuit_simulation(self, default_config, complex_circuit):
         """Test simulation of complex circuit."""
+
         with runtime(default_config) as rt:
             result = rt.simulate(complex_circuit)
 
@@ -141,12 +153,14 @@ class TestSimulation:
 
     def test_empty_circuit(self, default_config):
         """Test simulation of empty circuit."""
+
         with runtime(default_config) as rt:
             result = rt.simulate([])
             assert len(result) == 0
 
     def test_single_gate_circuit(self, default_config):
         """Test simulation of single-gate circuit."""
+
         circuit = [[1 + 0j, 0 + 0j, 0 + 0j, 1 + 0j]]
         with runtime(default_config) as rt:
             result = rt.simulate(circuit)
@@ -160,6 +174,7 @@ class TestPrecisionModes:
     @pytest.mark.parametrize("precision", ["fp8", "fp16", "fp32", "fp64"])
     def test_precision_mode_simulation(self, precision, simple_circuit):
         """Test simulation with different precision modes."""
+
         cfg = Config(simulation_precision=precision, seed=42)
         with runtime(cfg) as rt:
             result = rt.simulate(simple_circuit)
@@ -172,6 +187,7 @@ class TestScalability:
 
     def test_variable_circuit_sizes(self, default_config):
         """Test simulation with circuits of different sizes."""
+
         sizes = [1, 2, 4, 8, 16]
 
         for size in sizes:
@@ -182,6 +198,7 @@ class TestScalability:
 
     def test_large_gate_matrix(self, default_config):
         """Test simulation with larger gate matrices."""
+
         # Create a circuit with larger gates
         circuit = [
             [1 + 0j] * 16,  # 16-element gate
@@ -197,6 +214,7 @@ class TestLatencyTracking:
 
     def test_latency_recorded(self, default_config, simple_circuit):
         """Test that latency is recorded during simulation."""
+
         with runtime(default_config) as rt:
             assert rt.average_latency == 0.0
             rt.simulate(simple_circuit)
@@ -204,6 +222,7 @@ class TestLatencyTracking:
 
     def test_latency_positive(self, default_config, simple_circuit):
         """Test that latency is always positive."""
+
         with runtime(default_config) as rt:
             rt.simulate(simple_circuit)
             assert rt.average_latency > 0

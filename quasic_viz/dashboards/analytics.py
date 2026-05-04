@@ -18,6 +18,7 @@ class TimeSeriesAnalytics:
 
     def __init__(self, max_history: int = 10000) -> None:
         """Initialize analytics engine."""
+
         self._history: deque[dict[str, Any]] = deque(maxlen=max_history)
         self._start_time: float | None = None
 
@@ -28,15 +29,14 @@ class TimeSeriesAnalytics:
             mesh: Mesh data
             fields: Field data dictionary
         """
+
         if self._start_time is None:
             self._start_time = time.time()
 
         # Clone data to avoid mutation
         try:
             mesh_copy = mesh.copy() if hasattr(mesh, "copy") else mesh
-            fields_copy = {
-                k: v.copy() if hasattr(v, "copy") else v for k, v in fields.items()
-            }
+            fields_copy = {k: v.copy() if hasattr(v, "copy") else v for k, v in fields.items()}
         except Exception:
             mesh_copy = mesh
             fields_copy = fields
@@ -58,14 +58,13 @@ class TimeSeriesAnalytics:
         Returns:
             Frame data dictionary or None if not found
         """
+
         for frame in self._history:
             if frame["timestamp"] >= timestamp:
                 return frame
         return None
 
-    def get_frame_range(
-        self, start_time: float, end_time: float
-    ) -> list[dict[str, Any]]:
+    def get_frame_range(self, start_time: float, end_time: float) -> list[dict[str, Any]]:
         """Get all frames within time range.
 
         Args:
@@ -75,9 +74,8 @@ class TimeSeriesAnalytics:
         Returns:
             List of frame data dictionaries
         """
-        return [
-            f for f in self._history if start_time <= f["timestamp"] <= end_time
-        ]
+
+        return [f for f in self._history if start_time <= f["timestamp"] <= end_time]
 
     def get_latest_frames(self, count: int = 100) -> list[dict[str, Any]]:
         """Get most recent frames.
@@ -88,6 +86,7 @@ class TimeSeriesAnalytics:
         Returns:
             List of frame data dictionaries
         """
+
         return list(self._history)[-count:]
 
     def compute_field_statistics(
@@ -102,6 +101,7 @@ class TimeSeriesAnalytics:
         Returns:
             Statistics dictionary with min, max, mean, std
         """
+
         import numpy as np
 
         if frames is None:
@@ -130,16 +130,19 @@ class TimeSeriesAnalytics:
     @property
     def frame_count(self) -> int:
         """Get total number of recorded frames."""
+
         return len(self._history)
 
     @property
     def duration_seconds(self) -> float:
         """Get total duration of recorded history."""
+
         if not self._history:
             return 0.0
         return self._history[-1]["timestamp"] - self._history[0]["timestamp"]
 
     def clear(self) -> None:
         """Clear all recorded history."""
+
         self._history.clear()
         self._start_time = None

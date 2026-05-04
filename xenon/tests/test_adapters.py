@@ -15,6 +15,7 @@ class TestBioMechanismAdapter:
 
     def test_to_viz_model(self):
         """Test conversion to visualization model."""
+
         # Create sample mechanism
         states = [
             MolecularState("S1", "ProteinA", -10.0, 0.5),
@@ -53,6 +54,7 @@ class TestBioMechanismAdapter:
 
     def test_to_3d_network_spring(self):
         """Test 3D network generation with spring layout."""
+
         states = [
             MolecularState("S1", "ProteinA", -10.0),
             MolecularState("S2", "ProteinB", -15.0),
@@ -71,6 +73,7 @@ class TestBioMechanismAdapter:
 
     def test_to_3d_network_circular(self):
         """Test 3D network generation with circular layout."""
+
         states = [MolecularState(f"S{i}", f"Protein{i}", -10.0 - i) for i in range(4)]
         transitions = [Transition(f"S{i}", f"S{i + 1}", 1.0) for i in range(3)]
         mechanism = BioMechanism("MECH_001", states, transitions)
@@ -85,6 +88,7 @@ class TestBioMechanismAdapter:
 
     def test_to_3d_network_hierarchical(self):
         """Test 3D network generation with hierarchical layout."""
+
         states = [MolecularState(f"S{i}", f"Protein{i}", -10.0) for i in range(3)]
         transitions = [
             Transition("S0", "S1", 1.0),
@@ -100,6 +104,7 @@ class TestBioMechanismAdapter:
 
     def test_invalid_layout(self):
         """Test error handling for invalid layout."""
+
         states = [MolecularState("S1", "ProteinA", -10.0)]
         mechanism = BioMechanism("MECH_001", states, [])
 
@@ -113,6 +118,7 @@ class TestMolecularStateAdapter:
 
     def test_to_viz_model(self):
         """Test conversion to visualization model."""
+
         state = MolecularState("S1", "ProteinA", -10.0, 0.5)
         adapter = MolecularStateAdapter(state)
         viz_model = adapter.to_viz_model()
@@ -124,6 +130,7 @@ class TestMolecularStateAdapter:
 
     def test_to_energy_surface(self):
         """Test energy surface generation."""
+
         state = MolecularState("S1", "ProteinA", -10.0)
         adapter = MolecularStateAdapter(state)
         viz_data = adapter.to_energy_surface(resolution=20)
@@ -136,6 +143,7 @@ class TestMolecularStateAdapter:
 
     def test_to_point_cloud(self):
         """Test point cloud generation."""
+
         state = MolecularState("S1", "ProteinA", -15.0, 0.8)
         adapter = MolecularStateAdapter(state)
         viz_data = adapter.to_point_cloud(num_points=100)
@@ -153,6 +161,7 @@ class TestTransitionAdapter:
 
     def test_to_viz_model(self):
         """Test conversion to visualization model."""
+
         transition = Transition("S1", "S2", 1.5, -5.0, 20.0)
         adapter = TransitionAdapter(transition)
         viz_model = adapter.to_viz_model()
@@ -165,6 +174,7 @@ class TestTransitionAdapter:
 
     def test_to_arrow(self):
         """Test arrow generation."""
+
         transition = Transition("S1", "S2", 1.5, -5.0, 20.0)
         adapter = TransitionAdapter(transition)
 
@@ -181,6 +191,7 @@ class TestTransitionAdapter:
 
     def test_to_energy_barrier(self):
         """Test energy barrier generation."""
+
         transition = Transition("S1", "S2", 1.5, -5.0, 20.0)
         adapter = TransitionAdapter(transition)
         viz_data = adapter.to_energy_barrier(num_points=30)
@@ -194,6 +205,7 @@ class TestTransitionAdapter:
 
     def test_get_color_by_rate(self):
         """Test color mapping by rate constant."""
+
         transition = Transition("S1", "S2", 5.0)
         adapter = TransitionAdapter(transition)
 
@@ -205,6 +217,7 @@ class TestTransitionAdapter:
 
     def test_get_thickness_by_rate(self):
         """Test thickness mapping by rate constant."""
+
         transition = Transition("S1", "S2", 5.0)
         adapter = TransitionAdapter(transition)
 

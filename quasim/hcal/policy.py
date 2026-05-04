@@ -35,6 +35,7 @@ class PolicyValidator:
         Args:
             policy_config: Policy configuration
         """
+
         self.policy = policy_config
 
     @classmethod
@@ -51,6 +52,7 @@ class PolicyValidator:
             FileNotFoundError: If policy file doesn't exist
             ValueError: If policy is invalid
         """
+
         if not policy_path.exists():
             raise FileNotFoundError(f"Policy file not found: {policy_path}")
 
@@ -80,6 +82,7 @@ class PolicyValidator:
         Raises:
             ValueError: If configuration is invalid
         """
+
         required_keys = ["environment", "allowed_backends", "limits"]
         for key in required_keys:
             if key not in config:
@@ -100,6 +103,7 @@ class PolicyValidator:
         Returns:
             True if backend is allowed
         """
+
         if not self.policy:
             return True
 
@@ -115,6 +119,7 @@ class PolicyValidator:
         Returns:
             True if within limits
         """
+
         if not self.policy or resource not in self.policy.limits:
             return True
 
@@ -136,6 +141,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 """
+
 Policy engine for hardware control operations.
 
 Provides validation, rate limiting, and approval mechanisms for safe hardware control.
@@ -160,6 +166,7 @@ class Policy:
         Args:
             config: Policy configuration dictionary
         """
+
         self.config = config
         self.environment = config.get("environment", "DEV")
         self.allowed_backends = config.get("allowed_backends", [])
@@ -178,6 +185,7 @@ class Policy:
         Returns:
             Policy instance
         """
+
         with open(path) as f:
             config = yaml.safe_load(f)
         return cls(config)
@@ -191,6 +199,7 @@ class Policy:
         Raises:
             PolicyViolation: If plan violates policy
         """
+
         devices = plan.get("devices", {})
 
         for device_id, setpoints in devices.items():
@@ -220,6 +229,7 @@ class Policy:
         Returns:
             True if approvals required
         """
+
         return self.approvals.get("required", False)
 
 
@@ -282,6 +292,7 @@ class PolicyEngine:
         Args:
             policy_path: Path to policy YAML file. If None, uses default policy.
         """
+
         self.policy_path = policy_path
         self.policy: PolicyConfig | None = None
         self._command_history: list[float] = []
@@ -293,6 +304,7 @@ class PolicyEngine:
 
     def _load_default_policy(self):
         """Load default restrictive policy."""
+
         self.policy = PolicyConfig(
             environment=Environment.DEV,
             device_allowlist=["*"],
@@ -312,6 +324,7 @@ class PolicyEngine:
         Raises:
             ValueError: If policy is invalid.
         """
+
         with open(policy_path) as f:
             data = yaml.safe_load(f)
 
@@ -327,6 +340,7 @@ class PolicyEngine:
         Raises:
             ValueError: If schema is invalid.
         """
+
         required_fields = ["environment", "device_allowlist", "backend_restrictions"]
         for field_name in required_fields:
             if field_name not in data:
@@ -344,6 +358,7 @@ class PolicyEngine:
         Returns:
             PolicyConfig instance.
         """
+
         # Parse device limits
         device_limits = {}
         for device, limits in data.get("device_limits", {}).items():
@@ -390,6 +405,7 @@ class PolicyEngine:
         Returns:
             True if device is allowed.
         """
+
         if not self.policy:
             return False
 
@@ -407,6 +423,7 @@ class PolicyEngine:
         Returns:
             True if backend is allowed.
         """
+
         if not self.policy:
             return False
 
@@ -422,6 +439,7 @@ class PolicyEngine:
         Returns:
             True if setpoint is within limits.
         """
+
         if not self.policy:
             return False
 
@@ -472,6 +490,7 @@ class PolicyEngine:
         Returns:
             True if rate limit is not exceeded.
         """
+
         if not self.policy:
             return False
 
@@ -498,6 +517,7 @@ class PolicyEngine:
         Returns:
             True if approval requirements are met.
         """
+
         if not self.policy:
             return False
 
@@ -514,6 +534,7 @@ class PolicyEngine:
         Returns:
             Current environment.
         """
+
         if not self.policy:
             return Environment.DEV
         return self.policy.environment
@@ -524,6 +545,7 @@ class PolicyEngine:
         Returns:
             True if dry-run is default.
         """
+
         if not self.policy:
             return True
         return self.policy.dry_run_default
@@ -554,6 +576,7 @@ class DeviceLimits:
 
     def validate_setpoint(self, parameter: str, value: float) -> None:
         """
+
         Validate a setpoint against device limits.
 
         Args:
@@ -563,6 +586,7 @@ class DeviceLimits:
         Raises:
             PolicyViolation: If the setpoint violates limits
         """
+
         if parameter == "power_watts":
             if self.power_watts_max is not None and value > self.power_watts_max:
                 raise PolicyViolation(
@@ -592,11 +616,13 @@ class RateLimiter:
 
     def check_and_record(self) -> None:
         """
+
         Check rate limit and record the current command.
 
         Raises:
             PolicyViolation: If rate limit is exceeded
         """
+
         now = time.time()
         cutoff = now - self.window_seconds
 
@@ -616,6 +642,7 @@ class RateLimiter:
 
 class PolicyEngine:
     """
+
     Policy engine for hardware control operations.
 
     Provides validation, rate limiting, and approval mechanisms.
@@ -623,11 +650,13 @@ class PolicyEngine:
 
     def __init__(self, policy_file: Path | None = None):
         """
+
         Initialize policy engine.
 
         Args:
             policy_file: Path to policy configuration YAML file
         """
+
         # Default configuration
         self.config = {
             "environment": "DEV",
@@ -675,15 +704,18 @@ class PolicyEngine:
 
     def requires_approval(self) -> bool:
         """
+
         Check if approval is required for operations.
 
         Returns:
             True if approval is required
         """
+
         return self.config.get("approvals", {}).get("required", False)
 
     def is_backend_allowed(self, backend: str) -> bool:
         """
+
         Check if a backend is allowed.
 
         Args:
@@ -692,11 +724,13 @@ class PolicyEngine:
         Returns:
             True if backend is allowed
         """
+
         allowed = self.config.get("allowed_backends", [])
         return backend in allowed
 
     def is_device_allowed(self, device_id: str) -> bool:
         """
+
         Check if a device is allowed.
 
         Args:
@@ -705,6 +739,7 @@ class PolicyEngine:
         Returns:
             True if device is allowed
         """
+
         allowlist = self.config.get("device_allowlist")
         if allowlist is None:
             return True
@@ -718,6 +753,7 @@ class PolicyEngine:
         enable_actuation: bool,
     ) -> None:
         """
+
         Validate a hardware control operation.
 
         Args:
@@ -729,6 +765,7 @@ class PolicyEngine:
         Raises:
             PolicyViolation: If operation violates policy
         """
+
         # Check rate limit first (before any other validation)
         try:
             self.rate_limiter.check_and_record()
@@ -765,6 +802,7 @@ class PolicyEngine:
 
     def validate_approval(self, token: str) -> None:
         """
+
         Validate an approval token.
 
         Args:
@@ -773,6 +811,7 @@ class PolicyEngine:
         Raises:
             PolicyViolation: If token is invalid
         """
+
         approvals = self.config.get("approvals", {})
         method = approvals.get("method")
 
@@ -791,9 +830,11 @@ class PolicyEngine:
 
     def is_dry_run_default(self) -> bool:
         """
+
         Check if dry-run mode is the default for this policy.
 
         Returns:
             True if dry-run is the default mode
         """
+
         return self.config.get("dry_run_default", True)

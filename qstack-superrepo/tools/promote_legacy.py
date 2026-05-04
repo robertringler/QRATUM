@@ -12,6 +12,7 @@ IMPORTED_DIR = Path(__file__).resolve().parent.parent / "legacy" / "imported_rep
 
 def promote_snippets(target_dir: Path) -> Iterable[Path]:
     """Copy raw snippets into a target directory for manual curation."""
+
     target_dir.mkdir(parents=True, exist_ok=True)
     for snippet in RAW_SNIPPETS_DIR.glob("**/*"):
         if snippet.is_file():

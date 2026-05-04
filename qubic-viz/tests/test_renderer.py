@@ -14,6 +14,7 @@ from core.renderer import RenderBackend, RenderConfig, SceneRenderer
 
 def test_render_config_defaults():
     """Test RenderConfig default values."""
+
     config = RenderConfig()
     assert config.width == 1920
     assert config.height == 1080
@@ -23,6 +24,7 @@ def test_render_config_defaults():
 
 def test_render_config_validation():
     """Test RenderConfig validation."""
+
     with pytest.raises(ValueError):
         RenderConfig(width=-1)
 
@@ -35,6 +37,7 @@ def test_render_config_validation():
 
 def test_scene_renderer_initialization():
     """Test SceneRenderer initialization."""
+
     config = RenderConfig(width=800, height=600)
     renderer = SceneRenderer(config)
 
@@ -45,12 +48,14 @@ def test_scene_renderer_initialization():
 
 def test_scene_renderer_gpu_detection():
     """Test GPU detection."""
+
     renderer = SceneRenderer()
     assert isinstance(renderer.gpu_available, bool)
 
 
 def test_render_frame_basic():
     """Test basic frame rendering."""
+
     config = RenderConfig(width=100, height=100)
     renderer = SceneRenderer(config)
 
@@ -64,6 +69,7 @@ def test_render_frame_basic():
 
 def test_render_sequence():
     """Test sequence rendering."""
+
     config = RenderConfig(width=100, height=100)
     renderer = SceneRenderer(config)
 

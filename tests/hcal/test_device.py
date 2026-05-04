@@ -12,6 +12,7 @@ class TestDevice:
 
     def test_device_creation(self) -> None:
         """Test creating a device."""
+
         device = Device(
             id="test001",
             name="Test Device",
@@ -28,6 +29,7 @@ class TestDevice:
 
     def test_device_default_status(self) -> None:
         """Test device with default status."""
+
         device = Device(
             id="test002",
             name="Test Device 2",
@@ -43,11 +45,13 @@ class TestDeviceManager:
 
     def test_device_manager_init(self) -> None:
         """Test device manager initialization."""
+
         manager = DeviceManager()
         assert manager.list_devices() == []
 
     def test_discover_devices(self) -> None:
         """Test device discovery."""
+
         manager = DeviceManager()
         devices = manager.discover()
 
@@ -57,6 +61,7 @@ class TestDeviceManager:
 
     def test_get_device(self) -> None:
         """Test getting a device by ID."""
+
         manager = DeviceManager()
         manager.discover()
 
@@ -67,12 +72,14 @@ class TestDeviceManager:
 
     def test_get_nonexistent_device(self) -> None:
         """Test getting a nonexistent device."""
+
         manager = DeviceManager()
         device = manager.get_device("nonexistent")
         assert device is None
 
     def test_list_devices(self) -> None:
         """Test listing all devices."""
+
         manager = DeviceManager()
         manager.discover()
 
@@ -89,5 +96,6 @@ class TestDeviceHardware:
 
     def test_hardware_connection(self) -> None:
         """Test connecting to real hardware."""
+
         # This test would only run with actual hardware
         pytest.skip("Hardware not available")

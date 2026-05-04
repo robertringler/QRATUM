@@ -17,6 +17,7 @@ def calibrate_quotient_space(state_space: np.ndarray, n_quotient_classes: int = 
     Returns:
         Dictionary with calibration metrics
     """
+
     np.random.seed(42)
 
     n_points = len(state_space)
@@ -43,6 +44,7 @@ def calibrate_quotient_space(state_space: np.ndarray, n_quotient_classes: int = 
 
 def run_experiment():
     """Execute quotient calibration experiment."""
+
     np.random.seed(42)
 
     # Generate synthetic state space

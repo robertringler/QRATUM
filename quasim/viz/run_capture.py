@@ -36,6 +36,7 @@ class RunCapture:
         Args:
             step_dict: Dictionary with step data including 'frame' key
         """
+
         if "frame" in step_dict:
             frame = step_dict["frame"]
 
@@ -75,6 +76,7 @@ class RunCapture:
         Returns:
             Dictionary of generated artifact paths
         """
+
         if not self.frames:
             return {}
 
@@ -128,6 +130,7 @@ class RunCapture:
 
     def clear(self) -> None:
         """Clear all captured frames and metadata."""
+
         self.frames.clear()
         self.metadata.clear()
         self.frame_counter = 0
@@ -150,6 +153,7 @@ def create_dummy_frame(
     Returns:
         RGB frame as numpy array
     """
+
     frame = np.zeros((height, width, 3), dtype=np.uint8)
 
     if pattern == "checkerboard":

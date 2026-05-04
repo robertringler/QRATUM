@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -20,6 +19,7 @@ class FieldVisualizer:
 
     def __init__(self, mesh: TireMesh) -> None:
         """Initialize field visualizer."""
+
         self.mesh = mesh
 
     def visualize_scalar_field(
@@ -27,7 +27,7 @@ class FieldVisualizer:
         field_data: np.ndarray,
         field_name: str = "Field",
         colormap: str = "viridis",
-        output_path: Optional[Path] = None,
+        output_path: Path | None = None,
     ) -> np.ndarray:
         """Visualize a scalar field on the mesh.
 
@@ -40,6 +40,7 @@ class FieldVisualizer:
         Returns:
             Rendered image as RGB array
         """
+
         if len(field_data) != self.mesh.num_vertices:
             raise ValueError(
                 f"Field data size ({len(field_data)}) must match vertex count ({self.mesh.num_vertices})"
@@ -93,7 +94,7 @@ class FieldVisualizer:
         self,
         vector_data: np.ndarray,
         field_name: str = "Vector Field",
-        output_path: Optional[Path] = None,
+        output_path: Path | None = None,
         subsample: int = 10,
     ) -> np.ndarray:
         """Visualize a vector field on the mesh.
@@ -107,6 +108,7 @@ class FieldVisualizer:
         Returns:
             Rendered image as RGB array
         """
+
         if vector_data.shape[0] != self.mesh.num_vertices:
             raise ValueError("Vector data size must match vertex count")
 
@@ -168,7 +170,7 @@ class FieldVisualizer:
         field_data: np.ndarray,
         field_name: str = "Field",
         projection: str = "top",
-        output_path: Optional[Path] = None,
+        output_path: Path | None = None,
     ) -> np.ndarray:
         """Create 2D heatmap projection of field.
 
@@ -181,6 +183,7 @@ class FieldVisualizer:
         Returns:
             Rendered heatmap image
         """
+
         fig, ax = plt.subplots(figsize=(10, 8))
 
         # Select projection coordinates

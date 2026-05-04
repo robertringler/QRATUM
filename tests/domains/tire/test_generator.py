@@ -1,18 +1,18 @@
 """Tests for tire scenario generator."""
 
-import pytest
-
 from quasim.domains.tire.generator import TireScenarioGenerator
 
 
 def test_generator_creation():
     """Test TireScenarioGenerator initialization."""
+
     gen = TireScenarioGenerator(random_seed=42)
     assert gen.random_seed == 42
 
 
 def test_generate_compound_variants():
     """Test compound variant generation."""
+
     gen = TireScenarioGenerator(random_seed=42)
     compounds = gen.generate_compound_variants(count=8)
 
@@ -23,6 +23,7 @@ def test_generate_compound_variants():
 
 def test_generate_geometry_variants():
     """Test geometry variant generation."""
+
     gen = TireScenarioGenerator(random_seed=42)
     geometries = gen.generate_geometry_variants(count=10)
 
@@ -34,6 +35,7 @@ def test_generate_geometry_variants():
 
 def test_generate_environment_variants():
     """Test environment variant generation."""
+
     gen = TireScenarioGenerator(random_seed=42)
     environments = gen.generate_environment_variants(count=10)
 
@@ -48,6 +50,7 @@ def test_generate_environment_variants():
 
 def test_generate_operating_conditions():
     """Test operating condition generation."""
+
     gen = TireScenarioGenerator(random_seed=42)
     conditions = gen.generate_operating_conditions(count=25)
 
@@ -60,6 +63,7 @@ def test_generate_operating_conditions():
 
 def test_generate_scenarios():
     """Test scenario generation."""
+
     gen = TireScenarioGenerator(random_seed=42)
     scenarios = gen.generate_scenarios(target_count=100)
 
@@ -72,6 +76,7 @@ def test_generate_scenarios():
 
 def test_scenario_diversity():
     """Test that generated scenarios are diverse."""
+
     gen = TireScenarioGenerator(random_seed=42)
     scenarios = gen.generate_scenarios(target_count=500)  # Increase count for diversity
 
@@ -90,6 +95,7 @@ def test_scenario_diversity():
 
 def test_deterministic_generation():
     """Test that generation is deterministic with same seed."""
+
     gen1 = TireScenarioGenerator(random_seed=42)
     scenarios1 = gen1.generate_scenarios(target_count=50)
 

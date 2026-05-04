@@ -13,6 +13,7 @@ from quasim.validation.compare import compare_observables
 @pytest.fixture
 def temp_dir():
     """Create temporary directory for test files."""
+
     with tempfile.TemporaryDirectory() as tmpdir:
         yield Path(tmpdir)
 
@@ -20,6 +21,7 @@ def temp_dir():
 @pytest.fixture
 def sample_snapshot(temp_dir):
     """Create a sample HDF5 snapshot for testing."""
+
     snapshot_path = temp_dir / "test_snapshot.hdf5"
 
     meta = {
@@ -41,9 +43,9 @@ def sample_snapshot(temp_dir):
 @pytest.fixture
 def sample_config(temp_dir):
     """Create a sample observables config."""
+
     config_path = temp_dir / "observables.yml"
-    config_path.write_text(
-        """version: 1
+    config_path.write_text("""version: 1
 observables:
   population_test:
     source: "/agents"
@@ -60,13 +62,13 @@ observables:
     reduce: "return_ytd"
     expected: 0.12
     tolerance_abs: 0.05
-"""
-    )
+""")
     return config_path
 
 
 def test_compare_observables_pass(sample_snapshot, sample_config):
     """Test observable comparison with passing values."""
+
     results = compare_observables(str(sample_snapshot), str(sample_config), tol_default=0.03)
 
     assert "population_test" in results
@@ -85,17 +87,16 @@ def test_compare_observables_pass(sample_snapshot, sample_config):
 
 def test_compare_observables_fail(sample_snapshot, temp_dir):
     """Test observable comparison with failing values."""
+
     config_path = temp_dir / "fail_config.yml"
-    config_path.write_text(
-        """version: 1
+    config_path.write_text("""version: 1
 observables:
   population_test:
     source: "/agents"
     reduce: "count"
     expected: 1000  # Wrong expectation
     tolerance_abs: 10
-"""
-    )
+""")
 
     results = compare_observables(str(sample_snapshot), str(config_path), tol_default=0.03)
 
@@ -105,6 +106,7 @@ observables:
 
 def test_compare_observables_missing_snapshot(sample_config):
     """Test handling of missing snapshot file."""
+
     results = compare_observables("nonexistent.hdf5", str(sample_config))
 
     # Should return results with errors
@@ -114,6 +116,7 @@ def test_compare_observables_missing_snapshot(sample_config):
 
 def test_compare_observables_missing_config(sample_snapshot):
     """Test handling of missing config file."""
+
     results = compare_observables(str(sample_snapshot), "nonexistent.yml")
 
     # Should return empty results
@@ -122,17 +125,16 @@ def test_compare_observables_missing_config(sample_snapshot):
 
 def test_compare_observables_relative_tolerance(sample_snapshot, temp_dir):
     """Test relative tolerance checking."""
+
     config_path = temp_dir / "rel_tol_config.yml"
-    config_path.write_text(
-        """version: 1
+    config_path.write_text("""version: 1
 observables:
   test_observable:
     source: "/climate"
     reduce: "mean"
     expected: 288.5
     tolerance_rel: 0.01  # 1% relative tolerance
-"""
-    )
+""")
 
     results = compare_observables(str(sample_snapshot), str(config_path), tol_default=0.03)
 

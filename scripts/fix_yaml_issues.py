@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Fix common YAML issues in the repository
 """
 
@@ -13,6 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 def fix_multi_document_yaml(filepath: Path) -> bool:
     """Fix YAML files that contain multiple documents"""
+
     try:
         with open(filepath) as f:
             content = f.read()
@@ -31,6 +33,7 @@ def fix_multi_document_yaml(filepath: Path) -> bool:
 
 def fix_flow_node_yaml(filepath: Path) -> bool:
     """Fix YAML files with flow node parsing errors"""
+
     try:
         with open(filepath) as f:
             content = f.read()
@@ -58,6 +61,7 @@ def fix_flow_node_yaml(filepath: Path) -> bool:
 
 def main():
     """Main function"""
+
     print("Checking YAML files for common issues...\n")
 
     # Files with known issues from the test output

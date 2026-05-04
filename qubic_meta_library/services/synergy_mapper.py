@@ -13,11 +13,13 @@ class SynergyMapper:
 
     def __init__(self, config_dir: Path | None = None):
         """
+
         Initialize synergy mapper.
 
         Args:
             config_dir: Directory containing configuration files
         """
+
         if config_dir is None:
             config_dir = Path(__file__).parent.parent / "config"
 
@@ -26,11 +28,13 @@ class SynergyMapper:
 
     def load_clusters(self) -> dict[str, SynergyCluster]:
         """
+
         Load synergy cluster configurations.
 
         Returns:
             Dictionary mapping cluster IDs to SynergyCluster objects
         """
+
         clusters_file = self.config_dir / "clusters.yaml"
         if not clusters_file.exists():
             raise FileNotFoundError(f"Clusters configuration not found: {clusters_file}")
@@ -52,6 +56,7 @@ class SynergyMapper:
 
     def get_clusters_by_domain(self, domain_id: str) -> list[SynergyCluster]:
         """
+
         Get all clusters containing a specific domain.
 
         Args:
@@ -60,10 +65,12 @@ class SynergyMapper:
         Returns:
             List of clusters containing the domain
         """
+
         return [c for c in self.clusters.values() if domain_id in c.domains]
 
     def get_clusters_by_type(self, cluster_type: str) -> list[SynergyCluster]:
         """
+
         Get all clusters of a specific type.
 
         Args:
@@ -72,12 +79,14 @@ class SynergyMapper:
         Returns:
             List of clusters of the specified type
         """
+
         return [c for c in self.clusters.values() if c.cluster_type == cluster_type]
 
     def find_synergies(
         self, prompts: dict[int, Prompt], domains: dict[str, Domain]
     ) -> dict[str, list[int]]:
         """
+
         Find synergy opportunities across prompts.
 
         Args:
@@ -87,6 +96,7 @@ class SynergyMapper:
         Returns:
             Dictionary mapping synergy cluster IDs to prompt lists
         """
+
         synergies: dict[str, list[int]] = {}
 
         for cluster in self.clusters.values():
@@ -107,6 +117,7 @@ class SynergyMapper:
 
     def calculate_cluster_value(self, cluster_id: str) -> dict[str, Any]:
         """
+
         Calculate value metrics for a synergy cluster.
 
         Args:
@@ -115,6 +126,7 @@ class SynergyMapper:
         Returns:
             Dictionary with value metrics
         """
+
         if cluster_id not in self.clusters:
             raise ValueError(f"Cluster not found: {cluster_id}")
 
@@ -135,6 +147,7 @@ class SynergyMapper:
         self, prompts: dict[int, Prompt], min_connections: int = 2
     ) -> list[dict[str, Any]]:
         """
+
         Identify cross-domain patent opportunities.
 
         Args:
@@ -144,6 +157,7 @@ class SynergyMapper:
         Returns:
             List of cross-domain opportunities
         """
+
         opportunities = []
 
         for prompt in prompts.values():
@@ -169,11 +183,13 @@ class SynergyMapper:
 
     def generate_cluster_report(self) -> dict[str, Any]:
         """
+
         Generate comprehensive cluster report.
 
         Returns:
             Dictionary with cluster statistics and metrics
         """
+
         total_revenue = sum(c.get_total_revenue_projection() for c in self.clusters.values())
 
         cluster_types = {}

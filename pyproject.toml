@@ -3,13 +3,24 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "quasim"
-version = "0.1.0"
-description = "Quantum-Accelerated Simulation Runtime"
-authors = [{name = "QuASIM Team"}]
+name = "qratum"
+version = "2.0.0"
+description = "QRATUM: Classical simulation framework with planned quantum extensions (Formerly QuASIM)"
+authors = [{name = "QRATUM Team"}]
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
+keywords = ["simulation", "scientific-computing", "numerical-methods", "quantum-ready", "classical-simulation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
     "numpy>=1.24.0",
     "pyyaml>=6.0",
@@ -18,6 +29,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+quantum = [
+    "qiskit>=1.0.0",
+    "qiskit-aer>=0.13.0",
+    "qiskit-nature>=0.7.0",
+    "pennylane>=0.35.0",
+    "pennylane-qiskit>=0.35.0",
+    "pyscf>=2.3.0",
+]
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
@@ -67,9 +86,15 @@ hcal-nvidia = [
 hcal-amd = [
     "pyrsmi>=1.0",
 ]
+observability = [
+    "networkx>=3.0",
+    "scikit-learn>=1.3.0",
+]
 
 [project.scripts]
+qratum = "qratum_framework.cli:main"
 quasim-hcal = "quasim.hcal.cli:main"
+quasim-ciir = "quasim.ciir.cli:cli"
 quasim-revultra = "quasim.cli.revultra_cli:cli"
 quasim-qgh = "quasim.cli.qgh_cli:cli"
 quasim-terc-obs = "quasim.cli.terc_obs_cli:cli"
@@ -78,11 +103,12 @@ quasim-tire = "quasim.cli.tire_cli:cli"
 qunimbus = "quasim.qunimbus.cli:main"
 qnx = "qnx.cli:cli"
 qstack = "qstack.launch:main"
+xenon = "xenon.cli:cli"
 qubic-viz = "qubic.visualization.cli:cli"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["quasim*", "qnx*", "qstack*", "qubic*"]
+include = ["qratum*", "qratum_framework*", "quasim*", "qnx*", "qstack*", "qubic*", "xenon*", "api*", "qil*", "qcore*", "contracts*", "events*", "spine*", "adapters*", "omnilex*", "qratum_platform*", "verticals*", "aion*", "qdl*", "epistemic_heat_sink*", "topological_observer*"]
 
 [tool.black]
 line-length = 100
@@ -134,7 +160,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["quasim", "src", "QuASIM", "qstack", "qagents", "sdk", "integrations", "qubic"]
+source = ["quasim", "src", "QuASIM", "qstack", "qagents", "sdk", "integrations", "qubic", "qil", "qcore", "contracts", "events", "spine", "adapters", "epistemic_heat_sink", "topological_observer", "qratum_chess"]
 branch = true
 omit = [
     "*/tests/*",

@@ -19,6 +19,7 @@ def save_jsonl(data: list[dict[str, Any]], path: str | Path) -> None:
         data: List of dictionaries to save
         path: Output file path
     """
+
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -36,6 +37,7 @@ def load_jsonl(path: str | Path) -> list[dict[str, Any]]:
     Returns:
         List of dictionaries
     """
+
     path = Path(path)
     data = []
 
@@ -54,6 +56,7 @@ def save_npz(data: dict[str, np.ndarray], path: str | Path) -> None:
         data: Dictionary of arrays to save
         path: Output file path
     """
+
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(path, **data)
@@ -68,6 +71,7 @@ def load_npz(path: str | Path) -> dict[str, np.ndarray]:
     Returns:
         Dictionary of arrays
     """
+
     path = Path(path)
     data = np.load(path)
     return {key: data[key] for key in data.files}
@@ -80,6 +84,7 @@ def save_metrics(metrics: dict[str, Any], path: str | Path) -> None:
         metrics: Metrics dictionary
         path: Output file path
     """
+
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -96,6 +101,7 @@ def load_metrics(path: str | Path) -> dict[str, Any]:
     Returns:
         Metrics dictionary
     """
+
     path = Path(path)
 
     with open(path) as f:
@@ -111,6 +117,7 @@ def _json_default(obj: Any) -> Any:
     Returns:
         Serializable representation
     """
+
     if isinstance(obj, np.ndarray):
         return obj.tolist()
     elif isinstance(obj, (np.integer, np.floating)):

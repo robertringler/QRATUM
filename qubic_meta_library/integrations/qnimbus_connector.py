@@ -27,6 +27,7 @@ class CloudExecutionResult:
 
     def is_successful(self) -> bool:
         """Check if execution completed successfully."""
+
         return self.status == "completed"
 
 
@@ -61,6 +62,7 @@ class QNimbusConnector:
             default_region: Default deployment region
             enable_multicloud: Enable multi-cloud deployment
         """
+
         self.default_provider = default_provider
         self.default_region = default_region
         self.enable_multicloud = enable_multicloud
@@ -75,6 +77,7 @@ class QNimbusConnector:
         Returns:
             True if prompt is compatible with QNimbus platform
         """
+
         return prompt.domain in self.SUPPORTED_DOMAINS or "QNimbus" in prompt.execution_layers
 
     def execute(
@@ -97,6 +100,7 @@ class QNimbusConnector:
         Returns:
             CloudExecutionResult with execution status and outputs
         """
+
         if not self.can_execute(prompt):
             return CloudExecutionResult(
                 prompt_id=prompt.id,
@@ -139,6 +143,7 @@ class QNimbusConnector:
         Returns:
             List of CloudExecutionResults
         """
+
         results = []
         for prompt in prompts:
             if self.can_execute(prompt):
@@ -160,6 +165,7 @@ class QNimbusConnector:
         region: str,
     ) -> CloudExecutionResult:
         """Simulate execution for testing purposes."""
+
         import random
 
         random.seed(prompt.id)
@@ -193,6 +199,7 @@ class QNimbusConnector:
 
     def get_execution_stats(self) -> dict[str, Any]:
         """Get execution statistics."""
+
         return {
             "total_executions": self._execution_count,
             "default_provider": self.default_provider,

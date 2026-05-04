@@ -18,21 +18,19 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 def create_sample_files():
     """Create sample mesh, BC, and config files."""
+
     print("Creating sample files...")
 
     # Sample mesh (mock)
     mesh_path = Path("mesh.msh")
-    mesh_path.write_text(
-        """# Fluent Mesh File
+    mesh_path.write_text("""# Fluent Mesh File
 # Mock wing mesh - 32x32x16 cells
 # In production, export from Fluent
-"""
-    )
+""")
 
     # Boundary conditions
     bc_path = Path("boundary_conditions.yaml")
-    bc_path.write_text(
-        """inlet:
+    bc_path.write_text("""inlet:
   type: velocity-inlet
   velocity: [10.0, 0.0, 0.0]  # m/s
   temperature: 300.0  # K
@@ -44,8 +42,7 @@ outlet:
 walls:
   type: wall
   condition: no-slip
-"""
-    )
+""")
 
     # Job configuration
     job_config_path = Path("job_config.json")
@@ -70,6 +67,7 @@ walls:
 
 def run_quasim_adapter(mesh_path, bc_path, job_config_path):
     """Run QuASIM Fluent adapter."""
+
     print("\nRunning QuASIM Fluent adapter...")
 
     output_path = Path("quasim_results.csv")
@@ -102,6 +100,7 @@ def run_quasim_adapter(mesh_path, bc_path, job_config_path):
 
 def analyze_results(output_path):
     """Analyze and display results."""
+
     print("\nAnalyzing results...")
 
     if not output_path.exists():
@@ -119,6 +118,7 @@ def analyze_results(output_path):
 
 def compare_performance():
     """Compare performance with legacy solver."""
+
     print("\nPerformance Comparison")
     print("=" * 60)
 
@@ -135,6 +135,7 @@ def compare_performance():
 
 def main():
     """Main workflow."""
+
     print("=" * 60)
     print("QuASIM CFD Wing Example - End-to-End Workflow")
     print("=" * 60)

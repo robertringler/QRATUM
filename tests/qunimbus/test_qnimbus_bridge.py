@@ -9,11 +9,13 @@ class FakeHttp:
 
     def __init__(self):
         """Initialize fake HTTP client."""
+
         self.posts = []
         self.downloads = []
 
     def post_json(self, url, payload, timeout):
         """Mock POST request."""
+
         self.posts.append((url, payload, timeout))
         query_hash = str(abs(hash(payload.get("query", ""))))[:8]
         return {
@@ -29,12 +31,14 @@ class FakeHttp:
 
     def download(self, url, dest):
         """Mock file download."""
+
         self.downloads.append((url, dest))
         return dest
 
 
 def test_qnimbus_config_defaults():
     """Test QNimbusConfig default values."""
+
     cfg = QNimbusConfig()
     assert cfg.base_url == "https://omni.x.ai/qunimbus/v6"
     assert cfg.timeout_s == 120
@@ -43,6 +47,7 @@ def test_qnimbus_config_defaults():
 
 def test_qnimbus_config_custom():
     """Test QNimbusConfig with custom values."""
+
     cfg = QNimbusConfig(
         base_url="https://test.example.com",
         timeout_s=60,
@@ -55,6 +60,7 @@ def test_qnimbus_config_custom():
 
 def test_ascend_posts_and_returns():
     """Test ascend operation posts to correct endpoint."""
+
     fake_http = FakeHttp()
     bridge = QNimbusBridge(QNimbusConfig(base_url="https://test"), fake_http)
 
@@ -77,6 +83,7 @@ def test_ascend_posts_and_returns():
 
 def test_fetch_artifact():
     """Test artifact fetching."""
+
     fake_http = FakeHttp()
     bridge = QNimbusBridge(QNimbusConfig(base_url="https://test"), fake_http)
 
@@ -92,6 +99,7 @@ def test_fetch_artifact():
 
 def test_ascend_with_defaults():
     """Test ascend with default parameters."""
+
     fake_http = FakeHttp()
     bridge = QNimbusBridge(QNimbusConfig(), fake_http)
 
@@ -105,6 +113,7 @@ def test_ascend_with_defaults():
 
 def test_bridge_with_real_http():
     """Test bridge initialization with real HTTP client."""
+
     http_client = HttpClient()
     bridge = QNimbusBridge(QNimbusConfig(), http_client)
 

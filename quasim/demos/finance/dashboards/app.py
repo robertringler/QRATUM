@@ -8,21 +8,21 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Finance Demo - QuASIM", layout="wide")
 
     st.title("💰 Intraday Risk & Liquidity Stress with Quantum Tensor Net Greeks")
     st.markdown("**Target Accounts**: JPMorgan, Goldman Sachs, BlackRock, Two Sigma")
 
-    st.markdown(
-        """
+    st.markdown("""
+
     ## Overview
 
     Stable VaR/ES estimation and robust liquidity stress under shocks
 
     ### Key Performance Indicators (KPIs)
     - VaR_99, ES_97_5, drawdown_max, pnl_cvar_gap
-    """
-    )
+    """)
 
     artifacts_dir = Path("artifacts/finance")
 
@@ -54,8 +54,8 @@ def main():
     else:
         st.info("No artifacts directory found. Run the demo to generate data.")
 
-    st.markdown(
-        """
+    st.markdown("""
+
     ## How to Run
 
     ```bash
@@ -65,8 +65,7 @@ def main():
     # Run simulation with capture
     python -m quasim.demos.finance.cli simulate --seed 42 --capture
     ```
-    """
-    )
+    """)
 
 
 if __name__ == "__main__":

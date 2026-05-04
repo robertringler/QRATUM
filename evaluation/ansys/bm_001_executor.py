@@ -52,15 +52,12 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import hashlib
-import json
-import logging
-import statistics
 import csv
 import hashlib
 import json
 import logging
 import os
+import statistics
 import sys
 import time
 from dataclasses import asdict, dataclass, field
@@ -112,6 +109,8 @@ class RunMetrics:
     timestamp: str
     convergence_history: list[float] = field(default_factory=list)
     hardware_config: dict[str, Any] = field(default_factory=dict)
+
+
 class ExecutionResult:
     """Results from a single benchmark execution."""
 
@@ -133,6 +132,7 @@ class ExecutionResult:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
+
         return asdict(self)
 
 
@@ -154,12 +154,15 @@ class StatisticalSummary:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
+
         return asdict(self)
 
 
 @dataclass
 class ComparisonMetrics:
     """Comparison metrics between Ansys and QuASIM."""
+
+
 class StatisticalMetrics:
     """Statistical analysis metrics."""
 
@@ -186,6 +189,7 @@ class StatisticalMetrics:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
+
         return asdict(self)
 
 
@@ -214,6 +218,7 @@ class BM001Executor:
             device: Compute device for QuASIM (cpu, gpu, multi_gpu)
             random_seed: Random seed for deterministic execution
         """
+
         self.output_dir = output_dir
         self.num_runs = num_runs
         self.cooldown_sec = cooldown_sec
@@ -239,6 +244,7 @@ class BM001Executor:
         Returns:
             List of RunMetrics for each Ansys run
         """
+
         logger.info("=" * 80)
         logger.info("EXECUTING ANSYS BASELINE RUNS")
         logger.info("=" * 80)
@@ -281,6 +287,7 @@ class BM001Executor:
         Returns:
             List of RunMetrics for each QuASIM run
         """
+
         logger.info("\n" + "=" * 80)
         logger.info("EXECUTING QUASIM RUNS")
         logger.info("=" * 80)
@@ -319,6 +326,7 @@ class BM001Executor:
 
     def _simulate_ansys_run(self, run_id: int) -> RunMetrics:
         """Simulate Ansys baseline execution."""
+
         # Simulate setup time
         setup_time = self.rng.uniform(4.5, 5.5)
         time.sleep(0.05)
@@ -363,6 +371,7 @@ class BM001Executor:
 
     def _execute_quasim_run(self, run_id: int) -> RunMetrics:
         """Execute QuASIM via adapter."""
+
         # Initialize adapter
         adapter = QuasimAnsysAdapter(
             mode=SolverMode.STANDALONE,
@@ -440,6 +449,7 @@ class BM001Executor:
 
     def _generate_convergence_history(self, max_iterations: int) -> list[float]:
         """Generate convergence history with exponential decay."""
+
         history = []
         residual = 1.0
         for _ in range(max_iterations):
@@ -451,6 +461,7 @@ class BM001Executor:
 
     def _save_run_result(self, metrics: RunMetrics, directory: Path) -> None:
         """Save individual run result to JSON."""
+
         filepath = directory / f"run_{metrics.run_id}.json"
         with open(filepath, "w") as f:
             json.dump(metrics.to_dict(), f, indent=2)
@@ -465,6 +476,7 @@ class BM001Executor:
         Returns:
             StatisticalSummary with mean, median, CI, outliers
         """
+
         times = [r.solve_time_sec for r in results]
         solver = results[0].solver if results else "unknown"
 
@@ -502,6 +514,7 @@ class BM001Executor:
         self, times: list[float], n_bootstrap: int = 1000, alpha: float = 0.05
     ) -> tuple[float, float]:
         """Compute bootstrap confidence interval for median."""
+
         medians = []
         for _ in range(n_bootstrap):
             sample = self.rng.choice(times, size=len(times), replace=True)
@@ -512,6 +525,29 @@ class BM001Executor:
         return (float(lower), float(upper))
 
     def _detect_outliers(self, times: list[float], threshold: float = 3.5) -> list[int]:
+        """Detect outliers using modified Z-score method."""
+
+        times_array = np.array(times)
+        median = np.median(times_array)
+        mad = np.median(np.abs(times_array - median))
+        if mad == 0:
+            return []
+        modified_z = 0.6745 * (times_array - median) / mad
+        return [int(i) for i, z in enumerate(modified_z) if abs(z) > 3.5]
+        if len(times) < 3:
+            return []
+
+        times_array = np.array(times)
+        median = np.median(times_array)
+        mad = np.median(np.abs(times_array - median))
+
+        if mad == 0:
+            return []
+
+        modified_z = 0.6745 * (times_array - median) / mad
+        return [int(i) for i, z in enumerate(modified_z) if abs(z) > threshold]
+
+
 # Real Backend Solvers
 # ============================================================================
 
@@ -529,6 +565,7 @@ class QuasimAHTNSolver:
 
     def __init__(self, device: str = "gpu", random_seed: int = 42):
         """Initialize QuASIM AHTN solver."""
+
         self.device = device
         self.random_seed = random_seed
         self._gpu_available = False
@@ -542,6 +579,7 @@ class QuasimAHTNSolver:
 
     def _initialize_backends(self) -> None:
         """Initialize AHTN and tensor network backends."""
+
         # Try to load AHTN module
         try:
             from quasim.holo import anti_tensor
@@ -596,6 +634,7 @@ class QuasimAHTNSolver:
         Returns:
             Solution results dictionary
         """
+
         logger.info("Starting QuASIM AHTN solver execution...")
         start_time = time.time()
 
@@ -724,6 +763,7 @@ class PyMapdlExecutor:
 
     def __init__(self, random_seed: int = 42):
         """Initialize PyMAPDL executor."""
+
         self.random_seed = random_seed
         self._mapdl_session = None
         self._mapdl_available = False
@@ -735,6 +775,7 @@ class PyMapdlExecutor:
 
     def _check_mapdl_availability(self) -> None:
         """Check if PyMAPDL is available."""
+
         try:
             import importlib.util
 
@@ -750,6 +791,7 @@ class PyMapdlExecutor:
 
     def _launch_mapdl_session(self) -> Any:
         """Launch PyMAPDL session."""
+
         if not self._mapdl_available:
             return None
 
@@ -781,6 +823,7 @@ class PyMapdlExecutor:
         Returns:
             Solution results dictionary
         """
+
         logger.info("Starting Ansys MAPDL execution...")
         start_time = time.time()
 
@@ -848,8 +891,7 @@ class PyMapdlExecutor:
         }
 
         logger.info(
-            f"Ansys solve completed in {solve_time:.2f}s "
-            f"({len(convergence_history)} iterations)"
+            f"Ansys solve completed in {solve_time:.2f}s ({len(convergence_history)} iterations)"
         )
         logger.info(f"State hash: {state_hash[:16]}...")
 
@@ -872,6 +914,7 @@ class PyMapdlExecutor:
         - Boundary condition application
         - Nonlinear solve
         """
+
         setup_start = time.time()
 
         # Clear and prep
@@ -970,6 +1013,7 @@ class StatisticalValidator:
 
     def __init__(self, acceptance_criteria: dict[str, Any]):
         """Initialize validator with acceptance criteria."""
+
         self.acceptance_criteria = acceptance_criteria
 
     def validate(
@@ -984,6 +1028,7 @@ class StatisticalValidator:
         Returns:
             (passed, metrics) tuple
         """
+
         logger.info("Performing statistical validation...")
 
         # Extract solve times
@@ -1033,6 +1078,7 @@ class StatisticalValidator:
         self, ansys_times: np.ndarray, quasim_times: np.ndarray, n_bootstrap: int = 1000
     ) -> tuple[float, float, float]:
         """Compute bootstrap confidence interval for speedup."""
+
         speedups = []
         rng = np.random.RandomState(42)  # Fixed seed for reproducibility
 
@@ -1050,6 +1096,7 @@ class StatisticalValidator:
 
     def _detect_outliers(self, times: np.ndarray) -> list[int]:
         """Detect outliers using modified Z-score method."""
+
         if len(times) < 3:
             return []
 
@@ -1071,6 +1118,7 @@ class StatisticalValidator:
         quasim_results: list[RunMetrics],
     ) -> ComparisonMetrics:
         """Compare Ansys and QuASIM results with statistical analysis."""
+
         logger.info("\n" + "=" * 80)
         logger.info("STATISTICAL ANALYSIS AND COMPARISON")
         logger.info("=" * 80)
@@ -1181,6 +1229,7 @@ class StatisticalValidator:
         n_bootstrap: int = 1000,
     ) -> tuple[float, float]:
         """Bootstrap confidence interval for speedup."""
+
         speedups = []
         for _ in range(n_bootstrap):
             ansys_sample = self.rng.choice(ansys_times, size=len(ansys_times), replace=True)
@@ -1197,6 +1246,7 @@ class StatisticalValidator:
         comparison: ComparisonMetrics,
     ) -> None:
         """Generate all report formats."""
+
         logger.info("\n" + "=" * 80)
         logger.info("GENERATING REPORTS")
         logger.info("=" * 80)
@@ -1226,6 +1276,7 @@ class StatisticalValidator:
         comparison: ComparisonMetrics,
     ) -> None:
         """Generate CSV report."""
+
         csv_path = self.reports_dir / "results.csv"
 
         with open(csv_path, "w") as f:
@@ -1276,6 +1327,7 @@ class StatisticalValidator:
         comparison: ComparisonMetrics,
     ) -> None:
         """Generate JSON report."""
+
         json_path = self.reports_dir / "results.json"
 
         # Compute statistical summaries
@@ -1308,11 +1360,12 @@ class StatisticalValidator:
                 "stress_error_threshold": 0.05,
                 "minimum_speedup": 3.0,
                 "passed": comparison.passed,
-        modified_z = 0.6745 * (times - median) / mad
-        return [int(i) for i, z in enumerate(modified_z) if abs(z) > 3.5]
+            },
+        }
 
     def _check_acceptance(self, metrics: StatisticalMetrics) -> bool:
         """Check if metrics meet acceptance criteria."""
+
         acc = self.acceptance_criteria
 
         # Get thresholds with defaults
@@ -1355,6 +1408,7 @@ class ReportGenerator:
 
     def __init__(self, output_dir: Path):
         """Initialize report generator."""
+
         self.output_dir = output_dir
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -1366,6 +1420,7 @@ class ReportGenerator:
         passed: bool,
     ) -> None:
         """Generate all report formats."""
+
         logger.info(f"Generating reports in {self.output_dir}")
 
         self.generate_csv(ansys_results, quasim_results, metrics, passed)
@@ -1383,29 +1438,41 @@ class ReportGenerator:
         passed: bool,
     ) -> None:
         """Generate CSV summary report."""
+
         csv_path = self.output_dir / "summary.csv"
 
         with open(csv_path, "w", newline="") as f:
             writer = csv.writer(f)
 
             # Header
-            writer.writerow([
-                "Benchmark", "Status", "Speedup", "SpeedupCI_Lower", "SpeedupCI_Upper",
-                "DisplacementError", "StressError", "EnergyError", "CV"
-            ])
+            writer.writerow(
+                [
+                    "Benchmark",
+                    "Status",
+                    "Speedup",
+                    "SpeedupCI_Lower",
+                    "SpeedupCI_Upper",
+                    "DisplacementError",
+                    "StressError",
+                    "EnergyError",
+                    "CV",
+                ]
+            )
 
             # Data
-            writer.writerow([
-                "BM_001",
-                "PASS" if passed else "FAIL",
-                f"{metrics.speedup:.2f}",
-                f"{metrics.speedup_ci_lower:.2f}",
-                f"{metrics.speedup_ci_upper:.2f}",
-                f"{metrics.displacement_error:.4f}",
-                f"{metrics.stress_error:.4f}",
-                f"{metrics.energy_error:.2e}",
-                f"{metrics.coefficient_of_variation:.4f}",
-            ])
+            writer.writerow(
+                [
+                    "BM_001",
+                    "PASS" if passed else "FAIL",
+                    f"{metrics.speedup:.2f}",
+                    f"{metrics.speedup_ci_lower:.2f}",
+                    f"{metrics.speedup_ci_upper:.2f}",
+                    f"{metrics.displacement_error:.4f}",
+                    f"{metrics.stress_error:.4f}",
+                    f"{metrics.energy_error:.2e}",
+                    f"{metrics.coefficient_of_variation:.4f}",
+                ]
+            )
 
         logger.info(f"CSV report: {csv_path}")
 
@@ -1417,6 +1484,7 @@ class ReportGenerator:
         passed: bool,
     ) -> None:
         """Generate JSON full metadata report."""
+
         json_path = self.output_dir / "results.json"
 
         data = {
@@ -1446,6 +1514,7 @@ class ReportGenerator:
         passed: bool,
     ) -> None:
         """Generate HTML styled web report."""
+
         html_path = self.output_dir / "report.html"
 
         status_class = "status-pass" if passed else "status-fail"
@@ -1455,6 +1524,7 @@ class ReportGenerator:
         ansys_rows = ""
         for r in ansys_results:
             ansys_rows += f"""
+
             <tr>
                 <td>{r.run_id}</td>
                 <td>{r.solve_time:.2f}</td>
@@ -1466,6 +1536,7 @@ class ReportGenerator:
         quasim_rows = ""
         for r in quasim_results:
             quasim_rows += f"""
+
             <tr>
                 <td>{r.run_id}</td>
                 <td>{r.solve_time:.2f}</td>
@@ -1476,7 +1547,11 @@ class ReportGenerator:
 
         quasim_hashes = {r.state_hash for r in quasim_results}
         repro_status = "status-pass" if len(quasim_hashes) == 1 else "status-fail"
-        repro_text = f"Deterministic: All {len(quasim_results)} runs identical" if len(quasim_hashes) == 1 else f"Non-deterministic: {len(quasim_hashes)} unique hashes"
+        repro_text = (
+            f"Deterministic: All {len(quasim_results)} runs identical"
+            if len(quasim_hashes) == 1
+            else f"Non-deterministic: {len(quasim_hashes)} unique hashes"
+        )
 
         # CSS braces are doubled for .format() escaping
         html = """<!DOCTYPE html>
@@ -1714,6 +1789,7 @@ class ReportGenerator:
         comparison: ComparisonMetrics,
     ) -> None:
         """Generate PDF report."""
+
         pdf_path = self.reports_dir / "report.pdf"
         logger.info(f"HTML report: {html_path}")
 
@@ -1725,6 +1801,7 @@ class ReportGenerator:
         passed: bool,
     ) -> None:
         """Generate PDF executive summary."""
+
         pdf_path = self.output_dir / "executive_summary.pdf"
 
         try:
@@ -1732,13 +1809,7 @@ class ReportGenerator:
             from reportlab.lib.pagesizes import letter
             from reportlab.lib.styles import getSampleStyleSheet
             from reportlab.lib.units import inch
-            from reportlab.platypus import (
-                Paragraph,
-                SimpleDocTemplate,
-                Spacer,
-                Table,
-                TableStyle,
-            )
+            from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
         except ImportError:
             logger.warning("reportlab not installed, skipping PDF generation")
             return
@@ -1917,16 +1988,18 @@ class ReportGenerator:
         doc.build(story)
         logger.info(f"PDF report written to {pdf_path}")
 
-
-# ============================================================================
-# Command-Line Interface
+        # ============================================================================
+        # Command-Line Interface
         status_color = "green" if passed else "red"
-        status_text = f'<b>Status:</b> <font color="{status_color}">{"PASS" if passed else "FAIL"}</font>'
+        status_text = (
+            f'<b>Status:</b> <font color="{status_color}">{"PASS" if passed else "FAIL"}</font>'
+        )
         story.append(Paragraph(status_text, styles["Normal"]))
         story.append(Spacer(1, 0.2 * inch))
 
         # Summary
         summary_text = f"""
+
         <b>Executive Summary:</b><br/>
         This report presents BM_001 benchmark results comparing Ansys Mechanical
         baseline against QuASIM AHTN GPU-accelerated solver.<br/><br/>
@@ -1938,6 +2011,7 @@ class ReportGenerator:
         - Energy Error: {metrics.energy_error:.2e}<br/>
         - Reproducibility: {"Verified" if len({r.state_hash for r in quasim_results}) == 1 else "Failed"}
         """
+
         story.append(Paragraph(summary_text, styles["Normal"]))
         story.append(Spacer(1, 0.3 * inch))
 
@@ -1959,16 +2033,18 @@ class ReportGenerator:
 
         table = Table(table_data)
         table.setStyle(
-            TableStyle([
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#3498db")),
-                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
-                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-                ("FONTSIZE", (0, 0), (-1, 0), 12),
-                ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
-                ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
-                ("GRID", (0, 0), (-1, -1), 1, colors.black),
-            ])
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#3498db")),
+                    ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                    ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                    ("FONTSIZE", (0, 0), (-1, 0), 12),
+                    ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                    ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
+                    ("GRID", (0, 0), (-1, -1), 1, colors.black),
+                ]
+            )
         )
 
         story.append(table)
@@ -1983,10 +2059,12 @@ class ReportGenerator:
 
 def main() -> int:
     """Main entry point for BM_001 executor."""
+
     parser = argparse.ArgumentParser(
         description="BM_001 Large-Strain Rubber Block Compression - Tier-0 Execution",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
+
 Examples:
   # Run with default settings
   %(prog)s --output reports/BM_001

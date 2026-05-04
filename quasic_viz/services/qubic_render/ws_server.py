@@ -26,6 +26,7 @@ class WebSocketServer:
 
     def __init__(self, frame_cache: FrameCache | None = None) -> None:
         """Initialize WebSocket server."""
+
         self._clients: set[Any] = set()
         self.frame_cache = frame_cache or FrameCache()
         self.app = self._create_app() if FASTAPI_AVAILABLE else None
@@ -36,6 +37,7 @@ class WebSocketServer:
         Returns:
             FastAPI app instance
         """
+
         if not FASTAPI_AVAILABLE:
             return None
 
@@ -48,6 +50,7 @@ class WebSocketServer:
         @app.get("/health")
         async def health_check() -> dict[str, Any]:
             """Health check endpoint."""
+
             return {
                 "status": "healthy",
                 "clients_connected": len(self._clients),
@@ -57,6 +60,7 @@ class WebSocketServer:
         @app.websocket("/ws/stream")
         async def stream_ws(ws: WebSocket) -> None:
             """WebSocket streaming endpoint."""
+
             await ws.accept()
             self._clients.add(ws)
             try:
@@ -75,11 +79,13 @@ class WebSocketServer:
         @app.get("/frames/latest")
         async def get_latest_frame() -> dict[str, Any] | None:
             """Get latest cached frame."""
+
             return self.frame_cache.get_latest()
 
         @app.get("/frames/{timestamp}")
         async def get_frame_at(timestamp: float) -> dict[str, Any] | None:
             """Get frame at timestamp."""
+
             return self.frame_cache.get_frame_at(timestamp)
 
         return app
@@ -90,6 +96,7 @@ class WebSocketServer:
         Args:
             frame_data: Frame data to broadcast
         """
+
         if not self._clients:
             return
 
@@ -102,6 +109,7 @@ class WebSocketServer:
     @property
     def client_count(self) -> int:
         """Get number of connected clients."""
+
         return len(self._clients)
 
 
@@ -114,5 +122,6 @@ def create_ws_app(frame_cache: FrameCache | None = None) -> Any:
     Returns:
         FastAPI app or None if FastAPI not available
     """
+
     server = WebSocketServer(frame_cache)
     return server.app

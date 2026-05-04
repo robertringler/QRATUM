@@ -20,6 +20,7 @@ class TimeSeriesAdapter(SimulationAdapter):
 
     def __init__(self) -> None:
         """Initialize time-series adapter."""
+
         self.timesteps: list[VisualizationData] = []
         self.times: list[float] = []
 
@@ -37,6 +38,7 @@ class TimeSeriesAdapter(SimulationAdapter):
         Raises:
             ValueError: If source format is invalid
         """
+
         if isinstance(source, (str, Path)):
             return self._load_from_file(Path(source))
         elif isinstance(source, list):
@@ -46,8 +48,7 @@ class TimeSeriesAdapter(SimulationAdapter):
             return self._load_single_timestep(source)
         else:
             raise ValueError(
-                f"Unsupported source type: {type(source)}. "
-                "Expected file path, dictionary, or list."
+                f"Unsupported source type: {type(source)}. Expected file path, dictionary, or list."
             )
 
     def _load_from_file(self, path: Path) -> VisualizationData:
@@ -62,11 +63,12 @@ class TimeSeriesAdapter(SimulationAdapter):
         Raises:
             FileNotFoundError: If file doesn't exist
         """
+
         if not path.exists():
             raise FileNotFoundError(f"File not found: {path}")
 
-        raise NotImplementedError(
-            "File-based loading not yet implemented. Use list input."
+        raise ValueError(
+            "GAP-STUB-027: file-based loading is not implemented; pass data as list directly"
         )
 
     def _load_from_list(self, data_list: list[dict[str, Any]]) -> VisualizationData:
@@ -78,6 +80,7 @@ class TimeSeriesAdapter(SimulationAdapter):
         Returns:
             VisualizationData for first timestep
         """
+
         self.timesteps = []
         self.times = []
 
@@ -103,6 +106,7 @@ class TimeSeriesAdapter(SimulationAdapter):
         Returns:
             VisualizationData object
         """
+
         if "vertices" not in data or "faces" not in data:
             raise ValueError("Each timestep must contain 'vertices' and 'faces'")
 
@@ -149,13 +153,12 @@ class TimeSeriesAdapter(SimulationAdapter):
         Raises:
             IndexError: If index is out of range
         """
+
         if not self.timesteps:
             raise RuntimeError("No timesteps loaded. Call load_data first.")
 
         if index < 0 or index >= len(self.timesteps):
-            raise IndexError(
-                f"Timestep index {index} out of range [0, {len(self.timesteps)})"
-            )
+            raise IndexError(f"Timestep index {index} out of range [0, {len(self.timesteps)})")
 
         return self.timesteps[index]
 
@@ -165,6 +168,7 @@ class TimeSeriesAdapter(SimulationAdapter):
         Returns:
             Number of loaded timesteps
         """
+
         return len(self.timesteps)
 
     def get_time_range(self) -> tuple[float, float]:
@@ -176,6 +180,7 @@ class TimeSeriesAdapter(SimulationAdapter):
         Raises:
             RuntimeError: If no timesteps are loaded
         """
+
         if not self.times:
             raise RuntimeError("No timesteps loaded")
 
@@ -190,6 +195,7 @@ class TimeSeriesAdapter(SimulationAdapter):
         Returns:
             True if source is valid
         """
+
         if isinstance(source, (str, Path)):
             return Path(source).exists()
         elif isinstance(source, list):
@@ -213,6 +219,7 @@ class TimeSeriesAdapter(SimulationAdapter):
         Returns:
             VisualizationData for first timestep
         """
+
         data_list = []
 
         for i in range(n_steps):

@@ -1,15 +1,11 @@
 """Tests for Policy Reasoner."""
 
-from quasim.policy import (
-    ConfigurationMutation,
-    PolicyDecision,
-    PolicyFramework,
-    PolicyReasoner,
-)
+from quasim.policy import ConfigurationMutation, PolicyDecision, PolicyFramework, PolicyReasoner
 
 
 def test_policy_reasoner_initialization():
     """Test policy reasoner initialization."""
+
     pr = PolicyReasoner()
     assert len(pr.rules) > 0
 
@@ -21,6 +17,7 @@ def test_policy_reasoner_initialization():
 
 def test_policy_reasoner_rules_by_framework():
     """Test retrieving rules by framework."""
+
     pr = PolicyReasoner()
 
     do178c_rules = pr.get_rules_by_framework(PolicyFramework.DO_178C)
@@ -38,6 +35,7 @@ def test_policy_reasoner_rules_by_framework():
 
 def test_policy_reasoner_get_rule_by_id():
     """Test retrieving rule by ID."""
+
     pr = PolicyReasoner()
 
     rule = pr.get_rule_by_id("DO178C-001")
@@ -51,6 +49,7 @@ def test_policy_reasoner_get_rule_by_id():
 
 def test_policy_reasoner_approved_mutation():
     """Test evaluation of approved mutation."""
+
     pr = PolicyReasoner()
 
     mutation = ConfigurationMutation(
@@ -69,6 +68,7 @@ def test_policy_reasoner_approved_mutation():
 
 def test_policy_reasoner_rejected_mutation():
     """Test evaluation of rejected mutation."""
+
     pr = PolicyReasoner()
 
     mutation = ConfigurationMutation(
@@ -88,6 +88,7 @@ def test_policy_reasoner_rejected_mutation():
 
 def test_policy_reasoner_safety_critical_mutation():
     """Test evaluation of safety-critical mutation."""
+
     pr = PolicyReasoner()
 
     mutation = ConfigurationMutation(
@@ -112,6 +113,7 @@ def test_policy_reasoner_safety_critical_mutation():
 
 def test_policy_reasoner_access_control_mutation():
     """Test evaluation of access control mutation."""
+
     pr = PolicyReasoner()
 
     mutation = ConfigurationMutation(
@@ -132,6 +134,7 @@ def test_policy_reasoner_access_control_mutation():
 
 def test_policy_reasoner_crypto_mutation():
     """Test evaluation of cryptographic mutation."""
+
     pr = PolicyReasoner()
 
     mutation = ConfigurationMutation(
@@ -151,6 +154,7 @@ def test_policy_reasoner_crypto_mutation():
 
 def test_policy_reasoner_baseline_deviation():
     """Test evaluation with baseline deviation."""
+
     pr = PolicyReasoner()
 
     mutation = ConfigurationMutation(
@@ -172,6 +176,7 @@ def test_policy_reasoner_baseline_deviation():
 
 def test_policy_reasoner_cui_handling():
     """Test evaluation of CUI handling change."""
+
     pr = PolicyReasoner()
 
     mutation = ConfigurationMutation(
@@ -191,6 +196,7 @@ def test_policy_reasoner_cui_handling():
 
 def test_policy_reasoner_logic_correctness():
     """Test policy reasoner logic correctness."""
+
     pr = PolicyReasoner()
 
     # Test multiple scenarios

@@ -1,6 +1,7 @@
 """Deterministic seeding utilities for reproducible simulations.
 
 Provides global seed management and configuration hashing.
+Uses SHA-3 instead of SHA-256 for quantum resistance (Grover's algorithm).
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ def set_global_seed(seed: int) -> None:
     Args:
         seed: Random seed value
     """
+
     random.seed(seed)
     np.random.seed(seed)
 
@@ -36,19 +38,24 @@ def set_global_seed(seed: int) -> None:
 def hash_config(config: dict[str, Any]) -> str:
     """Generate deterministic hash of configuration.
 
+    Uses SHA-3 instead of SHA-256 for quantum resistance against Grover's algorithm.
+
     Args:
         config: Configuration dictionary
 
     Returns:
-        SHA256 hex digest of config
+        SHA3-256 hex digest of config
     """
+
     # Sort keys for determinism
     config_str = json.dumps(config, sort_keys=True)
-    return hashlib.sha256(config_str.encode()).hexdigest()
+    return hashlib.sha3_256(config_str.encode()).hexdigest()
 
 
 def derive_seed(base_seed: int, suffix: str) -> int:
     """Derive a child seed from a base seed and suffix.
+
+    Uses SHA-3 instead of SHA-256 for quantum resistance.
 
     Args:
         base_seed: Base random seed
@@ -57,8 +64,9 @@ def derive_seed(base_seed: int, suffix: str) -> int:
     Returns:
         Derived seed value
     """
+
     combined = f"{base_seed}:{suffix}"
-    hash_bytes = hashlib.sha256(combined.encode()).digest()
+    hash_bytes = hashlib.sha3_256(combined.encode()).digest()
     return int.from_bytes(hash_bytes[:4], byteorder="big")
 
 
@@ -76,6 +84,7 @@ class SeedManager:
         Args:
             base_seed: Base random seed
         """
+
         self.base_seed = base_seed
         self.derived_seeds: dict[str, int] = {}
         set_global_seed(base_seed)
@@ -89,6 +98,7 @@ class SeedManager:
         Returns:
             Derived seed value
         """
+
         if name not in self.derived_seeds:
             self.derived_seeds[name] = derive_seed(self.base_seed, name)
         return self.derived_seeds[name]
@@ -99,6 +109,7 @@ class SeedManager:
         Args:
             base_seed: New base seed (if None, keeps current)
         """
+
         if base_seed is not None:
             self.base_seed = base_seed
         self.derived_seeds.clear()

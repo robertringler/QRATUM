@@ -14,6 +14,7 @@ class NVMLBackend(Backend):
         Args:
             device_id: GPU device identifier
         """
+
         super().__init__(device_id)
 
     def get_telemetry(self) -> Dict[str, Any]:
@@ -22,6 +23,7 @@ class NVMLBackend(Backend):
         Returns:
             Telemetry dictionary
         """
+
         # Mock implementation
         return {
             "device_id": self.device_id,
@@ -39,6 +41,7 @@ class NVMLBackend(Backend):
         Returns:
             Result dictionary
         """
+
         # Mock implementation
         return {
             "success": True,
@@ -65,6 +68,7 @@ class NvidiaNvmlBackend(BaseBackend):
         Args:
             dry_run: Enable dry-run mode.
         """
+
         super().__init__(dry_run)
         self.nvml_available = False
         self.handles = {}
@@ -96,6 +100,7 @@ class NvidiaNvmlBackend(BaseBackend):
         Returns:
             True if device exists.
         """
+
         if self.dry_run:
             # In dry-run mode, simulate device existence
             return device_id.startswith("gpu")
@@ -116,6 +121,7 @@ class NvidiaNvmlBackend(BaseBackend):
         Returns:
             True if successful.
         """
+
         if self.dry_run:
             print(f"[DRY-RUN] Applying setpoint to {device_id}: {setpoint}")
             return True
@@ -166,6 +172,7 @@ class NvidiaNvmlBackend(BaseBackend):
         Returns:
             Configuration dictionary.
         """
+
         if self.dry_run:
             # Simulate configuration
             return {
@@ -209,6 +216,7 @@ class NvidiaNvmlBackend(BaseBackend):
                 - utilization_percent: GPU utilization
                 - memory_used_mb: Memory usage
         """
+
         if self.dry_run:
             # Simulate telemetry
             return {
@@ -256,6 +264,7 @@ class NvidiaNvmlBackend(BaseBackend):
 
     def __del__(self):
         """Cleanup NVML."""
+
         if self.nvml_available and not self.dry_run:
             with contextlib.suppress(Exception):
                 self.pynvml.nvmlShutdown()

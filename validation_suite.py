@@ -1,4 +1,5 @@
 """
+
 QuASIM Validation Suite — CI Regression Tests
 Author: Robert Ringler
 """
@@ -34,6 +35,7 @@ def purity(rho):
 
 def validate_consistency(block):
     """Check Bloch↔ρ↔counts consistency"""
+
     rho = rho_from_block(block)
     bloch_calc = bloch_from_rho(rho)
     bloch_reported = np.array(block["bloch_final"])
@@ -71,6 +73,7 @@ def test_quasim_blocks(fname):
 
 def test_purity_monotonic():
     """Ensure noisy run has purity < ideal run"""
+
     noisy = load_json("default_sim.json")
     ideal = load_json("ideal_sim.json")
     p_noisy = purity(rho_from_block(noisy))

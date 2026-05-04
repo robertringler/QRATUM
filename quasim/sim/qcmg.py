@@ -72,6 +72,7 @@ class QuantacosmorphysigeneticField:
         Args:
             params: Simulation parameters
         """
+
         self.params = params
         self.time = 0.0
         self.phi_m: np.ndarray | None = None
@@ -97,6 +98,7 @@ class QuantacosmorphysigeneticField:
         Args:
             mode: Initialization mode - "gaussian", "soliton", or "random"
         """
+
         n = self.params.grid_size
 
         if mode == "gaussian":
@@ -144,6 +146,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Laplacian of the field
         """
+
         laplacian = np.zeros_like(field)
         laplacian[1:-1] = (field[2:] - 2 * field[1:-1] + field[:-2]) / self.dx**2
 
@@ -159,6 +162,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Coherence value in [0, 1]
         """
+
         if self.phi_m is None or self.phi_i is None:
             return 0.0
 
@@ -177,6 +181,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Entropy value >= 0
         """
+
         if self.phi_m is None or self.phi_i is None:
             return 0.0
 
@@ -200,6 +205,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Total energy
         """
+
         if self.phi_m is None or self.phi_i is None:
             return 0.0
 
@@ -229,6 +235,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Current field state after evolution
         """
+
         if self.phi_m is None or self.phi_i is None:
             raise RuntimeError("Field not initialized. Call initialize() first.")
 
@@ -298,6 +305,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Current field state
         """
+
         if self.phi_m is None or self.phi_i is None:
             raise RuntimeError("Field not initialized. Call initialize() first.")
 
@@ -316,6 +324,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Dictionary containing state and trajectory information
         """
+
         if self.phi_m is None or self.phi_i is None:
             raise RuntimeError("Field not initialized. Call initialize() first.")
 

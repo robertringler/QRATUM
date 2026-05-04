@@ -21,15 +21,14 @@ class MatplotlibBackend:
     using Matplotlib's 3D plotting capabilities.
     """
 
-    def __init__(
-        self, figsize: tuple[int, int] = (10, 8), dpi: int = 100
-    ) -> None:
+    def __init__(self, figsize: tuple[int, int] = (10, 8), dpi: int = 100) -> None:
         """Initialize matplotlib backend.
 
         Args:
             figsize: Figure size in inches (width, height)
             dpi: Resolution in dots per inch
         """
+
         self.figsize = figsize
         self.dpi = dpi
         self.fig: Figure | None = None
@@ -57,6 +56,7 @@ class MatplotlibBackend:
         Returns:
             Matplotlib figure with rendered visualization
         """
+
         self.fig = plt.figure(figsize=self.figsize, dpi=self.dpi)
         self.ax = self.fig.add_subplot(111, projection="3d")
 
@@ -83,7 +83,11 @@ class MatplotlibBackend:
 
             # Create collection with colors
             collection = Poly3DCollection(
-                face_vertices, facecolors=colors, alpha=alpha, edgecolor="k" if show_edges else None, linewidths=0.1 if show_edges else 0
+                face_vertices,
+                facecolors=colors,
+                alpha=alpha,
+                edgecolor="k" if show_edges else None,
+                linewidths=0.1 if show_edges else 0,
             )
 
             # Add colorbar
@@ -137,15 +141,14 @@ class MatplotlibBackend:
             camera: Camera configuration
             center: Center point of the scene
         """
+
         # Calculate view angles
         view_vec = camera.position - camera.target
         distance = np.linalg.norm(view_vec)
 
         # Elevation and azimuth
         azim = np.degrees(np.arctan2(view_vec[1], view_vec[0]))
-        elev = np.degrees(
-            np.arcsin(view_vec[2] / (distance + 1e-10))
-        )
+        elev = np.degrees(np.arcsin(view_vec[2] / (distance + 1e-10)))
 
         self.ax.view_init(elev=elev, azim=azim)
         self.ax.dist = 10 / (distance + 1)  # Zoom level
@@ -157,6 +160,7 @@ class MatplotlibBackend:
             output_path: Output file path
             **kwargs: Additional arguments for plt.savefig
         """
+
         if self.fig is None:
             raise RuntimeError("No figure to save. Call render() first.")
 
@@ -169,6 +173,7 @@ class MatplotlibBackend:
 
     def show(self) -> None:
         """Display the rendered figure interactively."""
+
         if self.fig is None:
             raise RuntimeError("No figure to show. Call render() first.")
 
@@ -176,6 +181,7 @@ class MatplotlibBackend:
 
     def close(self) -> None:
         """Close the figure and free resources."""
+
         if self.fig is not None:
             plt.close(self.fig)
             self.fig = None

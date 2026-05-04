@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 import numpy as np
 
 from .mesh_generator import TireMesh
@@ -21,6 +19,7 @@ class DeformationEngine:
 
     def __init__(self, stiffness: float = 1.0) -> None:
         """Initialize deformation engine."""
+
         self.stiffness = stiffness
 
     def compute_contact_patch(
@@ -37,6 +36,7 @@ class DeformationEngine:
         Returns:
             Tuple of (deformed_mesh, contact_forces)
         """
+
         # Create deformed copy
         deformed_vertices = mesh.vertices.copy()
 
@@ -88,6 +88,7 @@ class DeformationEngine:
         Returns:
             Deformed mesh
         """
+
         # Create deformed copy
         deformed_vertices = mesh.vertices.copy()
 

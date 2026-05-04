@@ -28,6 +28,7 @@ class KernelMetrics:
 
     def to_dict(self) -> dict:
         """Convert metrics to dictionary for serialization."""
+
         return {
             "kernel_id": self.kernel_id,
             "timestamp": self.timestamp,
@@ -56,10 +57,12 @@ class IntrospectionAgent:
 
     def record_metrics(self, metrics: KernelMetrics) -> None:
         """Record kernel execution metrics."""
+
         self.metrics_history.append(metrics)
 
     def flush_to_disk(self) -> Path:
         """Write accumulated metrics to disk."""
+
         output_path = self.log_dir / f"metrics_{self._session_id}.json"
         data = [m.to_dict() for m in self.metrics_history]
         with open(output_path, "w") as f:
@@ -68,10 +71,12 @@ class IntrospectionAgent:
 
     def get_recent_metrics(self, n: int = 100) -> list[KernelMetrics]:
         """Get the n most recent metrics."""
+
         return self.metrics_history[-n:]
 
     def compute_statistics(self) -> dict[str, float]:
         """Compute aggregate statistics from collected metrics."""
+
         if not self.metrics_history:
             return {}
 

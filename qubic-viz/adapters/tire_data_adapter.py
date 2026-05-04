@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 import numpy as np
 
@@ -15,7 +15,7 @@ class TireDataAdapter:
     """
 
     @staticmethod
-    def extract_visualization_data(simulation_result: Any) -> Dict[str, Any]:
+    def extract_visualization_data(simulation_result: Any) -> dict[str, Any]:
         """Extract visualization data from simulation result.
 
         Args:
@@ -24,6 +24,7 @@ class TireDataAdapter:
         Returns:
             Dictionary containing visualization-ready data
         """
+
         # Extract geometry
         geometry = simulation_result.tire_geometry
 
@@ -58,6 +59,7 @@ class TireDataAdapter:
         Returns:
             Temperature values array
         """
+
         if hasattr(simulation_result, "thermal_map") and simulation_result.thermal_map is not None:
             return np.array(simulation_result.thermal_map)
 
@@ -81,6 +83,7 @@ class TireDataAdapter:
         Returns:
             Stress values array (MPa)
         """
+
         if (
             hasattr(simulation_result, "stress_distribution")
             and simulation_result.stress_distribution is not None
@@ -107,6 +110,7 @@ class TireDataAdapter:
         Returns:
             Wear depth values array (mm)
         """
+
         if (
             hasattr(simulation_result, "wear_pattern")
             and simulation_result.wear_pattern is not None
@@ -124,9 +128,7 @@ class TireDataAdapter:
         return wear
 
     @staticmethod
-    def normalize_field_data(
-        field_data: np.ndarray, target_size: int
-    ) -> np.ndarray:
+    def normalize_field_data(field_data: np.ndarray, target_size: int) -> np.ndarray:
         """Normalize field data to target size.
 
         Args:
@@ -136,6 +138,7 @@ class TireDataAdapter:
         Returns:
             Normalized field data
         """
+
         if len(field_data) == target_size:
             return field_data
 

@@ -1,0 +1,17 @@
+# Rust build artifacts
+/target/
+
+# Cargo lock should not be ignored for applications
+# !Cargo.lock
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Debug files
+*.pdb
+
+# Generated files
+*.generated.*

@@ -11,6 +11,7 @@ from quasim.qc.quasim_multi import MultiQubitSimulator
 
 def main():
     """Main distributed execution."""
+
     # Initialize distributed context
     print("Initializing JAX cluster with 2x4 mesh...")
     ctx = init_cluster(backend="jax", mesh_shape=(2, 4), seed=12345)

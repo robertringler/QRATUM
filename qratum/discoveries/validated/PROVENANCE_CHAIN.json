@@ -1,0 +1,607 @@
+{
+  "merkle_root": "MERKLE-0e0849b521de02da",
+  "chain_length": 100,
+  "generated_at": "1766943407",
+  "entries": [
+    {
+      "qrd_id": "QRD-001",
+      "qrdl_hash": "QRDL-f2e9c5c21b4f0d73",
+      "parent_hash": "GENESIS",
+      "fitness_score": 0.8956
+    },
+    {
+      "qrd_id": "QRD-002",
+      "qrdl_hash": "QRDL-b68e8b89492316be",
+      "parent_hash": "QRDL-f2e9c5c21b4f0d73",
+      "fitness_score": 0.8876
+    },
+    {
+      "qrd_id": "QRD-003",
+      "qrdl_hash": "QRDL-a7038d260096e48b",
+      "parent_hash": "QRDL-b68e8b89492316be",
+      "fitness_score": 0.9051
+    },
+    {
+      "qrd_id": "QRD-004",
+      "qrdl_hash": "QRDL-1896887746d2f617",
+      "parent_hash": "QRDL-a7038d260096e48b",
+      "fitness_score": 0.8881
+    },
+    {
+      "qrd_id": "QRD-005",
+      "qrdl_hash": "QRDL-2b9b6046e3b28b06",
+      "parent_hash": "QRDL-1896887746d2f617",
+      "fitness_score": 0.8926
+    },
+    {
+      "qrd_id": "QRD-006",
+      "qrdl_hash": "QRDL-75a221b1de8d661b",
+      "parent_hash": "QRDL-2b9b6046e3b28b06",
+      "fitness_score": 0.8951
+    },
+    {
+      "qrd_id": "QRD-007",
+      "qrdl_hash": "QRDL-04970bc69ac635cf",
+      "parent_hash": "QRDL-75a221b1de8d661b",
+      "fitness_score": 0.8831
+    },
+    {
+      "qrd_id": "QRD-008",
+      "qrdl_hash": "QRDL-3f519be63834ab5e",
+      "parent_hash": "QRDL-04970bc69ac635cf",
+      "fitness_score": 0.8996
+    },
+    {
+      "qrd_id": "QRD-009",
+      "qrdl_hash": "QRDL-e328ff461b0a01d7",
+      "parent_hash": "QRDL-3f519be63834ab5e",
+      "fitness_score": 0.9226
+    },
+    {
+      "qrd_id": "QRD-010",
+      "qrdl_hash": "QRDL-b0882d7b1f98487f",
+      "parent_hash": "QRDL-e328ff461b0a01d7",
+      "fitness_score": 0.8731
+    },
+    {
+      "qrd_id": "QRD-011",
+      "qrdl_hash": "QRDL-ca83cee62a0ad3fe",
+      "parent_hash": "QRDL-b0882d7b1f98487f",
+      "fitness_score": 0.8876
+    },
+    {
+      "qrd_id": "QRD-012",
+      "qrdl_hash": "QRDL-95ee35b5c7ca42af",
+      "parent_hash": "QRDL-ca83cee62a0ad3fe",
+      "fitness_score": 0.9176
+    },
+    {
+      "qrd_id": "QRD-013",
+      "qrdl_hash": "QRDL-aec9789e8132f43b",
+      "parent_hash": "QRDL-95ee35b5c7ca42af",
+      "fitness_score": 0.9006
+    },
+    {
+      "qrd_id": "QRD-014",
+      "qrdl_hash": "QRDL-2641a13b22dcebf6",
+      "parent_hash": "QRDL-aec9789e8132f43b",
+      "fitness_score": 0.8826
+    },
+    {
+      "qrd_id": "QRD-015",
+      "qrdl_hash": "QRDL-119188732c72bf03",
+      "parent_hash": "QRDL-2641a13b22dcebf6",
+      "fitness_score": 0.9001
+    },
+    {
+      "qrd_id": "QRD-016",
+      "qrdl_hash": "QRDL-9ac9fbedd52633f3",
+      "parent_hash": "QRDL-119188732c72bf03",
+      "fitness_score": 0.8956
+    },
+    {
+      "qrd_id": "QRD-017",
+      "qrdl_hash": "QRDL-b49d78615f29bc8e",
+      "parent_hash": "QRDL-9ac9fbedd52633f3",
+      "fitness_score": 0.8976
+    },
+    {
+      "qrd_id": "QRD-018",
+      "qrdl_hash": "QRDL-8626a09bfd054b0b",
+      "parent_hash": "QRDL-b49d78615f29bc8e",
+      "fitness_score": 0.9051
+    },
+    {
+      "qrd_id": "QRD-019",
+      "qrdl_hash": "QRDL-76abfb39335a9078",
+      "parent_hash": "QRDL-8626a09bfd054b0b",
+      "fitness_score": 0.8806
+    },
+    {
+      "qrd_id": "QRD-020",
+      "qrdl_hash": "QRDL-a19123f4d463a3e3",
+      "parent_hash": "QRDL-76abfb39335a9078",
+      "fitness_score": 0.9056
+    },
+    {
+      "qrd_id": "QRD-021",
+      "qrdl_hash": "QRDL-c38b5a689eb4e462",
+      "parent_hash": "QRDL-a19123f4d463a3e3",
+      "fitness_score": 0.9121
+    },
+    {
+      "qrd_id": "QRD-022",
+      "qrdl_hash": "QRDL-bb3321b5492e33e7",
+      "parent_hash": "QRDL-c38b5a689eb4e462",
+      "fitness_score": 0.9126
+    },
+    {
+      "qrd_id": "QRD-023",
+      "qrdl_hash": "QRDL-7aa632279de7aab0",
+      "parent_hash": "QRDL-bb3321b5492e33e7",
+      "fitness_score": 0.8756
+    },
+    {
+      "qrd_id": "QRD-024",
+      "qrdl_hash": "QRDL-497f648e443c26af",
+      "parent_hash": "QRDL-7aa632279de7aab0",
+      "fitness_score": 0.8831
+    },
+    {
+      "qrd_id": "QRD-025",
+      "qrdl_hash": "QRDL-7b1b9fe5d22be26e",
+      "parent_hash": "QRDL-497f648e443c26af",
+      "fitness_score": 0.8976
+    },
+    {
+      "qrd_id": "QRD-026",
+      "qrdl_hash": "QRDL-5f1442b93fdb62b7",
+      "parent_hash": "QRDL-7b1b9fe5d22be26e",
+      "fitness_score": 0.9226
+    },
+    {
+      "qrd_id": "QRD-027",
+      "qrdl_hash": "QRDL-23db2055049f5a08",
+      "parent_hash": "QRDL-5f1442b93fdb62b7",
+      "fitness_score": 0.8706
+    },
+    {
+      "qrd_id": "QRD-028",
+      "qrdl_hash": "QRDL-d110682a7e415cdf",
+      "parent_hash": "QRDL-23db2055049f5a08",
+      "fitness_score": 0.8731
+    },
+    {
+      "qrd_id": "QRD-029",
+      "qrdl_hash": "QRDL-7e5a0a764647874e",
+      "parent_hash": "QRDL-d110682a7e415cdf",
+      "fitness_score": 0.8776
+    },
+    {
+      "qrd_id": "QRD-030",
+      "qrdl_hash": "QRDL-b47e00cfc1d7982f",
+      "parent_hash": "QRDL-7e5a0a764647874e",
+      "fitness_score": 0.9176
+    },
+    {
+      "qrd_id": "QRD-031",
+      "qrdl_hash": "QRDL-53263f5979fdce78",
+      "parent_hash": "QRDL-b47e00cfc1d7982f",
+      "fitness_score": 0.8726
+    },
+    {
+      "qrd_id": "QRD-032",
+      "qrdl_hash": "QRDL-4421d468988a2e5b",
+      "parent_hash": "QRDL-53263f5979fdce78",
+      "fitness_score": 0.9006
+    },
+    {
+      "qrd_id": "QRD-033",
+      "qrdl_hash": "QRDL-b4f24635f44f5a26",
+      "parent_hash": "QRDL-4421d468988a2e5b",
+      "fitness_score": 0.8926
+    },
+    {
+      "qrd_id": "QRD-034",
+      "qrdl_hash": "QRDL-d2c5db33fbbc0923",
+      "parent_hash": "QRDL-b4f24635f44f5a26",
+      "fitness_score": 0.9001
+    },
+    {
+      "qrd_id": "QRD-035",
+      "qrdl_hash": "QRDL-15aa2fef8272da20",
+      "parent_hash": "QRDL-d2c5db33fbbc0923",
+      "fitness_score": 0.8776
+    },
+    {
+      "qrd_id": "QRD-036",
+      "qrdl_hash": "QRDL-585a5939236e12b3",
+      "parent_hash": "QRDL-15aa2fef8272da20",
+      "fitness_score": 0.8956
+    },
+    {
+      "qrd_id": "QRD-037",
+      "qrdl_hash": "QRDL-161f9dadb6b711de",
+      "parent_hash": "QRDL-585a5939236e12b3",
+      "fitness_score": 0.8996
+    },
+    {
+      "qrd_id": "QRD-038",
+      "qrdl_hash": "QRDL-e9ff7b03a18a89cb",
+      "parent_hash": "QRDL-161f9dadb6b711de",
+      "fitness_score": 0.9051
+    },
+    {
+      "qrd_id": "QRD-039",
+      "qrdl_hash": "QRDL-7e071bee4ef1fb57",
+      "parent_hash": "QRDL-e9ff7b03a18a89cb",
+      "fitness_score": 0.8881
+    },
+    {
+      "qrd_id": "QRD-040",
+      "qrdl_hash": "QRDL-2df951e1f96be8a6",
+      "parent_hash": "QRDL-7e071bee4ef1fb57",
+      "fitness_score": 0.8926
+    },
+    {
+      "qrd_id": "QRD-041",
+      "qrdl_hash": "QRDL-101d303efd6c1c7b",
+      "parent_hash": "QRDL-2df951e1f96be8a6",
+      "fitness_score": 0.8951
+    },
+    {
+      "qrd_id": "QRD-042",
+      "qrdl_hash": "QRDL-b69fbed724a2bc2f",
+      "parent_hash": "QRDL-101d303efd6c1c7b",
+      "fitness_score": 0.8831
+    },
+    {
+      "qrd_id": "QRD-043",
+      "qrdl_hash": "QRDL-89b72436f23e009e",
+      "parent_hash": "QRDL-b69fbed724a2bc2f",
+      "fitness_score": 0.8876
+    },
+    {
+      "qrd_id": "QRD-044",
+      "qrdl_hash": "QRDL-7da40dd339e8b837",
+      "parent_hash": "QRDL-89b72436f23e009e",
+      "fitness_score": 0.9226
+    },
+    {
+      "qrd_id": "QRD-045",
+      "qrdl_hash": "QRDL-15f8c0f227b74dbf",
+      "parent_hash": "QRDL-7da40dd339e8b837",
+      "fitness_score": 0.8731
+    },
+    {
+      "qrd_id": "QRD-046",
+      "qrdl_hash": "QRDL-721c77c03beec6be",
+      "parent_hash": "QRDL-15f8c0f227b74dbf",
+      "fitness_score": 0.8876
+    },
+    {
+      "qrd_id": "QRD-047",
+      "qrdl_hash": "QRDL-d8ea239368bde7ef",
+      "parent_hash": "QRDL-721c77c03beec6be",
+      "fitness_score": 0.9176
+    },
+    {
+      "qrd_id": "QRD-048",
+      "qrdl_hash": "QRDL-143a0c158951f97b",
+      "parent_hash": "QRDL-d8ea239368bde7ef",
+      "fitness_score": 0.9006
+    },
+    {
+      "qrd_id": "QRD-049",
+      "qrdl_hash": "QRDL-f21cf796ab7c48a2",
+      "parent_hash": "QRDL-143a0c158951f97b",
+      "fitness_score": 0.9121
+    },
+    {
+      "qrd_id": "QRD-050",
+      "qrdl_hash": "QRDL-1856db37665cd6ef",
+      "parent_hash": "QRDL-f21cf796ab7c48a2",
+      "fitness_score": 0.9176
+    },
+    {
+      "qrd_id": "QRD-051",
+      "qrdl_hash": "QRDL-4cd2aefe5f02ba53",
+      "parent_hash": "QRDL-1856db37665cd6ef",
+      "fitness_score": 0.8956
+    },
+    {
+      "qrd_id": "QRD-052",
+      "qrdl_hash": "QRDL-b6fb69fc74e31a2e",
+      "parent_hash": "QRDL-4cd2aefe5f02ba53",
+      "fitness_score": 0.8976
+    },
+    {
+      "qrd_id": "QRD-053",
+      "qrdl_hash": "QRDL-20a1af291be4016b",
+      "parent_hash": "QRDL-b6fb69fc74e31a2e",
+      "fitness_score": 0.9051
+    },
+    {
+      "qrd_id": "QRD-054",
+      "qrdl_hash": "QRDL-727f71b38a86a2f7",
+      "parent_hash": "QRDL-20a1af291be4016b",
+      "fitness_score": 0.8881
+    },
+    {
+      "qrd_id": "QRD-055",
+      "qrdl_hash": "QRDL-f96a39e8cbf7d5d6",
+      "parent_hash": "QRDL-727f71b38a86a2f7",
+      "fitness_score": 0.8826
+    },
+    {
+      "qrd_id": "QRD-056",
+      "qrdl_hash": "QRDL-ef4043b4f9da82fb",
+      "parent_hash": "QRDL-f96a39e8cbf7d5d6",
+      "fitness_score": 0.8951
+    },
+    {
+      "qrd_id": "QRD-057",
+      "qrdl_hash": "QRDL-5e7ff502de79e2af",
+      "parent_hash": "QRDL-ef4043b4f9da82fb",
+      "fitness_score": 0.8831
+    },
+    {
+      "qrd_id": "QRD-058",
+      "qrdl_hash": "QRDL-87c6110f0844a66e",
+      "parent_hash": "QRDL-5e7ff502de79e2af",
+      "fitness_score": 0.8976
+    },
+    {
+      "qrd_id": "QRD-059",
+      "qrdl_hash": "QRDL-5cc7214936571eb7",
+      "parent_hash": "QRDL-87c6110f0844a66e",
+      "fitness_score": 0.9226
+    },
+    {
+      "qrd_id": "QRD-060",
+      "qrdl_hash": "QRDL-8b4ada3f3e8d88e8",
+      "parent_hash": "QRDL-5cc7214936571eb7",
+      "fitness_score": 0.8706
+    },
+    {
+      "qrd_id": "QRD-061",
+      "qrdl_hash": "QRDL-32a918389a3c99ff",
+      "parent_hash": "QRDL-8b4ada3f3e8d88e8",
+      "fitness_score": 0.8731
+    },
+    {
+      "qrd_id": "QRD-062",
+      "qrdl_hash": "QRDL-9dc22daadbe5be8e",
+      "parent_hash": "QRDL-32a918389a3c99ff",
+      "fitness_score": 0.8896
+    },
+    {
+      "qrd_id": "QRD-063",
+      "qrdl_hash": "QRDL-b230df5fb853542f",
+      "parent_hash": "QRDL-9dc22daadbe5be8e",
+      "fitness_score": 0.9176
+    },
+    {
+      "qrd_id": "QRD-064",
+      "qrdl_hash": "QRDL-c12749a0f623e668",
+      "parent_hash": "QRDL-b230df5fb853542f",
+      "fitness_score": 0.8706
+    },
+    {
+      "qrd_id": "QRD-065",
+      "qrdl_hash": "QRDL-592264dd32c7ea5b",
+      "parent_hash": "QRDL-c12749a0f623e668",
+      "fitness_score": 0.9006
+    },
+    {
+      "qrd_id": "QRD-066",
+      "qrdl_hash": "QRDL-c19cb75f2a681e26",
+      "parent_hash": "QRDL-592264dd32c7ea5b",
+      "fitness_score": 0.8926
+    },
+    {
+      "qrd_id": "QRD-067",
+      "qrdl_hash": "QRDL-d078b9c3f237c523",
+      "parent_hash": "QRDL-c19cb75f2a681e26",
+      "fitness_score": 0.9001
+    },
+    {
+      "qrd_id": "QRD-068",
+      "qrdl_hash": "QRDL-83ab3a36fe98f210",
+      "parent_hash": "QRDL-d078b9c3f237c523",
+      "fitness_score": 0.8756
+    },
+    {
+      "qrd_id": "QRD-069",
+      "qrdl_hash": "QRDL-6d5ae9adbdabceb3",
+      "parent_hash": "QRDL-83ab3a36fe98f210",
+      "fitness_score": 0.8956
+    },
+    {
+      "qrd_id": "QRD-070",
+      "qrdl_hash": "QRDL-c596ee4d94f5385e",
+      "parent_hash": "QRDL-6d5ae9adbdabceb3",
+      "fitness_score": 0.8876
+    },
+    {
+      "qrd_id": "QRD-071",
+      "qrdl_hash": "QRDL-3f317a4315f156eb",
+      "parent_hash": "QRDL-c596ee4d94f5385e",
+      "fitness_score": 0.9051
+    },
+    {
+      "qrd_id": "QRD-072",
+      "qrdl_hash": "QRDL-df9fcbfc6aed3877",
+      "parent_hash": "QRDL-3f317a4315f156eb",
+      "fitness_score": 0.8881
+    },
+    {
+      "qrd_id": "QRD-073",
+      "qrdl_hash": "QRDL-3aa3c30b2f84aca6",
+      "parent_hash": "QRDL-df9fcbfc6aed3877",
+      "fitness_score": 0.8926
+    },
+    {
+      "qrd_id": "QRD-074",
+      "qrdl_hash": "QRDL-0dd00ecef3e7d87b",
+      "parent_hash": "QRDL-3aa3c30b2f84aca6",
+      "fitness_score": 0.8951
+    },
+    {
+      "qrd_id": "QRD-075",
+      "qrdl_hash": "QRDL-28032df90e86dac8",
+      "parent_hash": "QRDL-0dd00ecef3e7d87b",
+      "fitness_score": 0.8826
+    },
+    {
+      "qrd_id": "QRD-076",
+      "qrdl_hash": "QRDL-6022950410dc7e5b",
+      "parent_hash": "QRDL-28032df90e86dac8",
+      "fitness_score": 0.9006
+    },
+    {
+      "qrd_id": "QRD-077",
+      "qrdl_hash": "QRDL-081b5eba0cf7c5ea",
+      "parent_hash": "QRDL-6022950410dc7e5b",
+      "fitness_score": 0.9171
+    },
+    {
+      "qrd_id": "QRD-078",
+      "qrdl_hash": "QRDL-1dfb740a05a068d7",
+      "parent_hash": "QRDL-081b5eba0cf7c5ea",
+      "fitness_score": 0.9226
+    },
+    {
+      "qrd_id": "QRD-079",
+      "qrdl_hash": "QRDL-533152e7f8e5ae5f",
+      "parent_hash": "QRDL-1dfb740a05a068d7",
+      "fitness_score": 0.8731
+    },
+    {
+      "qrd_id": "QRD-080",
+      "qrdl_hash": "QRDL-27034d82e3c28cfe",
+      "parent_hash": "QRDL-533152e7f8e5ae5f",
+      "fitness_score": 0.8876
+    },
+    {
+      "qrd_id": "QRD-081",
+      "qrdl_hash": "QRDL-d0c0aa79b260a9af",
+      "parent_hash": "QRDL-27034d82e3c28cfe",
+      "fitness_score": 0.9176
+    },
+    {
+      "qrd_id": "QRD-082",
+      "qrdl_hash": "QRDL-9e0abda4dc3ddb3b",
+      "parent_hash": "QRDL-d0c0aa79b260a9af",
+      "fitness_score": 0.9006
+    },
+    {
+      "qrd_id": "QRD-083",
+      "qrdl_hash": "QRDL-82c11fd7dc94a4f6",
+      "parent_hash": "QRDL-9e0abda4dc3ddb3b",
+      "fitness_score": 0.8826
+    },
+    {
+      "qrd_id": "QRD-084",
+      "qrdl_hash": "QRDL-4c63fd3717092603",
+      "parent_hash": "QRDL-82c11fd7dc94a4f6",
+      "fitness_score": 0.9001
+    },
+    {
+      "qrd_id": "QRD-085",
+      "qrdl_hash": "QRDL-8a0b40f430311af3",
+      "parent_hash": "QRDL-4c63fd3717092603",
+      "fitness_score": 0.8956
+    },
+    {
+      "qrd_id": "QRD-086",
+      "qrdl_hash": "QRDL-111cf6fe18e1758e",
+      "parent_hash": "QRDL-8a0b40f430311af3",
+      "fitness_score": 0.8976
+    },
+    {
+      "qrd_id": "QRD-087",
+      "qrdl_hash": "QRDL-c0f9155fe79bb20b",
+      "parent_hash": "QRDL-111cf6fe18e1758e",
+      "fitness_score": 0.9051
+    },
+    {
+      "qrd_id": "QRD-088",
+      "qrdl_hash": "QRDL-afb803a95bb50397",
+      "parent_hash": "QRDL-c0f9155fe79bb20b",
+      "fitness_score": 0.8881
+    },
+    {
+      "qrd_id": "QRD-089",
+      "qrdl_hash": "QRDL-0b843034cba63996",
+      "parent_hash": "QRDL-afb803a95bb50397",
+      "fitness_score": 0.8946
+    },
+    {
+      "qrd_id": "QRD-090",
+      "qrdl_hash": "QRDL-e716ca9b437d44bb",
+      "parent_hash": "QRDL-0b843034cba63996",
+      "fitness_score": 0.8951
+    },
+    {
+      "qrd_id": "QRD-091",
+      "qrdl_hash": "QRDL-e850a6923165c46f",
+      "parent_hash": "QRDL-e716ca9b437d44bb",
+      "fitness_score": 0.8831
+    },
+    {
+      "qrd_id": "QRD-092",
+      "qrdl_hash": "QRDL-3cace6d1b0186cae",
+      "parent_hash": "QRDL-e850a6923165c46f",
+      "fitness_score": 0.8976
+    },
+    {
+      "qrd_id": "QRD-093",
+      "qrdl_hash": "QRDL-549da82f7ff9e077",
+      "parent_hash": "QRDL-3cace6d1b0186cae",
+      "fitness_score": 0.9226
+    },
+    {
+      "qrd_id": "QRD-094",
+      "qrdl_hash": "QRDL-47a9a8ad347a55ff",
+      "parent_hash": "QRDL-549da82f7ff9e077",
+      "fitness_score": 0.8731
+    },
+    {
+      "qrd_id": "QRD-095",
+      "qrdl_hash": "QRDL-f2743589b64e7a2e",
+      "parent_hash": "QRDL-47a9a8ad347a55ff",
+      "fitness_score": 0.8776
+    },
+    {
+      "qrd_id": "QRD-096",
+      "qrdl_hash": "QRDL-afe3bdefaecf102f",
+      "parent_hash": "QRDL-f2743589b64e7a2e",
+      "fitness_score": 0.9176
+    },
+    {
+      "qrd_id": "QRD-097",
+      "qrdl_hash": "QRDL-45eaf3d0961501bb",
+      "parent_hash": "QRDL-afe3bdefaecf102f",
+      "fitness_score": 0.9006
+    },
+    {
+      "qrd_id": "QRD-098",
+      "qrdl_hash": "QRDL-80d00caff29b4ac6",
+      "parent_hash": "QRDL-45eaf3d0961501bb",
+      "fitness_score": 0.8926
+    },
+    {
+      "qrd_id": "QRD-099",
+      "qrdl_hash": "QRDL-2b8710ad13778c83",
+      "parent_hash": "QRDL-80d00caff29b4ac6",
+      "fitness_score": 0.9001
+    },
+    {
+      "qrd_id": "QRD-100",
+      "qrdl_hash": "QRDL-9b87a7a841797ab0",
+      "parent_hash": "QRDL-2b8710ad13778c83",
+      "fitness_score": 0.8756
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuASIM Market Valuation Script
 
 Implements:
@@ -36,6 +37,7 @@ class MinimalYAMLParser:
     @staticmethod
     def parse_value(value: str) -> Any:
         """Parse a YAML value."""
+
         value = value.strip()
         if value.lower() in ("true", "yes"):
             return True
@@ -55,6 +57,7 @@ class MinimalYAMLParser:
     @staticmethod
     def load(stream) -> Dict[str, Any]:
         """Load minimal YAML config."""
+
         result: Dict[str, Any] = {}
         current_section = result
         section_stack = [(None, result)]
@@ -140,6 +143,7 @@ class ValuationEngine:
 
     def project_financials(self, scenario: Dict[str, Any]) -> List[Dict[str, float]]:
         """Project 5-year financials for a scenario."""
+
         projections = []
         revenue = scenario.get("year1_revenue", 0)
         growth_rates = scenario.get("yoy_growth", [])
@@ -188,6 +192,7 @@ class ValuationEngine:
         self, projections: List[Dict[str, float]], discount_rate: float = None
     ) -> Dict[str, float]:
         """Calculate DCF valuation."""
+
         if discount_rate is None:
             discount_rate = self.discount_rate
 
@@ -217,6 +222,7 @@ class ValuationEngine:
 
     def run_scenario_dcf(self, scenario_name: str) -> Tuple[List[Dict], Dict]:
         """Run DCF for a named scenario."""
+
         scenario = next((s for s in self.scenarios if s.get("name") == scenario_name), None)
         if not scenario:
             raise ValueError(f"Scenario '{scenario_name}' not found")
@@ -228,6 +234,7 @@ class ValuationEngine:
 
     def monte_carlo_simulation(self, base_scenario: Dict[str, Any]) -> Dict[str, Any]:
         """Run Monte Carlo simulation."""
+
         trials = self.mc_config.get("trials", 20000)
         distributions = self.mc_config.get("distributions", {})
 
@@ -288,6 +295,7 @@ class ValuationEngine:
 
     def real_options_uplift(self, base_ev: float) -> Dict[str, float]:
         """Calculate real options uplift proxy using Black-Scholes approximation."""
+
         # Simplified real-options model
         # Treats expansion as a call option on future growth
 
@@ -338,6 +346,7 @@ class ReportGenerator:
 
     def generate_report(self, output_path: str):
         """Generate comprehensive markdown report."""
+
         now = datetime.datetime.now(datetime.UTC)
 
         # Run scenarios
@@ -378,6 +387,7 @@ class ReportGenerator:
         timestamp: datetime.datetime,
     ) -> str:
         """Generate markdown report content."""
+
         base_dcf = scenarios_results.get("Base", {}).get("dcf", {})
         base_ev = base_dcf.get("enterprise_value", 0)
 
@@ -470,10 +480,12 @@ Uses Black-Scholes framework adapted for real options valuation.
 | Year | Revenue | Gross Profit | EBITDA | NOPAT | CapEx | FCF |
 |------|---------|--------------|--------|-------|-------|-----|
 """
+
                 for p in projections:
                     report += f"| {p['year']} | ${p['revenue']:,.0f} | ${p['gross_profit']:,.0f} | ${p['ebitda']:,.0f} | ${p['nopat']:,.0f} | ${p['capex']:,.0f} | ${p['fcf']:,.0f} |\n"
 
                 report += f"""
+
 **DCF Components:**
 - PV of FCF (Years 1-5): ${dcf["pv_fcf"]:,.0f}
 - Terminal Value: ${dcf["terminal_value"]:,.0f}
@@ -641,6 +653,7 @@ Terminal Growth     |████████| ±8%
 
     def _save_csv_data(self, scenarios_results: Dict, mc_results: Dict, output_path: str):
         """Save auxiliary CSV data."""
+
         # Create data directory
         data_dir = Path(output_path).parent / "data"
         data_dir.mkdir(exist_ok=True)
@@ -682,6 +695,7 @@ Terminal Growth     |████████| ±8%
 
 def main():
     """Main entry point."""
+
     parser = argparse.ArgumentParser(description="QuASIM Market Valuation Engine")
     parser.add_argument(
         "--config",

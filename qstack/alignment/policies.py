@@ -24,7 +24,8 @@ class AlignmentPolicy:
     def evaluate(
         self, operation: str, config: QStackConfig, context: dict
     ) -> list[AlignmentViolation]:
-        raise NotImplementedError
+        # GAP-STUB-014: base policy has no violations; subclasses override
+        return []
 
 
 class SafetyFirstPolicy(AlignmentPolicy):

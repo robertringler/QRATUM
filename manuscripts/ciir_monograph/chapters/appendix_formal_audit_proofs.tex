@@ -1,0 +1,304 @@
+% ============================================================
+%  Appendix — Full Proofs for Chapter 15
+%  (Formal Audit and Mathematical Deepening)
+% ============================================================
+
+\chapter{Formal Audit Proofs}
+\label{app:formal-audit-proofs}
+
+This appendix collects the extended proofs supporting the formal
+audit of Chapter~\ref{ch:formal-audit}.
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:15.1}: Metric Admissibility}
+\label{app:pf-metric-admissibility}
+% ============================================================
+
+\begin{proof}[Extended proof]
+We provide the complete verification that symmetrised subadditivity
+\eqref{eq:sym-subadditivity} is both necessary and sufficient for the
+triangle inequality of $d_{\CD}$.
+
+\emph{Necessity.}  Assume $d_{\CD}$ is a metric.  Then the triangle
+inequality gives:
+\[
+  d_{\CD}(\sigma_1, \sigma_3)
+  \leq d_{\CD}(\sigma_1, \sigma_2) + d_{\CD}(\sigma_2, \sigma_3).
+\]
+Squaring both sides (all terms non-negative):
+\begin{align*}
+  d_{\CD}(\sigma_1, \sigma_3)^2
+  &\leq \big[d_{\CD}(\sigma_1, \sigma_2) + d_{\CD}(\sigma_2, \sigma_3)\big]^2 \\
+  &= d_{\CD}(\sigma_1, \sigma_2)^2 + d_{\CD}(\sigma_2, \sigma_3)^2
+  + 2\,d_{\CD}(\sigma_1, \sigma_2)\,d_{\CD}(\sigma_2, \sigma_3).
+\end{align*}
+Substituting $d_{\CD}^2 = \CD + \CD^{\mathrm{rev}}$:
+\[
+  \CD(\sigma_1, \sigma_3) + \CD(\sigma_3, \sigma_1)
+  \leq \big[\sqrt{\CD(\sigma_1, \sigma_2) + \CD(\sigma_2, \sigma_1)}
+  + \sqrt{\CD(\sigma_2, \sigma_3) + \CD(\sigma_3, \sigma_2)}\big]^2.
+\]
+
+\emph{Sufficiency.}  Given \eqref{eq:sym-subadditivity}, define
+$d := d_{\CD}$.  Non-negativity and separation follow directly from the
+properties of $\CD$.  For the triangle inequality, taking square roots
+of \eqref{eq:sym-subadditivity}:
+\[
+  \sqrt{\CD(\sigma_1, \sigma_3) + \CD(\sigma_3, \sigma_1)}
+  \leq \sqrt{\CD(\sigma_1, \sigma_2) + \CD(\sigma_2, \sigma_1)}
+  + \sqrt{\CD(\sigma_2, \sigma_3) + \CD(\sigma_3, \sigma_2)},
+\]
+which is valid because if $a \leq (b + c)^2$ with $a, b, c \geq 0$,
+then $\sqrt{a} \leq b + c$.  This is precisely
+$d(\sigma_1, \sigma_3) \leq d(\sigma_1, \sigma_2) + d(\sigma_2, \sigma_3)$.
+\end{proof}
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:15.2}: Rank-Deficient Fisher Metric}
+\label{app:pf-rank-deficient}
+% ============================================================
+
+\begin{proof}[Extended proof]
+Let $\rho = \sum_{k=1}^r p_k |e_k\rangle\langle e_k|$ with
+$p_1 \geq \ldots \geq p_r > 0$ and $r < d = \dim(\HC)$.
+
+\emph{Step 1 (SLD equation on the support).}
+The SLD equation $\partial_i\rho = \frac{1}{2}(\rho\ell_i + \ell_i\rho)$
+restricted to $\mathrm{ran}(\rho)$ gives, in the eigenbasis:
+\[
+  \langle e_k|\partial_i\rho|e_l\rangle
+  = \frac{p_k + p_l}{2}\,\langle e_k|\ell_i|e_l\rangle
+\]
+for $k, l \in \{1, \ldots, r\}$.  When $p_k + p_l > 0$:
+\[
+  \langle e_k|\ell_i|e_l\rangle
+  = \frac{2\,\langle e_k|\partial_i\rho|e_l\rangle}{p_k + p_l}.
+\]
+
+\emph{Step 2 (Well-definedness on the support).}
+For $k, l \leq r$, $p_k + p_l \geq 2p_r > 0$, so each matrix element
+is well-defined and bounded:
+$|\langle e_k|\ell_i|e_l\rangle| \leq
+2\|\partial_i\rho\|_{\mathrm{op}} / (2p_r)$.
+
+\emph{Step 3 (Off-support terms).}
+For $k \leq r$ and $l > r$ (or vice versa), $p_k + p_l = p_k > 0$
+(or $p_l > 0$), so these terms are also well-defined.
+
+For $k, l > r$, both $p_k = p_l = 0$, and
+$\langle e_k|\partial_i\rho|e_l\rangle$ may be non-zero.  However,
+these terms do not contribute to $g_{ij}^{(0)}$ because the sum in
+\eqref{eq:reg-fisher} excludes pairs with $p_k + p_l = 0$.
+
+\emph{Step 4 (Metric properties).}
+$g_{ij}^{(0)} v^i v^j = \sum_{(k,l): p_k+p_l>0}
+\frac{2|v^i\langle e_k|\partial_i\rho|e_l\rangle|^2}{p_k+p_l} \geq 0$
+(sum of non-negative terms).
+
+If $v$ preserves rank, then $v^i\partial_i\rho \neq 0$, and since
+$\rho$ has full rank on its support, there exists at least one pair
+$(k,l)$ with $p_k + p_l > 0$ such that
+$v^i\langle e_k|\partial_i\rho|e_l\rangle \neq 0$.  Hence
+$g_{ij}^{(0)} v^i v^j > 0$.
+\end{proof}
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:15.7}: Large Deviation Principle}
+\label{app:pf-ldp}
+% ============================================================
+
+\begin{proof}[Extended proof]
+We prove Sanov's theorem in the finite-alphabet case and indicate the
+extension.
+
+\emph{Step 1 (Type counting).}
+For a finite alphabet $\CS = \{s_1, \ldots, s_m\}$ and $N$ i.i.d.\
+samples from $\nu_0 = (q_1, \ldots, q_m)$, the type (empirical
+distribution) $\hat{p} = (N_1/N, \ldots, N_m/N)$ has:
+\[
+  \Pr(L_N = \hat{p})
+  = \binom{N}{N_1, \ldots, N_m} \prod_{j=1}^m q_j^{N_j}.
+\]
+
+\emph{Step 2 (Stirling approximation).}
+Using $\ln\binom{N}{N_1,\ldots,N_m} = N\,H(\hat{p}) + O(\ln N)$
+where $H(\hat{p}) = -\sum \hat{p}_j\ln\hat{p}_j$:
+\[
+  \frac{1}{N}\ln\Pr(L_N = \hat{p})
+  = H(\hat{p}) + \sum_j \hat{p}_j\ln q_j + O(\ln N / N)
+  = -D_{\mathrm{KL}}(\hat{p}\|\nu_0) + O(\ln N / N).
+\]
+
+\emph{Step 3 (Upper bound).}
+For a closed set $F$ of distributions:
+\[
+  \Pr(L_N \in F) = \sum_{\hat{p} \in F \cap \mathcal{P}_N}
+  \Pr(L_N = \hat{p})
+  \leq (N+1)^m \cdot \max_{\hat{p} \in F} e^{-N\,D_{\mathrm{KL}}(\hat{p}\|\nu_0)},
+\]
+giving $\limsup \frac{1}{N}\ln\Pr(L_N \in F) \leq
+-\inf_{\hat{p} \in F} D_{\mathrm{KL}}(\hat{p}\|\nu_0)$.
+
+\emph{Step 4 (Lower bound).}
+For an open set $G$ and any $\hat{p}^* \in G$, there exists a sequence
+of types $\hat{p}_N \to \hat{p}^*$, and:
+\[
+  \Pr(L_N \in G) \geq \Pr(L_N = \hat{p}_N)
+  \geq (N+1)^{-m}\,e^{-N\,D_{\mathrm{KL}}(\hat{p}_N\|\nu_0)},
+\]
+giving $\liminf \frac{1}{N}\ln\Pr(L_N \in G) \geq
+-D_{\mathrm{KL}}(\hat{p}^*\|\nu_0)$.  Taking the supremum over
+$\hat{p}^* \in G$: $\geq -\inf_G D_{\mathrm{KL}}$.
+
+\emph{Step 5 (General case).}
+For continuous $\CS$, the proof extends by:
+\begin{itemize}
+  \item Approximating $\CS$ by finite partitions $\CS = \bigcup A_j$.
+  \item Applying the finite-alphabet result to each partition.
+  \item Taking the projective limit as partitions refine.
+\end{itemize}
+The rate function $I(\mu) = D_{\mathrm{KL}}(\mu\|\nu_0)$ is the
+projective limit of the finite-dimensional rate functions.
+\end{proof}
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:15.9}: No-Go Theorem}
+\label{app:pf-nogo}
+% ============================================================
+
+\begin{proof}[Extended proof]
+\emph{Step 1.}  If $\CC(\sigma) = c_0$ for all $\sigma$, then
+$\CC_{\mathrm{local}}(\sigma) = c_0$ is constant.  The matter action:
+\[
+  \mathcal{A}_{\mathrm{matter}} = \int c_0\,\sqrt{|g|}\,d^n\sigma
+  = c_0\,\mathrm{Vol}(\CM_{\mathrm{eff}}).
+\]
+Its variation:
+\[
+  \frac{\delta\mathcal{A}_{\mathrm{matter}}}{\delta g^{\mu\nu}}
+  = -\frac{c_0}{2}\,g_{\mu\nu}\,\sqrt{|g|},
+\]
+so $T_{\mu\nu}^{(\mathrm{em})} = c_0\,g_{\mu\nu}$ (a pure cosmological
+constant).
+
+\emph{Step 2.}  The probability measure $\mu_\CC \propto e^{-\beta c_0}$
+is the uniform measure on $\CS_{\mathrm{eff}}$, independent of $\sigma$.
+The Fisher metric of the uniform distribution is degenerate (the
+uniform distribution has no parameters to vary), which contradicts
+the non-degeneracy requirement SA.2$'$(a).
+
+To resolve this, note that for constant $\CC$, the Fisher metric
+$g_{ij} = \beta^2(\langle\CC_i\CC_j\rangle - \langle\CC_i\rangle
+\langle\CC_j\rangle) = 0$ (since $\CC_i = \partial_i c_0 = 0$).
+The metric degenerates, and no non-trivial geometry emerges.
+
+\emph{Step 3.}  The only non-degenerate solution to
+$G_{\mu\nu} + \Lambda g_{\mu\nu} = 0$ on a compact manifold is a
+constant-curvature space: $R_{\mu\nu} = \frac{2\Lambda}{n-2}g_{\mu\nu}$
+(for $n > 2$).  This is de Sitter ($\Lambda > 0$), anti-de Sitter
+($\Lambda < 0$), or flat ($\Lambda = 0$).
+
+\emph{Step 4.}  Non-trivial gravity requires
+$T_{\mu\nu} \neq c\,g_{\mu\nu}$, which requires $\CC$ to have spatial
+variation: $\partial_i\CC \neq 0$ at some points.  More precisely,
+$\nabla_\mu\nabla_\nu\CC \not\equiv 0$ is needed for the curvature
+to couple to the constraint structure beyond a cosmological constant.
+\end{proof}
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:15.10}: Uniqueness via Lovelock}
+\label{app:pf-uniqueness}
+% ============================================================
+
+\begin{proof}[Extended proof]
+\emph{Step 1 (Lovelock's theorem, statement).}
+In $n$ dimensions, the most general symmetric, divergence-free tensor
+$E^{\mu\nu}$ that depends on $g_{\mu\nu}$ and its first two derivatives
+is a linear combination of the Euler--Lovelock tensors:
+\[
+  E^{\mu\nu} = \sum_{p=0}^{\lfloor n/2 \rfloor}
+  \alpha_p\,G^{\mu\nu}_{(p)},
+\]
+where $G^{\mu\nu}_{(0)} = g^{\mu\nu}$ (cosmological),
+$G^{\mu\nu}_{(1)} = G^{\mu\nu}$ (Einstein), and $G^{\mu\nu}_{(p)}$
+for $p \geq 2$ are higher Lovelock tensors involving products of
+$p$ Riemann tensors.
+
+\emph{Step 2 (Restriction to $n = 4$).}
+For $n = 4$: $\lfloor 4/2 \rfloor = 2$, and $G^{\mu\nu}_{(2)}$ is the
+Gauss--Bonnet tensor, which is identically zero in 4D (it is a
+topological invariant).  Hence:
+\[
+  E^{\mu\nu} = \alpha_0\,g^{\mu\nu} + \alpha_1\,G^{\mu\nu}.
+\]
+Setting $\alpha_0 = -\Lambda/(8\pi G)$ and $\alpha_1 = 1/(16\pi G)$,
+the field equations become $G^{\mu\nu} + \Lambda g^{\mu\nu} = 8\pi G
+T^{\mu\nu}$.
+
+\emph{Step 3 (Newtonian limit).}
+In the weak-field, slow-motion limit $g_{\mu\nu} = \eta_{\mu\nu}
++ h_{\mu\nu}$ with $|h| \ll 1$:
+\[
+  G_{00} \approx \nabla^2 h_{00}/2 = \nabla^2\Phi/c^2,
+\]
+where $\Phi$ is the Newtonian potential.  Matching
+$G_{00} = 8\pi G T_{00} = 8\pi G\rho c^2$ gives
+$\nabla^2\Phi = 4\pi G\rho$, the Poisson equation.  This fixes $G$ to be
+Newton's gravitational constant.
+
+\emph{Step 4 (Uniqueness conclusion).}
+Under the three conditions of the theorem, the action is uniquely
+$\int(R - 2\Lambda)\sqrt{|g|}\,d^4x / (16\pi G)$ plus
+$\mathcal{A}_{\mathrm{matter}}$.
+\end{proof}
+
+% ============================================================
+\section{Proof of Theorem~\ref{thm:15.11}: Scaling Law}
+\label{app:pf-scaling}
+% ============================================================
+
+\begin{proof}[Extended proof]
+\emph{Step 1 (Fisher metric of exponential family).}
+For $p(\sigma|\theta) = \exp(\theta^i T_i - \psi(\theta))$:
+$g_{ij} = \partial_i\partial_j\psi = \mathrm{Cov}(T_i, T_j)$.
+
+When $T_i = \partial_i\CC$ and $\theta^i = -\beta\delta^i_j$:
+$g_{ij} = \beta^2\,\mathrm{Cov}(\CC_i, \CC_j)$ where
+$\CC_i = \partial_i\CC$.
+
+\emph{Step 2 (Curvature bound).}
+The Christoffel symbols are $\Gamma^k_{ij} = \frac{1}{2}g^{kl}\psi_{ijl}$.
+Each component of $R^k{}_{lij}$ contains products of two Christoffel
+symbols (quadratic in $\psi_{ijk}$) or one derivative of a Christoffel
+symbol (involving $\psi_{ijkl}$).
+
+For the Ricci tensor $R_{ij} = R^k{}_{ikj}$, the dominant terms at
+large $\beta$ scale as $\beta^2\|\nabla^2\CC\|^2$ (from the quadratic
+Christoffel products, since $\psi_{ijk} \sim \beta^2\langle\CC_i\CC_j
+\CC_k\rangle_c$ and $g^{-1} \sim \beta^{-2}$).
+
+The scalar curvature $R = g^{ij}R_{ij}$ involves $n^2$ terms, each
+bounded by $\|g^{-1}\|^2\,\beta^2\,\|\nabla^2\CC\|^2$, giving:
+\[
+  |R| \leq n(n-1)\,\beta^2\,\|\nabla^2\CC\|_{\mathrm{op}}^2\,
+  \|g^{-1}\|_{\mathrm{op}}^2.
+\]
+
+\emph{Step 3 (High-$\beta$ scaling).}
+In the $\beta \gg 1$ regime, the measure concentrates near $\sigma^*$
+where $\nabla\CC = 0$.  The Fisher metric at generic points (away from
+$\sigma^*$) is dominated by:
+$g_{ij} \approx \beta^2\,(\partial_i\CC)(\partial_j\CC)$ (the mean
+term dominates over the fluctuation term).
+
+The scalar curvature of this rank-one metric is:
+$R \sim \beta^2|\nabla\CC|^2/\mathrm{Var}(\CC)$ by dimensional
+analysis and direct computation of the Gauss curvature of the
+one-dimensional submanifold spanned by $\nabla\CC$.
+
+\emph{Step 4 (CRS discretisation).}
+With $N$ CRS nodes, $\ell_{\mathrm{CRS}} = \ell_0/N^{1/n}$.  The
+continuum curvature receives corrections of order $\ell_{\mathrm{CRS}}^2
+= \ell_0^2/N^{2/n}$, giving $R \sim \beta^2|\nabla\CC|^2/
+(\mathrm{Var}(\CC)\,N^{2/n})$.
+\end{proof}

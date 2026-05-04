@@ -18,6 +18,7 @@ class IsingConfiguration:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "spins": self.spins,
             "energy": self.energy,
@@ -35,6 +36,7 @@ class OptimizationHistory:
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
+
         return {
             "iterations": self.iterations,
             "configurations": [c.to_dict() for c in self.configurations[-100:]],  # Last 100
@@ -47,6 +49,7 @@ class OptimizationHistory:
 
 class IsingOptimizer:
     """
+
     Quantum-inspired optimizer using Ising model formulation.
     Uses simulated annealing to find minimum energy configuration.
     """
@@ -61,6 +64,7 @@ class IsingOptimizer:
 
     def _init_couplings(self) -> list[list[float]]:
         """Initialize random coupling matrix."""
+
         couplings = []
         for i in range(self.num_parameters):
             row = []
@@ -75,9 +79,11 @@ class IsingOptimizer:
 
     def compute_energy(self, config: IsingConfiguration) -> float:
         """
+
         Compute Hamiltonian energy for a configuration.
         E = -Σ(i,j) J_ij * s_i * s_j - Σ_i h_i * s_i
         """
+
         energy = 0.0
 
         # Interaction term
@@ -100,8 +106,10 @@ class IsingOptimizer:
         steps_per_temp: int = 100,
     ) -> IsingConfiguration:
         """
+
         Perform simulated annealing to find minimum energy configuration.
         """
+
         # Initialize random configuration
         current_config = IsingConfiguration(
             spins=[random.choice([-1, 1]) for _ in range(self.num_parameters)]
@@ -161,9 +169,11 @@ class IsingOptimizer:
 
     def spins_to_kernel_config(self, spins: list[int]) -> dict[str, int]:
         """
+
         Convert Ising spins to kernel configuration parameters.
         Maps binary decisions to discrete parameter values.
         """
+
         # Map spins to parameter ranges
         # Spin +1 -> high value, Spin -1 -> low value
 
@@ -185,9 +195,11 @@ class IsingOptimizer:
 
     def optimize_kernel_config(self) -> tuple[dict[str, int], float]:
         """
+
         Run quantum-inspired optimization to find best kernel configuration.
         Returns (config_dict, energy).
         """
+
         best_config = self.simulated_annealing()
         kernel_config = self.spins_to_kernel_config(best_config.spins)
 
@@ -195,6 +207,7 @@ class IsingOptimizer:
 
     def save_history(self, output_path: str = "quantum_search/history.json") -> Path:
         """Save optimization history to disk."""
+
         history_path = Path(output_path)
         history_path.parent.mkdir(parents=True, exist_ok=True)
 

@@ -16,14 +16,13 @@ def serialize_mesh_fields(mesh: Any, fields: dict[str, Any]) -> bytes:
     Returns:
         Serialized bytes payload
     """
+
     try:
         import numpy as np
 
         # Convert numpy arrays to lists for JSON serialization
         mesh_data = mesh.tolist() if hasattr(mesh, "tolist") else mesh
-        fields_data = {
-            k: v.tolist() if isinstance(v, np.ndarray) else v for k, v in fields.items()
-        }
+        fields_data = {k: v.tolist() if isinstance(v, np.ndarray) else v for k, v in fields.items()}
     except ImportError:
         mesh_data = mesh
         fields_data = fields
@@ -39,6 +38,7 @@ async def send_ws_payload(ws_url: str, payload: bytes) -> None:
         ws_url: WebSocket URL
         payload: Bytes payload to send
     """
+
     try:
         import websockets
 
@@ -61,6 +61,7 @@ class ARAdapter:
 
     def __init__(self, ws_url: str) -> None:
         """Initialize AR adapter."""
+
         self.ws_url = ws_url
         self._connected = False
 
@@ -71,6 +72,7 @@ class ARAdapter:
             mesh: Mesh data to stream
             fields: Field data to stream
         """
+
         payload = serialize_mesh_fields(mesh, fields)
         await send_ws_payload(self.ws_url, payload)
 
@@ -80,6 +82,7 @@ class ARAdapter:
         Returns:
             True if connection successful
         """
+
         try:
             import websockets
 
@@ -97,4 +100,5 @@ class ARAdapter:
         Returns:
             Connection status
         """
+
         return self._connected

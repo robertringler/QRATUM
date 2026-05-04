@@ -28,6 +28,7 @@ class TestDistributedSimulation:
 
     def test_init_cluster_jax(self):
         """Test JAX cluster initialization."""
+
         try:
             ctx = init_cluster(backend="jax", mesh_shape=(1, 1), seed=12345)
             assert ctx.backend == "jax"
@@ -39,6 +40,7 @@ class TestDistributedSimulation:
 
     def test_init_cluster_torch(self):
         """Test PyTorch cluster initialization."""
+
         try:
             ctx = init_cluster(backend="torch", mesh_shape=(1, 1), seed=12345)
             assert ctx.backend == "torch"
@@ -50,6 +52,7 @@ class TestDistributedSimulation:
 
     def test_shard_state(self):
         """Test state sharding."""
+
         ctx = init_cluster(backend="jax", mesh_shape=(1, 1), seed=42)
         state = initialize_zero_state(num_qubits=4)
 
@@ -59,6 +62,7 @@ class TestDistributedSimulation:
 
     def test_determinism(self):
         """Test deterministic execution with same seed."""
+
         seed = 42
         num_qubits = 3
 
@@ -75,6 +79,7 @@ class TestDistributedSimulation:
 
     def test_checkpoint_save_load(self, tmp_path):
         """Test checkpoint save and restore."""
+
         ctx = init_cluster(backend="jax", mesh_shape=(1, 1), seed=42)
         state = initialize_zero_state(num_qubits=4)
         sharded = shard_state(ctx, state)
@@ -89,6 +94,7 @@ class TestDistributedSimulation:
 
     def test_profile(self):
         """Test profiling functionality."""
+
         ctx = init_cluster(backend="jax", mesh_shape=(1, 1), seed=42)
         prof = profile(ctx)
 
@@ -103,6 +109,7 @@ class TestMultiQubitSimulator:
 
     def test_initialization(self):
         """Test simulator initialization."""
+
         sim = MultiQubitSimulator(num_qubits=2, seed=123)
         sim.initialize_state()
 
@@ -113,6 +120,7 @@ class TestMultiQubitSimulator:
 
     def test_single_qubit_gates(self):
         """Test single-qubit gate application."""
+
         sim = MultiQubitSimulator(num_qubits=2, seed=123)
         sim.initialize_state()
 
@@ -128,6 +136,7 @@ class TestMultiQubitSimulator:
 
     def test_bell_pair(self):
         """Test Bell pair creation."""
+
         sim = MultiQubitSimulator(num_qubits=2, seed=123)
         sim.initialize_state()
         sim.create_bell_pair((0, 1))
@@ -140,6 +149,7 @@ class TestMultiQubitSimulator:
 
     def test_ghz_state(self):
         """Test GHZ state creation."""
+
         num_qubits = 3
         sim = MultiQubitSimulator(num_qubits=num_qubits, seed=123)
         sim.initialize_state()
@@ -153,6 +163,7 @@ class TestMultiQubitSimulator:
 
     def test_entanglement_entropy(self):
         """Test entanglement entropy calculation."""
+
         sim = MultiQubitSimulator(num_qubits=2, seed=123)
         sim.initialize_state()
 
@@ -167,6 +178,7 @@ class TestMultiQubitSimulator:
 
     def test_w_state(self):
         """Test W state creation."""
+
         sim = MultiQubitSimulator(num_qubits=3, seed=123)
         sim.initialize_state()
         sim.create_w_state()
@@ -182,6 +194,7 @@ class TestMultiQubitSimulator:
 
     def test_noise_application(self):
         """Test noise channel application."""
+
         sim = MultiQubitSimulator(num_qubits=2, seed=123)
         sim.initialize_state()
         sim.create_bell_pair((0, 1))
@@ -200,6 +213,7 @@ class TestMultiQubitSimulator:
 
     def test_tomography(self):
         """Test quantum state tomography."""
+
         sim = MultiQubitSimulator(num_qubits=2, seed=123)
         sim.initialize_state()
         sim.create_bell_pair((0, 1))
@@ -215,6 +229,7 @@ class TestMultiQubitSimulator:
 
     def test_deterministic_execution(self):
         """Test deterministic execution with fixed seed."""
+
         seed = 42
 
         # Run 1
@@ -239,6 +254,7 @@ class TestScalability:
     @pytest.mark.parametrize("num_qubits", [2, 4, 6, 8])
     def test_ghz_scaling(self, num_qubits):
         """Test GHZ state creation scales correctly."""
+
         sim = MultiQubitSimulator(num_qubits=num_qubits, seed=123)
         sim.initialize_state()
         sim.create_ghz_state()
@@ -254,6 +270,7 @@ class TestScalability:
     @pytest.mark.parametrize("num_qubits", [2, 4, 6])
     def test_entropy_scaling(self, num_qubits):
         """Test entanglement entropy scales correctly."""
+
         sim = MultiQubitSimulator(num_qubits=num_qubits, seed=123)
         sim.initialize_state()
         sim.create_ghz_state()

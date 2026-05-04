@@ -30,6 +30,7 @@ def generate_yaml_benchmark_spec(output_dir: Path) -> Path:
     Returns:
         Path to generated file
     """
+
     output_path = output_dir / "appendix_a_benchmark_specs.md"
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -110,6 +111,7 @@ def generate_cuda_pseudocode(output_dir: Path) -> Path:
     Returns:
         Path to generated file
     """
+
     output_path = output_dir / "appendix_b_cuda_pseudocode.md"
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -224,6 +226,7 @@ def generate_statistical_derivations(output_dir: Path) -> Path:
     Returns:
         Path to generated file
     """
+
     output_path = output_dir / "appendix_c_statistical_methods.md"
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -235,11 +238,15 @@ def generate_statistical_derivations(output_dir: Path) -> Path:
         f.write("1. Original sample: $X = \\{x_1, x_2, ..., x_n\\}$\n")
         f.write("2. Generate $B$ bootstrap samples by sampling with replacement\n")
         f.write("3. Compute statistic $\\hat{\\theta}^*_b$ for each bootstrap sample\n")
-        f.write("4. Confidence interval: $(\\hat{\\theta}_{\\alpha/2}, \\hat{\\theta}_{1-\\alpha/2})$\n\n")
+        f.write(
+            "4. Confidence interval: $(\\hat{\\theta}_{\\alpha/2}, \\hat{\\theta}_{1-\\alpha/2})$\n\n"
+        )
 
         f.write("### Implementation\n\n")
         f.write("```python\n")
-        f.write("def bootstrap_ci(data: np.ndarray, num_samples: int = 1000, alpha: float = 0.05):\n")
+        f.write(
+            "def bootstrap_ci(data: np.ndarray, num_samples: int = 1000, alpha: float = 0.05):\n"
+        )
         f.write('    """Compute bootstrap confidence interval."""\n')
         f.write("    bootstrap_means = []\n")
         f.write("    \n")
@@ -257,7 +264,9 @@ def generate_statistical_derivations(output_dir: Path) -> Path:
 
         f.write("## Modified Z-Score for Outlier Detection\n\n")
         f.write("### Method\n\n")
-        f.write("Modified Z-score uses median absolute deviation (MAD) for robust outlier detection:\n\n")
+        f.write(
+            "Modified Z-score uses median absolute deviation (MAD) for robust outlier detection:\n\n"
+        )
         f.write("$$M_i = \\frac{0.6745(x_i - \\tilde{x})}{MAD}$$\n\n")
         f.write("where:\n")
         f.write("- $\\tilde{x}$ is the median\n")
@@ -302,6 +311,7 @@ def generate_reproducibility_proof(output_dir: Path) -> Path:
     Returns:
         Path to generated file
     """
+
     output_path = output_dir / "appendix_d_reproducibility_proof.md"
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -369,6 +379,7 @@ def generate_reporting_examples(output_dir: Path) -> Path:
     Returns:
         Path to generated file
     """
+
     output_path = output_dir / "appendix_e_reporting_formats.md"
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -398,12 +409,12 @@ def generate_reporting_examples(output_dir: Path) -> Path:
         f.write('    "stress_error": 0.023,\n')
         f.write('    "energy_error": 1.2e-7,\n')
         f.write('    "coefficient_of_variation": 0.012\n')
-        f.write('  },\n')
+        f.write("  },\n")
         f.write('  "reproducibility": {\n')
         f.write('    "deterministic": true,\n')
         f.write('    "hash_match": "100%",\n')
         f.write('    "temporal_drift": "0.8μs"\n')
-        f.write('  }\n')
+        f.write("  }\n")
         f.write("}\n")
         f.write("```\n\n")
 
@@ -469,6 +480,7 @@ def generate_all_appendices(output_dir: Path) -> list[Path]:
     Returns:
         List of generated file paths
     """
+
     output_dir.mkdir(parents=True, exist_ok=True)
 
     appendices = [

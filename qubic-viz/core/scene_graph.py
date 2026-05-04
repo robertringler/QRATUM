@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 
@@ -28,30 +28,37 @@ class Transform:
         Returns:
             4x4 transformation matrix
         """
+
         # Create translation matrix
         T = np.eye(4)
         T[:3, 3] = self.position
 
         # Create rotation matrices (ZYX order)
         rx, ry, rz = self.rotation
-        Rx = np.array([
-            [1, 0, 0, 0],
-            [0, np.cos(rx), -np.sin(rx), 0],
-            [0, np.sin(rx), np.cos(rx), 0],
-            [0, 0, 0, 1],
-        ])
-        Ry = np.array([
-            [np.cos(ry), 0, np.sin(ry), 0],
-            [0, 1, 0, 0],
-            [-np.sin(ry), 0, np.cos(ry), 0],
-            [0, 0, 0, 1],
-        ])
-        Rz = np.array([
-            [np.cos(rz), -np.sin(rz), 0, 0],
-            [np.sin(rz), np.cos(rz), 0, 0],
-            [0, 0, 1, 0],
-            [0, 0, 0, 1],
-        ])
+        Rx = np.array(
+            [
+                [1, 0, 0, 0],
+                [0, np.cos(rx), -np.sin(rx), 0],
+                [0, np.sin(rx), np.cos(rx), 0],
+                [0, 0, 0, 1],
+            ]
+        )
+        Ry = np.array(
+            [
+                [np.cos(ry), 0, np.sin(ry), 0],
+                [0, 1, 0, 0],
+                [-np.sin(ry), 0, np.cos(ry), 0],
+                [0, 0, 0, 1],
+            ]
+        )
+        Rz = np.array(
+            [
+                [np.cos(rz), -np.sin(rz), 0, 0],
+                [np.sin(rz), np.cos(rz), 0, 0],
+                [0, 0, 1, 0],
+                [0, 0, 0, 1],
+            ]
+        )
         R = Rz @ Ry @ Rx
 
         # Create scale matrix
@@ -73,16 +80,17 @@ class SceneNode:
     def __init__(
         self,
         name: str,
-        transform: Optional[Transform] = None,
-        parent: Optional[SceneNode] = None,
+        transform: Transform | None = None,
+        parent: SceneNode | None = None,
     ) -> None:
         """Initialize scene node."""
+
         self.name = name
         self.transform = transform or Transform()
         self.parent = parent
         self.children: list[SceneNode] = []
-        self.mesh: Optional[Any] = None
-        self.material: Optional[Any] = None
+        self.mesh: Any | None = None
+        self.material: Any | None = None
         self.visible: bool = True
 
         if parent is not None:
@@ -94,6 +102,7 @@ class SceneNode:
         Args:
             child: Child node to add
         """
+
         if child not in self.children:
             self.children.append(child)
             child.parent = self
@@ -104,6 +113,7 @@ class SceneNode:
         Args:
             child: Child node to remove
         """
+
         if child in self.children:
             self.children.remove(child)
             child.parent = None
@@ -114,6 +124,7 @@ class SceneNode:
         Returns:
             4x4 world transformation matrix
         """
+
         local_matrix = self.transform.to_matrix()
         if self.parent is None:
             return local_matrix
@@ -125,11 +136,12 @@ class SceneNode:
         Args:
             callback: Function to call for each node
         """
+
         callback(self)
         for child in self.children:
             child.traverse(callback)
 
-    def find(self, name: str) -> Optional[SceneNode]:
+    def find(self, name: str) -> SceneNode | None:
         """Find node by name.
 
         Args:
@@ -138,6 +150,7 @@ class SceneNode:
         Returns:
             Found node or None
         """
+
         if self.name == name:
             return self
         for child in self.children:
@@ -155,10 +168,11 @@ class SceneGraph:
 
     def __init__(self) -> None:
         """Initialize scene graph."""
+
         self.root = SceneNode("root")
 
     def add_node(
-        self, name: str, parent: Optional[SceneNode] = None, transform: Optional[Transform] = None
+        self, name: str, parent: SceneNode | None = None, transform: Transform | None = None
     ) -> SceneNode:
         """Add a new node to the scene.
 
@@ -170,11 +184,12 @@ class SceneGraph:
         Returns:
             Created scene node
         """
+
         if parent is None:
             parent = self.root
         return SceneNode(name, transform, parent)
 
-    def find_node(self, name: str) -> Optional[SceneNode]:
+    def find_node(self, name: str) -> SceneNode | None:
         """Find node by name.
 
         Args:
@@ -183,6 +198,7 @@ class SceneGraph:
         Returns:
             Found node or None
         """
+
         return self.root.find(name)
 
     def traverse(self, callback: callable) -> None:
@@ -191,6 +207,7 @@ class SceneGraph:
         Args:
             callback: Function to call for each node
         """
+
         self.root.traverse(callback)
 
     def get_visible_nodes(self) -> list[SceneNode]:
@@ -199,6 +216,7 @@ class SceneGraph:
         Returns:
             List of visible nodes
         """
+
         visible = []
 
         def collect_visible(node: SceneNode) -> None:

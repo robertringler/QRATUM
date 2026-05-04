@@ -28,6 +28,7 @@ class SimulationAdapter(ABC):
         Raises:
             ValueError: If data cannot be loaded or converted
         """
+
         pass
 
     @abstractmethod
@@ -40,4 +41,5 @@ class SimulationAdapter(ABC):
         Returns:
             True if source is valid, False otherwise
         """
+
         pass

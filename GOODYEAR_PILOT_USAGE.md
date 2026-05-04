@@ -1,8 +1,18 @@
-# Goodyear Quantum Tire Pilot - Usage Guide
+# ⚠️ OUTDATED DOCUMENT - HISTORICAL REFERENCE ONLY
+
+> **CRITICAL NOTICE**: This document describes a fictional demonstration with false claims.
+> - **NOT affiliated with Goodyear** - This is a proof-of-concept demo only
+> - **NO quantum computing** - Uses classical simulation despite claims
+> - **NO "quantum-enhanced optimization"** - Actually uses classical random search
+> See [QUANTUM_CAPABILITY_AUDIT.md](QUANTUM_CAPABILITY_AUDIT.md) and [README.md](README.md) for accurate information.
+
+---
+
+# Tire Simulation Demo - Usage Guide (FICTIONAL)
 
 ## Overview
 
-The Goodyear Quantum Tire Pilot is a comprehensive tire simulation platform that integrates QuASIM's quantum-enhanced optimization with Goodyear's extensive materials database (1,000+ pre-characterized tire compounds) to generate large-scale tire simulation scenarios for R&D, product development, and strategic decision-making.
+**DISCLAIMER**: This describes a fictional tire simulation demonstration. There is no partnership with Goodyear, no quantum computing is implemented, and the "quantum-enhanced optimization" is actually classical random search. This document is preserved for historical reference only.
 
 ## Quick Start
 

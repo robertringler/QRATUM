@@ -45,6 +45,7 @@ class QCMGParameters:
 
     def __post_init__(self):
         """Validate parameters after initialization."""
+
         if self.grid_size <= 0:
             raise ValueError("grid_size must be positive")
         if self.dt <= 0:
@@ -81,6 +82,7 @@ class FieldState:
         Returns:
             True if state is valid, False otherwise
         """
+
         # Check for NaN or Inf
         if not np.all(np.isfinite(self.phi_m)) or not np.all(np.isfinite(self.phi_i)):
             return False
@@ -110,6 +112,7 @@ class QuantacosmomorphysigeneticField:
         Args:
             params: Configuration parameters for the simulation
         """
+
         self.params = params
 
         # Set random seed if provided
@@ -136,6 +139,7 @@ class QuantacosmomorphysigeneticField:
                 - "soliton": Soliton-like localized state
                 - "random": Random field configuration
         """
+
         x = np.linspace(0, 2 * np.pi, self.params.grid_size, endpoint=False)
 
         if mode == "gaussian":
@@ -172,6 +176,7 @@ class QuantacosmomorphysigeneticField:
 
     def _normalize_fields(self):
         """Normalize the field amplitudes to prevent runaway growth."""
+
         norm_m = np.sqrt(np.sum(np.abs(self.phi_m) ** 2) * self.dx)
         norm_i = np.sqrt(np.sum(np.abs(self.phi_i) ** 2) * self.dx)
 
@@ -189,6 +194,7 @@ class QuantacosmomorphysigeneticField:
         Returns:
             Gradient of the field
         """
+
         # Central difference with periodic boundaries
         grad = np.zeros_like(field)
         grad[1:-1] = (field[2:] - field[:-2]) / (2 * self.dx)
@@ -205,6 +211,7 @@ class QuantacosmomorphysigeneticField:
         Returns:
             Laplacian of the field
         """
+
         lapl = np.zeros_like(field)
         lapl[1:-1] = (field[2:] - 2 * field[1:-1] + field[:-2]) / (self.dx**2)
         lapl[0] = (field[1] - 2 * field[0] + field[-1]) / (self.dx**2)
@@ -227,6 +234,7 @@ class QuantacosmomorphysigeneticField:
         Returns:
             Time derivatives (dphi_m_dt, dphi_i_dt)
         """
+
         # Compute Laplacians (kinetic energy terms)
         lapl_m = self._compute_laplacian(phi_m)
         lapl_i = self._compute_laplacian(phi_i)
@@ -248,6 +256,7 @@ class QuantacosmomorphysigeneticField:
         Returns:
             Updated (phi_m, phi_i) after one time step
         """
+
         dt = self.params.dt
 
         # RK4 stage 1
@@ -281,6 +290,7 @@ class QuantacosmomorphysigeneticField:
         Returns:
             Coherence value in [0, 1]
         """
+
         inner_product = np.sum(np.conj(self.phi_m) * self.phi_i) * self.dx
         coherence = np.abs(inner_product)
 
@@ -295,6 +305,7 @@ class QuantacosmomorphysigeneticField:
         Returns:
             Entropy value (non-negative)
         """
+
         # Compute probability distribution from field amplitudes
         probs_m = np.abs(self.phi_m) ** 2
         probs_i = np.abs(self.phi_i) ** 2
@@ -318,6 +329,7 @@ class QuantacosmomorphysigeneticField:
         Returns:
             Total energy
         """
+
         # Kinetic energy from gradients
         grad_m = self._compute_gradient(self.phi_m)
         grad_i = self._compute_gradient(self.phi_i)
@@ -341,6 +353,7 @@ class QuantacosmomorphysigeneticField:
         Returns:
             Complete field state
         """
+
         coherence = self._compute_coherence()
         entropy = self._compute_entropy()
         energy = self._compute_energy()
@@ -368,6 +381,7 @@ class QuantacosmomorphysigeneticField:
         Raises:
             RuntimeError: If state becomes invalid during evolution
         """
+
         for _ in range(steps):
             # Perform RK4 step
             self.phi_m, self.phi_i = self._rk4_step()
@@ -402,6 +416,7 @@ class QuantacosmomorphysigeneticField:
         Returns:
             Dictionary containing state and parameters
         """
+
         current_state = self.history[-1] if self.history else self._compute_state()
 
         export_data = {
@@ -444,6 +459,7 @@ class QuantacosmomorphysigeneticField:
             filename: Output file path
             include_history: Whether to include full evolution history
         """
+
         data = self.export_state(include_history=include_history)
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)

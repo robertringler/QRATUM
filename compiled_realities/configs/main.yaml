@@ -1,0 +1,33 @@
+# Main configuration for compiled realities simulation
+experiment_name: "compiled_realities_main"
+random_seed_base: 42
+n_seeds_per_config: 5
+n_samples_s_lab: 100
+
+# Model grids to run
+model_grids:
+  - type: cptp
+    config_file: configs/grid_cptp.yaml
+  - type: lattice
+    config_file: configs/grid_lattice.yaml
+
+# Output settings
+output_dir: "runs"
+save_artifacts: true
+generate_plots: true
+
+# Validity thresholds for chi reporting
+validity_thresholds:
+  dispersion_deviation_max: 0.10
+  attenuation_margin_min: 1.5
+  reconstruction_error_max: 0.10
+
+# Statistical thresholds
+statistical_thresholds:
+  s_lab_significance_sigma: 5.0
+  
+# Audit settings
+audit:
+  enable_causality_checks: true
+  hash_algorithm: "sha256"
+  quarantine_conditioning: true

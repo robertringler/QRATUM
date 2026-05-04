@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 
@@ -27,11 +26,13 @@ class TireMesh:
     @property
     def num_vertices(self) -> int:
         """Get number of vertices."""
+
         return len(self.vertices)
 
     @property
     def num_faces(self) -> int:
         """Get number of faces."""
+
         return len(self.faces)
 
     def compute_face_normals(self) -> np.ndarray:
@@ -40,6 +41,7 @@ class TireMesh:
         Returns:
             Face normals as (M, 3) array
         """
+
         v0 = self.vertices[self.faces[:, 0]]
         v1 = self.vertices[self.faces[:, 1]]
         v2 = self.vertices[self.faces[:, 2]]
@@ -55,6 +57,7 @@ class TireMesh:
 
     def recalculate_normals(self) -> None:
         """Recalculate vertex normals from face normals."""
+
         # Initialize normals to zero
         vertex_normals = np.zeros_like(self.vertices)
 
@@ -77,6 +80,7 @@ class TireMeshGenerator:
 
     def __init__(self, resolution: int = 32) -> None:
         """Initialize mesh generator."""
+
         self.resolution = resolution
 
     def generate_tire_mesh(self, tire_geometry: Any) -> TireMesh:
@@ -88,6 +92,7 @@ class TireMeshGenerator:
         Returns:
             Generated tire mesh
         """
+
         # Extract geometry parameters
         outer_diameter = getattr(tire_geometry, "outer_diameter_mm", 700.0) / 1000.0  # Convert to m
         width = getattr(tire_geometry, "width_mm", 225.0) / 1000.0
@@ -99,9 +104,7 @@ class TireMeshGenerator:
 
         return self._generate_torus(major_radius, minor_radius, width)
 
-    def _generate_torus(
-        self, major_radius: float, minor_radius: float, width: float
-    ) -> TireMesh:
+    def _generate_torus(self, major_radius: float, minor_radius: float, width: float) -> TireMesh:
         """Generate torus mesh for tire.
 
         Args:
@@ -112,6 +115,7 @@ class TireMeshGenerator:
         Returns:
             Generated mesh
         """
+
         # Resolution parameters
         u_segments = self.resolution * 2  # Around major circumference
         v_segments = self.resolution  # Around minor circumference
@@ -152,10 +156,12 @@ class TireMeshGenerator:
         faces = np.array(faces)
 
         # Generate UVs
-        uvs = np.column_stack([
-            u_flat / (2 * np.pi),
-            v_flat / (2 * np.pi),
-        ])
+        uvs = np.column_stack(
+            [
+                u_flat / (2 * np.pi),
+                v_flat / (2 * np.pi),
+            ]
+        )
 
         # Create mesh
         mesh = TireMesh(
@@ -170,7 +176,7 @@ class TireMeshGenerator:
 
         return mesh
 
-    def add_tread_detail(self, mesh: TireMesh, tread_design: Optional[Any] = None) -> TireMesh:
+    def add_tread_detail(self, mesh: TireMesh, tread_design: Any | None = None) -> TireMesh:
         """Add tread pattern detail to tire mesh.
 
         Args:
@@ -180,6 +186,7 @@ class TireMeshGenerator:
         Returns:
             Mesh with tread detail
         """
+
         # For now, return mesh unchanged
         # TODO: Implement tread pattern displacement
         return mesh

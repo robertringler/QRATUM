@@ -23,6 +23,7 @@ class DeviceLimits:
 
 class PolicyEngine:
     """
+
     Hardware policy enforcement engine.
 
     Validates hardware operations against defined policies and constraints.
@@ -33,10 +34,12 @@ class PolicyEngine:
 
     def set_device_limits(self, device_id: str, limits: DeviceLimits) -> None:
         """Set operational limits for a device."""
+
         self.device_limits[device_id] = limits
 
     def get_device_limits(self, device_id: str) -> DeviceLimits:
         """Get operational limits for a device."""
+
         # Return default limits if not configured
         if device_id not in self.device_limits:
             return DeviceLimits(device_id=device_id)
@@ -50,6 +53,7 @@ class PolicyEngine:
         enable_actuation: bool = True,
     ) -> None:
         """
+
         Validate a hardware operation against policy.
 
         Args:
@@ -61,6 +65,7 @@ class PolicyEngine:
         Raises:
             PolicyViolation: If operation violates policy constraints
         """
+
         limits = self.get_device_limits(device_id)
 
         # Validate power limit

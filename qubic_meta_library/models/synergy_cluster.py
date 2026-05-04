@@ -7,6 +7,7 @@ from typing import Any
 @dataclass
 class SynergyCluster:
     """
+
     Represents a synergy cluster connecting multiple domains.
 
     Attributes:
@@ -32,6 +33,7 @@ class SynergyCluster:
 
     def __post_init__(self):
         """Validate synergy cluster attributes."""
+
         if not self.domains:
             raise ValueError("Synergy cluster must contain at least one domain")
         if self.execution_mode not in ["sequential", "parallel", "hybrid"]:
@@ -55,10 +57,12 @@ class SynergyCluster:
 
     def get_total_revenue_projection(self) -> float:
         """Calculate total revenue projection across all years."""
+
         return sum(self.revenue_projection.values())
 
     def to_dict(self) -> dict[str, Any]:
         """Convert synergy cluster to dictionary representation."""
+
         return {
             "id": self.id,
             "name": self.name,
@@ -74,6 +78,7 @@ class SynergyCluster:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "SynergyCluster":
         """Create SynergyCluster instance from dictionary."""
+
         return cls(
             id=data["id"],
             name=data["name"],

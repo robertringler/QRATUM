@@ -32,14 +32,14 @@ class MeshAdapter(SimulationAdapter):
         Raises:
             ValueError: If source format is invalid
         """
+
         if isinstance(source, (str, Path)):
             return self._load_from_file(Path(source))
         elif isinstance(source, dict):
             return self._load_from_dict(source)
         else:
             raise ValueError(
-                f"Unsupported source type: {type(source)}. "
-                "Expected file path or dictionary."
+                f"Unsupported source type: {type(source)}. Expected file path or dictionary."
             )
 
     def _load_from_file(self, path: Path) -> VisualizationData:
@@ -55,12 +55,13 @@ class MeshAdapter(SimulationAdapter):
             FileNotFoundError: If file doesn't exist
             ValueError: If file format is unsupported
         """
+
         if not path.exists():
             raise FileNotFoundError(f"File not found: {path}")
 
         # Placeholder for file format detection and parsing
-        raise NotImplementedError(
-            "File-based loading not yet implemented. Use dictionary input."
+        raise ValueError(
+            "GAP-STUB-027: file-based loading is not implemented; pass data as dict directly"
         )
 
     def _load_from_dict(self, data: dict[str, Any]) -> VisualizationData:
@@ -75,6 +76,7 @@ class MeshAdapter(SimulationAdapter):
         Raises:
             ValueError: If required keys are missing
         """
+
         if "vertices" not in data or "faces" not in data:
             raise ValueError("Data must contain 'vertices' and 'faces' keys")
 
@@ -119,6 +121,7 @@ class MeshAdapter(SimulationAdapter):
         Returns:
             True if source is valid
         """
+
         if isinstance(source, (str, Path)):
             path = Path(source)
             return path.exists()
@@ -141,6 +144,7 @@ class MeshAdapter(SimulationAdapter):
         Raises:
             ValueError: If mesh type is unknown
         """
+
         if mesh_type == "sphere":
             return self._create_sphere(resolution)
         elif mesh_type == "cube":
@@ -152,6 +156,7 @@ class MeshAdapter(SimulationAdapter):
 
     def _create_sphere(self, resolution: int = 20) -> VisualizationData:
         """Create UV sphere mesh."""
+
         phi = np.linspace(0, np.pi, resolution)
         theta = np.linspace(0, 2 * np.pi, resolution)
         phi, theta = np.meshgrid(phi, theta)
@@ -189,6 +194,7 @@ class MeshAdapter(SimulationAdapter):
 
     def _create_cube(self) -> VisualizationData:
         """Create cube mesh."""
+
         vertices = np.array(
             [
                 [-1, -1, -1],
@@ -223,6 +229,7 @@ class MeshAdapter(SimulationAdapter):
 
     def _create_cylinder(self, resolution: int = 20) -> VisualizationData:
         """Create cylinder mesh."""
+
         theta = np.linspace(0, 2 * np.pi, resolution)
         z = np.linspace(-1, 1, resolution)
         theta, z = np.meshgrid(theta, z)

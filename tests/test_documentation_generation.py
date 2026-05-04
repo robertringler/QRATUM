@@ -15,6 +15,7 @@ from pathlib import Path
 
 def test_documentation_generator_imports():
     """Test that documentation generator can be imported."""
+
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
@@ -39,6 +40,7 @@ def test_documentation_generator_imports():
 
 def test_appendix_generator_imports():
     """Test that appendix generator can be imported."""
+
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
@@ -46,8 +48,8 @@ def test_appendix_generator_imports():
     from generate_appendices import (
         generate_all_appendices,
         generate_cuda_pseudocode,
-        generate_reproducibility_proof,
         generate_reporting_examples,
+        generate_reproducibility_proof,
         generate_statistical_derivations,
         generate_yaml_benchmark_spec,
     )
@@ -62,6 +64,7 @@ def test_appendix_generator_imports():
 
 def test_module_info_dataclass():
     """Test ModuleInfo dataclass."""
+
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
@@ -69,9 +72,7 @@ def test_module_info_dataclass():
     from generate_documentation_package import ModuleInfo
 
     # Create a ModuleInfo instance
-    module = ModuleInfo(
-        path=Path("test.py"), name="test", lines_of_code=100, classes=["TestClass"]
-    )
+    module = ModuleInfo(path=Path("test.py"), name="test", lines_of_code=100, classes=["TestClass"])
 
     assert module.name == "test"
     assert module.lines_of_code == 100
@@ -80,6 +81,7 @@ def test_module_info_dataclass():
 
 def test_appendix_generation():
     """Test that appendices can be generated."""
+
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
@@ -104,6 +106,7 @@ def test_appendix_generation():
 
 def test_repository_parser():
     """Test repository parser."""
+
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))

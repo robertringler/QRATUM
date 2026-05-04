@@ -25,6 +25,7 @@ class MLExecutionResult:
 
     def is_successful(self) -> bool:
         """Check if execution completed successfully."""
+
         return self.status == "completed"
 
 
@@ -55,6 +56,7 @@ class QStackConnector:
             batch_size: Default batch size for training
             enable_distributed: Enable distributed training
         """
+
         self.device = device
         self.batch_size = batch_size
         self.enable_distributed = enable_distributed
@@ -69,6 +71,7 @@ class QStackConnector:
         Returns:
             True if prompt is compatible with QStack platform
         """
+
         return prompt.domain in self.SUPPORTED_DOMAINS or "QStack" in prompt.execution_layers
 
     def execute(
@@ -87,6 +90,7 @@ class QStackConnector:
         Returns:
             MLExecutionResult with execution status and outputs
         """
+
         if not self.can_execute(prompt):
             return MLExecutionResult(
                 prompt_id=prompt.id,
@@ -125,6 +129,7 @@ class QStackConnector:
         Returns:
             List of MLExecutionResults
         """
+
         results = []
         for prompt in prompts:
             if self.can_execute(prompt):
@@ -141,6 +146,7 @@ class QStackConnector:
 
     def _simulate_execution(self, prompt: Prompt) -> MLExecutionResult:
         """Simulate execution for testing purposes."""
+
         import random
 
         random.seed(prompt.id)
@@ -168,6 +174,7 @@ class QStackConnector:
 
     def get_execution_stats(self) -> dict[str, Any]:
         """Get execution statistics."""
+
         return {
             "total_executions": self._execution_count,
             "device": self.device,

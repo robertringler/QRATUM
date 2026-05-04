@@ -37,6 +37,7 @@ class SovereignClusterReplication:
 
     def reconcile(self, source: str) -> dict[str, int]:
         """Deterministically copies chain data from source to others."""
+
         if source not in self.nodes:
             raise KeyError("source node not registered")
         source_chain = self.nodes[source].export_chain()

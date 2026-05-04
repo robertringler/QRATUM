@@ -1,21 +1,22 @@
-# Goodyear Quantum Tire Pilot - Quick Start Guide
+# ⚠️ OUTDATED DOCUMENT - DO NOT USE
 
-## 🚀 Fast Start (30 Seconds)
+> **CRITICAL WARNING**: Everything in this document is misleading or false.
+> - **NO Goodyear partnership** - Fictional demo only
+> - **NO quantum computing** - Classical simulation only
+> - **NO "quantum-enhanced optimization"** - Actually classical random search
+> - **NO DO-178C compliance** - Aspirational only
+> 
+> **This document should NOT be used.** See [README.md](README.md) for accurate information.
 
-```bash
-# Clone the repository (if needed)
-git clone https://github.com/robertringler/Qubic.git
-cd Qubic
+---
 
-# Run the Goodyear Quantum Tire Pilot
-python3 run_goodyear_quantum_pilot.py
-```
+# Tire Simulation Demo - Quick Start (DEPRECATED - DO NOT USE)
 
-**That's it!** The script will:
-- ✅ Generate 10,000 tire simulation scenarios
-- ✅ Use 1,000+ Goodyear materials
-- ✅ Apply quantum-enhanced optimization
-- ✅ Complete in ~2-3 seconds
+## ⚠️ DISCLAIMER
+
+**This is a fictional demonstration with false claims throughout.**
+
+There is no "Goodyear Quantum Tire Pilot," no quantum computing is implemented, and all "quantum-enhanced" claims are false. This document is preserved only to show what NOT to claim without evidence.
 
 ## 📊 What You Get
 

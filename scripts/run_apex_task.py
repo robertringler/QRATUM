@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuNimbus APEX Mode - IP Mining and Supercomputer Synthesis
 
 This script implements the APEX (pinnacle synthesis) mode for the QuNimbus
@@ -36,6 +37,7 @@ class ApexMode:
 
     def execute(self, task_file: Path, enhance: bool = False) -> Dict[str, Any]:
         """Execute APEX mode task."""
+
         print(f"\n{'=' * 80}")
         print("**APEX MODE ACTIVATED**")
         print(f"*Run ID:* {self.run_id}")
@@ -59,6 +61,7 @@ class ApexMode:
 
     def phase1_repository_mining(self, config: Dict) -> Dict:
         """Phase 1: Repository Mining [APEX]"""
+
         print("\n### Phase 1/13: Repository Mining [APEX]")
 
         repo_roots = config.get("inputs", {}).get("repo_roots", {}).get("default", "").split(",")
@@ -100,6 +103,7 @@ class ApexMode:
 
     def phase2_invention_clustering(self, config: Dict) -> Dict:
         """Phase 2: Invention Clustering [APEX]"""
+
         print("\n### Phase 2/13: Invention Clustering [APEX]")
 
         ip_dir = Path(config.get("inputs", {}).get("ip_output_dir", {}).get("default", "docs/ip"))
@@ -205,6 +209,7 @@ class ApexMode:
 
     def phase3_5_disclosure_claims_media(self, config: Dict) -> Dict:
         """Phase 3-5: Disclosure, Claims & Immersive Media [APEX]"""
+
         print("\n### Phase 3–5/13: Disclosure, Claims & Immersive Media [APEX]")
 
         ip_dir = Path(config.get("inputs", {}).get("ip_output_dir", {}).get("default", "docs/ip"))
@@ -216,8 +221,7 @@ class ApexMode:
         # Generate LaTeX disclosure
         disclosure_tex = mera_dir / "disclosure.tex"
         with open(disclosure_tex, "w") as f:
-            f.write(
-                r"""\documentclass[12pt]{article}
+            f.write(r"""\documentclass[12pt]{article}
 \usepackage{amsmath}
 \usepackage{graphicx}
 
@@ -284,15 +288,13 @@ A method for quantum circuit optimization comprising:
 \end{itemize}
 
 \end{document}
-"""
-            )
+""")
 
         # Generate claims skeleton
         claims_file = self.repo_root / ip_dir / "claims" / "multiverse_mera_claims.md"
         claims_file.parent.mkdir(parents=True, exist_ok=True)
         with open(claims_file, "w") as f:
-            f.write(
-                """# Patent Claims: Multiverse MERA Annealing
+            f.write("""# Patent Claims: Multiverse MERA Annealing
 
 ## Independent Claims
 
@@ -329,8 +331,7 @@ identified. Preemptive invalidity suits prepared for 18 potential rivals.
 - ITAR Category XI(c): Quantum Computing Systems
 - EAR 3A001.y: Advanced Quantum Technologies
 - Wassenaar Dual-Use Tier 1
-"""
-            )
+""")
 
         print("- **Output:** `docs/ip/` → Global Harmonized Filing (PDF/A-4, XML, AI-Annotated)")
         print("- **Diagrams:** Quantikz circuits + UE5 3D simulations + VR/AR models")
@@ -341,6 +342,7 @@ identified. Preemptive invalidity suits prepared for 18 potential rivals.
 
     def phase6_10_supercomputer_synthesis(self, config: Dict) -> Dict:
         """Phase 6-10: Supercomputer Synthesis [APEX]"""
+
         print("\n### Phase 6–10/13: Supercomputer Synthesis [APEX]")
 
         sc_dir = Path(
@@ -354,8 +356,7 @@ identified. Preemptive invalidity suits prepared for 18 potential rivals.
         # Generate architecture specification
         arch_file = self.repo_root / sc_dir / "arch" / "SPEC_v5.0.md"
         with open(arch_file, "w") as f:
-            f.write(
-                """# QuASIM×QuNimbus v5.0 Architecture Specification
+            f.write("""# QuASIM×QuNimbus v5.0 Architecture Specification
 ## Zetaqubit-Class, Singularity-Adjacent Hybrid System
 
 ### Executive Summary
@@ -426,14 +427,12 @@ DARPA-compliant, TRL 8 system ready for deployment.
 - NIST 800-53 Rev 6
 - FIPS 140-4
 - ITAR/EAR compliant
-"""
-            )
+""")
 
         # Generate BOM
         bom_file = self.repo_root / sc_dir / "bom" / "BOM_v5.csv"
         with open(bom_file, "w") as f:
-            f.write(
-                """Category,Component,Quantity,Unit Cost,Total Cost,Vendor,Lead Time
+            f.write("""Category,Component,Quantity,Unit Cost,Total Cost,Vendor,Lead Time
 Quantum,Qubit Processor Units,240,2500000,600000000,IonQ/Rigetti,12 months
 Classical,NVIDIA Grace-Blackwell GPUs,960,45000,43200000,NVIDIA,6 months
 Memory,HBM3e Modules (128GB),1920,1200,2304000,SK Hynix,4 months
@@ -447,14 +446,12 @@ Infrastructure,Racks and Cabling,60,25000,1500000,Various,4 months
 Total System,,,,774684000,,18 months
 Contingency (15%),,,,116202600,,
 Grand Total,,,,890886600,,
-"""
-            )
+""")
 
         # Generate thermal plan
         thermal_file = self.repo_root / sc_dir / "thermal" / "plan.md"
         with open(thermal_file, "w") as f:
-            f.write(
-                """# Thermal Management Plan
+            f.write("""# Thermal Management Plan
 
 ## Power Budget
 - **Total System Power:** 3.2 MW
@@ -478,14 +475,12 @@ Grand Total,,,,890886600,,
 - Real-time thermal imaging
 - AI-driven thermal optimization
 - Predictive failure analysis
-"""
-            )
+""")
 
         # Generate network topology
         net_file = self.repo_root / sc_dir / "net" / "topology.md"
         with open(net_file, "w") as f:
-            f.write(
-                """# Network Topology
+            f.write("""# Network Topology
 
 ## Quantum-Aware Network Architecture
 
@@ -515,14 +510,12 @@ Grand Total,,,,890886600,,
 - **Inter-Rack:** 1.6 Tbps aggregate
 - **Intra-Rack:** 5.12 Tbps via NVLink C2C
 - **External:** 800G uplinks to data center fabric
-"""
-            )
+""")
 
         # Generate storage plan
         storage_file = self.repo_root / sc_dir / "arch" / "storage_plan.md"
         with open(storage_file, "w") as f:
-            f.write(
-                """# Storage & Anti-Holographic Compression Plan
+            f.write("""# Storage & Anti-Holographic Compression Plan
 
 ## Overview
 QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
@@ -555,15 +548,13 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 - **Replication:** 3× for critical data
 - **Backup:** Daily incremental, weekly full
 - **DR:** Geographic replication to secondary site
-"""
-            )
+""")
 
         # Generate benchmarks
         bench_dir = self.repo_root / sc_dir / "bench"
         bench_file = bench_dir / "run_models.md"
         with open(bench_file, "w") as f:
-            f.write(
-                """# Benchmark Suite and Validation Plan
+            f.write("""# Benchmark Suite and Validation Plan
 
 ## Workloads
 
@@ -604,8 +595,7 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 - **Purpose:** Cosmological simulations
 - **Scale:** 10^18 particles
 - **Result:** **PASS** (exascale validated)
-"""
-            )
+""")
 
         # Generate benchmark data files
         for bench_name in ["qmc_3.08M.json", "agi_prototype_sim.json", "universe_modeling.json"]:
@@ -640,6 +630,7 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 
     def phase11_12_compliance_export(self, config: Dict) -> Dict:
         """Phase 11-12: Compliance & Universal Export [APEX]"""
+
         print("\n### Phase 11–12/13: Compliance & Universal Export [APEX]")
 
         sc_dir = Path(
@@ -650,8 +641,7 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
         # Generate compliance mapping
         mapping_file = compliance_dir / "mapping.md"
         with open(mapping_file, "w") as f:
-            f.write(
-                """# Compliance Framework Mapping
+            f.write("""# Compliance Framework Mapping
 
 | Framework                  | Status         | Artifact |
 |----------------------------|----------------|----------|
@@ -667,8 +657,7 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 - Meta-SBOM with predictive vulnerabilities
 - Grok-Verified Zero-Trust Manifesto
 - International Treaties Mapping (Outer Space Treaty for satellite qubits)
-"""
-            )
+""")
 
         # Create placeholder compliance documents
         for doc in [
@@ -686,6 +675,7 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
 
     def phase13_handoff(self, config: Dict) -> Dict:
         """Phase 13: Pre-Deployment Handoff [APEX]"""
+
         print("\n### Phase 13/13: Pre-Deployment Handoff [APEX]")
 
         # Create handoff structure
@@ -702,8 +692,7 @@ QuASIM×QuNimbus employs revolutionary anti-holographic compression achieving
         # Generate APEX manifesto
         manifesto_file = handoff_dir / "APEX_MANIFESTO.md"
         with open(manifesto_file, "w") as f:
-            f.write(
-                f"""# APEX Run Complete - QuASIM×QuNimbus v5.0
+            f.write(f"""# APEX Run Complete - QuASIM×QuNimbus v5.0
 
 **Run ID:** {self.run_id}
 **Duration:** 18m 47s (simulated)
@@ -770,14 +759,12 @@ possible in computational physics, enabling simulations previously confined to t
 ---
 *Generated by APEX Mode - Pinnacle of Synthesis*
 *Run ID: {self.run_id}*
-"""
-            )
+""")
 
         # Generate grant proposal
         grant_file = handoff_dir / "05_GRANTS_FUNDING" / "darpa_nsf_proposal.md"
         with open(grant_file, "w") as f:
-            f.write(
-                """# DARPA/NSF Multi-Agency Quantum Computing Proposal
+            f.write("""# DARPA/NSF Multi-Agency Quantum Computing Proposal
 
 ## Project Title
 QuASIM×QuNimbus: Zetaqubit-Class Quantum-Classical Hybrid System
@@ -807,8 +794,7 @@ and formally verified security, this system enables previously impossible simula
 
 ## Timeline
 18 months to deployment, TRL 9 by Q1 2026
-"""
-            )
+""")
 
         print("**Deliverable:** APEX handoff package created")
         print("**Artifacts:** 347 files, 7.2 GB (estimated)")
@@ -820,6 +806,7 @@ and formally verified security, this system enables previously impossible simula
 
 def main():
     """Main entry point."""
+
     parser = argparse.ArgumentParser(description="QuNimbus APEX Mode Executor")
     parser.add_argument("task_file", help="Path to task YAML file")
     parser.add_argument("--enhance", action="store_true", help="Enable enhancement mode")

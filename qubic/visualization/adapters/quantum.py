@@ -20,9 +20,7 @@ class QuantumSimulationAdapter(SimulationAdapter):
     - Circuit execution results
     """
 
-    def load_data(
-        self, source: dict[str, Any] | np.ndarray
-    ) -> VisualizationData:
+    def load_data(self, source: dict[str, Any] | np.ndarray) -> VisualizationData:
         """Load quantum simulation data.
 
         Args:
@@ -35,19 +33,17 @@ class QuantumSimulationAdapter(SimulationAdapter):
         Raises:
             ValueError: If source format is invalid
         """
+
         if isinstance(source, np.ndarray):
             return self._create_amplitude_bars(source)
         elif isinstance(source, dict):
             if "amplitudes" in source:
-                return self._create_amplitude_bars(
-                    source["amplitudes"], metadata=source
-                )
+                return self._create_amplitude_bars(source["amplitudes"], metadata=source)
             else:
                 raise ValueError("Dictionary must contain 'amplitudes' key")
         else:
             raise ValueError(
-                f"Unsupported source type: {type(source)}. "
-                "Expected numpy array or dictionary."
+                f"Unsupported source type: {type(source)}. Expected numpy array or dictionary."
             )
 
     def _create_amplitude_bars(
@@ -62,6 +58,7 @@ class QuantumSimulationAdapter(SimulationAdapter):
         Returns:
             VisualizationData representing amplitude bars
         """
+
         n_states = len(amplitudes)
 
         # Create bar geometry for each amplitude
@@ -153,6 +150,7 @@ class QuantumSimulationAdapter(SimulationAdapter):
         Returns:
             True if source is valid for this adapter
         """
+
         if isinstance(source, np.ndarray):
             # Should be 1D array of complex numbers
             return source.ndim == 1 and np.iscomplexobj(source)
@@ -172,6 +170,7 @@ class QuantumSimulationAdapter(SimulationAdapter):
         Returns:
             VisualizationData with synthetic quantum state
         """
+
         n_states = 2**n_qubits
 
         if state_type == "superposition":

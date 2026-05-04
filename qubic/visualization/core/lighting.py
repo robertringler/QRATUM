@@ -41,6 +41,7 @@ class Light:
 
     def __post_init__(self) -> None:
         """Initialize default values."""
+
         if self.position is None:
             self.position = np.array([0.0, 10.0, 0.0])
         if self.direction is None:
@@ -58,6 +59,7 @@ class Light:
         Returns:
             Illumination intensity
         """
+
         if self.type == LightType.AMBIENT:
             return self.intensity
 
@@ -104,6 +106,7 @@ class PBRMaterial:
 
     def __post_init__(self) -> None:
         """Initialize default values."""
+
         if self.albedo is None:
             self.albedo = np.array([0.8, 0.8, 0.8])
         if self.emissive is None:
@@ -122,6 +125,7 @@ class PBRMaterial:
         Returns:
             Shaded color as RGB
         """
+
         # Normalize vectors
         N = normal / np.linalg.norm(normal)
         V = view_dir / np.linalg.norm(view_dir)

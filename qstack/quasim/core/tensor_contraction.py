@@ -7,6 +7,7 @@ from typing import Sequence
 
 def contract_tensors(tensors: list[Sequence[float]]) -> list[float]:
     """Performs deterministic pairwise tensor contraction (element-wise multiply and sum)."""
+
     if not tensors:
         return []
     result = list(tensors[0])

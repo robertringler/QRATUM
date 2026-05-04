@@ -30,9 +30,11 @@ def simulate(
     delta=0.01,
 ):
     """
+
     Run the coupled classical–quantum flow for a fixed geometric schedule a(t).
     Returns: total objective, logs dict
     """
+
     dt = T / N
     if rho0 is None:
         rho0 = np.array([[1.0, 0.0], [0.0, 0.0]], dtype=complex)
@@ -104,8 +106,10 @@ def optimize_a(
     **sim_kwargs,
 ):
     """
+
     Finite-difference control over the geometric scale schedule a(t).
     """
+
     np.random.default_rng(seed)
     a = np.ones(N, dtype=float)
     hist = []

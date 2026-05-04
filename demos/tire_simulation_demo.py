@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 def demo_basic_tire_library():
     """Demonstrate basic tire library generation with synthetic compounds."""
+
     print("=" * 80)
     print("DEMO 1: Basic Tire Simulation Library")
     print("=" * 80)
@@ -44,9 +45,7 @@ def demo_basic_tire_library():
         print(f"  Average Rolling Resistance: {stats['avg_rolling_resistance']}")
         print(f"  Average Wear Rate: {stats['avg_wear_rate']} mm/1000km")
         print(f"  Average Optimization Score: {stats['avg_optimization_score']}")
-        print(
-            f"  Grip Range: {stats['grip_range'][0]} - {stats['grip_range'][1]}"
-        )
+        print(f"  Grip Range: {stats['grip_range'][0]} - {stats['grip_range'][1]}")
         print(
             f"  Lifetime Range: {stats['predicted_lifetime_range'][0]} - {stats['predicted_lifetime_range'][1]} km"
         )
@@ -56,6 +55,7 @@ def demo_basic_tire_library():
 
 def demo_goodyear_integration():
     """Demonstrate Goodyear Quantum Pilot integration with 1,000+ materials."""
+
     print("=" * 80)
     print("DEMO 2: Goodyear Quantum Pilot Integration")
     print("=" * 80)
@@ -71,7 +71,9 @@ def demo_goodyear_integration():
         db_stats = gqp.materials_db.get_statistics()
         print("Goodyear Materials Database:")
         print(f"  Total Materials: {db_stats['total_materials']}")
-        print(f"  Quantum Validated: {db_stats['quantum_validated']} ({db_stats['quantum_validated_percentage']}%)")
+        print(
+            f"  Quantum Validated: {db_stats['quantum_validated']} ({db_stats['quantum_validated_percentage']}%)"
+        )
         print()
         print("Materials by Family:")
         for family, count in db_stats["by_family"].items():
@@ -112,6 +114,7 @@ def demo_goodyear_integration():
 
 def demo_material_search():
     """Demonstrate material database search capabilities."""
+
     print("=" * 80)
     print("DEMO 3: Material Database Search")
     print("=" * 80)
@@ -132,7 +135,7 @@ def demo_material_search():
         print()
         print("Top 5 materials:")
         for i, material in enumerate(results[:5]):
-            print(f"{i+1}. {material.name}")
+            print(f"{i + 1}. {material.name}")
             print(f"   Family: {material.family}")
             print(f"   Wet Grip: {material.properties.get('wet_grip_coefficient', 0):.3f}")
             print(
@@ -157,16 +160,13 @@ def demo_material_search():
 
 def demo_quantum_optimization():
     """Demonstrate quantum optimization of tire compounds."""
+
     print("=" * 80)
     print("DEMO 4: Quantum Optimization")
     print("=" * 80)
     print()
 
-    from quasim.domains.tire.materials import (
-        CompoundType,
-        MaterialProperties,
-        TireCompound,
-    )
+    from quasim.domains.tire.materials import CompoundType, MaterialProperties, TireCompound
 
     # Create a base compound
     props = MaterialProperties(
@@ -210,6 +210,7 @@ def demo_quantum_optimization():
 
 def demo_scenario_diversity():
     """Demonstrate scenario diversity and coverage."""
+
     print("=" * 80)
     print("DEMO 5: Scenario Diversity")
     print("=" * 80)
@@ -252,6 +253,7 @@ def demo_scenario_diversity():
 
 def main():
     """Run all demonstrations."""
+
     print()
     print("=" * 80)
     print("QuASIM Tire Simulation Library - Comprehensive Demonstration")

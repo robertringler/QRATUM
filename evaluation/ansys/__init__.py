@@ -4,18 +4,13 @@ This package provides automated benchmark execution and performance comparison
 between Ansys Mechanical and QuASIM solvers.
 """
 
-from .performance_runner import (
-    # Data structures
+from .performance_runner import (  # Executor classes; Data structures; Analysis classes
+    AnsysBaselineExecutor,
     BenchmarkDefinition,
     BenchmarkResult,
     ComparisonResult,
-    
-    # Executor classes
-    AnsysBaselineExecutor,
-    QuasimExecutor,
-    
-    # Analysis classes
     PerformanceComparer,
+    QuasimExecutor,
     ReportGenerator,
 )
 

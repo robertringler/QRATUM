@@ -36,6 +36,7 @@ from qstack.qnx.runtime.vm import QNXVM
 
 def build_identity(seed: str) -> tuple[QIdentity, IdentityRegistry, TrustGraph]:
     """Seed the orchestrator identity, registry, and trust graph."""
+
     key_manager = KeyManager(seed)
     signer = Signer(key_manager.derive_key("signing"))
     attestor = Attestor(signer)
@@ -52,6 +53,7 @@ def build_identity(seed: str) -> tuple[QIdentity, IdentityRegistry, TrustGraph]:
 
 def build_runtime(state: QNXState) -> tuple[QNXVM, TraceRecorder]:
     """Create a deterministic runtime with safety and tracing enabled."""
+
     operators = OperatorLibrary()
 
     def bind_goal(current_state: QNXState, goal: str) -> dict[str, str]:
@@ -94,6 +96,7 @@ def build_runtime(state: QNXState) -> tuple[QNXVM, TraceRecorder]:
 
 def launch(seed: str, goal: str, energy: int) -> dict[str, Any]:
     """Execute a single deterministic Q-Stack cycle and return the summary."""
+
     orchestrator, registry, trust_graph = build_identity(seed)
     state = QNXState({"energy": energy, "tick": 0})
 

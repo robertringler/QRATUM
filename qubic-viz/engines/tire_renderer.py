@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,8 +22,9 @@ class TireRenderer:
         config: Rendering configuration
     """
 
-    def __init__(self, config: Optional[RenderConfig] = None) -> None:
+    def __init__(self, config: RenderConfig | None = None) -> None:
         """Initialize tire renderer."""
+
         self.config = config or RenderConfig()
         self.renderer = SceneRenderer(self.config)
         self.mesh_generator = TireMeshGenerator(resolution=32)
@@ -31,9 +32,9 @@ class TireRenderer:
     def render_tire_3d(
         self,
         tire_mesh: TireMesh,
-        camera: Optional[Camera] = None,
-        lights: Optional[list[Light]] = None,
-        material: Optional[PBRMaterial] = None,
+        camera: Camera | None = None,
+        lights: list[Light] | None = None,
+        material: PBRMaterial | None = None,
     ) -> np.ndarray:
         """Render 3D tire model with lighting.
 
@@ -46,6 +47,7 @@ class TireRenderer:
         Returns:
             Rendered image as RGB array
         """
+
         if camera is None:
             camera = Camera(
                 position=np.array([2.0, 1.5, 2.0]),
@@ -111,7 +113,7 @@ class TireRenderer:
         return image
 
     def render_thermal_map(
-        self, tire_mesh: TireMesh, thermal_data: np.ndarray, output_path: Optional[Path] = None
+        self, tire_mesh: TireMesh, thermal_data: np.ndarray, output_path: Path | None = None
     ) -> np.ndarray:
         """Render thermal gradient visualization.
 
@@ -123,6 +125,7 @@ class TireRenderer:
         Returns:
             Rendered thermal map
         """
+
         fig = plt.figure(figsize=(12, 8))
         ax = fig.add_subplot(111, projection="3d")
 
@@ -163,7 +166,7 @@ class TireRenderer:
         return image
 
     def render_stress_distribution(
-        self, tire_mesh: TireMesh, stress_data: np.ndarray, output_path: Optional[Path] = None
+        self, tire_mesh: TireMesh, stress_data: np.ndarray, output_path: Path | None = None
     ) -> np.ndarray:
         """Render stress field visualization.
 
@@ -175,6 +178,7 @@ class TireRenderer:
         Returns:
             Rendered stress distribution
         """
+
         fig = plt.figure(figsize=(12, 8))
         ax = fig.add_subplot(111, projection="3d")
 
@@ -215,7 +219,7 @@ class TireRenderer:
         return image
 
     def render_wear_pattern(
-        self, tire_mesh: TireMesh, wear_data: np.ndarray, output_path: Optional[Path] = None
+        self, tire_mesh: TireMesh, wear_data: np.ndarray, output_path: Path | None = None
     ) -> np.ndarray:
         """Render tread wear visualization.
 
@@ -227,6 +231,7 @@ class TireRenderer:
         Returns:
             Rendered wear pattern
         """
+
         fig = plt.figure(figsize=(12, 8))
         ax = fig.add_subplot(111, projection="3d")
 
@@ -267,7 +272,7 @@ class TireRenderer:
         return image
 
     def render_performance_dashboard(
-        self, simulation_result: Any, output_path: Optional[Path] = None
+        self, simulation_result: Any, output_path: Path | None = None
     ) -> np.ndarray:
         """Render comprehensive multi-panel performance dashboard.
 
@@ -278,6 +283,7 @@ class TireRenderer:
         Returns:
             Rendered dashboard image
         """
+
         fig = plt.figure(figsize=(16, 12))
 
         # Create grid layout
@@ -355,7 +361,7 @@ class TireRenderer:
         ax6.text(
             0.5,
             0.5,
-            f"{metrics.predicted_lifetime_km/1000:.1f}k km",
+            f"{metrics.predicted_lifetime_km / 1000:.1f}k km",
             ha="center",
             va="center",
             fontsize=36,
@@ -367,7 +373,11 @@ class TireRenderer:
 
         # Panel 7-9: Visualization placeholders
         ax7 = fig.add_subplot(gs[2, :])
-        suggestions = simulation_result.optimization_suggestions[:3] if simulation_result.optimization_suggestions else ["No suggestions available"]
+        suggestions = (
+            simulation_result.optimization_suggestions[:3]
+            if simulation_result.optimization_suggestions
+            else ["No suggestions available"]
+        )
         suggestions_text = "\n".join([f"• {s}" for s in suggestions])
         ax7.text(0.05, 0.5, suggestions_text, fontsize=11, va="center", wrap=True)
         ax7.set_title("Optimization Suggestions")

@@ -26,6 +26,7 @@ def load_config(path: str | Path) -> dict[str, Any]:
         FileNotFoundError: If config file doesn't exist
         ValueError: If config format is unsupported
     """
+
     path = Path(path)
 
     if not path.exists():
@@ -77,6 +78,7 @@ def save_config(config: dict[str, Any], path: str | Path) -> None:
         config: Configuration dictionary
         path: Output path
     """
+
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -113,6 +115,7 @@ def merge_configs(base: dict[str, Any], override: dict[str, Any]) -> dict[str, A
     Returns:
         Merged configuration
     """
+
     result = base.copy()
 
     for key, value in override.items():

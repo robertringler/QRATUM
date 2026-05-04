@@ -1,0 +1,13 @@
+# QIL Intent: Quantum Chemistry Simulation
+# This intent specifies molecular simulation using quantum computing
+
+INTENT quantum_chemistry {
+    OBJECTIVE simulate_h2o_molecule
+    HARDWARE ONLY QPU
+    CONSTRAINT QUBITS >= 20
+    CAPABILITY molecular_simulation
+    CAPABILITY vqe
+    TIME deadline: 3600s
+    AUTHORITY user: quantum_research
+    TRUST level: verified
+}

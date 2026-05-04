@@ -12,10 +12,12 @@ class TestExecutionEngine:
     @pytest.fixture
     def engine(self, tmp_path):
         """Create engine with test configuration."""
+
         config_dir = tmp_path / "config"
         config_dir.mkdir()
 
         pipeline_content = """
+
 pipelines:
   - id: P1
     name: Pipeline 1
@@ -35,12 +37,14 @@ pipelines:
     keystones: []
     dependencies: [P1]
 """
+
         (config_dir / "pipeline_v12.yaml").write_text(pipeline_content)
 
         return ExecutionEngine(config_dir=config_dir)
 
     def test_load_pipelines(self, engine):
         """Test loading pipeline configurations."""
+
         pipelines = engine.load_pipelines()
 
         assert len(pipelines) == 2
@@ -50,6 +54,7 @@ pipelines:
 
     def test_assign_prompts_to_pipelines(self, engine):
         """Test assigning prompts to pipelines."""
+
         engine.load_pipelines()
 
         prompts = {
@@ -84,6 +89,7 @@ pipelines:
 
     def test_get_ready_pipelines(self, engine):
         """Test getting ready pipelines."""
+
         engine.load_pipelines()
 
         # Initially, only P1 should be ready (no dependencies)
@@ -100,6 +106,7 @@ pipelines:
 
     def test_execute_pipeline_dry_run(self, engine):
         """Test dry run pipeline execution."""
+
         engine.load_pipelines()
 
         result = engine.execute_pipeline("P1", dry_run=True)
@@ -110,6 +117,7 @@ pipelines:
 
     def test_execute_pipeline_blocked(self, engine):
         """Test executing blocked pipeline."""
+
         engine.load_pipelines()
 
         result = engine.execute_pipeline("P2", dry_run=False)
@@ -119,6 +127,7 @@ pipelines:
 
     def test_get_execution_timeline(self, engine):
         """Test generating execution timeline."""
+
         engine.load_pipelines()
 
         timeline = engine.get_execution_timeline()
@@ -129,6 +138,7 @@ pipelines:
 
     def test_generate_execution_report(self, engine):
         """Test generating execution report."""
+
         engine.load_pipelines()
 
         report = engine.generate_execution_report()
@@ -139,6 +149,7 @@ pipelines:
 
     def test_validate_pipeline_configuration(self, engine):
         """Test validating pipeline configuration."""
+
         engine.load_pipelines()
 
         validation = engine.validate_pipeline_configuration()
@@ -148,10 +159,12 @@ pipelines:
 
     def test_validate_invalid_dependency(self, tmp_path):
         """Test validation with invalid dependency."""
+
         config_dir = tmp_path / "config"
         config_dir.mkdir()
 
         pipeline_content = """
+
 pipelines:
   - id: P1
     name: Pipeline 1
@@ -159,6 +172,7 @@ pipelines:
     platform: QuASIM
     dependencies: [P_INVALID]
 """
+
         (config_dir / "pipeline_v12.yaml").write_text(pipeline_content)
 
         engine = ExecutionEngine(config_dir=config_dir)

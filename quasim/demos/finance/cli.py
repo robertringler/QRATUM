@@ -12,6 +12,7 @@ from quasim.viz.run_capture import RunCapture
 
 def cmd_plan(args):
     """Run planning."""
+
     set_global_seed(args.seed)
 
     print(f"Running finance planning with seed={args.seed}")
@@ -39,6 +40,7 @@ def cmd_plan(args):
 
 def cmd_simulate(args):
     """Run simulation."""
+
     set_global_seed(args.seed)
 
     print(f"Running finance simulation with seed={args.seed}")
@@ -62,6 +64,7 @@ def cmd_simulate(args):
 
 def main():
     """Main CLI entrypoint."""
+
     parser = argparse.ArgumentParser(description="QuASIM 💰 Finance Demo")
 
     subparsers = parser.add_subparsers(dest="command", help="Command to run")

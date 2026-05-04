@@ -67,6 +67,7 @@ class QuantacosmorphysigeneticField:
         Args:
             params: Simulation parameters
         """
+
         self.params = params
         self._time = 0.0
         self._history: list[FieldState] = []
@@ -89,6 +90,7 @@ class QuantacosmorphysigeneticField:
                 - "soliton": Soliton-like localized state
                 - "random": Random field configuration
         """
+
         size = self.params.grid_size
 
         if mode == "gaussian":
@@ -130,6 +132,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Current state after evolution
         """
+
         if self._field is None:
             raise RuntimeError("Field not initialized. Call initialize() first.")
 
@@ -170,6 +173,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Current field state
         """
+
         if not self._history:
             raise RuntimeError("No state available. Initialize the field first.")
         return self._history[-1]
@@ -180,6 +184,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             List of all recorded states
         """
+
         return self._history.copy()
 
     def export_state(self) -> dict[str, Any]:
@@ -188,6 +193,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Dictionary with simulation parameters and current state
         """
+
         current_state = self.get_state()
 
         return {
@@ -217,6 +223,7 @@ class QuantacosmorphysigeneticField:
         Returns:
             Laplacian of the field
         """
+
         # Simple 5-point stencil for Laplacian
         laplacian = np.zeros_like(field_array)
         laplacian[1:-1, 1:-1] = (
@@ -230,6 +237,7 @@ class QuantacosmorphysigeneticField:
 
     def _record_state(self) -> None:
         """Record current field state in history."""
+
         if self._field is None:
             raise RuntimeError("Field not initialized")
 

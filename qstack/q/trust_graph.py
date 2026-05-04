@@ -24,6 +24,7 @@ class TrustGraph:
 
     def verify_path(self, start: QIdentity, end: QIdentity) -> bool:
         """Deterministically checks reachability using DFS without randomness."""
+
         visited: set[str] = set()
         stack: list[str] = [start.name]
         while stack:

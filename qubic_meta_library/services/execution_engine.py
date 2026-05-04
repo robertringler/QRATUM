@@ -13,11 +13,13 @@ class ExecutionEngine:
 
     def __init__(self, config_dir: Path | None = None):
         """
+
         Initialize execution engine.
 
         Args:
             config_dir: Directory containing configuration files
         """
+
         if config_dir is None:
             config_dir = Path(__file__).parent.parent / "config"
 
@@ -27,11 +29,13 @@ class ExecutionEngine:
 
     def load_pipelines(self) -> dict[str, Pipeline]:
         """
+
         Load pipeline configurations.
 
         Returns:
             Dictionary mapping pipeline IDs to Pipeline objects
         """
+
         pipeline_file = self.config_dir / "pipeline_v12.yaml"
         if not pipeline_file.exists():
             raise FileNotFoundError(f"Pipeline configuration not found: {pipeline_file}")
@@ -48,6 +52,7 @@ class ExecutionEngine:
 
     def assign_prompts_to_pipelines(self, prompts: dict[int, Prompt]) -> dict[str, list[int]]:
         """
+
         Assign prompts to appropriate pipelines based on phase and domain.
 
         Args:
@@ -56,6 +61,7 @@ class ExecutionEngine:
         Returns:
             Dictionary mapping pipeline IDs to prompt lists
         """
+
         assignments: dict[str, list[int]] = {pid: [] for pid in self.pipelines}
 
         for prompt in prompts.values():
@@ -72,11 +78,13 @@ class ExecutionEngine:
 
     def get_ready_pipelines(self) -> list[Pipeline]:
         """
+
         Get pipelines that are ready to execute.
 
         Returns:
             List of ready pipelines
         """
+
         ready = []
         for pipeline in self.pipelines.values():
             if pipeline.status == "pending" and pipeline.is_ready(self.completed_pipelines):
@@ -86,6 +94,7 @@ class ExecutionEngine:
 
     def execute_pipeline(self, pipeline_id: str, dry_run: bool = True) -> dict[str, Any]:
         """
+
         Execute a pipeline (or simulate execution).
 
         Args:
@@ -95,6 +104,7 @@ class ExecutionEngine:
         Returns:
             Dictionary with execution results
         """
+
         if pipeline_id not in self.pipelines:
             raise ValueError(f"Pipeline not found: {pipeline_id}")
 
@@ -145,11 +155,13 @@ class ExecutionEngine:
 
     def get_execution_timeline(self) -> list[dict[str, Any]]:
         """
+
         Generate execution timeline for all pipelines.
 
         Returns:
             List of pipeline execution schedule
         """
+
         timeline = []
         for pipeline in sorted(self.pipelines.values(), key=lambda p: p.phase):
             timeline.append(
@@ -170,11 +182,13 @@ class ExecutionEngine:
 
     def generate_execution_report(self) -> dict[str, Any]:
         """
+
         Generate comprehensive execution report.
 
         Returns:
             Dictionary with execution metrics and status
         """
+
         total_prompts = sum(len(p.prompts) for p in self.pipelines.values())
         total_keystones = sum(len(p.keystones) for p in self.pipelines.values())
 
@@ -202,11 +216,13 @@ class ExecutionEngine:
 
     def validate_pipeline_configuration(self) -> dict[str, Any]:
         """
+
         Validate pipeline configuration for consistency.
 
         Returns:
             Dictionary with validation results
         """
+
         errors = []
         warnings = []
 

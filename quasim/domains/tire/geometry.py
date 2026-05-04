@@ -66,6 +66,7 @@ class TreadDesign:
         Returns:
             Water evacuation capacity in L/s
         """
+
         # Base capacity from groove volume
         groove_volume = self.groove_depth * self.groove_width * self.groove_count
         base_capacity = groove_volume * 0.001  # Convert to L/s
@@ -87,6 +88,7 @@ class TreadDesign:
         Returns:
             Traction index (0-1)
         """
+
         # Dry traction primarily from block stiffness and edges
         dry_traction = 0.4 * self.block_stiffness + 0.3 * (self.edge_count / 300.0)
 
@@ -100,6 +102,7 @@ class TreadDesign:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize tread design to dictionary."""
+
         return {
             "pattern_type": self.pattern_type.value,
             "groove_depth": self.groove_depth,
@@ -147,6 +150,7 @@ class TireStructure:
         Returns:
             Load capacity in kg
         """
+
         # Pressure effect
         pressure_ratio = pressure_kpa / self.max_pressure
         pressure_factor = min(1.0, pressure_ratio)
@@ -169,6 +173,7 @@ class TireStructure:
         Returns:
             Stiffness index (0-1)
         """
+
         # Base stiffness from structure
         base_stiffness = (self.belt_count / 4.0 + self.ply_count / 4.0) / 2.0
 
@@ -180,6 +185,7 @@ class TireStructure:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize structure to dictionary."""
+
         return {
             "belt_count": self.belt_count,
             "ply_count": self.ply_count,
@@ -224,6 +230,7 @@ class TireGeometry:
         Returns:
             Contact patch area in cm²
         """
+
         # Basic contact area from load and pressure
         load_n = load_kg * 9.81
         pressure_pa = pressure_kpa * 1000.0
@@ -245,6 +252,7 @@ class TireGeometry:
         Returns:
             Rolling radius in mm
         """
+
         # Static radius
         sidewall_height = self.width * self.aspect_ratio / 100.0
         rim_radius = self.diameter * 25.4 / 2.0  # Convert inches to mm
@@ -258,6 +266,7 @@ class TireGeometry:
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize geometry to dictionary."""
+
         return {
             "tire_id": self.tire_id,
             "tire_type": self.tire_type.value,

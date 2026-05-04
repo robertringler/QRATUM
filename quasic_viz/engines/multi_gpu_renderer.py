@@ -17,6 +17,7 @@ class MultiGPURenderer:
 
     def __init__(self, device_ids: list[int] | None = None) -> None:
         """Initialize multi-GPU renderer."""
+
         try:
             import torch
 
@@ -34,6 +35,7 @@ class MultiGPURenderer:
     @property
     def num_devices(self) -> int:
         """Return number of available devices."""
+
         return len(self.device_ids) if self.device_ids else 1
 
     async def render_frame(
@@ -51,6 +53,7 @@ class MultiGPURenderer:
         Returns:
             Tuple of (combined_mesh, combined_fields) after GPU processing
         """
+
         if not self._torch_available:
             # Return input unchanged if torch not available
             return mesh_tensor, fields_dict
@@ -85,6 +88,7 @@ class MultiGPURenderer:
         Returns:
             True if PyTorch with CUDA is available
         """
+
         if not self._torch_available:
             return False
         import torch
@@ -97,6 +101,7 @@ class MultiGPURenderer:
         Returns:
             List of device info dictionaries
         """
+
         if not self._torch_available:
             return [{"device": "cpu", "message": "PyTorch not available"}]
 

@@ -31,6 +31,7 @@ class ClassificationHead:
         seed : int
             Random seed for initialization
         """
+
         np.random.seed(seed)
         # Xavier initialization
         scale = np.sqrt(2.0 / (self.input_dim + self.n_classes))
@@ -50,6 +51,7 @@ class ClassificationHead:
         NDArray
             Logits of shape (batch_size, n_classes)
         """
+
         if self.weights is None or self.bias is None:
             self.initialize()
 
@@ -69,6 +71,7 @@ class ClassificationHead:
         NDArray
             Predicted class labels
         """
+
         logits = self.forward(x)
         return np.argmax(logits, axis=1).astype(np.int64)
 
@@ -97,6 +100,7 @@ class RegressionHead:
         seed : int
             Random seed for initialization
         """
+
         np.random.seed(seed)
         scale = np.sqrt(2.0 / self.input_dim)
         self.weights = np.random.randn(self.input_dim, 1).astype(np.float32) * scale
@@ -115,6 +119,7 @@ class RegressionHead:
         NDArray
             Predictions of shape (batch_size,)
         """
+
         if self.weights is None or self.bias is None:
             self.initialize()
 
@@ -134,4 +139,5 @@ class RegressionHead:
         NDArray
             Predicted values
         """
+
         return self.forward(x)

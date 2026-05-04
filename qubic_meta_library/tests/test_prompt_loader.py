@@ -13,12 +13,14 @@ class TestPromptLoader:
     @pytest.fixture
     def loader(self, tmp_path):
         """Create loader with test data."""
+
         # Create config directory
         config_dir = tmp_path / "config"
         config_dir.mkdir()
 
         # Create domains config
         domains_content = """
+
 domains:
   - id: D1
     name: Test Domain 1
@@ -35,6 +37,7 @@ domains:
     commercial_sector: Test
     keystones: [Key2]
 """
+
         (config_dir / "domains.yaml").write_text(domains_content)
 
         # Create data directory with prompts
@@ -97,6 +100,7 @@ domains:
 
     def test_load_domains(self, loader):
         """Test loading domains from config."""
+
         domains = loader.load_domains()
 
         assert len(domains) == 2
@@ -106,6 +110,7 @@ domains:
 
     def test_load_prompts_from_csv(self, loader, tmp_path):
         """Test loading prompts from CSV file."""
+
         csv_file = tmp_path / "data" / "prompts" / "test_prompts.csv"
         prompts = loader.load_prompts_from_csv(csv_file)
 
@@ -117,6 +122,7 @@ domains:
 
     def test_load_all_prompts(self, loader):
         """Test loading all prompts from data directory."""
+
         prompts = loader.load_all_prompts()
 
         assert len(prompts) == 2
@@ -125,6 +131,7 @@ domains:
 
     def test_get_prompts_by_domain(self, loader):
         """Test getting prompts by domain."""
+
         loader.load_all_prompts()
 
         d1_prompts = loader.get_prompts_by_domain("D1")
@@ -135,6 +142,7 @@ domains:
 
     def test_get_prompts_by_phase(self, loader):
         """Test getting prompts by phase."""
+
         loader.load_all_prompts()
 
         phase1_prompts = loader.get_prompts_by_phase(1)
@@ -147,6 +155,7 @@ domains:
 
     def test_get_high_value_prompts(self, loader):
         """Test getting high-value prompts."""
+
         loader.load_all_prompts()
 
         high_value = loader.get_high_value_prompts(threshold=0.8)
@@ -158,6 +167,7 @@ domains:
 
     def test_parse_list(self, loader):
         """Test parsing semicolon-separated lists."""
+
         assert loader._parse_list("A;B;C") == ["A", "B", "C"]
         assert loader._parse_list("") == []
         assert loader._parse_list("  ") == []

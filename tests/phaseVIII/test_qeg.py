@@ -1,15 +1,11 @@
 """Tests for Quantum Ethical Governor (QEG)."""
 
-from quasim.meta import (
-    EthicalAssessment,
-    FairnessMetrics,
-    QuantumEthicalGovernor,
-    ResourceMetrics,
-)
+from quasim.meta import EthicalAssessment, FairnessMetrics, QuantumEthicalGovernor, ResourceMetrics
 
 
 def test_qeg_initialization():
     """Test QEG initialization."""
+
     qeg = QuantumEthicalGovernor(
         energy_budget=1000.0, equity_threshold=0.3, min_sustainability_score=75.0
     )
@@ -23,6 +19,7 @@ def test_qeg_initialization():
 
 def test_qeg_resource_monitoring():
     """Test resource monitoring."""
+
     qeg = QuantumEthicalGovernor()
 
     metrics = qeg.monitor_resources(
@@ -39,6 +36,7 @@ def test_qeg_resource_monitoring():
 
 def test_qeg_fairness_assessment():
     """Test fairness assessment."""
+
     qeg = QuantumEthicalGovernor()
 
     # Equal distribution (perfect equity)
@@ -56,6 +54,7 @@ def test_qeg_fairness_assessment():
 
 def test_qeg_fairness_inequality():
     """Test fairness assessment with inequality."""
+
     qeg = QuantumEthicalGovernor()
 
     # Unequal distribution
@@ -71,6 +70,7 @@ def test_qeg_fairness_inequality():
 
 def test_qeg_ethical_score_computation():
     """Test ethical score computation."""
+
     qeg = QuantumEthicalGovernor(energy_budget=1000.0, equity_threshold=0.3)
 
     # Monitor resources
@@ -101,6 +101,7 @@ def test_qeg_ethical_score_computation():
 
 def test_qeg_energy_budget_violation():
     """Test ethical assessment with energy budget violation."""
+
     qeg = QuantumEthicalGovernor(energy_budget=100.0)
 
     # Exceed energy budget
@@ -126,6 +127,7 @@ def test_qeg_energy_budget_violation():
 
 def test_qeg_equity_threshold_violation():
     """Test ethical assessment with equity threshold violation."""
+
     qeg = QuantumEthicalGovernor(equity_threshold=0.3)
 
     resource_metrics = qeg.monitor_resources(
@@ -148,6 +150,7 @@ def test_qeg_equity_threshold_violation():
 
 def test_qeg_dvl_emission():
     """Test DVL emission."""
+
     qeg = QuantumEthicalGovernor()
 
     resource_metrics = qeg.monitor_resources(
@@ -175,6 +178,7 @@ def test_qeg_dvl_emission():
 
 def test_qeg_performance_summary():
     """Test performance summary."""
+
     qeg = QuantumEthicalGovernor()
 
     # Initial summary
@@ -205,6 +209,7 @@ def test_qeg_performance_summary():
 
 def test_qeg_gini_calculation():
     """Test Gini coefficient calculation."""
+
     qeg = QuantumEthicalGovernor()
 
     # Perfect equality
@@ -218,6 +223,7 @@ def test_qeg_gini_calculation():
 
 def test_qeg_access_equity_calculation():
     """Test access equity calculation."""
+
     qeg = QuantumEthicalGovernor()
 
     # Equal access
@@ -231,6 +237,7 @@ def test_qeg_access_equity_calculation():
 
 def test_qeg_priority_fairness_calculation():
     """Test priority fairness calculation."""
+
     qeg = QuantumEthicalGovernor()
 
     # Fair: higher priority gets proportionally more resources

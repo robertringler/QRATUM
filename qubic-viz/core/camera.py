@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 
@@ -32,6 +31,7 @@ class Camera:
 
     def __post_init__(self) -> None:
         """Initialize default values."""
+
         if self.position is None:
             self.position = np.array([5.0, 5.0, 5.0])
         if self.target is None:
@@ -45,6 +45,7 @@ class Camera:
         Returns:
             4x4 view matrix
         """
+
         # Calculate camera basis vectors
         forward = self.target - self.position
         forward = forward / np.linalg.norm(forward)
@@ -59,11 +60,13 @@ class Camera:
         view[0, :3] = right
         view[1, :3] = up
         view[2, :3] = -forward
-        view[:3, 3] = -np.array([
-            np.dot(right, self.position),
-            np.dot(up, self.position),
-            np.dot(-forward, self.position),
-        ])
+        view[:3, 3] = -np.array(
+            [
+                np.dot(right, self.position),
+                np.dot(up, self.position),
+                np.dot(-forward, self.position),
+            ]
+        )
 
         return view
 
@@ -73,6 +76,7 @@ class Camera:
         Returns:
             4x4 projection matrix
         """
+
         fov_rad = np.radians(self.fov)
         f = 1.0 / np.tan(fov_rad / 2.0)
 
@@ -91,9 +95,10 @@ class Camera:
         Args:
             target: Target position
         """
+
         self.target = target
 
-    def orbit(self, angle_x: float, angle_y: float, distance: Optional[float] = None) -> None:
+    def orbit(self, angle_x: float, angle_y: float, distance: float | None = None) -> None:
         """Orbit camera around target.
 
         Args:
@@ -101,6 +106,7 @@ class Camera:
             angle_y: Vertical angle in radians
             distance: Distance from target (None to keep current)
         """
+
         if distance is None:
             distance = np.linalg.norm(self.position - self.target)
 
@@ -121,6 +127,7 @@ class CameraController:
 
     def __init__(self, camera: Camera) -> None:
         """Initialize camera controller."""
+
         self.camera = camera
         self.orbit_speed = 0.01
         self.zoom_speed = 0.1
@@ -133,6 +140,7 @@ class CameraController:
             dx: Horizontal movement
             dy: Vertical movement
         """
+
         # Calculate current angles
         rel_pos = self.camera.position - self.camera.target
         distance = np.linalg.norm(rel_pos)
@@ -156,6 +164,7 @@ class CameraController:
         Args:
             delta: Zoom amount
         """
+
         rel_pos = self.camera.position - self.camera.target
         distance = np.linalg.norm(rel_pos)
         new_distance = max(0.1, distance * (1.0 - delta * self.zoom_speed))
@@ -170,6 +179,7 @@ class CameraController:
             dx: Horizontal movement
             dy: Vertical movement
         """
+
         forward = self.camera.target - self.camera.position
         forward = forward / np.linalg.norm(forward)
 

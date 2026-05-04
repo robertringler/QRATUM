@@ -1,381 +1,412 @@
-QuASIM  
-### Quantum-Accelerated Simulation and Modeling Engine  
-High-Assurance • Deterministic • HPC-Optimized • Multi-Domain Scientific Computing
+# 1. QRATUM
 
-QuASIM is a high-assurance, quantum-accelerated simulation framework engineered for deterministic, reproducible, multi-domain modeling.  
-It is built for research environments requiring reliability, transparency, and scientific rigor across complex systems such as aerospace studies, energy-grid analysis, orbital mechanics research, and large-scale multi-physics simulation.
+**A modular, deterministic, traceable execution framework for constraint-governed multi-agent computation, with a verifiable Merkle-anchored execution ledger and a plugin-based subsystem architecture.**
 
-QuASIM integrates core components from the Q-Stack ecosystem:
-
-- **Q-OS** — deterministic runtime environment  
-- **QNX-style scheduler** — real-time determinism & reproducibility  
-- **Q-Core** — vectorized/tensor-accelerated compute  
-- **QuNimbus** — provenance & verification logging  
-- **QNET-OS** — distributed compute & data-exchange layer  
-
-All components are aligned toward high-integrity scientific modeling, transparent reproducibility, and audit-friendly computational workflows.
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/status-research%2Fbeta-yellow.svg)](#12-roadmap)
 
 ---
 
-## Executive Summary
+## 2. System Overview
 
-QuASIM provides:
+QRATUM is a Python-first computational framework that composes three properties most multi-agent systems treat as optional:
 
-- **Deterministic execution** (seeded, reproducible, audit-traceable)  
-- **High-performance numerical modeling** (tensor acceleration via Q-Core)  
-- **Extensible multi-domain simulation primitives**  
-- **Aerospace-grade runtime stability**  
-- **Scientific transparency and provenance logging**  
-- **Modular architecture for research and enterprise HPC labs**  
+1. **Constraint-governed execution** — every state transition is gated by an explicit constraint algebra; transitions that would violate an invariant are rejected, not retried silently.
+2. **Bit-exact determinism** — given identical inputs and configuration, every run produces byte-identical outputs and an identical execution trace. No wall-clock timestamps, no global RNG, no dictionary-order dependence in canonical encoders.
+3. **Cryptographic traceability** — every accepted step is appended to a Merkle-anchored ledger keyed by canonical-JSON SHA-256 over the step payload, so a third party can replay the run and verify each entry independently.
 
-QuASIM has been validated in scientific workflows including:
+It exists because typical agent stacks freely interleave LLM calls, stochastic samplers, and side-effecting tools without a verification layer. That is acceptable for exploratory work but unacceptable when the same pipeline must be (a) auditable after the fact, (b) reproducible across machines, and (c) safe to extend with new agents or new physics modules without breaking guarantees the rest of the system relies on. QRATUM is the substrate that makes those three things hold simultaneously.
 
-- orbital mechanics modeling  
-- aerospace trajectory studies  
-- energy-grid stability analysis  
-- large-scale Monte Carlo campaigns  
-- multi-physics evaluation with coupled solvers  
+The system targets a research-and-production hybrid envelope: rigorous enough that a falsification protocol can be applied to its claims, modular enough that experimental subsystems (plasma reconnection control, biokey-derived signing, trajectory controllers) live as plugins on the same spine.
 
 ---
 
-## Mission Context & Problem Domain
+## 3. Core Design Principles
 
-Modern research environments require simulation engines that are:
+| Invariant | What it means concretely | Where it is enforced |
+|---|---|---|
+| **Determinism** | No `time.time()`, no global RNG, no unordered iteration in any path that influences output. All randomness is seeded and explicit. | `qagents/control_geometry/`, `qagents/mvri/`, `qratum_framework/trace.py` (canonical-JSON, sorted keys, metadata excluded from hashes). |
+| **Traceability** | Every accepted step yields a `TraceEntry` with the prior hash, payload hash, and verdict. The chain is appendable but tamper-evident. | `qratum_framework/trace.py` (`UnifiedTraceEntry`, `MerkleLedger`). |
+| **Reproducibility** | Two runs with identical config and seed produce identical ledgers and identical hash chains. CI compares hashes, not floats. | Profiles in `qratum_framework/config.py` (`quick`, `medium`, `strong`, `full_fast`, `full_report`). |
+| **Modular isolation** | Subsystems communicate through typed adapters; a misbehaving plugin cannot corrupt the spine, only its own trace entries. | `qagents/adapters/`, `OperatorBackend` Protocol in `qratum_framework/operator.py`. |
+| **Execution safety** | Failure modes are named (Type I–IV in CIIR–CRS–RIC), so refusal to act is a first-class outcome, not an exception leak. The executor never raises into user code. | `qagents/ciir_crs_ric/failures.py`, `qagents/ciir_crs_ric/executor.py` (9-step `run_step`, never raises). |
+| **Verifiable computation** | Claims about behavior are stated as falsifiable verdicts (A / A0 / B) and screened by a published protocol. | `qratum_framework/falsifier.py`, `quasim/ciir/multi_qubit/analysis/falsification.py`. |
 
-- deterministic  
-- verifiable  
-- high-fidelity  
-- capable of integrating heterogeneous data sources  
-- performant under high computational load  
-
-Traditional tooling often fails to provide reproducibility or deterministic scheduling when scaling across multi-region or distributed compute environments.
-
-QuASIM addresses these gaps with:
-
-- deterministic execution paths  
-- strict seed governance  
-- algorithmic reproducibility  
-- advanced tensor computation for demanding workloads  
-- transparent provenance via QuNimbus  
-- modular physics and modeling engines  
-
-This makes the platform suitable for domains such as:
-
-- aerospace research  
-- grid-level energy modeling  
-- economic and financial system simulation  
-- physics-based modeling  
-- time-series forecasting  
-- geospatial and orbital analytics  
+These invariants are not aspirational. They are the gating conditions for the test suites under `tests/test_qratum_framework.py`, `tests/test_ciir_crs_ric_strict.py`, `tests/test_mvri.py`, `tests/test_realworld_bridge.py`, `tests/test_control_geometry.py`, and `tests/test_ric_*.py`.
 
 ---
 
-## Core Capabilities
+## 4. Architecture Breakdown
 
-- **Deterministic Multi-Domain Simulation**  
-Ensures reproducibility across runs, environments, and hardware.
-
-- **Orbital & Aerospace Modeling Frameworks**  
-Trajectory propagation, visibility windows, coordinate transformations.
-
-- **Quantum/Tensor-Accelerated Compute (Q-Core)**  
-Matrix operations, batched integrators, tensor contractions, and HPC primitives.
-
-- **Energy-Grid & Infrastructure Modeling**  
-Stability studies, time-series forecasting, renewable-integration modeling.
-
-- **Causal-Temporal Inference Tools**  
-Graph-based models for system-level behavior, scenario evaluation, and risk propagation.
-
-- **High-Fidelity Multi-Physics Engine**  
-ODE/PDE solvers, numerical integrators, interpolation modules, and uncertainty quantification.
-
----
-
-## System Architecture
-
-+-----------------------------+ | Secure Telemetry & Logging  | +-----------------------------+ | Distributed Compute Layer   | +-----------------------------+ | QuNimbus Verification Layer | +-----------------------------+ | Q-Core Acceleration Engine  | +-----------------------------+ | Deterministic Runtime (Q-OS)| +-----------------------------+ | Simulation Kernel (QuASIM)  | +-----------------------------+
-
-### Component Summary
-
-- **Simulation Kernel**  
-Core orchestrator for numerical methods, integrators, and modeling pipelines.
-
-- **Deterministic Runtime (Q-OS)**  
-Reproducible scheduling, seeded randomness, stable execution envelopes.
-
-- **Acceleration Pipeline (Q-Core)**  
-Tensorized HPC backends with optional GPU support.
-
-- **QuNimbus Verification**  
-Provenance capture, metadata tracking, run fingerprints, and audit logs.
-
-- **Distributed Compute Fabric**  
-Optional Kubernetes-based scaling for parallel workloads.
-
-- **Telemetry Layer**  
-Structured logs, metrics, and dashboards.
-
----
-
-## Technical Pillars
-
-### **Deterministic Compute**
-- Seed governance  
-- Controlled randomness  
-- Replayable execution  
-- Traceable compute graphs  
-
-### **High-Performance Acceleration**
-- Tensor contraction kernels  
-- Batched solver pipelines  
-- Multi-core/GPU optional paths  
-
-### **Scientific Transparency**
-- Config-fingerprinting  
-- Metadata embedding  
-- Provenance tracking  
-
-### **Safety-Critical Software Practices**
-- Static analysis  
-- Runtime validation  
-- Error-bounded integrators  
-- DO-178C-inspired deterministic discipline (research framing)  
-
----
-
-## Domain Applications (Research-Safe)
-
-### **Aerospace Research**
-- Trajectory analysis  
-- Orbital propagation  
-- Reference-frame transforms  
-- Mission-planning simulation  
-
-### **Energy & Infrastructure Studies**
-- Grid-stability modeling  
-- Time-series forecasting  
-- Renewable-integration experiments  
-
-### **Economic & Systemic Modeling**
-- Risk propagation  
-- Monte Carlo scenario exploration  
-- Complex-system behavior analysis  
-
-### **Physics & Multi-Domain Simulation**
-- ODE/PDE numerical solving  
-- Multi-physics coupling  
-- Uncertainty quantification  
-
-### **Tire Simulation & Materials Engineering**
-- Goodyear Quantum Tire Pilot integration  
-- 1,000+ pre-characterized tire materials database  
-- Quantum-enhanced compound optimization  
-- Multi-scale physics modeling (molecular → macroscopic)  
-- Comprehensive performance analysis (grip, wear, thermal, efficiency)  
-
----
-
-## Goodyear Quantum Tire Pilot
-
-QuASIM includes a comprehensive tire simulation platform integrated with Goodyear's Quantum Pilot materials database, enabling large-scale tire performance analysis with quantum-enhanced optimization.
-
-### Quick Start
-
-Run the full Goodyear Quantum Tire Pilot to generate 10,000+ tire simulation scenarios:
-
-```bash
-python3 run_goodyear_quantum_pilot.py
+```
+                                qratum_framework/
+                            ┌────────────────────────┐
+                            │  Operator (spine)      │
+                            │  ├─ OperatorBackend ◄──┼─── pluggable
+                            │  ├─ MerkleLedger       │
+                            │  ├─ Falsifier (A/A0/B) │
+                            │  └─ Health / Config    │
+                            └──────────┬─────────────┘
+                                       │ run_step
+                       ┌───────────────┼───────────────────────────┐
+                       ▼               ▼                           ▼
+              ┌────────────────┐  ┌────────────────┐      ┌────────────────────┐
+              │  CIIR–CRS–RIC  │  │ Reality        │      │ Domain plugins     │
+              │  control core  │  │ Interface      │      │ (plasma, VITRA-E0, │
+              │  (qagents/...) │  │ Controller     │      │  trajectory, ...)  │
+              └───────┬────────┘  └───────┬────────┘      └─────────┬──────────┘
+                      │                   │                         │
+                      ▼                   ▼                         ▼
+              ┌────────────────┐  ┌────────────────┐      ┌────────────────────┐
+              │ MVRI           │  │ RIC adapters   │      │ Real-world bridge  │
+              │ (state/inj.)   │  │ (qratum/ciir/  │      │ (sensors/actuators)│
+              │                │  │  crs)          │      │                    │
+              └────────────────┘  └────────────────┘      └────────────────────┘
+                                                                    │
+                                                                    ▼
+                                                           ┌──────────────────┐
+                                                           │  Trace ledger    │
+                                                           │  (Merkle chain)  │
+                                                           └──────────────────┘
 ```
 
-This generates:
-- **10,000 unique tire simulation scenarios**
-- **1,000+ Goodyear materials** (8 families: natural rubber, synthetic rubber, biopolymer, nano-enhanced, graphene-reinforced, quantum-optimized, silica-enhanced, carbon black)
-- **Comprehensive performance metrics** (16 KPIs per scenario)
-- **Quantum-enhanced optimization** (QAOA, VQE, hybrid algorithms)
-- **DO-178C Level A compliance posture**
+### 3.1 Control layer — CIIR–CRS–RIC
 
-### Features
+The deterministic execution core. Three coupled modules:
 
-- **Materials Database**: 1,000+ pre-characterized compounds with test data and certification status
-- **Tire Types**: Passenger, truck, off-road, racing, EV-specific, winter, all-season, performance
-- **Environmental Coverage**: Temperature range -40°C to +80°C, 12 surface types, 8 weather conditions
-- **Performance Domains**: Traction, wear, thermal response, rolling resistance, hydroplaning, noise, durability
-- **Integration Ready**: CAD systems, FEA tools, AI/ML workflows, digital twin platforms
+- **CIIR** (`qagents/ciir_crs_ric/ciir.py`, `qagents/framework/ciir.py`) — Constraint-governed Iterated Inference. Defines `State`, `Constraint`, the satisfaction predicate `phi`, the invariant predicate `Inv`, and the observer map `Omega` (which redacts internal-only fields).
+- **CRS** (`qagents/ciir_crs_ric/crs.py`, `qagents/framework/crs.py`) — Constrained Reactive System. Pure transition function `T` plus its constrained form `T_C` with explicit pre- and post-`phi` checks. Action sets are enumerated, never inferred.
+- **RIC** (`qagents/ciir_crs_ric/ric.py`, `qagents/reality_interface.py`, `qagents/reality_interface_v2.py`) — Reality Interface Controller. A perception → model → action loop with a strict 4-key output contract (`intent_interpretation`, `selected_action`, `predicted_outcome`, `fallback_plan`). RIC v2 adds k-step rollouts, seeded bounded perturbations, anti-deadlock heuristics.
 
-### CLI Usage
+The `Operator` (`qratum_framework/operator.py`) wraps these via the `OperatorBackend` Protocol; the default `StrictCIIRBackend` delegates to `qagents.ciir_crs_ric.executor.run_step`, a 9-step pipeline that never raises.
 
-```bash
-# Use all 1,000+ Goodyear materials
-quasim-tire goodyear --use-all --scenarios-per-material 10
+### 3.2 Orchestration layer — multi-agent coordination
 
-# Use only quantum-validated materials
-quasim-tire goodyear --quantum-only --scenarios-per-material 20
+- **RIC adapters** (`qagents/adapters/{qratum,ciir,crs}.py`) translate between the controller's abstract action space and three concrete domain encodings (OSR/CEI/SF/HRD; loss/violation; CRSI). Each adapter ships a `Simulator`, a `Proposer`, and a `make_<sys>_controller` builder.
+- **CIIR↔RIC↔LLM bridge** (`qagents/ciir_ric_bridge.py`, `qagents/llm_backends.py`) maps controller snapshots to world-state inputs and action verdicts to learning-rate signals; LLM backends (OpenAI, Anthropic, Gemini, Local, plus a `DeterministicLLM`) fall back deterministically when no SDK or key is present.
+- **Trajectory controller** (`qagents/trajectory_controller/`) plans, predicts, validates, and executes numeric action vectors `[type_code, target_index, magnitude, seed]` over the real-world bridge and MVRI.
 
-# Use only certified materials
-quasim-tire goodyear --use-certified --scenarios-per-material 5
-```
+### 3.3 State / ledger system
 
-### Documentation
+- **Trace** (`qratum_framework/trace.py`) — `UnifiedTraceEntry` + `MerkleLedger`. Hashing uses canonical JSON (sorted keys, no whitespace) over a payload that explicitly excludes the `metadata` field, so cosmetic edits never alter the chain. `iter_with_hashes` provides a public audit cursor.
+- **MVRI** (`qagents/mvri/`) — Minimal Viable Reality Injector. Typed immutable `State`, entropy `H`, invariant `Inv`, the action gate `validate_action`, and the constraint gate (`ER/CS/SS/IC/AUD` predicates) feed every accepted injection into the loop trace.
+- **Real-world bridge** (`qagents/realworld_bridge/`) — typed `Sensor`/`Actuator` ABCs, an EMA-based `StateObserver` with a canonical nodes↔edges bijection, a four-stage safety gate (`MAG → TGT → ROC → MVR`), and a strict 9-step `ControlLoop`.
 
-- **Usage Guide**: [GOODYEAR_PILOT_USAGE.md](GOODYEAR_PILOT_USAGE.md)
-- **Implementation Summary**: [TIRE_SIMULATION_SUMMARY.md](TIRE_SIMULATION_SUMMARY.md)
-- **Demo Script**: [demos/tire_simulation_demo.py](demos/tire_simulation_demo.py)
+### 3.4 Plugin / module system
 
----
+A subsystem becomes a QRATUM plugin by satisfying three contracts:
 
-## Visualization Subsystem
+1. Implement `OperatorBackend` (one method, `run_step`).
+2. Emit `TraceEntry`-compatible dictionaries.
+3. Register failure modes (subclasses of the named exceptions in `qagents/ciir_crs_ric/failures.py`).
 
-QuASIM includes a production-ready, unified visualization subsystem for rendering simulation results with support for tire simulations, quantum circuits, and generic mesh/field data.
+Existing plugins demonstrate the pattern:
 
-### Features
+| Plugin | Path | Domain |
+|---|---|---|
+| Plasma reconnection control | `quasim/ciir/plasma/` | 2D RMHD ψ–ω, X/O-points, plasmoid scaling, controller |
+| CIIR multi-qubit falsification | `quasim/ciir/multi_qubit/analysis/` | projector derivation, A/A0/B verdicts |
+| VITRA-E0 sovereign genomics | `qrVITRA/merkler-static/` (Rust) | biokey, FIDO2 dual-signature, ZKP |
+| Control geometry | `qagents/control_geometry/` | sensitivity, reachability, controllability rank |
 
-- **Multiple Backends**: Matplotlib (CPU), Headless (CI/cluster), GPU-accelerated with automatic fallback
-- **Export Formats**: PNG, JPEG, MP4, GIF, Interactive HTML/WebGL
-- **Simulation Adapters**: Tire, Quantum, Generic Mesh, Time-Series
-- **Pipelines**: Static rendering, Animation export, Real-time WebSocket streaming
-- **CLI & Python API**: Full command-line interface and programmatic access
+### 3.5 CLI + API
 
-### Quick Start
-
-```bash
-# Run tire visualization example
-qubic-viz example tire --output-dir ./viz_output
-
-# Run quantum state visualization example
-qubic-viz example quantum --output-dir ./viz_output
-
-# Render custom simulation data
-qubic-viz render --input data.json --output result.png --adapter tire --field temperature
-
-# Create animation from time-series
-qubic-viz animate --input timeseries.json --output animation.mp4 --fps 30
-```
-
-### Python API
-
-```python
-from qubic.visualization.adapters.tire import TireSimulationAdapter
-from qubic.visualization.pipelines.static import StaticPipeline
-
-# Load and visualize tire simulation
-adapter = TireSimulationAdapter()
-tire_data = adapter.create_synthetic_tire(resolution=48)
-
-pipeline = StaticPipeline(backend="headless", dpi=150)
-pipeline.render_and_save(
-    data=tire_data,
-    output_path="tire_temperature.png",
-    scalar_field="temperature",
-    colormap="hot"
-)
-```
-
-### Documentation
-
-- **Full Documentation**: [qubic/visualization/VISUALIZATION.md](qubic/visualization/VISUALIZATION.md)
-- **Examples**: [qubic/visualization/examples/](qubic/visualization/examples/)
-- **Tests**: [qubic/visualization/tests/](qubic/visualization/tests/)
+- **CLI**: `qratum` (entry point declared in `pyproject.toml` as `qratum = qratum_framework.cli:main`). Subcommands: `run`, `simulate`, `ledger`, `falsify`, `verify`.
+- **Programmatic API**: `from qratum_framework import Operator, MerkleLedger, FalsificationVerdict, PROFILES, check_health, check_readiness`. Adapter builders are re-exported from `qagents.adapters` and `qagents`.
 
 ---
 
-## Installation & Quickstart
+## 5. Data / Execution Flow
+
+```
+INPUT (CLI args / API call / config profile)
+   │
+   ▼
+[ 1 ] Profile resolution           qratum_framework/config.py → PROFILES[name]
+[ 2 ] Health / readiness check     qratum_framework/health.py
+[ 3 ] Operator construction        Operator(backend=StrictCIIRBackend(), ledger=MerkleLedger())
+   │
+   ▼
+[ 4 ] Per-step loop (Operator.run_step):
+        ├── 4a parse_intent          (RIC)
+        ├── 4b build Observation     (RIC; not raw State — Omega-filtered)
+        ├── 4c select_action         (RIC + adapter Proposer)
+        ├── 4d enumerate admissible  (CRS)
+        ├── 4e pre-phi check         (CIIR Constraint algebra)
+        ├── 4f apply T_C             (CRS: pure transition under constraint)
+        ├── 4g post-phi + Inv check  (CIIR)
+        ├── 4h validate_action gate  (MVRI / safety_gate)
+        └── 4i emit TraceEntry       (verdict ∈ {accept, reject(Type I–IV), hold})
+   │
+   ▼
+[ 5 ] Ledger append                  MerkleLedger.append(entry)
+        canonical_json(payload) → SHA-256 → linked to prev_hash
+[ 6 ] Falsification screen (opt.)    Falsifier → {A, A0, B}
+   │
+   ▼
+OUTPUT
+   ├── ledger.jsonl  (append-only, replayable)
+   ├── final state   (Omega-filtered)
+   └── verdict       (FalsificationVerdict)
+```
+
+Inputs never bypass the constraint algebra. Failures short-circuit at the earliest gate that detects them, are typed (`Type I` precondition / `Type II` postcondition / `Type III` invariant / `Type IV` admissibility), and are recorded in the ledger with the same hashing discipline as accepted steps. A rejected step is part of the audit trail, not noise.
+
+---
+
+## 6. Key Features
+
+- **Deterministic execution** — canonical-JSON hashing, seeded RNG, no global state; bit-exact reruns.
+- **Multi-agent coordination** — RIC adapters bridge a single controller to multiple domain encodings (qratum / CIIR / CRS) without state aliasing.
+- **Audit trail** — every step (accepted *and* rejected) is committed to a Merkle-linked ledger; tamper detection is O(1) per entry on replay.
+- **Runtime validation** — four-stage safety gate (`MAG → TGT → ROC → MVR`), constraint algebra pre/post-checks, observer-state invariants.
+- **Extensibility** — plugin contract is one Protocol method (`run_step`) plus typed trace entries; no central registry to fight.
+- **Falsification protocol** — verdicts A / A0 / B with a published 5-step screen (baseline / null / signal / artifacts / verdict).
+- **Fault isolation** — failures are typed, never silent; the operator catches and records them, the loop never raises into caller code.
+- **Health and readiness probes** — `check_health()` and `check_readiness()` for orchestration layers.
+- **CLI + programmatic parity** — every CLI subcommand is a thin shell over a public API call.
+- **Profiles** — `quick`, `medium`, `strong`, `full_fast`, `full_report` cover the latency / coverage trade space without ad-hoc flags.
+
+---
+
+## 7. Installation
 
 ### Prerequisites
-- Python 3.10+  
-- (Optional) Kubernetes 1.28+ for distributed workloads  
-- (Optional) GPU drivers for accelerated Q-Core modules  
 
-### Setup
+- Python **3.10+**
+- `pip` ≥ 23
+- (Optional) Rust **1.75+** with `cargo` for the `qrVITRA/merkler-static/` and `Aethernet/` crates.
+- (Optional) NumPy / SciPy for the plasma reconnection plugin (`quasim/ciir/plasma/`).
+
+### Install
+
 ```bash
-git clone https://github.com/robertringler/QuASIM.git
-cd QuASIM
-pip install -r requirements.txt
+git clone https://github.com/robertringler/QRATUM.git
+cd QRATUM
 
-Example Run
+python -m venv .venv
+source .venv/bin/activate      # POSIX
+# .venv\Scripts\activate       # Windows
 
-python -m quasim.simulate --scenario orbital_demo --seed 42 --output results/
+pip install -e .
+```
 
+This exposes the `qratum` console script and the `qratum_framework` and `qagents` packages.
 
----
+### Optional Rust components
 
-Repository Structure
+```bash
+# Genomics / biokey + ZKP + FIDO2 dual-signature
+cd qrVITRA/merkler-static && ./build.sh && cargo test
 
-(Structure preserved from your original README, but reframed safely.)
+# Networking primitives
+cd Aethernet && cargo test
+```
 
-analysis/            # Analytical tools and post-processing
-aerospace/           # Orbital & trajectory modeling (AURORA)
-benchmarks/          # Performance benchmarking
-ci/                  # Continuous integration scripts
-configs/             # Simulation configuration files
-data/                # Reference datasets
-docs/                # Documentation
-infra/               # Deployment & provisioning scripts
-models/              # ML/AI or numerical models
-quasim/              # Core simulation engine
-qcore/               # Acceleration backends
-qnet_os/             # Distributed compute & messaging utilities
-qunimbus/            # Provenance, metadata & verification
-runtime/             # Deterministic runtime layer
-tests/               # Unit & integration tests
-tools/               # Utility scripts
-visuals/             # Visualization modules
+### Verifying the install
 
+```bash
+PYTHONPATH=. python -m pytest tests/test_qratum_framework.py --override-ini="addopts=" -q
+```
+
+A clean run reports the unified-spine test count and exits with code 0.
 
 ---
 
-Verification & Provenance
+## 8. Usage Examples
 
-QuNimbus provides:
+### 7.1 CLI
 
-run metadata
+```bash
+# Run a deterministic controller pass under a named profile
+qratum run --profile medium --seed 42 --ledger out/ledger.jsonl
 
-configuration hashes
+# Replay and verify a previously emitted ledger
+qratum verify --ledger out/ledger.jsonl
 
-reproducible seeds
+# Apply the falsification screen to the resulting trace
+qratum falsify --ledger out/ledger.jsonl
 
-environment fingerprints
+# Pure simulation (no domain plugin, useful for CI smoke)
+qratum simulate --steps 100 --seed 42
 
-structured experiment logs
+# Inspect ledger entries
+qratum ledger --ledger out/ledger.jsonl --head 10
+```
 
+### 7.2 Programmatic API
 
-These enable:
+```python
+from qratum_framework import (
+    Operator, MerkleLedger, PROFILES, FalsificationVerdict,
+    check_health, check_readiness,
+)
+from qratum_framework.operator import StrictCIIRBackend
 
-scientific reproducibility
+assert check_health().ok and check_readiness().ok
 
-cross-team validation
+ledger = MerkleLedger()
+op = Operator(backend=StrictCIIRBackend(), ledger=ledger, profile=PROFILES["medium"])
 
-long-term auditability
+for step in range(100):
+    entry = op.run_step(input_payload={"step": step, "seed": 42})
+    if entry.verdict.kind == "reject":
+        # Typed failure modes: Type I–IV
+        print("rejected:", entry.verdict.failure_type, entry.verdict.reason)
 
+# Replay-style audit
+for prev_hash, payload_hash, entry in ledger.iter_with_hashes():
+    assert entry.prev_hash == prev_hash
 
+# Falsification screen
+verdict: FalsificationVerdict = op.falsify(ledger)
+assert verdict in {FalsificationVerdict.A, FalsificationVerdict.A0, FalsificationVerdict.B}
+```
+
+### 7.3 Custom backend (plugin)
+
+```python
+from qratum_framework.operator import Operator, OperatorBackend
+from qratum_framework.trace import UnifiedTraceEntry, MerkleLedger
+
+class MyBackend(OperatorBackend):
+    def run_step(self, state, action, *, profile):
+        # ... pure, deterministic, no global RNG ...
+        return UnifiedTraceEntry(
+            step=state.step + 1,
+            payload={"action": action, "result": ...},
+            metadata={"backend": "MyBackend"},  # excluded from hashing
+        )
+
+op = Operator(backend=MyBackend(), ledger=MerkleLedger())
+```
 
 ---
 
-License
+## 9. Configuration Model
 
-Apache 2.0 License (see LICENSE file).
-Contributions welcome under open, research-safe guidelines.
+### 8.1 Hierarchy
 
+Resolution order (highest precedence first):
+
+1. **CLI flags** — `--profile`, `--seed`, `--ledger`, `--steps`, etc.
+2. **Programmatic overrides** — keyword arguments to `Operator(...)`.
+3. **Environment variables** — see §9.3.
+4. **Profile** — one of the named entries in `qratum_framework/config.py::PROFILES`.
+5. **Built-in defaults** — conservative; `quick` profile equivalent.
+
+### 8.2 Profiles
+
+| Profile | Intent |
+|---|---|
+| `quick` | Smoke / CI; minimal step budget. |
+| `medium` | Default for development runs. |
+| `strong` | Tighter safety-gate thresholds; longer rollouts. |
+| `full_fast` | Production sweep; coverage over latency. |
+| `full_report` | Coverage + falsification screen + full ledger emission. |
+
+Profiles are *data*, not code paths. Adding a profile means adding a dict entry, not a branch.
+
+### 8.3 Environment variables (conceptual)
+
+| Variable | Purpose |
+|---|---|
+| `QRATUM_PROFILE` | Default profile when `--profile` is absent. |
+| `QRATUM_LEDGER` | Default ledger path. |
+| `QRATUM_SEED` | Default seed; required for reproducibility. |
+| `QRATUM_LLM_BACKEND` | One of `deterministic`, `openai`, `anthropic`, `gemini`, `local`. Falls back to `deterministic` when SDK or key is absent. |
+| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` / `GOOGLE_API_KEY` | Credentials for non-deterministic backends; *never required for default operation*. |
+
+Missing credentials must not cause hard failures or process exits — the LLM layer is required to fall back deterministically (see `qagents/llm_backends.py`).
 
 ---
 
-Development Philosophy
+## 10. Development Guide
 
-QuASIM adheres to principles of:
+### 9.1 Adding a module
 
-robustness
+1. Place the module under an existing namespace (`qagents/<your_module>/` for control-layer code, `quasim/<your_module>/` for simulation-domain code).
+2. Define typed inputs and outputs (dataclasses or TypedDict).
+3. Forbid global mutable state and global RNG. Inject a `random.Random(seed)` if you need stochasticity.
+4. Add a dedicated test file under `tests/test_<your_module>.py`. Follow the pattern of `tests/test_mvri.py` or `tests/test_control_geometry.py`.
+5. Re-export your public surface from the appropriate `__init__.py`.
 
-determinism
+### 9.2 Registering an agent / adapter
 
-clarity
+1. Implement a `Simulator`, a `Proposer`, and a `make_<sys>_controller` builder following the templates in `qagents/adapters/{qratum,ciir,crs}.py`.
+2. Re-export from `qagents/adapters/__init__.py`.
+3. Add adapter tests to `tests/test_ric_adapters.py`.
 
-transparency
+### 9.3 Extending execution rules
 
-scientific integrity
+To add a new constraint or invariant to CIIR–CRS–RIC:
 
-safety and ethics
+1. Define the predicate in `qagents/ciir_crs_ric/ciir.py` (constraint) or `qagents/framework/ciir.py` (algebra).
+2. Wire it into `phi` (precondition), `Inv` (invariant), or both.
+3. If the violation is structurally new, declare a new failure type in `qagents/ciir_crs_ric/failures.py` (Type I–IV taxonomy).
+4. The executor's 9-step `run_step` will pick it up via the existing `OperatorBackend` contract — do not modify the executor itself for domain rules.
 
+### 9.4 Test commands (verified)
 
-The project is intended strictly for research, modeling, and computational experimentation.
+```bash
+PYTHONPATH=. python -m pytest tests/test_qratum_framework.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ciir_crs_ric_strict.py     --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_mvri.py                    --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_realworld_bridge.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_control_geometry.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ric_v2.py                  --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ric_ciir_bridge.py         --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_plasma_reconnection.py     --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ciir_falsification.py      --override-ini="addopts=" -q
+```
 
 ---
+
+## 11. Safety, Determinism & Verification Guarantees
+
+### 10.1 Execution constraints
+
+- The constraint algebra (`phi`, `Inv`) is checked **twice** per step: pre-transition and post-transition.
+- The safety gate runs four sequential checks (`MAG`, `TGT`, `ROC`, `MVR`). All four are evaluated before a verdict is emitted, so failure reports are complete, not first-hit.
+- The `ControlLoop` advances `model_state` only on *accepted* injection; a rejected step never mutates the state used by the next step's planner.
+- `SensorExhausted` ends a run early but cleanly; the ledger remains valid.
+
+### 10.2 Reproducibility enforcement
+
+- Hashing is over **canonical JSON**: keys sorted, no whitespace, `metadata` field excluded from the hash domain.
+- All RNG is seeded; no module reads `time.time()` or `os.urandom()` on the determinism path.
+- Profiles are pure data; flipping a profile cannot inject non-determinism via a code path.
+- CI compares ledger hashes across machines, not floating-point outputs. A diverging hash is a hard failure.
+
+### 10.3 Invalid-state handling
+
+- Failure modes are named: **Type I** (precondition violation), **Type II** (postcondition violation), **Type III** (invariant violation), **Type IV** (admissibility violation).
+- The executor's 9-step `run_step` never raises into caller code; it returns a `TraceEntry` whose verdict carries the failure type.
+- The ledger records rejections with the same hashing discipline as acceptances; an attacker cannot hide a rejected step by reordering.
+- The falsifier reduces the ledger to one of `{A, A0, B}`:
+  - **A** — claim verified within tolerance.
+  - **A0** — claim verified but mechanism differs from declared (e.g. amplitude damping rather than causal geometry).
+  - **B** — claim falsified.
+
+### 10.4 Cryptographic verification surface
+
+- Per-entry hash: SHA-256 over canonical-JSON payload.
+- Chain link: each entry stores the prior `payload_hash` as `prev_hash`; `MerkleLedger.iter_with_hashes` is the public audit cursor.
+- Optional Rust-side biokey signing (`qrVITRA/merkler-static/`) provides ephemeral SNP-derived keys, FIDO2 dual-signature, and ZKP attestation for sovereign-genomics use cases.
+
+---
+
+## 12. Roadmap
+
+The following are tracked extension directions; none are required for current operation.
+
+- **Spine hardening** — strict mypy on `qratum_framework/`, atomic ledger writes with `fsync`, ledger-load verification, size caps on trace metadata.
+- **Distributed ledger mode** — multi-writer ledger with deterministic merge, suitable for federated agent runs.
+- **Hardware falsification** — execute the 5-step falsification protocol against physical quantum hardware (`run_falsification.py` is the simulator entry point today).
+- **Plugin SDK** — package the `OperatorBackend` Protocol, trace dataclasses, and failure taxonomy as a stand-alone wheel so out-of-tree plugins do not need to vendor `qagents/`.
+- **Plasma reconnection (extended)** — controller-aware mesh refinement for `quasim/ciir/plasma/`, FKR/plasmoid scaling at higher Lundquist numbers.
+- **Trajectory controller (k-step)** — extend RIC v2's k-step rollout into the trajectory controller for end-to-end horizon-aware planning over the real-world bridge.
+- **Formal verification** — discharge invariants `phi` and `Inv` to an SMT backend on a bounded fragment of the action space.
+
+Research directions (no committed timeline): falsification of causal-geometry claims at larger N, biokey-bound ledgers for genomics-grade reproducibility, and unification of MVRI's entropy/MI/TE metrics with CIIR's stability inequality.

@@ -21,6 +21,7 @@ class BioMechanismAdapter:
         Args:
             mechanism: BioMechanism instance to adapt
         """
+
         self.mechanism = mechanism
 
     def to_viz_model(self) -> dict[str, any]:
@@ -29,6 +30,7 @@ class BioMechanismAdapter:
         Returns:
             Dictionary with 'nodes' and 'edges' suitable for network visualization
         """
+
         nodes = []
         edges = []
 
@@ -68,6 +70,7 @@ class BioMechanismAdapter:
         Returns:
             VisualizationData with network geometry
         """
+
         num_states = len(self.mechanism.states)
 
         # Generate 3D positions for nodes based on layout
@@ -123,6 +126,7 @@ class BioMechanismAdapter:
         Returns:
             Index of the state, or None if not found
         """
+
         for i, state in enumerate(self.mechanism.states):
             if state.state_id == state_id:
                 return i
@@ -138,6 +142,7 @@ class BioMechanismAdapter:
         Returns:
             (N, 3) array of node positions
         """
+
         # Simple spring layout: random positions with slight structure
         np.random.seed(42)  # Deterministic for testing
         positions = np.random.randn(num_nodes, 3) * scale
@@ -153,6 +158,7 @@ class BioMechanismAdapter:
         Returns:
             (N, 3) array of node positions
         """
+
         angles = np.linspace(0, 2 * np.pi, num_nodes, endpoint=False)
         positions = np.zeros((num_nodes, 3))
         positions[:, 0] = scale * np.cos(angles)
@@ -169,6 +175,7 @@ class BioMechanismAdapter:
         Returns:
             (N, 3) array of node positions
         """
+
         # Simple hierarchical: assign levels based on connectivity
         num_nodes = len(self.mechanism.states)
         positions = np.zeros((num_nodes, 3))
@@ -191,6 +198,7 @@ class BioMechanismAdapter:
         Returns:
             (M, 3) array of face indices
         """
+
         # Create minimal dummy triangles (just to satisfy VisualizationData)
         # Each node gets one triangle (not realistic but sufficient for placeholder)
         if num_nodes < 3:

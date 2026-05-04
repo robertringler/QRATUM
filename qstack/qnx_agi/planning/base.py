@@ -28,6 +28,7 @@ class Planner:
         self, goal: dict[str, Any], state: dict[str, Any]
     ) -> list[PlanStep]:  # pragma: no cover - interface
         """Default deterministic plan: mirror goal into a single noop step."""
+
         return [
             PlanStep(
                 action="noop",

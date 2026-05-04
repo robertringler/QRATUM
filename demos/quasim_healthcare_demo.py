@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 QuASIM × Healthcare Genomics Demo
 
 Genomic pipeline optimization for WGS throughput and accuracy.
@@ -30,10 +31,12 @@ from quasim.common import (
 
 def simulate_genomics_pipeline(alpha: float, profile: dict, seed: int = 42) -> dict:
     """
+
     Simulate genomic sequencing pipeline performance.
 
     Alpha controls resource allocation (compute vs accuracy trade-off).
     """
+
     np.random.seed(seed)
 
     targets = profile["targets"]
@@ -74,6 +77,7 @@ def simulate_genomics_pipeline(alpha: float, profile: dict, seed: int = 42) -> d
 
 def evaluate_fitness(metrics: dict, profile: dict) -> float:
     """Evaluate pipeline fitness."""
+
     targets = profile["targets"]
     tolerances = profile["tolerances"]
     weights = profile["weights"]
@@ -106,6 +110,7 @@ def evaluate_fitness(metrics: dict, profile: dict) -> float:
 
 def create_visualization(metrics: dict, profile: dict) -> str:
     """Create genomics pipeline visualization."""
+
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 10))
     time = np.array(metrics["time"])
 

@@ -21,6 +21,7 @@ from quasim.sim import QCMGParameters, QuantacosmomorphysigeneticField
 
 def run_basic_simulation():
     """Run a basic QCMG field simulation."""
+
     print("=" * 60)
     print("QCMG Field Simulation Example")
     print("=" * 60)
@@ -80,6 +81,7 @@ def run_basic_simulation():
 
 def visualize_results(field: QuantacosmomorphysigeneticField):
     """Create visualization of simulation results."""
+
     print("\nCreating visualizations...")
 
     # Extract data from history
@@ -162,6 +164,7 @@ def visualize_results(field: QuantacosmomorphysigeneticField):
 
 def export_data(field: QuantacosmomorphysigeneticField):
     """Export simulation data to JSON."""
+
     output_dir = Path("qcmg_output")
     output_dir.mkdir(exist_ok=True)
 
@@ -172,6 +175,7 @@ def export_data(field: QuantacosmomorphysigeneticField):
 
 def main():
     """Main execution function."""
+
     # Run simulation
     field = run_basic_simulation()
 

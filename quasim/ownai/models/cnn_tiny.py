@@ -45,6 +45,7 @@ class TinyCNN:
         NDArray
             Flattened images of shape (N, C*H*W)
         """
+
         batch_size = images.shape[0]
         return images.reshape(batch_size, -1)
 
@@ -62,6 +63,7 @@ class TinyCNN:
         -------
         self
         """
+
         set_seed(self.seed)
 
         # Flatten images for sklearn
@@ -83,6 +85,7 @@ class TinyCNN:
         NDArray
             Predicted class labels
         """
+
         X_flat = self._flatten_images(X)
         return self.model.predict(X_flat)
 
@@ -99,5 +102,6 @@ class TinyCNN:
         NDArray
             Class probabilities
         """
+
         X_flat = self._flatten_images(X)
         return self.model.predict_proba(X_flat)

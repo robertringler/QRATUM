@@ -23,6 +23,7 @@ class ImageExporter:
             dpi: Resolution in dots per inch (higher = better quality)
             figsize: Figure size in inches
         """
+
         self.dpi = dpi
         self.figsize = figsize
         self.backend = HeadlessBackend(figsize=figsize, dpi=dpi)
@@ -48,6 +49,7 @@ class ImageExporter:
             transparent: Whether to use transparent background
             **kwargs: Additional arguments for savefig
         """
+
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -91,6 +93,7 @@ class ImageExporter:
             quality: JPEG quality (1-100, higher = better quality)
             **kwargs: Additional arguments for savefig
         """
+
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -135,19 +138,15 @@ class ImageExporter:
         Raises:
             ValueError: If file extension is not supported
         """
+
         output_path = Path(output_path)
         extension = output_path.suffix.lower()
 
         if extension == ".png":
-            self.export_png(
-                data, output_path, scalar_field, camera, colormap, **kwargs
-            )
+            self.export_png(data, output_path, scalar_field, camera, colormap, **kwargs)
         elif extension in (".jpg", ".jpeg"):
-            self.export_jpeg(
-                data, output_path, scalar_field, camera, colormap, **kwargs
-            )
+            self.export_jpeg(data, output_path, scalar_field, camera, colormap, **kwargs)
         else:
             raise ValueError(
-                f"Unsupported image format: {extension}. "
-                "Supported formats: .png, .jpg, .jpeg"
+                f"Unsupported image format: {extension}. Supported formats: .png, .jpg, .jpeg"
             )

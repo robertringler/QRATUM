@@ -79,6 +79,7 @@ def propagate_affine(
     intervals: dict[str, Interval], weights: dict[str, float], bias: float = 0.0
 ) -> Interval:
     r"""Propagate an affine transform \sum w_i * x_i + bias over intervals."""
+
     low = bias
     high = bias
     for name, weight in sorted(weights.items(), key=lambda kv: kv[0]):
@@ -119,6 +120,7 @@ class IntervalEnvironment:
 
     def intervals(self) -> dict[str, Interval]:
         """Return a shallow copy of the current interval mapping."""
+
         return dict(self._mapping)
 
     def bulk_update(self, updates: dict[str, Interval]) -> None:
@@ -127,6 +129,7 @@ class IntervalEnvironment:
 
     def propagate_non_linear(self, products: Iterable[tuple[str, str]]) -> dict[str, Interval]:
         """Propagate pairwise products for coarse abstract interpretation."""
+
         results: dict[str, Interval] = {}
         for left, right in products:
             lv = self.read(left)

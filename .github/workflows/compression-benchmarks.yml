@@ -1,0 +1,210 @@
+name: MERA Compression Benchmarks
+
+on:
+  schedule:
+    # Run weekly on Monday at 2am UTC
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
+    inputs:
+      qubits:
+        description: 'Comma-separated qubit counts to test (e.g., 10,15,20)'
+        required: false
+        default: '10,15,20'
+      verbose:
+        description: 'Enable verbose output'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  benchmark:
+    name: Run MERA Compression Benchmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy pyyaml
+          # Install optional quantum dependencies if available
+          pip install qiskit qiskit-aer || echo "Qiskit not available"
+          # Install QRATUM
+          pip install -e .
+
+      - name: Verify AHTC availability
+        run: |
+          python -c "from quasim.holo.anti_tensor import compress; print('✅ AHTC module available')"
+
+      - name: Run benchmark suite
+        id: benchmark
+        run: |
+          # Set flags based on inputs
+          VERBOSE_FLAG=""
+          if [ "${{ github.event.inputs.verbose }}" = "true" ]; then
+            VERBOSE_FLAG="--verbose"
+          fi
+
+          QUBIT_FLAG=""
+          if [ -n "${{ github.event.inputs.qubits }}" ]; then
+            QUBIT_FLAG="--qubits ${{ github.event.inputs.qubits }}"
+          fi
+
+          # Run benchmarks
+          python benchmarks/compression/run_suite.py \
+            --output artifacts/compression \
+            $QUBIT_FLAG \
+            $VERBOSE_FLAG
+
+      - name: Display summary
+        if: always()
+        run: |
+          if [ -f artifacts/compression/compression_summary.json ]; then
+            echo "## Benchmark Summary" >> $GITHUB_STEP_SUMMARY
+            python -c "
+          import json
+          with open('artifacts/compression/compression_summary.json') as f:
+              data = json.load(f)
+          print(f\"Total tests: {data.get('total_tests', 0)}\")
+          print(f\"Passed: {data.get('passed_tests', 0)}\")
+          print(f\"Failed: {data.get('failed_tests', 0)}\")
+
+          ratio_stats = data.get('compression_ratio_stats', {})
+          if ratio_stats:
+              print(f\"\\nCompression Ratio:\")
+              print(f\"  Median: {ratio_stats.get('median', 0):.2f}×\")
+              print(f\"  Mean: {ratio_stats.get('mean', 0):.2f}× ± {ratio_stats.get('std', 0):.2f}×\")
+              print(f\"  Range: [{ratio_stats.get('min', 0):.2f}×, {ratio_stats.get('max', 0):.2f}×]\")
+            " >> $GITHUB_STEP_SUMMARY
+
+            # Append markdown report if available
+            if [ -f artifacts/compression/compression_report.md ]; then
+              cat artifacts/compression/compression_report.md >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "⚠️ No summary file generated" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload benchmark artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compression-benchmarks-${{ github.run_number }}
+          path: artifacts/compression/
+          retention-days: 90
+
+      - name: Check benchmark results
+        if: steps.benchmark.outcome == 'success'
+        run: |
+          # Fail if no tests passed
+          PASSED=$(python -c "import json; f=open('artifacts/compression/compression_summary.json'); d=json.load(f); print(d.get('passed_tests', 0))")
+          if [ "$PASSED" -eq "0" ]; then
+            echo "❌ No benchmark tests passed"
+            exit 1
+          fi
+
+          # Warn if median compression ratio is below 10×
+          MEDIAN=$(python -c "import json; f=open('artifacts/compression/compression_summary.json'); d=json.load(f); print(d.get('compression_ratio_stats', {}).get('median', 0))")
+          if (( $(echo "$MEDIAN < 10.0" | bc -l) )); then
+            echo "⚠️ Warning: Median compression ratio ($MEDIAN×) is below 10×"
+          fi
+
+          echo "✅ Benchmark validation passed"
+
+      - name: Comment on PR (if applicable)
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            if (!fs.existsSync('artifacts/compression/compression_report.md')) {
+              return;
+            }
+
+            const report = fs.readFileSync('artifacts/compression/compression_report.md', 'utf8');
+            
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 📊 MERA Compression Benchmark Results\n\n${report}`
+            });
+
+  validate:
+    name: Validate Against Claims
+    runs-on: ubuntu-latest
+    needs: benchmark
+    if: always()
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Download benchmark artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: compression-benchmarks-${{ github.run_number }}
+          path: artifacts/compression/
+
+      - name: Install verification tools
+        run: |
+          pip install numpy pyyaml
+
+      - name: Validate compression ratios
+        run: |
+          python << 'EOF'
+          import json
+          import sys
+
+          with open('artifacts/compression/compression_summary.json') as f:
+              data = json.load(f)
+
+          ratio_stats = data.get('compression_ratio_stats', {})
+          median = ratio_stats.get('median', 0.0)
+          mean = ratio_stats.get('mean', 0.0)
+
+          # Check against documented claims
+          claims = {
+              'README.md': {'min': 10.0, 'max': 50.0, 'typical': 30.0},
+              'docs/holo/ahtc.md': {'min': 10.0, 'max': 50.0, 'typical': 36.8},
+          }
+
+          print("## Validation Against Claims\n")
+          
+          all_validated = True
+          for source, claim in claims.items():
+              in_range = claim['min'] <= median <= claim['max']
+              meets_typical = median >= claim['typical']
+              
+              status = "✅ VALIDATED" if in_range and meets_typical else \
+                       "⚠️ WITHIN_RANGE" if in_range else \
+                       "❌ BELOW_MIN"
+              
+              print(f"{source}: {status}")
+              print(f"  Claimed: {claim['typical']}× (range: {claim['min']}-{claim['max']}×)")
+              print(f"  Measured: {median:.1f}× (median), {mean:.1f}× (mean)")
+              
+              if not in_range:
+                  all_validated = False
+
+          if not all_validated:
+              print("\n⚠️ Warning: Some claims not validated")
+              sys.exit(1)
+          else:
+              print("\n✅ All claims validated")
+          EOF

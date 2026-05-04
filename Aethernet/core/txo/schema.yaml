@@ -1,0 +1,94 @@
+# TXO (Transaction Object) Schema - Version 1.0
+# CBOR-primary encoding with JSON-secondary for human readability
+# Part of QRATUM Aethernet: Accountable, Reversible Overlay Network
+
+txo:
+  version: "1.0"
+  
+  # Core identifiers
+  txo_id: "uuid-v4"                   # Unique transaction identifier
+  timestamp: "ISO-8601 UTC"           # Transaction creation time
+  epoch_id: "integer"                 # Ledger snapshot epoch (incremented per snapshot)
+  container_hash: "sha3-256"          # Hash of execution container
+  
+  # Sender identity with biokey support
+  sender:
+    identity_type: "operator|node|system"  # Type of sender identity
+    id: "uuid-v4"                          # Sender UUID
+    biokey_present: true|false             # Whether biometric key is used
+    fido2_signed: true|false               # Whether FIDO2 signature present
+    zk_proof: "base64"                     # Optional zero-knowledge proof for biokey privacy
+  
+  # Receiver identity
+  receiver:
+    identity_type: "operator|node|system"  # Type of receiver identity
+    id: "uuid-v4"                          # Receiver UUID
+  
+  # Operation classification
+  operation_class: "GENOMIC|NETWORK|COMPLIANCE|ADMIN"  # Domain-specific operation class
+  reversibility_flag: true|false                       # Can this TXO be rolled back?
+  
+  # Payload structure
+  payload:
+    type: "GENOME|METADATA|CONTROL|AUDIT"  # Payload content type
+    content_hash: "sha3-256"               # Hash of payload content
+    encrypted: true|false                  # Encryption status
+  
+  # Dual control requirement
+  dual_control_required: true|false        # Requires two operator signatures
+  
+  # Cryptographic signatures
+  signatures:
+    - type: "FIDO2|BIOKEY"                 # Signature type
+      signer_id: "uuid-v4"                 # Signer identifier
+      signature: "base64"                  # Base64-encoded signature
+  
+  # Rollback history tracking
+  rollback_history:
+    - from_epoch: "integer"                # Source epoch
+      to_epoch: "integer"                  # Target epoch for rollback
+      reason: "string"                     # Human-readable rollback reason
+  
+  # Audit trail
+  audit_trail:
+    - actor_id: "uuid-v4"                  # Actor performing action
+      action: "string"                     # Action description
+      timestamp: "ISO-8601 UTC"            # Action timestamp
+
+# Encoding specifications
+encoding:
+  primary: "CBOR"                          # Concise Binary Object Representation
+  secondary: "JSON"                        # Human-readable format
+  hash_algorithm: "SHA3-256"               # Cryptographic hash function
+  
+# Zone enforcement (Z0-Z3)
+zone_policy:
+  Z0:                                      # Genesis zone
+    allowed_operations: ["GENESIS"]
+    signature_requirement: "NONE"
+    reversibility: false
+  Z1:                                      # Staging zone
+    allowed_operations: ["GENOMIC", "NETWORK", "COMPLIANCE", "ADMIN"]
+    signature_requirement: "NONE"
+    reversibility: true
+  Z2:                                      # Production zone
+    allowed_operations: ["GENOMIC", "NETWORK", "COMPLIANCE"]
+    signature_requirement: "SINGLE"        # Requires one FIDO2 signature
+    reversibility: true
+  Z3:                                      # Archive zone (air-gapped)
+    allowed_operations: ["AUDIT"]
+    signature_requirement: "DUAL"          # Requires two FIDO2 signatures
+    reversibility: false
+
+# Sovereignty invariants
+invariants:
+  - name: "determinism"
+    description: "Same input TXO must produce same output state"
+  - name: "dual_control"
+    description: "Critical operations require two independent authorizations"
+  - name: "sovereignty"
+    description: "No external dependencies or data egress"
+  - name: "reversibility"
+    description: "Zone-appropriate rollback capability maintained"
+  - name: "auditability"
+    description: "Complete provenance chain for all operations"

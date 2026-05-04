@@ -7,6 +7,7 @@ from typing import Any
 @dataclass
 class Domain:
     """
+
     Represents a domain in the Qubic Meta Library.
 
     Attributes:
@@ -32,6 +33,7 @@ class Domain:
 
     def __post_init__(self):
         """Validate domain attributes."""
+
         if not self.id.startswith("D"):
             raise ValueError(f"Domain ID must start with 'D', got {self.id}")
         if not 1 <= self.tier <= 5:
@@ -47,6 +49,7 @@ class Domain:
 
     def contains_id(self, prompt_id: int) -> bool:
         """
+
         Check if prompt ID belongs to this domain.
 
         Args:
@@ -55,10 +58,12 @@ class Domain:
         Returns:
             True if prompt ID is within domain's range
         """
+
         return self.id_range[0] <= prompt_id <= self.id_range[1]
 
     def to_dict(self) -> dict[str, Any]:
         """Convert domain to dictionary representation."""
+
         return {
             "id": self.id,
             "name": self.name,
@@ -74,6 +79,7 @@ class Domain:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "Domain":
         """Create Domain instance from dictionary."""
+
         return cls(
             id=data["id"],
             name=data["name"],

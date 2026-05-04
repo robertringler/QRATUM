@@ -14,6 +14,7 @@ def run_simulation(
     capture: Optional[RunCapture] = None,
 ) -> Dict[str, Any]:
     """Run transportation simulation."""
+
     rng = np.random.RandomState(seed)
 
     state = {"time": 0.0, "value": 0.0}

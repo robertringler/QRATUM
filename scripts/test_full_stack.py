@@ -22,6 +22,7 @@ REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 def validate_yaml_files() -> bool:
     """Validate YAML syntax in manifests."""
+
     print("Validating YAML files...")
     yaml_files = list(REPO_ROOT.glob("**/*.yaml")) + list(REPO_ROOT.glob("**/*.yml"))
     yaml_files = [f for f in yaml_files if ".git" not in str(f) and "node_modules" not in str(f)]
@@ -59,6 +60,7 @@ def validate_yaml_files() -> bool:
 
 def validate_json_files() -> bool:
     """Validate JSON syntax."""
+
     print("Validating JSON files...")
     json_files = list(REPO_ROOT.glob("**/*.json"))
     json_files = [f for f in json_files if ".git" not in str(f) and "node_modules" not in str(f)]
@@ -78,6 +80,7 @@ def validate_json_files() -> bool:
 
 def validate_terraform() -> bool:
     """Validate Terraform modules if terraform CLI is available."""
+
     print("Validating Terraform modules...")
     try:
         subprocess.run(["terraform", "version"], capture_output=True, check=True)
@@ -117,6 +120,7 @@ def validate_terraform() -> bool:
 
 def validate_python_syntax() -> bool:
     """Validate Python syntax by compiling to bytecode."""
+
     print("Validating Python syntax...")
     py_files = list(REPO_ROOT.glob("**/*.py"))
     py_files = [f for f in py_files if ".git" not in str(f)]
@@ -133,6 +137,7 @@ def validate_python_syntax() -> bool:
 
 def main() -> int:
     """Run all validation checks."""
+
     print("=" * 60)
     print("Full Stack Validation")
     print("=" * 60)

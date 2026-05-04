@@ -7,6 +7,7 @@ from typing import Any
 @dataclass
 class Pipeline:
     """
+
     Represents an execution pipeline for prompt processing.
 
     Attributes:
@@ -36,6 +37,7 @@ class Pipeline:
 
     def __post_init__(self):
         """Validate pipeline attributes."""
+
         if not 1 <= self.phase <= 4:
             raise ValueError(f"Phase must be between 1 and 4, got {self.phase}")
         if self.platform not in ["QuASIM", "QStack", "QNimbus"]:
@@ -47,6 +49,7 @@ class Pipeline:
 
     def is_ready(self, completed_pipelines: set[str]) -> bool:
         """
+
         Check if pipeline is ready to execute.
 
         Args:
@@ -55,16 +58,19 @@ class Pipeline:
         Returns:
             True if all dependencies are completed
         """
+
         return all(dep in completed_pipelines for dep in self.dependencies)
 
     def add_prompt(self, prompt_id: int, is_keystone: bool = False):
         """
+
         Add a prompt to the pipeline.
 
         Args:
             prompt_id: Prompt ID to add
             is_keystone: Whether prompt is a keystone
         """
+
         if prompt_id not in self.prompts:
             self.prompts.append(prompt_id)
         if is_keystone and prompt_id not in self.keystones:
@@ -72,6 +78,7 @@ class Pipeline:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert pipeline to dictionary representation."""
+
         return {
             "id": self.id,
             "name": self.name,
@@ -89,6 +96,7 @@ class Pipeline:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "Pipeline":
         """Create Pipeline instance from dictionary."""
+
         return cls(
             id=data["id"],
             name=data["name"],

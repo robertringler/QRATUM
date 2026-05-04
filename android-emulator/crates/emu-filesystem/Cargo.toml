@@ -1,0 +1,28 @@
+[package]
+name = "emu-filesystem"
+description = "Virtual filesystem - EXT4 emulation, scoped storage, sandboxed mounts"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+log.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+bitflags.workspace = true
+byteorder.workspace = true
+parking_lot.workspace = true
+memmap2.workspace = true
+libc.workspace = true
+nix.workspace = true
+serde = { workspace = true, features = ["derive"] }
+
+[dev-dependencies]
+env_logger.workspace = true
+tempfile = "3.10"
+
+[features]
+default = []
+fuse = []

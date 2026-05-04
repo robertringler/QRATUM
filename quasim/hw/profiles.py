@@ -1,4 +1,5 @@
 """
+
 Reconfiguration profiles for common hardware optimization scenarios.
 
 Profiles define target setpoints and constraints for specific workload types.
@@ -101,6 +102,7 @@ PROFILES = {
 
 class ReconfigurationProfile:
     """
+
     Hardware reconfiguration profile planner.
 
     Translates high-level profiles to device-specific setpoints.
@@ -112,6 +114,7 @@ class ReconfigurationProfile:
     @classmethod
     def load(cls, profile_name: str) -> "ReconfigurationProfile":
         """Load profile by name."""
+
         if profile_name not in PROFILES:
             raise ValueError(f"Unknown profile: {profile_name}. Available: {list(PROFILES.keys())}")
 
@@ -120,6 +123,7 @@ class ReconfigurationProfile:
     @classmethod
     def list_profiles(cls) -> List[str]:
         """List available profile names."""
+
         return list(PROFILES.keys())
 
     def plan(
@@ -130,6 +134,7 @@ class ReconfigurationProfile:
         constraints: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
+
         Generate reconfiguration plan from profile.
 
         Args:
@@ -141,6 +146,7 @@ class ReconfigurationProfile:
         Returns:
             Reconfiguration plan ready for actuator
         """
+
         plan = {
             "profile": self.profile.name,
             "description": self.profile.description,
@@ -186,6 +192,7 @@ class ReconfigurationProfile:
         limits: Any,  # DeviceLimits
     ) -> Dict[str, Any]:
         """Apply policy limits to setpoints."""
+
         limited = setpoints.copy()
 
         # Power limit
@@ -206,6 +213,7 @@ class ReconfigurationProfile:
 
     def _validate_plan(self, plan: Dict[str, Any], policy: Any) -> None:
         """Validate plan against policy (raises PolicyViolation if invalid)."""
+
         for device_id, setpoints in plan["devices"].items():
             policy.validate_operation(
                 device_id=device_id,
@@ -222,6 +230,7 @@ def create_custom_profile(
     constraints: Optional[Dict[str, Any]] = None,
 ) -> Profile:
     """
+
     Create custom reconfiguration profile.
 
     Example:
@@ -233,6 +242,7 @@ def create_custom_profile(
             }
         )
     """
+
     return Profile(
         name=name,
         description=description,

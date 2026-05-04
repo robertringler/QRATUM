@@ -35,6 +35,7 @@ class TestTireDataAdapter:
 
     def test_extract_visualization_data(self):
         """Test data extraction from simulation result."""
+
         from quasic_viz.adapters.tire_data_adapter import TireDataAdapter
 
         result = MockSimulationResult()
@@ -47,6 +48,7 @@ class TestTireDataAdapter:
 
     def test_extract_thermal_map_synthetic(self):
         """Test synthetic thermal map generation."""
+
         from quasic_viz.adapters.tire_data_adapter import TireDataAdapter
 
         result = MockSimulationResult()
@@ -57,6 +59,7 @@ class TestTireDataAdapter:
 
     def test_extract_stress_distribution_synthetic(self):
         """Test synthetic stress distribution generation."""
+
         from quasic_viz.adapters.tire_data_adapter import TireDataAdapter
 
         result = MockSimulationResult()
@@ -67,6 +70,7 @@ class TestTireDataAdapter:
 
     def test_normalize_field_data_upsample(self):
         """Test field data upsampling."""
+
         from quasic_viz.adapters.tire_data_adapter import TireDataAdapter
 
         data = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
@@ -76,6 +80,7 @@ class TestTireDataAdapter:
 
     def test_normalize_field_data_downsample(self):
         """Test field data downsampling."""
+
         from quasic_viz.adapters.tire_data_adapter import TireDataAdapter
 
         data = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0])
