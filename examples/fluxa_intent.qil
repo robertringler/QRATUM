@@ -1,0 +1,40 @@
+# FLUXA Supply Chain Intent Example
+# QIL for Route Optimization
+
+vertical: FLUXA
+operation: route_optimization
+user_id: logistics_manager_001
+session_id: fluxa_session_404
+
+parameters:
+  depot:
+    lat: 40.7128
+    lon: -74.0060
+    name: NYC_Warehouse
+  
+  locations:
+    - id: CUST_A
+      lat: 40.7589
+      lon: -73.9851
+      demand: 15
+    - id: CUST_B
+      lat: 40.7306
+      lon: -73.9352
+      demand: 20
+    - id: CUST_C
+      lat: 40.6782
+      lon: -73.9442
+      demand: 12
+    - id: CUST_D
+      lat: 40.7580
+      lon: -73.9855
+      demand: 18
+  
+  num_vehicles: 2
+  vehicle_capacity: 40
+  
+metadata:
+  company: Logistics_Corp
+  region: new_york_metro
+  optimization_goal: minimize_distance
+  date: 2024-12-21

@@ -1,0 +1,33 @@
+{
+  "name": "Energy - Grid Load Balancing Optimization",
+  "description": "Smart grid load distribution with renewable integration",
+  "vertical": "energy",
+  "system": "Regional Transmission Grid",
+  "optimization_target": "Load balance with renewable penetration",
+  "targets": {
+    "target_load_balance_pct": 95.0,
+    "target_renewable_pct": 40.0,
+    "target_frequency_hz": 60.0,
+    "target_voltage_stability": 0.98
+  },
+  "tolerances": {
+    "balance_tolerance_pct": 3.0,
+    "renewable_tolerance_pct": 5.0,
+    "frequency_tolerance_hz": 0.05,
+    "voltage_tolerance": 0.03
+  },
+  "weights": {
+    "load_balance": 0.35,
+    "renewable": 0.25,
+    "frequency": 0.25,
+    "voltage": 0.15
+  },
+  "alpha_bounds": [0.2, 0.8],
+  "compliance_tags": ["NERC CIP", "IEEE 1547", "FERC Order 2222", "IEC 61850"],
+  "metadata": {
+    "grid_scale": "Regional (5-10 GW capacity)",
+    "renewable_sources": "Solar (60%), Wind (40%)",
+    "classification": "UNCLASSIFIED // PUBLIC",
+    "note": "Simplified grid model for demonstration. Not for operational use."
+  }
+}

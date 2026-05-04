@@ -1,0 +1,26 @@
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#002b36', 'primaryBorderColor': '#268bd2', 'primaryTextColor': '#fdf6e3',
+  'lineColor': '#268bd2', 'tertiaryColor': '#073642'
+}}}%%
+graph LR
+  A["Client SDKs"] --> B["Circuit Compiler"]
+  B --> C["Tensor Planner"]
+  C --> D["GPU Scheduler"]
+  D --> E["Grace CPU ↔ Blackwell GPU"]
+  E --> F["Kubernetes / GitOps / Security"]
+  F --> G["Observability (Grafana/Prometheus/Thanos)"]
+  G --> H["Φ_QEVF Verifier"]
+  H --> I["QMP/QEX Economic Sandbox"]
+  I --> J["Valuation Dashboard / Market Layer"]
+
+  subgraph "QuNimbus v6 Safety Control"
+    K["Dry-Run Validator"]
+    L["Query ID Audit Chain"]
+    M["Strict Validation Mode"]
+    N["Policy Guard"]
+  end
+  F --> K
+  K --> L
+  L --> M
+  M --> N
+  N --> H

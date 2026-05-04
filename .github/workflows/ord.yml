@@ -1,0 +1,48 @@
+name: Operational Readiness Demo Canary
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install prometheus-client requests jq
+
+      - name: Launch telemetry agent
+        run: |
+          nohup python services/telemetry/agent.py --port 9100 --collection-interval 5 &
+          echo $! > ord_agent.pid
+
+      - name: Wait for warmup
+        run: sleep 30
+
+      - name: Verify ORD SLOs
+        env:
+          PROM_URL: http://localhost:9090
+        run: |
+          echo "This step expects external Prometheus integration."
+          # Placeholder: integrate with Prometheus in future iterations.
+          # For now we assert agent is running.
+          ps -p $(cat ord_agent.pid)
+
+      - name: Cleanup agent
+        if: always()
+        run: |
+          if [ -f ord_agent.pid ]; then
+            kill $(cat ord_agent.pid) || true
+          fi

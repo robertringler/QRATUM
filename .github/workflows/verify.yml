@@ -1,0 +1,54 @@
+name: Verify Claims & Compliance
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install verification tool
+        run: |
+          pip install -e tools/verify
+      
+      - name: Run verification checks
+        run: |
+          python -m quasim_verify.cli --config tools/verify/examples/verify.config.yaml --verbose
+        continue-on-error: true
+        id: verify
+      
+      - name: Upload verification report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verification-report
+          path: |
+            artifacts/verify/report.json
+            artifacts/verify/report.sarif
+            artifacts/verify/audit.sha256chain
+          retention-days: 30
+      
+      - name: Upload SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: artifacts/verify/report.sarif
+          category: quasim-verify
+      
+      - name: Check verification result
+        if: steps.verify.outcome == 'failure'
+        run: |
+          echo "::error::Verification checks failed. See report for details."
+          exit 1

@@ -1,883 +1,412 @@
-<div align="center">
-  <img src="docs/assets/quasim_logo_light.svg" alt="QuASIM Logo" width="300"/>
-  
-  # QuASIM
-  ### Quantum-Inspired Autonomous Simulation
-  
-  [![Build Status](https://github.com/robertringler/QuASIM/workflows/CI/badge.svg)](https://github.com/robertringler/QuASIM/actions)
-  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-  [![Compliance](https://img.shields.io/badge/CMMC-2.0%20L2-green.svg)](docs/compliance/)
-  [![DO-178C](https://img.shields.io/badge/DO--178C-Level%20A-green.svg)](docs/certification/)
-  
-  **Enterprise-Grade Quantum Simulation Platform for Aerospace & Defense**
-</div>
+# 1. QRATUM
+
+**A modular, deterministic, traceable execution framework for constraint-governed multi-agent computation, with a verifiable Merkle-anchored execution ledger and a plugin-based subsystem architecture.**
+
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/status-research%2Fbeta-yellow.svg)](#12-roadmap)
 
 ---
 
-# QuASIM — Quantum-Inspired Autonomous Simulation
+## 2. System Overview
 
-![Build](https://img.shields.io/badge/build-passing-brightgreen)
-![Coverage](https://img.shields.io/badge/coverage-94%25-brightgreen)
-![License](https://img.shields.io/badge/license-Apache%202.0-blue)
-![Compliance](https://img.shields.io/badge/compliance-98.75%25-success)
-![SLA](https://img.shields.io/badge/SLA-99.95%25-blue)
+QRATUM is a Python-first computational framework that composes three properties most multi-agent systems treat as optional:
 
-**Hybrid quantum-classical runtime for aerospace certification, defense compliance, and enterprise-scale simulation.**
+1. **Constraint-governed execution** — every state transition is gated by an explicit constraint algebra; transitions that would violate an invariant are rejected, not retried silently.
+2. **Bit-exact determinism** — given identical inputs and configuration, every run produces byte-identical outputs and an identical execution trace. No wall-clock timestamps, no global RNG, no dictionary-order dependence in canonical encoders.
+3. **Cryptographic traceability** — every accepted step is appended to a Merkle-anchored ledger keyed by canonical-JSON SHA-256 over the step payload, so a third party can replay the run and verify each entry independently.
 
----
+It exists because typical agent stacks freely interleave LLM calls, stochastic samplers, and side-effecting tools without a verification layer. That is acceptable for exploratory work but unacceptable when the same pipeline must be (a) auditable after the fact, (b) reproducible across machines, and (c) safe to extend with new agents or new physics modules without breaking guarantees the rest of the system relies on. QRATUM is the substrate that makes those three things hold simultaneously.
 
-## 🛰️ QuASIM × SpaceX/NASA Pilot Track — Status
-
-| Workflow | Status | Description |
-|-----------|---------|-------------|
-| **Demo Validation** | [![spacex-demo](https://github.com/robertringler/QuASIM/actions/workflows/spacex-demo.yml/badge.svg?branch=pilot/spacex-nasa)](https://github.com/robertringler/QuASIM/actions/workflows/spacex-demo.yml) | Runs deterministic Phase-III RL demo (Falcon 9 + Starship shaping) |
-| **Release Automation** | [![pilot-release](https://github.com/robertringler/QuASIM/actions/workflows/release-pilot.yml/badge.svg?branch=pilot/spacex-nasa)](https://github.com/robertringler/QuASIM/actions/workflows/release-pilot.yml) | Generates templated notes & publishes pilot releases automatically |
+The system targets a research-and-production hybrid envelope: rigorous enough that a falsification protocol can be applied to its claims, modular enough that experimental subsystems (plasma reconnection control, biokey-derived signing, trajectory controllers) live as plugins on the same spine.
 
 ---
 
-### 📦 Latest Pilot Release
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/robertringler/QuASIM?include_prereleases&label=Latest%20Pilot%20Release)](https://github.com/robertringler/QuASIM/releases)
+## 3. Core Design Principles
 
-### 🧠 Key Metrics
-[![Deterministic](https://img.shields.io/badge/Deterministic-Yes-brightgreen)]()  
-[![RMSE](https://img.shields.io/badge/RMSE-%3C2%25-blue)]()  
-[![Fidelity](https://img.shields.io/badge/Fidelity-%E2%89%A50.97-purple)]()
+| Invariant | What it means concretely | Where it is enforced |
+|---|---|---|
+| **Determinism** | No `time.time()`, no global RNG, no unordered iteration in any path that influences output. All randomness is seeded and explicit. | `qagents/control_geometry/`, `qagents/mvri/`, `qratum_framework/trace.py` (canonical-JSON, sorted keys, metadata excluded from hashes). |
+| **Traceability** | Every accepted step yields a `TraceEntry` with the prior hash, payload hash, and verdict. The chain is appendable but tamper-evident. | `qratum_framework/trace.py` (`UnifiedTraceEntry`, `MerkleLedger`). |
+| **Reproducibility** | Two runs with identical config and seed produce identical ledgers and identical hash chains. CI compares hashes, not floats. | Profiles in `qratum_framework/config.py` (`quick`, `medium`, `strong`, `full_fast`, `full_report`). |
+| **Modular isolation** | Subsystems communicate through typed adapters; a misbehaving plugin cannot corrupt the spine, only its own trace entries. | `qagents/adapters/`, `OperatorBackend` Protocol in `qratum_framework/operator.py`. |
+| **Execution safety** | Failure modes are named (Type I–IV in CIIR–CRS–RIC), so refusal to act is a first-class outcome, not an exception leak. The executor never raises into user code. | `qagents/ciir_crs_ric/failures.py`, `qagents/ciir_crs_ric/executor.py` (9-step `run_step`, never raises). |
+| **Verifiable computation** | Claims about behavior are stated as falsifiable verdicts (A / A0 / B) and screened by a published protocol. | `qratum_framework/falsifier.py`, `quasim/ciir/multi_qubit/analysis/falsification.py`. |
 
----
-
-**Branch:** `pilot/spacex-nasa`  
-**Runtime:** CPU-only (< 60 s)  |  **Artifacts:** JSON + Base64 PNG  |  **Compliance:** DO-178C Level A | NIST 800-53 | CMMC 2.0 L2  
-
----
-
-## Executive Summary
-
-QuASIM is a production-grade quantum simulation platform engineered for regulated industries requiring aerospace certification (DO-178C Level A), defense compliance (NIST 800-53/171, CMMC 2.0 L2, DFARS), and deterministic reproducibility. Built on a hybrid quantum-classical runtime with NVIDIA cuQuantum acceleration, QuASIM delivers GPU-accelerated tensor network simulation, autonomous kernel evolution (Phase III RL-driven optimization), and multi-cloud Kubernetes orchestration with 99.95% SLA.
-
-The platform uniquely combines quantum circuit simulation with enterprise infrastructure—GitOps automation (ArgoCD), comprehensive observability (Prometheus/Grafana/Loki), and security hardening (Vault, OPA Gatekeeper, Cilium CNI). QuASIM has been validated against real aerospace telemetry (SpaceX Falcon 9, NASA Orion/SLS) with <2% RMSE and maintains 100% MC/DC coverage on safety-critical paths.
-
-Target customers include aerospace primes (Lockheed Martin, Northrop Grumman, Boeing), defense contractors requiring CMMC 2.0 L2 certification, and Fortune 500 enterprises across pharmaceuticals, financial services, and manufacturing. QuASIM's certification moat, federal/DIB pipeline readiness, and autonomous optimization create defensible competitive advantages in the quantum-classical convergence market.
+These invariants are not aspirational. They are the gating conditions for the test suites under `tests/test_qratum_framework.py`, `tests/test_ciir_crs_ric_strict.py`, `tests/test_mvri.py`, `tests/test_realworld_bridge.py`, `tests/test_control_geometry.py`, and `tests/test_ric_*.py`.
 
 ---
 
-## Key Highlights
+## 4. Architecture Breakdown
 
-- **Autonomous Kernel Evolution (Phase III)**: Reinforcement learning-driven optimization with runtime introspection, energy-adaptive regulation (30%+ power savings), and formal verification via SMT constraints for mission-critical applications.
-- **cuQuantum Acceleration**: NVIDIA cuQuantum integration for hardware-accelerated tensor network contraction with FP8/FP16/FP32/FP64 precision modes, achieving 10-100× speedups over CPU implementations.
-- **Deterministic Reproducibility**: <1μs seed replay drift tolerance for certification compliance, enabling repeatable Monte Carlo campaigns with 1,024+ trajectory simulations at ≥0.97 fidelity.
-- **Multi-Cloud Kubernetes**: Production-ready EKS/GKE/AKS deployment with Karpenter autoscaling, GPU node scheduling (NVIDIA/AMD), cross-region failover, and 99.95% uptime SLA.
-- **Comprehensive Observability**: Integrated Prometheus/Grafana/Loki/Tempo stack with real-time dashboards, distributed tracing, and alerting for proactive incident response.
-- **GitOps Automation**: ArgoCD app-of-apps pattern for declarative infrastructure management, automated sync, and rollback capabilities across development/staging/production environments.
-- **Fortune 500 Integration Index (QII)**: Structured go-to-market analysis covering 500 companies across 15 technical/business dimensions, identifying 75 high-fit adoption candidates (QII ≥ 0.70).
-- **Aerospace Certification Posture**: DO-178C Level A compliance with validated mission data (SpaceX, NASA), 100% MC/DC coverage, and continuous certification CI/CD pipeline enforcing zero regression tolerance.
+```
+                                qratum_framework/
+                            ┌────────────────────────┐
+                            │  Operator (spine)      │
+                            │  ├─ OperatorBackend ◄──┼─── pluggable
+                            │  ├─ MerkleLedger       │
+                            │  ├─ Falsifier (A/A0/B) │
+                            │  └─ Health / Config    │
+                            └──────────┬─────────────┘
+                                       │ run_step
+                       ┌───────────────┼───────────────────────────┐
+                       ▼               ▼                           ▼
+              ┌────────────────┐  ┌────────────────┐      ┌────────────────────┐
+              │  CIIR–CRS–RIC  │  │ Reality        │      │ Domain plugins     │
+              │  control core  │  │ Interface      │      │ (plasma, VITRA-E0, │
+              │  (qagents/...) │  │ Controller     │      │  trajectory, ...)  │
+              └───────┬────────┘  └───────┬────────┘      └─────────┬──────────┘
+                      │                   │                         │
+                      ▼                   ▼                         ▼
+              ┌────────────────┐  ┌────────────────┐      ┌────────────────────┐
+              │ MVRI           │  │ RIC adapters   │      │ Real-world bridge  │
+              │ (state/inj.)   │  │ (qratum/ciir/  │      │ (sensors/actuators)│
+              │                │  │  crs)          │      │                    │
+              └────────────────┘  └────────────────┘      └────────────────────┘
+                                                                    │
+                                                                    ▼
+                                                           ┌──────────────────┐
+                                                           │  Trace ledger    │
+                                                           │  (Merkle chain)  │
+                                                           └──────────────────┘
+```
 
----
+### 3.1 Control layer — CIIR–CRS–RIC
 
-## Current Validation Snapshot
-- **Modules validated:** 68 of 75 across runtime, kernels, CI/CD, and deployment.
-- **Kernels passing full suite:** 6 CUDA + 62 Python with RMSE/KL within thresholds.
-- **Coverage:** 94.0% line | 92.0% branch.
-- **Environments:** CUDA 12.1, ROCm 5.6, CPU.
+The deterministic execution core. Three coupled modules:
 
-See the full report: [Validated Modules & Kernels](docs/validation/validated_kernels_report.md).
+- **CIIR** (`qagents/ciir_crs_ric/ciir.py`, `qagents/framework/ciir.py`) — Constraint-governed Iterated Inference. Defines `State`, `Constraint`, the satisfaction predicate `phi`, the invariant predicate `Inv`, and the observer map `Omega` (which redacts internal-only fields).
+- **CRS** (`qagents/ciir_crs_ric/crs.py`, `qagents/framework/crs.py`) — Constrained Reactive System. Pure transition function `T` plus its constrained form `T_C` with explicit pre- and post-`phi` checks. Action sets are enumerated, never inferred.
+- **RIC** (`qagents/ciir_crs_ric/ric.py`, `qagents/reality_interface.py`, `qagents/reality_interface_v2.py`) — Reality Interface Controller. A perception → model → action loop with a strict 4-key output contract (`intent_interpretation`, `selected_action`, `predicted_outcome`, `fallback_plan`). RIC v2 adds k-step rollouts, seeded bounded perturbations, anti-deadlock heuristics.
 
----
+The `Operator` (`qratum_framework/operator.py`) wraps these via the `OperatorBackend` Protocol; the default `StrictCIIRBackend` delegates to `qagents.ciir_crs_ric.executor.run_step`, a 9-step pipeline that never raises.
 
-## IP Highlights
-- Hybrid quantum–classical scheduler with reversible kernel checkpoints.
-- Tensor-network contraction heuristics with adaptive error budgets.
-- Safety validation pipeline with enforceable approvals and rate-limiting.
-- Tool-qualification automation hooks for DO-178C/DO-330.
-- Autonomous self-evolving kernel architecture with RL optimization.
-- Anti-holographic tensor compression achieving 10-50× compression ratios.
+### 3.2 Orchestration layer — multi-agent coordination
 
-Full list and triage: [Patentables](docs/ip/patentables.md).
+- **RIC adapters** (`qagents/adapters/{qratum,ciir,crs}.py`) translate between the controller's abstract action space and three concrete domain encodings (OSR/CEI/SF/HRD; loss/violation; CRSI). Each adapter ships a `Simulator`, a `Proposer`, and a `make_<sys>_controller` builder.
+- **CIIR↔RIC↔LLM bridge** (`qagents/ciir_ric_bridge.py`, `qagents/llm_backends.py`) maps controller snapshots to world-state inputs and action verdicts to learning-rate signals; LLM backends (OpenAI, Anthropic, Gemini, Local, plus a `DeterministicLLM`) fall back deterministically when no SDK or key is present.
+- **Trajectory controller** (`qagents/trajectory_controller/`) plans, predicts, validates, and executes numeric action vectors `[type_code, target_index, magnitude, seed]` over the real-world bridge and MVRI.
 
----
+### 3.3 State / ledger system
 
-## Market Valuation (as of 2025-11-08)
-- **P50 Enterprise Value:** $13,909,925 (USD)
-- **Range (P10–P90):** $5,093,237 – $28,179,939
-- Scenario DCFs and methodology: [Market Valuation Report](docs/valuation/market_valuation.md).
+- **Trace** (`qratum_framework/trace.py`) — `UnifiedTraceEntry` + `MerkleLedger`. Hashing uses canonical JSON (sorted keys, no whitespace) over a payload that explicitly excludes the `metadata` field, so cosmetic edits never alter the chain. `iter_with_hashes` provides a public audit cursor.
+- **MVRI** (`qagents/mvri/`) — Minimal Viable Reality Injector. Typed immutable `State`, entropy `H`, invariant `Inv`, the action gate `validate_action`, and the constraint gate (`ER/CS/SS/IC/AUD` predicates) feed every accepted injection into the loop trace.
+- **Real-world bridge** (`qagents/realworld_bridge/`) — typed `Sensor`/`Actuator` ABCs, an EMA-based `StateObserver` with a canonical nodes↔edges bijection, a four-stage safety gate (`MAG → TGT → ROC → MVR`), and a strict 9-step `ControlLoop`.
 
-## 📈 Valuation Dashboard
+### 3.4 Plugin / module system
 
-Interactive valuation analytics and visualizations for the Q1 2026 pre-revenue update. [View Interactive Dashboard](docs/valuation_dashboard.html)
+A subsystem becomes a QRATUM plugin by satisfying three contracts:
 
-### DCF Valuation Analysis
-![DCF Valuation](docs/assets/valuation_dcf.png)
+1. Implement `OperatorBackend` (one method, `run_step`).
+2. Emit `TraceEntry`-compatible dictionaries.
+3. Register failure modes (subclasses of the named exceptions in `qagents/ciir_crs_ric/failures.py`).
 
-### Sensitivity Analysis
-![Sensitivity Heatmap](docs/assets/valuation_heatmap.png)
+Existing plugins demonstrate the pattern:
 
-### Monte Carlo Distribution
-![Monte Carlo Waterfall](docs/assets/valuation_waterfall.png)
+| Plugin | Path | Domain |
+|---|---|---|
+| Plasma reconnection control | `quasim/ciir/plasma/` | 2D RMHD ψ–ω, X/O-points, plasmoid scaling, controller |
+| CIIR multi-qubit falsification | `quasim/ciir/multi_qubit/analysis/` | projector derivation, A/A0/B verdicts |
+| VITRA-E0 sovereign genomics | `qrVITRA/merkler-static/` (Rust) | biokey, FIDO2 dual-signature, ZKP |
+| Control geometry | `qagents/control_geometry/` | sensitivity, reachability, controllability rank |
 
----
+### 3.5 CLI + API
 
-[![NIST 800-53](https://img.shields.io/badge/NIST%20800--53-Rev%205%20HIGH-blue)](DEFENSE_COMPLIANCE_SUMMARY.md)
-[![CMMC Level 2](https://img.shields.io/badge/CMMC-Level%202%20Certified-green)](DEFENSE_COMPLIANCE_SUMMARY.md)
-[![DO-178C](https://img.shields.io/badge/DO--178C-Level%20A-orange)](DEFENSE_COMPLIANCE_SUMMARY.md)
-[![Compliance Status](https://img.shields.io/badge/Compliance-98.75%25-brightgreen)](COMPLIANCE_STATUS_CHECKLIST.md)
-[![Validation](https://img.shields.io/badge/Validated-68%2F75%20modules-brightgreen)](docs/validation/validated_kernels_report.md)
-
----
-
-## 🛰️ QuASIM × SpaceX/NASA Pilot Track — Status
-
-| Workflow | Status | Description |
-|-----------|---------|-------------|
-| **Demo Validation** | [![spacex-demo](https://github.com/robertringler/QuASIM/actions/workflows/spacex-demo.yml/badge.svg?branch=pilot/spacex-nasa)](https://github.com/robertringler/QuASIM/actions/workflows/spacex-demo.yml) | Runs deterministic Phase-III RL demo (Falcon 9 + Starship shaping) |
-| **Release Automation** | [![pilot-release](https://github.com/robertringler/QuASIM/actions/workflows/release-pilot.yml/badge.svg?branch=pilot/spacex-nasa)](https://github.com/robertringler/QuASIM/actions/workflows/release-pilot.yml) | Generates templated notes & publishes pilot releases automatically |
-
-### 📦 Latest Pilot Release
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/robertringler/QuASIM?include_prereleases&label=Latest%20Pilot%20Release)](https://github.com/robertringler/QuASIM/releases)
-
-### 🧠 Key Metrics
-[![Deterministic](https://img.shields.io/badge/Deterministic-Yes-brightgreen)]()  
-[![RMSE](https://img.shields.io/badge/RMSE-%3C2%25-blue)]()  
-[![Fidelity](https://img.shields.io/badge/Fidelity-%E2%89%A50.97-purple)]()
-
-**Branch:** `pilot/spacex-nasa`  
-**Runtime:** CPU-only (< 60 s)  |  **Artifacts:** JSON + Base64 PNG  |  **Compliance:** DO-178C Level A | NIST 800-53 | CMMC 2.0 L2
+- **CLI**: `qratum` (entry point declared in `pyproject.toml` as `qratum = qratum_framework.cli:main`). Subcommands: `run`, `simulate`, `ledger`, `falsify`, `verify`.
+- **Programmatic API**: `from qratum_framework import Operator, MerkleLedger, FalsificationVerdict, PROFILES, check_health, check_readiness`. Adapter builders are re-exported from `qagents.adapters` and `qagents`.
 
 ---
 
-## Compliance & Certification
+## 5. Data / Execution Flow
 
-QuASIM is **COMPLIANT** with defense, aerospace, and industry standards:
-- 📋 [Compliance Assessment Index](COMPLIANCE_ASSESSMENT_INDEX.md) - **Start here** for navigation
-- ✅ [Defense Compliance Summary](DEFENSE_COMPLIANCE_SUMMARY.md) - Comprehensive assessment (26KB)
-- ✅ [Compliance Status Checklist](COMPLIANCE_STATUS_CHECKLIST.md) - Quick reference (6.5KB)
-- ✅ [Compliance Documentation](README_COMPLIANCE.md) - Framework details
+```
+INPUT (CLI args / API call / config profile)
+   │
+   ▼
+[ 1 ] Profile resolution           qratum_framework/config.py → PROFILES[name]
+[ 2 ] Health / readiness check     qratum_framework/health.py
+[ 3 ] Operator construction        Operator(backend=StrictCIIRBackend(), ledger=MerkleLedger())
+   │
+   ▼
+[ 4 ] Per-step loop (Operator.run_step):
+        ├── 4a parse_intent          (RIC)
+        ├── 4b build Observation     (RIC; not raw State — Omega-filtered)
+        ├── 4c select_action         (RIC + adapter Proposer)
+        ├── 4d enumerate admissible  (CRS)
+        ├── 4e pre-phi check         (CIIR Constraint algebra)
+        ├── 4f apply T_C             (CRS: pure transition under constraint)
+        ├── 4g post-phi + Inv check  (CIIR)
+        ├── 4h validate_action gate  (MVRI / safety_gate)
+        └── 4i emit TraceEntry       (verdict ∈ {accept, reject(Type I–IV), hold})
+   │
+   ▼
+[ 5 ] Ledger append                  MerkleLedger.append(entry)
+        canonical_json(payload) → SHA-256 → linked to prev_hash
+[ 6 ] Falsification screen (opt.)    Falsifier → {A, A0, B}
+   │
+   ▼
+OUTPUT
+   ├── ledger.jsonl  (append-only, replayable)
+   ├── final state   (Omega-filtered)
+   └── verdict       (FalsificationVerdict)
+```
 
-**Overall Status:** 98.75% compliant across 10+ frameworks | [View Full Assessment →](COMPLIANCE_ASSESSMENT_INDEX.md)
+Inputs never bypass the constraint algebra. Failures short-circuit at the earliest gate that detects them, are typed (`Type I` precondition / `Type II` postcondition / `Type III` invariant / `Type IV` admissibility), and are recorded in the ledger with the same hashing discipline as accepted steps. A rejected step is part of the audit trail, not noise.
 
-## Automated Code Quality & PR Management
+---
 
-QuASIM features a comprehensive automated code quality and pull request management system:
-- 🤖 **Automated Code Review**: Scans and fixes code quality issues automatically
-- 🔧 **Auto-Fix on PR**: Applies ruff, black, and isort fixes directly to pull requests
-- 🔀 **Auto-Merge**: Safely merges PRs that meet all quality and CI criteria
-- 🛡️ **Security Scanning**: Automated secret detection and vulnerability scanning
-- 📊 **Code Quality**: Reduced lint errors by 67% through automated fixes
+## 6. Key Features
 
-**Documentation:**
-- 📖 [Auto-Merge System Guide](docs/AUTO_MERGE_SYSTEM.md) - Complete system documentation
-- 📊 [Code Quality Summary](docs/CODE_QUALITY_SUMMARY.md) - Analysis and metrics
+- **Deterministic execution** — canonical-JSON hashing, seeded RNG, no global state; bit-exact reruns.
+- **Multi-agent coordination** — RIC adapters bridge a single controller to multiple domain encodings (qratum / CIIR / CRS) without state aliasing.
+- **Audit trail** — every step (accepted *and* rejected) is committed to a Merkle-linked ledger; tamper detection is O(1) per entry on replay.
+- **Runtime validation** — four-stage safety gate (`MAG → TGT → ROC → MVR`), constraint algebra pre/post-checks, observer-state invariants.
+- **Extensibility** — plugin contract is one Protocol method (`run_step`) plus typed trace entries; no central registry to fight.
+- **Falsification protocol** — verdicts A / A0 / B with a published 5-step screen (baseline / null / signal / artifacts / verdict).
+- **Fault isolation** — failures are typed, never silent; the operator catches and records them, the loop never raises into caller code.
+- **Health and readiness probes** — `check_health()` and `check_readiness()` for orchestration layers.
+- **CLI + programmatic parity** — every CLI subcommand is a thin shell over a public API call.
+- **Profiles** — `quick`, `medium`, `strong`, `full_fast`, `full_report` cover the latency / coverage trade space without ad-hoc flags.
 
-## QuASIM — Live Run Capture
+---
 
-<video src="artifacts/flows/quasim_run_latest.mp4" width="100%" controls muted playsinline>
-  <source src="artifacts/flows/quasim_run_latest.mp4" type="video/mp4" />
-  <img src="artifacts/flows/quasim_run_latest.gif" alt="QuASIM live run GIF" />
-</video>
+## 7. Installation
 
-Every QuASIM simulation automatically captures an MP4 + GIF visualization showing the evolution of control parameters, objective values, and quantum metrics in real-time. The latest run is always available above, with full history stored in `artifacts/flows/`.
+### Prerequisites
 
-## Quick Start
+- Python **3.10+**
+- `pip` ≥ 23
+- (Optional) Rust **1.75+** with `cargo` for the `qrVITRA/merkler-static/` and `Aethernet/` crates.
+- (Optional) NumPy / SciPy for the plasma reconnection plugin (`quasim/ciir/plasma/`).
 
-### Docker Compose (Full Stack)
+### Install
 
 ```bash
-# Build and start all services
-docker-compose up --build
+git clone https://github.com/robertringler/QRATUM.git
+cd QRATUM
 
-# Access applications
-# - Frontend:    http://localhost:8080
-# - Backend API: http://localhost:8000
-# - Health:      http://localhost:8000/health
-# - Metrics:     http://localhost:8000/metrics
+python -m venv .venv
+source .venv/bin/activate      # POSIX
+# .venv\Scripts\activate       # Windows
 
-# Stop services
-docker-compose down
+pip install -e .
 ```
 
-### Local Development
+This exposes the `qratum` console script and the `qratum_framework` and `qagents` packages.
+
+### Optional Rust components
 
 ```bash
-# Clone repository
-git clone https://github.com/robertringler/QuASIM.git
-cd QuASIM
+# Genomics / biokey + ZKP + FIDO2 dual-signature
+cd qrVITRA/merkler-static && ./build.sh && cargo test
 
-# Install dependencies
-pip install -r docker/requirements.txt
-
-# Run tests
-make test
-
-# Run linters
-make lint
-
-# Format code
-make fmt
+# Networking primitives
+cd Aethernet && cargo test
 ```
 
-### Health & Metrics Endpoints
+### Verifying the install
 
 ```bash
-# Health check
-curl http://localhost:8000/health
-
-# Prometheus metrics
-curl http://localhost:8000/metrics
-
-# Readiness probe
-curl http://localhost:8000/ready
+PYTHONPATH=. python -m pytest tests/test_qratum_framework.py --override-ini="addopts=" -q
 ```
 
-### Examples
+A clean run reports the unified-spine test count and exits with code 0.
+
+---
+
+## 8. Usage Examples
+
+### 7.1 CLI
 
 ```bash
-# Fortune 500 analysis
-python3 analysis/run_fortune500_analysis.py
+# Run a deterministic controller pass under a named profile
+qratum run --profile medium --seed 42 --ledger out/ledger.jsonl
 
-# Simple quantum circuit simulation
-python3 examples/roadmap_integration_demo.py
+# Replay and verify a previously emitted ledger
+qratum verify --ledger out/ledger.jsonl
 
-# Phase III autonomous evolution (10 generations, population 20)
-python3 scripts/run_phase3_cycle.py --generations 10 --population 20
+# Apply the falsification screen to the resulting trace
+qratum falsify --ledger out/ledger.jsonl
+
+# Pure simulation (no domain plugin, useful for CI smoke)
+qratum simulate --steps 100 --seed 42
+
+# Inspect ledger entries
+qratum ledger --ledger out/ledger.jsonl --head 10
+```
+
+### 7.2 Programmatic API
+
+```python
+from qratum_framework import (
+    Operator, MerkleLedger, PROFILES, FalsificationVerdict,
+    check_health, check_readiness,
+)
+from qratum_framework.operator import StrictCIIRBackend
+
+assert check_health().ok and check_readiness().ok
+
+ledger = MerkleLedger()
+op = Operator(backend=StrictCIIRBackend(), ledger=ledger, profile=PROFILES["medium"])
+
+for step in range(100):
+    entry = op.run_step(input_payload={"step": step, "seed": 42})
+    if entry.verdict.kind == "reject":
+        # Typed failure modes: Type I–IV
+        print("rejected:", entry.verdict.failure_type, entry.verdict.reason)
+
+# Replay-style audit
+for prev_hash, payload_hash, entry in ledger.iter_with_hashes():
+    assert entry.prev_hash == prev_hash
+
+# Falsification screen
+verdict: FalsificationVerdict = op.falsify(ledger)
+assert verdict in {FalsificationVerdict.A, FalsificationVerdict.A0, FalsificationVerdict.B}
+```
+
+### 7.3 Custom backend (plugin)
+
+```python
+from qratum_framework.operator import Operator, OperatorBackend
+from qratum_framework.trace import UnifiedTraceEntry, MerkleLedger
+
+class MyBackend(OperatorBackend):
+    def run_step(self, state, action, *, profile):
+        # ... pure, deterministic, no global RNG ...
+        return UnifiedTraceEntry(
+            step=state.step + 1,
+            payload={"action": action, "result": ...},
+            metadata={"backend": "MyBackend"},  # excluded from hashing
+        )
+
+op = Operator(backend=MyBackend(), ledger=MerkleLedger())
 ```
 
 ---
 
-## 🎯 Vertical Industry Demos
+## 9. Configuration Model
 
-QuASIM provides production-ready demo packages for 8 regulated industry verticals, each with complete CLI, dashboards, tests, and compliance documentation:
+### 8.1 Hierarchy
 
-### Available Demos
+Resolution order (highest precedence first):
 
-| Vertical | Target Accounts | Key Features |
-|----------|----------------|--------------|
-| 🚀 **[Aerospace](quasim/demos/aerospace/)** | SpaceX, Boeing, Lockheed Martin | Hot-staging & MECO optimization |
-| 📡 **[Telecom](quasim/demos/telecom/)** | AT&T, Verizon, Nokia | RAN slice placement, traffic forecasting |
-| 💰 **[Finance](quasim/demos/finance/)** | JPMorgan, Goldman Sachs, BlackRock | Risk modeling, liquidity stress testing |
-| ⚕️ **[Healthcare](quasim/demos/healthcare/)** | Pfizer, J&J, Mayo Clinic | Adaptive trial arm allocation |
-| ⚡ **[Energy](quasim/demos/energy/)** | Shell, ExxonMobil, NextEra | Grid dispatch with renewables |
-| 🚛 **[Transportation](quasim/demos/transportation/)** | UPS, FedEx, Tesla | Fleet routing with stochastic ETA |
-| 🏭 **[Manufacturing](quasim/demos/manufacturing/)** | Siemens, GE, Toyota | Predictive maintenance & throughput |
-| 🌾 **[Agritech](quasim/demos/agritech/)** | John Deere, Bayer, Corteva | Irrigation & yield optimization |
+1. **CLI flags** — `--profile`, `--seed`, `--ledger`, `--steps`, etc.
+2. **Programmatic overrides** — keyword arguments to `Operator(...)`.
+3. **Environment variables** — see §9.3.
+4. **Profile** — one of the named entries in `qratum_framework/config.py::PROFILES`.
+5. **Built-in defaults** — conservative; `quick` profile equivalent.
 
-### Quick Demo Commands
+### 8.2 Profiles
+
+| Profile | Intent |
+|---|---|
+| `quick` | Smoke / CI; minimal step budget. |
+| `medium` | Default for development runs. |
+| `strong` | Tighter safety-gate thresholds; longer rollouts. |
+| `full_fast` | Production sweep; coverage over latency. |
+| `full_report` | Coverage + falsification screen + full ledger emission. |
+
+Profiles are *data*, not code paths. Adding a profile means adding a dict entry, not a branch.
+
+### 8.3 Environment variables (conceptual)
+
+| Variable | Purpose |
+|---|---|
+| `QRATUM_PROFILE` | Default profile when `--profile` is absent. |
+| `QRATUM_LEDGER` | Default ledger path. |
+| `QRATUM_SEED` | Default seed; required for reproducibility. |
+| `QRATUM_LLM_BACKEND` | One of `deterministic`, `openai`, `anthropic`, `gemini`, `local`. Falls back to `deterministic` when SDK or key is absent. |
+| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` / `GOOGLE_API_KEY` | Credentials for non-deterministic backends; *never required for default operation*. |
+
+Missing credentials must not cause hard failures or process exits — the LLM layer is required to fall back deterministically (see `qagents/llm_backends.py`).
+
+---
+
+## 10. Development Guide
+
+### 9.1 Adding a module
+
+1. Place the module under an existing namespace (`qagents/<your_module>/` for control-layer code, `quasim/<your_module>/` for simulation-domain code).
+2. Define typed inputs and outputs (dataclasses or TypedDict).
+3. Forbid global mutable state and global RNG. Inject a `random.Random(seed)` if you need stochasticity.
+4. Add a dedicated test file under `tests/test_<your_module>.py`. Follow the pattern of `tests/test_mvri.py` or `tests/test_control_geometry.py`.
+5. Re-export your public surface from the appropriate `__init__.py`.
+
+### 9.2 Registering an agent / adapter
+
+1. Implement a `Simulator`, a `Proposer`, and a `make_<sys>_controller` builder following the templates in `qagents/adapters/{qratum,ciir,crs}.py`.
+2. Re-export from `qagents/adapters/__init__.py`.
+3. Add adapter tests to `tests/test_ric_adapters.py`.
+
+### 9.3 Extending execution rules
+
+To add a new constraint or invariant to CIIR–CRS–RIC:
+
+1. Define the predicate in `qagents/ciir_crs_ric/ciir.py` (constraint) or `qagents/framework/ciir.py` (algebra).
+2. Wire it into `phi` (precondition), `Inv` (invariant), or both.
+3. If the violation is structurally new, declare a new failure type in `qagents/ciir_crs_ric/failures.py` (Type I–IV taxonomy).
+4. The executor's 9-step `run_step` will pick it up via the existing `OperatorBackend` contract — do not modify the executor itself for domain rules.
+
+### 9.4 Test commands (verified)
 
 ```bash
-# Run all demo smoke tests (25 tests, ~0.2s)
-make demos
-
-# Run individual demo
-python -m quasim.demos.aerospace.cli optimize --steps 200 --profile starship
-python -m quasim.demos.telecom.cli plan --steps 200 --seed 42
-python -m quasim.demos.finance.cli plan --steps 200 --seed 42
-
-# Launch interactive dashboard
-streamlit run quasim/demos/aerospace/dashboards/app.py
-```
-
-### Demo Features
-
-- ✅ **Deterministic**: Seeded RNG with <1e-6 tolerance
-- ✅ **Tested**: 100% passing smoke tests with >90% coverage
-- ✅ **Compliant**: DO-178C, NIST 800-53/171, CMMC 2.0 mapping
-- ✅ **Automated**: CI/CD workflows for all verticals
-- ✅ **Visual**: MP4/GIF capture with Streamlit dashboards
-
-📖 **[Full Demo Documentation](docs/demos/README.md)**
-
----
-
-## Quantacosmic + REVULTRA Integration
-
-Implements symbolic-cognitive temporal curvature modeling and quantum manifold simulation.
-The new Quantacosmic modules power deterministic field propagation, REVULTRA curvature
-analytics, and documentation aligned with provisional patent filings. Dive deeper in the
-[Quantacosmic theory overview](docs/theory/quantacosmic.md) and review the
-[REVULTRA temporal curvature analysis](docs/analysis/REVULTRA_Temporal_Curvature_Quotient.md)
-for usage guidance.
-
----
-
-## Compliance & Certification
-
-| **Framework/Standard**      | **Status** | **Coverage**                      |
-|------------------------------|------------|-----------------------------------|
-| **Overall Compliance**       | ✅         | **98.75%**                        |
-| NIST 800-53 Rev 5 (HIGH)     | ✅         | 100% (21/21 controls)             |
-| NIST 800-171 R3 (CUI)        | ✅         | 100% (110/110 requirements)       |
-| CMMC 2.0 Level 2             | ✅         | 100% (110/110 practices)          |
-| DFARS 252.204-7012/7019/7020/7021 | ✅   | 100% (4/4 clauses)                |
-| FIPS 140-3                   | ✅         | Validated (AES-256-GCM)           |
-| ITAR (USML VIII, XI, XV)     | ⚠️         | 95% (DDTC registration required)  |
-| EAR (ECCN 5D002)             | ✅         | 100% (export compliance)          |
-| DO-178C Level A              | ✅         | 100% (MC/DC 100%)                 |
-| SOC 2 Type II                | ✅         | 100% (trust services)             |
-| ISO 27001:2022               | ✅         | 100% (information security)       |
-
----
-
-## Compliance Automation
-
-- **CI/CD Compliance Gates**: 100% of PRs enforce NIST 800-53/171, CMMC 2.0, DO-178C, and export control policies via OPA Gatekeeper and GitHub Actions workflows.
-- **SBOM Generation**: Automated SPDX 2.3 Software Bill of Materials creation for supply chain transparency and SLSA Level 3 provenance attestation.
-- **Export Control Scanning**: ITAR/EAR pattern detection for ECCN 5D002 compliance, scanning source code, documentation, and commit messages for controlled technology.
-- **MC/DC Coverage**: DO-178C Level A requirement verification with 100% Modified Condition/Decision Coverage on safety-critical paths, enforced via pytest-cov and custom analyzers.
-- **Security Scanning**: Integrated bandit (Python SAST), pip-audit (dependency vulnerabilities), and trivy (container scanning) with automated remediation workflows.
-- **Traceability Matrices**: Automated generation of requirements-to-test matrices for 21 NIST 800-53 controls and 110 CMMC 2.0 practices, maintained in CSV format for audit readiness.
-
----
-
-## Market Valuation Snapshot (Q4 2025)
-
-| **Metric**                     | **Value**                     |
-|---------------------------------|-------------------------------|
-| **Pre-Revenue Enterprise Value** | **$4.7B – $5.3B**            |
-| **Valuation Method**            | DCF + Comparables            |
-| **Key Drivers**                 | Certification moat, aerospace readiness, federal/DIB pipeline |
-| **WACC**                        | 26%                          |
-| **Terminal Growth Rate**        | 3.5%                         |
-| **Revenue Ramp**                | FY26: $8M → FY30: $215M      |
-
-**DCF Summary**: 5-year revenue projection from $8M (FY26, 12 customers) to $215M (FY30, 140 customers) with 72% gross margin drives $4.2B NPV. Aerospace certification (DO-178C Level A, NASA/SpaceX validation) creates defensible moat. Federal/DIB pipeline ($85M-$275M SAM) accelerates adoption via CMMC 2.0 L2 requirement. Comparable analysis (quantum software multiples 15-25× revenue) supports $4.7B-$5.3B range. Key assumptions: 35% YoY customer growth, $1.5M ARPU, 20% annual churn.
-
----
-
-## Roadmap & Next Actions
-
-| **Priority** | **Action Item**                       | **Timeline**  | **Status** |
-|--------------|---------------------------------------|---------------|------------|
-| High         | DDTC Registration (ITAR compliance)   | 30 days       | ⚠️ Pending |
-| High         | C3PAO Assessment (CMMC 2.0 L2 cert)   | Q1 2026       | 🔄 Planned |
-| High         | Annual Penetration Test               | Q2 2026       | 🔄 Planned |
-| Medium       | ISO 27001 Formal Certification        | Q4 2026       | 🔄 Planned |
-| Medium       | SOC 2 Type II Re-Audit                | Q2 2026       | 🔄 Planned |
-| Low          | FedRAMP Moderate Authorization        | Q3 2027       | 📋 Future  |
-
----
-
-## Architecture at a Glance
-
-QuASIM operates as a 4-layer stack designed for hybrid quantum-classical workloads:
-
-### Layer 1: Client APIs
-- **Python SDK** (`quasim` module): High-level tensor operations, circuit construction, numpy integration
-- **C++ SDK** (`libquasim`): Low-level CUDA/HIP kernel invocation for performance-critical paths
-- **REST/gRPC APIs**: HTTP endpoints for remote job submission, status polling, result retrieval
-
-### Layer 2: Quantum Runtime
-- **Circuit Compiler**: Graph optimization, gate decomposition, transpilation for target backends
-- **Tensor Planner**: Contraction strategy selection (greedy, optimal, metaheuristic) for network simplification
-- **GPU Scheduler**: Work distribution across NVIDIA/AMD accelerators with NVLink-C2C coherence
-
-### Layer 3: Hardware Abstraction
-- **Grace CPU** (72-core ARM v9): Orchestration, classical preprocessing, mixed-precision control flow
-- **Blackwell GPU** (Tensor Cores): cuQuantum-accelerated contractions, FP8/FP16/FP32/FP64 execution
-- **NVLink-C2C**: 900 GB/s bidirectional bandwidth for zero-copy data sharing across CPU-GPU boundary
-
-### Layer 4: Platform Services
-- **Kubernetes Orchestration** (EKS/GKE/AKS): GPU node pools, Karpenter autoscaling, multi-AZ deployments
-- **Observability** (Prometheus/Grafana/Loki/Tempo): Metrics, logs, traces with 99.95% SLA monitoring
-- **Security** (Vault/Gatekeeper/Cilium): Secrets management, policy enforcement, network segmentation
-
----
-
-## Deployment
-
-### Terraform + Helm Overview
-
-QuASIM infrastructure is provisioned via Terraform modules and deployed using Helm charts:
-
-```bash
-# Provision AWS infrastructure (VPC, EKS, S3, IAM)
-cd infra/terraform/multi-region
-terraform init
-terraform plan -out=tfplan
-terraform apply tfplan
-
-# Install core platform services via Helm
-helm install quasim-platform ./infra/helm/quasim-platform \
-  --namespace quasim-runtime \
-  --create-namespace \
-  --values values-production.yaml
-```
-
-### Karpenter Autoscaling
-
-Dynamic GPU node provisioning based on pod resource requests:
-
-```yaml
-apiVersion: karpenter.sh/v1alpha5
-kind: Provisioner
-metadata:
-  name: quasim-gpu
-spec:
-  requirements:
-    - key: node.kubernetes.io/instance-type
-      operator: In
-      values: ["g5.xlarge", "g5.2xlarge", "p4d.24xlarge"]
-  limits:
-    resources:
-      nvidia.com/gpu: 128
-```
-
-**Deployment Artifacts**: See `infra/terraform/` for multi-cloud modules (AWS/Azure/GCP) and `infra/helm/quasim-platform/` for Kubernetes charts.
-
----
-
-## Contributing
-
-We welcome contributions that maintain QuASIM's certification posture and code quality standards.
-
-### Guidelines
-
-- **Conventional Commits**: Use `feat:`, `fix:`, `docs:`, `test:`, `refactor:` prefixes for semantic versioning and automated changelog generation.
-- **Coverage Targets**: Maintain >90% test coverage for adapters/SDKs, 100% MC/DC coverage for safety-critical paths (DO-178C requirement).
-- **Code Formatting**: Run `make fmt` before committing (black, ruff with 100-char line length, PEP 8 compliance).
-- **MC/DC on Safety-Critical Paths**: All functions in `quasim/safety_critical/` require 100% Modified Condition/Decision Coverage with pytest-cov.
-- **Compliance Gates**: PRs automatically scanned for ITAR/EAR patterns, NIST 800-53/171 violations, and CMMC 2.0 control gaps.
-
-### Development Workflow
-
-1. Fork repository and create feature branch: `git checkout -b feature/your-feature-name`
-2. Make changes with tests (pytest, >90% coverage)
-3. Format code: `make fmt` (black, ruff)
-4. Run linters: `make lint`
-5. Run tests: `make test`
-6. Submit PR with conventional commit format
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
-
----
-
-## License & Contact
-
-**License**: Apache License 2.0 — see [LICENSE](LICENSE) for details.
-
-**Contact/Procurement**: For enterprise inquiries, federal/defense procurement, or partnership opportunities, contact procurement@quasim.io.
-
----
-
-## Competitive Advantages
-
-QuASIM leads the quantum simulation market through unique integration of five critical capabilities that no competing platform (IBM Qiskit, Google Quantum AI, AWS Braket, Microsoft Azure Quantum, NVIDIA Omniverse) combines in a single system.
-
-### 🏆 Where QuASIM LEADS
-
-#### 1. Hybrid Quantum-Classical Architecture Integration
-- **NVLink-C2C coherent fabric** between Grace CPU (72 cores) and Blackwell GPU clusters with unified virtual address spaces
-- **Zero-copy data sharing** across quantum and classical workloads enabling 10-100x performance improvements
-- **Hardware-accelerated tensor network contraction** with cuQuantum integration
-- **Competitive Edge**: Only platform providing production-grade unified runtime for seamless quantum-classical workflows
-
-#### 2. Autonomous Self-Evolving Kernel Architecture (Phase III)
-- **Reinforcement learning-driven optimization** that self-improves over time without human intervention
-- **Runtime introspection** with real-time performance analysis and adaptive optimization
-- **Energy-adaptive regulation** with thermal throttling and workload migration for 30%+ energy savings
-- **Formal verification** with stability certification using SMT constraints for mission-critical applications
-- **Federated learning** for privacy-preserving cross-deployment intelligence
-- **Competitive Edge**: Only quantum platform with autonomous kernel evolution and formal verification for aerospace applications
-
-#### 3. Aerospace-Grade Certification & Compliance
-- **DO-178C Level A** (highest software safety level for aerospace systems)
-- **ECSS-Q-ST-80C** (European Space Agency quality standards)
-- **NASA E-HBK-4008** compliance for mission-critical systems
-- **DO-330 Tool Qualification** documentation (41 operational requirements, 19 validation procedures)
-- **Real mission data validation** against SpaceX Falcon 9 and NASA Orion/SLS telemetry (RMSE <2%, MAE <1.5%)
-- **Competitive Edge**: ONLY quantum simulation platform with full aerospace certification and validated flight data
-
-#### 4. Production-Ready Enterprise Infrastructure
-- **GPU-accelerated EKS clusters** with automated Terraform provisioning
-- **GitOps automation** via ArgoCD app-of-apps pattern for declarative platform management
-- **Comprehensive observability** (Prometheus, Grafana, Loki, Tempo) with 99.95% uptime SLA
-- **Security hardening** (Vault, Gatekeeper, cert-manager, Cilium CNI) meeting SOC2/ISO 27001 requirements
-- **Multi-cloud support** (AWS, Azure, GCP) with cross-region failover
-- **Competitive Edge**: Only quantum platform with turnkey enterprise deployment and compliance frameworks built-in
-
-#### 5. Multi-Vehicle Mission Simulation
-- **SpaceX Falcon 9** (orbital dynamics, staging sequences, booster recovery)
-- **NASA Orion/SLS** (deep space mission profiles, lunar trajectory optimization)
-- **Dragon spacecraft** (ISS docking scenarios, thermal/power/GNC telemetry)
-- **Starship** (multi-stage with 33+6 Raptors, atmospheric flight, reentry dynamics)
-- **Competitive Edge**: No competing platform has validated mission data across multiple real-world launch vehicles
-
-#### 6. Quantum-Enhanced Digital Twins with Advanced Physics
-- **Conformal Field Theory (CFT) kernels** for phase space analysis with quantum corrections
-- **Quantum-inspired optimization** via Ising model simulated annealing (3-10x speedup over classical)
-- **Monte Carlo simulation** with quantum amplitude estimation speedup (quadratic advantage)
-- **ONNX integration** for importing existing digital twin models for quantum enhancement
-- **Competitive Edge**: Bridges gap between pure quantum simulation and enterprise digital twins (ANSYS, Siemens)
-
-#### 7. Fortune 500 Integration Analysis & Market Positioning
-- **QuASIM Integration Index (QII)** scoring system evaluating all 500 companies across 15 technical/business dimensions
-- **Sector-specific adoption pathways** (aerospace 85% fit, pharma 78%, financial services 72%, manufacturing 68%)
-- **0.85 Tech Moat Index** (composite score: architectural maturity, quantum libraries, ecosystem, compliance)
-- **2025-2030 adoption forecasts** with ROI models showing 200-400% returns over 3 years
-- **Competitive Edge**: Only quantum platform with structured go-to-market analysis and customer-specific integration scoring
-
-#### 8. Distributed Multi-GPU/Multi-Node Scalability
-- **JAX pjit/pmap and PyTorch DDP/FSDP** parallelism with near-linear scaling to 128+ GPUs
-- **MPI/NCCL** multi-node execution with InfiniBand RDMA for <1μs latency
-- **State sharding** with distributed gate application maintaining 99.9%+ fidelity
-- **Checkpoint/restore fault tolerance** with <60s recovery time
-- **Deterministic, reproducible results** for certification and regulatory compliance
-- **Competitive Edge**: Scales beyond single-GPU limitations (2-32+ qubit simulations across clusters)
-
-#### 9. Developer Experience & API Compatibility
-- **High-level Python SDK** (`quasim` module with context managers and numpy integration)
-- **Low-level C++ runtime** (`libquasim`) for performance-critical operations (10-100x faster)
-- **CUDA 12.x API parity** for seamless migration from NVIDIA stacks
-- **Polyglot support** (Python, C++, Rust, Go) with auto-generated bindings
-- **Benchmarking suite** with 50+ validation tests across quantum and classical workloads
-- **Competitive Edge**: Hardware-level performance with enterprise API compatibility (unlike pure-Python frameworks)
-
-#### 10. Continuous Certification CI/CD Pipeline
-- **4-stage validation pipeline** enforcing DO-178C, ECSS-Q-ST-80C, NASA E-HBK-4008 gates
-- **Monte Carlo fidelity ≥0.97** requirement with automated rollback on violations
-- **100% MC/DC coverage** for safety-critical code paths
-- **Zero regression tolerance** on certified components with differential testing
-- **Automated revert PR creation** for breaking changes (<5 minute detection)
-- **Competitive Edge**: Only quantum platform with continuous certification automation for regulated industries
-
-### 🎯 Unique Value Proposition
-
-QuASIM occupies a unique position at the intersection of:
-1. **Quantum simulation** (tensor networks, noise modeling, error mitigation)
-2. **Enterprise infrastructure** (Kubernetes, observability, security, compliance)
-3. **Aerospace certification** (DO-178C, real mission validation, formal verification)
-4. **Autonomous intelligence** (self-evolving kernels, federated learning, runtime optimization)
-5. **Production readiness** (multi-cloud, Fortune 500 adoption frameworks, 24/7 support)
-
-**Tech Moat Index**: 0.85/1.0 — Reflecting architectural maturity, certified quantum libraries, enterprise ecosystem depth, and regulatory compliance frameworks that create significant competitive barriers to entry.
-
----
-
-## Additional Information
-
-### Target Industries
-
-- **Aerospace & Defense**: Multi-vehicle mission simulation (SpaceX, NASA), CFD for hypersonic design, DO-178C certification ($85M-$275M SAM 2025-2030)
-- **Pharmaceuticals**: Molecular dynamics, protein folding, clinical trial simulation, FDA compliance ($60M-$190M SAM)
-- **Financial Services**: Portfolio optimization, risk simulation (VaR/CVaR), fraud detection, SOC2/ISO 27001 ($55M-$175M SAM)
-- **Manufacturing**: Digital twins, supply chain optimization, generative design, ONNX integration ($72M-$225M SAM)
-
-### Validation & Testing
-
-```bash
-# Run all tests
-make test
-
-# Run with coverage
-pytest --cov=. --cov-report=html tests/
-
-# Generate Monte Carlo validation campaign (1024 trajectories)
-python3 generate_quasim_jsons.py --output-dir . --trajectories 1024
-```
-
-**Verification Success Criteria:**
-- Mean fidelity ≥ 0.97 ± 0.005
-- Convergence rate ≥ 98%
-- Deterministic replay drift < 1μs
-- MC/DC coverage = 100%
-
----
-
-## References
-
-For comprehensive technical details, see:
-- **Phase III Overview**: [PHASE3_OVERVIEW.md](PHASE3_OVERVIEW.md)
-- **Fortune 500 Analysis**: [FORTUNE500_IMPLEMENTATION_SUMMARY.md](FORTUNE500_IMPLEMENTATION_SUMMARY.md)
-- **Compliance Framework**: [COMPLIANCE_IMPLEMENTATION_SUMMARY.md](COMPLIANCE_IMPLEMENTATION_SUMMARY.md)
-- **Contributing Guidelines**: [CONTRIBUTING.md](CONTRIBUTING.md)
-- **Security Policy**: [SECURITY.md](SECURITY.md)
-
----
-
-## System Requirements
-
-**Required:**
-- Python 3.8+
-- Docker 20.10+ (containerized deployment)
-- 8GB RAM minimum (16GB recommended)
-
-**Optional (full feature set):**
-- CUDA Toolkit 12.x (GPU acceleration)
-- Terraform ≥ 1.7 (infrastructure provisioning)
-- kubectl ≥ 1.29, helm ≥ 3.14 (Kubernetes deployment)
-
----
-
-## Appendix: Competitive Differentiation
-
-QuASIM uniquely combines capabilities that no competing platform (IBM Qiskit, Google Quantum AI, AWS Braket, Microsoft Azure Quantum, NVIDIA Omniverse) offers in a single system:
-
-### Key Differentiators
-
-1. **Hybrid Quantum-Classical Architecture**: NVLink-C2C coherent fabric between Grace CPU and Blackwell GPU with zero-copy data sharing (10-100× performance improvements)
-2. **Autonomous Self-Evolving Kernels (Phase III)**: RL-driven optimization with formal verification for aerospace applications
-3. **Aerospace Certification**: DO-178C Level A, ECSS-Q-ST-80C, NASA E-HBK-4008 compliance with validated SpaceX/NASA telemetry
-4. **Production-Ready Infrastructure**: GPU-accelerated Kubernetes with GitOps, observability, security hardening, 99.95% SLA
-5. **Fortune 500 Integration Framework**: QuASIM Integration Index (QII) covering 500 companies with sector-specific adoption pathways
-
-**Competitive Landscape:**
-- **IBM Qiskit**: Quantum hardware access, lacks enterprise infrastructure
-- **Google Quantum AI**: Research-oriented, no production frameworks
-- **AWS Braket**: Cloud-only, no on-premises/hybrid deployment
-- **Microsoft Azure Quantum**: Limited GPU acceleration, no aerospace certification
-- **NVIDIA Omniverse**: Digital twins without quantum capabilities
-
-**Tech Moat Index**: 0.85/1.0 (architectural maturity, certified libraries, ecosystem depth, compliance frameworks)
-
----
-
-## Appendix: Recent Capability Enhancements
-
-- **PR #47**: DO-178C Level A compliance framework (41 requirements, 19 validation procedures, traceability matrix)
-- **PR #48**: Monte Carlo validation campaign (1,024 trajectories, 0.9705 fidelity, <0.8μs drift)
-- **PR #49**: Phase III autonomous evolution (RL controller, 15+ metrics, 30%+ power savings, Z3 verification)
-- **PR #50**: Fortune 500 integration analysis (QII scoring, 9,631-word white paper, 75 high-fit candidates)
-- **PR #51**: Multi-cloud deployment (Terraform AWS/Azure/GCP, ArgoCD GitOps, Karpenter autoscaling, 99.95% SLA)
-
----
-
-## Appendix: Kubernetes Namespace Architecture
-
-- **`core`**: Cilium CNI, ingress-nginx, cert-manager
-- **`monitoring`**: Prometheus, Grafana, Loki, Tempo
-- **`security`**: Vault, Gatekeeper OPA, network policies
-- **`quasim-runtime`**: Quantum simulation runtime services with GPU scheduling
-
-Each namespace has resource quotas, network policies, and RBAC for isolation.
-
----
-
-## Appendix: Platform Diagrams
-
-### High-Level Data Flow
-
-```mermaid
-flowchart LR
-    A[Client SDK] --> B[QuASIM Runtime]
-    B --> C[GPU Cluster]
-    C --> D[Results Storage]
-    D --> E[Dashboards]
-    B --> F[Observability]
-    F --> E
+PYTHONPATH=. python -m pytest tests/test_qratum_framework.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ciir_crs_ric_strict.py     --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_mvri.py                    --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_realworld_bridge.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_control_geometry.py        --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ric_v2.py                  --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ric_ciir_bridge.py         --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_plasma_reconnection.py     --override-ini="addopts=" -q
+PYTHONPATH=. python -m pytest tests/test_ciir_falsification.py      --override-ini="addopts=" -q
 ```
 
 ---
 
-## Appendix: Platform Evolution (Phases I–XII)
+## 11. Safety, Determinism & Verification Guarantees
 
-QuASIM's development spans 12 phases (see [PHASE3_OVERVIEW.md](PHASE3_OVERVIEW.md) for details):
+### 10.1 Execution constraints
 
-**I–III (Core Runtime)**: TensorSolve engine, fault-tolerant quantum error correction, autonomous kernel evolution  
-**IV–VI (Optimization)**: Differentiable scheduling, quantum-inspired search, hybrid precision management  
-**VII–IX (Integration)**: Causal profiling, memory graph optimization, digital twin integration  
-**X–XII (Enterprise)**: Multi-cloud orchestration, Fortune 500 market analysis, BioSwarm bioinformatics
+- The constraint algebra (`phi`, `Inv`) is checked **twice** per step: pre-transition and post-transition.
+- The safety gate runs four sequential checks (`MAG`, `TGT`, `ROC`, `MVR`). All four are evaluated before a verdict is emitted, so failure reports are complete, not first-hit.
+- The `ControlLoop` advances `model_state` only on *accepted* injection; a rejected step never mutates the state used by the next step's planner.
+- `SensorExhausted` ends a run early but cleanly; the ledger remains valid.
 
-### Dual-Mode Architecture
-- **CPU Fallback**: Pure Python (NumPy), no external dependencies, CI/CD compatible (10-100× slower)
-- **GPU Accelerated**: CUDA/HIP kernels, cuTensorNet integration (10-100× faster, requires compute ≥ 7.0)
+### 10.2 Reproducibility enforcement
 
-### HPC Edition
-- MPI/NCCL multi-node execution, JAX pjit/pmap + PyTorch DDP/FSDP parallelism
-- State sharding, checkpoint/restore fault tolerance, deterministic reproducibility
-- Near-linear scaling to 128+ GPUs with InfiniBand RDMA (<1μs latency)
+- Hashing is over **canonical JSON**: keys sorted, no whitespace, `metadata` field excluded from the hash domain.
+- All RNG is seeded; no module reads `time.time()` or `os.urandom()` on the determinism path.
+- Profiles are pure data; flipping a profile cannot inject non-determinism via a code path.
+- CI compares ledger hashes across machines, not floating-point outputs. A diverging hash is a hard failure.
 
-### Build & Deploy
+### 10.3 Invalid-state handling
 
-```bash
-# Self-contained monolithic build
-python3 quasim_master_all.py --self-test
-python3 quasim_master_all.py --emit-scaffold ./QuASIM
+- Failure modes are named: **Type I** (precondition violation), **Type II** (postcondition violation), **Type III** (invariant violation), **Type IV** (admissibility violation).
+- The executor's 9-step `run_step` never raises into caller code; it returns a `TraceEntry` whose verdict carries the failure type.
+- The ledger records rejections with the same hashing discipline as acceptances; an attacker cannot hide a rejected step by reordering.
+- The falsifier reduces the ledger to one of `{A, A0, B}`:
+  - **A** — claim verified within tolerance.
+  - **A0** — claim verified but mechanism differs from declared (e.g. amplitude damping rather than causal geometry).
+  - **B** — claim falsified.
 
-# Docker (CPU fallback)
-docker build -f Dockerfile -t quasim:cpu .
+### 10.4 Cryptographic verification surface
 
-# Docker (CUDA-enabled)
-docker build -f Dockerfile.cuda -t quasim:cuda .
-docker run --gpus all -p 8000:8000 quasim:cuda
-```
-
----
-
-## Pilot Demonstration: QuASIM × SpaceX/NASA
-
-A sanitized, deterministic pilot demonstration showcasing QuASIM's trajectory optimization capabilities for aerospace applications. This demo runs profile-shaped MECO (Main Engine Cutoff) and hot-staging simulations with reproducible outputs.
-
-### Features
-
-![Deterministic](https://img.shields.io/badge/Deterministic-reproducible-green)
-![RMSE](https://img.shields.io/badge/RMSE-%3C2%25%20(surrogate)-blue)
-![Fidelity](https://img.shields.io/badge/Fidelity-%E2%89%A50.97-purple)
-
-- **Deterministic Execution**: Fixed seeds ensure bit-for-bit reproducible results across runs
-- **CPU-Only Dependencies**: Runs on standard CI runners with numpy and matplotlib only
-- **Fast Runtime**: < 30s per profile on standard hardware
-- **Public-Safe**: No proprietary kernels, datasets, or credentials
-- **Profile-Aware**: Supports custom MECO/hot-staging mission profiles
-
-### Quick Start
-
-#### Python (Direct)
-
-```bash
-# Install dependencies
-pip install -r requirements-demo.txt
-
-# Run Falcon 9 Stage 1 demo
-python quasim_spacex_demo.py --profile configs/meco_profiles/spacex_f9_stage1.json
-
-# Run Starship hot-staging demo
-python quasim_spacex_demo.py --profile configs/meco_profiles/starship_hotstaging.json
-```
-
-#### Make Targets
-
-```bash
-# Run individual profiles
-make spacex-demo      # Falcon 9 Stage 1
-make starship-demo    # Starship hot-staging
-
-# Run all profiles
-make demo-all
-```
-
-#### Docker
-
-```bash
-# Build and run with Docker Compose
-docker compose up --build spacex-demo
-
-# Or build and run manually
-docker build -t quasim-spacex-demo .
-docker run quasim-spacex-demo
-```
-
-### Output Artifacts
-
-Each demo run generates a JSON report containing:
-
-- **Optimized Parameters**: Best thrust shaping coefficient (alpha)
-- **Trajectory Metrics**: Peak altitude, MECO altitude/velocity/time
-- **Validation Metrics**: RMSE percentage, fidelity score
-- **Optimization History**: Generation-by-generation fitness evolution
-- **Visualization**: Base64-encoded PNG plots (altitude & velocity vs. time)
-
-Example output files:
-- `spacex_f9_stage1_demo_report.json` (Falcon 9 demo)
-- `starship_hotstaging_demo_report.json` (Starship demo)
-
-### Mission Profiles
-
-Two reference profiles are included:
-
-1. **SpaceX Falcon 9 Stage 1** (`configs/meco_profiles/spacex_f9_stage1.json`)
-   - MECO time: 162s
-   - Target altitude: 80 km
-   - Target velocity: 2.1 km/s
-
-2. **Starship Hot-Staging** (`configs/meco_profiles/starship_hotstaging.json`)
-   - MECO time: 170s
-   - Target altitude: 90 km
-   - Target velocity: 2.3 km/s
-
-### Validation Anchors
-
-The demo validates against surrogate/shaping targets:
-- **RMSE < 2%**: Trajectory accuracy relative to profile targets
-- **Fidelity ≥ 0.97**: Campaign anchor consistency metric
-- **Deterministic**: Identical outputs across runs with same seed
-
-**Note**: These are simplified surrogate models for demonstration purposes only. Not flight-validated. Actual QuASIM production deployments use cuQuantum tensor network simulation with DO-178C Level A certification posture.
-
-### CI Integration
-
-The pilot demo runs automatically in CI on every push:
-
-- Validates both profiles in < 60s combined runtime
-- Uploads artifacts to GitHub Actions
-- Verifies deterministic reproducibility
-- See [`.github/workflows/spacex-demo.yml`](.github/workflows/spacex-demo.yml)
-
-### Legal & Compliance
-
-Placeholder templates for partnership discussions:
-- [Mutual NDA](legal/QuASIM_SpaceX_Mutual_NDA_v1.0.txt)
-- [Letter of Intent](legal/QuASIM_SpaceX_LOI_Pilot_v1.0.txt)
-
-**Classification**: UNCLASSIFIED // PUBLIC  
-**Export Control**: No ITAR-controlled technical data included
+- Per-entry hash: SHA-256 over canonical-JSON payload.
+- Chain link: each entry stores the prior `payload_hash` as `prev_hash`; `MerkleLedger.iter_with_hashes` is the public audit cursor.
+- Optional Rust-side biokey signing (`qrVITRA/merkler-static/`) provides ephemeral SNP-derived keys, FIDO2 dual-signature, and ZKP attestation for sovereign-genomics use cases.
 
 ---
 
-## Appendix: Benchmarking
+## 12. Roadmap
 
-QuASIM performance validated against IBM Qiskit Aer (2-5× faster, 20+ qubits), Google Cirq (3-8× faster with GPU), and classical solvers (10-100× speedup for quantum-inspired optimization) on NVIDIA A100/H100/GH200, AMD MI250X/MI300X, AWS P4d/P5, Azure ND-series, and GCP A2/G2 instances.
+The following are tracked extension directions; none are required for current operation.
 
----
+- **Spine hardening** — strict mypy on `qratum_framework/`, atomic ledger writes with `fsync`, ledger-load verification, size caps on trace metadata.
+- **Distributed ledger mode** — multi-writer ledger with deterministic merge, suitable for federated agent runs.
+- **Hardware falsification** — execute the 5-step falsification protocol against physical quantum hardware (`run_falsification.py` is the simulator entry point today).
+- **Plugin SDK** — package the `OperatorBackend` Protocol, trace dataclasses, and failure taxonomy as a stand-alone wheel so out-of-tree plugins do not need to vendor `qagents/`.
+- **Plasma reconnection (extended)** — controller-aware mesh refinement for `quasim/ciir/plasma/`, FKR/plasmoid scaling at higher Lundquist numbers.
+- **Trajectory controller (k-step)** — extend RIC v2's k-step rollout into the trajectory controller for end-to-end horizon-aware planning over the real-world bridge.
+- **Formal verification** — discharge invariants `phi` and `Inv` to an SMT backend on a bounded fragment of the action space.
 
-## 🧾 About the Pilot Track
-
-The **QuASIM × SpaceX/NASA pilot branch** demonstrates a fully deterministic,
-certifiable quantum-classical simulation runtime capable of reproducing launch-phase
-dynamics with **< 2 % RMSE** and **≥ 0.97 Monte-Carlo fidelity** in under 60 seconds.
-
-All runs execute on CPU only, using fixed seeds and verified CI pipelines.
-Artifacts contain both the raw numerical outputs and a Base64-encoded visualization
-of altitude and velocity over time.  
-This branch is sanitized for public review—no proprietary kernels, telemetry,
-or classified datasets are included.
-
----
-
-## 🧩 Badge Reference
-
-| Badge | Meaning |
-|:------|:---------|
-| ![spacex-demo](https://github.com/robertringler/QuASIM/actions/workflows/spacex-demo.yml/badge.svg?branch=pilot/spacex-nasa) | Continuous integration test of the deterministic demo (Phase-III RL optimizer). |
-| ![pilot-release](https://github.com/robertringler/QuASIM/actions/workflows/release-pilot.yml/badge.svg?branch=pilot/spacex-nasa) | Automated release publishing via Copilot Agent. |
-| ![GitHub release (latest by date)](https://img.shields.io/github/v/release/robertringler/QuASIM?include_prereleases&label=Latest%20Pilot%20Release) | Shows the newest pilot tag and downloadable artifacts. |
-| ![Deterministic](https://img.shields.io/badge/Deterministic-Yes-brightgreen) | Confirms identical results across multiple CI runs. |
-| ![RMSE](https://img.shields.io/badge/RMSE-%3C2%25-blue) | Surrogate-level error benchmark vs. Falcon 9 telemetry. |
-| ![Fidelity](https://img.shields.io/badge/Fidelity-%E2%89%A50.97-purple) | Statistical similarity of Monte-Carlo ensemble trajectories. |
-
----
-
-## 🔐 Pilot Track Compliance & Security Summary
-- **Safety Certification:** DO-178C Level A surrogate validation (100 % MC/DC on demo paths)  
-- **Cybersecurity:** NIST 800-53 / 171 mapped; CMMC 2.0 L2 ready  
-- **Cryptography:** FIPS 140-3 AES-256-GCM for data at rest & in transit  
-- **SBOM:** SPDX 2.3 autogenerated for every pilot release  
-
----
-
-## 🛰️ Collaboration & Contact
-
-**Engineering / Technical Liaison**  
-📧 `devops@quasim.io`
-
-**Procurement & Partnerships**  
-📧 `procurement@quasim.io`
-
-**Press & Outreach**  
-🌐 [https://quasim.io](https://quasim.io)
-
-For partnership inquiries (SpaceX, NASA, DoD, or allied agencies),
-please reference the latest pilot release tag and attach the JSON reports
-(`spacex_demo_report.json`, `starship_demo_report.json`) in your correspondence.
-
----
-
-## 📰 Press-Ready Summary
-
-> QuASIM is the first certifiable quantum-classical simulation runtime engineered for aerospace and defense applications.
-The SpaceX/NASA pilot track demonstrates fully deterministic, Phase-III reinforcement-learning optimization of launch-phase dynamics with < 2 % RMSE and ≥ 0.97 fidelity, validated through continuous integration and automated compliance reporting.
-Built on auditable DO-178C Level A processes and NIST/CMMC cybersecurity standards, QuASIM delivers verifiable, reproducible simulations in under sixty seconds—establishing the foundation for next-generation mission design, trajectory optimization, and digital-twin certification.
-
----
-
-_This pilot track demonstrates QuASIM's commitment to verifiable, deterministic,
-and certifiable quantum simulation for next-generation aerospace systems._
-
----
-
-**© 2025 QuASIM. All rights reserved.**
+Research directions (no committed timeline): falsification of causal-geometry claims at larger N, biokey-bound ledgers for genomics-grade reproducibility, and unification of MVRI's entropy/MI/TE metrics with CIIR's stability inequality.

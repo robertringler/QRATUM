@@ -1,0 +1,22 @@
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#002b36', 'primaryBorderColor': '#268bd2', 'primaryTextColor': '#fdf6e3',
+  'lineColor': '#268bd2', 'tertiaryColor': '#073642', 'fontFamily': 'ui-sans-serif'
+}}}%%
+graph LR
+  A["Client SDKs (Python/C++)"] --> B["Circuit Compiler"]
+  B --> C["Tensor Planner"]
+  C --> D["GPU Scheduler"]
+  D --> E["Grace CPU ↔ Blackwell GPU (NVLink-C2C)"]
+  E --> F["Kubernetes Services / GitOps / Security"]
+  F --> G["Observability Stack (Grafana/Prometheus)"]
+  G --> H["Quantum Market Protocol (QMP) Sandbox"]
+  H --> I["Valuation Dashboard / QuNimbus Economic Layer"]
+
+  subgraph Compliance
+    J["DO-178C Level A"]
+    K["NIST 800-53 Rev 5"]
+    L["CMMC 2.0 L2"]
+  end
+  F --> J
+  F --> K
+  F --> L

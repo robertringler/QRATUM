@@ -1,0 +1,1338 @@
+% ============================================================
+% Chapter 9: Full Theoretical Consolidation + Red Team Reconstruction
+% CIIR Monograph — Constraint-Induced Interface Realism
+%
+% Dual-mode analysis:
+%   Mode A — Constructive Theorist: formalize CIIR into closed CPTP-compliant system
+%   Mode B — Red Team Reviewer: adversarial audit of every claim
+%
+% Dependencies: Ch3 (D3.1–D3.21), Ch4 (Ax4.1–4.6), Ch5 (D5.1–D5.12),
+%               Ch6 (D6.1–D6.16), Ch7 (D7.1–D7.17), Ch8 (D8.1–D8.22)
+% ============================================================
+
+\chapter{Theoretical Consolidation and Red Team Reconstruction}
+\label{ch:consolidation}
+
+\begin{quote}
+\textit{Objective.}  Transform the Constraint-Induced Interface Realism
+(CIIR) framework into a fully consistent, CPTP-compliant, mathematically
+rigorous, physically interpretable theory, or prove precisely why this is
+impossible and reconstruct the closest viable theory.
+\end{quote}
+
+This chapter operates in two simultaneous modes.  \textbf{Mode~A}
+(Constructive Theorist) formalises CIIR into a closed axiomatic system
+embedded strictly within GKSL/Lindblad dynamics and CPTP semigroup
+evolution.  \textbf{Mode~B} (Red Team) continuously attempts to break
+every construction, classifying failures as Fatal, Repairable, or
+Cosmetic, and proposes minimal fixes.  Red-team findings are set in
+\fbox{boxed paragraphs} throughout.
+
+% ============================================================
+\section{Axiomatic Foundation (Closed Form)}
+\label{sec:c9:axioms}
+% ============================================================
+
+We restate the CIIR axiom system from Chapter~4 in a form suitable for
+CPTP compliance analysis.
+
+\begin{definition}[CIIR State Space]
+\label{def:c9:statespace}
+Let $\mathcal{H}$ be a separable complex Hilbert space.  The
+\emph{physical state space} is the convex set of density operators
+\begin{equation}
+  \mathcal{D}(\mathcal{H}) = \bigl\{
+    \rho \in \mathcal{B}(\mathcal{H}) :
+    \rho = \rho^\dagger,\;
+    \rho \geq 0,\;
+    \mathrm{Tr}\,\rho = 1
+  \bigr\}.
+  \label{eq:c9:dh}
+\end{equation}
+\end{definition}
+
+\begin{definition}[Constraint Manifold]
+\label{def:c9:manifold}
+A \emph{constraint manifold} is a triple $(\mathcal{M}, g, \kappa)$
+where $\mathcal{M}$ is a smooth Riemannian manifold with metric $g$,
+$\kappa : \mathcal{M} \to \mathbb{R}_{\geq 0}$ is the scalar curvature
+field satisfying $\kappa_{\max} := \sup_{m\in\mathcal{M}} \kappa(m) < \infty$
+(Ax4.2), and the embedding $\iota : \mathcal{M} \hookrightarrow \mathcal{R}$
+is $C^2$-smooth into the reality space $\mathcal{R}$.
+\end{definition}
+
+\begin{definition}[Observable Algebra]
+\label{def:c9:obs}
+The observable algebra $\mathcal{A}(\mathcal{H})$ is the von~Neumann
+algebra of bounded self-adjoint operators on $\mathcal{H}$ that commute
+with the constraint projection $\hat{P}_{\mathcal{M}}$:
+\begin{equation}
+  \mathcal{A}(\mathcal{H}) = \bigl\{
+    \hat{O} \in \mathcal{B}(\mathcal{H})_{\mathrm{sa}} :
+    [\hat{O}, \hat{P}_{\mathcal{M}}] = 0
+  \bigr\}.
+\end{equation}
+\end{definition}
+
+\begin{definition}[Allowed Generator Class]
+\label{def:c9:generator}
+An \emph{admissible CIIR generator} is a linear superoperator
+$\mathcal{L} : \mathcal{B}(\mathcal{H}) \to \mathcal{B}(\mathcal{H})$
+of GKSL form:
+\begin{equation}
+  \mathcal{L}(\rho) = -i[H, \rho]
+    + \sum_{k=1}^{K} \gamma_k \Bigl(
+      L_k \rho L_k^\dagger
+      - \tfrac{1}{2} L_k^\dagger L_k \rho
+      - \tfrac{1}{2} \rho L_k^\dagger L_k
+    \Bigr),
+  \label{eq:c9:gksl}
+\end{equation}
+where $H = H^\dagger \in \mathcal{B}(\mathcal{H})$, $\gamma_k \geq 0$,
+$L_k \in \mathcal{B}(\mathcal{H})$, and
+$\sum_k \gamma_k L_k^\dagger L_k$ converges in the strong operator
+topology.
+\end{definition}
+
+\begin{axiom}[Consolidated CIIR Axiom System]
+\label{ax:c9:full}
+The CIIR theory tuple $\mathcal{T}_{\mathrm{CIIR}} = (\mathcal{S}, \mathcal{A},
+\mathcal{R}, \mathcal{D}, \mathcal{M}, \mathcal{I})$ satisfies:
+\begin{enumerate}
+\item[\textbf{Ax1}] (Ontological Priority) $\mathcal{R}$ is a non-empty
+  separable complete metric space.
+\item[\textbf{Ax2}] (Constraint Boundedness)  Every cognitive system $X$
+  is associated with $(\mathcal{M}_X, g_X, \kappa_X)$ with
+  $\kappa_{\max} < \infty$.
+\item[\textbf{Ax3}] (Interface Completeness)  There exists a unique
+  (up to unitary equivalence) CPTP interface map
+  $\Phi_X : \mathcal{B}(\mathcal{R}_{\mathrm{op}}) \to
+  \mathcal{B}(\mathcal{H})$ satisfying the intertwining relation
+  $\Phi_X \circ \iota_* = \hat{P}_{\mathcal{M}} \circ \Phi_X$.
+\item[\textbf{Ax4}] (Hilbert Representation)  $\dim(\mathcal{H}_X) \leq
+  \exp(\kappa_{\max} \cdot \mathrm{vol}(\mathcal{M}_X))$.
+\item[\textbf{Ax5}] (Measurement: Born Rule + L\"uders Update)  For
+  $\hat{O} = \sum_\lambda \lambda \hat{P}_\lambda$, measurement yields
+  $\lambda$ with probability $p(\lambda) = \mathrm{Tr}(\hat{P}_\lambda \rho)$,
+  post-measurement state $\rho' = \hat{P}_\lambda \rho \hat{P}_\lambda /
+  p(\lambda)$.
+\item[\textbf{Ax6}] (Composition)  Joint system $X_1 \otimes X_2$ has
+  $\mathcal{H}_{12} = \mathcal{H}_1 \otimes \mathcal{H}_2$ and
+  $\kappa_{12} \leq \kappa_1 \cdot \kappa_2$.
+\end{enumerate}
+\end{axiom}
+
+\begin{remark}[Axiom Independence]
+Independence was established in Theorem~4.2 via explicit countermodels
+for each axiom omission.
+\end{remark}
+
+%--------------------------------------------
+% FIGURE 1: Geometry of Constraint Manifold
+%--------------------------------------------
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{%
+\textbf{Figure~9.1: Geometry of the Constraint Manifold
+$(\mathcal{M}, g, \kappa)$.}\\[4pt]
+A smooth Riemannian surface $\mathcal{M}$ embedded in the reality space
+$\mathcal{R}$ via $\iota$.  The scalar curvature field
+$\kappa(m)$ is shown as a color map (blue$=$low, red$=$high), with
+$\kappa_{\max}$ marked at the curvature peak.  Geodesics on $\mathcal{M}$
+are drawn, illustrating the holonomy loop whose curvature 2-form $F_{ij}$
+generates the constraint commutation relations
+$[\hat{C}_i, \hat{C}_j] = i\hbar_{\mathrm{eff}} \hat{\Omega}_{ij}$.
+The interface map $\Phi_X$ projects from $\mathcal{R}$ to the cognitive
+Hilbert space $\mathcal{H}$, shown as a fiber over $\mathcal{M}$.
+The contraction factor $e^{-\kappa_{\min} \cdot \mathrm{diam}(\mathcal{M})}$
+governs the metric compression.
+}}
+\caption{Constraint manifold geometry illustrating the differential-geometric
+foundations of CIIR.  The curvature $\kappa$ controls both the dimension bound
+(Ax4) and the non-commutativity of constraint operators (Prop.~4.1).}
+\label{fig:c9:manifold}
+\end{figure}
+
+
+% ============================================================
+\section{Dynamical Law: Derivation of the CIIR Generator}
+\label{sec:c9:dynamics}
+% ============================================================
+
+\subsection{System--Environment Coupling}
+
+We derive the CIIR master equation from first principles via the standard
+weak-coupling (Davies) limit, rather than postulating it.
+
+\begin{definition}[Total System]
+\label{def:c9:total}
+The total system comprises:
+\begin{itemize}
+\item \textbf{System} $S$: the cognitive state on $\mathcal{H}_S = \mathcal{H}$.
+\item \textbf{Environment} $E$ (constraint bath): a bosonic reservoir on
+  Fock space $\mathcal{H}_E = \mathcal{F}(\mathfrak{h})$, with
+  $\mathfrak{h} = L^2(\mathcal{M}, \mu_g)$ the single-particle space
+  over the constraint manifold.
+\end{itemize}
+The total Hilbert space is $\mathcal{H}_{\mathrm{tot}} = \mathcal{H}_S
+\otimes \mathcal{H}_E$ with total Hamiltonian:
+\begin{equation}
+  H_{\mathrm{tot}} = H_S \otimes \mathbb{1}_E
+    + \mathbb{1}_S \otimes H_E
+    + \lambda\, V,
+  \label{eq:c9:htot}
+\end{equation}
+where $H_S = \hat{H}_{\mathcal{M}}$ is the constraint Hamiltonian (D7.1),
+$H_E = \int_{\mathcal{M}} \omega(m)\, a^\dagger(m) a(m)\, d\mu_g(m)$ is
+the bath free Hamiltonian with $\omega(m) = \kappa(m)$ (constraint
+curvature as bath frequency), and $V$ is the system--bath interaction.
+\end{definition}
+
+\begin{definition}[System--Bath Interaction]
+\label{def:c9:interaction}
+The interaction Hamiltonian is:
+\begin{equation}
+  V = \sum_{\alpha} S_\alpha \otimes B_\alpha,
+  \label{eq:c9:interaction}
+\end{equation}
+where $S_\alpha \in \mathcal{B}(\mathcal{H}_S)$ are system coupling
+operators and $B_\alpha = \int_{\mathcal{M}} g_\alpha(m)
+[a(m) + a^\dagger(m)]\, d\mu_g(m)$ are bath operators with coupling
+functions $g_\alpha \in L^2(\mathcal{M}, \mu_g)$.
+
+\textbf{CIIR specification:}  The coupling operators are the constraint
+operators themselves: $S_\alpha = \hat{C}_\alpha$ (the generators of
+$\mathcal{K}(\mathcal{H})$, Definition~5.1).
+\end{definition}
+
+
+\subsection{Davies Weak-Coupling Limit}
+
+\begin{theorem}[CIIR Generator via Davies Limit]
+\label{thm:c9:davies}
+In the weak-coupling limit $\lambda \to 0$ with rescaled time $t/\lambda^2$,
+the reduced dynamics of the system converges to:
+\begin{equation}
+  \frac{d\rho_S}{dt} = \mathcal{L}_{\mathrm{CIIR}}(\rho_S),
+\end{equation}
+where $\mathcal{L}_{\mathrm{CIIR}}$ is the GKSL generator
+\begin{equation}
+  \mathcal{L}_{\mathrm{CIIR}}(\rho) =
+    -i[H_{\mathrm{LS}}, \rho]
+    + \sum_{\alpha,\beta} \sum_\omega
+      h_{\alpha\beta}(\omega) \Bigl(
+        A_\beta(\omega)\, \rho\, A_\alpha(\omega)^\dagger
+        - \tfrac{1}{2}\{A_\alpha(\omega)^\dagger A_\beta(\omega), \rho\}
+      \Bigr),
+  \label{eq:c9:ciir_gen}
+\end{equation}
+with the following derived quantities:
+\begin{enumerate}
+\item[(i)] \textbf{Eigenoperators:}  $A_\alpha(\omega)$ are the spectral
+  decomposition operators of $\hat{C}_\alpha$ in the eigenbasis of $H_S$:
+  \begin{equation}
+    A_\alpha(\omega) = \sum_{\epsilon' - \epsilon = \omega}
+      \hat{P}_\epsilon\, \hat{C}_\alpha\, \hat{P}_{\epsilon'},
+    \label{eq:c9:eigenop}
+  \end{equation}
+  where $\hat{P}_\epsilon$ is the projector onto the eigenspace of $H_S$
+  with eigenvalue $\epsilon$.
+\item[(ii)] \textbf{Bath spectral density:}  The positive matrix
+  $h_{\alpha\beta}(\omega) = \gamma_{\alpha\beta}(\omega)$ is defined by
+  the one-sided Fourier transform of the bath correlation function:
+  \begin{equation}
+    \gamma_{\alpha\beta}(\omega) = \int_0^\infty e^{i\omega s}\,
+      \mathrm{Tr}_E\bigl(
+        \rho_E\, B_\alpha(s)\, B_\beta(0)
+      \bigr)\, ds,
+    \label{eq:c9:spectral}
+  \end{equation}
+  where $B_\alpha(s) = e^{iH_E s} B_\alpha e^{-iH_E s}$ and
+  $\rho_E$ is the bath thermal state.
+\item[(iii)] \textbf{Lamb shift:}  $H_{\mathrm{LS}} = H_S + \sum_{\alpha,\beta}
+  \sum_\omega s_{\alpha\beta}(\omega)\, A_\alpha(\omega)^\dagger A_\beta(\omega)$,
+  where $s_{\alpha\beta}(\omega) = \mathrm{Im}\,\gamma_{\alpha\beta}(\omega)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+This is a direct application of the Davies theorem \cite{Davies1974,
+Davies1976} to the system--bath Hamiltonian~\eqref{eq:c9:htot} with
+interaction~\eqref{eq:c9:interaction}.  The key steps are:
+\begin{enumerate}
+\item Pass to the interaction picture:
+  $\tilde{V}(t) = e^{i(H_S + H_E)t}\, V\, e^{-i(H_S + H_E)t}$.
+\item The Born--Markov approximation yields the Redfield equation:
+  $\dot{\rho}_S = -\lambda^2 \int_0^\infty
+    \mathrm{Tr}_E\bigl([\tilde{V}(t), [\tilde{V}(t-s), \rho_S \otimes \rho_E]]\bigr)\, ds$.
+\item The secular (rotating-wave) approximation retains only terms with
+  $\omega = \omega'$, eliminating rapidly oscillating contributions.
+\item The resulting equation has the form~\eqref{eq:c9:ciir_gen}, which is
+  GKSL by construction: the matrix $[\gamma_{\alpha\beta}(\omega)]$ is
+  positive semidefinite (it is a Fourier transform of a positive function
+  — the bath correlation function of a thermal state).
+\end{enumerate}
+Complete positivity of the spectral density matrix follows from the KMS
+condition on $\rho_E$, which guarantees
+$\gamma_{\alpha\beta}(\omega) = e^{\beta\omega}\,
+\gamma_{\beta\alpha}(-\omega)$ with $\gamma(\omega) \geq 0$ as a matrix
+for each $\omega$ \cite{Alicki1976}.
+\end{proof}
+
+\begin{corollary}[Explicit CIIR Lindblad Operators]
+\label{cor:c9:lindblad}
+By diagonalising the positive matrix $[\gamma_{\alpha\beta}(\omega)]$
+for each Bohr frequency $\omega$, we obtain the Lindblad operators:
+\begin{equation}
+  L_k = \sqrt{\gamma_k(\omega)}\, U_k(\omega)\, A(\omega),
+  \label{eq:c9:lk}
+\end{equation}
+where $U_k(\omega)$ are the eigenvectors of the spectral density matrix
+and $\gamma_k(\omega) \geq 0$ are its eigenvalues.  The CIIR generator
+becomes:
+\begin{equation}
+  \mathcal{L}_{\mathrm{CIIR}}(\rho) =
+    -i[H_{\mathrm{LS}}, \rho]
+    + \sum_k \gamma_k \Bigl(
+      L_k \rho L_k^\dagger
+      - \tfrac{1}{2}\{L_k^\dagger L_k, \rho\}
+    \Bigr).
+  \label{eq:c9:ciir_final}
+\end{equation}
+\end{corollary}
+
+\begin{lemma}[Boundedness of Lindblad Sum]
+\label{lem:c9:bounded}
+Under Ax2 (constraint boundedness, $\kappa_{\max} < \infty$), the
+Lindblad operators satisfy:
+\begin{equation}
+  \sum_k \gamma_k\, L_k^\dagger L_k
+    = \sum_\omega \sum_{\alpha,\beta}
+      \gamma_{\alpha\beta}(\omega)\, A_\alpha(\omega)^\dagger A_\beta(\omega)
+    < \infty
+  \label{eq:c9:lk_bound}
+\end{equation}
+in operator norm.
+\end{lemma}
+
+\begin{proof}
+Each $A_\alpha(\omega) = \hat{P}_\epsilon \hat{C}_\alpha \hat{P}_{\epsilon'}$
+satisfies $\|A_\alpha(\omega)\| \leq \|\hat{C}_\alpha\| \leq
+\kappa_{\max} < \infty$ by Ax2.  The number of Bohr frequencies is at
+most $\dim(\mathcal{H})^2 < \infty$ for finite-dimensional systems, or
+is controlled by the spectral structure of $H_S$ in the
+infinite-dimensional case.  The spectral density satisfies
+$\|\gamma(\omega)\| \leq \|g\|^2_{L^2}\, S(\omega)$ where $S(\omega)$
+is the bath spectral function, which decays for $\omega \to \infty$
+under the assumption of a physical (ohmic or sub-ohmic) spectral density.
+Hence the sum converges.
+\end{proof}
+
+%--------------------------------------------
+% FIGURE 2: GKSL vs Gradient Flow
+%--------------------------------------------
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{%
+\textbf{Figure~9.2: Flow Comparison — GKSL vs.\ Gradient Flow.}\\[4pt]
+Two flow diagrams on the state space $\mathcal{D}(\mathcal{H})$
+(depicted as a Bloch ball for a qubit).\\[4pt]
+\textbf{Left panel (GKSL / Physical dynamics):}  Trajectories
+$\rho(t) = e^{t\mathcal{L}}\rho(0)$ are shown as curves spiraling
+inward toward the unique fixed point $\rho_*$ (Gibbs state).
+The flow is \emph{linear} in $\rho$: parallel initial conditions
+produce parallel trajectories (affine structure preserved).
+Trajectories remain inside $\mathcal{D}(\mathcal{H})$ for all
+$t \geq 0$.\\[4pt]
+\textbf{Right panel (Gradient flow / Variational dynamics):}
+Trajectories $\dot{\rho} = -\nabla_\rho L(\rho)$ follow the steepest
+descent of the loss functional $L$.  The flow is generically
+\emph{nonlinear} in $\rho$ (the gradient depends on $\rho$ through
+$C_i(\rho)$ and $S(\rho)$).  Trajectories may exit
+$\mathcal{D}(\mathcal{H})$ unless explicitly projected.  The fixed
+point depends on the loss landscape, not on a thermal state.
+}}
+\caption{The GKSL flow (left) is the unique physically admissible
+dynamics; the gradient flow (right) is a variational tool, not a
+physical evolution.  See \S\ref{sec:c9:variational}.}
+\label{fig:c9:flow}
+\end{figure}
+
+
+% ============================================================
+\section{Lindblad Operator Derivation (Explicit)}
+\label{sec:c9:lindblad}
+% ============================================================
+
+We now make the derivation fully explicit for the canonical CIIR model.
+
+\begin{theorem}[GKS Matrix Construction]
+\label{thm:c9:gks}
+Define the GKS matrix $[a_{ij}]$ for $i, j \in \{1, \ldots, d^2-1\}$
+(where $d = \dim\mathcal{H}$) by:
+\begin{equation}
+  a_{ij} = \sum_\omega \gamma_{ij}(\omega),
+  \quad
+  \gamma_{ij}(\omega) =
+    \int_0^\infty e^{i\omega s}\,
+    \langle B_i(s) B_j(0) \rangle_{\rho_E}\, ds.
+  \label{eq:c9:gks}
+\end{equation}
+Then $[a_{ij}]$ is positive semidefinite, and the GKSL generator with
+this matrix is completely positive.
+\end{theorem}
+
+\begin{proof}
+For each $\omega$, $\gamma_{ij}(\omega)$ is the Fourier transform of the
+bath correlation function $C_{ij}(s) = \langle B_i(s) B_j(0) \rangle$,
+which is a positive-type function by the Bochner--Schwartz theorem (the
+bath is in a KMS state).  Hence $[\gamma_{ij}(\omega)] \geq 0$ for each
+$\omega$.  The sum over $\omega$ of positive semidefinite matrices is
+positive semidefinite, giving $[a_{ij}] \geq 0$.
+
+By the GKS theorem \cite{GKS1976}, a generator of the form
+$\mathcal{L}(\rho) = -i[H,\rho] + \sum_{i,j} a_{ij}
+(F_i \rho F_j^\dagger - \tfrac{1}{2}\{F_j^\dagger F_i, \rho\})$
+with $[a_{ij}] \geq 0$ and $\{F_i\}$ an orthonormal basis of
+traceless operators generates a CPTP semigroup.
+\end{proof}
+
+\begin{proposition}[Explicit Kraus Representation]
+\label{prop:c9:kraus}
+The CPTP map $\Phi_t = e^{t\mathcal{L}_{\mathrm{CIIR}}}$ admits the
+Kraus representation:
+\begin{equation}
+  \Phi_t(\rho) = \sum_\mu K_\mu(t)\, \rho\, K_\mu(t)^\dagger,
+  \quad
+  \sum_\mu K_\mu(t)^\dagger K_\mu(t) = \mathbb{1}.
+  \label{eq:c9:kraus}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Standard: every CPTP map on finite-dimensional $\mathcal{B}(\mathcal{H})$
+admits a Kraus decomposition \cite{Kraus1983}.  Explicitly,
+$K_\mu(t)$ can be obtained from the Choi--Jamio{\l}kowski isomorphism:
+the Choi matrix $C_t = (\mathrm{id} \otimes \Phi_t)(|\Omega\rangle
+\langle\Omega|) \geq 0$ (proved in \S\ref{sec:c9:cp}), and its
+eigendecomposition $C_t = \sum_\mu |\phi_\mu\rangle\langle\phi_\mu|$
+yields $K_\mu$ via the reshaping $K_\mu = \sqrt{d}\,
+\mathrm{reshape}(\phi_\mu)$.
+\end{proof}
+
+\begin{theorem}[Stinespring Dilation of CIIR]
+\label{thm:c9:stinespring}
+The CIIR channel $\Phi_t$ admits a Stinespring dilation:
+\begin{equation}
+  \Phi_t(\rho) = \mathrm{Tr}_E\bigl(
+    U(t)\, (\rho \otimes |0\rangle_E\langle 0|)\, U(t)^\dagger
+  \bigr),
+  \label{eq:c9:stinespring}
+\end{equation}
+where $U(t) \in \mathcal{U}(\mathcal{H}_S \otimes \mathcal{H}_E)$ is a
+unitary on the dilated space with
+$\dim\mathcal{H}_E \leq d^2 = (\dim\mathcal{H}_S)^2$, and $|0\rangle_E$
+is a fixed ancilla state.
+\end{theorem}
+
+\begin{proof}
+Stinespring's theorem \cite{Stinespring1955}: every CPTP map
+$\Phi : \mathcal{B}(\mathcal{H}) \to \mathcal{B}(\mathcal{H})$ has a
+minimal dilation with ancilla dimension $\leq d^2$.  The unitary $U(t)$
+is constructed from the Kraus operators via
+$U(t)(|\psi\rangle \otimes |0\rangle_E) = \sum_\mu (K_\mu(t)|\psi\rangle)
+\otimes |\mu\rangle_E$, extended to a unitary on the full space.
+\end{proof}
+
+%--------------------------------------------
+% FIGURE 5: Stinespring Dilation Diagram
+%--------------------------------------------
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{%
+\textbf{Figure~9.3: Stinespring Dilation of the CIIR Channel.}\\[4pt]
+A commutative diagram showing:
+\begin{itemize}
+\item Top row: $\rho \in \mathcal{D}(\mathcal{H}_S)
+  \xrightarrow{\Phi_t} \rho' \in \mathcal{D}(\mathcal{H}_S)$
+  (the CIIR CPTP map).
+\item Left arrow: $\rho \mapsto \rho \otimes |0\rangle_E\langle 0|$
+  (ancilla preparation).
+\item Bottom row: $\rho \otimes |0\rangle\langle 0|
+  \xrightarrow{U(t)} U(t)(\rho \otimes |0\rangle\langle 0|)U(t)^\dagger$
+  (unitary evolution on dilated space).
+\item Right arrow: $\mathrm{Tr}_E$ (partial trace over environment).
+\end{itemize}
+The triangle commutes: $\Phi_t = \mathrm{Tr}_E \circ \mathrm{Ad}_{U(t)}
+\circ (\cdot \otimes |0\rangle\langle 0|)$.  The environment space
+$\mathcal{H}_E$ has $\dim \leq d^2$.
+}}
+\caption{Stinespring dilation guarantees that the CIIR evolution can be
+viewed as a unitary process on an enlarged Hilbert space followed by
+partial trace.  This is the structural guarantee of complete positivity.}
+\label{fig:c9:stinespring}
+\end{figure}
+
+
+% ============================================================
+\section{Nonlinearity Elimination and Control}
+\label{sec:c9:nonlinearity}
+% ============================================================
+
+\subsection{Identification of Nonlinear Terms}
+
+The CIIR framework, as implemented in the QuASIM simulation layer
+(\texttt{quasim/ciir/evolution.py}), uses a variational loss functional:
+\begin{equation}
+  L(\rho) = \sum_i \lambda_i C_i(\rho)^2
+    + \sum_j \mu_j |\mathrm{Tr}(O_j \rho) - y_j|^2
+    - \gamma\, S(\rho),
+  \label{eq:c9:loss}
+\end{equation}
+where $C_i(\rho) = \mathrm{Tr}(K_i \rho)$, $S(\rho) = -\mathrm{Tr}(\rho
+\log\rho)$, and the evolution is the gradient flow
+$\dot{\rho} = -\nabla_\rho L(\rho)$.
+
+\begin{lemma}[Nonlinear Terms in the Gradient Flow]
+\label{lem:c9:nonlinear}
+The gradient $\nabla_\rho L$ contains the following nonlinear terms:
+\begin{enumerate}
+\item[(NL1)] $\partial L_C/\partial\rho = 2\lambda_i\, C_i(\rho)\, K_i$:
+  This is \emph{linear} in $\rho$ since $C_i(\rho) = \mathrm{Tr}(K_i\rho)$
+  is linear.  Hence $\partial L_C/\partial\rho = 2\lambda_i\,
+  \mathrm{Tr}(K_i\rho)\, K_i$, which is an \emph{affine} function of $\rho$.
+
+  \fbox{\parbox{0.78\linewidth}{%
+  \textbf{Red Team (Severity: Repairable).}  The term
+  $\mathrm{Tr}(K_i\rho) \cdot K_i$ makes the gradient flow $\rho$-dependent
+  in a way that is \emph{not} compatible with GKSL form.  The GKSL
+  generator must be $\rho$-independent (linear).  This term is
+  state-dependent through the expectation value.}}
+
+\item[(NL2)] $\partial L_O/\partial\rho = 2\mu_j\,
+  (\mathrm{Tr}(O_j\rho) - y_j)\, O_j$: same structure as NL1, affine
+  in $\rho$.
+
+  \fbox{\parbox{0.78\linewidth}{%
+  \textbf{Red Team (Severity: Repairable).}  Same issue as NL1:
+  the coefficient depends on $\rho$ via $\mathrm{Tr}(O_j\rho)$.}}
+
+\item[(NL3)] $\partial S/\partial\rho = -(\log\rho + \mathbb{1})$:
+  This is \emph{genuinely nonlinear} in $\rho$ (the matrix logarithm).
+
+  \fbox{\parbox{0.78\linewidth}{%
+  \textbf{Red Team (Severity: Fatal if used as physical dynamics).}
+  The matrix logarithm $\log\rho$ is not a linear function of $\rho$.
+  No GKSL generator can produce $\log\rho$ as part of $\dot\rho$.
+  This violates complete positivity if interpreted as a physical
+  evolution law.}}
+\end{enumerate}
+\end{lemma}
+
+%--------------------------------------------
+% FIGURE 3: Nonlinearity Emergence Diagram
+%--------------------------------------------
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{%
+\textbf{Figure~9.4: Nonlinearity Emergence Diagram.}\\[4pt]
+A flowchart showing how nonlinearity enters the CIIR framework.\\[2pt]
+$\rho \;\xrightarrow{\text{constraint eval}}\; C_i(\rho) = \mathrm{Tr}(K_i\rho)
+\;\xrightarrow{\text{squared penalty}}\; C_i(\rho)^2
+\;\xrightarrow{\text{gradient}}\; 2C_i(\rho)\, K_i$\\[2pt]
+The final gradient is affine in $\rho$ (linear coefficient times fixed
+operator).  This is \emph{not} GKSL-compatible.\\[4pt]
+Similarly: $\rho \;\xrightarrow{\text{entropy}}\; S(\rho) = -\mathrm{Tr}(\rho\log\rho)
+\;\xrightarrow{\text{gradient}}\; -(\log\rho + \mathbb{1})$\\[2pt]
+The entropy gradient is genuinely nonlinear (matrix logarithm).
+This is the \textbf{fatal obstruction} if used as physical dynamics.\\[4pt]
+Resolution arrows point to:
+(a) Reinterpretation as variational (non-physical),
+(b) Embedding into extended Hilbert space (mean-field),
+(c) Removal and replacement with fixed GKSL dissipator.
+}}
+\caption{The nonlinearity in the CIIR gradient flow is structural.
+Physical dynamics must use the derived GKSL generator
+(\S\ref{sec:c9:dynamics}), not the gradient flow.}
+\label{fig:c9:nonlinearity}
+\end{figure}
+
+
+\subsection{Resolution of Each Nonlinear Term}
+
+\begin{theorem}[Nonlinearity Resolution]
+\label{thm:c9:nonlinear_fix}
+Each nonlinear term in the gradient flow~\eqref{eq:c9:loss} is resolved
+as follows:
+\begin{enumerate}
+\item[\textbf{NL1, NL2}] (Affine state-dependence in constraint/observer
+  gradients.)\\
+  \textbf{Resolution:}  Reinterpret as \emph{variational} (non-physical).
+  The gradient flow is a computational tool for finding equilibria, not
+  the physical dynamics.  The physical dynamics is the GKSL
+  generator~\eqref{eq:c9:ciir_final} derived in \S\ref{sec:c9:dynamics},
+  which is manifestly $\rho$-independent (linear).
+
+  \textbf{Formal justification:}  The fixed point $\rho_*$ of the
+  gradient flow, if it exists, coincides with the fixed point of the
+  GKSL dynamics when the Lindblad operators are derived from the same
+  constraint Hamiltonian (Proposition~\ref{prop:c9:fixedpoint}).
+
+\item[\textbf{NL3}] (Matrix logarithm in entropy gradient.)\\
+  \textbf{Resolution:}  Remove from physical dynamics entirely.
+  The entropy regulariser $-\gamma S(\rho)$ is a \emph{variational
+  penalty} that ensures the gradient flow does not converge to
+  degenerate states.  In the physical GKSL dynamics, entropy production
+  arises automatically from the dissipator $\mathcal{D}(\rho)$ via
+  Spohn's theorem (Theorem~7.6): $dS/dt \geq 0$ for primitive
+  dissipators.  No explicit entropy term is needed or permitted.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(NL1, NL2):  The GKSL generator~\eqref{eq:c9:ciir_final} is a fixed
+linear superoperator — it does not depend on $\rho$.  The constraint
+operators $\hat{C}_\alpha$ enter through the \emph{interaction
+Hamiltonian} $V$ in the system--bath coupling, not through expectation
+values.  The Davies limit produces $\rho$-independent Lindblad
+operators (Corollary~\ref{cor:c9:lindblad}).
+
+(NL3):  The von Neumann entropy is not part of the GKSL generator.
+By Spohn's inequality \cite{Spohn1978},
+$dS(\rho(t))/dt \geq 0$ holds automatically for any GKSL semigroup
+with a full-rank fixed point, without requiring $S(\rho)$ in the
+generator.
+\end{proof}
+
+\begin{proposition}[Fixed-Point Correspondence]
+\label{prop:c9:fixedpoint}
+Under mild regularity conditions (primitive dissipator, ergodicity),
+the unique fixed point $\rho_*$ of $\mathcal{L}_{\mathrm{CIIR}}$ is:
+\begin{equation}
+  \rho_* = \frac{e^{-\beta H_{\mathrm{LS}}}}
+    {\mathrm{Tr}\, e^{-\beta H_{\mathrm{LS}}}},
+  \label{eq:c9:gibbs}
+\end{equation}
+with $\beta = 1/T_{\mathrm{eff}}$ the effective inverse temperature
+determined by the bath spectral density via the KMS condition.
+\end{proposition}
+
+\begin{proof}
+For a primitive GKSL generator satisfying detailed balance with respect
+to the KMS state at inverse temperature $\beta$, the unique fixed point
+is the Gibbs state \cite{Frigerio1978, Alicki1976}.  The Davies
+generator satisfies detailed balance by construction when the bath is
+in a KMS state.
+\end{proof}
+
+
+% ============================================================
+\section{No-Signaling Proof}
+\label{sec:c9:nosignal}
+% ============================================================
+
+\begin{theorem}[No-Signaling in CIIR]
+\label{thm:c9:nosignal}
+Let $\rho_{AB} \in \mathcal{D}(\mathcal{H}_A \otimes \mathcal{H}_B)$
+be a bipartite state of two CIIR systems.  Then:
+\begin{equation}
+  \frac{d\rho_B}{dt} = \mathcal{L}_B(\rho_B),
+  \label{eq:c9:nosignal}
+\end{equation}
+where $\rho_B = \mathrm{Tr}_A(\rho_{AB})$ and $\mathcal{L}_B$ is the
+\emph{local} GKSL generator on $\mathcal{H}_B$, independent of any
+operation performed by Alice on $\mathcal{H}_A$.
+\end{theorem}
+
+\begin{proof}
+Consider the total generator $\mathcal{L}_{AB} = \mathcal{L}_A \otimes
+\mathrm{id}_B + \mathrm{id}_A \otimes \mathcal{L}_B$ (local generators
+from the Davies construction, since the system--bath coupling is local:
+each subsystem couples to its own constraint bath).
+
+\textbf{Step 1} (Schmidt decomposition).  Write the initial state as
+$\rho_{AB} = \sum_{i,j} c_{ij}\, |a_i\rangle\langle a_j| \otimes
+|b_i\rangle\langle b_j|$ (or more generally as a sum of product terms).
+
+\textbf{Step 2} (Partial trace of GKSL evolution).
+\begin{align}
+  \mathrm{Tr}_A\bigl(\mathcal{L}_{AB}(\rho_{AB})\bigr)
+  &= \mathrm{Tr}_A\bigl(
+      (\mathcal{L}_A \otimes \mathrm{id}_B)(\rho_{AB})
+    \bigr)
+    + \mathrm{Tr}_A\bigl(
+      (\mathrm{id}_A \otimes \mathcal{L}_B)(\rho_{AB})
+    \bigr) \nonumber\\
+  &= \mathrm{Tr}_A\bigl(
+      \mathcal{L}_A(\rho_A)\bigr) \otimes \rho_B\, [\text{trace gives 0}]
+    + \mathcal{L}_B(\rho_B).
+  \label{eq:c9:nosignal_proof}
+\end{align}
+
+The first term vanishes because $\mathcal{L}_A$ is trace-preserving:
+$\mathrm{Tr}_A(\mathcal{L}_A(\sigma)) = 0$ for all $\sigma$
+(this is the definition of trace-preserving generator:
+$\mathrm{Tr}(\mathcal{L}(\rho)) = 0$).
+
+More precisely, using the Lindblad form for $\mathcal{L}_A$:
+\begin{align}
+  \mathrm{Tr}_A\bigl((\mathcal{L}_A \otimes \mathrm{id}_B)(\rho_{AB})\bigr)
+  &= \sum_k \gamma_k^A \mathrm{Tr}_A\bigl(
+    (L_k^A \otimes \mathbb{1}_B) \rho_{AB} (L_k^{A\dagger} \otimes \mathbb{1}_B)
+  \bigr) - \ldots \nonumber\\
+  &= \sum_k \gamma_k^A \bigl[
+    \mathrm{Tr}_A(L_k^A \rho_A L_k^{A\dagger}) \cdot \rho_{B|A}
+    - \tfrac{1}{2}\mathrm{Tr}_A(\{L_k^{A\dagger}L_k^A, \rho_A\}) \cdot \rho_{B|A}
+  \bigr]
+\end{align}
+For the partial trace, the $A$-sector contributes $\mathrm{Tr}_A(\mathcal{L}_A(\cdot)) = 0$
+by the trace-preservation property.
+
+\textbf{Step 3}.  Suppose Alice performs a local operation
+$\mathcal{E}_A$ on her subsystem.  The state becomes
+$(\mathcal{E}_A \otimes \mathrm{id}_B)(\rho_{AB})$, and Bob's
+reduced state is $\mathrm{Tr}_A((\mathcal{E}_A \otimes \mathrm{id}_B)(\rho_{AB}))
+= \rho_B$ whenever $\mathcal{E}_A$ is trace-preserving.  This is
+independent of the choice of $\mathcal{E}_A$.
+
+Hence $d\rho_B/dt = \mathcal{L}_B(\rho_B)$, independent of Alice's
+local generator or local operations.
+\end{proof}
+
+\fbox{\parbox{0.9\linewidth}{%
+\textbf{Red Team Audit: No-Signaling.}\\[2pt]
+\textbf{Potential violation:}  If the original gradient flow
+$\dot{\rho} = -\nabla_\rho L(\rho)$ were used as the physical
+dynamics, the state-dependent coefficients (NL1, NL2) could in
+principle allow signaling: the gradient on $B$ would depend on
+$\mathrm{Tr}(K_i \rho_{AB})$, which includes correlations with $A$.\\[2pt]
+\textbf{Resolution:}  This violation is \emph{absent} in the GKSL
+formulation.  The Davies-derived generator uses fixed, $\rho$-independent
+Lindblad operators.  Locality of the system--bath coupling ensures
+$\mathcal{L}_{AB} = \mathcal{L}_A \otimes \mathrm{id} + \mathrm{id}
+\otimes \mathcal{L}_B$.  No-signaling follows by linearity and
+trace preservation.\\[2pt]
+\textbf{Severity:}  The gradient flow issue is \textbf{Fatal} if
+interpreted as dynamics; \textbf{Cosmetic} when properly relegated
+to variational role.
+}}
+
+%--------------------------------------------
+% FIGURE 4: No-Signaling Violation Schematic
+%--------------------------------------------
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{%
+\textbf{Figure~9.5: No-Signaling Violation Schematic (Bipartite System).}
+\\[4pt]
+A bipartite system $A$-$B$ with entangled state
+$\rho_{AB} \in \mathcal{D}(\mathcal{H}_A \otimes \mathcal{H}_B)$.\\[4pt]
+\textbf{Scenario 1 (GKSL — safe):}  Alice applies local GKSL evolution
+$\mathcal{L}_A$.  Bob's state $\rho_B = \mathrm{Tr}_A(\rho_{AB})$ evolves
+under $\mathcal{L}_B$ alone, independent of Alice's choice.
+Arrow from $A$ to $B$ is crossed out (no signal).\\[4pt]
+\textbf{Scenario 2 (Gradient flow — violation):}  Alice's gradient
+$\nabla_{\rho_A} L$ depends on $\mathrm{Tr}(K_i \rho_{AB})$, which
+encodes correlations with $B$.  A dashed red arrow from $A$ to $B$
+indicates potential signaling through state-dependent coefficients.\\[4pt]
+\textbf{Resolution:}  Use Scenario 1 (GKSL) as physical dynamics;
+relegate Scenario 2 to variational computation.
+}}
+\caption{No-signaling is guaranteed by the GKSL structure but violated
+by na\"ive gradient flow.  This distinction is critical for CIIR's
+physical admissibility.}
+\label{fig:c9:nosignal}
+\end{figure}
+
+
+% ============================================================
+\section{Complete Positivity: Choi Matrix Construction}
+\label{sec:c9:cp}
+% ============================================================
+
+\begin{theorem}[Complete Positivity of CIIR Generator]
+\label{thm:c9:choi}
+The CIIR generator $\mathcal{L}_{\mathrm{CIIR}}$ given
+by~\eqref{eq:c9:ciir_final} generates a CPTP semigroup.  Explicitly, the
+Choi matrix of the channel $\Phi_t = e^{t\mathcal{L}_{\mathrm{CIIR}}}$:
+\begin{equation}
+  C_{\Phi_t} = (\mathrm{id} \otimes \Phi_t)(|\Omega\rangle\langle\Omega|)
+  \geq 0
+  \label{eq:c9:choi}
+\end{equation}
+for all $t \geq 0$, where $|\Omega\rangle = \frac{1}{\sqrt{d}}
+\sum_{i=1}^{d} |i\rangle \otimes |i\rangle \in \mathcal{H} \otimes
+\mathcal{H}$ is the maximally entangled state.
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1} (GKSL $\Rightarrow$ CPTP).  The GKSL theorem
+\cite{Lindblad1976, GKS1976} establishes that any generator of the
+form~\eqref{eq:c9:gksl} with $[a_{ij}] \geq 0$ generates a CPTP
+semigroup.  The CIIR generator is of this form by
+Theorem~\ref{thm:c9:davies}.
+
+\textbf{Step 2} (Explicit Choi construction).  Using the Kraus
+representation $\Phi_t(\rho) = \sum_\mu K_\mu(t) \rho K_\mu(t)^\dagger$:
+\begin{align}
+  C_{\Phi_t}
+  &= (\mathrm{id} \otimes \Phi_t)(|\Omega\rangle\langle\Omega|)
+  \nonumber\\
+  &= \frac{1}{d} \sum_{i,j} |i\rangle\langle j| \otimes
+    \Phi_t(|i\rangle\langle j|)
+  \nonumber\\
+  &= \frac{1}{d} \sum_{i,j} \sum_\mu
+    |i\rangle\langle j| \otimes K_\mu |i\rangle\langle j| K_\mu^\dagger.
+  \label{eq:c9:choi_explicit}
+\end{align}
+
+To show $C_{\Phi_t} \geq 0$:  For any vector
+$|\xi\rangle = \sum_{k,l} \xi_{kl}\, |k\rangle \otimes |l\rangle$:
+\begin{align}
+  \langle\xi| C_{\Phi_t} |\xi\rangle
+  &= \frac{1}{d} \sum_\mu \sum_{i,j}
+    \bar{\xi}_{ij} \xi_{ij'}\,
+    \langle j|K_\mu|i\rangle \overline{\langle j'|K_\mu|i\rangle}
+  \nonumber\\
+  &= \frac{1}{d} \sum_\mu
+    \Bigl| \sum_{i,j} \xi_{ij} \langle j|K_\mu|i\rangle \Bigr|^2
+  \geq 0.
+\end{align}
+
+\textbf{Step 3} (Trace preservation).
+$\mathrm{Tr}_2(C_{\Phi_t}) = \frac{1}{d} \sum_i \Phi_t(|i\rangle\langle i|)$.
+Since $\Phi_t$ is trace-preserving,
+$\mathrm{Tr}(\Phi_t(|i\rangle\langle i|)) = 1$ for all $i$, hence
+$\mathrm{Tr}(C_{\Phi_t}) = d \cdot (1/d) \cdot d = d$
+and $\mathrm{Tr}_2(C_{\Phi_t}) = \mathbb{1}_1/d$ (partial trace
+condition for trace-preserving maps).
+\end{proof}
+
+
+% ============================================================
+\section{EFT / Scaling Structure}
+\label{sec:c9:eft}
+% ============================================================
+
+\begin{definition}[CIIR Energy Scales]
+\label{def:c9:scales}
+Define:
+\begin{itemize}
+\item \textbf{System energy scale:}
+  $E = \|H_S\|_{\mathrm{op}} = \|\hat{H}_{\mathcal{M}}\|_{\mathrm{op}}$
+  (the constraint Hamiltonian norm).
+\item \textbf{Cutoff scale:}
+  $\Lambda = \omega_{\max}$ (the maximum bath frequency, i.e.\ the
+  maximum constraint curvature $\kappa_{\max}$).
+\item \textbf{Coupling parameter:}
+  $\epsilon = \lambda^2 / \Lambda$ (the weak-coupling expansion parameter).
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Generator Expansion]
+\label{thm:c9:eft}
+The CIIR generator admits the systematic expansion:
+\begin{equation}
+  \mathcal{L}_{\mathrm{CIIR}} = \mathcal{L}_0
+    + \sum_{n=1}^{\infty} \epsilon^n\, \mathcal{O}_n,
+  \label{eq:c9:eft_expansion}
+\end{equation}
+where:
+\begin{itemize}
+\item $\mathcal{L}_0(\rho) = -i[H_S, \rho]$ is the free Hamiltonian
+  evolution (zeroth order).
+\item $\mathcal{O}_1 = \mathcal{D}_{\mathrm{CIIR}}$ is the Davies
+  dissipator (first correction, $O(\epsilon)$).
+\item $\mathcal{O}_{n \geq 2}$ are higher-order corrections from the
+  Nakajima--Zwanzig projection (non-Markovian memory effects).
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+The Born--Markov approximation truncates the Nakajima--Zwanzig equation
+at second order in $\lambda$, giving $\mathcal{O}_1 \sim \lambda^2$.
+Higher orders correspond to $n$-point bath correlations, which contribute
+at order $\lambda^{2n}$.  In the ratio $E/\Lambda$:  the dissipator
+scales as $(E/\Lambda)^0 \cdot \epsilon$ when the bath spectral density
+is ohmic (i.e., $\gamma(\omega) \propto \omega$), giving the expansion
+parameter $\epsilon = \lambda^2/\Lambda$.
+\end{proof}
+
+\begin{remark}[Classification of CIIR in the EFT Hierarchy]
+\label{rem:c9:eft_class}
+CIIR is \textbf{not} a true effective field theory in the
+Wilsonian sense, because:
+\begin{enumerate}
+\item There is no path integral or action functional from which the
+  generator is derived via integrating out UV degrees of freedom.
+\item The expansion parameter $\epsilon$ is a coupling constant, not
+  an energy ratio $E/\Lambda$.
+\item The Lindblad operators are derived from a microscopic model
+  (system--bath Hamiltonian), not from symmetry and dimensional analysis.
+\end{enumerate}
+
+CIIR is more precisely classified as an \textbf{open quantum system
+in the weak-coupling limit}: a controlled perturbative expansion of a
+microscopic unitary theory, with the Markov approximation providing
+the leading-order effective description.  The analogy with EFT is
+structural (systematic expansion in a small parameter) but not
+ontological (no field-theoretic renormalisation group).
+\end{remark}
+
+%--------------------------------------------
+% FIGURE 6: EFT Scaling Hierarchy
+%--------------------------------------------
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{%
+\textbf{Figure~9.6: EFT Scaling Hierarchy of CIIR.}\\[4pt]
+A vertical energy scale diagram with:
+\begin{itemize}
+\item Top: $\Lambda = \kappa_{\max}$ (UV cutoff = max constraint curvature).
+\item Middle: $E = \|H_S\|$ (system energy scale).
+\item Bottom: $\epsilon = \lambda^2/\Lambda$ (weak-coupling scale).
+\end{itemize}
+At each scale, the dominant contribution is shown:
+\begin{itemize}
+\item $\Lambda$: Full unitary system-bath dynamics $U(t)$ on
+  $\mathcal{H}_S \otimes \mathcal{H}_E$.
+\item $E$: Free Hamiltonian evolution $\mathcal{L}_0 = -i[H_S, \cdot]$.
+\item $\epsilon$: Davies dissipator $\mathcal{D}_{\mathrm{CIIR}}$
+  (Markovian correction).
+\item $\epsilon^2$: Non-Markovian memory kernel (Nakajima--Zwanzig).
+\end{itemize}
+CIIR operates at the $\epsilon$ level (Born--Markov approximation).
+}}
+\caption{CIIR is a controlled perturbative expansion in the system--bath
+coupling, analogous to (but distinct from) a Wilsonian EFT.}
+\label{fig:c9:eft}
+\end{figure}
+
+
+% ============================================================
+\section{Variational Duality}
+\label{sec:c9:variational}
+% ============================================================
+
+\begin{theorem}[Gradient Flow $\neq$ Physical Dynamics]
+\label{thm:c9:grad_neq_phys}
+The gradient flow $\dot{\rho} = -\nabla_\rho L(\rho)$ from the CIIR
+loss functional~\eqref{eq:c9:loss} is \emph{not} identical to the
+physical GKSL dynamics~\eqref{eq:c9:ciir_final}.  Specifically:
+\begin{enumerate}
+\item The gradient flow is nonlinear in $\rho$; the GKSL generator is
+  linear.
+\item The gradient flow does not preserve $\mathcal{D}(\mathcal{H})$
+  without projection; the GKSL flow does.
+\item The gradient flow has a loss-landscape--dependent fixed point; the
+  GKSL flow has a Gibbs-state fixed point.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) follows from Lemma~\ref{lem:c9:nonlinear}: the gradient contains
+$\rho$-dependent coefficients ($C_i(\rho)$, $\log\rho$).
+
+(2) The gradient step $\rho - \eta \nabla L$ does not preserve positivity
+or trace normalization for arbitrary $\eta > 0$: the eigenvalues of
+$\rho - \eta \nabla L$ may become negative, requiring explicit projection
+(as implemented in \texttt{evolution.py:project\_density}).
+
+(3) The gradient flow minimizes $L(\rho)$; its fixed point satisfies
+$\nabla L(\rho_*) = 0$, which depends on the weight parameters
+$\lambda_i, \mu_j, \gamma$ and targets $y_j$.  The GKSL fixed point is
+the Gibbs state~\eqref{eq:c9:gibbs}, determined solely by $H_S$ and the
+bath temperature.
+\end{proof}
+
+\begin{proposition}[Relationship to TDVP]
+\label{prop:c9:tdvp}
+The gradient flow on $\mathcal{D}(\mathcal{H})$ with the quantum Fisher
+metric $g_F$ (Bures metric) yields the Time-Dependent Variational
+Principle (TDVP) equation:
+\begin{equation}
+  G_F(\rho)\, \dot{\rho} = -\nabla_\rho L(\rho),
+  \label{eq:c9:tdvp}
+\end{equation}
+where $G_F(\rho)$ is the Fisher information matrix.  This is
+\emph{still nonlinear} due to the metric dependence on $\rho$.
+\end{proposition}
+
+\begin{proposition}[Relationship to Free Energy Minimization]
+\label{prop:c9:freeenergy}
+If we set $L(\rho) = \mathrm{Tr}(\rho H_S) - T_{\mathrm{eff}} S(\rho)$
+(the negative free energy), the gradient flow becomes the free-energy
+descent:
+\begin{equation}
+  \dot{\rho} = -(H_S + T_{\mathrm{eff}} \log\rho + T_{\mathrm{eff}}\mathbb{1}).
+  \label{eq:c9:free_energy}
+\end{equation}
+The fixed point is the Gibbs state $\rho_* = e^{-\beta H_S}/Z$.
+This matches the GKSL fixed point but the \emph{dynamics} differ:
+the free-energy flow is nonlinear (via $\log\rho$) while the GKSL
+flow is linear.
+\end{proposition}
+
+\begin{corollary}[Variational-Physical Duality]
+\label{cor:c9:duality}
+The relationship between the variational (gradient) flow and the physical
+(GKSL) flow is:
+\begin{enumerate}
+\item \textbf{Fixed points agree} (under detailed balance): both converge
+  to the Gibbs state.
+\item \textbf{Transient dynamics differ}: the variational flow is
+  nonlinear; the physical flow is linear.
+\item \textbf{Physical admissibility}: only the GKSL flow satisfies
+  CPTP, no-signaling, and complete positivity.
+\end{enumerate}
+The variational flow serves as a \emph{computational oracle} for finding
+the physical equilibrium state, not as a description of physical evolution.
+\end{corollary}
+
+
+% ============================================================
+\section{Obstruction Theorems}
+\label{sec:c9:obstruction}
+% ============================================================
+
+\begin{theorem}[State-Dependent Generator Obstruction]
+\label{thm:c9:obstruction}
+Let $\mathcal{L}_\rho : \mathcal{B}(\mathcal{H}) \to
+\mathcal{B}(\mathcal{H})$ be a superoperator that depends on the
+state $\rho$, i.e., $\mathcal{L}_\rho(\sigma) = f(\rho, \sigma)$
+where $f$ is nonlinear in its first argument.  Then the evolution
+$\dot{\rho} = \mathcal{L}_\rho(\rho)$:
+\begin{enumerate}
+\item[(i)] Is nonlinear in $\rho$.
+\item[(ii)] Does not, in general, generate a CPTP semigroup.
+\item[(iii)] May violate the no-signaling condition.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(i)} is immediate: the map $\rho \mapsto \mathcal{L}_\rho(\rho)$
+is a composition of a nonlinear map $\rho \mapsto \mathcal{L}_\rho$ with
+a linear map $\mathcal{L}_\rho \mapsto \mathcal{L}_\rho(\rho)$, which
+is generically nonlinear.
+
+\textbf{(ii)} A CPTP semigroup $\{T_t\}_{t\geq 0}$ satisfies
+$T_{t+s} = T_t \circ T_s$ and each $T_t$ is CPTP.  But for a
+state-dependent generator, the solution $\rho(t)$ depends on the initial
+condition $\rho(0)$ in a nonlinear way, so $T_t(\rho) = \rho(t;\rho(0))$
+is not a linear map.  A nonlinear map cannot be CPTP (complete positivity
+is a property of linear maps).
+
+\textbf{(iii)} For a bipartite system, if $\mathcal{L}_{\rho_{AB}}$ on
+$A$ depends on the global state $\rho_{AB}$, then
+$\mathrm{Tr}_A(\mathcal{L}_{\rho_{AB}}(\rho_{AB}))$ depends on the
+$B$-marginal of $\rho_{AB}$, which in turn depends on operations
+performed on $A$.  Formally: let Alice apply a local unitary $U_A$.
+The new state is $\rho'_{AB} = (U_A \otimes \mathbb{1})\rho_{AB}
+(U_A^\dagger \otimes \mathbb{1})$.  The generator $\mathcal{L}_{\rho'_{AB}}$
+differs from $\mathcal{L}_{\rho_{AB}}$, and $\mathrm{Tr}_A(
+\mathcal{L}_{\rho'_{AB}}(\rho'_{AB}))$ may differ from
+$\mathrm{Tr}_A(\mathcal{L}_{\rho_{AB}}(\rho_{AB}))$ even for
+Bob's reduced state.
+\end{proof}
+
+\begin{corollary}[Expectation-Value Generators are Non-Physical]
+\label{cor:c9:ev_generators}
+Any generator of the form
+\begin{equation}
+  \mathcal{L}(\rho) = f\bigl(\mathrm{Tr}(A\rho)\bigr)\,
+    \mathcal{G}(\rho)
+  \label{eq:c9:ev_gen}
+\end{equation}
+where $f : \mathbb{R} \to \mathbb{R}$ is any non-constant function,
+$A \in \mathcal{B}(\mathcal{H})_{\mathrm{sa}}$, and $\mathcal{G}$ is a
+fixed GKSL generator, violates CPTP.
+\end{corollary}
+
+\begin{proof}
+Direct consequence of Theorem~\ref{thm:c9:obstruction}:
+$\mathrm{Tr}(A\rho)$ is a linear function of $\rho$, but
+$f(\mathrm{Tr}(A\rho))$ is nonlinear for non-constant $f$, making
+the full generator $\rho$-dependent and hence non-CPTP.
+\end{proof}
+
+\fbox{\parbox{0.9\linewidth}{%
+\textbf{Red Team: Obstruction Status.}\\[2pt]
+The obstruction theorem is \textbf{confirmed}: any attempt to make the
+CIIR generator depend on expectation values (e.g., $C_i(\rho) =
+\mathrm{Tr}(K_i\rho)$ as a coefficient) necessarily breaks CPTP.\\[2pt]
+\textbf{Resolution:}  The CIIR generator derived via Davies limit
+(\S\ref{sec:c9:dynamics}) is free of this obstruction: the Lindblad
+operators are fixed, state-independent operators derived from the
+constraint algebra and bath spectral density.  The expectation-value
+dependence is confined to the variational loss functional, which is not
+the physical dynamics.
+}}
+
+%--------------------------------------------
+% FIGURE 7: Operator Space Decomposition
+%--------------------------------------------
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{%
+\textbf{Figure~9.7: Operator Space Decomposition.}\\[4pt]
+The space $\mathcal{B}(\mathcal{H})$ (all bounded operators) is
+decomposed into:
+\begin{itemize}
+\item $\mathcal{B}(\mathcal{H})_{\mathrm{sa}}$: self-adjoint operators
+  (observables).  Contains $\mathcal{A}(\mathcal{H})$ (constraint-commuting
+  observables) as a sub-algebra.
+\item $\mathcal{K}(\mathcal{H})$: the constraint operator algebra
+  generated by $\{\hat{C}_\alpha\}$.
+\item The Lindblad operators $\{L_k\}$ live in $\mathcal{B}(\mathcal{H})$
+  (not necessarily self-adjoint).
+\item The generator $\mathcal{L}$ acts as a superoperator on
+  $\mathcal{B}(\mathcal{H})$, mapping $\mathcal{D}(\mathcal{H})$ to
+  the tangent cone of $\mathcal{D}(\mathcal{H})$.
+\end{itemize}
+Arrows show the derivation chain:
+$(\mathcal{M}, g, \kappa) \;\xrightarrow{\text{embedding}}\;
+\hat{C}_\alpha \;\xrightarrow{\text{Davies}}\;
+L_k, \gamma_k \;\xrightarrow{\text{GKSL}}\;
+\mathcal{L}_{\mathrm{CIIR}}$.
+}}
+\caption{The operator space decomposition showing how the constraint
+geometry flows into the physical generator through a mathematically
+controlled chain of derivations.}
+\label{fig:c9:opspace}
+\end{figure}
+
+
+% ============================================================
+\section{Minimal Consistent Theory}
+\label{sec:c9:minimal}
+% ============================================================
+
+We now assemble the fully CPTP-compliant, no-signaling, physically
+interpretable, mathematically closed version of CIIR.
+
+\begin{definition}[Minimal CIIR Theory]
+\label{def:c9:minimal}
+The \emph{minimal consistent CIIR theory} is the tuple
+$\mathcal{T}_{\mathrm{CIIR}}^{\min} = (\mathcal{H}, \mathcal{A},
+\mathcal{L}, \Phi, \mathcal{M})$ where:
+\begin{enumerate}
+\item $\mathcal{H}$ is a separable complex Hilbert space with
+  $\dim(\mathcal{H}) \leq \exp(\kappa_{\max} \cdot \mathrm{vol}(\mathcal{M}))$.
+
+\item $\mathcal{A}(\mathcal{H}) = \{O \in \mathcal{B}(\mathcal{H})_{\mathrm{sa}} :
+  [O, \hat{P}_{\mathcal{M}}] = 0\}$ is the observable algebra.
+
+\item $\mathcal{L} = \mathcal{L}_{\mathrm{CIIR}}$ is the GKSL
+  generator~\eqref{eq:c9:ciir_final} with:
+  \begin{itemize}
+  \item Hamiltonian: $H_{\mathrm{LS}} = \hat{H}_{\mathcal{M}} +
+    \sum_{\alpha,\beta,\omega} s_{\alpha\beta}(\omega)\,
+    A_\alpha(\omega)^\dagger A_\beta(\omega)$.
+  \item Lindblad operators: $L_k = \sqrt{\gamma_k(\omega)}\, U_k(\omega)\,
+    A(\omega)$ derived from the constraint operators $\hat{C}_\alpha$
+    via the Davies weak-coupling limit (Theorem~\ref{thm:c9:davies}).
+  \item Decoherence rates: $\gamma_k(\omega) \geq 0$ from the bath
+    spectral density (KMS condition).
+  \end{itemize}
+
+\item $\Phi : \mathcal{B}(\mathcal{R}_{\mathrm{op}}) \to
+  \mathcal{B}(\mathcal{H})$ is the CPTP interface map satisfying Ax3.
+
+\item $(\mathcal{M}, g, \kappa)$ is the constraint manifold with
+  $\kappa_{\max} < \infty$.
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[Properties of the Minimal Theory]
+\label{thm:c9:properties}
+$\mathcal{T}_{\mathrm{CIIR}}^{\min}$ satisfies:
+\begin{enumerate}
+\item[\textbf{P1}] \textbf{CPTP:}  The evolution $\Phi_t = e^{t\mathcal{L}}$
+  is CPTP for all $t \geq 0$ (Theorem~\ref{thm:c9:choi}).
+\item[\textbf{P2}] \textbf{No-signaling:}  Local dynamics on subsystems
+  do not permit superluminal communication (Theorem~\ref{thm:c9:nosignal}).
+\item[\textbf{P3}] \textbf{Entropy monotonicity:}  $dS(\rho)/dt \geq 0$
+  for primitive dissipators (Theorem~7.6).
+\item[\textbf{P4}] \textbf{Unique equilibrium:}  The Gibbs state
+  $\rho_* = e^{-\beta H_{\mathrm{LS}}}/Z$ is the unique fixed point
+  (Proposition~\ref{prop:c9:fixedpoint}).
+\item[\textbf{P5}] \textbf{Detailed balance:}  The KMS condition holds
+  with respect to $\rho_*$.
+\item[\textbf{P6}] \textbf{Physical interpretability:}  All
+  quantities ($H_S$, $L_k$, $\gamma_k$) are derived from the constraint
+  geometry $(\mathcal{M}, g, \kappa)$ via explicit physical
+  construction (system--bath Hamiltonian, weak-coupling limit).
+\item[\textbf{P7}] \textbf{Mathematical closure:}  The theory is
+  formulated within standard $C^*$-algebraic quantum mechanics; no
+  additional axioms or structures are required beyond Ax1--Ax6.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+P1--P2 are proved in \S\ref{sec:c9:cp} and \S\ref{sec:c9:nosignal}.
+P3 follows from Spohn's theorem applied to the primitive Davies generator.
+P4--P5 follow from the KMS structure of the Davies generator.
+P6 is established by the explicit construction in \S\ref{sec:c9:dynamics}.
+P7 holds because all objects are defined within $\mathcal{B}(\mathcal{H})$
+and the axioms Ax1--Ax6 are the only inputs.
+\end{proof}
+
+
+% ============================================================
+\section{Red Team Final Verdict}
+\label{sec:c9:verdict}
+% ============================================================
+
+\subsection{Summary of Issues Found}
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Issue} & \textbf{Severity} & \textbf{Status} & \textbf{Resolution} \\
+\midrule
+NL1: State-dependent constraint gradient & Repairable & Fixed &
+  Relegated to variational \\
+NL2: State-dependent observer gradient & Repairable & Fixed &
+  Relegated to variational \\
+NL3: Matrix logarithm ($\log\rho$) in dynamics & Fatal\textsuperscript{$\dagger$} & Fixed &
+  Removed; entropy arises from GKSL \\
+Gradient flow violates CPTP & Fatal\textsuperscript{$\dagger$} & Fixed &
+  Physical dynamics is GKSL, not gradient \\
+Gradient flow may violate no-signaling & Fatal\textsuperscript{$\dagger$} & Fixed &
+  Physical dynamics is local GKSL \\
+Projection $\Pi_C$ is non-differentiable & Cosmetic & N/A &
+  Projection is computational, not physical \\
+Lindblad operators not derived (assumed) & Repairable & Fixed &
+  Derived via Davies limit \\
+EFT analogy imprecise & Cosmetic & Clarified &
+  CIIR is weak-coupling, not Wilsonian EFT \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textsuperscript{$\dagger$}Fatal \emph{if} interpreted as physical dynamics;
+resolved by proper separation of variational and physical layers.
+
+\subsection{Remaining Open Questions}
+
+\begin{enumerate}
+\item \textbf{Non-Markovian regime:}  The Markov (Born--Markov)
+  approximation breaks down when the bath correlation time is comparable
+  to the system relaxation time.  The Nakajima--Zwanzig formalism
+  provides corrections, but the resulting evolution is no longer
+  a semigroup.  CIIR's applicability in the non-Markovian regime is
+  an open problem.
+
+\item \textbf{Constraint manifold identification:}  CIIR does not
+  provide a procedure for uniquely determining $(\mathcal{M}, g, \kappa)$
+  from experimental data.  This is a model-selection problem analogous
+  to Hamiltonian identification in quantum physics.
+
+\item \textbf{Infinite-dimensional convergence:}  For
+  $\dim(\mathcal{H}) = \infty$, the convergence of the Lindblad sum
+  $\sum_k \gamma_k L_k^\dagger L_k$ requires careful domain analysis
+  (unbounded operators).  The finite-dimensional results
+  extend via standard approximation arguments, but a rigorous
+  infinite-dimensional treatment requires additional technical
+  assumptions (e.g., $H_S$ has compact resolvent).
+
+\item \textbf{Multi-agent entanglement:}  The composition axiom (Ax6)
+  specifies tensor product structure but does not address
+  entanglement-assisted constraint processing.  Whether CIIR admits
+  non-trivial entanglement advantages over classical processing is
+  open.
+
+\item \textbf{Operational meaning of $\hbar_{\mathrm{eff}}$:}  The
+  effective action scale $\hbar_{\mathrm{eff}}$ sets the commutator
+  magnitude in Proposition~4.1.  Its physical or cognitive
+  interpretation and experimental determination remain to be established.
+\end{enumerate}
+
+\subsection{Final Classification}
+
+\begin{center}
+\fbox{\parbox{0.85\linewidth}{%
+\textbf{VERDICT: CONDITIONALLY VIABLE}\\[6pt]
+The minimal consistent CIIR theory
+$\mathcal{T}_{\mathrm{CIIR}}^{\min}$ is:
+\begin{itemize}
+\item \textbf{Fully CPTP-compliant} (GKSL generator with derived
+  Lindblad operators).
+\item \textbf{No-signaling} (local generators, trace preservation).
+\item \textbf{Physically interpretable} (system--bath coupling with
+  explicit microscopic model).
+\item \textbf{Mathematically closed} (all objects within
+  $C^*$-algebraic QM, axioms Ax1--Ax6 sufficient).
+\end{itemize}
+
+\textbf{Conditions for full viability:}
+\begin{enumerate}
+\item Extension to non-Markovian regime via controlled Nakajima--Zwanzig
+  corrections.
+\item Experimental protocol for constraint manifold identification.
+\item Rigorous infinite-dimensional domain analysis.
+\item Determination of $\hbar_{\mathrm{eff}}$ from empirical data.
+\end{enumerate}
+
+\textbf{No fundamental obstructions were identified.}  The theory is
+not proven impossible; rather, it is a well-defined open quantum system
+with a geometric origin for its constraint structure.  All initially
+problematic features (nonlinearity, non-physicality of gradient flow)
+were resolved by proper separation of the variational computational
+layer from the physical dynamical layer.
+}}
+\end{center}
+
+
+% ============================================================
+\section{Appendix: Detailed Davies Construction for Qubit CIIR}
+\label{sec:c9:app:qubit}
+% ============================================================
+
+We verify the Davies construction for the qubit model
+(Example~8.1, $\mathcal{H} = \mathbb{C}^2$).
+
+\textbf{System Hamiltonian:}
+$H_S = \omega \sigma_z = \omega\,\mathrm{diag}(1, -1)$.
+
+\textbf{Constraint operators:}
+$\hat{C}_1 = \sigma_x$, $\hat{C}_2 = \sigma_y$ (generators of
+$\mathcal{K}(\mathbb{C}^2)$).
+
+\textbf{Bohr frequencies:}  $\omega_{\mathrm{Bohr}} \in \{0, \pm 2\omega\}$.
+
+\textbf{Eigenoperators:}
+\begin{align}
+  A_1(+2\omega) &= |+\rangle\langle +| \sigma_x |-\rangle\langle -|
+    = |+\rangle\langle -| = \sigma_+, \\
+  A_1(-2\omega) &= \sigma_-, \quad
+  A_1(0) = 0.
+\end{align}
+Similarly for $\hat{C}_2$ with phases.
+
+\textbf{Bath spectral density (ohmic):}
+$\gamma(\omega) = \alpha\, |\omega|\, n_B(\omega)$ where
+$n_B(\omega) = (e^{\beta\omega} - 1)^{-1}$ is the Bose--Einstein
+distribution.
+
+\textbf{Resulting Lindblad operators:}
+\begin{align}
+  L_- &= \sqrt{\gamma(2\omega)}\, \sigma_- = \sqrt{\alpha\, 2\omega\, n_B(2\omega)}\, \sigma_-, \\
+  L_+ &= \sqrt{\gamma(-2\omega)}\, \sigma_+ = \sqrt{\alpha\, 2\omega\, (n_B(2\omega)+1)}\, \sigma_+.
+\end{align}
+
+\textbf{CIIR master equation (qubit):}
+\begin{align}
+  \frac{d\rho}{dt} &= -i\omega[\sigma_z, \rho]
+    + \gamma_-(L_-\rho L_-^\dagger - \tfrac{1}{2}\{L_-^\dagger L_-, \rho\})
+    \nonumber\\
+    &\quad + \gamma_+(L_+\rho L_+^\dagger - \tfrac{1}{2}\{L_+^\dagger L_+, \rho\}),
+  \label{eq:c9:qubit_master}
+\end{align}
+which is the standard quantum optical master equation for a
+two-level system in a thermal bath.  This reproduces Example~8.1 of the
+manuscript with $\gamma = \gamma_- + \gamma_+$, confirming that the
+Davies construction correctly recovers known physics.
+
+
+\endinput

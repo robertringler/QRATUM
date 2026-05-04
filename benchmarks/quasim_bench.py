@@ -12,6 +12,7 @@ from quasim.runtime import Config, runtime
 
 def _generate_tensor(rank: int, dimension: int) -> list[complex]:
     """Generate a deterministic tensor payload for benchmarking."""
+
     if dimension <= 1:
         scale = 0.0
         step = 0.0
@@ -28,6 +29,7 @@ def _generate_workload(batches: int, rank: int, dimension: int) -> Iterable[Iter
 
 def run_benchmark(batches: int, rank: int, dimension: int, repeat: int) -> dict[str, float]:
     """Execute the simulated tensor workload and record latency statistics."""
+
     timings: list[float] = []
     config = Config(simulation_precision="fp8", max_workspace_mb=32)
 

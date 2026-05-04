@@ -1,0 +1,33 @@
+{
+  "name": "Transportation - Logistics Route Optimization",
+  "description": "Multi-modal freight network optimization with real-time constraints",
+  "vertical": "transportation",
+  "system": "Continental Distribution Network",
+  "optimization_target": "Cost and delivery time minimization",
+  "targets": {
+    "target_cost_per_mile_usd": 1.50,
+    "target_delivery_time_hrs": 48.0,
+    "target_utilization_pct": 85.0,
+    "target_on_time_pct": 95.0
+  },
+  "tolerances": {
+    "cost_tolerance_usd": 0.20,
+    "time_tolerance_hrs": 6.0,
+    "util_tolerance_pct": 8.0,
+    "on_time_tolerance_pct": 3.0
+  },
+  "weights": {
+    "cost": 0.35,
+    "delivery_time": 0.30,
+    "utilization": 0.20,
+    "on_time": 0.15
+  },
+  "alpha_bounds": [0.3, 0.9],
+  "compliance_tags": ["DOT FMCSA", "CARB", "EPA SmartWay", "ISO 28000"],
+  "metadata": {
+    "network_size": "500+ distribution centers",
+    "fleet_composition": "Truck (70%), Rail (20%), Air (10%)",
+    "classification": "UNCLASSIFIED // PUBLIC",
+    "note": "Simplified logistics model for demonstration only."
+  }
+}

@@ -1,0 +1,63 @@
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#002b36', 'primaryBorderColor': '#268bd2', 'primaryTextColor': '#fdf6e3',
+  'lineColor': '#268bd2', 'tertiaryColor': '#073642'
+}}}%%
+graph LR
+  A["Global Anycast + Geo-DNS"] -->|"Policy / Auth"| B["Global Ingress Gateway"]
+
+  subgraph R1["us-east-1"]
+    R1A["Compiler + Tensor Planner"] --> R1B["GPU Schedulers (GB10)"]
+    R1B --> R1C["Kubernetes Services"]
+    R1C --> R1D["Observability (Grafana/Prometheus/Thanos)"]
+    R1C --> R1E["Φ_QEVF Verifier"]
+    R1E --> R1F["QMP Edge Node"]
+    R1C --> R1G["ORD Archive (zstd + Ed25519)"]
+  end
+
+  subgraph R2["eu-central-1"]
+    R2A["Compiler + Tensor Planner"] --> R2B["GPU Schedulers (GB10)"]
+    R2B --> R2C["Kubernetes Services"]
+    R2C --> R2D["Observability"]
+    R2C --> R2E["Φ_QEVF Verifier"]
+    R2E --> R2F["QMP Edge Node"]
+    R2C --> R2G["ORD Archive"]
+  end
+
+  subgraph R3["ap-southeast-1"]
+    R3A["Compiler + Tensor Planner"] --> R3B["GPU Schedulers (GB10)"]
+    R3B --> R3C["Kubernetes Services"]
+    R3C --> R3D["Observability"]
+    R3C --> R3E["Φ_QEVF Verifier"]
+    R3E --> R3F["QMP Edge Node"]
+    R3C --> R3G["ORD Archive"]
+  end
+
+  B --> R1A
+  B --> R2A
+  B --> R3A
+
+  R1D -->|"Metrics + Logs"| R2D
+  R2D -->|"Metrics + Logs"| R3D
+  R1G -->|"Signed checkpoints (30s)"| R2G
+  R2G -->|"Signed checkpoints (30s)"| R3G
+  R1E -.->|"Drift/KS Stats"| R2E
+  R2E -.->|"Drift/KS Stats"| R3E
+
+  subgraph M["QMP/QEX Market Mesh"]
+    M1["Broker A"] --- M2["Broker B"] --- M3["Broker C"]
+    M4["Pricing Oracles"]
+  end
+
+  R1F --> M1
+  R2F --> M2
+  R3F --> M3
+  M4 --> M1
+  M4 --> M2
+  M4 --> M3
+
+  M --> V["Valuation Dashboard / Risk Engine"]
+
+  subgraph S["QuNimbus v6 Global Safety Control"]
+    S1["Dry-Run Validator"] --> S2["Query ID Audit Chain"] --> S3["Strict Validation"] --> S4["Policy Guard"]
+  end
+  S4 --> B

@@ -1,0 +1,45 @@
+name: Phase VI.1 Validation
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      PYTHON_VERSION: "3.12"
+      VERIF_DIR: tools/phi_qevf
+      ORD_DIR: infra/ord_pipeline
+      QMP_DIR: tools/qmp_sandbox
+      KS_CONFIDENCE: "95"
+      TOL_FLOOR: "2"
+      ORD_INTERVAL_SEC: "30"
+      ORD_CHECKPOINT_HOURS: "6"
+      QMP_BASE_PRICE_USD: "0.0004"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+      - run: pip install numpy scipy scikit-learn zstandard
+      - run: python ${{ env.VERIF_DIR }}/phi_qevf.py
+      - run: python ${{ env.VERIF_DIR }}/anomaly_stack.py
+      - name: ORD and QMP validation
+        run: |
+          ORD_INTERVAL_SEC=${{ env.ORD_INTERVAL_SEC }} ORD_CHECKPOINT_HOURS=${{ env.ORD_CHECKPOINT_HOURS }} python ${{ env.ORD_DIR }}/writer.py
+          QMP_BASE_PRICE_USD=${{ env.QMP_BASE_PRICE_USD }} python ${{ env.QMP_DIR }}/qmp.py
+      - name: Evaluate thresholds and criteria
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          with open("out/phi_qevf_summary.json") as f:
+              s = json.load(f)
+          assert s["ks_confidence_pct"] >= float("${{ env.KS_CONFIDENCE }}"), f"KS confidence {s['ks_confidence_pct']:.1f}% below ${{ env.KS_CONFIDENCE }}%"
+          assert s["adaptive_tolerance_pct"] >= float("${{ env.TOL_FLOOR }}"), f"Adaptive tolerance {s['adaptive_tolerance_pct']:.1f}% below floor ${{ env.TOL_FLOOR }}%"
+          assert s["variance_pct"] < 5.0, f"Variance {s['variance_pct']:.1f}% exceeds 5%"
+          print("Verifier thresholds OK:", s)
+          anomaly_out = subprocess.check_output(["python", "${{ env.VERIF_DIR }}/anomaly_stack.py"]).decode()
+          a = json.loads(anomaly_out)
+          assert a["recall_pct"] >= 95.0, f"Recall {a['recall_pct']:.1f}% below 95%"
+          assert a["false_alarm_pct"] < 1.0, f"False alarms {a['false_alarm_pct']:.1f}% exceeds 1%"
+          print("Anomaly thresholds OK:", a)
+          PY

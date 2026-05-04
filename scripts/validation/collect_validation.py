@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Validation Data Collection Script for QuASIM
 
 This script collects validation data from various sources:
@@ -34,6 +35,7 @@ class ValidationCollector:
 
     def parse_validation_summary(self):
         """Parse existing validation summary."""
+
         summary_path = self.repo_root / "docs" / "validation" / "validation_summary.md"
         if not summary_path.exists():
             print(f"Warning: {summary_path} not found")
@@ -67,6 +69,7 @@ class ValidationCollector:
 
     def parse_coverage_matrix(self):
         """Parse coverage matrix CSV."""
+
         coverage_path = self.repo_root / "montecarlo_campaigns" / "coverage_matrix.csv"
         if not coverage_path.exists():
             print(f"Warning: {coverage_path} not found")
@@ -79,7 +82,6 @@ class ValidationCollector:
                 if row.get("Coverage Achieved") == "True":
                     coverage_count += 1
 
-        total_lines = coverage_count
         self.data["coverage"] = {
             "conditions_covered": coverage_count,
             "line_coverage_pct": 94.0,  # From README badge
@@ -88,6 +90,7 @@ class ValidationCollector:
 
     def collect_kernel_data(self):
         """Collect kernel validation data."""
+
         # Extract kernel information from quasim package
         quasim_dir = self.repo_root / "quasim"
         kernel_modules = []
@@ -123,6 +126,7 @@ class ValidationCollector:
 
     def collect_environment_info(self):
         """Collect environment and platform information."""
+
         self.data["environment"] = {
             "cuda_version": "12.1",
             "rocm_version": "5.6",
@@ -133,6 +137,7 @@ class ValidationCollector:
 
     def generate_metrics(self):
         """Generate synthetic metrics for demonstration."""
+
         self.data["metrics"] = {
             "rmse": 0.0012,
             "kl_divergence": 0.0015,
@@ -143,6 +148,7 @@ class ValidationCollector:
 
     def collect_all(self):
         """Collect data from all sources."""
+
         print("Collecting validation data...")
         self.parse_validation_summary()
         self.parse_coverage_matrix()
@@ -153,6 +159,7 @@ class ValidationCollector:
 
     def generate_report(self, output_path: str):
         """Generate the validated kernels report."""
+
         print(f"Generating report at {output_path}...")
 
         validated_count = self.data.get("validated_count", 68)
@@ -178,8 +185,8 @@ class ValidationCollector:
 
         report = f"""# QuASIM Validated Modules & Kernels Report
 
-**Generated:** {now.strftime('%Y-%m-%d %H:%M:%S')} UTC  
-**Commit:** {commit_sha}  
+**Generated:** {now.strftime("%Y-%m-%d %H:%M:%S")} UTC
+**Commit:** {commit_sha}
 **Validation Status:** {validated_count}/{total_count} modules validated
 
 ---
@@ -192,7 +199,7 @@ QuASIM has undergone comprehensive validation across runtime components, kernels
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| **Modules Validated** | {validated_count} of {total_count} | ✅ {(validated_count/total_count*100):.1f}% |
+| **Modules Validated** | {validated_count} of {total_count} | ✅ {(validated_count / total_count * 100):.1f}% |
 | **Kernels Passing Full Suite** | {len(cuda_kernels)} CUDA + {len(python_kernels)} Python | ✅ Comprehensive |
 | **Line Coverage** | {line_cov}% | ✅ Exceeds Target |
 | **Branch Coverage** | {branch_cov}% | ✅ High Quality |
@@ -203,10 +210,10 @@ QuASIM has undergone comprehensive validation across runtime components, kernels
 
 | Environment | Version | Status |
 |-------------|---------|--------|
-| **CUDA** | {env.get('cuda_version', 'N/A')} | ✅ Validated |
-| **ROCm** | {env.get('rocm_version', 'N/A')} | ✅ Validated |
-| **CPU** | {env.get('cpu_arch', 'N/A')} | ✅ Validated |
-| **Python** | {env.get('python_version', 'N/A')} | ✅ Validated |
+| **CUDA** | {env.get("cuda_version", "N/A")} | ✅ Validated |
+| **ROCm** | {env.get("rocm_version", "N/A")} | ✅ Validated |
+| **CPU** | {env.get("cpu_arch", "N/A")} | ✅ Validated |
+| **Python** | {env.get("python_version", "N/A")} | ✅ Validated |
 
 ---
 
@@ -273,18 +280,18 @@ r"Fidelity:\\s+(?P<fidelity>[0-9\\.]+)"
 
 | Module/Kernel | Version | Tests Passed | Tests Failed | Coverage % | Key Metrics | Environment | Date | Commit |
 |---------------|---------|--------------|--------------|------------|-------------|-------------|------|--------|
-| **quasim.qc.circuit** | 1.0.0 | 45 | 0 | 96.2% | RMSE: {metrics.get('rmse', 0.0012):.4f} | CUDA {env.get('cuda_version', '12.1')} | {now.strftime('%Y-%m-%d')} | {commit_sha[:8]} |
-| **quasim.qc.simulator** | 1.0.0 | 38 | 0 | 94.8% | Fidelity: {metrics.get('fidelity', 0.998):.3f} | CPU/GPU | {now.strftime('%Y-%m-%d')} | {commit_sha[:8]} |
-| **quasim.distributed.scheduler** | 1.0.0 | 52 | 0 | 95.1% | Throughput: {int(metrics.get('throughput_ops_per_sec', 125000))} ops/s | Multi-node | {now.strftime('%Y-%m-%d')} | {commit_sha[:8]} |
-| **quasim.hcal.device** | 1.0.0 | 28 | 0 | 92.4% | Latency: {metrics.get('latency_ms', 2.5):.1f} ms | CUDA/ROCm | {now.strftime('%Y-%m-%d')} | {commit_sha[:8]} |
-| **QuASIM/src/cuda/tensor_solve.cu** | 1.0.0 | 67 | 0 | 98.5% | KL: {metrics.get('kl_divergence', 0.0015):.4f} | CUDA {env.get('cuda_version', '12.1')} | {now.strftime('%Y-%m-%d')} | {commit_sha[:8]} |
-| **QuASIM/src/cuda/ftq_kernels.cu** | 1.0.0 | 54 | 0 | 97.2% | Throughput: 180k ops/s | CUDA {env.get('cuda_version', '12.1')} | {now.strftime('%Y-%m-%d')} | {commit_sha[:8]} |
-| **quasim.dtwin.simulation** | 1.0.0 | 41 | 0 | 93.6% | RMSE: 0.0008 | CPU | {now.strftime('%Y-%m-%d')} | {commit_sha[:8]} |
-| **quasim.api.server** | 1.0.0 | 72 | 0 | 91.8% | Latency: 1.8 ms | Multi-cloud | {now.strftime('%Y-%m-%d')} | {commit_sha[:8]} |
+| **quasim.qc.circuit** | 1.0.0 | 45 | 0 | 96.2% | RMSE: {metrics.get("rmse", 0.0012):.4f} | CUDA {env.get("cuda_version", "12.1")} | {now.strftime("%Y-%m-%d")} | {commit_sha[:8]} |
+| **quasim.qc.simulator** | 1.0.0 | 38 | 0 | 94.8% | Fidelity: {metrics.get("fidelity", 0.998):.3f} | CPU/GPU | {now.strftime("%Y-%m-%d")} | {commit_sha[:8]} |
+| **quasim.distributed.scheduler** | 1.0.0 | 52 | 0 | 95.1% | Throughput: {int(metrics.get("throughput_ops_per_sec", 125000))} ops/s | Multi-node | {now.strftime("%Y-%m-%d")} | {commit_sha[:8]} |
+| **quasim.hcal.device** | 1.0.0 | 28 | 0 | 92.4% | Latency: {metrics.get("latency_ms", 2.5):.1f} ms | CUDA/ROCm | {now.strftime("%Y-%m-%d")} | {commit_sha[:8]} |
+| **QuASIM/src/cuda/tensor_solve.cu** | 1.0.0 | 67 | 0 | 98.5% | KL: {metrics.get("kl_divergence", 0.0015):.4f} | CUDA {env.get("cuda_version", "12.1")} | {now.strftime("%Y-%m-%d")} | {commit_sha[:8]} |
+| **QuASIM/src/cuda/ftq_kernels.cu** | 1.0.0 | 54 | 0 | 97.2% | Throughput: 180k ops/s | CUDA {env.get("cuda_version", "12.1")} | {now.strftime("%Y-%m-%d")} | {commit_sha[:8]} |
+| **quasim.dtwin.simulation** | 1.0.0 | 41 | 0 | 93.6% | RMSE: 0.0008 | CPU | {now.strftime("%Y-%m-%d")} | {commit_sha[:8]} |
+| **quasim.api.server** | 1.0.0 | 72 | 0 | 91.8% | Latency: 1.8 ms | Multi-cloud | {now.strftime("%Y-%m-%d")} | {commit_sha[:8]} |
 
 ### 2.2 Module Categories
 
-#### Runtime Core ({len([m for m in self.data.get('modules', []) if 'qc' in m.get('name', '')])}/10 validated)
+#### Runtime Core ({len([m for m in self.data.get("modules", []) if "qc" in m.get("name", "")])}/10 validated)
 
 - ✅ **quasim.qc.circuit** - Quantum circuit construction and manipulation
 - ✅ **quasim.qc.simulator** - State vector and tensor network simulation
@@ -300,7 +307,7 @@ r"Fidelity:\\s+(?P<fidelity>[0-9\\.]+)"
 - ✅ **vjp.cu** - Vector-Jacobian product computation
 - Additional kernels validated in QuASIM/src/cuda/
 
-#### Hardware Control & Calibration ({len([m for m in self.data.get('modules', []) if 'hcal' in m.get('name', '')])}/15 validated)
+#### Hardware Control & Calibration ({len([m for m in self.data.get("modules", []) if "hcal" in m.get("name", "")])}/15 validated)
 
 - ✅ **quasim.hcal.device** - Hardware device abstraction layer
 - ✅ **quasim.hcal.sensors** - Telemetry and monitoring sensors
@@ -309,7 +316,7 @@ r"Fidelity:\\s+(?P<fidelity>[0-9\\.]+)"
 - ✅ **quasim.hcal.backends.nvidia_nvml** - NVIDIA GPU backend
 - ✅ **quasim.hcal.backends.amd_rocm** - AMD ROCm backend
 
-#### Distributed Computing ({len([m for m in self.data.get('modules', []) if 'distributed' in m.get('name', '')])}/3 validated)
+#### Distributed Computing ({len([m for m in self.data.get("modules", []) if "distributed" in m.get("name", "")])}/3 validated)
 
 - ✅ **quasim.distributed.scheduler** - Multi-node job scheduling
 - ✅ **quasim.distributed.executor** - Task execution engine
@@ -334,17 +341,17 @@ r"Fidelity:\\s+(?P<fidelity>[0-9\\.]+)"
 
 ✅ **100% MC/DC coverage** on safety-critical control paths (DO-178C Level A compliance)
 
-✅ **Multi-platform validation** across CUDA {env.get('cuda_version', '12.1')}, ROCm {env.get('rocm_version', '5.6')}, and CPU
+✅ **Multi-platform validation** across CUDA {env.get("cuda_version", "12.1")}, ROCm {env.get("rocm_version", "5.6")}, and CPU
 
 ### 3.2 Performance Validation
 
 | Metric | Target | Achieved | Status |
 |--------|--------|----------|--------|
-| **RMSE (Root Mean Square Error)** | < 0.002 | {metrics.get('rmse', 0.0012):.4f} | ✅ Pass |
-| **KL Divergence** | < 0.002 | {metrics.get('kl_divergence', 0.0015):.4f} | ✅ Pass |
-| **Fidelity** | ≥ 0.995 | {metrics.get('fidelity', 0.998):.3f} | ✅ Pass |
-| **Throughput** | > 100k ops/s | {int(metrics.get('throughput_ops_per_sec', 125000))} ops/s | ✅ Pass |
-| **Latency (P95)** | < 5 ms | {metrics.get('latency_ms', 2.5):.1f} ms | ✅ Pass |
+| **RMSE (Root Mean Square Error)** | < 0.002 | {metrics.get("rmse", 0.0012):.4f} | ✅ Pass |
+| **KL Divergence** | < 0.002 | {metrics.get("kl_divergence", 0.0015):.4f} | ✅ Pass |
+| **Fidelity** | ≥ 0.995 | {metrics.get("fidelity", 0.998):.3f} | ✅ Pass |
+| **Throughput** | > 100k ops/s | {int(metrics.get("throughput_ops_per_sec", 125000))} ops/s | ✅ Pass |
+| **Latency (P95)** | < 5 ms | {metrics.get("latency_ms", 2.5):.1f} ms | ✅ Pass |
 
 ### 3.3 Compliance Validation
 
@@ -504,7 +511,7 @@ r"Fidelity:\\s+(?P<fidelity>[0-9\\.]+)"
 
 | Date | Version | Changes | Author |
 |------|---------|---------|--------|
-| {now.strftime('%Y-%m-%d')} | 1.0 | Initial comprehensive validation report | QuASIM Team |
+| {now.strftime("%Y-%m-%d")} | 1.0 | Initial comprehensive validation report | QuASIM Team |
 
 ---
 
@@ -521,6 +528,7 @@ r"Fidelity:\\s+(?P<fidelity>[0-9\\.]+)"
 
     def _get_git_commit(self) -> str:
         """Get current git commit SHA."""
+
         try:
             import subprocess
 
@@ -539,6 +547,7 @@ r"Fidelity:\\s+(?P<fidelity>[0-9\\.]+)"
 
 def main():
     """Main entry point."""
+
     repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
     collector = ValidationCollector(repo_root)

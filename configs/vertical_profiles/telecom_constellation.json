@@ -1,0 +1,33 @@
+{
+  "name": "Telecom - Satellite Constellation Optimization",
+  "description": "LEO constellation network throughput and latency optimization",
+  "vertical": "telecom",
+  "system": "LEO Mega-Constellation",
+  "optimization_target": "Network capacity and coverage",
+  "targets": {
+    "target_throughput_gbps": 100.0,
+    "target_latency_ms": 25.0,
+    "target_coverage_pct": 95.0,
+    "target_satellite_util_pct": 80.0
+  },
+  "tolerances": {
+    "throughput_tolerance_gbps": 10.0,
+    "latency_tolerance_ms": 5.0,
+    "coverage_tolerance_pct": 3.0,
+    "util_tolerance_pct": 10.0
+  },
+  "weights": {
+    "throughput": 0.35,
+    "latency": 0.35,
+    "coverage": 0.20,
+    "utilization": 0.10
+  },
+  "alpha_bounds": [0.2, 0.8],
+  "compliance_tags": ["FCC Part 25", "ITU Radio Regulations", "3GPP TS 38.821"],
+  "metadata": {
+    "reference_system": "Starlink/OneWeb-like constellation",
+    "orbit_type": "LEO (550km altitude)",
+    "classification": "UNCLASSIFIED // PUBLIC",
+    "note": "Simplified network model for demonstration only."
+  }
+}

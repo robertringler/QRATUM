@@ -1,0 +1,33 @@
+version: 1
+quick: true
+random_seed: 42
+run_label: quick_smoke_v1
+lattice:
+  sizes:
+    - [4,4]
+  disorder_values: [0.0]
+noise:
+  gamma_scan_logspace: {start_exp: -3, end_exp: -1, points: 6}
+  target_time: 0.5
+  dt: 0.05
+analysis:
+  perform_convergence: true
+  perform_traj_variance: false
+  perform_phase_diagram: false
+  perform_msd: false
+  perform_otoc: false
+  perform_logical: false
+quality_gates:
+  max_trace_deviation: 1.0e-8
+  min_dt_order: 2.0
+  max_bootstrap_halfwidth: 0.2
+  fractal_transport_tolerance: 0.5
+  positivity_tolerance: 1.0e-8
+report:
+  build_latex: false
+output:
+  root_dir: automation_runs
+  compress_archives: false
+logging:
+  level: INFO
+  json_metadata: true

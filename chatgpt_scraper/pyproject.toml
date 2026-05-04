@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chatgpt-scraper"
+version = "0.1.0"
+description = "Utilities for parsing and normalizing local ChatGPT data exports."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  {name = "QuASIM Automation", email = "engineering@example.com"},
+]
+dependencies = [
+  "pydantic>=2,<3",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://example.com/chatgpt-scraper"
+Source = "https://example.com/chatgpt-scraper"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

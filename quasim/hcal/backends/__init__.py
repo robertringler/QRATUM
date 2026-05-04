@@ -12,6 +12,7 @@ class Backend:
         Args:
             device_id: Device identifier
         """
+
         self.device_id = device_id
 
     def get_telemetry(self) -> Dict[str, Any]:
@@ -20,6 +21,7 @@ class Backend:
         Returns:
             Dictionary of telemetry data
         """
+
         return {}
 
     def apply_setpoint(self, setpoint: Dict[str, Any]) -> Dict[str, Any]:
@@ -31,6 +33,7 @@ class Backend:
         Returns:
             Result dictionary
         """
+
         return {"success": True}
 
     def capture_state(self) -> Dict[str, Any]:
@@ -39,6 +42,7 @@ class Backend:
         Returns:
             State dictionary
         """
+
         return {}
 
     def restore_state(self, state: Dict[str, Any]) -> Dict[str, Any]:
@@ -50,6 +54,7 @@ class Backend:
         Returns:
             Result dictionary
         """
+
         return {"success": True}
 
 
@@ -68,6 +73,7 @@ class BaseBackend:
         Args:
             dry_run: Enable dry-run mode.
         """
+
         self.dry_run = dry_run
 
     def device_exists(self, device_id: str) -> bool:
@@ -79,7 +85,8 @@ class BaseBackend:
         Returns:
             True if device exists.
         """
-        raise NotImplementedError
+        # GAP-STUB-015: device registry not yet wired; report device absent
+        return False
 
     def apply_setpoint(self, device_id: str, setpoint: Dict[str, Any]) -> bool:
         """Apply setpoint to device.
@@ -91,7 +98,9 @@ class BaseBackend:
         Returns:
             True if successful.
         """
-        raise NotImplementedError
+
+        # GAP-STUB-016: setpoint application not yet wired; report not applied
+        return False
 
     def read_configuration(self, device_id: str) -> Dict[str, Any]:
         """Read current device configuration.
@@ -102,7 +111,9 @@ class BaseBackend:
         Returns:
             Configuration dictionary.
         """
-        raise NotImplementedError
+
+        # GAP-STUB-017: configuration readback not yet wired; return empty dict
+        return {}
 
     def read_telemetry(self, device_id: str) -> Dict[str, Any]:
         """Read device telemetry.
@@ -113,4 +124,6 @@ class BaseBackend:
         Returns:
             Telemetry dictionary.
         """
-        raise NotImplementedError
+
+        # GAP-STUB-018: telemetry readback not yet wired; return empty dict
+        return {}

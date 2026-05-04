@@ -1,0 +1,15 @@
+remote_write:
+  - url: https://prometheus.longterm.quasim.internal/api/v1/write
+    name: quasim-longterm
+    queue_config:
+      capacity: 50000
+      max_shards: 10
+      batch_send_deadline: 5s
+    metadata_config:
+      send: true
+    write_relabel_configs:
+      - source_labels: ["region"]
+        action: keep
+        regex: "(us-east|eu-central|ap-sg)"
+      - target_label: "phase"
+        replacement: "VI.1"

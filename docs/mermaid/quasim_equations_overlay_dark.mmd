@@ -1,0 +1,22 @@
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#002b36', 'primaryBorderColor': '#268bd2', 'primaryTextColor': '#fdf6e3',
+  'lineColor': '#268bd2', 'tertiaryColor': '#073642'
+}}}%%
+graph LR
+  A["Telemetry Features x_t"] -->|extract| B["Drift Analytics: r_t, KS, RMSE"]
+  B -->|features| C["u_t = K · ∂V/∂η"]
+  C -->|actuate| D["Runtime Actuators: schedulers, tolerance"]
+  D -->|closed loop| A
+
+  C -->|inputs| E["E(η,t) = ∂ ln p / ∂ η"]
+  E -->|impact| F["p = p0 · (1 + α Δη), depth D"]
+  F -->|signal| G["V = Σ CF_t/(1+WACC)^t,  ∂V/∂η"]
+  G -->|target bands| C
+
+  subgraph S["Stability & SLO"]
+    S1["||G||_∞ · ||H||_∞ < 1"]
+    S2["Variance < 5%, p95 ≤ 45s, FP < 1%"]
+  end
+  B --> S2
+  C --> S1
+  F --> S2

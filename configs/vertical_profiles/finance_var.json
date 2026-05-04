@@ -1,0 +1,33 @@
+{
+  "name": "Finance - Portfolio Risk (VaR) Optimization",
+  "description": "Value-at-Risk minimization with return constraints for multi-asset portfolio",
+  "vertical": "finance",
+  "portfolio": "Multi-Asset Equity/Fixed Income",
+  "risk_model": "Monte Carlo VaR (95% confidence)",
+  "targets": {
+    "target_var_pct": 3.5,
+    "target_return_pct": 8.0,
+    "target_sharpe_ratio": 1.2,
+    "target_max_drawdown_pct": 12.0
+  },
+  "tolerances": {
+    "var_tolerance_pct": 0.5,
+    "return_tolerance_pct": 1.0,
+    "sharpe_tolerance": 0.2,
+    "drawdown_tolerance_pct": 2.0
+  },
+  "weights": {
+    "var": 0.40,
+    "return": 0.30,
+    "sharpe": 0.20,
+    "drawdown": 0.10
+  },
+  "alpha_bounds": [0.1, 0.7],
+  "compliance_tags": ["PCI DSS", "SOX", "Basel III", "MiFID II"],
+  "metadata": {
+    "asset_classes": "Equities (60%), Fixed Income (30%), Alternatives (10%)",
+    "time_horizon": "1-year",
+    "classification": "CONFIDENTIAL // DEMO ONLY",
+    "note": "Simplified Monte Carlo model for demonstration. Not investment advice."
+  }
+}

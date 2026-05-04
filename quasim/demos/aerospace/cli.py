@@ -20,6 +20,7 @@ from quasim.viz.run_capture import RunCapture
 
 def cmd_optimize(args):
     """Run trajectory optimization."""
+
     set_global_seed(args.seed)
 
     print(f"Running aerospace optimization with profile={args.profile}, steps={args.steps}")
@@ -62,6 +63,7 @@ def cmd_optimize(args):
 
 def cmd_replay(args):
     """Replay a saved scenario."""
+
     set_global_seed(args.seed)
 
     print(f"Replaying scenario: {args.scenario}")
@@ -71,7 +73,7 @@ def cmd_replay(args):
     # Run with capture if requested
     capture = RunCapture() if args.capture else None
 
-    results = simulate_ascent(
+    simulate_ascent(
         scenario=scenario,
         steps=100,
         seed=args.seed,
@@ -94,6 +96,7 @@ def cmd_replay(args):
 
 def cmd_simulate(args):
     """Run forward simulation."""
+
     set_global_seed(args.seed)
 
     print(f"Running aerospace simulation with seed={args.seed}")
@@ -121,7 +124,7 @@ def cmd_simulate(args):
         output_dir = Path("artifacts/aerospace") / f"sim_{args.seed}"
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        artifacts = capture.finalize(
+        capture.finalize(
             mp4_path=output_dir / "simulation.mp4",
             fps=30,
         )
@@ -132,6 +135,7 @@ def cmd_simulate(args):
 
 def main():
     """Main CLI entrypoint."""
+
     parser = argparse.ArgumentParser(
         description="QuASIM Aerospace Demo - Hot-staging & MECO Optimization"
     )

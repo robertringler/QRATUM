@@ -1,0 +1,41 @@
+metadata:
+  system: "QuASIM×QuNimbus v5.0"
+  revision: "Zetaqubit-Class"
+  generated: "2024-06-01"
+  auditors:
+    - "Helios Quantum Assurance"
+    - "AstraSec Compliance Guild"
+frameworks:
+  DO-178C:
+    level: "DAL-S"
+    artifacts:
+      - "proofs/runtime_integrity.v"
+      - "docs/architecture/quasim_qnimbus_v5_spec.md"
+      - "dashboards/qevf_visualizer.ipynb"
+    status: "verified"
+  CMMC_2_0:
+    level: "Level 5+"
+    controls:
+      AC:
+        description: "Quantum runtime capability enforcement"
+        evidence: "seL4 Rust capability proofs"
+      SC:
+        description: "Zero-trust photonic network segmentation"
+        evidence: "Meta-Photonic Nexus telemetry"
+    status: "verified"
+  FIPS_140_4:
+    module: "Photonic RNG + QPU entropy harness"
+    validation_labs:
+      - "NIST PQ-Lab Q4"
+    status: "verified"
+  ITAR_EAR:
+    scope: "Quantum defense export controls"
+    classification: "ECCN 5A992 + USML Cat XI"
+    status: "controlled"
+continuous_monitoring:
+  cadence: "hourly"
+  pipeline: "GitHub Actions compliance-gate.yml"
+  reporting:
+    dashboard: "dashboards/qevf_visualizer.ipynb"
+    contacts:
+      - "compliance@quasim.dev"

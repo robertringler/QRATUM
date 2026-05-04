@@ -1,0 +1,17 @@
+version: 1
+observables:
+  population_total:
+    source: "/agents"
+    reduce: "count"
+    expected: 8.1e9
+    tolerance_abs: 5e7
+  mean_surface_temp:
+    source: "/climate/cells/*/state"
+    reduce: "global_weighted_mean(temp)"
+    expected: 288.5
+    tolerance_abs: 0.5
+  sp500_return_ytd:
+    source: "/economy/markets/SPX/timeseries"
+    reduce: "return_ytd"
+    expected: 0.12
+    tolerance_abs: 0.03

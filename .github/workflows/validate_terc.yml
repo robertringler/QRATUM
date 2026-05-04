@@ -1,0 +1,173 @@
+name: TERC Framework Validation
+
+on:
+  push:
+    branches: [ main, develop, 'copilot/**' ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      tier:
+        description: 'Validation tier to run (1-4, or "all")'
+        required: false
+        default: 'all'
+
+permissions:
+  contents: read
+
+jobs:
+  validate_terc:
+    name: TERC Validation Suite
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy scipy pandas matplotlib pytest pytest-cov
+        # Optional TDA libraries (commented out for now as they may not be strictly required)
+        # pip install ripser gudhi persim scikit-learn
+        # Optional neuro libraries (commented out for CI efficiency)
+        # pip install mne
+    
+    - name: Install QuASIM package
+      run: |
+        pip install -e .
+    
+    - name: Create output directories
+      run: |
+        mkdir -p docs/validation/TERC_results
+    
+    - name: Run Tier 1 - Computational Foundations
+      run: |
+        python -m quasim.terc_validation.validation_runner --tier=1 --log-level=INFO
+      continue-on-error: false
+    
+    - name: Run Tier 2 - Neurobiological Correlation
+      run: |
+        python -m quasim.terc_validation.validation_runner --tier=2 --log-level=INFO
+      continue-on-error: false
+    
+    - name: Run Tier 3 - Clinical Digital Twin
+      run: |
+        python -m quasim.terc_validation.validation_runner --tier=3 --log-level=INFO
+      continue-on-error: false
+    
+    - name: Run Tier 4 - Meta Validation
+      run: |
+        python -m quasim.terc_validation.validation_runner --tier=4 --log-level=INFO
+      continue-on-error: false
+    
+    - name: Run Full TERC Validation Suite
+      run: |
+        python -m quasim.terc_validation.validation_runner --full-suite --log-level=INFO
+      continue-on-error: false
+    
+    - name: Upload validation results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: terc-validation-results-py${{ matrix.python-version }}
+        path: |
+          docs/validation/TERC_results/*.json
+          docs/validation/TERC_results/*.csv
+          docs/validation/TERC_results/*.png
+          docs/validation/terc_validation_summary.md
+        retention-days: 30
+    
+    - name: Upload logs
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: terc-validation-logs-py${{ matrix.python-version }}
+        path: |
+          *.log
+        retention-days: 7
+    
+    - name: Validate success rate
+      run: |
+        python -c "
+        import json
+        import sys
+        
+        try:
+            with open('docs/validation/TERC_results/validation_results.json', 'r') as f:
+                results = json.load(f)
+            
+            if 'summary' in results:
+                success_rate = results['summary'].get('success_rate', 0.0)
+                print(f'TERC Validation Success Rate: {success_rate:.2%}')
+                
+                if success_rate < 0.90:
+                    print('WARNING: Success rate below 90% threshold')
+                    sys.exit(1)
+                else:
+                    print('✓ TERC validation passed threshold')
+            else:
+                print('No summary found in results')
+        except FileNotFoundError:
+            print('ERROR: Results file not found')
+            sys.exit(1)
+        "
+
+  validate_terc_integration:
+    name: TERC Integration Test
+    runs-on: ubuntu-latest
+    needs: validate_terc
+
+    permissions:
+      contents: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy scipy pandas matplotlib
+        pip install -e .
+    
+    - name: Run grand integration test
+      run: |
+        python quasim/terc_validation/experiment_5_4_integration.py
+    
+    - name: Verify integration metrics
+      run: |
+        python -c "
+        import sys
+        sys.path.insert(0, 'quasim/terc_validation')
+        from experiment_5_4_integration import run_experiment
+        
+        result = run_experiment()
+        print(f'Integration Status: {result[\"status\"]}')
+        print(f'Metrics: {result[\"metrics\"]}')
+        
+        if result['status'] != 'passed':
+            sys.exit(1)
+        "

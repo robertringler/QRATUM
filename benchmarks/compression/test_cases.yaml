@@ -1,0 +1,127 @@
+# MERA Compression Benchmark Test Configuration
+#
+# This configuration defines the test matrix for validating QRATUM's
+# MERA tensor compression capabilities.
+#
+# Note: Use decimal notation for epsilon values (e.g., 0.001 instead of 1e-3)
+# to ensure proper YAML parsing.
+
+test_cases:
+  # Random quantum states (baseline test)
+  - name: "random_states"
+    generator: "random"
+    qubits: [10, 15, 20, 25]
+    seeds: [42, 123, 456]
+    fidelity_target: 0.995
+    epsilon: [0.001, 0.0001, 0.00001]
+
+  # Product states (should achieve high compression)
+  - name: "product_states_zero"
+    generator: "product"
+    product_type: "zero"
+    qubits: [10, 15, 20]
+    fidelity_target: 0.999
+    epsilon: 0.001
+
+  - name: "product_states_plus"
+    generator: "product"
+    product_type: "plus"
+    qubits: [10, 15, 20]
+    fidelity_target: 0.999
+    epsilon: 0.001
+
+  # GHZ states (maximally entangled)
+  - name: "ghz_states"
+    generator: "ghz"
+    qubits: [10, 15, 20, 25]
+    fidelity_target: 0.995
+    epsilon: 0.001
+
+  # W states (symmetric entanglement)
+  - name: "w_states"
+    generator: "w"
+    qubits: [10, 15, 20]
+    fidelity_target: 0.995
+    epsilon: 0.001
+
+  # Random quantum circuits (realistic complexity)
+  - name: "random_circuits_shallow"
+    generator: "circuit"
+    qubits: [8, 10, 12]
+    circuit_depth: 10
+    seeds: [42, 123]
+    fidelity_target: 0.995
+    epsilon: 0.001
+
+  - name: "random_circuits_deep"
+    generator: "circuit"
+    qubits: [8, 10]
+    circuit_depth: 50
+    seeds: [42]
+    fidelity_target: 0.99
+    epsilon: 0.01
+
+# Compression algorithm settings
+compression_settings:
+  # Fidelity targets to test
+  fidelity_targets: [0.99, 0.995, 0.999]
+
+  # Epsilon sweep for sensitivity analysis
+  epsilon_sweep: [0.01, 0.001, 0.0001, 0.00001]
+
+  # Maximum rank (optional constraint)
+  max_rank: null
+
+# Output configuration
+output:
+  # Directory for compression artifacts
+  artifact_dir: "artifacts/compression"
+
+  # Summary files
+  summary_json: "compression_summary.json"
+  report_md: "compression_report.md"
+
+  # Save individual test artifacts
+  save_artifacts: true
+
+  # Save compressed representations
+  save_compressed: true
+
+  # Verbose logging
+  verbose: true
+
+# Performance settings
+performance:
+  # Maximum qubits to test (memory constraint)
+  max_qubits: 25
+
+  # Timeout per test case (seconds)
+  timeout_per_test: 300
+
+  # Parallel execution (number of workers)
+  n_workers: 1
+
+# Validation criteria
+validation:
+  # Minimum acceptable compression ratio
+  min_compression_ratio: 1.5
+
+  # Maximum acceptable runtime per qubit (seconds)
+  max_runtime_per_qubit: 10.0
+
+  # Claims to validate against
+  documented_claims:
+    - source: "README.md"
+      claimed_ratio: 30.0
+      claimed_min: 10.0
+      claimed_max: 50.0
+
+    - source: "docs/holo/ahtc.md"
+      claimed_ratio: 36.8
+      claimed_min: 10.0
+      claimed_max: 50.0
+
+    - source: "SPEC_v5.0"
+      claimed_ratio: 114.6
+      claimed_min: 100.0
+      claimed_max: 150.0

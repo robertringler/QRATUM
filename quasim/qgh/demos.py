@@ -26,6 +26,7 @@ def demo_tensor_processing() -> dict[str, Any]:
     dict[str, Any]
         Demo results
     """
+
     logger.info("Running tensor processing demo...")
 
     # Create superposed state
@@ -56,6 +57,7 @@ def demo_distributed_monitoring() -> dict[str, Any]:
     dict[str, Any]
         Demo results
     """
+
     logger.info("Running distributed monitoring demo...")
 
     monitor = DistributedStreamMonitor(num_streams=3, buffer_size=100)
@@ -88,6 +90,7 @@ def demo_federated_consensus() -> dict[str, Any]:
     dict[str, Any]
         Demo results
     """
+
     logger.info("Running federated consensus demo...")
 
     # Create nodes with different initial states
@@ -122,6 +125,7 @@ def demo_av_fusion() -> dict[str, Any]:
     dict[str, Any]
         Demo results
     """
+
     logger.info("Running AV sensor fusion demo...")
 
     # Simulate multiple sensor streams
@@ -163,6 +167,7 @@ def demo_portfolio_optimization() -> dict[str, Any]:
     dict[str, Any]
         Demo results
     """
+
     logger.info("Running portfolio optimization demo...")
 
     stability = StabilityMonitor(window_size=30, threshold=1.5)
@@ -197,6 +202,7 @@ def demo_signal_processing() -> dict[str, Any]:
     dict[str, Any]
         Demo results
     """
+
     logger.info("Running signal processing demo...")
 
     chh = CausalHistoryHash(history_size=100)

@@ -1,4 +1,9 @@
+.PHONY: test validate fmt lint build bench pack deploy video spacex-demo starship-demo demo-all
+.PHONY: demo-aerospace demo-telecom demo-finance demo-healthcare demo-energy
+.PHONY: demo-transportation demo-manufacturing demo-agritech demo-all-verticals
 .PHONY: test validate fmt lint build bench pack deploy video spacex-demo starship-demo demo-all demos
+.PHONY: audit autonomy-test
+.PHONY: sbom sbom-generate sbom-validate sbom-diff sbom-clean
 
 ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -14,6 +19,41 @@ starship-demo:
 demo-all: spacex-demo starship-demo
 	@echo "All pilot track demos complete!"
 
+# Vertical Market Demo Targets
+demo-aerospace:
+	@echo "Running Aerospace & Defense demo..."
+	python3 demos/quasim_aerospace_demo.py --profile configs/vertical_profiles/aerospace_f9.json
+
+demo-telecom:
+	@echo "Running Telecom & Satellite Constellations demo..."
+	python3 demos/quasim_telecom_demo.py --profile configs/vertical_profiles/telecom_constellation.json
+
+demo-finance:
+	@echo "Running Finance - Portfolio Risk demo..."
+	python3 demos/quasim_finance_demo.py --profile configs/vertical_profiles/finance_var.json
+
+demo-healthcare:
+	@echo "Running Healthcare Genomics demo..."
+	python3 demos/quasim_healthcare_demo.py --profile configs/vertical_profiles/healthcare_genomics.json
+
+demo-energy:
+	@echo "Running Energy Grid Optimization demo..."
+	python3 demos/quasim_energy_demo.py --profile configs/vertical_profiles/energy_grid.json
+
+demo-transportation:
+	@echo "Running Transportation & Logistics demo..."
+	python3 demos/quasim_transportation_demo.py --profile configs/vertical_profiles/transportation_logistics.json
+
+demo-manufacturing:
+	@echo "Running Manufacturing IIoT demo..."
+	python3 demos/quasim_manufacturing_demo.py --profile configs/vertical_profiles/manufacturing_iiot.json
+
+demo-agritech:
+	@echo "Running Agritech Precision Agriculture demo..."
+	python3 demos/quasim_agritech_demo.py --profile configs/vertical_profiles/agritech_optimization.json
+
+demo-all-verticals: demo-aerospace demo-telecom demo-finance demo-healthcare demo-energy demo-transportation demo-manufacturing demo-agritech
+	@echo "All vertical market demos complete!"
 # Run all vertical demo smoke tests
 demos:
 	@echo "Running smoke tests for all 8 vertical demos..."
@@ -112,3 +152,48 @@ stop-full-stack:
 		echo "Docker not installed."; \
 		exit 1; \
 	fi
+
+# Run full repository audit
+audit:
+	@echo "Running QuASIM full repository audit..."
+	@python3 -m quasim.audit.run --full --export-json audit/audit_summary.json
+
+# Run Phase VIII autonomy tests
+autonomy-test:
+	@echo "Running Phase VIII autonomy tests..."
+	@pytest tests/phaseVIII/ -v --tb=short
+
+# =============================================================================
+# SBOM (Software Bill of Materials) Targets
+# =============================================================================
+
+# Generate all SBOMs (CycloneDX and SPDX)
+sbom-generate:
+	@echo "Generating SBOMs for QRATUM..."
+	@chmod +x scripts/sbom/generate_sbom.sh
+	@bash scripts/sbom/generate_sbom.sh
+
+# Validate generated SBOMs
+sbom-validate:
+	@echo "Validating SBOMs..."
+	@chmod +x scripts/sbom/validate_sbom.sh
+	@bash scripts/sbom/validate_sbom.sh
+
+# Diff SBOMs against baseline
+sbom-diff:
+	@echo "Comparing SBOMs with baseline..."
+	@chmod +x scripts/sbom/diff_sbom.sh
+	@bash scripts/sbom/diff_sbom.sh
+
+# Full SBOM workflow: generate, validate
+sbom: sbom-generate sbom-validate
+	@echo "SBOM generation and validation complete!"
+	@echo "Artifacts in .sbom/"
+
+# Clean generated SBOM artifacts
+sbom-clean:
+	@echo "Cleaning SBOM artifacts..."
+	@rm -rf .sbom/cyclonedx/*.json .sbom/spdx/*.json
+	@rm -rf .sbom/hashes/*.sha256 .sbom/hashes/*.sha512
+	@rm -rf .sbom/provenance/*.json .sbom/diffs/*.json
+	@echo "SBOM artifacts cleaned"

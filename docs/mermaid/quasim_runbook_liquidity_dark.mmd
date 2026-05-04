@@ -1,0 +1,20 @@
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#002b36', 'primaryBorderColor': '#268bd2', 'primaryTextColor': '#fdf6e3',
+  'lineColor': '#268bd2', 'tertiaryColor': '#073642'
+}}}%%
+graph LR
+  subgraph R["Runbook & SLO Layer"]
+    R1["Error Budget: <1% variance breaches"] --> R2["Automated Rollback Trigger"]
+    R2 --> R3["Chaos Recovery Playbook (p95 ≤ 45s)"]
+    R3 --> R4["Compliance Snapshot Sign-off"]
+    R4 --> R5["Daily Attestation Audit"]
+  end
+
+  subgraph L["EPH Liquidity Model"]
+    L1["Order Depth: 50 tiers"] --> L2["Latency Band: 60s avg"]
+    L2 --> L3["Shock Absorber: Dynamic Spread"] --> L4["Liquidity Feedback Loop"]
+    L4 --> L5["Valuation Engine Coupling"]
+  end
+
+  R5 --> L1
+  L5 --> R1

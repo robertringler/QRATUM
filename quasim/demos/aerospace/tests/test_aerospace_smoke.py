@@ -6,6 +6,7 @@ from quasim.demos.aerospace.scenarios.hot_staging import load_scenario
 
 def test_simulate_ascent_basic():
     """Test basic ascent simulation."""
+
     scenario = {
         "mass_kg": 549000,
         "thrust_n": 7607000,
@@ -24,6 +25,7 @@ def test_simulate_ascent_basic():
 
 def test_simulate_ascent_deterministic():
     """Test deterministic behavior."""
+
     scenario = load_scenario("falcon9")
 
     results1 = simulate_ascent(scenario, steps=30, seed=42)
@@ -36,6 +38,7 @@ def test_simulate_ascent_deterministic():
 
 def test_load_scenarios():
     """Test scenario loading."""
+
     scenarios = ["starship", "falcon9", "hot_staging_v1"]
 
     for name in scenarios:
@@ -47,6 +50,7 @@ def test_load_scenarios():
 
 def test_quick_run():
     """Quick integration test."""
+
     scenario = load_scenario("starship")
     results = simulate_ascent(scenario, steps=20, seed=42)
 

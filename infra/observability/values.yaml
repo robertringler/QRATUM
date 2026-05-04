@@ -1,0 +1,7 @@
+regions:
+- us-east-1
+- eu-central-1
+- ap-southeast-1
+retentionDays: 90
+grafana:
+  dashboards: ["phi_qevf_overview", "anomaly_recall", "qmp_pricing"]

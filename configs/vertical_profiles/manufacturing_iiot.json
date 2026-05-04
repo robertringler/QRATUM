@@ -1,0 +1,33 @@
+{
+  "name": "Manufacturing - IIoT Production Line Optimization",
+  "description": "Smart factory throughput optimization with predictive maintenance",
+  "vertical": "manufacturing",
+  "system": "Automated Assembly Line",
+  "optimization_target": "OEE maximization with quality control",
+  "targets": {
+    "target_oee_pct": 85.0,
+    "target_throughput_units_per_hr": 1000.0,
+    "target_defect_rate_ppm": 50.0,
+    "target_downtime_pct": 3.0
+  },
+  "tolerances": {
+    "oee_tolerance_pct": 5.0,
+    "throughput_tolerance": 100.0,
+    "defect_tolerance_ppm": 20.0,
+    "downtime_tolerance_pct": 1.0
+  },
+  "weights": {
+    "oee": 0.40,
+    "throughput": 0.25,
+    "defect_rate": 0.25,
+    "downtime": 0.10
+  },
+  "alpha_bounds": [0.4, 0.9],
+  "compliance_tags": ["ISO 9001", "ISA-95", "IEC 62443", "OSHA"],
+  "metadata": {
+    "production_type": "Discrete manufacturing (automotive components)",
+    "automation_level": "Level 4 (High automation)",
+    "classification": "PROPRIETARY // DEMO ONLY",
+    "note": "Simplified production model for demonstration."
+  }
+}

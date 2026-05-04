@@ -6,7 +6,6 @@ import json
 import random
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
 
 
 @dataclass
@@ -23,6 +22,7 @@ class KernelGenome:
 
     def to_dict(self) -> dict:
         """Convert genome to dictionary."""
+
         return {
             "tile_size": self.tile_size,
             "warp_count": self.warp_count,
@@ -36,10 +36,12 @@ class KernelGenome:
     @classmethod
     def from_dict(cls, data: dict) -> KernelGenome:
         """Create genome from dictionary."""
+
         return cls(**data)
 
     def mutate(self, mutation_rate: float = 0.1) -> KernelGenome:
         """Create a mutated copy of this genome."""
+
         new_genome = KernelGenome(
             tile_size=self.tile_size,
             warp_count=self.warp_count,
@@ -79,13 +81,14 @@ class RLController:
 
     def __init__(self, population_size: int = 20, seed: int = 42):
         self.population_size = population_size
-        self.population: List[KernelGenome] = []
+        self.population: list[KernelGenome] = []
         self.best_genome: KernelGenome | None = None
         self.generation = 0
         random.seed(seed)
 
-    def initialize_population(self) -> List[KernelGenome]:
+    def initialize_population(self) -> list[KernelGenome]:
         """Create initial random population."""
+
         self.population = []
         tile_sizes = [64, 128, 256, 512, 1024]
         warp_counts = [8, 16, 32, 64]
@@ -108,9 +111,11 @@ class RLController:
 
     def evaluate_fitness(self, genome: KernelGenome, latency_ms: float, energy_j: float) -> float:
         """
+
         Compute fitness score for a genome based on performance metrics.
         Lower is better (minimizing combined latency and energy).
         """
+
         # Fitness function: weighted combination of latency and energy
         # Normalize by typical values
         normalized_latency = latency_ms / 100.0  # Assume 100ms baseline
@@ -122,8 +127,9 @@ class RLController:
         genome.fitness = fitness
         return fitness
 
-    def select_and_evolve(self) -> List[KernelGenome]:
+    def select_and_evolve(self) -> list[KernelGenome]:
         """Select top performers and create next generation."""
+
         # Sort by fitness (lower is better)
         self.population.sort(key=lambda g: g.fitness)
 
@@ -159,6 +165,7 @@ class RLController:
 
     def save_policy(self, path: str = "evolve/policies/policy.json") -> None:
         """Save current policy (population and best genome) to disk."""
+
         policy_path = Path(path)
         policy_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -173,6 +180,7 @@ class RLController:
 
     def load_policy(self, path: str = "evolve/policies/policy.json") -> None:
         """Load policy from disk."""
+
         policy_path = Path(path)
         if not policy_path.exists():
             return

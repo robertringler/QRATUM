@@ -8,21 +8,21 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Telecom Demo - QuASIM", layout="wide")
 
     st.title("📡 RAN Slice Placement & Quantum-Aided Traffic Forecasting")
     st.markdown("**Target Accounts**: AT&T, Verizon, T-Mobile, Nokia")
 
-    st.markdown(
-        """
+    st.markdown("""
+
     ## Overview
-    
+
     Minimize SLA violations and power under dynamic load
-    
+
     ### Key Performance Indicators (KPIs)
     - SLA_viol_rate, power_kWh, forecast_MAE, placement_cost
-    """
-    )
+    """)
 
     artifacts_dir = Path("artifacts/telecom")
 
@@ -56,19 +56,18 @@ def main():
     else:
         st.info("No artifacts directory found. Run the demo to generate data.")
 
-    st.markdown(
-        """
+    st.markdown("""
+
     ## How to Run
-    
+
     ```bash
     # Run planning
     python -m quasim.demos.telecom.cli plan --steps 200 --seed 42
-    
+
     # Run simulation with capture
     python -m quasim.demos.telecom.cli simulate --seed 42 --capture
     ```
-    """
-    )
+    """)
 
 
 if __name__ == "__main__":

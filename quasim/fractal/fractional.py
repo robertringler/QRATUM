@@ -37,6 +37,7 @@ def fractional_laplacian_fft(
     Reference:
         Laskin (2000), "Fractional quantum mechanics"
     """
+
     n = len(wavefunction)
 
     # Fourier transform
@@ -81,6 +82,7 @@ def fractional_schrodinger_step(
         >>> V = np.zeros(64)
         >>> psi_new = fractional_schrodinger_step(psi, 1.0, V, 0.1, 0.01)
     """
+
     # Kinetic energy term (fractional Laplacian)
     kinetic = fractional_laplacian_fft(wavefunction, alpha, dx)
 
@@ -129,6 +131,7 @@ def anomalous_diffusion_propagator(
     Reference:
         Metzler & Klafter (2000), "The random walk's guide to anomalous diffusion"
     """
+
     # Simplified form for 1D
     if t < 1e-10:
         # Delta function at t=0
@@ -178,6 +181,7 @@ def measure_diffusion_exponent(
         >>> beta, D = measure_diffusion_exponent(x, t)
         >>> assert abs(beta - 0.5) < 0.2
     """
+
     # Mean-square displacement
     msd = positions**2
 
@@ -223,6 +227,7 @@ def levy_flight_step(
         >>> x = 0.0
         >>> x_new = levy_flight_step(x, 1.5, 1.0, seed=42)
     """
+
     # Use Chambers-Mallows-Stuck algorithm
     rng = np.random.RandomState(seed)
 
@@ -270,6 +275,7 @@ def fractal_dimension_capacity(
         >>> sizes = np.logspace(-2, 0, 10)
         >>> D = fractal_dimension_capacity(x, sizes)
     """
+
     counts = []
 
     for epsilon in box_sizes:

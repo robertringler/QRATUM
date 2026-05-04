@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Patent-Eligible Inventions Extraction Tool for QuASIM
 
 This script systematically extracts and documents patent-eligible technical
@@ -546,6 +547,7 @@ class PatentInventionExtractor:
 
     def generate_json_report(self, output_file: str = "patent_inventions.json"):
         """Generate JSON format report"""
+
         report = {
             "metadata": {
                 "extraction_date": datetime.now().isoformat(),
@@ -565,6 +567,7 @@ class PatentInventionExtractor:
 
     def generate_markdown_report(self, output_file: str = "PATENT_INVENTIONS.md"):
         """Generate Markdown format report"""
+
         md_lines = [
             "# QuASIM Patent-Eligible Inventions",
             "",
@@ -721,6 +724,7 @@ class PatentInventionExtractor:
 
     def print_summary(self):
         """Print summary to console"""
+
         print("\n" + "=" * 80)
         print("QuASIM Patent-Eligible Inventions - Extraction Summary")
         print("=" * 80)
@@ -745,6 +749,7 @@ class PatentInventionExtractor:
 
 def main():
     """Main execution function"""
+
     import argparse
 
     parser = argparse.ArgumentParser(

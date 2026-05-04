@@ -22,6 +22,7 @@ from quasim.ownai.integration.terc_observables import (
 
 def main():
     """Run complete benchmark suite."""
+
     print("=" * 60)
     print("QuASIM-Own: Complete Benchmark Suite")
     print("=" * 60)
@@ -81,7 +82,7 @@ def main():
     print()
     print("Generating model cards...")
 
-    models = set(r.model_name for r in results)
+    models = {r.model_name for r in results}
     for model_name in models:
         card_path = Path(f"docs/ownai/model_card_{model_name}.md")
         model_results = [r for r in results if r.model_name == model_name]

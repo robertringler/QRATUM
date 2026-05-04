@@ -1,4 +1,4 @@
-"""HCAL - Hardware Control Abstraction Layer.
+"""Hardware Control & Calibration Layer (HCAL) for QuASIM.
 
 HCAL provides a unified interface for hardware control and calibration with:
 - Dry-run by default with explicit actuation enablement
@@ -36,9 +36,9 @@ class HCAL:
 
     def __init__(
         self,
-        policy_path: Optional[Path] = None,
+        policy_path: Path | None = None,
         dry_run: bool = True,
-        audit_log_path: Optional[Path] = None,
+        audit_log_path: Path | None = None,
     ):
         """Initialize HCAL.
 
@@ -47,11 +47,15 @@ class HCAL:
             dry_run: Enable dry-run mode (default: True for safety).
             audit_log_path: Path to audit log file.
         """
+
         # Initialize policy engine
         self.policy_engine = PolicyEngine(policy_path)
 
-        # Override dry_run if policy requires it
-        if self.policy_engine.is_dry_run_default():
+        # Override dry_run if policy requires it (check if method exists)
+        if (
+            hasattr(self.policy_engine, "is_dry_run_default")
+            and self.policy_engine.is_dry_run_default()
+        ):
             dry_run = True
 
         self.dry_run = dry_run
@@ -59,7 +63,11 @@ class HCAL:
         # Initialize components
         self.topology = TopologyDiscovery()
         self.sensor_manager = SensorManager()
-        self.actuator = Actuator(enable_actuation=not dry_run)
+        self.actuator = Actuator(
+            policy_engine=self.policy_engine,
+            audit_log_path=audit_log_path,
+            dry_run=dry_run,
+        )
 
         # Initialize backends
         self.backends = {"nvidia_nvml": NvidiaNvmlBackend(dry_run=dry_run)}
@@ -80,18 +88,22 @@ class HCAL:
         cls,
         policy_path: Path,
         enable_actuation: bool = False,
-        audit_log_dir: Optional[Path] = None,
+        audit_log_dir: Path | None = None,
     ) -> HCAL:
         """Create HCAL instance from policy file.
 
         Args:
             policy_path: Path to policy YAML file
-            enable_actuation: Whether to enable hardware changes
+            enable_actuation: Whether to enable hardware changes (overrides dry_run)
             audit_log_dir: Directory for audit logs
 
         Returns:
             HCAL instance
         """
+
+        # enable_actuation=True means dry_run=False
+        dry_run = not enable_actuation
+
         audit_log_path = None
         if audit_log_dir:
             audit_log_dir.mkdir(parents=True, exist_ok=True)
@@ -99,11 +111,11 @@ class HCAL:
 
         return cls(
             policy_path=policy_path,
-            dry_run=not enable_actuation,
+            dry_run=dry_run,
             audit_log_path=audit_log_path,
         )
 
-    def discover(self, full: bool = False) -> Dict[str, Any]:
+    def discover(self, full: bool = False) -> dict[str, Any]:
         """Discover hardware topology.
 
         Args:
@@ -112,6 +124,7 @@ class HCAL:
         Returns:
             Topology dictionary with devices, interconnects, and summary
         """
+
         topology = {
             "devices": [],
             "interconnects": [],
@@ -164,14 +177,15 @@ class HCAL:
         Returns:
             Topology instance with discovered hardware.
         """
+
         return self.topology.discover()
 
     def plan(
         self,
         profile: str,
-        devices: Optional[List[str]] = None,
+        devices: list[str] | None = None,
         **kwargs: Any,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Create hardware configuration plan.
 
         Args:
@@ -182,6 +196,7 @@ class HCAL:
         Returns:
             Plan dictionary with 'devices' and optional 'warnings' for filtered devices
         """
+
         plan = {
             "plan_id": str(uuid.uuid4()),
             "profile": profile,
@@ -190,10 +205,7 @@ class HCAL:
 
         # Get device list
         if devices is None:
-            if self.policy:
-                devices = self.policy.device_allowlist
-            else:
-                devices = []
+            devices = self.policy.device_allowlist if self.policy else []
 
         filtered_devices = []
         for device_id in devices:
@@ -229,9 +241,9 @@ class HCAL:
 
     def apply(
         self,
-        plan: Dict[str, Any],
-        enable_actuation: Optional[bool] = None,
-    ) -> Dict[str, Any]:
+        plan: dict[str, Any],
+        enable_actuation: bool | None = None,
+    ) -> dict[str, Any]:
         """Apply a configuration plan.
 
         Args:
@@ -244,6 +256,7 @@ class HCAL:
         Raises:
             PolicyViolation: If plan violates policy
         """
+
         # Validate plan against policy
         if self.policy:
             self.policy.validate_plan(plan)
@@ -273,7 +286,7 @@ class HCAL:
         self.audit_logger.log_event("apply", result)
         return result
 
-    def apply_setpoint(self, device_id: str, setpoint: Dict[str, Any]) -> bool:
+    def apply_setpoint(self, device_id: str, setpoint: dict[str, Any]) -> bool:
         """Apply setpoint to device.
 
         Args:
@@ -286,6 +299,7 @@ class HCAL:
         Returns:
             True if setpoint was applied successfully.
         """
+
         # Determine backend
         backend = self._get_backend(device_id)
         if not backend:
@@ -298,7 +312,7 @@ class HCAL:
         # Apply setpoint
         return self.actuator.apply_setpoint(device_id, setpoint, backend, validate=True)
 
-    def read_telemetry(self, device_id: str) -> Optional[TelemetryReading]:
+    def read_telemetry(self, device_id: str) -> TelemetryReading | None:
         """Read telemetry from device.
 
         Args:
@@ -307,6 +321,7 @@ class HCAL:
         Returns:
             TelemetryReading instance or None if failed.
         """
+
         backend = self._get_backend(device_id)
         if not backend:
             return None
@@ -323,20 +338,21 @@ class HCAL:
         Returns:
             CalibrationResult instance.
         """
+
         backend = self._get_backend(device_id)
         if not backend:
             raise ValueError(f"No backend for device {device_id}")
 
-        def measure_fn(dev_id: str, be: Any) -> Dict[str, Any]:
+        def measure_fn(dev_id: str, be: Any) -> dict[str, Any]:
             reading = self.sensor_manager.read_telemetry(dev_id, be)
             return reading.metrics if reading else {}
 
-        def apply_fn(dev_id: str, setpoint: Dict[str, Any], be: Any) -> bool:
+        def apply_fn(dev_id: str, setpoint: dict[str, Any], be: Any) -> bool:
             return self.actuator.apply_setpoint(dev_id, setpoint, be, validate=False)
 
         return bias_trim_v1(device_id, backend, measure_fn, apply_fn)
 
-    def run_power_sweep(self, device_id: str, power_range: Tuple[float, float], steps: int = 10):
+    def run_power_sweep(self, device_id: str, power_range: tuple[float, float], steps: int = 10):
         """Run power sweep calibration.
 
         Args:
@@ -347,15 +363,16 @@ class HCAL:
         Returns:
             List of (power, telemetry) tuples.
         """
+
         backend = self._get_backend(device_id)
         if not backend:
             raise ValueError(f"No backend for device {device_id}")
 
-        def measure_fn(dev_id: str, be: Any) -> Dict[str, Any]:
+        def measure_fn(dev_id: str, be: Any) -> dict[str, Any]:
             reading = self.sensor_manager.read_telemetry(dev_id, be)
             return reading.metrics if reading else {}
 
-        def apply_fn(dev_id: str, setpoint: Dict[str, Any], be: Any) -> bool:
+        def apply_fn(dev_id: str, setpoint: dict[str, Any], be: Any) -> bool:
             return self.actuator.apply_setpoint(dev_id, setpoint, be, validate=False)
 
         return power_sweep(device_id, backend, measure_fn, apply_fn, power_range, steps)
@@ -364,7 +381,7 @@ class HCAL:
         self,
         device: str,
         routine: str,
-        parameters: Optional[Dict[str, Any]] = None,
+        parameters: dict[str, Any] | None = None,
     ) -> CalibrationLoop:
         """Create calibration loop.
 
@@ -376,6 +393,7 @@ class HCAL:
         Returns:
             CalibrationLoop instance
         """
+
         if parameters is None:
             parameters = {}
 
@@ -388,8 +406,8 @@ class HCAL:
 
     def get_telemetry(
         self,
-        devices: Optional[List[str]] = None,
-    ) -> Dict[str, Any]:
+        devices: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Get device telemetry.
 
         Args:
@@ -398,16 +416,18 @@ class HCAL:
         Returns:
             Telemetry dictionary
         """
+
         return (
             self.actuator.get_telemetry(devices) if hasattr(self.actuator, "get_telemetry") else {}
         )
 
-    def emergency_stop(self) -> Dict[str, Any]:
+    def emergency_stop(self) -> dict[str, Any]:
         """Emergency stop all operations.
 
         Returns:
             Stop result
         """
+
         result = {"stopped": True, "timestamp": str(uuid.uuid4())}
         if hasattr(self.actuator, "emergency_stop"):
             self.actuator.emergency_stop()
@@ -420,6 +440,7 @@ class HCAL:
         Returns:
             List of audit log entries.
         """
+
         return self.actuator.get_audit_log() if hasattr(self.actuator, "get_audit_log") else []
 
     def verify_audit_chain(self) -> bool:
@@ -428,6 +449,7 @@ class HCAL:
         Returns:
             True if chain is valid.
         """
+
         return (
             self.actuator.verify_audit_chain()
             if hasattr(self.actuator, "verify_audit_chain")
@@ -443,6 +465,7 @@ class HCAL:
         Returns:
             Backend instance or None.
         """
+
         # Simple heuristic: gpu* -> nvidia_nvml
         if device_id.startswith("gpu"):
             return self.backends.get("nvidia_nvml")
@@ -451,11 +474,13 @@ class HCAL:
 
 
 __all__ = [
+    "__version__",
     "HCAL",
-    "Policy",
-    "PolicyEngine",
-    "PolicyViolation",
     "DeviceLimits",
     "Environment",
-    "__version__",
+    "PolicyEngine",
+    "PolicyViolation",
+    "Policy",
+    "CalibrationResult",
+    "TelemetryReading",
 ]

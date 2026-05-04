@@ -1,0 +1,49 @@
+name: Render Mermaid Diagrams
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/mermaid/**/*.mmd'
+      - '.github/workflows/render_mermaid.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'docs/mermaid/**/*.mmd'
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install mermaid-cli
+        run: |
+          npm i -g @mermaid-js/mermaid-cli@10
+
+      - name: Ensure output directory
+        run: mkdir -p docs/assets
+
+      - name: Render SVG + PNG (dark theme)
+        run: |
+          for f in docs/mermaid/*_dark.mmd; do
+            base=$(basename "$f" _dark.mmd)
+            # SVG
+            mmdc -i "$f" -o "docs/assets/${base}.svg" --theme base \
+              --themeVariables '{"primaryColor":"#002b36","primaryBorderColor":"#268bd2","primaryTextColor":"#fdf6e3","lineColor":"#268bd2","tertiaryColor":"#073642","fontFamily":"ui-sans-serif"}'
+            # PNG (4x)
+            mmdc -i "$f" -o "docs/assets/${base}.png" --scale 4 --theme base \
+              --themeVariables '{"primaryColor":"#002b36","primaryBorderColor":"#268bd2","primaryTextColor":"#fdf6e3","lineColor":"#268bd2","tertiaryColor":"#073642","fontFamily":"ui-sans-serif"}'
+          done
+
+      - name: Commit rendered assets
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs(assets): render dark-mode SVG+PNG from Mermaid"
+          file_pattern: docs/assets/*.svg docs/assets/*.png

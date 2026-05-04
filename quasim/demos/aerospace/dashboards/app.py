@@ -8,25 +8,25 @@ import streamlit as st
 
 def main():
     """Main dashboard."""
+
     st.set_page_config(page_title="Aerospace Demo - QuASIM", layout="wide")
 
     st.title("🚀 Aerospace: Hot-Staging & MECO Optimization")
     st.markdown("**Target Accounts**: SpaceX, Boeing, Lockheed Martin, Northrop Grumman")
 
-    st.markdown(
-        """
+    st.markdown("""
+
     ## Overview
-    
+
     This demo showcases trajectory optimization for launch vehicles with hot-staging
     and Main Engine Cutoff (MECO) envelope analysis.
-    
+
     ### Key Performance Indicators (KPIs)
     - **RMSE Altitude**: Root mean squared error vs target trajectory
     - **RMSE Velocity**: Velocity profile accuracy
     - **q_max**: Maximum dynamic pressure
     - **Fuel Margin**: Remaining fuel percentage
-    """
-    )
+    """)
 
     # Try to load latest results
     artifacts_dir = Path("artifacts/aerospace")
@@ -71,28 +71,27 @@ def main():
     else:
         st.info("No artifacts directory found. Run the demo to generate data.")
 
-    st.markdown(
-        """
+    st.markdown("""
+
     ## How to Run
-    
+
     ```bash
     # Optimize trajectory
     python -m quasim.demos.aerospace.cli optimize --steps 200 --profile starship
-    
+
     # Replay with video capture
     python -m quasim.demos.aerospace.cli replay --scenario hot_staging_v1 --capture
-    
+
     # Run simulation
     python -m quasim.demos.aerospace.cli simulate --seed 42 --capture
     ```
-    
+
     ## Compliance Notes
-    
+
     - DO-178C Level A process compatibility (no certification claims)
     - Deterministic reproducibility with seed control
     - NIST 800-53/171 security controls applicable to production deployments
-    """
-    )
+    """)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,412 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Chapter 19 — Cross-Domain Unification IV:
+%%               Cosmology, Formalized Astrology,
+%%               and Global Synthesis
+%%
+%%  DEPENDENCIES: Chapters 3–18
+%%
+%%  PURPOSE: Complete the cross-domain programme with cosmology and the
+%%           formalized symbolic mapping of astrology, then establish the
+%%           global unified theorem, emergence hierarchy, novel predictions,
+%%           and internal consistency check.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Cross-Domain Unification~IV: Cosmos, Symbols, and Synthesis}
+\label{ch:cross-domain-IV}
+
+\vspace{0.5em}
+\noindent
+This final chapter of the cross-domain programme embeds cosmology and
+formalized astrology into CIIR, then presents the global synthesis:
+a unified theorem, the emergence hierarchy, falsifiable predictions,
+and an internal consistency verification.
+
+% ============================================================
+\section{Domain XIV: Cosmology and Astronomy}
+\label{sec:ch19:cosmo}
+% ============================================================
+
+\subsection{Formal Definition}
+
+\begin{definition}[Cosmological Domain]\label{def:19.1}
+The \emph{cosmological domain} is:
+\[
+  D_{\mathrm{cosmo}} := (\CS_{\mathrm{global}},\;
+                         \mathcal{O}_{\mathrm{cosmo}},\;
+                         \Omega_{\mathrm{cosmo}})
+\]
+where $\CS_{\mathrm{global}}$ is the full configuration space $\CS$
+of the primitive triple (Definition~\ref{def:14.1}),
+$\mathcal{O}_{\mathrm{cosmo}} := \mathrm{End}(\HC)$ is the full
+operator algebra, and $\Omega_{\mathrm{cosmo}} :=
+\mathfrak{D}(\HC)$.  The cosmological domain is CIIR
+\emph{without restriction}—the maximal domain.
+\end{definition}
+
+\subsection{Ontological Mapping}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Cosmological Concept} & \textbf{CIIR Object} & \textbf{Reference} \\
+\midrule
+Spacetime metric & $g_{\mu\nu}$ from Fisher metric & Thm.~14.1 \\
+Curvature & Riemann tensor $R^\alpha{}_{\beta\gamma\delta}$ & Thm.~14.4 \\
+Einstein equations & $G_{\mu\nu} + \Lambda g_{\mu\nu} = 8\pi \mathcal{G} T_{\mu\nu}$ & Thm.~14.6 \\
+Dark energy & Cosmological constant $\Lambda := \inf_\sigma \CC(\sigma)$ & Def.~\ref{def:19.2} \\
+Large-scale structure & Global minima of $\CC$ & Thm.~\ref{thm:19.1} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Mathematical Construction}
+
+\begin{definition}[Cosmological Constant from Constraint Floor]\label{def:19.2}
+The \emph{cosmological constant} in the CIIR framework is:
+\[
+  \Lambda := \inf_{\sigma \in \CS} \CC(\sigma),
+\]
+the global infimum of the constraint functional.  Since $\CC \geq 0$
+by Definition~\ref{def:14.1}, we have $\Lambda \geq 0$.  If $\Lambda > 0$,
+the constraint functional has a non-zero floor, corresponding to a
+non-vanishing vacuum energy.
+\end{definition}
+
+\begin{theorem}[Large-Scale Structure from Global Constraints]\label{thm:19.1}
+The set of cosmological ground states is:
+\[
+  \CS_0 := \bigl\{ \sigma \in \CS : \CC(\sigma) = \Lambda \bigr\}.
+\]
+The topology of $\CS_0$ determines the large-scale structure:
+\begin{enumerate}
+  \item[\textup{(i)}] If $\CS_0$ is connected, the universe is
+    topologically trivial at the largest scales.
+  \item[\textup{(ii)}] If $\CS_0$ has multiple connected components,
+    the universe has a multi-vacuum structure
+    (landscape of de Sitter vacua).
+  \item[\textup{(iii)}] Perturbations $\delta\sigma$ around
+    $\sigma^* \in \CS_0$ satisfy:
+    \[
+      \CC(\sigma^* + \delta\sigma)
+      = \Lambda + \tfrac{1}{2}\, g_F^{ij} \delta\sigma_i \delta\sigma_j
+      + O(|\delta\sigma|^3),
+    \]
+    recovering the cosmological perturbation theory from the
+    Fisher metric.
+\end{enumerate}
+\end{theorem}
+
+\subsection{Cross-Domain Links}
+
+\begin{itemize}
+  \item \textbf{To Emergent Physics (Ch.~14):} The cosmological domain
+        is the maximal case of the emergent physics framework; all
+        results of Chapter~14 apply without restriction.
+  \item \textbf{To Information Theory (Sec.~\ref{sec:ch17:info}):}
+        The Bekenstein--Hawking entropy of a black hole is
+        $S_{\mathrm{BH}} = A / (4 G)$, which in CIIR is the von
+        Neumann entropy of the reduced state obtained by tracing
+        out degrees of freedom behind the horizon.
+\end{itemize}
+
+% ============================================================
+\section{Domain XV: Formalized Astrology}
+\label{sec:ch19:astrology}
+% ============================================================
+
+\subsection{Formal Definition}
+
+\begin{definition}[Astrological Domain]\label{def:19.3}
+The \emph{formalized astrological domain} is a symbolic relational
+mapping:
+\[
+  D_{\mathrm{astro}} := (A,\; \mathcal{O}_{\mathrm{astro}},\;
+                         \Omega_{\mathrm{astro}})
+\]
+where $A : \CS_{\mathrm{macro}} \to \CS_{\mathrm{micro}}$ is a
+\emph{correlation operator} between macroscopic (celestial) and
+microscopic (personal/terrestrial) states.
+
+\textbf{No causal influence is assumed.}  The operator $A$ encodes
+only structural correlations—i.e.\ statistical relationships between
+the macro and micro partitions of the global state $\sigma \in \CS$.
+\end{definition}
+
+\begin{definition}[Macro--Micro Partition]\label{def:19.4}
+The configuration space decomposes as:
+\[
+  \CS = \CS_{\mathrm{macro}} \times \CS_{\mathrm{micro}},
+\]
+where $\CS_{\mathrm{macro}}$ includes celestial coordinates and
+$\CS_{\mathrm{micro}}$ includes terrestrial states.  The correlation
+operator is:
+\[
+  A := P_{\mathrm{micro}} \rho_{\mathrm{global}} P_{\mathrm{macro}}^\dagger,
+\]
+where $\rho_{\mathrm{global}} \in \mathfrak{D}(\HC)$ is the global
+density operator and $P_{\mathrm{macro}}, P_{\mathrm{micro}}$ are
+the canonical projections.
+\end{definition}
+
+\subsection{Ontological Mapping}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Astrological Concept} & \textbf{CIIR Object} & \textbf{Reference} \\
+\midrule
+``Planet position'' & $\sigma_{\mathrm{macro}} \in \CS_{\mathrm{macro}}$ & Def.~\ref{def:19.4} \\
+``Natal chart'' & Conditional state $\rho_{\mathrm{micro} | \mathrm{macro}}$ & Def.~\ref{def:19.5} \\
+``Aspect'' & Operator $A_{ij}$ on correlations & Def.~\ref{def:19.5} \\
+``Influence'' & Statistical correlation $\mathrm{Cov}(O_i, O_j)$ & Thm.~\ref{thm:19.2} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Mathematical Construction}
+
+\begin{definition}[Astrological Aspect Operator]\label{def:19.5}
+For observables $O_{\mathrm{macro}} \in \mathcal{O}_{\mathrm{cosmo}}$
+and $O_{\mathrm{micro}} \in \mathcal{O}_{\mathrm{bio}}$, the
+\emph{aspect operator} is:
+\[
+  A_{ij} := \mathrm{Cov}_\rho(O_i^{\mathrm{macro}},\, O_j^{\mathrm{micro}})
+  := \Tr\bigl( \rho\, O_i^{\mathrm{macro}} \otimes O_j^{\mathrm{micro}} \bigr)
+  - \Tr(\rho\, O_i^{\mathrm{macro}}) \cdot \Tr(\rho\, O_j^{\mathrm{micro}}).
+\]
+This is the quantum covariance between macro and micro observables
+in the global state.
+\end{definition}
+
+\begin{theorem}[Astrological Correlations are Constraint-Induced]\label{thm:19.2}
+Let $\rho$ be the ground state of $\hatH = \CC(\sigma)$.  Then
+$A_{ij} \neq 0$ if and only if the global constraint functional $\CC$
+couples the macro and micro degrees of freedom:
+\[
+  A_{ij} \neq 0 \iff
+  \frac{\partial^2 \CC}{\partial \sigma_i^{\mathrm{macro}}
+  \partial \sigma_j^{\mathrm{micro}}} \neq 0.
+\]
+That is, non-zero astrological correlations exist precisely when the
+global constraint has cross-terms between celestial and terrestrial
+coordinates.
+
+\emph{This does not establish causal influence.}  The cross-terms
+in $\CC$ are structural properties of the constraint landscape, not
+directional causal mechanisms.
+\end{theorem}
+
+\begin{proof}
+In the ground state $\rho = |\psi_0\rangle\langle\psi_0|$, the
+covariance factorises as:
+\[
+  A_{ij} = \langle\psi_0| O_i^{\mathrm{macro}} O_j^{\mathrm{micro}} |\psi_0\rangle
+  - \langle\psi_0| O_i^{\mathrm{macro}} |\psi_0\rangle
+    \langle\psi_0| O_j^{\mathrm{micro}} |\psi_0\rangle.
+\]
+This vanishes if and only if $|\psi_0\rangle$ is a product state
+$|\psi_{\mathrm{macro}}\rangle \otimes |\psi_{\mathrm{micro}}\rangle$.
+By the variational principle, $|\psi_0\rangle$ is a product state if
+and only if $\CC$ has no cross-terms, i.e.\
+$\frac{\partial^2 \CC}{\partial \sigma_i^{\mathrm{macro}}
+\partial \sigma_j^{\mathrm{micro}}} = 0$ for all $i, j$.
+\end{proof}
+
+\subsection{Cross-Domain Links}
+
+\begin{itemize}
+  \item \textbf{To Cosmology (Sec.~\ref{sec:ch19:cosmo}):}
+        The macro states $\CS_{\mathrm{macro}}$ are a subset of the
+        cosmological domain.  Astrological correlations are
+        cosmological correlations restricted to specific
+        celestial--terrestrial pairings.
+  \item \textbf{To Biology (Sec.~\ref{sec:ch16:biology}):}
+        The micro states $\CS_{\mathrm{micro}}$ include biological
+        states.  The aspect operators $A_{ij}$ measure structural
+        correlations between cosmic configuration and biological
+        fitness.
+  \item \textbf{To Semiotics (Sec.~\ref{sec:ch17:semiotics}):}
+        Astrological ``signs'' are sign operators in the semiotic
+        domain, mapping celestial configurations (referents) to
+        symbolic interpretants via the interface map.
+\end{itemize}
+
+% ============================================================
+% ============================================================
+\section{Global Synthesis}
+\label{sec:ch19:synthesis}
+% ============================================================
+% ============================================================
+
+% ============================================================
+\subsection{Unified Theorem}
+\label{sec:ch19:unified}
+% ============================================================
+
+\begin{theorem}[Total Domain Embedding]\label{thm:19.3}
+Let $\{D_k\}_{k=1}^{15}$ be the fifteen domains defined in
+Chapters~16--19 (Cognitive Science, Neuroscience, HCI, Biology,
+Biochemistry, Linguistics, Semiotics, Computer Science, Information
+Theory, AI/ML, Complex Systems, Mathematics, Philosophy of Mind,
+Cosmology, Formalized Astrology).  Then:
+\[
+  \bigcup_{k=1}^{15} D_k \subseteq \mathrm{CIIR}
+  := (\CR,\; \CM,\; \HC,\; \Phi,\; \CB(\HC),\; \CL,\; \CS,\; \CC,\; \CD).
+\]
+Specifically, each domain $D_k$ is realised as a domain projection
+$(P_{D_k}, \mathcal{O}_{D_k}, \Omega_{D_k})$ in the sense of
+Definition~\ref{def:16.2}, with:
+\begin{enumerate}
+  \item[\textup{(i)}] $\mathcal{O}_{D_k} \subseteq \CB(\HC)$ (every
+    domain operator is a bounded operator on $\HC$).
+  \item[\textup{(ii)}] $\Omega_{D_k} \subseteq \mathfrak{D}(\HC)$
+    (every domain state is a density operator).
+  \item[\textup{(iii)}] The dynamics of $D_k$ are generated by the
+    restriction $\CL_{D_k}$ of the CIIR Lindblad generator.
+  \item[\textup{(iv)}] The cross-domain links are mediated by
+    inclusion of operator algebras:
+    $\mathcal{O}_{D_j} \cap \mathcal{O}_{D_k} \neq \{0\}$ for
+    all linked pairs $(D_j, D_k)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Each domain $D_k$ is constructed via the domain-projection apparatus
+(Definition~\ref{def:16.1}) applied to specific subspaces, constraint
+spectral windows, or tensor-product decompositions of $\HC$.  The
+embedding $\mathcal{O}_{D_k} \subseteq \CB(\HC)$ holds by
+construction (every operator is obtained by projecting or restricting
+elements of $\CB(\HC)$).  The dynamical inheritance follows from
+Lemma~\ref{lem:16.1}.  The cross-domain links are verified in each
+domain section above.
+\end{proof}
+
+% ============================================================
+\subsection{Emergence Hierarchy}
+\label{sec:ch19:hierarchy}
+% ============================================================
+
+\begin{definition}[CIIR Emergence Hierarchy]\label{def:19.6}
+The \emph{CIIR emergence hierarchy} is the chain:
+\[
+  \underbrace{\CS}_{\text{configurations}}
+  \;\xrightarrow{\;\CC\;}
+  \underbrace{\mathcal{O}}_{\text{operators}}
+  \;\xrightarrow{\;\Phi\;}
+  \underbrace{\HC_\CM}_{\text{interface}}
+  \;\xrightarrow{\;P_D\;}
+  \underbrace{\{D_k\}}_{\text{domains}},
+\]
+with the strict ordering:
+\begin{enumerate}
+  \item[\textbf{Level 0}:] The configuration space $\CS$ and
+        constraint functional $\CC$ (pure ontology).
+  \item[\textbf{Level 1}:] The operator algebra
+        $\mathcal{O} = \CB(\HC)$ generated by $\CC$ via the
+        variational principle (algebraic structure).
+  \item[\textbf{Level 2}:] The interface subspace
+        $\HC_\CM = \mathrm{Im}(\Phi)$ (epistemic access).
+  \item[\textbf{Level 3}:] The domain projections $\{P_{D_k}\}$
+        (scientific disciplines as constrained viewpoints).
+\end{enumerate}
+\end{definition}
+
+% ============================================================
+\subsection{Novel Falsifiable Predictions}
+\label{sec:ch19:predictions}
+% ============================================================
+
+\begin{conjecture}[CIIR Prediction 1 — Constraint-Curvature Entanglement
+Scaling]\label{conj:19.1}
+\textbf{Physics:} In a quantum system with CIIR constraint curvature
+$\kappa$, the bipartite entanglement entropy of the ground state
+satisfies:
+\[
+  S_{\mathrm{ent}}(A:B) = \frac{c}{3} \ln\ell
+  + \delta(\kappa) \cdot \ell^{-1} + O(\ell^{-2}),
+\]
+where $\ell$ is the subsystem size, $c$ is the central charge, and
+$\delta(\kappa) := \alpha \kappa^{-1/2}$ is a
+\emph{constraint-curvature correction}.  Standard CFT predicts
+$\delta = 0$.  CIIR predicts $\delta \neq 0$ and $\delta \to 0$
+as $\kappa \to \infty$.
+
+\emph{Testable regime:} Quantum simulators with $10^2$--$10^3$ qubits,
+measurable via entanglement Hamiltonians.
+\end{conjecture}
+
+\begin{conjecture}[CIIR Prediction 2 — Cognitive Bandwidth Bound]\label{conj:19.2}
+\textbf{Cognitive Science:} The number of simultaneously distinguishable
+percepts $N_{\mathrm{percept}}$ is bounded by:
+\[
+  N_{\mathrm{percept}} \leq \dim(\HC_\CM)
+  \leq \lfloor \kappa_{\max} \cdot \mathrm{vol}(\CM) \rfloor + 1.
+\]
+This predicts that cognitive capacity is determined by the constraint
+geometry of the interface, not by neural hardware alone.
+
+\emph{Testable regime:} Psychophysical experiments comparing perceptual
+capacity across tasks with varying information-geometric complexity.
+\end{conjecture}
+
+\begin{conjecture}[CIIR Prediction 3 — Evolutionary Convergence Rate]\label{conj:19.3}
+\textbf{Biology:} The convergence rate of evolutionary adaptation
+(fitness increase per generation) is bounded by the Fisher information
+of the biological state space:
+\[
+  \frac{d\mathcal{F}}{dt} \leq g_F(\nabla \CC, \nabla \CC),
+\]
+where $g_F$ is the Fisher metric on $\Omega_{\mathrm{bio}}$.  This
+generalises Fisher's fundamental theorem of natural selection to
+information-geometric form and predicts that evolutionary speed
+is limited by the curvature of the fitness landscape in the
+information metric.
+
+\emph{Testable regime:} Microbial evolution experiments with
+known fitness landscapes (e.g.\ antibiotic resistance).
+\end{conjecture}
+
+% ============================================================
+\subsection{Internal Consistency Check}
+\label{sec:ch19:consistency}
+% ============================================================
+
+\begin{theorem}[Internal Consistency of the Cross-Domain Framework]\label{thm:19.4}
+The cross-domain extension (Chapters~16--19) is internally consistent:
+\begin{enumerate}
+  \item[\textup{(i)}] \textbf{No contradictions:} Every domain
+    $D_k$ is a $C^*$-subalgebra of $\CB(\HC)$, inheriting the
+    consistency of the ambient $C^*$-algebra (Chapter~5).
+  \item[\textup{(ii)}] \textbf{Closure of operator algebra:}
+    $\bigcup_k \mathcal{O}_{D_k} \subseteq \CB(\HC)$, and
+    $\CB(\HC)$ is closed under addition, multiplication, and
+    adjunction.
+  \item[\textup{(iii)}] \textbf{Stability of recursive structures:}
+    The cognitive recursion operator $F_{\mathrm{cog}}$
+    (Definition~\ref{def:16.4}) and the learning operator $\Lambda$
+    (Definition~\ref{def:18.1}) both have fixed points when the
+    contraction conditions are satisfied
+    (Theorems~\ref{thm:16.1} and \ref{thm:18.1}).
+  \item[\textup{(iv)}] \textbf{No new primitives:} Every definition
+    in Chapters~16--19 is expressed solely in terms of the CIIR
+    primitives $(\CR, \CM, g, \kappa, \HC, \Phi, \CB(\HC), \CS,
+    \CC, \CD)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) Every domain projection $(P_{D_k}, \mathcal{O}_{D_k},
+\Omega_{D_k})$ is defined via orthogonal projections and
+restrictions, which preserve the $C^*$-algebra structure.  Subalgebras
+of a consistent algebra are consistent.
+
+(ii) Closure is inherited from $\CB(\HC)$.
+
+(iii) The fixed-point existence follows from the Banach contraction
+mapping theorem (Theorem~\ref{thm:16.1}) and the convergence theory
+of gradient descent on strongly convex functions
+(Theorem~\ref{thm:18.1}).
+
+(iv) Verified by inspection: Definitions~\ref{def:16.1}--\ref{def:19.5}
+reference only objects from Chapters~3--15.
+\end{proof}

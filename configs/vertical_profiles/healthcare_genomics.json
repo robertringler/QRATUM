@@ -1,0 +1,33 @@
+{
+  "name": "Healthcare - Genomic Variant Analysis Pipeline",
+  "description": "Optimize genomic sequence alignment and variant calling throughput",
+  "vertical": "healthcare",
+  "analysis_type": "Whole Genome Sequencing (WGS)",
+  "pipeline": "Alignment → Variant Calling → Annotation",
+  "targets": {
+    "target_throughput_samples_per_day": 50.0,
+    "target_accuracy_pct": 99.5,
+    "target_sensitivity_pct": 98.0,
+    "target_cost_per_sample_usd": 100.0
+  },
+  "tolerances": {
+    "throughput_tolerance": 5.0,
+    "accuracy_tolerance_pct": 0.3,
+    "sensitivity_tolerance_pct": 1.0,
+    "cost_tolerance_usd": 15.0
+  },
+  "weights": {
+    "throughput": 0.30,
+    "accuracy": 0.35,
+    "sensitivity": 0.25,
+    "cost": 0.10
+  },
+  "alpha_bounds": [0.3, 0.9],
+  "compliance_tags": ["HIPAA", "CLIA", "CAP", "FDA 21 CFR Part 11"],
+  "metadata": {
+    "reference_pipeline": "GATK Best Practices",
+    "sequencing_platform": "Illumina NovaSeq",
+    "classification": "PHI // DEMO ONLY",
+    "note": "Simplified pipeline model. Not for clinical use."
+  }
+}

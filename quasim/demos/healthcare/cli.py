@@ -12,6 +12,7 @@ from quasim.viz.run_capture import RunCapture
 
 def cmd_plan(args):
     """Run planning."""
+
     set_global_seed(args.seed)
 
     print(f"Running healthcare planning with seed={args.seed}")
@@ -41,6 +42,7 @@ def cmd_plan(args):
 
 def cmd_simulate(args):
     """Run simulation."""
+
     set_global_seed(args.seed)
 
     print(f"Running healthcare simulation with seed={args.seed}")
@@ -48,7 +50,7 @@ def cmd_simulate(args):
     scenario = {"default": True}
     capture = RunCapture() if args.capture else None
 
-    results = run_simulation(scenario, steps=150, seed=args.seed, capture=capture)
+    run_simulation(scenario, steps=150, seed=args.seed, capture=capture)
 
     print("\nSimulation complete")
 
@@ -56,7 +58,7 @@ def cmd_simulate(args):
         output_dir = Path("artifacts/healthcare") / f"sim_{args.seed}"
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        artifacts = capture.finalize(mp4_path=output_dir / "simulation.mp4", fps=30)
+        capture.finalize(mp4_path=output_dir / "simulation.mp4", fps=30)
         print(f"Artifacts saved to {output_dir}")
 
     return 0
@@ -64,6 +66,7 @@ def cmd_simulate(args):
 
 def main():
     """Main CLI entrypoint."""
+
     parser = argparse.ArgumentParser(description="QuASIM ⚕️ Healthcare Demo")
 
     subparsers = parser.add_subparsers(dest="command", help="Command to run")

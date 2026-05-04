@@ -10,23 +10,30 @@ agent:
   description: >
     GitHub Copilot Agent for QuASIM pilot track.
     Responsible for maintaining deterministic demo integrity,
-    running profile-shaped simulations, and generating JSON reports.
+    running profile-shaped simulations, and generating JSON reports
+    across multiple industry verticals.
   mode: strict
   allow_branch_creation: true
   allowed_branches:
     - pilot/spacex-nasa
+    - pilot/market-verticals
     - copilot/pilotspacex-nasa
-  default_branch: pilot/spacex-nasa
+    - copilot/add-vertical-specific-demos
+  default_branch: pilot/market-verticals
 
 permissions:
   file_access:
     allow:
       - "quasim_spacex_demo.py"
       - "configs/meco_profiles/*.json"
+      - "configs/vertical_profiles/*.json"
+      - "demos/*.py"
+      - "quasim/common.py"
       - "Dockerfile"
       - "docker-compose.yml"
       - "Makefile"
       - ".github/workflows/spacex-demo.yml"
+      - ".github/workflows/vertical-demo.yml"
       - "README.md"
       - "legal/*"
       - "requirements-demo.txt"
@@ -74,6 +81,14 @@ reporting:
   outputs:
     - spacex_f9_stage1_demo_report.json
     - starship_hotstaging_demo_report.json
+    - aerospace_f9_demo_report.json
+    - telecom_constellation_demo_report.json
+    - finance_var_demo_report.json
+    - healthcare_genomics_demo_report.json
+    - energy_grid_demo_report.json
+    - transportation_logistics_demo_report.json
+    - manufacturing_iiot_demo_report.json
+    - agritech_optimization_demo_report.json
   badges:
     - name: Deterministic
       color: green
@@ -84,6 +99,9 @@ reporting:
     - name: Fidelity
       color: purple
       message: "≥0.97"
+    - name: Verticals
+      color: orange
+      message: "8 industries"
 
 post_merge:
   actions:

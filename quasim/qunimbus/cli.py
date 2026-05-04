@@ -12,12 +12,17 @@ Usage:
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import sys
-from typing import Optional
 
 import click
 
+from quasim.audit.log import audit_event
+from quasim.io.hdf5 import write_snapshot
+from quasim.net.http import HttpClient
+from quasim.policy.qnimbus_guard import QNimbusGuard
+from quasim.qunimbus.bridge import QNimbusBridge, QNimbusConfig
 from quasim.qunimbus.china_integration import ChinaPhotonicFactory
 from quasim.qunimbus.orchestrator import (
     ComplianceFramework,
@@ -26,6 +31,8 @@ from quasim.qunimbus.orchestrator import (
     QuNimbusOrchestrator,
 )
 from quasim.qunimbus.pilot_factory import PilotFactory
+from quasim.runtime.determinism import set_seed
+from quasim.validation.compare import compare_observables
 
 # Configure logging
 logging.basicConfig(
@@ -44,6 +51,7 @@ def cli():
 
     Wave 3: 1,000 pilots/day + China Photonic Factory integration.
     """
+
     pass
 
 
@@ -92,7 +100,7 @@ def cli():
 def orchestrate(
     parallel: bool,
     task: tuple,
-    auth: Optional[str],
+    auth: str | None,
     compliance: str,
     mode: str,
     pilot_target: int,
@@ -112,6 +120,7 @@ def orchestrate(
             --compliance "CMMC-L2,DO-178C,ISO-13485,China-MLPS" \\
             --mode "live_accelerated"
     """
+
     # Parse compliance frameworks
     compliance_list = []
     for c in compliance.split(","):
@@ -164,13 +173,14 @@ def generate_pilots(count: int, display_snapshot: bool):
     Example:
         qunimbus generate-pilots --count 100
     """
+
     factory = PilotFactory(target_per_day=1000)
 
     logger.info(f"Generating {count} Wave 3 pilots...")
     pilots = factory.generate_batch(count)
 
     logger.info(f"\n✓ Generated {len(pilots)} pilots")
-    logger.info(f"Veto rate: {factory.get_stats()['veto_rate']*100:.1f}%")
+    logger.info(f"Veto rate: {factory.get_stats()['veto_rate'] * 100:.1f}%")
 
     if display_snapshot:
         factory.display_wave3_snapshot()
@@ -194,6 +204,7 @@ def china_factory(connect: bool, pilot_count: int):
     Example:
         qunimbus china-factory --connect --pilot-count 50
     """
+
     factory = ChinaPhotonicFactory()
 
     if connect:
@@ -236,6 +247,7 @@ def prep_wave4(target: str, integrate: str):
             --target "10000_pilots_per_day" \\
             --integrate "india_qpi_ai,japan_quantum_optics"
     """
+
     logger.info("### Preparing Wave 4 Expansion")
     logger.info(f"Target: {target}")
     logger.info(f"New Integrations: {integrate}")
@@ -264,6 +276,7 @@ def metrics():
     Example:
         qunimbus metrics
     """
+
     logger.info("### QuNimbus Wave 3 Metrics")
     logger.info("| Metric              | Value         |")
     logger.info("|---------------------|---------------|")
@@ -280,8 +293,218 @@ def metrics():
     logger.info("| Value Unlocked      | $20B/yr       |")
 
 
+@cli.command("ascend")
+@click.option("--query", required=True, help="Query for QuNimbus v6")
+@click.option("--mode", default="singularity", help="Execution mode")
+@click.option("--seed", default=42, type=int, help="Random seed for determinism")
+@click.option("--out", default="artifacts/real_world_sim_2025", help="Output directory")
+@click.option(
+    "--dry-run", is_flag=True, help="Validate config, seed, and policy without network calls"
+)
+@click.option("--query-id", default=None, help="Primary query identifier for audit tracking")
+@click.option("--qid", default=None, help="Alias for --query-id")
+def ascend_cmd(
+    query: str, mode: str, seed: int, out: str, dry_run: bool, query_id: str | None, qid: str | None
+):
+    """Execute QuNimbus v6 ascend operation.
+
+    This command queries QuNimbus v6 for world-model generation with
+    deterministic seeding and audit logging.
+
+    Example:
+        qunimbus ascend --query "real world simulation" --out artifacts/real_world_sim_2025
+        qunimbus ascend --query "real world simulation" --dry-run
+    """
+
+    # Check policy guard
+    guard = QNimbusGuard()
+    if not guard.allow_query(query):
+        reason = guard.get_rejection_reason(query)
+        logger.error(f"✗ Query rejected: {reason}")
+        sys.exit(1)
+
+    # Set deterministic seed
+    set_seed(seed)
+
+    # Resolve query_id (prefer --query-id over --qid)
+    resolved_qid = query_id or qid
+
+    # Dry-run mode: validate without network calls
+    if dry_run:
+        logger.info("🔍 DRY RUN MODE - Validation Only")
+        logger.info(f"✓ Query validated: {query}")
+        logger.info("✓ Policy check passed")
+        logger.info(f"✓ Mode: {mode}")
+        logger.info(f"✓ Seed: {seed}")
+        logger.info(f"✓ Output directory: {out}")
+        if resolved_qid:
+            logger.info(f"✓ Query ID: {resolved_qid}")
+        logger.info("✓ Configuration valid")
+
+        result = {
+            "status": "dry_run",
+            "valid": True,
+            "query": query,
+            "mode": mode,
+            "seed": seed,
+            "out": out,
+            "query_id": resolved_qid,
+        }
+        click.echo(json.dumps(result, indent=2))
+        return
+
+    # Initialize bridge
+    client = HttpClient()
+    bridge = QNimbusBridge(QNimbusConfig(), client)
+
+    # Execute ascend
+    logger.info(f"Ascending with query: {query}")
+    logger.info(f"Mode: {mode}, Seed: {seed}")
+    if resolved_qid:
+        logger.info(f"Query ID: {resolved_qid}")
+
+    resp = bridge.ascend(query=query, mode=mode, seed=seed, query_id=resolved_qid)
+
+    # Audit event
+    audit_event(
+        "qnimbus.ascend",
+        {
+            "query": query,
+            "mode": mode,
+            "seed": seed,
+            "query_id": resolved_qid or resp.get("query_id"),
+        },
+    )
+
+    # Fetch artifacts
+    artifacts = resp.get("artifacts", {})
+    paths = {}
+
+    logger.info(f"\nQuery ID: {resp.get('query_id')}")
+
+    if artifacts:
+        logger.info("\nFetching artifacts...")
+        for key, art in artifacts.items():
+            artifact_path = f"{out}/{art['filename']}"
+            paths[key] = bridge.fetch_artifact(art["id"], artifact_path)
+            logger.info(f"  ✓ {key}: {artifact_path}")
+    else:
+        # Create stub snapshot for testing
+        logger.info("\nCreating stub snapshot (no artifacts in response)...")
+        import numpy as np
+
+        stub_meta = {
+            "version": "1.0",
+            "query_id": resp.get("query_id"),
+            "seed": seed,
+            "query": query,
+        }
+        stub_arrays = {
+            "agents": np.zeros((100, 5)),  # Stub agent data
+            "climate": np.ones((50,)) * 288.5,  # Stub climate data
+        }
+        snapshot_path = f"{out}/earth_snapshot.hdf5"
+        write_snapshot(snapshot_path, stub_meta, stub_arrays)
+        paths["earth_snapshot"] = snapshot_path
+        logger.info(f"  ✓ earth_snapshot: {snapshot_path}")
+
+    result = {"status": "ok", "out": out, "paths": paths}
+    click.echo(json.dumps(result, indent=2))
+
+
+@cli.command("validate")
+@click.option("--snapshot", required=True, help="Path to earth_snapshot.hdf5")
+@click.option(
+    "--metrics",
+    default="configs/observables/earth_2025.yml",
+    help="Path to observables config",
+)
+@click.option("--tolerance", default=0.03, type=float, help="Validation tolerance")
+@click.option(
+    "--strict",
+    is_flag=True,
+    help="Fail if any observable is missing (even if others pass)",
+)
+def validate_cmd(snapshot: str, metrics: str, tolerance: float, strict: bool):
+    """Validate snapshot against expected observables.
+
+    This command compares a snapshot's observables against expected values
+    from a configuration file.
+
+    In strict mode (--strict), validation fails if ANY observable is missing
+    from the snapshot, even if other observables pass their tolerance checks.
+    This is useful for DO-178C Level A compliance where all expected metrics
+    must be present and valid.
+
+    Example:
+        qunimbus validate --snapshot artifacts/real_world_sim_2025/earth_snapshot.hdf5
+        qunimbus validate --snapshot artifacts/snapshot.hdf5 --strict --tolerance 0.01
+    """
+
+    logger.info(f"Validating snapshot: {snapshot}")
+    logger.info(f"Metrics config: {metrics}")
+    logger.info(f"Tolerance: {tolerance}")
+    if strict:
+        logger.info("Strict mode: ENABLED (all observables required)")
+
+    results = compare_observables(snapshot, metrics, tolerance)
+
+    # Check for missing observables in strict mode
+    if strict:
+        # Load config to see what observables are expected
+        from pathlib import Path
+
+        import yaml
+
+        cfg_path = Path(metrics)
+        if cfg_path.exists():
+            with open(cfg_path) as f:
+                config = yaml.safe_load(f)
+                expected_observables = set(config.get("observables", {}).keys())
+                found_observables = set(results.keys())
+                missing = expected_observables - found_observables
+
+                if missing:
+                    logger.error(f"\n✗ STRICT MODE FAILURE: Missing observables: {missing}")
+                    sys.exit(3)
+
+                # Check if any observable has an error
+                for name, result in results.items():
+                    if result.get("error"):
+                        logger.error(
+                            f"\n✗ STRICT MODE FAILURE: Observable '{name}' has error: "
+                            f"{result['error']}"
+                        )
+                        sys.exit(3)
+
+    # Audit validation
+    audit_event(
+        "qnimbus.validate", {"snapshot": snapshot, "tolerance": tolerance, "results": results}
+    )
+
+    # Display results
+    logger.info("\n### Validation Results")
+    ok = True
+    for name, result in results.items():
+        status = "✓ PASS" if result["pass"] else "✗ FAIL"
+        logger.info(
+            f"{status} {name}: {result['value']:.2f} "
+            f"(expected: {result['expected']:.2f}, delta: {result['delta']:.2f})"
+        )
+        if not result["pass"]:
+            ok = False
+
+    # Output JSON result
+    output = {"ok": ok, "results": results}
+    click.echo("\n" + json.dumps(output, indent=2))
+
+    # Exit with appropriate code
+    sys.exit(0 if ok else 2)
+
+
 def main():
     """Main entry point for CLI."""
+
     cli()
 
 

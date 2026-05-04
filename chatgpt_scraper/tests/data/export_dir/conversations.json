@@ -1,0 +1,64 @@
+[
+  {
+    "id": "conv-1",
+    "title": "Synthetic conversation",
+    "create_time": 1700000000,
+    "mapping": {
+      "node-1": {
+        "message": {
+          "id": "msg-1",
+          "author": {"role": "system"},
+          "create_time": 1700000000,
+          "metadata": {"model_slug": "gpt-4"},
+          "content": {
+            "content_type": "text",
+            "parts": ["System priming"]
+          }
+        }
+      },
+      "node-2": {
+        "message": {
+          "id": "msg-2",
+          "author": {"role": "user"},
+          "create_time": 1700000100,
+          "content": {
+            "content_type": "text",
+            "parts": ["Hello assistant"]
+          }
+        }
+      },
+      "node-3": {
+        "message": {
+          "id": "msg-3",
+          "author": {"role": "assistant"},
+          "create_time": 1700000200,
+          "metadata": {"model_slug": "gpt-4o"},
+          "content": {
+            "content_type": "text",
+            "parts": ["Greetings human"]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "conv-2",
+    "title": "List based conversation",
+    "create_time": "2023-11-01T00:00:00Z",
+    "messages": [
+      {
+        "id": "msg-4",
+        "role": "user",
+        "create_time": 1698796800,
+        "content": "What is 2+2?"
+      },
+      {
+        "id": "msg-5",
+        "role": "assistant",
+        "create_time": 1698796810,
+        "metadata": {"model": "gpt-3.5"},
+        "content": "4"
+      }
+    ]
+  }
+]

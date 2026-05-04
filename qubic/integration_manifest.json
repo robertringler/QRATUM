@@ -1,0 +1,231 @@
+{
+  "platform": "QRATUM",
+  "version": "2.0.0",
+  "components": {
+    "quasim": {
+      "name": "QuASIM",
+      "description": "Quantum-Inspired Autonomous Simulation Engine",
+      "version": "2.0.0",
+      "path": "/workspaces/QRATUM/quasim",
+      "modules": [
+        "quasim.api",
+        "quasim.opt",
+        "quasim.sim",
+        "quasim.hcal",
+        "quasim.qc",
+        "quasim.distributed"
+      ],
+      "data_feeds": [
+        "quantum_state",
+        "optimization_progress",
+        "simulation_metrics"
+      ]
+    },
+    "xenon": {
+      "name": "XENON",
+      "description": "Quantum Bioinformatics Platform",
+      "version": "5.0.0",
+      "path": "/workspaces/QRATUM/xenon",
+      "modules": [
+        "xenon.core",
+        "xenon.genome",
+        "xenon.protein",
+        "xenon.cli"
+      ],
+      "data_feeds": [
+        "genome_sequence",
+        "protein_fold",
+        "mutation_analysis"
+      ]
+    },
+    "qubic": {
+      "name": "QUBIC",
+      "description": "Advanced Visualization Suite",
+      "version": "2.0.0",
+      "path": "/workspaces/QRATUM/qubic",
+      "modules": [
+        "qubic.visualization",
+        "qubic.modules",
+        "qubic.dashboard"
+      ],
+      "data_feeds": [
+        "render_metrics",
+        "visualization_state"
+      ]
+    },
+    "autonomous": {
+      "name": "Autonomous Systems",
+      "description": "RL Optimization Platform",
+      "version": "1.0.0",
+      "path": "/workspaces/QRATUM/autonomous_systems_platform",
+      "modules": [
+        "autonomous.services.backend",
+        "autonomous.services.frontend",
+        "autonomous.infra"
+      ],
+      "data_feeds": [
+        "rl_state",
+        "policy_updates",
+        "reward_signals"
+      ]
+    },
+    "compliance": {
+      "name": "Compliance Framework",
+      "description": "DO-178C / NIST / CMMC Compliance",
+      "version": "1.0.0",
+      "path": "/workspaces/QRATUM/compliance",
+      "modules": [
+        "compliance.scripts",
+        "compliance.policies"
+      ],
+      "data_feeds": [
+        "compliance_status",
+        "audit_logs"
+      ]
+    }
+  },
+  "module_mapping": {
+    "quantum_state_viewer": "quasim",
+    "qubit_simulator": "quasim",
+    "entanglement_lab": "quasim",
+    "quantum_gate_designer": "quasim",
+    "decoherence_monitor": "quasim",
+    "bell_state_analyzer": "quasim",
+    "quantum_walk": "quasim",
+    "grover_search": "quasim",
+    "shor_factoring": "quasim",
+    "vqe_optimizer": "quasim",
+    "dna_sequencer": "xenon",
+    "protein_folder": "xenon",
+    "genome_browser": "xenon",
+    "phylo_tree": "xenon",
+    "mutation_tracker": "xenon",
+    "rna_structure": "xenon",
+    "crispr_designer": "xenon",
+    "metabolic_pathway": "xenon",
+    "expression_heatmap": "xenon",
+    "variant_caller": "xenon",
+    "neural_network": "autonomous",
+    "activation_maps": "autonomous",
+    "gradient_flow": "autonomous",
+    "attention_viz": "autonomous",
+    "embedding_space": "autonomous",
+    "loss_landscape": "autonomous",
+    "gan_generator": "autonomous",
+    "reinforcement_env": "autonomous",
+    "autoencoder_latent": "autonomous",
+    "transformer_layers": "autonomous",
+    "particle_collider": "quasim",
+    "wave_equation": "quasim",
+    "electromagnetic_field": "quasim",
+    "fluid_dynamics": "quasim",
+    "pendulum_chaos": "quasim",
+    "orbital_mechanics": "quasim",
+    "black_hole": "quasim",
+    "string_vibrations": "quasim",
+    "plasma_dynamics": "quasim",
+    "superconductor": "quasim",
+    "molecular_viewer": "quasim",
+    "reaction_kinetics": "quasim",
+    "periodic_explorer": "quasim",
+    "orbital_viewer": "quasim",
+    "bond_analyzer": "quasim",
+    "spectroscopy": "quasim",
+    "catalyst_sim": "quasim",
+    "crystal_structure": "quasim",
+    "solubility_map": "quasim",
+    "thermodynamics": "quasim",
+    "hash_visualizer": "quasim",
+    "blockchain_explorer": "quasim",
+    "encryption_flow": "quasim",
+    "key_exchange": "quasim",
+    "merkle_tree": "quasim",
+    "zero_knowledge": "quasim",
+    "signature_verify": "quasim",
+    "entropy_analyzer": "quasim",
+    "cipher_wheel": "quasim",
+    "quantum_crypto": "quasim",
+    "network_topology": "autonomous",
+    "packet_flow": "autonomous",
+    "firewall_monitor": "compliance",
+    "latency_map": "autonomous",
+    "ddos_simulator": "compliance",
+    "protocol_analyzer": "autonomous",
+    "dns_resolver": "autonomous",
+    "load_balancer": "autonomous",
+    "vpn_tunnel": "compliance",
+    "mesh_network": "autonomous",
+    "solar_system": "quasim",
+    "star_map": "quasim",
+    "galaxy_merger": "quasim",
+    "exoplanet_finder": "quasim",
+    "asteroid_tracker": "quasim",
+    "cosmic_web": "quasim",
+    "pulsar_timing": "quasim",
+    "redshift_map": "quasim",
+    "dark_matter": "quasim",
+    "gravitational_waves": "quasim",
+    "market_depth": "autonomous",
+    "volatility_surface": "autonomous",
+    "correlation_matrix": "autonomous",
+    "risk_dashboard": "compliance",
+    "monte_carlo_sim": "quasim",
+    "candlestick_chart": "autonomous",
+    "sentiment_tracker": "autonomous",
+    "flow_analyzer": "autonomous",
+    "yield_curve": "autonomous",
+    "portfolio_optimizer": "autonomous",
+    "scatter_3d": "qubic",
+    "parallel_coords": "qubic",
+    "treemap_viz": "qubic",
+    "sankey_flow": "qubic",
+    "chord_diagram": "qubic",
+    "force_graph": "qubic",
+    "sunburst_chart": "qubic",
+    "radar_chart": "qubic",
+    "stream_graph": "qubic",
+    "hexbin_map": "qubic"
+  },
+  "api_endpoints": {
+    "platform": {
+      "base": "http://localhost:9000",
+      "endpoints": {
+        "status": "/api/status",
+        "metrics": "/api/metrics",
+        "modules": "/api/modules",
+        "stream": "/api/stream/{type}"
+      }
+    },
+    "quasim": {
+      "base": "http://localhost:8000",
+      "endpoints": {
+        "health": "/health",
+        "kernel": "/kernel",
+        "metrics": "/metrics"
+      }
+    },
+    "xenon": {
+      "base": "http://localhost:8099",
+      "endpoints": {
+        "simulation": "/simulation",
+        "genome": "/genome",
+        "status": "/status"
+      }
+    },
+    "qubic": {
+      "base": "http://localhost:8100",
+      "endpoints": {
+        "dashboard": "/dashboard",
+        "modules": "/modules"
+      }
+    }
+  },
+  "total_modules": 100,
+  "component_counts": {
+    "quasim": 51,
+    "xenon": 10,
+    "autonomous": 25,
+    "compliance": 4,
+    "qubic": 10
+  }
+}

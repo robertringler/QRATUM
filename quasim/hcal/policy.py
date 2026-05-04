@@ -35,6 +35,7 @@ class PolicyValidator:
         Args:
             policy_config: Policy configuration
         """
+
         self.policy = policy_config
 
     @classmethod
@@ -51,6 +52,7 @@ class PolicyValidator:
             FileNotFoundError: If policy file doesn't exist
             ValueError: If policy is invalid
         """
+
         if not policy_path.exists():
             raise FileNotFoundError(f"Policy file not found: {policy_path}")
 
@@ -80,6 +82,7 @@ class PolicyValidator:
         Raises:
             ValueError: If configuration is invalid
         """
+
         required_keys = ["environment", "allowed_backends", "limits"]
         for key in required_keys:
             if key not in config:
@@ -100,6 +103,7 @@ class PolicyValidator:
         Returns:
             True if backend is allowed
         """
+
         if not self.policy:
             return True
 
@@ -115,6 +119,7 @@ class PolicyValidator:
         Returns:
             True if within limits
         """
+
         if not self.policy or resource not in self.policy.limits:
             return True
 
@@ -128,16 +133,15 @@ class PolicyValidator:
 
 """HCAL policy enforcement and validation."""
 
-from typing import Dict
 
 """Policy engine for HCAL - declarative YAML-based policy configuration."""
 
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional
 
 """
+
 Policy engine for hardware control operations.
 
 Provides validation, rate limiting, and approval mechanisms for safe hardware control.
@@ -145,7 +149,6 @@ Provides validation, rate limiting, and approval mechanisms for safe hardware co
 
 from collections import deque
 from dataclasses import dataclass, field
-from typing import Tuple
 
 
 class PolicyViolation(Exception):
@@ -157,12 +160,13 @@ class PolicyViolation(Exception):
 class Policy:
     """Hardware control policy."""
 
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: dict[str, Any]):
         """Initialize policy from configuration.
 
         Args:
             config: Policy configuration dictionary
         """
+
         self.config = config
         self.environment = config.get("environment", "DEV")
         self.allowed_backends = config.get("allowed_backends", [])
@@ -181,11 +185,12 @@ class Policy:
         Returns:
             Policy instance
         """
+
         with open(path) as f:
             config = yaml.safe_load(f)
         return cls(config)
 
-    def validate_plan(self, plan: Dict[str, Any]) -> None:
+    def validate_plan(self, plan: dict[str, Any]) -> None:
         """Validate a plan against policy.
 
         Args:
@@ -194,6 +199,7 @@ class Policy:
         Raises:
             PolicyViolation: If plan violates policy
         """
+
         devices = plan.get("devices", {})
 
         for device_id, setpoints in devices.items():
@@ -223,6 +229,7 @@ class Policy:
         Returns:
             True if approvals required
         """
+
         return self.approvals.get("required", False)
 
 
@@ -238,12 +245,12 @@ class Environment(Enum):
 class DeviceLimits:
     """Hardware limits for devices."""
 
-    max_power_watts: Optional[float] = None
-    max_temp_celsius: Optional[float] = None
-    max_voltage_volts: Optional[float] = None
-    max_clock_mhz: Optional[float] = None
-    min_power_watts: Optional[float] = None
-    min_temp_celsius: Optional[float] = None
+    max_power_watts: float | None = None
+    max_temp_celsius: float | None = None
+    max_voltage_volts: float | None = None
+    max_clock_mhz: float | None = None
+    min_power_watts: float | None = None
+    min_temp_celsius: float | None = None
 
 
 @dataclass
@@ -260,7 +267,7 @@ class ApprovalGate:
 
     required: bool = False
     min_approvers: int = 0
-    methods: List[str] = field(default_factory=list)
+    methods: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -268,9 +275,9 @@ class PolicyConfig:
     """Complete policy configuration."""
 
     environment: Environment
-    device_allowlist: List[str]
-    backend_restrictions: List[str]
-    device_limits: Dict[str, DeviceLimits]
+    device_allowlist: list[str]
+    backend_restrictions: list[str]
+    device_limits: dict[str, DeviceLimits]
     rate_limit: RateLimitConfig
     approval_gate: ApprovalGate
     dry_run_default: bool = True
@@ -279,15 +286,16 @@ class PolicyConfig:
 class PolicyEngine:
     """Policy engine for HCAL operations."""
 
-    def __init__(self, policy_path: Optional[Path] = None):
+    def __init__(self, policy_path: Path | None = None):
         """Initialize policy engine.
 
         Args:
             policy_path: Path to policy YAML file. If None, uses default policy.
         """
+
         self.policy_path = policy_path
-        self.policy: Optional[PolicyConfig] = None
-        self._command_history: List[float] = []
+        self.policy: PolicyConfig | None = None
+        self._command_history: list[float] = []
 
         if policy_path:
             self.load_policy(policy_path)
@@ -296,6 +304,7 @@ class PolicyEngine:
 
     def _load_default_policy(self):
         """Load default restrictive policy."""
+
         self.policy = PolicyConfig(
             environment=Environment.DEV,
             device_allowlist=["*"],
@@ -315,13 +324,14 @@ class PolicyEngine:
         Raises:
             ValueError: If policy is invalid.
         """
+
         with open(policy_path) as f:
             data = yaml.safe_load(f)
 
         self._validate_schema(data)
         self.policy = self._parse_policy(data)
 
-    def _validate_schema(self, data: Dict[str, Any]):
+    def _validate_schema(self, data: dict[str, Any]):
         """Validate policy schema.
 
         Args:
@@ -330,6 +340,7 @@ class PolicyEngine:
         Raises:
             ValueError: If schema is invalid.
         """
+
         required_fields = ["environment", "device_allowlist", "backend_restrictions"]
         for field_name in required_fields:
             if field_name not in data:
@@ -338,7 +349,7 @@ class PolicyEngine:
         if data["environment"] not in ["dev", "lab", "prod"]:
             raise ValueError(f"Invalid environment: {data['environment']}")
 
-    def _parse_policy(self, data: Dict[str, Any]) -> PolicyConfig:
+    def _parse_policy(self, data: dict[str, Any]) -> PolicyConfig:
         """Parse policy data into PolicyConfig.
 
         Args:
@@ -347,6 +358,7 @@ class PolicyEngine:
         Returns:
             PolicyConfig instance.
         """
+
         # Parse device limits
         device_limits = {}
         for device, limits in data.get("device_limits", {}).items():
@@ -393,6 +405,7 @@ class PolicyEngine:
         Returns:
             True if device is allowed.
         """
+
         if not self.policy:
             return False
 
@@ -410,12 +423,13 @@ class PolicyEngine:
         Returns:
             True if backend is allowed.
         """
+
         if not self.policy:
             return False
 
         return backend not in self.policy.backend_restrictions
 
-    def check_limits(self, device_id: str, setpoint: Dict[str, Any]) -> bool:
+    def check_limits(self, device_id: str, setpoint: dict[str, Any]) -> bool:
         """Check if setpoint is within limits.
 
         Args:
@@ -425,6 +439,7 @@ class PolicyEngine:
         Returns:
             True if setpoint is within limits.
         """
+
         if not self.policy:
             return False
 
@@ -475,6 +490,7 @@ class PolicyEngine:
         Returns:
             True if rate limit is not exceeded.
         """
+
         if not self.policy:
             return False
 
@@ -501,6 +517,7 @@ class PolicyEngine:
         Returns:
             True if approval requirements are met.
         """
+
         if not self.policy:
             return False
 
@@ -517,6 +534,7 @@ class PolicyEngine:
         Returns:
             Current environment.
         """
+
         if not self.policy:
             return Environment.DEV
         return self.policy.environment
@@ -527,6 +545,7 @@ class PolicyEngine:
         Returns:
             True if dry-run is default.
         """
+
         if not self.policy:
             return True
         return self.policy.dry_run_default
@@ -550,13 +569,14 @@ PolicyViolation = PolicyViolationError
 class DeviceLimits:
     """Device limits for hardware control operations."""
 
-    power_watts_max: Optional[float] = None
-    temp_c_max: Optional[float] = None
-    voltage_mv_range: Optional[Tuple[float, float]] = None
-    freq_mhz_range: Optional[Tuple[float, float]] = None
+    power_watts_max: float | None = None
+    temp_c_max: float | None = None
+    voltage_mv_range: tuple[float, float] | None = None
+    freq_mhz_range: tuple[float, float] | None = None
 
     def validate_setpoint(self, parameter: str, value: float) -> None:
         """
+
         Validate a setpoint against device limits.
 
         Args:
@@ -566,6 +586,7 @@ class DeviceLimits:
         Raises:
             PolicyViolation: If the setpoint violates limits
         """
+
         if parameter == "power_watts":
             if self.power_watts_max is not None and value > self.power_watts_max:
                 raise PolicyViolation(
@@ -595,11 +616,13 @@ class RateLimiter:
 
     def check_and_record(self) -> None:
         """
+
         Check rate limit and record the current command.
 
         Raises:
             PolicyViolation: If rate limit is exceeded
         """
+
         now = time.time()
         cutoff = now - self.window_seconds
 
@@ -619,18 +642,21 @@ class RateLimiter:
 
 class PolicyEngine:
     """
+
     Policy engine for hardware control operations.
 
     Provides validation, rate limiting, and approval mechanisms.
     """
 
-    def __init__(self, policy_file: Optional[Path] = None):
+    def __init__(self, policy_file: Path | None = None):
         """
+
         Initialize policy engine.
 
         Args:
             policy_file: Path to policy configuration YAML file
         """
+
         # Default configuration
         self.config = {
             "environment": "DEV",
@@ -678,15 +704,18 @@ class PolicyEngine:
 
     def requires_approval(self) -> bool:
         """
+
         Check if approval is required for operations.
 
         Returns:
             True if approval is required
         """
+
         return self.config.get("approvals", {}).get("required", False)
 
     def is_backend_allowed(self, backend: str) -> bool:
         """
+
         Check if a backend is allowed.
 
         Args:
@@ -695,11 +724,13 @@ class PolicyEngine:
         Returns:
             True if backend is allowed
         """
+
         allowed = self.config.get("allowed_backends", [])
         return backend in allowed
 
     def is_device_allowed(self, device_id: str) -> bool:
         """
+
         Check if a device is allowed.
 
         Args:
@@ -708,6 +739,7 @@ class PolicyEngine:
         Returns:
             True if device is allowed
         """
+
         allowlist = self.config.get("device_allowlist")
         if allowlist is None:
             return True
@@ -717,10 +749,11 @@ class PolicyEngine:
         self,
         device_id: str,
         operation: str,
-        setpoints: Dict[str, Any],
+        setpoints: dict[str, Any],
         enable_actuation: bool,
     ) -> None:
         """
+
         Validate a hardware control operation.
 
         Args:
@@ -732,13 +765,28 @@ class PolicyEngine:
         Raises:
             PolicyViolation: If operation violates policy
         """
+
+        # Check rate limit first (before any other validation)
+        try:
+            self.rate_limiter.check_and_record()
+        except PolicyViolation:
+            # Re-raise with more context
+            raise PolicyViolation("Rate limit exceeded - operation blocked")
+
         # Check device allowlist
         if not self.is_device_allowed(device_id):
             raise PolicyViolation(f"Device {device_id} not in allowlist")
 
-        # Check production environment restrictions
+        # Check production environment restrictions (before approval check)
         if self.environment == Environment.PROD and operation == "firmware_update":
             raise PolicyViolation("Firmware updates not allowed in PROD environment")
+
+        # Check if approval is required for actuation operations
+        if enable_actuation and self.requires_approval():
+            raise PolicyViolation(
+                "Operation requires approval but no approval provided. "
+                "Call validate_approval() with a valid token before actuating."
+            )
 
         # Validate setpoints against limits
         for param, value in setpoints.items():
@@ -754,6 +802,7 @@ class PolicyEngine:
 
     def validate_approval(self, token: str) -> None:
         """
+
         Validate an approval token.
 
         Args:
@@ -762,6 +811,7 @@ class PolicyEngine:
         Raises:
             PolicyViolation: If token is invalid
         """
+
         approvals = self.config.get("approvals", {})
         method = approvals.get("method")
 
@@ -780,9 +830,11 @@ class PolicyEngine:
 
     def is_dry_run_default(self) -> bool:
         """
+
         Check if dry-run mode is the default for this policy.
 
         Returns:
             True if dry-run is the default mode
         """
+
         return self.config.get("dry_run_default", True)

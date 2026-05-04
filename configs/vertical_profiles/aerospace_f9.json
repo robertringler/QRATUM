@@ -1,0 +1,31 @@
+{
+  "name": "Aerospace - Falcon 9 Stage 1",
+  "description": "Main Engine Cutoff (MECO) profile for Falcon 9 first stage ascent",
+  "vertical": "aerospace",
+  "vehicle": "Falcon 9 Block 5",
+  "mission_phase": "Stage 1 ascent to MECO",
+  "targets": {
+    "meco_time_s": 162.0,
+    "peak_altitude_km": 80.0,
+    "meco_altitude_km": 70.0,
+    "meco_velocity_kms": 2.1
+  },
+  "tolerances": {
+    "altitude_tolerance_km": 5.0,
+    "velocity_tolerance_kms": 0.1,
+    "time_tolerance_s": 10.0
+  },
+  "weights": {
+    "altitude": 0.4,
+    "velocity": 0.4,
+    "time": 0.2
+  },
+  "alpha_bounds": [0.3, 0.9],
+  "compliance_tags": ["DO-178C Level A", "ITAR", "NASA-STD-8739.8"],
+  "metadata": {
+    "reference_mission": "Starlink Launch (Surrogate)",
+    "data_source": "Public telemetry analysis",
+    "classification": "UNCLASSIFIED // PUBLIC",
+    "note": "Simplified surrogate model for demonstration only. Not flight-validated."
+  }
+}

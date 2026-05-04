@@ -1,0 +1,33 @@
+{
+  "name": "Agritech - Precision Agriculture Optimization",
+  "description": "Crop yield optimization with resource efficiency constraints",
+  "vertical": "agritech",
+  "system": "Precision Farming Operations",
+  "optimization_target": "Yield per acre with sustainability metrics",
+  "targets": {
+    "target_yield_bushels_per_acre": 200.0,
+    "target_water_efficiency_gal_per_bushel": 20.0,
+    "target_fertilizer_efficiency_lbs_per_acre": 150.0,
+    "target_profit_margin_pct": 25.0
+  },
+  "tolerances": {
+    "yield_tolerance": 15.0,
+    "water_tolerance": 3.0,
+    "fertilizer_tolerance": 20.0,
+    "margin_tolerance_pct": 5.0
+  },
+  "weights": {
+    "yield": 0.40,
+    "water_efficiency": 0.25,
+    "fertilizer_efficiency": 0.20,
+    "profit_margin": 0.15
+  },
+  "alpha_bounds": [0.2, 0.8],
+  "compliance_tags": ["EPA FIFRA", "FDA FSMA", "USDA Organic", "Good Agricultural Practices"],
+  "metadata": {
+    "crop_type": "Corn (Iowa region)",
+    "farm_size": "1,000 acres",
+    "classification": "UNCLASSIFIED // PUBLIC",
+    "note": "Simplified agricultural model for demonstration."
+  }
+}

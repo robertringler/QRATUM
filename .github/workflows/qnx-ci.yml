@@ -1,0 +1,41 @@
+name: QNX substrate CI
+
+on:
+  push:
+    paths:
+      - "qnx/**"
+      - "tests/qnx/**"
+      - "tests/qnx_integration/**"
+      - "docs/validation/qnx_backend_validation.md"
+      - ".github/workflows/qnx-ci.yml"
+  pull_request:
+    paths:
+      - "qnx/**"
+      - "tests/qnx/**"
+      - "tests/qnx_integration/**"
+      - "docs/validation/qnx_backend_validation.md"
+      - ".github/workflows/qnx-ci.yml"
+
+jobs:
+  test-qnx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -e .
+          pip install pytest
+
+      - name: Static interface check
+        run: |
+          python -m compileall qnx tests/qnx tests/qnx_integration
+
+      - name: Run QNX integration harness
+        run: |
+          pytest tests/qnx tests/qnx_integration -v

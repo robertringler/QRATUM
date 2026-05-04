@@ -1,0 +1,4 @@
+# Phase VII Prep: Migration hooks for QuNimbus v2
+tasks:
+  - migrate_ord_to_federated
+  - integrate_qmp_with_phase_vii_oracles

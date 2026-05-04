@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+
 Generate Market Valuation Section for QuASIM Documentation
 
 This script generates a comprehensive Market Valuation section for QuASIM
@@ -12,6 +13,7 @@ from datetime import datetime
 
 def generate_market_valuation_section() -> str:
     """
+
     Generate a complete Market Valuation section for QuASIM.
 
     Returns:
@@ -24,10 +26,10 @@ def generate_market_valuation_section() -> str:
 
     content = f"""## Market Valuation — QuASIM
 
-**Valuation Date:** {current_date}  
-**Reporting Period:** {current_quarter}  
-**Methodology:** Bayesian Real-Options, DCF, Comparable Company Analysis  
-**Status:** Pre-Revenue Deep-Tech Venture  
+**Valuation Date:** {current_date}
+**Reporting Period:** {current_quarter}
+**Methodology:** Bayesian Real-Options, DCF, Comparable Company Analysis
+**Status:** Pre-Revenue Deep-Tech Venture
 
 ---
 
@@ -91,7 +93,7 @@ Benchmarking against publicly-traded and late-stage private quantum/AI infrastru
 
 **Direct Quantum Computing Comparables:**
 - IonQ (IONQ): Trapped-ion quantum hardware
-- Rigetti Computing (RGTI): Superconducting quantum processors  
+- Rigetti Computing (RGTI): Superconducting quantum processors
 - D-Wave Systems: Quantum annealing platforms
 
 **Adjacent AI/Simulation Infrastructure:**
@@ -149,7 +151,7 @@ Benchmarking against publicly-traded and late-stage private quantum/AI infrastru
 
 **Total Addressable Market (TAM):**
 - **Quantum Computing Services**: $8.6B by 2027 (Boston Consulting Group)
-- **GPU Computing Infrastructure**: $54B by 2028 (Jon Peddie Research)  
+- **GPU Computing Infrastructure**: $54B by 2028 (Jon Peddie Research)
 - **Digital Twin / Simulation Software**: $86B by 2030 (MarketsandMarkets)
 - **Combined QuASIM TAM**: $148B+ with 18% CAGR
 
@@ -379,10 +381,10 @@ The company is **investment-ready** for deep-tech venture capital and strategic 
 
 ---
 
-**Document Version:** 1.0  
-**Next Update:** Quarterly (or upon material milestones)  
-**Maintained By:** QuASIM Finance & Strategy Team  
-**External Validation:** Recommended third-party valuation audit before Series B close  
+**Document Version:** 1.0
+**Next Update:** Quarterly (or upon material milestones)
+**Maintained By:** QuASIM Finance & Strategy Team
+**External Validation:** Recommended third-party valuation audit before Series B close
 
 """
 
@@ -391,6 +393,7 @@ The company is **investment-ready** for deep-tech venture capital and strategic 
 
 def main():
     """Main execution function."""
+
     print("=" * 70)
     print("QuASIM Market Valuation Generator")
     print("=" * 70)

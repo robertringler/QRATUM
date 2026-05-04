@@ -1,0 +1,71 @@
+name: Compliance Snapshot
+
+on:
+  push:
+    branches: ["main", "pilot/spacex-nasa"]
+  pull_request:
+  schedule:
+    - cron: "0 */6 * * *"
+
+jobs:
+  compliance-snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-demo.txt
+
+      - name: Generate compliance snapshot
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from datetime import datetime
+          from pathlib import Path
+
+          reports = {
+              "do178c": "docs/compliance/do178c_matrix.md",
+              "cmmc": "docs/compliance/cmmc_matrix.md",
+              "sbom": "docs/compliance/sbom_manifest.json",
+              "trivy": "reports/trivy_summary.json",
+              "grype": "reports/grype_summary.json",
+          }
+          timestamp = datetime.utcnow().isoformat() + "Z"
+          snapshot = {"timestamp": timestamp, "artifacts": []}
+          for key, path in reports.items():
+              p = Path(path)
+              if p.exists():
+                  digest = hashlib.sha256(p.read_bytes()).hexdigest()
+                  snapshot["artifacts"].append({"name": key, "path": path, "sha256": digest})
+          out_dir = Path("docs/compliance")
+          out_dir.mkdir(parents=True, exist_ok=True)
+          (out_dir / "latest_snapshot.json").write_text(json.dumps(snapshot, indent=2))
+          table_lines = ["| Artifact | SHA256 |", "|---|---|"]
+          for artifact in snapshot["artifacts"]:
+              table_lines.append(f"| {artifact['name']} | `{artifact['sha256']}` |")
+          summary = "\n".join([
+              "# Compliance Snapshot",
+              f"_Generated: {timestamp}_",
+              "",
+              "| Artifact | SHA256 |",
+              "|---|---|",
+          ] + [f"| {a['name']} | `{a['sha256']}` |" for a in snapshot["artifacts"]])
+          (out_dir / "latest_snapshot.md").write_text(summary + "\n")
+          PY
+
+      - name: Upload snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: compliance-snapshot
+          path: |
+            docs/compliance/latest_snapshot.json
+            docs/compliance/latest_snapshot.md

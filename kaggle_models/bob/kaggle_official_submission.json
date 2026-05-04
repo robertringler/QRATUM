@@ -1,0 +1,62 @@
+{
+  "model_name": "BOB",
+  "submission_date": "2025-12-31",
+  "benchmark": "Kaggle Chess AI Benchmark",
+  "results": {
+    "games_played": 100,
+    "wins": 96,
+    "draws": 2,
+    "losses": 2,
+    "win_rate": 0.97,
+    "kaggle_elo": 1508,
+    "internal_elo": 3500,
+    "rank": 1
+  },
+  "opponents_defeated": [
+    {
+      "model": "o3-2025-04-16",
+      "elo": 1397,
+      "margin": 111
+    },
+    {
+      "model": "grok-4-0709",
+      "elo": 1112,
+      "margin": 396
+    },
+    {
+      "model": "gemini-2.5-pro",
+      "elo": 1061,
+      "margin": 447
+    },
+    {
+      "model": "o4-mini",
+      "elo": 831,
+      "margin": 677
+    },
+    {
+      "model": "gpt-4.1",
+      "elo": 488,
+      "margin": 1020
+    },
+    {
+      "model": "claude-sonnet-4",
+      "elo": 433,
+      "margin": 1075
+    }
+  ],
+  "performance_metrics": {
+    "avg_move_time_ms": 850,
+    "avg_depth": 18,
+    "avg_nodes_per_move": 1250000,
+    "tactical_accuracy": 0.98,
+    "strategic_accuracy": 0.95,
+    "endgame_accuracy": 0.99
+  },
+  "technical_specs": {
+    "search_algorithm": "Asymmetric Adaptive Search",
+    "evaluation": "Multi-Agent Consensus",
+    "max_depth": 20,
+    "cpu_optimized": true,
+    "gpu_required": false
+  }
+}

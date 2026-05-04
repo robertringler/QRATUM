@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QRATUM Customer Dashboard - Quantum-Classical Convergence Platform">
+    <title>QRATUM | Customer Dashboard</title>
+    
+    <!-- External Libraries with SRI integrity checks -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" 
+            integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==" 
+            crossorigin="anonymous" 
+            referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+            integrity="sha384-jwMwVYcHJ9ql5YXgawmlD4dUxH0l12z1Vu3dRTfULBIpP7K7+xMT9v63ohEkIVw6"
+            crossorigin="anonymous"></script>
+    
+    <!-- Google Fonts - Inter & Roboto Mono for Scientific UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Dashboard Styles -->
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <!-- Phase 4 Panel Styles -->
+    <link rel="stylesheet" href="assets/css/phase4-panels.css">
+    
+    <!-- Desktop Integration (loaded conditionally for Electron) -->
+    <script>
+        if (typeof window !== 'undefined' && window.process && window.process.type === 'renderer') {
+            // Running in Electron - load desktop integration
+            const script = document.createElement('script');
+            script.src = '../qratum_desktop/src/desktop-integration.js';
+            document.head.appendChild(script);
+        }
+    </script>
+</head>
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Loading Screen -->
+    <div class="loader" id="loader" role="status" aria-label="Loading dashboard">
+        <div class="loader-ring"></div>
+        <div class="loader-text">INITIALIZING QRATUM</div>
+    </div>
+
+    <!-- Main Application -->
+    <div class="app-container">
+        <!-- Top Navigation Bar -->
+        <header class="nav-header" role="banner">
+            <div class="nav-brand">
+                <a href="landing.html" class="logo" style="text-decoration: none; color: inherit;">QRATUM</a>
+                <span class="logo-subtitle">Quantum-Classical Convergence Platform</span>
+            </div>
+            
+            <nav class="nav-tabs" role="navigation" aria-label="Main navigation">
+                <button class="nav-tab active" data-view="jobs" aria-selected="true">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-label">Jobs</span>
+                </button>
+                <button class="nav-tab" data-view="monitoring" aria-selected="false">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Monitoring</span>
+                </button>
+                <button class="nav-tab" data-view="quantum" aria-selected="false">
+                    <span class="nav-icon">⚛️</span>
+                    <span class="nav-label">Quantum</span>
+                </button>
+                <button class="nav-tab" data-view="codegen" aria-selected="false">
+                    <span class="nav-icon">🔧</span>
+                    <span class="nav-label">DCGE</span>
+                </button>
+                <button class="nav-tab" data-view="results" aria-selected="false">
+                    <span class="nav-icon">🔬</span>
+                    <span class="nav-label">Results</span>
+                </button>
+                <button class="nav-tab" data-view="resources" aria-selected="false">
+                    <span class="nav-icon">☁️</span>
+                    <span class="nav-label">Resources</span>
+                </button>
+            </nav>
+            
+            <div class="nav-actions">
+                <div class="status-indicator" aria-label="System status: Online">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">System Online</span>
+                </div>
+                <button class="btn-icon" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+                <button class="btn-icon" id="notifications" aria-label="Notifications">🔔</button>
+                <div class="user-menu">
+                    <button class="user-btn" aria-haspopup="true" aria-expanded="false">
+                        <span class="user-avatar">👤</span>
+                        <span class="user-name">User</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="main-content" role="main">
+            
+            <!-- ========================================== -->
+            <!-- JOBS VIEW -->
+            <!-- ========================================== -->
+            <section class="view active" id="jobs-view" aria-label="Job Management">
+                <div class="view-header">
+                    <h1>Job Management</h1>
+                    <div class="view-actions">
+                        <button class="btn btn-primary" id="new-job-btn">
+                            <span>➕</span> New Simulation
+                        </button>
+                        <button class="btn btn-secondary" id="batch-submit-btn">
+                            <span>📦</span> Batch Submit
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid-layout">
+                    <!-- Job Submission Panel -->
+                    <div class="card job-submission-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Submit New Job</h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="job-form" class="job-form" aria-label="Job submission form">
+                                <div class="form-group">
+                                    <label for="job-name">Job Name <span class="required">*</span></label>
+                                    <input type="text" id="job-name" name="jobName" required 
+                                           placeholder="e.g., Tire Compound Analysis v1.2"
+                                           aria-describedby="job-name-help">
+                                    <small id="job-name-help" class="form-help">A descriptive name for your simulation job</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="simulation-type">Simulation Type <span class="required">*</span></label>
+                                    <select id="simulation-type" name="simulationType" required>
+                                        <option value="">Select simulation type...</option>
+                                        <option value="quantum">Quantum Circuit Simulation</option>
+                                        <option value="tensor">Tensor Network Analysis</option>
+                                        <option value="materials">Materials Science (ANSYS)</option>
+                                        <option value="elastomeric">Elastomeric Deformation</option>
+                                        <option value="digital-twin">Digital Twin</option>
+                                        <option value="optimization">Quantum Optimization (QAOA)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="backend">Backend</label>
+                                        <select id="backend" name="backend">
+                                            <option value="cpu">CPU</option>
+                                            <option value="gpu" selected>GPU (cuQuantum)</option>
+                                            <option value="hybrid">Hybrid CPU/GPU</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="priority">Priority</label>
+                                        <select id="priority" name="priority">
+                                            <option value="low">Low</option>
+                                            <option value="normal" selected>Normal</option>
+                                            <option value="high">High</option>
+                                            <option value="critical">Critical</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="input-file">Input File</label>
+                                    <div class="file-upload" id="file-upload-zone">
+                                        <input type="file" id="input-file" name="inputFile" 
+                                               accept=".inp,.dat,.json,.yaml,.h5,.hdf5"
+                                               aria-describedby="file-help">
+                                        <div class="file-upload-content">
+                                            <span class="file-icon">📄</span>
+                                            <span class="file-text">Drop file here or click to upload</span>
+                                            <span class="file-formats">Supported: .inp, .dat, .json, .yaml, .h5</span>
+                                        </div>
+                                    </div>
+                                    <small id="file-help" class="form-help">Upload ANSYS input files or simulation configurations</small>
+                                </div>
+                                
+                                <!-- Advanced Parameters -->
+                                <details class="advanced-params">
+                                    <summary>Advanced Parameters</summary>
+                                    <div class="params-content">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="shots">Shots / Iterations</label>
+                                                <input type="number" id="shots" name="shots" 
+                                                       value="1000" min="1" max="1000000">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="precision">Precision</label>
+                                                <select id="precision" name="precision">
+                                                    <option value="fp16">FP16</option>
+                                                    <option value="fp32" selected>FP32</option>
+                                                    <option value="fp64">FP64</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="seed">Random Seed</label>
+                                            <input type="number" id="seed" name="seed" 
+                                                   placeholder="Optional (for reproducibility)">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>
+                                                <input type="checkbox" name="enableTelemetry" checked>
+                                                Enable telemetry collection
+                                            </label>
+                                        </div>
+                                    </div>
+                                </details>
+                                
+                                <div class="form-actions">
+                                    <button type="reset" class="btn btn-secondary">Clear</button>
+                                    <button type="submit" class="btn btn-primary">Submit Job</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Job Queue Panel -->
+                    <div class="card job-queue-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Job Queue</h2>
+                            <div class="card-actions">
+                                <select id="queue-filter" aria-label="Filter jobs">
+                                    <option value="all">All Jobs</option>
+                                    <option value="running">Running</option>
+                                    <option value="queued">Queued</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="failed">Failed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="job-list" id="job-list" role="list" aria-label="Job queue">
+                                <!-- Job items will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Batch Templates Panel -->
+                    <div class="card templates-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Batch Templates</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="template-list" id="template-list">
+                                <div class="template-item" data-template="tire-analysis">
+                                    <div class="template-icon">🛞</div>
+                                    <div class="template-info">
+                                        <h4>Tire Compound Analysis</h4>
+                                        <p>Multi-compound elastomeric simulation</p>
+                                    </div>
+                                </div>
+                                <div class="template-item" data-template="quantum-circuit">
+                                    <div class="template-icon">⚛️</div>
+                                    <div class="template-info">
+                                        <h4>Quantum Circuit Batch</h4>
+                                        <p>Parameterized circuit sweep</p>
+                                    </div>
+                                </div>
+                                <div class="template-item" data-template="materials-sweep">
+                                    <div class="template-icon">🔬</div>
+                                    <div class="template-info">
+                                        <h4>Materials Parameter Sweep</h4>
+                                        <p>ANSYS multi-material analysis</p>
+                                    </div>
+                                </div>
+                                <div class="template-item" data-template="optimization">
+                                    <div class="template-icon">📈</div>
+                                    <div class="template-info">
+                                        <h4>QAOA Optimization Suite</h4>
+                                        <p>Variational optimization batch</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- MONITORING VIEW -->
+            <!-- ========================================== -->
+            <section class="view" id="monitoring-view" aria-label="Real-time Monitoring">
+                <div class="view-header">
+                    <h1>Real-Time Monitoring</h1>
+                    <div class="view-actions">
+                        <span class="live-indicator">
+                            <span class="live-dot"></span>
+                            LIVE
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="metrics-grid">
+                    <!-- GPU Utilization -->
+                    <div class="card metric-card">
+                        <div class="card-header">
+                            <h2 class="card-title">GPU Utilization</h2>
+                            <span class="metric-badge nvidia">NVIDIA cuQuantum</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="gauge-container">
+                                <div class="gauge" id="gpu-gauge">
+                                    <div class="gauge-fill" style="--value: 0"></div>
+                                    <div class="gauge-center">
+                                        <span class="gauge-value" id="gpu-value">0%</span>
+                                        <span class="gauge-label">GPU Load</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="metric-details">
+                                <div class="metric-row">
+                                    <span>VRAM Usage</span>
+                                    <span id="vram-usage">0 / 80 GB</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Temperature</span>
+                                    <span id="gpu-temp">45°C</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Power Draw</span>
+                                    <span id="gpu-power">150 W</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Active Jobs Status -->
+                    <div class="card metric-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Active Jobs</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="jobs-summary">
+                                <div class="summary-item running">
+                                    <span class="summary-value" id="running-jobs">0</span>
+                                    <span class="summary-label">Running</span>
+                                </div>
+                                <div class="summary-item queued">
+                                    <span class="summary-value" id="queued-jobs">0</span>
+                                    <span class="summary-label">Queued</span>
+                                </div>
+                                <div class="summary-item completed">
+                                    <span class="summary-value" id="completed-jobs">0</span>
+                                    <span class="summary-label">Completed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tensor Network Convergence -->
+                    <div class="card metric-card wide">
+                        <div class="card-header">
+                            <h2 class="card-title">Tensor Network Convergence</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="convergence-chart" aria-label="Tensor network convergence graph"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Job Progress -->
+                    <div class="card metric-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Current Job Progress</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="progress-list" id="progress-list">
+                                <!-- Progress items populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- System Metrics Chart -->
+                    <div class="card metric-card">
+                        <div class="card-header">
+                            <h2 class="card-title">System Metrics</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container small">
+                                <canvas id="system-chart" aria-label="System metrics graph"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Console Output -->
+                    <div class="card metric-card wide">
+                        <div class="card-header">
+                            <h2 class="card-title">Console Output</h2>
+                            <div class="card-actions">
+                                <button class="btn-icon small" id="clear-console" aria-label="Clear console">🗑️</button>
+                                <button class="btn-icon small" id="download-logs" aria-label="Download logs">📥</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="console-output" id="console-output" role="log" aria-live="polite" aria-label="Console output">
+                                <div class="console-line info">[INIT] QRATUM Dashboard v2.0.0</div>
+                                <div class="console-line success">[OK] WebSocket connection established</div>
+                                <div class="console-line info">[INFO] Ready for job submissions</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- QUANTUM SIMULATION VIEW (Phase 4) -->
+            <!-- ========================================== -->
+            <section class="view" id="quantum-view" aria-label="Quantum Simulation">
+                <div class="view-header">
+                    <h1>Quantum Simulation</h1>
+                    <div class="view-actions">
+                        <span class="phase-badge">Phase 4 | Mini QuASIM</span>
+                        <button class="btn btn-primary" id="quantum-reset-btn">
+                            <span>🔄</span> Reset State
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="quantum-grid">
+                    <!-- Qubit State Visualization -->
+                    <div class="card quantum-state-card wide">
+                        <div class="card-header">
+                            <h2 class="card-title">Qubit State Visualization</h2>
+                            <div class="card-actions">
+                                <span class="qubit-info">12 Qubits | 4096 States</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="qubit-grid" class="qubit-grid" aria-label="Qubit state visualization">
+                                <!-- Qubit visualization populated by JS -->
+                            </div>
+                            <div class="quantum-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color amplitude-high"></span>
+                                    <span>High Amplitude</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color amplitude-low"></span>
+                                    <span>Low Amplitude</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color phase-indicator"></span>
+                                    <span>Phase (angle)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Gate Control Panel -->
+                    <div class="card gate-control-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Gate Operations</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="gate-buttons">
+                                <div class="gate-section">
+                                    <h3>Single-Qubit Gates</h3>
+                                    <div class="button-row">
+                                        <button class="gate-btn" data-gate="H" title="Hadamard">H</button>
+                                        <button class="gate-btn" data-gate="X" title="Pauli-X">X</button>
+                                        <button class="gate-btn" data-gate="Y" title="Pauli-Y">Y</button>
+                                        <button class="gate-btn" data-gate="Z" title="Pauli-Z">Z</button>
+                                    </div>
+                                    <div class="button-row">
+                                        <button class="gate-btn phase4" data-gate="S" title="Phase Gate (S)">S</button>
+                                        <button class="gate-btn phase4" data-gate="T" title="T Gate">T</button>
+                                    </div>
+                                </div>
+                                <div class="gate-section">
+                                    <h3>Multi-Qubit Gates</h3>
+                                    <div class="button-row">
+                                        <button class="gate-btn two-qubit" data-gate="CNOT" title="CNOT">CNOT</button>
+                                        <button class="gate-btn three-qubit phase4" data-gate="Toffoli" title="Toffoli (CCNOT)">Toffoli</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="qubit-selector">
+                                <label for="target-qubit">Target Qubit:</label>
+                                <select id="target-qubit">
+                                    <option value="0">Qubit 0</option>
+                                    <option value="1">Qubit 1</option>
+                                    <option value="2">Qubit 2</option>
+                                    <option value="3">Qubit 3</option>
+                                    <option value="4">Qubit 4</option>
+                                    <option value="5">Qubit 5</option>
+                                    <option value="6">Qubit 6</option>
+                                    <option value="7">Qubit 7</option>
+                                    <option value="8">Qubit 8</option>
+                                    <option value="9">Qubit 9</option>
+                                    <option value="10">Qubit 10</option>
+                                    <option value="11">Qubit 11</option>
+                                </select>
+                                <label for="control-qubit">Control Qubit:</label>
+                                <select id="control-qubit">
+                                    <option value="0">Qubit 0</option>
+                                    <option value="1" selected>Qubit 1</option>
+                                    <option value="2">Qubit 2</option>
+                                    <option value="3">Qubit 3</option>
+                                    <option value="4">Qubit 4</option>
+                                    <option value="5">Qubit 5</option>
+                                    <option value="6">Qubit 6</option>
+                                    <option value="7">Qubit 7</option>
+                                    <option value="8">Qubit 8</option>
+                                    <option value="9">Qubit 9</option>
+                                    <option value="10">Qubit 10</option>
+                                    <option value="11">Qubit 11</option>
+                                </select>
+                                <label for="control-qubit2">Control 2 (Toffoli):</label>
+                                <select id="control-qubit2">
+                                    <option value="0">Qubit 0</option>
+                                    <option value="1">Qubit 1</option>
+                                    <option value="2" selected>Qubit 2</option>
+                                    <option value="3">Qubit 3</option>
+                                    <option value="4">Qubit 4</option>
+                                    <option value="5">Qubit 5</option>
+                                    <option value="6">Qubit 6</option>
+                                    <option value="7">Qubit 7</option>
+                                    <option value="8">Qubit 8</option>
+                                    <option value="9">Qubit 9</option>
+                                    <option value="10">Qubit 10</option>
+                                    <option value="11">Qubit 11</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quantum Metrics -->
+                    <div class="card quantum-metrics-card">
+                        <div class="card-header">
+                            <h2 class="card-title">State Metrics</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="metric-display">
+                                <div class="metric-item">
+                                    <span class="metric-label">Entropy</span>
+                                    <span class="metric-value" id="quantum-entropy">0.000</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">States (non-zero)</span>
+                                    <span class="metric-value" id="nonzero-states">1</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Gate Count</span>
+                                    <span class="metric-value" id="gate-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- WASM Pod Status -->
+                    <div class="card wasm-pod-card">
+                        <div class="card-header">
+                            <h2 class="card-title">WASM Pod Isolation</h2>
+                            <span class="isolation-badge">Sandboxed</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="pod-status">
+                                <div class="pod-item">
+                                    <span class="pod-name">Mini QuASIM Pod</span>
+                                    <span class="pod-memory">2 MB limit</span>
+                                    <span class="pod-status-indicator online">Active</span>
+                                </div>
+                                <div class="pod-item">
+                                    <span class="pod-name">OS Supreme Pod</span>
+                                    <span class="pod-memory">64 KB limit</span>
+                                    <span class="pod-status-indicator online">Active</span>
+                                </div>
+                                <div class="pod-item">
+                                    <span class="pod-name">MiniLM Pod</span>
+                                    <span class="pod-memory">8 MB limit</span>
+                                    <span class="pod-status-indicator standby">Standby</span>
+                                </div>
+                            </div>
+                            <div class="pod-info">
+                                <p>Full sandboxing: No host memory/filesystem access</p>
+                                <p>Deterministic execution enforced</p>
+                                <p>Pod-level rollback on failure</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- CODE GENERATION VIEW (Phase 4 - DCGE) -->
+            <!-- ========================================== -->
+            <section class="view" id="codegen-view" aria-label="Code Generation">
+                <div class="view-header">
+                    <h1>DCGE - Code Generation</h1>
+                    <div class="view-actions">
+                        <span class="phase-badge">Deterministic Code Generation Engine</span>
+                    </div>
+                </div>
+                
+                <div class="codegen-grid">
+                    <!-- Code Generation Input -->
+                    <div class="card codegen-input-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Generate Code</h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="codegen-form" class="codegen-form">
+                                <div class="form-group">
+                                    <label for="codegen-prompt">Code Intent / Prompt</label>
+                                    <textarea id="codegen-prompt" rows="4" 
+                                        placeholder="Describe the code you want to generate...&#10;e.g., 'Create a function that sorts an array using quicksort'"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="codegen-language">Language</label>
+                                        <select id="codegen-language">
+                                            <option value="rust" selected>Rust</option>
+                                            <option value="python">Python</option>
+                                            <option value="javascript">JavaScript</option>
+                                            <option value="c">C</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="codegen-type">Intent Type</label>
+                                        <select id="codegen-type">
+                                            <option value="function">Function</option>
+                                            <option value="struct">Struct/Class</option>
+                                            <option value="module">Module</option>
+                                            <option value="fileio">File I/O</option>
+                                            <option value="threading">Threading</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Generate Code</button>
+                                    <button type="button" class="btn btn-secondary" id="validate-code-btn">Validate</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Generated Code Output -->
+                    <div class="card codegen-output-card wide">
+                        <div class="card-header">
+                            <h2 class="card-title">Generated Code</h2>
+                            <div class="card-actions">
+                                <button class="btn-icon" id="copy-code-btn" title="Copy to clipboard">📋</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <pre id="generated-code" class="code-output"><code>// Generated code will appear here...</code></pre>
+                        </div>
+                    </div>
+                    
+                    <!-- AST View -->
+                    <div class="card ast-card">
+                        <div class="card-header">
+                            <h2 class="card-title">AST Structure</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="ast-viewer" class="ast-viewer">
+                                <span class="placeholder-text">AST will be displayed after code generation</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Typed IR View -->
+                    <div class="card ir-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Typed IR</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="ir-viewer" class="ir-viewer">
+                                <span class="placeholder-text">Typed IR will be displayed after code generation</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Footprint Metrics -->
+                    <div class="card footprint-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Binary Footprint</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="footprint-metrics">
+                                <div class="footprint-item">
+                                    <span class="footprint-label">.text</span>
+                                    <span class="footprint-value" id="text-size">0 bytes</span>
+                                </div>
+                                <div class="footprint-item">
+                                    <span class="footprint-label">.stack</span>
+                                    <span class="footprint-value" id="stack-size">0 bytes</span>
+                                </div>
+                                <div class="footprint-item">
+                                    <span class="footprint-label">.heap</span>
+                                    <span class="footprint-value" id="heap-size">0 bytes</span>
+                                </div>
+                                <div class="footprint-item total">
+                                    <span class="footprint-label">Total</span>
+                                    <span class="footprint-value" id="total-size">0 bytes</span>
+                                </div>
+                            </div>
+                            <div class="regression-status">
+                                <span class="regression-label">Regression Delta:</span>
+                                <span class="regression-value pass" id="regression-delta">PASS</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- DCGE Benchmark -->
+                    <div class="card benchmark-card wide">
+                        <div class="card-header">
+                            <h2 class="card-title">DCGE Benchmark vs Copilot/Cursor</h2>
+                        </div>
+                        <div class="card-body">
+                            <!-- Note: Benchmark values shown are example/placeholder data for demonstration purposes -->
+                            <div class="benchmark-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Metric</th>
+                                            <th>DCGE</th>
+                                            <th>Copilot*</th>
+                                            <th>Cursor*</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Correctness Score</td>
+                                            <td class="highlight">100%</td>
+                                            <td>87%</td>
+                                            <td>91%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Determinism</td>
+                                            <td class="highlight">PASS</td>
+                                            <td>FAIL</td>
+                                            <td>FAIL</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Code Footprint</td>
+                                            <td class="highlight">Minimal</td>
+                                            <td>Medium</td>
+                                            <td>Medium</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Compile Success</td>
+                                            <td class="highlight">>99%</td>
+                                            <td>~85%</td>
+                                            <td>~88%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">* Example values for demonstration. Actual benchmarks pending.</p>
+                            </div>
+                            <div class="supremacy-note">
+                                <strong>Supremacy Note:</strong> DCGE guarantees deterministic, minimal-footprint code generation with compiler-validated output.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- RESULTS VIEW -->
+            <!-- ========================================== -->
+            <section class="view" id="results-view" aria-label="Results Visualization">
+                <div class="view-header">
+                    <h1>Results Visualization</h1>
+                    <div class="view-actions">
+                        <select id="results-job-select" aria-label="Select job results">
+                            <option value="">Select completed job...</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="results-grid">
+                    <!-- 3D Visualization -->
+                    <div class="card visualization-card">
+                        <div class="card-header">
+                            <h2 class="card-title">3D Tensor Field</h2>
+                            <div class="card-actions">
+                                <button class="btn-icon" id="viz-reset" aria-label="Reset view">🔄</button>
+                                <button class="btn-icon" id="viz-fullscreen" aria-label="Fullscreen">⛶</button>
+                            </div>
+                        </div>
+                        <div class="card-body no-padding">
+                            <div id="three-container" class="three-container" aria-label="3D tensor field visualization"></div>
+                            <div class="viz-controls">
+                                <div class="control-group">
+                                    <label for="viz-mode">Visualization Mode</label>
+                                    <select id="viz-mode">
+                                        <option value="tensor">Tensor Field</option>
+                                        <option value="deformation">Deformation</option>
+                                        <option value="circuit">Quantum Circuit</option>
+                                        <option value="energy">Energy Landscape</option>
+                                    </select>
+                                </div>
+                                <div class="control-group">
+                                    <label for="color-map">Color Map</label>
+                                    <select id="color-map">
+                                        <option value="viridis">Viridis</option>
+                                        <option value="plasma">Plasma</option>
+                                        <option value="thermal">Thermal</option>
+                                        <option value="rainbow">Rainbow</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Summary -->
+                    <div class="card results-summary-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Results Summary</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="results-metrics" id="results-metrics">
+                                <div class="result-item">
+                                    <span class="result-label">Final Energy</span>
+                                    <span class="result-value" id="result-energy">-</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Convergence</span>
+                                    <span class="result-value" id="result-convergence">-</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Iterations</span>
+                                    <span class="result-value" id="result-iterations">-</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Runtime</span>
+                                    <span class="result-value" id="result-runtime">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Export Options -->
+                    <div class="card export-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Export Results</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="export-options">
+                                <button class="export-btn" data-format="pdf">
+                                    <span class="export-icon">📄</span>
+                                    <span class="export-label">PDF Report</span>
+                                </button>
+                                <button class="export-btn" data-format="json">
+                                    <span class="export-icon">📋</span>
+                                    <span class="export-label">JSON Data</span>
+                                </button>
+                                <button class="export-btn" data-format="hdf5">
+                                    <span class="export-icon">💾</span>
+                                    <span class="export-label">HDF5 Dataset</span>
+                                </button>
+                                <button class="export-btn" data-format="csv">
+                                    <span class="export-icon">📊</span>
+                                    <span class="export-label">CSV Table</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quantum Circuit Diagram -->
+                    <div class="card circuit-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Quantum Circuit</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="circuit-diagram" class="circuit-diagram" aria-label="Quantum circuit diagram">
+                                <!-- Circuit SVG rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- RESOURCES VIEW -->
+            <!-- ========================================== -->
+            <section class="view" id="resources-view" aria-label="Resource Management">
+                <div class="view-header">
+                    <h1>Resource Management</h1>
+                    <div class="view-actions">
+                        <button class="btn btn-secondary" id="refresh-resources">
+                            <span>🔄</span> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="resources-grid">
+                    <!-- Cluster Status -->
+                    <div class="card cluster-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Cluster Status</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="cluster-grid" id="cluster-grid">
+                                <div class="cluster-item" data-provider="eks">
+                                    <div class="cluster-header">
+                                        <span class="cluster-icon">☁️</span>
+                                        <span class="cluster-name">AWS EKS</span>
+                                        <span class="cluster-status online">Online</span>
+                                    </div>
+                                    <div class="cluster-stats">
+                                        <div class="stat">
+                                            <span class="stat-value">8</span>
+                                            <span class="stat-label">Nodes</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">32</span>
+                                            <span class="stat-label">GPUs</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">67%</span>
+                                            <span class="stat-label">Utilized</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cluster-item" data-provider="gke">
+                                    <div class="cluster-header">
+                                        <span class="cluster-icon">☁️</span>
+                                        <span class="cluster-name">Google GKE</span>
+                                        <span class="cluster-status online">Online</span>
+                                    </div>
+                                    <div class="cluster-stats">
+                                        <div class="stat">
+                                            <span class="stat-value">6</span>
+                                            <span class="stat-label">Nodes</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">24</span>
+                                            <span class="stat-label">GPUs</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">54%</span>
+                                            <span class="stat-label">Utilized</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cluster-item" data-provider="aks">
+                                    <div class="cluster-header">
+                                        <span class="cluster-icon">☁️</span>
+                                        <span class="cluster-name">Azure AKS</span>
+                                        <span class="cluster-status standby">Standby</span>
+                                    </div>
+                                    <div class="cluster-stats">
+                                        <div class="stat">
+                                            <span class="stat-value">4</span>
+                                            <span class="stat-label">Nodes</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">16</span>
+                                            <span class="stat-label">GPUs</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">12%</span>
+                                            <span class="stat-label">Utilized</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cost Tracking -->
+                    <div class="card cost-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Cost Tracking</h2>
+                            <span class="period-badge">This Month</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="cost-summary">
+                                <div class="cost-total">
+                                    <span class="cost-label">Total Spend</span>
+                                    <span class="cost-value" id="total-cost">$12,450</span>
+                                </div>
+                                <div class="cost-budget">
+                                    <span class="cost-label">Budget</span>
+                                    <span class="cost-value">$20,000</span>
+                                </div>
+                            </div>
+                            <div class="budget-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 62%"></div>
+                                </div>
+                                <span class="budget-percent">62% of budget used</span>
+                            </div>
+                            <div class="cost-breakdown">
+                                <h3>Breakdown by Provider</h3>
+                                <div class="breakdown-chart">
+                                    <canvas id="cost-chart" aria-label="Cost breakdown by provider"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Budget Alerts -->
+                    <div class="card alerts-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Budget Alerts</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="alerts-list" id="alerts-list">
+                                <div class="alert-item warning">
+                                    <span class="alert-icon">⚠️</span>
+                                    <div class="alert-content">
+                                        <span class="alert-title">GPU usage approaching limit</span>
+                                        <span class="alert-time">2 hours ago</span>
+                                    </div>
+                                </div>
+                                <div class="alert-item info">
+                                    <span class="alert-icon">ℹ️</span>
+                                    <div class="alert-content">
+                                        <span class="alert-title">Monthly cost threshold 60% reached</span>
+                                        <span class="alert-time">1 day ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Historical Usage -->
+                    <div class="card usage-card wide">
+                        <div class="card-header">
+                            <h2 class="card-title">Historical Usage</h2>
+                            <div class="card-actions">
+                                <select id="usage-period" aria-label="Select time period">
+                                    <option value="7d">Last 7 Days</option>
+                                    <option value="30d" selected>Last 30 Days</option>
+                                    <option value="90d">Last 90 Days</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="usage-chart" aria-label="Historical usage chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="app-footer" role="contentinfo">
+            <div class="footer-left">
+                <span>QRATUM v2.0.0</span>
+                <span class="separator">|</span>
+                <span>DO-178C Level A Certified</span>
+            </div>
+            <div class="footer-center">
+                <span id="connection-status">🟢 Connected</span>
+            </div>
+            <div class="footer-right">
+                <span id="current-time"></span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal for Job Details -->
+    <div class="modal" id="job-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Job Details</h2>
+                <button class="modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Job details populated dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container" aria-live="polite" role="status"></div>
+
+    <!-- Dashboard Scripts -->
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/websocket.js"></script>
+    <script src="assets/js/visualization.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+    <!-- Phase 4 Panel Scripts -->
+    <script src="assets/js/quantum-panel.js"></script>
+    <script src="assets/js/codegen-panel.js"></script>
+</body>
+</html>

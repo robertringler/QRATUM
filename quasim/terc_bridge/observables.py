@@ -41,6 +41,7 @@ def beta_metrics_from_cipher(text: str) -> dict[str, float]:
     >>> 'beta_entropy' in metrics and 'beta_complexity' in metrics
     True
     """
+
     rev = REVULTRAAlgorithms()
 
     complexity = rev.emergent_complexity_score(text)
@@ -92,6 +93,7 @@ def ioc_period_candidates(text: str, max_period: int = 20, threshold: float = 0.
     >>> 3 in candidates  # Period of 3 expected
     True
     """
+
     rev = REVULTRAAlgorithms()
     ioc = rev.index_of_coincidence_tensor(text, max_period=max_period)
 
@@ -120,6 +122,7 @@ def emergent_complexity(text: str) -> dict[str, float]:
     >>> 'score' in complexity and 'entropy' in complexity
     True
     """
+
     rev = REVULTRAAlgorithms()
     return rev.emergent_complexity_score(text)
 
@@ -159,6 +162,7 @@ def qgh_consensus_status(
     >>> 'converged' in status and 'stability' in status
     True
     """
+
     num_nodes = node_states.shape[0]
 
     # Propagate to consensus
@@ -202,6 +206,7 @@ def stream_synchronization_metrics(
     dict[str, Any]
         Synchronization metrics including sync_pairs and sync_ratio
     """
+
     from quasim.qgh.nonspec_algorithms import DistributedStreamMonitor
 
     num_streams = len(stream_data)
@@ -240,6 +245,7 @@ def stability_assessment(metrics: list[float], window_size: int = 50) -> dict[st
     dict[str, Any]
         Stability assessment including is_stable, trend, and stats
     """
+
     monitor = StabilityMonitor(window_size=window_size, threshold=2.0)
 
     for value in metrics:

@@ -1,0 +1,8 @@
+{
+  "title": "Φ_QEVF Overview",
+  "panels": [
+    {"type": "graph", "title": "RMSE/MAE"},
+    {"type": "stat", "title": "KS Confidence"},
+    {"type": "table", "title": "Anomaly Recall"}
+  ]
+}
