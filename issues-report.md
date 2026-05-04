@@ -2,16 +2,16 @@
 ### Ruff Linting
 1356	N806  	[ ] non-lowercase-variable-in-function
  679	W293  	[ ] blank-line-with-whitespace
- 516	UP006 	[ ] non-pep585-annotation
- 455	UP045 	[ ] non-pep604-annotation-optional
- 345	N999  	[ ] invalid-module-name
+ 542	UP006 	[ ] non-pep585-annotation
+ 470	UP045 	[ ] non-pep604-annotation-optional
+ 346	N999  	[ ] invalid-module-name
  204	F841  	[ ] unused-variable
  199	N803  	[ ] invalid-argument-name
  169	      	[ ] invalid-syntax
  127	F821  	[ ] undefined-name
   94	E402  	[ ] module-import-not-at-top-of-file
+  85	B007  	[ ] unused-loop-control-variable
   85	SIM102	[ ] collapsible-if
-  84	B007  	[ ] unused-loop-control-variable
   56	N802  	[ ] invalid-function-name
   47	C408  	[ ] unnecessary-collection-call
   42	F811  	[ ] redefined-while-unused
@@ -26,15 +26,15 @@
   22	SIM105	[ ] suppressible-exception
   18	B023  	[ ] function-uses-loop-variable
   16	SIM118	[ ] in-dict-keys
-  14	I001  	[*] unsorted-imports
+  13	I001  	[*] unsorted-imports
   12	N815  	[ ] mixed-case-variable-in-class-scope
-  11	N818  	[ ] error-suffix-on-exception-name
+  12	N818  	[ ] error-suffix-on-exception-name
   10	SIM110	[ ] reimplemented-builtin
   10	UP031 	[ ] printf-string-formatting
    8	E722  	[ ] bare-except
+   6	B017  	[ ] assert-raises-exception
    6	C416  	[ ] unnecessary-comprehension
    6	E731  	[ ] lambda-assignment
-   5	B017  	[ ] assert-raises-exception
    4	N801  	[ ] invalid-class-name
    4	SIM115	[ ] open-file-with-context-handler
    3	SIM113	[ ] enumerate-for-loop
@@ -50,8 +50,8 @@
    1	SIM222	[ ] expr-or-true
    1	SIM401	[ ] if-else-block-instead-of-dict-get
    1	UP007 	[ ] non-pep604-annotation-union
-Found 4858 errors.
-[*] 14 fixable with the `--fix` option (2192 hidden fixes can be enabled with the `--unsafe-fixes` option).
+Found 4902 errors.
+[*] 13 fixable with the `--fix` option (2234 hidden fixes can be enabled with the `--unsafe-fixes` option).
 ### Type Checking (mypy)
 quasim-api contains __init__.py but is not a valid Python package name
 Type checking completed

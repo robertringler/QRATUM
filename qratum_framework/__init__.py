@@ -45,6 +45,25 @@ from qratum_framework.operator import (
     OperatorResult,
     StrictCIIRBackend,
 )
+
+# SDE (Module I — Streaming Drift Engine).  Imported lazily-friendly: the
+# import has zero side-effects beyond defining the public names.
+from qratum_framework.sde import (
+    AlarmEvaluator,
+    AlarmThresholds,
+    AlarmTier,
+    DriftEvent,
+    DriftReading,
+    DriftScorer,
+    KLDriftScorer,
+    MMDDriftScorer,
+    RollingWindowBuffer,
+    SDEConfig,
+    SDESnapshot,
+    StreamingDriftEngine,
+    Token,
+    WindowSnapshot,
+)
 from qratum_framework.trace import (
     GENESIS_HASH,
     MerkleLedger,
@@ -80,6 +99,21 @@ __all__ = [
     "ReadinessReport",
     "check_health",
     "check_readiness",
+    # sde (Module I)
+    "Token",
+    "WindowSnapshot",
+    "RollingWindowBuffer",
+    "DriftReading",
+    "DriftScorer",
+    "KLDriftScorer",
+    "MMDDriftScorer",
+    "AlarmTier",
+    "AlarmThresholds",
+    "DriftEvent",
+    "AlarmEvaluator",
+    "SDESnapshot",
+    "StreamingDriftEngine",
+    "SDEConfig",
 ]
 
 __version__ = "0.1.0"
