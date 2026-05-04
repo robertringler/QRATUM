@@ -26,11 +26,7 @@ from qcore.policy import (
     create_custom_policy_rule,
     evaluate_hardware_policy,
 )
-from qcore.resolver import (
-    CapabilityResolutionError,
-    CapabilityResolver,
-    ResolvedCapability,
-)
+from qcore.resolver import CapabilityResolutionError, CapabilityResolver, ResolvedCapability
 from qcore.semantic_state import (
     ChemistryValidator,
     DomainValidator,

@@ -7,6 +7,11 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "SoiTelemetrySubsystem.generated.h"
 
+#ifndef SOI_RUST_AVAILABLE
+#define SOI_RUST_AVAILABLE 0
+#endif
+
+#if SOI_RUST_AVAILABLE
 // Import Rust Functions via FFI
 extern "C" {
     void soi_initialize(const char* endpoint);
@@ -18,6 +23,17 @@ extern "C" {
     bool soi_is_initialized();
     void soi_shutdown();
 }
+#else
+// Stubs: Rust telemetry core not linked. All calls are no-ops.
+static FORCEINLINE void   soi_initialize(const char* /*endpoint*/) {}
+static FORCEINLINE uint64 soi_get_epoch() { return 0; }
+static FORCEINLINE float  soi_get_zone_heat(size_t /*zone_idx*/) { return 0.0f; }
+static FORCEINLINE float  soi_get_slashing_vector() { return 0.0f; }
+static FORCEINLINE void   soi_get_proof(char* buffer, size_t length) { if (buffer && length > 0) buffer[0] = '\0'; }
+static FORCEINLINE int32  soi_get_status_json(char* buffer, size_t length) { if (buffer && length > 0) { buffer[0] = '\0'; } return 0; }
+static FORCEINLINE bool   soi_is_initialized() { return false; }
+static FORCEINLINE void   soi_shutdown() {}
+#endif
 
 /**
  * State update delegate - broadcasts when telemetry state changes

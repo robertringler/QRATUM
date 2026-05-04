@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import time
+import traceback
 from typing import Any, MutableMapping
 
 from .backends import get_backend_registry
@@ -11,6 +12,45 @@ from .sustainability import estimate_carbon
 from .types import SimulationConfig, SubstrateResult
 
 logger = get_logger(__name__)
+
+
+def _default_serializer(obj: Any) -> str:
+    """Provide a stable string representation for non-JSON-native types.
+
+    Returns str(obj) as a fallback for objects that don't have a native JSON representation.
+    Note: This is deterministic for builtins but may not be deterministic for custom objects
+    that don't implement __str__ consistently.
+    """
+    return str(obj)
+
+
+def _canonical_serialize(obj: Any) -> str:
+    """Serialize object to a canonical JSON string for deterministic hashing.
+
+    - sort_keys=True to ensure dictionary order is stable
+    - separators removes irrelevant whitespace
+    - uses _default_serializer for non-JSON-native types
+    If serialization fails, falls back to JSON of str(obj), then to JSON of repr(obj) as
+    ultimate fallback, to avoid raising from hashing path while logging the event.
+    """
+    try:
+        return json.dumps(
+            obj,
+            sort_keys=True,
+            default=_default_serializer,
+            separators=(",", ":"),
+            ensure_ascii=False,
+        )
+    except TypeError as exc:
+        logger.info(
+            "Falling back to string serialization for hashing due to non-serializable object",
+            extra={"error": str(exc)},
+        )
+        try:
+            return json.dumps(str(obj), sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+        except Exception:
+            # ultimate fallback: repr
+            return json.dumps(repr(obj), sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
 class QNXSubstrate:
@@ -70,9 +110,34 @@ class QNXSubstrate:
         )
 
         start = time.perf_counter()
-        raw_results = backend.run(config)
-        execution_time_ms = (time.perf_counter() - start) * 1000
+        raw_results: Any = {"status": "error", "error": "backend_not_run"}
+        execution_time_ms = 0.0
+        carbon_emissions = 0.0
+        errors: list[str] = []
+        warnings: list[str] = []
 
+        try:
+            raw_results = backend.run(config)
+            execution_time_ms = (time.perf_counter() - start) * 1000
+            # attempt to compute carbon only when we have results
+            try:
+                carbon_emissions = estimate_carbon(raw_results)
+            except Exception as ce:  # pragma: no cover - defensive
+                logger.info("Carbon estimation failed", extra={"error": str(ce)})
+                carbon_emissions = 0.0
+        except Exception as exc:
+            # Capture backend exception, log full traceback and produce a structured raw_results
+            tb = traceback.format_exc()
+            logger.exception(
+                "Backend run raised an exception",
+                extra={"backend": config.backend, "error": str(exc), "traceback": tb},
+            )
+            raw_results = {"status": "error", "error": str(exc)}
+            execution_time_ms = (time.perf_counter() - start) * 1000
+            carbon_emissions = 0.0
+            errors.append("backend_exception")
+
+        # build payload for hashing using a canonical serializer to improve determinism
         hash_payload: MutableMapping[str, Any] = {
             "backend": config.backend,
             "scenario_id": config.scenario_id,
@@ -80,15 +145,16 @@ class QNXSubstrate:
             "seed": config.seed,
             "raw_results": raw_results,
         }
+        canonical = _canonical_serialize(hash_payload)
+        simulation_hash = compute_integrity_hash(canonical)
         simulation_hash = compute_integrity_hash(
             json.dumps(hash_payload, sort_keys=True, default=str)
         )
         carbon_emissions = estimate_carbon(raw_results)
 
-        errors = []
-        warnings = []
+        # extract structured errors/warnings from backend result if present
         if isinstance(raw_results, dict):
-            if raw_results.get("status") == "error":
+            if raw_results.get("status") == "error" and "backend_reported_error" not in errors:
                 errors.append("backend_reported_error")
             if "warnings" in raw_results and isinstance(raw_results["warnings"], list):
                 warnings.extend(raw_results["warnings"])

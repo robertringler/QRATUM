@@ -1,11 +1,6 @@
 """Tests for Quantum Ethical Governor (QEG)."""
 
-from quasim.meta import (
-    EthicalAssessment,
-    FairnessMetrics,
-    QuantumEthicalGovernor,
-    ResourceMetrics,
-)
+from quasim.meta import EthicalAssessment, FairnessMetrics, QuantumEthicalGovernor, ResourceMetrics
 
 
 def test_qeg_initialization():

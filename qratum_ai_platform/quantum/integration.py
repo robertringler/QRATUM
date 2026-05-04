@@ -3,9 +3,9 @@
 This module provides adapters that connect the quantum computing modules
 (VQE, QAOA) to the QRATUM unified platform, handling configuration,
 execution, and result formatting.
-"""Quantum backend integration adapters.
 
-Adapters for integrating quasim.quantum modules with platform layer.
+Quantum backend integration adapters for integrating quasim.quantum modules
+with the platform layer.
 """
 
 from __future__ import annotations
@@ -178,7 +178,7 @@ class QuantumModuleAdapter:
 
 
 __all__ = ["QuantumModuleAdapter"]
-from typing import Any, Dict, Optional
+from typing import Dict, Optional
 
 __all__ = ["QuantumBackendAdapter"]
 

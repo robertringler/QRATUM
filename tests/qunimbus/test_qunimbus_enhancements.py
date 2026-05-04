@@ -192,16 +192,14 @@ def test_strict_mode_fails_on_missing_observable():
     with tempfile.TemporaryDirectory() as tmpdir:
         # Create config with expected observables
         config_path = f"{tmpdir}/config.yml"
-        Path(config_path).write_text(
-            """version: 1
+        Path(config_path).write_text("""version: 1
 observables:
   test_observable:
     source: "/nonexistent"
     reduce: "mean"
     expected: 100
     tolerance_abs: 10
-"""
-        )
+""")
 
         # Create empty snapshot
         snapshot_path = f"{tmpdir}/snapshot.hdf5"
@@ -238,16 +236,14 @@ def test_strict_mode_passes_with_all_observables():
     with tempfile.TemporaryDirectory() as tmpdir:
         # Create config
         config_path = f"{tmpdir}/config.yml"
-        Path(config_path).write_text(
-            """version: 1
+        Path(config_path).write_text("""version: 1
 observables:
   test_observable:
     source: "/data"
     reduce: "mean"
     expected: 100
     tolerance_abs: 10
-"""
-        )
+""")
 
         # Create snapshot with matching data
         snapshot_path = f"{tmpdir}/snapshot.hdf5"
@@ -343,8 +339,14 @@ def test_verify_jwt_without_pyjwt():
 
     from quasim.qunimbus.auth import verify_jwt
 
-    # Valid JWT structure (3 parts)
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+    # GAP-SEC-SECRET-013: This is the IANA JWT RFC 7519 §A.1 example token (public test fixture).
+    # It is not a real credential — the signing secret is also public ("your-256-bit-secret").
+    _TEST_JWT_FIXTURE = (
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ"
+        ".SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+    )
+    token = _TEST_JWT_FIXTURE
 
     ok, data = verify_jwt(token)
     assert isinstance(data, dict)

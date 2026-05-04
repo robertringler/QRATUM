@@ -5,13 +5,7 @@ Tests the QIL parser, grammar, AST, and serialization.
 
 import pytest
 
-from qil import (
-    ParseError,
-    compute_hash,
-    intent_to_canonical_form,
-    parse_intent,
-    serialize_intent,
-)
+from qil import ParseError, compute_hash, intent_to_canonical_form, parse_intent, serialize_intent
 from qil.ast import HardwareSpec, TimeSpec
 
 
@@ -271,10 +265,7 @@ class TestQILParser:
     def test_hardware_spec_conflict(self):
         """Test hardware spec conflict detection."""
         with pytest.raises(ValueError, match="conflict"):
-            HardwareSpec(
-                only_clusters=["GB200"],
-                not_clusters=["GB200"]  # Conflict!
-            )
+            HardwareSpec(only_clusters=["GB200"], not_clusters=["GB200"])  # Conflict!
 
     def test_time_spec_conversion(self):
         """Test time spec unit conversion."""

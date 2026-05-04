@@ -23,6 +23,7 @@ use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::collections::BTreeMap;
 use alloc::collections::BTreeSet;
+use alloc::format;
 
 use sha3::{Sha3_256, Digest};
 use zeroize::{Zeroize, ZeroizeOnDrop};

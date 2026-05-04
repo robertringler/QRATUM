@@ -21,12 +21,7 @@ from qil.ast import (
 )
 from qil.grammar import QIL_GRAMMAR, GrammarConstants, validate_grammar_token
 from qil.parser import ParseError, QILParser, parse_intent
-from qil.serializer import (
-    compute_hash,
-    intent_to_canonical_form,
-    serialize_intent,
-    to_json,
-)
+from qil.serializer import compute_hash, intent_to_canonical_form, serialize_intent, to_json
 
 __all__ = [
     # AST nodes

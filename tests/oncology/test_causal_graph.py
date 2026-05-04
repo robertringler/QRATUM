@@ -3,16 +3,14 @@
 import pytest
 
 from qratum.oncology.causal_graph import (
-    CausalOncologyGraph,
-    OncogenicNode,
-    CausalEdge,
-    MutationState,
-    EpigeneticState,
-    ImmuneEvasionMechanism,
-    TumorMicroenvironment,
     CancerHallmark,
-    NodeType,
+    CausalEdge,
+    CausalOncologyGraph,
     EdgeType,
+    EpigeneticState,
+    MutationState,
+    NodeType,
+    OncogenicNode,
     create_example_egfr_graph,
 )
 
@@ -144,12 +142,8 @@ class TestCausalOncologyGraph:
         """Test adding edges."""
         graph = CausalOncologyGraph(name="Test")
 
-        node1 = OncogenicNode(
-            node_id="A", name="Node A", node_type=NodeType.MUTATION
-        )
-        node2 = OncogenicNode(
-            node_id="B", name="Node B", node_type=NodeType.PATHWAY
-        )
+        node1 = OncogenicNode(node_id="A", name="Node A", node_type=NodeType.MUTATION)
+        node2 = OncogenicNode(node_id="B", name="Node B", node_type=NodeType.PATHWAY)
         graph.add_node(node1)
         graph.add_node(node2)
 
@@ -167,9 +161,7 @@ class TestCausalOncologyGraph:
     def test_add_edge_invalid_source(self):
         """Test that adding edge with invalid source raises error."""
         graph = CausalOncologyGraph(name="Test")
-        node = OncogenicNode(
-            node_id="B", name="Node B", node_type=NodeType.PATHWAY
-        )
+        node = OncogenicNode(node_id="B", name="Node B", node_type=NodeType.PATHWAY)
         graph.add_node(node)
 
         edge = CausalEdge(
@@ -205,7 +197,9 @@ class TestCausalOncologyGraph:
             graph.add_node(
                 OncogenicNode(node_id=name, name=f"Node {name}", node_type=NodeType.PATHWAY)
             )
-        graph.add_edge(CausalEdge(source_id="A", target_id="B", edge_type=EdgeType.ACTIVATES, strength=0.5))
+        graph.add_edge(
+            CausalEdge(source_id="A", target_id="B", edge_type=EdgeType.ACTIVATES, strength=0.5)
+        )
 
         stability = graph.compute_stability_manifold(n_simulations=10)
         assert "A" in stability

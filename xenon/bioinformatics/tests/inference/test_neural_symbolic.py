@@ -4,11 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from xenon.bioinformatics.inference import (
-    ConstraintType,
-    GraphEmbedding,
-    NeuralSymbolicEngine,
-)
+from xenon.bioinformatics.inference import ConstraintType, GraphEmbedding, NeuralSymbolicEngine
 
 
 class TestNeuralSymbolicEngine:

@@ -142,10 +142,7 @@ def benchmark_model(
 
         model = get_linear_svc(seed=seed)
     elif model_name == "xgboost":
-        from quasim.baselines.xgboost_lightgbm import (
-            get_xgboost_classifier,
-            get_xgboost_regressor,
-        )
+        from quasim.baselines.xgboost_lightgbm import get_xgboost_classifier, get_xgboost_regressor
 
         if "cls" in task:
             model = get_xgboost_classifier(seed=seed)

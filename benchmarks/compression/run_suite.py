@@ -52,9 +52,7 @@ from benchmarks.compression.validators.compression_ratio import (  # noqa: E402
     aggregate_compression_statistics,
     validate_compression_claim,
 )
-from benchmarks.compression.validators.fidelity import (  # noqa: E402
-    validate_fidelity_bound,
-)
+from benchmarks.compression.validators.fidelity import validate_fidelity_bound  # noqa: E402
 
 # Import AHTC compression
 try:

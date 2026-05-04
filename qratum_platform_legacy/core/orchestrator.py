@@ -7,10 +7,9 @@ overall platform lifecycle.
 import hashlib
 import json
 from datetime import datetime, timezone
-from typing import Dict, Optional
-
 from platform.core.base import ExecutionResult, VerticalModuleBase
 from platform.core.intent import PlatformContract, PlatformIntent, VerticalType
+from typing import Dict, Optional
 
 
 class QRATUMPlatform:
