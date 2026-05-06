@@ -31,6 +31,8 @@ public class QRATUM : ModuleRules
             "RenderCore",
             "RHI",
             "Projects",
+            "Sockets",
+            "Networking",
         });
 
         PublicIncludePaths.AddRange(new string[]
