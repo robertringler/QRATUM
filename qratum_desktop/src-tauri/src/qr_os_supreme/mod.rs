@@ -9,7 +9,7 @@ const QUBITS: usize = 12;
 const STATE_SIZE: usize = 1 << QUBITS; // 4096 states
 
 // Complex number (stack-allocated, Copy trait for efficiency)
-#[derive(Clone, Copy, Debug, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Copy, Debug)]
 pub struct Complex {
     pub re: f32,
     pub im: f32,
@@ -61,7 +61,7 @@ impl Complex {
 
 // Quantum state (stack-only, no heap allocation)
 // Size: 4096 * 8 bytes = 32KB on stack (within limits for quantum computing)
-#[derive(Clone, serde::Serialize, serde::Deserialize)]
+#[derive(Clone)]
 pub struct QuantumState {
     amplitudes: [Complex; STATE_SIZE],
 }

@@ -18,6 +18,11 @@ winapi = { version = "0.3", features = ["sysinfoapi"] }
 [build-dependencies]
 tauri-build = { version = "1.5", features = [] }
 
+[features]
+# This feature is used for production builds where `devPath` points to the filesystem
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
+
 [profile.release]
 opt-level = "z"          # Optimize for size (not speed)
 lto = true               # Link-time optimization

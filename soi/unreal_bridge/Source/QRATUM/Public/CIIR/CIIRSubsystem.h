@@ -23,4 +23,14 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "QRATUM|CIIR")
     FOnTopologyUpdated OnTopologyUpdated;
+
+    UFUNCTION(BlueprintPure, Category = "QRATUM|CIIR")
+    const FObserverLoopState& GetLastState() const { return LastState; }
+
+protected:
+    UPROPERTY()
+    FObserverLoopState LastState;
+
+    float PhiFixedPoint[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+    float LastPhi[4]       = { 0.0f, 0.0f, 0.0f, 0.0f };
 };

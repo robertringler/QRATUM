@@ -279,15 +279,72 @@
 
     <!-- Navigation Tabs -->
     <div class="tabs">
-        <div class="tab active" data-tab="dashboard">Dashboard</div>
+        <div class="tab active" data-tab="boot">QRATUM Boot</div>
+        <div class="tab" data-tab="dashboard">Dashboard</div>
         <div class="tab" data-tab="quantum">Quantum Simulation</div>
         <div class="tab" data-tab="codegen">Code Generation</div>
         <div class="tab" data-tab="benchmark">Benchmarks</div>
         <div class="tab" data-tab="molecular">Molecular Viz</div>
     </div>
 
+    <!-- QRATUM Boot Tab -->
+    <div id="boot" class="tab-content active">
+        <div class="grid">
+            <div class="card">
+                <h2>Kernel Control</h2>
+                <div class="stat">
+                    <span class="stat-label">Daemon:</span>
+                    <span id="qboot-daemon" class="stat-value">offline</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Phase:</span>
+                    <span id="qboot-phase" class="stat-value">—</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Tick:</span>
+                    <span id="qboot-tick" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">State file:</span>
+                    <span id="qboot-path" class="stat-value" style="font-size:0.7rem;">—</span>
+                </div>
+                <button onclick="qratumBoot()" style="width:100%;margin-top:0.5rem;">Boot Kernel</button>
+                <button onclick="qratumHalt()" style="width:100%;margin-top:0.5rem;background:#7f1d1d;">Halt</button>
+            </div>
+            <div class="card">
+                <h2>CIIR · CRS · CGL</h2>
+                <div class="stat"><span class="stat-label">CIIR φ-norm:</span>     <span id="q-ciir-phi"   class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">CIIR |Δw|:</span>       <span id="q-ciir-delta" class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">CRS stratum:</span>    <span id="q-crs-stratum" class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">CRS ISS residual:</span><span id="q-crs-iss"   class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">CGL λ_min:</span>      <span id="q-cgl-lmin"  class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">CGL rank-deficient:</span><span id="q-cgl-rd" class="stat-value">—</span></div>
+            </div>
+            <div class="card">
+                <h2>QuaSim · QuBIC · RMHD</h2>
+                <div class="stat"><span class="stat-label">CHSH S:</span>          <span id="q-quasim-s"  class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">Quantum bound:</span>   <span id="q-quasim-qb" class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">QuBIC epoch:</span>     <span id="q-qubic-ep"  class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">RMHD V_in/V_A:</span>   <span id="q-rmhd-rate" class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">RMHD ψ-flux:</span>     <span id="q-rmhd-psi"  class="stat-value">—</span></div>
+            </div>
+            <div class="card">
+                <h2>RWB · MVRI · RIC</h2>
+                <div class="stat"><span class="stat-label">RWB sequence:</span>    <span id="q-rwb-seq"   class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">MVRI status:</span>     <span id="q-mvri-st"   class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">MVRI EMA:</span>        <span id="q-mvri-ema"  class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">MVRI gate mask:</span>  <span id="q-mvri-mask" class="stat-value">—</span></div>
+                <div class="stat"><span class="stat-label">RIC weights:</span>     <span id="q-ric-w"     class="stat-value">—</span></div>
+            </div>
+            <div class="card" style="grid-column: 1 / -1;">
+                <h2>Boot Log</h2>
+                <pre id="qboot-log" style="background:#0b1220;padding:0.75rem;border-radius:0.25rem;max-height:200px;overflow:auto;font-size:0.75rem;">(no boot yet)</pre>
+            </div>
+        </div>
+    </div>
+
     <!-- Dashboard Tab -->
-    <div id="dashboard" class="tab-content active">
+    <div id="dashboard" class="tab-content">
         <div class="grid">
             <!-- Health Status Card -->
             <div class="card">
@@ -635,6 +692,57 @@
 
     <script>
         const { invoke } = window.__TAURI__.tauri;
+
+        // ------------------------- QRATUM Boot -------------------------
+        async function qratumBoot() {
+            try {
+                const r = await invoke('qratum_boot_kernel');
+                addLog(`[QRATUM] ${r}`);
+            } catch (e) { addLog(`[QRATUM] boot failed: ${e}`); }
+        }
+        async function qratumHalt() {
+            try {
+                const r = await invoke('qratum_halt_kernel');
+                addLog(`[QRATUM] ${r}`);
+            } catch (e) { addLog(`[QRATUM] halt failed: ${e}`); }
+        }
+        async function qratumPollState() {
+            try {
+                const status = await invoke('qratum_kernel_status');
+                document.getElementById('qboot-daemon').textContent = status;
+            } catch (_) { /* ignore */ }
+            try {
+                const path = await invoke('qratum_bridge_path');
+                document.getElementById('qboot-path').textContent = path;
+            } catch (_) { /* ignore */ }
+            try {
+                const s = await invoke('qratum_bridge_state');
+                document.getElementById('qboot-phase').textContent = s.phase;
+                document.getElementById('qboot-tick').textContent  = s.epoch_tick;
+                document.getElementById('q-ciir-phi').textContent  = s.ciir.phi.toFixed(4);
+                document.getElementById('q-ciir-delta').textContent= s.ciir.delta_w_norm.toExponential(2);
+                document.getElementById('q-crs-stratum').textContent = s.crs.active_stratum;
+                document.getElementById('q-crs-iss').textContent     = s.crs.iss_residual.toFixed(3);
+                document.getElementById('q-cgl-lmin').textContent    = s.cgl.lambda_min.toFixed(3);
+                document.getElementById('q-cgl-rd').textContent      = s.cgl.rank_deficient ? 'YES' : 'no';
+                document.getElementById('q-quasim-s').textContent    = s.quasim.s.toFixed(4);
+                document.getElementById('q-quasim-qb').textContent   = s.quasim.quantum_bound ? 'S>2 (Bell)' : '—';
+                document.getElementById('q-qubic-ep').textContent    = s.qubic.epoch;
+                document.getElementById('q-rmhd-rate').textContent   = s.rmhd.reconnection_rate.toExponential(2);
+                document.getElementById('q-rmhd-psi').textContent    = s.rmhd.psi_flux.toFixed(4);
+                document.getElementById('q-rwb-seq').textContent     = s.rwb.sequence;
+                document.getElementById('q-mvri-st').textContent     = s.mvri.status;
+                document.getElementById('q-mvri-ema').textContent    = s.mvri.ema.toFixed(4);
+                document.getElementById('q-mvri-mask').textContent   = '0x' + s.mvri.gate_mask.toString(16);
+                document.getElementById('q-ric-w').textContent       =
+                    s.ric_dispatch_weights.map(w => w.toFixed(2)).join(' · ');
+            } catch (_) { /* state.json may not exist yet */ }
+            try {
+                const log = await invoke('qratum_bridge_boot_log');
+                document.getElementById('qboot-log').textContent = log;
+            } catch (_) { /* ignore */ }
+        }
+        setInterval(qratumPollState, 250);
 
         // Tab switching
         document.querySelectorAll('.tab').forEach(tab => {

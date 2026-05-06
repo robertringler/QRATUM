@@ -22,7 +22,12 @@ public:
     UFUNCTION(BlueprintPure, Category = "QRATUM|RIC")
     const FDispatchMatrix& GetDispatchMatrix() const { return DispatchMatrix; }
 
+    UFUNCTION(BlueprintCallable, Category = "QRATUM|RIC")
+    void SubmitObservation(EQRATUMDispatchSource Source, float Score);
+
 protected:
     UPROPERTY()
     FDispatchMatrix DispatchMatrix;
+
+    int64 GlobalTick = 0;
 };

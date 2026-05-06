@@ -22,7 +22,7 @@ pub struct ProductionRule {
     pub action: Option<String>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Grammar {
     pub language: String,
     pub start_symbol: String,
@@ -146,8 +146,8 @@ pub fn build_rust_grammar() -> Grammar {
             rhs: vec![
                 "fn".to_string(),
                 "identifier".to_string(),
-                "(",
-                ")",
+                "(".to_string(),
+                ")".to_string(),
                 "block".to_string(),
             ],
             action: Some("build_function".to_string()),
@@ -224,8 +224,8 @@ pub fn build_python_grammar() -> Grammar {
             rhs: vec![
                 "def".to_string(),
                 "identifier".to_string(),
-                "(",
-                ")",
+                "(".to_string(),
+                ")".to_string(),
                 ":".to_string(),
                 "stmt".to_string(),
             ],

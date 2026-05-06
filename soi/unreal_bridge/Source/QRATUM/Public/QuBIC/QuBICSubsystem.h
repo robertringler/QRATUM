@@ -18,4 +18,16 @@ public:
     virtual void Deinitialize() override;
     virtual void Tick(float DeltaTime) override;
     virtual TStatId GetStatId() const override;
+
+    UFUNCTION(BlueprintPure, Category = "QRATUM|QuBIC")
+    const FGenomicGraphState& GetGraph() const { return Graph; }
+
+    UFUNCTION(BlueprintPure, Category = "QRATUM|QuBIC")
+    int64 GetEpoch() const { return Epoch; }
+
+protected:
+    UPROPERTY()
+    FGenomicGraphState Graph;
+
+    int64 Epoch = 0;
 };

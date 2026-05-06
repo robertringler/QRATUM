@@ -1,10 +1,14 @@
-// RWBSubsystem.cpp — Φ=1 shell (no behavior).
+// RWBSubsystem.cpp — Φ=2: synthetic deterministic sensor stream.
 
 #include "RWB/RWBSubsystem.h"
+#include "MVRI/MVRISubsystem.h"
+#include "Engine/World.h"
 
 void URWBSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
     Super::Initialize(Collection);
+    Sequence       = 0;
+    AccumulatedTime = 0.0f;
     UE_LOG(LogTemp, Log, TEXT("[QRATUM/RWB] Initialize"));
 }
 
@@ -14,9 +18,30 @@ void URWBSubsystem::Deinitialize()
     Super::Deinitialize();
 }
 
-void URWBSubsystem::Tick(float /*DeltaTime*/)
+void URWBSubsystem::Tick(float DeltaTime)
 {
-    // Φ=2 will poll sensors and emit FRWBPacket here.
+    AccumulatedTime += DeltaTime;
+
+    FRWBPacket Packet;
+    Packet.Sequence         = ++Sequence;
+    Packet.TimestampSeconds = AccumulatedTime;
+    Packet.SensorVector.SetNum(8);
+    for (int32 i = 0; i < 8; ++i)
+    {
+        const float Phase = AccumulatedTime + 0.25f * i;
+        Packet.SensorVector[i] = FMath::Sin(Phase);
+    }
+    Packet.CanonicalHashHex = FString::Printf(TEXT("%016llx"), static_cast<uint64>(Sequence));
+
+    OnPacketEmitted.Broadcast(Packet);
+
+    if (UWorld* World = GetWorld())
+    {
+        if (UMVRISubsystem* MVRI = World->GetSubsystem<UMVRISubsystem>())
+        {
+            MVRI->Ingest(Packet);
+        }
+    }
 }
 
 TStatId URWBSubsystem::GetStatId() const

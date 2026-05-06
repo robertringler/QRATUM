@@ -4,6 +4,7 @@ use std::sync::{Arc, Mutex};
 use tauri::{CustomMenuItem, Manager, SystemTray, SystemTrayMenu};
 
 mod backend;
+mod bridge;
 mod codegen;
 mod commands;
 mod qr_os_supreme;
@@ -27,6 +28,7 @@ fn main() {
 
     let app = tauri::Builder::<tauri::Wry>::default()
         .manage(AppState::default())
+        .manage(bridge::DaemonHandle::default())
         .system_tray(tray)
         .on_system_tray_event(tray::handle_tray_event)
         .invoke_handler(tauri::generate_handler![
@@ -55,6 +57,13 @@ fn main() {
             commands::run_dcge_benchmark,
             commands::get_binary_metrics,
             commands::get_failure_modes,
+            // QRATUM bridge / boot
+            bridge::qratum_bridge_state,
+            bridge::qratum_bridge_boot_log,
+            bridge::qratum_bridge_path,
+            bridge::qratum_boot_kernel,
+            bridge::qratum_halt_kernel,
+            bridge::qratum_kernel_status,
         ])
         .build(tauri::generate_context!())
         .expect("error while building tauri application");

@@ -27,4 +27,11 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "QRATUM|MVRI")
     FOnMVRIChannelUpdated OnChannelUpdated;
+
+    UFUNCTION(BlueprintPure, Category = "QRATUM|MVRI")
+    const FMVRIChannel& GetLastChannel() const { return LastChannel; }
+
+protected:
+    UPROPERTY()
+    FMVRIChannel LastChannel;
 };

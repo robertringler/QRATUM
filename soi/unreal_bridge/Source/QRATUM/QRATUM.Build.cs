@@ -1,6 +1,6 @@
 // QRATUM.Build.cs
-// QRATUM Swarm — Φ=1 skeleton module.
-// Owner: A-01 (Swarm Supervisor). Behavior added in Φ=2; this module is shells only.
+// QRATUM Swarm — Φ=2 module: deterministic kernels + Bridge subsystem.
+// Owner: A-01 (Swarm Supervisor).
 
 using UnrealBuildTool;
 
@@ -9,6 +9,7 @@ public class QRATUM : ModuleRules
     public QRATUM(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+        CppStandard = CppStandardVersion.Cpp20;
 
         PublicDependencyModuleNames.AddRange(new string[]
         {
@@ -19,6 +20,8 @@ public class QRATUM : ModuleRules
             "UMG",
             "CommonUI",
             "Niagara",
+            "Json",
+            "JsonUtilities",
         });
 
         PrivateDependencyModuleNames.AddRange(new string[]
@@ -27,6 +30,7 @@ public class QRATUM : ModuleRules
             "SlateCore",
             "RenderCore",
             "RHI",
+            "Projects",
         });
 
         PublicIncludePaths.AddRange(new string[]

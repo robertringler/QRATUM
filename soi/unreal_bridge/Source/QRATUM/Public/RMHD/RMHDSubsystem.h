@@ -20,4 +20,7 @@ public:
 
     UPROPERTY(BlueprintReadOnly, Category = "QRATUM|RMHD")
     float ReconnectionRate = 0.0f;
+
+    UPROPERTY(BlueprintReadOnly, Category = "QRATUM|RMHD")
+    float PsiFlux = 0.0f;
 };

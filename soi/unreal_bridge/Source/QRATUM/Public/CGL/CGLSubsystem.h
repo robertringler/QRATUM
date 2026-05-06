@@ -22,4 +22,13 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "QRATUM|CGL")
     FOnRankDeficiencyDetected OnRankDeficiencyDetected;
+
+    UPROPERTY(BlueprintReadOnly, Category = "QRATUM|CGL")
+    float GramianEigenvalueMin = 1.0f;
+
+    UPROPERTY(BlueprintReadOnly, Category = "QRATUM|CGL")
+    bool bRankDeficient = false;
+
+protected:
+    float AccumulatedTime = 0.0f;
 };

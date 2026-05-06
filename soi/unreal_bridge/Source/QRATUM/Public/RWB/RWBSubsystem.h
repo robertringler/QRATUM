@@ -23,4 +23,11 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "QRATUM|RWB")
     FOnRWBPacketEmitted OnPacketEmitted;
+
+    UFUNCTION(BlueprintPure, Category = "QRATUM|RWB")
+    int64 GetSequence() const { return Sequence; }
+
+protected:
+    int64 Sequence       = 0;
+    float AccumulatedTime = 0.0f;
 };

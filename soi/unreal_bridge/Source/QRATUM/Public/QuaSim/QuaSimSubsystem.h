@@ -23,4 +23,13 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "QRATUM|QuaSim")
     FOnCHSHEvaluated OnCHSHEvaluated;
+
+    UFUNCTION(BlueprintPure, Category = "QRATUM|QuaSim")
+    const FCHSHResult& GetLastResult() const { return LastResult; }
+
+protected:
+    UPROPERTY()
+    FCHSHResult LastResult;
+
+    int64 TickCounter = 0;
 };
