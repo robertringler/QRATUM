@@ -1,0 +1,255 @@
+[package]
+name        = "qratum-arbiter"
+version     = "0.0.1"
+edition     = "2021"
+description = "Host-side formal model of the QRATUM kernel intent arbiter — replay & golden corpus harness."
+license     = "Proprietary"
+publish     = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+serde      = { version = "=1.0.210", features = ["derive"] }
+serde_json = "=1.0.128"
+blake3     = "=1.5.4"
+
+[dev-dependencies]
+
+[[test]]
+name = "golden"
+path = "tests/golden.rs"
+
+[[test]]
+name = "syscall_equivalence"
+path = "tests/syscall_equivalence.rs"
+
+[[test]]
+name = "determinism"
+path = "tests/determinism.rs"
+
+[[test]]
+name = "preemption_stress"
+path = "tests/preemption_stress.rs"
+
+[[test]]
+name = "audit_recovery"
+path = "tests/audit_recovery.rs"
+
+[[test]]
+name = "ahtc_k_tests"
+path = "tests/ahtc_k_tests.rs"
+
+[[test]]
+name = "kernel_equivalence_tests"
+path = "tests/kernel_equivalence_tests.rs"
+
+[[test]]
+name = "performance_truth"
+path = "tests/performance_truth.rs"
+
+[[test]]
+name = "ahtc_k_real_10x_validation"
+path = "tests/ahtc_k_real_10x_validation.rs"
+
+[[test]]
+name = "timing_equivalence"
+path = "tests/timing_equivalence.rs"
+
+[[test]]
+name = "instrumentation_completeness_tests"
+path = "tests/instrumentation_completeness_tests.rs"
+
+[[test]]
+name = "claim_registry_validation_tests"
+path = "tests/claim_registry_validation_tests.rs"
+
+[[test]]
+name = "entropy_consistency_tests"
+path = "tests/entropy_consistency_tests.rs"
+
+[[test]]
+name = "kernel_host_event_isomorphism_tests"
+path = "tests/kernel_host_event_isomorphism_tests.rs"
+
+[[test]]
+name = "ahtc_k_reality_constraint_tests"
+path = "tests/ahtc_k_reality_constraint_tests.rs"
+
+[[test]]
+name = "smp_determinism"
+path = "tests/smp_determinism.rs"
+
+[[test]]
+name = "migration_replay"
+path = "tests/migration_replay.rs"
+
+[[test]]
+name = "cross_core_invariants"
+path = "tests/cross_core_invariants.rs"
+
+[[test]]
+name = "cache_behavior"
+path = "tests/cache_behavior.rs"
+
+[[test]]
+name = "latency_stability"
+path = "tests/latency_stability.rs"
+
+[[test]]
+name = "context_switch_equivalence"
+path = "tests/context_switch_equivalence.rs"
+
+[[test]]
+name = "adversarial_fold_tests"
+path = "tests/adversarial_fold_tests.rs"
+
+[[test]]
+name = "performance_claim_integrity"
+path = "tests/performance_claim_integrity.rs"
+
+# ============================================================
+# P0.5 — Verified Multicore Execution Fabric
+# ============================================================
+[[test]]
+name = "live_multicore_hash"
+path = "tests/live_multicore_hash.rs"
+
+[[test]]
+name = "migration_ordering"
+path = "tests/migration_ordering.rs"
+
+[[test]]
+name = "work_steal_determinism"
+path = "tests/work_steal_determinism.rs"
+
+[[test]]
+name = "lock_graph_tests"
+path = "tests/lock_graph_tests.rs"
+
+[[test]]
+name = "memory_order_consistency"
+path = "tests/memory_order_consistency.rs"
+
+[[test]]
+name = "contention_stress"
+path = "tests/contention_stress.rs"
+
+[[test]]
+name = "numa_affinity"
+path = "tests/numa_affinity.rs"
+
+[[test]]
+name = "cache_locality_reduction"
+path = "tests/cache_locality_reduction.rs"
+
+[[test]]
+name = "migration_cache_penalty"
+path = "tests/migration_cache_penalty.rs"
+
+[[test]]
+name = "corpus_1000_equivalence"
+path = "tests/corpus_1000_equivalence.rs"
+
+[[test]]
+name = "replay_divergence_detection"
+path = "tests/replay_divergence_detection.rs"
+
+[[test]]
+name = "hardware_profile_consistency"
+path = "tests/hardware_profile_consistency.rs"
+
+[[test]]
+name = "claim_language_enforcement"
+path = "tests/claim_language_enforcement.rs"
+
+[[test]]
+name = "receipt_chain_integrity"
+path = "tests/receipt_chain_integrity.rs"
+
+[[test]]
+name = "receipt_replay_consistency"
+path = "tests/receipt_replay_consistency.rs"
+
+# ============================================================
+# P0.6 — Real Multicore + Hardware-Bound Determinism
+# ============================================================
+[[test]]
+name = "real_multicore_replay"
+path = "tests/real_multicore_replay.rs"
+
+[[test]]
+name = "x2apic_equivalence"
+path = "tests/x2apic_equivalence.rs"
+
+[[test]]
+name = "deterministic_work_steal"
+path = "tests/deterministic_work_steal.rs"
+
+[[test]]
+name = "replay_checkpoint_consistency"
+path = "tests/replay_checkpoint_consistency.rs"
+
+[[test]]
+name = "receipt_merkle_integrity"
+path = "tests/receipt_merkle_integrity.rs"
+
+[[test]]
+name = "divergence_envelope_tests"
+path = "tests/divergence_envelope_tests.rs"
+
+[[test]]
+name = "migration_epoch_ordering"
+path = "tests/migration_epoch_ordering.rs"
+
+[[test]]
+name = "interrupt_receipt_consistency"
+path = "tests/interrupt_receipt_consistency.rs"
+
+[[test]]
+name = "replay_barrier_tests"
+path = "tests/replay_barrier_tests.rs"
+
+[[test]]
+name = "hardware_jitter_bounds"
+path = "tests/hardware_jitter_bounds.rs"
+
+[[test]]
+name = "queue_pressure_stability"
+path = "tests/queue_pressure_stability.rs"
+
+[[test]]
+name = "apic_latency_consistency"
+path = "tests/apic_latency_consistency.rs"
+
+[[test]]
+name = "cross_topology_determinism"
+path = "tests/cross_topology_determinism.rs"
+
+[[test]]
+name = "receipt_anchor_integrity"
+path = "tests/receipt_anchor_integrity.rs"
+
+[[test]]
+name = "multicore_ahtc_fold_stability"
+path = "tests/multicore_ahtc_fold_stability.rs"
+
+[[test]]
+name = "replay_resume_consistency"
+path = "tests/replay_resume_consistency.rs"
+
+[[test]]
+name = "execution_epoch_monotonicity"
+path = "tests/execution_epoch_monotonicity.rs"
+
+[[test]]
+name = "deterministic_receipt_chain"
+path = "tests/deterministic_receipt_chain.rs"
+
+[[test]]
+name = "cryptographic_anchor_validation"
+path = "tests/cryptographic_anchor_validation.rs"
+
+[[test]]
+name = "orphan_claim_detection"
+path = "tests/orphan_claim_detection.rs"

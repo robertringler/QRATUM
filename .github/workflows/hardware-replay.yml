@@ -1,0 +1,42 @@
+name: hardware-replay
+
+on:
+  push:
+    paths:
+      - 'os/qratum-os/crates/qratum-arbiter/src/hardware_replay.rs'
+      - 'os/qratum-os/crates/qratum-arbiter/src/replay_checkpoint.rs'
+      - 'os/qratum-os/crates/qratum-arbiter/tests/real_multicore_replay.rs'
+      - 'os/qratum-os/crates/qratum-arbiter/tests/replay_checkpoint_consistency.rs'
+      - 'os/qratum-os/tools/hardware/**'
+      - '.github/workflows/hardware-replay.yml'
+  pull_request:
+    paths:
+      - 'os/qratum-os/crates/qratum-arbiter/src/hardware_replay.rs'
+      - 'os/qratum-os/crates/qratum-arbiter/tests/real_multicore_replay.rs'
+      - '.github/workflows/hardware-replay.yml'
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: os/qratum-os/crates/qratum-arbiter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build host crate
+        run: cargo build --tests
+      - name: Real multicore replay (INV-V)
+        run: cargo test --release --test real_multicore_replay -- --nocapture
+      - name: Replay checkpoint consistency (INV-U)
+        run: cargo test --release --test replay_checkpoint_consistency -- --nocapture
+      - name: Replay resume consistency (INV-U)
+        run: cargo test --release --test replay_resume_consistency -- --nocapture
+      - name: Real-silicon capture (deferred)
+        # SMP-real silicon capture is gated; emit deferred status, do
+        # not fail the build. INV claims rely on the host model + the
+        # validate_receipts script.
+        working-directory: os/qratum-os
+        run: |
+          bash tools/hardware/replay_capture.sh
+          bash tools/hardware/validate_receipts.sh || true

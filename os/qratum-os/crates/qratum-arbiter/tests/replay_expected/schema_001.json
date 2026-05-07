@@ -1,0 +1,8 @@
+{
+  "name": "schema_001",
+  "verdict_codes": [
+    32
+  ],
+  "lock_state_hash": "4c10bf508ce4da4694280fa37cda051a72e3b6b9f05fa0a313cbcda43805f84b",
+  "audit_tail_hash": "21e0eba0be517a9dc137d69d94e05a2a428ef441e6e500b14e0277879679f2bc"
+}

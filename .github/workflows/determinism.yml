@@ -1,0 +1,196 @@
+name: determinism
+
+on:
+  push:
+    paths:
+      - 'os/qratum-os/crates/qratum-arbiter/**'
+      - 'os/qratum-os/spec/**'
+      - 'os/qratum-os/audit/**'
+      - '.github/workflows/determinism.yml'
+  pull_request:
+    paths:
+      - 'os/qratum-os/crates/qratum-arbiter/**'
+      - 'os/qratum-os/spec/**'
+      - 'os/qratum-os/audit/**'
+      - '.github/workflows/determinism.yml'
+
+jobs:
+  arbiter-determinism:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: os/qratum-os/crates/qratum-arbiter
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install stable toolchain (host crate is std)
+        uses: dtolnay/rust-toolchain@stable
+      - name: Build host arbiter crate
+        run: cargo build --tests
+      - name: Run golden corpus
+        run: cargo test --test golden -- --nocapture
+      - name: Run syscall equivalence
+        run: cargo test --test syscall_equivalence
+      - name: Run determinism contract suite
+        run: cargo test --test determinism
+      - name: Run preemption stress (host model)
+        run: cargo test --test preemption_stress
+      - name: Run audit recovery
+        run: cargo test --test audit_recovery
+      - name: Run AHTC-K acceptance suite
+        run: cargo test --test ahtc_k_tests
+      - name: Run kernel ↔ arbiter equivalence (270-corpus)
+        run: cargo test --test kernel_equivalence_tests
+      - name: 4-hash determinism receipt is byte-stable across runs
+        # The receipt covers (kernel_trace, arbiter_trace, smp_recompose,
+        # ahtc_fold_expand). All four must match bit-for-bit between two
+        # consecutive runs — that is the directive's CI gate.
+        run: |
+          cargo test --test kernel_equivalence_tests -- determinism_receipt_is_byte_stable
+          cargo test --test kernel_equivalence_tests -- corpus_270_kernel_arbiter_equivalence
+      - name: P0.3.1 — performance truth (baseline vs AHTC-K)
+        run: cargo test --release --test performance_truth -- --nocapture
+      - name: P0.3.1 — strict 10× validation at 70 % duplication
+        # Hard CI gate. Build fails if scheduling reduction < 10×.
+        run: cargo test --release --test ahtc_k_real_10x_validation -- --nocapture
+      - name: P0.3.1 — kernel↔host timing envelope
+        run: cargo test --release --test timing_equivalence
+      - name: P0.3.2 — instrumentation completeness (INV-F)
+        run: cargo test --release --test instrumentation_completeness_tests -- --nocapture
+      - name: P0.3.2 — claim registry validation (INV-G)
+        # Every "10× / reduction / speedup / optimization / improvement"
+        # phrase in the public docs MUST resolve through proof_gate::CLAIMS.
+        run: cargo test --release --test claim_registry_validation_tests -- --nocapture
+      - name: P0.3.2 — entropy consistency (kernel↔host bytewise)
+        run: cargo test --release --test entropy_consistency_tests -- --nocapture
+      - name: P0.3.2 — kernel↔host event isomorphism (INV-H)
+        run: cargo test --release --test kernel_host_event_isomorphism_tests -- --nocapture
+      - name: P0.3.2 — AHTC-K reality constraint (INV-I + INV-J)
+        # AHTC-K must be a deterministic execution graph reduction
+        # operator. Prints "AHTC-K STATUS: VALID" on success.
+        run: cargo test --release --test ahtc_k_reality_constraint_tests -- --nocapture
+      - name: P0.4 — SMP determinism (INV-K + INV-M, host mirror)
+        run: cargo test --release --test smp_determinism -- --nocapture
+      - name: P0.4 — migration replay (INV-L)
+        run: cargo test --release --test migration_replay -- --nocapture
+      - name: P0.4 — cross-core invariants (INV-K + INV-M, stress)
+        run: cargo test --release --test cross_core_invariants -- --nocapture
+      - name: P0.4 — cache behavior under AHTC-K
+        run: cargo test --release --test cache_behavior -- --nocapture
+      - name: P0.4 — latency stability (envelope + monotone TSC proxy)
+        run: cargo test --release --test latency_stability -- --nocapture
+      - name: P0.4 — context-switch equivalence (host self-parity)
+        run: cargo test --release --test context_switch_equivalence -- --nocapture
+      - name: P0.4 — AHTC-K adversarial corpus (INV-N)
+        run: cargo test --release --test adversarial_fold_tests -- --nocapture
+      - name: P0.4 — performance claim integrity (banned-term gate)
+        run: cargo test --release --test performance_claim_integrity -- --nocapture
+      # ============================================================
+      # P0.5 — Verified Multicore Execution Fabric
+      # ============================================================
+      - name: P0.5 — live multicore hash (INV-O)
+        run: cargo test --release --test live_multicore_hash -- --nocapture
+      - name: P0.5 — migration ordering (INV-P)
+        run: cargo test --release --test migration_ordering -- --nocapture
+      - name: P0.5 — work steal determinism
+        run: cargo test --release --test work_steal_determinism -- --nocapture
+      - name: P0.5 — lock graph (INV-R)
+        run: cargo test --release --test lock_graph_tests -- --nocapture
+      - name: P0.5 — memory order (INV-S)
+        run: cargo test --release --test memory_order_consistency -- --nocapture
+      - name: P0.5 — contention stress
+        run: cargo test --release --test contention_stress -- --nocapture
+      - name: P0.5 — NUMA affinity
+        run: cargo test --release --test numa_affinity -- --nocapture
+      - name: P0.5 — cache locality reduction
+        run: cargo test --release --test cache_locality_reduction -- --nocapture
+      - name: P0.5 — migration cache penalty
+        run: cargo test --release --test migration_cache_penalty -- --nocapture
+      - name: P0.5 — corpus 1000 equivalence
+        run: cargo test --release --test corpus_1000_equivalence -- --nocapture
+      - name: P0.5 — replay divergence detection
+        run: cargo test --release --test replay_divergence_detection -- --nocapture
+      - name: P0.5 — hardware profile consistency
+        run: cargo test --release --test hardware_profile_consistency -- --nocapture
+      - name: P0.5 — claim language enforcement
+        run: cargo test --release --test claim_language_enforcement -- --nocapture
+      - name: P0.5 — receipt chain integrity (INV-Q)
+        run: cargo test --release --test receipt_chain_integrity -- --nocapture
+      - name: P0.5 — receipt replay consistency
+        run: cargo test --release --test receipt_replay_consistency -- --nocapture
+      - name: P0.5 — traceability hardened orphan check (extended columns)
+        working-directory: os/qratum-os
+        run: |
+          for col in "FORMAL MODEL" "REPLAY RECEIPT"; do
+            if ! grep -q "$col" spec/traceability_matrix.md; then
+              echo "::error::Traceability matrix missing column: $col"; exit 1
+            fi
+          done
+          if grep -E '^\| *[0-9]+' spec/traceability_matrix.md | grep -qE '\|[[:space:]]*\|'; then
+            echo "::error::Hardened traceability matrix contains an empty cell"
+            exit 1
+          fi
+      - name: P0.4 — traceability orphan check (no empty cells)
+        working-directory: os/qratum-os
+        run: |
+          if ! grep -q '^|' spec/traceability_matrix.md; then
+            echo "::error::Traceability matrix missing or empty"; exit 1
+          fi
+          # any '| *|' (empty cell) in a numbered data row is a hard fail
+          if grep -E '^\| *[0-9]+' spec/traceability_matrix.md | grep -qE '\|[[:space:]]*\|'; then
+            echo "::error::Traceability matrix contains an empty cell — orphan claim"
+            grep -E '^\| *[0-9]+' spec/traceability_matrix.md | grep -nE '\|[[:space:]]*\|'
+            exit 1
+          fi
+      - name: Confirm no manifest drift
+        # Re-run the manifest round-trip and fail if uncommitted diffs remain.
+        run: |
+          cargo test --test golden -- manifest_round_trip --nocapture
+          if ! git diff --quiet -- tests/golden_manifest.json tests/replay_expected; then
+            echo "::error::Golden manifest drift — commit the regenerated files."
+            git --no-pager diff -- tests/golden_manifest.json tests/replay_expected | head -200
+            exit 1
+          fi
+
+      # ============================================================
+      # P0.6 — Real Multicore + Hardware-Bound Determinism
+      # ============================================================
+      - name: P0.6 — real multicore replay (INV-V)
+        run: cargo test --release --test real_multicore_replay -- --nocapture
+      - name: P0.6 — x2APIC equivalence (INV-W)
+        run: cargo test --release --test x2apic_equivalence -- --nocapture
+      - name: P0.6 — deterministic work steal (INV-V)
+        run: cargo test --release --test deterministic_work_steal -- --nocapture
+      - name: P0.6 — replay checkpoint consistency (INV-U)
+        run: cargo test --release --test replay_checkpoint_consistency -- --nocapture
+      - name: P0.6 — receipt Merkle integrity (INV-X)
+        run: cargo test --release --test receipt_merkle_integrity -- --nocapture
+      - name: P0.6 — divergence envelope (INV-Y)
+        run: cargo test --release --test divergence_envelope_tests -- --nocapture
+      - name: P0.6 — migration epoch ordering
+        run: cargo test --release --test migration_epoch_ordering -- --nocapture
+      - name: P0.6 — interrupt receipt consistency
+        run: cargo test --release --test interrupt_receipt_consistency -- --nocapture
+      - name: P0.6 — replay barrier
+        run: cargo test --release --test replay_barrier_tests -- --nocapture
+      - name: P0.6 — hardware jitter bounds (INV-Y)
+        run: cargo test --release --test hardware_jitter_bounds -- --nocapture
+      - name: P0.6 — queue pressure stability
+        run: cargo test --release --test queue_pressure_stability -- --nocapture
+      - name: P0.6 — APIC latency consistency
+        run: cargo test --release --test apic_latency_consistency -- --nocapture
+      - name: P0.6 — cross topology determinism
+        run: cargo test --release --test cross_topology_determinism -- --nocapture
+      - name: P0.6 — receipt anchor integrity (INV-Z)
+        run: cargo test --release --test receipt_anchor_integrity -- --nocapture
+      - name: P0.6 — multicore AHTC-K fold stability
+        run: cargo test --release --test multicore_ahtc_fold_stability -- --nocapture
+      - name: P0.6 — replay resume consistency (INV-U)
+        run: cargo test --release --test replay_resume_consistency -- --nocapture
+      - name: P0.6 — execution epoch monotonicity
+        run: cargo test --release --test execution_epoch_monotonicity -- --nocapture
+      - name: P0.6 — deterministic receipt chain
+        run: cargo test --release --test deterministic_receipt_chain -- --nocapture
+      - name: P0.6 — cryptographic anchor validation (INV-Z)
+        run: cargo test --release --test cryptographic_anchor_validation -- --nocapture
+      - name: P0.6 — orphan claim detection
+        run: cargo test --release --test orphan_claim_detection -- --nocapture

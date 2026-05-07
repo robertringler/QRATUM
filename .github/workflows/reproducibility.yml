@@ -1,0 +1,39 @@
+name: reproducibility
+
+on:
+  push:
+    paths:
+      - 'os/qratum-os/**'
+      - '.github/workflows/reproducibility.yml'
+  pull_request:
+    paths:
+      - 'os/qratum-os/**'
+      - '.github/workflows/reproducibility.yml'
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: os/qratum-os
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bootstrap toolchain
+        run: bash tools/repro/bootstrap.sh
+      - name: One-command reproduction
+        run: bash tools/repro/reproduce.sh
+      - name: Receipt artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: p0.4-repro-receipt
+          path: |
+            os/qratum-os/out/repro/final_state.hash
+            os/qratum-os/out/repro/audit.hash
+            os/qratum-os/out/repro/replay_receipt.json
+            os/qratum-os/out/repro/performance_report.json
+      - name: Hashes are non-empty
+        run: |
+          test -s out/repro/final_state.hash || (echo "::error::final_state.hash empty" && exit 1)
+          test -s out/repro/audit.hash       || (echo "::error::audit.hash empty"       && exit 1)
+          test -s out/repro/replay_receipt.json
+          test -s out/repro/performance_report.json

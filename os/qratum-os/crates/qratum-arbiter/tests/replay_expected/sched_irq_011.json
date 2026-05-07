@@ -1,0 +1,15 @@
+{
+  "name": "sched_irq_011",
+  "verdict_codes": [
+    16,
+    19,
+    35,
+    17,
+    35,
+    17,
+    35,
+    17
+  ],
+  "lock_state_hash": "be1629b26bd57e1ded268391988b57a4394bcced1c58216649138c181f3fd2d4",
+  "audit_tail_hash": "c562c5c13fd1adac83da3ee89a53734c7ef0a5e56260acd739f5c2cf40b8a8f6"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "syscall_parity_kind6_002",
+  "verdict_codes": [
+    16
+  ],
+  "lock_state_hash": "ff77600a00a61a0cc340b3d55287932133d49d31373814aa0f18f1f05e6991cb",
+  "audit_tail_hash": "583624d8af212e276963021658641b3285c12f45633e2520975c15b2350a298a"
+}

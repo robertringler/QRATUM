@@ -1,0 +1,11 @@
+{
+  "name": "concurrent_002",
+  "verdict_codes": [
+    16,
+    18,
+    18,
+    19
+  ],
+  "lock_state_hash": "6420ef45c72260b3ebffd6549a0c53d3baf7c88e538eb8580760c72e9a260551",
+  "audit_tail_hash": "3521e8b8650624e1a7dbe16fb5c414174b5b2a9027036f6f538b84f5f9a18bdb"
+}

@@ -1,0 +1,62 @@
+[workspace]
+members = [".", "crates/qratum-arbiter"]
+resolver = "2"
+
+[package]
+name        = "qratum-os"
+version     = "0.0.1"
+edition     = "2021"
+authors     = ["QRATUM Kernel Implementation Swarm"]
+description = "QRATUM CORE OS — P0.3 deterministic substrate (UEFI x86_64)"
+license     = "Proprietary"
+publish     = false
+
+[[bin]]
+name = "qratum"
+path = "src/main.rs"
+
+# UEFI services available pre-ExitBootServices.
+[dependencies.uefi]
+version  = "0.31"
+default-features = false
+features = ["alloc", "global_allocator"]
+
+# x86_64 architecture primitives — GDT, IDT, paging, port I/O, MSRs.
+# Used post-ExitBootServices in kernel proper. Pinned to 0.15 for nightly compat.
+[dependencies.x86_64]
+version = "0.15"
+default-features = false
+features = ["instructions", "abi_x86_interrupt"]
+
+# Lock-free + spin primitives. No std, no alloc.
+[dependencies.spin]
+version = "0.9"
+default-features = false
+features = ["mutex", "spin_mutex", "lazy"]
+
+# Linked-list allocator for the kernel heap (manual, not #[global_allocator]
+# in P0.1 — the global slot is still owned by uefi pre-handoff).
+[dependencies.linked_list_allocator]
+version = "0.10"
+default-features = false
+features = ["use_spin"]
+
+# Legacy 8259 PIC driver (remap + EOI).
+[dependencies.pic8259]
+version = "0.11"
+default-features = false
+
+[profile.dev]
+panic           = "abort"
+opt-level       = 1
+overflow-checks = true
+debug           = true
+lto             = false
+
+[profile.release]
+panic           = "abort"
+opt-level       = "s"
+codegen-units   = 1
+lto             = true
+debug           = false
+strip           = "symbols"

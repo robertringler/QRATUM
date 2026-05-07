@@ -1,0 +1,7 @@
+# Default target is the UEFI cross. The host arbiter crate overrides this
+# in `crates/qratum-arbiter/.cargo/config.toml`. The unstable build-std
+# flags are NOT set here — they are passed by `scripts/build.ps1` via
+# `-Z build-std=...` so that std-using workspace members are unaffected.
+
+[build]
+target = "x86_64-unknown-uefi"

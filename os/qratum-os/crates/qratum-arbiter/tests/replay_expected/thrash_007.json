@@ -1,0 +1,20 @@
+{
+  "name": "thrash_007",
+  "verdict_codes": [
+    16,
+    16,
+    19,
+    35,
+    17,
+    35,
+    17,
+    35,
+    17,
+    35,
+    17,
+    35,
+    17
+  ],
+  "lock_state_hash": "973905ac2903d968ca4dff5aabaec2fff8365e5118c1249dd9a04aabf642f5eb",
+  "audit_tail_hash": "48c81378de80fb88b688ca5fc78ccecd692ac35417ca6f971035242ac73826ca"
+}

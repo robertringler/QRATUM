@@ -1,0 +1,11 @@
+{
+  "name": "escalate_024",
+  "verdict_codes": [
+    16,
+    18,
+    18,
+    19
+  ],
+  "lock_state_hash": "dd6aa12c7fb5f00a7c382c0066a0427e6a8d38abb0abc55152d5ac1e49b7b7d4",
+  "audit_tail_hash": "095dd27a5548cfc279834cee24bb2ed1d1c53c2f1ab8f484c3ef7ff153e4f6cd"
+}

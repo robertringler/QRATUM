@@ -1,0 +1,10 @@
+{
+  "name": "tie_012",
+  "verdict_codes": [
+    16,
+    17,
+    17
+  ],
+  "lock_state_hash": "e36d37b847da390c2a6d97c26ebfec0fbf0c282244013359eab628780f135937",
+  "audit_tail_hash": "4b5f7957c6f6fa96e5d3021b9ab57eadc34f3b4b9b00b10afe6c7af858cddce7"
+}

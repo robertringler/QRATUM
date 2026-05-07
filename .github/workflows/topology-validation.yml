@@ -1,0 +1,33 @@
+name: topology-validation
+
+on:
+  push:
+    paths:
+      - 'os/qratum-os/crates/qratum-arbiter/src/topology_model.rs'
+      - 'os/qratum-os/crates/qratum-arbiter/src/apic_model.rs'
+      - 'os/qratum-os/crates/qratum-arbiter/tests/cross_topology_determinism.rs'
+      - 'os/qratum-os/crates/qratum-arbiter/tests/x2apic_equivalence.rs'
+      - 'os/qratum-os/tools/hardware/collect_topology.*'
+      - '.github/workflows/topology-validation.yml'
+  pull_request:
+    paths:
+      - 'os/qratum-os/crates/qratum-arbiter/src/topology_model.rs'
+      - 'os/qratum-os/crates/qratum-arbiter/src/apic_model.rs'
+      - '.github/workflows/topology-validation.yml'
+
+jobs:
+  topology:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: os/qratum-os/crates/qratum-arbiter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: x2APIC ↔ xAPIC equivalence (INV-W)
+        run: cargo test --release --test x2apic_equivalence -- --nocapture
+      - name: Cross-topology determinism
+        run: cargo test --release --test cross_topology_determinism -- --nocapture
+      - name: Collect topology (informational)
+        working-directory: os/qratum-os
+        run: bash tools/hardware/collect_topology.sh

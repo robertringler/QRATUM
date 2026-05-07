@@ -1,0 +1,5 @@
+# Host arbiter crate — host default target. Workspace root no longer
+# forces UEFI build-std, so we just clear the inherited target override.
+
+[build]
+target = "x86_64-pc-windows-msvc"
