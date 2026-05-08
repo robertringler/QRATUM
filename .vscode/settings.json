@@ -2,5 +2,6 @@
     "python-envs.defaultEnvManager": "ms-python.python:conda",
     "python-envs.pythonProjects": [],
     "python-envs.defaultPackageManager": "ms-python.python:conda",
-    "azureTerraform.checkTerraformCmd": false
+    "azureTerraform.checkTerraformCmd": false,
+    "cmake.ignoreCMakeListsMissing": true
 }
