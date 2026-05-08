@@ -41,7 +41,7 @@ class Token:
         # Defensive: numpy arrays are mutable; freeze a copy so that
         # downstream mutation cannot perturb a token already in flight.
         if self.embedding is not None:
-            arr = np.asarray(self.embedding, dtype=float)
+            arr = np.array(self.embedding, dtype=float, copy=True)
             arr.setflags(write=False)
             object.__setattr__(self, "embedding", arr)
 
