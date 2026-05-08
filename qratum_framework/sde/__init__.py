@@ -22,8 +22,8 @@ Public API
   :class:`DriftEvent` — alarm-tier state machine
 * :class:`StreamingDriftEngine`, :class:`SDESnapshot`, :data:`HaltCallback`
   — top-level orchestrator
-* :class:`SDEConfig` — config sub-block extending
-  :class:`qratum_framework.config.PipelineProfile`
+* :class:`SDEConfig` — SDE configuration object stored separately from
+  :class:`qratum_framework.config.PipelineProfile`, keyed by profile name
 """
 
 from qratum_framework.sde.buffer import RollingWindowBuffer
