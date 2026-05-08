@@ -222,12 +222,16 @@ class AlarmEvaluator:
             self._candidate = None
             self._candidate_count = 0
             return self._current
-        # Escalation candidate: require N_debounce consecutive hits at
-        # or above the candidate tier.
-        if self._candidate is None or candidate.rank != self._candidate.rank:
+        # Escalation candidate: require N_debounce consecutive hits above
+        # the current tier, with each hit at or above the pending tier.
+        # Stronger readings must continue an in-flight lower-tier debounce
+        # window rather than resetting it.
+        if self._candidate is None:
             self._candidate = candidate
             self._candidate_count = 1
         else:
+            if candidate.rank < self._candidate.rank:
+                self._candidate = candidate
             self._candidate_count += 1
         if self._candidate_count >= self._n_debounce:
             new_tier = self._candidate
