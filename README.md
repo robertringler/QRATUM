@@ -25,7 +25,7 @@ Determinism is a hard requirement: the package never reads the global RNG, never
 
 ## 2. System Architecture
 
-QRATUM is composed of three layers under `qratum_framework/observability/`. Each layer is independently usable and exposes a stable Python API plus a CLI subcommand.
+QRATUM exposes both a top-level operator spine and an observability subsystem. The public API still includes the operator commands `run`, `simulate`, `ledger`, `falsify`, and `verify`, and the CLI also includes `qratum stream`. The three layers under `qratum_framework/observability/` described below are the observability layers specifically; each is independently usable and exposes a stable Python API plus a CLI subcommand.
 
 ### Layer A — Drift Engine (`qratum_framework/observability/drift/`)
 
