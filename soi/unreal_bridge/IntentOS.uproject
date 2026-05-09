@@ -1,0 +1,43 @@
+{
+    "FileVersion": 3,
+    "EngineAssociation": "5.7.4",
+    "Category": "",
+    "Description": "QRATUM IntentOS - UE5.7.4 Edition",
+    "Modules": [
+        {
+            "Name": "IntentOS",
+            "Type": "Runtime",
+            "LoadingPhase": "Default",
+            "AdditionalDependencies": [
+                "Engine",
+                "CoreUObject"
+            ]
+        },
+        {
+            "Name": "QRATUM",
+            "Type": "Runtime",
+            "LoadingPhase": "Default",
+            "AdditionalDependencies": [
+                "Engine",
+                "CoreUObject",
+                "UMG",
+                "CommonUI",
+                "Niagara"
+            ]
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "CommonUI",
+            "Enabled": true
+        },
+        {
+            "Name": "Niagara",
+            "Enabled": true
+        },
+        {
+            "Name": "PCG",
+            "Enabled": true
+        }
+    ]
+}
