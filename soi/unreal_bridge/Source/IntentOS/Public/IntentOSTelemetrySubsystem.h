@@ -5,7 +5,7 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "SoiTelemetrySubsystem.generated.h"
+#include "IntentOSTelemetrySubsystem.generated.h"
 
 #ifndef SOI_RUST_AVAILABLE
 #define SOI_RUST_AVAILABLE 0
@@ -56,7 +56,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnZoneHeatUpdate, int32, ZoneIndex
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProofVerified, FString, ProofHash);
 
 /**
- * SOI Telemetry Subsystem
+ * IntentOS Telemetry Subsystem
  * 
  * High-performance bridge between Rust telemetry core and Unreal Engine.
  * Provides real-time access to QRADLE state, Aethernet consensus,
@@ -68,7 +68,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProofVerified, FString, ProofHash
  * - Unreal UI: Niagara particles, CommonUI, Materials
  */
 UCLASS()
-class SOIGAME_API USoiTelemetrySubsystem : public UGameInstanceSubsystem
+class INTENTOS_API UIntentOSTelemetrySubsystem : public UGameInstanceSubsystem
 {
     GENERATED_BODY()
 

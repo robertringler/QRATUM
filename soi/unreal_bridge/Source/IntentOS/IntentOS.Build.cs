@@ -1,4 +1,4 @@
-// SoiGame.Build.cs
+// IntentOS.Build.cs
 // QRATUM Sovereign Operations Interface — UE5 module.
 // Rust telemetry core linkage is GATED on the presence of the prebuilt
 // shared library on disk. If absent, the module compiles with
@@ -8,9 +8,9 @@
 using System.IO;
 using UnrealBuildTool;
 
-public class SoiGame : ModuleRules
+public class IntentOS : ModuleRules
 {
-    public SoiGame(ReadOnlyTargetRules Target) : base(Target)
+    public IntentOS(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 

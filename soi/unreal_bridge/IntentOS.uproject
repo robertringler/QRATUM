@@ -1,11 +1,11 @@
 {
     "FileVersion": 3,
-    "EngineAssociation": "5.7",
+    "EngineAssociation": "5.7.4",
     "Category": "",
     "Description": "QRATUM Sovereign Operations Interface - UE5 Edition",
     "Modules": [
         {
-            "Name": "SoiGame",
+            "Name": "IntentOS",
             "Type": "Runtime",
             "LoadingPhase": "Default",
             "AdditionalDependencies": [

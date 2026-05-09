@@ -114,25 +114,25 @@ fi
 echo ""
 
 # Check Unreal files
-if [ -f "$SCRIPT_DIR/SoiGame.uproject" ]; then
+if [ -f "$SCRIPT_DIR/IntentOS.uproject" ]; then
     success "UE5 project file found"
 else
     error "UE5 project file missing"
 fi
 
-if [ -f "$SCRIPT_DIR/Source/SoiGame/Public/SoiTelemetrySubsystem.h" ]; then
+if [ -f "$SCRIPT_DIR/Source/IntentOS/Public/IntentOSTelemetrySubsystem.h" ]; then
     success "C++ header found"
 else
     error "C++ header missing"
 fi
 
-if [ -f "$SCRIPT_DIR/Source/SoiGame/Private/SoiTelemetrySubsystem.cpp" ]; then
+if [ -f "$SCRIPT_DIR/Source/IntentOS/Private/IntentOSTelemetrySubsystem.cpp" ]; then
     success "C++ implementation found"
 else
     error "C++ implementation missing"
 fi
 
-if [ -f "$SCRIPT_DIR/Source/SoiGame/SoiGame.Build.cs" ]; then
+if [ -f "$SCRIPT_DIR/Source/IntentOS/IntentOS.Build.cs" ]; then
     success "UE5 Build.cs found"
 else
     error "UE5 Build.cs missing"
@@ -189,7 +189,7 @@ if [ $ERRORS -eq 0 ] && [ $WARNINGS -eq 0 ]; then
     echo ""
     echo "Next steps:"
     echo "  1. Build Rust core: cd rust_core/soi_telemetry_core && ./build.sh"
-    echo "  2. Open SoiGame.uproject in Unreal Editor"
+    echo "  2. Open IntentOS.uproject in Unreal Editor"
     echo "  3. Follow BLUEPRINT_IMPLEMENTATION_GUIDE.md"
     exit 0
 elif [ $ERRORS -eq 0 ]; then

@@ -1,11 +1,11 @@
-// SoiTelemetrySubsystem.cpp
+// IntentOSTelemetrySubsystem.cpp
 // Copyright QRATUM Platform. All Rights Reserved.
 
-#include "SoiTelemetrySubsystem.h"
+#include "IntentOSTelemetrySubsystem.h"
 #include "TimerManager.h"
 #include "Engine/World.h"
 
-void USoiTelemetrySubsystem::Initialize(FSubsystemCollectionBase& Collection)
+void UIntentOSTelemetrySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
     Super::Initialize(Collection);
     
@@ -19,7 +19,7 @@ void USoiTelemetrySubsystem::Initialize(FSubsystemCollectionBase& Collection)
     }
 }
 
-void USoiTelemetrySubsystem::Deinitialize()
+void UIntentOSTelemetrySubsystem::Deinitialize()
 {
     // Clean up timer
     if (PollTimerHandle.IsValid())
@@ -42,7 +42,7 @@ void USoiTelemetrySubsystem::Deinitialize()
     Super::Deinitialize();
 }
 
-void USoiTelemetrySubsystem::ConnectToAethernet(FString Endpoint)
+void UIntentOSTelemetrySubsystem::ConnectToAethernet(FString Endpoint)
 {
     UE_LOG(LogTemp, Log, TEXT("[SOI] Connecting to Aethernet: %s"), *Endpoint);
     
@@ -60,7 +60,7 @@ void USoiTelemetrySubsystem::ConnectToAethernet(FString Endpoint)
         World->GetTimerManager().SetTimer(
             PollTimerHandle,
             this,
-            &USoiTelemetrySubsystem::PollRustState,
+            &UIntentOSTelemetrySubsystem::PollRustState,
             PollInterval,
             true // Loop
         );
@@ -69,7 +69,7 @@ void USoiTelemetrySubsystem::ConnectToAethernet(FString Endpoint)
     UE_LOG(LogTemp, Log, TEXT("[SOI] Connected and polling at %.2f Hz"), 1.0f / PollInterval);
 }
 
-void USoiTelemetrySubsystem::PollRustState()
+void UIntentOSTelemetrySubsystem::PollRustState()
 {
     if (!bIsConnected || !soi_is_initialized())
     {
@@ -126,7 +126,7 @@ void USoiTelemetrySubsystem::PollRustState()
     }
 }
 
-int64 USoiTelemetrySubsystem::GetCurrentEpoch() const
+int64 UIntentOSTelemetrySubsystem::GetCurrentEpoch() const
 {
     if (!bIsConnected)
     {
@@ -135,7 +135,7 @@ int64 USoiTelemetrySubsystem::GetCurrentEpoch() const
     return static_cast<int64>(soi_get_epoch());
 }
 
-float USoiTelemetrySubsystem::GetZoneHeat(int32 ZoneIndex) const
+float UIntentOSTelemetrySubsystem::GetZoneHeat(int32 ZoneIndex) const
 {
     if (!bIsConnected || ZoneIndex < 0 || ZoneIndex >= 4)
     {
@@ -144,7 +144,7 @@ float USoiTelemetrySubsystem::GetZoneHeat(int32 ZoneIndex) const
     return soi_get_zone_heat(static_cast<size_t>(ZoneIndex));
 }
 
-float USoiTelemetrySubsystem::GetSlashingVector() const
+float UIntentOSTelemetrySubsystem::GetSlashingVector() const
 {
     if (!bIsConnected)
     {
@@ -153,7 +153,7 @@ float USoiTelemetrySubsystem::GetSlashingVector() const
     return soi_get_slashing_vector();
 }
 
-FString USoiTelemetrySubsystem::GetLatestProof() const
+FString UIntentOSTelemetrySubsystem::GetLatestProof() const
 {
     if (!bIsConnected)
     {
@@ -165,7 +165,7 @@ FString USoiTelemetrySubsystem::GetLatestProof() const
     return FString(UTF8_TO_TCHAR(ProofBuffer));
 }
 
-FString USoiTelemetrySubsystem::GetStateJSON() const
+FString UIntentOSTelemetrySubsystem::GetStateJSON() const
 {
     if (!bIsConnected)
     {
@@ -183,7 +183,7 @@ FString USoiTelemetrySubsystem::GetStateJSON() const
     return TEXT("{}");
 }
 
-bool USoiTelemetrySubsystem::IsConnected() const
+bool UIntentOSTelemetrySubsystem::IsConnected() const
 {
     return bIsConnected && soi_is_initialized();
 }
