@@ -1,0 +1,56 @@
+name: Build & Package IntentOS (Linux)
+
+on:
+  push:
+    branches: [ intentos/rename-and-autoboot ]
+  pull_request:
+    branches: [ intentos/rename-and-autoboot ]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Unreal Engine 5.7.4
+      # NOTE: Requires Epic Games GitHub access token for private UE repo
+      # Set GH_TOKEN secret with Epic Games GitHub token
+      # Or use pre-installed UE on runner (if available)
+      run: |
+        # Placeholder: Download and setup UE 5.7.4
+        # This requires Epic Games authentication
+        echo "UE 5.7.4 setup required - see docs/ENGINE_SETUP.md"
+        # For now, assume UE is available at ~/UnrealEngine/UE_5.7
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential clang libgtk-3-dev libx11-dev libxrandr-dev libxss1 libgconf-2-4 libasound2-dev libpulse-dev libfreetype6-dev libfontconfig1-dev
+
+    - name: Generate project files
+      run: |
+        ~/UnrealEngine/UE_5.7/Engine/Build/BatchFiles/RunUAT.sh Build -project="soi/unreal_bridge/IntentOS.uproject" -platform=Linux -clientconfig=Development -build
+
+    - name: Build project
+      run: |
+        ~/UnrealEngine/UE_5.7/Engine/Build/BatchFiles/Linux/Build.sh IntentOS Linux Development "soi/unreal_bridge/IntentOS.uproject" -WaitMutex
+
+    - name: Package game
+      run: |
+        ~/UnrealEngine/UE_5.7/Engine/Build/BatchFiles/RunUAT.sh BuildCookRun -project="soi/unreal_bridge/IntentOS.uproject" -platform=Linux -clientconfig=Shipping -serverconfig=Shipping -cook -build -stage -pak -archive -archivedirectory="PackagedGame"
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: IntentOS-Linux
+        path: PackagedGame/
+
+    - name: Run smoke test
+      run: |
+        # Placeholder: Run packaged executable for 60s and check logs
+        # This would require the packaged binary to be executable
+        echo "Smoke test: Launch IntentOS.sh for 60 seconds"
+        # cd PackagedGame/Linux && timeout 60 ./IntentOS.sh -log || true
+        # grep -q "IntentOS: Initialized" Saved/Logs/IntentOS.log && echo "Smoke test passed" || echo "Smoke test failed"

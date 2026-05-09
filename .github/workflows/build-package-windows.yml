@@ -1,0 +1,51 @@
+name: Build & Package IntentOS (Windows)
+
+on:
+  push:
+    branches: [ intentos/rename-and-autoboot ]
+  pull_request:
+    branches: [ intentos/rename-and-autoboot ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Unreal Engine 5.7.4
+      # NOTE: Requires Epic Games GitHub access token for private UE repo
+      # Set GH_TOKEN secret with Epic Games GitHub token
+      # Or use pre-installed UE on runner (if available)
+      run: |
+        # Placeholder: Download and setup UE 5.7.4
+        # This requires Epic Games authentication
+        echo "UE 5.7.4 setup required - see docs/ENGINE_SETUP.md"
+        # For now, assume UE is available at C:\Program Files\Epic Games\UE_5.7
+
+    - name: Generate project files
+      run: |
+        & "C:\Program Files\Epic Games\UE_5.7\Engine\Build\BatchFiles\RunUAT.bat" Build -project="soi\unreal_bridge\IntentOS.uproject" -platform=Win64 -clientconfig=Development -build
+
+    - name: Build project
+      run: |
+        & "C:\Program Files\Epic Games\UE_5.7\Engine\Build\BatchFiles\Build.bat" IntentOS Win64 Development "soi\unreal_bridge\IntentOS.uproject" -WaitMutex -FromMsBuild
+
+    - name: Package game
+      run: |
+        & "C:\Program Files\Epic Games\UE_5.7\Engine\Build\BatchFiles\RunUAT.bat" BuildCookRun -project="soi\unreal_bridge\IntentOS.uproject" -platform=Win64 -clientconfig=Shipping -serverconfig=Shipping -cook -build -stage -pak -archive -archivedirectory="PackagedGame"
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: IntentOS-Windows
+        path: PackagedGame/
+
+    - name: Run smoke test
+      run: |
+        # Placeholder: Run packaged executable for 60s and check logs
+        # This would require the packaged binary to be executable
+        echo "Smoke test: Launch IntentOS.exe for 60 seconds"
+        # Start-Process -FilePath "PackagedGame\Windows\IntentOS.exe" -ArgumentList "-log" -Wait -Timeout 60000
+        echo "Check logs for 'IntentOS: Initialized'"
