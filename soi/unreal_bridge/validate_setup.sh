@@ -5,7 +5,7 @@
 set +e
 
 echo "╔══════════════════════════════════════════════════════════╗"
-echo "║  QRATUM SOI - UE5 Migration Setup Validator             ║"
+echo "║  QRATUM IntentOS - UE5 Setup Validator                  ║"
 echo "╚══════════════════════════════════════════════════════════╝"
 echo ""
 

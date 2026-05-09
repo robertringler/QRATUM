@@ -1,6 +1,6 @@
-# Quick Start: SOI Unreal Engine 5 Migration
+# Quick Start: IntentOS Unreal Engine 5.7.4 Setup
 
-This guide will get you up and running with the SOI UE5 migration in 10 minutes.
+This guide will get you up and running with IntentOS in 10 minutes.
 
 ## TL;DR
 
@@ -13,11 +13,16 @@ cd soi/unreal_bridge
 cd ../rust_core/soi_telemetry_core
 ./build.sh
 
-# 3. Open in Unreal Editor (requires UE5 5.3+)
-# Open: soi/unreal_bridge/SoiGame.uproject
+# 3. Open in Unreal Editor (requires UE5 5.7.4)
+# Open: soi/unreal_bridge/IntentOS.uproject
 
-# 4. Follow the Blueprint guide
-# Read: soi/unreal_bridge/BLUEPRINT_IMPLEMENTATION_GUIDE.md
+# 4. Build and package
+# Windows: .\package_windows.ps1
+# Linux: ./package_linux.sh
+
+# 5. Install auto-boot
+# Windows: .\install_win.ps1
+# Linux: ./install_linux.sh
 ```
 
 ## Prerequisites (5 minutes)
@@ -28,9 +33,9 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
 ```
 
-### 2. Install Unreal Engine 5.3+
+### 2. Install Unreal Engine 5.7.4
 - Download Epic Games Launcher: https://www.unrealengine.com/
-- Install Unreal Engine 5.3 or later
+- Install Unreal Engine 5.7.4 (exact version required)
 
 ### 3. Install C++ Build Tools
 
@@ -82,22 +87,72 @@ Expected output:
 
 ### Step 3: Open UE5 Project
 
-1. Launch Unreal Engine 5
+1. Launch Unreal Engine 5.7.4
 2. Click "Browse"
-3. Navigate to `soi/unreal_bridge/SoiGame.uproject`
+3. Navigate to `soi/unreal_bridge/IntentOS.uproject`
 4. Click "Open"
 
 When prompted to rebuild modules:
 - Click "Yes"
 - Wait for compilation (~2-5 minutes)
 
-### Step 4: Test the Connection
+### Step 4: Build and Package
 
-In UE5 Editor:
+**Windows:**
+```powershell
+# Build in UE5 Editor or via command line
+# Then package:
+.\package_windows.ps1
+# Creates: IntentOS_Windows.zip and optional installer
+```
 
-1. Open "Edit → Project Settings"
-2. Search for "SOI"
-3. Verify Subsystem is registered
+**Linux:**
+```bash
+# Build in UE5 Editor or via command line
+# Then package:
+./package_linux.sh
+# Creates: IntentOS_Linux.tar.gz
+```
+
+### Step 5: Install Auto-Boot
+
+**Windows:**
+```powershell
+# Install auto-start
+.\install_win.ps1
+# Creates shortcut in Startup folder
+
+# Uninstall
+.\uninstall_win.ps1
+```
+
+**Linux (Desktop):**
+```bash
+# Install auto-start
+./install_linux.sh
+# Creates ~/.config/autostart/IntentOS.desktop
+
+# Uninstall
+./uninstall_linux.sh
+```
+
+**Linux (System/Kiosk):**
+```bash
+# Package with systemd support
+./package_linux.sh . true
+# Then install system-wide:
+sudo cp IntentOS_Linux/intentos.service /etc/systemd/system/
+sudo systemctl enable intentos@$USER.service
+sudo systemctl start intentos@$USER.service
+```
+
+## CI/CD
+
+GitHub Actions workflows are configured for automated builds:
+- `build-package-windows.yml`: Windows builds and packaging
+- `build-package-linux.yml`: Linux builds and packaging
+
+Requires Epic Games GitHub token for UE 5.7.4 access.
 
 Or in Blueprint:
 1. Create new Blueprint Actor
