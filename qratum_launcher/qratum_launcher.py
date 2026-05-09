@@ -60,9 +60,7 @@ except ImportError:
 # ----------------------------------------------------------------------------
 # Paths
 # ----------------------------------------------------------------------------
-REPO_ROOT = Path(__file__).resolve().parent.parent
-UE_PROJECT_DEFAULT = REPO_ROOT / "soi" / "unreal_bridge" / "SoiGame.uproject"
-UE_EDITOR_DEFAULT = Path(r"C:\Program Files\Epic Games\UE_5.7\Engine\Binaries\Win64\UnrealEditor.exe")
+UE_PROJECT_DEFAULT = REPO_ROOT / "soi" / "unreal_bridge" / "IntentOS.uproject"
 UE_CMD_DEFAULT = Path(r"C:\Program Files\Epic Games\UE_5.7\Engine\Binaries\Win64\UnrealEditor-Cmd.exe")
 
 
