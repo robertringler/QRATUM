@@ -46,12 +46,14 @@ from pathlib import Path
 # ----------------------------------------------------------------------------
 try:
     import psutil  # type: ignore
+
     HAVE_PSUTIL = True
 except ImportError:
     HAVE_PSUTIL = False
 
 try:
     import keyboard  # type: ignore
+
     HAVE_KEYBOARD = True
 except ImportError:
     HAVE_KEYBOARD = False
@@ -62,8 +64,12 @@ except ImportError:
 # ----------------------------------------------------------------------------
 REPO_ROOT = Path(__file__).resolve().parent.parent
 UE_PROJECT_DEFAULT = REPO_ROOT / "soi" / "unreal_bridge" / "SoiGame.uproject"
-UE_EDITOR_DEFAULT = Path(r"C:\Program Files\Epic Games\UE_5.7\Engine\Binaries\Win64\UnrealEditor.exe")
-UE_CMD_DEFAULT = Path(r"C:\Program Files\Epic Games\UE_5.7\Engine\Binaries\Win64\UnrealEditor-Cmd.exe")
+UE_EDITOR_DEFAULT = Path(
+    r"C:\Program Files\Epic Games\UE_5.7\Engine\Binaries\Win64\UnrealEditor.exe"
+)
+UE_CMD_DEFAULT = Path(
+    r"C:\Program Files\Epic Games\UE_5.7\Engine\Binaries\Win64\UnrealEditor-Cmd.exe"
+)
 
 
 def bridge_dir() -> Path:
@@ -148,9 +154,7 @@ class UnrealSupervisor:
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                     creationflags=(
-                        subprocess.CREATE_NEW_PROCESS_GROUP
-                        if sys.platform == "win32"
-                        else 0
+                        subprocess.CREATE_NEW_PROCESS_GROUP if sys.platform == "win32" else 0
                     ),
                 )
                 self.started_at = time.time()
@@ -234,19 +238,22 @@ def state_publisher(sup: UnrealSupervisor, stop: threading.Event) -> None:
     while not stop.is_set():
         try:
             from autonomy import AUTONOMY
+
             autonomy_snap = AUTONOMY.snapshot()
-        except Exception:                               # noqa: BLE001
+        except Exception:  # noqa: BLE001
             autonomy_snap = {}
         try:
             from console import HUB as _CONSOLE_HUB
+
             console_snap = _CONSOLE_HUB.snapshot()
-        except Exception:                               # noqa: BLE001
+        except Exception:  # noqa: BLE001
             console_snap = {}
         try:
             from arbitration import ARBITER as _ARBITER
+
             _ARBITER.sweep()
             arbitration_snap = _ARBITER.snapshot()
-        except Exception:                               # noqa: BLE001
+        except Exception:  # noqa: BLE001
             arbitration_snap = {}
         payload = {
             "v": PROTOCOL_VERSION,
@@ -257,9 +264,9 @@ def state_publisher(sup: UnrealSupervisor, stop: threading.Event) -> None:
             "log_file": str(LOG_FILE),
             "intent_broker": {
                 "subscribers": BROKER.subscriber_count(),
-                "published":   BROKER.published_count,
-                "delivered":   BROKER.delivered_count,
-                "dropped":     dict(BROKER.dropped),
+                "published": BROKER.published_count,
+                "delivered": BROKER.delivered_count,
+                "dropped": dict(BROKER.dropped),
                 "queue_depth": BROKER.queue_depth(),
                 "replay_log_bytes": REPLAY.size_bytes(),
             },
@@ -318,7 +325,6 @@ def watchdog(sup: UnrealSupervisor, stop: threading.Event) -> None:
 # QRATUM CORE OS v1.0 — protocol, validation, replay, broker
 # Refer to QC_CORE_OS_SPEC.md for the canonical spec.
 # ----------------------------------------------------------------------------
-import queue as _queue
 import re
 import uuid
 from collections import deque
@@ -328,12 +334,19 @@ PROTOCOL_VERSION = "1.0"
 # §2.1 schema
 INTENT_NAME_RE = re.compile(r"^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*){1,4}$")
 ALLOWED_NAMESPACES = {
-    "sim", "actor", "vehicle", "ai", "ui", "param", "qratum", "debug",
+    "sim",
+    "actor",
+    "vehicle",
+    "ai",
+    "ui",
+    "param",
+    "qratum",
+    "debug",
 }
-MAX_LINE_BYTES   = 65_536
+MAX_LINE_BYTES = 65_536
 MAX_PARAMS_DEPTH = 8
-MAX_PARAMS_KEYS  = 256
-MAX_STRING_LEN   = 8 * 1024
+MAX_PARAMS_KEYS = 256
+MAX_STRING_LEN = 8 * 1024
 ALLOWED_PARAM_TYPES = (str, int, float, bool, type(None), list, dict)
 
 # §4 priority lanes (per subscriber)
@@ -341,16 +354,17 @@ LANE_CAPS = {"high": 64, "normal": 512, "low": 256}
 LANE_RATIO = (("high", 4), ("normal", 2), ("low", 1))
 
 # §3 result cache
-RESULT_TTL_S    = 600.0
-RESULT_CAP      = 4096
+RESULT_TTL_S = 600.0
+RESULT_CAP = 4096
 
 # §1 heartbeat + staleness
-HEARTBEAT_PERIOD_S   = 5.0
-SUBSCRIBER_STALE_S   = 15.0
+HEARTBEAT_PERIOD_S = 5.0
+SUBSCRIBER_STALE_S = 15.0
 
 
 class ValidationError(Exception):
     """Raised by IntentValidator. Carries a stable error code."""
+
     def __init__(self, code: str, detail: str = ""):
         super().__init__(f"{code}: {detail}" if detail else code)
         self.code = code
@@ -558,9 +572,10 @@ class IntentBroker:
         # ---- arbitration gate (QC_CORE_OS_ARBITRATION_V1.md) -----------
         try:
             from arbitration import ARBITER as _ARBITER
+
             validated = _ARBITER.tag(validated)
             verdict = _ARBITER.evaluate(validated)
-        except Exception:                               # noqa: BLE001
+        except Exception:  # noqa: BLE001
             verdict = None
 
         line = json.dumps(validated, separators=(",", ":")) + "\n"
@@ -571,25 +586,33 @@ class IntentBroker:
         if verdict is not None and not verdict.win:
             # Losing intents do not reach UE. Synthesize a result so the
             # originator (console / autonomy critic) always sees a verdict.
-            REPLAY.write({"kind": "arbitration",
-                          "id": validated["id"],
-                          "win": False,
-                          "reason": verdict.reason,
-                          "lock_key": verdict.lock_key,
-                          "holder": verdict.holder_authority})
+            REPLAY.write(
+                {
+                    "kind": "arbitration",
+                    "id": validated["id"],
+                    "win": False,
+                    "reason": verdict.reason,
+                    "lock_key": verdict.lock_key,
+                    "holder": verdict.holder_authority,
+                }
+            )
             self.published_count += 1
-            self.store_result({
-                "v": validated.get("v", "1.0"),
-                "type": "result",
-                "id": validated["id"],
-                "ok": False,
-                "error": "E_ARBITRATION_LOSS",
-                "data": {"reason": verdict.reason,
-                         "lock_key": verdict.lock_key,
-                         "holder": verdict.holder_authority},
-                "dispatch_ms": 0.0,
-                "ts": time.time(),
-            })
+            self.store_result(
+                {
+                    "v": validated.get("v", "1.0"),
+                    "type": "result",
+                    "id": validated["id"],
+                    "ok": False,
+                    "error": "E_ARBITRATION_LOSS",
+                    "data": {
+                        "reason": verdict.reason,
+                        "lock_key": verdict.lock_key,
+                        "holder": verdict.holder_authority,
+                    },
+                    "dispatch_ms": 0.0,
+                    "ts": time.time(),
+                }
+            )
             return 0, ["arbitration_loss"]
 
         drops: list[str] = []
@@ -600,8 +623,14 @@ class IntentBroker:
                 if not ok:
                     drops.append(reason or "")
                     self.dropped[priority] += 1
-                    REPLAY.write({"kind": "drop", "id": validated["id"],
-                                  "priority": priority, "reason": reason})
+                    REPLAY.write(
+                        {
+                            "kind": "drop",
+                            "id": validated["id"],
+                            "priority": priority,
+                            "reason": reason,
+                        }
+                    )
                     continue
                 delivered += 1
                 s.delivered += 1
@@ -609,8 +638,14 @@ class IntentBroker:
                 if reason and reason.startswith("dropped"):
                     # accepted but evicted an older entry — count + log it.
                     self.dropped[priority] += 1
-                    REPLAY.write({"kind": "drop", "id": validated["id"],
-                                  "priority": priority, "reason": reason})
+                    REPLAY.write(
+                        {
+                            "kind": "drop",
+                            "id": validated["id"],
+                            "priority": priority,
+                            "reason": reason,
+                        }
+                    )
             self._cv.notify_all()
         self.published_count += 1
         return delivered, drops
@@ -653,8 +688,9 @@ class IntentBroker:
         # v1.2 — fan out to console hub if present (decoupled, non-blocking).
         try:
             from console import HUB as _CONSOLE_HUB
+
             _CONSOLE_HUB.on_result(result)
-        except Exception:                               # noqa: BLE001
+        except Exception:  # noqa: BLE001
             pass
 
     def query_result(self, rid: str) -> dict | None:
@@ -669,11 +705,17 @@ BROKER = IntentBroker()
 def heartbeat_publisher(stop: threading.Event) -> None:
     """§1 — emits heartbeat lines into every subscriber's high-priority lane."""
     while not stop.is_set():
-        beat = json.dumps({
-            "v": PROTOCOL_VERSION,
-            "type": "heartbeat",
-            "ts": time.time(),
-        }, separators=(",", ":")) + "\n"
+        beat = (
+            json.dumps(
+                {
+                    "v": PROTOCOL_VERSION,
+                    "type": "heartbeat",
+                    "ts": time.time(),
+                },
+                separators=(",", ":"),
+            )
+            + "\n"
+        )
         with BROKER._cv:  # type: ignore[attr-defined]
             for s in BROKER._subs:  # type: ignore[attr-defined]
                 # Heartbeats bypass drop accounting; if the lane is full we skip.
@@ -763,8 +805,9 @@ def handle_client(conn: socket.socket, sup: UnrealSupervisor, stop: threading.Ev
             if not isinstance(intent, dict):
                 name = req.get("name")
                 if not name:
-                    _send_line(conn, {"ok": False, "error": "E_SCHEMA",
-                                      "detail": "missing intent.name"})
+                    _send_line(
+                        conn, {"ok": False, "error": "E_SCHEMA", "detail": "missing intent.name"}
+                    )
                     return
                 intent = {
                     "v": PROTOCOL_VERSION,
@@ -781,26 +824,29 @@ def handle_client(conn: socket.socket, sup: UnrealSupervisor, stop: threading.Ev
                 _send_line(conn, {"ok": False, "error": ve.code, "detail": ve.detail})
                 return
             delivered, drops = BROKER.publish(validated)
-            _send_line(conn, {
-                "ok": True,
-                "id": validated["id"],
-                "seq": validated["seq"],
-                "delivered": delivered,
-                "drops": drops,
-                "subscribers": BROKER.subscriber_count(),
-            })
+            _send_line(
+                conn,
+                {
+                    "ok": True,
+                    "id": validated["id"],
+                    "seq": validated["seq"],
+                    "delivered": delivered,
+                    "drops": drops,
+                    "subscribers": BROKER.subscriber_count(),
+                },
+            )
 
         elif cmd == "query_result":
             rid = req.get("id", "")
             res = BROKER.query_result(rid) if rid else None
             if res is None:
-                _send_line(conn, {"ok": False, "error": "E_PENDING",
-                                  "detail": "no result yet"})
+                _send_line(conn, {"ok": False, "error": "E_PENDING", "detail": "no result yet"})
             else:
                 _send_line(conn, {"ok": True, "result": res})
 
         elif cmd == "submit_goal":
             from autonomy import AUTONOMY
+
             spec = req.get("goal") if isinstance(req.get("goal"), dict) else req
             ok, gid, err = AUTONOMY.submit(spec)
             if ok:
@@ -810,22 +856,26 @@ def handle_client(conn: socket.socket, sup: UnrealSupervisor, stop: threading.Ev
 
         elif cmd == "goal_status":
             from autonomy import AUTONOMY
+
             gid = req.get("goal_id") or req.get("id")
             _send_line(conn, AUTONOMY.status(gid))
 
         elif cmd == "cancel_goal":
             from autonomy import AUTONOMY
+
             gid = req.get("goal_id") or req.get("id", "")
             ok = AUTONOMY.cancel(gid) if gid else False
             _send_line(conn, {"ok": ok})
 
         elif cmd == "kill_autonomy":
             from autonomy import AUTONOMY
+
             n = AUTONOMY.kill_all()
             _send_line(conn, {"ok": True, "killed": n})
 
         elif cmd == "console_send":
             from console import HUB as CONSOLE_HUB
+
             cid = req.get("client_id", "")
             raw = req.get("raw", "")
             allow_dbg = bool(req.get("allow_debug", False))
@@ -836,10 +886,17 @@ def handle_client(conn: socket.socket, sup: UnrealSupervisor, stop: threading.Ev
 
         elif cmd == "console_subscribe":
             from console import HUB as CONSOLE_HUB
+
             client_v = req.get("v", PROTOCOL_VERSION)
             if client_v != PROTOCOL_VERSION:
-                _send_line(conn, {"ok": False, "error": "version_mismatch",
-                                  "detail": f"server={PROTOCOL_VERSION}"})
+                _send_line(
+                    conn,
+                    {
+                        "ok": False,
+                        "error": "version_mismatch",
+                        "detail": f"server={PROTOCOL_VERSION}",
+                    },
+                )
                 return
 
             send_lock = threading.Lock()
@@ -855,11 +912,9 @@ def handle_client(conn: socket.socket, sup: UnrealSupervisor, stop: threading.Ev
 
             ok, cid = CONSOLE_HUB.attach(_sender, req.get("client_id"))
             if not ok:
-                _send_line(conn, {"ok": False, "error": "E_BUSY",
-                                  "detail": "max console clients"})
+                _send_line(conn, {"ok": False, "error": "E_BUSY", "detail": "max console clients"})
                 return
-            _send_line(conn, {"ok": True, "client_id": cid,
-                              "v": PROTOCOL_VERSION})
+            _send_line(conn, {"ok": True, "client_id": cid, "v": PROTOCOL_VERSION})
             log(f"console client {cid} attached")
 
             # Reader: accept inline {"cmd":"console_send"...} on the same socket
@@ -887,8 +942,9 @@ def handle_client(conn: socket.socket, sup: UnrealSupervisor, stop: threading.Ev
                         except (UnicodeDecodeError, json.JSONDecodeError):
                             continue
                         if msg.get("cmd") == "console_send":
-                            CONSOLE_HUB.submit(cid, msg.get("raw", ""),
-                                               bool(msg.get("allow_debug", False)))
+                            CONSOLE_HUB.submit(
+                                cid, msg.get("raw", ""), bool(msg.get("allow_debug", False))
+                            )
             finally:
                 CONSOLE_HUB.detach(cid)
                 log(f"console client {cid} detached")
@@ -900,16 +956,18 @@ def handle_client(conn: socket.socket, sup: UnrealSupervisor, stop: threading.Ev
             if not isinstance(payload, dict) or "id" not in payload:
                 _send_line(conn, {"ok": False, "error": "E_SCHEMA"})
                 return
-            BROKER.store_result({
-                "v": PROTOCOL_VERSION,
-                "type": payload.get("type", "result"),
-                "id": payload["id"],
-                "ok": bool(payload.get("ok", True)),
-                "error": payload.get("error", ""),
-                "data": payload.get("data", {}),
-                "dispatch_ms": float(payload.get("dispatch_ms", 0.0) or 0.0),
-                "ts": time.time(),
-            })
+            BROKER.store_result(
+                {
+                    "v": PROTOCOL_VERSION,
+                    "type": payload.get("type", "result"),
+                    "id": payload["id"],
+                    "ok": bool(payload.get("ok", True)),
+                    "error": payload.get("error", ""),
+                    "data": payload.get("data", {}),
+                    "dispatch_ms": float(payload.get("dispatch_ms", 0.0) or 0.0),
+                    "ts": time.time(),
+                }
+            )
             _send_line(conn, {"ok": True})
 
         elif cmd == "subscribe":
@@ -917,12 +975,24 @@ def handle_client(conn: socket.socket, sup: UnrealSupervisor, stop: threading.Ev
             # a reader thread parses inbound ack/result frames.
             client_v = req.get("v", PROTOCOL_VERSION)
             if client_v != PROTOCOL_VERSION:
-                _send_line(conn, {"ok": False, "error": "version_mismatch",
-                                  "detail": f"server={PROTOCOL_VERSION}"})
+                _send_line(
+                    conn,
+                    {
+                        "ok": False,
+                        "error": "version_mismatch",
+                        "detail": f"server={PROTOCOL_VERSION}",
+                    },
+                )
                 return
-            _send_line(conn, {"ok": True, "msg": "subscribed",
-                              "v": PROTOCOL_VERSION,
-                              "subscribers": BROKER.subscriber_count() + 1})
+            _send_line(
+                conn,
+                {
+                    "ok": True,
+                    "msg": "subscribed",
+                    "v": PROTOCOL_VERSION,
+                    "subscribers": BROKER.subscriber_count() + 1,
+                },
+            )
             sub = BROKER.subscribe()
             log(f"subscriber {sub.id[:8]} attached")
 
@@ -954,20 +1024,21 @@ def handle_client(conn: socket.socket, sup: UnrealSupervisor, stop: threading.Ev
                         sub.last_seen = time.time()
                         mtype = msg.get("type")
                         if mtype in ("ack", "result"):
-                            BROKER.store_result({
-                                "v": PROTOCOL_VERSION,
-                                "type": mtype,
-                                "id": msg.get("id", ""),
-                                "ok": bool(msg.get("ok", True)),
-                                "error": msg.get("error", ""),
-                                "data": msg.get("data", {}),
-                                "dispatch_ms": float(msg.get("dispatch_ms", 0.0) or 0.0),
-                                "ts": time.time(),
-                            })
+                            BROKER.store_result(
+                                {
+                                    "v": PROTOCOL_VERSION,
+                                    "type": mtype,
+                                    "id": msg.get("id", ""),
+                                    "ok": bool(msg.get("ok", True)),
+                                    "error": msg.get("error", ""),
+                                    "data": msg.get("data", {}),
+                                    "dispatch_ms": float(msg.get("dispatch_ms", 0.0) or 0.0),
+                                    "ts": time.time(),
+                                }
+                            )
                         # heartbeats just refresh last_seen.
 
-            rt = threading.Thread(target=_reader, daemon=True,
-                                  name=f"sub-reader-{sub.id[:8]}")
+            rt = threading.Thread(target=_reader, daemon=True, name=f"sub-reader-{sub.id[:8]}")
             rt.start()
             try:
                 while not stop.is_set():
@@ -975,8 +1046,7 @@ def handle_client(conn: socket.socket, sup: UnrealSupervisor, stop: threading.Ev
                     if line is None:
                         # staleness check
                         if time.time() - sub.last_seen > SUBSCRIBER_STALE_S:
-                            log(f"subscriber {sub.id[:8]} stale; closing",
-                                level="WARN")
+                            log(f"subscriber {sub.id[:8]} stale; closing", level="WARN")
                             break
                         continue
                     try:
@@ -1029,17 +1099,20 @@ def control_server(sup: UnrealSupervisor, stop: threading.Event, port: int) -> N
 # ----------------------------------------------------------------------------
 def failsafe_listener(sup: UnrealSupervisor, stop: threading.Event) -> None:
     if not HAVE_KEYBOARD:
-        log("`keyboard` module not installed — failsafe hotkey disabled. "
+        log(
+            "`keyboard` module not installed — failsafe hotkey disabled. "
             "Install with `pip install keyboard` for Ctrl+Alt+Q.",
-            level="WARN")
+            level="WARN",
+        )
         return
 
     def _trigger():
         log("Failsafe triggered — restoring Windows shell.", level="WARN")
         try:
             from autonomy import AUTONOMY
+
             AUTONOMY.kill_all()
-        except Exception:                               # noqa: BLE001
+        except Exception:  # noqa: BLE001
             pass
         sup.kill()
         if sys.platform == "win32":
@@ -1067,16 +1140,17 @@ def failsafe_listener(sup: UnrealSupervisor, stop: threading.Event) -> None:
 # ----------------------------------------------------------------------------
 def parse_args(argv: list[str]) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="QRATUM Launcher v2")
-    p.add_argument("--editor", type=Path, default=UE_EDITOR_DEFAULT,
-                   help="path to UnrealEditor.exe")
-    p.add_argument("--project", type=Path, default=UE_PROJECT_DEFAULT,
-                   help="path to .uproject")
-    p.add_argument("--headless", action="store_true",
-                   help="run UE with -nullrhi (no graphics)")
-    p.add_argument("--no-ue", action="store_true",
-                   help="don't spawn UE; just run supervisor + control socket")
-    p.add_argument("--port", type=int, default=CONTROL_PORT,
-                   help="control socket port (default 5555)")
+    p.add_argument(
+        "--editor", type=Path, default=UE_EDITOR_DEFAULT, help="path to UnrealEditor.exe"
+    )
+    p.add_argument("--project", type=Path, default=UE_PROJECT_DEFAULT, help="path to .uproject")
+    p.add_argument("--headless", action="store_true", help="run UE with -nullrhi (no graphics)")
+    p.add_argument(
+        "--no-ue", action="store_true", help="don't spawn UE; just run supervisor + control socket"
+    )
+    p.add_argument(
+        "--port", type=int, default=CONTROL_PORT, help="control socket port (default 5555)"
+    )
     return p.parse_args(argv)
 
 
@@ -1092,8 +1166,7 @@ def main(argv: list[str] | None = None) -> int:
     log(f"  keyboard   = {HAVE_KEYBOARD}")
     log("=" * 60)
 
-    sup = UnrealSupervisor(args.editor, args.project,
-                           headless=args.headless, no_ue=args.no_ue)
+    sup = UnrealSupervisor(args.editor, args.project, headless=args.headless, no_ue=args.no_ue)
     stop = threading.Event()
 
     def _on_signal(signum, _frame):
@@ -1124,30 +1197,41 @@ def main(argv: list[str] | None = None) -> int:
         }
         return world
 
-    AUTONOMY.bind(BROKER, IntentValidator.validate, ValidationError, log,
-                  bridge_dir() / "autonomy.jsonl", _world_view)
+    AUTONOMY.bind(
+        BROKER,
+        IntentValidator.validate,
+        ValidationError,
+        log,
+        bridge_dir() / "autonomy.jsonl",
+        _world_view,
+    )
     AUTONOMY.start()
 
     # ----- v1.2 console hub (QC_CORE_OS_SPEC_V1_2.md) -----------------------
     from console import HUB as CONSOLE_HUB
-    CONSOLE_HUB.bind(BROKER, IntentValidator.validate, ValidationError, log,
-                     bridge_dir() / "console.jsonl", PROTOCOL_VERSION)
+
+    CONSOLE_HUB.bind(
+        BROKER,
+        IntentValidator.validate,
+        ValidationError,
+        log,
+        bridge_dir() / "console.jsonl",
+        PROTOCOL_VERSION,
+    )
 
     # ----- arbitration v1.0 (QC_CORE_OS_ARBITRATION_V1.md) ------------------
     from arbitration import ARBITER
+
     ARBITER.bind(BROKER, log, bridge_dir() / "arbitration.jsonl")
 
     threads = [
-        threading.Thread(target=watchdog, args=(sup, stop),
-                         daemon=True, name="watchdog"),
-        threading.Thread(target=control_server, args=(sup, stop, args.port),
-                         daemon=True, name="control"),
-        threading.Thread(target=state_publisher, args=(sup, stop),
-                         daemon=True, name="publisher"),
-        threading.Thread(target=failsafe_listener, args=(sup, stop),
-                         daemon=True, name="failsafe"),
-        threading.Thread(target=heartbeat_publisher, args=(stop,),
-                         daemon=True, name="heartbeat"),
+        threading.Thread(target=watchdog, args=(sup, stop), daemon=True, name="watchdog"),
+        threading.Thread(
+            target=control_server, args=(sup, stop, args.port), daemon=True, name="control"
+        ),
+        threading.Thread(target=state_publisher, args=(sup, stop), daemon=True, name="publisher"),
+        threading.Thread(target=failsafe_listener, args=(sup, stop), daemon=True, name="failsafe"),
+        threading.Thread(target=heartbeat_publisher, args=(stop,), daemon=True, name="heartbeat"),
     ]
     for t in threads:
         t.start()

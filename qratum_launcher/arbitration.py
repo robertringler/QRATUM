@@ -14,33 +14,34 @@ Public surface:
     ARBITER.evaluate(envelope) -> Verdict # call from BROKER.publish gate
     ARBITER.snapshot()  -> dict           # for launcher.json
 """
+
 from __future__ import annotations
 
 import json
 import threading
 import time
 from collections import deque
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Callable
 
 # --- ranking tables ---------------------------------------------------------
 AUTHORITY_RANK = {"system": 4, "console": 3, "external": 2, "autonomy": 1}
-SCOPE_RANK     = {"system": 3, "world": 2, "actor": 1}
-PRIORITY_RANK  = {"override": 4, "high": 3, "normal": 2, "low": 1}
+SCOPE_RANK = {"system": 3, "world": 2, "actor": 1}
+PRIORITY_RANK = {"override": 4, "high": 3, "normal": 2, "low": 1}
 
 DEFAULT_AUTHORITY = "external"
-DEFAULT_SCOPE     = "actor"
-DEFAULT_PRIORITY  = "normal"
+DEFAULT_SCOPE = "actor"
+DEFAULT_PRIORITY = "normal"
 
 DOMINANCE_S = {
-    "system":   0.0,
-    "console":  5.0,
+    "system": 0.0,
+    "console": 5.0,
     "external": 1.0,
     "autonomy": 0.25,
 }
 
 OVERRIDE_THRASH_WINDOW_S = 5.0
-OVERRIDE_THRASH_LIMIT    = 50
+OVERRIDE_THRASH_LIMIT = 50
 
 _BROKER = None  # not used directly but kept symmetrical
 _LOG: Callable[..., None] = print
@@ -134,8 +135,8 @@ class ControlArbiter:
         self.losers = 0
         self.conflicts = 0
         self.override_thrash = 0
-        self.by_winner_authority: dict[str, int] = {k: 0 for k in AUTHORITY_RANK}
-        self.by_loser_authority:  dict[str, int] = {k: 0 for k in AUTHORITY_RANK}
+        self.by_winner_authority: dict[str, int] = dict.fromkeys(AUTHORITY_RANK, 0)
+        self.by_loser_authority: dict[str, int] = dict.fromkeys(AUTHORITY_RANK, 0)
         # thrash detection: per-(authority,key) recent acquisition timestamps
         self._acquisitions: dict[tuple[str, str], deque[float]] = {}
         # journal
@@ -192,9 +193,12 @@ class ControlArbiter:
             held = self.locks.get(key)
             # expire stale lock
             if held and held.expires_ts <= now:
-                self._journal("lock_expire", key=key,
-                              holder=held.holder_authority,
-                              held_for=now - held.acquired_ts)
+                self._journal(
+                    "lock_expire",
+                    key=key,
+                    holder=held.holder_authority,
+                    held_for=now - held.acquired_ts,
+                )
                 held = None
                 self.locks.pop(key, None)
 
@@ -214,21 +218,26 @@ class ControlArbiter:
                     # implicit "current holder" intent. Holder wins ties
                     # iff acquired earlier (already true since now > acquired).
                     new_key = _sort_key(env)
-                    held_proxy = (-AUTHORITY_RANK[held.holder_authority],
-                                  -PRIORITY_RANK.get(held.priority, 2),
-                                  1, held.acquired_ts, held.holder_id)
+                    held_proxy = (
+                        -AUTHORITY_RANK[held.holder_authority],
+                        -PRIORITY_RANK.get(held.priority, 2),
+                        1,
+                        held.acquired_ts,
+                        held.holder_id,
+                    )
                     if new_key < held_proxy:
                         verdict_win = True
                         reason = "priority"
                     else:
                         verdict_win = False
-                        reason = "console_dominance" if a == "console" else \
-                                 ("autonomy_blocked" if a == "autonomy"
-                                  else "timestamp")
+                        reason = (
+                            "console_dominance"
+                            if a == "console"
+                            else ("autonomy_blocked" if a == "autonomy" else "timestamp")
+                        )
                 else:
                     verdict_win = False
-                    reason = ("autonomy_blocked" if a == "autonomy"
-                              else "authority")
+                    reason = "autonomy_blocked" if a == "autonomy" else "authority"
 
             if verdict_win:
                 # thrash check
@@ -239,31 +248,34 @@ class ControlArbiter:
                 else:
                     self._acquire(env, key, a, now)
                     self.winners += 1
-                    self.by_winner_authority[a] = \
-                        self.by_winner_authority.get(a, 0) + 1
+                    self.by_winner_authority[a] = self.by_winner_authority.get(a, 0) + 1
             if not verdict_win:
                 self.losers += 1
                 self.conflicts += 1
-                self.by_loser_authority[a] = \
-                    self.by_loser_authority.get(a, 0) + 1
+                self.by_loser_authority[a] = self.by_loser_authority.get(a, 0) + 1
 
-            holder_auth = self.locks[key].holder_authority \
-                if key in self.locks else a
+            holder_auth = self.locks[key].holder_authority if key in self.locks else a
 
-            verdict = Verdict(win=verdict_win, reason=reason, lock_key=key,
-                              holder_authority=holder_auth,
-                              intent_id=str(env.get("id") or ""))
+            verdict = Verdict(
+                win=verdict_win,
+                reason=reason,
+                lock_key=key,
+                holder_authority=holder_auth,
+                intent_id=str(env.get("id") or ""),
+            )
 
-        self._journal("intent_arbitration",
-                      intent_id=verdict.intent_id,
-                      win=verdict.win,
-                      reason=reason,
-                      authority=a,
-                      scope=env["scope"],
-                      priority=arb_priority,
-                      lock_key=key,
-                      holder=holder_auth,
-                      name=env.get("name"))
+        self._journal(
+            "intent_arbitration",
+            intent_id=verdict.intent_id,
+            win=verdict.win,
+            reason=reason,
+            authority=a,
+            scope=env["scope"],
+            priority=arb_priority,
+            lock_key=key,
+            holder=holder_auth,
+            name=env.get("name"),
+        )
         return verdict
 
     # -- internals -----------------------------------------------------------
@@ -280,32 +292,34 @@ class ControlArbiter:
         if window <= 0:
             # system intents do not hold; only evict.
             if prev:
-                self._journal("lock_evict", key=key,
-                              evicted=prev.holder_authority,
-                              new_holder=authority)
+                self._journal(
+                    "lock_evict", key=key, evicted=prev.holder_authority, new_holder=authority
+                )
                 self.locks.pop(key, None)
             return
         qm = (env.get("params") or {}).get("_qratum") or {}
-        holder_id = (qm.get("client_id") or qm.get("goal_id")
-                     or env.get("client_id") or "external")
-        if prev and prev.holder_authority == authority \
-                and prev.holder_id == holder_id:
+        holder_id = qm.get("client_id") or qm.get("goal_id") or env.get("client_id") or "external"
+        if prev and prev.holder_authority == authority and prev.holder_id == holder_id:
             prev.expires_ts = now + window
             prev.refresh_count += 1
             prev.priority = env["priority"]
             self.locks[key] = prev
         else:
             if prev:
-                self._journal("lock_evict", key=key,
-                              evicted=prev.holder_authority,
-                              new_holder=authority)
+                self._journal(
+                    "lock_evict", key=key, evicted=prev.holder_authority, new_holder=authority
+                )
             self.locks[key] = Lock(
-                key=key, holder_authority=authority, holder_id=holder_id,
-                acquired_ts=now, expires_ts=now + window,
+                key=key,
+                holder_authority=authority,
+                holder_id=holder_id,
+                acquired_ts=now,
+                expires_ts=now + window,
                 priority=env["priority"],
             )
-            self._journal("lock_acquire", key=key, holder=authority,
-                          holder_id=holder_id, expires_in_s=window)
+            self._journal(
+                "lock_acquire", key=key, holder=authority, holder_id=holder_id, expires_in_s=window
+            )
         self._acquisitions.setdefault((authority, key), deque()).append(now)
 
     # -- maintenance ---------------------------------------------------------
@@ -317,9 +331,12 @@ class ControlArbiter:
             for k in list(self.locks):
                 if self.locks[k].expires_ts <= now:
                     held = self.locks.pop(k)
-                    self._journal("lock_expire", key=k,
-                                  holder=held.holder_authority,
-                                  held_for=now - held.acquired_ts)
+                    self._journal(
+                        "lock_expire",
+                        key=k,
+                        holder=held.holder_authority,
+                        held_for=now - held.acquired_ts,
+                    )
                     n += 1
         return n
 
@@ -333,14 +350,17 @@ class ControlArbiter:
                 "losers": self.losers,
                 "conflicts": self.conflicts,
                 "by_winner_authority": dict(self.by_winner_authority),
-                "by_loser_authority":  dict(self.by_loser_authority),
+                "by_loser_authority": dict(self.by_loser_authority),
                 "active_locks": len(self.locks),
                 "override_thrash": self.override_thrash,
                 "locks": [
-                    {"key": L.key, "holder": L.holder_authority,
-                     "holder_id": L.holder_id,
-                     "priority": L.priority,
-                     "expires_in_s": round(max(0.0, L.expires_ts - now), 3)}
+                    {
+                        "key": L.key,
+                        "holder": L.holder_authority,
+                        "holder_id": L.holder_id,
+                        "priority": L.priority,
+                        "expires_in_s": round(max(0.0, L.expires_ts - now), 3),
+                    }
                     for L in self.locks.values()
                 ],
             }

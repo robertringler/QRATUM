@@ -16,6 +16,7 @@ Public surface:
     HUB.on_result(result)     - hooked from BROKER.store_result()
     HUB.snapshot()            - dict for launcher.json
 """
+
 from __future__ import annotations
 
 import json
@@ -37,11 +38,11 @@ _PROTOCOL_VERSION = "1.0"
 
 # --- limits (§7) -------------------------------------------------------------
 PER_CLIENT_RATE_PER_S = 20
-PER_CLIENT_BURST      = 5
-GLOBAL_RATE_PER_S     = 200
-MAX_CONSOLE_CLIENTS   = 8
-MAX_RAW_LEN           = 2048
-SCROLLBACK_LATENCY    = 256       # how many recent samples we keep
+PER_CLIENT_BURST = 5
+GLOBAL_RATE_PER_S = 200
+MAX_CONSOLE_CLIENTS = 8
+MAX_RAW_LEN = 2048
+SCROLLBACK_LATENCY = 256  # how many recent samples we keep
 
 PRIORITY_TOKENS = {"!high": "high", "!normal": "normal", "!low": "low"}
 RESERVED_PARAM_KEYS = ("_qratum",)  # client cannot set these
@@ -58,7 +59,7 @@ class ProtoIntent:
 
 
 _NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)+$")
-_KEY_RE  = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+_KEY_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
 
 def _tokenize(raw: str) -> list[str]:
@@ -165,7 +166,7 @@ class _Bucket:
 @dataclass
 class _Client:
     client_id: str
-    sender: Callable[[dict], bool]   # writes a JSON line to socket; returns ok
+    sender: Callable[[dict], bool]  # writes a JSON line to socket; returns ok
     bucket: _Bucket = field(default_factory=_Bucket)
     submitted: int = 0
     rejected: int = 0
@@ -188,8 +189,15 @@ class ConsoleHub:
         self._log_lock = threading.Lock()
 
     # -- bind -----------------------------------------------------------------
-    def bind(self, broker, validate_fn, validation_err, log_fn,
-             console_log_path, protocol_version: str = "1.0") -> None:
+    def bind(
+        self,
+        broker,
+        validate_fn,
+        validation_err,
+        log_fn,
+        console_log_path,
+        protocol_version: str = "1.0",
+    ) -> None:
         global _BROKER, _VALIDATE, _VALIDATION_ERROR, _LOG, _PROTOCOL_VERSION
         _BROKER = broker
         _VALIDATE = validate_fn
@@ -198,8 +206,7 @@ class ConsoleHub:
         _PROTOCOL_VERSION = protocol_version
         try:
             self._log_path = console_log_path
-            self._log_fp = open(console_log_path, "a", encoding="utf-8",
-                                buffering=1)
+            self._log_fp = open(console_log_path, "a", encoding="utf-8", buffering=1)
         except OSError:
             self._log_fp = None
 
@@ -215,8 +222,9 @@ class ConsoleHub:
                 pass
 
     # -- client lifecycle -----------------------------------------------------
-    def attach(self, sender: Callable[[dict], bool],
-               client_id: str | None = None) -> tuple[bool, str]:
+    def attach(
+        self, sender: Callable[[dict], bool], client_id: str | None = None
+    ) -> tuple[bool, str]:
         with self._lock:
             if len(self.clients) >= MAX_CONSOLE_CLIENTS:
                 return False, ""
@@ -238,8 +246,7 @@ class ConsoleHub:
         self._journal("detach", client_id=client_id)
 
     # -- submit (§3.1) --------------------------------------------------------
-    def submit(self, client_id: str, raw: str,
-               allow_debug: bool = False) -> dict:
+    def submit(self, client_id: str, raw: str, allow_debug: bool = False) -> dict:
         if _BROKER is None or _VALIDATE is None:
             return {"ok": False, "error": "E_NOT_BOUND"}
         with self._lock:
@@ -249,8 +256,9 @@ class ConsoleHub:
 
         now = time.time()
         # rate limit
-        if not self._global_bucket.allow(now, GLOBAL_RATE_PER_S) or \
-           not cli.bucket.allow(now, PER_CLIENT_RATE_PER_S):
+        if not self._global_bucket.allow(now, GLOBAL_RATE_PER_S) or not cli.bucket.allow(
+            now, PER_CLIENT_RATE_PER_S
+        ):
             with self._lock:
                 cli.rejected += 1
                 self.rate_limited += 1
@@ -261,10 +269,10 @@ class ConsoleHub:
         if not ok:
             with self._lock:
                 cli.rejected += 1
-            self._send(cli, {"type": "console_error", "error": "E_PARSE",
-                             "detail": parsed, "raw": raw})
-            self._journal("parse_error", client_id=client_id, raw=raw,
-                          detail=parsed)
+            self._send(
+                cli, {"type": "console_error", "error": "E_PARSE", "detail": parsed, "raw": raw}
+            )
+            self._journal("parse_error", client_id=client_id, raw=raw, detail=parsed)
             return {"ok": False, "error": "E_PARSE", "detail": parsed}
 
         proto: ProtoIntent = parsed  # type: ignore[assignment]
@@ -274,9 +282,15 @@ class ConsoleHub:
         if ns == "debug" and not allow_debug:
             with self._lock:
                 cli.rejected += 1
-            self._send(cli, {"type": "console_error", "error": "E_DENIED",
-                             "detail": "debug namespace requires --allow-debug",
-                             "raw": raw})
+            self._send(
+                cli,
+                {
+                    "type": "console_error",
+                    "error": "E_DENIED",
+                    "detail": "debug namespace requires --allow-debug",
+                    "raw": raw,
+                },
+            )
             return {"ok": False, "error": "E_DENIED"}
 
         # build envelope
@@ -295,10 +309,10 @@ class ConsoleHub:
         except _VALIDATION_ERROR as e:
             with self._lock:
                 cli.rejected += 1
-            self._send(cli, {"type": "console_error", "error": "E_VALIDATE",
-                             "detail": str(e), "raw": raw})
-            self._journal("validate_error", client_id=client_id, raw=raw,
-                          detail=str(e))
+            self._send(
+                cli, {"type": "console_error", "error": "E_VALIDATE", "detail": str(e), "raw": raw}
+            )
+            self._journal("validate_error", client_id=client_id, raw=raw, detail=str(e))
             return {"ok": False, "error": "E_VALIDATE", "detail": str(e)}
 
         intent_id = envelope["id"]
@@ -309,11 +323,15 @@ class ConsoleHub:
 
         delivered, _drops = _BROKER.publish(envelope)
         # echo to originating client
-        self._send(cli, {"type": "console_intent", "intent": envelope,
-                         "delivered": delivered})
-        self._journal("submit", client_id=client_id, intent_id=intent_id,
-                      name=proto.name, priority=proto.priority,
-                      delivered=delivered)
+        self._send(cli, {"type": "console_intent", "intent": envelope, "delivered": delivered})
+        self._journal(
+            "submit",
+            client_id=client_id,
+            intent_id=intent_id,
+            name=proto.name,
+            priority=proto.priority,
+            delivered=delivered,
+        )
         return {"ok": True, "id": intent_id, "delivered": delivered}
 
     # -- result hook (§3.2) ---------------------------------------------------
@@ -338,8 +356,7 @@ class ConsoleHub:
         rtype = result.get("type", "result")
         frame_kind = "console_ack" if rtype == "ack" else "console_result"
         self._send(cli, {"type": frame_kind, "result": result})
-        self._journal("result", client_id=cid, intent_id=rid,
-                      ok=result.get("ok"))
+        self._journal("result", client_id=cid, intent_id=rid, ok=result.get("ok"))
 
     # -- broadcast log --------------------------------------------------------
     def broadcast_log(self, level: str, msg: str) -> None:
@@ -360,10 +377,10 @@ class ConsoleHub:
                 "submitted": submitted,
                 "rejected": rejected,
                 "results_routed": routed,
-                "p50_latency_ms": (round(statistics.median(lat), 2)
-                                   if lat else 0.0),
-                "p99_latency_ms": (round(sorted(lat)[max(0, int(len(lat)*0.99)-1)], 2)
-                                   if lat else 0.0),
+                "p50_latency_ms": (round(statistics.median(lat), 2) if lat else 0.0),
+                "p99_latency_ms": (
+                    round(sorted(lat)[max(0, int(len(lat) * 0.99) - 1)], 2) if lat else 0.0
+                ),
                 "rate_limited": self.rate_limited,
             }
 
@@ -371,9 +388,8 @@ class ConsoleHub:
     def _send(self, cli: _Client, frame: dict) -> None:
         try:
             cli.sender(frame)
-        except Exception as e:                          # noqa: BLE001
-            _LOG(f"[console] sender error for {cli.client_id}: {e}",
-                 level="WARN")
+        except Exception as e:  # noqa: BLE001
+            _LOG(f"[console] sender error for {cli.client_id}: {e}", level="WARN")
 
 
 # ---------------------------------------------------------------------------

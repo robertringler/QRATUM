@@ -1,6 +1,6 @@
 @echo off
 REM ============================================================
-REM  QRATUM SoiGame — UE5 launcher
+REM  QRATUM IntentOS — UE5 launcher
 REM
 REM  Usage:
 REM     Run.bat              - open editor (interactive)
@@ -10,7 +10,7 @@ REM ============================================================
 setlocal
 
 set UE_ROOT=C:\Program Files\Epic Games\UE_5.7
-set PROJECT=%~dp0SoiGame.uproject
+set PROJECT=%~dp0IntentOS.uproject
 set EDITOR=%UE_ROOT%\Engine\Binaries\Win64\UnrealEditor.exe
 set CMD=%UE_ROOT%\Engine\Binaries\Win64\UnrealEditor-Cmd.exe
 set BUILD=%UE_ROOT%\Engine\Build\BatchFiles\Build.bat
@@ -25,7 +25,7 @@ goto END
 
 :BUILD
 echo [QRATUM/UE5] building QRATUM module ...
-call "%BUILD%" SoiGameEditor Win64 Development -Project="%PROJECT%" -WaitMutex
+call "%BUILD%" IntentOSEditor Win64 Development -Project="%PROJECT%" -WaitMutex
 goto END
 
 :HEADLESS
