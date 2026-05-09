@@ -37,6 +37,7 @@ except ImportError:  # numpy missing → minimal fallback
 # Paths
 # ---------------------------------------------------------------------------
 
+
 def bridge_dir() -> Path:
     if os.name == "nt":
         base = os.environ.get("LOCALAPPDATA") or str(Path.home())
@@ -57,16 +58,19 @@ def state_path() -> Path:
 # Kernels
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class CIIRKernel:
     """φ_{n+1} = T(φ_n) contraction on R^4. [Ch.22, Thm 22.1]."""
 
-    A: list = field(default_factory=lambda: [
-        [0.55, -0.10,  0.05,  0.00],
-        [0.10,  0.50, -0.05,  0.00],
-        [0.00,  0.05,  0.45,  0.10],
-        [0.00,  0.00, -0.10,  0.40],
-    ])
+    A: list = field(
+        default_factory=lambda: [
+            [0.55, -0.10, 0.05, 0.00],
+            [0.10, 0.50, -0.05, 0.00],
+            [0.00, 0.05, 0.45, 0.10],
+            [0.00, 0.00, -0.10, 0.40],
+        ]
+    )
     b: list = field(default_factory=lambda: [0.30, -0.20, 0.15, 0.05])
     phi_star: list = field(default_factory=lambda: [0.0, 0.0, 0.0, 0.0])
     phi: list = field(default_factory=lambda: [0.0, 0.0, 0.0, 0.0])
@@ -244,6 +248,7 @@ class CGLKernel:
 # Boot orchestrator
 # ---------------------------------------------------------------------------
 
+
 class Kernel:
     def __init__(self, hz: float = 60.0) -> None:
         self.hz = hz
@@ -263,15 +268,15 @@ class Kernel:
     # Boot order matches §8: RWB→MVRI→CIIR→CRS→CGL→QuaSim→QuBIC→RMHD→RIC.
     def boot(self, log) -> None:
         steps = [
-            ("RWB",    None),
-            ("MVRI",   None),
-            ("CIIR",   self.ciir.initialize),
-            ("CRS",    None),
-            ("CGL",    None),
+            ("RWB", None),
+            ("MVRI", None),
+            ("CIIR", self.ciir.initialize),
+            ("CRS", None),
+            ("CGL", None),
             ("QuaSim", None),
-            ("QuBIC",  self.qubic.initialize),
-            ("RMHD",   self.rmhd.initialize),
-            ("RIC",    None),
+            ("QuBIC", self.qubic.initialize),
+            ("RMHD", self.rmhd.initialize),
+            ("RIC", None),
         ]
         self.phase = "INIT"
         log("[QRATUM] POST OK")
@@ -307,8 +312,8 @@ class Kernel:
             },
             "crs": {
                 "active_stratum": self.crs.active_stratum,
-                "iss_residual":   self.crs.iss_residual,
-                "stratum_count":  self.crs.stratum_count,
+                "iss_residual": self.crs.iss_residual,
+                "stratum_count": self.crs.stratum_count,
             },
             "ric_dispatch_weights": list(self.ric.weights),
             "quasim": {
@@ -317,10 +322,14 @@ class Kernel:
                 "samples": self.quasim.samples,
             },
             "qubic": {"epoch": self.qubic.epoch, "nodes": self.qubic.n},
-            "rmhd":  {"reconnection_rate": self.rmhd.rate, "psi_flux": self.rmhd.psi},
-            "mvri":  {"ema": self.mvri.ema, "gate_mask": self.mvri.gate_mask, "status": self.mvri.status},
-            "rwb":   {"sequence": self.rwb.sequence},
-            "cgl":   {"lambda_min": self.cgl.lambda_min, "rank_deficient": self.cgl.rank_deficient},
+            "rmhd": {"reconnection_rate": self.rmhd.rate, "psi_flux": self.rmhd.psi},
+            "mvri": {
+                "ema": self.mvri.ema,
+                "gate_mask": self.mvri.gate_mask,
+                "status": self.mvri.status,
+            },
+            "rwb": {"sequence": self.rwb.sequence},
+            "cgl": {"lambda_min": self.cgl.lambda_min, "rank_deficient": self.cgl.rank_deficient},
         }
 
 
@@ -335,12 +344,13 @@ def write_state_atomic(state: dict, path: Path) -> None:
 # Main
 # ---------------------------------------------------------------------------
 
+
 def main(argv: List[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="QRATUM Kernel Daemon")
-    p.add_argument("--hz",     type=float, default=60.0, help="Tick rate (Hz)")
-    p.add_argument("--write",  type=float, default=0.1,  help="State publish interval (s)")
-    p.add_argument("--steps",  type=int,   default=0,    help="Stop after N steps (0 = run forever)")
-    p.add_argument("--quiet",  action="store_true")
+    p.add_argument("--hz", type=float, default=60.0, help="Tick rate (Hz)")
+    p.add_argument("--write", type=float, default=0.1, help="State publish interval (s)")
+    p.add_argument("--steps", type=int, default=0, help="Stop after N steps (0 = run forever)")
+    p.add_argument("--quiet", action="store_true")
     args = p.parse_args(argv)
 
     sp = state_path()
@@ -365,7 +375,7 @@ def main(argv: List[str] | None = None) -> int:
         halted["flag"] = True
 
     try:
-        signal.signal(signal.SIGINT,  handle_sigint)
+        signal.signal(signal.SIGINT, handle_sigint)
         signal.signal(signal.SIGTERM, handle_sigint)
     except (AttributeError, ValueError):
         pass

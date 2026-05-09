@@ -20,11 +20,11 @@ Public surface:
     kill_autonomy() - global kill-switch
     snapshot()      - dict for launcher.json
 """
+
 from __future__ import annotations
 
 import hashlib
 import json
-import os
 import statistics
 import threading
 import time
@@ -36,26 +36,26 @@ from typing import Any, Callable
 
 # Imports from the launcher are deliberately late-bound to avoid a
 # cycle at module-import time. The launcher injects them on init.
-_BROKER = None        # set by bind()
-_VALIDATE = None      # IntentValidator.validate
+_BROKER = None  # set by bind()
+_VALIDATE = None  # IntentValidator.validate
 _VALIDATION_ERROR = Exception
 _LOG = print
 
 # --- §10.3 ACL --------------------------------------------------------------
 DEFAULT_POLICY = {
     "allow": ["sim", "actor", "ai", "vehicle", "ui", "param"],
-    "deny":  ["debug", "qratum"],
+    "deny": ["debug", "qratum"],
     "max_priority": "normal",
 }
 PRIORITY_ORDER = {"low": 0, "normal": 1, "high": 2}
 
 # --- §9 Guardrails ----------------------------------------------------------
-MAX_ACTIVE_GOALS    = 64
+MAX_ACTIVE_GOALS = 64
 MAX_INTENTS_PER_GOAL_PER_S = 20
-MAX_INTENTS_GLOBAL_PER_S   = 500
-RUNAWAY_HARD_CAP   = 128       # max intents over a goal's lifetime
-CPU_KILL_PCT       = 25.0      # §10.2 trigger 3
-CPU_KILL_WINDOWS   = 5         # consecutive 1 s windows
+MAX_INTENTS_GLOBAL_PER_S = 500
+RUNAWAY_HARD_CAP = 128  # max intents over a goal's lifetime
+CPU_KILL_PCT = 25.0  # §10.2 trigger 3
+CPU_KILL_WINDOWS = 5  # consecutive 1 s windows
 
 
 # ---------------------------------------------------------------------------
@@ -64,7 +64,7 @@ CPU_KILL_WINDOWS   = 5         # consecutive 1 s windows
 @dataclass(frozen=True)
 class Predicate:
     kind: str
-    path: str          # JSON-pointer-ish "/a/b/c"
+    path: str  # JSON-pointer-ish "/a/b/c"
     value: Any = None
     tolerance: float = 0.0
 
@@ -86,8 +86,8 @@ class Goal:
 @dataclass
 class GoalState:
     goal: Goal
-    status: str = "pending"       # pending|planning|executing|success|failure|G_*
-    plan: list[dict] = field(default_factory=list)   # list of proto-intents
+    status: str = "pending"  # pending|planning|executing|success|failure|G_*
+    plan: list[dict] = field(default_factory=list)  # list of proto-intents
     in_flight: dict[str, dict] = field(default_factory=dict)  # intent_id -> meta
     replans: int = 0
     intents_emitted: int = 0
@@ -168,6 +168,7 @@ def recipe(name: str):
     def _wrap(fn):
         PLAN_LIBRARY[name] = fn
         return fn
+
     return _wrap
 
 
@@ -175,8 +176,7 @@ def recipe(name: str):
 def _convoy_demo(goal: Goal) -> list[dict]:
     n = int(goal.params.get("count", 3))
     return [
-        {"name": "actor.spawn",
-         "params": {"kind": "truck", "where": [0, i * 500, 100]}}
+        {"name": "actor.spawn", "params": {"kind": "truck", "where": [0, i * 500, 100]}}
         for i in range(n)
     ] + [
         {"name": "sim.set_speed", "params": {"value": 1.0}},
@@ -283,9 +283,15 @@ class Autonomy:
         self.cpu_pct_1s = 0.0
 
     # -- bind -----------------------------------------------------------------
-    def bind(self, broker, validate_fn, validation_err, log_fn,
-             autonomy_log_path: Path,
-             world_view: Callable[[], dict]) -> None:
+    def bind(
+        self,
+        broker,
+        validate_fn,
+        validation_err,
+        log_fn,
+        autonomy_log_path: Path,
+        world_view: Callable[[], dict],
+    ) -> None:
         global _BROKER, _VALIDATE, _VALIDATION_ERROR, _LOG
         _BROKER = broker
         _VALIDATE = validate_fn
@@ -305,13 +311,12 @@ class Autonomy:
     # -- lifecycle ------------------------------------------------------------
     def start(self) -> None:
         roles: list[tuple[str, Callable[[], None], float]] = [
-            ("autonomy.executor",   self._executor_tick,   1.0 / 20.0),
-            ("autonomy.critic",     self._critic_tick,     1.0 / 10.0),
+            ("autonomy.executor", self._executor_tick, 1.0 / 20.0),
+            ("autonomy.critic", self._critic_tick, 1.0 / 10.0),
             ("autonomy.stabilizer", self._stabilizer_tick, 1.0),
         ]
         for name, fn, period in roles:
-            t = threading.Thread(target=self._loop, args=(fn, period),
-                                 daemon=True, name=name)
+            t = threading.Thread(target=self._loop, args=(fn, period), daemon=True, name=name)
             t.start()
             self._threads.append(t)
 
@@ -322,7 +327,7 @@ class Autonomy:
         while not self.stop.is_set():
             try:
                 fn()
-            except Exception as e:                      # noqa: BLE001
+            except Exception as e:  # noqa: BLE001
                 _LOG(f"[autonomy] role tick error: {e}", level="ERROR")
             self.stop.wait(period)
 
@@ -341,9 +346,13 @@ class Autonomy:
                 return False, "", "G_CYCLE"
             self.goals[goal.id] = GoalState(goal=goal, status="pending")
         if self.logger:
-            self.logger.write("goal_submit", goal_id=goal.id, name=goal.name,
-                              priority=goal.priority,
-                              deadline_s=goal.deadline_s)
+            self.logger.write(
+                "goal_submit",
+                goal_id=goal.id,
+                name=goal.name,
+                priority=goal.priority,
+                deadline_s=goal.deadline_s,
+            )
         # plan immediately on submitter's thread for low latency
         self._plan(goal.id)
         return True, goal.id, ""
@@ -389,8 +398,9 @@ class Autonomy:
                 "active_goals": sum(1 for s in self.goals.values() if s.alive()),
                 "completed": dict(self.completed),
                 "score_p50": statistics.median(scores) if scores else 0.0,
-                "score_p99": (sorted(scores)[max(0, int(len(scores) * 0.99) - 1)]
-                              if scores else 0.0),
+                "score_p99": (
+                    sorted(scores)[max(0, int(len(scores) * 0.99) - 1)] if scores else 0.0
+                ),
                 "intents_emitted": self.intents_emitted_total,
                 "replans": self.replans_total,
                 "stability_p50": statistics.median(stab) if stab else 1.0,
@@ -420,12 +430,14 @@ class Autonomy:
             for p in seq or ():
                 if not isinstance(p, dict):
                     continue
-                out.append(Predicate(
-                    kind=p.get("kind", "state_eq"),
-                    path=p.get("path", "/"),
-                    value=p.get("value"),
-                    tolerance=float(p.get("tolerance", 0.0) or 0.0),
-                ))
+                out.append(
+                    Predicate(
+                        kind=p.get("kind", "state_eq"),
+                        path=p.get("path", "/"),
+                        value=p.get("value"),
+                        tolerance=float(p.get("tolerance", 0.0) or 0.0),
+                    )
+                )
             return tuple(out)
 
         return Goal(
@@ -464,7 +476,7 @@ class Autonomy:
         recipe_fn = PLAN_LIBRARY.get(goal.name)
         try:
             proto = recipe_fn(goal) if recipe_fn else heuristic_decompose(goal)
-        except Exception as e:                          # noqa: BLE001
+        except Exception as e:  # noqa: BLE001
             _LOG(f"[autonomy] planner error '{goal.name}': {e}", level="ERROR")
             proto = []
         # cap fan-out (§2.2)
@@ -480,8 +492,12 @@ class Autonomy:
             self.replans_total += 1
             st.status = "executing" if proto else "planning"
         if self.logger:
-            self.logger.write("plan", goal_id=goal.id, steps=len(proto),
-                              mode=("recipe" if recipe_fn else "heuristic"))
+            self.logger.write(
+                "plan",
+                goal_id=goal.id,
+                steps=len(proto),
+                mode=("recipe" if recipe_fn else "heuristic"),
+            )
         if not proto:
             # empty plan twice in a row => infeasible
             if st.replans >= 2:
@@ -518,8 +534,7 @@ class Autonomy:
             envelope = self.compiler.compile(st.goal, idx, proto)
             if envelope is None:
                 if self.logger:
-                    self.logger.write("step_reject", goal_id=st.goal.id,
-                                      proto=proto)
+                    self.logger.write("step_reject", goal_id=st.goal.id, proto=proto)
                 continue
             delivered, drops = _BROKER.publish(envelope)
             with self._lock:
@@ -532,12 +547,14 @@ class Autonomy:
                 }
             self._global_intents_window.append(time.time())
             if self.logger:
-                self.logger.write("step_emit",
-                                  goal_id=st.goal.id,
-                                  intent_id=envelope["id"],
-                                  name=envelope["name"],
-                                  delivered=delivered,
-                                  drops=drops)
+                self.logger.write(
+                    "step_emit",
+                    goal_id=st.goal.id,
+                    intent_id=envelope["id"],
+                    name=envelope["name"],
+                    delivered=delivered,
+                    drops=drops,
+                )
 
     # -- critic (§4) ----------------------------------------------------------
     def _critic_tick(self) -> None:
@@ -560,20 +577,20 @@ class Autonomy:
                 for iid in completed_ids:
                     st.in_flight.pop(iid, None)
                     if self.logger:
-                        self.logger.write("step_result",
-                                          goal_id=st.goal.id,
-                                          intent_id=iid,
-                                          ok=results[iid].get("ok"))
+                        self.logger.write(
+                            "step_result",
+                            goal_id=st.goal.id,
+                            intent_id=iid,
+                            ok=results[iid].get("ok"),
+                        )
 
                 # predicate evaluation
-                fail_hit = any(_eval_predicate(p, world, results)
-                               for p in st.goal.failure)
+                fail_hit = any(_eval_predicate(p, world, results) for p in st.goal.failure)
                 if fail_hit:
                     self._finalize(st, "failure")
                     continue
                 succ_total = len(st.goal.success) or 1
-                succ_hit = sum(1 for p in st.goal.success
-                               if _eval_predicate(p, world, results))
+                succ_hit = sum(1 for p in st.goal.success if _eval_predicate(p, world, results))
                 coverage = succ_hit / succ_total
                 ok_count = sum(1 for r in results.values() if r.get("ok"))
                 step_ok_rate = (ok_count / len(results)) if results else 0.0
@@ -586,8 +603,10 @@ class Autonomy:
                     self._finalize(st, "success")
                     continue
                 # deadline?
-                if st.goal.deadline_s is not None and \
-                   (now - st.goal.created_ts) > st.goal.deadline_s:
+                if (
+                    st.goal.deadline_s is not None
+                    and (now - st.goal.created_ts) > st.goal.deadline_s
+                ):
                     self._finalize(st, "G_TIMEOUT")
                     continue
                 # replan cap?
@@ -600,8 +619,11 @@ class Autonomy:
                     pass
         # planning calls reacquire the lock; do them outside the loop.
         with self._lock:
-            need_replan = [s.goal.id for s in self.goals.values()
-                           if s.alive() and not s.plan and not s.in_flight]
+            need_replan = [
+                s.goal.id
+                for s in self.goals.values()
+                if s.alive() and not s.plan and not s.in_flight
+            ]
         for gid in need_replan:
             self._plan(gid)
 
@@ -641,16 +663,20 @@ class Autonomy:
             return
         st.status = status
         st.finalized_ts = time.time()
-        bucket = ("success" if status == "success"
-                  else "killed" if status.startswith("G_KILLED")
-                  else "failure")
+        bucket = (
+            "success"
+            if status == "success"
+            else "killed" if status.startswith("G_KILLED") else "failure"
+        )
         self.completed[bucket] = self.completed.get(bucket, 0) + 1
         if self.logger:
-            self.logger.write("goal_finalize",
-                              goal_id=st.goal.id,
-                              status=status,
-                              score=st.last_score,
-                              intents=st.intents_emitted)
+            self.logger.write(
+                "goal_finalize",
+                goal_id=st.goal.id,
+                status=status,
+                score=st.last_score,
+                intents=st.intents_emitted,
+            )
 
     # -- helpers --------------------------------------------------------------
     def _stability(self, st: GoalState) -> float:

@@ -11,7 +11,9 @@ Usage:
     python qctl.py ping
     python qctl.py push --name spawn_vehicle --params '{"location":[0,0,100]}'
 """
+
 from __future__ import annotations
+
 import argparse
 import json
 import socket
@@ -41,14 +43,14 @@ def _run_console_repl(host: str, port: int) -> int:
     pushes console_send frames over the same socket.
     """
     import threading
+
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         s.connect((host, port))
     except OSError as e:
         print(f"connect error: {e}", file=sys.stderr)
         return 2
-    s.sendall((json.dumps({"cmd": "console_subscribe", "v": "1.0"}) + "\n")
-              .encode("utf-8"))
+    s.sendall((json.dumps({"cmd": "console_subscribe", "v": "1.0"}) + "\n").encode("utf-8"))
 
     stop = threading.Event()
 
@@ -71,20 +73,27 @@ def _run_console_repl(host: str, port: int) -> int:
                     msg = json.loads(line.decode("utf-8"))
                 except (UnicodeDecodeError, json.JSONDecodeError):
                     continue
-                t = msg.get("type") or ("ack" if msg.get("ok") is not None
-                                        and "client_id" in msg else "?")
+                t = msg.get("type") or (
+                    "ack" if msg.get("ok") is not None and "client_id" in msg else "?"
+                )
                 if t == "console_intent":
                     env = msg.get("intent", {})
-                    print(f"  >> {env.get('name')}  id={env.get('id','')[:8]}  "
-                          f"delivered={msg.get('delivered')}")
+                    print(
+                        f"  >> {env.get('name')}  id={env.get('id','')[:8]}  "
+                        f"delivered={msg.get('delivered')}"
+                    )
                 elif t == "console_ack":
                     r = msg.get("result", {})
-                    print(f"  ack {r.get('id','')[:8]}  ok={r.get('ok')}  "
-                          f"{r.get('dispatch_ms', 0):.1f} ms")
+                    print(
+                        f"  ack {r.get('id','')[:8]}  ok={r.get('ok')}  "
+                        f"{r.get('dispatch_ms', 0):.1f} ms"
+                    )
                 elif t == "console_result":
                     r = msg.get("result", {})
-                    print(f"  result {r.get('id','')[:8]}  ok={r.get('ok')}  "
-                          f"{r.get('dispatch_ms', 0):.1f} ms")
+                    print(
+                        f"  result {r.get('id','')[:8]}  ok={r.get('ok')}  "
+                        f"{r.get('dispatch_ms', 0):.1f} ms"
+                    )
                     if r.get("error"):
                         print(f"    error: {r['error']}")
                     if r.get("data"):
@@ -123,8 +132,7 @@ def _run_console_repl(host: str, port: int) -> int:
                 print("\033[2J\033[H", end="")
                 continue
             try:
-                s.sendall((json.dumps({"cmd": "console_send", "raw": line})
-                           + "\n").encode("utf-8"))
+                s.sendall((json.dumps({"cmd": "console_send", "raw": line}) + "\n").encode("utf-8"))
             except OSError as e:
                 print(f"send error: {e}", file=sys.stderr)
                 break
@@ -139,29 +147,39 @@ def _run_console_repl(host: str, port: int) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="QRATUM launcher control client")
-    p.add_argument("cmd", choices=["status", "restart", "kill", "launch",
-                                    "shutdown", "log_tail", "ping", "push",
-                                    "query", "goal", "goals", "cancel",
-                                    "kill_autonomy", "console"])
+    p.add_argument(
+        "cmd",
+        choices=[
+            "status",
+            "restart",
+            "kill",
+            "launch",
+            "shutdown",
+            "log_tail",
+            "ping",
+            "push",
+            "query",
+            "goal",
+            "goals",
+            "cancel",
+            "kill_autonomy",
+            "console",
+        ],
+    )
     p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=5555)
-    p.add_argument("--lines", type=int, default=50,
-                   help="lines to retrieve for log_tail")
+    p.add_argument("--lines", type=int, default=50, help="lines to retrieve for log_tail")
     p.add_argument("--name", help="intent or goal name (push/goal)")
-    p.add_argument("--params", default="{}",
-                   help="params as JSON string (push/goal)")
+    p.add_argument("--params", default="{}", help="params as JSON string (push/goal)")
     p.add_argument("--id", default="", help="intent/goal correlation id")
     p.add_argument("--epoch", type=int, default=0, help="kernel epoch (push)")
-    p.add_argument("--priority", choices=["high", "normal", "low"],
-                   default="normal", help="priority lane")
-    p.add_argument("--deadline", type=float, default=None,
-                   help="goal deadline in seconds")
-    p.add_argument("--max-replans", type=int, default=8,
-                   help="goal replan budget")
-    p.add_argument("--success", default="[]",
-                   help="goal success predicates as JSON array")
-    p.add_argument("--failure", default="[]",
-                   help="goal failure predicates as JSON array")
+    p.add_argument(
+        "--priority", choices=["high", "normal", "low"], default="normal", help="priority lane"
+    )
+    p.add_argument("--deadline", type=float, default=None, help="goal deadline in seconds")
+    p.add_argument("--max-replans", type=int, default=8, help="goal replan budget")
+    p.add_argument("--success", default="[]", help="goal success predicates as JSON array")
+    p.add_argument("--failure", default="[]", help="goal failure predicates as JSON array")
     args = p.parse_args(argv)
 
     payload: dict = {"cmd": args.cmd}
@@ -246,4 +264,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
