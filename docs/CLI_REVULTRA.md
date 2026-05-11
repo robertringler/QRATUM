@@ -22,6 +22,7 @@ quasim-revultra analyze --file ciphertext.txt --max-period 30 --export analysis.
 ```
 
 **Options:**
+
 - `--ciphertext` - Ciphertext string to analyze (either this or `--file` required)
 - `--file` - Path to ciphertext file (either this or `--ciphertext` required)
 - `--plot` - Generate plots (requires matplotlib)
@@ -29,6 +30,7 @@ quasim-revultra analyze --file ciphertext.txt --max-period 30 --export analysis.
 - `--max-period` - Maximum period for IoC analysis (default: 20)
 
 **Analysis includes:**
+
 - Quantum information topology
 - Holographic entropy transform
 - Temporal embeddings
@@ -38,6 +40,7 @@ quasim-revultra analyze --file ciphertext.txt --max-period 30 --export analysis.
 - Emergent complexity scoring
 
 **Example output:**
+
 ```
 Analyzing ciphertext (length: 97)...
 
@@ -60,12 +63,14 @@ quasim-revultra demo --section all --export demo_results.json
 ```
 
 **Options:**
+
 - `--section` - Demo section to run: `kryptos`, `simple`, `all` (default: `kryptos`)
 - `--export` - Export demo results to JSON file (optional)
 
 **Available demos:**
 
 #### Kryptos K4 Analysis
+
 Analysis of the famous unsolved Kryptos K4 cipher sculpture.
 
 ```bash
@@ -73,6 +78,7 @@ quasim-revultra demo --section kryptos --export kryptos_analysis.json
 ```
 
 **Example output:**
+
 ```
 ======================================================================
 REVULTRA Kryptos K4 Analysis Demo
@@ -97,10 +103,12 @@ quasim-revultra frequency --file message.txt
 ```
 
 **Options:**
+
 - `--ciphertext` - Ciphertext to analyze (either this or `--file` required)
 - `--file` - Path to ciphertext file (either this or `--ciphertext` required)
 
 **Example output:**
+
 ```
 Character Frequencies:
 ----------------------------------------
@@ -137,6 +145,7 @@ quasim-revultra demo --section kryptos --export kryptos_baseline.json
 Analyzes the topological structure of quantum information in ciphertext.
 
 **Metrics:**
+
 - Topological features
 - Quantum state representations
 - Information flow patterns
@@ -146,6 +155,7 @@ Analyzes the topological structure of quantum information in ciphertext.
 Applies holographic principles to analyze entropy distribution.
 
 **Features:**
+
 - Surface-to-volume entropy ratio
 - Holographic bounds
 - Information density maps
@@ -155,6 +165,7 @@ Applies holographic principles to analyze entropy distribution.
 Creates temporal embeddings of ciphertext for pattern detection.
 
 **Capabilities:**
+
 - Time-series analysis
 - Periodicity detection
 - Temporal correlation
@@ -164,6 +175,7 @@ Creates temporal embeddings of ciphertext for pattern detection.
 Discovers recursive and emergent patterns in ciphertext.
 
 **Techniques:**
+
 - Memory-recursive pattern mining
 - N-gram analysis
 - Structural pattern detection
@@ -173,6 +185,7 @@ Discovers recursive and emergent patterns in ciphertext.
 Computes IoC tensor across multiple period lengths to detect periodicity.
 
 **Analysis:**
+
 - Period detection
 - Key length estimation
 - Peak identification
@@ -182,6 +195,7 @@ Computes IoC tensor across multiple period lengths to detect periodicity.
 Analyzes spectral properties and autocorrelation of ciphertext.
 
 **Metrics:**
+
 - Autocorrelation function
 - Spectral peaks
 - Frequency domain analysis
@@ -191,6 +205,7 @@ Analyzes spectral properties and autocorrelation of ciphertext.
 Quantifies the complexity and randomness of ciphertext.
 
 **Components:**
+
 - Shannon entropy
 - Chi-squared statistic
 - Pattern complexity
@@ -230,18 +245,23 @@ The JSON export contains comprehensive analysis results:
 ## Use Cases
 
 ### Cryptanalysis
+
 Analyze unknown ciphers and encrypted messages using quantum-inspired algorithms.
 
 ### Cipher Classification
+
 Classify ciphers by type (substitution, transposition, etc.) based on complexity metrics.
 
 ### Key Length Detection
+
 Detect key lengths in polyalphabetic ciphers using IoC peaks.
 
 ### Pattern Discovery
+
 Discover hidden patterns and structures in encrypted data.
 
 ### Complexity Assessment
+
 Assess the strength and complexity of encryption schemes.
 
 ## Performance Characteristics
@@ -289,41 +309,53 @@ python postprocess.py analysis.json
 ## Troubleshooting
 
 ### Must specify ciphertext or file
+
 ```bash
 Error: Must specify either --ciphertext or --file
 ```
+
 **Solution:** Provide either `--ciphertext "TEXT"` or `--file path/to/file.txt`.
 
 ### File not found
+
 ```bash
 Error: File not found: cipher.txt
 ```
+
 **Solution:** Verify the file path and ensure the file exists.
 
 ### Plotting not implemented
+
 ```bash
 Note: Plotting requires matplotlib (not implemented in this version)
 ```
+
 **Solution:** Use `--export` to save results and visualize with external tools.
 
 ### Memory issues with large ciphertexts
+
 ```bash
 MemoryError: Unable to allocate tensor
 ```
+
 **Solution:** Reduce `--max-period` or process the ciphertext in chunks.
 
 ## References
 
 ### Kryptos K4
+
 The Kryptos sculpture at CIA headquarters contains four encrypted messages. Three have been solved, but K4 remains unsolved since 1990.
 
 **REVULTRA Analysis:**
+
 - Complexity Score: 4.23 (high)
 - Suspected period: 7 or 14
 - Multiple pattern classes detected
 
 ### Research Applications
+
 REVULTRA algorithms are used in:
+
 - Academic cryptanalysis research
 - Historical cipher analysis
 - Encryption strength assessment
@@ -332,5 +364,6 @@ REVULTRA algorithms are used in:
 ## Support
 
 For issues or questions, refer to:
+
 - Main README: [../README.md](../README.md)
 - REVULTRA Algorithm Documentation: [algorithms/revultra.md](algorithms/revultra.md)

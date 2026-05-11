@@ -5,6 +5,7 @@ This directory contains the production-ready static website for the QuASIM (Quan
 ## Overview
 
 QuASIM is a production-grade quantum simulation platform engineered for regulated industries requiring:
+
 - Aerospace certification (DO-178C Level A)
 - Defense compliance (NIST 800-53/171, CMMC 2.0 L2, DFARS)
 - Deterministic reproducibility
@@ -14,6 +15,7 @@ QuASIM is a production-grade quantum simulation platform engineered for regulate
 ## Website Structure
 
 ### HTML Pages
+
 - `index.html` - Landing page with hero section, KPI cards, and feature highlights
 - `architecture.html` - Full-stack architecture diagrams and visualizations
 - `whitepaper.html` - Technical whitepaper with mathematical details
@@ -24,12 +26,14 @@ QuASIM is a production-grade quantum simulation platform engineered for regulate
 - `404.html` - Custom error page
 
 ### Stylesheets (css/)
+
 - `main.css` - Core styles, layout, and typography
 - `components.css` - UI component library
 - `animations.css` - Animation keyframes and effects
 - `visualizations.css` - Chart and diagram styles
 
 ### JavaScript (js/)
+
 - `main.js` - Core initialization and utilities
 - `particles.js` - Quantum particle background system
 - `terminal.js` - Terminal typing and simulation effects
@@ -38,12 +42,14 @@ QuASIM is a production-grade quantum simulation platform engineered for regulate
 - `navigation.js` - Keyboard shortcuts and page navigation
 
 ### Data (assets/data/)
+
 - `benchmarks.json` - Performance benchmark data
 - `compliance.json` - Security and compliance metrics
 
 ## Design System
 
 ### Color Palette
+
 - **Void Black**: `#0a0a0f` - Primary background
 - **Tactical Dark**: `#12121a` - Secondary background
 - **Surface Elevated**: `#1a1a24` - Card surfaces
@@ -54,6 +60,7 @@ QuASIM is a production-grade quantum simulation platform engineered for regulate
 - **Ghost White**: `#e0e0e0` - Text
 
 ### Typography
+
 - **Display**: Orbitron (hero titles)
 - **Headings**: JetBrains Mono
 - **Body**: Inter
@@ -87,17 +94,20 @@ QuASIM is a production-grade quantum simulation platform engineered for regulate
 ## Development
 
 To preview locally:
+
 1. Install a local web server (e.g., `python -m http.server`)
 2. Navigate to the docs directory
 3. Open `http://localhost:8000` in your browser
 
 For GitHub Pages deployment:
+
 - The site is automatically deployed from the `docs/` directory
-- Access at: https://robertringler.github.io/QRATUM
+- Access at: <https://robertringler.github.io/QRATUM>
 
 ## Accessibility
 
 This site follows WCAG 2.1 AA guidelines:
+
 - Proper heading hierarchy
 - ARIA labels and landmarks
 - Keyboard navigation support

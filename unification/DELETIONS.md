@@ -1,12 +1,15 @@
 # QRATUM Deletions Log
+
 _Phase_: U2 Close Gaps — delete-orphan  
 _Generated_: 2026-04-30
 
 ## Orphan Assessment
 
 ### GAP-ORPH-001: 179 code files with no inbound imports
+
 **Status**: DEFERRED — bulk deletion requires dependency graph analysis beyond current scope.  
 **Justification**: The 179 files identified by static analysis include:
+
 - Demo/example files (legitimately standalone)
 - CLI runner scripts (entry points, not imported)
 - Infrastructure scripts (Makefiles, CI helpers)
@@ -15,6 +18,7 @@ _Generated_: 2026-04-30
 **Action**: Files are NOT deleted. They are retained pending human review of the orphan list in `audit/GAP_REGISTRY.jsonl`.
 
 ### GAP-DOC-README-OLD: README_OLD.md
+
 **Status**: RETAINED — marked as deprecated but not deleted.  
 **Justification**: README_OLD.md contains historical context that may be useful during transition. It is clearly named "OLD" and does not conflict with the canonical README.md.  
 **Recommendation**: Delete after README.md content is validated as complete replacement.
@@ -22,6 +26,7 @@ _Generated_: 2026-04-30
 ## Files Modified vs Deleted
 
 No files were deleted in this remediation phase. All modifications:
+
 - Replaced `NotImplementedError` with minimal stubs (no interface changes)
 - Replaced `pickle` with `json` (backward-compatible for new checkpoints)
 - Replaced unsafe subprocess patterns (behavior-preserving)

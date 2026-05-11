@@ -2,10 +2,12 @@ Critique and Review Summary: "The Anti-holographic Entangled Universe"
 
 Summary of paper
 ----------------
+
 The paper "The Anti-holographic Entangled Universe" (AEU) proposes a framework in which subsystem entropies in a bulk cosmological setting scale super-extensively relative to boundary-area expectations. The author defines anti-holographic maps as isometries from a lower-dimensional effective Hilbert space into the microscopic Hilbert space and claims entanglement scaling S(\rho_R) ~ |R|^\alpha with \alpha > 1 - 1/d. The manuscript outlines axioms, proves existence using hierarchical tensor networks, sketches microscopic lattice and continuum models, and discusses dynamics and observational consequences. Appendices contain constructive tensor-network algorithms, energy bounds, OTOC estimates, and phenomenological estimates.
 
 Strengths
 ---------
+
 1. Originality and conceptual boldness: AEU flips the usual holographic intuition and provides a fresh framework that spans boundary-dominated and volume-law regimes.
 2. Mathematical scaffolding: Theorem III.1 and the tensor-network construction offer a plausible route to realize super-area entropy scaling; appendices include entropy bounds and stability arguments.
 3. Interdisciplinary reach: The manuscript connects quantum information, condensed matter volume-law systems, and cosmological phenomenology (CMB power-spectrum modification model).
@@ -13,6 +15,7 @@ Strengths
 
 Weaknesses and concerns
 -----------------------
+
 1. Lack of detailed numerics: Section VI is mostly a placeholder. The manuscript should include concrete plots (S(\ell) vs \ell), finite-size scaling, and access to the simulation code.
 2. Potential conflict with gravitational thermodynamics: The paper's claims about controlled violations of holographic bounds do not convincingly resolve how AEU is consistent with Bekenstein-Hawking entropy or gravitational entropy bounds.
 3. Over-reliance on simplifying assumptions: The continuum and lattice constructions assume regular lattices and simplified kernels; the extension to dynamical gravity, fermions, or gauge fields is not addressed.
@@ -21,6 +24,7 @@ Weaknesses and concerns
 
 Detailed recommendations (actionable)
 -------------------------------------
+
 - Core theoretical work
   - Expand Appendix B with explicit energy-density calculations and gravitational backreaction estimates. Show parameter regimes where AEU is benign.
   - Provide a rigorous argument (or clearly stated assumptions) showing AEU does not allow superluminal signaling or closed timelike curves. If a general proof is hard, present a theorem under clearly stated assumptions.
@@ -40,6 +44,7 @@ Detailed recommendations (actionable)
 
 Overall assessment
 ------------------
+
 - Innovation: 7/10
 - Completeness: 5/10
 

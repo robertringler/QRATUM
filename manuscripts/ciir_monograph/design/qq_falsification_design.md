@@ -10,6 +10,7 @@
 **Choice:** Quantum cognition order effects / QQ-equality.
 
 **Why this over alternatives:**
+
 - **CHSH / LGI** require entangled or coherent quantum systems; CIIR is a classical control framework on $\mathfrak{D}(H_C)$, so they don't bind.
 - **Ellsberg / Allais** are well-explained by prospect theory; CIIR adds no parameter-free prediction.
 - **Contextuality-by-Default (CbD)** lacks a single sharp numerical knife-edge.
@@ -18,6 +19,7 @@
 ## §2. Discriminating Prediction
 
 **Setup:** Single-qubit constraint Hilbert space $H_C$, with
+
 - $\rho_0 = \tfrac{1}{2}(I + \vec{r}\cdot\vec{\sigma})$, $|\vec{r}|=r_0$
 - $K = \sigma_x$ (CIIR generator)
 - $O_A = \sigma_z$ (question A projector basis)
@@ -31,6 +33,7 @@ $$
 where $\theta = \angle(\vec{r}, \hat{z})$.
 
 **Comparison:**
+
 | Model | $q$ |
 |---|---|
 | **PQC** (standard projector quantum cognition) | $0$ (parameter-free) |
@@ -52,6 +55,7 @@ This is four orders of magnitude above the empirical bound from Wang 2014 ($|\ba
 ## §4. Experimental Protocol
 
 **Data:**
+
 - **Primary corpus:** Wang et al. (2014, *PNAS*) — ~70 question pairs, $N \approx 10^5$ total respondents.
 - **Extension:** 30 new pairs on Prolific, designed to maximize $|\sin\phi\cos\theta|$ (predicted high-effect regime). Independent recruitment; pre-registered.
 
@@ -63,6 +67,7 @@ Pre-registered split-half (random by pair index, seed locked) to address $(\phi,
 **Significance:** $\alpha = 0.005$ (Benjamin et al. 2018).
 
 **Power:** simulation-based;
+
 - $\geq 0.999$ at the predicted central effect ($\beta_{\text{CIIR}} \approx 0.13$ at $K_{\min}D=1$)
 - $\geq 0.9$ down to $\beta = 0.020$
 At the predicted central effect, separation from PQC is $\geq 17\sigma$.
@@ -74,6 +79,7 @@ At the predicted central effect, separation from PQC is $\geq 17\sigma$.
 ## §5. Killshot Conditions
 
 CIIR is **falsified** if both of the following hold on the locked split-half:
+
 1. $|\hat\beta| < 0.010$ with 99.5% CI excluding $\beta_{\text{CIIR}} \geq 0.020$, AND
 2. Posterior on $K_{\min}D$ places $\geq 99\%$ of mass at $K_{\min}D > 8$ (the regime where CIIR is observationally indistinguishable from PQC).
 
@@ -82,6 +88,7 @@ CIIR is **corroborated** if $\hat\beta$ is consistent with the predicted $\beta_
 ## §6. Bayes Factor & Pre-Registration
 
 **Locked priors** (OSF, hash-committed before unblinding):
+
 - $\lambda \sim \text{LogNormal}(0, 1)$ — projection rate
 - $\mu \sim \text{LogNormal}(0, 1)$ — drift coefficient
 - $\gamma \sim \text{HalfNormal}(0.1)$ — coupling
@@ -114,6 +121,7 @@ New modules under `quasim/ciir/cognition/`:
 - `bayes_factor.py` — PyMC bridge sampling wrapper with locked-prior loader.
 
 Tests: `tests/test_qq_equality.py` (≥25 tests):
+
 - closed-form recovers Wang–Busemeyer (2013) Theorem 1 in $\alpha\to 1$ unitary limit
 - $[K,O_A]=0$ and $[K,O_B]=0$ sub-cases give $q=0$
 - numerical stability of the projection channel $\Pi$ near rank-deficient $\rho$

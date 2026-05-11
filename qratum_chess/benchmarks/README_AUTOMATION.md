@@ -21,6 +21,7 @@ python run_full_benchmark.py --quick
 ```
 
 This reduces:
+
 - Torture suite depth: 15 → 8
 - Resilience iterations: 10 → 3
 
@@ -313,6 +314,7 @@ pip install -r requirements.txt
 ```
 
 Required packages:
+
 - numpy
 - json (built-in)
 - csv (built-in)
@@ -326,6 +328,7 @@ python run_full_benchmark.py --verbose
 ```
 
 Check logs in output directory:
+
 ```
 benchmarks/auto_run/YYYYMMDD_HHMMSS/logs/benchmark.log
 ```
@@ -404,6 +407,7 @@ python run_full_benchmark.py \
 ## API Reference
 
 See source code documentation in:
+
 - `qratum_chess/benchmarks/auto_benchmark.py`
 - `qratum_chess/benchmarks/motif_extractor.py`
 - `qratum_chess/benchmarks/telemetry.py`
@@ -411,6 +415,7 @@ See source code documentation in:
 ## Support
 
 For issues or questions:
+
 - Check the troubleshooting section above
 - Review example usage in this document
 - Examine output logs with `--verbose`

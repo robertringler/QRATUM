@@ -22,12 +22,14 @@ quasim-qgh demo --section tensor --export results.json
 ```
 
 **Options:**
+
 - `--section` - Demo section to run: `tensor`, `distributed`, `fusion`, `optimization`, `signal`, `consensus`, `all` (default)
 - `--export` - Export demo results to JSON file (optional)
 
 **Available demos:**
 
 #### Tensor Processing
+
 Demonstrates tensor processing with SuperpositionResolver.
 
 ```bash
@@ -35,6 +37,7 @@ quasim-qgh demo --section tensor
 ```
 
 #### Distributed Stream Monitoring
+
 Shows distributed stream monitoring across multiple nodes.
 
 ```bash
@@ -42,6 +45,7 @@ quasim-qgh demo --section distributed
 ```
 
 #### AV Sensor Fusion
+
 Autonomous vehicle sensor fusion with quantum algorithms.
 
 ```bash
@@ -49,6 +53,7 @@ quasim-qgh demo --section fusion
 ```
 
 #### Portfolio Optimization
+
 Portfolio optimization with stability monitoring.
 
 ```bash
@@ -56,6 +61,7 @@ quasim-qgh demo --section optimization
 ```
 
 #### Signal Processing
+
 Signal processing with causal history tracking.
 
 ```bash
@@ -63,6 +69,7 @@ quasim-qgh demo --section signal
 ```
 
 #### Federated Consensus
+
 Federated consensus propagation across distributed nodes.
 
 ```bash
@@ -70,6 +77,7 @@ quasim-qgh demo --section consensus
 ```
 
 #### All Demos
+
 Run all demonstration sections sequentially.
 
 ```bash
@@ -77,6 +85,7 @@ quasim-qgh demo --section all --export qgh_results.json
 ```
 
 **Example output:**
+
 ```
 ======================================================================
 QGH Demo: Tensor Processing
@@ -108,11 +117,13 @@ quasim-qgh resolve --states 4 --dim 3 --export resolved.json
 ```
 
 **Options:**
+
 - `--states` - Number of superposition states (default: 4)
 - `--dim` - Dimension of each state (default: 3)
 - `--export` - Export resolved states to JSON file (optional)
 
 **Example output:**
+
 ```
 Resolving 4 superposition states (dimension 3)...
 ✓ Resolution complete
@@ -130,11 +141,13 @@ quasim-qgh monitor --nodes 10 --streams 5 --timesteps 100
 ```
 
 **Options:**
+
 - `--nodes` - Number of monitoring nodes (default: 10)
 - `--streams` - Number of data streams (default: 5)
 - `--timesteps` - Number of timesteps to simulate (default: 100)
 
 **Example output:**
+
 ```
 Monitoring 5 streams across 10 nodes for 100 timesteps...
 
@@ -158,11 +171,13 @@ quasim-qgh consensus --nodes 8 --rounds 20 --export consensus.json
 ```
 
 **Options:**
+
 - `--nodes` - Number of consensus nodes (default: 8)
 - `--rounds` - Number of consensus rounds (default: 20)
 - `--export` - Export consensus results to JSON file (optional)
 
 **Example output:**
+
 ```
 Computing consensus across 8 nodes for 20 rounds...
 
@@ -182,11 +197,13 @@ quasim-qgh history --depth 50 --branches 3 --visualize
 ```
 
 **Options:**
+
 - `--depth` - History depth to analyze (default: 50)
 - `--branches` - Number of causal branches (default: 3)
 - `--visualize` - Generate visualization (requires graphviz)
 
 **Example output:**
+
 ```
 Analyzing quantum graph history...
 
@@ -238,6 +255,7 @@ QGH implements non-speculative quantum algorithms that guarantee:
 ### Key Algorithms
 
 #### SuperpositionResolver
+
 Resolves quantum superpositions while preserving causal history.
 
 ```python
@@ -249,6 +267,7 @@ resolved_state = resolver.resolve(quantum_states)
 ```
 
 #### ConsensusProtocol
+
 Implements distributed consensus across quantum nodes.
 
 ```python
@@ -259,6 +278,7 @@ consensus_state = protocol.compute(initial_states)
 ```
 
 #### CausalHistory
+
 Tracks and analyzes causal relationships in quantum computations.
 
 ```python
@@ -281,15 +301,19 @@ QGH integrates with QuASIM simulation platform:
 ## Use Cases
 
 ### Autonomous Vehicles
+
 Sensor fusion using quantum superposition resolution for real-time decision making.
 
 ### Financial Systems
+
 Portfolio optimization with distributed consensus for risk management.
 
 ### Telecommunications
+
 Network monitoring and optimization using quantum stream processing.
 
 ### Distributed Systems
+
 Byzantine fault-tolerant consensus for distributed ledgers and blockchain.
 
 ## Performance Characteristics
@@ -303,25 +327,32 @@ Byzantine fault-tolerant consensus for distributed ledgers and blockchain.
 ## Troubleshooting
 
 ### Export file already exists
+
 ```bash
 Error: Export file already exists
 ```
+
 **Solution:** Remove the existing file or choose a different filename.
 
 ### Insufficient nodes for consensus
+
 ```bash
 Error: At least 4 nodes required for consensus
 ```
+
 **Solution:** Increase `--nodes` to at least 4 for meaningful consensus.
 
 ### Memory issues with large states
+
 ```bash
 MemoryError: Unable to allocate array
 ```
+
 **Solution:** Reduce `--states` or `--dim` parameters, or increase available memory.
 
 ## Support
 
 For issues or questions, refer to:
+
 - Main README: [../README.md](../README.md)
 - QGH Algorithm Documentation: [algorithms/qgh.md](algorithms/qgh.md)

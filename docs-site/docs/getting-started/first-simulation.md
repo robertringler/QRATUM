@@ -134,28 +134,28 @@ plt.show()
 
 <div class="grid cards" markdown>
 
--   :material-molecule:{ .lg .middle } __QAOA Tutorial__
+- :material-molecule:{ .lg .middle } **QAOA Tutorial**
 
     ---
 
     Learn QAOA for combinatorial optimization
-    
+
     [:octicons-arrow-right-24: QAOA MaxCut](../tutorials/qaoa-maxcut.md)
 
--   :material-api:{ .lg .middle } __API Reference__
+- :material-api:{ .lg .middle } **API Reference**
 
     ---
 
     Explore the full API
-    
+
     [:octicons-arrow-right-24: API Reference](../reference/api-reference.md)
 
--   :material-book-multiple:{ .lg .middle } __More Tutorials__
+- :material-book-multiple:{ .lg .middle } **More Tutorials**
 
     ---
 
     Advanced quantum simulations
-    
+
     [:octicons-arrow-right-24: All Tutorials](../tutorials/index.md)
 
 </div>

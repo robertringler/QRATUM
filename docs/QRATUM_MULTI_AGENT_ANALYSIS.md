@@ -67,6 +67,7 @@ S_resource = {cpu_used ∈ [0, MAX_CPU],
               mem_used ∈ [0, MAX_MEM],
               status  ∈ {idle, running, halted}}
 ```
+
 (`qagents/ciir_crs_ric/ciir.py`)
 
 ```
@@ -77,6 +78,7 @@ S_mvri = (nodes,                # sorted tuple[str]
           bounds,               # (float, float)
           initial_edges)        # frozenset[(str,str)]
 ```
+
 (`qagents/mvri/state.py`)
 
 ### Constraint Algebra

@@ -1,4 +1,5 @@
 # QRATUM Unification Plan
+
 _Phase_: U0 Intake & Plan  
 _Generated_: 2026-04-30  
 _Input_: `audit/GAP_REGISTRY.jsonl` (80 gaps)

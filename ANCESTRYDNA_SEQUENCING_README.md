@@ -123,20 +123,20 @@ All results are saved in `results/ancestrydna_sequencing/`:
 
 ### Metadata and Reports
 
-5. **`ancestrydna_summary.json`** (1.6 KB)
+1. **`ancestrydna_summary.json`** (1.6 KB)
    - AncestryDNA-specific statistics
    - Chromosome distribution
    - Allele distribution
    - Heterozygosity rate
    - Sequence generation details
 
-6. **`deployment_report.json`** (3.7 KB)
+2. **`deployment_report.json`** (3.7 KB)
    - Complete pipeline execution summary
    - Performance metrics
    - Reproducibility validation
    - Hardware and backend information
 
-7. **`audit_summary.json`** (113 bytes)
+3. **`audit_summary.json`** (113 bytes)
    - Audit statistics (0 violations found)
    - Validation status
 
@@ -145,6 +145,7 @@ All results are saved in `results/ancestrydna_sequencing/`:
 ### Sequencing Script: `sequence_ancestrydna.py`
 
 The script provides:
+
 - **AncestryDNAParser**: Parses SNP data and organizes by chromosome
 - **AncestryDNASequencingPipeline**: Extended pipeline with AncestryDNA-specific functionality
 - **Sequence Generation**: Converts SNP alleles into processable sequences
@@ -199,6 +200,7 @@ python3 sequence_ancestrydna.py \
 ### Reproducibility
 
 The pipeline ensures reproducibility through:
+
 - Global seed management (seed=42)
 - Deterministic sequence generation
 - Thread-safe execution with seed derivation
@@ -244,6 +246,7 @@ The AncestryDNA.txt whole genome has been successfully sequenced using the XENON
 ## Next Steps
 
 The generated results can be used for:
+
 1. Further genomic analysis and variant interpretation
 2. Comparison with reference genomes
 3. Functional prediction and pathway analysis

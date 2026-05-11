@@ -1,7 +1,8 @@
 # QRATUM Completeness Scorecard
+
 _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22:27:58Z
 
-Score = `1 - (major+block findings) / (files in subtree)`. Heuristic: signals true *defects* per file, not feature completeness. A 100% score means no `major`/`block` static findings, NOT that every promised feature is built.
+Score = `1 - (major+block findings) / (files in subtree)`. Heuristic: signals true _defects_ per file, not feature completeness. A 100% score means no `major`/`block` static findings, NOT that every promised feature is built.
 
 | Subsystem | Files | Major+Block | Score | Evidence |
 |---|---|---|---|---|
@@ -54,5 +55,6 @@ Score = `1 - (major+block findings) / (files in subtree)`. Heuristic: signals tr
 | `docs-site` | 36 | 4 | 88.9% | audit/code/findings.jsonl + audit/security/findings.jsonl filtered by path prefix `docs-site` |
 
 ## Caveats
+
 - Subsystems claimed in problem statement but **absent** from filesystem are flagged 'N/A':
   - `dashboards`

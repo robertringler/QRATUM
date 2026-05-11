@@ -37,9 +37,11 @@ Source/QRATUM/
 ```
 
 ## Topological order (Initialize)
+
 RWB → MVRI → CIIR → OBS → CRS → CGL → QuaSim → QuBIC → RMHD → RIC → GUI
 
 ## Teardown order (Deinitialize)
+
 GUI → RIC → RMHD → QuBIC → QuaSim → CGL → CRS → OBS → CIIR → MVRI → RWB
 
 ## Build

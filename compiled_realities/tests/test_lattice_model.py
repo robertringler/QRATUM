@@ -1,7 +1,6 @@
 """Tests for Lattice Field Model."""
 
 import numpy as np
-
 from compiled_realities.models.lattice_field import LatticeFieldModel
 
 

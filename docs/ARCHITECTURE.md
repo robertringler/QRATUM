@@ -74,6 +74,7 @@ The execution foundation providing deterministic operations with cryptographic a
 **Status**: 🟢 In Development (~60% complete)
 
 **Key Responsibilities:**
+
 - Execute contracts deterministically
 - Emit Merkle-chained events for all operations
 - Enforce 8 Fatal Invariants
@@ -89,6 +90,7 @@ Multi-vertical AI platform spanning 14 critical domains with unified reasoning.
 **Status**: 🟢 In Development (~40% complete)
 
 **Key Responsibilities:**
+
 - Execute AI workloads across 14 verticals
 - Synthesize insights across domains
 - Maintain sovereign deployment capabilities
@@ -104,6 +106,7 @@ Constrained Recursive Self-Improvement (CRSI) framework for controlled superinte
 **Status**: 🟡 Theoretical (~10% complete, requires AI breakthroughs)
 
 **Key Responsibilities:**
+
 - Safe self-improvement under immutable constraints
 - Autonomous intent generation (human-authorized)
 - Superhuman discovery across domains
@@ -121,6 +124,7 @@ Constrained Recursive Self-Improvement (CRSI) framework for controlled superinte
 **Purpose**: Execute deterministic, auditable operations
 
 **Architecture**:
+
 ```python
 class Contract:
     """Atomic unit of work in QRADLE."""
@@ -141,6 +145,7 @@ class Contract:
 ```
 
 **Properties**:
+
 - **Deterministic**: Same `contract_id` + `payload` = same result
 - **Atomic**: All operations succeed or all fail (no partial execution)
 - **Auditable**: Every operation emits Merkle-chained event
@@ -151,6 +156,7 @@ class Contract:
 **Purpose**: Tamper-evident audit trail for all operations
 
 **Structure**:
+
 ```
 Event₀ → Event₁ → Event₂ → Event₃ → ...
   ↓        ↓        ↓        ↓
@@ -160,6 +166,7 @@ Hash_n = SHA256(Event_n || Hash_{n-1})
 ```
 
 **Event Schema**:
+
 ```python
 class Event:
     event_id: str              # Unique ID
@@ -173,6 +180,7 @@ class Event:
 ```
 
 **Properties**:
+
 - **Tamper-Evident**: Any modification breaks chain
 - **Append-Only**: Events cannot be deleted or modified
 - **Verifiable**: External parties can verify without system access
@@ -183,11 +191,13 @@ class Event:
 **Purpose**: Return to any previous verified state
 
 **Checkpoint Types**:
+
 - **Automatic**: Created before every SENSITIVE+ contract
 - **Manual**: Created on explicit request
 - **Scheduled**: Created on time-based triggers (e.g., daily)
 
 **Rollback Process**:
+
 ```python
 def rollback(checkpoint_id: str) -> RollbackResult:
     """Rollback to specified checkpoint."""
@@ -200,6 +210,7 @@ def rollback(checkpoint_id: str) -> RollbackResult:
 ```
 
 **Constraints**:
+
 - Cannot rollback past a CRITICAL contract without explicit authorization
 - Cannot rollback across EXISTENTIAL boundaries
 - All rollback operations are themselves Merkle-chained
@@ -209,6 +220,7 @@ def rollback(checkpoint_id: str) -> RollbackResult:
 **Purpose**: Enforce multi-level safety requirements
 
 **Safety Levels**:
+
 ```python
 class SafetyLevel(Enum):
     ROUTINE = "routine"           # No authorization required
@@ -219,6 +231,7 @@ class SafetyLevel(Enum):
 ```
 
 **Authorization Flow**:
+
 1. Contract specifies required `safety_level`
 2. System determines required approvers based on level
 3. Request sent to approvers (email, dashboard, API)
@@ -231,6 +244,7 @@ class SafetyLevel(Enum):
 **Purpose**: Enforce 8 immutable constraints
 
 **8 Fatal Invariants**:
+
 ```python
 FATAL_INVARIANTS = frozenset([
     "human_oversight_requirement",
@@ -245,6 +259,7 @@ FATAL_INVARIANTS = frozenset([
 ```
 
 **Enforcement**:
+
 - Checked before every contract execution
 - Checked after every contract execution
 - Violations trigger immediate system lockdown
@@ -276,12 +291,14 @@ FATAL_INVARIANTS = frozenset([
 ### 14 Vertical Modules
 
 Each vertical is a specialized AI domain with:
+
 - **Domain-Specific Knowledge Graphs**: Structured domain knowledge
 - **Reasoning Algorithms**: Deductive, inductive, abductive, analogical, causal, Bayesian
 - **External Integrations**: APIs, databases, file formats
 - **Validation Frameworks**: Benchmarks against domain experts
 
 **Vertical Structure**:
+
 ```python
 class VerticalModule:
     """Base class for QRATUM vertical modules."""
@@ -306,6 +323,7 @@ class VerticalModule:
 **Purpose**: Synthesize insights across multiple verticals
 
 **Cross-Domain Query Example**:
+
 ```python
 query = CrossDomainQuery(
     question="Optimize drug manufacturing for COVID-19 vaccine",
@@ -327,6 +345,7 @@ result = unified_reasoning_engine.synthesize(query)
 ```
 
 **Synthesis Algorithms**:
+
 - **Constraint Satisfaction**: Find solutions meeting all vertical constraints
 - **Pareto Optimization**: Trade-offs across competing objectives
 - **Causal Reasoning**: Understand cross-domain cause-effect relationships
@@ -343,6 +362,7 @@ result = unified_reasoning_engine.synthesize(query)
 **Purpose**: Unified causal model fusing all 14 verticals
 
 **Architecture**:
+
 ```python
 class QReality:
     """Emergent world model integrating all verticals."""
@@ -360,6 +380,7 @@ class QReality:
 ```
 
 **Properties**:
+
 - **Immutable Nodes**: Knowledge nodes are content-addressed (SHA256)
 - **Versioned Graph**: Causal graph evolves via append-only operations
 - **Provenance Tracking**: Every node links to source contracts
@@ -372,6 +393,7 @@ class QReality:
 **Purpose**: Integrate all 14 verticals into unified reasoning
 
 **Reasoning Strategies**:
+
 - **Deductive**: Logical inference from premises
 - **Inductive**: Generalization from specific instances
 - **Abductive**: Best explanation for observations
@@ -380,6 +402,7 @@ class QReality:
 - **Bayesian**: Probabilistic inference under uncertainty
 
 **Architecture**:
+
 ```python
 class QMind:
     """Unified reasoning across all verticals."""
@@ -394,6 +417,7 @@ class QMind:
 ```
 
 **Determinism**: Every reasoning step is:
+
 - Logged as Merkle-chained event
 - Reproducible (same query + context = same reasoning)
 - Auditable (external verification possible)
@@ -405,6 +429,7 @@ class QMind:
 **Purpose**: Contract-bound self-improvement under immutable constraints
 
 **Self-Improvement Types**:
+
 1. **Model Updates**: New weights/parameters (SENSITIVE)
 2. **Algorithm Changes**: New reasoning strategies (CRITICAL)
 3. **Knowledge Integration**: New facts/relationships (ELEVATED)
@@ -412,6 +437,7 @@ class QMind:
 5. **Architecture Changes**: System modifications (EXISTENTIAL)
 
 **Improvement Proposal Flow**:
+
 ```python
 class ImprovementProposal:
     """Self-improvement proposal (contract-bound)."""
@@ -436,6 +462,7 @@ class ImprovementProposal:
 ```
 
 **IMMUTABLE_BOUNDARIES**:
+
 ```python
 IMMUTABLE_BOUNDARIES = frozenset([
     "human_oversight_requirement",
@@ -456,6 +483,7 @@ IMMUTABLE_BOUNDARIES = frozenset([
 **Purpose**: Propose goals based on system state analysis
 
 **Goal Proposal Process**:
+
 ```python
 class GoalProposal:
     """Autonomous goal proposal (human-authorized)."""
@@ -478,6 +506,7 @@ class GoalProposal:
 ```
 
 **PROHIBITED_GOALS**:
+
 ```python
 PROHIBITED_GOALS = frozenset([
     "remove_human_oversight",
@@ -500,6 +529,7 @@ PROHIBITED_GOALS = frozenset([
 **Purpose**: Cross-domain hypothesis generation and validation
 
 **Discovery Pipeline**:
+
 ```python
 class Discovery:
     """Novel cross-domain discovery."""
@@ -523,6 +553,7 @@ class Discovery:
 ```
 
 **Validation Framework**:
+
 - **Theoretical Validation**: Consistency with known laws
 - **Empirical Validation**: Experimental evidence
 - **Expert Validation**: Domain expert review
@@ -554,6 +585,7 @@ class Discovery:
 ```
 
 **Key Interactions**:
+
 1. QRATUM submits AI workload as QRADLE contract
 2. QRADLE executes deterministically, emits events
 3. QRADLE returns result with Merkle proof
@@ -586,6 +618,7 @@ class Discovery:
 ```
 
 **Key Interactions**:
+
 1. QRATUM-ASI builds world model from QRATUM vertical outputs
 2. QRATUM-ASI proposes cross-domain queries to QRATUM
 3. QRATUM-ASI proposes self-improvements (human-authorized)
@@ -694,21 +727,25 @@ Valid?
 ### Contract Types
 
 **1. Query Contract**
+
 - **Purpose**: Read-only query (no state changes)
 - **Safety Level**: ROUTINE or ELEVATED
 - **Example**: "Retrieve patient medical history"
 
 **2. Update Contract**
+
 - **Purpose**: Modify system state
 - **Safety Level**: SENSITIVE or CRITICAL
 - **Example**: "Update drug dosage recommendation"
 
 **3. Self-Improvement Contract**
+
 - **Purpose**: Modify QRATUM-ASI capabilities
 - **Safety Level**: CRITICAL or EXISTENTIAL
 - **Example**: "Add new reasoning algorithm to Q-MIND"
 
 **4. Goal Execution Contract**
+
 - **Purpose**: Execute autonomous goal (Q-WILL)
 - **Safety Level**: CRITICAL or EXISTENTIAL
 - **Example**: "Optimize national energy grid"
@@ -744,12 +781,15 @@ Valid?
 
 1. **Obtain Event Log**: Download Merkle chain from QRATUM
 2. **Verify Chain Integrity**:
+
    ```python
    for i in range(1, len(events)):
        computed_hash = sha256(events[i].to_json() + events[i-1].merkle_proof)
        assert computed_hash == events[i].merkle_proof
    ```
+
 3. **Verify Contract Execution**:
+
    ```python
    contract_events = filter(lambda e: e.contract_id == target_contract_id, events)
    assert contract_events[0].operation == "contract_start"
@@ -758,6 +798,7 @@ Valid?
    ```
 
 **Properties**:
+
 - **Tamper-Evident**: Any modification breaks chain
 - **Non-Repudiable**: Cannot deny executed operations
 - **Auditable**: Complete provenance from input to output
@@ -770,41 +811,49 @@ Valid?
 ### 8 Fatal Invariants
 
 **1. Human Oversight Requirement**
+
 - SENSITIVE+ contracts require human authorization
 - Cannot be waived or bypassed
 - Violations trigger immediate lockdown
 
 **2. Merkle Chain Integrity**
+
 - All events must be Merkle-chained
 - Chain breaks trigger immediate lockdown
 - External verification always possible
 
 **3. Contract Immutability**
+
 - Executed contracts cannot be retroactively altered
 - Historical record is append-only
 - Rollback creates new events (doesn't delete old)
 
 **4. Authorization System**
+
 - Permission model must remain enforced
 - Cannot disable or bypass authorization checks
 - Violations trigger immediate lockdown
 
 **5. Safety Level System**
+
 - Risk classification must be applied to all operations
 - Cannot downgrade safety levels without authorization
 - Violations trigger immediate lockdown
 
 **6. Rollback Capability**
+
 - System must retain ability to return to verified states
 - Cannot disable or remove rollback system
 - Violations trigger immediate lockdown
 
 **7. Event Emission Requirement**
+
 - All operations must emit auditable events
 - Cannot disable or suppress event emission
 - Violations trigger immediate lockdown
 
 **8. Determinism Guarantee**
+
 - Same inputs must produce same outputs
 - Cannot introduce non-determinism
 - Violations detected via reproducibility tests
@@ -812,21 +861,25 @@ Valid?
 ### Enforcement Mechanisms
 
 **Pre-Execution Checks**:
+
 - Verify all invariants are intact
 - Verify contract doesn't violate invariants
 - Verify authorization (if required)
 
 **Post-Execution Checks**:
+
 - Verify all invariants still intact
 - Verify events emitted correctly
 - Verify Merkle chain updated correctly
 
 **Continuous Monitoring**:
+
 - Periodic invariant checks (every 5 minutes)
 - Anomaly detection (unexpected patterns)
 - External auditor verification (daily)
 
 **Lockdown Procedure**:
+
 1. Halt all contract execution immediately
 2. Alert all administrators
 3. Log lockdown reason (Merkle-chained)
@@ -840,6 +893,7 @@ Valid?
 ### 1. On-Premises Deployment
 
 **Architecture**:
+
 ```
 ┌─────────────────────────────────────────┐
 │        Customer Data Center             │
@@ -869,6 +923,7 @@ Valid?
 ### 2. Air-Gapped Deployment
 
 **Architecture**:
+
 ```
 ┌─────────────────────────────────────────┐
 │     Isolated Network (No Internet)      │
@@ -894,6 +949,7 @@ Valid?
 ### 3. Private Cloud Deployment
 
 **Architecture**:
+
 ```
 ┌─────────────────────────────────────────┐
 │          Dedicated VPC                  │
@@ -921,6 +977,7 @@ Valid?
 ### DO-178C Level A (Airborne Systems)
 
 **Requirements**:
+
 - Deterministic execution (✓ QRADLE)
 - Complete traceability (✓ Merkle chains)
 - Formal verification (🟡 In progress)
@@ -931,6 +988,7 @@ Valid?
 ### CMMC Level 3 (Defense Contractors)
 
 **Requirements**:
+
 - Access control (✓ Authorization system)
 - Audit logging (✓ Merkle chains)
 - Incident response (✓ Rollback capability)
@@ -941,6 +999,7 @@ Valid?
 ### ISO 27001 (Information Security)
 
 **Requirements**:
+
 - Security policies (✓ Safety levels)
 - Asset management (✓ Contract tracking)
 - Access control (✓ Authorization)
@@ -959,6 +1018,7 @@ QRATUM-ASI provides a **rigorous architectural framework** for controlled, audit
 3. **QRATUM-ASI** (when achievable) will be inherently safe via immutable constraints
 
 **Key Innovations**:
+
 - Merkle-chained provenance for all operations
 - Contract-based execution with rollback capability
 - Immutable safety boundaries (8 Fatal Invariants)
@@ -969,4 +1029,4 @@ QRATUM-ASI provides a **rigorous architectural framework** for controlled, audit
 
 ---
 
-For questions or feedback on this architecture, contact: architecture@qratum.io
+For questions or feedback on this architecture, contact: <architecture@qratum.io>

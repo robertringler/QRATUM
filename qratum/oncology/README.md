@@ -183,6 +183,7 @@ REMISSION           PROGRESSION
 ### Stability Manifold Analysis
 
 The system identifies **attractor states** representing:
+
 - **Remission**: Low tumor activity, stable low-proliferation state
 - **Progression**: High tumor activity, treatment-resistant state
 - **Unstable**: Transitional states amenable to therapeutic intervention
@@ -206,16 +207,19 @@ The system identifies **attractor states** representing:
 **Core Insight**: Continuous maximum-dose therapy creates selection pressure favoring resistant clones. Intermittent treatment maintains a population of drug-sensitive cells that compete with resistant clones, delaying resistance emergence.
 
 **Testable Predictions**:
+
 1. Time to progression increases >50% with adaptive dosing
 2. Resistant clone frequency remains lower in adaptive arm
 3. Overall survival is not compromised by drug holidays
 
 **Failure Modes**:
+
 - Resistance emerges despite drug holidays
 - Optimal switching thresholds unknown
 - Patient compliance challenges
 
 **Counter-Strategies**:
+
 - ctDNA-guided treatment decisions for early resistance detection
 - Multi-arm adaptive trials to test multiple threshold strategies
 
@@ -224,11 +228,13 @@ The system identifies **attractor states** representing:
 **Core Insight**: Cancer disrupts normal immune timing signals. Sequential administration of treatments can "reset" immune signaling and restore coordinated anti-tumor response.
 
 **Testable Predictions**:
+
 1. CD8+ T-cell infiltration increases after targeted therapy priming
 2. IFN-gamma signature predicts response to sequential immunotherapy
 3. Optimal sequencing window is 2-4 weeks post targeted therapy
 
 **Failure Modes**:
+
 - Immune-related adverse events
 - Inadequate T-cell infiltration
 - Context-dependent effects
@@ -384,6 +390,7 @@ RATIONALE:
 ### AI Safety Constraints
 
 **Hard Constraints** (Never Violated):
+
 1. NEVER provide direct treatment recommendations to patients
 2. ALWAYS require clinical expert review before application
 3. NEVER claim diagnostic or prognostic accuracy
@@ -391,6 +398,7 @@ RATIONALE:
 5. ALWAYS maintain audit trail of all operations
 
 **Human Oversight Requirements**:
+
 - All treatment sequence recommendations require oncologist review
 - Hypothesis ranking requires domain expert validation
 - Validation pipeline designs require IRB review
@@ -426,6 +434,7 @@ RATIONALE:
 ## 9. Research Roadmap (5-10 Years)
 
 ### Phase 1: Foundation (2025-2027)
+
 - **Goal**: Validate computational framework, build initial hypothesis portfolio
 - **Milestones**:
   - VITRA algorithm validation on known pathways
@@ -435,6 +444,7 @@ RATIONALE:
 - **Budget**: $5M
 
 ### Phase 2: Preclinical Validation (2027-2029)
+
 - **Goal**: Validate hypotheses in preclinical models
 - **Milestones**:
   - Organoid validation studies (5+ hypotheses)
@@ -443,6 +453,7 @@ RATIONALE:
 - **Budget**: $15M
 
 ### Phase 3: Clinical Translation (2029-2032)
+
 - **Goal**: Initiate clinical trials, establish regulatory pathway
 - **Milestones**:
   - IND submission and Phase I trial
@@ -451,6 +462,7 @@ RATIONALE:
 - **Budget**: $50M
 
 ### Phase 4: Expansion and Impact (2032-2035)
+
 - **Goal**: Expand validation, demonstrate population-level impact
 - **Milestones**:
   - Phase II/III pivotal trials

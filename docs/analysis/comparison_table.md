@@ -16,24 +16,28 @@
 ## Unique Differentiators
 
 ### 1. Aerospace Certification (QuASIM Only)
+
 - **DO-178C Level A:** Highest software safety level
 - **Validated Mission Data:** SpaceX Falcon 9, NASA Orion/SLS (<2% RMSE)
 - **MC/DC Coverage:** 100% on safety-critical paths
 - **Competitive Moat:** 3-5 year timeline for competitors to achieve parity
 
 ### 2. Autonomous Kernel Evolution (QuASIM Only)
+
 - **Phase III RL Optimization:** Self-improving quantum kernels
 - **Formal Verification:** Z3 SMT constraint solving
 - **Energy Savings:** 30%+ power reduction validated
 - **Patent Portfolio:** 3 provisional patents filed
 
 ### 3. Federal/DIB Pipeline (QuASIM Only)
+
 - **CMMC 2.0 Level 2:** 110/110 practices compliant
 - **NIST 800-53/171:** Full coverage
 - **ITAR/EAR Ready:** Export control automation
 - **SAM Pipeline:** $120M-$340M (2025-2030)
 
 ### 4. Production Infrastructure (QuASIM Advantage)
+
 - **Multi-Cloud:** AWS EKS, Azure AKS, GCP GKE
 - **GitOps:** ArgoCD app-of-apps pattern
 - **Observability:** Prometheus/Grafana/Loki/Tempo
@@ -42,6 +46,7 @@
 ## Tech Moat Index: 0.85/1.0
 
 **Components:**
+
 - Architectural Maturity: 0.90
 - Certified Libraries: 0.95
 - Ecosystem Depth: 0.80

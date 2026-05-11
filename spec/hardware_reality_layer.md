@@ -6,8 +6,9 @@ pending QEMU + bare-metal validation.
 machine with multi-core scheduling active."*
 
 This document satisfies the per-step deliverable format:
+
 1. subsystem → 2. real hardware dependency → 3. implementation order →
-4. failure modes under real hardware → 5. test for physical validation.
+2. failure modes under real hardware → 5. test for physical validation.
 
 ---
 

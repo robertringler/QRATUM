@@ -26,6 +26,7 @@ qunimbus orchestrate --parallel \
 ```
 
 **Options:**
+
 - `--parallel` - Execute tasks in parallel (default: True)
 - `--task` - Tasks to execute (can be specified multiple times; default: wave3_launch, china_photonic_scale)
 - `--auth` - Authentication URI (e.g., cac://quantum.lead@akron.us)
@@ -35,18 +36,21 @@ qunimbus orchestrate --parallel \
 - `--china-enabled/--no-china` - Enable China Photonic Factory integration (default: enabled)
 
 **Execution modes:**
+
 - `live` - Live production execution
 - `live_accelerated` - Accelerated live execution (default)
 - `simulation` - Simulation mode for testing
 - `validation` - Validation mode for verification
 
 **Compliance frameworks:**
+
 - `CMMC_L2` - Cybersecurity Maturity Model Certification Level 2
 - `DO_178C` - Aerospace software certification
 - `ISO_13485` - Medical device quality management
 - `China_MLPS` - China Multi-Level Protection Scheme
 
 **Example output:**
+
 ```
 ✓ QuNimbus Wave 3 orchestration completed successfully!
 ✓ Total pilots/day: 1,500
@@ -63,10 +67,12 @@ qunimbus generate-pilots --count 1000 --no-snapshot
 ```
 
 **Options:**
+
 - `--count` - Number of pilots to generate (default: 10)
 - `--display-snapshot/--no-snapshot` - Display Wave 3 snapshot of first 10 pilots (default: enabled)
 
 **Example output:**
+
 ```
 Generating 100 Wave 3 pilots...
 
@@ -96,10 +102,12 @@ qunimbus china-factory --connect --pilot-count 50
 ```
 
 **Options:**
+
 - `--connect/--no-connect` - Establish connection to China factory (default: enabled)
 - `--pilot-count` - Number of pilots to generate (default: 0 for display only)
 
 **Example output:**
+
 ```
 ✓ Connected to China Photonic Factory
 
@@ -131,10 +139,12 @@ qunimbus prep-wave4 \
 ```
 
 **Options:**
+
 - `--target` - Wave 4 target (default: 10000_pilots_per_day)
 - `--integrate` - New integrations for Wave 4, comma-separated (default: india_qpi_ai,japan_quantum_optics)
 
 **Example output:**
+
 ```
 ### Preparing Wave 4 Expansion
 Target: 10000_pilots_per_day
@@ -163,6 +173,7 @@ qunimbus metrics
 ```
 
 **Example output:**
+
 ```
 ### QuNimbus Wave 3 Metrics
 | Metric              | Value         |
@@ -191,6 +202,7 @@ qunimbus ascend --query "simulation" --query-id "qid-a1b2c3" --seed 42
 ```
 
 **Options:**
+
 - `--query` - Query for QuNimbus v6 (required)
 - `--mode` - Execution mode (default: singularity)
 - `--seed` - Random seed for determinism (default: 42)
@@ -200,11 +212,13 @@ qunimbus ascend --query "simulation" --query-id "qid-a1b2c3" --seed 42
 - `--qid` - Alias for --query-id
 
 **Dry-run mode:**
+
 ```bash
 qunimbus ascend --query "climate model" --dry-run
 ```
 
 **Example output (dry-run):**
+
 ```
 🔍 DRY RUN MODE - Validation Only
 ✓ Query validated: climate model
@@ -216,6 +230,7 @@ qunimbus ascend --query "climate model" --dry-run
 ```
 
 **Example output (live execution):**
+
 ```
 Ascending with query: real world simulation
 Mode: singularity, Seed: 42
@@ -241,10 +256,12 @@ qunimbus validate \
 ```
 
 **Options:**
+
 - `--snapshot` - Path to HDF5 snapshot file (required)
 - `--tolerance` - Validation tolerance (default: 0.03)
 
 **Example output:**
+
 ```
 Validating snapshot: artifacts/real_world_sim_2025/earth_snapshot.hdf5
 Tolerance: 3.0%
@@ -334,6 +351,7 @@ qunimbus generate-pilots --count 5000
 ### Wave 3 Topology
 
 QuNimbus Wave 3 operates across:
+
 - **Akron Facility**: 1,000 pilots/day, 10,000+ qubits
 - **China Photonic Factory**: 500 pilots/day, 1M+ qubits/year
 - **Combined Capacity**: 1,500 pilots/day
@@ -342,6 +360,7 @@ QuNimbus Wave 3 operates across:
 ### Compliance Integration
 
 Automated compliance validation across:
+
 - **US Standards**: CMMC L2, DO-178C
 - **International**: ISO-13485
 - **China Standards**: MLPS
@@ -350,6 +369,7 @@ Automated compliance validation across:
 ### Data Formats
 
 #### HDF5 Snapshots
+
 ```
 earth_snapshot.hdf5
 ├── metadata/
@@ -366,6 +386,7 @@ earth_snapshot.hdf5
 ```
 
 #### Zarr Archives
+
 Chunked, compressed storage for large-scale simulation data.
 
 ## Performance Characteristics
@@ -381,20 +402,26 @@ Chunked, compressed storage for large-scale simulation data.
 ## Security and Compliance
 
 ### Authentication
+
 Uses CAC (Common Access Card) authentication for secure access:
+
 ```bash
 --auth "cac://quantum.lead@akron.us"
 ```
 
 ### Audit Logging
+
 All operations are logged with SHA-256 audit chain:
+
 - Query ID tracking
 - Seed management
 - Compliance validation
 - Artifact provenance
 
 ### Policy Guard
+
 QNimbusGuard validates queries before execution:
+
 - Content filtering
 - Policy compliance
 - Resource constraints
@@ -403,32 +430,41 @@ QNimbusGuard validates queries before execution:
 ## Troubleshooting
 
 ### Query rejected by policy
+
 ```bash
 ✗ Query rejected: Contains prohibited content
 ```
+
 **Solution:** Modify query to comply with policy guidelines.
 
 ### China factory connection failed
+
 ```bash
 Error: Unable to connect to China Photonic Factory
 ```
+
 **Solution:** Verify network connectivity and authentication credentials.
 
 ### Snapshot validation failed
+
 ```bash
 ✗ Climate observables: FAIL (5.2% deviation)
 ```
+
 **Solution:** Regenerate snapshot with different seed or adjust tolerance.
 
 ### Insufficient resources
+
 ```bash
 Error: Pilot generation quota exceeded
 ```
+
 **Solution:** Wait for quota reset or increase resource allocation.
 
 ## Support
 
 For issues or questions, refer to:
+
 - Main README: [../README.md](../README.md)
 - QuNimbus Documentation: [QUNIMBUS_WAVE3.md](QUNIMBUS_WAVE3.md)
 - Wave 3 Quick Start: [QUNIMBUS_WAVE3_QUICKSTART.md](QUNIMBUS_WAVE3_QUICKSTART.md)

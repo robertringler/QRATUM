@@ -11,6 +11,7 @@
 ## 1. EXECUTIVE SUMMARY
 
 ### Overall Status
+
 | Metric | Value |
 |--------|-------|
 | Benchmarks Executed | 5 |
@@ -20,6 +21,7 @@
 | Total Runtime | ~45 seconds |
 
 ### Key Findings
+
 1. **QuASIM Tensor**: ✅ PASS - 4.1M elements/sec throughput
 2. **UltraSSSP**: ✅ PASS - 1000 nodes validated correctly
 3. **PostDijkstra**: ❌ FAIL - Correctness validation failed
@@ -31,6 +33,7 @@
 ## 2. PLATFORM CONFIGURATION
 
 ### Hardware
+
 | Component | Specification |
 |-----------|--------------|
 | CPU | AMD EPYC 7763 (4 vCPUs) |
@@ -39,6 +42,7 @@
 | GPU | ❌ None |
 
 ### Software
+
 | Component | Version |
 |-----------|---------|
 | OS | Ubuntu 24.04.3 LTS |
@@ -47,6 +51,7 @@
 | NumPy | 2.4.1 |
 
 ### Execution Parameters
+
 | Parameter | Value |
 |-----------|-------|
 | PYTHONHASHSEED | 42 |
@@ -74,6 +79,7 @@
 | **Throughput** | **4,110,124 elements/sec** |
 
 **Raw Output**:
+
 ```
 QuASIM Tensor Benchmark — batches=32 rank=4 dim=2048
 ============================================================
@@ -105,6 +111,7 @@ elements/s:  4110124
 **Validation**: All 1000 nodes reachable, distances verified against Dijkstra baseline.
 
 **Distance Statistics**:
+
 - Min: 0.00
 - Max: 19.04  
 - Avg: 11.73
@@ -144,6 +151,7 @@ elements/s:  4110124
 | **Total** | **24** | **578.39ms** |
 
 **Quantum Simulation Results**:
+
 | Qubits | Duration | Notes |
 |--------|----------|-------|
 | 4 | 0.06ms | State vector: 16 elements |
@@ -153,6 +161,7 @@ elements/s:  4110124
 | 20 | 24.18ms | State vector: 1,048,576 elements |
 
 **Matrix Multiplication (GFLOPS)**:
+
 | Size | Duration | GFLOPS |
 |------|----------|--------|
 | 256×256 | 4.19ms | 8.00 |
@@ -177,12 +186,14 @@ elements/s:  4110124
 | Move Generation | **904 pos/sec** |
 
 **Position Results**:
+
 | Position | Nodes | Time | NPS | Best Move |
 |----------|-------|------|-----|-----------|
 | Starting | 1,600 | 5.88s | 272 | b2b4 |
 | Endgame | 1,814 | 0.55s | 3,303 | h1h3 |
 
 **Critical Note**: This benchmark represents a **pure Python** chess engine implementation. Production deployment requires:
+
 - Native C++ compilation of search engine
 - SIMD-optimized move generation
 - GPU acceleration for neural network evaluation
@@ -194,6 +205,7 @@ Expected speedup with native implementation: **100-1000x**
 ## 4. COMPARATIVE ANALYSIS
 
 ### vs. Prior QRATUM Results
+
 No prior benchmark artifacts found in repository for comparison.
 
 ### vs. Publicly Documented Baselines
@@ -276,6 +288,7 @@ No prior benchmark artifacts found in repository for comparison.
 ## 10. AUDIT TRAIL
 
 ### Raw Artifacts
+
 All raw benchmark outputs preserved at:
 `benchmarks/results/20260118_203732/`
 
@@ -288,6 +301,7 @@ All raw benchmark outputs preserved at:
 | bm005_chess_cpu.json | 1.1 KB | Chess results |
 
 ### Reproduction Instructions
+
 ```bash
 # Set environment
 export PYTHONHASHSEED=42
@@ -306,6 +320,7 @@ python benchmarks/automated/benchmark_runner.py --backend cpu
 ## 11. CONCLUSIONS
 
 ### What Is Empirically Proven
+
 1. QuASIM tensor simulation achieves 4.1M elements/sec on CPU
 2. UltraSSSP produces correct SSSP distances
 3. Automated benchmark suite passes all 24 tests
@@ -313,6 +328,7 @@ python benchmarks/automated/benchmark_runner.py --backend cpu
 5. 20-qubit quantum simulation completes in 24ms
 
 ### What Is Explicitly NOT Claimed
+
 1. GPU performance (no GPU tested)
 2. Production chess engine performance (pure Python only)
 3. PostDijkstra algorithm correctness (FAILED)
@@ -320,6 +336,7 @@ python benchmarks/automated/benchmark_runner.py --backend cpu
 5. Comparison to external benchmarks
 
 ### Recommendations
+
 1. **FIX**: PostDijkstra correctness bug before production use
 2. **ENABLE**: GPU environment for full benchmark coverage
 3. **COMPILE**: Native chess engine for valid performance claims
@@ -330,6 +347,7 @@ python benchmarks/automated/benchmark_runner.py --backend cpu
 **END OF BENCHMARK REPORT**
 
 **Independent auditor can reproduce these results by:**
+
 1. Cloning repository at commit d6bafe894be45d50e63a36241e536bfe70d2f6b3
 2. Following instructions in RUN_MANIFEST.md
 3. Comparing outputs to artifacts in benchmarks/results/20260118_203732/

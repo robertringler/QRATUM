@@ -10,6 +10,7 @@
 ## 1. CPU INFORMATION
 
 ### Summary
+
 | Property | Value |
 |----------|-------|
 | Model | AMD EPYC 7763 64-Core Processor |
@@ -22,6 +23,7 @@
 | Virtualization | AMD-V (Microsoft Hypervisor) |
 
 ### SIMD Capabilities
+
 - SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2
 - AVX, AVX2
 - FMA
@@ -29,6 +31,7 @@
 - SHA extensions
 
 ### Cache Hierarchy
+
 | Level | Size | Instances |
 |-------|------|-----------|
 | L1d | 64 KiB | 2 |
@@ -37,10 +40,12 @@
 | L3 | 32 MiB | 1 |
 
 ### NUMA Topology
+
 - NUMA Nodes: 1
 - Node 0 CPUs: 0-3
 
 ### Raw lscpu Output
+
 ```
 Architecture:                         x86_64
 CPU op-mode(s):                       32-bit, 64-bit
@@ -88,6 +93,7 @@ Vulnerability Tsx async abort:        Not affected
 ## 2. MEMORY INFORMATION
 
 ### Summary
+
 | Property | Value |
 |----------|-------|
 | Total RAM | 16 GiB |
@@ -95,6 +101,7 @@ Vulnerability Tsx async abort:        Not affected
 | Swap | 4 GiB |
 
 ### Raw /proc/meminfo Output
+
 ```
 MemTotal:       16379472 kB
 MemFree:         7094052 kB
@@ -158,22 +165,24 @@ DirectMap1G:    13631488 kB
 ## 3. GPU INFORMATION
 
 ### Status
+
 **NO NVIDIA GPU DETECTED**
 
 This benchmark will execute CPU-only workloads. GPU-accelerated benchmarks (CUDA/cuQuantum) are excluded from scope.
-
 
 ---
 
 ## 4. STORAGE INFORMATION
 
 ### Summary
+
 | Filesystem | Size | Used | Available | Mount |
 |------------|------|------|-----------|-------|
 | /dev/root | 72G | 51G | 22G | / |
 | /dev/sda1 | 74G | 4.1G | 66G | /mnt |
 
 ### Block Devices
+
 ```
 NAME    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
 sda       8:0    0   75G  0 disk 
@@ -190,6 +199,7 @@ sdb       8:16   0   75G  0 disk
 ## 5. OPERATING SYSTEM & KERNEL
 
 ### Summary
+
 | Property | Value |
 |----------|-------|
 | OS | Ubuntu 24.04.3 LTS (Noble Numbat) |
@@ -198,6 +208,7 @@ sdb       8:16   0   75G  0 disk
 | Hypervisor | Microsoft Azure |
 
 ### Raw os-release
+
 ```
 PRETTY_NAME="Ubuntu 24.04.3 LTS"
 NAME="Ubuntu"
@@ -219,6 +230,7 @@ LOGO=ubuntu-logo
 ## 6. SOFTWARE ENVIRONMENT
 
 ### Compilers & Interpreters
+
 | Tool | Version |
 |------|---------|
 | Python | 3.12.3 |
@@ -226,6 +238,7 @@ LOGO=ubuntu-logo
 | GCC | 13.3.0 |
 
 ### Python Dependencies (Benchmark-Relevant)
+
 | Package | Version |
 |---------|---------|
 | NumPy | 2.4.1 |
@@ -239,14 +252,17 @@ LOGO=ubuntu-logo
 ## 7. PERFORMANCE-RELEVANT CONFIGURATION
 
 ### CPU Governor
+
 - Managed by hypervisor (Azure)
 - No direct tuning access
 
 ### SIMD Optimization
+
 - AVX2 available and enabled
 - SHA extensions available for cryptographic operations
 
 ### Memory Configuration
+
 - THP (Transparent Huge Pages): System default
 - No custom NUMA binding (single NUMA node)
 

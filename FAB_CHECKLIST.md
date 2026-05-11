@@ -50,6 +50,7 @@
   - [ ] Image 3: debug overlay showing live cognitive state
 
 ### Video requirements (Fab)
+
 - [ ] Format: MP4, H.264 codec  ⚠️ REQUIRED FORMAT
 - [ ] Resolution: 1920×1080 minimum
 - [ ] Frame rate: 30 or 60 FPS
@@ -85,6 +86,7 @@
 - [ ] All media assets load in preview
 
 ### Common rejection flags
+
 - ⛔ Missing module in Build.cs dependency chain
 - ⛔ Plugin fails to load in clean UE5.7 project
 - ⛔ Hardcoded asset paths in C++ source
@@ -93,6 +95,7 @@
 - ⛔ Features described but not implemented
 
 ### If rejected
+
 - [ ] Check Output Log for missing dependency errors
 - [ ] Verify .uplugin module names match compiled binaries exactly
 - [ ] Rebuild in Development Editor before resubmission

@@ -18,6 +18,7 @@ HPCG stresses memory bandwidth and network latency rather than compute throughpu
 **Matrix Structure:** 27-point stencil (3D Laplacian) - only 27 non-zeros per row.
 
 **Key Operations:**
+
 1. **SpMV (Sparse Matrix-Vector Multiply):** 90% of runtime
 2. **Vector dot products:** 5% (requires AllReduce)
 3. **Vector updates (AXPY):** 5%
@@ -31,6 +32,7 @@ HPCG stresses memory bandwidth and network latency rather than compute throughpu
 **H100 Memory Bandwidth:** 3.2 TB/s per GPU
 
 SpMV is memory-bound (1 FLOP per 16 bytes loaded):
+
 - Arithmetic intensity: 1/16 = 0.0625 FLOPS/byte
 - Peak SpMV: 3.2 TB/s × 0.0625 = **200 GFLOPS per GPU**
 - System total: 200 GFLOPS × 50,000 = **10 TFLOPS**

@@ -298,6 +298,7 @@ records `subscriber_timeout`.
 ## 11. Roadmap
 
 ### v1.0 (this spec — implemented now)
+
 * Protocol v1.0 envelope + version handshake
 * Validator (`IntentValidator`)
 * Replay log (`replay.jsonl`)
@@ -308,17 +309,20 @@ records `subscriber_timeout`.
 * Extended `launcher.json` telemetry
 
 ### v1.1 (next)
+
 * Async handler results (deferred completion via `result_pending`)
 * Snapshot-based replay resume
 * Per-namespace ACL tokens
 * gRPC sidecar for non-line-protocol clients
 
 ### v2.0
+
 * Multi-UE-instance fan-out (multi-shard sim)
 * Distributed replay across hosts
 * Quorum-based determinism check
 
 ### v3.0
+
 * Cryptographically signed intent envelopes
 * Hardware-attested execution receipts (TPM/SEV-SNP)
 * Public CIIR adapter SDK

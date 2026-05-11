@@ -24,7 +24,9 @@ The QRATUM Sovereign AI Platform provides 14 specialized vertical AI modules tha
 ### Vertical Modules (`verticals/`)
 
 #### 1. JURIS - Legal AI
+
 **Capabilities:**
+
 - IRAC legal reasoning (Issue, Rule, Application, Conclusion)
 - Contract analysis with risk identification
 - Litigation outcome prediction
@@ -33,7 +35,9 @@ The QRATUM Sovereign AI Platform provides 14 specialized vertical AI modules tha
 **Safety:** Not a substitute for licensed legal counsel
 
 #### 2. VITRA - Bioinformatics
+
 **Capabilities:**
+
 - DNA/RNA/Protein sequence analysis
 - Codon translation and ORF detection
 - Protein structure prediction
@@ -44,7 +48,9 @@ The QRATUM Sovereign AI Platform provides 14 specialized vertical AI modules tha
 **Safety:** Research use only - not for clinical diagnostics
 
 #### 3. ECORA - Climate & Energy
+
 **Capabilities:**
+
 - Climate projection with SSP scenarios
 - Energy grid optimization
 - Carbon footprint analysis
@@ -54,7 +60,9 @@ The QRATUM Sovereign AI Platform provides 14 specialized vertical AI modules tha
 **Safety:** Projections subject to uncertainty
 
 #### 4. CAPRA - Financial Risk
+
 **Capabilities:**
+
 - Black-Scholes option pricing with Greeks
 - Monte Carlo simulation
 - Value at Risk (VaR) and CVaR calculation
@@ -65,7 +73,9 @@ The QRATUM Sovereign AI Platform provides 14 specialized vertical AI modules tha
 **Safety:** Not investment advice - consult licensed advisors
 
 #### 5. SENTRA - Aerospace & Defense
+
 **Capabilities:**
+
 - Ballistic trajectory simulation
 - Radar cross-section (RCS) analysis
 - Two-body orbital propagation
@@ -75,7 +85,9 @@ The QRATUM Sovereign AI Platform provides 14 specialized vertical AI modules tha
 **Safety:** Research only - export controls may apply (ITAR/EAR)
 
 #### 6. NEURA - Neuroscience & BCI
+
 **Capabilities:**
+
 - Spiking neural network simulation
 - EEG/MEG signal analysis
 - Brain connectivity mapping
@@ -85,7 +97,9 @@ The QRATUM Sovereign AI Platform provides 14 specialized vertical AI modules tha
 **Safety:** Research only - IRB approval required
 
 #### 7. FLUXA - Supply Chain
+
 **Capabilities:**
+
 - Vehicle routing optimization (VRP/TSP)
 - Demand forecasting
 - Inventory optimization (EOQ)
@@ -161,20 +175,25 @@ The platform enforces these invariants:
 ## Safety Features
 
 ### Disclaimers
+
 Every module includes domain-specific safety disclaimers warning users about:
+
 - Limitations of AI predictions
 - Need for professional review
 - Regulatory requirements
 - Appropriate use cases
 
 ### Prohibited Uses
+
 Each module detects and blocks prohibited operations:
+
 - Unauthorized practice of professions
 - Violations of regulations
 - Malicious applications
 - Privacy violations
 
 ### Example
+
 ```python
 # This will raise SafetyViolation
 intent = PlatformIntent(
@@ -214,6 +233,7 @@ See `examples/` directory for QIL (QRATUM Intent Language) files demonstrating e
 ## Testing
 
 Comprehensive test coverage (58 tests):
+
 - 26 platform core tests
 - 32 vertical module tests
 
@@ -268,6 +288,7 @@ tests/
 ## Future Work
 
 The remaining 7 vertical modules to be implemented:
+
 - SPECTRA - Spectrum Management
 - AEGIS - Cybersecurity
 - LOGOS - Education & Training
@@ -286,7 +307,7 @@ See CONTRIBUTING.md for guidelines.
 
 ## Security
 
-Report security vulnerabilities to security@qratum.io
+Report security vulnerabilities to <security@qratum.io>
 
 ## Acknowledgments
 

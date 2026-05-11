@@ -7,6 +7,7 @@ This document outlines a realistic, phased approach to transform QRATUM from a c
 ## Current State Assessment
 
 **What We Have** ✅:
+
 - Well-structured Python codebase
 - Deterministic execution framework
 - Classical numerical simulation capabilities
@@ -14,6 +15,7 @@ This document outlines a realistic, phased approach to transform QRATUM from a c
 - Modular architecture ready for extension
 
 **What We Don't Have** ❌:
+
 - Any actual quantum computing implementation
 - Quantum library dependencies
 - Real quantum circuit simulation
@@ -38,6 +40,7 @@ This document outlines a realistic, phased approach to transform QRATUM from a c
   - Separate "Current Capabilities" (classical) vs "Roadmap" (quantum)
   
 - [ ] Rename/Clarify Quantum Classes:
+
   ```python
   # OLD: quasim/opt/optimizer.py
   class QuantumOptimizer  # <- Claims to be quantum, isn't
@@ -49,6 +52,7 @@ This document outlines a realistic, phased approach to transform QRATUM from a c
   ```
 
 - [ ] Fix Method Names:
+
   ```python
   # OLD
   def _optimize_qaoa(...)  # <- Not actually QAOA
@@ -81,6 +85,7 @@ This document outlines a realistic, phased approach to transform QRATUM from a c
 ### 1.4 Add Transparency
 
 - [ ] Create `DEVELOPMENT_STATUS.md`:
+
   ```markdown
   # Development Status
   
@@ -97,12 +102,14 @@ This document outlines a realistic, phased approach to transform QRATUM from a c
   ```
 
 **Deliverables**:
+
 - Updated README.md
 - Cleaned documentation
 - Clear disclaimers
 - No false claims
 
 **Success Criteria**:
+
 - No misleading quantum claims
 - Honest about capabilities
 - Clear development roadmap
@@ -124,6 +131,7 @@ This document outlines a realistic, phased approach to transform QRATUM from a c
   - Basin Hopping
   
 - [ ] Add benchmarks against established libraries:
+
   ```python
   import scipy.optimize
   import numpy as np
@@ -155,12 +163,14 @@ This document outlines a realistic, phased approach to transform QRATUM from a c
   - Integration patterns
 
 **Deliverables**:
+
 - Validated classical implementations
 - Comprehensive test suite
 - Performance benchmarks
 - Technical documentation
 
 **Success Criteria**:
+
 - 90%+ test coverage
 - Performance comparable to scipy/numpy
 - Clear documentation of capabilities
@@ -319,12 +329,14 @@ class RealQAOA:
 - [ ] Be honest about when quantum helps (and when it doesn't)
 
 **Deliverables**:
+
 - Working VQE for H₂ molecule
 - Working QAOA for small graphs
 - Validation against known results
 - Honest performance comparison
 
 **Success Criteria**:
+
 - Algorithms produce correct results
 - Match published benchmarks
 - Clear documentation of limitations
@@ -408,6 +420,7 @@ class QuantumBackend:
   - Performance trade-offs
 
 **Deliverables**:
+
 - Hybrid optimizer that intelligently uses both approaches
 - Backend abstraction supporting multiple quantum platforms
 - Cost-benefit analysis framework
@@ -462,6 +475,7 @@ mitigated_results = meas_fitter.filter.apply(raw_results)
 - [ ] Be honest about current limitations
 
 **Deliverables**:
+
 - Real quantum hardware integration
 - Error mitigation strategies
 - Honest performance comparison
@@ -502,6 +516,7 @@ mitigated_results = meas_fitter.filter.apply(raw_results)
 - [ ] Testing requirements
 
 **Success Criteria**:
+
 - Recognized as credible by quantum computing community
 - Used in education or research
 - Honest about capabilities and limitations
@@ -526,6 +541,7 @@ mitigated_results = meas_fitter.filter.apply(raw_results)
 ## Success Metrics
 
 ### Technical Metrics
+
 - [ ] VQE matches known H₂ ground state (±0.001 Hartree)
 - [ ] QAOA solves 10-node Max-Cut correctly
 - [ ] Hybrid optimizer beats pure classical on test problems
@@ -533,6 +549,7 @@ mitigated_results = meas_fitter.filter.apply(raw_results)
 - [ ] All benchmarks documented and reproducible
 
 ### Community Metrics
+
 - [ ] No false quantum claims in documentation
 - [ ] GitHub stars/forks from quantum computing community
 - [ ] Contributions from external developers
@@ -540,6 +557,7 @@ mitigated_results = meas_fitter.filter.apply(raw_results)
 - [ ] Used in educational contexts
 
 ### Scientific Metrics
+
 - [ ] arXiv preprint (if novel work)
 - [ ] Conference presentations
 - [ ] Community recognition
@@ -550,6 +568,7 @@ mitigated_results = meas_fitter.filter.apply(raw_results)
 ## Common Pitfalls to Avoid
 
 ### ❌ Don't
+
 1. **Claim quantum advantage without proof**: Rigorously benchmark
 2. **Ignore NISQ limitations**: Be honest about qubit counts and error rates
 3. **Oversell capabilities**: Quantum doesn't solve everything faster
@@ -559,6 +578,7 @@ mitigated_results = meas_fitter.filter.apply(raw_results)
 7. **Forget error mitigation**: Real hardware is noisy
 
 ### ✅ Do
+
 1. **Be transparent**: Document what works and what doesn't
 2. **Validate rigorously**: Compare against published results
 3. **Start simple**: H₂ VQE before protein folding
@@ -572,20 +592,23 @@ mitigated_results = meas_fitter.filter.apply(raw_results)
 ## Resources for Learning
 
 ### Essential Reading
+
 1. **Nielsen & Chuang**: "Quantum Computation and Quantum Information"
-2. **Qiskit Textbook**: https://qiskit.org/textbook/
-3. **PennyLane Tutorials**: https://pennylane.ai/qml/
-4. **Quantum Algorithm Zoo**: https://quantumalgorithmzoo.org/
+2. **Qiskit Textbook**: <https://qiskit.org/textbook/>
+3. **PennyLane Tutorials**: <https://pennylane.ai/qml/>
+4. **Quantum Algorithm Zoo**: <https://quantumalgorithmzoo.org/>
 
 ### Frameworks to Study
-1. **Qiskit**: https://qiskit.org/ (IBM)
-2. **Cirq**: https://quantumai.google/cirq (Google)
-3. **PennyLane**: https://pennylane.ai/ (Xanadu)
-4. **Braket**: https://aws.amazon.com/braket/ (AWS)
+
+1. **Qiskit**: <https://qiskit.org/> (IBM)
+2. **Cirq**: <https://quantumai.google/cirq> (Google)
+3. **PennyLane**: <https://pennylane.ai/> (Xanadu)
+4. **Braket**: <https://aws.amazon.com/braket/> (AWS)
 
 ### Communities
-1. **Quantum Computing Stack Exchange**: https://quantumcomputing.stackexchange.com/
-2. **Qiskit Slack**: https://qiskit.slack.com/
+
+1. **Quantum Computing Stack Exchange**: <https://quantumcomputing.stackexchange.com/>
+2. **Qiskit Slack**: <https://qiskit.slack.com/>
 3. **r/QuantumComputing**: Reddit community
 4. **arXiv quant-ph**: Latest quantum computing papers
 

@@ -32,6 +32,7 @@ The 12-agent spec below extends these pieces; nothing here is greenfield fantasy
   - **Presentation plane** — UE5 SoiGame (graphical world) + Tauri shell (HUD, settings, fallback). Both attach to `state.json` as **read-only consumers** + write intents back via the control socket.
 - **Single source of truth:** the `state.json` snapshot (atomic temp+rename, Merkle-chained per epoch). Whoever holds the `kernel.lock` is the authoritative publisher; UE5 takes the lock when launched, Python falls back to read-only follower.
 - **Boot flow:**
+
   ```
   POWER → host kernel → host login → QC-AI-OS bootloader (logon task)
    └─ POST  : sanity (python, paths, GPU, lockfile)
@@ -39,6 +40,7 @@ The 12-agent spec below extends these pieces; nothing here is greenfield fantasy
    └─ SHELL : spawn UE5 SoiGame fullscreen + Tauri HUD overlay
    └─ READY : input router live, host shell suppressed
   ```
+
 - **Session ownership:** a `qratum-session` process becomes the user's `Userinit`/`Shell` replacement (Win) or replaces `gnome-session` (Linux). On crash, watchdog restores host shell.
 
 ### Interfaces
@@ -63,12 +65,14 @@ The 12-agent spec below extends these pieces; nothing here is greenfield fantasy
 
 - **Tier-0 bootloader:** scheduled task (Windows) / systemd unit (Linux), already implemented for kernel-only mode. Extend to run a `qratum-session.exe` that owns the lifecycle.
 - **Stages mirror BIOS→OS metaphor:**
+
   | Stage | Duration | Failure → |
   |---|---|---|
   | POST | <100 ms | abort, emit `boot.fail` |
   | INIT | <2 s | retry 3×, then host-shell fallback |
   | SHELL | <8 s | UE5 fail → Tauri-only mode |
   | READY | – | watchdog active |
+
 - **Fail-safe rollback:** `qratum-session.exe --panic` re-enables `explorer.exe` (Win) or `gnome-shell` (Linux) and writes a panic dump to `%LOCALAPPDATA%/QRATUM/panic/`.
 - **Boot phase published in `state.json`** as `phase ∈ {POST, INIT, RUN, HALT, PANIC}`.
 
@@ -147,6 +151,7 @@ qratum.event.append(evt: Event) -> EpochTick
 ### Decisions
 
 - **Authority pipeline** (mirrors QCore architecture freeze):
+
   ```
   LLM/UE5/User → Intent (QIL string)
               → Parser (qil/) → AST
@@ -154,6 +159,7 @@ qratum.event.append(evt: Event) -> EpochTick
               → Spine.dispatch(Contract) → Adapter → Event
               → EventChain.append(Event)  [SHA-256 chained]
   ```
+
 - **CIIR fixed-point** is the arbitration kernel: any intent whose post-state would push `|Δφ| > ε_max` (default 1e-3) is rejected as destabilizing. Stops runaway LLM behaviors.
 - **RIC bias-correction** weights every dispatch by `score_c = score_r / (1 + k·age)` to prevent stale-priority lock-in.
 - **Rollback:** every Contract carries a `parent_hash`. If a downstream adapter fails, the `EventChain` records `Reverted(parent_hash)` and CIIR rolls φ back to the parent fixed point.
@@ -182,6 +188,7 @@ def submit_intent(intent: Intent) -> Contract | AuthorizationError:
 ### Decisions
 
 - **In-OS agent layer = a small fixed swarm**, not freeform LLM autonomy:
+
   | Agent | Role | Memory |
   |---|---|---|
   | `Perceiver` | reads state.json + UE5 sensor stream | ring buffer 1024 epochs |
@@ -189,6 +196,7 @@ def submit_intent(intent: Intent) -> Contract | AuthorizationError:
   | `Critic` | rejects unsafe intents pre-CIIR | rules + small LM |
   | `Executor` | submits intents to QCore | none (stateless) |
   | `Narrator` | renders explanations to HUD | last 30 s |
+
 - **Memory persistence:** `~/.qratum/memory/` with three tiers — working (RAM, lost on halt), episodic (sqlite, per session), semantic (vector store, persistent).
 - **LLM access:** off by default. When enabled, every LLM call is wrapped: response → parsed as QIL → routed through CIIR. The LLM can never directly mutate state.
 
@@ -238,12 +246,14 @@ def submit_intent(intent: Intent) -> Contract | AuthorizationError:
 ### Decisions
 
 - **State storage hierarchy:**
+
   ```
   hot     → RAM (state.json, kernel struct)
   warm    → ~/.qratum/state/  (snapshots every 60 s, ring of 16)
   cold    → ~/.qratum/events/ (append-only Merkle log, rotated daily)
   archive → optional S3/B2, encrypted with user's libsodium keypair
   ```
+
 - **Snapshot/restore:** `qratumctl snapshot create <tag>` freezes kernel for ≤50 ms, copies struct + last 1024 events. `qratumctl snapshot restore <tag>` reseeds kernel and replays events past the snapshot tick.
 - **Versioned memory graph:** semantic store keyed by `(epoch_tick, contract_hash)`; queries return causally-consistent views.
 - **Schema:** all on-disk state uses the same frozen-dataclass JSON contracts that travel through `state.json`, so there is one schema, versioned by `bridge.schema_version`.
@@ -263,11 +273,13 @@ def submit_intent(intent: Intent) -> Contract | AuthorizationError:
   - Linux: deb/rpm + systemd user unit (`~/.config/systemd/user/qratum-session.service`).
 - **UE5 packaging:** `Run.bat /package` invokes `BuildCookRun` → produces `dist/SoiGame-Win64-Shipping/` (~3 GB). Bundled as MSIX optional feature so kernel-only installs stay small.
 - **Dependency strategy:**
+
   | Dep | Strategy |
   |---|---|
   | Python 3.11 | embedded (PyOxidizer) — never relies on system Python |
   | UE5 runtime | shipped as cooked binary, no engine install needed |
   | VC++ runtime | static-linked Tauri/UE5 binaries |
+
 - **CI:** existing `.github/workflows/` adds a `qc-ai-os-build` job: lint → kernel pytest → UE5 cook (Linux runner with UE5 docker image) → MSIX pack → SBOM (CycloneDX) → sign.
 
 ### Risks
@@ -281,6 +293,7 @@ def submit_intent(intent: Intent) -> Contract | AuthorizationError:
 ### Decisions
 
 - **Budgets (per 16.67 ms frame):**
+
   | Stage | Budget |
   |---|---|
   | UE5 render | 8 ms |
@@ -288,6 +301,7 @@ def submit_intent(intent: Intent) -> Contract | AuthorizationError:
   | Bridge IPC (intent + state) | 1 ms |
   | Kernel CIIR/CRS/etc. | 2 ms |
   | Headroom | 2.67 ms |
+
 - **Threading:** kernel uses 1 thread for the `Tick()` loop + 1 for IPC; UE5 keeps default task-graph; AI agents in their own process pool, throttled to ≤30 % of one core.
 - **GPU:** UE5 owns it; kernel/AI use CPU only by default. Optional CUDA path for QuaSim large-S quantum probes — gated behind a `GPULease` contract.
 - **Hot-path optimizations:**
@@ -314,9 +328,11 @@ def submit_intent(intent: Intent) -> Contract | AuthorizationError:
 ### v1 implementation roadmap (12 weeks, 4 milestones)
 
 **M1 — Foundation (already done, weeks 0)**
+
 - ✅ Bridge contract + Python kernel + Tauri HUD + boot scripts + scheduled tasks
 
 **M2 — UE5 wired (weeks 1–4)**
+
 - Build the QRATUM module via [Run.bat /build](soi/unreal_bridge/Run.bat)
 - Implement `kernel.lock` ownership protocol (UE5 wins, Python follows)
 - `QRATUMComm` JSON-RPC plugin
@@ -324,6 +340,7 @@ def submit_intent(intent: Intent) -> Contract | AuthorizationError:
 - Bridge automation tests (≥ 1 per subsystem, §4 of v3 prompt)
 
 **M3 — Session takeover (weeks 5–8)**
+
 - `qratum-session.exe` Rust binary (replaces `Userinit\Shell`)
 - HUD-as-UE5-texture compositing
 - Watchdog + panic restore
@@ -331,6 +348,7 @@ def submit_intent(intent: Intent) -> Contract | AuthorizationError:
 - AI swarm (Perceiver/Planner/Critic/Executor/Narrator) with sqlite memory
 
 **M4 — Ship (weeks 9–12)**
+
 - MSIX/deb/rpm installers
 - CycloneDX SBOM
 - Signed binaries
