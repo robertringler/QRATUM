@@ -12,6 +12,7 @@
 This document outlines the comprehensive transformation of QRATUM from its current Phase Ω completion state into a fully operational, revenue-generating, and strategically positioned platform while maintaining its identity as a **Decentralized Ghost Machine**.
 
 QRATUM represents a convergence opportunity at the intersection of:
+
 - Post-quantum cryptography and blockchain
 - Sovereign AI and deterministic computing
 - Biokey authentication and compliance automation
@@ -53,12 +54,14 @@ QRATUM represents a convergence opportunity at the intersection of:
 #### Action Items
 
 **Q1 2026: Cryptographic Hardening**
+
 1. Replace SPHINCS+ placeholder with production implementation using `pqcrypto` crate
 2. Integrate NIST-standardized ML-KEM (Kyber) and ML-DSA (Dilithium)
 3. Add constant-time implementation audit via `dudect` statistical testing
 4. Implement zeroization verification via memory inspection tools
 
 **Q2 2026: Third-Party Audit**
+
 1. Engage cryptographic audit firm (NCC Group, Trail of Bits, or Cure53)
 2. Scope: DRBG, HKDF, PQC implementations
 3. Deliverable: Audit report with remediation timeline
@@ -149,6 +152,7 @@ impl ProductionSphincsSigner {
 #### Completion Plan
 
 **Coq Proofs (Q1 2026)**
+
 ```coq
 (* Target: Complete proof that all 8 Fatal Invariants 
    are preserved across state transitions *)
@@ -170,12 +174,14 @@ Qed.
 ```
 
 **TLA+ Specifications (Q1-Q2 2026)**
+
 - Complete liveness proofs for consensus
 - Add fairness constraints
 - Model check Byzantine fault scenarios
 - Verify zone promotion invariants
 
 **Alloy BFT Consensus (Q2 2026)**
+
 - Complete signature verification model
 - Add slashing condition verification
 - Model validator set changes
@@ -317,14 +323,17 @@ class QuantumReproducibilityPipeline:
 #### Remediation Plan
 
 **Q1 2026: Access Control & Configuration Management**
+
 - Implement automated access review (AC.L2-3.1.5)
 - Deploy baseline configuration management (CM.L2-3.4.6)
 
 **Q2 2026: Incident Response & Maintenance**
+
 - Develop incident response playbooks (IR.L2-3.6.2)
 - Implement remote maintenance logging (MA.L2-3.7.2)
 
 **Q3 2026: Assessment & Certification**
+
 - Conduct third-party CMMC assessment
 - Remediate findings
 - Achieve CMMC Level 2 certification
@@ -465,6 +474,7 @@ class AdversarialTestHarness:
 #### Requirements
 
 1. **No secret-dependent branches**
+
    ```rust
    // BAD: Secret-dependent branch
    if secret_byte != 0 { do_something(); }
@@ -474,6 +484,7 @@ class AdversarialTestHarness:
    ```
 
 2. **No secret-dependent memory access**
+
    ```rust
    // BAD: Secret-dependent array index
    let value = table[secret_index];
@@ -483,6 +494,7 @@ class AdversarialTestHarness:
    ```
 
 3. **No variable-time operations**
+
    ```rust
    // BAD: Variable-time comparison
    if a == b { return true; }

@@ -22,17 +22,20 @@ quasim-terc-obs emit --state-file state.json --out obs.json --observable beta_me
 ```
 
 **Options:**
+
 - `--state-file` - Path to QuASIM state file (either this or `--text` required)
 - `--text` - Text/ciphertext input (either this or `--state-file` required)
 - `--out` - Output JSON file (required)
 - `--observable` - Specific observable to compute (optional, computes all if not specified)
 
 **Available observables:**
+
 - `beta_metrics` - Beta metrics from cipher analysis
 - `ioc_periods` - Index of Coincidence period candidates
 - `emergent_complexity` - Emergent complexity score
 
 **Example output:**
+
 ```
 Computing REVULTRA observables...
 Observables emitted to: observables.json
@@ -63,6 +66,7 @@ quasim-terc-obs list
 ```
 
 **Example output:**
+
 ```
 Registered TERC Observables:
 ========================================
@@ -85,11 +89,13 @@ quasim-terc-obs consensus --num-nodes 10 --state-dim 5 --out consensus.json
 ```
 
 **Options:**
+
 - `--num-nodes` - Number of nodes (default: 5)
 - `--state-dim` - State dimension (default: 3)
 - `--out` - Output JSON file (optional)
 
 **Example output:**
+
 ```
 Computing consensus for 10 nodes, dimension 5...
 
@@ -99,6 +105,7 @@ Results written to: consensus.json
 ```
 
 **Output format:**
+
 ```json
 {
   "format_version": "1.0",
@@ -123,9 +130,11 @@ quasim-terc-obs validate --obs-file observables.json
 ```
 
 **Options:**
+
 - `--obs-file` - Observable JSON file to validate (required)
 
 **Example output:**
+
 ```
 Validating observable file...
 ✓ Observable file is valid
@@ -140,11 +149,13 @@ Observables present:
 ```
 
 **Validation checks:**
+
 - Required fields present (`observables`, `format_version`, `source`)
 - Valid JSON structure
 - Observable format compliance
 
 **Error example:**
+
 ```
 ❌ Missing 'observables' field
 ```
@@ -179,11 +190,13 @@ quasim-terc-obs list
 Extracts beta metrics from cipher analysis.
 
 **Computed from:**
+
 - Frequency analysis
 - Statistical properties
 - Distribution characteristics
 
 **Use cases:**
+
 - Cipher strength assessment
 - Randomness testing
 - Statistical validation
@@ -193,11 +206,13 @@ Extracts beta metrics from cipher analysis.
 Identifies period candidates from Index of Coincidence analysis.
 
 **Computed from:**
+
 - IoC tensor analysis
 - Peak detection
 - Period inference
 
 **Use cases:**
+
 - Key length detection
 - Polyalphabetic cipher analysis
 - Periodicity detection
@@ -207,11 +222,13 @@ Identifies period candidates from Index of Coincidence analysis.
 Quantifies the emergent complexity of ciphertext.
 
 **Computed from:**
+
 - Shannon entropy
 - Pattern complexity
 - Information measures
 
 **Use cases:**
+
 - Encryption strength
 - Complexity classification
 - Security assessment
@@ -221,11 +238,13 @@ Quantifies the emergent complexity of ciphertext.
 Computes distributed consensus status across quantum nodes.
 
 **Computed from:**
+
 - Node state analysis
 - Convergence detection
 - Stability metrics
 
 **Use cases:**
+
 - Distributed validation
 - Consensus verification
 - Network health monitoring
@@ -235,21 +254,25 @@ Computes distributed consensus status across quantum nodes.
 TERC observables support multiple validation tiers:
 
 ### Tier 1: Basic Validation
+
 - Format compliance
 - Required fields present
 - Basic integrity checks
 
 ### Tier 2: Statistical Validation
+
 - Metric ranges
 - Distribution properties
 - Statistical significance
 
 ### Tier 3: Cross-Validation
+
 - Multiple observable consistency
 - Temporal consistency
 - Comparative analysis
 
 ### Tier 4: Certification
+
 - Compliance documentation
 - Reproducibility verification
 - Audit trail validation
@@ -278,11 +301,13 @@ Standard TERC observable JSON format:
 ```
 
 **Required fields:**
+
 - `format_version` - Observable format version
 - `source` - Source system identifier
 - `observables` - Dictionary of observable data
 
 **Optional fields:**
+
 - `timestamp` - Emission timestamp
 - `metadata` - Additional metadata
 
@@ -350,32 +375,41 @@ if complexity > 3.0 and beta_0 > 1.0:
 ## Troubleshooting
 
 ### Must specify state-file or text
+
 ```bash
 Error: Must specify either --state-file or --text
 ```
+
 **Solution:** Provide input via `--state-file` or `--text`.
 
 ### Unknown observable
+
 ```bash
 Unknown observable: custom_metric
 Available: ['beta_metrics', 'ioc_periods', 'emergent_complexity']
 ```
+
 **Solution:** Use one of the available observables listed, or compute all by omitting `--observable`.
 
 ### Invalid JSON format
+
 ```bash
 ❌ Invalid JSON: Expecting property name enclosed in double quotes
 ```
+
 **Solution:** Fix JSON syntax in the input file.
 
 ### Missing required field
+
 ```bash
 ❌ Missing 'observables' field
 ```
+
 **Solution:** Ensure the observable file has the required structure. Re-emit observables if needed.
 
 ## Support
 
 For issues or questions, refer to:
+
 - Main README: [../README.md](../README.md)
 - TERC Bridge Documentation: [terc_bridge.md](terc_bridge.md)

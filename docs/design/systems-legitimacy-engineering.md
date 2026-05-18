@@ -36,11 +36,13 @@ Define legitimacy for machine authority.
 ### 1.2 Foundations of Legitimacy
 
 **Human Authority Legitimacy (Weber):**
+
 - Traditional: "It has always been this way"
 - Charismatic: "This leader is exceptional"
 - Rational-Legal: "Proper procedures were followed"
 
 **Machine Authority Legitimacy (Novel):**
+
 - Procedural: System follows defined rules correctly
 - Epistemic: System has superior knowledge/capability
 - Democratic: System reflects collective will
@@ -266,6 +268,7 @@ Design override policies that preserve trust.
 ### 3.2 Override Paradox
 
 **The Problem:**
+
 - Overrides are necessary (human agency, edge cases)
 - Too many overrides undermine system legitimacy
 - Too few overrides undermine human agency

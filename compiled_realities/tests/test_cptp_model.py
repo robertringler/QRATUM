@@ -1,7 +1,6 @@
 """Tests for CPTP Process-Tensor Model."""
 
 import numpy as np
-
 from compiled_realities.models.cptp_process_tensor import CPTPProcessTensorModel
 
 

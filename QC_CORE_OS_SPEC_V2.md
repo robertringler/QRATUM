@@ -380,6 +380,7 @@ critic_decision | goal_finalize` with timestamps.
 ## 12. Roadmap & Acceptance
 
 ### v1.1 (this spec — implementable now in launcher)
+
 * Goal store, planner (recipe + heuristic), compiler, critic,
   stabilizer
 * Multi-agent role threads
@@ -389,10 +390,12 @@ critic_decision | goal_finalize` with timestamps.
   `kill_autonomy` control commands
 
 ### v2.0
+
 * Multi-shard fan-out (§7.2) — UE side adds `world_id` to subscribe
 * Eventual-consistency snapshot merge (§8)
 
 ### v3.0
+
 * gRPC sidecar, signed envelopes, distributed quorum
   (carried over from v1.0 §11 v3.0)
 

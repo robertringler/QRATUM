@@ -170,8 +170,8 @@ The Kaggle integration allows you to:
    echo '{"username":"YOUR_USERNAME","key":"YOUR_API_KEY"}' > ~/.kaggle/kaggle.json
    chmod 600 ~/.kaggle/kaggle.json
    ```
-   
-   Get your API key from: https://www.kaggle.com/settings/account
+
+   Get your API key from: <https://www.kaggle.com/settings/account>
 
 ### Installation
 
@@ -367,6 +367,7 @@ submission.display_submission_summary(result)
 ```
 
 Output:
+
 ```
 Kaggle Submission Summary
 ✓ Status: SUCCESS
@@ -591,23 +592,29 @@ download_kaggle_leaderboard('~/Downloads/kaggle_chess_leaderboard.json')
 ## Metrics Explanation
 
 ### Move Accuracy
+
 Percentage of positions where QRATUM's best move matches the expected/reference move from the Kaggle benchmark. This is the primary metric for comparison.
 
 ### Evaluation Difference
+
 Average absolute difference between QRATUM's position evaluation and the expected evaluation. Lower is better.
 
 ### Nodes Per Second (NPS)
+
 Calculated as `avg_nodes / (avg_time_ms / 1000)`. Indicates search efficiency.
 
 ### Search Depth
+
 Average depth reached during search. Higher depth generally indicates more thorough analysis.
 
 ### Category Breakdown
+
 - **Opening**: Standard opening positions
 - **Middlegame**: Complex tactical and strategic positions
 - **Endgame**: Endgame positions requiring precise calculation
 
 ### Difficulty Breakdown
+
 - **Easy**: Straightforward positions with clear best moves
 - **Medium**: Positions requiring tactical awareness
 - **Hard**: Complex positions with non-obvious solutions
@@ -639,6 +646,7 @@ summary = runner.run(engine, evaluator=None)
 **Problem:** `Kaggle credentials not found`
 
 **Solutions:**
+
 1. Verify `~/.kaggle/kaggle.json` exists and has correct format
 2. Check file permissions: `chmod 600 ~/.kaggle/kaggle.json`
 3. Try using environment variables instead
@@ -649,6 +657,7 @@ summary = runner.run(engine, evaluator=None)
 **Problem:** `HTTP 401: Unauthorized`
 
 **Solutions:**
+
 1. Check API key is valid and not expired
 2. Verify username matches your Kaggle account
 3. Ensure API access is enabled in account settings
@@ -656,6 +665,7 @@ summary = runner.run(engine, evaluator=None)
 **Problem:** `HTTP 404: Not Found`
 
 **Solutions:**
+
 1. Verify competition ID is correct
 2. Check you have accepted competition rules
 3. Ensure competition is still active
@@ -663,6 +673,7 @@ summary = runner.run(engine, evaluator=None)
 **Problem:** `HTTP 429: Too Many Requests`
 
 **Solutions:**
+
 1. Wait a few minutes before retrying
 2. Reduce submission frequency
 3. Check Kaggle API rate limits
@@ -672,6 +683,7 @@ summary = runner.run(engine, evaluator=None)
 **Problem:** `Validation failed: Missing required field`
 
 **Solutions:**
+
 1. Check all required fields are present in results
 2. Verify field names match submission format
 3. Ensure no null/missing values
@@ -679,6 +691,7 @@ summary = runner.run(engine, evaluator=None)
 **Problem:** `Invalid submission format`
 
 **Solutions:**
+
 1. Verify CSV headers match required format
 2. Check for correct data types
 3. Ensure no duplicate position IDs
@@ -688,6 +701,7 @@ summary = runner.run(engine, evaluator=None)
 **Problem:** `No positions found in leaderboard data`
 
 **Solutions:**
+
 1. Use `--use-sample` flag for testing
 2. Check JSON file structure
 3. Try downloading fresh data
@@ -795,18 +809,20 @@ For issues or questions:
 
 1. Check this documentation
 2. Review troubleshooting section
-3. Check Kaggle API documentation: https://github.com/Kaggle/kaggle-api
+3. Check Kaggle API documentation: <https://github.com/Kaggle/kaggle-api>
 4. Review QRATUM Chess benchmark docs: `qratum_chess/benchmarks/README_AUTOMATION.md`
 
 ## License
 
 QRATUM Chess Kaggle Integration is part of the QRATUM project.
 See LICENSE file for details.
+
 ### Issue: Download fails
 
 **Problem**: `curl` fails to download leaderboard data
 
 **Solution**:
+
 - Check internet connection
 - Verify the Kaggle API endpoint is accessible
 - Try downloading manually and specifying the file path
@@ -823,6 +839,7 @@ See LICENSE file for details.
 **Problem**: Engine throws errors during search
 
 **Solution**:
+
 - Reduce search depth with `--depth 10`
 - Add time limit with `--time-limit 3000`
 - Check that the engine is properly initialized
@@ -833,6 +850,7 @@ See LICENSE file for details.
 **Problem**: Benchmark takes too long to run
 
 **Solution**:
+
 - Use `--quick` mode for faster testing
 - Reduce `--max-positions` to test fewer positions
 - Lower `--depth` to reduce search time
@@ -918,6 +936,7 @@ For issues, questions, or contributions related to the Kaggle integration:
 ## Future Enhancements
 
 Planned improvements:
+
 - Direct API authentication for automated downloads
 - Support for submitting results to Kaggle (if API allows)
 - More sophisticated position selection algorithms

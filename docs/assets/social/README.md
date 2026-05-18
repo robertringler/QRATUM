@@ -28,6 +28,7 @@ social/
 **File Naming**: `twitter_{type}_{description}_v{version}.png`
 
 Examples:
+
 - `twitter_card_quantum_simulation_launch_v1.png`
 - `twitter_header_quasim_qunimbus_v2.png`
 
@@ -43,6 +44,7 @@ Examples:
 **File Naming**: `linkedin_{type}_{description}_v{version}.png`
 
 Examples:
+
 - `linkedin_post_certification_announcement_v1.png`
 - `linkedin_banner_enterprise_quantum_v1.png`
 
@@ -58,6 +60,7 @@ Examples:
 **File Naming**: `instagram_{type}_{description}_v{version}.png`
 
 Examples:
+
 - `instagram_square_spacex_validation_v1.png`
 - `instagram_story_feature_highlight_v2.png`
 
@@ -103,6 +106,7 @@ All social media assets must follow QuASIM brand guidelines:
 ### Safe Zones
 
 Always keep critical content within safe zones:
+
 - **Twitter Header**: Center 1280×427px
 - **LinkedIn Banner**: Center area (avoid edges)
 - **Instagram Story**: Center vertical strip, avoid top 250px and bottom 250px
@@ -115,6 +119,7 @@ Always keep critical content within safe zones:
 Purpose: Product launches, feature releases, certifications
 
 Elements:
+
 - Eye-catching headline
 - Key benefit or metric
 - QuASIM logo
@@ -125,6 +130,7 @@ Elements:
 Purpose: Technical explainers, how-to content
 
 Elements:
+
 - Diagram or illustration
 - Concise explanation
 - Code snippet or example (if applicable)
@@ -135,6 +141,7 @@ Elements:
 Purpose: Customer success, validation results
 
 Elements:
+
 - Quote or metric
 - Company logo (SpaceX, NASA, etc.)
 - Validation data
@@ -145,6 +152,7 @@ Elements:
 Purpose: Webinars, conferences, meetups
 
 Elements:
+
 - Event details (date, time)
 - Speaker or topic
 - Registration link
@@ -172,6 +180,7 @@ Elements:
 ### 1. Create in Figma
 
 Use templates from `QuASIM_QuNimbus_Marketing` Figma project:
+
 - Navigate to `04_Social_Media` page
 - Duplicate template for desired platform
 - Customize content
@@ -252,18 +261,21 @@ Maintain a content calendar for social media posts:
 ### Platform-Specific
 
 #### Twitter/X
+
 - Keep text concise (280 character limit)
 - Use 1-2 hashtags (#QuASIM #QuantumComputing)
 - Include link to GitHub or docs
 - Tag relevant accounts (@NASA, @SpaceX if applicable)
 
 #### LinkedIn
+
 - Professional tone, longer-form content acceptable
 - Use industry-relevant hashtags
 - Tag company pages and collaborators
 - Include metrics and credibility indicators
 
 #### Instagram
+
 - Visual-first, minimal text
 - Use stories for behind-the-scenes content
 - Leverage hashtags (up to 30)
@@ -272,12 +284,14 @@ Maintain a content calendar for social media posts:
 ## Hashtag Strategy
 
 ### Primary Hashtags
+
 - #QuASIM
 - #QuNimbus
 - #QuantumSimulation
 - #MarketIntelligence
 
 ### Industry Hashtags
+
 - #QuantumComputing
 - #AerospaceEngineering
 - #DefenseTechnology
@@ -285,7 +299,9 @@ Maintain a content calendar for social media posts:
 - #HPC (High Performance Computing)
 
 ### Campaign-Specific Hashtags
+
 Create unique hashtags for campaigns:
+
 - #QuASIMCertified (for DO-178C announcement)
 - #QuantumValidated (for SpaceX/NASA results)
 - #QuNimbusLaunch (for economic activation features)
@@ -295,6 +311,7 @@ Create unique hashtags for campaigns:
 ### Content Review
 
 All social media assets must be reviewed before posting:
+
 - **Technical Accuracy**: Verify claims and metrics
 - **ITAR Compliance**: No export-controlled information
 - **Trademark Usage**: Follow guidelines for third-party logos
@@ -303,6 +320,7 @@ All social media assets must be reviewed before posting:
 ### Attribution
 
 When featuring customer results or testimonials:
+
 - Obtain written permission
 - Include proper attribution
 - Link to official sources when possible
@@ -317,6 +335,7 @@ When featuring customer results or testimonials:
 ## Questions?
 
 For questions about social media assets or content strategy:
+
 - Open a GitHub issue with label `marketing` or `design`
 - Contact the marketing team
 - Reference this README in discussions

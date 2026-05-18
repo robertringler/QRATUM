@@ -224,6 +224,7 @@ intent_syscall_entry:
 ```
 
 `intent::dispatch`:
+
 1. Copy envelope into kernel slab `IntentSlot` (fixed 4 KiB pool).
 2. **Validate** schema, name, params length, namespace allow-list.
 3. **Tag** authority/scope (compiler-style), reject illegal `flags` for

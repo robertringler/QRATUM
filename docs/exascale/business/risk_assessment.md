@@ -39,6 +39,7 @@ The QRATUM ExaScale Initiative faces substantial technical, financial, and opera
 **Severity:** **RED**
 
 **Mitigation Strategies:**
+
 1. **DOE/DOD Priority Allocation:**
    - Leverage Defense Production Act (DPA) if necessary
    - NVIDIA committed 25,000 units via DOE partnership (2026-2027)
@@ -64,6 +65,7 @@ The QRATUM ExaScale Initiative faces substantial technical, financial, and opera
 **Severity:** **ORANGE**
 
 **Mitigation Strategies:**
+
 1. **Dual-Source Foundries:**
    - Primary: TSMC 5nm (N5)
    - Backup: Samsung 5nm (5LPE)
@@ -90,6 +92,7 @@ The QRATUM ExaScale Initiative faces substantial technical, financial, and opera
 **Severity:** **ORANGE**
 
 **Mitigation Strategies:**
+
 1. **Early Procurement:**
    - Order transformers 24 months ahead (Q1 2026)
    - Redundant units (N+1) pre-ordered
@@ -113,6 +116,7 @@ The QRATUM ExaScale Initiative faces substantial technical, financial, and opera
 **Severity:** **ORANGE**
 
 **Mitigation Strategies:**
+
 1. **Agile Development:**
    - 2-week sprints, continuous integration (CI/CD)
    - Nightly builds + automated testing (10,000+ test cases)
@@ -137,6 +141,7 @@ The QRATUM ExaScale Initiative faces substantial technical, financial, and opera
 **Severity:** **ORANGE**
 
 **Mitigation Strategies:**
+
 1. **Fixed-Price Contracts:**
    - 80% of CapEx under fixed-price contracts (GPUs, NICs, switches)
    - Penalty clauses for late delivery
@@ -161,6 +166,7 @@ The QRATUM ExaScale Initiative faces substantial technical, financial, and opera
 **Severity:** **ORANGE**
 
 **Mitigation Strategies:**
+
 1. **Fast-Track Critical Path:**
    - AetherFabric-X ASIC: Overlap design + tapeout (save 3 months)
    - Facility construction: Start before final design (at-risk)
@@ -216,14 +222,17 @@ The QRATUM ExaScale Initiative faces substantial technical, financial, and opera
 ### Geopolitical Risks
 
 **Taiwan Semiconductor (TSMC) Risk:**
+
 - 90% of advanced chips manufactured in Taiwan
 - **Threat:** China-Taiwan conflict disrupts supply chain
 
 **Mitigation:**
+
 - Diversify foundries (Samsung 5nm as backup)
 - Accelerate domestic chip manufacturing (US CHIPS Act)
 
 **Export Controls:**
+
 - H100 GPUs subject to US export controls (China, Russia embargoed)
 - **Mitigation:** QRATUM is US-based (no export restrictions)
 

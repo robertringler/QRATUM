@@ -17,12 +17,14 @@ This document describes the state-of-the-art enhancements to the XENON Quantum B
 **Module**: `xenon.bioinformatics.quantum_alignment`
 
 **Capabilities**:
+
 - Adaptive quantum circuit depth selection based on sequence entropy
 - Classical-quantum equivalence validation with configurable tolerance
 - Deterministic reproducibility via global seed authority
 - Numerical stability monitoring with condition number tracking
 
 **Mathematical Basis**:
+
 ```
 Circuit depth D = D_min + floor((D_max - D_min) * (H / H_max))
 H = -Σ p_i * log(p_i)  (Shannon entropy)
@@ -30,6 +32,7 @@ Equivalence: ||Q(seq1, seq2) - C(seq1, seq2)|| < ε
 ```
 
 **Usage Example**:
+
 ```python
 from xenon.bioinformatics import QuantumAlignmentEngine, AlignmentConfig
 
@@ -50,6 +53,7 @@ print(f"Equivalence error: {result.equivalence_error:.2e}")
 ```
 
 **Validation**:
+
 - ✅ 15 comprehensive tests (100% passing)
 - ✅ Deterministic reproducibility verified
 - ✅ Classical-quantum equivalence maintained
@@ -62,12 +66,14 @@ print(f"Equivalence error: {result.equivalence_error:.2e}")
 **Module**: `xenon.bioinformatics.information_fusion`
 
 **Capabilities**:
+
 - Partial Information Decomposition (PID) using Williams & Beer framework
 - Conservation constraint enforcement (non-negativity, upper bounds, monotonicity)
 - Automatic correction of minor violations
 - Multi-layer information flow analysis
 
 **Mathematical Basis**:
+
 ```
 I(S1, S2; T) = Unique(S1) + Unique(S2) + Redundant(S1, S2) + Synergistic(S1, S2)
 
@@ -78,6 +84,7 @@ Conservation Constraints:
 ```
 
 **Usage Example**:
+
 ```python
 from xenon.bioinformatics import InformationFusionEngine, ConservationConstraints
 
@@ -105,6 +112,7 @@ print(f"Conservation valid: {result.conservation_valid}")
 ```
 
 **Multi-Layer Analysis**:
+
 ```python
 # Analyze information flow across multiple omics layers
 layers = [genomics, transcriptomics, proteomics, metabolomics]
@@ -122,6 +130,7 @@ for pair_name, pid in flow["pairwise_decompositions"].items():
 ```
 
 **Validation**:
+
 - ✅ 18 comprehensive tests (100% passing)
 - ✅ PID decomposition correctness verified
 - ✅ Conservation constraints enforced
@@ -134,12 +143,14 @@ for pair_name, pid in flow["pairwise_decompositions"].items():
 **Module**: `xenon.bioinformatics.transfer_entropy`
 
 **Capabilities**:
+
 - Batched transfer entropy estimation for scalability
 - Optimal lag selection via exhaustive search
 - Information flow network construction
 - GPU-safe computation paths (placeholder for future GPU integration)
 
 **Mathematical Basis**:
+
 ```
 Transfer Entropy (directed information flow):
 TE(X→Y) = I(Y_t; X_{t-k} | Y_{t-1})
@@ -152,6 +163,7 @@ Where:
 ```
 
 **Usage Example**:
+
 ```python
 from xenon.bioinformatics import TransferEntropyEngine, TransferEntropyConfig
 
@@ -177,6 +189,7 @@ print(f"Valid: {result.valid}")
 ```
 
 **Batched Processing**:
+
 ```python
 # Process multiple time series pairs
 sources = [gene1_ts, gene2_ts, gene3_ts]
@@ -195,6 +208,7 @@ for i, source_results in enumerate(te_matrix):
 ```
 
 **Network Construction**:
+
 ```python
 # Build directed information flow network
 time_series = {
@@ -215,6 +229,7 @@ for edge in network['edges']:
 ```
 
 **Validation**:
+
 - ✅ Smoke tests passing
 - ✅ Deterministic reproducibility verified
 - ✅ Numerical stability monitored
@@ -309,6 +324,7 @@ print(f"  Directed edges: {len(network['edges'])}")
 | Batched TE | O(N² × n × lag × bins³) | O(N² × bins³) |
 
 Where:
+
 - m, n: sequence lengths
 - N: number of variables
 - lag: maximum time lag
@@ -323,6 +339,7 @@ Where:
 ### Numerical Stability
 
 All modules monitor condition numbers and issue warnings when:
+
 - Condition number > 1e10 (configurable)
 - Data ranges span >10 orders of magnitude
 - Discretization produces <3 non-empty bins
@@ -342,6 +359,7 @@ All modules monitor condition numbers and issue warnings when:
 ### Determinism Validation
 
 All modules have been validated for bit-level reproducibility:
+
 - Same seed → identical results
 - Cross-platform consistency (Linux verified)
 - Numerical stability within tolerance
@@ -349,6 +367,7 @@ All modules have been validated for bit-level reproducibility:
 ### Conservation Law Compliance
 
 Information-theoretic constraints verified:
+
 - ✅ Non-negativity (all information quantities >= 0)
 - ✅ Upper bounds (MI <= min entropy)
 - ✅ Decomposition consistency (sum = total)
@@ -362,6 +381,7 @@ Information-theoretic constraints verified:
 **Module**: `xenon.bioinformatics.inference.neural_symbolic`
 
 **Capabilities**:
+
 - Graph Neural Network (GNN) based inference with message passing
 - Symbolic constraint regularization during training
 - Deterministic PyTorch execution with seed management
@@ -369,6 +389,7 @@ Information-theoretic constraints verified:
 - Multi-head attention for node embeddings
 
 **Mathematical Basis**:
+
 ```
 Loss Function:
 L_total = L_task + λ * L_constraint
@@ -389,6 +410,7 @@ Where:
 ```
 
 **Usage Example**:
+
 ```python
 from xenon.bioinformatics.inference import (
     NeuralSymbolicEngine,
@@ -427,6 +449,7 @@ print(f"Constraint violations: {result.constraint_violations}")
 ```
 
 **Validation**:
+
 - ✅ Deterministic inference verified
 - ✅ Classical fallback operational
 - ✅ Graph embedding structure correct
@@ -439,6 +462,7 @@ print(f"Constraint violations: {result.constraint_violations}")
 **Module**: `xenon.bioinformatics.audit.audit_registry`
 
 **Capabilities**:
+
 - SQLite-backed audit log storage
 - Violation tracking and classification
 - Queryable export for compliance reporting
@@ -446,6 +470,7 @@ print(f"Constraint violations: {result.constraint_violations}")
 - Resolution status tracking
 
 **Usage Example**:
+
 ```python
 from xenon.bioinformatics.audit import (
     AuditRegistry,
@@ -489,6 +514,7 @@ registry.close()
 ```
 
 **Validation**:
+
 - ✅ SQLite persistence functional
 - ✅ Query interface operational
 - ✅ Statistics generation working
@@ -501,12 +527,14 @@ registry.close()
 **Module**: `xenon.bioinformatics.utils.threading_utils`
 
 **Capabilities**:
+
 - Thread-safe wrappers for engines
 - Deterministic thread-level seed derivation
 - Concurrent execution with ordering guarantees
 - Lock-based synchronization
 
 **Usage Example**:
+
 ```python
 from xenon.bioinformatics.utils.threading_utils import (
     ThreadSafeEngine,
@@ -537,6 +565,7 @@ for i, result in enumerate(results):
 ```
 
 **Validation**:
+
 - ✅ Thread safety verified
 - ✅ Deterministic seed derivation working
 - ✅ Ordering guarantees maintained
@@ -549,12 +578,14 @@ for i, result in enumerate(results):
 **Module**: `xenon.bioinformatics.utils.backend_introspection`
 
 **Capabilities**:
+
 - Runtime backend capability detection
 - Automatic downgrade paths (QPU → Aer → Classical)
 - Execution metrics logging
 - Gate set and qubit count queries
 
 **Usage Example**:
+
 ```python
 from xenon.bioinformatics.utils.backend_introspection import (
     BackendIntrospection,
@@ -591,6 +622,7 @@ print(f"Gates per second: {log_entry['gates_per_second']:.0f}")
 ```
 
 **Validation**:
+
 - ✅ Backend detection working
 - ✅ Downgrade paths functional
 - ✅ Capability queries operational
@@ -603,6 +635,7 @@ print(f"Gates per second: {log_entry['gates_per_second']:.0f}")
 **Module**: `xenon.bioinformatics.utils.instrumentation`
 
 **Capabilities**:
+
 - Memory usage tracking
 - GPU utilization monitoring (with pynvml)
 - Operation duration measurement
@@ -610,6 +643,7 @@ print(f"Gates per second: {log_entry['gates_per_second']:.0f}")
 - JSON export for analysis
 
 **Usage Example**:
+
 ```python
 from xenon.bioinformatics.utils.instrumentation import PerformanceInstrument
 
@@ -640,6 +674,7 @@ instrument.export_metrics("performance_metrics.json")
 ```
 
 **Validation**:
+
 - ✅ Memory tracking functional
 - ✅ GPU monitoring operational (when available)
 - ✅ Duration measurements accurate
@@ -652,12 +687,14 @@ instrument.export_metrics("performance_metrics.json")
 **Module**: `xenon.bioinformatics.utils.hardware_testing`
 
 **Capabilities**:
+
 - Automatic hardware detection (CPU, GPU NVIDIA/AMD, QPU)
 - Conditional test execution via pytest decorators
 - Hardware capability queries
 - Cross-platform support
 
 **Usage Example**:
+
 ```python
 from xenon.bioinformatics.utils.hardware_testing import (
     HardwareDetector,
@@ -692,6 +729,7 @@ def test_quantum_backend():
 ```
 
 **Validation**:
+
 - ✅ CPU detection always working
 - ✅ GPU detection functional (when present)
 - ✅ QPU simulator detection working
@@ -704,6 +742,7 @@ def test_quantum_backend():
 **Status**: Complete - this document
 
 All Tasks 1-10 have been implemented with:
+
 - ✅ Full mathematical documentation
 - ✅ Usage examples for all modules
 - ✅ Integration patterns described
@@ -716,13 +755,16 @@ All Tasks 1-10 have been implemented with:
 ## References
 
 ### Quantum Alignment
+
 - Needleman, S. B., & Wunsch, C. D. (1970). A general method applicable to the search for similarities in the amino acid sequence of two proteins. *Journal of Molecular Biology*, 48(3), 443-453.
 
 ### Information Theory
+
 - Williams, P. L., & Beer, R. D. (2010). Nonnegative decomposition of multivariate information. *arXiv:1004.2515*.
 - Shannon, C. E. (1948). A mathematical theory of communication. *Bell System Technical Journal*, 27(3), 379-423.
 
 ### Transfer Entropy
+
 - Schreiber, T. (2000). Measuring information transfer. *Physical Review Letters*, 85(2), 461.
 - Vicente, R., et al. (2011). Transfer entropy—a model-free measure of effective connectivity for the neurosciences. *Journal of Computational Neuroscience*, 30(1), 45-67.
 
@@ -731,8 +773,9 @@ All Tasks 1-10 have been implemented with:
 ## Contact & Support
 
 For questions or issues related to XENON Quantum Bioinformatics:
-- Repository: https://github.com/robertringler/QRATUM
-- Issues: https://github.com/robertringler/QRATUM/issues
+
+- Repository: <https://github.com/robertringler/QRATUM>
+- Issues: <https://github.com/robertringler/QRATUM/issues>
 
 ---
 

@@ -14,12 +14,14 @@ QuASIM × QuNimbus now has a complete infrastructure for creating and managing p
 ## Quick Links
 
 ### Documentation
+
 - **[Figma Integration Guide](FIGMA_INTEGRATION_GUIDE.md)** - Complete workflow guide
 - **[Brand Guidelines](BRAND_GUIDELINES.md)** - Colors, typography, and visual identity
 - **[Marketing Assets README](../assets/marketing/README.md)** - Using marketing assets
 - **[Social Media Assets README](../assets/social/README.md)** - Social media specifications
 
 ### Directories
+
 - **`docs/assets/marketing/`** - Diagrams, icons, illustrations, screenshots
 - **`docs/assets/social/`** - Platform-specific social media assets
 - **`figma/`** - Figma project references and templates
@@ -29,6 +31,7 @@ QuASIM × QuNimbus now has a complete infrastructure for creating and managing p
 ### 1. Familiarize Yourself with Brand Guidelines
 
 Read the [Brand Guidelines](BRAND_GUIDELINES.md) to understand:
+
 - Color palette (#002b36, #073642, #268bd2, #2aa198)
 - Typography (Inter for UI, Roboto Mono for code)
 - Logo usage rules
@@ -37,11 +40,13 @@ Read the [Brand Guidelines](BRAND_GUIDELINES.md) to understand:
 ### 2. Access Figma Projects
 
 Request access to QuASIM Figma workspace:
+
 1. Open GitHub issue with label `access-request`
 2. Provide your Figma account email
 3. Specify required access level (view/edit)
 
 **Primary Projects**:
+
 - `QuASIM_QuNimbus_Marketing` - Marketing pages, social media
 - `QuASIM_Design_System` - Brand components and templates
 - `QuASIM_Pitch_Deck` - Investor presentations
@@ -59,6 +64,7 @@ Follow the workflow in the [Figma Integration Guide](FIGMA_INTEGRATION_GUIDE.md#
 ### 4. Use Templates
 
 Browse available templates in `figma/templates/` or within Figma projects:
+
 - Landing page layouts
 - Social media post templates
 - Pitch deck slide templates
@@ -78,6 +84,7 @@ Browse available templates in `figma/templates/` or within Figma projects:
 6. Save to `docs/assets/social/{platform}/`
 
 **Dimensions Reference**:
+
 - Twitter Card: 1200×675px
 - LinkedIn Post: 1200×627px
 - Instagram Square: 1080×1080px
@@ -102,6 +109,7 @@ Browse available templates in `figma/templates/` or within Figma projects:
 6. Save to `docs/assets/marketing/badges/`
 
 **Available Certifications**:
+
 - DO-178C Level A (Orange background)
 - CMMC 2.0 Level 2 (Green background)
 - NIST 800-53 Rev 5 (Blue background)
@@ -111,17 +119,20 @@ Browse available templates in `figma/templates/` or within Figma projects:
 ### Visual Identity
 
 **Dark Theme**:
+
 - Base Dark (#002b36) for primary backgrounds
 - Base Medium (#073642) for panels and cards
 - Light text (#fdf6e3) on dark backgrounds
 
 **Quantum Aesthetic**:
+
 - Clean vector lines (no blur effects)
 - Geometric shapes
 - Cyan/blue accents for "quantum glow"
 - Minimalist design language
 
 **Typography**:
+
 - Inter: UI elements, marketing copy
 - Roboto Mono: Code snippets, technical specs
 
@@ -184,6 +195,7 @@ figma/
 **Use for**: Logos, icons, diagrams, illustrations
 
 **Settings**:
+
 - Format: SVG
 - Include "id" attributes: ✓
 - Outline text: Optional (keep editable when possible)
@@ -196,6 +208,7 @@ figma/
 **Use for**: Screenshots, social media, photos
 
 **Settings**:
+
 - Format: PNG
 - Scale: 1x (standard), 2x (retina for high-DPI)
 - Background: Transparent (where applicable)
@@ -252,12 +265,14 @@ When creating marketing materials, emphasize these key differentiators:
 **Professional + Futuristic + Technical + Accessible**
 
 **Do**:
+
 - Use active voice
 - Be specific with metrics
 - Cite validation results
 - Focus on benefits
 
 **Don't**:
+
 - Overhype capabilities
 - Use buzzwords without substance
 - Over-simplify technical accuracy
@@ -266,16 +281,19 @@ When creating marketing materials, emphasize these key differentiators:
 ## Support & Questions
 
 ### For Design Questions
+
 - Open GitHub issue with `design` label
 - Reference brand guidelines or integration guide
 - Include visual examples when helpful
 
 ### For Access Requests
+
 - Open GitHub issue with `access-request` label
 - Provide Figma account email
 - Specify required projects and access level
 
 ### For Technical Questions
+
 - Contact development team via GitHub
 - Tag relevant team members
 
@@ -292,6 +310,7 @@ When creating marketing materials, emphasize these key differentiators:
 ## Additional Resources
 
 ### External Links
+
 - [Figma Website](https://www.figma.com/)
 - [Figma API Documentation](https://www.figma.com/developers/api)
 - [Inter Font](https://rsms.me/inter/)
@@ -300,6 +319,7 @@ When creating marketing materials, emphasize these key differentiators:
 - [ImageOptim](https://imageoptim.com/)
 
 ### Internal Links
+
 - [Main README](../../README.md)
 - [Architecture Documentation](../technical/architecture.md)
 - [Valuation Dashboard](../valuation_dashboard.html)

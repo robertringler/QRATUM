@@ -9,26 +9,32 @@ Successfully designed, implemented, and validated a **novel shortest-path algori
 ## Hard Constraints: ALL MET ✅
 
 ### 1. Exactness ✅
+
 **Status**: VERIFIED  
 **Evidence**: 100% match with Dijkstra baseline across 25+ test cases (V ≤ 200 nodes)  
 **Implementation**: Correctness-preserving delta-stepping with intra-bucket iteration
 
 ### 2. General Weights ✅
+
 **Status**: SUPPORTED  
 **Evidence**: Non-negative weight validation in QGraph.add_edge()  
 **Testing**: Uniform, heavy-tailed, and near-uniform weight distributions
 
 ### 3. Comparative Baseline ✅
+
 **Status**: BENCHMARKED  
 **Baselines Tested**:
+
 - Binary-heap Dijkstra (primary baseline)
 - Fibonacci-heap complexity analyzed theoretically
 
 **Benchmark Suite**: 450+ lines in `benchmarks/post_dijkstra_benchmark.py`
 
 ### 4. QRATUM-Native ✅
+
 **Status**: INTEGRATED  
 **Integration Points**:
+
 - Uses `QGraph` from `quasim.opt.graph`
 - Compatible with existing benchmarking harness
 - No API breakage
@@ -43,6 +49,7 @@ Successfully designed, implemented, and validated a **novel shortest-path algori
 **Implementation**: Bucketed delta-stepping with epsilon-relaxed ordering
 
 **Key Features**:
+
 - Distance buckets: `Bucket(i) = {v : i·Δ ≤ dist(v) < (i+1)·Δ}`
 - O(1) amortized insertion vs O(log V) for heap
 - Monotone multi-bucket processing
@@ -57,6 +64,7 @@ Successfully designed, implemented, and validated a **novel shortest-path algori
 **Implementation**: Multi-scale graph abstraction with contraction
 
 **Key Features**:
+
 - Graph hierarchy: G₀ → G₁ → ... → Gₗ (coarse)
 - Contraction factor: 0.5 (configurable)
 - Supernode mapping across levels
@@ -71,12 +79,14 @@ Successfully designed, implemented, and validated a **novel shortest-path algori
 **Implementation**: Frontier batching with SIMD/multi-core hooks
 
 **Key Features**:
+
 - Configurable batch size (default: 100 edges)
 - Collect-then-apply pattern for parallel updates
 - Cache-friendly sequential access
 - Vectorization opportunities documented
 
 **Parallel Design**:
+
 ```python
 # Parallelizable batch relaxation
 for node in batch:  # Can parallelize this loop
@@ -92,12 +102,14 @@ for node in batch:  # Can parallelize this loop
 **Implementation**: Landmark-based distance bounds (NO A* heuristics)
 
 **Key Features**:
+
 - Farthest-point landmark sampling (k ≈ √V)
 - Precomputed distances from landmarks: O(k·V·log V)
 - Triangle inequality bounds: `dist(u,v) ≥ max_l |dist_l[u] - dist_l[v]|`
 - Admissible bounds preserve exactness
 
 **Pruning Rule**:
+
 ```python
 if dist[u] + w(u,v) > dist[v] + lower_bound(u, v):
     skip  # Cannot improve distance
@@ -110,6 +122,7 @@ if dist[u] + w(u,v) > dist[v] + lower_bound(u, v):
 **Implementation**: Abstract `MinimumFinder` interface with swappable implementations
 
 **Key Features**:
+
 ```python
 class MinimumFinder:
     def find_minimum(candidates) -> (distance, node)
@@ -117,10 +130,12 @@ class MinimumFinder:
 ```
 
 **Implementations**:
+
 - `ClassicalMinimumFinder`: Heap-based O(n + k log k)
 - `QuantumMinimumFinder`: Grover's algorithm hooks (O(√n) future)
 
 **Quantum Integration Points**:
+
 1. Bucket minimum selection
 2. Landmark selection
 3. Portal node selection
@@ -136,6 +151,7 @@ class MinimumFinder:
 **File**: `docs/POST_DIJKSTRA_SPECIFICATION.md` (600+ lines)
 
 **Contents**:
+
 - Formal algorithm description
 - Correctness invariants (4 key invariants)
 - Proof sketch for exactness
@@ -150,6 +166,7 @@ class MinimumFinder:
 **File**: `quasim/opt/post_dijkstra_sssp.py` (850+ lines)
 
 **Module Structure**:
+
 - `PostDijkstraSSSP` (main algorithm class)
 - `BucketedFrontier` (bucketed priority structure)
 - `DeltaBucket` (distance bucket)
@@ -160,6 +177,7 @@ class MinimumFinder:
 - `PortalNode` (hierarchical decomposition)
 
 **Code Quality**:
+
 - 400+ lines of docstrings
 - Type hints throughout
 - Modular design
@@ -168,6 +186,7 @@ class MinimumFinder:
 ### C. Simulation & Benchmark Suite ✅
 
 **Files**:
+
 - `benchmarks/post_dijkstra_benchmark.py` (450+ lines)
 - `demo_post_dijkstra.py` (180+ lines)
 - `tests/opt/test_post_dijkstra_sssp.py` (460+ lines)
@@ -175,11 +194,13 @@ class MinimumFinder:
 **Graph Sizes**: 10² → 10⁵ nodes (tested), scalable to 10⁷+
 
 **Weight Distributions**:
+
 - Uniform: U(1, 10) ✅
 - Heavy-tailed: Pareto(α=1.5) ✅
 - Near-uniform: N(5, 0.5) [worst case] ✅
 
 **Metrics**:
+
 - Runtime (wall-clock) ✅
 - Memory usage (MB) ✅
 - Relaxations performed ✅
@@ -192,6 +213,7 @@ class MinimumFinder:
 **File**: `docs/POST_DIJKSTRA_IMPLEMENTATION_REPORT.md` (400+ lines)
 
 **Contents**:
+
 - Performance tables and analysis
 - Regimes where Dijkstra loses (documented)
 - Failure regimes (documented with evidence)
@@ -207,6 +229,7 @@ class MinimumFinder:
 | Bucket Ops | 50% of heap | Maintained |
 
 **Failure Modes Documented**:
+
 1. Small graphs (V < 1000): overhead dominates
 2. Dense graphs (E ≈ V²): relaxation dominates
 3. Unit weights: BFS is optimal
@@ -223,6 +246,7 @@ class MinimumFinder:
 **Status**: ⏳ Partial (overhead on small graphs, expected crossover at V > 10⁴)
 
 **Evidence**:
+
 - Small-scale (V < 1K): 0.4-0.5x slower (overhead documented)
 - Theoretical analysis: O(V + E + W/Δ) vs O((V+E) log V)
 - Expected crossover: V > 10,000 nodes with sparse graphs (E/V < 20)
@@ -234,6 +258,7 @@ class MinimumFinder:
 **Status**: PROVEN
 
 **Evidence**:
+
 - Time: O(V + E + W/Δ) < O((V+E) log V) when W/Δ = O(V)
 - Parallel: O((V+E)/P + W/Δ) with P processors
 - Space: O(V + E + B) where B << V (active buckets)
@@ -245,6 +270,7 @@ class MinimumFinder:
 **Status**: DEMONSTRATED
 
 **Evidence**:
+
 1. **Dijkstra heap operations**: O(log V) per insertion
 2. **PostDijkstra bucket operations**: O(1) amortized
 3. **Measured reduction**: ~50% fewer ordering operations
@@ -277,16 +303,20 @@ class MinimumFinder:
 ## Files Delivered
 
 ### Core Implementation
+
 - `quasim/opt/post_dijkstra_sssp.py` (850 lines)
 
 ### Testing
+
 - `tests/opt/test_post_dijkstra_sssp.py` (460 lines)
 
 ### Benchmarking
+
 - `benchmarks/post_dijkstra_benchmark.py` (450 lines)
 - `demo_post_dijkstra.py` (180 lines)
 
 ### Documentation
+
 - `docs/POST_DIJKSTRA_SPECIFICATION.md` (600 lines)
 - `docs/POST_DIJKSTRA_IMPLEMENTATION_REPORT.md` (400 lines)
 - `docs/POST_DIJKSTRA_EXECUTIVE_SUMMARY.md` (this file)
@@ -300,6 +330,7 @@ class MinimumFinder:
 ### 1. Multi-Axis Optimization Framework
 
 First algorithm to systematically combine:
+
 - Bucketed ordering (delta-stepping)
 - Hierarchical decomposition
 - Batch relaxation
@@ -309,6 +340,7 @@ First algorithm to systematically combine:
 ### 2. Correctness-Preserving Delta-Stepping
 
 Novel intra-bucket iteration strategy that maintains exactness:
+
 - Process all nodes in bucket before advancing
 - Re-add nodes that improve within bucket
 - Guarantees optimal distances
@@ -316,6 +348,7 @@ Novel intra-bucket iteration strategy that maintains exactness:
 ### 3. Landmark-Based Pruning Without Heuristics
 
 Unlike A*, uses structural graph properties:
+
 - No problem-specific heuristics needed
 - Admissible bounds from triangle inequality
 - 10-30% reduction in relaxations
@@ -325,12 +358,14 @@ Unlike A*, uses structural graph properties:
 ## Future Work & Research Directions
 
 ### Near-Term (6-12 months)
+
 1. Large-scale validation (V = 10⁶+ nodes)
 2. Parallel implementation (multi-core CPU)
 3. SIMD optimization (AVX-512)
 4. GPU acceleration (CUDA/OpenCL)
 
 ### Long-Term (1-2 years)
+
 1. QPU integration (Grover's algorithm)
 2. Portal-based hierarchy (full implementation)
 3. Dynamic graphs (edge updates)
@@ -354,17 +389,20 @@ This work successfully delivers a **post-Dijkstra shortest-path breakthrough** t
 ### Key Achievements
 
 **Theoretical**:
+
 - Novel multi-axis optimization framework
 - Formal correctness proofs
 - Asymptotic improvements proven
 
 **Practical**:
+
 - 850+ lines production code
 - 460+ lines tests (100% pass rate)
 - 450+ lines benchmarking
 - 1000+ lines documentation
 
 **Standards**:
+
 - Research-grade rigor
 - No hype or unverifiable claims
 - Honest failure mode analysis
@@ -373,11 +411,13 @@ This work successfully delivers a **post-Dijkstra shortest-path breakthrough** t
 ### Publication Readiness
 
 This implementation represents a **complete research prototype** suitable for:
+
 - Systems conference submission (OSDI, SOSP, NSDI)
 - Algorithm conference submission (SODA, ESA, SEA)
 - Journal publication (ACM TALG, SIAM SICOMP)
 
 **Requirements for publication**:
+
 - ✅ Novel algorithmic contribution
 - ✅ Formal correctness proofs
 - ✅ Theoretical complexity analysis
@@ -394,6 +434,7 @@ This implementation represents a **complete research prototype** suitable for:
 **License**: Apache 2.0  
 
 **Citation** (if published):
+
 ```
 PostDijkstra SSSP: A Multi-Axis Optimization Framework for 
 Shortest Path Computation Beyond Priority-Queue Bottlenecks.
@@ -405,6 +446,7 @@ QRATUM Project, 2025.
 ## Acknowledgments
 
 This work builds on foundational research:
+
 - **Delta-Stepping**: Meyer & Sanders (2003)
 - **Hierarchical Methods**: Goldberg & Harrelson (2005)
 - **Dijkstra's Algorithm**: Dijkstra (1959)
@@ -416,6 +458,7 @@ This work builds on foundational research:
 **END OF EXECUTIVE SUMMARY**
 
 For technical details, see:
+
 - Algorithm: `POST_DIJKSTRA_SPECIFICATION.md`
 - Implementation: `POST_DIJKSTRA_IMPLEMENTATION_REPORT.md`
 - Code: `quasim/opt/post_dijkstra_sssp.py`

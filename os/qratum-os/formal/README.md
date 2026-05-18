@@ -42,6 +42,7 @@ All models terminate within the listed bound on commodity hardware.
 ## Failure conditions
 
 If TLC reports any of:
+
 - `ReplayLossless` violated → INV-J broken; fold/expand asymmetry.
 - `ArbitrationInvariant` violated → fold changed verdict; INV-N broken.
 - `ReplayConsistency` violated → migration log non-deterministic.

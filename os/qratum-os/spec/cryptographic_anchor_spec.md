@@ -17,6 +17,7 @@ nor its `prev_link` may change.
 ## Verification path
 
 External verifiers receive:
+
 1. The kernel's Merkle root,
 2. The full leaf vector,
 3. The host's Blake3 root over the same leaves.

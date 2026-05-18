@@ -44,21 +44,25 @@ QRATUM-Chess is a complete chess engine system implementing:
 ## Components
 
 ### Core (`qratum_chess/core/`)
+
 - **BitBoard**: 64-bit integer bitboard representation
 - **Position**: Complete chess position state
 - **Move**: Move representation with UCI notation
 
 ### Neural (`qratum_chess/neural/`)
+
 - **PolicyValueNetwork**: Dual-head residual network
 - **PositionEncoder**: 28-channel tensor encoding
 - **TriModalCore**: Three co-evolving cognition stacks
 
 ### Search (`qratum_chess/search/`)
+
 - **AlphaBetaSearch**: Alpha-beta with pruning optimizations
 - **MCTSSearch**: Monte Carlo Tree Search with neural guidance
 - **AsymmetricAdaptiveSearch**: Phase-aware adaptive search
 
 ### Agents (`qratum_chess/agents/`)
+
 - **BoardManagerAgent**: Position state management
 - **EvaluationAgent**: Position assessment
 - **MoveProposalAgent**: Move candidate generation
@@ -67,6 +71,7 @@ QRATUM-Chess is a complete chess engine system implementing:
 - **AgentOrchestrator**: Multi-agent pipeline coordination
 
 ### Benchmarks (`qratum_chess/benchmarks/`)
+
 - **PerformanceMetrics**: Core KPI measurement
 - **StrategicTortureSuite**: Pathological position testing
 - **AdversarialGauntlet**: Engine-vs-engine matches
@@ -77,9 +82,11 @@ QRATUM-Chess is a complete chess engine system implementing:
 - **MotifExtractor**: Novel chess pattern discovery and classification
 
 ### Protocols (`qratum_chess/protocols/`)
+
 - **UCIEngine**: Universal Chess Interface implementation
 
 ### Training (`qratum_chess/training/`)
+
 - **SelfPlayGenerator**: Self-play data generation
 - **NetworkTrainer**: Neural network training loop
 - **KnowledgeDistillation**: Cross-generation learning
@@ -153,6 +160,7 @@ python run_full_benchmark.py \
 ```
 
 Features:
+
 - **Automated execution**: Complete pipeline from start to finish
 - **Environment verification**: Python, dependencies, GPU detection
 - **Motif extraction**: Discover novel chess patterns automatically
@@ -178,11 +186,13 @@ See [`docs/MOTIF_EXTRACTION.md`](../docs/MOTIF_EXTRACTION.md) for motif classifi
 ## Certification Criteria
 
 ### Stage III Promotion Gate
+
 - ≥ 75% winrate vs Stockfish-NNUE baseline
 - ≥ 70% winrate vs Lc0-class nets
 - Novel motif emergence confirmed
 
 ### Elo Certification
+
 - ELO_QRATUM - ELO_SF17 ≥ +250 for promotion
 - Any regression ≥ 10 Elo triggers rollback
 

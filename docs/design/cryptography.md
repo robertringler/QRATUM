@@ -36,12 +36,14 @@ Design a cryptographic trust chain suitable for court-admissible evidence.
 ### 1.2 Legal Requirements for Digital Evidence
 
 **Federal Rules of Evidence (FRE 901, 902):**
+
 - Authentication: Evidence must be what proponent claims
 - Chain of custody: Unbroken documentation of handling
 - Integrity: No unauthorized modification
 - Completeness: No material omissions
 
 **International Standards:**
+
 - ISO/IEC 27037: Guidelines for identification, collection, acquisition, preservation
 - SWGDE Best Practices for Computer Forensics
 - eIDAS (EU): Electronic signatures and seals
@@ -226,16 +228,19 @@ Analyze QRATUM's cryptographic assumptions under quantum threat models.
 ### 2.5 Migration Strategy
 
 **Phase 1: Hybrid Deployment (Current)**
+
 - All new signatures use hybrid ECDSA+Dilithium
 - Legacy ECDSA accepted during transition
 - All key exchanges use hybrid X25519+Kyber
 
 **Phase 2: PQC Primary (2027)**
+
 - PQC signature mandatory for all new operations
 - ECDSA deprecated for new certificates
 - Existing ECDSA certificates grandfathered until expiry
 
 **Phase 3: Classical Removal (2030)**
+
 - All classical-only cryptography removed
 - Re-sign all long-term audit data with SPHINCS+
 - Complete PQC-only operation

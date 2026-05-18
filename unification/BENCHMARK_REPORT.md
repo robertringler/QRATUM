@@ -1,4 +1,5 @@
 # QRATUM Benchmark Report
+
 _Phase_: U5 Benchmark & Technical Spec  
 _Generated_: 2026-04-30
 
@@ -29,6 +30,7 @@ The following benchmark infrastructure exists in the repository:
 ## Flagged Gaps (from Prompt #1 audit)
 
 Per the audit, missing benchmarks were flagged for:
+
 - Multi-qubit CIIR controller throughput (GAP-CIIR-MQ-001 — now stubbed)
 - Tensor-network contraction cost vs bond dimension (no dedicated benchmark exists)
 - RIC v2 horizon-vs-cost curve (no dedicated harness)
@@ -41,6 +43,7 @@ Per the audit, missing benchmarks were flagged for:
 ## Reproducibility
 
 All benchmarks in `benchmarks/` use seeded RNG. To reproduce:
+
 ```bash
 PYTHONPATH=. python run_full_benchmark.py --seed 42
 ```

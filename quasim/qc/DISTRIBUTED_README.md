@@ -314,9 +314,9 @@ This implementation follows aerospace-grade determinism principles:
 
 1. Nielsen & Chuang, "Quantum Computation and Quantum Information"
 2. Preskill, "Quantum Computation" lecture notes (Caltech)
-3. JAX documentation: https://jax.readthedocs.io/
-4. PyTorch distributed: https://pytorch.org/tutorials/beginner/dist_overview.html
-5. NCCL tuning: https://docs.nvidia.com/deeplearning/nccl/user-guide/
+3. JAX documentation: <https://jax.readthedocs.io/>
+4. PyTorch distributed: <https://pytorch.org/tutorials/beginner/dist_overview.html>
+5. NCCL tuning: <https://docs.nvidia.com/deeplearning/nccl/user-guide/>
 
 ## License
 

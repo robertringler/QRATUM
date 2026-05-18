@@ -1,4 +1,5 @@
 # QRATUM Container Topology
+
 _Phase_: U1 Canonical Architecture  
 _Generated_: 2026-04-30
 

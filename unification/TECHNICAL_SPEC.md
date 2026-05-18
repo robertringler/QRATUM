@@ -1,4 +1,5 @@
 # QRATUM Technical Spec
+
 _Phase_: U5 Benchmark & Technical Spec  
 _Generated_: 2026-04-30
 
@@ -31,7 +32,7 @@ Production (docker-compose.production.yml)
 | Plasma reconnection (sim) | 10 req/s | <500ms |
 | Dashboard (SSR) | 100 req/s | <100ms |
 
-*All values are targets; actual measured results require production hardware.*
+_All values are targets; actual measured results require production hardware._
 
 ## Simulation Engine Scaling
 

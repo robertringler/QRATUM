@@ -57,7 +57,7 @@ This Code of Conduct also applies when an individual is officially representing 
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at:
 
-**conduct@qratum.io**
+**<conduct@qratum.io>**
 
 All complaints will be reviewed and investigated promptly and fairly.
 
@@ -118,7 +118,7 @@ Community leaders will follow these Community Impact Guidelines in determining t
 
 If you believe you have been falsely or unfairly accused of violating this Code of Conduct, you may appeal by contacting:
 
-**appeals@qratum.io**
+**<appeals@qratum.io>**
 
 Appeals will be reviewed by a different community leader than the one who handled the original enforcement decision. The appeal decision is final.
 
@@ -147,17 +147,17 @@ Given QRATUM's focus on **safety-critical AI systems** and **sovereign infrastru
 
 ## Attribution
 
-This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org), version 2.1, available at https://www.contributor-covenant.org/version/2/1/code_of_conduct.html.
+This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org), version 2.1, available at <https://www.contributor-covenant.org/version/2/1/code_of_conduct.html>.
 
 Community Impact Guidelines were inspired by [Mozilla's code of conduct enforcement ladder](https://github.com/mozilla/diversity).
 
-For answers to common questions about this code of conduct, see the FAQ at https://www.contributor-covenant.org/faq. Translations are available at https://www.contributor-covenant.org/translations.
+For answers to common questions about this code of conduct, see the FAQ at <https://www.contributor-covenant.org/faq>. Translations are available at <https://www.contributor-covenant.org/translations>.
 
 ## Questions
 
 If you have questions about this Code of Conduct, please contact:
 
-**conduct@qratum.io**
+**<conduct@qratum.io>**
 
 ---
 

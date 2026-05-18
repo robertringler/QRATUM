@@ -61,6 +61,7 @@
 All citations are to real, published works. No fabricated references.
 
 Key citations verified:
+
 - Lindblad 1976: Comm. Math. Phys. 48, 119 ✓
 - GKS 1976: J. Math. Phys. 17, 821 ✓
 - Kochen-Specker 1967: J. Math. Mech. 17, 59 ✓

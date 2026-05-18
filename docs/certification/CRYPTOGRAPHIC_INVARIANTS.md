@@ -20,11 +20,13 @@ This document specifies the cryptographic invariants that QRATUM maintains acros
 **Statement**: All cryptographic key material exists only in volatile memory and is never written to persistent storage.
 
 **Enforcement**:
+
 - `#[derive(Zeroize, ZeroizeOnDrop)]` on all key types
 - No serialization to files for key types
 - Memory-mapped I/O disabled for key storage
 
 **Verification**:
+
 - Static analysis for file I/O on key types
 - Runtime monitoring of write syscalls
 - Formal proof: Key state machine never reaches "Persisted" state
@@ -46,11 +48,13 @@ pub struct EphemeralBiokey {
 **Statement**: Biokey material is valid for at most 30 seconds from derivation.
 
 **Enforcement**:
+
 - Type-level lifetime tracking
 - Runtime expiration checks before use
 - Automatic invalidation after timeout
 
 **Verification**:
+
 - Unit tests for lifetime boundary
 - Formal proof: `is_valid()` returns false when `age > 30000ms`
 
@@ -77,10 +81,12 @@ impl EphemeralBiokey {
 **Statement**: Key derivation must blend entropy from at least 2 independent sources.
 
 **Enforcement**:
+
 - `MIN_ENTROPY_SOURCES = 2` constant
 - `derive_blended()` returns error if sources < 2
 
 **Verification**:
+
 - Runtime check in derivation function
 - Audit logging of entropy source types
 
@@ -106,11 +112,13 @@ pub fn derive_blended(
 **Statement**: DRBG must reseed before generating 2^48 outputs or on explicit request.
 
 **Enforcement**:
+
 - Counter tracking in DRBG state
 - Automatic reseed trigger at threshold
 - `ReseedRequired` error if exceeded without fresh entropy
 
 **Verification**:
+
 - Counter verification in `generate()`
 - NIST SP 800-90A compliance testing
 
@@ -134,11 +142,13 @@ pub fn generate(&mut self, output: &mut [u8], ...) -> Result<(), DrbgError> {
 **Statement**: All cryptographic operations must execute in constant time regardless of input values.
 
 **Enforcement**:
+
 - No data-dependent branches in crypto code
 - No data-dependent memory access patterns
 - Use of constant-time comparison functions
 
 **Verification**:
+
 - Timing analysis tools (dudect)
 - Manual code review checklist
 - CI timing tests
@@ -162,11 +172,13 @@ fn hmac_sha3_512(key: &[u8], data: &[u8]) -> [u8; SEED_LENGTH] {
 **Statement**: All asymmetric cryptography provides NIST Security Level 5 (256-bit equivalent).
 
 **Enforcement**:
+
 - Parameter set selection locked to Level 5
 - No downgrade paths available
 - Algorithm agility framework validates level
 
 **Verification**:
+
 - Static analysis of parameter constants
 - Integration tests with expected key/signature sizes
 
@@ -189,11 +201,13 @@ pub const SPHINCS_N: usize = 32;  // 256-bit security
 **Statement**: Each ledger entry cryptographically chains to its predecessor via SHA3-256.
 
 **Enforcement**:
+
 - Append-only ledger structure
 - Hash computation on every append
 - Integrity verification on read
 
 **Verification**:
+
 - TLA+ model checking (MerkleChainIntegrity invariant)
 - Runtime integrity verification
 - Formal proof in Coq
@@ -222,11 +236,13 @@ fn compute_root_from_txos(&self) -> [u8; 32] {
 **Statement**: TXO finalization requires >2/3 voting power from active validators.
 
 **Enforcement**:
+
 - `consensus_threshold = 67` (percentage)
 - Voting power calculation from validator stakes
 - Threshold check before finalization
 
 **Verification**:
+
 - Alloy model (bft_consensus.als)
 - TLA+ consensus specification
 - Unit tests with various stake distributions
@@ -248,11 +264,13 @@ pub fn has_consensus(&self, proposal_id: &ProposalID) -> bool {
 **Statement**: Data erasure is cryptographically provable via tombstones that demonstrate key destruction.
 
 **Enforcement**:
+
 - Per-record encryption key
 - Key destruction on erasure request
 - Tombstone with proof of key knowledge
 
 **Verification**:
+
 - Unit tests for tombstone verification
 - Audit trail of erasure operations
 
@@ -286,11 +304,13 @@ impl CryptographicTombstone {
 **Statement**: Quantum simulations with identical seeds produce bit-identical results.
 
 **Enforcement**:
+
 - Seed-locked RNG in simulator
 - Merkle-hashed state fingerprints
 - Drift detection between runs
 
 **Verification**:
+
 - Replay tests with trace comparison
 - Fingerprint matching assertions
 - Statistical analysis of outputs

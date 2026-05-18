@@ -23,12 +23,14 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 ### File Breakdown
 
 **Rust Implementation (merkler-static)**:
+
 - `src/main.rs` (275 lines) - CLI interface
 - `src/biokey.rs` (222 lines) - Ephemeral biokey derivation
 - `src/zkp.rs` (244 lines) - Zero-knowledge proofs
 - `src/fido2.rs` (414 lines) - Dual-signature system
 
 **Shell Scripts**:
+
 - `biokey_lib.sh` (271 lines) - Helper library
 - `derive_biokey.sh` (156 lines) - Biokey generation
 - `verify_biokey.sh` (111 lines) - ZKP verification
@@ -36,6 +38,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 - `init_genesis_merkle.sh` (61 lines) - Merkle initialization
 
 **Nextflow Pipeline**:
+
 - `vitra-e0-germline.nf` (120 lines) - Main workflow
 - `provenance.nf` (106 lines) - Biokey enforcement
 - `validate.nf` (74 lines) - GIAB validation
@@ -43,6 +46,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 - `align.nf` (44 lines) - Alignment
 
 **Documentation**:
+
 - `scripts/sop.md` (651 lines) - Standard Operating Procedures
 - `README.md` (323 lines) - User guide
 
@@ -51,6 +55,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 ### Unit Tests: ✅ 22/22 Passing
 
 **Biokey Module** (5 tests):
+
 - ✅ Biokey derivation from SNPs
 - ✅ Deterministic key generation
 - ✅ Signature creation
@@ -58,6 +63,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 - ✅ Different loci produce different keys
 
 **ZKP Module** (7 tests):
+
 - ✅ Challenge generation
 - ✅ Proof creation and verification
 - ✅ Deterministic proofs
@@ -67,6 +73,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 - ✅ Different biokeys produce different responses
 
 **FIDO2 Module** (9 tests):
+
 - ✅ Dual signature creation
 - ✅ Signature verification
 - ✅ Temporal ordering
@@ -78,6 +85,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 - ✅ Same location detection
 
 **Main Module** (1 test):
+
 - ✅ Version constant
 
 ### Integration Tests: ✅ 10/10 Passing
@@ -98,6 +106,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 ### 1. Ephemeral Biokey System ✅
 
 **Security Properties**:
+
 - ✅ RAM-only key storage (never written to disk)
 - ✅ Automatic memory wiping on session exit
 - ✅ SHA3-256 quantum-resistant hashing
@@ -106,6 +115,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 - ✅ Session timeout enforcement (60 minutes)
 
 **Implementation**:
+
 - Rust module with zeroize for memory safety
 - Shell script for VCF processing in tmpfs
 - Automatic cleanup on shell exit
@@ -114,6 +124,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 ### 2. Zero-Knowledge Proof Protocol ✅
 
 **Capabilities**:
+
 - ✅ Challenge-response authentication
 - ✅ No genome data revealed during verification
 - ✅ 256-bit random challenges
@@ -121,6 +132,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 - ✅ JSON serialization for network transport
 
 **Implementation**:
+
 - Rust ZKP module with challenge generation
 - Shell script for interactive verification
 - Replay attack prevention via unique challenges
@@ -128,6 +140,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 ### 3. Dual-Signature Authorization ✅
 
 **Features**:
+
 - ✅ Two-operator requirement for critical operations
 - ✅ Temporal ordering enforcement
 - ✅ Geographic separation verification
@@ -135,6 +148,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 - ✅ Merkle chain provenance
 
 **Safety Levels**:
+
 | Level | Authorization | Implemented |
 |-------|--------------|-------------|
 | ROUTINE | None | ✅ |
@@ -146,12 +160,14 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 ### 4. Nextflow Pipeline Integration ✅
 
 **Workflow Stages**:
+
 1. ✅ Alignment (FASTQ to BAM)
 2. ✅ Variant Calling (DeepVariant)
 3. ✅ GIAB Validation (optional)
 4. ✅ Provenance with Biokey
 
 **Biokey Enforcement**:
+
 - ✅ `beforeScript` checks for active session
 - ✅ Environment variable verification
 - ✅ Safety level enforcement
@@ -168,6 +184,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 | Z3 | Archive (air-gapped) | Dual Biokey + Dual FIDO2 | ✅ |
 
 **Promotion Scripts**:
+
 - ✅ `promote-z1-to-z2` - Single authorization
 - ✅ `promote-z2-to-z3` - Dual authorization
 - ✅ Automatic promotion records
@@ -176,12 +193,14 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 ### 6. Compliance Framework ✅
 
 **HIPAA Compliance**:
+
 - ✅ No PHI storage (VCF in RAM only)
 - ✅ Complete audit trail (Merkle chain)
 - ✅ Encryption at rest and in transit
 - ✅ Access controls (biokey authentication)
 
 **GDPR Article 9**:
+
 - ✅ Explicit consent (enrollment form)
 - ✅ Purpose limitation (authentication only)
 - ✅ Data minimization (public hash only)
@@ -189,6 +208,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 - ✅ Integrity & confidentiality (ZKP + dual-control)
 
 **BIPA Compliance**:
+
 - ✅ Written policy (SOP document)
 - ✅ Informed consent (enrollment)
 - ✅ Retention schedule (session-based)
@@ -198,6 +218,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 ### 7. Documentation ✅
 
 **Standard Operating Procedures** (651 lines):
+
 1. ✅ Biokey Overview
 2. ✅ Ephemeral Biokey Derivation
 3. ✅ Dual Biokey + FIDO2 Workflow
@@ -208,6 +229,7 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 8. ✅ Compliance & Legal (HIPAA/GDPR/BIPA)
 
 **README** (323 lines):
+
 - ✅ Quick start guide
 - ✅ Architecture overview
 - ✅ Feature descriptions
@@ -260,12 +282,14 @@ Successfully implemented a complete **VITRA-E0 repository with Biokey integratio
 ### 1. Military Genomics (Classified Operations) ✅
 
 **Implementation**:
+
 - Dual-control authorization
 - Air-gapped deployment
 - Complete audit trail
 - Biometric authentication
 
 **Example**:
+
 ```bash
 ./scripts/biokey/derive_biokey.sh director /secure/director.vcf.gz
 ./scripts/biokey/derive_biokey.sh scientist /secure/scientist.vcf.gz
@@ -277,12 +301,14 @@ nextflow run nextflow/vitra-e0-germline.nf \
 ### 2. Clinical Genomics (HIPAA-Compliant) ✅
 
 **Implementation**:
+
 - No PHI storage
 - Audit trail for medical-legal
 - Operator authentication
 - Rollback capability
 
 **Example**:
+
 ```bash
 ./scripts/biokey/derive_biokey.sh director-jones /secure/jones.vcf.gz
 nextflow run nextflow/vitra-e0-germline.nf \
@@ -293,12 +319,14 @@ nextflow run nextflow/vitra-e0-germline.nf \
 ### 3. Pharmaceutical R&D (Trade Secret Protection) ✅
 
 **Implementation**:
+
 - Trade secret protection
 - Dual-authorization for archival
 - Air-gapped Z3 storage
 - ZKP credential verification
 
 **Example**:
+
 ```bash
 ./scripts/biokey/derive_biokey.sh pi-smith /secure/smith.vcf.gz
 ./scripts/biokey/verify_biokey.sh pi-smith
@@ -313,18 +341,21 @@ nextflow run nextflow/vitra-e0-germline.nf \
 ### Core Technologies
 
 **Rust** (v1.92.0):
+
 - ✅ Memory-safe biokey implementation
 - ✅ Zero-copy operations
 - ✅ Automatic memory wiping (zeroize)
 - ✅ Comprehensive test suite
 
 **Shell** (Bash):
+
 - ✅ Secure tmpfs management
 - ✅ VCF processing
 - ✅ Session management
 - ✅ Automatic cleanup
 
 **Nextflow** (≥21.10):
+
 - ✅ Workflow orchestration
 - ✅ GPU acceleration
 - ✅ Biokey enforcement
@@ -333,6 +364,7 @@ nextflow run nextflow/vitra-e0-germline.nf \
 ### Dependencies
 
 **Rust Crates**:
+
 - sha3 (0.10) - Quantum-resistant hashing
 - serde (1.0) - Serialization
 - rand (0.8) - Secure random generation
@@ -340,6 +372,7 @@ nextflow run nextflow/vitra-e0-germline.nf \
 - zeroize (1.7) - Memory wiping
 
 **System Requirements**:
+
 - Linux (Ubuntu 20.04+)
 - Rust 1.70+
 - Nextflow 21.10+
@@ -365,6 +398,7 @@ nextflow run nextflow/vitra-e0-germline.nf \
 ### Deployment
 
 1. **Build Production Binary**:
+
    ```bash
    cd qrVITRA/merkler-static
    ./build.sh
@@ -372,17 +406,20 @@ nextflow run nextflow/vitra-e0-germline.nf \
    ```
 
 2. **Initialize Genesis Merkle**:
+
    ```bash
    cd qrVITRA
    ./scripts/init_genesis_merkle.sh
    ```
 
 3. **Enroll Operators**:
+
    ```bash
    ./scripts/biokey/derive_biokey.sh operator-alice /secure/alice.vcf.gz
    ```
 
 4. **Run Pipeline**:
+
    ```bash
    nextflow run nextflow/vitra-e0-germline.nf \
      --fastq_r1 sample_R1.fastq.gz \
@@ -413,6 +450,7 @@ The **VITRA-E0 Biokey Integration** is a groundbreaking implementation that:
 **Status**: ✅ **PRODUCTION-READY**
 
 **Deployment Environments**:
+
 - Military genomics (classified operations)
 - Clinical genomics (HIPAA-compliant)
 - Pharmaceutical R&D (trade secret protection)

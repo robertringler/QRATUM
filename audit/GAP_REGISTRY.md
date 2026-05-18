@@ -1,7 +1,9 @@
 # QRATUM Gap Registry
+
 _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22:27:58Z
 
 ## Counts
+
 - Total: **80**
 - By severity: `block`=7, `info`=1, `major`=54, `minor`=18
 - By area: `security`=27, `quasim`=12, `cicd`=7, `qnx`=3, `qubic`=3, `sdk`=3, `theory`=3, `code`=3, `qagents`=2, `qcore`=2, `qos`=2, `qreal`=2, `cli`=2, `production_workflow_checkpointing.py`=1, `qdl`=1, `qratum-rust`=1, `qstack`=1, `quasim/ciir`=1, `tests`=1, `inventory`=1, `artifacts`=1, `documentation`=1
@@ -28,7 +30,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-SEC-SECRET-013` | block | harden | Hardcoded credential pattern at tests/qunimbus/test_qunimbus_enhancements.py:347 |
 | `GAP-SEC-SECRET-014` | block | harden | Hardcoded credential pattern at tests/test_sdk.py:87 |
 | `GAP-SEC-UNSAFE-001` | major | harden | UNSAFE-SUBPROCESS at .github/workflows/sbom.yml:182 |
-| `GAP-SEC-UNSAFE-002` | major | harden | UNSAFE-EVAL at aion/runtime/__init__.py:287 |
+| `GAP-SEC-UNSAFE-002` | major | harden | UNSAFE-EVAL at aion/runtime/**init**.py:287 |
 | `GAP-SEC-UNSAFE-003` | major | harden | UNSAFE-PICKLE at production_workflow_checkpointing.py:279 |
 | `GAP-SEC-UNSAFE-004` | major | harden | UNSAFE-PICKLE at production_workflow_checkpointing.py:282 |
 | `GAP-SEC-UNSAFE-005` | major | harden | UNSAFE-PICKLE at qratum/temporal/state.py:150 |
@@ -42,6 +44,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-DEP-007` | major | harden | Vulnerable pinned dependency gunicorn==21.2.0: endpoint restriction bypass (affected <22.0.0) |
 
 **Evidence:**
+
 - `GAP-SEC-SECRET-001` — `README_OLD.md:186 :: ibmq_token="YOUR_API_TOKEN_HERE",`
 - `GAP-SEC-SECRET-002` — `docs-site/docs/advanced/troubleshooting.md:127 :: ibmq_token="your_actual_token"`
 - `GAP-SEC-SECRET-003` — `docs-site/docs/getting-started/installation.md:120 :: ibmq_token="YOUR_API_TOKEN_HERE",`
@@ -74,10 +77,10 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 
 | ID | Sev | Fix class | Title |
 |----|-----|-----------|-------|
-| `GAP-STUB-015` | major | finish-stub | NotImplementedError stub at quasim/hcal/backends/__init__.py:89 |
-| `GAP-STUB-016` | major | finish-stub | NotImplementedError stub at quasim/hcal/backends/__init__.py:102 |
-| `GAP-STUB-017` | major | finish-stub | NotImplementedError stub at quasim/hcal/backends/__init__.py:114 |
-| `GAP-STUB-018` | major | finish-stub | NotImplementedError stub at quasim/hcal/backends/__init__.py:126 |
+| `GAP-STUB-015` | major | finish-stub | NotImplementedError stub at quasim/hcal/backends/**init**.py:89 |
+| `GAP-STUB-016` | major | finish-stub | NotImplementedError stub at quasim/hcal/backends/**init**.py:102 |
+| `GAP-STUB-017` | major | finish-stub | NotImplementedError stub at quasim/hcal/backends/**init**.py:114 |
+| `GAP-STUB-018` | major | finish-stub | NotImplementedError stub at quasim/hcal/backends/**init**.py:126 |
 | `GAP-STUB-019` | major | finish-stub | NotImplementedError stub at quasim/opt/post_dijkstra_sssp.py:381 |
 | `GAP-STUB-020` | major | finish-stub | NotImplementedError stub at quasim/opt/post_dijkstra_sssp.py:395 |
 | `GAP-STUB-021` | major | finish-stub | NotImplementedError stub at quasim/opt/problems.py:47 |
@@ -88,6 +91,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-STUB-026` | major | finish-stub | NotImplementedError stub at quasim/qunimbus/auth.py:407 |
 
 **Evidence:**
+
 - `GAP-STUB-015` — `quasim/hcal/backends/__init__.py:89 :: raise NotImplementedError`
 - `GAP-STUB-016` — `quasim/hcal/backends/__init__.py:102 :: raise NotImplementedError`
 - `GAP-STUB-017` — `quasim/hcal/backends/__init__.py:114 :: raise NotImplementedError`
@@ -114,13 +118,14 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-DEP-PIN-001` | major | harden | requirements.txt has 4 unpinned top-level dependencies |
 
 **Evidence:**
-- `GAP-CTR-NOROOT-Dockerfile` — `Dockerfile :: no `USER` directive present`
-- `GAP-CTR-HEALTH-Dockerfile` — `Dockerfile :: no `HEALTHCHECK` directive`
-- `GAP-CTR-NOROOT-Dockerfile.sandbox-platform` — `Dockerfile.sandbox-platform :: no `USER` directive present`
-- `GAP-CTR-HEALTH-Dockerfile.sandbox-platform` — `Dockerfile.sandbox-platform :: no `HEALTHCHECK` directive`
-- `GAP-CTR-NOROOT-Dockerfile.sandbox-qradle` — `Dockerfile.sandbox-qradle :: no `USER` directive present`
-- `GAP-CTR-HEALTH-Dockerfile.sandbox-qradle` — `Dockerfile.sandbox-qradle :: no `HEALTHCHECK` directive`
-- `GAP-DEP-PIN-001` — `requirements.txt:1-4 :: pandas / matplotlib / seaborn / numpy (no `==` pin)`
+
+- `GAP-CTR-NOROOT-Dockerfile` — `Dockerfile :: no`USER`directive present`
+- `GAP-CTR-HEALTH-Dockerfile` — `Dockerfile :: no`HEALTHCHECK`directive`
+- `GAP-CTR-NOROOT-Dockerfile.sandbox-platform` — `Dockerfile.sandbox-platform :: no`USER`directive present`
+- `GAP-CTR-HEALTH-Dockerfile.sandbox-platform` — `Dockerfile.sandbox-platform :: no`HEALTHCHECK`directive`
+- `GAP-CTR-NOROOT-Dockerfile.sandbox-qradle` — `Dockerfile.sandbox-qradle :: no`USER`directive present`
+- `GAP-CTR-HEALTH-Dockerfile.sandbox-qradle` — `Dockerfile.sandbox-qradle :: no`HEALTHCHECK`directive`
+- `GAP-DEP-PIN-001` — `requirements.txt:1-4 :: pandas / matplotlib / seaborn / numpy (no`==`pin)`
 
 ### qnx
 
@@ -131,6 +136,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-STUB-008` | major | finish-stub | NotImplementedError stub at qnx/backends/qpu.py:36 |
 
 **Evidence:**
+
 - `GAP-STUB-006` — `qnx/backends/cpu.py:36 :: raise NotImplementedError(`
 - `GAP-STUB-007` — `qnx/backends/gpu.py:36 :: raise NotImplementedError(`
 - `GAP-STUB-008` — `qnx/backends/qpu.py:36 :: raise NotImplementedError(`
@@ -144,6 +150,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-STUB-029` | major | finish-stub | NotImplementedError stub at qubic/visualization/adapters/tire.py:79 |
 
 **Evidence:**
+
 - `GAP-STUB-027` — `qubic/visualization/adapters/mesh.py:63 :: raise NotImplementedError("File-based loading not yet implemented. Use dictionary input.")`
 - `GAP-STUB-028` — `qubic/visualization/adapters/timeseries.py:70 :: raise NotImplementedError("File-based loading not yet implemented. Use list input.")`
 - `GAP-STUB-029` — `qubic/visualization/adapters/tire.py:79 :: raise NotImplementedError("File-based loading not yet implemented. Use dictionary input.")`
@@ -157,6 +164,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-STUB-032` | major | finish-stub | NotImplementedError stub at sdk/ansys/quasim_ansys_adapter.py:860 |
 
 **Evidence:**
+
 - `GAP-STUB-030` — `sdk/ansys/quasim_ansys_adapter.py:594 :: raise NotImplementedError("CDB file import not yet implemented")`
 - `GAP-STUB-031` — `sdk/ansys/quasim_ansys_adapter.py:813 :: raise NotImplementedError(f"Export format '{format}' not yet implemented")`
 - `GAP-STUB-032` — `sdk/ansys/quasim_ansys_adapter.py:860 :: raise NotImplementedError("Preconditioner registration not yet implemented")`
@@ -170,6 +178,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-THEORY-001` | major | write-proof | 397 formal claims (theorem/lemma/proposition/corollary/definition/proof/algorithm) extracted from .tex with no automated linkage to code or tests |
 
 **Evidence:**
+
 - `GAP-DOC-MONO-001` — `manuscripts/ciir_monograph/chapters/ :: only ch03..ch08 present; no ch21_multi_qubit_controller.tex, no ch22_unified_extensions.tex`
 - `GAP-DOC-MONO-002` — `manuscripts/ciir_monograph/ciir_quasim_formalization.tex :: standalone, no chapter inclusion`
 - `GAP-THEORY-001` — `audit/theory/claims_matrix.csv`
@@ -183,6 +192,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-CODE-EXCEPT-001` | minor | refactor | 13 bare-except + 116 broad-Exception handlers — risk of swallowed errors |
 
 **Evidence:**
+
 - `GAP-CODE-PRINT-001` — `audit/code/findings.jsonl :: rule_id=DBG-PRINT`
 - `GAP-CODE-TODO-001` — `audit/code/findings.jsonl :: rule_id=STUB-TODO`
 - `GAP-CODE-EXCEPT-001` — `audit/code/findings.jsonl :: rule_id IN (BARE-EXCEPT, BROAD-EXCEPT)`
@@ -195,6 +205,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-CIIR-RIC-V2-001` | major | write-test | qagents/reality_interface_v2.py exists but no companion test_ric_v2.py is enumerated under tests/ (despite stored memory of 18 tests); verify regression coverag |
 
 **Evidence:**
+
 - `GAP-STUB-002` — `qagents/strategy.py:23 :: raise NotImplementedError`
 - `GAP-CIIR-RIC-V2-001` — `tests/ :: contains test_ric_v2.py — confirm symbol mapping in audit/tests/coverage_gap.csv`
 
@@ -206,6 +217,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-STUB-004` | major | finish-stub | NotImplementedError stub at qcore/hamiltonian.py:125 |
 
 **Evidence:**
+
 - `GAP-STUB-003` — `qcore/hamiltonian.py:105 :: raise NotImplementedError(`
 - `GAP-STUB-004` — `qcore/hamiltonian.py:125 :: raise NotImplementedError(`
 
@@ -217,6 +229,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-STUB-010` | major | finish-stub | NotImplementedError stub at qos/policy.py:47 |
 
 **Evidence:**
+
 - `GAP-STUB-009` — `qos/envelopes.py:49 :: raise NotImplementedError(`
 - `GAP-STUB-010` — `qos/policy.py:47 :: raise NotImplementedError(`
 
@@ -228,6 +241,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-STUB-013` | major | finish-stub | NotImplementedError stub at qreal/base_adapter.py:60 |
 
 **Evidence:**
+
 - `GAP-STUB-012` — `qreal/base_adapter.py:55 :: raise NotImplementedError`
 - `GAP-STUB-013` — `qreal/base_adapter.py:60 :: raise NotImplementedError`
 
@@ -239,6 +253,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-CIIR-RUN-002` | major | wire-seam | Top-level CLI runner run_falsification.py is missing |
 
 **Evidence:**
+
 - `GAP-CIIR-RUN-001` — `ROOT :: file does not exist (referenced by prior implementation notes & problem statement)`
 - `GAP-CIIR-RUN-002` — `ROOT :: file does not exist (referenced by problem statement § CLI surface)`
 
@@ -249,6 +264,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-STUB-001` | major | finish-stub | NotImplementedError stub at production_workflow_checkpointing.py:519 |
 
 **Evidence:**
+
 - `GAP-STUB-001` — `production_workflow_checkpointing.py:519 :: raise NotImplementedError("Subclass must implement _execute_stages")`
 
 ### qdl
@@ -258,6 +274,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-STUB-005` | major | finish-stub | NotImplementedError stub at qdl/ast.py:11 |
 
 **Evidence:**
+
 - `GAP-STUB-005` — `qdl/ast.py:11 :: raise NotImplementedError`
 
 ### qratum-rust
@@ -267,6 +284,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-STUB-011` | major | finish-stub | NotImplementedError stub at qratum-rust/src/q_substrate.rs:670 |
 
 **Evidence:**
+
 - `GAP-STUB-011` — `qratum-rust/src/q_substrate.rs:670 :: raise NotImplementedError("Generated stub for: {}")"#, desc, desc),`
 
 ### qstack
@@ -276,6 +294,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-STUB-014` | major | finish-stub | NotImplementedError stub at qstack/alignment/policies.py:25 |
 
 **Evidence:**
+
 - `GAP-STUB-014` — `qstack/alignment/policies.py:25 :: raise NotImplementedError`
 
 ### quasim/ciir
@@ -285,6 +304,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-CIIR-MQ-001` | block | finish-stub | Promised quasim/ciir/multi_qubit/ subsystem (controller, density_matrix, fractal_qec, hybrid_sim, stability, plots, non_markovian, geometric_control, hardware_p |
 
 **Evidence:**
+
 - `GAP-CIIR-MQ-001` — `quasim/ciir/ :: only plasma/, simulation/, integration/, ciir.py present; no multi_qubit/ directory exists`
 
 ### tests
@@ -294,6 +314,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-TEST-PUB-001` | major | write-test | 2218 public Python symbols out of 5977 (37%) have no textual reference in any test file |
 
 **Evidence:**
+
 - `GAP-TEST-PUB-001` — `audit/tests/coverage_gap.csv :: column referenced_by_test='N'`
 
 ### inventory
@@ -303,6 +324,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-ORPH-001` | minor | delete-orphan | 179 code files appear to have no inbound import or doc reference |
 
 **Evidence:**
+
 - `GAP-ORPH-001` — `audit/inventory/orphans.txt`
 
 ### artifacts
@@ -312,6 +334,7 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-ART-001` | minor | document | 24 `.zip` artifacts checked into repo with no producer/consumer manifest |
 
 **Evidence:**
+
 - `GAP-ART-001` — `audit/artifacts/manifest.csv`
 
 ### documentation
@@ -321,4 +344,5 @@ _Commit_: `8fc58a9107334a3b53b69a47580df64b185d3317`  _Generated_: 2026-04-29T22
 | `GAP-DOC-README-OLD` | minor | delete-orphan | README_OLD.md retained alongside README.md — duplication risk; placeholder secret on line 186 |
 
 **Evidence:**
+
 - `GAP-DOC-README-OLD` — `README_OLD.md:186 :: ibmq_token="YOUR_API_TOKEN_HERE"`

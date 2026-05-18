@@ -21,6 +21,7 @@ quasim-own train --model slt --task text-cls --dataset imdb-mini --seed 1337 --o
 ```
 
 **Options:**
+
 - `--model` - Model type: `slt` (default), `mlp`, `cnn`
 - `--task` - Task type (e.g., `text-cls`)
 - `--dataset` - Dataset name (e.g., `imdb-mini`)
@@ -28,6 +29,7 @@ quasim-own train --model slt --task text-cls --dataset imdb-mini --seed 1337 --o
 - `--out` - Output directory (default: `runs/default`)
 
 **Example output:**
+
 ```
 Training slt on text-cls/imdb-mini with seed=1337
 ✅ Training complete!
@@ -36,6 +38,7 @@ Training slt on text-cls/imdb-mini with seed=1337
 ```
 
 **Features:**
+
 - Deterministic training with seed control
 - Automatic result logging to QGH ledger
 - Prediction hash generation for verification
@@ -50,10 +53,12 @@ quasim-own eval --run runs/default --metrics all
 ```
 
 **Options:**
+
 - `--run` - Run directory containing training results (required)
 - `--metrics` - Metrics to compute (default: `all`)
 
 **Example output:**
+
 ```
 📊 Evaluation Results for runs/default
    Model: slt
@@ -71,17 +76,20 @@ quasim-own benchmark --suite std --repeat 3 --cpu-only --report reports/own
 ```
 
 **Options:**
+
 - `--suite` - Suite type: `quick`, `std` (default), `full`
 - `--repeat` - Number of repeats (default: 3)
 - `--cpu-only` - CPU-only mode (default: True)
 - `--report` - Report output directory (default: `reports/own`)
 
 **Available suites:**
+
 - `quick` - Fast validation suite
 - `std` - Standard benchmark suite
 - `full` - Comprehensive full benchmark suite
 
 **Example output:**
+
 ```
 🚀 Running std benchmark suite with 3 repeats...
    Running in CPU-only mode
@@ -98,6 +106,7 @@ quasim-own benchmark --suite std --repeat 3 --cpu-only --report reports/own
 ```
 
 **Generated artifacts:**
+
 - CSV file with detailed results
 - JSON file with structured data
 - Markdown summary report
@@ -112,15 +121,18 @@ quasim-own export --run runs/default --format json --out exports/model.json
 ```
 
 **Options:**
+
 - `--run` - Run directory (required)
 - `--format` - Export format: `json` (default), `onnx`
 - `--out` - Output file path (required)
 
 **Supported formats:**
+
 - `json` - JSON format with model metadata
 - `onnx` - ONNX format for deployment (future)
 
 **Example output:**
+
 ```
 Exporting model from runs/default to exports/model.json (format: json)
 ✅ Exported to: exports/model.json
@@ -135,15 +147,18 @@ quasim-own modelcard --run runs/default --out exports/model_card.md
 ```
 
 **Options:**
+
 - `--run` - Run directory (required)
 - `--out` - Output model card path (required)
 
 **Example output:**
+
 ```
 ✅ Model card generated: exports/model_card.md
 ```
 
 **Model card includes:**
+
 - Model architecture details
 - Training parameters
 - Performance metrics
@@ -208,19 +223,25 @@ QuASIM-Own integrates with the QuASIM platform:
 ## Troubleshooting
 
 ### Run directory not found
+
 ```bash
 ❌ Run directory not found: runs/missing
 ```
+
 **Solution:** Train a model first to create the run directory.
 
 ### Results file missing
+
 ```bash
 ❌ Results file not found: runs/default/results.json
 ```
+
 **Solution:** Ensure training completed successfully and results were saved.
 
 ### CPU-only mode warning
+
 If you see warnings about JAX platform:
+
 ```bash
 export JAX_PLATFORM_NAME=cpu  # Linux/Mac
 $env:JAX_PLATFORM_NAME="cpu"  # Windows PowerShell
@@ -229,5 +250,6 @@ $env:JAX_PLATFORM_NAME="cpu"  # Windows PowerShell
 ## Support
 
 For issues or questions, refer to:
+
 - Main README: [../README.md](../README.md)
 - OwnAI Documentation: [ownai/ownai_overview.md](ownai/ownai_overview.md)
