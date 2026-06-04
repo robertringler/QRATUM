@@ -144,6 +144,10 @@ class TemporalEngine:
         # Calculate number of steps based on temporal resolution
         if num_steps is None:
             num_steps = max(1, int(delta_t / self.config.temporal_resolution))
+            # Bound auto-calculated steps to avoid unbounded computation and
+            # memory growth when delta_t >> temporal_resolution (e.g. a 100s
+            # delta at 1ns resolution would otherwise be 1e11 iterations).
+            num_steps = min(num_steps, self.config.max_timeline_depth)
 
         step_size = delta_t / num_steps
 
@@ -261,6 +265,9 @@ class TemporalEngine:
         # Calculate number of steps
         if num_steps is None:
             num_steps = max(1, int(abs(delta_t) / self.config.temporal_resolution))
+            # Bound auto-calculated steps to avoid unbounded computation and
+            # memory growth when |delta_t| >> temporal_resolution.
+            num_steps = min(num_steps, self.config.max_timeline_depth)
 
         step_size = abs(delta_t) / num_steps
 
