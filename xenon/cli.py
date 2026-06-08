@@ -241,11 +241,12 @@ def validate(mechanism_file: str, temperature: float):
     click.echo(f"Mechanism hash: {mech_hash[:32]}...")
 
 
-if __name__ == "__main__":
-    cli()
-"""Command-line interface for XENON simulation and visualization."""
-
-from __future__ import annotations
+# ---------------------------------------------------------------------------
+# Argparse-based entry point (``main``) used by the test suite and as an
+# alternative to the click ``cli`` group above. Both interfaces live in this
+# module: ``cli`` is the console-script entry point; ``main`` drives the
+# argparse flow below.
+# ---------------------------------------------------------------------------
 
 import argparse
 import logging

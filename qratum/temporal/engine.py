@@ -24,6 +24,14 @@ from .constants import (
 from .state import StateChain, TemporalCoordinate, TemporalState
 from .verification import TemporalProof, TemporalVerifier
 
+# Upper bound on the number of evolution steps derived automatically from
+# ``delta_t / temporal_resolution``. Without it, a modest delta at the default
+# nanosecond resolution (e.g. 100s -> 1e11 steps) would build an enormous state
+# chain and hang the engine. The final state of a step-wise evolution does not
+# depend on the step count, so bounding it preserves results while keeping the
+# computation tractable. Callers needing finer granularity may pass ``num_steps``.
+MAX_AUTO_STEPS = 10_000
+
 
 @dataclass
 class TemporalEngineConfig:
@@ -147,7 +155,7 @@ class TemporalEngine:
             # Bound auto-calculated steps to avoid unbounded computation and
             # memory growth when delta_t >> temporal_resolution (e.g. a 100s
             # delta at 1ns resolution would otherwise be 1e11 iterations).
-            num_steps = min(num_steps, self.config.max_timeline_depth)
+            num_steps = min(num_steps, MAX_AUTO_STEPS)
 
         step_size = delta_t / num_steps
 
@@ -267,7 +275,7 @@ class TemporalEngine:
             num_steps = max(1, int(abs(delta_t) / self.config.temporal_resolution))
             # Bound auto-calculated steps to avoid unbounded computation and
             # memory growth when |delta_t| >> temporal_resolution.
-            num_steps = min(num_steps, self.config.max_timeline_depth)
+            num_steps = min(num_steps, MAX_AUTO_STEPS)
 
         step_size = abs(delta_t) / num_steps
 
