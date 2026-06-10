@@ -362,9 +362,16 @@ class SequenceAnalyzer:
                     freq = count / total
                     entropy -= freq * np.log2(freq + 1e-10)
 
-                # Normalize by maximum entropy (log2(20) for 20 amino acids)
-                max_entropy = np.log2(20)
-                conservation[pos] = 1.0 - (entropy / max_entropy)
+                # Normalize by the maximum entropy attainable for the observed
+                # number of residues (capped at the 20 amino acids). Using the
+                # column occupancy rather than a fixed log2(20) yields a proper
+                # relative-conservation score for shallow alignments: a column
+                # of all-distinct residues scores ~0, all-identical scores 1.
+                n_possible = min(20, total)
+                max_entropy = np.log2(n_possible) if n_possible > 1 else 0.0
+                conservation[pos] = (
+                    1.0 - (entropy / max_entropy) if max_entropy > 0 else 1.0
+                )
 
         return conservation
 

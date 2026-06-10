@@ -433,6 +433,13 @@ const model{i} = viewer.addModel({json.dumps(struct['pdb_data'])}, 'pdb');
             for style in struct["styles"]:
                 js_code += f"viewer.setStyle({{}}, {json.dumps(style)});\n"
 
+        # Apply standalone (selection, style) pairs added via add_style().
+        for selection, style in self._styles:
+            js_code += (
+                f"viewer.setStyle({json.dumps(selection.to_3dmol())}, "
+                f"{json.dumps(style.to_3dmol())});\n"
+            )
+
         # Add surfaces
         for surface_spec in state["surfaces"]:
             js_code += f"""
