@@ -29,21 +29,42 @@ class MolecularState:
     Attributes:
         name: Unique identifier for this state
         molecule: Molecule name (e.g., 'EGFR', 'ATP', 'RAS')
-        properties: State-specific properties (phosphorylation, binding, conformation)
-        concentration: Concentration in nM (optional, for simulation)
         free_energy: Gibbs free energy in kcal/mol (optional, for thermodynamics)
+        concentration: Concentration in nM (optional, for simulation)
+        properties: State-specific properties (phosphorylation, binding, conformation)
+
+    Backward-compatibility aliases (read-only, for the visualization adapters and
+    legacy callers): ``state_id`` -> ``name``, ``protein_name`` -> ``molecule``,
+    ``metadata`` -> ``properties``. The positional field order
+    ``(name, molecule, free_energy, concentration)`` is preserved so legacy
+    positional construction keeps working.
     """
 
     name: str
     molecule: str
-    properties: dict[str, Any] = field(default_factory=dict)
-    concentration: Optional[float] = None
     free_energy: Optional[float] = None
+    concentration: Optional[float] = None
+    properties: dict[str, Any] = field(default_factory=dict)
 
     def __hash__(self) -> int:
         """Hash based on name for use in sets/dicts."""
 
         return hash(self.name)
+
+    @property
+    def state_id(self) -> str:
+        """Backward-compatible alias for :attr:`name`."""
+        return self.name
+
+    @property
+    def protein_name(self) -> str:
+        """Backward-compatible alias for :attr:`molecule`."""
+        return self.molecule
+
+    @property
+    def metadata(self) -> dict[str, Any]:
+        """Backward-compatible alias for :attr:`properties`."""
+        return self.properties
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
@@ -67,19 +88,37 @@ class Transition:
         source: Source state
         target: Target state
         rate_constant: Forward rate constant (1/s or 1/(M*s))
+        delta_g: Reaction free-energy change in kcal/mol (optional)
         activation_energy: Activation energy in kcal/mol
         reversible: Whether transition is reversible
         reverse_rate: Reverse rate constant if reversible
         stoichiometry: Stoichiometric coefficients for reactants/products
+
+    Backward-compatibility aliases (read-only): ``source_state`` -> ``source``,
+    ``target_state`` -> ``target``. The positional field order
+    ``(source, target, rate_constant, delta_g, activation_energy)`` is preserved
+    for legacy positional construction.
     """
 
     source: str
     target: str
     rate_constant: float
+    delta_g: Optional[float] = None
     activation_energy: Optional[float] = None
     reversible: bool = False
     reverse_rate: Optional[float] = None
     stoichiometry: dict[str, int] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    @property
+    def source_state(self) -> str:
+        """Backward-compatible alias for :attr:`source`."""
+        return self.source
+
+    @property
+    def target_state(self) -> str:
+        """Backward-compatible alias for :attr:`target`."""
+        return self.target
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
@@ -88,10 +127,12 @@ class Transition:
             "source": self.source,
             "target": self.target,
             "rate_constant": self.rate_constant,
+            "delta_g": self.delta_g,
             "activation_energy": self.activation_energy,
             "reversible": self.reversible,
             "reverse_rate": self.reverse_rate,
             "stoichiometry": self.stoichiometry,
+            "metadata": self.metadata,
         }
 
 
@@ -109,11 +150,20 @@ class BioMechanism:
         confidence_intervals: Parameter uncertainty estimates
     """
 
-    def __init__(self, name: str) -> None:
+    def __init__(
+        self,
+        name: str,
+        states: Optional[list[MolecularState]] = None,
+        transitions: Optional[list[Transition]] = None,
+        evidence_score: Optional[float] = None,
+    ) -> None:
         """Initialize mechanism.
 
         Args:
             name: Unique mechanism identifier
+            states: Optional initial molecular states (legacy convenience form)
+            transitions: Optional initial transitions (legacy convenience form)
+            evidence_score: Optional confidence score in [0, 1] (defaults to 1.0)
         """
 
         self.name = name
@@ -122,10 +172,46 @@ class BioMechanism:
         else:
             self.graph = None
         self.posterior = 1.0
+        self.evidence_score = evidence_score if evidence_score is not None else 1.0
         self.provenance: list[str] = []
         self.confidence_intervals: dict[str, tuple[float, float]] = {}
         self._states: dict[str, MolecularState] = {}
         self._transitions: list[Transition] = []
+
+        for state in states or []:
+            self.add_state(state)
+        # The legacy bulk form stores transitions permissively (endpoints are
+        # not required to be registered states), unlike the strict incremental
+        # add_transition() used by the canonical builder flow.
+        for transition in transitions or []:
+            self._transitions.append(transition)
+            if self.graph is not None:
+                self.graph.add_edge(
+                    transition.source, transition.target, transition=transition
+                )
+
+    @property
+    def mechanism_id(self) -> str:
+        """Backward-compatible alias for :attr:`name`."""
+        return self.name
+
+    @property
+    def states(self) -> list[MolecularState]:
+        """All molecular states in insertion order."""
+        return list(self._states.values())
+
+    @property
+    def transitions(self) -> list[Transition]:
+        """All transitions in insertion order."""
+        return list(self._transitions)
+
+    def get_transitions_to(self, state_id: str) -> list[Transition]:
+        """Return transitions whose target is ``state_id``."""
+        return [t for t in self._transitions if t.target == state_id]
+
+    def get_transitions_from(self, state_id: str) -> list[Transition]:
+        """Return transitions whose source is ``state_id``."""
+        return [t for t in self._transitions if t.source == state_id]
 
     def add_state(self, state: MolecularState) -> None:
         """Add a molecular state to the mechanism."""
