@@ -46,7 +46,9 @@ class EffectiveVelocity:
     mechanism: str
     computational_delta_t: float
     physical_delta_t: float
-    effective_c_multiple: float
+    # Derived in __post_init__ from the two deltas; defaulted so callers need
+    # not supply it.
+    effective_c_multiple: float = 0.0
     operations_executed: int = 0
     distance_equivalent: float = 0.0
 

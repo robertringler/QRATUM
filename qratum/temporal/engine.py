@@ -219,6 +219,7 @@ class TemporalEngine:
             final_state=final_state,
             chain=chain,
             operation="forward",
+            computational_delta_t=delta_t,
         )
 
         # Add performance metrics

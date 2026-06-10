@@ -188,6 +188,7 @@ class TemporalVerifier:
         final_state: TemporalState,
         chain: StateChain,
         operation: str,
+        computational_delta_t: float | None = None,
     ) -> TemporalProof:
         """
         Generate cryptographic proof for a temporal computation.
@@ -197,6 +198,9 @@ class TemporalVerifier:
             final_state: Ending state
             chain: Complete state chain
             operation: Type of operation (forward, backward, branch, converge)
+            computational_delta_t: Exact requested computational time delta. When
+                provided it is reported verbatim, avoiding the floating-point
+                drift of summing per-step sizes over the state chain.
 
         Returns:
             Temporal proof object
@@ -210,9 +214,12 @@ class TemporalVerifier:
         ]
 
         # Calculate time deltas
-        comp_delta_t = (
-            final_state.coordinate.computational_t - initial_state.coordinate.computational_t
-        )
+        if computational_delta_t is not None:
+            comp_delta_t = computational_delta_t
+        else:
+            comp_delta_t = (
+                final_state.coordinate.computational_t - initial_state.coordinate.computational_t
+            )
         phys_delta_t = final_state.coordinate.physical_t - initial_state.coordinate.physical_t
 
         proof = TemporalProof(
