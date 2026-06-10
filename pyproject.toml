@@ -152,7 +152,9 @@ testpaths = ["tests"]
 # Put the repository root on sys.path so first-party top-level packages
 # (e.g. quantum.python, qunimbus.synthetic, aion.*, benchmarks.*) import
 # correctly during collection regardless of the invocation directory.
-pythonpath = ["."]
+# tools/verify hosts the standalone quasim_verify package exercised by
+# tests/verify.
+pythonpath = [".", "tools/verify"]
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"

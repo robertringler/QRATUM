@@ -8,6 +8,11 @@ import numpy as np
 import pandas as pd
 import pytest
 import yaml
+
+# quasim_verify (tools/verify) requires pydantic; skip rather than error when
+# the optional dependency is not installed.
+pytest.importorskip("pydantic")
+
 from quasim_verify.checks import (
     audit_chain,
     comp_artifacts,
