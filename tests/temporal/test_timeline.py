@@ -150,13 +150,14 @@ class TestTimelineManager:
         t1 = manager.create_timeline(timeline_id="t1")
         t2 = manager.create_timeline(timeline_id="t2")
 
-        # Add final states
+        # Add a final state to each fresh timeline. As the first state in an
+        # empty timeline it must be an initial state (depth 0, no parent_hash).
         coord1 = TemporalCoordinate(
             state_hash="",
             timeline_id="t1",
             computational_t=100.0,
             physical_t=1.0,
-            depth=10,
+            depth=0,
         )
         state1 = TemporalState(coordinate=coord1, data=10.0)
         state1.coordinate.state_hash = state1.compute_hash()
@@ -167,7 +168,7 @@ class TestTimelineManager:
             timeline_id="t2",
             computational_t=100.0,
             physical_t=1.0,
-            depth=10,
+            depth=0,
         )
         state2 = TemporalState(coordinate=coord2, data=20.0)
         state2.coordinate.state_hash = state2.compute_hash()
@@ -199,7 +200,7 @@ class TestTimelineManager:
                 timeline_id=f"t{i}",
                 computational_t=100.0,
                 physical_t=1.0,
-                depth=10,
+                depth=0,
             )
             state = TemporalState(coordinate=coord, data=float(i * 10))
             state.coordinate.state_hash = state.compute_hash()

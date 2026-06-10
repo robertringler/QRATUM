@@ -441,11 +441,11 @@ class TemporalEngine:
         if timeline_id is None:
             timeline_id = f"converged_{uuid.uuid4().hex[:8]}"
 
-        # Extract state data from all branches
-        branch_states = [state.data for state in branches.values()]
-
-        # Apply convergence function
-        converged_data = convergence_fn(branch_states)
+        # Apply the convergence function to the branch states. Per the
+        # documented contract the function receives the TemporalState objects
+        # (e.g. ``lambda states: sum(s.data for s in states) / len(states)``),
+        # not pre-extracted data values.
+        converged_data = convergence_fn(list(branches.values()))
 
         # Create converged state
         coord = TemporalCoordinate(

@@ -51,7 +51,9 @@ class TestFTLComputation:
             delta_t=delta_t,
         )
 
-        assert initial_state.data == pytest.approx(0.0, rel=1e-5)
+        # abs (not rel) tolerance: a relative tolerance against 0.0 collapses to
+        # ~1e-12 and cannot express the intended 1e-5 bound.
+        assert initial_state.data == pytest.approx(0.0, abs=1e-5)
         assert velocity.mechanism == FTLMechanism.INVERSE_CAUSALITY
 
     def test_parallel_reality_search(self):
