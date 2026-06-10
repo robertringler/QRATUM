@@ -181,8 +181,13 @@ class InformationEngine:
         # Stack data
         joint_data = np.column_stack([data_x.flatten(), data_y.flatten()])
 
-        # 2D histogram
-        hist, _, _ = np.histogram2d(joint_data[:, 0], joint_data[:, 1], bins="auto", density=True)
+        # 2D histogram. np.histogram2d (unlike np.histogram) does not accept
+        # bins="auto", so derive per-axis automatic bin edges explicitly.
+        x_edges = np.histogram_bin_edges(joint_data[:, 0], bins="auto")
+        y_edges = np.histogram_bin_edges(joint_data[:, 1], bins="auto")
+        hist, _, _ = np.histogram2d(
+            joint_data[:, 0], joint_data[:, 1], bins=[x_edges, y_edges], density=True
+        )
         hist = hist[hist > 0]
         hist = hist / np.sum(hist)
 
