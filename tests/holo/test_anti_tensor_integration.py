@@ -199,15 +199,7 @@ class TestStateVectorIntegration:
 
     def test_statevector_compress_basic(self):
         """Test StateVector.compress() basic functionality."""
-        import importlib.util
-
-        spec = importlib.util.spec_from_file_location(
-            "statevector", "/home/runner/work/QRATUM/QRATUM/qratum_ai_platform/core/statevector.py"
-        )
-        statevector = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(statevector)
-
-        StateVector = statevector.StateVector
+        from qratum.core.statevector import StateVector
 
         sv = StateVector.random_state(8, seed=42)
         compressed = sv.compress(fidelity=0.995)
@@ -218,15 +210,7 @@ class TestStateVectorIntegration:
 
     def test_statevector_compress_decompress_roundtrip(self):
         """Test StateVector compress -> from_compressed roundtrip."""
-        import importlib.util
-
-        spec = importlib.util.spec_from_file_location(
-            "statevector", "/home/runner/work/QRATUM/QRATUM/qratum_ai_platform/core/statevector.py"
-        )
-        statevector = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(statevector)
-
-        StateVector = statevector.StateVector
+        from qratum.core.statevector import StateVector
 
         sv = StateVector.random_state(10, seed=123)
         original_data = sv.data.copy()
@@ -245,15 +229,7 @@ class TestStateVectorIntegration:
 
     def test_statevector_different_fidelities(self):
         """Test StateVector compression with different fidelity targets."""
-        import importlib.util
-
-        spec = importlib.util.spec_from_file_location(
-            "statevector", "/home/runner/work/QRATUM/QRATUM/qratum_ai_platform/core/statevector.py"
-        )
-        statevector = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(statevector)
-
-        StateVector = statevector.StateVector
+        from qratum.core.statevector import StateVector
 
         sv = StateVector.random_state(8, seed=456)
 
@@ -263,15 +239,7 @@ class TestStateVectorIntegration:
 
     def test_compressed_statevector_decompress_method(self):
         """Test CompressedStateVector.decompress() method."""
-        import importlib.util
-
-        spec = importlib.util.spec_from_file_location(
-            "statevector", "/home/runner/work/QRATUM/QRATUM/qratum_ai_platform/core/statevector.py"
-        )
-        statevector = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(statevector)
-
-        StateVector = statevector.StateVector
+        from qratum.core.statevector import StateVector
 
         sv = StateVector.random_state(8, seed=789)
         compressed = sv.compress(fidelity=0.99)

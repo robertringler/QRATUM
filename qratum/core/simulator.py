@@ -192,40 +192,23 @@ class Simulator:
         """
 
         n = state.num_qubits
-        dim = 2**n
+        k = len(qubits)
 
-        # For single-qubit gates
-        if len(qubits) == 1:
-            q = qubits[0]
-            # Build full gate matrix using Kronecker products
-            gate_full = np.eye(1, dtype=complex)
-            for i in range(n):
-                if i == q:
-                    gate_full = np.kron(gate_full, matrix)
-                else:
-                    gate_full = np.kron(gate_full, np.eye(2, dtype=complex))
-
-            # Apply gate
-            state.data = gate_full @ state.data
-
-        # For two-qubit gates
-        elif len(qubits) == 2:
-            q0, q1 = sorted(qubits)
-            # Simplified two-qubit gate application
-            # Full implementation would use tensor product and permutation
-            # For now, apply to full state space (works for small circuits)
-            if q0 == 0 and q1 == 1 and n == 2:
-                state.data = matrix @ state.data
-            else:
-                # General case: build full operator (simplified)
-                # This is a placeholder for more efficient tensor contraction
-                pass
-
-        # For three-qubit gates
-        elif len(qubits) == 3:
-            # Simplified three-qubit gate application
-            if n == 3:
-                state.data = matrix @ state.data
+        # Apply the gate by tensor contraction over the targeted qubit axes.
+        # This is exact for any k-qubit gate on any (ordered) qubit indices and
+        # avoids materializing the full 2^n x 2^n operator. Qubit i maps to
+        # tensor axis i (qubit 0 = most significant bit of the basis index),
+        # and the gate's qubit order is preserved (no sorting), so directional
+        # gates such as CNOT keep their control/target orientation.
+        gate_tensor = np.asarray(matrix, dtype=complex).reshape([2] * (2 * k))
+        state_tensor = state.data.reshape([2] * n)
+        state_tensor = np.tensordot(
+            gate_tensor, state_tensor, axes=(list(range(k, 2 * k)), list(qubits))
+        )
+        # tensordot places the gate's k output axes first; restore them to
+        # their original qubit positions.
+        state_tensor = np.moveaxis(state_tensor, list(range(k)), list(qubits))
+        state.data = np.ascontiguousarray(state_tensor.reshape(-1))
 
         return state
 
