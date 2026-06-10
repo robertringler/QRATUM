@@ -7,7 +7,14 @@ combined with symbolic latent features.
 
 import numpy as np
 from numpy.typing import NDArray
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+
+try:
+    from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+
+    _HAS_SKLEARN = True
+except ImportError:  # pragma: no cover - optional dependency
+    RandomForestClassifier = RandomForestRegressor = None  # type: ignore[assignment,misc]
+    _HAS_SKLEARN = False
 
 from quasim.ownai.determinism import set_seed
 from quasim.ownai.revultra.feats import (
@@ -51,6 +58,12 @@ class SymbolicLatentTransformer:
         self.use_symbolic = use_symbolic
 
         set_seed(self.seed)
+
+        if not _HAS_SKLEARN:
+            raise ImportError(
+                "scikit-learn is required for SymbolicLatentTransformer; install it "
+                "with 'pip install quasim[ownai]'"
+            )
 
         # Determine if classification or regression
         if "cls" in task:

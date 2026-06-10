@@ -2,7 +2,14 @@
 
 import numpy as np
 from numpy.typing import NDArray
-from sklearn.ensemble import RandomForestClassifier
+
+try:
+    from sklearn.ensemble import RandomForestClassifier
+
+    _HAS_SKLEARN = True
+except ImportError:  # pragma: no cover - optional dependency
+    RandomForestClassifier = None  # type: ignore[assignment,misc]
+    _HAS_SKLEARN = False
 
 from quasim.ownai.determinism import set_seed
 
@@ -23,6 +30,12 @@ class TinyCNN:
         self.seed = seed
 
         set_seed(self.seed)
+
+        if not _HAS_SKLEARN:
+            raise ImportError(
+                "scikit-learn is required for TinyCNN; install it with "
+                "'pip install quasim[ownai]'"
+            )
 
         # Use RandomForest as a simple baseline
         self.model = RandomForestClassifier(
