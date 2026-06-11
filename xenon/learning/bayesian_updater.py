@@ -6,11 +6,12 @@ P(mechanism | experiment) ∝ P(experiment | mechanism) × P(mechanism)
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional
 
 import numpy as np
 
 from ..core.mechanism import BioMechanism
+from .forward_inference import gaussian_log_likelihood, simulate_mechanism_meanfield
 
 
 class ExperimentResult:
@@ -31,12 +32,19 @@ class ExperimentResult:
         uncertainties: Optional[dict[str, float]] = None,
         conditions: Optional[dict[str, Any]] = None,
         metadata: Optional[dict[str, Any]] = None,
+        initial_conditions: Optional[dict[str, float]] = None,
+        time: Optional[float] = None,
     ):
         self.experiment_type = experiment_type
         self.observations = observations
         self.uncertainties = uncertainties or {}
         self.conditions = conditions or {}
         self.metadata = metadata or {}
+        # When provided, the likelihood forward-simulates the mechanism from
+        # these initial concentrations to ``time`` to PREDICT the observations,
+        # rather than comparing against statically stored concentrations.
+        self.initial_conditions = initial_conditions
+        self.time = time
 
 
 class BayesianUpdater:
@@ -152,10 +160,32 @@ class BayesianUpdater:
     ) -> float:
         """Likelihood for concentration measurements.
 
-        Uses Gaussian likelihood: exp(-chi^2 / 2)
-        where chi^2 = sum((observed - predicted)^2 / uncertainty^2)
+        Preferred path (real inference): when the experiment specifies
+        ``initial_conditions`` (and optionally ``time``), the mechanism is
+        forward-simulated from those conditions to predict the observed species,
+        and the prediction is scored with a Gaussian likelihood. This is the
+        substance of XENON's mechanism inference - the model is run, not read.
+
+        Legacy fallback: if no initial conditions are given, compare against the
+        mechanism's stored concentrations (preserves prior behaviour for callers
+        that have not supplied an experimental protocol).
         """
 
+        if experiment.initial_conditions is not None and mechanism.transitions:
+            t = experiment.time if experiment.time is not None else 1.0
+            try:
+                predicted = simulate_mechanism_meanfield(
+                    mechanism, experiment.initial_conditions, t
+                )
+            except Exception:
+                predicted = {}
+            if predicted:
+                ll = gaussian_log_likelihood(
+                    predicted, experiment.observations, experiment.uncertainties
+                )
+                return max(float(np.exp(ll / max(1.0, self.likelihood_scale))), 1e-10)
+
+        # --- legacy fallback: score against stored concentrations ---
         chi_squared = 0.0
         n_measurements = 0
 
