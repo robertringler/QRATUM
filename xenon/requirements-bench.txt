@@ -1,0 +1,9 @@
+# Optional heavy dependencies for the Phase 4 head-to-head benchmarks
+# (xenon/benchmarks, xenon/tests/test_benchmarks.py, xenon/tests/test_sbml_io.py).
+# Not required for the core library or its main test suite - the benchmark tests
+# importorskip these and are skipped when they are absent.
+-r requirements.txt
+
+python-libsbml>=5.20    # SBML import/export (xenon.learning.sbml_io)
+libroadrunner>=2.7      # gold-standard SBML ODE engine (simulation benchmark)
+pyabc>=0.12             # ABC-SMC reference for the inference benchmark
