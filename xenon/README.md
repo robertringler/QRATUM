@@ -1,41 +1,87 @@
-# XENON: Xenobiotic Execution Network for Organismal Neurosymbolic Reasoning
+# XENON: a mechanism-graph workbench for Bayesian inference of biochemical networks
 
-**A post-GPU biological intelligence platform that replaces tensor-based approaches with mechanism-based continuous learning.**
+**XENON builds a biochemical mechanism once — as a directed graph of molecular states and
+mass-action transitions — then forward-simulates it, infers its kinetic parameters and topology
+from experimental data with Bayesian methods, and proposes the next most-informative experiment.
+One mechanism object drives simulate → infer → design, with full provenance.**
 
-## Overview
+## What is actually validated (evidence, not marketing)
 
-XENON represents a paradigm shift in biological intelligence:
+XENON's leadership claim is deliberately narrow and benchmark-backed
+(see [`benchmarks/BENCHMARK_REPORT.md`](benchmarks/BENCHMARK_REPORT.md)):
 
-- **Computational Primitive**: Biological mechanism DAGs (not tensors)
-- **Learning**: Sequential Bayesian updating (not gradient descent)
-- **Value**: Mechanistic explanations with provenance (not static weights)
-- **Moat**: Non-exportable experimental history (not replicable datasets)
+- **Forward model** matches the gold-standard SBML ODE engine (libRoadRunner) to a max relative
+  error of **1.7 × 10⁻⁶** on the benchmark network.
+- **Bayesian parameter recovery** of mass-action rate constants is **~25× more accurate than the
+  pyABC ABC-SMC reference** (0.17 % vs ~4.8 % mean relative error) on the same data, because the
+  mean-field likelihood is analytically tractable.
+- **Closed-loop active experiment design** reaches a tighter posterior in fewer experiments than
+  random selection.
+
+These results — and only these — are what XENON claims. The previous "post-GPU / quantum /
+biological intelligence platform" framing was not supported by the code and has been removed. The
+molecular-dynamics and genome-sequencing modules in this tree are *not* part of this claim and are
+not competitive with OpenMM/GROMACS or GATK/DeepVariant respectively.
+
+### Scope / honest boundaries
+- Validated for **unimolecular (mass-action) networks of small biochemical systems** where the
+  mean of the chemical master equation is tractable. For low-copy-number or strongly nonlinear
+  regimes, use the stochastic Gillespie path (`xenon.simulation.gillespie`) with an ABC backend.
+- "Sequential Bayesian updating", "mechanistic explanations with provenance", and the
+  mechanism-DAG primitive are implemented and tested; "non-exportable experimental history" is a
+  provenance log, not a technical capability.
 
 ## Installation
 
-### Dependencies
-
 ```bash
-pip install numpy>=1.21 scipy>=1.7 click>=8.0
+pip install numpy>=1.24 scipy>=1.10        # core
+pip install networkx>=3.0                   # optional: graph backing
+# optional, for SBML interop + head-to-head benchmarks:
+pip install -r xenon/requirements-bench.txt # python-libsbml, libroadrunner, pyabc
 ```
 
-Optional (recommended):
-```bash
-pip install networkx>=2.6
-```
-
-### Install XENON
+### Install XENON (from this repository)
 
 ```bash
-# From source
-git clone https://github.com/robertringler/Qubic.git
-cd Qubic
+git clone https://github.com/robertringler/qratum.git
+cd qratum
 pip install -e .
 ```
 
 ## Quick Start
 
-### Python API
+### Bayesian mechanism inference (the validated workflow)
+
+```python
+from xenon.learning.forward_inference import (
+    MechanismModel, Observation, metropolis_infer, model_selection,
+)
+
+# A candidate topology A -> B -> C; the rate constants are the unknowns.
+model = MechanismModel(species=["A", "B", "C"], edges=[("A", "B"), ("B", "C")])
+
+# Time-course observations (initial conditions, time, measured concentrations).
+data = [
+    Observation(initial={"A": 100.0, "B": 0.0, "C": 0.0}, time=2.0,
+                observed={"A": 20.2, "B": 55.5, "C": 24.3},
+                uncertainties={"A": 2.0, "B": 2.0, "C": 2.0}),
+    # ... more conditions/times ...
+]
+
+# Infer rate constants (exact-likelihood Metropolis MCMC).
+result = metropolis_infer(model, data, seed=0)
+print(result.posterior_mean, result.credible_interval(0.95))
+
+# Rank competing topologies by Bayesian model evidence.
+candidates = [model, MechanismModel(["A", "B", "C"], [("A", "B"), ("A", "C")])]
+for m, log_evidence, posterior in model_selection(candidates, data, seed=0):
+    print(m.edges, posterior)
+```
+
+Closed-loop active experiment design lives in `xenon.learning.active_design`; SBML
+import/export in `xenon.learning.sbml_io`.
+
+### Python API (legacy mechanism construction)
 
 ```python
 from xenon import XENONRuntime, BioMechanism, MolecularState, Transition
