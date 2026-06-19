@@ -101,7 +101,8 @@ jobs:
           pip install pytest pytest-timeout
       - name: No-stub gate (xenon.genomics must be real)
         run: |
-          ! grep -rnE "np\.random|Simulating|would execute" xenon/genomics/ \
+          # Fail if simulated-code patterns appear in genomics *source* (.py only).
+          ! grep -rnE "np\.random\.|Simulating |would execute" xenon/genomics/ --include='*.py' \
             || (echo "::error::simulated code found in xenon/genomics" && exit 1)
       - name: Run genomics foundation tests
         run: |

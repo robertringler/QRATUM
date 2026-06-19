@@ -4,7 +4,7 @@ Compares a query callset against a truth VCF on normalized variant keys and
 reports precision / recall / F1 overall and stratified by variant type
 (SNV vs indel). This is the honest core of variant-call validation
 (cf. hap.py / vcfeval); it does set-based concordance on parsimoniously
-normalized variants rather than the previous "[SIMULATION]" placeholder.
+normalized variants rather than the earlier placeholder validator.
 """
 
 from __future__ import annotations

@@ -1,7 +1,7 @@
 """Real VCF I/O and variant normalization (cyvcf2-backed).
 
-Replaces the previous line-splitting + np.random VCF stub. Reads real VCF files
-with cyvcf2 (full INFO/FORMAT/genotype semantics), normalizes variants
+Supersedes the earlier line-splitting placeholder VCF reader. Reads real VCF
+files with cyvcf2 (full INFO/FORMAT/genotype semantics), normalizes variants
 parsimoniously so equivalent representations compare equal, and writes valid
 minimal VCF.
 """

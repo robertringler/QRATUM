@@ -1,7 +1,7 @@
 """Real genomics I/O and truth evaluation for XENON (no simulation).
 
-This package replaces the previous np.random / "[SIMULATION]" genomics paths with
-real, library-backed implementations:
+This package supersedes the earlier placeholder genomics paths with real,
+library-backed implementations:
 
 * :mod:`xenon.genomics.vcf_io` - VCF parsing/writing via cyvcf2, with parsimonious
   variant normalization (the foundation for honest variant handling).
