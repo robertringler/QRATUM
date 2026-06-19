@@ -101,10 +101,15 @@ jobs:
           pip install pytest pytest-timeout
       - name: No-stub gate (xenon.genomics must be real)
         run: |
-          # Fail if simulated-code patterns appear in genomics *source* (.py only).
-          ! grep -rnE "np\.random\.|Simulating |would execute" xenon/genomics/ --include='*.py' \
-            || (echo "::error::simulated code found in xenon/genomics" && exit 1)
-      - name: Run genomics foundation tests
+          # Fail on simulated-data patterns in genomics *source*: the legacy
+          # global-RNG fabrication calls the old stubs used to invent variants/
+          # frequencies, and "would execute"/"Simulating" placeholders. An
+          # explicitly-seeded np.random.default_rng (e.g. for reproducible
+          # train/test splits) is legitimate and allowed.
+          ! grep -rnE "np\.random\.(choice|beta|randint|uniform|normal|rand|seed)|Simulating |would execute" \
+            xenon/genomics/ --include='*.py' \
+            || (echo "::error::simulated/fabricated code found in xenon/genomics" && exit 1)
+      - name: Run genomics foundation + interpretation tests
         run: |
-          pytest xenon/tests/test_genomics_vcf.py \
-            --import-mode=importlib -p no:cacheprovider -o addopts="" --timeout=120 -q
+          pytest xenon/tests/test_genomics_vcf.py xenon/tests/test_genomics_interpretation.py \
+            --import-mode=importlib -p no:cacheprovider -o addopts="" --timeout=180 -q
