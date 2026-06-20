@@ -2,8 +2,18 @@
 
 **QRATUM Research Series — Applied Domain Analysis**
 
-*Status:* Engineering specification, pre-M0 design
-*Companion volumes:* POC-MONO-1.0 (architecture), POC-MONO-2.0 (theory), POC-MONO-3.0 (complexity)
+*Status:* Engineering specification, pre-M0 design — **revised per POC-RQ-1.0 simulation findings**
+*Companion volumes:* POC-MONO-1.0 (architecture), POC-MONO-2.0 (theory), POC-MONO-3.0 (complexity), POC-RQ-1.0 (simulation findings)
+
+> **Revision note (POC-RQ-1.0).** Pre-M0 simulation (see `docs/POC_RQ_FINDINGS.md`,
+> code in `poc_sim/`) corrected three items in the original draft of this
+> document. They are marked **[CORRECTED]** inline below. Summary: (1) the
+> reservoir benchmark BM-R1 changed from NARMA-10 to memory capacity, because a
+> linear reservoir cannot solve the nonlinear NARMA-10 task even at fp64;
+> (2) the MIMO convergence-limit figure κ=77 was a ~8× error (true Richardson
+> limit κ≈9), and BM-M1's primary algorithm must be Chebyshev-accelerated, not
+> the simple resolvent; (3) the evidence-based application priority order is now
+> **radar → MIMO → reservoir**, not the original reservoir → radar → MIMO.
 
 ---
 
@@ -21,7 +31,7 @@ This document translates that envelope into concrete engineering specifications 
 4. A hardware phase map (which milestone enables what)
 5. An honest feasibility assessment naming conditions of failure
 
-The three domains in priority order: **(1) Linear Reservoir Computing**, **(2) Radar Direction-of-Arrival via MUSIC**, **(3) Massive MIMO Zero-Forcing Precoding**.
+The three domains in **evidence-based** priority order **[CORRECTED per POC-RQ-1.0]**: **(1) Radar Direction-of-Arrival via MUSIC** (precision-robust; the lead application), **(2) Massive MIMO Zero-Forcing Precoding** (viable with Chebyshev acceleration), **(3) Linear Reservoir Computing** (structurally elegant but the most precision-handicapped). The sections below retain their original numbering (reservoir first) for cross-reference continuity; the priority reordering is documented in POC-RQ-1.0.
 
 A fourth section treats **anti-pattern domains** — where the envelope fails and the POC should not be used — because knowing where not to build is as important as knowing where to build.
 
@@ -94,22 +104,51 @@ class ReservoirOperatorContract(BaseContract):
     steps_per_epoch: int                   # reuse before recalibration check
 ```
 
-### 1.5 Benchmark program: BM-R1 (NARMA-10 time-series identification)
+### 1.5 Benchmark program: BM-R1 (linear memory capacity) **[CORRECTED per POC-RQ-1.0]**
 
-**Task.** Identify the 10th-order Nonlinear Autoregressive Moving Average (NARMA-10) system:
-$$y(t+1) = 0.3\,y(t) + 0.05\,y(t)\sum_{i=0}^{9}y(t-i) + 1.5\,u(t-9)\,u(t) + 0.1$$
-where $u(t) \sim \text{Uniform}[0, 0.5]$. This is a standard reservoir computing benchmark with a known classical baseline.
+> **Correction.** The original BM-R1 used NARMA-10 with a target NMSE ≤ 0.03.
+> Simulation (POC-RQ-1.0) showed this is invalid: NARMA-10 is a *nonlinear*
+> task (it contains the product term $0.05\,y(t)\sum y(t{-}i)$ and the bilinear
+> input $1.5\,u(t{-}9)u(t)$) that a *linear* reservoir — the POC's native
+> f=identity mode — cannot solve even at fp64 (measured NMSE ≈ 0.29–0.32, an
+> order of magnitude above 0.03). The 0.01–0.02 literature figures are for
+> *tanh* reservoirs. The correct benchmark is the task linear reservoirs are
+> provably suited for: short-term memory capacity. NARMA-10 is retained below
+> only as a *negative control* demonstrating the linear/nonlinear boundary.
 
-**Data model.** Input: $10^4$ time steps, $u(t)$ sampled uniformly. Training split: first 5,000 steps (discard first 200 as washout). Test split: remaining 4,800 steps. This is entirely synthetic — reproducible with `numpy.random.seed(42)`.
+**Task.** Measure the short-term memory capacity (Jaeger 2002) of the POC's
+linear reservoir loop:
+$$\mathrm{MC} = \sum_{k\ge 1}\mathrm{corr}^2\bigl(\hat y_k(t),\,u(t{-}k)\bigr),\qquad \mathrm{MC}\le n\ \text{(linear reservoir bound)},$$
+where $\hat y_k$ is the best linear reconstruction of the input delayed by $k$
+steps, trained by ridge regression on the collected reservoir states.
 
-**POC execution.** Reservoir size $n = 64$. $W_{\text{res}}$ initialized as random Gaussian $\mathcal{N}(0, 1/n)$, scaled so $\rho(W_{\text{res}}) = 0.9$. $\alpha = 0.3$. $W_{\text{in}} \in \mathbb{R}^{64 \times 1}$ random. $W_{\text{out}}$ trained by ridge regression on the collected reservoir states.
+**Data model.** I.i.d. input $u(t)\sim\text{Uniform}[-0.5,0.5]$, $6000$ steps
+(200 washout, 3000 train, remainder test), probe delays up to $2n$. Synthetic,
+seeded, reproducible. (Negative control: the same reservoir on NARMA-10, which
+must fail — confirming the linear/nonlinear boundary.)
+
+**POC execution.** Reservoir size $n=64$, $W_{\text{res}}$ random Gaussian
+scaled to $\rho=0.9$, no leak ($\alpha=1$, maximal memory), $W_{\text{in}}$
+random. Reservoir states read out at the POC precision $P$ bits per transit.
 
 **Success criteria.**
-- Primary: NMSE (normalized mean squared error) $\leq 0.03$ (classical software reservoir at $n=64$ achieves $\approx 0.01$–$0.02$; the POC is allowed $3\times$ degradation from precision loss)
-- Secondary: energy per time step $\leq 50$ nJ (vs. $\approx 200$ nJ for GPU INT8 at comparable n)
-- Tertiary: the execution log must pass statistical replay at 99% confidence
+- Primary: at $n=64$, $P=6$ bits, retain $\ge 30\%$ of the fp64 memory
+  capacity (simulation baseline: fp64 MC $\approx 39$, i.e. MC/n $\approx 0.62$;
+  POC P=6 measured MC $\approx 13.6$, i.e. **35% retained** — the target
+  codifies this measured floor). A retention below 30% indicates the precision
+  model is worse than predicted.
+- Secondary: energy per time step $\leq 50$ nJ (vs. $\approx 200$ nJ for GPU
+  INT8 at comparable $n$).
+- Tertiary: the execution log must pass statistical replay at 99% confidence.
 
-**Classical baseline.** NumPy dense matrix-vector product at fp32, same $n=64$, same $W_{\text{res}}$, running on host CPU. No GPU (n=64 is below GPU parallelism threshold; the comparison must be honest).
+**Classical baseline.** NumPy dense matrix-vector product at fp64, same $n=64$,
+same $W_{\text{res}}$, on host CPU. No GPU (n=64 is below the GPU parallelism
+threshold; the comparison must be honest).
+
+**Honest caveat.** Even at the corrected benchmark, 6-bit POC readout costs
+~60% of the fp64 memory capacity (POC-RQ-1.0, RQ-1). Reservoir computing is the
+most precision-sensitive of the three domains; deploy only where the downstream
+task is memory-light enough to tolerate the reduced capacity.
 
 **Phase gate.** Executable at M0 ($n = 16$: run BM-R1-small at $n=16$ as a sanity check), primary target at M1 ($n=32$), full benchmark at M2 ($n=64$).
 
@@ -232,10 +271,26 @@ The ZF precoding step is $W_{\text{ZF}} \mathbf{s} = H^\dagger G^{-1} \mathbf{s}
 1. **Step A**: solve $G \mathbf{v} = \mathbf{s}$, i.e., compute $\mathbf{v} = G^{-1} \mathbf{s}$
 2. **Step B**: compute $\mathbf{x} = H^\dagger \mathbf{v}$ (classical, $O(n_{\text{BS}} n_{\text{UE}})$ MACs)
 
-**Step A is the POC's role** — via the resolvent mode (Neumann series) of the Spectral Unit:
-$$(I - \alpha G) \mathbf{x} = \alpha \mathbf{s} \quad \Rightarrow \quad \mathbf{x} = (I - \alpha G)^{-1} \alpha \mathbf{s} = \sum_{k=0}^\infty \alpha^k G^k (\alpha \mathbf{s})$$
+**Step A is the POC's role** — via the resolvent mode of the Spectral Unit.
+The simple Neumann-series / Richardson iteration is
+$$\mathbf{x}_{k+1} = (I - \alpha G)\mathbf{x}_k + \alpha\mathbf{s},\qquad \alpha < 1/\|G\|,$$
+which converges to $G^{-1}\mathbf{s}$ with per-transit contraction
+$c = 1 - 1/\kappa(G)$.
 
-For $\alpha < 1/\|G\|$, this converges geometrically. Each term is one loop transit. Convergence rate: $(\alpha \|G\|)^k$ per transit.
+> **[CORRECTED per POC-RQ-1.0]** The simple Richardson/Neumann iteration above is
+> **inadequate for realistic MIMO loading.** Its contraction $c = 1-1/\kappa$
+> means reaching tolerance $10^{-2}$ in the 40-transit loop-depth budget
+> requires $\kappa(G) \lesssim 9$ (NOT the $\kappa \approx 77$ quoted in the
+> original draft, which conflated the loop gain with the contraction factor).
+> Simulation shows $\kappa(G)$ exceeds 9 essentially always at full loading
+> ($n_{\text{UE}}\ge 16$), giving a 100% fallback rate. **The primary algorithm
+> must therefore be the Chebyshev-accelerated resolvent** (the POC's
+> cross-coupled-loop Chebyshev mode, Vol I §6.2), whose error bound
+> $2\,r^t$ with $r=(\sqrt\kappa-1)/(\sqrt\kappa+1)$ gives $\sqrt\kappa$ scaling
+> and raises the 40-transit limit to $\kappa\lesssim 360$. With Chebyshev
+> acceleration the measured fallback rate is ~0% up to $n_{\text{UE}}=48$
+> (POC-RQ-1.0, RQ-3). The simple Neumann series is retained only as a low-loading
+> ($n_{\text{UE}}\le 8$) fast path.
 
 **Why this fits the envelope:**
 - **Dense**: $G = HH^\dagger$ is dense (full-rank covariance for a rich scattering channel)
@@ -306,7 +361,16 @@ class MIMOPrecoderContract(BaseContract):
 
 **Phase gate.** BM-M1-small ($n_{\text{BS}}=16$, $n_{\text{UE}}=8$) at M0; full BM-M1 at M2.
 
-**Condition of failure.** If the resolvent loop fails to converge within 40 transits for more than 10% of channel realizations (i.e., $\kappa(G) > (0.9)^{-40} \approx 77$ too often for the given channel model), the precoder falls back to the hybrid digital iteration loop. The benchmark must report the fallback rate — this is honest performance characterization, not a disqualifying failure.
+**Condition of failure.** If the resolvent loop fails to converge within 40
+transits, the precoder falls back to the hybrid digital iteration loop.
+**[CORRECTED per POC-RQ-1.0]** The 40-transit condition-number limit is
+$\kappa \approx 9$ for the simple Richardson resolvent and $\kappa \approx 360$
+for the Chebyshev-accelerated resolvent (the original $\kappa\approx 77$ figure
+was a ~8× error). With the simple resolvent the fallback rate is 100% at full
+loading; with Chebyshev acceleration it is ~0% up to $n_{\text{UE}}=48$ (median
+$\kappa$ up to ~190), with mean transit counts of 12–37. The benchmark must use
+the Chebyshev resolvent and report the residual fallback rate (nonzero only at
+the extreme corner $n_{\text{UE}}=48$, correlation 0.7).
 
 ---
 
@@ -318,7 +382,7 @@ class MIMOPrecoderContract(BaseContract):
 | BM-D1-small | Radar DOA | M0 (n=16) | 16 | RMSE ≤ 3° @ 20 dB | Spectral readout validation |
 | BM-R1 | Reservoir | M1 (n=32) | 32 | NMSE ≤ 0.05 | Energy advantage expected |
 | BM-M1-small | MIMO | M1 (n=32, UE=8) | 32 | SpEff within 1 dB | Resolvent convergence validation |
-| BM-R1-full | Reservoir | M2 (n=64) | 64 | NMSE ≤ 0.03 | Main reservoir benchmark |
+| BM-R1-full | Reservoir | M2 (n=64) | 64 | MC retention ≥ 30% of fp64 | Main reservoir benchmark **[CORRECTED: was NMSE≤0.03]** |
 | BM-D1 | Radar DOA | M2 (n=64) | 64 | RMSE ≤ 1.5° @ 15 dB | Main radar benchmark |
 | BM-M1 | MIMO | M2 (n=64, UE=32) | 64 | SpEff within 0.5 dB | Main MIMO benchmark |
 
@@ -387,11 +451,27 @@ Given the above, the M0 ($n = 8$–$16$) hardware bring-up should focus on **BM-
 
 The application specifications above expose specific research questions that need answers before M1 can be designed with confidence:
 
-**RQ-1 (Reservoir):** What is the accuracy loss from 5–7 bit precision in linear reservoirs as a function of reservoir dimension $n$ and spectral radius $\rho$? Published literature uses fp64; the POC precision model predicts graceful degradation for $\rho < 0.9$ but this has not been validated experimentally. Answerable in simulation before M0.
+**RQ-1 (Reservoir):** **[ANSWERED — POC-RQ-1.0]** What is the accuracy loss
+from 5–7 bit precision in linear reservoirs vs. $n$ and $\rho$? Answer: on the
+correct (memory-capacity) benchmark, 6-bit POC readout retains ~35–40% of fp64
+memory capacity at $n=64$; the noise-amplification $\sim\delta/(1-\rho)$
+prediction is confirmed. A key by-product: the originally-named NARMA-10
+benchmark was invalid for a linear reservoir (see BM-R1 correction above).
 
-**RQ-2 (Radar):** Does the ringdown spectroscopy achieve eigenvalue resolution $\Delta\lambda_{\min} < \lambda_K - \lambda_{K+1}$ for typical radar covariance matrices at $n=64$? The theoretical limit is $\sim$7 bits of spectral resolution (Volume II, first-principles derivation). Typical eigenvalue gaps in ULA covariance matrices at SNR = 15 dB are $\sim$20 dB (factor of 10) — the POC needs $\log_2(10) \approx 3.3$ bits to resolve this, well within the 7-bit ceiling. But for scenarios with near-coherent sources (angular separation $\ll 1/n$), the gap closes and the resolution limit bites. Map the failure region before M1.
+**RQ-2 (Radar):** **[ANSWERED — POC-RQ-1.0]** Does ringdown spectroscopy
+achieve sufficient resolution for MUSIC at $n=64$? Answer: **yes, with margin —
+precision is not the bottleneck.** End-to-end MUSIC at 6–7 bits matches fp64
+angle RMSE down to the classical array beamwidth (1.79° at $n=64$); precision
+only bites at $P\le 5$ or below the beamwidth. Radar DOA is the precision-robust
+lead application. See `docs/POC_RQ_FINDINGS.md`.
 
-**RQ-3 (MIMO):** What fraction of realistic 3GPP channels produce $\kappa(G) > 77$ (the 40-transit resolvent convergence limit)? This sets the fallback rate for BM-M1 and determines whether the hybrid digital cleanup loop is needed for the majority or minority of realizations. Answerable in simulation from 3GPP channel model parameters.
+**RQ-3 (MIMO):** **[ANSWERED — POC-RQ-1.0]** What fraction of realistic
+channels exceed the 40-transit resolvent convergence limit? Answer: the limit
+is $\kappa\approx 9$ (Richardson) / $\kappa\approx 360$ (Chebyshev), not the
+originally-stated 77. With the simple resolvent, full-loading channels exceed
+it ~100% of the time; with Chebyshev acceleration the fallback rate is ~0% up
+to $n_{\text{UE}}=48$. Directive: BM-M1 uses the Chebyshev resolvent. See
+`docs/POC_RQ_FINDINGS.md`.
 
 **RQ-4 (Calibration amortization):** At what reuse factor $R$ does the Ω($n^2$) verification tomography cost fall below 1% of the total compute time? For BM-D1 (500 CPIs of 200 snapshots each): total executions = $10^5$; tomography is performed once per calibration epoch. If one epoch lasts $10^4$ executions, verification overhead is 1%. This is the regime where the audit is essentially free. Compute the break-even for each benchmark.
 
@@ -424,7 +504,8 @@ Is wall-clock latency or energy at the point of operation a binding constraint?
 DEPLOY POC
   Reservoir computing (streaming time-series): OAU + loop register as reservoir
   Radar/sonar (DOA, beamforming): OAU + ringdown spectral readout
-  Massive MIMO (precoding solve): OAU + resolvent Neumann series
+  Massive MIMO (precoding solve): OAU + Chebyshev-accelerated resolvent
+    (NOT the simple Neumann series — fails at full loading, POC-RQ-1.0)
   Control (LQR/Riccati online solve): OAU + resolvent, high duty cycle
   Signal processing (covariance EVD, spectral filtering): OAU + SU
 ```
