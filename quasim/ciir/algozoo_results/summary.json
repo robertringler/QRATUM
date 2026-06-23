@@ -1,0 +1,18 @@
+{
+  "total": 1376,
+  "distinct_by_class_instance": 1376,
+  "unique_structure_hashes": 1358,
+  "passed": 1376,
+  "pass_rate": 1.0,
+  "by_family": {
+    "F1": 324,
+    "F2": 252,
+    "F3": 360,
+    "F4": 440
+  },
+  "max_family_share": 0.32,
+  "qiskit_cross_check": {
+    "checked": 25,
+    "max_fidelity_deviation": 1.9539925233402755e-14
+  }
+}
