@@ -241,67 +241,107 @@ def validate(mechanism_file: str, temperature: float):
     click.echo(f"Mechanism hash: {mech_hash[:32]}...")
 
 
-if __name__ == "__main__":
-    cli()
-"""Command-line interface for XENON simulation and visualization."""
-
-from __future__ import annotations
+# ---------------------------------------------------------------------------
+# Argparse-based entry point (``main``) used by the test suite and as an
+# alternative to the click ``cli`` group above. Both interfaces live in this
+# module: ``cli`` is the console-script entry point; ``main`` drives the
+# argparse flow below.
+# ---------------------------------------------------------------------------
 
 import argparse
 import logging
 import sys
+from dataclasses import dataclass, field
 
 import numpy as np
 
 from xenon.adapters.bio_mechanism_adapter import BioMechanismAdapter
-from xenon.core.mechanism import BioMechanism, MolecularState, Transition
 
 logger = logging.getLogger(__name__)
 
 
-def create_sample_mechanism(num_states: int = 5) -> BioMechanism:
+# The CLI works with a lightweight demonstration data model (distinct from the
+# richer xenon.core.mechanism types) that matches what BioMechanismAdapter and
+# the CLI tests expect: state_id / protein_name on states and
+# source_state / target_state on transitions.
+@dataclass
+class DemoMolecularState:
+    state_id: str
+    protein_name: str
+    free_energy: float
+    concentration: float
+
+
+@dataclass
+class DemoTransition:
+    source_state: str
+    target_state: str
+    rate_constant: float
+    delta_g: float = 0.0
+    activation_energy: float = 0.0
+
+
+@dataclass
+class DemoBioMechanism:
+    mechanism_id: str
+    states: list = field(default_factory=list)
+    transitions: list = field(default_factory=list)
+    evidence_score: float = 0.85
+
+    def get_transitions_to(self, state_id: str) -> list:
+        """Return transitions whose target is ``state_id``."""
+        return [t for t in self.transitions if t.target_state == state_id]
+
+    def get_transitions_from(self, state_id: str) -> list:
+        """Return transitions whose source is ``state_id``."""
+        return [t for t in self.transitions if t.source_state == state_id]
+
+
+def create_sample_mechanism(num_states: int = 5) -> DemoBioMechanism:
     """Create a sample bio-mechanism for demonstration.
 
     Args:
         num_states: Number of states in the mechanism
 
     Returns:
-        Sample BioMechanism instance
+        Sample DemoBioMechanism instance
     """
 
     states = []
     for i in range(num_states):
-        state = MolecularState(
+        state = DemoMolecularState(
             state_id=f"S{i}",
             protein_name=f"Protein_{chr(65 + i)}",
-            free_energy=np.random.uniform(-50, 0),
-            concentration=np.random.uniform(0, 1),
+            free_energy=float(np.random.uniform(-50, 0)),
+            concentration=float(np.random.uniform(0, 1)),
         )
         states.append(state)
 
     transitions = []
     for i in range(num_states - 1):
-        transition = Transition(
-            source_state=f"S{i}",
-            target_state=f"S{i + 1}",
-            rate_constant=np.random.uniform(0.1, 10.0),
-            delta_g=np.random.uniform(-10, 10),
-            activation_energy=np.random.uniform(10, 50),
+        transitions.append(
+            DemoTransition(
+                source_state=f"S{i}",
+                target_state=f"S{i + 1}",
+                rate_constant=float(np.random.uniform(0.1, 10.0)),
+                delta_g=float(np.random.uniform(-10, 10)),
+                activation_energy=float(np.random.uniform(10, 50)),
+            )
         )
-        transitions.append(transition)
 
     # Add some backward transitions
     for i in range(1, num_states, 2):
-        transition = Transition(
-            source_state=f"S{i}",
-            target_state=f"S{max(0, i - 2)}",
-            rate_constant=np.random.uniform(0.01, 1.0),
-            delta_g=np.random.uniform(-5, 5),
-            activation_energy=np.random.uniform(20, 60),
+        transitions.append(
+            DemoTransition(
+                source_state=f"S{i}",
+                target_state=f"S{max(0, i - 2)}",
+                rate_constant=float(np.random.uniform(0.01, 1.0)),
+                delta_g=float(np.random.uniform(-5, 5)),
+                activation_energy=float(np.random.uniform(20, 60)),
+            )
         )
-        transitions.append(transition)
 
-    return BioMechanism(
+    return DemoBioMechanism(
         mechanism_id="SAMPLE_MECH_001",
         states=states,
         transitions=transitions,
@@ -350,11 +390,11 @@ def run_simulation(args: argparse.Namespace) -> int:
     return 0
 
 
-def visualize_mechanism(mechanism: BioMechanism, args: argparse.Namespace) -> None:
+def visualize_mechanism(mechanism: DemoBioMechanism, args: argparse.Namespace) -> None:
     """Visualize bio-mechanism using streaming pipeline.
 
     Args:
-        mechanism: BioMechanism to visualize
+        mechanism: DemoBioMechanism to visualize
         args: Command-line arguments
     """
 

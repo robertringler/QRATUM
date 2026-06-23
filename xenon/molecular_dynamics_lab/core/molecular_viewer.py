@@ -17,7 +17,7 @@ from .pdb_loader import PDBStructure
 logger = logging.getLogger(__name__)
 
 
-class RenderStyle(Enum):
+class RenderStyle(str, Enum):
     """Molecular rendering styles."""
 
     CARTOON = "cartoon"
@@ -30,7 +30,7 @@ class RenderStyle(Enum):
     TRACE = "trace"
 
 
-class ColorScheme(Enum):
+class ColorScheme(str, Enum):
     """Molecular coloring schemes."""
 
     ELEMENT = "element"
@@ -42,7 +42,7 @@ class ColorScheme(Enum):
     CUSTOM = "custom"
 
 
-class SurfaceType(Enum):
+class SurfaceType(str, Enum):
     """Molecular surface types."""
 
     VDW = "VDW"
@@ -100,7 +100,7 @@ class StyleSpec:
     """Style specification for molecular rendering."""
 
     style: RenderStyle = RenderStyle.CARTOON
-    color: Optional[str] = None
+    color: Optional[str] = "spectrum"
     color_scheme: ColorScheme = ColorScheme.ELEMENT
     opacity: float = 1.0
     radius: float = 0.5
@@ -109,14 +109,26 @@ class StyleSpec:
     tubes: bool = True  # For cartoon style
     selection: Optional[dict] = None
 
+    def __post_init__(self) -> None:
+        if isinstance(self.style, str):
+            self.style = RenderStyle(self.style.lower())
+        if isinstance(self.color_scheme, str):
+            self.color_scheme = ColorScheme(self.color_scheme.lower())
+
+    def to_3dmol(self) -> dict:
+        """Alias for :meth:`to_3dmol_spec`."""
+        return self.to_3dmol_spec()
+
     def to_3dmol_spec(self) -> dict:
         """Convert to 3Dmol.js style specification."""
         spec: dict[str, Any] = {}
 
         style_config: dict[str, Any] = {}
 
+        # 3Dmol.js exposes named colour schemes (spectrum, Jmol, chain, ...)
+        # via the "colorscheme" key.
         if self.color:
-            style_config["color"] = self.color
+            style_config["colorscheme"] = self.color
         else:
             style_config["colorscheme"] = self.color_scheme.value
 
@@ -148,6 +160,10 @@ class Selection:
     element: Optional[str] = None
     hetflag: Optional[bool] = None
     within_distance: Optional[tuple[float, dict]] = None
+
+    def to_3dmol(self) -> dict:
+        """Alias for :meth:`to_3dmol_selection`."""
+        return self.to_3dmol_selection()
 
     def to_3dmol_selection(self) -> dict:
         """Convert to 3Dmol.js selection object."""
@@ -242,11 +258,26 @@ class MolecularViewer:
         """
         self.config = config or ViewerConfig()
         self._structures: list[tuple[PDBStructure, list[StyleSpec]]] = []
+        self._styles: list[tuple[Selection, StyleSpec]] = []
         self._labels: list[Label] = []
         self._surfaces: list[tuple[Selection, Surface]] = []
         self._animations: list[dict] = []
         self._click_callbacks: list[str] = []
         self._hover_callbacks: list[str] = []
+
+    def add_style(self, selection: Selection, style: StyleSpec) -> None:
+        """Apply a style to a selection of atoms."""
+        self._styles.append((selection, style))
+
+    def clear_styles(self) -> None:
+        """Remove all previously added (selection, style) pairs."""
+        self._styles = []
+
+    def generate_full_page(
+        self, title: str = "Molecular Dynamics Lab", include_controls: bool = True
+    ) -> str:
+        """Alias for :meth:`generate_html` (complete standalone HTML page)."""
+        return self.generate_html(title=title, include_controls=include_controls)
 
     def add_structure(
         self,
@@ -265,12 +296,14 @@ class MolecularViewer:
         self._structures.append((structure, styles))
         logger.info(f"Added structure {structure.pdb_id} with {len(styles)} styles")
 
-    def add_label(self, label: Label) -> None:
+    def add_label(self, label: Optional[Label] = None, **kwargs: Any) -> None:
         """Add a text label to the viewer.
 
-        Args:
-            label: Label configuration
+        Accepts either a pre-built :class:`Label` (``add_label(label)``) or the
+        label's fields as keyword arguments (``add_label(text=..., position=...)``).
         """
+        if label is None:
+            label = Label(**kwargs)
         self._labels.append(label)
 
     def add_surface(
@@ -368,6 +401,10 @@ class MolecularViewer:
 
         return state
 
+    def generate_js(self) -> str:
+        """Alias for :meth:`generate_javascript`."""
+        return self.generate_javascript()
+
     def generate_javascript(self) -> str:
         """Generate 3Dmol.js initialization JavaScript.
 
@@ -395,6 +432,13 @@ const model{i} = viewer.addModel({json.dumps(struct['pdb_data'])}, 'pdb');
 """
             for style in struct["styles"]:
                 js_code += f"viewer.setStyle({{}}, {json.dumps(style)});\n"
+
+        # Apply standalone (selection, style) pairs added via add_style().
+        for selection, style in self._styles:
+            js_code += (
+                f"viewer.setStyle({json.dumps(selection.to_3dmol())}, "
+                f"{json.dumps(style.to_3dmol())});\n"
+            )
 
         # Add surfaces
         for surface_spec in state["surfaces"]:

@@ -1,0 +1,9 @@
+# Genomics dependencies for XENON's explainable-interpretation program.
+# The genomics tests importorskip these, so the core suite is unaffected when absent.
+-r requirements.txt
+
+cyvcf2>=0.30        # real VCF parsing (xenon.genomics.vcf_io)
+pysam>=0.22         # BAM/CRAM/SAM access
+scikit-learn>=1.3   # calibration + metrics for the interpretation engine
+# Later phases (Ensembl VEP/consequence, ClinVar/ProteinGym fetchers):
+# pyensembl>=2.2

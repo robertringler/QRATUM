@@ -24,6 +24,14 @@ from .constants import (
 from .state import StateChain, TemporalCoordinate, TemporalState
 from .verification import TemporalProof, TemporalVerifier
 
+# Upper bound on the number of evolution steps derived automatically from
+# ``delta_t / temporal_resolution``. Without it, a modest delta at the default
+# nanosecond resolution (e.g. 100s -> 1e11 steps) would build an enormous state
+# chain and hang the engine. The final state of a step-wise evolution does not
+# depend on the step count, so bounding it preserves results while keeping the
+# computation tractable. Callers needing finer granularity may pass ``num_steps``.
+MAX_AUTO_STEPS = 10_000
+
 
 @dataclass
 class TemporalEngineConfig:
@@ -144,6 +152,10 @@ class TemporalEngine:
         # Calculate number of steps based on temporal resolution
         if num_steps is None:
             num_steps = max(1, int(delta_t / self.config.temporal_resolution))
+            # Bound auto-calculated steps to avoid unbounded computation and
+            # memory growth when delta_t >> temporal_resolution (e.g. a 100s
+            # delta at 1ns resolution would otherwise be 1e11 iterations).
+            num_steps = min(num_steps, MAX_AUTO_STEPS)
 
         step_size = delta_t / num_steps
 
@@ -207,6 +219,7 @@ class TemporalEngine:
             final_state=final_state,
             chain=chain,
             operation="forward",
+            computational_delta_t=delta_t,
         )
 
         # Add performance metrics
@@ -261,6 +274,9 @@ class TemporalEngine:
         # Calculate number of steps
         if num_steps is None:
             num_steps = max(1, int(abs(delta_t) / self.config.temporal_resolution))
+            # Bound auto-calculated steps to avoid unbounded computation and
+            # memory growth when |delta_t| >> temporal_resolution.
+            num_steps = min(num_steps, MAX_AUTO_STEPS)
 
         step_size = abs(delta_t) / num_steps
 
@@ -425,11 +441,11 @@ class TemporalEngine:
         if timeline_id is None:
             timeline_id = f"converged_{uuid.uuid4().hex[:8]}"
 
-        # Extract state data from all branches
-        branch_states = [state.data for state in branches.values()]
-
-        # Apply convergence function
-        converged_data = convergence_fn(branch_states)
+        # Apply the convergence function to the branch states. Per the
+        # documented contract the function receives the TemporalState objects
+        # (e.g. ``lambda states: sum(s.data for s in states) / len(states)``),
+        # not pre-extracted data values.
+        converged_data = convergence_fn(list(branches.values()))
 
         # Create converged state
         coord = TemporalCoordinate(

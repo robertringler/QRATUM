@@ -22,16 +22,16 @@ from .pdb_loader import PDBStructure
 logger = logging.getLogger(__name__)
 
 
-class Integrator(Enum):
-    """MD integration schemes."""
+class Integrator(str, Enum):
+    """MD integration schemes (str-valued for ergonomic comparison)."""
 
     VERLET = "verlet"
     VELOCITY_VERLET = "velocity_verlet"
     LEAPFROG = "leapfrog"
 
 
-class Thermostat(Enum):
-    """Temperature control methods."""
+class Thermostat(str, Enum):
+    """Temperature control methods (str-valued for ergonomic comparison)."""
 
     NONE = "none"
     BERENDSEN = "berendsen"
@@ -39,8 +39,8 @@ class Thermostat(Enum):
     VELOCITY_RESCALE = "velocity_rescale"
 
 
-class Barostat(Enum):
-    """Pressure control methods."""
+class Barostat(str, Enum):
+    """Pressure control methods (str-valued for ergonomic comparison)."""
 
     NONE = "none"
     BERENDSEN = "berendsen"
@@ -65,6 +65,22 @@ class MDConfig:
     random_seed: int = 42
     constraint_bonds: bool = True  # SHAKE/LINCS
     constraint_tolerance: float = 1e-6
+    # Alias for thermostat_tau; when provided it overrides thermostat_tau.
+    thermostat_coupling: Optional[float] = None
+
+    def __post_init__(self) -> None:
+        # Accept string values for the enum fields (normalizing hyphens), so
+        # callers may pass e.g. thermostat="nose-hoover".
+        if isinstance(self.integrator, str):
+            self.integrator = Integrator(self.integrator.replace("-", "_").lower())
+        if isinstance(self.thermostat, str):
+            self.thermostat = Thermostat(self.thermostat.replace("-", "_").lower())
+        if isinstance(self.barostat, str):
+            self.barostat = Barostat(self.barostat.replace("-", "_").lower())
+        if self.thermostat_coupling is not None:
+            self.thermostat_tau = self.thermostat_coupling
+        else:
+            self.thermostat_coupling = self.thermostat_tau
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -99,11 +115,12 @@ class SimulationState:
     potential_energy: float = 0.0
     temperature: float = 0.0
     pressure: float = 0.0
+    # Total energy; defaults to kinetic + potential when not supplied.
+    total_energy: Optional[float] = None
 
-    @property
-    def total_energy(self) -> float:
-        """Get total energy."""
-        return self.kinetic_energy + self.potential_energy
+    def __post_init__(self) -> None:
+        if self.total_energy is None:
+            self.total_energy = self.kinetic_energy + self.potential_energy
 
     @property
     def num_atoms(self) -> int:
@@ -143,7 +160,16 @@ class TrajectoryFrame:
     step: int
     time: float
     positions: np.ndarray
-    energies: dict
+    energies: dict = field(default_factory=dict)
+    velocities: Optional[np.ndarray] = None
+    kinetic_energy: float = 0.0
+    potential_energy: float = 0.0
+    total_energy: Optional[float] = None
+    temperature: float = 0.0
+
+    def __post_init__(self) -> None:
+        if self.total_energy is None:
+            self.total_energy = self.kinetic_energy + self.potential_energy
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -151,7 +177,14 @@ class TrajectoryFrame:
             "step": self.step,
             "time": self.time,
             "positions": self.positions.tolist(),
+            "velocities": (
+                self.velocities.tolist() if self.velocities is not None else None
+            ),
             "energies": self.energies,
+            "kinetic_energy": self.kinetic_energy,
+            "potential_energy": self.potential_energy,
+            "total_energy": self.total_energy,
+            "temperature": self.temperature,
         }
 
 
@@ -639,9 +672,134 @@ class MDSimulator:
         Args:
             positions: New positions array
         """
-        if positions.shape != self._state.positions.shape:
+        positions = np.asarray(positions, dtype=float)
+        # If atoms are already present, the new array must match; otherwise this
+        # call initializes the system and resizes the companion arrays.
+        if self._state.num_atoms and positions.shape != self._state.positions.shape:
             raise ValueError("Position array shape mismatch")
         self._state.positions = positions.copy()
+        n = len(positions)
+        if len(self._state.velocities) != n:
+            self._state.velocities = np.zeros((n, 3))
+        if len(self._state.forces) != n:
+            self._state.forces = np.zeros((n, 3))
+        if len(self._state.masses) != n:
+            self._state.masses = np.full(n, 12.0)
+        if len(self._elements) != n:
+            # Default to carbon when elements are not otherwise specified.
+            self._elements = ["C"] * n
+
+    def set_masses(self, masses: np.ndarray) -> None:
+        """Set atomic masses (atomic mass units)."""
+        self._state.masses = np.asarray(masses, dtype=float)
+
+    @property
+    def _positions(self) -> np.ndarray:
+        """Current atomic positions (proxy to the simulation state)."""
+        return self._state.positions
+
+    @_positions.setter
+    def _positions(self, value: np.ndarray) -> None:
+        self._state.positions = np.asarray(value, dtype=float)
+
+    @property
+    def _masses(self) -> np.ndarray:
+        """Current atomic masses (proxy to the simulation state)."""
+        return self._state.masses
+
+    @_masses.setter
+    def _masses(self, value: np.ndarray) -> None:
+        self._state.masses = np.asarray(value, dtype=float)
+
+    @property
+    def _velocities(self) -> np.ndarray:
+        """Current atomic velocities (proxy to the simulation state)."""
+        return self._state.velocities
+
+    @_velocities.setter
+    def _velocities(self, value: np.ndarray) -> None:
+        self._state.velocities = np.asarray(value, dtype=float)
+
+    def compute_forces(self) -> np.ndarray:
+        """Compute and return the current force array (shape (N, 3))."""
+        self._compute_forces()
+        return self._state.forces
+
+    def _compute_temperature(self) -> float:
+        """Instantaneous temperature (Kelvin) from the kinetic energy."""
+        velocities = self._state.velocities
+        masses = self._state.masses
+        n = len(velocities)
+        if n == 0 or len(masses) != n:
+            return 0.0
+        ke = 0.5 * float(np.sum(masses[:, np.newaxis] * velocities**2))
+        dof = 3 * n - 3 if n > 1 else 3 * n
+        if dof <= 0:
+            return 0.0
+        return 2.0 * ke / (dof * self.KB)
+
+    def minimize(
+        self, max_steps: int = 100, tolerance: float = 0.001, step_size: float = 1e-3
+    ) -> float:
+        """Steepest-descent energy minimization.
+
+        Moves atoms along the force vectors with a displacement-capped step so
+        the potential energy decreases monotonically. Returns the final
+        potential energy.
+
+        Args:
+            max_steps: Maximum number of minimization steps
+            tolerance: Stop when the maximum force component falls below this
+            step_size: Base step length along the force (Angstrom per kcal/mol/A)
+        """
+        for _ in range(max_steps):
+            self._compute_forces()
+            forces = self._state.forces
+            fmax = float(np.max(np.abs(forces))) if forces.size else 0.0
+            if fmax < tolerance:
+                break
+            disp = step_size * forces
+            max_disp = float(np.max(np.abs(disp))) if disp.size else 0.0
+            if max_disp > 0.05:  # cap per-step displacement for stability
+                disp = disp * (0.05 / max_disp)
+            self._state.positions = self._state.positions + disp
+        return self._compute_potential_energy()
+
+    def _compute_potential_energy(self) -> float:
+        """Total Lennard-Jones potential energy of the current configuration."""
+        positions = self._state.positions
+        n = len(positions)
+        cutoff_sq = self.config.cutoff**2
+        energy = 0.0
+        for i in range(n):
+            elem_i = self._elements[i] if i < len(self._elements) else "C"
+            eps_i, sig_i = self.LJ_PARAMS.get(elem_i, (0.1, 3.4))
+            for j in range(i + 1, n):
+                elem_j = self._elements[j] if j < len(self._elements) else "C"
+                eps_j, sig_j = self.LJ_PARAMS.get(elem_j, (0.1, 3.4))
+                epsilon = np.sqrt(eps_i * eps_j)
+                sigma = (sig_i + sig_j) / 2
+                delta = positions[i] - positions[j]
+                r_sq = float(np.dot(delta, delta))
+                if r_sq == 0.0 or r_sq > cutoff_sq:
+                    continue
+                sig_r6 = (sigma * sigma / r_sq) ** 3
+                energy += 4.0 * epsilon * (sig_r6 * sig_r6 - sig_r6)
+        return float(energy)
+
+    @staticmethod
+    def _lennard_jones_energy(
+        r: float, epsilon: float = 0.1, sigma: float = 3.4
+    ) -> float:
+        """Lennard-Jones potential energy (r_min convention).
+
+        Uses ``E(r) = epsilon * ((sigma/r)**12 - 2*(sigma/r)**6)`` so the
+        minimum of depth ``-epsilon`` occurs at ``r = sigma``.
+        """
+        if r <= 0:
+            return float("inf")
+        sr6 = (sigma / r) ** 6
+        return float(epsilon * (sr6 * sr6 - 2.0 * sr6))
 
     def apply_force(self, atom_index: int, force: tuple[float, float, float]) -> None:
         """Apply external force to atom (for haptic feedback).

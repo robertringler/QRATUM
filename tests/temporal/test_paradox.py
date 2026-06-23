@@ -225,6 +225,7 @@ class TestCausalityValidator:
         final_state = TemporalState(
             coordinate=coord_final,
             data={"prevents_initial": True},
+            parent_hash="hash1",
         )
 
         def prevents_existence(final_data, initial_data):

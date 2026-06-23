@@ -1,0 +1,115 @@
+name: XENON CI
+
+# Gates the xenon subsystem: its full (currently green) test corpus plus a
+# syntax check, on the supported Python matrix. Intended to be branch-protection
+# required so the API-drift failures fixed during hardening cannot return.
+
+on:
+  push:
+    paths:
+      - "xenon/**"
+      - "qratum/bioinformatics/**"
+      - "tests/hardening/xenon_v5/**"
+      - ".github/workflows/xenon-ci.yml"
+  pull_request:
+    paths:
+      - "xenon/**"
+      - "qratum/bioinformatics/**"
+      - "tests/hardening/xenon_v5/**"
+      - ".github/workflows/xenon-ci.yml"
+
+jobs:
+  test-xenon:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r xenon/requirements.txt
+          pip install pytest pytest-timeout
+
+      - name: Syntax gate (xenon must always compile)
+        run: |
+          python -m compileall -q xenon
+
+      - name: Run xenon test corpus
+        run: |
+          pytest \
+            xenon/tests \
+            xenon/bioinformatics/tests \
+            xenon/molecular_dynamics_lab/tests \
+            tests/hardening/xenon_v5 \
+            --import-mode=importlib -p no:cacheprovider \
+            -o addopts="" --timeout=120 -q
+
+  benchmark-xenon:
+    # Phase 4 head-to-head benchmarks against gold-standard tools (libRoadRunner,
+    # pyABC) + SBML round-trip. Separate from the matrix because the reference
+    # tools are heavy; the core suite importorskips them.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install benchmark dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r xenon/requirements-bench.txt
+          pip install pytest pytest-timeout
+      - name: Run SBML + benchmark gates
+        run: |
+          pytest xenon/tests/test_sbml_io.py xenon/tests/test_benchmarks.py \
+            --import-mode=importlib -p no:cacheprovider -o addopts="" --timeout=300 -q
+      - name: Regenerate benchmark report (artifact)
+        run: |
+          python -m xenon.benchmarks.harness > /tmp/benchmark_results.json || true
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: xenon-benchmark-results
+          path: /tmp/benchmark_results.json
+
+  genomics-xenon:
+    # Genomics foundation: real VCF I/O + GIAB-style truth reconciliation
+    # (cyvcf2/pysam). Separate job because the parsers are heavy; the core suite
+    # importorskips them. No-stub guarantee enforced below.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install genomics dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r xenon/requirements-genomics.txt
+          pip install pytest pytest-timeout
+      - name: No-stub gate (xenon.genomics must be real)
+        run: |
+          # Fail on simulated-data patterns in genomics *source*: the legacy
+          # global-RNG fabrication calls the old stubs used to invent variants/
+          # frequencies, and "would execute"/"Simulating" placeholders. An
+          # explicitly-seeded np.random.default_rng (e.g. for reproducible
+          # train/test splits) is legitimate and allowed.
+          ! grep -rnE "np\.random\.(choice|beta|randint|uniform|normal|rand|seed)|Simulating |would execute" \
+            xenon/genomics/ --include='*.py' \
+            || (echo "::error::simulated/fabricated code found in xenon/genomics" && exit 1)
+      - name: Run genomics foundation + interpretation tests
+        run: |
+          pytest xenon/tests/test_genomics_vcf.py xenon/tests/test_genomics_interpretation.py \
+            --import-mode=importlib -p no:cacheprovider -o addopts="" --timeout=180 -q

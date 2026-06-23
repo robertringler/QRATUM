@@ -2,7 +2,14 @@
 
 import numpy as np
 from numpy.typing import NDArray
-from sklearn.neural_network import MLPClassifier, MLPRegressor
+
+try:
+    from sklearn.neural_network import MLPClassifier, MLPRegressor
+
+    _HAS_SKLEARN = True
+except ImportError:  # pragma: no cover - optional dependency
+    MLPClassifier = MLPRegressor = None  # type: ignore[assignment,misc]
+    _HAS_SKLEARN = False
 
 from quasim.ownai.determinism import set_seed
 
@@ -35,6 +42,12 @@ class DeterministicMLP:
         self.seed = seed
 
         set_seed(self.seed)
+
+        if not _HAS_SKLEARN:
+            raise ImportError(
+                "scikit-learn is required for DeterministicMLP; install it with "
+                "'pip install quasim[ownai]'"
+            )
 
         if task == "classification":
             self.model = MLPClassifier(

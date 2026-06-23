@@ -25,17 +25,27 @@ class Atom:
 
     serial: int
     name: str
-    alt_loc: str
-    res_name: str
+    residue_name: str
     chain_id: str
-    res_seq: int
+    residue_seq: int
     x: float
     y: float
     z: float
     occupancy: float = 1.0
     temp_factor: float = 0.0
     element: str = ""
+    alt_loc: str = ""
     charge: str = ""
+
+    @property
+    def res_name(self) -> str:
+        """Backward-compatible alias for :attr:`residue_name`."""
+        return self.residue_name
+
+    @property
+    def res_seq(self) -> int:
+        """Backward-compatible alias for :attr:`residue_seq`."""
+        return self.residue_seq
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -43,9 +53,9 @@ class Atom:
             "serial": self.serial,
             "name": self.name,
             "alt_loc": self.alt_loc,
-            "res_name": self.res_name,
+            "res_name": self.residue_name,
             "chain_id": self.chain_id,
-            "res_seq": self.res_seq,
+            "res_seq": self.residue_seq,
             "x": self.x,
             "y": self.y,
             "z": self.z,
@@ -66,9 +76,15 @@ class Residue:
     """Amino acid residue."""
 
     name: str
-    chain_id: str
-    seq_num: int
+    sequence: int
+    insertion_code: str = ""
+    chain_id: str = ""
     atoms: list[Atom] = field(default_factory=list)
+
+    @property
+    def seq_num(self) -> int:
+        """Backward-compatible alias for :attr:`sequence`."""
+        return self.sequence
 
     def get_atom(self, name: str) -> Optional[Atom]:
         """Get atom by name."""
@@ -156,13 +172,23 @@ class Hetatm:
 
     serial: int
     name: str
-    res_name: str
+    residue_name: str
     chain_id: str
-    res_seq: int
+    residue_seq: int
     x: float
     y: float
     z: float
     element: str = ""
+
+    @property
+    def res_name(self) -> str:
+        """Backward-compatible alias for :attr:`residue_name`."""
+        return self.residue_name
+
+    @property
+    def res_seq(self) -> int:
+        """Backward-compatible alias for :attr:`residue_seq`."""
+        return self.residue_seq
 
     @property
     def coords(self) -> np.ndarray:
@@ -192,6 +218,16 @@ class Bond:
     atom2_serial: int
     bond_order: int = 1
 
+    @property
+    def atom1(self) -> int:
+        """Backward-compatible alias for :attr:`atom1_serial`."""
+        return self.atom1_serial
+
+    @property
+    def atom2(self) -> int:
+        """Backward-compatible alias for :attr:`atom2_serial`."""
+        return self.atom2_serial
+
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
         return {
@@ -210,19 +246,55 @@ class PDBStructure:
     authors: str = ""
     resolution: float = 0.0
     method: str = ""
-    chains: dict[str, Chain] = field(default_factory=dict)
+    chains: list[Chain] = field(default_factory=list)
     hetatms: list[Hetatm] = field(default_factory=list)
     bonds: list[Bond] = field(default_factory=list)
+    header: dict = field(default_factory=dict)
     raw_content: str = ""
 
     @property
     def all_atoms(self) -> list[Atom]:
         """Get all atoms from all chains."""
         atoms = []
-        for chain in self.chains.values():
+        for chain in self.chains:
             for residue in chain.residues:
                 atoms.extend(residue.atoms)
         return atoms
+
+    @property
+    def atoms(self) -> list[Atom]:
+        """Alias for :attr:`all_atoms` (flat list of polymer atoms)."""
+        return self.all_atoms
+
+    def get_chain(self, chain_id: str) -> Optional[Chain]:
+        """Return the chain with the given identifier, or None."""
+        for chain in self.chains:
+            if chain.chain_id == chain_id:
+                return chain
+        return None
+
+    def to_3dmol_format(self) -> dict:
+        """3Dmol.js view containing the polymer (ATOM) atoms only.
+
+        Hetero atoms are available separately via :attr:`hetatms`; use
+        :meth:`to_3dmol_model` for a combined polymer + hetero atom list.
+        """
+        atoms = [
+            {
+                "elem": atom.element or atom.name[0],
+                "x": atom.x,
+                "y": atom.y,
+                "z": atom.z,
+                "serial": atom.serial,
+                "atom": atom.name,
+                "resn": atom.residue_name,
+                "chain": atom.chain_id,
+                "resi": atom.residue_seq,
+                "b": atom.temp_factor,
+            }
+            for atom in self.all_atoms
+        ]
+        return {"atoms": atoms}
 
     @property
     def num_atoms(self) -> int:
@@ -232,7 +304,7 @@ class PDBStructure:
     @property
     def num_residues(self) -> int:
         """Total number of residues."""
-        return sum(len(c.residues) for c in self.chains.values())
+        return sum(len(c.residues) for c in self.chains)
 
     @property
     def bounding_box(self) -> tuple[np.ndarray, np.ndarray]:
@@ -257,9 +329,11 @@ class PDBStructure:
             "authors": self.authors,
             "resolution": self.resolution,
             "method": self.method,
-            "chains": {k: v.to_dict() for k, v in self.chains.items()},
+            "chains": [c.to_dict() for c in self.chains],
             "hetatms": [h.to_dict() for h in self.hetatms],
             "bonds": [b.to_dict() for b in self.bonds],
+            "header": self.header,
+            "raw_content": self.raw_content,
             "num_atoms": self.num_atoms,
             "num_residues": self.num_residues,
         }
@@ -403,7 +477,12 @@ class PDBLoader:
             record_type = line[:6].strip()
 
             if record_type == "HEADER":
-                structure.pdb_id = line[62:66].strip() or pdb_id
+                structure.pdb_id = pdb_id or line[62:66].strip()
+                structure.header = {
+                    "classification": line[10:50].strip(),
+                    "date": line[50:59].strip(),
+                    "id_code": line[62:66].strip(),
+                }
 
             elif record_type == "TITLE":
                 structure.title += line[10:80].strip() + " "
@@ -435,9 +514,9 @@ class PDBLoader:
 
                     if res_seq not in residue_map[chain_id]:
                         residue_map[chain_id][res_seq] = Residue(
-                            name=atom.res_name,
+                            name=atom.residue_name,
+                            sequence=res_seq,
                             chain_id=chain_id,
-                            seq_num=res_seq,
                         )
 
                     residue_map[chain_id][res_seq].atoms.append(atom)
@@ -456,7 +535,7 @@ class PDBLoader:
             chain = Chain(chain_id=chain_id)
             for seq_num in sorted(residue_map[chain_id].keys()):
                 chain.residues.append(residue_map[chain_id][seq_num])
-            structure.chains[chain_id] = chain
+            structure.chains.append(chain)
 
         structure.title = structure.title.strip()
         structure.authors = structure.authors.strip()
@@ -471,6 +550,10 @@ class PDBLoader:
 
         return structure
 
+    def _parse_atom_record(self, line: str) -> Optional[Atom]:
+        """Alias for :meth:`_parse_atom_line`."""
+        return self._parse_atom_line(line)
+
     def _parse_atom_line(self, line: str) -> Optional[Atom]:
         """Parse ATOM record line."""
         try:
@@ -478,9 +561,9 @@ class PDBLoader:
                 serial=int(line[6:11].strip()),
                 name=line[12:16].strip(),
                 alt_loc=line[16].strip(),
-                res_name=line[17:20].strip(),
+                residue_name=line[17:20].strip(),
                 chain_id=line[21].strip() or "A",
-                res_seq=int(line[22:26].strip()),
+                residue_seq=int(line[22:26].strip()),
                 x=float(line[30:38].strip()),
                 y=float(line[38:46].strip()),
                 z=float(line[46:54].strip()),
@@ -499,9 +582,9 @@ class PDBLoader:
             return Hetatm(
                 serial=int(line[6:11].strip()),
                 name=line[12:16].strip(),
-                res_name=line[17:20].strip(),
+                residue_name=line[17:20].strip(),
                 chain_id=line[21].strip() or "A",
-                res_seq=int(line[22:26].strip()),
+                residue_seq=int(line[22:26].strip()),
                 x=float(line[30:38].strip()),
                 y=float(line[38:46].strip()),
                 z=float(line[46:54].strip()),

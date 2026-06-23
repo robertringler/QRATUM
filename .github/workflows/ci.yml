@@ -23,10 +23,21 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install ruff black mypy
-    
+
+    - name: Validate Python syntax (gating)
+      run: |
+        # Every tracked Python file must compile. This gate blocks merge
+        # artifacts and corrupted files (e.g. duplicated module headers /
+        # spliced bodies) from reaching the default branch. It is intentionally
+        # NOT continue-on-error: a syntax error is always a hard failure.
+        git ls-files '*.py' | xargs -P 4 -n 40 python -m py_compile
+
     - name: Run ruff linter
       run: |
-        ruff check . --select=F821,E999 --output-format=github
+        # E999 was removed as a selectable rule in recent ruff; ruff now always
+        # reports syntax errors. F821 (undefined names) remains non-gating while
+        # the legacy backlog is worked down.
+        ruff check . --select=F821 --output-format=github
       continue-on-error: true  # Temporarily allow failures while fixing legacy issues
     
     - name: Check Python formatting

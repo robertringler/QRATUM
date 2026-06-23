@@ -65,7 +65,10 @@ class TestTemporalEngine:
             inverse_fn=inverse_evolve,
         )
 
-        assert initial_state.data == pytest.approx(0.0, rel=1e-6)
+        # abs (not rel) tolerance: a relative tolerance against 0.0 collapses to
+        # ~1e-12, which cannot express the intended 1e-6 bound on the small
+        # floating-point drift from repeated step-wise evolution.
+        assert initial_state.data == pytest.approx(0.0, abs=1e-6)
         assert proof.operation == "backward"
 
     def test_timeline_branching(self):
@@ -115,6 +118,7 @@ class TestTemporalEngine:
         state1 = TemporalState(
             coordinate=coord1,
             data=10.0,
+            parent_hash="parent1",
         )
 
         coord2 = TemporalCoordinate(
@@ -127,6 +131,7 @@ class TestTemporalEngine:
         state2 = TemporalState(
             coordinate=coord2,
             data=20.0,
+            parent_hash="parent2",
         )
 
         branches = {"branch1": state1, "branch2": state2}
@@ -329,6 +334,7 @@ class TestTemporalState:
             coordinate=coord,
             data={"test": "data"},
             metadata={"key": "value"},
+            parent_hash="parent_hash_value",
         )
 
         # Serialize

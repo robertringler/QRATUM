@@ -1,0 +1,12 @@
+# XENON subsystem dependencies (pinned for reproducible CI / installs).
+#
+# Hard dependency: numpy is the only third-party runtime requirement of the
+# core simulation / mechanism / bioinformatics / molecular-dynamics modules.
+numpy>=1.24,<3
+
+# Optional but exercised by parts of the test corpus:
+# - scipy: information-theory / transfer-entropy estimators (spatial, special)
+# - networkx: BioMechanism graph backing (degrades gracefully if absent)
+# - qiskit*: only the (disabled-by-default) quantum alignment path
+scipy>=1.10
+networkx>=3.0
