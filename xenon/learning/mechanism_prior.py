@@ -8,6 +8,8 @@ Combines multiple sources of prior information:
 
 from __future__ import annotations
 
+from typing import List
+
 import numpy as np
 
 from ..core.mechanism import BioMechanism, Transition
@@ -236,3 +238,37 @@ class MechanismPrior:
                 mechanism.posterior /= total
 
         return mechanisms
+
+    def initialize_new_priors(
+        self,
+        all_mechanisms: List[BioMechanism],
+        new_mechanisms: List[BioMechanism],
+    ) -> List[BioMechanism]:
+        """Assign priors to newly created mechanisms without resetting evidence.
+
+        Mechanisms already present in the pool keep their accumulated posterior;
+        only the ``new_mechanisms`` receive a fresh prior. The combined pool is
+        then renormalized to sum to 1. This fixes the defect where regenerating
+        hypotheses wiped the posterior of every surviving mechanism (F5).
+
+        Args:
+            all_mechanisms: The full pool after appending the new mechanisms.
+            new_mechanisms: The subset that was just created this round.
+
+        Returns:
+            The pool with normalized posteriors (existing evidence preserved).
+        """
+
+        new_ids = {id(m) for m in new_mechanisms}
+
+        for mechanism in all_mechanisms:
+            if id(mechanism) in new_ids:
+                mechanism.posterior = self.compute_prior(mechanism)
+            # Existing mechanisms retain their accumulated posterior.
+
+        total = sum(m.posterior for m in all_mechanisms)
+        if total > 0:
+            for mechanism in all_mechanisms:
+                mechanism.posterior /= total
+
+        return all_mechanisms

@@ -6,7 +6,7 @@ P(mechanism | experiment) ∝ P(experiment | mechanism) × P(mechanism)
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional
 
 import numpy as np
 
@@ -161,10 +161,17 @@ class BayesianUpdater:
 
         for state_name, observed_conc in experiment.observations.items():
             if state_name in mechanism._states:
-                predicted_conc = mechanism._states[state_name].concentration
+                state = mechanism._states[state_name]
+                predicted_conc = state.concentration
 
                 if predicted_conc is not None:
-                    uncertainty = experiment.uncertainties.get(state_name, 0.1 * observed_conc)
+                    meas_unc = experiment.uncertainties.get(state_name, 0.1 * abs(observed_conc))
+                    # Fold the Monte-Carlo standard error of the prediction (if
+                    # the runtime recorded one) into the noise model in
+                    # quadrature, so simulation noise is not mistaken for
+                    # model-data mismatch (see F6).
+                    mc_se = float(state.properties.get("conc_mc_se", 0.0))
+                    uncertainty = (meas_unc**2 + mc_se**2) ** 0.5
                     if uncertainty > 0:
                         residual = (observed_conc - predicted_conc) / uncertainty
                         chi_squared += residual**2
@@ -173,9 +180,11 @@ class BayesianUpdater:
         if n_measurements == 0:
             return 0.1  # Low likelihood if no predictions available
 
-        # Gaussian likelihood
-        likelihood = np.exp(-chi_squared / (2.0 * n_measurements * self.likelihood_scale))
-        return max(likelihood, 1e-10)  # Prevent underflow
+        # Joint Gaussian likelihood: exp(-chi^2 / 2). The chi^2 is summed (not
+        # averaged) over measurements so that evidence accumulates with data
+        # volume, as required by the likelihood principle (see F4).
+        likelihood = np.exp(-chi_squared / (2.0 * self.likelihood_scale))
+        return max(likelihood, 1e-300)  # Prevent underflow to exactly zero
 
     def _likelihood_kinetics(
         self,
@@ -207,8 +216,10 @@ class BayesianUpdater:
         if n_rates == 0:
             return 0.1
 
-        likelihood = np.exp(log_likelihood / n_rates)
-        return max(likelihood, 1e-10)
+        # Joint log-normal likelihood: summed (not averaged) over rate
+        # observations so evidence accumulates with data volume (see F4).
+        likelihood = np.exp(log_likelihood)
+        return max(likelihood, 1e-300)
 
     def _likelihood_perturbation(
         self,

@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Reproducible demonstrations for the XENON Phase-1 forensic audit.
+"""Status verifier for the XENON Phase-1 forensic audit findings.
 
-Each function isolates one defect and prints empirical evidence. Run:
+Each check exercises the ACTUAL current code (not a hand-rolled reproduction)
+and reports whether the finding is FIXED or still PRESENT. Run:
 
-    python xenon_campaigns/audit/audit_findings.py
+    PYTHONPATH=$PWD python xenon_campaigns/audit/audit_findings.py
 
-Findings are keyed to PHASE1_FORENSIC_AUDIT.md (F1..F12).
+Findings are keyed to PHASE1_FORENSIC_AUDIT.md (F1..F12). Tier-0 remediation
+(chosen scope) targets F1, F2, F4, F5, F6; F3/F10 remain deferred and are
+reported honestly as PRESENT.
 """
 
 from __future__ import annotations
@@ -15,113 +18,150 @@ import numpy as np
 from xenon.core.mechanism import BioMechanism, MolecularState, Transition
 from xenon.learning.bayesian_updater import BayesianUpdater, ExperimentResult
 from xenon.learning.mechanism_prior import MechanismPrior
+from xenon.runtime.xenon_kernel import XENONRuntime
 from xenon.simulation.gillespie import GillespieSimulator
 
 
-def f1_reverse_reactions_dropped() -> bool:
-    """F1: SSA ignores declared reverse reactions (no detailed balance)."""
+def _status(fixed: bool) -> str:
+    return "FIXED" if fixed else "PRESENT"
+
+
+def f1_reverse_reactions() -> bool:
+    """F1: SSA must honour reverse reactions (detailed balance)."""
     m = BioMechanism("rev")
     m.add_state(MolecularState(name="A", molecule="P", concentration=100.0))
     m.add_state(MolecularState(name="B", molecule="P", concentration=0.0))
     m.add_transition(
         Transition(source="A", target="B", rate_constant=1.0, reversible=True, reverse_rate=1.0)
     )
-    sim = GillespieSimulator(m, volume=1e-15)
-    _, traj = sim.run(t_max=50.0, initial_state={"A": 100.0, "B": 0.0}, seed=42, record_interval=1.0)
-    a_final = traj["A"][-1]
-    # Symmetric reversible reaction MUST equilibrate near 50/50.
-    failed = a_final < 5.0
-    print(f"[F1] symmetric A<->B final: A={a_final:.1f} B={traj['B'][-1]:.1f} nM "
-          f"(expected ~50/50)  -> reverse {'IGNORED' if failed else 'ok'}")
-    return failed
+    finals = [
+        GillespieSimulator(m).run(t_max=50.0, initial_state={"A": 100.0, "B": 0.0},
+                                  seed=s, record_interval=1.0)[1]["A"][-1]
+        for s in range(16)
+    ]
+    mean_a = float(np.mean(finals))
+    fixed = 35.0 < mean_a < 65.0  # symmetric -> ~50/50
+    print(f"[F1] symmetric A<->B mean A={mean_a:.1f} nM (expect ~50) -> {_status(fixed)}")
+    return fixed
 
 
-def f2_stoichiometry_ignored() -> bool:
-    """F2: Transition.stoichiometry is ignored; updates hardcode +/-1."""
-    t = Transition(source="A", target="B", rate_constant=1.0, stoichiometry={"A": -2, "B": 1})
-    # _update_state always does source-=1, target+=1 regardless of this field.
-    failed = t.stoichiometry == {"A": -2, "B": 1}
-    print(f"[F2] declared stoichiometry {t.stoichiometry} but engine applies +/-1 only "
-          f"-> {'IGNORED' if failed else 'ok'}")
-    return failed
+def f2_stoichiometry() -> bool:
+    """F2: engine must apply declared stoichiometry / bimolecular kinetics."""
+    m = BioMechanism("bi")
+    for n, c in [("A", 60.0), ("B", 40.0), ("C", 0.0)]:
+        m.add_state(MolecularState(name=n, molecule=n, concentration=c))
+    m.add_transition(
+        Transition(source="A", target="C", rate_constant=5.0, stoichiometry={"A": -1, "B": -1, "C": 1})
+    )
+    _, tr = GillespieSimulator(m).run(
+        t_max=5.0, initial_state={"A": 60.0, "B": 40.0, "C": 0.0}, seed=1, record_interval=0.5
+    )
+    a, b, c = tr["A"][-1], tr["B"][-1], tr["C"][-1]
+    fired = c > 1.0
+    conserved = abs((a + c) - 60.0) < 2.0 and abs((b + c) - 40.0) < 2.0
+    b_limiting = b < a  # B is the limiting reagent
+    fixed = fired and conserved and b_limiting
+    print(f"[F2] A+B->C final A={a:.1f} B={b:.1f} C={c:.1f} "
+          f"(fired={fired}, conserved={conserved}, B-limiting={b_limiting}) -> {_status(fixed)}")
+    return fixed
 
 
-def f3_perturbation_likelihood_inert() -> bool:
-    """F3: perturbation likelihood is constant 0.1 under the kernel's own format."""
+def f4_evidence_accumulates() -> bool:
+    """F4: concentration likelihood must sharpen with more measurements."""
+    bu = BayesianUpdater()
+
+    def lik(n_states: int) -> float:
+        m = BioMechanism("m")
+        obs = {}
+        unc = {}
+        for i in range(n_states):
+            name = f"S{i}"
+            m.add_state(MolecularState(name=name, molecule="P", concentration=50.0))
+            obs[name] = 56.0  # predicted 50, observed 56, sigma 3 -> 2 sigma off
+            unc[name] = 3.0
+        exp = ExperimentResult("concentration", observations=obs, uncertainties=unc)
+        return bu.compute_likelihood(m, exp)
+
+    l1, l5 = lik(1), lik(5)
+    fixed = l5 < l1 * 0.5  # joint likelihood must shrink with data
+    print(f"[F4] concentration likelihood n=1 -> {l1:.3e}, n=5 -> {l5:.3e} "
+          f"(must shrink) -> {_status(fixed)}")
+    return fixed
+
+
+def f5_regeneration_preserves_evidence() -> bool:
+    """F5: regeneration must NOT wipe accumulated posteriors (kernel path)."""
+    mp = MechanismPrior()
+
+    def mech(name: str, post: float) -> BioMechanism:
+        m = BioMechanism(name)
+        m.add_state(MolecularState(name="A", molecule="EGFR", concentration=50.0, free_energy=-10.0))
+        m.add_state(MolecularState(name="B", molecule="EGFR", concentration=50.0, free_energy=-12.0))
+        m.add_transition(Transition(source="A", target="B", rate_constant=1.0))
+        m.posterior = post
+        return m
+
+    evidenced = mech("evidenced", 0.97)
+    other = mech("other", 0.03)
+    new = mech("new", 1.0)
+    pool = [evidenced, other, new]
+    # Kernel now calls initialize_new_priors (not the resetting method).
+    mp.initialize_new_priors(pool, [new])
+    # evidenced must retain the LARGEST share among the pre-existing pair.
+    fixed = evidenced.posterior > other.posterior and evidenced.posterior > 0.3
+    print(f"[F5] after regeneration: evidenced={evidenced.posterior:.3f} other={other.posterior:.3f} "
+          f"new={new.posterior:.3f} (evidence preserved) -> {_status(fixed)}")
+    return fixed
+
+
+def f6_replicated_observable() -> bool:
+    """F6: the runtime must store a Monte-Carlo standard error on predictions."""
+    rt = XENONRuntime(convergence_threshold=0.1, sim_replicates=5, sim_t_max=2.0)
+    rt.add_target(name="EGFR_target", protein="EGFR", objective="characterize")
+    rt._rng = np.random.default_rng(42)
+    rt._generate_hypothesis_mechanisms(rt.targets[0])
+    rt._simulate_mechanisms(rt.targets[0])
+    se_present = any(
+        "conc_mc_se" in s.properties
+        for m in rt.mechanisms["EGFR_target"]
+        for s in m._states.values()
+    )
+    print(f"[F6] predicted states carry Monte-Carlo SE (conc_mc_se): {se_present} -> "
+          f"{_status(se_present)}")
+    return se_present
+
+
+def f3_perturbation_inert() -> bool:
+    """F3 (deferred): perturbation likelihood still inert under kernel format."""
     m = BioMechanism("t")
     m.add_state(MolecularState(name="EGFR_inactive", molecule="EGFR", concentration=50.0))
     m.add_state(MolecularState(name="EGFR_active", molecule="EGFR", concentration=50.0))
     m.add_transition(Transition(source="EGFR_inactive", target="EGFR_active", rate_constant=1.0))
-    m.posterior = 0.5
-    exp = ExperimentResult(
-        experiment_type="perturbation",
-        observations={"response": 0.5},
-        conditions={"temperature": 310.0},  # exactly what _execute_experiment emits
+    lik = BayesianUpdater().compute_likelihood(
+        m, ExperimentResult("perturbation", observations={"response": 0.5},
+                            conditions={"temperature": 310.0})
     )
-    lik = BayesianUpdater().compute_likelihood(m, exp)
-    failed = lik == 0.1
-    print(f"[F3] perturbation likelihood (kernel format) = {lik} "
-          f"-> {'INERT (constant fallback)' if failed else 'ok'}")
-    return failed
-
-
-def f4_evidence_does_not_accumulate() -> bool:
-    """F4: chi^2 averaged by n -> likelihood independent of measurement count."""
-    def conc_lik(resid: float, n: int) -> float:
-        chi2 = n * resid**2
-        return float(np.exp(-chi2 / (2.0 * n * 1.0)))
-
-    liks = [conc_lik(2.0, n) for n in (1, 5, 20)]
-    failed = abs(liks[0] - liks[-1]) < 1e-12
-    print(f"[F4] concentration likelihood for n=1,5,20 identical residuals = "
-          f"{[round(x, 4) for x in liks]} -> {'NO ACCUMULATION' if failed else 'ok'}")
-    return failed
-
-
-def f5_regeneration_resets_posterior() -> bool:
-    """F5: initialize_mechanism_priors overwrites accumulated posterior with prior."""
-    mp = MechanismPrior()
-    m = BioMechanism("evidenced")
-    m.add_state(MolecularState(name="A", molecule="EGFR", concentration=50.0, free_energy=-10.0))
-    m.add_state(MolecularState(name="B", molecule="EGFR", concentration=50.0, free_energy=-12.0))
-    m.add_transition(Transition(source="A", target="B", rate_constant=1.0))
-    m.posterior = 0.97
-    before = m.posterior
-    mp.initialize_mechanism_priors([m])  # what the kernel calls on regeneration
-    failed = abs(m.posterior - before) > 1e-6
-    print(f"[F5] posterior {before} -> {m.posterior:.4f} after regeneration "
-          f"-> {'EVIDENCE WIPED' if failed else 'ok'}")
-    return failed
-
-
-def f9_steady_state_non_identifiability() -> bool:
-    """F9: steady-state split depends only on the forward/reverse ratio.
-
-    Two mechanisms with the same ratio but 100x different absolute rates are
-    indistinguishable from a steady-state concentration measurement.
-    """
-    # Engine drops reverse anyway (F1), so we reason structurally: for a true
-    # reversible 2-state system K = k_f/k_r sets the split; (k_f, k_r) are not
-    # separately identifiable from the steady state alone.
-    print("[F9] steady-state split fixed by K=k_f/k_r; absolute rates "
-          "non-identifiable from concentration alone -> needs kinetic/time-course data")
-    return True
+    fixed = lik != 0.1
+    print(f"[F3] perturbation likelihood (kernel format) = {lik} -> {_status(fixed)} (deferred)")
+    return fixed
 
 
 def main() -> int:
-    print("XENON Phase-1 forensic audit — empirical demonstrations\n")
-    results = {
-        "F1_reverse_dropped": f1_reverse_reactions_dropped(),
-        "F2_stoichiometry_ignored": f2_stoichiometry_ignored(),
-        "F3_perturbation_inert": f3_perturbation_likelihood_inert(),
-        "F4_no_evidence_accumulation": f4_evidence_does_not_accumulate(),
-        "F5_regeneration_resets": f5_regeneration_resets_posterior(),
-        "F9_non_identifiability": f9_steady_state_non_identifiability(),
+    print("XENON audit status — actual-code verification (Tier-0 remediation)\n")
+    tier0 = {
+        "F1_reverse_reactions": f1_reverse_reactions(),
+        "F2_stoichiometry": f2_stoichiometry(),
+        "F4_evidence_accumulates": f4_evidence_accumulates(),
+        "F5_regeneration_preserves": f5_regeneration_preserves_evidence(),
+        "F6_replicated_observable": f6_replicated_observable(),
     }
     print()
-    confirmed = sum(1 for v in results.values() if v)
-    print(f"Confirmed {confirmed}/{len(results)} demonstrated defects.")
-    return 0
+    deferred = {"F3_perturbation_inert": f3_perturbation_inert()}
+    print()
+    fixed = sum(1 for v in tier0.values() if v)
+    print(f"Tier-0: {fixed}/{len(tier0)} findings FIXED. "
+          f"Deferred still PRESENT: {[k for k, v in deferred.items() if not v]}")
+    return 0 if fixed == len(tier0) else 1
 
 
 if __name__ == "__main__":

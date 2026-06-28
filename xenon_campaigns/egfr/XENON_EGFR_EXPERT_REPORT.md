@@ -7,6 +7,17 @@
 > `xenon/runtime/xenon_kernel.py` now derive sub-seeds from the runtime's master RNG, so the entire
 > learning loop is a pure function of the seed. The campaign is now **fully reproducible** and the
 > determinism gate **PASSES**. (The earlier non-reproducible run is preserved in git history.)
+>
+> **⚠️ Superseded as a scientific result — read this first.** After the Tier-0 correctness fixes
+> (joint likelihood F4, corrected SSA F1/F2, replicated observable F6), this mock-data campaign now
+> *converges in a single iteration* to one mechanism (entropy ≈ 0). That is **not** a discovery — it
+> is the expected consequence of feeding a now-correct, sharp likelihood with the **mechanism-
+> independent mock experiment executor** (audit finding **F7**): the posterior locks onto whichever
+> mechanism's prediction first matches the random observation. **No biological claim about EGFR is
+> supported by this campaign.** The scientifically meaningful validation of the inference engine is
+> the **in-silico recovery campaign** (`xenon_campaigns/recovery/`), which generates data from a
+> *known* ground-truth mechanism and verifies XENON recovers it. The numbers below are retained only
+> to show the determinism/numerical-stability gates still pass end to end.
 
 ---
 

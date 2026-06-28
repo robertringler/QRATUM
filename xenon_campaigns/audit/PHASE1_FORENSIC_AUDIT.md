@@ -3,8 +3,14 @@
 **Reviewer stance:** independent scientific reviewer + engineering lead. Standard applied:
 publication-grade computational biology (Nature Biotechnology / Cell Systems / PNAS).
 **Scope of this document:** Phase 1 of the 10-phase program — a complete, evidence-grounded audit
-of the existing scientific kernel. **Every finding below is reproduced by
-[`audit_findings.py`](audit_findings.py)** (`6/6` defects confirmed on this checkout).
+of the existing scientific kernel.
+
+> **Remediation status (Tier-0 implemented).** Findings **F1, F2, F4, F5, F6** (and bonus
+> final-state-recording + F12 imports) are now **FIXED** and validated by a closed-loop in-silico
+> recovery harness — see [`../TIER0_REMEDIATION_AND_RECOVERY.md`](../TIER0_REMEDIATION_AND_RECOVERY.md).
+> **F3** remains deferred. [`audit_findings.py`](audit_findings.py) has been converted to a
+> **status verifier** that exercises the actual code and reports `Tier-0: 5/5 FIXED`. The audit text
+> below is preserved as the original diagnosis; read it together with the remediation report.
 
 > **Scope honesty.** Phases 2–10 of the tasking program (live ingestion from GEO/TCGA/PRIDE/…,
 > multiple inference backends, identifiability suites, optimal experimental design, external/clinical
