@@ -8,7 +8,7 @@
     "top_k": 5,
     "replicates_per_mechanism": 8,
     "confirm_tmax_s": 5.0,
-    "wallclock_s": 0.048
+    "wallclock_s": 0.044
   },
   "environment": {
     "python": "3.11.15",
@@ -16,87 +16,91 @@
     "numpy": "2.4.6"
   },
   "reproducibility": {
-    "reproducible": false,
+    "reproducible": true,
     "summary_first": {
-      "iterations": 16,
+      "iterations": 20,
       "converged": true,
-      "final_entropy": 0.09896939299644274,
-      "mechanisms_discovered": 5
+      "final_entropy": 0.012302587465951666,
+      "mechanisms_discovered": 6
     },
     "summary_repeat": {
-      "iterations": 19,
+      "iterations": 20,
       "converged": true,
-      "final_entropy": 0.027229635231140605,
-      "mechanisms_discovered": 9
+      "final_entropy": 0.012302587465951666,
+      "mechanisms_discovered": 6
     }
   },
   "summary": {
-    "iterations": 16,
+    "iterations": 20,
     "converged": true,
-    "final_entropy": 0.09896939299644274,
-    "mechanisms_discovered": 5
+    "final_entropy": 0.012302587465951666,
+    "mechanisms_discovered": 6
   },
   "runtime_summary": {
-    "iterations": 15,
-    "total_mechanisms": 5,
+    "iterations": 19,
+    "total_mechanisms": 6,
     "targets": 1,
     "evidence": {
       "EGFR_target": {
-        "n_mechanisms": 5,
+        "n_mechanisms": 6,
         "total_evidence": 1.0,
-        "max_posterior": 0.9840755096407675,
-        "mean_posterior": 0.2,
-        "entropy": 0.09896939299644274
+        "max_posterior": 0.998647834800079,
+        "mean_posterior": 0.16666666666666666,
+        "entropy": 0.012302587465951666
       }
     }
   },
   "evidence_summary": {
-    "n_mechanisms": 5,
+    "n_mechanisms": 6,
     "total_evidence": 1.0,
-    "max_posterior": 0.9840755096407675,
-    "mean_posterior": 0.2,
-    "entropy": 0.09896939299644274
+    "max_posterior": 0.998647834800079,
+    "mean_posterior": 0.16666666666666666,
+    "entropy": 0.012302587465951666
   },
   "top_mechanisms": [
     {
-      "name": "EGFR_target_template_5",
-      "posterior": 0.9840755096407675,
-      "hash": "7b82e69b2fe01cfa25411c57a7494c3f28736eb09effb39b1d2747b7e08ed631",
+      "name": "EGFR_target_template_9",
+      "posterior": 0.998647834800079,
+      "hash": "2bb407fb9712987c4b8d3f3d6ce7ac5c65761b3cd313a0bce61e571458889177",
       "n_states": 2,
       "n_transitions": 1,
       "provenance": [
         "bayesian_update_0:kinetics",
-        "bayesian_update_1:concentration",
-        "bayesian_update_2:perturbation",
+        "bayesian_update_1:kinetics",
+        "bayesian_update_2:concentration",
         "bayesian_update_3:kinetics",
-        "bayesian_update_4:kinetics",
+        "bayesian_update_4:perturbation",
         "bayesian_update_5:perturbation",
-        "bayesian_update_6:perturbation",
+        "bayesian_update_6:kinetics",
         "bayesian_update_7:kinetics",
-        "bayesian_update_8:concentration",
-        "bayesian_update_9:kinetics",
-        "bayesian_update_10:concentration",
-        "bayesian_update_11:perturbation",
-        "bayesian_update_12:kinetics",
+        "bayesian_update_8:kinetics",
+        "bayesian_update_9:concentration",
+        "bayesian_update_10:kinetics",
+        "bayesian_update_11:concentration",
+        "bayesian_update_12:perturbation",
         "bayesian_update_13:kinetics",
-        "bayesian_update_14:perturbation",
-        "bayesian_update_15:concentration"
+        "bayesian_update_14:kinetics",
+        "bayesian_update_15:concentration",
+        "bayesian_update_16:concentration",
+        "bayesian_update_17:kinetics",
+        "bayesian_update_18:kinetics",
+        "bayesian_update_19:concentration"
       ],
       "steady_state_mc": {
         "EGFR_inactive": {
-          "mean": 18.26635669212886,
-          "std": 3.7131650240780303,
-          "ci95": 2.573092084826479,
+          "mean": 21.587512454334107,
+          "std": 4.233659509791418,
+          "ci95": 2.9337763616362578,
           "n": 8
         },
         "EGFR_active": {
-          "mean": 81.36831617402855,
-          "std": 3.7131650240780307,
-          "ci95": 2.5730920848264796,
+          "mean": 78.04716041182331,
+          "std": 4.233659509791417,
+          "ci95": 2.933776361636257,
           "n": 8
         }
       },
-      "ssa_throughput_rps": 179025.38580012947,
+      "ssa_throughput_rps": 179787.85033947878,
       "validation": {
         "thermodynamically_feasible": true,
         "conservation_ok": true,
@@ -105,35 +109,153 @@
       "rate_sensitivity": [
         {
           "transition": "EGFR_inactive->EGFR_active",
-          "base_rate": 0.16779852749843738,
+          "base_rate": 0.13401574000421135,
           "probe_state": "EGFR_active",
-          "rel_sensitivity": 0.03787878787878788
+          "rel_sensitivity": 0.04232804232804238
+        }
+      ]
+    },
+    {
+      "name": "EGFR_target_mutant_0_6",
+      "posterior": 0.0003922807332576045,
+      "hash": "e29b2cb315653060359e968a514ddf5f169a6cdd11d9bb51284c69d6fed106cb",
+      "n_states": 2,
+      "n_transitions": 1,
+      "provenance": [
+        "topology_mutation",
+        "topology_mutation",
+        "bayesian_update_0:kinetics",
+        "bayesian_update_1:kinetics",
+        "bayesian_update_2:concentration",
+        "bayesian_update_3:kinetics",
+        "bayesian_update_4:perturbation",
+        "bayesian_update_5:perturbation",
+        "bayesian_update_6:kinetics",
+        "bayesian_update_7:kinetics",
+        "bayesian_update_8:kinetics",
+        "bayesian_update_9:concentration",
+        "bayesian_update_10:kinetics",
+        "bayesian_update_11:concentration",
+        "bayesian_update_12:perturbation",
+        "bayesian_update_13:kinetics",
+        "bayesian_update_14:kinetics",
+        "bayesian_update_15:concentration",
+        "bayesian_update_16:concentration",
+        "bayesian_update_17:kinetics"
+      ],
+      "steady_state_mc": {
+        "EGFR_inactive": {
+          "mean": 1.0378611756891396,
+          "std": 1.155713293513372,
+          "ci95": 0.8008684528117292,
+          "n": 8
+        },
+        "EGFR_active": {
+          "mean": 98.59681169046827,
+          "std": 1.1557132935133734,
+          "ci95": 0.8008684528117301,
+          "n": 8
+        }
+      },
+      "ssa_throughput_rps": 174319.7896553601,
+      "validation": {
+        "thermodynamically_feasible": true,
+        "conservation_ok": true,
+        "conservation_violations": []
+      },
+      "rate_sensitivity": [
+        {
+          "transition": "EGFR_inactive->EGFR_active",
+          "base_rate": 0.6897238129133524,
+          "probe_state": "EGFR_active",
+          "rel_sensitivity": 0.0021008403361344203
+        }
+      ]
+    },
+    {
+      "name": "EGFR_target_mutant_0_7",
+      "posterior": 0.0003922807332576045,
+      "hash": "e29b2cb315653060359e968a514ddf5f169a6cdd11d9bb51284c69d6fed106cb",
+      "n_states": 2,
+      "n_transitions": 1,
+      "provenance": [
+        "topology_mutation",
+        "topology_mutation",
+        "topology_mutation",
+        "bayesian_update_0:kinetics",
+        "bayesian_update_1:kinetics",
+        "bayesian_update_2:concentration",
+        "bayesian_update_3:kinetics",
+        "bayesian_update_4:perturbation",
+        "bayesian_update_5:perturbation",
+        "bayesian_update_6:kinetics",
+        "bayesian_update_7:kinetics",
+        "bayesian_update_8:kinetics",
+        "bayesian_update_9:concentration",
+        "bayesian_update_10:kinetics",
+        "bayesian_update_11:concentration",
+        "bayesian_update_12:perturbation",
+        "bayesian_update_13:kinetics",
+        "bayesian_update_14:kinetics",
+        "bayesian_update_15:concentration",
+        "bayesian_update_16:concentration"
+      ],
+      "steady_state_mc": {
+        "EGFR_inactive": {
+          "mean": 1.0378611756891396,
+          "std": 1.155713293513372,
+          "ci95": 0.8008684528117292,
+          "n": 8
+        },
+        "EGFR_active": {
+          "mean": 98.59681169046827,
+          "std": 1.1557132935133734,
+          "ci95": 0.8008684528117301,
+          "n": 8
+        }
+      },
+      "ssa_throughput_rps": 170741.44472429555,
+      "validation": {
+        "thermodynamically_feasible": true,
+        "conservation_ok": true,
+        "conservation_violations": []
+      },
+      "rate_sensitivity": [
+        {
+          "transition": "EGFR_inactive->EGFR_active",
+          "base_rate": 0.6897238129133524,
+          "probe_state": "EGFR_active",
+          "rel_sensitivity": 0.0021008403361344203
         }
       ]
     },
     {
       "name": "EGFR_target_template_1",
-      "posterior": 0.006497693382108856,
+      "posterior": 0.00028373780374799334,
       "hash": "58f4326b5780619f4f58b1bde81a7bc3cfd32f73fd202855f351c133bfbbce2f",
       "n_states": 2,
       "n_transitions": 1,
       "provenance": [
         "bayesian_update_0:kinetics",
-        "bayesian_update_1:concentration",
-        "bayesian_update_2:perturbation",
+        "bayesian_update_1:kinetics",
+        "bayesian_update_2:concentration",
         "bayesian_update_3:kinetics",
-        "bayesian_update_4:kinetics",
+        "bayesian_update_4:perturbation",
         "bayesian_update_5:perturbation",
-        "bayesian_update_6:perturbation",
+        "bayesian_update_6:kinetics",
         "bayesian_update_7:kinetics",
-        "bayesian_update_8:concentration",
-        "bayesian_update_9:kinetics",
-        "bayesian_update_10:concentration",
-        "bayesian_update_11:perturbation",
-        "bayesian_update_12:kinetics",
+        "bayesian_update_8:kinetics",
+        "bayesian_update_9:concentration",
+        "bayesian_update_10:kinetics",
+        "bayesian_update_11:concentration",
+        "bayesian_update_12:perturbation",
         "bayesian_update_13:kinetics",
-        "bayesian_update_14:perturbation",
-        "bayesian_update_15:concentration"
+        "bayesian_update_14:kinetics",
+        "bayesian_update_15:concentration",
+        "bayesian_update_16:concentration",
+        "bayesian_update_17:kinetics",
+        "bayesian_update_18:kinetics",
+        "bayesian_update_19:concentration"
       ],
       "steady_state_mc": {
         "EGFR_inactive": {
@@ -149,7 +271,7 @@
           "n": 8
         }
       },
-      "ssa_throughput_rps": 199982.47772849878,
+      "ssa_throughput_rps": 188983.69070852993,
       "validation": {
         "thermodynamically_feasible": true,
         "conservation_ok": true,
@@ -166,44 +288,47 @@
     },
     {
       "name": "EGFR_target_mutant_0_2",
-      "posterior": 0.006497693382108856,
-      "hash": "58f4326b5780619f4f58b1bde81a7bc3cfd32f73fd202855f351c133bfbbce2f",
+      "posterior": 0.0002108401006180617,
+      "hash": "94ac72ca5a711b859e4741a9a6dc9ba191142a33f2ae847cb491cae4271b87e1",
       "n_states": 2,
       "n_transitions": 1,
       "provenance": [
         "topology_mutation",
         "bayesian_update_0:kinetics",
-        "bayesian_update_1:concentration",
-        "bayesian_update_2:perturbation",
+        "bayesian_update_1:kinetics",
+        "bayesian_update_2:concentration",
         "bayesian_update_3:kinetics",
-        "bayesian_update_4:kinetics",
+        "bayesian_update_4:perturbation",
         "bayesian_update_5:perturbation",
-        "bayesian_update_6:perturbation",
+        "bayesian_update_6:kinetics",
         "bayesian_update_7:kinetics",
-        "bayesian_update_8:concentration",
-        "bayesian_update_9:kinetics",
-        "bayesian_update_10:concentration",
-        "bayesian_update_11:perturbation",
-        "bayesian_update_12:kinetics",
+        "bayesian_update_8:kinetics",
+        "bayesian_update_9:concentration",
+        "bayesian_update_10:kinetics",
+        "bayesian_update_11:concentration",
+        "bayesian_update_12:perturbation",
         "bayesian_update_13:kinetics",
-        "bayesian_update_14:perturbation",
-        "bayesian_update_15:concentration"
+        "bayesian_update_14:kinetics",
+        "bayesian_update_15:concentration",
+        "bayesian_update_16:concentration",
+        "bayesian_update_17:kinetics",
+        "bayesian_update_18:kinetics"
       ],
       "steady_state_mc": {
         "EGFR_inactive": {
-          "mean": 3.5287279973430747,
-          "std": 2.807985149964439,
-          "ci95": 1.9458344341907599,
+          "mean": 5.812022583859182,
+          "std": 2.6256041681902844,
+          "ci95": 1.8194508617982341,
           "n": 8
         },
         "EGFR_active": {
-          "mean": 96.10594486881433,
-          "std": 2.807985149964438,
-          "ci95": 1.9458344341907592,
+          "mean": 93.82265028229823,
+          "std": 2.625604168190282,
+          "ci95": 1.8194508617982326,
           "n": 8
         }
       },
-      "ssa_throughput_rps": 207590.08668025525,
+      "ssa_throughput_rps": 206910.821436505,
       "validation": {
         "thermodynamically_feasible": true,
         "conservation_ok": true,
@@ -212,117 +337,17 @@
       "rate_sensitivity": [
         {
           "transition": "EGFR_inactive->EGFR_active",
-          "base_rate": 0.4298041836286426,
+          "base_rate": 0.34758748699577896,
           "probe_state": "EGFR_active",
-          "rel_sensitivity": 0.021276595744680875
-        }
-      ]
-    },
-    {
-      "name": "EGFR_target_mutant_0_7",
-      "posterior": 0.0027630076633974854,
-      "hash": "11d218fb48409e006acf0bc0641bd3c11c46f3f7d5d0dae28f2356b9cadb59ce",
-      "n_states": 2,
-      "n_transitions": 0,
-      "provenance": [
-        "topology_mutation",
-        "bayesian_update_0:kinetics",
-        "bayesian_update_1:concentration",
-        "bayesian_update_2:perturbation",
-        "bayesian_update_3:kinetics",
-        "bayesian_update_4:kinetics",
-        "bayesian_update_5:perturbation",
-        "bayesian_update_6:perturbation",
-        "bayesian_update_7:kinetics",
-        "bayesian_update_8:concentration",
-        "bayesian_update_9:kinetics",
-        "bayesian_update_10:concentration",
-        "bayesian_update_11:perturbation",
-        "bayesian_update_12:kinetics",
-        "bayesian_update_13:kinetics",
-        "bayesian_update_14:perturbation",
-        "bayesian_update_15:concentration"
-      ],
-      "steady_state_mc": {
-        "EGFR_inactive": {
-          "mean": 50.0,
-          "std": 0.0,
-          "ci95": 0.0,
-          "n": 8
-        },
-        "EGFR_active": {
-          "mean": 50.0,
-          "std": 0.0,
-          "ci95": 0.0,
-          "n": 8
-        }
-      },
-      "ssa_throughput_rps": 0.0,
-      "validation": {
-        "thermodynamically_feasible": true,
-        "conservation_ok": true,
-        "conservation_violations": []
-      },
-      "rate_sensitivity": []
-    },
-    {
-      "name": "EGFR_target_template_0",
-      "posterior": 0.00016609593161732034,
-      "hash": "2470649a4d2783d6a3a996698bb66416e5bc2d4eea68bdcf59488bcd5dfddd8a",
-      "n_states": 2,
-      "n_transitions": 1,
-      "provenance": [
-        "bayesian_update_0:kinetics",
-        "bayesian_update_1:concentration",
-        "bayesian_update_2:perturbation",
-        "bayesian_update_3:kinetics",
-        "bayesian_update_4:kinetics",
-        "bayesian_update_5:perturbation",
-        "bayesian_update_6:perturbation",
-        "bayesian_update_7:kinetics",
-        "bayesian_update_8:concentration",
-        "bayesian_update_9:kinetics",
-        "bayesian_update_10:concentration",
-        "bayesian_update_11:perturbation",
-        "bayesian_update_12:kinetics",
-        "bayesian_update_13:kinetics",
-        "bayesian_update_14:perturbation",
-        "bayesian_update_15:concentration"
-      ],
-      "steady_state_mc": {
-        "EGFR_inactive": {
-          "mean": 1.2454334108269676,
-          "std": 1.3768784416952007,
-          "ci95": 0.9541280813323978,
-          "n": 8
-        },
-        "EGFR_active": {
-          "mean": 98.38923945533045,
-          "std": 1.3768784416952022,
-          "ci95": 0.9541280813323989,
-          "n": 8
-        }
-      },
-      "ssa_throughput_rps": 11503.552680424731,
-      "validation": {
-        "thermodynamically_feasible": true,
-        "conservation_ok": true,
-        "conservation_violations": []
-      },
-      "rate_sensitivity": [
-        {
-          "transition": "EGFR_inactive->EGFR_active",
-          "base_rate": 44.02874346669274,
-          "probe_state": "EGFR_active",
-          "rel_sensitivity": 0.01054852320675103
+          "rel_sensitivity": 0.02838427947598253
         }
       ]
     }
   ],
   "gates": {
     "determinism": {
-      "status": "FAIL",
-      "evidence": "seed=42; identical summary on re-run: False"
+      "status": "PASS",
+      "evidence": "seed=42; identical summary on re-run: True"
     },
     "numerical_stability": {
       "status": "PASS",
@@ -330,7 +355,7 @@
     },
     "performance": {
       "status": "INFO",
-      "evidence": "peak SSA throughput ~207,590 reactions/s (target 1e6 rps; small 2-state mechanisms are event-starved)"
+      "evidence": "peak SSA throughput ~206,911 reactions/s (target 1e6 rps; small 2-state mechanisms are event-starved)"
     },
     "security": {
       "status": "INFO",

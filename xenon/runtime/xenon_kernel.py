@@ -216,7 +216,12 @@ class XENONRuntime:
             # Add mutations to existing mechanisms
             if self.mechanisms[target.name] and self._rng.random() < 0.5:
                 parent = self._rng.choice(self.mechanisms[target.name])
-                mech = self.mechanism_graph.mutate_topology(parent, self.mutation_rate, seed=None)
+                # Derive a sub-seed from the master RNG so topology mutation is a
+                # deterministic function of the runtime seed (determinism gate).
+                mutate_seed = int(self._rng.integers(2**31))
+                mech = self.mechanism_graph.mutate_topology(
+                    parent, self.mutation_rate, seed=mutate_seed
+                )
                 mech.name = f"{target.name}_mutant_{self.iteration_count}_{i}"
 
             self.mechanisms[target.name].append(mech)
@@ -290,11 +295,15 @@ class XENONRuntime:
             initial_state = dict.fromkeys(mechanism._states, 50.0)
 
             try:
+                # Derive a sub-seed from the master RNG so the viability
+                # simulation is a deterministic function of the runtime seed.
+                sim_seed = int(self._rng.integers(2**31))
+
                 # Run brief simulation (0.1 seconds)
                 times, trajectories = simulator.run(
                     t_max=0.1,
                     initial_state=initial_state,
-                    seed=None,
+                    seed=sim_seed,
                     record_interval=0.01,
                 )
 
