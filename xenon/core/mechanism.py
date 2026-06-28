@@ -195,14 +195,31 @@ class BioMechanism:
         if source not in self._states or target not in self._states:
             return []
 
-        if self.graph is None or nx is None:
-            return []
+        if self.graph is not None and nx is not None:
+            try:
+                return list(nx.all_simple_paths(self.graph, source, target))
+            except (nx.NetworkXNoPath, nx.NodeNotFound):
+                return []
 
-        try:
-            paths = list(nx.all_simple_paths(self.graph, source, target))
-            return paths
-        except (nx.NetworkXNoPath, nx.NodeNotFound):
-            return []
+        # networkx-free fallback: enumerate simple paths by DFS over the
+        # transition list, so downstream consumers (e.g. the perturbation
+        # likelihood) work even when the optional networkx dependency is absent.
+        adjacency: dict[str, list[str]] = {}
+        for transition in self._transitions:
+            adjacency.setdefault(transition.source, []).append(transition.target)
+
+        paths: list[list[str]] = []
+        stack: list[tuple[str, list[str]]] = [(source, [source])]
+        while stack:
+            node, path = stack.pop()
+            if node == target:
+                paths.append(path)
+                continue
+            for nxt in adjacency.get(node, []):
+                if nxt not in path:  # keep paths simple (no cycles)
+                    stack.append((nxt, path + [nxt]))
+
+        return paths
 
     def compute_mechanism_hash(self) -> str:
         """Compute unique hash of mechanism topology and parameters."""

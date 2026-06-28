@@ -410,6 +410,7 @@ class XENONRuntime:
         """
 
         exp_type = experiment["type"]
+        conditions: dict[str, Any] = {"temperature": 310.0}
 
         # Generate mock observations
         if exp_type == "concentration":
@@ -430,6 +431,12 @@ class XENONRuntime:
             uncertainties = {}
 
         else:  # perturbation
+            # Emit the schema the perturbation likelihood consumes
+            # (perturbation_source/target), so the channel is no longer inert
+            # (F3). The perturbation drives the inactive species and the response
+            # is read out on the active species.
+            conditions["perturbation_source"] = f"{target.protein}_inactive"
+            conditions["perturbation_target"] = f"{target.protein}_active"
             observations = {"response": self._rng.normal(0.5, 0.1)}
             uncertainties = {"response": 0.1}
 
@@ -437,7 +444,7 @@ class XENONRuntime:
             experiment_type=exp_type,
             observations=observations,
             uncertainties=uncertainties,
-            conditions={"temperature": 310.0},
+            conditions=conditions,
         )
 
     def get_mechanisms(

@@ -5,12 +5,12 @@ publication-grade computational biology (Nature Biotechnology / Cell Systems / P
 **Scope of this document:** Phase 1 of the 10-phase program — a complete, evidence-grounded audit
 of the existing scientific kernel.
 
-> **Remediation status (Tier-0 implemented).** Findings **F1, F2, F4, F5, F6** (and bonus
-> final-state-recording + F12 imports) are now **FIXED** and validated by a closed-loop in-silico
-> recovery harness — see [`../TIER0_REMEDIATION_AND_RECOVERY.md`](../TIER0_REMEDIATION_AND_RECOVERY.md).
-> **F3** remains deferred. [`audit_findings.py`](audit_findings.py) has been converted to a
-> **status verifier** that exercises the actual code and reports `Tier-0: 5/5 FIXED`. The audit text
-> below is preserved as the original diagnosis; read it together with the remediation report.
+> **Remediation status.** Findings **F1, F2, F4, F5, F6, F3** (and bonus final-state-recording +
+> F12 imports) are now **FIXED** and validated by a closed-loop in-silico recovery harness and unit
+> tests — see [`../TIER0_REMEDIATION_AND_RECOVERY.md`](../TIER0_REMEDIATION_AND_RECOVERY.md).
+> [`audit_findings.py`](audit_findings.py) has been converted to a **status verifier** that exercises
+> the actual code and reports `6/6 findings FIXED`. The audit text below is preserved as the original
+> diagnosis; read it together with the remediation report.
 
 > **Scope honesty.** Phases 2–10 of the tasking program (live ingestion from GEO/TCGA/PRIDE/…,
 > multiple inference backends, identifiability suites, optimal experimental design, external/clinical
@@ -114,6 +114,12 @@ the producer and consumer share a schema. Long term, replace ad-hoc dict keys wi
 `Observation` objects (Phase 2 evidence objects).
 **Verification.** Property test: for every experiment type the kernel can emit, the matching
 likelihood must depend on at least one mechanism parameter (∂lik/∂θ ≠ 0 for some θ).
+**✅ RESOLVED.** Both (a) and (b) implemented: `_execute_experiment` now emits
+`perturbation_source/target`, and `_likelihood_perturbation` is a Gaussian over a topology-predicted
+response (per-step signal attenuation, parallel paths combined as a union; no path ⇒ predicted 0).
+Added a networkx-free `get_causal_paths` fallback so the channel works without the optional
+dependency. Verified topology-dependent (path 0.135 vs no-path 3.7×10⁻⁶) and covered by
+`xenon/tests/test_perturbation_likelihood.py` (producer/consumer schema contract + fallback).
 
 ### F4 — Likelihood averages χ², so evidence does not accumulate 🔴 Critical
 **Explanation.** `_likelihood_concentration` returns `exp(−χ²/(2·n·scale))` (line 177) and

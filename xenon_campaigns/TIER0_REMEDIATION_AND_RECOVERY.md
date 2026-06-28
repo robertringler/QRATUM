@@ -5,11 +5,12 @@ the user: implement the Tier-0 correctness fixes and a closed-loop in-silico rec
 
 Reproduce:
 ```bash
-pip install numpy scipy click
-PYTHONPATH=$PWD python xenon_campaigns/audit/audit_findings.py     # 5/5 Tier-0 FIXED
+pip install numpy scipy click networkx   # networkx is optional but recommended
+PYTHONPATH=$PWD python xenon_campaigns/audit/audit_findings.py     # 6/6 FIXED
 PYTHONPATH=$PWD python xenon_campaigns/recovery/run_recovery.py    # recovery + identifiability
 python -m pytest xenon/tests/test_insilico_recovery.py xenon/tests/test_gillespie.py \
-                 xenon/tests/test_runtime.py -p no:cacheprovider -o addopts=""   # 31 passed
+                 xenon/tests/test_runtime.py xenon/tests/test_perturbation_likelihood.py \
+                 -p no:cacheprovider -o addopts=""                # all green
 ```
 
 ---
@@ -27,9 +28,9 @@ verifier against the **actual code** (not hand-rolled reproductions):
 | **F4** | Likelihood averaged χ² over `n` | Joint Gaussian/log-normal likelihood `exp(−½χ²)` (summed, not averaged) so evidence accumulates | ✅ FIXED |
 | **F5** | Regeneration reset posteriors | `MechanismPrior.initialize_new_priors` initializes only *new* mechanisms; the kernel uses it | ✅ FIXED |
 | **F6** | Likelihood on one 0.1 s transient | Replicated SSA to steady state; mean prediction + Monte-Carlo SE folded into the noise model in quadrature | ✅ FIXED |
+| **F3** | Perturbation likelihood inert (schema mismatch) | Producer emits `perturbation_source/target`; likelihood is now a Gaussian over a topology-predicted response (signal propagation with per-step attenuation, parallel paths union); plus a networkx-free `get_causal_paths` fallback so the channel works without the optional dependency | ✅ FIXED |
 | (bonus) | `record_interval` dropped the final state for fast systems | Always record the terminal state in `GillespieSimulator.run` | ✅ FIXED |
 | **F12** | Missing `Optional`/`List` imports | Added | ✅ FIXED |
-| **F3** | Perturbation likelihood inert | — | ⏳ Deferred (honestly reported PRESENT) |
 
 **Audit verifier output (actual code):**
 
@@ -39,15 +40,17 @@ verifier against the **actual code** (not hand-rolled reproductions):
 [F4] concentration likelihood n=1 -> 1.353e-01, n=5 -> 4.540e-05         -> FIXED
 [F5] after regeneration: evidenced=0.709 other=0.022 new=0.269           -> FIXED
 [F6] predicted states carry Monte-Carlo SE (conc_mc_se): True            -> FIXED
-[F3] perturbation likelihood (kernel format) = 0.1                       -> PRESENT (deferred)
-Tier-0: 5/5 findings FIXED.
+[F3] perturbation likelihood path=0.1353 no-path=3.73e-06 (topology-dependent) -> FIXED
+6/6 findings FIXED (Tier-0 F1/F2/F4/F5/F6 + F3 perturbation channel).
 ```
 
 Determinism is preserved end to end (all sub-seeds derive from the master seed); the EGFR campaign
 remains bit-reproducible and the determinism + numerical-stability gates still pass. **No regressions:
-the full `xenon/tests` failure count dropped from 20 → 18 (the remaining 18 are pre-existing in
-`test_integration.py`/`test_mechanism.py`, files untouched here; `test_cli.py` has a pre-existing
-`SyntaxError`).** The two simulation/runtime suites and the new recovery suite are green (31 passed).
+the full `xenon/tests` failure count dropped from 20 → 16** (installing the optional `networkx`
+resolved the two pre-existing `test_mechanism` failures; the remaining 16 are pre-existing in
+`test_integration.py`, which exercises the alternate adapter API and is untouched here; `test_cli.py`
+has a pre-existing `SyntaxError`). The simulation, runtime, recovery, mechanism, and perturbation
+suites are green.
 
 ---
 

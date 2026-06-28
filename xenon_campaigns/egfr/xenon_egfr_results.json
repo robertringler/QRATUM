@@ -8,7 +8,7 @@
     "top_k": 5,
     "replicates_per_mechanism": 8,
     "confirm_tmax_s": 5.0,
-    "wallclock_s": 0.559
+    "wallclock_s": 0.561
   },
   "environment": {
     "python": "3.11.15",
@@ -81,7 +81,7 @@
           "n": 8
         }
       },
-      "ssa_throughput_rps": 118790.29376533079,
+      "ssa_throughput_rps": 122810.11303174781,
       "validation": {
         "thermodynamically_feasible": true,
         "conservation_ok": true,
@@ -108,7 +108,7 @@
     },
     "performance": {
       "status": "INFO",
-      "evidence": "peak SSA throughput ~118,790 reactions/s (target 1e6 rps; small 2-state mechanisms are event-starved)"
+      "evidence": "peak SSA throughput ~122,810 reactions/s (target 1e6 rps; small 2-state mechanisms are event-starved)"
     },
     "security": {
       "status": "INFO",

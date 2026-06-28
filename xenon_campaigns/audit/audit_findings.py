@@ -131,18 +131,32 @@ def f6_replicated_observable() -> bool:
     return se_present
 
 
-def f3_perturbation_inert() -> bool:
-    """F3 (deferred): perturbation likelihood still inert under kernel format."""
-    m = BioMechanism("t")
-    m.add_state(MolecularState(name="EGFR_inactive", molecule="EGFR", concentration=50.0))
-    m.add_state(MolecularState(name="EGFR_active", molecule="EGFR", concentration=50.0))
-    m.add_transition(Transition(source="EGFR_inactive", target="EGFR_active", rate_constant=1.0))
-    lik = BayesianUpdater().compute_likelihood(
-        m, ExperimentResult("perturbation", observations={"response": 0.5},
-                            conditions={"temperature": 310.0})
+def f3_perturbation_channel() -> bool:
+    """F3: perturbation likelihood must be schema-aligned and topology-dependent."""
+    bu = BayesianUpdater()
+
+    def mech(with_path: bool) -> BioMechanism:
+        m = BioMechanism("t")
+        m.add_state(MolecularState(name="EGFR_inactive", molecule="EGFR", concentration=50.0))
+        m.add_state(MolecularState(name="EGFR_active", molecule="EGFR", concentration=50.0))
+        if with_path:
+            m.add_transition(Transition(source="EGFR_inactive", target="EGFR_active",
+                                        rate_constant=1.0))
+        return m
+
+    # Use the schema the kernel now emits.
+    exp = ExperimentResult(
+        "perturbation",
+        observations={"response": 0.5},
+        uncertainties={"response": 0.1},
+        conditions={"perturbation_source": "EGFR_inactive",
+                    "perturbation_target": "EGFR_active", "temperature": 310.0},
     )
-    fixed = lik != 0.1
-    print(f"[F3] perturbation likelihood (kernel format) = {lik} -> {_status(fixed)} (deferred)")
+    lik_path = bu.compute_likelihood(mech(True), exp)
+    lik_no_path = bu.compute_likelihood(mech(False), exp)
+    fixed = lik_path != 0.1 and lik_path > lik_no_path
+    print(f"[F3] perturbation likelihood path={lik_path:.4f} no-path={lik_no_path:.2e} "
+          f"(topology-dependent) -> {_status(fixed)}")
     return fixed
 
 
@@ -156,12 +170,13 @@ def main() -> int:
         "F6_replicated_observable": f6_replicated_observable(),
     }
     print()
-    deferred = {"F3_perturbation_inert": f3_perturbation_inert()}
+    extra = {"F3_perturbation_channel": f3_perturbation_channel()}
     print()
-    fixed = sum(1 for v in tier0.values() if v)
-    print(f"Tier-0: {fixed}/{len(tier0)} findings FIXED. "
-          f"Deferred still PRESENT: {[k for k, v in deferred.items() if not v]}")
-    return 0 if fixed == len(tier0) else 1
+    all_checks = {**tier0, **extra}
+    fixed = sum(1 for v in all_checks.values() if v)
+    print(f"{fixed}/{len(all_checks)} findings FIXED "
+          f"(Tier-0 F1/F2/F4/F5/F6 + F3 perturbation channel).")
+    return 0 if fixed == len(all_checks) else 1
 
 
 if __name__ == "__main__":
