@@ -7,15 +7,21 @@ falsifiable validation of the inference engine.
 """
 
 from xenon.validation.insilico_recovery import (
+    PerturbationRecoveryResult,
     RecoveryResult,
+    make_pathway_mechanism,
     make_two_state_mechanism,
     predict_steady_state,
+    run_perturbation_recovery,
     run_recovery,
 )
 
 __all__ = [
+    "PerturbationRecoveryResult",
     "RecoveryResult",
+    "make_pathway_mechanism",
     "make_two_state_mechanism",
     "predict_steady_state",
+    "run_perturbation_recovery",
     "run_recovery",
 ]

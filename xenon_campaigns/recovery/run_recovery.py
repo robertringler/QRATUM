@@ -30,8 +30,10 @@ from pathlib import Path
 import numpy as np
 
 from xenon.validation.insilico_recovery import (
+    make_pathway_mechanism,
     make_two_state_mechanism,
     predict_steady_state,
+    run_perturbation_recovery,
     run_recovery,
 )
 
@@ -98,12 +100,55 @@ def scenario_b() -> dict:
     }
 
 
+def scenario_c() -> dict:
+    """Perturbation-channel recovery (validates the F3 fix on a ground truth).
+
+    Ground truth M*: a single direct edge inactive -> active (topology-predicted
+    perturbation response 0.7). Candidates have DIFFERENT topologies; the channel
+    must recover the one matching M* and reject the rest, including a mechanism
+    with no inactive->active path (predicted response 0).
+    """
+
+    src, tgt = f"{PROTEIN}_inactive", f"{PROTEIN}_active"
+    truth = make_pathway_mechanism("M_star", PROTEIN, [("inactive", "active")])
+    candidates = [
+        make_pathway_mechanism("C_direct", PROTEIN, [("inactive", "active")]),
+        make_pathway_mechanism("C_indirect", PROTEIN, [("inactive", "mid"), ("mid", "active")]),
+        make_pathway_mechanism(
+            "C_both", PROTEIN, [("inactive", "active"), ("inactive", "mid"), ("mid", "active")]
+        ),
+        make_pathway_mechanism("C_nopath", PROTEIN, [("active", "inactive")]),
+    ]
+
+    result = run_perturbation_recovery(
+        truth=truth, candidates=candidates, source=src, target=tgt,
+        n_experiments=16, response_noise=0.15, seed=SEED,
+    )
+    curve = [round(step["C_direct"], 4) for step in result.posterior_trajectory]
+    return {
+        "truth_topology": "inactive->active (direct)",
+        "truth_predicted_response": round(result.truth_predicted_response, 3),
+        "candidate_predicted_response": {
+            k: round(v, 3) for k, v in result.candidate_predicted_response.items()
+        },
+        "final_posterior": {k: round(v, 6) for k, v in result.final_posterior.items()},
+        "recovered_name": result.recovered_name,
+        "C_direct_posterior_over_experiments": curve,
+        "verdict": {
+            "recovers_true_topology": result.recovered_name == "C_direct",
+            "no_path_mechanism_rejected": result.final_posterior["C_nopath"] < 1e-3,
+            "evidence_accumulates": curve[-1] > curve[0],
+        },
+    }
+
+
 def main() -> int:
     record = {
         "scenario_meta": {"protein": PROTEIN, "seed": SEED,
                           "ground_truth": {"k_f": 2.0, "k_r": 1.0, "K": 2.0}},
         "scenario_A_recovery": scenario_a(),
         "scenario_B_identifiability": scenario_b(),
+        "scenario_C_perturbation": scenario_c(),
     }
     out_dir = Path("xenon_campaigns") / "recovery"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -112,6 +157,7 @@ def main() -> int:
 
     a = record["scenario_A_recovery"]
     b = record["scenario_B_identifiability"]
+    c = record["scenario_C_perturbation"]
     print(f"Wrote {out_path}")
     print("[A] recovered:", a["recovered_name"],
           "| posterior on truth:", a["verdict"]["final_posterior_on_truth"],
@@ -120,6 +166,10 @@ def main() -> int:
     print("[B] pred active C_K2 vs C_K2_alt:", b["predicted_active_nM"],
           "| diff", b["prediction_mean_diff_nM"], "nM vs 2*MC_SE", round(2 * b["prediction_mc_se_nM"], 3),
           "| within MC error:", b["predictions_agree_within_mc_error"])
+    print("[C] perturbation recovered:", c["recovered_name"],
+          "| predicted responses:", c["candidate_predicted_response"],
+          "| no-path rejected:", c["verdict"]["no_path_mechanism_rejected"])
+    print("    C_direct posterior curve:", c["C_direct_posterior_over_experiments"])
     return 0
 
 

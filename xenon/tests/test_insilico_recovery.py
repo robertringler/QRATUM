@@ -10,8 +10,10 @@ from __future__ import annotations
 import numpy as np
 
 from xenon.validation.insilico_recovery import (
+    make_pathway_mechanism,
     make_two_state_mechanism,
     predict_steady_state,
+    run_perturbation_recovery,
     run_recovery,
 )
 
@@ -62,6 +64,29 @@ def test_equal_K_is_non_identifiable_from_concentration():
     # Predictions agree within ~2 Monte-Carlo standard errors -> not separable
     # from a steady-state concentration measurement.
     assert mean_diff <= 2.0 * mc_se + 1.0
+
+
+def test_perturbation_recovery_recovers_topology():
+    """Perturbation channel recovers the true topology and rejects wrong ones (F3)."""
+
+    src, tgt = f"{PROTEIN}_inactive", f"{PROTEIN}_active"
+    truth = make_pathway_mechanism("M_star", PROTEIN, [("inactive", "active")])
+    candidates = [
+        make_pathway_mechanism("C_direct", PROTEIN, [("inactive", "active")]),
+        make_pathway_mechanism("C_indirect", PROTEIN, [("inactive", "mid"), ("mid", "active")]),
+        make_pathway_mechanism("C_nopath", PROTEIN, [("active", "inactive")]),
+    ]
+
+    result = run_perturbation_recovery(
+        truth, candidates, src, tgt, n_experiments=16, response_noise=0.15, seed=42
+    )
+
+    # True topology recovered; no-path mechanism rejected; evidence accumulates.
+    assert result.recovered_name == "C_direct"
+    assert result.final_posterior["C_direct"] > 0.9
+    assert result.final_posterior["C_nopath"] < 1e-3
+    curve = [step["C_direct"] for step in result.posterior_trajectory]
+    assert curve[-1] > curve[0]
 
 
 def test_recovery_is_deterministic():

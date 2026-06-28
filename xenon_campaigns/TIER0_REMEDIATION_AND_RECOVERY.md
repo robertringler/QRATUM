@@ -67,8 +67,9 @@ what the recovery harness provides.
 ## 3. In-silico recovery validation (the real test)
 
 `xenon/validation/insilico_recovery.py` generates observations from a **known** ground-truth
-mechanism M* (reversible EGFR activation, `k_f=2, k_r=1`, so `K=2`, total 100 nM) and asks whether
-XENON recovers it.
+mechanism M* and asks whether XENON recovers it — across three scenarios: (A) concentration-based
+recovery + evidence accumulation, (B) an honest identifiability limit, and (C) perturbation-channel
+topology recovery (validating the F3 fix on ground truth).
 
 ### Scenario A — recovery + evidence accumulation
 Candidates span the identifiable quantity `K ∈ {0.5, 1, 1.5, 2(true), 2.5, 4}`. M* steady state came
@@ -105,6 +106,30 @@ steady-state concentration. With well-resolved predictions (64 replicates, `t_ma
 mechanisms from concentration data alone. The harness reports this as a non-identifiability finding —
 the correct scientific behaviour, and the concrete motivation for Phase 5 (identifiability analysis)
 and Phase 6 (optimal experimental design: a kinetic/time-course experiment would break the degeneracy).
+
+### Scenario C — perturbation-channel recovery (validates F3 on a ground truth)
+Ground truth M* is a single direct edge `inactive → active` whose topology-predicted perturbation
+response is **0.7**. Candidates have **different topologies**:
+
+| Candidate | Topology | Predicted response | Final posterior |
+|---|---|---|---|
+| **C_direct** | `inactive→active` | **0.70** (matches M*) | **0.9998** |
+| C_both | `inactive→active` + `inactive→mid→active` | 0.85 | ~2×10⁻⁴ |
+| C_indirect | `inactive→mid→active` | 0.49 | ~0 |
+| C_nopath | `active→inactive` (no fwd path) | 0.00 | ~0 |
+
+`C_direct` posterior over 16 perturbation experiments (noise 0.15):
+```
+0.48, 0.63, 0.77, 0.73, 0.94, 0.93, 0.97, 0.99, 0.99, 0.99, 0.999, ... -> 1.0
+```
+**Verdict:** the now-functional perturbation channel **recovers the true topology**, **rejects the
+no-path mechanism** (predicted response 0 vs observed ~0.7), and **accumulates evidence** with
+repeated experiments — the closed-loop confirmation that the F3 fix works on ground truth.
+
+*Scope note (honesty):* this validates that inference correctly **inverts** the topology→response
+forward model and accumulates evidence; it does **not** claim the forward model (per-edge attenuation
+`decay**L`, parallel-path union) is biologically calibrated. A real perturbation assay (knockdown /
+inhibitor dose–response) would replace the synthetic forward model in Phase 2.
 
 ---
 

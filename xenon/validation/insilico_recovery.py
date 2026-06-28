@@ -70,6 +70,33 @@ def make_two_state_mechanism(
     return mech
 
 
+def make_pathway_mechanism(
+    name: str,
+    protein: str,
+    edges: list[tuple[str, str]],
+    rate: float = 1.0,
+) -> BioMechanism:
+    """Build a mechanism from a list of directed (source, target) state edges.
+
+    State names are formed as ``f"{protein}_{suffix}"`` for each suffix appearing
+    in ``edges`` (e.g. ``("inactive", "active")`` -> ``EGFR_inactive ->
+    EGFR_active``). Used to construct candidates with *different topologies* for
+    perturbation-channel validation.
+    """
+
+    mech = BioMechanism(name)
+    suffixes = sorted({s for edge in edges for s in edge})
+    for suffix in suffixes:
+        mech.add_state(
+            MolecularState(name=f"{protein}_{suffix}", molecule=protein, concentration=50.0)
+        )
+    for src, tgt in edges:
+        mech.add_transition(
+            Transition(source=f"{protein}_{src}", target=f"{protein}_{tgt}", rate_constant=rate)
+        )
+    return mech
+
+
 def predict_steady_state(
     mechanism: BioMechanism,
     rng: np.random.Generator,
@@ -203,4 +230,78 @@ def run_recovery(
         recovered_name=recovered,
         truth_identifiable_K=K_of(truth),
         candidate_K={c.name: K_of(c) for c in candidates},
+    )
+
+
+@dataclass
+class PerturbationRecoveryResult:
+    """Outcome of a perturbation-channel recovery run."""
+
+    truth_name: str
+    truth_predicted_response: float
+    candidate_predicted_response: dict[str, float]
+    posterior_trajectory: list[dict[str, float]]
+    final_posterior: dict[str, float]
+    recovered_name: str
+
+
+def run_perturbation_recovery(
+    truth: BioMechanism,
+    candidates: list[BioMechanism],
+    source: str,
+    target: str,
+    n_experiments: int = 16,
+    response_noise: float = 0.05,
+    seed: int = 42,
+) -> PerturbationRecoveryResult:
+    """Closed-loop validation of the perturbation likelihood (F3) on a ground truth.
+
+    Observations are generated from ``truth``'s topology-predicted perturbation
+    response (plus measurement noise); candidate mechanisms with *different
+    topologies* are then ranked. This verifies that the perturbation channel
+    recovers the topology that generated the data and penalizes wrong ones.
+
+    Scope note: this validates that the inference correctly *inverts* the
+    topology->response forward model and accumulates evidence — it does not
+    assert that the forward model itself is biologically calibrated (that is a
+    modelling assumption, and a real perturbation assay would replace it).
+    """
+
+    rng = np.random.default_rng(seed)
+    updater = BayesianUpdater()
+
+    truth_response = updater._predict_perturbation_response(truth, source, target)
+    candidate_response = {
+        c.name: updater._predict_perturbation_response(c, source, target) for c in candidates
+    }
+
+    for cand in candidates:
+        cand.posterior = 1.0 / len(candidates)
+
+    trajectory: list[dict[str, float]] = []
+    for _ in range(n_experiments):
+        observed = float(np.clip(truth_response + rng.normal(0.0, response_noise), 0.0, 1.0))
+        experiment = ExperimentResult(
+            experiment_type="perturbation",
+            observations={"response": observed},
+            uncertainties={"response": response_noise},
+            conditions={
+                "perturbation_source": source,
+                "perturbation_target": target,
+                "temperature": 310.0,
+            },
+        )
+        updater.update_mechanisms(candidates, experiment)
+        trajectory.append({c.name: c.posterior for c in candidates})
+
+    final = {c.name: c.posterior for c in candidates}
+    recovered = max(final, key=final.get)
+
+    return PerturbationRecoveryResult(
+        truth_name=truth.name,
+        truth_predicted_response=truth_response,
+        candidate_predicted_response=candidate_response,
+        posterior_trajectory=trajectory,
+        final_posterior=final,
+        recovered_name=recovered,
     )
