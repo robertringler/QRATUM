@@ -1,0 +1,81 @@
+{
+  "data_status": "SURROGATE (real E-MTAB-16935 counts unavailable: EBI egress blocked, no upload). Validates pipeline recovery, not embryo biology.",
+  "experiment_ref": "E-MTAB-16935 (mouse 2-cell embryo polyA+ RNA-seq)",
+  "ground_truth": {
+    "process": "maternal->zygotic (ZGA)",
+    "planted_late_ZtoM_ratio": 2.0,
+    "n_genes": 200,
+    "timepoints": [
+      "t0h",
+      "t6h",
+      "t12h",
+      "t17h"
+    ]
+  },
+  "modules": {
+    "n": 2,
+    "sizes": [
+      100,
+      100
+    ],
+    "composition": [
+      {
+        "module": 0,
+        "size": 100,
+        "dominant": "MAT",
+        "purity": 1.0
+      },
+      {
+        "module": 1,
+        "size": 100,
+        "dominant": "ZYG",
+        "purity": 1.0
+      }
+    ]
+  },
+  "state_variables_late": {
+    "module_0": 33.414,
+    "module_1": 66.586
+  },
+  "inference": {
+    "inactive_module": "module_0",
+    "active_module": "module_1",
+    "observed_active_fraction": 0.6659,
+    "observed_K": 1.9927,
+    "candidate_K": [
+      0.25,
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "final_posterior": {
+      "K=0.25": 0.0,
+      "K=0.5": 0.0,
+      "K=1.0": 0.0,
+      "K=2.0": 1.0,
+      "K=4.0": 0.0
+    },
+    "recovered_mechanism": "K=2.0",
+    "recovered_K": 2.0,
+    "posterior_first": {
+      "K=0.25": 3.548848164184518e-26,
+      "K=0.5": 1.4020749430075938e-14,
+      "K=1.0": 5.558366880395681e-05,
+      "K=2.0": 0.7966322398719381,
+      "K=4.0": 0.20331217645924388
+    },
+    "posterior_last": {
+      "K=0.25": 6.013251659053064e-275,
+      "K=0.5": 2.3433775420200814e-144,
+      "K=1.0": 6.856666112908806e-40,
+      "K=2.0": 0.9999999999999998,
+      "K=4.0": 2.0577532935108695e-16
+    }
+  },
+  "verdict": {
+    "modules_separated": true,
+    "recovered_K": 2.0,
+    "recovers_planted_K": true
+  }
+}
