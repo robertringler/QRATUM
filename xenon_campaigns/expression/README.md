@@ -53,10 +53,65 @@ Result (`expression_pipeline_results.json`), fully reproducible (`seed=42`):
   biological inference additionally needs real counts, replicate/time-course structure, and a
   defensible state-variable semantics.
 
+## Real-matrix ingest CLI (production path)
+
+One command runs an actual counts/TPM matrix through the full pipeline:
+
+```bash
+python -m xenon.bioinformatics.expression_to_mechanism \
+  --matrix    data/E-MTAB-16935_counts.tsv \
+  --metadata  data/E-MTAB-16935.sdrf.txt \
+  --gene-sets xenon_campaigns/expression/configs/mouse_ega_markers.tsv \
+  --normalization tpm \
+  --out       xenon_campaigns/expression/real_run/
+```
+
+Outputs (in `--out`): `normalized_expression.tsv`, `selected_modules.tsv`, `state_variables.tsv`,
+`candidate_mechanisms.json`, `xenon_inference_results.json`, `report.md`, `summary.json`.
+
+**Worked example (committed):** [`example_real/`](example_real/) holds a fake-real matrix (real mouse
+marker symbols: maternal `Zar1/Npm2/Zp3/…`, zygotic `Zscan4d/Dux/Zfp352/…`, polyA-sensitive histones),
+an SDRF-style metadata file, and a one-timepoint variant. Run results are in
+[`real_run/`](real_run/) (recovers **K=2.0**) and [`real_run_one_tp/`](real_run_one_tp/) (correctly
+**refuses** mechanism recovery).
+
+### What it does (acceptance criteria)
+- **Loads** real CSV/TSV genes×samples matrices; **deduplicates** genes (row-averaging), **imputes**
+  missing values (per-gene mean).
+- **Parses metadata** (SDRF *or* SRA run table — fuzzy column matching) for sample, timepoint/age,
+  polyA± treatment, replicate, developmental stage, run accession; **validated against the real
+  uploaded `SraRunTable.csv`** (correctly reads 17 h / polyA+ / 2-cell).
+- **Matches** expression columns to metadata sample names (exact → case-insensitive → substring).
+- **Normalization:** `raw`, `log1p`, `cpm`, `tpm` (pass-through). *Note: the normalization choice
+  changes the state-variable scale and therefore the inferred K; use a linear scale (`tpm`/`raw`) when
+  interpreting module-activity ratios.*
+- **Builds state variables** from gene-set modules (maternal / zygotic-EGA / polyA-sensitive),
+  timepoint-resolved.
+- **Runs XENON inference** (candidate-K posterior) with an **identifiability warning** when timepoints
+  are sparse, and **refuses mechanism-recovery** (ingestion-only) when there is `<2` distinct
+  timepoints — emitting: *"insufficient temporal structure for mechanism recovery; ingestion-only
+  validation."*
+
 ## Reproduce
 
 ```bash
 pip install numpy
+# synthetic planted-recovery demo
 PYTHONPATH=$PWD python xenon_campaigns/expression/run_expression_pipeline.py
-python -m pytest xenon/tests/test_expression_to_mechanism.py -p no:cacheprovider -o addopts=""
+# real-matrix ingest CLI on the committed fake-real example
+PYTHONPATH=$PWD python -m xenon.bioinformatics.expression_to_mechanism \
+  --matrix xenon_campaigns/expression/example_real/counts.tsv \
+  --metadata xenon_campaigns/expression/example_real/sdrf.tsv \
+  --gene-sets xenon_campaigns/expression/configs/mouse_ega_markers.tsv \
+  --normalization tpm --out xenon_campaigns/expression/real_run/
+python -m pytest xenon/tests/test_expression_to_mechanism.py xenon/tests/test_expression_ingest.py \
+  -p no:cacheprovider -o addopts=""
 ```
+
+## Status vs the real-data milestone
+
+This delivers the **executable real-data path** (option c): point `--matrix` at the genuine
+E-MTAB-16935 processed matrix and it runs end-to-end. What is **not** yet done — and must not be
+claimed — is a real biological result: that still requires the actual counts (EBI egress is blocked
+here) plus a production-grade module detector (option a) and defensible state-variable semantics. The
+metadata parser is, however, already validated on the **real** SRA run table for this study.

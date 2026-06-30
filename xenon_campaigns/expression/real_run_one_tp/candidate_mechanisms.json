@@ -1,0 +1,4 @@
+{
+  "status": "not_constructed",
+  "reason": "insufficient temporal structure for mechanism recovery; ingestion-only validation"
+}

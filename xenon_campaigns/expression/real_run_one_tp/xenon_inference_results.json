@@ -1,0 +1,6 @@
+{
+  "status": "REFUSED",
+  "reason": "insufficient temporal structure for mechanism recovery; ingestion-only validation",
+  "distinct_timepoints": 1,
+  "n_samples": 2
+}

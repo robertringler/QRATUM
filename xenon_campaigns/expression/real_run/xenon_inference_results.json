@@ -1,0 +1,23 @@
+{
+  "inactive_module": "maternal",
+  "active_module": "zygotic",
+  "observed_active_fraction": 0.6654,
+  "observed_K": 1.9889,
+  "candidate_K": [
+    0.25,
+    0.5,
+    1.0,
+    2.0,
+    4.0
+  ],
+  "final_posterior": {
+    "K=0.25": 0.0,
+    "K=0.5": 0.0,
+    "K=1.0": 0.0,
+    "K=2.0": 1.0,
+    "K=4.0": 0.0
+  },
+  "recovered_mechanism": "K=2.0",
+  "recovered_K": 2.0,
+  "status": "OK"
+}
