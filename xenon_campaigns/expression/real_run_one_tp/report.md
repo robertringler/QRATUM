@@ -7,7 +7,7 @@
 - **Mechanism recovery attempted:** False
 
 ## Modules
-- method: `gene-set`
+- mode: `gene_sets` (3 modules); see `module_detection_report.md` for quality diagnostics
   - **maternal** (maternal): activity by sample = [33.5, 32.667]
   - **polya** (polya): activity by sample = [50.0, 50.0]
   - **zygotic** (zygotic): activity by sample = [65.6, 66.0]
@@ -20,4 +20,6 @@
 - Mechanism recovery requires ≥2 distinct timepoints; with sparse timepoints K is weakly identified and any recovered mechanism is provisional.
 
 ## Warnings
+- state variables are biologically imposed, not discovered from expression structure
+- module structure is weak; mechanism inference is exploratory only
 - insufficient temporal structure for mechanism recovery; ingestion-only validation

@@ -1,0 +1,3 @@
+module	role	size	within_module_corr	between_module_corr	separation	marker_enrichment	timepoint_trend	replicate_stability	dropout_fraction
+kmeans_module_0	maternal	6	0.996	-0.996	1.992	1.0	1.007	0.985	0.0
+kmeans_module_1	zygotic	5	0.997	-0.996	1.994	1.0	1.735	0.991	0.0

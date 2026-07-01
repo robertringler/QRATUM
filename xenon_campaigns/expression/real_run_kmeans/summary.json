@@ -10,14 +10,24 @@
     17.0
   ],
   "modules": {
-    "mode": "hybrid",
-    "n_modules": 3,
+    "mode": "silhouette_kmeans",
+    "n_modules": 2,
     "diagnostics": {
-      "mode": "hybrid",
-      "mean_within_module_corr": 0.498,
-      "between_module_corr": -0.336,
-      "n_modules": 3,
-      "silhouette": null,
+      "mode": "silhouette_kmeans",
+      "selected_k": 4,
+      "silhouette": 0.9536,
+      "k_scores": {
+        "2": 0.7464,
+        "3": 0.815,
+        "4": 0.9536,
+        "5": 0.5848,
+        "6": 0.6715,
+        "7": 0.6795,
+        "8": 0.4353
+      },
+      "mean_within_module_corr": 0.996,
+      "between_module_corr": -0.996,
+      "n_modules": 2,
       "quality_flags": {
         "weak_coherence": false,
         "flat_trend": false,
@@ -29,8 +39,8 @@
   },
   "mechanism_recovery": true,
   "inference": {
-    "inactive_module": "maternal",
-    "active_module": "zygotic",
+    "inactive_module": "kmeans_module_0",
+    "active_module": "kmeans_module_1",
     "observed_active_fraction": 0.6654,
     "observed_K": 1.9889,
     "candidate_K": [

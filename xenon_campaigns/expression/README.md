@@ -108,6 +108,54 @@ python -m pytest xenon/tests/test_expression_to_mechanism.py xenon/tests/test_ex
   -p no:cacheprovider -o addopts=""
 ```
 
+## Module detection (production-grade, option a)
+
+Module discovery is now a defensible, auditable layer
+([`xenon/bioinformatics/module_detection.py`](../../xenon/bioinformatics/module_detection.py)) with
+five modes, per-module quality scoring, and honesty warnings — so a mechanism is never presented as
+more solid than the module structure supports.
+
+| `--module-mode` | What it does |
+|---|---|
+| `gene_sets` | marker sets → modules (most interpretable; **biologically imposed**) |
+| `correlation_modules` | co-expression graph (correlation threshold → connected components) |
+| `silhouette_kmeans` | automatic *k* via silhouette across `--min-k..--max-k` |
+| `hybrid` | markers first, then cluster the remaining genes |
+| `manual` | user-supplied `gene→module` mapping (`--manual-modules`) |
+
+Extra CLI flags: `--module-mode`, `--min-k`, `--max-k`, `--correlation-threshold`,
+`--min-module-size`, `--manual-modules`.
+
+Per-module quality (in `module_quality.tsv` / `module_diagnostics.json`): size, within-module
+correlation, between-module correlation, separation, silhouette, marker enrichment, timepoint trend,
+replicate stability, dropout fraction. New outputs: `selected_modules.tsv` (gene→module),
+`module_quality.tsv`, `module_activity.tsv`, `module_diagnostics.json`, `module_detection_report.md`.
+
+**Honesty warnings** (emitted, and they downgrade inference to *exploratory* where appropriate):
+- weak coherence → *"module structure is weak; mechanism inference is exploratory only"*
+- markers-only → *"state variables are biologically imposed, not discovered from expression structure"*
+- coherent but no labels → *"modules are statistically coherent but biologically unlabeled"*
+- flat dynamics → *"insufficient dynamic signal for mechanism recovery"*
+- poor replicate agreement → *"module activities are unstable across replicates"*
+
+**Cross-check on the worked example:** `gene_sets`/`hybrid` and unsupervised `silhouette_kmeans` both
+recover **K=2.0**, and the unsupervised modules show **marker enrichment 1.0** against the maternal/
+zygotic sets — i.e. the discovered modules *align with the known biology*. See
+[`real_run/`](real_run/) (hybrid), [`real_run_kmeans/`](real_run_kmeans/) (unsupervised independent
+check), and [`real_run_one_tp/`](real_run_one_tp/) (refusal).
+
+> **Note on unsupervised within-module correlation:** k-means/correlation modes produce
+> internally-correlated clusters *by construction*, so a high within-module correlation is not by
+> itself evidence of real structure — the **silhouette** and **between-module separation** are the
+> honest quality signals, and a weak/random matrix correctly trips `weak_coherence → exploratory`.
+
+### Recommended real-data protocol (per your plan)
+1. Drop in the actual E-MTAB-16935 counts/TPM on `--matrix`.
+2. Run `--module-mode hybrid` with the EGA markers.
+3. Run `--module-mode correlation_modules` (and `silhouette_kmeans`) as **independent checks**.
+4. Compare whether discovered modules align with maternal/zygotic biology (marker enrichment).
+5. Only then consider multi-module mechanisms.
+
 ## Status vs the real-data milestone
 
 This delivers the **executable real-data path** (option c): point `--matrix` at the genuine

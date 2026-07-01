@@ -7,24 +7,22 @@
     17.0
   ],
   "modules": {
-    "method": "gene-set",
-    "modules": [
-      {
-        "name": "maternal",
-        "markers_defined": 6,
-        "markers_found": 6
-      },
-      {
-        "name": "polya",
-        "markers_defined": 2,
-        "markers_found": 2
-      },
-      {
-        "name": "zygotic",
-        "markers_defined": 5,
-        "markers_found": 5
+    "mode": "gene_sets",
+    "n_modules": 3,
+    "diagnostics": {
+      "mode": "gene_sets",
+      "mean_within_module_corr": -0.022,
+      "between_module_corr": -0.033,
+      "n_modules": 3,
+      "silhouette": null,
+      "quality_flags": {
+        "weak_coherence": true,
+        "flat_trend": false,
+        "unstable_replicates": false,
+        "unlabeled": false,
+        "exploratory_only": true
       }
-    ]
+    }
   },
   "mechanism_recovery": false,
   "inference": {
@@ -34,6 +32,8 @@
     "n_samples": 2
   },
   "warnings": [
+    "state variables are biologically imposed, not discovered from expression structure",
+    "module structure is weak; mechanism inference is exploratory only",
     "insufficient temporal structure for mechanism recovery; ingestion-only validation"
   ]
 }

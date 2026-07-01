@@ -1,0 +1,62 @@
+{
+  "mode": "hybrid",
+  "diagnostics": {
+    "mode": "hybrid",
+    "mean_within_module_corr": 0.498,
+    "between_module_corr": -0.336,
+    "n_modules": 3,
+    "silhouette": null,
+    "quality_flags": {
+      "weak_coherence": false,
+      "flat_trend": false,
+      "unstable_replicates": false,
+      "unlabeled": false,
+      "exploratory_only": false
+    }
+  },
+  "warnings": [],
+  "modules": [
+    {
+      "name": "maternal",
+      "role": "maternal",
+      "quality": {
+        "size": 6,
+        "within_module_corr": 0.996,
+        "between_module_corr": -0.336,
+        "separation": 1.332,
+        "marker_enrichment": 1.0,
+        "timepoint_trend": 1.007,
+        "replicate_stability": 0.985,
+        "dropout_fraction": 0.0
+      }
+    },
+    {
+      "name": "polya",
+      "role": "polya",
+      "quality": {
+        "size": 2,
+        "within_module_corr": -0.5,
+        "between_module_corr": -0.336,
+        "separation": -0.164,
+        "marker_enrichment": 1.0,
+        "timepoint_trend": 0.02,
+        "replicate_stability": 1.0,
+        "dropout_fraction": 0.0
+      }
+    },
+    {
+      "name": "zygotic",
+      "role": "zygotic",
+      "quality": {
+        "size": 5,
+        "within_module_corr": 0.997,
+        "between_module_corr": -0.336,
+        "separation": 1.334,
+        "marker_enrichment": 1.0,
+        "timepoint_trend": 1.735,
+        "replicate_stability": 0.991,
+        "dropout_fraction": 0.0
+      }
+    }
+  ]
+}

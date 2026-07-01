@@ -31,6 +31,7 @@ from pathlib import Path
 
 import numpy as np
 
+from xenon.bioinformatics.module_detection import detect_modules
 from xenon.core.mechanism import BioMechanism, MolecularState, Transition
 from xenon.learning.bayesian_updater import BayesianUpdater, ExperimentResult
 
@@ -506,6 +507,12 @@ def run_pipeline(
     normalization: str = "log1p",
     n_modules: int = 2,
     seed: int = 42,
+    module_mode: str | None = None,
+    manual_path: str | None = None,
+    min_k: int = 2,
+    max_k: int = 8,
+    corr_threshold: float = 0.6,
+    min_module_size: int = 5,
 ) -> dict:
     """End-to-end real-matrix ingest pipeline. Writes outputs to ``out_dir``.
 
@@ -549,37 +556,56 @@ def run_pipeline(
     n_distinct_tp = len(distinct_tp)
     n_samples = len(expr.samples)
 
-    # 3. Modules (gene-set if provided, else unsupervised k-means).
-    if gene_sets_path:
-        gene_sets = load_gene_sets(gene_sets_path)
-        named = score_gene_set_modules(expr, gene_sets, X_norm)
-        module_names = named.module_names
-        module_acts = named.activities
-        low_cov = [n for n in module_names if named.present_counts[n] == 0]
-        if low_cov:
-            warnings.append(f"Gene-set modules with zero markers found in matrix: {low_cov}")
-        modules_summary = {
-            "method": "gene-set",
-            "modules": [
-                {"name": n, "markers_defined": named.member_counts[n],
-                 "markers_found": named.present_counts[n]}
-                for n in module_names
-            ],
-        }
-        roles = _classify_modules(module_names)
-    else:
-        km = select_gene_modules(expr, n_modules=n_modules, seed=seed)
-        module_names = [f"module_{j}" for j in range(km.n_modules)]
-        module_acts = km.raw_profiles
-        modules_summary = {"method": "kmeans", "sizes": km.sizes}
-        roles = {}
+    replicates = {
+        s: (meta[sample_to_meta[s]].replicate if s in sample_to_meta else None)
+        for s in expr.samples
+    }
 
-    # Write selected_modules.tsv
-    with (out / "selected_modules.tsv").open("w") as fh:
+    # 3. Module detection (defensible, auditable — see module_detection.py).
+    if module_mode is None:
+        module_mode = "gene_sets" if gene_sets_path else "silhouette_kmeans"
+    gene_sets = load_gene_sets(gene_sets_path) if gene_sets_path else None
+    manual = load_gene_sets(manual_path) if manual_path else None
+
+    md = detect_modules(
+        expr.genes, expr.samples, X_norm, module_mode,
+        timepoints=timepoints, replicates=replicates, gene_sets=gene_sets, manual=manual,
+        min_k=min_k, max_k=max_k, corr_threshold=corr_threshold,
+        min_module_size=min_module_size, seed=seed,
+    )
+    warnings.extend(md.warnings)
+    module_names = [m.name for m in md.modules]
+    module_acts = (np.array([m.activity for m in md.modules])
+                   if md.modules else np.zeros((0, len(expr.samples))))
+    roles = {m.name: (m.role or "") for m in md.modules}
+    exploratory = bool(md.diagnostics.get("quality_flags", {}).get("exploratory_only"))
+    modules_summary = {"mode": module_mode, "n_modules": len(md.modules),
+                       "diagnostics": md.diagnostics}
+
+    # Write module-detection outputs.
+    with (out / "selected_modules.tsv").open("w") as fh:  # gene -> module
+        fh.write("gene\tmodule\trole\n")
+        for m in md.modules:
+            for g in m.genes:
+                fh.write(f"{g}\t{m.name}\t{m.role or ''}\n")
+    with (out / "module_activity.tsv").open("w") as fh:  # module x samples
         fh.write("module\trole\t" + "\t".join(expr.samples) + "\n")
-        for j, n in enumerate(module_names):
-            fh.write(n + "\t" + roles.get(n, "") + "\t"
-                     + "\t".join(f"{v:.4f}" for v in module_acts[j]) + "\n")
+        for m in md.modules:
+            fh.write(m.name + "\t" + (m.role or "") + "\t"
+                     + "\t".join(f"{v:.4f}" for v in m.activity) + "\n")
+    with (out / "module_quality.tsv").open("w") as fh:
+        cols = ["size", "within_module_corr", "between_module_corr", "separation",
+                "marker_enrichment", "timepoint_trend", "replicate_stability", "dropout_fraction"]
+        fh.write("module\trole\t" + "\t".join(cols) + "\n")
+        for m in md.modules:
+            fh.write(m.name + "\t" + (m.role or "") + "\t"
+                     + "\t".join(str(m.quality.get(c)) for c in cols) + "\n")
+    (out / "module_diagnostics.json").write_text(
+        json.dumps({"mode": module_mode, "diagnostics": md.diagnostics,
+                    "warnings": md.warnings,
+                    "modules": [{"name": m.name, "role": m.role, "quality": m.quality}
+                                for m in md.modules]}, indent=2, default=str))
+    _write_module_report(out / "module_detection_report.md", module_mode, md, expr.samples)
 
     # Write normalized_expression.tsv
     with (out / "normalized_expression.tsv").open("w") as fh:
@@ -587,15 +613,13 @@ def run_pipeline(
         for g, row in zip(expr.genes, X_norm):
             fh.write(g + "\t" + "\t".join(f"{v:.4f}" for v in row) + "\n")
 
-    # 4. State variables: timepoint-normalized module activity curves.
-    state_rows = []
-    for j, n in enumerate(module_names):
-        for s_i, s in enumerate(expr.samples):
-            state_rows.append((n, roles.get(n, ""), s, timepoints[s], module_acts[j, s_i]))
+    # 4. State variables: timepoint-resolved module activity curves.
     with (out / "state_variables.tsv").open("w") as fh:
         fh.write("module\trole\tsample\ttimepoint_hours\tactivity\n")
-        for n, role, s, tp, a in state_rows:
-            fh.write(f"{n}\t{role}\t{s}\t{'' if tp is None else tp}\t{a:.4f}\n")
+        for j, n in enumerate(module_names):
+            for s_i, s in enumerate(expr.samples):
+                fh.write(f"{n}\t{roles.get(n, '')}\t{s}\t"
+                         f"{'' if timepoints[s] is None else timepoints[s]}\t{module_acts[j, s_i]:.4f}\n")
 
     # 5. Mechanism inference — only with sufficient temporal structure.
     inference: dict
@@ -612,15 +636,23 @@ def run_pipeline(
         }
         candidate_mechanisms = {"status": "not_constructed", "reason": msg}
     else:
-        # Use the latest timepoint; map maternal->inactive, zygotic->active when
-        # roles are known, else fall back to highest-activity ordering.
+        # Use the latest timepoint; map maternal->inactive, zygotic->active by
+        # module role (from markers or trend), else fall back to activity order.
         late_tp = distinct_tp[-1]
         late_cols = [i for i, s in enumerate(expr.samples) if timepoints[s] == late_tp]
         late_act = module_acts[:, late_cols].mean(axis=1)
         state_activities = {n: float(max(late_act[j], 0.0)) for j, n in enumerate(module_names)}
 
-        maternal = next((n for n in module_names if roles.get(n) == "maternal"), None)
-        zygotic = next((n for n in module_names if roles.get(n) == "zygotic"), None)
+        def _side(name: str) -> str | None:
+            r = roles.get(name, "").lower()
+            if r.startswith("matern"):
+                return "maternal"
+            if r.startswith("zygot"):
+                return "zygotic"
+            return None
+
+        maternal = next((n for n in module_names if _side(n) == "maternal"), None)
+        zygotic = next((n for n in module_names if _side(n) == "zygotic"), None)
         if maternal and zygotic:
             state_activities = {maternal: state_activities[maternal],
                                 zygotic: state_activities[zygotic]}
@@ -632,6 +664,12 @@ def run_pipeline(
         else:
             inference = infer_mechanism(state_activities, protein="program", seed=seed)
             inference["status"] = "OK"
+            inference["exploratory"] = exploratory
+            inference["module_caveats"] = md.warnings
+            if exploratory:
+                inference["exploratory_note"] = (
+                    "module structure is weak and/or timepoint dynamics are flat — "
+                    "treat this mechanism as exploratory, not a recovery claim")
             if n_distinct_tp < 3:
                 inference["identifiability_warning"] = (
                     f"only {n_distinct_tp} timepoints; K is weakly identified — "
@@ -662,6 +700,49 @@ def run_pipeline(
     return summary
 
 
+def _write_module_report(path, mode, md, samples) -> None:
+    """Write the module-detection report with per-module quality + honesty flags."""
+
+    lines = []
+    a = lines.append
+    a(f"# Module detection report — mode: `{mode}`\n")
+    d = md.diagnostics
+    a(f"- modules: {d.get('n_modules')}")
+    a(f"- mean within-module correlation: {d.get('mean_within_module_corr')}")
+    a(f"- between-module correlation: {d.get('between_module_corr')}")
+    if d.get("silhouette") is not None:
+        a(f"- silhouette: {d.get('silhouette')}"
+          + (f" (selected k={d.get('selected_k')}, scores={d.get('k_scores')})"
+             if d.get("selected_k") else ""))
+    a("")
+    a("## Per-module quality")
+    a("| module | role | size | within-corr | separation | enrichment | trend | rep-stability | dropout |")
+    a("|---|---|---:|---:|---:|---:|---:|---:|---:|")
+    for m in md.modules:
+        q = m.quality
+        a(f"| {m.name} | {m.role or ''} | {q['size']} | {q['within_module_corr']} | "
+          f"{q['separation']} | {q['marker_enrichment']} | {q['timepoint_trend']} | "
+          f"{q['replicate_stability']} | {q['dropout_fraction']} |")
+    a("")
+    flags = d.get("quality_flags", {})
+    a("## Honesty flags")
+    a(f"- weak coherence: {flags.get('weak_coherence')}")
+    a(f"- flat trend: {flags.get('flat_trend')}")
+    a(f"- unstable replicates: {flags.get('unstable_replicates')}")
+    a(f"- biologically unlabeled: {flags.get('unlabeled')}")
+    a(f"- **mechanism inference exploratory-only: {flags.get('exploratory_only')}**")
+    if md.warnings:
+        a("\n## Warnings")
+        for w in md.warnings:
+            a(f"- {w}")
+    a("\n## Interpretation limits")
+    a("- Module activities are abstract state variables, not physical concentrations.")
+    a("- High within-module correlation from k-means/correlation modes is expected by "
+      "construction; the silhouette score and between-module separation are the honest "
+      "quality signals for unsupervised modes.")
+    Path(path).write_text("\n".join(lines) + "\n")
+
+
 def _write_report(path, summary, meta, sample_to_meta, expr, roles, module_names,
                   module_acts, timepoints) -> None:
     lines = []
@@ -675,7 +756,9 @@ def _write_report(path, summary, meta, sample_to_meta, expr, roles, module_names
     a(f"- **Mechanism recovery attempted:** {summary['mechanism_recovery']}\n")
 
     a("## Modules")
-    a(f"- method: `{summary['modules'].get('method')}`")
+    a(f"- mode: `{summary['modules'].get('mode')}` "
+      f"({summary['modules'].get('n_modules')} modules); "
+      f"see `module_detection_report.md` for quality diagnostics")
     for j, n in enumerate(module_names):
         role = roles.get(n, "")
         a(f"  - **{n}**{f' ({role})' if role else ''}: "
@@ -688,6 +771,8 @@ def _write_report(path, summary, meta, sample_to_meta, expr, roles, module_names
         a(f"- recovered mechanism: **{inf['recovered_mechanism']}** (K={inf['recovered_K']})")
         a(f"- observed activation ratio K* = {inf['observed_K']}")
         a(f"- posterior: {inf['final_posterior']}")
+        if inf.get("exploratory"):
+            a(f"- ⚠️ **exploratory:** {inf.get('exploratory_note')}")
         if "identifiability_warning" in inf:
             a(f"- ⚠️ **identifiability:** {inf['identifiability_warning']}")
     else:
@@ -716,18 +801,31 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--matrix", required=True, help="genes×samples expression matrix (CSV/TSV)")
     p.add_argument("--metadata", default=None, help="SDRF / SRA run-table metadata (CSV/TSV)")
     p.add_argument("--gene-sets", default=None, help="gene-set module definitions (gene,module)")
+    p.add_argument("--manual-modules", default=None, help="manual gene->module mapping (gene,module)")
     p.add_argument("--out", required=True, help="output directory")
     p.add_argument("--normalization", default="log1p",
                    choices=["raw", "log1p", "cpm", "tpm"], help="normalization method")
-    p.add_argument("--n-modules", type=int, default=2,
-                   help="modules for unsupervised k-means fallback (ignored with --gene-sets)")
+    p.add_argument("--module-mode",
+                   choices=["gene_sets", "correlation_modules", "silhouette_kmeans",
+                            "hybrid", "manual"],
+                   default=None,
+                   help="module detector (default: gene_sets if --gene-sets else silhouette_kmeans)")
+    p.add_argument("--min-k", type=int, default=2, help="min k for silhouette_kmeans")
+    p.add_argument("--max-k", type=int, default=8, help="max k for silhouette_kmeans")
+    p.add_argument("--correlation-threshold", type=float, default=0.6,
+                   help="correlation threshold for correlation_modules")
+    p.add_argument("--min-module-size", type=int, default=5,
+                   help="minimum genes per module (smaller are dropped)")
+    p.add_argument("--n-modules", type=int, default=2, help="(legacy) fixed k; superseded by --module-mode")
     p.add_argument("--seed", type=int, default=42)
     args = p.parse_args(argv)
 
     summary = run_pipeline(
         matrix_path=args.matrix, out_dir=args.out, metadata_path=args.metadata,
         gene_sets_path=args.gene_sets, normalization=args.normalization,
-        n_modules=args.n_modules, seed=args.seed,
+        n_modules=args.n_modules, seed=args.seed, module_mode=args.module_mode,
+        manual_path=args.manual_modules, min_k=args.min_k, max_k=args.max_k,
+        corr_threshold=args.correlation_threshold, min_module_size=args.min_module_size,
     )
     print(f"Wrote outputs to {args.out}/")
     print(f"genes×samples: {summary['n_genes']}×{summary['n_samples']} | "

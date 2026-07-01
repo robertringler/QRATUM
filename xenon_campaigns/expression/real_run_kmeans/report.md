@@ -7,10 +7,9 @@
 - **Mechanism recovery attempted:** True
 
 ## Modules
-- mode: `hybrid` (3 modules); see `module_detection_report.md` for quality diagnostics
-  - **maternal** (maternal): activity by sample = [100.5, 99.5, 79.5, 76.5, 56.0, 53.333, 33.5, 32.667]
-  - **polya** (polya): activity by sample = [49.5, 49.5, 50.5, 50.5, 50.0, 50.0, 50.0, 50.0]
-  - **zygotic** (zygotic): activity by sample = [5.2, 5.4, 23.4, 23.8, 44.6, 45.0, 65.6, 66.0]
+- mode: `silhouette_kmeans` (2 modules); see `module_detection_report.md` for quality diagnostics
+  - **kmeans_module_0** (maternal): activity by sample = [100.5, 99.5, 79.5, 76.5, 56.0, 53.333, 33.5, 32.667]
+  - **kmeans_module_1** (zygotic): activity by sample = [5.2, 5.4, 23.4, 23.8, 44.6, 45.0, 65.6, 66.0]
 
 ## Inference
 - recovered mechanism: **K=2.0** (K=2.0)

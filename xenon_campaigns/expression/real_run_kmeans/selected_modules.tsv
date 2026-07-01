@@ -1,0 +1,12 @@
+gene	module	role
+Zar1	kmeans_module_0	maternal
+Npm2	kmeans_module_0	maternal
+Zp3	kmeans_module_0	maternal
+Bnc1	kmeans_module_0	maternal
+H1foo	kmeans_module_0	maternal
+Nlrp5	kmeans_module_0	maternal
+Zscan4d	kmeans_module_1	zygotic
+Dux	kmeans_module_1	zygotic
+Zfp352	kmeans_module_1	zygotic
+Tcstv1	kmeans_module_1	zygotic
+Tcstv3	kmeans_module_1	zygotic

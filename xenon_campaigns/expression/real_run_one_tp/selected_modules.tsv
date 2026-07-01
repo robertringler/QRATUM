@@ -1,4 +1,14 @@
-module	role	t17_rep1	t17_rep2
-maternal	maternal	33.5000	32.6667
-polya	polya	50.0000	50.0000
-zygotic	zygotic	65.6000	66.0000
+gene	module	role
+Zar1	maternal	maternal
+Npm2	maternal	maternal
+Zp3	maternal	maternal
+Bnc1	maternal	maternal
+H1foo	maternal	maternal
+Nlrp5	maternal	maternal
+Hist1h1a	polya	polya
+Hist1h2ab	polya	polya
+Zscan4d	zygotic	zygotic
+Dux	zygotic	zygotic
+Zfp352	zygotic	zygotic
+Tcstv1	zygotic	zygotic
+Tcstv3	zygotic	zygotic

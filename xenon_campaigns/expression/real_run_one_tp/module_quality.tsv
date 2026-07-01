@@ -1,0 +1,4 @@
+module	role	size	within_module_corr	between_module_corr	separation	marker_enrichment	timepoint_trend	replicate_stability	dropout_fraction
+maternal	maternal	6	0.133	-0.033	0.167	1.0	None	0.987	0.0
+polya	polya	2	0.0	-0.033	0.033	1.0	None	1.0	0.0
+zygotic	zygotic	5	-0.2	-0.033	-0.167	1.0	None	0.997	0.0
