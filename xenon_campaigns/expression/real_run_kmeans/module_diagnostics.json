@@ -1,0 +1,58 @@
+{
+  "mode": "silhouette_kmeans",
+  "diagnostics": {
+    "mode": "silhouette_kmeans",
+    "selected_k": 4,
+    "silhouette": 0.9536,
+    "k_scores": {
+      "2": 0.7464,
+      "3": 0.815,
+      "4": 0.9536,
+      "5": 0.5848,
+      "6": 0.6715,
+      "7": 0.6795,
+      "8": 0.4353
+    },
+    "mean_within_module_corr": 0.996,
+    "between_module_corr": -0.996,
+    "n_modules": 2,
+    "quality_flags": {
+      "weak_coherence": false,
+      "flat_trend": false,
+      "unstable_replicates": false,
+      "unlabeled": false,
+      "exploratory_only": false
+    }
+  },
+  "warnings": [],
+  "modules": [
+    {
+      "name": "kmeans_module_0",
+      "role": "maternal",
+      "quality": {
+        "size": 6,
+        "within_module_corr": 0.996,
+        "between_module_corr": -0.996,
+        "separation": 1.992,
+        "marker_enrichment": 1.0,
+        "timepoint_trend": 1.007,
+        "replicate_stability": 0.985,
+        "dropout_fraction": 0.0
+      }
+    },
+    {
+      "name": "kmeans_module_1",
+      "role": "zygotic",
+      "quality": {
+        "size": 5,
+        "within_module_corr": 0.997,
+        "between_module_corr": -0.996,
+        "separation": 1.994,
+        "marker_enrichment": 1.0,
+        "timepoint_trend": 1.735,
+        "replicate_stability": 0.991,
+        "dropout_fraction": 0.0
+      }
+    }
+  ]
+}

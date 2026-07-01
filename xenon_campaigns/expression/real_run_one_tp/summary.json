@@ -1,0 +1,39 @@
+{
+  "matrix": "xenon_campaigns/expression/example_real/counts_one_tp.tsv",
+  "n_genes": 13,
+  "n_samples": 2,
+  "normalization": "tpm",
+  "distinct_timepoints": [
+    17.0
+  ],
+  "modules": {
+    "mode": "gene_sets",
+    "n_modules": 3,
+    "diagnostics": {
+      "mode": "gene_sets",
+      "mean_within_module_corr": -0.022,
+      "between_module_corr": -0.033,
+      "n_modules": 3,
+      "silhouette": null,
+      "quality_flags": {
+        "weak_coherence": true,
+        "flat_trend": false,
+        "unstable_replicates": false,
+        "unlabeled": false,
+        "exploratory_only": true
+      }
+    }
+  },
+  "mechanism_recovery": false,
+  "inference": {
+    "status": "REFUSED",
+    "reason": "insufficient temporal structure for mechanism recovery; ingestion-only validation",
+    "distinct_timepoints": 1,
+    "n_samples": 2
+  },
+  "warnings": [
+    "state variables are biologically imposed, not discovered from expression structure",
+    "module structure is weak; mechanism inference is exploratory only",
+    "insufficient temporal structure for mechanism recovery; ingestion-only validation"
+  ]
+}

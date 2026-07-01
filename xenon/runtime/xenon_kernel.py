@@ -59,6 +59,8 @@ class XENONRuntime:
         max_mechanisms: int = 1000,
         convergence_threshold: float = 0.1,
         mutation_rate: float = 0.1,
+        sim_replicates: int = 5,
+        sim_t_max: float = 2.0,
     ):
         """Initialize XENON runtime.
 
@@ -66,11 +68,17 @@ class XENONRuntime:
             max_mechanisms: Maximum mechanisms to maintain
             convergence_threshold: Entropy threshold for convergence
             mutation_rate: Topology mutation rate
+            sim_replicates: Number of SSA replicates used to estimate the
+                predicted observable and its Monte-Carlo standard error (F6).
+            sim_t_max: Simulation horizon (s) for the predicted observable;
+                long enough to approach steady state rather than a transient.
         """
 
         self.max_mechanisms = max_mechanisms
         self.convergence_threshold = convergence_threshold
         self.mutation_rate = mutation_rate
+        self.sim_replicates = sim_replicates
+        self.sim_t_max = sim_t_max
 
         # Components
         self.bayesian_updater = BayesianUpdater()
@@ -210,20 +218,29 @@ class XENONRuntime:
         # Generate initial template mechanisms
         n_generate = min(10, self.max_mechanisms // len(self.targets))
 
+        new_mechanisms: list[BioMechanism] = []
         for i in range(n_generate):
             mech = self._create_template_mechanism(target, i)
 
             # Add mutations to existing mechanisms
             if self.mechanisms[target.name] and self._rng.random() < 0.5:
                 parent = self._rng.choice(self.mechanisms[target.name])
-                mech = self.mechanism_graph.mutate_topology(parent, self.mutation_rate, seed=None)
+                # Derive a sub-seed from the master RNG so topology mutation is a
+                # deterministic function of the runtime seed (determinism gate).
+                mutate_seed = int(self._rng.integers(2**31))
+                mech = self.mechanism_graph.mutate_topology(
+                    parent, self.mutation_rate, seed=mutate_seed
+                )
                 mech.name = f"{target.name}_mutant_{self.iteration_count}_{i}"
 
+            new_mechanisms.append(mech)
             self.mechanisms[target.name].append(mech)
 
-        # Initialize priors
-        self.mechanisms[target.name] = self.mechanism_prior.initialize_mechanism_priors(
-            self.mechanisms[target.name]
+        # Initialize priors for the NEW mechanisms only; existing mechanisms
+        # retain their accumulated posterior so sequential evidence is not wiped
+        # when the pool is regenerated (F5).
+        self.mechanisms[target.name] = self.mechanism_prior.initialize_new_priors(
+            self.mechanisms[target.name], new_mechanisms
         )
 
     def _create_template_mechanism(self, target: Target, index: int) -> BioMechanism:
@@ -276,34 +293,53 @@ class XENONRuntime:
         return mech
 
     def _simulate_mechanisms(self, target: Target) -> None:
-        """Simulate all mechanisms for target.
+        """Predict each mechanism's observable from replicated SSA runs.
+
+        For every mechanism the predicted steady-state observable is estimated
+        as the mean final concentration over ``sim_replicates`` independent
+        Gillespie trajectories run to ``sim_t_max`` (long enough to approach
+        steady state, not a 0.1 s transient). The Monte-Carlo standard error of
+        that mean is stored on each state's ``properties['conc_mc_se']`` so the
+        likelihood can treat simulation noise as part of the noise model rather
+        than as model-data mismatch (F6). All sub-seeds derive from the master
+        RNG, preserving end-to-end determinism.
 
         Args:
             target: Learning target
         """
 
         for mechanism in self.mechanisms[target.name]:
-            # Run short simulation to check viability
             simulator = GillespieSimulator(mechanism, volume=1e-15)
-
-            # Initial state: equal concentrations
             initial_state = dict.fromkeys(mechanism._states, 50.0)
 
-            try:
-                # Run brief simulation (0.1 seconds)
-                times, trajectories = simulator.run(
-                    t_max=0.1,
-                    initial_state=initial_state,
-                    seed=None,
-                    record_interval=0.01,
-                )
+            samples: dict[str, list[float]] = {name: [] for name in mechanism._states}
 
-                # Update state concentrations from final simulation state
-                if times and len(times) > 0:
+            try:
+                for _ in range(self.sim_replicates):
+                    # Deterministic sub-seed per replicate.
+                    sim_seed = int(self._rng.integers(2**31))
+                    _, trajectories = simulator.run(
+                        t_max=self.sim_t_max,
+                        initial_state=dict(initial_state),
+                        seed=sim_seed,
+                        record_interval=self.sim_t_max / 20.0,
+                    )
                     for state_name in mechanism._states:
-                        if state_name in trajectories and len(trajectories[state_name]) > 0:
-                            final_conc = trajectories[state_name][-1]
-                            mechanism._states[state_name].concentration = final_conc
+                        series = trajectories.get(state_name)
+                        if series:
+                            samples[state_name].append(series[-1])
+
+                # Store the mean prediction and its Monte-Carlo standard error.
+                for state_name, values in samples.items():
+                    if values:
+                        mean_conc = float(np.mean(values))
+                        if len(values) > 1:
+                            mc_se = float(np.std(values, ddof=1) / np.sqrt(len(values)))
+                        else:
+                            mc_se = 0.0
+                        state = mechanism._states[state_name]
+                        state.concentration = mean_conc
+                        state.properties["conc_mc_se"] = mc_se
 
             except Exception:
                 # If simulation fails, mark with low posterior
@@ -374,6 +410,7 @@ class XENONRuntime:
         """
 
         exp_type = experiment["type"]
+        conditions: dict[str, Any] = {"temperature": 310.0}
 
         # Generate mock observations
         if exp_type == "concentration":
@@ -394,6 +431,12 @@ class XENONRuntime:
             uncertainties = {}
 
         else:  # perturbation
+            # Emit the schema the perturbation likelihood consumes
+            # (perturbation_source/target), so the channel is no longer inert
+            # (F3). The perturbation drives the inactive species and the response
+            # is read out on the active species.
+            conditions["perturbation_source"] = f"{target.protein}_inactive"
+            conditions["perturbation_target"] = f"{target.protein}_active"
             observations = {"response": self._rng.normal(0.5, 0.1)}
             uncertainties = {"response": 0.1}
 
@@ -401,7 +444,7 @@ class XENONRuntime:
             experiment_type=exp_type,
             observations=observations,
             uncertainties=uncertainties,
-            conditions={"temperature": 310.0},
+            conditions=conditions,
         )
 
     def get_mechanisms(

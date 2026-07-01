@@ -1,0 +1,9 @@
+Source Name	Characteristics[age]	Characteristics[developmental stage]	Comment[library construction]	Characteristics[replicate]
+t0_rep1	0	zygote	polyA+ selection	1
+t0_rep2	0	zygote	polyA+ selection	2
+t6_rep1	6	2-cell	polyA+ selection	1
+t6_rep2	6	2-cell	polyA+ selection	2
+t12_rep1	12	2-cell	polyA+ selection	1
+t12_rep2	12	2-cell	polyA+ selection	2
+t17_rep1	17	2-cell	polyA+ selection	1
+t17_rep2	17	2-cell	polyA+ selection	2

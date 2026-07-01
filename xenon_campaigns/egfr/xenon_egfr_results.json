@@ -1,0 +1,118 @@
+{
+  "campaign": {
+    "target": "EGFR",
+    "objective": "characterize",
+    "temperature_K": 310.0,
+    "seed": 42,
+    "max_iterations": 500,
+    "top_k": 5,
+    "replicates_per_mechanism": 8,
+    "confirm_tmax_s": 5.0,
+    "wallclock_s": 0.561
+  },
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-6.18.5-x86_64-with-glibc2.39",
+    "numpy": "2.4.6"
+  },
+  "reproducibility": {
+    "reproducible": true,
+    "summary_first": {
+      "iterations": 1,
+      "converged": true,
+      "final_entropy": 5.551115123125782e-16,
+      "mechanisms_discovered": 1
+    },
+    "summary_repeat": {
+      "iterations": 1,
+      "converged": true,
+      "final_entropy": 5.551115123125782e-16,
+      "mechanisms_discovered": 1
+    }
+  },
+  "summary": {
+    "iterations": 1,
+    "converged": true,
+    "final_entropy": 5.551115123125782e-16,
+    "mechanisms_discovered": 1
+  },
+  "runtime_summary": {
+    "iterations": 0,
+    "total_mechanisms": 1,
+    "targets": 1,
+    "evidence": {
+      "EGFR_target": {
+        "n_mechanisms": 1,
+        "total_evidence": 0.9999999999999994,
+        "max_posterior": 0.9999999999999994,
+        "mean_posterior": 0.9999999999999994,
+        "entropy": 5.551115123125782e-16
+      }
+    }
+  },
+  "evidence_summary": {
+    "n_mechanisms": 1,
+    "total_evidence": 0.9999999999999994,
+    "max_posterior": 0.9999999999999994,
+    "mean_posterior": 0.9999999999999994,
+    "entropy": 5.551115123125782e-16
+  },
+  "top_mechanisms": [
+    {
+      "name": "EGFR_target_template_9",
+      "posterior": 0.9999999999999994,
+      "hash": "6c370a8fcb82c40077304738abba4f04ea300e08025babd08ecd29ccf6449040",
+      "n_states": 2,
+      "n_transitions": 1,
+      "provenance": [
+        "bayesian_update_0:concentration"
+      ],
+      "steady_state_mc": {
+        "EGFR_inactive": {
+          "mean": 27.39953503819329,
+          "std": 3.804861918761075,
+          "ci95": 2.636634790949726,
+          "n": 8
+        },
+        "EGFR_active": {
+          "mean": 72.23513782796412,
+          "std": 3.804861918761077,
+          "ci95": 2.6366347909497274,
+          "n": 8
+        }
+      },
+      "ssa_throughput_rps": 122810.11303174781,
+      "validation": {
+        "thermodynamically_feasible": true,
+        "conservation_ok": true,
+        "conservation_violations": []
+      },
+      "rate_sensitivity": [
+        {
+          "transition": "EGFR_inactive->EGFR_active",
+          "base_rate": 0.13401574000421135,
+          "probe_state": "EGFR_active",
+          "rel_sensitivity": 0.06176470588235287
+        }
+      ]
+    }
+  ],
+  "gates": {
+    "determinism": {
+      "status": "PASS",
+      "evidence": "seed=42; identical summary on re-run: True"
+    },
+    "numerical_stability": {
+      "status": "PASS",
+      "evidence": "NaN/Inf detected in confirmatory SSA outputs: False"
+    },
+    "performance": {
+      "status": "INFO",
+      "evidence": "peak SSA throughput ~122,810 reactions/s (target 1e6 rps; small 2-state mechanisms are event-starved)"
+    },
+    "security": {
+      "status": "INFO",
+      "evidence": "no untrusted input, network, or deserialization in this run; see tests/hardening/xenon_v5/test_security.py for the gate proper"
+    }
+  }
+}

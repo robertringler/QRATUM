@@ -6,7 +6,7 @@ P(mechanism | experiment) ∝ P(experiment | mechanism) × P(mechanism)
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional
 
 import numpy as np
 
@@ -161,10 +161,17 @@ class BayesianUpdater:
 
         for state_name, observed_conc in experiment.observations.items():
             if state_name in mechanism._states:
-                predicted_conc = mechanism._states[state_name].concentration
+                state = mechanism._states[state_name]
+                predicted_conc = state.concentration
 
                 if predicted_conc is not None:
-                    uncertainty = experiment.uncertainties.get(state_name, 0.1 * observed_conc)
+                    meas_unc = experiment.uncertainties.get(state_name, 0.1 * abs(observed_conc))
+                    # Fold the Monte-Carlo standard error of the prediction (if
+                    # the runtime recorded one) into the noise model in
+                    # quadrature, so simulation noise is not mistaken for
+                    # model-data mismatch (see F6).
+                    mc_se = float(state.properties.get("conc_mc_se", 0.0))
+                    uncertainty = (meas_unc**2 + mc_se**2) ** 0.5
                     if uncertainty > 0:
                         residual = (observed_conc - predicted_conc) / uncertainty
                         chi_squared += residual**2
@@ -173,9 +180,11 @@ class BayesianUpdater:
         if n_measurements == 0:
             return 0.1  # Low likelihood if no predictions available
 
-        # Gaussian likelihood
-        likelihood = np.exp(-chi_squared / (2.0 * n_measurements * self.likelihood_scale))
-        return max(likelihood, 1e-10)  # Prevent underflow
+        # Joint Gaussian likelihood: exp(-chi^2 / 2). The chi^2 is summed (not
+        # averaged) over measurements so that evidence accumulates with data
+        # volume, as required by the likelihood principle (see F4).
+        likelihood = np.exp(-chi_squared / (2.0 * self.likelihood_scale))
+        return max(likelihood, 1e-300)  # Prevent underflow to exactly zero
 
     def _likelihood_kinetics(
         self,
@@ -207,8 +216,41 @@ class BayesianUpdater:
         if n_rates == 0:
             return 0.1
 
-        likelihood = np.exp(log_likelihood / n_rates)
-        return max(likelihood, 1e-10)
+        # Joint log-normal likelihood: summed (not averaged) over rate
+        # observations so evidence accumulates with data volume (see F4).
+        likelihood = np.exp(log_likelihood)
+        return max(likelihood, 1e-300)
+
+    # Per-edge signal-propagation factor used to predict a perturbation
+    # response from mechanism topology (each reaction step attenuates the signal).
+    PERTURBATION_DECAY = 0.7
+
+    def _predict_perturbation_response(
+        self,
+        mechanism: BioMechanism,
+        source: str,
+        target: str,
+    ) -> float:
+        """Predict the perturbation response (0..1) from topology.
+
+        A perturbation of ``source`` propagates to ``target`` along causal paths.
+        Each path of edge-length L transmits with probability ``decay**L``; the
+        target responds if the signal arrives along *any* path, so the responses
+        combine as a union: ``1 - prod_paths (1 - decay**L)``. A mechanism with no
+        path (or missing either species) predicts a zero response.
+        """
+
+        if source not in mechanism._states or target not in mechanism._states:
+            return 0.0
+
+        paths = mechanism.get_causal_paths(source, target)
+        prob_no_signal = 1.0
+        for path in paths:
+            edge_length = len(path) - 1
+            if edge_length >= 1:
+                prob_no_signal *= 1.0 - self.PERTURBATION_DECAY**edge_length
+
+        return 1.0 - prob_no_signal
 
     def _likelihood_perturbation(
         self,
@@ -217,23 +259,28 @@ class BayesianUpdater:
     ) -> float:
         """Likelihood for perturbation experiments.
 
-        Evaluates whether mechanism topology supports observed response.
+        Compares the observed response magnitude to the response the mechanism's
+        topology predicts (Gaussian likelihood). This makes the channel depend on
+        the mechanism — a mechanism whose topology cannot propagate the
+        perturbation predicts ~0 response and is penalized when a response is
+        observed, while one with a short, well-connected path predicts a strong
+        response. (Fixes F3: previously this returned a constant 0.1 because the
+        kernel never supplied perturbation_source/perturbation_target.)
         """
 
-        # Check if perturbation source and target are in mechanism
         source = experiment.conditions.get("perturbation_source")
         target = experiment.conditions.get("perturbation_target")
+        observed = experiment.observations.get("response")
 
-        if source and target and source in mechanism._states and target in mechanism._states:
-            # Check if causal path exists
-            paths = mechanism.get_causal_paths(source, target)
+        # Malformed experiment (missing schema): uninformative.
+        if source is None or target is None or observed is None:
+            return 0.1
 
-            if len(paths) > 0:
-                # Likelihood increases with number of paths
-                likelihood = 1.0 - np.exp(-len(paths) / 5.0)
-                return likelihood
+        sigma = experiment.uncertainties.get("response", 0.1) or 0.1
+        predicted = self._predict_perturbation_response(mechanism, source, target)
 
-        return 0.1  # Low likelihood if topology doesn't support perturbation
+        residual = (observed - predicted) / sigma
+        return max(float(np.exp(-0.5 * residual**2)), 1e-300)
 
     def prune_low_evidence(
         self,

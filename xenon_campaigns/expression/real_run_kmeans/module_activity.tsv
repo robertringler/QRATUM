@@ -1,0 +1,3 @@
+module	role	t0_rep1	t0_rep2	t6_rep1	t6_rep2	t12_rep1	t12_rep2	t17_rep1	t17_rep2
+kmeans_module_0	maternal	100.5000	99.5000	79.5000	76.5000	56.0000	53.3333	33.5000	32.6667
+kmeans_module_1	zygotic	5.2000	5.4000	23.4000	23.8000	44.6000	45.0000	65.6000	66.0000

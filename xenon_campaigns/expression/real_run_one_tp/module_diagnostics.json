@@ -1,0 +1,65 @@
+{
+  "mode": "gene_sets",
+  "diagnostics": {
+    "mode": "gene_sets",
+    "mean_within_module_corr": -0.022,
+    "between_module_corr": -0.033,
+    "n_modules": 3,
+    "silhouette": null,
+    "quality_flags": {
+      "weak_coherence": true,
+      "flat_trend": false,
+      "unstable_replicates": false,
+      "unlabeled": false,
+      "exploratory_only": true
+    }
+  },
+  "warnings": [
+    "state variables are biologically imposed, not discovered from expression structure",
+    "module structure is weak; mechanism inference is exploratory only"
+  ],
+  "modules": [
+    {
+      "name": "maternal",
+      "role": "maternal",
+      "quality": {
+        "size": 6,
+        "within_module_corr": 0.133,
+        "between_module_corr": -0.033,
+        "separation": 0.167,
+        "marker_enrichment": 1.0,
+        "timepoint_trend": null,
+        "replicate_stability": 0.987,
+        "dropout_fraction": 0.0
+      }
+    },
+    {
+      "name": "polya",
+      "role": "polya",
+      "quality": {
+        "size": 2,
+        "within_module_corr": 0.0,
+        "between_module_corr": -0.033,
+        "separation": 0.033,
+        "marker_enrichment": 1.0,
+        "timepoint_trend": null,
+        "replicate_stability": 1.0,
+        "dropout_fraction": 0.0
+      }
+    },
+    {
+      "name": "zygotic",
+      "role": "zygotic",
+      "quality": {
+        "size": 5,
+        "within_module_corr": -0.2,
+        "between_module_corr": -0.033,
+        "separation": -0.167,
+        "marker_enrichment": 1.0,
+        "timepoint_trend": null,
+        "replicate_stability": 0.997,
+        "dropout_fraction": 0.0
+      }
+    }
+  ]
+}

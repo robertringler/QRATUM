@@ -15,7 +15,7 @@ from typing import Optional
 
 import numpy as np
 
-from ..core.mechanism import BioMechanism
+from ..core.mechanism import BioMechanism, Transition
 
 
 @dataclass
@@ -31,6 +31,27 @@ class SimulationState:
     time: float
     concentrations: dict[str, float]
     molecule_counts: dict[str, int]
+
+
+@dataclass
+class _Reaction:
+    """A single elementary reaction channel compiled from a Transition.
+
+    A reversible ``Transition`` compiles into two channels (forward + reverse);
+    an irreversible one into a single forward channel.
+
+    Attributes:
+        reactants: species -> stoichiometric order consumed (for the propensity)
+        net: species -> net change in molecule count when the channel fires
+        transition: the source Transition (rate read live, so parameter
+            perturbation between runs is reflected)
+        direction: 'forward' or 'reverse' (selects which rate constant to use)
+    """
+
+    reactants: dict[str, int]
+    net: dict[str, int]
+    transition: Transition
+    direction: str
 
 
 class GillespieSimulator:
@@ -70,6 +91,48 @@ class GillespieSimulator:
 
         self._rng: Optional[np.random.Generator] = None
         self._reaction_count = 0
+        self._reactions: list[_Reaction] = []
+
+    def _build_reactions(self) -> list[_Reaction]:
+        """Compile transitions into elementary reaction channels.
+
+        Each transition yields a forward channel; reversible transitions that
+        declare a ``reverse_rate`` additionally yield a reverse channel (fixes
+        the silent dropping of reverse reactions — detailed balance now holds).
+        Net stoichiometry is taken from ``Transition.stoichiometry`` when given,
+        otherwise it defaults to the unimolecular convention ``{source:-1,
+        target:+1}`` (preserves prior behaviour for simple transitions).
+        Reactant orders for the propensity are derived from the negative entries
+        of the net-change vector, enabling higher-order (e.g. bimolecular)
+        reactions via mass action.
+        """
+
+        reactions: list[_Reaction] = []
+        for transition in self.mechanism._transitions:
+            if transition.stoichiometry:
+                net = dict(transition.stoichiometry)
+            else:
+                net = {transition.source: -1, transition.target: 1}
+
+            reactants = {sp: -c for sp, c in net.items() if c < 0}
+            reactions.append(_Reaction(reactants, net, transition, "forward"))
+
+            if transition.reversible and transition.reverse_rate is not None:
+                reverse_net = {sp: -c for sp, c in net.items()}
+                reverse_reactants = {sp: -c for sp, c in reverse_net.items() if c < 0}
+                reactions.append(
+                    _Reaction(reverse_reactants, reverse_net, transition, "reverse")
+                )
+
+        return reactions
+
+    @staticmethod
+    def _channel_rate(reaction: _Reaction) -> float:
+        """Read the (live) rate constant for a reaction channel."""
+
+        if reaction.direction == "reverse":
+            return reaction.transition.reverse_rate or 0.0
+        return reaction.transition.rate_constant
 
     def run(
         self,
@@ -93,6 +156,11 @@ class GillespieSimulator:
         # Initialize random number generator
         self._rng = np.random.default_rng(seed)
         self._reaction_count = 0
+
+        # Compile reaction channels (forward + reverse) for the current
+        # mechanism. Done here (not in __init__) so that live edits to rate
+        # constants between runs are reflected.
+        self._reactions = self._build_reactions()
 
         # Initialize state
         state = self._initialize_state(initial_state)
@@ -135,6 +203,15 @@ class GillespieSimulator:
                 if record_interval:
                     next_record_time += record_interval
 
+        # Always record the final state. Without this, systems that
+        # equilibrate or terminate within a single record_interval would return
+        # only their initial point, so downstream "final concentration" reads
+        # would see the initial condition rather than the true endpoint.
+        if times[-1] != state.time:
+            times.append(state.time)
+            for species in state.concentrations:
+                trajectories[species].append(state.concentrations[species])
+
         return times, trajectories
 
     def _initialize_state(self, initial_concentrations: dict[str, float]) -> SimulationState:
@@ -168,26 +245,36 @@ class GillespieSimulator:
         )
 
     def _compute_propensities(self, state: SimulationState) -> list[float]:
-        """Compute reaction propensities (rates).
+        """Compute reaction propensities (mass-action).
 
-        Propensity a_i = rate_constant × reactant_counts
+        For a channel with reactant orders ``v_s`` the stochastic mass-action
+        propensity is ``a = k * prod_s falling_factorial(n_s, v_s)`` where
+        ``falling_factorial(n, v) = n*(n-1)*...*(n-v+1)``. For unimolecular
+        reactions (``v=1``) this reduces to ``a = k * n`` (unchanged from the
+        previous implementation); for bimolecular reactions it gives the correct
+        combinatorial count of reactant pairs. A channel is inert when any
+        reactant has fewer molecules than its order.
 
         Args:
             state: Current simulation state
 
         Returns:
-            List of propensities for each transition
+            List of propensities, one per compiled reaction channel
         """
 
         propensities = []
 
-        for transition in self.mechanism._transitions:
-            # Get reactant count
-            source_count = state.molecule_counts[transition.source]
+        for reaction in self._reactions:
+            propensity = self._channel_rate(reaction)
 
-            # Propensity = rate_constant × source_count
-            # For unimolecular reactions: a = k × n
-            propensity = transition.rate_constant * source_count
+            for species, order in reaction.reactants.items():
+                count = state.molecule_counts.get(species, 0)
+                if count < order:
+                    propensity = 0.0
+                    break
+                # Falling factorial n*(n-1)*...*(n-order+1)
+                for j in range(order):
+                    propensity *= count - j
 
             propensities.append(max(propensity, 0.0))
 
@@ -224,19 +311,16 @@ class GillespieSimulator:
             reaction_idx: Index of reaction that fired
         """
 
-        transition = self.mechanism._transitions[reaction_idx]
+        reaction = self._reactions[reaction_idx]
 
-        # Update molecule counts (stoichiometry)
-        state.molecule_counts[transition.source] -= 1
-        state.molecule_counts[transition.target] += 1
+        # Apply the net stoichiometric change for every species in the channel.
+        for species, change in reaction.net.items():
+            new_count = state.molecule_counts.get(species, 0) + change
+            # Clamp to zero (should not occur: propensity is zero when a
+            # reactant is depleted, so the channel cannot fire).
+            state.molecule_counts[species] = max(new_count, 0)
 
-        # Check for negative counts (indicates algorithm bug)
-        if state.molecule_counts[transition.source] < 0:
-            # This should not happen in correct SSA implementation
-            # If it does, clamp to zero and continue
-            state.molecule_counts[transition.source] = 0
-
-        # Update concentrations
+        # Update concentrations for the declared species
         for species in state.concentrations:
             count = state.molecule_counts[species]
             state.concentrations[species] = count / self.nM_to_molecules

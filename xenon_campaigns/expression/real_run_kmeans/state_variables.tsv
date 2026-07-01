@@ -1,0 +1,17 @@
+module	role	sample	timepoint_hours	activity
+kmeans_module_0	maternal	t0_rep1	0.0	100.5000
+kmeans_module_0	maternal	t0_rep2	0.0	99.5000
+kmeans_module_0	maternal	t6_rep1	6.0	79.5000
+kmeans_module_0	maternal	t6_rep2	6.0	76.5000
+kmeans_module_0	maternal	t12_rep1	12.0	56.0000
+kmeans_module_0	maternal	t12_rep2	12.0	53.3333
+kmeans_module_0	maternal	t17_rep1	17.0	33.5000
+kmeans_module_0	maternal	t17_rep2	17.0	32.6667
+kmeans_module_1	zygotic	t0_rep1	0.0	5.2000
+kmeans_module_1	zygotic	t0_rep2	0.0	5.4000
+kmeans_module_1	zygotic	t6_rep1	6.0	23.4000
+kmeans_module_1	zygotic	t6_rep2	6.0	23.8000
+kmeans_module_1	zygotic	t12_rep1	12.0	44.6000
+kmeans_module_1	zygotic	t12_rep2	12.0	45.0000
+kmeans_module_1	zygotic	t17_rep1	17.0	65.6000
+kmeans_module_1	zygotic	t17_rep2	17.0	66.0000

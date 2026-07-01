@@ -1,0 +1,7 @@
+module	role	sample	timepoint_hours	activity
+maternal	maternal	t17_rep1	17.0	33.5000
+maternal	maternal	t17_rep2	17.0	32.6667
+polya	polya	t17_rep1	17.0	50.0000
+polya	polya	t17_rep2	17.0	50.0000
+zygotic	zygotic	t17_rep1	17.0	65.6000
+zygotic	zygotic	t17_rep2	17.0	66.0000
