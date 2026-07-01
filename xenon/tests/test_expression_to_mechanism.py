@@ -66,3 +66,15 @@ def test_pipeline_is_deterministic(tmp_path):
         return infer_mechanism(s, protein="zga", seed=7)["final_posterior"]
 
     assert go() == go()
+
+
+def test_infer_mechanism_honors_explicit_roles():
+    """Explicit active/inactive keys preserve biological direction (Codex P2)."""
+    # Maternal (inactive) still higher than zygotic (active) at the late timepoint.
+    sa = {"maternal": 66.0, "zygotic": 33.0}
+    # Activity-ordering fallback would mislabel the higher module as active.
+    assert infer_mechanism(sa, seed=1)["active_module"] == "maternal"
+    # Explicit roles keep zygotic as active -> ratio < 1 (ZGA not complete).
+    r = infer_mechanism(sa, seed=1, active_key="zygotic", inactive_key="maternal")
+    assert r["active_module"] == "zygotic"
+    assert r["observed_K"] < 1.0

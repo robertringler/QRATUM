@@ -179,6 +179,8 @@ def infer_mechanism(
     n_observations: int = 12,
     noise_frac: float = 0.1,
     seed: int = 42,
+    active_key: str | None = None,
+    inactive_key: str | None = None,
 ) -> dict:
     """Infer the effective two-module regulatory mechanism via XENON.
 
@@ -192,9 +194,17 @@ def infer_mechanism(
     activities supply the observation instead of an SSA prediction.
     """
 
-    # Pick the two dominant modules as inactive/active by activity.
-    ordered = sorted(state_activities.items(), key=lambda kv: kv[1], reverse=True)
-    (active_name, active_val), (inactive_name, inactive_val) = ordered[0], ordered[1]
+    # Honor an explicit active/inactive assignment (e.g. from marker roles:
+    # zygotic->active, maternal->inactive) so the biological direction of the
+    # transition is preserved even when the maternal module is still higher at
+    # the latest timepoint. Fall back to activity ordering only when no explicit
+    # roles are supplied.
+    if (active_key in state_activities) and (inactive_key in state_activities):
+        active_name, active_val = active_key, state_activities[active_key]
+        inactive_name, inactive_val = inactive_key, state_activities[inactive_key]
+    else:
+        ordered = sorted(state_activities.items(), key=lambda kv: kv[1], reverse=True)
+        (active_name, active_val), (inactive_name, inactive_val) = ordered[0], ordered[1]
     total = active_val + inactive_val
     if total <= 0:
         raise ValueError("Module activities are non-positive; cannot infer mechanism.")
@@ -662,7 +672,10 @@ def run_pipeline(
             candidate_mechanisms = {"status": "not_constructed"}
             mechanism_recovery = False
         else:
-            inference = infer_mechanism(state_activities, protein="program", seed=seed)
+            inference = infer_mechanism(
+                state_activities, protein="program", seed=seed,
+                active_key=zygotic, inactive_key=maternal,
+            )
             inference["status"] = "OK"
             inference["exploratory"] = exploratory
             inference["module_caveats"] = md.warnings
