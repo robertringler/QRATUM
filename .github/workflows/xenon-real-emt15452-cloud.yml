@@ -1,0 +1,338 @@
+name: XENON real E-MTAB-15452 cloud run
+
+on:
+  push:
+    branches:
+      - codex/xenon-real-run-cloud-20260701
+  workflow_dispatch:
+
+jobs:
+  real-emt15452:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime deps
+        run: python -m pip install -q numpy networkx
+
+      - name: Patch direct blocking pipeline issues in runner only
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import re
+
+          md = Path('xenon/bioinformatics/module_detection.py')
+          s = md.read_text(encoding='utf-8')
+          s = s.replace(
+              'DROPOUT_FRAC = 0.50         # fraction of zeros above this => dropout warning\n',
+              'DROPOUT_FRAC = 0.50         # fraction of zeros above this => dropout warning\n'
+              'MAX_SILHOUETTE_POINTS = 500\n'
+              'MAX_CORRELATION_QUALITY_GENES = 500\n'
+              'CORRELATION_BLOCK_SIZE = 256\n'
+          )
+          sampled_silhouette = '''def silhouette_score(Z: np.ndarray, labels: np.ndarray) -> float:
+              """Mean silhouette over points, numpy implementation. NaN-safe."""
+
+              uniq = [u for u in np.unique(labels) if u >= 0]
+              if len(uniq) < 2:
+                  return float("nan")
+              mask = labels >= 0
+              Zm, lm = Z[mask], labels[mask]
+              if len(Zm) > MAX_SILHOUETTE_POINTS:
+                  per_cluster = max(2, MAX_SILHOUETTE_POINTS // len(uniq))
+                  sampled = []
+                  for u in uniq:
+                      members = np.where(lm == u)[0]
+                      if len(members) > per_cluster:
+                          members = members[np.linspace(0, len(members) - 1, per_cluster, dtype=int)]
+                      sampled.append(members)
+                  sample_idx = np.unique(np.concatenate(sampled))
+                  if len(sample_idx) > MAX_SILHOUETTE_POINTS:
+                      sample_idx = sample_idx[np.linspace(0, len(sample_idx) - 1,
+                                                          MAX_SILHOUETTE_POINTS, dtype=int)]
+                  Zm, lm = Zm[sample_idx], lm[sample_idx]
+                  uniq = [u for u in np.unique(lm) if u >= 0]
+                  if len(uniq) < 2:
+                      return float("nan")
+              D = np.sqrt(np.maximum(np.sum((Zm[:, None, :] - Zm[None, :, :]) ** 2, axis=2), 0.0))
+              scores = []
+              for i in range(len(Zm)):
+                  same = lm == lm[i]
+                  same[i] = False
+                  a = D[i, same].mean() if same.any() else 0.0
+                  b = np.inf
+                  for u in uniq:
+                      if u == lm[i]:
+                          continue
+                      other = lm == u
+                      if other.any():
+                          b = min(b, D[i, other].mean())
+                  denom = max(a, b)
+                  scores.append((b - a) / denom if denom > 0 else 0.0)
+              return float(np.mean(scores))'''
+          s = re.sub(r'def silhouette_score\(Z: np\.ndarray, labels: np\.ndarray\) -> float:\n.*?\n\ndef _corr_matrix', sampled_silhouette + '\n\ndef _corr_matrix', s, flags=re.S)
+
+          helpers = '''def _sample_idx(idx: np.ndarray, max_genes: int = MAX_CORRELATION_QUALITY_GENES) -> np.ndarray:
+              if len(idx) <= max_genes:
+                  return idx
+              return idx[np.linspace(0, len(idx) - 1, max_genes, dtype=int)]
+
+
+          def _within_between_from_data(
+              X_norm: np.ndarray, idx_by_module: list[np.ndarray]
+          ) -> tuple[list[float], float, bool]:
+              """Correlation quality scores without materializing all gene-gene pairs."""
+
+              within = []
+              sampled = False
+              for idx in idx_by_module:
+                  if len(idx) >= 2:
+                      sidx = _sample_idx(idx)
+                      sampled = sampled or len(sidx) < len(idx)
+                      sub = _corr_matrix(X_norm[sidx])
+                      iu = np.triu_indices(len(sidx), k=1)
+                      within.append(float(sub[iu].mean()))
+                  else:
+                      within.append(float("nan"))
+              between_vals = []
+              for a in range(len(idx_by_module)):
+                  for b in range(a + 1, len(idx_by_module)):
+                      ia, ib = _sample_idx(idx_by_module[a]), _sample_idx(idx_by_module[b])
+                      sampled = sampled or len(ia) < len(idx_by_module[a]) or len(ib) < len(idx_by_module[b])
+                      if len(ia) and len(ib):
+                          Za = _zscore_rows(X_norm[ia])
+                          Zb = _zscore_rows(X_norm[ib])
+                          C = (Za @ Zb.T) / max(Za.shape[1], 1)
+                          between_vals.append(float(C.mean()))
+              between = float(np.mean(between_vals)) if between_vals else 0.0
+              return within, between, sampled
+
+
+          '''
+          s = s.replace('\ndef _timepoint_trend', '\n' + helpers + 'def _timepoint_trend')
+
+          corr_func = '''def _correlation_modules_labels(X_norm: np.ndarray, threshold: float, min_size: int) -> np.ndarray:
+              Z = _zscore_rows(X_norm)
+              n = Z.shape[0]
+              parent = list(range(n))
+
+              def find(x):
+                  while parent[x] != x:
+                      parent[x] = parent[parent[x]]
+                      x = parent[x]
+                  return x
+
+              def union(a, b):
+                  ra, rb = find(a), find(b)
+                  if ra != rb:
+                      parent[max(ra, rb)] = min(ra, rb)
+
+              denom = max(Z.shape[1], 1)
+              for start in range(0, n, CORRELATION_BLOCK_SIZE):
+                  end = min(start + CORRELATION_BLOCK_SIZE, n)
+                  corr = (Z[start:end] @ Z.T) / denom
+                  for local_i, global_i in enumerate(range(start, end)):
+                      hits = np.where(corr[local_i, global_i + 1:] >= threshold)[0] + global_i + 1
+                      for j in hits:
+                          union(global_i, int(j))
+              comp = np.array([find(i) for i in range(n)])
+              labels = np.full(len(comp), -1)
+              next_label = 0
+              for root in np.unique(comp):
+                  members = np.where(comp == root)[0]
+                  if len(members) >= min_size:
+                      labels[members] = next_label
+                      next_label += 1
+              return labels'''
+          s = re.sub(r'def _correlation_modules_labels\(X_norm: np\.ndarray, threshold: float, min_size: int\) -> np\.ndarray:\n.*?\n\ndef _silhouette_kmeans_labels', corr_func + '\n\ndef _silhouette_kmeans_labels', s, flags=re.S)
+          s = s.replace(
+              '    # Build modules + per-module quality.\n'
+              '    C = _corr_matrix(X_norm)\n'
+              '    idx_by_module = [np.array(idx, dtype=int) for _, _, idx in named_groups if len(idx)]\n'
+              '    within_list, between = _within_between(C, idx_by_module) if idx_by_module else ([], 0.0)\n',
+              '    # Build modules + per-module quality.\n'
+              '    idx_by_module = [np.array(idx, dtype=int) for _, _, idx in named_groups if len(idx)]\n'
+              '    if idx_by_module:\n'
+              '        within_list, between, sampled_quality = _within_between_from_data(X_norm, idx_by_module)\n'
+              '    else:\n'
+              '        within_list, between, sampled_quality = [], 0.0, False\n'
+              '    if sampled_quality:\n'
+              '        diagnostics["correlation_quality_sampled_genes"] = MAX_CORRELATION_QUALITY_GENES\n'
+          )
+          md.write_text(s, encoding='utf-8')
+
+          etm = Path('xenon/bioinformatics/expression_to_mechanism.py')
+          s = etm.read_text(encoding='utf-8')
+          s = s.replace('import json\nimport re\n', 'import json\nimport os\nimport re\n')
+          s = s.replace('Path(path).write_text("\\n".join(lines) + "\\n")', 'Path(path).write_text("\\n".join(lines) + "\\n", encoding="utf-8")')
+          s = s.replace('(out / "candidate_mechanisms.json").write_text(json.dumps(candidate_mechanisms, indent=2))', '(out / "candidate_mechanisms.json").write_text(json.dumps(candidate_mechanisms, indent=2), encoding="utf-8")')
+          s = s.replace('(out / "xenon_inference_results.json").write_text(json.dumps(inference_public, indent=2, default=str))', '(out / "xenon_inference_results.json").write_text(json.dumps(inference_public, indent=2, default=str), encoding="utf-8")')
+          s = s.replace('(out / "summary.json").write_text(json.dumps(summary, indent=2, default=str))', '(out / "summary.json").write_text(json.dumps(summary, indent=2, default=str), encoding="utf-8")')
+          s = s.replace(']}, indent=2, default=str))\n    _write_module_report', ']}, indent=2, default=str), encoding="utf-8")\n    _write_module_report')
+          s = re.sub(r'    # Write normalized_expression\.tsv\n    with \(out / "normalized_expression\.tsv"\)\.open\("w"\) as fh:\n        fh\.write\("Gene\\t" \+ "\\t"\.join\(expr\.samples\) \+ "\\n"\)\n        for g, row in zip\(expr\.genes, X_norm\):\n            fh\.write\(g \+ "\\t" \+ "\\t"\.join\(f"\{v:\.4f\}" for v in row\) \+ "\\n"\)\n', '    # Write normalized_expression.tsv only when explicitly requested; it is bulky.\n    if os.environ.get("XENON_WRITE_NORMALIZED_EXPRESSION") == "1":\n        with (out / "normalized_expression.tsv").open("w") as fh:\n            fh.write("Gene\\t" + "\\t".join(expr.samples) + "\\n")\n            for g, row in zip(expr.genes, X_norm):\n                fh.write(g + "\\t" + "\\t".join(f"{v:.4f}" for v in row) + "\\n")\n', s)
+          etm.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Download real BioStudies files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p data/E-MTAB-15452
+          cd data/E-MTAB-15452
+          curl -fsSL "https://www.ebi.ac.uk/biostudies/api/v1/studies/E-MTAB-15452/info" -o info.json
+          python - <<'PY' > ftp_root.txt
+          import json
+          d=json.load(open('info.json'))
+          print(d.get('ftpLink','').rstrip('/'))
+          PY
+          FTP_ROOT="$(cat ftp_root.txt)"
+          echo "FTP_ROOT=$FTP_ROOT"
+          test -n "$FTP_ROOT"
+          curl -fL "$FTP_ROOT/Files/Count-table-EGA-timecourse-Detectable_genes.tsv" -o Count-table-EGA-timecourse-Detectable_genes.tsv
+          curl -fL "$FTP_ROOT/Files/Count-table-EGA-timecourse-Detectable_transposons.tsv" -o Count-table-EGA-timecourse-Detectable_transposons.tsv
+          curl -fL "$FTP_ROOT/Files/E-MTAB-15452.sdrf.txt" -o E-MTAB-15452.sdrf.txt
+          curl -fL "$FTP_ROOT/Files/E-MTAB-15452.idf.txt" -o E-MTAB-15452.idf.txt
+          ls -lh
+
+      - name: Map markers and preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          python <<'PY' | tee preflight.txt
+          import csv, json, urllib.parse, urllib.request
+          from collections import Counter
+          from pathlib import Path
+
+          cfg=Path('xenon_campaigns/expression/configs')
+          marker_path=cfg/'mouse_ega_markers.tsv'
+          map_path=cfg/'mouse_ega_marker_symbol_to_ensembl.tsv'
+          ens_path=cfg/'mouse_ega_markers_ensembl.tsv'
+          report_path=cfg/'mouse_ega_marker_mapping_report.md'
+          rows=list(csv.DictReader(marker_path.open(newline='', encoding='utf-8'), delimiter='\t'))
+          symbols=[]; modules={}
+          for r in rows:
+              symbols.append(r['gene']); modules.setdefault(r['gene'], []).append(r['module'])
+          query=f'''<?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE Query>
+          <Query virtualSchemaName="default" formatter="TSV" header="0" uniqueRows="0" count="" datasetConfigVersion="0.6">
+            <Dataset name="mmusculus_gene_ensembl" interface="default">
+              <Filter name="mgi_symbol" value="{','.join(symbols)}"/>
+              <Attribute name="mgi_symbol"/>
+              <Attribute name="ensembl_gene_id"/>
+            </Dataset>
+          </Query>'''
+          mapped={s:set() for s in symbols}; sources={s:set() for s in symbols}
+          url='https://www.ensembl.org/biomart/martservice?' + urllib.parse.urlencode({'query': query})
+          for line in urllib.request.urlopen(url, timeout=90).read().decode().splitlines():
+              p=line.split('\t')
+              if len(p)>=2 and p[0] in mapped and p[1].startswith('ENSMUSG'):
+                  mapped[p[0]].add(p[1]); sources[p[0]].add('Ensembl BioMart')
+          for sym in symbols:
+              if mapped[sym]:
+                  continue
+              rurl='https://rest.ensembl.org/xrefs/symbol/mus_musculus/'+urllib.parse.quote(sym)+'?content-type=application/json'
+              try:
+                  data=json.loads(urllib.request.urlopen(rurl, timeout=30).read().decode())
+                  for item in data:
+                      if item.get('type') == 'gene' and str(item.get('id','')).startswith('ENSMUSG'):
+                          mapped[sym].add(item['id']); sources[sym].add('Ensembl REST xrefs')
+              except Exception as e:
+                  print('REST mapping warning', sym, e)
+          with map_path.open('w', newline='', encoding='utf-8') as f:
+              w=csv.writer(f, delimiter='\t', lineterminator='\n')
+              w.writerow(['symbol','module','ensembl_gene_id','mapping_status','mapping_sources'])
+              for sym in symbols:
+                  ids=sorted(mapped[sym]); status='unmapped' if not ids else ('multiple' if len(ids)>1 else 'unique')
+                  if ids:
+                      for eid in ids: w.writerow([sym,';'.join(modules[sym]),eid,status,';'.join(sorted(sources[sym]))])
+                  else:
+                      w.writerow([sym,';'.join(modules[sym]),'',status,''])
+          with ens_path.open('w', newline='', encoding='utf-8') as f:
+              w=csv.writer(f, delimiter='\t', lineterminator='\n')
+              w.writerow(['gene','module'])
+              for sym in symbols:
+                  for module in modules[sym]:
+                      for eid in sorted(mapped[sym]): w.writerow([eid,module])
+          unique=sum(1 for s in symbols if len(mapped[s])==1); multi=[s for s in symbols if len(mapped[s])>1]; unmapped=[s for s in symbols if not mapped[s]]
+          report_path.write_text('\n'.join([
+              '# Mouse EGA Marker Symbol to Ensembl Mapping Report','',
+              f'Total input symbols: {len(symbols)}','',
+              f'Uniquely mapped symbols: {unique}','',
+              f'Multiply mapped symbols: {len(multi)}','',
+              f'Unmapped symbols excluded: {len(unmapped)}','',
+              'Unmapped: '+(', '.join(unmapped) if unmapped else 'none'),''
+          ]), encoding='utf-8')
+
+          matrix=Path('data/E-MTAB-15452/Count-table-EGA-timecourse-Detectable_genes.tsv')
+          sdrf=Path('data/E-MTAB-15452/E-MTAB-15452.sdrf.txt')
+          with matrix.open(newline='', encoding='utf-8') as f:
+              r=csv.reader(f, delimiter='\t'); h=next(r); first=[]; ids=set(); rows=0; bad=0
+              for row in r:
+                  if not row: continue
+                  rows+=1; ids.add(row[0])
+                  if len(first)<10: first.append(row[0])
+                  for v in row[1:]:
+                      try: float(v)
+                      except Exception: bad+=1
+          samples=h[1:]
+          marker_ids=[r['gene'] for r in csv.DictReader(ens_path.open(newline='', encoding='utf-8'), delimiter='\t')]
+          if not marker_ids or not all(x.startswith('ENSMUSG') for x in marker_ids): raise SystemExit('STOP marker IDs not ENSMUSG')
+          overlap=sorted(set(marker_ids)&ids)
+          if len(overlap)<5: raise SystemExit(f'STOP marker overlap too low: {len(overlap)}')
+          with sdrf.open(newline='', encoding='utf-8') as f:
+              dr=csv.DictReader(f, delimiter='\t'); src=[]; assay=[]; times=[]
+              for row in dr:
+                  src.append(row.get('Source Name','')); assay.append(row.get('Assay Name','')); times.append(row.get('Factor Value[time]',''))
+          tb={}
+          for s,t in zip(src,times):
+              if s and s not in tb: tb[s]=t
+          tc=Counter(tb.get(s,'') for s in samples)
+          print('FIRST_10_MATRIX_IDS', ', '.join(first))
+          print('FIRST_10_MARKER_IDS', ', '.join(marker_ids[:10]))
+          print('MARKER_MATRIX_OVERLAP', len(overlap))
+          print('MATRIX_DIMENSIONS', f'{rows} genes x {len(samples)} samples')
+          print('NON_NUMERIC_VALUES', bad)
+          print('SAMPLE_MATCH_SOURCE', f'{sum(s in set(src) for s in samples)}/{len(samples)}')
+          print('SAMPLE_MATCH_ASSAY', f'{sum(s in set(assay) for s in samples)}/{len(samples)}')
+          print('DISTINCT_TIMEPOINTS', ', '.join(f'{k}h:{v}' for k,v in sorted(tc.items(), key=lambda kv: int(kv[0]) if kv[0].isdigit() else 999)))
+          PY
+
+      - name: Run XENON modes
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$PWD:${PYTHONPATH:-}"
+          export XENON_WRITE_NORMALIZED_EXPRESSION=0
+          M=data/E-MTAB-15452/Count-table-EGA-timecourse-Detectable_genes.tsv
+          S=data/E-MTAB-15452/E-MTAB-15452.sdrf.txt
+          G=xenon_campaigns/expression/configs/mouse_ega_markers_ensembl.tsv
+          python -m xenon.bioinformatics.expression_to_mechanism --matrix "$M" --metadata "$S" --gene-sets "$G" --normalization cpm --module-mode hybrid --out xenon_real_run/hybrid
+          python -m xenon.bioinformatics.expression_to_mechanism --matrix "$M" --metadata "$S" --gene-sets "$G" --normalization cpm --module-mode silhouette_kmeans --min-k 2 --max-k 8 --out xenon_real_run/silhouette_kmeans
+          python -m xenon.bioinformatics.expression_to_mechanism --matrix "$M" --metadata "$S" --gene-sets "$G" --normalization cpm --module-mode correlation_modules --correlation-threshold 0.6 --min-module-size 10 --out xenon_real_run/correlation_modules
+
+      - name: Summarize outputs
+        shell: bash
+        run: |
+          python <<'PY' | tee cloud_summary.txt
+          import csv, json
+          from pathlib import Path
+          for mode in ['hybrid','silhouette_kmeans','correlation_modules']:
+              p=Path('xenon_real_run')/mode
+              print('\nMODE', mode)
+              print((p/'module_quality.tsv').read_text())
+              print(json.dumps(json.loads((p/'xenon_inference_results.json').read_text()), indent=2))
+              d=json.loads((p/'module_diagnostics.json').read_text())
+              print('WARNINGS', d.get('warnings'))
+          PY
+          tar -czf xenon_real_run_artifacts.tgz xenon_real_run preflight.txt cloud_summary.txt xenon_campaigns/expression/configs/mouse_ega_marker_symbol_to_ensembl.tsv xenon_campaigns/expression/configs/mouse_ega_markers_ensembl.tsv xenon_campaigns/expression/configs/mouse_ega_marker_mapping_report.md
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: xenon-real-emt15452-results
+          path: xenon_real_run_artifacts.tgz
