@@ -1,0 +1,73 @@
+{
+  "program": "QRATUM-FLT",
+  "milestone": "M0",
+  "claim": "FLT for all odd prime exponents implies FLT for every exponent greater than 2",
+  "status": "canonical_mathlib_proof_integrated_build_pending",
+  "nodes": [
+    {
+      "id": "MATHLIB-FLT-BASIC",
+      "kind": "verified_dependency",
+      "name": "FermatLastTheoremFor and FermatLastTheoremWith.mono",
+      "module": "Mathlib.NumberTheory.FLT.Basic",
+      "status": "upstream_kernel_checked",
+      "dependencies": []
+    },
+    {
+      "id": "MATHLIB-FLT-COVERAGE",
+      "kind": "verified_dependency",
+      "name": "Nat.four_dvd_or_exists_odd_prime_and_dvd_of_two_lt",
+      "module": "Mathlib.NumberTheory.FLT.Four",
+      "status": "upstream_kernel_checked",
+      "dependencies": []
+    },
+    {
+      "id": "MATHLIB-FLT-FOUR",
+      "kind": "verified_dependency",
+      "name": "fermatLastTheoremFour",
+      "module": "Mathlib.NumberTheory.FLT.Four",
+      "status": "upstream_kernel_checked",
+      "dependencies": ["MATHLIB-FLT-BASIC"]
+    },
+    {
+      "id": "MATHLIB-FLT-M0",
+      "kind": "verified_dependency",
+      "name": "FermatLastTheorem.of_odd_primes",
+      "module": "Mathlib.NumberTheory.FLT.Four",
+      "status": "upstream_kernel_checked",
+      "dependencies": [
+        "MATHLIB-FLT-BASIC",
+        "MATHLIB-FLT-COVERAGE",
+        "MATHLIB-FLT-FOUR"
+      ]
+    },
+    {
+      "id": "QRATUM-FLT-M0-WRAPPER",
+      "kind": "integration_theorem",
+      "name": "QRATUM.FLT.flt_of_odd_primes",
+      "path": "lean/QRATUM/FLT/Reduction.lean",
+      "status": "implemented_build_pending",
+      "dependencies": ["MATHLIB-FLT-M0"]
+    },
+    {
+      "id": "FLT-ODD-PRIME-FRONTIER",
+      "kind": "open_formalization_frontier",
+      "name": "FLT for every odd prime exponent",
+      "status": "not_complete",
+      "dependencies": [
+        "Frey curve construction",
+        "Ribet level lowering",
+        "semistable modularity / Taylor-Wiles"
+      ]
+    }
+  ],
+  "acceptance": {
+    "upstream_m0_identified": true,
+    "upstream_exponent_four_identified": true,
+    "qratum_wrapper_implemented": true,
+    "lake_build": false,
+    "placeholder_audit": false,
+    "clean_rebuild": false,
+    "m0_integration_complete": false,
+    "full_flt_complete": false
+  }
+}
