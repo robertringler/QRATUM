@@ -1,65 +1,73 @@
 {
   "program": "QRATUM-FLT",
   "milestone": "M0",
-  "claim": "FLT for exponent 4 plus all odd prime exponents implies FLT for every exponent greater than 2",
-  "status": "scaffolded_not_yet_ci_verified",
+  "claim": "FLT for all odd prime exponents implies FLT for every exponent greater than 2",
+  "status": "canonical_mathlib_proof_integrated_build_pending",
   "nodes": [
     {
-      "id": "FLT-DEF-001",
-      "kind": "definition",
-      "name": "FermatAt",
-      "path": "lean/QRATUM/FLT/Basic.lean",
-      "status": "implemented",
+      "id": "MATHLIB-FLT-BASIC",
+      "kind": "verified_dependency",
+      "name": "FermatLastTheoremFor and FermatLastTheoremWith.mono",
+      "module": "Mathlib.NumberTheory.FLT.Basic",
+      "status": "upstream_kernel_checked",
       "dependencies": []
     },
     {
-      "id": "FLT-LIFT-001",
-      "kind": "theorem",
-      "name": "fermatAt_of_dvd",
-      "path": "lean/QRATUM/FLT/Basic.lean",
-      "status": "implemented_unverified",
-      "dependencies": ["FLT-DEF-001"]
-    },
-    {
-      "id": "FLT-COVER-001",
-      "kind": "theorem_target",
-      "name": "ExponentCoverage",
-      "path": "lean/QRATUM/FLT/Reduction.lean",
-      "status": "specified_not_proved",
+      "id": "MATHLIB-FLT-COVERAGE",
+      "kind": "verified_dependency",
+      "name": "Nat.four_dvd_or_exists_odd_prime_and_dvd_of_two_lt",
+      "module": "Mathlib.NumberTheory.FLT.Four",
+      "status": "upstream_kernel_checked",
       "dependencies": []
     },
     {
-      "id": "FLT-FOUR-001",
-      "kind": "deep_dependency",
-      "name": "FermatAt 4",
-      "status": "external_hypothesis",
-      "dependencies": []
+      "id": "MATHLIB-FLT-FOUR",
+      "kind": "verified_dependency",
+      "name": "fermatLastTheoremFour",
+      "module": "Mathlib.NumberTheory.FLT.Four",
+      "status": "upstream_kernel_checked",
+      "dependencies": ["MATHLIB-FLT-BASIC"]
     },
     {
-      "id": "FLT-ODD-PRIME-001",
-      "kind": "deep_dependency",
-      "name": "FermatAt p for every odd prime p",
-      "status": "external_hypothesis",
-      "dependencies": []
-    },
-    {
-      "id": "FLT-M0-ASSEMBLY",
-      "kind": "theorem",
-      "name": "flt_of_four_and_odd_primes",
-      "path": "lean/QRATUM/FLT/Reduction.lean",
-      "status": "implemented_unverified",
+      "id": "MATHLIB-FLT-M0",
+      "kind": "verified_dependency",
+      "name": "FermatLastTheorem.of_odd_primes",
+      "module": "Mathlib.NumberTheory.FLT.Four",
+      "status": "upstream_kernel_checked",
       "dependencies": [
-        "FLT-LIFT-001",
-        "FLT-COVER-001",
-        "FLT-FOUR-001",
-        "FLT-ODD-PRIME-001"
+        "MATHLIB-FLT-BASIC",
+        "MATHLIB-FLT-COVERAGE",
+        "MATHLIB-FLT-FOUR"
+      ]
+    },
+    {
+      "id": "QRATUM-FLT-M0-WRAPPER",
+      "kind": "integration_theorem",
+      "name": "QRATUM.FLT.flt_of_odd_primes",
+      "path": "lean/QRATUM/FLT/Reduction.lean",
+      "status": "implemented_build_pending",
+      "dependencies": ["MATHLIB-FLT-M0"]
+    },
+    {
+      "id": "FLT-ODD-PRIME-FRONTIER",
+      "kind": "open_formalization_frontier",
+      "name": "FLT for every odd prime exponent",
+      "status": "not_complete",
+      "dependencies": [
+        "Frey curve construction",
+        "Ribet level lowering",
+        "semistable modularity / Taylor-Wiles"
       ]
     }
   ],
   "acceptance": {
+    "upstream_m0_identified": true,
+    "upstream_exponent_four_identified": true,
+    "qratum_wrapper_implemented": true,
     "lake_build": false,
     "placeholder_audit": false,
     "clean_rebuild": false,
-    "m0_complete": false
+    "m0_integration_complete": false,
+    "full_flt_complete": false
   }
 }
