@@ -1,0 +1,65 @@
+{
+  "program": "QRATUM-FLT",
+  "milestone": "M0",
+  "claim": "FLT for exponent 4 plus all odd prime exponents implies FLT for every exponent greater than 2",
+  "status": "scaffolded_not_yet_ci_verified",
+  "nodes": [
+    {
+      "id": "FLT-DEF-001",
+      "kind": "definition",
+      "name": "FermatAt",
+      "path": "lean/QRATUM/FLT/Basic.lean",
+      "status": "implemented",
+      "dependencies": []
+    },
+    {
+      "id": "FLT-LIFT-001",
+      "kind": "theorem",
+      "name": "fermatAt_of_dvd",
+      "path": "lean/QRATUM/FLT/Basic.lean",
+      "status": "implemented_unverified",
+      "dependencies": ["FLT-DEF-001"]
+    },
+    {
+      "id": "FLT-COVER-001",
+      "kind": "theorem_target",
+      "name": "ExponentCoverage",
+      "path": "lean/QRATUM/FLT/Reduction.lean",
+      "status": "specified_not_proved",
+      "dependencies": []
+    },
+    {
+      "id": "FLT-FOUR-001",
+      "kind": "deep_dependency",
+      "name": "FermatAt 4",
+      "status": "external_hypothesis",
+      "dependencies": []
+    },
+    {
+      "id": "FLT-ODD-PRIME-001",
+      "kind": "deep_dependency",
+      "name": "FermatAt p for every odd prime p",
+      "status": "external_hypothesis",
+      "dependencies": []
+    },
+    {
+      "id": "FLT-M0-ASSEMBLY",
+      "kind": "theorem",
+      "name": "flt_of_four_and_odd_primes",
+      "path": "lean/QRATUM/FLT/Reduction.lean",
+      "status": "implemented_unverified",
+      "dependencies": [
+        "FLT-LIFT-001",
+        "FLT-COVER-001",
+        "FLT-FOUR-001",
+        "FLT-ODD-PRIME-001"
+      ]
+    }
+  ],
+  "acceptance": {
+    "lake_build": false,
+    "placeholder_audit": false,
+    "clean_rebuild": false,
+    "m0_complete": false
+  }
+}
