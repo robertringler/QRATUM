@@ -1,0 +1,265 @@
+{
+  "findings": [
+    {
+      "attack_id": "A1_MUTATE_LOADED_CONFIG",
+      "category": "input corruption",
+      "defence": "EnergySystem is a frozen dataclass built once at load time; the engine never re-reads the raw document, and config_hash was computed at load.",
+      "description": "Raise a generator's nameplate capacity in the raw configuration dictionary held by LoadedSystem after validation has completed.",
+      "evidence": {
+        "effective_p_max_mw": 220.0,
+        "identity_after": "dbbbcaa6b182591f5e0d69d56f1357b271a9837a3e4766bbc58a55eed42fe257",
+        "identity_before": "dbbbcaa6b182591f5e0d69d56f1357b271a9837a3e4766bbc58a55eed42fe257"
+      },
+      "outcome": "REJECTED"
+    },
+    {
+      "attack_id": "A2_MUTATE_FROZEN_MODEL",
+      "category": "input corruption",
+      "defence": "frozen dataclass",
+      "description": "Assign directly to a field of a live Generator object.",
+      "evidence": {
+        "error": "FrozenInstanceError: cannot assign to field 'p_max_mw'"
+      },
+      "outcome": "REJECTED"
+    },
+    {
+      "attack_id": "A3_SUBBIT_INPUT_CHANGE",
+      "category": "input corruption",
+      "defence": "SHA-256 over canonical JSON with exact float repr",
+      "description": "Change one line reactance by one floating-point step (0.06 -> 0.060000000000000005) and claim the original provenance.",
+      "evidence": {
+        "config_hash_after": "e12a615f13b4f04c6855d4db566e4b1e7060d8a22d70d120b9afb70d5af6d40f",
+        "config_hash_before": "b3fc57aaf4e8aaf02b370953789058dc03ec27b545907f2f015f0a75bd31d8f7",
+        "model_hash_changed": true
+      },
+      "outcome": "DETECTED"
+    },
+    {
+      "attack_id": "B1_EDIT_STORED_EVENT",
+      "category": "event corruption",
+      "defence": "per-node content-hash recomputation in FluxaEventLedger.verify()",
+      "description": "Rewrite the payload of a logged event in place, concealing a violation.",
+      "evidence": {
+        "chain_head_unchanged": true,
+        "event_index": 87,
+        "messages": [
+          "node 87: content hash does not match data"
+        ],
+        "note": "The chain head does not change, so comparing heads alone would miss this. Detection comes from per-node content verification."
+      },
+      "outcome": "DETECTED"
+    },
+    {
+      "attack_id": "B2_REHASH_TAMPERED_EVENT",
+      "category": "event corruption",
+      "defence": "previous_hash linkage: the following node's parent pointer no longer matches",
+      "description": "Edit an event and recompute its node hash, so the content check passes.",
+      "evidence": {
+        "event_index": 5,
+        "messages": [
+          "node 6: previous_hash acebc1cfa718... != expected 979024685c5a..."
+        ]
+      },
+      "outcome": "DETECTED"
+    },
+    {
+      "attack_id": "B3_DELETE_EVENT",
+      "category": "event corruption",
+      "defence": "chain linkage plus monotonic sequence numbering",
+      "description": "Splice an event out of the ledger.",
+      "evidence": {
+        "messages": [
+          "node 5: previous_hash acebc1cfa718... != expected ac1cc85b15de...",
+          "event 5: sequence field is 6",
+          "event 6: sequence field is 7"
+        ]
+      },
+      "outcome": "DETECTED"
+    },
+    {
+      "attack_id": "B4_APPEND_EXCULPATORY_EVENT",
+      "category": "event corruption",
+      "defence": "the externally recorded root in the provenance bundle no longer matches",
+      "description": "Append a fabricated SYSTEM_STABILIZED event after the run closed.",
+      "evidence": {
+        "ledger_still_self_consistent": true,
+        "note": "An append-only log cannot detect its own extension from the inside. Detection requires the external witness (the bundle's recorded root), which is why the bundle must be published separately.",
+        "recorded_root": "7cb4c9b0b7109761bc6ac423a74d1c66bc5ffcd50fe0ef60732c28d70aac75fd",
+        "root_after_append": "1f17fbbf12cce45d180035133599307aee8dfdd34df19a5c6a3cb0817cdf004b"
+      },
+      "outcome": "DETECTED"
+    },
+    {
+      "attack_id": "C1_EDIT_HISTORICAL_STATE",
+      "category": "state corruption",
+      "defence": "binary Merkle tree over exact-precision per-state hashes",
+      "description": "Change one recorded timestep's load by 1e-9 MW and recompute the state tree.",
+      "evidence": {
+        "recomputed_root": "f945714a494056452d50601e22f0b546a4bd4b4fd252d709307ac2629ba573e1",
+        "recorded_state_tree_root": "5f8dbfac2e29d8feb97171509aba6bf30a2bce5acbd332ceacc1ae9c1cf0b942"
+      },
+      "outcome": "DETECTED"
+    },
+    {
+      "attack_id": "C2_INJECT_UNPHYSICAL_STATE",
+      "category": "state corruption",
+      "defence": "in-loop validate_physical_state raises and halts the run",
+      "description": "Inject 50 MW of phantom generation into a mid-run state.",
+      "evidence": {
+        "error": "QRADLE contract execution failed: step 10: physical invariant violated: ['POWER_BALANCE: supply 335.276246849 MW != demand 285.276246849 MW (residual 5.000e+01)', 'CAPACITY_EXCEEDED: GAS_CCGT_1 at 255.336450504 MW > p_max 220.0 MW']"
+      },
+      "outcome": "REJECTED"
+    },
+    {
+      "attack_id": "D1_REPLAY_FOREIGN_LEDGER",
+      "category": "replay attack",
+      "defence": "the provenance bundle binds scenario_hash, profile_hash, event root and state root together, so a substituted ledger does not match",
+      "description": "Present the clean baseline ledger as the audit trail for the compound disturbance run.",
+      "evidence": {
+        "clean_event_tree_root": "532a64489203fd6546d46036c5902ce69e3149f8a9410f5d02e8f8cbd4a57943",
+        "disturbed_event_tree_root": "a4c1b44d8267aed1657b6d107c3df978178aa64d7d367f0abd7c4cf0928ece14",
+        "scenario_hash_differs": true
+      },
+      "outcome": "DETECTED"
+    },
+    {
+      "attack_id": "D2_REPLAY_FOREIGN_CHECKPOINT",
+      "category": "replay attack",
+      "defence": "checkpoint ids are experiment-addressed, so a foreign id is not present",
+      "description": "Restore a checkpoint taken under a different scenario.",
+      "evidence": {
+        "example_id_a": "FLUXA:FLUXA-6BUS-ISLAND-A:A_BASELINE:ad5e59ee52f63454:ckpt000000",
+        "example_id_b": "FLUXA:FLUXA-6BUS-ISLAND-A:B_SOLAR_SHOCK:596aa4cb22a8306d:ckpt000000"
+      },
+      "outcome": "REJECTED"
+    },
+    {
+      "attack_id": "E1_UNAUTHORIZED_SENSITIVE_OPERATION",
+      "category": "unauthorized operation",
+      "defence": "QRADLE FatalInvariants.enforce_human_oversight, checked before any physics",
+      "description": "Run the SENSITIVE generator-outage scenario without authorization.",
+      "evidence": {
+        "error": "FATAL INVARIANT VIOLATION [human_oversight_requirement]: Operation 'fluxa_simulation:D_GENERATOR_OUTAGE' at level 'SENSITIVE' requires human authorization Context: {'operation': 'fluxa_simulation:D_GENERATOR_OUTAGE', 'safety_level': 'SENSITIVE'}"
+      },
+      "outcome": "REJECTED"
+    },
+    {
+      "attack_id": "E2_RELABEL_TO_EVADE_GATE",
+      "category": "unauthorized operation",
+      "defence": "required_safety_level is derived from perturbation kinds, not from free text",
+      "description": "Relabel the gated scenario's name, description and tags as routine.",
+      "evidence": {
+        "derived_level": "SENSITIVE"
+      },
+      "outcome": "REJECTED"
+    },
+    {
+      "attack_id": "E3_SELF_ASSERTED_AUTHORIZATION",
+      "category": "unauthorized operation",
+      "defence": "NONE. The gate verifies that an authorization flag was set, not that a human set it. There is no signature, credential or second party.",
+      "description": "Set RunConfig.authorized=True with an arbitrary authorizer_id and run the gated scenario.",
+      "evidence": {
+        "authorizer_id": "adversarial",
+        "run_succeeded": true,
+        "severity": "This is a real architectural gap: any caller able to construct a RunConfig can authorize itself. QRADLE's zones module implements dual-control (ZoneContext.has_dual_control) but the DeterministicEngine authorization path does not use it."
+      },
+      "outcome": "SUCCEEDED"
+    },
+    {
+      "attack_id": "F1_DRAIN_EMPTY_BATTERY",
+      "category": "forced constraint violation",
+      "defence": "SOC bounds are LP variable bounds; the deficit is reported as unserved energy instead of being drawn from an empty store",
+      "description": "Demand 420 MW with both gas units out, no sun, no wind and the battery at its minimum state of charge.",
+      "evidence": {
+        "discharge_mw": 0.0,
+        "soc_end": 0.1,
+        "soc_min": 0.1,
+        "unserved_mw": 320.0
+      },
+      "outcome": "CONSTRAINED"
+    },
+    {
+      "attack_id": "F2_OVERDRIVE_GENERATORS",
+      "category": "forced constraint violation",
+      "defence": "capacity limits are LP variable bounds",
+      "description": "Demand 5000 MW from a system with 310 MW of dispatchable capacity.",
+      "evidence": {
+        "dispatch_mw": [
+          220.0,
+          90.0
+        ],
+        "nameplate_mw": [
+          220.0,
+          90.0
+        ],
+        "unserved_mw": 4510.0
+      },
+      "outcome": "CONSTRAINED"
+    },
+    {
+      "attack_id": "F3_FORCE_LINE_OVERLOAD",
+      "category": "forced constraint violation",
+      "defence": "the overload slack is a measured decision variable, so the violation is reported with its magnitude rather than silently absorbed",
+      "description": "Derate every line to 1 MW and require 380 MW of delivery.",
+      "evidence": {
+        "overload_matches_flow_minus_rating": true,
+        "total_overload_mw": 252.69079578139983
+      },
+      "outcome": "DETECTED"
+    },
+    {
+      "attack_id": "F4_FORCE_NEGATIVE_ENERGY_STATE",
+      "category": "forced constraint violation",
+      "defence": "non-negativity is imposed as LP variable lower bounds",
+      "description": "Drive the system deep into surplus (120 MW load, 330 MW of renewables) and look for negative power or energy quantities.",
+      "evidence": {
+        "curtailment_or_export_absorbed_surplus": 100.0,
+        "min_charge_mw": 42.105263157895216,
+        "min_discharge_mw": 0.0,
+        "min_unserved_mw": 0.0
+      },
+      "outcome": "CONSTRAINED"
+    },
+    {
+      "attack_id": "G1_VARY_EXECUTION_ORDER",
+      "category": "nondeterminism",
+      "defence": "no mutable module-level state; every RNG is an explicitly constructed Generator(PCG64(seed)), so the global numpy RNG is never read",
+      "description": "Execute three scenarios in forward and reverse order within one process and compare their provenance identities.",
+      "evidence": {
+        "forward": {
+          "A_BASELINE": "077890f9eb9625903387836d2cf3f3ffbfb874314e9971d33a373b6bb0f6029b",
+          "B_SOLAR_SHOCK": "d0a2e05b3869704cae0c04db5100eaab0c078991b806186a98b4120f9c047531",
+          "G_LINE_DERATE": "33fce4393d22cf03b039d9aa7c37651e96d1647a43650d25a5dec2e5d7d60b0a"
+        },
+        "reverse": {
+          "A_BASELINE": "077890f9eb9625903387836d2cf3f3ffbfb874314e9971d33a373b6bb0f6029b",
+          "B_SOLAR_SHOCK": "d0a2e05b3869704cae0c04db5100eaab0c078991b806186a98b4120f9c047531",
+          "G_LINE_DERATE": "33fce4393d22cf03b039d9aa7c37651e96d1647a43650d25a5dec2e5d7d60b0a"
+        }
+      },
+      "outcome": "REJECTED"
+    },
+    {
+      "attack_id": "H1_FORGE_QRADLE_MERKLE_PROOF",
+      "category": "substrate limitation",
+      "defence": "NONE in QRADLE. MerkleProof.verify() returns `self.root_hash == claimed_root`; it never recomputes a root from the leaf and path, so any field but root_hash can be arbitrary. FLUXA therefore does not rely on it and carries its own recomputing inclusion proof (fluxa.provenance.verify_inclusion_proof), which rejects this forgery.",
+      "description": "Construct a qradle.core.merkle.MerkleProof with a fabricated event hash and a garbage proof path, keeping only the genuine root_hash field, and submit it for verification.",
+      "evidence": {
+        "fluxa_proof_rejects_equivalent_forgery": true,
+        "qradle_accepted_forgery": true
+      },
+      "outcome": "SUCCEEDED"
+    }
+  ],
+  "n_attacks": 20,
+  "outcomes": {
+    "CONSTRAINED": 3,
+    "DETECTED": 8,
+    "REJECTED": 7,
+    "SUCCEEDED": 2
+  },
+  "successful_attacks": [
+    "E3_SELF_ASSERTED_AUTHORIZATION",
+    "H1_FORGE_QRADLE_MERKLE_PROOF"
+  ]
+}

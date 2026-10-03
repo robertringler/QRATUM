@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "system_id": "FLUXA-6BUS-ISLAND-A",
+  "description": "Six-bus island transmission system with CCGT, peaking GT, utility PV, onshore wind, a 320 MWh BESS and a single external interconnection. Parameter origins are documented in fluxa/configs/PARAMETER_SOURCES.md.",
+  "peak_load_mw": 420.0,
+  "buses": [
+    {"bus_id": "B1", "name": "Gas Hub (slack)",  "is_slack": true,  "load_share": 0.10},
+    {"bus_id": "B2", "name": "Solar Plateau",    "is_slack": false, "load_share": 0.00},
+    {"bus_id": "B3", "name": "Wind Ridge",       "is_slack": false, "load_share": 0.00},
+    {"bus_id": "B4", "name": "Industrial Park",  "is_slack": false, "load_share": 0.35},
+    {"bus_id": "B5", "name": "Urban Center",     "is_slack": false, "load_share": 0.40},
+    {"bus_id": "B6", "name": "Interconnect",     "is_slack": false, "load_share": 0.15}
+  ],
+  "lines": [
+    {"line_id": "L1", "from_bus": "B1", "to_bus": "B2", "reactance_pu": 0.06, "capacity_mw": 160.0},
+    {"line_id": "L2", "from_bus": "B1", "to_bus": "B4", "reactance_pu": 0.05, "capacity_mw": 200.0},
+    {"line_id": "L3", "from_bus": "B2", "to_bus": "B4", "reactance_pu": 0.08, "capacity_mw": 130.0},
+    {"line_id": "L4", "from_bus": "B2", "to_bus": "B3", "reactance_pu": 0.07, "capacity_mw": 120.0},
+    {"line_id": "L5", "from_bus": "B3", "to_bus": "B5", "reactance_pu": 0.06, "capacity_mw": 150.0},
+    {"line_id": "L6", "from_bus": "B4", "to_bus": "B5", "reactance_pu": 0.04, "capacity_mw": 180.0},
+    {"line_id": "L7", "from_bus": "B5", "to_bus": "B6", "reactance_pu": 0.05, "capacity_mw": 150.0},
+    {"line_id": "L8", "from_bus": "B1", "to_bus": "B6", "reactance_pu": 0.09, "capacity_mw": 110.0}
+  ],
+  "generators": [
+    {
+      "gen_id": "GAS_CCGT_1", "bus_id": "B1", "kind": "gas_ccgt",
+      "p_max_mw": 220.0, "p_min_mw": 40.0,
+      "marginal_cost_usd_per_mwh": 48.0, "ramp_mw_per_min": 4.0,
+      "co2_tonnes_per_mwh": 0.36
+    },
+    {
+      "gen_id": "GAS_GT_2", "bus_id": "B6", "kind": "gas_peaker",
+      "p_max_mw": 90.0, "p_min_mw": 0.0,
+      "marginal_cost_usd_per_mwh": 92.0, "ramp_mw_per_min": 9.0,
+      "co2_tonnes_per_mwh": 0.55
+    },
+    {
+      "gen_id": "SOLAR_PV_1", "bus_id": "B2", "kind": "solar_pv",
+      "p_max_mw": 180.0, "p_min_mw": 0.0,
+      "marginal_cost_usd_per_mwh": 1.0, "ramp_mw_per_min": 180.0,
+      "co2_tonnes_per_mwh": 0.0
+    },
+    {
+      "gen_id": "WIND_1", "bus_id": "B3", "kind": "wind",
+      "p_max_mw": 150.0, "p_min_mw": 0.0,
+      "marginal_cost_usd_per_mwh": 2.0, "ramp_mw_per_min": 150.0,
+      "co2_tonnes_per_mwh": 0.0
+    }
+  ],
+  "batteries": [
+    {
+      "battery_id": "BESS_1", "bus_id": "B5",
+      "energy_capacity_mwh": 320.0,
+      "p_charge_max_mw": 80.0, "p_discharge_max_mw": 80.0,
+      "charge_efficiency": 0.95, "discharge_efficiency": 0.95,
+      "soc_min": 0.10, "soc_max": 0.95, "soc_initial": 0.50,
+      "cycle_cost_usd_per_mwh": 4.0
+    }
+  ],
+  "interconnections": [
+    {
+      "link_id": "TIE_1", "bus_id": "B6",
+      "import_max_mw": 100.0, "export_max_mw": 100.0,
+      "import_price_usd_per_mwh": 75.0, "export_price_usd_per_mwh": 25.0
+    }
+  ],
+  "economics": {
+    "value_of_lost_load_usd_per_mwh": 10000.0,
+    "curtailment_cost_usd_per_mwh": 15.0,
+    "overload_penalty_usd_per_mwh": 2000.0,
+    "reserve_shortfall_penalty_usd_per_mwh": 500.0,
+    "stored_energy_value_usd_per_mwh": 48.0,
+    "co2_price_usd_per_tonne": 0.0
+  },
+  "reserve": {
+    "load_fraction": 0.08,
+    "renewable_fraction": 0.15,
+    "duration_h": 0.25
+  },
+  "frequency": {
+    "nominal_hz": 50.0,
+    "response_characteristic_mw_per_hz": 30.0,
+    "alarm_deviation_hz": 0.20
+  }
+}
