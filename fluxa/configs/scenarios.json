@@ -1,0 +1,210 @@
+{
+  "schema_version": "1.0.0",
+  "description": "FLUXA scenario library. Onsets are hours from simulation start. A is the unperturbed reference; B-F are the required disturbance set with F as the primary compound resilience experiment; G and H are supplementary network/integration experiments. Scenarios whose required safety level is SENSITIVE (D, F) are gated by QRADLE invariant 1 and will not execute without human authorization.",
+  "scenarios": [
+    {
+      "scenario_id": "A_BASELINE",
+      "name": "Baseline",
+      "description": "Normal generation and demand. No perturbation. Reference trajectory for all comparisons.",
+      "tags": [
+        "reference"
+      ],
+      "perturbations": []
+    },
+    {
+      "scenario_id": "B_SOLAR_SHOCK",
+      "name": "Solar shock",
+      "description": "Photovoltaic output falls 70% over 15 minutes at 12:00, holds for 2 hours, then recovers over 45 minutes.",
+      "tags": [
+        "renewable",
+        "single"
+      ],
+      "perturbations": [
+        {
+          "perturbation_id": "PV_DERATE_70",
+          "kind": "renewable_derate",
+          "targets": [
+            "SOLAR_PV_1"
+          ],
+          "start_h": 12.0,
+          "ramp_min": 15.0,
+          "hold_min": 120.0,
+          "recovery_min": 45.0,
+          "magnitude": 0.7
+        }
+      ]
+    },
+    {
+      "scenario_id": "C_WIND_SHOCK",
+      "name": "Wind shock",
+      "description": "Wind generation falls 85% over 20 minutes at 18:00 (into the evening peak), holds 3 hours, recovers over 60 minutes.",
+      "tags": [
+        "renewable",
+        "single"
+      ],
+      "perturbations": [
+        {
+          "perturbation_id": "WIND_DERATE_85",
+          "kind": "renewable_derate",
+          "targets": [
+            "WIND_1"
+          ],
+          "start_h": 18.0,
+          "ramp_min": 20.0,
+          "hold_min": 180.0,
+          "recovery_min": 60.0,
+          "magnitude": 0.85
+        }
+      ]
+    },
+    {
+      "scenario_id": "D_GENERATOR_OUTAGE",
+      "name": "Generator outage",
+      "description": "The CCGT trips instantaneously at 19:00 and stays out for 3 hours. SENSITIVE: requires human authorization under QRADLE invariant 1.",
+      "tags": [
+        "contingency",
+        "authorization-gated"
+      ],
+      "perturbations": [
+        {
+          "perturbation_id": "CCGT_TRIP",
+          "kind": "generator_outage",
+          "targets": [
+            "GAS_CCGT_1"
+          ],
+          "start_h": 19.0,
+          "ramp_min": 0.0,
+          "hold_min": 180.0,
+          "recovery_min": 10.0
+        }
+      ]
+    },
+    {
+      "scenario_id": "E_LOAD_SPIKE",
+      "name": "Load spike",
+      "description": "Demand rises 30% over 30 minutes at 17:30, holds 2 hours, decays over 60 minutes.",
+      "tags": [
+        "demand",
+        "single"
+      ],
+      "perturbations": [
+        {
+          "perturbation_id": "LOAD_PLUS_30",
+          "kind": "load_scale",
+          "targets": [],
+          "start_h": 17.5,
+          "ramp_min": 30.0,
+          "hold_min": 120.0,
+          "recovery_min": 60.0,
+          "magnitude": 0.3
+        }
+      ]
+    },
+    {
+      "scenario_id": "F_COMPOUND",
+      "name": "Compound event",
+      "description": "Primary resilience experiment: wind collapse at 18:00, CCGT trip at 18:50, and a 25% demand surge at 19:00, overlapping through the evening peak. SENSITIVE: requires human authorization.",
+      "tags": [
+        "compound",
+        "primary-resilience",
+        "authorization-gated"
+      ],
+      "perturbations": [
+        {
+          "perturbation_id": "WIND_COLLAPSE_80",
+          "kind": "renewable_derate",
+          "targets": [
+            "WIND_1"
+          ],
+          "start_h": 18.0,
+          "ramp_min": 25.0,
+          "hold_min": 210.0,
+          "recovery_min": 60.0,
+          "magnitude": 0.8
+        },
+        {
+          "perturbation_id": "CCGT_TRIP_COMPOUND",
+          "kind": "generator_outage",
+          "targets": [
+            "GAS_CCGT_1"
+          ],
+          "start_h": 18.833333,
+          "ramp_min": 0.0,
+          "hold_min": 150.0,
+          "recovery_min": 15.0
+        },
+        {
+          "perturbation_id": "LOAD_SURGE_25",
+          "kind": "load_scale",
+          "targets": [],
+          "start_h": 19.0,
+          "ramp_min": 20.0,
+          "hold_min": 120.0,
+          "recovery_min": 45.0,
+          "magnitude": 0.25
+        }
+      ]
+    },
+    {
+      "scenario_id": "G_LINE_DERATE",
+      "name": "Transmission derate",
+      "description": "Supplementary network experiment. The B3-B5 corridor (L5) carries the wind farm's output to the urban load centre and is the most heavily loaded branch in the baseline (0.836 utilisation at 08:00). It is derated 55% for 4 hours from 06:00, across the morning demand ramp. The energy balance is not short, so this isolates the network constraint: the expected response is congestion-driven wind curtailment with the limit binding but not violated.",
+      "tags": [
+        "network",
+        "congestion",
+        "curtailment",
+        "supplementary"
+      ],
+      "perturbations": [
+        {
+          "perturbation_id": "L5_DERATE_55",
+          "kind": "line_derate",
+          "targets": [
+            "L5"
+          ],
+          "start_h": 6.0,
+          "ramp_min": 5.0,
+          "hold_min": 240.0,
+          "recovery_min": 15.0,
+          "magnitude": 0.55
+        }
+      ]
+    },
+    {
+      "scenario_id": "H_VRE_CURTAILMENT",
+      "name": "Solar congestion with low demand",
+      "description": "Supplementary renewable-integration experiment. Both corridors out of the photovoltaic bus B2 (L1 to B1, L3 to B4) are derated 70% for 4 hours from 10:00 while midday demand falls 40%, so the solar resource exceeds what the network and the remaining sinks (export, storage, the CCGT's must-run floor) can absorb. On this capacity mix a pure demand reduction produces almost no curtailment -- export and storage absorb the surplus -- so congestion is what makes the curtailment pathway observable.",
+      "tags": [
+        "renewable",
+        "congestion",
+        "curtailment",
+        "supplementary"
+      ],
+      "perturbations": [
+        {
+          "perturbation_id": "B2_EGRESS_DERATE_70",
+          "kind": "line_derate",
+          "targets": [
+            "L1",
+            "L3"
+          ],
+          "start_h": 10.0,
+          "ramp_min": 15.0,
+          "hold_min": 240.0,
+          "recovery_min": 30.0,
+          "magnitude": 0.7
+        },
+        {
+          "perturbation_id": "MIDDAY_LOAD_MINUS_40",
+          "kind": "load_scale",
+          "targets": [],
+          "start_h": 10.0,
+          "ramp_min": 20.0,
+          "hold_min": 240.0,
+          "recovery_min": 30.0,
+          "magnitude": -0.4
+        }
+      ]
+    }
+  ]
+}

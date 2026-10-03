@@ -1,0 +1,37 @@
+{
+  "changed_bundle_fields": [
+    "config_hash",
+    "event_chain_root",
+    "event_tree_root",
+    "final_state_hash",
+    "identity_hash",
+    "model_hash",
+    "output_hash",
+    "qradle_chain_root",
+    "qradle_output_hash",
+    "state_tree_root"
+  ],
+  "event_tree_root": "8b893f28dd6ad3fcad657df4dd4769bbb35f24a19c9b4982a535ead4b1d7a1c5",
+  "final_state_hash": "520816f9e26e80f6d2d4da674c8fe4498955df67956f024ed21100b53bde5099",
+  "identity_changed": true,
+  "identity_hash_after": "de363ebca870b4ccf0e0189c2afb407fe14835537249d4503a85747098cdeade",
+  "identity_hash_before": "bf235012eab56da59fb01960542e3efd48e28e9b69835a2e1004a9518144d666",
+  "input_change_description": "BESS_1.energy_capacity_mwh 320.0 -> 321.0",
+  "n_events": 629,
+  "n_states": 288,
+  "qradle_proof_accepts_forged_path": true,
+  "rehashed_tamper_detected": true,
+  "rehashed_tamper_messages": [
+    "node 6: previous_hash 5baa5269b537... != expected 31754b4d755a..."
+  ],
+  "scenario_id": "F_COMPOUND",
+  "state_tree_root": "bddf8f43f9dd3e7b0d18b861ee19f5191bcd1f485addd56a7f0c76f49e6a0005",
+  "tamper_changes_chain_head": false,
+  "tamper_detection_messages": [
+    "node 314: content hash does not match data"
+  ],
+  "tampered_event_index": 314,
+  "tampered_ledger_verifies": false,
+  "untampered_all_inclusion_proofs_verify": true,
+  "untampered_ledger_verifies": true
+}

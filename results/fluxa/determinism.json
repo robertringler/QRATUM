@@ -1,0 +1,95 @@
+{
+  "A_BASELINE": {
+    "bundle_differences": {
+      "qradle_chain_root": [
+        "3f6875bd577dc5b647fc72e506f92a277c78513de3dc619dbb77a06e4aa7c4cf",
+        "98df362335202436d5abf12b74b83dd817de2a7f398e2d74c65502de06b6fbf3"
+      ]
+    },
+    "deterministic_at_fluxa_level": true,
+    "distinct_identity_hashes": [
+      "b784cd5f42ca7035046bc078aade79b355a1cd5cb3694481511d3f8806dc913c"
+    ],
+    "distinct_qradle_chain_roots": [
+      "33ae507b31887aa821180f38073231645bd8d59d49d9a5c1f6492f14dfa0e7c7",
+      "3f6875bd577dc5b647fc72e506f92a277c78513de3dc619dbb77a06e4aa7c4cf",
+      "98df362335202436d5abf12b74b83dd817de2a7f398e2d74c65502de06b6fbf3"
+    ],
+    "event_sequence_identical": true,
+    "event_tree_root_identical": true,
+    "final_state_hash_identical": true,
+    "first_state_divergence_step": null,
+    "fluxa_chain_root_identical": true,
+    "identity_hash_identical": true,
+    "n_runs": 3,
+    "n_steps": 288,
+    "output_hash_identical": true,
+    "qradle_chain_root_identical": false,
+    "qradle_output_hash_identical": true,
+    "scenario_id": "A_BASELINE",
+    "state_hashes_identical": true,
+    "state_tree_root_identical": true
+  },
+  "F_COMPOUND": {
+    "bundle_differences": {
+      "qradle_chain_root": [
+        "7a19f6321701137dd0c49bb6e45e8e65a9b84766e9c28e91ab418e576d4041c5",
+        "7122c259a458ada7ad7a7712a8c48b71d2ebb9aca0c48487e3c3fd1106cbc653"
+      ]
+    },
+    "deterministic_at_fluxa_level": true,
+    "distinct_identity_hashes": [
+      "bf235012eab56da59fb01960542e3efd48e28e9b69835a2e1004a9518144d666"
+    ],
+    "distinct_qradle_chain_roots": [
+      "2d41d32e155ec081c3bddf8658eda448fdd777fc4e67cd1cc578dc0beeb929b6",
+      "7122c259a458ada7ad7a7712a8c48b71d2ebb9aca0c48487e3c3fd1106cbc653",
+      "7a19f6321701137dd0c49bb6e45e8e65a9b84766e9c28e91ab418e576d4041c5"
+    ],
+    "event_sequence_identical": true,
+    "event_tree_root_identical": true,
+    "final_state_hash_identical": true,
+    "first_state_divergence_step": null,
+    "fluxa_chain_root_identical": true,
+    "identity_hash_identical": true,
+    "n_runs": 3,
+    "n_steps": 288,
+    "output_hash_identical": true,
+    "qradle_chain_root_identical": false,
+    "qradle_output_hash_identical": true,
+    "scenario_id": "F_COMPOUND",
+    "state_hashes_identical": true,
+    "state_tree_root_identical": true
+  },
+  "G_LINE_DERATE": {
+    "bundle_differences": {
+      "qradle_chain_root": [
+        "5f61fa58b73cffa5adda4218ca2841f5d17fc35f4e335d5ca01a16f97a82f9ae",
+        "303e4bda94c6108fbde737d1bbc0847a594f9caeb0d97fc7d39997c11a1dc96f"
+      ]
+    },
+    "deterministic_at_fluxa_level": true,
+    "distinct_identity_hashes": [
+      "e4265fd4b6228efcaff59be0522b6ca5236494c497f6e1dcb6db01c985234f7a"
+    ],
+    "distinct_qradle_chain_roots": [
+      "303e4bda94c6108fbde737d1bbc0847a594f9caeb0d97fc7d39997c11a1dc96f",
+      "5ca16a9529697343b29ee7cd8bf92010798c01669289d3983dddf51078d4f13c",
+      "5f61fa58b73cffa5adda4218ca2841f5d17fc35f4e335d5ca01a16f97a82f9ae"
+    ],
+    "event_sequence_identical": true,
+    "event_tree_root_identical": true,
+    "final_state_hash_identical": true,
+    "first_state_divergence_step": null,
+    "fluxa_chain_root_identical": true,
+    "identity_hash_identical": true,
+    "n_runs": 3,
+    "n_steps": 288,
+    "output_hash_identical": true,
+    "qradle_chain_root_identical": false,
+    "qradle_output_hash_identical": true,
+    "scenario_id": "G_LINE_DERATE",
+    "state_hashes_identical": true,
+    "state_tree_root_identical": true
+  }
+}
