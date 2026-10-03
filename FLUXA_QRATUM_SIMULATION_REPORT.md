@@ -7,7 +7,7 @@
 | Vertical | FLUXA (energy systems), implemented at `fluxa/` |
 | Substrate | QRADLE 1.0.0 (`qradle/`), pre-existing and unmodified |
 | Compute | CPU only — 4 logical cores, `Linux-6.18.44-fc-v64-x86_64`, CPython 3.11.15, NumPy 2.4.6, SciPy 1.17.1 |
-| Campaign | `python -m fluxa.experiments.run_all` — 361.3 s wall, 8 stages, **0 failed stages**, 72 artefact files (20 MB) in `results/fluxa/` |
+| Campaign | `python -m fluxa.experiments.run_all` — 361.3 s wall, 8 stages, **0 failed stages**, 73 artefact files (20 MB) in `results/fluxa/` |
 | System config hash | `b3fc57aaf4e8aaf02b370953789058dc03ec27b545907f2f015f0a75bd31d8f7` |
 | Model hash | `fac1fd29898a3dbc9547280635762a556435afe641833b817b100e6cf2ea59d9` |
 | FLUXA test suite | 297 tests, all passing |
@@ -88,7 +88,7 @@ what their names suggest.
 ### 2.1 Layering as executed
 
 ```
-FLUXA  (new; fluxa/, 16 modules, 11 test modules)
+FLUXA  (new; fluxa/, 18 modules + 3 experiment drivers + 15 test modules, 10,800 lines)
   model.py       frozen, hashable physical + economic description
   network.py     linearised DC power flow → PTDF
   profiles.py    seeded, reproducible load / solar / wind drivers
